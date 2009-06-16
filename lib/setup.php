@@ -80,13 +80,14 @@ global $HTTPSPAGEREQUIRED;
 
 /// First try to detect some attacks on older buggy PHP versions
     if (isset($_REQUEST['GLOBALS']) || isset($_COOKIE['GLOBALS']) || isset($_FILES['GLOBALS'])) {
-        die('Fatal: Illegal GLOBALS overwrite attempt detected!');
+        trigger_error('Fatal: Illegal GLOBALS overwrite attempt detected!');
+        exit(1);
     }
 
 
     if (!isset($CFG->wwwroot)) {
         trigger_error('Fatal: $CFG->wwwroot is not configured! Exiting.');
-        die;
+        exit(1);
     }
 
 /// sometimes default PHP settings are borked on shared hosting servers, I wonder why they have to do that??
@@ -181,7 +182,7 @@ global $HTTPSPAGEREQUIRED;
                fwrite($fp, time());
             }
         }
-        die;
+        exit(1);
     }
 
 /// Forcing ASSOC mode for ADOdb (some DBs default to FETCH_BOTH)
