@@ -291,4 +291,111 @@ $string['welcomep70'] = 'Click the \"Next\" button below to continue with the se
 $string['wwwroot'] = 'Web address';
 $string['wwwrooterror'] = 'The \'Web Address\' does not appear to be valid - this Moodle installation doesn\'t appear to be there. The value below has been reset.';
 
+// cli installer strings
+$string['aborting'] = '\nAborting ...\n';
+$string['abortinstallation']= 'Aborting installtion ...\n';
+$string['adminemail'] = 'Email :';
+$string['adminfirstname'] = 'First Name :';
+$string['admininfo'] = 'Administrator Details';
+$string['adminlastname'] = 'Last Name :';
+$string['adminpassword'] = 'Password :';
+$string['adminusername'] = 'Username :';
+$string['askcontinue'] = 'Continue (yes/no) :';
+$string['availabledbtypes']='\nAvailable db types \n';
+$string['availablelangs']='List of available languages \n';
+$string['cannotconnecttodb'] = 'Cannot connect to db \n';
+$string['checkingphpsettings']='\n\nChecking PHP Settings\n\n';
+$string['configfilecreated'] = 'Configuration file successfully created\n ';
+$string['configfiledoesnotexist'] = 'Configuration file does not exist !!!';
+$string['configurationfileexist']='Configuration file already exist!\n';
+$string['creatingconfigfile'] =' Creating configuration file ...\n';
+$string['databasehost']='Database host :';
+$string['databasename']='Database name : ';
+$string['databasepass']='Database password :';
+$string['databasesettingsformoodle']='\n\nDatabase settings for Moodle\n\n';
+$string['databasetype']='Database type :';
+$string['databaseuser']='Database user :';
+$string['disagreelicense'] = 'Upgrade cannot proceed due to disagreement to GPL!';
+$string['downloadlanguagepack']='\n\nDo you want to download language pack now(yes/no) :';
+$string['downloadsuccess'] = 'Language Pack Downloaded Successfuly';
+$string['doyouagree'] = 'Do you agree ? (yes/no):';
+$string['errorsinenvironment'] ='Errors in the environment !\n';
+$string['inputdatadirectory']='Data Directory :';
+$string['inputwebadress']='Web address :';
+$string['inputwebdirectory']='Moodle Directory :';
+$string['installationiscomplete'] = 'Installtion is completed !\n';
+$string['invalidargumenthelp']='
+    Error: Invalid argument(s)
+    Usage: \$php cliupgrade.php OPTIONS
+    Use --help option to get more help\n';
+$string['invalidemail'] = 'Invalid Email';
+$string['invalidhost'] = 'Invalid Host ';
+$string['invalidint']='Error: value is not an integer \n';
+$string['invalidintrange'] = 'Error: Value is outside valid range\n';
+$string['invalidpath'] = 'Invalid Path ';
+$string['invalidsetelement']= 'Error: Value given is not in the given options \n';
+$string['invalidtextvalue'] = 'Invalid Text Value';
+$string['invalidurl'] = 'Invalid URL ';
+$string['invalidvalueforlanguage']='Invalid value for --lang option. Type --help for more help\n';
+$string['invalidyesno'] = 'Error: value is not a valid yes/no argument \n';
+$string['locationanddirectories']= '\n\nLocation and directories \n\n';
+$string['newline'] = '\n';
+$string['pearargerror']='PEAR library cannot identify the arguments\n';
+$string['releasenoteslink'] = 'For information about this version of Moodle, please see Release Notes at $a';
+$string['selectlanguage']='\n\nSelecting a language for installation\n';
+$string['sitefullname'] = 'Site full name :';
+$string['siteinfo'] = 'Site Details';
+$string['sitenewsitems'] = 'News Items :';
+$string['siteshortname'] = 'Site short name :';
+$string['sitesummary'] ='Site summary :';
+$string['tableprefix']='Table prefix :';
+$string['unsafedirname'] = 'Error: Unsafe characters in directory name. valid characters are a-zA-Z0-9_-\n';
+$string['upgradingactivitymodule']= 'Upgrading Activity Module';
+$string['upgradingbackupdb'] = 'Upgrading Backup Database';
+$string['upgradingblocksdb'] = 'Upgrading Blocks Database';
+$string['upgradingblocksplugin'] = 'Upgrading Blocks Plugin';
+$string['upgradingcompleted'] = 'Upgrading completed...\n';
+$string['upgradingcourseformatplugin'] = 'Upgrading Course Format Pluggin';
+$string['upgradingenrolplugin'] = 'Upgrading Enrol Plugin';
+$string['upgradinggradeexportplugin'] = 'Upgrading Grade Export Plugin';
+$string['upgradinggradeimportplugin'] = 'Upgrading Grame Import Plugin';
+$string['upgradinggradereportplugin'] = 'Upgrading Grade Report Plugin';
+$string['upgradinglocaldb'] = 'Upgrading Local Database';
+$string['upgradingmessageoutputpluggin'] = 'Upgrading Message Output Plugin';
+$string['upgradingqtypeplugin'] = 'Upgrading Question/type Plugin';
+$string['upgradingrpcfunctions'] = 'Upgrading RPC Functions';
+$string['usagehelp']='
+Synopsis:
+\$php cliupgrade.php OPTIONS\n
+OPTIONS
+--lang              Valid installed language for installation. Default is English(en)
+--webaddr           Web address for the Moodle site
+--moodledir         Location of the moodle web folder
+--datadir           Location of the moodle data folder (should not be web visible)
+--dbtype            Database type. Default it mysql
+--dbhost            Database host. Default localhost
+--dbname            Database name. Default is moodle
+--dbuser            Database user. Default is blank
+--dbpass            Database password. Default is blank
+--prefix            Table prefix for above database tables. Default is mdl
+--verbose           0 No output, 1 Summarized output(Default), 2 Detailed output
+--interactivelevel  0 Non interactive, 1 semi interactive(Default), 2 interactive
+--agreelicense      Yes(Default) or No
+--confirmrelease    Yes(Default) or No
+--sitefullname      Full name for the site. Default is : Moodle Site (Please Change Site Name!!)
+--siteshortname     Short name for the site. Default is moodle
+--sitesummary       Summary of the site. Default is blank
+--adminfirstname    First name of the admin. Default is Admin
+--adminlastname     Last name of the admin. Default is User
+--adminusername     Username for the admin. Default is admin
+--adminpassword     Password for the admin. Default is admin
+--adminemail        Email address of admin. Default is root@localhost
+--help              print out this help\n
+Usage:
+\$php cliupgrade.php --lang=en --webaddr=http://www.example.com --moodledir=/var/www/html/moodle --datadir=/var/moodledata --dbtype=mysql --dbhost=localhost --dbname=moodle --dbuser=root --prefix=mdl --agreelicense=yes --confirmrelease=yes --sitefullname=\"Example Moodle Site\" --siteshortname=moodle --sitesummary=siteforme --adminfirstname=Admin --adminlastname=User --adminusername=admin --adminpassword=admin --adminemail=admin@example.com --verbose=1 --interactivelevel=2 \n';
+$string['versionerror'] = 'User aborted due to version Error ';
+$string['welcometext']='\n\n---Welcome to moodle commandline installer---\n\n';
+$string['writetoconfigfilefaild'] = 'Error: Write to config file failed ';
+$string['yourchoice']='\nYour choice :';
+
 ?>
