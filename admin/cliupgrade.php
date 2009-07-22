@@ -1337,7 +1337,12 @@ if ( file_exists(dirname(dirname(__FILE__)) . '/config.php')) {
     $admuser = get_admin();
     $USER = get_complete_user_data('id', $admuser->id);
     complete_user_login($USER);
-    admin_new_settings_to_default();
+
+    // apply all default settings, do it twice to fill all defaults - some settings depend on other setting
+    admin_get_root(true); // needs to be reloaded
+    admin_apply_default_settings(NULL, true);
+    admin_apply_default_settings(NULL, true);
+    set_config('chat_serverhost', 'localhost'); // won't be set correctly since it relies on $_SERVER['HTTP_HOST']
 
     if ( $verbose > CLI_NO ) {
         print_newline();
