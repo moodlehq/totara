@@ -568,8 +568,10 @@ function question_showbank($tabname, $contexts, $pageurl, $cm, $page, $perpage, 
             $questionnames .= '<br />'.get_string('questionsinuse', 'quiz');
         }
         notice_yesno(get_string("deletequestionscheck", "quiz", $questionnames),
-                    $pageurl->out_action(array('deleteselected'=>$questionlist, 'confirm'=>md5($questionlist))),
-                    $pageurl->out_action());
+                    $pageurl->out_action(),
+                    $pageurl->out(true),
+                    array('deleteselected'=>$questionlist, 'confirm'=>md5($questionlist)),
+                    $pageurl->params(), 'post', 'get');
 
         echo '</td></tr>';
         echo '</table>';

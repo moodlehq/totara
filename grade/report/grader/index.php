@@ -1,27 +1,19 @@
-<?php // $Id$
+<?php
 
-///////////////////////////////////////////////////////////////////////////
-// NOTICE OF COPYRIGHT                                                   //
-//                                                                       //
-// Moodle - Modular Object-Oriented Dynamic Learning Environment         //
-//          http://moodle.org                                            //
-//                                                                       //
-// Copyright (C) 1999 onwards  Martin Dougiamas  http://moodle.com       //
-//                                                                       //
-// This program is free software; you can redistribute it and/or modify  //
-// it under the terms of the GNU General Public License as published by  //
-// the Free Software Foundation; either version 2 of the License, or     //
-// (at your option) any later version.                                   //
-//                                                                       //
-// This program is distributed in the hope that it will be useful,       //
-// but WITHOUT ANY WARRANTY; without even the implied warranty of        //
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         //
-// GNU General Public License for more details:                          //
-//                                                                       //
-//          http://www.gnu.org/copyleft/gpl.html                         //
-//                                                                       //
-///////////////////////////////////////////////////////////////////////////
-
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 require_once '../../../config.php';
 require_once $CFG->libdir.'/gradelib.php';
@@ -205,6 +197,12 @@ echo '<div id="hiddentooltiproot">tooltip panel</div>';
 YAHOO.namespace("graderreport");
 
 function init() {
+    // Adjust height of header c0
+    var rows = document.getElementsByClassName('heading_name_row');
+    var header_cell_region = YAHOO.util.Dom.getRegion(rows[rows.length-1].firstChild);
+    var height = header_cell_region.bottom - header_cell_region.top;
+    YAHOO.util.Dom.setStyle('studentheader', 'height', height + 'px');
+    
     // attach event listener to the table for mouseover and mouseout
     var table = document.getElementById('user-grades');
     YAHOO.util.Event.on(table, 'mouseover', YAHOO.graderreport.mouseoverHandler);
@@ -216,14 +214,14 @@ function init() {
         draggable: false,
         visible: false,
         close: false,
-        preventcontextoverlap: true
+        preventcontextoverlap: true,
+        underlay: 'none'
 
     });
 
     YAHOO.graderreport.panelEl.render(table);
 
     document.body.className += ' yui-skin-sam';
-
 }
 
 YAHOO.graderreport.mouseoverHandler = function (e) {
@@ -342,6 +340,7 @@ YAHOO.graderreport.mouseoutHandler = function (e) {
 
 
 YAHOO.util.Event.onDOMReady(init);
+
 //]]>
 </script>
 <?php

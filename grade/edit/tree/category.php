@@ -1,27 +1,19 @@
-<?php  //$Id$
+<?php
 
-///////////////////////////////////////////////////////////////////////////
-//                                                                       //
-// NOTICE OF COPYRIGHT                                                   //
-//                                                                       //
-// Moodle - Modular Object-Oriented Dynamic Learning Environment         //
-//          http://moodle.com                                            //
-//                                                                       //
-// Copyright (C) 1999 onwards  Martin Dougiamas  http://moodle.com       //
-//                                                                       //
-// This program is free software; you can redistribute it and/or modify  //
-// it under the terms of the GNU General Public License as published by  //
-// the Free Software Foundation; either version 2 of the License, or     //
-// (at your option) any later version.                                   //
-//                                                                       //
-// This program is distributed in the hope that it will be useful,       //
-// but WITHOUT ANY WARRANTY; without even the implied warranty of        //
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         //
-// GNU General Public License for more details:                          //
-//                                                                       //
-//          http://www.gnu.org/copyleft/gpl.html                         //
-//                                                                       //
-///////////////////////////////////////////////////////////////////////////
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 require_once '../../../config.php';
 require_once $CFG->dirroot.'/grade/lib.php';
@@ -85,6 +77,11 @@ if ($id) {
     $grade_category->apply_forced_settings();
 
     $category = $grade_category->get_record_data();
+
+    $grade_item = new grade_item(array('courseid'=>$courseid, 'itemtype'=>'manual'), false);
+    foreach ($grade_item->get_record_data() as $key => $value) {
+        $category->{"grade_item_$key"} = $value;
+    }
 }
 
 $mform = new edit_category_form(null, array('current'=>$category, 'gpr'=>$gpr));
@@ -126,6 +123,18 @@ if ($mform->is_cancelled()) {
     if (!isset($itemdata->aggregationcoef)) {
         $itemdata->aggregationcoef = 0;
     }
+    
+    if (!isset($itemdata->gradepass) || $itemdata->gradepass == '') {
+        $itemdata->gradepass = 0;
+    }
+
+    if (!isset($itemdata->grademax) || $itemdata->grademax == '') {
+        $itemdata->grademax = 0;
+    }
+
+    if (!isset($itemdata->grademin) || $itemdata->grademin == '') {
+        $itemdata->grademin = 0;
+    } 
 
     $hidden      = empty($itemdata->hidden) ? 0: $itemdata->hidden;
     $hiddenuntil = empty($itemdata->hiddenuntil) ? 0: $itemdata->hiddenuntil;
@@ -154,16 +163,16 @@ if ($mform->is_cancelled()) {
     if (empty($grade_item->id)) {
         $grade_item->id = $grade_item_copy->id;
     }
-    if (empty($grade_item->grademax)) {
+    if (empty($grade_item->grademax) && $grade_item->grademax != '0') {
         $grade_item->grademax = $grade_item_copy->grademax;
     }
-    if (empty($grade_item->grademin)) {
+    if (empty($grade_item->grademin) && $grade_item->grademin != '0') {
         $grade_item->grademin = $grade_item_copy->grademin;
     }
-    if (empty($grade_item->gradepass)) {
+    if (empty($grade_item->gradepass) && $grade_item->gradepass != '0') {
         $grade_item->gradepass = $grade_item_copy->gradepass;
     }
-    if (empty($grade_item->aggregationcoef)) {
+    if (empty($grade_item->aggregationcoef) && $grade_item->aggregationcoef != '0') {
         $grade_item->aggregationcoef = $grade_item_copy->aggregationcoef;
     }
 
