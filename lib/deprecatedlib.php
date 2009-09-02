@@ -1689,4 +1689,9 @@ function error ($message, $link='') {
 
     die;
 }
+
+function use_html_editor($name='', $editorhidebuttons='', $id='') {
+    // error('use_html_editor() not available anymore');
+}
+
 ?>
