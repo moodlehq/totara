@@ -1,12 +1,14 @@
 <?php
 
 require_once('../../config.php');
+$courseid = optional_param('course', SITEID, PARAM_INT);
 
 $editorlanguage = substr(current_language(), 0, 2);
 $SESSION->lang = $editorlanguage;
 
 $directionality = get_string('thisdirection');
-$courseid = optional_param('course');
+$strtime        = get_string('strftimetime');
+$strdate        = get_string('strftimedaydate');
 
 /*
  * This section configures the TinyMCE toolbar buttons on and off
