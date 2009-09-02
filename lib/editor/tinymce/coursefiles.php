@@ -204,10 +204,14 @@
             require_once($CFG->dirroot.'/lib/uploadlib.php');
 
             if ($save and confirm_sesskey()) {
-                $um = new upload_manager('userfile',false,false,$course,false,0);
+                $um = new upload_manager('userfile',false,true,$course,false,0);
                 $dir = "$basedir$wdir";
                 if ($um->process_file_uploads($dir)) {
-                    notify(get_string('uploadedfile'));
+                    if (!empty($um->files['userfile']['uploadlog'])) {
+                        notify($um->files['userfile']['uploadlog']);
+                    } else {
+                        notify(get_string('uploadedfile'));
+                    }
                 }
                 // um will take care of error reporting.
                 displaydir($wdir);
