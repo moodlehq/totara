@@ -2676,6 +2676,10 @@ function print_header ($title='', $heading='', $navigation='', $focus='',
 
     $bodytags .= ' class="'.$pageclass.'" id="'.$pageid.'"';
 
+    require_once($CFG->libdir .'/editor/htmlEditor.class.php');
+    $htmlEditorObject = new htmlEditor();
+    $htmlEditor = $htmlEditorObject->configure(NULL, $COURSE->id);
+
     ob_start();
     include($CFG->header);
     $output = ob_get_contents();
@@ -4900,23 +4904,26 @@ function print_recent_activity_note($time, $user, $text, $link, $return=false, $
 /**
  * Prints a basic textarea field.
  *
+ * When using this function, you should 
+ *
  * @uses $CFG
- * @param boolean $usehtmleditor ?
- * @param int $rows ?
- * @param int $cols ?
- * @param null $width <b>Legacy field no longer used!</b>  Set to zero to get control over mincols
- * @param null $height <b>Legacy field no longer used!</b>  Set to zero to get control over minrows
- * @param string $name ?
- * @param string $value ?
- * @param int $courseid ?
- * @todo Finish documenting this function
+ * @param bool $usehtmleditor Enables the use of the htmleditor for this field.
+ * @param int $rows Number of rows to display  (minimum of 10 when $height is non-null)
+ * @param int $cols Number of columns to display (minimum of 65 when $width is non-null)
+ * @param null $width (Deprecated) Width of the element; if a value is passed, the minimum value for $cols will be 65. Value is otherwise ignored.
+ * @param null $height (Deprecated) Height of the element; if a value is passe, the minimum value for $rows will be 10. Value is otherwise ignored.
+ * @param string $name Name to use for the textarea element.
+ * @param string $value Initial content to display in the textarea.
+ * @param int $obsolete deprecated
+ * @param bool $return If false, will output string. If true, will return string value.
+ * @param string $id CSS ID to add to the textarea element.
+ * @param string $editorclass CSS classes to add to the textarea element when using the htmleditor. Use 'form-textarea-simple' to get a basic editor. Defaults to 'form-textarea-advanced' (complete editor). If this is null or invalid, the htmleditor will not show for this field.
  */
-function print_textarea($usehtmleditor, $rows, $cols, $width, $height, $name, $value='', $courseid=0, $return=false, $id='') {
-/// $width and height are legacy fields and no longer used as pixels like they used to be.
-/// However, you can set them to zero to override the mincols and minrows values below.
+function print_textarea($usehtmleditor, $rows, $cols, $width, $height, $name, $value='', $obsolete=0, $return=false, $id='', $editorclass='form-textarea-advanced') {
+    /// $width and height are legacy fields and no longer used as pixels like they used to be.
+    /// However, you can set them to zero to override the mincols and minrows values below.
 
-    global $CFG, $COURSE, $HTTPSPAGEREQUIRED;
-    static $scriptcount = 0; // For loading the htmlarea script only once.
+    global $CFG, $COURSE, $HTTPSPAGEREQUIRED, $THEME;
 
     $mincols = 65;
     $minrows = 10;
@@ -4926,40 +4933,22 @@ function print_textarea($usehtmleditor, $rows, $cols, $width, $height, $name, $v
         $id = 'edit-'.$name;
     }
 
-    if ( empty($CFG->editorsrc) ) { // for backward compatibility.
-        if (empty($courseid)) {
-            $courseid = $COURSE->id;
+    if ( empty($CFG->editorsrc) && $usehtmleditor ) { // for backward compatibility.
+        if ($height && ($rows < $minrows)) {
+            $rows = $minrows;
         }
-
-        if ($usehtmleditor) {
-            if (!empty($courseid) and has_capability('moodle/course:managefiles', get_context_instance(CONTEXT_COURSE, $courseid))) {
-                $httpsrequired = empty($HTTPSPAGEREQUIRED) ? '' : '&amp;httpsrequired=1';
-                // needed for course file area browsing in image insert plugin
-                $str .= ($scriptcount < 1) ? '<script type="text/javascript" src="'.
-                        $CFG->httpswwwroot .'/lib/editor/htmlarea/htmlarea.php?id='.$courseid.$httpsrequired.'"></script>'."\n" : '';
-            } else {
-                $httpsrequired = empty($HTTPSPAGEREQUIRED) ? '' : '?httpsrequired=1';
-                $str .= ($scriptcount < 1) ? '<script type="text/javascript" src="'.
-                         $CFG->httpswwwroot .'/lib/editor/htmlarea/htmlarea.php'.$httpsrequired.'"></script>'."\n" : '';
-
-            }
-            $str .= ($scriptcount < 1) ? '<script type="text/javascript" src="'.
-                    $CFG->httpswwwroot .'/lib/editor/htmlarea/lang/en.php?id='.$courseid.'"></script>'."\n" : '';
-            $scriptcount++;
-
-            if ($height) {    // Usually with legacy calls
-                if ($rows < $minrows) {
-                    $rows = $minrows;
-                }
-            }
-            if ($width) {    // Usually with legacy calls
-                if ($cols < $mincols) {
-                    $cols = $mincols;
-                }
-            }
+        if ($width && ($cols < $mincols)) {
+            $cols = $mincols;
         }
     }
-    $str .= '<textarea class="form-textarea" id="'. $id .'" name="'. $name .'" rows="'. $rows .'" cols="'. $cols .'">';
+
+    if ($usehtmleditor) {
+        $THEME->htmleditors[] = $id;
+    } else {
+        $editorclass = '';
+    }
+
+    $str .= "\n".'<textarea class="form-textarea '. $editorclass .'" id="'. $id .'" name="'. $name .'" rows="'. $rows .'" cols="'. $cols .'">'."\n";
     if ($usehtmleditor) {
         $str .= htmlspecialchars($value); // needed for editing of cleaned text!
     } else {
@@ -4968,109 +4957,17 @@ function print_textarea($usehtmleditor, $rows, $cols, $width, $height, $name, $v
     $str .= '</textarea>'."\n";
 
     if ($usehtmleditor) {
+        $str_toggle = '<span class="helplink"><a href="javascript:mce_toggleEditor(\''. $id .'\');"><img width="50" height="17" src="'. $CFG->httpswwwroot .'/lib/editor/tinymce/images/toggle.gif" alt="'. get_string('editortoggle') .'" title="'. get_string('editortoggle') .'" class="icontoggle" /></a></span>';
         // Show shortcuts button if HTML editor is in use, but only if JavaScript is enabled (MDL-9556)
+        $str .= '<div class="textareaicons">';
         $str .= '<script type="text/javascript">
 //<![CDATA[
+mce_saveOnSubmit(\''.addslashes_js($id).'\');
+document.write(\''.addslashes_js($str_toggle).'\');
 document.write(\''.addslashes_js(editorshortcutshelpbutton()).'\');
 //]]>
 </script>';
-    }
-
-    if ($return) {
-        return $str;
-    }
-    echo $str;
-}
-
-/**
- * Sets up the HTML editor on textareas in the current page.
- * If a field name is provided, then it will only be
- * applied to that field - otherwise it will be used
- * on every textarea in the page.
- *
- * In most cases no arguments need to be supplied
- *
- * @param string $name Form element to replace with HTMl editor by name
- */
-function use_html_editor($name='', $editorhidebuttons='', $id='') {
-    global $THEME;
-
-    $editor = 'editor_'.md5($name); //name might contain illegal characters
-    if ($id === '') {
-        $id = 'edit-'.$name;
-    }
-    echo "\n".'<script type="text/javascript" defer="defer">'."\n";
-    echo '//<![CDATA['."\n\n"; // Extra \n is to fix odd wiki problem, MDL-8185
-    echo "$editor = new HTMLArea('$id');\n";
-    echo "var config = $editor.config;\n";
-
-    echo print_editor_config($editorhidebuttons);
-
-    if (empty($THEME->htmleditorpostprocess)) {
-        if (empty($name)) {
-            echo "\nHTMLArea.replaceAll($editor.config);\n";
-        } else {
-            echo "\n$editor.generate();\n";
-        }
-    } else {
-        if (empty($name)) {
-            echo "\nvar HTML_name = '';";
-        } else {
-            echo "\nvar HTML_name = \"$name;\"";
-        }
-        echo "\nvar HTML_editor = $editor;";
-    }
-    echo '//]]>'."\n";
-    echo '</script>'."\n";
-}
-
-function print_editor_config($editorhidebuttons='', $return=false) {
-    global $CFG;
-
-    $str = "config.pageStyle = \"body {";
-
-    if (!(empty($CFG->editorbackgroundcolor))) {
-        $str .= " background-color: $CFG->editorbackgroundcolor;";
-    }
-
-    if (!(empty($CFG->editorfontfamily))) {
-        $str .= " font-family: $CFG->editorfontfamily;";
-    }
-
-    if (!(empty($CFG->editorfontsize))) {
-        $str .= " font-size: $CFG->editorfontsize;";
-    }
-
-    $str .= " }\";\n";
-    $str .= "config.killWordOnPaste = ";
-    $str .= (empty($CFG->editorkillword)) ? "false":"true";
-    $str .= ';'."\n";
-    $str .= 'config.fontname = {'."\n";
-
-    $fontlist = isset($CFG->editorfontlist) ? explode(';', $CFG->editorfontlist) : array();
-    $i = 1;                     // Counter is used to get rid of the last comma.
-
-    foreach ($fontlist as $fontline) {
-        if (!empty($fontline)) {
-            if ($i > 1) {
-                $str .= ','."\n";
-            }
-            list($fontkey, $fontvalue) = split(':', $fontline);
-            $str .= '"'. $fontkey ."\":\t'". $fontvalue ."'";
-
-            $i++;
-        }
-    }
-    $str .= '};';
-
-    if (!empty($editorhidebuttons)) {
-        $str .= "\nconfig.hideSomeButtons(\" ". $editorhidebuttons ." \");\n";
-    } else if (!empty($CFG->editorhidebuttons)) {
-        $str .= "\nconfig.hideSomeButtons(\" ". $CFG->editorhidebuttons ." \");\n";
-    }
-
-    if (!empty($CFG->editorspelling) && !empty($CFG->aspellpath)) {
-        $str .= print_speller_code($CFG->htmleditor, true);
+        $str .= '</div>';
     }
 
     if ($return) {
