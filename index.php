@@ -187,6 +187,10 @@
         $frontpagelayout = $CFG->frontpage;
     }
 
+
+    if (file_exists($CFG->dirroot.'/theme/'.$CFG->theme.'/frontpage.html')) {
+        include($CFG->dirroot.'/theme/'.$CFG->theme.'/frontpage.html');
+    }
     foreach (explode(',',$frontpagelayout) as $v) {
         switch ($v) {     /// Display the main part of the front page.
             case FRONTPAGENEWS:
