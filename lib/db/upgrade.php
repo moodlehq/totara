@@ -3169,6 +3169,20 @@ function xmldb_main_upgrade($oldversion=0) {
         upgrade_main_savepoint($result, 2007101547);
     }
 
+    if ($result && $oldversion < 2007101551) {
+
+    /// Define field enablecompletion to be added to course
+        $table = new XMLDBTable('course');
+        $field = new XMLDBField('enablecompletion');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0', 'defaultrole');
+
+    /// Launch add field enablecompletion
+        $result = $result && add_field($table, $field);
+
+    /// Main savepoint reached
+        upgrade_main_savepoint($result, 2007101551);
+    }
+
     return $result;
 }
 
