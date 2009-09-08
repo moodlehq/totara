@@ -3406,12 +3406,23 @@ class admin_setting_special_calendar_weekend extends admin_setting {
 
 
 /**
- * Graded roles in gradebook
+ * Admin setting that allows a user to pick appropriate roles for something.
  */
-class admin_setting_special_gradebookroles extends admin_setting_configmulticheckbox {
-    function admin_setting_special_gradebookroles() {
-        parent::admin_setting_configmulticheckbox('gradebookroles', get_string('gradebookroles', 'admin'),
-                                                  get_string('configgradebookroles', 'admin'), NULL, NULL);
+class admin_setting_pickroles extends admin_setting_configmulticheckbox {
+    /** @var array Array of capabilities which identify roles */
+    private $types;
+
+    /**
+     * @param string $name Name of config variable
+     * @param string $visiblename Display name
+     * @param string $description Description
+     * @param array $types Array of capabilities (usually moodle/legacy:something)
+     *   which identify roles that will be enabled by default. Default is the
+     *   student role
+     */
+    function admin_setting_pickroles($name, $visiblename, $description, $types = array('moodle/legacy:student')) {
+        parent::admin_setting_configmulticheckbox($name, $visiblename, $description, NULL, NULL);
+        $this->types = $types;
     }
 
     function load_choices() {
@@ -3436,17 +3447,32 @@ class admin_setting_special_gradebookroles extends admin_setting_configmultichec
     function get_defaultsetting() {
         global $CFG;
         if (empty($CFG->rolesactive)) {
-            return NULL;
+            return array(0);
         }
         $result = array();
-        if ($studentroles = get_roles_with_capability('moodle/legacy:student', CAP_ALLOW)) {
-            foreach ($studentroles as $studentrole) {
-                $result[$studentrole->id] = '1';
+        foreach($this->types as $capability) {
+            if ($caproles = get_roles_with_capability($capability, CAP_ALLOW)) {
+                foreach ($caproles as $caprole) {
+                    $result[$caprole->id] = '1';
+                }
             }
         }
         return $result;
     }
 }
+
+
+
+/**
+ * Graded roles in gradebook
+ */
+class admin_setting_special_gradebookroles extends admin_setting_pickroles {
+    function admin_setting_special_gradebookroles() {
+        parent::admin_setting_pickroles('gradebookroles', get_string('gradebookroles', 'admin'),
+                                                  get_string('configgradebookroles', 'admin'));
+    }
+}
+
 
 class admin_setting_regradingcheckbox extends admin_setting_configcheckbox {
     function write_setting($data) {
