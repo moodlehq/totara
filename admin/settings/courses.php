@@ -47,6 +47,11 @@ if ($hassiteconfig
     $temp->add(new admin_setting_configselect('moodlecourse/maxbytes', get_string('maximumupload'), get_string('coursehelpmaximumupload'), key($choices), $choices));
     $temp->add(new admin_setting_configselect('moodlecourse/metacourse', get_string('metacourse'), get_string('coursehelpmetacourse'), 0,array(0 => get_string('no'), 1 => get_string('yes'))));
 
+    if (!empty($CFG->enablecompletion)) {
+        $temp->add(new admin_setting_configselect('moodlecourse/enablecompletion', get_string('completion','completion'), '',
+            1, array(0 => get_string('completiondisabled','completion'), 1 => get_string('completionenabled','completion'))));
+    }
+
     $ADMIN->add('courses', $temp);
 
     // "courserequests" settingpage
