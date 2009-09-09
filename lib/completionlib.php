@@ -613,15 +613,17 @@ class completion_info {
      *   activity, 0 if none
      */
     public function count_user_data($cm) {
-        global $DB;
+        global $CFG;
 
-        return $DB->get_field_sql("
+        $cmid = (int)$cm->id;
+
+        return get_field_sql("
     SELECT
         COUNT(1)
     FROM
-        {course_modules_completion}
+        {$CFG->prefix}course_modules_completion
     WHERE
-        coursemoduleid=? AND completionstate<>0", array($cm->id));
+        coursemoduleid = {$cmid} AND completionstate <> 0");
     }
 
     /**
