@@ -908,14 +908,14 @@ class completion_info {
      * @param object $data Data about completion for that user
      */
     function internal_set_data($cm, $data) {
-        global $USER, $SESSION, $DB;
+        global $USER, $SESSION;
 
         if ($data->id) {
             // Has real (nonzero) id meaning that a database row exists
-            $DB->update_record('course_modules_completion', $data);
+            update_record('course_modules_completion', $data);
         } else {
             // Didn't exist before, needs creating
-            $data->id = $DB->insert_record('course_modules_completion', $data);
+            $data->id = insert_record('course_modules_completion', $data);
         }
 
         if ($data->userid == $USER->id) {
