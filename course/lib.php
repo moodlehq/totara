@@ -1,6 +1,7 @@
 <?php  // $Id$
    // Library of useful functions
 
+require_once($CFG->libdir.'/completionlib.php');
 
 define('COURSE_MAX_LOG_DISPLAY', 150);          // days
 define('COURSE_MAX_LOGS_PER_PAGE', 1000);       // records
@@ -2314,6 +2315,27 @@ function get_course_section($section, $courseid) {
     $id = insert_record("course_sections", $cw);
     return get_record("course_sections", "id", $id);
 }
+
+function set_coursemodule_completion($id, $completion) {
+    global $DB;
+    return $DB->set_field("course_modules", "completion", $completion, array('id'=>$id));
+}
+
+function set_coursemodule_completionview($id, $completionview) {
+    global $DB;
+    return $DB->set_field("course_modules", "completionview", $completionview, array('id'=>$id));
+}
+
+function set_coursemodule_completiongradeitemnumber($id, $completiongradeitemnumber) {
+    global $DB;
+    return $DB->set_field("course_modules", "completiongradeitemnumber", $completiongradeitemnumber, array('id'=>$id));
+}
+
+function set_coursemodule_completionexpected($id, $completionexpected) {
+    global $DB;
+    return $DB->set_field("course_modules", "completionexpected", $completionexpected, array('id'=>$id));
+}
+
 /**
  * Given a full mod object with section and course already defined, adds this module to that section.
  *
