@@ -791,7 +791,7 @@ class completion_info {
      * @return object Completion data (record from course_modules_completion)
      */
     public function get_data($cm, $wholecourse=false, $userid=0, $modinfo=null) {
-        global $USER, $CFG, $SESSION, $DB;
+        global $USER, $CFG, $SESSION;
 
         // Get user ID
         if (!$userid) {
@@ -825,14 +825,14 @@ class completion_info {
         // Not there, get via SQL
         if ($currentuser && $wholecourse) {
             // Get whole course data for cache
-            $alldatabycmc = $DB->get_records_sql("
+            $alldatabycmc = get_records_sql("
     SELECT
         cmc.*
     FROM
-        {course_modules} cm
-        INNER JOIN {course_modules_completion} cmc ON cmc.coursemoduleid=cm.id
+        {$CFG->prefix}course_modules cm
+        INNER JOIN {$CFG->prefix}course_modules_completion cmc ON cmc.coursemoduleid=cm.id
     WHERE
-        cm.course=? AND cmc.userid=?", array($this->course->id, $userid));
+        cm.course = {$this->course->id} AND cmc.userid = {$userid}");
 
             // Reindex by cm id
             $alldata = array();
@@ -870,7 +870,7 @@ class completion_info {
 
         } else {
             // Get single record
-            $data = $DB->get_record('course_modules_completion', array('coursemoduleid'=>$cm->id, 'userid'=>$userid));
+            $data = get_record('course_modules_completion', 'coursemoduleid', $cm->id, 'userid', $userid);
             if ($data == false) {
                 // Row not present counts as 'not complete'
                 $data = new StdClass;
