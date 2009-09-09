@@ -3216,7 +3216,7 @@ function xmldb_main_upgrade($oldversion=0) {
 
    /// Define table course_modules_completion to be created
         $table = new XMLDBTable('course_modules_completion');
-        if(table_exists($table)) {
+        if(!table_exists($table)) {
 
         /// Adding fields to table course_modules_completion
             $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null, null);
