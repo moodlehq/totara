@@ -216,6 +216,7 @@ class grade_object {
             insert_record($this->table.'_history', addslashes_recursive($data));
         }
 
+        $this->notify_changed(false);
         return true;
     }
 
@@ -245,6 +246,7 @@ class grade_object {
                 $data->userlogged   = $USER->id;
                 insert_record($this->table.'_history', addslashes_recursive($data));
             }
+            $this->notify_changed(true);
             return true;
 
         } else {
@@ -307,6 +309,7 @@ class grade_object {
             insert_record($this->table.'_history', addslashes_recursive($data));
         }
 
+        $this->notify_changed(false);
         return $this->id;
     }
 
@@ -344,6 +347,16 @@ class grade_object {
                 $instance->$var = $value;
             }
         }
+    }
+
+    /**
+     * Called immediately after the object data has been inserted, updated, or
+     * deleted in the database. Default does nothing, can be overridden to
+     * hook in special behaviour.
+     *
+     * @param bool $deleted
+     */
+    function notify_changed($deleted) {
     }
 }
 ?>
