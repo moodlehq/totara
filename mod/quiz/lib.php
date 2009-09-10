@@ -1191,6 +1191,18 @@ function quiz_num_attempt_summary($quiz, $cm, $returnzero = false, $currentgroup
 }
 
 /**
+ * @param string $feature FEATURE_xx constant for requested feature
+ * @return bool True if quiz supports feature
+ */
+function quiz_supports($feature) {
+    switch($feature) {
+        case FEATURE_GRADE_HAS_GRADE: return true;
+        case FEATURE_COMPLETION_TRACKS_VIEWS: return true;
+        default: return null;
+    }
+}
+
+/**
  * Returns all other caps used in module
  */
 function quiz_get_extra_capabilities() {
