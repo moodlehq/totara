@@ -305,14 +305,13 @@ class completion_info {
 
         // Fill cache if empty
         if (!is_array($this->criteria)) {
-            global $DB;
 
             $params = array(
                 'course'    => $this->course->id
             );
 
             // Load criteria from database
-            $records = (array)$DB->get_records('course_completion_criteria', $params);
+            $records = get_records('course_completion_criteria', $params);
 
             // Build array of criteria objects
             $this->criteria = array();
@@ -382,9 +381,8 @@ class completion_info {
      * Clear old course completion criteria
      */
     public function clear_criteria() {
-        global $DB;
-        $DB->delete_records('course_completion_criteria', array('course' => $this->course_id));
-        $DB->delete_records('course_completion_aggr_methd', array('course' => $this->course_id));
+        delete_records('course_completion_criteria', 'course', $this->course_id);
+        delete_records('course_completion_aggr_methd', 'course', $this->course_id);
 
         $this->delete_course_completion_data();
     }
@@ -493,7 +491,6 @@ class completion_info {
      *
      * @global object
      * @global object
-     * @global object
      * @uses COMPLETION_VIEW_REQUIRED
      * @uses COMPLETION_NOT_VIEWED
      * @uses COMPLETION_INCOMPLETE
@@ -506,7 +503,7 @@ class completion_info {
      * @return mixed
      */
     function internal_get_state($cm, $userid, $current) {
-        global $USER, $DB, $CFG;
+        global $USER, $CFG;
 
         // Get user ID
         if (!$userid) {
@@ -522,7 +519,7 @@ class completion_info {
 
         // Modname hopefully is provided in $cm but just in case it isn't, let's grab it
         if (!isset($cm->modname)) {
-            $cm->modname = $DB->get_field('modules', 'name', array('id'=>$cm->module));
+            $cm->modname = get_field('modules', 'name', 'id', $cm->module);
         }
 
         $newstate = COMPLETION_COMPLETE;
@@ -637,26 +634,23 @@ class completion_info {
      *   course, 0 if none
      */
     public function count_course_user_data($user_id = null) {
-        global $DB;
+        global $CFG;
 
-        $sql = '
+        $sql = "
     SELECT
         COUNT(1)
     FROM
-        {course_completion_crit_compl}
+        {$CFG->prefix}course_completion_crit_compl
     WHERE
-        course = ?
-        ';
-
-        $params = array($this->course_id);
+        course = {$this->course_id}
+        ";
 
         // Limit data to a single user if an ID is supplied
         if ($user_id) {
-            $sql .= ' AND userid = ?';
-            $params[] = $user_id;
+            $sql .= ' AND userid = '.(int)$user_id;
         }
 
-        return $DB->get_field_sql($sql, $params);
+        return get_field_sql($sql);
     }
 
     /**
@@ -673,14 +667,11 @@ class completion_info {
      *
      * Intended to be used when unlocking completion criteria settings.
      *
-     * @global  object
      * @return  void
      */
     public function delete_course_completion_data() {
-        global $DB;
-
-        $DB->delete_records('course_completions', array('course' => $this->course_id));
-        $DB->delete_records('course_completion_crit_compl', array('course' => $this->course_id));
+        delete_records('course_completions', 'course', $this->course_id);
+        delete_records('course_completion_crit_compl', 'course', $this->course_id);
     }
 
     /**
@@ -689,14 +680,13 @@ class completion_info {
      * Intended for use only when the activity itself is deleted.
      *
      * @global object
-     * @global object
      * @param object $cm Activity
      */
     public function delete_all_state($cm) {
-        global $SESSION, $DB;
+        global $SESSION;
 
         // Delete from database
-        $DB->delete_records('course_modules_completion', array('coursemoduleid'=>$cm->id));
+        delete_records('course_modules_completion', 'coursemoduleid', $cm->id);
 
         // Erase cache data for current user if applicable
         if (isset($SESSION->completioncache) &&
@@ -718,8 +708,8 @@ class completion_info {
 
         if ($acriteria) {
             // Delete all criteria completions relating to this activity
-            $DB->delete_records('course_completion_crit_compl', array('course' => $this->course_id, 'criteriaid' => $acriteria->id));
-            $DB->delete_records('course_completions', array('course' => $this->course_id));
+            delete_records('course_completion_crit_compl', 'course', $this->course_id, 'criteriaid', $acriteria->id);
+            delete_records('course_completions', 'course', $this->course_id);
         }
     }
 
