@@ -734,20 +734,18 @@ class completion_info {
      * Resetting state of manual tickbox has same result as deleting state for
      * it.
      *
-     * @global object
      * @uses COMPLETION_TRACKING_MANUAL
      * @uses COMPLETION_UNKNOWN
      * @param object $cm Activity
      */
     public function reset_all_state($cm) {
-        global $DB;
 
         if ($cm->completion == COMPLETION_TRACKING_MANUAL) {
             $this->delete_all_state($cm);
             return;
         }
         // Get current list of users with completion state
-        $rs = $DB->get_recordset('course_modules_completion', array('coursemoduleid'=>$cm->id), '', 'userid');
+        $rs = get_recordset('course_modules_completion', 'coursemoduleid', $cm->id, '', 'userid');
         $keepusers = array();
         foreach ($rs as $rec) {
             $keepusers[] = $rec->userid;
@@ -966,14 +964,13 @@ class completion_info {
      * progress report.
      *
      * @global object
-     * @global object
      * @uses CONTEXT_COURSE
      * @param bool $sortfirstname Optional True to sort with firstname
      * @param int $groupid Optionally restrict to groupid
      * @return array Array of user objects containing id, firstname, lastname (empty if none)
      */
     function internal_get_tracked_users($sortfirstname = false, $groupid = 0) {
-        global $CFG, $DB;
+        global $CFG;
 
         if (!empty($CFG->progresstrackedroles)) {
             $roles = explode(', ', $CFG->progresstrackedroles);
@@ -999,7 +996,6 @@ class completion_info {
      * completion progress for any course-module.
      *
      * @global object
-     * @global object
      * @param bool $sortfirstname If true, sort by first name, otherwise sort by
      *   last name
      * @param int $groupid Group ID or 0 (default)/false for all groups
@@ -1011,7 +1007,7 @@ class completion_info {
      */
     public function get_progress_all($sortfirstname=false, $groupid=0,
         $pagesize=0,$start=0) {
-        global $CFG, $DB;
+        global $CFG;
         $resultobject=new StdClass;
 
         // Get list of applicable users
@@ -1033,18 +1029,19 @@ class completion_info {
         for($i=0; $i<count($userids); $i+=1000) {
             $blocksize = count($userids)-$i < 1000 ? count($userids)-$i : 1000;
 
-            list($insql, $params) = $DB->get_in_or_equal(array_slice($userids, $i, $blocksize));
-            array_splice($params, 0, 0, array($this->course->id));
-            $rs = $DB->get_recordset_sql("
+            $insql = 'IN ('.implode(array_slice($userids, $i, $blocksize), ', ').')';
+            $rs = get_recordset_sql("
 SELECT
     cmc.*
 FROM
-    {course_modules} cm
-    INNER JOIN {course_modules_completion} cmc ON cm.id=cmc.coursemoduleid
+    {$CFG->prefix}course_modules cm
+    INNER JOIN {$CFG->prefix}course_modules_completion cmc ON cm.id=cmc.coursemoduleid
 WHERE
-    cm.course=? AND cmc.userid $insql
-    ", $params);
+    cm.course = {$this->course->id} AND cmc.userid $insql");
+
             foreach ($rs as $progress) {
+                $progress = (object)$progress;
+
                 $resultobject->users[$progress->userid]->progress[$progress->coursemoduleid]=$progress;
             }
             $rs->close();
