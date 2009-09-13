@@ -1124,7 +1124,7 @@ WHERE
      */
     function internal_systemerror($error) {
         global $CFG;
-        throw new moodle_exception('err_system','completion',
+        print_error('err_system','completion',
             $CFG->wwwroot.'/course/view.php?id='.$this->course->id,null,$error);
     }
 
