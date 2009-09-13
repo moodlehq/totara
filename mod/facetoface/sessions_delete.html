@@ -1,0 +1,66 @@
+<form name="form" method="post" action="sessions.php?f=<?php echo $facetoface->id; if($d) echo "&amp;d=1";?>">
+<input type="hidden" name="id" value="<?php echo $id; ?>" />
+<input type="hidden" name="sesskey" value="<?php echo $USER->sesskey; ?>" />
+<input type="hidden" name="f" value="<?php echo $f; ?>" />
+<input type="hidden" name="s" value="<?php echo $s; ?>" />
+<input type="hidden" name="c" value="<?php echo $c; ?>" />
+<input type="hidden" name="d" value="<?php echo $d; ?>" />
+<input type="hidden" name="location" value="<?php echo $form->location; ?>" />
+<input type="hidden" name="venue" value="<?php echo $form->venue; ?>" />
+<input type="hidden" name="room" value="<?php echo $form->room; ?>" />
+<input type="hidden" name="action" value="1" />
+<table cellpadding="5">
+<tr valign="top">
+    <td align="right" width="300"><b><?php print_string('location', 'facetoface') ?>:</b></td>
+    <td width="300"><?php echo $form->location; ?></td> </tr>
+<tr valign="top">
+    <td align="right" width="300"><b><?php print_string('venue', 'facetoface') ?>:</b></td>
+    <td width="300"><?php echo $form->venue; ?></td>
+</tr>
+<tr valign="top">
+    <td align="right" width="300"><b><?php print_string('room', 'facetoface') ?>:</b></td>
+    <td width="300"><?php echo $form->room; ?></td>
+</tr>
+<?php
+if ($form->datetimeknown) {
+?>
+<tr valign="top">
+    <td align="right" width="300"><b><?php print_string('sessiondatetime', 'facetoface') ?>:</b></td>
+    <td width="300" align="left"><table border="0">
+<?php
+    for ($i=0; $i < $nbdays; $i++) {
+?>
+        <tr>
+        <td align="right"><?php echo $sessiondate[$i]; ?>,</td>
+        <td align="left"><?php echo $datetimestart[$i]; ?> - <?php echo $datetimefinish[$i]; ?></td>
+        </tr>
+<?php
+    }
+?>
+    </table></td>
+</tr>
+<?php
+} else {
+?>
+<tr valign="top">
+    <td align="right" width="300"><b><?php print_string('sessiondatetime', 'facetoface') ?>:</b></td>
+    <td width="300"><?php print_string('wait-listed', 'facetoface') ?></td>
+</tr>
+<?php
+}
+?>
+<tr valign="top">
+    <td align="right" width="300"><b><?php print_string('capacity', 'facetoface') ?>:</b></td>     <td width="300"><?php echo $form->capacity; ?></td>
+</tr>
+<tr valign="top">
+    <td align="right" width="300"><b><?php print_string('details', 'facetoface') ?>:</b></td>
+    <td width="300"><?php echo $form->details; ?></td>
+</tr>
+<tr>
+    <td colspan="2" align="center">
+        <input type="submit" value="<?php print_string('deletesession', 'facetoface') ?>" />
+        <input type="submit" name="cancel" value="<?php print_string('cancel') ?>" />
+    </td>
+</tr>
+</table>
+</form>

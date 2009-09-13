@@ -1392,6 +1392,10 @@ function print_section($course, $section, $mods, $modnamesused, $absolute=false,
                     echo " <span class=\"groupinglabel\">(".format_string($groupings[$mod->groupingid]->name).')</span>';
                 }
 
+            } elseif ($mod->modname == 'facetoface') {
+                include_once($CFG->dirroot.'/mod/facetoface/lib.php');
+                echo facetoface_print_coursemodule_info($mod);
+
             } else { // Normal activity
                 $instancename = format_string($modinfo->cms[$modnumber]->name, true,  $course->id);
 

@@ -1,0 +1,267 @@
+<form name="form" method="post" action="signup.php?s=<?php echo $s.$querystr; ?>">
+<input type="hidden" name="id" value="<?php echo $id; ?>" />
+<input type="hidden" name="sesskey" value="<?php echo $USER->sesskey; ?>" />
+<input type="hidden" name="f" value="<?php echo $f; ?>" />
+<input type="hidden" name="s" value="<?php echo $s; ?>" />
+<input type="hidden" name="action" value="1" />
+<?php
+if (!$addmanager and !$confirmmanager and !$changemanager) {
+    // Generic form (no manager action)
+?>
+<table cellpadding="3" align="center">
+<tr valign="top">
+    <td align="right" width="300"><b><?php print_string('location', 'facetoface') ?>:</b></td>
+    <td width="300"><?php echo $session->location; ?></td> </tr>
+<tr valign="top">
+    <td align="right" width="300"><b><?php print_string('venue', 'facetoface') ?>:</b></td>
+    <td width="300"><?php echo $session->venue; ?></td>
+</tr>
+<tr valign="top">
+    <td align="right" width="300"><b><?php print_string('room', 'facetoface') ?>:</b></td>
+    <td width="300"><?php echo $session->room; ?></td>
+</tr>
+<?php
+  if ($session->datetimeknown) {
+?>
+<tr valign="top">
+    <td align="right" width="300"><b><?php print_string('sessiondatetime', 'facetoface') ?>:</b></td>
+    <td width="300" align="left"><table border="0">
+<?php
+    for ($i=0; $i < count($session->sessiondates); $i++) {
+?>
+        <tr>
+        <td align="right"><?php echo $sessiondate[$i]; ?>,</td>
+        <td align="left"><?php echo $datetimestart[$i]; ?> - <?php echo $datetimefinish[$i]; ?></td>
+        </tr>
+<?php
+    } // for
+?>
+    </table></td>
+</tr>
+<?php
+    } else { // !$session->datatimeknown
+?>
+<tr valign="top">
+    <td align="right" width="300"><b><?php print_string('sessiondatetime', 'facetoface') ?>:</b></td>
+    <td width="300"><?php print_string('wait-listed', 'facetoface') ?></td>
+</tr>
+<?php
+  } // end of datetimeknown if
+
+  if ($session->duration > 0) {
+?>
+<tr valign="top">
+    <td align="right" width="300"><b><?php print_string('duration', 'facetoface') ?>:</b></td>
+    <td width="300"><?php echo facetoface_duration($session->duration); ?></td>
+</tr>
+<?php
+  }
+
+  if ($session->normalcost > 0) {
+    if ($signedup) {
+?>
+<tr valign="top">
+    <td align="right" width="300"><b><?php print_string('cost', 'facetoface') ?>:</b></td>
+    <td width="300"><?php echo facetoface_cost($USER->id, $session->id, $session); ?></td>
+</tr>
+<?php
+    } else {
+?>
+<tr valign="top">
+    <td align="right" width="300"><b><?php print_string('normalcost', 'facetoface') ?>:</b></td>
+    <td width="300"><?php echo format_cost($session->normalcost); ?></td>
+</tr>
+<?php
+      if ($session->discountcost > 0) {
+?>
+<tr valign="top">
+    <td align="right" width="300"><b><?php print_string('discountcost', 'facetoface') ?>:</b></td>
+    <td width="300"><?php echo format_cost($session->discountcost); ?></td>
+</tr>
+<tr valign="top">
+    <td align="right" width="300"><b><?php print_string('discountcode', 'facetoface') ?>:</b></td>
+    <td width="300"><input type="text" name="discountcode" size="6" /><?php helpbutton('discountcode', get_string('discountcode', 'facetoface'), 'facetoface'); ?></td>
+</tr>
+<?php
+      }
+    }
+  } // end of normalcost
+
+  if (has_capability('mod/facetoface:viewattendees', $context)) {
+?>
+<tr valign="top">
+    <td align="right" width="300"><b><?php print_string('capacity', 'facetoface') ?>:</b></td>
+    <td width="300"><?php echo $session->capacity; ?></td>
+</tr>
+<?php
+  } else { // !has_capability('mod/facetoface:viewattendees', $context)
+    $signupcount = facetoface_get_num_attendees($session->id);
+    $stats = $session->capacity - $signupcount;
+?>
+<tr valign="top">
+    <td align="right" width="300"><b><?php print_string('seatsavailable', 'facetoface') ?>:</b></td>
+    <td width="300"><?php echo $stats; ?></td>
+</tr>
+<?php
+  } // end of has_capability
+  if (!empty($session->details)) {
+?>
+<tr valign="top">
+    <td align="right" width="300"><b><?php print_string('details', 'facetoface') ?>:</b></td>
+    <td width="300"><?php echo nl2br($session->details); ?></td>
+</tr>
+<?php
+  } // end of session->details
+
+  // if not signed up yet, display notify drop down
+  if (!$signedup)
+  {
+?>
+<tr valign="top">
+    <td align="right" width="300"><b><?php print_string('notificationtype', 'facetoface') ?>:</b></td>
+    <td>
+        <select name="notificationtype">
+            <option value="<?php echo MDL_F2F_BOTH ?>" selected="selected"><?php print_string('notificationboth', 'facetoface') ?></option>
+            <option value="<?php echo MDL_F2F_TEXT ?>"><?php print_string('notificationemail', 'facetoface') ?></option>
+            <option value="<?php echo MDL_F2F_ICAL ?>"><?php print_string('notificationical', 'facetoface') ?></option>
+        </select>
+    </td>
+</tr>
+<?php
+  }  // end of !$signedup
+} // end of generic form code
+?>
+<tr><td colspan="2">
+<table cellpadding="3" align="center">
+<?php
+
+// If already signed up...
+if ($signedup) {
+    // Cancellation form
+    if ($cancelbooking) {
+?>
+<tr>
+    <td align="right"><input type="submit" name="confirmcancel" value="<?php print_string('cancelbooking', 'facetoface') ?>" /></td>
+    <td><input type="submit" name="cancelform" value="<?php print_string('goback', 'facetoface') ?>" /></td>
+</tr>
+<?php
+    } else { // if not cancelling, just checking details (or viewing attendees, thinking of cancelling)
+?>
+<tr>
+    <td align="right" valign="top"><b><?php print_string('options', 'facetoface') ?>:</b></td>
+    <td>
+<a href="<?php echo $CFG->wwwroot.'/mod/facetoface/attendees.php?s='.$session->id.'&amp;backtoallsessions='.$backtoallsessions; ?>" alt="<?php echo get_string('seeattendees', 'facetoface'); ?>" title="<?php echo get_string('seeattendees', 'facetoface'); ?>"><?php echo get_string('seeattendees', 'facetoface'); ?></a>
+<br />
+<a href="<?php echo $CFG->wwwroot.'/mod/facetoface/signup.php?s='.$session->id.'&amp;cancelbooking=1&amp;backtoallsessions='.$backtoallsessions; ?>" alt="<?php echo get_string('cancelbooking', 'facetoface'); ?>" title="<?php echo get_string('cancelbooking','facetoface'); ?>"><?php echo get_string('cancelbooking', 'facetoface'); ?></a></td>
+</tr>
+<?php
+    } // end of $cancelbooking
+
+} else { // if not yet signed up
+
+    // Adding a manager
+    if ($addmanager) {
+?>
+
+<tr>
+    <td width="800" colspan="2"><?php print_string('manageremailinstruction', 'facetoface') ?></td>
+</tr>
+<tr>
+    <td colspan="2" class="separator"></td>
+</tr>
+<tr>
+    <td colspan="2"><h1><?php print_string('addmanageremailaddress', 'facetoface') ?></h1></td>
+</tr>
+<tr>
+    <td width="800" colspan="2"><?php print_string('addmanageremailinstruction', 'facetoface'); echo ' '.facetoface_get_manageremailformat(); ?></td>
+<tr>
+    <td colspan="2" class="separator"></td>
+</tr>
+<tr>
+    <td colspan="2" class="separator"></td>
+</tr>
+<tr>
+    <td align="right" width="400"><b><?php print_string('manageremailaddress', 'facetoface') ?>:</b></td>
+    <td width="400"><input type="text" size="30" name="manageremail" value="<?php if(!empty($form->manageremail)) echo $form->manageremail; ?>"></td>
+</tr>
+<tr>
+    <td colspan="2" class="separator"></td>
+</tr>
+<tr>
+    <td colspan="2" class="separator"></td>
+</tr>
+<tr>
+    <input type="hidden" name="discountcode" value="<?php echo $discountcode; ?>" />
+    <input type="hidden" name="notificationtype" value="<?php echo $notificationtype; ?>" />
+    <td align="center" colspan="2"><input type="submit" value="<?php print_string('submit', 'facetoface') ?>" />&nbsp;<input type="submit" name="cancelform" value="<?php print_string('cancel') ?>" /></td>
+</tr>
+<?php
+
+    } elseif ($confirmmanager) { // confirming manager
+
+?>
+<tr>
+    <td colspan="2"><?php print_string('manageremailinstruction', 'facetoface', $manageremail) ?></td>
+</tr>
+<tr>
+    <td colspan="2" class="separator"></td>
+</tr>
+<tr>
+    <td colspan="2"><?php print_string('confirmmanageremailaddressquestion', 'facetoface', $manageremail);?></td>
+</tr>
+<tr>
+    <td colspan="2" class="separator"></td>
+</tr>
+<tr>
+    <td colspan="2" class="separator"></td>
+</tr>
+<tr>
+    <input type="hidden" name="discountcode" value="<?php echo $discountcode; ?>" />
+    <input type="hidden" name="notificationtype" value="<?php echo $notificationtype; ?>" />
+    <td align="center" colspan="2"><input type="submit" name="confirm" value="<?php print_string('yes') ?>" />&nbsp;<input type="submit" name="changemanager" value="<?php print_string('no') ?>" />&nbsp;<input type="submit" name="cancelform" value="<?php print_string('cancel') ?>" /></td>
+</tr>
+<?php
+
+    } elseif ($changemanager) { // changing manager
+
+?>
+<tr>
+    <td colspan="2"><h1><?php print_string('changemanageremailaddress', 'facetoface') ?></h1></td>
+</tr>
+<tr>
+    <td colspan="2"><?php print_string('changemanageremailinstruction', 'facetoface'); echo ' '.facetoface_get_manageremailformat() ?></td>
+</tr>
+<tr>
+    <td colspan="2" class="separator"></td>
+</tr>
+<tr>
+    <td><b><?php print_string('newmanageremailaddress', 'facetoface') ?>:</b></td>
+    <td><input type="text" size="30" name="manageremail" value=""></td>
+</tr>
+<tr>
+    <td colspan="2" class="separator"></td>
+</tr>
+<tr>
+    <input type="hidden" name="discountcode" value="<?php echo $discountcode; ?>" />
+    <input type="hidden" name="notificationtype" value="<?php echo $notificationtype; ?>" />
+    <td colspan="2" align="center"><input type="submit" value="<?php print_string('submit', 'facetoface') ?>" />&nbsp;<input type="submit" name="cancelform" value="<?php print_string('cancel') ?>" /></td>
+</tr>
+<?php
+
+    } else {
+
+        // No manager changes, generic signup form buttons
+?>
+<tr>
+    <td align="right"><input type="submit" value="<?php print_string('signup', 'facetoface') ?>" /></td>
+    <td><input type="submit" name="cancelform" value="<?php print_string('cancel') ?>" /></td>
+</tr>
+<?php
+
+    }
+}
+?>
+</table>
+</td></tr>
+</table>
+</form>
