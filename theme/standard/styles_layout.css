@@ -1833,6 +1833,10 @@ border-width:0px;
   background:white;
   font-size:0.85em;
 }
+#course-view form.togglecompletion img.iconhelp,
+#course-view span.autocompletion img.iconhelp {
+  vertical-align:top;
+}
 
 #course-view ul.section,
 #site-index ul.section {
