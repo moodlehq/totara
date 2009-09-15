@@ -43,7 +43,7 @@ $local_mitms_capabilities = array(
     'moodle/local:updatepositions' => array(
         'captype'      => 'read',
         'contextlevel' => CONTEXT_SYSTEM,
-    )
+    ),
     'moodle/local:deletepositions' => array(
         'captype'      => 'read',
         'contextlevel' => CONTEXT_SYSTEM,
