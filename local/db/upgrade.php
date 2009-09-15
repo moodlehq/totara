@@ -31,10 +31,8 @@ function xmldb_local_upgrade($oldversion) {
     $result = true;
     if ($result && $oldversion < 2009091000) {
 
-    /// Define table_framework position to be created
+    /// Create table framework_position
         $table = new XMLDBTable('position_framework');
-
-    /// Adding fields to table position_framework
         $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
         $table->addFieldInfo('fullname', XMLDB_TYPE_TEXT, 'medium', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
         $table->addFieldInfo('shortname', XMLDB_TYPE_CHAR, '100', null, XMLDB_NOTNULL, null, null);
@@ -43,16 +41,11 @@ function xmldb_local_upgrade($oldversion) {
         $table->addFieldInfo('timecreated', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
         $table->addFieldInfo('timemodified', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
         $table->addFieldInfo('usermodified', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-
-    /// Adding keys to table position_framework
         $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
-
         $result = $result && create_table($table);
 
-    /// Define table position to be created
+    /// Create table position
         $table = new XMLDBTable('position');
-
-    /// Adding fields to table position
         $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
         $table->addFieldInfo('fullname', XMLDB_TYPE_TEXT, 'medium', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
         $table->addFieldInfo('shortname', XMLDB_TYPE_CHAR, '100', null, XMLDB_NOTNULL, null, null);
@@ -66,46 +59,31 @@ function xmldb_local_upgrade($oldversion) {
         $table->addFieldInfo('timecreated', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
         $table->addFieldInfo('timemodified', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
         $table->addFieldInfo('usermodified', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-
-    /// Adding keys to table position
         $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
-
         $result = $result && create_table($table);
 
-    /// Define table position_relations to be created
+    /// Create table position_relations 
         $table = new XMLDBTable('position_relations');
-
-    /// Adding fields to table position_relations
         $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
         $table->addFieldInfo('fullname', XMLDB_TYPE_TEXT, 'medium', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
         $table->addFieldInfo('shortname', XMLDB_TYPE_CHAR, '100', null, XMLDB_NOTNULL, null, null);
         $table->addFieldInfo('datatype', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
         $table->addFieldInfo('description', XMLDB_TYPE_TEXT, 'big', XMLDB_UNSIGNED, null, null, null);
-
-    /// Adding keys to table position_relations
         $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
-
         $result = $result && create_table($table);
 
-    /// Define table position_depth to be created
+    /// Create table position_depth 
         $table = new XMLDBTable('position_depth');
-
-    /// Adding fields to table position_depth
         $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
         $table->addFieldInfo('fullname', XMLDB_TYPE_TEXT, 'medium', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
         $table->addFieldInfo('shortname', XMLDB_TYPE_CHAR, '100', null, XMLDB_NOTNULL, null, null);
         $table->addFieldInfo('datatype', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
         $table->addFieldInfo('description', XMLDB_TYPE_TEXT, 'big', XMLDB_UNSIGNED, null, null, null);
-
-    /// Adding keys to table position_depth
         $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
-
         $result = $result && create_table($table);
 
-    /// Define table position_depth_info_field to be created
+    /// Create table position_depth_info_field 
         $table = new XMLDBTable('position_depth_info_field');
-
-    /// Adding fields to table position_depth_info_field
         $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
         $table->addFieldInfo('fullname', XMLDB_TYPE_TEXT, 'medium', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
         $table->addFieldInfo('shortname', XMLDB_TYPE_CHAR, '100', null, XMLDB_NOTNULL, null, null);
@@ -121,37 +99,24 @@ function xmldb_local_upgrade($oldversion) {
         $table->addFieldInfo('param3', XMLDB_TYPE_TEXT, 'big', XMLDB_UNSIGNED, null, null, null);
         $table->addFieldInfo('param4', XMLDB_TYPE_TEXT, 'big', XMLDB_UNSIGNED, null, null, null);
         $table->addFieldInfo('param5', XMLDB_TYPE_TEXT, 'big', XMLDB_UNSIGNED, null, null, null);
-
-    /// Adding keys to table position_depth_info_field
         $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
-
         $result = $result && create_table($table);
 
-    /// Define table position_depth_info_category to be created
+    /// Create table position_depth_info_category 
         $table = new XMLDBTable('position_depth_info_category');
-
-    /// Adding fields to table position_depth_info_category
         $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
         $table->addFieldInfo('name', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
         $table->addFieldInfo('sortorder', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-
-    /// Adding keys to table position_depth_info_category
         $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
-
         $result = $result && create_table($table);
 
-    /// Define table position_depth_info_data to be created
+    /// Create table position_depth_info_data 
         $table = new XMLDBTable('position_depth_info_data');
-
-    /// Adding fields to table position_depth_info_data
         $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
         $table->addFieldInfo('fieldid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
         $table->addFieldInfo('positionid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
         $table->addFieldInfo('data', XMLDB_TYPE_TEXT, 'big', XMLDB_UNSIGNED, null, null, null);
-
-    /// Adding keys to table position_depth_info_data
         $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
-
         $result = $result && create_table($table);
 
     }
