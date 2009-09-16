@@ -1,0 +1,219 @@
+<script language="JavaScript" type="text/javascript">
+//<![CDATA[
+
+function getobject(objid) {
+    if (document.getElementById) {
+        return document.getElementById(objid);
+    } else if (window[objid]) {
+        return window[objid];
+    }
+    return null;
+}
+
+var dates_hidden = <?php echo($form->datetimeknown) ? 'false' : 'true'; ?>;
+
+function hide_dates() {
+    if (!dates_hidden) {
+        var dates_row = getobject("dates");
+        dates_row.style.display = "none";
+        var adddate_row = getobject("adddate");
+        adddate_row.style.display = "none";
+        dates_hidden = true;
+    }
+}
+function show_dates() {
+    if (dates_hidden) {
+        var dates_row = getobject("dates");
+        dates_row.style.display = "";
+        var adddate_row = getobject("adddate");
+        adddate_row.style.display = "";
+        dates_hidden = false;
+    }
+}
+
+var nextday = <?php echo $nbdays; ?>; // id of the next day to be added
+var nbdays = <?php echo $nbdays; ?>; // current nb of days shown
+
+function add_day() {
+    var alldates = getobject('alldates');
+    var datetemplate = getobject('datetemplate');
+
+    var row = alldates.insertRow(-1);
+    row.id = 'day_' + nextday;
+    var cell = row.insertCell(-1);
+    cell.innerHTML = datetemplate.innerHTML;
+
+    nextday = nextday + 1;
+    nbdays = nbdays + 1;
+}
+
+function remove_day(node) {
+    if (nbdays > 1) {
+        var tdnode = node.parentNode;
+        var trnode = tdnode.parentNode;
+        var tablenode = trnode.parentNode;
+        var outertdnode = tablenode.parentNode;
+        var outertrnode = outertdnode.parentNode;
+        outertrnode.innerHTML = '';
+        nbdays = nbdays - 1;
+    }
+}
+
+//]]>
+</script>
+<form method="post" action="sessions.php?f=<?php echo $facetoface->id; if($d) echo "&amp;d=1";?>">
+<div>
+<input type="hidden" name="id" value="<?php echo $id; ?>" />
+<input type="hidden" name="sesskey" value="<?php echo $USER->sesskey; ?>" />
+<input type="hidden" name="f" value="<?php echo $f; ?>" />
+<input type="hidden" name="s" value="<?php echo $s; ?>" />
+<input type="hidden" name="c" value="<?php echo $c; ?>" />
+<input type="hidden" name="d" value="<?php echo $d; ?>" />
+<input type="hidden" name="action" value="1" />
+
+<table cellpadding="5">
+<?php
+if($c) {
+?>
+<tr valign="top">
+    <td align="right"><b><?php print_string('facetoface', 'facetoface') ?>:</b></td>
+    <td>
+<?php
+    $choices = facetoface_get_facetoface_menu();
+    if (!empty($choices)) {
+        choose_from_menu ($choices, 'facetoface', $form->facetoface, '');
+    }
+?>
+    </td>
+</tr>
+<?php
+}
+?>
+<tr valign="top">
+    <td align="right"><b><?php print_string('location', 'facetoface') ?>:</b></td>
+    <td><input type="text" name="location" size="30" value="<?php p($form->location) ?>" /><?php helpbutton('location', get_string('location', 'facetoface'), 'facetoface'); ?><?php if (isset($err['location'])) formerr($err['location']); ?></td>
+</tr>
+<tr valign="top">
+    <td align="right"><b><?php print_string('venue', 'facetoface') ?>:</b></td>
+    <td><input type="text" name="venue" size="30" value="<?php p($form->venue) ?>" /><?php helpbutton('venue', get_string('venue', 'facetoface'), 'facetoface'); ?><?php if (isset($err['venue'])) formerr($err['venue']); ?></td>
+</tr>
+<tr valign="top">
+    <td align="right"><b><?php print_string('room', 'facetoface') ?>:</b></td>
+    <td><input type="text" name="room" size="30" value="<?php p($form->room) ?>" /><?php helpbutton('room', get_string('room', 'facetoface'), 'facetoface'); ?></td>
+</tr>
+<tr valign="top">
+    <td align="right"><b><?php print_string('sessiondatetimeknown', 'facetoface') ?>:</b></td>
+    <td><span class="radiogroup datetimeknown">
+        <span class="radioelement datetimeknown rb0"><input name="datetimeknown" id="datetimeknown_yes" type="radio" value="1" <?php if ($form->datetimeknown) print 'checked="checked"'; ?> onclick="show_dates();"/> <label for="datetimeknown_yes"><?php print_string('yes'); ?></label></span>
+        <span class="radioelement datetimeknown rb1"><input name="datetimeknown" id="datetimeknown_no" type="radio" value="0" <?php if (!$form->datetimeknown) print 'checked="checked"'; ?> onclick="hide_dates();" /> <label for="datetimeknown_no"><?php print_string('no'); ?></label></span>
+    </span><?php helpbutton('sessiondatetimeknown', get_string('sessiondatetimeknown', 'facetoface'), 'facetoface'); ?></td>
+</tr>
+<tr valign="top" id="dates" style="<?php echo ($form->datetimeknown) ? 'display:' : 'display: none' ?>">
+    <td align="right"><b><?php print_string('sessiondatetime', 'facetoface') ?>:</b></td>
+    <td>
+      <table id="alldates" border="0">
+
+<?php
+  // $nbdays is the number of days which are initially visible
+  for ($i = 0; $i < $nbdays; $i++) {
+?>
+      <tr id="day_<?php echo $i ?>">
+        <td>
+          <table border="0">
+            <tr valign="top">
+                <td align="right"><?php print_string('sessiondate', 'facetoface') ?>:</td>
+                <td><?php print_date_selector('sessday[]', 'sessmon[]', 'sessyr[]', $sessiondate[$i]); ?><?php helpbutton('sessiondate', get_string('sessiondate', 'facetoface'), 'facetoface'); ?></td>
+            </tr>
+            <tr valign="top">
+                <td align="right"><?php print_string('timestart', 'facetoface') ?>:</td>
+                <td><?php print_time_selector('starthr[]', 'startmin[]', $datetimestart[$i]); ?><?php helpbutton('timestart', get_string('timestart', 'facetoface'), 'facetoface'); ?></td>
+            </tr>
+            <tr valign="top">
+                <td align="right"><?php print_string('timefinish', 'facetoface') ?>:</td>
+                <td><?php print_time_selector('endhr[]', 'endmin[]', $datetimefinish[$i]); ?>
+                    <?php helpbutton('timefinish', get_string('timefinish', 'facetoface'), 'facetoface'); ?>
+                    <?php print_spacer(1, 15, false, false); ?>
+                    <button type="button" onclick="remove_day(this);"><?php print_string('dateremove', 'facetoface') ?></button>
+                </td>
+            </tr>
+            <tr><td><?php print_spacer(10, 1, false, false); ?></td></tr>
+          </table>
+        </td>
+      </tr>
+<?php
+  }
+?>
+      </table>
+    </td>
+</tr>
+
+<tr id="adddate" style="<?php echo ($form->datetimeknown) ? 'display:' : 'display: none' ?>">
+  <td></td>
+  <td align="right" id="add_a_date_link"><button type="button" onclick="add_day();"><?php print_string('dateadd', 'facetoface') ?></button></td>
+</tr>
+
+<tr valign="top">
+    <td align="right"><b><?php print_string('capacity', 'facetoface') ?>:</b></td>
+    <td><input type="text" name="capacity" size="6" value="<?php p($form->capacity) ?>" /><?php
+    helpbutton('capacity', get_string('capacity', 'facetoface'), 'facetoface');
+?>
+    </td>
+</tr>
+<tr valign="top">
+    <td align="right"><b><?php print_string('duration', 'facetoface') ?>:</b></td>
+    <td><input type="text" name="duration" size="6" value="<?php p($form->duration) ?>" /><?php helpbutton('duration', get_string('duration', 'facetoface'), 'facetoface'); ?><?php if (isset($err['duration'])) formerr($err['duration']); ?></td>
+</tr>
+<?php
+  if (!get_config(NULL, 'facetoface_hidecost')) {
+?>
+<tr valign="top">
+    <td align="right"><b><?php print_string('normalcost', 'facetoface') ?>:</b></td>
+    <td><input type="text" name="normalcost" size="6" value="<?php p($form->normalcost) ?>" /><?php helpbutton('normalcost', get_string('normalcost', 'facetoface'), 'facetoface'); ?><?php if (isset($err['normalcost'])) formerr($err['normalcost']); ?></td>
+</tr>
+<?php
+    if (!get_config(NULL, 'facetoface_hidediscount')) {
+?>
+<tr valign="top">
+    <td align="right"><b><?php print_string('discountcost', 'facetoface') ?>:</b></td>
+    <td><input type="text" name="discountcost" size="6" value="<?php p($form->discountcost) ?>" /><?php helpbutton('discountcost', get_string('discountcost', 'facetoface'), 'facetoface'); ?><?php if (isset($err['discountcost'])) formerr($err['discountcost']); ?> </td>
+</tr>
+<?php
+    }
+  }
+?>
+<tr valign="top">
+    <td align="right"><b><?php print_string('details', 'facetoface') ?>:</b></td>
+    <td><textarea name="details" rows="10" cols="40"><?php p($form->details) ?></textarea><?php helpbutton('details', get_string('details', 'facetoface'), 'facetoface'); ?></td>
+</tr>
+<tr>
+    <td colspan="2" align="center">
+        <input type="submit" value="<?php print_string('savechanges') ?>" />
+        <input type="submit" name="cancel" value="<?php print_string('cancel') ?>" />
+    </td>
+</tr>
+</table>
+</div>
+
+<div style="display: none" id="datetemplate">
+          <table border="0">
+            <tr valign="top">
+                <td align="right"><?php print_string('sessiondate', 'facetoface') ?>:</td>
+                <td><?php print_date_selector('sessday[]', 'sessmon[]', 'sessyr[]', time()); ?><?php helpbutton('sessiondate', get_string('sessiondate', 'facetoface'), 'facetoface'); ?></td>
+            </tr>
+            <tr valign="top">
+                <td align="right"><?php print_string('timestart', 'facetoface') ?>:</td>
+                <td><?php print_time_selector('starthr[]', 'startmin[]', time()); ?><?php helpbutton('timestart', get_string('timestart', 'facetoface'), 'facetoface'); ?></td>
+            </tr>
+            <tr valign="top">
+                <td align="right"><?php print_string('timefinish', 'facetoface') ?>:</td>
+                <td><?php print_time_selector('endhr[]', 'endmin[]', time()); ?>
+                    <?php helpbutton('timefinish', get_string('timefinish', 'facetoface'), 'facetoface'); ?>
+                    <?php print_spacer(1, 15, false, false); ?>
+                    <button type="button" onclick="remove_day(this);"><?php print_string('dateremove', 'facetoface') ?></button>
+                </td>
+            </tr>
+            <tr><td><?php print_spacer(10, 1, false, false); ?></td></tr>
+          </table>
+</div>
+
+</form>
