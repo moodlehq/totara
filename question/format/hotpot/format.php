@@ -102,7 +102,15 @@ class qformat_hotpot extends qformat_default {
                     notice("Unknown quiz type '$xml->quiztype'");
                 }
         } // end switch
-        return $questions;
+
+        if (count($questions)) {
+            return $questions;
+        } else {
+            if (method_exists($this, 'error')) { // Moodle >= 1.8
+                $this->error(get_string('giftnovalidquestion', 'quiz'));
+            }
+            return false;
+        }
     }
 
     function process_jcloze(&$xml, &$questions) {
@@ -188,7 +196,7 @@ class qformat_hotpot extends qformat_default {
                         $text = $this->hotpot_prepare_str($xml->xml_value($tags,  $answer."['text'][0]['#']"));
                         $correct = $xml->xml_value($tags,  $answer."['correct'][0]['#']");
                         $feedback = $this->hotpot_prepare_str($xml->xml_value($tags,  $answer."['feedback'][0]['#']"));
-                        if ($text) {
+                        if (strlen($text)) {
                             // set score (0=0%, 1=100%)
                             $fraction = empty($correct) ? 0 : 1;
                             // store answer
@@ -217,10 +225,17 @@ class qformat_hotpot extends qformat_default {
                 $q++;
             } // end while $text
 
-            // define total grade for this exercise
-            $question->defaultgrade = $gap_count * $defaultgrade;
+            if ($q) {
+                // define total grade for this exercise
+                $question->defaultgrade = $gap_count * $defaultgrade;
 
-            $questions[] = $question;
+                // add this cloze as a single question object
+                $questions[] = $question;
+            } else {
+                // no gaps found in this text so don't add this question
+                // import will fail and error message will be displayed:
+            }
+
             $x++;
         } // end while $exercise
     }
@@ -548,8 +563,29 @@ class hotpot_xml_tree {
     }
     function xml_value($tags, $more_tags="[0]['#']") {
 
-        $tags = empty($tags) ? '' : "['".str_replace(",", "'][0]['#']['", $tags)."']";
-        eval('$value = &$this->xml'.$this->xml_root.$tags.$more_tags.';');
+        $value = null;
+        if (isset($this->xml) && is_array($this->xml)) {
+
+            $all_tags = $this->xml_root;
+            if ($tags) {
+                $all_tags .= "['".str_replace(",", "'][0]['#']['", $tags)."']";
+            }
+            $all_tags .= $more_tags;
+
+            $pos = strrpos($all_tags, '[');
+            if ($pos===false) {
+                $most_tags = ''; // shouldn't happen !!
+            } else {
+                $most_tags = substr($all_tags, 0, $pos);
+            }
+
+            eval('if (isset($this->xml'.$most_tags.') && is_array($this->xml'.$most_tags.') && isset($this->xml'.$all_tags.')) {'
+                    .'$value = &$this->xml'.$all_tags.';'
+                .'} else {'
+                    .'$value = null;'
+                .'}'
+            );
+        }
 
         if (is_string($value)) {
 

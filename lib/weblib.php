@@ -347,7 +347,7 @@ class moodle_url {
      * @param array $params Defaults to null. If null then return value of param 'name'.
      * @return array Array of Params for url.
      */
-    public function params($params = null) {
+    function params($params = null) {
         if (!is_null($params)) {
             return $this->params = $params + $this->params;
         } else {
@@ -6641,7 +6641,7 @@ function print_maintenance_message () {
     print_header(strip_tags($SITE->fullname), $SITE->fullname, 'home');
     print_box_start();
     print_heading(get_string('sitemaintenance', 'admin'));
-    @include($CFG->dataroot.'/1/maintenance.html');
+    @include($CFG->dataroot.'/'.SITEID.'/maintenance.html');
     print_box_end();
     print_footer();
 }
