@@ -3288,6 +3288,9 @@ function xmldb_main_upgrade($oldversion=0) {
             create_table($table);
         }
 
+    /// Changes to modinfo mean we need to rebuild course cache
+        rebuild_course_cache(0,true);
+ 
     /// Main savepoint reached
         upgrade_main_savepoint($result, 2007101553);
     }
