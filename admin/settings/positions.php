@@ -11,7 +11,7 @@
     $ADMIN->add('positions', new admin_externalpage('positionaddnew', get_string('positionaddnew', 'admin'), $CFG->wwwroot . '/course/index.php?categoryedit=on',
             array('moodle/category:manage', 'moodle/course:create')));
 
-    $ADMIN->add('positions', new admin_externalpage('positionupload', get_string('positionupload', 'admin'), $CFG->wwwroot . '/course/index.php?categoryedit=on',
+    $ADMIN->add('positions', new admin_externalpage('positionupload', get_string('positionupload', 'admin'), "$CFG->wwwroot/$CFG->admin/uploadposition.php",
             array('moodle/category:manage', 'moodle/course:create')));
 
     $ADMIN->add('positions', new admin_externalpage('positioncustomfields', get_string('positioncustomfields', 'admin'), $CFG->wwwroot . '/course/index.php?categoryedit=on',
