@@ -55,7 +55,7 @@ if($group===0 && $course->groupmode==SEPARATEGROUPS) {
 $reportsurl = $CFG->wwwroot.'/course/report.php?id='.$course->id;
 $completion = new completion_info($course);
 $activities = $completion->get_activities();
-$criteria   = false;#$completion->has_criteria() ? $completion->get_criteria() : false;
+$criteria   = $completion->has_criteria() ? $completion->get_criteria() : false;
 
 if(empty($activities) && empty($criteria)) {
     print_error('err_noactivities','completion',$reportsurl);
@@ -121,6 +121,32 @@ if($progress->total > COMPLETION_REPORT_PAGE) {
 } else {
     $pagingbar='';
 }
+
+
+// Can we mark users as complete?
+// (if the logged in user has a role defined in the role criteria)
+$allow_marking = false;
+$allow_marking_criteria = null;
+
+if ($criteria) {
+    // Get role criteria
+    $rcriteria = $completion->get_criteria(COMPLETION_CRITERIA_TYPE_ROLE);
+
+    if (!empty($rcriteria)) {
+
+        foreach ($rcriteria as $rcriterion) {
+            $users = get_role_users($rcriterion->role, $context, true);
+
+            // If logged in user has this role, allow marking complete
+            if (in_array($USER->id, array_keys($users))) {
+                $allow_marking = true;
+                $allow_marking_criteria = $rcriterion->id;
+                break;
+            }
+        }
+    }
+}
+
 
 
 // Can we mark users as complete?
@@ -214,6 +240,37 @@ foreach($activities as $activity) {
         print '</th>';
     }
 }
+
+// Course completion criteria
+if ($criteria) {
+
+    foreach ($criteria as $criterion) {
+
+        // Ignore activity completion criteria (use existing activity cols instead)
+        if ($criterion->criteriatype == COMPLETION_CRITERIA_TYPE_ACTIVITY) {
+            continue;
+        }
+
+        if ($csv) {
+            print $sep.csv_quote(strip_tags($criterion->get_title()));
+        } else {
+            print '<th scope="col">'.format_text($criterion->get_title()).'</th>';
+        }
+    }
+
+    // Overall course completion status
+    if ($csv) {
+        print $sep.csv_quote(strip_tags(get_string('coursecomplete', 'completion')));
+    } else {
+        print '<th scope="col">'.get_string('coursecomplete', 'completion').'</th>';
+    }
+
+    // Mark complete?
+    if (!$csv && $allow_marking) {
+        print '<th scope="col">'.get_string('markcomplete', 'completion').'</th>';
+    }
+}
+
 
 // Course completion criteria
 if ($criteria) {

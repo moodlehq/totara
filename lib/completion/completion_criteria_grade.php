@@ -155,10 +155,10 @@ class completion_criteria_grade extends completion_criteria {
      * @return  void
      */
     public function cron() {
-        global $DB;
+        global $CFG;
 
         // Get all users who meet this criteria
-        $sql = '
+        $sql = "
             SELECT DISTINCT
                 c.id AS course,
                 cr.date AS date,
@@ -166,38 +166,38 @@ class completion_criteria_grade extends completion_criteria {
                 ra.userid AS userid,
                 gg.finalgrade AS gradefinal
             FROM
-                {course_completion_criteria} cr
+                {$CFG->prefix}course_completion_criteria cr
             INNER JOIN
-                {course} c
+                {$CFG->prefix}course c
              ON cr.course = c.id
             INNER JOIN
-                {context} con
+                {$CFG->prefix}context con
              ON con.instanceid = c.id
             INNER JOIN
-                {role_assignments} ra
+                {$CFG->prefix}role_assignments ra
               ON ra.contextid = con.id
             INNER JOIN
-                {grade_items} gi
+                {$CFG->prefix}grade_items gi
              ON gi.courseid = c.id
-            AND gi.itemtype = \'course\'
+            AND gi.itemtype = 'course'
             INNER JOIN
-                {grade_grades} gg
+                {$CFG->prefix}grade_grades gg
              ON gg.itemid = gi.id
             AND gg.userid = ra.userid
             LEFT JOIN
-                {course_completion_crit_compl} cc
+                {$CFG->prefix}course_completion_crit_compl cc
              ON cc.criteriaid = cr.id
             AND cc.userid = ra.userid
             WHERE
-                cr.criteriatype = '.COMPLETION_CRITERIA_TYPE_GRADE.'
-            AND con.contextlevel = '.CONTEXT_COURSE.'
+                cr.criteriatype = ".COMPLETION_CRITERIA_TYPE_GRADE."
+            AND con.contextlevel = ".CONTEXT_COURSE."
             AND c.enablecompletion = 1
             AND cc.id IS NULL
             AND gg.finalgrade >= cr.gradepass
-        ';
+        ";
 
         // Loop through completions, and mark as complete
-        if ($rs = $DB->get_recordset_sql($sql)) {
+        if ($rs = get_recordset_sql($sql)) {
             foreach ($rs as $record) {
 
                 $completion = new completion_criteria_completion((array)$record);

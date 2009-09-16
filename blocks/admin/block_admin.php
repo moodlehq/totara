@@ -65,6 +65,11 @@ class block_admin extends block_list {
 
             $this->content->items[]='<a href="'.$CFG->wwwroot.'/course/edit.php?id='.$this->instance->pageid.'">'.get_string('settings').'</a>';
             $this->content->icons[]='<img src="'.$CFG->pixpath.'/i/settings.gif" class="icon" alt="" />';
+            
+            if (!empty($course->enablecompletion)) {
+                $this->content->items[]='<a href="'.$CFG->wwwroot.'/course/completion.php?id='.$course->id.'">'.get_string('completionmenuitem', 'completion').'</a>';
+                $this->content->icons[]='<img src="'.$CFG->pixpath.'/i/settings.gif" class="icon" alt="" />';
+            }
         }
 
     /// Assign roles to the course

@@ -224,6 +224,14 @@
     mtrace('done.');
 
 
+    if ($CFG->enablecompletion) {
+        // Completion cron
+        mtrace('Starting the completion cron...');
+        require_once($CFG->libdir . '/completion/cron.php');
+        completion_cron();
+        mtrace('done');
+    }
+
 /// Run all core cron jobs, but not every time since they aren't too important.
 /// These don't have a timer to reduce load, so we'll use a random number 
 /// to randomly choose the percentage of times we should run these jobs.

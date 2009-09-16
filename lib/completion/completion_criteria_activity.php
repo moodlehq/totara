@@ -65,7 +65,6 @@ class completion_criteria_activity extends completion_criteria {
      * @return  void
      */
     public function update_config(&$data) {
-        global $DB;
 
         if (!empty($data->criteria_activity) && is_array($data->criteria_activity)) {
 
@@ -73,7 +72,7 @@ class completion_criteria_activity extends completion_criteria {
 
             foreach (array_keys($data->criteria_activity) as $activity) {
 
-                $module = $DB->get_record('course_modules', array('id' => $activity));
+                $module = get_record('course_modules', 'id', $activity);
                 $this->module = self::get_mod_name($module->module);
                 $this->moduleinstance = $activity;
                 $this->id = NULL;
@@ -93,8 +92,7 @@ class completion_criteria_activity extends completion_criteria {
         static $types;
 
         if (!is_array($types)) {
-            global $DB;
-            $types = $DB->get_records('modules');
+            $types = get_records('modules');
         }
 
         return $types[$type]->name;
@@ -108,10 +106,9 @@ class completion_criteria_activity extends completion_criteria {
      * @return  boolean
      */
     public function review($completion, $mark = true) {
-        global $DB;
 
-        $course = $DB->get_record('course', array('id' => $completion->course));
-        $cm = $DB->get_record('course_modules', array('id' => $this->moduleinstance));
+        $course = get_record('course', 'id', $completion->course);
+        $cm = get_record('course_modules', 'id', $this->moduleinstance);
         $info = new completion_info($course);
 
         $data = $info->get_data($cm, false, $completion->userid);
@@ -143,47 +140,48 @@ class completion_criteria_activity extends completion_criteria {
      * @return  void
      */
     public function cron() {
-        global $DB;
+
+        global $CFG;
 
         // Get all users who meet this criteria
-        $sql = '
+        $sql = "
             SELECT DISTINCT
                 c.id AS course,
                 cr.date AS date,
                 cr.id AS criteriaid,
                 ra.userid AS userid
             FROM
-                {course_completion_criteria} cr
+                {$CFG->prefix}course_completion_criteria cr
             INNER JOIN
-                {course} c
+                {$CFG->prefix}course c
              ON cr.course = c.id
             INNER JOIN
-                {context} con
+                {$CFG->prefix}context con
              ON con.instanceid = c.id
             INNER JOIN
-                {role_assignments} ra
+                {$CFG->prefix}role_assignments ra
               ON ra.contextid = con.id
             INNER JOIN
-                {course_modules_completion} mc
+                {$CFG->prefix}course_modules_completion mc
              ON mc.coursemoduleid = cr.moduleinstance
             AND mc.userid = ra.userid
             LEFT JOIN
-                {course_completion_crit_compl} cc
+                {$CFG->prefix}course_completion_crit_compl cc
              ON cc.criteriaid = cr.id
             AND cc.userid = ra.userid
             WHERE
-                cr.criteriatype = '.COMPLETION_CRITERIA_TYPE_ACTIVITY.'
-            AND con.contextlevel = '.CONTEXT_COURSE.'
+                cr.criteriatype = ".COMPLETION_CRITERIA_TYPE_ACTIVITY."
+            AND con.contextlevel = ".CONTEXT_COURSE."
             AND c.enablecompletion = 1
             AND cc.id IS NULL
             AND (
-                mc.completionstate = '.COMPLETION_COMPLETE.'
-             OR mc.completionstate = '.COMPLETION_COMPLETE_PASS.'
+                mc.completionstate = ".COMPLETION_COMPLETE."
+             OR mc.completionstate = ".COMPLETION_COMPLETE_PASS."
                 )
-        ';
+        ";
 
         // Loop through completions, and mark as complete
-        if ($rs = $DB->get_recordset_sql($sql)) {
+        if ($rs = get_recordset_sql($sql)) {
             foreach ($rs as $record) {
 
                 $completion = new completion_criteria_completion((array)$record);
