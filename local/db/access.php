@@ -33,7 +33,7 @@
  * CAP_ALLOW, CAP_PREVENT, CAP_PROHIBIT, and inherit (not set).
 */
 
-$local_mitms_capabilities = array(
+$local_capabilities = array(
 
     // viewing and managing positions 
     'moodle/local:viewpositions' => array(
@@ -47,6 +47,32 @@ $local_mitms_capabilities = array(
     'moodle/local:deletepositions' => array(
         'captype'      => 'read',
         'contextlevel' => CONTEXT_SYSTEM,
+    ),
+
+    // viewing and managing competencies
+    'moodle/local:viewcompetencies' => array(
+        'riskbitmask' => RISK_PERSONAL,
+        'captype' => 'read',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'legacy' => array(
+            'admin' => CAP_ALLOW,
+        ),
+    ),
+    'moodle/local:updatecompetencies' => array(
+        'riskbitmask'   => RISK_PERSONAL | RISK_DATALOSS,
+        'captype'       => 'write',
+        'contextlevel'  => CONTEXT_SYSTEM,
+        'legacy' => array(
+            'admin' => CAP_ALLOW,
+        ),
+    ),
+    'moodle/local:deletecompetencies' => array(
+        'riskbitmask'   => RISK_PERSONAL | RISK_DATALOSS,
+        'captype'       => 'write',
+        'contextlevel'  => CONTEXT_SYSTEM,
+        'legacy' => array(
+            'admin' => CAP_ALLOW,
+        ),
     )
 );
 

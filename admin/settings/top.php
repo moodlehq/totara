@@ -20,6 +20,7 @@ $ADMIN->add('root', new admin_externalpage('upgradesettings', get_string('upgrad
 
 $ADMIN->add('root', new admin_category('users', get_string('users','admin')));
 $ADMIN->add('root', new admin_category('positions', get_string('positions','admin')));
+$ADMIN->add('root', new admin_category('competencies', get_string('competencies', 'admin')));
 $ADMIN->add('root', new admin_category('courses', get_string('courses','admin')));
 $ADMIN->add('root', new admin_category('grades', get_string('grades')));
 $ADMIN->add('root', new admin_category('location', get_string('location','admin')));
