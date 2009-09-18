@@ -367,6 +367,47 @@ function xmldb_local_upgrade($oldversion) {
         $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
         $result = $result && create_table($table);
 
+        $roles = array(
+            'regionalmananger' => array(
+                'name'        => 'Regional Manager',
+                'description' => 'User who is responsible for the performance of a region and has access to regional reports'
+            ),
+            'regionaltrainer' => array(
+                'name'        => 'Regional Trainer',
+                'description' => 'User who oversees the delivery of training within a region',
+            ),
+            'trainer' => array(
+                'name'        => 'Editing Trainer',
+                'description' => 'Responsible for delivering training of learners, and can alter activities',
+                'legacy'      => 'editingteacher',
+            ),
+            'noneditingtrainer' => array(
+                'name'        => 'Non-editing Trainer',
+                'description' => 'Responsible for delivering training of learners, but may not alter activities.',
+                'legacy'      => 'teacher',
+            ),
+            'manager' => array(
+                'name'        => 'Manager',
+                'description' => 'User tasked with managing the performance of a learner or team',
+            ),
+            'learner' => array(
+                'name'        => 'Learner',
+                'description' => 'User acquiring knowledge, comprehension, or mastery through learning',
+                'legacy'      => 'student',
+            ),
+        );
+        foreach ($roles as $shortname => $roledata) {
+            if (array_key_exists('legacy', $roledata)) {
+                if ($oldrole = get_record_select('role', "shortname='".$roledata['legacy']."'")) {
+                    $oldrole->name        = $roledata['name'];
+                    $oldrole->description = $roledata['description'];
+                    update_record('role', $oldrole);
+                }
+            } else {
+                $roledata['legacy']= '';
+                $roles[$shortname]['id'] = create_role($roledata['name'], $shortname, $roledata['description'], $roledata['legacy']);
+            }
+        }
     }
 
     return $result;
