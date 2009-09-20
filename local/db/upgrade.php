@@ -367,6 +367,7 @@ function xmldb_local_upgrade($oldversion) {
         $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
         $result = $result && create_table($table);
 
+    /// Bootstrap custom roles and change sort order of both custom and legacy roles
         $roles = array(
             'guest' => array(
                 'name'        => 'Guest',
