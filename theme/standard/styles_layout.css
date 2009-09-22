@@ -1965,17 +1965,20 @@ body#course-category .addcategory {
 }
 
 body#course-index .buttons .singlebutton,
-body#course-category .buttons .singlebutton {
+body#course-category .buttons .singlebutton,
+body#competencies-index .buttons .singlebutton {
   display: inline;
 }
 
 body#course-index .buttons,
-body#course-category .buttons {
+body#course-category .buttons,
+body#competencies-index .buttons {
   text-align: center;
   margin-bottom: 15px;
 }
 
-body#course-index #middle-column .editcourse {
+body#course-index #middle-column .editcourse,
+body#competency-index #middle-column .editcompetencies {
   margin-left:auto;
   margin-right:auto;
   margin-top:20px;
