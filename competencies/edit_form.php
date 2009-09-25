@@ -10,13 +10,64 @@ class competency_edit_form extends moodleform {
 
         $mform =& $this->_form;
 
+        // Get all competencies in this framework that we can use
+        // as parents
+        $competency = $this->_customdata['competency'];
+        $competencies = get_records('competency', 'frameworkid', $competency->frameworkid, 'sortorder');
+        $max_depth = get_field('competency_depth', 'MAX(depthlevel)', 'frameworkid', $competency->frameworkid);
+
+        $parents = array(
+            0   => 'Top',
+        );
+
+        if ($competencies) {
+            // Cache breadcrumbs
+            $breadcrumbs = array();
+
+            foreach ($competencies as $parent) {
+                // Do not show competencies at the deepest depth
+                if ($parent->depthid == $max_depth) {
+                    continue;
+                }
+
+                // Do not show this competency as a possible parent
+                if ($parent->id == $competency->id) {
+                    continue;
+                }
+
+                // Grab parents and append this title
+                $breadcrumbs = array_slice($breadcrumbs, 0, $parent->depthid);
+                $breadcrumbs[] = $parent->fullname;
+
+                // Make display text
+                $display = implode(' / ', $breadcrumbs);
+                $parents[$parent->id] = $display;
+            }
+        }
+
         $strgeneral  = get_string('general');
 
         /// Add some extra hidden fields
         $mform->addElement('hidden', 'id');
+        $mform->addElement('hidden', 'frameworkid');
+        $mform->addElement('hidden', 'visible');
+        $mform->addElement('hidden', 'sortorder');
 
         /// Print the required moodle fields first
         $mform->addElement('header', 'moodle', $strgeneral);
+
+        $mform->addElement('text', 'framework', get_string('framework', 'competencies'));
+        $mform->setHelpButton('framework', array('competencyframework', get_string('framework', 'competencies')), true);
+        $mform->hardFreeze('framework');
+
+        // If we only have a "Top" placeholder parentid
+        $mform->addElement('select', 'parentid', get_string('parent', 'competencies'), $parents);
+        $mform->setHelpButton('parentid', array('competencyparent', get_string('parent', 'competencies')), true);
+
+        if (count($parents) <= 1) {
+            $mform->setDefault('parentid', 0);
+            $mform->hardFreeze('parentid');
+        }
 
         $mform->addElement('text', 'fullname', get_string('fullname', 'competencies'), 'maxlength="254" size="50"');
         $mform->setHelpButton('fullname', array('competencyfullname', get_string('fullname', 'competencies')), true);

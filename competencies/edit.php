@@ -6,6 +6,13 @@ require_once($CFG->dirroot.'/competencies/edit_form.php');
 
 // capability id; 0 if creating new user
 $id = optional_param('id', 0, PARAM_INT);
+// framework id; required when creating a new user
+$frameworkid = optional_param('frameworkid', 0, PARAM_INT);
+
+// We require either an id for editing, or a framework for creating
+if (!$id && !$frameworkid) {
+    error('Incorrect parameters');
+}
 
 // Make this page appear under the manage competencies admin item
 admin_externalpage_setup('competencymanage', '', array(), '', $CFG->wwwroot.'/competencies/edit.php');
@@ -18,13 +25,9 @@ if ($id == 0) {
 
     $competency = new object();
     $competency->id = 0;
-    $competency->deleted = 0;
-    $competency->frameworkid = 1;
-    $competency->parentid    = 0;
-    $competency->sortorder   = 1;
-    $competency->aggregationmethod = 1;
-    $competency->scaleid = 1;
-    $competency->proficiencyexpected = 1;
+    $competency->frameworkid = $frameworkid;
+    $competency->visible = 1;
+    $competency->sortorder = 0;
 
 } else {
     // editing existing competency
@@ -35,12 +38,18 @@ if ($id == 0) {
     }
 }
 
+// Load framework
+if (!$framework = get_record('competency_framework', 'id', $competency->frameworkid)) {
+    error('Competency framework ID was incorrect');
+}
+$competency->framework = $framework->fullname;
+
 // create form
-$competencyform = new competency_edit_form();
+$competencyform = new competency_edit_form(null, compact('competency'));
 $competencyform->set_data($competency);
 
 // cancelled
-if ($competencyform->is_cancelled()){
+if ($competencyform->is_cancelled()) {
 
     if ($id == 0) {
         redirect("$CFG->wwwroot/competencies/index.php");
@@ -48,22 +57,55 @@ if ($competencyform->is_cancelled()){
         redirect("$CFG->wwwroot/competencies/view.php?id=$id");
     }
 
-// update data
+// Update data
 } else if ($competencynew = $competencyform->get_data()) {
 
     $competencynew->timemodified = time();
     $competencynew->usermodified = $USER->id;
 
-    $competencynew->frameworkid = 1;
-    $competencynew->parentid    = 0;
-    $competencynew->sortorder   = 1;
     $competencynew->aggregationmethod = 1;
     $competencynew->scaleid = 1;
     $competencynew->proficiencyexpected = 1;
-    $competencynew->depthid = 1;
-    $competencynew->visible = 1;
 
-    // new competency
+    // Load parent competency if set
+    if ($competencynew->parentid) {
+        if (!$parent = get_record('competency', 'id', $competencynew->parentid)) {
+            error('Parent competency ID was incorrect');
+        }
+
+        $competencynew->depthid = $parent->depthid + 1;
+    } else {
+        $competencynew->depthid = 0;
+    }
+
+    // Start db operations
+    begin_sql();
+
+    // Sort order
+    // Need to update if parent changed or new
+    if (!isset($competency->parentid) || $competencynew->parentid != $competency->parentid) {
+
+        // Find highest sortorder of siblings
+        $path = $competencynew->parentid ? $parent->path : '';
+        $sql = "SELECT MAX(sortorder) FROM {$CFG->prefix}competency WHERE frameworkid = {$competencynew->frameworkid}";
+        if ($path) {
+            $sql .= " AND path LIKE '{$path}%'";
+        }
+
+        $sortorder = (int) get_field_sql($sql);
+
+        // Find the next sortorder
+        $competencynew->sortorder = $sortorder + 1;
+
+        // Increment all following competencies
+        execute_sql("UPDATE {$CFG->prefix}competency SET sortorder = sortorder + 1 WHERE sortorder > $sortorder AND frameworkid = {$competencynew->frameworkid}", false);
+    }
+
+    // Create path for finding ancestors
+    $competencynew->path = ($competencynew->parentid ? $parent->path : '') . '/' . ($competencynew->id != 0 ? $competencynew->id : '');
+
+    // Save
+    // New competency
     if ($competencynew->id == 0) {
         unset($competencynew->id);
 
@@ -73,20 +115,26 @@ if ($competencyform->is_cancelled()){
             error('Error creating competency record');
         }
 
-    // existing competency
+        // Can't set the full path till we know the id!
+        set_field('competency', 'path', $competencynew->path.$competencynew->id, 'id', $competencynew->id);
+
+    // Existing competency
     } else {
         if (!update_record('competency', $competencynew)) {
             error('Error updating competency record');
         }
     }
 
-    // reload from db
+    // Commit db operations
+    commit_sql();
+
+    // Reload from db
     $competencynew = get_record('competency', 'id', $competencynew->id);
 
-    // log
+    // Log
     add_to_log(1, 'competencies', 'update', "view.php?id=$competencynew->id", '');
 
-    redirect("$CFG->wwwroot/competencies/view.php?id=$competencynew->id");
+    redirect("$CFG->wwwroot/competencies/index.php?frameworkid=$competencynew->frameworkid");
     //never reached
 }
 
@@ -94,7 +142,7 @@ if ($competencyform->is_cancelled()){
 /// Display page header
 admin_externalpage_print_header();
 
-if ($competency->id == 0 {
+if ($competency->id == 0) {
     print_heading(get_string('addnewcompetency', 'competencies'));
 } else {
     print_heading(get_string('editcompetency', 'competencies'));
@@ -104,4 +152,4 @@ if ($competency->id == 0 {
 $competencyform->display();
 
 /// and proper footer
-print_footer('none');
+print_footer();

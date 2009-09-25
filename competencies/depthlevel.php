@@ -6,7 +6,6 @@ require_once($CFG->dirroot.'/competencies/depthlevel_form.php');
 
 // depth level id; 0 if creating a new depth level
 $id = optional_param('id', 0, PARAM_INT);
-
 // framework id; required if creating a new depth level
 $frameworkid = optional_param('frameworkid', 0, PARAM_INT);
 
@@ -28,8 +27,8 @@ if ($id == 0) {
     $depth->id = 0;
     $depth->frameworkid = $frameworkid;
 
-    // todo calculate next depth level
-    $depth->depthlevel = 4;
+    // Calculate next depth level
+    $depth->depthlevel = get_field('competency_depth', 'MAX(depthlevel) + 1', 'frameworkid', $frameworkid);
 
 } else {
     // editing existing depth level
@@ -52,7 +51,7 @@ $depthform->set_data($depth);
 // cancelled
 if ($depthform->is_cancelled()){
 
-    redirect("$CFG->wwwroot/competencies/index.php?framework=$framework->id");
+    redirect("$CFG->wwwroot/competencies/index.php?frameworkid=$framework->id");
 
 // update data
 } else if ($depthnew = $depthform->get_data()) {
@@ -92,7 +91,7 @@ if ($depthform->is_cancelled()){
 admin_externalpage_print_header();
 
 if ($depth->id == 0) {
-    print_heading(get_string('addnewdepthlevel', 'competencies'));
+    print_heading(get_string('adddepthlevel', 'competencies'));
 } else {
     print_heading(get_string('editdepthlevel', 'competencies'));
 }
