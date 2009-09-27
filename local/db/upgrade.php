@@ -460,3 +460,4 @@ function xmldb_local_upgrade($oldversion) {
     return $result;
 
 }
+?>
