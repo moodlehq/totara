@@ -442,13 +442,13 @@ function xmldb_local_upgrade($oldversion) {
                     $oldrole->description = $roledata['description'];
                     $oldrole->sortorder   = $roledata['sortorder'];
                     update_record('role', $oldrole);
-                    $oldrole = get_record_select('role', "name='".$roledata['name']."'");
                 }
             } else {
                 $roledata['shortname'] = $shortname;
                 $roledata['legacy'] = '';
                 insert_record('role', $roledata);
             }
+            $oldrole = get_record_select('role', "name='".$roledata['name']."'");
         }
 
         // Insert default competency data
