@@ -36,3 +36,26 @@ function update_competency_button() {
     return print_single_button("{$CFG->wwwroot}/competencies/index.php", $options,
             $label, 'get', '', true);
 }
+
+
+/**
+ * Recursively called function for deleting competencies and their children
+ *
+ * @param   object  $competency
+ * @return  void
+ */
+function competency_delete($competency) {
+
+    // Delete all child competencies
+    $children = get_records('competency', 'parentid', $competency->id);
+
+    if ($children) {
+        // Call this function recursively
+        foreach ($children as $child) {
+            competency_delete($child);
+        }
+    }
+
+    // Finally delete this competency
+    delete_records('competency', 'id', $competency->id);
+}

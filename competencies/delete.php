@@ -58,7 +58,7 @@ if (!confirm_sesskey()) {
 
 add_to_log(SITEID, 'competencies', 'delete', "view.php?id=$competency->id", "$competency->fullname (ID $competency->id)");
 
-//competency_delete($competency);
+competency_delete($competency);
 
 print_heading(get_string('deletedcompetency', 'competencies', format_string($competency->fullname)));
 print_continue("{$CFG->wwwroot}/competencies/index.php?frameworkid=$competency->frameworkid");
