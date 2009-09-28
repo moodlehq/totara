@@ -80,7 +80,7 @@ if ($depthform->is_cancelled()){
     $depthnew = get_record('competency_depth', 'id', $depthnew->id);
 
     // Log
-    add_to_log(1, 'competencies', 'update depth level', "depthlevel.php?id=$depthnew->id", '');
+    add_to_log(SITEID, 'competencies', 'update depth level', "depthlevel.php?id=$depthnew->id", '');
 
     redirect("$CFG->wwwroot/competencies/index.php?id=$depthnew->frameworkid");
     //never reached

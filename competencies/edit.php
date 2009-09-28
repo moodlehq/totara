@@ -132,7 +132,7 @@ if ($competencyform->is_cancelled()) {
     $competencynew = get_record('competency', 'id', $competencynew->id);
 
     // Log
-    add_to_log(1, 'competencies', 'update', "view.php?id=$competencynew->id", '');
+    add_to_log(SITEID, 'competencies', 'update', "view.php?id=$competencynew->id", '');
 
     redirect("$CFG->wwwroot/competencies/index.php?frameworkid=$competencynew->frameworkid");
     //never reached

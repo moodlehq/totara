@@ -2,6 +2,8 @@
 
 $string['adddepthlevel'] = 'Add a new depth level';
 $string['addnewcompetency'] = 'Add new competency';
+$string['deletecheck'] = 'Are you absolutely sure you want to completely delete this competency, all it\'s children and the data they contain?';
+$string['deletedcompetency'] = 'The competency $a and it\'s children have been completely deleted';
 $string['depthlevel'] = 'Depth level';
 $string['editcompetency'] = 'Edit competency';
 $string['editdepthlevel'] = 'Edit depth level';
