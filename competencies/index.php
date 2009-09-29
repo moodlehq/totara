@@ -234,7 +234,21 @@ if ($competencies) {
 // Display page
 admin_externalpage_print_header();
 
-print '<p>Framework selector</p>';
+
+// Show framework selector
+$frameworks = get_records('competency_framework', 'visible', 1);
+
+if (count($frameworks) > 1) {
+    $fwoptions = array();
+
+    foreach ($frameworks as $fw) {
+        $fwoptions[$fw->id] = $fw->fullname;
+    }
+
+    echo '<div class="frameworkpicker">';
+    popup_form($CFG->wwwroot.'/competencies/index.php?frameworkid=', $fwoptions, 'switchframework', $framework->id, '');
+    echo '</div>';
+}
 
 #print_paging_bar($usercount, $page, $perpage,
 #    "user.php?sort=$sort&amp;dir=$dir&amp;perpage=$perpage&amp;");

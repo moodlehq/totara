@@ -1966,13 +1966,15 @@ body#course-category .addcategory {
 
 body#course-index .buttons .singlebutton,
 body#course-category .buttons .singlebutton,
-body#competencies-index .buttons .singlebutton {
+body#competencies-index .buttons .singlebutton,
+body#competencies-frameworks-index .buttons .singlebutton {
   display: inline;
 }
 
 body#course-index .buttons,
 body#course-category .buttons,
-body#competencies-index .buttons {
+body#competencies-index .buttons,
+body#competencies-frameworks-index .buttons {
   text-align: center;
   margin-bottom: 15px;
 }
@@ -2076,7 +2078,8 @@ body#course-info .generalbox.info {
   border-style:solid;
 }
 
-.categorypicker {
+.categorypicker,
+.frameworkpicker {
   text-align:center;
   padding-bottom:10px;
 }
