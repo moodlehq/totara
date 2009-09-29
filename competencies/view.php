@@ -57,6 +57,10 @@ $depthstr = $depth->fullname;
         <th class="header"><?php echo get_string('descriptionview', 'competencies', $depthstr) ?></th>
         <td class="cell"><?php echo format_text($competency->description, FORMAT_HTML) ?></td>
     </tr>
+    <tr>
+        <th class="header"><?php echo get_string('aggregationmethodview', 'competencies', $depthstr) ?></th>
+        <td class="cell"><?php echo get_string('aggregationmethod'.$competency->aggregationmethod, 'competencies') ?></td>
+    </tr>
 </tbody>
 </table>
 <?php
