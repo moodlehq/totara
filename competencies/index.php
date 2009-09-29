@@ -47,13 +47,6 @@ if ($frameworkid == 0) {
     }
 }
 
-// Get competency depths
-$depths = get_records('competency_depth', 'frameworkid', $framework->id, 'id');
-
-// TODO: link to add depth form
-if (!$depths) {
-    error('No competency depths exist');
-}
 
 // Cache user capabilities
 $can_add_comp = has_capability('moodle/local:createcompetencies', $sitecontext);
@@ -61,6 +54,47 @@ $can_edit_comp = has_capability('moodle/local:updatecompetencies', $sitecontext)
 $can_delete_comp = has_capability('moodle/local:deletecompetencies', $sitecontext);
 $can_add_depth = has_capability('moodle/local:createcompetencydepth', $sitecontext);
 $can_edit_depth = has_capability('moodle/local:updatecompetencydepth', $sitecontext);
+
+
+// Get competency depths
+$depths = get_records('competency_depth', 'frameworkid', $framework->id, 'id');
+
+// Link to add depth form
+if (!$depths) {
+
+    // Display page
+    admin_externalpage_print_header();
+
+    // Show framework selector
+    $frameworks = get_records('competency_framework', 'visible', 1);
+
+    if (count($frameworks) > 1) {
+        $fwoptions = array();
+
+        foreach ($frameworks as $fw) {
+            $fwoptions[$fw->id] = $fw->fullname;
+        }
+
+        echo '<div class="frameworkpicker">';
+        popup_form($CFG->wwwroot.'/competencies/index.php?frameworkid=', $fwoptions, 'switchframework', $framework->id, '');
+        echo '</div>';
+    }
+
+    print_heading(get_string('nodepthlevels', 'competencies'));
+
+    // Print button to add a depth level
+    if ($can_add_depth) {
+        echo '<div class="buttons">';
+
+        $options = array('frameworkid' => $framework->id);
+        print_single_button($CFG->wwwroot.'/competencies/depthlevel.php', $options, get_string('adddepthlevel', 'competencies'), 'get');
+
+        echo '</div>';
+    }
+
+    print_footer();
+    exit();
+}
 
 
 ///
