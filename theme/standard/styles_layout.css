@@ -1967,6 +1967,7 @@ body#course-category .addcategory {
 body#course-index .buttons .singlebutton,
 body#course-category .buttons .singlebutton,
 body#competencies-index .buttons .singlebutton,
+body#competencies-view .buttons .singlebutton,
 body#competencies-frameworks-index .buttons .singlebutton {
   display: inline;
 }
@@ -1974,6 +1975,7 @@ body#competencies-frameworks-index .buttons .singlebutton {
 body#course-index .buttons,
 body#course-category .buttons,
 body#competencies-index .buttons,
+body#competencies-view .buttons,
 body#competencies-frameworks-index .buttons {
   text-align: center;
   margin-bottom: 15px;
@@ -4302,4 +4304,9 @@ wikiadminactions {
   background: #eee;
   border: 1px dashed #ddd;
   padding: 3px;
+}
+
+table.viewcompetency th {
+    text-align: left;
+    vertical-align: top;
 }
