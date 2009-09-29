@@ -3,6 +3,13 @@
 $string['adddepthlevel'] = 'Add a new depth level';
 $string['addnewcompetency'] = 'Add new competency';
 $string['addnewframework'] = 'Add new competency framework';
+$string['aggregationmethod'] = 'Aggregation method';
+$string['aggregationmethod1'] = 'All';
+$string['aggregationmethod2'] = 'Any';
+$string['aggregationmethod3'] = 'Unit';
+$string['aggregationmethod4'] = 'Fraction';
+$string['aggregationmethod5'] = 'Sum of weighted';
+$string['aggregationmethod6'] = 'Average of weighted';
 $string['deletecheck'] = 'Are you absolutely sure you want to completely delete this competency, all it\'s children and the data they contain?';
 $string['deletecheckframework'] = 'Are you absolutely sure you want to completely delete this competency framework and all the data it contains?';
 $string['deletedcompetency'] = 'The competency $a and it\'s children have been completely deleted';

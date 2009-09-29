@@ -45,6 +45,13 @@ class competency_edit_form extends moodleform {
             }
         }
 
+        // Get all aggregation methods
+        global $COMP_AGGREGATION;
+        $aggregations = array();
+        foreach ($COMP_AGGREGATION as $title => $key) {
+            $aggregations[$key] = get_string('aggregationmethod'.$key, 'competencies');
+        }
+
         $strgeneral  = get_string('general');
 
         /// Add some extra hidden fields
@@ -60,10 +67,9 @@ class competency_edit_form extends moodleform {
         $mform->setHelpButton('framework', array('competencyframework', get_string('framework', 'competencies')), true);
         $mform->hardFreeze('framework');
 
-        // If we only have a "Top" placeholder parentid
         $mform->addElement('select', 'parentid', get_string('parent', 'competencies'), $parents);
         $mform->setHelpButton('parentid', array('competencyparent', get_string('parent', 'competencies')), true);
-
+        // If we only have a "Top" placeholder parentid, lock it
         if (count($parents) <= 1) {
             $mform->setDefault('parentid', 0);
             $mform->hardFreeze('parentid');
@@ -86,6 +92,10 @@ class competency_edit_form extends moodleform {
         $mform->addElement('htmleditor', 'description', get_string('description'), array('rows'=> '10', 'cols'=>'65'));
         $mform->setHelpButton('description', array('text', get_string('helptext')), true);
         $mform->setType('description', PARAM_RAW);
+
+        $mform->addElement('select', 'aggregationmethod', get_string('aggregationmethod', 'competencies'), $aggregations);
+        $mform->setHelpButton('aggregationmethod', array('competencyaggregationmethod', get_string('aggregationmethod', 'competencies')), true);
+        $mform->addRule('aggregationmethod', get_string('aggregationmethod', 'competencies'), 'required', null, 'client');
 
         $this->add_action_buttons();
     }

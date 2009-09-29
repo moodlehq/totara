@@ -1,8 +1,14 @@
 <?php
 
 require_once('../config.php');
+require_once('./lib.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->dirroot.'/competencies/edit_form.php');
+
+
+///
+/// Setup / loading data
+///
 
 // competency id; 0 if creating new competency
 $id = optional_param('id', 0, PARAM_INT);
@@ -28,6 +34,7 @@ if ($id == 0) {
     $competency->frameworkid = $frameworkid;
     $competency->visible = 1;
     $competency->sortorder = 0;
+    $competency->aggregationmethod = $COMP_AGGREGATION['ALL'];
 
 } else {
     // editing existing competency
@@ -43,6 +50,11 @@ if (!$framework = get_record('competency_framework', 'id', $competency->framewor
     error('Competency framework ID was incorrect');
 }
 $competency->framework = $framework->fullname;
+
+
+///
+/// Display page
+///
 
 // create form
 $competencyform = new competency_edit_form(null, compact('competency'));
@@ -63,7 +75,6 @@ if ($competencyform->is_cancelled()) {
     $competencynew->timemodified = time();
     $competencynew->usermodified = $USER->id;
 
-    $competencynew->aggregationmethod = 1;
     $competencynew->scaleid = 1;
     $competencynew->proficiencyexpected = 1;
 
