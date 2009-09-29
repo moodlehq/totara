@@ -452,28 +452,52 @@ function xmldb_local_upgrade($oldversion) {
             $oldrole = get_record_select('role', "name='".$roledata['name']."'");
         }
 
-        // Insert default competency data
+        $timenow = time();
+
+        // Insert default competency_framework
         $default_framework = (object) array(
             'fullname'      => 'General competencies',
-            'shortname'     => 'General competencies',
-            'timecreated'   => time(),
-            'timemodified'  => time(),
+            'shortname'     => 'general',
+            'timecreated'   => $timenow,
+            'timemodified'  => $timenow,
             'usermodified'  => 1,
             'isdefault'     => 1,
             'visible'       => 1,
-            'sortorder'     => 0
+            'sortorder'     => 1
         );
-
         $default_framework->id = insert_record('competency_framework', $default_framework);
 
+        // Insert default competency_depth
         $default_depth = (object) array(
             'fullname'      => 'Competencies',
             'shortname'     => 'Competencies',
             'depthlevel'    => 0,
             'frameworkid'   => $default_framework->id
         );
-
         insert_record('competency_depth', $default_depth);
+
+        // Insert default competency
+        $default_competency = array(
+            'id'                  => 1,
+            'fullname'            => 'Reading comprehension',
+            'shortname'           => 'Reading comprehension',
+            'idnumber'            => '',
+            'frameworkid'         => 1,
+            'parentid'            => 0,
+            'sortorder'           => 1,
+            'depthid'             => 0,
+            'path'                => 1,
+            'description'         => '',
+            'aggregationmethod'   => 1,
+            'scaleid'             => 1,
+            'proficiencyexpected' => 1,
+            'timecreated'         => $timenow,
+            'timemodified'        => $timenow,
+            'usermodified'        => 2,
+            'visible'             => 1,
+        );
+        insert_record('competency', $default_competency);
+
     }
 
     return $result;
