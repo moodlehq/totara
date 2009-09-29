@@ -28,7 +28,8 @@ if ($id == 0) {
     $depth->frameworkid = $frameworkid;
 
     // Calculate next depth level
-    $depth->depthlevel = get_field('competency_depth', 'MAX(depthlevel) + 1', 'frameworkid', $frameworkid);
+    // The weird cast is a nasty hack to make moodle forms still display a zero
+    $depth->depthlevel = (string) (int) get_field('competency_depth', 'MAX(depthlevel) + 1', 'frameworkid', $frameworkid);
 
 } else {
     // editing existing depth level
