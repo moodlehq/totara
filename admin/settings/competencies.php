@@ -2,10 +2,10 @@
 
 // This file defines settingpages and externalpages under the "competencies" category
 
-    $ADMIN->add('competencies', new admin_externalpage('competencymanage', get_string('competencymanage', 'admin'), "$CFG->wwwroot/competencies/index.php",
+    $ADMIN->add('competencies', new admin_externalpage('competencyframeworkmanage', get_string('competencyframeworkmanage', 'admin'), "$CFG->wwwroot/competencies/frameworks/index.php",
             array('moodle/local:viewcompetencies')));
 
-    $ADMIN->add('competencies', new admin_externalpage('competencyframeworkmanage', get_string('competencyframeworkmanage', 'admin'), "$CFG->wwwroot/competencies/framework/index.php",
+    $ADMIN->add('competencies', new admin_externalpage('competencymanage', get_string('competencymanage', 'admin'), "$CFG->wwwroot/competencies/index.php",
             array('moodle/local:viewcompetencies')));
 
     $ADMIN->add('competencies', new admin_externalpage('competencybulkaction', get_string('competencybulkaction', 'admin'), "$CFG->wwwroot/competencies/bulk.php",
