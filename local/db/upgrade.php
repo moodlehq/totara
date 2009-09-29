@@ -222,7 +222,7 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && create_table($table);
 
     /// Create table competency_depth_info_category
-        $table = new XMLDBTable('position_depth_info_category');
+        $table = new XMLDBTable('competency_depth_info_category');
         $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
         $table->addFieldInfo('name', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
         $table->addFieldInfo('sortorder', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
