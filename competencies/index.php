@@ -144,31 +144,32 @@ $str_movedown = get_string('movedown');
 $str_hide     = get_string('hide');
 $str_show     = get_string('show');
 
-if ($competencies) {
+// Create display table
+$table = new stdclass();
+$table->class = 'generalbox editcompetencies';
+$table->width = '95%';
 
-    // Create display table
-    $table = new stdclass();
-    $table->class = 'generalbox editcompetencies';
-    $table->width = '95%';
+// Setup column headers
+$table->head = array();
+$table->align = array();
 
-    // Setup column headers
-    $table->head = array();
-    $table->align = array();
+foreach ($depths as $depth) {
+    $header = $depth->fullname;
 
-    foreach ($depths as $depth) {
-        $header = $depth->fullname;
-
-        if ($editingon && $can_edit_depth) {
-            $header .= "<a href=\"{$CFG->wwwroot}/competencies/depthlevel.php?id={$depth->id}\" title=\"$str_edit\">".
-                "<img src=\"{$CFG->pixpath}/t/edit.gif\" class=\"iconsmall\" alt=\"$str_edit\" /></a>";
-        }
-
-        $table->head[] = $header;
-        $table->align[] = 'left';
+    if ($editingon && $can_edit_depth) {
+        $header .= "<a href=\"{$CFG->wwwroot}/competencies/depthlevel.php?id={$depth->id}\" title=\"$str_edit\">".
+            "<img src=\"{$CFG->pixpath}/t/edit.gif\" class=\"iconsmall\" alt=\"$str_edit\" /></a>";
     }
 
-    $table->head[] = get_string('evidenceitems', 'competencies');
-    $table->align[] = 'center';
+    $table->head[] = $header;
+    $table->align[] = 'left';
+}
+
+$table->head[] = get_string('evidenceitems', 'competencies');
+$table->align[] = 'center';
+
+// If we have competencies, add edit col and rows of data
+if ($competencies) {
 
     // Add edit column
     if ($editingon && $can_edit_comp) {
@@ -224,6 +225,9 @@ if ($competencies) {
 
         $table->data[] = $row;
     }
+} else {
+    // If no competencies, add a message
+    $table->data[] = array('<i>'.get_string('nocompetenciesinframework', 'competencies').'</i>');
 }
 
 
@@ -232,22 +236,24 @@ admin_externalpage_print_header();
 
 print '<p>Framework selector</p>';
 
-if ($competencies) {
-        #print_paging_bar($usercount, $page, $perpage,
-    #    "user.php?sort=$sort&amp;dir=$dir&amp;perpage=$perpage&amp;");
-    #
-    print_table($table);
+#print_paging_bar($usercount, $page, $perpage,
+#    "user.php?sort=$sort&amp;dir=$dir&amp;perpage=$perpage&amp;");
+#
+print_table($table);
 
-        #print_paging_bar($usercount, $page, $perpage,
-    #    "user.php?sort=$sort&amp;dir=$dir&amp;perpage=$perpage&amp;");
-} else {
-    print_heading(get_string('nocompetenciesinframework', 'competencies'));
-}
+#print_paging_bar($usercount, $page, $perpage,
+#    "user.php?sort=$sort&amp;dir=$dir&amp;perpage=$perpage&amp;");
 
 
 // Editing buttons
 if ($can_add_comp || $can_add_depth) {
     echo '<div class="buttons">';
+
+    // Print button for creating new competency
+    if ($can_add_comp) {
+        $options = array('frameworkid' => $framework->id);
+        print_single_button($CFG->wwwroot.'/competencies/edit.php', $options, get_string('addnewcompetency', 'competencies'), 'get');
+    }
 
     // Print button to add a depth level
     if ($can_add_depth) {
@@ -255,11 +261,6 @@ if ($can_add_comp || $can_add_depth) {
         print_single_button($CFG->wwwroot.'/competencies/depthlevel.php', $options, get_string('adddepthlevel', 'competencies'), 'get');
     }
 
-    // Print button for creating new competency
-    if ($can_add_comp) {
-        $options = array('frameworkid' => $framework->id);
-        print_single_button($CFG->wwwroot.'/competencies/edit.php', $options, get_string('addnewcompetency', 'competencies'), 'get');
-    }
 
     echo '</div>';
 }
