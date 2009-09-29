@@ -148,9 +148,11 @@ function xmldb_local_upgrade($oldversion) {
         $table->addFieldInfo('description', XMLDB_TYPE_TEXT, 'big', XMLDB_UNSIGNED, null, null, null);
         $table->addFieldInfo('sortorder', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
         $table->addFieldInfo('isdefault', XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
+        $table->addFieldInfo('sortorder', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
         $table->addFieldInfo('timecreated', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
         $table->addFieldInfo('timemodified', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
         $table->addFieldInfo('usermodified', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
+        $table->addFieldInfo('visible', XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
         $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
         $table->addIndexInfo('sortorder', XMLDB_INDEX_UNIQUE, array('sortorder'));
         $result = $result && create_table($table);
@@ -458,7 +460,9 @@ function xmldb_local_upgrade($oldversion) {
             'timecreated'   => time(),
             'timemodified'  => time(),
             'usermodified'  => 1,
-            'isdefault'     => 1
+            'isdefault'     => 1,
+            'visible'       => 1,
+            'sortorder'     => 0
         );
 
         $default_framework->id = insert_record('competency_framework', $default_framework);
@@ -472,9 +476,6 @@ function xmldb_local_upgrade($oldversion) {
 
         insert_record('competency_depth', $default_depth);
     }
-
-    // todo
-    // add default to frameworks
 
     return $result;
 

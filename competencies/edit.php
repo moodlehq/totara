@@ -4,9 +4,9 @@ require_once('../config.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->dirroot.'/competencies/edit_form.php');
 
-// capability id; 0 if creating new user
+// competency id; 0 if creating new competency
 $id = optional_param('id', 0, PARAM_INT);
-// framework id; required when creating a new user
+// framework id; required when creating a new competency
 $frameworkid = optional_param('frameworkid', 0, PARAM_INT);
 
 // We require either an id for editing, or a framework for creating

@@ -103,6 +103,29 @@ $local_capabilities = array(
         'legacy' => array(
             'admin' => CAP_ALLOW,
         ),
+    ),
+    'moodle/local:createcompetencyframeworks' => array(
+        'captype'       => 'write',
+        'contextlevel'  => CONTEXT_SYSTEM,
+        'legacy' => array(
+            'admin' => CAP_ALLOW,
+        ),
+    ),
+    'moodle/local:updatecompetencyframeworks' => array(
+        'riskbitmask'   => RISK_PERSONAL | RISK_DATALOSS,
+        'captype'       => 'write',
+        'contextlevel'  => CONTEXT_SYSTEM,
+        'legacy' => array(
+            'admin' => CAP_ALLOW,
+        ),
+    ),
+    'moodle/local:deletecompetencyframeworks' => array(
+        'riskbitmask'   => RISK_PERSONAL | RISK_DATALOSS,
+        'captype'       => 'write',
+        'contextlevel'  => CONTEXT_SYSTEM,
+        'legacy' => array(
+            'admin' => CAP_ALLOW,
+        ),
     )
 );
 

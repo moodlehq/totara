@@ -123,10 +123,6 @@ if ($editingon) {
             commit_sql();
         }
     }
-
-    // Delete
-    //
-    //
 } // End of editing stuff
 
 
