@@ -230,7 +230,7 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && create_table($table);
 
     /// Create table competency_depth_info_data
-        $table = new XMLDBTable('position_depth_info_data');
+        $table = new XMLDBTable('competency_depth_info_data');
         $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
         $table->addFieldInfo('fieldid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
         $table->addFieldInfo('competencyid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
