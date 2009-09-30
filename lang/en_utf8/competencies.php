@@ -11,6 +11,7 @@ $string['aggregationmethod4'] = 'Fraction';
 $string['aggregationmethod5'] = 'Sum of weighted';
 $string['aggregationmethod6'] = 'Average of weighted';
 $string['aggregationmethodview'] = '$a aggregation method';
+$string['competencyscales'] = 'Competency scales';
 $string['deletecheck'] = 'Are you absolutely sure you want to completely delete this competency, all it\'s children and the data they contain?';
 $string['deletecheckframework'] = 'Are you absolutely sure you want to completely delete this competency framework and all the data it contains?';
 $string['deletedcompetency'] = 'The competency $a and it\'s children have been completely deleted';

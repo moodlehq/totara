@@ -57,6 +57,7 @@ $string['competencybulkaction'] = 'Bulk actions';
 $string['competencycustomfields'] = 'Custom fields';
 $string['competencyframeworkmanage'] = 'Manage frameworks';
 $string['competencymanage'] = 'Manage competencies';
+$string['competencyscales'] = 'Competency scales';
 $string['competencyupload'] = 'Upload competencies';
 $string['componentinstalled'] = 'Component Installed';
 $string['computedfromlogs'] = 'Computed from logs since $a.';
