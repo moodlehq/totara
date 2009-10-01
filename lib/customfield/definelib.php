@@ -1,0 +1,174 @@
+<?php  //$Id$
+
+class customfield_define_base {
+
+    /**
+     * Prints out the form snippet for creating or editing a custom field
+     * @param   object   instance of the moodleform class
+     */
+    function define_form(&$form, $depth=0, $tableprefix) {
+        $form->addElement('header', '_commonsettings', get_string('commonsettings', 'customfields'));
+        $this->define_form_common($form, $depth, $tableprefix);
+
+        $form->addElement('header', '_specificsettings', get_string('specificsettings', 'customfields'));
+        $this->define_form_specific($form);
+    }
+
+    /**
+     * Prints out the form snippet for the part of creating or
+     * editing a custom field common to all data types
+     * @param   object   instance of the moodleform class
+     */
+    function define_form_common(&$form, $depth=0, $tableprefix) {
+
+        $strrequired = get_string('required');
+
+        $form->addElement('text', 'shortname', get_string('shortname', 'customfields'), 'maxlength="100" size="25"');
+        $form->addRule('shortname', $strrequired, 'required', null, 'client');
+        $form->setType('shortname', PARAM_ALPHANUM);
+
+        $form->addElement('text', 'fullname', get_string('fullname'), 'size="50"');
+        $form->addRule('fullname', $strrequired, 'required', null, 'client');
+        $form->setType('fullname', PARAM_MULTILANG);
+
+        $form->addElement('htmleditor', 'description', get_string('description', 'customfields'));
+        $form->setHelpButton('description', array('text', get_string('helptext')));
+
+        $form->addElement('selectyesno', 'required', get_string('required', 'customfields'));
+
+        $form->addElement('selectyesno', 'locked', get_string('locked', 'customfields'));
+
+        $form->addElement('selectyesno', 'forceunique', get_string('forceunique', 'customfields'));
+        
+        $form->addElement('selectyesno', 'hidden', get_string('visible', 'customfields'));
+
+        $choices = customfield_list_categories($depth, $tableprefix);
+        $form->addElement('select', 'categoryid', get_string('category', 'customfields'), $choices);
+    }
+
+    /**
+     * Prints out the form snippet for the part of creating or
+     * editing a custom field specific to the current data type
+     * @param   object   instance of the moodleform class
+     */
+    function define_form_specific(&$form) {
+        /// do nothing - overwrite if necessary
+    }
+
+    /**
+     * Validate the data from the add/edit custom field form.
+     * Generally this method should not be overwritten by child
+     * classes.
+     * @param   object   data from the add/edit custom field form
+     * @return  array    associative array of error messages
+     */
+    function define_validate($data, $files) {
+
+        $data = (object)$data;
+        $err = array();
+
+        $err += $this->define_validate_common($data, $files);
+        $err += $this->define_validate_specific($data, $files);
+
+        return $err;
+    }
+
+    /**
+     * Validate the data from the add/edit custom field form
+     * that is common to all data types. Generally this method
+     * should not be overwritten by child classes.
+     * @param   object   data from the add/edit custom field form
+     * @return  array    associative array of error messages
+     */
+    function define_validate_common($data, $files) {
+
+        global $USER;
+
+        $err = array();
+
+        /// Check the shortname was not truncated by cleaning
+        if (empty($data->shortname)) {
+            $err['shortname'] = get_string('required');
+
+        } else {
+        /// Fetch field-record from DB
+            $field = get_record('user_info_field', 'shortname', $data->shortname);
+        /// Check the shortname is unique
+            if ($field and $field->id <> $data->id) {
+                $err['shortname'] = get_string('shortnamenotunique', 'customfields');
+
+        /// Shortname must also be unique compared to the standard user fields
+            } else if (!$field and isset($USER->{$data->shortname})) {
+                $err['shortname'] = get_string('shortnamenotunique', 'customfields');
+            }
+        }
+
+        /// No further checks necessary as the form class will take care of it
+        return $err;
+    }
+
+    /**
+     * Validate the data from the add/edit custom field form
+     * that is specific to the current data type
+     * @param   object   data from the add/edit custom field form
+     * @return  array    associative array of error messages
+     */
+    function define_validate_specific($data, $files) {
+        /// do nothing - overwrite if necessary
+        return array();
+    }
+
+    /**
+     * Alter form based on submitted or existing data
+     * @param   object   form
+     */
+    function define_after_data(&$mform) {
+        /// do nothing - overwrite if necessary
+    }
+
+    /**
+     * Add a new custom field or save changes to current field
+     * @param   object   data from the add/edit custom field form
+     * @return  boolean  status of the insert/update record
+     */
+    function define_save($data, $tableprefix) {
+        $data = $this->define_save_preprocess($data); /// hook for child classes
+
+        $old = false;
+        if (!empty($data->id)) {
+            $old = get_record($tableprefix.'_info_field', 'id', $data->id);
+        }
+
+        /// check to see if the category has changed
+        if (!$old or $old->categoryid != $data->categoryid) {
+            $data->sortorder = count_records_select($tableprefix.'_info_field', 'categoryid='.$data->categoryid) + 1;
+        } else {
+            $data->sortorder = $old->sortorder;
+        }
+
+
+        if (empty($data->id)) {
+            unset($data->id);
+            if (!$data->id = insert_record($tableprefix.'_info_field', $data)) {
+                error('Error creating new field');
+            }
+        } else {
+            if (!update_record($tableprefix.'_info_field', $data)) {
+                error('Error updating field');
+            }
+        }
+    }
+
+    /**
+     * Preprocess data from the add/edit custom field form
+     * before it is saved. This method is a hook for the child
+     * classes to overwrite.
+     * @param   object   data from the add/edit custom field form
+     * @return  object   processed data object
+     */
+    function define_save_preprocess($data) {
+        /// do nothing - overwrite if necessary
+        return $data;
+    }
+
+}

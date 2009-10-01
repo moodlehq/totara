@@ -1,0 +1,455 @@
+<?php
+///////////////////////////////////////////////////////////////////////////
+//                                                                       //
+// NOTICE OF COPYRIGHT                                                   //
+//                                                                       //
+// Moodle - Modular Object-Oriented Dynamic Learning Environment         //
+//          http://moodle.org                                            //
+//                                                                       //
+// Copyright (C) 1999 onwards Martin Dougiamas  http://dougiamas.com     //
+//                                                                       //
+// This program is free software; you can redistribute it and/or modify  //
+// it under the terms of the GNU General Public License as published by  //
+// the Free Software Foundation; either version 2 of the License, or     //
+// (at your option) any later version.                                   //
+//                                                                       //
+// This program is distributed in the hope that it will be useful,       //
+// but WITHOUT ANY WARRANTY; without even the implied warranty of        //
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         //
+// GNU General Public License for more details:                          //
+//                                                                       //
+//          http://www.gnu.org/copyleft/gpl.html                         //
+//                                                                       //
+///////////////////////////////////////////////////////////////////////////
+
+/**
+ * moodlelib.php - Moodle main library
+ *
+ * Library file of custom field functions
+ * Based on the custom user profile field functionality
+ * @copyright Catalyst IT Limited
+ * @author Jonathan Newman 
+ * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
+ * @package MITMS
+ */
+
+/**
+ * Create a string containing the editing icons for custom fields
+ * @param   object   the field object
+ * @param   object   the fieldcount object
+ * @param   object   the depth of the object if used
+ * @return  string   the icon string
+ */
+function customfield_edit_icons($field, $fieldcount, $depth=0) {
+    global $CFG;
+
+    if (empty($str)) {
+        $strdelete   = get_string('delete');
+        $strmoveup   = get_string('moveup');
+        $strmovedown = get_string('movedown');
+        $stredit     = get_string('edit');
+    }
+
+    /// Edit
+    $editstr = '<a title="'.$stredit.'" href="index.php?id='.$field->id.'&amp;depth='.$depth.'&amp;action=editfield"><img src="'.$CFG->pixpath.'/t/edit.gif" alt="'.$stredit.'" class="iconsmall" /></a> ';
+
+    /// Delete
+    $editstr .= '<a title="'.$strdelete.'" href="index.php?id='.$field->id.'&amp;depth='.$depth.'&amp;action=deletefield';
+    $editstr .= '"><img src="'.$CFG->pixpath.'/t/delete.gif" alt="'.$strdelete.'" class="iconsmall" /></a> ';
+
+    /// Move up
+    if ($field->sortorder > 1) {
+        $editstr .= '<a title="'.$strmoveup.'" href="index.php?id='.$field->id.'&amp;depth='.$depth.'&amp;action=movefield&amp;dir=up&amp;sesskey='.sesskey().'"><img src="'.$CFG->pixpath.'/t/up.gif" alt="'.$strmoveup.'" class="iconsmall" /></a> ';
+     } else {
+        $editstr .= '<img src="'.$CFG->pixpath.'/spacer.gif" alt="" class="iconsmall" /> ';
+    }
+
+    /// Move down
+    if ($field->sortorder < $fieldcount) {
+        $editstr .= '<a title="'.$strmovedown.'" href="index.php?id='.$field->id.'&amp;depth='.$depth.'&amp;action=movefield&amp;dir=down&amp;sesskey='.sesskey().'"><img src="'.$CFG->pixpath.'/t/down.gif" alt="'.$strmovedown.'" class="iconsmall" /></a> ';
+    } else {
+        $editstr .= '<img src="'.$CFG->pixpath.'/spacer.gif" alt="" class="iconsmall" /> ';
+    }
+
+    return $editstr;
+}
+
+/**
+ * Create a string containing the editing icons for the custom field categories
+ * @param   object   the category object
+ * @param   int      the number of categories
+ * @param   int      the number of fields in the category
+ * @param   object   the depth of the object if used
+ * @return  string   the icon string
+ */
+function customfield_category_icons($category, $categorycount, $fieldcount, $depth=0) {
+    global $CFG;
+
+    $strdelete   = get_string('delete');
+    $strmoveup   = get_string('moveup');
+    $strmovedown = get_string('movedown');
+    $stredit     = get_string('edit');
+
+    /// Edit
+    $editstr = '<a title="'.$stredit.'" href="index.php?id='.$category->id.'&amp;depth='.$depth.'&amp;action=editcategory"><img src="'.$CFG->pixpath.'/t/edit.gif" alt="'.$stredit.'" class="iconsmall" /></a> ';
+
+    /// Delete
+    /// Can only delete the last category if there are no fields in it
+    if ( ($categorycount > 1) or ($fieldcount == 0) ) {
+        $editstr .= '<a title="'.$strdelete.'" href="index.php?id='.$category->id.'&amp;depth='.$depth.'&amp;action=deletecategory';
+        $editstr .= '"><img src="'.$CFG->pixpath.'/t/delete.gif" alt="'.$strdelete.'" class="iconsmall" /></a> ';
+    } else {
+        $editstr .= '<img src="'.$CFG->pixpath.'/spacer.gif" alt="" class="iconsmall" /> ';
+    }
+
+    /// Move up
+    if ($category->sortorder > 1) {
+        $editstr .= '<a title="'.$strmoveup.'" href="index.php?id='.$category->id.'&amp;depth='.$depth.'&amp;action=movecategory&amp;dir=up&amp;sesskey='.sesskey().'"><img src="'.$CFG->pixpath.'/t/up.gif" alt="'.$strmoveup.'" class="iconsmall" /></a> ';
+    } else {
+        $editstr .= '<img src="'.$CFG->pixpath.'/spacer.gif" alt="" class="iconsmall" /> ';
+    }
+
+    /// Move down
+    if ($category->sortorder < $categorycount) {
+        $editstr .= '<a title="'.$strmovedown.'" href="index.php?id='.$category->id.'&amp;depth='.$depth.'&amp;action=movecategory&amp;dir=down&amp;sesskey='.sesskey().'"><img src="'.$CFG->pixpath.'/t/down.gif" alt="'.$strmovedown.'" class="iconsmall" /></a> ';
+    } else {
+        $editstr .= '<img src="'.$CFG->pixpath.'/spacer.gif" alt="" class="iconsmall" /> ';
+    }
+
+    return $editstr;
+}
+
+/**
+ * Delete a custom field category
+ * @param   integer   id of the category to be deleted
+ * @param   string    table prefix for the feature the category belongs to
+ * @return  boolean   success of operation
+ */
+function customfield_delete_category($id, $depth=0, $tableprefix) {
+    /// Retrieve the category
+    if (!$category = get_record($tableprefix.'_info_category', 'id', $id)) {
+        error('Incorrect category id');
+    }   
+
+    if (!$categories = get_records_select($tableprefix.'_info_category', '', 'sortorder ASC')) {
+        error('Error no categories!?!?');
+    }   
+
+    unset($categories[$category->id]);
+
+    if (!count($categories)) {
+        return; //we can not delete the last category
+    }   
+
+    /// Does the category contain any fields
+    if (count_records($tableprefix.'_info_field', 'categoryid', $category->id)) {
+        if (array_key_exists($category->sortorder-1, $categories)) {
+            $newcategory = $categories[$category->sortorder-1];
+        } else if (array_key_exists($category->sortorder+1, $categories)) {
+            $newcategory = $categories[$category->sortorder+1];
+        } else {
+            $newcategory = reset($categories); // get first category if sortorder broken
+        }   
+
+        $sortorder = count_records($tableprefix.'_info_field', 'categoryid', $newcategory->id) + 1;
+
+        if ($fields = get_records_select($tableprefix.'_info_field', 'categoryid='.$category->id, 'sortorder ASC')) {
+            foreach ($fields as $field) {
+                $f = new object();
+                $f->id = $field->id;
+                $f->sortorder = $sortorder++;
+                $f->categoryid = $newcategory->id;
+                update_record($tableprefix.'_info_field', $f);
+                echo "<pre>";var_dump($f);echo"</pre>";
+            }   
+        }   
+    }   
+
+    /// Finally we get to delete the category
+    if (!delete_records($tableprefix.'_info_category', 'id', $category->id)) {
+        error('Error while deliting category');
+    }   
+    customfield_reorder_categories($depth, $tableprefix);
+    return true;
+}
+
+function customfield_delete_field($id, $tableprefix) {
+
+    /// Remove any user data associated with this field
+    if (!delete_records($tableprefix.'_info_data', 'fieldid', $id)) {
+        error('Error deleting custom field data');
+    }
+
+    /// Try to remove the record from the database
+    delete_records($tableprefix.'_info_field', 'id', $id);
+
+    /// Reorder the remaining fields in the same category
+    customfield_reorder_fields($tableprefix);
+}
+
+/**
+ * Change the sortorder of a field
+ * @param   integer   id of the field
+ * @param   string    direction of move
+ * @return  boolean   success of operation
+ */
+function customfield_move_field($id, $move, $tableprefix) {
+    /// Get the field object
+    if (!$field = get_record($tableprefix.'_info_field', 'id', $id, '', '', '', '', 'id, sortorder, categoryid')) {
+        return false;
+    }
+    /// Count the number of fields in this category
+    $fieldcount = count_records_select($tableprefix.'_info_field', 'categoryid='.$field->categoryid);
+
+    /// Calculate the new sortorder
+    if ( ($move == 'up') and ($field->sortorder > 1)) {
+        $neworder = $field->sortorder - 1;
+    } elseif ( ($move == 'down') and ($field->sortorder < $fieldcount)) {
+        $neworder = $field->sortorder + 1;
+    } else {
+        return false;
+    }
+
+    /// Retrieve the field object that is currently residing in the new position
+    if ($swapfield = get_record($tableprefix.'_info_field', 'categoryid', $field->categoryid, 'sortorder', $neworder, '', '', 'id, sortorder')) {
+
+        /// Swap the sortorders
+        $swapfield->sortorder = $field->sortorder;
+        $field->sortorder     = $neworder;
+
+        /// Update the field records
+        update_record($tableprefix.'_info_field', $field);
+        update_record($tableprefix.'_info_field', $swapfield);
+    }
+
+    customfield_reorder_fields($tableprefix);
+}
+
+/**
+ * Change the sortorder of a category
+ * @param   integer   id of the category
+ * @param   string    direction of move
+ * @return  boolean   success of operation
+ */
+function customfield_move_category($id, $move, $tableprefix) {
+    /// Get the category object
+    if (!($category = get_record($tableprefix.'_info_category', 'id', $id, '', '', '', '', 'id, sortorder'))) {
+        return false;
+    }
+
+    /// Count the number of categories
+    $categorycount = count_records($tableprefix.'_info_category');
+
+    /// Calculate the new sortorder
+    if ( ($move == 'up') and ($category->sortorder > 1)) {
+        $neworder = $category->sortorder - 1;
+    } elseif ( ($move == 'down') and ($category->sortorder < $categorycount)) {
+        $neworder = $category->sortorder + 1;
+    } else {
+        return false;
+    }
+
+    /// Retrieve the category object that is currently residing in the new position
+    if ($swapcategory = get_record($tableprefix.'_info_category', 'sortorder', $neworder, '', '', '', '', 'id, sortorder')) {
+
+        /// Swap the sortorders
+        $swapcategory->sortorder = $category->sortorder;
+        $category->sortorder     = $neworder;
+
+        /// Update the category records
+        if (update_record($tableprefix.'_info_category', $category) and update_record($tableprefix.'_info_category', $swapcategory)) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+/**
+ * Retrieve a list of all the available data types
+ * @return   array   a list of the datatypes suitable to use in a select statement
+ */
+function customfield_list_datatypes() {
+    global $CFG;
+
+    $datatypes = array();
+
+    if ($dirlist = get_directory_list($CFG->dirroot.'/lib/customfield/field', '', false, true, false)) {
+        foreach ($dirlist as $type) {
+            $datatypes[$type] = get_string('customfieldtype'.$type, 'customfields');
+            if (strpos($datatypes[$type], '[[') !== false) {
+                $datatypes[$type] = get_string('customfieldtype'.$type, 'admin');
+            }
+        }
+    }
+    asort($datatypes);
+
+    return $datatypes;
+}
+
+/**
+ * Retrieve a list of categories and ids suitable for use in a form
+ * @return   array
+ */
+function customfield_list_categories($depth=0, $tableprefix) {
+    $depthstr = '';
+    if ($depth) {
+        $depthstr = "depthid = '$depth'";
+    }
+    if (!$categories = get_records_select_menu($tableprefix.'_info_category', $depthstr, 'sortorder ASC', 'id, name')) {
+        $categories = array();
+    }
+    return $categories;
+}
+
+function customfield_edit_category($id, $depth=0, $redirect, $tableprefix) {
+    global $CFG;
+
+    require_once('customfield/index_category_form.php');
+
+    $datatosend = array('depth' => $depth);
+    $categoryform = new category_form(null, $datatosend);
+
+    if ($category = get_record($tableprefix.'_info_category', 'id', $id)) {
+        $categoryform->set_data($category);
+    }
+
+    if ($categoryform->is_cancelled()) {
+        redirect($redirect);
+    } else {
+        if ($data = $categoryform->get_data()) {
+
+// error_log(print_r($data));
+            if (empty($data->id)) {
+                unset($data->id);
+
+                $depthstr = '';
+                if ($data->depthid) {
+                    $depth = $data->depthid;
+                    $depthstr = "depthid='$data->depthid'";
+                }
+
+                $categorycount = count_records_select($tableprefix.'_info_category', $depthstr);
+// echo $categorycount;
+                $data->sortorder = $categorycount + 1;
+//error_log(print_r($data));
+                if (!insert_record($tableprefix.'_info_category', $data, false)) {
+                    error('There was a problem adding the record to the database');
+                }
+            } else {
+                if (!update_record($tableprefix.'_info_category', $data)) {
+                    error('There was a problem updating the record in the database');
+                }
+            }
+            customfield_reorder_categories($depth, $tableprefix);
+
+            if ($data->depthid) {
+                $redirect .= '?depth='.$data->depthid;
+            }
+
+            redirect($redirect);
+
+        }
+
+        if (empty($id)) {
+            $strheading = get_string('createnewcategory', 'customfields');
+        } else {
+            $strheading = get_string('editcategory', 'customfields', format_string($category->name));
+        }
+
+        /// Print the page
+        admin_externalpage_print_header();
+        print_heading($strheading);
+        $categoryform->display();
+        admin_externalpage_print_footer();
+        die;
+    }
+
+}
+
+function customfield_edit_field($id, $datatype, $depth=0, $redirect, $tableprefix) {
+    global $CFG;
+
+    if (!$field = get_record($tableprefix.'_info_field', 'id', $id)) {
+        $field = new object();
+        $field->datatype = $datatype;
+    }
+
+    require_once('customfield/index_field_form.php');
+    $datatosend = array('datatype' => $field->datatype, 'depth' => $depth, 'tableprefix' => $tableprefix);
+    $fieldform = new field_form(null, $datatosend);
+    $fieldform->set_data($field);
+
+    if ($fieldform->is_cancelled()) {
+        redirect($redirect);
+
+    } else {
+        if ($data = $fieldform->get_data()) {
+            require_once($CFG->dirroot.'/lib/customfield/field/'.$datatype.'/define.class.php');
+            $newfield = 'customfield_define_'.$datatype;
+            $formfield = new $newfield();
+            $formfield->define_save($data, $tableprefix);
+            customfield_reorder_fields($tableprefix);
+            customfield_reorder_categories($depth, $tableprefix);
+            if ($data->depthid) {
+                $redirect .= '?depth='.$data->depthid;
+            }
+            redirect($redirect);
+        }
+
+        $datatypes = customfield_list_datatypes();
+
+        if (empty($id)) {
+            $strheading = get_string('createnewfield', 'customfields', $datatypes[$datatype]);
+        } else {
+            $strheading = get_string('editfield', 'customfields', $field->fullname);
+        }
+
+        /// Print the page
+        admin_externalpage_print_header();
+        print_heading($strheading);
+        $fieldform->display();
+        admin_externalpage_print_footer();
+        die;
+    }
+}
+
+/**
+ * Reorder the custom field categories starting at the category
+ * at the given startorder
+ */
+function customfield_reorder_categories($depth=0, $tableprefix) {
+    $i = 1;
+
+    $depthstr = '';
+    if ($depth) {
+        $depthstr = 'depthid = '.$depth;
+    }
+
+    if ($categories = get_records_select($tableprefix.'_info_category', $depthstr, 'sortorder ASC')) {
+        foreach ($categories as $cat) {
+            $cat->sortorder = $i++;
+            update_record($tableprefix.'_info_category', $cat);
+        }
+    }
+}
+
+/**
+ * Reorder the custom fields within a given category starting
+ * at the field at the given startorder
+ */
+function customfield_reorder_fields($tableprefix) {
+    if ($categories = get_records_select($tableprefix.'_info_category')) {
+        foreach ($categories as $category) {
+            $i = 1;
+            if ($fields = get_records_select($tableprefix.'_info_field', 'categoryid='.$category->id, 'sortorder ASC')) {
+                foreach ($fields as $field) {
+                    $f = new object();
+                    $f->id = $field->id;
+                    $f->sortorder = $i++;
+                    update_record($tableprefix.'_info_field', $f);
+                }   
+            }   
+        }   
+    }   
+}
