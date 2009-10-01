@@ -31,6 +31,8 @@ function xmldb_local_upgrade($oldversion) {
     $result = true;
     if ($result && $oldversion < 2009091000) {
 
+        set_config('theme', 'mitms');
+
     /// Create table
         $table = new XMLDBTable('scale_values');
         $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
