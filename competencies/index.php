@@ -171,12 +171,13 @@ $competencies = get_records('competency', 'frameworkid', $framework->id, 'sortor
 ///
 /// Generate / display page
 ///
-$str_edit     = get_string('edit');
-$str_delete   = get_string('delete');
-$str_moveup   = get_string('moveup');
-$str_movedown = get_string('movedown');
-$str_hide     = get_string('hide');
-$str_show     = get_string('show');
+$str_edit         = get_string('edit');
+$str_delete       = get_string('delete');
+$str_moveup       = get_string('moveup');
+$str_movedown     = get_string('movedown');
+$str_hide         = get_string('hide');
+$str_show         = get_string('show');
+$str_customfields = get_string('customfields', 'customfields');
 
 // Create display table
 $table = new stdclass();
@@ -192,7 +193,9 @@ foreach ($depths as $depth) {
 
     if ($editingon && $can_edit_depth) {
         $header .= "<a href=\"{$CFG->wwwroot}/competencies/depthlevel.php?id={$depth->id}\" title=\"$str_edit\">".
-            "<img src=\"{$CFG->pixpath}/t/edit.gif\" class=\"iconsmall\" alt=\"$str_edit\" /></a>";
+            "<img src=\"{$CFG->pixpath}/t/edit.gif\" class=\"iconsmall\" alt=\"$str_edit\" /></a> ".
+            "<a href=\"{$CFG->wwwroot}/competencies/depth/customfields/index.php?depth={$depth->id}\" title=\"$str_customfields\">".
+            "<img src=\"{$CFG->pixpath}/t/customfields.gif\" class=\"iconsmall\" alt=\"$str_customfields\" /></a></a>";
     }
 
     $table->head[] = $header;
