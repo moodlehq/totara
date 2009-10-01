@@ -14,7 +14,7 @@
     $ADMIN->add('competencies', new admin_externalpage('competencyupload', get_string('competencyupload', 'admin'), "$CFG->wwwroot/competencies/upload.php",
             array('moodle/local:updatecompetencies')));
 
-    $ADMIN->add('competencies', new admin_externalpage('competencycustomfields', get_string('competencycustomfields', 'admin'), "$CFG->wwwroot/competencies/fields/index.php",
+    $ADMIN->add('competencies', new admin_externalpage('competencydepthcustomfields', get_string('competencycustomfields', 'admin'), "$CFG->wwwroot/competencies/depth/customfields/index.php",
             array('moodle/local:updatecompetencies')));
 
     $ADMIN->add('competencies', new admin_externalpage('competencyscales', get_string('competencyscales', 'admin'), "$CFG->wwwroot/competencies/scale/index.php",
