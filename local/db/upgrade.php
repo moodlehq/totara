@@ -501,6 +501,9 @@ function xmldb_local_upgrade($oldversion) {
         );
         insert_record('competency', $default_competency);
 
+        // install mitms demo data
+        include('demo.php');
+
     }
 
     return $result;
