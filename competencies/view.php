@@ -61,6 +61,26 @@ $depthstr = $depth->fullname;
         <th class="header"><?php echo get_string('aggregationmethodview', 'competencies', $depthstr) ?></th>
         <td class="cell"><?php echo get_string('aggregationmethod'.$competency->aggregationmethod, 'competencies') ?></td>
     </tr>
+
+<?php
+
+$sql = "SELECT cdif.fullname, cdid.data
+        FROM {$CFG->prefix}competency_depth_info_data cdid
+        JOIN {$CFG->prefix}competency_depth_info_field cdif ON cdid.fieldid=cdif.id
+        WHERE cdid.competencyid=$competency->id";
+
+if ($cfdata = get_records_sql($sql)) {
+    foreach ($cfdata as $cf) {
+        echo "
+    <tr>
+        <th class=\"header\">$cf->fullname</th>
+        <td class=\"cell\">$cf->data</td>
+    </tr>
+";
+    }
+}
+
+?>
 </tbody>
 </table>
 <?php
