@@ -97,6 +97,9 @@ class competency_edit_form extends moodleform {
         $mform->setHelpButton('aggregationmethod', array('competencyaggregationmethod', get_string('aggregationmethod', 'competencies')), true);
         $mform->addRule('aggregationmethod', get_string('aggregationmethod', 'competencies'), 'required', null, 'client');
 
+        /// Next the custom fields
+        customfield_definition($mform, $competency->id, 'competency', 'competency_depth');
+
         $this->add_action_buttons();
     }
 }

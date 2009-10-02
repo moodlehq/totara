@@ -1,6 +1,6 @@
 <?php //$Id$
 
-class customfield_field_textarea extends customfield_field_base {
+class customfield_textarea extends customfield_base {
 
     function edit_field_add(&$mform) {
         $cols = $this->field->param1;
@@ -12,8 +12,8 @@ class customfield_field_textarea extends customfield_field_base {
     }
 
     /// Overwrite base class method, data in this field type is potentially too large to be
-    /// included in the user object
-    function is_user_object_data() {
+    /// included in the feature object
+    function is_feature_object_data() {
         return false;
     }
 

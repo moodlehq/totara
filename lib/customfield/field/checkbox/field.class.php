@@ -1,18 +1,18 @@
 <?php // $Id$
 
-class customfield_field_checkbox extends customfield_field_base {
+class customfield_checkbox extends customfield_base {
 
     /**
      * Constructor method.
      * Pulls out the options for the checkbox from the database and sets the
      * the corresponding key for the data if it exists
      */
-    function customfield_field_checkbox($fieldid=0, $userid=0) {
+    function customfield_checkbox($fieldid=0, $featurid=0, $feature, $tableprefix) {
         //first call parent constructor
-        $this->customfield_field_base($fieldid, $userid);
+        $this->customfield_base($fieldid, $featureid);
 
         if (!empty($this->field)) {
-            $datafield = get_field('user_info_data', 'data', 'userid', $this->userid, 'fieldid', $this->fieldid);
+            $datafield = get_field($tableprefix.'_info_data', 'data', $feature.'id', $this->{$feature.'id'}, 'fieldid', $this->fieldid);
             if ($datafield !== false) {
                 $this->data = $datafield;
             } else {
@@ -28,7 +28,7 @@ class customfield_field_checkbox extends customfield_field_base {
             $checkbox->setChecked(true);
         }        
         $mform->setType($this->inputname, PARAM_BOOL);
-        if ($this->is_required() and !has_capability('moodle/user:update', get_context_instance(CONTEXT_SYSTEM, SITEID))) {
+        if ($this->is_required()) {
             $mform->addRule($this->inputname, get_string('required'), 'nonzero', null, 'client');
         }
     }

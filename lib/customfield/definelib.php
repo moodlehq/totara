@@ -80,9 +80,7 @@ class customfield_define_base {
      * @param   object   data from the add/edit custom field form
      * @return  array    associative array of error messages
      */
-    function define_validate_common($data, $files) {
-
-        global $USER;
+    function define_validate_common($data, $files, $tableprefix) {
 
         $err = array();
 
@@ -92,13 +90,9 @@ class customfield_define_base {
 
         } else {
         /// Fetch field-record from DB
-            $field = get_record('user_info_field', 'shortname', $data->shortname);
+            $field = get_record($tableprefix.'_info_field', 'shortname', $data->shortname);
         /// Check the shortname is unique
             if ($field and $field->id <> $data->id) {
-                $err['shortname'] = get_string('shortnamenotunique', 'customfields');
-
-        /// Shortname must also be unique compared to the standard user fields
-            } else if (!$field and isset($USER->{$data->shortname})) {
                 $err['shortname'] = get_string('shortnamenotunique', 'customfields');
             }
         }

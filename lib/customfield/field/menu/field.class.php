@@ -1,6 +1,6 @@
 <?php //$Id$
 
-class customfield_field_menu extends customfield_field_base {
+class customfield_menu extends customfield_base {
     var $options;
     var $datakey;
 
@@ -9,9 +9,9 @@ class customfield_field_menu extends customfield_field_base {
      * Pulls out the options for the menu from the database and sets the
      * the corresponding key for the data if it exists
      */
-    function customfield_field_menu($fieldid=0, $userid=0) {
+    function customfield_menu($fieldid=0, $featureid=0) {
         //first call parent constructor
-        $this->customfield_field_base($fieldid, $userid);
+        $this->customfield_base($fieldid, $featureid);
 
         /// Param 1 for menu type is the options
         $options = explode("\n", $this->field->param1);
@@ -62,13 +62,13 @@ class customfield_field_menu extends customfield_field_base {
     }
 
     /**
-     * When passing the user object to the form class for the edit custom page
+     * When passing the feature object to the form class for the edit custom page
      * we should load the key for the saved data
      * Overwrites the base class method
-     * @param   object   user object
+     * @param   object   feature object
      */
-    function edit_load_user_data(&$user) {
-        $user->{$this->inputname} = $this->datakey;
+    function edit_load_feature_data(&$feature) {
+        $feature->{$this->inputname} = $this->datakey;
     }
 
     /**
@@ -79,7 +79,7 @@ class customfield_field_menu extends customfield_field_base {
         if (!$mform->elementExists($this->inputname)) {
             return;
         }
-        if ($this->is_locked() and !has_capability('moodle/user:update', get_context_instance(CONTEXT_SYSTEM))) {
+        if ($this->is_locked()) {
             $mform->hardFreeze($this->inputname);
             $mform->setConstant($this->inputname, $this->datakey);
         }
