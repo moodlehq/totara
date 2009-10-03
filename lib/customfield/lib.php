@@ -300,10 +300,14 @@ function customfield_load_data(&$feature, $tableprefix) {
  * Print out the customisable categories and fields
  * @param  object  instance of the moodleform class
  */
-function customfield_definition(&$mform, $featureid, $feature, $tableprefix) {
+function customfield_definition(&$mform, $featureid, $feature, $depthid=0, $tableprefix) {
     global $CFG;
 
-    if ($categories = get_records_select($tableprefix.'_info_category', '', 'sortorder ASC')) {
+    $depthstr = '';
+    if ($depthid) {
+        $depthstr = "depthid='$depthid'";
+    }
+    if ($categories = get_records_select($tableprefix.'_info_category', $depthstr, 'sortorder ASC')) {
         foreach ($categories as $category) {
             if ($fields = get_records_select($tableprefix.'_info_field', "categoryid=$category->id", 'sortorder ASC')) {
 

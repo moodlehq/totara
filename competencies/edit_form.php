@@ -14,6 +14,7 @@ class competency_edit_form extends moodleform {
         // as parents
         $competency = $this->_customdata['competency'];
         $competencies = get_records('competency', 'frameworkid', $competency->frameworkid, 'sortorder');
+        $depthid = get_field_select('competency_depth', 'id', "frameworkid=$competency->frameworkid and depthlevel=$competency->depthid");
         $max_depth = get_field('competency_depth', 'MAX(depthlevel)', 'frameworkid', $competency->frameworkid);
 
         $parents = array(
@@ -97,8 +98,10 @@ class competency_edit_form extends moodleform {
         $mform->setHelpButton('aggregationmethod', array('competencyaggregationmethod', get_string('aggregationmethod', 'competencies')), true);
         $mform->addRule('aggregationmethod', get_string('aggregationmethod', 'competencies'), 'required', null, 'client');
 
-        /// Next the custom fields
-        customfield_definition($mform, $competency->id, 'competency', 'competency_depth');
+        /// Next show the custom fields if we're editing an existing competency (otherwise we don't know the depthid)
+        if ($competency->id) {
+            customfield_definition($mform, $competency->id, 'competency', $depthid, 'competency_depth');
+        }
 
         $this->add_action_buttons();
     }
