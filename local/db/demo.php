@@ -412,19 +412,16 @@
 
     $competency_depth_info_data = array(
         array(
-            'id'           => '1',
             'competencyid' => '1',
             'fieldid'      => '1',
             'data'         => '3',
         ),
         array(
-            'id'           => '2',
             'competencyid' => '1',
             'fieldid'      => '2',
             'data'         => '45',
         ),
         array(
-            'id'           => '3',
             'competencyid' => '1',
             'fieldid'      => '3',
             'data'         => 'This qualification is the first of two qualifications for people who are, or are training to be first line managers (team leaders, supervisors, or charge hands).  People in these roles are likely to be responsible for managing people, resources, or workplace operations, and may have had little, or no formal training.<br/><br/>
@@ -434,6 +431,111 @@ The compulsory section specifies the essential oral communication skills require
 Knowledge and skills covered in the first two elective sections include relevant business skills such as administration, quality management, systems and resources, people development, and interpersonal skills.  A third elective allows the candidate to choose from anywhere on the National Qualifications Framework to include industry-specific skills and knowledge, or to build on earlier learning, or begin building a career pathway of his/her choosing.<br/><br/>
 
 The National Certificate in Business (First Line Management) (Level 3) [Ref: 0743] may lead to the National Certificate in Business (First Line Management) (Level 4) [Ref: 0649] and to other qualifications in the Business field such as the National Diploma in Business (Level 5) [Ref: 0783], or other qualifications in business administration, small business management, or Māori business and management.',
+        ),
+        array(
+            'competencyid' => '2',
+            'fieldid'      => '5',
+            'data'         => '3',
+        ),
+        array(
+            'competencyid' => '2',
+            'fieldid'      => '6',
+            'data'         => '3',
+        ),
+        array(
+            'competencyid' => '2',
+            'fieldid'      => '7',
+            'data'         => '5',
+        ),
+        array(
+            'competencyid' => '3',
+            'fieldid'      => '5',
+            'data'         => '3',
+        ),
+        array(
+            'competencyid' => '3',
+            'fieldid'      => '6',
+            'data'         => '3',
+        ),
+        array(
+            'competencyid' => '3',
+            'fieldid'      => '7',
+            'data'         => '4',
+        ),
+        array(
+            'competencyid' => '4',
+            'fieldid'      => '5',
+            'data'         => '2',
+        ),
+        array(
+            'competencyid' => '4',
+            'fieldid'      => '6',
+            'data'         => '3',
+        ),
+        array(
+            'competencyid' => '4',
+            'fieldid'      => '7',
+            'data'         => '4',
+        ),
+        array(
+            'competencyid' => '5',
+            'fieldid'      => '5',
+            'data'         => '3',
+        ),
+        array(
+            'competencyid' => '5',
+            'fieldid'      => '6',
+            'data'         => '4',
+        ),
+        array(
+            'competencyid' => '5',
+            'fieldid'      => '7',
+            'data'         => '4',
+        ),
+        array(
+            'competencyid' => '6',
+            'fieldid'      => '5',
+            'data'         => '3',
+        ),
+        array(
+            'competencyid' => '6',
+            'fieldid'      => '6',
+            'data'         => '3',
+        ),
+        array(
+            'competencyid' => '6',
+            'fieldid'      => '7',
+            'data'         => '4',
+        ),
+        array(
+            'competencyid' => '7',
+            'fieldid'      => '5',
+            'data'         => '3',
+        ),
+        array(
+            'competencyid' => '7',
+            'fieldid'      => '6',
+            'data'         => '3',
+        ),
+        array(
+            'competencyid' => '7',
+            'fieldid'      => '7',
+            'data'         => '4',
+        ),
+        array(
+            'competencyid' => '8',
+            'fieldid'      => '5',
+            'data'         => '3',
+        ),
+        array(
+            'competencyid' => '8',
+            'fieldid'      => '6',
+            'data'         => '3',
+        ),
+        array(
+            'competencyid' => '8',
+            'fieldid'      => '7',
+            'data'         => '2',
         ),
     );
     foreach($competency_depth_info_data as $competency_depth_info_data_item) {
@@ -608,6 +710,20 @@ The National Certificate in Business (First Line Management) (Level 3) [Ref: 074
                     'timecreated'         => $timenow,
                     'timemodified'        => $timenow,
                     'usermodified'        => '2',
+                    'customdata'          => array(
+                        array(
+                            'fieldid'      => '5',
+                            'data'         => '4',
+                        ),
+                        array(
+                            'fieldid'      => '6',
+                            'data'         => '5',
+                        ),
+                        array(
+                            'fieldid'      => '7',
+                            'data'         => '4',
+                        ),
+                    ),
                 ),
                 array(
                     'fullname'            => 'Supervise workplace operations',
@@ -624,6 +740,20 @@ The National Certificate in Business (First Line Management) (Level 3) [Ref: 074
                     'timecreated'         => $timenow,
                     'timemodified'        => $timenow,
                     'usermodified'        => '2',
+                    'customdata'          => array(
+                        array(
+                            'fieldid'      => '5',
+                            'data'         => '4',
+                        ),
+                        array(
+                            'fieldid'      => '6',
+                            'data'         => '6',
+                        ),
+                        array(
+                            'fieldid'      => '7',
+                            'data'         => '4',
+                        ),
+                    ),
                 ),
                 array(
                     'fullname'            => 'Identify key workplace organisational principles',
@@ -640,6 +770,20 @@ The National Certificate in Business (First Line Management) (Level 3) [Ref: 074
                     'timecreated'         => $timenow,
                     'timemodified'        => $timenow,
                     'usermodified'        => '2',
+                    'customdata'          => array(
+                        array(
+                            'fieldid'      => '5',
+                            'data'         => '4',
+                        ),
+                        array(
+                            'fieldid'      => '6',
+                            'data'         => '4',
+                        ),
+                        array(
+                            'fieldid'      => '7',
+                            'data'         => '2',
+                        ),
+                    ),
                 ),
                 array(
                     'fullname'            => 'Demonstrate and apply knowledge of team building skills',
@@ -656,6 +800,20 @@ The National Certificate in Business (First Line Management) (Level 3) [Ref: 074
                     'timecreated'         => $timenow,
                     'timemodified'        => $timenow,
                     'usermodified'        => '2',
+                    'customdata'          => array(
+                        array(
+                            'fieldid'      => '5',
+                            'data'         => '4',
+                        ),
+                        array(
+                            'fieldid'      => '6',
+                            'data'         => '5',
+                        ),
+                        array(
+                            'fieldid'      => '7',
+                            'data'         => '2',
+                        ),
+                    ),
                 ),
                 array(
                     'fullname'            => 'Demonstrate knowledge of performance management planning',
@@ -672,6 +830,20 @@ The National Certificate in Business (First Line Management) (Level 3) [Ref: 074
                     'timecreated'         => $timenow,
                     'timemodified'        => $timenow,
                     'usermodified'        => '2',
+                    'customdata'          => array(
+                        array(
+                            'fieldid'      => '5',
+                            'data'         => '4',
+                        ),
+                        array(
+                            'fieldid'      => '6',
+                            'data'         => '3',
+                        ),
+                        array(
+                            'fieldid'      => '7',
+                            'data'         => '1',
+                        ),
+                    ),
                 ),
             ),
         ),
@@ -707,6 +879,20 @@ The National Certificate in Business (First Line Management) (Level 3) [Ref: 074
                     'timecreated'         => $timenow,
                     'timemodified'        => $timenow,
                     'usermodified'        => '2',
+                    'customdata'          => array(
+                        array(
+                            'fieldid'      => '5',
+                            'data'         => '5',
+                        ),
+                        array(
+                            'fieldid'      => '6',
+                            'data'         => '6',
+                        ),
+                        array(
+                            'fieldid'      => '7',
+                            'data'         => '1',
+                        ),
+                    ),
                 ),
                 array(
                     'fullname'            => 'Manage interpersonal conflict',
@@ -723,6 +909,20 @@ The National Certificate in Business (First Line Management) (Level 3) [Ref: 074
                     'timecreated'         => $timenow,
                     'timemodified'        => $timenow,
                     'usermodified'        => '2',
+                    'customdata'          => array(
+                        array(
+                            'fieldid'      => '5',
+                            'data'         => '4',
+                        ),
+                        array(
+                            'fieldid'      => '6',
+                            'data'         => '6',
+                        ),
+                        array(
+                            'fieldid'      => '7',
+                            'data'         => '4',
+                        ),
+                    ),
                 ),
                 array(
                     'fullname'            => 'Participate in a formal meeting',
@@ -739,6 +939,20 @@ The National Certificate in Business (First Line Management) (Level 3) [Ref: 074
                     'timecreated'         => $timenow,
                     'timemodified'        => $timenow,
                     'usermodified'        => '2',
+                    'customdata'          => array(
+                        array(
+                            'fieldid'      => '5',
+                            'data'         => '4',
+                        ),
+                        array(
+                            'fieldid'      => '6',
+                            'data'         => '4',
+                        ),
+                        array(
+                            'fieldid'      => '7',
+                            'data'         => '4',
+                        ),
+                    ),
                 ),
                 array(
                     'fullname'            => 'Apply problem solving techniques',
@@ -755,6 +969,20 @@ The National Certificate in Business (First Line Management) (Level 3) [Ref: 074
                     'timecreated'         => $timenow,
                     'timemodified'        => $timenow,
                     'usermodified'        => '2',
+                    'customdata'          => array(
+                        array(
+                            'fieldid'      => '5',
+                            'data'         => '4',
+                        ),
+                        array(
+                            'fieldid'      => '6',
+                            'data'         => '4',
+                        ),
+                        array(
+                            'fieldid'      => '7',
+                            'data'         => '4',
+                        ),
+                    ),
                 ),
                 array(
                     'fullname'            => 'Lead a group/team to achieve an objective(s)',
@@ -771,6 +999,20 @@ The National Certificate in Business (First Line Management) (Level 3) [Ref: 074
                     'timecreated'         => $timenow,
                     'timemodified'        => $timenow,
                     'usermodified'        => '2',
+                    'customdata'          => array(
+                        array(
+                            'fieldid'      => '5',
+                            'data'         => '4',
+                        ),
+                        array(
+                            'fieldid'      => '6',
+                            'data'         => '5',
+                        ),
+                        array(
+                            'fieldid'      => '7',
+                            'data'         => '1',
+                        ),
+                    ),
                 ),
                 array(
                     'fullname'            => 'Apply time management concepts and methods in business solutions',
@@ -787,6 +1029,20 @@ The National Certificate in Business (First Line Management) (Level 3) [Ref: 074
                     'timecreated'         => $timenow,
                     'timemodified'        => $timenow,
                     'usermodified'        => '2',
+                    'customdata'          => array(
+                        array(
+                            'fieldid'      => '5',
+                            'data'         => '4',
+                        ),
+                        array(
+                            'fieldid'      => '6',
+                            'data'         => '3',
+                        ),
+                        array(
+                            'fieldid'      => '7',
+                            'data'         => '2',
+                        ),
+                    ),
                 ),
             ),
         ),
@@ -836,9 +1092,14 @@ The National Certificate in Business (First Line Management) (Level 3) [Ref: 074
         $competency['sortorder'] = $sortorder++;
         $newid = insert_record('competency', (object)$competency);
         foreach ($subcompetencies as $subcompetency) {
+            $customdata = $subcompetency['customdata'];
             $subcompetency['parentid'] = $newid;
             $subcompetency['sortorder'] = $sortorder++;
-            insert_record('competency', $subcompetency);
+            $newid = insert_record('competency', $subcompetency);
+            foreach ($customdata as $c) {
+                $c['competencyid'] = $newid;
+                insert_record('competency_depth_info_data', $c);
+            }
         }
 
     }
