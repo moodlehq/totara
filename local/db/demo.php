@@ -263,6 +263,9 @@
             'hidden'       => '0',
             'required'     => '1',
             'defaultdata'  => '',
+            'param1'       => '30',
+            'param2'       => '2048',
+            'param3'       => '0',
         ),
         array(
             'id'           => '2',
@@ -276,6 +279,9 @@
             'hidden'       => '0',
             'required'     => '1',
             'defaultdata'  => '',
+            'param1'       => '30',
+            'param2'       => '2048',
+            'param3'       => '0',
         ),
         array(
             'id'           => '3',
@@ -289,6 +295,9 @@
             'hidden'       => '0',
             'required'     => '1',
             'defaultdata'  => '',
+            'param1'       => '30',
+            'param2'       => '2048',
+            'param3'       => '0',
         ),
         array(
             'id'           => '4',
@@ -302,6 +311,9 @@
             'hidden'       => '0',
             'required'     => '1',
             'defaultdata'  => '',
+            'param1'       => '30',
+            'param2'       => '40',
+            'param3'       => '',
         ),
         array(
             'id'           => '5',
@@ -310,11 +322,14 @@
             'description'  => '',
             'depthid'      => '2',
             'datatype'     => 'text',
-            'categoryid'   => '1',
+            'categoryid'   => '4',
             'sortorder'    => '1',
             'hidden'       => '0',
             'required'     => '1',
             'defaultdata'  => '',
+            'param1'       => '30',
+            'param2'       => '2048',
+            'param3'       => '0',
         ),
         array(
             'id'           => '6',
@@ -323,11 +338,14 @@
             'description'  => '',
             'depthid'      => '2',
             'datatype'     => 'text',
-            'categoryid'   => '1',
+            'categoryid'   => '4',
             'sortorder'    => '2',
             'hidden'       => '0',
             'required'     => '1',
             'defaultdata'  => '',
+            'param1'       => '30',
+            'param2'       => '2048',
+            'param3'       => '0',
         ),
         array(
             'id'           => '7',
@@ -336,15 +354,17 @@
             'description'  => '',
             'depthid'      => '2',
             'datatype'     => 'text',
-            'categoryid'   => '1',
+            'categoryid'   => '4',
             'sortorder'    => '3',
             'hidden'       => '0',
             'required'     => '1',
             'defaultdata'  => '',
+            'param1'       => '30',
+            'param2'       => '2048',
+            'param3'       => '0',
         ),
     );
     foreach($competency_depth_info_fields as $competency_depth_info_field) {
-        $competency_depth_info_field['depthid'] = 1;
         insert_record('competency_depth_info_field', $competency_depth_info_field);
     }
 
@@ -356,20 +376,37 @@
             'depthid'      => '1',
         ),
         array(
-            'id'           => '1',
+            'id'           => '2',
             'name'         => 'Mid level',
             'sortorder'    => '2',
             'depthid'      => '1',
         ),
         array(
-            'id'           => '1',
+            'id'           => '3',
             'name'         => 'Low level',
             'sortorder'    => '3',
             'depthid'      => '1',
         ),
+        array(
+            'id'           => '4',
+            'name'         => 'High level',
+            'sortorder'    => '1',
+            'depthid'      => '2',
+        ),
+        array(
+            'id'           => '5',
+            'name'         => 'Mid level',
+            'sortorder'    => '2',
+            'depthid'      => '2',
+        ),
+        array(
+            'id'           => '6',
+            'name'         => 'Low level',
+            'sortorder'    => '3',
+            'depthid'      => '2',
+        ),
     );
     foreach($competency_depth_info_categories as $competency_depth_info_category) {
-        $competency_depth_info_category['depthid'] = 1;
         insert_record('competency_depth_info_category', $competency_depth_info_category);
     }
 
