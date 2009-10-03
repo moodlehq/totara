@@ -47,11 +47,11 @@ print_heading("{$depth->fullname} - {$competency->fullname}");
 $depthstr = $depth->fullname;
 
 ?>
-<table class="generalbox boxaligncenter viewcompetency" cellpadding="5" cellspacing="1">
+<table class="generalbox viewcompetency" cellpadding="5" cellspacing="1">
 <tbody>
     <tr>
-        <th class="header"><?php echo get_string('fullnameview', 'competencies', $depthstr) ?></th>
-        <td class="cell"><?php echo format_string($competency->fullname) ?></td>
+        <th class="header" width="200"><?php echo get_string('fullnameview', 'competencies', $depthstr) ?></th>
+        <td class="cell" width="400"><?php echo format_string($competency->fullname) ?></td>
     </tr>
     <tr>
         <th class="header"><?php echo get_string('idnumberview', 'competencies', $depthstr) ?></th>
