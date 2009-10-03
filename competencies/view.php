@@ -54,6 +54,10 @@ $depthstr = $depth->fullname;
         <td class="cell"><?php echo format_string($competency->fullname) ?></td>
     </tr>
     <tr>
+        <th class="header"><?php echo get_string('idnumberview', 'competencies', $depthstr) ?></th>
+        <td class="cell"><?php echo format_string($competency->idnumber) ?></td>
+    </tr>
+    <tr>
         <th class="header"><?php echo get_string('descriptionview', 'competencies', $depthstr) ?></th>
         <td class="cell"><?php echo format_text($competency->description, FORMAT_HTML) ?></td>
     </tr>

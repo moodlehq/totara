@@ -37,6 +37,7 @@ $string['fullnamedepth'] = 'Depth level full name';
 $string['fullnameframework'] = 'Framework full name';
 $string['idnumber'] = 'Competency ID number';
 $string['idnumberframework'] = 'Framework ID number';
+$string['idnumberview'] = '$a idnumber';
 $string['managecompetencies'] = 'Manage competencies';
 $string['missingfullname'] = 'Missing competency full name';
 $string['missingfullnamedepth'] = 'Missing depth level full name';
