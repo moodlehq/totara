@@ -12,6 +12,14 @@ class competencyframework_edit_form extends moodleform {
 
         $strgeneral  = get_string('general');
 
+        /// Load competency scales
+        $scales_raw = get_records('competency_scale', '', '', 'name');
+        $scales = array();
+
+        foreach ($scales_raw as $scale) {
+            $scales[$scale->id] = $scale->name;
+        }
+
         /// Add some extra hidden fields
         $mform->addElement('hidden', 'id');
         $mform->addElement('hidden', 'visible');
@@ -38,6 +46,10 @@ class competencyframework_edit_form extends moodleform {
         $mform->addElement('htmleditor', 'description', get_string('description'), array('rows'=> '10', 'cols'=>'65'));
         $mform->setHelpButton('description', array('text', get_string('helptext')), true);
         $mform->setType('description', PARAM_RAW);
+
+        $mform->addElement('select', 'scale', get_string('scale'), $scales, array('multiple' => true));
+        $mform->setHelpButton('scale', array('competencyframeworkscale', get_string('scale')), true);
+        $mform->addRule('scale', get_string('missingscale', 'competencies'), 'required', null, 'client');
 
         $this->add_action_buttons();
     }

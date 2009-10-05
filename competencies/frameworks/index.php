@@ -62,43 +62,6 @@ if ($editingon) {
         }
     }
 
-    /// Reorder a competency
-    if ((!empty($moveup) or !empty($movedown))) {
-        require_capability('moodle/local:updatecompetencies', $sitecontext);
-        $movecourse = NULL;
-        $swapcourse = NULL;
-
-        // ensure the course order has no gaps and isn't at 0
-        fix_course_sortorder($category->id);
-
-        // we are going to need to know the range
-        $max = get_record_sql('SELECT MAX(sortorder) AS max, 1
-                FROM ' . $CFG->prefix . 'course WHERE category=' . $category->id);
-        $max = $max->max + 100;
-
-        if (!empty($moveup)) {
-            $movecourse = get_record('course', 'id', $moveup);
-            $swapcourse = get_record('course', 'category',  $category->id,
-                    'sortorder', $movecourse->sortorder - 1);
-        } else {
-            $movecourse = get_record('course', 'id', $movedown);
-            $swapcourse = get_record('course', 'category',  $category->id,
-                    'sortorder', $movecourse->sortorder + 1);
-        }
-
-        if ($swapcourse and $movecourse) {
-            // Renumber everything for robustness
-            begin_sql();
-            if (!(    set_field('course', 'sortorder', $max, 'id', $swapcourse->id)
-                   && set_field('course', 'sortorder', $swapcourse->sortorder, 'id', $movecourse->id)
-                   && set_field('course', 'sortorder', $movecourse->sortorder, 'id', $swapcourse->id)
-                )) {
-                notify('Could not update that course!');
-            }
-            commit_sql();
-        }
-    }
-
 } // End of editing stuff
 
 

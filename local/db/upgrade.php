@@ -33,22 +33,6 @@ function xmldb_local_upgrade($oldversion) {
 
         set_config('theme', 'mitms');
 
-    /// Create table
-        $table = new XMLDBTable('scale_values');
-        $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
-        $table->addFieldInfo('name', XMLDB_TYPE_TEXT, 'medium', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $table->addFieldInfo('idnumber', XMLDB_TYPE_CHAR, '100', null, null, null, null);
-        $table->addFieldInfo('description', XMLDB_TYPE_TEXT, 'big', XMLDB_UNSIGNED, null, null, null);
-        $table->addFieldInfo('scaleid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $table->addFieldInfo('numeric', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null);
-        $table->addFieldInfo('sortorder', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $table->addFieldInfo('timecreated', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $table->addFieldInfo('timemodified', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $table->addFieldInfo('usermodified', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
-        $table->addIndexInfo('sortorder', XMLDB_INDEX_UNIQUE, array('sortorder'));
-        $result = $result && create_table($table);
-
     /// Create table position_framework
         $table = new XMLDBTable('position_framework');
         $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
@@ -178,7 +162,6 @@ function xmldb_local_upgrade($oldversion) {
         $table->addFieldInfo('usermodified', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
         $table->addFieldInfo('visible', XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
         $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
-        $table->addIndexInfo('sortorder', XMLDB_INDEX_UNIQUE, array('sortorder'));
         $result = $result && create_table($table);
 
     /// Create table competency_relations
@@ -390,6 +373,40 @@ function xmldb_local_upgrade($oldversion) {
         $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
         $result = $result && create_table($table);
 
+    /// Create table competency_scale
+        $table = new XMLDBTable('competency_scale');
+        $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null, null);
+        $table->addFieldInfo('name', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null, null, null);
+        $table->addFieldInfo('description', XMLDB_TYPE_TEXT, 'small', null, XMLDB_NOTNULL, null, null, null, null);
+        $table->addFieldInfo('timemodified', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
+        $table->addFieldInfo('usermodified', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
+        $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
+        $result = $result && create_table($table);
+
+    /// Create table competency_scale_assignments
+        $table = new XMLDBTable('competency_scale_assignments');
+        $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null, null);
+        $table->addFieldInfo('scaleid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
+        $table->addFieldInfo('frameworkid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
+        $table->addFieldInfo('timemodified', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
+        $table->addFieldInfo('usermodified', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
+        $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
+        $result = $result && create_table($table);
+
+    /// Create table competency_scale_values
+        $table = new XMLDBTable('competency_scale_values');
+        $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->addFieldInfo('name', XMLDB_TYPE_TEXT, 'medium', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
+        $table->addFieldInfo('idnumber', XMLDB_TYPE_CHAR, '100', null, null, null, null);
+        $table->addFieldInfo('description', XMLDB_TYPE_TEXT, 'big', XMLDB_UNSIGNED, null, null, null);
+        $table->addFieldInfo('scaleid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
+        $table->addFieldInfo('numeric', XMLDB_TYPE_NUMBER, '10, 5', null, null, null, null);
+        $table->addFieldInfo('sortorder', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
+        $table->addFieldInfo('timemodified', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
+        $table->addFieldInfo('usermodified', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
+        $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
+        $result = $result && create_table($table);
+
     /// Bootstrap custom roles and change sort order of both custom and legacy roles
         $roles = array(
             'guest' => array(
@@ -473,7 +490,7 @@ function xmldb_local_upgrade($oldversion) {
         $default_depth = (object) array(
             'fullname'      => 'Competencies',
             'shortname'     => 'Competencies',
-            'depthlevel'    => 0,
+            'depthlevel'    => 1,
             'frameworkid'   => $default_framework->id
         );
         insert_record('competency_depth', $default_depth);
@@ -487,8 +504,8 @@ function xmldb_local_upgrade($oldversion) {
             'frameworkid'         => 1,
             'parentid'            => 0,
             'sortorder'           => 1,
-            'depthid'             => 0,
-            'path'                => 1,
+            'depthid'             => 1,
+            'path'                => '/1',
             'description'         => '',
             'aggregationmethod'   => 1,
             'scaleid'             => 1,

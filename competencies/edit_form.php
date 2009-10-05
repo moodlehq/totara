@@ -14,8 +14,11 @@ class competency_edit_form extends moodleform {
         // as parents
         $competency = $this->_customdata['competency'];
         $competencies = get_records('competency', 'frameworkid', $competency->frameworkid, 'sortorder');
-        $depthid = get_field_select('competency_depth', 'id', "frameworkid=$competency->frameworkid and depthlevel=$competency->depthid");
-        $max_depth = get_field('competency_depth', 'MAX(depthlevel)', 'frameworkid', $competency->frameworkid);
+        $depthlevels = get_records('competency_depth', 'frameworkid', $competency->frameworkid, 'depthlevel');
+
+        // Get max depth level
+        end($depthlevels);
+        $max_depth = current($depthlevels)->id;
 
         $parents = array(
             0   => 'Top',
@@ -37,7 +40,7 @@ class competency_edit_form extends moodleform {
                 }
 
                 // Grab parents and append this title
-                $breadcrumbs = array_slice($breadcrumbs, 0, $parent->depthid);
+                $breadcrumbs = array_slice($breadcrumbs, 0, $depthlevels[$parent->depthid]->depthlevel);
                 $breadcrumbs[] = $parent->fullname;
 
                 // Make display text

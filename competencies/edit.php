@@ -34,7 +34,7 @@ if ($id == 0) {
     $competency->id = 0;
     $competency->frameworkid = $frameworkid;
     $competency->visible = 1;
-    $competency->sortorder = 0;
+    $competency->sortorder = 1;
     $competency->aggregationmethod = $COMP_AGGREGATION['ALL'];
 
 } else {
@@ -84,11 +84,13 @@ if ($competencyform->is_cancelled()) {
         if (!$parent = get_record('competency', 'id', $competencynew->parentid)) {
             error('Parent competency ID was incorrect');
         }
+        $parent_depth = get_field('competency_depth', 'depthlevel', 'id', $parent->depthid);
 
-        $competencynew->depthid = $parent->depthid + 1;
     } else {
-        $competencynew->depthid = 0;
+        $parent_depth = 0;
     }
+
+    $competencynew->depthid = get_field('competency_depth', 'id', 'frameworkid', $competencynew->frameworkid, 'depthlevel', $parent_depth + 1);
 
     // Start db operations
     begin_sql();

@@ -221,7 +221,7 @@ if ($competencies) {
         $cssclass = !$competency->visible ? 'class="dimmed"' : '';
 
         foreach ($depths as $depth) {
-            if ($depth->depthlevel == $competency->depthid) {
+            if ($depth->id == $competency->depthid) {
                 $row[] = "<a $cssclass href=\"{$CFG->wwwroot}/competencies/view.php?id={$competency->id}\">{$competency->fullname}</a>";
             } else {
                 $row[] = '';

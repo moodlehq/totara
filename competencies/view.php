@@ -27,7 +27,7 @@ if (!$framework = get_record('competency_framework', 'id', $competency->framewor
 }
 
 // Load depth
-if (!$depth = get_record('competency_depth', 'frameworkid', $framework->id, 'depthlevel', $competency->depthid)) {
+if (!$depth = get_record('competency_depth', 'id', $competency->depthid)) {
     error('Competency depth could not be found');
 }
 

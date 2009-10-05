@@ -17,89 +17,70 @@
 
 
 require_once '../../config.php';
-require_once $CFG->dirroot.'/grade/lib.php';
-require_once $CFG->libdir.'/gradelib.php';
-
-$courseid = optional_param('id', 0, PARAM_INT);
-$action   = optional_param('action', '', PARAM_ALPHA);
-
 require_once $CFG->libdir.'/adminlib.php';
+
+///
+/// Setup / loading data
+///
+
+$sitecontext = get_context_instance(CONTEXT_SYSTEM);
+
+// Setup page and check permissions
 admin_externalpage_setup('competencyscales');
 
-/// return tracking object
-$gpr = new grade_plugin_return(array('type'=>'edit', 'plugin'=>'scale', 'courseid'=>$courseid));
+// Load all scales
+$scales = get_records('competency_scale', null, null, 'name');
 
-$strscale          = get_string('scale');
-$strscales         = get_string('competencyscales', 'competencies');
-$strname           = get_string('name');
-$strdelete         = get_string('delete');
-$stredit           = get_string('edit');
-$srtcreatenewscale = get_string('scalescustomcreate');
-$strused           = get_string('used');
-$stredit           = get_string('edit');
+// Cache permissions
+$can_edit = has_capability('moodle/local:updatecompetencies', $sitecontext);
+$can_delete = has_capability('moodle/local:deletecompetencies', $sitecontext);
 
-switch ($action) {
-    case 'delete':
-        if (!confirm_sesskey()) {
-            break;
+$stredit = get_string('edit');
+$strdelete = get_string('delete');
+
+///
+/// Build page
+///
+
+if ($scales) {
+    $table = new stdClass();
+    $table->head  = array(get_string('scale'), get_string('used'), $strdelete);
+    $table->size = array('70%', '20%', '10%');
+    $table->align = array('left', 'center', 'center');
+    $table->width = '90%';
+
+    $table->data = array();
+    foreach($scales as $scale) {
+        $line = array();
+        $line[] = "<a href=\"$CFG->wwwroot/competencies/scale/view.php?id={$scale->id}\">".format_string($scale->name)."</a>";
+        $line[] = get_string('no');
+
+        $buttons = array();
+        if ($can_edit) {
+            $buttons[] = "<a title=\"$stredit\" href=\"edit.php?id=$scale->id\"><img".
+                " src=\"$CFG->pixpath/t/edit.gif\" class=\"iconsmall\" alt=\"$stredit\" /></a> ";
         }
-        $scaleid = required_param('scaleid', PARAM_INT);
-        if (!$scale = grade_scale::fetch(array('id'=>$scaleid))) {
-            break;
-        }
 
-        if (empty($scale->courseid)) {
-            require_capability('moodle/course:managescales', get_context_instance(CONTEXT_SYSTEM));
-        } else if ($scale->courseid != $courseid) {
-            error('Incorrect courseid!');
+        if ($can_delete) {
+            $buttons[] = "<a title=\"$strdelete\" href=\"delete.php?id=$scale->id\"><img".
+                        " src=\"$CFG->pixpath/t/delete.gif\" class=\"iconsmall\" alt=\"$strdelete\" /></a> ";
         }
+        $line[] = implode($buttons, ' ');
 
-        if (!$scale->can_delete()) {
-            break;
-        }
-
-        $scale->delete();
-        break;
+        $table->data[] = $line;
+    }
 }
 
 admin_externalpage_print_header();
 
-$table2 = null;
+print_heading(get_string('competencyscales', 'competencies'));
 
-if ($scales = grade_scale::fetch_all_global()) {
-
-    $data = array();
-    foreach($scales as $scale) {
-        $line = array();
-        $line[] = format_string($scale->name).'<div class="scale_options">'.str_replace(",",", ",$scale->scale).'</div>';
-
-        $used = $scale->is_used();
-        $line[] = $used ? get_string('yes') : get_string('no');
-
-        $buttons = "";
-        if (has_capability('moodle/course:managescales', get_context_instance(CONTEXT_SYSTEM))) {
-            $buttons .= "<a title=\"$stredit\" href=\"edit.php?courseid=$courseid&amp;id=$scale->id\"><img".
-                        " src=\"$CFG->pixpath/t/edit.gif\" class=\"iconsmall\" alt=\"$stredit\" /></a> ";
-        }
-        if (!$used and has_capability('moodle/course:managescales', get_context_instance(CONTEXT_SYSTEM))) {
-            $buttons .= "<a title=\"$strdelete\" href=\"index.php?id=$courseid&amp;scaleid=$scale->id&amp;action=delete&amp;sesskey=$USER->sesskey\"><img".
-                        " src=\"$CFG->pixpath/t/delete.gif\" class=\"iconsmall\" alt=\"$strdelete\" /></a> ";
-        }
-        $line[] = $buttons;
-        $data[] = $line;
-    }
-    $table2->head  = array($strscale, $strused, $stredit);
-    $table2->size  = array('70%', '20%', '10%');
-    $table2->align = array('left', 'center', 'center');
-    $table2->width = '90%';
-    $table2->data  = $data;
+if ($scales) {
+    print_table($table);
 }
 
-
-print_heading($strscales, '', 3, 'main');
-print_table($table2);
 echo '<div class="buttons">';
-print_single_button('edit.php', null, $srtcreatenewscale);
+print_single_button('edit.php', null, get_string('scalescustomcreate'));
 echo '</div>';
 
 admin_externalpage_print_footer();
