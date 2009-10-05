@@ -194,7 +194,7 @@ foreach ($depths as $depth) {
     if ($editingon && $can_edit_depth) {
         $header .= "<a href=\"{$CFG->wwwroot}/competencies/depthlevel.php?id={$depth->id}\" title=\"$str_edit\">".
             "<img src=\"{$CFG->pixpath}/t/edit.gif\" class=\"iconsmall\" alt=\"$str_edit\" /></a> ".
-            "<a href=\"{$CFG->wwwroot}/competencies/depth/customfields/index.php?depth={$depth->id}\" title=\"$str_customfields\">".
+            "<a href=\"{$CFG->wwwroot}/competencies/depth/customfields/index.php?depthid={$depth->id}\" title=\"$str_customfields\">".
             "<img src=\"{$CFG->pixpath}/t/customfields.gif\" class=\"iconsmall\" alt=\"$str_customfields\" /></a></a>";
     }
 

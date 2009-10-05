@@ -6,9 +6,9 @@ class customfield_define_base {
      * Prints out the form snippet for creating or editing a custom field
      * @param   object   instance of the moodleform class
      */
-    function define_form(&$form, $depth=0, $tableprefix) {
+    function define_form(&$form, $depthid=0, $tableprefix) {
         $form->addElement('header', '_commonsettings', get_string('commonsettings', 'customfields'));
-        $this->define_form_common($form, $depth, $tableprefix);
+        $this->define_form_common($form, $depthid, $tableprefix);
 
         $form->addElement('header', '_specificsettings', get_string('specificsettings', 'customfields'));
         $this->define_form_specific($form);
@@ -19,7 +19,7 @@ class customfield_define_base {
      * editing a custom field common to all data types
      * @param   object   instance of the moodleform class
      */
-    function define_form_common(&$form, $depth=0, $tableprefix) {
+    function define_form_common(&$form, $depthid=0, $tableprefix) {
 
         $strrequired = get_string('required');
 
@@ -42,7 +42,7 @@ class customfield_define_base {
         
         $form->addElement('selectyesno', 'hidden', get_string('visible', 'customfields'));
 
-        $choices = customfield_list_categories($depth, $tableprefix);
+        $choices = customfield_list_categories($depthid, $tableprefix);
         $form->addElement('select', 'categoryid', get_string('category', 'customfields'), $choices);
     }
 

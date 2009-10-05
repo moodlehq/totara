@@ -37,10 +37,10 @@
  * Create a string containing the editing icons for custom fields
  * @param   object   the field object
  * @param   object   the fieldcount object
- * @param   object   the depth of the object if used
+ * @param   object   the depthid of the object if used
  * @return  string   the icon string
  */
-function customfield_edit_icons($field, $fieldcount, $depth=0) {
+function customfield_edit_icons($field, $fieldcount, $depthid=0) {
     global $CFG;
 
     if (empty($str)) {
@@ -51,22 +51,22 @@ function customfield_edit_icons($field, $fieldcount, $depth=0) {
     }
 
     /// Edit
-    $editstr = '<a title="'.$stredit.'" href="index.php?id='.$field->id.'&amp;depth='.$depth.'&amp;action=editfield"><img src="'.$CFG->pixpath.'/t/edit.gif" alt="'.$stredit.'" class="iconsmall" /></a> ';
+    $editstr = '<a title="'.$stredit.'" href="index.php?id='.$field->id.'&amp;depthid='.$depthid.'&amp;action=editfield"><img src="'.$CFG->pixpath.'/t/edit.gif" alt="'.$stredit.'" class="iconsmall" /></a> ';
 
     /// Delete
-    $editstr .= '<a title="'.$strdelete.'" href="index.php?id='.$field->id.'&amp;depth='.$depth.'&amp;action=deletefield';
+    $editstr .= '<a title="'.$strdelete.'" href="index.php?id='.$field->id.'&amp;depthid='.$depthid.'&amp;action=deletefield';
     $editstr .= '"><img src="'.$CFG->pixpath.'/t/delete.gif" alt="'.$strdelete.'" class="iconsmall" /></a> ';
 
     /// Move up
     if ($field->sortorder > 1) {
-        $editstr .= '<a title="'.$strmoveup.'" href="index.php?id='.$field->id.'&amp;depth='.$depth.'&amp;action=movefield&amp;dir=up&amp;sesskey='.sesskey().'"><img src="'.$CFG->pixpath.'/t/up.gif" alt="'.$strmoveup.'" class="iconsmall" /></a> ';
+        $editstr .= '<a title="'.$strmoveup.'" href="index.php?id='.$field->id.'&amp;depthid='.$depthid.'&amp;action=movefield&amp;dir=up&amp;sesskey='.sesskey().'"><img src="'.$CFG->pixpath.'/t/up.gif" alt="'.$strmoveup.'" class="iconsmall" /></a> ';
      } else {
         $editstr .= '<img src="'.$CFG->pixpath.'/spacer.gif" alt="" class="iconsmall" /> ';
     }
 
     /// Move down
     if ($field->sortorder < $fieldcount) {
-        $editstr .= '<a title="'.$strmovedown.'" href="index.php?id='.$field->id.'&amp;depth='.$depth.'&amp;action=movefield&amp;dir=down&amp;sesskey='.sesskey().'"><img src="'.$CFG->pixpath.'/t/down.gif" alt="'.$strmovedown.'" class="iconsmall" /></a> ';
+        $editstr .= '<a title="'.$strmovedown.'" href="index.php?id='.$field->id.'&amp;depthid='.$depthid.'&amp;action=movefield&amp;dir=down&amp;sesskey='.sesskey().'"><img src="'.$CFG->pixpath.'/t/down.gif" alt="'.$strmovedown.'" class="iconsmall" /></a> ';
     } else {
         $editstr .= '<img src="'.$CFG->pixpath.'/spacer.gif" alt="" class="iconsmall" /> ';
     }
@@ -79,10 +79,10 @@ function customfield_edit_icons($field, $fieldcount, $depth=0) {
  * @param   object   the category object
  * @param   int      the number of categories
  * @param   int      the number of fields in the category
- * @param   object   the depth of the object if used
+ * @param   object   the depthid of the object if used
  * @return  string   the icon string
  */
-function customfield_category_icons($category, $categorycount, $fieldcount, $depth=0) {
+function customfield_category_icons($category, $categorycount, $fieldcount, $depthid=0) {
     global $CFG;
 
     $strdelete   = get_string('delete');
@@ -91,12 +91,12 @@ function customfield_category_icons($category, $categorycount, $fieldcount, $dep
     $stredit     = get_string('edit');
 
     /// Edit
-    $editstr = '<a title="'.$stredit.'" href="index.php?id='.$category->id.'&amp;depth='.$depth.'&amp;action=editcategory"><img src="'.$CFG->pixpath.'/t/edit.gif" alt="'.$stredit.'" class="iconsmall" /></a> ';
+    $editstr = '<a title="'.$stredit.'" href="index.php?id='.$category->id.'&amp;depthid='.$depthid.'&amp;action=editcategory"><img src="'.$CFG->pixpath.'/t/edit.gif" alt="'.$stredit.'" class="iconsmall" /></a> ';
 
     /// Delete
     /// Can only delete the last category if there are no fields in it
     if ( ($categorycount > 1) or ($fieldcount == 0) ) {
-        $editstr .= '<a title="'.$strdelete.'" href="index.php?id='.$category->id.'&amp;depth='.$depth.'&amp;action=deletecategory';
+        $editstr .= '<a title="'.$strdelete.'" href="index.php?id='.$category->id.'&amp;depthid='.$depthid.'&amp;action=deletecategory';
         $editstr .= '"><img src="'.$CFG->pixpath.'/t/delete.gif" alt="'.$strdelete.'" class="iconsmall" /></a> ';
     } else {
         $editstr .= '<img src="'.$CFG->pixpath.'/spacer.gif" alt="" class="iconsmall" /> ';
@@ -104,14 +104,14 @@ function customfield_category_icons($category, $categorycount, $fieldcount, $dep
 
     /// Move up
     if ($category->sortorder > 1) {
-        $editstr .= '<a title="'.$strmoveup.'" href="index.php?id='.$category->id.'&amp;depth='.$depth.'&amp;action=movecategory&amp;dir=up&amp;sesskey='.sesskey().'"><img src="'.$CFG->pixpath.'/t/up.gif" alt="'.$strmoveup.'" class="iconsmall" /></a> ';
+        $editstr .= '<a title="'.$strmoveup.'" href="index.php?id='.$category->id.'&amp;depthid='.$depthid.'&amp;action=movecategory&amp;dir=up&amp;sesskey='.sesskey().'"><img src="'.$CFG->pixpath.'/t/up.gif" alt="'.$strmoveup.'" class="iconsmall" /></a> ';
     } else {
         $editstr .= '<img src="'.$CFG->pixpath.'/spacer.gif" alt="" class="iconsmall" /> ';
     }
 
     /// Move down
     if ($category->sortorder < $categorycount) {
-        $editstr .= '<a title="'.$strmovedown.'" href="index.php?id='.$category->id.'&amp;depth='.$depth.'&amp;action=movecategory&amp;dir=down&amp;sesskey='.sesskey().'"><img src="'.$CFG->pixpath.'/t/down.gif" alt="'.$strmovedown.'" class="iconsmall" /></a> ';
+        $editstr .= '<a title="'.$strmovedown.'" href="index.php?id='.$category->id.'&amp;depthid='.$depthid.'&amp;action=movecategory&amp;dir=down&amp;sesskey='.sesskey().'"><img src="'.$CFG->pixpath.'/t/down.gif" alt="'.$strmovedown.'" class="iconsmall" /></a> ';
     } else {
         $editstr .= '<img src="'.$CFG->pixpath.'/spacer.gif" alt="" class="iconsmall" /> ';
     }
@@ -122,10 +122,11 @@ function customfield_category_icons($category, $categorycount, $fieldcount, $dep
 /**
  * Delete a custom field category
  * @param   integer   id of the category to be deleted
+ * @param   integer   depthid of the category to be deleted
  * @param   string    table prefix for the feature the category belongs to
  * @return  boolean   success of operation
  */
-function customfield_delete_category($id, $depth=0, $tableprefix) {
+function customfield_delete_category($id, $depthid=0, $tableprefix) {
     /// Retrieve the category
     if (!$category = get_record($tableprefix.'_info_category', 'id', $id)) {
         error('Incorrect category id');
@@ -169,7 +170,7 @@ function customfield_delete_category($id, $depth=0, $tableprefix) {
     if (!delete_records($tableprefix.'_info_category', 'id', $category->id)) {
         error('Error while deliting category');
     }   
-    customfield_reorder_categories($depth, $tableprefix);
+    customfield_reorder_categories($depthid, $tableprefix);
     return true;
 }
 
@@ -231,14 +232,18 @@ function customfield_move_field($id, $move, $tableprefix) {
  * @param   string    direction of move
  * @return  boolean   success of operation
  */
-function customfield_move_category($id, $move, $tableprefix) {
+function customfield_move_category($id, $move, $depthid=0, $tableprefix) {
     /// Get the category object
     if (!($category = get_record($tableprefix.'_info_category', 'id', $id, '', '', '', '', 'id, sortorder'))) {
         return false;
     }
 
     /// Count the number of categories
-    $categorycount = count_records($tableprefix.'_info_category');
+    if ($depthid) {
+        $categorycount = count_records($tableprefix.'_info_category', 'depthid', $depthid);
+    } else {
+        $categorycount = count_records($tableprefix.'_info_category');
+    }
 
     /// Calculate the new sortorder
     if ( ($move == 'up') and ($category->sortorder > 1)) {
@@ -250,15 +255,32 @@ function customfield_move_category($id, $move, $tableprefix) {
     }
 
     /// Retrieve the category object that is currently residing in the new position
-    if ($swapcategory = get_record($tableprefix.'_info_category', 'sortorder', $neworder, '', '', '', '', 'id, sortorder')) {
+    if ($depthid) {
 
-        /// Swap the sortorders
-        $swapcategory->sortorder = $category->sortorder;
-        $category->sortorder     = $neworder;
+        if ($swapcategory = get_record($tableprefix.'_info_category', 'sortorder', $neworder, 'depthid', $depthid, '', '', 'id, sortorder')) {
 
-        /// Update the category records
-        if (update_record($tableprefix.'_info_category', $category) and update_record($tableprefix.'_info_category', $swapcategory)) {
-            return true;
+            /// Swap the sortorders
+            $swapcategory->sortorder = $category->sortorder;
+            $category->sortorder     = $neworder;
+
+            /// Update the category records
+            if (update_record($tableprefix.'_info_category', $category) and update_record($tableprefix.'_info_category', $swapcategory)) {
+                return true;
+            }
+        }
+
+    } else {
+
+        if ($swapcategory = get_record($tableprefix.'_info_category', 'sortorder', $neworder, '', '', '', '', 'id, sortorder')) {
+
+            /// Swap the sortorders
+            $swapcategory->sortorder = $category->sortorder;
+            $category->sortorder     = $neworder;
+
+            /// Update the category records
+            if (update_record($tableprefix.'_info_category', $category) and update_record($tableprefix.'_info_category', $swapcategory)) {
+                return true;
+            }
         }
     }
 
@@ -291,10 +313,10 @@ function customfield_list_datatypes() {
  * Retrieve a list of categories and ids suitable for use in a form
  * @return   array
  */
-function customfield_list_categories($depth=0, $tableprefix) {
+function customfield_list_categories($depthid=0, $tableprefix) {
     $depthstr = '';
-    if ($depth) {
-        $depthstr = "depthid = '$depth'";
+    if ($depthid) {
+        $depthstr = "depthid = '$depthid'";
     }
     if (!$categories = get_records_select_menu($tableprefix.'_info_category', $depthstr, 'sortorder ASC', 'id, name')) {
         $categories = array();
@@ -302,12 +324,12 @@ function customfield_list_categories($depth=0, $tableprefix) {
     return $categories;
 }
 
-function customfield_edit_category($id, $depth=0, $redirect, $tableprefix) {
+function customfield_edit_category($id, $depthid=0, $redirect, $tableprefix) {
     global $CFG;
 
     require_once('customfield/index_category_form.php');
 
-    $datatosend = array('depth' => $depth);
+    $datatosend = array('depthid' => $depthid);
     $categoryform = new category_form(null, $datatosend);
 
     if ($category = get_record($tableprefix.'_info_category', 'id', $id)) {
@@ -325,7 +347,7 @@ function customfield_edit_category($id, $depth=0, $redirect, $tableprefix) {
 
                 $depthstr = '';
                 if ($data->depthid) {
-                    $depth = $data->depthid;
+                    $depthid = $data->depthid;
                     $depthstr = "depthid='$data->depthid'";
                 }
 
@@ -341,10 +363,10 @@ function customfield_edit_category($id, $depth=0, $redirect, $tableprefix) {
                     error('There was a problem updating the record in the database');
                 }
             }
-            customfield_reorder_categories($depth, $tableprefix);
+            customfield_reorder_categories($depthid, $tableprefix);
 
             if ($data->depthid) {
-                $redirect .= '?depth='.$data->depthid;
+                $redirect .= '?depthid='.$data->depthid;
             }
 
             redirect($redirect);
@@ -367,7 +389,7 @@ function customfield_edit_category($id, $depth=0, $redirect, $tableprefix) {
 
 }
 
-function customfield_edit_field($id, $datatype, $depth=0, $redirect, $tableprefix) {
+function customfield_edit_field($id, $datatype, $depthid=0, $redirect, $tableprefix) {
     global $CFG;
 
     if (!$field = get_record($tableprefix.'_info_field', 'id', $id)) {
@@ -376,7 +398,7 @@ function customfield_edit_field($id, $datatype, $depth=0, $redirect, $tableprefi
     }
 
     require_once('customfield/index_field_form.php');
-    $datatosend = array('datatype' => $field->datatype, 'depth' => $depth, 'tableprefix' => $tableprefix);
+    $datatosend = array('datatype' => $field->datatype, 'depthid' => $depthid, 'tableprefix' => $tableprefix);
     $fieldform = new field_form(null, $datatosend);
     $fieldform->set_data($field);
 
@@ -390,9 +412,9 @@ function customfield_edit_field($id, $datatype, $depth=0, $redirect, $tableprefi
             $formfield = new $newfield();
             $formfield->define_save($data, $tableprefix);
             customfield_reorder_fields($tableprefix);
-            customfield_reorder_categories($depth, $tableprefix);
+            customfield_reorder_categories($depthid, $tableprefix);
             if ($data->depthid) {
-                $redirect .= '?depth='.$data->depthid;
+                $redirect .= '?depthid='.$data->depthid;
             }
             redirect($redirect);
         }
@@ -418,12 +440,11 @@ function customfield_edit_field($id, $datatype, $depth=0, $redirect, $tableprefi
  * Reorder the custom field categories starting at the category
  * at the given startorder
  */
-function customfield_reorder_categories($depth=0, $tableprefix) {
+function customfield_reorder_categories($depthid=0, $tableprefix) {
     $i = 1;
-
     $depthstr = '';
-    if ($depth) {
-        $depthstr = 'depthid = '.$depth;
+    if ($depthid) {
+        $depthstr = 'depthid = '.$depthid;
     }
 
     if ($categories = get_records_select($tableprefix.'_info_category', $depthstr, 'sortorder ASC')) {

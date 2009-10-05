@@ -16,7 +16,7 @@ class category_form extends moodleform {
         /// Add some extra hidden fields
         $mform->addElement('hidden', 'id');
         $mform->addElement('hidden', 'action', 'editcategory');
-        $mform->addElement('hidden', 'depthid', $datasent['depth']);
+        $mform->addElement('hidden', 'depthid', $datasent['depthid']);
 
         $mform->addElement('text', 'name', get_string('categorynamemustbeunique', 'customfields'), 'maxlength="255" size="30"');
         $mform->setType('name', PARAM_MULTILANG);
