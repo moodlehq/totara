@@ -18,21 +18,6 @@ $show = optional_param('show', 0, PARAM_INT);
 $moveup = optional_param('moveup', 0, PARAM_INT);
 $movedown = optional_param('movedown', 0, PARAM_INT);
 
-// Handle editing toggling
-if (update_competency_button()) {
-    if ($competencyedit !== -1) {
-        $USER->competencyediting = $competencyedit;
-    }
-    $editingon = !empty($USER->competencyediting);
-    $navbaritem = update_competency_button(); // Must call this again after updating the state.
-} else {
-    $navbaritem = '';
-    $editingon = false;
-}
-
-// Setup page and check permissions
-admin_externalpage_setup('competencymanage', $navbaritem);
-
 // Load framework
 // If no framework id supplied, use default
 if ($frameworkid == 0) {
@@ -46,6 +31,22 @@ if ($frameworkid == 0) {
         error('Competency framework does not exist');
     }
 }
+
+// Handle editing toggling
+$options = array('frameworkid' => $frameworkid);
+if (update_competency_button()) {
+    if ($competencyedit !== -1) {
+        $USER->competencyediting = $competencyedit;
+    }
+    $editingon = !empty($USER->competencyediting);
+    $navbaritem = update_competency_button($options); // Must call this again after updating the state.
+} else {
+    $navbaritem = '';
+    $editingon = false;
+}
+
+// Setup page and check permissions
+admin_externalpage_setup('competencymanage', $navbaritem);
 
 
 // Cache user capabilities

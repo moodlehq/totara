@@ -20,10 +20,11 @@ $COMP_AGGREGATION = array(
 /**
  * Prints the turn editing on/off button on competencies/index.php
  *
+ * @param array $options Optional array of extra params to pass when button clicked
  * @return string HTML of the editing button, or empty string, if this user is not allowed
  *      to see it.
  */
-function update_competency_button() {
+function update_competency_button($options = array()) {
     global $CFG, $USER;
 
     // Check permissions.
@@ -49,7 +50,7 @@ function update_competency_button() {
     }
 
     // Generate the button HTML.
-    $options = array('competencyedit' => $edit);
+    $options['competencyedit'] = $edit;
     return print_single_button("{$CFG->wwwroot}/competencies/index.php", $options,
             $label, 'get', '', true);
 }
