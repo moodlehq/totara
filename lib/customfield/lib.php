@@ -131,8 +131,10 @@ class customfield_base {
      * @param   object   instance of the moodleform class
      */
     function edit_field_set_default(&$mform) {
-        if (!empty($default)) {
-            $mform->setDefault($this->inputname, $this->field->defaultdata);
+        if (!empty($this->data)) {
+            $mform->setDefault($this->inputname, $this->data);
+        } else {
+            $mform->setDefault($this->inputname, $this->defaultdata);
         }
     }
 
