@@ -40,7 +40,7 @@ class competency_edit_form extends moodleform {
                 }
 
                 // Grab parents and append this title
-                $breadcrumbs = array_slice($breadcrumbs, 0, $depthlevels[$parent->depthid]->depthlevel);
+                $breadcrumbs = array_slice($breadcrumbs, 0, ($depthlevels[$parent->depthid]->depthlevel - 1));
                 $breadcrumbs[] = $parent->fullname;
 
                 // Make display text
