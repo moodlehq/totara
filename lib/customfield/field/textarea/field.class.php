@@ -7,7 +7,7 @@ class customfield_textarea extends customfield_base {
         $rows = $this->field->param2;
 
         /// Create the form field
-        $mform->addElement('htmleditor', $this->inputname, format_string($this->field->name), array('cols'=>$cols, 'rows'=>$rows));
+        $mform->addElement('htmleditor', $this->inputname, format_string($this->field->fullname), array('cols'=>$cols, 'rows'=>$rows));
         $mform->setType($this->inputname, PARAM_CLEAN);
     }
 
