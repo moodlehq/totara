@@ -424,6 +424,11 @@
         array(
             'competencyid' => '1',
             'fieldid'      => '3',
+            'data'         => 'For new team leaders or those who are being developed for team leader or first line management roles.',
+        ),
+        array(
+            'competencyid' => '1',
+            'fieldid'      => '4',
             'data'         => 'This qualification is the first of two qualifications for people who are, or are training to be first line managers (team leaders, supervisors, or charge hands).  People in these roles are likely to be responsible for managing people, resources, or workplace operations, and may have had little, or no formal training.<br/><br/>
 
 The compulsory section specifies the essential oral communication skills required of first line managers, while the elective sections allow people to select from a diverse range of outcomes to allow the qualification to be focused on the specific needs of the individual, business, or workplace.<br/><br/>
