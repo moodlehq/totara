@@ -103,7 +103,7 @@ class competency_edit_form extends moodleform {
 
         /// Next show the custom fields if we're editing an existing competency (otherwise we don't know the depthid)
         if ($competency->id) {
-            customfield_definition($mform, $competency->id, 'competency', $depthid, 'competency_depth');
+            customfield_definition($mform, $competency->id, 'competency', $competency->depthid, 'competency_depth');
         }
 
         $this->add_action_buttons();
