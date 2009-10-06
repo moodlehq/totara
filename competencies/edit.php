@@ -64,11 +64,7 @@ $competencyform->set_data($competency);
 // cancelled
 if ($competencyform->is_cancelled()) {
 
-    if ($id == 0) {
-        redirect("$CFG->wwwroot/competencies/index.php");
-    } else {
-        redirect("$CFG->wwwroot/competencies/view.php?id=$id");
-    }
+    redirect("$CFG->wwwroot/competencies/index.php?frameworkid=$competency->frameworkid");
 
 // Update data
 } else if ($competencynew = $competencyform->get_data()) {
