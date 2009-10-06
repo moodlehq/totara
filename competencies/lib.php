@@ -51,7 +51,7 @@ function update_competency_button($options = array()) {
 
     // Generate the button HTML.
     $options['competencyedit'] = $edit;
-    return print_single_button("{$CFG->wwwroot}/{$_SERVER['PHP_SELF']}", $options,
+    return print_single_button($_SERVER['PHP_SELF'], $options,
             $label, 'get', '', true);
 }
 
