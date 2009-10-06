@@ -93,18 +93,6 @@ if ($cfdata = get_records_sql($sql)) {
 // Navigation / editing buttons
 echo '<div class="buttons">';
 
-// Print button for creating new competency
-/*if ($can_add_comp) {
-    $options = array('frameworkid' => $framework->id);
-    print_single_button($CFG->wwwroot.'/competencies/edit.php', $options, get_string('addnewcompetency', 'competencies'), 'get');
-}
-
-// Print button to add a depth level
-if ($can_add_depth) {
-    $options = array('frameworkid' => $framework->id);
-    print_single_button($CFG->wwwroot.'/competencies/depthlevel.php', $options, get_string('adddepthlevel', 'competencies'), 'get');
-}*/
-
 $options = array('frameworkid' => $framework->id);
 print_single_button($CFG->wwwroot.'/competencies/index.php', $options, get_string('returntocompetencies', 'competencies'), 'get');
 

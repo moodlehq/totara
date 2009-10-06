@@ -1,8 +1,8 @@
 <?php
 
-require_once('../config.php');
+require_once('../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
-require_once($CFG->dirroot.'/competencies/depthlevel_form.php');
+require_once($CFG->dirroot.'/competencies/depth/edit_form.php');
 
 // depth level id; 0 if creating a new depth level
 $id = optional_param('id', 0, PARAM_INT);
@@ -83,9 +83,9 @@ if ($depthform->is_cancelled()){
     $depthnew = get_record('competency_depth', 'id', $depthnew->id);
 
     // Log
-    add_to_log(SITEID, 'competencies', 'update depth level', "depthlevel.php?id=$depthnew->id", '');
+    add_to_log(SITEID, 'competencies', 'update depth level', "depth/edit.php?id=$depthnew->id", '');
 
-    redirect("$CFG->wwwroot/competencies/index.php?id=$depthnew->frameworkid");
+    redirect("$CFG->wwwroot/competencies/index.php?frameworkid=$depthnew->frameworkid");
     //never reached
 }
 
