@@ -35,8 +35,13 @@ if ($id == 0) {
     }
 
     // Load scale assignments
-#    $scales = get_records('competency_scale_assignments', 'frameworkid', $framework->id);
+    $scales = get_records('competency_scale_assignments', 'frameworkid', $framework->id);
     $framework->scale = array();
+    if ($scales) {
+        foreach ($scales as $scale) {
+            $framework->scale[] = $scale->scaleid;
+        }
+    }
 }
 
 // create form
@@ -51,25 +56,17 @@ if ($competencyform->is_cancelled()) {
 // Update data
 } else if ($frameworknew = $competencyform->get_data()) {
 
-    $frameworknew->timemodified = time();
-    $frameworknew->usermodified = $USER->id;
+    $time = time();
 
-    // Handle scale assignments
-/*    foreach ($frameworknew->scale as $key) {
-        // Check if scale assignment is new
-        if (!in_array($key, $framework->scale)) {
-            if (!insert_record('competency_scale_assignments', $assignment)) {
-                error();
-            }
-        }
-}*/
+    $frameworknew->timemodified = $time;
+    $frameworknew->usermodified = $USER->id;
 
     // Save
     // New framework
     if ($frameworknew->id == 0) {
         unset($frameworknew->id);
 
-        $frameworknew->timecreated = time();
+        $frameworknew->timecreated = $time;
 
         if (!$frameworknew->id = insert_record('competency_framework', $frameworknew)) {
             error('Error creating competency framework record');
@@ -81,6 +78,29 @@ if ($competencyform->is_cancelled()) {
             error('Error updating competency framework record');
         }
     }
+
+    // Handle scale assignments
+    // Get new assignments
+    $scales_new = array_diff($frameworknew->scale, $framework->scale);
+    foreach ($scales_new as $key) {
+        $assignment = new object();
+        $assignment->scaleid = $key;
+        $assignment->frameworkid = $frameworknew->id;
+        $assignment->timemodified = $time;
+        $assignment->usermodified = $USER->id;
+        if (!insert_record('competency_scale_assignments', $assignment)) {
+            error('Could not add scale assignment');
+        }
+    }
+
+    // Get removed assignments
+    $scales_removed = array_diff($framework->scale, $frameworknew->scale);
+    foreach ($scales_removed as $key) {
+        if (!delete_records('competency_scale_assignments', 'scaleid', $key, 'frameworkid', $frameworknew->id)) {
+            error('Could not delete scale assignment');
+        }
+    }
+
 
     // Reload from db
     $frameworknew = get_record('competency_framework', 'id', $frameworknew->id);
