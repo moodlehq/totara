@@ -87,7 +87,7 @@ if (!$depths) {
         echo '<div class="buttons">';
 
         $options = array('frameworkid' => $framework->id);
-        print_single_button($CFG->wwwroot.'/competencies/depthlevel.php', $options, get_string('adddepthlevel', 'competencies'), 'get');
+        print_single_button($CFG->wwwroot.'/competencies/depth/edit.php', $options, get_string('adddepthlevel', 'competencies'), 'get');
 
         echo '</div>';
     }
@@ -192,7 +192,7 @@ foreach ($depths as $depth) {
     $header = $depth->fullname;
 
     if ($editingon && $can_edit_depth) {
-        $header .= "<a href=\"{$CFG->wwwroot}/competencies/depthlevel.php?id={$depth->id}\" title=\"$str_edit\">".
+        $header .= "<a href=\"{$CFG->wwwroot}/competencies/depth/edit.php?id={$depth->id}\" title=\"$str_edit\">".
             "<img src=\"{$CFG->pixpath}/t/edit.gif\" class=\"iconsmall\" alt=\"$str_edit\" /></a> ".
             "<a href=\"{$CFG->wwwroot}/competencies/depth/customfields/index.php?depthid={$depth->id}\" title=\"$str_customfields\">".
             "<img src=\"{$CFG->pixpath}/t/customfields.gif\" class=\"iconsmall\" alt=\"$str_customfields\" /></a></a>";
@@ -309,7 +309,7 @@ if ($can_add_comp || $can_add_depth) {
     // Print button to add a depth level
     if ($can_add_depth) {
         $options = array('frameworkid' => $framework->id);
-        print_single_button($CFG->wwwroot.'/competencies/depthlevel.php', $options, get_string('adddepthlevel', 'competencies'), 'get');
+        print_single_button($CFG->wwwroot.'/competencies/depth/edit.php', $options, get_string('adddepthlevel', 'competencies'), 'get');
     }
 
 
