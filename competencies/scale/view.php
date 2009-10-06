@@ -95,7 +95,7 @@ $values = get_records('competency_scale_values', 'scaleid', $scale->id, 'sortord
 admin_externalpage_print_header();
 
 // Display info about scale
-print_heading($scale->name);
+print_heading(get_string('competencyscalename', 'competencies', $scale->name));
 
 if (strlen(trim($scale->description))) {
 

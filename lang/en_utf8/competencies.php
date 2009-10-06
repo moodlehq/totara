@@ -19,6 +19,7 @@ $string['competencycustomfields'] = 'Custom fields';
 $string['competencyframeworkmanage'] = 'Manage frameworks';
 $string['competencymanage'] = 'Manage competencies';
 $string['competencyscale'] = 'Competency scale';
+$string['competencyscalename'] = 'Competency scale: $a';
 $string['competencyscales'] = 'Competency scales';
 $string['competencyupload'] = 'Upload competencies';
 $string['competencydepthcustomfields'] = 'Competency depth custom fields';
