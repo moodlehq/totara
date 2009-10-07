@@ -214,7 +214,7 @@
             'fullname'    => 'Unit Standards',
             'shortname'   => 'Unit Standards',
             'description' => '',
-            'depthlevel'  => '1',
+            'depthlevel'  => '2',
             'frameworkid' => '1',
     );
     insert_record('competency_depth', $defaultcd1);
