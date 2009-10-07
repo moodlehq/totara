@@ -267,7 +267,7 @@ if ($competencies) {
                 $row .= "<a $cssclass href=\"{$CFG->wwwroot}/competencies/view.php?id={$competency->id}\">{$name}</a>";
 
                 if ($buttons) {
-                    $row .= implode($buttons, ' ');
+                    $row .= " ".implode($buttons, ' ');
                 }
 
                 $row .= '</td>';
@@ -279,7 +279,9 @@ if ($competencies) {
         }
 
         // Evidence items
-        $row .= '<td align="center">0</td>';
+        $row .= '<td align="center">';
+        $row .= '0';
+        $row .= '</td>';
 
         echo '<tr>'.$row.'</tr>';
     }

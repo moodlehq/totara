@@ -2,6 +2,7 @@
 
 require_once('../config.php');
 require_once($CFG->libdir.'/adminlib.php');
+require_once($CFG->dirroot.'/competencies/lib.php');
 
 
 ///
@@ -10,9 +11,23 @@ require_once($CFG->libdir.'/adminlib.php');
 
 // competency id
 $id = required_param('id', PARAM_INT);
+$competencyedit = optional_param('competencyedit', -1, PARAM_BOOL);
+
+// Handle editing toggling
+$options = array('id' => $id);
+if (update_competency_button()) {
+    if ($competencyedit !== -1) {
+        $USER->competencyediting = $competencyedit;
+    }
+    $editingon = !empty($USER->competencyediting);
+    $navbaritem = update_competency_button($options); // Must call this again after updating the state.
+} else {
+    $navbaritem = '';
+    $editingon = false;
+}
 
 // Make this page appear under the manage competencies admin item
-admin_externalpage_setup('competencymanage', '', array(), '', $CFG->wwwroot.'/competencies/edit.php');
+admin_externalpage_setup('competencymanage', $navbaritem);
 
 $sitecontext = get_context_instance(CONTEXT_SYSTEM);
 require_capability('moodle/local:viewcompetencies', $sitecontext);
@@ -42,7 +57,16 @@ $can_edit_comp = has_capability('moodle/local:updatecompetencies', $sitecontext)
 /// Display page header
 admin_externalpage_print_header();
 
-print_heading("{$depth->fullname} - {$competency->fullname}");
+$heading = "{$depth->fullname} - {$competency->fullname}";
+
+// If editing on, add edit icon
+if ($editingon) {
+    $str_edit = get_string('edit');
+    $heading .= " <a href=\"{$CFG->wwwroot}/competencies/edit.php?id={$competency->id}\" title=\"$str_edit\">".
+            "<img src=\"{$CFG->pixpath}/t/edit.gif\" class=\"iconsmall\" alt=\"$str_edit\" /></a>";
+}
+
+print_heading($heading);
 
 $depthstr = $depth->fullname;
 
@@ -89,12 +113,80 @@ if ($cfdata = get_records_sql($sql)) {
 </table>
 <?php
 
+// Display evidence items
+print_heading(get_string('evidenceitems', 'competencies'));
+
+?>
+<table width="95%" cellpadding="5" cellspacing="1" class="generalbox editcompetencies boxaligncenter">
+<tr>
+    <th style="vertical-align:top; text-align:center; white-space:nowrap;" class="header c0" scope="col">
+        <?php echo get_string('name'); ?>
+    </th>
+
+    <th style="vertical-align:top; text-align:center; white-space:nowrap;" class="header c1" scope="col">
+        <?php echo get_string('type', 'competencies'); ?>
+    </th>
+
+    <th style="vertical-align:top; text-align:center; white-space:nowrap;" class="header c2" scope="col">
+        <?php echo get_string('activity'); ?>
+    </th>
+
+    <th style="vertical-align:top; text-align:center; white-space:nowrap;" class="header c3" scope="col">
+        <?php echo get_string('weight', 'competencies'); ?>
+    </th>
+
+<?php
+    if ($editingon) {
+?>
+    <th style="vertical-align:top; text-align:center; white-space:nowrap;" class="header c4" scope="col">
+        <?php echo get_string('edit'); ?>
+    </th>
+<?php
+    }
+?>
+
+    <th style="vertical-align:top; text-align:center; white-space:nowrap;" class="header c5" scope="col">
+        <?php echo get_string('achieved', 'competencies'); ?>
+    </th>
+</tr>
+<?php
+
+$evidence = array();
+
+
+if ($evidence) {
+
+
+} else {
+    // # cols varies
+    $cols = $editingon ? 6 : 5;
+    echo '<tr><td colspan="'.$cols.'"><i>'.get_string('noevidenceitems', 'competencies').'</i></td></tr>';
+}
+
+echo '</table>';
+
 
 // Navigation / editing buttons
 echo '<div class="buttons">';
 
+// Display add evidence item button
+if ($editingon && $can_edit_comp) {
+    $options = array('competency' => $competency->id);
+    print_single_button(
+        $CFG->wwwroot.'/competencies/evidence/edit.php',
+        $options,
+        get_string('addnewevidenceitem', 'competencies'),
+        'get'
+    );
+}
+
 $options = array('frameworkid' => $framework->id);
-print_single_button($CFG->wwwroot.'/competencies/index.php', $options, get_string('returntocompetencies', 'competencies'), 'get');
+print_single_button(
+    $CFG->wwwroot.'/competencies/index.php',
+    $options,
+    get_string('returntocompetencies', 'competencies'),
+    'get'
+);
 
 echo '</div>';
 
