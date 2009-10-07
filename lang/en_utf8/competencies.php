@@ -1,7 +1,9 @@
 <?php
 
+$string['achieved'] = 'Achieved';
 $string['adddepthlevel'] = 'Add a new depth level';
 $string['addnewcompetency'] = 'Add new competency';
+$string['addnewevidenceitem'] = 'Add new evidence item';
 $string['addnewframework'] = 'Add new competency framework';
 $string['addnewscalevalue'] = 'Add new scale value';
 $string['aggregationmethod'] = 'Aggregation method';
@@ -58,6 +60,7 @@ $string['missingshortnamedepth'] = 'Missing depth level short name';
 $string['missingshortnameframework'] = 'Missing framework short name';
 $string['nocompetenciesinframework'] = 'No competencies in this framework';
 $string['nodepthlevels'] = 'No depth levels in this framework';
+$string['noevidenceitems'] = 'No evidence items setup for this competency';
 $string['noframeworks'] = 'No competency frameworks available';
 $string['numericalvalue'] = 'Numerical value';
 $string['parent'] = 'Parent competency';
@@ -70,3 +73,5 @@ $string['scalevalues'] = 'Scale values';
 $string['shortname'] = 'Competency short name';
 $string['shortnamedepth'] = 'Depth level short name';
 $string['shortnameframework'] = 'Framework short name';
+$string['type'] = 'Type';
+$string['weight'] = 'Weight';
