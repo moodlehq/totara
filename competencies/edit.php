@@ -57,6 +57,9 @@ $competency->framework = $framework->fullname;
 /// Display page
 ///
 
+//Load custom fields data
+customfield_load_data($competency, 'competency', 'competency_depth');
+
 // create form
 $competencyform = new competency_edit_form(null, compact('competency'));
 $competencyform->set_data($competency);
@@ -128,9 +131,13 @@ if ($competencyform->is_cancelled()) {
         // Can't set the full path till we know the id!
         set_field('competency', 'path', $competencynew->path.$competencynew->id, 'id', $competencynew->id);
 
+        customfield_save_data($competencynew, 'competency_depth', 'competency');
+
     // Existing competency
     } else {
-        if (!update_record('competency', $competencynew)) {
+        if (update_record('competency', $competencynew)) {
+            customfield_save_data($competencynew, 'competency_depth', 'competency');
+        } else {
             error('Error updating competency record');
         }
     }
