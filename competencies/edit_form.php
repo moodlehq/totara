@@ -20,9 +20,18 @@ class competency_edit_form extends moodleform {
         end($depthlevels);
         $max_depth = current($depthlevels)->id;
 
-        $parents = array(
-            0   => 'Top',
-        );
+        // Get competencies current depth level
+        $depthlevel = 0;
+        if ($competency->id) {
+            $depthlevel = $depthlevels[$competency->depthid]->depthlevel;
+        }
+
+        $parents = array();
+
+        // Add top as an option if adding a new competency, or current parent is Top
+        if (!$competency->id || $competency->parentid == 0) {
+            $parents[0] = 'Top';
+        }
 
         if ($competencies) {
             // Cache breadcrumbs
@@ -37,6 +46,13 @@ class competency_edit_form extends moodleform {
                 // Do not show this competency as a possible parent
                 if ($parent->id == $competency->id) {
                     continue;
+                }
+
+                // If we are editing a competency, do not allow to alter the level of the parent
+                if ($competency->id) {
+                    if ($depthlevels[$parent->depthid]->depthlevel != ($depthlevel - 1)) {
+                        continue;
+                    }
                 }
 
                 // Grab parents and append this title
