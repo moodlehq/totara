@@ -206,13 +206,13 @@
     // update default competency depth details with demo example
     if ($defaultcd = get_record_select('competency_depth', "shortname='Competencies'")) {
          $defaultcd->fullname    = 'Qualifications';
-         $defaultcd->shortname   = 'Quals';
+         $defaultcd->shortname   = 'Q';
          update_record('competency_depth', $defaultcd);
     }
     // add a competency depth level to the default competency framework
     $defaultcd1 = array(
             'fullname'    => 'Unit Standards',
-            'shortname'   => 'Unit Standards',
+            'shortname'   => 'US',
             'description' => '',
             'depthlevel'  => '2',
             'frameworkid' => '1',
@@ -222,7 +222,7 @@
     $competency_depths = array(
         array(
             'fullname'    => 'Qualifications',
-            'shortname'   => 'Quals',
+            'shortname'   => 'Q',
             'description' => '',
             'depthlevel'  => '1',
         ),
