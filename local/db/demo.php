@@ -549,7 +549,7 @@ The National Certificate in Business (First Line Management) (Level 3) [Ref: 074
 
     // change the default competency and add its sub-competencies
     if ($defaultc = get_record_select('competency', "id='1'")) {
-         $defaultc->fullname    = 'National Certificate in Business (First Line Management)<br/>(Level 3) v3';
+         $defaultc->fullname    = 'National Certificate in Business (First Line Management) (Level 3) v3';
          $defaultc->shortname   = 'Business L3';
          $defaultc->idnumber    = '71';
          $defaultc->frameworkid = '1';
@@ -684,7 +684,7 @@ The National Certificate in Business (First Line Management) (Level 3) [Ref: 074
     // add the rest of the competencies in this framework in a nested array
     $competencies = array(
         array(
-            'fullname'            => 'National Certificate in Business (First Line Management)<br/>(Level 3) v3 and (Level 4) v4',
+            'fullname'            => 'National Certificate in Business (First Line Management) (Level 3) v3 and (Level 4) v4',
             'shortname'           => 'Business L3 and L4',
             'description'         => 'Management Award in Communication (Level 3)',
             'idnumber'            => '71',
@@ -841,7 +841,7 @@ The National Certificate in Business (First Line Management) (Level 3) [Ref: 074
             ),
         ),
         array(
-            'fullname'            => 'National Certificate in Business (First Line Management)<br/>(Level 4) v4',
+            'fullname'            => 'National Certificate in Business (First Line Management) (Level 4) v4',
             'shortname'           => 'Business L4',
             'description'         => 'Management Award in Leading Teams',
             'idnumber'            => '71',
