@@ -180,95 +180,6 @@ $str_hide         = get_string('hide');
 $str_show         = get_string('show');
 $str_customfields = get_string('customfields', 'customfields');
 
-// Create display table
-$table = new stdclass();
-$table->class = 'generalbox editcompetencies';
-$table->width = '95%';
-
-// Setup column headers
-$table->head = array();
-$table->align = array();
-
-foreach ($depths as $depth) {
-    $header = $depth->fullname;
-
-    if ($editingon && $can_edit_depth) {
-        $header .= "<a href=\"{$CFG->wwwroot}/competencies/depth/edit.php?id={$depth->id}\" title=\"$str_edit\">".
-            "<img src=\"{$CFG->pixpath}/t/edit.gif\" class=\"iconsmall\" alt=\"$str_edit\" /></a> ".
-            "<a href=\"{$CFG->wwwroot}/competencies/depth/customfields/index.php?depthid={$depth->id}\" title=\"$str_customfields\">".
-            "<img src=\"{$CFG->pixpath}/t/customfields.gif\" class=\"iconsmall\" alt=\"$str_customfields\" /></a></a>";
-    }
-
-    $table->head[] = $header;
-    $table->align[] = 'left';
-}
-
-$table->head[] = get_string('evidenceitems', 'competencies');
-$table->align[] = 'center';
-
-// If we have competencies, add edit col and rows of data
-if ($competencies) {
-
-    // Add edit column
-    if ($editingon && $can_edit_comp) {
-        $table->head[] = get_string('edit');
-        $table->align[] = 'center';
-    }
-
-    // Add rows to table
-    foreach ($competencies as $competency) {
-        $row = array();
-
-        $cssclass = !$competency->visible ? 'class="dimmed"' : '';
-
-        foreach ($depths as $depth) {
-            if ($depth->id == $competency->depthid) {
-                $row[] = "<a $cssclass href=\"{$CFG->wwwroot}/competencies/view.php?id={$competency->id}\">{$competency->fullname}</a>";
-            } else {
-                $row[] = '';
-            }
-        }
-
-        // Evidence items
-        $row[] = 0;
-
-        // Add edit link
-        $buttons = array();
-        if ($editingon && $can_edit_comp) {
-            $buttons[] = "<a href=\"{$CFG->wwwroot}/competencies/edit.php?id={$competency->id}\" title=\"$str_edit\">".
-                "<img src=\"{$CFG->pixpath}/t/edit.gif\" class=\"iconsmall\" alt=\"$str_edit\" /></a>";
-
-            if ($competency->visible) {
-                $buttons[] = "<a href=\"{$CFG->wwwroot}/competencies/index.php?hide={$competency->id}\" title=\"$str_hide\">".
-                    "<img src=\"{$CFG->pixpath}/t/hide.gif\" class=\"iconsmall\" alt=\"$str_hide\" /></a>";
-            } else {
-                $buttons[] = "<a href=\"{$CFG->wwwroot}/competencies/index.php?show={$competency->id}\" title=\"$str_show\">".
-                    "<img src=\"{$CFG->pixpath}/t/show.gif\" class=\"iconsmall\" alt=\"$str_show\" /></a>";
-            }
-        }
-
-        if ($editingon && $can_delete_comp) {
-            $buttons[] = "<a href=\"{$CFG->wwwroot}/competencies/delete.php?id={$competency->id}\" title=\"$str_delete\">".
-                "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_delete\" /></a>";
-        }
-
-        // If competency not in the top depth, can move to another parent as same depth
-        if (false) {
-            $buttons[] = 'Move';
-        }
-
-        if ($buttons) {
-            $row[] = implode($buttons, ' ');
-        }
-
-        $table->data[] = $row;
-    }
-} else {
-    // If no competencies, add a message
-    $table->data[] = array('<i>'.get_string('nocompetenciesinframework', 'competencies').'</i>');
-}
-
-
 // Display page
 admin_externalpage_print_header();
 
@@ -288,10 +199,96 @@ if (count($frameworks) > 1) {
     echo '</div>';
 }
 
-#print_paging_bar($usercount, $page, $perpage,
-#    "user.php?sort=$sort&amp;dir=$dir&amp;perpage=$perpage&amp;");
-#
-print_table($table);
+// Display table
+echo '<table width="95%" cellpadding="5" cellspacing="1" class="generalbox editcompetencies boxaligncenter">';
+
+// Setup column headers
+echo '<tr>';
+
+$col = 0;
+foreach ($depths as $depth) {
+    $header = format_string($depth->shortname);
+
+    if ($editingon && $can_edit_depth) {
+        $header .= "<a href=\"{$CFG->wwwroot}/competencies/depth/edit.php?id={$depth->id}\" title=\"$str_edit\">".
+            "<img src=\"{$CFG->pixpath}/t/edit.gif\" class=\"iconsmall\" alt=\"$str_edit\" /></a> ".
+            "<a href=\"{$CFG->wwwroot}/competencies/depth/customfields/index.php?depthid={$depth->id}\" title=\"$str_customfields\">".
+            "<img src=\"{$CFG->pixpath}/t/customfields.gif\" class=\"iconsmall\" alt=\"$str_customfields\" /></a></a>";
+    }
+
+    echo '<th style="vertical-align:top; text-align:left; white-space:nowrap;" class="header c'.$col.'" scope="col">'.$header.'</th>';
+    $col++;
+}
+
+echo '<th style="vertical-align:top; text-align:center; white-space:nowrap;" class="header c'.$col.'" scope="col">';
+echo get_string('evidenceitems', 'competencies');
+echo '</th>';
+
+echo '</tr>';
+
+$numdepthcols = count($depths);
+
+// Create data rows
+if ($competencies) {
+
+    // Add rows to table
+    foreach ($competencies as $competency) {
+        $row = '';
+
+        // Add edit link
+        $buttons = array();
+        if ($editingon && $can_edit_comp) {
+            $buttons[] = "<a href=\"{$CFG->wwwroot}/competencies/edit.php?id={$competency->id}\" title=\"$str_edit\">".
+                "<img src=\"{$CFG->pixpath}/t/edit.gif\" class=\"iconsmall\" alt=\"$str_edit\" /></a>";
+
+            if ($competency->visible) {
+                $buttons[] = "<a href=\"{$CFG->wwwroot}/competencies/index.php?hide={$competency->id}\" title=\"$str_hide\">".
+                    "<img src=\"{$CFG->pixpath}/t/hide.gif\" class=\"iconsmall\" alt=\"$str_hide\" /></a>";
+            } else {
+                $buttons[] = "<a href=\"{$CFG->wwwroot}/competencies/index.php?show={$competency->id}\" title=\"$str_show\">".
+                    "<img src=\"{$CFG->pixpath}/t/show.gif\" class=\"iconsmall\" alt=\"$str_show\" /></a>";
+            }
+        }
+
+        // Add delete link
+        if ($editingon && $can_delete_comp) {
+            $buttons[] = "<a href=\"{$CFG->wwwroot}/competencies/delete.php?id={$competency->id}\" title=\"$str_delete\">".
+                "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_delete\" /></a>";
+        }
+
+        $cssclass = !$competency->visible ? 'class="dimmed"' : '';
+
+        // Show name in correct column
+        $col = 0;
+        foreach ($depths as $depth) {
+            if ($depth->id == $competency->depthid) {
+                $name = format_string($competency->shortname);
+                $row .= '<td colspan="'.($numdepthcols - $col).'">';
+                $row .= "<a $cssclass href=\"{$CFG->wwwroot}/competencies/view.php?id={$competency->id}\">{$name}</a>";
+
+                if ($buttons) {
+                    $row .= implode($buttons, ' ');
+                }
+
+                $row .= '</td>';
+                break;
+            } else {
+                $row .= '<td></td>';
+            }
+            $col++;
+        }
+
+        // Evidence items
+        $row .= '<td align="center">0</td>';
+
+        echo '<tr>'.$row.'</tr>';
+    }
+} else {
+    // If no competencies, add a message
+    echo '<tr><td colspan="'.($numdepthcols + 1).'"><i>'.get_string('nocompetenciesinframework', 'competencies').'</i></td></tr>';
+}
+
+echo '</table>';
 
 #print_paging_bar($usercount, $page, $perpage,
 #    "user.php?sort=$sort&amp;dir=$dir&amp;perpage=$perpage&amp;");
