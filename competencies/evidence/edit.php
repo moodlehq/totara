@@ -39,10 +39,13 @@ $can_edit_comp = has_capability('moodle/local:updatecompetencies', $sitecontext)
 /// Display page
 ///
 
-print_heading(get_string('addnewevidenceitem', 'competencies'));
-
 ?>
-<h2 class="main">Select the evidence type:</h2>
+
+<h2 style="border-bottom: 1px solid #CACACA; font-size: 1em; margin: 10px 0; padding-bottom: 5px; text-align: left; font-weight: bold; font-family: Verdana, Arial, Helvetica, sans-serif; color: #002C3F;">
+<?php echo get_string('addnewevidenceitem', 'competencies') ?>
+</h2>
+
+<p>Select the evidence type:</p>
 <ul>
     <li>
         Activity completion
