@@ -26,6 +26,30 @@ if (update_competency_button()) {
     $editingon = false;
 }
 
+// Load required javascript libraries
+require_js(
+    array(
+        'yui_yahoo',
+        'yui_yuiloader',
+        'yui_dom',
+        'yui_event',
+        'yui_element',
+        'yui_button',
+        'yui_animation',
+        'yui_connection',
+        'yui_container',
+    )
+);
+
+if (debugging('', DEBUG_DEVELOPER)) {
+    require_js(
+        array(
+            'yui_logger',
+            $CFG->wwwroot.'/local/js/logging.js'        
+        )
+    );
+}
+
 // Make this page appear under the manage competencies admin item
 admin_externalpage_setup('competencymanage', $navbaritem);
 
@@ -56,6 +80,12 @@ $can_edit_comp = has_capability('moodle/local:updatecompetencies', $sitecontext)
 
 /// Display page header
 admin_externalpage_print_header();
+
+// Make sure page specific javascript is loaded
+$js = array(
+    $CFG->wwwroot.'/local/js/competencies.js',
+);
+require_js($js);
 
 $heading = "{$depth->fullname} - {$competency->fullname}";
 
@@ -171,13 +201,20 @@ echo '<div class="buttons">';
 
 // Display add evidence item button
 if ($editingon && $can_edit_comp) {
-    $options = array('competency' => $competency->id);
-    print_single_button(
-        $CFG->wwwroot.'/competencies/evidence/edit.php',
-        $options,
-        get_string('addnewevidenceitem', 'competencies'),
-        'get'
-    );
+
+?>
+
+<div class="singlebutton">
+<!-- <form action="<?php echo $CFG->wwwroot ?>/competencies/evidence/edit.php" method="get">
+<div>
+<input type="hidden" name="competency" value="<?php echo $competency->id ?>" /> -->
+<input type="submit" id="show-evidence-dialog" value="<?php echo get_string('addnewevidenceitem', 'competencies') ?>" />
+<!--</div>
+</form>-->
+</div>
+
+<?php
+
 }
 
 $options = array('frameworkid' => $framework->id);

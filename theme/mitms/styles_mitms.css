@@ -766,3 +766,36 @@ div.yuimenu .yuichildtree .yuimenuitem {
 #adminsettings fieldset {
   border:none;
 }
+
+
+/** Competencies theme css **/
+/*#addevidence_c.yui-panel-container.shadow .underlay { 
+    left:3px; 
+    right:-3px; 
+    top:3px; 
+    bottom:-3px; 
+    position:absolute; 
+    background-color:#000; 
+    opacity:0.12; 
+    filter:alpha(opacity=12); 
+} */
+
+div#addevidence.yui-panel {
+    border: 5px solid #666;
+    background-color: #fff;
+    padding: 10px 10px 5px;
+}
+
+div#addevidence.yui-panel .bd {
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 5px;
+}
+
+div#addevidence.yui-panel a.container-close {
+    display: block;
+    margin-left: 639px;
+    width: 66px;
+    height: 22px;
+    background-image: url(closelabel.gif);
+}
