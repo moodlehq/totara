@@ -63,11 +63,11 @@ YAHOO.util.Event.onDOMReady(function () {
         },
         failure: function(o) {
 
-            alert('fail');
+//            alert('fail');
         }
     }
 
-    YAHOO.util.Connect.asyncRequest('GET', '/competencies/evidence/edit.php?id=2', callback);
+    YAHOO.util.Connect.asyncRequest('GET', 'evidence/edit.php?id=2', callback);
 
 
     // Hide if we click anywhere in the document other than the dialog
