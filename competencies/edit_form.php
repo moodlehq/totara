@@ -124,4 +124,18 @@ class competency_edit_form extends moodleform {
 
         $this->add_action_buttons();
     }
+
+    function definition_after_data() {
+
+        $mform =& $this->_form;
+        $competencyid = $mform->getElementValue('id');
+
+        if ($competency = get_record('competency', 'id', $competencyid)) {
+
+            customfield_definition_after_data($mform, $competency->id, 'competency', $competency->depthid, 'competency_depth');
+
+        }
+
+    }
+
 }

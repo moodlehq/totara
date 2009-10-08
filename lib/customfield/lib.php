@@ -85,7 +85,7 @@ class customfield_base {
      * @param   string  name of the feature (ie, competency)
      * @return  mixed   returns data id if success of db insert/update, false on fail, 0 if not permitted
      */
-    function edit_save_data($featurenew, $feature) {
+    function edit_save_data($featurenew, $tableprefix, $feature) {
 
         if (!isset($featurenew->{$this->inputname})) {
             // field not present in form, probably locked and invisible - skip it
@@ -131,10 +131,8 @@ class customfield_base {
      * @param   object   instance of the moodleform class
      */
     function edit_field_set_default(&$mform) {
-        if (!empty($this->data)) {
-            $mform->setDefault($this->inputname, $this->data);
-        } else {
-            $mform->setDefault($this->inputname, $this->defaultdata);
+        if (!empty($default)) {
+            $mform->setDefault($this->inputname, $this->field->defaultdata);
         }
     }
 
@@ -286,13 +284,17 @@ class customfield_base {
 
 /***** General purpose functions for custom fields *****/
 
-function customfield_load_data(&$feature, $tableprefix) {
+function customfield_load_data(&$feature, $featurename, $tableprefix) {
     global $CFG;
-    if ($fields = get_records_select($tableprefix.'_info_field')) {
+    $depthstr = '';
+    if ($feature->depthid) {
+        $depthstr = "depthid='$feature->depthid'";
+    }
+    if ($fields = get_records_select($tableprefix.'_info_field', $depthstr)) {
         foreach ($fields as $field) {
             require_once($CFG->dirroot.'/lib/customfield/field/'.$field->datatype.'/field.class.php');
             $newfield = 'customfield_'.$field->datatype;
-            $formfield = new $newfield($field->id, $feature->id);
+            $formfield = new $newfield($field->id, $feature->id, $featurename, $tableprefix);
             $formfield->edit_load_feature_data($feature);
         }
     }
@@ -336,15 +338,19 @@ function customfield_definition(&$mform, $featureid, $feature, $depthid=0, $tabl
     }   
 }
 
-function customfield_definition_after_data(&$mform, $id, $tableprefix) {
+function customfield_definition_after_data(&$mform, $featureid, $feature, $depthid=0, $tableprefix) {
     global $CFG;
-    $id = ($id < 0) ? 0 : (int)$id;
 
-    if ($fields = get_records($tableprefix.'_info_field')) {
+    $depthstr = '';
+    if ($featurenew->depthid) {
+        $depthstr = 'depthid='.$featurenew->depthid;
+    }
+
+    if ($fields = get_records_select($tableprefix.'_info_field', $depthstr)) {
         foreach ($fields as $field) {
             require_once($CFG->dirroot.'/lib/customfield/field/'.$field->datatype.'/field.class.php');
             $newfield = 'customfield_'.$field->datatype;
-            $formfield = new $newfield($field->id, $id);
+            $formfield = new $newfield($field->id, $featureid, $feature, $tableprefix);
             $formfield->edit_after_data($mform);
         }
     }
@@ -368,12 +374,17 @@ function customfield_validation($featurenew, $files, $tableprefix) {
 function customfield_save_data($featurenew, $tableprefix, $feature) {
     global $CFG;
 
-    if ($fields = get_records_select($tableprefix.'_info_field')) {
+    $depthstr = '';
+    if ($featurenew->depthid) {
+        $depthstr = 'depthid='.$featurenew->depthid;
+    }
+
+    if ($fields = get_records_select($tableprefix.'_info_field', $depthstr)) {
         foreach ($fields as $field) {
             require_once($CFG->dirroot.'/lib/customfield/field/'.$field->datatype.'/field.class.php');
             $newfield = 'customfield_'.$field->datatype;
-            $formfield = new $newfield($field->id, $featurenew->id);
-            $formfield->edit_save_data($featurenew, $feature);
+            $formfield = new $newfield($field->id, $featureid, $feature, $tableprefix);
+            $formfield->edit_save_data($featurenew, $tableprefix, $feature);
         }
     }
 }
