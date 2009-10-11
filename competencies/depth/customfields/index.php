@@ -96,13 +96,13 @@ print_heading(get_string('competencydepthcustomfields', 'competencies'));
 if ($depthid) {
 
     $competencydepth = get_record_select('competency_depth', "id='$depthid'");
-    $sql = "SELECT cf.fullname FROM {$CFG->prefix}competency_depth cd, {$CFG->prefix}competency_framework cf WHERE cf.id = cd.frameworkid and cd.id='$depthid'";
-    $competencyframeworkfullname = get_field_sql($sql);
+    $sql = "SELECT cf.id, cf.fullname FROM {$CFG->prefix}competency_depth cd, {$CFG->prefix}competency_framework cf WHERE cf.id = cd.frameworkid and cd.id='$depthid'";
+    $competencyframework = get_record_sql($sql);
     $competency = get_record_select('competency', "id='$depthid'");
     $categories = get_records_select('competency_depth_info_category', "depthid='$depthid'", 'sortorder ASC');
     $categorycount = count($categories);
 
-    echo "<b>".get_string('framework', 'competencies').":</b> $competencyframeworkfullname<br>";
+    echo "<b>".get_string('framework', 'competencies').":</b> <a href=\"".$CFG->wwwroot."/competencies/index.php?frameworkid=".$competencyframework->id."\">$competencyframework->fullname</a><br>";
     echo "<b>".get_string('depthlevel', 'competencies').":</b> $competencydepth->fullname<br>";
 
     foreach($categories as $category) {
