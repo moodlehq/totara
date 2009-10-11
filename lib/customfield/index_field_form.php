@@ -27,6 +27,7 @@ class field_form extends moodleform {
         $mform->addElement('hidden', 'action', 'editfield');
         $mform->addElement('hidden', 'datatype', $datasent['datatype']);
         $mform->addElement('hidden', 'depthid', $datasent['depthid']);
+        $mform->addElement('hidden', 'tableprefix', $datasent['tableprefix']);
 
         $this->field->define_form($mform, $depthid, $tableprefix);
 
@@ -43,7 +44,7 @@ class field_form extends moodleform {
 
 /// perform some moodle validation
     function validation($data, $files) {
-        return $this->field->define_validate($data, $files);
+        return $this->field->define_validate($data, $files, $data['tableprefix']);
     }
 }
 

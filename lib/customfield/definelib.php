@@ -62,13 +62,13 @@ class customfield_define_base {
      * @param   object   data from the add/edit custom field form
      * @return  array    associative array of error messages
      */
-    function define_validate($data, $files) {
+    function define_validate($data, $files, $tableprefix) {
 
         $data = (object)$data;
         $err = array();
 
-        $err += $this->define_validate_common($data, $files);
-        $err += $this->define_validate_specific($data, $files);
+        $err += $this->define_validate_common($data, $files, $tableprefix);
+        $err += $this->define_validate_specific($data, $files, $tableprefix);
 
         return $err;
     }
@@ -107,7 +107,7 @@ class customfield_define_base {
      * @param   object   data from the add/edit custom field form
      * @return  array    associative array of error messages
      */
-    function define_validate_specific($data, $files) {
+    function define_validate_specific($data, $files, $tableprefix) {
         /// do nothing - overwrite if necessary
         return array();
     }

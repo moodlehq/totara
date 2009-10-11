@@ -95,11 +95,11 @@ class customfield_base {
         $featurenew->{$this->inputname} = $this->edit_save_data_preprocess($featurenew->{$this->inputname});
 
         $data = new object();
-        $data->featureid  = $featurenew->id;
-        $data->fieldid    = $this->field->id;
-        $data->data       = $featurenew->{$this->inputname};
+        $data->{$feature.'id'}  = $featurenew->id;
+        $data->fieldid          = $this->field->id;
+        $data->data             = $featurenew->{$this->inputname};
 
-        if ($dataid = get_field($tableprefix.'_info_data', 'id', $feature.'id', $data->featureid, 'fieldid', $data->fieldid)) {
+        if ($dataid = get_field($tableprefix.'_info_data', 'id', $feature.'id', $data->{$feature.'id'}, 'fieldid', $data->fieldid)) {
             $data->id = $dataid;
             if (!update_record($tableprefix.'_info_data', $data)) {
                 error('Error updating custom field!');
@@ -356,16 +356,22 @@ function customfield_definition_after_data(&$mform, $featureid, $feature, $depth
     }
 }
 
-function customfield_validation($featurenew, $files, $tableprefix) {
+function customfield_validation($featurenew, $featurename, $tableprefix) {
     global $CFG;
 
     $err = array();
-    if ($fields = get_records($tableprefix.'_info_field')) {
+
+    $depthstr = '';
+    if ($featurenew->depthid) {
+        $depthstr = 'depthid='.$featurenew->depthid;
+    }
+
+    if ($fields = get_records_select($tableprefix.'_info_field', $depthstr)) {
         foreach ($fields as $field) {
             require_once($CFG->dirroot.'/lib/customfield/field/'.$field->datatype.'/field.class.php');
             $newfield = 'customfield_'.$field->datatype;
-            $formfield = new $newfield($field->id, $featurenew->id);
-            $err += $formfield->edit_validate_field($featurenew, $files);
+            $formfield = new $newfield($field->id, $featurenew->id, $featurename, $tableprefix);
+            $err += $formfield->edit_validate_field($featurenew);
         }
     }
     return $err;
@@ -383,7 +389,7 @@ function customfield_save_data($featurenew, $tableprefix, $feature) {
         foreach ($fields as $field) {
             require_once($CFG->dirroot.'/lib/customfield/field/'.$field->datatype.'/field.class.php');
             $newfield = 'customfield_'.$field->datatype;
-            $formfield = new $newfield($field->id, $featureid, $feature, $tableprefix);
+            $formfield = new $newfield($field->id, $featurenew->id, $feature, $tableprefix);
             $formfield->edit_save_data($featurenew, $tableprefix, $feature);
         }
     }

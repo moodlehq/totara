@@ -9,9 +9,9 @@ class customfield_menu extends customfield_base {
      * Pulls out the options for the menu from the database and sets the
      * the corresponding key for the data if it exists
      */
-    function customfield_menu($fieldid=0, $featureid=0) {
+    function customfield_menu($fieldid=0, $featureid=0, $feature, $tableprefix) {
         //first call parent constructor
-        $this->customfield_base($fieldid, $featureid);
+        $this->customfield_base($fieldid, $featureid, $feature, $tableprefix);
 
         /// Param 1 for menu type is the options
         $options = explode("\n", $this->field->param1);
@@ -35,7 +35,7 @@ class customfield_menu extends customfield_base {
      * @param   object   moodleform instance
      */
     function edit_field_add(&$mform) {
-        $mform->addElement('select', $this->inputname, format_string($this->field->name), $this->options);
+        $mform->addElement('select', $this->inputname, format_string($this->field->fullname), $this->options);
     }
 
     /**

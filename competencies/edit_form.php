@@ -119,6 +119,7 @@ class competency_edit_form extends moodleform {
 
         /// Next show the custom fields if we're editing an existing competency (otherwise we don't know the depthid)
         if ($competency->id) {
+            $mform->addElement('hidden', 'depthid', $competency->depthid);
             customfield_definition($mform, $competency->id, 'competency', $competency->depthid, 'competency_depth');
         }
 
@@ -136,6 +137,20 @@ class competency_edit_form extends moodleform {
 
         }
 
+    }
+
+    function validation($competencynew, $files) {
+
+        global $CFG;
+        $errors = parent::validation($competencynew, $files);
+
+        $competencynew = (object)$competencynew;
+        $competency    = get_record('competency', 'id', $competencynew->id);
+
+        /// Check custom fields
+        $errors += customfield_validation($competencynew, 'competency', 'competency_depth');
+
+        return $errors;
     }
 
 }
