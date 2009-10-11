@@ -41,15 +41,6 @@ require_js(
     )
 );
 
-if (debugging('', DEBUG_DEVELOPER)) {
-    require_js(
-        array(
-            'yui_logger',
-            $CFG->wwwroot.'/local/js/logging.js'        
-        )
-    );
-}
-
 // Make this page appear under the manage competencies admin item
 admin_externalpage_setup('competencymanage', $navbaritem);
 
@@ -204,13 +195,19 @@ if ($editingon && $can_edit_comp) {
 
 ?>
 
+<script type="text/javascript">
+    <!-- //
+    var competency_id = '<?php echo $competency->id ?>';
+    // -->
+</script>
+
 <div class="singlebutton">
-<!-- <form action="<?php echo $CFG->wwwroot ?>/competencies/evidence/edit.php" method="get">
+<form action="<?php echo $CFG->wwwroot ?>/competencies/evidence/edit.php" method="get">
 <div>
-<input type="hidden" name="competency" value="<?php echo $competency->id ?>" /> -->
+<input type="hidden" name="competency" value="<?php echo $competency->id ?>" />
 <input type="submit" id="show-evidence-dialog" value="<?php echo get_string('addnewevidenceitem', 'competencies') ?>" />
-<!--</div>
-</form>-->
+</div>
+</form>
 </div>
 
 <?php
