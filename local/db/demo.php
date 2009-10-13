@@ -1068,15 +1068,15 @@ The National Certificate in Business (First Line Management) (Level 3) [Ref: 074
         $subcompetencies = $competency['subcompetencies'];
         $competency['sortorder'] = $sortorder++;
         $competency['depthid'] = 1;
-        $newid = insert_record('competency', (object)$competency);
+        $newcid = insert_record('competency', (object)$competency);
         foreach ($subcompetencies as $subcompetency) {
             $customdata = $subcompetency['customdata'];
-            $subcompetency['parentid'] = $newid;
+            $subcompetency['parentid'] = $newcid;
             $subcompetency['sortorder'] = $sortorder++;
             $subcompetency['depthid'] = 2;
-            $newid = insert_record('competency', $subcompetency);
+            $newsubcid = insert_record('competency', $subcompetency);
             foreach ($customdata as $c) {
-                $c['competencyid'] = $newid;
+                $c['competencyid'] = $newsubcid;
                 insert_record('competency_depth_info_data', $c);
             }
         }
