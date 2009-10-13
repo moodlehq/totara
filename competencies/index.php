@@ -489,13 +489,6 @@ admin_externalpage_print_header();
         echo '</div>';
     }
 
-    if ($perpage == SHOW_ALL_PAGE_SIZE) {
-        echo '<div id="showall"><a href="'.$perpageurl.'&amp;perpage='.DEFAULT_PAGE_SIZE.'">'.get_string('showperpage', '', DEFAULT_PAGE_SIZE).'</a></div>';
-
-    } else if ($matchcount > 0 && $perpage < $matchcount) {
-        echo '<div id="showall"><a href="'.$perpageurl.'&amp;perpage='.SHOW_ALL_PAGE_SIZE.'">'.get_string('showall', 'competencies', $matchcount).'</a></div>';
-    }
-
     print_footer();
 
     if ($competencylist) {
