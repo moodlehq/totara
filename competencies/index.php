@@ -232,12 +232,14 @@ admin_externalpage_print_header();
     }
     $colcount = 0;
 
-    $tablecolumns = array();
-    $tableheaders = array();
+    $tablecolumns   = array(); // all columns
+    $tablecolumnscf = array(); // just the customfield columns
+    $tableheaders   = array();
 
     foreach ($depths as $depth) {
 
         $tablecolumns[] = format_string($depth->fullname);
+        $tablecolumnsd[] = format_string($depth->fullname);
 
         if ($showdepthfullname) {
             $header = format_string($depth->fullname);
@@ -258,6 +260,7 @@ admin_externalpage_print_header();
             foreach ($customfields as $customfield) {
                 if (!$customfield->hidden && $customfield->depthid == $depth->id) {
                     $tablecolumns[] = format_string($depth->fullname).'-'.format_string($customfield->fullname);
+                    $tablecolumnscf[] = format_string($depth->fullname).'-'.format_string($customfield->fullname);
                     $tableheaders[] = format_string($customfield->fullname);
                     $customfieldcount++;
                     $colcount++;
@@ -282,6 +285,11 @@ admin_externalpage_print_header();
     $table->define_columns($tablecolumns);
     $table->define_headers($tableheaders);
     $table->define_baseurl($baseurl);
+    foreach ($tablecolumnscf as $tablecolumncf) {
+        $table->column_style($tablecolumncf,'text-align','center');
+    }
+    $table->column_style('edit','width','80px');
+    $table->column_style('evidence','text-align','center');
 
     $table->set_attribute('cellspacing', '0');
     $table->set_attribute('id', 'competencies');
@@ -378,7 +386,7 @@ admin_externalpage_print_header();
             }
 
             // Evidence items
-            $data[$i][$j] = '0';
+            $data[$i][$j] = '<a href="">0</a>';
 
             $i++;
             $competencytrack[] = $competency->id;
