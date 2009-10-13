@@ -261,7 +261,11 @@ admin_externalpage_print_header();
                 if (!$customfield->hidden && $customfield->depthid == $depth->id) {
                     $tablecolumns[] = format_string($depth->fullname).'-'.format_string($customfield->fullname);
                     $tablecolumnscf[] = format_string($depth->fullname).'-'.format_string($customfield->fullname);
-                    $tableheaders[] = format_string($customfield->fullname);
+                    $header = format_string($customfield->fullname);
+                    if ($editingon && $can_edit_depth) {
+                        $header .= ' <a title="'.$str_edit.'" href="'.$CFG->wwwroot.'/competencies/depth/customfields/index.php?id='.$customfield->id.'&amp;depthid='.$depth->id.'&amp;action=editfield"><img src="'.$CFG->pixpath.'/t/edit.gif" alt="'.$str_edit.'" class="iconsmall" /></a>';
+                    }
+                    $tableheaders[] = $header;
                     $customfieldcount++;
                     $colcount++;
                 }
