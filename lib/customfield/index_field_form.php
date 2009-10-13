@@ -44,7 +44,7 @@ class field_form extends moodleform {
 
 /// perform some moodle validation
     function validation($data, $files) {
-        return $this->field->define_validate($data, $files, $data['tableprefix']);
+        return $this->field->define_validate($data, $files, $data['depthid'], $data['tableprefix']);
     }
 }
 

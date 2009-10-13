@@ -62,12 +62,12 @@ class customfield_define_base {
      * @param   object   data from the add/edit custom field form
      * @return  array    associative array of error messages
      */
-    function define_validate($data, $files, $tableprefix) {
+    function define_validate($data, $files, $depthid, $tableprefix) {
 
         $data = (object)$data;
         $err = array();
 
-        $err += $this->define_validate_common($data, $files, $tableprefix);
+        $err += $this->define_validate_common($data, $files, $depthid, $tableprefix);
         $err += $this->define_validate_specific($data, $files, $tableprefix);
 
         return $err;
@@ -80,7 +80,7 @@ class customfield_define_base {
      * @param   object   data from the add/edit custom field form
      * @return  array    associative array of error messages
      */
-    function define_validate_common($data, $files, $tableprefix) {
+    function define_validate_common($data, $files, $depthid, $tableprefix) {
 
         $err = array();
 
@@ -90,7 +90,7 @@ class customfield_define_base {
 
         } else {
         /// Fetch field-record from DB
-            $field = get_record($tableprefix.'_info_field', 'shortname', $data->shortname);
+            $field = get_record($tableprefix.'_info_field', 'shortname', $data->shortname, 'depthid', $depthid);
         /// Check the shortname is unique
             if ($field and $field->id <> $data->id) {
                 $err['shortname'] = get_string('shortnamenotunique', 'customfields');
