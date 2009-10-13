@@ -1,22 +1,34 @@
 <?php
 
+// Lists all competencies in a given framework
+
 require_once('../config.php');
 require_once('./lib.php');
 require_once($CFG->libdir.'/adminlib.php');
+require_once($CFG->libdir.'/tablelib.php');
+
+define('DEFAULT_PAGE_SIZE', 20);
+define('SHOW_ALL_PAGE_SIZE', 5000);
 
 ///
 /// Setup / loading data
 ///
 
-$sitecontext = get_context_instance(CONTEXT_SYSTEM);
+$sitecontext    = get_context_instance(CONTEXT_SYSTEM);
+$page           = optional_param('page', 0, PARAM_INT);                     // which page to show
+$perpage        = optional_param('perpage', DEFAULT_PAGE_SIZE, PARAM_INT);  // how many per page
+$competencyedit = optional_param('competencyedit', -1, PARAM_BOOL);
 
 // Get params
 $frameworkid = optional_param('frameworkid', 0, PARAM_INT);
-$competencyedit = optional_param('competencyedit', -1, PARAM_BOOL);
-$hide = optional_param('hide', 0, PARAM_INT);
-$show = optional_param('show', 0, PARAM_INT);
-$moveup = optional_param('moveup', 0, PARAM_INT);
-$movedown = optional_param('movedown', 0, PARAM_INT);
+$hide        = optional_param('hide', 0, PARAM_INT);
+$show        = optional_param('show', 0, PARAM_INT);
+$moveup      = optional_param('moveup', 0, PARAM_INT);
+$movedown    = optional_param('movedown', 0, PARAM_INT);
+
+$hidecustomfields       = false;
+$showcompetencyfullname = true;
+$showdepthfullname      = true;
 
 // Load framework
 // If no framework id supplied, use default
@@ -125,35 +137,35 @@ if ($editingon) {
     /// Reorder a competency
     if ((!empty($moveup) or !empty($movedown))) {
         require_capability('moodle/local:updatecompetencies', $sitecontext);
-        $movecourse = NULL;
-        $swapcourse = NULL;
+        $movecompetency = NULL;
+        $swapcompetency = NULL;
 
-        // ensure the course order has no gaps and isn't at 0
-        fix_course_sortorder($category->id);
+        // ensure the competency order has no gaps and isn't at 0
+//        fix_competency_sortorder($category->id);
 
         // we are going to need to know the range
         $max = get_record_sql('SELECT MAX(sortorder) AS max, 1
-                FROM ' . $CFG->prefix . 'course WHERE category=' . $category->id);
+                FROM ' . $CFG->prefix . 'competency WHERE frameworkid=' . $frameworkid);
         $max = $max->max + 100;
 
         if (!empty($moveup)) {
-            $movecourse = get_record('course', 'id', $moveup);
-            $swapcourse = get_record('course', 'category',  $category->id,
-                    'sortorder', $movecourse->sortorder - 1);
+            $movecompetency = get_record('competency', 'id', $moveup);
+            $swapcompetency = get_record('competency', 'frameworkid',  $frameworkid,
+                    'sortorder', $movecompetency->sortorder - 1);
         } else {
-            $movecourse = get_record('course', 'id', $movedown);
-            $swapcourse = get_record('course', 'category',  $category->id,
-                    'sortorder', $movecourse->sortorder + 1);
+            $movecompetency = get_record('competency', 'id', $movedown);
+            $swapcompetency = get_record('competency', 'frameworkid',  $frameworkid,
+                    'sortorder', $movecompetency->sortorder + 1);
         }
 
-        if ($swapcourse and $movecourse) {
+        if ($swapcompetency and $movecompetency) {
             // Renumber everything for robustness
             begin_sql();
-            if (!(    set_field('course', 'sortorder', $max, 'id', $swapcourse->id)
-                   && set_field('course', 'sortorder', $swapcourse->sortorder, 'id', $movecourse->id)
-                   && set_field('course', 'sortorder', $movecourse->sortorder, 'id', $swapcourse->id)
+            if (!(    set_field('competency', 'sortorder', $max, 'id', $swapcompetency->id)
+                   && set_field('competency', 'sortorder', $swapcompetency->sortorder, 'id', $movecompetency->id)
+                   && set_field('competency', 'sortorder', $movecompetency->sortorder, 'id', $swapcompetency->id)
                 )) {
-                notify('Could not update that course!');
+                notify('Could not update that competency!');
             }
             commit_sql();
         }
@@ -179,141 +191,314 @@ $str_movedown     = get_string('movedown');
 $str_hide         = get_string('hide');
 $str_show         = get_string('show');
 $str_customfields = get_string('customfields', 'customfields');
+$str_spacer       = "<img src=\"{$CFG->wwwroot}/pix/spacer.gif\" class=\"iconsmall\" alt=\"\" /> ";
 
 // Display page
 admin_externalpage_print_header();
 
+    // Show framework selector
+    $frameworks = get_records('competency_framework', 'visible', 1);
 
-// Show framework selector
-$frameworks = get_records('competency_framework', 'visible', 1);
+    if (count($frameworks) > 1) {
+        $fwoptions = array();
 
-if (count($frameworks) > 1) {
-    $fwoptions = array();
+        foreach ($frameworks as $fw) {
+            $fwoptions[$fw->id] = $fw->fullname;
+        }
 
-    foreach ($frameworks as $fw) {
-        $fwoptions[$fw->id] = $fw->fullname;
+        echo '<div class="frameworkpicker">';
+        popup_form($CFG->wwwroot.'/competencies/index.php?frameworkid=', $fwoptions, 'switchframework', $framework->id, '');
+        echo '</div>';
     }
 
-    echo '<div class="frameworkpicker">';
-    popup_form($CFG->wwwroot.'/competencies/index.php?frameworkid=', $fwoptions, 'switchframework', $framework->id, '');
-    echo '</div>';
-}
+    $select = "SELECT id, depthid, shortname, fullname, visible";
+    $from   = " FROM {$CFG->prefix}competency";
+    $where  = " WHERE frameworkid=$frameworkid";
+    $sort   = " ORDER BY sortorder";
 
-// Display table
-echo '<table width="95%" cellpadding="5" cellspacing="1" class="generalbox editcompetencies boxaligncenter">';
+    if (!$hidecustomfields) {
+        // Retreive visible customfields definitions
+        $sql = "SELECT cdf.id, cdf.depthid, cdf.shortname, cdf.fullname
+                FROM {$CFG->prefix}competency_depth_info_field cdf
+                JOIN {$CFG->prefix}competency_depth_info_category cdc
+                    ON cdc.id=cdf.categoryid
+                JOIN {$CFG->prefix}competency_depth cd
+                    ON cd.id=cdf.depthid
+                WHERE cd.frameworkid=$frameworkid AND cdf.hidden=0
+                ORDER BY cdc.depthid, cdc.sortorder, cdf.sortorder";
 
-// Setup column headers
-echo '<tr>';
-
-$col = 0;
-foreach ($depths as $depth) {
-    $header = format_string($depth->shortname);
-
-    if ($editingon && $can_edit_depth) {
-        $header .= "<a href=\"{$CFG->wwwroot}/competencies/depth/edit.php?id={$depth->id}\" title=\"$str_edit\">".
-            "<img src=\"{$CFG->pixpath}/t/edit.gif\" class=\"iconsmall\" alt=\"$str_edit\" /></a> ".
-            "<a href=\"{$CFG->wwwroot}/competencies/depth/customfields/index.php?depthid={$depth->id}\" title=\"$str_customfields\">".
-            "<img src=\"{$CFG->pixpath}/t/customfields.gif\" class=\"iconsmall\" alt=\"$str_customfields\" /></a></a>";
+        $customfields = get_records_sql($sql);
+        $customfieldtrack  = array();
     }
+    $colcount = 0;
 
-    echo '<th style="vertical-align:top; text-align:left; white-space:nowrap;" class="header c'.$col.'" scope="col">'.$header.'</th>';
-    $col++;
-}
+    $tablecolumns = array();
+    $tableheaders = array();
 
-echo '<th style="vertical-align:top; text-align:center; white-space:nowrap;" class="header c'.$col.'" scope="col">';
-echo get_string('evidenceitems', 'competencies');
-echo '</th>';
+    foreach ($depths as $depth) {
 
-echo '</tr>';
+        $tablecolumns[] = format_string($depth->fullname);
 
-$numdepthcols = count($depths);
+        if ($showdepthfullname) {
+            $header = format_string($depth->fullname);
+        } else {
+            $header = format_string($depth->shortname);
+        }
+        if ($editingon && $can_edit_depth) {
+            $header .= "<a href=\"{$CFG->wwwroot}/competencies/depth/edit.php?id={$depth->id}\" title=\"$str_edit\">".
+                "<img src=\"{$CFG->pixpath}/t/edit.gif\" class=\"iconsmall\" alt=\"$str_edit\" /></a> ".
+                "<a href=\"{$CFG->wwwroot}/competencies/depth/customfields/index.php?depthid={$depth->id}\" title=\"$str_customfields\">".
+                "<img src=\"{$CFG->pixpath}/t/customfields.gif\" class=\"iconsmall\" alt=\"$str_customfields\" /></a>";
+        }
+        $tableheaders[] = $header;
+        $colcount++;
 
-// Create data rows
-if ($competencies) {
-
-    // Add rows to table
-    foreach ($competencies as $competency) {
-        $row = '';
-
-        // Add edit link
-        $buttons = array();
-        if ($editingon && $can_edit_comp) {
-            $buttons[] = "<a href=\"{$CFG->wwwroot}/competencies/edit.php?id={$competency->id}\" title=\"$str_edit\">".
-                "<img src=\"{$CFG->pixpath}/t/edit.gif\" class=\"iconsmall\" alt=\"$str_edit\" /></a>";
-
-            if ($competency->visible) {
-                $buttons[] = "<a href=\"{$CFG->wwwroot}/competencies/index.php?hide={$competency->id}\" title=\"$str_hide\">".
-                    "<img src=\"{$CFG->pixpath}/t/hide.gif\" class=\"iconsmall\" alt=\"$str_hide\" /></a>";
-            } else {
-                $buttons[] = "<a href=\"{$CFG->wwwroot}/competencies/index.php?show={$competency->id}\" title=\"$str_show\">".
-                    "<img src=\"{$CFG->pixpath}/t/show.gif\" class=\"iconsmall\" alt=\"$str_show\" /></a>";
+        if (!$hidecustomfields) {
+            $customfieldcount = 0;
+            foreach ($customfields as $customfield) {
+                if (!$customfield->hidden && $customfield->depthid == $depth->id) {
+                    $tablecolumns[] = format_string($depth->fullname).'-'.format_string($customfield->fullname);
+                    $tableheaders[] = format_string($customfield->fullname);
+                    $customfieldcount++;
+                    $colcount++;
+                }
             }
+            $customfieldtrack[$depth->depthlevel] = $customfieldcount;
+        }
+    }
+
+    if ($editingon) {
+        $tablecolumns[] = "edit";
+        $tableheaders[] = "Edit";
+        $colcount++;
+    }
+
+    $tablecolumns[] = "evidence";
+    $tableheaders[] = "Evidence items";
+    $colcount++;
+
+    $table = new flexible_table('competency-framework-index-'.$frameworkid);
+
+    $table->define_columns($tablecolumns);
+    $table->define_headers($tableheaders);
+    $table->define_baseurl($baseurl);
+
+    $table->set_attribute('cellspacing', '0');
+    $table->set_attribute('id', 'competencies');
+    $table->set_attribute('class', 'generaltable generalbox');
+
+    $table->set_control_variables(array(
+                TABLE_VAR_SORT    => 'ssort',
+                TABLE_VAR_HIDE    => 'shide',
+                TABLE_VAR_SHOW    => 'sshow',
+                TABLE_VAR_IFIRST  => 'sifirst',
+                TABLE_VAR_ILAST   => 'silast',
+                TABLE_VAR_PAGE    => 'spage'
+                ));
+    $table->setup();
+
+    $table->initialbars(true);
+
+    $matchcount = count_records_sql('SELECT COUNT (DISTINCT id) '.$from.$where);
+
+    $table->pagesize($perpage, $matchcount);
+
+    $competencylist = get_recordset_sql($select.$from.$where.$wheresearch.$sort,
+            $table->get_page_start(),  $table->get_page_size());
+
+    if ($competencylist)  {
+
+        $competenciesfound = false;
+        $competencytrack = array();
+        $data = array();
+        $i = 0;
+
+        while ($competency = rs_fetch_next_record($competencylist)) {
+
+            $competenciesfound = true;
+
+            $j = 0;
+            foreach ($depths as $depth) {
+
+                if ($depth->id == $competency->depthid) {
+                    $cssclass = !$competency->visible ? 'class="dimmed"' : '';
+                    $competencyname = $showcompetencyfullname ? $competency->fullname : $competency->shortname;
+                    $cell = "<a $cssclass href=\"{$CFG->wwwroot}/competencies/view.php?id={$competency->id}\">{$competencyname}</a>";
+                    $data[$i][$j] = $cell;
+                } else {
+                    $data[$i][$j] = '';
+                }
+                $j++;
+                if (!$hidecustomfields) {
+                    for ($k=0; $k < $customfieldtrack[$depth->depthlevel]; $k++) {
+                        $data[$i][$j] = '';
+                        $j++;
+                    }
+                }
+            }
+
+            // Add edit and delete buttons
+            if ($editingon) {
+                $buttons = array();
+                if ($can_edit_comp) {
+                    $buttons[] = "<a href=\"{$CFG->wwwroot}/competencies/edit.php?id={$competency->id}\" title=\"$str_edit\">".
+                        "<img src=\"{$CFG->pixpath}/t/edit.gif\" class=\"iconsmall\" alt=\"$str_edit\" /></a>";
+
+                    if ($competency->visible) {
+                        $buttons[] = "<a href=\"{$CFG->wwwroot}/competencies/index.php?hide={$competency->id}\" title=\"$str_hide\">".
+                            "<img src=\"{$CFG->pixpath}/t/hide.gif\" class=\"iconsmall\" alt=\"$str_hide\" /></a>";
+                    } else {
+                        $buttons[] = "<a href=\"{$CFG->wwwroot}/competencies/index.php?show={$competency->id}\" title=\"$str_show\">".
+                            "<img src=\"{$CFG->pixpath}/t/show.gif\" class=\"iconsmall\" alt=\"$str_show\" /></a>";
+                    }
+                }
+                if ($can_delete_comp) {
+                    $buttons[] = "<a href=\"{$CFG->wwwroot}/competencies/delete.php?id={$competency->id}\" title=\"$str_delete\">".
+                        "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_delete\" /></a>";
+                }
+                if ($competency->depthid > 1) {
+                    $up = true;
+                    $down = true;
+
+                    if ($up) {
+                        $buttons[] = "<a href=\"index.php?moveup={$competency->id}\" title=\"$str->moveup\">".
+                            "<img src=\"{$CFG->pixpath}/t/up.gif\" class=\"iconsmall\" alt=\"$str->moveup\" /></a> ";
+                    } else {
+                       $buttons[] = $str_spacer;
+                    }
+                    if ($down) {
+                        $buttons[] = "<a href=\"index.php?movedown={$competency->id}\" title=\"$str_moveup\">".
+                            "<img src=\"{$CFG->pixpath}/t/down.gif\" class=\"iconsmall\" alt=\"$str_movedown\" /></a> ";
+                    } else {
+                       $buttons[] = $str_spacer;
+                    }
+                }
+                $data[$i][$j] = implode($buttons, ' ');
+                $j++;
+            }
+
+            // Evidence items
+            $data[$i][$j] = '0';
+
+            $i++;
+            $competencytrack[] = $competency->id;
         }
 
-        // Add delete link
-        if ($editingon && $can_delete_comp) {
-            $buttons[] = "<a href=\"{$CFG->wwwroot}/competencies/delete.php?id={$competency->id}\" title=\"$str_delete\">".
-                "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_delete\" /></a>";
-        }
+        if ($competenciesfound) {
+            if ($hidecustomfields) {
+            // Go ahead and print the tabledata   
 
-        $cssclass = !$competency->visible ? 'class="dimmed"' : '';
-
-        // Show name in correct column
-        $col = 0;
-        foreach ($depths as $depth) {
-            if ($depth->id == $competency->depthid) {
-                $name = format_string($competency->shortname);
-                $row .= '<td colspan="'.($numdepthcols - $col).'">';
-                $row .= "<a $cssclass href=\"{$CFG->wwwroot}/competencies/view.php?id={$competency->id}\">{$name}</a>";
-
-                if ($buttons) {
-                    $row .= " ".implode($buttons, ' ');
+                for ($i=0; $i < count($competencytrack); $i++) {
+                    $tabledata = array();
+                    for ($j=0; $j < $colcount; $j++) {
+                        $tabledata[] = $data[$i][$j];
+                    }
+                    $table->add_data($tabledata);
                 }
 
-                $row .= '</td>';
-                break;
             } else {
-                $row .= '<td></td>';
+            // Get the custom data and populate the table
+
+                $select = "SELECT c.id as competencyid, cdf.depthid, cdf.id as fieldid, cdd.data";
+                $from   = " FROM {$CFG->prefix}competency c
+                        LEFT OUTER JOIN {$CFG->prefix}competency_depth_info_field cdf 
+                            ON cdf.depthid=c.depthid 
+                        LEFT OUTER JOIN {$CFG->prefix}competency_depth_info_data cdd 
+                            ON cdd.fieldid=cdf.id AND cdd.competencyid=c.id";
+                $where  = " WHERE c.frameworkid=$frameworkid AND c.id IN (".implode(",", $competencytrack).") AND cdf.hidden=0";
+                $sort   = " ORDER BY c.sortorder, cdf.categoryid, cdf.sortorder";
+
+                $customdatalist = get_recordset_sql($select.$from.$where.$wheresearch.$sort);
+
+                if ($customdatalist) {
+
+                    $competencyid=0;
+                    $depthid=0;
+                    $i=0;
+                    $j=0;
+
+                    // Add the custom data to the array
+                    while ($customdata = rs_fetch_next_record($customdatalist)) {
+
+                        if ($competencyid != $customdata->competencyid) {
+
+                            if (empty($competencyid)) {
+
+                                // Initialise the first competency
+                                $competencyid = $customdata->competencyid;
+                                $depthid      = $customdata->depthid;
+
+                            } else {
+
+                                // We've got all the data for the last competency
+                                // So we can add it to the table
+                                $tabledata = array();
+                                for ($k=0; $k < $colcount; $k++) {
+                                    $tabledata[] = $data[$i][$k];
+                                }
+                                $table->add_data($tabledata);
+
+                                // Now continue with the new competency
+                                $competencyid = $customdata->competencyid;
+                                $depthid      = $customdata->depthid;
+                                $i++;
+                                $j=0;
+
+                            }
+
+                            // Advance to the column starting with depthid
+                            foreach ($depths as $depth) {
+                                $j++; // add one for the competency
+                                if ($depth->id == $depthid) {
+                                    break;
+                                } else {
+                                    $j += $customfieldtrack[$depth->depthlevel];
+                                }
+                            }
+                        }
+
+                        $data[$i][$j] = $customdata->data;
+                        $j++;
+
+                    }
+                }
             }
-            $col++;
+        }
+    }
+
+    // Display table
+    $table->print_html();
+
+    // Editing buttons
+    if ($can_add_comp || $can_add_depth) {
+        echo '<div class="buttons">';
+
+        // Print button for creating new competency
+        if ($can_add_comp) {
+            $options = array('frameworkid' => $framework->id);
+            print_single_button($CFG->wwwroot.'/competencies/edit.php', $options, get_string('addnewcompetency', 'competencies'), 'get');
         }
 
-        // Evidence items
-        $row .= '<td align="center">';
-        $row .= '0';
-        $row .= '</td>';
-
-        echo '<tr>'.$row.'</tr>';
-    }
-} else {
-    // If no competencies, add a message
-    echo '<tr><td colspan="'.($numdepthcols + 1).'"><i>'.get_string('nocompetenciesinframework', 'competencies').'</i></td></tr>';
-}
-
-echo '</table>';
-
-#print_paging_bar($usercount, $page, $perpage,
-#    "user.php?sort=$sort&amp;dir=$dir&amp;perpage=$perpage&amp;");
+        // Print button to add a depth level
+        if ($can_add_depth) {
+            $options = array('frameworkid' => $framework->id);
+            print_single_button($CFG->wwwroot.'/competencies/depth/edit.php', $options, get_string('adddepthlevel', 'competencies'), 'get');
+        }
 
 
-// Editing buttons
-if ($can_add_comp || $can_add_depth) {
-    echo '<div class="buttons">';
-
-    // Print button for creating new competency
-    if ($can_add_comp) {
-        $options = array('frameworkid' => $framework->id);
-        print_single_button($CFG->wwwroot.'/competencies/edit.php', $options, get_string('addnewcompetency', 'competencies'), 'get');
+        echo '</div>';
     }
 
-    // Print button to add a depth level
-    if ($can_add_depth) {
-        $options = array('frameworkid' => $framework->id);
-        print_single_button($CFG->wwwroot.'/competencies/depth/edit.php', $options, get_string('adddepthlevel', 'competencies'), 'get');
+    if ($perpage == SHOW_ALL_PAGE_SIZE) {
+        echo '<div id="showall"><a href="'.$perpageurl.'&amp;perpage='.DEFAULT_PAGE_SIZE.'">'.get_string('showperpage', '', DEFAULT_PAGE_SIZE).'</a></div>';
+
+    } else if ($matchcount > 0 && $perpage < $matchcount) {
+        echo '<div id="showall"><a href="'.$perpageurl.'&amp;perpage='.SHOW_ALL_PAGE_SIZE.'">'.get_string('showall', 'competencies', $matchcount).'</a></div>';
     }
 
+    print_footer();
 
-    echo '</div>';
-}
+    if ($competencylist) {
+        rs_close($competencylist);
+    }
 
-print_footer();
