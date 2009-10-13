@@ -282,6 +282,7 @@ admin_externalpage_print_header();
 
     $tablecolumns[] = "evidence";
     $tableheaders[] = "Evidence items";
+    $coledit = $colcount;
     $colcount++;
 
     $table = new flexible_table('competency-framework-index-'.$frameworkid);
@@ -320,8 +321,10 @@ admin_externalpage_print_header();
 
     if ($competencylist)  {
 
-        $competenciesfound = false;
-        $competencytrack = array();
+        $competenciesfound = false;   // track if we found any competencies
+        $competencytrack   = array(); // track all the competencies found, used after the loop to add custom data for each competency
+        $depthidtrack      = 0;       // flag if we've moved to a new depthid in the loop
+        $moveiconup        = false;   // the up icon is needed for a competency (down icon is handled after)
         $data = array();
         $i = 0;
 
@@ -337,6 +340,18 @@ admin_externalpage_print_header();
                     $competencyname = $showcompetencyfullname ? $competency->fullname : $competency->shortname;
                     $cell = "<a $cssclass href=\"{$CFG->wwwroot}/competencies/view.php?id={$competency->id}\">{$competencyname}</a>";
                     $data[$i][$j] = $cell;
+                    if ($editingon) {
+                        $moveiconup   = false;
+                        if ($depthidtrack != 0 && $depth->depthlevel == 0) { // it's not the first and we're at the top level
+                            $moveiconup   = true;
+                        } elseif ($depthidtrack == $depth->id) {
+                            // depthid hasn't changed so the competency can move up and the last one can move down
+                            $moveiconup       = true;
+                            $data[$i-1][$coledit-1] .= "<a href=\"index.php?movedown=".end($competencytrack)."\" title=\"$str_moveup\">".
+                                     "<img src=\"{$CFG->pixpath}/t/down.gif\" class=\"iconsmall\" alt=\"$str_movedown\" /></a> ";
+                        }
+                        $depthidtrack = $depth->id;
+                    }
                 } else {
                     $data[$i][$j] = '';
                 }
@@ -368,22 +383,11 @@ admin_externalpage_print_header();
                     $buttons[] = "<a href=\"{$CFG->wwwroot}/competencies/delete.php?id={$competency->id}\" title=\"$str_delete\">".
                         "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_delete\" /></a>";
                 }
-                if ($competency->depthid > 1) {
-                    $up = true;
-                    $down = true;
-
-                    if ($up) {
-                        $buttons[] = "<a href=\"index.php?moveup={$competency->id}\" title=\"$str->moveup\">".
-                            "<img src=\"{$CFG->pixpath}/t/up.gif\" class=\"iconsmall\" alt=\"$str->moveup\" /></a> ";
-                    } else {
-                       $buttons[] = $str_spacer;
-                    }
-                    if ($down) {
-                        $buttons[] = "<a href=\"index.php?movedown={$competency->id}\" title=\"$str_moveup\">".
-                            "<img src=\"{$CFG->pixpath}/t/down.gif\" class=\"iconsmall\" alt=\"$str_movedown\" /></a> ";
-                    } else {
-                       $buttons[] = $str_spacer;
-                    }
+                if ($moveiconup) {
+                    $buttons[] = "<a href=\"index.php?moveup={$competency->id}\" title=\"$str->moveup\">".
+                        "<img src=\"{$CFG->pixpath}/t/up.gif\" class=\"iconsmall\" alt=\"$str->moveup\" /></a> ";
+                } else {
+                   $buttons[] = $str_spacer;
                 }
                 $data[$i][$j] = implode($buttons, ' ');
                 $j++;
