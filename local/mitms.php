@@ -34,3 +34,32 @@ if (!defined('MOODLE_INTERNAL')) {
     die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
 }
 
+/**
+* print out the MITMS nav section
+*/
+function mitms_print_static_nav($return=false) {
+    global $CFG, $USER;
+
+    $returnstr = '
+     <ul id="mitms-nav">
+       <li><a href="' . $CFG->wwwroot . '">' . get_string('home') . '</a></li>
+    ';
+    if (!isloggedin()) {
+        $returnstr .= '
+       <li><a href="' . $CFG->wwwroot . '/login/index.php">' . get_string('login') . '</a></li>
+        ';
+    } else {
+        $returnstr .= '
+       <li><a href="' . $CFG->wwwroot . '/login/logout.php">' . get_string('logout') . '</a></li>
+        ';
+    }
+    $returnstr .= '
+     </ul>
+    ';
+
+    if ($return) {
+        return $returnstr;
+    }
+    echo $returnstr;
+}
+
