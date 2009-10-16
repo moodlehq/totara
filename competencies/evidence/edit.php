@@ -2,6 +2,7 @@
 
 require_once('../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
+require_once($CFG->dirroot.'/course/lib.php');
 
 
 ///
@@ -10,6 +11,7 @@ require_once($CFG->libdir.'/adminlib.php');
 
 // competency id
 $id = required_param('id', PARAM_INT);
+$type = optional_param('type', -1, PARAM_INT);
 
 // Check perms
 admin_externalpage_setup('competencymanage', '', array(), '', $CFG->wwwroot.'/competencies/edit.php');
@@ -39,32 +41,74 @@ $can_edit_comp = has_capability('moodle/local:updatecompetencies', $sitecontext)
 /// Display page
 ///
 
+
+// Load all categories
+$categories = array();
+$parents = array();
+make_categories_list($categories, $parents);
+
 ?>
 
-<h2 style="border-bottom: 1px solid #CACACA; font-size: 1em; margin: 10px 0; padding-bottom: 5px; text-align: left; font-weight: bold; font-family: Verdana, Arial, Helvetica, sans-serif; color: #002C3F;">
-<?php echo get_string('addnewevidenceitem', 'competencies') ?>
-</h2>
+<h2><?php echo get_string('addnewevidenceitem', 'competencies') ?></h2>
 
-<p>Select the evidence type:</p>
-<ul>
-    <li>
-        Activity completion
-    </li>
-    <li>
-        Activity grade
-    </li>
-    <li>
-        Activity outcome
-    </li>
-    <li>
-        Course completion
-    </li>
-    <li>
-        Course grade
-    </li>
-    <li>
-        File
-    </li>
-</ul>
+<div id="available-evidence">
+</div>
+
+<p>
+    Locate course:
+</p>
+
+<ul id="categories" class="filetree">
 <?php
 
+    $len = count($categories);
+    $i = 0;
+    $parent = array();
+
+    // Add empty category to end of array to trigger
+    // closing nested lists
+    $categories[] = null;
+
+    foreach ($categories as $id => $category) {
+        $i++;
+
+        // If an actual category
+        if ($category !== null) {
+            if (!isset($parents[$i])) {
+                $this_parent = array();
+            } else {
+                $this_parents = array_reverse($parents[$i]);
+                $this_parent = $parents[$i];
+            }
+        // If placeholder category at end
+        } else {
+            $this_parent = array();
+        }
+
+        if ($this_parent == $parent) {
+            if ($i > 1) {
+                echo '<li><span>Loading courses...</span></li></ul></li>';
+            }
+        } else {
+            // If there are less parents now
+            $diff = count($parent) - count($this_parent);
+
+            if ($diff) {
+                echo str_repeat('</li><li><span>Loading courses...</span></li></ul>', $diff + 1);
+            }
+
+            $parent = $this_parent;
+        }
+
+        if ($category !== null) {
+            // Grab category name
+            $rpos = strrpos($category, ' / ');
+            if ($rpos) {
+                $category = substr($category, $rpos + 3);
+            }
+            echo '<li class="closed" id="cat_list_'.$id.'"><span class="folder" id="cat_'.$id.'">'.$category.'</span><ul>'.PHP_EOL;
+        }
+    }
+
+?>
+</ul>

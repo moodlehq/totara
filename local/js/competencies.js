@@ -1,5 +1,6 @@
 // Setup
 YAHOO.namespace('competencies.dialogs');
+YAHOO.namespace('competencies.setupFuncs');
 
 // Dialog object
 function yuiDialog(title, buttonid, default_url) {
@@ -171,6 +172,9 @@ function yuiDialog(title, buttonid, default_url) {
             this,
             true
         );
+
+        // Run setup function
+        YAHOO.competencies.setupFuncs[this.title]();
     }
 
 
@@ -181,29 +185,6 @@ function yuiDialog(title, buttonid, default_url) {
 
 // Bind functionality to page on load
 YAHOO.util.Event.onDOMReady(function () {
-
-    loader = new YAHOO.util.YUILoader({
-        require: ["container"],
-
-        skin: {
-
-            // Specifies the location of the skin relative to the build
-            // directory for the skinnable component.
-            base: 'assets/skins/',
-
-            // The default skin, which is automatically applied if not
-            // overriden by a component-specific skin definition.
-            // Change this in to apply a different skin globally 
-            defaultSkin: 'sam',
-        },
-
-        onSuccess: function(o) {
-            //callback logic goes here
-        }
-    });
-
-    loader.insert();
-
     YAHOO.competencies.dialogs.add = new yuiDialog(
         'addevidence',
         'show-evidence-dialog',

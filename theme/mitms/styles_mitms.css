@@ -801,3 +801,28 @@ div.yui-dialog div.yui-panel .bd h2 {
 }
 
 /** Competencies lightbox styling **/
+#addevidence ul#categories li {
+    font-size: 0.8em;
+}
+
+#addevidence ul#categories li li {
+    font-size: 1em;
+}
+
+#addevidence ul#categories li span {
+    padding-left: 0.25em;
+}
+
+#addevidence ul#categories li span.folder {
+    padding-left: 1.75em;
+}
+
+#addevidence ul#categories li span.clickable {
+    cursor: pointer;
+}
+
+#addevidence #available-evidence {
+    float: right;
+    width: 40%;
+    border-left: 1px solid #ccc;
+}

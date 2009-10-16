@@ -29,17 +29,21 @@ if (update_competency_button()) {
 // Load required javascript libraries
 require_js(
     array(
+        $CFG->wwwroot.'/local/js/jquery-1.3.2.min.js',
         'yui_yahoo',
-        'yui_yuiloader',
         'yui_dom',
         'yui_event',
         'yui_element',
-        'yui_button',
         'yui_animation',
         'yui_connection',
         'yui_container',
+        'yui_json',
     )
 );
+
+?>
+    <link rel="stylesheet" href="<?php echo $CFG->wwwroot ?>/local/js/jquery.treeview.css" type="text/css" />
+<?php
 
 // Make this page appear under the manage competencies admin item
 admin_externalpage_setup('competencymanage', $navbaritem);
@@ -74,7 +78,9 @@ admin_externalpage_print_header();
 
 // Make sure page specific javascript is loaded
 $js = array(
+    $CFG->wwwroot.'/local/js/jquery.treeview.min.js',
     $CFG->wwwroot.'/local/js/competencies.js',
+    $CFG->wwwroot.'/local/js/evidence.js',
 );
 require_js($js);
 

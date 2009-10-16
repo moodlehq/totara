@@ -72,6 +72,36 @@ class competency_edit_form extends moodleform {
             $aggregations[$key] = get_string('aggregationmethod'.$key, 'competencies');
         }
 
+        // Get all available scales and their values
+        $scales_raw = get_records_sql("
+            SELECT
+                v.id AS vid,
+                s.id AS sid,
+                s.name AS scale,
+                v.name AS value
+            FROM
+                {$CFG->prefix}competency_scale_values v,
+                {$CFG->prefix}competency_scale_assignments a,
+                {$CFG->prefix}competency_scale s
+            WHERE
+                a.frameworkid = {$competency->frameworkid}
+            AND a.scaleid = s.id
+            AND s.id = v.scaleid
+        ");
+
+        $scales = array();
+        $values = array();
+        if ($scales_raw) {
+            foreach ($scales_raw as $value) {
+                if (!isset($scales[$value->sid])) {
+                    $scales[$value->sid] = $value->scale;
+                    $values[$value->sid] = array();
+                }
+
+                $values[$value->sid][$value->vid] = $value->value;
+            }
+        }
+
         $strgeneral  = get_string('general');
 
         /// Add some extra hidden fields
@@ -116,6 +146,21 @@ class competency_edit_form extends moodleform {
         $mform->addElement('select', 'aggregationmethod', get_string('aggregationmethod', 'competencies'), $aggregations);
         $mform->setHelpButton('aggregationmethod', array('competencyaggregationmethod', get_string('aggregationmethod', 'competencies')), true);
         $mform->addRule('aggregationmethod', get_string('aggregationmethod', 'competencies'), 'required', null, 'client');
+
+        $mform->addElement('select', 'scaleid', get_string('scale'), $scales);
+        $mform->setHelpButton('scaleid', array('competencyscale', get_string('scale')), true);
+        $mform->addRule('scaleid', get_string('scale'), 'required', null, 'client');
+        if (count($scales) == 1) {
+            $keys = array_keys($scales);
+            var_dump($scales);
+            var_dump($keys);
+            $mform->setDefault('scaleid', $keys[0]);
+            $mform->hardFreeze('scaleid');
+        }
+
+#        $mform->addElement('select', 'aggregationmethod', get_string('aggregationmethod', 'competencies'), $aggregations);
+#        $mform->setHelpButton('aggregationmethod', array('competencyaggregationmethod', get_string('aggregationmethod', 'competencies')), true);
+#        $mform->addRule('aggregationmethod', get_string('aggregationmethod', 'competencies'), 'required', null, 'client');
 
         /// Next show the custom fields if we're editing an existing competency (otherwise we don't know the depthid)
         if ($competency->id) {
