@@ -90,6 +90,30 @@ class hierarchy {
     }
 
     /**
+    * Get editing button
+    * @param signed int edit - is editing on or off?
+    * @return button or ''
+    */
+    function get_editing_button($edit=-1){
+        global $USER;
+        if ($edit !== -1) {
+            $USER->{$this->prefix.'editing'} = $edit;
+        }
+        // Work out the appropriate action.
+        if (empty($USER->{$this->prefix.'editing'})) {
+            $label = get_string('turneditingon');
+            $edit = 'on';
+        } else {
+            $label = get_string('turneditingoff');
+            $edit = 'off';
+        }
+
+        // Generate the button HTML.
+        $options = array('frameworkid' => $this->frameworkid, 'edit' => $edit);
+        return print_single_button($_SERVER['PHP_SELF'], $options, $label, 'get', '', true);
+    }
+
+    /**
      * Display pulldown menu of frameworks
      * @return boolean success
      */
