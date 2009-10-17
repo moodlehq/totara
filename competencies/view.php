@@ -2,28 +2,36 @@
 
 require_once('../config.php');
 require_once($CFG->libdir.'/adminlib.php');
-require_once($CFG->dirroot.'/competencies/lib.php');
-
+require_once($CFG->libdir.'/hierarchylib.php');
 
 ///
 /// Setup / loading data
 ///
 
 // competency id
-$id = required_param('id', PARAM_INT);
-$competencyedit = optional_param('competencyedit', -1, PARAM_BOOL);
+$id          = required_param('id', PARAM_INT);
+$edit        = optional_param('edit', -1, PARAM_BOOL);
+$sitecontext = get_context_instance(CONTEXT_SYSTEM);
 
-// Handle editing toggling
-$options = array('id' => $id);
-if (update_competency_button()) {
-    if ($competencyedit !== -1) {
-        $USER->competencyediting = $competencyedit;
-    }
-    $editingon = !empty($USER->competencyediting);
-    $navbaritem = update_competency_button($options); // Must call this again after updating the state.
+$hierarchy         = new hierarchy();
+$hierarchy->prefix = 'competency';
+$item              = $hierarchy->get_item_by_id($id);
+$depth             = $hierarchy->get_depth_by_id($item->depthid);
+$framework         = $hierarchy->get_framework($item->frameworkid);
+
+// Cache user capabilities
+$can_add_item    = has_capability('moodle/local:createcompetencies', $sitecontext);
+$can_edit_item   = has_capability('moodle/local:updatecompetencies', $sitecontext);
+$can_delete_item = has_capability('moodle/local:deletecompetencies', $sitecontext);
+$can_add_depth   = has_capability('moodle/local:createcompetencydepth', $sitecontext);
+$can_edit_depth  = has_capability('moodle/local:updatecompetencydepth', $sitecontext);
+
+if ($can_edit_item || $can_delete_item || $can_add_depth || $can_edit_depth) {
+    $options = array('id' => $item->id);
+    $navbaritem = $hierarchy->get_editing_button($edit, $options);
+    $editingon = !empty($USER->{$hierarchy->prefix.'editing'});
 } else {
     $navbaritem = '';
-    $editingon = false;
 }
 
 // Load required javascript libraries
@@ -45,25 +53,11 @@ require_js(
     <link rel="stylesheet" href="<?php echo $CFG->wwwroot ?>/local/js/jquery.treeview.css" type="text/css" />
 <?php
 
-// Make this page appear under the manage competencies admin item
-admin_externalpage_setup('competencymanage', $navbaritem);
+// Make this page appear under the manage items admin menu
+admin_externalpage_setup($hierarchy->prefix.'manage', $navbaritem);
 
 $sitecontext = get_context_instance(CONTEXT_SYSTEM);
 require_capability('moodle/local:viewcompetencies', $sitecontext);
-
-if (!$competency = get_record('competency', 'id', $id)) {
-    error('Competency ID was incorrect');
-}
-
-// Load framework
-if (!$framework = get_record('competency_framework', 'id', $competency->frameworkid)) {
-    error('Competency framework could not be found');
-}
-
-// Load depth
-if (!$depth = get_record('competency_depth', 'id', $competency->depthid)) {
-    error('Competency depth could not be found');
-}
 
 // Cache user capabilities
 $can_edit_comp = has_capability('moodle/local:updatecompetencies', $sitecontext);
@@ -84,12 +78,12 @@ $js = array(
 );
 require_js($js);
 
-$heading = "{$depth->fullname} - {$competency->fullname}";
+$heading = "{$depth->fullname} - {$item->fullname}";
 
 // If editing on, add edit icon
 if ($editingon) {
     $str_edit = get_string('edit');
-    $heading .= " <a href=\"{$CFG->wwwroot}/competencies/edit.php?id={$competency->id}\" title=\"$str_edit\">".
+    $heading .= " <a href=\"{$CFG->wwwroot}/competencies/edit.php?id={$item->id}\" title=\"$str_edit\">".
             "<img src=\"{$CFG->pixpath}/t/edit.gif\" class=\"iconsmall\" alt=\"$str_edit\" /></a>";
 }
 
@@ -98,31 +92,31 @@ print_heading($heading);
 $depthstr = $depth->fullname;
 
 ?>
-<table class="generalbox viewcompetency" cellpadding="5" cellspacing="1">
+<table class="generalbox view<?php echo $hierarchy->prefix ?>" cellpadding="5" cellspacing="1">
 <tbody>
     <tr>
         <th class="header" width="200"><?php echo get_string('fullnameview', 'competencies', $depthstr) ?></th>
-        <td class="cell" width="400"><?php echo format_string($competency->fullname) ?></td>
+        <td class="cell" width="400"><?php echo format_string($item->fullname) ?></td>
     </tr>
     <tr>
         <th class="header"><?php echo get_string('idnumberview', 'competencies', $depthstr) ?></th>
-        <td class="cell"><?php echo format_string($competency->idnumber) ?></td>
+        <td class="cell"><?php echo format_string($item->idnumber) ?></td>
     </tr>
     <tr>
         <th class="header"><?php echo get_string('descriptionview', 'competencies', $depthstr) ?></th>
-        <td class="cell"><?php echo format_text($competency->description, FORMAT_HTML) ?></td>
+        <td class="cell"><?php echo format_text($item->description, FORMAT_HTML) ?></td>
     </tr>
     <tr>
         <th class="header"><?php echo get_string('aggregationmethodview', 'competencies', $depthstr) ?></th>
-        <td class="cell"><?php echo get_string('aggregationmethod'.$competency->aggregationmethod, 'competencies') ?></td>
+        <td class="cell"><?php echo get_string('aggregationmethod'.$item->aggregationmethod, 'competencies') ?></td>
     </tr>
 
 <?php
 
 $sql = "SELECT cdif.fullname, cdid.data
-        FROM {$CFG->prefix}competency_depth_info_data cdid
-        JOIN {$CFG->prefix}competency_depth_info_field cdif ON cdid.fieldid=cdif.id
-        WHERE cdid.competencyid=$competency->id";
+        FROM {$CFG->prefix}{$hierarchy->prefix}_depth_info_data cdid
+        JOIN {$CFG->prefix}{$hierarchy->prefix}_depth_info_field cdif ON cdid.fieldid=cdif.id
+        WHERE cdid.{$hierarchy->prefix}id={$item->id}";
 
 if ($cfdata = get_records_sql($sql)) {
     foreach ($cfdata as $cf) {
@@ -203,14 +197,14 @@ if ($editingon && $can_edit_comp) {
 
 <script type="text/javascript">
     <!-- //
-    var competency_id = '<?php echo $competency->id ?>';
+    var <?php echo $hierarchy->prefix ?>_id = '<?php echo $item->id ?>';
     // -->
 </script>
 
 <div class="singlebutton">
 <form action="<?php echo $CFG->wwwroot ?>/competencies/evidence/edit.php" method="get">
 <div>
-<input type="hidden" name="competency" value="<?php echo $competency->id ?>" />
+<input type="hidden" name="<?php echo $hierarchy->prefix ?>" value="<?php echo $item->id ?>" />
 <input type="submit" id="show-evidence-dialog" value="<?php echo get_string('addnewevidenceitem', 'competencies') ?>" />
 </div>
 </form>
