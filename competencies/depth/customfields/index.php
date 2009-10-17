@@ -4,18 +4,22 @@ require('../../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->libdir.'/customfieldlib.php');
 require_once($CFG->libdir.'/customfield/definelib.php');
+require_once($CFG->libdir.'/hierarchylib.php');
 
 $depthid    = optional_param('depthid', '0', PARAM_INT);
 $action   = optional_param('action', '', PARAM_ALPHA);
 
+$hierarchy         = new hierarchy();
+$hierarchy->prefix = 'competency';
+
 $redirect    = $CFG->wwwroot.'/competencies/depth/customfields/index.php';
-$tableprefix = 'competency_depth';
+$tableprefix = $hierarchy->prefix.'_depth';
 
 if ($depthid) {
     $redirect .= '?depthid='.$depthid;
 }
 
-admin_externalpage_setup('competencydepthcustomfields');
+admin_externalpage_setup($hierarchy->prefix.'depthcustomfields');
 
 // check if any actions need to be performed
 switch ($action) {
@@ -47,7 +51,7 @@ switch ($action) {
         }   
 
         //ask for confirmation
-        $fieldcount = count_records('competency_depth_info_field', 'categoryid', $id);
+        $fieldcount = count_records($hierarchy->prefix.'_depth_info_field', 'categoryid', $id);
         $optionsyes = array ('id'=>$id, 'confirm'=>1, 'action'=>'deletecategory', 'sesskey'=>sesskey());
         admin_externalpage_print_header();
         print_heading('deletecategory', 'customfields');
@@ -90,20 +94,18 @@ switch ($action) {
 }
 
 admin_externalpage_print_header();
-print_heading(get_string('competencydepthcustomfields', 'competencies'));
+print_heading(get_string($hierarchy->prefix.'depthcustomfields', 'competencies'));
 
 // show custom fields for the given depth
 if ($depthid) {
 
-    $competencydepth = get_record_select('competency_depth', "id='$depthid'");
-    $sql = "SELECT cf.id, cf.fullname FROM {$CFG->prefix}competency_depth cd, {$CFG->prefix}competency_framework cf WHERE cf.id = cd.frameworkid and cd.id='$depthid'";
-    $competencyframework = get_record_sql($sql);
-    $competency = get_record_select('competency', "id='$depthid'");
-    $categories = get_records_select('competency_depth_info_category', "depthid='$depthid'", 'sortorder ASC');
+    $depth      = $hierarchy->get_depth_by_id($depthid);
+    $framework  = $hierarchy->get_framework($depth->frameworkid);
+    $categories = get_records_select($hierarchy->prefix.'_depth_info_category', "depthid='$depthid'", 'sortorder ASC');
     $categorycount = count($categories);
 
-    echo "<b>".get_string('framework', 'competencies').":</b> <a href=\"".$CFG->wwwroot."/competencies/index.php?frameworkid=".$competencyframework->id."\">$competencyframework->fullname</a><br>";
-    echo "<b>".get_string('depthlevel', 'competencies').":</b> $competencydepth->fullname<br>";
+    echo "<b>".get_string('framework', 'competencies').":</b> <a href=\"".$CFG->wwwroot."/competencies/index.php?frameworkid=".$framework->id."\">$framework->fullname</a><br>";
+    echo "<b>".get_string('depthlevel', 'competencies').":</b> $depth->fullname<br>";
 
     foreach($categories as $category) {
 
@@ -114,7 +116,7 @@ if ($depthid) {
         $table->class = 'generaltable customfields';
         $table->data = array();
 
-        if ($fields = get_records_select('competency_depth_info_field', "categoryid=$category->id", 'sortorder ASC')) {
+        if ($fields = get_records_select($tableprefix.'_info_field', "categoryid=$category->id", 'sortorder ASC')) {
 
             $fieldcount = count($fields);
             print_heading(format_string($category->name).' '.customfield_category_icons($category, $categorycount, $fieldcount, $depthid));
@@ -145,10 +147,10 @@ if ($depthid) {
 // show custom fields for all frameworks
 
     $sql = "SELECT cf.shortname as frameworkshortname, cd.fullname as depthfullname, cdc.name as categoryname, cdf.fullname as depthfieldfullname
-            FROM {$CFG->prefix}competency_framework cf
-            JOIN {$CFG->prefix}competency_depth cd on cd.frameworkid=cf.id
-            LEFT OUTER JOIN {$CFG->prefix}competency_depth_info_category cdc on cdc.depthid=cd.id
-            LEFT OUTER JOIN {$CFG->prefix}competency_depth_info_field cdf on cdf.depthid=cd.id AND cdf.categoryid=cdc.id
+            FROM {$CFG->prefix}{$hierarchy->prefix}_framework cf
+            JOIN {$CFG->prefix}{$hierarchy->prefix}_depth cd on cd.frameworkid=cf.id
+            LEFT OUTER JOIN {$CFG->prefix}{$hierarchy->prefix}_depth_info_category cdc on cdc.depthid=cd.id
+            LEFT OUTER JOIN {$CFG->prefix}{$hierarchy->prefix}_depth_info_field cdf on cdf.depthid=cd.id AND cdf.categoryid=cdc.id
             ORDER BY cf.sortorder, cd.depthlevel, cdc.sortorder, cdf.sortorder";
 
     if ($rs = get_recordset_sql($sql)) {
