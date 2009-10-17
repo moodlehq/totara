@@ -3,6 +3,7 @@
 require_once('../../config.php');
 require_once('../lib.php');
 require_once($CFG->libdir.'/adminlib.php');
+require_once($CFG->libdir.'/hierarchylib.php');
 
 
 ///
@@ -16,15 +17,15 @@ $id     = required_param('id', PARAM_INT);
 // Delete confirmation hash
 $delete = optional_param('delete', '', PARAM_ALPHANUM);
 
+$hierarchy         = new hierarchy();
+$hierarchy->prefix = 'competency';
+
 // Setup page and check permissions
-admin_externalpage_setup('competencyframeworkmanage');
+admin_externalpage_setup($hierarchy->prefix.'frameworkmanage');
 
 require_capability('moodle/local:deletecompetencyframeworks', $sitecontext);
 
-if (!$framework = get_record('competency_framework', 'id', $id)) {
-    error('Competency framework ID was incorrect');
-}
-
+$framework = $hierarchy->get_framework($id);
 
 ///
 /// Display page
@@ -45,7 +46,7 @@ if (!$delete) {
 
 
 ///
-/// Delete competency framework
+/// Delete framework
 ///
 
 if ($delete != md5($framework->timemodified)) {
@@ -58,7 +59,7 @@ if (!confirm_sesskey()) {
 
 add_to_log(SITEID, 'competencyframeworks', 'delete', "view.php?frameworkid=$framework->id", "$framework->fullname (ID $framework->id)");
 
-competency_framework_delete($framework);
+$hierarchy->delete_framework();
 
 print_heading(get_string('deletedframework', 'competencies', format_string($framework->fullname)));
 print_continue("{$CFG->wwwroot}/competencies/frameworks/index.php");
