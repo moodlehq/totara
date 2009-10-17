@@ -13,6 +13,7 @@ class competency_edit_form extends moodleform {
         // Get all competencies in this framework that we can use
         // as parents
         $competency = $this->_customdata['competency'];
+        $spage = $this->_customdata['spage'];
         $competencies = get_records('competency', 'frameworkid', $competency->frameworkid, 'sortorder');
         $depthlevels = get_records('competency_depth', 'frameworkid', $competency->frameworkid, 'depthlevel');
 
@@ -109,6 +110,7 @@ class competency_edit_form extends moodleform {
         $mform->addElement('hidden', 'frameworkid');
         $mform->addElement('hidden', 'visible');
         $mform->addElement('hidden', 'sortorder');
+        $mform->addElement('hidden', 'spage', $spage);
 
         /// Print the required moodle fields first
         $mform->addElement('header', 'moodle', $strgeneral);

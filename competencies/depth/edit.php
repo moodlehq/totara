@@ -8,6 +8,7 @@ require_once($CFG->dirroot.'/competencies/depth/edit_form.php');
 $id = optional_param('id', 0, PARAM_INT);
 // framework id; required if creating a new depth level
 $frameworkid = optional_param('frameworkid', 0, PARAM_INT);
+$spage       = optional_param('spage', 0, PARAM_INT);
 
 // We require either an id for editing, or a framework for creating
 if (!$id && !$frameworkid) {
@@ -48,13 +49,14 @@ if (!$framework = get_record('competency_framework', 'id', $depth->frameworkid))
 }
 
 // create form
-$depthform = new competencydepth_edit_form();
+$datatosend = array('spage' => $spage);
+$depthform  = new competencydepth_edit_form(null, $datatosend);
 $depthform->set_data($depth);
 
 // cancelled
 if ($depthform->is_cancelled()){
 
-    redirect("$CFG->wwwroot/competencies/index.php?frameworkid=$framework->id");
+    redirect("$CFG->wwwroot/competencies/index.php?frameworkid=$framework->id&spage=$spage");
 
 // update data
 } else if ($depthnew = $depthform->get_data()) {
@@ -85,7 +87,7 @@ if ($depthform->is_cancelled()){
     // Log
     add_to_log(SITEID, 'competencies', 'update depth level', "depth/edit.php?id=$depthnew->id", '');
 
-    redirect("$CFG->wwwroot/competencies/index.php?frameworkid=$depthnew->frameworkid");
+    redirect("$CFG->wwwroot/competencies/index.php?frameworkid=$depthnew->frameworkid&spage=$spage");
     //never reached
 }
 

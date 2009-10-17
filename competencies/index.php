@@ -13,7 +13,7 @@
 
     /// Setup page
     $sitecontext    = get_context_instance(CONTEXT_SYSTEM);
-    $page           = optional_param('page', 0, PARAM_INT);                     // which page to show
+    $spage          = optional_param('spage', 0, PARAM_INT);                     // which page to show
     $perpage        = optional_param('perpage', DEFAULT_PAGE_SIZE, PARAM_INT);  // how many per page
     $edit           = optional_param('edit', -1, PARAM_BOOL);
 
@@ -431,10 +431,10 @@ if (!$depths) {
     // Editing buttons
     echo '<div class="buttons">';
     if ($can_add_item) {
-        $hierarchy->display_add_item_button();
+        $hierarchy->display_add_item_button($spage);
     }
     if ($can_add_depth) {
-        $hierarchy->display_add_depth_button();
+        $hierarchy->display_add_depth_button($spage);
     }
     echo '</div>';
 

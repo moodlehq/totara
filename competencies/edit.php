@@ -15,6 +15,7 @@ require_once($CFG->dirroot.'/lib/customfield/lib.php');
 $id = optional_param('id', 0, PARAM_INT);
 // framework id; required when creating a new competency
 $frameworkid = optional_param('frameworkid', 0, PARAM_INT);
+$spage       = optional_param('spage', 0, PARAM_INT);
 
 // We require either an id for editing, or a framework for creating
 if (!$id && !$frameworkid) {
@@ -61,13 +62,14 @@ $competency->framework = $framework->fullname;
 customfield_load_data($competency, 'competency', 'competency_depth');
 
 // create form
-$competencyform = new competency_edit_form(null, compact('competency'));
+$datatosend = array('competency' => $competency, 'spage' => $spage);
+$competencyform = new competency_edit_form(null, $datatosend);
 $competencyform->set_data($competency);
 
 // cancelled
 if ($competencyform->is_cancelled()) {
 
-    redirect("$CFG->wwwroot/competencies/index.php?frameworkid=$competency->frameworkid");
+    redirect("$CFG->wwwroot/competencies/index.php?frameworkid=$competency->frameworkid&spage=$spage");
 
 // Update data
 } else if ($competencynew = $competencyform->get_data()) {
@@ -149,9 +151,9 @@ if ($competencyform->is_cancelled()) {
     $competencynew = get_record('competency', 'id', $competencynew->id);
 
     // Log
-    add_to_log(SITEID, 'competencies', 'update', "view.php?id=$competencynew->id", '');
+    add_to_log(SITEID, 'competencies', 'update', "view.php?id=$frameworkid", '');
 
-    redirect("$CFG->wwwroot/competencies/index.php?frameworkid=$competencynew->frameworkid");
+    redirect("$CFG->wwwroot/competencies/index.php?frameworkid=$frameworkid&spage=$spage");
     //never reached
 }
 

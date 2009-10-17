@@ -115,9 +115,9 @@ class hierarchy {
      * Display add item button
      * @return boolean success
      */
-    function display_add_item_button() {
+    function display_add_item_button($spage=0) {
         global $CFG;
-        $options = array('frameworkid' => $this->frameworkid);
+        $options = array('frameworkid' => $this->frameworkid, 'spage' => $spage);
         print_single_button($CFG->wwwroot.'/competencies/edit.php', $options, get_string('addnewcompetency', 'competencies'), 'get');
     }
 
@@ -125,9 +125,9 @@ class hierarchy {
      * Display add depth button
      * @return boolean success
      */
-    function display_add_depth_button() {
+    function display_add_depth_button($spage=0) {
         global $CFG;
-        $options = array('frameworkid' => $this->frameworkid);
+        $options = array('frameworkid' => $this->frameworkid, 'spage' => $spage);
         print_single_button($CFG->wwwroot.'/competencies/depth/edit.php', $options, get_string('adddepthlevel', 'competencies'), 'get');
     }
 
@@ -236,7 +236,7 @@ class hierarchy {
         }   
 
         // Finally delete this item
-        delete_records($this->feature, 'id', $id);
+        delete_records($this->prefix, 'id', $id);
     }
 
     /**

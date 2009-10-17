@@ -11,10 +11,12 @@ class competencydepth_edit_form extends moodleform {
         $mform =& $this->_form;
 
         $strgeneral  = get_string('general');
+        $spage = $this->_customdata['spage'];
 
         /// Add some extra hidden fields
         $mform->addElement('hidden', 'id');
         $mform->addElement('hidden', 'frameworkid');
+        $mform->addElement('hidden', 'spage', $spage);
 
         /// Print the required moodle fields first
         $mform->addElement('header', 'moodle', $strgeneral);
