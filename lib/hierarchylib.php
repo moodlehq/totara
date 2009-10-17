@@ -54,11 +54,11 @@ class hierarchy {
         // If no framework id supplied, use default
         if ($id == 0) {
             if (!$framework = get_record($this->prefix.'_framework', 'isdefault', 1)) {
-                error('Default competency framework does not exist');
+                error('Default '.$this->prefix.' framework does not exist');
             }
         } else {
             if (!$framework = get_record($this->prefix.'_framework', 'id', $id)) {
-                error('Competency framework does not exist');
+                error('The '.$this->prefix.' framework does not exist');
             }
         }
         $this->frameworkid = $framework->id; // specify the frameworki d
@@ -66,11 +66,19 @@ class hierarchy {
     }
 
     /**
+     * Get depth by id
+     * @return boolean success
+     */
+    function get_depth_by_id($id) {
+        return get_record($this->prefix.'_depth', 'id', $id);
+    }
+
+    /**
      * Get framework
      * @return boolean success
      */
     function get_frameworks() {
-        return get_records('competency_framework', 'visible', 1); 
+        return get_records($this->prefix.'_framework', 'visible', 1, 'sortorder');
     }
 
     /**
@@ -79,6 +87,14 @@ class hierarchy {
      */
     function get_depths() {
         return get_records($this->prefix.'_depth', 'frameworkid', $this->frameworkid, 'id');
+    }
+
+    /**
+     * Get depths for a framework
+     * @return boolean success
+     */
+    function get_item_by_id($id) {
+        return get_record($this->prefix, 'id', $id);
     }
 
     /**
@@ -167,7 +183,7 @@ class hierarchy {
      * Get the sortorder range for the framework
      * @return boolean success
      */
-    function get_sortorder_offset() {
+    function get_item_sortorder_offset() {
         global $CFG;
         $max = get_record_sql('SELECT MAX(sortorder) AS max, 1
                 FROM ' . $CFG->prefix . $this->prefix .' WHERE frameworkid=' . $this->frameworkid);
@@ -193,7 +209,7 @@ class hierarchy {
         $move = NULL;
         $swap = NULL;
         $this->validate_sortorder();
-        $sortoffset = $this->get_sortorder_offset();
+        $sortoffset = $this->get_item_sortorder_offset();
         $move = get_record($this->prefix, 'id', $id);
         if ($up) {
             $swap = get_record($this->prefix, 'frameworkid',  $this->frameworkid, 'sortorder', $move->sortorder - 1); 
@@ -243,6 +259,76 @@ class hierarchy {
     }
 
     /**
+     * Hide the hierarchy item
+     * @var int - the item id to hide
+     * @return void
+     */
+    function hide_framework($id) {
+        $framework = $this->get_framework($id);
+        if ($framework) {
+            $visible = 0;
+            if (!set_field($this->prefix.'_framework', 'visible', $visible, 'id', $framework->id)) {
+                notify('Could not update that '.$this->prefix.' framework!');
+            }
+        }
+    }
+
+    /**
+     * Show the hierarchy item
+     * @var int - the item id to show
+     * @return void
+     */
+    function show_framework($id) {
+        $framework = $this->get_framework($id);
+        if ($framework) {
+            $visible = 1;
+            if (!set_field($this->prefix.'_framework', 'visible', $visible, 'id', $framework->id)) {
+                notify('Could not update that '.$this->prefix.' framework!');
+            }
+        }
+    }
+
+    /**
+     * Get the sortorder range for the framework
+     * @return boolean success
+     */
+    function get_framework_sortorder_offset() {
+        global $CFG;
+        $max = get_record_sql('SELECT MAX(sortorder) AS max, 1
+                FROM ' . $CFG->prefix . $this->prefix .'_framework');
+        return $max->max + 1000;
+    }
+
+    /**
+     * Move the framework in the sortorder
+     * @var int - the framework id to move
+     * @var boolean $up - up if true, down if false
+     * @return boolean success
+     */
+    function move_framework($id, $up) {
+        $move = NULL;
+        $swap = NULL;
+        $this->validate_sortorder();
+        $sortoffset = $this->get_framework_sortorder_offset();
+        $move = get_record('competency_framework', 'id', $id);
+        if ($up) {
+            $swap = get_record('competency_framework', 'sortorder', $move->sortorder - 1);
+        } else {
+            $swap = get_record('competency_framework', 'sortorder', $move->sortorder + 1);
+        }
+        if ($move && $swap) {
+            begin_sql();
+            if (!(    set_field('competency_framework', 'sortorder', $sortoffset, 'id', $swap->id)
+                   && set_field('competency_framework', 'sortorder', $swap->sortorder, 'id', $move->id)
+                   && set_field('competency_framework', 'sortorder', $move->sortorder, 'id', $swap->id)
+                )) {
+                notify('Could not update that '.$this->prefix.' framework!');
+            }
+            commit_sql();
+        }
+    }
+
+    /**
      * Recursively called function for deleting items and their children
      * @var int - the item id to delete
      * @return  void
@@ -269,12 +355,12 @@ class hierarchy {
      */
     function delete_framework() {
 
-        // Get all competencies in the framework
-        $competencies = $this->get_competencies();
+        // Get all items in the framework
+        $items = $this->get_items();
 
-        foreach ($competencies as $competency) {
-            // Delete all info data for a competency
-            delete_records($this->prefix.'_depth_info_data', 'competencyid', $competency->id);
+        foreach ($items as $item) {
+            // Delete all info data for each framework item
+            delete_records($this->prefix.'_depth_info_data', $this->prefix.'id', $item->id);
         }
 
         // Get all depths in the framework
