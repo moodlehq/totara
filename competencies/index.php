@@ -1,76 +1,75 @@
 <?php
 
-// Lists all competencies in a given framework
+    // Lists all items in a given hierarchy's framework
 
-require_once('../config.php');
-require_once('./lib.php');
-require_once($CFG->libdir.'/adminlib.php');
-require_once($CFG->libdir.'/tablelib.php');
+    require_once('../config.php');
+    require_once('./lib.php');
+    require_once($CFG->libdir.'/adminlib.php');
+    require_once($CFG->libdir.'/tablelib.php');
+    require_once($CFG->libdir.'/hierarchylib.php');
 
-define('DEFAULT_PAGE_SIZE', 20);
-define('SHOW_ALL_PAGE_SIZE', 5000);
+    define('DEFAULT_PAGE_SIZE', 20);
+    define('SHOW_ALL_PAGE_SIZE', 5000);
 
-///
-/// Setup / loading data
-///
+    /// Setup page
+    $sitecontext    = get_context_instance(CONTEXT_SYSTEM);
+    $page           = optional_param('page', 0, PARAM_INT);                     // which page to show
+    $perpage        = optional_param('perpage', DEFAULT_PAGE_SIZE, PARAM_INT);  // how many per page
+    $edit           = optional_param('edit', -1, PARAM_BOOL);
 
-$sitecontext    = get_context_instance(CONTEXT_SYSTEM);
-$page           = optional_param('page', 0, PARAM_INT);                     // which page to show
-$perpage        = optional_param('perpage', DEFAULT_PAGE_SIZE, PARAM_INT);  // how many per page
-$competencyedit = optional_param('competencyedit', -1, PARAM_BOOL);
+    // Get params
+    $frameworkid = optional_param('frameworkid', 0, PARAM_INT);
+    $hide        = optional_param('hide', 0, PARAM_INT);
+    $show        = optional_param('show', 0, PARAM_INT);
+    $moveup      = optional_param('moveup', 0, PARAM_INT);
+    $movedown    = optional_param('movedown', 0, PARAM_INT);
 
-// Get params
-$frameworkid = optional_param('frameworkid', 0, PARAM_INT);
-$hide        = optional_param('hide', 0, PARAM_INT);
-$show        = optional_param('show', 0, PARAM_INT);
-$moveup      = optional_param('moveup', 0, PARAM_INT);
-$movedown    = optional_param('movedown', 0, PARAM_INT);
+    $hidecustomfields  = false;
+    $showitemfullname  = true;
+    $showdepthfullname = true;
 
-$hidecustomfields       = false;
-$showcompetencyfullname = true;
-$showdepthfullname      = true;
+    // Cache user capabilities
+    $can_add_item    = has_capability('moodle/local:createcompetencies', $sitecontext);
+    $can_edit_item   = has_capability('moodle/local:updatecompetencies', $sitecontext);
+    $can_delete_item = has_capability('moodle/local:deletecompetencies', $sitecontext);
+    $can_add_depth   = has_capability('moodle/local:createcompetencydepth', $sitecontext);
+    $can_edit_depth  = has_capability('moodle/local:updatecompetencydepth', $sitecontext);
 
-// Load framework
-// If no framework id supplied, use default
-if ($frameworkid == 0) {
-    if (!$framework = get_record('competency_framework', 'isdefault', 1)) {
-        error('Default competency framework does not exist');
+    $hierarchy         = new hierarchy();
+    $hierarchy->prefix = 'competency';
+
+    // Load framework
+    $framework  = $hierarchy->get_framework($frameworkid);
+
+    if ($can_edit_item || $can_delete_item || $can_add_depth || $can_edit_depth) {
+        global $USER;
+        if ($edit !== -1) {
+            $USER->{$hierarchy->prefix.'editing'} = $edit;
+        }
+        // Work out the appropriate action.
+        if (empty($USER->{$hierarchy->prefix.'editing'})) {
+            $label = get_string('turneditingon');
+            $edit = 'on';
+        } else {
+            $label = get_string('turneditingoff');
+            $edit = 'off';
+        }
+
+        // Generate the button HTML.
+        $options = array('frameworkid' => $framework->id, 'edit' => $edit);
+        $navbaritem = print_single_button($_SERVER['PHP_SELF'], $options, $label, 'get', '', true);
+
+        $editingon = !empty($USER->{$hierarchy->prefix.'editing'});
+
+    } else {
+        $navbaritem = '';
     }
 
-    $frameworkid = $framework->id;
-} else {
-    if (!$framework = get_record('competency_framework', 'id', $frameworkid)) {
-        error('Competency framework does not exist');
-    }
-}
+    // Setup page and check permissions
+    admin_externalpage_setup($hierarchy->prefix.'manage', $navbaritem);
 
-// Handle editing toggling
-$options = array('frameworkid' => $frameworkid);
-if (update_competency_button()) {
-    if ($competencyedit !== -1) {
-        $USER->competencyediting = $competencyedit;
-    }
-    $editingon = !empty($USER->competencyediting);
-    $navbaritem = update_competency_button($options); // Must call this again after updating the state.
-} else {
-    $navbaritem = '';
-    $editingon = false;
-}
-
-// Setup page and check permissions
-admin_externalpage_setup('competencymanage', $navbaritem);
-
-
-// Cache user capabilities
-$can_add_comp = has_capability('moodle/local:createcompetencies', $sitecontext);
-$can_edit_comp = has_capability('moodle/local:updatecompetencies', $sitecontext);
-$can_delete_comp = has_capability('moodle/local:deletecompetencies', $sitecontext);
-$can_add_depth = has_capability('moodle/local:createcompetencydepth', $sitecontext);
-$can_edit_depth = has_capability('moodle/local:updatecompetencydepth', $sitecontext);
-
-
-// Get competency depths
-$depths = get_records('competency_depth', 'frameworkid', $framework->id, 'id');
+    // Get the framework depths
+    $depths = $hierarchy->get_depths($framework->id);
 
 // Link to add depth form
 if (!$depths) {
@@ -78,20 +77,7 @@ if (!$depths) {
     // Display page
     admin_externalpage_print_header();
 
-    // Show framework selector
-    $frameworks = get_records('competency_framework', 'visible', 1);
-
-    if (count($frameworks) > 1) {
-        $fwoptions = array();
-
-        foreach ($frameworks as $fw) {
-            $fwoptions[$fw->id] = $fw->fullname;
-        }
-
-        echo '<div class="frameworkpicker">';
-        popup_form($CFG->wwwroot.'/competencies/index.php?frameworkid=', $fwoptions, 'switchframework', $framework->id, '');
-        echo '</div>';
-    }
+    $hierarchy->display_framework_selector();
 
     print_heading(get_string('nodepthlevels', 'competencies'));
 
@@ -109,122 +95,55 @@ if (!$depths) {
     exit();
 }
 
-
-///
-/// Process any actions
-///
-
-if ($editingon) {
-    // Hide or show a competency
-    if ((!empty($hide) or !empty($show))) {
+    ///
+    /// Process any actions
+    ///
+    if ($editingon) {
         require_capability('moodle/local:updatecompetencies', $sitecontext);
 
-        if (!empty($hide)) {
-            $competency = get_record('competency', 'id', $hide);
-            $visible = 0;
-        } else {
-            $competency = get_record('competency', 'id', $show);
-            $visible = 1;
+        // Hide an item
+        if ($hide) {
+            $hierarchy->hide_item($hide);
+        } elseif ($show) {
+           $hierarchy->show_item($show);
+        } elseif ($moveup) {
+            $hierarchy->move_item($moveup, true);
+        } elseif ($movedown) {
+            $hierarchy->move_item($movedown, false);
         }
+    } // End of editing stuff
 
-        if ($competency) {
-            if (!set_field('competency', 'visible', $visible, 'id', $competency->id)) {
-                notify('Could not update that competency!');
-            }
-        }
-    }
+    ///
+    /// Generate / display page
+    ///
+    $str_edit         = get_string('edit');
+    $str_delete       = get_string('delete');
+    $str_moveup       = get_string('moveup');
+    $str_movedown     = get_string('movedown');
+    $str_hide         = get_string('hide');
+    $str_show         = get_string('show');
+    $str_customfields = get_string('customfields', 'customfields');
+    $str_spacer       = "<img src=\"{$CFG->wwwroot}/pix/spacer.gif\" class=\"iconsmall\" alt=\"\" /> ";
 
-    /// Reorder a competency
-    if ((!empty($moveup) or !empty($movedown))) {
-        require_capability('moodle/local:updatecompetencies', $sitecontext);
-        $movecompetency = NULL;
-        $swapcompetency = NULL;
+    // Display page
+    admin_externalpage_print_header();
 
-        // ensure the competency order has no gaps and isn't at 0
-//        fix_competency_sortorder($category->id);
-
-        // we are going to need to know the range
-        $max = get_record_sql('SELECT MAX(sortorder) AS max, 1
-                FROM ' . $CFG->prefix . 'competency WHERE frameworkid=' . $frameworkid);
-        $max = $max->max + 100;
-
-        if (!empty($moveup)) {
-            $movecompetency = get_record('competency', 'id', $moveup);
-            $swapcompetency = get_record('competency', 'frameworkid',  $frameworkid,
-                    'sortorder', $movecompetency->sortorder - 1);
-        } else {
-            $movecompetency = get_record('competency', 'id', $movedown);
-            $swapcompetency = get_record('competency', 'frameworkid',  $frameworkid,
-                    'sortorder', $movecompetency->sortorder + 1);
-        }
-
-        if ($swapcompetency and $movecompetency) {
-            // Renumber everything for robustness
-            begin_sql();
-            if (!(    set_field('competency', 'sortorder', $max, 'id', $swapcompetency->id)
-                   && set_field('competency', 'sortorder', $swapcompetency->sortorder, 'id', $movecompetency->id)
-                   && set_field('competency', 'sortorder', $movecompetency->sortorder, 'id', $swapcompetency->id)
-                )) {
-                notify('Could not update that competency!');
-            }
-            commit_sql();
-        }
-    }
-} // End of editing stuff
-
-
-///
-/// Load competencies after any changes
-///
-
-// Get competencies for this page
-$competencies = get_records('competency', 'frameworkid', $framework->id, 'sortorder');
-
-
-///
-/// Generate / display page
-///
-$str_edit         = get_string('edit');
-$str_delete       = get_string('delete');
-$str_moveup       = get_string('moveup');
-$str_movedown     = get_string('movedown');
-$str_hide         = get_string('hide');
-$str_show         = get_string('show');
-$str_customfields = get_string('customfields', 'customfields');
-$str_spacer       = "<img src=\"{$CFG->wwwroot}/pix/spacer.gif\" class=\"iconsmall\" alt=\"\" /> ";
-
-// Display page
-admin_externalpage_print_header();
-
-    // Show framework selector
-    $frameworks = get_records('competency_framework', 'visible', 1);
-
-    if (count($frameworks) > 1) {
-        $fwoptions = array();
-
-        foreach ($frameworks as $fw) {
-            $fwoptions[$fw->id] = $fw->fullname;
-        }
-
-        echo '<div class="frameworkpicker">';
-        popup_form($CFG->wwwroot.'/competencies/index.php?frameworkid=', $fwoptions, 'switchframework', $framework->id, '');
-        echo '</div>';
-    }
+    $hierarchy->display_framework_selector();
 
     $select = "SELECT id, depthid, shortname, fullname, visible";
-    $from   = " FROM {$CFG->prefix}competency";
-    $where  = " WHERE frameworkid=$frameworkid";
+    $from   = " FROM {$CFG->prefix}{$hierarchy->prefix}";
+    $where  = " WHERE frameworkid=$framework->id";
     $sort   = " ORDER BY sortorder";
 
     if (!$hidecustomfields) {
         // Retreive visible customfields definitions
         $sql = "SELECT cdf.id, cdf.depthid, cdf.shortname, cdf.fullname
-                FROM {$CFG->prefix}competency_depth_info_field cdf
-                JOIN {$CFG->prefix}competency_depth_info_category cdc
+                FROM {$CFG->prefix}{$hierarchy->prefix}_depth_info_field cdf
+                JOIN {$CFG->prefix}{$hierarchy->prefix}_depth_info_category cdc
                     ON cdc.id=cdf.categoryid
-                JOIN {$CFG->prefix}competency_depth cd
+                JOIN {$CFG->prefix}{$hierarchy->prefix}_depth cd
                     ON cd.id=cdf.depthid
-                WHERE cd.frameworkid=$frameworkid AND cdf.hidden=0
+                WHERE cd.frameworkid=$framework->id AND cdf.hidden=0
                 ORDER BY cdc.depthid, cdc.sortorder, cdf.sortorder";
 
         $customfields = get_records_sql($sql);
@@ -285,7 +204,7 @@ admin_externalpage_print_header();
     $coledit = $colcount;
     $colcount++;
 
-    $table = new flexible_table('competency-framework-index-'.$frameworkid);
+    $table = new flexible_table($hierarchy->prefix.'-framework-index-'.$framework->id);
 
     $table->define_columns($tablecolumns);
     $table->define_headers($tableheaders);
@@ -297,7 +216,7 @@ admin_externalpage_print_header();
     $table->column_style('evidence','text-align','center');
 
     $table->set_attribute('cellspacing', '0');
-    $table->set_attribute('id', 'competencies');
+    $table->set_attribute('id', $hierarchy->prefix);
     $table->set_attribute('class', 'generaltable generalbox');
 
     $table->set_control_variables(array(
@@ -316,38 +235,38 @@ admin_externalpage_print_header();
 
     $table->pagesize($perpage, $matchcount);
 
-    $competencylist = get_recordset_sql($select.$from.$where.$wheresearch.$sort,
+    $itemlist = get_recordset_sql($select.$from.$where.$wheresearch.$sort,
             $table->get_page_start(),  $table->get_page_size());
 
-    if ($competencylist)  {
+    if ($itemlist)  {
 
-        $competenciesfound = false;   // track if we found any competencies
-        $competencytrack   = array(); // track all the competencies found, used after the loop to add custom data for each competency
-        $depthidtrack      = 0;       // flag if we've moved to a new depthid in the loop
-        $moveiconup        = false;   // the up icon is needed for a competency (down icon is handled after)
+        $itemsfound      = false;   // track if we found any items
+        $itemtrack       = array(); // track all the items found, used after the loop to add custom data for each item
+        $depthidtrack    = 0;       // flag if we've moved to a new depthid in the loop
+        $moveiconup      = false;   // the up icon is needed for an item (down icon is handled after)
         $data = array();
         $i = 0;
 
-        while ($competency = rs_fetch_next_record($competencylist)) {
+        while ($item = rs_fetch_next_record($itemlist)) {
 
-            $competenciesfound = true;
+            $itemsfound = true;
 
             $j = 0;
             foreach ($depths as $depth) {
 
-                if ($depth->id == $competency->depthid) {
-                    $cssclass = !$competency->visible ? 'class="dimmed"' : '';
-                    $competencyname = $showcompetencyfullname ? $competency->fullname : $competency->shortname;
-                    $cell = "<a $cssclass href=\"{$CFG->wwwroot}/competencies/view.php?id={$competency->id}\">{$competencyname}</a>";
+                if ($depth->id == $item->depthid) {
+                    $cssclass = !$item->visible ? 'class="dimmed"' : '';
+                    $itemname = $showitemfullname ? $item->fullname : $item->shortname;
+                    $cell = "<a $cssclass href=\"{$CFG->wwwroot}/competencies/view.php?id={$item->id}\">{$itemname}</a>";
                     $data[$i][$j] = $cell;
                     if ($editingon) {
                         $moveiconup   = false;
                         if ($depthidtrack != 0 && $depth->depthlevel == 0) { // it's not the first and we're at the top level
                             $moveiconup   = true;
                         } elseif ($depthidtrack == $depth->id) {
-                            // depthid hasn't changed so the competency can move up and the last one can move down
+                            // depthid hasn't changed so the item can move up and the last one can move down
                             $moveiconup       = true;
-                            $data[$i-1][$coledit-1] .= "<a href=\"index.php?movedown=".end($competencytrack)."\" title=\"$str_moveup\">".
+                            $data[$i-1][$coledit-1] .= "<a href=\"index.php?movedown=".end($itemtrack)."\" title=\"$str_moveup\">".
                                      "<img src=\"{$CFG->pixpath}/t/down.gif\" class=\"iconsmall\" alt=\"$str_movedown\" /></a> ";
                         }
                         $depthidtrack = $depth->id;
@@ -367,24 +286,24 @@ admin_externalpage_print_header();
             // Add edit and delete buttons
             if ($editingon) {
                 $buttons = array();
-                if ($can_edit_comp) {
-                    $buttons[] = "<a href=\"{$CFG->wwwroot}/competencies/edit.php?id={$competency->id}\" title=\"$str_edit\">".
+                if ($can_edit_item) {
+                    $buttons[] = "<a href=\"{$CFG->wwwroot}/competencies/edit.php?id={$item->id}\" title=\"$str_edit\">".
                         "<img src=\"{$CFG->pixpath}/t/edit.gif\" class=\"iconsmall\" alt=\"$str_edit\" /></a>";
 
-                    if ($competency->visible) {
-                        $buttons[] = "<a href=\"{$CFG->wwwroot}/competencies/index.php?hide={$competency->id}\" title=\"$str_hide\">".
+                    if ($item->visible) {
+                        $buttons[] = "<a href=\"{$CFG->wwwroot}/competencies/index.php?hide={$item->id}\" title=\"$str_hide\">".
                             "<img src=\"{$CFG->pixpath}/t/hide.gif\" class=\"iconsmall\" alt=\"$str_hide\" /></a>";
                     } else {
-                        $buttons[] = "<a href=\"{$CFG->wwwroot}/competencies/index.php?show={$competency->id}\" title=\"$str_show\">".
+                        $buttons[] = "<a href=\"{$CFG->wwwroot}/competencies/index.php?show={$item->id}\" title=\"$str_show\">".
                             "<img src=\"{$CFG->pixpath}/t/show.gif\" class=\"iconsmall\" alt=\"$str_show\" /></a>";
                     }
                 }
-                if ($can_delete_comp) {
-                    $buttons[] = "<a href=\"{$CFG->wwwroot}/competencies/delete.php?id={$competency->id}\" title=\"$str_delete\">".
+                if ($can_delete_item) {
+                    $buttons[] = "<a href=\"{$CFG->wwwroot}/competencies/delete.php?id={$item->id}\" title=\"$str_delete\">".
                         "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_delete\" /></a>";
                 }
                 if ($moveiconup) {
-                    $buttons[] = "<a href=\"index.php?moveup={$competency->id}\" title=\"$str->moveup\">".
+                    $buttons[] = "<a href=\"index.php?moveup={$item->id}\" title=\"$str->moveup\">".
                         "<img src=\"{$CFG->pixpath}/t/up.gif\" class=\"iconsmall\" alt=\"$str->moveup\" /></a> ";
                 } else {
                    $buttons[] = $str_spacer;
@@ -397,14 +316,14 @@ admin_externalpage_print_header();
             $data[$i][$j] = '<a href="">0</a>';
 
             $i++;
-            $competencytrack[] = $competency->id;
+            $itemtrack[] = $item->id;
         }
 
-        if ($competenciesfound) {
+        if ($itemsfound) {
             if ($hidecustomfields) {
             // Go ahead and print the tabledata   
 
-                for ($i=0; $i < count($competencytrack); $i++) {
+                for ($i=0; $i < count($itemtrack); $i++) {
                     $tabledata = array();
                     for ($j=0; $j < $colcount; $j++) {
                         $tabledata[] = $data[$i][$j];
@@ -415,20 +334,21 @@ admin_externalpage_print_header();
             } else {
             // Get the custom data and populate the table
 
-                $select = "SELECT c.id as competencyid, cdf.depthid, cdf.id as fieldid, cdd.data";
-                $from   = " FROM {$CFG->prefix}competency c
-                        LEFT OUTER JOIN {$CFG->prefix}competency_depth_info_field cdf 
-                            ON cdf.depthid=c.depthid 
-                        LEFT OUTER JOIN {$CFG->prefix}competency_depth_info_data cdd 
-                            ON cdd.fieldid=cdf.id AND cdd.competencyid=c.id";
-                $where  = " WHERE c.frameworkid=$frameworkid AND c.id IN (".implode(",", $competencytrack).") AND cdf.hidden=0";
+                $select = "SELECT c.id as itemid, cdf.depthid, cdf.id as fieldid, cdd.data";
+                $from   = " FROM {$CFG->prefix}{$hierarchy->prefix} c
+                        LEFT OUTER JOIN {$CFG->prefix}{$hierarchy->prefix}_depth_info_field cdf
+                            ON cdf.depthid=c.depthid
+                        LEFT OUTER JOIN {$CFG->prefix}{$hierarchy->prefix}_depth_info_data cdd
+                            ON cdd.fieldid=cdf.id AND cdd.{$hierarchy->prefix}id=c.id";
+                $where  = " WHERE c.frameworkid=$framework->id AND c.id IN (".implode(",", $itemtrack).") AND cdf.hidden=0";
                 $sort   = " ORDER BY c.sortorder, cdf.categoryid, cdf.sortorder";
 
                 $customdatalist = get_recordset_sql($select.$from.$where.$wheresearch.$sort);
 
                 if ($customdatalist) {
 
-                    $competencyid=0;
+                    $customdatafound = false;
+                    $itemid=0;
                     $depthid=0;
                     $i=0;
                     $j=0;
@@ -436,17 +356,19 @@ admin_externalpage_print_header();
                     // Add the custom data to the array
                     while ($customdata = rs_fetch_next_record($customdatalist)) {
 
-                        if ($competencyid != $customdata->competencyid) {
+                        $customdatafound = true;
 
-                            if (empty($competencyid)) {
+                        if ($itemid != $customdata->itemid) {
 
-                                // Initialise the first competency
-                                $competencyid = $customdata->competencyid;
-                                $depthid      = $customdata->depthid;
+                            if (empty($itemid)) {
+
+                                // Initialise the first item
+                                $itemid  = $customdata->itemid;
+                                $depthid = $customdata->depthid;
 
                             } else {
 
-                                // We've got all the data for the last competency
+                                // We've got all the data for the last item
                                 // So we can add it to the table
                                 $tabledata = array();
                                 for ($k=0; $k < $colcount; $k++) {
@@ -454,9 +376,9 @@ admin_externalpage_print_header();
                                 }
                                 $table->add_data($tabledata);
 
-                                // Now continue with the new competency
-                                $competencyid = $customdata->competencyid;
-                                $depthid      = $customdata->depthid;
+                                // Now continue with the new item
+                                $itemid  = $customdata->itemid;
+                                $depthid = $customdata->depthid;
                                 $i++;
                                 $j=0;
 
@@ -464,7 +386,7 @@ admin_externalpage_print_header();
 
                             // Advance to the column starting with depthid
                             foreach ($depths as $depth) {
-                                $j++; // add one for the competency
+                                $j++; // add one for the item
                                 if ($depth->id == $depthid) {
                                     break;
                                 } else {
@@ -478,36 +400,43 @@ admin_externalpage_print_header();
 
                     }
                 }
+                if ($customdatafound) {
+
+                    // We need add the last row
+                    $tabledata = array();
+                    for ($k=0; $k < $colcount; $k++) {
+                        $tabledata[] = $data[$i][$k];
+                    }
+                    $table->add_data($tabledata);
+
+                } else {
+
+                    // We need to add all the rows
+                    for ($i=0; $i < count($itemtrack); $i++) {
+                        $tabledata = array();
+                        for ($j=0; $j < $colcount; $j++) {
+                            $tabledata[] = $data[$i][$j];
+                        }
+                        $table->add_data($tabledata);
+                    }
+                }
             }
         }
+        rs_close($itemlist);
     }
 
     // Display table
     $table->print_html();
 
     // Editing buttons
-    if ($can_add_comp || $can_add_depth) {
-        echo '<div class="buttons">';
-
-        // Print button for creating new competency
-        if ($can_add_comp) {
-            $options = array('frameworkid' => $framework->id);
-            print_single_button($CFG->wwwroot.'/competencies/edit.php', $options, get_string('addnewcompetency', 'competencies'), 'get');
-        }
-
-        // Print button to add a depth level
-        if ($can_add_depth) {
-            $options = array('frameworkid' => $framework->id);
-            print_single_button($CFG->wwwroot.'/competencies/depth/edit.php', $options, get_string('adddepthlevel', 'competencies'), 'get');
-        }
-
-
-        echo '</div>';
+    echo '<div class="buttons">';
+    if ($can_add_item) {
+        $hierarchy->display_add_item_button();
     }
+    if ($can_add_depth) {
+        $hierarchy->display_add_depth_button();
+    }
+    echo '</div>';
 
     print_footer();
-
-    if ($competencylist) {
-        rs_close($competencylist);
-    }
 
