@@ -299,7 +299,7 @@ if (!$depths) {
                     }
                 }
                 if ($can_delete_item) {
-                    $buttons[] = "<a href=\"{$CFG->wwwroot}/competencies/delete.php?id={$item->id}\" title=\"$str_delete\">".
+                    $buttons[] = "<a href=\"{$CFG->wwwroot}/competencies/delete.php?id={$item->id}&spage={$spage}\" title=\"$str_delete\">".
                         "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_delete\" /></a>";
                 }
                 if ($moveiconup) {

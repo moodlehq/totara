@@ -15,6 +15,7 @@ $sitecontext = get_context_instance(CONTEXT_SYSTEM);
 $id     = required_param('id', PARAM_INT);
 // Delete confirmation hash
 $delete = optional_param('delete', '', PARAM_ALPHANUM);
+$spage  = optional_param('spage', 0, PARAM_INT);
 
 // Setup page and check permissions
 admin_externalpage_setup('competencymanage');
@@ -36,7 +37,7 @@ if (!$delete) {
     $strdelete = get_string('deletecheck', 'competencies');
 
     notice_yesno("$strdelete<br /><br />" . format_string($competency->fullname),
-                 "{$CFG->wwwroot}/competencies/delete.php?id={$competency->id}&amp;delete=".md5($competency->timemodified)."&amp;sesskey={$USER->sesskey}",
+                 "{$CFG->wwwroot}/competencies/delete.php?id={$competency->id}&amp;delete=".md5($competency->timemodified)."&amp;sesskey={$USER->sesskey}&amp;spage={$spage}",
                  "{$CFG->wwwroot}/competencies/index.php?frameworkid={$competency->frameworkid}");
 
     print_footer();
@@ -61,5 +62,5 @@ add_to_log(SITEID, 'competencies', 'delete', "view.php?id=$competency->id", "$co
 competency_delete($competency);
 
 print_heading(get_string('deletedcompetency', 'competencies', format_string($competency->fullname)));
-print_continue("{$CFG->wwwroot}/competencies/index.php?frameworkid=$competency->frameworkid");
+print_continue("{$CFG->wwwroot}/competencies/index.php?frameworkid={$competency->frameworkid}&spage={$spage}");
 print_footer();
