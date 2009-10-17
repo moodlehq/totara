@@ -23,7 +23,7 @@
 ///////////////////////////////////////////////////////////////////////////
 
 /**
- * moodlelib.php - Moodle main library
+ * customfieldslib.php
  *
  * Library file of custom field functions
  * Based on the custom user profile field functionality
@@ -329,7 +329,7 @@ function customfield_edit_category($id, $depthid=0, $redirect, $tableprefix) {
 
     require_once('customfield/index_category_form.php');
 
-    $datatosend = array('depthid' => $depthid);
+    $datatosend = array('depthid' => $depthid, 'tableprefix' => $tableprefix);
     $categoryform = new category_form(null, $datatosend);
 
     if ($category = get_record($tableprefix.'_info_category', 'id', $id)) {
@@ -341,7 +341,6 @@ function customfield_edit_category($id, $depthid=0, $redirect, $tableprefix) {
     } else {
         if ($data = $categoryform->get_data()) {
 
-// error_log(print_r($data));
             if (empty($data->id)) {
                 unset($data->id);
 
@@ -352,9 +351,8 @@ function customfield_edit_category($id, $depthid=0, $redirect, $tableprefix) {
                 }
 
                 $categorycount = count_records_select($tableprefix.'_info_category', $depthstr);
-// echo $categorycount;
                 $data->sortorder = $categorycount + 1;
-//error_log(print_r($data));
+
                 if (!insert_record($tableprefix.'_info_category', $data, false)) {
                     error('There was a problem adding the record to the database');
                 }

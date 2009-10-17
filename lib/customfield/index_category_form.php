@@ -17,6 +17,7 @@ class category_form extends moodleform {
         $mform->addElement('hidden', 'id');
         $mform->addElement('hidden', 'action', 'editcategory');
         $mform->addElement('hidden', 'depthid', $datasent['depthid']);
+        $mform->addElement('hidden', 'tableprefix', $datasent['tableprefix']);
 
         $mform->addElement('text', 'name', get_string('categorynamemustbeunique', 'customfields'), 'maxlength="255" size="30"');
         $mform->setType('name', PARAM_MULTILANG);
@@ -26,19 +27,14 @@ class category_form extends moodleform {
 
     } /// End of function
 
-/// perform some moodle validation,
-/// NOTEL tableprefix is needed - not sure yet how it should be passed to the function!
-
-    function validation($data, $files, $tableprefix) {
+    function validation($data, $files) {
         global $CFG;
         $errors = parent::validation($data, $files);
 
         $data  = (object)$data;
 
-        $category = get_record($tableprefix.'_info_category', 'id', $data->id);
-
-        /// Check the name is unique
-        if ($category and ($category->name !== $data->name) and (record_exists($tableprefix.'_info_category', 'name', $data->name))) {
+        /// Check the name is unique to the depth level
+        if (record_exists($data->tableprefix.'_info_category', 'name', $data->name, 'depthid' , $data->depthid)) {
             $errors['name'] = get_string('categorynamenotunique', 'customfields');
         }
 
