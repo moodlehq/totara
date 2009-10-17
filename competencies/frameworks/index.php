@@ -1,77 +1,69 @@
 <?php
 
-require_once('../../config.php');
-require_once('../lib.php');
-require_once($CFG->libdir.'/adminlib.php');
+    require_once('../../config.php');
+    require_once('../lib.php');
+    require_once($CFG->libdir.'/adminlib.php');
+    require_once($CFG->libdir.'/hierarchylib.php');
 
-///
-/// Setup / loading data
-///
+    ///
+    /// Setup / loading data
+    ///
 
-$sitecontext = get_context_instance(CONTEXT_SYSTEM);
+    $sitecontext = get_context_instance(CONTEXT_SYSTEM);
 
-// Get params
-$competencyedit = optional_param('competencyedit', -1, PARAM_BOOL);
-$hide = optional_param('hide', 0, PARAM_INT);
-$show = optional_param('show', 0, PARAM_INT);
-$moveup = optional_param('moveup', 0, PARAM_INT);
-$movedown = optional_param('movedown', 0, PARAM_INT);
+    // Get params
+    $edit        = optional_param('edit', -1, PARAM_BOOL);
+    $hide        = optional_param('hide', 0, PARAM_INT);
+    $show        = optional_param('show', 0, PARAM_INT);
+    $moveup      = optional_param('moveup', 0, PARAM_INT);
+    $movedown    = optional_param('movedown', 0, PARAM_INT);
 
-// Handle editing toggling
-if (update_competency_button()) {
-    if ($competencyedit !== -1) {
-        $USER->competencyediting = $competencyedit;
+    // Cache user capabilities
+    $can_add = has_capability('moodle/local:createcompetencyframeworks', $sitecontext);
+    $can_edit = has_capability('moodle/local:updatecompetencyframeworks', $sitecontext);
+    $can_delete = has_capability('moodle/local:deletecompetencyframeworks', $sitecontext);
+
+    $hierarchy         = new hierarchy();
+    $hierarchy->prefix = 'competency';
+
+    if ($can_add || $can_edit || $can_delete) {
+        $navbaritem = $hierarchy->get_editing_button($edit);
+        $editingon = !empty($USER->{$hierarchy->prefix.'editing'});
+    } else {
+        $navbaritem = '';
     }
-    $editingon = !empty($USER->competencyediting);
-    $navbaritem = update_competency_button(); // Must call this again after updating the state.
-} else {
-    $navbaritem = '';
-    $editingon = false;
-}
 
-// Setup page and check permissions
-admin_externalpage_setup('competencyframeworkmanage', $navbaritem);
+    // Setup page and check permissions
+    admin_externalpage_setup($hierarchy->prefix.'frameworkmanage', $navbaritem);
 
-// Cache user capabilities
-$can_add = has_capability('moodle/local:createcompetencyframeworks', $sitecontext);
-$can_edit = has_capability('moodle/local:updatecompetencyframeworks', $sitecontext);
-$can_delete = has_capability('moodle/local:deletecompetencyframeworks', $sitecontext);
+    ///
+    /// Process any actions
+    ///
 
-
-///
-/// Process any actions
-///
-
-if ($editingon) {
-    // Hide or show a competency
-    if ((!empty($hide) or !empty($show))) {
-        require_capability('moodle/local:updatecompetencies', $sitecontext);
-
-        if (!empty($hide)) {
-            $competency = get_record('competency', 'id', $hide);
-            $visible = 0;
-        } else {
-            $competency = get_record('competency', 'id', $show);
-            $visible = 1;
-        }
-
-        if ($competency) {
-            if (!set_field('competency', 'visible', $visible, 'id', $competency->id)) {
-                notify('Could not update that competency!');
+    if ($editingon) {
+        // Hide or show a framework
+        if ($hide or $show or $moveup or $movedown) {
+            require_capability('moodle/local:updatecompetencies', $sitecontext);
+            // Hide an item
+            if ($hide) {
+                $hierarchy->hide_framework($hide);
+            } elseif ($show) {
+                $hierarchy->show_framework($show);
+            } elseif ($moveup) {
+                $hierarchy->move_framework($moveup, true);
+            } elseif ($movedown) {
+                $hierarchy->move_framework($movedown, false);
             }
         }
-    }
 
-} // End of editing stuff
-
+    } // End of editing stuff
 
 ///
-/// Load competency frameworks after any changes
+/// Load hierarchy frameworks after any changes
 ///
 
 // Get frameworks for this page
-$frameworks = get_records('competency_framework', '', '', 'sortorder');
-
+$frameworks = $hierarchy->get_frameworks();
 
 ///
 /// Generate / display page
@@ -103,6 +95,7 @@ if ($frameworks) {
     }
 
     // Add rows to table
+    $rowcount = 1;
     foreach ($frameworks as $framework) {
         $row = array();
 
@@ -115,20 +108,28 @@ if ($frameworks) {
         if ($editingon && $can_edit) {
             $buttons[] = "<a href=\"{$CFG->wwwroot}/competencies/frameworks/edit.php?id={$framework->id}\" title=\"$str_edit\">".
                 "<img src=\"{$CFG->pixpath}/t/edit.gif\" class=\"iconsmall\" alt=\"$str_edit\" /></a>";
-/*
             if ($framework->visible) {
-                $buttons[] = "<a href=\"{$CFG->wwwroot}/competencies/index.php?hide={$framework->id}\" title=\"$str_hide\">".
+                $buttons[] = "<a href=\"{$CFG->wwwroot}/competencies/frameworks/index.php?hide={$framework->id}\" title=\"$str_hide\">".
                     "<img src=\"{$CFG->pixpath}/t/hide.gif\" class=\"iconsmall\" alt=\"$str_hide\" /></a>";
             } else {
-                $buttons[] = "<a href=\"{$CFG->wwwroot}/competencies/index.php?show={$framework->id}\" title=\"$str_show\">".
+                $buttons[] = "<a href=\"{$CFG->wwwroot}/competencies/frameworks/index.php?show={$framework->id}\" title=\"$str_show\">".
                     "<img src=\"{$CFG->pixpath}/t/show.gif\" class=\"iconsmall\" alt=\"$str_show\" /></a>";
             }
-*/
         }
-
         if ($editingon && $can_delete) {
             $buttons[] = "<a href=\"{$CFG->wwwroot}/competencies/frameworks/delete.php?id={$framework->id}\" title=\"$str_delete\">".
                 "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_delete\" /></a>";
+        }
+        if ($editingon && $can_edit) {
+            if ($rowcount != 1) {
+                $buttons[] = "<a href=\"index.php?moveup={$framework->id}\" title=\"$str_moveup\">".
+                   "<img src=\"{$CFG->pixpath}/t/up.gif\" class=\"iconsmall\" alt=\"$str_moveup\" /></a> ";
+            }
+            if ($rowcount != count($frameworks)) {
+                $buttons[] = "<a href=\"index.php?movedown={$framework->id}\" title=\"$str_movedown\">".
+                    "<img src=\"{$CFG->pixpath}/t/down.gif\" class=\"iconsmall\" alt=\"$str_movedown\" /></a>";
+            }
+            $rowcount++;
         }
 
         if ($buttons) {
@@ -154,7 +155,7 @@ if ($frameworks) {
 if ($can_add) {
     echo '<div class="buttons">';
 
-    // Print button for creating new competency framework
+    // Print button for creating new framework
     print_single_button($CFG->wwwroot.'/competencies/frameworks/edit.php', array(), get_string('addnewframework', 'competencies'), 'get');
 
     echo '</div>';
