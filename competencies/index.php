@@ -250,7 +250,7 @@ if (!$depths) {
                         } elseif ($depthidtrack == $depth->id) {
                             // depthid hasn't changed so the item can move up and the last one can move down
                             $moveiconup       = true;
-                            $data[$i-1][$coledit-1] .= "<a href=\"index.php?movedown=".end($itemtrack)."\" title=\"$str_moveup\">".
+                            $data[$i-1][$coledit-1] .= "<a href=\"index.php?movedown=".end($itemtrack)."\" title=\"$str_movedown\">".
                                      "<img src=\"{$CFG->pixpath}/t/down.gif\" class=\"iconsmall\" alt=\"$str_movedown\" /></a> ";
                         }
                         $depthidtrack = $depth->id;
