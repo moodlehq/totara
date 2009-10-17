@@ -110,7 +110,7 @@ class hierarchy {
     * @param signed int edit - is editing on or off?
     * @return button or ''
     */
-    function get_editing_button($edit=-1){
+    function get_editing_button($edit=-1, $options=array()){
         global $USER;
         if ($edit !== -1) {
             $USER->{$this->prefix.'editing'} = $edit;
@@ -125,7 +125,7 @@ class hierarchy {
         }
 
         // Generate the button HTML.
-        $options = array('frameworkid' => $this->frameworkid, 'edit' => $edit);
+        $options['edit'] = $edit;
         return print_single_button($_SERVER['PHP_SELF'], $options, $label, 'get', '', true);
     }
 

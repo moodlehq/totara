@@ -42,9 +42,9 @@
     $framework  = $hierarchy->get_framework($frameworkid);
 
     if ($can_edit_item || $can_delete_item || $can_add_depth || $can_edit_depth) {
-        $navbaritem = $hierarchy->get_editing_button($edit);
+        $options = array('frameworkid' => $framework->id, 'spage' => $spage);
+        $navbaritem = $hierarchy->get_editing_button($edit, $options);
         $editingon = !empty($USER->{$hierarchy->prefix.'editing'});
-
     } else {
         $navbaritem = '';
     }
