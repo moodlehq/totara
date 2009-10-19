@@ -218,7 +218,7 @@ if (!$depths) {
 
     $table->pagesize($perpage, $matchcount);
 
-    $itemlist = get_recordset_sql($select.$from.$where.$wheresearch.$sort,
+    $itemlist = get_recordset_sql($select.$from.$where.$sort,
             $table->get_page_start(),  $table->get_page_size());
 
     if ($itemlist)  {
