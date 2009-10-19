@@ -1999,27 +1999,27 @@ body#course-category .addcategory {
 
 body#course-index .buttons .singlebutton,
 body#course-category .buttons .singlebutton,
-body#competencies-index .buttons .singlebutton,
-body#competencies-view .buttons .singlebutton,
-body#competencies-scale-index .buttons .singlebutton,
-body#competencies-scale-view .buttons .singlebutton,
-body#competencies-frameworks-index .buttons .singlebutton {
+body#competency-index .buttons .singlebutton,
+body#competency-view .buttons .singlebutton,
+body#competency-scale-index .buttons .singlebutton,
+body#competency-scale-view .buttons .singlebutton,
+body#competency-frameworks-index .buttons .singlebutton {
   display: inline;
 }
 
 body#course-index .buttons,
 body#course-category .buttons,
-body#competencies-index .buttons,
-body#competencies-view .buttons,
-body#competencies-scale-index .buttons,
-body#competencies-scale-view .buttons,
-body#competencies-frameworks-index .buttons {
+body#competency-index .buttons,
+body#competency-view .buttons,
+body#competency-scale-index .buttons,
+body#competency-scale-view .buttons,
+body#competency-frameworks-index .buttons {
   text-align: center;
   margin-bottom: 15px;
 }
 
 body#course-index #middle-column .editcourse,
-body#competency-index #middle-column .editcompetencies {
+body#competency-index #middle-column .editcompetency {
   margin-left:auto;
   margin-right:auto;
   margin-top:20px;
