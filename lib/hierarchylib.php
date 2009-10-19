@@ -146,7 +146,7 @@ class hierarchy {
             }   
 
             echo '<div class="frameworkpicker">';
-            popup_form($CFG->wwwroot.'/competencies/index.php?frameworkid=', $fwoptions, 'switchframework', $this->frameworkid, '');
+            popup_form($CFG->wwwroot.'/'.$this->prefix.'/index.php?frameworkid=', $fwoptions, 'switchframework', $this->frameworkid, '');
             echo '</div>';
         }   
     }
@@ -158,7 +158,7 @@ class hierarchy {
     function display_add_item_button($spage=0) {
         global $CFG;
         $options = array('frameworkid' => $this->frameworkid, 'spage' => $spage);
-        print_single_button($CFG->wwwroot.'/competencies/edit.php', $options, get_string('addnewcompetency', 'competencies'), 'get');
+        print_single_button($CFG->wwwroot.'/'.$this->prefix.'/edit.php', $options, get_string('addnew'.$this->prefix, $this->prefix), 'get');
     }
 
     /**
@@ -168,7 +168,7 @@ class hierarchy {
     function display_add_depth_button($spage=0) {
         global $CFG;
         $options = array('frameworkid' => $this->frameworkid, 'spage' => $spage);
-        print_single_button($CFG->wwwroot.'/competencies/depth/edit.php', $options, get_string('adddepthlevel', 'competencies'), 'get');
+        print_single_button($CFG->wwwroot.'/'.$this->prefix.'/depth/edit.php', $options, get_string('adddepthlevel', $this->prefix), 'get');
     }
 
     /**
@@ -310,17 +310,17 @@ class hierarchy {
         $swap = NULL;
         $this->validate_sortorder();
         $sortoffset = $this->get_framework_sortorder_offset();
-        $move = get_record('competency_framework', 'id', $id);
+        $move = get_record($this->prefix.'_framework', 'id', $id);
         if ($up) {
-            $swap = get_record('competency_framework', 'sortorder', $move->sortorder - 1);
+            $swap = get_record($this->prefix.'_framework', 'sortorder', $move->sortorder - 1);
         } else {
-            $swap = get_record('competency_framework', 'sortorder', $move->sortorder + 1);
+            $swap = get_record($this->prefix.'_framework', 'sortorder', $move->sortorder + 1);
         }
         if ($move && $swap) {
             begin_sql();
-            if (!(    set_field('competency_framework', 'sortorder', $sortoffset, 'id', $swap->id)
-                   && set_field('competency_framework', 'sortorder', $swap->sortorder, 'id', $move->id)
-                   && set_field('competency_framework', 'sortorder', $move->sortorder, 'id', $swap->id)
+            if (!(    set_field($this->prefix.'_framework', 'sortorder', $sortoffset, 'id', $swap->id)
+                   && set_field($this->prefix.'_framework', 'sortorder', $swap->sortorder, 'id', $move->id)
+                   && set_field($this->prefix.'_framework', 'sortorder', $move->sortorder, 'id', $swap->id)
                 )) {
                 notify('Could not update that '.$this->prefix.' framework!');
             }
@@ -378,7 +378,7 @@ class hierarchy {
         // Delete all depths in the framework
         delete_records($this->prefix.'_depth', 'frameworkid', $this->frameworkid);
 
-        // Delete all competencies in the framework
+        // Delete all items in the framework
         delete_records($this->prefix, 'frameworkid', $this->frameworkid);
 
         // Finally delete this framework
