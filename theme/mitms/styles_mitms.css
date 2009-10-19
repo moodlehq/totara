@@ -447,7 +447,11 @@ ul.tabrow1 li a:visited,
 }
 #front-blocks .front-blocks-content {
  font-size: 12px;
+<<<<<<< HEAD
  padding: 0 0px 5px 0px;
+=======
+ padding: 0 10px 5px 10px;
+>>>>>>> mdl19-mitms-course-completion-dev
  height: 100px;
  overflow: hidden;
 }

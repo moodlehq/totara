@@ -680,4 +680,15 @@ function lesson_is_moddata_trusted() {
     return true;
 }
 
+/**
+ * @param string $feature FEATURE_xx constant for requested feature
+ * @return mixed True if module supports feature, null if doesn't know
+*/
+function lesson_supports($feature) {
+    switch($feature) {
+        case FEATURE_COMPLETION_TRACKS_VIEWS: return true;
+        case FEATURE_GRADE_HAS_GRADE: return true;
+        default: return null;
+    }
+}
 ?>

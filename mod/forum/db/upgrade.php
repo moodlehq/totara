@@ -87,6 +87,37 @@ function xmldb_forum_upgrade($oldversion=0) {
         delete_records('forum_ratings', 'post', 0); /// Clean existing wrong rates. MDL-18227
     }
 
+    if ($result && $oldversion < 2007101514) {
+    /// Define field completiondiscussions to be added to forum
+        $table = new XMLDBTable('forum');
+        $field = new XMLDBField('completiondiscussions');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '9', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0', 'blockperiod');
+
+    /// Launch add field completiondiscussions
+        if(!field_exists($table,$field)) {
+            add_field($table, $field);
+        }
+
+        $field = new XMLDBField('completionreplies');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '9', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0', 'completiondiscussions');
+
+    /// Launch add field completionreplies
+        if(!field_exists($table,$field)) {
+            add_field($table, $field);
+        }
+
+    /// Define field completionposts to be added to forum
+        $field = new XMLDBField('completionposts');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '9', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0', 'completionreplies');
+
+    /// Launch add field completionposts
+        if(!field_exists($table,$field)) {
+            add_field($table, $field);
+        }
+
+        upgrade_mod_savepoint($result, 2007101514, 'forum');
+    }
+
     return $result;
 }
 

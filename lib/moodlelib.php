@@ -274,6 +274,16 @@ if (!defined('SORT_LOCALE_STRING')) { // PHP < 4.4.0 - TODO: remove in 2.0
     define('SORT_LOCALE_STRING', SORT_STRING);
 }
 
+// Feature constants. Used for plugin_supports() to report features that are,
+// or are not, supported by a module.
+
+/** True if module can provide a grade */
+define('FEATURE_GRADE_HAS_GRADE', 'grade_has_grade');
+/** True if module has code to track whether somebody viewed it */
+define('FEATURE_COMPLETION_TRACKS_VIEWS', 'completion_tracks_views');
+/** True if module has custom completion rules */
+define('FEATURE_COMPLETION_HAS_RULES', 'completion_has_rules');
+
 
 /// PARAMETER HANDLING ////////////////////////////////////////////////////
 
@@ -2007,6 +2017,30 @@ function require_login($courseorid=0, $autologinguest=true, $cm=null, $setwantsu
             print_error('nocontext');
         }
     }
+
+    // Conditional activity access control
+    if(!empty($CFG->enableavailability) and $cm) {
+        // We cache conditional access in session
+        if(!isset($SESSION->conditionaccessok)) {
+            $SESSION->conditionaccessok=array();
+        }
+        // If you have been allowed into the module once then you are allowed
+        // in for rest of session, no need to do conditional checks
+        if(!array_key_exists($cm->id,$SESSION->conditionaccessok)) {
+            // Get condition info (does a query for the availability table)
+            require_once($CFG->libdir.'/conditionlib.php');        
+            $ci=new condition_info($cm,CONDITION_MISSING_EXTRATABLE);
+            // Check condition for user (this will do a query if the availability
+            // information depends on grade or completion information)
+            if($ci->is_available($junk) || 
+                has_capability('moodle/course:viewhiddenactivities', $COURSE->context)) {
+                $SESSION->conditionaccessok[$cm->id]=true;
+            } else {
+                print_error('activityiscurrentlyhidden');
+            }
+        }
+    }
+
     if ($COURSE->id == SITEID) {
         /// Eliminate hidden site activities straight away
         if (!empty($cm) && !$cm->visible
@@ -6213,6 +6247,42 @@ function get_list_of_plugins($plugin='mod', $exclude='', $basedir='') {
         asort($plugins);
     }
     return $plugins;
+}
+
+/**
+ * Checks whether a plugin supports a specified feature.
+ *
+ * @param string $type Plugin type e.g. 'mod'
+ * @param string $name Plugin name
+ * @param string $feature Feature code (FEATURE_xx constant)
+ * @return Feature result (false if not supported, null if feature is unknown
+ *  [=not supportted, usually]; otherwise usually true but may have
+ *  other feature-specific value otherwise)
+ */
+function plugin_supports($type, $name, $feature) {
+    global $CFG;
+
+    switch($type) {
+        case 'mod' :
+            $file = $CFG->dirroot.'/mod/'.$name.'/lib.php';
+            $function = $name.'_supports';
+            break;
+        default:
+            throw new Exception('Unsupported plugin type ('.$type.')');
+    }
+
+    // Load library and look for function
+    require_once($file);
+    if(function_exists($function)) {
+        // Function exists, so just return function result
+        return $function($feature);
+    } else {
+        switch($feature) {
+            // If some features can also be checked in other ways
+            // for legacy support, this could be added here
+            default: return null;
+        }
+    }
 }
 
 /**
