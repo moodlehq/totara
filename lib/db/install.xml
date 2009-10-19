@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="lib/db" VERSION="20081010" COMMENT="XMLDB file for core Moodle tables"
+<XMLDB PATH="lib/db" VERSION="20090904" COMMENT="XMLDB file for core Moodle tables"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../lib/xmldb/xmldb.xsd"
 >
@@ -73,7 +73,8 @@
         <FIELD NAME="enrolstartdate" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="enrollable" NEXT="enrolenddate"/>
         <FIELD NAME="enrolenddate" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="enrolstartdate" NEXT="enrol"/>
         <FIELD NAME="enrol" TYPE="char" LENGTH="20" NOTNULL="true" SEQUENCE="false" ENUM="false" PREVIOUS="enrolenddate" NEXT="defaultrole"/>
-        <FIELD NAME="defaultrole" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The default role given to participants who self-enrol" PREVIOUS="enrol"/>
+        <FIELD NAME="defaultrole" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The default role given to participants who self-enrol" PREVIOUS="enrol" NEXT="enablecompletion"/>
+        <FIELD NAME="enablecompletion" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="1 = allow use of 'completion' progress-tracking on this course. 0 = disable completion tracking on this course." PREVIOUS="defaultrole"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
@@ -84,7 +85,7 @@
         <INDEX NAME="shortname" UNIQUE="false" FIELDS="shortname" PREVIOUS="idnumber"/>
       </INDEXES>
     </TABLE>
-    <TABLE NAME="course_categories" COMMENT="Course categories" PREVIOUS="course" NEXT="course_display">
+    <TABLE NAME="course_categories" COMMENT="Course categories" PREVIOUS="course" NEXT="course_completion_aggr_methd">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" NEXT="name"/>
         <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" ENUM="false" PREVIOUS="id" NEXT="description"/>
@@ -103,7 +104,99 @@
         <KEY NAME="parent" TYPE="foreign" FIELDS="parent" REFTABLE="course_categories" REFFIELDS="id" COMMENT="note that to make this recursive FK working someday, the parent field must be declared NULL" PREVIOUS="primary"/>
       </KEYS>
     </TABLE>
-    <TABLE NAME="course_display" COMMENT="Stores info about how to display the course" PREVIOUS="course_categories" NEXT="course_meta">
+    <TABLE NAME="course_completion_aggr_methd" COMMENT="Course completion aggregation methods for criteria" PREVIOUS="course_categories" NEXT="course_completion_criteria">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="course"/>
+        <FIELD NAME="course" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="id" NEXT="criteriatype"/>
+        <FIELD NAME="criteriatype" TYPE="int" LENGTH="20" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" COMMENT="The criteria type we are aggregating, or NULL if complete course aggregation" PREVIOUS="course" NEXT="method"/>
+        <FIELD NAME="method" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" COMMENT="1 = all, 2 = any, 3 = fraction, 4 = unit" PREVIOUS="criteriatype" NEXT="value"/>
+        <FIELD NAME="value" TYPE="number" LENGTH="10" NOTNULL="false" UNSIGNED="false" SEQUENCE="false" DECIMALS="5" COMMENT="NULL = all/any, 0..1 for method 'fraction', > 0 for method 'unit'" PREVIOUS="method"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="course" UNIQUE="false" FIELDS="course" NEXT="criteriatype"/>
+        <INDEX NAME="criteriatype" UNIQUE="false" FIELDS="criteriatype" PREVIOUS="course"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="course_completion_criteria" COMMENT="Course completion criteria" PREVIOUS="course_completion_aggr_methd" NEXT="course_completion_crit_compl">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="course"/>
+        <FIELD NAME="course" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="id" NEXT="criteriatype"/>
+        <FIELD NAME="criteriatype" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" COMMENT="Type of criteria" PREVIOUS="course" NEXT="module"/>
+        <FIELD NAME="module" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" COMMENT="Type of module (if using module criteria type)" PREVIOUS="criteriatype" NEXT="moduleinstance"/>
+        <FIELD NAME="moduleinstance" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" COMMENT="Module instance id (if using module criteria type)" PREVIOUS="module" NEXT="enrolperiod"/>
+        <FIELD NAME="enrolperiod" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" COMMENT="Number of days after enrolment the course is completed (if using enrolperiod criteria type)" PREVIOUS="moduleinstance" NEXT="date"/>
+        <FIELD NAME="date" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" COMMENT="Timestamp of the date for course completion (if using date criteria type)" PREVIOUS="enrolperiod" NEXT="gradepass"/>
+        <FIELD NAME="gradepass" TYPE="number" LENGTH="10" NOTNULL="false" UNSIGNED="false" SEQUENCE="false" DECIMALS="5" COMMENT="The minimum grade needed to pass the course (if passing grade criteria enabled)" PREVIOUS="date" NEXT="role"/>
+        <FIELD NAME="role" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" PREVIOUS="gradepass" NEXT="lock"/>
+        <FIELD NAME="lock" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" COMMENT="Date this criteria was locked" SEQUENCE="false" PREVIOUS="role"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="course" UNIQUE="false" FIELDS="course" NEXT="lock"/>
+        <INDEX NAME="lock" UNIQUE="false" FIELDS="lock" PREVIOUS="course"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="course_completion_crit_compl" COMMENT="Course completion user records" PREVIOUS="course_completion_criteria" NEXT="course_completion_notify">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="userid"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="id" NEXT="course"/>
+        <FIELD NAME="course" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="userid" NEXT="criteriaid"/>
+        <FIELD NAME="criteriaid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" COMMENT="Completion criteria this references" PREVIOUS="course" NEXT="gradefinal"/>
+        <FIELD NAME="gradefinal" TYPE="number" LENGTH="10" NOTNULL="false" UNSIGNED="false" SEQUENCE="false" DECIMALS="5" COMMENT="The final grade for the course (included regardless of whether a passing grade was required)" PREVIOUS="criteriaid" NEXT="unenroled"/>
+        <FIELD NAME="unenroled" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" COMMENT="Timestamp when the user was unenroled" PREVIOUS="gradefinal" NEXT="deleted"/>
+        <FIELD NAME="deleted" TYPE="int" LENGTH="1" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" PREVIOUS="unenroled" NEXT="timecompleted"/>
+        <FIELD NAME="timecompleted" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" PREVIOUS="deleted"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="userid" UNIQUE="false" FIELDS="userid" NEXT="course"/>
+        <INDEX NAME="course" UNIQUE="false" FIELDS="course" PREVIOUS="userid" NEXT="criteriaid"/>
+        <INDEX NAME="criteriaid" UNIQUE="false" FIELDS="criteriaid" PREVIOUS="course" NEXT="timecompleted"/>
+        <INDEX NAME="timecompleted" UNIQUE="false" FIELDS="timecompleted" PREVIOUS="criteriaid"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="course_completion_notify" COMMENT="Course completion notification emails" PREVIOUS="course_completion_crit_compl" NEXT="course_completions">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="course"/>
+        <FIELD NAME="course" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="id" NEXT="role"/>
+        <FIELD NAME="role" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" COMMENT="ID of the role to receive this notification message when a course has been completed" PREVIOUS="course" NEXT="message"/>
+        <FIELD NAME="message" TYPE="text" LENGTH="small" NOTNULL="true" SEQUENCE="false" COMMENT="HTML formatted message to be sent" PREVIOUS="role" NEXT="timesent"/>
+        <FIELD NAME="timesent" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="message"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="course" UNIQUE="false" FIELDS="course"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="course_completions" COMMENT="Course completion records" PREVIOUS="course_completion_notify" NEXT="course_display">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="userid"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="id" NEXT="course"/>
+        <FIELD NAME="course" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="userid" NEXT="deleted"/>
+        <FIELD NAME="deleted" TYPE="int" LENGTH="1" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" PREVIOUS="course" NEXT="timenotified"/>
+        <FIELD NAME="timenotified" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" PREVIOUS="deleted" NEXT="timeenroled"/>
+        <FIELD NAME="timeenroled" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="timenotified" NEXT="timecompleted"/>
+        <FIELD NAME="timecompleted" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" PREVIOUS="timeenroled"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="userid" UNIQUE="false" FIELDS="userid" NEXT="course"/>
+        <INDEX NAME="course" UNIQUE="false" FIELDS="course" PREVIOUS="userid" NEXT="timecompleted"/>
+        <INDEX NAME="timecompleted" UNIQUE="false" FIELDS="timecompleted" PREVIOUS="course"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="course_display" COMMENT="Stores info about how to display the course" PREVIOUS="course_completions" NEXT="course_meta">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" NEXT="course"/>
         <FIELD NAME="course" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="id" NEXT="userid"/>
@@ -131,7 +224,7 @@
         <INDEX NAME="child_course" UNIQUE="false" FIELDS="child_course" PREVIOUS="parent_course"/>
       </INDEXES>
     </TABLE>
-    <TABLE NAME="course_modules" COMMENT="course_modules table retrofitted from MySQL" PREVIOUS="course_meta" NEXT="course_sections">
+    <TABLE NAME="course_modules" COMMENT="course_modules table retrofitted from MySQL" PREVIOUS="course_meta" NEXT="course_modules_availability">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" NEXT="course"/>
         <FIELD NAME="course" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="id" NEXT="module"/>
@@ -146,7 +239,17 @@
         <FIELD NAME="visibleold" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="false" DEFAULT="1" SEQUENCE="false" ENUM="false" PREVIOUS="visible" NEXT="groupmode"/>
         <FIELD NAME="groupmode" TYPE="int" LENGTH="4" NOTNULL="true" UNSIGNED="false" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="visibleold" NEXT="groupingid"/>
         <FIELD NAME="groupingid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="groupmode" NEXT="groupmembersonly"/>
-        <FIELD NAME="groupmembersonly" TYPE="int" LENGTH="4" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="only members of any group are allowed to access the activity" PREVIOUS="groupingid"/>
+        <FIELD NAME="groupmembersonly" TYPE="int" LENGTH="4" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="only members of any group are allowed to access the activity" PREVIOUS="groupingid" NEXT="completion"/>
+        <FIELD NAME="completion" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="Whether the completion-tracking facilities are enabled for this activity.
+0 = not enabled (database default)
+1 = manual tracking, user can tick this activity off (UI default for most activity types)
+2 = automatic tracking, system should mark completion according to rules specified in course_moduleS_completion" PREVIOUS="groupmembersonly" NEXT="completiongradeitemnumber"/>
+        <FIELD NAME="completiongradeitemnumber" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" ENUM="false" COMMENT="Grade-item number used to track automatic completion, if applicable." PREVIOUS="completion" NEXT="completionview"/>
+        <FIELD NAME="completionview" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="Controls whether a page view is part of the automatic completion requirements for this activity. 0 = view not required 1 = view required" PREVIOUS="completiongradeitemnumber" NEXT="completionexpected"/>
+        <FIELD NAME="completionexpected" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="Date at which students are expected to complete this activity. This field is used when displaying student progress." PREVIOUS="completionview" NEXT="availablefrom"/>
+        <FIELD NAME="availablefrom" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="If set non-zero, the activity only becomes available from the time given here." PREVIOUS="completionexpected" NEXT="availableuntil"/>
+        <FIELD NAME="availableuntil" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="If set non-zero, the activity is only available until the time given here." PREVIOUS="availablefrom" NEXT="showavailability"/>
+        <FIELD NAME="showavailability" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="If this field is set to 1 and the activity is not available because the 'availablefrom' date has not been reached, or one of the conditions in course_modules_availability is not matched, then the item will be displayed greyed-out (unclickable) with an information message such as 'Available from (date)'. Otherwise, the item will not be displayed to students at all." PREVIOUS="availableuntil"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id" NEXT="groupingid"/>
@@ -160,7 +263,50 @@
         <INDEX NAME="idnumber-course" UNIQUE="false" FIELDS="idnumber, course" COMMENT="non unique index (although programatically we are guarantying some sort of uniqueness both under this table and the grade_items one). TODO: We need a central store of module idnumbers in the future." PREVIOUS="instance"/>
       </INDEXES>
     </TABLE>
-    <TABLE NAME="course_sections" COMMENT="to define the sections for each course" PREVIOUS="course_modules" NEXT="course_request">
+    <TABLE NAME="course_modules_availability" COMMENT="Table stores conditions that affect whether a module/activity is currently available to students or not." PREVIOUS="course_modules" NEXT="course_modules_completion">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" NEXT="coursemoduleid"/>
+        <FIELD NAME="coursemoduleid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" COMMENT="ID of the module whose availability is being restricted by this condition." PREVIOUS="id" NEXT="sourcecmid"/>
+        <FIELD NAME="sourcecmid" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" ENUM="false" COMMENT="If this condition is based on completion of another activity, then this is the course-module ID of that activity. Otherwise null." PREVIOUS="coursemoduleid" NEXT="requiredcompletion"/>
+        <FIELD NAME="requiredcompletion" TYPE="int" LENGTH="1" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" ENUM="false" COMMENT="If this condition is on a module's completion, then this should be set to the required completion state. Otherwise null. Suitable values are 1 = completed, 2 = completed-passed, 3 = completed-failed." PREVIOUS="sourcecmid" NEXT="gradeitemid"/>
+        <FIELD NAME="gradeitemid" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" ENUM="false" COMMENT="If this condition is based on a gradebook score, the item ID is given here (and the item will now not be available until a value is achieved for that grade). Otherwise null." PREVIOUS="requiredcompletion" NEXT="grademin"/>
+        <FIELD NAME="grademin" TYPE="number" LENGTH="10" NOTNULL="false" UNSIGNED="false" SEQUENCE="false" ENUM="false" DECIMALS="5" COMMENT="If set, this is the minimum grade that must be reached (greater than or equal) in order for this module to appear. Otherwise null." PREVIOUS="gradeitemid" NEXT="grademax"/>
+        <FIELD NAME="grademax" TYPE="number" LENGTH="10" NOTNULL="false" UNSIGNED="false" SEQUENCE="false" ENUM="false" DECIMALS="5" COMMENT="If set, this is the maximum grade that users must be below (less than) in order to display this item. Otherwise null." PREVIOUS="grademin"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" NEXT="coursemoduleid"/>
+        <KEY NAME="coursemoduleid" TYPE="foreign" FIELDS="coursemoduleid" REFTABLE="course_modules" REFFIELDS="id" PREVIOUS="primary" NEXT="sourcecmid"/>
+        <KEY NAME="sourcecmid" TYPE="foreign" FIELDS="sourcecmid" REFTABLE="course_modules" REFFIELDS="id" PREVIOUS="coursemoduleid" NEXT="gradeitemid"/>
+        <KEY NAME="gradeitemid" TYPE="foreign" FIELDS="gradeitemid" REFTABLE="grade_items" REFFIELDS="id" PREVIOUS="sourcecmid"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="course_modules_completion" COMMENT="Stores the completion state (completed or not completed, etc) of each user on each activity." PREVIOUS="course_modules_availability" NEXT="course_sections">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" NEXT="coursemoduleid"/>
+        <FIELD NAME="coursemoduleid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" COMMENT="Activity that has been completed (or not)." PREVIOUS="id" NEXT="userid"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" COMMENT="ID of user who has (or hasn't) completed the activity." PREVIOUS="coursemoduleid" NEXT="completionstate"/>
+        <FIELD NAME="completionstate" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" COMMENT="Whether or not the user has completed the activity. Available states:
+0 = not completed [if there's no row in this table, that also counts as 0]
+1 = completed
+2 = completed, show passed
+3 = completed, show failed" PREVIOUS="userid" NEXT="viewed"/>
+
+        <FIELD NAME="viewed" TYPE="int" LENGTH="1" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" ENUM="false" COMMENT="Tracks whether or not this activity has been viewed.
+NULL = we are not tracking viewed for this activity
+0 = not viewed
+1 = viewed" PREVIOUS="completionstate" NEXT="timemodified"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" COMMENT="Time at which the completion state last changed." PREVIOUS="viewed"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="coursemoduleid" UNIQUE="false" FIELDS="coursemoduleid" COMMENT="For quick access via course-module (e.g. when displaying course module settings page and we need to determine whether anyone has completed it)." NEXT="userid"/>
+        <INDEX NAME="userid" UNIQUE="false" FIELDS="userid" COMMENT="Index on user ID. Used when obtaining completion information for normal course page view." PREVIOUS="coursemoduleid"/>
+
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="course_sections" COMMENT="to define the sections for each course" PREVIOUS="course_modules_completion" NEXT="course_request">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" NEXT="course"/>
         <FIELD NAME="course" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="id" NEXT="section"/>
@@ -1702,6 +1848,7 @@
         <SENTENCE TEXT="(module, action, mtable, field) VALUES ('message', 'block contact', 'user', 'CONCAT(firstname,&quot; &quot;,lastname)')" />
         <SENTENCE TEXT="(module, action, mtable, field) VALUES ('message', 'unblock contact', 'user', 'CONCAT(firstname,&quot; &quot;,lastname)')" />
         <SENTENCE TEXT="(module, action, mtable, field) VALUES ('group', 'view', 'groups', 'name')" />
+        <SENTENCE TEXT="(module, action, mtable, field) VALUES ('tag', 'update', 'tag', 'name')" />
       </SENTENCES>
     </STATEMENT>
   </STATEMENTS>

@@ -275,6 +275,8 @@
 
             break;
     }
+    $completion=new completion_info($course);
+    $completion->set_module_viewed($cm);
     print_footer($course);
 
 ?>

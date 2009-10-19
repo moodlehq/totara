@@ -549,6 +549,19 @@ h2.headingblock {
   color: #666666;
 }
 
+#course-view .availabilityinfo {
+  font-size:0.85em;
+  color:#aaa;
+}
+#course-view .availabilityinfo strong {
+  font-weight:normal;
+  color:black;
+}
+#course-view .dimmed_text img {
+  opacity:0.3;
+  filter: alpha(opacity='30'); 
+}
+
 /***
  *** Doc
  ***/

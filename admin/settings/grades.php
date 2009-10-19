@@ -62,6 +62,14 @@ if (has_capability('moodle/grade:manage', $systemcontext)
         $temp->add(new admin_setting_special_gradeexport());
 
         $temp->add(new admin_setting_special_gradelimiting());
+
+        // Completion system
+        require_once($CFG->libdir.'/completionlib.php');
+        $temp->add(new admin_setting_configcheckbox('enablecompletion', get_string('enablecompletion', 'completion'), get_string('configenablecompletion', 'completion'), COMPLETION_ENABLED));
+        $temp->add(new admin_setting_pickroles('progresstrackedroles', get_string('progresstrackedroles', 'completion'), get_string('configprogresstrackedroles', 'completion')));
+
+        // Condition system
+        $temp->add(new admin_setting_configcheckbox('enableavailability', get_string('enableavailability', 'condition'), get_string('configenableavailability', 'condition'), 0));
     }
     $ADMIN->add('grades', $temp);
 

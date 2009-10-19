@@ -214,6 +214,82 @@ function forum_delete_instance($id) {
 
 
 /**
+ * Indicates API features that the forum supports.
+ *
+ * @param string $feature
+ * @return mixed True if yes (some features may use other values)
+ */
+function forum_supports($feature) {
+    switch($feature) {
+        case FEATURE_COMPLETION_TRACKS_VIEWS: return true;
+        case FEATURE_COMPLETION_HAS_RULES: return true;
+        default: return null;
+    }
+}
+
+
+/**
+ * Obtains the automatic completion state for this forum based on any conditions
+ * in forum settings.
+ *
+ * @param object $course Course
+ * @param object $cm Course-module
+ * @param int $userid User ID
+ * @param bool $type Type of comparison (or/and; can be used as return value if no conditions)
+ * @return bool True if completed, false if not. (If no conditions, then return
+ *   value depends on comparison type)
+ */
+function forum_get_completion_state($course,$cm,$userid,$type) {
+    global $CFG;
+
+    // Get forum details
+    if(!($forum = get_record('forum', 'id', $cm->instance))) {
+        error("Can't find forum {$cm->instance}");
+    }
+
+    $result=$type; // Default return value
+
+    $postcountsql="
+SELECT
+    COUNT(1)
+FROM
+    {$CFG->prefix}forum_posts fp
+    INNER JOIN {$CFG->prefix}forum_discussions fd ON fp.discussion=fd.id
+WHERE
+    fp.userid = {$userid} AND fd.forum = {$forum->id}";
+
+    if($forum->completiondiscussions) {
+        $value = $forum->completiondiscussions <=
+          count_records('forum_discussions', 'forum', $forum->id, 'userid', $userid);
+          if($type==COMPLETION_AND) {
+            $result=$result && $value;
+        } else {
+            $result=$result || $value;
+        }
+    }
+    if($forum->completionreplies) {
+        $value = $forum->completionreplies <=
+            get_field_sql($postcountsql.' AND fp.parent<>0');
+        if($type==COMPLETION_AND) {
+            $result=$result && $value;
+        } else {
+            $result=$result || $value;
+        }
+    }
+    if($forum->completionposts) {
+        $value = $forum->completionposts <= get_field_sql($postcountsql);
+        if($type==COMPLETION_AND) {
+            $result=$result && $value;
+        } else {
+            $result=$result || $value;
+        }
+    }
+
+    return $result;
+}
+
+
+/**
  * Function to be run periodically according to the moodle cron
  * Finds all posts that have yet to be mailed out, and mails them
  * out to all subscribers
@@ -4004,9 +4080,14 @@ function forum_add_discussion($discussion,&$message) {
 
 
 /**
- *
+ * Deletes a discussion and handles all associated cleanup.
+ * @param object $discussion Discussion to delete
+ * @param bool $fulldelete True when deleting entire forum
+ * @param object $course Course (required if fulldelete is false)
+ * @param object $cm Course-module (required if fulldelete is false)
+ * @param object $forum Forum (required if fulldelete is false)
  */
-function forum_delete_discussion($discussion, $fulldelete=false) {
+function forum_delete_discussion($discussion, $fulldelete = false, $course = null, $cm = null, $forum = null) {
 // $discussion is a discussion record object
 
     $result = true;
@@ -4018,7 +4099,7 @@ function forum_delete_discussion($discussion, $fulldelete=false) {
             if (! delete_records("forum_ratings", "post", "$post->id")) {
                 $result = false;
             }
-            if (! forum_delete_post($post, $fulldelete)) {
+            if (! forum_delete_post($post, 'ignore', $course, $cm, $forum, $fulldelete)) {
                 $result = false;
             }
         }
@@ -4030,18 +4111,39 @@ function forum_delete_discussion($discussion, $fulldelete=false) {
         $result = false;
     }
 
+    // Update completion state if we are tracking completion based on number of posts
+    $completion=new completion_info($course);
+
+    if(!$fulldelete && // But don't bother when deleting whole thing
+        $completion->is_enabled($cm)==COMPLETION_TRACKING_AUTOMATIC &&
+        ($forum->completiondiscussions || $forum->completionreplies || $forum->completionposts)) {
+
+        $completion->update_state($cm,COMPLETION_INCOMPLETE,$discussion->userid);
+    }
+
     return $result;
 }
 
 
 /**
- *
+ * Deletes a single forum post.
+ * @param object $post Forum post object
+ * @param mixed $children Whether to delete children. If false, returns false
+ *   if there are any children (without deleting the post). If true,
+ *   recursively deletes all children. If set to special value 'ignore', deletes
+ *   post regardless of children (this is for use only when deleting all posts
+ *   in a disussion).
+ * @param object $course Course
+ * @param object $cm Course-module
+ * @param object $forum Forum
+ * @param bool $skipcompletion True to skip updating completion state if it
+ *   would otherwise be updated, i.e. when deleting entire forum anyway.
  */
-function forum_delete_post($post, $children=false) {
-   if ($childposts = get_records('forum_posts', 'parent', $post->id)) {
+function forum_delete_post($post, $children=false, $course, $cm, $forum, $skipcompletion=false) {
+   if ($children != 'ignore' && ($childposts = get_records('forum_posts', 'parent', $post->id))) {
        if ($children) {
            foreach ($childposts as $childpost) {
-               forum_delete_post($childpost, true);
+               forum_delete_post($childpost, true, $course, $cm, $forum, $skipcompletion);
            }
        } else {
            return false;
@@ -4061,6 +4163,14 @@ function forum_delete_post($post, $children=false) {
 
    // Just in case we are deleting the last post
        forum_discussion_update_last_post($post->discussion);
+
+       // Update completion state if we are tracking completion based on number of posts
+       $completion=new completion_info($course);
+       if(!$skipcompletion && // But don't bother when deleting whole thing
+           $completion->is_enabled($cm)==COMPLETION_TRACKING_AUTOMATIC &&
+           ($forum->completiondiscussions || $forum->completionreplies || $forum->completionposts)) {
+           $completion->update_state($cm,COMPLETION_INCOMPLETE,$post->userid);
+       }
 
        return true;
    }

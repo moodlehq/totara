@@ -1,6 +1,7 @@
 <?php  // $Id$
    // Library of useful functions
 
+require_once($CFG->libdir.'/completionlib.php');
 
 define('COURSE_MAX_LOG_DISPLAY', 150);          // days
 define('COURSE_MAX_LOGS_PER_PAGE', 1000);       // records
@@ -58,6 +59,12 @@ function make_log_url($module, $url) {
             break;
         case 'notes':
             $url = "/notes/$url";
+            break;
+        case 'tag':
+            $url = "/tag/$url";
+            break;
+        case 'role':
+            $url = '/'.$url;
             break;
         default:
             $url = "/mod/$module/$url";
@@ -991,6 +998,9 @@ function get_array_of_activities($courseid) {
 //  extra - contains extra string to include in any link
 
     global $CFG;
+    if(!empty($CFG->enableavailability)) {
+        require_once($CFG->libdir.'/conditionlib.php');
+    }
 
     $mod = array();
 
@@ -1014,7 +1024,17 @@ function get_array_of_activities($courseid) {
                    $mod[$seq]->groupmode        = $rawmods[$seq]->groupmode;
                    $mod[$seq]->groupingid       = $rawmods[$seq]->groupingid;
                    $mod[$seq]->groupmembersonly = $rawmods[$seq]->groupmembersonly;
+                   $mod[$seq]->indent           = $rawmods[$seq]->indent;
+                   $mod[$seq]->completion       = $rawmods[$seq]->completion;
                    $mod[$seq]->extra            = "";
+                   if(!empty($CFG->enableavailability)) {
+                       condition_info::fill_availability_conditions($rawmods[$seq]);
+                       $mod[$seq]->availablefrom    = $rawmods[$seq]->availablefrom;
+                       $mod[$seq]->availableuntil   = $rawmods[$seq]->availableuntil;
+                       $mod[$seq]->showavailability = $rawmods[$seq]->showavailability;
+                       $mod[$seq]->conditionscompletion = $rawmods[$seq]->conditionscompletion;
+                       $mod[$seq]->conditionsgrade  = $rawmods[$seq]->conditionsgrade;
+                   }
 
                    $modname = $mod[$seq]->mod;
                    $functionname = $modname."_get_coursemodule_info";
@@ -1057,6 +1077,10 @@ function get_array_of_activities($courseid) {
  */
 function &get_fast_modinfo(&$course, $userid=0) {
     global $CFG, $USER;
+
+    if(!empty($CFG->enableavailability)) {
+        require_once($CFG->libdir.'/conditionlib.php');
+    }
 
     static $cache = array();
 
@@ -1134,9 +1158,27 @@ function &get_fast_modinfo(&$course, $userid=0) {
         $cm->groupmode        = $mod->groupmode;
         $cm->groupingid       = $mod->groupingid;
         $cm->groupmembersonly = $mod->groupmembersonly;
+        $cm->indent           = $mod->indent;
+        $cm->completion       = $mod->completion;
         $cm->extra            = isset($mod->extra) ? urldecode($mod->extra) : '';
         $cm->icon             = isset($mod->icon) ? $mod->icon : '';
         $cm->uservisible      = true;
+        if(!empty($CFG->enableavailability)) {
+            // We must have completion information from modinfo. If it's not
+            // there, cache needs rebuilding
+            if(!isset($mod->availablefrom)) {
+                debugging('enableavailability option was changed; rebuilding '.
+                    'cache for course '.$course->id);
+                rebuild_course_cache($course->id,true);
+                // Re-enter this routine to do it all properly
+                return get_fast_modinfo($course,$userid);
+            }
+            $cm->availablefrom    = $mod->availablefrom;
+            $cm->availableuntil   = $mod->availableuntil;
+            $cm->showavailability = $mod->showavailability;
+            $cm->conditionscompletion = $mod->conditionscompletion;
+            $cm->conditionsgrade  = $mod->conditionsgrade;
+        }
 
         // preload long names plurals and also check module is installed properly
         if (!isset($modlurals[$cm->modname])) {
@@ -1149,8 +1191,29 @@ function &get_fast_modinfo(&$course, $userid=0) {
 
         $modcontext = get_context_instance(CONTEXT_MODULE,$cm->id);
 
-        if (!$cm->visible and !has_capability('moodle/course:viewhiddenactivities', 
-            $modcontext, $userid)) {
+        if(!empty($CFG->enableavailability)) {
+            // Unfortunately the next call really wants to call
+            // get_fast_modinfo, but that would be recursive, so we fake up a
+            // modinfo for it already
+            if(empty($minimalmodinfo)) {
+                $minimalmodinfo=new stdClass();
+                $minimalmodinfo->cms=array();
+                foreach($info as $mod) {
+                    $minimalcm=new stdClass();
+                    $minimalcm->id=$mod->cm;
+                    $minimalcm->name=urldecode($mod->name);
+                    $minimalmodinfo->cms[$minimalcm->id]=$minimalcm;
+                }
+            }
+
+            // Get availability information
+            $ci = new condition_info($cm);
+            $cm->available=$ci->is_available($cm->availableinfo,true,$userid,
+                $minimalmodinfo);
+        } else {
+            $cm->available=true;
+        }
+        if ((!$cm->visible or !$cm->available) and !has_capability('moodle/course:viewhiddenactivities', $modcontext, $userid)) {
             $cm->uservisible = false;
 
         } else if (!empty($CFG->enablegroupings) and !empty($cm->groupmembersonly)
@@ -1195,6 +1258,8 @@ function &get_fast_modinfo(&$course, $userid=0) {
 function get_all_mods($courseid, &$mods, &$modnames, &$modnamesplural, &$modnamesused) {
 // Returns a number of useful structures for course displays
 
+    global $COURSE;
+
     $mods          = array();    // course modules indexed by id
     $modnames      = array();    // all course module names (except resource!)
     $modnamesplural= array();    // all course module names (plural form)
@@ -1212,7 +1277,10 @@ function get_all_mods($courseid, &$mods, &$modnames, &$modnamesplural, &$modname
         error("No modules are installed!");
     }
 
-    if ($rawmods = get_course_mods($courseid)) {
+    $course = ($courseid==$COURSE->id) ? $COURSE : get_record('course', 'id', $courseid);
+    $modinfo = get_fast_modinfo($course);
+
+    if ($rawmods=$modinfo->cms) {
         foreach($rawmods as $mod) {    // Index the mods
             if (empty($modnames[$mod->modname])) {
                 continue;
@@ -1282,7 +1350,7 @@ function set_section_visible($courseid, $sectionnumber, $visibility) {
 }
 
 
-function print_section($course, $section, $mods, $modnamesused, $absolute=false, $width="100%") {
+function print_section($course, $section, $mods, $modnamesused, $absolute=false, $width="100%", $hidecompletion=false) {
 /// Prints a section full of activity modules
     global $CFG, $USER;
 
@@ -1342,7 +1410,20 @@ function print_section($course, $section, $mods, $modnamesused, $absolute=false,
             }
 
             if (isset($modinfo->cms[$modnumber])) {
-                if (!$modinfo->cms[$modnumber]->uservisible) {
+                // We can continue (because it will not be displayed at all)
+                // if:
+                // 1) The activity is not visible to users
+                // and
+                // 2a) The 'showavailability' option is not set (if that is set,
+                //     we need to display the activity so we can show
+                //     availability info)
+                // or
+                // 2b) The 'availableinfo' is empty, i.e. the activity was
+                //     hidden in a way that leaves no info, such as using the
+                //     eye icon.
+                if (!$modinfo->cms[$modnumber]->uservisible &&
+                    (empty($modinfo->cms[$modnumber]->showavailability) ||
+                      empty($modinfo->cms[$modnumber]->availableinfo))) {
                     // visibility shortcut
                     continue;
                 }
@@ -1351,7 +1432,8 @@ function print_section($course, $section, $mods, $modnamesused, $absolute=false,
                     // module not installed
                     continue;
                 }
-                if (!coursemodule_visible_for_user($mod)) {
+                if (!coursemodule_visible_for_user($mod) &&
+                    empty($mod->showavailability)) {
                     // full visibility check
                     continue;
                 }
@@ -1377,7 +1459,7 @@ function print_section($course, $section, $mods, $modnamesused, $absolute=false,
 
             if ($mod->modname == "label") {
                 echo "<span class=\"";
-                if (!$mod->visible) {
+                if (!$mod->visible || !$mod->uservisible) {
                     echo 'dimmed_text';
                 } else {
                     echo 'label';
@@ -1391,6 +1473,10 @@ function print_section($course, $section, $mods, $modnamesused, $absolute=false,
                     }
                     echo " <span class=\"groupinglabel\">(".format_string($groupings[$mod->groupingid]->name).')</span>';
                 }
+
+            } elseif ($mod->modname == 'facetoface') {
+                include_once($CFG->dirroot.'/mod/facetoface/lib.php');
+                echo facetoface_print_coursemodule_info($mod);
 
             } else { // Normal activity
                 $instancename = format_string($modinfo->cms[$modnumber]->name, true,  $course->id);
@@ -1424,17 +1510,36 @@ function print_section($course, $section, $mods, $modnamesused, $absolute=false,
                     $altname = get_accesshide(' '.$altname);
                 }
 
-                $linkcss = $mod->visible ? "" : " class=\"dimmed\" ";
-                echo '<a '.$linkcss.' '.$extra.        // Title unnecessary!
-                     ' href="'.$CFG->wwwroot.'/mod/'.$mod->modname.'/view.php?id='.$mod->id.'">'.
-                     '<img src="'.$icon.'" class="activityicon" alt="" /> <span>'.
-                     $instancename.$altname.'</span></a>';
-
-                if (!empty($CFG->enablegroupings) && !empty($mod->groupingid) && has_capability('moodle/course:managegroups', get_context_instance(CONTEXT_COURSE, $course->id))) {
-                    if (!isset($groupings)) {
-                        $groupings = groups_get_all_groupings($course->id);
+                // We may be displaying this just in order to show information
+                // about visibility, without the actual link
+                if($mod->uservisible) {
+                    // Display normal module link
+                    if($mod->visible) {
+                        $linkcss='';
+                        $accesstext='';
+                    } else {
+                        $linkcss = ' class="dimmed" ';
+                        $accesstext='<span class="accesshide">'.
+                            get_string('hiddenfromstudents').': </span>';
                     }
-                    echo " <span class=\"groupinglabel\">(".format_string($groupings[$mod->groupingid]->name).')</span>';
+
+                    echo '<a '.$linkcss.' '.$extra.
+                         ' href="'.$CFG->wwwroot.'/mod/'.$mod->modname.'/view.php?id='.$mod->id.'">'.
+                         '<img src="'.$icon.'" class="activityicon" alt="" /> '.
+                         $accesstext.'<span>'.$instancename.$altname.'</span></a>';
+
+                    if (!empty($CFG->enablegroupings) && !empty($mod->groupingid) && has_capability('moodle/course:managegroups', get_context_instance(CONTEXT_COURSE, $course->id))) {
+                        if (!isset($groupings)) {
+                            $groupings = groups_get_all_groupings($course->id);
+                        }
+                        echo " <span class=\"groupinglabel\">(".format_string($groupings[$mod->groupingid]->name).')</span>';
+                    }
+                } else {
+                    // Display greyed-out text of link
+                    echo '<span class="dimmed_text" '.$extra.' ><span class="accesshide">'.
+                        get_string('notavailableyet','condition').': </span>'.
+                        '<img src="'.$icon.'" class="activityicon" alt="" /> <span>'.
+                        $instancename.$altname.'</span></span>';
                 }
             }
             if ($usetracking && $mod->modname == 'forum') {
@@ -1462,6 +1567,92 @@ function print_section($course, $section, $mods, $modnamesused, $absolute=false,
                 echo '&nbsp;&nbsp;';
                 echo make_editing_buttons($mod, $absolute, true, $mod->indent, $section->section);
             }
+
+            // Completion
+            $completioninfo=new completion_info($course);
+            $completion=$hidecompletion
+                ? COMPLETION_TRACKING_NONE
+                : $completioninfo->is_enabled($mod);
+            if($completion!=COMPLETION_TRACKING_NONE && isloggedin() &&
+                !isguestuser() && $mod->uservisible) {
+               $completiondata=$completioninfo->get_data($mod,true);
+                $completionicon='';
+                if($isediting) {
+                    switch($completion) {
+                        case COMPLETION_TRACKING_MANUAL :
+                            $completionicon='manual-enabled'; break;
+                        case COMPLETION_TRACKING_AUTOMATIC :
+                            $completionicon='auto-enabled'; break;
+                        default: // wtf
+                    }
+                } else if($completion==COMPLETION_TRACKING_MANUAL) {
+                    switch($completiondata->completionstate) {
+                        case COMPLETION_INCOMPLETE:
+                            $completionicon='manual-n'; break;
+                        case COMPLETION_COMPLETE:
+                            $completionicon='manual-y'; break;
+                    }
+                } else { // Automatic
+                    switch($completiondata->completionstate) {
+                        case COMPLETION_INCOMPLETE:
+                            $completionicon='auto-n'; break;
+                        case COMPLETION_COMPLETE:
+                            $completionicon='auto-y'; break;
+                        case COMPLETION_COMPLETE_PASS:
+                            $completionicon='auto-pass'; break;
+                        case COMPLETION_COMPLETE_FAIL:
+                            $completionicon='auto-fail'; break;
+                    }
+                }
+                if($completionicon) {
+                    static $shownhelp=false;
+                    $imgsrc=$CFG->pixpath.'/i/completion-'.$completionicon.'.gif';
+                    $imgalt=get_string('completion-alt-'.$completionicon,'completion');
+                    if($completion==COMPLETION_TRACKING_MANUAL && !$isediting) {
+                        $imgtitle=get_string('completion-title-'.$completionicon,'completion');
+                        $newstate=
+                            $completiondata->completionstate==COMPLETION_COMPLETE
+                            ? COMPLETION_INCOMPLETE
+                            : COMPLETION_COMPLETE;
+                        // In manual mode the icon is a toggle form.
+                        echo "
+<form class='togglecompletion' method='post' action='togglecompletion.php'><div>";
+                        if(!$shownhelp && !$isediting) {
+                            helpbutton('completionicons',get_string('completionicons','completion'),'completion');
+                            $shownhelp=true;
+                        }
+                        echo "
+<input type='hidden' name='id' value='{$mod->id}' />
+<input type='hidden' name='completionstate' value='$newstate' />
+<input type='image' src='$imgsrc' alt='$imgalt' title='$imgtitle' />
+</div></form>";
+                    } else {
+                        // In auto mode, or when editing, the icon is just an image
+                        echo "<span class='autocompletion'>";
+                        if(!$shownhelp && !$isediting) {
+                            helpbutton('completionicons',get_string('completionicons','completion'),'completion');
+                            $shownhelp=true;
+                        }
+                        echo "<img src='$imgsrc' alt='$imgalt' title='$imgalt' /></span>";
+                    }
+                }
+            }
+
+            // Show availability information (for someone who isn't allowed to
+            // see the activity itself, or for staff)
+            if(!$mod->uservisible) {
+                echo '<div class="availabilityinfo">'.$mod->availableinfo.'</div>';
+            } else if($isediting && !empty($CFG->enableavailability)) {
+                $ci = new condition_info($mod);
+                $fullinfo=$ci->get_full_information();
+                if($fullinfo) {
+                    echo '<div class="availabilityinfo">'.get_string($mod->showavailability
+                        ? 'userrestriction_visible'
+                        : 'userrestriction_hidden','condition',
+                        $fullinfo).'</div>';
+                }
+            }
+
             echo "</li>\n";
         }
 
@@ -2314,6 +2505,23 @@ function get_course_section($section, $courseid) {
     $id = insert_record("course_sections", $cw);
     return get_record("course_sections", "id", $id);
 }
+
+function set_coursemodule_completion($id, $completion) {
+    return set_field("course_modules", "completion", $completion, 'id', $id);
+}
+
+function set_coursemodule_completionview($id, $completionview) {
+    return set_field("course_modules", "completionview", $completionview, 'id', $id);
+}
+
+function set_coursemodule_completiongradeitemnumber($id, $completiongradeitemnumber) {
+    return set_field("course_modules", "completiongradeitemnumber", $completiongradeitemnumber, 'id', $id);
+}
+
+function set_coursemodule_completionexpected($id, $completionexpected) {
+    return set_field("course_modules", "completionexpected", $completionexpected, 'id', $id);
+}
+
 /**
  * Given a full mod object with section and course already defined, adds this module to that section.
  *

@@ -729,6 +729,7 @@
             fwrite ($bf,full_tag("ENROLSTARTDATE",3,false,$course->enrolstartdate));
             fwrite ($bf,full_tag("ENROLENDDATE",3,false,$course->enrolenddate));
             fwrite ($bf,full_tag("ENROLPERIOD",3,false,$course->enrolperiod));
+            fwrite ($bf,full_tag("ENABLECOMPLETION",3,false,$course->enablecompletion));
 
             /// write local course overrides here?
             write_role_overrides_xml($bf, $context, 3);
@@ -1184,6 +1185,11 @@
 
         $first_record = true;
 
+        $course = get_record('course', 'id', $preferences->backup_course);
+        if(!$course) {
+            return false;
+        }
+
         //Now print the mods in section
         //Extracts mod id from sequence
         $tok = strtok($section->sequence,",");
@@ -1242,11 +1248,36 @@
                fwrite ($bf,full_tag("GROUPINGID",6,false,$course_module->groupingid));
                fwrite ($bf,full_tag("GROUPMEMBERSONLY",6,false,$course_module->groupmembersonly));
                fwrite ($bf,full_tag("IDNUMBER",6,false,$course_module->idnumber));
+               fwrite ($bf,full_tag("COMPLETION",6,false,$course_module->completion));
+               fwrite ($bf,full_tag("COMPLETIONGRADEITEMNUMBER",6,false,$course_module->completiongradeitemnumber));
+               fwrite ($bf,full_tag("COMPLETIONVIEW",6,false,$course_module->completionview));
+               fwrite ($bf,full_tag("COMPLETIONEXPECTED",6,false,$course_module->completionexpected));
                // get all the role_capabilities overrides in this mod
                write_role_overrides_xml($bf, $context, 6);
                /// write role_assign code here
                write_role_assignments_xml($bf, $preferences, $context, 6);
-               /// write role_assign code here
+               // write completion data if enabled and user data enabled
+               require_once($CFG->libdir.'/completionlib.php');
+               $completion=new completion_info($course);
+               if($completion->is_enabled($course_module) &&
+                   backup_userdata_selected($preferences,$moduletype,$course_module->instance)) {
+                   fwrite ($bf,start_tag("COMPLETIONDATA",6,true));
+
+                   // Get all completion records for this module and loop
+                   $data = get_records('course_modules_completion', 'coursemoduleid', $course_module->id);
+                   $data = $data ? $data : array();
+                   foreach($data as $completion) {
+                       // Write completion record
+                       fwrite ($bf,start_tag("COMPLETION",7,true));
+                       fwrite ($bf,full_tag("USERID",8,false,$completion->userid));
+                       fwrite ($bf,full_tag("COMPLETIONSTATE",8,false,$completion->completionstate));
+                       fwrite ($bf,full_tag("VIEWED",8,false,$completion->viewed));
+                       fwrite ($bf,full_tag("TIMEMODIFIED",8,false,$completion->timemodified));
+                       fwrite ($bf,end_tag("COMPLETION",7,true));
+                   }
+
+                   fwrite ($bf,end_tag("COMPLETIONDATA",6,true));
+               }
 
                fwrite ($bf,end_tag("MOD",5,true));
            }

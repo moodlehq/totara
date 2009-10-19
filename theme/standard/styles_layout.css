@@ -478,6 +478,13 @@ img.iconkbhelp {
   border:0px;
 }
 
+img.icontoggle {
+  width:50px;
+  height:17px;
+  border:0px;
+  vertical-align:middle;
+}
+
 /*Accessibility: text 'seen' by screen readers but not visual users. Fixed for RTL languages, example Farsi. */
 .accesshide {
   position:absolute;
@@ -582,11 +589,10 @@ fieldset.fdate_selector label {
   clear: left;
 }
 .mform div.fhtmleditor {
-  margin: 0 auto 10px auto;
-  width : 600px;
-  clear:both;
-  float:none;
-  padding: 25px 0 20px 0;
+  margin: 5px 0 0 10px;
+  padding: 0;
+  float: left;
+  display: block;
 }
 .mform span.error, .mform span.required {
   color: red;
@@ -1811,6 +1817,33 @@ border-width:0px;
 #course-view .section .weekdates {
 }
 
+#course-view li.activity {
+  margin-right:20px; /* Space allowed for completion icons if enabled */
+  position:relative;
+}
+#course-view li.activity form.togglecompletion,
+#course-view li.activity span.autocompletion {
+  display:inline;
+  position:absolute;
+  right:-20px;
+  z-index:10;
+}
+#course-view li.activity form.togglecompletion div {
+  display:inline;
+}
+#course-view .completion-saved-display {
+  position:absolute;
+  top:0; left:0;
+  border:1px solid black;
+  padding: 1px 2px;
+  background:white;
+  font-size:0.85em;
+}
+#course-view form.togglecompletion img.iconhelp,
+#course-view span.autocompletion img.iconhelp {
+  vertical-align:top;
+}
+
 #course-view ul.section,
 #site-index ul.section {
   margin: 0;
@@ -2711,6 +2744,36 @@ body.notes .notesgroup {
 }
 
 /***
+ *** Completion progress report
+ ***/
+
+#course-report-progress-index th,
+#course-report-progress-index td {
+  padding:2px 4px;
+  font-weight:normal;
+  border-right: 1px solid #EEE;
+}
+.completion-expired {
+  background:#fdd;
+}
+.completion-expected {
+  font-size:0.75em;
+}
+.completion-sortchoice {
+  font-size:0.75em;
+  vertical-align:bottom;
+}
+.completion-progresscell {
+  text-align:right;
+}
+.completion-expired .completion-expected {
+  font-weight:bold;
+}
+#course-report-progress-index .progress-actions {
+  text-align:center;
+}
+
+/***
  *** Logs
  ***/
 
@@ -2783,7 +2846,8 @@ body.notes .notesgroup {
   background-image: url(pix/tab/left_hover.gif);
 }
 
-.tabrow0 .here a:hover {
+.tabrow0 .here a:link:hover,
+.tabrow0 .here a:visited:hover {
   background-image: url(pix/tab/left.gif);
 }
 
@@ -4309,7 +4373,19 @@ wikiadminactions {
   border: 1px dashed #ddd;
   padding: 3px;
 }
-
+#help #emoticons{
+    text-align: center;clear:both;width: 300px;margin-right: auto; margin-left:auto;
+}
+#help #emoticons ul{
+    list-style-type: none;
+}
+#help #emoticons li{
+    margin-bottom: 3px;
+    width: 120px;
+    border-left: 3px solid gray;
+    padding-left: 7px;
+    float: left;
+}
 table.viewcompetency th {
     text-align: left;
     vertical-align: top;

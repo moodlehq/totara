@@ -3169,6 +3169,301 @@ function xmldb_main_upgrade($oldversion=0) {
         upgrade_main_savepoint($result, 2007101547);
     }
 
+    if ($result && $oldversion < 2007101551){
+        //insert new record for log_display table
+        //used to record tag update.
+        if (!record_exists("log_display", "action", "update",
+                    "module", "tag")){
+            $log_action = new stdClass();
+            $log_action->module = 'tag';
+            $log_action->action = 'update';
+            $log_action->mtable = 'tag';
+            $log_action->field  = 'name';
+
+            $result  = $result && insert_record('log_display', $log_action);
+        }
+        upgrade_main_savepoint($result, 2007101551);
+    }
+
+    if ($result && $oldversion < 2007101552) {
+
+    /// Define field enablecompletion to be added to course
+        $table = new XMLDBTable('course');
+        $field = new XMLDBField('enablecompletion');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0', 'defaultrole');
+
+    /// Launch add field enablecompletion
+        $result = $result && add_field($table, $field);
+
+    /// Main savepoint reached
+        upgrade_main_savepoint($result, 2007101551);
+    }
+
+    if ($result && $oldversion < 2007101552) {
+
+    /// Define field completion to be added to course_modules
+        $table = new XMLDBTable('course_modules');
+        $field = new XMLDBField('completion');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0', 'groupmembersonly');
+
+    /// Launch add field completion
+        $result = $result && add_field($table, $field);
+
+    /// Define field completiongradeitemnumber to be added to course_modules
+        $field = new XMLDBField('completiongradeitemnumber');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null, null, null, 'completion');
+
+    /// Launch add field completiongradeitemnumber
+        $result = $result && add_field($table, $field);
+
+    /// Define field completionview to be added to course_modules
+        $field = new XMLDBField('completionview');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0', 'completiongradeitemnumber');
+
+    /// Launch add field completionview
+        $result = $result && add_field($table, $field);
+
+    /// Define field completionexpected to be added to course_modules
+        $field = new XMLDBField('completionexpected');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0', 'completionview');
+
+    /// Launch add field completionexpected
+        $result = $result && add_field($table, $field);
+
+   /// Define table course_modules_completion to be created
+        $table = new XMLDBTable('course_modules_completion');
+        if(!table_exists($table)) {
+
+        /// Adding fields to table course_modules_completion
+            $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null, null);
+            $table->addFieldInfo('coursemoduleid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
+            $table->addFieldInfo('userid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
+            $table->addFieldInfo('completionstate', XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
+            $table->addFieldInfo('viewed', XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, null, null, null, null, null);
+            $table->addFieldInfo('timemodified', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
+    
+        /// Adding keys to table course_modules_completion
+            $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
+    
+        /// Adding indexes to table course_modules_completion
+            $table->addIndexInfo('coursemoduleid', XMLDB_INDEX_NOTUNIQUE, array('coursemoduleid'));
+            $table->addIndexInfo('userid', XMLDB_INDEX_NOTUNIQUE, array('userid'));
+    
+        /// Launch create table for course_modules_completion
+            create_table($table);
+        }
+
+        /// Main savepoint reached
+        upgrade_main_savepoint($result, 2007101552);
+    }
+
+    if ($result && $oldversion < 2007101553) {
+
+    /// Define field availablefrom to be added to course_modules
+        $table = new XMLDBTable('course_modules');
+        $field = new XMLDBField('availablefrom');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0', 'completionexpected');
+
+    /// Conditionally launch add field availablefrom
+        $result = $result && add_field($table, $field);
+
+    /// Define field availableuntil to be added to course_modules
+        $field = new XMLDBField('availableuntil');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0', 'availablefrom');
+
+    /// Conditionally launch add field availableuntil
+        $result = $result && add_field($table, $field);
+
+    /// Define field showavailability to be added to course_modules
+        $field = new XMLDBField('showavailability');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0', 'availableuntil');
+
+    /// Conditionally launch add field showavailability
+        $result = $result && add_field($table, $field);
+
+    /// Define table course_modules_availability to be created
+        $table = new XMLDBTable('course_modules_availability');
+
+    /// Adding fields to table course_modules_availability
+        $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null, null);
+        $table->addFieldInfo('coursemoduleid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
+        $table->addFieldInfo('sourcecmid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null, null, null);
+        $table->addFieldInfo('requiredcompletion', XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, null, null, null, null, null);
+        $table->addFieldInfo('gradeitemid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null, null, null);
+        $table->addFieldInfo('grademin', XMLDB_TYPE_NUMBER, '10, 5', null, null, null, null, null, null);
+        $table->addFieldInfo('grademax', XMLDB_TYPE_NUMBER, '10, 5', null, null, null, null, null, null);
+
+    /// Adding keys to table course_modules_availability
+        $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
+        $table->addKeyInfo('coursemoduleid', XMLDB_KEY_FOREIGN, array('coursemoduleid'), 'course_modules', array('id'));
+        $table->addKeyInfo('sourcecmid', XMLDB_KEY_FOREIGN, array('sourcecmid'), 'course_modules', array('id'));
+        $table->addKeyInfo('gradeitemid', XMLDB_KEY_FOREIGN, array('gradeitemid'), 'grade_items', array('id'));
+
+    /// Conditionally launch create table for course_modules_availability
+        if (!table_exists($table)) {
+            create_table($table);
+        }
+
+    /// Changes to modinfo mean we need to rebuild course cache
+        rebuild_course_cache(0,true);
+ 
+    /// Main savepoint reached
+        upgrade_main_savepoint($result, 2007101553);
+    }
+    
+    if ($result && $oldversion < 2007101554) {
+
+    /// Add course completion tables
+    /// Define table course_completion_aggr_methd to be created
+        $table = new XMLDBTable('course_completion_aggr_methd');
+
+    /// Adding fields to table course_completion_aggr_methd
+        $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->addFieldInfo('course', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0');
+        $table->addFieldInfo('criteriatype', XMLDB_TYPE_INTEGER, '20', XMLDB_UNSIGNED, null, null, null);
+        $table->addFieldInfo('method', XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0');
+        $table->addFieldInfo('value', XMLDB_TYPE_NUMBER, '10, 5', null, null, null, null);
+
+    /// Adding keys to table course_completion_aggr_methd
+        $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
+
+    /// Adding indexes to table course_completion_aggr_methd
+        $table->addIndexInfo('course', XMLDB_INDEX_NOTUNIQUE, array('course'));
+        $table->addIndexInfo('criteriatype', XMLDB_INDEX_NOTUNIQUE, array('criteriatype'));
+
+    /// Conditionally launch create table for course_completion_aggr_methd
+        if (!table_exists($table)) {
+            create_table($table);
+        }
+
+
+    /// Define table course_completion_criteria to be created
+        $table = new XMLDBTable('course_completion_criteria');
+
+    /// Adding fields to table course_completion_criteria
+        $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->addFieldInfo('course', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0');
+        $table->addFieldInfo('criteriatype', XMLDB_TYPE_INTEGER, '20', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0');
+        $table->addFieldInfo('module', XMLDB_TYPE_CHAR, '100', null, null, null, null);
+        $table->addFieldInfo('moduleinstance', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null);
+        $table->addFieldInfo('enrolperiod', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null);
+        $table->addFieldInfo('date', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null);
+        $table->addFieldInfo('gradepass', XMLDB_TYPE_NUMBER, '10, 5', null, null, null, null);
+        $table->addFieldInfo('role', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null);
+        $table->addFieldInfo('lock', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null);
+
+    /// Adding keys to table course_completion_criteria
+        $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
+
+    /// Adding indexes to table course_completion_criteria
+        $table->addIndexInfo('course', XMLDB_INDEX_NOTUNIQUE, array('course'));
+        $table->addIndexInfo('lock', XMLDB_INDEX_NOTUNIQUE, array('lock'));
+
+    /// Conditionally launch create table for course_completion_criteria
+        if (!table_exists($table)) {
+            create_table($table);
+        }
+
+
+    /// Define table course_completion_crit_compl to be created
+        $table = new XMLDBTable('course_completion_crit_compl');
+
+    /// Adding fields to table course_completion_crit_compl
+        $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->addFieldInfo('userid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0');
+        $table->addFieldInfo('course', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0');
+        $table->addFieldInfo('criteriaid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0');
+        $table->addFieldInfo('gradefinal', XMLDB_TYPE_NUMBER, '10, 5', null, null, null, null);
+        $table->addFieldInfo('unenroled', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null);
+        $table->addFieldInfo('deleted', XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, null, null, null);
+        $table->addFieldInfo('timecompleted', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null);
+
+    /// Adding keys to table course_completion_crit_compl
+        $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
+
+    /// Adding indexes to table course_completion_crit_compl
+        $table->addIndexInfo('userid', XMLDB_INDEX_NOTUNIQUE, array('userid'));
+        $table->addIndexInfo('course', XMLDB_INDEX_NOTUNIQUE, array('course'));
+        $table->addIndexInfo('criteriaid', XMLDB_INDEX_NOTUNIQUE, array('criteriaid'));
+        $table->addIndexInfo('timecompleted', XMLDB_INDEX_NOTUNIQUE, array('timecompleted'));
+
+    /// Conditionally launch create table for course_completion_crit_compl
+        if (!table_exists($table)) {
+            create_table($table);
+        }
+
+
+    /// Define table course_completion_notify to be created
+        $table = new XMLDBTable('course_completion_notify');
+
+    /// Adding fields to table course_completion_notify
+        $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->addFieldInfo('course', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0');
+        $table->addFieldInfo('role', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0');
+        $table->addFieldInfo('message', XMLDB_TYPE_TEXT, 'small', null, XMLDB_NOTNULL, null, null);
+        $table->addFieldInfo('timesent', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0');
+
+    /// Adding keys to table course_completion_notify
+        $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
+
+    /// Adding indexes to table course_completion_notify
+        $table->addIndexInfo('course', XMLDB_INDEX_NOTUNIQUE, array('course'));
+
+    /// Conditionally launch create table for course_completion_notify
+        if (!table_exists($table)) {
+            create_table($table);
+        }
+
+    /// Define table course_completions to be created
+        $table = new XMLDBTable('course_completions');
+
+    /// Adding fields to table course_completions
+        $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->addFieldInfo('userid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0');
+        $table->addFieldInfo('course', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0');
+        $table->addFieldInfo('deleted', XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, null, null, null);
+        $table->addFieldInfo('timenotified', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null);
+        $table->addFieldInfo('timeenroled', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0');
+        $table->addFieldInfo('timecompleted', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null);
+
+    /// Adding keys to table course_completions
+        $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
+
+    /// Adding indexes to table course_completions
+        $table->addIndexInfo('userid', XMLDB_INDEX_NOTUNIQUE, array('userid'));
+        $table->addIndexInfo('course', XMLDB_INDEX_NOTUNIQUE, array('course'));
+        $table->addIndexInfo('timecompleted', XMLDB_INDEX_NOTUNIQUE, array('timecompleted'));
+
+    /// Conditionally launch create table for course_completions
+        if (!table_exists($table)) {
+            create_table($table);
+        }
+
+
+    /// Add cols to course table
+    /// Define field enablecompletion to be added to course
+        $table = new XMLDBTable('course');
+        $field = new XMLDBField('enablecompletion');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0', 'defaultrole');
+
+    /// Conditionally launch add field enablecompletion
+        if (!field_exists($table, $field)) {
+            add_field($table, $field);
+        }
+
+    /// Define field completionnotify to be added to course
+        $field = new XMLDBField('completionnotify');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0', 'enablecompletion');
+
+    /// Conditionally launch add field completionnotify
+        if (!field_exists($table, $field)) {
+            add_field($table, $field);
+        }
+
+
+        upgrade_main_savepoint($result, 2007101554);
+    }
+
     return $result;
 }
 
