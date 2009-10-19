@@ -1,6 +1,7 @@
 <?php
 
 require_once($CFG->dirroot.'/lib/formslib.php');
+require_once($CFG->libdir.'/hierarchylib.php');
 
 class competency_edit_form extends moodleform {
 
@@ -12,52 +13,56 @@ class competency_edit_form extends moodleform {
 
         // Get all competencies in this framework that we can use
         // as parents
-        $competency = $this->_customdata['competency'];
+        $item = $this->_customdata['competency'];
         $spage = $this->_customdata['spage'];
+        $hierarchy = new hierarchy();
+        $hierarchy->prefix = 'competency';
+        $framework = $hierachy->get_framework($item->id);
+        $items = $hiearchy->get_items();
+        
         $competencies = get_records('competency', 'frameworkid', $competency->frameworkid, 'sortorder');
-        $depthlevels = get_records('competency_depth', 'frameworkid', $competency->frameworkid, 'depthlevel');
 
         // Get max depth level
-        end($depthlevels);
-        $max_depth = current($depthlevels)->id;
+        end($depths);
+        $max_depth = current($depths)->id;
 
-        // Get competencies current depth level
+        // Get items current depth level
         $depthlevel = 0;
-        if ($competency->id) {
-            $depthlevel = $depthlevels[$competency->depthid]->depthlevel;
+        if ($item->id) {
+            $depthlevel = $depths[$item->depthid]->depthlevel;
         }
 
         $parents = array();
 
-        // Add top as an option if adding a new competency, or current parent is Top
-        if (!$competency->id || $competency->parentid == 0) {
+        // Add top as an option if adding a new item, or current parent is Top
+        if (!$item->id || $item->parentid == 0) {
             $parents[0] = 'Top';
         }
 
-        if ($competencies) {
+        if ($items) {
             // Cache breadcrumbs
             $breadcrumbs = array();
 
-            foreach ($competencies as $parent) {
-                // Do not show competencies at the deepest depth
+            foreach ($items as $parent) {
+                // Do not show items at the deepest depth
                 if ($parent->depthid == $max_depth) {
                     continue;
                 }
 
-                // Do not show this competency as a possible parent
-                if ($parent->id == $competency->id) {
+                // Do not show this item as a possible parent
+                if ($parent->id == $item->id) {
                     continue;
                 }
 
-                // If we are editing a competency, do not allow to alter the level of the parent
-                if ($competency->id) {
-                    if ($depthlevels[$parent->depthid]->depthlevel != ($depthlevel - 1)) {
+                // If we are editing a item, do not allow to alter the level of the parent
+                if ($item->id) {
+                    if ($depths[$parent->depthid]->depthlevel != ($depthlevel - 1)) {
                         continue;
                     }
                 }
 
                 // Grab parents and append this title
-                $breadcrumbs = array_slice($breadcrumbs, 0, ($depthlevels[$parent->depthid]->depthlevel - 1));
+                $breadcrumbs = array_slice($breadcrumbs, 0, ($depths[$parent->depthid]->depthlevel - 1));
                 $breadcrumbs[] = $parent->fullname;
 
                 // Make display text
@@ -81,11 +86,11 @@ class competency_edit_form extends moodleform {
                 s.name AS scale,
                 v.name AS value
             FROM
-                {$CFG->prefix}competency_scale_values v,
-                {$CFG->prefix}competency_scale_assignments a,
-                {$CFG->prefix}competency_scale s
+                {$CFG->prefix}{$hierarchy->prefix}_scale_values v,
+                {$CFG->prefix}{$hierarchy->prefix}_scale_assignments a,
+                {$CFG->prefix}{$hierarchy->prefix}_scale s
             WHERE
-                a.frameworkid = {$competency->frameworkid}
+                a.frameworkid = {$item->frameworkid}
             AND a.scaleid = s.id
             AND s.id = v.scaleid
         ");
@@ -165,9 +170,9 @@ class competency_edit_form extends moodleform {
 #        $mform->addRule('aggregationmethod', get_string('aggregationmethod', 'competencies'), 'required', null, 'client');
 
         /// Next show the custom fields if we're editing an existing competency (otherwise we don't know the depthid)
-        if ($competency->id) {
-            $mform->addElement('hidden', 'depthid', $competency->depthid);
-            customfield_definition($mform, $competency->id, 'competency', $competency->depthid, 'competency_depth');
+        if ($item->id) {
+            $mform->addElement('hidden', 'depthid', $item->depthid);
+            customfield_definition($mform, $item->id, $hierarchy->prefix, $item->depthid, $hierarchy->prefix.'_depth');
         }
 
         $this->add_action_buttons();
@@ -176,26 +181,26 @@ class competency_edit_form extends moodleform {
     function definition_after_data() {
 
         $mform =& $this->_form;
-        $competencyid = $mform->getElementValue('id');
+        $itemid = $mform->getElementValue('id');
 
-        if ($competency = get_record('competency', 'id', $competencyid)) {
+        if ($item = get_record('competency', 'id', $itemid)) {
 
-            customfield_definition_after_data($mform, $competency->id, 'competency', $competency->depthid, 'competency_depth');
+            customfield_definition_after_data($mform, $item->id, 'competency', $item->depthid, 'competency_depth');
 
         }
 
     }
 
-    function validation($competencynew, $files) {
+    function validation($itemnew, $files) {
 
         global $CFG;
-        $errors = parent::validation($competencynew, $files);
+        $errors = parent::validation($itemnew, $files);
 
-        $competencynew = (object)$competencynew;
-        $competency    = get_record('competency', 'id', $competencynew->id);
+        $itemnew = (object)$itemnew;
+        $item    = get_record('competency', 'id', $itemnew->id);
 
         /// Check custom fields
-        $errors += customfield_validation($competencynew, 'competency', 'competency_depth');
+        $errors += customfield_validation($itemnew, 'competency', 'competency_depth');
 
         return $errors;
     }
