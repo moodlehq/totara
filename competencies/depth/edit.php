@@ -2,6 +2,7 @@
 
 require_once('../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
+require_once($CFG->libdir.'/hierarchylib.php');
 require_once($CFG->dirroot.'/competencies/depth/edit_form.php');
 
 // depth level id; 0 if creating a new depth level
@@ -10,13 +11,16 @@ $id = optional_param('id', 0, PARAM_INT);
 $frameworkid = optional_param('frameworkid', 0, PARAM_INT);
 $spage       = optional_param('spage', 0, PARAM_INT);
 
+$hierarchy         = new hierarchy();
+$hierarchy->prefix = 'competency';
+
 // We require either an id for editing, or a framework for creating
 if (!$id && !$frameworkid) {
     error('Incorrect parameters');
 }
 
-// Make this page appear under the manage competencies admin item
-admin_externalpage_setup('competencymanage', '', array(), '', $CFG->wwwroot.'/competencies/depthlevel.php');
+// Make this page appear under the manage hierachy items admin menu
+admin_externalpage_setup($hierarchy->prefix.'manage', '', array(), '', $CFG->wwwroot.'/competencies/depthlevel.php');
 
 $context = get_context_instance(CONTEXT_SYSTEM);
 
@@ -29,7 +33,7 @@ if ($id == 0) {
     $depth->frameworkid = $frameworkid;
 
     // Calculate next depth level
-    $depth->depthlevel = get_field('competency_depth', 'MAX(depthlevel) + 1', 'frameworkid', $frameworkid);
+    $depth->depthlevel = get_field($hierarchy->prefix.'_depth', 'MAX(depthlevel) + 1', 'frameworkid', $frameworkid);
     if (!$depth->depthlevel) {
         $depth->depthlevel = 1;
     }
@@ -37,15 +41,14 @@ if ($id == 0) {
 } else {
     // editing existing depth level
     require_capability('moodle/local:updatecompetencydepth', $context);
-
-    if (!$depth = get_record('competency_depth', 'id', $id)) {
-        error('Competency depth level ID was incorrect');
+    if (!$depth = $hiearchy->get_depth_by_id($id)) {
+        error('Depth level ID was incorrect');
     }
 }
 
 // Load framework
-if (!$framework = get_record('competency_framework', 'id', $depth->frameworkid)) {
-    error('Competency framework ID was incorrect');
+if (!$framework = get_record($hierarchy->prefix.'_framework', 'id', $depth->frameworkid)) {
+    error('Framework ID was incorrect');
 }
 
 // create form
@@ -61,8 +64,8 @@ if ($depthform->is_cancelled()){
 // update data
 } else if ($depthnew = $depthform->get_data()) {
 
-    $competencynew->timemodified = time();
-    $competencynew->usermodified = $USER->id;
+    $depthnew->timemodified = time();
+    $depthnew->usermodified = $USER->id;
 
     // new depth level
     if ($depthnew->id == 0) {
@@ -70,19 +73,19 @@ if ($depthform->is_cancelled()){
 
         $depthnew->timecreated = time();
 
-        if (!$depthnew->id = insert_record('competency_depth', $depthnew)) {
-            error('Error creating competency depth level record');
+        if (!$depthnew->id = insert_record($hierarchy->prefix.'_depth', $depthnew)) {
+            error('Error creating '.$hierarchy->prefix.' depth level record');
         }
 
     // Existing depth level
     } else {
-        if (!update_record('competency_depth', $depthnew)) {
-            error('Error updating competency depth level record');
+        if (!update_record($hierarchy->prefix.'_depth', $depthnew)) {
+            error('Error updating '.$hierarchy->prefix.' depth level record');
         }
     }
 
     // Reload from db
-    $depthnew = get_record('competency_depth', 'id', $depthnew->id);
+    $depthnew = get_record($hierarchy->prefix.'_depth', 'id', $depthnew->id);
 
     // Log
     add_to_log(SITEID, 'competencies', 'update depth level', "depth/edit.php?id=$depthnew->id", '');
