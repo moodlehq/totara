@@ -192,7 +192,6 @@ if (!$depths) {
 
     $table->define_columns($tablecolumns);
     $table->define_headers($tableheaders);
-    $table->define_baseurl($baseurl);
     foreach ($tablecolumnscf as $tablecolumncf) {
         $table->column_style($tablecolumncf,'text-align','center');
     }
