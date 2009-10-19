@@ -286,8 +286,8 @@ if (!$depths) {
                         "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_delete\" /></a>";
                 }
                 if ($moveiconup) {
-                    $buttons[] = "<a href=\"index.php?moveup={$item->id}\" title=\"$str->moveup\">".
-                        "<img src=\"{$CFG->pixpath}/t/up.gif\" class=\"iconsmall\" alt=\"$str->moveup\" /></a> ";
+                    $buttons[] = "<a href=\"index.php?moveup={$item->id}\" title=\"$str_moveup\">".
+                        "<img src=\"{$CFG->pixpath}/t/up.gif\" class=\"iconsmall\" alt=\"$str_moveup\" /></a> ";
                 } else {
                    $buttons[] = $str_spacer;
                 }
