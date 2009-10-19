@@ -14,10 +14,10 @@ $id = required_param('id', PARAM_INT);
 $type = optional_param('type', -1, PARAM_INT);
 
 // Check perms
-admin_externalpage_setup('competencymanage', '', array(), '', $CFG->wwwroot.'/competencies/edit.php');
+admin_externalpage_setup('competencymanage', '', array(), '', $CFG->wwwroot.'/competency/edit.php');
 
 $sitecontext = get_context_instance(CONTEXT_SYSTEM);
-require_capability('moodle/local:updatecompetencies', $sitecontext);
+require_capability('moodle/local:updatecompetency', $sitecontext);
 
 if (!$competency = get_record('competency', 'id', $id)) {
     error('Competency ID was incorrect');
@@ -34,7 +34,7 @@ if (!$depth = get_record('competency_depth', 'id', $competency->depthid)) {
 }
 
 // Cache user capabilities
-$can_edit_comp = has_capability('moodle/local:updatecompetencies', $sitecontext);
+$can_edit_comp = has_capability('moodle/local:updatecompetency', $sitecontext);
 
 
 ///
@@ -49,7 +49,7 @@ make_categories_list($categories, $parents);
 
 ?>
 
-<h2><?php echo get_string('addnewevidenceitem', 'competencies') ?></h2>
+<h2><?php echo get_string('addnewevidenceitem', 'competency') ?></h2>
 
 <div id="available-evidence">
 </div>
