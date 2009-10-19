@@ -18,14 +18,14 @@ $movedown = optional_param('movedown', 0, PARAM_INT);
 admin_externalpage_setup('competencyscales');
 
 $sitecontext = get_context_instance(CONTEXT_SYSTEM);
-require_capability('moodle/local:viewcompetencies', $sitecontext);
+require_capability('moodle/local:viewcompetency', $sitecontext);
 
 if (!$scale = get_record('competency_scale', 'id', $id)) {
     error('Competency scale ID was incorrect');
 }
 
 // Cache user capabilities
-$can_edit = has_capability('moodle/local:updatecompetencies', $sitecontext);
+$can_edit = has_capability('moodle/local:updatecompetency', $sitecontext);
 
 // Cache text
 $str_edit = get_string('edit');
@@ -95,7 +95,7 @@ $values = get_records('competency_scale_values', 'scaleid', $scale->id, 'sortord
 admin_externalpage_print_header();
 
 // Display info about scale
-print_heading(get_string('competencyscalename', 'competencies', $scale->name));
+print_heading(get_string('competencyscalename', 'competency', $scale->name));
 
 if (strlen(trim($scale->description))) {
 
@@ -119,7 +119,7 @@ if ($values) {
     $table->data = array();
 
     // Headers
-    $table->head = array(get_string('name'), get_string('idnumber'), get_string('numericalvalue', 'competencies'));
+    $table->head = array(get_string('name'), get_string('idnumber'), get_string('numericalvalue', 'competency'));
     $table->align = array('left', 'center', 'center');
 
     if ($can_edit) {
@@ -142,15 +142,15 @@ if ($values) {
 
         $buttons = array();
         if ($can_edit) {
-            $buttons[] = "<a href=\"{$CFG->wwwroot}/competencies/scale/editvalue.php?id={$value->id}\" title=\"$str_edit\">".
+            $buttons[] = "<a href=\"{$CFG->wwwroot}/competency/scale/editvalue.php?id={$value->id}\" title=\"$str_edit\">".
                 "<img src=\"{$CFG->pixpath}/t/edit.gif\" class=\"iconsmall\" alt=\"$str_edit\" /></a>";
 
-            $buttons[] = "<a href=\"{$CFG->wwwroot}/competencies/scale/deletevalue.php?id={$value->id}\" title=\"$str_delete\">".
+            $buttons[] = "<a href=\"{$CFG->wwwroot}/competency/scale/deletevalue.php?id={$value->id}\" title=\"$str_delete\">".
                 "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_delete\" /></a>";
 
             // If value can be moved up
             if ($count > 1) {
-                $buttons[] = "<a href=\"{$CFG->wwwroot}/competencies/scale/view.php?id={$scale->id}&moveup={$value->id}\" title=\"$str_moveup\">".
+                $buttons[] = "<a href=\"{$CFG->wwwroot}/competency/scale/view.php?id={$scale->id}&moveup={$value->id}\" title=\"$str_moveup\">".
                              "<img src=\"{$CFG->pixpath}/t/up.gif\" class=\"iconsmall\" alt=\"$str_moveup\" /></a>";
             } else {
                 $buttons[] = $spacer;
@@ -158,7 +158,7 @@ if ($values) {
 
             // If value can be moved down
             if ($count < $numvalues) {
-                $buttons[] = "<a href=\"{$CFG->wwwroot}/competencies/scale/view.php?id={$scale->id}&movedown={$value->id}\" title=\"$str_movedown\">".
+                $buttons[] = "<a href=\"{$CFG->wwwroot}/competency/scale/view.php?id={$scale->id}&movedown={$value->id}\" title=\"$str_movedown\">".
                              "<img src=\"{$CFG->pixpath}/t/down.gif\" class=\"iconsmall\" alt=\"$str_movedown\" /></a>";
             } else {
                 $buttons[] = $spacer;
@@ -172,7 +172,7 @@ if ($values) {
         $table->data[] = $row;
     }
 
-    print_heading(get_string('scalevalues', 'competencies'));
+    print_heading(get_string('scalevalues', 'competency'));
     print_table($table);
 }
 
@@ -182,10 +182,10 @@ echo '<div class="buttons">';
 // Print button for creating new scale value
 if ($can_edit) {
     $options = array('scaleid' => $scale->id);
-    print_single_button($CFG->wwwroot.'/competencies/scale/editvalue.php', $options, get_string('addnewscalevalue', 'competencies'), 'get');
+    print_single_button($CFG->wwwroot.'/competency/scale/editvalue.php', $options, get_string('addnewscalevalue', 'competency'), 'get');
 }
 
-print_single_button($CFG->wwwroot.'/competencies/scale/index.php', array(), get_string('returntocompetencyscales', 'competencies'), 'get');
+print_single_button($CFG->wwwroot.'/competency/scale/index.php', array(), get_string('returntocompetencyscales', 'competency'), 'get');
 
 echo '</div>';
 

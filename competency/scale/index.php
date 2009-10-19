@@ -32,8 +32,8 @@ admin_externalpage_setup('competencyscales');
 $scales = get_records('competency_scale', null, null, 'name');
 
 // Cache permissions
-$can_edit = has_capability('moodle/local:updatecompetencies', $sitecontext);
-$can_delete = has_capability('moodle/local:deletecompetencies', $sitecontext);
+$can_edit = has_capability('moodle/local:updatecompetency', $sitecontext);
+$can_delete = has_capability('moodle/local:deletecompetency', $sitecontext);
 
 $stredit = get_string('edit');
 $strdelete = get_string('delete');
@@ -52,7 +52,7 @@ if ($scales) {
     $table->data = array();
     foreach($scales as $scale) {
         $line = array();
-        $line[] = "<a href=\"$CFG->wwwroot/competencies/scale/view.php?id={$scale->id}\">".format_string($scale->name)."</a>";
+        $line[] = "<a href=\"$CFG->wwwroot/competency/scale/view.php?id={$scale->id}\">".format_string($scale->name)."</a>";
         $line[] = get_string('no');
 
         $buttons = array();
@@ -73,7 +73,7 @@ if ($scales) {
 
 admin_externalpage_print_header();
 
-print_heading(get_string('competencyscales', 'competencies'));
+print_heading(get_string('competencyscales', 'competency'));
 
 if ($scales) {
     print_table($table);

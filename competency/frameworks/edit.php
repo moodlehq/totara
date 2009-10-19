@@ -2,13 +2,13 @@
 
 require_once('../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
-require_once($CFG->dirroot.'/competencies/frameworks/edit_form.php');
+require_once($CFG->dirroot.'/competency/frameworks/edit_form.php');
 
 // Capability id; 0 if creating new framework
 $id = optional_param('id', 0, PARAM_INT);
 
 // Make this page appear under the manage competencies admin item
-admin_externalpage_setup('competencyframeworkmanage', '', array(), '', $CFG->wwwroot.'/competencies/framework/edit.php');
+admin_externalpage_setup('competencyframeworkmanage', '', array(), '', $CFG->wwwroot.'/competency/framework/edit.php');
 
 $context = get_context_instance(CONTEXT_SYSTEM);
 
@@ -51,7 +51,7 @@ $competencyform->set_data($framework);
 // cancelled
 if ($competencyform->is_cancelled()) {
 
-    redirect("$CFG->wwwroot/competencies/frameworks/index.php");
+    redirect("$CFG->wwwroot/competency/frameworks/index.php");
 
 // Update data
 } else if ($frameworknew = $competencyform->get_data()) {
@@ -108,7 +108,7 @@ if ($competencyform->is_cancelled()) {
     // Log
     add_to_log(SITEID, 'competencyframeworks', 'update', "view.php?id=$frameworknew->id", '');
 
-    redirect("$CFG->wwwroot/competencies/frameworks/index.php");
+    redirect("$CFG->wwwroot/competency/frameworks/index.php");
     //never reached
 }
 
@@ -117,9 +117,9 @@ if ($competencyform->is_cancelled()) {
 admin_externalpage_print_header();
 
 if ($framework->id == 0) {
-    print_heading(get_string('addnewframework', 'competencies'));
+    print_heading(get_string('addnewframework', 'competency'));
 } else {
-    print_heading(get_string('editframework', 'competencies'));
+    print_heading(get_string('editframework', 'competency'));
 }
 
 /// Finally display THE form

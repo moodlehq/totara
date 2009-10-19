@@ -34,11 +34,11 @@ $framework = $hierarchy->get_framework($id);
 admin_externalpage_print_header();
 
 if (!$delete) {
-    $strdelete = get_string('deletecheckframework', 'competencies');
+    $strdelete = get_string('deletecheckframework', 'competency');
 
     notice_yesno("$strdelete<br /><br />" . format_string($framework->fullname),
-                 "{$CFG->wwwroot}/competencies/frameworks/delete.php?id={$framework->id}&amp;delete=".md5($framework->timemodified)."&amp;sesskey={$USER->sesskey}",
-                 "{$CFG->wwwroot}/competencies/frameworks/index.php");
+                 "{$CFG->wwwroot}/competency/frameworks/delete.php?id={$framework->id}&amp;delete=".md5($framework->timemodified)."&amp;sesskey={$USER->sesskey}",
+                 "{$CFG->wwwroot}/competency/frameworks/index.php");
 
     print_footer();
     exit;
@@ -61,6 +61,6 @@ add_to_log(SITEID, 'competencyframeworks', 'delete', "view.php?frameworkid=$fram
 
 $hierarchy->delete_framework();
 
-print_heading(get_string('deletedframework', 'competencies', format_string($framework->fullname)));
-print_continue("{$CFG->wwwroot}/competencies/frameworks/index.php");
+print_heading(get_string('deletedframework', 'competency', format_string($framework->fullname)));
+print_continue("{$CFG->wwwroot}/competency/frameworks/index.php");
 print_footer();

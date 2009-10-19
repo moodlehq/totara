@@ -18,7 +18,7 @@ $delete = optional_param('delete', '', PARAM_ALPHANUM);
 // Setup page and check permissions
 admin_externalpage_setup('competencyscales');
 
-require_capability('moodle/local:deletecompetencies', $sitecontext);
+require_capability('moodle/local:deletecompetency', $sitecontext);
 
 if (!$value = get_record('competency_scale_values', 'id', $id)) {
     error('Competency scale value ID was incorrect');
@@ -32,11 +32,11 @@ if (!$value = get_record('competency_scale_values', 'id', $id)) {
 admin_externalpage_print_header();
 
 if (!$delete) {
-    $strdelete = get_string('deletecheckscalevalue', 'competencies');
+    $strdelete = get_string('deletecheckscalevalue', 'competency');
 
     notice_yesno("$strdelete<br /><br />" . format_string($value->name),
-                 "{$CFG->wwwroot}/competencies/scale/deletevalue.php?id={$value->id}&amp;delete=".md5($value->timemodified)."&amp;sesskey={$USER->sesskey}",
-                 "{$CFG->wwwroot}/competencies/scale/view.php?id={$value->scaleid}");
+                 "{$CFG->wwwroot}/competency/scale/deletevalue.php?id={$value->id}&amp;delete=".md5($value->timemodified)."&amp;sesskey={$USER->sesskey}",
+                 "{$CFG->wwwroot}/competency/scale/view.php?id={$value->scaleid}");
 
     print_footer();
     exit;
@@ -59,6 +59,6 @@ add_to_log(SITEID, 'competencyscalesvalu', 'delete', "view.php?id=$value->scalei
 
 delete_records('competency_scale_values', 'id', $value->id);
 
-print_heading(get_string('deletedcompetencyscalevalue', 'competencies', format_string($value->name)));
-print_continue("{$CFG->wwwroot}/competencies/scale/view.php?id={$value->scaleid}");
+print_heading(get_string('deletedcompetencyscalevalue', 'competency', format_string($value->name)));
+print_continue("{$CFG->wwwroot}/competency/scale/view.php?id={$value->scaleid}");
 print_footer();

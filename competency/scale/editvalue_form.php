@@ -18,19 +18,19 @@ class competencyscalevalue_edit_form extends moodleform {
         /// Print the required moodle fields first
         $mform->addElement('header', 'moodle', get_string('general'));
 
-        $mform->addElement('static', 'scalename', get_string('competencyscale', 'competencies'));
+        $mform->addElement('static', 'scalename', get_string('competencyscale', 'competency'));
 
-        $mform->addElement('text', 'name', get_string('scalevaluename', 'competencies'), 'maxlength="100" size="20"');
-        $mform->setHelpButton('name', array('competencyscalevaluename', get_string('scalevaluename', 'competencies')), true);
-        $mform->addRule('name', get_string('missingscalevaluename', 'competencies'), 'required', null, 'client');
+        $mform->addElement('text', 'name', get_string('scalevaluename', 'competency'), 'maxlength="100" size="20"');
+        $mform->setHelpButton('name', array('competencyscalevaluename', get_string('scalevaluename', 'competency')), true);
+        $mform->addRule('name', get_string('missingscalevaluename', 'competency'), 'required', null, 'client');
         $mform->setType('name', PARAM_MULTILANG);
 
-        $mform->addElement('text', 'idnumber', get_string('scalevalueidnumber', 'competencies'), 'maxlength="100"  size="10"');
-        $mform->setHelpButton('idnumber', array('competencyscalevalueidnumber', get_string('scalevalueidnumber', 'competencies')), true);
+        $mform->addElement('text', 'idnumber', get_string('scalevalueidnumber', 'competency'), 'maxlength="100"  size="10"');
+        $mform->setHelpButton('idnumber', array('competencyscalevalueidnumber', get_string('scalevalueidnumber', 'competency')), true);
         $mform->setType('idnumber', PARAM_RAW);
 
-        $mform->addElement('text', 'numeric', get_string('scalevaluenumericalvalue', 'competencies'), 'maxlength="100"  size="10"');
-        $mform->setHelpButton('numeric', array('competencyscalevaluenumeric', get_string('scalevaluenumericalvalue', 'competencies')), true);
+        $mform->addElement('text', 'numeric', get_string('scalevaluenumericalvalue', 'competency'), 'maxlength="100"  size="10"');
+        $mform->setHelpButton('numeric', array('competencyscalevaluenumeric', get_string('scalevaluenumericalvalue', 'competency')), true);
         $mform->setType('numeric', PARAM_RAW);
 
         $mform->addElement('htmleditor', 'description', get_string('description'), array('rows'=> '10', 'cols'=>'65'));
@@ -51,7 +51,7 @@ class competencyscalevalue_edit_form extends moodleform {
             if (is_numeric($valuenew->numeric)) {
                 $valuenew->numeric = (float)$valuenew->numeric;
             } else {
-                $err['numeric'] = get_string('invalidnumeric', 'competencies');
+                $err['numeric'] = get_string('invalidnumeric', 'competency');
                 return $err;
             }
         } else {

@@ -28,15 +28,15 @@
     $showitemfullname  = true;
     $showdepthfullname = true;
 
-    // Cache user capabilities
-    $can_add_item    = has_capability('moodle/local:createcompetencies', $sitecontext);
-    $can_edit_item   = has_capability('moodle/local:updatecompetencies', $sitecontext);
-    $can_delete_item = has_capability('moodle/local:deletecompetencies', $sitecontext);
-    $can_add_depth   = has_capability('moodle/local:createcompetencydepth', $sitecontext);
-    $can_edit_depth  = has_capability('moodle/local:updatecompetencydepth', $sitecontext);
-
     $hierarchy         = new hierarchy();
     $hierarchy->prefix = 'competency';
+
+    // Cache user capabilities
+    $can_add_item    = has_capability('moodle/local:create'.$hierarchy->prefix, $sitecontext);
+    $can_edit_item   = has_capability('moodle/local:update'.$hierarchy->prefix, $sitecontext);
+    $can_delete_item = has_capability('moodle/local:delete'.$hierarchy->prefix, $sitecontext);
+    $can_add_depth   = has_capability('moodle/local:create'.$hierarchy->prefix.'depth', $sitecontext);
+    $can_edit_depth  = has_capability('moodle/local:update'.$hierarchy->prefix.'depth', $sitecontext);
 
     // Load framework
     $framework  = $hierarchy->get_framework($frameworkid);
@@ -63,14 +63,14 @@ if (!$depths) {
 
     $hierarchy->display_framework_selector();
 
-    print_heading(get_string('nodepthlevels', 'competencies'));
+    print_heading(get_string('nodepthlevels', $hierarchy->prefix));
 
     // Print button to add a depth level
     if ($can_add_depth) {
         echo '<div class="buttons">';
 
         $options = array('frameworkid' => $framework->id);
-        print_single_button($CFG->wwwroot.'/competencies/depth/edit.php', $options, get_string('adddepthlevel', 'competencies'), 'get');
+        print_single_button($CFG->wwwroot.'/'.$hierarchy->prefix.'/depth/edit.php', $options, get_string('adddepthlevel', $hierarchy->prefix), 'get');
 
         echo '</div>';
     }
@@ -83,7 +83,7 @@ if (!$depths) {
     /// Process any actions
     ///
     if ($editingon) {
-        require_capability('moodle/local:updatecompetencies', $sitecontext);
+        require_capability('moodle/local:update'.$hierarchy->prefix, $sitecontext);
 
         // Hide an item
         if ($hide) {
@@ -121,7 +121,7 @@ if (!$depths) {
 
     if (!$hidecustomfields) {
         // Retreive visible customfields definitions
-        $sql = "SELECT cdf.id, cdf.depthid, cdf.shortname, cdf.fullname
+        $sql = "SELECT cdf.id, cdf.depthid, cdf.shortname, cdf.fullname, cdf.hidden
                 FROM {$CFG->prefix}{$hierarchy->prefix}_depth_info_field cdf
                 JOIN {$CFG->prefix}{$hierarchy->prefix}_depth_info_category cdc
                     ON cdc.id=cdf.categoryid
@@ -150,9 +150,9 @@ if (!$depths) {
             $header = format_string($depth->shortname);
         }
         if ($editingon && $can_edit_depth) {
-            $header .= "<a href=\"{$CFG->wwwroot}/competencies/depth/edit.php?id={$depth->id}\" title=\"$str_edit\">".
+            $header .= "<a href=\"{$CFG->wwwroot}/{$hierarchy->prefix}/depth/edit.php?id={$depth->id}\" title=\"$str_edit\">".
                 "<img src=\"{$CFG->pixpath}/t/edit.gif\" class=\"iconsmall\" alt=\"$str_edit\" /></a> ".
-                "<a href=\"{$CFG->wwwroot}/competencies/depth/customfields/index.php?depthid={$depth->id}\" title=\"$str_customfields\">".
+                "<a href=\"{$CFG->wwwroot}/{$hierarchy->prefix}/depth/customfields/index.php?depthid={$depth->id}\" title=\"$str_customfields\">".
                 "<img src=\"{$CFG->pixpath}/t/customfields.gif\" class=\"iconsmall\" alt=\"$str_customfields\" /></a>";
         }
         $tableheaders[] = $header;
@@ -166,7 +166,7 @@ if (!$depths) {
                     $tablecolumnscf[] = format_string($depth->fullname).'-'.format_string($customfield->fullname);
                     $header = format_string($customfield->fullname);
                     if ($editingon && $can_edit_depth) {
-                        $header .= ' <a title="'.$str_edit.'" href="'.$CFG->wwwroot.'/competencies/depth/customfields/index.php?id='.$customfield->id.'&amp;depthid='.$depth->id.'&amp;action=editfield"><img src="'.$CFG->pixpath.'/t/edit.gif" alt="'.$str_edit.'" class="iconsmall" /></a>';
+                        $header .= ' <a title="'.$str_edit.'" href="'.$CFG->wwwroot.'/'.$hierarchy->prefix.'/depth/customfields/index.php?id='.$customfield->id.'&amp;depthid='.$depth->id.'&amp;action=editfield"><img src="'.$CFG->pixpath.'/t/edit.gif" alt="'.$str_edit.'" class="iconsmall" /></a>';
                     }
                     $tableheaders[] = $header;
                     $customfieldcount++;
@@ -241,7 +241,7 @@ if (!$depths) {
                 if ($depth->id == $item->depthid) {
                     $cssclass = !$item->visible ? 'class="dimmed"' : '';
                     $itemname = $showitemfullname ? $item->fullname : $item->shortname;
-                    $cell = "<a $cssclass href=\"{$CFG->wwwroot}/competencies/view.php?id={$item->id}\">{$itemname}</a>";
+                    $cell = "<a $cssclass href=\"{$CFG->wwwroot}/{$hierarchy->prefix}/view.php?id={$item->id}\">{$itemname}</a>";
                     $data[$i][$j] = $cell;
                     if ($editingon) {
                         $moveiconup   = false;
@@ -271,19 +271,19 @@ if (!$depths) {
             if ($editingon) {
                 $buttons = array();
                 if ($can_edit_item) {
-                    $buttons[] = "<a href=\"{$CFG->wwwroot}/competencies/edit.php?id={$item->id}\" title=\"$str_edit\">".
+                    $buttons[] = "<a href=\"{$CFG->wwwroot}/{$hierarchy->prefix}/edit.php?id={$item->id}\" title=\"$str_edit\">".
                         "<img src=\"{$CFG->pixpath}/t/edit.gif\" class=\"iconsmall\" alt=\"$str_edit\" /></a>";
 
                     if ($item->visible) {
-                        $buttons[] = "<a href=\"{$CFG->wwwroot}/competencies/index.php?hide={$item->id}\" title=\"$str_hide\">".
+                        $buttons[] = "<a href=\"{$CFG->wwwroot}/{$hierarchy->prefix}/index.php?hide={$item->id}\" title=\"$str_hide\">".
                             "<img src=\"{$CFG->pixpath}/t/hide.gif\" class=\"iconsmall\" alt=\"$str_hide\" /></a>";
                     } else {
-                        $buttons[] = "<a href=\"{$CFG->wwwroot}/competencies/index.php?show={$item->id}\" title=\"$str_show\">".
+                        $buttons[] = "<a href=\"{$CFG->wwwroot}/{$hierarchy->prefix}/index.php?show={$item->id}\" title=\"$str_show\">".
                             "<img src=\"{$CFG->pixpath}/t/show.gif\" class=\"iconsmall\" alt=\"$str_show\" /></a>";
                     }
                 }
                 if ($can_delete_item) {
-                    $buttons[] = "<a href=\"{$CFG->wwwroot}/competencies/delete.php?id={$item->id}&spage={$spage}\" title=\"$str_delete\">".
+                    $buttons[] = "<a href=\"{$CFG->wwwroot}/{$hierarchy->prefix}/delete.php?id={$item->id}&spage={$spage}\" title=\"$str_delete\">".
                         "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_delete\" /></a>";
                 }
                 if ($moveiconup) {

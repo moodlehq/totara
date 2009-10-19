@@ -49,8 +49,8 @@ $local_capabilities = array(
         'contextlevel' => CONTEXT_SYSTEM,
     ),
 
-    // viewing and managing competencies
-    'moodle/local:viewcompetencies' => array(
+    // viewing and managing a competency
+    'moodle/local:viewcompetency' => array(
         'riskbitmask' => RISK_PERSONAL,
         'captype' => 'read',
         'contextlevel' => CONTEXT_SYSTEM,
@@ -58,14 +58,14 @@ $local_capabilities = array(
             'admin' => CAP_ALLOW,
         ),
     ),
-    'moodle/local:createcompetencies' => array(
+    'moodle/local:createcompetency' => array(
         'captype'       => 'write',
         'contextlevel'  => CONTEXT_SYSTEM,
         'legacy' => array(
             'admin' => CAP_ALLOW,
         ),
     ),
-    'moodle/local:updatecompetencies' => array(
+    'moodle/local:updatecompetency' => array(
         'riskbitmask'   => RISK_PERSONAL | RISK_DATALOSS,
         'captype'       => 'write',
         'contextlevel'  => CONTEXT_SYSTEM,
@@ -73,7 +73,7 @@ $local_capabilities = array(
             'admin' => CAP_ALLOW,
         ),
     ),
-    'moodle/local:deletecompetencies' => array(
+    'moodle/local:deletecompetency' => array(
         'riskbitmask'   => RISK_PERSONAL | RISK_DATALOSS,
         'captype'       => 'write',
         'contextlevel'  => CONTEXT_SYSTEM,

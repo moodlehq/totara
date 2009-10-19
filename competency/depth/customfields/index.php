@@ -12,7 +12,7 @@ $action   = optional_param('action', '', PARAM_ALPHA);
 $hierarchy         = new hierarchy();
 $hierarchy->prefix = 'competency';
 
-$redirect    = $CFG->wwwroot.'/competencies/depth/customfields/index.php';
+$redirect    = $CFG->wwwroot.'/'.$hierarchy->prefix.'/depth/customfields/index.php';
 $tableprefix = $hierarchy->prefix.'_depth';
 
 if ($depthid) {
@@ -94,7 +94,7 @@ switch ($action) {
 }
 
 admin_externalpage_print_header();
-print_heading(get_string($hierarchy->prefix.'depthcustomfields', 'competencies'));
+print_heading(get_string($hierarchy->prefix.'depthcustomfields', $hierarchy->prefix));
 
 // show custom fields for the given depth
 if ($depthid) {
@@ -104,8 +104,8 @@ if ($depthid) {
     $categories = get_records_select($hierarchy->prefix.'_depth_info_category', "depthid='$depthid'", 'sortorder ASC');
     $categorycount = count($categories);
 
-    echo "<b>".get_string('framework', 'competencies').":</b> <a href=\"".$CFG->wwwroot."/competencies/index.php?frameworkid=".$framework->id."\">$framework->fullname</a><br>";
-    echo "<b>".get_string('depthlevel', 'competencies').":</b> $depth->fullname<br>";
+    echo "<b>".get_string('framework', $hierarchy->prefix).":</b> <a href=\"".$CFG->wwwroot."/".$hierarchy->prefix."/index.php?frameworkid=".$framework->id."\">$framework->fullname</a><br>";
+    echo "<b>".get_string('depthlevel', $hierarchy->prefix).":</b> $depth->fullname<br>";
 
     foreach($categories as $category) {
 

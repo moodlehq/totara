@@ -31,18 +31,18 @@ class competencyframework_edit_form extends moodleform {
         /// Print the required moodle fields first
         $mform->addElement('header', 'moodle', $strgeneral);
 
-        $mform->addElement('text', 'fullname', get_string('fullnameframework', 'competencies'), 'maxlength="254" size="50"');
-        $mform->setHelpButton('fullname', array('competencyframeworkfullname', get_string('fullnameframework', 'competencies')), true);
-        $mform->addRule('fullname', get_string('missingfullnameframework', 'competencies'), 'required', null, 'client');
+        $mform->addElement('text', 'fullname', get_string('fullnameframework', 'competency'), 'maxlength="254" size="50"');
+        $mform->setHelpButton('fullname', array('competencyframeworkfullname', get_string('fullnameframework', 'competency')), true);
+        $mform->addRule('fullname', get_string('missingfullnameframework', 'competency'), 'required', null, 'client');
         $mform->setType('fullname', PARAM_MULTILANG);
 
-        $mform->addElement('text', 'shortname', get_string('shortnameframework', 'competencies'), 'maxlength="100" size="20"');
-        $mform->setHelpButton('shortname', array('competencyframeworkshortname', get_string('shortnameframework', 'competencies')), true);
-        $mform->addRule('shortname', get_string('missingshortnameframework', 'competencies'), 'required', null, 'client');
+        $mform->addElement('text', 'shortname', get_string('shortnameframework', 'competency'), 'maxlength="100" size="20"');
+        $mform->setHelpButton('shortname', array('competencyframeworkshortname', get_string('shortnameframework', 'competency')), true);
+        $mform->addRule('shortname', get_string('missingshortnameframework', 'competency'), 'required', null, 'client');
         $mform->setType('shortname', PARAM_MULTILANG);
 
-        $mform->addElement('text', 'idnumber', get_string('idnumberframework', 'competencies'), 'maxlength="100"  size="10"');
-        $mform->setHelpButton('idnumber', array('competencyframeworkidnumber', get_string('idnumberframework', 'competencies')), true);
+        $mform->addElement('text', 'idnumber', get_string('idnumberframework', 'competency'), 'maxlength="100"  size="10"');
+        $mform->setHelpButton('idnumber', array('competencyframeworkidnumber', get_string('idnumberframework', 'competency')), true);
         $mform->setType('idnumber', PARAM_RAW);
 
         $mform->addElement('htmleditor', 'description', get_string('description'), array('rows'=> '10', 'cols'=>'65'));
@@ -52,7 +52,7 @@ class competencyframework_edit_form extends moodleform {
         if ($scales) {
             $mform->addElement('select', 'scale', get_string('scale'), $scales, array('multiple' => true));
             $mform->setHelpButton('scale', array('competencyframeworkscale', get_string('scale')), true);
-            $mform->addRule('scale', get_string('missingscale', 'competencies'), 'required', null, 'client');
+            $mform->addRule('scale', get_string('missingscale', 'competency'), 'required', null, 'client');
         }
 
         $this->add_action_buttons();

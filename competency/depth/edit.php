@@ -3,7 +3,6 @@
 require_once('../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->libdir.'/hierarchylib.php');
-require_once($CFG->dirroot.'/competencies/depth/edit_form.php');
 
 // depth level id; 0 if creating a new depth level
 $id = optional_param('id', 0, PARAM_INT);
@@ -14,13 +13,15 @@ $spage       = optional_param('spage', 0, PARAM_INT);
 $hierarchy         = new hierarchy();
 $hierarchy->prefix = 'competency';
 
+require_once($CFG->dirroot.'/'.$hierarchy->prefix.'/depth/edit_form.php');
+
 // We require either an id for editing, or a framework for creating
 if (!$id && !$frameworkid) {
     error('Incorrect parameters');
 }
 
 // Make this page appear under the manage hierachy items admin menu
-admin_externalpage_setup($hierarchy->prefix.'manage', '', array(), '', $CFG->wwwroot.'/competencies/depthlevel.php');
+admin_externalpage_setup($hierarchy->prefix.'manage', '', array(), '', $CFG->wwwroot.'/competency/depthlevel.php');
 
 $context = get_context_instance(CONTEXT_SYSTEM);
 
@@ -53,13 +54,13 @@ if (!$framework = get_record($hierarchy->prefix.'_framework', 'id', $depth->fram
 
 // create form
 $datatosend = array('spage' => $spage);
-$depthform  = new competencydepth_edit_form(null, $datatosend);
+$depthform  = new depth_edit_form(null, $datatosend);
 $depthform->set_data($depth);
 
 // cancelled
 if ($depthform->is_cancelled()){
 
-    redirect("$CFG->wwwroot/competencies/index.php?frameworkid=$framework->id&spage=$spage");
+    redirect("$CFG->wwwroot/competency/index.php?frameworkid=$framework->id&spage=$spage");
 
 // update data
 } else if ($depthnew = $depthform->get_data()) {
@@ -88,9 +89,9 @@ if ($depthform->is_cancelled()){
     $depthnew = get_record($hierarchy->prefix.'_depth', 'id', $depthnew->id);
 
     // Log
-    add_to_log(SITEID, 'competencies', 'update depth level', "depth/edit.php?id=$depthnew->id", '');
+    add_to_log(SITEID, 'competency', 'update depth level', "depth/edit.php?id=$depthnew->id", '');
 
-    redirect("$CFG->wwwroot/competencies/index.php?frameworkid=$depthnew->frameworkid&spage=$spage");
+    redirect("$CFG->wwwroot/competency/index.php?frameworkid=$depthnew->frameworkid&spage=$spage");
     //never reached
 }
 
@@ -99,9 +100,9 @@ if ($depthform->is_cancelled()){
 admin_externalpage_print_header();
 
 if ($depth->id == 0) {
-    print_heading(get_string('adddepthlevel', 'competencies'));
+    print_heading(get_string('adddepthlevel', 'competency'));
 } else {
-    print_heading(get_string('editdepthlevel', 'competencies'));
+    print_heading(get_string('editdepthlevel', 'competency'));
 }
 
 /// Finally display the form

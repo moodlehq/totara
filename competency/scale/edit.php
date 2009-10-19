@@ -18,7 +18,7 @@ $sitecontext = get_context_instance(CONTEXT_SYSTEM);
 
 if ($id == 0) {
     // creating new competency scale
-    require_capability('moodle/local:createcompetencies', $sitecontext);
+    require_capability('moodle/local:createcompetency', $sitecontext);
 
     $scale = new object();
     $scale->id = 0;
@@ -29,7 +29,7 @@ if ($id == 0) {
 
 } else {
     // editing existing competency scale
-    require_capability('moodle/local:updatecompetencies', $sitecontext);
+    require_capability('moodle/local:updatecompetency', $sitecontext);
 
     if (!$scale = get_record('competency_scale', 'id', $id)) {
         error('Competency scale ID was incorrect');
@@ -47,7 +47,7 @@ $mform->set_data($scale);
 // If cancelled
 if ($mform->is_cancelled()) {
 
-    redirect("$CFG->wwwroot/competencies/scale/index.php");
+    redirect("$CFG->wwwroot/competency/scale/index.php");
 
 // Update data
 } else if ($scalenew = $mform->get_data()) {
@@ -74,7 +74,7 @@ if ($mform->is_cancelled()) {
     // Log
     add_to_log(SITEID, 'competencyscales', 'update', "view.php?id=$scalenew->id", '');
 
-    redirect("$CFG->wwwroot/competencies/scale/view.php?id={$scalenew->id}");
+    redirect("$CFG->wwwroot/competency/scale/view.php?id={$scalenew->id}");
 }
 
 admin_externalpage_print_header();

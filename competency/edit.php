@@ -3,7 +3,7 @@
 require_once('../config.php');
 require_once('./lib.php');
 require_once($CFG->libdir.'/adminlib.php');
-require_once($CFG->dirroot.'/competencies/edit_form.php');
+require_once($CFG->dirroot.'/competency/edit_form.php');
 require_once($CFG->dirroot.'/lib/customfield/lib.php');
 
 
@@ -23,13 +23,13 @@ if (!$id && !$frameworkid) {
 }
 
 // Make this page appear under the manage competencies admin item
-admin_externalpage_setup('competencymanage', '', array(), '', $CFG->wwwroot.'/competencies/edit.php');
+admin_externalpage_setup('competencymanage', '', array(), '', $CFG->wwwroot.'/competency/edit.php');
 
 $context = get_context_instance(CONTEXT_SYSTEM);
 
 if ($id == 0) {
     // creating new competency
-    require_capability('moodle/local:createcompetencies', $context);
+    require_capability('moodle/local:createcompetency', $context);
 
     $competency = new object();
     $competency->id = 0;
@@ -40,7 +40,7 @@ if ($id == 0) {
 
 } else {
     // editing existing competency
-    require_capability('moodle/local:updatecompetencies', $context);
+    require_capability('moodle/local:updatecompetency', $context);
 
     if (!$competency = get_record('competency', 'id', $id)) {
         error('Competency ID was incorrect');
@@ -69,7 +69,7 @@ $competencyform->set_data($competency);
 // cancelled
 if ($competencyform->is_cancelled()) {
 
-    redirect("$CFG->wwwroot/competencies/index.php?frameworkid=$competency->frameworkid&spage=$spage");
+    redirect("$CFG->wwwroot/competency/index.php?frameworkid=$competency->frameworkid&spage=$spage");
 
 // Update data
 } else if ($competencynew = $competencyform->get_data()) {
@@ -151,9 +151,9 @@ if ($competencyform->is_cancelled()) {
     $competencynew = get_record('competency', 'id', $competencynew->id);
 
     // Log
-    add_to_log(SITEID, 'competencies', 'update', "view.php?id=$frameworkid", '');
+    add_to_log(SITEID, 'competency', 'update', "view.php?id=$frameworkid", '');
 
-    redirect("$CFG->wwwroot/competencies/index.php?frameworkid=$frameworkid&spage=$spage");
+    redirect("$CFG->wwwroot/competency/index.php?frameworkid=$frameworkid&spage=$spage");
     //never reached
 }
 
@@ -162,9 +162,9 @@ if ($competencyform->is_cancelled()) {
 admin_externalpage_print_header();
 
 if ($competency->id == 0) {
-    print_heading(get_string('addnewcompetency', 'competencies'));
+    print_heading(get_string('addnewcompetency', 'competency'));
 } else {
-    print_heading(get_string('editcompetency', 'competencies'));
+    print_heading(get_string('editcompetency', 'competency'));
 }
 
 /// Finally display THE form

@@ -26,7 +26,7 @@ $sitecontext = get_context_instance(CONTEXT_SYSTEM);
 
 if ($id == 0) {
     // Creating new scale value
-    require_capability('moodle/local:createcompetencies', $sitecontext);
+    require_capability('moodle/local:createcompetency', $sitecontext);
 
     $value = new object();
     $value->id = 0;
@@ -38,7 +38,7 @@ if ($id == 0) {
 
 } else {
     // Editing scale value
-    require_capability('moodle/local:updatecompetencies', $sitecontext);
+    require_capability('moodle/local:updatecompetency', $sitecontext);
 
     if (!$value = get_record('competency_scale_values', 'id', $id)) {
         error('Scale value ID was incorrect');
@@ -64,7 +64,7 @@ $valueform->set_data($value);
 // cancelled
 if ($valueform->is_cancelled()) {
 
-    redirect("$CFG->wwwroot/competencies/scale/view.php?id={$value->scaleid}");
+    redirect("$CFG->wwwroot/competency/scale/view.php?id={$value->scaleid}");
 
 // Update data
 } else if ($valuenew = $valueform->get_data()) {
@@ -98,7 +98,7 @@ if ($valueform->is_cancelled()) {
     // Log
     add_to_log(SITEID, 'competencyscalevalue', 'update', "view.php?id={$valuenew->scaleid}");
 
-    redirect("$CFG->wwwroot/competencies/scale/view.php?id={$valuenew->scaleid}");
+    redirect("$CFG->wwwroot/competency/scale/view.php?id={$valuenew->scaleid}");
     // never reached
 }
 
@@ -106,9 +106,9 @@ if ($valueform->is_cancelled()) {
 admin_externalpage_print_header();
 
 if ($id == 0) {
-    print_heading(get_string('addnewscalevalue', 'competencies'));
+    print_heading(get_string('addnewscalevalue', 'competency'));
 } else {
-    print_heading(get_string('editscalevalue', 'competencies'));
+    print_heading(get_string('editscalevalue', 'competency'));
 }
 
 $valueform->display();

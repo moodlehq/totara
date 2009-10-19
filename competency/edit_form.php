@@ -17,10 +17,9 @@ class competency_edit_form extends moodleform {
         $spage = $this->_customdata['spage'];
         $hierarchy = new hierarchy();
         $hierarchy->prefix = 'competency';
-        $framework = $hierachy->get_framework($item->id);
-        $items = $hiearchy->get_items();
-        
-        $competencies = get_records('competency', 'frameworkid', $competency->frameworkid, 'sortorder');
+        $framework = $hierarchy->get_framework($item->frameworkid);
+        $items = $hierarchy->get_items();
+        $depths = $hierarchy->get_depths();
 
         // Get max depth level
         end($depths);
@@ -75,10 +74,23 @@ class competency_edit_form extends moodleform {
         global $COMP_AGGREGATION;
         $aggregations = array();
         foreach ($COMP_AGGREGATION as $title => $key) {
-            $aggregations[$key] = get_string('aggregationmethod'.$key, 'competencies');
+            $aggregations[$key] = get_string('aggregationmethod'.$key, 'competency');
         }
 
         // Get all available scales and their values
+        echo "SELECT
+                v.id AS vid,
+                s.id AS sid,
+                s.name AS scale,
+                v.name AS value
+            FROM
+                {$CFG->prefix}{$hierarchy->prefix}_scale_values v,
+                {$CFG->prefix}{$hierarchy->prefix}_scale_assignments a,
+                {$CFG->prefix}{$hierarchy->prefix}_scale s
+            WHERE
+                a.frameworkid = {$item->frameworkid}
+            AND a.scaleid = s.id
+            AND s.id = v.scaleid";
         $scales_raw = get_records_sql("
             SELECT
                 v.id AS vid,
@@ -94,6 +106,7 @@ class competency_edit_form extends moodleform {
             AND a.scaleid = s.id
             AND s.id = v.scaleid
         ");
+error_log(print_r($scales_raw, true));
 
         $scales = array();
         $values = array();
@@ -120,39 +133,39 @@ class competency_edit_form extends moodleform {
         /// Print the required moodle fields first
         $mform->addElement('header', 'moodle', $strgeneral);
 
-        $mform->addElement('text', 'framework', get_string('framework', 'competencies'));
-        $mform->setHelpButton('framework', array('competencyframework', get_string('framework', 'competencies')), true);
+        $mform->addElement('text', 'framework', get_string('framework', 'competency'));
+        $mform->setHelpButton('framework', array('competencyframework', get_string('framework', 'competency')), true);
         $mform->hardFreeze('framework');
 
-        $mform->addElement('select', 'parentid', get_string('parent', 'competencies'), $parents);
-        $mform->setHelpButton('parentid', array('competencyparent', get_string('parent', 'competencies')), true);
+        $mform->addElement('select', 'parentid', get_string('parent', 'competency'), $parents);
+        $mform->setHelpButton('parentid', array('competencyparent', get_string('parent', 'competency')), true);
         // If we only have a "Top" placeholder parentid, lock it
         if (count($parents) <= 1) {
             $mform->setDefault('parentid', 0);
             $mform->hardFreeze('parentid');
         }
 
-        $mform->addElement('text', 'fullname', get_string('fullname', 'competencies'), 'maxlength="254" size="50"');
-        $mform->setHelpButton('fullname', array('competencyfullname', get_string('fullname', 'competencies')), true);
-        $mform->addRule('fullname', get_string('missingfullname', 'competencies'), 'required', null, 'client');
+        $mform->addElement('text', 'fullname', get_string('fullname', 'competency'), 'maxlength="254" size="50"');
+        $mform->setHelpButton('fullname', array('competencyfullname', get_string('fullname', 'competency')), true);
+        $mform->addRule('fullname', get_string('missingfullname', 'competency'), 'required', null, 'client');
         $mform->setType('fullname', PARAM_MULTILANG);
 
-        $mform->addElement('text', 'shortname', get_string('shortname', 'competencies'), 'maxlength="100" size="20"');
-        $mform->setHelpButton('shortname', array('competencyshortname', get_string('shortname', 'competencies')), true);
-        $mform->addRule('shortname', get_string('missingshortname', 'competencies'), 'required', null, 'client');
+        $mform->addElement('text', 'shortname', get_string('shortname', 'competency'), 'maxlength="100" size="20"');
+        $mform->setHelpButton('shortname', array('competencyshortname', get_string('shortname', 'competency')), true);
+        $mform->addRule('shortname', get_string('missingshortname', 'competency'), 'required', null, 'client');
         $mform->setType('shortname', PARAM_MULTILANG);
 
-        $mform->addElement('text', 'idnumber', get_string('idnumber', 'competencies'), 'maxlength="100"  size="10"');
-        $mform->setHelpButton('idnumber', array('competencyidnumber', get_string('idnumber', 'competencies')), true);
+        $mform->addElement('text', 'idnumber', get_string('idnumber', 'competency'), 'maxlength="100"  size="10"');
+        $mform->setHelpButton('idnumber', array('competencyidnumber', get_string('idnumber', 'competency')), true);
         $mform->setType('idnumber', PARAM_RAW);
 
         $mform->addElement('htmleditor', 'description', get_string('description'), array('rows'=> '10', 'cols'=>'65'));
         $mform->setHelpButton('description', array('text', get_string('helptext')), true);
         $mform->setType('description', PARAM_RAW);
 
-        $mform->addElement('select', 'aggregationmethod', get_string('aggregationmethod', 'competencies'), $aggregations);
-        $mform->setHelpButton('aggregationmethod', array('competencyaggregationmethod', get_string('aggregationmethod', 'competencies')), true);
-        $mform->addRule('aggregationmethod', get_string('aggregationmethod', 'competencies'), 'required', null, 'client');
+        $mform->addElement('select', 'aggregationmethod', get_string('aggregationmethod', 'competency'), $aggregations);
+        $mform->setHelpButton('aggregationmethod', array('competencyaggregationmethod', get_string('aggregationmethod', 'competency')), true);
+        $mform->addRule('aggregationmethod', get_string('aggregationmethod', 'competency'), 'required', null, 'client');
 
         $mform->addElement('select', 'scaleid', get_string('scale'), $scales);
         $mform->setHelpButton('scaleid', array('competencyscale', get_string('scale')), true);
@@ -164,10 +177,6 @@ class competency_edit_form extends moodleform {
             $mform->setDefault('scaleid', $keys[0]);
             $mform->hardFreeze('scaleid');
         }
-
-#        $mform->addElement('select', 'aggregationmethod', get_string('aggregationmethod', 'competencies'), $aggregations);
-#        $mform->setHelpButton('aggregationmethod', array('competencyaggregationmethod', get_string('aggregationmethod', 'competencies')), true);
-#        $mform->addRule('aggregationmethod', get_string('aggregationmethod', 'competencies'), 'required', null, 'client');
 
         /// Next show the custom fields if we're editing an existing competency (otherwise we don't know the depthid)
         if ($item->id) {

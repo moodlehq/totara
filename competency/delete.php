@@ -18,7 +18,7 @@ $id     = required_param('id', PARAM_INT);
 $delete = optional_param('delete', '', PARAM_ALPHANUM);
 $spage  = optional_param('spage', 0, PARAM_INT);
 
-require_capability('moodle/local:deletecompetencies', $sitecontext);
+require_capability('moodle/local:delete'.$hierarchy->prefix, $sitecontext);
 
 $hierarchy         = new hierarchy();
 $hierarchy->prefix = 'competency';
@@ -34,11 +34,11 @@ admin_externalpage_setup($hierarchy->prefix.'manage');
 admin_externalpage_print_header();
 
 if (!$delete) {
-    $strdelete = get_string('deletecheck', 'competencies');
+    $strdelete = get_string('deletecheck', $hierarchy->prefix);
 
     notice_yesno("$strdelete<br /><br />" . format_string($item->fullname),
-                 "{$CFG->wwwroot}/competencies/delete.php?id={$item->id}&amp;delete=".md5($item->timemodified)."&amp;sesskey={$USER->sesskey}&amp;spage={$spage}",
-                 "{$CFG->wwwroot}/competencies/index.php?frameworkid={$item->frameworkid}");
+                 "{$CFG->wwwroot}/{$hierarchy->prefix}/delete.php?id={$item->id}&amp;delete=".md5($item->timemodified)."&amp;sesskey={$USER->sesskey}&amp;spage={$spage}",
+                 "{$CFG->wwwroot}/{$hierarchy->prefix}/index.php?frameworkid={$item->frameworkid}");
 
     print_footer();
     exit;
@@ -46,7 +46,7 @@ if (!$delete) {
 
 
 ///
-/// Delete competency
+/// Delete
 ///
 
 if ($delete != md5($item->timemodified)) {
@@ -59,8 +59,8 @@ if (!confirm_sesskey()) {
 
 $hierarchy->delete_framework_item($item->id);
 
-add_to_log(SITEID, 'competencies', 'delete', "view.php?id=$item->id", "$item->fullname (ID $item->id)");
+add_to_log(SITEID, $hierarchy->prefix, 'delete', "view.php?id=$item->id", "$item->fullname (ID $item->id)");
 
-print_heading(get_string('deletedcompetency', 'competencies', format_string($item->fullname)));
-print_continue("{$CFG->wwwroot}/competencies/index.php?frameworkid={$item->frameworkid}&spage={$spage}");
+print_heading(get_string('deleted'.$hierarchy->prefix, $hierarchy->prefix, format_string($item->fullname)));
+print_continue("{$CFG->wwwroot}/{$hierarchy->prefix}/index.php?frameworkid={$item->frameworkid}&spage={$spage}");
 print_footer();
