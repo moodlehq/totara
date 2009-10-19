@@ -342,8 +342,8 @@ function customfield_definition_after_data(&$mform, $featureid, $feature, $depth
     global $CFG;
 
     $depthstr = '';
-    if ($featurenew->depthid) {
-        $depthstr = 'depthid='.$featurenew->depthid;
+    if ($depthid) {
+        $depthstr = 'depthid='.$depthid;
     }
 
     if ($fields = get_records_select($tableprefix.'_info_field', $depthstr)) {
