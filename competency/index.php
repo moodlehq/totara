@@ -326,7 +326,7 @@ if (!$depths) {
                 $where  = " WHERE c.frameworkid=$framework->id AND c.id IN (".implode(",", $itemtrack).") AND cdf.hidden=0";
                 $sort   = " ORDER BY c.sortorder, cdf.categoryid, cdf.sortorder";
 
-                $customdatalist = get_recordset_sql($select.$from.$where.$wheresearch.$sort);
+                $customdatalist = get_recordset_sql($select.$from.$where.$sort);
 
                 if ($customdatalist) {
 
