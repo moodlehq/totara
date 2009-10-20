@@ -227,7 +227,6 @@ class completion_info {
     public function get_completion($user_id, $criteriatype) {
         $completions = $this->get_completions($user_id, $criteriatype);
 
-        // Check if self completion is one of this course's criteria
         if (empty($completions)) {
             return false;
         } elseif (count($completions) > 1) {
