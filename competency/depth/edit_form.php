@@ -11,6 +11,7 @@ class depth_edit_form extends moodleform {
         $mform =& $this->_form;
 
         $strgeneral  = get_string('general');
+        $prefix = $this->_customdata['prefix'];
         $spage = $this->_customdata['spage'];
 
         /// Add some extra hidden fields
@@ -21,18 +22,18 @@ class depth_edit_form extends moodleform {
         /// Print the required moodle fields first
         $mform->addElement('header', 'moodle', $strgeneral);
 
-        $mform->addElement('text', 'depthlevel', get_string('depthlevel', 'competency'));
-        $mform->setHelpButton('depthlevel', array('depthlevel', get_string('depthlevel', 'competency')), true);
+        $mform->addElement('text', 'depthlevel', get_string('depthlevel', $prefix));
+        $mform->setHelpButton('depthlevel', array('depthlevel', get_string('depthlevel', $prefix)), true);
         $mform->hardFreeze('depthlevel');
 
-        $mform->addElement('text', 'fullname', get_string('fullnamedepth', 'competency'), 'maxlength="254" size="50"');
-        $mform->setHelpButton('fullname', array('competencyfullname', get_string('fullnamedepth', 'competency')), true);
-        $mform->addRule('fullname', get_string('missingfullnamedepth', 'competency'), 'required', null, 'client');
+        $mform->addElement('text', 'fullname', get_string('fullnamedepth', $prefix), 'maxlength="254" size="50"');
+        $mform->setHelpButton('fullname', array('depthlevelfullname', get_string('fullnamedepth', $prefix)), true);
+        $mform->addRule('fullname', get_string('missingfullnamedepth', $prefix), 'required', null, 'client');
         $mform->setType('fullname', PARAM_MULTILANG);
 
-        $mform->addElement('text', 'shortname', get_string('shortnamedepth', 'competency'), 'maxlength="100" size="20"');
-        $mform->setHelpButton('shortname', array('competencyshortname', get_string('shortnamedepth', 'competency')), true);
-        $mform->addRule('shortname', get_string('missingshortnamedepth', 'competency'), 'required', null, 'client');
+        $mform->addElement('text', 'shortname', get_string('shortnamedepth', $prefix), 'maxlength="100" size="20"');
+        $mform->setHelpButton('shortname', array('depthlevelshortname', get_string('shortnamedepth', $prefix)), true);
+        $mform->addRule('shortname', get_string('missingshortnamedepth', $prefix), 'required', null, 'client');
         $mform->setType('shortname', PARAM_MULTILANG);
 
         $mform->addElement('htmleditor', 'description', get_string('description'), array('rows'=> '10', 'cols'=>'65'));

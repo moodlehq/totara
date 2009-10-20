@@ -53,7 +53,7 @@ if (!$framework = get_record($hierarchy->prefix.'_framework', 'id', $depth->fram
 }
 
 // create form
-$datatosend = array('spage' => $spage);
+$datatosend = array('prefix' => $hierarchy->prefix, 'spage' => $spage);
 $depthform  = new depth_edit_form(null, $datatosend);
 $depthform->set_data($depth);
 
