@@ -258,7 +258,7 @@ if (!$depths) {
                     $data[$i][$j] = '';
                 }
                 $j++;
-                if (!$hidecustomfields) {
+                if (!$hidecustomfields && !empty($customfieldtrack)) {
                     for ($k=0; $k < $customfieldtrack[$depth->depthlevel]; $k++) {
                         $data[$i][$j] = '';
                         $j++;
