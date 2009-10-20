@@ -42,7 +42,7 @@ if ($id == 0) {
 } else {
     // editing existing depth level
     require_capability('moodle/local:updatecompetencydepth', $context);
-    if (!$depth = $hiearchy->get_depth_by_id($id)) {
+    if (!$depth = $hierarchy->get_depth_by_id($id)) {
         error('Depth level ID was incorrect');
     }
 }
