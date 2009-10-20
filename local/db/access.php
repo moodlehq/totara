@@ -35,20 +35,6 @@
 
 $local_capabilities = array(
 
-    // viewing and managing positions 
-    'moodle/local:viewpositions' => array(
-        'captype'      => 'read',
-        'contextlevel' => CONTEXT_SYSTEM,
-    ),
-    'moodle/local:updatepositions' => array(
-        'captype'      => 'read',
-        'contextlevel' => CONTEXT_SYSTEM,
-    ),
-    'moodle/local:deletepositions' => array(
-        'captype'      => 'read',
-        'contextlevel' => CONTEXT_SYSTEM,
-    ),
-
     // viewing and managing a competency
     'moodle/local:viewcompetency' => array(
         'riskbitmask' => RISK_PERSONAL,
@@ -120,6 +106,134 @@ $local_capabilities = array(
         ),
     ),
     'moodle/local:deletecompetencyframeworks' => array(
+        'riskbitmask'   => RISK_PERSONAL | RISK_DATALOSS,
+        'captype'       => 'write',
+        'contextlevel'  => CONTEXT_SYSTEM,
+        'legacy' => array(
+            'admin' => CAP_ALLOW,
+        ),
+    ),
+
+    // viewing and managing positions
+    'moodle/local:viewposition' => array(
+        'captype'      => 'read',
+        'contextlevel' => CONTEXT_SYSTEM,
+    ),
+    'moodle/local:createposition' => array(
+        'captype'      => 'read',
+        'contextlevel' => CONTEXT_SYSTEM,
+    ),
+    'moodle/local:updateposition' => array(
+        'captype'      => 'read',
+        'contextlevel' => CONTEXT_SYSTEM,
+    ),
+    'moodle/local:deleteposition' => array(
+        'captype'      => 'read',
+        'contextlevel' => CONTEXT_SYSTEM,
+    ),
+    'moodle/local:createpositiondepth' => array(
+        'captype'       => 'write',
+        'contextlevel'  => CONTEXT_SYSTEM,
+        'legacy' => array(
+            'admin' => CAP_ALLOW,
+        ),
+    ),
+    'moodle/local:updatepositiondepth' => array(
+        'riskbitmask'   => RISK_PERSONAL | RISK_DATALOSS,
+        'captype'       => 'write',
+        'contextlevel'  => CONTEXT_SYSTEM,
+        'legacy' => array(
+            'admin' => CAP_ALLOW,
+        ),
+    ),
+    'moodle/local:deletepositiondepth' => array(
+        'riskbitmask'   => RISK_PERSONAL | RISK_DATALOSS,
+        'captype'       => 'write',
+        'contextlevel'  => CONTEXT_SYSTEM,
+        'legacy' => array(
+            'admin' => CAP_ALLOW,
+        ),
+    ),
+    'moodle/local:createpositionframeworks' => array(
+        'captype'       => 'write',
+        'contextlevel'  => CONTEXT_SYSTEM,
+        'legacy' => array(
+            'admin' => CAP_ALLOW,
+        ),
+    ),
+    'moodle/local:updatepositionframeworks' => array(
+        'riskbitmask'   => RISK_PERSONAL | RISK_DATALOSS,
+        'captype'       => 'write',
+        'contextlevel'  => CONTEXT_SYSTEM,
+        'legacy' => array(
+            'admin' => CAP_ALLOW,
+        ),
+    ),
+    'moodle/local:deletepositionframeworks' => array(
+        'riskbitmask'   => RISK_PERSONAL | RISK_DATALOSS,
+        'captype'       => 'write',
+        'contextlevel'  => CONTEXT_SYSTEM,
+        'legacy' => array(
+            'admin' => CAP_ALLOW,
+        ),
+    ),
+
+    // viewing and managing organisations
+    'moodle/local:vieworganisation' => array(
+        'captype'      => 'read',
+        'contextlevel' => CONTEXT_SYSTEM,
+    ),
+    'moodle/local:createorganisation' => array(
+        'captype'      => 'read',
+        'contextlevel' => CONTEXT_SYSTEM,
+    ),
+    'moodle/local:updateorganisation' => array(
+        'captype'      => 'read',
+        'contextlevel' => CONTEXT_SYSTEM,
+    ),
+    'moodle/local:deleteorganisation' => array(
+        'captype'      => 'read',
+        'contextlevel' => CONTEXT_SYSTEM,
+    ),
+    'moodle/local:createorganisationdepth' => array(
+        'captype'       => 'write',
+        'contextlevel'  => CONTEXT_SYSTEM,
+        'legacy' => array(
+            'admin' => CAP_ALLOW,
+        ),
+    ),
+    'moodle/local:updateorganisationdepth' => array(
+        'riskbitmask'   => RISK_PERSONAL | RISK_DATALOSS,
+        'captype'       => 'write',
+        'contextlevel'  => CONTEXT_SYSTEM,
+        'legacy' => array(
+            'admin' => CAP_ALLOW,
+        ),
+    ),
+    'moodle/local:deleteorganisationdepth' => array(
+        'riskbitmask'   => RISK_PERSONAL | RISK_DATALOSS,
+        'captype'       => 'write',
+        'contextlevel'  => CONTEXT_SYSTEM,
+        'legacy' => array(
+            'admin' => CAP_ALLOW,
+        ),
+    ),
+    'moodle/local:createorganisationframeworks' => array(
+        'captype'       => 'write',
+        'contextlevel'  => CONTEXT_SYSTEM,
+        'legacy' => array(
+            'admin' => CAP_ALLOW,
+        ),
+    ),
+    'moodle/local:updateorganisationframeworks' => array(
+        'riskbitmask'   => RISK_PERSONAL | RISK_DATALOSS,
+        'captype'       => 'write',
+        'contextlevel'  => CONTEXT_SYSTEM,
+        'legacy' => array(
+            'admin' => CAP_ALLOW,
+        ),
+    ),
+    'moodle/local:deleteorganisationframeworks' => array(
         'riskbitmask'   => RISK_PERSONAL | RISK_DATALOSS,
         'captype'       => 'write',
         'contextlevel'  => CONTEXT_SYSTEM,
