@@ -36,6 +36,7 @@ if ($id == 0) {
     $competency->frameworkid = $frameworkid;
     $competency->visible = 1;
     $competency->sortorder = 1;
+    $competency->depthid = null;
     $competency->aggregationmethod = $COMP_AGGREGATION['ALL'];
 
 } else {
