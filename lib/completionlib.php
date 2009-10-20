@@ -926,7 +926,7 @@ class completion_info {
         // Obtain those activities which have completion turned on
         $withcompletion = get_records_select('course_modules', 'course='.$this->course->id.
           ' AND completion<>'.COMPLETION_TRACKING_NONE);
-        if (count($withcompletion) == 0) {
+        if (!$withcompletion) {
             return array();
         }
 
