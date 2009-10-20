@@ -404,12 +404,15 @@ if (!$depths) {
                     }
                 }
             }
+        } else {
+            $table->add_data(array());
         }
         rs_close($itemlist);
     }
 
     // Display table
     $table->print_html();
+    echo "<i>".get_string('nocompetency', 'competency')."</i><br><br>";
 
     // Editing buttons
     echo '<div class="buttons">';
