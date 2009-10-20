@@ -221,9 +221,10 @@ if (!$depths) {
     $itemlist = get_recordset_sql($select.$from.$where.$sort,
             $table->get_page_start(),  $table->get_page_size());
 
+    $itemsfound = false;   // track if we found any items
+
     if ($itemlist)  {
 
-        $itemsfound      = false;   // track if we found any items
         $itemtrack       = array(); // track all the items found, used after the loop to add custom data for each item
         $depthidtrack    = 0;       // flag if we've moved to a new depthid in the loop
         $moveiconup      = false;   // the up icon is needed for an item (down icon is handled after)
@@ -412,7 +413,10 @@ if (!$depths) {
 
     // Display table
     $table->print_html();
-    echo "<i>".get_string('nocompetency', 'competency')."</i><br><br>";
+
+    if (!$itemsfound) {
+        echo "<i>".get_string('nocompetency', 'competency')."</i><br><br>";
+    }
 
     // Editing buttons
     echo '<div class="buttons">';
