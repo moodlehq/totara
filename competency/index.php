@@ -158,7 +158,7 @@ if (!$depths) {
         $tableheaders[] = $header;
         $colcount++;
 
-        if (!$hidecustomfields) {
+        if (!$hidecustomfields && !empty($customfields)) {
             $customfieldcount = 0;
             foreach ($customfields as $customfield) {
                 if (!$customfield->hidden && $customfield->depthid == $depth->id) {
