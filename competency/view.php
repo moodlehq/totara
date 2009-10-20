@@ -19,11 +19,11 @@ $depth             = $hierarchy->get_depth_by_id($item->depthid);
 $framework         = $hierarchy->get_framework($item->frameworkid);
 
 // Cache user capabilities
-$can_add_item    = has_capability('moodle/local:createcompetency', $sitecontext);
-$can_edit_item   = has_capability('moodle/local:updatecompetency', $sitecontext);
-$can_delete_item = has_capability('moodle/local:deletecompetency', $sitecontext);
-$can_add_depth   = has_capability('moodle/local:createcompetencydepth', $sitecontext);
-$can_edit_depth  = has_capability('moodle/local:updatecompetencydepth', $sitecontext);
+$can_add_item    = has_capability('moodle/local:create'.$hierarchy->prefix, $sitecontext);
+$can_edit_item   = has_capability('moodle/local:update'.$hierarchy->prefix, $sitecontext);
+$can_delete_item = has_capability('moodle/local:delete'.$hierarchy->prefix, $sitecontext);
+$can_add_depth   = has_capability('moodle/local:create'.$hierarchy->prefix.'depth', $sitecontext);
+$can_edit_depth  = has_capability('moodle/local:update'.$hierarchy->prefix.'depth', $sitecontext);
 
 if ($can_edit_item || $can_delete_item || $can_add_depth || $can_edit_depth) {
     $options = array('id' => $item->id);
@@ -59,7 +59,7 @@ $sitecontext = get_context_instance(CONTEXT_SYSTEM);
 require_capability('moodle/local:view'.$hierarchy->prefix, $sitecontext);
 
 // Cache user capabilities
-$can_edit_comp = has_capability('moodle/local:update'.$hierarchy->prefix, $sitecontext);
+$can_edit = has_capability('moodle/local:update'.$hierarchy->prefix, $sitecontext);
 
 
 ///
@@ -190,7 +190,7 @@ echo '</table>';
 echo '<div class="buttons">';
 
 // Display add evidence item button
-if ($editingon && $can_edit_comp) {
+if ($editingon && $can_edit) {
 
 ?>
 
