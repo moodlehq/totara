@@ -3,9 +3,13 @@ YAHOO.competencies.setupFuncs.addevidence = function() {
     $('#addevidence #categories').treeview();
 
     // Load courses on category click
-    $('#addevidence #categories span.folder').click(function() {
-            // Id in format cat_XX
-            var id = this.id.substr(4);
+    $('#addevidence #categories span.folder, '+
+      '#addevidence #categories div.hitarea').click(function() {
+            // Get parent for id
+            var par = $(this).parent();
+
+            // Id in format cat_list_XX
+            var id = par.attr('id').substr(9);
             evidence_load_courses(id);
     });
 }

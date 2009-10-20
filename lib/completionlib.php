@@ -227,7 +227,6 @@ class completion_info {
     public function get_completion($user_id, $criteriatype) {
         $completions = $this->get_completions($user_id, $criteriatype);
 
-        // Check if self completion is one of this course's criteria
         if (empty($completions)) {
             return false;
         } elseif (count($completions) > 1) {
@@ -926,7 +925,7 @@ class completion_info {
         // Obtain those activities which have completion turned on
         $withcompletion = get_records_select('course_modules', 'course='.$this->course->id.
           ' AND completion<>'.COMPLETION_TRACKING_NONE);
-        if (count($withcompletion) == 0) {
+        if (!$withcompletion) {
             return array();
         }
 

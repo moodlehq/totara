@@ -3182,10 +3182,6 @@ function xmldb_main_upgrade($oldversion=0) {
 
             $result  = $result && insert_record('log_display', $log_action);
         }
-        upgrade_main_savepoint($result, 2007101551);
-    }
-
-    if ($result && $oldversion < 2007101552) {
 
     /// Define field enablecompletion to be added to course
         $table = new XMLDBTable('course');
