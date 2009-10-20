@@ -18,11 +18,11 @@ $id     = required_param('id', PARAM_INT);
 $delete = optional_param('delete', '', PARAM_ALPHANUM);
 $spage  = optional_param('spage', 0, PARAM_INT);
 
-require_capability('moodle/local:delete'.$hierarchy->prefix, $sitecontext);
-
 $hierarchy         = new hierarchy();
 $hierarchy->prefix = 'competency';
 $item              = $hierarchy->get_item_by_id($id);
+
+require_capability('moodle/local:delete'.$hierarchy->prefix, $sitecontext);
 
 // Setup page and check permissions
 admin_externalpage_setup($hierarchy->prefix.'manage');
