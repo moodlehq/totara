@@ -107,31 +107,34 @@ if ($depthid) {
     echo "<b>".get_string('framework', $hierarchy->prefix).":</b> <a href=\"".$CFG->wwwroot."/".$hierarchy->prefix."/index.php?frameworkid=".$framework->id."\">$framework->fullname</a><br>";
     echo "<b>".get_string('depthlevel', $hierarchy->prefix).":</b> $depth->fullname<br>";
 
-    foreach($categories as $category) {
+    if (!empty($categories)) {
 
-        $table = new object();
-        $table->head  = array(get_string('customfield', 'customfields'), get_string('edit'));
-        $table->align = array('left', 'right');
-        $table->width = '95%';
-        $table->class = 'generaltable customfields';
-        $table->data = array();
+        foreach($categories as $category) {
 
-        if ($fields = get_records_select($tableprefix.'_info_field', "categoryid=$category->id", 'sortorder ASC')) {
+            $table = new object();
+            $table->head  = array(get_string('customfield', 'customfields'), get_string('edit'));
+            $table->align = array('left', 'right');
+            $table->width = '95%';
+            $table->class = 'generaltable customfields';
+            $table->data = array();
 
-            $fieldcount = count($fields);
-            print_heading(format_string($category->name).' '.customfield_category_icons($category, $categorycount, $fieldcount, $depthid));
+            if ($fields = get_records_select($tableprefix.'_info_field', "categoryid=$category->id", 'sortorder ASC')) {
 
-            foreach ($fields as $field) {
-                $table->data[] = array($field->fullname, customfield_edit_icons($field, $fieldcount, $depthid));
-            }   
-        } else {
-            print_heading(format_string($category->name).' '.customfield_category_icons($category, $categorycount, 0, $depthid));
-        }
+                $fieldcount = count($fields);
+                print_heading(format_string($category->name).' '.customfield_category_icons($category, $categorycount, $fieldcount, $depthid));
 
-        if (count($table->data)) {
-            print_table($table);
-        } else {
-            notify(get_string('nocustomfieldsdefined', 'customfields'));
+                foreach ($fields as $field) {
+                    $table->data[] = array($field->fullname, customfield_edit_icons($field, $fieldcount, $depthid));
+                }   
+            } else {
+                print_heading(format_string($category->name).' '.customfield_category_icons($category, $categorycount, 0, $depthid));
+            }
+
+            if (count($table->data)) {
+                print_table($table);
+            } else {
+                notify(get_string('nocustomfieldsdefined', 'customfields'));
+            }
         }
     }
 
