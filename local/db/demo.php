@@ -1177,16 +1177,18 @@ The National Certificate in Business (First Line Management) (Level 3) [Ref: 074
             'name'         => 'Competency scale',
             'description'  => 'Standard competency scale',
             'timemodified' => $timenow,
+            'usermodified' => '1',
         ),
         array(
             'id'           => '2',
             'name'         => 'Competency performance scale',
             'description'  => 'Standard competency performance scale',
             'timemodified' => $timenow,
+            'usermodified' => '1',
         ),
     );
     foreach($scales as $scale) {
-        insert_record('scale', $scale);
+        insert_record('competency_scale', $scale);
     }
 
     $scale_values = array(
@@ -1252,5 +1254,68 @@ The National Certificate in Business (First Line Management) (Level 3) [Ref: 074
         ),
     );
     foreach($scale_values as $scale_value) {
-        insert_record('scale_values', $scale_value);
+        insert_record('competency_scale_values', $scale_value);
     }
+
+    $scale_assignments = array(
+        array(
+            'id'           => '1',
+            'scaleid'      => '1',
+            'frameworkid'  => '1',
+            'timemodified' => $timenow,
+            'usermodified' => '1',
+        ),
+        array(
+            'id'           => '1',
+            'scaleid'      => '1',
+            'frameworkid'  => '2',
+            'timemodified' => $timenow,
+            'usermodified' => '1',
+        ),
+        array(
+            'id'           => '1',
+            'scaleid'      => '1',
+            'frameworkid'  => '3',
+            'timemodified' => $timenow,
+            'usermodified' => '1',
+        ),
+        array(
+            'id'           => '1',
+            'scaleid'      => '1',
+            'frameworkid'  => '4',
+            'timemodified' => $timenow,
+            'usermodified' => '1',
+        ),
+        array(
+            'id'           => '1',
+            'scaleid'      => '1',
+            'frameworkid'  => '5',
+            'timemodified' => $timenow,
+            'usermodified' => '1',
+        ),
+        array(
+            'id'           => '1',
+            'scaleid'      => '1',
+            'frameworkid'  => '6',
+            'timemodified' => $timenow,
+            'usermodified' => '1',
+        ),
+        array(
+            'id'           => '1',
+            'scaleid'      => '1',
+            'frameworkid'  => '7',
+            'timemodified' => $timenow,
+            'usermodified' => '1',
+        ),
+        array(
+            'id'           => '1',
+            'scaleid'      => '1',
+            'frameworkid'  => '8',
+            'timemodified' => $timenow,
+            'usermodified' => '1',
+        ),
+    );
+    foreach($scale_assignments as $scale_assignment) {
+        insert_record('competency_scale_assignments', $scale_assignment);
+    }
+
