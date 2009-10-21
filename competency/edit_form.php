@@ -106,7 +106,6 @@ class competency_edit_form extends moodleform {
             AND a.scaleid = s.id
             AND s.id = v.scaleid
         ");
-error_log(print_r($scales_raw, true));
 
         $scales = array();
         $values = array();
