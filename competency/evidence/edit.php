@@ -106,7 +106,7 @@ make_categories_list($categories, $parents);
             if ($rpos) {
                 $category = substr($category, $rpos + 3);
             }
-            echo '<li class="closed" id="cat_list_'.$id.'"><span class="folder" id="cat_'.$id.'">'.$category.'</span><ul>'.PHP_EOL;
+            echo '<li class="closed" id="cat_list_'.$id.'"><span class="folder">'.$category.'</span><ul>'.PHP_EOL;
         }
     }
 
