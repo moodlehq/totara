@@ -158,8 +158,6 @@ class competency_edit_form extends moodleform {
         $mform->addRule('scaleid', get_string('scale'), 'required', null, 'client');
         if (count($scales) == 1) {
             $keys = array_keys($scales);
-            var_dump($scales);
-            var_dump($keys);
             $mform->setDefault('scaleid', $keys[0]);
             $mform->hardFreeze('scaleid');
         }
