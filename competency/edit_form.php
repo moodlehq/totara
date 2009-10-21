@@ -78,19 +78,6 @@ class competency_edit_form extends moodleform {
         }
 
         // Get all available scales and their values
-        echo "SELECT
-                v.id AS vid,
-                s.id AS sid,
-                s.name AS scale,
-                v.name AS value
-            FROM
-                {$CFG->prefix}{$hierarchy->prefix}_scale_values v,
-                {$CFG->prefix}{$hierarchy->prefix}_scale_assignments a,
-                {$CFG->prefix}{$hierarchy->prefix}_scale s
-            WHERE
-                a.frameworkid = {$item->frameworkid}
-            AND a.scaleid = s.id
-            AND s.id = v.scaleid";
         $scales_raw = get_records_sql("
             SELECT
                 v.id AS vid,
