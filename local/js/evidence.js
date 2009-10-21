@@ -22,7 +22,9 @@ evidence_courses_loaded = [];
 function evidence_load_courses(cat) {
 
     if (evidence_courses_loaded[cat]) {
-        return;
+        // TODO: Fix caching
+        //return;
+        // Continue for the meantime
     }
 
     var callback =
@@ -67,7 +69,7 @@ function evidence_add_courses(response) {
             html = html + '<li>';
         }
 
-        html = html + '<span class="clickable">'+courses[course]['fullname']+'</span></li>';
+        html = html + '<span class="clickable" id="course_list_'+courses[course]['id']+'">'+courses[course]['fullname']+'</span></li>';
 
         list.append($(html));
     }
@@ -79,6 +81,37 @@ function evidence_add_courses(response) {
 
     // Add click handlers for course names
     $('span.clickable', list).click(function() {
-        alert('load course info');
+        // Get course id
+        var id = $(this).attr('id').substr(12);
+
+        evidence_load_coursedata(id);
     });
+}
+
+
+// Load course data
+function evidence_load_coursedata(course) {
+
+    var callback =
+    {
+        success:    evidence_display_coursedata,
+        failure:    function(o) {},
+        argument:   course,
+    }
+
+    // Load data
+    YAHOO.util.Connect.asyncRequest(
+        'GET',
+        'evidence/course.php?id='+course+'&competency='+competency_id,
+        callback
+    );
+}
+
+// Display course data
+function evidence_display_coursedata(response) {
+
+    var course_id = response.argument;
+    var html = response.responseText;
+
+    var display = $('#addevidence #available-evidence').html(html);
 }
