@@ -80,6 +80,7 @@ if ($competencyform->is_cancelled()) {
 
     $competencynew->scaleid = 1;
     $competencynew->proficiencyexpected = 1;
+    $competencynew->evidencecount = 0;
 
     // Load parent competency if set
     if ($competencynew->parentid) {

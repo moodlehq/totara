@@ -114,7 +114,7 @@ if (!$depths) {
 
     $hierarchy->display_framework_selector();
 
-    $select = "SELECT id, depthid, shortname, fullname, visible";
+    $select = "SELECT id, depthid, shortname, fullname, visible, evidencecount";
     $from   = " FROM {$CFG->prefix}{$hierarchy->prefix}";
     $where  = " WHERE frameworkid=$framework->id";
     $sort   = " ORDER BY sortorder";
@@ -297,7 +297,7 @@ if (!$depths) {
             }
 
             // Evidence items
-            $data[$i][$j] = '<a href="">0</a>';
+            $data[$i][$j] = "<a href=\"{$CFG->wwwroot}/{$hierarchy->prefix}/view.php?id={$item->id}\">{$item->evidencecount}</a>";
 
             $i++;
             $itemtrack[] = $item->id;
