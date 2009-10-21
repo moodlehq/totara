@@ -333,12 +333,12 @@ ul.tabrow1 li a:visited,
   background: transparent url(images/tab/right.gif) no-repeat top right;
   padding: 10px 0 4px 0;
   position: relative;
-  z-index: 0;
+  z-index: -1;
 }
 
 .navbar {
   position: relative;
-  z-index: 1;
+  z-index: 0;
 }
 
 .header-tabs {
@@ -798,6 +798,14 @@ div.yui-dialog div.yui-panel .bd h2 {
     font-weight: bold;
     font-family: Verdana, Arial, Helvetica, sans-serif;
     color: #002C3F;
+}
+
+div.mask {
+    background-color: #666;
+	filter:alpha(opacity=50);
+	-moz-opacity:0.5;
+	-khtml-opacity: 0.5;
+	opacity: 0.5;
 }
 
 /** Competencies lightbox styling **/
