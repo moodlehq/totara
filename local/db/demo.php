@@ -50,8 +50,6 @@
     
     $role_assignments = array(
     );
-    $organisation = array(
-    );
     $training_organisation = array(
         '1' => array(
             'fullname'       => 'Retail Institute',
@@ -211,32 +209,44 @@
     }
     // add a competency depth level to the default competency framework
     $defaultcd1 = array(
-            'fullname'    => 'Unit Standards',
-            'shortname'   => 'US',
-            'description' => '',
-            'depthlevel'  => '2',
-            'frameworkid' => '1',
+            'fullname'     => 'Unit Standards',
+            'shortname'    => 'US',
+            'description'  => '',
+            'depthlevel'   => '2',
+            'frameworkid'  => '1',
+            'timecreated'  => $timenow,
+            'timemodified' => $timenow,
+            'usermodified' => '2',
     );
     insert_record('competency_depth', $defaultcd1);
 
     $competency_depths = array(
         array(
-            'fullname'    => 'Qualifications',
-            'shortname'   => 'Q',
-            'description' => '',
-            'depthlevel'  => '1',
+            'fullname'     => 'Qualifications',
+            'shortname'    => 'Q',
+            'description'  => '',
+            'depthlevel'   => '1',
+            'timecreated'  => $timenow,
+            'timemodified' => $timenow,
+            'usermodified' => '2',
         ),
         array(
-            'fullname'    => 'Unit Standards',
-            'shortname'   => 'US',
-            'description' => '',
-            'depthlevel'  => '2',
+            'fullname'     => 'Unit Standards',
+            'shortname'    => 'US',
+            'description'  => '',
+            'depthlevel'   => '2',
+            'timecreated'  => $timenow,
+            'timemodified' => $timenow,
+            'usermodified' => '2',
         ),
         array(
-            'fullname'    => 'Elements',
-            'shortname'   => 'EL',
-            'description' => '',
-            'depthlevel'  => '3',
+            'fullname'     => 'Elements',
+            'shortname'    => 'EL',
+            'description'  => '',
+            'depthlevel'   => '3',
+            'timecreated'  => $timenow,
+            'timemodified' => $timenow,
+            'usermodified' => '2',
         ),
     );
     $competencydepthids = array();
