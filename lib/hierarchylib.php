@@ -217,14 +217,18 @@ class hierarchy {
             $swap = get_record($this->prefix, 'frameworkid',  $this->frameworkid, 'sortorder', $move->sortorder + 1); 
         }
         if ($move && $swap) {
-            begin_sql();
-            if (!(    set_field($this->prefix, 'sortorder', $sortoffset, 'id', $swap->id)
-                   && set_field($this->prefix, 'sortorder', $swap->sortorder, 'id', $move->id)
-                   && set_field($this->prefix, 'sortorder', $move->sortorder, 'id', $swap->id)
-                )) {
-                notify('Could not update that '.$this->prefix.'!');
-            }   
-            commit_sql();
+            if ($move->depthid != $swap->depthid) {
+                notify('Cannot move a '.$this->prefix.' to a different depth level!');
+            } else {
+                begin_sql();
+                if (!(    set_field($this->prefix, 'sortorder', $sortoffset, 'id', $swap->id)
+                       && set_field($this->prefix, 'sortorder', $swap->sortorder, 'id', $move->id)
+                       && set_field($this->prefix, 'sortorder', $move->sortorder, 'id', $swap->id)
+                    )) {
+                    notify('Could not update that '.$this->prefix.'!');
+                }
+                commit_sql();
+            }
         }
     }
 
