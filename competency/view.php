@@ -48,12 +48,12 @@ require_js(
     )
 );
 
+// Make this page appear under the manage items admin menu
+admin_externalpage_setup($hierarchy->prefix.'manage', $navbaritem);
+
 ?>
     <link rel="stylesheet" href="<?php echo $CFG->wwwroot ?>/local/js/jquery.treeview.css" type="text/css" />
 <?php
-
-// Make this page appear under the manage items admin menu
-admin_externalpage_setup($hierarchy->prefix.'manage', $navbaritem);
 
 $sitecontext = get_context_instance(CONTEXT_SYSTEM);
 require_capability('moodle/local:view'.$hierarchy->prefix, $sitecontext);
