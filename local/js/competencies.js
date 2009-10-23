@@ -152,6 +152,18 @@ function yuiDialog(title, buttonid, default_url) {
         this.dialog.setBody(o.responseText);
         this.dialog.render(document.body);
 
+        this.bindLinks();
+
+        // Run setup function
+        YAHOO.competencies.setupFuncs[this.title]();
+    }
+
+
+    /**
+     * Bind this.navigate to any links in the dialog
+     * @return void
+     */
+    this.bindLinks = function() {
         var anchors = YAHOO.util.Dom.getElementsBy(
             function(el) {
                 if (el.className != 'container-close') {
@@ -172,9 +184,6 @@ function yuiDialog(title, buttonid, default_url) {
             this,
             true
         );
-
-        // Run setup function
-        YAHOO.competencies.setupFuncs[this.title]();
     }
 
 

@@ -114,4 +114,20 @@ function evidence_display_coursedata(response) {
     var html = response.responseText;
 
     var display = $('#addevidence #available-evidence').html(html);
+
+    // Handle add evidence links
+    $('#addevidence #available-evidence a').click( function(event) {
+        event.preventDefault();
+        $.get($(this).attr('href'), '', evidence_new_evidence);
+    });
+}
+
+// Add new evidence to competency view
+function evidence_new_evidence(response) {
+    YAHOO.competencies.dialogs.add.dialog.hide();
+
+    // Delete no evidence items warning, if exists
+    $('table.editcompetency tr.noevidenceitems').remove();
+
+    $('table.editcompetency tbody').append(response);
 }

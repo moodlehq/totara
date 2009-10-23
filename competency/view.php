@@ -1,8 +1,8 @@
 <?php
-
 require_once('../config.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->libdir.'/hierarchylib.php');
+require_once($CFG->dirroot.'/competency/evidence/type/abstract.php');
 
 ///
 /// Setup / loading data
@@ -17,6 +17,10 @@ $hierarchy->prefix = 'competency';
 $item              = $hierarchy->get_item_by_id($id);
 $depth             = $hierarchy->get_depth_by_id($item->depthid);
 $framework         = $hierarchy->get_framework($item->frameworkid);
+
+// Load evidence items
+$evidence = get_records('competency_evidence_items', 'competencyid', $item->id);
+
 
 // Cache user capabilities
 $can_add_item    = has_capability('moodle/local:create'.$hierarchy->prefix, $sitecontext);
@@ -82,6 +86,8 @@ $heading = "{$depth->fullname} - {$item->fullname}";
 // If editing on, add edit icon
 if ($editingon) {
     $str_edit = get_string('edit');
+    $str_delete = get_string('delete');
+
     $heading .= " <a href=\"{$CFG->wwwroot}/{$hierarchy->prefix}/edit.php?id={$item->id}\" title=\"$str_edit\">".
             "<img src=\"{$CFG->pixpath}/t/edit.gif\" class=\"iconsmall\" alt=\"$str_edit\" /></a>";
 }
@@ -139,20 +145,16 @@ print_heading(get_string('evidenceitems', $hierarchy->prefix));
 ?>
 <table width="95%" cellpadding="5" cellspacing="1" class="generalbox edit<?php echo $hierarchy->prefix ?> boxaligncenter">
 <tr>
-    <th style="vertical-align:top; text-align:center; white-space:nowrap;" class="header c0" scope="col">
+    <th style="vertical-align:top; text-align: left; white-space:nowrap;" class="header c0" scope="col">
         <?php echo get_string('name'); ?>
     </th>
 
-    <th style="vertical-align:top; text-align:center; white-space:nowrap;" class="header c1" scope="col">
+    <th style="vertical-align:top; text-align: left; white-space:nowrap;" class="header c1" scope="col">
         <?php echo get_string('type', $hierarchy->prefix); ?>
     </th>
 
-    <th style="vertical-align:top; text-align:center; white-space:nowrap;" class="header c2" scope="col">
+    <th style="vertical-align:top; text-align:left; white-space:nowrap;" class="header c2" scope="col">
         <?php echo get_string('activity'); ?>
-    </th>
-
-    <th style="vertical-align:top; text-align:center; white-space:nowrap;" class="header c3" scope="col">
-        <?php echo get_string('weight', $hierarchy->prefix); ?>
     </th>
 
 <?php
@@ -171,16 +173,37 @@ print_heading(get_string('evidenceitems', $hierarchy->prefix));
 </tr>
 <?php
 
-$evidence = array();
-
-
 if ($evidence) {
 
+    foreach ($evidence as $eitem) {
+
+        $eitem = competency_evidence_type::factory($eitem);
+
+        echo '<tr>';
+        echo '<td>'.$eitem->get_name().'</td>';
+        echo '<td>'.$eitem->get_type().'</td>';
+        echo '<td>'.$eitem->get_activity_type().'</td>';
+
+        if ($editingon) {
+            echo "<td style=\"text-align: center;\">";
+            
+            echo "<a href=\"{$CFG->wwwroot}/{$hierarchy->prefix}/evidence/edit.php?id={$eitem->id}\" title=\"$str_edit\">".
+                 "<img src=\"{$CFG->pixpath}/t/edit.gif\" class=\"iconsmall\" alt=\"$str_edit\" /></a> ";
+
+            echo "<a href=\"{$CFG->wwwroot}/{$hierarchy->prefix}/evidence/delete.php?id={$eitem->id}\" title=\"$str_delete\">".
+                 "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_delete\" /></a>";
+            
+            echo "</td>";
+        }
+
+        echo '<td style="text-align: center">0</td>';
+        echo '</tr>';
+    }
 
 } else {
     // # cols varies
-    $cols = $editingon ? 6 : 5;
-    echo '<tr><td colspan="'.$cols.'"><i>'.get_string('noevidenceitems', $hierarchy->prefix).'</i></td></tr>';
+    $cols = $editingon ? 5 : 4;
+    echo '<tr class="noevidenceitems"><td colspan="'.$cols.'"><i>'.get_string('noevidenceitems', $hierarchy->prefix).'</i></td></tr>';
 }
 
 echo '</table>';
