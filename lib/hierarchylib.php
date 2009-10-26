@@ -83,7 +83,7 @@ class hierarchy {
      * @return boolean success
      */
     function get_frameworks() {
-        return get_records($this->prefix.'_framework', 'visible', 1, 'sortorder');
+        return get_records($this->prefix.'_framework', '', '', 'sortorder');
     }
 
     /**
