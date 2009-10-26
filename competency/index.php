@@ -6,7 +6,6 @@
     require_once('./lib.php');
     require_once($CFG->libdir.'/adminlib.php');
     require_once($CFG->libdir.'/tablelib.php');
-    require_once($CFG->libdir.'/hierarchylib.php');
 
     define('DEFAULT_PAGE_SIZE', 20);
     define('SHOW_ALL_PAGE_SIZE', 5000);
@@ -28,8 +27,7 @@
     $showitemfullname  = true;
     $showdepthfullname = true;
 
-    $hierarchy         = new hierarchy();
-    $hierarchy->prefix = 'competency';
+    $hierarchy         = new competency();
 
     // Cache user capabilities
     $can_add_item    = has_capability('moodle/local:create'.$hierarchy->prefix, $sitecontext);
