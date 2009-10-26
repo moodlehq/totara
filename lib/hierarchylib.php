@@ -41,9 +41,14 @@ class hierarchy {
 
     /** 
      * The base table prefix for the hierarchy
-     * @var int $timecreated
+     * @var string
      */
     var $prefix;
+
+    /**
+     * The current framework id
+     * @var int
+     */
     var $frameworkid;
 
     /**
@@ -61,7 +66,7 @@ class hierarchy {
                 error('The '.$this->prefix.' framework does not exist');
             }
         }
-        $this->frameworkid = $framework->id; // specify the frameworki d
+        $this->frameworkid = $framework->id; // specify the framework id
         return $framework;
     }
 
