@@ -136,9 +136,10 @@ class hierarchy {
 
     /**
      * Display pulldown menu of frameworks
+     * @param string $page Page to redirect to
      * @return boolean success
      */
-    function display_framework_selector() {
+    function display_framework_selector($page = 'index.php') {
         global $CFG;
 
         $frameworks = $this->get_frameworks();
@@ -151,7 +152,7 @@ class hierarchy {
             }   
 
             echo '<div class="frameworkpicker">';
-            popup_form($CFG->wwwroot.'/'.$this->prefix.'/index.php?frameworkid=', $fwoptions, 'switchframework', $this->frameworkid, '');
+            popup_form($CFG->wwwroot.'/'.$this->prefix.'/'.$page.'?frameworkid=', $fwoptions, 'switchframework', $this->frameworkid, '');
             echo '</div>';
         }   
     }
