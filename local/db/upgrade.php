@@ -539,7 +539,10 @@ function xmldb_local_upgrade($oldversion) {
             'fullname'      => 'Competencies',
             'shortname'     => 'Competencies',
             'depthlevel'    => 1,
-            'frameworkid'   => $default_framework->id
+            'frameworkid'   => $default_framework->id,
+            'timecreated'   => $timenow,
+            'timemodified'  => $timenow,
+            'usermodified'  => 2,
         );
         insert_record('competency_depth', $default_depth);
 
