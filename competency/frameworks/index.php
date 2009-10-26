@@ -43,7 +43,7 @@
     if ($editingon) {
         // Hide or show a framework
         if ($hide or $show or $moveup or $movedown) {
-            require_capability('moodle/local:update'.$hierarchy->prefix, $sitecontext);
+            require_capability('moodle/local:update'.$hierarchy->prefix.'framework', $sitecontext);
             // Hide an item
             if ($hide) {
                 $hierarchy->hide_framework($hide);
