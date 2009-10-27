@@ -368,21 +368,25 @@ class hierarchy {
         // Get all items in the framework
         $items = $this->get_items();
 
-        foreach ($items as $item) {
-            // Delete all info data for each framework item
-            delete_records($this->prefix.'_depth_info_data', $this->prefix.'id', $item->id);
+        if ($items) {
+            foreach ($items as $item) {
+                // Delete all info data for each framework item
+                delete_records($this->prefix.'_depth_info_data', $this->prefix.'id', $item->id);
+            }
         }
 
         // Get all depths in the framework
         $depths = $this->get_depths();
 
-        foreach ($depths as $depth) {
+        if ($depths) {
+            foreach ($depths as $depth) {
 
-            // Delete all info fields in a depth
-            delete_records($this->prefix.'_depth_info_field', 'depthid', $depth->id);
+                // Delete all info fields in a depth
+                delete_records($this->prefix.'_depth_info_field', 'depthid', $depth->id);
 
-            // Delete all info categories in a depth
-            delete_records($this->prefix.'_depth_info_category', 'depthid', $depth->id);
+                // Delete all info categories in a depth
+                delete_records($this->prefix.'_depth_info_category', 'depthid', $depth->id);
+            }
         }
 
         // Delete all depths in the framework
