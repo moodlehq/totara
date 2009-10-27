@@ -95,7 +95,7 @@ class competency_filtering {
             case 'shortname':    return new competency_filter_text('shortname', get_string('shortname'), $advanced, 'shortname');
             case 'idnumber':    return new competency_filter_text('idnumber', get_string('idnumber'), $advanced, 'idnumber');
             case 'description':       return new competency_filter_text('description', get_string('description'), $advanced, 'description');
-            case 'custom':      return new competency_filter_customfield('custom', get_string('customfield'), $advanced);
+            case 'custom':      return new competency_filter_customfield('custom', get_string('customfield', 'customfields'), $advanced);
             default:            return null;
         }
     }
