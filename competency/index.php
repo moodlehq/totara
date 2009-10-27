@@ -216,16 +216,17 @@ if (!$depths) {
     // create the competency filter form
     $cfiltering = new competency_filtering();
     $extrasql = $cfiltering->get_sql_filter();
+    if ($extrasql !== '') {
+        $extrasql = ' AND '.$extrasql;
+    }
 
     $matchcount = count_records_sql('SELECT COUNT (DISTINCT id) '.$from.$where);
     $filteredmatchcount = count_records_sql('SELECT COUNT (DISTINCT id) '.$from
-        .$where.' AND '.$extrasql);
+        .$where.$extrasql);
 
-    // TODO consider moving all this up to avoid printing in middle of table code
     if ($extrasql !== '') {
         print_heading("$filteredmatchcount / $matchcount ".get_string('competencies', 'competency'));
         $matchcount = $filteredmatchcount;
-        $extrasql = ' AND '.$extrasql;
     } else {
         print_heading("$matchcount ".get_string('competencies', 'competency'));
     }
