@@ -41,9 +41,14 @@ class hierarchy {
 
     /** 
      * The base table prefix for the hierarchy
-     * @var int $timecreated
+     * @var string
      */
     var $prefix;
+
+    /**
+     * The current framework id
+     * @var int
+     */
     var $frameworkid;
 
     /**
@@ -61,7 +66,7 @@ class hierarchy {
                 error('The '.$this->prefix.' framework does not exist');
             }
         }
-        $this->frameworkid = $framework->id; // specify the frameworki d
+        $this->frameworkid = $framework->id; // specify the framework id
         return $framework;
     }
 
@@ -78,7 +83,7 @@ class hierarchy {
      * @return boolean success
      */
     function get_frameworks() {
-        return get_records($this->prefix.'_framework', 'visible', 1, 'sortorder');
+        return get_records($this->prefix.'_framework', '', '', 'sortorder');
     }
 
     /**
@@ -131,9 +136,10 @@ class hierarchy {
 
     /**
      * Display pulldown menu of frameworks
+     * @param string $page Page to redirect to
      * @return boolean success
      */
-    function display_framework_selector() {
+    function display_framework_selector($page = 'index.php') {
         global $CFG;
 
         $frameworks = $this->get_frameworks();
@@ -146,7 +152,7 @@ class hierarchy {
             }   
 
             echo '<div class="frameworkpicker">';
-            popup_form($CFG->wwwroot.'/'.$this->prefix.'/index.php?frameworkid=', $fwoptions, 'switchframework', $this->frameworkid, '');
+            popup_form($CFG->wwwroot.'/'.$this->prefix.'/'.$page.'?frameworkid=', $fwoptions, 'switchframework', $this->frameworkid, '');
             echo '</div>';
         }   
     }
@@ -362,21 +368,25 @@ class hierarchy {
         // Get all items in the framework
         $items = $this->get_items();
 
-        foreach ($items as $item) {
-            // Delete all info data for each framework item
-            delete_records($this->prefix.'_depth_info_data', $this->prefix.'id', $item->id);
+        if ($items) {
+            foreach ($items as $item) {
+                // Delete all info data for each framework item
+                delete_records($this->prefix.'_depth_info_data', $this->prefix.'id', $item->id);
+            }
         }
 
         // Get all depths in the framework
         $depths = $this->get_depths();
 
-        foreach ($depths as $depth) {
+        if ($depths) {
+            foreach ($depths as $depth) {
 
-            // Delete all info fields in a depth
-            delete_records($this->prefix.'_depth_info_field', 'depthid', $depth->id);
+                // Delete all info fields in a depth
+                delete_records($this->prefix.'_depth_info_field', 'depthid', $depth->id);
 
-            // Delete all info categories in a depth
-            delete_records($this->prefix.'_depth_info_category', 'depthid', $depth->id);
+                // Delete all info categories in a depth
+                delete_records($this->prefix.'_depth_info_category', 'depthid', $depth->id);
+            }
         }
 
         // Delete all depths in the framework

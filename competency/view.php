@@ -213,7 +213,7 @@ echo '</table>';
 echo '<div class="buttons">';
 
 // Display add evidence item button
-if ($editingon && $can_edit) {
+if ($can_edit) {
 
 ?>
 

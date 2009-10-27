@@ -24,9 +24,6 @@
 ///////////////////////////////////////////////////////////////////////////
 
 /**
- * hierarchylib.php
- *
- * Library to construct hierarchies such as competencies, positions, etc
  * @copyright Catalyst IT Limited
  * @author Aaron Barnes
  * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
