@@ -4,7 +4,7 @@ require_once('../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->dirroot.'/competency/frameworks/edit_form.php');
 
-// Capability id; 0 if creating new framework
+// Framework id; 0 if creating new framework
 $id = optional_param('id', 0, PARAM_INT);
 
 // Make this page appear under the manage competencies admin item
