@@ -60,4 +60,60 @@ class competency extends hierarchy {
      */
     var $prefix = 'competency';
 
+    /**
+     * Get template
+     * @param int Template id
+     * @return object|false
+     */
+    function get_template($id) {
+        return get_record($this->prefix.'_template', 'id', $id);
+    }
+
+    /**
+     * Get templates
+     * @return array|false
+     */
+    function get_templates() {
+        return get_records($this->prefix.'_template', 'frameworkid', $this->frameworkid, 'fullname');
+    }
+
+    /**
+     * Hide the competency template
+     * @var int - the template id to hide
+     * @return void
+     */
+    function hide_template($id) {
+        $template = $this->get_template($id);
+        if ($template) {
+            $visible = 0;
+            if (!set_field($this->prefix.'_template', 'visible', $visible, 'id', $template->id)) {
+                notify('Could not update that '.$this->prefix.' template!');
+            }
+        }
+    }
+
+    /**
+     * Show the competency template
+     * @var int - the template id to show
+     * @return void
+     */
+    function show_template($id) {
+        $template = $this->get_template($id);
+        if ($template) {
+            $visible = 1;
+            if (!set_field($this->prefix.'_template', 'visible', $visible, 'id', $template->id)) {
+                notify('Could not update that '.$this->prefix.' template!');
+            }
+        }
+    }
+
+    /**
+     * Delete template and associated data
+     * @var int - the template id to delete
+     * @return  void
+     */
+    function delete_template($id) {
+        // Delete this item
+        delete_records($this->prefix.'_template', 'id', $id);
+    }
 }

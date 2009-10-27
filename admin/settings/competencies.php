@@ -8,6 +8,9 @@
     $ADMIN->add('competencies', new admin_externalpage('competencymanage', get_string('competencymanage', 'competency'), "$CFG->wwwroot/competency/index.php",
             array('moodle/local:viewcompetency')));
 
+    $ADMIN->add('competencies', new admin_externalpage('competencytemplatemanage', get_string('competencytemplatemanage', 'competency'), "$CFG->wwwroot/competency/template/index.php",
+            array('moodle/local:viewcompetency')));
+
     $ADMIN->add('competencies', new admin_externalpage('competencybulkaction', get_string('competencybulkaction', 'competency'), "$CFG->wwwroot/competency/bulk.php",
             array('moodle/local:updatecompetency', 'moodle/local:deletecompetency')));
 
