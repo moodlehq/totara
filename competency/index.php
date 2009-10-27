@@ -4,6 +4,7 @@
 
     require_once('../config.php');
     require_once('./lib.php');
+    require_once('./filters/lib.php');
     require_once($CFG->libdir.'/adminlib.php');
     require_once($CFG->libdir.'/tablelib.php');
 
@@ -212,11 +213,26 @@ if (!$depths) {
 
     $table->initialbars(true);
 
+    // create the competency filter form
+    $cfiltering = new competency_filtering();
+    $extrasql = $cfiltering->get_sql_filter();
+
     $matchcount = count_records_sql('SELECT COUNT (DISTINCT id) '.$from.$where);
+    $filteredmatchcount = count_records_sql('SELECT COUNT (DISTINCT id) '.$from
+        .$where.' AND '.$extrasql);
+
+    // TODO consider moving all this up to avoid printing in middle of table code
+    if ($extrasql !== '') {
+        print_heading("$filteredmatchcount / $matchcount ".get_string('competencies', 'competency'));
+        $matchcount = $filteredmatchcount;
+        $extrasql = ' AND '.$extrasql;
+    } else {
+        print_heading("$matchcount ".get_string('competencies', 'competency'));
+    }
 
     $table->pagesize($perpage, $matchcount);
 
-    $itemlist = get_recordset_sql($select.$from.$where.$sort,
+    $itemlist = get_recordset_sql($select.$from.$where.$extrasql.$sort,
             $table->get_page_start(),  $table->get_page_size());
 
     $itemsfound = false;   // track if we found any items
@@ -408,6 +424,10 @@ if (!$depths) {
         }
         rs_close($itemlist);
     }
+
+    // add filters
+    $cfiltering->display_add();
+    $cfiltering->display_active();
 
     // Display table
     $table->print_html();
