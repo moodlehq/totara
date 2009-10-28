@@ -21,6 +21,9 @@ class competency_show_options_form extends moodleform {
         $mform->addElement('hidden', 'frameworkid', $this->_customdata['framework']->id);
         $mform->setType('frameworkid', PARAM_INT);
 
+        $mform->addElement('hidden', 'spage', $this->_customdata['spage']);
+        $mform->setType('spage', PARAM_INT);
+
         $mform->addElement('submit', 'submitbutton', get_string('savechanges'));
     }
 }

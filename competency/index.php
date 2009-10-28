@@ -101,12 +101,19 @@ if (!$depths) {
 
 
     $returnurl = "{$CFG->wwwroot}/competency/index.php";
-    if(isset($frameworkid)) {
-        $returnurl .= "?frameworkid=$frameworkid";
+    $urlparams = array();
+    if($frameworkid != 0) {
+        $urlparams[] = "frameworkid=$frameworkid";
+    }
+    if($spage != 0) {
+        $urlparams[] = "spage=$spage";
+    }
+    if(count($urlparams) > 0) {
+        $returnurl .= '?'.implode('&amp;', $urlparams);
     }
 
     // display options form 
-    $display_options = new competency_show_options_form(null, compact('framework'));
+    $display_options = new competency_show_options_form(null, compact('framework','spage'));
 
     if ($display_options->is_cancelled()) {
         redirect($returnurl);
@@ -488,10 +495,12 @@ if (!$depths) {
     if($showoptions) {
         $display_options->display();
     } else {
-        if($frameworkid != 0) {
-            $fw = "frameworkid=$frameworkid&amp;";
+        if (strpos($returnurl, '?') !== false) {
+            $showurl = "{$returnurl}&amp;showoptions=1";
+        } else {
+            $showurl = "{$returnurl}?showoptions=1";
         }
-        print "<p><a href=\"{$CFG->wwwroot}/competency/index.php?{$fw}showoptions=1\">".get_string('showdisplayoptions', 'competency').'</a></p>';
+        print "<p><a href=\"$showurl\">".get_string('showdisplayoptions', 'competency').'</a></p>';
     }
 
 // Display table
