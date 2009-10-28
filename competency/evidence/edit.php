@@ -49,7 +49,7 @@ make_categories_list($categories, $parents);
 
 ?>
 
-<h2><?php echo get_string('addnewevidenceitem', 'competency') ?></h2>
+<h2><?php echo get_string('assignnewevidenceitem', 'competency') ?></h2>
 
 <div id="available-evidence">
 </div>
