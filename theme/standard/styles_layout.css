@@ -2003,7 +2003,8 @@ body#competency-index .buttons .singlebutton,
 body#competency-view .buttons .singlebutton,
 body#competency-scale-index .buttons .singlebutton,
 body#competency-scale-view .buttons .singlebutton,
-body#competency-frameworks-index .buttons .singlebutton {
+body#competency-frameworks-index .buttons .singlebutton,
+body#competency-template-index .buttons .singlebutton {
   display: inline;
 }
 
@@ -2013,7 +2014,8 @@ body#competency-index .buttons,
 body#competency-view .buttons,
 body#competency-scale-index .buttons,
 body#competency-scale-view .buttons,
-body#competency-frameworks-index .buttons {
+body#competency-frameworks-index .buttons,
+body#competency-template-index .buttons {
   text-align: center;
   margin-bottom: 15px;
 }
