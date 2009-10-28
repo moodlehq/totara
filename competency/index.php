@@ -7,6 +7,7 @@
     require_once('./filters/lib.php');
     require_once($CFG->libdir.'/adminlib.php');
     require_once($CFG->libdir.'/tablelib.php');
+    require_once($CFG->dirroot.'/competency/show_options_form.php');
 
     define('DEFAULT_PAGE_SIZE', 20);
     define('SHOW_ALL_PAGE_SIZE', 5000);
@@ -24,9 +25,11 @@
     $moveup      = optional_param('moveup', 0, PARAM_INT);
     $movedown    = optional_param('movedown', 0, PARAM_INT);
 
-    $hidecustomfields  = false;
-    $showitemfullname  = true;
-    $showdepthfullname = true;
+    // table display options
+    $showoptions = optional_param('showoptions', null, PARAM_BOOL);
+    $hidecustomfields  = optional_param('hidecustomfields', null, PARAM_BOOL);
+    $showitemfullname  = optional_param('showitemfullname', null, PARAM_BOOL);
+    $showdepthfullname = optional_param('showdepthfullname', null, PARAM_BOOL);
 
     $hierarchy         = new competency();
 
@@ -96,6 +99,55 @@ if (!$depths) {
         }
     } // End of editing stuff
 
+
+    $returnurl = "{$CFG->wwwroot}/competency/index.php";
+    if(isset($frameworkid)) {
+        $returnurl .= "?frameworkid=$frameworkid";
+    }
+
+    // display options form 
+    $display_options = new competency_show_options_form(null, compact('framework'));
+
+    if ($display_options->is_cancelled()) {
+        redirect($returnurl);
+    }
+    else if ($fromform = $display_options->get_data()) {
+        if (empty($fromform->submitbutton)) {
+            print_error('unknownbuttonclicked', 'competency', $returnurl);
+        }
+
+        $todb = new object();
+        if(!isset($fromform->hidecustomfields)) {
+            $fromform->hidecustomfields = 0;
+        }
+        $todb->hidecustomfields = $fromform->hidecustomfields;
+        
+        if(!isset($fromform->showitemfullname)) {
+            $fromform->showitemfullname = 0;
+        }
+        $todb->showitemfullname = $fromform->showitemfullname;
+
+        if(!isset($fromform->showdepthfullname)) {
+            $fromform->showdepthfullname = 0;
+        }
+        $todb->showdepthfullname = $fromform->showdepthfullname;
+        $todb->id = $fromform->frameworkid; 
+
+        if(!update_record('competency_framework', $todb)) {
+            print_error('cannotupdatedisplaysettings', 'competency', $returnurl);
+        }
+        redirect($returnurl);
+
+    } else {
+        $toform = new object();
+        $toform->hidecustomfields = $framework->hidecustomfields;
+        $toform->showitemfullname = $framework->showitemfullname;
+        $toform->showdepthfullname = $framework->showdepthfullname;
+        $display_options->set_data($toform);
+    }
+
+
+
     ///
     /// Generate / display page
     ///
@@ -117,6 +169,25 @@ if (!$depths) {
     $from   = " FROM {$CFG->prefix}{$hierarchy->prefix}";
     $where  = " WHERE frameworkid=$framework->id";
     $sort   = " ORDER BY sortorder";
+
+    // create the competency filter form
+    $cfiltering = new competency_filtering();
+    $extrasql = $cfiltering->get_sql_filter();
+    if ($extrasql !== '') {
+        $extrasql = ' AND '.$extrasql;
+    }
+
+    $matchcount = count_records_sql('SELECT COUNT (DISTINCT id) '.$from.$where);
+    $filteredmatchcount = count_records_sql('SELECT COUNT (DISTINCT id) '.$from
+        .$where.$extrasql);
+
+    if ($extrasql !== '') {
+        print_heading("$filteredmatchcount / $matchcount ".get_string('competencies', 'competency'));
+        $matchcount = $filteredmatchcount;
+    } else {
+        print_heading("$matchcount ".get_string('competencies', 'competency'));
+    }
+
 
     if (!$hidecustomfields) {
         // Retreive visible customfields definitions
@@ -143,7 +214,7 @@ if (!$depths) {
         $tablecolumns[] = format_string($depth->fullname);
         $tablecolumnsd[] = format_string($depth->fullname);
 
-        if ($showdepthfullname) {
+        if ($framework->showdepthfullname) {
             $header = format_string($depth->fullname);
         } else {
             $header = format_string($depth->shortname);
@@ -213,23 +284,6 @@ if (!$depths) {
 
     $table->initialbars(true);
 
-    // create the competency filter form
-    $cfiltering = new competency_filtering();
-    $extrasql = $cfiltering->get_sql_filter();
-    if ($extrasql !== '') {
-        $extrasql = ' AND '.$extrasql;
-    }
-
-    $matchcount = count_records_sql('SELECT COUNT (DISTINCT id) '.$from.$where);
-    $filteredmatchcount = count_records_sql('SELECT COUNT (DISTINCT id) '.$from
-        .$where.$extrasql);
-
-    if ($extrasql !== '') {
-        print_heading("$filteredmatchcount / $matchcount ".get_string('competencies', 'competency'));
-        $matchcount = $filteredmatchcount;
-    } else {
-        print_heading("$matchcount ".get_string('competencies', 'competency'));
-    }
 
     $table->pagesize($perpage, $matchcount);
 
@@ -255,7 +309,7 @@ if (!$depths) {
 
                 if ($depth->id == $item->depthid) {
                     $cssclass = !$item->visible ? 'class="dimmed"' : '';
-                    $itemname = $showitemfullname ? $item->fullname : $item->shortname;
+                    $itemname = $framework->showitemfullname ? $item->fullname : $item->shortname;
                     $cell = "<a $cssclass href=\"{$CFG->wwwroot}/{$hierarchy->prefix}/view.php?id={$item->id}\">{$itemname}</a>";
                     $data[$i][$j] = $cell;
                     if ($editingon) {
@@ -430,7 +484,17 @@ if (!$depths) {
     $cfiltering->display_add();
     $cfiltering->display_active();
 
-    // Display table
+    // show options form or link
+    if($showoptions) {
+        $display_options->display();
+    } else {
+        if($frameworkid != 0) {
+            $fw = "frameworkid=$frameworkid&amp;";
+        }
+        print "<p><a href=\"{$CFG->wwwroot}/competency/index.php?{$fw}showoptions=1\">".get_string('showdisplayoptions', 'competency').'</a></p>';
+    }
+
+// Display table
     $table->print_html();
 
     if (!$itemsfound) {

@@ -92,3 +92,11 @@ $string['shortnametemplate'] = 'Template short name';
 $string['template'] = 'Competency template';
 $string['type'] = 'Type';
 $string['weight'] = 'Weight';
+$string['showdisplayoptions'] = 'Show Display Options';
+$string['displayoptions'] = 'Display Options';
+$string['hidecustomfields'] = 'Hide Custom Fields';
+$string['showitemfullname'] = 'Show Item Fullname';
+$string['showdepthfullname'] = 'Show Depth Fullname';
+$string['unknownbuttonclicked'] = 'Unknown button clicked';
+$string['cannotupdatedisplaysettings'] = 'Could not update display settings';
+
