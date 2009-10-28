@@ -189,7 +189,7 @@ if (!$depths) {
     }
 
 
-    if (!$hidecustomfields) {
+    if (!$framework->hidecustomfields) {
         // Retreive visible customfields definitions
         $sql = "SELECT cdf.id, cdf.depthid, cdf.shortname, cdf.fullname, cdf.hidden
                 FROM {$CFG->prefix}{$hierarchy->prefix}_depth_info_field cdf
@@ -228,7 +228,7 @@ if (!$depths) {
         $tableheaders[] = $header;
         $colcount++;
 
-        if (!$hidecustomfields && !empty($customfields)) {
+        if (!$framework->hidecustomfields && !empty($customfields)) {
             $customfieldcount = 0;
             foreach ($customfields as $customfield) {
                 if (!$customfield->hidden && $customfield->depthid == $depth->id) {
@@ -328,7 +328,7 @@ if (!$depths) {
                     $data[$i][$j] = '';
                 }
                 $j++;
-                if (!$hidecustomfields && !empty($customfieldtrack)) {
+                if (!$framework->hidecustomfields && !empty($customfieldtrack)) {
                     for ($k=0; $k < $customfieldtrack[$depth->depthlevel]; $k++) {
                         $data[$i][$j] = '';
                         $j++;
@@ -373,7 +373,7 @@ if (!$depths) {
         }
 
         if ($itemsfound) {
-            if ($hidecustomfields) {
+            if ($framework->hidecustomfields) {
             // Go ahead and print the tabledata   
 
                 for ($i=0; $i < count($itemtrack); $i++) {
