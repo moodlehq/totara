@@ -8,6 +8,7 @@
     require_once($CFG->libdir.'/adminlib.php');
     require_once($CFG->libdir.'/tablelib.php');
     require_once($CFG->dirroot.'/competency/show_options_form.php');
+    require_once($CFG->dirroot.'/competency/download_form.php');
 
     define('DEFAULT_PAGE_SIZE', 20);
     define('SHOW_ALL_PAGE_SIZE', 5000);
@@ -154,7 +155,14 @@ if (!$depths) {
     }
 
 
+    // download form
+    $download = new competency_download_form();
+    if ($fromform = $download->get_data()) {
+        // TODO set session data. What do we need to send?
+        redirect($CFG->wwwroot.'/competency/download_competencies.php');
+    }    
 
+   
     ///
     /// Generate / display page
     ///
@@ -503,11 +511,13 @@ if (!$depths) {
         print "<p><a href=\"$showurl\">".get_string('showdisplayoptions', 'competency').'</a></p>';
     }
 
-// Display table
+    // Display table
     $table->print_html();
 
     if (!$itemsfound) {
         echo "<i>".get_string('nocompetency', 'competency')."</i><br><br>";
+    } else {
+        $download->display();
     }
 
     // Editing buttons
