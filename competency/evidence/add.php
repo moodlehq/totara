@@ -51,15 +51,12 @@ echo '<td>'.$evidence->get_activity_type().'</td>';
 if (!empty($USER->competencyediting)) {
 
     $str_edit = get_string('edit');
-    $str_delete = get_string('delete');
+    $str_remove = get_string('remove');
 
     echo "<td style=\"text-align: center;\">";
     
-    echo "<a href=\"{$CFG->wwwroot}/competency/evidence/edit.php?id={$evidence->id}\" title=\"$str_edit\">".
-         "<img src=\"{$CFG->pixpath}/t/edit.gif\" class=\"iconsmall\" alt=\"$str_edit\" /></a> ";
-
-    echo "<a href=\"{$CFG->wwwroot}/competency/evidence/delete.php?id={$evidence->id}\" title=\"$str_delete\">".
-         "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_delete\" /></a>";
+    echo "<a href=\"{$CFG->wwwroot}/competency/evidence/remove.php?id={$evidence->id}\" title=\"$str_remove\">".
+         "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_remove\" /></a>";
     
     echo "</td>";
 }

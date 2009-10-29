@@ -91,6 +91,29 @@ abstract class competency_evidence_type extends data_object {
     }
 
     /**
+     * Delete this evidence item from a competency
+     *
+     * @param   $competency Competency object
+     * @return  void
+     */
+    public function delete($competency) {
+
+        // Delete evidence item from database
+        if (!parent::delete()) {
+            error('Could not delete evidence item');
+        }
+
+        // Update evidence count
+        // Get latest count
+        $count = get_field('competency_evidence_items', 'COUNT(*)', 'competencyid', $competency->id);
+        $competency->evidencecount = (int) $count;
+
+        if (!update_record('competency', $competency)) {
+            error('Could not update competency evidence count');
+        }
+    }
+
+    /**
      * Return evidence name and link
      * Defined by child classes
      *

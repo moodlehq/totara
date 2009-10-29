@@ -86,7 +86,7 @@ $heading = "{$depth->fullname} - {$item->fullname}";
 // If editing on, add edit icon
 if ($editingon) {
     $str_edit = get_string('edit');
-    $str_delete = get_string('delete');
+    $str_remove = get_string('remove');
 
     $heading .= " <a href=\"{$CFG->wwwroot}/{$hierarchy->prefix}/edit.php?id={$item->id}\" title=\"$str_edit\">".
             "<img src=\"{$CFG->pixpath}/t/edit.gif\" class=\"iconsmall\" alt=\"$str_edit\" /></a>";
@@ -161,7 +161,7 @@ print_heading(get_string('evidenceitems', $hierarchy->prefix));
     if ($editingon) {
 ?>
     <th style="vertical-align:top; text-align:center; white-space:nowrap;" class="header c4" scope="col">
-        <?php echo get_string('edit'); ?>
+        <?php echo get_string('options', $hierarchy->prefix); ?>
     </th>
 <?php
     }
@@ -186,12 +186,9 @@ if ($evidence) {
 
         if ($editingon) {
             echo "<td style=\"text-align: center;\">";
-            
-            echo "<a href=\"{$CFG->wwwroot}/{$hierarchy->prefix}/evidence/edit.php?id={$eitem->id}\" title=\"$str_edit\">".
-                 "<img src=\"{$CFG->pixpath}/t/edit.gif\" class=\"iconsmall\" alt=\"$str_edit\" /></a> ";
 
-            echo "<a href=\"{$CFG->wwwroot}/{$hierarchy->prefix}/evidence/delete.php?id={$eitem->id}\" title=\"$str_delete\">".
-                 "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_delete\" /></a>";
+            echo "<a href=\"{$CFG->wwwroot}/{$hierarchy->prefix}/evidence/remove.php?id={$eitem->id}\" title=\"$str_remove\">".
+                 "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_remove\" /></a>";
             
             echo "</td>";
         }
