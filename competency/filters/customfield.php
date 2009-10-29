@@ -34,15 +34,18 @@ class competency_filter_customfield extends competency_filter_type {
      * Returns an array of custom fields
      * @return array of fields
      */
-    // TODO abstract this for organisation/position
-    // TODO show level in pulldown box?
     function get_custom_fields() {
-        if (!$fields = get_records_select('competency_depth_info_field', '', 'shortname', 'id,shortname')) {
+        global $CFG;
+        $sql = "SELECT f.id, f.fullname AS fieldname, d.fullname AS depthname FROM
+                {$CFG->prefix}competency_depth_info_field f JOIN
+                {$CFG->prefix}competency_depth d ON f.depthid = d.id
+                WHERE hidden = 0 ORDER BY f.depthid, f.sortorder";
+        if (!$fields = get_records_sql($sql)) {
             return null;
         }
         $res = array(0 => get_string('anyfield', 'filters'));
         foreach($fields as $k=>$v) {
-            $res[$k] = $v->shortname;
+            $res[$k] = $v->depthname . ' > ' . $v->fieldname;
         }
         return $res;
     }
@@ -61,7 +64,7 @@ class competency_filter_customfield extends competency_filter_type {
         $objs[] =& $mform->createElement('select', $this->_name.'_op', null, $this->get_operators());
         $objs[] =& $mform->createElement('text', $this->_name, null);
         $grp =& $mform->addElement('group', $this->_name.'_grp', $this->_label, $objs, '', false);
-        $grp->setHelpButton(array('customfield',$this->_label,'filters')); //TODO help file?
+        $grp->setHelpButton(array('customfield',$this->_label,'filters'));
         if ($this->_advanced) {
             $mform->setAdvanced($this->_name.'_grp');
         }
@@ -150,8 +153,6 @@ class competency_filter_customfield extends competency_filter_type {
         if ($where !== '') {
             $where = "WHERE $where";
         }
-        //TODO should this be id, fieldid, competencyid or something else
-        //TODO check this is working as expected
         return "id $op (SELECT fieldid FROM {$CFG->prefix}competency_depth_info_data $where)";
     }
 

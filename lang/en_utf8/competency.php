@@ -3,7 +3,6 @@
 $string['achieved'] = 'Achieved';
 $string['adddepthlevel'] = 'Add a new depth level';
 $string['addnewcompetency'] = 'Add new competency';
-$string['addnewevidenceitem'] = 'Add new evidence item';
 $string['addnewframework'] = 'Add new competency framework';
 $string['addnewtemplate'] = 'Add new competency template';
 $string['addnewscalevalue'] = 'Add new scale value';
@@ -15,6 +14,7 @@ $string['aggregationmethod4'] = 'Fraction';
 $string['aggregationmethod5'] = 'Sum of weighted';
 $string['aggregationmethod6'] = 'Average of weighted';
 $string['aggregationmethodview'] = '$a aggregation method';
+$string['assignnewevidenceitem'] = 'Assign new evidence item';
 $string['competencies'] = 'Competencies';
 $string['competencyaddnew'] = 'Add a new competency';
 $string['competencybulkaction'] = 'Bulk actions';
@@ -92,3 +92,11 @@ $string['shortnametemplate'] = 'Template short name';
 $string['template'] = 'Competency template';
 $string['type'] = 'Type';
 $string['weight'] = 'Weight';
+$string['showdisplayoptions'] = 'Show Display Options';
+$string['displayoptions'] = 'Display Options';
+$string['hidecustomfields'] = 'Hide Custom Fields';
+$string['showitemfullname'] = 'Show Item Fullname';
+$string['showdepthfullname'] = 'Show Depth Fullname';
+$string['unknownbuttonclicked'] = 'Unknown button clicked';
+$string['cannotupdatedisplaysettings'] = 'Could not update display settings';
+

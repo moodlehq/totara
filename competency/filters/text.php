@@ -1,8 +1,5 @@
 <?php //$Id$
 
-// TODO is this needed? seems to be circular
-//require_once($CFG->dirroot.'/competency/filters/lib.php');
-
 /**
  * Generic filter for text fields.
  */

@@ -136,6 +136,9 @@ function xmldb_local_upgrade($oldversion) {
         $table->addFieldInfo('timemodified', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
         $table->addFieldInfo('usermodified', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
         $table->addFieldInfo('visible', XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
+        $table->addFieldInfo('hidecustomfields', XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
+        $table->addFieldInfo('showitemfullname', XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
+        $table->addFieldInfo('showdepthfullname', XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
         $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
         $table->addIndexInfo('sortorder', XMLDB_INDEX_UNIQUE, array('sortorder'));
         $result = $result && create_table($table);
@@ -531,6 +534,9 @@ function xmldb_local_upgrade($oldversion) {
             'usermodified'  => 1,
             'isdefault'     => 1,
             'visible'       => 1,
+            'hidecustomfields' => 0,
+            'showitemfullname' => 1,
+            'showdepthfullname' => 1,
             'sortorder'     => 1
         );
         $default_framework->id = insert_record('competency_framework', $default_framework);
