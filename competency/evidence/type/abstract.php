@@ -127,11 +127,16 @@ abstract class competency_evidence_type extends data_object {
     /**
      * Create and return new class appropriate to evidence type
      *
-     * @param   $data   object  Database record
+     * @param   $data   object|int  Database record or record pkey
      * @return  object  comptency_evidence_type_*
      */
     public static function factory($data) {
         global $CFG;
+
+        // If supplied an ID, load record
+        if (is_numeric($data)) {
+            $data = get_record('competency_evidence_items', 'id', $data);
+        }
 
         // Load class file
         require_once($CFG->dirroot.'/competency/evidence/type/'.$data->itemtype.'.php');
