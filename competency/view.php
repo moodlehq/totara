@@ -56,8 +56,7 @@ $can_edit = has_capability('moodle/local:update'.$hierarchy->prefix, $sitecontex
 setup_lightbox(array(MBE_JS_TREEVIEW));
 
 require_js(array(
-    $CFG->wwwroot.'/local/js/competencies.js',
-    $CFG->wwwroot.'/local/js/evidence.js',
+    $CFG->wwwroot.'/local/js/competency.evidence.js',
 ));
 
 // Display page header

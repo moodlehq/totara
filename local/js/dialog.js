@@ -1,3 +1,8 @@
+// Setup
+YAHOO.namespace('dialog');
+YAHOO.namespace('dialogSetupFunc');
+
+
 // Dialog object
 function yuiDialog(title, buttonid, default_url) {
 
@@ -151,7 +156,7 @@ function yuiDialog(title, buttonid, default_url) {
         this.bindLinks();
 
         // Run setup function
-        YAHOO.competencies.setupFuncs[this.title]();
+        YAHOO.dialogSetupFunc[this.title]();
     }
 
 

@@ -1,4 +1,21 @@
-YAHOO.competencies.setupFuncs.addevidence = function() {
+// Courses loaded flags
+// Indexed by category id
+evidence_courses_loaded = [];
+
+
+// Bind functionality to page on load
+YAHOO.util.Event.onDOMReady(function () {
+    YAHOO.dialog.evidence = new yuiDialog(
+        'addevidence',
+        'show-evidence-dialog',
+        'evidence/edit.php?id=' + competency_id
+    );
+});
+
+
+// Setup function
+// Run on dialog load
+YAHOO.dialogSetupFunc.addevidence = function() {
 
     $('#addevidence #categories').treeview();
 
@@ -14,9 +31,6 @@ YAHOO.competencies.setupFuncs.addevidence = function() {
     });
 }
 
-// Courses loaded flags
-// Indexed by category id
-evidence_courses_loaded = [];
 
 // Load courses for this category
 function evidence_load_courses(cat) {
@@ -124,7 +138,7 @@ function evidence_display_coursedata(response) {
 
 // Add new evidence to competency view
 function evidence_new_evidence(response) {
-    YAHOO.competencies.dialogs.add.dialog.hide();
+    YAHOO.dialog.evidence.dialog.hide();
 
     // Delete no evidence items warning, if exists
     $('table.editcompetency tr.noevidenceitems').remove();
