@@ -16,7 +16,7 @@ $sitecontext = get_context_instance(CONTEXT_SYSTEM);
 
 $hierarchy         = new hierarchy();
 $hierarchy->prefix = 'competency';
-$item              = $hierarchy->get_item_by_id($id);
+$item              = $hierarchy->get_item($id);
 $depth             = $hierarchy->get_depth_by_id($item->depthid);
 $framework         = $hierarchy->get_framework($item->frameworkid);
 

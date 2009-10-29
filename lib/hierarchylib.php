@@ -95,10 +95,11 @@ class hierarchy {
     }
 
     /**
-     * Get depths for a framework
+     * Get the hierarchy item
+     * @var int $id the id to move
      * @return boolean success
      */
-    function get_item_by_id($id) {
+    function get_item($id) {
         return get_record($this->prefix, 'id', $id);
     }
 
@@ -194,15 +195,6 @@ class hierarchy {
         $max = get_record_sql('SELECT MAX(sortorder) AS max, 1
                 FROM ' . $CFG->prefix . $this->prefix .' WHERE frameworkid=' . $this->frameworkid);
         return $max->max + 1000;
-    }
-
-    /**
-     * Get the hierarchy item
-     * @var int $id the id to move
-     * @return boolean success
-     */
-    function get_item($id) {
-        return get_record($this->prefix, 'id', $id);
     }
 
     /**
