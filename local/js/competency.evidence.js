@@ -72,26 +72,19 @@ function evidence_add_courses(response) {
 
     // Add courses
     var length = courses.length;
-    var count = 0;
+    var html = '';
     for (var course in courses) {
-        count++;
 
-        var html = '';
-        if (count == length) {
-            html = html + '<li class="last">';
-        } else {
-            html = html + '<li>';
-        }
-
+        html = html + '<li>';
         html = html + '<span class="clickable" id="course_list_'+courses[course]['id']+'">'+courses[course]['fullname']+'</span></li>';
-
-        list.append($(html));
     }
 
     // If no courses added
-    if (count == 0) {
-        list.append($('<li class="last"><span>No courses</span></li>'));
+    if (length == 0) {
+        html = '<li><span>No courses</span></li>';
     }
+
+    $('#addevidence #categories').treeview({add: list.append($(html))});
 
     // Add click handlers for course names
     $('span.clickable', list).click(function() {
