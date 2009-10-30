@@ -3,6 +3,8 @@ require_once('../config.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->libdir.'/hierarchylib.php');
 require_once($CFG->dirroot.'/competency/evidence/type/abstract.php');
+require_once($CFG->dirroot.'/local/js/setup.php');
+
 
 ///
 /// Setup / loading data
@@ -14,7 +16,7 @@ $sitecontext = get_context_instance(CONTEXT_SYSTEM);
 
 $hierarchy         = new hierarchy();
 $hierarchy->prefix = 'competency';
-$item              = $hierarchy->get_item_by_id($id);
+$item              = $hierarchy->get_item($id);
 $depth             = $hierarchy->get_depth_by_id($item->depthid);
 $framework         = $hierarchy->get_framework($item->frameworkid);
 
@@ -37,27 +39,8 @@ if ($can_edit_item || $can_delete_item || $can_add_depth || $can_edit_depth) {
     $navbaritem = '';
 }
 
-// Load required javascript libraries
-require_js(
-    array(
-        $CFG->wwwroot.'/local/js/jquery-1.3.2.min.js',
-        'yui_yahoo',
-        'yui_dom',
-        'yui_event',
-        'yui_element',
-        'yui_animation',
-        'yui_connection',
-        'yui_container',
-        'yui_json',
-    )
-);
-
 // Make this page appear under the manage items admin menu
 admin_externalpage_setup($hierarchy->prefix.'manage', $navbaritem);
-
-?>
-    <link rel="stylesheet" href="<?php echo $CFG->wwwroot ?>/local/js/jquery.treeview.css" type="text/css" />
-<?php
 
 $sitecontext = get_context_instance(CONTEXT_SYSTEM);
 require_capability('moodle/local:view'.$hierarchy->prefix, $sitecontext);
@@ -70,23 +53,22 @@ $can_edit = has_capability('moodle/local:update'.$hierarchy->prefix, $sitecontex
 /// Display page
 ///
 
-/// Display page header
+setup_lightbox(array(MBE_JS_TREEVIEW));
+
+require_js(array(
+    $CFG->wwwroot.'/local/js/competency.evidence.js',
+));
+
+// Display page header
 admin_externalpage_print_header();
 
-// Make sure page specific javascript is loaded
-$js = array(
-    $CFG->wwwroot.'/local/js/jquery.treeview.min.js',
-    $CFG->wwwroot.'/local/js/competencies.js',
-    $CFG->wwwroot.'/local/js/evidence.js',
-);
-require_js($js);
 
 $heading = "{$depth->fullname} - {$item->fullname}";
 
 // If editing on, add edit icon
 if ($editingon) {
     $str_edit = get_string('edit');
-    $str_delete = get_string('delete');
+    $str_remove = get_string('remove');
 
     $heading .= " <a href=\"{$CFG->wwwroot}/{$hierarchy->prefix}/edit.php?id={$item->id}\" title=\"$str_edit\">".
             "<img src=\"{$CFG->pixpath}/t/edit.gif\" class=\"iconsmall\" alt=\"$str_edit\" /></a>";
@@ -161,7 +143,7 @@ print_heading(get_string('evidenceitems', $hierarchy->prefix));
     if ($editingon) {
 ?>
     <th style="vertical-align:top; text-align:center; white-space:nowrap;" class="header c4" scope="col">
-        <?php echo get_string('edit'); ?>
+        <?php echo get_string('options', $hierarchy->prefix); ?>
     </th>
 <?php
     }
@@ -186,12 +168,9 @@ if ($evidence) {
 
         if ($editingon) {
             echo "<td style=\"text-align: center;\">";
-            
-            echo "<a href=\"{$CFG->wwwroot}/{$hierarchy->prefix}/evidence/edit.php?id={$eitem->id}\" title=\"$str_edit\">".
-                 "<img src=\"{$CFG->pixpath}/t/edit.gif\" class=\"iconsmall\" alt=\"$str_edit\" /></a> ";
 
-            echo "<a href=\"{$CFG->wwwroot}/{$hierarchy->prefix}/evidence/delete.php?id={$eitem->id}\" title=\"$str_delete\">".
-                 "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_delete\" /></a>";
+            echo "<a href=\"{$CFG->wwwroot}/{$hierarchy->prefix}/evidence/remove.php?id={$eitem->id}\" title=\"$str_remove\">".
+                 "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_remove\" /></a>";
             
             echo "</td>";
         }

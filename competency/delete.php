@@ -20,7 +20,7 @@ $spage  = optional_param('spage', 0, PARAM_INT);
 
 $hierarchy         = new hierarchy();
 $hierarchy->prefix = 'competency';
-$item              = $hierarchy->get_item_by_id($id);
+$item              = $hierarchy->get_item($id);
 
 require_capability('moodle/local:delete'.$hierarchy->prefix, $sitecontext);
 

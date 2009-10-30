@@ -1,6 +1,7 @@
 // Setup
-YAHOO.namespace('competencies.dialogs');
-YAHOO.namespace('competencies.setupFuncs');
+YAHOO.namespace('dialog');
+YAHOO.namespace('dialogSetupFunc');
+
 
 // Dialog object
 function yuiDialog(title, buttonid, default_url) {
@@ -155,7 +156,7 @@ function yuiDialog(title, buttonid, default_url) {
         this.bindLinks();
 
         // Run setup function
-        YAHOO.competencies.setupFuncs[this.title]();
+        YAHOO.dialogSetupFunc[this.title]();
     }
 
 
@@ -190,13 +191,3 @@ function yuiDialog(title, buttonid, default_url) {
     // Setup object
     this.setup();
 }
-
-
-// Bind functionality to page on load
-YAHOO.util.Event.onDOMReady(function () {
-    YAHOO.competencies.dialogs.add = new yuiDialog(
-        'addevidence',
-        'show-evidence-dialog',
-        'evidence/edit.php?id=' + competency_id
-    );
-});

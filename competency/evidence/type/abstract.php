@@ -59,6 +59,28 @@ abstract class competency_evidence_type extends data_object {
     );
 
     /**
+     * Create and return new class appropriate to evidence type
+     *
+     * @param   $data   object|int  Database record or record pkey
+     * @return  object  comptency_evidence_type_*
+     */
+    public static function factory($data) {
+        global $CFG;
+
+        // If supplied an ID, load record
+        if (is_numeric($data)) {
+            $data = get_record('competency_evidence_items', 'id', $data);
+        }
+
+        // Load class file
+        require_once($CFG->dirroot.'/competency/evidence/type/'.$data->itemtype.'.php');
+        $class = 'competency_evidence_type_'.$data->itemtype;
+
+        // Create new and return
+        return new $class($data, false);
+    }
+
+    /**
      * Add this evidence to a competency
      *
      * @param   $competency Competency object
@@ -91,15 +113,39 @@ abstract class competency_evidence_type extends data_object {
     }
 
     /**
-     * Return evidence name and link
-     * Defined by child classes
+     * Delete this evidence item from a competency
      *
-     * @return  string
+     * @param   $competency Competency object
+     * @return  void
      */
-    abstract public function get_name();
+    public function delete($competency) {
+
+        // Delete evidence item from database
+        if (!parent::delete()) {
+            error('Could not delete evidence item');
+        }
+
+        // Update evidence count
+        // Get latest count
+        $count = get_field('competency_evidence_items', 'COUNT(*)', 'competencyid', $competency->id);
+        $competency->evidencecount = (int) $count;
+
+        if (!update_record('competency', $competency)) {
+            error('Could not update competency evidence count');
+        }
+    }
 
     /**
      * Get human readable type name
+     *
+     * @return  string
+     */
+    public function get_type_name() {
+        return get_string('evidence'.$this->itemtype, 'competency');
+    }
+
+    /**
+     * Get human activity type
      * 
      * @return  string
      */
@@ -108,36 +154,18 @@ abstract class competency_evidence_type extends data_object {
     }
 
     /**
+     * Return evidence name and link
+     * Defined by child classes
+     *
+     * @return  string
+     */
+    abstract public function get_name();
+
+    /**
      * Return evidence item type and link
      * Defined by child classes
      *
      * @return  string
      */
     abstract public function get_type();
-
-    /**
-     * Get human readable type name
-     * 
-     * @return  string
-     */
-    public function get_type_name() {
-        return get_string('evidence'.$this->itemtype, 'competency');
-    }
-
-    /**
-     * Create and return new class appropriate to evidence type
-     *
-     * @param   $data   object  Database record
-     * @return  object  comptency_evidence_type_*
-     */
-    public static function factory($data) {
-        global $CFG;
-
-        // Load class file
-        require_once($CFG->dirroot.'/competency/evidence/type/'.$data->itemtype.'.php');
-        $class = 'competency_evidence_type_'.$data->itemtype;
-
-        // Create new and return
-        return new $class($data, false);
-    }   
 }

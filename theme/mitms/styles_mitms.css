@@ -810,23 +810,23 @@ div.mask {
 }
 
 /** Competencies lightbox styling **/
-#addevidence ul#categories li {
+.yui-panel ul.treeview li {
     font-size: 0.8em;
 }
 
-#addevidence ul#categories li li {
+.yui-panel ul.treeview li li {
     font-size: 1em;
 }
 
-#addevidence ul#categories li span {
+.yui-panel ul.treeview li span {
     padding-left: 0.25em;
 }
 
-#addevidence ul#categories li span.folder {
+.yui-panel ul.treeview li span.folder {
     padding-left: 1.75em;
 }
 
-#addevidence ul#categories li span.clickable {
+.yui-panel ul.treeview li span.clickable {
     cursor: pointer;
 }
 

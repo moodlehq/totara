@@ -1999,23 +1999,19 @@ body#course-category .addcategory {
 
 body#course-index .buttons .singlebutton,
 body#course-category .buttons .singlebutton,
-body#competency-index .buttons .singlebutton,
-body#competency-view .buttons .singlebutton,
-body#competency-scale-index .buttons .singlebutton,
-body#competency-scale-view .buttons .singlebutton,
-body#competency-frameworks-index .buttons .singlebutton,
-body#competency-template-index .buttons .singlebutton {
+body.competency .buttons .singlebutton,
+body.competency-scale .buttons .singlebutton,
+body.competency-frameworks .buttons .singlebutton,
+body.competency-template .buttons .singlebutton {
   display: inline;
 }
 
 body#course-index .buttons,
 body#course-category .buttons,
-body#competency-index .buttons,
-body#competency-view .buttons,
-body#competency-scale-index .buttons,
-body#competency-scale-view .buttons,
-body#competency-frameworks-index .buttons,
-body#competency-template-index .buttons {
+body.competency .buttons,
+body.competency-scale .buttons,
+body.competency-frameworks .buttons,
+body.competency-template .buttons {
   text-align: center;
   margin-bottom: 15px;
 }
