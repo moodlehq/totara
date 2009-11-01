@@ -13,6 +13,8 @@
     define('DEFAULT_PAGE_SIZE', 20);
     define('SHOW_ALL_PAGE_SIZE', 5000);
 
+    global $SESSION;
+
     /// Setup page
     $sitecontext    = get_context_instance(CONTEXT_SYSTEM);
     $spage          = optional_param('spage', 0, PARAM_INT);                     // which page to show
@@ -155,31 +157,6 @@ if (!$depths) {
     }
 
 
-    // download form
-    $download = new competency_download_form();
-    if ($fromform = $download->get_data()) {
-        // TODO set session data. What do we need to send?
-        redirect($CFG->wwwroot.'/competency/download_competencies.php');
-    }    
-
-   
-    ///
-    /// Generate / display page
-    ///
-    $str_edit         = get_string('edit');
-    $str_delete       = get_string('delete');
-    $str_moveup       = get_string('moveup');
-    $str_movedown     = get_string('movedown');
-    $str_hide         = get_string('hide');
-    $str_show         = get_string('show');
-    $str_customfields = get_string('customfields', 'customfields');
-    $str_spacer       = "<img src=\"{$CFG->wwwroot}/pix/spacer.gif\" class=\"iconsmall\" alt=\"\" /> ";
-
-    // Display page
-    admin_externalpage_print_header();
-
-    $hierarchy->display_framework_selector();
-
     $select = "SELECT id, depthid, shortname, fullname, visible, evidencecount";
     $from   = " FROM {$CFG->prefix}{$hierarchy->prefix}";
     $where  = " WHERE frameworkid=$framework->id";
@@ -197,8 +174,39 @@ if (!$depths) {
         .$where.$extrasql);
 
     if ($extrasql !== '') {
-        print_heading("$filteredmatchcount / $matchcount ".get_string('competencies', 'competency'));
         $matchcount = $filteredmatchcount;
+    }
+
+
+    // download form
+    $download = new competency_download_form();
+    if ($fromform = $download->get_data()) {
+        $competencyids = get_records_sql('SELECT id '.$from.$where.$extrasql);
+        $SESSION->downloaddata = $competencyids;
+       redirect($CFG->wwwroot.'/competency/download_competencies.php');
+    }    
+
+  
+    ///
+    /// Generate / display page
+    ///
+    $str_edit         = get_string('edit');
+    $str_delete       = get_string('delete');
+    $str_moveup       = get_string('moveup');
+    $str_movedown     = get_string('movedown');
+    $str_hide         = get_string('hide');
+    $str_show         = get_string('show');
+    $str_customfields = get_string('customfields', 'customfields');
+    $str_spacer       = "<img src=\"{$CFG->wwwroot}/pix/spacer.gif\" class=\"iconsmall\" alt=\"\" /> ";
+
+    // Display page
+    admin_externalpage_print_header();
+
+    $hierarchy->display_framework_selector();
+
+
+    if ($extrasql !== '') {
+        print_heading("$filteredmatchcount / $matchcount ".get_string('competencies', 'competency'));
     } else {
         print_heading("$matchcount ".get_string('competencies', 'competency'));
     }
