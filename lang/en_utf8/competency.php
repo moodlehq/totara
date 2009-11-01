@@ -106,4 +106,5 @@ $string['showitemfullname'] = 'Show Item Fullname';
 $string['showdepthfullname'] = 'Show Depth Fullname';
 $string['unknownbuttonclicked'] = 'Unknown button clicked';
 $string['cannotupdatedisplaysettings'] = 'Could not update display settings';
+$string['download'] = 'Download selected competencies';
 
