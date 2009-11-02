@@ -71,7 +71,9 @@ function competency_download_ods($fields, $data) {
     $row = 0;
     foreach ($data as $datarow) {
         for($col=0; $col<$numfields;$col++) {
-            $worksheet[0]->write($row+1, $col, $data[$row][$col]);
+            if(isset($data[$row][$col])) {
+                $worksheet[0]->write($row+1, $col, $data[$row][$col]);
+            }
         }
         $row++;
     }
@@ -103,7 +105,9 @@ function competency_download_xls($fields, $data) {
     $row = 0;
     foreach ($data as $datarow) {
         for($col=0; $col<$numfields; $col++) {
-            $worksheet[0]->write($row+1, $col, $data[$row][$col]);
+            if(isset($data[$row][$col])) {
+                $worksheet[0]->write($row+1, $col, $data[$row][$col]);
+            }
         }
         $row++;
     }
