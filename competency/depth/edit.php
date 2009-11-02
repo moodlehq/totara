@@ -78,6 +78,16 @@ if ($depthform->is_cancelled()){
             error('Error creating '.$hierarchy->prefix.' depth level record');
         }
 
+        // add a default custom field category for the depth
+        $depthinfocategorynew            = new object();
+        $depthinfocategorynew->name      = get_string('misc', 'admin');
+        $depthinfocategorynew->sortorder = 1;
+        $depthinfocategorynew->depthid   = $depthnew->id;
+
+        if (!$depthnew->id = insert_record($hierarchy->prefix.'_depth_info_category', $depthinfocategorynew)) {
+            error('Error creating '.$hierarchy->prefix.' depth info category record');
+        }
+
     // Existing depth level
     } else {
         if (!update_record($hierarchy->prefix.'_depth', $depthnew)) {
