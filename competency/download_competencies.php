@@ -12,45 +12,22 @@ $format = optional_param('format', '', PARAM_ALPHA);
 $hierarchy         = new competency();
 
 admin_externalpage_setup($hierarchy->prefix.'manage');
-//todo decide on competencies
-//require_capability('moodle/user:update', get_context_instance(CONTEXT_SYSTEM));
+require_capability('moodle/local:view'.$hierarchy->prefix, get_context_instance(CONTEXT_SYSTEM));
 
 $return = $CFG->wwwroot.'/competency/index.php';
 
-if (empty($SESSION->downloaddata)) {
+if (empty($SESSION->download_data)) {
     redirect($return);
 }
 
 if ($format) {
-    $fields = array('id'        => 'id',
-                    'fullname'  => 'fullname',
-                    'shortname' => 'shortname',
-                    'idnumber'  => 'idnumber',
-                    'frameworkid' => 'frameworkid',
-                    'parentid' => 'parentid',
-                    'sortorder'    => 'sortorder',
-                    'depthid'    => 'depthid',
-                    'path'      => 'path',
-                    'description'       => 'description',
-                    'aggregationmethod'       => 'aggregrationmethod',
-                    'scaleid'     => 'scaleid',
-                    'proficiencyexpected'       => 'proficiencyexpected',
-                    'evidencecount'     => 'evidencecount',
-                    'timecreated'       => 'timecreated',
-                    'timemodified'      => 'timemodified',
-                    'usermodified'      => 'usermodified',
-                    'visible'   => 'visible');
-
-    if ($customfields = get_records_select('competency_info_field')) {
-        foreach ($customfields as $n=>$v){
-            $fields['custom_field_'.$v->shortname] = 'custom_field_'.$v->shortname;
-        }
-    }
+    $fields = $SESSION->download_cols;
+    $data = $SESSION->download_data;
 
     switch ($format) {
-        case 'csv' : competency_download_csv($fields);
-        case 'ods' : competency_download_ods($fields);
-        case 'xls' : competency_download_xls($fields);
+        case 'csv' : competency_download_csv($fields, $data);
+        case 'ods' : competency_download_ods($fields, $data);
+        case 'xls' : competency_download_xls($fields, $data);
         
     }
     die;
@@ -71,8 +48,8 @@ print_continue($return);
 
 print_footer();
 
-function competency_download_ods($fields) {
-    global $CFG, $SESSION;
+function competency_download_ods($fields, $data) {
+    global $CFG;
 
     require_once("$CFG->libdir/odslib.class.php");
 
@@ -90,15 +67,11 @@ function competency_download_ods($fields) {
         $col++;
     }
 
-    $row = 1;
-    foreach ($SESSION->downloaddata as $competencyid => $unused) {
-        if (!$competency = get_record('competency', 'id', $competencyid)) {
-            continue;
-        }
-        $col = 0;
-        foreach ($fields as $field=>$unused) {
-            $worksheet[0]->write($row, $col, $competency->$field);
-            $col++;
+    $numfields = count($fields);
+    $row = 0;
+    foreach ($data as $datarow) {
+        for($col=0; $col<$numfields;$col++) {
+            $worksheet[0]->write($row+1, $col, $data[$row][$col]);
         }
         $row++;
     }
@@ -107,8 +80,8 @@ function competency_download_ods($fields) {
     die;
 }
 
-function competency_download_xls($fields) {
-    global $CFG, $SESSION;
+function competency_download_xls($fields, $data) {
+    global $CFG;
 
     require_once("$CFG->libdir/excellib.class.php");
 
@@ -126,15 +99,11 @@ function competency_download_xls($fields) {
         $col++;
     }
 
-    $row = 1;
-    foreach ($SESSION->downloaddata as $competencyid=>$unused) {
-        if (!$competency = get_record('competency', 'id', $competencyid)) {
-            continue;
-        }
-        $col = 0;
-        foreach ($fields as $field=>$unused) {
-            $worksheet[0]->write($row, $col, $competency->$field);
-            $col++;
+    $numfields = count($fields);
+    $row = 0;
+    foreach ($data as $datarow) {
+        for($col=0; $col<$numfields; $col++) {
+            $worksheet[0]->write($row+1, $col, $data[$row][$col]);
         }
         $row++;
     }
@@ -143,8 +112,8 @@ function competency_download_xls($fields) {
     die;
 }
 
-function competency_download_csv($fields) {
-    global $CFG, $SESSION;
+function competency_download_csv($fields, $data) {
+    global $CFG;
     
     $filename = clean_filename(get_string('competencies','competency').'.csv');
 
@@ -160,19 +129,25 @@ function competency_download_csv($fields) {
     foreach ($fields as $fieldname) {
         $row[] = str_replace($delimiter, $encdelim, $fieldname);
     }
+
     echo implode($delimiter, $row)."\n";
-    foreach ($SESSION->downloaddata as $competencyid => $unused) {
+
+    $numfields = count($fields);
+    $i = 0;
+    foreach ($data AS $row) {
         $row = array();
-        if (!$competency = get_record('competency', 'id', $competencyid)) {
-            continue;
-        }
-        
-        foreach ($fields as $field=>$unused) {
-            $row[] = str_replace($delimiter, $encdelim, $competency->$field);
+        for($j=0; $j<$numfields; $j++) {
+            if(isset($data[$i][$j])) {
+                $row[] = str_replace($delimiter, $encdelim, $data[$i][$j]);
+            } else {
+                $row[] = '';
+            }
         }
         echo implode($delimiter, $row)."\n";
+        $i++;
     }
     die;
+
 }
 
 ?>

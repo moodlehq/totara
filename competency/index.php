@@ -57,6 +57,20 @@
     // Setup page and check permissions
     admin_externalpage_setup($hierarchy->prefix.'manage', $navbaritem);
 
+    // build return url path
+    $returnurl = "{$CFG->wwwroot}/competency/index.php";
+    $urlparams = array();
+    if($frameworkid != 0) {
+        $urlparams[] = "frameworkid=$frameworkid";
+    }
+    if($spage != 0) {
+        $urlparams[] = "spage=$spage";
+    }
+    if(count($urlparams) > 0) {
+        $returnurl .= '?'.implode('&amp;', $urlparams);
+    }
+
+
     // Get the framework depths
     $depths = $hierarchy->get_depths($framework->id);
 
@@ -85,6 +99,47 @@ if (!$depths) {
 }
 
     ///
+    /// Get database info
+    ///
+
+    // prepare SQL to get page data
+    $select = "SELECT id, depthid, shortname, fullname, visible, evidencecount";
+    $from   = " FROM {$CFG->prefix}{$hierarchy->prefix}";
+    $where  = " WHERE frameworkid=$framework->id";
+    $sort   = " ORDER BY sortorder";
+
+    // create the competency filter form
+    $cfiltering = new competency_filtering();
+    $extrasql = $cfiltering->get_sql_filter();
+    if ($extrasql !== '') {
+        $extrasql = ' AND '.$extrasql;
+    }
+
+    $matchcount = count_records_sql('SELECT COUNT (DISTINCT id) '.$from.$where);
+    $filteredmatchcount = count_records_sql('SELECT COUNT (DISTINCT id) '.$from
+        .$where.$extrasql);
+
+    if ($extrasql !== '') {
+        $matchcount = $filteredmatchcount;
+    }
+
+    if (!$framework->hidecustomfields) {
+        // Retreive visible customfields definitions
+        $sql = "SELECT cdf.id, cdf.depthid, cdf.shortname, cdf.fullname, cdf.hidden
+                FROM {$CFG->prefix}{$hierarchy->prefix}_depth_info_field cdf
+                JOIN {$CFG->prefix}{$hierarchy->prefix}_depth_info_category cdc
+                    ON cdc.id=cdf.categoryid
+                JOIN {$CFG->prefix}{$hierarchy->prefix}_depth cd
+                    ON cd.id=cdf.depthid
+                WHERE cd.frameworkid=$framework->id AND cdf.hidden=0
+                ORDER BY cdc.depthid, cdc.sortorder, cdf.sortorder";
+
+        $customfields = get_records_sql($sql);
+        $customfieldtrack  = array();
+    }
+ 
+
+    ///
     /// Process any actions
     ///
     if ($editingon) {
@@ -102,18 +157,6 @@ if (!$depths) {
         }
     } // End of editing stuff
 
-
-    $returnurl = "{$CFG->wwwroot}/competency/index.php";
-    $urlparams = array();
-    if($frameworkid != 0) {
-        $urlparams[] = "frameworkid=$frameworkid";
-    }
-    if($spage != 0) {
-        $urlparams[] = "spage=$spage";
-    }
-    if(count($urlparams) > 0) {
-        $returnurl .= '?'.implode('&amp;', $urlparams);
-    }
 
     // display options form 
     $display_options = new competency_show_options_form(null, compact('framework','spage'));
@@ -157,33 +200,11 @@ if (!$depths) {
     }
 
 
-    $select = "SELECT id, depthid, shortname, fullname, visible, evidencecount";
-    $from   = " FROM {$CFG->prefix}{$hierarchy->prefix}";
-    $where  = " WHERE frameworkid=$framework->id";
-    $sort   = " ORDER BY sortorder";
-
-    // create the competency filter form
-    $cfiltering = new competency_filtering();
-    $extrasql = $cfiltering->get_sql_filter();
-    if ($extrasql !== '') {
-        $extrasql = ' AND '.$extrasql;
-    }
-
-    $matchcount = count_records_sql('SELECT COUNT (DISTINCT id) '.$from.$where);
-    $filteredmatchcount = count_records_sql('SELECT COUNT (DISTINCT id) '.$from
-        .$where.$extrasql);
-
-    if ($extrasql !== '') {
-        $matchcount = $filteredmatchcount;
-    }
-
-
     // download form
     $download = new competency_download_form();
     if ($fromform = $download->get_data()) {
-        $competencyids = get_records_sql('SELECT id '.$from.$where.$extrasql);
-        $SESSION->downloaddata = $competencyids;
-       redirect($CFG->wwwroot.'/competency/download_competencies.php');
+        require_once('get_download_data.php');
+        redirect($CFG->wwwroot.'/competency/download_competencies.php');
     }    
 
   
@@ -212,21 +233,7 @@ if (!$depths) {
     }
 
 
-    if (!$framework->hidecustomfields) {
-        // Retreive visible customfields definitions
-        $sql = "SELECT cdf.id, cdf.depthid, cdf.shortname, cdf.fullname, cdf.hidden
-                FROM {$CFG->prefix}{$hierarchy->prefix}_depth_info_field cdf
-                JOIN {$CFG->prefix}{$hierarchy->prefix}_depth_info_category cdc
-                    ON cdc.id=cdf.categoryid
-                JOIN {$CFG->prefix}{$hierarchy->prefix}_depth cd
-                    ON cd.id=cdf.depthid
-                WHERE cd.frameworkid=$framework->id AND cdf.hidden=0
-                ORDER BY cdc.depthid, cdc.sortorder, cdf.sortorder";
-
-        $customfields = get_records_sql($sql);
-        $customfieldtrack  = array();
-    }
-    $colcount = 0;
+   $colcount = 0;
 
     $tablecolumns   = array(); // all columns
     $tablecolumnscf = array(); // just the customfield columns
