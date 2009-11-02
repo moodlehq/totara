@@ -2,18 +2,18 @@
 
 // This file defines settingpages and externalpages under the "positions" category
 
-    $ADMIN->add('positions', new admin_externalpage('positionbrowselist', get_string('positionbrowselist', 'admin'), "$CFG->wwwroot/$CFG->admin/position.php",
-            array('moodle/category:manage', 'moodle/course:create')));
+    $ADMIN->add('positions', new admin_externalpage('positionframeworkmanage', get_string('positionframeworkmanage', 'position'), "$CFG->wwwroot/position/frameworks/index.php",
+            array('moodle/local:viewposition')));
 
-    $ADMIN->add('positions', new admin_externalpage('positionbulkaction', get_string('positionbulkaction', 'admin'), $CFG->wwwroot . '/course/index.php?categoryedit=on',
-            array('moodle/category:manage', 'moodle/course:create')));
+    $ADMIN->add('positions', new admin_externalpage('positionmanage', get_string('positionmanage', 'position'), $CFG->wwwroot . '/position/index.php',
+            array('moodle/local:updateposition')));
 
-    $ADMIN->add('positions', new admin_externalpage('positionaddnew', get_string('positionaddnew', 'admin'), $CFG->wwwroot . '/course/index.php?categoryedit=on',
-            array('moodle/category:manage', 'moodle/course:create')));
+    $ADMIN->add('positions', new admin_externalpage('positionaddnew', get_string('positionaddnew', 'position'), $CFG->wwwroot . '/position/bulk.php',
+            array('moodle/local:updateposition', 'moodle/local:deleteposition')));
 
-    $ADMIN->add('positions', new admin_externalpage('positionupload', get_string('positionupload', 'admin'), "$CFG->wwwroot/$CFG->admin/uploadposition.php",
-            array('moodle/category:manage', 'moodle/course:create')));
+    $ADMIN->add('positions', new admin_externalpage('positionupload', get_string('positionupload', 'position'), "$CFG->wwwroot/$CFG->admin/position/upload.php",
+            array('moodle/local:updateposition')));
 
-    $ADMIN->add('positions', new admin_externalpage('positioncustomfields', get_string('positioncustomfields', 'admin'), $CFG->wwwroot . '/course/index.php?categoryedit=on',
-            array('moodle/category:manage', 'moodle/course:create')));
+    $ADMIN->add('positions', new admin_externalpage('positiondepthcustomfields', get_string('positioncustomfields', 'position'), $CFG->wwwroot . '/position/depth/customfields/index.php',
+            array('moodle/local:viewposition')));
 ?>
