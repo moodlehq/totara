@@ -50,32 +50,6 @@
     
     $role_assignments = array(
     );
-    $training_organisation = array(
-        '1' => array(
-            'fullname'       => 'Retail Institute',
-            'shortname'      => 'RI',
-        ),
-        '2' => array(
-            'fullname'       => 'Hospitality Standards Institute',
-            'shortname'      => 'HSI',
-        ),
-        '3' => array(
-            'fullname'       => 'Hairdressing Industry Training Organisation',
-            'shortname'      => 'HITO',
-        ),
-        '4' => array(
-            'fullname'       => 'Aviation, Tourism and Travel Training Organisation',
-            'shortname'      => 'ATTTO',
-        ),
-        '5' => array(
-            'fullname'       => 'Skills Active',
-            'shortname'      => 'SA',
-        ),
-        '6' => array(
-            'fullname'       => 'Tranzqual',
-            'shortname'      => 'T',
-        ),
-    );
     $position_frameworks = array(
     );
     $position_depth = array(
