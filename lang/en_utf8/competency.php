@@ -19,7 +19,6 @@ $string['assignnewcompetency'] = 'Assign new competency';
 $string['assignnewevidenceitem'] = 'Assign new evidence item';
 $string['competencies'] = 'Competencies';
 $string['competencyaddnew'] = 'Add a new competency';
-$string['competencybulkaction'] = 'Bulk actions';
 $string['competencycustomfields'] = 'Custom fields';
 $string['competencyframeworkmanage'] = 'Manage frameworks';
 $string['competencymanage'] = 'Manage competencies';
