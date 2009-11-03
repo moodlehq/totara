@@ -154,7 +154,7 @@ class hierarchy_filter_customfield extends hierarchy_filter_type {
         if ($where !== '') {
             $where = "WHERE $where";
         }
-        return "id $op (SELECT fieldid FROM {$CFG->prefix}{$hierarchyprefix}_depth_info_data $where)";
+        return "id $op (SELECT competencyid FROM {$CFG->prefix}{$hierarchyprefix}_depth_info_data $where)";
     }
 
     /**
