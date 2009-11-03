@@ -530,7 +530,7 @@ if (!$depths) {
     $table->print_html();
 
     if (!$itemsfound) {
-        echo "<i>".get_string('nocompetency', 'competency')."</i><br><br>";
+        echo "<i>".get_string('no'.$hierarchy->prefix, $hierarchy->prefix)."</i><br><br>";
     } else {
         $download->display();
     }
