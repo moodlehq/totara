@@ -203,7 +203,7 @@ if ($can_edit) {
 </script>
 
 <div class="singlebutton">
-<form action="<?php echo $CFG->wwwroot ?>/<?php $hierarchy->prefix ?>/evidence/edit.php" method="get">
+<form action="<?php echo $CFG->wwwroot ?>/<?php echo $hierarchy->prefix ?>/evidence/edit.php" method="get">
 <div>
 <input type="hidden" name="<?php echo $hierarchy->prefix ?>" value="<?php echo $item->id ?>" />
 <input type="submit" id="show-evidence-dialog" value="<?php echo get_string('assignnewevidenceitem', $hierarchy->prefix) ?>" />

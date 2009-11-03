@@ -3,6 +3,8 @@
 require_once('../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->dirroot.'/competency/lib.php');
+require_once($CFG->dirroot.'/local/js/setup.php');
+
 
 ///
 /// Setup / loading data
@@ -16,10 +18,13 @@ $hierarchy         = new competency();
 $item              = $hierarchy->get_template($id);
 $framework         = $hierarchy->get_framework($item->frameworkid);
 
-// Cache user capabilities
-$can_edit_item   = has_capability('moodle/local:update'.$hierarchy->prefix.'template', $sitecontext);
+// Get assigned competencies
+$competencies = $hierarchy->get_assigned_to_template($id);
 
-if ($can_edit_item) {
+// Cache user capabilities
+$can_edit   = has_capability('moodle/local:update'.$hierarchy->prefix.'template', $sitecontext);
+
+if ($can_edit) {
     $options = array('id' => $item->id);
     $navbaritem = $hierarchy->get_editing_button($edit, $options);
     $editingon = !empty($USER->{$hierarchy->prefix.'editing'});
@@ -27,27 +32,8 @@ if ($can_edit_item) {
     $navbaritem = '';
 }
 
-// Load required javascript libraries
-require_js(
-    array(
-        $CFG->wwwroot.'/local/js/jquery-1.3.2.min.js',
-        'yui_yahoo',
-        'yui_dom',
-        'yui_event',
-        'yui_element',
-        'yui_animation',
-        'yui_connection',
-        'yui_container',
-        'yui_json',
-    )
-);
-
 // Make this page appear under the manage items admin menu
 admin_externalpage_setup($hierarchy->prefix.'templatemanage', $navbaritem);
-
-?>
-    <link rel="stylesheet" href="<?php echo $CFG->wwwroot ?>/local/js/jquery.treeview.css" type="text/css" />
-<?php
 
 $sitecontext = get_context_instance(CONTEXT_SYSTEM);
 require_capability('moodle/local:view'.$hierarchy->prefix, $sitecontext);
@@ -57,6 +43,12 @@ require_capability('moodle/local:view'.$hierarchy->prefix, $sitecontext);
 /// Display page
 ///
 
+setup_lightbox(array(MBE_JS_TREEVIEW, MBE_JS_ADVANCED));
+
+require_js(array(
+    $CFG->wwwroot.'/local/js/competency.assign.js',
+));
+
 /// Display page header
 admin_externalpage_print_header();
 
@@ -65,7 +57,7 @@ $heading = "{$framework->fullname} - {$item->fullname}";
 // If editing on, add edit icon
 if ($editingon) {
     $str_edit = get_string('edit');
-    $str_delete = get_string('delete');
+    $str_remove = get_string('remove');
 
     $heading .= " <a href=\"{$CFG->wwwroot}/{$hierarchy->prefix}/template/edit.php?id={$item->id}\" title=\"$str_edit\">".
             "<img src=\"{$CFG->pixpath}/t/edit.gif\" class=\"iconsmall\" alt=\"$str_edit\" /></a>";
@@ -91,9 +83,91 @@ $depthstr = get_string('template', $hierarchy->prefix);
 
 <?php
 
+///
+/// Display assigned competencies
+///
+print_heading(get_string('assignedcompetencies', $hierarchy->prefix));
+
+?>
+<table width="95%" cellpadding="5" cellspacing="1" class="generalbox edit<?php echo $hierarchy->prefix ?> boxaligncenter">
+<tr>
+    <th style="vertical-align:top; text-align: left; white-space:nowrap;" class="header c0" scope="col">
+        <?php echo get_string('depthlevel', $hierarchy->prefix); ?>
+    </th>
+
+    <th style="vertical-align:top; text-align: left; white-space:nowrap;" class="header c1" scope="col">
+        <?php echo get_string('name'); ?>
+    </th>
+
+<?php
+    if ($editingon) {
+?>
+    <th style="vertical-align:top; text-align:center; white-space:nowrap;" class="header c4" scope="col">
+        <?php echo get_string('options', $hierarchy->prefix); ?>
+    </th>
+<?php
+    }
+?>
+</tr>
+<?php
+
+if ($competencies) {
+
+    foreach ($competencies as $competency) {
+
+        echo '<tr>';
+        echo '<td>'.$competency->depth.'</td>';
+        echo "<td><a href=\"{$CFG->wwwroot}/{$hierarchy->prefix}/view.php?id={$competency->id}\">{$competency->competency}</a></td>";
+
+        if ($editingon) {
+            echo "<td style=\"text-align: center;\">";
+
+            echo "<a href=\"{$CFG->wwwroot}/{$hierarchy->prefix}/template/remove_assignment.php?templateid={$item->id}&assignment={$competency->id}\" title=\"$str_remove\">".
+    "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_remove\" /></a>";
+
+            echo "</td>";
+        }
+
+        echo '</tr>';
+    }
+
+} else {
+    // # cols varies
+    $cols = $editingon ? 3 : 2;
+    echo '<tr class="noitems"><td colspan="'.$cols.'"><i>'.get_string('noassignedcompetencies', $hierarchy->prefix).'</i></td></tr>';
+}
+
+echo '</table>';
+
+
 // Navigation / editing buttons
 echo '<div class="buttons">';
 
+// Display assign competency button
+if ($can_edit) {
+
+?>
+
+<script type="text/javascript">
+    <!-- //
+    var <?php echo $hierarchy->prefix ?>_template_id = '<?php echo $item->id ?>';
+    // -->
+</script>
+
+<div class="singlebutton">
+<form action="<?php echo $CFG->wwwroot ?>/<?php echo $hierarchy->prefix ?>/template/assign_competency.php" method="get">
+<div>
+<input type="hidden" name="<?php echo $hierarchy->prefix ?>_template_id" value="<?php echo $item->id ?>" />
+<input type="submit" id="show-assignment-dialog" value="<?php echo get_string('assignnewcompetency', $hierarchy->prefix) ?>" />
+</div>
+</form>
+</div>
+
+<?php
+
+}
+
+// Return to template list
 $options = array('frameworkid' => $framework->id);
 print_single_button(
     $CFG->wwwroot.'/'.$hierarchy->prefix.'/template/index.php',

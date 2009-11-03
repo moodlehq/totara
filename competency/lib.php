@@ -116,4 +116,35 @@ class competency extends hierarchy {
         // Delete this item
         delete_records($this->prefix.'_template', 'id', $id);
     }
+
+    /**
+     * Get competencies assigned to a template
+     * @param int $id Template id
+     * @return array|false
+     */
+    function get_assigned_to_template($id) {
+        global $CFG;
+
+        return get_records_sql(
+            "
+            SELECT
+                c.id AS id,
+                d.fullname AS depth,
+                c.fullname AS competency
+            FROM
+                {$CFG->prefix}competency_template_assignment a
+            LEFT JOIN
+                {$CFG->prefix}competency_template t
+             ON t.id = a.templateid
+            LEFT JOIN
+                {$CFG->prefix}competency c
+             ON a.instanceid = c.id
+            LEFT JOIN
+                {$CFG->prefix}competency_depth d
+             ON c.depthid = d.id
+            WHERE
+                t.id = {$id}
+            "
+        );
+    }
 }

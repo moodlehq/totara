@@ -72,7 +72,7 @@ class hierarchy {
 
     /**
      * Get depth by id
-     * @return boolean success
+     * @return object|false
      */
     function get_depth_by_id($id) {
         return get_record($this->prefix.'_depth', 'id', $id);
@@ -80,7 +80,7 @@ class hierarchy {
 
     /**
      * Get framework
-     * @return boolean success
+     * @return array|false
      */
     function get_frameworks() {
         return get_records($this->prefix.'_framework', '', '', 'sortorder');
@@ -88,7 +88,7 @@ class hierarchy {
 
     /**
      * Get depths for a framework
-     * @return boolean success
+     * @return array|false
      */
     function get_depths() {
         return get_records($this->prefix.'_depth', 'frameworkid', $this->frameworkid, 'id');
@@ -97,18 +97,27 @@ class hierarchy {
     /**
      * Get the hierarchy item
      * @var int $id the id to move
-     * @return boolean success
+     * @return object|false
      */
     function get_item($id) {
         return get_record($this->prefix, 'id', $id);
     }
 
     /**
-     * Get depths for a framework
-     * @return boolean success
+     * Get items in a framework
+     * @return array|false
      */
     function get_items() {
         return get_records($this->prefix, 'frameworkid', $this->frameworkid, 'sortorder');
+    }
+
+    /**
+     * Get items in a framework by parent
+     * @param int $parentid
+     * @return array|false
+     */
+    function get_items_by_parent($parentid) {
+        return get_records_select($this->prefix, "frameworkid = {$this->frameworkid} AND parentid = {$parentid}", 'sortorder');
     }
 
     /**

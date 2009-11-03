@@ -71,6 +71,7 @@ if ($form->is_cancelled()) {
         unset($templatenew->id);
 
         $templatenew->timecreated = $time;
+        $templatenew->competencycount = 0;
 
         if (!$frameworknew->id = insert_record('competency_template', $templatenew)) {
             error('Error creating competency template record');

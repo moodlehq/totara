@@ -109,7 +109,7 @@ if ($templates) {
         $cssclass = !$template->visible ? 'class="dimmed"' : '';
 
         $row[] = "<a $cssclass href=\"{$CFG->wwwroot}/{$hierarchy->prefix}/template/view.php?id={$template->id}\">{$template->fullname}</a>";
-        $row[] = '0';
+        $row[] = "<a $cssclass href=\"{$CFG->wwwroot}/{$hierarchy->prefix}/template/view.php?id={$template->id}\">{$template->competencycount}</a>";
         $row[] = '0';
         $row[] = '0';
         $row[] = userdate($template->timecreated, '%A, %e %B %Y');

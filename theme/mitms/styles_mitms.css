@@ -783,8 +783,7 @@ div.yui-dialog div.yui-panel .bd {
 }
 
 div.yui-dialog div.yui-panel a.container-close {
-    display: block;
-    margin-left: 639px;
+    float: right;
     width: 66px;
     height: 22px;
     background-image: url(closelabel.gif);
@@ -801,6 +800,39 @@ div.yui-dialog div.yui-panel .bd h2 {
     color: #002C3F;
 }
 
+div.yui-dialog div.yui-panel .ft {
+    float: left;
+}
+
+div.yui-dialog div.yui-panel ul.treeview {
+    height: 170px;
+/*    overflow: auto;*/
+}
+
+div.yui-dialog div.yui-panel ul.treeview li {
+    font-size: 0.8em;
+}
+
+div.yui-dialog div.yui-panel ul.treeview li li {
+    font-size: 1em;
+}
+
+div.yui-dialog div.yui-panel ul.treeview li span {
+    padding-left: 0.25em;
+}
+
+div.yui-dialog div.yui-panel ul.treeview li span.folder {
+    padding-left: 1.75em;
+}
+
+div.yui-dialog div.yui-panel ul.treeview li span.clickable {
+    cursor: pointer;
+}
+
+div.yui-dialog div.yui-panel ul.treeview li span.ui-draggable {
+    cursor: pointer;
+}
+
 div.mask {
     background-color: #666;
 	filter:alpha(opacity=50);
@@ -810,26 +842,6 @@ div.mask {
 }
 
 /** Competencies lightbox styling **/
-.yui-panel ul.treeview li {
-    font-size: 0.8em;
-}
-
-.yui-panel ul.treeview li li {
-    font-size: 1em;
-}
-
-.yui-panel ul.treeview li span {
-    padding-left: 0.25em;
-}
-
-.yui-panel ul.treeview li span.folder {
-    padding-left: 1.75em;
-}
-
-.yui-panel ul.treeview li span.clickable {
-    cursor: pointer;
-}
-
 #addevidence #available-evidence {
     float: right;
     width: 40%;
@@ -853,4 +865,28 @@ div.mask {
 #addevidence #available-evidence ul li {
     font-size: 1em;
     padding-bottom: 0.25em;
+}
+
+#assigncompetency ul.treeview {
+    width: 65%;
+    overflow: auto;
+}
+
+#assigncompetency #assignedcompetencies {
+    float: right;
+    width: 30%;
+    border-left: 1px solid #ccc;
+    height: 200px;
+    overflow: auto;
+    padding: 0 10px;
+}
+
+#assigncompetency #assignedcompetencies p {
+    margin-top: 0;
+}
+
+#assigncompetency #assignedcompetencies span {
+    display: block;
+    font-size: 0.8em;
+    margin-top: 1em;
 }

@@ -4,6 +4,7 @@
  * Constants for defining JS to load
  */
 define('MBE_JS_TREEVIEW',       1);
+define('MBE_JS_ADVANCED',       2);
 
 
 /**
@@ -35,6 +36,14 @@ function setup_lightbox($options = array()) {
 
         require_js(array(
             $CFG->wwwroot.'/local/js/jquery.treeview.min.js',
+        ));
+    }
+
+    // If advanced enabled
+    if (in_array(MBE_JS_ADVANCED, $options)) {
+
+        require_js(array(
+            $CFG->wwwroot.'/local/js/jquery-ui-1.7.2.custom.min.js',
         ));
     }
 }

@@ -4,7 +4,7 @@ YAHOO.namespace('dialogSetupFunc');
 
 
 // Dialog object
-function yuiDialog(title, buttonid, default_url) {
+function yuiDialog(title, buttonid, default_url, config) {
 
     /**
      * ID of dialog
@@ -31,25 +31,32 @@ function yuiDialog(title, buttonid, default_url) {
      */
     this.url = '';
 
+    /**
+     * Custom configuration
+     */
+    this.config = config;
 
     /**
      * Setup this dialog
      * @return  void
      */
     this.setup = function() {
+        // Default config
+        var default_config = {
+            x : 205,
+            y : 300,
+            width : "705px",
+            effect : {effect: YAHOO.widget.ContainerEffect.FADE, duration: 0.5},
+            visible : false,
+            draggable : false,
+            modal : true,
+            underlay : 'shadow',
+        };
+
         // Instantiate the Dialog
         this.dialog = new YAHOO.widget.Dialog(
             this.title,
-            {
-                x : 205,
-                y : 300,
-                width : "705px",
-                effect : {effect: YAHOO.widget.ContainerEffect.FADE, duration: 0.5},
-                visible : false,
-                draggable : false,
-                modal : true,
-                underlay : 'shadow'
-            }
+            $.extend(default_config, this.config)
         );
 
         // Set up obj for closure
