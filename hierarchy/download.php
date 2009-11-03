@@ -5,16 +5,19 @@
 
 require_once('../config.php');
 require_once($CFG->libdir.'/adminlib.php');
-require_once('lib.php');
+require_once($CFG->libdir.'/hierarchylib.php');
 global $SESSION;
 
-$format = optional_param('format', '', PARAM_ALPHA);
-$hierarchy         = new competency();
+$format          = optional_param('format', '', PARAM_ALPHA);
+$hierarchyprefix = optional_param('hierarchyprefix', '', PARAM_ALPHA);
+
+$hierarchy         = new hierarchy();
+$hierarchy->prefix = $hierarchyprefix;
 
 admin_externalpage_setup($hierarchy->prefix.'manage');
 require_capability('moodle/local:view'.$hierarchy->prefix, get_context_instance(CONTEXT_SYSTEM));
 
-$return = $CFG->wwwroot.'/competency/index.php';
+$return = $CFG->wwwroot.'/'.$hierarchy->prefix.'/index.php';
 
 if (empty($SESSION->download_data)) {
     redirect($return);
@@ -25,9 +28,9 @@ if ($format) {
     $data = $SESSION->download_data;
 
     switch ($format) {
-        case 'csv' : competency_download_csv($fields, $data);
-        case 'ods' : competency_download_ods($fields, $data);
-        case 'xls' : competency_download_xls($fields, $data);
+        case 'csv' : hierarchy_download_csv($fields, $data, $hierarchy->prefix);
+        case 'ods' : hierarchy_download_ods($fields, $data, $hierarchy->prefix);
+        case 'xls' : hierarchy_download_xls($fields, $data, $hierarchy->prefix);
         
     }
     die;
@@ -38,9 +41,9 @@ print_heading(get_string('download', 'admin'));
 
 print_box_start();
 echo '<ul>';
-echo '<li><a href="download_competencies.php?format=csv">'.get_string('downloadtext').'</a></li>';
-echo '<li><a href="download_competencies.php?format=ods">'.get_string('downloadods').'</a></li>';
-echo '<li><a href="download_competencies.php?format=xls">'.get_string('downloadexcel').'</a></li>';
+echo '<li><a href="download.php?format=csv&hierarchyprefix='.$hierarchyprefix.'">'.get_string('downloadtext').'</a></li>';
+echo '<li><a href="download.php?format=ods&hierarchyprefix='.$hierarchyprefix.'">'.get_string('downloadods').'</a></li>';
+echo '<li><a href="download.php?format=xls&hierarchyprefix='.$hierarchyprefix.'">'.get_string('downloadexcel').'</a></li>';
 echo '</ul>';
 print_box_end();
 
@@ -48,12 +51,12 @@ print_continue($return);
 
 print_footer();
 
-function competency_download_ods($fields, $data) {
+function hierarchy_download_ods($fields, $data, $hierarchyprefix) {
     global $CFG;
 
     require_once("$CFG->libdir/odslib.class.php");
 
-    $filename = clean_filename(get_string('competencies','competency').'.ods');
+    $filename = clean_filename(get_string('featureplural',$hierarchyprefix).'.ods');
 
     $workbook = new MoodleODSWorkbook('-');
     $workbook->send($filename);
@@ -82,12 +85,12 @@ function competency_download_ods($fields, $data) {
     die;
 }
 
-function competency_download_xls($fields, $data) {
+function hierarchy_download_xls($fields, $data, $hierarchyprefix) {
     global $CFG;
 
     require_once("$CFG->libdir/excellib.class.php");
 
-    $filename = clean_filename(get_string('competencies','competency').'.xls');
+    $filename = clean_filename(get_string('featureplural',$hierarchyprefix).'.xls');
 
     $workbook = new MoodleExcelWorkbook('-');
     $workbook->send($filename);
@@ -116,10 +119,10 @@ function competency_download_xls($fields, $data) {
     die;
 }
 
-function competency_download_csv($fields, $data) {
+function hierarchy_download_csv($fields, $data, $hierarchyprefix) {
     global $CFG;
     
-    $filename = clean_filename(get_string('competencies','competency').'.csv');
+    $filename = clean_filename(get_string('featureplural',$hierarchyprefix).'.csv');
 
     header("Content-Type: application/download\n");
     header("Content-Disposition: attachment; filename=$filename");

@@ -1,9 +1,9 @@
 <?php //$Id$
 
 /**
- * Competency filter based on values of custom fields.
+ * Hierarchy filter based on values of custom fields.
  */
-class competency_filter_customfield extends competency_filter_type {
+class hierarchy_filter_customfield extends hierarchy_filter_type {
 
     /**
      * Constructor
@@ -11,8 +11,8 @@ class competency_filter_customfield extends competency_filter_type {
      * @param string $label the label of the filter instance
      * @param boolean $advanced advanced form element flag
      */
-    function competency_filter_customfield($name, $label, $advanced) {
-        parent::competency_filter_type($name, $label, $advanced);
+    function hierarchy_filter_customfield($name, $label, $advanced) {
+        parent::hierarchy_filter_type($name, $label, $advanced);
     }
 
     /**
@@ -34,11 +34,11 @@ class competency_filter_customfield extends competency_filter_type {
      * Returns an array of custom fields
      * @return array of fields
      */
-    function get_custom_fields() {
+    function get_custom_fields($hierarchyprefix) {
         global $CFG;
         $sql = "SELECT f.id, f.fullname AS fieldname, d.fullname AS depthname FROM
-                {$CFG->prefix}competency_depth_info_field f JOIN
-                {$CFG->prefix}competency_depth d ON f.depthid = d.id
+                {$CFG->prefix}{$hierarchyprefix}_depth_info_field f JOIN
+                {$CFG->prefix}{$hierarchyprefix}_depth d ON f.depthid = d.id
                 WHERE hidden = 0 ORDER BY f.depthid, f.sortorder";
         if (!$fields = get_records_sql($sql)) {
             return null;
@@ -54,8 +54,8 @@ class competency_filter_customfield extends competency_filter_type {
      * Adds controls specific to this filter in the form.
      * @param object $mform a MoodleForm object to setup
      */
-    function setupForm(&$mform) {
-        $custom_fields = $this->get_custom_fields();
+    function setupForm(&$mform, $hierarchyprefix=null) {
+        $custom_fields = $this->get_custom_fields($hierarchyprefix);
         if (empty($custom_fields)) {
             return;
         }
@@ -76,7 +76,8 @@ class competency_filter_customfield extends competency_filter_type {
      * @return mixed array filter data or false when filter not set
      */
     function check_data($formdata) {
-        $custom_fields = $this->get_custom_fields();
+        $hierarchyprefix = $formdata->hierarchyprefix;
+        $custom_fields = $this->get_custom_fields($hierarchyprefix);
 
         if (empty($custom_fields)) {
             return false;
@@ -102,10 +103,10 @@ class competency_filter_customfield extends competency_filter_type {
      * @param array $data filter settings
      * @return string the filtering condition or null if the filter is disabled
      */
-    function get_sql_filter($data) {
+    function get_sql_filter($data, $hierarchyprefix) {
         global $CFG;
 
-        $custom_fields = $this->get_custom_fields();
+        $custom_fields = $this->get_custom_fields($hierarchyprefix);
         if (empty($custom_fields)) {
             return '';
         }
@@ -153,7 +154,7 @@ class competency_filter_customfield extends competency_filter_type {
         if ($where !== '') {
             $where = "WHERE $where";
         }
-        return "id $op (SELECT fieldid FROM {$CFG->prefix}competency_depth_info_data $where)";
+        return "id $op (SELECT fieldid FROM {$CFG->prefix}{$hierarchyprefix}_depth_info_data $where)";
     }
 
     /**
@@ -161,9 +162,9 @@ class competency_filter_customfield extends competency_filter_type {
      * @param array $data filter settings
      * @return string active filter label
      */
-    function get_label($data) {
+    function get_label($data, $hierarchyprefix) {
         $operators      = $this->get_operators();
-        $custom_fields = $this->get_custom_fields();
+        $custom_fields = $this->get_custom_fields($hierarchyprefix);
 
         if (empty($custom_fields)) {
             return '';

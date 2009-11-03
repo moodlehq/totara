@@ -1,29 +1,36 @@
 <?php //$Id$
 
-require_once($CFG->dirroot.'/competency/filters/text.php');
-require_once($CFG->dirroot.'/competency/filters/customfield.php');
-require_once($CFG->dirroot.'/competency/filters/competency_filter_forms.php');
+require_once($CFG->dirroot.'/hierarchy/filters/text.php');
+require_once($CFG->dirroot.'/hierarchy/filters/customfield.php');
+require_once($CFG->dirroot.'/hierarchy/filters/filter_forms.php');
 
 
 /**
- * Competency filtering wrapper class.
+ * Hierarchy filtering wrapper class.
  */
-class competency_filtering {
+class hierarchy_filtering {
     var $_fields;
     var $_addform;
     var $_activeform;
+    var $_hierarchyprefix;
 
     /**
      * Contructor
-     * @param array array of visible competency fields
+     * @param array array of visible hierarchy items
      * @param string base url used for submission/return, null if the same of current page
      * @param array extra page parameters
      */
-    function competency_filtering($fieldnames=null, $baseurl=null, $extraparams=null) {
+    function hierarchy_filtering($hierarchyprefix=null, $fieldnames=null, $baseurl=null, $extraparams=null) {
         global $SESSION;
 
-        if (!isset($SESSION->competency_filtering)) {
-            $SESSION->competency_filtering = array();
+        if($hierarchyprefix == null) {
+            error('hierarchyprefix must be defined');
+        }
+        $filtername = $hierarchyprefix.'_filtering';
+        $this->_hierarchyprefix = $hierarchyprefix;
+
+        if (!isset($SESSION->{$filtername})) {
+            $SESSION->{$filtername} = array();
         }
 
         if (empty($fieldnames)) {
@@ -39,28 +46,28 @@ class competency_filtering {
         }
 
         // first the new filter form
-        $this->_addform = new competency_add_filter_form($baseurl, array('fields'=>$this->_fields, 'extraparams'=>$extraparams));
+        $this->_addform = new hierarchy_add_filter_form($baseurl, array('fields'=>$this->_fields, 'extraparams'=>$extraparams, 'hierarchyprefix'=>$hierarchyprefix));
         if ($adddata = $this->_addform->get_data(false)) {
             foreach($this->_fields as $fname=>$field) {
                 $data = $field->check_data($adddata);
                 if ($data === false) {
                     continue; // nothing new
                 }
-                if (!array_key_exists($fname, $SESSION->competency_filtering)) {
-                    $SESSION->competency_filtering[$fname] = array();
+                if (!array_key_exists($fname, $SESSION->{$filtername})) {
+                    $SESSION->{$filtername}[$fname] = array();
                 }
-                $SESSION->competency_filtering[$fname][] = $data;
+                $SESSION->{$filtername}[$fname][] = $data;
             }
             // clear the form
             $_POST = array();
-            $this->_addform = new competency_add_filter_form($baseurl, array('fields'=>$this->_fields, 'extraparams'=>$extraparams));
+            $this->_addform = new hierarchy_add_filter_form($baseurl, array('fields'=>$this->_fields, 'extraparams'=>$extraparams, 'hierarchyprefix'=>$hierarchyprefix));
         }
 
         // now the active filters
-        $this->_activeform = new competency_active_filter_form($baseurl, array('fields'=>$this->_fields, 'extraparams'=>$extraparams));
+        $this->_activeform = new hierarchy_active_filter_form($baseurl, array('fields'=>$this->_fields, 'extraparams'=>$extraparams, 'hierarchyprefix'=>$hierarchyprefix));
         if ($adddata = $this->_activeform->get_data(false)) {
             if (!empty($adddata->removeall)) {
-                $SESSION->competency_filtering = array();
+                $SESSION->{$filtername} = array();
 
             } else if (!empty($adddata->removeselected) and !empty($adddata->filter)) {
                 foreach($adddata->filter as $fname=>$instances) {
@@ -68,21 +75,21 @@ class competency_filtering {
                         if (empty($val)) {
                             continue;
                         }
-                        unset($SESSION->competency_filtering[$fname][$i]);
+                        unset($SESSION->{$filtername}[$fname][$i]);
                     }
-                    if (empty($SESSION->competency_filtering[$fname])) {
-                        unset($SESSION->competency_filtering[$fname]);
+                    if (empty($SESSION->{$filtername}[$fname])) {
+                        unset($SESSION->{$filtername}[$fname]);
                     } 
                 }
             }
             // clear+reload the form
             $_POST = array();
-            $this->_activeform = new competency_active_filter_form($baseurl, array('fields'=>$this->_fields, 'extraparams'=>$extraparams));
+            $this->_activeform = new hierarchy_active_filter_form($baseurl, array('fields'=>$this->_fields, 'extraparams'=>$extraparams, 'hierarchyprefix'=>$hierarchyprefix));
         }
     }
 
     /**
-     * Creates known competency filter if present
+     * Creates known hierarchy filter if present
      * @param string $fieldname
      * @param boolean $advanced
      * @return object filter
@@ -91,17 +98,17 @@ class competency_filtering {
         global $USER, $CFG, $SITE;
 
         switch ($fieldname) {
-            case 'fullname':    return new competency_filter_text('fullname', get_string('fullname'), $advanced, 'fullname');
-            case 'shortname':    return new competency_filter_text('shortname', get_string('shortname'), $advanced, 'shortname');
-            case 'idnumber':    return new competency_filter_text('idnumber', get_string('idnumber'), $advanced, 'idnumber');
-            case 'description':       return new competency_filter_text('description', get_string('description'), $advanced, 'description');
-            case 'custom':      return new competency_filter_customfield('custom', get_string('customfield', 'customfields'), $advanced);
+            case 'fullname':    return new hierarchy_filter_text('fullname', get_string('fullname'), $advanced, 'fullname');
+            case 'shortname':    return new hierarchy_filter_text('shortname', get_string('shortname'), $advanced, 'shortname');
+            case 'idnumber':    return new hierarchy_filter_text('idnumber', get_string('idnumber'), $advanced, 'idnumber');
+            case 'description':       return new hierarchy_filter_text('description', get_string('description'), $advanced, 'description');
+            case 'custom':      return new hierarchy_filter_customfield('custom', get_string('customfield', 'customfields'), $advanced);
             default:            return null;
         }
     }
 
     /**
-     * Returns sql where statement based on active competency filters
+     * Returns sql where statement based on active hierarchy filters
      * @param string $extra sql
      * @return string
      */
@@ -113,14 +120,16 @@ class competency_filtering {
             $sqls[] = $extra;
         }
 
-        if (!empty($SESSION->competency_filtering)) {
-            foreach ($SESSION->competency_filtering as $fname=>$datas) {
+        $filtername = $this->_hierarchyprefix.'_filtering';
+
+        if (!empty($SESSION->{$filtername})) {
+            foreach ($SESSION->{$filtername} as $fname=>$datas) {
                 if (!array_key_exists($fname, $this->_fields)) {
                     continue; // filter not used
                 }
                 $field = $this->_fields[$fname];
                 foreach($datas as $i=>$data) {
-                    $sqls[] = $field->get_sql_filter($data);
+                    $sqls[] = $field->get_sql_filter($data, $this->_hierarchyprefix);
                 }
             }
         }
@@ -149,9 +158,9 @@ class competency_filtering {
 }
 
 /**
- * The base competency filter class. All abstract classes must be implemented.
+ * The base hierarchy filter class. All abstract classes must be implemented.
  */
-class competency_filter_type {
+class hierarchy_filter_type {
     /**
      * The name of this filter instance.
      */
@@ -173,7 +182,7 @@ class competency_filter_type {
      * @param string $label the label of the filter instance
      * @param boolean $advanced advanced form element flag
      */
-    function competency_filter_type($name, $label, $advanced) {
+    function hierarchy_filter_type($name, $label, $advanced) {
         $this->_name     = $name;
         $this->_label    = $label;
         $this->_advanced = $advanced;
