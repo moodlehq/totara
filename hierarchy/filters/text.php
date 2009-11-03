@@ -3,7 +3,7 @@
 /**
  * Generic filter for text fields.
  */
-class competency_filter_text extends competency_filter_type {
+class hierarchy_filter_text extends hierarchy_filter_type {
     var $_field;
 
     /**
@@ -11,10 +11,10 @@ class competency_filter_text extends competency_filter_type {
      * @param string $name the name of the filter instance
      * @param string $label the label of the filter instance
      * @param boolean $advanced advanced form element flag
-     * @param string $field competency table field name
+     * @param string $field feature table field name
      */
-    function competency_filter_text($name, $label, $advanced, $field) {
-        parent::competency_filter_type($name, $label, $advanced);
+    function hierarchy_filter_text($name, $label, $advanced, $field) {
+        parent::hierarchy_filter_type($name, $label, $advanced);
         $this->_field = $field;
     }
 
@@ -35,7 +35,7 @@ class competency_filter_text extends competency_filter_type {
      * Adds controls specific to this filter in the form.
      * @param object $mform a MoodleForm object to setup
      */
-    function setupForm(&$mform) {
+    function setupForm(&$mform, $hierarchyprefix=null) {
         $objs = array();
         $objs[] =& $mform->createElement('select', $this->_name.'_op', null, $this->getOperators());
         $objs[] =& $mform->createElement('text', $this->_name, null);
@@ -107,7 +107,7 @@ class competency_filter_text extends competency_filter_type {
      * @param array $data filter settings
      * @return string active filter label
      */
-    function get_label($data) {
+    function get_label($data, $hierarchyprefix) {
         $operator  = $data['operator'];
         $value     = $data['value'];
         $operators = $this->getOperators();

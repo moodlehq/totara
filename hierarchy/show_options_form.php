@@ -2,20 +2,20 @@
 
 require_once($CFG->libdir.'/formslib.php');
 
-class competency_show_options_form extends moodleform {
+class hierarchy_show_options_form extends moodleform {
 
     function definition() {
         $mform =& $this->_form;
 
-        $mform->addElement('header', 'displayoptions', get_string('displayoptions','competency'));
+        $mform->addElement('header', 'displayoptions', get_string('displayoptions','hierarchy'));
 
-        $mform->addElement('checkbox', 'hidecustomfields', get_string('hidecustomfields', 'competency'));
+        $mform->addElement('checkbox', 'hidecustomfields', get_string('hidecustomfields', 'hierarchy'));
         $mform->setType('hidecustomfields', PARAM_BOOL);
 
-        $mform->addElement('checkbox', 'showitemfullname', get_string('showitemfullname', 'competency'));
+        $mform->addElement('checkbox', 'showitemfullname', get_string('showitemfullname', 'hierarchy'));
         $mform->setType('showitemfullname', PARAM_BOOL);
 
-        $mform->addElement('checkbox', 'showdepthfullname', get_string('showdepthfullname', 'competency'));
+        $mform->addElement('checkbox', 'showdepthfullname', get_string('showdepthfullname', 'hierarchy'));
         $mform->setType('showdepthfullname', PARAM_BOOL);
 
         $mform->addElement('hidden', 'frameworkid', $this->_customdata['framework']->id);

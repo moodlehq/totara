@@ -2,7 +2,7 @@
 
 // Code to generate the data to be downloaded
 //
-// Called from download_competencies
+// Called from download.php
 //
 
 // build the header column from depth information
@@ -22,11 +22,13 @@ foreach($depths as $depth) {
     }
 }
 
-// add evidence count column
-$row = new object();
-$row->type = 'evidencecount';
-$row->value->fullname = get_string('evidenceitems','competency');
-$myhead[] = $row;
+if ($hierarchy->prefix == 'competency') {
+    // add evidence count column
+    $row = new object();
+    $row->type = 'evidencecount';
+    $row->value->fullname = get_string('evidenceitems','competency');
+    $myhead[] = $row;
+}
 
 // query to get competencies
 $sql = "SELECT id, depthid, shortname, fullname, visible, evidencecount
@@ -83,9 +85,11 @@ foreach($myitemlist AS $rowid => $item) {
                 }
             }
         }
-        if ($head->type == 'evidencecount') {
-            if($item->id == $rowid) {
-                $download_data[$i][$j] = $item->evidencecount;
+        if ($hierarchy->prefix == 'competency') {
+            if ($head->type == 'evidencecount') {
+                if($item->id == $rowid) {
+                    $download_data[$i][$j] = $item->evidencecount;
+                }
             }
         }
         $j++;

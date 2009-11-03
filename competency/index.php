@@ -4,11 +4,11 @@
 
     require_once('../config.php');
     require_once('./lib.php');
-    require_once('./filters/lib.php');
     require_once($CFG->libdir.'/adminlib.php');
     require_once($CFG->libdir.'/tablelib.php');
-    require_once($CFG->dirroot.'/competency/show_options_form.php');
-    require_once($CFG->dirroot.'/competency/download_form.php');
+    require_once($CFG->dirroot.'/hierarchy/filters/lib.php');
+    require_once($CFG->dirroot.'/hierarchy/show_options_form.php');
+    require_once($CFG->dirroot.'/hierarchy/download_form.php');
 
     define('DEFAULT_PAGE_SIZE', 20);
     define('SHOW_ALL_PAGE_SIZE', 5000);
@@ -58,7 +58,7 @@
     admin_externalpage_setup($hierarchy->prefix.'manage', $navbaritem);
 
     // build return url path
-    $returnurl = "{$CFG->wwwroot}/competency/index.php";
+    $returnurl = "{$CFG->wwwroot}/{$hierarchy->prefix}/index.php";
     $urlparams = array();
     if($frameworkid != 0) {
         $urlparams[] = "frameworkid=$frameworkid";
@@ -108,9 +108,9 @@ if (!$depths) {
     $where  = " WHERE frameworkid=$framework->id";
     $sort   = " ORDER BY sortorder";
 
-    // create the competency filter form
-    $cfiltering = new competency_filtering();
-    $extrasql = $cfiltering->get_sql_filter();
+    // create the filter form
+    $filtering = new hierarchy_filtering($hierarchy->prefix);
+    $extrasql = $filtering->get_sql_filter();
     if ($extrasql !== '') {
         $extrasql = ' AND '.$extrasql;
     }
@@ -159,14 +159,14 @@ if (!$depths) {
 
 
     // display options form 
-    $display_options = new competency_show_options_form(null, compact('framework','spage'));
+    $display_options = new hierarchy_show_options_form(null, compact('framework','spage'));
 
     if ($display_options->is_cancelled()) {
         redirect($returnurl);
     }
     else if ($fromform = $display_options->get_data()) {
         if (empty($fromform->submitbutton)) {
-            print_error('unknownbuttonclicked', 'competency', $returnurl);
+            print_error('unknownbuttonclicked', $hierarchy->prefix, $returnurl);
         }
 
         $todb = new object();
@@ -186,8 +186,8 @@ if (!$depths) {
         $todb->showdepthfullname = $fromform->showdepthfullname;
         $todb->id = $fromform->frameworkid; 
 
-        if(!update_record('competency_framework', $todb)) {
-            print_error('cannotupdatedisplaysettings', 'competency', $returnurl);
+        if(!update_record($hierarchy->prefix.'_framework', $todb)) {
+            print_error('cannotupdatedisplaysettings', $hierarchy->prefix, $returnurl);
         }
         redirect($returnurl);
 
@@ -201,10 +201,10 @@ if (!$depths) {
 
 
     // download form
-    $download = new competency_download_form();
+    $download = new hierarchy_download_form(null, array('hierarchyprefix'=>$hierarchy->prefix));
     if ($fromform = $download->get_data()) {
-        require_once('get_download_data.php');
-        redirect($CFG->wwwroot.'/competency/download_competencies.php');
+        require_once($CFG->dirroot.'/hierarchy/get_download_data.php');
+        redirect($CFG->wwwroot.'/hierarchy/download.php?hierarchyprefix='.$hierarchy->prefix);
     }    
 
   
@@ -227,9 +227,9 @@ if (!$depths) {
 
 
     if ($extrasql !== '') {
-        print_heading("$filteredmatchcount / $matchcount ".get_string('competencies', 'competency'));
+        print_heading("$filteredmatchcount / $matchcount ".get_string('featureplural', $hierarchy->prefix));
     } else {
-        print_heading("$matchcount ".get_string('competencies', 'competency'));
+        print_heading("$matchcount ".get_string('featureplural', $hierarchy->prefix));
     }
 
 
@@ -511,8 +511,8 @@ if (!$depths) {
     }
 
     // add filters
-    $cfiltering->display_add();
-    $cfiltering->display_active();
+    $filtering->display_add();
+    $filtering->display_active();
 
     // show options form or link
     if($showoptions) {
@@ -523,7 +523,7 @@ if (!$depths) {
         } else {
             $showurl = "{$returnurl}?showoptions=1";
         }
-        print "<p><a href=\"$showurl\">".get_string('showdisplayoptions', 'competency').'</a></p>';
+        print "<p><a href=\"$showurl\">".get_string('showdisplayoptions', 'hierarchy').'</a></p>';
     }
 
     // Display table
