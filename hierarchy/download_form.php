@@ -8,7 +8,9 @@ class hierarchy_download_form extends moodleform {
         $mform =& $this->_form;
         $datasent = $this->_customdata;
 
-        $mform->addElement('submit', 'downloadbutton', get_string('download', $datasent['hierarchyprefix']));
+        $mform->addElement('hidden', 'type', $datasent['type']);
+
+        $mform->addElement('submit', 'downloadbutton', get_string('download', 'admin'));
 
     }
 }

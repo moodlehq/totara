@@ -268,6 +268,7 @@
             'hidden'       => '0',
             'locked'       => '0',
             'required'     => '1',
+            'forceunique'  => '1',
             'defaultdata'  => '',
             'param1'       => '30',
             'param2'       => '2048',
@@ -285,7 +286,7 @@
             'hidden'       => '0',
             'locked'       => '0',
             'required'     => '1',
-            'required'     => '1',
+            'forceunique'  => '1',
             'defaultdata'  => '',
             'param1'       => '30',
             'param2'       => '2048',
@@ -303,7 +304,7 @@
             'hidden'       => '1',
             'locked'       => '0',
             'required'     => '1',
-            'required'     => '1',
+            'forceunique'  => '1',
             'defaultdata'  => '',
             'param1'       => '30',
             'param2'       => '2048',
@@ -321,7 +322,7 @@
             'hidden'       => '1',
             'locked'       => '0',
             'required'     => '1',
-            'required'     => '1',
+            'forceunique'  => '1',
             'defaultdata'  => '',
             'param1'       => '30',
             'param2'       => '40',
@@ -339,7 +340,7 @@
             'hidden'       => '0',
             'locked'       => '0',
             'required'     => '1',
-            'required'     => '1',
+            'forceunique'  => '1',
             'defaultdata'  => '',
             'param1'       => '30',
             'param2'       => '2048',
@@ -357,7 +358,7 @@
             'hidden'       => '0',
             'locked'       => '0',
             'required'     => '1',
-            'required'     => '1',
+            'forceunique'  => '1',
             'defaultdata'  => '',
             'param1'       => '30',
             'param2'       => '2048',
@@ -375,7 +376,7 @@
             'hidden'       => '0',
             'locked'       => '0',
             'required'     => '1',
-            'required'     => '1',
+            'forceunique'  => '1',
             'defaultdata'  => '',
             'param1'       => '30',
             'param2'       => '2048',
@@ -1345,3 +1346,124 @@ The National Certificate in Business (First Line Management) (Level 3) [Ref: 074
         insert_record('competency_scale_assignments', $scale_assignment);
     }
 
+    if ($defaultof = get_record_select('organisation_framework', "shortname='general'")) {
+         $defaultof->fullname    = 'National Office';
+         $defaultof->shortname   = 'NO';
+         $defaultof->idnumber    = '1';
+
+         update_record('organisation_framework', $defaultof);
+    }
+
+    $organisation_frameworks = array(
+        array(
+            'id'           => '2',
+            'fullname'     => 'Regional Offices',
+            'shortname'    => 'RO',
+            'idnumber'     => '2',
+            'isdefault'    => '0',
+            'description'  => '',
+            'sortorder'    => '2',
+            'timecreated'  => $timenow,
+            'timemodified' => $timenow,
+            'usermodified' => '2',
+            'visible'      => 1,
+            'hidecustomfields' => 0,
+            'showitemfullname' => 1,
+            'showdepthfullname' => 1,
+        ),
+    );
+    foreach($organisation_frameworks as $organisation_framework) {
+        insert_record('organisation_framework', $organisation_framework);
+    }
+
+    // update default organisation depth details with demo example
+    if ($defaultcd = get_record_select('organisation_depth', "shortname='Organisations'")) {
+         $defaultcd->fullname    = 'Business Group';
+         $defaultcd->shortname   = 'BG';
+         update_record('competency_depth', $defaultcd);
+    }
+    // add a competency depth level to the default competency framework
+    $defaultcd1 = array(
+            'fullname'     => 'Business Unit',
+            'shortname'    => 'BU',
+            'description'  => '',
+            'depthlevel'   => '2',
+            'frameworkid'  => '1',
+            'timecreated'  => $timenow,
+            'timemodified' => $timenow,
+            'usermodified' => '2',
+    );
+    insert_record('organisation_depth', $defaultcd1);
+
+    $organisation_depths = array(
+        array(
+            'fullname'     => 'Regional Office',
+            'shortname'    => 'RO',
+            'description'  => '',
+            'depthlevel'   => '1',
+            'timecreated'  => $timenow,
+            'timemodified' => $timenow,
+            'usermodified' => '2',
+        ),
+        array(
+            'fullname'     => 'Area Office',
+            'shortname'    => 'AO',
+            'description'  => '',
+            'depthlevel'   => '2',
+            'timecreated'  => $timenow,
+            'timemodified' => $timenow,
+            'usermodified' => '2',
+        ),
+    );
+    $competencydepthids = array();
+    for ($i = 2; $i < 7; $i++) {
+        foreach($organisation_depths as $organisation_depth) {
+            $organisation_depth['frameworkid'] = $i;
+            $id = insert_record('competency_depth', $competency_depth);
+            if ($competency_depth['frameworkid'] == '2') {
+                $competencydepthids[] = $id;
+            }
+        }
+    }
+
+    $organisations = array(
+        array(
+            'fullname'            => 'Organisational Development',
+            'shortname'           => 'OD',
+            'description'         => '',
+            'idnumber'            => '3',
+            'frameworkid'         => '1',
+            'parentid'            => '0',
+            'visible'             => '1',
+            'timecreated'         => $timenow,
+            'timemodified'        => $timenow,
+            'usermodified'        => '2',
+            'subcompetencies'     => array(
+                array(
+                    'fullname'            => '',
+                    'shortname'           => '',
+                    'description'         => '',
+                    'idnumber'            => '',
+                    'frameworkid'         => '1',
+                    'visible'             => '1',
+                    'timecreated'         => $timenow,
+                    'timemodified'        => $timenow,
+                    'usermodified'        => '2',
+                    'customdata'          => array(
+                        array(
+                            'fieldid'      => '',
+                            'data'         => '',
+                        ),
+                        array(
+                            'fieldid'      => '',
+                            'data'         => '',
+                        ),
+                        array(
+                            'fieldid'      => '',
+                            'data'         => '',
+                        ),
+                    ),
+                ),
+            ),
+        ),
+    );

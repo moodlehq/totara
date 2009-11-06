@@ -5,16 +5,15 @@ require_once($CFG->libdir.'/formslib.php');
 class hierarchy_add_filter_form extends moodleform {
 
     function definition() {
-        $mform           =& $this->_form;
-// print_r($this->_customdata);
-        $fields          = $this->_customdata['fields'];
-        $extraparams     = $this->_customdata['extraparams'];
-        $hierarchyprefix = $this->_customdata['hierarchyprefix'];
+        $mform       =& $this->_form;
+        $fields      = $this->_customdata['fields'];
+        $extraparams = $this->_customdata['extraparams'];
+        $type        = $this->_customdata['type'];
 
         $mform->addElement('header', 'newfilter', get_string('newfilter','filters'));
 
         foreach($fields as $ft) {
-            $ft->setupForm($mform, $hierarchyprefix);
+            $ft->setupForm($mform, $type);
         }
 
         // in case we wasnt to track some page params
@@ -24,8 +23,8 @@ class hierarchy_add_filter_form extends moodleform {
             }
         }
 
-        // Add the hierarchy prefix
-        $mform->addElement('hidden', 'hierarchyprefix', $hierarchyprefix);
+        // Add the hierarchy prefix and type
+        $mform->addElement('hidden', 'type', $type);
 
         // Add button
         $mform->addElement('submit', 'addfilter', get_string('addfilter','filters'));
@@ -40,12 +39,11 @@ class hierarchy_active_filter_form extends moodleform {
     function definition() {
         global $SESSION; // this is very hacky :-(
 
-        $mform           =& $this->_form;
-        $fields          = $this->_customdata['fields'];
-        $extraparams     = $this->_customdata['extraparams'];
-        $hierarchyprefix = $this->_customdata['hierarchyprefix'];
-
-        $filtername = $hierarchyprefix.'_filtering';
+        $mform       =& $this->_form;
+        $fields      = $this->_customdata['fields'];
+        $extraparams = $this->_customdata['extraparams'];
+        $type        = $this->_customdata['type'];
+        $filtername  = $type.'_filtering';
 
         if (!empty($SESSION->{$filtername})) {
             // add controls for each active filter in the active filters group
@@ -57,7 +55,7 @@ class hierarchy_active_filter_form extends moodleform {
                 }
                 $field = $fields[$fname];
                 foreach($datas as $i=>$data) {
-                    $description = $field->get_label($data, $hierarchyprefix);
+                    $description = $field->get_label($data, $type);
                     $mform->addElement('checkbox', 'filter['.$fname.']['.$i.']', null, $description);
                 }
             }
@@ -68,8 +66,8 @@ class hierarchy_active_filter_form extends moodleform {
                 }
             }
 
-            // Add the hierarchy prefix
-            $mform->addElement('hidden', 'hierarchyprefix', $hierarchyprefix);
+            // Add the hierarchy prefix and type
+            $mform->addElement('hidden', 'type', $type);
 
             $objs = array();
             $objs[] = &$mform->createElement('submit', 'removeselected', get_string('removeselected','filters'));

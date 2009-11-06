@@ -24,6 +24,9 @@ class hierarchy_show_options_form extends moodleform {
         $mform->addElement('hidden', 'spage', $this->_customdata['spage']);
         $mform->setType('spage', PARAM_INT);
 
+        $mform->addElement('hidden', 'type', $this->_customdata['type']);
+        $mform->setType('type', PARAM_SAFEDIR);
+
         $mform->addElement('submit', 'submitbutton', get_string('savechanges'));
     }
 }

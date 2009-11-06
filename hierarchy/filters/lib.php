@@ -12,7 +12,7 @@ class hierarchy_filtering {
     var $_fields;
     var $_addform;
     var $_activeform;
-    var $_hierarchyprefix;
+    var $_type;
 
     /**
      * Contructor
@@ -20,14 +20,14 @@ class hierarchy_filtering {
      * @param string base url used for submission/return, null if the same of current page
      * @param array extra page parameters
      */
-    function hierarchy_filtering($hierarchyprefix=null, $fieldnames=null, $baseurl=null, $extraparams=null) {
+    function hierarchy_filtering($type=null, $fieldnames=null, $baseurl=null, $extraparams=null) {
         global $SESSION;
 
-        if($hierarchyprefix == null) {
-            error('hierarchyprefix must be defined');
+        if($type == null) {
+            error('hierarchy type must be defined');
         }
-        $filtername = $hierarchyprefix.'_filtering';
-        $this->_hierarchyprefix = $hierarchyprefix;
+        $filtername = $type.'_filtering';
+        $this->_type = $type;
 
         if (!isset($SESSION->{$filtername})) {
             $SESSION->{$filtername} = array();
@@ -46,7 +46,7 @@ class hierarchy_filtering {
         }
 
         // first the new filter form
-        $this->_addform = new hierarchy_add_filter_form($baseurl, array('fields'=>$this->_fields, 'extraparams'=>$extraparams, 'hierarchyprefix'=>$hierarchyprefix));
+        $this->_addform = new hierarchy_add_filter_form($baseurl, array('fields'=>$this->_fields, 'extraparams'=>$extraparams, 'type'=>$type));
         if ($adddata = $this->_addform->get_data(false)) {
             foreach($this->_fields as $fname=>$field) {
                 $data = $field->check_data($adddata);
@@ -60,11 +60,11 @@ class hierarchy_filtering {
             }
             // clear the form
             $_POST = array();
-            $this->_addform = new hierarchy_add_filter_form($baseurl, array('fields'=>$this->_fields, 'extraparams'=>$extraparams, 'hierarchyprefix'=>$hierarchyprefix));
+            $this->_addform = new hierarchy_add_filter_form($baseurl, array('fields'=>$this->_fields, 'extraparams'=>$extraparams, 'type'=>$type));
         }
 
         // now the active filters
-        $this->_activeform = new hierarchy_active_filter_form($baseurl, array('fields'=>$this->_fields, 'extraparams'=>$extraparams, 'hierarchyprefix'=>$hierarchyprefix));
+        $this->_activeform = new hierarchy_active_filter_form($baseurl, array('fields'=>$this->_fields, 'extraparams'=>$extraparams, 'type'=>$type));
         if ($adddata = $this->_activeform->get_data(false)) {
             if (!empty($adddata->removeall)) {
                 $SESSION->{$filtername} = array();
@@ -84,7 +84,7 @@ class hierarchy_filtering {
             }
             // clear+reload the form
             $_POST = array();
-            $this->_activeform = new hierarchy_active_filter_form($baseurl, array('fields'=>$this->_fields, 'extraparams'=>$extraparams, 'hierarchyprefix'=>$hierarchyprefix));
+            $this->_activeform = new hierarchy_active_filter_form($baseurl, array('fields'=>$this->_fields, 'extraparams'=>$extraparams, 'type'=>$type));
         }
     }
 
@@ -120,7 +120,7 @@ class hierarchy_filtering {
             $sqls[] = $extra;
         }
 
-        $filtername = $this->_hierarchyprefix.'_filtering';
+        $filtername = $this->_type.'_filtering';
 
         if (!empty($SESSION->{$filtername})) {
             foreach ($SESSION->{$filtername} as $fname=>$datas) {
@@ -129,7 +129,7 @@ class hierarchy_filtering {
                 }
                 $field = $this->_fields[$fname];
                 foreach($datas as $i=>$data) {
-                    $sqls[] = $field->get_sql_filter($data, $this->_hierarchyprefix);
+                    $sqls[] = $field->get_sql_filter($data, $this->_type);
                 }
             }
         }

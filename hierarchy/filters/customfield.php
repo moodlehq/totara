@@ -34,11 +34,11 @@ class hierarchy_filter_customfield extends hierarchy_filter_type {
      * Returns an array of custom fields
      * @return array of fields
      */
-    function get_custom_fields($hierarchyprefix) {
+    function get_custom_fields($type) {
         global $CFG;
         $sql = "SELECT f.id, f.fullname AS fieldname, d.fullname AS depthname FROM
-                {$CFG->prefix}{$hierarchyprefix}_depth_info_field f JOIN
-                {$CFG->prefix}{$hierarchyprefix}_depth d ON f.depthid = d.id
+                {$CFG->prefix}{$type}_depth_info_field f JOIN
+                {$CFG->prefix}{$type}_depth d ON f.depthid = d.id
                 WHERE hidden = 0 ORDER BY f.depthid, f.sortorder";
         if (!$fields = get_records_sql($sql)) {
             return null;
@@ -54,8 +54,8 @@ class hierarchy_filter_customfield extends hierarchy_filter_type {
      * Adds controls specific to this filter in the form.
      * @param object $mform a MoodleForm object to setup
      */
-    function setupForm(&$mform, $hierarchyprefix=null) {
-        $custom_fields = $this->get_custom_fields($hierarchyprefix);
+    function setupForm(&$mform, $type=null) {
+        $custom_fields = $this->get_custom_fields($type);
         if (empty($custom_fields)) {
             return;
         }
@@ -76,8 +76,8 @@ class hierarchy_filter_customfield extends hierarchy_filter_type {
      * @return mixed array filter data or false when filter not set
      */
     function check_data($formdata) {
-        $hierarchyprefix = $formdata->hierarchyprefix;
-        $custom_fields = $this->get_custom_fields($hierarchyprefix);
+        $type = $formdata->type;
+        $custom_fields = $this->get_custom_fields($type);
 
         if (empty($custom_fields)) {
             return false;
@@ -103,10 +103,10 @@ class hierarchy_filter_customfield extends hierarchy_filter_type {
      * @param array $data filter settings
      * @return string the filtering condition or null if the filter is disabled
      */
-    function get_sql_filter($data, $hierarchyprefix) {
+    function get_sql_filter($data, $type) {
         global $CFG;
 
-        $custom_fields = $this->get_custom_fields($hierarchyprefix);
+        $custom_fields = $this->get_custom_fields($type);
         if (empty($custom_fields)) {
             return '';
         }
@@ -154,7 +154,7 @@ class hierarchy_filter_customfield extends hierarchy_filter_type {
         if ($where !== '') {
             $where = "WHERE $where";
         }
-        return "id $op (SELECT competencyid FROM {$CFG->prefix}{$hierarchyprefix}_depth_info_data $where)";
+        return "id $op (SELECT {$type}id FROM {$CFG->prefix}{$type}_depth_info_data $where)";
     }
 
     /**
@@ -162,9 +162,9 @@ class hierarchy_filter_customfield extends hierarchy_filter_type {
      * @param array $data filter settings
      * @return string active filter label
      */
-    function get_label($data, $hierarchyprefix) {
+    function get_label($data, $type) {
         $operators      = $this->get_operators();
-        $custom_fields = $this->get_custom_fields($hierarchyprefix);
+        $custom_fields = $this->get_custom_fields($type);
 
         if (empty($custom_fields)) {
             return '';

@@ -5,19 +5,20 @@
 
 require_once('../config.php');
 require_once($CFG->libdir.'/adminlib.php');
-require_once($CFG->libdir.'/hierarchylib.php');
 global $SESSION;
 
-$format          = optional_param('format', '', PARAM_ALPHA);
-$hierarchyprefix = optional_param('hierarchyprefix', '', PARAM_ALPHA);
+$format = optional_param('format', '', PARAM_ALPHA);
+$type   = optional_param('type', '-1', PARAM_SAFEDIR);
 
-$hierarchy         = new hierarchy();
-$hierarchy->prefix = $hierarchyprefix;
+// Confirm the type exists
+if (!file_exists($CFG->dirroot.'/hierarchy/type/'.$type.'/lib.php')) {
+    error('Hierarchy type '.$type.' does not exist');
+}
 
-admin_externalpage_setup($hierarchy->prefix.'manage');
-require_capability('moodle/local:view'.$hierarchy->prefix, get_context_instance(CONTEXT_SYSTEM));
+admin_externalpage_setup($type.'manage');
+require_capability('moodle/local:view'.$type, get_context_instance(CONTEXT_SYSTEM));
 
-$return = $CFG->wwwroot.'/'.$hierarchy->prefix.'/index.php';
+$return = $CFG->wwwroot.'/hierarchy/index.php?type='.$type;
 
 if (empty($SESSION->download_data)) {
     redirect($return);
@@ -28,9 +29,9 @@ if ($format) {
     $data = $SESSION->download_data;
 
     switch ($format) {
-        case 'csv' : hierarchy_download_csv($fields, $data, $hierarchy->prefix);
-        case 'ods' : hierarchy_download_ods($fields, $data, $hierarchy->prefix);
-        case 'xls' : hierarchy_download_xls($fields, $data, $hierarchy->prefix);
+        case 'csv' : hierarchy_download_csv($fields, $data, $type);
+        case 'ods' : hierarchy_download_ods($fields, $data, $type);
+        case 'xls' : hierarchy_download_xls($fields, $data, $type);
         
     }
     die;
@@ -41,9 +42,9 @@ print_heading(get_string('download', 'admin'));
 
 print_box_start();
 echo '<ul>';
-echo '<li><a href="download.php?format=csv&hierarchyprefix='.$hierarchyprefix.'">'.get_string('downloadtext').'</a></li>';
-echo '<li><a href="download.php?format=ods&hierarchyprefix='.$hierarchyprefix.'">'.get_string('downloadods').'</a></li>';
-echo '<li><a href="download.php?format=xls&hierarchyprefix='.$hierarchyprefix.'">'.get_string('downloadexcel').'</a></li>';
+echo '<li><a href="download.php?format=csv&type='.$type.'">'.get_string('downloadtext').'</a></li>';
+echo '<li><a href="download.php?format=ods&type='.$type.'">'.get_string('downloadods').'</a></li>';
+echo '<li><a href="download.php?format=xls&type='.$type.'">'.get_string('downloadexcel').'</a></li>';
 echo '</ul>';
 print_box_end();
 
@@ -51,12 +52,12 @@ print_continue($return);
 
 print_footer();
 
-function hierarchy_download_ods($fields, $data, $hierarchyprefix) {
+function hierarchy_download_ods($fields, $data, $type) {
     global $CFG;
 
     require_once("$CFG->libdir/odslib.class.php");
 
-    $filename = clean_filename(get_string('featureplural',$hierarchyprefix).'.ods');
+    $filename = clean_filename(get_string('featureplural',$type).'.ods');
 
     $workbook = new MoodleODSWorkbook('-');
     $workbook->send($filename);
@@ -85,12 +86,12 @@ function hierarchy_download_ods($fields, $data, $hierarchyprefix) {
     die;
 }
 
-function hierarchy_download_xls($fields, $data, $hierarchyprefix) {
+function hierarchy_download_xls($fields, $data, $type) {
     global $CFG;
 
     require_once("$CFG->libdir/excellib.class.php");
 
-    $filename = clean_filename(get_string('featureplural',$hierarchyprefix).'.xls');
+    $filename = clean_filename(get_string('featureplural',$type).'.xls');
 
     $workbook = new MoodleExcelWorkbook('-');
     $workbook->send($filename);
@@ -119,10 +120,10 @@ function hierarchy_download_xls($fields, $data, $hierarchyprefix) {
     die;
 }
 
-function hierarchy_download_csv($fields, $data, $hierarchyprefix) {
+function hierarchy_download_csv($fields, $data, $type) {
     global $CFG;
     
-    $filename = clean_filename(get_string('featureplural',$hierarchyprefix).'.csv');
+    $filename = clean_filename(get_string('featureplural',$type).'.csv');
 
     header("Content-Type: application/download\n");
     header("Content-Disposition: attachment; filename=$filename");

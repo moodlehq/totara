@@ -35,7 +35,7 @@ class hierarchy_filter_text extends hierarchy_filter_type {
      * Adds controls specific to this filter in the form.
      * @param object $mform a MoodleForm object to setup
      */
-    function setupForm(&$mform, $hierarchyprefix=null) {
+    function setupForm(&$mform, $type=null) {
         $objs = array();
         $objs[] =& $mform->createElement('select', $this->_name.'_op', null, $this->getOperators());
         $objs[] =& $mform->createElement('text', $this->_name, null);
@@ -107,7 +107,7 @@ class hierarchy_filter_text extends hierarchy_filter_type {
      * @param array $data filter settings
      * @return string active filter label
      */
-    function get_label($data, $hierarchyprefix) {
+    function get_label($data, $type) {
         $operator  = $data['operator'];
         $value     = $data['value'];
         $operators = $this->getOperators();
