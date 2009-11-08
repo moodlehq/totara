@@ -20,6 +20,7 @@ $string['descriptionview'] = '$a description';
 $string['editorganisation'] = 'Edit organisation';
 $string['editdepthlevel'] = 'Edit depth level';
 $string['editframework'] = 'Edit organisation framework';
+$string['featureplural'] = 'Organisations';
 $string['framework'] = 'Organisation framework';
 $string['fullname'] = 'Organisation full name';
 $string['fullnameview'] = '$a full name';
