@@ -23,14 +23,14 @@ class hierarchybackup_select_form extends moodleform {
                 foreach($frameworks->$hname AS $fwid => $framework) {
                     $fwname = "framework$fwid";
                     $itemcount = $items->$hname->$fwname->items_count;
-                    $mform->addElement('html','<table class="hierarchyform">');
-                    $mform->addElement('html','<tr><td>');
+                    //$mform->addElement('html','<table class="hierarchyform">');
+                    //$mform->addElement('html','<tr><td>');
                     $label = "{$framework->fullname} ({$itemcount} ".get_string("{$hname}plural",$hname).")";
                     $mform->addElement('checkbox',"frameworks[$hname][$framework->id]", '', $label);
                     $mform->setDefault("frameworks[$hname][$framework->id]",1);
-                    $mform->addElement('html','</td></tr>');
+                    //$mform->addElement('html','</td></tr>');
 
-                $mform->addElement('html','</table>');
+                //$mform->addElement('html','</table>');
                 }
 
                 $setoptionsfunc = $hname.'_set_extra_options';

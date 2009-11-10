@@ -4,8 +4,8 @@
 //Define some globals for all the script
 
 require_once ("../config.php");
-require_once ("../backup/lib.php");
-require_once ("../backup/backuplib.php");
+require_once ("$CFG->dirroot/backup/lib.php");
+require_once ("$CFG->dirroot/backup/backuplib.php");
 require_once ("$CFG->libdir/adminlib.php");
 require_once ("$CFG->dirroot/hierarchy/lib.php");
 require_once ("hierarchybackup_forms.php");
@@ -35,10 +35,6 @@ $stradministration = get_string('administration');
 @ini_set("max_execution_time","3000");
 raise_memory_limit("192M");
 
-// TODO grab this automatically from directories in /hierarchy/type/
-// TODO or from hierarchy table if we decide to create one
-$hierarchies = array('competency','position','organisation');
-
 // check each hierarchy type for a backup script to determine
 // which will be included in backup
 $hlist = array();
@@ -48,9 +44,9 @@ $hlist = get_backup_list();
 $frameworks = new object();
 $items = new object();
 foreach ($hlist AS $index => $hname) {
-    $hlib = "$CFG->dirroot/$hname/lib.php";
+    $hlib = "$CFG->dirroot/hierarchy/type/$hname/lib.php";
     if(!file_exists($hlib)) {
-        error_log("Could not backup $hname because $hname/lib.php does not exist");
+        error_log("Could not backup $hname because hierarchy/type/$hname/lib.php does not exist");
         unset($hlist[$index]);
         continue;
     }
@@ -94,7 +90,7 @@ foreach ($hlist AS $index => $hname) {
 }
 
 // TODO form logic here
-$selectform = new hierarchybackup_select_form('hierarchybackup_execute.php', //?XDEBUG_SESSION_START=1',  // TODO remove xdebug
+$selectform = new hierarchybackup_select_form('hierarchybackup_execute.php',
     compact('hlist','frameworks','items'));
 if($selectform->is_cancelled()) {
     // TODO redirect
@@ -145,8 +141,7 @@ function get_backup_list() {
 
     $hlist = array();
     foreach($hierarchies AS $hname) {
-        // todo update path
-        $hbackupfile = "$CFG->dirroot/$hname/backuplib.php";
+        $hbackupfile = "$CFG->dirroot/hierarchy/type/$hname/backuplib.php";
         $hbackup = $hname."_backup";
 
         if(file_exists($hbackupfile)) {

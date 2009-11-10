@@ -104,7 +104,7 @@ foreach($frameworks AS $hname => $fwid) {
         continue;
     }
 
-    $hbackupfile = "$CFG->dirroot/$hname/backuplib.php";
+    $hbackupfile = "$CFG->dirroot/hierarchy/type/$hname/backuplib.php";
     $hbackup = $hname.'_backup';
     $getoptionsfunc = $hname.'_get_extra_options';
 
@@ -155,7 +155,7 @@ if (!defined('BACKUP_SILENTLY')) {
 
 $zipprefs = new object();
 $zipprefs->backup_unique_code = $backup_unique_code;
-$zipprefs->backup_name = '1234567.zip'; //$backupfilename;
+$zipprefs->backup_name = '1234567.zip'; //TODO $backupfilename;
 // save to hierarchies directory at same level as courses
 $zipprefs->backup_destination = "$CFG->dataroot/hierarchies";
 $status = backup_zip($zipprefs);
