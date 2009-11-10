@@ -246,4 +246,38 @@ function competency_get_extra_options() {
     return $options;
 }
 
+// returns array of options for use by hierarchybackup.php and hierarchyrestore.php to provide
+// additional options in forms
+function competency_options() {
+    $options = array();
 
+    $options['relations'] = array('name' => 'inc_relations',
+                                  'type' => 'selectyesno',
+                                  'label' => 'Include competency relations',
+                                  'default' => 1,
+                                  'format' => PARAM_BOOL
+                            );
+
+    $options['scales'] = array('name' => 'inc_scales',
+                                  'type' => 'selectyesno',
+                                  'label' => 'Include competency scales',
+                                  'default' => 1,
+                                  'format' => PARAM_BOOL
+                              );
+
+    $options['custom'] = array('name' => 'inc_custom',
+                                  'type' => 'selectyesno',
+                                  'label' => 'Include custom fields',
+                                  'default' => 1,
+                                  'format' => PARAM_BOOL
+                              );
+
+    $options['evidence'] = array('name' => 'inc_evidence',
+                                  'type' => 'selectyesno',
+                                  'label' => 'Include competency evidence',
+                                  'default' => 1,
+                                  'format' => PARAM_BOOL
+                              );
+
+    return $options;
+}

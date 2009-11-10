@@ -106,7 +106,7 @@ foreach($frameworks AS $hname => $fwid) {
 
     $hbackupfile = "$CFG->dirroot/hierarchy/type/$hname/backuplib.php";
     $hbackup = $hname.'_backup';
-    $getoptionsfunc = $hname.'_get_extra_options';
+    $getoptionsfunc = $hname.'_options';
 
     if(!file_exists($hbackupfile)) {
         if(!defined('BACKUP_SILENTLY')) {
@@ -123,7 +123,12 @@ foreach($frameworks AS $hname => $fwid) {
     }
     $options = new object();
     if(function_exists($getoptionsfunc)) {
-        $options = $getoptionsfunc();
+        $extraoptions = $getoptionsfunc();
+        foreach($extraoptions as $extraoption) {
+            $name = $extraoption['name'];
+            $format = $extraoption['format'];
+            $options->$name = optional_param($name, null, $format);
+        }
     }
     $options->inc_users = $userdata;
 
