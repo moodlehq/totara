@@ -5,8 +5,8 @@
 
 require_once ("../config.php");
 require_once ("$CFG->libdir/xmlize.php");
-require_once ("../backup/lib.php");
-require_once ("../backup/restorelib.php");
+require_once ("$CFG->dirroot/backup/lib.php");
+require_once ("$CFG->dirroot/backup/restorelib.php");
 require_once ("$CFG->libdir/adminlib.php");
 require_once ("$CFG->dirroot/hierarchy/lib.php");
 require_once ("hierarchyrestore_forms.php");
@@ -19,7 +19,7 @@ if (!has_capability('moodle/site:backup', get_context_instance(CONTEXT_SYSTEM)))
     error("You need to be an admin user to use this page.", "$CFG->wwwroot/login/index.php");
 }
 
-//TODO does process use any of the session vars defined in backup/restore.php L41-56
+//TODO does restore process use any of the session vars defined in backup/restore.php L41-56
 // if so we may need to unset them here?
 
 //Check site
@@ -64,8 +64,7 @@ if(!$file) {
     }
     closedir($dir);
     if(count($filelist) == 0) {
-        print "No files found to restore from. Please check their are hierarchy zip files in your
-               $hierarchyrestoredir folder and that the permissions are correctly set";
+        print "No files found to restore from. ".get_string('pickfilehelp','hierarchy',$hierarchyrestoredir);
     }
     else {
         // print form

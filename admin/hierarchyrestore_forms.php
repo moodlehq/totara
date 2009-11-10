@@ -4,15 +4,19 @@ require_once($CFG->libdir.'/formslib.php');
 class hierarchyrestore_pickfile_form extends moodleform {
 
     function definition() {
+        global $CFG;
+
         $mform =& $this->_form;
         $filelist = $this->_customdata['filelist'];
 
         if(count($filelist) == 1) {
             $file = array_shift($filelist);
             $mform->addElement('hidden', 'file', $file);
-            $mform->addElement('html', "Would you like to restore the file $file ?");
+            $mform->addElement('html', get_string('pickfilehelp','hierarchy', "$CFG->dataroot/hierarchies"));
+            $mform->addElement('html', "<br /><br />One file found. Would you like to restore the file $file ?");
             $this->add_action_buttons(false, 'Confirm');
         } else if (count($filelist) > 0) {
+            $mform->addElement('html', get_string('pickfilehelp', 'hierarchy', "$CFG->dataroot/hierarchies"));
             $mform->addElement('select', 'file', 'Pick a file to restore', $filelist);
             $this->add_action_buttons(false, 'Confirm');
         }
