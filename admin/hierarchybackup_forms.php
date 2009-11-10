@@ -35,15 +35,7 @@ class hierarchybackup_select_form extends moodleform {
                 //$mform->addElement('html','</table>');
                 }
 
-                /////
-                /*
-                $setoptionsfunc = $hname.'_set_extra_options';
-                if(function_exists($setoptionsfunc)) {
-                    $mform->addElement('header',$hname.'extraoptions',get_string($hname, $hname).' Additional Options');
-                    $setoptionsfunc($mform);
-                }*/
-                //////
-                $setoptionsfunc = $hname.'_options';
+               $setoptionsfunc = $hname.'_options';
                 if(function_exists($setoptionsfunc)) {
                     $mform->addElement('header',$hname.'extraoptions',get_string($hname, $hname).' Additional Options');
                     $options = $setoptionsfunc();

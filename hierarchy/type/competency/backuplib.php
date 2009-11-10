@@ -213,39 +213,6 @@ function competency_backup_scales($bf, $options) {
     fwrite($bf, end_tag('SCALES', 3, true));
 }
 
-
-// if this function exists, it will be called to provide additional competency 
-// specific options for the hierarchybackup form
-function competency_set_extra_options($mform) {
-
-    $mform->addElement('selectyesno','competency_inc_relations','Include competency relations');
-    $mform->setDefault('competency_inc_relations',1);
-
-    $mform->addElement('selectyesno','competency_inc_scales','Include competency scales');
-    $mform->setDefault('competency_inc_scales',1);
-
-    $mform->addElement('selectyesno','competency_inc_custom','Include custom fields');
-    $mform->setDefault('competency_inc_custom',1);
-
-    $mform->addElement('selectyesno','competency_inc_evidence','Include competency evidence');
-    $mform->setDefault('competency_inc_evidence',1);
-
-}
-
-
-// if this function exists, it will be called to retrieve additional competency 
-// specific options for the hierarchybackup form
-// these options can then be used within the backup functions but do check if 
-// they are set first 
-function competency_get_extra_options() {
-    $options = new object();
-    $options->inc_relations = optional_param('competency_inc_relations', null, PARAM_BOOL);
-    $options->inc_scales = optional_param('competency_inc_scales',null, PARAM_BOOL);
-    $options->inc_custom = optional_param('competency_inc_custom',null, PARAM_BOOL);
-    $options->inc_evidence = optional_param('competency_inc_evidence',null, PARAM_BOOL);
-    return $options;
-}
-
 // returns array of options for use by hierarchybackup.php and hierarchyrestore.php to provide
 // additional options in forms
 function competency_options() {
