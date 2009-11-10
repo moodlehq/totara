@@ -28,7 +28,7 @@
  *
  * Library to construct hierarchies such as competencies, positions, etc
  * @copyright Catalyst IT Limited
- * @author Jonathan Newman 
+ * @author Jonathan Newman
  * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
  * @package MITMS
  */
@@ -39,7 +39,7 @@
  */
 class hierarchy {
 
-    /** 
+    /**
      * The base table prefix for the hierarchy
      * @var string
      */
@@ -160,14 +160,14 @@ class hierarchy {
 
             foreach ($frameworks as $fw) {
                 $fwoptions[$fw->id] = $fw->fullname;
-            }   
+            }
 
             echo '<div class="frameworkpicker">';
             popup_form($CFG->wwwroot.'/hierarchy/'.$page.'?type='.$this->prefix.'&frameworkid=', $fwoptions, 'switchframework', $this->frameworkid, '');
             echo '</div>';
-        }   
+        }
     }
-    
+
     /**
      * Display add item button
      * @return boolean success
@@ -220,9 +220,9 @@ class hierarchy {
         $sortoffset = $this->get_item_sortorder_offset();
         $move = get_record($this->prefix, 'id', $id);
         if ($up) {
-            $swap = get_record($this->prefix, 'frameworkid',  $this->frameworkid, 'sortorder', $move->sortorder - 1); 
+            $swap = get_record($this->prefix, 'frameworkid',  $this->frameworkid, 'sortorder', $move->sortorder - 1);
         } else {
-            $swap = get_record($this->prefix, 'frameworkid',  $this->frameworkid, 'sortorder', $move->sortorder + 1); 
+            $swap = get_record($this->prefix, 'frameworkid',  $this->frameworkid, 'sortorder', $move->sortorder + 1);
         }
         if ($move && $swap) {
             if ($move->depthid != $swap->depthid) {
@@ -251,7 +251,7 @@ class hierarchy {
             $visible = 0;
             if (!set_field($this->prefix, 'visible', $visible, 'id', $item->id)) {
                 notify('Could not update that '.$this->prefix.'!');
-            }   
+            }
         }
     }
 
@@ -266,7 +266,7 @@ class hierarchy {
             $visible = 1;
             if (!set_field($this->prefix, 'visible', $visible, 'id', $item->id)) {
                 notify('Could not update that '.$this->prefix.'!');
-            }   
+            }
         }
     }
 
@@ -354,8 +354,8 @@ class hierarchy {
             // Call this function recursively
             foreach ($children as $child) {
                 $this->delete_framework_item($child->id);
-            }   
-        }   
+            }
+        }
 
         // Finally delete this item
         delete_records($this->prefix, 'id', $id);
@@ -401,4 +401,17 @@ class hierarchy {
         delete_records($this->prefix.'_framework', 'id', $this->frameworkid);
     }
 
+    /**
+     * Run any code before printing admin page header
+     * @param $item object Item being viewed
+     * @return void
+     */
+    function admin_page_setup($item) {}
+
+    /**
+     * Print any extra markup to display on the hierarchy view item page
+     * @param $item object Item being viewed
+     * @return void
+     */
+    function display_extra_view_info($item) {}
 }

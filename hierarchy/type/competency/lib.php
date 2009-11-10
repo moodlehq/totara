@@ -33,6 +33,7 @@
  * @package MITMS
  */
 require_once($CFG->dirroot.'/hierarchy/lib.php');
+require_once($CFG->dirroot.'/hierarchy/type/competency/evidence/type/abstract.php');
 
 /**
  * Competency aggregation methods
@@ -147,5 +148,46 @@ class competency extends hierarchy {
                 t.id = {$id}
             "
         );
+    }
+
+    /**
+     * Get evidence items for a competency
+     * @param $item object Competency
+     * @return array|false
+     */
+    function get_evidence($item) {
+        return get_records('competency_evidence_items', 'competencyid', $item->id);
+    }
+
+    /**
+     * Run any code before printing admin header
+     * @param $item object Competency being viewed
+     * @return void
+     */
+    function admin_page_setup($item) {
+        global $CFG;
+
+        // Setup custom javascript
+        require_once($CFG->dirroot.'/local/js/setup.php');
+
+        // Get evidence
+        setup_lightbox(array(MBE_JS_TREEVIEW));
+
+        require_js(array(
+            $CFG->wwwroot.'/local/js/competency.evidence.js',
+        ));
+    }
+
+    /**
+     * Print any extra markup to display on the hierarchy view item page
+     * @param $item object Competency being viewed
+     * @return void
+     */
+    function display_extra_view_info($item) {
+        global $CFG, $can_edit, $editingon;
+
+        $evidence = $this->get_evidence($item);
+
+        require $CFG->dirroot.'/hierarchy/type/competency/view-evidence.html';
     }
 }

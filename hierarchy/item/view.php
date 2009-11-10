@@ -13,14 +13,9 @@ if (file_exists($CFG->dirroot.'/hierarchy/type/'.$type.'/lib.php')) {
     error('Hierarchy type '.$type.' does not exist');
 }
 
-// Use type file override if it exists
-if (file_exists($CFG->dirroot.'/hierarchy/type/'.$type.'/item/view.php')) {
-    include($CFG->dirroot.'/hierarchy/type/'.$type.'/item/view.php');
-    die;
-}
-
 require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->dirroot.'/hierarchy/lib.php');
+
 
 ///
 /// Setup / loading data
@@ -60,6 +55,9 @@ $can_edit = has_capability('moodle/local:update'.$type, $sitecontext);
 /// Display page
 ///
 
+// Run any hierarchy type specific code
+$hierarchy->admin_page_setup($item);
+
 // Display page header
 admin_externalpage_print_header();
 
@@ -79,7 +77,7 @@ print_heading($heading);
 $depthstr = $depth->fullname;
 
 ?>
-<table class="generalbox view<?php echo $type ?>" cellpadding="5" cellspacing="1">
+<table class="generalbox viewhierarchyitem" cellpadding="5" cellspacing="1">
 <tbody>
     <tr>
         <th class="header" width="200"><?php echo get_string('fullnameview', $type, $depthstr) ?></th>
@@ -116,6 +114,9 @@ if ($cfdata = get_records_sql($sql)) {
 </tbody>
 </table>
 <?php
+
+// Print extra info
+$hierarchy->display_extra_view_info($item);
 
 echo '<div class="buttons">';
 
