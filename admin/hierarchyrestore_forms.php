@@ -28,9 +28,21 @@ class hierarchyrestore_chooseitems_form extends moodleform {
     function definition() {
         $mform =& $this->_form;
         $contents = $this->_customdata['contents'];
+        $usercount = $this->_customdata['usercount'];
 
+        // general hierarchy restore options go here
+        // TODO if no options other than usercount, only show header if section required
+        $mform->addElement('header', 'hierarchyrestore', 'Hierarchy Restore');
+        if($usercount > 0) {
+            $mform->addElement('static','usercount', '', "$usercount Users found to restore.");
+            $mform->addElement('selectyesno','inc_users','Restore users and user data');
+        }
+        else {
+            $mform->addElement('static','usercount', '', 'No users found to restore.');
+        }
         foreach ($contents AS $hname => $hierarchy) {
             $mform->addElement('header', $hname.'restore', get_string($hname, $hname).' Restore');
+            $mform->addElement('static','message','Select which frameworks to restore','[Put checkbox controller here]');
             foreach ($hierarchy AS $fwid => $framework) {
                 $fwfield = "framework$fwid";
                 $itemcount = $framework->itemcount;
@@ -39,7 +51,8 @@ class hierarchyrestore_chooseitems_form extends moodleform {
                 $mform->addElement('checkbox',"framework[$hname][$fwid]", '', $label);
                 $mform->setDefault("framework[$hname][$fwid]",1);
             }
-        } 
+        }
+        $this->add_action_buttons();
     }
 
 

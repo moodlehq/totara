@@ -76,23 +76,25 @@ if(!$file) {
 }
 
 
+
 print "Examining file \"$file\"";
 $errorstr = '';
 $contents = '';
-$status = hierarchyrestore_precheck($file,$contents, $errorstr);
+$usercount = '';
+$status = hierarchyrestore_precheck($file,$contents, $usercount, $errorstr);
 
 if (!$status || $contents=='') {
     error("An error occured $errorstr");
 }
 
-$chooseitems = new hierarchyrestore_chooseitems_form(null, compact('contents'));
+$chooseitems = new hierarchyrestore_chooseitems_form(null, compact('contents','usercount'));
 $chooseitems->display();
 
 //Print footer
 print_footer();
 
 
-function hierarchyrestore_precheck($file, &$contents, &$errorstr) {
+function hierarchyrestore_precheck($file, &$contents, &$usercount, &$errorstr) {
     global $CFG, $SESSION;
 
     //Prepend dataroot to variable to have the absolute path
@@ -233,6 +235,17 @@ function hierarchyrestore_precheck($file, &$contents, &$errorstr) {
         return false;
     }
 
+    // check if backup includes user data
+    if(isset($info['MOODLE_BACKUP']['#']['USERS']['0']['#']['USER'])) {
+        $users = $info['MOODLE_BACKUP']['#']['USERS']['0']['#']['USER'];
+        $usercount = count($users);
+    }
+    else {
+        $usercount = 0;
+    }
+
+   //print_object($info);
+
     // loop through XML and create array of hierarchies, frameworks and item counts
     // to be used to build the selection form
     $contents = array();
@@ -258,6 +271,7 @@ function hierarchyrestore_precheck($file, &$contents, &$errorstr) {
             }
         }
     }
+
     if (!$status) {
         if (!defined('RESTORE_SILENTLY')) {
             error ("An error has ocurred");

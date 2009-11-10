@@ -2,7 +2,7 @@
 require_once($CFG->libdir.'/formslib.php');
 
 class hierarchybackup_select_form extends moodleform {
-
+//TODO help buttons for all forms
     function definition() {
         $mform =& $this->_form;
         $hlist = $this->_customdata['hlist'];
@@ -20,6 +20,8 @@ class hierarchybackup_select_form extends moodleform {
             foreach($hlist AS $hname) {
                 $mform->addElement('header',$hname.'backup', get_string($hname, $hname).' Backup');
                 //TODO add checkbox controller
+                $first = true;
+                $mform->addElement('static','message','Select which frameworks to backup','[Put checkbox controller here]');
                 foreach($frameworks->$hname AS $fwid => $framework) {
                     $fwname = "framework$fwid";
                     $itemcount = $items->$hname->$fwname->items_count;

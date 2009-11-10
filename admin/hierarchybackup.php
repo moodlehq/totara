@@ -131,14 +131,22 @@ print_footer();
 function get_backup_list() {
     global $CFG;
 
-    // TODO grab this automatically from directories in /hierarchy/type/
-    // TODO or from hierarchy table if we decide to create one
-    $hierarchies = array('competency','position','organisation');
+    // get list of hierarchies from directories in hierarchy/type/
+    $typedir = "$CFG->dirroot/hierarchy/type";
+    $hierarchies = array();
+    $dir = opendir($typedir);
+    while (false !== ($file = readdir($dir))) {
+        if ($file == "." || $file == ".." || !is_dir($typedir."/".$file)) {
+            continue;
+        }
+        $hierarchies[] = $file;
+    }
 
-    if(!is_array($hierarchies)) {
+    if(!is_array($hierarchies) || count($hierarchies) < 1) {
         return false;
     }
 
+    // exclude hierarchy directories without a backuplib.php
     $hlist = array();
     foreach($hierarchies AS $hname) {
         $hbackupfile = "$CFG->dirroot/hierarchy/type/$hname/backuplib.php";
