@@ -73,7 +73,7 @@ abstract class competency_evidence_type extends data_object {
         }
 
         // Load class file
-        require_once($CFG->dirroot.'/competency/evidence/type/'.$data->itemtype.'.php');
+        require_once($CFG->dirroot.'/hierarchy/type/competency/evidence/type/'.$data->itemtype.'.php');
         $class = 'competency_evidence_type_'.$data->itemtype;
 
         // Create new and return
@@ -146,7 +146,7 @@ abstract class competency_evidence_type extends data_object {
 
     /**
      * Get human activity type
-     * 
+     *
      * @return  string
      */
     public function get_activity_type() {

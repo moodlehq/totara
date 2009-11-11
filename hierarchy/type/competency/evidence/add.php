@@ -1,9 +1,9 @@
 <?php
 
-require_once('../../config.php');
+require_once('../../../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->libdir.'/completionlib.php');
-require_once($CFG->dirroot.'/competency/evidence/type/abstract.php');
+require_once($CFG->dirroot.'/hierarchy/type/competency/lib.php');
 require_once('HTML/AJAX/JSON.php');
 
 
@@ -54,10 +54,10 @@ if (!empty($USER->competencyediting)) {
     $str_remove = get_string('remove');
 
     echo "<td style=\"text-align: center;\">";
-    
-    echo "<a href=\"{$CFG->wwwroot}/competency/evidence/remove.php?id={$evidence->id}\" title=\"$str_remove\">".
+
+    echo "<a href=\"{$CFG->wwwroot}/hierarchy/type/competency/evidence/remove.php?id={$evidence->id}\" title=\"$str_remove\">".
          "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_remove\" /></a>";
-    
+
     echo "</td>";
 }
 

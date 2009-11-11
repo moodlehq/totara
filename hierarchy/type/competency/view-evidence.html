@@ -4,7 +4,7 @@
 print_heading(get_string('evidenceitems', $this->prefix));
 
 ?>
-<table width="95%" cellpadding="5" cellspacing="1" class="generalbox boxaligncenter">
+<table width="95%" cellpadding="5" cellspacing="1" class="generalbox boxaligncenter viewevidence">
 <tr>
     <th style="vertical-align:top; text-align: left; white-space:nowrap;" class="header c0" scope="col">
         <?php echo get_string('name'); ?>
@@ -34,6 +34,11 @@ print_heading(get_string('evidenceitems', $this->prefix));
 </tr>
 <?php
 
+if ($editingon) {
+    $str_edit = get_string('edit');
+    $str_remove = get_string('remove');
+}
+
 if ($evidence) {
 
     foreach ($evidence as $eitem) {
@@ -48,7 +53,7 @@ if ($evidence) {
         if ($editingon) {
             echo "<td style=\"text-align: center;\">";
 
-            echo "<a href=\"{$CFG->wwwroot}/{$hierarchy->prefix}/evidence/remove.php?id={$eitem->id}\" title=\"$str_remove\">".
+            echo "<a href=\"{$CFG->wwwroot}/hierarchy/type/{$this->prefix}/evidence/remove.php?id={$eitem->id}\" title=\"$str_remove\">".
                  "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_remove\" /></a>";
 
             echo "</td>";
@@ -81,9 +86,8 @@ if ($can_edit) {
 </script>
 
 <div class="singlebutton">
-<form action="<?php echo $CFG->wwwroot ?>/hierarchy/type/competency/evidence/edit.php" method="get">
+<form action="<?php echo $CFG->wwwroot ?>/hierarchy/type/competency/evidence/edit.php?id=<?php echo $item->id ?>" method="get">
 <div>
-<input type="hidden" name="<?php echo $this->prefix ?>" value="<?php echo $item->id ?>" />
 <input type="submit" id="show-evidence-dialog" value="<?php echo get_string('assignnewevidenceitem', $this->prefix) ?>" />
 </div>
 </form>

@@ -81,7 +81,7 @@ class competency_evidence_type_activitycompletion extends competency_evidence_ty
 
     /**
      * Return module instance
-     * 
+     *
      * @return object
      */
     private function _get_module() {
@@ -115,7 +115,7 @@ class competency_evidence_type_activitycompletion extends competency_evidence_ty
 
         $module = $this->_get_module();
 
-        return '<a href="'.$CFG->wwwroot.'/mod/'.$module->cmid.'/view.php?id='.$this->iteminstance.'">'.$module->name.'</a>';
+        return '<a href="'.$CFG->wwwroot.'/mod/'.$this->itemmodule.'/view.php?id='.$this->iteminstance.'">'.$module->name.'</a>';
     }
 
     /**

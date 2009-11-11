@@ -7,8 +7,7 @@ evidence_courses_loaded = [];
 YAHOO.util.Event.onDOMReady(function () {
     YAHOO.dialog.evidence = new yuiDialog(
         'addevidence',
-        'show-evidence-dialog',
-        'evidence/edit.php?id=' + competency_id
+        'show-evidence-dialog'
     );
 });
 
@@ -51,7 +50,7 @@ function evidence_load_courses(cat) {
     // Load courses
     YAHOO.util.Connect.asyncRequest(
         'GET',
-        'evidence/category.php?id='+cat,
+        '../type/competency/evidence/category.php?id='+cat,
         callback
     );
 }
@@ -109,7 +108,7 @@ function evidence_load_coursedata(course) {
     // Load data
     YAHOO.util.Connect.asyncRequest(
         'GET',
-        'evidence/course.php?id='+course+'&competency='+competency_id,
+        '../type/competency/evidence/course.php?id='+course+'&competency='+competency_id,
         callback
     );
 }
@@ -134,7 +133,7 @@ function evidence_new_evidence(response) {
     YAHOO.dialog.evidence.dialog.hide();
 
     // Delete no evidence items warning, if exists
-    $('table.editcompetency tr.noevidenceitems').remove();
+    $('table.viewevidence tr.noevidenceitems').remove();
 
-    $('table.editcompetency tbody').append(response);
+    $('table.viewevidence tbody').append(response);
 }
