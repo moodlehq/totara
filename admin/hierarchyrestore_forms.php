@@ -20,7 +20,7 @@ class hierarchyrestore_pickfile_form extends moodleform {
             $mform->addElement('html', get_string('pickfilehelp', 'hierarchy', "$CFG->dataroot/hierarchies"));
             $mform->addElement('select', 'file', 'Pick a file to restore', $filelist);
             //$mform->addElement('submit', 'pickfilebutton','Confirm');
-            $this->add_action_buttons(false, 'Confirm');
+            $this->add_action_buttons(true, 'Confirm');
         }
     }
 }
@@ -70,6 +70,7 @@ class hierarchyrestore_chooseitems_form extends moodleform {
                     }
                 }
             }
+            $mform->addElement('hidden','backup_unique_code',$contents->backup_unique_code);
 
         }
         $this->add_action_buttons();

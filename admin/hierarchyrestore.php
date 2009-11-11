@@ -14,6 +14,10 @@ require_once ("hierarchyrestore_forms.php");
 
 $file = optional_param('file');
 $action = optional_param('action', null);
+$cancel = optional_param('cancel', null);
+$framework = optional_param('framework', null);
+$options = optional_param('options', null);
+$backup_unique_code = optional_param('backup_unique_code', null);
 
 require_login();
 if (!has_capability('moodle/site:backup', get_context_instance(CONTEXT_SYSTEM))) {
@@ -42,6 +46,11 @@ $stradministration = get_string('administration');
 //Adjust some php variables to the execution of this script
 @ini_set("max_execution_time","3000");
 raise_memory_limit("192M");
+
+// redirect to first page if cancel button pressed
+if(isset($cancel)) {
+    redirect("$CFG->wwwroot/admin/hierarchyrestore.php");
+}
 
 //Print header
 $navlinks[] = array('name' => $stradministration, 'link' => "$CFG->wwwroot/$CFG->admin/index.php", 'type' => 'misc');
@@ -78,6 +87,19 @@ if($action == 'selectoptions') {
 } else if ($action == 'execute') {
     // do the actual restore
     print "Restore execute";
+
+    var_dump($options);
+    var_dump($framework);
+
+    //Reading info from file
+    $xml_file  = $CFG->dataroot."/temp/backup/".$backup_unique_code."/moodle.xml";
+    $xml = file_get_contents($xml_file);
+    $info = xmlize($xml);
+
+    var_dump($info);
+    // TODO write get_tag and get_tags functions
+    // given a nested array and string returns only that portion of the array ??
+
     print_footer();
 
 } else {
@@ -256,7 +278,7 @@ function hierarchyrestore_precheck($file, &$contents, &$errorstr) {
 
     // Now we have the backup as an array, look through for content
     // to determine how to display the form
-    $contents = get_backup_contents($info, $errorstr);
+    $contents = get_backup_contents($info, $backup_unique_code, $errorstr);
     if($contents === false) {
         return false;
     }
@@ -289,7 +311,7 @@ function array_key_exists_r($needle, $haystack) {
 }
 
 
-function get_backup_contents($info, &$errorstr) {
+function get_backup_contents($info, $backup_unique_code, &$errorstr) {
     global $CFG;
 
     // check for hierarchies
@@ -309,6 +331,8 @@ function get_backup_contents($info, &$errorstr) {
     else {
         $contents->options->usercount = 0;
     }
+
+    $contents->backup_unique_code = $backup_unique_code;
 
     // loop through XML and create array of hierarchies, frameworks and item counts
     // to be used to build the selection form
