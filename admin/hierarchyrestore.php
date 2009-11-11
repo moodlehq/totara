@@ -13,7 +13,7 @@ require_once ("$CFG->dirroot/hierarchy/backuplib.php");
 require_once ("hierarchyrestore_forms.php");
 
 $file = optional_param('file');
-
+$action = optional_param('action', null);
 
 require_login();
 if (!has_capability('moodle/site:backup', get_context_instance(CONTEXT_SYSTEM))) {
@@ -53,17 +53,38 @@ print_header("$site->shortname: $strhierarchyrestore", $site->fullname, $navigat
 //Print form
 print_heading(format_string("$strhierarchyrestore"));
 
-if(!$file) {
-    $hierarchyrestoredir = "$CFG->dataroot/hierarchies";
-    $filelist = array();
-    $dir = opendir($hierarchyrestoredir);
-    while (false !== ($file = readdir($dir))) {
-        if ($file == "." || $file == ".." || substr($file, -4) != ".zip") {
-            continue;
-        }
-        $filelist[$file] = $file;
+// display page based on action parameter
+if($action == 'selectoptions') {
+    // file picked, examine and pick restore options
+
+    print "Examining file \"$file\"";
+    $errorstr = '';
+    $contents = '';
+    $usercount = '';
+    $status = hierarchyrestore_precheck($file, $contents, $errorstr);
+
+    if (!$status || $contents=='') {
+        error("An error occured $errorstr");
     }
-    closedir($dir);
+
+    $chooseitems = new hierarchyrestore_chooseitems_form(null, compact('contents'));
+    $chooseitems->display();
+
+    //Print footer
+    print_footer();
+    exit;
+
+
+} else if ($action == 'execute') {
+    // do the actual restore
+    print "Restore execute";
+    print_footer();
+
+} else {
+    // first visit - display list of zip files to pick from
+    $hierarchyrestoredir = "$CFG->dataroot/hierarchies";
+    $filelist = hierarchyrestore_get_backup_list($hierarchyrestoredir);
+
     if(count($filelist) == 0) {
         print "No files found to restore from. ".get_string('pickfilehelp','hierarchy',$hierarchyrestoredir);
     }
@@ -78,21 +99,24 @@ if(!$file) {
 
 
 
-print "Examining file \"$file\"";
-$errorstr = '';
-$contents = '';
-$usercount = '';
-$status = hierarchyrestore_precheck($file,$contents, $errorstr);
+function hierarchyrestore_get_backup_list($dir) {
+    if(!is_dir($dir)) {
+        return false;
+    }
+    $filelist = array();
+    $dir = opendir($dir);
+    while (false !== ($file = readdir($dir))) {
+        if ($file == "." || $file == ".." || substr($file, -4) != ".zip") {
+            continue;
+        }
+        $filelist[$file] = $file;
+    }
+    closedir($dir);
 
-if (!$status || $contents=='') {
-    error("An error occured $errorstr");
+    return $filelist;
+
 }
 
-$chooseitems = new hierarchyrestore_chooseitems_form(null, compact('contents'));
-$chooseitems->display();
-
-//Print footer
-print_footer();
 
 
 function hierarchyrestore_precheck($file, &$contents, &$errorstr) {
@@ -229,6 +253,46 @@ function hierarchyrestore_precheck($file, &$contents, &$errorstr) {
     print_object($GLOBALS['traverse_array']);
     $GLOBALS['traverse_array'] ='';
      */
+
+    // Now we have the backup as an array, look through for content
+    // to determine how to display the form
+    $contents = get_backup_contents($info, $errorstr);
+    if($contents === false) {
+        return false;
+    }
+
+    if (!$status) {
+        if (!defined('RESTORE_SILENTLY')) {
+            error ("An error has ocurred");
+        } else {
+            $errorstr = "An error has occured"; // helpful! :P
+            return false;
+        }
+    }
+    return true;
+}
+
+
+function array_key_exists_r($needle, $haystack) {
+    $result = array_key_exists($needle, $haystack);
+    if ($result) {
+        return $result;
+    }
+
+    foreach ($haystack as $v) {
+        if (is_array($v)) {
+            $result = array_key_exists_r($needle, $v);
+        }
+        if ($result) return $result;
+    }
+    return $result;
+}
+
+
+function get_backup_contents($info, &$errorstr) {
+    global $CFG;
+
+    // check for hierarchies
     if(isset($info['MOODLE_BACKUP']['#']['HIERARCHIES']['0']['#']['HIERARCHY'])) {
         $hierarchies = $info['MOODLE_BACKUP']['#']['HIERARCHIES']['0']['#']['HIERARCHY'];
     } else {
@@ -245,8 +309,6 @@ function hierarchyrestore_precheck($file, &$contents, &$errorstr) {
     else {
         $contents->options->usercount = 0;
     }
-
-   //print_object($info);
 
     // loop through XML and create array of hierarchies, frameworks and item counts
     // to be used to build the selection form
@@ -294,30 +356,8 @@ function hierarchyrestore_precheck($file, &$contents, &$errorstr) {
         }
     }
 
-    if (!$status) {
-        if (!defined('RESTORE_SILENTLY')) {
-            error ("An error has ocurred");
-        } else {
-            $errorstr = "An error has occured"; // helpful! :P
-            return false;
-        }
-    }
-    return true;
+    return $contents;
 }
 
 
-function array_key_exists_r($needle, $haystack) {
-    $result = array_key_exists($needle, $haystack);
-    if ($result) {
-        return $result;
-    }
-
-    foreach ($haystack as $v) {
-        if (is_array($v)) {
-            $result = array_key_exists_r($needle, $v);
-        }
-        if ($result) return $result;
-    }
-    return $result;
-}
 

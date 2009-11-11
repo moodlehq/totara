@@ -9,6 +9,7 @@ class hierarchyrestore_pickfile_form extends moodleform {
         $mform =& $this->_form;
         $filelist = $this->_customdata['filelist'];
 
+        $mform->addElement('hidden','action','selectoptions');
         if(count($filelist) == 1) {
             $file = array_shift($filelist);
             $mform->addElement('hidden', 'file', $file);
@@ -18,6 +19,7 @@ class hierarchyrestore_pickfile_form extends moodleform {
         } else if (count($filelist) > 0) {
             $mform->addElement('html', get_string('pickfilehelp', 'hierarchy', "$CFG->dataroot/hierarchies"));
             $mform->addElement('select', 'file', 'Pick a file to restore', $filelist);
+            //$mform->addElement('submit', 'pickfilebutton','Confirm');
             $this->add_action_buttons(false, 'Confirm');
         }
     }
@@ -29,6 +31,7 @@ class hierarchyrestore_chooseitems_form extends moodleform {
         $mform =& $this->_form;
         $contents = $this->_customdata['contents'];
 
+        $mform->addElement('hidden','action','execute');
         // general hierarchy restore options go here
         // TODO if no options other than usercount, only show header if section required
         $mform->addElement('header', 'hierarchyrestore', 'Hierarchy Restore');
@@ -58,11 +61,12 @@ class hierarchyrestore_chooseitems_form extends moodleform {
             }
             if(isset($contents->$hname->options)) {
                 $options = $contents->$hname->options;
-                $mform->addElement('header', $hname.'restoreoptions', get_string($hname, $hname).' restore additional options');
+                $mform->addElement('header', $hname.'restoreoptions', get_string($hname, $hname).' Restore Additional Options');
                 foreach ($options AS $opname => $option) {
                     if ($option->exists) {
-                        $mform->addElement('checkbox',"options[$hname][$opname]", '', $option->label);
+                        $mform->addElement('selectyesno',"options[$hname][$opname]", $option->label);
                         $mform->setDefault("options[$hname][$opname]", $option->default);
+                        // matching options go here?
                     }
                 }
             }
