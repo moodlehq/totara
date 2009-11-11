@@ -9,6 +9,7 @@ require_once ("$CFG->dirroot/backup/lib.php");
 require_once ("$CFG->dirroot/backup/restorelib.php");
 require_once ("$CFG->libdir/adminlib.php");
 require_once ("$CFG->dirroot/hierarchy/lib.php");
+require_once ("$CFG->dirroot/hierarchy/backuplib.php");
 require_once ("hierarchyrestore_forms.php");
 
 $file = optional_param('file');
@@ -81,20 +82,20 @@ print "Examining file \"$file\"";
 $errorstr = '';
 $contents = '';
 $usercount = '';
-$status = hierarchyrestore_precheck($file,$contents, $usercount, $errorstr);
+$status = hierarchyrestore_precheck($file,$contents, $errorstr);
 
 if (!$status || $contents=='') {
     error("An error occured $errorstr");
 }
 
-$chooseitems = new hierarchyrestore_chooseitems_form(null, compact('contents','usercount'));
+$chooseitems = new hierarchyrestore_chooseitems_form(null, compact('contents'));
 $chooseitems->display();
 
 //Print footer
 print_footer();
 
 
-function hierarchyrestore_precheck($file, &$contents, &$usercount, &$errorstr) {
+function hierarchyrestore_precheck($file, &$contents, &$errorstr) {
     global $CFG, $SESSION;
 
     //Prepend dataroot to variable to have the absolute path
@@ -235,39 +236,60 @@ function hierarchyrestore_precheck($file, &$contents, &$usercount, &$errorstr) {
         return false;
     }
 
+    $contents = new object();
     // check if backup includes user data
     if(isset($info['MOODLE_BACKUP']['#']['USERS']['0']['#']['USER'])) {
         $users = $info['MOODLE_BACKUP']['#']['USERS']['0']['#']['USER'];
-        $usercount = count($users);
+        $contents->options->usercount = count($users);
     }
     else {
-        $usercount = 0;
+        $contents->options->usercount = 0;
     }
 
    //print_object($info);
 
     // loop through XML and create array of hierarchies, frameworks and item counts
     // to be used to build the selection form
-    $contents = array();
     foreach($hierarchies as $hierarchy) {
         $name = $hierarchy['#']['NAME']['0']['#'];
-        $contents[$name] = array();
+        $contents->$name = new object();
         if(isset($hierarchy['#']['FRAMEWORKS']['0']['#']['FRAMEWORK'])) {
             $frameworks = $hierarchy['#']['FRAMEWORKS']['0']['#']['FRAMEWORK'];
+            $contents->$name->frameworks = array();
             foreach($frameworks AS $framework) {
                 $fullname = $framework['#']['FULLNAME']['0']['#'];
                 $id = $framework['#']['ID']['0']['#'];
-                $contents[$name][$id] = new object();
-                $contents[$name][$id]->fullname = $fullname;
+                $contents->$name->frameworks[$id] = new object();
+                $contents->$name->frameworks[$id]->fullname = $fullname;
                 $itemnameplural = strtoupper(get_string($name.'plural',$name));
                 $itemname = strtoupper(get_string($name, $name));
                 if(isset($framework['#'][$itemnameplural]['0']['#'][$itemname])) {
                     $items = $framework['#'][$itemnameplural]['0']['#'][$itemname];
-                    $contents[$name][$id]->itemcount = count($items);
+                    $contents->$name->frameworks[$id]->itemcount = count($items);
                 } else {
-                    $contents[$name][$id]->itemcount = 0;
+                    $contents->$name->frameworks[$id]->itemcount = 0;
                 }
 
+            }
+        }
+
+        // check to see if backup contains optional tags for this hierarchy
+        $hbackupfile = "$CFG->dirroot/hierarchy/type/$name/backuplib.php";
+        $optionsfunc = $name.'_options';
+        if(file_exists($hbackupfile)) {
+            include_once($hbackupfile);
+            if(function_exists($optionsfunc)) {
+                $options = $optionsfunc();
+                foreach ($options AS $option) {
+                    $opname = $option['name'];
+                    $optag = $option['tag'];
+                    $oplabel = $option['label'];
+                    $opdefault = $option['default'];
+                    // if optag is an array key, this option was included in backup
+                    $contents->$name->options->$opname->exists = array_key_exists_r($optag, $hierarchy);
+                    $contents->$name->options->$opname->label = $oplabel;
+                    $contents->$name->options->$opname->default = $opdefault;
+                }
             }
         }
     }
@@ -281,5 +303,21 @@ function hierarchyrestore_precheck($file, &$contents, &$usercount, &$errorstr) {
         }
     }
     return true;
+}
+
+
+function array_key_exists_r($needle, $haystack) {
+    $result = array_key_exists($needle, $haystack);
+    if ($result) {
+        return $result;
+    }
+
+    foreach ($haystack as $v) {
+        if (is_array($v)) {
+            $result = array_key_exists_r($needle, $v);
+        }
+        if ($result) return $result;
+    }
+    return $result;
 }
 

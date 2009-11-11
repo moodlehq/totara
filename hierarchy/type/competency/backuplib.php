@@ -218,32 +218,36 @@ function competency_backup_scales($bf, $options) {
 function competency_options() {
     $options = array();
 
-    $options['relations'] = array('name' => 'inc_relations',
+    $options['relations'] = array('name' => 'inc_relations', // used as an array key so no spaces
                                   'type' => 'selectyesno',
-                                  'label' => 'Include competency relations',
-                                  'default' => 1,
-                                  'format' => PARAM_BOOL
+                                  'label' => 'Include competency relations', // field label for both backup and restore
+                                  'default' => 1, // default option for field for both backup and restore forms
+                                  'format' => PARAM_BOOL, //TODO get rid of this and type???
+                                  'tag' => 'RELATIONS' // matched by key_exists in xmlise object - set to a tag that will exist if this option has been included
                             );
 
     $options['scales'] = array('name' => 'inc_scales',
                                   'type' => 'selectyesno',
                                   'label' => 'Include competency scales',
                                   'default' => 1,
-                                  'format' => PARAM_BOOL
+                                  'format' => PARAM_BOOL,
+                                  'tag' => 'SCALES'
                               );
 
     $options['custom'] = array('name' => 'inc_custom',
                                   'type' => 'selectyesno',
                                   'label' => 'Include custom fields',
                                   'default' => 1,
-                                  'format' => PARAM_BOOL
+                                  'format' => PARAM_BOOL,
+                                  'tag' => 'DEPTHS'
                               );
 
     $options['evidence'] = array('name' => 'inc_evidence',
                                   'type' => 'selectyesno',
                                   'label' => 'Include competency evidence',
                                   'default' => 1,
-                                  'format' => PARAM_BOOL
+                                  'format' => PARAM_BOOL,
+                                  'tag' => 'EVIDENCES'
                               );
 
     return $options;

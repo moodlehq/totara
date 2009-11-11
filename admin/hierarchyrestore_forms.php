@@ -28,29 +28,45 @@ class hierarchyrestore_chooseitems_form extends moodleform {
     function definition() {
         $mform =& $this->_form;
         $contents = $this->_customdata['contents'];
-        $usercount = $this->_customdata['usercount'];
 
         // general hierarchy restore options go here
         // TODO if no options other than usercount, only show header if section required
         $mform->addElement('header', 'hierarchyrestore', 'Hierarchy Restore');
-        if($usercount > 0) {
-            $mform->addElement('static','usercount', '', "$usercount Users found to restore.");
+        if($contents->options->usercount > 0) {
+            $mform->addElement('static','usercount', '', "{$contents->options->usercount} Users found to restore.");
             $mform->addElement('selectyesno','inc_users','Restore users and user data');
         }
         else {
             $mform->addElement('static','usercount', '', 'No users found to restore.');
         }
-        foreach ($contents AS $hname => $hierarchy) {
+        $hierarchies = get_backup_list();
+        foreach ($hierarchies as $hname) {
+            if(!isset($contents->$hname)) {
+                // TODO put in as a developer debug message?
+                //print "Hierarchy $hname not found in zip";
+                continue;
+            }
+
             $mform->addElement('header', $hname.'restore', get_string($hname, $hname).' Restore');
             $mform->addElement('static','message','Select which frameworks to restore','[Put checkbox controller here]');
-            foreach ($hierarchy AS $fwid => $framework) {
-                $fwfield = "framework$fwid";
+            foreach ($contents->$hname->frameworks AS $fwid => $framework) {
                 $itemcount = $framework->itemcount;
                 $fwname = $framework->fullname;
                 $label = "$fwname ($itemcount ".get_string("{$hname}plural",$hname).")";
                 $mform->addElement('checkbox',"framework[$hname][$fwid]", '', $label);
                 $mform->setDefault("framework[$hname][$fwid]",1);
             }
+            if(isset($contents->$hname->options)) {
+                $options = $contents->$hname->options;
+                $mform->addElement('header', $hname.'restoreoptions', get_string($hname, $hname).' restore additional options');
+                foreach ($options AS $opname => $option) {
+                    if ($option->exists) {
+                        $mform->addElement('checkbox',"options[$hname][$opname]", '', $option->label);
+                        $mform->setDefault("options[$hname][$opname]", $option->default);
+                    }
+                }
+            }
+
         }
         $this->add_action_buttons();
     }
