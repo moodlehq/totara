@@ -9,19 +9,22 @@ class hierarchyrestore_pickfile_form extends moodleform {
         $mform =& $this->_form;
         $filelist = $this->_customdata['filelist'];
 
+        // action for next page
         $mform->addElement('hidden','action','selectoptions');
+
         if(count($filelist) == 1) {
+            // only one file available
             $file = array_shift($filelist);
             $mform->addElement('hidden', 'file', $file);
-            $mform->addElement('html', get_string('pickfilehelp','hierarchy', "$CFG->dataroot/hierarchies"));
-            $mform->addElement('html', "<br /><br />One file found. Would you like to restore the file $file ?");
-            $this->add_action_buttons(false, 'Confirm');
+            $mform->addElement('html', '<p>' . get_string('pickfileone', 'hierarchy', $file) . '</p>');
+            $mform->addElement('html','<p>' . get_string('pickfilehelp','hierarchy', "$CFG->dataroot/hierarchies") . '</p>');
         } else if (count($filelist) > 0) {
+            // multiple possible files - choose with select box
             $mform->addElement('html', get_string('pickfilehelp', 'hierarchy', "$CFG->dataroot/hierarchies"));
-            $mform->addElement('select', 'file', 'Pick a file to restore', $filelist);
-            //$mform->addElement('submit', 'pickfilebutton','Confirm');
-            $this->add_action_buttons(true, 'Confirm');
+            $mform->addElement('select', 'file', get_string('pickfilemultiple','hierarchy'), $filelist);
         }
+        $this->add_action_buttons(false, get_string('continue'));
+
     }
 }
 
@@ -56,8 +59,8 @@ class hierarchyrestore_chooseitems_form extends moodleform {
                 $itemcount = $framework->itemcount;
                 $fwname = $framework->fullname;
                 $label = "$fwname ($itemcount ".get_string("{$hname}plural",$hname).")";
-                $mform->addElement('checkbox',"framework[$hname][$fwid]", '', $label);
-                $mform->setDefault("framework[$hname][$fwid]",1);
+                $mform->addElement('checkbox',"hierarchy[$hname][$fwid]", '', $label);
+                $mform->setDefault("hierarchy[$hname][$fwid]",1);
             }
             if(isset($contents->$hname->options)) {
                 $options = $contents->$hname->options;

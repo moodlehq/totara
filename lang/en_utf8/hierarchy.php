@@ -8,4 +8,6 @@ $string['showdepthfullname'] = 'Show Depth Fullname';
 $string['hierarchybackup'] = 'Hierarchy Backup';
 $string['hierarchyrestore'] = 'Hierarchy Restore';
 $string['pickfilehelp'] = 'If the file you want to restore is not available, make sure that the hierarchy backup .zip file is saved in {$a} and that permissions are correctly set.';
-
+$string['error:norestorefiles'] = 'No files found to restore from. {$a}';
+$string['pickfileone'] = 'One file found. Would you like to restore the file {$a}?';
+$string['pickfilemultiple'] = 'Pick a file to restore';
