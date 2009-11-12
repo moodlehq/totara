@@ -867,12 +867,12 @@ div.mask {
     padding-bottom: 0.25em;
 }
 
-#assigncompetency ul.treeview {
+.selectcompetencies ul.treeview {
     width: 65%;
     overflow: auto;
 }
 
-#assigncompetency #assignedcompetencies {
+.selectcompetencies #selectedcompetencies {
     float: right;
     width: 30%;
     border-left: 1px solid #ccc;
@@ -881,11 +881,11 @@ div.mask {
     padding: 0 10px;
 }
 
-#assigncompetency #assignedcompetencies p {
+.selectcompetencies #selectedcompetencies p {
     margin-top: 0;
 }
 
-#assigncompetency #assignedcompetencies span {
+.selectcompetencies #selectedcompetencies span {
     display: block;
     font-size: 0.8em;
     margin-top: 1em;

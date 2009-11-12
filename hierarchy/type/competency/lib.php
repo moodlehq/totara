@@ -160,6 +160,41 @@ class competency extends hierarchy {
     }
 
     /**
+     * Get related competencies
+     * @param $item object Competency
+     * @return array|false
+     */
+    function get_related($item) {
+        global $CFG;
+
+        return get_records_sql(
+            "
+            SELECT DISTINCT
+                c.id AS id,
+                c.fullname,
+                f.id AS fid,
+                f.fullname AS framework,
+                d.fullname AS depth
+            FROM
+                {$CFG->prefix}competency_relations r
+            INNER JOIN
+                {$CFG->prefix}competency c
+             ON r.id1 = c.id
+             OR r.id2 = c.id
+            INNER JOIN
+                {$CFG->prefix}competency_framework f
+             ON f.id = c.frameworkid
+            INNER JOIN
+                {$CFG->prefix}competency_depth d
+             ON d.id = c.depthid
+            WHERE
+                (r.id1 = {$item->id} OR r.id2 = {$item->id})
+            AND c.id != {$item->id}
+            "
+        );
+    }
+
+    /**
      * Run any code before printing admin header
      * @param $item object Competency being viewed
      * @return void
@@ -171,9 +206,10 @@ class competency extends hierarchy {
         require_once($CFG->dirroot.'/local/js/setup.php');
 
         // Get evidence
-        setup_lightbox(array(MBE_JS_TREEVIEW));
+        setup_lightbox(array(MBE_JS_TREEVIEW, MBE_JS_ADVANCED));
 
         require_js(array(
+            $CFG->wwwroot.'/local/js/competency.related.js',
             $CFG->wwwroot.'/local/js/competency.evidence.js',
         ));
     }
@@ -186,8 +222,12 @@ class competency extends hierarchy {
     function display_extra_view_info($item) {
         global $CFG, $can_edit, $editingon;
 
-        $evidence = $this->get_evidence($item);
+        // Display related competencies
+        $related = $this->get_related($item);
+        require $CFG->dirroot.'/hierarchy/type/competency/view-related.html';
 
+        // Display evidence
+        $evidence = $this->get_evidence($item);
         require $CFG->dirroot.'/hierarchy/type/competency/view-evidence.html';
     }
 }

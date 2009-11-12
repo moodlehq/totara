@@ -1,37 +1,35 @@
 <?php
 
-require_once('../../config.php');
+require_once('../../../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
-require_once($CFG->dirroot.'/competency/lib.php');
+require_once($CFG->dirroot.'/hierarchy/type/competency/lib.php');
 
 
 ///
 /// Setup / loading data
 ///
 
-// Template id
-$id = required_param('templateid', PARAM_INT);
+// Competency id
+$id = required_param('id', PARAM_INT);
 
-// Parent competency
+// Parent id
 $parentid = optional_param('parentid', 0, PARAM_INT);
 
+// Framework id
+$frameworkid = optional_param('frameworkid', 0, PARAM_INT);
+
 // Setup page
-admin_externalpage_setup('competencytemplatemanage', '', array(), '', $CFG->wwwroot.'/competency/template/assign_competency.php');
+admin_externalpage_setup('competencymanage', '', array(), '', $CFG->wwwroot.'/competency/related/add.php');
 
 // Check permissions
 $sitecontext = get_context_instance(CONTEXT_SYSTEM);
-require_capability('moodle/local:updatecompetencytemplate', $sitecontext);
+require_capability('moodle/local:updatecompetency', $sitecontext);
 
 // Setup hierarchy object
 $hierarchy = new competency();
 
-// Load template
-if (!$template = $hierarchy->get_template($id)) {
-    error('Template ID was incorrect');
-}
-
 // Load framework
-if (!$framework = $hierarchy->get_framework($template->frameworkid)) {
+if (!$framework = $hierarchy->get_framework($frameworkid)) {
     error('Competency framework could not be found');
 }
 
@@ -55,13 +53,14 @@ if (!$parentid) {
 
 ?>
 
-<div class="selectedcompetencies">
+<div class="selectcompetencies">
 
-<h2><?php echo get_string('assignnewcompetency', $hierarchy->prefix) ?></h2>
+<h2><?php echo get_string('addrelatedcompetencies', $hierarchy->prefix) ?></h2>
 
 <div id="selectedcompetencies">
     <p>
-        <?php echo get_string('dragheretoassign', $hierarchy->prefix) ?></p>
+        <?php echo get_string('dragheretoassign', $hierarchy->prefix) ?>
+    </p>
 </div>
 
 <p>
