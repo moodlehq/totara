@@ -71,7 +71,7 @@ print_heading(format_string("$strhierarchyrestore"));
 if($action == 'selectoptions') {
     // file picked, examine and pick restore options
 
-    print "Examining file \"$file\"";
+    print "Examining file \"$file\""; //todo get_string
     //Now calculate the unique_code for this restore
     $backup_unique_code = time();
 

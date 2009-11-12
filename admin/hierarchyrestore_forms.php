@@ -42,7 +42,7 @@ class hierarchyrestore_chooseitems_form extends moodleform {
 
         // general hierarchy restore options go here
         // TODO if no options other than usercount, only show header if section required
-        $mform->addElement('header', 'hierarchyrestore', 'Hierarchy Restore');
+        $mform->addElement('header', 'hierarchyrestore', get_string('hierarchyrestore','hierarchy'));
         if($contents->options->usercount > 0) {
             $mform->addElement('static','usercount', '', get_string('restoreusers', 'hierarchy',$contents->options->usercount));
             $mform->addElement('selectyesno','inc_users', get_string('restoreusersanddata','hierarchy'));
@@ -55,12 +55,14 @@ class hierarchyrestore_chooseitems_form extends moodleform {
         foreach ($hierarchies as $hname) {
             $i++;
             if(!isset($contents->$hname)) {
+                // This happens if an installation has hierarchy types installed
+                // but the zip file doesn't contain data for that type.
                 // TODO put in as a developer debug message?
                 //print "Hierarchy $hname not found in zip";
                 continue;
             }
 
-            $mform->addElement('header', $hname.'restore', get_string($hname, $hname).' Restore');
+            $mform->addElement('header', $hname.'restore', get_string($hname, $hname).' '.get_string('restore','hierarchy'));
             $mform->addElement('static','message',get_string('selectframeworks','hierarchy'),'');
             $this->add_checkbox_controller($i,'',array(),1);
             foreach ($contents->$hname->frameworks AS $fwid => $framework) {
@@ -73,7 +75,10 @@ class hierarchyrestore_chooseitems_form extends moodleform {
 
             if(isset($contents->$hname->options)) {
                 $options = $contents->$hname->options;
-                $mform->addElement('header', $hname.'restoreoptions', get_string($hname, $hname).' Restore Additional Options');
+                $mform->addElement('header', $hname.'restoreoptions',
+                    get_string($hname, $hname).' '.
+                    get_string('restore','hierarchy').' '.
+                    get_string('additionaloptions', 'hierarchy'));
                 foreach ($options AS $opname => $option) {
                     if ($option->exists) {
                         $mform->addElement('selectyesno',"options[$hname][$opname]", $option->label);
