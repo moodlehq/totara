@@ -72,13 +72,26 @@ if($action == 'selectoptions') {
     // file picked, examine and pick restore options
 
     print "Examining file \"$file\"";
-    $errorstr = '';
-    $contents = '';
-    $status = hierarchyrestore_precheck($file, $contents, $errorstr);
+    //Now calculate the unique_code for this restore
+    $backup_unique_code = time();
 
-    if (!$status || $contents=='') {
-        error("An error occured $errorstr");
+    $errorstr = '';
+    $info = hierarchyrestore_precheck($file, $backup_unique_code, $errorstr);
+
+    if (!$info || $errorstr != '') {
+        print_error('error:restoreerror','hierarchy', $returnurl, $errorstr);
     }
+
+    // Now we have the backup as an array, look through for content
+    // to determine how to display the form
+    $contents = get_backup_contents($info, $backup_unique_code, $errorstr);
+    if($contents === false) {
+        print_error('error:restoreerror','hierarchy', $returnurl, $errorstr);
+    }
+
+
+
+    // get contents here
 
     $chooseitems = new hierarchyrestore_chooseitems_form(null, compact('contents'));
     $chooseitems->display();
@@ -98,8 +111,8 @@ if($action == 'selectoptions') {
     $xml = file_get_contents($xml_file);
     $info = xmlize($xml);
 
+    print "<h2>Users</h2>";
     if($inc_users) {
-        print "<h2>Users</h2>";
         $matches = match_users($info,$backup_unique_code);
         if($matches) {
             print $matches;

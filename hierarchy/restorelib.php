@@ -24,53 +24,35 @@ function hierarchyrestore_get_backup_list($dir) {
 
 
 /**
- * Unpacks the zip file ready for restore and looks at contents
- * to determine restore options
- * TODO move second half (get_backup_contents) out of this function
+ * Unpacks the zip file ready for restore and does some basic checks 
+ * to make sure file looks okay
+ * Returns the contents of the XML file as an xmlized PHP array
 **/
-function hierarchyrestore_precheck($file, &$contents, &$errorstr) {
+function hierarchyrestore_precheck($file, $backup_unique_code, &$errorstr) {
     global $CFG, $SESSION;
 
     //Prepend dataroot to variable to have the absolute path
     $file = $CFG->dataroot."/hierarchies/".$file;
 
-    if (!defined('RESTORE_SILENTLY')) {
-        //Start the main table
-        echo "<table cellpadding=\"5\">";
-        echo "<tr><td>";
-
-        //Start the mail ul
-        echo "<ul>";
-    }
+    //Start the progress ul
+    echo "<ul>";
 
     //Check the file exists
     if (!is_file($file)) {
-        if (!defined('RESTORE_SILENTLY')) {
-            error ("File not exists ($file)");
-        } else {
-            $errorstr = "File not exists ($file)";
-            return false;
-        }
+        $errorstr = "File does not exist ($file)";
+        return false;
     }
 
     //Check the file name ends with .zip
     if (!substr($file,-4) == ".zip") {
-        if (!defined('RESTORE_SILENTLY')) {
-            error ("File has an incorrect extension");
-        } else {
-            $errorstr = 'File has an incorrect extension';
-            return false;
-        }
+        $errorstr = 'File has an incorrect extension';
+        return false;
     }
-
-    //Now calculate the unique_code for this restore
-    $backup_unique_code = time();
 
     //Now check and create the backup dir (if it doesn't exist)
-    if (!defined('RESTORE_SILENTLY')) {
-        echo "<li>".get_string("creatingtemporarystructures").'</li>';
-    }
+    echo "<li>".get_string("creatingtemporarystructures").'</li>';
     $status = check_and_create_backup_dir($backup_unique_code);
+
     //Empty dir
     if ($status) {
         $status = clear_backup_dir($backup_unique_code);
@@ -78,59 +60,39 @@ function hierarchyrestore_precheck($file, &$contents, &$errorstr) {
 
     //Now delete old data and directories under dataroot/temp/backup
     if ($status) {
-        if (!defined('RESTORE_SILENTLY')) {
-            echo "<li>".get_string("deletingolddata").'</li>';
-        }
+        echo "<li>".get_string("deletingolddata").'</li>';
         $status = backup_delete_old_data();
     }
 
     //Now copy he zip file to dataroot/temp/backup/backup_unique_code
     if ($status) {
-        if (!defined('RESTORE_SILENTLY')) {
-            echo "<li>".get_string("copyingzipfile").'</li>';
-        }
+        echo "<li>".get_string("copyingzipfile").'</li>';
         if (! $status = backup_copy_file($file,$CFG->dataroot."/temp/backup/".$backup_unique_code."/".basename($file))) {
-            if (!defined('RESTORE_SILENTLY')) {
-                notify("Error copying backup file. Invalid name or bad perms.");
-            } else {
-                $errorstr = "Error copying backup file. Invalid name or bad perms";
-                return false;
-            }
+            $errorstr = "Error copying backup file. Invalid name or bad perms";
+            return false;
         }
     }
 
     //Now unzip the file
     if ($status) {
-        if (!defined('RESTORE_SILENTLY')) {
-            echo "<li>".get_string("unzippingbackup").'</li>';
-        }
+        echo "<li>".get_string("unzippingbackup").'</li>';
         if (! $status = restore_unzip ($CFG->dataroot."/temp/backup/".$backup_unique_code."/".basename($file))) {
-            if (!defined('RESTORE_SILENTLY')) {
-                notify("Error unzipping backup file. Invalid zip file.");
-            } else {
-                $errorstr = "Error unzipping backup file. Invalid zip file.";
-                return false;
-            }
+            $errorstr = "Error unzipping backup file. Invalid zip file.";
+            return false;
         }
     }
 
     //Now check for the moodle.xml file
     if ($status) {
         $xml_file  = $CFG->dataroot."/temp/backup/".$backup_unique_code."/moodle.xml";
-        if (!defined('RESTORE_SILENTLY')) {
-            echo "<li>".get_string("checkingbackup").'</li>';
-        }
+        echo "<li>".get_string("checkingbackup").'</li>';
         if (! $status = restore_check_moodle_file ($xml_file)) {
             if (!is_file($xml_file)) {
                 $errorstr = 'Error checking backup file. moodle.xml not found at root level of zip file.';
             } else {
                 $errorstr = 'Error checking backup file. moodle.xml is incorrect or corrupted.';
             }
-            if (!defined('RESTORE_SILENTLY')) {
-                notify($errorstr);
-            } else {
-                return false;
-            }
+            return false;
         }
     }
 
@@ -138,23 +100,19 @@ function hierarchyrestore_precheck($file, &$contents, &$errorstr) {
 
     //Now read the whole xml file into a big array
     if ($status) {
-        if (!defined('RESTORE_SILENTLY')) {
-            echo "<li>".get_string("readinginfofrombackup").'</li>';
-        }
+        echo "<li>".get_string("readinginfofrombackup").'</li>';
         //Reading info from file
         $xml = file_get_contents($xml_file);
         $info = xmlize($xml);
 
    }
 
-    if (!defined('RESTORE_SILENTLY')) {
-        //End the main ul
-        echo "</ul>\n";
+    //End the progress ul
+    echo "</ul>\n";
 
-        //End the main table
-        echo "</td></tr>";
-        echo "</table>";
-    }
+    //End the main table
+    echo "</td></tr>";
+    echo "</table>";
 
     /*
     // debugging xml array
@@ -163,22 +121,12 @@ function hierarchyrestore_precheck($file, &$contents, &$errorstr) {
     $GLOBALS['traverse_array'] ='';
      */
 
-    // Now we have the backup as an array, look through for content
-    // to determine how to display the form
-    $contents = get_backup_contents($info, $backup_unique_code, $errorstr);
-    if($contents === false) {
+    if (!$status) {
+        $errorstr = "An error has occured"; // helpful! :P
         return false;
     }
+    return $info;
 
-    if (!$status) {
-        if (!defined('RESTORE_SILENTLY')) {
-            error ("An error has ocurred");
-        } else {
-            $errorstr = "An error has occured"; // helpful! :P
-            return false;
-        }
-    }
-    return true;
 }
 
 /*
@@ -200,7 +148,11 @@ function array_key_exists_r($needle, $haystack) {
     return $result;
 }
 
-
+/**
+ * Examines the backup file to look for specific tags, returning an object
+ * that provides information about the file contents. This is used to 
+ * display the select options form (hierarchyrestore_chooseitems_form).
+**/
 function get_backup_contents($info, $backup_unique_code, &$errorstr) {
     global $CFG;
 
@@ -213,7 +165,11 @@ function get_backup_contents($info, $backup_unique_code, &$errorstr) {
     }
 
     $contents = new object();
-    // check if backup includes user data
+
+    // include the unique code for this restore
+    $contents->backup_unique_code = $backup_unique_code;
+
+    // check if backup includes user data and count number of users
     if(isset($info['MOODLE_BACKUP']['#']['USERS']['0']['#']['USER'])) {
         $users = $info['MOODLE_BACKUP']['#']['USERS']['0']['#']['USER'];
         $contents->options->usercount = count($users);
@@ -222,10 +178,10 @@ function get_backup_contents($info, $backup_unique_code, &$errorstr) {
         $contents->options->usercount = 0;
     }
 
-    $contents->backup_unique_code = $backup_unique_code;
 
     // loop through XML and create array of hierarchies, frameworks and item counts
     // to be used to build the selection form
+    // We only extract the info we need for the next form
     foreach($hierarchies as $hierarchy) {
         $name = $hierarchy['#']['NAME']['0']['#'];
         $contents->$name = new object();
@@ -248,6 +204,10 @@ function get_backup_contents($info, $backup_unique_code, &$errorstr) {
 
             }
         }
+
+        // the rest of this function is hierarchy specific. We look for 
+        // specific tags based on the options set by [hierarchy-type]_options()
+        // in the file /hierarchy/type/[hierarchytype]/backuplib.php
 
         // check to see if backup contains optional tags for this hierarchy
         $hbackupfile = "$CFG->dirroot/hierarchy/type/$name/backuplib.php";
