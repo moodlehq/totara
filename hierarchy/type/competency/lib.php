@@ -236,6 +236,11 @@ class competency extends hierarchy {
     function display_extra_view_info($item) {
         global $CFG, $can_edit, $editingon;
 
+        if ($editingon) {
+            $str_edit = get_string('edit');
+            $str_remove = get_string('remove');
+        }
+
         // Display related competencies
         $related = $this->get_related($item);
         require $CFG->dirroot.'/hierarchy/type/competency/view-related.html';

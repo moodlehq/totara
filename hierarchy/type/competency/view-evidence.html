@@ -34,11 +34,6 @@ print_heading(get_string('evidenceitems', $this->prefix));
 </tr>
 <?php
 
-if ($editingon) {
-    $str_edit = get_string('edit');
-    $str_remove = get_string('remove');
-}
-
 if ($evidence) {
 
     foreach ($evidence as $eitem) {
