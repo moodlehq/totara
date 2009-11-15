@@ -1,8 +1,8 @@
 <?php
 
-require_once('../../config.php');
+require_once('../../../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
-require_once($CFG->dirroot.'/competency/lib.php');
+require_once($CFG->dirroot.'/hierarchy/type/competency/lib.php');
 
 
 ///
@@ -55,7 +55,7 @@ if (!$parentid) {
 
 ?>
 
-<div class="selectedcompetencies">
+<div class="selectcompetencies">
 
 <h2><?php echo get_string('assignnewcompetency', $hierarchy->prefix) ?></h2>
 

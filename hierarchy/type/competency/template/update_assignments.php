@@ -1,8 +1,8 @@
 <?php
 
-require_once('../../config.php');
+require_once('../../../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
-require_once($CFG->dirroot.'/competency/lib.php');
+require_once($CFG->dirroot.'/hierarchy/type/competency/lib.php');
 
 
 ///
@@ -76,12 +76,12 @@ foreach ($assignments as $assignment) {
     // Return html
     echo '<tr>';
     echo '<td>'.$depths[$competency->depthid]->fullname.'</td>';
-    echo "<td><a href=\"{$CFG->wwwroot}/{$hierarchy->prefix}/view.php?id={$competency->id}\">{$competency->fullname}</a></td>";
+    echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/item/view.php?type={$hierarchy->prefix}&id={$competency->id}\">{$competency->fullname}</a></td>";
 
     if ($editingon) {
         echo "<td style=\"text-align: center;\">";
 
-        echo "<a href=\"{$CFG->wwwroot}/{$hierarchy->prefix}/template/remove_assignment.php?templateid={$template->id}&assignment={$competency->id}\" title=\"$str_remove\">".
+        echo "<a href=\"{$CFG->wwwroot}/hierarchy/type/{$hierarchy->prefix}/template/remove_assignment.php?templateid={$template->id}&assignment={$competency->id}\" title=\"$str_remove\">".
 "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_remove\" /></a>";
 
         echo "</td>";

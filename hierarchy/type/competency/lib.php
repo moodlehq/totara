@@ -197,10 +197,15 @@ class competency extends hierarchy {
     /**
      * Run any code before printing admin header
      * @param $item object Competency being viewed
+     * @param $page string Unique identifier for admin page
      * @return void
      */
-    function admin_page_setup($item) {
+    function admin_page_setup($item, $page = '') {
         global $CFG;
+
+        if (!in_array($page, array('template/view', 'item/view'))) {
+            return;
+        }
 
         // Setup custom javascript
         require_once($CFG->dirroot.'/local/js/setup.php');
@@ -208,10 +213,19 @@ class competency extends hierarchy {
         // Get evidence
         setup_lightbox(array(MBE_JS_TREEVIEW, MBE_JS_ADVANCED));
 
-        require_js(array(
-            $CFG->wwwroot.'/local/js/competency.related.js',
-            $CFG->wwwroot.'/local/js/competency.evidence.js',
-        ));
+        switch ($page) {
+            case 'item/view':
+                require_js(array(
+                    $CFG->wwwroot.'/local/js/competency.related.js',
+                    $CFG->wwwroot.'/local/js/competency.evidence.js',
+                ));
+                break;
+            case 'template/view':
+                require_js(array(
+                    $CFG->wwwroot.'/local/js/competency.template.js',
+                ));
+                break;
+        }
     }
 
     /**

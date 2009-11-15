@@ -1999,13 +1999,15 @@ body#course-category .addcategory {
 
 body#course-index .buttons .singlebutton,
 body#course-category .buttons .singlebutton,
-body.hierarchy-item .buttons .singlebutton {
+body.hierarchy-item .buttons .singlebutton,
+body.hierarchy-type-competency-template .buttons .singlebutton {
   display: inline;
 }
 
 body#course-index .buttons,
 body#course-category .buttons,
-body.hierarchy-item .buttons {
+body.hierarchy-item .buttons,
+body.hierarchy-type-competency-template .buttons {
   text-align: center;
   margin-bottom: 15px;
 }

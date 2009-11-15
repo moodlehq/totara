@@ -1,6 +1,6 @@
 <?php
 
-require_once('../../config.php');
+require_once('../../../../config.php');
 require_once('../lib.php');
 require_once($CFG->libdir.'/adminlib.php');
 
@@ -108,8 +108,8 @@ if ($templates) {
 
         $cssclass = !$template->visible ? 'class="dimmed"' : '';
 
-        $row[] = "<a $cssclass href=\"{$CFG->wwwroot}/{$hierarchy->prefix}/template/view.php?id={$template->id}\">{$template->fullname}</a>";
-        $row[] = "<a $cssclass href=\"{$CFG->wwwroot}/{$hierarchy->prefix}/template/view.php?id={$template->id}\">{$template->competencycount}</a>";
+        $row[] = "<a $cssclass href=\"{$CFG->wwwroot}/hierarchy/type/{$hierarchy->prefix}/template/view.php?id={$template->id}\">{$template->fullname}</a>";
+        $row[] = "<a $cssclass href=\"{$CFG->wwwroot}/hierarchy/type/{$hierarchy->prefix}/template/view.php?id={$template->id}\">{$template->competencycount}</a>";
         $row[] = '0';
         $row[] = '0';
         $row[] = userdate($template->timecreated, '%A, %e %B %Y');
@@ -117,18 +117,18 @@ if ($templates) {
         // Add edit link
         $buttons = array();
         if ($editingon && $can_edit) {
-            $buttons[] = "<a href=\"{$CFG->wwwroot}/{$hierarchy->prefix}/template/edit.php?id={$template->id}\" title=\"$str_edit\">".
+            $buttons[] = "<a href=\"{$CFG->wwwroot}/hierarchy/type/{$hierarchy->prefix}/template/edit.php?id={$template->id}\" title=\"$str_edit\">".
                 "<img src=\"{$CFG->pixpath}/t/edit.gif\" class=\"iconsmall\" alt=\"$str_edit\" /></a>";
             if ($template->visible) {
-                $buttons[] = "<a href=\"{$CFG->wwwroot}/{$hierarchy->prefix}/template/index.php?hide={$template->id}\" title=\"$str_hide\">".
+                $buttons[] = "<a href=\"{$CFG->wwwroot}/hierarchy/type/{$hierarchy->prefix}/template/index.php?hide={$template->id}\" title=\"$str_hide\">".
                     "<img src=\"{$CFG->pixpath}/t/hide.gif\" class=\"iconsmall\" alt=\"$str_hide\" /></a>";
             } else {
-                $buttons[] = "<a href=\"{$CFG->wwwroot}/{$hierarchy->prefix}/template/index.php?show={$template->id}\" title=\"$str_show\">".
+                $buttons[] = "<a href=\"{$CFG->wwwroot}/hierarchy/type/{$hierarchy->prefix}/template/index.php?show={$template->id}\" title=\"$str_show\">".
                     "<img src=\"{$CFG->pixpath}/t/show.gif\" class=\"iconsmall\" alt=\"$str_show\" /></a>";
             }
         }
         if ($editingon && $can_delete) {
-            $buttons[] = "<a href=\"{$CFG->wwwroot}/{$hierarchy->prefix}/template/delete.php?id={$template->id}\" title=\"$str_delete\">".
+            $buttons[] = "<a href=\"{$CFG->wwwroot}/hierarchy/type/{$hierarchy->prefix}/template/delete.php?id={$template->id}\" title=\"$str_delete\">".
                 "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_delete\" /></a>";
         }
 
@@ -159,7 +159,7 @@ if ($can_add) {
 
     // Print button for creating new template
     $data = array('frameworkid' => $framework->id);
-    print_single_button($CFG->wwwroot.'/'.$hierarchy->prefix.'/template/edit.php', $data, get_string('addnewtemplate', $hierarchy->prefix), 'get');
+    print_single_button($CFG->wwwroot.'/hierarchy/type/'.$hierarchy->prefix.'/template/edit.php', $data, get_string('addnewtemplate', $hierarchy->prefix), 'get');
 
     echo '</div>';
 }

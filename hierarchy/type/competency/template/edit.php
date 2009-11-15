@@ -1,8 +1,8 @@
 <?php
 
-require_once('../../config.php');
+require_once('../../../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
-require_once($CFG->dirroot.'/competency/template/edit_form.php');
+require_once($CFG->dirroot.'/hierarchy/type/competency/template/edit_form.php');
 
 
 ///
@@ -55,7 +55,7 @@ $form->set_data($template);
 // cancelled
 if ($form->is_cancelled()) {
 
-    redirect("$CFG->wwwroot/competency/template/index.php?frameworkid=".$framework->id);
+    redirect("$CFG->wwwroot/hierarchy/type/competency/template/index.php?frameworkid=".$framework->id);
 
 // Update data
 } else if ($templatenew = $form->get_data()) {
@@ -90,7 +90,7 @@ if ($form->is_cancelled()) {
     // Log
     add_to_log(SITEID, 'competencytemplate', 'update', "view.php?id=$templatenew->id", '');
 
-    redirect("$CFG->wwwroot/competency/template/view.php?id=$templatenew->id");
+    redirect("$CFG->wwwroot/hierarchy/type/competency/template/view.php?id=$templatenew->id");
     //never reached
 }
 

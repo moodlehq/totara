@@ -1,9 +1,8 @@
 <?php
 
-require_once('../../config.php');
+require_once('../../../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
-require_once($CFG->dirroot.'/competency/lib.php');
-require_once($CFG->dirroot.'/local/js/setup.php');
+require_once($CFG->dirroot.'/hierarchy/type/competency/lib.php');
 
 
 ///
@@ -43,11 +42,8 @@ require_capability('moodle/local:view'.$hierarchy->prefix, $sitecontext);
 /// Display page
 ///
 
-setup_lightbox(array(MBE_JS_TREEVIEW, MBE_JS_ADVANCED));
-
-require_js(array(
-    $CFG->wwwroot.'/local/js/competency.assign.js',
-));
+// Run any hierarchy type specific code
+$hierarchy->admin_page_setup($item, 'template/view');
 
 /// Display page header
 admin_externalpage_print_header();
@@ -59,7 +55,7 @@ if ($editingon) {
     $str_edit = get_string('edit');
     $str_remove = get_string('remove');
 
-    $heading .= " <a href=\"{$CFG->wwwroot}/{$hierarchy->prefix}/template/edit.php?id={$item->id}\" title=\"$str_edit\">".
+    $heading .= " <a href=\"{$CFG->wwwroot}/hierarchy/type/{$hierarchy->prefix}/template/edit.php?id={$item->id}\" title=\"$str_edit\">".
             "<img src=\"{$CFG->pixpath}/t/edit.gif\" class=\"iconsmall\" alt=\"$str_edit\" /></a>";
 }
 
@@ -68,7 +64,7 @@ print_heading($heading);
 $depthstr = get_string('template', $hierarchy->prefix);
 
 ?>
-<table class="generalbox view<?php echo $hierarchy->prefix ?>" cellpadding="5" cellspacing="1">
+<table class="generalbox viewhierarchyitem" cellpadding="5" cellspacing="1">
 <tbody>
     <tr>
         <th class="header" width="200"><?php echo get_string('fullnameview', $hierarchy->prefix, $depthstr) ?></th>
@@ -117,12 +113,12 @@ if ($competencies) {
 
         echo '<tr>';
         echo '<td>'.$competency->depth.'</td>';
-        echo "<td><a href=\"{$CFG->wwwroot}/{$hierarchy->prefix}/view.php?id={$competency->id}\">{$competency->competency}</a></td>";
+        echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/item/view.php?type={$hierarchy->prefix}&id={$competency->id}\">{$competency->competency}</a></td>";
 
         if ($editingon) {
             echo "<td style=\"text-align: center;\">";
 
-            echo "<a href=\"{$CFG->wwwroot}/{$hierarchy->prefix}/template/remove_assignment.php?templateid={$item->id}&assignment={$competency->id}\" title=\"$str_remove\">".
+            echo "<a href=\"{$CFG->wwwroot}/hierarchy/type/{$hierarchy->prefix}/template/remove_assignment.php?templateid={$item->id}&assignment={$competency->id}\" title=\"$str_remove\">".
     "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_remove\" /></a>";
 
             echo "</td>";
@@ -155,9 +151,8 @@ if ($can_edit) {
 </script>
 
 <div class="singlebutton">
-<form action="<?php echo $CFG->wwwroot ?>/<?php echo $hierarchy->prefix ?>/template/assign_competency.php" method="get">
+<form action="<?php echo $CFG->wwwroot ?>/hierarchy/type/<?php echo $hierarchy->prefix ?>/template/assign_competency.php?templateid=<?php echo $item->id ?>" method="get">
 <div>
-<input type="hidden" name="<?php echo $hierarchy->prefix ?>_template_id" value="<?php echo $item->id ?>" />
 <input type="submit" id="show-assignment-dialog" value="<?php echo get_string('assignnewcompetency', $hierarchy->prefix) ?>" />
 </div>
 </form>
@@ -170,7 +165,7 @@ if ($can_edit) {
 // Return to template list
 $options = array('frameworkid' => $framework->id);
 print_single_button(
-    $CFG->wwwroot.'/'.$hierarchy->prefix.'/template/index.php',
+    $CFG->wwwroot.'/hierarchy/type/'.$hierarchy->prefix.'/template/index.php',
     $options,
     get_string('returntotemplates', $hierarchy->prefix),
     'get'

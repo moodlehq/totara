@@ -3,7 +3,6 @@ YAHOO.util.Event.onDOMReady(function () {
     YAHOO.dialog.competency = new yuiDialog(
         'assigncompetency',
         'show-assignment-dialog',
-        'assign_competency.php?templateid=' + competency_template_id,
         {
             buttons : [
                 { text: 'Save changes', handler: assigncompetency_save }
@@ -21,7 +20,7 @@ YAHOO.dialogSetupFunc.assigncompetency = function() {
     $('#assigncompetency #competencies').treeview();
 
     // Setup droppable
-    $('#assigncompetency #assignedcompetencies').droppable({
+    $('#assigncompetency #selectedcompetencies').droppable({
         drop: assigncompetency_drop,
     });
 
@@ -32,7 +31,7 @@ YAHOO.dialogSetupFunc.assigncompetency = function() {
 // Handle dropping
 function assigncompetency_drop(event, ui) {
     // Get drop box
-    var dropbox = $('#assigncompetency #assignedcompetencies');
+    var dropbox = $('#assigncompetency #selectedcompetencies');
 
     // Append clone
     dropbox.append(ui.draggable.clone());
@@ -104,7 +103,7 @@ function assigncompetency_save() {
 
     // Serialize data
     var assignments = '';
-    $('#assigncompetency #assignedcompetencies span').each(
+    $('#assigncompetency #selectedcompetencies span').each(
         function (intIndex) {
             var id = $(this).attr('id').substr(4);
 

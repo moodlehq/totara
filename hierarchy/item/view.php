@@ -56,7 +56,7 @@ $can_edit = has_capability('moodle/local:update'.$type, $sitecontext);
 ///
 
 // Run any hierarchy type specific code
-$hierarchy->admin_page_setup($item);
+$hierarchy->admin_page_setup($item, 'item/view');
 
 // Display page header
 admin_externalpage_print_header();

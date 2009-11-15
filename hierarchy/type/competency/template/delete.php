@@ -1,7 +1,7 @@
 <?php
 
-require_once('../../config.php');
-require_once('../lib.php');
+require_once('../../../../config.php');
+require_once($CFG->dirroot.'/hierarchy/type/competency/lib.php');
 require_once($CFG->libdir.'/adminlib.php');
 
 
@@ -35,8 +35,8 @@ if (!$delete) {
     $strdelete = get_string('deletechecktemplate', $hierarchy->prefix);
 
     notice_yesno("$strdelete<br /><br />" . format_string($template->fullname),
-                 "{$CFG->wwwroot}/{$hierarchy->prefix}/template/delete.php?id={$template->id}&amp;delete=".md5($template->timemodified)."&amp;sesskey={$USER->sesskey}",
-                 "{$CFG->wwwroot}/{$hierarchy->prefix}/template/index.php?frameworkid={$template->frameworkid}");
+                 "{$CFG->wwwroot}/hierarchy/type/{$hierarchy->prefix}/template/delete.php?id={$template->id}&amp;delete=".md5($template->timemodified)."&amp;sesskey={$USER->sesskey}",
+                 "{$CFG->wwwroot}/hierarchy/type/{$hierarchy->prefix}/template/index.php?frameworkid={$template->frameworkid}");
 
     print_footer();
     exit;
@@ -60,5 +60,5 @@ add_to_log(SITEID, $hierarchy->prefix.'template', 'delete', "view.php?id=$templa
 $hierarchy->delete_template($id);
 
 print_heading(get_string('deletedtemplate', $hierarchy->prefix, format_string($template->fullname)));
-print_continue("{$CFG->wwwroot}/{$hierarchy->prefix}/template/index.php?frameworkid={$template->frameworkid}");
+print_continue("{$CFG->wwwroot}/hierarchy/type/{$hierarchy->prefix}/template/index.php?frameworkid={$template->frameworkid}");
 print_footer();

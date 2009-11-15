@@ -404,9 +404,10 @@ class hierarchy {
     /**
      * Run any code before printing admin page header
      * @param $item object Item being viewed
+     * @param $page string Unique identifier for admin page
      * @return void
      */
-    function admin_page_setup($item) {}
+    function admin_page_setup($item, $page) {}
 
     /**
      * Print any extra markup to display on the hierarchy view item page
