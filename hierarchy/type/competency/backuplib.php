@@ -124,6 +124,7 @@ function competency_backup_custom_field($bf, $categoryid, $options) {
             fwrite($bf, full_tag('HIDDEN', 11, false, $field->hidden));
             fwrite($bf, full_tag('LOCKED', 11, false, $field->locked));
             fwrite($bf, full_tag('REQUIRED', 11, false, $field->required));
+            fwrite($bf, full_tag('FORCEUNIQUE', 11, false, $field->forceunique));
             fwrite($bf, full_tag('DEFAULTDATA', 11, false, $field->defaultdata));
             fwrite($bf, full_tag('PARAM1', 11, false, $field->param1));
             fwrite($bf, full_tag('PARAM2', 11, false, $field->param2));

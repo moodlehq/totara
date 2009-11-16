@@ -64,7 +64,6 @@ function competency_restore_framework($fwinfo, $options, $backup_unique_code) {
     if($newid) {
         backup_putid($backup_unique_code, 'competency_framework', $oldid, $newid);
 
-        // TODO stop it from inserting $@NULL@$ into db
         // now restore depth levels within this framework
         competency_restore_depth($oldid, $newid, $fwinfo, $options, $backup_unique_code);
 
@@ -175,6 +174,7 @@ function competency_restore_custom_field($oldcatid, $newcatid, $catinfo, $option
         $field->hidden = backup_todb($field_info['#']['HIDDEN']['0']['#']);
         $field->locked = backup_todb($field_info['#']['LOCKED']['0']['#']);
         $field->required = backup_todb($field_info['#']['REQUIRED']['0']['#']);
+        $field->forceunique = backup_todb($field_info['#']['FORCEUNIQUE']['0']['#']);
         $field->defaultdata = backup_todb($field_info['#']['DEFAULTDATA']['0']['#']);
         $field->param1 = backup_todb($field_info['#']['PARAM1']['0']['#']);
         $field->param2 = backup_todb($field_info['#']['PARAM2']['0']['#']);
@@ -190,7 +190,6 @@ function competency_restore_custom_field($oldcatid, $newcatid, $catinfo, $option
         if($depthid) {
             $field->depthid = $depthid->new_id;
         }
-
         $newid = insert_record('competency_depth_info_field', $field);
         if($newid) {
             backup_putid($backup_unique_code, 'competency_depth_info_field', $oldid, $newid);
@@ -298,9 +297,7 @@ function competency_restore_custom_data($oldcompid, $newcompid, $compinfo, $opti
         if($fieldid) {
             $value->fieldid = $fieldid->new_id;
         }
-
         $newid = insert_record('competency_depth_info_data',$value);
-
         if($newid) {
             backup_putid($backup_unique_code, 'competency_depth_info_data', $oldid, $newid);
         } else {

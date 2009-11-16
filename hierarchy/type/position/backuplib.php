@@ -58,10 +58,13 @@ function position_backup_position($bf, $fwid, $options) {
             fwrite($bf, full_tag('FULLNAME', 7, false, $position->fullname));
             fwrite($bf, full_tag('SHORTNAME', 7, false, $position->shortname));
             fwrite($bf, full_tag('IDNUMBER', 7, false, $position->idnumber));
-            fwrite($bf, full_tag('FRAMEWORKID', 7, false, $position->frameworkid));
-            fwrite($bf, full_tag('PARENTIDNUMBER', 7, false, $position->parentidnumber));
-            fwrite($bf, full_tag('SORTORDER', 7, false, $position->sortorder));
             fwrite($bf, full_tag('DESCRIPTION', 7, false, $position->description));
+            fwrite($bf, full_tag('FRAMEWORKID', 7, false, $position->frameworkid));
+            fwrite($bf, full_tag('PATH', 7, false, $position->path));
+            fwrite($bf, full_tag('DEPTHID', 7, false, $position->depthid));
+            fwrite($bf, full_tag('PARENTID', 7, false, $position->parentid));
+            fwrite($bf, full_tag('SORTORDER', 7, false, $position->sortorder));
+            fwrite($bf, full_tag('VISIBLE', 7, false, $position->visible));
             fwrite($bf, full_tag('TIMEVALIDFROM', 7, false, $position->timevalidfrom));
             fwrite($bf, full_tag('TIMEVALIDTO', 7, false, $position->timevalidto));
             fwrite($bf, full_tag('TIMECREATED', 7, false, $position->timecreated));
