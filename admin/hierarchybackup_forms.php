@@ -17,22 +17,20 @@ class hierarchybackup_select_form extends moodleform {
         //$mform->setDefault('userdata', 1);
 
         if(!empty($hlist)) {
+            $i = 0;
             foreach($hlist AS $hname) {
+                $i++;
                 $mform->addElement('header',$hname.'backup', get_string($hname, $hname).' Backup');
                 //TODO add checkbox controller
                 $first = true;
-                $mform->addElement('static','message','Select which frameworks to backup','[Put checkbox controller here]');
+                $mform->addElement('static','message','Select which frameworks to backup','');
+                $this->add_checkbox_controller($i,'',array(),1);
                 foreach($frameworks->$hname AS $fwid => $framework) {
                     $fwname = "framework$fwid";
                     $itemcount = $items->$hname->$fwname->items_count;
-                    //$mform->addElement('html','<table class="hierarchyform">');
-                    //$mform->addElement('html','<tr><td>');
                     $label = "{$framework->fullname} ({$itemcount} ".get_string("{$hname}plural",$hname).")";
-                    $mform->addElement('checkbox',"frameworks[$hname][$framework->id]", '', $label);
+                    $mform->addElement('advcheckbox',"frameworks[$hname][$framework->id]", '', $label, array('group'=>$i));
                     $mform->setDefault("frameworks[$hname][$framework->id]",1);
-                    //$mform->addElement('html','</td></tr>');
-
-                //$mform->addElement('html','</table>');
                 }
 
                $setoptionsfunc = $hname.'_options';

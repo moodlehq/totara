@@ -38,7 +38,7 @@ class hierarchyrestore_chooseitems_form extends moodleform {
         $contents = $this->_customdata['contents'];
 
         // action for next page
-        $mform->addElement('hidden','action','execute');
+        $mform->addElement('hidden','action','confirm');
 
         // general hierarchy restore options go here
         // TODO if no options other than usercount, only show header if section required

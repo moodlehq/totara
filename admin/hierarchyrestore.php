@@ -13,6 +13,8 @@ require_once ("$CFG->dirroot/hierarchy/backuplib.php");
 require_once ("$CFG->dirroot/hierarchy/restorelib.php");
 require_once ("hierarchyrestore_forms.php");
 
+global $restore;
+
 $file = optional_param('file');
 $action = optional_param('action', null);
 $cancel = optional_param('cancel', null);
@@ -20,6 +22,7 @@ $hierarchy = optional_param('hierarchy', null);
 $options = optional_param('options', null);
 $backup_unique_code = optional_param('backup_unique_code', null);
 $inc_users = optional_param('inc_users', null);
+$tobackup = optional_param('tobackup', null);
 
 require_login();
 if (!has_capability('moodle/site:backup', get_context_instance(CONTEXT_SYSTEM))) {
@@ -89,10 +92,7 @@ if($action == 'selectoptions') {
         print_error('error:restoreerror','hierarchy', $returnurl, $errorstr);
     }
 
-
-
-    // get contents here
-
+    // display the form to let user pick what to restore
     $chooseitems = new hierarchyrestore_chooseitems_form(null, compact('contents'));
     $chooseitems->display();
 
@@ -101,8 +101,8 @@ if($action == 'selectoptions') {
     exit;
 
 
-} else if ($action == 'execute') {
-    // do the actual restore
+} else if ($action == 'confirm') {
+    // TODO get_string
     print "<h1>Confirm Restore </h1>";
     print "<p>Are you sure you want to restore the following data. This operation cannot be undone.</p>";
 
@@ -132,6 +132,8 @@ if($action == 'selectoptions') {
     foreach ($hierarchy AS $hname => $inc_frameworks) {
         //$inc_frameworks = array_keys($frameworks);
         print '<h2>'.get_string($hname.'plural',$hname).'</h2>';
+        //TODO change this! Really bad idea using language string
+        //to find tags.
         $pluraltag = strtoupper(get_string($hname.'plural',$hname));
         $singletag = strtoupper(get_string($hname, $hname));
         if(isset($info['MOODLE_BACKUP']['#']['HIERARCHIES']['0']['#']['HIERARCHY']['0']['#']['FRAMEWORKS']['0']['#']['FRAMEWORK'])) {
@@ -148,7 +150,7 @@ if($action == 'selectoptions') {
                 $fwid = $framework['#']['ID']['0']['#'];
                 $fwname = $framework['#']['FULLNAME']['0']['#'];
             }
-            if (array_key_exists($fwid, $inc_frameworks)) {
+            if (isset($inc_frameworks[$fwid]) && $inc_frameworks[$fwid] == 1) {
                 print "Matching framework \"$fwname\":<br />";
 
 
@@ -156,10 +158,90 @@ if($action == 'selectoptions') {
             }
         }
     }
-
-
+    print_single_button($CFG->wwwroot.'/admin/hierarchyrestore.php', array('action'=> 'execute', 'tobackup'=>serialize($hierarchy), 'options'=>serialize($options), 'backup_unique_code'=>$backup_unique_code), 'Restore hierarchies', 'post');
     print_footer();
+    exit;
 
+} else if ($action == 'execute') {
+
+    if(isset($tobackup)) {
+        $tobackup = unserialize(stripslashes($tobackup));
+    } else {
+        $tobackup = array();
+    }
+    if(isset($options)) {
+        $options = unserialize(stripslashes($options));
+    } else {
+        $options = array();
+    }
+
+    //Reading info from file
+    $xml_file  = $CFG->dataroot."/temp/backup/".$backup_unique_code."/moodle.xml";
+    $xml = file_get_contents($xml_file);
+    $info = xmlize($xml);
+
+    // need to set a global pref to fool backup_encode_absolute_links()
+    // copy any existing prefs to temporary variable and restore afterwards
+    $savedrestore = $restore;
+    $restore->course_id = 1;
+    $restore->mods = array();
+
+    if(isset($info['MOODLE_BACKUP']['#']['HIERARCHIES']['0']['#']['HIERARCHY'])) {
+        $hierarchies = $info['MOODLE_BACKUP']['#']['HIERARCHIES']['0']['#']['HIERARCHY'];
+    } else {
+        $hierarchies = array();
+    }
+    foreach ($hierarchies AS $hierarchy) {
+        $hname = $hierarchy['#']['NAME']['0']['#'];
+        print '<h2>Restoring '.get_string($hname.'plural',$hname).'</h2>';
+        $restorefile = "$CFG->dirroot/hierarchy/type/$hname/restorelib.php";
+        $restorefunc = $hname.'_restore';
+        $hoptions = $options[$hname];
+        if(isset($tobackup[$hname])){
+            $fwtobackup = $tobackup[$hname];
+        }
+        else {
+            $fwtobackup = array();
+        }
+
+        if(file_exists($restorefile)) {
+            include_once($restorefile);
+            if(function_exists($restorefunc)) {
+                $restorefunc($hierarchy, $fwtobackup, $hoptions, $backup_unique_code);
+            } else {
+                print "Function $restorefunc not found";
+            }
+        } else {
+            print "No restorelib.php file found in hiearchy/type/$hname";
+        }
+    }
+    // restore any global preferences setting
+    $restore = $savedrestore;
+
+    // restore user data
+/*
+    // loop through hierarchies, calling [hname]_restore() for each one
+    // and passing frameworks and options
+    foreach ($hierarchy AS $hname => $frameworks) {
+        print '<h2>Restoring '.get_string($hname.'plural',$hname).'</h2>';
+        $restorefile = "$CFG->dirroot/hierarchy/type/$hname/restorelib.php";
+        $restorefunc = $hname.'_restore';
+        $hoptions = $options[$hname];
+
+        if(file_exists($restorefile)) {
+            include_once($restorefile);
+            if(function_exists($restorefunc)) {
+                $restorefunc($info, $frameworks, $hoptions);
+            } else {
+                print "Function $restorefunc not found";
+            }
+        } else {
+            print "No restorelib.php file found in hiearchy/type/$hname";
+        }
+    }
+*/
+    print_footer();
+    exit;
 } else {
     // first call to page - display list of zip files to pick from
     $hierarchyrestoredir = "$CFG->dataroot/hierarchies";
