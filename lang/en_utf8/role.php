@@ -52,6 +52,7 @@ $string['course:viewhiddencourses'] = 'View hidden courses';
 $string['course:viewhiddensections'] = 'View hidden sections';
 $string['course:viewhiddenuserfields'] = 'View hidden user fields';
 $string['course:viewparticipants'] = 'View participants';
+$string['course:viewprogress'] = 'View course progress';
 $string['course:viewscales'] = 'View scales';
 $string['course:visibility'] = 'Hide/show courses';
 $string['deletecourseoverrides'] = 'Delete all overrides in course';
