@@ -4,20 +4,19 @@
 function competency_backup($bf, $frameworks, $options) {
     fwrite($bf,start_tag('HIERARCHY',2,true));
     fwrite($bf,full_tag('NAME', 3, false, 'competency'));
-    if(is_array($frameworks)) {
-        if(!defined('BACKUP_SILENTLY')) {
-            print '<li>Backing up frameworks</li>';
-        }
+    // only backup frameworks if at least one is selected
+    if(is_array($frameworks) && array_keys($frameworks, '1')) {
+        print '<li>Backing up frameworks</li>';
         fwrite($bf,start_tag('FRAMEWORKS',3, true));
-        foreach($frameworks AS $fwid => $unused) {
-            competency_backup_framework($bf, $fwid, $options);
+        foreach($frameworks AS $fwid => $include) {
+            if($include) {
+                competency_backup_framework($bf, $fwid, $options);
+            }
         }
         fwrite($bf,end_tag('FRAMEWORKS', 3, true));
     }
     if(isset($options->inc_scales) && $options->inc_scales) {
-        if(!defined('BACKUP_SILENTLY')) {
-            print '<li>Backing up scales</li>';
-        }
+        print '<li>Backing up scales</li>';
         competency_backup_scales($bf, $options);
     }
     fwrite($bf,end_tag('HIERARCHY',2, true));
@@ -51,10 +50,10 @@ function competency_backup_framework($bf, $fwid, $options) {
         //competency_backup_scale_assignments($bf, $framework->id, $options);
     }
 
+    competency_backup_depth($bf, $framework->id, $options);
     competency_backup_competency($bf, $framework->id, $options);
-    if(isset($options->inc_custom) && $options->inc_custom) {
-        competency_backup_depth($bf, $framework->id, $options);
-    }
+
+
 
     fwrite($bf, end_tag('FRAMEWORK', 4, true));
 }
@@ -76,7 +75,9 @@ function competency_backup_depth($bf, $fwid, $options) {
             fwrite($bf, full_tag('TIMECREATED', 7, false, $depth->timecreated));
             fwrite($bf, full_tag('TIMEMODIFIED', 7, false, $depth->timemodified));
             fwrite($bf, full_tag('USERMODIFIED', 7, false, $depth->usermodified));
-            competency_backup_custom_category($bf, $depth->id, $options);
+            if(isset($options->inc_custom) && $options->inc_custom) {
+                competency_backup_custom_category($bf, $depth->id, $options);
+            }
             fwrite($bf, end_tag('DEPTH', 6, true));
         }
         fwrite($bf, end_tag('DEPTHS', 5, true));
@@ -239,7 +240,7 @@ function competency_options() {
                                   'label' => 'Include custom fields',
                                   'default' => 1,
                                   'format' => PARAM_BOOL,
-                                  'tag' => 'DEPTHS'
+                                  'tag' => 'DEPTH_CATEGORIES'
                               );
 
     $options['evidence'] = array('name' => 'inc_evidence',

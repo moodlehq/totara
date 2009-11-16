@@ -74,6 +74,11 @@ foreach ($hlist AS $index => $hname) {
     }
     $hierarchy = new $hname();
     $frameworks->$hname = $hierarchy->get_frameworks();
+
+    if(!$frameworks->$hname) {
+        continue;
+    }
+
     // get the items for each framework
     foreach($frameworks->$hname AS $framework) {
         $fwid = $framework->id;

@@ -3,6 +3,8 @@
 $string['adddepthlevel'] = 'Add a new depth level';
 $string['addnewposition'] = 'Add new position';
 $string['addnewframework'] = 'Add new position framework';
+$string['position'] = 'Position';
+$string['positionplural'] = 'Positions';
 $string['positions'] = 'Positions';
 $string['positionaddnew'] = 'Add a new position';
 $string['positionbulkaction'] = 'Bulk actions';

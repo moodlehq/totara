@@ -20,6 +20,12 @@ class hierarchybackup_select_form extends moodleform {
             $i = 0;
             foreach($hlist AS $hname) {
                 $i++;
+
+                // skip this hierarchy if no frameworks found
+                if(!$frameworks->$hname) {
+                    continue;
+                }
+
                 $mform->addElement('header',$hname.'backup', get_string($hname, $hname).' Backup');
                 //TODO add checkbox controller
                 $first = true;
