@@ -15,6 +15,6 @@ $string['pickfileone'] = 'One file found. Would you like to restore the file {$a
 $string['pickfilemultiple'] = 'Pick a file to restore';
 $string['error:restoreerror'] = 'An error occurred during the restore process: {$a}';
 $string['restoreusers'] = '{$a} Users found to restore.';
-$string['restorenouesrs'] = 'No Users found to restore.';
+$string['restorenousers'] = 'No Users found to restore.';
 $string['restoreusersanddata'] = 'Restore users and user data';
 $string['selectframeworks'] = 'Select which frameworks to restore';
