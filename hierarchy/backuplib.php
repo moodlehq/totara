@@ -68,6 +68,13 @@
  *
  *    See hierachy/type/competency/backuplib.php for an example of how to write
  *    this function
+ *
+ *11- The hierarchy/type/[hname]/backuplib.php should contain a function called
+ *    [hname]_get_item_tag(), which returns the singular of the item's tag name,
+ *    or if called with an optional first argument set to true, returns the
+ *    plural of the item's tag name. This is used to name the item XML tags within
+ *    the backup file and access them when restoring.
+ *
 **/
 
 /**
@@ -111,3 +118,5 @@ function get_backup_list() {
     return $hlist;
 
 }
+
+

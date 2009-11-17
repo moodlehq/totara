@@ -53,8 +53,6 @@ function competency_backup_framework($bf, $fwid, $options) {
     competency_backup_depth($bf, $framework->id, $options);
     competency_backup_competency($bf, $framework->id, $options);
 
-
-
     fwrite($bf, end_tag('FRAMEWORK', 4, true));
 }
 
@@ -254,3 +252,13 @@ function competency_options() {
 
     return $options;
 }
+
+
+function competency_get_item_tag($plural=false) {
+    if ($plural) {
+        return "COMPETENCIES";
+    } else {
+        return "COMPETENCY";
+    }
+}
+
