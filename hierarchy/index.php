@@ -116,8 +116,8 @@
 
     // prepare SQL to get page data
     $select = "SELECT id, depthid, shortname, fullname, visible";
-    if(!empty($hierarchy->extrafield)) {
-        $select .= ', '.$hierarchy->extrafield;
+    if(!empty($hierarchy->extrafields)) {
+        $select .= ', ' . implode(', ', $hierarchy->extrafields);
     }
     $from   = " FROM {$CFG->prefix}{$type}";
     $where  = " WHERE frameworkid=$frameworkid";
@@ -295,10 +295,12 @@
     }
 
 
-    if(!empty($hierarchy->extrafield)) {
-        $tablecolumns[] = $hierarchy->extrafield;
-        $tableheaders[] = get_string($hierarchy->extrafield, $type);
-        $colcount++;
+    if(!empty($hierarchy->extrafields)) {
+        foreach($hierarchy->extrafields as $extrafield) {
+            $tablecolumns[] = $extrafield;
+            $tableheaders[] = get_string($extrafield, $type);
+            $colcount++;
+        }
     }
 
     $table = new flexible_table($type.'-framework-index-'.$frameworkid);
@@ -309,8 +311,10 @@
         $table->column_style($tablecolumncf,'text-align','center');
     }
     $table->column_style('edit','width','80px');
-    if (!empty($hierarchy->extrafield)) {
-        $table->column_style($hierarchy->extrafield,'text-align','center');
+    if (!empty($hierarchy->extrafields)) {
+        foreach($hierarchy->extrafields as $extrafield) {
+            $table->column_style($extrafield,'text-align','center');
+        }
     }
 
     $table->set_attribute('cellspacing', '0');
@@ -411,8 +415,10 @@
             }
 
             
-            if(!empty($hierarchy->extrafield)) {
-                $data[$i][$j] = "<a href=\"{$CFG->wwwroot}/hierarchy/item/view.php?type={$type}&id={$item->id}\">{$item->{$hierarchy->extrafield}}</a>";
+            if(!empty($hierarchy->extrafields)) {
+                foreach($hierarchy->extrafields as $extrafield) {
+                    $data[$i][$j] = "<a href=\"{$CFG->wwwroot}/hierarchy/item/view.php?type={$type}&id={$item->id}\">{$item->{$extrafield}}</a>";
+                }
             }
 
             $i++;

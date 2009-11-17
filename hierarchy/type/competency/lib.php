@@ -60,7 +60,7 @@ class competency extends hierarchy {
      * The base table prefix for the class
      */
     var $prefix = 'competency';
-    var $extrafield = 'evidencecount';
+    var $extrafields = array('evidencecount');
 
     /**
      * Get template
