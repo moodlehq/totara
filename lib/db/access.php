@@ -1263,6 +1263,15 @@ $moodle_capabilities = array(
             'coursecreator' => CAP_ALLOW,
             'admin' => CAP_ALLOW
         )
+    ),
+
+    'coursereport/completion:view' => array(
+        'captype' => 'read',
+        'contextlevel' => CONTEXT_COURSE,
+        'legacy' => array(
+            'teacher' => CAP_ALLOW,
+            'admin' => CAP_ALLOW
+        )
     )
 );
 
