@@ -191,4 +191,49 @@ class completion_criteria_activity extends completion_criteria {
             $rs->close();
         }
     }
+
+    /**
+     * Return criteria progress details for display in reports
+     * @access  public
+     * @param   object  $completion     The user's completion record
+     * @return  array
+     */
+    public function get_details($completion) {
+        global $CFG;
+
+        // Get completion info
+        $course = new object();
+        $course->id = $completion->course;
+        $info = new completion_info($course);
+
+        $module = get_record('course_modules', 'id', $this->moduleinstance);
+        $data = $info->get_data($module, false, $completion->userid);
+
+        $activity = get_record($this->module, 'id', $module->instance);
+
+        $details = array();
+        $details['type'] = $this->get_title();
+        $details['criteria'] = '<a href="'.$CFG->wwwroot.'/mod/'.$this->module.'/view.php?id='.$this->moduleinstance.'">'.$activity->name.'</a>';
+
+        // Build requirements
+        $details['requirement'] = array();
+
+        if ($module->completion == 1) {
+            $details['requirement'][] = get_string('markingyourselfcomplete', 'completion');
+        } elseif ($module->completion == 2) {
+            if ($module->completionview) {
+                $details['requirement'][] = get_string('viewingactivity', 'completion', $this->module);
+            }
+
+            if ($module->completiongradeitemnumber) {
+                $details['requirement'][] = get_string('achievinggrade', 'completion');
+            }
+        }
+
+        $details['requirement'] = implode($details['requirement'], ', ');
+
+        $details['status'] = '';
+
+        return $details;
+    }
 }
