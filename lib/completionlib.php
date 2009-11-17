@@ -156,8 +156,8 @@ class completion_info {
 
     /**
      * Determines whether completion is enabled across entire site.
-     * 
-     * Static function. 
+     *
+     * Static function.
      *
      * @global object
      * @return int COMPLETION_ENABLED (true) if completion is enabled for the site,
@@ -674,7 +674,7 @@ class completion_info {
 
     /**
      * Deletes completion state related to an activity for all users.
-     * 
+     *
      * Intended for use only when the activity itself is deleted.
      *
      * @global object
@@ -713,12 +713,12 @@ class completion_info {
 
     /**
      * Recalculates completion state related to an activity for all users.
-     * 
+     *
      * Intended for use if completion conditions change. (This should be avoided
      * as it may cause some things to become incomplete when they were previously
      * complete, with the effect - for example - of hiding a later activity that
      * was previously available.)
-     * 
+     *
      * Resetting state of manual tickbox has same result as deleting state for
      * it.
      *
@@ -770,8 +770,8 @@ class completion_info {
      *   fill the cache, retrieves information from the entire course not just for
      *   this one activity
      * @param int $userid User ID or 0 (default) for current user
-     * @param array $modinfo Supply the value here - this is used for unit 
-     *   testing and so that it can be called recursively from within 
+     * @param array $modinfo Supply the value here - this is used for unit
+     *   testing and so that it can be called recursively from within
      *   get_fast_modinfo. (Needs only list of all CMs with IDs.)
      *   Otherwise the method calls get_fast_modinfo itself.
      * @return object Completion data (record from course_modules_completion)
@@ -884,7 +884,7 @@ class completion_info {
     /**
      * Updates completion data for a particular coursemodule and user (user is
      * determined from $data).
-     * 
+     *
      * (Internal function. Not private, so we can unit-test it.)
      *
      * @global object
@@ -976,10 +976,10 @@ class completion_info {
     /**
      * Obtains progress information across a course for all users on that course, or
      * for all users in a specific group. Intended for use when displaying progress.
-     * 
+     *
      * This includes only users who, in course context, have one of the roles for
      * which progress is tracked (the progresstrackedroles admin option).
-     * 
+     *
      * Users are included (in the first array) even if they do not have
      * completion progress for any course-module.
      *
@@ -1077,7 +1077,7 @@ WHERE
      * Calculates the completion state that would result from a graded item
      * (where grade-based completion is turned on) based on the actual grade
      * and settings.
-     * 
+     *
      * Internal function. Not private, so we can unit-test it.
      *
      * @uses COMPLETION_INCOMPLETE
@@ -1126,8 +1126,8 @@ WHERE
             $CFG->wwwroot.'/course/view.php?id='.$this->course->id,null,$error);
     }
 
-    /** 
-     * For testing only. Wipes information cached in user session. 
+    /**
+     * For testing only. Wipes information cached in user session.
      *
      * @global object
      */

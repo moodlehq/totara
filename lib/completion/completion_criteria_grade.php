@@ -207,4 +207,25 @@ class completion_criteria_grade extends completion_criteria {
             $rs->close();
         }
     }
+
+    /**
+     * Return criteria progress details for display in reports
+     * @access  public
+     * @param   object  $completion     The user's completion record
+     * @return  array
+     */
+    public function get_details($completion) {
+        $details = array();
+        $details['type'] = get_string('coursegrade', 'completion');
+        $details['criteria'] = get_string('passinggrade', 'completion');
+        $details['requirement'] = ((float)$this->gradepass).'%';
+        $details['status'] = '';
+
+        $grade = (float)$this->get_grade($completion);
+        if ($grade) {
+            $details['status'] = $grade.'%';
+        }
+
+        return $details;
+    }
 }

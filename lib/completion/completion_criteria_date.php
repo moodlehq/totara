@@ -170,4 +170,20 @@ class completion_criteria_date extends completion_criteria {
             $rs->close();
         }
     }
+
+    /**
+     * Return criteria progress details for display in reports
+     * @access  public
+     * @param   object  $completion     The user's completion record
+     * @return  array
+     */
+    public function get_details($completion) {
+        $details = array();
+        $details['type'] = get_string('datepassed', 'completion');
+        $details['criteria'] = get_string('remainingenroleduntildate', 'completion');
+        $details['requirement'] = userdate($this->date, '%d %B %Y');
+        $details['status'] = '';
+
+        return $details;
+    }
 }
