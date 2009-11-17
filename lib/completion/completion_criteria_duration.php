@@ -193,4 +193,24 @@ class completion_criteria_duration extends completion_criteria {
             $rs->close();
         }
     }
+
+    /**
+     * Return criteria progress details for display in reports
+     * @access  public
+     * @param   object  $completion     The user's completion record
+     * @return  array
+     */
+    public function get_details($completion) {
+        $details = array();
+        $details['type'] = get_string('periodpostenrolment', 'completion');
+        $details['criteria'] = get_string('remainingenroledfortime', 'completion');
+        $details['requirement'] = get_string('xdays', 'completion', ceil($this->enrolperiod / (60*60*24)));
+
+        // Get status
+        $timeenroled = $this->get_timeenroled($completion);
+        $timepassed = time() - $timeenroled;
+        $details['status'] = get_string('xdays', 'completion', floor($timepassed / (60*60*24)));
+
+        return $details;
+    }
 }

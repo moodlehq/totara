@@ -91,4 +91,20 @@ class completion_criteria_unenrol extends completion_criteria {
     public function get_title() {
         return get_string('unenrol');
     }
+
+    /**
+     * Return criteria progress details for display in reports
+     * @access  public
+     * @param   object  $completion     The user's completion record
+     * @return  array
+     */
+    public function get_details($completion) {
+        $details = array();
+        $details['type'] = get_string('unenrolment', 'completion');
+        $details['criteria'] = get_string('unenrolment', 'completion');
+        $details['requirement'] = get_string('unenrolingfromcourse', 'completion');
+        $details['status'] = '';
+
+        return $details;
+    }
 }

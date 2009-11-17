@@ -183,6 +183,14 @@ abstract class completion_criteria extends data_object {
     abstract public function get_title();
 
     /**
+     * Return criteria progress details for display in reports
+     * @access  public
+     * @param   object  $completion     The user's completion record
+     * @return  array
+     */
+    abstract public function get_details($completion);
+
+    /**
      * Return criteria status text for display in reports
      * @access  public
      * @param   object  $completion     The user's completion record

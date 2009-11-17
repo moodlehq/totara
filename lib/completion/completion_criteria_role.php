@@ -119,4 +119,20 @@ class completion_criteria_role extends completion_criteria {
         $role = get_field('role', 'name', 'id', $this->role);
         return $role;
     }
+
+    /**
+     * Return criteria progress details for display in reports
+     * @access  public
+     * @param   object  $completion     The user's completion record
+     * @return  array
+     */
+    public function get_details($completion) {
+        $details = array();
+        $details['type'] = get_string('manualcompletionby', 'completion');
+        $details['criteria'] = $this->get_title();
+        $details['requirement'] = get_string('markedcompleteby', 'completion', $details['criteria']);
+        $details['status'] = '';
+
+        return $details;
+    }
 }
