@@ -8,9 +8,4 @@
     $ADMIN->add('organisations', new admin_externalpage('organisationmanage', get_string('organisationmanage', 'organisation'), $CFG->wwwroot . '/hierarchy/index.php?type=organisation',
             array('moodle/local:updateorganisation')));
 
-    $ADMIN->add('organisations', new admin_externalpage('organisationupload', get_string('organisationupload', 'organisation'), "$CFG->wwwroot/$CFG->admin/organisation/upload.php",
-            array('moodle/local:updateorganisation')));
-
-    $ADMIN->add('organisations', new admin_externalpage('organisationdepthcustomfields', get_string('organisationcustomfields', 'organisation'), $CFG->wwwroot . '/organisation/depth/customfields/index.php',
-            array('moodle/local:vieworganisation')));
 ?>
