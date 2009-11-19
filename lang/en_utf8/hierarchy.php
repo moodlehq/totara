@@ -1,0 +1,20 @@
+<?php
+$string['displayoptions'] = 'Display Options';
+$string['error:hierarchytypenotfound'] = 'Hierarchy type $a not found';
+$string['hidecustomfields'] = 'Hide Custom Fields';
+$string['showdisplayoptions'] = 'Show Display Options';
+$string['showitemfullname'] = 'Show Item Fullname';
+$string['showdepthfullname'] = 'Show Depth Fullname';
+$string['hierarchybackup'] = 'Hierarchy Backup';
+$string['hierarchyrestore'] = 'Hierarchy Restore';
+$string['restore'] = 'Restore';
+$string['additionaloptions'] = 'Additional Options';
+$string['pickfilehelp'] = 'If the file you want to restore is not available, make sure that the hierarchy backup .zip file is saved in {$a} and that permissions are correctly set.';
+$string['error:norestorefiles'] = 'No files found to restore from. {$a}';
+$string['pickfileone'] = 'One file found. Would you like to restore the file {$a}?';
+$string['pickfilemultiple'] = 'Pick a file to restore';
+$string['error:restoreerror'] = 'An error occurred during the restore process: {$a}';
+$string['restoreusers'] = '{$a} Users found to restore.';
+$string['restorenousers'] = 'No Users found to restore.';
+$string['restoreusersanddata'] = 'Restore users and user data';
+$string['selectframeworks'] = 'Select which frameworks to restore';

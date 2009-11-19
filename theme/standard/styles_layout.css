@@ -1998,12 +1998,16 @@ body#course-category .addcategory {
 }
 
 body#course-index .buttons .singlebutton,
-body#course-category .buttons .singlebutton {
+body#course-category .buttons .singlebutton,
+body.hierarchy-item .buttons .singlebutton,
+body.hierarchy-type-competency-template .buttons .singlebutton {
   display: inline;
 }
 
 body#course-index .buttons,
-body#course-category .buttons {
+body#course-category .buttons,
+body.hierarchy-item .buttons,
+body.hierarchy-type-competency-template .buttons {
   text-align: center;
   margin-bottom: 15px;
 }
@@ -2106,7 +2110,8 @@ body#course-info .generalbox.info {
   border-style:solid;
 }
 
-.categorypicker {
+.categorypicker,
+.frameworkpicker {
   text-align:center;
   padding-bottom:10px;
 }
@@ -4374,4 +4379,7 @@ wikiadminactions {
     padding-left: 7px;
     float: left;
 }
-
+table.viewhierarchyitem th {
+    text-align: left;
+    vertical-align: top;
+}

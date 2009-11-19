@@ -333,12 +333,12 @@ ul.tabrow1 li a:visited,
   background: transparent url(images/tab/right.gif) no-repeat top right;
   padding: 10px 0 4px 0;
   position: relative;
-  z-index: 0;
+  z-index: -1;
 }
 
 .navbar {
   position: relative;
-  z-index: 1;
+  z-index: 0;
 }
 
 .header-tabs {
@@ -447,11 +447,7 @@ ul.tabrow1 li a:visited,
 }
 #front-blocks .front-blocks-content {
  font-size: 12px;
-<<<<<<< HEAD
- padding: 0 0px 5px 0px;
-=======
  padding: 0 10px 5px 10px;
->>>>>>> mdl19-mitms-course-completion-dev
  height: 100px;
  overflow: hidden;
 }
@@ -769,4 +765,128 @@ div.yuimenu .yuichildtree .yuimenuitem {
 }
 #adminsettings fieldset {
   border:none;
+}
+
+
+/** Lightbox styling **/
+div.yui-dialog div.yui-panel {
+    border: 5px solid #666;
+    background-color: #fff;
+    padding: 10px 10px 5px;
+}
+
+div.yui-dialog div.yui-panel .bd {
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 5px;
+    overflow: auto;
+}
+
+div.yui-dialog div.yui-panel a.container-close {
+    float: right;
+    width: 66px;
+    height: 22px;
+    background-image: url(closelabel.gif);
+}
+
+div.yui-dialog div.yui-panel .bd h2 {
+    border-bottom: 1px solid #CACACA;
+    font-size: 1em;
+    margin: 0 0 10px;
+    padding-bottom: 5px;
+    text-align: left;
+    font-weight: bold;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    color: #002C3F;
+}
+
+div.yui-dialog div.yui-panel .ft {
+    float: left;
+}
+
+div.yui-dialog div.yui-panel ul.treeview {
+    height: 170px;
+/*    overflow: auto;*/
+}
+
+div.yui-dialog div.yui-panel ul.treeview li {
+    font-size: 0.8em;
+}
+
+div.yui-dialog div.yui-panel ul.treeview li li {
+    font-size: 1em;
+}
+
+div.yui-dialog div.yui-panel ul.treeview li span {
+    padding-left: 0.25em;
+}
+
+div.yui-dialog div.yui-panel ul.treeview li span.folder {
+    padding-left: 1.75em;
+}
+
+div.yui-dialog div.yui-panel ul.treeview li span.clickable {
+    cursor: pointer;
+}
+
+div.yui-dialog div.yui-panel ul.treeview li span.ui-draggable {
+    cursor: pointer;
+}
+
+div.mask {
+    background-color: #666;
+	filter:alpha(opacity=50);
+	-moz-opacity:0.5;
+	-khtml-opacity: 0.5;
+	opacity: 0.5;
+}
+
+/** Competencies lightbox styling **/
+#addevidence #available-evidence {
+    float: right;
+    width: 40%;
+    border-left: 1px solid #ccc;
+    height: 200px;
+    overflow: auto;
+    padding: 0 10px;
+}
+
+#addevidence #available-evidence h3 {
+    margin: 0 0 0.5em;
+}
+
+#addevidence #available-evidence ul {
+    font-size: 0.8em;
+    margin: 0.25em 0 1em;
+    list-style: none;
+    padding: 0;
+}
+
+#addevidence #available-evidence ul li {
+    font-size: 1em;
+    padding-bottom: 0.25em;
+}
+
+.selectcompetencies ul.treeview {
+    width: 65%;
+    overflow: auto;
+}
+
+.selectcompetencies #selectedcompetencies {
+    float: right;
+    width: 30%;
+    border-left: 1px solid #ccc;
+    height: 200px;
+    overflow: auto;
+    padding: 0 10px;
+}
+
+.selectcompetencies #selectedcompetencies p {
+    margin-top: 0;
+}
+
+.selectcompetencies #selectedcompetencies span {
+    display: block;
+    font-size: 0.8em;
+    margin-top: 1em;
 }

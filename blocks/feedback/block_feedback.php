@@ -26,7 +26,7 @@ class block_feedback extends block_base {
         // get the feedback instances on the course site
         // show only feedback does have an existing mapping at feedback_sitecourse_map on the current course
         // or feedback that does not have an explicit mapping on feedback_sitecourse_map
-        
+
         // does not work with mysql
         // $sql = "select cm.id, f.name from
                 // {$CFG->prefix}feedback f, {$CFG->prefix}course_modules cm,
@@ -39,20 +39,20 @@ class block_feedback extends block_base {
                   // FROM {$CFG->prefix}feedback f, {$CFG->prefix}course_modules cm, {$CFG->prefix}feedback_sitecourse_map sm, {$CFG->prefix}modules m
                   // WHERE f.id = cm.instance
                     // AND f.course = '".SITEID."'
-                    // AND m.id = cm.module 
+                    // AND m.id = cm.module
                     // AND m.name = 'feedback'
-                    // AND sm.courseid = $courseid 
+                    // AND sm.courseid = $courseid
                     // AND sm.feedbackid = f.id";
-        
+
         // if ($feedbacks = get_records_sql($sql)) {
-            
+
         if ( $feedbacks = feedback_get_feedbacks_from_sitecourse_map($courseid)) { //arb
-        
+
             foreach ($feedbacks as $feedback) { //arb
                 $this->content->text .= '<a href="'.$CFG->wwwroot.'/mod/feedback/view.php?id='. //arb
                 $feedback->cmid.'&courseid='.$courseid.'">'.$feedback->name . '</a><br/>'; //arb
             }
-    
+
         }
 
         $this->content->footer = '';

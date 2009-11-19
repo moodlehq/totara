@@ -109,4 +109,20 @@ class completion_criteria_self extends completion_criteria {
     public function get_title() {
         return get_string('selfcompletion', 'completion');
     }
+
+    /**
+     * Return criteria progress details for display in reports
+     * @access  public
+     * @param   object  $completion     The user's completion record
+     * @return  array
+     */
+    public function get_details($completion) {
+        $details = array();
+        $details['type'] = $this->get_title();
+        $details['criteria'] = $this->get_title();
+        $details['requirement'] = get_string('markingyourselfcomplete', 'completion');
+        $details['status'] = '';
+
+        return $details;
+    }
 }
