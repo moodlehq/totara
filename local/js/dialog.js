@@ -53,7 +53,7 @@ function yuiDialog(title, buttonid, config) {
             visible : false,
             draggable : false,
             modal : true,
-            underlay : 'shadow',
+            underlay : 'shadow'
         };
 
         // Instantiate the Dialog

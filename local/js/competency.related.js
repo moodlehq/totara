@@ -6,7 +6,7 @@ YAHOO.util.Event.onDOMReady(function () {
         {
             buttons : [
                 { text: 'Save changes', handler: relatedcompetencies_save }
-            ],
+            ]
         }
     );
 });
@@ -21,7 +21,7 @@ YAHOO.dialogSetupFunc.relatedcompetencies = function() {
 
     // Setup droppable
     $('#relatedcompetencies #selectedcompetencies').droppable({
-        drop: relatedcompetencies_drop,
+        drop: relatedcompetencies_drop
     });
 
     relatedcompetencies_bind($('#relatedcompetencies #competencies'));
@@ -57,7 +57,7 @@ function relatedcompetencies_bind(parent_element) {
     // Make draggable
     $('span:not(.empty)', parent_element).draggable({
         containment: 'body',
-        helper: 'clone',
+        helper: 'clone'
     });
 }
 
@@ -69,7 +69,7 @@ function relatedcompetencies_load_competencies(parentid) {
     {
         success:    relatedcompetencies_add_competencies,
         failure:    function(o) {},
-        argument:   parentid,
+        argument:   parentid
     }
 
     // Load courses
@@ -119,7 +119,7 @@ function relatedcompetencies_save() {
     var callback =
     {
         success:    relatedcompetencies_update,
-        failure:    function(o) {},
+        failure:    function(o) {}
     }
 
     YAHOO.util.Connect.asyncRequest(

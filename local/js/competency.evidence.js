@@ -44,7 +44,7 @@ function evidence_load_courses(cat) {
     {
         success:    evidence_add_courses,
         failure:    function(o) {},
-        argument:   cat,
+        argument:   cat
     }
 
     // Load courses
@@ -102,7 +102,7 @@ function evidence_load_coursedata(course) {
     {
         success:    evidence_display_coursedata,
         failure:    function(o) {},
-        argument:   course,
+        argument:   course
     }
 
     // Load data
