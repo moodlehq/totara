@@ -134,7 +134,7 @@ function completion_cron_completions() {
     while (1) {
 
         // Grab records for current user/course
-        foreach ($rs as $record) {
+        while ($record = rs_fetch_next_record($rs)) {
             // If we are still grabbing the same users completions
             $record = (object)$record;
             if ($record->userid === $current_user && $record->course === $current_course) {
