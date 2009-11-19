@@ -1344,6 +1344,14 @@ if ( file_exists(dirname(dirname(__FILE__)) . '/config.php')) {
     admin_apply_default_settings(NULL, true);
     set_config('chat_serverhost', 'localhost'); // won't be set correctly since it relies on $_SERVER['HTTP_HOST']
 
+    if (file_exists($CFG->dirroot . '/local/lib.php')) {
+        if (function_exists('local_postinst')) {
+            if (!local_postinst()) {
+                print_error('localpostinstfailed', 'error');
+            }
+        }
+    }
+
     if ( $verbose > CLI_NO ) {
         print_newline();
         console_write(STDOUT,'upgradingcompleted');
