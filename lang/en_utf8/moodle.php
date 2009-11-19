@@ -272,6 +272,7 @@ $string['coursecategories'] = 'Course categories';
 $string['coursecategory'] = 'Course category';
 $string['coursecategorydeleted'] = 'Deleted course category $a';
 $string['coursecompletion'] = 'Course completion';
+$string['coursecompletiondata'] = 'Course completion data';
 $string['coursecompletions'] = 'Course completions';
 $string['coursecreators'] = 'Course creator';
 $string['coursecreatorsdescription'] = 'Course creators can create new courses and teach in them.';
