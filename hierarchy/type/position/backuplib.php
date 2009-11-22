@@ -1,20 +1,23 @@
 <?php
 
 function position_backup($bf, $frameworks, $options) {
-     fwrite($bf,start_tag('HIERARCHY',2,true));
-    fwrite($bf,full_tag('NAME', 3, false, 'position'));
-    // only backup frameworks if at least one is selected
+    // only create hierarchy tag if there are frameworks
     if(is_array($frameworks) && array_keys($frameworks, '1')) {
-        print '<li>Backing up frameworks</li>';
-        fwrite($bf,start_tag('FRAMEWORKS',3, true));
-        foreach($frameworks AS $fwid => $include) {
-            if($include) {
-                position_backup_framework($bf, $fwid, $options);
+        fwrite($bf,start_tag('HIERARCHY',2,true));
+        fwrite($bf,full_tag('NAME', 3, false, 'position'));
+        // only backup frameworks if at least one is selected
+        if(is_array($frameworks) && array_keys($frameworks, '1')) {
+            print '<li>Backing up frameworks</li>';
+            fwrite($bf,start_tag('FRAMEWORKS',3, true));
+            foreach($frameworks AS $fwid => $include) {
+                if($include) {
+                    position_backup_framework($bf, $fwid, $options);
+                }
             }
+            fwrite($bf,end_tag('FRAMEWORKS', 3, true));
         }
-        fwrite($bf,end_tag('FRAMEWORKS', 3, true));
+        fwrite($bf,end_tag('HIERARCHY',2, true));
     }
-    fwrite($bf,end_tag('HIERARCHY',2, true));
     return true;
 }
 
@@ -194,3 +197,21 @@ function position_options() {
     return $options;
 
 }
+
+/**
+ * Used by hierarchy/restorelib.php to determine which tags to look inside
+ * when restoring items
+ *
+ * @param boolean $plural True if the plural of the tag is required
+ * @return string Returns a string containing the tag name for this hierarchy
+ *                The plural version of the tag is returned if $plural is true
+ *                otherwise the singlular is returned
+**/
+function position_get_item_tag($plural=false) {
+    if ($plural) {
+        return "POSITIONS";
+    } else {
+        return "POSITION";
+    }
+}
+

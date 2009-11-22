@@ -244,7 +244,7 @@ if($action == 'selectoptions') {
 } else {
     // first call to page - display list of zip files to pick from
     $hierarchyrestoredir = "$CFG->dataroot/hierarchies";
-    $filelist = hierarchyrestore_get_backup_list($hierarchyrestoredir);
+    $filelist = hierarchyrestore_get_backup_files($hierarchyrestoredir);
 
     if(!$filelist || count($filelist) == 0) {
         print_error('error:norestorefiles','hierarchy', '', get_string('pickfilehelp','hierarchy',$hierarchyrestoredir));

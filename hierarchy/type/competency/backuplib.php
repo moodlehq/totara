@@ -2,24 +2,30 @@
 
 // if this function exists hierarchybackup.php will try to backup competencies
 function competency_backup($bf, $frameworks, $options) {
-    fwrite($bf,start_tag('HIERARCHY',2,true));
-    fwrite($bf,full_tag('NAME', 3, false, 'competency'));
-    // only backup frameworks if at least one is selected
-    if(is_array($frameworks) && array_keys($frameworks, '1')) {
-        print '<li>Backing up frameworks</li>';
-        fwrite($bf,start_tag('FRAMEWORKS',3, true));
-        foreach($frameworks AS $fwid => $include) {
-            if($include) {
-                competency_backup_framework($bf, $fwid, $options);
+    // only create hierarchy tag if there are frameworks or scales
+    if((is_array($frameworks) && array_keys($frameworks, '1')) ||
+       (isset($options->inc_scales) && $options->inc_scales)) {
+        fwrite($bf,start_tag('HIERARCHY',2,true));
+        fwrite($bf,full_tag('NAME', 3, false, 'competency'));
+
+        // only backup frameworks if at least one is selected
+        if(is_array($frameworks) && array_keys($frameworks, '1')) {
+            print '<li>Backing up frameworks</li>';
+            fwrite($bf,start_tag('FRAMEWORKS',3, true));
+            foreach($frameworks AS $fwid => $include) {
+                if($include) {
+                    competency_backup_framework($bf, $fwid, $options);
+                }
             }
+            fwrite($bf,end_tag('FRAMEWORKS', 3, true));
         }
-        fwrite($bf,end_tag('FRAMEWORKS', 3, true));
+        // only backup scales if they are required
+        if(isset($options->inc_scales) && $options->inc_scales) {
+            print '<li>Backing up scales</li>';
+            competency_backup_scales($bf, $options);
+        }
+        fwrite($bf,end_tag('HIERARCHY',2, true));
     }
-    if(isset($options->inc_scales) && $options->inc_scales) {
-        print '<li>Backing up scales</li>';
-        competency_backup_scales($bf, $options);
-    }
-    fwrite($bf,end_tag('HIERARCHY',2, true));
     return true;
 }
 
@@ -252,8 +258,15 @@ function competency_options() {
 
     return $options;
 }
-
-
+/**
+ * Used by hierarchy/restorelib.php to determine which tags to look inside
+ * when restoring items
+ *
+ * @param boolean $plural True if the plural of the tag is required
+ * @return string Returns a string containing the tag name for this hierarchy
+ *                The plural version of the tag is returned if $plural is true
+ *                otherwise the singlular is returned
+**/
 function competency_get_item_tag($plural=false) {
     if ($plural) {
         return "COMPETENCIES";

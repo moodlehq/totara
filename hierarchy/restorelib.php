@@ -13,13 +13,29 @@
  *
  * 3- restorelib.php must include a function called [hname]_restore(), which
  *    is the function that performs the restore for that hierarchy
+ *
+ *    [hname]_restore() must have the following arguments:
+ *    - $info
+ *      Contains the XMLized data for the restore process
+ *    - $fwtobackup
+ *      Array of frameworks to be backed up. Keys are framework IDs, values
+ *      are 1 if framework is to be included or 0 otherwise.
+ *    - $options
+ *      Array of options for this restore. Keys are specified in
+ *      [hname]_options(), values are set by user
+ *    - $backup_unique_code
+ *      Is the unique code associated with this restore (used to track
+ *      old and new ids during the process)
 **/
 
 /**
  * Get list of possible files to restore from hierarchy backup folder
  *
+ * @param string $dir Directory that contains the hierarchy backup files
+ * @return mixed Array of possible backup files. If no files returns an
+ *               empty array. If $dir is not a directory returns false
 **/
-function hierarchyrestore_get_backup_list($dir) {
+function hierarchyrestore_get_backup_files($dir) {
     if(!is_dir($dir)) {
         return false;
     }
@@ -42,6 +58,15 @@ function hierarchyrestore_get_backup_list($dir) {
  * Unpacks the zip file ready for restore and does some basic checks 
  * to make sure file looks okay
  * Returns the contents of the XML file as an xmlized PHP array
+ *
+ * @param string $file Name of the file to be restored
+ * @param int $backup_unique_code Unique code used to track ids during
+ *            the restore process
+ * @param string &$errorstr Passed by reference. Error string that can
+ *                          be set in this function which is displayed
+ *                          if function returns false
+ * @return mixed XMLized array based on file contents or false if checks
+ *               fail.
 **/
 function hierarchyrestore_precheck($file, $backup_unique_code, &$errorstr) {
     global $CFG, $SESSION;
@@ -147,6 +172,10 @@ function hierarchyrestore_precheck($file, $backup_unique_code, &$errorstr) {
 /*
  * Recursive version of array_key_exists() used to search XMLize data
  * for particular tags
+ *
+ * @param string $needle Array key to look for
+ * @param array $haystack Nested array to search for key
+ * @return boolean True if key exists, false otherwise
 **/
 function array_key_exists_r($needle, $haystack) {
     $result = array_key_exists($needle, $haystack);
@@ -167,6 +196,28 @@ function array_key_exists_r($needle, $haystack) {
  * Examines the backup file to look for specific tags, returning an object
  * that provides information about the file contents. This is used to 
  * display the select options form (hierarchyrestore_chooseitems_form).
+ *
+ * @param array $info XMLized array containing parsed XML file
+ * @param int $backup_unique_code Unique code used to track ids during restore
+ *                                process.
+ * @param string $errorstr Passed by reference. Error string which is displayed
+ *                         if this function returns false
+ * @return array $contents Array used by forms to display form options to user
+ *                         Structure of this array is:
+ *
+ *    $contents->options->usercount   Number of users in XML file
+ *    $contents->[hierarchyname]      Object for each hierarchy in file
+ *
+ *    Each hiearchy object (above) contains:
+ *
+ *    ->frameworks[]               Array of frameworks with key = framework ID
+ *    ->frameworks[]->fullname     Name of a particular framework
+ *    ->frameworks[]->itemcount    Number of items within this framework
+ *
+ *    ->options->[optionname]      Option as defined by [hname]_options()
+ *    ->options->[optionname]->exists   If the option is set
+ *                           ->label    Label for displaying the option
+ *                           ->default  Default option value
 **/
 function get_backup_contents($info, $backup_unique_code, &$errorstr) {
     global $CFG;
@@ -259,7 +310,12 @@ function get_backup_contents($info, $backup_unique_code, &$errorstr) {
     return $contents;
 }
 
-
+/**
+ * Creates a temporary table used for matching backed up users to existing users
+ *
+ * TODO this should be obsolete as job done by user backup scripts
+ *
+**/
 function create_temp_user_table($tname) {
     global $CFG;
     require_once("$CFG->libdir/ddllib.php");
@@ -446,7 +502,7 @@ function create_temp_items_table($tname) {
 
 /**
  * Updates the path of a row in the specified table
- * Must be called after the new row is inserted as row ID is required
+ * Must be called after the new row is inserted as current row ID is required
  *
  * @param string $path Path string to be updated
  * @param int $id ID of the table row to update with the new path
@@ -544,6 +600,10 @@ function get_matches($xmlinfo, $matchfields, $tablename, $where=null) {
  * already set as the default. If so, this new row is not allowed to be default
  * too.
  *
+ * @param string $table Name of database table to check, without moodle prefix
+ * @param boolean $isdefault Current setting for this row from backup file
+ * @return boolean New value for the specified row, taking into account existing
+ *                 values in db.
 **/
 function getdefault($table, $isdefault) {
     if($isdefault) {
@@ -561,6 +621,11 @@ function getdefault($table, $isdefault) {
 /**
  * Given a table and a sortorder ID, returns the sortorder to use for a new
  * record. This is either the next available ID or the current one if unused
+ *
+ * @param string $table Name of the database table to check, without moodle prefix
+ * @param int $sortorder Current setting for this row from backup file
+ * @return int New value for the specified row, taking into account existing
+ *             values in db.
 **/
 function get_sortorder($table, $sortorder) {
     global $CFG;
