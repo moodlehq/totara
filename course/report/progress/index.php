@@ -365,6 +365,8 @@ foreach($progress->users as $user) {
             $is_complete = $criteria_completion->is_complete();
 
             $completiontype = $is_complete ? 'y' : 'n';
+            $completionicon = 'completion-auto-'.$completiontype;
+
             $describe = get_string('completion-alt-auto-'.$completiontype, 'completion');
 
             $a = new StdClass;
