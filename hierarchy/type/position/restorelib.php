@@ -203,19 +203,19 @@ function position_restore_positions($oldfwid, $newfwid, $fwinfo, $options, $back
 
         $oldid = backup_todb($position_info['#']['ID']['0']['#']);
         $position = new object();
-        $position->fullname = $position_info['#']['FULLNAME']['0']['#'];
-        $position->shortname = $position_info['#']['SHORTNAME']['0']['#'];
-        $position->idnumber = $position_info['#']['IDNUMBER']['0']['#'];
-        $position->description = $position_info['#']['DESCRIPTION']['0']['#'];
+        $position->fullname = backup_todb($position_info['#']['FULLNAME']['0']['#']);
+        $position->shortname = backup_todb($position_info['#']['SHORTNAME']['0']['#']);
+        $position->idnumber = backup_todb($position_info['#']['IDNUMBER']['0']['#']);
+        $position->description = backup_todb($position_info['#']['DESCRIPTION']['0']['#']);
         $position->frameworkid = $newfwid;
-        $position->path = $position_info['#']['PATH']['0']['#'];
-        $position->depthid = $position_info['#']['DEPTHID']['0']['#'];
-        $position->parentid = $position_info['#']['PARENTID']['0']['#'];
-        $position->sortorder = $position_info['#']['SORTORDER']['0']['#'];
-        $position->visible = $position_info['#']['VISIBLE']['0']['#'];
-        $position->timecreated = $position_info['#']['TIMECREATED']['0']['#'];
-        $position->timemodified = $position_info['#']['TIMEMODIFIED']['0']['#'];
-        $position->usermodified = $position_info['#']['USERMODIFIED']['0']['#'];
+        $position->path = backup_todb($position_info['#']['PATH']['0']['#']);
+        $position->depthid = backup_todb($position_info['#']['DEPTHID']['0']['#']);
+        $position->parentid = backup_todb($position_info['#']['PARENTID']['0']['#']);
+        $position->sortorder = backup_todb($position_info['#']['SORTORDER']['0']['#']);
+        $position->visible = backup_todb($position_info['#']['VISIBLE']['0']['#']);
+        $position->timecreated = backup_todb($position_info['#']['TIMECREATED']['0']['#']);
+        $position->timemodified = backup_todb($position_info['#']['TIMEMODIFIED']['0']['#']);
+        $position->usermodified = backup_todb($position_info['#']['USERMODIFIED']['0']['#']);
 
         // rewrite parentid
         $parentid = backup_getid($backup_unique_code, 'position', $position->parentid);

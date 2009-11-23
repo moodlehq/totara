@@ -2,7 +2,6 @@
 
 function organisation_restore($orginfo, $fwtobackup, $options, $backup_unique_code) {
     $frameworks = $orginfo['#']['FRAMEWORKS']['0']['#']['FRAMEWORK'];
-
     // restore requested frameworks
     foreach($frameworks AS $frameworkinfo) {
         $fwid = $frameworkinfo['#']['ID']['0']['#'];
@@ -203,19 +202,19 @@ function organisation_restore_organisations($oldfwid, $newfwid, $fwinfo, $option
 
         $oldid = backup_todb($organisation_info['#']['ID']['0']['#']);
         $organisation = new object();
-        $organisation->fullname = $organisation_info['#']['FULLNAME']['0']['#'];
-        $organisation->shortname = $organisation_info['#']['SHORTNAME']['0']['#'];
-        $organisation->idnumber = $organisation_info['#']['IDNUMBER']['0']['#'];
-        $organisation->description = $organisation_info['#']['DESCRIPTION']['0']['#'];
+        $organisation->fullname = backup_todb($organisation_info['#']['FULLNAME']['0']['#']);
+        $organisation->shortname = backup_todb($organisation_info['#']['SHORTNAME']['0']['#']);
+        $organisation->idnumber = backup_todb($organisation_info['#']['IDNUMBER']['0']['#']);
+        $organisation->description = backup_todb($organisation_info['#']['DESCRIPTION']['0']['#']);
         $organisation->frameworkid = $newfwid;
-        $organisation->path = $organisation_info['#']['PATH']['0']['#'];
-        $organisation->depthid = $organisation_info['#']['DEPTHID']['0']['#'];
-        $organisation->parentid = $organisation_info['#']['PARENTID']['0']['#'];
-        $organisation->sortorder = $organisation_info['#']['SORTORDER']['0']['#'];
-        $organisation->visible = $organisation_info['#']['VISIBLE']['0']['#'];
-        $organisation->timecreated = $organisation_info['#']['TIMECREATED']['0']['#'];
-        $organisation->timemodified = $organisation_info['#']['TIMEMODIFIED']['0']['#'];
-        $organisation->usermodified = $organisation_info['#']['USERMODIFIED']['0']['#'];
+        $organisation->path = backup_todb($organisation_info['#']['PATH']['0']['#']);
+        $organisation->depthid = backup_todb($organisation_info['#']['DEPTHID']['0']['#']);
+        $organisation->parentid = backup_todb($organisation_info['#']['PARENTID']['0']['#']);
+        $organisation->sortorder = backup_todb($organisation_info['#']['SORTORDER']['0']['#']);
+        $organisation->visible = backup_todb($organisation_info['#']['VISIBLE']['0']['#']);
+        $organisation->timecreated = backup_todb($organisation_info['#']['TIMECREATED']['0']['#']);
+        $organisation->timemodified = backup_todb($organisation_info['#']['TIMEMODIFIED']['0']['#']);
+        $organisation->usermodified = backup_todb($organisation_info['#']['USERMODIFIED']['0']['#']);
 
         // rewrite parentid
         $parentid = backup_getid($backup_unique_code, 'organisation', $organisation->parentid);
