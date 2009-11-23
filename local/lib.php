@@ -47,20 +47,21 @@ function local_postinst() {
     $course_cat->name = get_string('induction', 'local');
     $course_cat->description ='';
     $course_cat->parent = 0;
-    $course_cat->sortorder = 2;
+    $course_cat->sortorder = 999;
     $course_cat->coursecount = 0;
     $course_cat->visible = 1;
     $course_cat->timemodified = time();
     $course_cat->depth = 1;
-    $course_cat->path = "''";
+    $course_cat->path = "/2";
     $course_cat->theme = '';
     $catid1 = insert_record('course_categories', $course_cat);
     $catcontext = get_context_instance(CONTEXT_COURSECAT, $catid);
     mark_context_dirty($catcontext->path);
 
     $course_cat->name = get_string('leadership', 'local');
-    $course_cat->sortorder = 3;
+    $course_cat->sortorder = 999;
     $course_cat->visible = 1;
+    $course_cat->path = "/3";
     $catid2 = insert_record('course_categories', $course_cat);
     $catcontext = get_context_instance(CONTEXT_COURSECAT, $lptempid);
     mark_context_dirty($catcontext->path);
@@ -71,7 +72,7 @@ function local_postinst() {
     require_once($CFG->dirroot.'/course/lib.php');
     require_once($CFG->dirroot.'/backup/lib.php');
     require_once($CFG->dirroot.'/backup/restorelib.php');
-    if (file_exists($CFG->dirroot.'/local/defaultcoursebackups/inductioncourse.zip')) {
+    if (file_exists($CFG->dirroot.'/local/defaultcoursebackups/backup-presentation_skills-20091124-1116.zip')) {
         $course = new StdClass;
         $course->fullname  = get_string('induction','local');
         $course->shortname = get_string('induction','local');
