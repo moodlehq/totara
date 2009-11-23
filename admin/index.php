@@ -622,7 +622,7 @@
             if (!local_postinst()) {
                 print_error('localpostinstfailed', 'error');
             }
-            unset($_SESSION['justinstalled'])
+            unset($_SESSION['justinstalled']);
             print_continue($CFG->wwwroot . '/index.php');
             print_footer();
             exit;
