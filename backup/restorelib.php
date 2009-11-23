@@ -370,6 +370,15 @@ define('RESTORE_GROUPS_GROUPINGS', 3);
         return $info;
     }
 
+    //This function read the xml file and store its data from the course completion data in a object
+    function restore_read_xml_coursecompletiondata ($xml_file) {
+
+        //We call the main read_xml function, with todo = COMPLETION
+        $info = restore_read_xml ($xml_file,"COMPLETION",false);
+
+        return $info;
+    }
+
     //This function read the xml file and store its data from the gradebook in a object
     function restore_read_xml_gradebook ($restore, $xml_file) {
 
@@ -1422,6 +1431,54 @@ define('RESTORE_GROUPS_GROUPINGS', 3);
             }
 
         }
+        return $status;
+    }
+
+    //This function creates all the course completion data from xml
+    function restore_create_coursecompletiondata($restore, $xml_file) {
+
+        global $CFG,$db;
+
+        $status = true;
+        //Check it exists
+        if (!file_exists($xml_file)) {
+            $status = false;
+        }
+        //Get info from xml
+        if ($status) {
+            //Load data from XML to info
+            $info = restore_read_xml_coursecompletiondata($xml_file);
+        }
+
+        if ($status && $info) {
+            //For each table
+            foreach (array_keys($info->data) as $table) {
+
+                //For each row
+                foreach ($info->data[$table] as $row) {
+
+                    //Escape data
+                    foreach ($row as $key => $value) {
+
+                        if ($key === 'course') {
+                            $value = $restore->course_id;
+                        }
+
+                        $row[$key] = backup_todb($value);
+                    }
+
+                    //Save it to db
+                    $newid = insert_record($table, (object)$row);
+
+                    //save old and new section id
+                    backup_putid($restore->backup_unique_code, $table, $row['id'], $newid);
+                }
+            }
+
+        } else {
+            $status = false;
+        }
+
         return $status;
     }
 
@@ -4944,6 +5001,22 @@ define('RESTORE_GROUPS_GROUPINGS', 3);
             //    echo $this->level.str_repeat("&nbsp;",$this->level*2)."&lt;".$tagName."&gt;<br />\n";   //Debug
         }
 
+        //This is the startTag handler we use where we are reading the completion zone (todo="COMPLETION")
+        function startElementCompletion($parser, $tagName, $attrs) {
+
+            //Refresh properties
+            $this->level++;
+            $this->tree[$this->level] = $tagName;
+
+            //Accumulate all the data inside this tag
+            if (isset($this->tree[5]) and $this->level >= 5 and $this->tree[3] == "COMPLETION") {
+                if (!isset($this->temp)) {
+                    $this->temp = "";
+                }
+                $this->temp .= "<".$tagName.">";
+            }
+        }
+
         //This is the startTag handler we use where we are reading the gradebook zone (todo="GRADEBOOK")
         function startElementGradebook($parser, $tagName, $attrs) {
 
@@ -6246,6 +6319,69 @@ define('RESTORE_GROUPS_GROUPINGS', 3);
 
             //Clear things
             $this->tree[$this->level] = '';
+            $this->level--;
+            $this->content = "";
+        }
+
+        //This is the endTag handler we use where we are reading the completion zone (todo="COMPLETION")
+        function endElementCompletion($parser, $tagName) {
+            //Check if we are into COMPLETION zone
+            if ($this->tree[3] == "COMPLETION") {
+
+                //Acumulate data to info (content + close tag)
+                //Reconvert: strip htmlchars again and trim to generate xml data
+                if (!isset($this->temp)) {
+                    $this->temp = '';
+                }
+
+                $this->temp .= htmlspecialchars(trim($this->content))."</".$tagName.">";
+
+                // We have finished a group, reset accumulated
+                // data because they are close tags
+                if ($this->level == 4) {
+                    $this->temp = '';
+                }
+
+                if ($this->level == 6) {
+                    if (!isset($this->info->tempdata)) {
+                        $this->info->tempdata = array();
+                    }
+
+                    $col = strtolower($tagName);
+
+                    $this->info->tempdata[$col] = $this->getContents();
+                }
+
+                //If we've finished a item, save
+                if ($this->level == 5) {
+                    if (!isset($this->info->data)) {
+                        $this->info->data = array();
+                    }
+
+                    $table = 'course_'.strtolower($tagName);
+
+                    if (!isset($this->info->data[$table])) {
+                        $this->info->data[$table] = array();
+                    }
+
+                    $this->info->data[$table][] = $this->info->tempdata;
+
+                    unset($this->info->tempdata);
+
+                    //Reset temp
+                    unset($this->temp);
+                }
+            }
+
+            //Stop parsing if todo = COMPLETION and tagName = COMPLETION (end of the tag, of course)
+            //Speed up a lot (avoid parse all)
+            if ($tagName == "COMPLETION" and $this->level == 3) {
+                $this->finished = true;
+                $this->counter = 0;
+            }
+
+            //Clear things
+            $this->tree[$this->level] = "";
             $this->level--;
             $this->content = "";
         }
@@ -7625,6 +7761,8 @@ define('RESTORE_GROUPS_GROUPINGS', 3);
             xml_set_element_handler($xml_parser, "startElementModules", "endElementModules");
         } else if ($todo == "LOGS") {
             xml_set_element_handler($xml_parser, "startElementLogs", "endElementLogs");
+        } else if ($todo == "COMPLETION") {
+            xml_set_element_handler($xml_parser, "startElementCompletion", "endElementCompletion");
         } else {
             //Define default handlers (must no be invoked when everything become finished)
             xml_set_element_handler($xml_parser, "startElementInfo", "endElementInfo");
@@ -8472,6 +8610,27 @@ define('RESTORE_GROUPS_GROUPINGS', 3);
                         notify('Error while creating the course blocks');
                     } else {
                         $errorstr = "Error while creating the course blocks";
+                        return false;
+                    }
+                }
+                if (!defined('RESTORE_SILENTLY')) {
+                    echo '</li>';
+                }
+            }
+        }
+
+        //Now create course completion data
+        if ($status) {
+            //Only to new courses!
+            if ($restore->restoreto == RESTORETO_NEW_COURSE) {
+                if (!defined('RESTORE_SILENTLY')) {
+                    echo "<li>".get_string("creatingcoursecompletiondata");
+                }
+                if (!$status = restore_create_coursecompletiondata($restore,$xml_file)) {
+                    if (!defined('RESTORE_SILENTLY')) {
+                        notify("Error creating course completion data in the course.");
+                    } else {
+                        $errorstr = "Error creating course completion data in the course.";
                         return false;
                     }
                 }

@@ -272,37 +272,6 @@ if ($criteria) {
 }
 
 
-// Course completion criteria
-if ($criteria) {
-
-    foreach ($criteria as $criterion) {
-
-        // Ignore activity completion criteria (use existing activity cols instead)
-        if ($criterion->criteriatype == COMPLETION_CRITERIA_TYPE_ACTIVITY) {
-            continue;
-        }
-
-        if ($csv) {
-            print $sep.csv_quote(strip_tags($criterion->get_title()));
-        } else {
-            print '<th scope="col">'.format_text($criterion->get_title()).'</th>';
-        }
-    }
-
-    // Overall course completion status
-    if ($csv) {
-        print $sep.csv_quote(strip_tags(get_string('coursecomplete', 'completion')));
-    } else {
-        print '<th scope="col">'.get_string('coursecomplete', 'completion').'</th>';
-    }
-
-    // Mark complete?
-    if (!$csv && $allow_marking) {
-        print '<th scope="col">'.get_string('markcomplete', 'completion').'</th>';
-    }
-}
-
-
 if($csv) {
     print $line;
 } else {
