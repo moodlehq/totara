@@ -262,12 +262,12 @@ if ($criteria) {
     if ($csv) {
         print $sep.csv_quote(strip_tags(get_string('coursecomplete', 'completion')));
     } else {
-        print '<th scope="col">'.get_string('coursecomplete', 'completion').'</th>';
+        print '<th scope="col"><p><strong>'.get_string('coursecomplete', 'completion').'</strong></p></th>';
     }
 
     // Mark complete?
     if (!$csv && $allow_marking) {
-        print '<th scope="col">'.get_string('markcomplete', 'completion').'</th>';
+        print '<th scope="col"><p>'.get_string('markcomplete', 'completion').'</p></th>';
     }
 }
 
