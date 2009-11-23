@@ -42,9 +42,6 @@ function local_postinst() {
     set_config('theme', 'mitms');
     $db->debug = $CFG->debug;
 
-    // set frontpage blocks
-//    mitms_reset_frontpage_blocks();
-
     // set default course categories
     $course_cat = new stdclass();
     $course_cat->name = get_string('induction', 'local');
@@ -80,7 +77,7 @@ function local_postinst() {
         $course->shortname = get_string('induction','local');
         $course->category = $catid1;
         if ($newcourse = create_course($course)) {
-        import_backup_file_silently($CFG->dirroot.'/local/defaultcoursebackups/inductioncourse.zip', $newcourse->id, true, false, array(), RESTORETO_NEW_COURSE);
+        import_backup_file_silently($CFG->dirroot.'/local/defaultcoursebackups/backup-presentation_skills-20091124-1116.zip', $newcourse->id, true, false, array(), RESTORETO_NEW_COURSE);
         }
     }
 
