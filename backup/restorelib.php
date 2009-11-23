@@ -1451,11 +1451,15 @@ define('RESTORE_GROUPS_GROUPINGS', 3);
         }
 
         if ($status && $info) {
+            $newids = array();
+
             //For each table
             foreach (array_keys($info->data) as $table) {
+                $newids[$table] = array();
 
                 //For each row
                 foreach ($info->data[$table] as $row) {
+                    $newids[$table][$row['id']] = null;
 
                     //Escape data
                     foreach ($row as $key => $value) {
@@ -1467,11 +1471,21 @@ define('RESTORE_GROUPS_GROUPINGS', 3);
                         $row[$key] = backup_todb($value);
                     }
 
+                    // Handle special cases here (foreign keys)
+                    switch ($table) {
+                        case 'course_completion_crit_compl':
+
+                            // Get correct criteriaid
+                            $row['criteriaid'] = $newids['course_completion_criteria'][$row['criteriaid']];
+
+                            break;
+                    }
+
                     //Save it to db
                     $newid = insert_record($table, (object)$row);
 
-                    //save old and new section id
-                    backup_putid($restore->backup_unique_code, $table, $row['id'], $newid);
+                    // Record new ids
+                    $newids[$table][$row['id']] = $newid;
                 }
             }
 
