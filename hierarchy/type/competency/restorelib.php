@@ -210,23 +210,23 @@ function competency_restore_competencies($oldfwid, $newfwid, $fwinfo, $options, 
 
         $oldid = backup_todb($competency_info['#']['ID']['0']['#']);
         $competency = new object();
-        $competency->fullname = $competency_info['#']['FULLNAME']['0']['#'];
-        $competency->shortname = $competency_info['#']['SHORTNAME']['0']['#'];
-        $competency->idnumber = $competency_info['#']['IDNUMBER']['0']['#'];
+        $competency->fullname = backup_todb($competency_info['#']['FULLNAME']['0']['#']);
+        $competency->shortname = backup_todb($competency_info['#']['SHORTNAME']['0']['#']);
+        $competency->idnumber = backup_todb($competency_info['#']['IDNUMBER']['0']['#']);
         $competency->frameworkid = $newfwid;
-        $competency->parentid = $competency_info['#']['PARENTID']['0']['#'];
-        $competency->sortorder = $competency_info['#']['SORTORDER']['0']['#'];
-        $competency->depthid = $competency_info['#']['DEPTHID']['0']['#'];
-        $competency->path = $competency_info['#']['PATH']['0']['#'];
-        $competency->description = $competency_info['#']['DESCRIPTION']['0']['#'];
-        $competency->aggregationmethod = $competency_info['#']['AGGREGATIONMETHOD']['0']['#'];
-        $competency->scaleid = $competency_info['#']['SCALEID']['0']['#'];
-        $competency->proficiencyexpected = $competency_info['#']['PROFICIENCYEXPECTED']['0']['#'];
-        $competency->evidencecount = $competency_info['#']['EVIDENCECOUNT']['0']['#'];
-        $competency->timecreated = $competency_info['#']['TIMECREATED']['0']['#'];
-        $competency->timemodified = $competency_info['#']['TIMEMODIFIED']['0']['#'];
-        $competency->usermodified = $competency_info['#']['USERMODIFIED']['0']['#'];
-        $competency->visible = $competency_info['#']['VISIBLE']['0']['#'];
+        $competency->parentid = backup_todb($competency_info['#']['PARENTID']['0']['#']);
+        $competency->sortorder = backup_todb($competency_info['#']['SORTORDER']['0']['#']);
+        $competency->depthid = backup_todb($competency_info['#']['DEPTHID']['0']['#']);
+        $competency->path = backup_todb($competency_info['#']['PATH']['0']['#']);
+        $competency->description = backup_todb($competency_info['#']['DESCRIPTION']['0']['#']);
+        $competency->aggregationmethod = backup_todb($competency_info['#']['AGGREGATIONMETHOD']['0']['#']);
+        $competency->scaleid = backup_todb($competency_info['#']['SCALEID']['0']['#']);
+        $competency->proficiencyexpected = backup_todb($competency_info['#']['PROFICIENCYEXPECTED']['0']['#']);
+        $competency->evidencecount = backup_todb($competency_info['#']['EVIDENCECOUNT']['0']['#']);
+        $competency->timecreated = backup_todb($competency_info['#']['TIMECREATED']['0']['#']);
+        $competency->timemodified = backup_todb($competency_info['#']['TIMEMODIFIED']['0']['#']);
+        $competency->usermodified = backup_todb($competency_info['#']['USERMODIFIED']['0']['#']);
+        $competency->visible = backup_todb($competency_info['#']['VISIBLE']['0']['#']);
 
         // rewrite parentid
         $parentid = backup_getid($backup_unique_code, 'competency', $competency->parentid);
