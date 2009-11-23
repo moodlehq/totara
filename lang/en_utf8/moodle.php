@@ -334,6 +334,7 @@ $string['creatingblocks'] = 'Creating blocks';
 $string['creatingblogsinfo'] = 'Creating blogs info';
 $string['creatingblocksroles'] = 'Creating block level role assignments and overrides';
 $string['creatingcategoriesandquestions'] = 'Creating categories and questions';
+$string['creatingcoursecompletiondata'] = 'Creating course completion data';
 $string['creatingcoursemodules'] = 'Creating course modules';
 $string['creatingcourseroles'] = 'Creating course level role assignments and overrides';
 $string['creatingevents'] = 'Creating events';

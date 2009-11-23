@@ -1564,15 +1564,15 @@
         global $CFG;
         require_once($CFG->libdir.'/completionlib.php');
 
+        $status = true;
+
         // Check if course completion is enabled
         $course = get_record('course', 'id', $preferences->backup_course);
         $completion_info = new completion_info($course);
 
         if (!$completion_info->is_enabled()) {
-            return true;
+            return $status;
         }
-
-        $status = true;
 
         //Completion header
         fwrite ($bf,start_tag("COMPLETION",2,true));
@@ -1601,7 +1601,7 @@
             foreach ($methods as $method) {
 
                 //Begin completion_aggregation_method
-                fwrite ($bf,start_tag("COMPLETION_AGGREGATION_METHOD",4,true));
+                fwrite ($bf,start_tag("COMPLETION_AGGR_METHD",4,true));
 
                 //Output individual fields
                 fwrite ($bf,full_tag("ID",5,false,$method->id));
@@ -1611,7 +1611,7 @@
                 fwrite ($bf,full_tag("VALUE",5,false,$method->value));
 
                 //End completion_aggregation_method
-                fwrite ($bf,end_tag("COMPLETION_AGGREGATION_METHOD",4,true));
+                fwrite ($bf,end_tag("COMPLETION_AGGR_METHD",4,true));
             }
 
             //End completion_aggregation_methods tag
@@ -1635,7 +1635,7 @@
             foreach ($criteria as $criterion) {
 
                 //Begin completion_criterion
-                fwrite ($bf,start_tag("COMPLETION_CRITERION",4,true));
+                fwrite ($bf,start_tag("COMPLETION_CRITERIA",4,true));
 
                 //Output individual fields
                 fwrite ($bf,full_tag("ID",5,false,$criterion->id));
@@ -1650,7 +1650,7 @@
                 fwrite ($bf,full_tag("LOCK",5,false,$criterion->lock));
 
                 //End completion_criterion
-                fwrite ($bf,end_tag("COMPLETION_CRITERION",4,true));
+                fwrite ($bf,end_tag("COMPLETION_CRITERIA",4,true));
             }
 
             //End completion_criteria tag
@@ -1671,7 +1671,7 @@
             foreach ($completions as $completion) {
             /// Grades are only sent to backup if the user is one target user
                 if (backup_getid($preferences->backup_unique_code, 'user', $completion->userid)) {
-                    fwrite ($bf,start_tag("COMPLETION",4,true));
+                    fwrite ($bf,start_tag("COMPLETION_CRIT_COMPL",4,true));
                     fwrite ($bf,full_tag("ID",5,false,$completion->id));
                     fwrite ($bf,full_tag("USERID",5,false,$completion->userid));
                     fwrite ($bf,full_tag("COURSE",5,false,$completion->course));
@@ -1680,7 +1680,7 @@
                     fwrite ($bf,full_tag("UNENROLED",5,false,$completion->unenroled));
                     fwrite ($bf,full_tag("DELETED",5,false,$completion->deleted));
                     fwrite ($bf,full_tag("TIMECOMPLETED",5,false,$completion->timecompleted));
-                    fwrite ($bf,end_tag("COMPLETION",4,true));
+                    fwrite ($bf,end_tag("COMPLETION_CRIT_COMPL",4,true));
                 }
             }
             $status = fwrite ($bf,end_tag("COMPLETION_CRITERIA_COMPLETIONS",3,true));
@@ -1699,7 +1699,7 @@
             foreach ($completions as $completion) {
             /// Grades are only sent to backup if the user is one target user
                 if (backup_getid($preferences->backup_unique_code, 'user', $completion->userid)) {
-                    fwrite ($bf,start_tag("COMPLETION",4,true));
+                    fwrite ($bf,start_tag("COMPLETIONS",4,true));
                     fwrite ($bf,full_tag("ID",5,false,$completion->id));
                     fwrite ($bf,full_tag("USERID",5,false,$completion->userid));
                     fwrite ($bf,full_tag("COURSE",5,false,$completion->course));
@@ -1707,7 +1707,7 @@
                     fwrite ($bf,full_tag("TIMENOTIFIED",5,false,$completion->timenotified));
                     fwrite ($bf,full_tag("TIMEENROLED",5,false,$completion->timeenroled));
                     fwrite ($bf,full_tag("TIMECOMPLETED",5,false,$completion->timecompleted));
-                    fwrite ($bf,end_tag("COMPLETION",4,true));
+                    fwrite ($bf,end_tag("COMPLETIONS",4,true));
                 }
             }
             $status = fwrite ($bf,end_tag("COMPLETION_COMPLETIONS",3,true));
