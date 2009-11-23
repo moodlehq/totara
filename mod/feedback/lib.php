@@ -1769,11 +1769,22 @@ function feedback_print_errors() {
     echo '<p align="center"><b><font color="black"><pre>';
     print_r($SESSION->feedback->errors) . "\n";
     echo '</pre></font></b></p>';
-	
+
     // print_simple_box_end();
     print_box_end();
     echo '<br /><br />';
     $SESSION->feedback->errors = array(); //remove errors
-} 
+}
+
+/**
+ * @param string $feature FEATURE_xx constant for requested feature
+ * @return bool True if module supports feature
+ */
+function feedback_supports($feature) {
+    switch($feature) {
+        case FEATURE_COMPLETION_TRACKS_VIEWS: return true;
+        default: return null;
+    }
+}
 
 ?>
