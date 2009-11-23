@@ -242,6 +242,13 @@ $generateimscp = ($allowedit) ? '<a title="'.get_string('generateimscp', 'book')
 </table>
 
 <?php
-print_footer($course);
+
+    // Mark module as viewed (note, we do this here and not in finish_page,
+    // otherwise the 'not enrolled' error conditions would result in marking
+    // 'viewed', I think it's better if they don't.)
+    $completion=new completion_info($course);
+    $completion->set_module_viewed($cm);
+
+    print_footer($course);
 
 ?>

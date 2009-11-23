@@ -452,4 +452,16 @@ function book_relink($id, $bookid, $courseid) {
     }
 }
 
+/**
+ * @param string $feature FEATURE_xx constant for requested feature
+ * @return bool True if module supports feature
+ */
+function book_supports($feature) {
+    switch($feature) {
+        case FEATURE_COMPLETION_TRACKS_VIEWS: return true;
+        default: return null;
+    }
+}
+
+
 ?>
