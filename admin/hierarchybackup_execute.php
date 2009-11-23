@@ -82,7 +82,11 @@ if($userdata) {
     $userprefs = new object();
     $userprefs->backup_unique_code = $backup_unique_code;
     // back up the users
+    // COURSE tags required to put USER tags at right level for restore
+    fwrite ($bf,start_tag("COURSE",1,true));
     $status = backup_user_info($bf, $userprefs);
+    fwrite ($bf,end_tag("COURSE",1,true));
+
     if (!$status) {
         print_error('Could not backup user data');
     }

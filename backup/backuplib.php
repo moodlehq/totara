@@ -220,11 +220,11 @@
 
         global $CFG;
         $count = 0;
-        
+
         $backup_users = get_recordset_select("backup_ids",
             "backup_code='$backup_unique_code' AND table_name='user'", "", "id, old_id");
- 
-        while ($user = rs_fetch_next_record($backup_users)) {               
+
+        while ($user = rs_fetch_next_record($backup_users)) {
             //Is this user needed in the backup?
             $userdir = make_user_directory($user->old_id, true);
             if (check_dir_exists($userdir)) {
@@ -438,7 +438,7 @@
         //Here we encode absolute links
         // MDL-10770
         if (is_null($content)) {
-            $content = '$@NULL@$'; 
+            $content = '$@NULL@$';
         } else {
             $content = backup_encode_absolute_links($content);
         }
@@ -1559,6 +1559,162 @@
         return $status;
     }
 
+    //Backup course completion info
+    function backup_course_completion_info($bf, $preferences) {
+        global $CFG;
+        require_once($CFG->libdir.'/completionlib.php');
+
+        $status = true;
+
+        // Check if course completion is enabled
+        $course = get_record('course', 'id', $preferences->backup_course);
+        $completion_info = new completion_info($course);
+
+        if (!$completion_info->is_enabled()) {
+            return $status;
+        }
+
+        //Completion header
+        fwrite ($bf,start_tag("COMPLETION",2,true));
+
+        $status = backup_course_completion_aggregation_methods($bf, $preferences);
+        $status = backup_course_completion_criteria($bf, $preferences);
+        $status = backup_course_completion_criteria_completions($bf, $preferences);
+        $status = backup_course_completion_completions($bf, $preferences);
+
+        //Completion footer
+        $status = fwrite ($bf,end_tag("COMPLETION",2,true));
+        return $status;
+    }
+
+    // Backup course completion aggregation methods
+    function backup_course_completion_aggregation_methods($bf, $preferences) {
+        $status = true;
+
+        $methods = get_records('course_completion_aggr_methd', 'course', $preferences->backup_course);
+
+        if ($methods) {
+            //Begin completion_aggregation_methods tag
+            fwrite ($bf,start_tag("COMPLETION_AGGREGATION_METHODS",3,true));
+
+            //Iterate for each aggregation method
+            foreach ($methods as $method) {
+
+                //Begin completion_aggregation_method
+                fwrite ($bf,start_tag("COMPLETION_AGGR_METHD",4,true));
+
+                //Output individual fields
+                fwrite ($bf,full_tag("ID",5,false,$method->id));
+                fwrite ($bf,full_tag("COURSE",5,false,$method->course));
+                fwrite ($bf,full_tag("CRITERIATYPE",5,false,$method->criteriatype));
+                fwrite ($bf,full_tag("METHOD",5,false,$method->method));
+                fwrite ($bf,full_tag("VALUE",5,false,$method->value));
+
+                //End completion_aggregation_method
+                fwrite ($bf,end_tag("COMPLETION_AGGR_METHD",4,true));
+            }
+
+            //End completion_aggregation_methods tag
+            $status = fwrite ($bf,end_tag("COMPLETION_AGGREGATION_METHODS",3,true));
+        }
+
+        return $status;
+    }
+
+    // Backup course completion criteria
+    function backup_course_completion_criteria($bf, $preferences) {
+        $status = true;
+
+        $criteria = get_records('course_completion_criteria', 'course', $preferences->backup_course);
+
+        if ($criteria) {
+            //Begin completion_criteria tag
+            fwrite ($bf,start_tag("COMPLETION_CRITERIA",3,true));
+
+            //Iterate for each criteria
+            foreach ($criteria as $criterion) {
+
+                //Begin completion_criterion
+                fwrite ($bf,start_tag("COMPLETION_CRITERIA",4,true));
+
+                //Output individual fields
+                fwrite ($bf,full_tag("ID",5,false,$criterion->id));
+                fwrite ($bf,full_tag("COURSE",5,false,$criterion->course));
+                fwrite ($bf,full_tag("CRITERIATYPE",5,false,$criterion->criteriatype));
+                fwrite ($bf,full_tag("MODULE",5,false,$criterion->module));
+                fwrite ($bf,full_tag("MODULEINSTANCE",5,false,$criterion->moduleinstance));
+                fwrite ($bf,full_tag("ENROLPERIOD",5,false,$criterion->enrolperiod));
+                fwrite ($bf,full_tag("DATE",5,false,$criterion->date));
+                fwrite ($bf,full_tag("GRADEPASS",5,false,$criterion->gradepass));
+                fwrite ($bf,full_tag("ROLE",5,false,$criterion->role));
+                fwrite ($bf,full_tag("LOCK",5,false,$criterion->lock));
+
+                //End completion_criterion
+                fwrite ($bf,end_tag("COMPLETION_CRITERIA",4,true));
+            }
+
+            //End completion_criteria tag
+            $status = fwrite ($bf,end_tag("COMPLETION_CRITERIA",3,true));
+        }
+
+        return $status;
+    }
+
+    //Backup course completion criteria completions
+    function backup_course_completion_criteria_completions($bf, $preferences) {
+        $status = true;
+
+        // Grade all criteria completions in this course
+        if ($completions = get_records('course_completion_crit_compl', 'course', $preferences->backup_course)) {
+
+            fwrite ($bf,start_tag("COMPLETION_CRITERIA_COMPLETIONS",3,true));
+            foreach ($completions as $completion) {
+            /// Grades are only sent to backup if the user is one target user
+                if (backup_getid($preferences->backup_unique_code, 'user', $completion->userid)) {
+                    fwrite ($bf,start_tag("COMPLETION_CRIT_COMPL",4,true));
+                    fwrite ($bf,full_tag("ID",5,false,$completion->id));
+                    fwrite ($bf,full_tag("USERID",5,false,$completion->userid));
+                    fwrite ($bf,full_tag("COURSE",5,false,$completion->course));
+                    fwrite ($bf,full_tag("CRITERIAID",5,false,$completion->criteriaid));
+                    fwrite ($bf,full_tag("GRADEFINAL",5,false,$completion->gradefinal));
+                    fwrite ($bf,full_tag("UNENROLED",5,false,$completion->unenroled));
+                    fwrite ($bf,full_tag("DELETED",5,false,$completion->deleted));
+                    fwrite ($bf,full_tag("TIMECOMPLETED",5,false,$completion->timecompleted));
+                    fwrite ($bf,end_tag("COMPLETION_CRIT_COMPL",4,true));
+                }
+            }
+            $status = fwrite ($bf,end_tag("COMPLETION_CRITERIA_COMPLETIONS",3,true));
+        }
+        return $status;
+    }
+
+    //Backup course completion completions
+    function backup_course_completion_completions($bf, $preferences) {
+        $status = true;
+
+        // Grade all completions in this course
+        if ($completions = get_records('course_completions', 'course', $preferences->backup_course)) {
+
+            fwrite ($bf,start_tag("COMPLETION_COMPLETIONS",3,true));
+            foreach ($completions as $completion) {
+            /// Grades are only sent to backup if the user is one target user
+                if (backup_getid($preferences->backup_unique_code, 'user', $completion->userid)) {
+                    fwrite ($bf,start_tag("COMPLETIONS",4,true));
+                    fwrite ($bf,full_tag("ID",5,false,$completion->id));
+                    fwrite ($bf,full_tag("USERID",5,false,$completion->userid));
+                    fwrite ($bf,full_tag("COURSE",5,false,$completion->course));
+                    fwrite ($bf,full_tag("DELETED",5,false,$completion->deleted));
+                    fwrite ($bf,full_tag("TIMENOTIFIED",5,false,$completion->timenotified));
+                    fwrite ($bf,full_tag("TIMEENROLED",5,false,$completion->timeenroled));
+                    fwrite ($bf,full_tag("TIMECOMPLETED",5,false,$completion->timecompleted));
+                    fwrite ($bf,end_tag("COMPLETIONS",4,true));
+                }
+            }
+            $status = fwrite ($bf,end_tag("COMPLETION_COMPLETIONS",3,true));
+        }
+        return $status;
+    }
+
     //Backup gradebook info
     function backup_gradebook_info($bf, $preferences) {
         global $CFG;
@@ -2495,7 +2651,7 @@
                     $status = check_dir_exists("$CFG->dataroot/temp/backup/$preferences->backup_unique_code/user_files/". $group, true);
                 }
 
-                $status = $status && backup_copy_file($userdir, 
+                $status = $status && backup_copy_file($userdir,
                     "$CFG->dataroot/temp/backup/$preferences->backup_unique_code/user_files/$group/$user->old_id");
             }
             //Do some output
@@ -3346,6 +3502,22 @@
                     }
                     else {
                         $errorstr = "An error occurred while backing up the course format data";
+                        return false;
+                    }
+                }
+            }
+
+            //Backup course completion data, if any
+            if (!defined('BACKUP_SILENTLY')) {
+                echo '<li>'.get_string("coursecompletiondata").'</li>';
+            }
+            if($status) {
+                if (!$status = backup_course_completion_info($backup_file,$preferences)) {
+                    if (!defined('BACKUP_SILENTLY')) {
+                        notify("An error occurred while backing up the course completion data");
+                    }
+                    else {
+                        $errorstr = "An error occurred while backing up the course completion data";
                         return false;
                     }
                 }

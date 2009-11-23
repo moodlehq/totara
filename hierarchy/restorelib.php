@@ -1,10 +1,41 @@
 <?php
 
 /**
+ *
+ * To restore a hierarchy the following files must be in place:
+ *
+ * 1- See the list in hierarchy/backuplib.php, Some of the backup functions are
+ *    also used in the restore process so probably best to have all that stuff
+ *    for restore too. In particular hierarchy/type/[hname]/backuplib.php is
+ *    required.
+ *
+ * 2- Must have a file called hierarchy/type/[hname]/restorelib.php
+ *
+ * 3- restorelib.php must include a function called [hname]_restore(), which
+ *    is the function that performs the restore for that hierarchy
+ *
+ *    [hname]_restore() must have the following arguments:
+ *    - $info
+ *      Contains the XMLized data for the restore process
+ *    - $fwtobackup
+ *      Array of frameworks to be backed up. Keys are framework IDs, values
+ *      are 1 if framework is to be included or 0 otherwise.
+ *    - $options
+ *      Array of options for this restore. Keys are specified in
+ *      [hname]_options(), values are set by user
+ *    - $backup_unique_code
+ *      Is the unique code associated with this restore (used to track
+ *      old and new ids during the process)
+**/
+
+/**
  * Get list of possible files to restore from hierarchy backup folder
  *
+ * @param string $dir Directory that contains the hierarchy backup files
+ * @return mixed Array of possible backup files. If no files returns an
+ *               empty array. If $dir is not a directory returns false
 **/
-function hierarchyrestore_get_backup_list($dir) {
+function hierarchyrestore_get_backup_files($dir) {
     if(!is_dir($dir)) {
         return false;
     }
@@ -27,6 +58,15 @@ function hierarchyrestore_get_backup_list($dir) {
  * Unpacks the zip file ready for restore and does some basic checks 
  * to make sure file looks okay
  * Returns the contents of the XML file as an xmlized PHP array
+ *
+ * @param string $file Name of the file to be restored
+ * @param int $backup_unique_code Unique code used to track ids during
+ *            the restore process
+ * @param string &$errorstr Passed by reference. Error string that can
+ *                          be set in this function which is displayed
+ *                          if function returns false
+ * @return mixed XMLized array based on file contents or false if checks
+ *               fail.
 **/
 function hierarchyrestore_precheck($file, $backup_unique_code, &$errorstr) {
     global $CFG, $SESSION;
@@ -132,6 +172,10 @@ function hierarchyrestore_precheck($file, $backup_unique_code, &$errorstr) {
 /*
  * Recursive version of array_key_exists() used to search XMLize data
  * for particular tags
+ *
+ * @param string $needle Array key to look for
+ * @param array $haystack Nested array to search for key
+ * @return boolean True if key exists, false otherwise
 **/
 function array_key_exists_r($needle, $haystack) {
     $result = array_key_exists($needle, $haystack);
@@ -152,6 +196,28 @@ function array_key_exists_r($needle, $haystack) {
  * Examines the backup file to look for specific tags, returning an object
  * that provides information about the file contents. This is used to 
  * display the select options form (hierarchyrestore_chooseitems_form).
+ *
+ * @param array $info XMLized array containing parsed XML file
+ * @param int $backup_unique_code Unique code used to track ids during restore
+ *                                process.
+ * @param string $errorstr Passed by reference. Error string which is displayed
+ *                         if this function returns false
+ * @return array $contents Array used by forms to display form options to user
+ *                         Structure of this array is:
+ *
+ *    $contents->options->usercount   Number of users in XML file
+ *    $contents->[hierarchyname]      Object for each hierarchy in file
+ *
+ *    Each hiearchy object (above) contains:
+ *
+ *    ->frameworks[]               Array of frameworks with key = framework ID
+ *    ->frameworks[]->fullname     Name of a particular framework
+ *    ->frameworks[]->itemcount    Number of items within this framework
+ *
+ *    ->options->[optionname]      Option as defined by [hname]_options()
+ *    ->options->[optionname]->exists   If the option is set
+ *                           ->label    Label for displaying the option
+ *                           ->default  Default option value
 **/
 function get_backup_contents($info, $backup_unique_code, &$errorstr) {
     global $CFG;
@@ -170,21 +236,37 @@ function get_backup_contents($info, $backup_unique_code, &$errorstr) {
     $contents->backup_unique_code = $backup_unique_code;
 
     // check if backup includes user data and count number of users
-    if(isset($info['MOODLE_BACKUP']['#']['USERS']['0']['#']['USER'])) {
-        $users = $info['MOODLE_BACKUP']['#']['USERS']['0']['#']['USER'];
+    if(isset($info['MOODLE_BACKUP']['#']['COURSE']['0']['#']['USERS']['0']['#']['USER'])) {
+        $users = $info['MOODLE_BACKUP']['#']['COURSE']['0']['#']['USERS']['0']['#']['USER'];
         $contents->options->usercount = count($users);
     }
     else {
         $contents->options->usercount = 0;
     }
 
-
     // loop through XML and create array of hierarchies, frameworks and item counts
     // to be used to build the selection form
-    // We only extract the info we need for the next form
+    // We only extract the info we need for the form
     foreach($hierarchies as $hierarchy) {
         $name = $hierarchy['#']['NAME']['0']['#'];
         $contents->$name = new object();
+
+        $hbackupfile = "$CFG->dirroot/hierarchy/type/$name/backuplib.php";
+        if(file_exists($hbackupfile)) {
+            include_once($hbackupfile);
+        }
+
+        // get the name of the tag for this hierarchy
+        $getitemtagfunc = $name.'_get_item_tag';
+        if(function_exists($getitemtagfunc)) {
+            $itemnameplural = $getitemtagfunc(true);
+            $itemname = $getitemtagfunc();
+        } else {
+            // try to guess tag name using name
+            $itemname = strtoupper($name);
+            $itemnameplural = strtoupper($name.'s');
+        }
+
         if(isset($hierarchy['#']['FRAMEWORKS']['0']['#']['FRAMEWORK'])) {
             $frameworks = $hierarchy['#']['FRAMEWORKS']['0']['#']['FRAMEWORK'];
             $contents->$name->frameworks = array();
@@ -193,8 +275,7 @@ function get_backup_contents($info, $backup_unique_code, &$errorstr) {
                 $id = $framework['#']['ID']['0']['#'];
                 $contents->$name->frameworks[$id] = new object();
                 $contents->$name->frameworks[$id]->fullname = $fullname;
-                $itemnameplural = strtoupper(get_string($name.'plural',$name));
-                $itemname = strtoupper(get_string($name, $name));
+
                 if(isset($framework['#'][$itemnameplural]['0']['#'][$itemname])) {
                     $items = $framework['#'][$itemnameplural]['0']['#'][$itemname];
                     $contents->$name->frameworks[$id]->itemcount = count($items);
@@ -210,22 +291,18 @@ function get_backup_contents($info, $backup_unique_code, &$errorstr) {
         // in the file /hierarchy/type/[hierarchytype]/backuplib.php
 
         // check to see if backup contains optional tags for this hierarchy
-        $hbackupfile = "$CFG->dirroot/hierarchy/type/$name/backuplib.php";
         $optionsfunc = $name.'_options';
-        if(file_exists($hbackupfile)) {
-            include_once($hbackupfile);
-            if(function_exists($optionsfunc)) {
-                $options = $optionsfunc();
-                foreach ($options AS $option) {
-                    $opname = $option['name'];
-                    $optag = $option['tag'];
-                    $oplabel = $option['label'];
-                    $opdefault = $option['default'];
-                    // if optag is an array key, this option was included in backup
-                    $contents->$name->options->$opname->exists = array_key_exists_r($optag, $hierarchy);
-                    $contents->$name->options->$opname->label = $oplabel;
-                    $contents->$name->options->$opname->default = $opdefault;
-                }
+        if(function_exists($optionsfunc)) {
+            $options = $optionsfunc();
+            foreach ($options AS $option) {
+                $opname = $option['name'];
+                $optag = $option['tag'];
+                $oplabel = $option['label'];
+                $opdefault = $option['default'];
+                // if optag is an array key, this option was included in backup
+                $contents->$name->options->$opname->exists = array_key_exists_r($optag, $hierarchy);
+                $contents->$name->options->$opname->label = $oplabel;
+                $contents->$name->options->$opname->default = $opdefault;
             }
         }
     }
@@ -233,7 +310,12 @@ function get_backup_contents($info, $backup_unique_code, &$errorstr) {
     return $contents;
 }
 
-
+/**
+ * Creates a temporary table used for matching backed up users to existing users
+ *
+ * TODO this should be obsolete as job done by user backup scripts
+ *
+**/
 function create_temp_user_table($tname) {
     global $CFG;
     require_once("$CFG->libdir/ddllib.php");
@@ -267,8 +349,8 @@ function match_users($info, $backup_unique_code) {
     // delete entries with same unique code to avoid duplicates
     delete_records($tempusers, 'backup_unique_code', $backup_unique_code);
     // write users from XML file to temporary table
-    if(isset($info['MOODLE_BACKUP']['#']['USERS']['0']['#']['USER'])) {
-        $users = $info['MOODLE_BACKUP']['#']['USERS']['0']['#']['USER'];
+    if(isset($info['MOODLE_BACKUP']['#']['COURSE']['0']['#']['USERS']['0']['#']['USER'])) {
+        $users = $info['MOODLE_BACKUP']['#']['COURSE']['0']['#']['USERS']['0']['#']['USER'];
         foreach($users as $user) {
             $todb = new object();
             $todb->oid = $user['#']['ID']['0']['#'];
@@ -314,9 +396,19 @@ function match_users($info, $backup_unique_code) {
 }
 
 function match_items($frameworkinfo, $hname, $fwid, $tempitems, $backup_unique_code) {
-    $itemplural = strtoupper(get_string($hname.'plural',$hname));
-    $itemsingle = strtoupper(get_string($hname, $hname));
-
+    $hbackupfile = "$CFG->dirroot/hierarchy/type/$hname/backuplib.php";
+    if(file_exists($hbackupfile)) {
+        include_once($hbackupfile);
+    }
+    $getitemtagfunc = $hname.'_get_item_tag';
+    if(function_exists($getitemtagfunc)) {
+        $itemplural = $getitemtagfunc(true);
+        $itemsingle = $getitemtagfunc();
+    } else {
+        // try to guess tag name using name
+        $itemplural = strtoupper($hname.'s');
+        $itemsingle = strtoupper($hname);
+    }
     // write items from XML file to temporary table
     if (isset($frameworkinfo['#'][$itemplural]['0']['#'][$itemsingle])) {
         $items = $frameworkinfo['#'][$itemplural]['0']['#'][$itemsingle];
@@ -394,6 +486,157 @@ function create_temp_items_table($tname) {
     
     return create_table($table, true, false);
     
+}
+
+
+
+/**
+ *
+ * HELPER FUNCTIONS
+ *
+ * Extra functions for helping with restore process
+ *
+**/
+
+
+
+/**
+ * Updates the path of a row in the specified table
+ * Must be called after the new row is inserted as current row ID is required
+ *
+ * @param string $path Path string to be updated
+ * @param int $id ID of the table row to update with the new path
+ * @param string $pathtable Table to use to get new ids for the path elements from
+ * @param string $desttable Table to update the path in
+ * @param int $backup_unique_code Backup code, used to find new path element ids
+ * @return mixed The new path (with updated IDs) or false if update failed
+**/
+function update_path($path, $id, $pathtable, $desttable, $backup_unique_code) {
+    $pathelements = explode('/', $path);
+    $out = array();
+    foreach($pathelements AS $element) {
+        if(trim($element) == '') {
+            $out[]='';
+            continue;
+        }
+        $comp = backup_getid($backup_unique_code, $pathtable, $element);
+        if($comp) {
+            $out[] = $comp->new_id;
+        } else {
+            $out[] = $element;
+        }
+    }
+    $newpath = implode('/', $out);
+    $pathupdate = new object();
+    $pathupdate->id = $id;
+    $pathupdate->path = $newpath;
+    if(update_record($desttable, $pathupdate)) {
+        return $newpath;
+    } else {
+        return false;
+    }
+}
+
+/*
+ * Given an array of XMLized data representing a particular branch of the backup
+ * file, and a list of fields to match, and a db table to match to, this function
+ * returns an array detailing if branch members matched existing db entries
+ * and which fields they matched on. The match can be further restricted with an
+ * optional SQL WHERE fragment.
+*/
+function get_matches($xmlinfo, $matchfields, $tablename, $where=null) {
+    global $CFG;
+    $queries = array();
+    if(!empty($where)) {
+        $where = " WHERE $where ";
+    } else {
+        $where = '';
+    }
+    // first build a result table for each matchfield
+    // do this way to avoid running one query per item
+    foreach ($matchfields AS $matchfield) {
+        $data = array();
+        foreach ($xmlinfo AS $row) {
+            $data[] =  '\''.$row['#'][strtoupper($matchfield)]['0']['#'].'\'';
+        }
+        // build the in statement
+        $instr = implode(', ',$data);
+        // run the query
+        $sql  = "SELECT $matchfield,count(id) FROM {$CFG->prefix}$tablename
+            $where
+            GROUP BY $matchfield
+            HAVING $matchfield IN ($instr)";
+        $queries[$matchfield] = get_records_sql($sql);
+    }
+
+    // now rerun through each line of input data, and create output array
+    // of IDs and fields that matched (false for no match)
+    // TODO what if matchfields have quotes or other special chars that
+    // can't be used as array keys?
+    $out = array();
+    foreach($xmlinfo AS $row) {
+        $match = false;
+        $id = $row['#']['ID']['0']['#'];
+        foreach ($matchfields AS $matchfield) {
+            $data = $row['#'][strtoupper($matchfield)]['0']['#'];
+            if(isset($queries[$matchfield][$data]->count) && $queries[$matchfield][$data]->count == 1) {
+                $match = $matchfield;
+                break;
+            }
+        }
+        $out[$id] = $match;
+
+    }
+    // returns an array, where keys are the ID from the backup file
+    // and value is either:
+    // - the name of the field that matched exactly once
+    // - false if no fields matched
+    return $out;
+
+}
+
+/**
+ * Given an isdefault setting (1 or 0), checks to see if any other rows are
+ * already set as the default. If so, this new row is not allowed to be default
+ * too.
+ *
+ * @param string $table Name of database table to check, without moodle prefix
+ * @param boolean $isdefault Current setting for this row from backup file
+ * @return boolean New value for the specified row, taking into account existing
+ *                 values in db.
+**/
+function getdefault($table, $isdefault) {
+    if($isdefault) {
+        if(count_records($table,'isdefault',1)) {
+            return 0;
+        } else {
+            return 1;
+        }
+    }
+    else {
+        return 0;
+    }
+}
+
+/**
+ * Given a table and a sortorder ID, returns the sortorder to use for a new
+ * record. This is either the next available ID or the current one if unused
+ *
+ * @param string $table Name of the database table to check, without moodle prefix
+ * @param int $sortorder Current setting for this row from backup file
+ * @return int New value for the specified row, taking into account existing
+ *             values in db.
+**/
+function get_sortorder($table, $sortorder) {
+    global $CFG;
+    $matches = count_records($table, 'sortorder', $sortorder);
+    if($matches) {
+        $sql = "SELECT max(sortorder)+1 AS sortorder from {$CFG->prefix}$table";
+        $res = get_record_sql($sql);
+        return $res->sortorder;
+    } else {
+        return $sortorder;
+    }
 }
 
 

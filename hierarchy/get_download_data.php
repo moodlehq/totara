@@ -75,7 +75,7 @@ foreach($myitemlist AS $rowid => $item) {
     $j = 0;
     foreach($myhead AS $head) {
         if ($head->type == 'depth') {
-            if ($item->depthid == $head->value->depthlevel) {
+            if ($item->depthid == $head->value->id) {
                 $download_data[$i][$j] = $item->$displayitem;
             }
         }

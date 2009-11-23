@@ -1,5 +1,6 @@
 <?php
-
+$string['organisation'] = 'Organisation';
+$string['organisationplural'] = 'Organisations';
 $string['adddepthlevel'] = 'Add a new depth level';
 $string['addneworganisation'] = 'Add new organisation';
 $string['addnewframework'] = 'Add new organisation framework';

@@ -1,17 +1,17 @@
 <?php
 
-function position_backup($bf, $frameworks, $options) {
+function organisation_backup($bf, $frameworks, $options) {
     // only create hierarchy tag if there are frameworks
     if(is_array($frameworks) && array_keys($frameworks, '1')) {
         fwrite($bf,start_tag('HIERARCHY',2,true));
-        fwrite($bf,full_tag('NAME', 3, false, 'position'));
+        fwrite($bf,full_tag('NAME', 3, false, 'organisation'));
         // only backup frameworks if at least one is selected
         if(is_array($frameworks) && array_keys($frameworks, '1')) {
             print '<li>Backing up frameworks</li>';
             fwrite($bf,start_tag('FRAMEWORKS',3, true));
             foreach($frameworks AS $fwid => $include) {
                 if($include) {
-                    position_backup_framework($bf, $fwid, $options);
+                    organisation_backup_framework($bf, $fwid, $options);
                 }
             }
             fwrite($bf,end_tag('FRAMEWORKS', 3, true));
@@ -21,9 +21,9 @@ function position_backup($bf, $frameworks, $options) {
     return true;
 }
 
-function position_backup_framework($bf, $fwid, $options) {
+function organisation_backup_framework($bf, $fwid, $options) {
      if(is_numeric($fwid)) {
-        $framework = get_record('position_framework','id',$fwid);
+        $framework = get_record('organisation_framework','id',$fwid);
     }
 
     $status = true;
@@ -44,15 +44,15 @@ function position_backup_framework($bf, $fwid, $options) {
     fwrite($bf, full_tag('SHOWITEMFULLNAME', 5, false, $framework->showitemfullname));
     fwrite($bf, full_tag('SHOWDEPTHFULLNAME', 5, false, $framework->showdepthfullname));
 
-    position_backup_depth($bf, $framework->id, $options);
-    position_backup_position($bf, $framework->id, $options);
+    organisation_backup_depth($bf, $framework->id, $options);
+    organisation_backup_organisation($bf, $framework->id, $options);
 
     fwrite($bf, end_tag('FRAMEWORK', 4, true));
 }
 
-function position_backup_depth($bf, $fwid, $options) {
+function organisation_backup_depth($bf, $fwid, $options) {
     if(is_numeric($fwid)) {
-        $depths = get_records('position_depth', 'frameworkid', $fwid);
+        $depths = get_records('organisation_depth', 'frameworkid', $fwid);
     }
     if($depths) {
         fwrite($bf, start_tag('DEPTHS', 5, true));
@@ -68,7 +68,7 @@ function position_backup_depth($bf, $fwid, $options) {
             fwrite($bf, full_tag('TIMEMODIFIED', 7, false, $depth->timemodified));
             fwrite($bf, full_tag('USERMODIFIED', 7, false, $depth->usermodified));
             if(isset($options->inc_custom) && $options->inc_custom) {
-                position_backup_custom_category($bf, $depth->id, $options);
+                organisation_backup_custom_category($bf, $depth->id, $options);
             }
             fwrite($bf, end_tag('DEPTH', 6, true));
         }
@@ -76,9 +76,9 @@ function position_backup_depth($bf, $fwid, $options) {
     }
 }
 
-function position_backup_custom_category($bf, $depthid, $options) {
+function organisation_backup_custom_category($bf, $depthid, $options) {
     if(is_numeric($depthid)) {
-        $categories = get_records('position_depth_info_category','depthid', $depthid);
+        $categories = get_records('organisation_depth_info_category','depthid', $depthid);
     }
     if($categories) {
         fwrite($bf, start_tag('DEPTH_CATEGORIES', 7, true));
@@ -89,7 +89,7 @@ function position_backup_custom_category($bf, $depthid, $options) {
             fwrite($bf, full_tag('SORTORDER', 9, false, $category->sortorder));
             fwrite($bf, full_tag('DEPTHID', 9, false, $category->depthid));
 
-            position_backup_custom_field($bf, $category->id, $options);
+            organisation_backup_custom_field($bf, $category->id, $options);
 
             fwrite($bf, end_tag('DEPTH_CATEGORY', 8, true));
         }
@@ -97,9 +97,9 @@ function position_backup_custom_category($bf, $depthid, $options) {
     }
 }
 
-function position_backup_custom_field($bf, $categoryid, $options) {
+function organisation_backup_custom_field($bf, $categoryid, $options) {
     if(is_numeric($categoryid)) {
-        $fields = get_records('position_depth_info_field','categoryid', $categoryid);
+        $fields = get_records('organisation_depth_info_field','categoryid', $categoryid);
     }
     if($fields) {
         fwrite($bf, start_tag('CUSTOM_FIELDS', 9, true));
@@ -129,44 +129,44 @@ function position_backup_custom_field($bf, $categoryid, $options) {
     }
 }
 
-function position_backup_position($bf, $fwid, $options) {
+function organisation_backup_organisation($bf, $fwid, $options) {
     if(is_numeric($fwid)) {
-        $positions = get_records('position', 'frameworkid', $fwid);
+        $organisations = get_records('organisation', 'frameworkid', $fwid);
     }
-    if($positions) {
-        fwrite($bf, start_tag('POSITIONS', 5, true));
-        foreach($positions AS $position) {
-            fwrite($bf, start_tag('POSITION', 6, true));
-            fwrite($bf, full_tag('ID', 7, false, $position->id));
-            fwrite($bf, full_tag('FULLNAME', 7, false, $position->fullname));
-            fwrite($bf, full_tag('SHORTNAME', 7, false, $position->shortname));
-            fwrite($bf, full_tag('IDNUMBER', 7, false, $position->idnumber));
-            fwrite($bf, full_tag('DESCRIPTION', 7, false, $position->description));
-            fwrite($bf, full_tag('FRAMEWORKID', 7, false, $position->frameworkid));
-            fwrite($bf, full_tag('PATH', 7, false, $position->path));
-            fwrite($bf, full_tag('DEPTHID', 7, false, $position->depthid));
-            fwrite($bf, full_tag('PARENTID', 7, false, $position->parentid));
-            fwrite($bf, full_tag('SORTORDER', 7, false, $position->sortorder));
-            fwrite($bf, full_tag('VISIBLE', 7, false, $position->visible));
-            fwrite($bf, full_tag('TIMEVALIDFROM', 7, false, $position->timevalidfrom));
-            fwrite($bf, full_tag('TIMEVALIDTO', 7, false, $position->timevalidto));
-            fwrite($bf, full_tag('TIMECREATED', 7, false, $position->timecreated));
-            fwrite($bf, full_tag('TIMEMODIFIED', 7, false, $position->timemodified));
-            fwrite($bf, full_tag('USERMODIFIED', 7, false, $position->usermodified));
+    if($organisations) {
+        fwrite($bf, start_tag('ORGANISATIONS', 5, true));
+        foreach($organisations AS $organisation) {
+            fwrite($bf, start_tag('ORGANISATION', 6, true));
+            fwrite($bf, full_tag('ID', 7, false, $organisation->id));
+            fwrite($bf, full_tag('FULLNAME', 7, false, $organisation->fullname));
+            fwrite($bf, full_tag('SHORTNAME', 7, false, $organisation->shortname));
+            fwrite($bf, full_tag('IDNUMBER', 7, false, $organisation->idnumber));
+            fwrite($bf, full_tag('DESCRIPTION', 7, false, $organisation->description));
+            fwrite($bf, full_tag('FRAMEWORKID', 7, false, $organisation->frameworkid));
+            fwrite($bf, full_tag('PATH', 7, false, $organisation->path));
+            fwrite($bf, full_tag('DEPTHID', 7, false, $organisation->depthid));
+            fwrite($bf, full_tag('PARENTID', 7, false, $organisation->parentid));
+            fwrite($bf, full_tag('SORTORDER', 7, false, $organisation->sortorder));
+            fwrite($bf, full_tag('VISIBLE', 7, false, $organisation->visible));
+            fwrite($bf, full_tag('TIMEVALIDFROM', 7, false, $organisation->timevalidfrom));
+            fwrite($bf, full_tag('TIMEVALIDTO', 7, false, $organisation->timevalidto));
+            fwrite($bf, full_tag('TIMECREATED', 7, false, $organisation->timecreated));
+            fwrite($bf, full_tag('TIMEMODIFIED', 7, false, $organisation->timemodified));
+            fwrite($bf, full_tag('USERMODIFIED', 7, false, $organisation->usermodified));
 
             if(isset($options->inc_custom) && $options->inc_custom) {
-                position_backup_custom_data($bf, $position->id, $options);
+                organisation_backup_custom_data($bf, $organisation->id, $options);
             }
 
-            fwrite($bf, end_tag('POSITION', 6, true));
+            fwrite($bf, end_tag('ORGANISATION', 6, true));
         }
-        fwrite($bf, end_tag('POSITIONS', 5, true));
+        fwrite($bf, end_tag('ORGANISATIONS', 5, true));
     }
 }
 
-function position_backup_custom_data($bf, $posid, $options) {
+function organisation_backup_custom_data($bf, $posid, $options) {
     if(is_numeric($posid)) {
-        $values = get_records('position_depth_info_data','positionid',$posid);
+        $values = get_records('organisation_depth_info_data','organisationid',$posid);
     }
     if($values) {
         fwrite($bf, start_tag('CUSTOM_VALUES', 7, true));
@@ -174,7 +174,7 @@ function position_backup_custom_data($bf, $posid, $options) {
             fwrite($bf, start_tag('CUSTOM_VALUE', 8, true));
             fwrite($bf, full_tag('ID', 9, false, $value->id));
             fwrite($bf, full_tag('FIELDID', 9, false, $value->fieldid));
-            fwrite($bf, full_tag('POSITIONID', 9, false, $value->positionid));
+            fwrite($bf, full_tag('ORGANISATIONID', 9, false, $value->organisationid));
             fwrite($bf, full_tag('DATA', 9, false, $value->data));
             fwrite($bf, end_tag('CUSTOM_VALUE', 8, true));
         }
@@ -183,7 +183,7 @@ function position_backup_custom_data($bf, $posid, $options) {
     }
 }
 
-function position_options() {
+function organisation_options() {
     $options = array();
 
     $options['custom'] = array('name' => 'inc_custom',
@@ -207,11 +207,11 @@ function position_options() {
  *                The plural version of the tag is returned if $plural is true
  *                otherwise the singlular is returned
 **/
-function position_get_item_tag($plural=false) {
+function organisation_get_item_tag($plural=false) {
     if ($plural) {
-        return "POSITIONS";
+        return "ORGANISATIONS";
     } else {
-        return "POSITION";
+        return "ORGANISATION";
     }
 }
 

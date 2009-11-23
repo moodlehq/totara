@@ -6,15 +6,15 @@
 **/
 
 /**
- * Requirements to back up a specific hierarchy:
+ * Requirements to enable back up functionality for a specific hierarchy:
  *
  * 1- Must have a directory called hierarchy/type/[hname]/ where [hname] is
- *    the name of the hiearchy to be backed up.
+ *    the name of the hiearchy to be backed up (same as prefix).
  *
  * 2- Must have a file called hierarchy/type/[hname]/backuplib.php
  *
  * 3- backuplib.php must include a function called [hname]_backup(), which
- *    is the function that creates the backup data for that hierarchy
+ *    is the function that initialises the backup for that hierarchy
  *
  * 4- Must have a file called hierarchy/type/[hname]/lib.php
  *
@@ -68,15 +68,24 @@
  *
  *    See hierachy/type/competency/backuplib.php for an example of how to write
  *    this function
+ *
+ *11- The hierarchy/type/[hname]/backuplib.php should contain a function called
+ *    [hname]_get_item_tag(), which returns the singular of the item's tag name,
+ *    or if called with an optional first argument set to true, returns the
+ *    plural of the item's tag name. This is used to name the item XML tags within
+ *    the backup file and access them when restoring.
+ *
 **/
 
 /**
- * Return array of hierarchy names to be backed up based on existence of the
+ * Returns array of hierarchy names to be backed up based on existence of the
  * required files and functions
+ *
+ * Note this function also includes() the backuplib.php file for the specified
+ * hierarchy in order to check for required functions.
  *
  * @return array Array of hierarchy prefixes that can be backed up
  **/
-//TODO remove include() from this function and do seperately when called??
 function get_backup_list() {
     global $CFG;
 
@@ -111,3 +120,5 @@ function get_backup_list() {
     return $hlist;
 
 }
+
+

@@ -214,7 +214,7 @@
     }
 
     // Download form
-    $download = new hierarchy_download_form(null, array('type'=>$type));
+    $download = new hierarchy_download_form(null, array('type'=>$type,'frameworkid'=>$frameworkid));
     if ($fromform = $download->get_data()) {
         require_once($CFG->dirroot.'/hierarchy/get_download_data.php');
         redirect($CFG->wwwroot.'/hierarchy/download.php?type='.$type);
