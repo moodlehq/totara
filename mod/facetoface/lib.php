@@ -2359,4 +2359,16 @@ function facetoface_update_calendar_events($session, $eventtype)
     return $result;
 }
 
+/**
+ * @param string $feature FEATURE_xx constant for requested feature
+ * @return bool True if module supports feature
+ */
+function facetoface_supports($feature) {
+    switch($feature) {
+        case FEATURE_GRADE_HAS_GRADE: return true;
+        case FEATURE_COMPLETION_TRACKS_VIEWS: return true;
+        default: return null;
+    }
+}
+
 ?>
