@@ -153,11 +153,8 @@ class block_completionstatus extends block_base {
 
         $this->content->text .= ':</td></tr>'.$shtml.'</tbody></table>';
 
-        // Display link to report
-        $context = get_context_instance(CONTEXT_COURSE, $COURSE->id);
-        if (has_capability('coursereport/progress:view',$context)) {
-            $this->content->footer = '<br><a href="'.$CFG->wwwroot.'/course/report/progress/?course='.$COURSE->id.'">More info</a>';
-        }
+        // Display link to detailed view
+        $this->content->footer = '<br><a href="'.$CFG->wwwroot.'/blocks/completionstatus/details.php?course='.$COURSE->id.'">More details</a>';
 
         return $this->content;
     }
