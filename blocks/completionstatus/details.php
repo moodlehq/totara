@@ -167,7 +167,6 @@ foreach ($rows as $row) {
             }
 
             echo '</i> '.strtolower(get_string('required')).')';
-        } else {
             $agg_type = false;
         }
     }
