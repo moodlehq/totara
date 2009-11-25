@@ -528,7 +528,7 @@
                             if ($type === 'complete' && $first_row) {
                                 $params = array(
                                     'userid'    => $user->id,
-                                    'courseid'  => $c_course->id
+                                    'course'  => $c_course->id
                                 );
 
                                 $ccompletion = new completion_completion($params);
