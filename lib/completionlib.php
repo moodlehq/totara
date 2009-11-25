@@ -394,7 +394,7 @@ class completion_info {
     public function is_course_complete($user_id) {
         $params = array(
             'userid'    => $user_id,
-            'courseid'  => $this->course_id
+            'course'  => $this->course_id
         );
 
         $ccompletion = new completion_completion($params);
