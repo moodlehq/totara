@@ -199,7 +199,7 @@ function completion_cron_completions() {
         }
 
         // If this is the end of the recordset, break the loop
-        if ($rs->EOF) {
+        if (!$record) {
             $rs->close();
             break;
         }
