@@ -1643,6 +1643,7 @@
                 fwrite ($bf,full_tag("CRITERIATYPE",5,false,$criterion->criteriatype));
                 fwrite ($bf,full_tag("MODULE",5,false,$criterion->module));
                 fwrite ($bf,full_tag("MODULEINSTANCE",5,false,$criterion->moduleinstance));
+                fwrite ($bf,full_tag("COURSEINSTANCE",5,false,$criterion->courseinstance));
                 fwrite ($bf,full_tag("ENROLPERIOD",5,false,$criterion->enrolperiod));
                 fwrite ($bf,full_tag("DATE",5,false,$criterion->date));
                 fwrite ($bf,full_tag("GRADEPASS",5,false,$criterion->gradepass));

@@ -3448,6 +3448,20 @@ function xmldb_main_upgrade($oldversion=0) {
         upgrade_main_savepoint($result, 2007101554);
     }
 
+    if ($result && $oldversion < 2007101556) {
+
+    /// Add cols to course completion criteria table
+        $table = new XMLDBTable('course_completion_criteria');
+        $field = new XMLDBField('courseinstance');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, '0', 'moduleinstance');
+
+        if (!field_exists($table, $field)) {
+            add_field($table, $field);
+        }
+
+        upgrade_main_savepoint($result, 2007101556);
+    }
+
     return $result;
 }
 

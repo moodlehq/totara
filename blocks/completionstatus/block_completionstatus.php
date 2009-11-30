@@ -71,11 +71,15 @@ class block_completionstatus extends block_base {
         }
 
         // Generate markup for criteria statuses
-        $shtml = '<tr><td><b>'.get_string('requiredcriteria', 'completion').'</b></td><td style="text-align: right"><b>'.get_string('status').'</b></td></tr>';
+        $shtml = '';
 
         // For aggregating activity completion
         $activities = array();
         $activities_complete = 0;
+
+        // For aggregating course prerequisites
+        $prerequisites = array();
+        $prerequisites_complete = 0;
 
         // Flag to set if current completion data is inconsistent with
         // what is stored in the database
@@ -102,6 +106,17 @@ class block_completionstatus extends block_base {
                 continue;
             }
 
+            // Prerequisites are also a special case, so cache them and leave them till last
+            if ($criteria->criteriatype == COMPLETION_CRITERIA_TYPE_COURSE) {
+                $prerequisites[$criteria->courseinstance] = $complete;
+
+                if ($complete) {
+                    $prerequisites_complete++;
+                }
+
+                continue;
+            }
+
             $shtml .= '<tr><td>';
             $shtml .= $criteria->get_title();
             $shtml .= '</td><td style="text-align: right">';
@@ -113,10 +128,22 @@ class block_completionstatus extends block_base {
         if (!empty($activities)) {
 
             $shtml .= '<tr><td>';
-            $shtml .= 'Activities complete';
+            $shtml .= get_string('activitiescompleted', 'completion');
             $shtml .= '</td><td style="text-align: right">';
             $shtml .= $activities_complete.' of '.count($activities);
             $shtml .= '</td></tr>';
+        }
+
+        // Aggregate prerequisites
+        if (!empty($prerequisites)) {
+
+            $phtml  = '<tr><td>';
+            $phtml .= get_string('prerequisitescompleted', 'completion');
+            $phtml .= '</td><td style="text-align: right">';
+            $phtml .= $prerequisites_complete.' of '.count($prerequisites);
+            $phtml .= '</td></tr>';
+
+            $shtml = $phtml . $shtml;
         }
 
         // Display completion status
@@ -151,7 +178,9 @@ class block_completionstatus extends block_base {
             $this->content->text .= get_string('criteriarequiredany', 'completion');
         }
 
-        $this->content->text .= ':</td></tr>'.$shtml.'</tbody></table>';
+        $this->content->text .= ':</td></tr>';
+        $this->content->text .= '<tr><td><b>'.get_string('requiredcriteria', 'completion').'</b></td><td style="text-align: right"><b>'.get_string('status').'</b></td></tr>';
+        $this->content->text .= $shtml.'</tbody></table>';
 
         // Display link to detailed view
         $this->content->footer = '<br><a href="'.$CFG->wwwroot.'/blocks/completionstatus/details.php?course='.$COURSE->id.'">More details</a>';
