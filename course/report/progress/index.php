@@ -211,6 +211,58 @@ if(!$csv) {
     }
 }
 
+// Sort out extra heading row
+if (!$csv) {
+
+    // Display prerequisite header
+    $ccriteria = 0;
+
+    if ($criteria) {
+        foreach ($criteria as $criterion) {
+            // Count course criteria
+            if ($criterion->criteriatype == COMPLETION_CRITERIA_TYPE_COURSE) {
+                $ccriteria++;
+            }
+        }
+    }
+
+    if ($ccriteria) {
+        print '<th scope="col" colspan="'.$ccriteria.'" align="center">'.get_string('prerequisitescompleted', 'completion').'</th>';
+    }
+
+    if ($activities) {
+        print '<th scope="col" colspan="'.count($activities).'" align="center">'.get_string('activitiescompleted', 'completion').'</th>';
+    }
+
+    if ($ccriteria || $activities) {
+        print '</tr><tr><th></th>';
+    }
+}
+
+// Course completion prerequisites
+if ($criteria) {
+
+    foreach ($criteria as $criterion) {
+
+        // Ignore other criteria types
+        if ($criterion->criteriatype != COMPLETION_CRITERIA_TYPE_COURSE) {
+            continue;
+        }
+
+        // Get prerequisite course
+        $c = get_record('course', 'id', $criterion->courseinstance);
+
+        // Build title
+        $title = s($c->fullname);
+
+        if ($csv) {
+            print $sep.csv_quote(strip_tags($title));
+        } else {
+            print '<th scope="col">'.format_text($title).'</th>';
+        }
+    }
+}
+
 // Activities
 foreach($activities as $activity) {
     $activity->datepassed = $activity->completionexpected && $activity->completionexpected <= time();
@@ -247,7 +299,8 @@ if ($criteria) {
     foreach ($criteria as $criterion) {
 
         // Ignore activity completion criteria (use existing activity cols instead)
-        if ($criterion->criteriatype == COMPLETION_CRITERIA_TYPE_ACTIVITY) {
+        if ($criterion->criteriatype == COMPLETION_CRITERIA_TYPE_ACTIVITY ||
+            $criterion->criteriatype == COMPLETION_CRITERIA_TYPE_COURSE) {
             continue;
         }
 
@@ -291,6 +344,41 @@ foreach($progress->users as $user) {
             $user->id.'&amp;course='.$course->id.'">'.fullname($user).'</a></th>';
         if($idnumbers) {
             print '<td>'.htmlspecialchars($user->idnumber).'</td>';
+        }
+    }
+
+    // Course completion prerequisites
+    if ($criteria) {
+
+        foreach ($criteria as $criterion) {
+
+            // Ignore other criteria types
+            if ($criterion->criteriatype != COMPLETION_CRITERIA_TYPE_COURSE) {
+                continue;
+            }
+
+            $criteria_completion = $completion->get_user_completion($user->id, $criterion);
+            $is_complete = $criteria_completion->is_complete();
+
+            $completiontype = $is_complete ? 'y' : 'n';
+            $completionicon = 'completion-auto-'.$completiontype;
+
+            $describe = get_string('completion-alt-auto-'.$completiontype, 'completion');
+
+            $a = new StdClass;
+            $a->state    = $describe;
+            $a->date     = $is_complete ? userdate($criteria_completion->timecompleted) : '';
+            $a->user     = fullname($user);
+            $a->activity = strip_tags($criterion->get_title());
+            $fulldescribe = get_string('progress-title', 'completion', $a);
+
+            if ($csv) {
+                print $sep.csv_quote($describe);
+            } else {
+                print '<td class="completion-progresscell">'.
+                    '<img src="'.$CFG->pixpath.'/i/'.$completionicon.'.gif'.
+                    '" alt="'.$describe.'" title="'.$fulldescribe.'" /></td>';
+            }
         }
     }
 
@@ -356,8 +444,9 @@ foreach($progress->users as $user) {
     if ($criteria) {
         foreach ($criteria as $criterion) {
 
-            // Ignore activity completion criteria
-            if ($criterion->criteriatype == COMPLETION_CRITERIA_TYPE_ACTIVITY) {
+            // Ignore activity completion criteria, and prerequisites
+            if ($criterion->criteriatype == COMPLETION_CRITERIA_TYPE_ACTIVITY ||
+                $criterion->criteriatype == COMPLETION_CRITERIA_TYPE_COURSE) {
                 continue;
             }
 
