@@ -4,7 +4,7 @@ YAHOO.namespace('dialogSetupFunc');
 
 
 // Dialog object
-function yuiDialog(title, buttonid, config) {
+function yuiDialog(title, buttonid, config, default_url) {
 
     /**
      * ID of dialog
@@ -42,7 +42,11 @@ function yuiDialog(title, buttonid, config) {
      */
     this.setup = function() {
         // Get form action
-        this.default_url = $('#'+this.buttonid).closest('form').attr('action');
+        if (default_url) {
+            this.default_url = default_url;
+        } else {
+            this.default_url = $('#'+this.buttonid).closest('form').attr('action');
+        }
 
         // Default config
         var default_config = {
