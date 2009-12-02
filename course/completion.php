@@ -38,7 +38,9 @@ require_once($CFG->libdir.'/completion/completion_criteria_role.php');
 require_once($CFG->libdir.'/completion/completion_criteria_course.php');
 require_once('completion_form.php');
 
-$id = required_param('id', PARAM_INT);       // course id
+// Get paramaters
+$id = required_param('id', PARAM_INT);                  // course id
+$js_enabled = optional_param('js', true, PARAM_BOOL);    // js enabled
 
 /// basic access control checks
 if ($id) { // editing course
@@ -134,6 +136,17 @@ if ($form->is_cancelled()){
 
 /// Print the form
 
+// If js enabled, setup custom javascript
+if ($js_enabled) {
+    require_once($CFG->dirroot.'/local/js/setup.php');
+
+    setup_lightbox(array(MBE_JS_TREEVIEW, MBE_JS_ADVANCED));
+
+    require_js(array(
+        $CFG->wwwroot.'/local/js/completion.prerequisite.js',
+    ));
+}
+
 $streditcompletionsettings = get_string("editcoursecompletionsettings", 'completion');
 $navlinks = array();
 
@@ -146,6 +159,15 @@ $fullname = $course->fullname;
 $navigation = build_navigation($navlinks);
 print_header($title, $fullname, $navigation, $form->focus());
 print_heading($streditcompletionsettings);
+
+// If js enabled, we need the current course id available to it
+if ($js_enabled) {
+?>
+    <script type="text/javascript">
+        var course_id = '<?php echo $course->id ?>';
+    </script>
+<?php
+}
 
 $form->display();
 

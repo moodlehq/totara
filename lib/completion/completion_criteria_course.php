@@ -71,14 +71,16 @@ class completion_criteria_course extends completion_criteria {
      * @return  void
      */
     public function update_config(&$data) {
+        global $js_enabled;
 
         if (!empty($data->criteria_course) && is_array($data->criteria_course)) {
 
             $this->course = $data->id;
 
-            foreach ($data->criteria_course as $course) {
+            foreach ($data->criteria_course as $key => $course) {
 
-                $this->courseinstance = $course;
+                // Use correct index, depending on use of checkbox or select
+                $this->courseinstance = $js_enabled ? $key : $course;
                 $this->id = NULL;
                 $this->insert();
             }
