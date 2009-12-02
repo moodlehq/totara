@@ -126,8 +126,9 @@
         <FIELD NAME="course" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="id" NEXT="criteriatype"/>
         <FIELD NAME="criteriatype" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" COMMENT="Type of criteria" PREVIOUS="course" NEXT="module"/>
         <FIELD NAME="module" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" COMMENT="Type of module (if using module criteria type)" PREVIOUS="criteriatype" NEXT="moduleinstance"/>
-        <FIELD NAME="moduleinstance" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" COMMENT="Module instance id (if using module criteria type)" PREVIOUS="module" NEXT="enrolperiod"/>
-        <FIELD NAME="enrolperiod" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" COMMENT="Number of days after enrolment the course is completed (if using enrolperiod criteria type)" PREVIOUS="moduleinstance" NEXT="date"/>
+        <FIELD NAME="moduleinstance" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" COMMENT="Module instance id (if using module criteria type)" PREVIOUS="module" NEXT="courseinstance"/>
+        <FIELD NAME="courseinstance" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" COMMENT="Course instance id (if using course criteria type)" PREVIOUS="moduleinstance" NEXT="enrolperiod"/>
+        <FIELD NAME="enrolperiod" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" COMMENT="Number of days after enrolment the course is completed (if using enrolperiod criteria type)" PREVIOUS="courseinstance" NEXT="date"/>
         <FIELD NAME="date" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" COMMENT="Timestamp of the date for course completion (if using date criteria type)" PREVIOUS="enrolperiod" NEXT="gradepass"/>
         <FIELD NAME="gradepass" TYPE="number" LENGTH="10" NOTNULL="false" UNSIGNED="false" SEQUENCE="false" DECIMALS="5" COMMENT="The minimum grade needed to pass the course (if passing grade criteria enabled)" PREVIOUS="date" NEXT="role"/>
         <FIELD NAME="role" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" PREVIOUS="gradepass" NEXT="lock"/>

@@ -28,7 +28,7 @@ require_once($CFG->libdir.'/formslib.php');
 class course_completion_form extends moodleform {
 
     function definition() {
-        global $USER, $CFG;
+        global $USER, $CFG, $js_enabled;
 
         $courseconfig = get_config('moodlecourse');
         $mform    =& $this->_form;
@@ -58,6 +58,112 @@ class course_completion_form extends moodleform {
         $mform->addElement('header', 'overallcriteria', get_string('overallcriteriaaggregation', 'completion'));
         $mform->addElement('select', 'overall_aggregation', get_string('aggregationmethod', 'completion'), $aggregation_methods);
         $mform->setDefault('overall_aggregation', $completion->get_aggregation_method());
+
+        // Course prerequisite completion criteria
+        $mform->addElement('header', 'courseprerequisites', get_string('courseprerequisites', 'completion'));
+
+        // Show noscript version if js off
+        if (!$js_enabled) {
+            // Get applicable courses
+            $courses = get_records_sql(
+                "
+                    SELECT DISTINCT
+                        c.id,
+                        c.category,
+                        c.fullname,
+                        cc.id AS selected
+                    FROM
+                        {$CFG->prefix}course c
+                    LEFT JOIN
+                        {$CFG->prefix}course_completion_criteria cc
+                     ON cc.courseinstance = c.id
+                    AND cc.course = {$course->id}
+                    INNER JOIN
+                        {$CFG->prefix}course_completion_criteria ccc
+                     ON ccc.course = c.id
+                    WHERE
+                        c.enablecompletion = ".COMPLETION_ENABLED."
+                    AND c.id <> {$course->id}
+                "
+            );
+
+            if (!empty($courses)) {
+                if (count($courses) > 1) {
+                    $mform->addElement('select', 'course_aggregation', get_string('aggregationmethod', 'completion'), $aggregation_methods);
+                    $mform->setDefault('course_aggregation', $completion->get_aggregation_method(COMPLETION_CRITERIA_TYPE_COURSE));
+                }
+
+                // Get category list
+                $list = array();
+                $parents = array();
+                make_categories_list($list, $parents);
+
+                // Get course list for select box
+                $selectbox = array();
+                $selected = array();
+                foreach ($courses as $c) {
+                    $selectbox[$c->id] = $list[$c->category] . ' / ' . s($c->fullname);
+
+                    // If already selected
+                    if ($c->selected) {
+                        $selected[] = $c->id;
+                    }
+                }
+
+                // Show multiselect box
+                $mform->addElement('select', 'criteria_course', get_string('coursesavailable', 'completion'), $selectbox, array('multiple' => 'multiple', 'size' => 6));
+
+                // Select current criteria
+                $mform->setDefault('criteria_course', $selected);
+
+                // Explain list
+                $mform->addElement('static', 'criteria_courses_explaination', '', get_string('coursesavailableexplaination', 'completion'));
+
+                // Show js version
+                $mform->addElement('static', 'showjsversion', '', '<small><a href="completion.php?id='.$course->id.'">'.get_string('usealternateselector', 'completion').'</a></small>');
+            } else {
+                $mform->addElement('static', 'nocourses', '', get_string('err_nocourses', 'completion'));
+            }
+
+        // If js turned on
+        } else {
+            // Get current prerequisites
+            $courses = get_records_sql(
+                "
+                    SELECT DISTINCT
+                        c.id,
+                        c.category,
+                        c.fullname
+                    FROM
+                        {$CFG->prefix}course c
+                    INNER JOIN
+                        {$CFG->prefix}course_completion_criteria cc
+                     ON cc.courseinstance = c.id
+                    AND cc.course = {$course->id}
+                    WHERE
+                        c.enablecompletion = ".COMPLETION_ENABLED."
+                    AND c.id <> {$course->id}
+                "
+            );
+
+            $mform->addElement('select', 'course_aggregation', get_string('aggregationmethod', 'completion'), $aggregation_methods);
+            $mform->setDefault('course_aggregation', $completion->get_aggregation_method(COMPLETION_CRITERIA_TYPE_COURSE));
+
+            if (!empty($courses)) {
+                foreach ($courses as $c) {
+                    $mform->addelement('checkbox', "criteria_course[{$c->id}]", s($c->fullname));
+                    $mform->setdefault('criteria_course['.$c->id.']', 1);
+                }
+            } else {
+                $mform->addElement('static', 'nocoursesselected', '', '<span class="nocoursesselected"></span>'.get_string('err_nocoursesselected', 'completion'));
+            }
+
+            // Add new prerequisite button
+            $mform->addElement('button', 'add_criteria_course', get_string('addcourseprerequisite', 'completion'));
+
+            // Show non-js version
+            $mform->addElement('static', 'shownonjsversion', '', '<small><a href="completion.php?id='.$course->id.'&js=0">'.get_string('usealternateselector', 'completion').'</a></small>');
+        }
 
         // Manual self completion
         $mform->addElement('header', 'manualselfcompletion', get_string('manualselfcompletion', 'completion'));
@@ -129,12 +235,28 @@ class course_completion_form extends moodleform {
         $criteria = new completion_criteria_unenrol($params);
         $criteria->config_form_display($mform);
 
+        // Do some cheeky stuff here to handle dynamically generated checkboxes
+        // (they need to appear in the form definition for the data to come through)
+        if ($js_enabled && !empty($_POST['criteria_course']) && is_array($_POST['criteria_course'])) {
+
+            foreach ($_POST['criteria_course'] as $key => $value) {
+                if ($mform->elementExists("criteria_course[{$key}]")) {
+                    continue;
+                }
+                $mform->addelement('hidden', "criteria_course[{$key}]", $key);
+            }
+        }
+
 
 //--------------------------------------------------------------------------------
         $this->add_action_buttons();
 //--------------------------------------------------------------------------------
         $mform->addElement('hidden', 'id', $course->id);
         $mform->setType('id', PARAM_INT);
+
+        // Remember js setting
+        $mform->addElement('hidden', 'js', $js_enabled);
+        $mform->setType('js', PARAM_BOOL);
 
         // If the criteria are locked, freeze values and submit button
         if ($completion->is_course_locked()) {

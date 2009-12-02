@@ -40,6 +40,7 @@ define('COMPLETION_CRITERIA_TYPE_ACTIVITY',     4);
 define('COMPLETION_CRITERIA_TYPE_DURATION',     5);
 define('COMPLETION_CRITERIA_TYPE_GRADE',        6);
 define('COMPLETION_CRITERIA_TYPE_ROLE',         7);
+define('COMPLETION_CRITERIA_TYPE_COURSE',       8);
 
 /**
  * Criteria type constant to class name mapping
@@ -53,6 +54,7 @@ $COMPLETION_CRITERIA_TYPES = array(
     COMPLETION_CRITERIA_TYPE_DURATION   => 'duration',
     COMPLETION_CRITERIA_TYPE_GRADE      => 'grade',
     COMPLETION_CRITERIA_TYPE_ROLE       => 'role',
+    COMPLETION_CRITERIA_TYPE_COURSE     => 'course',
 );
 
 
@@ -70,7 +72,7 @@ abstract class completion_criteria extends data_object {
      * Array of required table fields, must start with 'id'.
      * @var array $required_fields
      */
-    public $required_fields = array('id', 'course', 'criteriatype', 'module', 'moduleinstance', 'enrolperiod', 'date', 'gradepass', 'role');
+    public $required_fields = array('id', 'course', 'criteriatype', 'module', 'moduleinstance', 'courseinstance', 'enrolperiod', 'date', 'gradepass', 'role');
 
     /**
      * Course id

@@ -1479,6 +1479,13 @@ define('RESTORE_GROUPS_GROUPINGS', 3);
                             $row['criteriaid'] = $newids['course_completion_criteria'][$row['criteriaid']];
 
                             break;
+                        case 'course_completion_criteria':
+
+                            // If prerequisite criteria, only restore if this is the same site
+                            if ($row['courseinstance'] && !backup_is_same_site($restore)) {
+                                continue;
+                            }
+                            break;
                     }
 
                     //Save it to db

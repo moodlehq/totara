@@ -35,9 +35,12 @@ require_once($CFG->libdir.'/completion/completion_criteria_activity.php');
 require_once($CFG->libdir.'/completion/completion_criteria_duration.php');
 require_once($CFG->libdir.'/completion/completion_criteria_grade.php');
 require_once($CFG->libdir.'/completion/completion_criteria_role.php');
+require_once($CFG->libdir.'/completion/completion_criteria_course.php');
 require_once('completion_form.php');
 
-$id = required_param('id', PARAM_INT);       // course id
+// Get paramaters
+$id = required_param('id', PARAM_INT);                  // course id
+$js_enabled = optional_param('js', true, PARAM_BOOL);    // js enabled
 
 /// basic access control checks
 if ($id) { // editing course
@@ -57,7 +60,6 @@ if ($id) { // editing course
     require_login();
     print_error('needcourseid');
 }
-
 
 /// first create the form
 $form = new course_completion_form('completion.php?id='.$id, compact('course'));
@@ -110,6 +112,17 @@ if ($form->is_cancelled()){
     $aggregation->setMethod($data->activity_aggregation);
     $aggregation->insert();
 
+    // Course aggregation
+    if (empty($data->course_aggregation)) {
+        $data->course_aggregation = 0;
+    }
+
+    $aggregation = new completion_aggregation();
+    $aggregation->course = $data->id;
+    $aggregation->criteriatype = COMPLETION_CRITERIA_TYPE_COURSE;
+    $aggregation->setMethod($data->course_aggregation);
+    $aggregation->insert();
+
     // Role aggregation
     $aggregation = new completion_aggregation();
     $aggregation->course = $data->id;
@@ -123,6 +136,17 @@ if ($form->is_cancelled()){
 
 /// Print the form
 
+// If js enabled, setup custom javascript
+if ($js_enabled) {
+    require_once($CFG->dirroot.'/local/js/setup.php');
+
+    setup_lightbox(array(MBE_JS_TREEVIEW, MBE_JS_ADVANCED));
+
+    require_js(array(
+        $CFG->wwwroot.'/local/js/completion.prerequisite.js',
+    ));
+}
+
 $streditcompletionsettings = get_string("editcoursecompletionsettings", 'completion');
 $navlinks = array();
 
@@ -135,6 +159,15 @@ $fullname = $course->fullname;
 $navigation = build_navigation($navlinks);
 print_header($title, $fullname, $navigation, $form->focus());
 print_heading($streditcompletionsettings);
+
+// If js enabled, we need the current course id available to it
+if ($js_enabled) {
+?>
+    <script type="text/javascript">
+        var course_id = '<?php echo $course->id ?>';
+    </script>
+<?php
+}
 
 $form->display();
 
