@@ -1679,6 +1679,7 @@
                     fwrite ($bf,full_tag("CRITERIAID",5,false,$completion->criteriaid));
                     fwrite ($bf,full_tag("GRADEFINAL",5,false,$completion->gradefinal));
                     fwrite ($bf,full_tag("UNENROLED",5,false,$completion->unenroled));
+                    fwrite ($bf,full_tag("RPL",5,false,$completion->rpl));
                     fwrite ($bf,full_tag("DELETED",5,false,$completion->deleted));
                     fwrite ($bf,full_tag("TIMECOMPLETED",5,false,$completion->timecompleted));
                     fwrite ($bf,end_tag("COMPLETION_CRIT_COMPL",4,true));
@@ -1704,6 +1705,9 @@
                     fwrite ($bf,full_tag("ID",5,false,$completion->id));
                     fwrite ($bf,full_tag("USERID",5,false,$completion->userid));
                     fwrite ($bf,full_tag("COURSE",5,false,$completion->course));
+                    fwrite ($bf,full_tag("RPL",5,false,$completion->rpl));
+                    fwrite ($bf,full_tag("OFFICEID",5,false,$completion->officeid));
+                    fwrite ($bf,full_tag("POSITIONID",5,false,$completion->positionid));
                     fwrite ($bf,full_tag("DELETED",5,false,$completion->deleted));
                     fwrite ($bf,full_tag("TIMENOTIFIED",5,false,$completion->timenotified));
                     fwrite ($bf,full_tag("TIMEENROLED",5,false,$completion->timeenroled));
