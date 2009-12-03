@@ -3495,6 +3495,25 @@ function xmldb_main_upgrade($oldversion=0) {
         upgrade_main_savepoint($result, 2007101557);
     }
 
+    if ($result && $oldversion < 2007101558) {
+
+    /// Define fields to be added to course_completions
+        $table = new XMLDBTable('course_completions');
+        $field = new XMLDBField('officeid');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null, null, null, 'unenroled');
+
+    /// Launch add field officeid
+        $result = $result && add_field($table, $field);
+
+        $field = new XMLDBField('positionid');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null, null, null, 'course');
+
+    /// Launch add field positionid
+        $result = $result && add_field($table, $field);
+
+        upgrade_main_savepoint($result, 2007101558);
+    }
+
     return $result;
 }
 
