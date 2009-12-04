@@ -138,7 +138,7 @@ function backup_facetoface_session_roles($bf, $sessionid) {
     $status = true;
 
     $roles = get_records('facetoface_session_roles', 'sessionid', $sessionid, 'id');
-    if ($dates) {
+    if ($roles) {
 
         $status &= fwrite($bf, start_tag('ROLES', 6, true)) > 0;
 

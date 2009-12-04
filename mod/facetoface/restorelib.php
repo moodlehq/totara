@@ -198,7 +198,7 @@ function restore_facetoface_sessions($newfacetofaceid, $info, $restore) {
  *
  * @param integer $newsessionid ID of the session we are creating
  */
-function restore_facetoface_sessions_dates($newsessionid, $sessioninfo, $restore) {
+function restore_facetoface_session_roles($newsessionid, $sessioninfo, $restore) {
 
     $status = true;
 
