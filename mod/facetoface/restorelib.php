@@ -179,8 +179,56 @@ function restore_facetoface_sessions($newfacetofaceid, $info, $restore) {
         if ($newid) {
             backup_putid($restore->backup_unique_code, 'facetoface_sessions', $oldid, $newid);
 
+            // Table: facetoface_session_roles
+            $status &= restore_facetoface_session_roles($newid, $sessioninfo, $restore);
+
             // Table: facetoface_sessions_dates
             $status &= restore_facetoface_sessions_dates($newid, $sessioninfo, $restore);
+        } else {
+            $status = false;
+        }
+    }
+
+    return $status;
+}
+
+/**
+ * Restore the facetoface_session_roles table entries for a given
+ * facetoface session
+ *
+ * @param integer $newsessionid ID of the session we are creating
+ */
+function restore_facetoface_sessions_dates($newsessionid, $sessioninfo, $restore) {
+
+    $status = true;
+
+    if (empty($sessioninfo['#']['ROLES'])) {
+        return $status; // Nothing to restore
+    }
+
+    $roles = $sessioninfo['#']['ROLES']['0']['#']['ROLE'];
+    foreach ($roles as $roleinfo) {
+        $oldid = backup_todb($roleinfo['#']['ID']['0']['#']);
+
+        $role = new Object();
+        $role->sessionid  = $newsessionid;
+        $role->roleid  = backup_todb($roleinfo['#']['ROLEID']['0']['#']);
+        $role->userid = backup_todb($roleinfo['#']['USERID']['0']['#']);
+
+        $newid = insert_record('facetoface_session_roles', $role);
+
+        // Progress bar
+        if (!defined('RESTORE_SILENTLY')) {
+            if ($newid) {
+                echo '.';
+            } else {
+                echo 'X';
+            }
+        }
+        backup_flush(300);
+
+        if ($newid) {
+            backup_putid($restore->backup_unique_code, 'facetoface_session_roles', $oldid, $newid);
         } else {
             $status = false;
         }

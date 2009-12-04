@@ -117,12 +117,44 @@ function backup_facetoface_sessions($bf, $facetofaceid) {
             $status &= fwrite($bf, full_tag('TIMECREATED', 6, false, $session->timecreated)) > 0;
             $status &= fwrite($bf, full_tag('TIMEMODIFIED', 6, false, $session->timemodified)) > 0;
 
+            $status &= backup_facetoface_session_roles($bf, $session->id);
             $status &= backup_facetoface_sessions_dates($bf, $session->id);
 
             $status &= fwrite($bf, end_tag('SESSION', 5, true)) > 0;
         }
 
         $status &= fwrite($bf, end_tag('SESSIONS', 4, true)) > 0;
+    }
+
+    return $status;
+}
+
+/**
+ * Backup the facetoface_session_roles table entries for a given
+ * facetoface session
+ */
+function backup_facetoface_session_roles($bf, $sessionid) {
+
+    $status = true;
+
+    $roles = get_records('facetoface_session_roles', 'sessionid', $sessionid, 'id');
+    if ($dates) {
+
+        $status &= fwrite($bf, start_tag('ROLES', 6, true)) > 0;
+
+        foreach ($roles as $role) {
+
+            $status &= fwrite($bf, start_tag('ROLE', 7, true)) > 0;
+
+            // facetoface_session_roles table
+            $status &= fwrite($bf, full_tag('ID', 8, false, $role->id)) > 0;
+            $status &= fwrite($bf, full_tag('ROLEID', 8, false, $role->roleid)) > 0;
+            $status &= fwrite($bf, full_tag('USERID', 8, false, $role->userid)) > 0;
+
+            $status &= fwrite($bf, end_tag('ROLE', 7, true)) > 0;
+        }
+
+        $status &= fwrite($bf, end_tag('ROLES', 6, true)) > 0;
     }
 
     return $status;
