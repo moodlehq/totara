@@ -448,7 +448,7 @@
                         $course_name = $c_course->fullname;
 
                         // Get completions
-                        $completions = $c_info->get_completions($USER->id);
+                        $completions = $c_info->get_completions($user->id);
 
                         // Save row data
                         $rows = array();
