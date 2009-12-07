@@ -118,7 +118,7 @@ class completion_criteria_date extends completion_criteria {
      * @return  string
      */
     public function get_status($completion) {
-        return userdate($this->date, '%d-%h-%y');
+        return $completion->is_complete() ? get_string('yes') : userdate($this->date, '%d-%h-%y');
     }
 
     /**
