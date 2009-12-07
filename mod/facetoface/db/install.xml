@@ -94,7 +94,7 @@
         <KEY NAME="sessionid" TYPE="foreign" FIELDS="sessionid" REFTABLE="facetoface_sessions" REFFIELDS="id" PREVIOUS="primary"/>
       </KEYS>
     </TABLE>
-    <TABLE NAME="facetoface_signups_status" COMMENT="User/session signup status" PREVIOUS="facetoface_signups" NEXT="facetoface_submissions">
+    <TABLE NAME="facetoface_signups_status" COMMENT="User/session signup status" PREVIOUS="facetoface_signups">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="false" SEQUENCE="true" ENUM="false" NEXT="signupid"/>
         <FIELD NAME="signupid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="id" NEXT="statuscode"/>
@@ -109,33 +109,6 @@
         <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="primary key of the table, please edit me" NEXT="signupid"/>
         <KEY NAME="signupid" TYPE="foreign" FIELDS="signupid" REFTABLE="facetoface_signups" REFFIELDS="id" PREVIOUS="primary"/>
       </KEYS>
-    </TABLE>
-    <TABLE NAME="facetoface_submissions" COMMENT="An entry is created here whenever a user signs up for a facetoface session." PREVIOUS="facetoface_signups_status">
-      <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="false" SEQUENCE="true" ENUM="false" COMMENT="id of the table, please edit me" NEXT="facetoface"/>
-        <FIELD NAME="facetoface" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="id" NEXT="sessionid"/>
-        <FIELD NAME="sessionid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="facetoface" NEXT="userid"/>
-        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="sessionid" NEXT="grade"/>
-        <FIELD NAME="grade" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="false" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The grade assigned by the instructor to the user." PREVIOUS="userid" NEXT="mailedconfirmation"/>
-        <FIELD NAME="mailedconfirmation" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="Time when the confirmation was sent." PREVIOUS="grade" NEXT="mailedreminder"/>
-        <FIELD NAME="mailedreminder" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="Time when the reminder was sent." PREVIOUS="mailedconfirmation" NEXT="discountcode"/>
-        <FIELD NAME="discountcode" TYPE="text" LENGTH="small" NOTNULL="false" SEQUENCE="false" ENUM="false" COMMENT="Arbitrary case-insensitive string that will be verified by the instructor, not by Moodle.  If this field isn't empty, then the discount code is used for that user." PREVIOUS="mailedreminder" NEXT="timegraded"/>
-        <FIELD NAME="timegraded" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="A time of zero means that it was never graded." PREVIOUS="discountcode" NEXT="timecreated"/>
-        <FIELD NAME="timecreated" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="timegraded" NEXT="timemodified"/>
-        <FIELD NAME="timemodified" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="timecreated" NEXT="timecancelled"/>
-        <FIELD NAME="timecancelled" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="timemodified" NEXT="notificationtype"/>
-        <FIELD NAME="notificationtype" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="Bit mask for the types of notifications (email, iCalendar, etc.) that the user requested." PREVIOUS="timecancelled"/>
-      </FIELDS>
-      <KEYS>
-        <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="primary key of the table, please edit me" NEXT="facetoface"/>
-        <KEY NAME="facetoface" TYPE="foreign" FIELDS="facetoface" REFTABLE="facetoface" REFFIELDS="id" PREVIOUS="primary" NEXT="sessionid"/>
-        <KEY NAME="sessionid" TYPE="foreign" FIELDS="sessionid" REFTABLE="facetoface_sessions" REFFIELDS="id" PREVIOUS="facetoface"/>
-      </KEYS>
-      <INDEXES>
-        <INDEX NAME="userid" UNIQUE="false" FIELDS="userid" NEXT="mailedconfirmation"/>
-        <INDEX NAME="mailedconfirmation" UNIQUE="false" FIELDS="mailedconfirmation" PREVIOUS="userid" NEXT="mailedreminder"/>
-        <INDEX NAME="mailedreminder" UNIQUE="false" FIELDS="mailedreminder" PREVIOUS="mailedconfirmation"/>
-      </INDEXES>
     </TABLE>
   </TABLES>
   <STATEMENTS>

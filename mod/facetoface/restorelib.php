@@ -51,8 +51,9 @@ function facetoface_restore_mods($mod, $restore) {
                     echo '<br />';
                 }
 
-                // Table: facetoface_submissions
-                $status &= restore_facetoface_submissions($newid, $info, $restore);
+                // Table: facetoface_signups
+                $status &= restore_facetoface_signups($newid, $info, $restore);
+                $status &= restore_facetoface_signups_status($info, $restore);
             }
         } else {
             $status = false;
@@ -65,52 +66,48 @@ function facetoface_restore_mods($mod, $restore) {
 }
 
 /**
- * Restore the facetoface_submissions table entries for a given
+ * Restore the facetoface_signups table entries for a given
  * facetoface activity
  *
  * @param integer $newfacetofaceid ID of the facetoface activity we're creating
  */
-function restore_facetoface_submissions($newfacetofaceid, $info, $restore) {
+function restore_facetoface_signups($newfacetofaceid, $info, $restore) {
 
     $status = true;
 
-    if (empty($info['MOD']['#']['SUBMISSIONS'])) {
+    if (empty($info['MOD']['#']['SIGNUPS'])) {
         return $status; // Nothing to restore
     }
 
-    $submissions = $info['MOD']['#']['SUBMISSIONS']['0']['#']['SUBMISSION'];
-    foreach ($submissions as $submissioninfo) {
-        $oldid = backup_todb($submissioninfo['#']['ID']['0']['#']);
+    $signups = $info['MOD']['#']['SIGNUPS']['0']['#']['SIGNUP'];
+    foreach ($signups as $signupinfo) {
+        $oldid = backup_todb($signupinfo['#']['ID']['0']['#']);
 
-        $submission->facetoface         = $newfacetofaceid;
-        $submission->sessionid          = backup_todb($submissioninfo['#']['SESSIONID']['0']['#']);
-        $submission->userid             = backup_todb($submissioninfo['#']['USERID']['0']['#']);
-        $submission->mailedconfirmation = backup_todb($submissioninfo['#']['MAILEDCONFIRMATION']['0']['#']);
-        $submission->mailedreminder     = backup_todb($submissioninfo['#']['MAILEDREMINDER']['0']['#']);
-        $submission->discountcode       = backup_todb($submissioninfo['#']['DISCOUNTCODE']['0']['#']);
-        $submission->timecreated        = backup_todb($submissioninfo['#']['TIMECREATED']['0']['#']);
-        $submission->timemodified       = backup_todb($submissioninfo['#']['TIMEMODIFIED']['0']['#']);
-        $submission->timecancelled      = backup_todb($submissioninfo['#']['TIMECANCELLED']['0']['#']);
-        $submission->notificationtype   = backup_todb($submissioninfo['#']['NOTIFICATIONTYPE']['0']['#']);
+        $signup = new Object();
+        $signup->sessionid          = backup_todb($signupinfo['#']['SESSIONID']['0']['#']);
+        $signup->userid             = backup_todb($signupinfo['#']['USERID']['0']['#']);
+        $signup->mailedreminder     = backup_todb($signupinfo['#']['MAILEDREMINDER']['0']['#']);
+        $signup->discountcode       = backup_todb($signupinfo['#']['DISCOUNTCODE']['0']['#']);
+        $signup->notificationtype   = backup_todb($signupinfo['#']['NOTIFICATIONTYPE']['0']['#']);
 
         // Fix the sessionid
-        $session = backup_getid($restore->backup_unique_code, 'facetoface_sessions', $submission->sessionid);
+        $session = backup_getid($restore->backup_unique_code, 'facetoface_sessions', $signup->sessionid);
         if ($session) {
-            $submission->sessionid = $session->new_id;
+            $signup->sessionid = $session->new_id;
         }
 
         // Fix the userid
-        $user = backup_getid($restore->backup_unique_code, 'user', $submission->userid);
+        $user = backup_getid($restore->backup_unique_code, 'user', $signup->userid);
         if ($user) {
-            $submission->userid = $user->new_id;
+            $signup->userid = $user->new_id;
         }
 
         // Fix the discount code
-        if (empty($submission->discountcode)) {
-            $submission->discountcode = null;
+        if (empty($signup->discountcode)) {
+            $signup->discountcode = null;
         }
 
-        $newid = insert_record('facetoface_submissions', $submission);
+        $newid = insert_record('facetoface_signups', $signup);
 
         // Progress bar
         if (!defined('RESTORE_SILENTLY')) {
@@ -123,7 +120,60 @@ function restore_facetoface_submissions($newfacetofaceid, $info, $restore) {
         backup_flush(300);
 
         if ($newid) {
-            backup_putid($restore->backup_unique_code, 'facetoface_submissions', $oldid, $newid);
+            backup_putid($restore->backup_unique_code, 'facetoface_signups', $oldid, $newid);
+        } else {
+            $status = false;
+        }
+    }
+
+    return $status;
+}
+
+/**
+ * Restore the facetoface_signups_status table entries for a given
+ * facetoface activity
+ */
+function restore_facetoface_signups_status($info, $restore) {
+
+    $status = true;
+
+    if (empty($info['MOD']['#']['SIGNUPS_STATUS'])) {
+        return $status; // Nothing to restore
+    }
+
+    $signups = $info['MOD']['#']['SIGNUPS_STATUS']['0']['#']['STATUS'];
+    foreach ($signups as $signupinfo) {
+        $oldid = backup_todb($signupinfo['#']['ID']['0']['#']);
+
+        $signup = new Object();
+        $signup->signupid           = backup_todb($signupinfo['#']['SIGNUPID']['0']['#']);
+        $signup->statuscode         = backup_todb($signupinfo['#']['STATUSCODE']['0']['#']);
+        $signup->superceded         = backup_todb($signupinfo['#']['SUPERCEDED']['0']['#']);
+        $signup->grade              = backup_todb($signupinfo['#']['GRADE']['0']['#']);
+        $signup->note               = backup_todb($signupinfo['#']['NOTE']['0']['#']);
+        $signup->createdby          = backup_todb($signupinfo['#']['CREATEDBY']['0']['#']);
+        $signup->timecreated        = backup_todb($signupinfo['#']['TIMECREATED']['0']['#']);
+
+        // Fix the sessionid
+        $signupid = backup_getid($restore->backup_unique_code, 'facetoface_signups', $signup->signupid);
+        if ($session) {
+            $signup->signupnid = $signupid->new_id;
+        }
+
+        $newid = insert_record('facetoface_signups_status', $signup);
+
+        // Progress bar
+        if (!defined('RESTORE_SILENTLY')) {
+            if ($newid) {
+                echo '.';
+            } else {
+                echo 'X';
+            }
+        }
+        backup_flush(300);
+
+        if ($newid) {
+            backup_putid($restore->backup_unique_code, 'facetoface_signups_status', $oldid, $newid);
         } else {
             $status = false;
         }
