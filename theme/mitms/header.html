@@ -15,13 +15,13 @@
     }
     ?>>
 
-<div id="page">
+<div id="page"><strong></strong>
 
 <?php //Accessibility: 'headermain' is now H1, see theme/standard/styles_layout.css: .headermain
       if ($home) {  // This is what gets printed on the home page only
 ?>
     <?php print_container_start(true, '', 'header-home'); ?>
-        <div class="headermenu"><?php echo $menu ?></div>
+        <div class="headermenu"><div class="login-container"><?php echo $menu ?></div></div>
 <div id="header-logo-container">
         <div class="headersearch"><input type="text" class="input-text" name="q" size="35" maxlength="255"/><input type="submit" class="input-submit" name="sa" value="Search"/></div>
         <div class="logo"><img alt="mitms logo" src="<?php echo $CFG->wwwroot.'/theme/'.current_theme() ?>/images/logo.png" /></div>
@@ -31,7 +31,7 @@
 <?php } else if ($heading) {  // This is what gets printed on any other page with a heading
 ?>
     <?php print_container_start(true, '', 'header'); ?>
-        <div class="headermenu"><?php echo $menu ?></div>      
+        <div class="headermenu"><div class="login-container"><?php echo $menu ?></div></div>      
         <div id="header-logo-container">
         <div class="story"><img alt="story" src="<?php echo $CFG->wwwroot.'/theme/'.current_theme() ?>/images/headerimage_02.jpg" /></div> 
         <div class="logo"><img alt="mitms logo" src="<?php echo $CFG->wwwroot.'/theme/'.current_theme() ?>/images/logo.png" /></div>

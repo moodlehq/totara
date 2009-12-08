@@ -26,7 +26,6 @@ input, select, button {
 /**
  * Layout Styles
  **/
-
 #content {
   width: 940px;
   font-size: 0.9em;
@@ -47,7 +46,6 @@ div.course-content  #layout-table {
 }
 #left-column {
   width: 180px !important;
-  background: #e7e7e7; 
   padding-top: 5px;    
 }
 #right-column {
@@ -105,16 +103,23 @@ div#header .logo {
    padding: 20px 0  10px 10px;
 }
 #header-logo-container .headersearch {
-   width:350px;
-   float:right;
-   text-align: right;
-   margin-top:13px;
-   padding:20px 12px 20px 10px;
-   background: transparent url(images/search-bg.gif) no-repeat top left;   
+	background:transparent url(images/search-bg.gif) no-repeat scroll right top;
+	float:right;
+	margin-top:13px;
+	padding:20px 12px 20px 10px;
+	text-align:center;
+	width:350px;
+
 }
 #header-logo-container .headersearch input {
    font-size:1em !important;
 }
+
+#header-logo-container .headersearch .input-text {
+	width: 270px;
+}
+
+
 #header  .story {
    float:right;
    line-height:0;
@@ -131,6 +136,10 @@ div#header .logo {
   padding:3px 10px 4px 10px;
   background: #143d4f url(images/headermenu_bg.jpg) repeat-x center;
 }
+.login-container {
+	width: 940px;
+}
+
 .headermenu .logininfo {
   font-size: 0.75em;
   display:inline;
@@ -153,15 +162,19 @@ div#header .logo {
   margin: 0 0 0 5px;
 }
 
+.navbar .navbutton .popupform {
+	padding-top: 0px !important;	
+}
+
 /**
  * Footer Styles
  **/
  
 #footer {
-  width: 95%;
-  margin: 5px auto;
-  padding: 15px 0;
-  border-top: 1px solid #DDD;
+	border-top:1px solid #DDDDDD;
+	margin:0;
+	padding:15px 10px;
+	width:940px;
 }
 
 #footer .sitelink,
@@ -410,7 +423,7 @@ ul.tabrow1 li a:visited,
   font-family: Arial, Helvetica, sans-serif !important;
   width:365px;
   font-size:2em;   
-  padding: 10px 15px 0 0;
+  padding: 2px 15px 0 0;
 }
 #content .storybg h2 {
   font-size:1.3em;
@@ -431,7 +444,7 @@ ul.tabrow1 li a:visited,
 #front-blocks {
   width:687px;
   margin-top:10px;
-  margin-left:15px;
+  margin-left:28px;
   background: url(images/front_blocks_bg.jpg) no-repeat top left;
 }
 #front-blocks .front-blocks-inner {
@@ -447,7 +460,7 @@ ul.tabrow1 li a:visited,
 }
 #front-blocks .front-blocks-content {
  font-size: 12px;
- padding: 0 0px 5px 0px;
+ padding: 0 10px 5px 10px;
  height: 100px;
  overflow: hidden;
 }
@@ -538,8 +551,13 @@ ul.tabrow1 li a:visited,
 .sideblock div.header .title .commands {
   position:relative;
   margin: 7px -4px -7px -4px;
-  padding: 4px;
+  padding: 5px 4px 0;
   border: 1px solid #CACACA;
+  background: #FFFFFF;
+}
+
+.sideblock .header .icon.hide, .sideblock .header .icon.edit {
+	margin-right: 2px !important;
 }
 .sideblock div.header .title .commands img {
   height: 11px;
@@ -584,20 +602,18 @@ ul.tabrow1 li a:visited,
 #left-column .sideblock div.header .title h2 a {
   padding-left: 7px;
 }
-#left-column .sideblock .content { 
-  margin-top:0px;
-  padding: 3px 5px 0 10px;
-}
-#right-column .sideblock,
+
+#right-column .sideblock, #left-column .sideblock,
 #site-index #left-column .sideblock { 
   width:180px;
-  background: url(images/sidecontent_bg.jpg) no-repeat center top; 
+  background: url(images/sidecontent_bg.jpg) no-repeat center top !important; 
 }
 #right-column .sideblock div.header,
+#left-column .sideblock div.header,
 #site-index #left-column .sideblock div.header {
   border:none;
   padding-bottom: 6px;
-  background: #FFF url(images/sideheader_bg.png) no-repeat left top;  
+  background: #b3d4ed url(images/sideheader_bg.png) no-repeat left top;  
 }
 #right-column .sideblock div.header .title h2,
 #right-column .sideblock div.header .title h2 a
@@ -605,14 +621,18 @@ ul.tabrow1 li a:visited,
 #site-index #left-column .sideblock div.header .title h2 a {
   padding-bottom: 0px;
 }
-#right-column .sideblock .content,
+#right-column .sideblock .content, #left-column .sideblock .content,
 #site-index #left-column .sideblock .content {
   padding: 7px 7px 12px 7px;
   background: transparent url(images/sidefooter_bg.png) no-repeat left bottom;  
 }
-#site-index #left-column .sideblock .content {
-  padding-left:10px;
+
+* html #right-column .sideblock .content, 
+* html #left-column .sideblock .content,
+* html #site-index #left-column .sideblock .content {
+  background: transparent url(images/sidefooter_bg_iE6.gif) no-repeat left bottom;  
 }
+
 
 /* List blocks */
 
@@ -645,6 +665,20 @@ ul.tabrow1 li a:visited,
   font-size:1em;
   padding: 3px 0;
 } 
+
+.sideblock .content .footer {
+	padding: 3px 0 0;
+	margin-bottom: 0;
+}
+
+.sideblock .content .message {
+	padding-bottom: 0;
+	margin-bottom: 0;
+}
+
+#inst15 .content {
+	padding-bottom:8px !important;
+}
 
 .block_course_html .content,
 .block_course_summary .content {
