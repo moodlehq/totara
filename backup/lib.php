@@ -799,6 +799,14 @@
         $SESSION->restore->restore_site_files   = $restore->site_files;
         $SESSION->restore->backup_version       = $restore->info->backup_backup_version;
 
+        // hack to get silent restore to include role mappings
+        $SESSION->restore->rolesmapping = array();
+        $SESSION->restore->rolesmapping[2] = 2;
+        $SESSION->restore->rolesmapping[3] = 3;
+        $SESSION->restore->rolesmapping[4] = 4;
+        $SESSION->restore->rolesmapping[5] = 5;
+
+
         restore_setup_for_check($restore, $backup_unique_code);
 
         // maybe we need users (defaults to 2 (none) in restore_setup_for_check)
