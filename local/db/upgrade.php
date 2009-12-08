@@ -624,7 +624,7 @@ function xmldb_local_upgrade($oldversion) {
             'showitemfullname' => 1,
             'showdepthfullname' => 1,
         );
-        $default_framework->id = insert_record('position_framework', $default_framework);
+        $default_framework->id = insert_record('organisation_framework', $default_framework);
 
         // install mitms demo data
         include('demo.php');
