@@ -29,6 +29,13 @@
             $currentcoursestartdate = $course_header->course_startdate;
             $coursestartdatedateoffset = $form1->startdate - $currentcoursestartdate;
             $restore->course_startdateoffset = $coursestartdatedateoffset; //change to restore
+            // Only apply rolling of dates if differences are bigger than one day
+            // that should solve current problems with daylight changes between
+            // backup and restore
+            if (abs($restore->course_startdateoffset) < 24 * 60 * 60) {
+                $coursestartdatedateoffset = 0;
+                $restore->course_startdateoffset = 0;
+            }
         } else { // don't roll if the course hasn't start date
             $coursestartdatedateoffset = 0;
             $restore->course_startdateoffset = 0;
@@ -187,15 +194,21 @@
     //Check login
     require_login();
 
+    //Init restoreuserinfo
+    $restoreuserinfo = false;
+
+
     //Check admin
     if (!empty($id)) {
         if (!has_capability('moodle/site:restore', get_context_instance(CONTEXT_COURSE, $id))) {
             error("You need to be a teacher or admin user to use this page.", "$CFG->wwwroot/login/index.php");
         }
+        $restoreuserinfo = has_capability('moodle/restore:userinfo', get_context_instance(CONTEXT_COURSE, $id));
     } else {
         if (!has_capability('moodle/site:restore', get_context_instance(CONTEXT_SYSTEM))) {
             error("You need to be an admin user to use this page.", "$CFG->wwwroot/login/index.php");
         }
+        $restoreuserinfo = has_capability('moodle/restore:userinfo', get_context_instance(CONTEXT_SYSTEM));
     }
 
     //Check site
@@ -269,6 +282,26 @@
             }
         }
 
+        // If we have selected to roll dates on restore and the user is missing
+        // such capability (moodle/restore:rolldates) in the target course/category,
+        // disable roll of dates and warn
+        if ($restore->course_startdateoffset != 0) {
+            $canrolldates = false; // init to false
+
+            // if we know the target course, check the capability on it
+            if (!empty($restore->course_id)) {
+                $canrolldates = has_capability('moodle/restore:rolldates', get_context_instance(CONTEXT_COURSE, $restore->course_id));
+            // if we know the target category, check capability on it
+            } else if (!empty($restore->restore_restorecatto)) {
+                $canrolldates = has_capability('moodle/restore:rolldates', get_context_instance(CONTEXT_COURSECAT, $restore->restore_restorecatto));
+            }
+
+            if (!$canrolldates) {
+                $messages[] = get_string ("noteusercannotrolldatesoncontext");
+                $restore->course_startdateoffset = 0;
+            }
+        }
+
         //Check if we've selected any mod's user info and restore->users
         //is set to none. Change it to course and inform.
         if ($restore->users == 2) {
@@ -288,6 +321,37 @@
                 $restore->users = 1;
             }
         }
+
+        // Re-enforce 'moodle/site:restore' at system context to be able to restore all users
+        if ($restore->users == 0 and !has_capability('moodle/site:restore', get_context_instance(CONTEXT_SYSTEM))) {
+            $restore->users = 1; // users => course
+        }
+
+        // Re-enforce moodle/restore:userinfo capability
+        if (!$restoreuserinfo) {
+            $userinfocheck = true;
+            // Confirm that all the settings are properly set to no users
+            // if anything is wrong, message and stop
+            // First global settings
+            if ($restore->users != 2 or $restore->user_files or $restore->messages or $restore->blogs) {
+                $userinfocheck = false;
+
+            // Now all modules userinfo flag
+            } else {
+                $mods = $restore->mods;
+                foreach ($mods as $mod) {
+                    if ($mod->userinfo) {
+                        $userinfocheck = false;
+                    }
+                }
+            }
+
+            if (!$userinfocheck) { // Something was wrong
+                $messages[] = get_string('restoreuserinfofailed');
+                $show_continue_button = false;
+            }
+        }
+
 
     /// If restoring users and backup has mnet remote users and we are restoring to different site, forbid restore to non-admins. MDL-17009
         if ($restore->users != 2 &&                                                   /// If restoring users
@@ -309,6 +373,11 @@
         //Save the restore session object
         $SESSION->restore = $restore;
 
+        // Calculate all session objects checksum and store them in session too
+        // so restore_execute.html (used by manual restore and import) will be
+        // able to detect any problem in session info.
+        restore_save_session_object_checksums($restore, $info, $course_header);
+
         echo "<div style='text-align:center'>";
 
     /// Printout messages
@@ -323,6 +392,7 @@
             $hidden["launch"]             = "execute";
             $hidden["file"]               =  $file;
             $hidden["id"]                 =  $id;
+            $hidden["sesskey"]            =  sesskey();
             print_string('longtimewarning','admin');
 
 

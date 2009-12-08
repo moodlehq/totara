@@ -692,11 +692,325 @@ define('RESTORE_GROUPS_GROUPINGS', 3);
         return $status;
     }
 
+   /**
+    * Given one user object (from backup file), perform all the neccesary
+    * checks is order to decide how that user will be handled on restore.
+    *
+    * Note the function requires $user->mnethostid to be already calculated
+    * so it's caller responsibility to set it
+    *
+    * This function is used both by @restore_precheck_users() and
+    * @restore_create_users() to get consistent results in both places
+    *
+    * It returns:
+    *   - one user object (from DB), if match has been found and user will be remapped
+    *   - boolean true if the user needs to be created
+    *   - boolean false if some conflict happened and the user cannot be handled
+    *
+    * Each test is responsible for returning its results and interrupt
+    * execution. At the end, boolean true (user needs to be created) will be
+    * returned if no test has interrupted that.
+    *
+    * Here it's the logic applied, keep it updated:
+    *
+    *  If restoring users from same site backup:
+    *      1A - Normal check: If match by id and username and mnethost  => ok, return target user
+    *      1B - Handle users deleted in DB and "alive" in backup file:
+    *           If match by id and mnethost and user is deleted in DB and
+    *           (match by username LIKE 'backup_email.%' or by non empty email = md5(username)) => ok, return target user
+    *      1C - Handle users deleted in backup file and "alive" in DB:
+    *           If match by id and mnethost and user is deleted in backup file
+    *           and match by email = email_without_time(backup_email) => ok, return target user
+    *      1D - Conflict: If match by username and mnethost and doesn't match by id => conflict, return false
+    *      1E - None of the above, return true => User needs to be created
+    *
+    *  if restoring from another site backup (cannot match by id here, replace it by email/firstaccess combination):
+    *      2A - Normal check: If match by username and mnethost and (email or non-zero firstaccess) => ok, return target user
+    *      2B - Handle users deleted in DB and "alive" in backup file:
+    *           2B1 - If match by mnethost and user is deleted in DB and not empty email = md5(username) and
+    *                 (username LIKE 'backup_email.%' or non-zero firstaccess) => ok, return target user
+    *           2B2 - If match by mnethost and user is deleted in DB and
+    *                 username LIKE 'backup_email.%' and non-zero firstaccess) => ok, return target user
+    *                 (to cover situations were md5(username) wasn't implemented on delete we requiere both)
+    *      2C - Handle users deleted in backup file and "alive" in DB:
+    *           If match mnethost and user is deleted in backup file
+    *           and by email = email_without_time(backup_email) and non-zero firstaccess=> ok, return target user
+    *      2D - Conflict: If match by username and mnethost and not by (email or non-zero firstaccess) => conflict, return false
+    *      1E - None of the above, return true => User needs to be created
+    *
+    * Note: for DB deleted users email is stored in username field, hence we
+    *       are looking there for emails. See delete_user()
+    * Note: for DB deleted users md5(username) is stored *sometimes* in the email field,
+    *       hence we are looking there for usernames if not empty. See delete_user()
+    */
+    function restore_check_user($restore, $user) {
+        global $CFG;
+
+        // Verify mnethostid is set, return error if not
+        // it's parent responsibility to define that before
+        // arriving here
+        if (empty($user->mnethostid)) {
+            debugging("restore_check_user() wrong use, mnethostid not set for user $user->username", DEBUG_DEVELOPER);
+            return false;
+        }
+
+        // Handle checks from same site backups
+        if (backup_is_same_site($restore)) {
+
+            // 1A - If match by id and username and mnethost => ok, return target user
+            if ($rec = get_record('user', 'id', $user->id, 'username', addslashes($user->username), 'mnethostid', $user->mnethostid)) {
+                return $rec; // Matching user found, return it
+            }
+
+            // 1B - Handle users deleted in DB and "alive" in backup file
+            // Note: for DB deleted users email is stored in username field, hence we
+            //       are looking there for emails. See delete_user()
+            // Note: for DB deleted users md5(username) is stored *sometimes* in the email field,
+            //       hence we are looking there for usernames if not empty. See delete_user()
+            // If match by id and mnethost and user is deleted in DB and
+            // match by username LIKE 'backup_email.%' or by non empty email = md5(username) => ok, return target user
+            if ($rec = get_record_sql("SELECT *
+                                         FROM {$CFG->prefix}user u
+                                        WHERE id = $user->id
+                                          AND mnethostid = $user->mnethostid
+                                          AND deleted = 1
+                                          AND (
+                                                  username LIKE '$user->email.%'
+                                               OR (
+                                                      ".sql_isnotempty('user', 'email', false, false)."
+                                                  AND email = '".md5($user->username)."'
+                                                  )
+                                              )")) {
+                return $rec; // Matching user, deleted in DB found, return it
+            }
+
+            // 1C - Handle users deleted in backup file and "alive" in DB
+            // If match by id and mnethost and user is deleted in backup file
+            // and match by email = email_without_time(backup_email) => ok, return target user
+            if ($user->deleted) {
+                // Note: for DB deleted users email is stored in username field, hence we
+                //       are looking there for emails. See delete_user()
+                // Trim time() from email
+                $trimemail = preg_replace('/(.*?)\.[0-9]+.?$/', '\\1', $user->username);
+                if ($rec = get_record_sql("SELECT *
+                                             FROM {$CFG->prefix}user u
+                                            WHERE id = $user->id
+                                              AND mnethostid = $user->mnethostid
+                                              AND email = '$trimemail'")) {
+                    return $rec; // Matching user, deleted in backup file found, return it
+                }
+            }
+
+            // 1D - If match by username and mnethost and doesn't match by id => conflict, return false
+            if ($rec = get_record('user', 'username', addslashes($user->username), 'mnethostid', $user->mnethostid)) {
+                if ($user->id != $rec->id) {
+                    return false; // Conflict, username already exists and belongs to another id
+                }
+            }
+
+        // Handle checks from different site backups
+        } else {
+
+            // 2A - If match by username and mnethost and
+            //     (email or non-zero firstaccess) => ok, return target user
+            if ($rec = get_record_sql("SELECT *
+                                         FROM {$CFG->prefix}user u
+                                        WHERE username = '$user->username'
+                                          AND mnethostid = $user->mnethostid
+                                          AND (
+                                                  email = '$user->email'
+                                               OR (
+                                                      firstaccess != 0
+                                                  AND firstaccess = $user->firstaccess
+                                                  )
+                                              )")) {
+                return $rec; // Matching user found, return it
+            }
+
+            // 2B - Handle users deleted in DB and "alive" in backup file
+            // Note: for DB deleted users email is stored in username field, hence we
+            //       are looking there for emails. See delete_user()
+            // Note: for DB deleted users md5(username) is stored *sometimes* in the email field,
+            //       hence we are looking there for usernames if not empty. See delete_user()
+            // 2B1 - If match by mnethost and user is deleted in DB and not empty email = md5(username) and
+            //       (by username LIKE 'backup_email.%' or non-zero firstaccess) => ok, return target user
+            if ($rec = get_record_sql("SELECT *
+                                         FROM {$CFG->prefix}user u
+                                        WHERE mnethostid = $user->mnethostid
+                                          AND deleted = 1
+                                          AND ".sql_isnotempty('user', 'email', false, false)."
+                                          AND email = '".md5($user->username)."'
+                                          AND (
+                                                  username LIKE '$user->email.%'
+                                               OR (
+                                                      firstaccess != 0
+                                                  AND firstaccess = $user->firstaccess
+                                                  )
+                                              )")) {
+                return $rec; // Matching user found, return it
+            }
+
+            // 2B2 - If match by mnethost and user is deleted in DB and
+            //       username LIKE 'backup_email.%' and non-zero firstaccess) => ok, return target user
+            //       (this covers situations where md5(username) wasn't being stored so we require both
+            //        the email & non-zero firstaccess to match)
+            if ($rec = get_record_sql("SELECT *
+                                         FROM {$CFG->prefix}user u
+                                        WHERE mnethostid = $user->mnethostid
+                                          AND deleted = 1
+                                          AND username LIKE '$user->email.%'
+                                          AND firstaccess != 0
+                                          AND firstaccess = $user->firstaccess")) {
+                return $rec; // Matching user found, return it
+            }
+
+            // 2C - Handle users deleted in backup file and "alive" in DB
+            // If match mnethost and user is deleted in backup file
+            // and match by email = email_without_time(backup_email) and non-zero firstaccess=> ok, return target user
+            if ($user->deleted) {
+                // Note: for DB deleted users email is stored in username field, hence we
+                //       are looking there for emails. See delete_user()
+                // Trim time() from email
+                $trimemail = preg_replace('/(.*?)\.[0-9]+.?$/', '\\1', $user->username);
+                if ($rec = get_record_sql("SELECT *
+                                             FROM {$CFG->prefix}user u
+                                            WHERE mnethostid = $user->mnethostid
+                                              AND email = '$trimemail'
+                                              AND firstaccess != 0
+                                              AND firstaccess = $user->firstaccess")) {
+                    return $rec; // Matching user, deleted in backup file found, return it
+                }
+            }
+
+            // 2D - If match by username and mnethost and not by (email or non-zero firstaccess) => conflict, return false
+            if ($rec = get_record_sql("SELECT *
+                                         FROM {$CFG->prefix}user u
+                                        WHERE username = '$user->username'
+                                          AND mnethostid = $user->mnethostid
+                                      AND NOT (
+                                                  email = '$user->email'
+                                               OR (
+                                                      firstaccess != 0
+                                                  AND firstaccess = $user->firstaccess
+                                                  )
+                                              )")) {
+                return false; // Conflict, username/mnethostid already exist and belong to another user (by email/firstaccess)
+            }
+        }
+
+        // Arrived here, return true as the user will need to be created and no
+        // conflicts have been found in the logic above. This covers:
+        // 1E - else => user needs to be created, return true
+        // 2E - else => user needs to be created, return true
+        return true;
+    }
+
+   /**
+    * For all the users being restored, check if they are going to cause problems
+    * before executing the restore process itself, detecting situations like:
+    *   - conflicts preventing restore to continue - provided by @restore_check_user()
+    *   - prevent creation of users if not allowed - check some global settings/caps
+    */
+    function restore_precheck_users($xml_file, $restore, &$problems) {
+        global $CFG;
+
+        $status = true; // Init $status
+
+        // We aren't restoring users, nothing to check, allow continue
+        if ($restore->users == 2) {
+            return true;
+        }
+
+        // Get array of users from xml file and load them in backup_ids table
+        if (!$info = restore_read_xml_users($restore,$xml_file)) {
+            return true; // No users, nothing to check, allow continue
+        }
+
+        // We are going to map mnethostid, so load all the available ones
+        $mnethosts = get_records('mnet_host', '', '', 'wwwroot', 'wwwroot, id');
+
+        // Calculate the context we are going to use for capability checking
+        if (!empty($restore->course_id)) { // Know the target (existing) course, check capabilities there
+            $context = get_context_instance(CONTEXT_COURSE, $restore->course_id);
+        } else if (!empty($restore->restore_restorecatto)) { // Know the category, check capabilities there
+            $context = get_context_instance(CONTEXT_COURSECAT, $restore->restore_restorecatto);
+        } else { // Last resort, check capabilities at system level
+            $context = get_context_instance(CONTEXT_SYSTEM);
+        }
+
+        // Calculate if we have perms to create users, by checking:
+        // to 'moodle/restore:createuser' and 'moodle/restore:userinfo'
+        // and also observe $CFG->disableusercreationonrestore
+        $cancreateuser = false;
+        if (has_capability('moodle/restore:createuser', $context) and
+            has_capability('moodle/restore:userinfo', $context) and
+            empty($CFG->disableusercreationonrestore)) { // Can create users
+
+            $cancreateuser = true;
+        }
+
+        // Iterate over all users, checking if they are likely to cause problems on restore
+        $counter = 0;
+        foreach ($info->users as $userid) {
+            $rec = backup_getid($restore->backup_unique_code, 'user', $userid);
+            $user = $rec->info;
+
+            // Find the correct mnethostid for user before performing any further check
+            if (empty($user->mnethosturl) || $user->mnethosturl===$CFG->wwwroot) {
+                $user->mnethostid = $CFG->mnet_localhost_id;
+            } else {
+                // fast url-to-id lookups
+                if (isset($mnethosts[$user->mnethosturl])) {
+                    $user->mnethostid = $mnethosts[$user->mnethosturl]->id;
+                } else {
+                    $user->mnethostid = $CFG->mnet_localhost_id;
+                }
+            }
+
+            // Calculate the best way to handle this user from backup file
+            $usercheck = restore_check_user($restore, $user);
+
+            if (is_object($usercheck)) { // No problem, we have found one user in DB to be mapped to
+
+            } else if ($usercheck === false) { // Found conflict, report it as problem
+                $problems[] = get_string('restoreuserconflict', '', $user->username);
+                $status = false;
+
+            } else if ($usercheck === true) { // User needs to be created, check if we are able
+                if (!$cancreateuser) { // Cannot create, report as problem
+
+                    $problems[] = get_string('restorecannotcreateuser', '', $user->username);
+                    $status = false;
+                }
+
+            } else { // Shouldn't arrive here ever, something is for sure wrong in restore_check_user()
+                if (!defined('RESTORE_SILENTLY')) {
+                    notify('Unexpected error pre-checking user ' . s($user->username) . ' from backup file');
+                    return false;
+                }
+            }
+
+            // Do some output
+            $counter++;
+            if ($counter % 10 == 0) {
+                if (!defined('RESTORE_SILENTLY')) {
+                    echo ".";
+                    if ($counter % 200 == 0) {
+                        echo "<br />";
+                    }
+                }
+                backup_flush(300);
+            }
+        }
+
+        return $status;
+    }
+
     //This function create a new course record.
     //When finished, course_header contains the id of the new course
     function restore_create_new_course($restore,&$course_header) {
 
-        global $CFG;
+        global $CFG, $SESSION;
 
         $status = true;
 
@@ -864,6 +1178,8 @@ define('RESTORE_GROUPS_GROUPINGS', 3);
                 backup_putid ($restore->backup_unique_code,"course",$course_header->course_id,$newid);
                 //Replace old course_id in course_header
                 $course_header->course_id = $newid;
+                $SESSION->restore->course_id = $newid;
+                return $newid;
             } else {
                 $status = false;
             }
@@ -1535,7 +1851,7 @@ define('RESTORE_GROUPS_GROUPINGS', 3);
         $restoreall = true;  // set to false if any grade_item is not selected/restored
         $importing  = !empty($SESSION->restore->importing); // there should not be a way to import old backups, but anyway ;-)
 
-        if ($importing) {
+        if ($importing || $restore->users == 2) {
             $restoreall = false;
 
         } else {
@@ -1726,7 +2042,7 @@ define('RESTORE_GROUPS_GROUPINGS', 3);
         $restoreall = true;  // set to false if any grade_item is not selected/restored or already exist
         $importing  = !empty($SESSION->restore->importing);
 
-        if ($importing) {
+        if ($importing || $restore->users == 2) {
             $restoreall = false;
 
         } else {
@@ -2569,6 +2885,8 @@ define('RESTORE_GROUPS_GROUPINGS', 3);
         global $CFG, $db;
         require_once ($CFG->dirroot.'/tag/lib.php');
 
+        $authcache = array(); // Cache to get some bits from authentication plugins
+
         $status = true;
         //Check it exists
         if (!file_exists($xml_file)) {
@@ -2648,12 +2966,12 @@ define('RESTORE_GROUPS_GROUPINGS', 3);
                 //Has role teacher or student or needed
                 $is_course_user = ($is_teacher or $is_student or $is_needed);
 
-                // in case we are restoring to same server, look for user by id
+                // in case we are restoring to same server, look for user by id and username
                 // it should return record always, but in sites rebuilt from scratch
                 // and being reconstructed using course backups
                 $user_data = false;
                 if (backup_is_same_site($restore)) {
-                    $user_data = get_record('user', 'id', $user->id);
+                    $user_data = get_record('user', 'id', $user->id, 'username', addslashes($user->username));
                 }
 
                 // Only try to perform mnethost/auth modifications if restoring to another server
@@ -2695,8 +3013,8 @@ define('RESTORE_GROUPS_GROUPINGS', 3);
                 $newid=null;
                 //check if it exists (by username) and get its id
                 $user_exists = true;
-                if (!backup_is_same_site($restore)) { /// Restoring to another server, look for existing user based on fields
-                                                      /// If restoring to same server, look has been performed some lines above (by id)
+                if (!backup_is_same_site($restore) || !$user_data) { /// Restoring to another server, or rebuilding site (failed id&
+                                                                     /// login search above), look for existing user based on fields
                     $user_data = get_record('user', 'username', addslashes($user->username), 'mnethostid', $user->mnethostid);
                 }
 
@@ -2746,14 +3064,44 @@ define('RESTORE_GROUPS_GROUPINGS', 3);
                     }
 
                     //We need to analyse the AUTH field to recode it:
-                    //   - if the field isn't set, we are in a pre 1.4 backup and we'll
-                    //     use manual
-
-                    if (empty($user->auth)) {
+                    //   - if the field isn't set, we are in a pre 1.4 backup and $CFG->registerauth will decide
+                    //   - if the auth isn't enabled in target site, $CFG->registerauth will decide
+                    //   - finally, if the auth resulting isn't enabled, default to 'manual'
+                    if (empty($user->auth) || !is_enabled_auth($user->auth)) {
                         if ($CFG->registerauth == 'email') {
                             $user->auth = 'email';
                         } else {
                             $user->auth = 'manual';
+                        }
+                    }
+                    if (!is_enabled_auth($user->auth)) { // Final auth check verify, default to manual if not enabled
+                        $user->auth = 'manual';
+                    }
+
+                    // Now that we know the auth method, for users to be created without pass
+                    // if password handling is internal and reset password is available
+                    // we set the password to "restored" (plain text), so the login process
+                    // will know how to handle that situation in order to allow the user to
+                    // recover the password. MDL-20846
+                    if (empty($user->password)) { // Only if restore comes without password
+                        if (!array_key_exists($user->auth, $authcache)) { // Not in cache
+                            $userauth = new stdClass();
+                            $authplugin = get_auth_plugin($user->auth);
+                            $userauth->preventpassindb = $authplugin->prevent_local_passwords();
+                            $userauth->isinternal      = $authplugin->is_internal();
+                            $userauth->canresetpwd     = $authplugin->can_reset_password();
+                            $authcache[$user->auth] = $userauth;
+                        } else {
+                            $userauth = $authcache[$user->auth]; // Get from cache
+                        }
+
+                        // Most external plugins do not store passwords locally
+                        if (!empty($userauth->preventpassindb)) {
+                            $user->password = 'not cached';
+
+                        // If Moodle is responsible for storing/validating pwd and reset functionality is available, mark
+                        } else if ($userauth->isinternal and $userauth->canresetpwd) {
+                            $user->password = 'restored';
                         }
                     }
 
@@ -3361,7 +3709,7 @@ define('RESTORE_GROUPS_GROUPINGS', 3);
     //This function creates all the scales
     function restore_create_scales($restore,$xml_file) {
 
-        global $CFG, $db;
+        global $CFG, $USER, $db;
 
         $status = true;
         //Check it exists
@@ -3377,16 +3725,11 @@ define('RESTORE_GROUPS_GROUPINGS', 3);
         //Now, if we have anything in scales, we have to restore that
         //scales
         if ($scales) {
-            //Get admin->id for later use
-            $admin = get_admin();
-            $adminid = $admin->id;
             if ($scales !== true) {
                 //Iterate over each scale
                 foreach ($scales as $scale) {
                     //Get record from backup_ids
                     $data = backup_getid($restore->backup_unique_code,"scale",$scale->id);
-                    //Init variables
-                    $create_scale = false;
 
                     if ($data) {
                         //Now get completed xmlized object
@@ -3404,49 +3747,41 @@ define('RESTORE_GROUPS_GROUPINGS', 3);
                         $sca->description = backup_todb($info['SCALE']['#']['DESCRIPTION']['0']['#']);
                         $sca->timemodified = backup_todb($info['SCALE']['#']['TIMEMODIFIED']['0']['#']);
 
-                        //Now search if that scale exists (by scale field) in course 0 (Standar scale)
-                        //or in restore->course_id course (Personal scale)
-                        if ($sca->courseid == 0) {
-                            $course_to_search = 0;
-                        } else {
-                            $course_to_search = $restore->course_id;
-                        }
-
+                        // Look for scale (by 'scale' both in standard (course=0) and current course
+                        // with priority to standard scales (ORDER clause)
                         // scale is not course unique, use get_record_sql to suppress warning
-                        //Going to compare LOB columns so, use the cross-db sql_compare_text() in both sides.
+                        // Going to compare LOB columns so, use the cross-db sql_compare_text() in both sides.
                         $compare_scale_clause = sql_compare_text('scale')  . "=" .  sql_compare_text("'" . $sca->scale . "'");
-                        $sca_db = get_record_sql("SELECT * FROM {$CFG->prefix}scale
-                                                           WHERE $compare_scale_clause
-                                                           AND courseid = $course_to_search", true);
+                        // Scale doesn't exist, create it
+                        if (!$sca_db = get_record_sql("SELECT *
+                                                         FROM {$CFG->prefix}scale
+                                                        WHERE $compare_scale_clause
+                                                          AND courseid IN (0, $restore->course_id)
+                                                     ORDER BY courseid", true)) {
 
-                        //If it doesn't exist, create
-                        if (!$sca_db) {
-                            $create_scale = true;
-                        }
-                        //If we must create the scale
-                        if ($create_scale) {
-                            //Me must recode the courseid if it's <> 0 (common scale)
-                            if ($sca->courseid != 0) {
-                                $sca->courseid = $restore->course_id;
-                            }
-                            //We must recode the userid
+                            // Try to recode the user field, defaulting to current user if not found
                             $user = backup_getid($restore->backup_unique_code,"user",$sca->userid);
                             if ($user) {
                                 $sca->userid = $user->new_id;
                             } else {
-                                //Assign it to admin
-                                $sca->userid = $adminid;
+                                $sca->userid = $USER->id;
+                            }
+                            // If scale is standard, if user lacks perms to manage standar scales
+                            // 'downgrade' them to course scales
+                            if ($sca->courseid == 0 and !has_capability('moodle/course:managescales', get_context_instance(CONTEXT_SYSTEM), $sca->userid)) {
+                                $sca->courseid = $restore->course_id;
                             }
                             //The structure is equal to the db, so insert the scale
                             $newid = insert_record ("scale",$sca);
+
+                        // Scale exists, reuse it
                         } else {
-                            //get current scale id
                             $newid = $sca_db->id;
                         }
+
                         if ($newid) {
                             //We have the newid, update backup_ids
-                            backup_putid($restore->backup_unique_code,"scale",
-                                         $scale->id, $newid);
+                            backup_putid($restore->backup_unique_code,"scale", $scale->id, $newid);
                         }
                     }
                 }
@@ -6853,9 +7188,6 @@ define('RESTORE_GROUPS_GROUPINGS', 3);
                         case "LASTIP":
                             $this->info->tempuser->lastip = $this->getContents();
                             break;
-                        case "SECRET":
-                            $this->info->tempuser->secret = $this->getContents();
-                            break;
                         case "PICTURE":
                             $this->info->tempuser->picture = $this->getContents();
                             break;
@@ -7914,6 +8246,16 @@ define('RESTORE_GROUPS_GROUPINGS', 3);
             }
         }
 
+        // If experimental option is enabled (enableimsccimport)
+        // check for Common Cartridge packages and convert to Moodle format
+        if ($status && isset($CFG->enableimsccimport) && $CFG->enableimsccimport == 1) {
+            require_once($CFG->dirroot. '/backup/cc/restore_cc.php');
+            if (!defined('RESTORE_SILENTLY')) {
+                echo "<li>".get_string('checkingforimscc', 'imscc').'</li>';
+            }
+            $status = cc_convert($CFG->dataroot. DIRECTORY_SEPARATOR .'temp'. DIRECTORY_SEPARATOR . 'backup'. DIRECTORY_SEPARATOR . $backup_unique_code);
+        }
+
         //Check for Blackboard backups and convert
         if ($status){
             require_once("$CFG->dirroot/backup/bb/restore_bb.php");
@@ -7972,7 +8314,7 @@ define('RESTORE_GROUPS_GROUPINGS', 3);
         }
 
         //We compare Moodle's versions
-        if ($CFG->version < $info->backup_moodle_version && $status) {
+        if ($status && $CFG->version < $info->backup_moodle_version) {
             $message = new object();
             $message->serverversion = $CFG->version;
             $message->serverrelease = $CFG->release;
@@ -8016,10 +8358,9 @@ define('RESTORE_GROUPS_GROUPINGS', 3);
             }
             else {
                 if (empty($noredirect)) {
-                    // in 2.0 we must not print "Continue" redirect link here, because ppl click on it and the execution gets interrupted on next page!!!
-                    // imo RESTORE_SILENTLY is an ugly hack :-P
-                    $sillystr = get_string('donotclickcontinue');
-                    redirect($CFG->wwwroot.'/backup/restore.php?backup_unique_code='.$backup_unique_code.'&launch=form&file='.$file.'&id='.$id, $sillystr, 0);
+                    print_continue($CFG->wwwroot.'/backup/restore.php?backup_unique_code='.$backup_unique_code.'&launch=form&file='.$file.'&id='.$id.'&sesskey='.sesskey());
+                    print_footer();
+                    die;
 
                 } else {
                     return $backup_unique_code;
@@ -8042,8 +8383,9 @@ define('RESTORE_GROUPS_GROUPINGS', 3);
         global $SESSION;
         $restore->backup_unique_code=$backup_unique_code;
         $restore->users = 2; // yuk
-        $restore->course_files = $SESSION->restore->restore_course_files;
-        $restore->site_files = $SESSION->restore->restore_site_files;
+        // we set these from restore object on silent restore and from info (backup) object on import
+        $restore->course_files = isset($SESSION->restore->restore_course_files) ? $SESSION->restore->restore_course_files : $SESSION->info->backup_course_files;
+        $restore->site_files = isset($SESSION->restore->restore_site_files) ? $SESSION->restore->restore_site_files : $SESSION->info->backup_site_files;
         if ($allmods = get_records("modules")) {
             foreach ($allmods as $mod) {
                 $modname = $mod->name;
@@ -8054,17 +8396,39 @@ define('RESTORE_GROUPS_GROUPINGS', 3);
                 }
             }
         }
+        // Calculate all session objects checksum and store them in session too
+        // so restore_execute.html (used by manual restore and import) will be
+        // able to detect any problem in session info.
+        restore_save_session_object_checksums($restore, $SESSION->info, $SESSION->course_header);
+
         return true;
+    }
+
+    /**
+     * Save the checksum of the 3 main in-session restore objects (restore, info, course_header)
+     * so restore_execute.html will be able to check that all them have arrived correctly, without
+     * losing data for any type of session size limit/error. MDL-18469. Used both by manual restore
+     * and import
+     */
+    function restore_save_session_object_checksums($restore, $info, $course_header) {
+        global $SESSION;
+        $restore_checksums = array();
+        $restore_checksums['info']          = md5(serialize($info));
+        $restore_checksums['course_header'] = md5(serialize($course_header));
+        $restore_checksums['restore']       = md5(serialize($restore));
+        $SESSION->restore_checksums = $restore_checksums;
     }
 
     function backup_to_restore_array($backup,$k=0) {
         if (is_array($backup) ) {
+            $restore = array();
             foreach ($backup as $key => $value) {
                 $newkey = str_replace('backup','restore',$key);
                 $restore[$newkey] = backup_to_restore_array($value,$key);
             }
         }
         else if (is_object($backup)) {
+            $restore = new stdClass();
             $tmp = get_object_vars($backup);
             foreach ($tmp as $key => $value) {
                 $newkey = str_replace('backup','restore',$key);
@@ -8125,6 +8489,19 @@ define('RESTORE_GROUPS_GROUPINGS', 3);
         //Location of the xml file
         $xml_file = $CFG->dataroot."/temp/backup/".$restore->backup_unique_code."/moodle.xml";
 
+        // Re-assure xml file is in place before any further process
+        if (! $status = restore_check_moodle_file($xml_file)) {
+            if (!is_file($xml_file)) {
+                $errorstr = 'Error checking backup file. moodle.xml not found. Session problem?';
+            } else {
+                $errorstr = 'Error checking backup file. moodle.xml is incorrect or corrupted. Session problem?';
+            }
+            if (!defined('RESTORE_SILENTLY')) {
+                notify($errorstr);
+            }
+            return false;
+        }
+
         //Preprocess the moodle.xml file spliting into smaller chucks (modules, users, logs...)
         //for optimal parsing later in the restore process.
         if (!empty($CFG->experimentalsplitrestore)) {
@@ -8133,14 +8510,31 @@ define('RESTORE_GROUPS_GROUPINGS', 3);
             }
             //First of all, split moodle.xml into handy files
             if (!restore_split_xml ($xml_file, $restore)) {
+                $errorstr = "Error proccessing moodle.xml file. Process ended.";
                 if (!defined('RESTORE_SILENTLY')) {
-                    notify("Error proccessing moodle.xml file. Process ended.");
-                } else {
-                    $errorstr = "Error proccessing moodle.xml file. Process ended.";
+                    notify($errorstr);
                 }
                 return false;
             }
         }
+
+        // Precheck the users section, detecting various situations that can lead to problems, so
+        // we stop restore before performing any further action
+        /*
+        if (!defined('RESTORE_SILENTLY')) {
+            echo '<li>'.get_string('restoreusersprecheck').'</li>';
+        }
+        if (!restore_precheck_users($xml_file, $restore, $problems)) {
+            $errorstr = get_string('restoreusersprecheckerror');
+            if (!empty($problems)) {
+                $errorstr .= ' (' . implode(', ', $problems)  . ')';
+            }
+            if (!defined('RESTORE_SILENTLY')) {
+                notify($errorstr);
+            }
+            return false;
+        }
+        */
 
         //If we've selected to restore into new course
         //create it (course)
@@ -8685,7 +9079,7 @@ define('RESTORE_GROUPS_GROUPINGS', 3);
         }
 
         //Now create log entries as needed
-        if ($status and ($restore->logs)) {
+        if ($status and ($info->backup_logs == 'true' && $restore->logs)) {
             if (!defined('RESTORE_SILENTLY')) {
                 echo "<li>".get_string("creatinglogentries");
             }
@@ -9289,6 +9683,29 @@ define('RESTORE_GROUPS_GROUPINGS', 3);
             assign_capability($override->capability, $override->permission, $override->roleid, $override->contextid);
         }
     }
+
+    /**
+     * true or false function to see if user can roll dates on restore (any course is enough)
+     * @return bool
+     */
+    function restore_user_can_roll_dates() {
+        global $USER;
+        // if user has moodle/restore:rolldates capability at system or any course cat return true
+
+        if (has_capability('moodle/restore:rolldates', get_context_instance(CONTEXT_SYSTEM))) {
+            return true;
+        }
+
+        // Non-cached - get accessinfo
+        if (isset($USER->access)) {
+            $accessinfo = $USER->access;
+        } else {
+            $accessinfo = get_user_access_sitewide($USER->id);
+        }
+        $courses = get_user_courses_bycap($USER->id, 'moodle/restore:rolldates', $accessinfo, true);
+        return !empty($courses);
+    }
+
     //write activity date changes to the html log file, and update date values in the the xml array
     function restore_log_date_changes($recordtype, &$restore, &$xml, $TAGS, $NAMETAG='NAME') {
 

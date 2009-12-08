@@ -100,6 +100,7 @@ $string['registerallhostsexplain']      = 'You can choose to register all hosts 
                                           'Moodle site that connects to you and requests your public key.<br />'.
                                           'You have the option below to configure services for \'All Hosts\' and by enabling some services there, you are able to provide '.
                                           'services to any Moodle server indiscriminately.';
+$string['allhosts_no_options']          = 'No options are available when viewing multiple hosts';
 
 $string['mnet_session_prohibited']      = 'Users from your home server are not currently permitted to roam to $a.';
 $string['ssl_acl_allow']                = 'SSO ACL: Allow user $a[0] from $a[1]';
@@ -238,6 +239,9 @@ $string['enrolcourseenrol_desc'] = 'Enrol/unenrol users from this course using M
                                     <em>Other enrolled users</em>';
 $string['host'] = 'host';
 $string['loginlinkmnetuser'] = '<br />If you are a Moodle Network remote user and can <a href=\"$a\">confirm your email address here</a>, you can be redirected to your login page.<br />';
+$string['mnetidprovider'] = 'MNET ID Provider';
+$string['mnetidprovidermsg'] = 'You should be able to login at your $a provider.';
+$string['findlogin'] = 'Find Login';
 
 $string['error7020'] = 'This error normally occurs if the remote site has created a record for you with the wrong wwwroot, for example, http://yoursite.com instead of http://www.yoursite.com. You should contact the administrator of the remote site with your wwwroot (as specified in config.php) asking her to update her record for your host.';
 $string['error7023'] = 'The remote site has tried to decrypt your message with all the keys it has on record for your site. They have all failed. You might be able to fix this problem by manually re-keying with the remote site. This is unlikely to occur unless you\'ve been out of communication with the remote site for a few months.';

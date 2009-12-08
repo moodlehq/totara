@@ -198,10 +198,20 @@ YAHOO.namespace("graderreport");
 
 function init() {
     // Adjust height of header c0
+    //"heading_name_row" only exists if static students column is turned on
     var rows = YAHOO.util.Dom.getElementsByClassName('heading_name_row');
-    var header_cell_region = YAHOO.util.Dom.getRegion();
-    var height = header_cell_region.bottom - header_cell_region.top;
-    YAHOO.util.Dom.setStyle('studentheader', 'height', height + 'px');
+    if(rows && rows.length>0)
+    {
+        var header_cell_region = YAHOO.util.Dom.getRegion(rows[rows.length-1].firstChild);
+        if(header_cell_region)
+        {
+            var height = header_cell_region.bottom - header_cell_region.top;
+            if(!isNaN(height))
+            {
+                YAHOO.util.Dom.setStyle('studentheader', 'height', height + 'px');
+            }
+        }
+    }
 
     // attach event listener to the table for mouseover and mouseout
     var table = document.getElementById('user-grades');

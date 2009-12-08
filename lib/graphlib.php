@@ -509,7 +509,7 @@ function draw_x_label() {
   $label = $this->calculated['x_label'];
   $coords = array('x' => $x, 'y' => $y, 'reference' => 'top-center');
   $this->update_boundaryBox($label['boundary_box'], $coords);
- $this->print_TTF($label);
+  $this->print_TTF($label);
 }
 
 function draw_zero_axis_left() {
@@ -1156,7 +1156,9 @@ function find_range($data, $min, $max, $resolution) {
     if ($max < 0) $factor = - pow(10, (floor(log10(abs($max))) + $resolution) );
     else $factor = pow(10, (floor(log10(abs($max))) - $resolution) );
   }
-  $factor = round($factor * 1000.0) / 1000.0; // To avoid some wierd rounding errors (Moodle)
+  if ($factor > 0.1) { // To avoid some wierd rounding errors (Moodle)
+    $factor = round($factor * 1000.0) / 1000.0; // To avoid some wierd rounding errors (Moodle)
+  } // To avoid some wierd rounding errors (Moodle)
 
   $max = $factor * @ceil($max / $factor);
   $min = $factor * @floor($min / $factor);
@@ -1366,7 +1368,7 @@ function get_boundaryBox($message) {
   } else {
     $width = abs($bounds[4]-$bounds[6]);
     $height = abs($bounds[7]-$bounds[1]);
-    $offsetY = 0;
+    $offsetY = $bounds[1];
     $offsetX = 0;
   }
 

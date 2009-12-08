@@ -109,6 +109,12 @@ function workshop_add_instance($workshop) {
         return get_string('invaliddates', 'workshop');
     }
 
+    // set the workshop's type
+    $wtype = 0; // 3 phases, no grading grades
+    if ($workshop->includeself or $workshop->ntassessments) $wtype = 1; // 3 phases with grading grades
+    if ($workshop->nsassessments) $wtype = 2; // 5 phases with grading grades
+    $workshop->wtype = $wtype;
+
     if ($returnid = insert_record("workshop", $workshop)) {
 
         $event = NULL;
@@ -1751,7 +1757,7 @@ function workshop_grade_assessments($workshop, $verbose=false) {
                                 set_field("workshop_assessments", "timegraded", $timenow, "id", $assessment->id);
                             } else {
                                 // it's one of the pack, compare with the best...
-                                $gradinggrade = workshop_compare_assessments($workshop, $best, $assessment);
+                                $gradinggrade = round(workshop_compare_assessments($workshop, $best, $assessment));
                                 // ...and save the grade for the assessment
                                 set_field("workshop_assessments", "gradinggrade", $gradinggrade, "id", $assessment->id);
                                 set_field("workshop_assessments", "timegraded", $timenow, "id", $assessment->id);
@@ -1783,9 +1789,11 @@ function workshop_grade_assessments($workshop, $verbose=false) {
 function workshop_gradinggrade($workshop, $student) {
     // returns the current (external) grading grade of the based on their (cold) assessments
     // (needed as it's called by grade)
+    global $CFG;
+    require_once(dirname(__FILE__) . '/locallib.php');
 
     $gradinggrade = 0;
-    if ($assessments = workshop_get_user_assessments($workshop, $student)) {
+    if ($assessments = workshop_get_user_assessments_done($workshop, $student)) {
         $n = 0;
         foreach ($assessments as $assessment) {
             $gradinggrade += $assessment->gradinggrade;
@@ -1859,6 +1867,60 @@ function workshop_get_post_actions() {
  */
 function workshop_get_extra_capabilities() {
     return array('moodle/site:accessallgroups', 'moodle/site:viewfullnames');
+}
+
+/**
+ * Called by course/reset.php
+ * @param $mform form passed by reference
+ */
+function workshop_reset_course_form_definition(&$mform) {
+
+    $mform->addElement('header', ' workshopheader', get_string('modulenameplural', 'workshop'));
+    $mform->addElement('checkbox', 'reset_workshop_all', get_string('resetworkshopall','workshop'));
+}
+
+/**
+ * Course reset form defaults.
+ */
+function workshop_reset_course_form_defaults($course) {
+    return array('reset_workshop_all'=>1);
+}
+
+/**
+ * This function is used by the reset_course_userdata function in moodlelib.
+ * This function will remove all issued certificates from the specified course
+ * @param $data the data submitted from the reset course.
+ * @return array status array
+ */
+function workshop_reset_userdata($data) {
+    global $CFG;
+
+    $status = array();
+
+    if (!empty($data->reset_workshop_all)) {
+        $workshopids = get_records('workshop', 'course', $data->courseid, '', 'id');
+        if (!empty($workshopids)) {
+            $workshopidslist = implode(',', array_keys($workshopids));
+            // delete all students participation info, keep assessment forms elements and stock comments
+            delete_records_select('workshop_submissions', "workshopid IN ($workshopidslist)");
+            delete_records_select('workshop_grades', "workshopid IN ($workshopidslist)");
+            delete_records_select('workshop_comments', "workshopid IN ($workshopidslist)");
+            delete_records_select('workshop_assessments', "workshopid IN ($workshopidslist)");
+
+            set_field_select('workshop_elements', 'stddev', 0, "workshopid IN ($workshopidslist)");
+            set_field_select('workshop_elements', 'totalassessments', 0, "workshopid IN ($workshopidslist)");
+        }
+
+        // delete module data (submissions)
+        $basedir = $CFG->dataroot.'/'.$data->courseid.'/'.$CFG->moddata.'/workshop/';
+        remove_dir("$basedir");
+
+        // fill return info
+        $status[] = array('component' => get_string('modulenameplural', 'workshop'),
+                            'item' => get_string('resetworkshopall', 'workshop'), 'error' => false);
+    }
+
+    return $status;
 }
 
 ?>

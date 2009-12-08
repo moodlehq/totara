@@ -60,6 +60,27 @@ $CFG->dbpersist = false;         // Should database connections be reused?
 
 
 //=========================================================================
+// 1.5. SECRET PASSWORD SALT
+//=========================================================================
+// User password salt is very important security feature, it is created
+// automatically in installer, you have to uncomment and modify value
+// on the next line if you are creating config.php manually.
+//
+// $CFG->passwordsaltmain = 'a_very_long_random_string_of_characters#@6&*1';
+//
+// After changing the main salt you have to copy old value into one
+// of the following settings - this allows migration to the new salt
+// during the next login of each user.
+//
+// $CFG->passwordsaltalt1 = '';
+// $CFG->passwordsaltalt2 = '';
+// $CFG->passwordsaltalt3 = '';
+// ....
+// $CFG->passwordsaltalt19 = '';
+// $CFG->passwordsaltalt20 = '';
+
+
+//=========================================================================
 // 2. WEB SITE LOCATION
 //=========================================================================
 // Now you need to tell Moodle where it is located. Specify the full
@@ -148,6 +169,13 @@ $CFG->admin = 'admin';
 // Useful for webhost operators who have alternate methods of backups
 //      $CFG->disablescheduledbackups = true;
 //
+// Allow user passwords to be included in backup files. Very dangerous
+// setting as far as it publishes password hashes that can be unencrypted
+// if the backup file is publicy available. Use it only if you can guarantee
+// that all your backup files remain only privacy available and are never
+// shared out from your site/institution!
+//      $CFG->includeuserpasswordsinbackup = true;
+//
 // Prevent stats processing and hide the GUI
 //      $CFG->disablestatsprocessing = true;
 //
@@ -183,7 +211,13 @@ $CFG->admin = 'admin';
 // This setting will prevent the 'My Courses' page being displayed when a student
 // logs in. The site front page will always show the same (logged-out) view.
 //     $CFG->disablemycourses = true;
-// 
+//
+// Enable this option if you need fully working default frontpage role,
+// please note it might cause serious memory and performance issues,
+// also there should not be any negative capabilities in default
+// frontpage role (MDL-19039).
+//     $CFG->fullusersbycapabilityonfrontpage = true;
+//
 // If this setting is set to true, then Moodle will track the IP of the 
 // current user to make sure it hasn't changed during a session.  This 
 // will prevent the possibility of sessions being hijacked via XSS, but it 

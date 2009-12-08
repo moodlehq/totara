@@ -39,7 +39,7 @@ $string['continue'] = '続ける';
 $string['ctyperecommended'] = 'あなたのサイトが非ラテン言語をサポートしている場合、サイトパフォーマンスを改善するため、PHP ctype拡張モジュールのインストールを強くお勧めします。';
 $string['ctyperequired'] = 'サイトパフォーマンスの改善および多言語サポートを提供するため、MoodleではPHP ctype拡張モジュールが必須です。';
 $string['curlrecommended'] = 'Moodleネットワーキング機能を有効にするため、cURLライブラリのインストールを強くお勧めします。';
-$string['curlrequired'] = 'Moodleリポジトリと通信するため、MoodleではPHP cURL拡張モジュールが必須です。';
+$string['curlrequired'] = 'Moodleリポジトリと通信するため、MoodleではPHP cURL拡張モジュールが必須です。'; // ORPHANED
 $string['customcheck'] = 'その他のチェック';
 $string['database'] = 'データベース';
 $string['databasecreationsettingshead'] = 'ほとんどのMoodleデータが保存されるデータベース設定を行ってください。このデータベースはインストーラーにより、下記の設定が指定された形で自動的に作成されます。';
@@ -132,12 +132,12 @@ $string['downloadlanguagenotneeded'] = 'デフォルトの言語パック「 $a 
 $string['downloadlanguagesub'] = 'あなたは、言語パックをダウンロードして、この言語でインストールを継続することができます。<br /><br />もし、あなたが言語パックをダウンロードできない場合、インストールは英語で継続されます。 (インストールの完了後、さらに言語パックをダウンロードして、インストールすることができます。)';
 $string['environmenterrortodo'] = 'このバージョンのMoodleをインストールする前に、発見された動作環境の問題 (エラー) を解消してください!';
 $string['environmenthead'] = 'あなたの環境を確認しています ...';
-$string['environmentrecommendcustomcheck'] = 'このテストに不適合の場合、潜在的な問題があることを意味します。';
+$string['environmentrecommendcustomcheck'] = 'このテストに不適合の場合、潜在的な問題が存在することを意味します。';
 $string['environmentrecommendinstall'] = '最適な動作のため、インストールおよび有効化してください。';
 $string['environmentrecommendversion'] = 'バージョン $a->needed 以上を推奨します。あなたは現在 $a->current を使用しています。';
-$string['environmentrequirecustomcheck'] = 'このテストはパスする必要があります。';
+$string['environmentrequirecustomcheck'] = 'このテストには、パスする必要があります。';
 $string['environmentrequireinstall'] = '必ずインストールおよび有効化してください。';
-$string['environmentrequireversion'] = 'バージョン $a->needed 以上が必須です。あなたは現在 $a->current を使用しています。';
+$string['environmentrequireversion'] = 'バージョン $a->needed 以上が必須です。あなたは、現在 $a->current を使用しています。';
 $string['environmentsub'] = 'あなたのシステムに関する様々な要素が、システム要件に合致するか確認しています。';
 $string['environmentxmlerror'] = '環境データ ($a->error_code) の読み込み中にエラーが発生しました。';
 $string['error'] = 'エラー';
@@ -167,7 +167,7 @@ $string['globalsquoteshelp'] = '<p>Magic Quotes GPCの無効化およびRegister
 <blockquote><div>php_value register_globals Off</div></blockquote>';
 $string['globalswarning'] = '<p><strong>セキュリティ警告</strong>: Moodleを適切に動作させるため、<br />現在のPHP設定を変更する必要があります。<p/><p><code>register_globals=off</code>  の<em>設定を行って</em>ください。<p>この設定は、<code>php.ini</code>、Apache/IIS <br />設定、または <code>.htaccess</code> ファイルの編集により管理することができます。</p>';
 $string['help'] = 'ヘルプ';
-$string['iconvrecommended'] = 'より良いパフォーマンスを得るため、ICONVライブラリのインストールおよび稼動を強くお勧めします。あなたのサイトがラテン文字以外をサポートしている場合、特にお勧めします。';
+$string['iconvrecommended'] = 'より良いパフォーマンスを得るため、ICONVライブラリのインストールを強くお勧めします。あなたのサイトが非ラテン言語をサポートしている場合、特にお勧めします。';
 $string['info'] = '情報';
 $string['installation'] = 'インストレーション';
 $string['invalidmd5'] = '無効なmp5ファイルです。';
@@ -182,7 +182,7 @@ $string['magicquotesruntimehelp'] = '<p>Moodleを正常に動作させるため�
 
 <p>php.iniファイルにアクセスできない場合は、Moodleディレクトリの.htaccessファイルに次の行を追加してください:</p>
 <blockquote><div>php_value magic_quotes_runtime Off</div></blockquote>';
-$string['mbstringrecommended'] = 'より良いパフォーマンスを得るため、mbstringライブラリのインストールおよび稼動を強くお勧めします。あなたのサイトがラテン文字以外をサポートしている場合、特にお勧めします。';
+$string['mbstringrecommended'] = 'サイトパフォーマンスを改善するため、mbstringライブラリのインストールおよび稼動を強くお勧めします。あなたのサイトがラテン文字以外をサポートしている場合、特にお勧めします。';
 $string['memorylimit'] = 'Memory Limit';
 $string['memorylimiterror'] = 'PHPのmemory limitが低すぎます ... 後で問題が発生する可能性があります。';
 $string['memorylimithelp'] = '<p>現在、サーバのPHPメモリー制限が $a に設定されています。</p>
@@ -203,7 +203,7 @@ $string['mssqlextensionisnotpresentinphp'] = 'PHPのMSSQL拡張モジュール�
 $string['mssql_n'] = 'SQL*Server UTF-8サポート (mssql_n)';
 $string['mysql'] = 'MySQL (mysql)';
 $string['mysql416bypassed'] = 'あなたのサイトがiso-8859-1 (ラテン) 言語のみ使用している場合、現在インストールされている MySQL 4.1.12 (またはそれ以上) を使用することができます。';
-$string['mysql416required'] = 'Moodle1.6では、将来すべてのデータをUTF-8に変換するため、MySQL 4.1.16が要求される最低限のバージョンです。';
+$string['mysql416required'] = '将来すべてのデータをUTF-8に変換できるため、Moodle 1.6では、MySQL 4.1.16が要求される最低限のバージョンです。';
 $string['mysqlextensionisnotpresentinphp'] = 'PHPのMySQL拡張モジュールが適切に設定されていないため、MySQLと通信できません。あなたのphp.iniファイルをチェックするか、PHPを再コンパイルしてください。';
 $string['mysqli'] = 'Improved MySQL (mysqli)';
 $string['mysqliextensionisnotpresentinphp'] = 'PHPのMySQLi拡張モジュールが適切に設定されていないため、MySQLと通信できません。あなたのphp.iniファイルをチェックするか、PHPを再コンパイルしてください。MySQLi拡張モジュールは、PHP4では使用できません。';
@@ -218,17 +218,19 @@ $string['opensslrecommended'] = 'Moodleネットワーキング機能を有効�
 $string['pass'] = 'パス';
 $string['password'] = 'パスワード';
 $string['pgsqlextensionisnotpresentinphp'] = 'PHPのPGSQL拡張モジュールが適切に設定されていないため、PostgreSQLと通信できません。あなたのphp.iniファイルをチェックするか、PHPを再コンパイルしてください。';
-$string['php50restricted'] = 'PHP 5.0.x には数多くの既知の問題があります。5.1.x にアップグレードするか、4.3.x または 4.4.x にダウングレードしてください。';
+$string['php50restricted'] = 'PHP 5.0.x には、数多くの既知の問題があります。5.1.x にアップグレードするか、4.3.x または 4.4.x にダウングレードしてください。';
 $string['phpversion'] = 'PHPバージョン';
-$string['phpversionerror'] = 'PHPバージョンは少なくとも 4.3.0 または 5.1.0 をお使いください (5.0.x には既知の多数の問題があります)。'; // ORPHANED
+$string['phpversionerror'] = 'PHPバージョンは少なくとも 4.3.0 または 5.1.0 をお使いください (5.0.x には既知の多数の問題があります)。';
 $string['phpversionhelp'] = '<p>Moodleには、少なくとも 4.3.0 または 5.1.0 のPHPバージョンが必要です (5.0.x には既知の多数の問題があります)。</p>
 <p>現在、バージョン $a が動作しています。</p>
 <p>PHPをアップグレードするか、新しいバージョンがインストールされているホストに移動してください!<br />
 (5.0.x の場合、バージョン 4.4.x にダウングレードすることもできます。)</p>';
 $string['postgres7'] = 'PostgreSQL (postgres7)';
+$string['postgresqlwarning'] = '<strong>メモ:</strong> あなたが接続問題を経験している場合、「Host Server」フィールドに「
+host=\'postgresql_host\' port=\'5432\' dbname=\'postgresql_database_name\' user=\'postgresql_user\' password=\'postgresql_user_password\'」と入力して、「Database」「User」「Password」フィールドを空白にしてください。詳細は、<a href=\"http://docs.moodle.org/en/Installing_Postgres_for_PHP\">Moodle Docs</a>をご覧ください。';
 $string['previous'] = '前へ';
 $string['qtyperqpwillberemoved'] = 'アップグレード中、RQP問題タイプは削除されます。あなたはこの問題タイプを使用していませんので、トラブルが発生することはありません。';
-$string['qtyperqpwillberemovedanyway'] = 'アップグレード中、RQP問題タイプは削除されます。あなたのデータベース内にRQP問題タイプが登録されています。アップグレードを続ける前に、 http://moodle.org/mod/data/view.php?d=13&amp;rid=797 から対応するプログラムをインストールしない場合、これらの問題は動作しなくなります。';
+$string['qtyperqpwillberemovedanyway'] = 'アップグレード中、RQP問題タイプは削除されます。あなたのデータベース内にRQP問題タイプが登録されています。アップグレードを続ける前に、http://moodle.org/mod/data/view.php?d=13&amp;rid=797 から対応するプログラムをインストールしない場合、これらの問題は動作しなくなります。';
 $string['remotedownloaderror'] = 'あなたのサーバへのコンポーネントのダウンロードに失敗しました。プロクシ設定を確認してください。PHP cURL拡張モジュールの使用を強くお勧めします。<br /><br /><a href=\"$a->url\">$a->url</a>ファイルを手動でダウンロードした後、あなたのサーバの「$a->dest」にコピーおよび解凍してください。';
 $string['remotedownloadnotallowed'] = 'あなたのサーバーにコンポーネントをダウンロードすることができません (allow_url_fopen が無効)。<br /><br /><a href=\"$a->url\">$a->url</a> ファイルを手動でダウンロードして、サーバの「 $a->dest 」にコピーした後、解凍してください。';
 $string['report'] = 'レポート';
@@ -248,8 +250,8 @@ $string['status'] = '状態';
 $string['thischarset'] = 'UTF-8';
 $string['thisdirection'] = 'ltr';
 $string['thislanguage'] = '日本語';
-$string['unicoderecommended'] = 'あなたのすべてのデータをユニコードフォーマット (UTF-8) で保存することをお勧めします。Moodleの新しいインストールは、ユニコードをデフォルトキャラクタにセットしたデータベースで実行してください。アップグレードの場合、UTF-8移行プロセスを実行してださい (詳細は管理ページをご覧ください)。';
-$string['unicoderequired'] = 'あなたのすべてのデータをユニコードフォーマット (UTF-8) で保存することが必須です。Moodleの新しいインストールは、ユニコードをデフォルトキャラクタにセットしたデータベースで実行してください。アップグレードの場合、UTF-8移行プロセスを実行してださい (詳細は管理ページをご覧ください)。';
+$string['unicoderecommended'] = 'あなたのすべてのデータをユニコードフォーマット (UTF-8) で保存することをお勧めします。Moodleの新しいインストールは、ユニコードをデフォルトキャラクタにセットしたデータベースで実行してください。アップグレードの場合、UTF-8移行処理を実行してださい (詳細は管理ページをご覧ください)。';
+$string['unicoderequired'] = 'あなたのすべてのデータをユニコードフォーマット (UTF-8) で保存することが必須です。Moodleの新しいインストールは、ユニコードをデフォルトキャラクタにセットしたデータベースで実行してください。アップグレードの場合、UTF-8移行処理を実行してださい (詳細は管理ページをご覧ください)。';
 $string['user'] = 'ユーザ';
 $string['welcomep10'] = '$a->installername ($a->installerversion)';
 $string['welcomep20'] = 'インストールが正常に完了したため、このページをご覧いただいています。あなたのコンピュータで <strong>$a->packname $a->packversion</strong> パッケージを起動してください。おめでとうございます!';

@@ -75,6 +75,7 @@
         <form id="amendtitleform" action="submissions.php" method="post">
         <fieldset class="invisiblefieldset">
         <input type="hidden" name="action" value="adminupdatetitle" />
+        <input type="hidden" name="sesskey" value="<?php echo sesskey(); ?>" />
         <input type="hidden" name="id" value="<?php echo $cm->id ?>" />
         <input type="hidden" name="sid" value="<?php echo $sid ?>" />
         <div class="boxaligncenter">
@@ -98,6 +99,7 @@
     elseif ($action == 'adminclearlate' ) {
 
         require_capability('mod/workshop:manage', $context);
+        require_sesskey();
         if (empty($sid)) {
             error("Admin clear late flag: submission id missing");
         }
@@ -122,13 +124,14 @@
             error("Confirm delete: submission id missing");
             }
         notice_yesno(get_string("confirmdeletionofthisitem","workshop", get_string("submission", "workshop")),
-             "submissions.php?action=delete&amp;id=$cm->id&amp;sid=$sid", "view.php?id=$cm->id#sid=$sid");
+             "submissions.php?sesskey=" . sesskey() . "&amp;action=delete&amp;id=$cm->id&amp;sid=$sid", "view.php?id=$cm->id#sid=$sid");
         }
 
 
     /******************* delete ************************************/
     elseif ($action == 'delete' ) {
 
+        require_sesskey();
         if (empty($sid)) {
             error("Delete: submission id missing");
         }
@@ -153,9 +156,9 @@
                 delete_records("workshop_grades", "assessmentid", $assessment->id);
                 echo ".";
             }
-            // ...now delete the assessments...
-            delete_records("workshop_assessments", "submissionid", $submission->id);
         }
+        // ...now delete the assessments...
+        delete_records("workshop_assessments", "submissionid", $submission->id);
         // ...and the submission record...
         delete_records("workshop_submissions", "id", $submission->id);
         // ..and finally the submitted file
@@ -177,7 +180,7 @@
         }
 
         notice_yesno(get_string("clearlateflag","workshop")."?",
-             "submissions.php?action=adminclearlate&amp;id=$cm->id&amp;sid=$sid",
+             "submissions.php?sesskey=" . sesskey() . "&amp;action=adminclearlate&amp;id=$cm->id&amp;sid={$submission->id}",
              "view.php?id=$cm->id");
     }
 
@@ -197,6 +200,7 @@
     elseif ($action == 'adminupdatetitle' ) {
 
         require_capability('mod/workshop:manage', $context);
+        require_sesskey();
         if (empty($sid)) {
             error("Admin Update Title: submission id missing");
         }
@@ -219,7 +223,7 @@
         }
 
         notice_yesno(get_string("confirmremoveattachments","workshop"),
-             "submissions.php?action=removeattachments&amp;id=$cm->id&amp;sid=$sid",
+             "submissions.php?sesskey=" . sesskey() . "&amp;action=removeattachments&amp;id=$cm->id&amp;sid=$sid",
              "view.php?id=$cm->id");
     }
 
@@ -244,6 +248,7 @@
         <form id="editform" enctype="multipart/form-data" action="submissions.php" method="post">
         <fieldset class="invisiblefieldset">
         <input type="hidden" name="action" value="updatesubmission" />
+        <input type="hidden" name="sesskey" value="<?php echo sesskey(); ?>" />
         <input type="hidden" name="id" value="<?php echo $cm->id ?>" />
         <input type="hidden" name="sid" value="<?php echo $sid ?>" />
         <div class="boxaligncenter">
@@ -336,6 +341,7 @@
     /******************* remove (all) attachments ************************************/
     elseif ($action == 'removeattachments' ) {
 
+        require_sesskey();
         $form = data_submitted();
 
         if (empty($form->sid)) {
@@ -408,6 +414,7 @@
     /*************** update submission ***************************/
     elseif ($action == 'updatesubmission') {
 
+        require_sesskey();
         if (empty($sid)) {
             error("Update submission: submission id missing");
         }

@@ -19,7 +19,7 @@
 
 function xmldb_main_upgrade($oldversion=0) {
 
-    global $CFG, $THEME, $USER, $db;
+    global $CFG, $THEME, $USER, $SITE, $db;
 
     $result = true;
 
@@ -1780,7 +1780,7 @@ function xmldb_main_upgrade($oldversion=0) {
                 $raw_normalized = clean_param($oldtag->text, PARAM_TAG);
                 $normalized     = moodle_strtolower($raw_normalized);
                 // if this tag does not exist in tag table yet
-                if (!$newtag = get_record('tag', 'name', $normalized, '', '', '', '', 'id')) {
+                if (!$newtag = get_record('tag', 'name', addslashes($normalized), '', '', '', '', 'id')) {
                     $itag = new object();
                     $itag->name         = $normalized;
                     $itag->rawname      = $raw_normalized;
@@ -1793,7 +1793,7 @@ function xmldb_main_upgrade($oldversion=0) {
                         $itag->tagtype  = 'default';
                     }
 
-                    if ($idx = insert_record('tag', $itag)) {
+                    if ($idx = insert_record('tag', addslashes_recursive($itag))) {
                         $tagrefs[$oldtag->id] = $idx;
                     }
                 // if this tag is already used by tag table
@@ -3472,6 +3472,113 @@ function xmldb_main_upgrade($oldversion=0) {
         }
 
         upgrade_main_savepoint($result, 2007101556);
+
+    }
+
+    if ($result && $oldversion < 2007101561.01) {
+        // As part of security changes password policy will now be enabled by default.
+        // If it has not already been enabled then we will enable it... Admins will still
+        // be able to switch it off after this upgrade
+        if (record_exists('config', 'name', 'passwordpolicy', 'value', 0)) {
+            unset_config('passwordpolicy');
+        }
+
+        $message = get_string('upgrade197notice', 'admin');
+        if (empty($CFG->passwordmainsalt)) {
+            $docspath = $CFG->docroot.'/'.str_replace('_utf8', '', current_language()).'/report/security/report_security_check_passwordsaltmain';
+            $message .= "\n".get_string('upgrade197salt', 'admin', $docspath);
+        }
+        notify($message, 'notifysuccess');
+
+        unset($message);
+
+        upgrade_main_savepoint($result, 2007101561.01);
+    }
+
+    if ($result && $oldversion < 2007101561.02) {
+        $messagesubject = s($SITE->shortname).': '.get_string('upgrade197noticesubject', 'admin');
+        $message  = '<p>'.s($SITE->fullname).' ('.s($CFG->wwwroot).'):</p>'.get_string('upgrade197notice', 'admin');
+        if (empty($CFG->passwordmainsalt)) {
+            $docspath = $CFG->docroot.'/'.str_replace('_utf8', '', current_language()).'/report/security/report_security_check_passwordsaltmain';
+            $message .= "\n".get_string('upgrade197salt', 'admin', $docspath);
+        }
+
+        // Force administrators to change password on next login
+        $systemcontext = get_context_instance(CONTEXT_SYSTEM);
+        $sql = "SELECT DISTINCT u.id, u.firstname, u.lastname, u.picture, u.imagealt, u.email, u.password, u.mailformat
+              FROM {$CFG->prefix}role_capabilities rc
+              JOIN {$CFG->prefix}role_assignments ra ON (ra.contextid = rc.contextid AND ra.roleid = rc.roleid)
+              JOIN {$CFG->prefix}user u ON u.id = ra.userid
+             WHERE rc.capability = 'moodle/site:doanything'
+                   AND rc.permission = ".CAP_ALLOW."
+                   AND u.deleted = 0
+                   AND rc.contextid = ".$systemcontext->id." AND (u.auth='manual' OR u.auth='email')";
+
+        $adminusers = get_records_sql($sql);
+        foreach ($adminusers as $adminuser) {
+            if ($preference = get_record('user_preferences', 'userid', $adminuser->id, 'name', 'auth_forcepasswordchange')) {
+                if ($preference->value == '1') {
+                    continue;
+                }
+                set_field('user_preferences', 'value', '1', 'id', $preference->id);
+            } else {
+                $preference = new stdClass;
+                $preference->userid = $adminuser->id;
+                $preference->name   = 'auth_forcepasswordchange';
+                $preference->value  = '1';
+                insert_record('user_preferences', $preference);
+            }
+            $adminuser->maildisplay = 0; // do not use return email to self, it might actually help emails to get through and prevents notices
+            // Message them with the notice about upgrading
+            email_to_user($adminuser, $adminuser, $messagesubject, html_to_text($message), $message);
+        }
+
+        unset($adminusers);
+        unset($preference);
+        unset($message);
+        unset($messagesubject);
+
+        upgrade_main_savepoint($result, 2007101561.02);
+    }
+
+    if ($result && $oldversion < 2007101563.02) {
+        // this block tries to undo incorrect forcing of new passwords for admins that have no
+        // way to change passwords MDL-20933
+        $systemcontext = get_context_instance(CONTEXT_SYSTEM);
+        $sql = "SELECT DISTINCT u.id, u.firstname, u.lastname, u.picture, u.imagealt, u.email, u.password
+                  FROM {$CFG->prefix}role_capabilities rc
+                  JOIN {$CFG->prefix}role_assignments ra ON (ra.contextid = rc.contextid AND ra.roleid = rc.roleid)
+                  JOIN {$CFG->prefix}user u ON u.id = ra.userid
+                 WHERE rc.capability = 'moodle/site:doanything'
+                       AND rc.permission = ".CAP_ALLOW."
+                       AND u.deleted = 0
+                       AND rc.contextid = ".$systemcontext->id." AND u.auth<>'manual' AND u.auth<>'email'";
+
+        if ($adminusers = get_records_sql($sql)) {
+            foreach ($adminusers as $adminuser) {
+                delete_records('user_preferences', 'userid', $adminuser->id, 'name', 'auth_forcepasswordchange');
+            }
+        }
+        unset($adminusers);
+
+        upgrade_main_savepoint($result, 2007101563.02);
+    }
+
+    if ($result && $oldversion < 2007101563.03) {
+        // NOTE: this is quite hacky, but anyway it should work fine in 1.9,
+        //       in 2.0 we should always use plugin upgrade code for things like this
+
+        $authsavailable = get_list_of_plugins('auth');
+        foreach($authsavailable as $authname) {
+            if (!$auth = get_auth_plugin($authname)) {
+                continue;
+            }
+            if ($auth->prevent_local_passwords()) {
+                execute_sql("UPDATE {$CFG->prefix}user SET password='not cached' WHERE auth='$authname'");
+            }
+        }
+
+        upgrade_main_savepoint($result, 2007101563.03);
     }
 
     return $result;

@@ -296,10 +296,17 @@
     }
 
 /// Check to see if groups are being used here
-    $returnurl = 'view.php?d='.$data->id.'&amp;search='.s($search).'&amp;sort='.s($sort).'&amp;order='.s($order).'&amp;';
+    $returnurl = $CFG->wwwroot . '/mod/data/view.php?d='.$data->id.'&amp;search='.s($search).'&amp;sort='.s($sort).'&amp;order='.s($order).'&amp;';
     groups_print_activity_menu($cm, $returnurl);
     $currentgroup = groups_get_activity_group($cm);
     $groupmode = groups_get_activity_groupmode($cm);
+
+    // deletect entries not approved yet and show hint instead of not found error
+    if ($record and $data->approval and !$record->approved and $record->userid != $USER->id and !has_capability('mod/data:manageentries', $context)) {
+        if (!$currentgroup or $record->groupid == $currentgroup or $record->groupid == 0) {
+            print_error('notapproved', 'data');
+        }
+    }
 
     print_heading(format_string($data->name));
 

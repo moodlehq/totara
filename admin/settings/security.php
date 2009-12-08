@@ -46,7 +46,7 @@ if ($hassiteconfig) { // speedup for non-admins, add all caps used on this page
     $temp->add(new admin_setting_configcheckbox('cronclionly', get_string('cronclionly', 'admin'), get_string('configcronclionly', 'admin'), 0));
     $temp->add(new admin_setting_configpasswordunmask('cronremotepassword', get_string('cronremotepassword', 'admin'), get_string('configcronremotepassword', 'admin'), ''));
 
-    $temp->add(new admin_setting_configcheckbox('passwordpolicy', get_string('passwordpolicy', 'admin'), get_string('configpasswordpolicy', 'admin'), 0));
+    $temp->add(new admin_setting_configcheckbox('passwordpolicy', get_string('passwordpolicy', 'admin'), get_string('configpasswordpolicy', 'admin'), 1));
     $temp->add(new admin_setting_configtext('minpasswordlength', get_string('minpasswordlength', 'admin'), get_string('configminpasswordlength', 'admin'), 8, PARAM_INT));
     $temp->add(new admin_setting_configtext('minpassworddigits', get_string('minpassworddigits', 'admin'), get_string('configminpassworddigits', 'admin'), 1, PARAM_INT));
     $temp->add(new admin_setting_configtext('minpasswordlower', get_string('minpasswordlower', 'admin'), get_string('configminpasswordlower', 'admin'), 1, PARAM_INT));
@@ -66,6 +66,7 @@ if ($hassiteconfig) { // speedup for non-admins, add all caps used on this page
     $temp->add(new admin_setting_configcheckbox('cookiesecure', get_string('cookiesecure', 'admin'), get_string('configcookiesecure', 'admin'), 0));
     $temp->add(new admin_setting_configcheckbox('cookiehttponly', get_string('cookiehttponly', 'admin'), get_string('configcookiehttponly', 'admin'), 0));
     $temp->add(new admin_setting_configcheckbox('regenloginsession', get_string('regenloginsession', 'admin'), get_string('configregenloginsession', 'admin'), 0));
+    $temp->add(new admin_setting_configtext('excludeoldflashclients', get_string('excludeoldflashclients', 'admin'), get_string('configexcludeoldflashclients', 'admin'), '10.0.12', PARAM_TEXT));
     $ADMIN->add('security', $temp);
 
 

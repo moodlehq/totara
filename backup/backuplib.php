@@ -85,7 +85,6 @@
 
     //Returns every needed user (participant) in a course
     //It uses the xxxx_get_participants() function
-    //plus users needed to backup scales.
     //Also it search for users having messages and
     //users having blogs
     //WARNING: It returns only NEEDED users, not every
@@ -121,21 +120,6 @@
                         }
                     }
                  }
-            }
-        }
-
-        //Now, add scale users (from site and course scales)
-        //Get users
-        $scaleusers = get_records_sql("SELECT DISTINCT userid,userid
-                                       FROM {$CFG->prefix}scale
-                                       WHERE courseid = '0' or courseid = '$courseid'");
-        //Add scale users to results
-        if ($scaleusers) {
-            foreach ($scaleusers as $scaleuser) {
-                //If userid != 0
-                if ($scaleuser->userid != 0) {
-                    $result[$scaleuser->userid]->id = $scaleuser->userid;
-                }
             }
         }
 
@@ -184,7 +168,7 @@
         // get all users with moodle/course:view capability, this will include people
         // assigned at cat level, or site level
         // but it should be ok if they have no direct assignment at course, mod, block level
-        return get_users_by_capability(get_context_instance(CONTEXT_COURSE, $courseid), 'moodle/course:view');
+        return get_users_by_capability(get_context_instance(CONTEXT_COURSE, $courseid), 'moodle/course:view', '', '', '', '', '', '', false);
     }
 
     //Returns all users ids (every record in users table)
@@ -1334,7 +1318,11 @@
                 fwrite ($bf,full_tag("POLICYAGREED",4,false,$user->policyagreed));
                 fwrite ($bf,full_tag("DELETED",4,false,$user->deleted));
                 fwrite ($bf,full_tag("USERNAME",4,false,$user->username));
-                fwrite ($bf,full_tag("PASSWORD",4,false,$user->password));
+                // Prevent user passwords in backup files unless
+                // $CFG->includeuserpasswordsinbackup is defined. MDL-20838
+                if (!empty($CFG->includeuserpasswordsinbackup)) {
+                    fwrite ($bf,full_tag("PASSWORD",4,false,$user->password));
+                }
                 fwrite ($bf,full_tag("IDNUMBER",4,false,$user->idnumber));
                 fwrite ($bf,full_tag("FIRSTNAME",4,false,$user->firstname));
                 fwrite ($bf,full_tag("LASTNAME",4,false,$user->lastname));
@@ -1360,7 +1348,6 @@
                 fwrite ($bf,full_tag("LASTLOGIN",4,false,$user->lastlogin));
                 fwrite ($bf,full_tag("CURRENTLOGIN",4,false,$user->currentlogin));
                 fwrite ($bf,full_tag("LASTIP",4,false,$user->lastip));
-                fwrite ($bf,full_tag("SECRET",4,false,$user->secret));
                 fwrite ($bf,full_tag("PICTURE",4,false,$user->picture));
                 fwrite ($bf,full_tag("URL",4,false,$user->url));
                 fwrite ($bf,full_tag("DESCRIPTION",4,false,$user->description));

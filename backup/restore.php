@@ -23,18 +23,6 @@
     $method = optional_param( 'method' );
     $backup_unique_code = optional_param('backup_unique_code',0,PARAM_INT);
 
-    //Get and check course
-    if (! $course = get_record("course", "id", $id)) {
-        error("Course ID was incorrect (can't find it)");
-    }
-    // To some reasons, course_startdateoffset value was lost during restoring
-    // See MDL-17469
-    if (!empty($course->startdate) && !empty($SESSION->course_header->course_startdate)) {
-        $SESSION->restore->course_startdateoffset = $course->startdate - $SESSION->course_header->course_startdate;
-    } else {
-        $SESSION->restore->course_startdateoffset = 0;
-    }
-
     //Check login
     require_login();
 
@@ -126,7 +114,12 @@
         exit;
     }
 
-    //We are here, so me have a file.
+    //We are here, so we have a file.
+
+    //Get and check course
+    if (! $course = get_record("course", "id", $id)) {
+        error("Course ID was incorrect (can't find it)");
+    }
 
     //Print header
     if (has_capability('moodle/site:config', get_context_instance(CONTEXT_SYSTEM))) {
@@ -161,6 +154,7 @@
         if (!empty($SESSION->restore->importing)) {
             // set up all the config stuff and skip asking the user about it.
             restore_setup_for_check($SESSION->restore,$backup_unique_code);
+            require_sesskey();
             include_once("restore_execute.html");
         } else {
             include_once("restore_form.html");
@@ -176,6 +170,7 @@
         }
         //Unset this for the future
         unset($SESSION->cancontinue);
+        require_sesskey();
         include_once("restore_execute.html");
     }
     print_simple_box_end();

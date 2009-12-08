@@ -199,6 +199,17 @@ class moodlelib_test extends UnitTestCase {
         $this->assertEqual(clean_param($CFG->wwwroot, PARAM_LOCALURL), $CFG->wwwroot);
         $this->assertEqual(clean_param('/just/a/path', PARAM_LOCALURL), '/just/a/path');
         $this->assertEqual(clean_param('funny:thing', PARAM_LOCALURL), '');
+
+        //test filename param
+        $this->assertEqual(clean_param('correctfile.txt', PARAM_FILE), 'correctfile.txt');
+        $this->assertEqual(clean_param('b\'a<d`\\/fi:l>e.t"x|t', PARAM_FILE), 'badfile.txt');
+        $this->assertEqual(clean_param('../parentdirfile.txt', PARAM_FILE), 'parentdirfile.txt');
+        //The following behaviours have been maintained although they seem a little odd
+        $this->assertEqual(clean_param('funny:thing', PARAM_FILE), 'funnything');
+        $this->assertEqual(clean_param('./currentdirfile.txt', PARAM_FILE), '.currentdirfile.txt');
+        $this->assertEqual(clean_param('c:\temp\windowsfile.txt', PARAM_FILE), 'ctempwindowsfile.txt');
+        $this->assertEqual(clean_param('/home/user/linuxfile.txt', PARAM_FILE), 'homeuserlinuxfile.txt');
+        $this->assertEqual(clean_param('~/myfile.txt', PARAM_FILE), '~myfile.txt');
     }
 
     function test_make_user_directory() {
@@ -219,6 +230,38 @@ class moodlelib_test extends UnitTestCase {
         $this->assertFalse(make_user_directory(true, true));
         
     }
+
+    function test_shorten_text() {
+        $text = "short text already no tags";
+        $this->assertEqual($text, shorten_text($text));
+
+        $text = "<p>short <b>text</b> already</p><p>with tags</p>";
+        $this->assertEqual($text, shorten_text($text));
+
+        $text = "long text without any tags blah de blah blah blah what";
+        $this->assertEqual('long text without any tags ...', shorten_text($text));
+
+        $text = "<div class='frog'><p><blockquote>Long text with tags that will ".
+            "be chopped off but <b>should be added back again</b></blockquote></p></div>";
+        $this->assertEqual("<div class='frog'><p><blockquote>Long text with " .
+            "tags that ...</blockquote></p></div>", shorten_text($text));
+
+        $text = "some text which shouldn't &nbsp; break there";
+        $this->assertEqual("some text which shouldn't &nbsp; ...", 
+            shorten_text($text, 31));
+        $this->assertEqual("some text which shouldn't ...", 
+            shorten_text($text, 30));
+        
+        // This case caused a bug up to 1.9.5
+        $text = "<h3>standard 'break-out' sub groups in TGs?</h3>&nbsp;&lt;&lt;There are several";
+        $this->assertEqual("<h3>standard 'break-out' sub groups in ...</h3>",
+            shorten_text($text, 43));
+
+        $text = "<h1>123456789</h1>";//a string with no convenient breaks
+        $this->assertEqual("<h1>12345...</h1>",
+            shorten_text($text, 8));
+    }
+
 }
 
 ?>
