@@ -128,7 +128,7 @@
                 error('You are not authorized to do this');
             }
 
-            if($form = data_submitted()) {
+            if($form = data_submitted() and confirm_sesskey()) {
 
                 $form->name = clean_param(strip_tags($form->name,'<lang><span>'), PARAM_CLEAN);
 
@@ -193,7 +193,7 @@
         case 'new':
             $title = get_string('newevent', 'calendar');
             $form = data_submitted();
-            if(!empty($form) && !empty($form->name)) {
+            if(!empty($form) && !empty($form->name) && confirm_sesskey()) {
 
                 $form->name = clean_text(strip_tags($form->name, '<lang><span>'));
 
@@ -286,7 +286,7 @@
         case 'delete':
             $confirm = optional_param('confirm', 0, PARAM_INT);
             $repeats = optional_param('repeats', 0, PARAM_INT);
-            if($confirm) {
+            if($confirm and confirm_sesskey()) {
                 // Kill it and redirect to day view
                 if(($event = get_record('event', 'id', $eventid)) !== false) {
 
@@ -540,14 +540,15 @@
 
     echo '<td class="sidecalendar">';
     echo '<div class="sideblock">';
-    echo '<div class="header">'.get_string('eventskey', 'calendar').'</div>';
+    echo '<div class="header"><h2>'.get_string('eventskey', 'calendar').'</h2></div>';
     echo '<div class="filters">';
     echo calendar_filter_controls('event', 'action='.$action.'&amp;type='.$eventtype.'&amp;id='.$eventid);
     echo '</div>';
     echo '</div>';
 
     echo '<div class="sideblock">';
-    echo '<div class="header">'.get_string('monthlyview', 'calendar').'</div>';
+    echo '<div class="header"><h2>'.get_string('monthlyview', 'calendar').'</h2></div>';
+
     echo '<div class="minicalendarblock minicalendartop">';
     echo calendar_top_controls('display', array('id' => $urlcourse, 'm' => $prevmon, 'y' => $prevyr));
     echo calendar_get_mini($courses, $groups, $users, $prevmon, $prevyr);

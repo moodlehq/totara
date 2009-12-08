@@ -769,7 +769,7 @@ function element_to_popup_window ($type=null, $url=null, $name=null, $linkname=n
                 $url = substr($url, strlen($CFG->wwwroot));
             }
             $element = '<a title="'. s(strip_tags($title)) .'" href="'. $CFG->wwwroot . $url .'" '.
-                       "onclick=\"this.target='$name'; return openpopup('$url', '$name', '$options', $fullscreen);\">$linkname</a>";
+                       "$CFG->frametarget onclick=\"this.target='$name'; return openpopup('$url', '$name', '$options', $fullscreen);\">$linkname</a>";
             break;
         default :
             error('Undefined element - can\'t create popup window.');
@@ -1007,8 +1007,7 @@ function choose_from_menu_nested($options,$name,$selected='',$nothing='choose',$
     }
     if (!empty($options)) {
         foreach ($options as $section => $values) {
-
-            $output .= '   <optgroup label="'. s(format_string($section)) .'">'."\n";
+            $output .= '   <optgroup label="'. s(strip_tags(format_string($section))) .'">'."\n";
             foreach ($values as $value => $label) {
                 $output .= '   <option value="'. format_string($value) .'"';
                 if ((string)$value == (string)$selected) {
@@ -2023,8 +2022,8 @@ function clean_text($text, $format=FORMAT_MOODLE) {
                 $text = purify_html($text);
             } else {
             /// Fix non standard entity notations
-                $text = preg_replace('/(&#[0-9]+)(;?)/', "\\1;", $text);
-                $text = preg_replace('/(&#x[0-9a-fA-F]+)(;?)/', "\\1;", $text);
+                $text = preg_replace('/&#0*([0-9]+);?/', "&#\\1;", $text);
+                $text = preg_replace('/&#x0*([0-9a-fA-F]+);?/', "&#x\\1;", $text);
 
             /// Remove tags that are not allowed
                 $text = strip_tags($text, $ALLOWED_TAGS);
@@ -2489,6 +2488,21 @@ function print_header ($title='', $heading='', $navigation='', $focus='',
         return;
     }
     define('HEADER_PRINTED', 'true');
+
+/// Perform a browser environment check for the flash version.  Should only run once per login session.
+    if (isloggedin() && !empty($CFG->excludeoldflashclients) && empty($SESSION->flashversion)) {
+        // Unfortunately we can't use require_js here and keep it all clean in 1.9 ...
+        // require_js(array('yui_yahoo', 'yui_event', 'yui_connection', $CFG->httpswwwroot."/lib/swfobject/swfobject.js"));
+        $meta .= '<script type="text/javascript"  src="'.$CFG->wwwroot.'/lib/yui/yahoo/yahoo-min.js"></script>';
+        $meta .= '<script type="text/javascript"  src="'.$CFG->wwwroot.'/lib/yui/event/event-min.js"></script>';
+        $meta .= '<script type="text/javascript"  src="'.$CFG->wwwroot.'/lib/yui/connection/connection-min.js"></script>';
+        $meta .= '<script type="text/javascript"  src="'.$CFG->wwwroot.'/lib/swfobject/swfobject.js"></script>';
+        $meta .= 
+           "<script type=\"text/javascript\">\n".
+           "  var flashversion = swfobject.getFlashPlayerVersion();\n".
+           "  YAHOO.util.Connect.asyncRequest('GET','".$CFG->wwwroot."/login/environment.php?sesskey=".sesskey()."&amp;flashversion='+flashversion.major+'.'+flashversion.minor+'.'+flashversion.release);\n".
+           "</script>";
+    }
 
 
 /// Add the required stylesheets
@@ -2977,7 +2991,7 @@ function print_footer($course=NULL, $usercourse=NULL, $return=false) {
         } else if ($course === 'home') {   // special case for site home page - please do not remove
             $course = get_site();
             $homelink  = '<div class="sitelink">'.
-               '<a title="Moodle '. $CFG->release .'" href="http://moodle.org/">'.
+               '<a title="Moodle" href="http://moodle.org/">'.
                '<img style="width:100px;height:30px" src="pix/moodlelogo.gif" alt="moodlelogo" /></a></div>';
             $home  = true;
 
@@ -3888,7 +3902,7 @@ function build_navigation($extranavlinks, $cm = null) {
             $navigation .= get_separator();
         }
         if ((!empty($navlink['link'])) && !$last) {
-            $navigation .= "<a onclick=\"this.target='$CFG->framename'\" href=\"{$navlink['link']}\">";
+            $navigation .= "<a $CFG->frametarget onclick=\"this.target='$CFG->framename'\" href=\"{$navlink['link']}\">";
         }
         $navigation .= "{$navlink['name']}";
         if ((!empty($navlink['link'])) && !$last) {
@@ -5304,7 +5318,7 @@ function navmenu($course, $cm=NULL, $targetwindow='self') {
     if ($selectmod and has_capability('coursereport/log:view', $context)) {
         $logstext = get_string('alllogs');
         $logslink = '<li>'."\n".'<a title="'.$logstext.'" '.
-                    $CFG->frametarget.'onclick="this.target=\''.$CFG->framename.'\';"'.' href="'.
+                    $CFG->frametarget.' onclick="this.target=\''.$CFG->framename.'\';"'.' href="'.
                     $CFG->wwwroot.'/course/report/log/index.php?chooselog=1&amp;user=0&amp;date=0&amp;id='.
                        $course->id.'&amp;modid='.$selectmod->id.'">'.
                     '<img class="icon log" src="'.$CFG->pixpath.'/i/log.gif" alt="'.$logstext.'" /></a>'."\n".'</li>';
@@ -5312,7 +5326,7 @@ function navmenu($course, $cm=NULL, $targetwindow='self') {
     }
     if ($backmod) {
         $backtext= get_string('activityprev', 'access');
-        $backmod = '<li><form action="'.$CFG->wwwroot.'/mod/'.$backmod->modname.'/view.php" '.
+        $backmod = '<li><form action="'.$CFG->wwwroot.'/mod/'.$backmod->modname.'/view.php" '.$CFG->frametarget.' '.
                    'onclick="this.target=\''.$CFG->framename.'\';"'.'><fieldset class="invisiblefieldset">'.
                    '<input type="hidden" name="id" value="'.$backmod->id.'" />'.
                    '<button type="submit" title="'.$backtext.'">'.link_arrow_left($backtext, $url='', $accesshide=true).
@@ -5320,7 +5334,7 @@ function navmenu($course, $cm=NULL, $targetwindow='self') {
     }
     if ($nextmod) {
         $nexttext= get_string('activitynext', 'access');
-        $nextmod = '<li><form action="'.$CFG->wwwroot.'/mod/'.$nextmod->modname.'/view.php"  '.
+        $nextmod = '<li><form action="'.$CFG->wwwroot.'/mod/'.$nextmod->modname.'/view.php"  '.$CFG->frametarget.' '.
                    'onclick="this.target=\''.$CFG->framename.'\';"'.'><fieldset class="invisiblefieldset">'.
                    '<input type="hidden" name="id" value="'.$nextmod->id.'" />'.
                    '<button type="submit" title="'.$nexttext.'">'.link_arrow_right($nexttext, $url='', $accesshide=true).
@@ -6099,7 +6113,7 @@ function redirect($url, $message='', $delay=-1) {
 <script type="text/javascript">
 //<![CDATA[
 
-  function redirect() {
+  function redirect() { 
       document.location.replace('<?php echo addslashes_js($url) ?>');
   }
   setTimeout("redirect()", <?php echo ($delay * 1000) ?>);
@@ -6365,10 +6379,15 @@ function print_side_block($heading='', $content='', $list=NULL, $icons=NULL, $fo
             echo "\n<ul class='list'>\n";
             foreach ($list as $key => $string) {
                 echo '<li class="r'. $row .'">';
-                if ($icons) {
-                    echo '<div class="icon column c0">'. $icons[$key] .'</div>';
+                if ($icons) {                    
+                    $newstring = str_replace('">', '">'.$icons[$key].'&nbsp;', $string);
+                    $newstring = str_replace('" >', '">'.$icons[$key].'&nbsp;', $newstring);
+                    if ($newstring == $string) {  // No link found, so insert before the string
+                        $newstring = $icons[$key].'&nbsp;'.$string;
+                    }
+                    $string = $newstring;                    
                 }
-                echo '<div class="column c1">'. $string .'</div>';
+                echo '<div class="column c1">' . $string . '</div>';
                 echo "</li>\n";
                 $row = $row ? 0:1;
             }
@@ -6403,7 +6422,7 @@ function print_side_block_start($heading='', $attributes = array()) {
         $attributes['class'] = 'sideblock';
 
     } else if(!strpos($attributes['class'], 'sideblock')) {
-        $attributes['class'] .= ' sideblock';
+        $attributes['class'] .= ' sideblock';        
     }
 
     // OK, the class is surely there and in addition to anything
@@ -7032,5 +7051,40 @@ function auth_get_plugin_title ($authtype) {
     return $authtitle;
 }
 
-// vim:autoindent:expandtab:shiftwidth=4:tabstop=4:tw=140:
+ /**
+ * Print password policy.
+ * @uses $CFG
+ * @return string
+ */
+ function print_password_policy(){
+     global $CFG;
+     $messages = array();
+     
+     if(!empty($CFG->passwordpolicy)){
+            $messages[] = get_string('informminpasswordlength', 'auth', $CFG->minpasswordlength);
+            if(!empty($CFG->minpassworddigits)){
+                $messages[] = get_string('informminpassworddigits', 'auth', $CFG->minpassworddigits);
+            }
+            if(!empty($CFG->minpasswordlower)){
+                $messages[] = get_string('informminpasswordlower', 'auth', $CFG->minpasswordlower);
+            }
+            if(!empty($CFG->minpasswordupper)){
+                $messages[] = get_string('informminpasswordupper', 'auth', $CFG->minpasswordupper);
+            }
+            if(!empty($CFG->minpasswordnonalphanum)){
+                $messages[] = get_string('informminpasswordnonalphanum', 'auth', $CFG->minpasswordnonalphanum);
+            }
+            
+            $lastmessage = new stdClass;
+            $lastmessage->one = '';
+            $lastmessage->two = array_pop($messages);
+            $messages[] = get_string('and','moodle',$lastmessage);
+            $message = join(', ', $messages);
+            $message = '<div class="fitemtitle">&nbsp;</div><div class="felement ftext">'. get_string('informpasswordpolicy', 'auth', $message) . '</div>';
+        }
+        return $message;
+                
+ }
+
+ // vim:autoindent:expandtab:shiftwidth=4:tabstop=4:tw=140:
 ?>

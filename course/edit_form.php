@@ -65,10 +65,16 @@ class course_edit_form extends moodleform {
             $mform->addElement('select', 'category', get_string('category'), $displaylist);
         } else {
             $mform->addElement('hidden', 'category', null);
+            $mform->setType('category', PARAM_INT);
         }
         $mform->setHelpButton('category', array('coursecategory', get_string('category')));
         $mform->setDefault('category', $category->id);
         $mform->setType('category', PARAM_INT);
+
+        if ($course and !has_capability('moodle/course:changecategory', $coursecontext)) {
+            $mform->hardFreeze('category');
+            $mform->setConstant('category', $category->id);
+        }
 
         $mform->addElement('text','fullname', get_string('fullname'),'maxlength="254" size="50"');
         $mform->setHelpButton('fullname', array('coursefullname', get_string('fullname')), true);
@@ -101,6 +107,10 @@ class course_edit_form extends moodleform {
         $mform->addElement('htmleditor','summary', get_string('summary'), array('rows'=> '10', 'cols'=>'65'));
         $mform->setHelpButton('summary', array('text', get_string('helptext')), true);
         $mform->setType('summary', PARAM_RAW);
+
+        if ($course and !has_capability('moodle/course:changesummary', $coursecontext)) {
+            $mform->hardFreeze('summary');
+        }
 
         $courseformats = get_list_of_plugins('course/format');
         $formcourseformats = array();
@@ -390,6 +400,7 @@ class course_edit_form extends moodleform {
             $mform->disabledIf('allowedmods', 'restrictmodules', 'eq', 0);
         } else {
             $mform->addElement('hidden', 'restrictmodules', null);
+            $mform->setType('restrictmodules', PARAM_INT);
         }
         if ($CFG->restrictmodulesfor == 'all') {
             $mform->setDefault('allowedmods', explode(',',$CFG->defaultallowedmodules));
@@ -424,9 +435,13 @@ class course_edit_form extends moodleform {
 
         // fill in default teacher and student names to keep backwards compatibility for a while
         $mform->addElement('hidden', 'teacher', get_string('defaultcourseteacher'));
+        $mform->setType('teacher', PARAM_RAW);
         $mform->addElement('hidden', 'teachers', get_string('defaultcourseteachers'));
+        $mform->setType('teachers', PARAM_RAW);
         $mform->addElement('hidden', 'student', get_string('defaultcoursestudent'));
+        $mform->setType('student', PARAM_RAW);
         $mform->addElement('hidden', 'students', get_string('defaultcoursestudents'));
+        $mform->setType('students', PARAM_RAW);
     }
 
     function definition_after_data() {

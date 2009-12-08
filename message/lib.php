@@ -49,7 +49,7 @@ function message_print_contacts() {
                          AND mc.blocked = 0 
                    GROUP BY u.id, u.firstname, u.lastname, u.picture,
                             u.imagealt, u.lastaccess
-                   ORDER BY u.firstname ASC;";
+                   ORDER BY u.firstname ASC";
 
     if($rs = get_recordset_sql($contactsql)){
         while($rd = rs_fetch_next_record($rs)){
@@ -79,7 +79,7 @@ function message_print_contacts() {
                     WHERE mc.id IS NULL AND m.useridto = {$USER->id} 
                     GROUP BY u.id, u.firstname, u.lastname, u.picture,
                              u.imagealt, u.lastaccess
-                    ORDER BY u.firstname ASC;";
+                    ORDER BY u.firstname ASC";
 
     if($rs = get_recordset_sql($strangersql)){
         while($rd= rs_fetch_next_record($rs)){
@@ -974,6 +974,8 @@ function message_post_message($userfrom, $userto, $message, $format, $messagetyp
             $tagline = get_string('emailtagline', 'message', $SITE->shortname);
 
             $messagesubject = preg_replace('/\s+/', ' ', strip_tags($message)); // make sure it's all on one line
+            //convert things like &quot; back to regular characters then strip out tags like <b> <p> etc
+            $messagesubject = strip_tags(html_entity_decode($messagesubject));
             $messagesubject = message_shorten_message($messagesubject, 30).'...';
 
             $messagetext = format_text_email($message, $format).

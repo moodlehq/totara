@@ -22,13 +22,13 @@ require_once($CFG->libdir . '/simpletestlib/test_case.php');
  * them into a group test.
  * @package SimpleTestEx
  */
-class AutoGroupTest extends GroupTest {
+class AutoGroupTest extends TestSuite {
 
     var $thorough;
     var $showsearch;
 
     function AutoGroupTest($showsearch, $thorough, $test_name = null) {
-        $this->GroupTest($test_name);
+        $this->TestSuite($test_name);
         $this->showsearch = $showsearch;
         $this->thorough = $thorough;
     }
@@ -56,7 +56,7 @@ class AutoGroupTest extends GroupTest {
             }
             $file_path = $path . '/' . $file;
             if (is_dir($file_path)) {
-                if ($file != 'CVS' && !in_array($file_path, $this->ignorefolders)) {
+                if ($file != 'CVS' && $file != '.git' && !in_array($file_path, $this->ignorefolders)) {
                     $this->_recurseFolders($file_path);
                 }
             } elseif (preg_match('/simpletest(\/|\\\\)test.*\.php$/', $file_path) ||

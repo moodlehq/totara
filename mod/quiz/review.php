@@ -38,9 +38,9 @@
     require_login($course->id, false, $cm);
     $context = get_context_instance(CONTEXT_MODULE, $cm->id);
     $coursecontext = get_context_instance(CONTEXT_COURSE, $cm->course);
-    $isteacher = has_capability('mod/quiz:preview', get_context_instance(CONTEXT_MODULE, $cm->id));
+    $isteacher = has_capability('mod/quiz:preview', $context);
     $options = quiz_get_reviewoptions($quiz, $attempt, $context);
-    $popup = $isteacher ? 0 : $quiz->popup; // Controls whether this is shown in a javascript-protected window.
+    $popup = $isteacher ? 0 : $quiz->popup; // Controls whether this is shown in a javascript-protected window or with a safe browser.
 
     $timenow = time();
     if (!has_capability('mod/quiz:viewreports', $context)) {
@@ -68,15 +68,15 @@
             } else {
                 $message = get_string('noreview', 'quiz');
             }
-            if (empty($popup)) {
-                redirect('view.php?q=' . $quiz->id, $message);
-            } else {
+            if (!empty($popup) && $popup == 1) {
                 ?><script type="text/javascript">
                 opener.document.location.reload();
                 self.close();
                 </script><?php
                 die();
-            }
+            } else {
+                redirect('view.php?q=' . $quiz->id, $message);
+            } 
         }
     }
 
@@ -124,11 +124,12 @@
 /// Print the page header
     $pagequestions = explode(',', $pagelist);
     $headtags = get_html_head_contributions($pagequestions, $questions, $states);
-    if (!empty($popup)) {
+    if (!$isteacher && $quiz->popup) {
         define('MESSAGE_WINDOW', true);  // This prevents the message window coming up
         print_header($course->shortname.': '.format_string($quiz->name), '', '', '', $headtags, false, '', '', false, '');
-        /// Include Javascript protection for this page
-        include('protect_js.php');
+        if ($quiz->popup == 1) {
+            include('protect_js.php');
+        }
     } else {
         $strupdatemodule = has_capability('moodle/course:manageactivities', $coursecontext)
                     ? update_module_button($cm->id, $course->id, get_string('modulename', 'quiz'))
@@ -140,7 +141,7 @@
     echo '<div id="overDiv" style="position:absolute; visibility:hidden; z-index:1000;"></div>'; // for overlib
 
 /// Print heading and tabs if this is part of a preview
-    if (has_capability('mod/quiz:preview', $context)) {
+    if ($isteacher) {
         if ($attempt->userid == $USER->id) { // this is the report on a preview
             $currenttab = 'preview';
         } else {

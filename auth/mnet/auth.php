@@ -294,6 +294,8 @@ class auth_plugin_mnet extends auth_plugin_base {
                 print_error('nolocaluser', 'mnet');
             }
             $remoteuser->mnethostid = $remotehost->id;
+            $remoteuser->firstaccess = time(); // First time user in this server, grab it here
+
             if (! insert_record('user', addslashes_recursive($remoteuser))) {
                 print_error('databaseerror', 'mnet');
             }
@@ -367,6 +369,9 @@ class auth_plugin_mnet extends auth_plugin_base {
         }
 
         $localuser->mnethostid = $remotepeer->id;
+        if (empty($localuser->firstaccess)) { // Now firstaccess, grab it here
+            $localuser->firstaccess = time();
+        }
 
         $bool = update_record('user', addslashes_recursive($localuser));
         if (!$bool) {
@@ -589,6 +594,10 @@ class auth_plugin_mnet extends auth_plugin_base {
         $local_courseid_string = implode(', ', $local_courseid_array);
         $whereclause = " userid = '$userid' AND hostid = '{$MNET_REMOTE_CLIENT->id}' AND courseid NOT IN ($local_courseid_string)";
         delete_records_select('mnet_enrol_assignments', $whereclause);
+    }
+
+    function prevent_local_passwords() {
+        return true;
     }
 
     /**
@@ -950,7 +959,7 @@ class auth_plugin_mnet extends auth_plugin_base {
                 // There is no way to capture what the custom session handler
                 // is and then reset it on each pass - I checked that out
                 // already.
-                $sesscache = clone($_SESSION);
+                $sesscache = $_SESSION;
                 $sessidcache = session_id();
                 session_write_close();
                 unset($_SESSION);
@@ -970,7 +979,7 @@ class auth_plugin_mnet extends auth_plugin_base {
                 session_name('MoodleSession'.$CFG->sessioncookie);
                 session_id($sessidcache);
                 session_start();
-                $_SESSION = clone($sesscache);
+                $_SESSION = $sesscache;
                 session_write_close();
             }
         }
@@ -1140,7 +1149,7 @@ class auth_plugin_mnet extends auth_plugin_base {
 
             $uc = ini_get('session.use_cookies');
             ini_set('session.use_cookies', false);
-            $sesscache = clone($_SESSION);
+            $sesscache = $_SESSION;
             $sessidcache = session_id();
             session_write_close();
             unset($_SESSION);
@@ -1159,7 +1168,7 @@ class auth_plugin_mnet extends auth_plugin_base {
             session_name('MoodleSession'.$CFG->sessioncookie);
             session_id($sessidcache);
             session_start();
-            $_SESSION = clone($sesscache);
+            $_SESSION = $sesscache;
             session_write_close();
 
             $end = ob_end_clean();
@@ -1186,7 +1195,7 @@ class auth_plugin_mnet extends auth_plugin_base {
 
             $uc = ini_get('session.use_cookies');
             ini_set('session.use_cookies', false);
-            $sesscache = clone($_SESSION);
+            $sesscache = $_SESSION;
             $sessidcache = session_id();
             session_write_close();
             unset($_SESSION);
@@ -1205,7 +1214,7 @@ class auth_plugin_mnet extends auth_plugin_base {
             session_name('MoodleSession'.$CFG->sessioncookie);
             session_id($sessidcache);
             session_start();
-            $_SESSION = clone($sesscache);
+            $_SESSION = $sesscache;
             session_write_close();
 
             $end = ob_end_clean();
@@ -1228,7 +1237,7 @@ class auth_plugin_mnet extends auth_plugin_base {
 
             $uc = ini_get('session.use_cookies');
             ini_set('session.use_cookies', false);
-            $sesscache = clone($_SESSION);
+            $sesscache = $_SESSION;
             $sessidcache = session_id();
             session_write_close();
             unset($_SESSION);
@@ -1247,7 +1256,7 @@ class auth_plugin_mnet extends auth_plugin_base {
             session_name('MoodleSession'.$CFG->sessioncookie);
             session_id($sessidcache);
             session_start();
-            $_SESSION = clone($sesscache);
+            $_SESSION = $sesscache;
 
             $end = ob_end_clean();
             return true;

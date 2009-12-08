@@ -655,6 +655,11 @@
         
     }
 
+    if (empty($CFG->passwordsaltmain)) {
+        $path = $CFG->docroot.'/'.str_replace('_utf8', '', current_language()).'/report/security/report_security_check_passwordsaltmain';
+        print_box(get_string('upgrade197notice', 'admin')."\n".get_string('upgrade197salt', 'admin', $path));
+    }
+
     if (defined('WARN_DISPLAY_ERRORS_ENABLED')) {
         print_box(get_string('displayerrorswarning', 'admin'), 'generalbox adminwarning');
     }
