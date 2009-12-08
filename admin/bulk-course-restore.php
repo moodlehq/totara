@@ -28,51 +28,22 @@
  * with other core libraries.
  *
  */
+require_once('../config.php');
+print "Bulk course install";
+bulk_course_restore();
 
-if (!defined('MOODLE_INTERNAL')) {
-    die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
-}
-
-require_once($CFG->dirroot.'/local/mitms.php');
-
-function local_postinst() {
+function bulk_course_restore() {
 
     global $db, $CFG;
     $olddebug = $db->debug;
-    set_config('theme', 'mitms');
     $db->debug = $CFG->debug;
-
-    // set default course categories
-    $course_cat = new stdclass();
-    $course_cat->name = get_string('induction', 'local');
-    $course_cat->description ='';
-    $course_cat->parent = 0;
-    $course_cat->sortorder = 2;
-    $course_cat->coursecount = 0;
-    $course_cat->visible = 1;
-    $course_cat->timemodified = time();
-    $course_cat->depth = 1;
-    $course_cat->path = "''";
-    $course_cat->theme = '';
-    $catid1 = insert_record('course_categories', $course_cat);
-    $catcontext = get_context_instance(CONTEXT_COURSECAT, $catid);
-    mark_context_dirty($catcontext->path);
-
-    $course_cat->name = get_string('leadership', 'local');
-    $course_cat->sortorder = 3;
-    $course_cat->visible = 1;
-    $catid2 = insert_record('course_categories', $course_cat);
-    $catcontext = get_context_instance(CONTEXT_COURSECAT, $lptempid);
-    mark_context_dirty($catcontext->path);
-
-    fix_course_sortorder(); //set paths correctly.
 
     // silent course restores:
     require_once($CFG->dirroot.'/course/lib.php');
     require_once($CFG->dirroot.'/backup/lib.php');
     require_once($CFG->dirroot.'/backup/restorelib.php');
 
-    $zips = get_course_backups($CFG->dirroot.'/local/defaultcoursebackups');
+    $zips = get_course_backups2($CFG->dirroot.'/local/defaultcoursebackups');
 
     foreach($zips as $zip) {
         if(file_exists($zip['filename'])) {
@@ -81,62 +52,19 @@ function local_postinst() {
             $course->shortname = $zip['shortname'];
             $course->category = 1; // Miscellaneous
             print "Trying to create course \"{$zip['fullname']}\" ({$zip['shortname']}) ID={$zip['courseid']}\n";
-            // check if the ID we want to use is already a course
-            if(course_exists($zip['courseid'])) {
-                print "Error: Course ID already in use. Not restoring course";
-            } else {
-                if ($newcourse = create_course($course)) {
-                    // rewrite the courseid that is created to use 
-                    // the one we want. If that ID is already in use, 
-                    // prints an error and returns false
-                    //if(rewrite_course_id($newcourse->id, $zip['courseid'])) {
-                        import_backup_file_silently($zip['filename'], $zip['courseid'], true, false, array(), RESTORETO_NEW_COURSE);
-                    //}
-                }
+            if ($newcourse = create_course($course)) {
+                import_backup_file_silently($zip['filename'], $newcourse->id, true, false, array(), RESTORETO_NEW_COURSE);
             }
         }
     }
 
 
 
-    /*
-    if (file_exists($CFG->dirroot.'/local/defaultcoursebackups/inductioncourse.zip')) {
-        $course = new StdClass;
-        $course->fullname  = get_string('induction','local');
-        $course->shortname = get_string('induction','local');
-        $course->category = $catid1;
-        if ($newcourse = create_course($course)) {
-        import_backup_file_silently($CFG->dirroot.'/local/defaultcoursebackups/backup-presentation_skills-20091124-1116.zip', $newcourse->id, true, false, array(), RESTORETO_NEW_COURSE);
-        }
-    }
-     */
-    // set up frontpage
-    set_config('frontpage', '');
-    set_config('frontpageloggedin', '');
-    set_config('allowvisiblecoursesinhiddencategories', '1');
-
     rebuild_course_cache(SITEID);
 
     return true;
 
 }
-
-function rewrite_course_id($oldid, $newid) {
-    set_field('course','id',$newid,'id',$oldid);
-    set_field('course_sections','id',$newid,'id',$oldid);
-
-    return true;
-}
-
-
-function course_exists($id) {
-    if(get_record('course','id', $id)) {
-        return true;
-    } else {
-        return false;
-    }
-}
-
 
 
 
@@ -150,7 +78,7 @@ function course_exists($id) {
  * @param string $backupdir Directory to search
  * @return array Associative array of filename, shortname, fullname, courseid 
 **/
-function get_course_backups($backupdir) {
+function get_course_backups2($backupdir) {
 
     $ret = array();
     if (is_dir($backupdir)) {
