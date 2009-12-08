@@ -53,7 +53,6 @@ function facetoface_restore_mods($mod, $restore) {
 
                 // Table: facetoface_signups
                 $status &= restore_facetoface_signups($newid, $info, $restore);
-                $status &= restore_facetoface_signups_status($info, $restore);
             }
         } else {
             $status = false;
@@ -124,6 +123,8 @@ function restore_facetoface_signups($newfacetofaceid, $info, $restore) {
         } else {
             $status = false;
         }
+
+        $status &= restore_facetoface_signups_status($signupinfo, $restore);
     }
 
     return $status;
@@ -137,11 +138,11 @@ function restore_facetoface_signups_status($info, $restore) {
 
     $status = true;
 
-    if (empty($info['MOD']['#']['SIGNUPS_STATUS'])) {
+    if (empty($info['#']['SIGNUPS_STATUS'])) {
         return $status; // Nothing to restore
     }
 
-    $signups = $info['MOD']['#']['SIGNUPS_STATUS']['0']['#']['STATUS'];
+    $signups = $info['#']['SIGNUPS_STATUS']['0']['#']['STATUS'];
     foreach ($signups as $signupinfo) {
         $oldid = backup_todb($signupinfo['#']['ID']['0']['#']);
 
