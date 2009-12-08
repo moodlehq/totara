@@ -1,10 +1,10 @@
 <?php //$Id$
 
-class block_mitms_nav extends block_base {
+class block_mitms_my_tools_nav extends block_base {
 
     function init() {
-        $this->title = get_string('title', 'block_mitms_nav');
-        $this->version = 2008112100;
+        $this->title = get_string('title', 'block_mitms_my_tools_nav');
+        $this->version = 2009120100;
     }
 
     function applicable_formats() {
@@ -16,7 +16,7 @@ class block_mitms_nav extends block_base {
     }
 
     function specialization() {
-        $this->title = get_string('displaytitle', 'block_mitms_nav');
+        $this->title = get_string('displaytitle', 'block_mitms_my_tools_nav');
     }
 
     function get_content() {
@@ -25,7 +25,7 @@ class block_mitms_nav extends block_base {
         }
 
         $this->content = new stdClass;
-        $this->content->text = mitms_print_static_nav(true);
+        $this->content->text = mitms_print_my_tools_nav(true);
         $this->content->footer = '';
 
         return $this->content;

@@ -28,6 +28,12 @@
  */
 
 // Course categories
+$string['assessments'] = 'Assessments';
+$string['bookings'] = 'Bookings';
+$string['developmentplan'] = 'Development Plan';
+$string['evaluations'] = 'Evaluations';
+$string['goals'] = 'Goals';
+$string['history'] = 'History';
 $string['induction'] = 'Induction';
 $string['leadership'] = 'Leadership';
 
