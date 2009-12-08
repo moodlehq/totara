@@ -33,7 +33,7 @@
     /// import demo user data
     require_once('demousers.php');
     foreach($users as $user) {
-        insert_record('user', $user);
+        insert_record('user', (object)$user);
     }
     // free memory
     $users = array();
@@ -43,7 +43,7 @@
     foreach($positions as $position) {
         $position['timecreated']  = $timenow;
         $position['timemodified'] = $timenow;
-        insert_record('position', $position);
+        insert_record('position', (object)$position);
     }
     // free memory
     $positions = array();
@@ -193,7 +193,7 @@
         ),
     );
     foreach($competency_frameworks as $competency_framework) {
-        insert_record('competency_framework', $competency_framework);
+        insert_record('competency_framework', (object)$competency_framework);
     }
 
     // update default competency depth details with demo example
@@ -213,7 +213,7 @@
             'timemodified' => $timenow,
             'usermodified' => '2',
     );
-    insert_record('competency_depth', $defaultcd1);
+    insert_record('competency_depth', (object)$defaultcd1);
 
     $competency_depths = array(
         array(
@@ -248,7 +248,7 @@
     for ($i = 2; $i < 7; $i++) {
         foreach($competency_depths as $competency_depth) {
             $competency_depth['frameworkid'] = $i;
-            $id = insert_record('competency_depth', $competency_depth);
+            $id = insert_record('competency_depth', (object)$competency_depth);
             if ($competency_depth['frameworkid'] == '2') {
                 $competencydepthids[] = $id;
             }
@@ -384,7 +384,7 @@
         ),
     );
     foreach($competency_depth_info_fields as $competency_depth_info_field) {
-        insert_record('competency_depth_info_field', $competency_depth_info_field);
+        insert_record('competency_depth_info_field', (object)$competency_depth_info_field);
     }
 
     $competency_depth_info_categories = array(
@@ -426,7 +426,7 @@
         ),
     );
     foreach($competency_depth_info_categories as $competency_depth_info_category) {
-        insert_record('competency_depth_info_category', $competency_depth_info_category);
+        insert_record('competency_depth_info_category', (object)$competency_depth_info_category);
     }
 
     $competency_depth_info_data = array(
@@ -563,7 +563,7 @@ The National Certificate in Business (First Line Management) (Level 3) [Ref: 074
         ),
     );
     foreach($competency_depth_info_data as $competency_depth_info_data_item) {
-        insert_record('competency_depth_info_data', $competency_depth_info_data_item);
+        insert_record('competency_depth_info_data', (object)$competency_depth_info_data_item);
     }
 
     // change the default competency and add its sub-competencies
@@ -705,7 +705,7 @@ The National Certificate in Business (First Line Management) (Level 3) [Ref: 074
     $sortorder = 2;
     foreach($competencies as $competency) {
         $competency['sortorder'] = $sortorder++;
-        insert_record('competency', $competency);
+        insert_record('competency', (object)$competency);
     }
     // add the rest of the competencies in this framework in a nested array
     $competencies = array(
@@ -1118,7 +1118,7 @@ The National Certificate in Business (First Line Management) (Level 3) [Ref: 074
             $newsubcid = insert_record('competency', $subcompetency);
             foreach ($customdata as $c) {
                 $c['competencyid'] = $newsubcid;
-                insert_record('competency_depth_info_data', $c);
+                insert_record('competency_depth_info_data', (object)$c);
             }
         }
 
@@ -1215,7 +1215,7 @@ The National Certificate in Business (First Line Management) (Level 3) [Ref: 074
         ),
     );
     foreach($scales as $scale) {
-        insert_record('competency_scale', $scale);
+        insert_record('competency_scale', (object)$scale);
     }
 
     $scale_values = array(
@@ -1281,7 +1281,7 @@ The National Certificate in Business (First Line Management) (Level 3) [Ref: 074
         ),
     );
     foreach($scale_values as $scale_value) {
-        insert_record('competency_scale_values', $scale_value);
+        insert_record('competency_scale_values', (object)$scale_value);
     }
 
     $scale_assignments = array(
@@ -1343,7 +1343,7 @@ The National Certificate in Business (First Line Management) (Level 3) [Ref: 074
         ),
     );
     foreach($scale_assignments as $scale_assignment) {
-        insert_record('competency_scale_assignments', $scale_assignment);
+        insert_record('competency_scale_assignments', (object)$scale_assignment);
     }
 
     if ($defaultof = get_record_select('organisation_framework', "shortname='general'")) {
@@ -1373,7 +1373,7 @@ The National Certificate in Business (First Line Management) (Level 3) [Ref: 074
         ),
     );
     foreach($organisation_frameworks as $organisation_framework) {
-        insert_record('organisation_framework', $organisation_framework);
+        insert_record('organisation_framework', (object)$organisation_framework);
     }
 
     // update default organisation depth details with demo example
@@ -1393,7 +1393,7 @@ The National Certificate in Business (First Line Management) (Level 3) [Ref: 074
             'timemodified' => $timenow,
             'usermodified' => '2',
     );
-    insert_record('organisation_depth', $defaultcd1);
+    insert_record('organisation_depth', (object)$defaultcd1);
 
     $organisation_depths = array(
         array(
@@ -1419,7 +1419,7 @@ The National Certificate in Business (First Line Management) (Level 3) [Ref: 074
     for ($i = 2; $i < 7; $i++) {
         foreach($organisation_depths as $organisation_depth) {
             $organisation_depth['frameworkid'] = $i;
-            $id = insert_record('competency_depth', $competency_depth);
+            $id = insert_record('competency_depth', (object)$competency_depth);
             if ($competency_depth['frameworkid'] == '2') {
                 $competencydepthids[] = $id;
             }
