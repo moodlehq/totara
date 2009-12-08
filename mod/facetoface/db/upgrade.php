@@ -1,6 +1,6 @@
 <?php  //$Id: upgrade.php,v 1.4 2008/08/05 02:54:06 fmarier Exp $
 
-// This file keeps track of upgrades to 
+// This file keeps track of upgrades to
 // the facetoface module
 //
 // Sometimes, changes between versions involve
@@ -93,6 +93,55 @@ function xmldb_facetoface_upgrade($oldversion=0) {
 
         // Launch add field
         $result = $result && add_field($table, $field);
+    }
+
+    if ($result && $oldversion < 2008100301) {
+
+    /// Create table facetoface_session_roles
+        $table = new XMLDBTable('facetoface_session_roles');
+        $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->addFieldInfo('sessionid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
+        $table->addFieldInfo('roleid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
+        $table->addFieldInfo('userid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
+        $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
+        $table->addKeyInfo('sessionid', XMLDB_KEY_FOREIGN, array('sessionid'), 'facetoface_sessions', array('id'));
+        $result = $result && create_table($table);
+    }
+
+    if ($result && $oldversion < 2008100302) {
+
+    /// Create table facetoface_signups
+        $table = new XMLDBTable('facetoface_signups');
+        $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->addFieldInfo('sessionid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
+        $table->addFieldInfo('userid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
+        $table->addFieldInfo('mailedreminder', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
+        $table->addFieldInfo('discountcode', XMLDB_TYPE_TEXT, 'small', null, null, null, null);
+        $table->addFieldInfo('notificationtype', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
+        $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
+        $table->addKeyInfo('sessionid', XMLDB_KEY_FOREIGN, array('sessionid'), 'facetoface_sessions', array('id'));
+        $result = $result && create_table($table);
+
+    /// Create table facetoface_signups_status
+        $table = new XMLDBTable('facetoface_signups_status');
+        $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->addFieldInfo('signupid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
+        $table->addFieldInfo('statuscode', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
+        $table->addFieldInfo('superceded', XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
+        $table->addFieldInfo('grade', XMLDB_TYPE_NUMBER, '10, 5', null, null, null, null);
+        $table->addFieldInfo('createdby', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
+        $table->addFieldInfo('note', XMLDB_TYPE_TEXT, 'small', null, null, null, null);
+        $table->addFieldInfo('timecreated', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
+        $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
+        $table->addKeyInfo('signupid', XMLDB_KEY_FOREIGN, array('signupid'), 'facetoface_signups', array('id'));
+        $result = $result && create_table($table);
+    }
+
+    if ($result && $oldversion < 2008100303) {
+
+    /// Drop table facetoface_submissions
+        $table = new XMLDBTable('facetoface_submissions');
+        $result = $result && drop_table($table);
     }
 
     return $result;
