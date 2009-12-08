@@ -51,9 +51,9 @@ function bulk_course_restore() {
             $course->fullname = $zip['fullname'];
             $course->shortname = $zip['shortname'];
             $course->category = 1; // Miscellaneous
-            print "Trying to create course \"{$zip['fullname']}\" ({$zip['shortname']}) ID={$zip['courseid']}\n";
+            print "Trying to create course \"{$zip['fullname']}\" ({$zip['shortname']}) ID={$zip['courseid']}<br>\n";
             if ($newcourse = create_course($course)) {
-                import_backup_file_silently($zip['filename'], $newcourse->id, true, false, array(), RESTORETO_NEW_COURSE);
+                import_backup_file_silently($zip['filename'], $newcourse->id, true, true, array(), RESTORETO_NEW_COURSE);
             }
         }
     }
