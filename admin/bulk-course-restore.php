@@ -29,7 +29,7 @@
  *
  */
 require_once('../config.php');
-print "Bulk course install";
+print "Bulk course install<br><br>\n\n";
 bulk_course_restore();
 
 function bulk_course_restore() {
@@ -43,7 +43,7 @@ function bulk_course_restore() {
     require_once($CFG->dirroot.'/backup/lib.php');
     require_once($CFG->dirroot.'/backup/restorelib.php');
 
-    $zips = get_course_backups2($CFG->dirroot.'/local/defaultcoursebackups');
+    $zips = get_course_backups($CFG->dirroot.'/local/defaultcoursebackups');
 
     foreach($zips as $zip) {
         if(file_exists($zip['filename'])) {
@@ -78,7 +78,7 @@ function bulk_course_restore() {
  * @param string $backupdir Directory to search
  * @return array Associative array of filename, shortname, fullname, courseid 
 **/
-function get_course_backups2($backupdir) {
+function get_course_backups($backupdir) {
 
     $ret = array();
     if (is_dir($backupdir)) {
@@ -94,7 +94,7 @@ function get_course_backups2($backupdir) {
                 }
 
                 // remove .zip extension
-                $filename = substr($file, 0, -4);
+                $filename = substr(urldecode($file), 0, -4);
 
                 // split name
                 list($shortname, $fullname, $courseid) = explode("===", $filename);
@@ -114,6 +114,13 @@ function get_course_backups2($backupdir) {
             closedir($dh);
         }
     }
+
+    // Sort by course ID
+    foreach($ret as $key => $row) {
+        $sortby[$key] = $row['courseid'];
+    }
+    array_multisort($sortby, SORT_ASC, $ret);
+
     return $ret;
 
 }
