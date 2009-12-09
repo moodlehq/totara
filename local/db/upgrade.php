@@ -276,15 +276,6 @@ function xmldb_local_upgrade($oldversion) {
             add_field($table, $field);
         }
 
-    /// Define field completionnotify to be added to course
-        $field = new XMLDBField('completionnotify');
-        $field->setAttributes(XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0', 'enablecompletion');
-
-    /// Conditionally launch add field completionnotify
-        if (!field_exists($table, $field)) {
-            add_field($table, $field);
-        }
-
     /// Add cols to course completion criteria table
         $table = new XMLDBTable('course_completion_criteria');
         $field = new XMLDBField('courseinstance');
