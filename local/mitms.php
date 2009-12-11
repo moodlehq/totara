@@ -35,14 +35,57 @@ if (!defined('MOODLE_INTERNAL')) {
 }
 
 /**
-* print out the MITMS nav section
+* print out the MITMS My Learning nav section
 */
-function mitms_print_static_nav($return=false) {
+function mitms_print_my_learning_nav($return=false) {
     global $CFG, $USER;
 
     $returnstr = '
      <ul id="mitms-nav">
-       <li><a href="' . $CFG->wwwroot . '">' . get_string('home') . '</a></li>
+       <li><a href="' . $CFG->wwwroot . '">' . get_string('developmentplan', 'local') . '</a></li>
+       <li><a href="' . $CFG->wwwroot . '">' . get_string('bookings', 'local') . '</a></li>
+       <li><a href="' . $CFG->wwwroot . '">' . get_string('history', 'local') . '</a></li>
+    ';
+    $returnstr .= '
+     </ul>
+    ';
+
+    if ($return) {
+        return $returnstr;
+    }
+    echo $returnstr;
+}
+
+/**
+* print out the MITMS My Performance nav section
+*/
+function mitms_print_my_performance_nav($return=false) {
+    global $CFG, $USER;
+
+    $returnstr = '
+     <ul id="mitms-nav">
+       <li><a href="' . $CFG->wwwroot . '">' . get_string('goals', 'local') . '</a></li>
+       <li><a href="' . $CFG->wwwroot . '">' . get_string('assessments', 'local') . '</a></li>
+       <li><a href="' . $CFG->wwwroot . '">' . get_string('evaluations', 'local') . '</a></li>
+    ';
+    $returnstr .= '
+     </ul>
+    ';
+
+    if ($return) {
+        return $returnstr;
+    }
+    echo $returnstr;
+}
+
+/**
+* print out the MITMS My Tools nav section
+*/
+function mitms_print_my_tools_nav($return=false) {
+    global $CFG, $USER;
+
+    $returnstr = '
+     <ul id="mitms-nav">
     ';
     if (!isloggedin()) {
         $returnstr .= '
