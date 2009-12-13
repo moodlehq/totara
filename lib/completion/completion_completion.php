@@ -42,7 +42,7 @@ class completion_completion extends data_object {
      * Array of required table fields, must start with 'id'.
      * @var array $required_fields
      */
-    public $required_fields = array('id', 'userid', 'course', 'deleted', 'timenotified', 'timeenroled', 'timecompleted');
+    public $required_fields = array('id', 'userid', 'course', 'deleted', 'timenotified', 'timeenroled', 'timecompleted', 'rpl');
 
     /**
      * User ID
@@ -64,6 +64,13 @@ class completion_completion extends data_object {
      * @var     int
      */
     public $deleted;
+
+    /**
+     * Record of prior learning, leave blank if none
+     * @access  public
+     * @var     string
+     */
+    public $rpl;
 
     /**
      * Timestamp the interested parties were notified
@@ -112,7 +119,7 @@ class completion_completion extends data_object {
 
     /**
      * Mark this user complete in this course
-     * 
+     *
      * This generally happens when the required completion criteria
      * in the course are complete.
      *
@@ -129,7 +136,11 @@ class completion_completion extends data_object {
         $context = get_context_instance(CONTEXT_COURSE, $this->course);
         $this->timeenroled = get_field('role_assignments', 'timestart', 'contextid', $context->id, 'userid', $this->userid);
 
-        // Create record
-        $this->insert();
+        // Save record
+        if ($this->id) {
+            $this->update();
+        } else {
+            $this->insert();
+        }
     }
 }

@@ -141,8 +141,8 @@ abstract class completion_criteria extends data_object {
     public static function factory($params) {
         global $CFG, $COMPLETION_CRITERIA_TYPES;
 
-        if (!isset($COMPLETION_CRITERIA_TYPES[$params->criteriatype])) {
-            throw new moodle_exception('invalidcriteriatype', 'completion');
+        if (!isset($params->criteriatype) || !isset($COMPLETION_CRITERIA_TYPES[$params->criteriatype])) {
+            error('invalidcriteriatype', 'completion');
         }
 
         $class = 'completion_criteria_'.$COMPLETION_CRITERIA_TYPES[$params->criteriatype];
@@ -183,6 +183,20 @@ abstract class completion_criteria extends data_object {
      * @return  string
      */
     abstract public function get_title();
+
+    /**
+     * Return a more detailed criteria title for display in reports
+     * @access  public
+     * @return  string
+     */
+    abstract public function get_title_detailed();
+
+    /**
+     * Return criteria type title for display in reports
+     * @access  public
+     * @return  string
+     */
+    abstract public function get_type_title();
 
     /**
      * Return criteria progress details for display in reports

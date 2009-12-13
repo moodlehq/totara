@@ -99,6 +99,28 @@ class completion_criteria_activity extends completion_criteria {
     }
 
     /**
+     * Get module instance
+     * @access  public
+     * @return  object|false
+     */
+    public function get_mod_instance() {
+        global $CFG;
+
+        return get_record_sql(
+            "
+                SELECT
+                    m.*
+                FROM
+                    {$CFG->prefix}{$this->module} m
+                INNER JOIN
+                    {$CFG->prefix}course_modules cm
+                 ON cm.id = {$this->moduleinstance}
+                AND m.id = cm.instance
+            "
+        );
+    }
+
+    /**
      * Review this criteria and decide if the user has completed
      * @access  public
      * @param   object  $completion     The user's completion record
@@ -132,6 +154,27 @@ class completion_criteria_activity extends completion_criteria {
      */
     public function get_title() {
         return get_string('activitiescompleted', 'completion');
+    }
+
+    /**
+     * Return a more detailed criteria title for display in reports
+     * @access  public
+     * @return  string
+     */
+    public function get_title_detailed() {
+        $module = get_record('course_modules', 'id', $this->moduleinstance);
+        $activity = get_record($this->module, 'id', $module->instance);
+
+        return shorten_text(urldecode($activity->name));
+    }
+
+    /**
+     * Return criteria type title for display in reports
+     * @access  public
+     * @return  string
+     */
+    public function get_type_title() {
+        return get_string('activities', 'completion');
     }
 
     /**

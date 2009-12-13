@@ -66,6 +66,15 @@ class block_completionstatus extends block_base {
         // Check this user is enroled
         $users = $info->internal_get_tracked_users(true);
         if (!in_array($USER->id, array_keys($users))) {
+
+            // If not enrolled, but are can view the report:
+            if (has_capability('coursereport/progress:view', get_context_instance(CONTEXT_COURSE, $COURSE->id))) {
+                $this->content->text = '<a href="'.$CFG->wwwroot.'/course/report/completion/index.php?course='.$COURSE->id.
+                                       '">'.get_string('viewcoursereport', 'completion').'</a>';
+                return $this->content;
+            }
+
+            // Otherwise, show error
             $this->content->text = get_string('notenroled', 'completion');
             return $this->content;
         }
@@ -160,6 +169,18 @@ class block_completionstatus extends block_base {
             $this->content->text .= '<i>'.get_string('pending', 'completion').'</i>';
         } else if ($coursecomplete) {
             $this->content->text .= get_string('complete');
+
+            // Check for RPL
+            $params = array(
+                'userid' => $USER->id,
+                'course' => $COURSE->id,
+            );
+            $ccompletion = new completion_completion($params);
+
+            if (strlen($ccompletion->rpl)) {
+                $this->content->text .= ' '. get_string('viarpl', 'completion');
+            }
+
         } else if (!$criteriacomplete) {
             $this->content->text .= '<i>'.get_string('notyetstarted', 'completion').'</i>';
         } else {
@@ -167,6 +188,12 @@ class block_completionstatus extends block_base {
         }
 
         $this->content->text .= '</td></tr>';
+
+        // If RPL
+        if (isset($ccompletion) && strlen($ccompletion->rpl)) {
+            $this->content->text .= '<tr><td colspan="2"><b>Course RPL:</b> '.htmlentities($ccompletion->rpl).'</td></tr>';
+        }
+
         $this->content->text .= '<tr><td colspan="2">';
 
         // Get overall aggregation method

@@ -85,10 +85,20 @@ $coursecomplete = $info->is_course_complete($USER->id);
 // Has this user completed any criteria?
 $criteriacomplete = $info->count_course_user_data($USER->id);
 
-#if ($pending_update) {
-#    echo '<i>'.get_string('pending', 'completion').'</i>';
 if ($coursecomplete) {
     echo get_string('complete');
+
+    // Check for RPL
+    $params = array(
+        'userid' => $USER->id,
+        'course' => $COURSE->id,
+    );
+    $ccompletion = new completion_completion($params);
+
+    if (strlen($ccompletion->rpl)) {
+        echo ' '.get_string('viarpl', 'completion');
+    }
+
 } else if (!$criteriacomplete) {
     echo '<i>'.get_string('notyetstarted', 'completion').'</i>';
 } else {
@@ -96,6 +106,12 @@ if ($coursecomplete) {
 }
 
 echo '</td></tr>';
+
+// Show RPL
+if (isset($ccompletion) && strlen($ccompletion->rpl)) {
+    echo '<tr><td colspan="2"><b>Course RPL:</b> '.htmlentities($ccompletion->rpl).'</td></tr>';
+}
+
 echo '<tr><td colspan="2"><b>'.get_string('required').':</b> ';
 
 // Get overall aggregation method

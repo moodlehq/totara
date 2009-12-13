@@ -122,6 +122,25 @@ class completion_criteria_course extends completion_criteria {
     }
 
     /**
+     * Return a more detailed criteria title for display in reports
+     * @access  public
+     * @return  string
+     */
+    public function get_title_detailed() {
+        $prereq = get_record('course', 'id', $this->courseinstance);
+        return shorten_text(urldecode($prereq->fullname));
+    }
+
+    /**
+     * Return criteria type title for display in reports
+     * @access  public
+     * @return  string
+     */
+    public function get_type_title() {
+        return get_string('prerequisites', 'completion');
+    }
+
+    /**
      * Find user's who have completed this criteria
      * @access  public
      * @return  void

@@ -34,7 +34,7 @@ input, select, button {
 }
 #layout-table {
   margin-top:-5px;
-  border-collapse:collapse;  
+  border-collapse:collapse;
 }
 div.course-content  #layout-table {
   margin-top:-5px;
@@ -46,7 +46,7 @@ div.course-content  #layout-table {
 }
 #left-column {
   width: 180px !important;
-  padding-top: 5px;    
+  padding-top: 5px;
 }
 #right-column {
   width: 180px !important;
@@ -87,17 +87,17 @@ div.course-content #middle-column {
 }
 
 div#header-home {
-  height: 110px; 
+  height: 110px;
 }
 div#header {
   height: 193px;
 }
 div#header .logo {
-   padding: 57px 0  10px 10px;  
+   padding: 57px 0  10px 10px;
 }
 #header-logo-container {
    width: 950px;
-}   
+}
 #header-logo-container .logo {
    width:235px;
    padding: 20px 0  10px 10px;
@@ -147,7 +147,7 @@ div#header .logo {
 }
 .headermenu .logininfo a {
   color: #C6E1E8;
-} 
+}
 .navbar {
   clear:both;
   width: 923px;
@@ -163,13 +163,13 @@ div#header .logo {
 }
 
 .navbar .navbutton .popupform {
-	padding-top: 0px !important;	
+	padding-top: 0px !important;
 }
 
 /**
  * Footer Styles
  **/
- 
+
 #footer {
 	border-top:1px solid #DDDDDD;
 	margin:0;
@@ -222,7 +222,7 @@ h4, h4.main,
 h5, h5.main,
 h6, h6.main {
   color: #002C3F;
-  margin: 10px 0 10px 0;  
+  margin: 10px 0 10px 0;
 }
 
 h1, h1.main,
@@ -232,7 +232,7 @@ h2, h2.main {
 
 h1, h1.main {
   font-size: 1.6em;
-  margin: 10px 0 10px 0;  
+  margin: 10px 0 10px 0;
 }
 
 h2.headingblock,
@@ -240,7 +240,7 @@ h2.headingblock,
 #middle-column h2 {
   font-size: 1em;
   font-weight:bold;
-  text-align:left;  
+  text-align:left;
   border:none;
   margin: 10px 0 10px 0;
   padding-bottom: 5px;
@@ -288,11 +288,11 @@ h6 {
 
 .tabrow0 a span {
   background: transparent url(images/tab/right.gif) no-repeat right top;
-  
+
 }
 
 /* Hover Styles */
-.tabrow0 a:link:hover, 
+.tabrow0 a:link:hover,
 .tabrow0 a:visited:hover,
 .tabrow0 .last a:hover,
 .tabrow0 a:hover {
@@ -300,7 +300,7 @@ h6 {
   color: #FFFFFF;
   text-decoration: none;
 }
-.tabrow0 a:link:hover span, 
+.tabrow0 a:link:hover span,
 .tabrow0 a:visited:hover span,
 .tabrow0 .last a:hover span,
 .tabrow0 a:hover span {
@@ -390,10 +390,10 @@ ul.tabrow1 li a:visited,
  * Story Board
  **/
 #content .storybg {
-  width: 735px;   
+  width: 735px;
   clear:both;
-  height: 223px; 
-  padding-left:12px; 
+  height: 223px;
+  padding-left:12px;
   margin: 10px 0 15px 0;
   overflow:hidden;
   background: transparent url(images/story_bg.jpg) no-repeat top left;
@@ -408,9 +408,9 @@ ul.tabrow1 li a:visited,
 }
 #content .storybg p {
   font-size: 1.2em;
-  line-height: 1.3em;  
+  line-height: 1.3em;
   color: #333333;
-  margin: 0 0 10px 0;  
+  margin: 0 0 10px 0;
 }
 #content .storybg li {
   font-family: Arial, Helvetica, sans-serif !important;
@@ -422,14 +422,14 @@ ul.tabrow1 li a:visited,
 #content .storybg h1 {
   font-family: Arial, Helvetica, sans-serif !important;
   width:365px;
-  font-size:2em;   
+  font-size:2em;
   padding: 2px 15px 0 0;
 }
 #content .storybg h2 {
   font-size:1.3em;
   margin: 0;
   border:none;
-  padding: 0 0 0 0;  
+  padding: 0 0 0 0;
 }
 #content .storybg .story,
 #content .storybg .story {
@@ -440,7 +440,7 @@ ul.tabrow1 li a:visited,
 /**
  * Front Blocks
  **/
- 
+
 #front-blocks {
   width:687px;
   margin-top:10px;
@@ -537,11 +537,11 @@ ul.tabrow1 li a:visited,
 .sideblock {
   border:none;
   margin-bottom:8px;
-}  
+}
 .sideblock div.header .title h2,
 .sideblock div.header .title h2 a {
-  font-size:1em;  
-  color: #002C3F;  
+  font-size:1em;
+  color: #002C3F;
   margin:0 0 0 0;
   padding: 7px 4px 0 2px;
 }
@@ -592,7 +592,7 @@ ul.tabrow1 li a:visited,
 .sideblock .date {
   width: 165px;
 }
-#left-column .sideblock { 
+#left-column .sideblock {
   width:180px;
 }
 #left-column .sideblock div.header {
@@ -604,16 +604,16 @@ ul.tabrow1 li a:visited,
 }
 
 #right-column .sideblock, #left-column .sideblock,
-#site-index #left-column .sideblock { 
+#site-index #left-column .sideblock {
   width:180px;
-  background: url(images/sidecontent_bg.jpg) no-repeat center top !important; 
+  background: url(images/sidecontent_bg.jpg) no-repeat center top !important;
 }
 #right-column .sideblock div.header,
 #left-column .sideblock div.header,
 #site-index #left-column .sideblock div.header {
   border:none;
   padding-bottom: 6px;
-  background: #b3d4ed url(images/sideheader_bg.png) no-repeat left top;  
+  background: #b3d4ed url(images/sideheader_bg.png) no-repeat left top;
 }
 #right-column .sideblock div.header .title h2,
 #right-column .sideblock div.header .title h2 a
@@ -624,13 +624,13 @@ ul.tabrow1 li a:visited,
 #right-column .sideblock .content, #left-column .sideblock .content,
 #site-index #left-column .sideblock .content {
   padding: 7px 7px 12px 7px;
-  background: transparent url(images/sidefooter_bg.png) no-repeat left bottom;  
+  background: transparent url(images/sidefooter_bg.png) no-repeat left bottom;
 }
 
-* html #right-column .sideblock .content, 
+* html #right-column .sideblock .content,
 * html #left-column .sideblock .content,
 * html #site-index #left-column .sideblock .content {
-  background: transparent url(images/sidefooter_bg_iE6.gif) no-repeat left bottom;  
+  background: transparent url(images/sidefooter_bg_iE6.gif) no-repeat left bottom;
 }
 
 
@@ -664,7 +664,7 @@ ul.tabrow1 li a:visited,
   text-align:left;
   font-size:1em;
   padding: 3px 0;
-} 
+}
 
 .sideblock .content .footer {
 	padding: 3px 0 0;
@@ -684,7 +684,7 @@ ul.tabrow1 li a:visited,
 .block_course_summary .content {
   background:transparent !important;
   border-top: 1px solid #CACACA;
-  border-bottom: 1px solid #CACACA;  
+  border-bottom: 1px solid #CACACA;
 }
 
 .block_site_main_menu .footer select {
@@ -723,7 +723,7 @@ table.minicalendar .today {
   border: none;
   font-weight: bold;
   margin: 0;
-  border-color: #C93113 
+  border-color: #C93113
 }
 table.minicalendar .weekend {
   color: #666666;
@@ -788,7 +788,7 @@ div.yuimenu .yuichildtree .yuimenuitem {
 .yuimenuitemlabel {
     padding: 2px 24px 2px 3px;
     outline:none;
-}	
+}
 
 .generalbox {
   border:none;
@@ -923,4 +923,54 @@ div.mask {
     display: block;
     font-size: 0.8em;
     margin-top: 1em;
+}
+
+/** Course completion report **/
+.completionreport th {
+    white-space: nowrap;
+    vertical-align: top;
+}
+
+.completionreport th.rowheader {
+    text-align: right;
+    font-style: italic;
+    font-weight: normal;
+    font-size: 90%;
+}
+
+.completionreport th.criteriagroup,
+.completionreport th.aggheader {
+    text-align: center;
+}
+
+.completionreport th.aggheader {
+    font-weight: normal;
+    font-style: italic;
+}
+
+.completionreport span.completion-rplheader {
+    display: block;
+    color: #238E23;
+}
+
+.completionreport th a.rplexpand {
+    display: none;
+}
+
+.completionreport td.completion-progresscell {
+    text-align: left;
+    white-space: nowrap;
+}
+
+.completionreport td.completion-progresscell span.rplvalue {
+/*    display: none;*/
+}
+
+.completionreport td.completion-progresscell a.rplshow {
+    color: #238E23;
+    display: none;
+}
+
+.completionreport form {
+    display: inline;
 }

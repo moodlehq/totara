@@ -55,9 +55,8 @@ if($group===0 && $course->groupmode==SEPARATEGROUPS) {
 $reportsurl = $CFG->wwwroot.'/course/report.php?id='.$course->id;
 $completion = new completion_info($course);
 $activities = $completion->get_activities();
-$criteria   = $completion->has_criteria() ? $completion->get_criteria() : false;
 
-if(empty($activities) && empty($criteria)) {
+if(empty($activities)) {
     print_error('err_noactivities','completion',$reportsurl);
 }
 
@@ -123,57 +122,6 @@ if($progress->total > COMPLETION_REPORT_PAGE) {
 }
 
 
-// Can we mark users as complete?
-// (if the logged in user has a role defined in the role criteria)
-$allow_marking = false;
-$allow_marking_criteria = null;
-
-if ($criteria) {
-    // Get role criteria
-    $rcriteria = $completion->get_criteria(COMPLETION_CRITERIA_TYPE_ROLE);
-
-    if (!empty($rcriteria)) {
-
-        foreach ($rcriteria as $rcriterion) {
-            $users = get_role_users($rcriterion->role, $context, true);
-
-            // If logged in user has this role, allow marking complete
-            if (in_array($USER->id, array_keys($users))) {
-                $allow_marking = true;
-                $allow_marking_criteria = $rcriterion->id;
-                break;
-            }
-        }
-    }
-}
-
-
-
-// Can we mark users as complete?
-// (if the logged in user has a role defined in the role criteria)
-$allow_marking = false;
-$allow_marking_criteria = null;
-
-if ($criteria) {
-    // Get role criteria
-    $rcriteria = $completion->get_criteria(COMPLETION_CRITERIA_TYPE_ROLE);
-
-    if (!empty($rcriteria)) {
-
-        foreach ($rcriteria as $rcriterion) {
-            $users = get_role_users($rcriterion->role, $context, true);
-
-            // If logged in user has this role, allow marking complete
-            if (in_array($USER->id, array_keys($users))) {
-                $allow_marking = true;
-                $allow_marking_criteria = $rcriterion->id;
-                break;
-            }
-        }
-    }
-}
-
-
 // Okay, let's draw the table of progress info,
 
 // Start of table
@@ -211,58 +159,6 @@ if(!$csv) {
     }
 }
 
-// Sort out extra heading row
-if (!$csv) {
-
-    // Display prerequisite header
-    $ccriteria = 0;
-
-    if ($criteria) {
-        foreach ($criteria as $criterion) {
-            // Count course criteria
-            if ($criterion->criteriatype == COMPLETION_CRITERIA_TYPE_COURSE) {
-                $ccriteria++;
-            }
-        }
-    }
-
-    if ($ccriteria) {
-        print '<th scope="col" colspan="'.$ccriteria.'" align="center">'.get_string('prerequisitescompleted', 'completion').'</th>';
-    }
-
-    if ($activities) {
-        print '<th scope="col" colspan="'.count($activities).'" align="center">'.get_string('activitiescompleted', 'completion').'</th>';
-    }
-
-    if ($ccriteria || $activities) {
-        print '</tr><tr><th></th>';
-    }
-}
-
-// Course completion prerequisites
-if ($criteria) {
-
-    foreach ($criteria as $criterion) {
-
-        // Ignore other criteria types
-        if ($criterion->criteriatype != COMPLETION_CRITERIA_TYPE_COURSE) {
-            continue;
-        }
-
-        // Get prerequisite course
-        $c = get_record('course', 'id', $criterion->courseinstance);
-
-        // Build title
-        $title = s($c->fullname);
-
-        if ($csv) {
-            print $sep.csv_quote(strip_tags($title));
-        } else {
-            print '<th scope="col">'.format_text($title).'</th>';
-        }
-    }
-}
-
 // Activities
 foreach($activities as $activity) {
     $activity->datepassed = $activity->completionexpected && $activity->completionexpected <= time();
@@ -293,38 +189,6 @@ foreach($activities as $activity) {
     }
 }
 
-// Course completion criteria
-if ($criteria) {
-
-    foreach ($criteria as $criterion) {
-
-        // Ignore activity completion criteria (use existing activity cols instead)
-        if ($criterion->criteriatype == COMPLETION_CRITERIA_TYPE_ACTIVITY ||
-            $criterion->criteriatype == COMPLETION_CRITERIA_TYPE_COURSE) {
-            continue;
-        }
-
-        if ($csv) {
-            print $sep.csv_quote(strip_tags($criterion->get_title()));
-        } else {
-            print '<th scope="col">'.format_text($criterion->get_title()).'</th>';
-        }
-    }
-
-    // Overall course completion status
-    if ($csv) {
-        print $sep.csv_quote(strip_tags(get_string('coursecomplete', 'completion')));
-    } else {
-        print '<th scope="col"><p><strong>'.get_string('coursecomplete', 'completion').'</strong></p></th>';
-    }
-
-    // Mark complete?
-    if (!$csv && $allow_marking) {
-        print '<th scope="col"><p>'.get_string('markcomplete', 'completion').'</p></th>';
-    }
-}
-
-
 if($csv) {
     print $line;
 } else {
@@ -344,41 +208,6 @@ foreach($progress->users as $user) {
             $user->id.'&amp;course='.$course->id.'">'.fullname($user).'</a></th>';
         if($idnumbers) {
             print '<td>'.htmlspecialchars($user->idnumber).'</td>';
-        }
-    }
-
-    // Course completion prerequisites
-    if ($criteria) {
-
-        foreach ($criteria as $criterion) {
-
-            // Ignore other criteria types
-            if ($criterion->criteriatype != COMPLETION_CRITERIA_TYPE_COURSE) {
-                continue;
-            }
-
-            $criteria_completion = $completion->get_user_completion($user->id, $criterion);
-            $is_complete = $criteria_completion->is_complete();
-
-            $completiontype = $is_complete ? 'y' : 'n';
-            $completionicon = 'completion-auto-'.$completiontype;
-
-            $describe = get_string('completion-alt-auto-'.$completiontype, 'completion');
-
-            $a = new StdClass;
-            $a->state    = $describe;
-            $a->date     = $is_complete ? userdate($criteria_completion->timecompleted) : '';
-            $a->user     = fullname($user);
-            $a->activity = strip_tags($criterion->get_title());
-            $fulldescribe = get_string('progress-title', 'completion', $a);
-
-            if ($csv) {
-                print $sep.csv_quote($describe);
-            } else {
-                print '<td class="completion-progresscell">'.
-                    '<img src="'.$CFG->pixpath.'/i/'.$completionicon.'.gif'.
-                    '" alt="'.$describe.'" title="'.$fulldescribe.'" /></td>';
-            }
         }
     }
 
@@ -415,101 +244,12 @@ foreach($progress->users as $user) {
         $a->activity=strip_tags($activity->name);
         $fulldescribe=get_string('progress-title','completion',$a);
 
-        // Check if this activity has a dependant couse completion criteria
-        $is_criteria = false;
-        if ($criteria) {
-            foreach ($criteria as $criterion) {
-                if ($criterion->criteriatype != COMPLETION_CRITERIA_TYPE_ACTIVITY) {
-                    continue;
-                }
-
-                if ($criterion->moduleinstance === $activity->id) {
-                    $is_criteria = true;
-                    break;
-                }
-            }
-        }
-
         if($csv) {
             print $sep.csv_quote($describe).$sep.csv_quote($date);
         } else {
             print '<td class="completion-progresscell '.$activity->datepassedclass.'"'.
-                ($is_criteria ? '' : ' style="background-color: #ccc;"').'>'.
                 '<img src="'.$CFG->pixpath.'/i/'.$completionicon.'.gif'.
                 '" alt="'.$describe.'" title="'.$fulldescribe.'" /></td>';
-        }
-    }
-
-    // Progress for each course completion criteria
-    if ($criteria) {
-        foreach ($criteria as $criterion) {
-
-            // Ignore activity completion criteria, and prerequisites
-            if ($criterion->criteriatype == COMPLETION_CRITERIA_TYPE_ACTIVITY ||
-                $criterion->criteriatype == COMPLETION_CRITERIA_TYPE_COURSE) {
-                continue;
-            }
-
-            $criteria_completion = $completion->get_user_completion($user->id, $criterion);
-            $is_complete = $criteria_completion->is_complete();
-
-            $completiontype = $is_complete ? 'y' : 'n';
-            $completionicon = 'completion-auto-'.$completiontype;
-
-            $describe = get_string('completion-alt-auto-'.$completiontype, 'completion');
-
-            $a = new StdClass;
-            $a->state    = $describe;
-            $a->date     = $is_complete ? userdate($criteria_completion->timecompleted) : '';
-            $a->user     = fullname($user);
-            $a->activity = strip_tags($criterion->get_title());
-            $fulldescribe = get_string('progress-title', 'completion', $a);
-
-            if ($csv) {
-                print $sep.csv_quote($describe);
-            } else {
-                print '<td class="completion-progresscell">'.
-                    '<img src="'.$CFG->pixpath.'/i/'.$completionicon.'.gif'.
-                    '" alt="'.$describe.'" title="'.$fulldescribe.'" /></td>';
-            }
-        }
-
-        // Course completion
-        $completiontype =  $completion->is_course_complete($user->id) ? 'y' : 'n';
-        $describe = get_string('completion-alt-auto-'.$completiontype, 'completion');
-
-        $a = new StdClass;
-        $a->state    = $describe;
-        $a->date     = '';
-        $a->user     = fullname($user);
-        $a->activity = strip_tags(get_string('coursecomplete', 'completion'));
-        $fulldescribe = get_string('progress-title', 'completion', $a);
-
-        if ($csv) {
-            print $sep.csv_quote($describe);
-        } else {
-            print '<td class="completion-progresscell">'.
-                '<img src="'.$CFG->pixpath.'/i/completion-auto-'.$completiontype.'.gif'.
-                '" alt="'.$describe.'" title="'.$fulldescribe.'" /></td>';
-        }
-
-        if ($allow_marking) {
-
-            foreach ($criteria as $criterion) {
-                if ($criterion->id == $allow_marking_criteria) {
-
-                    $criteria_completion = $completion->get_user_completion($user->id, $criterion);
-                    $marked_complete = $criteria_completion->is_complete() ? 'y' : 'n';
-                    break;
-                }
-            }
-
-            $describe = get_string('completion-alt-auto-'.$marked_complete.'completion');
-
-            print '<td class="completion-progresscell">'.
-                '<a href="'.$CFG->wwwroot.'/course/togglecompletion.php?user='.$user->id.'&course='.$course->id.'&rolec='.$allow_marking_criteria.'">'.
-                '<img src="'.$CFG->pixpath.'/i/completion-manual-'.$marked_complete.'.gif'.
-                '" alt="'.$describe.'" title="Mark as complete" /></a></td>';
         }
     }
 

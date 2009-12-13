@@ -41,7 +41,7 @@ class completion_criteria_completion extends data_object {
      * Array of required table fields, must start with 'id'.
      * @var array $required_fields
      */
-    public $required_fields = array('id', 'userid', 'course', 'criteriaid', 'gradefinal', 'deleted', 'unenroled', 'timecompleted');
+    public $required_fields = array('id', 'userid', 'course', 'criteriaid', 'gradefinal', 'rpl', 'deleted', 'unenroled', 'timecompleted');
 
     /**
      * User ID
@@ -70,6 +70,13 @@ class completion_criteria_completion extends data_object {
      * @var     float
      */
     public $gradefinal;
+
+    /**
+     * Record of prior learning, leave blank if none
+     * @access  public
+     * @var     string
+     */
+    public $rpl;
 
     /**
      * Course deleted flag
@@ -140,7 +147,13 @@ class completion_criteria_completion extends data_object {
     public function mark_complete() {
         // Create record
         $this->timecompleted = time();
-        $this->insert();
+
+        // Save record
+        if ($this->id) {
+            $this->update();
+        } else {
+            $this->insert();
+        }
     }
 
     /**
