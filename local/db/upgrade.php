@@ -286,6 +286,7 @@ function xmldb_local_upgrade($oldversion) {
         }
 
         set_config('theme', 'mitms');
+        set_config('defaulthtmleditor', 'tinymce');
 
     /// Create table competency_framework
         $table = new XMLDBTable('competency_framework');
