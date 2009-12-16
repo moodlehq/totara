@@ -29,7 +29,17 @@
  *
  */
 require_once('../config.php');
-print "Bulk course install";
+
+
+//Adjust some php variables to the execution of this script
+@ini_set("max_execution_time","3000");
+if (empty($CFG->extramemorylimit)) {
+    raise_memory_limit('128M');
+} else {
+    raise_memory_limit($CFG->extramemorylimit);
+}
+
+print "Bulk course install<br><br>\n\n";
 bulk_course_restore();
 
 function bulk_course_restore() {
@@ -43,7 +53,7 @@ function bulk_course_restore() {
     require_once($CFG->dirroot.'/backup/lib.php');
     require_once($CFG->dirroot.'/backup/restorelib.php');
 
-    $zips = get_course_backups2($CFG->dirroot.'/local/defaultcoursebackups');
+    $zips = get_course_backups($CFG->dirroot.'/local/defaultcoursebackups');
 
     foreach($zips as $zip) {
         if(file_exists($zip['filename'])) {
@@ -51,9 +61,10 @@ function bulk_course_restore() {
             $course->fullname = $zip['fullname'];
             $course->shortname = $zip['shortname'];
             $course->category = 1; // Miscellaneous
-            print "Trying to create course \"{$zip['fullname']}\" ({$zip['shortname']}) ID={$zip['courseid']}\n";
+            $course->enablecompletion = 1; // course completion on
+            print "Trying to create course \"{$zip['fullname']}\" ({$zip['shortname']}) ID={$zip['courseid']}<br>\n";
             if ($newcourse = create_course($course)) {
-                import_backup_file_silently($zip['filename'], $newcourse->id, true, false, array(), RESTORETO_NEW_COURSE);
+                import_backup_file_silently($zip['filename'], $newcourse->id, true, true, array(), RESTORETO_NEW_COURSE);
             }
         }
     }
@@ -78,7 +89,7 @@ function bulk_course_restore() {
  * @param string $backupdir Directory to search
  * @return array Associative array of filename, shortname, fullname, courseid 
 **/
-function get_course_backups2($backupdir) {
+function get_course_backups($backupdir) {
 
     $ret = array();
     if (is_dir($backupdir)) {
@@ -94,7 +105,7 @@ function get_course_backups2($backupdir) {
                 }
 
                 // remove .zip extension
-                $filename = substr($file, 0, -4);
+                $filename = substr(urldecode($file), 0, -4);
 
                 // split name
                 list($shortname, $fullname, $courseid) = explode("===", $filename);
@@ -114,6 +125,13 @@ function get_course_backups2($backupdir) {
             closedir($dh);
         }
     }
+
+    // Sort by course ID
+    foreach($ret as $key => $row) {
+        $sortby[$key] = $row['courseid'];
+    }
+    array_multisort($sortby, SORT_ASC, $ret);
+
     return $ret;
 
 }
