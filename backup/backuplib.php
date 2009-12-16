@@ -1693,7 +1693,7 @@
                     fwrite ($bf,full_tag("USERID",5,false,$completion->userid));
                     fwrite ($bf,full_tag("COURSE",5,false,$completion->course));
                     fwrite ($bf,full_tag("RPL",5,false,$completion->rpl));
-                    fwrite ($bf,full_tag("OFFICEID",5,false,$completion->officeid));
+                    fwrite ($bf,full_tag("ORGANISATIONID",5,false,$completion->organisationid));
                     fwrite ($bf,full_tag("POSITIONID",5,false,$completion->positionid));
                     fwrite ($bf,full_tag("DELETED",5,false,$completion->deleted));
                     fwrite ($bf,full_tag("TIMENOTIFIED",5,false,$completion->timenotified));

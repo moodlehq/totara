@@ -184,9 +184,9 @@
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="userid"/>
         <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="id" NEXT="course"/>
         <FIELD NAME="course" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="userid" NEXT="rpl"/>
-        <FIELD NAME="rpl" TYPE="text" LENGTH="small" NOTNULL="false" SEQUENCE="false" COMMENT="Record of prior learning" PREVIOUS="course" NEXT="officeid"/>
-        <FIELD NAME="officeid" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" COMMENT="Office ID" PREVIOUS="rpl" NEXT="positionid"/>
-        <FIELD NAME="positionid" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" COMMENT="Position ID" PREVIOUS="officeid" NEXT="deleted"/>
+        <FIELD NAME="rpl" TYPE="text" LENGTH="small" NOTNULL="false" SEQUENCE="false" COMMENT="Record of prior learning" PREVIOUS="course" NEXT="organisationid"/>
+        <FIELD NAME="organisationid" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" COMMENT="Office ID" PREVIOUS="rpl" NEXT="positionid"/>
+        <FIELD NAME="positionid" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" COMMENT="Position ID" PREVIOUS="organisationid" NEXT="deleted"/>
         <FIELD NAME="deleted" TYPE="int" LENGTH="1" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" PREVIOUS="positionid" NEXT="timenotified"/>
         <FIELD NAME="timenotified" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" PREVIOUS="deleted" NEXT="timeenroled"/>
         <FIELD NAME="timeenroled" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="timenotified" NEXT="timecompleted"/>
