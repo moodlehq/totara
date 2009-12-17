@@ -44,7 +44,7 @@ function mitms_print_my_learning_nav($return=false) {
      <ul id="mitms-nav">
        <li><a href="' . $CFG->wwwroot . '">' . get_string('developmentplan', 'local') . '</a></li>
        <li><a href="' . $CFG->wwwroot . '">' . get_string('bookings', 'local') . '</a></li>
-       <li><a href="' . $CFG->wwwroot . '">' . get_string('history', 'local') . '</a></li>
+       <li><a href="' . $CFG->wwwroot . '/my/records.php">' . get_string('history', 'local') . '</a></li>
     ';
     $returnstr .= '
      </ul>
@@ -106,3 +106,21 @@ function mitms_print_my_tools_nav($return=false) {
     echo $returnstr;
 }
 
+/**
+* helper function to return a user's data stored in a given profile field
+*
+* @param int $userid id of the user whose user profile field value will be returned
+* @param string $fieldshortname the shortname of the field to be returned
+*
+* @return string the field value
+*/
+function mitms_print_user_profile_field($userid=null, $fieldshortname=null) {
+    $sql = "SELECT uid.data
+            FROM mdl_user_info_data uid
+            JOIN mdl_user_info_field uif
+              ON uif.id=uid.fieldid
+            WHERE uif.shortname='{$fieldshortname}'
+            AND uid.userid='{$userid}'
+            ";
+    return get_field_sql($sql);
+}

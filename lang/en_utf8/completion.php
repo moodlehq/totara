@@ -11,6 +11,7 @@ $string['all']='All';
 $string['any']='Any';
 $string['approval']='Approval';
 $string['badautocompletion']='When you select automatic completion, you must also enable at least one requirement (below).';
+$string['completed']='Completed';
 $string['completedunlocked']='Completion options unlocked';
 $string['completedunlockedtext']='When you save changes, completion state for all users will be erased. If you change your mind about this, do not save the form.';
 $string['completedwarning']='Completion options locked';

@@ -92,6 +92,7 @@ $string['numericalvalue'] = 'Numerical value';
 $string['options'] = 'Options';
 $string['parent'] = 'Parent competency';
 $string['positions'] = 'Positions';
+$string['proficiency'] = 'Proficiency';
 $string['relatedcompetencies'] = 'Related Competencies';
 $string['removedcompetencyevidenceitem'] = 'The <i>$a</i> evidence item and it\'s data has been removed';
 $string['returntoframework'] = 'Return to competency framework';

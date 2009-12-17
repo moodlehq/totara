@@ -121,6 +121,26 @@ class hierarchy {
     }
 
     /**
+     * Get items in a lineage
+     * @param int $id
+     * @return array|false
+     */
+    function get_item_lineage($id) {
+        $path = get_field($this->prefix, 'path', 'id', $id);
+        if ($path) {
+            $paths = explode('/', substr($path, 1));
+            $sql = "SELECT o.id, o.fullname, od.depthlevel
+                    FROM mdl_{$this->prefix} o
+                    JOIN mdl_{$this->prefix}_depth od
+                      ON o.depthid=od.id
+                    WHERE o.id IN (".implode(",", $paths).")";
+            return get_records_sql($sql);
+        } else {
+            error('No path found for '.$this->prefix.' id '.$id);
+        }
+    }
+
+    /**
     * Get editing button
     * @param signed int edit - is editing on or off?
     * @return button or ''
