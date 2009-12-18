@@ -34,9 +34,9 @@ class mod_facetoface_signup_form extends moodleform {
             $mform->addElement('hidden', 'discountcode', '');
         }
 
-        $options = array(MDL_F2F_BOTH => get_string('notificationboth', 'facetoface'),
+        $options = array(MDL_F2F_BOTH => get_string('notificationical', 'facetoface'),
                          MDL_F2F_TEXT => get_string('notificationemail', 'facetoface'),
-                         MDL_F2F_ICAL => get_string('notificationical', 'facetoface'),
+                         MDL_F2F_ICAL => get_string('notificationboth', 'facetoface'),
                          );
         $mform->addElement('select', 'notificationtype', get_string('notificationtype', 'facetoface'), $options);
         $mform->addRule('notificationtype', null, 'required', null, 'client');
