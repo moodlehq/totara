@@ -827,14 +827,14 @@ function facetoface_get_grade($userid, $courseid, $facetofaceid) {
 function facetoface_get_attendees($sessionid)
 {
     global $CFG;
-
-    $records = get_records_sql("SELECT u.id, s.id AS submissionid, u.firstname, u.lastname, u.email,
-                                       s.discountcode, f.id AS facetofaceid, f.course, 0 AS grade
-                                  FROM {$CFG->prefix}facetoface f
-                                  JOIN {$CFG->prefix}facetoface_submissions s ON s.facetoface = f.id
-                                  JOIN {$CFG->prefix}user u ON u.id = s.userid
-                                 WHERE s.sessionid = $sessionid AND s.timecancelled = 0
-                              ORDER BY u.firstname");
+   $records = get_records_sql("SELECT u.id, su.id AS submissionid, u.firstname, u.lastname, u.email, 
+                                s.discountcost, f.id AS facetofaceid , f.course, 0 AS grade 
+                                FROM {$CFG->prefix}facetoface f
+                                JOIN {$CFG->prefix}facetoface_sessions s ON s.facetoface = f.id 
+                                JOIN {$CFG->prefix}facetoface_signups su ON s.id=su.sessionid
+                                JOIN {$CFG->prefix}facetoface_signups_status ss ON su.id=ss.signupid
+                                JOIN {$CFG->prefix}user u ON u.id=su.userid
+                                WHERE s.id=$sessionid AND ss.superceded=0 AND ss.statuscode NOT IN (2,3)");
     if (!$records) {
         return $records;
     }
@@ -2228,7 +2228,11 @@ function facetoface_grade_item_delete($facetoface) {
  * @return integer
  */
 function facetoface_get_num_attendees($session_id) {
-    return (int) count_records('facetoface_submissions', 'sessionid', $session_id, 'timecancelled', 0);
+    global $CFG;
+    // for the session, pick signups that haven't been superceded, or cancelled  
+    return (int) count_records_sql("select count(ss.id) from {$CFG->prefix}facetoface_signups su
+        JOIN {$CFG->prefix}facetoface_signups_status ss ON su.id = ss.signupid
+        WHERE sessionid=$session_id AND ss.superceded=0 AND ss.statuscode NOT IN (2,3)");
 }
 
 /**
@@ -2242,15 +2246,26 @@ function facetoface_get_num_attendees($session_id) {
 function facetoface_get_user_submissions($facetofaceid, $userid, $includecancellations=false) {
     global $CFG;
 
-    $whereclause = "facetoface=$facetofaceid AND userid=$userid";
+    //$whereclause = "facetoface=$facetofaceid AND userid=$userid";
+    $whereclause = "s.facetoface=$facetofaceid AND s.userid=$userid AND ss.superceded != 1";
     if (!$includecancellations) {
-        $whereclause .= ' AND timecancelled=0';
+        //$whereclause .= ' AND timecancelled=0';
+        $whereclause .= ' AND ss.statuscode != 2 AND ss.statuscode != 3';
     }
-
+    /*
     return get_records_sql("SELECT *
                               FROM {$CFG->prefix}facetoface_submissions
                              WHERE $whereclause
                           ORDER BY timecreated");
+    */
+    return get_records_sql("SELECT su.id, s.facetoface, s.id as sessionid, su.userid, 
+        su.mailedreminder, su.discountcode, s.timecreated, s.timemodified 
+        FROM mdl_facetoface_sessions s 
+        JOIN mdl_facetoface_signups su ON su.sessionid=s.id
+        JOIN mdl_facetoface_signups_status ss ON su.id=ss.signupid
+        WHERE $whereclause
+        ORDER BY s.timecreated");
+ 
 }
 
 /**
