@@ -861,7 +861,7 @@ function xmldb_local_upgrade($oldversion) {
             'showdepthfullname' => 1,
         );
         $default_framework->id = insert_record('position_framework', $default_framework);
-
+/* import via hierarchy restore instead
         // Insert default organisation_framework
         $default_framework = (object) array(
             'fullname'      => 'General offices',
@@ -880,10 +880,11 @@ function xmldb_local_upgrade($oldversion) {
             'showdepthfullname' => 1,
         );
         $default_framework->id = insert_record('organisation_framework', $default_framework);
+ */
 
         // install mitms demo data
-        include('demo.php');
-
+        //include('demo.php');
+        include('doc_custom_profile_fields.php');
     }
 
     return $result;
