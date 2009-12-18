@@ -259,14 +259,6 @@ function xmldb_facetoface_upgrade($oldversion=0) {
         }
     }
 
-    if ($result && $oldversion < 2009113000) {
-        // Add new cancellation reason field for signups
-        $table = new XMLDBTable('facetoface_submissions');
-        $field = new XMLDBField('cancelreason');
-        $field->setAttributes(XMLDB_TYPE_CHAR, '255', null, null, null, null, null, null, 'notificationtype');
-        $result = $result && add_field($table, $field);
-    }
-
     if ($result && $oldversion < 2009120900) {
         // Create Calendar events for all existing Face-to-face sessions
         begin_sql();
@@ -295,15 +287,6 @@ function xmldb_facetoface_upgrade($oldversion=0) {
         }
 
         commit_sql();
-    }
-
-    if ($result && $oldversion < 2009121000) {
-        // This should have been done a while ago, but for some reason, I'm still seeing these fields on some sites
-        $table = new XMLDBTable('facetoface_submissions');
-        $field1 = new XMLDBField('grade');
-        $field2 = new XMLDBField('timegraded');
-        $result = $result && drop_field($table, $field1);
-        $result = $result && drop_field($table, $field2);
     }
 
     if ($result && $oldversion < 2009121701) {
