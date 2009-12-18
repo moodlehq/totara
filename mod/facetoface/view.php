@@ -187,7 +187,7 @@ function print_session_list($courseid, $facetofaceid, $location)
             else {
                 $stats = max(0, $stats);
             }
-            $sessionrow[] = $allsessiontimes;
+            $sessionrow[] = $stats;
 
             // Status
             $status  = get_string('bookingopen', 'facetoface');
