@@ -81,7 +81,6 @@
         <KEY NAME="sessionid" TYPE="foreign" FIELDS="sessionid" REFTABLE="facetoface_sessions" REFFIELDS="id" PREVIOUS="primary"/>
       </KEYS>
     </TABLE>
-    </TABLE>
     <TABLE NAME="facetoface_signups_status" COMMENT="User/session signup status" NEXT="facetoface_session_field" PREVIOUS="facetoface_signups">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="false" SEQUENCE="true" ENUM="false" NEXT="signupid"/>
