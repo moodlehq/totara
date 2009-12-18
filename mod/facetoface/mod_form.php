@@ -36,6 +36,22 @@ class mod_facetoface_mod_form extends moodleform_mod {
         $mform->setDefault('display', 3); // 3th element is 6
         $mform->setHelpButton('display', array('sessionsoncoursepage', get_string('sessionsoncoursepage', 'facetoface'), 'facetoface'));
 
+        $mform->addElement('header', 'calendaroptions', get_string('calendaroptions', 'facetoface'));
+
+        $mform->addElement('checkbox', 'showoncalendar', get_string('showoncalendar', 'facetoface'));
+        $mform->setDefault('showoncalendar', true);
+        $mform->setHelpButton('showoncalendar', array('showoncalendar', get_string('showoncalendar', 'facetoface'), 'facetoface'));
+
+        $mform->addElement('text', 'shortname', get_string('shortname'), array('size' => 32));
+        $mform->setType('shortname', PARAM_TEXT);
+        $mform->setHelpButton('shortname', array('shortname', get_string('shortname'), 'facetoface'));
+        $mform->disabledIf('shortname', 'showoncalendar');
+
+        $mform->addElement('htmleditor', 'description', get_string('description'), array('rows'  => 4, 'cols'  => 64));
+        $mform->setType('description', PARAM_RAW);
+        $mform->setHelpButton('description', array('description', get_string('description'), 'facetoface'));
+        $mform->disabledIf('description', 'showoncalendar');
+
         // CONFIRMATION MESSAGE
         $mform->addElement('header', 'confirmation', get_string('confirmationmessage', 'facetoface'));
         $mform->setHelpButton('confirmation', array('confirmationmessage', get_string('confirmationmessage', 'facetoface'), 'facetoface'));
@@ -72,10 +88,10 @@ class mod_facetoface_mod_form extends moodleform_mod {
 
         $reminderperiod = array();
         for ($i=1; $i<=20; $i += 1) {
-            $reminderperiod[] = $i;
+            $reminderperiod[$i] = $i;
         }
         $mform->addElement('select', 'reminderperiod', get_string('reminderperiod', 'facetoface'), $reminderperiod);
-        $mform->setDefault('reminderperiod', 1); // element at position 1 is 2
+        $mform->setDefault('reminderperiod', 2);
         $mform->setHelpButton('reminderperiod', array('reminderperiod', get_string('reminderperiod', 'facetoface'), 'facetoface'));
 
         // WAITLISTED MESSAGE

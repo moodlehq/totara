@@ -4,20 +4,27 @@
   //
   //          facetoface                  facetoface_sessions
   //         (CL, pk->id)-------------(CL, pk->id, fk->facetoface)
-  //              |                          |        |
-  //              |                          |        |
-  //              |                          |        |
-  //              |            +-------------+        |
-  //              |            |                      |
-  //          facetoface_submissions                  |
-  //  (UL, pk->id, fk->facetoface, fk->sessionid)     |
-  //                                                  |
+  //              |                          |     |  |
+  //              |                          |     |  |
+  //              |                          |     |  |
+  //              |            +-------------+     |  |
+  //              |            |                   |  |
+  //          facetoface_submissions               |  |
+  //  (UL, pk->id, fk->facetoface, fk->sessionid)  |  |
+  //                                               |  |
+  //                                               |  |
+  //     facetoface_session_field                  |  |
+  //          (SL, pk->id)  |                      |  |
+  //                        |                      |  |
+  //             facetoface_session_data-----------+  |
+  //    (CL, pk->id, fk->sessionid, fk->fieldid)      |
   //                                                  |
   //                                    facetoface_sessions_dates
   //                                    (CL, pk->id, fk->session)
   //
   // Meaning: pk->primary key field of the table
   //          fk->foreign key to link with parent
+  //          SL->system level info
   //          CL->course level info
   //          UL->user level info
   //
@@ -27,11 +34,11 @@
  * API function called by the Moodle backup system to backup all of
  * the facetoface activities
  */
-function facetoface_backup_mods($bf, $preferences) {
-
+function facetoface_backup_mods($bf, $preferences)
+{
     $status = true;
 
-    $facetofaces = get_records ('facetoface', 'course', $preferences->backup_course, 'id');
+    $facetofaces = get_records('facetoface', 'course', $preferences->backup_course, 'id');
     if ($facetofaces) {
         foreach ($facetofaces as $facetoface) {
             if (backup_mod_selected($preferences, 'facetoface', $facetoface->id)) {
@@ -39,6 +46,45 @@ function facetoface_backup_mods($bf, $preferences) {
             }
         }
     }
+
+    //$status &= facetoface_backup_session_field($bf, $preferences); // DISABLED
+
+    return $status;
+}
+
+/**
+ * Backup the facetoface_session_field table (all custom session fields)
+ *
+ * NOTE: NOT CURRENTLY BACKED UP!
+ */
+function facetoface_backup_session_field($bf, $preferences)
+{
+    $status = true;
+
+    $sessionfields = get_records('facetoface_session_field');
+    if (!$sessionfields) {
+        return $status;
+    }
+
+    $status = fwrite($bf, start_tag('SESSIONFIELDS', 3, true)) > 0;
+    foreach ($sessionfields as $field) {
+        $status &= fwrite($bf, start_tag('SESSIONFIELD', 4, true)) > 0;
+
+        // facetoface_session_field table
+        $status &= fwrite($bf, full_tag('ID', 5, false, $field->id)) > 0;
+        $status &= fwrite($bf, full_tag('NAME', 5, false, $field->name)) > 0;
+        $status &= fwrite($bf, full_tag('SHORTNAME', 5, false, $field->shortname)) > 0;
+        $status &= fwrite($bf, full_tag('TYPE', 5, false, $field->type)) > 0;
+        $status &= fwrite($bf, full_tag('POSSIBLEVALUES', 5, false, $field->possiblevalues)) > 0;
+        $status &= fwrite($bf, full_tag('REQUIRED', 5, false, $field->required)) > 0;
+        $status &= fwrite($bf, full_tag('DEFAULTVALUE', 5, false, $field->defaultvalue)) > 0;
+        $status &= fwrite($bf, full_tag('ISFILTER', 5, false, $field->isfilter)) > 0;
+        $status &= fwrite($bf, full_tag('SHOWINSUMMARY', 5, false, $field->showinsummary)) > 0;
+
+        $status &= fwrite($bf, end_tag('SESSIONFIELD', 4, true)) > 0;
+    }
+    $status = fwrite($bf, end_tag('SESSIONFIELDS', 3, true)) > 0;
+
     return $status;
 }
 
@@ -46,8 +92,8 @@ function facetoface_backup_mods($bf, $preferences) {
  * API function called by the Moodle backup system to backup a single
  * facetoface activity
  */
-function facetoface_backup_one_mod($bf, $preferences, $facetoface) {
-
+function facetoface_backup_one_mod($bf, $preferences, $facetoface)
+{
     if (is_numeric($facetoface)) {
         $facetoface = get_record('facetoface', 'id', $facetoface);
     }
@@ -89,73 +135,37 @@ function facetoface_backup_one_mod($bf, $preferences, $facetoface) {
  * Backup the facetoface_sessions table entries for a given facetoface
  * activity
  */
-function backup_facetoface_sessions($bf, $facetofaceid) {
-
+function backup_facetoface_sessions($bf, $facetofaceid)
+{
     $status = true;
 
     $sessions = get_records('facetoface_sessions', 'facetoface', $facetofaceid, 'id');
-    if ($sessions) {
-
-        $status &= fwrite($bf, start_tag('SESSIONS', 4, true)) > 0;
-
-        foreach ($sessions as $session) {
-
-            $status &= fwrite($bf, start_tag('SESSION', 5, true)) > 0;
-
-            // facetoface_sessions table
-            $status &= fwrite($bf, full_tag('ID', 6, false, $session->id)) > 0;
-            $status &= fwrite($bf, full_tag('CAPACITY', 6, false, $session->capacity)) > 0;
-            $status &= fwrite($bf, full_tag('LOCATION', 6, false, $session->location)) > 0;
-            $status &= fwrite($bf, full_tag('VENUE', 6, false, $session->venue)) > 0;
-            $status &= fwrite($bf, full_tag('ROOM', 6, false, $session->room)) > 0;
-            $status &= fwrite($bf, full_tag('DETAILS', 6, false, $session->details)) > 0;
-            $status &= fwrite($bf, full_tag('DATETIMEKNOWN', 6, false, $session->datetimeknown)) > 0;
-            $status &= fwrite($bf, full_tag('DURATION', 6, false, $session->duration)) > 0;
-            $status &= fwrite($bf, full_tag('NORMALCOST', 6, false, $session->normalcost)) > 0;
-            $status &= fwrite($bf, full_tag('DISCOUNTCOST', 6, false, $session->discountcost)) > 0;
-            $status &= fwrite($bf, full_tag('CLOSED', 6, false, $session->closed)) > 0;
-            $status &= fwrite($bf, full_tag('TIMECREATED', 6, false, $session->timecreated)) > 0;
-            $status &= fwrite($bf, full_tag('TIMEMODIFIED', 6, false, $session->timemodified)) > 0;
-
-            $status &= backup_facetoface_session_roles($bf, $session->id);
-            $status &= backup_facetoface_sessions_dates($bf, $session->id);
-
-            $status &= fwrite($bf, end_tag('SESSION', 5, true)) > 0;
-        }
-
-        $status &= fwrite($bf, end_tag('SESSIONS', 4, true)) > 0;
+    if (!$sessions) {
+        return $status;
     }
 
-    return $status;
-}
+    $status &= fwrite($bf, start_tag('SESSIONS', 4, true)) > 0;
+    foreach ($sessions as $session) {
+        $status &= fwrite($bf, start_tag('SESSION', 5, true)) > 0;
 
-/**
- * Backup the facetoface_session_roles table entries for a given
- * facetoface session
- */
-function backup_facetoface_session_roles($bf, $sessionid) {
+        // facetoface_sessions table
+        $status &= fwrite($bf, full_tag('ID', 6, false, $session->id)) > 0;
+        $status &= fwrite($bf, full_tag('CAPACITY', 6, false, $session->capacity)) > 0;
+        $status &= fwrite($bf, full_tag('DETAILS', 6, false, $session->details)) > 0;
+        $status &= fwrite($bf, full_tag('DATETIMEKNOWN', 6, false, $session->datetimeknown)) > 0;
+        $status &= fwrite($bf, full_tag('DURATION', 6, false, $session->duration)) > 0;
+        $status &= fwrite($bf, full_tag('NORMALCOST', 6, false, $session->normalcost)) > 0;
+        $status &= fwrite($bf, full_tag('DISCOUNTCOST', 6, false, $session->discountcost)) > 0;
+        $status &= fwrite($bf, full_tag('TIMECREATED', 6, false, $session->timecreated)) > 0;
+        $status &= fwrite($bf, full_tag('TIMEMODIFIED', 6, false, $session->timemodified)) > 0;
 
-    $status = true;
+        $status &= backup_facetoface_sessions_dates($bf, $session->id);
 
-    $roles = get_records('facetoface_session_roles', 'sessionid', $sessionid, 'id');
-    if ($roles) {
+        $status &= backup_facetoface_session_data($bf, $session->id);
 
-        $status &= fwrite($bf, start_tag('ROLES', 6, true)) > 0;
-
-        foreach ($roles as $role) {
-
-            $status &= fwrite($bf, start_tag('ROLE', 7, true)) > 0;
-
-            // facetoface_session_roles table
-            $status &= fwrite($bf, full_tag('ID', 8, false, $role->id)) > 0;
-            $status &= fwrite($bf, full_tag('ROLEID', 8, false, $role->roleid)) > 0;
-            $status &= fwrite($bf, full_tag('USERID', 8, false, $role->userid)) > 0;
-
-            $status &= fwrite($bf, end_tag('ROLE', 7, true)) > 0;
-        }
-
-        $status &= fwrite($bf, end_tag('ROLES', 6, true)) > 0;
+        $status &= fwrite($bf, end_tag('SESSION', 5, true)) > 0;
     }
+    $status &= fwrite($bf, end_tag('SESSIONS', 4, true)) > 0;
 
     return $status;
 }
@@ -164,29 +174,66 @@ function backup_facetoface_session_roles($bf, $sessionid) {
  * Backup the facetoface_sessions_dates table entries for a given
  * facetoface session
  */
-function backup_facetoface_sessions_dates($bf, $sessionid) {
-
+function backup_facetoface_sessions_dates($bf, $sessionid)
+{
     $status = true;
 
     $dates = get_records('facetoface_sessions_dates', 'sessionid', $sessionid, 'id');
-    if ($dates) {
-
-        $status &= fwrite($bf, start_tag('DATES', 6, true)) > 0;
-
-        foreach ($dates as $date) {
-
-            $status &= fwrite($bf, start_tag('DATE', 7, true)) > 0;
-
-            // facetoface_sessions_dates table
-            $status &= fwrite($bf, full_tag('ID', 8, false, $date->id)) > 0;
-            $status &= fwrite($bf, full_tag('TIMESTART', 8, false, $date->timestart)) > 0;
-            $status &= fwrite($bf, full_tag('TIMEFINISH', 8, false, $date->timefinish)) > 0;
-
-            $status &= fwrite($bf, end_tag('DATE', 7, true)) > 0;
-        }
-
-        $status &= fwrite($bf, end_tag('DATES', 6, true)) > 0;
+    if (!$dates) {
+        return $status;
     }
+
+    $status &= fwrite($bf, start_tag('DATES', 6, true)) > 0;
+    foreach ($dates as $date) {
+        $status &= fwrite($bf, start_tag('DATE', 7, true)) > 0;
+
+        // facetoface_sessions_dates table
+        $status &= fwrite($bf, full_tag('ID', 8, false, $date->id)) > 0;
+        $status &= fwrite($bf, full_tag('TIMESTART', 8, false, $date->timestart)) > 0;
+        $status &= fwrite($bf, full_tag('TIMEFINISH', 8, false, $date->timefinish)) > 0;
+
+        $status &= fwrite($bf, end_tag('DATE', 7, true)) > 0;
+    }
+    $status &= fwrite($bf, end_tag('DATES', 6, true)) > 0;
+
+    return $status;
+}
+
+/**
+ * Backup the facetoface_session_data table entries for a given
+ * facetoface session
+ *
+ * NOTE: we keep track of the field shortname so that we can lookup
+ * the fieldid when we restore. Custom fields need to be manually
+ * recreated on the destination site.
+ */
+function backup_facetoface_session_data($bf, $sessionid)
+{
+    global $CFG;
+    $status = true;
+
+    $data = get_records_sql("SELECT d.id, f.shortname, d.sessionid, d.data
+                               FROM {$CFG->prefix}facetoface_session_field f
+                               JOIN {$CFG->prefix}facetoface_session_data d ON f.id = d.fieldid
+                              WHERE d.sessionid = $sessionid
+                           ORDER BY d.id");
+    if (!$data) {
+        return $status;
+    }
+
+    $status &= fwrite($bf, start_tag('DATA', 6, true)) > 0;
+    foreach ($data as $datum) {
+        $status &= fwrite($bf, start_tag('DATUM', 7, true)) > 0;
+
+        // facetoface_sessions_dates table
+        $status &= fwrite($bf, full_tag('ID', 8, false, $datum->id)) > 0;
+        $status &= fwrite($bf, full_tag('FIELDSHORTNAME', 8, false, $datum->shortname)) > 0;
+        $status &= fwrite($bf, full_tag('SESSIONID', 8, false, $datum->sessionid)) > 0;
+        $status &= fwrite($bf, full_tag('DATA', 8, false, $datum->data)) > 0;
+
+        $status &= fwrite($bf, end_tag('DATUM', 7, true)) > 0;
+    }
+    $status &= fwrite($bf, end_tag('DATA', 6, true)) > 0;
 
     return $status;
 }
@@ -195,37 +242,35 @@ function backup_facetoface_sessions_dates($bf, $sessionid) {
  * Backup the facetoface_submissions table entries for a given
  * facetoface activity
  */
-function backup_facetoface_submissions($bf, $facetofaceid) {
-
+function backup_facetoface_submissions($bf, $facetofaceid)
+{
     $status = true;
 
     $submissions = get_records('facetoface_submissions', 'facetoface', $facetofaceid, 'id');
-    if ($submissions) {
-
-        $status &= fwrite($bf, start_tag('SUBMISSIONS', 4, true)) > 0;
-
-        foreach ($submissions as $submission) {
-
-            $status &= fwrite($bf, start_tag('SUBMISSION', 5, true)) > 0;
-
-            // facetoface_submissions table
-            $status &= fwrite($bf, full_tag('ID', 6, false, $submission->id)) > 0;
-            $status &= fwrite($bf, full_tag('FACETOFACE', 6, false, $submission->facetoface)) > 0;
-            $status &= fwrite($bf, full_tag('SESSIONID', 6, false, $submission->sessionid)) > 0;
-            $status &= fwrite($bf, full_tag('USERID', 6, false, $submission->userid)) > 0;
-            $status &= fwrite($bf, full_tag('MAILEDCONFIRMATION', 6, false, $submission->mailedconfirmation)) > 0;
-            $status &= fwrite($bf, full_tag('MAILEDREMINDER', 6, false, $submission->mailedreminder)) > 0;
-            $status &= fwrite($bf, full_tag('DISCOUNTCODE', 6, false, $submission->discountcode)) > 0;
-            $status &= fwrite($bf, full_tag('TIMECREATED', 6, false, $submission->timecreated)) > 0;
-            $status &= fwrite($bf, full_tag('TIMEMODIFIED', 6, false, $submission->timemodified)) > 0;
-            $status &= fwrite($bf, full_tag('TIMECANCELLED', 6, false, $submission->timecancelled)) > 0;
-            $status &= fwrite($bf, full_tag('NOTIFICATIONTYPE', 6, false, $submission->notificationtype)) > 0;
-
-            $status &= fwrite($bf, end_tag('SUBMISSION', 5, true)) > 0;
-        }
-
-        $status &= fwrite($bf, end_tag('SUBMISSIONS', 4, true)) > 0;
+    if (!$submissions) {
+        return $status;
     }
+
+    $status &= fwrite($bf, start_tag('SUBMISSIONS', 4, true)) > 0;
+    foreach ($submissions as $submission) {
+        $status &= fwrite($bf, start_tag('SUBMISSION', 5, true)) > 0;
+
+        // facetoface_submissions table
+        $status &= fwrite($bf, full_tag('ID', 6, false, $submission->id)) > 0;
+        $status &= fwrite($bf, full_tag('FACETOFACE', 6, false, $submission->facetoface)) > 0;
+        $status &= fwrite($bf, full_tag('SESSIONID', 6, false, $submission->sessionid)) > 0;
+        $status &= fwrite($bf, full_tag('USERID', 6, false, $submission->userid)) > 0;
+        $status &= fwrite($bf, full_tag('MAILEDCONFIRMATION', 6, false, $submission->mailedconfirmation)) > 0;
+        $status &= fwrite($bf, full_tag('MAILEDREMINDER', 6, false, $submission->mailedreminder)) > 0;
+        $status &= fwrite($bf, full_tag('DISCOUNTCODE', 6, false, $submission->discountcode)) > 0;
+        $status &= fwrite($bf, full_tag('TIMECREATED', 6, false, $submission->timecreated)) > 0;
+        $status &= fwrite($bf, full_tag('TIMEMODIFIED', 6, false, $submission->timemodified)) > 0;
+        $status &= fwrite($bf, full_tag('TIMECANCELLED', 6, false, $submission->timecancelled)) > 0;
+        $status &= fwrite($bf, full_tag('NOTIFICATIONTYPE', 6, false, $submission->notificationtype)) > 0;
+
+        $status &= fwrite($bf, end_tag('SUBMISSION', 5, true)) > 0;
+    }
+    $status &= fwrite($bf, end_tag('SUBMISSIONS', 4, true)) > 0;
 
     return $status;
 }
@@ -234,8 +279,8 @@ function backup_facetoface_submissions($bf, $facetofaceid) {
  * API function called by the Moodle backup system to describe the
  * contents of the given backup instances
  */
-function facetoface_check_backup_mods_instances($instance, $backup_unique_code) {
-
+function facetoface_check_backup_mods_instances($instance, $backup_unique_code)
+{
     $info[$instance->id.'0'][0] = '<b>'.$instance->name.'</b>';
     $info[$instance->id.'0'][1] = '';
 
@@ -254,8 +299,8 @@ function facetoface_check_backup_mods_instances($instance, $backup_unique_code) 
  * API function called by the Moodle backup system to describe the
  * contents of backup instances for the given course
  */
-function facetoface_check_backup_mods($course, $user_data=false, $backup_unique_code, $instances=null) {
-
+function facetoface_check_backup_mods($course, $user_data=false, $backup_unique_code, $instances=null)
+{
     global $CFG;
 
     if (!empty($instances) && is_array($instances) && count($instances)) {
@@ -287,5 +332,3 @@ function facetoface_check_backup_mods($course, $user_data=false, $backup_unique_
 
     return $info;
 }
-
-?>

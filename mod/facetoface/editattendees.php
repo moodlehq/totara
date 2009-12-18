@@ -1,9 +1,9 @@
 <?php
 
-require_once('../../config.php');
-require_once('lib.php');
+require_once '../../config.php';
+require_once 'lib.php';
 
-define("MAX_USERS_PER_PAGE", 5000);
+define('MAX_USERS_PER_PAGE', 5000);
 
 $s              = required_param('s', PARAM_INT); // facetoface session ID
 $add            = optional_param('add', 0, PARAM_BOOL);
@@ -12,18 +12,19 @@ $showall        = optional_param('showall', 0, PARAM_BOOL);
 $searchtext     = optional_param('searchtext', '', PARAM_RAW); // search string
 $suppressemail  = optional_param('suppressemail', false, PARAM_BOOL); // send email notifications
 $previoussearch = optional_param('previoussearch', 0, PARAM_BOOL);
+$backtoallsessions = optional_param('backtoallsessions', 0, PARAM_INT); // facetoface activity to go back to
 
 if (!$session = facetoface_get_session($s)) {
-    error(get_string('error:incorrectcoursemodulesession', 'facetoface'));
+    print_error('error:incorrectcoursemodulesession', 'facetoface');
 }
 if (!$facetoface = get_record('facetoface', 'id', $session->facetoface)) {
-    error(get_string('error:incorrectfacetofaceid', 'facetoface'));
+    print_error('error:incorrectfacetofaceid', 'facetoface');
 }
 if (!$course = get_record('course', 'id', $facetoface->course)) {
-    error(get_string('error:coursemisconfigured', 'facetoface'));
+    print_error('error:coursemisconfigured', 'facetoface');
 }
 if (!$cm = get_coursemodule_from_instance('facetoface', $facetoface->id, $course->id)) {
-    error(get_string('error:incorrectcoursemodule', 'facetoface'));
+    print_error('error:incorrectcoursemodule', 'facetoface');
 }
 
 /// Check essential permissions
@@ -45,7 +46,7 @@ if ($frm = data_submitted()) {
 
     // Add button
     if ($add and !empty($frm->addselect) and confirm_sesskey()) {
-        require_capability('mod/facetoface:editattendees', $context);
+        require_capability('mod/facetoface:addattendees', $context);
 
         foreach ($frm->addselect as $adduser) {
             if (!$adduser = clean_param($adduser, PARAM_INT)) {
@@ -67,23 +68,29 @@ if ($frm = data_submitted()) {
                 $erruser = get_record('user', 'id', $adduser, '','','','', 'id, firstname, lastname');
                 $errors[] = get_string('error:addalreadysignedupattendee', 'facetoface', fullname($erruser));
             }
-            elseif (!facetoface_user_signup($session, $facetoface, $course, '', MDL_F2F_BOTH,
-                                            $adduser, !$suppressemail, false)) {
-                $erruser = get_record('user', 'id', $adduser, '','','','', 'id, firstname, lastname');
-                $errors[] = get_string('error:addattendee', 'facetoface', fullname($erruser));
+            else {
+                if (!facetoface_session_has_capacity($session, $context)) {
+                    $errors[] = get_string('full', 'facetoface');
+                    break; // no point in trying to add other people
+                }
+                elseif (!facetoface_user_signup($session, $facetoface, $course, '', MDL_F2F_BOTH,
+                                                $adduser, !$suppressemail, false)) {
+                    $erruser = get_record('user', 'id', $adduser, '','','','', 'id, firstname, lastname');
+                    $errors[] = get_string('error:addattendee', 'facetoface', fullname($erruser));
+                }
             }
         }
     }
     // Remove button
     else if ($remove and !empty($frm->removeselect) and confirm_sesskey()) {
-        require_capability('mod/facetoface:editattendees', $context);
+        require_capability('mod/facetoface:removeattendees', $context);
 
         foreach ($frm->removeselect as $removeuser) {
             if (!$removeuser = clean_param($removeuser, PARAM_INT)) {
                 continue; // invalid userid
             }
 
-            if (facetoface_user_cancel($session, $removeuser)) {
+            if (facetoface_user_cancel($session, $removeuser, true, $cancelerr)) {
                 // Notify the user of the cancellation if the session hasn't started yet
                 $timenow = time();
                 if (!$suppressemail and !facetoface_has_session_started($session, $timenow)) {
@@ -91,6 +98,7 @@ if ($frm = data_submitted()) {
                 }
             }
             else {
+                $errors[] = $cancelerr;
                 $erruser = get_record('user', 'id', $removeuser, '','','','', 'id, firstname, lastname');
                 $errors[] = get_string('error:removeattendee', 'facetoface', fullname($erruser));
             }
@@ -113,6 +121,7 @@ $navigation = build_navigation($navlinks);
 print_header_simple($pagetitle, '', $navigation, '', '', true,
                     update_module_button($cm->id, $course->id, $strfacetoface), navmenu($course, $cm));
 
+print_box_start();
 print_heading(get_string('addremoveattendees', 'facetoface'), 'center');
 
 /// Get the list of currently signed-up users
@@ -127,7 +136,10 @@ if ($searchtext !== '') {   // Search for a subset of remaining users
     $LIKE      = sql_ilike();
     $FULLNAME  = sql_fullname();
 
-    $selectsql = " AND ($FULLNAME $LIKE '%$searchtext%' OR email $LIKE '%$searchtext%') ";
+    $selectsql = " AND ($FULLNAME $LIKE '%$searchtext%' OR
+                            email $LIKE '%$searchtext%' OR
+                         idnumber $LIKE '%$searchtext%' OR
+                         username $LIKE '%$searchtext%') ";
     $select  .= $selectsql;
 }
 
@@ -148,9 +160,7 @@ $availableusers = get_recordset_sql('SELECT id, firstname, lastname, email
 $usercount = count_records_select('user', $select) - $existingcount;
 
 /// Prints a form to add/remove users from the session
-print_simple_box_start('center');
 include('editattendees.html');
-print_simple_box_end();
 
 if (!empty($errors)) {
     $msg = '<p>';
@@ -165,9 +175,8 @@ if (!empty($errors)) {
 
 // Bottom of the page links
 print '<p style="text-align: center">';
-$url = $CFG->wwwroot.'/mod/facetoface/attendees.php?s='.$session->id;
+$url = $CFG->wwwroot.'/mod/facetoface/attendees.php?s='.$session->id.'&amp;backtoallsessions='.$backtoallsessions;
 print '<a href="'.$url.'">'.get_string('goback', 'facetoface').'</a></p>';
 
+print_box_end();
 print_footer($course);
-
-?>

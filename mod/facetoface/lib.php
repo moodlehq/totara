@@ -1,6 +1,8 @@
 <?php
 
-require_once($CFG->libdir.'/gradelib.php');
+require_once "$CFG->libdir/gradelib.php";
+require_once "$CFG->dirroot/grade/lib.php";
+require_once $CFG->dirroot.'/lib/adminlib.php';
 
 /**
  * Definitions for setting notification types
@@ -26,6 +28,15 @@ define('MDL_F2F_CANCEL_ICAL',		9);	    // Send just a combined text/ical message
 
 // Name of the custom field where the manager's email address is stored
 define('MDL_MANAGERSEMAIL_FIELD', 'managersemail');
+
+// Custom field related constants
+define('CUSTOMFIELD_DELIMITTER', ';');
+define('CUSTOMFIELD_TYPE_TEXT',        0);
+define('CUSTOMFIELD_TYPE_SELECT',      1);
+define('CUSTOMFIELD_TYPE_MULTISELECT', 2);
+
+// Calendar-related constants
+define('CALENDAR_MAX_NAME_LENGTH', 10);
 
 /**
  * Prints the cost amount along with the appropriate currency symbol.
@@ -90,12 +101,22 @@ function facetoface_cost($userid, $sessionid, $sessiondata, $htmloutput=true) {
  * Human-readable version of the duration field used to display it to
  * users
  *
- * @param integer $duration duration in minutes
+ * @param integer $duration duration in hours
  */
-function facetoface_duration($duration) {
+function format_duration($duration) {
 
-    $minutes = round(($duration - floor($duration)) * 60);
-    $hours = floor($duration);
+    $components = explode(':', $duration);
+
+    if ($components and count($components) > 1) {
+        // e.g. "1:30" => "1 hour and 30 minutes"
+        $hours = $components[0];
+        $minutes = $components[1];
+    }
+    else {
+        // e.g. "1.5" => "1 hour and 30 minutes"
+        $minutes = round(($duration - floor($duration)) * 60);
+        $hours = floor($duration);
+    }
 
     $string = '';
 
@@ -124,33 +145,53 @@ function facetoface_duration($duration) {
  */
 function facetoface_minutes_to_hours($minutes) {
 
-    return round($minutes / 60.0, 2);
+    if ($minutes > 0) {
+        $hours = floor($minutes / 60.0);
+        $mins = $minutes - ($hours * 60.0);
+        return "$hours:$mins";
+    }
+    else {
+        return $minutes;
+    }
 }
 
 /**
  * Converts hours to minutes
  */
-function facetoface_hours_to_minutes($hours) {
-
-    return round($hours * 60.0);
+function facetoface_hours_to_minutes($hours)
+{
+    $components = explode(':', $hours);
+    if ($components and count($components) > 1) {
+        // e.g. "1:45" => 105 minutes
+        $hours = $components[0];
+        $minutes = $components[1];
+        return $hours * 60.0 + $minutes;
+    }
+    else {
+        // e.g. "1.75" => 105 minutes
+        return round($hours * 60.0);
+    }
 }
 
 /**
- * Turn undefined manager messages into empty strings
+ * Turn undefined manager messages into empty strings and deal with checkboxes
  */
-function facetoface_fix_manager_messages($facetoface) {
+function facetoface_fix_settings($facetoface) {
 
     if (empty($facetoface->emailmanagerconfirmation)) {
-        $facetoface->confirmationinstrmngr = '';
+        $facetoface->confirmationinstrmngr = null;
     }
     if (empty($facetoface->emailmanagerreminder)) {
-        $facetoface->reminderinstrmngr = '';
+        $facetoface->reminderinstrmngr = null;
     }
     if (empty($facetoface->emailmanagercancellation)) {
-        $facetoface->cancellationinstrmngr = '';
+        $facetoface->cancellationinstrmngr = null;
     }
     if (empty($facetoface->thirdpartywaitlist)) {
         $facetoface->thirdpartywaitlist = 0;
+    }
+    if (empty($facetoface->showoncalendar)) {
+        $facetoface->showoncalendar = 0;
     }
 }
 
@@ -163,7 +204,7 @@ function facetoface_add_instance($facetoface) {
 
     $facetoface->timemodified = time();
 
-    facetoface_fix_manager_messages($facetoface);
+    facetoface_fix_settings($facetoface);
     if ($facetoface->id = insert_record('facetoface', $facetoface)) {
         facetoface_grade_item_update($facetoface);
     }
@@ -179,7 +220,7 @@ function facetoface_update_instance($facetoface) {
 
     $facetoface->id = $facetoface->instance;
 
-    facetoface_fix_manager_messages($facetoface);
+    facetoface_fix_settings($facetoface);
     if ($return = update_record('facetoface', $facetoface)) {
         facetoface_grade_item_update($facetoface);
     }
@@ -280,13 +321,25 @@ function facetoface_add_session($session, $sessiondates)
 
     $eventname = get_field('facetoface', 'name', 'id', $session->facetoface);
 
-    begin_sql();
     if ($session->id = insert_record('facetoface_sessions', $session)) {
-        foreach ($sessiondates as $date) {
+        if (empty($sessiondates)) {
+            // Insert a dummy date record
+            $date = new object();
             $date->sessionid = $session->id;
+            $date->timestart = 0;
+            $date->timefinish = 0;
             if (!insert_record('facetoface_sessions_dates', $date)) {
                 rollback_sql();
                 return false;
+            }
+        }
+        else {
+            foreach ($sessiondates as $date) {
+                $date->sessionid = $session->id;
+                if (!insert_record('facetoface_sessions_dates', $date)) {
+                    rollback_sql();
+                    return false;
+                }
             }
         }
 
@@ -295,7 +348,6 @@ function facetoface_add_session($session, $sessiondates)
         $session->sessiondates = $sessiondates;
         facetoface_add_session_to_user_calendar($session, $eventname, $USER->id, 'session');
 
-        commit_sql();
         return $session->id;
     } else {
         rollback_sql();
@@ -311,7 +363,6 @@ function facetoface_update_session($session, $sessiondates) {
     $session->timemodified = time();
     $session = cleanup_session_data($session);
 
-    begin_sql();
     if (!update_record('facetoface_sessions', $session)) {
         rollback_sql();
         return false;
@@ -321,11 +372,25 @@ function facetoface_update_session($session, $sessiondates) {
         rollback_sql();
         return false;
     }
-    foreach ($sessiondates as $date) {
+
+    if (empty($sessiondates)) {
+        // Insert a dummy date record
+        $date = new object();
         $date->sessionid = $session->id;
+        $date->timestart = 0;
+        $date->timefinish = 0;
         if (!insert_record('facetoface_sessions_dates', $date)) {
             rollback_sql();
             return false;
+        }
+    }
+    else {
+        foreach ($sessiondates as $date) {
+            $date->sessionid = $session->id;
+            if (!insert_record('facetoface_sessions_dates', $date)) {
+                rollback_sql();
+                return false;
+            }
         }
     }
 
@@ -340,7 +405,6 @@ function facetoface_update_session($session, $sessiondates) {
         return false;
     }
 
-    commit_sql();
     return $session->id;
 }
 
@@ -374,23 +438,22 @@ function facetoface_get_facetoface_menu() {
  * Delete entry from the facetoface_sessions table along with all
  * related details in other tables
  *
- * @param class $formdata Data submitted by the form
+ * @param object $session Record from facetoface_sessions
  */
-function facetoface_delete_session($formdata) {
-
+function facetoface_delete_session($session)
+{
     global $CFG;
 
-    $session = facetoface_get_session($formdata->s);
     $facetoface = get_record('facetoface', 'id', $session->facetoface);
 
     // Cancel user signups (and notify users)
     $signedupusers = get_records_sql("SELECT DISTINCT userid
                                         FROM {$CFG->prefix}facetoface_submissions
-                                       WHERE sessionid = $formdata->s AND
+                                       WHERE sessionid = $session->id AND
                                              timecancelled = 0");
     if ($signedupusers and count($signedupusers) > 0) {
         foreach ($signedupusers as $user) {
-            if (facetoface_user_cancel($session, $user->userid)) {
+            if (facetoface_user_cancel($session, $user->userid, true)) {
                 facetoface_send_cancellation_notice($facetoface, $session, $user->userid);
             }
             else {
@@ -410,16 +473,19 @@ function facetoface_delete_session($formdata) {
         return false;
     }
 
+    // Remove entry from site-wide calendar
+    facetoface_remove_session_from_site_calendar($session);
+
     // Delete session details
-    if (!delete_records('facetoface_sessions', 'id', $formdata->s)) {
+    if (!delete_records('facetoface_sessions', 'id', $session->id)) {
         rollback_sql();
         return false;
     }
-    if (!delete_records('facetoface_sessions_dates', 'sessionid', $formdata->s)) {
+    if (!delete_records('facetoface_sessions_dates', 'sessionid', $session->id)) {
         rollback_sql();
         return false;
     }
-    if (!delete_records('facetoface_submissions', 'sessionid', $formdata->s)) {
+    if (!delete_records('facetoface_submissions', 'sessionid', $session->id)) {
         rollback_sql();
         return false;
     }
@@ -431,7 +497,11 @@ function facetoface_delete_session($formdata) {
 /**
  * Subsitute the placeholders in email templates for the actual data
  */
-function facetoface_email_substitutions($msg, $facetofacename, $reminderperiod, $user, $session, $sessionid) {
+function facetoface_email_substitutions($msg, $facetofacename, $reminderperiod, $user, $session, $sessionid)
+{
+    if (empty($msg)) {
+        return '';
+    }
 
     if ($session->datetimeknown) {
         // Scheduled session
@@ -465,12 +535,27 @@ function facetoface_email_substitutions($msg, $facetofacename, $reminderperiod, 
     $msg = str_replace(get_string('placeholder:sessiondate', 'facetoface'), $sessiondate,$msg);
     $msg = str_replace(get_string('placeholder:starttime', 'facetoface'), $starttime,$msg);
     $msg = str_replace(get_string('placeholder:finishtime', 'facetoface'), $finishtime,$msg);
-    $msg = str_replace(get_string('placeholder:duration', 'facetoface'), facetoface_duration($session->duration),$msg);
-    $msg = str_replace(get_string('placeholder:location', 'facetoface'), $session->location,$msg);
-    $msg = str_replace(get_string('placeholder:venue', 'facetoface'), $session->venue,$msg);
-    $msg = str_replace(get_string('placeholder:room', 'facetoface'), $session->room,$msg);
-    $msg = str_replace(get_string('placeholder:details', 'facetoface'), $session->details,$msg);
+    $msg = str_replace(get_string('placeholder:duration', 'facetoface'), format_duration($session->duration),$msg);
+    if (empty($session->details)) {
+        $msg = str_replace(get_string('placeholder:details', 'facetoface'), '',$msg);
+    }
+    else {
+        $msg = str_replace(get_string('placeholder:details', 'facetoface'), html_to_text($session->details),$msg);
+    }
     $msg = str_replace(get_string('placeholder:reminderperiod', 'facetoface'), $reminderperiod,$msg);
+
+    // Custom session fields (they look like "session:shortname" in the templates)
+    $customfields = facetoface_get_session_customfields();
+    $customdata = get_records('facetoface_session_data', 'sessionid', $session->id, '', 'fieldid, data');
+    foreach ($customfields as $field) {
+        $placeholder = "[session:{$field->shortname}]";
+        $data = '';
+        if (!empty($customdata[$field->id])) {
+            $data = $customdata[$field->id]->data;
+        }
+
+        $msg = str_replace($placeholder, $data, $msg);
+    }
 
     return $msg;
 }
@@ -479,124 +564,146 @@ function facetoface_email_substitutions($msg, $facetofacename, $reminderperiod, 
  * Function to be run periodically according to the moodle cron
  * Finds all facetoface notifications that have yet to be mailed out, and mails them.
  */
-function facetoface_cron () {
-
+function facetoface_cron()
+{
     global $CFG, $USER;
 
-    if ($submissionsdata = facetoface_get_unmailed_reminders()) {
+    $signupsdata = facetoface_get_unmailed_reminders();
+    if (!$signupsdata) {
+        echo "\n".get_string('noremindersneedtobesent', 'facetoface')."\n";
+        return true;
+    }
 
-        $timenow   = time();
+    $timenow = time();
 
-        foreach ($submissionsdata as $submissiondata) {
-
-            if (facetoface_has_session_started($submissiondata, $timenow)) {
-                // Too late, the session already started
-                continue;
+    foreach ($signupsdata as $signupdata) {
+        if (facetoface_has_session_started($signupdata, $timenow)) {
+            // Too late, the session already started
+            // Mark the reminder as being sent already
+            $newsubmission = new object;
+            $newsubmission->id = $signupdata->id;
+            $newsubmission->mailedreminder = 1; // magic number to show that it was not actually sent
+            if (!update_record('facetoface_submissions', $newsubmission)) {
+                echo "ERROR: could not update mailedreminder for submission ID $signupdata->id";
             }
+            continue;
+        }
 
-            $reminderperiod = $submissiondata->reminderperiod;
-
-            // Convert the period from business days (no weekends) to calendar days
-            for ($reminderday = 0; $reminderday < $reminderperiod + 1; $reminderday++ ) {
-                $reminderdaytime = $submissiondata->sessiondates[0]->timestart - ($reminderday * 24 * 3600);
-                $reminderdaycheck = userdate($reminderdaytime, '%u');
-                if ($reminderdaycheck > 5) {
-                    // Saturdays and Sundays are not included in the
-                    // reminder period as entered by the user, extend
-                    // that period by 1
-                    $reminderperiod++;
-                }
-            }
-
-            $remindertime = $submissiondata->sessiondates[0]->timestart - ($reminderperiod * 24 * 3600);
-
-            if ($timenow < $remindertime) {
-                // Too early to send reminder
-                continue;
-            }
-
-            if (! $user = get_record('user', 'id', "$submissiondata->userid")) {
-                continue;
-            }
-
-            $USER->lang = $user->lang;
-
-            if (! $course = get_record('course', 'id', "$submissiondata->course")) {
-                continue;
-            }
-
-            if (! $facetoface = get_record('facetoface', 'id', "$submissiondata->facetofaceid")) {
-                continue;
-            }
-
-            $postsubject = '';
-            $posttext = '';
-            $posttextmgrheading = '';
-
-            if (empty ($submissiondata->mailedreminder)) {
-                $postsubject = $facetoface->remindersubject;
-                $posttext = $facetoface->remindermessage;
-                $posttextmgrheading = $facetoface->reminderinstrmngr;
-            }
-
-            if (! empty($postsubject) && ! empty ($posttext) ) {
-
-                $postsubject = facetoface_email_substitutions($postsubject, $submissiondata->facetofacename, $submissiondata->reminderperiod, $user, $submissiondata, $submissiondata->sessionid);
-                $posttext = facetoface_email_substitutions($posttext, $submissiondata->facetofacename, $submissiondata->reminderperiod, $user, $submissiondata, $submissiondata->sessionid);
-
-                if (! empty($posttextmgrheading) ) {
-                    $posttextmgrheading = facetoface_email_substitutions($posttextmgrheading, $submissiondata->facetofacename, $submissiondata->reminderperiod, $user, $submissiondata, $submissiondata->sessionid);
-                }
-
-                $posthtml = '';
-                $fromaddress = get_config(NULL, 'facetoface_fromaddress');
-                if (!$fromaddress) {
-                    $fromaddress = '';
-                }
-
-                require_once($CFG->dirroot.'/lib/adminlib.php');
-
-                if (email_to_user($user, $fromaddress, $postsubject, $posttext, $posthtml)) {
-
-                    echo get_string('sentreminderuser', 'facetoface').": $user->firstname $user->lastname $user->email<BR />\n";
-
-                    $submission = new object;
-                    $submission->id = $submissiondata->id;
-                    $submission->mailedreminder = $timenow;
-                    update_record('facetoface_submissions', $submission);
-
-                    if (!empty($posttextmgrheading)) {
-                        $managertext = $posttextmgrheading.$posttext;
-
-                        $usercheck = get_record('user', 'id', $user->id);
-                        $manager = $user;
-                        $manager->email = facetoface_get_manageremail($user->id);
-
-                        if (!empty($manager->email) && email_to_user($manager, $fromaddress, $postsubject, $managertext, $posthtml)) {
-
-                            echo get_string('sentremindermanager', 'facetoface').": $user->firstname $user->lastname $manager->email<BR />\n";
-
-                        } else {
-                            $errormsg = array();
-                            $errormsg['submissionid'] = $submissiondata->id;
-                            $errormsg['userid'] = $user->id;
-                            $errormsg['manageremail'] = $manager->email;
-                            echo get_string('error:cronprefix', 'facetoface').' '.get_string('error:cannotemailmanager', 'facetoface', $errormsg)."\n";
-                        }
-                    }
-
-                } else {
-                    $errormsg = array();
-                    $errormsg['submissionid'] = $submissiondata->id;
-                    $errormsg['userid'] = $user->id;
-                    $errormsg['useremail'] = $user->email;
-                    echo get_string('error:cronprefix', 'facetoface').' '.get_string('error:cannotemailuser', 'facetoface', $errormsg)."\n";
-                }
+        $earlieststarttime = $signupdata->sessiondates[0]->timestart;
+        foreach ($signupdata->sessiondates as $date) {
+            if ($date->timestart < $earlieststarttime) {
+                $earlieststarttime = $date->timestart;
             }
         }
-    } else {
-        echo get_string('noremindersneedtobesent', 'facetoface');
+
+        $reminderperiod = $signupdata->reminderperiod;
+
+        // Convert the period from business days (no weekends) to calendar days
+        for ($reminderday = 0; $reminderday < $reminderperiod + 1; $reminderday++ ) {
+            $reminderdaytime = $earlieststarttime - ($reminderday * 24 * 3600);
+            $reminderdaycheck = userdate($reminderdaytime, '%u');
+            if ($reminderdaycheck > 5) {
+                // Saturdays and Sundays are not included in the
+                // reminder period as entered by the user, extend
+                // that period by 1
+                $reminderperiod++;
+            }
+        }
+
+        $remindertime = $earlieststarttime - ($reminderperiod * 24 * 3600);
+        if ($timenow < $remindertime) {
+            // Too early to send reminder
+            continue;
+        }
+
+        if (!$user = get_record('user', 'id', $signupdata->userid)) {
+            continue;
+        }
+
+        // Hack to make sure that the timezone and languages are set properly in emails
+        // (i.e. it uses the language and timezone of the recipient of the email)
+        $USER->lang = $user->lang;
+        $USER->timezone = $user->timezone;
+
+        if (!$course = get_record('course', 'id', $signupdata->course)) {
+            continue;
+        }
+        if (!$facetoface = get_record('facetoface', 'id', $signupdata->facetofaceid)) {
+            continue;
+        }
+
+        $postsubject = '';
+        $posttext = '';
+        $posttextmgrheading = '';
+
+        if (empty($signupdata->mailedreminder)) {
+            $postsubject = $facetoface->remindersubject;
+            $posttext = $facetoface->remindermessage;
+            $posttextmgrheading = $facetoface->reminderinstrmngr;
+        }
+
+        if (empty($posttext)) {
+            // The reminder message is not set, don't send anything
+            continue;
+        }
+
+        $postsubject = facetoface_email_substitutions($postsubject, $signupdata->facetofacename, $signupdata->reminderperiod,
+                                                      $user, $signupdata, $signupdata->sessionid);
+        $posttext = facetoface_email_substitutions($posttext, $signupdata->facetofacename, $signupdata->reminderperiod,
+                                                   $user, $signupdata, $signupdata->sessionid);
+        $posttextmgrheading = facetoface_email_substitutions($posttextmgrheading, $signupdata->facetofacename, $signupdata->reminderperiod,
+                                                             $user, $signupdata, $signupdata->sessionid);
+
+        $posthtml = ''; // FIXME
+        $fromaddress = get_config(NULL, 'facetoface_fromaddress');
+        if (!$fromaddress) {
+            $fromaddress = '';
+        }
+
+        if (email_to_user($user, $fromaddress, $postsubject, $posttext, $posthtml)) {
+            echo "\n".get_string('sentreminderuser', 'facetoface').": $user->firstname $user->lastname $user->email";
+
+            $newsubmission = new object;
+            $newsubmission->id = $signupdata->id;
+            $newsubmission->mailedreminder = $timenow;
+            if (!update_record('facetoface_submissions', $newsubmission)) {
+                echo "ERROR: could not update mailedreminder for submission ID $signupdata->id";
+            }
+
+            if (empty($posttextmgrheading)) {
+                continue; // no manager message set
+            }
+
+            $managertext = $posttextmgrheading.$posttext;
+            $manager = $user;
+            $manager->email = facetoface_get_manageremail($user->id);
+
+            if (empty($manager->email)) {
+                continue; // don't know who the manager is
+            }
+
+            // Send email to mamager
+            if (email_to_user($manager, $fromaddress, $postsubject, $managertext, $posthtml)) {
+                echo "\n".get_string('sentremindermanager', 'facetoface').": $user->firstname $user->lastname $manager->email";
+            }
+            else {
+                $errormsg = array();
+                $errormsg['submissionid'] = $signupdata->id;
+                $errormsg['userid'] = $user->id;
+                $errormsg['manageremail'] = $manager->email;
+                echo get_string('error:cronprefix', 'facetoface').' '.get_string('error:cannotemailmanager', 'facetoface', $errormsg)."\n";
+            }
+        }
+        else {
+            $errormsg = array();
+            $errormsg['submissionid'] = $signupdata->id;
+            $errormsg['userid'] = $user->id;
+            $errormsg['useremail'] = $user->email;
+            echo get_string('error:cronprefix', 'facetoface').' '.get_string('error:cannotemailuser', 'facetoface', $errormsg)."\n";
+        }
     }
+
+    print "\n";
     return true;
 }
 
@@ -622,224 +729,13 @@ function facetoface_has_session_started($session, $timenow) {
 }
 
 /**
- * Print the list of all sessions for the given facetoface activity and location
- */
-function facetoface_print_sessions($courseid, $facetofaceid, $location) {
-
-    global $CFG, $USER;
-
-    $context = get_context_instance(CONTEXT_COURSE, $courseid, $USER->id);
-
-    $bookedsession = '0';
-    $spanclass = '';
-
-    $submissions = facetoface_get_user_submissions($facetofaceid, $USER->id);
-
-    $bookedsession = null;
-    if ($submissions) {
-        $submission = array_shift($submissions);
-        $bookedsession = $submission->sessionid;
-    }
-
-    $timenow = time();
-
-    $tableheader = '';
-
-    if (has_capability('mod/facetoface:viewattendees', $context)) {
-        $tableheader = '<thead>'
-                    . '<tr>'
-                    . '<th class="header" align="left">'.get_string('location', 'facetoface').'</th>'
-                    . '<th class="header" align="left">'.get_string('venue', 'facetoface').'</th>'
-                    . '<th class="header">'.get_string('date', 'facetoface').'</th>'
-                    . '<th class="header">'.get_string('time', 'facetoface').'</th>'
-                    . '<th class="header">'.get_string('capacity', 'facetoface').'</th>'
-                    . '<th class="header">'.get_string('status', 'facetoface').'</th>'
-                    . '<th class="header">'.get_string('options', 'facetoface').'</th>'
-                    . '</tr>'
-                    . '</thead>';
-    } else {
-        $tableheader = '<thead>'
-                    . '<tr>'
-                    . '<th class="header" align="left">'.get_string('location', 'facetoface').'</th>'
-                    . '<th class="header" align="left">'.get_string('venue', 'facetoface').'</th>'
-                    . '<th class="header">'.get_string('date', 'facetoface').'</th>'
-                    . '<th class="header">'.get_string('time', 'facetoface').'</th>'
-                    . '<th class="header">'.get_string('seatsavailable', 'facetoface').'</th>'
-                    . '<th class="header">'.get_string('status', 'facetoface').'</th>'
-                    . '<th class="header">'.get_string('options', 'facetoface').'</th>'
-                    . '</tr>'
-                    . '</thead>';
-    }
-
-    $tableupcoming = '';
-    $tableupcomingtbd = '';
-    $tableprevious = '';
-
-    if ($sessions = facetoface_get_sessions($facetofaceid, $location) ) {
-
-        foreach($sessions as $session) {
-
-            $status  = get_string('bookingopen', 'facetoface');
-            $options = '';
-            $spanclass = '';
-
-            $signupcount = facetoface_get_num_attendees($session->id);
-
-            if ($signupcount >= $session->capacity) {
-
-                $status = get_string('bookingfull', 'facetoface');
-
-            } elseif ($session->closed) {
-
-                $status = get_string('bookingclosed', 'facetoface');
-
-            }
-
-            $allsessiondates = '';
-            $allsessiontimes = '';
-            foreach ($session->sessiondates as $date) {
-                if (!empty($allsessiondates)) {
-                        $allsessiondates .= '<br />';
-                }
-                $allsessiondates .= userdate($date->timestart, get_string('strftimedate'));
-                if (!empty($allsessiontimes)) {
-                    $allsessiontimes .= '<br />';
-                }
-                $allsessiontimes .= userdate($date->timestart, get_string('strftimetime')).
-                    ' - '.userdate($date->timefinish, get_string('strftimetime'));
-            }
-
-            // Defaults for normal users
-            $stats = $session->capacity - $signupcount;
-            $options = '';
-
-            if ($session->datetimeknown && facetoface_has_session_started($session, $timenow)) {
-
-                $status = get_string('sessionover', 'facetoface');
-                $spanclass = ' class="dimmed_text"';
-
-                if (has_capability('mod/facetoface:editsessions', $context)) {
-                    $options .= ' <a href="sessions.php?s='.$session->id.'" title="'.get_string('editsession', 'facetoface').'">'.get_string('edit').'</a> '
-                        . '<a href="sessions.php?s='.$session->id.'&amp;c=1" title="'.get_string('copysession', 'facetoface').'">'.get_string('copy', 'facetoface').'</a> '
-                        . '<a href="sessions.php?s='.$session->id.'&amp;d=1" title="'.get_string('deletesession', 'facetoface').'">'.get_string('delete').'</a> ';
-                }
-                if (has_capability('mod/facetoface:viewattendees', $context)){
-                    $stats = $signupcount.' / '.$session->capacity;
-                    $options .= '<a href="attendees.php?s='.$session->id.'" title="'.get_string('seeattendees', 'facetoface').'">'.get_string('attendees', 'facetoface').'</a> ';
-                }
-
-                if (empty($options)) {
-                    $options = get_string('none', 'facetoface');
-                }
-
-                $tableprevious .= '<tr>'
-                            . '<td class="content" style="width: 10%"><span '.$spanclass.'>'.$session->location.'</span></td>'
-                            . '<td class="content" style="width: 20%"><span '.$spanclass.'>'.$session->venue.'</span></td>'
-                            . '<td class="content" style="width: 10%" align="center"><span '.$spanclass.'>'.$allsessiondates.'</span></td>'
-                            . '<td class="content" style="width: 15%" align="center"><span '.$spanclass.'>'.$allsessiontimes.'</span></td>'
-                            . '<td class="content" style="width: 15%" align="center"><span '.$spanclass.'>'.$stats.'</span></td>'
-                            . '<td class="content" style="width: 10%" align="center"><span '.$spanclass.'>'.$status.'</span></td>'
-                            . '<td class="content" style="width: 20%" align="center"><span '.$spanclass.'>'.$options.'</span></td>'
-                            . '</tr>';
-
-            } else {
-
-                $trclass = '';
-                $spanclass = '';
-
-                if (has_capability('mod/facetoface:editsessions', $context)) {
-                    $options .= '<a href="sessions.php?s='.$session->id.'" title="'.get_string('editsession', 'facetoface').'">'.get_string('edit').'</a> '
-                        . '<a href="sessions.php?s='.$session->id.'&amp;c=1" title="'.get_string('copysession', 'facetoface').'">'.get_string('copy', 'facetoface').'</a> '
-                        . '<a href="sessions.php?s='.$session->id.'&amp;d=1" title="'.get_string('deletesession', 'facetoface').'">'.get_string('delete').'</a> ';
-                }
-                if ($session->id == $bookedsession) {
-                    $trclass = ' class="highlight"';
-                    $tableupcoming .= '<tr'.$trclass.'><td class="content" colspan="7"><span style="font-size: 12px; line-height: 12px;"><b>'.get_string('youarebooked', 'facetoface').':</b></span></td></tr>';
-
-                    $options .= '<a href="'.$CFG->wwwroot.'/mod/facetoface/signup.php?s='.$session->id.'&amp;backtoallsessions='.$facetofaceid.'" alt="'.get_string('moreinfo', 'facetoface').'" title="'.get_string('moreinfo', 'facetoface').'">'.get_string('moreinfo', 'facetoface').'</a><br />'
-                        . '<a href="'.$CFG->wwwroot.'/mod/facetoface/attendees.php?s='.$session->id.'&amp;backtoallsessions='.$facetofaceid.'" alt="'.get_string('seeattendees', 'facetoface').'" title="'.get_string('seeattendees', 'facetoface').'">'.get_string('seeattendees', 'facetoface').'</a><br />'
-                        . '<a href="'.$CFG->wwwroot.'/mod/facetoface/signup.php?s='.$session->id.'&amp;cancelbooking=1&amp;backtoallsessions='.$facetofaceid.'" alt="'.get_string('cancelbooking', 'facetoface').'" title="'.get_string('cancelbooking', 'facetoface').'">'.get_string('cancelbooking', 'facetoface').'</a>';
-                } else {
-                    if (has_capability('mod/facetoface:viewattendees', $context)) {
-                        $stats = $signupcount.' / '.$session->capacity;
-                        $options .= ' <a href="attendees.php?s='.$session->id.'&amp;backtoallsessions='.$facetofaceid.'" title="'.get_string('seeattendees', 'facetoface').'">'.get_string('attendees', 'facetoface').'</a> ';
-                    }
-
-                    if ($bookedsession || ($status == get_string('bookingfull', 'facetoface'))) {
-                        $spanclass = ' class="dimmed_text"';
-                    } else {
-                        $options .= '<a href="signup.php?s='.$session->id.'&amp;backtoallsessions='.$facetofaceid.'">'.get_string('signup', 'facetoface').'</a>';
-                    }
-                }
-
-                if (empty($options)) {
-                    $options = get_string('none', 'facetoface');
-                }
-
-                if ($session->datetimeknown) {
-
-                    $tableupcoming .= '<tr'.$trclass.'>'
-                                . '<td class="content" style="width: 10%"><span '.$spanclass.'>'.$session->location.'</span></td>'
-                                . '<td class="content" style="width: 20%"><span '.$spanclass.'>'.$session->venue.'</span></td>'
-                                . '<td class="content" style="width: 10%" align="center"><span '.$spanclass.'>'.$allsessiondates.'</span></td>'
-                                . '<td class="content" style="width: 15%" align="center"><span '.$spanclass.'>'.$allsessiontimes.'</span></td>'
-                                . '<td class="content" style="width: 15%" align="center"><span '.$spanclass.'>'.$stats.'</span></td>'
-                                . '<td class="content" style="width: 10%" align="center"><span '.$spanclass.'>'.$status.'</span></td>'
-                                . '<td class="content" style="width: 20%" align="center"><span '.$spanclass.'>'.$options.'</span></td>'
-                                . '</tr>';
-
-                } else {
-
-                    $tableupcomingtbd .= '<tr'.$trclass.'>'
-                                . '<td class="content" style="width: 10%"><span '.$spanclass.'>'.$session->location.'</span></td>'
-                                . '<td class="content" style="width: 20%"><span '.$spanclass.'>'.$session->venue.'</span></td>'
-                                . '<td class="content" style="width: 10%" align="center"><span '.$spanclass.'>'.get_string('wait-listed', 'facetoface').'</span></td>'
-                                . '<td class="content" style="width: 15%" align="center"><span '.$spanclass.'>'.get_string('wait-listed', 'facetoface').'</span></td>'
-                                . '<td class="content" style="width: 15%" align="center"><span '.$spanclass.'>'.$stats.'</span></td>'
-                                . '<td class="content" style="width: 10%" align="center"><span '.$spanclass.'>'.get_string('wait-listed', 'facetoface').'</span></td>'
-                                . '<td class="content" style="width: 20%" align="center"><span '.$spanclass.'>'.$options.'</span></td>'
-                                . '</tr>';
-
-                }
-
-            }
-
-        }
-
-    }
-
-    print_heading(get_string('upcomingsessions', 'facetoface'), 'center');
-        echo '<table align="center" cellpadding="3" cellspacing="0" width="90%" style="border-color:#DDDDDD; border-width:1px 1px 1px 1px; border-style:solid;">';
-        echo $tableheader;
-        if (empty($tableupcoming) and empty($tableupcomingtbd) ) {
-            echo '<tr><td colspan="7" align="center">'.get_string('noupcoming', 'facetoface').'</td></tr>';
-        } else {
-            echo $tableupcoming;
-            echo $tableupcomingtbd;
-        }
-        if (has_capability('mod/facetoface:editsessions', $context)) {
-            echo '<tr><td colspan="7" align="center"><a href="'.$CFG->wwwroot.'/mod/facetoface/sessions.php?f='.$facetofaceid.'" title="'.get_string('addsession', 'facetoface').'">'.get_string('addsession', 'facetoface').'</a></td></tr>';
-        }
-        echo '</table>';
-
-    if (! empty($tableprevious)) {
-        print_heading(get_string('previoussessions', 'facetoface'), 'center');
-        echo '<table align="center" cellpadding="3" cellspacing="0" width="90%" style="border-color:#DDDDDD; border-width:1px 1px 1px 1px; border-style:solid;">';
-        echo $tableheader;
-        echo $tableprevious;
-        echo '</table>';
-    } 
-
-}
-
-/**
  * Get all of the dates for a given session
  */
 function facetoface_get_session_dates($sessionid) {
 
     $ret = array();
 
-    if ($dates = get_records('facetoface_sessions_dates', 'sessionid', $sessionid)) {
+    if ($dates = get_records('facetoface_sessions_dates', 'sessionid', $sessionid, 'timestart')) {
         $i = 0;
         foreach ($dates as $date) {
             $ret[$i++] = $date;
@@ -872,46 +768,25 @@ function facetoface_get_session($sessionid) {
  * @param integer $facetofaceid ID of the activity
  * @param string $location location filter (optional)
  */
-function facetoface_get_sessions($facetofaceid, $location='') {
-
+function facetoface_get_sessions($facetofaceid, $location='')
+{
     global $CFG;
-    if (empty($location)) {
-        $sessions = get_records_sql("SELECT s.* FROM {$CFG->prefix}facetoface_sessions s,
-                                        (SELECT sessionid, min(timestart) AS mintimestart
-                                            FROM {$CFG->prefix}facetoface_sessions_dates GROUP BY sessionid) d
-                                        WHERE s.facetoface=$facetofaceid AND d.sessionid = s.id
-                                        ORDER BY s.datetimeknown, d.mintimestart");
 
-        $brokensessions = get_records_sql("SELECT s.* FROM {$CFG->prefix}facetoface_sessions s
-                                               WHERE s.facetoface=$facetofaceid
-                                                   AND NOT EXISTS
-                                          (SELECT 1 FROM {$CFG->prefix}facetoface_sessions_dates
-                                              WHERE sessionid = s.id)");
-    } else {
-        $sessions = get_records_sql("SELECT s.* FROM {$CFG->prefix}facetoface_sessions s,
-                                        (SELECT sessionid, min(timestart) AS mintimestart
-                                            FROM {$CFG->prefix}facetoface_sessions_dates GROUP BY sessionid) d
-                                        WHERE s.facetoface=$facetofaceid AND d.sessionid = s.id
-                                            AND s.location='$location'
-                                        ORDER BY s.datetimeknown, d.mintimestart");
-
-        $brokensessions = get_records_sql("SELECT s.* FROM {$CFG->prefix}facetoface_sessions s
-                                               WHERE s.facetoface=$facetofaceid
-                                                   AND s.location='$location'
-                                                   AND NOT EXISTS
-                                          (SELECT 1 FROM {$CFG->prefix}facetoface_sessions_dates
-                                              WHERE sessionid = s.id)");
+    $fromclause = "FROM {$CFG->prefix}facetoface_sessions s";
+    $locationwhere = '';
+    if (!empty($location)) {
+        $fromclause = "FROM {$CFG->prefix}facetoface_session_data d
+                       JOIN {$CFG->prefix}facetoface_sessions s ON s.id = d.sessionid";
+        $locationwhere = " AND d.data = '$location'";
     }
 
-    // Broken sessions are sessions which have no dates associated
-    // with them, they are only returned so that they are visible and
-    // can be fixed by users.  The cause of these broken sessions
-    // should be investigated and a bug should be filed.
-    if ($brokensessions) {
-        $courseid = get_field('facetoface', 'course', 'id', $facetofaceid);
-        add_to_log($courseid, 'facetoface', 'broken sessions found', '', "facetofaceid=$facetofaceid");
-        $sessions = array_merge($sessions, $brokensessions);
-    }
+    $sessions = get_records_sql("SELECT s.*
+                                   $fromclause
+                        LEFT OUTER JOIN (SELECT sessionid, min(timestart) AS mintimestart
+                                           FROM {$CFG->prefix}facetoface_sessions_dates GROUP BY sessionid) m ON m.sessionid = s.id
+                                  WHERE s.facetoface = $facetofaceid
+                                        $locationwhere
+                               ORDER BY s.datetimeknown, m.mintimestart");
 
     if ($sessions) {
         foreach ($sessions as $key => $value) {
@@ -919,7 +794,6 @@ function facetoface_get_sessions($facetofaceid, $location='') {
             $sessions[$key]->sessiondates = facetoface_get_session_dates($value->id);
         }
     }
-
     return $sessions;
 }
 
@@ -950,7 +824,8 @@ function facetoface_get_grade($userid, $courseid, $facetofaceid) {
 /**
  * Get list of users attending a given session
  */
-function facetoface_get_attendees($sessionid) {
+function facetoface_get_attendees($sessionid)
+{
     global $CFG;
 
     $records = get_records_sql("SELECT u.id, s.id AS submissionid, u.firstname, u.lastname, u.email,
@@ -958,10 +833,8 @@ function facetoface_get_attendees($sessionid) {
                                   FROM {$CFG->prefix}facetoface f
                                   JOIN {$CFG->prefix}facetoface_submissions s ON s.facetoface = f.id
                                   JOIN {$CFG->prefix}user u ON u.id = s.userid
-                                 WHERE s.sessionid=$sessionid
-                                   AND s.timecancelled = 0
+                                 WHERE s.sessionid = $sessionid AND s.timecancelled = 0
                               ORDER BY u.firstname");
-
     if (!$records) {
         return $records;
     }
@@ -983,6 +856,38 @@ function facetoface_get_attendees($sessionid) {
 }
 
 /**
+ * Return all user fields to include in exports
+ */
+function facetoface_get_userfields()
+{
+    global $CFG;
+
+    static $userfields = null;
+    if (null == $userfields) {
+        $userfields = array();
+
+        if (function_exists('grade_export_user_fields')) {
+            $fieldnames = grade_export_user_fields();
+            foreach ($fieldnames as $key => $obj) {
+                $userfields[$obj->shortname] = $obj->fullname;
+            }
+        }
+        else {
+            // Set default fields if the grade export patch is not
+            // detected (see MDL-17346)
+            $fieldnames = array('firstname', 'lastname', 'email', 'city',
+                                'idnumber', 'institution', 'department', 'address');
+            foreach ($fieldnames as $shortname) {
+                $userfields[$shortname] = get_string($shortname);
+            }
+            $userfields['managersemail'] = get_string('manageremail', 'facetoface');
+        }
+    }
+
+    return $userfields;
+}
+
+/**
  * Download the list of users attending at least one of the sessions
  * for a given facetoface activity
  */
@@ -993,28 +898,7 @@ function facetoface_download_attendance($facetofacename, $facetofaceid, $locatio
     $timeformat = str_replace(' ', '_', get_string('strftimedate'));
     $downloadfilename = clean_filename($facetofacename.'_'.userdate($timenow, $timeformat));
 
-    require_once $CFG->dirroot.'/grade/lib.php';
-    $userfields = array();
-    if (function_exists('grade_export_user_fields')) {
-        $userfields = grade_export_user_fields();
-    }
-    else {
-        // Set default fields if the grade export patch is not
-        // detected (see MDL-17346)
-        $fieldnames = array('firstname', 'lastname', 'email', 'city',
-                            'idnumber', 'institution', 'department', 'address');
-        foreach ($fieldnames as $shortname) {
-            $field = new object();
-            $field->shortname = $shortname;
-            $field->fullname = get_string($shortname);
-            $userfields[] = $field;
-        }
-        $field = new object;
-        $field->shortname = 'managersemail';
-        $field->fullname = get_string('manageremail', 'facetoface');
-        $userfields[] = $field;
-    }
-
+    $dateformat = 0;
     if ('ods' === $format) {
         // OpenDocument format (ISO/IEC 26300)
         require_once($CFG->dirroot.'/lib/odslib.class.php');
@@ -1026,40 +910,162 @@ function facetoface_download_attendance($facetofacename, $facetofaceid, $locatio
         require_once($CFG->dirroot.'/lib/excellib.class.php');
         $downloadfilename .= '.xls';
         $workbook = new MoodleExcelWorkbook('-');
+        $dateformat =& $workbook->add_format();
+        $dateformat->set_num_format('d mmm yy'); // TODO: use format specified in language pack
     }
 
     $workbook->send($downloadfilename);
     $worksheet =& $workbook->add_worksheet('attendance');
 
+    facetoface_write_worksheet_header($worksheet);
+    facetoface_write_activity_attendance($worksheet, 1, $facetofaceid, $location, '', '', $dateformat);
+
+    $workbook->close();
+    exit;
+}
+
+/**
+ * Add the appropriate column headers to the given worksheet
+ *
+ * @param object $worksheet  The worksheet to modify (passed by reference)
+ * @returns integer The index of the next column
+ */
+function facetoface_write_worksheet_header(&$worksheet)
+{
     $pos=0;
-    $worksheet->write_string(0,$pos++,get_string('location', 'facetoface'));
-    $worksheet->write_string(0,$pos++,get_string('venue', 'facetoface'));
-    $worksheet->write_string(0,$pos++,get_string('date', 'facetoface'));
-    $worksheet->write_string(0,$pos++,get_string('timestart', 'facetoface'));
-    $worksheet->write_string(0,$pos++,get_string('timefinish', 'facetoface'));
-    $worksheet->write_string(0,$pos++,get_string('status', 'facetoface'));
-    foreach ($userfields as $field) {
-        $worksheet->write_string(0,$pos++,$field->fullname);
+    $customfields = facetoface_get_session_customfields();
+    foreach ($customfields as $field) {
+        if (!empty($field->showinsummary)) {
+            $worksheet->write_string(0, $pos++, $field->name);
+        }
     }
-    $worksheet->write_string(0,$pos++,get_string('attendance', 'facetoface'));
+    $worksheet->write_string(0, $pos++, get_string('date', 'facetoface'));
+    $worksheet->write_string(0, $pos++, get_string('timestart', 'facetoface'));
+    $worksheet->write_string(0, $pos++, get_string('timefinish', 'facetoface'));
+    $worksheet->write_string(0, $pos++, get_string('duration', 'facetoface'));
+    $worksheet->write_string(0, $pos++, get_string('status', 'facetoface'));
 
-    $sessions = facetoface_get_sessions($facetofaceid, $location);
-    if (!empty($sessions)) {
+    $userfields = facetoface_get_userfields();
+    foreach ($userfields as $shortname => $fullname) {
+        $worksheet->write_string(0, $pos++, $fullname);
+    }
 
-        $i = 0;
+    $worksheet->write_string(0, $pos++, get_string('attendance', 'facetoface'));
+    return $pos;
+}
+
+/**
+ * Write in the worksheet the given facetoface attendance information
+ * filtered by location.
+ *
+ * This function includes lots of custom SQL because it's otherwise
+ * way too slow.
+ *
+ * @param object  $worksheet    Currently open worksheet
+ * @param integer $startingrow  Index of the starting row (usually 1)
+ * @param integer $facetofaceid ID of the facetoface activity
+ * @param string  $location     Location to filter by
+ * @param string  $coursename   Name of the course (optional)
+ * @param string  $activityname Name of the facetoface activity (optional)
+ * @param object  $dateformat   Use to write out dates in the spreadsheet
+ * @returns integer Index of the last row written
+ */
+function facetoface_write_activity_attendance(&$worksheet, $startingrow, $facetofaceid, $location,
+                                              $coursename, $activityname, $dateformat)
+{
+    global $CFG;
+
+    $userfields = facetoface_get_userfields();
+    $customsessionfields = facetoface_get_session_customfields();
+    $timenow = time();
+    $i = $startingrow;
+
+    $locationcondition = '';
+    if (!empty($location)) {
+        $locationcondition = "AND s.location='$location'";
+    }
+
+    // Fast version of "facetoface_get_attendees()" for all sessions
+    $sessionsignups = array();
+    $signups = get_records_sql("SELECT s.id AS submissionid, s.sessionid AS sessionid, u.*,
+                                       f.course AS courseid, 0 AS grade
+                                  FROM {$CFG->prefix}facetoface f
+                                  JOIN {$CFG->prefix}facetoface_submissions s ON s.facetoface = f.id
+                                  JOIN {$CFG->prefix}user u ON u.id = s.userid
+                                 WHERE f.id = $facetofaceid AND s.timecancelled = 0
+                              ORDER BY s.sessionid, u.firstname, u.lastname");
+    if ($signups) {
+        // Get all grades at once
+        $userids = array();
+        foreach ($signups as $signup) {
+            if ($signup->id > 0) {
+                $userids[] = $signup->id;
+            }
+        }
+        $grading_info = grade_get_grades(reset($signups)->courseid, 'mod', 'facetoface',
+                                         $facetofaceid, $userids);
+
+        foreach ($signups as $signup) {
+            $userid = $signup->id;
+
+            if ($customuserfields = facetoface_get_user_customfields($userid, $userfields)) {
+                foreach ($customuserfields as $fieldname => $value) {
+                    if (!isset($signup->$fieldname)) {
+                        $signup->$fieldname = $value;
+                    }
+                }
+            }
+
+            // Set grade
+            if (!empty($grading_info->items) and !empty($grading_info->items[0]->grades[$userid])) {
+                $signup->grade = $grading_info->items[0]->grades[$userid]->str_grade;
+            }
+
+            $sessionsignups[$signup->sessionid][] = $signup;
+        }
+    }
+
+    // Fast version of "facetoface_get_sessions($facetofaceid, $location)"
+    $sql = "SELECT s.id, s.datetimeknown, s.capacity,
+                   s.duration, d.timestart, d.timefinish
+              FROM {$CFG->prefix}facetoface_sessions s
+              JOIN {$CFG->prefix}facetoface_sessions_dates d ON s.id = d.sessionid
+             WHERE s.facetoface=$facetofaceid AND d.sessionid = s.id
+                   $locationcondition
+          ORDER BY s.datetimeknown, d.timestart";
+
+    if ($sessions = get_records_sql($sql)) {
+        $i = $i - 1; // will be incremented BEFORE each row is written
+
         foreach ($sessions as $session) {
+            $customdata = get_records('facetoface_session_data', 'sessionid', $session->id, '', 'fieldid, data');
+
+            $sessiondate = false;
+            $starttime   = get_string('wait-listed', 'facetoface');
+            $finishtime  = get_string('wait-listed', 'facetoface');
+            $status      = get_string('wait-listed', 'facetoface');
 
             if ($session->datetimeknown) {
                 // Display only the first date
-                $sessiondate = userdate($session->sessiondates[0]->timestart, get_string('strftimedate'));
-                $starttime   = userdate($session->sessiondates[0]->timestart, get_string('strftimetime'));
-                $finishtime  = userdate($session->sessiondates[0]->timefinish, get_string('strftimetime'));
+                if (method_exists($worksheet, 'write_date')) {
+                    // Needs the patch in MDL-20781
+                    $sessiondate = (int)$session->timestart;
+                }
+                else {
+                    $sessiondate = userdate($session->timestart, get_string('strftimedate'));
+                }
+                $starttime   = userdate($session->timestart, get_string('strftimetime'));
+                $finishtime  = userdate($session->timefinish, get_string('strftimetime'));
 
-                if (facetoface_has_session_started($session, $timenow)) {
+                if ($session->timestart < $timenow) {
                     $status = get_string('sessionover', 'facetoface');
                 }
                 else {
-                    $signupcount = facetoface_get_num_attendees($session->id);
+                    $signupcount = 0;
+                    if (!empty($sessionsignups[$session->id])) {
+                        $signupcount = count($sessionsignups[$session->id]);
+                    }
+
                     if ($signupcount >= $session->capacity) {
                         $status = get_string('bookingfull', 'facetoface');
                     } else {
@@ -1067,100 +1073,174 @@ function facetoface_download_attendance($facetofacename, $facetofaceid, $locatio
                     }
                 }
             }
-            else {
-                $sessiondate = get_string('wait-listed', 'facetoface');
-                $starttime   = get_string('wait-listed', 'facetoface');
-                $finishtime  = get_string('wait-listed', 'facetoface');
-                $status      = get_string('wait-listed', 'facetoface');
-            }
 
-            $attendees = facetoface_get_attendees($session->id);
+            if (!empty($sessionsignups[$session->id])) {
+                foreach ($sessionsignups[$session->id] as $attendee) {
+                    $i++; $j=0;
 
-            if (!empty($attendees)) {
-                foreach ($attendees as $attendee) {
-                    $student = get_complete_user_data('id', $attendee->id);
-                    if (!empty($student)) {
-                        $i++; $j=0;
-                        $worksheet->write_string($i,$j++,$session->location);
-                        $worksheet->write_string($i,$j++,$session->venue);
-                        $worksheet->write_string($i,$j++,$sessiondate);
-                        $worksheet->write_string($i,$j++,$starttime);
-                        $worksheet->write_string($i,$j++,$finishtime);
-                        $worksheet->write_string($i,$j++,$status);
-                        foreach ($userfields as $field) {
-                            $worksheet->write_string($i,$j++,$student->{$field->shortname});
+                    // Custom session fields
+                    foreach ($customsessionfields as $field) {
+                        if (empty($field->showinsummary)) {
+                            continue; // skip
                         }
-                        $worksheet->write_string($i,$j++,$attendee->grade);
+
+                        $data = '-';
+                        if (!empty($customdata[$field->id])) {
+                            $data = $customdata[$field->id]->data;
+                        }
+                        $worksheet->write_string($i, $j++, $data);
+                    }
+
+                    if (empty($sessiondate)) {
+                        $worksheet->write_string($i, $j++, $status); // session date
+                    }
+                    else {
+                        if (method_exists($worksheet, 'write_date')) {
+                            $worksheet->write_date($i, $j++, $sessiondate, $dateformat);
+                        }
+                        else {
+                            $worksheet->write_string($i, $j++, $sessiondate);
+                        }
+                    }
+                    $worksheet->write_string($i,$j++,$starttime);
+                    $worksheet->write_string($i,$j++,$finishtime);
+                    $worksheet->write_number($i,$j++,(int)$session->duration);
+                    $worksheet->write_string($i,$j++,$status);
+                    foreach ($userfields as $shortname => $fullname) {
+                        $value = '-';
+                        if (!empty($attendee->$shortname)) {
+                            $value = $attendee->$shortname;
+                        }
+
+                        if ('firstaccess' == $shortname or 'lastaccess' == $shortname or
+                            'lastlogin' == $shortname or 'currentlogin' == $shortname) {
+
+                            if (method_exists($worksheet, 'write_date')) {
+                                $worksheet->write_date($i, $j++, (int)$value, $dateformat);
+                            }
+                            else {
+                                $worksheet->write_string($i, $j++, userdate($value, get_string('strftimedate')));
+                            }
+                        }
+                        else {
+                            $worksheet->write_string($i,$j++,$value);
+                        }
+                    }
+                    $worksheet->write_string($i,$j++,$attendee->grade);
+
+                    if (!empty($coursename)) {
+                        $worksheet->write_string($i, $j++, $coursename);
+                    }
+                    if (!empty($activityname)) {
+                        $worksheet->write_string($i, $j++, $activityname);
                     }
                 }
             }
             else {
                 // no one is sign-up, so let's just print the basic info
                 $i++; $j=0;
-                $worksheet->write_string($i,$j++,$session->location);
-                $worksheet->write_string($i,$j++,$session->venue);
-                $worksheet->write_string($i,$j++,$sessiondate);
+
+                // Custom session fields
+                foreach ($customsessionfields as $field) {
+                    if (empty($field->showinsummary)) {
+                        continue; // skip
+                    }
+
+                    $data = '-';
+                    if (!empty($customdata[$field->id])) {
+                        $data = $customdata[$field->id]->data;
+                    }
+                    $worksheet->write_string($i, $j++, $data);
+                }
+
+                if (empty($sessiondate)) {
+                    $worksheet->write_string($i, $j++, $status); // session date
+                }
+                else {
+                    if (method_exists($worksheet, 'write_date')) {
+                        $worksheet->write_date($i, $j++, $sessiondate, $dateformat);
+                    }
+                    else {
+                        $worksheet->write_string($i, $j++, $sessiondate);
+                    }
+                }
                 $worksheet->write_string($i,$j++,$starttime);
                 $worksheet->write_string($i,$j++,$finishtime);
+                $worksheet->write_number($i,$j++,(int)$session->duration);
                 $worksheet->write_string($i,$j++,$status);
-                foreach ($userfields as $field) {
+                foreach ($userfields as $unused) {
                     $worksheet->write_string($i,$j++,'-');
                 }
                 $worksheet->write_string($i,$j++,'-');
+
+                if (!empty($coursename)) {
+                    $worksheet->write_string($i, $j++, $coursename);
+                }
+                if (!empty($activityname)) {
+                    $worksheet->write_string($i, $j++, $activityname);
+                }
             }
         }
     }
 
-    $workbook->close();
-    exit;
+    return $i;
 }
 
 /**
- * Return an array of all of the locations where the given facetoface
- * activity has sessions
+ * Return an object with all values for a user's custom fields.
+ *
+ * This is about 15 times faster than the custom field API.
+ *
+ * @param array $fieldstoinclude Limit the fields returned/cached to these ones (optional)
  */
-function facetoface_get_locations($facetofaceid) { 
-    global $CFG; 
-    if ($sessions = get_records_sql("SELECT DISTINCT location, id, venue
-                                         FROM {$CFG->prefix}facetoface_sessions
-                                         WHERE facetoface = $facetofaceid
-                                         ORDER BY location")) {
+function facetoface_get_user_customfields($userid, $fieldstoinclude=false)
+{
+    global $CFG;
 
-        $i=1;
-        $locationmenu[''] = get_string('alllocations', 'facetoface');
-        foreach ($sessions as $session) {
-            $f = $session->id;
-            $locationmenu[$session->location] = $session->location;
-            $i++;
-        }
-
-        return $locationmenu;
-
-    } else {
-        
-        return '';
-
+    // Cache all lookup
+    static $customfields = null;
+    if (null == $customfields) {
+        $customfields = array();
     }
+
+    if (!empty($customfields[$userid])) {
+        return $customfields[$userid];
+    }
+
+    $ret = new object();
+
+    $sql = "SELECT if.shortname, id.data
+              FROM {$CFG->prefix}user_info_field if
+              JOIN {$CFG->prefix}user_info_data id ON id.fieldid = if.id
+             WHERE id.userid = $userid";
+    if ($customfields = get_records_sql($sql)) {
+        foreach ($customfields as $field) {
+            $fieldname = $field->shortname;
+            if (false === $fieldstoinclude or !empty($fieldstoinclude[$fieldname])) {
+                $ret->$fieldname = $field->data;
+            }
+        }
+    }
+
+    $customfields[$userid] = $ret;
+    return $ret;
 }
 
 /**
  * Return list of marked submissions that have not been mailed out for currently enrolled students
  */
-function facetoface_get_unmailed_reminders() {
-
+function facetoface_get_unmailed_reminders()
+{
     global $CFG;
 
     $submissions = get_records_sql("SELECT su.*, f.course, f.id as facetofaceid, f.name as facetofacename,
                                            f.reminderperiod, se.duration, se.normalcost, se.discountcost,
-                                           se.location, se.venue, se.room, se.details, se.datetimeknown
-                                       FROM {$CFG->prefix}facetoface_submissions su,
-                                            {$CFG->prefix}facetoface_sessions se,
-                                            {$CFG->prefix}facetoface f,
-                                            {$CFG->prefix}course c
-                                       WHERE su.mailedreminder = 0 AND se.datetimeknown=1 AND
-                                             f.course=c.id AND su.sessionid=se.id AND
-                                             se.facetoface=f.id AND f.id=su.facetoface AND
-                                             su.timecancelled = 0");
+                                           se.details, se.datetimeknown
+                                      FROM {$CFG->prefix}facetoface_submissions su
+                                      JOIN {$CFG->prefix}facetoface_sessions se ON su.sessionid = se.id
+                                      JOIN {$CFG->prefix}facetoface f ON se.facetoface = f.id
+                                     WHERE su.mailedreminder = 0 AND se.datetimeknown=1 AND
+                                           su.timecancelled = 0");
 
     if ($submissions) {
         foreach ($submissions as $key => $value) {
@@ -1246,21 +1326,36 @@ function facetoface_user_signup($session, $facetoface, $course, $discountcode,
 /**
  * Cancel a user who signed up earlier
  *
- * @param class $session record from the facetoface_sessions table
- * @param integer $userid ID of the user to remove from the session
+ * @param class $session       Record from the facetoface_sessions table
+ * @param integer $userid      ID of the user to remove from the session
+ * @param bool $forcecancel    Forces cancellation of sessions that have already occurred
+ * @param string $errorstr     Passed by reference. For setting error string in calling function
+ * @param string $cancelreason Optional justification for cancelling the signup
  */
-function facetoface_user_cancel($session, $userid=false) {
-
+function facetoface_user_cancel($session, $userid=false, $forcecancel=false, &$errorstr=null, $cancelreason='')
+{
     if (!$userid) {
         global $USER;
         $userid = $USER->id;
     }
 
-    if (facetoface_user_cancel_submission($session->id, $userid)) {
+    // if $forcecancel is set, cancel session even if already occurred
+    // used by facetotoface_delete_session()
+    if (!$forcecancel) {
+        $timenow = time();
+        // don't allow user to cancel a session that has already occurred
+        if (facetoface_has_session_started($session, $timenow)) {
+            $errorstr = get_string('error:eventoccurred', 'facetoface');
+            return false;
+        }
+    }
+
+    if (facetoface_user_cancel_submission($session->id, $userid, $cancelreason)) {
         facetoface_remove_bookings_from_user_calendar($session, $userid);
         return true;
     }
 
+    $errorstr = get_string('error:cancelbooking', 'facetoface');
     return false;
 }
 
@@ -1342,7 +1437,7 @@ function facetoface_send_notice($postsubject, $posttext, $posttextmgrheading,
                                                       $user, $session, $session->id);
             $body = facetoface_email_substitutions($posttext, $facetoface->name, $facetoface->reminderperiod,
                                                    $user, $session, $session->id);
-            $htmlbody = ''; // TODO
+            $htmlbody = ''; // FIXME
             $icalattachments[] = array('filename' => $filename, 'subject' => $subject,
                                        'body' => $body, 'htmlbody' => $htmlbody);
         }
@@ -1354,13 +1449,10 @@ function facetoface_send_notice($postsubject, $posttext, $posttextmgrheading,
     $posttext = facetoface_email_substitutions($posttext, $facetoface->name, $facetoface->reminderperiod,
                                                $user, $session, $session->id);
 
-    if (!empty($posttextmgrheading)) {
-        $posttextmgrheading = facetoface_email_substitutions($posttextmgrheading, $facetoface->name,
-                                                             $facetoface->reminderperiod, $user, $session,
-                                                             $session->id);
-    }
+    $posttextmgrheading = facetoface_email_substitutions($posttextmgrheading, $facetoface->name, $facetoface->reminderperiod,
+                                                         $user, $session, $session->id);
 
-    $posthtml = ''; // TODO: provide an HTML version of these notices
+    $posthtml = ''; // FIXME
     $fromaddress = get_config(NULL, 'facetoface_fromaddress');
     if (!$fromaddress) {
         $fromaddress = '';
@@ -1405,11 +1497,14 @@ function facetoface_send_notice($postsubject, $posttext, $posttextmgrheading,
         ($session->datetimeknown || !empty($facetoface->thirdpartywaitlist))) {
 
         $thirdparty = $user;
-        $thirdparty->email = $facetoface->thirdparty;
+        $recipients = explode(',', $facetoface->thirdparty);
+        foreach ($recipients as $recipient) {
+            $thirdparty->email = trim($recipient);
 
-        // Leave out the ical attachments in the 3rd parties notification
-        if (!email_to_user($thirdparty, $fromaddress, $postsubject, $posttext, $posthtml)) {
-            return get_string('error:cannotsendconfirmationthirdparty', 'facetoface');
+            // Leave out the ical attachments in the 3rd parties notification
+            if (!email_to_user($thirdparty, $fromaddress, $postsubject, $posttext, $posthtml)) {
+                return get_string('error:cannotsendconfirmationthirdparty', 'facetoface');
+            }
         }
     }
 }
@@ -1476,13 +1571,14 @@ function facetoface_send_cancellation_notice($facetoface, $session, $userid) {
  * facetoface activity
  *
  * @global class $USER used to get the current userid
+ * @returns integer The session id that we signed up for, false otherwise
  */
 function facetoface_check_signup($facetofaceid) {
 
     global $USER;
 
     if ($submissions = facetoface_get_user_submissions($facetofaceid, $USER->id)) {
-        return true;
+        return reset($submissions)->sessionid;
     } else {
         return false;
     }
@@ -1630,7 +1726,7 @@ function facetoface_take_attendance($data) {
             $submissionid = substr($key, 13);
             $selectedsubmissionids[$submissionid]=$submissionid;
 
-            // TODO: This is not very efficient, we should do this
+            // FIXME: This is not very efficient, we should do this
             // query outside of the loop to get all submissions for a
             // given Face-to-face ID, then call
             // facetoface_grade_item_update with an array of grade
@@ -1700,173 +1796,186 @@ function facetoface_take_individual_attendance($submissionid,$didattend) {
  * facetoface activity on the course page
  *
  * @global class $USER used to get the current userid
+ * @global class $CFG used to get the path to the module
  */
-function facetoface_print_coursemodule_info($coursemodule) {
-
+function facetoface_print_coursemodule_info($coursemodule)
+{
     global $CFG, $USER;
 
-    $info = NULL;
+    $contextmodule = get_context_instance(CONTEXT_MODULE, $coursemodule->id);
+    if (!has_capability('mod/facetoface:view', $contextmodule)) {
+        return ''; // not allowed to view this activity
+    }
+
     $table = '';
-
     $timenow = time();
+    $facetofacepath = "$CFG->wwwroot/mod/facetoface";
+
     $facetofaceid = $coursemodule->instance;
+    $facetoface = get_record('facetoface', 'id', $facetofaceid);
+    if (!$facetoface) {
+        error_log("facetoface: ask to print coursemodule info for a non-existent activity ($facetofaceid)");
+        return '';
+    }
 
-    if ($facetoface = get_record('facetoface', 'id', $facetofaceid)) {
+    // Link to display for when there are no sessions to show
+    $strdimmed = '';
+    if (!$coursemodule->visible) {
+        $strdimmed = ' class="dimmed"';
+    }
+    $strfacetoface = get_string('facetoface', 'facetoface');
+    $activitynameonly = "<img src=\"$CFG->pixpath/mod/facetoface/icon.gif\" class=\"activityicon\" alt=\"$strfacetoface\" />".
+                        "<a title=\"$strfacetoface\" $strdimmed href=\"$facetofacepath/view.php?f=$facetofaceid\">$strfacetoface</a>";
 
-        $context = get_context_instance(CONTEXT_MODULE, $coursemodule->id);
-        if (has_capability('mod/facetoface:view', $context)) {
+    if ($submissions = facetoface_get_user_submissions($facetofaceid, $USER->id)) {
+        // User has signedup for the instance
+        $submission = array_shift($submissions);
 
-            if ($submissions = facetoface_get_user_submissions($facetofaceid, $USER->id)) {
-                // User has signedup for the instance
+        if ($session = facetoface_get_session($submission->sessionid)) {
+            $sessiondate = '';
+            $sessiontime = '';
 
-                $submission = array_shift($submissions);
-
-                if ($session = facetoface_get_session($submission->sessionid)) {
-
-                    if ($session->datetimeknown) {
-
-                        $sessiondate = '';
-                        $sessiontime = '';
-                        foreach ($session->sessiondates as $date) {
-                            if (!empty($sessiondate)) {
-                                $sessiondate .= '<br />';
-                            }
-                            $sessiondate .= userdate($date->timestart, get_string('strftimedate'));
-                            if (!empty($sessiontime)) {
-                                $sessiontime .= '<br />';
-                            }
-                            $sessiontime .= userdate($date->timestart, get_string('strftimetime')).
-                                ' - '.userdate($date->timefinish, get_string('strftimetime'));
-                        }
-
-                    } else {
-
-                        $sessiondate = get_string('wait-listed', 'facetoface');
-                        $sessiontime = get_string('wait-listed', 'facetoface');
-
+            if ($session->datetimeknown) {
+                foreach ($session->sessiondates as $date) {
+                    if (!empty($sessiondate)) {
+                        $sessiondate .= '<br />';
                     }
-
-                    $table = '<table border="0" cellpadding="1" cellspacing="0" width="90%">'
-                            .'<tr>'
-                            .'<td colspan="4"><span style="font-size: 11px; font-weight: bold; line-height: 14px;">'.get_string('bookingstatus', 'facetoface').':</span></td>'
-                            .'<td><span style="font-size: 11px; font-weight: bold; line-height: 14px;">'.get_string('options', 'facetoface').':</span></td>'
-                            .'</tr>'
-                            .'<tr>'
-                            .'<td>'.$session->location.'</td>' 
-                            .'<td>'.$session->venue.'</td>' 
-                            .'<td>'.$sessiondate.'</td>' 
-                            .'<td>'.$sessiontime.'</td>'
-                            .'<td><table border="0"><tr><td><span style="font-size: 11px; font-weight: bold; line-height: 14px;"><a href="'.$CFG->wwwroot.'/mod/facetoface/signup.php?s='.$session->id.'" alt="'.get_string('moreinfo', 'facetoface').'" title="'.get_string('moreinfo', 'facetoface').'">'.get_string('moreinfo', 'facetoface').'</a></span></td>'
-                            .'</tr>'
-                            .'<tr>'
-                            .'<td><span style="font-size: 11px; font-weight: bold; line-height: 14px;"><a href="'.$CFG->wwwroot.'/mod/facetoface/attendees.php?s='.$session->id.'" alt="'.get_string('seeattendees', 'facetoface').'" title="'.get_string('seeattendees', 'facetoface').'">'.get_string('seeattendees', 'facetoface').'</a></span></td>'
-                            .'</tr>'
-                            .'<tr>'
-                            .'<td><span style="font-size: 11px; font-weight: bold; line-height: 14px;"><a href="'.$CFG->wwwroot.'/mod/facetoface/signup.php?s='.$session->id.'&amp;cancelbooking=1" alt="'.get_string('cancelbooking', 'facetoface').'" title="'.get_string('cancelbooking', 'facetoface').'">'.get_string('cancelbooking', 'facetoface').'</a></span></td>'
-                            .'</tr>'
-                            .'<tr>'
-                            .'<td><span style="font-size: 11px; font-weight: bold; line-height: 14px"><a href="'.$CFG->wwwroot.'/mod/facetoface/view.php?f='.$facetofaceid.'" alt="'.get_string('viewallsessions', 'facetoface').'" title="'.get_string('viewallsessions', 'facetoface').'">'.get_string('viewallsessions', 'facetoface').'</a></span></td>'
-                            .'</tr>'
-                            .'</table></td></tr>'
-                            .'</table>';
-
-
+                    $sessiondate .= userdate($date->timestart, get_string('strftimedate'));
+                    if (!empty($sessiontime)) {
+                        $sessiontime .= '<br />';
+                    }
+                    $sessiontime .= userdate($date->timestart, get_string('strftimetime')).
+                        ' - '.userdate($date->timefinish, get_string('strftimetime'));
                 }
-
-            } elseif ($sessions = facetoface_get_sessions($facetofaceid)) {
-
-                if ($facetoface->display == 0) {
-
-                    $table .= '<table border="0" cellpadding="1" cellspacing="0" width="100%">'
-                            .'   <tr>'
-                            .'       <td colspan="2"><span style="font-size: 11px; font-weight: bold; line-height: 14px;">'.get_string('signupforsession', 'facetoface').':</span></td>'
-                            .'   </tr>';
-                    $table .= '   <tr>'
-                            .'     <td colspan="2"><span style="font-size: 11px; font-weight: bold; line-height: 14px"><a href="'.$CFG->wwwroot.'/mod/facetoface/view.php?f='.$facetofaceid.'" alt="'.get_string('viewallsessions', 'facetoface').'" title="'.get_string('viewallsessions', 'facetoface').'">'.get_string('viewallsessions', 'facetoface').'</a></span></td>'
-                            .'   </tr>'
-                            .'</table>';
-
-                } else {
-
-                    $table = '<table border="0" cellpadding="1" cellspacing="0" width="100%">'
-                            .'   <tr>'
-                            .'       <td colspan="2"><span style="font-size: 11px; font-weight: bold; line-height: 14px;">'.get_string('signupforsession', 'facetoface').':</span></td>'
-                            .'   </tr>';
-
-                    $i=0;
-
-                    foreach($sessions as $session) {
-
-                        if ($session->datetimeknown && (facetoface_has_session_started($session, $timenow))) {
-                            continue;
-                         }
-
-                        $signupcount = facetoface_get_num_attendees($session->id);
-                        if ($signupcount >= $session->capacity) continue;
-
-                        $multiday = '';
-                        if ($session->datetimeknown) {
-
-                            if (empty($session->sessiondates)) {
-                                $sessiondate = get_string('unknowndate', 'facetoface');
-                                $sessiontime = get_string('unknowntime', 'facetoface');
-                            } else {
-                                $sessiondate = userdate($session->sessiondates[0]->timestart, get_string('strftimedate'));
-                                $sessiontime = userdate($session->sessiondates[0]->timestart, get_string('strftimetime')).
-                                    ' - '.userdate($session->sessiondates[0]->timefinish, get_string('strftimetime'));
-                                if (count($session->sessiondates) > 1) {
-                                    $multiday = ' ('.get_string('multiday', 'facetoface').')';
-                                }
-                            }
-
-                        } else {
-
-                            $sessiondate = get_string('wait-listed', 'facetoface');
-                            $sessiontime = "";
-
-                        }
-
-                        if ($i == 0) {
-                            $table .= '   <tr>';
-                            $i++;
-                        } else if ($i++ % 2 == 0) {
-                            if ($i > $facetoface->display) {
-                                break;
-                            }
-                            $table .= '   </tr>';
-                            $table .= '   <tr>';
-                        }
-                        $table .= '      <td><span style="font-size: 11px; line-height: 14px;"><a href="'.$CFG->wwwroot.'/mod/facetoface/signup.php?s='.$session->id.'">'.$session->location.', '.$sessiondate.'<br />'.$sessiontime.$multiday.'</a></span></td>';
-                    }
-                    if ($i++ % 2 == 0) {
-                        $table .= '<td><span style="font-size: 11px; line-height: 14px;">&nbsp;</span></td>';
-                    }
-                    $table .= '   </tr>'
-                        .'   <tr>'
-                        .'     <td colspan="2"><span style="font-size: 11px; font-weight: bold; line-height: 14px"><a href="'.$CFG->wwwroot.'/mod/facetoface/view.php?f='.$facetofaceid.'" alt="'.get_string('viewallsessions', 'facetoface').'" title="'.get_string('viewallsessions', 'facetoface').'">'.get_string('viewallsessions', 'facetoface').'</a></span></td>'
-                        .'   </tr>'
-                        .'</table>';
-                }
-
-            } else {
-
-                if (has_capability('mod/facetoface:viewemptyactivities', $context)) {
-
-                    $strdimmed = '';
-
-                    if (!$coursemodule->visible) {
-                        $strdimmed = ' class="dimmed"';
-                    }
-
-                    $table = '<img src="'.$CFG->wwwroot.'/mod/facetoface/icon.gif" class="activityicon" alt="'.get_string('facetoface', 'facetoface').'" /> <a title="'.get_string('facetoface', 'facetoface').'"'.$strdimmed.' href="'.$CFG->wwwroot.'/mod/facetoface/view.php?f='.$facetofaceid.'">'.get_string('facetoface','facetoface').'</a>';
-
-                }
-
+            }
+            else {
+                $sessiondate = get_string('wait-listed', 'facetoface');
+                $sessiontime = get_string('wait-listed', 'facetoface');
             }
 
+            // don't include the link to cancel a session if it has already occurred
+            $cancellink = '';
+            if (!facetoface_has_session_started($session, $timenow)) {
+                $strcancelbooking = get_string('cancelbooking', 'facetoface');
+                $cancellink = "<tr><td><a class=\"f2fsessionlinks\" href=\"$facetofacepath/cancelsignup.php?s={$session->id}\" title=\"$strcancelbooking\">$strcancelbooking</a></td></tr>";
+            }
+
+            $strmoreinfo = get_string('moreinfo', 'facetoface');
+            $strseeattendees = get_string('seeattendees', 'facetoface');
+            $strviewallsessions = get_string('viewallsessions', 'facetoface');
+
+            $location = '&nbsp;';
+            $venue = '&nbsp;';
+            $customfielddata = facetoface_get_customfielddata($session->id);
+            if (!empty($customfielddata['location'])) {
+                $location = $customfielddata['location']->data;
+            }
+            if (!empty($customfielddata['venue'])) {
+                $venue = $customfielddata['venue']->data;
+            }
+
+            $table = '<table border="0" cellpadding="1" cellspacing="0" width="90%" summary="">'
+                .'<tr>'
+                .'<td class="f2fsessionnotice" colspan="4">'.get_string('bookingstatus', 'facetoface').':</td>'
+                .'<td><span class="f2fsessionnotice" >'.get_string('options', 'facetoface').':</span></td>'
+                .'</tr>'
+                .'<tr>'
+                .'<td>'.$location.'</td>'
+                .'<td>'.$venue.'</td>'
+                .'<td>'.$sessiondate.'</td>'
+                .'<td>'.$sessiontime.'</td>'
+                ."<td><table border=\"0\" summary=\"\"><tr><td><a class=\"f2fsessionlinks\" href=\"$facetofacepath/signup.php?s=$session->id\" title=\"$strmoreinfo\">$strmoreinfo</a></td>"
+                .'</tr>'
+                .'<tr>'
+                ."<td><a class=\"f2fsessionlinks\" href=\"$facetofacepath/attendees.php?s=$session->id\" title=\"$strseeattendees\">$strseeattendees</a></td>"
+                .'</tr>'
+                .$cancellink
+                .'<tr>'
+                ."<td><a class=\"f2fsessionlinks\" href=\"$facetofacepath/view.php?f=$facetofaceid\" title=\"$strviewallsessions\">$strviewallsessions</a></td>"
+                .'</tr>'
+                .'</table></td></tr>'
+                .'</table>';
+        }
+    }
+    elseif ($sessions = facetoface_get_sessions($facetofaceid)) {
+        if ($facetoface->display == 0) { // i.e. don't display session times on course page
+            return $activitynameonly;
         }
 
-    } 
+        $table = '<table border="0" cellpadding="1" cellspacing="0" width="100%" summary="">'
+            .'   <tr>'
+            .'       <td class="f2fsessionnotice" colspan="2">'.get_string('signupforsession', 'facetoface').':</td>'
+            .'   </tr>';
+
+        $i=0;
+        foreach($sessions as $session) {
+            if ($session->datetimeknown && (facetoface_has_session_started($session, $timenow))) {
+                continue;
+            }
+
+            if (!facetoface_session_has_capacity($session, $contextmodule)) {
+                continue;
+            }
+
+            $multiday = '';
+            $sessiondate = '';
+            $sessiontime = '';
+
+            if ($session->datetimeknown) {
+                if (empty($session->sessiondates)) {
+                    $sessiondate = get_string('unknowndate', 'facetoface');
+                    $sessiontime = get_string('unknowntime', 'facetoface');
+                }
+                else {
+                    $sessiondate = userdate($session->sessiondates[0]->timestart, get_string('strftimedate'));
+                    $sessiontime = userdate($session->sessiondates[0]->timestart, get_string('strftimetime')).
+                        ' - '.userdate($session->sessiondates[0]->timefinish, get_string('strftimetime'));
+                    if (count($session->sessiondates) > 1) {
+                        $multiday = ' ('.get_string('multiday', 'facetoface').')';
+                    }
+                }
+            }
+            else {
+                $sessiondate = get_string('wait-listed', 'facetoface');
+            }
+
+            if ($i == 0) {
+                $table .= '   <tr>';
+                $i++;
+            }
+            else if ($i++ % 2 == 0) {
+                if ($i > $facetoface->display) {
+                    break;
+                }
+                $table .= '   </tr>';
+                $table .= '   <tr>';
+            }
+
+            $locationstring = '';
+            $customfielddata = facetoface_get_customfielddata($session->id);
+            if (!empty($customfielddata['location'])) {
+                $locationstring = $customfielddata['location']->data . ', ';
+            }
+
+            $table .= "      <td><a href=\"$facetofacepath/signup.php?s=$session->id\">{$locationstring}$sessiondate<br />{$sessiontime}$multiday</a></td>";
+        }
+        if ($i++ % 2 == 0) {
+            $table .= '<td>&nbsp;</td>';
+        }
+
+        $strviewallsessions = get_string('viewallsessions', 'facetoface');
+        $table .= '   </tr>'
+            .'   <tr>'
+            ."     <td colspan=\"2\"><a class=\"f2fsessionlinks\" href=\"$facetofacepath/view.php?f=$facetofaceid\" title=\"$strviewallsessions\">$strviewallsessions</a></td>"
+            .'   </tr>'
+            .'</table>';
+    }
+    elseif (has_capability('mod/facetoface:viewemptyactivities', $contextmodule)) {
+        return $activitynameonly;
+    }
+    else {
+        // Nothing to display to this user
+    }
 
     return $table;
 }
@@ -1877,7 +1986,8 @@ function facetoface_print_coursemodule_info($coursemodule) {
  * @param integer $method The method, @see {{MDL_F2F_INVITE}}
  * @return string Filename of the attachment in the temp directory
  */
-function facetoface_get_ical_attachment($method, $facetoface, $session, $user) {
+function facetoface_get_ical_attachment($method, $facetoface, $session, $user)
+{
     global $CFG;
 
     // First, generate all the VEVENT blocks
@@ -1898,20 +2008,37 @@ function facetoface_get_ical_attachment($method, $facetoface, $session, $user) {
         $DTSTART = facetoface_ical_generate_timestamp($date->timestart);
         $DTEND   = facetoface_ical_generate_timestamp($date->timefinish);
 
-        // TODO: currently we are not sending updates if the times of the 
+        // FIXME: currently we are not sending updates if the times of the
         // sesion are changed. This is not ideal!
         $SEQUENCE = ($method & MDL_F2F_CANCEL) ? 1 : 0;
 
-        // TODO: escape these: must wrap at 75 octets and some characters must 
-        // be backslash escaped
         $SUMMARY     = facetoface_ical_escape($facetoface->name);
-        $DESCRIPTION = facetoface_ical_escape($session->details);
+        $DESCRIPTION = facetoface_ical_escape($session->details, true);
+
+        // Get the location data from custom fields if they exist
+        $customfielddata = facetoface_get_customfielddata($session->id);
+        $locationstring = '';
+        if (!empty($customfielddata['room'])) {
+            $locationstring .= $customfielddata['room']->data;
+        }
+        if (!empty($customfielddata['venue'])) {
+            if (!empty($locationstring)) {
+                $locationstring .= "\n";
+            }
+            $locationstring .= $customfielddata['venue']->data;
+        }
+        if (!empty($customfielddata['location'])) {
+            if (!empty($locationstring)) {
+                $locationstring .= "\n";
+            }
+            $locationstring .= $customfielddata['location']->data;
+        }
 
         // NOTE: Newlines are meant to be encoded with the literal sequence 
         // '\n'. But evolution presents a single line text field for location, 
         // and shows the newlines as [0x0A] junk. So we switch it for commas 
         // here. Remember commas need to be escaped too.
-        $LOCATION    = str_replace('\n', '\, ', facetoface_ical_escape("{$session->room}\n{$session->venue}\n{$session->location}"));
+        $LOCATION    = str_replace('\n', '\, ', facetoface_ical_escape($locationstring));
 
         $ORGANISEREMAIL = get_config(NULL, 'facetoface_fromaddress');
 
@@ -1924,7 +2051,7 @@ function facetoface_get_ical_attachment($method, $facetoface, $session, $user) {
 
         $icalmethod = ($method & MDL_F2F_INVITE) ? 'REQUEST' : 'CANCEL';
 
-        // TODO: if the user has input their name in another language, we need 
+        // FIXME: if the user has input their name in another language, we need
         // to set the LANGUAGE property parameter here
         $USERNAME = fullname($user);
         $MAILTO   = $user->email;
@@ -1953,6 +2080,7 @@ EOF;
 
     $VEVENTS = trim($VEVENTS);
 
+    // TODO: remove the hard-coded timezone!
     $template = <<<EOF
 BEGIN:VCALENDAR
 CALSCALE:GREGORIAN
@@ -1996,7 +2124,15 @@ function facetoface_ical_generate_timestamp($timestamp) {
  *
  * See RFC2445 or http://www.kanzaki.com/docs/ical/text.html or a more readable definition
  */
-function facetoface_ical_escape($text) {
+function facetoface_ical_escape($text, $converthtml=false) {
+    if (empty($text)) {
+        return '';
+    }
+
+    if ($converthtml) {
+        $text = html_to_text($text);
+    }
+
     $text = str_replace(
         array('\\',   "\n", ';',  ','),
         array('\\\\', '\n', '\;', '\,'),
@@ -2120,25 +2256,27 @@ function facetoface_get_user_submissions($facetofaceid, $userid, $includecancell
 /**
  * Cancel users' submission to a facetoface session
  *
- * @param integer $session_id
- * @param integer $user_id
+ * @param integer $sessionid   ID of the facetoface_sessions record
+ * @param integer $userid      ID of the user record
+ * @param string $cancelreason Short justification for cancelling the signup
  * @return boolean success
  */
-function facetoface_user_cancel_submission($session_id, $user_id) {
-    global $CFG;
+function facetoface_user_cancel_submission($sessionid, $userid, $cancelreason='')
+{
+    $signup = get_record('facetoface_submissions', 'sessionid', $sessionid, 'userid', $userid, 'timecancelled', 0, 'id');
+    if (!$signup) {
+        return true; // not signed up, nothing to do
+    }
+
     $timenow = time();
-    return execute_sql("
-            UPDATE
-                {$CFG->prefix}facetoface_submissions
-            SET
-                timecancelled = $timenow,
-                timemodified = $timenow
-            WHERE
-                sessionid = $session_id
-                AND userid = $user_id
-                AND timecancelled = 0
-            ",
-            false);
+
+    $newsignup = new object();
+    $newsignup->id = $signup->id;
+    $newsignup->timecancelled = $timenow;
+    $newsignup->timemodified = $timenow;
+    $newsignup->cancelreason = $cancelreason;
+
+    return update_record('facetoface_submissions', $newsignup);
 }
 
 /**
@@ -2153,50 +2291,6 @@ function facetoface_get_view_actions() {
  */
 function facetoface_get_post_actions() {
     return array('cancel booking', 'signup');
-}
-
-/**
- * Get list of users that signed up then cancelled a facetoface session
- *
- * @param integer $session_id
- * @return array users
- */
-function facetoface_get_cancellations($session_id) {
-    global $CFG;
-
-    $records = get_records_sql("
-        SELECT
-            s.id AS submissionid,
-            u.id,
-            u.firstname,
-            u.lastname,
-            u.email,
-            s.timecreated,
-            s.timecancelled
-        FROM
-            {$CFG->prefix}facetoface_submissions s
-        JOIN
-            {$CFG->prefix}user u ON u.id = s.userid
-        WHERE
-            s.sessionid = $session_id
-            AND s.timecancelled > 0
-        ORDER BY
-            u.lastname,
-            u.firstname,
-            s.timecancelled
-    ");
-
-    return $records;
-}
-
-/**
- * Get number of users that signed up then cancelled a facetoface session
- *
- * @param integer $session_id
- * @return interger
- */
-function facetoface_get_num_cancellations($session_id) {
-    return (int) count_records_select('facetoface_submissions', "sessionid = $session_id AND timecancelled >  0");
 }
 
 /**
@@ -2307,6 +2401,57 @@ function facetoface_add_session_to_user_calendar($session, $eventname, $userid, 
 }
 
 /**
+ * Add a link to the session to the site Calendar
+ *
+ * @param class   $session     Record from the facetoface_sessions table
+ * @param class   $facetoface  Record from the facetoface table
+ */
+function facetoface_add_session_to_site_calendar($session, $facetoface)
+{
+    global $CFG;
+
+    if (empty($facetoface->showoncalendar) or empty($session->datetimeknown)) {
+        return true; // not meant for the calendar
+    }
+
+    $shortname = $facetoface->shortname;
+    if (empty($shortname)) {
+        $shortname = substr($facetoface->name, 0, CALENDAR_MAX_NAME_LENGTH);
+    }
+
+    $description = '';
+    if (!empty($facetoface->description)) {
+        $description .= '<p>'.clean_param($facetoface->description, FORMAT_HTML).'</p>';
+    }
+    $description .= facetoface_print_session($session, false, true, true);
+    $signupurl = "$CFG->wwwroot/mod/facetoface/signup.php?s=$session->id";
+    $description .= '<a href="' . $signupurl . '">' . get_string('signupforthissession', 'facetoface') . '</a>';
+
+    $result = true;
+    foreach ($session->sessiondates as $date) {
+        $newevent = new object();
+        $newevent->name = addslashes($shortname);
+        $newevent->description = addslashes($description);
+        $newevent->format = FORMAT_HTML;
+        $newevent->courseid = SITEID; // site-wide event
+        $newevent->groupid = 0;
+        $newevent->userid = 0; // not a user event
+        $newevent->uuid = "$session->id";
+        $newevent->instance = $session->facetoface;
+        $newevent->modulename = 'facetoface';
+        $newevent->eventtype = "facetofacesession";
+        $newevent->timestart = $date->timestart;
+        $newevent->timeduration = $date->timefinish - $date->timestart;
+        $newevent->visible = 1;
+        $newevent->timemodified = time();
+
+        $result = $result && insert_record('event', $newevent);
+    }
+
+    return $result;
+}
+
+/**
  * Remove all entries in the student's calendar which relate to this session.
  *
  * @param class $session    Record from the facetoface_sessions table
@@ -2317,7 +2462,23 @@ function facetoface_remove_bookings_from_user_calendar($session, $userid)
     return delete_records_select('event', "modulename = 'facetoface' AND
                                            eventtype = 'facetofacebooking' AND
                                            instance = $session->facetoface AND
-                                           userid = $userid");
+                                           userid = $userid AND
+                                           courseid = 0");
+}
+
+/**
+ * Remove all entries in the site calendar which relate to this session.
+ *
+ * @param class $session       Record from the facetoface_sessions table
+ */
+function facetoface_remove_session_from_site_calendar($session)
+{
+    return delete_records_select('event', "modulename = 'facetoface' AND
+                                           eventtype = 'facetofacesession' AND
+                                           instance = $session->facetoface AND
+                                           courseid = ". SITEID . " AND
+                                           uuid = '$session->id' AND
+                                           userid = 0");
 }
 
 /**
@@ -2360,15 +2521,216 @@ function facetoface_update_calendar_events($session, $eventtype)
 }
 
 /**
- * @param string $feature FEATURE_xx constant for requested feature
- * @return bool True if module supports feature
+ * Confirm that a user can be added to a session.
+ *
+ * @param class  $session Record from the facetoface_sessions table
+ * @param object $context A context object (record from context table)
+ * @return bool True if user can be added to session
+ **/
+function facetoface_session_has_capacity($session, $context) {
+
+    if (empty($session)) {
+        return false;
+    }
+
+    $signupcount = facetoface_get_num_attendees($session->id);
+    if ($signupcount >= $session->capacity) {
+        // if session is full, check if overbooking is allowed for this user
+        if (!has_capability('mod/facetoface:overbook', $context)) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+/**
+ * Print the details of a session
+ *
+ * @param object $session         Record from facetoface_sessions
+ * @param boolean $showcapacity   Show the capacity (true) or only the seats available (false)
+ * @param boolean $calendaroutput Whether the output should be formatted for a calendar event
+ * @param boolean $return         Whether to return (true) the html or print it directly (true)
  */
-function facetoface_supports($feature) {
-    switch($feature) {
-        case FEATURE_GRADE_HAS_GRADE: return true;
-        case FEATURE_COMPLETION_TRACKS_VIEWS: return true;
-        default: return null;
+function facetoface_print_session($session, $showcapacity, $calendaroutput=false, $return=false)
+{
+    $table = new object();
+    $table->summary = get_string('sessionsdetailstablesummary', 'facetoface');
+    $table->class = 'f2fsession';
+    $table->width = '50%';
+    $table->align = array('right', 'left');
+    if ($calendaroutput) {
+        $table->tablealign = 'left';
+    }
+
+    $customfields = facetoface_get_session_customfields();
+    $customdata = get_records('facetoface_session_data', 'sessionid', $session->id, '', 'fieldid, data');
+    foreach ($customfields as $field) {
+        $data = '';
+        if (!empty($customdata[$field->id])) {
+            if (CUSTOMFIELD_TYPE_MULTISELECT == $field->type) {
+                $values = explode(CUSTOMFIELD_DELIMITTER, $customdata[$field->id]->data);
+                $data = implode(', ', $values);
+            }
+            else {
+                $data = $customdata[$field->id]->data;
+            }
+        }
+        $table->data[] = array(format_string($field->name), format_string($data));
+    }
+
+    if ($session->datetimeknown) {
+        $html = '';
+        foreach($session->sessiondates as $date) {
+            if (!empty($html)) {
+                $html .= '<br/>';
+            }
+            $timestart = userdate($date->timestart, get_string('strftimedatetime'));
+            $timefinish = userdate($date->timefinish, get_string('strftimedatetime'));
+            $html .= "$timestart &ndash; $timefinish";
+        }
+        $table->data[] = array(get_string('sessiondatetime', 'facetoface'), $html);
+    }
+    else {
+        $table->data[] = array(get_string('sessiondatetime', 'facetoface'), '<i>'.get_string('wait-listed', 'facetoface').'</i>');
+    }
+
+    if ($showcapacity) {
+        $table->data[] = array(get_string('capacity', 'facetoface'), $session->capacity);
+    }
+    elseif (!$calendaroutput) {
+        $signupcount = facetoface_get_num_attendees($session->id);
+        $placesleft = $session->capacity - $signupcount;
+        $table->data[] = array(get_string('capacity', 'facetoface'), $placesleft);
+    }
+
+    if (!empty($session->duration)) {
+        $table->data[] = array(get_string('duration', 'facetoface'), format_duration($session->duration));
+    }
+    if (!empty($session->normalcost)) {
+        $table->data[] = array(get_string('normalcost', 'facetoface'), format_cost($session->normalcost));
+    }
+    if (!empty($session->discountcost)) {
+        $table->data[] = array(get_string('discountcost', 'facetoface'), format_cost($session->discountcost));
+    }
+    if (!empty($session->details)) {
+        $details = clean_text($session->details, FORMAT_HTML);
+        $table->data[] = array(get_string('details', 'facetoface'), $details);
+    }
+
+    return print_table($table, $return);
+}
+
+/**
+ * Update the value of a customfield for the given session.
+ *
+ * @param integer $fieldid    ID of a record from the facetoface_session_field table
+ * @param string  $data       Value for that custom field
+ * @param integer $sessionid  ID of a record from the facetoface_sessions table
+ * @returns true if it succeeded, false otherwise
+ */
+function facetoface_save_customfield($fieldid, $data, $sessionid)
+{
+    $dbdata = null;
+    if (is_array($data)) {
+        $dbdata = implode(CUSTOMFIELD_DELIMITTER, $data);
+    }
+    else {
+        $dbdata = trim($data);
+    }
+
+    if (empty($dbdata)) {
+        return true; // no need to store empty values
+    }
+
+    $newrecord = new object();
+    $newrecord->data = $dbdata;
+
+    if ($record = get_record('facetoface_session_data', 'fieldid', $fieldid, 'sessionid', $sessionid)) {
+        $newrecord->id = $record->id;
+        return update_record('facetoface_session_data', $newrecord);
+    }
+    else {
+        $newrecord->fieldid = $fieldid;
+        $newrecord->sessionid = $sessionid;
+        return insert_record('facetoface_session_data', $newrecord);
     }
 }
 
-?>
+/**
+ * Return the value of a customfield for the given session.
+ *
+ * @param object  $field      A record from the facetoface_session_field table
+ * @param integer $sessionid  ID of a record from the facetoface_sessions table
+ * @returns string The data contained in this custom field (empty string if it doesn't exist)
+ */
+function facetoface_get_customfield($field, $sessionid)
+{
+    if ($record = get_record('facetoface_session_data', 'fieldid', $field->id, 'sessionid', $sessionid)) {
+        if (!empty($record->data)) {
+            if (CUSTOMFIELD_TYPE_MULTISELECT == $field->type) {
+                return explode(CUSTOMFIELD_DELIMITTER, $record->data);
+            }
+            return $record->data;
+        }
+    }
+    return '';
+}
+
+/**
+ * Return the values stored for all custom fields in the given session.
+ *
+ * @param integer $sessionid  ID of facetoface_sessions record
+ * @returns array Indexed by field shortnames
+ */
+function facetoface_get_customfielddata($sessionid)
+{
+    global $CFG;
+
+    $sql = "SELECT f.shortname, d.data
+              FROM {$CFG->prefix}facetoface_session_field f
+              JOIN {$CFG->prefix}facetoface_session_data d ON f.id = d.fieldid
+             WHERE d.sessionid = $sessionid";
+    if ($records = get_records_sql($sql)) {
+        return $records;
+    }
+    return array();
+}
+
+/**
+ * Return a cached copy of all records in facetoface_session_field
+ */
+function facetoface_get_session_customfields()
+{
+    static $customfields = null;
+    if (null == $customfields) {
+        if (!$customfields = get_records('facetoface_session_field')) {
+            $customfields = array();
+        }
+    }
+    return $customfields;
+}
+
+function facetoface_list_of_customfields()
+{
+    global $CFG, $USER;
+
+    if ($fields = get_records('facetoface_session_field', '', '', 'name', 'id, name')) {
+        $table = new stdClass;
+        $table->width = '50%';
+        $table->tablealign = 'left';
+        $table->data = array();
+        $table->size = array('100%');
+        foreach ($fields as $field) {
+            $fieldname = format_string($field->name);
+            $editlink = '<a href="'.$CFG->wwwroot.'/mod/facetoface/customfield.php?id='.$field->id.'">'.
+                '<img class="iconsmall" src="'.$CFG->pixpath.'/t/edit.gif" alt="'.get_string('edit').'" /></a>';
+            $deletelink = '<a href="'.$CFG->wwwroot.'/mod/facetoface/customfield.php?id='.$field->id.'&amp;d=1&amp;sesskey='.$USER->sesskey.'">'.
+                '<img class="iconsmall" src="'.$CFG->pixpath.'/t/delete.gif" alt="'.get_string('delete').'" /></a>';
+            $table->data[] = array($fieldname, $editlink, $deletelink);
+        }
+        return print_table($table, true);
+    }
+
+    return get_string('nocustomfields', 'facetoface');
+}

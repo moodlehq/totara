@@ -3,15 +3,14 @@
 /**
  * API function called by the Moodle restore system
  */
-function facetoface_restore_mods($mod, $restore) {
-
+function facetoface_restore_mods($mod, $restore)
+{
     global $CFG;
 
     $status = true;
 
     $data = backup_getid($restore->backup_unique_code, $mod->modtype, $mod->id);
     if ($data) {
-
         $info = $data->info;
 
         $facetoface->course                = $restore->course_id;
@@ -51,13 +50,15 @@ function facetoface_restore_mods($mod, $restore) {
                     echo '<br />';
                 }
 
-                // Table: facetoface_signups
+                // Table: facetoface_signups_
                 $status &= restore_facetoface_signups($newid, $info, $restore);
             }
-        } else {
+        }
+        else {
             $status = false;
         }
-    } else {
+    }
+    else {
         $status = false;
     }
 
@@ -70,8 +71,8 @@ function facetoface_restore_mods($mod, $restore) {
  *
  * @param integer $newfacetofaceid ID of the facetoface activity we're creating
  */
-function restore_facetoface_signups($newfacetofaceid, $info, $restore) {
-
+function restore_facetoface_signups($newfacetofaceid, $info, $restore)
+{
     $status = true;
 
     if (empty($info['MOD']['#']['SIGNUPS'])) {
@@ -112,7 +113,8 @@ function restore_facetoface_signups($newfacetofaceid, $info, $restore) {
         if (!defined('RESTORE_SILENTLY')) {
             if ($newid) {
                 echo '.';
-            } else {
+            }
+            else {
                 echo 'X';
             }
         }
@@ -120,7 +122,8 @@ function restore_facetoface_signups($newfacetofaceid, $info, $restore) {
 
         if ($newid) {
             backup_putid($restore->backup_unique_code, 'facetoface_signups', $oldid, $newid);
-        } else {
+        }
+        else {
             $status = false;
         }
 
@@ -189,8 +192,8 @@ function restore_facetoface_signups_status($info, $restore) {
  *
  * @param integer $newfacetofaceid ID of the facetoface activity we're creating
  */
-function restore_facetoface_sessions($newfacetofaceid, $info, $restore) {
-
+function restore_facetoface_sessions($newfacetofaceid, $info, $restore)
+{
     $status = true;
 
     if (empty($info['MOD']['#']['SESSIONS'])) {
@@ -203,15 +206,11 @@ function restore_facetoface_sessions($newfacetofaceid, $info, $restore) {
 
         $session->facetoface    = $newfacetofaceid;
         $session->capacity      = backup_todb($sessioninfo['#']['CAPACITY']['0']['#']);
-        $session->location      = backup_todb($sessioninfo['#']['LOCATION']['0']['#']);
-        $session->venue         = backup_todb($sessioninfo['#']['VENUE']['0']['#']);
-        $session->room          = backup_todb($sessioninfo['#']['ROOM']['0']['#']);
         $session->details       = backup_todb($sessioninfo['#']['DETAILS']['0']['#']);
         $session->datetimeknown = backup_todb($sessioninfo['#']['DATETIMEKNOWN']['0']['#']);
         $session->duration      = backup_todb($sessioninfo['#']['DURATION']['0']['#']);
         $session->normalcost    = backup_todb($sessioninfo['#']['NORMALCOST']['0']['#']);
         $session->discountcost  = backup_todb($sessioninfo['#']['DISCOUNTCOST']['0']['#']);
-        $session->closed        = backup_todb($sessioninfo['#']['CLOSED']['0']['#']);
         $session->timecreated   = backup_todb($sessioninfo['#']['TIMECREATED']['0']['#']);
         $session->timemodified  = backup_todb($sessioninfo['#']['TIMEMODIFIED']['0']['#']);
 
@@ -221,7 +220,8 @@ function restore_facetoface_sessions($newfacetofaceid, $info, $restore) {
         if (!defined('RESTORE_SILENTLY')) {
             if ($newid) {
                 echo '.';
-            } else {
+            }
+            else {
                 echo 'X';
             }
         }
@@ -235,7 +235,11 @@ function restore_facetoface_sessions($newfacetofaceid, $info, $restore) {
 
             // Table: facetoface_sessions_dates
             $status &= restore_facetoface_sessions_dates($newid, $sessioninfo, $restore);
-        } else {
+
+            // Table: facetoface_session_data
+            $status &= restore_facetoface_session_data($newid, $sessioninfo, $restore);
+        }
+        else {
             $status = false;
         }
     }
@@ -255,7 +259,7 @@ function restore_facetoface_session_roles($newsessionid, $sessioninfo, $restore)
 
     if (empty($sessioninfo['#']['ROLES'])) {
         return $status; // Nothing to restore
-    }
+    }   
 
     $roles = $sessioninfo['#']['ROLES']['0']['#']['ROLE'];
     foreach ($roles as $roleinfo) {
@@ -274,16 +278,16 @@ function restore_facetoface_session_roles($newsessionid, $sessioninfo, $restore)
                 echo '.';
             } else {
                 echo 'X';
-            }
-        }
+            }   
+        }   
         backup_flush(300);
 
         if ($newid) {
             backup_putid($restore->backup_unique_code, 'facetoface_session_roles', $oldid, $newid);
         } else {
             $status = false;
-        }
-    }
+        }   
+    }   
 
     return $status;
 }
@@ -294,8 +298,8 @@ function restore_facetoface_session_roles($newsessionid, $sessioninfo, $restore)
  *
  * @param integer $newsessionid ID of the session we are creating
  */
-function restore_facetoface_sessions_dates($newsessionid, $sessioninfo, $restore) {
-
+function restore_facetoface_sessions_dates($newsessionid, $sessioninfo, $restore)
+{
     $status = true;
 
     if (empty($sessioninfo['#']['DATES'])) {
@@ -306,6 +310,7 @@ function restore_facetoface_sessions_dates($newsessionid, $sessioninfo, $restore
     foreach ($dates as $dateinfo) {
         $oldid = backup_todb($dateinfo['#']['ID']['0']['#']);
 
+        $date = new object();
         $date->sessionid  = $newsessionid;
         $date->timestart  = backup_todb($dateinfo['#']['TIMESTART']['0']['#']);
         $date->timefinish = backup_todb($dateinfo['#']['TIMEFINISH']['0']['#']);
@@ -316,7 +321,8 @@ function restore_facetoface_sessions_dates($newsessionid, $sessioninfo, $restore
         if (!defined('RESTORE_SILENTLY')) {
             if ($newid) {
                 echo '.';
-            } else {
+            }
+            else {
                 echo 'X';
             }
         }
@@ -324,7 +330,8 @@ function restore_facetoface_sessions_dates($newsessionid, $sessioninfo, $restore
 
         if ($newid) {
             backup_putid($restore->backup_unique_code, 'facetoface_sessions_dates', $oldid, $newid);
-        } else {
+        }
+        else {
             $status = false;
         }
     }
@@ -332,4 +339,61 @@ function restore_facetoface_sessions_dates($newsessionid, $sessioninfo, $restore
     return $status;
 }
 
-?>
+/**
+ * Restore the facetoface_session_data table entries for a given
+ * facetoface session
+ *
+ * @param integer $newsessionid ID of the session we are creating
+ */
+function restore_facetoface_session_data($newsessionid, $sessioninfo, $restore)
+{
+    $status = true;
+
+    if (empty($sessioninfo['#']['DATA'])) {
+        return $status; // Nothing to restore
+    }
+
+    $fieldids = get_records('facetoface_session_field', '', '', '', 'shortname, id');
+
+    $data = $sessioninfo['#']['DATA']['0']['#']['DATUM'];
+    foreach ($data as $datuminfo) {
+        $fieldshortname = backup_todb($datuminfo['#']['FIELDSHORTNAME']['0']['#']);
+
+        if (empty($fieldids[$fieldshortname])) {
+            // Custom field not defined on destination site
+            if (!defined('RESTORE_SILENTLY')) {
+                echo 'S';
+            }
+            continue;
+        }
+
+        $oldid = backup_todb($datuminfo['#']['ID']['0']['#']);
+
+        $datum = new object();
+        $datum->sessionid = $newsessionid;
+        $datum->fieldid   = $fieldids[$fieldshortname]->id;
+        $datum->data      = backup_todb($datuminfo['#']['DATA']['0']['#']);
+
+        $newid = insert_record('facetoface_session_data', $datum);
+
+        // Progress bar
+        if (!defined('RESTORE_SILENTLY')) {
+            if ($newid) {
+                echo '.';
+            }
+            else {
+                echo 'X';
+            }
+        }
+        backup_flush(300);
+
+        if ($newid) {
+            backup_putid($restore->backup_unique_code, 'facetoface_session_data', $oldid, $newid);
+        }
+        else {
+            $status = false;
+        }
+    }
+
+    return $status;
+}

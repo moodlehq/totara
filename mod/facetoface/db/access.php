@@ -95,8 +95,20 @@ $mod_facetoface_capabilities = array(
         )
     ),
 
-    // Ability to add/remove attendees from a session
-    'mod/facetoface:editattendees' => array(
+    // Ability to add attendees to a session
+    'mod/facetoface:addattendees' => array(
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_COURSE,
+        'legacy' => array(
+            'teacher' => CAP_ALLOW,
+            'editingteacher' => CAP_ALLOW,
+            'coursecreator' => CAP_ALLOW,
+            'admin' => CAP_ALLOW
+        )
+    ),
+
+    // Ability to remove attendees from a session
+    'mod/facetoface:removeattendees' => array(
         'captype' => 'write',
         'contextlevel' => CONTEXT_COURSE,
         'legacy' => array(
@@ -121,6 +133,19 @@ $mod_facetoface_capabilities = array(
 
     // View session cancellations
     'mod/facetoface:viewcancellations' => array(
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_COURSE,
+        'legacy' => array(
+            'teacher' => CAP_ALLOW,
+            'editingteacher' => CAP_ALLOW,
+            'coursecreator' => CAP_ALLOW,
+            'admin' => CAP_ALLOW
+        ),
+    ),
+
+    // Ability to overbook a session by signing up for it
+    // Users with mod/facetoface:addattendees can also overbook
+    'mod/facetoface:overbook' => array(
         'captype' => 'write',
         'contextlevel' => CONTEXT_COURSE,
         'legacy' => array(
