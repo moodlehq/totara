@@ -1266,6 +1266,8 @@ function facetoface_get_unmailed_reminders()
 /**
  * Add a record to the facetoface submissions table and sends out an
  * email confirmation
+ * TODO Need to check if user previously cancelled this session, and if so 
+ *      update signup status rather than creating a new signup. 
  *
  * @param class $session record from the facetoface_sessions table
  * @param class $facetoface record from the facetoface table
