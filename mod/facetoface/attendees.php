@@ -129,16 +129,25 @@ else {
     $table->align[] = array('center');
 }
 
+// TODO temporary change to show booking status on attendance page
+// Need to be done properly:
+// - What options should be available in pulldown?
+// - Should other attendees be able to see full status code?
+// - move attendance_options somewhere more sensible
+// - add grading and notes?
+$attendance_options = array(1 => 'Requested', 2 => 'User Cancelled', 3 => 'Session Cancelled', 4 => 'Approved', 
+    5=> 'Waitlisted', 6 => 'Booked', 7 => 'No show', 8 =>'Partially Attended', 9 => 'Fully Attended');
+
 if ($attendees = facetoface_get_attendees($session->id)) {
     foreach($attendees as $attendee) {
         $data = array();
         $data[] = "<a href=\"$CFG->wwwroot/user/view.php?id={$attendee->id}&amp;course={$course->id}\">". format_string(fullname($attendee)).'</a>';
 
         if ($takeattendance) {
-            $checkboxid = 'submissionid_'.$attendee->submissionid;
-            $didattend = ((int)($attendee->grade) > 0) ? 1 : 0;
-            $checkbox = print_checkbox($checkboxid, $didattend, $didattend, '', '', '', true);
-            $data[] = $checkbox;
+            $optionid = 'submissionid_'.$attendee->submissionid;
+            $status = $attendee->statuscode;
+            $select = choose_from_menu($attendance_options, $optionid, $status, 'choose', '', '0', true);
+            $data[] = $select;
         }
         else {
             if (!get_config(NULL, 'facetoface_hidecost')) {
@@ -147,8 +156,8 @@ if ($attendees = facetoface_get_attendees($session->id)) {
                     $data[] = $attendee->discountcode;
                 }
             }
-            $didattend = ((int)($attendee->grade) > 0)? get_string('yes') : get_string('no');
-            $data[] = $didattend;
+            $status = $attendee->statuscode;
+            $data[] = $attendance_options[$status];
         }
         $table->data[] = $data;
     }
@@ -221,11 +230,13 @@ function facetoface_get_cancellations($sessionid)
 
     $fullname = sql_fullname('u.firstname', 'u.lastname');
 
-    $sql = "SELECT s.id AS submissionid, u.id, u.firstname, u.lastname,
-                   s.timecreated, s.timecancelled, s.cancelreason
-              FROM {$CFG->prefix}facetoface_submissions s
-              JOIN {$CFG->prefix}user u ON u.id = s.userid
-             WHERE s.sessionid = $sessionid AND s.timecancelled > 0
-          ORDER BY $fullname, s.timecancelled";
+    // TODO get original time signed up from signups_status history and include in this query as timecreated
+    $sql = "SELECT su.id AS signupid, u.id, u.firstname, u.lastname,
+                   ss.timecreated as timecancelled, ss.note as cancelreason
+              FROM {$CFG->prefix}facetoface_signups su
+              JOIN {$CFG->prefix}facetoface_signups_status ss ON su.id=ss.signupid
+              JOIN {$CFG->prefix}user u ON u.id = su.userid
+             WHERE su.sessionid = $sessionid AND ss.superceded != 1 AND ss.statuscode IN (2,3)
+          ORDER BY $fullname, ss.timecreated";
     return get_records_sql($sql);
 }
