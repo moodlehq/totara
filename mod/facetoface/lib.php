@@ -38,6 +38,17 @@ define('CUSTOMFIELD_TYPE_MULTISELECT', 2);
 // Calendar-related constants
 define('CALENDAR_MAX_NAME_LENGTH', 10);
 
+// Signup status codes
+define('MDL_F2F_STATUS_REQUESTED',1);
+define('MDL_F2F_STATUS_USER_CANCELLED',2);
+define('MDL_F2F_STATUS_SESSION_CANCELLED',3);
+define('MDL_F2F_STATUS_APPROVED',4);
+define('MDL_F2F_STATUS_WAITLISTED',5);
+define('MDL_F2F_STATUS_BOOKED',6);
+define('MDL_F2F_STATUS_NO_SHOW',7);
+define('MDL_F2F_STATUS_PARTIALLY_ATTENDED',8);
+define('MDL_F2F_STATUS_FULLY_ATTENDED',9);
+
 /**
  * Prints the cost amount along with the appropriate currency symbol.
  *
@@ -828,13 +839,13 @@ function facetoface_get_attendees($sessionid)
 {
     global $CFG;
    $records = get_records_sql("SELECT u.id, su.id AS submissionid, u.firstname, u.lastname, u.email, 
-                                s.discountcost, f.id AS facetofaceid , f.course, 0 AS grade 
+                                s.discountcost, f.id AS facetofaceid , f.course, 0 AS grade, ss.statuscode 
                                 FROM {$CFG->prefix}facetoface f
                                 JOIN {$CFG->prefix}facetoface_sessions s ON s.facetoface = f.id 
                                 JOIN {$CFG->prefix}facetoface_signups su ON s.id=su.sessionid
                                 JOIN {$CFG->prefix}facetoface_signups_status ss ON su.id=ss.signupid
                                 JOIN {$CFG->prefix}user u ON u.id=su.userid
-                                WHERE s.id=$sessionid AND ss.superceded=0 AND ss.statuscode NOT IN (2,3)");
+                                WHERE s.id=$sessionid AND ss.superceded!=1 AND ss.statuscode NOT IN (2,3)");
     if (!$records) {
         return $records;
     }
@@ -1280,47 +1291,88 @@ function facetoface_user_signup($session, $facetoface, $course, $discountcode,
     $usersignup = new stdclass;
     $usersignup->sessionid = $session->id;
     $usersignup->userid = $userid;
-    $usersignup->facetoface = $session->facetoface;
-    $usersignup->timecreated = $timenow;
-    $usersignup->timemodified = $timenow;
     $usersignup->discountcode = trim(strtoupper($discountcode));
+    $usersignup->notificationtype = $notificationtype;
+
     if (empty($usersignup->discountcode)) {
         $usersignup->discountcode = null;
     }
 
-    $usersignup->notificationtype = $notificationtype;
 
     begin_sql();
-    if ($returnid = insert_record('facetoface_submissions', $usersignup)) {
+    if ($signupid = insert_record('facetoface_signups', $usersignup)) {
 
-        $return = $returnid;
+        $return = $signupid;
 
-        if (!$notifyuser or facetoface_has_session_started($session, $timenow)) {
-            // If the session has already started, there's no need to notify the user
-            facetoface_add_session_to_user_calendar($session, addslashes($facetoface->name), $userid, 'booking');
-            commit_sql();
-            return $return;
-        }
-        else {
-            $error = facetoface_send_confirmation_notice($facetoface, $session, $userid, $notificationtype);
-            if (empty($error)) {
-                $usersignup->id = $returnid;
-                $usersignup->mailedconfirmation = $timenow;
+        if ($statusid = facetoface_update_signup_status($signupid, 6, $userid)) {
 
-                if (update_record('facetoface_submissions', $usersignup)) {
-                    facetoface_add_session_to_user_calendar($session, addslashes($facetoface->name), $userid, 'booking');
-                    commit_sql();
-                    return $return;
-                }
+            if (!$notifyuser or facetoface_has_session_started($session, $timenow)) {
+                // If the session has already started, there's no need to notify the user
+                facetoface_add_session_to_user_calendar($session, addslashes($facetoface->name), $userid, 'booking');
+                commit_sql();
+                return $return;
             }
-            elseif ($displayerrors) {
-                error($error);
+            else {
+                $error = facetoface_send_confirmation_notice($facetoface, $session, $userid, $notificationtype);
+                if (empty($error)) {
+
+                    $usersignup->id = $signupid;
+                    $usersignup->mailedreminder = $timenow;
+
+                    if (update_record('facetoface_signups', $usersignup)) {
+                        facetoface_add_session_to_user_calendar($session, addslashes($facetoface->name), $userid, 'booking');
+                        commit_sql();
+                        return $return;
+                    }
+                }
+                elseif ($displayerrors) {
+                    error($error);
+                }
             }
         }
     }
 
     rollback_sql();
     return false;
+}
+
+/**
+ * Update the signup status of a particular signup
+ *
+ * @param integer $signupid ID of the signup to be updated
+ * @param integer $statuscode Status code to be updated to
+ * @param integer $createdby User ID of the user causing the status update
+ * @param string $note Cancellation reason or other notes
+ *
+ * @returns integer ID of newly created signup status, or false
+ *
+ */
+function facetoface_update_signup_status($signupid, $statuscode, $createdby, $note='') {
+    $timenow = time();
+
+    $signupstatus = new stdclass;
+    $signupstatus->signupid = $signupid;
+    $signupstatus->statuscode = $statuscode;
+    $signupstatus->createdby = $createdby;
+    $signupstatus->timecreated = $timenow;
+    $signupstatus->note = $note;
+
+    begin_sql();
+    if ($statusid = insert_record('facetoface_signups_status', $signupstatus)) {
+        // mark any previous signup_statuses as superceded
+        $where = "signupid = $signupid AND ( superceded = 0 OR superceded IS NULL ) AND id != $statusid";
+        if(set_field_select('facetoface_signups_status', 'superceded', 1, $where)) {
+            commit_sql();
+            return $statusid;
+        } else {
+            rollback_sql();
+            return false;
+        }
+    } else {
+        rollback_sql();
+        return false;
+    }
+
 }
 
 /**
@@ -2246,20 +2298,17 @@ function facetoface_get_num_attendees($session_id) {
 function facetoface_get_user_submissions($facetofaceid, $userid, $includecancellations=false) {
     global $CFG;
 
-    //$whereclause = "facetoface=$facetofaceid AND userid=$userid";
-    $whereclause = "s.facetoface=$facetofaceid AND s.userid=$userid AND ss.superceded != 1";
+    $whereclause = "s.facetoface=$facetofaceid AND su.userid=$userid AND ss.superceded != 1";
     if (!$includecancellations) {
-        //$whereclause .= ' AND timecancelled=0';
-        $whereclause .= ' AND ss.statuscode != 2 AND ss.statuscode != 3';
+        $whereclause .= ' AND ss.statuscode NOT IN (2,3)';
     }
-    /*
-    return get_records_sql("SELECT *
-                              FROM {$CFG->prefix}facetoface_submissions
-                             WHERE $whereclause
-                          ORDER BY timecreated");
-    */
+
+    //TODO fix mailedconfirmation, timegraded, timecancelled, etc
     return get_records_sql("SELECT su.id, s.facetoface, s.id as sessionid, su.userid, 
-        su.mailedreminder, su.discountcode, s.timecreated, s.timemodified 
+        0 as mailedconfirmation,
+        su.mailedreminder, su.discountcode, ss.timecreated,
+        ss.timecreated as timegraded,
+        s.timemodified, 0 as timecancelled, su.notificationtype
         FROM mdl_facetoface_sessions s 
         JOIN mdl_facetoface_signups su ON su.sessionid=s.id
         JOIN mdl_facetoface_signups_status ss ON su.id=ss.signupid
@@ -2278,20 +2327,12 @@ function facetoface_get_user_submissions($facetofaceid, $userid, $includecancell
  */
 function facetoface_user_cancel_submission($sessionid, $userid, $cancelreason='')
 {
-    $signup = get_record('facetoface_submissions', 'sessionid', $sessionid, 'userid', $userid, 'timecancelled', 0, 'id');
+    $signup = get_record('facetoface_signups', 'sessionid', $sessionid, 'userid', $userid);
     if (!$signup) {
         return true; // not signed up, nothing to do
     }
 
-    $timenow = time();
-
-    $newsignup = new object();
-    $newsignup->id = $signup->id;
-    $newsignup->timecancelled = $timenow;
-    $newsignup->timemodified = $timenow;
-    $newsignup->cancelreason = $cancelreason;
-
-    return update_record('facetoface_submissions', $newsignup);
+    return facetoface_update_signup_status($signup->id, 2, $userid, $cancelreason);
 }
 
 /**
