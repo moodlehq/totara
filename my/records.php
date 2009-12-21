@@ -356,81 +356,21 @@ echo "</table>";
     $where2  = " WHERE ce.userid={$user->id}";
     $sort2   = " ORDER by ce.timemodified DESC";
 
+    $select3 = "SELECT c.fullname as cfullname, ce.competencyid AS cid, ce.proficiency, ce.positionid, ce.organisationid, ce.timemodified, 'competency' AS type
+        FROM mdl_competency_evidence ce JOIN mdl_competency c ON c.id=ce.competencyid WHERE ce.userid={$user->id}
+        UNION ALL
+        SELECT c.fullname AS cfullname, cc.course AS cid, CASE WHEN cc.timecompleted IS NOT NULL THEN 3 ELSE 1 END AS proficiency,
+        NULL AS positionid, NULL AS organisationid, cc.timecompleted, 'course' AS type
+        FROM mdl_course_completions cc JOIN mdl_course c ON c.id=cc.course
+        WHERE cc.userid={$user->id} ORDER BY timemodified DESC";
+
     $matchcount1 = count_records_sql('SELECT COUNT (*) '.$from1.$where1);
     $matchcount2 = count_records_sql('SELECT COUNT (*) '.$from2.$where2);
 
     $table->pagesize($perpage, $matchcount1+$matchcount2);
     $extrasql = '';
 
-    $records1 = get_recordset_sql($select1.$from1.$where1.$extrasql.$sort1,
-            $table->get_page_start(),  $table->get_page_size());
-    
-    if ($records1) {
-        while ($record = rs_fetch_next_record($records1)) {
-            $tabledata = array();
-            foreach ($columns as $column) {
-                switch($column['type']) {
-                    case 'course':
-                        $tabledata[] = '<a href="'.$CFG->wwwroot.'/course/view.php?id='.$record->cid.'">'.$record->cfullname.'</a>';
-                        break;
-                    case 'competency':
-                        $tabledata[] = '';
-                        break;
-                    case 'proficiency':
-                        if(!empty($record->timecompleted)) {
-                            $tabledata[] = get_string('completed', 'completion');
-                        } else {
-                            $tabledata[] = get_string('notcompleted', 'completion');
-                        }
-                        break;
-                    case 'position':
-                        if ($positions) {
-                            foreach ($positions as $position) {
-                                if ($column['level'] == $position->depthlevel) {
-                                    $tabledata[] = $position->{$column['value']};
-                                    break;
-                                }
-                            }
-                        } else {
-                            $tabledata[] = '';
-                        }
-                        break;
-                    case 'organisation':
-                        $testfound = false;
-                        if ($organisations) {
-                            foreach ($organisations as $organisation) {
-                                if ($column['level'] == $organisation->depthlevel) {
-                                    $tabledata[] = $organisation->{$column['value']};
-                                    $testfound = true;
-                                    break;
-                                }
-                            }
-                        } else {
-                            $tabledata[] = '';
-                        }
-                        if (!$testfound) {
-                            $tabledata[] = get_string('notapplicable', 'local');
-                        }
-                        break;
-                    case 'date':
-                        if(!empty($record->timecompleted)) {
-                            $tabledata[] = userdate($record->timecompleted, '%d %b %Y');
-                        } else {
-                            $tabledata[] = '-';
-                        }
-                        break;
-                    default:
-                        $tabledata[] = '';
-                        break;
-                }
-
-            }
-
-            $table->add_data($tabledata);
-        }
-        rs_close($records1);
-    }
-    $records2 = get_recordset_sql($select2.$from2.$where2.$extrasql.$sort2,
+    $records3 = get_recordset_sql($select3,
             $table->get_page_start(),  $table->get_page_size());
 
     $scalevalues = array(
@@ -447,6 +387,144 @@ echo "</table>";
             'name' => 'Competent',
         )
     );
+
+
+    if ($records3) {
+        while ($record = rs_fetch_next_record($records3)) {
+            $tabledata = array();
+            foreach ($columns as $column) {
+                switch($column['type']) {
+                case 'course':
+                        if($record->type=='course') {
+                            $tabledata[] = '<a href="'.$CFG->wwwroot.'/course/view.php?id='.$record->cid.'">'.$record->cfullname.'</a>';
+                        } else {
+                            $tabledata[] = '<a href="'.$CFG->wwwroot.'/hierarchy/item/view.php?type=competency&id='.$record->cid.'">'.$record->cfullname.'</a>';
+                        }
+                        break;
+                    case 'competency':
+                        $tabledata[] = '';
+                        break;
+                    case 'proficiency':
+                        if($record->type=='course') {
+                            if(!empty($record->timemodified)) {
+                                $tabledata[] = get_string('completed', 'completion');
+                            } else {
+                                $tabledata[] = get_string('notcompleted', 'completion');
+                            }
+                        } else {
+                            if(!empty($record->proficiency)) {
+                                foreach ($scalevalues as $scalevalue) {
+                                    if ($record->proficiency == $scalevalue['id']) {
+                                        $tabledata[] = $scalevalue['name'];
+                                    }
+                                }
+                            } else {
+                                $tabledata[] = "-";
+                            }
+                        }
+                        break;
+                    case 'position':
+                        if($record->type=='course') {
+                            if ($positions) {
+                                foreach ($positions as $position) {
+                                    if ($column['level'] == $position->depthlevel) {
+                                        $tabledata[] = $position->{$column['value']};
+                                        break;
+                                    }
+                                }
+                            } else {
+                                $tabledata[] = '';
+                            }
+
+                        } else {
+
+                            if ($positions) {
+                                foreach ($positions as $position) {
+                                    if ($column['level'] == $position->depthlevel) {
+                                        $tabledata[] = $position->{$column['value']};
+                                        break;
+                                    }
+                                }
+                            } else {
+                                $tabledata[] = '';
+                            }
+                        }
+
+                        break;
+                    case 'organisation':
+
+                        if($record->type=='course') {
+                            $testfound = false;
+                            if ($organisations) {
+                                foreach ($organisations as $organisation) {
+                                    if ($column['level'] == $organisation->depthlevel) {
+                                        $tabledata[] = $organisation->{$column['value']};
+                                        $testfound = true;
+                                        break;
+                                    }
+                                }
+                            } else {
+                                $tabledata[] = '';
+                            }
+                            if (!$testfound) {
+                                $tabledata[] = get_string('notapplicable', 'local');
+                            }
+
+                        } else {
+
+                            $testfound = false;
+                            if ($organisations) {
+                                foreach ($organisations as $organisation) {
+                                    if ($column['level'] == $organisation->depthlevel) {
+                                        $tabledata[] = $organisation->{$column['value']};
+                                        $testfound = true;
+                                        break;
+                                    }
+                                }
+                            } else {
+                                $tabledata[] = '';
+                            }
+                            if (!$testfound) {
+                                $tabledata[] = get_string('notapplicable', 'local');
+                            }
+                        }
+
+                        break;
+                    case 'date':
+                        if($record->type=='course') {
+                            if(!empty($record->timemodified)) {
+                                $tabledata[] = userdate($record->timemodified, '%d %b %Y');
+                            } else {
+                                $tabledata[] = '-';
+                            }
+                        } else {
+                            if(!empty($record->timemodified)) {
+                                $tabledata[] = userdate($record->timemodified, '%d %b %Y');
+                            } else {
+                                $tabledata[] = '-';
+                            }
+                        }
+                        break;
+                    default:
+                        $tabledata[] = '';
+
+
+                        break;
+                    default:
+                        $tabledata[] = '';
+                        break;
+                }
+
+            }
+
+            $table->add_data($tabledata);
+        }
+        rs_close($records3);
+    }
+
+    /*
+    $records2 = get_recordset_sql($select2.$from2.$where2.$extrasql.$sort2,
+            $table->get_page_start(),  $table->get_page_size());
 
     if ($records2) {
         while ($record = rs_fetch_next_record($records2)) {
@@ -517,7 +595,7 @@ echo "</table>";
         }
         rs_close($records2);
     }
-
+     */
     // Display table
     $table->print_html();
 
