@@ -38,13 +38,13 @@ if ($format) {
 }
 
 admin_externalpage_print_header();
-print_heading(get_string('download', 'admin'));
+print_heading(get_string('export', 'hierarchy'));
 
 print_box_start();
 echo '<ul>';
-echo '<li><a href="download.php?format=csv&type='.$type.'">'.get_string('downloadtext').'</a></li>';
-echo '<li><a href="download.php?format=ods&type='.$type.'">'.get_string('downloadods').'</a></li>';
-echo '<li><a href="download.php?format=xls&type='.$type.'">'.get_string('downloadexcel').'</a></li>';
+echo '<li><a href="download.php?format=csv&type='.$type.'">'.get_string('exporttext', 'hierarchy').'</a></li>';
+echo '<li><a href="download.php?format=ods&type='.$type.'">'.get_string('exportods', 'hierarchy').'</a></li>';
+echo '<li><a href="download.php?format=xls&type='.$type.'">'.get_string('exportexcel','hierarchy').'</a></li>';
 echo '</ul>';
 print_box_end();
 

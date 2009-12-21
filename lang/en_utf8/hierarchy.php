@@ -2,6 +2,9 @@
 $string['displayoptions'] = 'Display Options';
 $string['error:hierarchytypenotfound'] = 'Hierarchy type $a not found';
 $string['export'] = 'Export';
+$string['exporttext'] = 'Export in text format';
+$string['exportods'] = 'Export in ODS format';
+$string['exportexcel'] = 'Export in Excel format';
 $string['hidecustomfields'] = 'Hide Custom Fields';
 $string['showdisplayoptions'] = 'Show Display Options';
 $string['showitemfullname'] = 'Show Item Fullname';
