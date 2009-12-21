@@ -521,6 +521,8 @@ echo "</table>";
     // Display table
     $table->print_html();
 
+    echo '<center><form><input type="submit" value="Export" /></form></center>';
+
     print_footer();
 
 ?>
