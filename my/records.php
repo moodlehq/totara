@@ -238,6 +238,7 @@ echo "</table>";
     <td></td>
 </tr>
 </table>
+<br>
 
 <?php
 
