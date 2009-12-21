@@ -140,10 +140,10 @@
             'column'      => '1',
             'sortorder'   => '5',
             'type'        => 'usercustom',
-            'value'       => 'managerempcode',
+            'value'       => 'managername',
             'level'       => '',
             'headingtype' => 'defined',
-            'heading'     => '',
+            'heading'     => 'Manager name',
         ),
         array(
             'column'      => '2',
@@ -175,12 +175,23 @@ foreach ($columns as $column) {
             }
             break;
         case 'usercustom':
-            $cell1str .= get_field('user_info_field', 'name', 'shortname', $column['value']);
-            $usercustom = mitms_print_user_profile_field($user->id, $column['value']);
-            if (!$usercustom == '') {
-                $cell2str .= $usercustom;
+            if ($column['value'] == 'managername') {
+                $cell1str .= 'Manager name';
+                $managerid = mitms_print_user_profile_field($user->id, 'managerid');
+                if (!empty($managerid)) {
+                    $manager = get_record('user', 'id', $managerid);
+                    $cell2str .= '<a href="'.$CFG->wwwroot.'/user/view.php?id='.$managerid.'">'.$manager->firstname.' '.$manager->lastname.'</a>';
+                } else {
+                    $cell2str .= get_string('notavailable', 'local');
+                }
             } else {
-                $cell2str .= get_string('notavailable', 'local');
+                $cell1str .= get_field('user_info_field', 'name', 'shortname', $column['value']);
+                $usercustom = mitms_print_user_profile_field($user->id, $column['value']);
+                if (!$usercustom == '') {
+                    $cell2str .= $usercustom;
+                } else {
+                    $cell2str .= get_string('notavailable', 'local');
+                }
             }
             break;
         case 'position':
@@ -331,23 +342,31 @@ echo "</table>";
 
     $table->initialbars(true);
 
-    $select = "SELECT c.fullname AS cfullname, cc.course AS cid, cc.timecompleted";
-    $from   = " FROM mdl_course_completions cc
-                JOIN mdl_course c
-                ON c.id=cc.course";
-    $where  = " WHERE cc.userid={$user->id}";
-    $sort   = " ORDER BY cc.timecompleted";
+    $select1 = "SELECT c.fullname AS cfullname, cc.course AS cid, cc.timecompleted";
+    $from1   = " FROM mdl_course_completions cc
+                 JOIN mdl_course c
+                   ON c.id=cc.course";
+    $where1  = " WHERE cc.userid={$user->id}";
+    $sort1   = " ORDER BY cc.timecompleted";
 
-    $matchcount = count_records_sql('SELECT COUNT (*) '.$from.$where);
+    $select2 = "SELECT c.fullname AS cfullname, ce.competencyid AS cid, ce.proficiency, ce.positionid, ce.organisationid, ce.timemodified";
+    $from2   = " FROM mdl_competency_evidence ce
+                 JOIN mdl_competency c
+                 ON c.id=ce.competencyid";
+    $where2  = " WHERE ce.userid={$user->id}";
+    $sort2   = " ORDER by ce.timemodified DESC";
 
-    $table->pagesize($perpage, $matchcount);
+    $matchcount1 = count_records_sql('SELECT COUNT (*) '.$from1.$where1);
+    $matchcount2 = count_records_sql('SELECT COUNT (*) '.$from2.$where2);
+
+    $table->pagesize($perpage, $matchcount1+$matchcount2);
     $extrasql = '';
 
-    $records = get_recordset_sql($select.$from.$where.$extrasql.$sort,
+    $records1 = get_recordset_sql($select1.$from1.$where1.$extrasql.$sort1,
             $table->get_page_start(),  $table->get_page_size());
     
-    if ($records) {
-        while ($record = rs_fetch_next_record($records)) {
+    if ($records1) {
+        while ($record = rs_fetch_next_record($records1)) {
             $tabledata = array();
             foreach ($columns as $column) {
                 switch($column['type']) {
@@ -358,7 +377,98 @@ echo "</table>";
                         $tabledata[] = '';
                         break;
                     case 'proficiency':
-                        $tabledata[] = get_string('completed', 'completion');
+                        if(!empty($record->timecompleted)) {
+                            $tabledata[] = get_string('completed', 'completion');
+                        } else {
+                            $tabledata[] = get_string('notcompleted', 'completion');
+                        }
+                        break;
+                    case 'position':
+                        if ($positions) {
+                            foreach ($positions as $position) {
+                                if ($column['level'] == $position->depthlevel) {
+                                    $tabledata[] = $position->{$column['value']};
+                                    break;
+                                }
+                            }
+                        } else {
+                            $tabledata[] = '';
+                        }
+                        break;
+                    case 'organisation':
+                        $testfound = false;
+                        if ($organisations) {
+                            foreach ($organisations as $organisation) {
+                                if ($column['level'] == $organisation->depthlevel) {
+                                    $tabledata[] = $organisation->{$column['value']};
+                                    $testfound = true;
+                                    break;
+                                }
+                            }
+                        } else {
+                            $tabledata[] = '';
+                        }
+                        if (!$testfound) {
+                            $tabledata[] = get_string('notapplicable', 'local');
+                        }
+                        break;
+                    case 'date':
+                        if(!empty($record->timecompleted)) {
+                            $tabledata[] = userdate($record->timecompleted, '%d %b %Y');
+                        } else {
+                            $tabledata[] = '-';
+                        }
+                        break;
+                    default:
+                        $tabledata[] = '';
+                        break;
+                }
+
+            }
+
+            $table->add_data($tabledata);
+        }
+        rs_close($records1);
+    }
+    $records2 = get_recordset_sql($select2.$from2.$where2.$extrasql.$sort2,
+            $table->get_page_start(),  $table->get_page_size());
+
+    $scalevalues = array(
+        array(
+            'id' => 1,
+            'name' => 'Not competent',
+        ),
+        array(
+            'id' => 2,
+            'name' => 'Competent with supervision',
+        ),
+        array(
+            'id' => 3,
+            'name' => 'Competent',
+        )
+    );
+
+    if ($records2) {
+        while ($record = rs_fetch_next_record($records2)) {
+            $tabledata = array();
+            foreach ($columns as $column) {
+                switch($column['type']) {
+                    case 'course':
+                        $tabledata[] = '<a href="'.$CFG->wwwroot.'/hierarchy/item/view.php?type=competency&id='.$record->cid.'">'.$record->cfullname.'</a>';
+                        break;
+                    case 'competency':
+                        $tabledata[] = '';
+                        break;
+                    case 'proficiency':
+                        if(!empty($record->proficiency)) {
+                            foreach ($scalevalues as $scalevalue) {
+                                if ($record->proficiency == $scalevalue['id']) {
+                                    $tabledata[] = $scalevalue['name'];
+                                }
+                            }
+                        } else {
+                            $tabledata[] = "-";
+                        }
                         break;
                     case 'position':
                         if ($positions) {
@@ -390,7 +500,11 @@ echo "</table>";
                         }
                         break;
                     case 'date':
-                        $tabledata[] = userdate($record->timecompleted, '%d %b %Y');
+                        if(!empty($record->timemodified)) {
+                            $tabledata[] = userdate($record->timemodified, '%d %b %Y');
+                        } else {
+                            $tabledata[] = '-';
+                        }
                         break;
                     default:
                         $tabledata[] = '';
@@ -401,6 +515,7 @@ echo "</table>";
 
             $table->add_data($tabledata);
         }
+        rs_close($records2);
     }
 
     // Display table
