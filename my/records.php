@@ -338,7 +338,6 @@ echo "</table>";
     $sort   = " ORDER BY cc.timecompleted";
 
     $matchcount = count_records_sql('SELECT COUNT (*) '.$from.$where);
-    $matchcount = 100;
 
     $table->pagesize($perpage, $matchcount);
     $extrasql = '';
