@@ -336,7 +336,6 @@ echo "</table>";
                 ON c.id=cc.course";
     $where  = " WHERE cc.userid={$user->id}";
     $sort   = " ORDER BY cc.timecompleted";
-echo $select.$from.$where.$sort;
 
     $matchcount = count_records_sql('SELECT COUNT (*) '.$from.$where);
     $matchcount = 100;
@@ -374,16 +373,21 @@ echo $select.$from.$where.$sort;
                         }
                         break;
                     case 'organisation':
+                        $testfound = false;
                         if ($organisations) {
                             foreach ($organisations as $organisation) {
                                 if ($column['level'] == $organisation->depthlevel) {
                                     $tabledata[] = $organisation->{$column['value']};
+                                    $testfound = true;
                                     break;
                                 }
                             }
                         } else {
                             $tabledata[] = '';
                         } 
+                        if (!$testfound) {
+                            $tabledata[] = get_string('notapplicable', 'local');
+                        }
                         break;
                     case 'date':
                         $tabledata[] = userdate($record->timecompleted, '%d %b %Y');
