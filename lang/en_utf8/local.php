@@ -99,6 +99,8 @@ $string['history'] = 'History';
 $string['induction'] = 'Induction';
 $string['leadership'] = 'Leadership';
 $string['myrecordoflearning'] = 'My Record of Learning';
+$string['notapplicable'] = 'Not applicable';
+$string['notavailable'] = 'Not available';
 
 // Learning record report
 $string['report:completiondate'] = 'Completion date';

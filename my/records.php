@@ -156,8 +156,79 @@
         ),
     );
 
-    echo mitms_print_report_heading($columns, $user, $usercustomfields);
-
+echo '<table cellpadding="4">';
+foreach ($columns as $column) {
+    if ($column['column'] == 1) {
+        echo "<tr>";
+    }
+    $cell1str = "<td><strong>";
+    $cell2str = "<td>";
+    switch($column['type']) {
+        case 'user':
+            $cell1str .= get_string($column['value']);
+            if ($column['value'] == 'fullname') {
+                $cell2str .= '<a href="'.$CFG->wwwroot.'/user/view.php?id='.$user->id.'">'.fullname($user, true).'</a>';
+            } elseif ($column['value'] == 'email') {
+                $cell2str .= obfuscate_mailto($user->email);
+            } else {
+                $cell2str .= $user->{$column['value']};
+            }
+            break;
+        case 'usercustom':
+            $cell1str .= get_field('user_info_field', 'name', 'shortname', $column['value']);
+            $usercustom = mitms_print_user_profile_field($user->id, $column['value']);
+            if (!$usercustom == '') {
+                $cell2str .= $usercustom;
+            } else {
+                $cell2str .= get_string('notavailable', 'local');
+            }
+            break;
+        case 'position':
+            if ($column['headingtype'] == 'defined') {
+                $cell1str .= $column['heading'];
+            } else {
+                $cell1str .= get_string('position', 'position');
+            }
+            if ($positions) {
+                foreach ($positions as $position) {
+                    if ($column['level'] == $position->depthlevel) {
+                        $cell2str .= $position->{$column['value']};
+                        break;
+                    }
+                }
+            }
+            break;
+        case 'organisation':
+            $testfound = false;
+            if ($column['headingtype'] == 'defined') {
+                $cell1str .= $column['heading'];
+            } else {
+                $cell1str .= get_string('organisation', 'organisation');
+            }
+            if ($organisations) {
+                foreach ($organisations as $organisation) {
+                    if ($column['level'] == $organisation->depthlevel) {
+                        $cell2str .= $organisation->{$column['value']};
+                        $testfound = true;
+                        break;
+                    }
+                }
+            }
+            if (!$testfound) {
+                $cell2str .= get_string('notapplicable', 'local');
+            }
+            break;
+        default:
+            $cell1str = "<td></td>";
+            $cell2str = "<td></td>";
+            break;
+    }
+    echo $cell1str.$cell2str;
+    if ($column['column'] == 2) {
+        echo "</tr>";
+    }
+}
+echo "</table>";
 ?>
 <table cellpadding="4">
 <tr>
@@ -265,6 +336,7 @@
                 ON c.id=cc.course";
     $where  = " WHERE cc.userid={$user->id}";
     $sort   = " ORDER BY cc.timecompleted";
+echo $select.$from.$where.$sort;
 
     $matchcount = count_records_sql('SELECT COUNT (*) '.$from.$where);
     $matchcount = 100;
