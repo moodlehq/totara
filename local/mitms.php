@@ -184,9 +184,7 @@ function mitms_print_my_tools_nav($return=false) {
 function mitms_print_my_team_nav($return=false) {
     global $CFG, $USER;
 
-    $returnstr = '
-     <ul id="mitms-nav">
-    ';
+    $returnstr = '';
     $sql = "SELECT u.id,u.firstname,u.lastname
             FROM mdl_user_info_data uid
             JOIN mdl_user_info_field uif
@@ -197,18 +195,19 @@ function mitms_print_my_team_nav($return=false) {
             AND uid.data='{$USER->id}'
             ORDER BY uid.userid";
     $teammembers = get_records_sql($sql);
-    foreach($teammembers as $teammember) {
-        $returnstr .= '<li><a href="'.$CFG->wwwroot.'/my/records.php?id='.$teammember->id.'">'.$teammember->firstname.' '.$teammember->lastname.'</a></li>';
+    if (!empty($teammembers)) {
+        $returnstr = '
+         <ul id="mitms-nav">
+        ';
+        foreach($teammembers as $teammember) {
+            $returnstr .= '<li><a href="'.$CFG->wwwroot.'/my/records.php?id='.$teammember->id.'">'.$teammember->firstname.' '.$teammember->lastname.'</a></li>';
+        }
+        $returnstr .= '
+         </ul>
+        ';
     }
+    return $returnstr;
 
-    $returnstr .= '
-     </ul>
-    ';
-
-    if ($return) {
-        return $returnstr;
-    }
-    echo $returnstr;
 }
 
 /**
