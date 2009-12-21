@@ -11,7 +11,7 @@ class hierarchy_download_form extends moodleform {
         $mform->addElement('hidden', 'type', $datasent['type']);
 
         $mform->addElement('hidden', 'frameworkid', $frameworkid);
-        $mform->addElement('submit', 'downloadbutton', get_string('download', 'admin'));
+        $mform->addElement('submit', 'downloadbutton', get_string('export', 'hierarchy'));
 
     }
 }
