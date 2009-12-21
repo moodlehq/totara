@@ -179,6 +179,39 @@ function mitms_print_my_tools_nav($return=false) {
 }
 
 /**
+* print out the MITMS My Team nav section
+*/
+function mitms_print_my_team_nav($return=false) {
+    global $CFG, $USER;
+
+    $returnstr = '
+     <ul id="mitms-nav">
+    ';
+    $sql = "SELECT u.id,u.firstname,u.lastname
+            FROM mdl_user_info_data uid
+            JOIN mdl_user_info_field uif
+              ON uid.fieldid=uif.id
+            JOIN mdl_user u
+              ON u.id=uid.userid
+            WHERE uif.shortname='managerid'
+            AND uid.data={$USER->id}
+            ORDER BY uid.userid";
+    $teammembers = get_records_sql($sql);
+    foreach($teammembers as $teammember) {
+        $returnstr .= '<li><a href="'.$CFG->wwwroot.'/my/records.php?id='.$teammember->id.'">'.$teammember->firstname.' '.$teammember->lastname.'</a></li>';
+    }
+
+    $returnstr .= '
+     </ul>
+    ';
+
+    if ($return) {
+        return $returnstr;
+    }
+    echo $returnstr;
+}
+
+/**
 * helper function to return a user's data stored in a given profile field
 *
 * @param int $userid id of the user whose user profile field value will be returned
