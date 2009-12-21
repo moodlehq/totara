@@ -194,7 +194,7 @@ function mitms_print_my_team_nav($return=false) {
             JOIN mdl_user u
               ON u.id=uid.userid
             WHERE uif.shortname='managerid'
-            AND uid.data={$USER->id}
+            AND uid.data='{$USER->id}'
             ORDER BY uid.userid";
     $teammembers = get_records_sql($sql);
     foreach($teammembers as $teammember) {
