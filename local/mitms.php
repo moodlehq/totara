@@ -35,6 +35,78 @@ if (!defined('MOODLE_INTERNAL')) {
 }
 
 /**
+ * resets the customised front page blocks.  designed to be called from local_postinst
+ *
+ * @return bool
+ */
+function mitms_reset_frontpage_blocks() {
+    global $CFG;
+
+    // first delete pre-set ones
+    execute_sql('DELETE FROM ' . $CFG->prefix . 'block_instance
+        WHERE pageid = ' . SITEID . "
+        AND pagetype = 'course-view'"
+    );
+
+    // build new block array
+    $blocks = array(
+        (object)array(
+            'blockid'  =>  get_field('block', 'id', 'name', 'mitms_my_learning_nav'),
+            'pageid'   => SITEID,
+            'pagetype' => 'course-view',
+            'position' => 'l',
+            'weight'   => 1,
+            'visible'  => 1,
+            'configdata' => '',
+        ),
+        (object)array(
+            'blockid'  =>  get_field('block', 'id', 'name', 'mitms_my_performance_nav'),
+            'pageid'   => SITEID,
+            'pagetype' => 'course-view',
+            'position' => 'l',
+            'weight'   => 2,
+            'visible'  => 1,
+            'configdata' => '',
+        ),
+        (object)array(
+            'blockid'  =>  get_field('block', 'id', 'name', 'admin_tree'),
+            'pageid'   => SITEID,
+            'pagetype' => 'course-view',
+            'position' => 'l',
+            'weight'   => 3,
+            'visible'  => 1,
+            'configdata' => '',
+        ),
+        (object)array(
+            'blockid'  =>  get_field('block', 'id', 'name', 'messages'),
+            'pageid'   => SITEID,
+            'pagetype' => 'course-view',
+            'position' => 'r',
+            'weight'   => 1,
+            'visible'  => 1,
+            'configdata' => '',
+        ),
+        (object)array(
+            'blockid'  =>  get_field('block', 'id', 'name', 'calendar_month'),
+            'pageid'   => SITEID,
+            'pagetype' => 'course-view',
+            'position' => 'r',
+            'weight'   => 2,
+            'visible'  => 1,
+            'configdata' => '',
+        ),
+    );
+
+    // insert blocks
+    foreach ($blocks as $b) {
+        insert_record('block_instance', $b);
+    }
+
+    return 1;
+
+}
+
+/**
 * print out the MITMS My Learning nav section
 */
 function mitms_print_my_learning_nav($return=false) {

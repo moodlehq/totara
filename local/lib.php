@@ -42,6 +42,8 @@ function local_postinst() {
     set_config('theme', 'mitms');
     $db->debug = $CFG->debug;
 
+    mitms_reset_frontpage_blocks();
+
     // set default course categories
     $course_cat = new stdclass();
     $course_cat->name = get_string('induction', 'local');
