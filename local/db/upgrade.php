@@ -757,7 +757,7 @@ function xmldb_local_upgrade($oldversion) {
                 'sortorder'   => '5',
             ),
             'noneditingtrainer' => array(
-                'name'        => 'Non-editing Trainer',
+                'name'        => 'Trainer',
                 'description' => 'Responsible for delivering training of learners, but may not alter activities.',
                 'legacy'      => 'teacher',
                 'sortorder'   => '4',
