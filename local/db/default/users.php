@@ -5002,4 +5002,10 @@ array('id'=>'5001','username'=>'avis_weissnat','firstname'=>'Avis','lastname'=>'
 array('id'=>'5002','username'=>'katelyn_beier','firstname'=>'Katelyn','lastname'=>'Beier','email'=>'katelyn.beier@example.com','idnumber'=>'9524625','city'=>'Auckland','country'=>'NZ',),
 array('id'=>'5003','username'=>'lelia_harber','firstname'=>'Lelia','lastname'=>'Harber','email'=>'lelia.harber@example.com','idnumber'=>'13419001','city'=>'Palmerston North','country'=>'NZ',),
 );
-?>
+
+// insert users
+foreach($users as $user) {
+    insert_record('user', (object)$user);
+}
+// free memory
+$users = array();    

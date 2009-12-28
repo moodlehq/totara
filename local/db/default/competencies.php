@@ -1,89 +1,31 @@
 <?php
-/*
- * Moodle - Modular Object-Oriented Dynamic Learning Environment
- *          http://moodle.org
- * Copyright (C) 1999 onwards Martin Dougiamas  http://dougiamas.com
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @package    moodle
- * @subpackage local
- * @author     Jonathan Newman <jonathan.newman@catalyst.net.nz>
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL
- * @copyright  (C) 1999 onwards Martin Dougiamas  http://dougiamas.com
- *
- * local db upgrades for MITMS 
- */
-
-    /// Insert demo data in these tables: user, position, position_assignments, competency, competency_assignmnets
-
-    $timenow = time();
-
-    /// import demo user data
-    require_once('demousers.php');
-    foreach($users as $user) {
-        insert_record('user', (object)$user);
-    }
-    // free memory
-    $users = array();
-
-    /// import demo position data
-    require_once('demopositions.php');
-    foreach($positions as $position) {
-        $position['timecreated']  = $timenow;
-        $position['timemodified'] = $timenow;
-        insert_record('position', (object)$position);
-    }
-    // free memory
-    $positions = array();
-    
-    $role_assignments = array(
-    );
-    $position_frameworks = array(
-    );
-    $position_depth = array(
-    );
-    $position_depth_info_fields = array(
-    );
-    $position_depth_info_category = array(
-    );
-    $position_depth_info_data = array(
-    );
-    $position_relations = array(
-    );
-    $position_assignments = array(
-    );
-    $position_assignments_history = array(
-    );
-
-    if ($defaultcp = get_record_select('competency_framework', "shortname='general'")) {
-         $defaultcp->fullname    = 'National Qualifications Framework';
-         $defaultcp->shortname   = 'NQF';
-         $defaultcp->description = 'The National Qualifications Framework (NQF) is designed to provide:<br>'
-                                    .'<li><ul>nationally recognised standards and qualifications</ul>'
-                                    .'<ul>recognition and credit for a wide range of knowledge and skills.</ul></li><br>'
-                                    .'Unit standards and achievement standards, National Certificates and National Diplomas are registered on the NQF.';
-
-         update_record('competency_framework', $defaultcp);
-    }
 
     $competency_frameworks = array(
+        array(
+            'id'           => '1',
+            'fullname'     => 'National Qualifications Framework',
+            'shortname'    => 'NQF',
+            'description'  => 'The National Qualifications Framework (NQF) is designed to provide:<br>'
+                                    .'<li><ul>nationally recognised standards and qualifications</ul>'
+                                    .'<ul>recognition and credit for a wide range of knowledge and skills.</ul></li><br>'
+                                    .'Unit standards and achievement standards, National Certificates and National Diplomas are registered on the NQF.',
+            'idnumber'     => '',
+            'isdefault'    => '0',
+            'description'  => '',
+            'sortorder'    => '1',
+            'timecreated'  => $timenow,
+            'timemodified' => $timenow,
+            'usermodified' => '2',
+            'visible'      => 1,
+            'hidecustomfields' => 0,
+            'showitemfullname' => 1,
+            'showdepthfullname' => 1,
+        ),
         array(
             'id'           => '2',
             'fullname'     => 'New Zealand Standard Classification of Education',
             'shortname'    => 'NZSCED',
-            'idnumber'    => '',
+            'idnumber'     => '',
             'isdefault'    => '0',
             'description'  => '',
             'sortorder'    => '2',
@@ -99,7 +41,7 @@
             'id'           => '3',
             'fullname'     => 'Retail Institute Qualifications',
             'shortname'    => 'RI Quals',
-            'idnumber'    => '',
+            'idnumber'     => '',
             'isdefault'    => '0',
             'description'  => '',
             'sortorder'    => '3',
@@ -114,8 +56,8 @@
         array(
             'id'           => '4',
             'fullname'     => 'Hospitality Standards Institute Qualifications',
-            'shortname'     => 'HSI Quals',
-            'idnumber'    => '',
+            'shortname'    => 'HSI Quals',
+            'idnumber'     => '',
             'description'  => '',
             'isdefault'    => '0',
             'sortorder'    => '4',
@@ -131,7 +73,7 @@
             'id'           => '5',
             'fullname'     => 'Hairdressing Industry Training Organisation Qualifications',
             'shortname'    => 'HITO Quals',
-            'idnumber'    => '',
+            'idnumber'     => '',
             'description'  => '',
             'isdefault'    => '0',
             'sortorder'    => '5',
@@ -147,7 +89,7 @@
             'id'           => '6',
             'fullname'     => 'Aviation, Tourism and Travel Training Organisation Qualifications',
             'shortname'    => 'ATTTO Quals',
-            'idnumber'    => '',
+            'idnumber'     => '',
             'description'  => '',
             'isdefault'    => '0',
             'sortorder'    => '6',
@@ -163,7 +105,7 @@
             'id'           => '7',
             'fullname'     => 'Skills Active Qualifications',
             'shortname'    => 'SA Quals',
-            'idnumber'    => '',
+            'idnumber'     => '',
             'description'  => '',
             'isdefault'    => '0',
             'sortorder'    => '7',
@@ -179,7 +121,7 @@
             'id'           => '8',
             'fullname'     => 'Tranzqual Qualifications',
             'shortname'    => 'T Quals',
-            'idnumber'    => '',
+            'idnumber'     => '',
             'description'  => '',
             'isdefault'    => '0',
             'sortorder'    => '8',
@@ -195,25 +137,6 @@
     foreach($competency_frameworks as $competency_framework) {
         insert_record('competency_framework', (object)$competency_framework);
     }
-
-    // update default competency depth details with demo example
-    if ($defaultcd = get_record_select('competency_depth', "shortname='Competencies'")) {
-         $defaultcd->fullname    = 'Qualifications';
-         $defaultcd->shortname   = 'Q';
-         update_record('competency_depth', $defaultcd);
-    }
-    // add a competency depth level to the default competency framework
-    $defaultcd1 = array(
-            'fullname'     => 'Unit Standards',
-            'shortname'    => 'US',
-            'description'  => '',
-            'depthlevel'   => '2',
-            'frameworkid'  => '1',
-            'timecreated'  => $timenow,
-            'timemodified' => $timenow,
-            'usermodified' => '2',
-    );
-    insert_record('competency_depth', (object)$defaultcd1);
 
     $competency_depths = array(
         array(
@@ -234,24 +157,11 @@
             'timemodified' => $timenow,
             'usermodified' => '2',
         ),
-        array(
-            'fullname'     => 'Elements',
-            'shortname'    => 'EL',
-            'description'  => '',
-            'depthlevel'   => '3',
-            'timecreated'  => $timenow,
-            'timemodified' => $timenow,
-            'usermodified' => '2',
-        ),
     );
-    $competencydepthids = array();
-    for ($i = 2; $i < 7; $i++) {
+    for ($i = 1; $i < 7; $i++) {
         foreach($competency_depths as $competency_depth) {
             $competency_depth['frameworkid'] = $i;
-            $id = insert_record('competency_depth', (object)$competency_depth);
-            if ($competency_depth['frameworkid'] == '2') {
-                $competencydepthids[] = $id;
-            }
+            insert_record('competency_depth', (object)$competency_depth);
         }
     }
 
@@ -566,15 +476,25 @@ The National Certificate in Business (First Line Management) (Level 3) [Ref: 074
         insert_record('competency_depth_info_data', (object)$competency_depth_info_data_item);
     }
 
-    // change the default competency and add its sub-competencies
-    if ($defaultc = get_record_select('competency', "id='1'")) {
-         $defaultc->fullname    = 'National Certificate in Business (First Line Management) (Level 3) v3';
-         $defaultc->shortname   = 'Business L3';
-         $defaultc->idnumber    = '71';
-         $defaultc->frameworkid = '1';
-         update_record('competency', $defaultc);
-    }
     $competencies = array(
+        array(
+            'fullname'            => 'National Certificate in Business (First Line Management) (Level 3) v3',
+            'shortname'           => 'Business L3',
+            'description'         => '',
+            'idnumber'            => '71',
+            'frameworkid'         => '1',
+            'parentid'            => '0',
+            'depthid'             => '1',
+            'path'                => '/1',
+            'visible'             => '1',
+            'aggregationmethod'   => '1',
+            'scaleid'             => '1',
+            'proficiencyexpected' => '1',
+            'evidencecount'       => '0',
+            'timecreated'         => $timenow,
+            'timemodified'        => $timenow,
+            'usermodified'        => '2',
+        ),
         array(
             'fullname'            => 'Speak to a specified audience in a predictable situation',
             'shortname'           => 'Speak to an audience',
@@ -702,7 +622,7 @@ The National Certificate in Business (First Line Management) (Level 3) [Ref: 074
             'usermodified'        => '2',
         ),
     );
-    $sortorder = 2;
+    $sortorder = 1;
     foreach($competencies as $competency) {
         $competency['sortorder'] = $sortorder++;
         insert_record('competency', (object)$competency);
@@ -1064,7 +984,6 @@ The National Certificate in Business (First Line Management) (Level 3) [Ref: 074
                 ),
             ),
         ),
-/*
         array(
             'id'                  => '7',
             'fullname'            => 'Business',
@@ -1103,7 +1022,6 @@ The National Certificate in Business (First Line Management) (Level 3) [Ref: 074
             'timemodified'        => $timenow,
             'usermodified'        => '2',
         ),
-*/
     );
     foreach ($competencies as $competency) {
         $subcompetencies = $competency['subcompetencies'];
@@ -1346,124 +1264,3 @@ The National Certificate in Business (First Line Management) (Level 3) [Ref: 074
         insert_record('competency_scale_assignments', (object)$scale_assignment);
     }
 
-    if ($defaultof = get_record_select('organisation_framework', "shortname='general'")) {
-         $defaultof->fullname    = 'National Office';
-         $defaultof->shortname   = 'NO';
-         $defaultof->idnumber    = '1';
-
-         update_record('organisation_framework', $defaultof);
-    }
-
-    $organisation_frameworks = array(
-        array(
-            'id'           => '2',
-            'fullname'     => 'Regional Offices',
-            'shortname'    => 'RO',
-            'idnumber'     => '2',
-            'isdefault'    => '0',
-            'description'  => '',
-            'sortorder'    => '2',
-            'timecreated'  => $timenow,
-            'timemodified' => $timenow,
-            'usermodified' => '2',
-            'visible'      => 1,
-            'hidecustomfields' => 0,
-            'showitemfullname' => 1,
-            'showdepthfullname' => 1,
-        ),
-    );
-    foreach($organisation_frameworks as $organisation_framework) {
-        insert_record('organisation_framework', (object)$organisation_framework);
-    }
-
-    // update default organisation depth details with demo example
-    if ($defaultcd = get_record_select('organisation_depth', "shortname='Organisations'")) {
-         $defaultcd->fullname    = 'Business Group';
-         $defaultcd->shortname   = 'BG';
-         update_record('competency_depth', $defaultcd);
-    }
-    // add a competency depth level to the default competency framework
-    $defaultcd1 = array(
-            'fullname'     => 'Business Unit',
-            'shortname'    => 'BU',
-            'description'  => '',
-            'depthlevel'   => '2',
-            'frameworkid'  => '1',
-            'timecreated'  => $timenow,
-            'timemodified' => $timenow,
-            'usermodified' => '2',
-    );
-    insert_record('organisation_depth', (object)$defaultcd1);
-
-    $organisation_depths = array(
-        array(
-            'fullname'     => 'Regional Office',
-            'shortname'    => 'RO',
-            'description'  => '',
-            'depthlevel'   => '1',
-            'timecreated'  => $timenow,
-            'timemodified' => $timenow,
-            'usermodified' => '2',
-        ),
-        array(
-            'fullname'     => 'Area Office',
-            'shortname'    => 'AO',
-            'description'  => '',
-            'depthlevel'   => '2',
-            'timecreated'  => $timenow,
-            'timemodified' => $timenow,
-            'usermodified' => '2',
-        ),
-    );
-    $competencydepthids = array();
-    for ($i = 2; $i < 7; $i++) {
-        foreach($organisation_depths as $organisation_depth) {
-            $organisation_depth['frameworkid'] = $i;
-            $id = insert_record('competency_depth', (object)$competency_depth);
-            if ($competency_depth['frameworkid'] == '2') {
-                $competencydepthids[] = $id;
-            }
-        }
-    }
-
-    $organisations = array(
-        array(
-            'fullname'            => 'Organisational Development',
-            'shortname'           => 'OD',
-            'description'         => '',
-            'idnumber'            => '3',
-            'frameworkid'         => '1',
-            'parentid'            => '0',
-            'visible'             => '1',
-            'timecreated'         => $timenow,
-            'timemodified'        => $timenow,
-            'usermodified'        => '2',
-            'subcompetencies'     => array(
-                array(
-                    'fullname'            => '',
-                    'shortname'           => '',
-                    'description'         => '',
-                    'idnumber'            => '',
-                    'frameworkid'         => '1',
-                    'visible'             => '1',
-                    'timecreated'         => $timenow,
-                    'timemodified'        => $timenow,
-                    'usermodified'        => '2',
-                    'customdata'          => array(
-                        array(
-                            'fieldid'      => '',
-                            'data'         => '',
-                        ),
-                        array(
-                            'fieldid'      => '',
-                            'data'         => '',
-                        ),
-                        array(
-                            'fieldid'      => '',
-                            'data'         => '',
-                        ),
-                    ),
-                ),
-            ),
-        ),
-    );
