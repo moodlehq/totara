@@ -27,6 +27,41 @@
  * these should be called like get_string('key', 'local');
  */
 
+// Local hierarchy capability strings
+$string['local:viewcompetency'] = 'View a competency';
+$string['local:createcompetency'] = 'Create a competency';
+$string['local:updatecompetency'] = 'Update a competency';
+$string['local:deletecompetency'] = 'Delete a competency';
+$string['local:createcompetencydepth'] = 'Create a competency depth';
+$string['local:updatecompetencydepth'] = 'Update a competency depth';
+$string['local:deletecompetencydepth'] = 'Delete a comptency depth';
+$string['local:createcompetencyframeworks'] = 'Create a competency framework';
+$string['local:updatecompetencyframeworks'] = 'Update a competency framework';
+$string['local:deletecompetencyframeworks'] = 'Delete a competency framework';
+$string['local:createcompetencytemplate'] = 'Create a competency template';
+$string['local:updatecompetencytemplate'] = 'Update a competency template';
+$string['local:deletecompetencytemplate'] = 'Delete a competency template';
+$string['local:viewposition'] = 'View a position';
+$string['local:createposition'] = 'Create a position';
+$string['local:updateposition'] = 'Update a position';
+$string['local:deleteposition'] = 'Delete a position';
+$string['local:createpositiondepth'] = 'Create a position depth';
+$string['local:updatepositiondepth'] = 'Update a position depth';
+$string['local:deletepositiondepth'] = 'Delete a position depth';
+$string['local:createpositionframeworks'] = 'Create a position framework';
+$string['local:updatepositionframeworks'] = 'Update a position framework';
+$string['local:deletepositionframeworks'] = 'Delete a position framework';
+$string['local:vieworganisation'] = 'View an organisation';
+$string['local:createorganisation'] = 'Create an organisation';
+$string['local:updateorganisation'] = 'Update an organisation';
+$string['local:deleteorganisation'] = 'Delete an organisation';
+$string['local:createorganisationdepth'] = 'Create an organisational depth';
+$string['local:updateorganisationdepth'] = 'Update an organisational depth';
+$string['local:deleteorganisationdepth'] = 'Delete an organisational depth';
+$string['local:createorganisationframeworks'] = 'Create an organisational framework';
+$string['local:updateorganisationframeworks'] = 'Update an organisational framework';
+$string['local:deleteorganisationframeworks'] = 'Delete an organisational framework';
+
 // Course categories
 $string['assessments'] = 'Assessments';
 $string['bookings'] = 'Bookings';
