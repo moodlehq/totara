@@ -24,15 +24,3 @@ foreach($customfields as $customfield) {
 // free memory
 $customfields = array();
 
-// also add some roles
-$roles = array(
-    array('name'=>'Trainer','shortname'=>'trainer','description'=>'Trainer','sortorder'=>10),
-    array('name'=>'Assistant Trainer','shortname'=>'assistanttrainer','description'=>'Assistant Trainer','sortorder'=>11),
-    array('name'=>'Auditor','shortname'=>'auditor','description'=>'Auditor','sortorder'=>12),
-    array('name'=>'Assessor','shortname'=>'assessor','description'=>'Assessor','sortorder'=>13),
-);
-
-foreach($roles as $role) {
-    insert_record('role',(object)$role);
-}
-
