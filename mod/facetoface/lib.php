@@ -2376,7 +2376,7 @@ function facetoface_user_cancel_submission($sessionid, $userid, $cancelreason=''
         return true; // not signed up, nothing to do
     }
 
-    return facetoface_update_signup_status($signup->id, 2, $userid, $cancelreason);
+    return facetoface_update_signup_status($signup->id, MDL_F2F_STATUS_USER_CANCELLED, $userid, $cancelreason);
 }
 
 /**
