@@ -254,7 +254,30 @@ function facetoface_delete_instance($id) {
     $result = true;
     begin_sql();
 
-    if (!delete_records('facetoface_submissions', 'facetoface', $facetoface->id)) {
+    if (!delete_records_select(
+        'facetoface_signups_status',
+        "signupid IN
+        (
+            SELECT
+                id
+            FROM
+                {$CFG->prefix}facetoface_signups
+            WHERE
+                sessionid IN
+                (
+                    SELECT
+                        id
+                    FROM
+                        {$CFG->prefix}facetoface_sessions
+                    WHERE
+                        facetoface = {$facetoface->id}
+                )
+        )
+        ")) {
+        $result = false;
+    }
+
+    if (!delete_records_select('facetoface_signups', "sessionid IN (SELECT id FROM {$CFG->prefix}facetoface_sessions WHERE facetoface = {$facetoface->id})")) {
         $result = false;
     }
 
