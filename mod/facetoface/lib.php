@@ -40,15 +40,16 @@ define('CUSTOMFIELD_TYPE_MULTISELECT', 2);
 define('CALENDAR_MAX_NAME_LENGTH', 10);
 
 // Signup status codes
-define('MDL_F2F_STATUS_REQUESTED',1);
-define('MDL_F2F_STATUS_USER_CANCELLED',2);
-define('MDL_F2F_STATUS_SESSION_CANCELLED',3);
-define('MDL_F2F_STATUS_APPROVED',4);
-define('MDL_F2F_STATUS_WAITLISTED',5);
-define('MDL_F2F_STATUS_BOOKED',6);
-define('MDL_F2F_STATUS_NO_SHOW',7);
-define('MDL_F2F_STATUS_PARTIALLY_ATTENDED',8);
-define('MDL_F2F_STATUS_FULLY_ATTENDED',9);
+define('MDL_F2F_STATUS_REQUESTED', 1);
+define('MDL_F2F_STATUS_USER_CANCELLED', 2);
+define('MDL_F2F_STATUS_SESSION_CANCELLED', 3);
+define('MDL_F2F_STATUS_DENIED', 4);
+define('MDL_F2F_STATUS_APPROVED', 5);
+define('MDL_F2F_STATUS_WAITLISTED', 6);
+define('MDL_F2F_STATUS_BOOKED', 7);
+define('MDL_F2F_STATUS_NO_SHOW', 8);
+define('MDL_F2F_STATUS_PARTIALLY_ATTENDED', 9);
+define('MDL_F2F_STATUS_FULLY_ATTENDED', 10);
 
 /**
  * Prints the cost amount along with the appropriate currency symbol.
@@ -869,7 +870,7 @@ function facetoface_get_attendees($sessionid)
                                 JOIN {$CFG->prefix}facetoface_signups su ON s.id=su.sessionid
                                 JOIN {$CFG->prefix}facetoface_signups_status ss ON su.id=ss.signupid
                                 JOIN {$CFG->prefix}user u ON u.id=su.userid
-                                WHERE s.id=$sessionid AND ss.superceded!=1 AND ss.statuscode NOT IN (2,3)");
+                                WHERE s.id=$sessionid AND ss.superceded!=1 AND ss.statuscode >= ".MDL_F2F_STATUS_APPROVED);
     if (!$records) {
         return $records;
     }
@@ -1330,7 +1331,7 @@ function facetoface_user_signup($session, $facetoface, $course, $discountcode,
 
         $return = $signupid;
 
-        if ($statusid = facetoface_update_signup_status($signupid, 6, $userid)) {
+        if ($statusid = facetoface_update_signup_status($signupid, MDL_F2F_STATUS_BOOKED, $userid)) {
 
             if (!$notifyuser or facetoface_has_session_started($session, $timenow)) {
                 // If the session has already started, there's no need to notify the user
@@ -2328,7 +2329,7 @@ function facetoface_get_num_attendees($session_id) {
     // for the session, pick signups that haven't been superceded, or cancelled  
     return (int) count_records_sql("select count(ss.id) from {$CFG->prefix}facetoface_signups su
         JOIN {$CFG->prefix}facetoface_signups_status ss ON su.id = ss.signupid
-        WHERE sessionid=$session_id AND ss.superceded=0 AND ss.statuscode NOT IN (2,3)");
+        WHERE sessionid=$session_id AND ss.superceded=0 AND ss.statuscode >= ".MDL_F2F_STATUS_APPROVED);
 }
 
 /**
@@ -2344,7 +2345,7 @@ function facetoface_get_user_submissions($facetofaceid, $userid, $includecancell
 
     $whereclause = "s.facetoface=$facetofaceid AND su.userid=$userid AND ss.superceded != 1";
     if (!$includecancellations) {
-        $whereclause .= ' AND ss.statuscode NOT IN (2,3)';
+        $whereclause .= ' AND ss.statuscode >= '.MDL_F2F_STATUS_APPROVED;
     }
 
     //TODO fix mailedconfirmation, timegraded, timecancelled, etc
