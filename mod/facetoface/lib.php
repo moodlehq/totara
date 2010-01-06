@@ -40,16 +40,16 @@ define('CUSTOMFIELD_TYPE_MULTISELECT', 2);
 define('CALENDAR_MAX_NAME_LENGTH', 10);
 
 // Signup status codes
-define('MDL_F2F_STATUS_REQUESTED', 1);
-define('MDL_F2F_STATUS_USER_CANCELLED', 2);
-define('MDL_F2F_STATUS_SESSION_CANCELLED', 3);
-define('MDL_F2F_STATUS_DENIED', 4);
-define('MDL_F2F_STATUS_APPROVED', 5);
-define('MDL_F2F_STATUS_WAITLISTED', 6);
-define('MDL_F2F_STATUS_BOOKED', 7);
-define('MDL_F2F_STATUS_NO_SHOW', 8);
-define('MDL_F2F_STATUS_PARTIALLY_ATTENDED', 9);
-define('MDL_F2F_STATUS_FULLY_ATTENDED', 10);
+define('MDL_F2F_STATUS_USER_CANCELLED',     10);
+define('MDL_F2F_STATUS_SESSION_CANCELLED',  20);
+define('MDL_F2F_STATUS_DENIED',             30);
+define('MDL_F2F_STATUS_REQUESTED',          40);
+define('MDL_F2F_STATUS_APPROVED',           50);
+define('MDL_F2F_STATUS_WAITLISTED',         60);
+define('MDL_F2F_STATUS_BOOKED',             70);
+define('MDL_F2F_STATUS_NO_SHOW',            80);
+define('MDL_F2F_STATUS_PARTIALLY_ATTENDED', 90);
+define('MDL_F2F_STATUS_FULLY_ATTENDED',     100);
 
 /**
  * Prints the cost amount along with the appropriate currency symbol.
@@ -97,13 +97,12 @@ function facetoface_cost($userid, $sessionid, $sessiondata, $htmloutput=true) {
     global $CFG;
 
     if (count_records_sql("SELECT COUNT(*)
-                               FROM {$CFG->prefix}facetoface_submissions su,
+                               FROM {$CFG->prefix}facetoface_signups su,
                                     {$CFG->prefix}facetoface_sessions se
                               WHERE su.sessionid=$sessionid
                                 AND su.userid=$userid
                                 AND su.discountcode IS NOT NULL
-                                AND su.sessionid = se.id
-                                AND su.timecancelled = 0") > 0) {
+                                AND su.sessionid = se.id") > 0) {
         return format_cost($sessiondata->discountcost, $htmloutput);
     } else {
         return format_cost($sessiondata->normalcost, $htmloutput);
@@ -483,10 +482,22 @@ function facetoface_delete_session($session)
     $facetoface = get_record('facetoface', 'id', $session->facetoface);
 
     // Cancel user signups (and notify users)
-    $signedupusers = get_records_sql("SELECT DISTINCT userid
-                                        FROM {$CFG->prefix}facetoface_submissions
-                                       WHERE sessionid = $session->id AND
-                                             timecancelled = 0");
+    $signedupusers = get_records_sql(
+        "
+            SELECT DISTINCT
+                userid
+            FROM
+                {$CFG->prefix}facetoface_signups s
+            LEFT JOIN
+                {$CFG->prefix}facetoface_signups_status ss
+             ON ss.signupid = s.id
+            WHERE
+                s.sessionid = $session->id
+            AND ss.superceded = 0
+            AND ss.statuscode >= ".MDL_F2F_STATUS_REQUESTED."
+        "
+    );
+
     if ($signedupusers and count($signedupusers) > 0) {
         foreach ($signedupusers as $user) {
             if (facetoface_user_cancel($session, $user->userid, true)) {
@@ -521,7 +532,31 @@ function facetoface_delete_session($session)
         rollback_sql();
         return false;
     }
-    if (!delete_records('facetoface_submissions', 'sessionid', $session->id)) {
+
+    if (!delete_records_select(
+        'facetoface_signups_status',
+        "signupid IN
+        (
+            SELECT
+                id
+            FROM
+                {$CFG->prefix}facetoface_signups
+            WHERE
+                sessionid IN
+                (
+                    SELECT
+                        id
+                    FROM
+                        {$CFG->prefix}facetoface_sessions
+                    WHERE
+                        facetoface = {$facetoface->id}
+                )
+        )
+        ")) {
+        $result = false;
+    }
+
+    if (!delete_records('facetoface_signups', 'sessionid', $session->id)) {
         rollback_sql();
         return false;
     }
@@ -619,7 +654,7 @@ function facetoface_cron()
             $newsubmission = new object;
             $newsubmission->id = $signupdata->id;
             $newsubmission->mailedreminder = 1; // magic number to show that it was not actually sent
-            if (!update_record('facetoface_submissions', $newsubmission)) {
+            if (!update_record('facetoface_signups', $newsubmission)) {
                 echo "ERROR: could not update mailedreminder for submission ID $signupdata->id";
             }
             continue;
@@ -702,7 +737,7 @@ function facetoface_cron()
             $newsubmission = new object;
             $newsubmission->id = $signupdata->id;
             $newsubmission->mailedreminder = $timenow;
-            if (!update_record('facetoface_submissions', $newsubmission)) {
+            if (!update_record('facetoface_signups', $newsubmission)) {
                 echo "ERROR: could not update mailedreminder for submission ID $signupdata->id";
             }
 
@@ -1272,7 +1307,7 @@ function facetoface_get_unmailed_reminders()
     $submissions = get_records_sql("SELECT su.*, f.course, f.id as facetofaceid, f.name as facetofacename,
                                            f.reminderperiod, se.duration, se.normalcost, se.discountcost,
                                            se.details, se.datetimeknown
-                                      FROM {$CFG->prefix}facetoface_submissions su
+                                      FROM {$CFG->prefix}facetoface_signups su
                                       JOIN {$CFG->prefix}facetoface_sessions se ON su.sessionid = se.id
                                       JOIN {$CFG->prefix}facetoface f ON se.facetoface = f.id
                                      WHERE su.mailedreminder = 0 AND se.datetimeknown=1 AND
@@ -1653,7 +1688,7 @@ function facetoface_send_cancellation_notice($facetoface, $session, $userid) {
     $posttextmgrheading = $facetoface->cancellationinstrmngr;
 
     // Lookup what type of notification to send
-    $notificationtype = get_field('facetoface_submissions', 'notificationtype',
+    $notificationtype = get_field('facetoface_signups', 'notificationtype',
                                   'sessionid', $session->id, 'userid', $userid);
 
     // Set cancellation bit
@@ -1870,7 +1905,7 @@ function facetoface_take_individual_attendance($submissionid,$didattend) {
     }
 
     $record = get_record_sql("SELECT f.*, s.userid
-                                FROM {$CFG->prefix}facetoface_submissions s
+                                FROM {$CFG->prefix}facetoface_signups s
                                 JOIN {$CFG->prefix}facetoface f ON f.id = s.facetoface
                                 JOIN {$CFG->prefix}course_modules cm ON cm.instance = f.id
                                 JOIN {$CFG->prefix}modules m ON m.id = cm.module
@@ -2345,7 +2380,7 @@ function facetoface_get_user_submissions($facetofaceid, $userid, $includecancell
 
     $whereclause = "s.facetoface=$facetofaceid AND su.userid=$userid AND ss.superceded != 1";
     if (!$includecancellations) {
-        $whereclause .= ' AND ss.statuscode >= '.MDL_F2F_STATUS_APPROVED;
+        $whereclause .= ' AND ss.statuscode >= '.MDL_F2F_STATUS_REQUESTED;
     }
 
     //TODO fix mailedconfirmation, timegraded, timecancelled, etc
