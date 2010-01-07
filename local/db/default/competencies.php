@@ -10,7 +10,7 @@
                                     .'<ul>recognition and credit for a wide range of knowledge and skills.</ul></li><br>'
                                     .'Unit standards and achievement standards, National Certificates and National Diplomas are registered on the NQF.',
             'idnumber'     => '',
-            'isdefault'    => '0',
+            'isdefault'    => '1',
             'description'  => '',
             'sortorder'    => '1',
             'timecreated'  => $timenow,
