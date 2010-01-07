@@ -1329,6 +1329,13 @@ function cmp_plan($a, $b, $field, $descending=false) {
 /**
  * Sort plans by descending modification time
  */
+function approvaltime_cmp_plan($a, $b) {
+    return cmp_plan($a, $b, 'mtime', true);
+}
+
+/**
+ * Sort plans by descending modification time
+ */
 function mtime_cmp_plan($a, $b) {
     return cmp_plan($a, $b, 'mtime', true);
 }
