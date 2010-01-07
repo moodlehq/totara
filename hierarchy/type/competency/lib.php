@@ -195,12 +195,11 @@ class competency extends hierarchy {
     }
 
     /**
-     * Run any code before printing admin header
-     * @param $item object Competency being viewed
-     * @param $page string Unique identifier for admin page
+     * Run any code before printing header
+     * @param $page string Unique identifier for page
      * @return void
      */
-    function admin_page_setup($item, $page = '') {
+    function hierarchy_page_setup($page = '') {
         global $CFG;
 
         if (!in_array($page, array('template/view', 'item/view'))) {
@@ -210,7 +209,7 @@ class competency extends hierarchy {
         // Setup custom javascript
         require_once($CFG->dirroot.'/local/js/setup.php');
 
-        // Get evidence
+        // Setup lightbox
         setup_lightbox(array(MBE_JS_TREEVIEW, MBE_JS_ADVANCED));
 
         switch ($page) {

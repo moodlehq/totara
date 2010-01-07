@@ -43,7 +43,7 @@ require_capability('moodle/local:view'.$hierarchy->prefix, $sitecontext);
 ///
 
 // Run any hierarchy type specific code
-$hierarchy->admin_page_setup($item, 'template/view');
+$hierarchy->hierarchy_page_setup('template/view');
 
 /// Display page header
 admin_externalpage_print_header();
