@@ -1391,7 +1391,9 @@ function print_user_learning_plans($userid, $canviewplans, $page, $perpage, $ord
     }
 
     // Sort the plans
-    uasort($plans, "{$orderby}_cmp_plan");
+    if ($plans) {
+        uasort($plans, "{$orderby}_cmp_plan");
+    }
 
     // Make list of trainee user IDs
     print "<div id=\"planlist\">\n";
@@ -2532,6 +2534,8 @@ function convert_userdate($datestring) {
 
     return strtotime($datestring);
 }
+
+$collapsing_tree_node_groups = array();
 
 /**
  * Writes out the data, for mutually exclusive collapsing_tree_nodes.  These
