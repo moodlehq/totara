@@ -72,11 +72,8 @@ elseif ('create' == $action or 'rename' == $action) {
     $defaultname = get_string('defaultplanname', 'idp');
     $defaultstartdate = strtotime('now');
     $defaultenddate = strtotime('now + 3 months');
-    if ('create' == $action) {
-        // Show the disclaimer
-        print '<blockquote><p>'.format_text($CFG->idpdisclaimer, FORMAT_HTML).'</p></blockquote>';
-    }
-    else {
+
+    if ('create' != $action) {
         // Get the current values from the DB
         $plan = get_record('idp', 'id', $planid);
         $defaultname = $plan->name;
