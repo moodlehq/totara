@@ -1,0 +1,65 @@
+<?php
+/**
+ * This page lists all the instances of idp in a particular course
+ *
+ * @author    Francois Marier <francois@catalyst.net.nz>
+ * @copyright 2007 (C) Catalyst IT Ltd
+ * @package   idp
+ **/
+
+    require_once('../config.php');
+    require_once('lib.php');
+
+    require_login();
+
+    add_to_log(SITEID, 'idp', 'view all', "index.php?id=$course->id", '');
+
+    $stridps = get_string('idps', 'idp');
+
+    $navlinks = array();
+    $navlinks[] = array('name' => $stridps, 'link' => '', 'type' => 'activity');
+    $navigation = build_navigation($navlinks);
+    print_header_simple($stridps, '', $navigation, '', '', true, '', navmenu($course));
+
+    $strname = get_string('name');
+    $strweek = get_string('week');
+    $strtopic = get_string('topic');
+
+    if ($course->format == 'weeks') {
+        $table->head  = array ($strweek, $strname);
+        $table->align = array ('center', 'left');
+    } else if ($course->format == 'topics') {
+        $table->head  = array ($strtopic, $strname);
+        $table->align = array ('center', 'left', 'left', 'left');
+    } else {
+        $table->head  = array ($strname);
+        $table->align = array ('left', 'left', 'left');
+    }
+
+    if (! $idps = get_all_idps()) {
+
+    } else {
+        foreach ($idps as $idp) {
+            if (!$idp->visible) {
+                //Show dimmed if the mod is hidden
+                $link = "<a class=\"dimmed\" href=\"view.php?id=$idp->coursemodule\">$idp->name</a>";
+            } else {
+                //Show normal if the mod is visible
+                $link = "<a href=\"view.php?id=$idp->coursemodule\">$idp->name</a>";
+            }
+
+            if ($course->format == 'weeks' or $course->format == 'topics') {
+                $table->data[] = array ($idp->section, $link);
+            } else {
+                $table->data[] = array ($link);
+            }
+        }
+    }
+
+    echo '<br />';
+
+    print_table($table);
+
+    print_footer($course);
+
+?>
