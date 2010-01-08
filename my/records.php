@@ -356,11 +356,12 @@ echo "</table>";
     $where2  = " WHERE ce.userid={$user->id}";
     $sort2   = " ORDER by ce.timemodified DESC";
 
-    $select3 = "SELECT c.fullname as cfullname, ce.competencyid AS cid, ce.proficiency, ce.positionid, ce.organisationid, ce.timemodified, 'competency' AS type
+    $select3 = "SELECT c.fullname as cfullname, ce.competencyid AS cid, ce.proficiency, ce.positionid, ce.organisationid, ce.timemodified, 
+        'competency' AS type, c.idnumber as idnumber
         FROM mdl_competency_evidence ce JOIN mdl_competency c ON c.id=ce.competencyid WHERE ce.userid={$user->id}
         UNION ALL
         SELECT c.fullname AS cfullname, cc.course AS cid, CASE WHEN cc.timecompleted IS NOT NULL THEN 3 ELSE 1 END AS proficiency,
-        NULL AS positionid, NULL AS organisationid, cc.timecompleted, 'course' AS type
+        NULL AS positionid, NULL AS organisationid, cc.timecompleted, 'course' AS type, c.idnumber as idnumber
         FROM mdl_course_completions cc JOIN mdl_course c ON c.id=cc.course
         WHERE cc.userid={$user->id} ORDER BY timemodified DESC";
 
@@ -388,7 +389,6 @@ echo "</table>";
         )
     );
 
-
     if ($records3) {
         while ($record = rs_fetch_next_record($records3)) {
             $tabledata = array();
@@ -402,7 +402,7 @@ echo "</table>";
                         }
                         break;
                     case 'competency':
-                        $tabledata[] = '';
+                        $tabledata[] = $record->idnumber;
                         break;
                     case 'proficiency':
                         if($record->type=='course') {
