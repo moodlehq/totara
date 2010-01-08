@@ -6,7 +6,6 @@
 define('MBE_JS_TREEVIEW',       1);
 define('MBE_JS_ADVANCED',       2);
 
-
 /**
  * Load appropriate JS and CSS files for lightbox
  *

@@ -769,8 +769,20 @@ function xmldb_local_upgrade($oldversion) {
         $table->addFieldInfo('revision', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
         $table->addFieldInfo('competency', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
         $table->addFieldInfo('ctime', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $table->addFieldInfo('grade', XMLDB_TYPE_INTEGER, '8', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $table->addFieldInfo('postapproval', XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
+        $table->addFieldInfo('grade', XMLDB_TYPE_INTEGER, '8', XMLDB_UNSIGNED, null, null, null);
+        $table->addFieldInfo('postapproval', XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, null, null, null);
+        $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
+        $table->addIndexInfo('revision', XMLDB_INDEX_NOTUNIQUE, array('revision'));
+        $result = $result && create_table($table);
+
+    /// Create table idp_revision_course
+        $table = new XMLDBTable('idp_revision_course');
+        $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->addFieldInfo('revision', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->addFieldInfo('course', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->addFieldInfo('ctime', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
+        $table->addFieldInfo('grade', XMLDB_TYPE_INTEGER, '8', XMLDB_UNSIGNED, null, null, null);
+        $table->addFieldInfo('postapproval', XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, null, null, null);
         $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
         $table->addIndexInfo('revision', XMLDB_INDEX_NOTUNIQUE, array('revision'));
         $result = $result && create_table($table);

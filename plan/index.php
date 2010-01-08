@@ -91,6 +91,7 @@ elseif ($manageroverview) {
     $perpage = 20;
     $hasplans = false;
     $canviewplans = true;
+    print '<h1>'.get_string('traineesummarytitle', 'idp', format_user_link($userid)).'</h1>';
     $hasplans = print_user_learning_plans($userid, $canviewplans, $page, $perpage, $orderby);
     if ($ownpage && has_capability('moodle/local:editownplan', $contextsite)) {
         // Create new plan button
@@ -248,7 +249,7 @@ function print_trainees_summary($trainees) {
     );
     $table->data = array();
     $orderedtrainees = array();
-    $canview = $cancomment = $canapprove = false;
+    $canview = $cancomment = $can_approve = false;
 
     foreach ($trainees as $traineeuser) {
         $userctx    = get_context_instance(CONTEXT_USER, $traineeuser->id);
@@ -258,7 +259,7 @@ function print_trainees_summary($trainees) {
 
         $canview    = has_capability('moodle/local:viewplan', $userctx, $userid);
         $cancomment = has_capability('moodle/local:addcomment', $userctx, $userid);
-        $canapprove = has_capability('moodle/local:approveplan', $userctx, $userid);
+        $can_approve = has_capability('moodle/local:approveplan', $userctx, $userid);
 
         $trainee            = new stdclass;
         $trainee->id        = $traineeuser->id;
@@ -266,7 +267,7 @@ function print_trainees_summary($trainees) {
         $trainee->role      = $userrole;
         $trainee->view      = $canview;
         $trainee->comment   = $cancomment;
-        $trainee->approve   = $canapprove;
+        $trainee->approve   = $can_approve;
 
         $orderedtrainees[]  = $trainee;
     };

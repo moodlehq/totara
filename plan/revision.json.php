@@ -12,7 +12,7 @@ $action = required_param('action', PARAM_ALPHA); // Action code
 $revid = optional_param('revisionid', 0, PARAM_INT); // Revision ID
 $objectiveid = optional_param('objectiveid', 0, PARAM_INT); // Learning Objective ID
 $curriculum = optional_param('curriculum', '', PARAM_ALPHA); // Curriculum code
-$editable = optional_param('editable', 0, PARAM_INT); // Show/hide edit components
+$can_edit = optional_param('can_edit', 0, PARAM_INT); // Show/hide edit components
 $listtype = optional_param('listtype', '', PARAM_INT); // Which list the items belong to
 $itemtext = optional_param('itemtext', '', PARAM_NOTAGS); // List item contents
 $itemid = optional_param('itemid', '', PARAM_INT); // ID of the item to delete
@@ -38,7 +38,7 @@ if (0 == $error) {
         } else {
             if (objective_ajax_action($objectiveid, $revid, $action)) {
                 $revision = get_revision(0, $revid, false);
-                $data = curriculum_objectives($curriculum, $revision, $editable);
+                $data = curriculum_objectives($curriculum, $revision, $can_edit);
             }
             else {
                 $error = 4;

@@ -1,5 +1,5 @@
 // This function is called when users click on an objective's add/delete button
-function toggle_objective(revid, objectiveid, curriculum, editable, action, element) {
+function toggle_objective(revid, objectiveid, curriculum, can_edit, action, element) {
 
     var urlparams = 'revisionid=' + revid + '&objectiveid=' + objectiveid
         + '&curriculum=' + curriculum + '&action=' + action;

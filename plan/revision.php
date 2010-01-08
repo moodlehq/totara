@@ -6,8 +6,24 @@
 require_once('../config.php');
 require_once('lib.php');
 
-require_js(array('yui_yahoo', 'yui_event', 'yui_connection', 'yui_json'));
+$js_enabled = optional_param('js', true, PARAM_BOOL);    // js enabled
+
 require_login();
+
+// If js enabled, setup custom javascript
+if ($js_enabled) {
+
+    require_once($CFG->dirroot.'/local/js/setup.php');
+    setup_lightbox(array(MBE_JS_TREEVIEW, MBE_JS_ADVANCED));
+    require_js(array('yui_yahoo',
+            'yui_event',
+            'yui_connection',
+            'yui_json',
+            $CFG->wwwroot.'/local/js/idp.competency.js',
+            $CFG->wwwroot.'/local/js/idp.course.js',
+    ));
+
+}
 
 $id = required_param('id', PARAM_INT); // Plan ID
 $rev = optional_param('rev', 0, PARAM_INT); // Revision ID
@@ -46,7 +62,6 @@ if ($USER->id != $plan->userid and 'notsubmitted' == $currevision->status) {
 $currevision->owner = get_record('user', 'id', $plan->userid, '', '', '', '', 'id,firstname,lastname,idnumber');
 add_to_log(SITEID, 'idp', 'view plan', "revision.php?id=$plan->id", $plan->id);
 
-
 $stridps = get_string('idps', 'idp');
 
 $pagetitle = format_string($plan->name);
@@ -64,46 +79,50 @@ $CFG->stylesheets[] = array(
 print_header_simple($pagetitle, '', $navigation, '', '', true);
 
 if ($currevision) {
-    // Whether or not to see the editable view
-    $editable = false;
-    $cansubmit = false;
+    // Whether or not to see the can_edit view
+    $can_edit = false;
+    $can_submit = false;
     if (is_my_plan($currevision->id) and has_capability('moodle/local:editownplan', $contextsite)) {
-        $cansubmit = true;
+        $can_submit = true;
         if ('notsubmitted' == $currevision->status or 'inrevision' == $currevision->status) {
-            $editable = true;
+            $can_edit = true;
         }
     }
-    $editable = $editable && !$print;
+    $can_edit = $can_edit && !$print;
 
     // Whether or not the current user can approve this plan
-    $canapprove = false;
-    if (!$cansubmit && has_capability('moodle/local:approveplan', $contextuser)) {
-        $canapprove = true;
+    $can_approve = false;
+    if (!$can_submit && has_capability('moodle/local:approveplan', $contextuser)) {
+        $can_approve = true;
     }
 
-    if ($editable) {
+    if ($can_edit) {
         print '<h1>'.get_string('revisionedittitle', 'idp', $plan->name).'</h1>';
     } else {
         print '<h1>'.get_string('revisionviewtitle', 'idp', $plan->name).'</h1>';
     }
 
-    if ($canapprove) {
+    if ($can_approve) {
         print_revision_manager($currevision, $plan, array(
-            'cansubmit'  => $cansubmit,
-            'canapprove' => $canapprove,
+            'can_submit' => $can_submit,
+            'can_edit'   => $can_edit,
+            'can_approve' => $can_approve,
         ));
     } else {
         print_revision_trainee($currevision, $plan, array(
-            'editable'  => $editable,
-            'cansubmit' => $cansubmit,
+            'can_edit'  => $can_edit,
+            'can_submit' => $can_submit,
         ));
     }
 
-    if ($cansubmit) {
+    if ($can_submit) {
 
-        if ($editable) {
+        if ($can_edit) {
+
+            print '<table cellpadding="10" summary="Three buttons side by side"><tr><td>';
+
             // Save and continue later
-            print '<table cellpadding="10" summary="Two buttons side by side"><tr><td>';
+            print '</td><td>';
             print '<form method="get" action="index.php"><div>';
             print '<input type="submit" value="'.get_string('savecontinuelaterbutton', 'idp').'" />';
             print '</div></form>';
@@ -131,7 +150,14 @@ if ($currevision) {
 } else {
     print '<p><i>'.get_string('norevisions', 'idp')."</i></p>\n";
 }
+?>
 
+<script type="text/javascript">
+<!-- //
+var idp_revision_id = <?php echo $id ?>
+// -->
+</script>
+<?php
 print collapse_groups_script();
 print '<script type="text/javascript" src="revision.js"></script>'."\n";
 print '<script type="text/javascript" src="search.js"></script>'."\n";

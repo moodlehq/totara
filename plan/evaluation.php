@@ -125,7 +125,7 @@ function print_curriculum_evaluation($curriculumcode, $revisionid) {
     print collapsing_tree_node("caption_$divid", $divid, get_string('additionalobjectives', 'idp'),
                                0, '', false, 'curriculum');
     print '<div id="'.$divid.'" style="display: none">';
-    print editable_curriculum_browser($curriculumcode, $revisionid, false, 50);
+    print can_edit_curriculum_browser($curriculumcode, $revisionid, false, 50);
     print '</div>';
 
     print '</blockquote>';

@@ -1,5 +1,8 @@
 <?php
 
+require_once('../hierarchy/type/competency/lib.php');
+$CFG->idpenablefavourites = false;
+
 /**
  * Create a new Learning Plan along with an initial revision
  */
@@ -115,8 +118,6 @@ function get_revision($planid, $revid=0, $pdf=false) {
     elseif ($revid > 0) {
         // Get the requested revision
         $revision = get_record('idp_revision', 'id', $revid);
-error_log("revid: $revid");
-error_log(print_r($revision, true));
     }
     else {
         // Get the latest revision    
@@ -250,7 +251,7 @@ function format_revision_status($revision, $showdetails=true, $showdate=true, $p
 /**
  * Print details about the given revision.
  */
-function print_revision_details($revision, $cansubmit, $canapprove=false, $pdf=false, $showactions = true) {
+function print_revision_details($revision, $can_submit, $can_approve=false, $pdf=false, $showactions = true) {
 
     global $CFG;
 
@@ -283,14 +284,14 @@ function print_revision_details($revision, $cansubmit, $canapprove=false, $pdf=f
     // Next actions
     $nextactions = '';
     if ('approved' == $revision->status or 'overdue' == $revision->status) {
-        if ($cansubmit) {
+        if ($can_submit) {
             $nextactions .= '<a href="'.$CFG->wwwroot.'/plan/evaluation.php?id=' . $revision->idp . '">'.get_string('evaluateplan', 'idp').'</a> - ';
         }
         $nextactions .= '<a href="'.$CFG->wwwroot.'/plan/revision.php?id=' . $revision->idp . '&amp;print=1">'.get_string('printableview', 'idp').'</a>';
         $nextactions .= '<a href="'.$CFG->wwwroot.'/plan/revision_pdf.php?id=' . $revision->idp . '">' . get_string('exporttopdf', 'idp') . '</a>';
     }
     elseif ('withdrawn' == $revision->status) {
-        if ($cansubmit) {
+        if ($can_submit) {
             $nextactions .= '<a href="'.$moduledir .'/revision.php?id='.$revision->idp.'">'.get_string('editlatestrevision', 'idp').'</a>';
         }
         else {
@@ -298,20 +299,20 @@ function print_revision_details($revision, $cansubmit, $canapprove=false, $pdf=f
         }
     }
     elseif ('submitted' == $revision->status) {
-        if ($canapprove) {
+        if ($can_approve) {
             $nextactions .= '<a href="'.$CFG->wwwroot.'/plan/approve.php?rev='.$revision->id.'">'.get_string('approveplan', 'idp').'</a> - ';
             $nextactions .= '<a href="'.$CFG->wwwroot.'/plan/reject.php?rev='.$revision->id.'">'.get_string('rejectplan', 'idp').'</a>';
         }
 
     }
     elseif ('inrevision' == $revision->status) {
-        if ($cansubmit) {
+        if ($can_submit) {
             $nextactions .= '<a href="'.$CFG->wwwroot.'/plan/submit.php?rev='.$revision->id.'">'.get_string('submitplan', 'idp').'</a> - ';
         }
         $nextactions .= '<a style="cursor: pointer;" onclick="toggle_addcomments(); return 0;">' . get_string('commentonplan', 'idp') . '</a>';
     }
     elseif ('notsubmitted' == $revision->status) {
-        if ($cansubmit) {
+        if ($can_submit) {
             $nextactions .= '<a href="'.$CFG->wwwroot.'/plan/submit.php?rev='.$revision->id.'">'.get_string('submitplan', 'idp').'</a>';
         }
     }
@@ -406,7 +407,7 @@ function revision_comments($revision) {
 /**
  * Return a table of themes and objectives for a given curriculum
  */
-function curriculum_objectives($curriculumcode, $revision, $editable=false) {
+function curriculum_objectives($curriculumcode, $revision, $can_edit=false) {
     global $CFG;
 
     $objectives = get_records_sql("SELECT ro.id, o.id AS objectiveid, t.name AS themename,
@@ -434,12 +435,12 @@ function curriculum_objectives($curriculumcode, $revision, $editable=false) {
 
     if ($objectives and count($objectives) > 0) {
 
-        if ($revision->id and $editable) {
+        if ($revision->id and $can_edit) {
 
             foreach ($objectives as $objective) {
 
                 $html = "<img id=\"deleteobjective$objective->id\"";
-                $html .= " onclick=\"toggle_objective($revision->id, $objective->objectiveid, '$curriculumcode', '$editable', 'deleteobj')\"";
+                $html .= " onclick=\"toggle_objective($revision->id, $objective->objectiveid, '$curriculumcode', '$can_edit', 'deleteobj')\"";
                 $html .= ' style="cursor: pointer"';
                 $html .= ' title="'.get_string('removefromplanbutton', 'idp').'"';
                 $html .= ' alt="'.get_string('removefromplanbutton', 'idp').'"';
@@ -470,7 +471,7 @@ function curriculum_objectives($curriculumcode, $revision, $editable=false) {
 
         return print_table($table, true);
     }
-    elseif ($editable) {
+    elseif ($can_edit) {
         $noneyet = '<i>'.get_string('noneyet', 'idp').'</i>';
         $table->data[] = array($noneyet, $noneyet);
 
@@ -487,7 +488,7 @@ function curriculum_objectives($curriculumcode, $revision, $editable=false) {
  * domains, themes and objectives for the given curriculum, along with
  * the appropriate buttons to add objectives to the plan revision.
  */
-function editable_curriculum_browser($curriculumcode, $revisionid, $enablefavourites, $indentation=0) {
+function can_edit_curriculum_browser($curriculumcode, $revisionid, $enablefavourites, $indentation=0) {
 
     $alreadyadded = get_alreadyadded($curriculumcode, $revisionid);
     return curriculum_browser($curriculumcode, true, $revisionid, $alreadyadded, $enablefavourites, $indentation);
@@ -522,7 +523,7 @@ function list_item_edit_controls($revid, $listtype, $item) {
 /**
  * Return a table of list items for a revision
  */
-function get_list_items($revid, $listtype, $editable) {
+function get_list_items($revid, $listtype, $can_edit) {
     global $CFG;
 
     $listitems = get_records_select('idp_list_item', "revision = $revid AND listtype = $listtype", 'ctime');
@@ -539,7 +540,7 @@ function get_list_items($revid, $listtype, $editable) {
     if ($listitems and count($listitems) > 0) {
         $table->head = array('', get_string($typestrings[$listtype], 'idp'));
 
-        if ($editable) {
+        if ($can_edit) {
             $i = 1;
             foreach ($listitems as $item) {
                 $html = list_item_edit_controls($revid, $listtype, $item);
@@ -584,7 +585,7 @@ function get_list_items($revid, $listtype, $editable) {
 
         return print_table($table, true);
     }
-    else if ($editable) {
+    else if ($can_edit) {
         $nothingyet = '<i>'.get_string('nothingyet', 'idp').'</i>';
         $table->data[] = array($nothingyet);
 
@@ -667,18 +668,8 @@ function delete_plan_objective($objectiveid, $revisionid, $postapproval=0) {
     begin_sql();
     if (delete_records('idp_revision_objective', 'objective', $objectiveid,
                        'revision', $revisionid, 'postapproval', $postapproval)) {
-        if ($postapproval || update_modification_time($revisionid)) {
-            if (1 == get_field('racp_objective', 'deleted', 'id', $objectiveid)) {
-                // Attempt to delete again this DELETED objective, in case
-                // no other plan has a reference to it
-                if (!delete_item($objectiveid, 'obj')) {
-                    rollback_sql();
-                    return false;
-                }
-            }
-            commit_sql();
-            return true;
-        }
+        commit_sql();
+        return true;
     }
     rollback_sql();
     return false;
@@ -699,8 +690,11 @@ function delete_plan($planid) {
     if ('notsubmitted' != $revision->status) {
         return false; // Status must be unsubmitted
     }
-    if (count_records('idp_revision_objective', 'revision', $revision->id) > 0) {
-        return false; // There are objectives in this revision
+    if (count_records('idp_revision_competency', 'revision', $revision->id) > 0) {
+        return false; // There are competencies in this revision
+    }
+    if (count_records('idp_revision_course', 'revision', $revision->id) > 0) {
+        return false; // There are courses in this revision
     }
     if (count_records('idp_revision_comment', 'revision', $revision->id) > 0) {
         return false; // There are comments on this revision
@@ -1748,10 +1742,10 @@ function idp_email_notification($type, $revision, $subsargs) {
  *
  * @param string $curriculumcode  The one-letter code for the curriculum to display
  * @param class $revision         Record from the idp_revision table, as returned by get_revision()
- * @param boolean $editable       Should the curriculum browser (used to add objectives) be shown?
+ * @param boolean $can_edit       Should the curriculum browser (used to add objectives) be shown?
  * @param boolean $return         Return the HTML code instead of printing it directly?
  */
-function print_curriculum($curriculumcode, $revision, $editable, $return = false) {
+function print_curriculum($curriculumcode, $revision, $can_edit, $return = false) {
     global $CFG;
 
     $listdata = '';
@@ -1761,21 +1755,21 @@ function print_curriculum($curriculumcode, $revision, $editable, $return = false
     $out .=  '<blockquote>';
 
     $out .=  '<div id="objectivelist'.$curriculumcode.'">';
-    $listdata = curriculum_objectives($curriculumcode, $revision, $editable);
+    $listdata = curriculum_objectives($curriculumcode, $revision, $can_edit);
     $out .=  $listdata;
     $out .=  "</div>\n";
 
-    if ($editable) {
-        $out .=  editable_curriculum_browser($curriculumcode, $revision->id, $CFG->idpenablefavourites);
+    if ($can_edit) {
+        $out .=  can_edit_curriculum_browser($curriculumcode, $revision->id, $CFG->idpenablefavourites);
     }
 
-    if ($editable && $revision->id && $CFG->idpenablesearch) {
+    if ($can_edit && $revision->id && $CFG->idpenablesearch) {
         $out .=  objsearch_form($curriculumcode, $revision->id);
     }
 
     $out .=  '</blockquote>';
 
-    if (!$editable && empty($listdata)) {
+    if (!$can_edit && empty($listdata)) {
         $out = '';
     } else {
         $out .=  '</div>';
@@ -1792,15 +1786,15 @@ function print_curriculum($curriculumcode, $revision, $editable, $return = false
  *
  * @param string $revisionid  ID of the revision to display
  * @param string $listtype    Type of the list to display.
- * @param boolean $editable   Should the multi-line edit box (used to add items) be shown?
+ * @param boolean $can_edit   Should the multi-line edit box (used to add items) be shown?
  * @param boolean $return     Return the HTML code instead of printing it directly?
  */
-function print_freeform_list($revisionid, $listtype, $editable = false, $return = false) {
+function print_freeform_list($revisionid, $listtype, $can_edit = false, $return = false) {
     $out = '';
     $listdata = '';
 
     $out .= '<div class="pagesection">';
-    if ($editable) {
+    if ($can_edit) {
         $out .= '<div class="editplanquestions">'.get_string("list{$listtype}description", 'idp');
         $out .=  helpbutton("list{$listtype}", get_string("help:list{$listtype}", 'idp'), 'idp', true, false, '', true);
         $out .= '</div>';
@@ -1810,18 +1804,18 @@ function print_freeform_list($revisionid, $listtype, $editable = false, $return 
     $out .=  '<blockquote>';
 
     $out .=  '<div id="itemlist' . $listtype . '">';
-    $listdata = get_list_items($revisionid, $listtype, $editable);
+    $listdata = get_list_items($revisionid, $listtype, $can_edit);
     $out .= $listdata;
     $out .=  '</div>';
 
-    if ($editable) {
+    if ($can_edit) {
         $out .=  '<p>'.get_string("list{$listtype}explanation2", 'idp').'</p>';
         $out .=  print_freeform_textbox($revisionid, $listtype, true);
     }
 
     $out .=  '</blockquote>';
     $out .= '</div>';
-    if (!$editable && empty($listdata)) {
+    if (!$can_edit && empty($listdata)) {
         $out = '';
     }
     if ($return) {
@@ -1836,8 +1830,8 @@ function print_revision_manager($revision, $plan, $options=array()) {
 
     // merge in options array, in case of unset options, defaults are provided.
     $options = array_merge(array(
-        'cansubmit'  =>  false,
-        'canapprove' =>  false,
+        'can_submit'  =>  false,
+        'can_approve' =>  false,
     ), $options);
 
 
@@ -1847,39 +1841,29 @@ function print_revision_manager($revision, $plan, $options=array()) {
         $revision->owner = $USER;
     }
 
-    print_revision_details($revision, $options['cansubmit'], $options['canapprove'], false, true);
+    print_revision_details($revision, $options['can_submit'], $options['can_approve'], false, true);
     print_revision_list($plan->id, $revision->id);
     print revision_comments($revision);
     print_comment_textbox($revision->id);
 
     $usercurriculum = get_field('user', 'curriculum', 'id', $plan->userid);
 
-    $listshtml = '';
-    if (!empty($usercurriculum)) {
-        $listshtml .= print_curriculum($usercurriculum, $revision, false, true);
-    }
-    $listshtml .= print_curriculum('Q', $revision, false, true);
+    $competencies = idp_get_user_competencies($plan->userid, $revision->id);
+    include $CFG->dirroot.'/plan/view-competencies.html';
 
     // Free-form lists
-    $objhtml = print_freeform_list($revision->id, 0, false, true);
-    $objhtml .= print_freeform_list($revision->id, 1, false, true);
+//    $objhtml = print_freeform_list($revision->id, 0, false, true);
+//    $objhtml .= print_freeform_list($revision->id, 1, false, true);
 
-    // Check for empty plans
-    if (empty($objhtml) && empty($listshtml)) {
-        print '<p><i>'.get_string('emptyplan', 'idp')."</i></p>\n";
-    } else {
-        print $listshtml;
-        print $objhtml;
-        print_revision_extracomment($revision);
-    }
+    print_revision_extracomment($revision);
 }
 
 function print_revision_trainee($revision, $plan, $options=array()) {
     global $USER, $CFG;
     // merge in options array, in case of unset options, defaults are provided.
     $options = array_merge(array(
-        'editable'      =>  false,
-        'cansubmit'      =>  false,
+        'can_edit'      =>  false,
+        'can_submit'    =>  false,
     ), $options);
 
 
@@ -1889,45 +1873,40 @@ function print_revision_trainee($revision, $plan, $options=array()) {
         $revision->owner = $USER;
     }
 
-    if ($options['editable']) {
+    if ($options['can_edit']) {
         print_revision_legend();
     }
-    print_revision_details($revision, $options['cansubmit'], false, false, true);
+    print_revision_details($revision, $options['can_submit'], false, false, true);
     print_revision_list($plan->id, $revision->id);
 
-    if ($options['editable']) {
+    if ($options['can_edit']) {
         print_comment_textbox($revision->id);
     }
     print revision_comments($revision);
 
-    if ($options['editable']) {
+    if ($options['can_edit']) {
         print '<div class="editplanquestions">'.get_string('objectiveheading', 'idp');
         print '</div>';
     }
 
-//    $usercurriculum = get_field('user', 'curriculum', 'id', $plan->userid);
-    if ($options['editable']) {
+    if ($options['can_edit']) {
         $addbutton = '<img src="'.$CFG->pixpath.'/t/add.gif" alt="'.get_string('addbutton', 'idp').'" />';
         print get_string('plannerinstructions', 'idp', $addbutton);
     }
 
-    $listshtml = '';
-    if (empty($usercurriculum)) {
-        if ($options['editable']) {
-            print '<p style="border-style: dashed; border-color: #FF0000"><i><b>'.get_string('error:nousercurriculum', 'idp').'</b></i></p>';
-        }
-    } else {
-        $listshtml .= print_curriculum($usercurriculum, $revision, $options['editable'], true);
-    }
-//    $listshtml .= print_curriculum('Q', $revision, $options['editable'], true);
+    $competencies = idp_get_user_competencies($plan->userid, $revision->id);
+    include $CFG->dirroot.'/plan/view-competencies.html';
+
+    $courses = idp_get_user_courses($plan->userid, $revision->id);
+    include $CFG->dirroot.'/plan/view-courses.html';
 
     // Free-form lists
-//    $objhtml = print_freeform_list($revision->id, 0, $options['editable'], true);
-//    $objhtml .= print_freeform_list($revision->id, 1, $options['editable'], true);
+//    $objhtml = print_freeform_list($revision->id, 0, $options['can_edit'], true);
+//    $objhtml .= print_freeform_list($revision->id, 1, $options['can_edit'], true);
 
     // Check for empty plans
     if (empty($objhtml) && empty($listshtml)) {
-        print '<p><i>'.get_string('emptyplan', 'idp')."</i></p>\n";
+//        print '<p><i>'.get_string('emptyplan', 'idp')."</i></p>\n";
     } else {
         print $listshtml;
         print $objhtml;
@@ -1957,14 +1936,15 @@ function print_revision_preview($revision, $plan, $printable=true) {
     }
 
     print_revision_details($revision, false, false, false, false);
-/*
-    $usercurriculum = get_field('user', 'curriculum', 'id', $plan->userid);
-    $listshtml = '';
-    if (!empty($usercurriculum)) {
-        $listshtml .= print_curriculum($usercurriculum, $revision, false, true);
-    }
-    $listshtml .= print_curriculum('Q', $revision, false, true);
 
+    $competencies = idp_get_user_competencies($plan->userid, $revision->id);
+    if ($competencies) {
+       require $CFG->dirroot.'/plan/view-competencies.html';
+    } else {
+       print '<p><i>'.get_string('emptyplancompetencies', 'idp')."</i></p>\n";
+    }
+
+/*
     // Free-form lists
     $objhtml = print_freeform_list($revision->id, 0, false, true);
     $objhtml .= print_freeform_list($revision->id, 1, false, true);
@@ -1985,7 +1965,7 @@ function print_revision_pdf($revision, $plan, $options=array()) {
 
     // merge in options array, in case of unset options, defaults are provided.
     $options = array_merge(array(
-        'cansubmit'      =>  false,
+        'can_submit'      =>  false,
         'show_comments'         =>  false,
     ), $options);
 
@@ -1996,31 +1976,24 @@ function print_revision_pdf($revision, $plan, $options=array()) {
         $revision->owner = $USER;
     }
 
-    print_revision_details($revision, $options['cansubmit'], false, true, false);
+    print_revision_details($revision, $options['can_submit'], false, true, false);
     if ($options['show_comments']) {
         print revision_comments($revision);
     }
 
-    $usercurriculum = get_field('user', 'curriculum', 'id', $plan->userid);
-
-    $listshtml = '';
-    if (!empty($usercurriculum)) {
-        $listshtml .= print_curriculum($usercurriculum, $revision, false, true);
+    $competencies = idp_get_user_competencies($plan->userid, $revision->id);
+    if ($competencies) {
+       require $CFG->dirroot.'/plan/view-competencies.html';
+    } else {
+       print '<p><i>'.get_string('emptyplancompetencies', 'idp')."</i></p>\n";
     }
-    $listshtml .= print_curriculum('Q', $revision, false, true);
 
     // Free-form lists
-    $objhtml = print_freeform_list($revision->id, 0, false, true);
-    $objhtml .= print_freeform_list($revision->id, 1, false, true);
+//    $objhtml = print_freeform_list($revision->id, 0, false, true);
+//    $objhtml .= print_freeform_list($revision->id, 1, false, true);
 
-    // Check for empty plans
-    if (empty($objhtml) && empty($listshtml)) {
-        print '<p><i>'.get_string('emptyplan', 'idp')."</i></p>\n";
-    } else {
-        print $listshtml;
-        print $objhtml;
-        print_revision_extracomment($revision);
-    }
+    print_revision_extracomment($revision);
+
 }
 
 /**
@@ -2070,6 +2043,70 @@ function print_button() {
         . get_string('printviewbutton', 'idp').'</button></div>';
 }
 
+/**
+ * Get this users competencies for this revision.
+ *
+ * @param class $revision       Revision object as returned by get_revision()
+ * @param array $grades         Array of grades as submitted by the grades form
+ * @param string $extracomment  Optional comment added to the evaluation
+ */
+function idp_get_user_competencies($userid, $currevisionid) {
+    global $CFG;
+    
+    $sql = "
+        SELECT DISTINCT
+            c.id AS id,
+            c.fullname,
+            f.id AS fid,
+            f.fullname AS framework,
+            d.fullname AS depth
+        FROM
+            {$CFG->prefix}idp_revision_competency r
+        INNER JOIN
+            {$CFG->prefix}competency c
+         ON r.competency = c.id
+        INNER JOIN
+            {$CFG->prefix}competency_framework f
+         ON f.id = c.frameworkid
+        INNER JOIN
+            {$CFG->prefix}competency_depth d
+         ON d.id = c.depthid
+        WHERE r.revision = {$currevisionid}
+        ";
+    return get_records_sql($sql);
+}
+
+/**
+ * Get this users courses for this revision.
+ *
+ * @param class $revision       Revision object as returned by get_revision()
+ * @param array $grades         Array of grades as submitted by the grades form
+ * @param string $extracomment  Optional comment added to the evaluation
+ */
+function idp_get_user_courses($userid, $currevisionid) {
+    global $CFG;
+    
+    $sql = "
+        SELECT DISTINCT
+            c.id,
+            c.fullname,
+            cc.id as ccid,
+            cc.name as category
+        FROM {$CFG->prefix}idp_revision_course r
+        INNER JOIN {$CFG->prefix}course c
+          ON c.id=r.course
+        INNER JOIN {$CFG->prefix}course_categories cc
+          ON c.category=cc.id
+        WHERE r.revision = {$currevisionid}
+        ";
+    return get_records_sql($sql);  
+}
+
+/**
+ * Mark the given revision as "evaluated" and give a grade to each
+ * revision objective.
+ *
+ * @param class $revision       Revision object as returned by get_revision()
 /**
  * Mark the given revision as "evaluated" and give a grade to each
  * revision objective.

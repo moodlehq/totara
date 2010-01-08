@@ -25,10 +25,10 @@ function update_mtime(revid, time) {
 }
 
 // This function is called when users click on an objective's add/delete button
-function toggle_objective(revid, objectiveid, curriculum, editable, action, element) {
+function toggle_objective(revid, objectiveid, curriculum, can_edit, action, element) {
 
     var urlparams = 'revisionid=' + revid + '&objectiveid=' + objectiveid
-        + '&curriculum=' + curriculum + '&editable=' + editable
+        + '&curriculum=' + curriculum + '&can_edit=' + can_edit
         + '&action=' + action;
 
     sendjsonrequest('revision.json.php', urlparams,
@@ -75,7 +75,7 @@ function toggle_objective(revid, objectiveid, curriculum, editable, action, elem
 }
 
 // This function is called when users click the add button next to the text fields
-function add_list_item(revid, listtype, editable) {
+function add_list_item(revid, listtype, can_edit) {
 
     var textfield = getobject('listitem' + listtype);
     var itemtext = textfield.value;
@@ -89,7 +89,7 @@ function add_list_item(revid, listtype, editable) {
     }
 
     var urlparams = 'revisionid=' + revid + '&listtype=' + listtype
-        + '&editable=' + editable + '&action=additem'
+        + '&can_edit=' + can_edit + '&action=additem'
         + '&itemtext=' + encodeURIComponent(itemtext);
 
     sendjsonrequest('revision.json.php', urlparams,
@@ -127,7 +127,7 @@ function listitem_getobject(name, listtype, itemid) {
 
 function listitem_edit(revid, listtype, itemid) {
     var urlparams = 'revisionid=' + revid + '&listtype=' + listtype
-        + '&editable=1' + '&action=edititem'
+        + '&can_edit=1' + '&action=edititem'
         + '&itemid=' + itemid;
 
     listitem_display(true, 'editor', listtype, itemid);
@@ -154,7 +154,7 @@ function listitem_save(revid, listtype, itemid) {
     }
 
     var urlparams = 'revisionid=' + revid + '&listtype=' + listtype
-        + '&editable=1' + '&action=saveitem'
+        + '&can_edit=1' + '&action=saveitem'
         + '&itemid=' + itemid
         + '&itemtext=' + encodeURIComponent(itemtext);
 
@@ -203,7 +203,7 @@ function listitem_cancel(revid, listtype, itemid) {
 
 function listitem_action(revid, listtype, itemid, action) {
     var urlparams = 'revisionid=' + revid + '&listtype=' + listtype
-        + '&editable=1' + '&action=' + action + "item"
+        + '&can_edit=1' + '&action=' + action + "item"
         + '&itemid=' + itemid;
 
     switch(action) {
@@ -226,7 +226,7 @@ function listitem_action(revid, listtype, itemid, action) {
 function listitem_del(revid, listtype, itemid) {
 
     var urlparams = 'revisionid=' + revid + '&listtype=' + listtype
-        + '&editable=1' + '&action=deleteitem'
+        + '&can_edit=1' + '&action=deleteitem'
         + '&itemid=' + itemid;
 
     sendjsonrequest('revision.json.php', urlparams,
@@ -259,11 +259,11 @@ function clear_list_item(listtype) {
 var add_comment_last_sent = null;
 
 // This function is called when users click the add button next to the comment text fields
-function add_comment(revid, editable) {
+function add_comment(revid, can_edit) {
 
     var textfield = getobject('commentfield');
     var urlparams = 'revisionid=' + revid + '&listtype=' + 0
-        + '&editable=' + editable + '&action=addcomment'
+        + '&can_edit=' + can_edit + '&action=addcomment'
         + '&itemtext=' + encodeURIComponent(textfield.value);
 
     if (add_comment_last_sent && add_comment_last_sent == urlparams ) {

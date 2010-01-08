@@ -53,21 +53,21 @@ add_to_log(SITEID, 'idp', 'view plan', "revision_pdf.php?id=$plan->id", $plan->i
 $stridps = get_string('idps', 'idp');
 
 if ($currevision) {
-    // Whether or not to see the editable view
-    $editable = false;
+    // Whether or not to see the can_edit view
+    $can_edit = false;
     $isauthor = false;
 
     // Whether or not the current user can approve this plan
-    $canapprove = false;
+    $can_approve = false;
     if (!$isauthor && has_capability('moodle/local:approveplan', $contextuser)) {
-        $canapprove = true;
+        $can_approve = true;
     }
 
     // Information at the top
     lpheading( get_string('personaldetailsheading', 'idp') );
 
     ob_start();
-    print_revision_details($currevision, $isauthor, $canapprove, true);
+    print_revision_details($currevision, $isauthor, $can_approve, true);
     $details = ob_get_contents();
     ob_end_clean();
     $pdf->WriteHTML($details);
@@ -76,12 +76,12 @@ if ($currevision) {
     lpheading(get_string('objectiveheading', 'idp').'&nbsp;');
     $usercurriculum = get_field('user', 'curriculum', 'id', $plan->userid);
 
-    print_curriculum_pdf($usercurriculum, $currevision, $editable);
-    print_curriculum_pdf('Q', $currevision, $editable);
+    print_curriculum_pdf($usercurriculum, $currevision, $can_edit);
+    print_curriculum_pdf('Q', $currevision, $can_edit);
 
     // Free-form lists
-    print_freeform_list_pdf($currevision->id, 0, $editable);
-    print_freeform_list_pdf($currevision->id, 1, $editable);
+    print_freeform_list_pdf($currevision->id, 0, $can_edit);
+    print_freeform_list_pdf($currevision->id, 1, $can_edit);
 
 } else {
     $pdf->WriteHTML('<p><i>'.get_string('norevisions', 'idp')."</i></p>\n");
@@ -115,9 +115,9 @@ function lpheading($text, $level=1) {
     $pdf->SetFontSize(12);
 }
 
-function print_curriculum_pdf($curriculumcode, $revision, $editable) {
+function print_curriculum_pdf($curriculumcode, $revision, $can_edit) {
     global $pdf;
-    $table = curriculum_objectives($curriculumcode, $revision, $editable);
+    $table = curriculum_objectives($curriculumcode, $revision, $can_edit);
     $table = preg_replace('/<table /','<table border="1" ', $table);
 
     if ($table) {
@@ -131,14 +131,14 @@ function print_curriculum_pdf($curriculumcode, $revision, $editable) {
 
 }
 
-function print_freeform_list_pdf($revisionid, $listtype, $editable) {
+function print_freeform_list_pdf($revisionid, $listtype, $can_edit) {
     global $pdf;
 
     lpheading(get_string("list{$listtype}heading", 'idp').'&nbsp;');
 
     $pdf->WriteHTML('<blockquote>');
 
-    $table = get_list_items($revisionid, $listtype, $editable);
+    $table = get_list_items($revisionid, $listtype, $can_edit);
     $table = preg_replace('/<table /','<table border="1" ', $table);
     $pdf->WriteHTML($table);
     $pdf->WriteHTML('</blockquote>');
