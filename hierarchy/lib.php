@@ -126,6 +126,7 @@ class hierarchy {
      * @return array|false
      */
     function get_item_descendants($id) {
+        global $CFG;
         $path = get_field($this->prefix, 'path', 'id', $id);
         if ($path) {
             $paths = explode('/', substr($path, 1));
