@@ -145,12 +145,13 @@ class hierarchy {
      * @return array|false
      */
     function get_item_lineage($id) {
+        global $CFG;
         $path = get_field($this->prefix, 'path', 'id', $id);
         if ($path) {
             $paths = explode('/', substr($path, 1));
             $sql = "SELECT o.id, o.fullname, od.depthlevel
-                    FROM mdl_{$this->prefix} o
-                    JOIN mdl_{$this->prefix}_depth od
+                    FROM {$CFG->prefix}{$this->prefix} o
+                    JOIN {$CFG->prefix}{$this->prefix}_depth od
                       ON o.depthid=od.id
                     WHERE o.id IN (".implode(",", $paths).")";
             return get_records_sql($sql);
