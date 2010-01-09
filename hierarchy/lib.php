@@ -121,6 +121,24 @@ class hierarchy {
     }
 
     /**
+     * Get descendants of an item
+     * @param int $id
+     * @return array|false
+     */
+    function get_item_descendants($id) {
+        $path = get_field($this->prefix, 'path', 'id', $id);
+        if ($path) {
+            $paths = explode('/', substr($path, 1));
+            $sql = "SELECT id, fullname, parentid, path
+                    FROM {$CFG->prefix}organisation
+                    WHERE path LIKE '{$path}%' ORDER BY path";
+            return get_records_sql($sql);
+        } else {
+            error('No path found for '.$this->prefix.' id '.$id);
+        }
+    }
+
+    /**
      * Get items in a lineage
      * @param int $id
      * @return array|false
@@ -423,10 +441,11 @@ class hierarchy {
 
     /**
      * Run any code before printing admin page header
+     * @param $item object Item being viewed
      * @param $page string Unique identifier for admin page
      * @return void
      */
-    function hierarchy_page_setup($page) {}
+    function admin_page_setup($item, $page) {}
 
     /**
      * Print any extra markup to display on the hierarchy view item page
