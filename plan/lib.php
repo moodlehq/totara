@@ -120,7 +120,7 @@ function get_revision($planid, $revid=0, $pdf=false) {
         $revision = get_record('idp_revision', 'id', $revid);
     }
     else {
-        // Get the latest revision    
+        // Get the latest revision
         $revision = get_record_select('idp_revision', "idp = $planid AND ctime = (SELECT MAX(ctime)
                                      FROM {$CFG->prefix}idp_revision WHERE idp = $planid)");
     }
@@ -255,6 +255,116 @@ function print_revision_details($revision, $can_submit, $can_approve=false, $pdf
 
     global $CFG;
 
+    require_once($CFG->dirroot.'/local/reportlib.php');
+
+    if (! $user = get_record('user', 'id', $revision->owner->id)) {
+        error('User not found');
+    }
+
+    /// Add the custom profile fields to the user record
+    include_once($CFG->dirroot.'/user/profile/lib.php');
+    $usercustomfields = (array)profile_user_record($user->id);
+    foreach ($usercustomfields as $cname=>$cvalue) {
+        if (!isset($user->$cname)) { // Don't overwrite any standard fields
+            $user->$cname = $cvalue;
+        }
+    }
+
+    $columns = array(
+        array(
+            'column'      => '1',
+            'sortorder'   => '1',
+            'type'        => 'user',
+            'value'       => 'fullname',
+            'level'       => '',
+            'headingtype' => 'lang',
+            'heading'     => 'fullname',
+        ),
+        array(
+            'column'      => '2',
+            'sortorder'   => '1',
+            'type'        => 'organisation',
+            'value'       => 'fullname',
+            'level'       => '2',
+            'headingtype' => 'defined',
+            'heading'     => 'Conservancy',
+        ),
+        array(
+            'column'      => '1',
+            'sortorder'   => '2',
+            'type'        => 'user',
+            'value'       => 'email',
+            'level'       => '',
+            'headingtype' => 'lang',
+            'heading'     => 'email',
+        ),
+        array(
+            'column'      => '2',
+            'sortorder'   => '2',
+            'type'        => 'organisation',
+            'value'       => 'fullname',
+            'level'       => '3',
+            'headingtype' => 'defined',
+            'heading'     => 'Area Office',
+        ),
+        array(
+            'column'      => '1',
+            'sortorder'   => '3',
+            'type'        => 'usercustom',
+            'value'       => 'title',
+            'level'       => '',
+            'headingtype' => 'defined',
+            'heading'     => '',
+        ),
+        array(
+            'column'      => '2',
+            'sortorder'   => '3',
+            'type'        => 'user',
+            'value'       => 'idnumber',
+            'level'       => '',
+            'headingtype' => 'defined',
+            'heading'     => 'Jade id',
+        ),
+        array(
+            'column'      => '1',
+            'sortorder'   => '4',
+            'type'        => 'position',
+            'value'       => 'fullname',
+            'level'       => '1',
+            'headingtype' => 'defined',
+            'heading'     => 'Role',
+        ),
+        array(
+            'column'      => '2',
+            'sortorder'   => '4',
+            'type'        => 'usercustom',
+            'value'       => 'nzqaid',
+            'level'       => '',
+            'headingtype' => 'defined',
+            'heading'     => '',
+        ),
+        array(
+            'column'      => '1',
+            'sortorder'   => '5',
+            'type'        => 'usercustom',
+            'value'       => 'managerempcode',
+            'level'       => '',
+            'headingtype' => 'defined',
+            'heading'     => '',
+        ),
+        array(
+            'column'      => '2',
+            'sortorder'   => '5',
+            'type'        => 'usercustom',
+            'value'       => 'datejoined',
+            'level'       => '',
+            'headingtype' => 'defined',
+            'heading'     => '',
+        ),
+    );
+
+    echo mitms_print_report_heading($columns, $user, $usercustomfields);
+
     $table->tablealign = 'left';
     $table->class = 'generaltable personaldetails';
 
@@ -262,16 +372,7 @@ function print_revision_details($revision, $can_submit, $can_approve=false, $pdf
     $suffix = ($pdf) ? '</b>' : '';
 
     // Personal information
-    $table->data[] = array($prefix . get_string('name') .':'. $suffix, fullname($revision->owner));
-    $table->data[] = array($prefix. get_string('idnumber').':'. $suffix, $revision->owner->idnumber);
     $table->data[] = array($prefix . get_string('trainingperiod', 'idp') . $suffix, $revision->period);
-
-    $manager = get_user_manager($revision->owner->id);
-    if ($manager !== false) {
-        $table->data[] = array($prefix . get_string('manager', 'idp') . $suffix, fullname($manager));
-    } else {
-        $table->data[] = array($prefix . get_string('manager', 'idp') . $suffix, '<b>' . get_string('error:nomanager', 'idp') . '</b>');
-    }
 
     // Creation and modification time
     $mtime = userdate($revision->mtime);
@@ -565,7 +666,7 @@ function get_list_items($revid, $listtype, $can_edit) {
                 $editcontrols .= " onclick=\"listitem_action($revid, '$listtype', {$item->id}, 'cancel')\"";
                 $editcontrols .= ' value="'.get_string('cancelbutton', 'local').'" />';
 
-                $itemhtml = "<span id=\"item{$listtype}{$item->id}\">" 
+                $itemhtml = "<span id=\"item{$listtype}{$item->id}\">"
                     . s($item->contents) . '</span>' . $editcontrols;
 
                 $table->data[] = array($i++, $itemhtml, $html);
@@ -642,7 +743,7 @@ function update_modification_time($revisionid) {
     $record = new stdclass();
     $record->id = $revisionid;
     $record->mtime = time();
-    return update_record('idp_revision', $record);    
+    return update_record('idp_revision', $record);
 }
 
 /**
@@ -884,14 +985,14 @@ function add_comment($revisionid, $itemtext) {
             $type = 'managercommented';
         }
         $planname = get_field_sql(
-            "SELECT p.name 
-                FROM {$CFG->prefix}idp p 
-                JOIN {$CFG->prefix}idp_revision r 
-                    ON r.idp = p.id 
+            "SELECT p.name
+                FROM {$CFG->prefix}idp p
+                JOIN {$CFG->prefix}idp_revision r
+                    ON r.idp = p.id
                 WHERE r.id = $revisionid");
-        idp_email_notification($type, $revision, 
+        idp_email_notification($type, $revision,
             array(
-                $namekey => $fullname, 
+                $namekey => $fullname,
                 'comment' => stripslashes($itemtext),
                 'planname' => $planname,
             )
@@ -1080,7 +1181,7 @@ function approve_revision($revision, $onbehalfof=false) {
         $fullname = fullname(get_user_light($USER->id));
         $duedate = strftime('%d-%m-%Y', $revision->evaluationdeadline);
 
-        idp_email_notification('approved', $revision, 
+        idp_email_notification('approved', $revision,
                                  array('managername' => $fullname,
                                        'onbehalfof' => $onbehalfofstring,
                                        'duedate' => $duedate));
@@ -1669,8 +1770,8 @@ function idp_email_notification($type, $revision, $subsargs) {
     $users = array();
     $from = get_string('emailnotificationfromname', 'idp');
     $subject = get_string('emailsubject' . $type, 'idp');
-    $body = isset($CFG->{'idp_' . $type . '_text'}) 
-        ? $CFG->{'idp_' . $type . '_text'} 
+    $body = isset($CFG->{'idp_' . $type . '_text'})
+        ? $CFG->{'idp_' . $type . '_text'}
         : get_string('admin:' . $type . 'textdefault', 'idp');
     $extras = '';
     $subsargs = (object)$subsargs;
@@ -1684,7 +1785,7 @@ function idp_email_notification($type, $revision, $subsargs) {
             unset($subsargs->comment);
         break;
         case 'managercommented':
-            // just send it to the trainee 
+            // just send it to the trainee
             $users[] = get_user_light($revision->userid);
             $validkeys = array('managername', 'planname', 'link');
             $extras = $subsargs->comment; // take this out before doing the string substitution
@@ -1724,7 +1825,7 @@ function idp_email_notification($type, $revision, $subsargs) {
         $extras .= "\n\n";
     }
     $extras .= "---\n\n" . get_string('emailnotificationfooter', 'idp');
-    $body .= "\n\n" . $extras; 
+    $body .= "\n\n" . $extras;
     foreach ($users as $user) {
         if (is_numeric($user)) {
             $user = get_user_light($user);
@@ -1881,11 +1982,6 @@ function print_revision_trainee($revision, $plan, $options=array()) {
     }
     print revision_comments($revision);
 
-    if ($options['can_edit']) {
-        print '<div class="editplanquestions">'.get_string('objectiveheading', 'idp');
-        print '</div>';
-    }
-
     $competencies = idp_get_user_competencies($plan->userid, $revision->id);
     include $CFG->dirroot.'/plan/view-competencies.html';
 
@@ -1989,7 +2085,7 @@ function print_revision_pdf($revision, $plan, $options=array()) {
 }
 
 /**
- * Display a floating print button at the 
+ * Display a floating print button at the
  */
 function print_button() {
     return  '<div id="page_print_button" style="float:right;">'
@@ -2006,7 +2102,7 @@ function print_button() {
  */
 function idp_get_user_competencies($userid, $currevisionid) {
     global $CFG;
-    
+
     $sql = "
         SELECT DISTINCT
             c.id AS id,
@@ -2039,7 +2135,7 @@ function idp_get_user_competencies($userid, $currevisionid) {
  */
 function idp_get_user_courses($userid, $currevisionid) {
     global $CFG;
-    
+
     $sql = "
         SELECT DISTINCT
             c.id,
@@ -2053,7 +2149,7 @@ function idp_get_user_courses($userid, $currevisionid) {
           ON c.category=cc.id
         WHERE r.revision = {$currevisionid}
         ";
-    return get_records_sql($sql);  
+    return get_records_sql($sql);
 }
 
 /**
@@ -2504,7 +2600,7 @@ function format_user_link($userid, $youstring='Yourself') {
 
     if ($user->id == $USER->id and $youstring !== false) {
         return $youstring;
-    }    
+    }
 
     return "<a href=\"$link\">".fullname($user).'</a>';
 }
@@ -2548,8 +2644,8 @@ function collapse_groups_script() {
     foreach($collapsing_tree_node_groups as $groupid => $divs) {
         if (!empty($divs)) {
             $outarr[] = $groupid . ": [ '" . implode("', '", $divs) . "' ]";
-        }    
-    }    
+        }
+    }
     $out .= implode(",\n", $outarr);
     $out .= "\n};\n</script>";
     return $out;
