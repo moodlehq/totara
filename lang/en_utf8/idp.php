@@ -232,7 +232,6 @@ $string['plangrade3'] = 'Satisfactory';
 $string['plangrade4'] = 'Excellent';
 $string['plannameexplanation1'] = 'Please enter a name for your IDP:';
 $string['plannameexplanation2'] = '(This name will be shown in your list of IDPs.)';
-$string['plannerinstructions'] = '<p>Add competencies using the $a button.  </p><p>Selected will automatically appear in the table.</p>';
 $string['previewtitle'] = 'Review IDP \"$a\"';
 $string['previewobjectivesuffix'] = 'Target Learning Objectives';
 $string['printableview'] = 'Printable view';

@@ -1873,9 +1873,6 @@ function print_revision_trainee($revision, $plan, $options=array()) {
         $revision->owner = $USER;
     }
 
-    if ($options['can_edit']) {
-        print_revision_legend();
-    }
     print_revision_details($revision, $options['can_submit'], false, false, true);
     print_revision_list($plan->id, $revision->id);
 
@@ -1887,11 +1884,6 @@ function print_revision_trainee($revision, $plan, $options=array()) {
     if ($options['can_edit']) {
         print '<div class="editplanquestions">'.get_string('objectiveheading', 'idp');
         print '</div>';
-    }
-
-    if ($options['can_edit']) {
-        $addbutton = '<img src="'.$CFG->pixpath.'/t/add.gif" alt="'.get_string('addbutton', 'idp').'" />';
-        print get_string('plannerinstructions', 'idp', $addbutton);
     }
 
     $competencies = idp_get_user_competencies($plan->userid, $revision->id);
@@ -1994,44 +1986,6 @@ function print_revision_pdf($revision, $plan, $options=array()) {
 
     print_revision_extracomment($revision);
 
-}
-
-/**
- * Key (in a sidebar) for all icons used on the revision editor.
- */
-function print_revision_legend() {
-    global $CFG;
-
-    $addfavourite = get_string('addfavouritebutton', 'local');
-    $delfavourite = get_string('delfavouritebutton', 'local');
-    $additem = get_string('addbutton', 'idp');
-    $deleteitem = get_string('deleteitembutton', 'idp');
-    $edititem = get_string('edititembutton', 'idp');
-
-    $favhtml = '';
-    if ($CFG->idpenablefavourites) {
-        $favhtml = <<<ENDFAV
-            <tr><td><img src="{$CFG->pixpath}/t/favourite_off.gif" alt="Grey star"/></td>
-                 <td style="text-align:left">$addfavourite</td></tr>
-            <tr><td><img src="{$CFG->pixpath}/t/favourite_on.gif" alt="Golden star"/></td>
-                 <td style="text-align:left">$delfavourite</td></tr>
-ENDFAV;
-    }
-
-    print <<<ENDLEGEND
-        <div id="revision_legend">
-        <h1 style="font-size:0.6em;">Legend</h1>
-        <table summary="List of icons used in the tree selectors">
-            <tr><td><img src="{$CFG->pixpath}/t/add.gif" alt="Green plus sign"/></td>
-                <td style="text-align:left">$additem</td></tr>
-            $favhtml
-            <tr><td><img src="{$CFG->pixpath}/t/delete.gif" alt="Red X"/></td>
-                <td style="text-align:left">$deleteitem</td></tr>
-            <tr><td><img src="{$CFG->pixpath}/t/edit.gif" alt="Paper and pencil"/></td>
-                <td style="text-align:left">$edititem</td></tr>
-        </table>
-        </div>
-ENDLEGEND;
 }
 
 /**

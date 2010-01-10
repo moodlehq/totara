@@ -51,6 +51,17 @@ function mitms_get_user_hierarchy_lineage($id=null, $type=null) {
 
 function mitms_print_report_heading($columns, $user, $usercustomfields) {
 
+    global $CFG;
+
+    $organisations = new object();
+    if ($user->organisationid) {
+        $organisations = mitms_get_user_hierarchy_lineage($user->organisationid, 'organisation');
+    }
+    $positions = new object();
+    if ($user->positionid) {
+        $positions = mitms_get_user_hierarchy_lineage($user->positionid, 'position');
+    }
+
     $table = '<table cellpadding="4">';
     foreach ($columns as $column) {
         if ($column['column'] == 1) {
@@ -74,8 +85,6 @@ function mitms_print_report_heading($columns, $user, $usercustomfields) {
                 if ($usercustomfields) {
                     foreach($usercustomfields as $usercustomfield) {
                         $cell2str .= mitms_print_user_profile_field($user->id, $column['value']);
-                        print_r($usercustomfield);
-                        echo '<BR>';
                     }
                 } else {
                     echo "not found";
