@@ -1886,11 +1886,6 @@ function print_revision_trainee($revision, $plan, $options=array()) {
         print '</div>';
     }
 
-    if ($options['can_edit']) {
-        $addbutton = '<img src="'.$CFG->pixpath.'/t/add.gif" alt="'.get_string('addbutton', 'idp').'" />';
-        print get_string('plannerinstructions', 'idp', $addbutton);
-    }
-
     $competencies = idp_get_user_competencies($plan->userid, $revision->id);
     include $CFG->dirroot.'/plan/view-competencies.html';
 
