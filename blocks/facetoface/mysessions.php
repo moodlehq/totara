@@ -9,7 +9,7 @@ require_once 'lib.php';
 require_login();
 
 $timenow = time();
-$timelater = $timenow + 3 * WEEKSECS;
+$timelater = $timenow + 13 * WEEKSECS;
 
 $startyear  = optional_param('startyear',  strftime('%Y', $timenow), PARAM_INT);
 $startmonth = optional_param('startmonth', strftime('%m', $timenow), PARAM_INT);
