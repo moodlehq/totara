@@ -62,6 +62,30 @@ $string['local:createorganisationframeworks'] = 'Create an organisational framew
 $string['local:updateorganisationframeworks'] = 'Update an organisational framework';
 $string['local:deleteorganisationframeworks'] = 'Delete an organisational framework';
 
+// Local IDP capability strings
+$string['local:addcomment'] = 'Comment on a user\'s IDP';
+$string['local:addowncomment'] = 'Comment on your own IDPs';
+$string['local:admin'] = 'Perform administrative tasks on a IDP activity';
+$string['local:approveplan'] = 'Approve a user\'s IDP';
+$string['local:approveplanonbehalf'] = 'Approve a user\'s IDP on behalf of someone else';
+$string['local:editownfavourite'] = 'Edit own favourites';
+$string['local:editownplan'] = 'Edit own IDPs';
+$string['local:receivenotification'] = 'Receive notification emails';
+$string['local:submitownplan'] = 'Submit own IDPs';
+$string['local:supervisoroverview'] = 'View a supervisor\'s overview page';
+$string['local:supervisorownoverview'] = 'View own supervisor overview page';
+$string['local:traineeoverview'] = 'View a trainee\'s overview page';
+$string['local:traineeownoverview'] = 'View own trainee overview page';
+$string['local:viewcomment'] = 'View a user\'s IDP comments';
+$string['local:viewfavourite'] = 'View a user\'s favourites';
+$string['local:viewlist'] = 'View a user\'s list of IDPs';
+$string['local:viewowncomment'] = 'View own comments';
+$string['local:viewownfavourite'] = 'View own favourites';
+$string['local:viewownlist'] = 'View own IDP list';
+$string['local:viewownplan'] = 'View own IDPs';
+$string['local:viewplan'] = 'View a user\'s IDPs';
+$string['local:withdrawownplan'] = 'Withdraw own submitted IDPs';
+
 // Course categories
 $string['assessments'] = 'Assessments';
 $string['bookings'] = 'Bookings';

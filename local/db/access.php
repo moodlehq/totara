@@ -263,7 +263,179 @@ $local_capabilities = array(
         'legacy' => array(
             'admin' => CAP_ALLOW,
         ),
-    )
+    ),
+
+  // Capability definitions for the lplan module
+    // Ability for users to view their own plans
+    'moodle/local:viewownplan' => array(
+        'captype' => 'read',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'legacy' => array(
+            'admin' => CAP_ALLOW,
+        ),
+    ),
+
+    // Ability for users to edit their own plans
+    'moodle/local:editownplan' => array(
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'legacy' => array(
+            'admin' => CAP_ALLOW,
+        ),
+    ),
+
+    // Ability for managers to view a user's plan
+    'moodle/local:viewplan' => array(
+        'captype' => 'read',
+        'contextlevel' => CONTEXT_USER,
+    ),
+
+    // Ability for users to view their own favourites
+    'moodle/local:viewownfavourite' => array(
+        'captype' => 'read',
+        'contextlevel' => CONTEXT_SYSTEM,
+    ),
+
+    // Ability for users to edit their own favourites
+    'moodle/local:editownfavourite' => array(
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_SYSTEM,
+    ),
+
+    // Ability for managers to view a user's favourites
+    'moodle/local:viewfavourite' => array(
+        'captype' => 'read',
+        'contextlevel' => CONTEXT_USER,
+    ),
+
+    // Ability for users to view the comments on their own plans
+    'moodle/local:viewowncomment' => array(
+        'captype' => 'read',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'legacy' => array(
+            'admin' => CAP_ALLOW,
+        ),
+    ),
+
+    // Ability for users to comment on their own plans
+    'moodle/local:addowncomment' => array(
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'legacy' => array(
+            'admin' => CAP_ALLOW,
+        ),
+    ),
+
+    // Ability for managers to view a user's plan comments
+    'moodle/local:viewcomment' => array(
+        'captype' => 'read',
+        'contextlevel' => CONTEXT_USER,
+    ),
+
+    // Ability for managers to comment on a user's plan
+    'moodle/local:addcomment' => array(
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_USER,
+    ),
+
+    // Ability for users to submit their own plans for approval
+    'moodle/local:submitownplan' => array(
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'legacy' => array(
+            'admin' => CAP_ALLOW,
+        ),
+    ),
+
+    // Ability for users to withdraw their own submitted plans
+    'moodle/local:withdrawownplan' => array(
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'legacy' => array(
+            'admin' => CAP_ALLOW,
+        ),
+    ),
+
+    // Ability for managers to approve a specific user's plan
+    'moodle/local:approveplan' => array(
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_USER,
+        'legacy' => array(
+            'admin' => CAP_ALLOW,
+        ),
+    ),
+
+    // Ability for managers to approve a specific user's plan on
+    // behalf of someone else who has approval rights for that user
+    'moodle/local:approveplanonbehalf' => array(
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_USER,
+        'legacy' => array(
+            'admin' => CAP_ALLOW,
+        ),
+    ),
+
+    // Ability for users to view their own list of plans
+    'moodle/local:viewownlist' => array(
+        'captype' => 'read',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'legacy' => array(
+            'admin' => CAP_ALLOW,
+        ),
+    ),
+
+    // Ability for managers to view the list of a user's plan
+    'moodle/local:viewlist' => array(
+        'captype' => 'read',
+        'contextlevel' => CONTEXT_USER,
+    ),
+
+    // Ability for managers to look at their own overview page
+    'moodle/local:managerownoverview' => array(
+        'captype' => 'read',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'legacy' => array(
+            'admin' => CAP_ALLOW,
+        ),
+    ),
+
+    // Ability to look at managers overview pages
+    'moodle/local:manageroverview' => array(
+        'captype' => 'read',
+        'contextlevel' => CONTEXT_USER,
+    ),
+
+    // Ability for trainees to look at their own overview page
+    'moodle/local:traineeownoverview' => array(
+        'captype' => 'read',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'legacy' => array(
+            'admin' => CAP_ALLOW,
+        ),
+    ),
+
+    // Ability for managers to look at a trainee's overview page
+    'moodle/local:traineeoverview' => array(
+        'captype' => 'read',
+        'contextlevel' => CONTEXT_USER,
+    ),
+
+    // Ability for administrators to change the module settings
+    'moodle/local:admin' => array(
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'legacy' => array(
+            'admin' => CAP_ALLOW,
+        ),
+    ),
+
+    // Ability for managers to receive notification emails.
+    // used by lplan_email_notification
+    'moodle/local:receivenotification' => array(
+        'captype' => 'read',
+        'contextlevel' => CONTEXT_USER,
+    ),
+
 );
 
 ?>

@@ -1,0 +1,77 @@
+<?php
+
+// Display competencies
+print_heading(get_string('courses'));
+$str_remove = get_string('remove', 'idp');
+$editingon = true;
+
+?>
+<table width="95%" cellpadding="5" cellspacing="1" id="list-idp-courses" class="generalbox edit boxaligncenter viewcourses">
+<tr>
+    <th style="vertical-align:top; text-align: left; white-space:nowrap;" class="header c0" scope="col">
+        <?php echo get_string('category') ?>
+    </th>
+
+    <th style="vertical-align:top; text-align:left; white-space:nowrap;" class="header c2" scope="col">
+        <?php echo get_string('course'); ?>
+    </th>
+
+<?php
+    if ($editingon) {
+?>
+    <th style="vertical-align:top; text-align:center; white-space:nowrap;" class="header c4" scope="col">
+        <?php echo get_string('options', 'idp') ?>
+    </th>
+<?php
+    }
+?>
+</tr>
+<?php
+
+    // # cols varies
+    $cols = $editingon ? 4 : 3;
+
+if ($courses) {
+
+    foreach ($courses as $course) {
+
+        echo '<tr>';
+        echo "<td><a href=\"{$CFG->wwwroot}/course/index.php?id={$course->ccid}\">{$course->category}</a></td>";
+        echo "<td><a href=\"{$CFG->wwwroot}/course/view.php?id={$course->id}\">{$course->fullname}</a></td>";
+
+        if ($editingon) {
+            echo "<td style=\"text-align: center;\">";
+
+            echo "<a href=\"{$CFG->wwwroot}/course/idp/remove.php?id={$course->id}\" title=\"$str_remove\">".
+                 "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_remove\" /></a>";
+
+            echo "</td>";
+        }
+
+        echo '</tr>';
+    }
+
+} else {
+    echo '<tr class="noitems"><td colspan="'.$cols.'"><i>'.get_string('emptyplancourses', 'idp').'</i></td></tr>';
+}
+
+    echo '</table>';
+
+    // Add courses button
+    if ($options['can_edit']) {
+
+?>
+<table width="95%" cellpadding="5" cellspacing="1" class="generalbox edit course boxaligncenter">
+    <tr class="noitems" colspan="<?php echo $cols ?>">
+        <td>
+            <div class="singlebutton">
+            <form action="<?php echo $CFG->wwwroot ?>/hierarchy/type/course/idp/add.php?id=<?php echo $revision->id ?>" method="get">
+            <input type="submit" id="show-idpcourse-dialog" value="<?php echo get_string('addcoursesbutton', 'idp') ?>" />
+            </form></div>
+        </td>
+    </tr>
+</table>
+<?php
+
+    }
+
