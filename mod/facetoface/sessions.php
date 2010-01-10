@@ -90,6 +90,9 @@ if ($fromform = $mform->get_data()) { // Form submitted
     }
 
     // Pre-process fields
+    if (empty($fromform->allowoverbook)) {
+        $fromform->allowoverbook = 0;
+    }
     if (empty($fromform->duration)) {
         $fromform->duration = 0;
     }
@@ -120,6 +123,7 @@ if ($fromform = $mform->get_data()) { // Form submitted
     $todb->facetoface = $facetoface->id;
     $todb->datetimeknown = $fromform->datetimeknown;
     $todb->capacity = $fromform->capacity;
+    $todb->allowoverbook = $fromform->allowoverbook;
     $todb->duration = $fromform->duration;
     $todb->normalcost = $fromform->normalcost;
     $todb->discountcost = $fromform->discountcost;
@@ -193,6 +197,7 @@ elseif ($session != null) { // Edit mode
     $toform = new object();
     $toform->datetimeknown = (1 == $session->datetimeknown);
     $toform->capacity = $session->capacity;
+    $toform->allowoverbook = $session->allowoverbook;
     $toform->duration = $session->duration;
     $toform->normalcost = $session->normalcost;
     $toform->discountcost = $session->discountcost;

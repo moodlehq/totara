@@ -100,7 +100,7 @@ function print_session_list($courseid, $facetofaceid, $location)
     $bookedsession = null;
     if ($submissions = facetoface_get_user_submissions($facetofaceid, $USER->id)) {
         $submission = array_shift($submissions);
-        $bookedsession = $submission->sessionid;
+        $bookedsession = $submission;
     }
 
     $customfields = facetoface_get_session_customfields();
@@ -195,14 +195,29 @@ function print_session_list($courseid, $facetofaceid, $location)
                 $status = get_string('sessionover', 'facetoface');
                 $sessionstarted = true;
             }
-            elseif ($session->id == $bookedsession) {
-                $status = get_string('enrolled', 'facetoface');
+            elseif ($bookedsession && $session->id == $bookedsession->sessionid) {
+                $signupstatus = facetoface_get_status($bookedsession->statuscode);
+
+                $status = get_string('status_'.$signupstatus, 'facetoface');
                 $isbookedsession = true;
             }
             elseif ($signupcount >= $session->capacity) {
                 $status = get_string('bookingfull', 'facetoface');
                 $sessionfull = true;
             }
+/*
+            // Get status history (temp hack)
+            $tmp_signup = get_record('facetoface_signups', 'sessionid', $session->id, 'userid', $USER->id);
+            if ($tmp_signup) {
+                $tmp_status = get_records('facetoface_signups_status', 'signupid', $tmp_signup->id);
+
+                $status .= '<ul>';
+                foreach (array_slice($tmp_status, 0, 5) as $s) {
+                    $status .= '<li style="text-align: left;">'.get_string('status_'.facetoface_get_status($s->statuscode), 'facetoface').'</li>';
+                }
+                $status .= '</ul>';
+            }
+ */
             $sessionrow[] = $status;
 
             // Options

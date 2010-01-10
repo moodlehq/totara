@@ -81,6 +81,12 @@ if ($takeattendance && !has_capability('mod/facetoface:takeattendance', $context
     $takeattendance = 0;
 }
 
+// Check the session has already started
+if ($takeattendance && $session->datetimeknown && !facetoface_has_session_started($session, time())) {
+    error('Can not take attendance for a session that has not yet started', 'attendees.php?s='.$session->id);
+    exit();
+}
+
 $heading = '';
 if ($takeattendance) {
     $heading = get_string('takeattendance', 'facetoface');
@@ -113,6 +119,8 @@ $table->size = array('100%');
 $table->width = '50%';
 
 if ($takeattendance) {
+    $table->head[] = get_string('currentstatus', 'facetoface');
+    $table->align[] = array('center');
     $table->head[] = get_string('attendedsession', 'facetoface');
     $table->align[] = array('center');
 }
@@ -131,12 +139,17 @@ else {
 
 // TODO temporary change to show booking status on attendance page
 // Need to be done properly:
-// - What options should be available in pulldown?
 // - Should other attendees be able to see full status code?
-// - move attendance_options somewhere more sensible
 // - add grading and notes?
-$attendance_options = array(1 => 'Requested', 2 => 'User Cancelled', 3 => 'Session Cancelled', 4 => 'Approved', 
-    5=> 'Waitlisted', 6 => 'Booked', 7 => 'No show', 8 =>'Partially Attended', 9 => 'Fully Attended');
+
+$status_options = array();
+foreach ($MDL_F2F_STATUS as $key => $value) {
+    if ($key <= MDL_F2F_STATUS_BOOKED) {
+        continue;
+    }
+
+    $status_options[$key] = get_string('status_'.$value, 'facetoface');
+}
 
 if ($attendees = facetoface_get_attendees($session->id)) {
     foreach($attendees as $attendee) {
@@ -144,9 +157,12 @@ if ($attendees = facetoface_get_attendees($session->id)) {
         $data[] = "<a href=\"$CFG->wwwroot/user/view.php?id={$attendee->id}&amp;course={$course->id}\">". format_string(fullname($attendee)).'</a>';
 
         if ($takeattendance) {
+            // Show current status
+            $data[] = get_string('status_'.facetoface_get_status($attendee->statuscode), 'facetoface');
+
             $optionid = 'submissionid_'.$attendee->submissionid;
             $status = $attendee->statuscode;
-            $select = choose_from_menu($attendance_options, $optionid, $status, 'choose', '', '0', true);
+            $select = choose_from_menu($status_options, $optionid, $status, 'choose', '', '0', true);
             $data[] = $select;
         }
         else {
@@ -156,14 +172,13 @@ if ($attendees = facetoface_get_attendees($session->id)) {
                     $data[] = $attendee->discountcode;
                 }
             }
-            $status = $attendee->statuscode;
-            $data[] = $attendance_options[$status];
+            $data[] = get_string('status_'.facetoface_get_status($attendee->statuscode), 'facetoface');
         }
         $table->data[] = $data;
     }
 }
 else {
-    $table->data = array(array(get_string('nosignedupusers', 'facetoface')));
+    $table->data = array(array(get_string('nosignedupusers', 'facetoface'), '', '', ''));
 }
 
 print_table($table);
@@ -178,7 +193,7 @@ else {
     // Actions
     print '<p>';
     if (has_capability('mod/facetoface:takeattendance', $context)) {
-        if (!$takeattendance and !empty($attendees)) {
+        if (!$takeattendance && !empty($attendees) && $session->datetimeknown && facetoface_has_session_started($session, time())) {
             // Take attendance
             echo '<a href="attendees.php?s='.$session->id.'&amp;takeattendance=1&amp;backtoallsessions='.$backtoallsessions.'">'.get_string('takeattendance', 'facetoface').'</a> - ';
         }
@@ -236,7 +251,7 @@ function facetoface_get_cancellations($sessionid)
               FROM {$CFG->prefix}facetoface_signups su
               JOIN {$CFG->prefix}facetoface_signups_status ss ON su.id=ss.signupid
               JOIN {$CFG->prefix}user u ON u.id = su.userid
-             WHERE su.sessionid = $sessionid AND ss.superceded != 1 AND ss.statuscode IN (2,3)
+             WHERE su.sessionid = $sessionid AND ss.superceded != 1 AND ss.statuscode = ".MDL_F2F_STATUS_USER_CANCELLED."
           ORDER BY $fullname, ss.timecreated";
     return get_records_sql($sql);
 }

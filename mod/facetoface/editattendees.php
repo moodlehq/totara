@@ -150,10 +150,11 @@ $availableusers = get_recordset_sql('SELECT id, firstname, lastname, email
                                         AND id NOT IN
                                           (
                                             SELECT u.id
-                                              FROM '.$CFG->prefix.'facetoface_submissions s
+                                              FROM '.$CFG->prefix.'facetoface_signups s
+                                              JOIN '.$CFG->prefix.'facetoface_signups_status ss ON s.id = ss.signupid AND ss.superceded = 0
                                               JOIN '.$CFG->prefix.'user u ON u.id=s.userid
                                              WHERE s.sessionid='.$session->id.'
-                                               AND s.timecancelled = 0
+                                               AND ss.statuscode >= '.MDL_F2F_STATUS_REQUESTED.'
                                           )
                                           ORDER BY lastname ASC, firstname ASC');
 

@@ -83,6 +83,9 @@ class mod_facetoface_session_form extends moodleform {
         $mform->setDefault('capacity', 10);
         $mform->setHelpButton('capacity', array('capacity', get_string('capacity', 'facetoface'), 'facetoface'));
 
+        $mform->addElement('checkbox', 'allowoverbook', get_string('allowoverbook', 'facetoface'));
+        $mform->setHelpButton('allowoverbook', array('allowoverbook', get_string('allowoverbook', 'facetoface'), 'facetoface'));
+
         $mform->addElement('text', 'duration', get_string('duration', 'facetoface'), 'size="5"');
         $mform->setType('duration', PARAM_TEXT);
         $mform->setHelpButton('duration', array('duration', get_string('duration', 'facetoface'), 'facetoface'));

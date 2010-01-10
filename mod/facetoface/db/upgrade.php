@@ -338,5 +338,13 @@ function xmldb_facetoface_upgrade($oldversion=0) {
         $result = $result && drop_table($table);
     }
 
+    if ($result && $oldversion < 2009121704) {
+        // New field necessary for overbooking
+        $table = new XMLDBTable('facetoface_sessions');
+        $field1 = new XMLDBField('allowoverbook');
+        $field1->setAttributes(XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null, 0, 'capacity');
+        $result = $result && add_field($table, $field1);
+    }
+
     return $result;
 }
