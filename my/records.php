@@ -32,7 +32,7 @@
     require_once($CFG->libdir.'/blocklib.php');
     require_once($CFG->libdir.'/tablelib.php');
     require_once($CFG->dirroot.'/tag/lib.php');
-    require_once($CFG->dirroot.'/local/mitms.php');
+    require_once($CFG->dirroot.'/local/reportlib.php');
 
     require_login();
 
@@ -53,29 +53,15 @@
 
     /// Add the custom profile fields to the user record
     include_once($CFG->dirroot.'/user/profile/lib.php');
-    $customfields = (array)profile_user_record($user->id);
-    foreach ($customfields as $cname=>$cvalue) {
+    $usercustomfields = (array)profile_user_record($user->id);
+    foreach ($usercustomfields as $cname=>$cvalue) {
         if (!isset($user->$cname)) { // Don't overwrite any standard fields
             $user->$cname = $cvalue;
         }
     }
 
-    $useorganisations = true;
-    $usepositions     = true;
-
-    if ($useorganisations) {
-        require_once($CFG->dirroot.'/hierarchy/lib.php');
-        $hierarchy = new hierarchy();
-        $hierarchy->prefix = 'organisation';
-        $organisations = $hierarchy->get_item_lineage($user->organisationid);
-    }
-    if ($usepositions) {
-        require_once($CFG->dirroot.'/hierarchy/lib.php');
-        $hierarchy = new hierarchy();
-        $hierarchy->prefix = 'position';
-        $positions = $hierarchy->get_item_lineage($user->positionid);
-    }
-
+    $organisations = mitms_get_user_hierarchy_lineage($user->organisationid, 'organisation');
+    $positions     = mitms_get_user_hierarchy_lineage($user->positionid, 'position');
 
     $columns = array(
         array(
@@ -170,69 +156,8 @@
         ),
     );
 
-echo '<table cellpadding="4">';
-foreach ($columns as $column) {
-    if ($column['column'] == 1) {
-        echo "<tr>";
-    }
-    $cell1str = "<td><strong>";
-    $cell2str = "<td>";
-    switch($column['type']) {
-        case 'user':
-            $cell1str .= get_string($column['value']);
-            if ($column['value'] == 'fullname') {
-                $cell2str .= '<a href="'.$CFG->wwwroot.'/user/view.php?id='.$user->id.'">'.fullname($user, true).'</a>';
-            } elseif ($column['value'] == 'email') {
-                $cell2str .= obfuscate_mailto($user->email);
-            } else {
-                $cell2str .= $user->{$column['value']};
-            }
-            break;
-        case 'usercustom':
-            $cell1str .= get_field('user_info_field', 'name', 'shortname', $column['value']);
-            $cell2str .= mitms_print_user_profile_field($user->id, $column['value']);
-            break;
-        case 'position':
-            if ($column['headingtype'] == 'defined') {
-                $cell1str .= $column['heading'];
-            } else {
-                $cell1str .= get_string('position', 'position');
-            }
-            if ($positions) {
-                foreach ($positions as $position) {
-                    if ($column['level'] == $position->depthlevel) {
-                        $cell2str .= $position->{$column['value']};
-                        break;
-                    }
-                }
-            }
-            break;
-        case 'organisation':
-            if ($column['headingtype'] == 'defined') {
-                $cell1str .= $column['heading'];
-            } else {
-                $cell1str .= get_string('organisation', 'organisation');
-            }
-            if ($organisations) {
-                foreach ($organisations as $organisation) {
-                    if ($column['level'] == $organisation->depthlevel) {
-                        $cell2str .= $organisation->{$column['value']};
-                        break;
-                    }
-                }
-            }
-            break;
-        default:
-            $cell1str = "<td></td>";
-            $cell2str = "<td></td>";
-            break;
-    }
-    echo $cell1str.$cell2str;
-    if ($column['column'] == 2) {
-        echo "</tr>";
-    }
-}
-echo "</table>";
+    echo mitms_print_report_heading($columns, $user, $usercustomfields);
+
 ?>
 <table cellpadding="4">
 <tr>
