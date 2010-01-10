@@ -98,3 +98,13 @@ $string['induction'] = 'Induction';
 $string['leadership'] = 'Leadership';
 $string['myrecordoflearning'] = 'My Record of Learning';
 
+// Learning record report
+$string['report:completiondate'] = 'Completion date';
+$string['report:coursetitle'] = 'Course title';
+$string['report:enddate'] = 'End date';
+$string['report:learner'] = 'Learner';
+$string['report:learningrecords'] = 'Learning records';
+$string['report:nodata'] = 'There is no available data for that combination of criteria, start date and end date';
+$string['report:organisation'] = 'Office';
+$string['report:startdate'] = 'Start date';
+
