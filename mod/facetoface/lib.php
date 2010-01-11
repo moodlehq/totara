@@ -2935,20 +2935,23 @@ function facetoface_print_session($session, $showcapacity, $calendaroutput=false
         $table->data[] = array(get_string('sessiondatetime', 'facetoface'), '<i>'.get_string('wait-listed', 'facetoface').'</i>');
     }
 
+    $signupcount = facetoface_get_num_attendees($session->id);
+    $placesleft = $session->capacity - $signupcount;
+
     if ($showcapacity) {
-        $table->data[] = array(get_string('capacity', 'facetoface'), $session->capacity);
+        if ($session->allowoverbook) {
+            $table->data[] = array(get_string('capacity', 'facetoface'), $session->capacity . ' ('.strtolower(get_string('allowoverbook', 'facetoface')).')');
+        } else {
+            $table->data[] = array(get_string('capacity', 'facetoface'), $session->capacity);
+        }
     }
     elseif (!$calendaroutput) {
-        $signupcount = facetoface_get_num_attendees($session->id);
-        $placesleft = $session->capacity - $signupcount;
-        $table->data[] = array(get_string('capacity', 'facetoface'), $placesleft);
+        $table->data[] = array(get_string('capacity', 'facetoface'), max(0, $placesleft));
     }
 
     // Get context for capacity check
-    $facetoface = get_record('facetoface', 'id', $session->facetoface);
-    $context = get_context_instance(CONTEXT_COURSE, $facetoface->course);
-    if ($session->allowoverbook && !facetoface_session_has_capacity($session, $context)) {
-        $table->data[] = array(get_string('allowoverbook', 'facetoface'), get_string('userwillbewaitlisted', 'facetoface'));
+    if ($session->allowoverbook && $placesleft < 1) {
+        $table->data[] = array('', get_string('userwillbewaitlisted', 'facetoface'));
     }
 
     if (!empty($session->duration)) {

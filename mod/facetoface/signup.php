@@ -61,7 +61,7 @@ if ($fromform = $mform->get_data()) { // Form submitted
     // Get signup type
     if (!$session->datetimeknown) {
         $iswaitlisted = true;
-    } elseif (facetoface_get_num_attendees($session) < $session->capacity) {
+    } elseif (facetoface_get_num_attendees($session->id) < $session->capacity) {
         // Save available
         $iswaitlisted = false;
     } else {

@@ -74,7 +74,7 @@ if ($frm = data_submitted()) {
                     break; // no point in trying to add other people
                 }
                 elseif (!facetoface_user_signup($session, $facetoface, $course, '', MDL_F2F_BOTH,
-                                                $adduser, !$suppressemail, false)) {
+                                                false, $adduser, !$suppressemail, false)) {
                     $erruser = get_record('user', 'id', $adduser, '','','','', 'id, firstname, lastname');
                     $errors[] = get_string('error:addattendee', 'facetoface', fullname($erruser));
                 }
@@ -103,6 +103,9 @@ if ($frm = data_submitted()) {
                 $errors[] = get_string('error:removeattendee', 'facetoface', fullname($erruser));
             }
         }
+
+        // Update attendees
+        facetoface_update_attendees($session);
     }
     // "Show All" button
     elseif ($showall) {
@@ -151,10 +154,11 @@ $availableusers = get_recordset_sql('SELECT id, firstname, lastname, email
                                           (
                                             SELECT u.id
                                               FROM '.$CFG->prefix.'facetoface_signups s
-                                              JOIN '.$CFG->prefix.'facetoface_signups_status ss ON s.id = ss.signupid AND ss.superceded = 0
+                                              JOIN '.$CFG->prefix.'facetoface_signups_status ss ON s.id = ss.signupid
                                               JOIN '.$CFG->prefix.'user u ON u.id=s.userid
                                              WHERE s.sessionid='.$session->id.'
-                                               AND ss.statuscode >= '.MDL_F2F_STATUS_REQUESTED.'
+                                               AND ss.statuscode >= '.MDL_F2F_STATUS_BOOKED.'
+                                               AND ss.superceded = 0
                                           )
                                           ORDER BY lastname ASC, firstname ASC');
 
