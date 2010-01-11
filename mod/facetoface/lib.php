@@ -522,32 +522,31 @@ function facetoface_update_attendees($session) {
             // Convert earliest signed up users to booked, and make the rest waitlisted
             $capacity = $session->capacity;
 
+            // Count number of booked users
+            $booked = 0;
             foreach ($users as $user) {
-                
-                // No capacity left, make sure they are not booked
-                if (!$capacity) {
-                    if ($user->statuscode == MDL_F2F_STATUS_BOOKED) {
+                if ($user->statuscode == MDL_F2F_STATUS_BOOKED) {
+                    $booked++;
+                }
+            }
 
-                        if (!facetoface_user_signup($session, $facetoface, $course, $user->discountcode, $user->notificationtype, true, $user->id)) {
-                            rollback_sql();
-                            return false;
-                        }
+            // If booked less than capacity, book some new users
+            if ($booked < $capacity) {
+                foreach ($users as $user) {
+                    if ($booked >= $capacity) {
+                        break;
                     }
 
-                // Capacity left, convert waitlisted to booked
-                } else {
                     if ($user->statuscode == MDL_F2F_STATUS_WAITLISTED) {
 
                         if (!facetoface_user_signup($session, $facetoface, $course, $user->discountcode, $user->notificationtype, false, $user->id)) {
                             rollback_sql();
                             return false;
                         }
+                        $booked++;
                     }
-
-                    $capacity--;
                 }
             }
-
         }
     }
 
@@ -1649,10 +1648,11 @@ function facetoface_user_cancel($session, $userid=false, $forcecancel=false, &$e
 
     if (facetoface_user_cancel_submission($session->id, $userid, $cancelreason)) {
         facetoface_remove_bookings_from_user_calendar($session, $userid);
+
+        facetoface_update_attendees($session);
+
         return true;
     }
-
-    facetoface_update_attendees($session);
 
     $errorstr = get_string('error:cancelbooking', 'facetoface');
     return false;
