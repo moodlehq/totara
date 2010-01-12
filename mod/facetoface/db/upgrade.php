@@ -346,5 +346,13 @@ function xmldb_facetoface_upgrade($oldversion=0) {
         $result = $result && add_field($table, $field1);
     }
 
+    if ($result && $oldversion < 2010120101) {
+        // New field for storing recommendations/advice
+        $table = new XMLDBTable('facetoface_signups_status');
+        $field1 = new XMLDBField('advice');
+        $field1->setAttributes(XMLDB_TYPE_TEXT, 'small', null, null, null, null);
+        $result = $result && add_field($table, $field1);
+    }
+
     return $result;
 }
