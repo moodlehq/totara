@@ -2894,6 +2894,8 @@ function facetoface_session_has_capacity($session, $context) {
  */
 function facetoface_print_session($session, $showcapacity, $calendaroutput=false, $return=false)
 {
+    global $CFG;
+
     $table = new object();
     $table->summary = get_string('sessionsdetailstablesummary', 'facetoface');
     $table->class = 'f2fsession';
@@ -2966,6 +2968,29 @@ function facetoface_print_session($session, $showcapacity, $calendaroutput=false
     if (!empty($session->details)) {
         $details = clean_text($session->details, FORMAT_HTML);
         $table->data[] = array(get_string('details', 'facetoface'), $details);
+    }
+
+    // Display trainers
+    $trainerroles = facetoface_get_trainer_roles();
+
+    if ($trainerroles) {
+        // Get trainers
+        $trainers = facetoface_get_trainers($session->id);
+
+        foreach ($trainerroles as $role => $rolename) {
+            $rolename = $rolename->name;
+
+            if (empty($trainers[$role])) {
+                continue;
+            }
+
+            $trainer_names = array();
+            foreach ($trainers[$role] as $trainer) {
+                $trainer_names[] = '<a href="'.$CFG->wwwroot.'/user/view.php?id='.$trainer->id.'">'.fullname($trainer).'</a>';
+            }
+
+            $table->data[] = array($rolename, implode(', ', $trainer_names));
+        }
     }
 
     return print_table($table, $return);
@@ -3083,4 +3108,153 @@ function facetoface_list_of_customfields()
     }
 
     return get_string('nocustomfields', 'facetoface');
+}
+
+
+function facetoface_update_trainers($sessionid, $form) {
+
+    // If we recieved bad data
+    if (!is_array($form)) {
+        return false;
+    }
+
+    // Load current trainers
+    $old_trainers = facetoface_get_trainers($sessionid);
+
+    begin_sql();
+
+    // Loop through form data and add any new trainers
+    foreach ($form as $roleid => $trainers) {
+
+        // Loop through trainers in this role
+        foreach ($trainers as $trainer) {
+
+            if (!$trainer) {
+                continue;
+            }
+
+            // If the trainer doesn't exist already, create it
+            if (!isset($old_trainers[$roleid][$trainer])) {
+
+                $newtrainer = new object();
+                $newtrainer->userid = $trainer;
+                $newtrainer->roleid = $roleid;
+                $newtrainer->sessionid = $sessionid;
+
+                if (!insert_record('facetoface_session_roles', $newtrainer)) {
+                    error('Could not save new face-to-face session trainer');
+                    rollback_sql();
+                    return false;
+                }
+            }
+
+            unset($old_trainers[$roleid][$trainer]);
+        }
+    }
+
+    // Loop through what is left of old trainers, and remove
+    // (as they have been deselected)
+    if ($old_trainers) {
+        foreach ($old_trainers as $roleid => $trainers) {
+            // If no trainers left
+            if (empty($trainers)) {
+                continue;
+            }
+
+            // Delete any remaining trainers
+            foreach ($trainers as $trainer) {
+                if (!delete_records('facetoface_session_roles', 'sessionid', $sessionid, 'roleid', $roleid, 'userid', $trainer->id)) {
+                    error('Could not delete a face-to-face session trainer');
+                    rollback_sql();
+                    return false;
+                }
+            }
+        }
+    }
+
+    commit_sql();
+
+    return true;
+}
+
+
+function facetoface_get_trainer_roles() {
+    global $CFG;
+
+    // Check that roles have been selected
+    if (empty($CFG->facetoface_sessionroles)) {
+        return false;
+    }
+
+    // Parse roles
+    $cleanroles = clean_param($CFG->facetoface_sessionroles, PARAM_SEQUENCE);
+
+    // Load role names
+    $rolenames = get_records_sql("
+        SELECT
+            r.id,
+            r.name
+        FROM
+            {$CFG->prefix}role r
+        WHERE
+            r.id IN ({$cleanroles})
+        AND r.id <> 0
+    ");
+
+    // Return roles and names
+    return $rolenames;
+}
+
+
+function facetoface_get_trainers($sessionid, $roleid = null) {
+    global $CFG;
+
+    $rs = get_recordset_sql("
+        SELECT
+            u.id,
+            u.firstname,
+            u.lastname,
+            r.roleid
+        FROM
+            {$CFG->prefix}facetoface_session_roles r
+        LEFT JOIN
+            {$CFG->prefix}user u
+         ON u.id = r.userid
+        WHERE
+            r.sessionid = {$sessionid}
+        ".
+        ($roleid ? "AND r.roleid = {$roleid}" : '')
+    );
+
+    if (!$rs) {
+        return false;
+    }
+
+    $return = array();
+    while ($record = rs_fetch_next_record($rs)) {
+        // Create new array for this role
+        if (!isset($return[$record->roleid])) {
+            $return[$record->roleid] = array();
+        }
+
+        $return[$record->roleid][$record->id] = $record;
+    }
+
+    rs_close($rs);
+
+    // If we are only after one roleid
+    if ($roleid) {
+        if (empty($return[$roleid])) {
+            return false;
+        }
+
+        return $return[$roleid];
+    }
+
+    // If we are after all roles
+    if (empty($return)) {
+        return false;
+    }
+
+    return $return;
 }

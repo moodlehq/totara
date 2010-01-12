@@ -78,7 +78,7 @@ if ($d and $confirm) {
 
 $customfields = facetoface_get_session_customfields();
 
-$mform =& new mod_facetoface_session_form(null, compact('id', 'f', 's', 'c', 'nbdays', 'customfields'));
+$mform =& new mod_facetoface_session_form(null, compact('id', 'f', 's', 'c', 'nbdays', 'customfields', 'course'));
 if ($mform->is_cancelled()){
     redirect($returnurl);
 }
@@ -168,6 +168,11 @@ if ($fromform = $mform->get_data()) { // Form submitted
             rollback_sql();
             print_error('error:couldnotsavecustomfield', 'facetoface', $returnurl);
         }
+    }
+
+    // Save trainer roles
+    if (isset($fromform->trainerrole)) {
+        facetoface_update_trainers($sessionid, $fromform->trainerrole);
     }
 
     // Retrieve record that was just inserted/updated

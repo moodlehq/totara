@@ -7,6 +7,8 @@ class mod_facetoface_session_form extends moodleform {
 
     function definition()
     {
+        global $CFG;
+
         $mform =& $this->_form;
 
         $mform->addElement('hidden', 'id', $this->_customdata['id']);
@@ -105,6 +107,79 @@ class mod_facetoface_session_form extends moodleform {
         $mform->addElement('htmleditor', 'details', get_string('details', 'facetoface'), '');
         $mform->setType('details', PARAM_RAW);
         $mform->setHelpButton('details', array('details', get_string('details', 'facetoface'), 'facetoface'));
+
+        // Choose users for trainer roles
+        $rolenames = facetoface_get_trainer_roles();
+
+        if ($rolenames) {
+            // Get current trainers
+            $current_trainers = facetoface_get_trainers($this->_customdata['s']);
+
+            // Loop through all selected roles
+            $header_shown = false;
+            foreach ($rolenames as $role => $rolename) {
+                $rolename = $rolename->name;
+
+                // Get course context
+                $context = get_context_instance(CONTEXT_COURSE, $this->_customdata['course']->id);
+
+                // Attempt to load users with this role in this course
+                $rs = get_recordset_sql("
+                    SELECT
+                        u.id,
+                        u.firstname,
+                        u.lastname
+                    FROM
+                        {$CFG->prefix}role_assignments ra
+                    LEFT JOIN
+                        {$CFG->prefix}user u
+                      ON ra.userid = u.id
+                    WHERE
+                        contextid = {$context->id}
+                    AND roleid = {$role}
+                ");
+
+                if (!$rs) {
+                    continue;
+                }
+
+                $choices = array();
+                while ($roleuser = rs_fetch_next_record($rs)) {
+                    $choices[$roleuser->id] = fullname($roleuser);
+                }
+                rs_close($rs);
+
+                // Show header (if haven't already)
+                if (!$header_shown) {
+                    $mform->addElement('header', 'trainerroles', get_string('sessionroles', 'facetoface'));
+                    $header_shown = true;
+                }
+
+                // If only a few, use checkboxes
+                if (count($choices) < 4) {
+                    foreach ($choices as $cid => $choice) {
+                        $mform->addElement('advcheckbox', 'trainerrole['.$role.']['.$cid.']', $rolename, $choice, null, array('', $cid));
+                        $mform->setType('trainerrole['.$role.']['.$cid.']', PARAM_INT);
+                    }
+                } else {
+                    $mform->addElement('select', 'trainerrole['.$role.']', $rolename, $choices, array('multiple' => 'multiple'));
+                    $mform->setType('trainerrole['.$role.']', PARAM_SEQUENCE);
+                }
+
+                // Select current trainers
+                if ($current_trainers) {
+                    foreach ($current_trainers as $role => $trainers) {
+                        $t = array();
+                        foreach ($trainers as $trainer) {
+                            $t[] = $trainer->id;
+                            $mform->setDefault('trainerrole['.$role.']['.$trainer->id.']', $trainer->id);
+                        }
+
+                        $mform->setDefault('trainerrole['.$role.']', implode(',', $t));
+                    }
+                }
+            }
+        }
 
         $this->add_action_buttons();
     }
