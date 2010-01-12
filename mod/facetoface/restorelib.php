@@ -155,6 +155,7 @@ function restore_facetoface_signups_status($info, $restore) {
         $signup->superceded         = backup_todb($signupinfo['#']['SUPERCEDED']['0']['#']);
         $signup->grade              = backup_todb($signupinfo['#']['GRADE']['0']['#']);
         $signup->note               = backup_todb($signupinfo['#']['NOTE']['0']['#']);
+        $signup->advice             = backup_todb($signupinfo['#']['ADVICE']['0']['#']);
         $signup->createdby          = backup_todb($signupinfo['#']['CREATEDBY']['0']['#']);
         $signup->timecreated        = backup_todb($signupinfo['#']['TIMECREATED']['0']['#']);
 
