@@ -207,6 +207,8 @@ foreach ($columns as $column) {
                         break;
                     }
                 }
+            } else {
+                $cell2str .= get_string('notavailable','local');
             }
             break;
         case 'organisation':
@@ -361,7 +363,7 @@ echo "</table>";
         FROM mdl_competency_evidence ce JOIN mdl_competency c ON c.id=ce.competencyid WHERE ce.userid={$user->id}
         UNION ALL
         SELECT c.fullname AS cfullname, cc.course AS cid, CASE WHEN cc.timecompleted IS NOT NULL THEN 3 ELSE 1 END AS proficiency,
-        NULL AS positionid, NULL AS organisationid, cc.timecompleted, 'course' AS type, c.idnumber as idnumber
+        positionid, organisationid, cc.timecompleted, 'course' AS type, c.idnumber as idnumber
         FROM mdl_course_completions cc JOIN mdl_course c ON c.id=cc.course
         WHERE cc.userid={$user->id} ORDER BY timemodified DESC";
 
@@ -424,6 +426,9 @@ echo "</table>";
                         }
                         break;
                     case 'position':
+                        // TODO currently this lists users role
+                        // look for positionid in course completions first and use
+                        // that instead if available
                         if($record->type=='course') {
                             if ($positions) {
                                 foreach ($positions as $position) {
