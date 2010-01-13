@@ -742,25 +742,6 @@ function xmldb_local_upgrade($oldversion) {
         $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
         $result = $result && create_table($table);
 
-    /// Insert default records
-        $defaultdir = $CFG->dirroot.'/local/db/default';
-        if (is_dir($defaultdir)) {
-            if ($dh = opendir($defaultdir)) {
-                $timenow = time();
-                while (($file = readdir($dh)) !== false) {
-                    // exclude directories
-                    if (is_dir($file)) {
-                        continue;
-                    }
-                    // not a php file
-                    if (substr($file, -4) != '.php') {
-                        continue;
-                    }
-                    // include default data file
-                    include($CFG->dirroot.'/local/db/default/'.$file);
-                }
-            }
-        }
     }
 
     if ($result && $oldversion < 2010011000) {
@@ -847,6 +828,26 @@ function xmldb_local_upgrade($oldversion) {
         $table->addIndexInfo('revision', XMLDB_INDEX_NOTUNIQUE, array('revision'));
         $result = $result && create_table($table);
 
+    }
+
+    /// Insert default records
+    $defaultdir = $CFG->dirroot.'/local/db/default';
+    if (is_dir($defaultdir)) {
+        if ($dh = opendir($defaultdir)) {
+            $timenow = time();
+            while (($file = readdir($dh)) !== false) {
+                // exclude directories
+                if (is_dir($file)) {
+                    continue;
+                }
+                // not a php file
+                if (substr($file, -4) != '.php') {
+                    continue;
+                }
+                // include default data file
+                include($CFG->dirroot.'/local/db/default/'.$file);
+            }
+        }
     }
 
     return $result;
