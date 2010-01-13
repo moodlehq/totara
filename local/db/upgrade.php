@@ -746,6 +746,7 @@ function xmldb_local_upgrade($oldversion) {
         $defaultdir = $CFG->dirroot.'/local/db/default';
         if (is_dir($defaultdir)) {
             if ($dh = opendir($defaultdir)) {
+                $timenow = time();
                 while (($file = readdir($dh)) !== false) {
                     // exclude directories
                     if (is_dir($file)) {
@@ -845,8 +846,6 @@ function xmldb_local_upgrade($oldversion) {
         $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
         $table->addIndexInfo('revision', XMLDB_INDEX_NOTUNIQUE, array('revision'));
         $result = $result && create_table($table);
-
-        $timenow = time();
 
     }
 
