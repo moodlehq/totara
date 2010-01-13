@@ -760,6 +760,7 @@ function xmldb_local_upgrade($oldversion) {
                 }
             }
         }
+    }
 
     if ($result && $oldversion < 2010011000) {
 
