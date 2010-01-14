@@ -359,12 +359,16 @@ echo "</table>";
     $where2  = " WHERE ce.userid={$user->id}";
     $sort2   = " ORDER by ce.timemodified DESC";
 
-    $select3 = "SELECT c.fullname as cfullname, ce.competencyid AS cid, ce.proficiency, ce.positionid, ce.organisationid, ce.timemodified, 
-        'competency' AS type, c.idnumber as idnumber
+    $select3 = "SELECT c.fullname as cfullname, ce.competencyid AS cid,
+        ce.proficiency, 
+        ce.positionid, ce.organisationid, ce.timemodified, ce.assessorid, 
+        ce.assessorname, 'competency' AS type, c.idnumber as idnumber
         FROM mdl_competency_evidence ce JOIN mdl_competency c ON c.id=ce.competencyid WHERE ce.userid={$user->id}
         UNION ALL
-        SELECT c.fullname AS cfullname, cc.course AS cid, CASE WHEN cc.timecompleted IS NOT NULL THEN 3 ELSE 1 END AS proficiency,
-        positionid, organisationid, cc.timecompleted, 'course' AS type, c.idnumber as idnumber
+        SELECT c.fullname AS cfullname, cc.course AS cid, 
+        CASE WHEN cc.timecompleted IS NOT NULL THEN 3 ELSE 1 END AS proficiency,
+        positionid, organisationid, cc.timecompleted, null::integer as assessorid, 
+        null::varchar as assessorname, 'course' AS type, c.idnumber as idnumber
         FROM mdl_course_completions cc JOIN mdl_course c ON c.id=cc.course
         WHERE cc.userid={$user->id} ORDER BY timemodified DESC";
 
@@ -467,8 +471,28 @@ echo "</table>";
                             }
                         }
                         break;
-                    default:
-                        $tabledata[] = '';
+                    case 'competency_evidence':
+                        
+                        if($column['value']=='assessorid') {
+                            if(!empty($record->assessorid) && $record->assessorid != 0) {
+                                $user = get_record('user','id',$record->assessorid);
+                                if($user) {
+                                    $tabledata[] = $user->firstname.' '.$user->lastname;
+                                } else {
+                                    $tabledata[] = '';
+                                }
+                            } else {
+                                $tabledata[] = '';
+                            }
+                        } else if ($column['value']=='assessororg'){
+                            if (!empty($record->assessorname)) {
+                                $tabledata[] = $record->assessorname;
+                            } else {
+                                $tabledata[] = '';
+                            }
+                        } else {
+                            $tabledata[] = '';
+                        }
 
 
                         break;
