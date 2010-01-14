@@ -52,7 +52,7 @@ if ($scales) {
     $table->data = array();
     foreach($scales as $scale) {
         $line = array();
-        $line[] = "<a href=\"$CFG->wwwroot/competency/scale/view.php?id={$scale->id}\">".format_string($scale->name)."</a>";
+        $line[] = "<a href=\"$CFG->wwwroot/hierarchy/type/competency/scale/view.php?id={$scale->id}\">".format_string($scale->name)."</a>";
         $line[] = get_string('no');
 
         $buttons = array();
