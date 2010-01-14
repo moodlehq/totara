@@ -434,43 +434,23 @@ echo "</table>";
                         }
                         break;
                     case 'organisation':
-
-                        if($record->type=='course') {
+                        if(!empty($record->organisationid)) {
                             $testfound = false;
-                            if ($organisations) {
-                                foreach ($organisations as $organisation) {
-                                    if ($column['level'] == $organisation->depthlevel) {
-                                        $tabledata[] = $organisation->{$column['value']};
-                                        $testfound = true;
-                                        break;
-                                    }
+                            // not very efficient doing this for every loop but don't know
+                            // in advance what possible values will be because we are using recordset
+                            $orgs = mitms_get_user_hierarchy_lineage($record->organisationid, 'organisation');
+                            foreach ($orgs as $org) {
+                                if ($column['level'] == $org->depthlevel) {
+                                    $tabledata[] = $org->{$column['value']};
+                                    $testfound = true;
                                 }
-                            } else {
-                                $tabledata[] = '';
                             }
                             if (!$testfound) {
                                 $tabledata[] = get_string('notapplicable', 'local');
                             }
-
                         } else {
-
-                            $testfound = false;
-                            if ($organisations) {
-                                foreach ($organisations as $organisation) {
-                                    if ($column['level'] == $organisation->depthlevel) {
-                                        $tabledata[] = $organisation->{$column['value']};
-                                        $testfound = true;
-                                        break;
-                                    }
-                                }
-                            } else {
-                                $tabledata[] = '';
-                            }
-                            if (!$testfound) {
-                                $tabledata[] = get_string('notapplicable', 'local');
-                            }
+                            $tabledata[] = '';
                         }
-
                         break;
                     case 'date':
                         if($record->type=='course') {
