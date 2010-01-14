@@ -62,6 +62,7 @@
 
     $organisations = mitms_get_user_hierarchy_lineage($user->organisationid, 'organisation');
     $positions     = mitms_get_user_hierarchy_lineage($user->positionid, 'position');
+    $positionids = get_records('position', '', '', '', 'id,fullname');
 
     $columns = array(
         array(
@@ -426,35 +427,11 @@ echo "</table>";
                         }
                         break;
                     case 'position':
-                        // TODO currently this lists users role
-                        // look for positionid in course completions first and use
-                        // that instead if available
-                        if($record->type=='course') {
-                            if ($positions) {
-                                foreach ($positions as $position) {
-                                    if ($column['level'] == $position->depthlevel) {
-                                        $tabledata[] = $position->{$column['value']};
-                                        break;
-                                    }
-                                }
-                            } else {
-                                $tabledata[] = '';
-                            }
-
+                        if(!empty($record->positionid) && isset($positionids[$record->positionid])) {
+                            $tabledata[] = $positionids[$record->positionid]->fullname;
                         } else {
-
-                            if ($positions) {
-                                foreach ($positions as $position) {
-                                    if ($column['level'] == $position->depthlevel) {
-                                        $tabledata[] = $position->{$column['value']};
-                                        break;
-                                    }
-                                }
-                            } else {
-                                $tabledata[] = '';
-                            }
+                            $tabledata[] = '';
                         }
-
                         break;
                     case 'organisation':
 
