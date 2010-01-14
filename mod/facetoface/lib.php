@@ -2265,7 +2265,7 @@ function facetoface_print_coursemodule_info($coursemodule)
 
             $locationstring = '';
             $customfielddata = facetoface_get_customfielddata($session->id);
-            if (!empty($customfielddata['location'])) {
+            if (!empty($customfielddata['location']) && trim($customfielddata['location']->data) != '') {
                 $locationstring = $customfielddata['location']->data . ', ';
             }
 
