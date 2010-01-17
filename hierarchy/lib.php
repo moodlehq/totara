@@ -83,7 +83,7 @@ class hierarchy {
      * @return array|false
      */
     function get_frameworks() {
-        return get_records($this->prefix.'_framework', '', '', 'sortorder');
+        return get_records($this->prefix.'_framework', '', '', 'sortorder, fullname');
     }
 
     /**
@@ -108,7 +108,7 @@ class hierarchy {
      * @return array|false
      */
     function get_items() {
-        return get_records($this->prefix, 'frameworkid', $this->frameworkid, 'sortorder');
+        return get_records($this->prefix, 'frameworkid', $this->frameworkid, 'sortorder, fullname');
     }
 
     /**
@@ -117,7 +117,7 @@ class hierarchy {
      * @return array|false
      */
     function get_items_by_parent($parentid) {
-        return get_records_select($this->prefix, "frameworkid = {$this->frameworkid} AND parentid = {$parentid}", 'sortorder');
+        return get_records_select($this->prefix, "frameworkid = {$this->frameworkid} AND parentid = {$parentid}", 'sortorder, fullname');
     }
 
     /**
