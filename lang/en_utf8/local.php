@@ -102,6 +102,7 @@ $string['myrecordoflearning'] = 'My Record of Learning';
 $string['myidp'] = 'My IDP';
 $string['notapplicable'] = 'Not applicable';
 $string['notavailable'] = 'Not available';
+$string['recordoflearning'] = 'Record of Learning';
 
 // Learning record report
 $string['report:completiondate'] = 'Completion date';

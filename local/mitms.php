@@ -116,7 +116,7 @@ function mitms_print_my_learning_nav($return=false) {
      <ul id="mitms-nav">
        <li><a href="' . $CFG->wwwroot . '/plan/index.php">' . get_string('developmentplan', 'local') . '</a></li>
        <li><a href="' . $CFG->wwwroot . '/blocks/facetoface/mysignups.php">' . get_string('bookings', 'local') . '</a></li>
-       <li><a href="' . $CFG->wwwroot . '/my/records.php?id='.$USER->id.'">' . get_string('history', 'local') . '</a></li>
+       <li><a href="' . $CFG->wwwroot . '/my/records.php?id='.$USER->id.'">' . get_string('recordoflearning', 'local') . '</a></li>
     ';
     $returnstr .= '
      </ul>
