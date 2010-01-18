@@ -101,7 +101,7 @@ $string['error:revisionnotvisible'] = 'This revision is not visible to you.';
 # Other strings
 $string['addbutton'] = 'Add competency to plan';
 $string['addcomment'] = 'Add a comment:';
-$string['addcompetenciesbutton'] = 'Add competenices to plan';
+$string['addcompetenciesbutton'] = 'Add competencies to plan';
 $string['addcompetenciestoplan'] = 'Add competencies to plan';
 $string['addcoursesbutton'] = 'Add courses to plan';
 $string['addcoursestoplan'] = 'Add courses to plan';
