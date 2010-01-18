@@ -293,6 +293,11 @@
                 $cm->completion = $fromform->completion;
                 $cm->completionview = $fromform->completionview;
                 $cm->completionexpected = $fromform->completionexpected;
+                if ($fromform->completionexpected == null) {
+                    $cm->completionexpected = 0;
+		} else {
+                    $cm->completionexpected = $fromform->completionexpected;
+                }
                 $cm->completiongradeitemnumber = $fromform->completiongradeitemnumber;
             }
 
