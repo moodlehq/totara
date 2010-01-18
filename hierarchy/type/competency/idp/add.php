@@ -53,7 +53,32 @@ if (!$parentid) {
 
 <div class="selectcompetencies">
 
-<h2><?php echo get_string('addcompetenciestoplan', 'idp') ?></h2>
+<h2><?php echo get_string('addcompetenciestoplan', 'idp') ?>
+
+<?php
+
+    // Display framework picker
+    $frameworks = $hierarchy->get_frameworks();
+
+    if (count($frameworks) > 1) {
+
+        echo '<select id="framework-picker">';
+
+        foreach ($frameworks as $fw) {
+            echo '<option value="'.$fw->id.'"';
+
+            // Is current?
+            if ($fw->id == $frameworkid) {
+                echo ' selected="selected"';
+            }
+
+            echo '>'.$fw->fullname.'</option>';
+        }
+
+        echo '</select>';
+    }
+
+?></h2>
 
 <div id="selectedcompetencies">
     <p>
