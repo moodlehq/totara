@@ -10,21 +10,6 @@ $js_enabled = optional_param('js', true, PARAM_BOOL);    // js enabled
 
 require_login();
 
-// If js enabled, setup custom javascript
-if ($js_enabled) {
-
-    require_once($CFG->dirroot.'/local/js/setup.php');
-    setup_lightbox(array(MBE_JS_TREEVIEW, MBE_JS_ADVANCED));
-    require_js(array('yui_yahoo',
-            'yui_event',
-            'yui_connection',
-            'yui_json',
-            $CFG->wwwroot.'/local/js/idp.competency.js',
-            $CFG->wwwroot.'/local/js/idp.course.js',
-    ));
-
-}
-
 $id = required_param('id', PARAM_INT); // Plan ID
 $rev = optional_param('rev', 0, PARAM_INT); // Revision ID
 $lp = optional_param('lp', 0, PARAM_INT); // Activity ID
@@ -62,6 +47,18 @@ if ($USER->id != $plan->userid and 'notsubmitted' == $currevision->status) {
 $currevision->owner = get_record('user', 'id', $plan->userid, '', '', '', '', 'id,firstname,lastname,idnumber');
 add_to_log(SITEID, 'idp', 'view plan', "revision.php?id=$plan->id", $plan->id);
 
+// If js enabled, setup custom javascript
+if ($js_enabled) {
+
+    require_once($CFG->dirroot.'/local/js/setup.php');
+    setup_lightbox(array(MBE_JS_TREEVIEW, MBE_JS_ADVANCED));
+    require_js(array(
+        $CFG->wwwroot.'/local/js/idp.competency.js',
+        $CFG->wwwroot.'/local/js/idp.course.js',
+    ));
+
+}
+
 $stridps = get_string('idps', 'idp');
 
 $pagetitle = format_string($plan->name);
@@ -72,11 +69,10 @@ $navlinks[] = array('name' => $pagetitle, 'link' => '', 'type' => 'home');
 
 $navigation = build_navigation($navlinks);
 
-$CFG->stylesheets[] = array(
-        'media' =>  'print',
-        'href'  =>  $CFG->themewww . '/MITMS_print/user_styles.css',
-    );
-print_header_simple($pagetitle, '', $navigation, '', '', true);
+// Hack to add print stylesheet
+$meta = '<link rel="stylesheet" type="text/css" media="print" href="'.$CFG->themewww.'/MITMS_print/user_styles.css" />'."\n";
+
+print_header_simple($pagetitle, '', $navigation, '', $meta, true);
 
 if ($currevision) {
     // Whether or not to see the can_edit view

@@ -56,13 +56,11 @@ if ($confirm) {
     }
 }
 else {
+    // Hack to add print stylesheet
+    $meta = '<link rel="stylesheet" type="text/css" media="print" href="'.$CFG->themewww.'/MITMS_print/user_styles.css" />'."\n";
 
-    $CFG->stylesheets[] = array(
-        'media' =>  'print',
-        'href'  =>  $CFG->themewww . '/MITMS_print/user_styles.css',
-    );
     // Preview page
-    print_header_simple($pagetitle, '', $navigation, '', '', true);
+    print_header_simple($pagetitle, '', $navigation, '', $meta, true);
 
     print '<h1>'.get_string('previewtitle', 'idp', $plan->name)."</h1>\n";
 
