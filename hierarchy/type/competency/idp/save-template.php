@@ -63,12 +63,14 @@ foreach ($add as $addition) {
     echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/type/competency/template/view.php?id={$template->id}\">{$template->fullname}</a></td>";
 
 //    if ($editingon) {
+/*
         echo "<td style=\"text-align: center;\">";
 
         echo "<a href=\"{$CFG->wwwroot}/{$hierarchy->prefix}/competency/remove.php?id={$template->id}\" title=\"$str_remove\">".
              "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_remove\" /></a>";
 
         echo "</td>";
+*/
 //    }
 
     echo '</tr>'.PHP_EOL;
