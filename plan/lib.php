@@ -1985,6 +1985,9 @@ function print_revision_trainee($revision, $plan, $options=array()) {
     $competencies = idp_get_user_competencies($plan->userid, $revision->id);
     include $CFG->dirroot.'/plan/view-competencies.html';
 
+    $competencytemplates = idp_get_user_competencytemplates($plan->userid, $revision->id);
+    include $CFG->dirroot.'/plan/view-competencytemplates.html';
+
     $courses = idp_get_user_courses($plan->userid, $revision->id);
     include $CFG->dirroot.'/plan/view-courses.html';
 
@@ -2121,6 +2124,34 @@ function idp_get_user_competencies($userid, $currevisionid) {
         INNER JOIN
             {$CFG->prefix}competency_depth d
          ON d.id = c.depthid
+        WHERE r.revision = {$currevisionid}
+        ";
+    return get_records_sql($sql);
+}
+
+/**
+ * Get this users competency templates for this revision.
+ *
+ * @param class $revision       Revision object as returned by get_revision()
+ * @param array $grades         Array of grades as submitted by the grades form
+ */
+function idp_get_user_competencytemplates($userid, $currevisionid) {
+    global $CFG;
+
+    $sql = "
+        SELECT DISTINCT
+            c.id AS id,
+            c.fullname,
+            f.id AS fid,
+            f.fullname AS framework
+        FROM
+            {$CFG->prefix}idp_revision_competencytemplate r
+        INNER JOIN
+            {$CFG->prefix}competency_template c
+         ON r.competencytemplate = c.id
+        INNER JOIN
+            {$CFG->prefix}competency_framework f
+         ON f.id = c.frameworkid
         WHERE r.revision = {$currevisionid}
         ";
     return get_records_sql($sql);

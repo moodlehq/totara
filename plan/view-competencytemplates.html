@@ -1,0 +1,76 @@
+<?php
+
+// Display competencies
+print_heading(get_string('competencytemplates', 'competency'));
+$editingon = true;
+
+?>
+<table width="95%" cellpadding="5" cellspacing="1" id="list-idp-competencytemplates" class="generalbox edit competency boxaligncenter">
+<tr>
+    <th style="vertical-align:top; text-align: left; white-space:nowrap;" class="header c0" scope="col">
+        <?php echo get_string('framework', 'competency') ?>
+    </th>
+
+    <th style="vertical-align:top; text-align:left; white-space:nowrap;" class="header c2" scope="col">
+        <?php echo get_string('name'); ?>
+    </th>
+
+<?php
+    if ($editingon) {
+?>
+    <th style="vertical-align:top; text-align:center; white-space:nowrap;" class="header c4" scope="col">
+        <?php echo get_string('options', 'competency') ?>
+    </th>
+<?php
+    }
+?>
+</tr>
+<?php
+
+    // # cols varies
+    $cols = $editingon ? 3 : 2;
+
+if ($competencytemplates) {
+
+    foreach ($competencytemplates as $competency) {
+
+        echo '<tr>';
+        echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/frameworks/index.php?type=competency&id={$competency->fid}\">{$competency->framework}</a></td>";
+        echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/type/competency/template/view.php?id={$competency->id}\">{$competency->fullname}</a></td>";
+
+        if ($editingon) {
+            echo "<td style=\"text-align: center;\">";
+
+            echo "<a href=\"{$CFG->wwwroot}/competency/idp/remove.php?id={$competency->id}\" title=\"$str_remove\">".
+                 "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_remove\" /></a>";
+
+            echo "</td>";
+        }
+
+        echo '</tr>';
+    }
+
+} else {
+    echo '<tr class="noitems"><td colspan="'.$cols.'"><i>'.get_string('emptyplancompetencytemplates', 'idp').'</i></td></tr>';
+}
+
+    echo '</table>';
+
+    // Add competencies button
+    if (!empty($options) and $options['can_edit']) {
+
+?>
+<table width="95%" cellpadding="5" cellspacing="1" class="generalbox edit competency boxaligncenter">
+    <tr class="noitems" colspan="<?php echo $cols ?>">
+        <td>
+            <div class="singlebutton">
+            <form action="<?php echo $CFG->wwwroot ?>/hierarchy/type/competency/idp/add-template.php?id=<?php echo $revision->id ?>" method="get">
+            <input type="submit" id="show-idpcompetencytemplate-dialog" value="<?php echo get_string('addcompetencytemplatesbutton', 'idp') ?>" />
+            </form></div>
+        </td>
+    </tr>
+</table>
+<?php
+
+    }
+

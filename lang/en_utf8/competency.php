@@ -30,6 +30,7 @@ $string['competencyscale'] = 'Competency scale';
 $string['competencyscalename'] = 'Competency scale: $a';
 $string['competencyscales'] = 'Competency scales';
 $string['competencytemplatemanage'] = 'Manage templates';
+$string['competencytemplates'] = 'Competency templates';
 $string['competencydepthcustomfields'] = 'Competency depth custom fields';
 $string['createdon'] = 'Created on';
 $string['deletecheck'] = 'Are you absolutely sure you want to completely delete this competency, all it\'s children and the data they contain?';
