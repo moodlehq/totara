@@ -51,6 +51,8 @@
         error('User not found');
     }
 
+    echo '<h1>'.$strheading.'</h1>';
+
     /// Add the custom profile fields to the user record
     include_once($CFG->dirroot.'/user/profile/lib.php');
     $usercustomfields = (array)profile_user_record($user->id);
