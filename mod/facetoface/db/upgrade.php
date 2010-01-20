@@ -346,12 +346,20 @@ function xmldb_facetoface_upgrade($oldversion=0) {
         $result = $result && add_field($table, $field1);
     }
 
-    if ($result && $oldversion < 2010120101) {
+    if ($result && $oldversion < 2010012000) {
         // New field for storing recommendations/advice
         $table = new XMLDBTable('facetoface_signups_status');
         $field1 = new XMLDBField('advice');
         $field1->setAttributes(XMLDB_TYPE_TEXT, 'small', null, null, null, null);
         $result = $result && add_field($table, $field1);
+    }
+
+    if ($result && $oldversion < 2010012001) {
+        // New field for storing manager approval requirement
+        $table = new XMLDBTable('facetoface');
+        $field = new XMLDBField('approvalreqd');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, 0, 'showoncalendar');
+        $result = $result && add_field($table, $field);
     }
 
     return $result;
