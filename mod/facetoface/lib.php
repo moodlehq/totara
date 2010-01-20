@@ -1,8 +1,9 @@
 <?php
 
-require_once "$CFG->libdir/gradelib.php";
-require_once "$CFG->dirroot/grade/lib.php";
+require_once $CFG->libdir.'/gradelib.php';
+require_once $CFG->dirroot.'/grade/lib.php';
 require_once $CFG->dirroot.'/lib/adminlib.php';
+require_once $CFG->libdir.'/completionlib.php';
 
 /**
  * Definitions for setting notification types
@@ -1311,6 +1312,15 @@ function facetoface_user_signup($session, $facetoface, $course, $discountcode,
             if (!$notifyuser or facetoface_has_session_started($session, $timenow)) {
                 // If the session has already started, there's no need to notify the user
                 facetoface_add_session_to_user_calendar($session, addslashes($facetoface->name), $userid, 'booking');
+
+                $ccdetails = array(
+                    'course'        => $course->id,
+                    'userid'        => $userid,
+                );
+
+                $cc = new completion_completion($ccdetails);
+                $cc->mark_inprogress($timenow);
+
                 commit_sql();
                 return $return;
             }
@@ -1323,6 +1333,15 @@ function facetoface_user_signup($session, $facetoface, $course, $discountcode,
 
                     if (update_record('facetoface_signups', $usersignup)) {
                         facetoface_add_session_to_user_calendar($session, addslashes($facetoface->name), $userid, 'booking');
+
+                        $ccdetails = array(
+                            'course'        => $course->id,
+                            'userid'        => $userid,
+                        );
+
+                        $cc = new completion_completion($ccdetails);
+                        $cc->mark_inprogress($timenow);
+
                         commit_sql();
                         return $return;
                     }
