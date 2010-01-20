@@ -118,23 +118,58 @@ class completion_completion extends data_object {
     }
 
     /**
+     * Mark this user as inprogress in this course
+     *
+     * If the user is already complete, they will not be un-completed
+     *
+     * @access  public
+     * @param   integer $timestarted Time started (optional)
+     * @return  void
+     */
+    public function mark_inprogress($timestarted = null) {
+
+        /*
+        if (!$this->timestarted && $timestarted) {
+            $this->timestarted = $timestarted;
+        }
+        */
+
+        $this->_save();
+    }
+
+    /**
      * Mark this user complete in this course
      *
      * This generally happens when the required completion criteria
      * in the course are complete.
      *
-     * This method creates a course_completions record
      * @access  public
      * @return  void
      */
     public function mark_complete() {
 
+        // Set time complete
         $this->timecompleted = time();
 
-        // Get users timenroled
-        // Can't find a more efficient way of doing this without alter get_users_by_capability()
-        $context = get_context_instance(CONTEXT_COURSE, $this->course);
-        $this->timeenroled = get_field('role_assignments', 'timestart', 'contextid', $context->id, 'userid', $this->userid);
+        // Save record
+        $this->_save();
+    }
+
+    /**
+     * Save course completion status
+     *
+     * This method creates a course_completions record if none exists
+     * @access  public
+     * @return  void
+     */
+    private function _save() {
+
+        if (!$this->timeenroled) {
+            // Get users timenroled
+            // Can't find a more efficient way of doing this without alter get_users_by_capability()
+            $context = get_context_instance(CONTEXT_COURSE, $this->course);
+            $this->timeenroled = get_field('role_assignments', 'timestart', 'contextid', $context->id, 'userid', $this->userid);
+        }
 
         // Save record
         if ($this->id) {
