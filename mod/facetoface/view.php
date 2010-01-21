@@ -62,7 +62,7 @@ print_box_start();
 print_heading(get_string('allsessionsin', 'facetoface', $facetoface->name), "center");
 
 $locations = get_locations($facetoface->id);
-if (!empty($locations)) {
+if (count($locations) > 1) {
     echo '<form method="get" action="view.php">';
     echo '<div><input type="hidden" name="f" value="'.$facetoface->id.'"/>';
     choose_from_menu($locations, 'location', $location, '');
@@ -301,13 +301,19 @@ function print_session_list($courseid, $facetofaceid, $location)
     }
 }
 
+/**
+ * Get facetoface locations
+ *
+ * @param   interger    $facetofaceid
+ * @return  array
+ */
 function get_locations($facetofaceid)
 {
     global $CFG;
 
     $locationfieldid = get_field('facetoface_session_field', 'id', 'shortname', 'location');
     if (!$locationfieldid) {
-        return '';
+        return array();
     }
 
     $sql = "SELECT DISTINCT d.data AS location
@@ -328,5 +334,5 @@ function get_locations($facetofaceid)
         return $locationmenu;
     }
 
-    return '';
+    return array();
 }
