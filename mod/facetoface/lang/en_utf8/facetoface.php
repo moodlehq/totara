@@ -76,6 +76,7 @@ $string['discountcost'] = 'Discount cost';
 $string['due'] = 'due';
 $string['duration'] = 'Duration';
 $string['early'] = '\$a early';
+$string['edit'] = 'Edit';
 $string['editsession'] = 'Edit session';
 $string['editingsession'] = 'Editing session in $a';
 $string['emailmanager'] = 'Send notice to manager';
