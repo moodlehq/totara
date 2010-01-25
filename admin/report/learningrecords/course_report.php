@@ -4,8 +4,9 @@ require_once('../../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->libdir.'/tablelib.php');
 require_once($CFG->dirroot.'/admin/report/learningrecords/filters/lib.php');
-//require_once($CFG->dirroot.'/local/mitms.php');
-//require_once($CFG->dirroot.'/hierarchy/lib.php');
+require_once($CFG->dirroot.'/local/mitms.php');
+require_once($CFG->dirroot.'/hierarchy/lib.php');
+require_once($CFG->dirroot.'/local/reportlib.php');
 
 define('DEFAULT_PAGE_SIZE', 40);
 define('SHOW_ALL_PAGE_SIZE', 5000);
@@ -71,21 +72,39 @@ $columns = array(
         'type'    => 'course_completion',
         'value'   => 'completeddate',
         'heading' => 'Completion Date',
-    ),
+    ),/*
     array(
         'type'    => 'user',
         'value'   => 'area_office',
         'heading' => 'AO',
+        'level'   => '3',
     ),
     array(
         'type'    => 'user',
         'value'   => 'conservancy_office',
         'heading' => 'CO',
+        'level'   => '2',
     ),
     array(
         'type'    => 'user',
         'value'   => 'regional_office',
         'heading' => 'RO',
+        'level'   => '1',
+    ),*/
+    array(
+        'type'    => 'office',
+        'value'   => 'area_office',
+        'heading' => 'Area Office',
+    ),
+    array(
+        'type'    => 'office',
+        'value'   => 'conservancy_office',
+        'heading' => 'Conservancy Office',
+    ),
+    array(
+        'type'    => 'office',
+        'value'   => 'regional_office',
+        'heading' => 'Regional Office',
     ),
 );
 
@@ -194,6 +213,8 @@ $table->pagesize($perpage, $countfiltered);
 $records = get_recordset_sql($sql.$where,
     $table->get_page_start(),  $table->get_page_size());
 
+$org_cache = array();
+
 if ($records) {
     while ($record = rs_fetch_next_record($records)) {
         $tabledata = array();
@@ -213,13 +234,21 @@ if ($records) {
                 } else if ($field == 'course_fullname' && isset($record->course_id)) {
                     // link name to course page if id available
                     $tabledata[] = '<a href="'.$CFG->wwwroot.'/course/view.php?id='.$record->course_id.'">'.$record->$field.'</a>';
-                } else if ($field == 'user_area_office') {
-                    // TODO
-                    // User this function, possibly after  while but before foreach to get hierarchy
-                    // Then use levels or have one else per level to display
-                    // or, do it in the sql???
-                    //$orgs = mitms_get_user_hierarchy_lineage($orgid,'organisation');
-
+                } else if (preg_match('/^user_.*_office$/i',$field)) {
+                    // basic caching to reduce calls to hierarchy_lineage
+                    if(array_key_exists($record->$field,$org_cache)){
+                        $orgs = $org_cache[$record->$field];
+                    } else {
+                        $orgs = mitms_get_user_hierarchy_lineage($record->$field,'organisation');
+                        $org_cache[$record->$field] = $orgs;
+                    }
+                    $desc = '';
+                    foreach ($orgs as $org) {
+                        if($column['level'] == $org->depthlevel) {
+                            $desc = $org->fullname;
+                        }
+                    }
+                    $tabledata[] = $desc;
                 } else {
                     // just print the field
                     $tabledata[] = $record->$field;
