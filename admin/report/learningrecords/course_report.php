@@ -72,7 +72,7 @@ $columns = array(
         'type'    => 'course_completion',
         'value'   => 'completeddate',
         'heading' => 'Completion Date',
-    ),/*
+    ),
     array(
         'type'    => 'user',
         'value'   => 'area_office',
@@ -90,21 +90,6 @@ $columns = array(
         'value'   => 'regional_office',
         'heading' => 'RO',
         'level'   => '1',
-    ),*/
-    array(
-        'type'    => 'office',
-        'value'   => 'area_office',
-        'heading' => 'Area Office',
-    ),
-    array(
-        'type'    => 'office',
-        'value'   => 'conservancy_office',
-        'heading' => 'Conservancy Office',
-    ),
-    array(
-        'type'    => 'office',
-        'value'   => 'regional_office',
-        'heading' => 'Regional Office',
     ),
 );
 

@@ -27,16 +27,6 @@ foreach($custom_fields as $custom_field) {
 $joinlist['manager'] = "LEFT JOIN {$CFG->prefix}user manager ON (CAST(manager.id AS varchar) = user_managerid.data)";
 $joinlist['organisation'] = "LEFT JOIN {$CFG->prefix}organisation organisation ON (CAST(organisation.id AS varchar) = user_organisationid.data)";
 $joinlist['position'] = "LEFT JOIN {$CFG->prefix}position position ON (CAST(position.id AS varchar) = user_positionid.data)";
-$joinlist['organisation_depth'] = "LEFT JOIN {$CFG->prefix}organisation_depth organisation_depth ON organisation.frameworkid = organisation_depth.frameworkid";
-
-// add all organisation depths to join list
-$depths = get_records('organisation_depth','','','','id,shortname');
-foreach($depths as $depth) {
-    $field = strtolower($depth->shortname);
-    $id = $depth->id;
-    $key = "org_$field";
-    $joinlist[$key] = "LEFT JOIN {$CFG->prefix}organisation $key ON ( organisation_depth.frameworkid = $key.frameworkid AND CAST($key.id AS VARCHAR) = ANY(string_to_array(organisation.path,'/')) and $key.depthid=$id )";
-}
 
 // array keys match 'type' and 'value' keys in $columns array, and provide details of what
 // SQL snippets to add to query to get the required data
@@ -139,36 +129,6 @@ $snippets['course_completion'] = array(
         'regional_office' => array(
             'field' => "user_organisationid.data",
             'joins' => array('user','user_organisationid'),
-        ),
-    ),
-    'office' => array(
-        'area_office' => array(
-            'field' => "org_ao.fullname",
-            'joins' => array('user','user_organisationid','organisation_depth','org_ao'),
-        ),
-        'regional_office' => array(
-            'field' => "org_ro.fullname",
-            'joins' => array('user','user_organisationid','organisation_depth','org_ro'),
-        ),
-        'conservancy_office' => array(
-            'field' => "org_co.fullname",
-            'joins' => array('user','user_organisationid','organisation_depth','org_co'),
-        ),
-        'national_office' => array(
-            'field' => "org_no.fullname",
-            'joins' => array('user','user_organisationid','organisation_depth','org_no'),
-        ),
-        'business_group' => array(
-            'field' => "org_bg.fullname",
-            'joins' => array('user','user_organisationid','organisation_depth','org_bg'),
-        ),
-        'business_unit' => array(
-            'field' => "org_bu.fullname",
-            'joins' => array('user','user_organisationid','organisation_depth','org_bu'),
-        ),
-        'external' => array(
-            'field' => "org_ext.fullname",
-            'joins' => array('user','user_organisationid','organisation_depth','org_ext'),
         ),
     ),
 );
