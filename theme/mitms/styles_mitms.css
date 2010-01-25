@@ -166,6 +166,39 @@ div#header .logo {
 	padding-top: 0px !important;
 }
 
+.tertiary {
+	background:transparent url(images/blue-nav-bg.jpg) repeat-x scroll center top;
+	border:1px solid #D8ECF1;
+	clear:both;
+	line-height:29px;
+	margin:0 10px 0;
+	padding:0 5px 0 10px;
+	text-align:right;
+	width:923px;
+}
+.clear {
+	clear: both;
+}
+.tertiary ul {
+	margin:0;
+	padding:0;
+}
+.tertiary li{
+	display: inline;
+	font-size:1em;
+	list-style-image:none;
+	list-style-position:outside;
+	list-style-type:none;
+	margin:0 ;
+	padding: 5px 10px 4px;
+}
+.tertiary li.selected{
+	background: transparent url(images/blue-nav-selected.jpg) repeat-x scroll center top;
+}
+
+
+
+
 /**
  * Footer Styles
  **/
@@ -874,57 +907,6 @@ div.mask {
 	-khtml-opacity: 0.5;
 	opacity: 0.5;
 }
-
-/** Course lightbox styling **/
-#addcourse #available-courses {
-    float: right;
-    width: 40%;
-    border-left: 1px solid #ccc;
-    height: 200px;
-    overflow: auto;
-    padding: 0 10px;
-}
-
-#addcourse #available-courses h3 {
-    margin: 0 0 0.5em;
-}
-
-#addcourse #available-courses ul {
-    font-size: 0.8em;
-    margin: 0.25em 0 1em;
-    list-style: none;
-    padding: 0;
-}
-
-#addcourse #available-courses ul li {
-    font-size: 1em;
-    padding-bottom: 0.25em;
-}
-
-.selectcourses ul.treeview {
-    width: 65%;
-    overflow: auto;
-}
-
-.selectcourses #selectedcourses {
-    float: right;
-    width: 30%; 
-    border-left: 1px solid #ccc;
-    height: 200px;
-    overflow: auto;
-    padding: 0 10px;
-}
-
-.selectcourses #selectedcourses p {
-    margin-top: 0;
-}
-
-.selectcourses #selectedcourses span {
-    display: block;
-    font-size: 0.8em;
-    margin-top: 1em; 
-}
-
 
 /** Competencies lightbox styling **/
 #addevidence #available-evidence {

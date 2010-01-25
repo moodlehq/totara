@@ -26,20 +26,22 @@
         <div class="headersearch"><input type="text" class="input-text" name="q" size="35" maxlength="255"/><input type="submit" class="input-submit" name="sa" value="Search"/></div>
         <div class="logo"><img alt="mitms logo" src="<?php echo $CFG->wwwroot.'/theme/'.current_theme() ?>/images/logo.png" /></div>
         </div>
-   
-    <?php print_container_end(); ?>  
+
+    <?php print_container_end(); ?>
 <?php } else if ($heading) {  // This is what gets printed on any other page with a heading
 ?>
     <?php print_container_start(true, '', 'header'); ?>
-        <div class="headermenu"><div class="login-container"><?php echo $menu ?></div></div>      
+        <div class="headermenu"><div class="login-container"><?php echo $menu ?></div></div>
         <div id="header-logo-container">
-        <div class="story"><img alt="story" src="<?php echo $CFG->wwwroot.'/theme/'.current_theme() ?>/images/headerimage_02.jpg" /></div> 
+        <div class="story"><img alt="story" src="<?php echo $CFG->wwwroot.'/theme/'.current_theme() ?>/images/headerimage_02.jpg" /></div>
         <div class="logo"><img alt="mitms logo" src="<?php echo $CFG->wwwroot.'/theme/'.current_theme() ?>/images/logo.png" /></div>
-        </div>                 
+        </div>
     <?php print_container_end(); ?>
 <?php } ?>
 <?php //Accessibility: breadcrumb trail/navbar now a DIV, not a table.
       if ($navigation) { // This is the navigation bar with breadcrumbs  ?>
+    <div class="tertiary nav">
+    <ul><li><a href="<?php echo $CFG->wwwroot.'/course/index.php' ?>">Communities</a></li><li> <a href="">Competencies</a></li><li> <a href="">Positions</a></li><li> <a href="<?php echo $CFG->wwwroot.'/course/index.php' ?>">Courses</a></li><li> <a href="">Calendar</a></li></ul><div class="clear"></div></div>
     <div class="navbar clearfix">
         <div class="breadcrumb"><?php print_navigation($navigation); ?></div>
         <div class="navbutton"><?php echo $button; ?></div>
