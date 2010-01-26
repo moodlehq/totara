@@ -90,14 +90,26 @@ class filter_select extends filter_type {
         $query    = $this->_query;
 
         switch($operator) {
-            case 1: // equal to
-                $res = "='$value'"; break;
-            case 2: // not equal to
-                $res = "<>'$value'"; break;
+            case 1:
+                $token = ' = ';
+                $glue = ' OR ';
+                break;
+            case 2:
+                $token = ' <> ';
+                $glue = ' AND ';
+                break;
             default:
                 return '';
         }
-        return $query.$res;
+
+        // split by comma and look for any items
+        // within list
+        $items = explode(',',$value);
+        $res = array();
+        foreach($items as $item) {
+            $res[] = $query.$token."'$item'";
+        }
+        return '('.implode($glue,$res).')';
     }
 
     /**
