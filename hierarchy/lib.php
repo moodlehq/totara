@@ -117,7 +117,11 @@ class hierarchy {
      * @return array|false
      */
     function get_items_by_parent($parentid) {
-        return get_records_select($this->prefix, "frameworkid = {$this->frameworkid} AND parentid = {$parentid}", 'sortorder, fullname');
+        if(empty($this->frameworkid)) {
+            return get_records_select($this->prefix, "parentid = {$parentid}", 'frameworkid,sortorder');
+        } else {
+            return get_records_select($this->prefix, "frameworkid = {$this->frameworkid} AND parentid = {$parentid}", 'frameworkid, sortorder, fullname');
+        }
     }
 
     /**
@@ -139,6 +143,54 @@ class hierarchy {
         }
     }
 
+    /**
+     * Returns an object that can be used to
+     * build a select form element based on the hierarchy
+     *
+     * Called recursively to get full hierarchy
+     * @param array &$list Array used to build and return results. Passed by reference
+     * @param integer $id ID of node to start from or null for all
+     * @param boolean $children If true select will include an additional option to
+     *                          include item and all its children
+     * @param boolean $shortname If true use shortname in select, otherwise fullname
+     * @param string $path Current path for select, used recursively
+     */
+    function make_hierarchy_list(&$list, $id = NULL, $children=false, $shortname=false, $path = "") {
+        // initialize the array if needed
+        if(!is_array($list)) {
+            $list = array();
+        }
+        if(empty($id)) {
+            // start at top level
+            $id = 0;
+        } else {
+            $item = get_record($this->prefix, 'id', $id, '','','','','*','sortorder');
+            $name = ($shortname) ? $item->shortname : $item->fullname ;
+            if($path) {
+                $path = $path.' / '.$name;
+            } else {
+                $path = $name;
+            }
+            // add item
+            $list[$item->id] = $path;
+            if($children) {
+                // if children wanted and there are some
+                // show a second option with children
+                $descendants = $this->get_item_descendants($id);
+                if(count($descendants)>1) {
+                    // add comma separated list of all children too
+                    $idstr = implode(',',array_keys($descendants));
+                    $list[$idstr] = $path." (and all children)";
+                }
+            }
+        }
+
+        if($children = $this->get_items_by_parent($id)) {
+            foreach($children as $child) {
+                $this->make_hierarchy_list($list, $child->id, $children, $shortname, $path);
+            }
+        }
+    }
     /**
      * Get items in a lineage
      * @param int $id
