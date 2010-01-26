@@ -155,7 +155,7 @@ class hierarchy {
      * @param boolean $shortname If true use shortname in select, otherwise fullname
      * @param string $path Current path for select, used recursively
      */
-    function make_hierarchy_list(&$list, $id = NULL, $children=false, $shortname=false, $path = "") {
+    function make_hierarchy_list(&$list, $id = NULL, $showchildren=false, $shortname=false, $path = "") {
         // initialize the array if needed
         if(!is_array($list)) {
             $list = array();
@@ -173,7 +173,7 @@ class hierarchy {
             }
             // add item
             $list[$item->id] = $path;
-            if($children) {
+            if($showchildren === true) {
                 // if children wanted and there are some
                 // show a second option with children
                 $descendants = $this->get_item_descendants($id);
@@ -187,7 +187,7 @@ class hierarchy {
 
         if($children = $this->get_items_by_parent($id)) {
             foreach($children as $child) {
-                $this->make_hierarchy_list($list, $child->id, $children, $shortname, $path);
+                $this->make_hierarchy_list($list, $child->id, $showchildren, $shortname, $path);
             }
         }
     }
