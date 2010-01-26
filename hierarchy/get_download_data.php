@@ -12,12 +12,14 @@ foreach($depths as $depth) {
     $row->type = 'depth';
     $row->value = $depth;
     $myhead[] = $row;
-    foreach ($customfields AS $customfield) {
-        if ($depth->id == $customfield->depthid) {
-            $row = new object();
-            $row->type = 'custom';
-            $row->value = $customfield;
-            $myhead[] = $row;
+    if(is_array($customfields)) {
+        foreach ($customfields AS $customfield) {
+            if ($depth->id == $customfield->depthid) {
+                $row = new object();
+                $row->type = 'custom';
+                $row->value = $customfield;
+                $myhead[] = $row;
+            }
         }
     }
 }
