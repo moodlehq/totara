@@ -55,6 +55,17 @@ $columns = array(
         'heading' => 'Completion Date',
     ),
     array(
+        'type'    => 'course_completion',
+        'value'   => 'organisation',
+        'heading' => 'Completion Office',
+    ),
+    array(
+        'type'    => 'course_completion',
+        'value'   => 'position',
+        'heading' => 'Completion Role',
+    ),
+    /*
+    array(
         'type'    => 'user',
         'value'   => 'area_office',
         'heading' => 'AO',
@@ -72,6 +83,7 @@ $columns = array(
         'heading' => 'RO',
         'level'   => '1',
     ),
+     */
 );
 
 // specify filter options to show
@@ -84,17 +96,22 @@ $fieldinfo = array(
     ),
     array(
         'type' => 'user',
-        'value' => 'firstname',
-        'advanced' => 1,
-    ),
-    array(
-        'type' => 'user',
-        'value' => 'lastname',
-        'advanced' => 1,
-    ),
-    array(
-        'type' => 'user',
         'value' => 'organisationid',
+        'advanced' => 0,
+    ),
+    array(
+        'type' => 'course_completion',
+        'value' => 'organisationid',
+        'advanced' => 0,
+    ),
+    array(
+        'type' => 'user',
+        'value' => 'positionid',
+        'advanced' => 0,
+    ),
+    array(
+        'type' => 'course_completion',
+        'value' => 'positionid',
         'advanced' => 0,
     ),
     array(
@@ -105,12 +122,17 @@ $fieldinfo = array(
     array(
         'type' => 'course_category',
         'value' => 'id',
-        'advanced' => 1,
+        'advanced' => 0,
     ),
     array(
         'type' => 'course_completion',
         'value' => 'completeddate',
-        'advanced' => 1,
+        'advanced' => 0,
+    ),
+    array(
+        'type' => 'course_completion',
+        'value' => 'status',
+        'advanced' => 0,
     ),
 );
 // display SQL query

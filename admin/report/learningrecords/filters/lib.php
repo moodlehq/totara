@@ -132,22 +132,42 @@ class filtering {
         global $USER, $CFG, $SITE;
         require_once($CFG->dirroot.'/course/lib.php');
 
+        // define select options
+        $hierarchy = new hierarchy();
+        $hierarchy->prefix = 'organisation';
+        $hierarchy->make_hierarchy_list($offices, null, true, true);
+
+        $hierarchy = new hierarchy();
+        $hierarchy->prefix = 'position';
+        $hierarchy->make_hierarchy_list($roles, null, false, false);
+
+        $completionselect = array();
+        $completionselect['Completed'] = 'Completed';
+        $completionselect['Not Completed'] = 'Not Completed';
+
+        $options = array('class' => 'limited-width');
+
         switch ($fieldname) {
             //TODO finish adding field query to arguments
             case 'user-lastname':    return new filter_text($fieldname, get_string('lastname'), $advanced, $fieldname, $fieldquery);
             case 'user-firstname':    return new filter_text($fieldname, get_string('firstname'), $advanced, $fieldname, $fieldquery);
-            case 'user-fullname':    return new filter_text($fieldname, get_string('fullname'), $advanced, $fieldname, $fieldquery);
+            case 'user-fullname':    return new filter_text($fieldname, 'Participant Name', $advanced, $fieldname, $fieldquery);
             case 'course-fullname':       return new filter_text($fieldname, 'Course name', $advanced, $fieldname, $fieldquery);
             case 'course_category-id':
                 //TODO available categories should be limited to users capabilities - is possible with this function
                 make_categories_list($cats, $unused);
-                return new filter_select($fieldname, 'Course category', $advanced, $fieldname, $fieldquery, $cats);
+                return new filter_select($fieldname, 'Course category', $advanced, $fieldname, $fieldquery, $cats, null, $options);
             case 'course_completion-completeddate': return new filter_date($fieldname, 'Completed Date', $advanced, $fieldname, $fieldquery);
+            case 'course_completion-status':
+                return new filter_select($fieldname, 'Completion Status', $advanced, $fieldname, $fieldquery, $completionselect);
             case 'user-organisationid':
-                $hierarchy = new hierarchy();
-                $hierarchy->prefix = 'organisation';
-                $hierarchy->make_hierarchy_list($offices, null, true, true);
-                return new filter_select($fieldname, 'Office', $advanced, $fieldname, $fieldquery, $offices);
+               return new filter_select($fieldname, 'Participant\'s current office', $advanced, $fieldname, $fieldquery, $offices, null, $options);
+            case 'course_completion-organisationid':
+                return new filter_select($fieldname, 'Office when completed', $advanced, $fieldname, $fieldquery, $offices, null, $options);
+            case 'user-positionid':
+                return new filter_select($fieldname, 'Participant\'s current role', $advanced, $fieldname, $fieldquery, $roles, null, $options);
+            case 'course_completion-positionid':
+                return new filter_select($fieldname, 'Role when completed', $advanced, $fieldname, $fieldquery, $roles, null, $options);
                 /*
             case 'user_profile':     return new filter_profilefield($fieldname, get_string('profile'), $fieldquery, $advanced);
             case 'confirmed':   return new filter_yesno('confirmed', get_string('confirmed', 'admin'), $advanced, 'confirmed');
