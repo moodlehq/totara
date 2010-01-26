@@ -109,6 +109,10 @@ $snippets['course_completion'] = array(
             'field' => sql_fullname("manager.firstname","manager.lastname"),
             'joins' => array('user','user_managerid','manager'),
         ),
+        'organisationid' => array(
+            'field' => "user_organisationid.data",
+            'joins' => array('user','user_organisationid'),
+        ),
         'organisation' => array(
             'field' => "organisation.fullname",
             'joins' => array('user','user_organisationid','organisation'),

@@ -143,6 +143,11 @@ class filtering {
                 make_categories_list($cats, $unused);
                 return new filter_select($fieldname, 'Course category', $advanced, $fieldname, $fieldquery, $cats);
             case 'course_completion-completeddate': return new filter_date($fieldname, 'Completed Date', $advanced, $fieldname, $fieldquery);
+            case 'user-organisationid':
+                $hierarchy = new hierarchy();
+                $hierarchy->prefix = 'organisation';
+                $hierarchy->make_hierarchy_list($offices, null, true, true);
+                return new filter_select($fieldname, 'Office', $advanced, $fieldname, $fieldquery, $offices);
                 /*
             case 'user_profile':     return new filter_profilefield($fieldname, get_string('profile'), $fieldquery, $advanced);
             case 'confirmed':   return new filter_yesno('confirmed', get_string('confirmed', 'admin'), $advanced, 'confirmed');
