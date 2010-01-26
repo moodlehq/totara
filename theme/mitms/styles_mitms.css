@@ -1007,3 +1007,10 @@ div.mask {
 .completionreport form {
     display: inline;
 }
+
+/** Completion/Competency Evidence Filter **/
+
+/* shrink select boxes to fit in filter */
+select.limited-width {
+    width: 200px;
+}
