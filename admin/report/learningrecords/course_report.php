@@ -15,7 +15,7 @@ define('SHOW_ALL_PAGE_SIZE', 5000);
 
 $spage     = optional_param('spage', 0, PARAM_INT);                    // which page to show
 $perpage   = optional_param('perpage', DEFAULT_PAGE_SIZE, PARAM_INT);
-
+$ssort     = optional_param('ssort');
 // which base table to start from - see query_snippets.php
 $source = 'course_completion';
 
@@ -164,36 +164,14 @@ if($where=='') {
 
 // generate the table column headers
 foreach($columns as $column) {
+    $type = $column['type'];
+    $value = $column['value'];
     // don't print a column if heading is blank
     if(isset($column['heading']) && $column['heading'] != '') {
-        $tablecolumns[] = $column['heading'];
+        $tablecolumns[] = "{$type}_{$value}"; // used for sorting
         $tableheaders[] = $column['heading'];
     }
 }
-
-// action to export data
-$download = new download_form();
-if($fromform = $download->get_data()) {
-    // get the data (none paginated)
-    $data = fetch_data($sql.$where, $columns);
-    // save to session vars
-    $SESSION->download_data = strip_tags_deep($data);
-    $SESSION->download_cols = strip_tags_deep($tablecolumns);
-    // send to download page
-    redirect($CFG->wwwroot.'/admin/report/learningrecords/download.php');
-}
-
-
-// Begin Page output
-admin_externalpage_setup('reportlearningrecords');
-admin_externalpage_print_header();
-
-// display heading including filtering stats
-print_heading(get_string('report:learningrecords', 'local').": Showing $countfiltered / $countall");
-
-// show filter form elements
-$filtering->display_add();
-$filtering->display_active();
 
 // build the table
 $table = new flexible_table('-learningrecords');
@@ -211,12 +189,46 @@ $table->set_control_variables(array(
             TABLE_VAR_ILAST   => 'silast',
             TABLE_VAR_PAGE    => 'spage'
         ));
+$table->sortable(true);
 $table->setup();
 $table->initialbars(true);
 $table->pagesize($perpage, $countfiltered);
 
+// get the ORDER BY SQL fragment from table
+$sort = $table->get_sql_sort();
+if($sort!='') {
+    $order = "ORDER BY $sort";
+} else {
+    $order = '';
+}
+
+
+// action to export data
+$download = new download_form();
+if($fromform = $download->get_data()) {
+    // get the data (none paginated)
+    $data = fetch_data($sql.$where.$order, $columns);
+    // save to session vars
+    $SESSION->download_data = strip_tags_deep($data);
+    $SESSION->download_cols = strip_tags_deep($tableheaders);
+    // send to download page
+    redirect($CFG->wwwroot.'/admin/report/learningrecords/download.php');
+}
+
+
+// Begin Page output
+admin_externalpage_setup('reportlearningrecords');
+admin_externalpage_print_header();
+
+// display heading including filtering stats
+print_heading(get_string('report:learningrecords', 'local').": Showing $countfiltered / $countall");
+
+// show filter form elements
+$filtering->display_add();
+$filtering->display_active();
+
 // Get Data for Table
-$data = fetch_data($sql.$where, $columns,
+$data = fetch_data($sql.$where.$order, $columns,
     $table->get_page_start(), $table->get_page_size());
 
 
