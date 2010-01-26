@@ -24,12 +24,13 @@ class filter_select extends filter_type {
      * @param array $options select options
      * @param mixed $default option
      */
-    function filter_select($name, $label, $advanced, $field, $query, $options, $default=null) {
+    function filter_select($name, $label, $advanced, $field, $query, $options, $default=null, $attributes=null) {
         parent::filter_type($name, $label, $advanced);
         $this->_field   = $field;
         $this->_query   = $query;
         $this->_options = $options;
         $this->_default = $default;
+        $this->_attributes = $attributes;
     }
 
     /**
@@ -49,7 +50,7 @@ class filter_select extends filter_type {
     function setupForm(&$mform) {
         $objs = array();
         $objs[] =& $mform->createElement('select', $this->_name.'_op', null, $this->get_operators());
-        $objs[] =& $mform->createElement('select', $this->_name, null, $this->_options);
+        $objs[] =& $mform->createElement('select', $this->_name, null, $this->_options, $this->_attributes);
         $grp =& $mform->addElement('group', $this->_name.'_grp', $this->_label, $objs, '', false);
         $grp->setHelpButton(array('select', $this->_label, 'filters'));
         $mform->disabledIf($this->_name, $this->_name.'_op', 'eq', 0);
