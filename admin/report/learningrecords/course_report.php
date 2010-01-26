@@ -7,6 +7,8 @@ require_once($CFG->dirroot.'/admin/report/learningrecords/filters/lib.php');
 require_once($CFG->dirroot.'/local/mitms.php');
 require_once($CFG->dirroot.'/hierarchy/lib.php');
 require_once($CFG->dirroot.'/local/reportlib.php');
+require_once($CFG->dirroot.'/admin/report/learningrecords/download_form.php');
+require_once('query_snippets.php');
 
 define('DEFAULT_PAGE_SIZE', 40);
 define('SHOW_ALL_PAGE_SIZE', 5000);
@@ -14,14 +16,7 @@ define('SHOW_ALL_PAGE_SIZE', 5000);
 $spage     = optional_param('spage', 0, PARAM_INT);                    // which page to show
 $perpage   = optional_param('perpage', DEFAULT_PAGE_SIZE, PARAM_INT);
 
-admin_externalpage_setup('reportlearningrecords');
-admin_externalpage_print_header();
-
-
-// include SQL snippets for building query
-require_once('query_snippets.php');
-
-// specify source table
+// which base table to start from - see query_snippets.php
 $source = 'course_completion';
 
 // specify columns to be retrieved and displayed
@@ -72,7 +67,7 @@ $columns = array(
         'type'    => 'course_completion',
         'value'   => 'completeddate',
         'heading' => 'Completion Date',
-    ),
+    ),/*
     array(
         'type'    => 'user',
         'value'   => 'area_office',
@@ -90,10 +85,11 @@ $columns = array(
         'value'   => 'regional_office',
         'heading' => 'RO',
         'level'   => '1',
-    ),
+    ),*/
 );
 
-// specify filter options
+// specify filter options to show
+// must have matching entries in filter/lib.php
 $fieldinfo = array(
     array(
         'type' => 'user',
@@ -109,6 +105,11 @@ $fieldinfo = array(
         'type' => 'user',
         'value' => 'lastname',
         'advanced' => 1,
+    ),
+    array(
+        'type' => 'user',
+        'value' => 'organisationid',
+        'advanced' => 0,
     ),
     array(
         'type' => 'course',
@@ -141,19 +142,51 @@ if($extrasql && $extrasql!='') {
 }
 
 // build sql query
-// note that this function looks at session var set by filtering above
+// note that this function looks at session var set by filtering
 // so needs to be *after* filtering defined
 $sql = build_query($columns, $source, $snippets);
 
+// print the current query
 $debug = false;
 if ($debug) {
     print $sql.$where;
 }
 
-// count results with and without filtering
+// count results without filtering
 $countsql = build_query($columns, $source, $snippets, true);
 $countall = count_records_sql($countsql);
-$countfiltered = count_records_sql($countsql.$where);
+// count results with filtering if there is any
+if($where=='') {
+    $countfiltered = $countall;
+} else {
+    $countfiltered = count_records_sql($countsql.$where);
+}
+
+// generate the table column headers
+foreach($columns as $column) {
+    // don't print a column if heading is blank
+    if(isset($column['heading']) && $column['heading'] != '') {
+        $tablecolumns[] = $column['heading'];
+        $tableheaders[] = $column['heading'];
+    }
+}
+
+// action to export data
+$download = new download_form();
+if($fromform = $download->get_data()) {
+    // get the data (none paginated)
+    $data = fetch_data($sql.$where, $columns);
+    // save to session vars
+    $SESSION->download_data = strip_tags_deep($data);
+    $SESSION->download_cols = strip_tags_deep($tablecolumns);
+    // send to download page
+    redirect($CFG->wwwroot.'/admin/report/learningrecords/download.php');
+}
+
+
+// Begin Page output
+admin_externalpage_setup('reportlearningrecords');
+admin_externalpage_print_header();
 
 // display heading including filtering stats
 print_heading(get_string('report:learningrecords', 'local').": Showing $countfiltered / $countall");
@@ -164,23 +197,12 @@ $filtering->display_active();
 
 // build the table
 $table = new flexible_table('-learningrecords');
-
-foreach($columns as $column) {
-    // don't print a column if heading is blank
-    if(isset($column['heading']) && $column['heading'] != '') {
-        $tablecolumns[] = $column['heading'];
-        $tableheaders[] = $column['heading'];
-    }
-}
 $table->define_columns($tablecolumns);
 $table->define_headers($tableheaders);
-
 $table->column_style('edit','width','80px');
-
 $table->set_attribute('cellspacing', '0');
 $table->set_attribute('id', 'recordoflearning');
 $table->set_attribute('class', 'logtable generalbox');
-
 $table->set_control_variables(array(
             TABLE_VAR_SORT    => 'ssort',
             TABLE_VAR_HIDE    => 'shide',
@@ -188,71 +210,94 @@ $table->set_control_variables(array(
             TABLE_VAR_IFIRST  => 'sifirst',
             TABLE_VAR_ILAST   => 'silast',
             TABLE_VAR_PAGE    => 'spage'
-            ));
+        ));
 $table->setup();
-
 $table->initialbars(true);
-
 $table->pagesize($perpage, $countfiltered);
 
-$records = get_recordset_sql($sql.$where,
-    $table->get_page_start(),  $table->get_page_size());
+// Get Data for Table
+$data = fetch_data($sql.$where, $columns,
+    $table->get_page_start(), $table->get_page_size());
 
-$org_cache = array();
 
-if ($records) {
-    while ($record = rs_fetch_next_record($records)) {
-        $tabledata = array();
-        foreach ($columns as $column) {
-            // don't print a column if heading is blank
-            if(isset($column['heading']) && $column['heading'] != '') {
-                $type = $column['type'];
-                $value = $column['value'];
-                $field = "{$type}_{$value}";
-                // add conditions here to treat certain fields differently
-                if ($field == 'course_startdate' || $field == 'course_completion_completeddate') {
-                    // show timestamp as date or blank if not set
-                    $tabledata[] = nice_date($record->$field);
-                } else if ($field == 'user_fullname' && isset($record->user_id)) {
-                    // link name to profile page if id available
-                    $tabledata[] = '<a href="'.$CFG->wwwroot.'/user/view.php?id='.$record->user_id.'">'.$record->$field.'</a>';
-                } else if ($field == 'course_fullname' && isset($record->course_id)) {
-                    // link name to course page if id available
-                    $tabledata[] = '<a href="'.$CFG->wwwroot.'/course/view.php?id='.$record->course_id.'">'.$record->$field.'</a>';
-                } else if (preg_match('/^user_.*_office$/i',$field)) {
-                    // basic caching to reduce calls to hierarchy_lineage
-                    if(array_key_exists($record->$field,$org_cache)){
-                        $orgs = $org_cache[$record->$field];
-                    } else {
-                        $orgs = mitms_get_user_hierarchy_lineage($record->$field,'organisation');
-                        $org_cache[$record->$field] = $orgs;
-                    }
-                    $desc = '';
-                    foreach ($orgs as $org) {
-                        if($column['level'] == $org->depthlevel) {
-                            $desc = $org->fullname;
-                        }
-                    }
-                    $tabledata[] = $desc;
-                } else {
-                    // just print the field
-                    $tabledata[] = $record->$field;
-                }
-            }
-        }
-        $table->add_data($tabledata);
-    }
-    rs_close($records);
+// add data to flexible table
+foreach ($data as $row) {
+    $table->add_data($row);
 }
 
-$table->print_html();
-
-// Get Data for Table
-
+// display table and export form if there are results
+if($countfiltered>0) {
+    $table->print_html();
+    $download->display();
+} else {
+    // lang string
+    print "No results found. Try removing one or more filters.";
+}
 
 admin_externalpage_print_footer();
 
 
+
+// recursive version of strip_tags
+function strip_tags_deep($value) {
+    return is_array($value) ? array_map('strip_tags_deep', $value) :
+        strip_tags($value);
+}
+
+// get 2d array of data for a given query
+function fetch_data($sql, $columns, $start=null, $size=null) {
+    global $CFG;
+    $records = get_recordset_sql($sql, $start, $size);
+    $org_cache = array();
+    $ret = array();
+    if ($records) {
+        while ($record = rs_fetch_next_record($records)) {
+            $tabledata = array();
+            foreach ($columns as $column) {
+                // don't print a column if heading is blank
+                if(isset($column['heading']) && $column['heading'] != '') {
+                    $type = $column['type'];
+                    $value = $column['value'];
+                    $field = "{$type}_{$value}";
+                    // add conditions here to treat certain fields differently
+                    if ($field == 'course_startdate' || $field == 'course_completion_completeddate') {
+                        // show timestamp as date or blank if not set
+                        $tabledata[] = nice_date($record->$field);
+                    } else if ($field == 'user_fullname' && isset($record->user_id)) {
+                        // link name to profile page if id available
+                        $tabledata[] = '<a href="'.$CFG->wwwroot.'/user/view.php?id='.$record->user_id.'">'.$record->$field.'</a>';
+                    } else if ($field == 'course_fullname' && isset($record->course_id)) {
+                        // link name to course page if id available
+                        $tabledata[] = '<a href="'.$CFG->wwwroot.'/course/view.php?id='.$record->course_id.'">'.$record->$field.'</a>';
+                    } else if (preg_match('/^user_.*_office$/i',$field)) {
+                        // basic caching to reduce calls to hierarchy_lineage
+                        if(array_key_exists($record->$field,$org_cache)){
+                            $orgs = $org_cache[$record->$field];
+                        } else {
+                            $orgs = mitms_get_user_hierarchy_lineage($record->$field,'organisation');
+                            $org_cache[$record->$field] = $orgs;
+                        }
+                        $desc = '';
+                        foreach ($orgs as $org) {
+                            if($column['level'] == $org->depthlevel) {
+                                $desc = $org->fullname;
+                            }
+                        }
+                        $tabledata[] = $desc;
+                    } else {
+                        // just print the field
+                        $tabledata[] = $record->$field;
+                    }
+                }
+            }
+            $ret[] =$tabledata;
+        }
+        rs_close($records);
+    }
+    return $ret;
+}
+
+// format a datestamp
 function nice_date($timestamp) {
     if($timestamp && $timestamp > 0) {
         return userdate($timestamp,'%d %B %Y');
@@ -261,6 +306,7 @@ function nice_date($timestamp) {
     }
 }
 
+// generate an sql query
 function build_query($columns, $source, $snippets, $countonly=false) {
     global $CFG,$joinlist;
 
@@ -294,6 +340,7 @@ function build_query($columns, $source, $snippets, $countonly=false) {
     $sql = "$select $from";
     return $sql;
 }
+
 
 function get_column_fields($source, $columns, $info) {
     $fields = array();
@@ -349,6 +396,7 @@ function get_column_joins($source, $columns, $info, $joinlist) {
     return $joins;
 
 }
+
 
 function get_filter_joins($source, $info, $joinlist) {
     global $SESSION;
