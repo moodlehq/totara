@@ -362,5 +362,21 @@ function xmldb_facetoface_upgrade($oldversion=0) {
         $result = $result && add_field($table, $field);
     }
 
+    if ($result && $oldversion < 2010012700) {
+        // New fields for storing request emails
+        $table = new XMLDBTable('facetoface');
+        $field = new XMLDBField('requestsubject');
+        $field->setAttributes(XMLDB_TYPE_TEXT, 'small', null, null, null, null, null, '', 'reminderperiod');
+        $result = $result && add_field($table, $field);
+
+        $field = new XMLDBField('requestinstrmngr');
+        $field->setAttributes(XMLDB_TYPE_TEXT, 'medium', null, null, null, null, null, '', 'requestsubject');
+        $result = $result && add_field($table, $field);
+
+        $field = new XMLDBField('requestmessage');
+        $field->setAttributes(XMLDB_TYPE_TEXT, 'medium', null, null, null, null, null, '', 'requestinstrmngr');
+        $result = $result && add_field($table, $field);
+    }
+
     return $result;
 }

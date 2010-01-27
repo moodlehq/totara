@@ -13,6 +13,8 @@ $string['allsessionsin'] = 'All sessions in $a';
 $string['alreadysignedup'] = 'You have already signed-up for this Face-to-face activity.';
 $string['answer'] = 'Sign in';
 $string['answercancel'] = 'Sign out';
+$string['approvalreqd'] = 'Approval required';
+$string['approve'] = 'Approve';
 $string['assessmentyour'] = 'Your assessment';
 $string['attendance'] = 'Attendance';
 $string['attendanceinstructions'] = 'Select users who attended the session:';
@@ -69,6 +71,7 @@ $string['deleteall'] = 'Delete all';
 $string['deletesession'] = 'Delete session';
 $string['deletesessionconfirm'] = 'Are you completely sure you want to delete this session and all sign-ups for this session?';
 $string['deletingsession'] = 'Deleting session in $a';
+$string['deny'] = 'Deny';
 $string['description'] = 'Introduction text';
 $string['details'] = 'Details';
 $string['discountcode'] = 'Discount code';
@@ -178,6 +181,7 @@ $string['modulenameplural'] = 'Face-to-face';
 $string['moreinfo'] = 'More info';
 $string['multiday'] = 'multi-day';
 $string['newmanageremailaddress'] = 'Manager\'s email address';
+$string['nochange'] = 'No Change';
 $string['nocustomfields'] = '<p>No custom fields are defined.</p>';
 $string['nofacetofaces'] = 'There are no Face-to-face activities';
 $string['none'] = 'none';
@@ -223,6 +227,7 @@ $string['registrations'] = 'Registrations';
 $string['reminder'] = 'Reminder';
 $string['remindermessage'] = 'Reminder message';
 $string['reminderperiod'] = 'Days before message is sent';
+$string['requestmessage'] = 'Request message';
 $string['room'] = 'Room';
 $string['saveallfeedback'] = 'Save all responses';
 $string['saveattendance'] = 'Save attendance';
@@ -241,6 +246,7 @@ $string['sessionisfull'] = 'This session is now full. You will need to pick anot
 $string['sessionover'] = 'session over';
 $string['sessions'] = 'Sessions';
 $string['sessionsoncoursepage'] = 'Sessions displayed on course page';
+$string['sessionrequiresmanagerapproval'] = 'This session requires manager approval to book';
 $string['sessionroles'] = 'Session roles';
 $string['sessionstartdate'] = 'Session start date';
 $string['sessionstarttime'] = 'Session start time';
@@ -349,6 +355,26 @@ To re-schedule your booking you need to cancel this booking and then re-book a n
 $string['setting:defaultremindersubject'] = 'Default subject line for reminder emails.';
 $string['setting:defaultremindersubject_caption'] = 'Reminder subject';
 $string['setting:defaultremindersubjectdefault'] = 'Course booking reminder: [facetofacename], [starttime]-[finishtime], [sessiondate]';
+$string['setting:defaultrequestinstrmngrdefault'] = "*** Action required ****
+
+Your staff member [firstname] [lastname] has requested a booking to attend the above course and has also received this email.
+
+To confirm or deny their request, visit the following link:
+[url]/mod/facetoface/attendees.php?s=[session:id]
+
+If you are not their Team Leader / Manager and believe you have received this email by mistake please reply to this email.
+
+*** [firstname] [lastname]'s email is copied below ****
+";
+$string['setting:defaultrequestmessagedefault'] = 'This is to advise that your manager has been sent your request to be booked to:
+
+Course:   [facetofacename]
+Location:  [session:location]
+Participant:   [firstname] [lastname]
+
+***Please note this is not a course booking confirmation***
+';
+$string['setting:defaultrequestsubjectdefault'] = 'Course booking request for [facetofacename]';
 $string['setting:defaultvalue'] = 'Default value';
 $string['setting:defaultwaitlistedmessage'] = 'Default wait-listed message sent to users.';
 $string['setting:defaultwaitlistedmessage_caption'] = 'Wait-listed message';
@@ -393,6 +419,7 @@ $string['setting:type'] = 'Field type';
 $string['showbylocation'] = 'Show by location';
 $string['showoncalendar'] = 'Show on the calendar';
 $string['signup'] = 'Sign-up';
+$string['signups'] = 'Sign-ups';
 $string['signupfor'] = 'Sign-up for $a';
 $string['signupforsession'] = 'Sign-up for an available upcoming session';
 $string['signupforthissession'] = 'Sign-up for this Face-to-face session';
@@ -407,6 +434,7 @@ $string['status_booked'] = 'Booked';
 $string['status_fully_attended'] = 'Fully attended';
 $string['status_no_show'] = 'No show';
 $string['status_partially_attended'] = 'Partially attended';
+$string['status_requested'] = 'Requested';
 $string['status_user_cancelled'] = 'User Cancelled';
 $string['status_waitlisted'] = 'Wait-listed';
 $string['summary'] = 'Summary'; 
@@ -416,9 +444,11 @@ $string['timedue'] = 'Registration deadline';
 $string['timefinish'] = 'Finish time';
 $string['timestart'] = 'Start time';
 $string['timecancelled'] = 'Time Cancelled';
+$string['timerequested'] = 'Time Requested';
 $string['timesignedup'] = 'Time Signed Up';
 $string['thirdpartyemailaddress'] = 'Third-party email address(es)';
 $string['thirdpartywaitlist'] = 'Notify third-party about wait-listed sessions';
+$string['unapprovedrequests'] = 'Unapproved Requests';
 $string['unknowndate'] = '(unknown date)';
 $string['unknowntime'] = '(unknown time)';
 $string['upcomingsessions'] = 'Upcoming sessions';

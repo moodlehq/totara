@@ -36,6 +36,8 @@ class mod_facetoface_mod_form extends moodleform_mod {
         $mform->setDefault('display', 3); // 3th element is 6
         $mform->setHelpButton('display', array('sessionsoncoursepage', get_string('sessionsoncoursepage', 'facetoface'), 'facetoface'));
 
+        $mform->addElement('checkbox', 'approvalreqd', get_string('approvalreqd', 'facetoface'));
+
         $mform->addElement('header', 'calendaroptions', get_string('calendaroptions', 'facetoface'));
 
         $mform->addElement('checkbox', 'showoncalendar', get_string('showoncalendar', 'facetoface'));
@@ -51,6 +53,23 @@ class mod_facetoface_mod_form extends moodleform_mod {
         $mform->setType('description', PARAM_RAW);
         $mform->setHelpButton('description', array('description', get_string('description'), 'facetoface'));
         $mform->disabledIf('description', 'showoncalendar');
+
+        // REQUEST MESSAGE
+        $mform->addElement('header', 'request', get_string('requestmessage', 'facetoface'));
+        $mform->setHelpButton('request', array('requestmessage', get_string('requestmessage', 'facetoface'), 'facetoface'));
+
+        $mform->addElement('text', 'requestsubject', get_string('email:subject', 'facetoface'), array('size'=>'55'));
+        $mform->setType('requestsubject', PARAM_TEXT);
+        $mform->setDefault('requestsubject', get_string('setting:defaultrequestsubjectdefault', 'facetoface'));
+        $mform->disabledIf('requestsubject', 'approvalreqd');
+
+        $mform->addElement('textarea', 'requestmessage', get_string('email:message', 'facetoface'), 'wrap="virtual" rows="15" cols="70"');
+        $mform->setDefault('requestmessage', get_string('setting:defaultrequestmessagedefault', 'facetoface'));
+        $mform->disabledIf('requestmessage', 'approvalreqd');
+
+        $mform->addElement('textarea', 'requestinstrmngr', get_string('email:instrmngr', 'facetoface'), 'wrap="virtual" rows="10" cols="70"');
+        $mform->setDefault('requestinstrmngr', get_string('setting:defaultrequestinstrmngrdefault', 'facetoface'));
+        $mform->disabledIf('requestinstrmngr', 'approvalreqd');
 
         // CONFIRMATION MESSAGE
         $mform->addElement('header', 'confirmation', get_string('confirmationmessage', 'facetoface'));

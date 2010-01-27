@@ -51,6 +51,7 @@ require_course_login($course);
 $context = get_context_instance(CONTEXT_COURSE, $course->id);
 require_capability('mod/facetoface:viewattendees', $context);
 
+// Handle submitted data
 if ($form = data_submitted()) {
     if (!confirm_sesskey()) {
         print_error('confirmsesskeybad', 'error');
@@ -60,6 +61,12 @@ if ($form = data_submitted()) {
 
     if ($cancelform) {
         redirect("attendees.php?s=$s&amp;backtoallsessions=$backtoallsessions");
+    }
+    elseif (!empty($form->requests)) {
+        // Approve requests
+        if (facetoface_approve_requests($form)) {
+            add_to_log($course->id, 'facetoface', 'approve requests', "view.php?id=$cm->id", $facetoface->id, $cm->id);
+        }
     }
     elseif (facetoface_take_attendance($form)) {
         add_to_log($course->id, 'facetoface', 'take attendance', "view.php?id=$cm->id", $facetoface->id, $cm->id);
@@ -137,11 +144,6 @@ else {
     $table->align[] = array('center');
 }
 
-// TODO temporary change to show booking status on attendance page
-// Need to be done properly:
-// - Should other attendees be able to see full status code?
-// - add grading and notes?
-
 $status_options = array();
 foreach ($MDL_F2F_STATUS as $key => $value) {
     if ($key <= MDL_F2F_STATUS_BOOKED) {
@@ -178,7 +180,8 @@ if ($attendees = facetoface_get_attendees($session->id)) {
     }
 }
 else {
-    $table->data = array(array(get_string('nosignedupusers', 'facetoface'), '', '', ''));
+    $table->data = array();
+    $table->data[] = array_pad(array(get_string('nosignedupusers', 'facetoface')), count($table->head), '');
 }
 
 print_table($table);
@@ -212,6 +215,48 @@ else {
     print '<a href="'.$url.'">'.get_string('goback', 'facetoface').'</a></p>';
 }
 
+// View unapproved requests
+if (!$takeattendance && ($attendees = facetoface_get_requests($session->id))) {
+
+    echo '<br />';
+    print_heading(get_string('unapprovedrequests', 'facetoface'), 'center');
+
+    echo '<form action="attendees.php?s='.$s.'" method="post">';
+    echo '<input type="hidden" name="sesskey" value="'.$USER->sesskey.'" />';
+    echo '<input type="hidden" name="s" value="'.$s.'" />';
+    echo '<input type="hidden" name="backtoallsessions" value="'.$backtoallsessions.'" /></p>';
+
+    $table = new object();
+    $table->summary = get_string('requeststablesummary', 'facetoface');
+    $table->head = array(get_string('name'), get_string('timerequested', 'facetoface'),
+                         get_string('nochange', 'facetoface'), get_string('deny', 'facetoface'), get_string('approve', 'facetoface'));
+    $table->align = array('left', 'center', 'center', 'center', 'center');
+
+    $cantakeattendance = has_capability('mod/facetoface:takeattendance', $context);
+    foreach($attendees as $attendee) {
+
+        // Check the logged in user has permissions to see the user
+        if (!$cantakeattendance) {
+            if (facetoface_get_manageremail($attendee->id) !== $USER->email) {
+                continue;
+            }
+        }
+
+        $data = array();
+        $data[] = "<a href=\"{$CFG->wwwroot}/user/view.php?id={$attendee->id}&amp;course={$course->id}\">". format_string(fullname($attendee)).'</a>';
+        $data[] = userdate($attendee->timerequested, get_string('strftimedatetime'));
+        $data[] = '<input type="radio" name="requests['.$attendee->id.']" value="0" checked="checked" />';
+        $data[] = '<input type="radio" name="requests['.$attendee->id.']" value="1" />';
+        $data[] = '<input type="radio" name="requests['.$attendee->id.']" value="2" />';
+        $table->data[] = $data;
+    }
+
+    print_table($table);
+
+    echo '<p><input type="submit" value="Update requests" /></p>';
+    echo '</form>';
+}
+
 // View cancellations
 if (!$takeattendance and has_capability('mod/facetoface:viewcancellations', $context) and
     ($attendees = facetoface_get_cancellations($session->id))) {
@@ -228,7 +273,7 @@ if (!$takeattendance and has_capability('mod/facetoface:viewcancellations', $con
     foreach($attendees as $attendee) {
         $data = array();
         $data[] = "<a href=\"$CFG->wwwroot/user/view.php?id={$attendee->id}&amp;course={$course->id}\">". format_string(fullname($attendee)).'</a>';
-        $data[] = userdate($attendee->timecreated, get_string('strftimedatetime'));
+        $data[] = userdate($attendee->timesignedup, get_string('strftimedatetime'));
         $data[] = userdate($attendee->timecancelled, get_string('strftimedatetime'));
         $data[] = format_string($attendee->cancelreason);
         $table->data[] = $data;
@@ -245,13 +290,65 @@ function facetoface_get_cancellations($sessionid)
 
     $fullname = sql_fullname('u.firstname', 'u.lastname');
 
-    // TODO get original time signed up from signups_status history and include in this query as timecreated
+    // Nasty SQL follows:
+    // Load currently cancelled users,
+    // include most recent booked/waitlisted time also
+    $sql = "
+            SELECT
+                su.id AS signupid,
+                u.id,
+                u.firstname,
+                u.lastname,
+                MAX(ss.timecreated) AS timesignedup,
+                c.timecreated AS timecancelled,
+                c.note AS cancelreason
+            FROM
+                {$CFG->prefix}facetoface_signups su
+            JOIN
+                {$CFG->prefix}user u
+             ON u.id = su.userid
+            JOIN
+                {$CFG->prefix}facetoface_signups_status c
+             ON su.id = c.signupid
+            AND c.statuscode = ".MDL_F2F_STATUS_USER_CANCELLED."
+            AND c.superceded = 0
+            LEFT JOIN
+                {$CFG->prefix}facetoface_signups_status ss
+             ON su.id = ss.signupid
+             AND ss.statuscode IN (
+                 ".MDL_F2F_STATUS_BOOKED.",
+                 ".MDL_F2F_STATUS_WAITLISTED.",
+                 ".MDL_F2F_STATUS_REQUESTED."
+             )
+            AND ss.superceded = 1
+            WHERE
+                su.sessionid = {$sessionid}
+            GROUP BY
+                su.id,
+                u.id,
+                u.firstname,
+                u.lastname,
+                c.timecreated,
+                c.note
+            ORDER BY
+                {$fullname},
+                c.timecreated
+    ";
+    return get_records_sql($sql);
+}
+
+function facetoface_get_requests($sessionid)
+{
+    global $CFG;
+
+    $fullname = sql_fullname('u.firstname', 'u.lastname');
+
     $sql = "SELECT su.id AS signupid, u.id, u.firstname, u.lastname,
-                   ss.timecreated as timecancelled, ss.note as cancelreason
+                   ss.timecreated AS timerequested
               FROM {$CFG->prefix}facetoface_signups su
               JOIN {$CFG->prefix}facetoface_signups_status ss ON su.id=ss.signupid
               JOIN {$CFG->prefix}user u ON u.id = su.userid
-             WHERE su.sessionid = $sessionid AND ss.superceded != 1 AND ss.statuscode = ".MDL_F2F_STATUS_USER_CANCELLED."
+             WHERE su.sessionid = $sessionid AND ss.superceded != 1 AND ss.statuscode = ".MDL_F2F_STATUS_REQUESTED."
           ORDER BY $fullname, ss.timecreated";
     return get_records_sql($sql);
 }

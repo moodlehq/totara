@@ -74,7 +74,7 @@ if ($frm = data_submitted()) {
                     break; // no point in trying to add other people
                 }
                 elseif (!facetoface_user_signup($session, $facetoface, $course, '', MDL_F2F_BOTH,
-                                                false, $adduser, !$suppressemail, false)) {
+                                                false, $adduser, !$suppressemail, MDL_F2F_STATUS_BOOKED)) {
                     $erruser = get_record('user', 'id', $adduser, '','','','', 'id, firstname, lastname');
                     $errors[] = get_string('error:addattendee', 'facetoface', fullname($erruser));
                 }

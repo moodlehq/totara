@@ -60,12 +60,12 @@ if ($fromform = $mform->get_data()) { // Form submitted
 
     // Get signup type
     if (!$session->datetimeknown) {
-        $iswaitlisted = true;
+        $statuscode = MDL_F2F_STATUS_WAITLISTED;
     } elseif (facetoface_get_num_attendees($session->id) < $session->capacity) {
         // Save available
-        $iswaitlisted = false;
+        $statuscode = MDL_F2F_STATUS_BOOKED;
     } else {
-        $iswaitlisted = true;
+        $statuscode = MDL_F2F_STATUS_WAITLISTED;
     }
 
     if (!facetoface_session_has_capacity($session, $context)) {
@@ -74,7 +74,7 @@ if ($fromform = $mform->get_data()) { // Form submitted
     elseif (facetoface_get_user_submissions($facetoface->id, $USER->id)) {
         print_error('alreadysignedup', 'facetoface', $returnurl);
     }
-    elseif ($submissionid = facetoface_user_signup($session, $facetoface, $course, $fromform->discountcode, $fromform->notificationtype, $iswaitlisted)) {
+    elseif ($submissionid = facetoface_user_signup($session, $facetoface, $course, $fromform->discountcode, $fromform->notificationtype, $statuscode)) {
         add_to_log($course->id, 'facetoface','signup',"signup.php?s=$session->id", $session->id, $cm->id);
 
         $message = get_string('bookingcompleted', 'facetoface');
