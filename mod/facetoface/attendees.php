@@ -251,6 +251,10 @@ if (!$takeattendance && ($attendees = facetoface_get_requests($session->id))) {
         $table->data[] = $data;
     }
 
+    if (empty($table->data)) {
+        $table->data[] = array(get_string('noactionableunapprovedrequests', 'facetoface'), '', '');
+    }
+
     print_table($table);
 
     echo '<p><input type="submit" value="Update requests" /></p>';

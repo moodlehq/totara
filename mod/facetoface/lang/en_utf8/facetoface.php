@@ -181,6 +181,7 @@ $string['modulenameplural'] = 'Face-to-face';
 $string['moreinfo'] = 'More info';
 $string['multiday'] = 'multi-day';
 $string['newmanageremailaddress'] = 'Manager\'s email address';
+$string['noactionableunapprovedrequests'] = 'No actionable unapproved requests';
 $string['nochange'] = 'No Change';
 $string['nocustomfields'] = '<p>No custom fields are defined.</p>';
 $string['nofacetofaces'] = 'There are no Face-to-face activities';
