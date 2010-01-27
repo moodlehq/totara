@@ -62,7 +62,7 @@ print_box_start();
 print_heading(get_string('allsessionsin', 'facetoface', $facetoface->name), "center");
 
 $locations = get_locations($facetoface->id);
-if (count($locations) > 1) {
+if (count($locations) > 2) {
     echo '<form method="get" action="view.php">';
     echo '<div><input type="hidden" name="f" value="'.$facetoface->id.'"/>';
     choose_from_menu($locations, 'location', $location, '');
