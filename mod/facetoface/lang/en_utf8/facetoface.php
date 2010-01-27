@@ -360,7 +360,7 @@ $string['setting:defaultrequestinstrmngrdefault'] = "*** Action required ****
 Your staff member [firstname] [lastname] has requested a booking to attend the above course and has also received this email.
 
 To confirm or deny their request, visit the following link:
-[url]/mod/facetoface/attendees.php?s=[session:id]
+[attendeeslink]
 
 If you are not their Team Leader / Manager and believe you have received this email by mistake please reply to this email.
 
