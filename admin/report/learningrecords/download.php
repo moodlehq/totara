@@ -6,6 +6,11 @@
 global $SESSION;
 require_once('../../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
+require_once($CFG->dirroot.'/admin/report/learningrecords/reportlib.php');
+
+@raise_memory_limit('256M');
+@set_time_limit(0);
+
 
 $format = optional_param('format', '', PARAM_ALPHA);
 
@@ -13,19 +18,21 @@ admin_externalpage_setup('reportlearningrecords');
 
 $return = $CFG->wwwroot.'/admin/report/learningrecords/index.php';
 
-if (empty($SESSION->download_data)) {
+if (empty($SESSION->query) or empty($SESSION->columns)) {
     redirect($return);
 }
 
 if ($format) {
     $fields = $SESSION->download_cols;
-    $data = $SESSION->download_data;
+    $query = $SESSION->query;
+    $count = $SESSION->count;
+    $columns = $SESSION->columns;
+    //$data = strip_tags_deep(fetch_data($SESSION->query, $SESSION->columns));
 
     switch ($format) {
-        case 'csv' : download_csv($fields, $data);
-        case 'ods' : download_ods($fields, $data);
-        case 'xls' : download_xls($fields, $data);
-
+        case 'csv' : download_csv($fields, $query, $columns, $count);
+        case 'ods' : download_ods($fields, $query, $columns, $count);
+        case 'xls' : download_xls($fields, $query, $columns, $count);
     }
     die;
 }
@@ -46,7 +53,7 @@ print_continue($return);
 
 print_footer();
 
-function download_ods($fields, $data) {
+function download_ods($fields, $query, $columns, $count) {
     global $CFG;
     require_once("$CFG->libdir/odslib.class.php");
 
@@ -70,22 +77,32 @@ function download_ods($fields, $data) {
         $worksheet[0]->write(0, $col, $fieldname);
         $col++;
     }
+
     $numfields = count($fields);
-    $row = 0;
-    foreach ($data as $datarow) {
-        for($col=0; $col<$numfields;$col++) {
-            if(isset($data[$row][$col])) {
-                $worksheet[0]->write($row+1, $col, htmlspecialchars_decode($data[$row][$col]));
+
+    $blocksize = 1000;
+    //break the data into blocks as single array gets too big
+    for($k=0;$k<=floor($count/$blocksize);$k++) {
+        $start = $k*$blocksize;
+        $data = strip_tags_deep(fetch_data($query, $columns, $start, $blocksize));
+
+        $row = 0;
+        foreach ($data as $datarow) {
+            for($col=0; $col<$numfields;$col++) {
+                if(isset($data[$row][$col])) {
+                    $worksheet[0]->write($row+1+$start, $col, htmlspecialchars_decode($data[$row][$col]));
+                }
             }
+            $row++;
         }
-        $row++;
     }
+
 
     $workbook->close();
     die;
 }
 
-function download_xls($fields, $data) {
+function download_xls($fields, $query, $columns, $count) {
     global $CFG;
 
     require_once("$CFG->libdir/excellib.class.php");
@@ -112,21 +129,29 @@ function download_xls($fields, $data) {
     }
 
     $numfields = count($fields);
-    $row = 0;
-    foreach ($data as $datarow) {
-        for($col=0; $col<$numfields; $col++) {
-            if(isset($data[$row][$col])) {
-                $worksheet[0]->write($row+1, $col, htmlspecialchars_decode($data[$row][$col]));
+
+    $blocksize = 1000;
+    // break the data into blocks as single array gets too big
+    for($k=0;$k<=floor($count/$blocksize);$k++) {
+        $start = $k*$blocksize;
+        $data = strip_tags_deep(fetch_data($query, $columns, $start, $blocksize));
+
+        $row = 0;
+        foreach ($data as $datarow) {
+            for($col=0; $col<$numfields; $col++) {
+                if(isset($data[$row][$col])) {
+                    $worksheet[0]->write($row+1+$start, $col, htmlspecialchars_decode($data[$row][$col]));
+                }
             }
+            $row++;
         }
-        $row++;
     }
 
     $workbook->close();
     die;
 }
 
-function download_csv($fields, $data) {
+function download_csv($fields, $query, $columns, $count) {
     global $CFG;
 
     $filename = clean_filename('learningreports.csv');
@@ -147,18 +172,25 @@ function download_csv($fields, $data) {
     echo implode($delimiter, $row)."\n";
 
     $numfields = count($fields);
-    $i = 0;
-    foreach ($data AS $row) {
-        $row = array();
-        for($j=0; $j<$numfields; $j++) {
-            if(isset($data[$i][$j])) {
-                $row[] = htmlspecialchars_decode(str_replace($delimiter, $encdelim, $data[$i][$j]));
-            } else {
-                $row[] = '';
+    $blocksize = 1000;
+    // break the data into blocks as single array gets too big
+    for($k=0;$k<=floor($count/$blocksize);$k++) {
+        $start = $k*$blocksize;
+        $data = strip_tags_deep(fetch_data($query, $columns, $start, $blocksize));
+        $i = 0;
+        foreach ($data AS $row) {
+            $row = array();
+            for($j=0; $j<$numfields; $j++) {
+                if(isset($data[$i][$j])) {
+                    $row[] = htmlspecialchars_decode(str_replace($delimiter, $encdelim, $data[$i][$j]));
+                } else {
+                    $row[] = '';
+                }
             }
+            echo implode($delimiter, $row)."\n";
+            $i++;
         }
-        echo implode($delimiter, $row)."\n";
-        $i++;
+
     }
     die;
 
