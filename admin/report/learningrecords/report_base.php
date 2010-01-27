@@ -13,6 +13,9 @@ require_once('query_snippets.php');
 define('DEFAULT_PAGE_SIZE', 40);
 define('SHOW_ALL_PAGE_SIZE', 5000);
 
+raise_memory_limit('256M');
+set_time_limit(0);
+
 $spage     = optional_param('spage', 0, PARAM_INT);                    // which page to show
 $perpage   = optional_param('perpage', DEFAULT_PAGE_SIZE, PARAM_INT);
 $ssort     = optional_param('ssort');
@@ -156,7 +159,9 @@ function fetch_data($sql, $columns, $start=null, $size=null) {
                     $value = $column['value'];
                     $field = "{$type}_{$value}";
                     // add conditions here to treat certain fields differently
-                    if ($field == 'course_startdate' || $field == 'course_completion_completeddate') {
+                    if ($field == 'course_startdate' ||
+                        $field == 'course_completion_completeddate' ||
+                        $field == 'competency_evidence_completeddate') {
                         // show timestamp as date or blank if not set
                         $tabledata[] = nice_date($record->$field);
                     } else if ($field == 'user_fullname' && isset($record->user_id)) {
@@ -180,6 +185,22 @@ function fetch_data($sql, $columns, $start=null, $size=null) {
                             }
                         }
                         $tabledata[] = $desc;
+                    } else if ($field == 'competency_evidence_proficiency') {
+                        switch($record->$field) {
+                            //TODO obtain these choices from one place for all uses
+                            // see also my/records.php and filter/lib.php
+                            case '1':
+                                $tabledata[] = 'Not Competent';
+                                break;
+                            case '2':
+                                $tabledata[] = 'Competent with Supervison';
+                                break;
+                            case '3':
+                                $tabledata[] = 'Competent';
+                                break;
+                            default:
+                                $tabledata[] = '';
+                        }
                     } else {
                         // just print the field
                         $tabledata[] = $record->$field;

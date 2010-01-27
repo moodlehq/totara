@@ -145,6 +145,13 @@ class filtering {
         $completionselect['Completed'] = 'Completed';
         $completionselect['Not Completed'] = 'Not Completed';
 
+        // TODO obtain this scale from the same source
+        // see also my/records.php and admin/report/learningrecords/report_base.php
+        $proficiencyselect = array();
+        $proficiencyselect[3] = 'Competent';
+        $proficiencyselect[2] = 'Competent with Supervision';
+        $proficiencyselect[1] = 'Not Competent';
+
         $options = array('class' => 'limited-width');
 
         switch ($fieldname) {
@@ -157,16 +164,24 @@ class filtering {
                 //TODO available categories should be limited to users capabilities - is possible with this function
                 make_categories_list($cats, $unused);
                 return new filter_select($fieldname, 'Course category', $advanced, $fieldname, $fieldquery, $cats, null, $options);
-            case 'course_completion-completeddate': return new filter_date($fieldname, 'Completed Date', $advanced, $fieldname, $fieldquery);
+            case 'competency-fullname': return new filter_text($fieldname, 'Competency name', $advanced, $fieldname, $fieldquery);
+            case 'competency-idnumber': return new filter_text($fieldname, 'Competency ID', $advanced, $fieldname, $fieldquery);
+            case 'course_completion-completeddate':
+            case 'competency_evidence-completeddate':
+                return new filter_date($fieldname, 'Completed Date', $advanced, $fieldname, $fieldquery);
             case 'course_completion-status':
                 return new filter_select($fieldname, 'Completion Status', $advanced, $fieldname, $fieldquery, $completionselect);
+            case 'competency_evidence-proficiency':
+                return new filter_select($fieldname, 'Proficiency', $advanced, $fieldname, $fieldquery, $proficiencyselect);
             case 'user-organisationid':
                return new filter_select($fieldname, 'Participant\'s current office', $advanced, $fieldname, $fieldquery, $offices, null, $options);
             case 'course_completion-organisationid':
+            case 'competency_evidence-organisationid':
                 return new filter_select($fieldname, 'Office when completed', $advanced, $fieldname, $fieldquery, $offices, null, $options);
             case 'user-positionid':
                 return new filter_select($fieldname, 'Participant\'s current role', $advanced, $fieldname, $fieldquery, $roles, null, $options);
             case 'course_completion-positionid':
+            case 'competency_evidence-positionid':
                 return new filter_select($fieldname, 'Role when completed', $advanced, $fieldname, $fieldquery, $roles, null, $options);
                 /*
             case 'user_profile':     return new filter_profilefield($fieldname, get_string('profile'), $fieldquery, $advanced);

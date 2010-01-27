@@ -29,7 +29,7 @@ $joinlist['organisation'] = "LEFT JOIN {$CFG->prefix}organisation organisation O
 $joinlist['position'] = "LEFT JOIN {$CFG->prefix}position position ON (CAST(position.id AS varchar) = user_positionid.data)";
 $joinlist['completion_organisation'] = "LEFT JOIN {$CFG->prefix}organisation completion_organisation ON base.organisationid = completion_organisation.id";
 $joinlist['completion_position'] = "LEFT JOIN {$CFG->prefix}position completion_position ON base.positionid = completion_position.id";
-
+$joinlist['competency'] = "LEFT JOIN {$CFG->prefix}competency competency ON base.competencyid = competency.id";
 // array keys match 'type' and 'value' keys in $columns array, and provide details of what
 // SQL snippets to add to query to get the required data
 // NOTE: don't use a dash (-) in keys as this is used as a separator in the filtering code!
@@ -159,17 +159,6 @@ $snippets['course_completion'] = array(
     ),
 );
 
-// add custom fields to course_completion snippet
-foreach($custom_fields as $custom_field) {
-    $field = $custom_field->shortname;
-    $id = $custom_field->id;
-    $key = "user_$field";
-    $snippets['course_completion']['user_profile'][$field] = array(
-            'field' => "$key.data",
-            'joins' => array('user',$key),
-    );
-}
-
 // End of course_completion snippet
 
 
@@ -189,11 +178,52 @@ $snippets['competency_evidence'] = array(
             'field' => "base.timemodified",
             'joins' => array(),
         ),
+        'organisationid' => array(
+            'field' => "base.organisationid",
+            'joins' => array(),
+        ),
+        'organisation' => array(
+            'field' => 'completion_organisation.fullname',
+            'joins' => array('completion_organisation'),
+        ),
+        'positionid' => array(
+            'field' => 'base.positionid',
+            'joins' => array(),
+        ),
+        'position' => array(
+            'field' => 'completion_position.fullname',
+            'joins' => array('completion_position'),
+        ),
     ),
-    'user' => array(
+    // copy all the user info from course completion as it's the same
+    'user' => $snippets['course_completion']['user'],
+    'competency' => array(
         'fullname' => array(
-            'field' => sql_fullname("u.firstname","u.lastname"),
-            'joins' => array('user'),
+            'field' => "competency.fullname",
+            'joins' => array('competency'),
+        ),
+        'idnumber' => array(
+            'field' => "competency.idnumber",
+            'joins' => array('competency'),
         ),
     ),
 );
+
+
+// add custom fields to course_completion and comp_evidence snippets
+foreach($custom_fields as $custom_field) {
+    $field = $custom_field->shortname;
+    $id = $custom_field->id;
+    $key = "user_$field";
+    $snippets['course_completion']['user_profile'][$field] = array(
+            'field' => "$key.data",
+            'joins' => array('user',$key),
+    );
+    $snippets['competency_evidence']['user_profile'][$field] = array(
+            'field' => "$key.data",
+            'joins' => array('user',$key),
+    );
+
+}
+
+

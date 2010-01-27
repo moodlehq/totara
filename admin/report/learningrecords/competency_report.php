@@ -10,6 +10,41 @@ $source = 'competency_evidence';
 // from DB but not displayed in table (useful to get IDs for linking)
 $columns = array(
     array(
+        'type'    => 'user',
+        'value'   => 'fullname',
+        'heading' => 'Participant',
+    ),
+    array(
+        'type'    => 'competency',
+        'value'   => 'fullname',
+        'heading' => 'Competency',
+    ),
+    array(
+        'type'    => 'competency',
+        'value'   => 'idnumber',
+        'heading' => 'ID',
+    ),
+    array(
+        'type'    => 'user',
+        'value'   => 'organisation',
+        'heading' => 'Office',
+    ),
+    array(
+        'type'    => 'competency_evidence',
+        'value'   => 'organisation',
+        'heading' => 'Completion Office',
+    ),
+    array(
+        'type'    => 'user',
+        'value'   => 'position',
+        'heading' => 'Role',
+    ),
+    array(
+        'type'    => 'competency_evidence',
+        'value'   => 'position',
+        'heading' => 'Completion Role',
+    ),
+    array(
         'type'    => 'competency_evidence',
         'value'   => 'proficiency',
         'heading' => 'Proficiency',
@@ -19,31 +54,15 @@ $columns = array(
         'value'   => 'completeddate',
         'heading' => 'Completed Date',
     ),
-    array(
-        'type'    => 'user',
-        'value'   => 'fullname',
-        'heading' => 'Participant',
-    ),
 );
 
 // specify filter options to show
 // must have matching entries in filter/lib.php
 $fieldinfo = array(
     array(
-        'type' => 'competency_evidence',
-        'value' => 'proficiency',
+        'type' => 'user',
+        'value' => 'fullname',
         'advanced' => 0,
-    ),
-    /*
-    array(
-        'type' => 'user',
-        'value' => 'firstname',
-        'advanced' => 1,
-    ),
-    array(
-        'type' => 'user',
-        'value' => 'lastname',
-        'advanced' => 1,
     ),
     array(
         'type' => 'user',
@@ -51,20 +70,40 @@ $fieldinfo = array(
         'advanced' => 0,
     ),
     array(
-        'type' => 'course',
+        'type' => 'competency_evidence',
+        'value' => 'organisationid',
+        'advanced' => 0,
+    ),
+    array(
+        'type' => 'user',
+        'value' => 'positionid',
+        'advanced' => 0,
+    ),
+    array(
+        'type' => 'competency_evidence',
+        'value' => 'positionid',
+        'advanced' => 0,
+    ),
+    array(
+        'type' => 'competency',
         'value' => 'fullname',
         'advanced' => 0,
     ),
     array(
-        'type' => 'course_category',
-        'value' => 'id',
-        'advanced' => 1,
+        'type' => 'competency',
+        'value' => 'idnumber',
+        'advanced' => 0,
     ),
     array(
-        'type' => 'course_completion',
+        'type' => 'competency_evidence',
         'value' => 'completeddate',
-        'advanced' => 1,
-    ),*/
+        'advanced' => 0,
+    ),
+    array(
+        'type' => 'competency_evidence',
+        'value' => 'proficiency',
+        'advanced' => 0,
+    ),
 );
 // display SQL query
 $debug = false;
