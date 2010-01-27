@@ -1,6 +1,6 @@
 <?php //$Id$
 
-require_once($CFG->dirroot.'/admin/report/learningrecords/filters/lib.php');
+require_once($CFG->dirroot.'/admin/learningrecords/filters/lib.php');
 
 /**
  * Generic filter based on a list of values.

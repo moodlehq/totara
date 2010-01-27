@@ -1,16 +1,16 @@
 <?php //$Id$
 //TODO change to relative path
-require_once($CFG->dirroot.'/admin/report/learningrecords/filters/text.php');
-require_once($CFG->dirroot.'/admin/report/learningrecords/filters/select.php');
-require_once($CFG->dirroot.'/admin/report/learningrecords/filters/date.php');
+require_once($CFG->dirroot.'/admin/learningrecords/filters/text.php');
+require_once($CFG->dirroot.'/admin/learningrecords/filters/select.php');
+require_once($CFG->dirroot.'/admin/learningrecords/filters/date.php');
 /*
-require_once($CFG->dirroot.'/admin/report/learningrecords/filters/simpleselect.php');
-require_once($CFG->dirroot.'/admin/report/learningrecords/filters/courserole.php');
-require_once($CFG->dirroot.'/admin/report/learningrecords/filters/globalrole.php');
-require_once($CFG->dirroot.'/admin/report/learningrecords/filters/profilefield.php');
-require_once($CFG->dirroot.'/admin/report/learningrecords/filters/yesno.php');
+require_once($CFG->dirroot.'/admin/learningrecords/filters/simpleselect.php');
+require_once($CFG->dirroot.'/admin/learningrecords/filters/courserole.php');
+require_once($CFG->dirroot.'/admin/learningrecords/filters/globalrole.php');
+require_once($CFG->dirroot.'/admin/learningrecords/filters/profilefield.php');
+require_once($CFG->dirroot.'/admin/learningrecords/filters/yesno.php');
  */
-require_once($CFG->dirroot.'/admin/report/learningrecords/filters/filter_forms.php');
+require_once($CFG->dirroot.'/admin/learningrecords/filters/filter_forms.php');
 
 
 /**
@@ -146,7 +146,7 @@ class filtering {
         $completionselect['Not Completed'] = 'Not Completed';
 
         // TODO obtain this scale from the same source
-        // see also my/records.php and admin/report/learningrecords/report_base.php
+        // see also my/records.php and admin/learningrecords/report_base.php
         $proficiencyselect = array();
         $proficiencyselect[3] = 'Competent';
         $proficiencyselect[2] = 'Competent with Supervision';

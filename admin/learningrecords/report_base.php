@@ -1,14 +1,14 @@
 <?php
 
-require_once('../../../config.php');
-require_once($CFG->dirroot.'/admin/report/learningrecords/reportlib.php');
+require_once('../../config.php');
+require_once($CFG->dirroot.'/admin/learningrecords/reportlib.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->libdir.'/tablelib.php');
-require_once($CFG->dirroot.'/admin/report/learningrecords/filters/lib.php');
+require_once($CFG->dirroot.'/admin/learningrecords/filters/lib.php');
 require_once($CFG->dirroot.'/local/mitms.php');
 require_once($CFG->dirroot.'/hierarchy/lib.php');
 require_once($CFG->dirroot.'/local/reportlib.php');
-require_once($CFG->dirroot.'/admin/report/learningrecords/download_form.php');
+require_once($CFG->dirroot.'/admin/learningrecords/download_form.php');
 require_once('query_snippets.php');
 
 define('DEFAULT_PAGE_SIZE', 40);
@@ -94,7 +94,7 @@ if($fromform = $download->get_data()) {
     $SESSION->count = $countfiltered;
     $SESSION->download_cols = strip_tags_deep($tableheaders);
     // send to download page
-    redirect($CFG->wwwroot.'/admin/report/learningrecords/download.php');
+    redirect($CFG->wwwroot.'/admin/learningrecords/download.php');
 }
 
 // Get Data for Table
@@ -109,7 +109,7 @@ foreach ($data as $row) {
 
 
 // Begin Page output
-admin_externalpage_setup('reportlearningrecords');
+admin_externalpage_setup($source);
 admin_externalpage_print_header();
 
 // display heading including filtering stats

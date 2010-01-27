@@ -4,9 +4,9 @@
 */
 
 global $SESSION;
-require_once('../../../config.php');
+require_once('../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
-require_once($CFG->dirroot.'/admin/report/learningrecords/reportlib.php');
+require_once($CFG->dirroot.'/admin/learningrecords/reportlib.php');
 
 @raise_memory_limit('256M');
 @set_time_limit(0);
@@ -16,7 +16,7 @@ $format = optional_param('format', '', PARAM_ALPHA);
 
 admin_externalpage_setup('reportlearningrecords');
 
-$return = $CFG->wwwroot.'/admin/report/learningrecords/index.php';
+$return = $CFG->wwwroot.'/admin/learningrecords/index.php';
 
 if (empty($SESSION->query) or empty($SESSION->columns)) {
     redirect($return);

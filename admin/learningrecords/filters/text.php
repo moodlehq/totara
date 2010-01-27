@@ -1,6 +1,6 @@
 <?php //$Id$
 // TODO relative path?
-require_once($CFG->dirroot.'/admin/report/learningrecords/filters/lib.php');
+require_once($CFG->dirroot.'/admin/learningrecords/filters/lib.php');
 
 /**
  * Generic filter for text fields.
