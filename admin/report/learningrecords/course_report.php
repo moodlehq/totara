@@ -10,6 +10,16 @@ $source = 'course_completion';
 // from DB but not displayed in table (useful to get IDs for linking)
 $columns = array(
     array(
+        'type'    => 'user',
+        'value'   => 'fullname',
+        'heading' => 'Participant',
+    ),
+    // get user id but don't display column
+    array(
+        'type'    => 'user',
+        'value'   => 'id',
+    ),
+    array(
         'type'    => 'course',
         'value'   => 'fullname',
         'heading' => 'Course Name',
@@ -21,28 +31,23 @@ $columns = array(
     ),
     array(
         'type'    => 'user',
-        'value'   => 'fullname',
-        'heading' => 'Participant',
-    ),
-    // get user id but don't display column
-    array(
-        'type'    => 'user',
-        'value'   => 'id',
-    ),
-    array(
-        'type'    => 'user',
         'value'   => 'organisation',
         'heading' => 'Office',
     ),
     array(
-        'type'    => 'user_profile',
-        'value'   => 'dob',
-        'heading' => 'DOB',
+        'type'    => 'course_completion',
+        'value'   => 'organisation',
+        'heading' => 'Completion Office',
     ),
     array(
         'type'    => 'user',
         'value'   => 'position',
         'heading' => 'Role',
+    ),
+    array(
+        'type'    => 'course_completion',
+        'value'   => 'position',
+        'heading' => 'Completion Role',
     ),
     array(
         'type'    => 'course_completion',
@@ -53,16 +58,6 @@ $columns = array(
         'type'    => 'course_completion',
         'value'   => 'completeddate',
         'heading' => 'Completion Date',
-    ),
-    array(
-        'type'    => 'course_completion',
-        'value'   => 'organisation',
-        'heading' => 'Completion Office',
-    ),
-    array(
-        'type'    => 'course_completion',
-        'value'   => 'position',
-        'heading' => 'Completion Role',
     ),
     /*
     array(
