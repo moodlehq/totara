@@ -179,10 +179,10 @@ class filtering {
             case 'competency_evidence-organisationid':
                 return new filter_select($fieldname, 'Office when completed', $advanced, $fieldname, $fieldquery, $offices, null, $options);
             case 'user-positionid':
-                return new filter_select($fieldname, 'Participant\'s current role', $advanced, $fieldname, $fieldquery, $roles, null, $options);
+                return new filter_select($fieldname, 'Participant\'s current position', $advanced, $fieldname, $fieldquery, $roles, null, $options);
             case 'course_completion-positionid':
             case 'competency_evidence-positionid':
-                return new filter_select($fieldname, 'Role when completed', $advanced, $fieldname, $fieldquery, $roles, null, $options);
+                return new filter_select($fieldname, 'Position when completed', $advanced, $fieldname, $fieldquery, $roles, null, $options);
                 /*
             case 'user_profile':     return new filter_profilefield($fieldname, get_string('profile'), $fieldquery, $advanced);
             case 'confirmed':   return new filter_yesno('confirmed', get_string('confirmed', 'admin'), $advanced, 'confirmed');

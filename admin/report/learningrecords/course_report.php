@@ -42,12 +42,12 @@ $columns = array(
     array(
         'type'    => 'user',
         'value'   => 'position',
-        'heading' => 'Role',
+        'heading' => 'Position',
     ),
     array(
         'type'    => 'course_completion',
         'value'   => 'position',
-        'heading' => 'Completion Role',
+        'heading' => 'Completion Position',
     ),
     array(
         'type'    => 'course_completion',

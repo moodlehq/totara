@@ -37,12 +37,12 @@ $columns = array(
     array(
         'type'    => 'user',
         'value'   => 'position',
-        'heading' => 'Role',
+        'heading' => 'Position',
     ),
     array(
         'type'    => 'competency_evidence',
         'value'   => 'position',
-        'heading' => 'Completion Role',
+        'heading' => 'Completion Position',
     ),
     array(
         'type'    => 'competency_evidence',
