@@ -245,6 +245,9 @@ function facetoface_fix_settings($facetoface) {
     if (empty($facetoface->showoncalendar)) {
         $facetoface->showoncalendar = 0;
     }
+    if (empty($facetoface->approvalreqd)) {
+        $facetoface->approvalreqd = 0;
+    }
 }
 
 /**
