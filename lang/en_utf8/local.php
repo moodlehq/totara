@@ -88,6 +88,11 @@ $string['local:viewownplan'] = 'View own IDPs';
 $string['local:viewplan'] = 'View a user\'s IDPs';
 $string['local:withdrawownplan'] = 'Withdraw own submitted IDPs';
 
+// Local Report capability strings
+$string['local:viewlocalreports'] = 'View learning reports for all staff in user\'s region';
+$string['local:viewstaffreports'] = 'View learning reports for a user\'s subordinates';
+$string['local:viewownreports'] = 'View a user\'s own learning reports';
+
 // Course categories
 $string['assessments'] = 'Assessments';
 $string['bookings'] = 'Bookings';

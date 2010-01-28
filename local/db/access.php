@@ -436,12 +436,39 @@ $local_capabilities = array(
         'contextlevel' => CONTEXT_USER,
     ),
 
-    // Assign a position to a user
-    'moodle/local:assignuserposition' => array(
-        'captype' => 'write',
-        'contextlevel' => CONTEXT_SYSTEM,
+    // Ability for local administrators to view reports for staff in their region
+    'moodle/local:viewlocalreports' => array(
+        'captype' => 'read',
+        'contextlevel' => CONTEXT_USER,
+        'riskbitmask' => RISK_PERSONAL,
         'legacy' => array(
             'admin' => CAP_ALLOW,
+        ),
+    ),
+
+    // Ability for staff to view reports for their subordinates
+    'moodle/local:viewstaffreports' => array(
+        'captype' => 'read',
+        'contextlevel' => CONTEXT_USER,
+        'riskbitmask' => RISK_PERSONAL,
+        'legacy' => array(
+            'admin' => CAP_ALLOW,
+            'teacher' => CAP_ALLOW,
+            'editingteacher' => CAP_ALLOW,
+            'student' => CAP_ALLOW,
+        ),
+    ),
+
+    // Ability for staff to view their own reports
+    'moodle/local:viewownreports' => array(
+        'captype' => 'read',
+        'contextlevel' => CONTEXT_USER,
+        'riskbitmask' => RISK_PERSONAL,
+        'legacy' => array(
+            'admin' => CAP_ALLOW,
+            'teacher' => CAP_ALLOW,
+            'editingteacher' => CAP_ALLOW,
+            'student' => CAP_ALLOW,
         ),
     ),
 
@@ -456,6 +483,14 @@ $local_capabilities = array(
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM,
     ),
+
+    // Assign a position to a user
+    'moodle/local:assignuserposition' => array(
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'legacy' => array(
+            'admin' => CAP_ALLOW,
+        ),
+    ),
 );
 
-?>
