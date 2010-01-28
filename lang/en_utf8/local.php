@@ -131,3 +131,4 @@ $string['report:startdate'] = 'Start date';
 $string['learningreports'] = 'Learning Reports';
 $string['course_completion'] = 'Course Completion';
 $string['competency_evidence'] = 'Competency Evidence';
+$string['reportsettings'] = 'Report Settings';
