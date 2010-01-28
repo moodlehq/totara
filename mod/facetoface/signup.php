@@ -141,6 +141,11 @@ if ($signedup) {
 
     echo '<br/><a href="'.$returnurl.'" title="'.get_string('goback', 'facetoface').'">'.get_string('goback', 'facetoface').'</a>';
 }
+elseif (!facetoface_get_manageremail($USER->id)) {
+    // Check to see if the user has a managers email set
+    echo '<p><strong>'.get_string('error:manageremailaddressmissing', 'facetoface').'</strong></p>';
+    echo '<br/><a href="'.$returnurl.'" title="'.get_string('goback', 'facetoface').'">'.get_string('goback', 'facetoface').'</a>';
+}
 else {
     // Signup form
     $mform->display();
