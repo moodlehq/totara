@@ -144,3 +144,6 @@ $string['reportname'] = 'Report Name';
 $string['reportshortname'] = 'Short Name';
 $string['restriction'] = 'Restriction';
 $string['error:couldnotcreatenewreport'] = 'Could not create new report';
+$string['error:mustselectsource'] = 'You must pick a source for the report';
+$string['error:norestrictions'] = 'No restrictions found. To use restrictions ask your developer to add the necessary files to /local/learningreports/restrictions/.';
+$string['error:nosources'] ='No sources found. You must have at least one source before you can add reports. Ask your developer to hadd the necessary files to /local/learningreports/sources/.';

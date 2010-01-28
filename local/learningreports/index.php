@@ -1,13 +1,12 @@
 <?php // $Id$
-
     require_once('../../config.php');
     require_once($CFG->libdir.'/adminlib.php');
+    require_once($CFG->dirroot.'/local/learningreports/learningreportslib.php');
     require_once('learning_reports_new_form.php');
 
     admin_externalpage_setup('learningreports');
 
     $returnurl = $CFG->wwwroot.'/local/learningreports/index.php';
-
     // form definition
     $mform =& new learning_reports_new_form();
 
@@ -24,8 +23,8 @@
         $todb = new object();
         $todb->fullname = $fromform->fullname;
         $todb->shortname = $fromform->shortname;
-        $todb->source = $fromform->source;
-        //$todb->restriction = $fromform->restriction;
+        $todb->source = ($fromform->source != '0') ? $fromform->source : null;
+        $todb->restriction = ($fromform->restriction != '0') ? $fromform->restriction : null;
         if(insert_record('learning_report',$todb)) {
             redirect($returnurl, get_string('newreportcreated','local'));
         } else {
