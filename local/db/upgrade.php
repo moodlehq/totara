@@ -992,22 +992,19 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && change_field_type($table, $field);
     }
 
-
-    /// Create table competency_evidence
-        $table = new XMLDBTable('competency_evidence');
+    if ($result && $oldversion < 2010012800) {
+    /// Create table learning_report
+        $table = new XMLDBTable('learning_report');
         $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
-        $table->addFieldInfo('userid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $table->addFieldInfo('competencyid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $table->addFieldInfo('positionid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null);
-        $table->addFieldInfo('organisationid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null);
-        $table->addFieldInfo('assessorid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null);
-        $table->addFieldInfo('assessorname', XMLDB_TYPE_CHAR, '100', null, null, null, null);
-        $table->addFieldInfo('assessmenttype', XMLDB_TYPE_CHAR, '100', null, null, null, null);
-        $table->addFieldInfo('proficiency', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null);
-        $table->addFieldInfo('timecreated', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $table->addFieldInfo('timemodified', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
+        $table->addFieldInfo('fullname', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
+        $table->addFieldInfo('shortname', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
+        $table->addFieldInfo('source', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
+        $table->addFieldInfo('filters', XMLDB_TYPE_TEXT, 'medium', XMLDB_UNSIGNED, null, null, null);
+        $table->addFieldInfo('columns', XMLDB_TYPE_TEXT, 'medium', XMLDB_UNSIGNED, null, null, null);
         $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
+        $table->addIndexInfo('shortname', XMLDB_INDEX_UNIQUE, array('shortname'));
         $result = $result && create_table($table);
+     }
 
     /// Insert default records
     $defaultdir = $CFG->dirroot.'/local/db/default';
