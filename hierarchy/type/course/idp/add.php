@@ -72,14 +72,14 @@ make_categories_list($categories, $parents);
 
         if ($this_parent == $parent) {
             if ($i > 1) {
-                echo '<li><span>Loading courses...</span></li></ul></li>';
+                echo '<li class="loading"><span>Loading courses...</span></li></ul></li>';
             }
         } else {
             // If there are less parents now
             $diff = count($parent) - count($this_parent);
 
             if ($diff) {
-                echo str_repeat('</li><li><span>Loading courses...</span></li></ul>', $diff + 1);
+                echo str_repeat('</li><li class="loading"><span>Loading courses...</span></li></ul>', $diff + 1);
             }
 
             $parent = $this_parent;

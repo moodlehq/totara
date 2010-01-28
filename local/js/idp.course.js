@@ -1,8 +1,3 @@
-// Courses loaded flags
-// Indexed by category id
-courses_loaded = [];
-
-
 // Bind functionality to page on load
 YAHOO.util.Event.onDOMReady(function () {
     YAHOO.dialog.courses = new yuiDialog(
@@ -28,19 +23,7 @@ YAHOO.dialogSetupFunc.idpcourses = function() {
         drop: idpcourses_drop
     });
 
-    idpcourses_bind($('#idpcourses #courses'));
-/*
-    // Load courses on category click
-    $('#idpcourses #categories span.folder, '+
-      '#idpcourses #categories div.hitarea').click(function() {
-            // Get parent for id
-            var par = $(this).parent();
-
-            // Id in format cat_list_XX
-            var id = par.attr('id').substr(9);
-            load_courses(id);
-    });
-*/
+    idpcourses_bind($('#idpcourses #categories'));
 }
 
 // Handle dropping
@@ -58,15 +41,7 @@ function idpcourses_bind(parent_element) {
     var select = 'span.folder, div.hitarea';
 
     // Load courses on category click
-    $(select, parent_element).click(function() {
-
-        // Get parent for id
-        var par = $(this).parent();
-
-        // Id in format course_list_XX
-        var id = par.attr('id').substr(9);
-        idpcourses_load_courses(id);
-    }); 
+    $(select, parent_element).one('click', idpcourses_load_courses);
 
     // Make draggable
     $('span:not(.empty)', parent_element).draggable({
@@ -76,13 +51,21 @@ function idpcourses_bind(parent_element) {
 }
 
 // Load child courses
-function idpcourses_load_courses(parentid) {
+function idpcourses_load_courses() {
 
-    if (courses_loaded[parentid]) {
-        // TODO: Fix caching
-        //return;
-        // Continue for the meantime
-    }   
+    // Get parent for id
+    var par = $(this).parent();
+
+    // Id in format course_list_XX
+    var parentid = par.attr('id').substr(9);
+
+    // Check for loading list item
+    var loading = $('#idpcourses #categories li#cat_list_'+parentid+' ul:first > li.loading');
+
+    if (loading.length == 0) {
+        // Already loaded, so ignore
+        return;
+    }
 
     var callback =
     {
@@ -94,7 +77,7 @@ function idpcourses_load_courses(parentid) {
     // Load courses
     YAHOO.util.Connect.asyncRequest(
         'GET',
-        '../hierarchy/type/courses/idp/category.php?id='+parentid,
+        '../hierarchy/type/course/idp/category.php?id='+parentid,
         callback
     );
 }
@@ -102,15 +85,12 @@ function idpcourses_load_courses(parentid) {
 // Add courses to parent
 function idpcourses_add_courses(response) {
 
-    var parent_id = response.argument;
+    var cat_id = response.argument;
     var courses = YAHOO.lang.JSON.parse(response.responseText);
     var list = $('#idpcourses #categories li#cat_list_'+cat_id+' ul:first');
 
-    // Prevent courses from being reloaded later
-    courses_loaded[parent_id] = true;
-
-    // Remove all existing children
-    $('li', list).remove();
+    // Remove "Loading courses..." list item
+    $('> li.loading', list).remove();
 
     // Add courses
     var length = courses.length;
@@ -126,18 +106,10 @@ function idpcourses_add_courses(response) {
         html = '<li><span>No courses</span></li>';
     }
 
-    $('#addevidence #categories').treeview({add: list.append($(html))});
+    $('#idpcourses #categories').treeview({add: list.append($(html))});
 
-    // Add click handlers for course names
-    $('span.clickable', list).click(function() {
-        // Get course id
-        var id = $(this).attr('id').substr(12);
-
-        idpcourses_load_coursedata(id);
-    });
+    idpcourses_bind(list);
 }
-
-
 
 // Save new courses
 function idpcourses_save() {
@@ -173,36 +145,11 @@ function idpcourses_save() {
 function idpcourses_update(response) {
 
     // Hide dialog
-    YAHOO.dialog.related.dialog.hide();
+    YAHOO.dialog.courses.dialog.hide();
 
     // Update list
     // Delete no evidence items warning, if exists
     $('table#list-idp-courses tr.noitems').remove();
 
     $('table#list-idp-courses tbody').append(response.responseText);
-}
-
-// Display course data
-function display_courses(response) {
-
-    var course_id = response.argument;
-    var html = response.responseText;
-
-    var display = $('#idpcourses #available-courses').html(html);
-
-    // Handle add course links
-    $('#idpcourses #available-courses a').click( function(event) {
-        event.preventDefault();
-        $.get($(this).attr('href'), '', new_courses);
-    });
-}
-
-// Add new courses to idp courses view
-function new_courses(response) {
-    YAHOO.dialog.courses.dialog.hide();
-
-    // Delete no courses warning, if exists
-    $('table.viewcourses tr.noevidenceitems').remove();
-
-    $('table.viewcourses tbody').append(response);
 }
