@@ -109,8 +109,20 @@ foreach ($data as $row) {
 
 
 // Begin Page output
-admin_externalpage_setup($source);
-admin_externalpage_print_header();
+
+// check permissions
+$context = get_context_instance(CONTEXT_SYSTEM);
+if(!has_capability('moodle/local:viewlocalreports',$context) and 
+   !has_capability('moodle/local:viewstaffreports',$context)) {
+    print_error('nopermissions');
+    die;
+}
+
+$pagetitle = format_string(get_string('learningreports','local').': '.get_string($source,'local'));
+$navlinks[] = array('name' => get_string('learningreports','local'), 'link'=> '', 'type'=>'title');
+$navlinks[] = array('name' => get_string($source,'local'), 'link'=>'');
+$navigation = build_navigation($navlinks);
+print_header_simple($pagetitle, '', $navigation, '', '', true);
 
 // display heading including filtering stats
 print_heading("{$report_title}: Showing $countfiltered / $countall");
@@ -133,7 +145,7 @@ if($countfiltered>0) {
     print "No results found. Try removing one or more filters.";
 }
 
-admin_externalpage_print_footer();
+print_footer();
 
 
 

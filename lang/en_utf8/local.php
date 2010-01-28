@@ -128,4 +128,6 @@ $string['report:learningrecords'] = 'Learning records';
 $string['report:nodata'] = 'There is no available data for that combination of criteria, start date and end date';
 $string['report:organisation'] = 'Office';
 $string['report:startdate'] = 'Start date';
-
+$string['learningreports'] = 'Learning Reports';
+$string['course_completion'] = 'Course Completion';
+$string['competency_evidence'] = 'Competency Evidence';
