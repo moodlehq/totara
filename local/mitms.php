@@ -210,6 +210,22 @@ function mitms_print_my_team_nav($return=false) {
 
 }
 
+function mitms_print_report_manager($return=false) {
+    global $CFG;
+
+    $returnstr = '
+     <ul id="mitms-report-manager">
+       <li><a href="' . $CFG->wwwroot . '/admin/learningrecords/course_report.php">' . get_string('course_completion','block_mitms_report_manager') . '</a></li>
+       <li><a href="' . $CFG->wwwroot . '/admin/learningrecords/competency_report.php">' . get_string('competency_evidence','block_mitms_report_manager') . '</a></li>
+     </ul>
+    ';
+
+    if ($return) {
+        return $returnstr;
+    }
+    echo $returnstr;
+}
+
 /**
 * helper function to return a user's data stored in a given profile field
 *
