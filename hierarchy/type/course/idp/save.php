@@ -33,27 +33,36 @@ foreach ($add as $addition) {
         error('Supplied bad data - non numeric id');
     }
 
+    // Load course
+    if (!$course = get_record('course', 'id', (int)$addition)) {
+        error('Could not load course');
+    }
+
+    // Load category
+    if (!$category = get_record('course_categories', 'id', $course->category)) {
+        error('Could not load category');
+    }
+
     // Add idp course
     $idpcourse = new Object();
     $idpcourse->revision = $id;
-    $idpcourse->course = $addition;
+    $idpcourse->course = $course->id;
     $idpcourse->ctime = time();
 
     insert_record('idp_revision_course', $idpcourse);
 
+
     // Return html
     echo '<tr>';
-    echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/framework/index.php?type={$hierarchy->prefix}&id={$framework->id}\">{$framework->fullname}</a></td>";
-    echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/item/view.php?type={$hierarchy->prefix}&id={$competency->id}\">{$competency->fullname}</a></td>";
+    echo "<td><a href=\"{$CFG->wwwroot}/course/category.php?id={$course->category}\">".format_string($category->name)."</a></td>";
+    echo "<td><a href=\"{$CFG->wwwroot}/course/view.php?id={$course->id}\">".format_string($course->fullname)."</a></td>";
 
-//    if ($editingon) {
-        echo "<td style=\"text-align: center;\">";
+    echo "<td style=\"text-align: center;\">";
 
-        echo "<a href=\"{$CFG->wwwroot}/{$hierarchy->prefix}/competency/remove.php?id={$competency->id}\" title=\"$str_remove\">".
-             "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_remove\" /></a>";
+    echo "<a href=\"{$CFG->wwwroot}/course/idp/remove.php?id={$course->id}\" title=\"$str_remove\">".
+         "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_remove\" /></a>";
 
-        echo "</td>";
-//    }
+    echo "</td>";
 
     echo '</tr>'.PHP_EOL;
 }

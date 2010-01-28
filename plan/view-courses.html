@@ -2,7 +2,7 @@
 
 // Display competencies
 print_heading(get_string('courses'));
-$str_remove = get_string('remove', 'idp');
+$str_remove = get_string('remove');
 $editingon = true;
 
 ?>
@@ -36,7 +36,7 @@ if ($courses) {
     foreach ($courses as $course) {
 
         echo '<tr>';
-        echo "<td><a href=\"{$CFG->wwwroot}/course/index.php?id={$course->ccid}\">{$course->category}</a></td>";
+        echo "<td><a href=\"{$CFG->wwwroot}/course/category.php?id={$course->ccid}\">{$course->category}</a></td>";
         echo "<td><a href=\"{$CFG->wwwroot}/course/view.php?id={$course->id}\">{$course->fullname}</a></td>";
 
         if ($editingon) {
