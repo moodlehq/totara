@@ -71,7 +71,7 @@ $string['deleteall'] = 'Delete all';
 $string['deletesession'] = 'Delete session';
 $string['deletesessionconfirm'] = 'Are you completely sure you want to delete this session and all sign-ups for this session?';
 $string['deletingsession'] = 'Deleting session in $a';
-$string['deny'] = 'Deny';
+$string['decline'] = 'Decline';
 $string['description'] = 'Introduction text';
 $string['details'] = 'Details';
 $string['discountcode'] = 'Discount code';
@@ -361,7 +361,7 @@ $string['setting:defaultrequestinstrmngrdefault'] = "*** Action required ****
 
 Your staff member [firstname] [lastname] has requested a booking to attend the above course and has also received this email.
 
-To confirm or deny their request, visit the following link:
+To confirm or decline their request, visit the following link:
 [attendeeslink]
 
 If you are not their Team Leader / Manager and believe you have received this email by mistake please reply to this email.

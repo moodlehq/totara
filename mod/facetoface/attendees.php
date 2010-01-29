@@ -229,7 +229,7 @@ if (!$takeattendance && ($attendees = facetoface_get_requests($session->id))) {
     $table = new object();
     $table->summary = get_string('requeststablesummary', 'facetoface');
     $table->head = array(get_string('name'), get_string('timerequested', 'facetoface'),
-                         get_string('nochange', 'facetoface'), get_string('deny', 'facetoface'), get_string('approve', 'facetoface'));
+                         get_string('nochange', 'facetoface'), get_string('decline', 'facetoface'), get_string('approve', 'facetoface'));
     $table->align = array('left', 'center', 'center', 'center', 'center');
 
     $cantakeattendance = has_capability('mod/facetoface:takeattendance', $context);

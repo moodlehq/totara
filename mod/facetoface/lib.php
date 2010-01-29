@@ -42,7 +42,7 @@ define('CALENDAR_MAX_NAME_LENGTH', 10);
 // Signup status codes (remember to update $MDL_F2F_STATUS)
 define('MDL_F2F_STATUS_USER_CANCELLED',     10);
 define('MDL_F2F_STATUS_SESSION_CANCELLED',  20);
-define('MDL_F2F_STATUS_DENIED',             30);
+define('MDL_F2F_STATUS_DECLINED',           30);
 define('MDL_F2F_STATUS_REQUESTED',          40);
 define('MDL_F2F_STATUS_APPROVED',           50);
 define('MDL_F2F_STATUS_WAITLISTED',         60);
@@ -56,7 +56,7 @@ define('MDL_F2F_STATUS_FULLY_ATTENDED',     100);
 $MDL_F2F_STATUS = array(
     MDL_F2F_STATUS_USER_CANCELLED       => 'user_cancelled',
     MDL_F2F_STATUS_SESSION_CANCELLED    => 'session_cancelled',
-    MDL_F2F_STATUS_DENIED               => 'denied',
+    MDL_F2F_STATUS_DECLINED             => 'declined',
     MDL_F2F_STATUS_REQUESTED            => 'requested',
     MDL_F2F_STATUS_APPROVED             => 'approved',
     MDL_F2F_STATUS_WAITLISTED           => 'waitlisted',
@@ -2234,7 +2234,7 @@ function facetoface_take_attendance($data) {
 }
 
 /**
- * Mark users' booking requests as denied or approved
+ * Mark users' booking requests as declined or approved
  *
  * @param array $data array containing the sessionid under the 's' key
  *                    and an array of request approval/denies
@@ -2285,11 +2285,11 @@ function facetoface_approve_requests($data) {
         // Update status
         switch ($value) {
 
-            // Deny
+            // Decline
             case 1:
                 facetoface_update_signup_status(
                         $attendee->submissionid,
-                        MDL_F2F_STATUS_DENIED,
+                        MDL_F2F_STATUS_DECLINED,
                         $USER->id
                 );
 
