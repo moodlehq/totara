@@ -4,11 +4,14 @@
     require_once($CFG->dirroot.'/local/learningreports/learningreportslib.php');
     require_once('learning_reports_forms.php');
 
-    admin_externalpage_setup('learningreports');
+    $id = required_param('id',PARAM_INT); // learning report id
 
+    $report = get_record('learning_report','id',$id);
+
+    admin_externalpage_setup('learningreports');
     $returnurl = $CFG->wwwroot.'/local/learningreports/index.php';
     // form definition
-    $mform =& new learning_reports_new_form();
+    $mform =& new learning_reports_edit_form(null, compact('report'));
 
     // form results check
     if ($mform->is_cancelled()) {
@@ -20,24 +23,26 @@
             print_error('error:unknownbuttonclicked', 'local', $returnurl);
         }
         // create new record here
+        /*
         $todb = new object();
         $todb->fullname = $fromform->fullname;
         $todb->shortname = $fromform->shortname;
         $todb->source = ($fromform->source != '0') ? $fromform->source : null;
-        // create with default columns and queries
-        $todb->columns = serialize(get_source_data($fromform->source,'defaultcolumns'));
         $todb->restriction = ($fromform->restriction != '0') ? $fromform->restriction : null;
         if(insert_record('learning_report',$todb)) {
             redirect($returnurl, get_string('newreportcreated','local'));
         } else {
             redirect($returnurl, get_string('error:couldnotcreatenewreport','local'));
         }
+         */
     }
 
     admin_externalpage_print_header();
 
-    print_heading(get_string('learningreports','local'));
+    print_heading(get_string('editlearningreport','local',$report->fullname));
 
+    // get record here
+    /*
     $reports = get_records('learning_report');
     if($reports) {
     foreach($reports as $report) {
@@ -67,6 +72,7 @@
     } else {
         print "No reports have been created";
     }
+     */
 
     // display mform
     $mform->display();

@@ -24,5 +24,32 @@ function learningreports_get_options_from_dir($source) {
     return $ret;
 }
 
+// get a particular type of data from the specified source
+function get_source_data($source, $datatype) {
+    global $CFG;
+    $file = "{$CFG->dirroot}/local/learningreports/sources/$source/$datatype.php";
+    if(file_exists($file)) {
+        include($file);
+    }
+    if(isset($$datatype)) {
+        return $$datatype;
+    } else {
+        return null;
+    }
+}
 
+// parses the column options data structure to return an array suitable
+// for use as a select pulldown
+function get_columns_select($source) {
+    $columns = get_source_data($source,'columnoptions');
+    $ret = array();
+    foreach($columns as $type => $info) {
+        foreach ($info as $value => $info2) {
+            $key = "{$type}-{$value}";
+            $text = $info2['name'];
+            $ret[$key] = $text;
+        }
+    }
+    return $ret;
+}
 
