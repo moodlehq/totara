@@ -73,8 +73,15 @@ if ($frm = data_submitted()) {
                     $errors[] = get_string('full', 'facetoface');
                     break; // no point in trying to add other people
                 }
+
+                // Check if we are waitlisting or booking
+                if ($session->datetimeknown) {
+                    $status = MDL_F2F_STATUS_BOOKED;
+                } else {
+                    $status = MDL_F2F_STATUS_WAITLISTED;
+                }
                 elseif (!facetoface_user_signup($session, $facetoface, $course, '', MDL_F2F_BOTH,
-                                                false, $adduser, !$suppressemail, MDL_F2F_STATUS_BOOKED)) {
+                                                false, $adduser, !$suppressemail, $status)) {
                     $erruser = get_record('user', 'id', $adduser, '','','','', 'id, firstname, lastname');
                     $errors[] = get_string('error:addattendee', 'facetoface', fullname($erruser));
                 }
