@@ -83,6 +83,10 @@ $snippets['course_completion'] = array(
             'field' => "c.id",
             'joins' => array('course'),
         ),
+        'courselink' => array(
+            'field' => "c.id, c.fullname",
+            'joins' => array('course'),
+        ),
         'startdate' => array(
             'field' => "c.startdate",
             'joins' => array('course'),
@@ -121,6 +125,10 @@ $snippets['course_completion'] = array(
         ),
         'id' => array(
             'field' => "u.id",
+            'joins' => array('user'),
+        ),
+        'namelink' => array(
+            'field' => "u.id, ".sql_fullname("u.firstname","u.lastname"),
             'joins' => array('user'),
         ),
         'manager_name' => array(
