@@ -38,6 +38,17 @@ function get_source_data($source, $datatype) {
     }
 }
 
+function get_filters_select($source) {
+    $filters = get_source_data($source,'queryoptions');
+    $ret = array();
+    foreach($filters as $filter) {
+            $key = "{$filter['type']}-{$filter['value']}";
+            $text = $filter['name'];
+            $ret[$key] = $text;
+    }
+    return $ret;
+}
+
 // parses the column options data structure to return an array suitable
 // for use as a select pulldown
 function get_columns_select($source) {

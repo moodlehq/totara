@@ -26,7 +26,10 @@
         $todb->source = ($fromform->source != '0') ? $fromform->source : null;
         // create with default columns and queries
         $todb->columns = serialize(get_source_data($fromform->source,'defaultcolumns'));
-        $todb->restriction = ($fromform->restriction != '0') ? $fromform->restriction : null;
+        $todb->filters = serialize(get_source_data($fromform->source,'defaultqueries'));
+        if(isset($fromform->restriction)) {
+            $todb->restriction = ($fromform->restriction != '0') ? $fromform->restriction : null;
+        }
         if(insert_record('learning_report',$todb)) {
             redirect($returnurl, get_string('newreportcreated','local'));
         } else {
