@@ -121,11 +121,14 @@ class completion_completion extends data_object {
      */
     public function mark_inprogress($timestarted = null) {
 
-        /*
-        if (!$this->timestarted && $timestarted) {
+        if (!$this->timestarted) {
+
+            if (!$timestarted) {
+                $timestarted = time();
+            }
+
             $this->timestarted = $timestarted;
         }
-        */
 
         $this->_save();
     }
