@@ -1496,14 +1496,35 @@ function facetoface_get_unmailed_reminders()
 {
     global $CFG;
 
-    $submissions = get_records_sql("SELECT su.*, f.course, f.id as facetofaceid, f.name as facetofacename,
-                                           f.reminderperiod, se.duration, se.normalcost, se.discountcost,
-                                           se.details, se.datetimeknown
-                                      FROM {$CFG->prefix}facetoface_signups su
-                                      JOIN {$CFG->prefix}facetoface_sessions se ON su.sessionid = se.id
-                                      JOIN {$CFG->prefix}facetoface f ON se.facetoface = f.id
-                                     WHERE su.mailedreminder = 0 AND se.datetimeknown=1 AND
-                                           su.timecancelled = 0");
+    $submissions = get_records_sql("
+        SELECT
+            su.*,
+            f.course,
+            f.id as facetofaceid,
+            f.name as facetofacename,
+            f.reminderperiod,
+            se.duration,
+            se.normalcost,
+            se.discountcost,
+            se.details,
+            se.datetimeknown
+        FROM
+            {$CFG->prefix}facetoface_signups su
+        INNER JOIN
+            {$CFG->prefix}facetoface_signups_status sus
+         ON su.id = sus.signupid
+        AND sus.superceded = 0
+        AND sus.statuscode = ".MDL_F2F_STATUS_BOOKED."
+        JOIN
+            {$CFG->prefix}facetoface_sessions se
+         ON su.sessionid = se.id
+        JOIN
+            {$CFG->prefix}facetoface f
+         ON se.facetoface = f.id
+        WHERE
+            su.mailedreminder = 0
+        AND se.datetimeknown = 1
+    ");
 
     if ($submissions) {
         foreach ($submissions as $key => $value) {
