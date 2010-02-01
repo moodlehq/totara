@@ -154,6 +154,14 @@ class completion_criteria_completion extends data_object {
         } else {
             $this->insert();
         }
+
+        // Mark course completion record as started (if not already)
+        $cc = array(
+            'course'    => $this->course,
+            'userid'    => $this->userid
+        );
+        $ccompletion = new completion_completion($cc);
+        $ccompletion->mark_inprogress($this->timecompleted);
     }
 
     /**
