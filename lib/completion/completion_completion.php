@@ -118,6 +118,29 @@ class completion_completion extends data_object {
     }
 
     /**
+     * Mark this user as started (or enrolled) in this course
+     *
+     * If the user is already complete, they will not be un-completed
+     *
+     * @access  public
+     * @param   integer $timeenrolled Time enrolled (optional)
+     * @return  void
+     */
+    public function mark_enrolled($timeenrolled = null) {
+
+        if (!$this->timeenrolled) {
+
+            if (!$timeenrolled) {
+                $timeenrolled = time();
+            }
+
+            $this->timeenrolled = $timeenrolled;
+        }
+
+        $this->_save();
+    }
+
+    /**
      * Mark this user as inprogress in this course
      *
      * If the user is already complete, they will not be un-completed
