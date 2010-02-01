@@ -38,9 +38,82 @@ require_once $CFG->libdir.'/completionlib.php';
  */
 function completion_cron() {
 
+    completion_cron_mark_started();
+
     completion_cron_criteria();
 
     completion_cron_completions();
+}
+
+/**
+ * Mark users as started if the config option is set
+ *
+ * @return  void
+ */
+function completion_cron_mark_started() {
+    global $CFG;
+
+    if (debugging()) {
+        mtrace('Marking users as started');
+    }
+
+    $sql = "
+        SELECT DISTINCT
+            c.id AS course,
+            ra.userid AS userid,
+            crc.id AS completionid,
+            MIN(ra.timestart) AS timestarted
+        FROM
+            {$CFG->prefix}course c
+        INNER JOIN
+            {$CFG->prefix}context con
+         ON con.instanceid = c.id
+        INNER JOIN
+            {$CFG->prefix}role_assignments ra
+         ON ra.contextid = con.id
+        LEFT JOIN
+            {$CFG->prefix}course_completions crc
+         ON crc.course = c.id
+        AND crc.userid = ra.userid
+        WHERE
+            con.contextlevel = ".CONTEXT_COURSE."
+        AND c.enablecompletion = 1
+        AND c.completionstartonenrol = 1
+        AND crc.timeenroled IS NULL
+        AND (ra.timeend IS NULL OR ra.timeend > ".time().")
+        GROUP BY
+            c.id,
+            ra.userid,
+            crc.id
+        ORDER BY
+            course,
+            userid
+    ";
+
+    // Check if result is empty
+    if (!$rs = get_recordset_sql($sql)) {
+        return;
+    }
+
+    // Grab records for current user/course
+    while ($record = rs_fetch_next_record($rs)) {
+        $completion = new completion_completion();
+        $completion->userid = $record->userid;
+        $completion->course = $record->course;
+        $completion->timeenrolled = $record->timestarted;
+
+        if ($record->completionid) {
+            $completion->id = $record->completionid;
+        }
+
+        $completion->mark_enrolled();
+
+        if (debugging()) {
+            mtrace('Marked started user '.$record->userid.' in course '.$record->course);
+        }
+    }
+
+    $rs->close();
 }
 
 /**
