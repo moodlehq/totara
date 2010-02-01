@@ -164,7 +164,7 @@ class completion_criteria_date extends completion_criteria {
             foreach ($rs as $record) {
 
                 $completion = new completion_criteria_completion((array)$record);
-                $completion->mark_complete();
+                $completion->mark_complete($record->date);
             }
 
             $rs->close();

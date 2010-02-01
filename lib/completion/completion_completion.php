@@ -172,12 +172,23 @@ class completion_completion extends data_object {
      * in the course are complete.
      *
      * @access  public
+     * @param   integer $timecomplete Time completed (optional)
      * @return  void
      */
-    public function mark_complete() {
+    public function mark_complete($timecomplete = null) {
+
+        // Never change a completion time
+        if ($this->timecompleted) {
+            return;
+        }
+
+        // Use current time if nothing supplied
+        if (!$timecomplete) {
+            $timecomplete = time();
+        }
 
         // Set time complete
-        $this->timecompleted = time();
+        $this->timecompleted = $timecomplete;
 
         // Save record
         $this->_save();

@@ -158,7 +158,8 @@ class completion_criteria_duration extends completion_criteria {
                 c.id AS course,
                 cr.date AS date,
                 cr.id AS criteriaid,
-                ra.userid AS userid
+                ra.userid AS userid,
+                (ra.timestart + cr.enrolperiod) AS timecompleted
             FROM
                 {$CFG->prefix}course_completion_criteria cr
             INNER JOIN
@@ -187,7 +188,7 @@ class completion_criteria_duration extends completion_criteria {
             foreach ($rs as $record) {
 
                 $completion = new completion_criteria_completion((array)$record);
-                $completion->mark_complete();
+                $completion->mark_complete($record->timecompleted);
             }
 
             $rs->close();

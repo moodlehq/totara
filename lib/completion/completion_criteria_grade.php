@@ -164,7 +164,8 @@ class completion_criteria_grade extends completion_criteria {
                 cr.date AS date,
                 cr.id AS criteriaid,
                 ra.userid AS userid,
-                gg.finalgrade AS gradefinal
+                gg.finalgrade AS gradefinal,
+                gg.timemodified AS timecompleted
             FROM
                 {$CFG->prefix}course_completion_criteria cr
             INNER JOIN
@@ -201,7 +202,7 @@ class completion_criteria_grade extends completion_criteria {
             foreach ($rs as $record) {
 
                 $completion = new completion_criteria_completion((array)$record);
-                $completion->mark_complete();
+                $completion->mark_complete($record->timecompleted);
             }
 
             $rs->close();

@@ -244,8 +244,13 @@ function completion_cron_completions() {
             $prerequisite_status = null;
             $role_status = null;
 
+            // Get latest timecompleted
+            $timecompleted = null;
+
             // Check each of the criteria
             foreach ($completions as $params) {
+                $timecompleted = max($timecompleted, $params->timecompleted);
+
                 $completion = new completion_criteria_completion($params, false);
 
                 // Handle aggregation special cases
@@ -282,7 +287,7 @@ function completion_cron_completions() {
                 }
 
                 $ccompletion = new completion_completion(array('course' => $params->course, 'userid' => $params->userid));
-                $ccompletion->mark_complete();
+                $ccompletion->mark_complete($timecompleted);
             }
         }
 
