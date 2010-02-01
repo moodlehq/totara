@@ -42,7 +42,7 @@ class completion_completion extends data_object {
      * Array of required table fields, must start with 'id'.
      * @var array $required_fields
      */
-    public $required_fields = array('id', 'userid', 'course', 'deleted', 'timenotified', 'timeenroled', 'timecompleted', 'rpl');
+    public $required_fields = array('id', 'userid', 'course', 'deleted', 'timenotified', 'timeenrolled', 'timestarted', 'timecompleted', 'rpl');
 
     /**
      * User ID
@@ -82,10 +82,19 @@ class completion_completion extends data_object {
 
     /**
      * Time of course enrolment
+     * @see     completion_completion::mark_enrolled()
      * @access  public
      * @var     int
      */
-    public $timeenroled;
+    public $timeenrolled;
+
+    /**
+     * Time the user started their course completion
+     * @see     completion_completion::mark_inprogress()
+     * @access  public
+     * @var     int
+     */
+    public $timestarted;
 
     /**
      * Timestamp of course completion
@@ -190,11 +199,11 @@ class completion_completion extends data_object {
      */
     private function _save() {
 
-        if (!$this->timeenroled) {
-            // Get users timenroled
+        if (!$this->timeenrolled) {
+            // Get users timenrolled
             // Can't find a more efficient way of doing this without alter get_users_by_capability()
             $context = get_context_instance(CONTEXT_COURSE, $this->course);
-            $this->timeenroled = get_field('role_assignments', 'timestart', 'contextid', $context->id, 'userid', $this->userid);
+            $this->timeenrolled = get_field('role_assignments', 'timestart', 'contextid', $context->id, 'userid', $this->userid);
         }
 
         // Save record

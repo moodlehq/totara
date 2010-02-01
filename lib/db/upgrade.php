@@ -3320,6 +3320,26 @@ function xmldb_main_upgrade($oldversion=0) {
 
         upgrade_main_savepoint($result, 2007101572);
     }
+
+    if ($result && $oldversion < 2007101573) {
+        // Rename timeenroled to timeenrolled
+
+        $table = new XMLDBTable('course_completions');
+        $field = new XMLDBField('timeenroled');
+
+        if (field_exists($table, $field)) {
+            drop_field($table, $field);
+        }
+
+        $field = new XMLDBField('timeenrolled');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null, 'timeenrolled');
+
+        if (!field_exists($table, $field)) {
+            add_field($table, $field);
+        }
+
+        upgrade_main_savepoint($result, 2007101573);
+    }
     return $result;
 }
 
