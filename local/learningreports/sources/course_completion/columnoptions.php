@@ -5,13 +5,14 @@ $columnoptions = array(
     'course_completion' => array(
         'status' => array(
             'name'  => 'Completion Status',
-            'field' => '',
+            'field' => "CASE WHEN base.timecompleted IS NOT NULL THEN 'Completed' ELSE 'Not Completed' END",
             'joins' => array(),
         ),
         'completeddate' => array(
             'name' => 'Completion Date',
             'field' => "base.timecompleted",
             'joins' => array(),
+            'displayfunc' => 'learningreport_nice_date',
         ),
         'organisationid' => array(
             'name' => 'Completion Organisation ID',
@@ -53,8 +54,9 @@ $columnoptions = array(
         // hack to display course link, use only for column, not for filter
         'courselink' => array(
             'name' => 'Course Name (linked to course page)',
-            'field' => 'c.id, c.fullname',
+            'field' => 'c.id AS course_id, c.fullname',
             'joins' => array('course'),
+            'displayfunc' => 'learningreport_link_course',
         ),
         'id' => array(
             'name' => 'Course ID',
@@ -65,6 +67,7 @@ $columnoptions = array(
             'name' => 'Course Start Date',
             'field' => "c.startdate",
             'joins' => array('course'),
+            'displayfunc' => 'learningreport_nice_date',
         ),
     ),
     'course_category' => array(
@@ -108,8 +111,9 @@ $columnoptions = array(
         // hack to display user link - only user for column, not filter
         'namelink' => array(
             'name' => 'User Fullname (linked to profile)',
-            'field' => 'u.id, '.sql_fullname('u.firstname','u.lastname'),
+            'field' => 'u.id AS user_id, '.sql_fullname('u.firstname','u.lastname'),
             'joins' => array('user'),
+            'displayfunc' => 'learningreport_link_user',
         ),
         'id' => array(
             'name' => 'User ID',
@@ -143,6 +147,7 @@ $columnoptions = array(
         ),
         /*
         // just get org id for these, convert to correct depth level in table
+        // need a displayfunc to do this
         'area_office' => array(
             'field' => "user_organisationid.data",
             'joins' => array('user','user_organisationid'),

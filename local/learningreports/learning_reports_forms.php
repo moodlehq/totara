@@ -48,12 +48,11 @@ class learning_reports_edit_form extends moodleform {
         $mform->addElement('header', 'general', get_string('filterfields', 'local'));
 
         $mform->addElement('html', '<table><tr><th>Filter</th><th>Advanced?</th><th>Options</th><tr>');
-        $filtersselect = get_filters_select($report->source);
+        $filtersselect = $report->get_filters_select();
 
-        if(isset($report->filters)) {
-            $filters = unserialize($report->filters);
+        if(isset($report->_filters)) {
+            $filters = $report->_filters;
             if(is_array($filters)) {
-
                 foreach($filters as $index => $filter) {
                     $row = array();
                     $type = $filter['type'];
@@ -90,12 +89,11 @@ class learning_reports_edit_form extends moodleform {
         $mform->addElement('header', 'general', get_string('reportcolumns', 'local'));
 
         $mform->addElement('html', '<table><tr><th>Column</th><th>Heading</th><th>Options</th><tr>');
-        $columnsselect = get_columns_select($report->source);
+        $columnsselect = $report->get_columns_select();
 
-        if(isset($report->columns)) {
-            $columns = unserialize($report->columns);
+        if(isset($report->_columns)) {
+            $columns = $report->_columns;
             if(is_array($columns)) {
-
                 foreach($columns as $index => $column) {
                     $row = array();
                     $type = $column['type'];
@@ -105,6 +103,7 @@ class learning_reports_edit_form extends moodleform {
                     $columnid = $index;
                     $mform->addElement('html','<tr><td>');
                     $mform->addElement('select',"column{$columnid}",'',$columnsselect);
+                    //$mform->addRule("column{$columnid}",'Cannot display same column multiple times','callback','norepeatcol');
                     $mform->setDefault("column{$columnid}", $field);
                     $mform->addElement('html','</td><td>');
                     $mform->addElement('text',"heading{$columnid}",'');
@@ -133,5 +132,23 @@ class learning_reports_edit_form extends moodleform {
     }
 }
 
+/*
+function norepeatcol($col) {
+    global $columns;
+    $count = 0;
+    print "## $col ##";
+    foreach($columns as $column) {
+        if ($col == "{$column['type']}-{$column['value']}") {
+            $count++;
+        }
+    }
+    print "@@@@ $count @@@@";
+    if($count>1) {
+        return false;
+    } else {
+        return true;
+    }
 
+}
+ */
 

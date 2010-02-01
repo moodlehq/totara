@@ -25,6 +25,7 @@
         $todb->shortname = $fromform->shortname;
         $todb->source = ($fromform->source != '0') ? $fromform->source : null;
         // create with default columns and queries
+        // TODO How to get default data for non existant report
         $todb->columns = serialize(get_source_data($fromform->source,'defaultcolumns'));
         $todb->filters = serialize(get_source_data($fromform->source,'defaultqueries'));
         if(isset($fromform->restriction)) {
