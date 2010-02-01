@@ -57,6 +57,11 @@ function completion_cron_mark_started() {
         mtrace('Marking users as started');
     }
 
+    $roles = '';
+    if (!empty($CFG->progresstrackedroles)) {
+        $roles = 'AND ra.roleid IN ('.$CFG->progresstrackedroles.')';
+    }
+
     $sql = "
         SELECT DISTINCT
             c.id AS course,
@@ -81,6 +86,7 @@ function completion_cron_mark_started() {
         AND c.completionstartonenrol = 1
         AND crc.timeenroled IS NULL
         AND (ra.timeend IS NULL OR ra.timeend > ".time().")
+        {$roles}
         GROUP BY
             c.id,
             ra.userid,
