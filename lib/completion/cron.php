@@ -195,7 +195,7 @@ function completion_cron_completions() {
         WHERE
             con.contextlevel = ".CONTEXT_COURSE."
         AND c.enablecompletion = 1
-        AND crc.id IS NULL
+        AND crc.timecompleted IS NULL
         ORDER BY
             course,
             userid
