@@ -1,5 +1,4 @@
 <?php
-
 // all available course completion columns
 $columnoptions = array(
     'course_completion' => array(
@@ -164,4 +163,16 @@ $columnoptions = array(
     ),
 );
 
+$custom_fields = get_records('user_info_field','','','','id,shortname,name');
+foreach($custom_fields as $custom_field) {
+    $field = $custom_field->shortname;
+    $name = $custom_field->name;
+    $id = $custom_field->id;
+    $key = "user_$field";
+    $columnoptions['user_profile'][$field] = array(
+        'name' => $name,
+        'field' => "$key.data",
+        'joins' => array('user',$key),
+    );
+}
 
