@@ -24,8 +24,7 @@ $ssort     = optional_param('ssort');
 $format    = optional_param('format', '', PARAM_TEXT);
 
 // new report object
-$report = new learningreport('course_comp_site');
-
+$report = new learningreport('competency_evidence');
 $download = new download_form();
 if($fromform = $download->get_data()) {
     // print download links instead of table

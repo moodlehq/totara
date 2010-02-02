@@ -12,6 +12,13 @@ function learningreport_link_user($user, $row) {
     return "<a href=\"{$CFG->wwwroot}/user/view.php?id={$userid}\">{$user}</a>";
 }
 
+/*
+function learningreport_link_competency($comp, $row) {
+    global $CFG;
+    $compid = $row->competency_id;
+    return "<a href=\"{$CFG->wwwroot}/hierarchy/index.php?type=competency&
+ */
+
 function learningreport_nice_date($date, $row) {
     if($date && $date > 0) {
         return userdate($date, '%d %B %Y');
