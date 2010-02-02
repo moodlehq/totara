@@ -1005,7 +1005,23 @@ function xmldb_local_upgrade($oldversion) {
         $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
         $table->addIndexInfo('shortname', XMLDB_INDEX_UNIQUE, array('shortname'));
         $result = $result && create_table($table);
-     }
+    }
+
+    if ($result && $oldversion < 2010020200) {
+    /// Fix imported course_completions records
+        $sql = "
+            UPDATE
+                {$CFG->prefix}course_completions
+            SET
+                timeenrolled = timecompleted,
+                timestarted = timecompleted
+            WHERE
+                timecompleted IS NOT NULL
+            AND timeenrolled IS NULL
+            AND timestarted IS NULL
+        ";
+        $result = $result && execute_sql($sql);
+    }
 
     /// Insert default records
     $defaultdir = $CFG->dirroot.'/local/db/default';
