@@ -80,6 +80,15 @@ class learningreport {
         return $this->_filtering->get_sql_filter();
     }
 
+    // parses input array into set of restrictions and returns single
+    // SQL WHERE snippet
+    // input argument should be like this
+    // $arg = array('own', 'local', 'staff');
+    // that would give access to all three groups
+    function get_restrictions($restrictions) {
+
+    }
+
     // generate an sql query for this report
     // if countonly is true, just returns count of query, otherwise return
     // fields as required
@@ -132,6 +141,7 @@ class learningreport {
         return $sql;
     }
 
+
     // return the total number of records in this report
     function get_full_count() {
         $sql = $this->build_query(true);
@@ -140,6 +150,7 @@ class learningreport {
 
     // return the filtered number of records in this report
     function get_filtered_count() {
+
         $sql = $this->build_query(true, true);
         return count_records_sql($sql);
 
@@ -230,25 +241,24 @@ class learningreport {
     }
 
     function get_column_fields() {
+
         $source = $this->_source;
         $columns = $this->_columns;
         $columnoptions = $this->_columnoptions;
         $fields = array();
         foreach($columns as $column) {
             $type = isset($column['type']) ? $column['type'] : '';
-
             if(array_key_exists($type, $columnoptions)) {
                 $value = isset($column['value']) ? $column['value'] : '';
-
                 if(array_key_exists($value, $columnoptions[$type])) {
                     // add field to list to be selected
                     // use type_value as alias for each field
                     $fields[] = $columnoptions[$type][$value]['field']." ".sql_as()." {$type}_{$value}";
                 } else {
-                    trigger_error("get_column_fields(): column value '$value' not found in source '$source' for type '$type'",E_USER_ERROR);
+                    error("get_column_fields(): column value '$value' not found in source '$source' for type '$type'");
                 }
             } else {
-                trigger_error("get_column_fields(): column type '$type' not found in source '$source'",E_USER_ERROR);
+                error("get_column_fields(): column type '$type' not found in source '$source'");
             }
         }
         return $fields;
@@ -277,14 +287,14 @@ class learningreport {
                             // is only stored once (as required)
                             $joins[$join] = $joinlist[$join];
                         } else {
-                            trigger_error("get_column_joins(): join name $join not in joinlist",E_USER_ERROR);
+                            error("get_column_joins(): join name $join not in joinlist");
                         }
                     }
                 } else {
-                    trigger_error("get_column_joins(): column value '$value' not found in source '$source' for type '$type'",E_USER_ERROR);
+                    error("get_column_joins(): column value '$value' not found in source '$source' for type '$type'");
                 }
             } else {
-                trigger_error("get_column_joins(): column type '$type' not found in source '$source'",E_USER_ERROR);
+                error("get_column_joins(): column type '$type' not found in source '$source'");
             }
         }
         return $joins;
@@ -306,7 +316,7 @@ class learningreport {
                 // parse the filtername for type and value
                 $parts = explode('-',$filter);
                 if (count($parts) != 2) {
-                    trigger_error("get_filter_joins(): filter name format incorrect. Query snippets may have included a dash character.", E_USER_WARNING);
+                    error("get_filter_joins(): filter name format incorrect. Query snippets may have included a dash character.");
                     continue;
                 }
                 $type = $parts[0];
@@ -315,7 +325,7 @@ class learningreport {
                     if(array_key_exists($join, $joinlist)) {
                         $joins[$join] = $joinlist[$join];
                     } else {
-                        trigger_error("get_filter_joins(): join name $join not in joinlist",E_USER_ERROR);
+                        error("get_filter_joins(): join name $join not in joinlist");
                     }
                 }
             }
