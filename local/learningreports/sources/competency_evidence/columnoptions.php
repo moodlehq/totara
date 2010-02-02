@@ -7,6 +7,7 @@ $columnoptions = array(
             'name'  => 'Proficiency',
             'field' => "base.proficiency",
             'joins' => array(),
+            'displayfunc' => 'learningreport_proficiency',
         ),
         'completeddate' => array(
             'name' => 'Completion Date',
