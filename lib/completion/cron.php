@@ -165,6 +165,9 @@ function completion_cron_completions() {
         mtrace('Aggregating completions');
     }
 
+    // Save time started
+    $timestarted = time();
+
     // Grab all criteria and their associated criteria completions
     $sql = "
         SELECT DISTINCT
@@ -196,6 +199,7 @@ function completion_cron_completions() {
             con.contextlevel = ".CONTEXT_COURSE."
         AND c.enablecompletion = 1
         AND crc.timecompleted IS NULL
+        AND crc.reaggregate > 0
         ORDER BY
             course,
             userid
@@ -303,6 +307,18 @@ function completion_cron_completions() {
         $completions = array();
         $completions[$record->criteriaid] = $record;
     }
+
+    // Mark all users as aggregated
+    $sql = "
+        UPDATE
+            {$CFG->prefix}course_completions
+        SET
+            reaggregate = 0
+        WHERE
+            reaggregate < {$timestarted}
+    ";
+
+    execute_sql($sql, false);
 }
 
 /**

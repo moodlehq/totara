@@ -42,7 +42,8 @@ class completion_completion extends data_object {
      * Array of required table fields, must start with 'id'.
      * @var array $required_fields
      */
-    public $required_fields = array('id', 'userid', 'course', 'deleted', 'timenotified', 'timeenrolled', 'timestarted', 'timecompleted', 'rpl');
+    public $required_fields = array('id', 'userid', 'course', 'deleted', 'timenotified',
+        'timeenrolled', 'timestarted', 'timecompleted', 'rpl', 'reaggregate');
 
     /**
      * User ID
@@ -104,6 +105,13 @@ class completion_completion extends data_object {
      */
     public $timecompleted;
 
+    /**
+     * Flag to trigger cron aggregation (timestamp)
+     * @access  public
+     * @var     int
+     */
+    public $reaggregate;
+
 
     /**
      * Finds and returns a data_object instance based on params.
@@ -129,7 +137,7 @@ class completion_completion extends data_object {
     /**
      * Mark this user as started (or enrolled) in this course
      *
-     * If the user is already complete, they will not be un-completed
+     * If the user is already marked as started, no change will occur
      *
      * @access  public
      * @param   integer $timeenrolled Time enrolled (optional)
@@ -152,7 +160,8 @@ class completion_completion extends data_object {
     /**
      * Mark this user as inprogress in this course
      *
-     * If the user is already complete, they will not be un-completed
+     * If the user is already marked as inprogress,
+     * the time will not be changed
      *
      * @access  public
      * @param   integer $timestarted Time started (optional)
@@ -160,10 +169,15 @@ class completion_completion extends data_object {
      */
     public function mark_inprogress($timestarted = null) {
 
+        $timenow = time();
+
+        // Set reaggregate flag
+        $this->reaggregate = $timenow;
+
         if (!$this->timestarted) {
 
             if (!$timestarted) {
-                $timestarted = time();
+                $timestarted = $timenow;
             }
 
             $this->timestarted = $timestarted;
