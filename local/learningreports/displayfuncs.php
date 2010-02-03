@@ -26,6 +26,14 @@ function learningreport_nice_date($date, $row) {
     }
 }
 
+function learningreport_nice_time($date, $row) {
+    if($date && $date > 0) {
+        return userdate($date, '%d %B %Y at %H:%M');
+    } else {
+        return '';
+    }
+}
+
 function learningreport_proficiency($proficiency, $row) {
     switch ($proficiency) {
         case '1':
@@ -39,3 +47,30 @@ function learningreport_proficiency($proficiency, $row) {
     }
 }
 
+function learningreport_facetoface_status($status, $row) {
+    switch ($status) {
+        case '10':
+            return 'User Cancelled';
+        case '20':
+            return 'Session Cancelled';
+        case '30':
+            return 'Request Denied';
+        case '40':
+            return 'Requested';
+        case '50':
+            return 'Approved';
+        case '60':
+            return 'Waitlisted';
+        case '70':
+            return 'Booked';
+        case '80':
+            return 'No Show';
+        case '90':
+            return 'Partially Attended';
+        case '100':
+            return 'Fully Attended';
+        default:
+            return $status;
+    }
+
+}
