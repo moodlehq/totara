@@ -212,19 +212,50 @@ function mitms_print_my_team_nav($return=false) {
 
 function mitms_print_report_manager($return=false) {
     global $CFG;
+    require_once($CFG->dirroot.'/local/learningreports/learningreportslib.php');
+    $reports = get_records('learning_report');
+    $context = get_context_instance(CONTEXT_SYSTEM);
 
-    $returnstr = '
+    $links = array();
+    foreach ($reports as $report) {
+        // go through each restriction looking for capabilities
+        $restrictions = unserialize($report->restriction);
+        // allow link to appear if no restriction set
+        $hascap = true;
+        if($restrictions && is_array($restrictions)) {
+            // if restrictions are set, require at least one of the
+            // capabilities
+            $hascap = false;
+            foreach($restrictions as $restriction) {
+                $cap = $restriction['capability'];
+                // if they have any, include the link
+                if(has_capability($cap,$context)) {
+                    $hascap = true;
+                }
+            }
+        }
+        if($hascap) {
+            $links[] = '<li><a href="' . $CFG->wwwroot . '/local/learningreports/report.php?id='.$report->id.'">' . $report->fullname . '</a></li>';
+        }
+    }
+
+    // if there are any links print them
+    if(count($links)>0) {
+        $returnstr = '
      <ul id="mitms-report-manager">
-       <li><a href="' . $CFG->wwwroot . '/admin/learningrecords/course_report.php">' . get_string('course_completion','block_mitms_report_manager') . '</a></li>
-       <li><a href="' . $CFG->wwwroot . '/admin/learningrecords/competency_report.php">' . get_string('competency_evidence','block_mitms_report_manager') . '</a></li>
-     </ul>
     ';
+        $returnstr .= implode("\n",$links);
+
+        $returnstr .= '</ul>
+        ';
+    }
 
     if ($return) {
         return $returnstr;
     }
     echo $returnstr;
 }
+
 
 /**
 * helper function to return a user's data stored in a given profile field
