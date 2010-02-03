@@ -83,6 +83,37 @@ class learningreport {
         return $this->_filtering->get_sql_filter();
     }
 
+    // returns array of capabilities associated with this report
+    function get_capability_list() {
+        $restrictions = $this->_restriction;
+        $capabilities = array();
+        if($capabilities && is_array($capabilities)) {
+            foreach ($restrictions as $restriction) {
+                $capabilities[] = $restriction['capability'];
+            }
+        }
+        return array_unique($capabilities);
+    }
+
+    // returns true if current user has one or more or required capabilities
+    function is_capable() {
+        $context = get_context_instance(CONTEXT_SYSTEM);
+        $capabilities = $this->get_capability_list();
+        // allow to view if no capabilities set
+        $ret = true;
+        if($capabilities && is_array($capabilities)) {
+            // if capabilities set, require at least one
+            $ret = false;
+            foreach ($capabilities as $capability) {
+                if(has_capability($capability, $context)) {
+                    $ret = true;
+                }
+            }
+        }
+        return $ret;
+
+    }
+
     // parses input array into set of restrictions and returns single
     // SQL WHERE snippet
     // input argument should be like this
