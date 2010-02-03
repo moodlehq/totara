@@ -48,7 +48,8 @@ if ($fromform = $mform->get_data()) {
     $todb->columns = serialize($result);
     $result = build_filters($fromform);
     $todb->filters = serialize($result);
-
+    $result = build_restrictions($fromform);
+    $todb->restriction = serialize($result);
     if(update_record('learning_report',$todb)) {
         redirect($returnurl, get_string('reportupdated','local'));
     } else {
@@ -141,4 +142,17 @@ function build_filters($fromform) {
 
 }
 
+function build_restrictions($fromform) {
+    $i = 0;
+    $rest = "restriction$i";
+    $ret = array();
+    while(isset($fromform->$rest)) {
+        if($fromform->$rest != '0') {
+            $ret[] = $fromform->$rest;
+        }
+        $i++;
+        $rest = "restriction$i";
+    }
+    return $ret;
+}
 ?>

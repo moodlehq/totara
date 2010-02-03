@@ -24,6 +24,7 @@ class learning_reports_new_form extends moodleform {
             // TODO invalid if not set
             //$mform->addRule('source', get_string('error:mustselectsource','local'), 'nonzero');
 
+/*
             $restrictions = learningreports_get_options_from_dir('restrictions');
             if(count($restrictions)>0) {
                 $pick = array(0 => 'Select a restriction...');
@@ -32,6 +33,7 @@ class learning_reports_new_form extends moodleform {
             } else {
                 $mform->addElement('static','restriction', get_string('restriction','local'), get_string('error:norestrictions','local'));
             }
+ */
             $this->add_action_buttons();
 
         } else {
@@ -126,6 +128,19 @@ class learning_reports_edit_form extends moodleform {
         $mform->addElement('html','</td><td>&nbsp;</td></tr>');
         $mform->addElement('html','</table>');
 
+
+        $mform->addElement('header', 'general', get_string('limitrecordsto', 'local'));
+        if(isset($report->_restrictionoptions) && is_array($report->_restrictionoptions)) {
+            $restrictions = $report->_restrictionoptions;
+            foreach($restrictions as $index => $restriction) {
+                $mform->addElement('advcheckbox',"restriction$index",$restriction['title'],null,null,array(0,$restriction['funcname']));
+                if(in_array($restriction['funcname'], $report->_restriction)) {
+                    $mform->setDefault("restriction$index",$restriction['funcname']);
+                }
+            }
+        } else {
+            $mform->addElement('html','No restrictions found. Ask your developer to add restrictions to /local/learningreports/sources/*/restrictionoptions.php');
+        }
 
         $mform->addElement('hidden','id',$this->_customdata['id']);
         $this->add_action_buttons();

@@ -14,8 +14,10 @@ class learningreport {
     var $_columnoptions;
     var $_defaultcolumns;
     var $_queryoptions;
+    var $_restrictionoptions;
     var $_defaultqueries;
     var $_joinlist;
+    var $_restrictions;
     var $_base;
     var $_filtering;
 
@@ -31,7 +33,7 @@ class learningreport {
             $this->_fullname = $report->fullname;
             $this->_filters = unserialize($report->filters);
             $this->_columns = unserialize($report->columns);
-            $this->_restriction = $report->restriction;
+            $this->_restriction = unserialize($report->restriction);
             $this->_id = $report->id;
 
             // pull in data for this report
@@ -41,6 +43,7 @@ class learningreport {
             $this->_defaultqueries = $this->get_source_data('defaultqueries');
             $this->_filteroptions = $this->get_source_data('filteroptions');
             $this->_joinlist = $this->get_source_data('joinlist');
+            $this->_restrictionoptions = $this->get_source_data('restrictionoptions');
             $this->_base = $this->get_source_data('base');
 
             // generate a filter for this report
@@ -85,10 +88,78 @@ class learningreport {
     // input argument should be like this
     // $arg = array('own', 'local', 'staff');
     // that would give access to all three groups
-    function get_restrictions($restrictions) {
+    function get_restrictions() {
+        global $CFG;
+        $context = get_context_instance(CONTEXT_SYSTEM);
+        // import restriction funcs
+        include_once($CFG->dirroot.'/local/learningreports/restrictionfuncs.php');
+        $restrictions = $this->_restriction;
+        $queries = array();
+        // go through restrictions
+        // saving groups of fields together
+        if(is_array($restrictions)){
+            foreach ($restrictions as $restriction) {
+                // convert restriction funcname into actual entry
+                foreach ($this->_restrictionoptions as $poss) {
+                    if($poss['funcname'] == $restriction) {
+                        $funcname = $poss['funcname'];
+                        $field = $poss['field'];
+                        $capability = $poss['capability'];
+                    }
+                }
 
+                // TODO add cap check
+                if(!isset($capability) ||
+                    has_capability($capability,$context)) {
+                    $func = "learningreport_restriction_{$funcname}";
+                    if(!function_exists($func)) {
+                        error("Restriction function $func does not exist");
+                    }
+                    $values = $func();
+                    if(!empty($values)) {
+                        if(isset($queries[$field])) {
+                            $queries[$field] = array_merge((array)$queries[$field], (array)$values);
+                        } else {
+                            $queries[$field] = $values;
+                        }
+                    } else {
+                        // add an empty query so failed match shows
+                        // no results (not all results!)
+                        if(!isset($queries[$field])) {
+                            $queries[$field] = array();
+                        }
+                    }
+                } else {
+                    if(!isset($queries[$field])) {
+                        $queries[$field] = array();
+                    }
+                }
+
+            }
+        }
+        // now go through each grouping, reducing to unique records
+        $out = array();
+        foreach ($queries as $field=>$query) {
+            // build query
+            if(count($query) > 0) {
+            $string = $field;
+            $string .= " IN (";
+            $string .= implode(',',array_unique((array)$query));
+            $string .= ")";
+            // if no entries query is false
+            } else {
+                $string = "false";
+            }
+            $out[] = $string;
+        }
+
+        // finally build the output
+        if(count($out)>0) {
+            return '('.implode(' OR ',$out).')';
+        } else {
+            return '';
+        }
     }
-
     // generate an sql query for this report
     // if countonly is true, just returns count of query, otherwise return
     // fields as required
@@ -123,21 +194,26 @@ class learningreport {
         // build query starting from base table then adding required joins
         $from = "FROM $base ".implode($joins,' ')." ";
 
-        $sql = "$select $from";
+
+        // restrictions
+        $restrictions = $this->get_restrictions();
+        if ($restrictions != '') {
+            $where = "WHERE $restrictions";
+        } else {
+            $where = '';
+        }
 
         // also apply filter to query
         if($filtered===true) {
             $extrasql = $this->get_sql_filter();
-            if($extrasql && $extrasql!='') {
+            if($extrasql!='' && $where=='') {
                 $where = "WHERE $extrasql";
-            } else {
-                $where = '';
+            } else if ($extrasql!='') {
+                $where = $where." AND $extrasql";
             }
-            $sql .= $where;
         }
 
-        //TODO add restriction here
-
+        $sql = "$select $from $where";
         return $sql;
     }
 
@@ -620,6 +696,7 @@ function learningreports_get_options_from_dir($source) {
 
 // get a particular type of data from the specified source
 // TODO combine two versions of this function
+
 function get_source_data($source, $datatype) {
     global $CFG;
     $file = "{$CFG->dirroot}/local/learningreports/sources/$source/$datatype.php";

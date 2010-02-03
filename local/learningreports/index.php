@@ -28,9 +28,11 @@
         // TODO How to get default data for non existant report
         $todb->columns = serialize(get_source_data($fromform->source,'defaultcolumns'));
         $todb->filters = serialize(get_source_data($fromform->source,'defaultqueries'));
+        $todb->restriction = serialize(get_default_restrictions($fromform->source));
+        /*
         if(isset($fromform->restriction)) {
             $todb->restriction = ($fromform->restriction != '0') ? $fromform->restriction : null;
-        }
+        }*/
         if(insert_record('learning_report',$todb)) {
             redirect($returnurl, get_string('newreportcreated','local'));
         } else {
@@ -78,4 +80,16 @@
     admin_externalpage_print_footer();
 
 
+    function get_default_restrictions($source) {
+        $options = get_source_data($source,'restrictionoptions');
+        $restrictions = array();
+        if(is_array($options)) {
+            foreach ($options as $option) {
+                if($option['default'] == '1') {
+                    $restrictions[] = $option['funcname'];
+                }
+            }
+        }
+        return $restrictions;
+    }
 ?>
