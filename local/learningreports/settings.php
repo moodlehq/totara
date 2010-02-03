@@ -5,18 +5,11 @@ require_once($CFG->dirroot.'/local/learningreports/learningreportslib.php');
 require_once('learning_reports_forms.php');
 
 $id = required_param('id',PARAM_INT); // learning report id
-//TODO
-//$d = optional_param('d', 0, PARAM_INT); // delete
-//$confirm = optional_param('confirm','false', PARAM_BOOL); // confirm delete
-
-$shortname = get_field('learning_report','shortname','id',$id);
-$report = new learningreport($shortname);
-//get_record('learning_report','id',$id);
+$d = optional_param('d', null, PARAM_TEXT); // delete
+$confirm = optional_param('confirm','false', PARAM_BOOL); // confirm delete
 
 admin_externalpage_setup('learningreports');
 $returnurl = $CFG->wwwroot."/local/learningreports/settings.php?id=$id";
-// form definition
-$mform =& new learning_reports_edit_form(null, compact('id','report'));
 
 // TODO
 /*
@@ -32,6 +25,28 @@ if ($d and $confirm) {
     }
 }
  */
+
+
+// TODO
+/*
+if (!empty($d)) {
+
+    admin_externalpage_print_header();
+
+    notice_yesno('Are you sure?',"settings.php?id=$id&amp;d=$d&amp;confirm=1&amp;sesskey=$USER->sesskey", $returnurl);
+
+    admin_externalpage_print_footer();
+    die;
+}
+ */
+
+$shortname = get_field('learning_report','shortname','id',$id);
+$report = new learningreport($shortname);
+//get_record('learning_report','id',$id);
+
+// form definition
+$mform =& new learning_reports_edit_form(null, compact('id','report'));
+
 // form results check
 if ($mform->is_cancelled()) {
     redirect($returnurl);
@@ -61,14 +76,6 @@ admin_externalpage_print_header();
 
 print_heading(get_string('editlearningreport','local',$report->_fullname));
 
-// TODO
-/*
-if ($d) {
-    notice_yesno('Are you sure?',"settings.php?id=$id&amp;d=1&amp;confirm=1&amp;sesskey=$USER->sesskey", $returnurl);
-    print_footer();
-    die;
-}
- */
 
 // display the form
 $mform->display();

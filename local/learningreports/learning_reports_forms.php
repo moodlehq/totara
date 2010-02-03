@@ -59,7 +59,7 @@ class learning_reports_edit_form extends moodleform {
                     $mform->addElement('checkbox',"advanced{$filterid}",'');
                     $mform->setDefault("advanced{$filterid}",$advanced);
                     $mform->addElement('html','</td><td>');
-                    $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/learningreports/deletefilter.php?filterid='.$filterid.'">Delete</a>');
+                    $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/learningreports/settings.php?d=f&amp;id='.$filterid.'">Delete</a>');
                     $mform->addElement('html','</td></tr>');
                 }
 
@@ -101,7 +101,7 @@ class learning_reports_edit_form extends moodleform {
                     $mform->addElement('text',"heading{$columnid}",'');
                     $mform->setDefault("heading{$columnid}",$heading);
                     $mform->addElement('html','</td><td>');
-                    $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/learningreports/deletecolumn.php?columnid='.$columnid.'">Delete</a>');
+                    $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/learningreports/settings.php?d=c&amp;id='.$columnid.'">Delete</a>');
                     $mform->addElement('html','</td></tr>');
                 }
 
