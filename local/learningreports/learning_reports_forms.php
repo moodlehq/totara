@@ -139,7 +139,7 @@ class learning_reports_edit_form extends moodleform {
                 }
             }
         } else {
-            $mform->addElement('html','No restrictions found. Ask your developer to add restrictions to /local/learningreports/sources/*/restrictionoptions.php');
+            $mform->addElement('html','No restrictions found. Ask your developer to add restrictions to /local/learningreports/sources/'.$report->_source.'/restrictionoptions.php');
         }
 
         $mform->addElement('hidden','id',$this->_customdata['id']);
