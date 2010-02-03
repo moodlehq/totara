@@ -119,7 +119,7 @@ class learning_reports_edit_form extends moodleform {
         $mform->addElement('html','</table>');
 
 
-        $mform->addElement('header', 'general', get_string('limitrecordsto', 'local'));
+        $mform->addElement('header', 'general', get_string('onlydisplayrecordsfor', 'local'));
         if(isset($report->_restrictionoptions) && is_array($report->_restrictionoptions)) {
             $restrictions = $report->_restrictionoptions;
             foreach($restrictions as $index => $restriction) {
