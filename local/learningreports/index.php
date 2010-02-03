@@ -58,8 +58,8 @@
         if(isset($fromform->restriction)) {
             $todb->restriction = ($fromform->restriction != '0') ? $fromform->restriction : null;
         }*/
-        if(insert_record('learning_report',$todb)) {
-            redirect($returnurl, get_string('newreportcreated','local'));
+        if($newid = insert_record('learning_report',$todb)) {
+            redirect($CFG->wwwroot.'/local/learningreports/settings.php?id='.$newid);
         } else {
             redirect($returnurl, get_string('error:couldnotcreatenewreport','local'));
         }
