@@ -5,9 +5,16 @@ require_once('learningreportslib.php');
 require_once($CFG->dirroot.'/local/learningreports/download_form.php');
 
 $format    = optional_param('format', '', PARAM_TEXT);
+$id = required_param('id',PARAM_INT);
+
+$shortname = get_field('learning_report','shortname','id',$id);
 
 // new report object
-$report = new learningreport('competency_evidence');
+$report = new learningreport($shortname);
+
+if(!$report->is_capable()) {
+    error('You cannot view this page');
+}
 $download = new download_form();
 if($fromform = $download->get_data()) {
     // print download links instead of table
