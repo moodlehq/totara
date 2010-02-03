@@ -111,7 +111,12 @@
         if(is_array($options)) {
             foreach ($options as $option) {
                 if($option['default'] == '1') {
-                    $restrictions[] = $option['funcname'];
+                    $row = array();
+                    $row['funcname'] = $option['funcname'];
+                    $row['title'] = $option['title'];
+                    $row['field'] = $option['field'];
+                    $row['capability'] = $option['capability'];
+                    $restrictions[] = $row;
                 }
             }
         }

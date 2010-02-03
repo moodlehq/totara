@@ -24,16 +24,6 @@ class learning_reports_new_form extends moodleform {
             // TODO invalid if not set
             //$mform->addRule('source', get_string('error:mustselectsource','local'), 'nonzero');
 
-/*
-            $restrictions = learningreports_get_options_from_dir('restrictions');
-            if(count($restrictions)>0) {
-                $pick = array(0 => 'Select a restriction...');
-                $select = array_merge($pick, $restrictions);
-                $mform->addElement('select','restriction', get_string('restriction','local'), $select);
-            } else {
-                $mform->addElement('static','restriction', get_string('restriction','local'), get_string('error:norestrictions','local'));
-            }
- */
             $this->add_action_buttons();
 
         } else {
@@ -134,8 +124,12 @@ class learning_reports_edit_form extends moodleform {
             $restrictions = $report->_restrictionoptions;
             foreach($restrictions as $index => $restriction) {
                 $mform->addElement('advcheckbox',"restriction$index",$restriction['title'],null,null,array(0,$restriction['funcname']));
-                if(in_array($restriction['funcname'], $report->_restriction)) {
-                    $mform->setDefault("restriction$index",$restriction['funcname']);
+                if($report->_restriction) {
+                    foreach($report->_restriction as $res) {
+                        if($restriction['funcname'] == $res['funcname']) {
+                            $mform->setDefault("restriction$index",$res['funcname']);
+                        }
+                    }
                 }
             }
         } else {
@@ -143,6 +137,7 @@ class learning_reports_edit_form extends moodleform {
         }
 
         $mform->addElement('hidden','id',$this->_customdata['id']);
+        $mform->addElement('hidden','source',$report->_source);
         $this->add_action_buttons();
     }
 }

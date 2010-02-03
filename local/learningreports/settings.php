@@ -143,12 +143,25 @@ function build_filters($fromform) {
 }
 
 function build_restrictions($fromform) {
+    $source = $fromform->source;
+    $options = get_source_data($source,'restrictionoptions');
     $i = 0;
     $rest = "restriction$i";
     $ret = array();
     while(isset($fromform->$rest)) {
         if($fromform->$rest != '0') {
-            $ret[] = $fromform->$rest;
+            if(isset($options) && is_array($options)) {
+                foreach($options as $option) {
+                    if($option['funcname'] == $fromform->$rest) {
+                        $row = array();
+                        $row['funcname'] = $option['funcname'];
+                        $row['title'] = $option['title'];
+                        $row['field'] = $option['field'];
+                        $row['capability'] = $option['capability'];
+                        $ret[] = $row;
+                    }
+                }
+            }
         }
         $i++;
         $rest = "restriction$i";

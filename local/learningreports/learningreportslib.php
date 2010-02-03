@@ -99,16 +99,10 @@ class learningreport {
         // saving groups of fields together
         if(is_array($restrictions)){
             foreach ($restrictions as $restriction) {
-                // convert restriction funcname into actual entry
-                foreach ($this->_restrictionoptions as $poss) {
-                    if($poss['funcname'] == $restriction) {
-                        $funcname = $poss['funcname'];
-                        $field = $poss['field'];
-                        $capability = $poss['capability'];
-                    }
-                }
+                $funcname = $restriction['funcname'];
+                $field = $restriction['field'];
+                $capability = $restriction['capability'];
 
-                // TODO add cap check
                 if(!isset($capability) ||
                     has_capability($capability,$context)) {
                     $func = "learningreport_restriction_{$funcname}";
