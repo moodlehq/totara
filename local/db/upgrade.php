@@ -1025,7 +1025,7 @@ function xmldb_local_upgrade($oldversion) {
 
     if ($result && $oldversion < 2010020500) {
     // increase space for restriction data
-        $table = new XMLDBTable('learningreport');
+        $table = new XMLDBTable('learning_report');
         $field = new XMLDBField('restriction');
         $result = $result && drop_field($table, $field);
         $field = new XMLDBField('restriction');
