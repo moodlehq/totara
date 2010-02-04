@@ -722,7 +722,7 @@ function calendar_top_controls($type, $data) {
             $nextlink = calendar_get_link_next(get_string('monthnext', 'access'), 'index.php?', 0, $nextmonth, $nextyear, $accesshide=true);
             $prevlink = calendar_get_link_previous(get_string('monthprev', 'access'), 'index.php?', 0, $prevmonth, $prevyear, true);
             $content .= "\n".'<div class="calendar-controls">'. $prevlink;
-            $content .= '<span class="hide"> | </span><span class="current"><a href="'.calendar_get_link_href(CALENDAR_URL.'view.php?view=month'.$courseid.'&amp;', 1, $data['m'], $data['y']).'">'.userdate($time, get_string('strftimemonthyear')).'</a></span>';
+            $content .= '<span class="hide"> | </span><span class="current"><a href="'.calendar_get_link_href($CFG->wwwroot.'/blocks/facetoface/calendar.php?view=month'.$courseid.'&amp;', 1, $data['m'], $data['y']).'">'.userdate($time, get_string('strftimemonthyear')).'</a></span>';
             $content .= '<span class="hide"> | </span>'. $nextlink ."\n";
             $content .= "<span class=\"clearer\"><!-- --></span></div>\n";
         break;
@@ -732,7 +732,7 @@ function calendar_top_controls($type, $data) {
             $nextlink = calendar_get_link_next(get_string('monthnext', 'access'), 'view.php?id='.$data['id'].'&amp;', 0, $nextmonth, $nextyear, $accesshide=true);
             $prevlink = calendar_get_link_previous(get_string('monthprev', 'access'), 'view.php?id='.$data['id'].'&amp;', 0, $prevmonth, $prevyear, true);
             $content .= "\n".'<div class="calendar-controls">'. $prevlink;
-            $content .= '<span class="hide"> | </span><span class="current"><a href="'.calendar_get_link_href(CALENDAR_URL.'view.php?view=month'.$courseid.'&amp;', 1, $data['m'], $data['y']).'">'.userdate($time, get_string('strftimemonthyear')).'</a></span>';
+            $content .= '<span class="hide"> | </span><span class="current"><a href="'.calendar_get_link_href($CFG->wwwroot.'/blocks/facetoface/calendar.php?view=month'.$courseid.'&amp;', 1, $data['m'], $data['y']).'">'.userdate($time, get_string('strftimemonthyear')).'</a></span>';
             $content .= '<span class="hide"> | </span>'. $nextlink ."\n";
             $content .= "<span class=\"clearer\"><!-- --></span></div>\n";
         break;
