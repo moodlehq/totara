@@ -10,12 +10,12 @@ $id = required_param('id',PARAM_INT);
 $shortname = get_field('learning_report','shortname','id',$id);
 
 // new report object
-$report = new learningreport($shortname);
+$report = new learningreport($shortname, compact('id'));
 
 if(!$report->is_capable()) {
     error('You cannot view this page');
 }
-$download = new download_form();
+$download = new download_form(null, compact('id'));
 if($fromform = $download->get_data()) {
     // print download links instead of table
     $pagetitle = format_string(get_string('download','local'));
@@ -29,9 +29,9 @@ if($fromform = $download->get_data()) {
     print_box_start();
 
     echo '<ul>';
-    echo '<li><a href="report.php?format=csv">Export in text format</a></li>';
-    echo '<li><a href="report.php?format=ods">Export in ODS format</a></li>';
-    echo '<li><a href="report.php?format=xls">Export in Excel format</a></li>';
+    echo '<li><a href="report.php?id='.$id.'&amp;format=csv">Export in text format</a></li>';
+    echo '<li><a href="report.php?id='.$id.'&amp;format=ods">Export in ODS format</a></li>';
+    echo '<li><a href="report.php?id='.$id.'&amp;format=xls">Export in Excel format</a></li>';
     echo '</ul>';
 
     print_box_end();

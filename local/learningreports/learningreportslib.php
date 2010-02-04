@@ -20,7 +20,7 @@ class learningreport {
     var $_base;
     var $_filtering;
 
-    function learningreport($shortname=null) {
+    function learningreport($shortname=null, $extraparams=null) {
         global $CFG;
         if($shortname == null) {
             error('You must provide a report shortname');
@@ -45,7 +45,7 @@ class learningreport {
             $this->_base = $this->get_source_data('base');
 
             // generate a filter for this report
-            $this->_filtering = new filtering($this);
+            $this->_filtering = new filtering($this, $_SERVER['REQUEST_URI']);
 
         } else {
             error("Report '$shortname' not found.");
