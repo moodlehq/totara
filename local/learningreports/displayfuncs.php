@@ -18,6 +18,16 @@ function learningreport_link_competency($comp, $row) {
     return "<a href=\"{$CFG->wwwroot}/hierarchy/item/view.php?type=competency&id={$compid}\">{$comp}</a>";
 }
 
+function learningreport_link_course_or_comp($name, $row) {
+    global $CFG;
+    $type = $row->type_type;
+    if($type=='Course') {
+        return learningreport_link_course($name, $row);
+    } else {
+        return learningreport_link_competency($name, $row);
+    }
+}
+
 function learningreport_nice_date($date, $row) {
     if($date && $date > 0) {
         return userdate($date, '%d %B %Y');
