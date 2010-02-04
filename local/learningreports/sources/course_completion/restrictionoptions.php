@@ -29,5 +29,15 @@ $restrictionoptions = array(
         'capability' => 'moodle/local:viewlocalreports',
         'default' => '0',
     ),
+    array(
+        'funcname' => 'all',
+        'title' => 'All Records',
+        // note this is a special value - when field set to "all" and
+        // user has capability skips normal process and displays all
+        // records independent of other restrictions
+        'field' => 'all',
+        'capability' => 'moodle/site:viewreports',
+        'default' => '0',
+    ),
 );
 
