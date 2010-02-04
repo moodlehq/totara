@@ -10,7 +10,7 @@ $restrictionoptions = array(
     ),
     array(
         'funcname' => 'staff_records',
-        'title' => 'Immediate Subordinates',
+        'title' => 'Direct Reports',
         'field' => 'base.userid',
         'capability' => 'moodle/local:viewstaffreports',
         'default' => '0',
