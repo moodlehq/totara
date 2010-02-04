@@ -28,6 +28,10 @@
  * @abstract
  */
 abstract class data_object {
+    /**
+     * Table that the class maps to in the database
+     * @var string $table
+     */
     public $table;
 
     /**
