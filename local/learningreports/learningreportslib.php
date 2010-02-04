@@ -13,7 +13,6 @@ class learningreport {
     var $_id;
     var $_columnoptions;
     var $_defaultcolumns;
-    var $_queryoptions;
     var $_restrictionoptions;
     var $_defaultqueries;
     var $_joinlist;
@@ -39,7 +38,6 @@ class learningreport {
             // pull in data for this report
             $this->_columnoptions = $this->get_source_data('columnoptions');
             $this->_defaultcolumns = $this->get_source_data('defaultcolumns');
-            $this->_queryoptions = $this->get_source_data('queryoptions');
             $this->_defaultqueries = $this->get_source_data('defaultqueries');
             $this->_filteroptions = $this->get_source_data('filteroptions');
             $this->_joinlist = $this->get_source_data('joinlist');
@@ -515,12 +513,14 @@ class learningreport {
     }
 
     function get_filters_select() {
-        $filters = $this->_queryoptions;
+       $filters = $this->_filteroptions;
         $ret = array();
-        foreach($filters as $filter) {
-                $key = "{$filter['type']}-{$filter['value']}";
-                $text = $filter['name'];
-                $ret[$key] = $text;
+        foreach($filters as $type => $info) {
+            foreach ($info as $value => $info2) {
+                $label = $info2['label'];
+                $key = "{$type}-{$value}";
+                $ret[$key] = $label;
+            }
         }
         return $ret;
     }
