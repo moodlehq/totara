@@ -136,6 +136,11 @@ class learningreport {
 
                 if(!isset($capability) ||
                     has_capability($capability,$context)) {
+                        // short circuit and show all if 'all' is set
+                        if($field=='all') {
+                            return "( TRUE )";
+                        }
+
                     $func = "learningreport_restriction_{$funcname}";
                     if(!function_exists($func)) {
                         error("Restriction function $func does not exist");
