@@ -141,3 +141,6 @@ $string['error:nosources'] ='No sources found. You must have at least one source
 $string['editlearningreport'] = '$a Settings';
 $string['filterfields'] = 'Filter Fields';
 $string['reportcolumns'] = 'Report Columns';
+$string['onlydisplayrecordsfor'] = 'Only display records for';
+$string['reportupdated'] = 'Report Updated';
+
