@@ -33,7 +33,8 @@ $ADMIN->add('root', new admin_category('frontpage', get_string('frontpage','admi
 $ADMIN->add('root', new admin_category('server', get_string('server','admin')));
 $ADMIN->add('root', new admin_category('mnet', get_string('net','mnet')));
 $ADMIN->add('root', new admin_category('reports', get_string('reports')));
-$ADMIN->add('root', new admin_category('reportsettings', get_string('reportsettings','local')));
+// TODO still work in progress so hide in menu for now
+$ADMIN->add('root', new admin_category('reportsettings', get_string('reportsettings','local'),true));
 $ADMIN->add('root', new admin_category('misc', get_string('miscellaneous')));
 
 // hidden unsupported category
