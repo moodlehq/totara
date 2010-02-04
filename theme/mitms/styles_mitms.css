@@ -1014,3 +1014,7 @@ div.mask {
 select.limited-width {
     width: 200px;
 }
+
+div.fitem div.felement {
+    float: none;
+}
