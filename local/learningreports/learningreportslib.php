@@ -1,6 +1,7 @@
 <?php
 
 require_once("{$CFG->dirroot}/local/learningreports/filters/lib.php");
+require_once($CFG->dirroot.'/local/learningreports/download_form.php');
 require_once($CFG->libdir.'/tablelib.php');
 
 class learningreport {
@@ -549,6 +550,13 @@ class learningreport {
 
 
     // export functions
+
+    function export_button() {
+        global $CFG;
+        $reportid = $this->_id;
+        $download = new download_form($CFG->wwwroot.'/local/learningreports/download.php', compact('reportid'));
+        $download->display();
+    }
 
     function download_ods($fields, $query, $count) {
         global $CFG;

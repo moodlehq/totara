@@ -6,10 +6,10 @@ class download_form extends moodleform {
 
     function definition() {
         $mform =& $this->_form;
-        $id = $this->_customdata['id'];
+        $reportid = $this->_customdata['reportid'];
         //TODO use lang string for button text
         $mform->addElement('submit', 'downloadbutton', 'Export');
-        $mform->addElement('hidden', 'id', $id);
+        $mform->addElement('hidden', 'id', $reportid);
 
     }
 }
