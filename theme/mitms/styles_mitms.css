@@ -1015,6 +1015,8 @@ select.limited-width {
     width: 200px;
 }
 
-div.fitem div.felement {
+/* override float left on pulldown menus inside table */
+div.learningreportsform div.fitem div.felement {
     float: none;
 }
+

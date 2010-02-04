@@ -39,7 +39,7 @@ class learning_reports_edit_form extends moodleform {
         $report = $this->_customdata['report'];
         $mform->addElement('header', 'general', get_string('filterfields', 'local'));
 
-        $mform->addElement('html', '<table><tr><th>Filter</th><th>Advanced?</th><th>Options</th><tr>');
+        $mform->addElement('html', '<div class="learningreportsform"><table><tr><th>Filter</th><th>Advanced?</th><th>Options</th><tr>');
         $filtersselect = $report->get_filters_select();
 
         if(isset($report->_filters)) {
@@ -74,13 +74,13 @@ class learning_reports_edit_form extends moodleform {
         $mform->disabledIf('newadvanced','newfilter', 'eq', 0);
         $mform->addElement('html','</td><td>');
         $mform->addElement('html','</td><td>&nbsp;</td></tr>');
-        $mform->addElement('html','</table>');
+        $mform->addElement('html','</table></div>');
 
 
 
         $mform->addElement('header', 'general', get_string('reportcolumns', 'local'));
 
-        $mform->addElement('html', '<table><tr><th>Column</th><th>Heading</th><th>Options</th><tr>');
+        $mform->addElement('html', '<div class="learningreportsform"><table><tr><th>Column</th><th>Heading</th><th>Options</th><tr>');
         $columnsselect = $report->get_columns_select();
 
         if(isset($report->_columns)) {
@@ -116,7 +116,7 @@ class learning_reports_edit_form extends moodleform {
         $mform->disabledIf('newheading','newcolumns', 'eq', 0);
         $mform->addElement('html','</td><td>');
         $mform->addElement('html','</td><td>&nbsp;</td></tr>');
-        $mform->addElement('html','</table>');
+        $mform->addElement('html','</table></div>');
 
 
         $mform->addElement('header', 'general', get_string('onlydisplayrecordsfor', 'local'));
