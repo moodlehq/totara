@@ -17,6 +17,19 @@ function get_session_status_list() {
     return $status;
 }
 
+function get_yesno_list() {
+    $yn = array();
+    $yn['Yes'] = 'Yes';
+    $yn['No'] = 'No';
+    return $yn;
+}
+
+function get_coursedelivery_list() {
+    $coursedelivery = array();
+    $coursedelivery['Internal'] = 'Internal';
+    $coursedelivery['External'] = 'External';
+    return $coursedelivery;
+}
 /*
 function get_course_categories_list() {
     global $CFG;
@@ -25,7 +38,7 @@ function get_course_categories_list() {
 
     return $cats;
 }
-
+ */
 function get_organisations_list() {
     global $CFG;
     require_once($CFG->dirroot.'/hierarchy/lib.php');
@@ -51,6 +64,7 @@ function get_positions_list() {
 
 }
 
+/*
 function get_completion_status_list() {
     // TODO obtain this scale from single source - db?
     $proficiencyselect = array();

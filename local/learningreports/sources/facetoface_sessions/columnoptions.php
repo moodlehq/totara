@@ -125,7 +125,6 @@ $columnoptions = array(
             'field' => "u.id",
             'joins' => array('signup','user'),
         ),
-        /*
         'manager_name' => array(
             'name' => 'User\'s Manager Name',
             'field' => sql_fullname("manager.firstname","manager.lastname"),
@@ -150,7 +149,7 @@ $columnoptions = array(
             'name' => 'User\'s Position',
             'field' => "position.fullname",
             'joins' => array('user','user_positionid','position'),
-        ),*/
+        ),
         /*
         // just get org id for these, convert to correct depth level in table
         // need a displayfunc to do this
