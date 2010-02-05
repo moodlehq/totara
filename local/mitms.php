@@ -240,19 +240,18 @@ function mitms_print_report_manager($return=false) {
             }
         }
         if($hascap) {
-            $links[] = '<li><a href="' . $CFG->wwwroot . '/local/learningreports/report.php?id='.$report->id.'">' . $report->fullname . '</a></li>';
+            $links[] = '<p><a href="'.$CFG->wwwroot.'/local/learningreports/report.php?id='.$report->id.'" title="'.$report->fullname.'">
+              <img src="'.$CFG->wwwroot.'/pix/i/idp.png" width="32" height="32" /></a>
+              <a href="'.$CFG->wwwroot.'/local/learningreports/report.php?id='.$report->id.'">'.$report->fullname.'</a></p>';
         }
     }
 
     // if there are any links print them
     if(count($links)>0) {
-        $returnstr = '
-     <ul id="mitms-report-manager">
-    ';
+        $returnstr = '';
         $returnstr .= implode("\n",$links);
 
-        $returnstr .= '</ul>
-        ';
+        $returnstr .= '';
     }
 
     if ($return) {
