@@ -8,19 +8,34 @@ $defaultcolumns = array(
         'heading' => 'Participant',
     ),
     array(
+        'type' => 'course',
+        'value' => 'courselink',
+        'heading' => 'Course Name',
+    ),
+    array(
         'type' => 'session',
-        'value' => 'capacity',
-        'heading' => 'Capacity',
+        'value' => 'location',
+        'heading' => 'Location',
+    ),
+    array(
+        'type' => 'session',
+        'value' => 'audit',
+        'heading' => 'Audit',
+    ),
+    array(
+        'type' => 'session',
+        'value' => 'pilot',
+        'heading' => 'Pilot',
+    ),
+    array(
+        'type' => 'session',
+        'value' => 'coursedelivery',
+        'heading' => 'Course Delivery',
     ),
     array(
         'type' => 'date',
-        'value' => 'timestart',
-        'heading' => 'Session Start Time',
-    ),
-    array(
-        'type' => 'date',
-        'value' => 'timefinish',
-        'heading' => 'Session Finish Time',
+        'value' => 'sessiondate',
+        'heading' => 'Session Date',
     ),
 );
 

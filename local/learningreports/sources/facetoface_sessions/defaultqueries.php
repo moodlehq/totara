@@ -1,5 +1,4 @@
 <?php
-/*
 $defaultqueries = array(
     array(
         'type' => 'user',
@@ -7,28 +6,39 @@ $defaultqueries = array(
         'advanced' => 0,
     ),
     array(
-        'type' => 'user',
-        'value' => 'organisationid',
-        'advanced' => 0,
-    ),
-    array(
-        'type' => 'course_completion',
-        'value' => 'organisationid',
-        'advanced' => 0,
-    ),
-    array(
-        'type' => 'user',
-        'value' => 'positionid',
-        'advanced' => 0,
-    ),
-    array(
-        'type' => 'course_completion',
-        'value' => 'positionid',
-        'advanced' => 0,
-    ),
-    array(
         'type' => 'course',
         'value' => 'fullname',
+        'advanced' => 0,
+    ),
+    array(
+        'type' => 'status',
+        'value' => 'statuscode',
+        'advanced' => 0,
+    ),
+    array(
+        'type' => 'date',
+        'value' => 'sessiondate',
+        'advanced' => 0,
+    ),
+/*
+    array(
+        'type' => 'user',
+        'value' => 'organisationid',
+        'advanced' => 0,
+    ),
+    array(
+        'type' => 'course_completion',
+        'value' => 'organisationid',
+        'advanced' => 0,
+    ),
+    array(
+        'type' => 'user',
+        'value' => 'positionid',
+        'advanced' => 0,
+    ),
+    array(
+        'type' => 'course_completion',
+        'value' => 'positionid',
         'advanced' => 0,
     ),
     array(
@@ -46,7 +56,7 @@ $defaultqueries = array(
         'value' => 'status',
         'advanced' => 0,
     ),
-);
  */
+);
 
 
