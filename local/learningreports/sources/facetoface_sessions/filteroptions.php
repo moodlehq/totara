@@ -2,17 +2,17 @@
 
 $filteroptions = array(
     'user' => array(
-        'firstname' => array(
-            'filtertype' => 'text',
-            'label' => get_string('lastname'),
-        ),
-        'lastname' => array(
-            'filtertype' => 'text',
-            'label' => get_string('firstname'),
-        ),
         'fullname' => array(
             'filtertype' => 'text',
             'label' => 'Participant Name',
+        ),
+        'firstname' => array(
+            'filtertype' => 'text',
+            'label' => get_string('firstname'),
+        ),
+        'lastname' => array(
+            'filtertype' => 'text',
+            'label' => get_string('lastname'),
         ),
         'username' => array(
             'filtertype' => 'text',

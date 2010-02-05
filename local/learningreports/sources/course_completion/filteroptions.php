@@ -2,13 +2,17 @@
 
 $filteroptions = array(
     'user' => array(
+        'fullname' => array(
+            'filtertype' => 'text',
+            'label' => 'Participant Name',
+        ),
         'firstname' => array(
             'filtertype' => 'text',
-            'label' => get_string('lastname'),
+            'label' => get_string('firstname'),
         ),
         'lastname' => array(
             'filtertype' => 'text',
-            'label' => get_string('firstname'),
+            'label' => get_string('lastname'),
         ),
         'username' => array(
             'filtertype' => 'text',
@@ -17,10 +21,6 @@ $filteroptions = array(
         'idnumber' => array(
             'filtertype' => 'text',
             'label' => 'ID Number',
-        ),
-        'fullname' => array(
-            'filtertype' => 'text',
-            'label' => 'Participant Name',
         ),
         'organisationid' => array(
             'filtertype' => 'select',
