@@ -39,9 +39,8 @@ function get_positions_list() {
 function get_completion_status_list() {
     // TODO obtain this scale from single source - db?
     $proficiencyselect = array();
-    $proficiencyselect[3] = 'Competent';
-    $proficiencyselect[2] = 'Competent with Supervison';
-    $proficiencyselect[1] = 'Not Competency';
+    $proficiencyselect['Completed'] = 'Completed';
+    $proficiencyselect['Not Completed'] = 'Not Completed';
 
     return $proficiencyselect;
 }
