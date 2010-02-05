@@ -241,7 +241,7 @@ function mitms_print_report_manager($return=false) {
         }
         if($hascap) {
             $links[] = '<p><a href="'.$CFG->wwwroot.'/local/learningreports/report.php?id='.$report->id.'" title="'.$report->fullname.'">
-              <img src="'.$CFG->wwwroot.'/pix/i/idp.png" width="32" height="32" /></a>
+              <img src="'.$CFG->wwwroot.'/pix/i/reports.png" width="32" height="32" /></a>
               <a href="'.$CFG->wwwroot.'/local/learningreports/report.php?id='.$report->id.'">'.$report->fullname.'</a></p>';
         }
     }
