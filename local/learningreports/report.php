@@ -39,7 +39,7 @@ if($countfiltered>0) {
     // export button
     $report->export_button();
 } else {
-    print "No results found. Try removing one or more filters.";
+    print "No results found.";
 }
 
 
