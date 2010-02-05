@@ -89,6 +89,7 @@ function build_columns($fromform) {
     $i = 0;
     $col = "column$i";
     $head = "heading$i";
+    $ret = array();
     while(isset($fromform->$col)) {
         $parts = explode('-',$fromform->$col);
         $ret[$i] = array(
@@ -121,6 +122,7 @@ function build_filters($fromform) {
     $i = 0;
     $filt = "filter$i";
     $adv = "advanced$i";
+    $ret = array();
     while(isset($fromform->$filt)) {
         $parts = explode('-',$fromform->$filt);
         $thisadv = (isset($fromform->$adv)) ? 1 : 0;
