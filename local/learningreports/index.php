@@ -112,10 +112,11 @@
             foreach ($options as $option) {
                 if($option['default'] == '1') {
                     $row = array();
-                    $row['funcname'] = $option['funcname'];
-                    $row['title'] = $option['title'];
-                    $row['field'] = $option['field'];
-                    $row['capability'] = $option['capability'];
+                    $row['funcname'] = (isset($option['funcname'])) ? $option['funcname'] : null;
+                    $row['title'] = (isset($option['title'])) ? $option['title'] : null;
+                    $row['field'] = (isset($option['field'])) ? $option['field'] : null;
+                    $row['joins'] = (isset($option['joins'])) ? $option['joins'] : null;
+                    $row['capability'] = (isset($option['capability'])) ? $option['capability'] : null;
                     $restrictions[] = $row;
                 }
             }

@@ -40,6 +40,7 @@ $restrictionoptions = array(
         // user has capability skips normal process and displays all
         // records independent of other restrictions
         'field' => 'all',
+        'joins' => array('signup'),
         'capability' => 'moodle/site:viewreports',
         'default' => '0',
     ),

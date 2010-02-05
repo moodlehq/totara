@@ -202,10 +202,11 @@ class learningreport {
         // get the fields needed to display requested columns
         $fields = $this->get_column_fields();
 
-        // get the joins needed to display requested columns and do filtering
+        // get the joins needed to display requested columns and do filtering and restrictions
         $columnjoins = $this->get_column_joins();
         $filterjoins = $this->get_filter_joins();
-        $joins = array_merge($columnjoins, $filterjoins);
+        $restjoins = $this->get_restriction_joins();
+        $joins = array_merge($columnjoins, $filterjoins, $restjoins);
 
         // now build the query from the snippets
 
@@ -368,6 +369,26 @@ class learningreport {
         }
         return $fields;
 
+    }
+
+    function get_restriction_joins() {
+        $source = $this->_source;
+        $restrictions = $this->_restriction;
+        $joinlist = $this->_joinlist;
+        $joins = array();
+        foreach($restrictions as $restriction) {
+            $rest_joins = (isset($restriction['joins'])) ? $restriction['joins'] : null;
+            if($rest_joins && is_array($rest_joins)) {
+                foreach($rest_joins as $rest_join) {
+                    if(array_key_exists($rest_join, $joinlist)) {
+                        $joins[$rest_join] = $joinlist[$rest_join];
+                    } else {
+                        error("get_restriction_joins(): join name $rest_join not in joinlist");
+                    }
+                }
+            }
+        }
+        return $joins;
     }
 
 

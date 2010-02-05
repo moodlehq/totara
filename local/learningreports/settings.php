@@ -163,10 +163,12 @@ function build_restrictions($fromform) {
                 foreach($options as $option) {
                     if($option['funcname'] == $fromform->$rest) {
                         $row = array();
-                        $row['funcname'] = $option['funcname'];
-                        $row['title'] = $option['title'];
-                        $row['field'] = $option['field'];
-                        $row['capability'] = $option['capability'];
+                        // TODO check if exists first (here and in index.php)
+                        $row['funcname'] = (isset($option['funcname'])) ? $option['funcname'] : null;
+                        $row['title'] = (isset($option['title'])) ? $option['title'] : null;
+                        $row['field'] = (isset($option['field'])) ? $option['field'] : null;
+                        $row['joins'] = (isset($option['joins'])) ? $option['joins'] : null;
+                        $row['capability'] = (isset($option['capability'])) ? $option['capability'] : null;
                         $ret[] = $row;
                     }
                 }
