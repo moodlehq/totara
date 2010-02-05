@@ -113,10 +113,15 @@ function mitms_print_my_learning_nav($return=false) {
     global $CFG, $USER;
 
     $returnstr = '
-     <ul id="mitms-nav">
-       <li><a href="' . $CFG->wwwroot . '/plan/index.php">' . get_string('developmentplan', 'local') . '</a></li>
-       <li><a href="' . $CFG->wwwroot . '/blocks/facetoface/mysignups.php">' . get_string('bookings', 'local') . '</a></li>
-       <li><a href="' . $CFG->wwwroot . '/my/records.php?id='.$USER->id.'">' . get_string('recordoflearning', 'local') . '</a></li>
+       <p style="text-align: left;">
+         <a href="'.$CFG->wwwroot.'/plan/index.php" title="'.get_string('developmentplan','local').'"><img src="'. $CFG->wwwroot.'/pix/i/idp.png" width="32" height="32" /></a>
+         <a href="'.$CFG->wwwroot.'/plan/index.php">' . get_string('developmentplan', 'local') . '</a></p>
+       <p style="text-align: left;">
+         <a href="'.$CFG->wwwroot.'/blocks/facetoface/mysignups.php" title=""><img src="'.$CFG->wwwroot.'/pix/i/bookings.png" width="32" height="32" /></a>
+         <a href="'.$CFG->wwwroot.'/blocks/facetoface/mysignups.php">'.get_string('bookings','local').'</a></p>
+       <p style="text-align: left;">
+         <a href="'.$CFG->wwwroot.'/my/records.php?id='.$USER->id.'" title=""><img src="' . $CFG->wwwroot . '/pix/i/rol.png" width="32" height="32" /></a>
+         <a href="'.$CFG->wwwroot.'/my/records.php?id='.$USER->id.'">'.get_string('recordoflearning','local').'</a></p>
     ';
     $returnstr .= '
      </ul>
