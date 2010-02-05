@@ -86,7 +86,7 @@ class learningreport {
     function get_capability_list() {
         $restrictions = $this->_restriction;
         $capabilities = array();
-        if($capabilities && is_array($capabilities)) {
+        if($restrictions && is_array($restrictions)) {
             foreach ($restrictions as $restriction) {
                 $capabilities[] = $restriction['capability'];
             }
