@@ -37,6 +37,7 @@ class learning_reports_edit_form extends moodleform {
         global $CFG;
         $mform =& $this->_form;
         $report = $this->_customdata['report'];
+        $id = $this->_customdata['id'];
         $mform->addElement('header', 'general', get_string('filterfields', 'local'));
 
         $mform->addElement('html', '<div class="learningreportsform"><table><tr><th>Filter</th><th>Advanced?</th><th>Options</th><tr>');
@@ -59,7 +60,7 @@ class learning_reports_edit_form extends moodleform {
                     $mform->addElement('checkbox',"advanced{$fid}",'');
                     $mform->setDefault("advanced{$fid}",$advanced);
                     $mform->addElement('html','</td><td>');
-                    $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/learningreports/settings.php?d=f&amp;id='.$filterid.'">Delete</a>');
+                    $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/learningreports/settings.php?id='.$id.'&amp;fid='.$fid.'">Delete</a>');
                     $mform->addElement('html','</td></tr>');
                 }
 
@@ -101,7 +102,7 @@ class learning_reports_edit_form extends moodleform {
                     $mform->addElement('text',"heading{$cid}",'');
                     $mform->setDefault("heading{$cid}",$heading);
                     $mform->addElement('html','</td><td>');
-                    $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/learningreports/settings.php?d=c&amp;id='.$columnid.'">Delete</a>');
+                    $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/learningreports/settings.php?id='.$id.'&amp;cid='.$cid.'">Delete</a>');
                     $mform->addElement('html','</td></tr>');
                 }
 

@@ -722,7 +722,49 @@ class learningreport {
 
     }
 
+    function delete_column($cid) {
+        $id = $this->_id;
+        // generate new version of columns, minus the one to delete
+        $newcolumns = array();
+        foreach($this->_columns as $index => $column) {
+            if($index != $cid) {
+                $newcolumns[] = $column;
+            }
+        }
 
+        // update record in db
+        $todb = new object();
+        $todb->id = $id;
+        $todb->columns = serialize($newcolumns);
+        if(update_record('learning_report', $todb)) {
+            $this->_columns = $newcolumns;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function delete_filter($fid) {
+        $id = $this->_id;
+        // generate new version of filters, minus the one to delete
+        $newfilters = array();
+        foreach($this->_filters as $index => $filter) {
+            if($index != $fid) {
+                $newfilters[] = $filter;
+            }
+        }
+
+        // update record in db
+        $todb = new object();
+        $todb->id = $id;
+        $todb->filters = serialize($newfilters);
+        if(update_record('learning_report', $todb)) {
+            $this->_filters = $newfilters;
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 } // End of learningreport class
 
