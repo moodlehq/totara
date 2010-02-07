@@ -6,7 +6,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-$THEME->sheets = array('styles_menu','styles_page','styles_buttons','styles_mitms');
+$THEME->sheets = array('styles_menu','styles_page','styles_buttons','styles_mitms','styles_mitms_common');
 
 /// This variable is an array containing the names of all the 
 /// stylesheet files you want included in this theme, and in what order
