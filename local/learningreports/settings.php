@@ -22,12 +22,12 @@ $report = new learningreport($shortname);
 
 
 // delete fields or columns
-if ((!empty($cid) || !empty($fid)) and $confirm ) {
+if ($d and (isset($cid) || isset($fid)) and $confirm ) {
     if(!confirm_sesskey()) {
         print_error('confirmsesskeybad','error');
     }
 
-    if(!empty($cid)) {
+    if(isset($cid)) {
         if($report->delete_column($cid)) {
             redirect($returnurl);
         } else {
@@ -35,7 +35,7 @@ if ((!empty($cid) || !empty($fid)) and $confirm ) {
         }
     }
 
-    if(!empty($fid)) {
+    if(isset($fid)) {
         if($report->delete_filter($fid)) {
             redirect($returnurl);
         } else {
@@ -47,16 +47,16 @@ if ((!empty($cid) || !empty($fid)) and $confirm ) {
 
 
 // confirm deletion of field or column
-if (!empty($cid) || !empty($fid)) {
+if ($d && (isset($cid) || isset($fid))) {
 
     admin_externalpage_print_header();
 
-    if(!empty($cid)) {
-        notice_yesno('Are you sure you want to delete this column?',"settings.php?id=$id&amp;cid=$cid&amp;confirm=1&amp;sesskey=$USER->sesskey", $returnurl);
+    if(isset($cid)) {
+        notice_yesno('Are you sure you want to delete this column?',"settings.php?d=1&amp;id=$id&amp;cid=$cid&amp;confirm=1&amp;sesskey=$USER->sesskey", $returnurl);
     }
 
-    if(!empty($fid)) {
-        notice_yesno('Are you sure you want to delete this filter?',"settings.php?id=$id&amp;fid=$fid&amp;confirm=1&amp;sesskey=$USER->sesskey", $returnurl);
+    if(isset($fid)) {
+        notice_yesno('Are you sure you want to delete this filter?',"settings.php?d=1&amp;id=$id&amp;fid=$fid&amp;confirm=1&amp;sesskey=$USER->sesskey", $returnurl);
     }
 
     admin_externalpage_print_footer();
@@ -87,7 +87,7 @@ $mform =& new learning_reports_edit_form(null, compact('id','report'));
 
 // form results check
 if ($mform->is_cancelled()) {
-    redirect($returnurl);
+    redirect($CFG->wwwroot.'/local/learningreports/');
 }
 if ($fromform = $mform->get_data()) {
 
