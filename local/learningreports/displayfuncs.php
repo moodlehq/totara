@@ -84,3 +84,4 @@ function learningreport_facetoface_status($status, $row) {
     }
 
 }
+

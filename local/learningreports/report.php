@@ -13,7 +13,7 @@ $shortname = get_field('learning_report','shortname','id',$id);
 $report = new learningreport($shortname);
 
 if(!$report->is_capable()) {
-    error('You cannot view this page');
+    error(get_string('nopermission','local'));
 }
 
 $countfiltered = $report->get_filtered_count();
@@ -24,10 +24,10 @@ $navlinks[] = array('name' => get_string('learningreports','local'), 'link'=> ''
 $navlinks[] = array('name' => $fullname, 'link'=> '', 'type'=>'title');
 
 $navigation = build_navigation($navlinks);
-print_header_simple($pagetitle, '', $navigation, '', '', true);
+print_header_simple($pagetitle, '', $navigation, '', '', true, print_edit_button($id));
 
 // display heading including filtering stats
-print_heading("$fullname: Showing $countfiltered / $countall");
+print_heading("$fullname: ".get_string('showing','local')." $countfiltered / $countall");
 
 // print filters
 $report->display_add();
@@ -39,10 +39,20 @@ if($countfiltered>0) {
     // export button
     $report->export_button();
 } else {
-    print "No results found.";
+    print get_string('noresultsfound','local');
 }
 
 
 print_footer();
 
 
+function print_edit_button($id) {
+    global $CFG;
+    $context = get_context_instance(CONTEXT_SYSTEM);
+    // TODO what capability should be required here?
+    if(has_capability('moodle/local:admin',$context)) {
+        return print_single_button($CFG->wwwroot.'/local/learningreports/settings.php', array('id'=>$id), get_string('editthisreport','local'), 'get', '_self', true);
+    } else {
+        return '';
+    }
+}

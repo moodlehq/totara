@@ -20,14 +20,14 @@
             print_error('confirmsesskeybad','error');
         }
         if(delete_records('learning_report','id',$id)) {
-            redirect($returnurl, 'Report Deleted');
+            redirect($returnurl, get_string('reportdeleted', 'local'));
         } else {
-            redirect($returnurl, 'Report could not be deleted');
+            redirect($returnurl, get_string'reportnotdeleted', 'local'));
         }
     } else if($d) {
         admin_externalpage_print_header();
         print_heading(get_string('learningreports','local'));
-        notice_yesno('Are you sure you want to delete this report?',"index.php?id={$id}&amp;d=1&amp;confirm=1&amp;sesskey={$USER->sesskey}", $returnurl);
+        notice_yesno(get_string('reportconfirmdelete','local'),"index.php?id={$id}&amp;d=1&amp;confirm=1&amp;sesskey={$USER->sesskey}", $returnurl);
         print_footer();
         die;
     }
@@ -49,15 +49,10 @@
         $todb->fullname = $fromform->fullname;
         $todb->shortname = $fromform->shortname;
         $todb->source = ($fromform->source != '0') ? $fromform->source : null;
-        // create with default columns and queries
-        // TODO How to get default data for non existant report
+        // create with default columns, restrictions and queries
         $todb->columns = serialize(get_source_data($fromform->source,'defaultcolumns'));
         $todb->filters = serialize(get_source_data($fromform->source,'defaultqueries'));
         $todb->restriction = serialize(get_default_restrictions($fromform->source));
-        /*
-        if(isset($fromform->restriction)) {
-            $todb->restriction = ($fromform->restriction != '0') ? $fromform->restriction : null;
-        }*/
         if($newid = insert_record('learning_report',$todb)) {
             redirect($CFG->wwwroot.'/local/learningreports/settings.php?id='.$newid);
         } else {
@@ -96,7 +91,7 @@
     $reportstable->data = $data;
     print_table($reportstable);
     } else {
-        print "No reports have been created";
+        print get_string('noreports','local');
     }
 
     // display mform

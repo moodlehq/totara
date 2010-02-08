@@ -14,13 +14,13 @@ class learning_reports_new_form extends moodleform {
 
             $mform->addElement('text', 'fullname', get_string('reportname', 'local'), 'maxlength="255"');
             $mform->setType('fullname', PARAM_TEXT);
-            $mform->addRule('fullname','Required','required');
+            $mform->addRule('fullname',null,'required');
 
             $mform->addElement('text', 'shortname', get_string('reportshortname', 'local'), 'maxlength="255"');
             $mform->setType('shortname', PARAM_TEXT);
-            $mform->addRule('shortname','Required','required');
+            $mform->addRule('shortname',null,'required');
 
-            $pick = array(0 => 'Select a source...');
+            $pick = array(0 => get_string('selectsource','local'));
             $select = array_merge($pick, $sources);
             $mform->addElement('select','source', get_string('source','local'), $select);
             // TODO invalid if not set
@@ -46,26 +46,28 @@ class learning_reports_edit_form extends moodleform {
         $report = $this->_customdata['report'];
         $id = $this->_customdata['id'];
 
-        $mform->addElement('header', 'general', get_string('editreport', 'local'));
+        $mform->addElement('header', 'general', get_string('reportsettings', 'local'));
 
-        $mform->addElement('text', 'fullname', 'Report Title', array('size'=>'30'));
+        $mform->addElement('text', 'fullname', get_string('reporttitle','local'), array('size'=>'30'));
         $mform->setDefault('fullname', $report->_fullname);
-        $mform->addRule('fullname','Required','required');
-        $mform->addElement('text', 'shortname', 'Unique name', array('size'=>'30'));
+        $mform->addRule('fullname',null,'required');
+        $mform->addElement('text', 'shortname', get_string('uniquename','local'), array('size'=>'30'));
         $mform->setDefault('shortname', $report->_shortname);
-        $mform->addRule('shortname','Required','required');
-        $mform->addElement('static', 'reportsource', 'Source', $report->_source);
-
+        $mform->addRule('shortname',null,'required');
+        $mform->addElement('static', 'reportsource', get_string('source','local'), $report->_source);
 
         $mform->addElement('header', 'general', get_string('filterfields', 'local'));
 
-        $mform->addElement('html', '<div class="learningreportsform"><table><tr><th>Filter</th><th>Advanced?</th><th>Options</th><tr>');
+        $mform->addElement('html', '<div class="learningreportsform"><table><tr><th>'.get_string('filter','local').
+            '</th><th>'.get_string('advanced','local').'</th><th>'.get_string('options','local').'</th><tr>');
+
         $filtersselect = $report->get_filters_select();
 
-        $strmovedown = "Move Down";
-        $strmoveup = "Move Up";
-        $strdelete = "Delete";
+        $strmovedown = get_string('movedown','local');
+        $strmoveup = get_string('moveup','local');
+        $strdelete = get_string('delete','local');
         $spacer = '<img src="'.$CFG->wwwroot.'/pix/spacer.gif" class="iconsmall" alt="" />';
+
         if(isset($report->_filters)) {
             $filters = $report->_filters;
             if(is_array($filters)) {
@@ -104,7 +106,7 @@ class learning_reports_edit_form extends moodleform {
         }
 
         $mform->addElement('html','<tr><td>');
-        $newfilterselect = array_merge(array(0=>'Add another filter...'),$filtersselect);
+        $newfilterselect = array_merge(array(0=>get_string('addanotherfilter','local')),$filtersselect);
         $mform->addElement('select','newfilter','',$newfilterselect);
         $mform->addElement('html','</td><td>');
         $mform->addElement('checkbox','newadvanced','');
@@ -113,11 +115,11 @@ class learning_reports_edit_form extends moodleform {
         $mform->addElement('html','</td><td>&nbsp;</td></tr>');
         $mform->addElement('html','</table></div>');
 
-
-
         $mform->addElement('header', 'general', get_string('reportcolumns', 'local'));
 
-        $mform->addElement('html', '<div class="learningreportsform"><table><tr><th>Column</th><th>Heading</th><th>Options</th><tr>');
+        $mform->addElement('html', '<div class="learningreportsform"><table><tr><th>'.get_string('column','local').
+            '</th><th>'.get_string('heading','local').'</th><th>'.get_string('options','local').'</th><tr>');
+
         $columnsselect = $report->get_columns_select();
 
         if(isset($report->_columns)) {
@@ -164,7 +166,7 @@ class learning_reports_edit_form extends moodleform {
         }
 
         $mform->addElement('html','<tr><td>');
-        $newcolumnsselect = array_merge(array(0=>'Add another column...'),$columnsselect);
+        $newcolumnsselect = array_merge(array(0=>get_string('addanothercolumn','local')),$columnsselect);
         $mform->addElement('select','newcolumns','',$newcolumnsselect);
         $mform->addElement('html','</td><td>');
         $mform->addElement('text','newheading','');
@@ -177,6 +179,7 @@ class learning_reports_edit_form extends moodleform {
         $mform->addElement('header', 'general', get_string('onlydisplayrecordsfor', 'local'));
         if(isset($report->_restrictionoptions) && is_array($report->_restrictionoptions)) {
             $restrictions = $report->_restrictionoptions;
+
             foreach($restrictions as $index => $restriction) {
                 $mform->addElement('advcheckbox',"restriction$index",$restriction['title'],null,null,array(0,$restriction['funcname']));
                 if($report->_restriction) {
@@ -187,8 +190,9 @@ class learning_reports_edit_form extends moodleform {
                     }
                 }
             }
+            $mform->addElement('html',get_string('restrictionswarning','local'));
         } else {
-            $mform->addElement('html','No restrictions found. Ask your developer to add restrictions to /local/learningreports/sources/'.$report->_source.'/restrictionoptions.php');
+            $mform->addElement('html',get_string('norestrictionsfound','local',$report->_source));
         }
 
         $mform->addElement('hidden','id',$this->_customdata['id']);
@@ -216,13 +220,15 @@ function validate_shortname($data) {
             unset($foundreports[$data['id']]);
         }
         if(!empty($foundreports)) {
-            $errors['shortname'] = 'Short name taken';
+            $errors['shortname'] = get_string('shortnametaken','local');
         }
     }
     return $errors;
 
 }
 
+// check each column is only included once
+// (breaks flexible table otherwise)
 function validate_unique_columns($data) {
     $errors = array();
     $i = 0;
@@ -230,7 +236,7 @@ function validate_unique_columns($data) {
     $used_cols = array();
     while(isset($data[$field])) {
         if(array_key_exists($data[$field], $used_cols)) {
-            $errors[$field] = 'No repeat cols';
+            $errors[$field] = get_string('norepeatcols','local');
         } else {
             $used_cols[$data[$field]] = 1;
         }
@@ -239,23 +245,5 @@ function validate_unique_columns($data) {
     }
     return $errors;
 }
-/*
-function norepeatcol($col) {
-    global $columns;
-    $count = 0;
-    print "## $col ##";
-    foreach($columns as $column) {
-        if ($col == "{$column['type']}-{$column['value']}") {
-            $count++;
-        }
-    }
-    print "@@@@ $count @@@@";
-    if($count>1) {
-        return false;
-    } else {
-        return true;
-    }
 
-}
- */
 
