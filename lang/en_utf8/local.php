@@ -186,5 +186,6 @@ $string['exportcsv'] = 'Export in text format';
 $string['exportods'] = 'Export in ODS format';
 $string['exportxls'] = 'Export in Excel format';
 $string['exportproblem'] = 'There was a problem downloading the file';
+$string['noshortname'] = 'You must provide a report shortname';
 
 

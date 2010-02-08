@@ -24,7 +24,7 @@ class reportbuilder {
     function reportbuilder($shortname=null, $extraparams=null) {
         global $CFG;
         if($shortname == null) {
-            error('You must provide a report shortname');
+            error(get_string('noshortname','local'));
         }
 
         if ($report = get_record('report_builder', 'shortname', $shortname)) {
