@@ -43,9 +43,15 @@ class learning_reports_edit_form extends moodleform {
         $mform->addElement('html', '<div class="learningreportsform"><table><tr><th>Filter</th><th>Advanced?</th><th>Options</th><tr>');
         $filtersselect = $report->get_filters_select();
 
+        $strmovedown = "Move Down";
+        $strmoveup = "Move Up";
+        $strdelete = "Delete";
+        $spacer = '<img src="'.$CFG->wwwroot.'/pix/spacer.gif" class="iconsmall" alt="" />';
         if(isset($report->_filters)) {
             $filters = $report->_filters;
             if(is_array($filters)) {
+                $filtercount = count($filters);
+                $i = 1;
                 foreach($filters as $index => $filter) {
                     $row = array();
                     $type = $filter['type'];
@@ -60,8 +66,19 @@ class learning_reports_edit_form extends moodleform {
                     $mform->addElement('checkbox',"advanced{$fid}",'');
                     $mform->setDefault("advanced{$fid}",$advanced);
                     $mform->addElement('html','</td><td>');
-                    $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/learningreports/settings.php?id='.$id.'&amp;fid='.$fid.'">Delete</a>');
+                    $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/learningreports/settings.php?d=1&amp;id='.$id.'&amp;fid='.$fid.'" title="'.$strdelete.'"><img src="'.$CFG->pixpath.'/t/delete.gif" class="iconsmall" alt="'.$strdelete.'" /></a>');
+                    if($i != 1) {
+                        $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/learningreports/settings.php?m=up&amp;id='.$id.'&amp;fid='.$fid.'" title="'.$strmoveup.'"><img src="'.$CFG->pixpath.'/t/up.gif" class="iconsmall" alt="'.$strmoveup.'" /></a>');
+                    } else {
+                        $mform->addElement('html', $spacer);
+                    }
+                    if($i != $filtercount) {
+                        $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/learningreports/settings.php?m=down&amp;id='.$id.'&amp;fid='.$fid.'" title="'.$strmovedown.'"><img src="'.$CFG->pixpath.'/t/down.gif" class="iconsmall" alt="'.$strmovedown.'" /></a>');
+                    } else {
+                        $mform->addElement('html', $spacer);
+                    }
                     $mform->addElement('html','</td></tr>');
+                    $i++;
                 }
 
             }
@@ -86,7 +103,10 @@ class learning_reports_edit_form extends moodleform {
 
         if(isset($report->_columns)) {
             $columns = $report->_columns;
+
             if(is_array($columns)) {
+                $colcount = count($columns);
+                $i = 1;
                 foreach($columns as $index => $column) {
                     $row = array();
                     $type = $column['type'];
@@ -96,14 +116,29 @@ class learning_reports_edit_form extends moodleform {
                     $cid = $index;
                     $mform->addElement('html','<tr><td>');
                     $mform->addElement('select',"column{$cid}",'',$columnsselect);
-                    //$mform->addRule("column{$cid}",'Cannot display same column multiple times','callback','norepeatcol');
                     $mform->setDefault("column{$cid}", $field);
                     $mform->addElement('html','</td><td>');
                     $mform->addElement('text',"heading{$cid}",'');
                     $mform->setDefault("heading{$cid}",$heading);
                     $mform->addElement('html','</td><td>');
-                    $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/learningreports/settings.php?id='.$id.'&amp;cid='.$cid.'">Delete</a>');
+                    // delete link
+                    $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/learningreports/settings.php?d=1&amp;id='.$id.'&amp;cid='.$cid.'" title="'.$strdelete.'"><img src="'.$CFG->pixpath.'/t/delete.gif" class="iconsmall" alt="'.$strdelete.'" /></a>');
+                    // move up link
+                    if($i != 1) {
+                        $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/learningreports/settings.php?m=up&amp;id='.$id.'&amp;cid='.$cid.'" title="'.$strmoveup.'"><img src="'.$CFG->pixpath.'/t/up.gif" class="iconsmall" alt="'.$strmoveup.'" /></a>');
+                    } else {
+                        $mform->addElement('html', $spacer);
+                    }
+
+                    // move down link
+                    if($i != $filtercount) {
+                        $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/learningreports/settings.php?m=down&amp;id='.$id.'&amp;cid='.$cid.'" title="'.$strmovedown.'"><img src="'.$CFG->pixpath.'/t/down.gif" class="iconsmall" alt="'.$strmovedown.'" /></a>');
+                    } else {
+                        $mform->addElement('html', $spacer);
+                    }
+
                     $mform->addElement('html','</td></tr>');
+                    $i++;
                 }
 
             }

@@ -725,6 +725,7 @@ class learningreport {
     function delete_column($cid) {
         $id = $this->_id;
         // generate new version of columns, minus the one to delete
+        // this will update the array indices
         $newcolumns = array();
         foreach($this->_columns as $index => $column) {
             if($index != $cid) {
@@ -747,6 +748,7 @@ class learningreport {
     function delete_filter($fid) {
         $id = $this->_id;
         // generate new version of filters, minus the one to delete
+        // this will update the array indices
         $newfilters = array();
         foreach($this->_filters as $index => $filter) {
             if($index != $fid) {
@@ -765,6 +767,71 @@ class learningreport {
             return false;
         }
     }
+
+    function move_column($cid, $updown) {
+        $id = $this->_id;
+
+        // assumes array is well behaved (indexes 0 -> N-1)
+        $first = 0;
+        $last = count($this->_columns)-1;
+        foreach($this->_columns as $index => $column) {
+            // do a down move
+            if($index == $cid && $updown == 'down' && $index != $last) {
+                $temp = $column;
+                $this->_columns[$index] = $this->_columns[$index+1];
+                $this->_columns[$index+1] = $temp;
+            }
+            // do an up move
+            if($index == $cid && $updown == 'up' && $index != $first) {
+                $temp = $column;
+                $this->_columns[$index] = $this->_columns[$index-1];
+                $this->_columns[$index-1] = $temp;
+            }
+        }
+        // save results
+        $todb = new object();
+        $todb->id = $id;
+        $todb->columns = serialize($this->_columns);
+        if(update_record('learning_report',$todb)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    function move_filter($fid, $updown) {
+        $id = $this->_id;
+
+        // assumes array is well behaved (indexes 0 -> N-1)
+        $first = 0;
+        $last = count($this->_filters)-1;
+        foreach($this->_filters as $index => $filter) {
+            // do a down move
+            if($index == $fid && $updown == 'down' && $index != $last) {
+                $temp = $filter;
+                $this->_filters[$index] = $this->_filters[$index+1];
+                $this->_filters[$index+1] = $temp;
+            }
+            // do an up move
+            if($index == $fid && $updown == 'up' && $index != $first) {
+                $temp = $filter;
+                $this->_filters[$index] = $this->_filters[$index-1];
+                $this->_filters[$index-1] = $temp;
+            }
+        }
+        // save results
+        $todb = new object();
+        $todb->id = $id;
+        $todb->filters = serialize($this->_filters);
+        if(update_record('learning_report',$todb)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
 
 } // End of learningreport class
 
