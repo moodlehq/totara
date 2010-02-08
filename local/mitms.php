@@ -244,7 +244,7 @@ function mitms_print_report_manager($return=false) {
               <img src="'.$CFG->wwwroot.'/pix/i/reports.png" width="32" height="32" /></a>
               <a href="'.$CFG->wwwroot.'/local/reportbuilder/report.php?id='.$report->id.'">'.$report->fullname.'</a></p>';
             // if admin with edit mode on show settings button too
-            if(has_capability('moodle/local:admin',$context) && $USER->editing) {
+            if(has_capability('moodle/local:admin',$context) && isset($USER->editing) && $USER->editing) {
                 $link .= '<a href="'.$CFG->wwwroot.'/local/reportbuilder/settings.php?id='.$report->id.'">'.
                     '<img src="'.$CFG->pixpath.'/t/edit.gif" alt="'.get_string('settings','local').'"></a>';
             }
