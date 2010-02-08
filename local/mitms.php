@@ -216,7 +216,7 @@ function mitms_print_my_team_nav($return=false) {
 }
 
 function mitms_print_report_manager($return=false) {
-    global $CFG;
+    global $CFG,$USER;
     require_once($CFG->dirroot.'/local/reportbuilder/lib.php');
     $reports = get_records('report_builder');
     $context = get_context_instance(CONTEXT_SYSTEM);
@@ -240,9 +240,15 @@ function mitms_print_report_manager($return=false) {
             }
         }
         if($hascap) {
-            $links[] = '<p><a href="'.$CFG->wwwroot.'/local/reportbuilder/report.php?id='.$report->id.'" title="'.$report->fullname.'">
+            $link = '<p><a href="'.$CFG->wwwroot.'/local/reportbuilder/report.php?id='.$report->id.'" title="'.$report->fullname.'">
               <img src="'.$CFG->wwwroot.'/pix/i/reports.png" width="32" height="32" /></a>
               <a href="'.$CFG->wwwroot.'/local/reportbuilder/report.php?id='.$report->id.'">'.$report->fullname.'</a></p>';
+            // if admin with edit mode on show settings button too
+            if(has_capability('moodle/local:admin',$context) && $USER->editing) {
+                $link .= '<a href="'.$CFG->wwwroot.'/local/reportbuilder/settings.php?id='.$report->id.'">'.
+                    '<img src="'.$CFG->pixpath.'/t/edit.gif" alt="'.get_string('settings','local').'"></a>';
+            }
+            $links[] = $link;
         }
     }
 
