@@ -264,8 +264,16 @@ class reportbuilder {
 
     function export_data($format) {
         $columns = $this->_columns;
+        $shortname = $this->_shortname;
         $count = $this->get_filtered_count();
-        $sql = $this->build_query(false, true); //TODO add order by
+        $sql = $this->build_query(false, true);
+
+        // need to create flexible table object to get sort order
+        // from session var
+        $table = new flexible_table($shortname);
+        $sort = $table->get_sql_sort($shortname);
+        $order = ($sort!='') ? "ORDER BY $sort" : '';
+ 
         $headings = array();
         foreach($columns as $column) {
             if(isset($column['heading']) && $column['heading'] != '') {
@@ -274,11 +282,11 @@ class reportbuilder {
         }
         switch($format) {
             case 'ods':
-                $this->download_ods($headings, $sql, $count);
+                $this->download_ods($headings, $sql.$order, $count);
             case 'xls':
-                $this->download_xls($headings, $sql, $count);
+                $this->download_xls($headings, $sql.$order, $count);
             case 'csv':
-                $this->download_csv($headings, $sql, $count);
+                $this->download_csv($headings, $sql.$order, $count);
         }
         die;
     }
