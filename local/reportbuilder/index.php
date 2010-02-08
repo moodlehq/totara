@@ -68,11 +68,13 @@
     if($reports) {
     foreach($reports as $report) {
         $row = array();
-        $settings = '<a href="'.$CFG->wwwroot.'/local/reportbuilder/settings.php?id='.$report->id.'">' .
-            get_string('settings').'</a>';
-        $delete = '<a href="'.$CFG->wwwroot.'/local/reportbuilder/index.php?d=1&amp;id='.$report->id.'">' .
-            get_string('delete').'</a>';
-        $row[] = $report->fullname;
+        $strsettings = get_string('settings','local');
+        $strdelete = get_string('delete','local');
+        $settings = '<a href="'.$CFG->wwwroot.'/local/reportbuilder/settings.php?id='.$report->id.'" title="'.$strsettings.'">' .
+            '<img src="'.$CFG->pixpath.'/t/edit.gif" alt="'.$strsettings.'"></a>';
+        $delete = '<a href="'.$CFG->wwwroot.'/local/reportbuilder/index.php?d=1&amp;id='.$report->id.'" title="'.$strdelete.'">' .
+            '<img src="'.$CFG->pixpath.'/t/delete.gif" alt="'.$strdelete.'"></a>';
+        $row[] = '<a href="'.$CFG->wwwroot.'/local/reportbuilder/report.php?id='.$report->id.'">'.$report->fullname.'</a>';
         $row[] = $report->shortname;
         $row[] = $report->source;
         $row[] = "$settings &nbsp; $delete";
