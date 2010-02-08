@@ -14,21 +14,27 @@ class learning_reports_new_form extends moodleform {
 
             $mform->addElement('text', 'fullname', get_string('reportname', 'local'), 'maxlength="255"');
             $mform->setType('fullname', PARAM_TEXT);
+            $mform->addRule('fullname','Required','required');
 
             $mform->addElement('text', 'shortname', get_string('reportshortname', 'local'), 'maxlength="255"');
             $mform->setType('shortname', PARAM_TEXT);
+            $mform->addRule('shortname','Required','required');
 
             $pick = array(0 => 'Select a source...');
             $select = array_merge($pick, $sources);
             $mform->addElement('select','source', get_string('source','local'), $select);
             // TODO invalid if not set
-            //$mform->addRule('source', get_string('error:mustselectsource','local'), 'nonzero');
+            $mform->addRule('source', get_string('error:mustselectsource','local'), 'regex','/^[^0]*$/');
 
             $this->add_action_buttons();
 
         } else {
             $mform->addElement('html', get_string('error:nosources','local'));
         }
+    }
+
+    function validation($data) {
+        return validate_shortname($data);
     }
 }
 
@@ -176,8 +182,50 @@ class learning_reports_edit_form extends moodleform {
         $mform->addElement('hidden','source',$report->_source);
         $this->add_action_buttons();
     }
+
+
+    function validation($data) {
+        $err = array();
+        $err += validate_shortname($data);
+        $err += validate_unique_columns($data);
+        return $err;
+    }
+
+
 }
 
+// check shortname is unique in db
+function validate_shortname($data) {
+    $errors = array();
+
+    if($foundreports = get_records('learning_report','shortname',$data['shortname'])) {
+        if(!empty($data['id'])) {
+            unset($foundreports[$data['id']]);
+        }
+        if(!empty($foundreports)) {
+            $errors['shortname'] = 'Short name taken';
+        }
+    }
+    return $errors;
+
+}
+
+function validate_unique_columns($data) {
+    $errors = array();
+    $i = 0;
+    $field = "column$i";
+    $used_cols = array();
+    while(isset($data[$field])) {
+        if(array_key_exists($data[$field], $used_cols)) {
+            $errors[$field] = 'No repeat cols';
+        } else {
+            $used_cols[$data[$field]] = 1;
+        }
+        $i++;
+        $field = "column$i";
+    }
+    return $errors;
+}
 /*
 function norepeatcol($col) {
     global $columns;
