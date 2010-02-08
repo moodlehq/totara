@@ -15,7 +15,7 @@ class reportbuilder {
     var $_columnoptions;
     var $_defaultcolumns;
     var $_restrictionoptions;
-    var $_defaultqueries;
+    var $_defaultfilters;
     var $_joinlist;
     var $_restrictions;
     var $_base;
@@ -39,7 +39,7 @@ class reportbuilder {
             // pull in data for this report
             $this->_columnoptions = $this->get_source_data('columnoptions');
             $this->_defaultcolumns = $this->get_source_data('defaultcolumns');
-            $this->_defaultqueries = $this->get_source_data('defaultqueries');
+            $this->_defaultfilters = $this->get_source_data('defaultfilters');
             $this->_filteroptions = $this->get_source_data('filteroptions');
             $this->_joinlist = $this->get_source_data('joinlist');
             $this->_restrictionoptions = $this->get_source_data('restrictionoptions');

@@ -49,9 +49,9 @@
         $todb->fullname = $fromform->fullname;
         $todb->shortname = $fromform->shortname;
         $todb->source = ($fromform->source != '0') ? $fromform->source : null;
-        // create with default columns, restrictions and queries
+        // create with default columns, restrictions and filters
         $todb->columns = serialize(get_source_data($fromform->source,'defaultcolumns'));
-        $todb->filters = serialize(get_source_data($fromform->source,'defaultqueries'));
+        $todb->filters = serialize(get_source_data($fromform->source,'defaultfilters'));
         $todb->restriction = serialize(get_default_restrictions($fromform->source));
         if($newid = insert_record('report_builder',$todb)) {
             redirect($CFG->wwwroot.'/local/reportbuilder/settings.php?id='.$newid);
