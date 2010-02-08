@@ -29,7 +29,6 @@ function get_positions_list() {
 }
 
 function get_proficiency_list() {
-    // TODO populate
     $proficiencies = array();
     $proficiencies[3] = 'Competent';
     $proficiencies[2] = 'Competent with Supervision';

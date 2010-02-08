@@ -1,6 +1,14 @@
 <?php
+// This file defines which of the columnoptions appear by default when a new
+// report from this source is created
+//
+// Each array element is one column
+// Each column contains an array with:
+// - type (used to get column info from columnoptions)
+// - value (used to get column info from columnoptions)
+// - heading (default heading given when new report is created)
 
-// default columns for course completion
+// default columns for this source
 $defaultcolumns = array(
     array(
         'type' => 'user',

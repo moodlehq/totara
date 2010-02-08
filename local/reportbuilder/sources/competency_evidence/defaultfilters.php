@@ -1,6 +1,6 @@
 <?php
 
-$defaultqueries = array(
+$defaultfilters = array(
     array(
         'type' => 'user',
         'value' => 'fullname',

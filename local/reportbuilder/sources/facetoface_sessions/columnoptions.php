@@ -1,5 +1,36 @@
 <?php
-// all available course completion columns
+//
+// This file defines the possible columns that can be included in reports
+// from this source
+//
+// The format of this file is a multidimensional array:
+//
+// outer key => 'type' of field
+// inner key => 'value' of field
+// 'name' key => Description of column, used in report builder pulldown
+// 'field' key => SQL fragment used as a SELECT field to pick a column for display
+//                and also optionally in the WHERE clause if a filter is defined
+//                with the same 'type' and 'value' in filteroptions.php
+//                You can abuse this slightly to pull back two SQL columns for 
+//                a single table column by providing multiple comma separate fields,
+//                but don't define a filter based on that column or you'll get an
+//                SQL error
+// 'joins' key => Array of join names which are required to be made to allow the 
+//                field defined above to be obtained. The join names are the same
+//                as the keys in the joinlist.php file. The order the joins are 
+//                provided is unimportant as this is determined from the order in the
+//                joinlist.
+// 'displayfunc' key => Normally the contents of a field is obtained from the database
+//                      and output in the column. If you want to do some additional
+//                      formatting before display, include a 'displayfunc' key with the
+//                      name of a function to be found in local/reportbuilder/displayfuncs.php
+//                      The value will be passed to the function and the return value 
+//                      displayed instead. The whole row will also be passed to the 
+//                      function in case you want to make use of other data (see
+//                      reportbuilder_link_* funcs for an example).
+//
+//
+// define all columns available for this source
 $columnoptions = array(
     'session' => array(
         'capacity' => array(

@@ -30,15 +30,7 @@ function get_coursedelivery_list() {
     $coursedelivery['External'] = 'External';
     return $coursedelivery;
 }
-/*
-function get_course_categories_list() {
-    global $CFG;
-    require_once($CFG->dirroot.'/course/lib.php');
-    make_categories_list($cats, $unused);
 
-    return $cats;
-}
- */
 function get_organisations_list() {
     global $CFG;
     require_once($CFG->dirroot.'/hierarchy/lib.php');
@@ -64,15 +56,4 @@ function get_positions_list() {
 
 }
 
-/*
-function get_completion_status_list() {
-    // TODO obtain this scale from single source - db?
-    $proficiencyselect = array();
-    $proficiencyselect[3] = 'Competent';
-    $proficiencyselect[2] = 'Competent with Supervison';
-    $proficiencyselect[1] = 'Not Competency';
-
-    return $proficiencyselect;
-}
- */
 
