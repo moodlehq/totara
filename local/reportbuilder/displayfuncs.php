@@ -1,23 +1,35 @@
 <?php
 
+// functions used to reformat report columns prior to display or export
+//
+// These functions are assigned to columns in columnoptions.php in the
+// 'displayfunc' key of the array. The data returned from the database
+// is passed in as the first parameter, with the whole row being 
+// passed as the second parameter. The return value will be displayed
+// in place of the column value.
+
+// convert a course name into a link to that course
 function reportbuilder_link_course($course, $row) {
     global $CFG;
     $courseid = $row->course_id;
     return "<a href=\"{$CFG->wwwroot}/course/view.php?id={$courseid}\">{$course}</a>";
 }
 
+// convert a users name into a link to their profile
 function reportbuilder_link_user($user, $row) {
     global $CFG;
     $userid = $row->user_id;
     return "<a href=\"{$CFG->wwwroot}/user/view.php?id={$userid}\">{$user}</a>";
 }
 
+// convert a competency name into a link to that competency
 function reportbuilder_link_competency($comp, $row) {
     global $CFG;
     $compid = $row->competency_id;
     return "<a href=\"{$CFG->wwwroot}/hierarchy/item/view.php?type=competency&id={$compid}\">{$comp}</a>";
 }
 
+// print the appropriate link depending on record type
 function reportbuilder_link_course_or_comp($name, $row) {
     global $CFG;
     $type = $row->type_type;
@@ -28,6 +40,7 @@ function reportbuilder_link_course_or_comp($name, $row) {
     }
 }
 
+// reformat a timestamp, showing nothing if invalid or null
 function reportbuilder_nice_date($date, $row) {
     if($date && $date > 0) {
         return userdate($date, '%d %B %Y');
@@ -36,6 +49,7 @@ function reportbuilder_nice_date($date, $row) {
     }
 }
 
+// reformat a timestamp into a date+time, showing nothing if invalid or null
 function reportbuilder_nice_time($date, $row) {
     if($date && $date > 0) {
         return userdate($date, '%d %B %Y at %H:%M');
@@ -44,6 +58,7 @@ function reportbuilder_nice_time($date, $row) {
     }
 }
 
+// convert proficiency code into text
 function reportbuilder_proficiency($proficiency, $row) {
     switch ($proficiency) {
         case '1':
@@ -57,6 +72,7 @@ function reportbuilder_proficiency($proficiency, $row) {
     }
 }
 
+// convert status code into text
 function reportbuilder_facetoface_status($status, $row) {
     switch ($status) {
         case '10':
