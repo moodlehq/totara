@@ -7,6 +7,7 @@ require_once('learning_reports_forms.php');
 global $USER;
 $id = required_param('id',PARAM_INT); // learning report id
 $d = optional_param('d', null, PARAM_TEXT); // delete
+$m = optional_param('m', null, PARAM_TEXT); // move
 $fid = optional_param('fid',null,PARAM_INT); //filter id
 $cid = optional_param('cid',null,PARAM_INT); //column id
 $confirm = optional_param('confirm', 0, PARAM_INT); // confirm delete
@@ -60,6 +61,24 @@ if (!empty($cid) || !empty($fid)) {
 
     admin_externalpage_print_footer();
     die;
+}
+
+// move column
+if($m && isset($cid)) {
+    if($report->move_column($cid, $m)) {
+        redirect($returnurl);
+    } else {
+        redirect($returnurl, 'Column could not be moved');
+    }
+}
+
+// move filter
+if($m && isset($fid)) {
+    if($report->move_filter($fid, $m)) {
+        redirect($returnurl);
+    } else {
+        redirect($returnurl, 'Filter could not be moved');
+    }
 }
 
 
