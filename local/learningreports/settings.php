@@ -84,6 +84,8 @@ if ($fromform = $mform->get_data()) {
     $todb->filters = serialize($result);
     $result = build_restrictions($fromform);
     $todb->restriction = serialize($result);
+    $todb->shortname = $fromform->shortname;
+    $todb->fullname = $fromform->fullname;
     if(update_record('learning_report',$todb)) {
         redirect($returnurl, get_string('reportupdated','local'));
     } else {

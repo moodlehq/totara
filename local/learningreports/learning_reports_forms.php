@@ -38,12 +38,25 @@ class learning_reports_new_form extends moodleform {
     }
 }
 
+
 class learning_reports_edit_form extends moodleform {
     function definition() {
         global $CFG;
         $mform =& $this->_form;
         $report = $this->_customdata['report'];
         $id = $this->_customdata['id'];
+
+        $mform->addElement('header', 'general', get_string('editreport', 'local'));
+
+        $mform->addElement('text', 'fullname', 'Report Title', array('size'=>'30'));
+        $mform->setDefault('fullname', $report->_fullname);
+        $mform->addRule('fullname','Required','required');
+        $mform->addElement('text', 'shortname', 'Unique name', array('size'=>'30'));
+        $mform->setDefault('shortname', $report->_shortname);
+        $mform->addRule('shortname','Required','required');
+        $mform->addElement('static', 'reportsource', 'Source', $report->_source);
+
+
         $mform->addElement('header', 'general', get_string('filterfields', 'local'));
 
         $mform->addElement('html', '<div class="learningreportsform"><table><tr><th>Filter</th><th>Advanced?</th><th>Options</th><tr>');
