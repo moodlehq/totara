@@ -1672,7 +1672,7 @@ function facetoface_user_signup($session, $facetoface, $course, $discountcode,
     // Course completion
     if (in_array($new_status, array(MDL_F2F_STATUS_BOOKED, MDL_F2F_STATUS_WAITLISTED))) {
 
-        if ($CFG->enabletion && $course->enablecompletion) {
+        if ($CFG->enablecompletion && $course->enablecompletion) {
 
             $ccdetails = array(
                 'course'        => $course->id,
