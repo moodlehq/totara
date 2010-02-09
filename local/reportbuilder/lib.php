@@ -98,11 +98,10 @@ class reportbuilder {
     function is_capable() {
         $context = get_context_instance(CONTEXT_SYSTEM);
         $capabilities = $this->get_capability_list();
-        // allow to view if no capabilities set
-        $ret = true;
+        // don't allow to view if no capabilities set
+        $ret = false;
         if($capabilities && is_array($capabilities)) {
             // if capabilities set, require at least one
-            $ret = false;
             foreach ($capabilities as $capability) {
                 if(has_capability($capability, $context)) {
                     $ret = true;
@@ -125,6 +124,8 @@ class reportbuilder {
         include_once($CFG->dirroot.'/local/reportbuilder/restrictionfuncs.php');
         $restrictions = $this->_restriction;
         $queries = array();
+        // start with an empty query, so default is display no results
+        $queries['default'] = array();
         // go through restrictions
         // saving groups of fields together
         if(is_array($restrictions)){

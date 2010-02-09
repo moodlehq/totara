@@ -190,7 +190,6 @@ class report_builder_edit_form extends moodleform {
                     }
                 }
             }
-            $mform->addElement('html',get_string('restrictionswarning','local'));
         } else {
             $mform->addElement('html',get_string('norestrictionsfound','local',$report->_source));
         }

@@ -48,7 +48,7 @@ $restrictionoptions = array(
         'field' => 'base.userid',      // field to apply limit to
         'joins' => array(),         // joins required for above field
         'capability' => 'moodle/local:viewownreports', // cap required, if not set then restriction can be applied without needing any capability
-        'default' => '1', // if 1, this setting is checked for new reports
+        'default' => '0', // if 1, this setting is checked for new reports
     ),
     array(
         'funcname' => 'staff_records',

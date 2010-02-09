@@ -48,7 +48,7 @@ $restrictionoptions = array(
         'field' => 'signup.userid',
         'joins' => array('signup'),
         'capability' => 'moodle/local:viewownreports',
-        'default' => '1',
+        'default' => '0',
     ),
     array(
         'funcname' => 'staff_records',
