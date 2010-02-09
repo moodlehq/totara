@@ -9,25 +9,27 @@ class add_filter_form extends moodleform {
         $fields      = $this->_customdata['fields'];
         $extraparams = $this->_customdata['extraparams'];
 
-        $mform->addElement('header', 'newfilter', get_string('newfilter','filters'));
+        if($fields && is_array($fields) && count($fields) > 0) {
+            $mform->addElement('header', 'newfilter', get_string('newfilter','filters'));
 
-        foreach($fields as $ft) {
-            $ft->setupForm($mform);
-        }
-
-        // in case we wasnt to track some page params
-        if ($extraparams) {
-            foreach ($extraparams as $key=>$value) {
-                $mform->addElement('hidden', $key, $value);
-                $mform->setType($key, PARAM_RAW);
+            foreach($fields as $ft) {
+                $ft->setupForm($mform);
             }
+
+            // in case we wasnt to track some page params
+            if ($extraparams) {
+                foreach ($extraparams as $key=>$value) {
+                    $mform->addElement('hidden', $key, $value);
+                    $mform->setType($key, PARAM_RAW);
+                }
+            }
+
+            // Add button
+            $mform->addElement('submit', 'addfilter', get_string('addfilter','filters'));
+
+            // Don't use last advanced state
+            $mform->setShowAdvanced(false);
         }
-
-        // Add button
-        $mform->addElement('submit', 'addfilter', get_string('addfilter','filters'));
-
-        // Don't use last advanced state
-        $mform->setShowAdvanced(false);
     }
 }
 
