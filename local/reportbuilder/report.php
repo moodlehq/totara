@@ -2,7 +2,6 @@
 
 require_once('../../config.php');
 require_once($CFG->dirroot.'/local/reportbuilder/lib.php');
-require_once($CFG->dirroot.'/local/reportbuilder/download_form.php');
 
 $format    = optional_param('format', '', PARAM_TEXT);
 $id = required_param('id',PARAM_INT);

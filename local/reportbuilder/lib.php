@@ -1,7 +1,6 @@
 <?php
 
 require_once("{$CFG->dirroot}/local/reportbuilder/filters/lib.php");
-require_once($CFG->dirroot.'/local/reportbuilder/download_form.php');
 require_once($CFG->libdir.'/tablelib.php');
 
 class reportbuilder {
@@ -651,9 +650,10 @@ class reportbuilder {
 
     function export_button() {
         global $CFG;
-        $reportid = $this->_id;
-        $download = new download_form($CFG->wwwroot.'/local/reportbuilder/download.php', compact('reportid'));
-        $download->display();
+        $url = new moodle_url(qualified_me());
+        $current_params = $url->params;
+        print_single_button($CFG->wwwroot.'/local/reportbuilder/download.php', $current_params,
+            get_string('export','local'));
     }
 
     function download_ods($fields, $query, $count) {
