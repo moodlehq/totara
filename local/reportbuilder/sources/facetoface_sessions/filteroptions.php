@@ -129,6 +129,20 @@ $filteroptions = array(
             'options' => array('class' => 'limited-width'),
         ),
     ),
+    'role' => array(
+        'trainer' => array(
+            'filtertype' => 'text',
+            'label' => 'Session Trainer',
+        ),
+        'assessor' => array(
+            'filtertype' => 'text',
+            'label' => 'Session Assessor',
+        ),
+        'auditor' => array(
+            'filtertype' => 'text',
+            'label' => 'Session Auditor',
+        ),
+    ),
     /*
     'course_category' => array(
         'id' => array(

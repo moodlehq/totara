@@ -38,4 +38,22 @@ foreach($session_fields as $session_field) {
     $joinlist[$key] = "LEFT JOIN {$CFG->prefix}facetoface_session_data $key ON (base.id = $key.sessionid AND $key.fieldid = $id )";
 }
 
+// add joins for the following roles as "session_role_X" and "session_role_user_X"
+$sessionroles = array('trainer','auditor','assessor','assistanttrainer');
+$roles = get_records('role','','','','id,shortname');
+foreach ($roles as $role) {
+    if (in_array($role->shortname,$sessionroles)) {
+        $field = $role->shortname;
+        $id = $role->id;
+        $key = "session_role_$field";
+        $userkey = "session_role_user_$field";
+        // join to session roles to get userid of role
+        $joinlist[$key] = "LEFT JOIN {$CFG->prefix}facetoface_session_roles $key ON (base.id = $key.sessionid AND $key.roleid = $id )";
+        // join again to user table to get role's info
+        $joinlist[$userkey] = "LEFT JOIN {$CFG->prefix}user $userkey ON $key.userid = $userkey.id";
+    }
+}
+
+
+
 

@@ -198,6 +198,26 @@ $columnoptions = array(
         ),
          */
     ),
+    'role' => array(
+        'trainer' => array(
+            'name' => 'Trainer',
+            'field' => sql_fullname("session_role_user_trainer.firstname",
+                "session_role_user_trainer.lastname"),
+            'joins' => array('session_role_trainer','session_role_user_trainer'),
+        ),
+        'auditor' => array(
+            'name' => 'Auditor',
+            'field' => sql_fullname('session_role_user_auditor.firstname',
+                'session_role_user_auditor.lastname'),
+            'joins' => array('session_role_auditor','session_role_user_auditor'),
+        ),
+        'assessor' => array(
+            'name' => 'Assessor',
+            'field' => sql_fullname('session_role_user_assessor.firstname',
+                'session_role_user_assessor.lastname'),
+            'joins' => array('session_role_assessor','session_role_user_assessor'),
+        ),
+    ),
 );
 
 $custom_fields = get_records('user_info_field','','','','id,shortname,name');
