@@ -48,7 +48,13 @@ foreach ($roles as $role) {
         $key = "session_role_$field";
         $userkey = "session_role_user_$field";
         // join to session roles to get userid of role
+        // we have a problem here because there can be more than one assigned user per session per role
+        // two ways to handle, the first includes one row per user (increasing the total number of results):
         $joinlist[$key] = "LEFT JOIN {$CFG->prefix}facetoface_session_roles $key ON (base.id = $key.sessionid AND $key.roleid = $id )";
+        // the second method only shows one record, in this case the first user found by id, but requires MIN() which is postgres only
+        // TODO come up with a better approach? would be nice to merge results
+        //$joinlist[$key] = "LEFT JOIN ( SELECT sessionid,roleid,min(userid) as userid FROM {$CFG->prefix}facetoface_session_roles GROUP BY sessionid,roleid) AS $key ON (base.id = $key.sessionid AND $key.roleid = $id )";
+
         // join again to user table to get role's info
         $joinlist[$userkey] = "LEFT JOIN {$CFG->prefix}user $userkey ON $key.userid = $userkey.id";
     }
