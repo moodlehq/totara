@@ -198,6 +198,8 @@ $columnoptions = array(
         ),
          */
     ),
+    // be careful using these - they will generate extra results rows
+    // if same role is assigned to a session multiple times
     'role' => array(
         'trainer' => array(
             'name' => 'Trainer',
@@ -205,6 +207,15 @@ $columnoptions = array(
                 "session_role_user_trainer.lastname"),
             'joins' => array('session_role_trainer','session_role_user_trainer'),
         ),
+        /*
+        // the problem with this is that it generates extra table rows for multiple assistant trainers
+        'assistanttrainer' => array(
+            'name' => 'Assistant Trainer',
+            'field' => sql_fullname("session_role_user_assistanttrainer.firstname",
+                "session_role_user_assistanttrainer.lastname"),
+            'joins' => array('session_role_assistanttrainer','session_role_user_assistanttrainer'),
+        ),
+         */
         'auditor' => array(
             'name' => 'Auditor',
             'field' => sql_fullname('session_role_user_auditor.firstname',
