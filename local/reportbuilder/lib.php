@@ -20,6 +20,8 @@ class reportbuilder {
     var $_restrictions;
     var $_base;
     var $_filtering;
+    var $_params;
+    var $_paramoptions;
 
     function reportbuilder($shortname=null, $extraparams=null) {
         global $CFG;
@@ -44,14 +46,33 @@ class reportbuilder {
             $this->_joinlist = $this->get_source_data('joinlist');
             $this->_restrictionoptions = $this->get_source_data('restrictionoptions');
             $this->_base = $this->get_source_data('base');
+            $this->_paramoptions = $this->get_source_data('paramoptions');
+            $this->_params = $this->get_current_params();
 
             // generate a filter for this report
             $this->_filtering = new filtering($this, $_SERVER['REQUEST_URI']);
+
 
         } else {
             error("Report '$shortname' not found.");
         }
 
+    }
+
+    function get_current_params() {
+        $out = array();
+        foreach ($this->_paramoptions as $name => $param) {
+            $var = optional_param($name, null, PARAM_TEXT); //get as text for max flexibility
+            if(isset($var)) {
+                // this url param exists, add to params to use
+                $res = array();
+                $res['field'] = $param['field'];
+                $res['joins'] = $param['joins'];
+                $res['value'] = $var; // save the value
+                $out[] = $res;
+            }
+        }
+        return $out;
     }
 
     // get a particular type of data from the specified source
@@ -110,6 +131,26 @@ class reportbuilder {
         }
         return $ret;
 
+    }
+
+    function get_param_restrictions() {
+        $out=array();
+        $params = $this->_params;
+        if(is_array($params)) {
+            foreach($params as $param) {
+                $field = isset($param['field']) ? $param['field'] : null;
+                $value = isset($param['value']) ? $param['value'] : null;
+                // don't include if param not set to anything
+                if(!isset($value) || $value=='') {
+                    continue;
+                }
+                $out[] = "$field = $value";
+            }
+        }
+        if(count($out)==0) {
+            return '';
+        }
+        return "(" . implode(" AND ",$out) . ")";
     }
 
     // parses input array into set of restrictions and returns single
@@ -207,6 +248,7 @@ class reportbuilder {
         $columnjoins = $this->get_column_joins();
         $filterjoins = $this->get_filter_joins();
         $restjoins = $this->get_restriction_joins();
+        $paramjoins = $this->get_param_joins();
         $joins = array_merge($columnjoins, $filterjoins, $restjoins);
 
         // now build the query from the snippets
@@ -242,6 +284,14 @@ class reportbuilder {
             } else if ($extrasql!='') {
                 $where = $where." AND $extrasql";
             }
+        }
+
+        // also apply parameter restrictions
+        $paramrestrictions = $this->get_param_restrictions();
+        if($paramrestrictions != '' && $where=='') {
+            $where = "WHERE $paramrestrictions";
+        } else if ($paramrestrictions != '') {
+            $where = $where . " AND $paramrestrictions";
         }
 
         $sql = "$select $from $where";
@@ -293,7 +343,6 @@ class reportbuilder {
     }
 
     function display_table() {
-
         define('DEFAULT_PAGE_SIZE', 40);
         define('SHOW_ALL_PAGE_SIZE', 5000);
 
@@ -343,7 +392,6 @@ class reportbuilder {
         } else {
            $order = '';
         }
-
         $data = $this->fetch_data($sql.$order, $table->get_page_start(), $table->get_page_size());
         // add data to flexible table
         foreach ($data as $row) {
@@ -378,6 +426,26 @@ class reportbuilder {
         }
         return $fields;
 
+    }
+
+    function get_param_joins() {
+        $source = $this->_source;
+        $params = $this->_params;
+        $joinlist = $this->_joinlist;
+        $joins = array();
+        foreach($params as $param) {
+            $param_joins = (isset($param['joins'])) ? $param['joins'] : null;
+            if($param_joins && is_array($param_joins)) {
+                foreach($param_joins as $param_join) {
+                    if(array_key_exists($param_join, $joinlist)) {
+                        $joins[$param_join] = $joinlist[$param_join];
+                    } else {
+                        error("get_param_joins(): join name $param_join not in joinlist");
+                    }
+                }
+            }
+        }
+        return $joins;
     }
 
     function get_restriction_joins() {
