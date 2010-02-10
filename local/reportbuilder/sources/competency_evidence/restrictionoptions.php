@@ -81,7 +81,7 @@ $restrictionoptions = array(
         // user has capability skips normal process and displays all
         // records independent of other restrictions
         'field' => 'all',
-        'capability' => 'moodle/site:viewreports',
+        'capability' => 'moodle/local:viewallreports',
         'default' => '0',
     ),
 );

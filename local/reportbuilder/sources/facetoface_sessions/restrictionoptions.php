@@ -82,7 +82,7 @@ $restrictionoptions = array(
         // records independent of other restrictions
         'field' => 'all',
         'joins' => array('signup'),
-        'capability' => 'moodle/site:viewreports',
+        'capability' => 'moodle/local:viewallreports',
         'default' => '0',
     ),
 );
