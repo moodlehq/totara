@@ -89,9 +89,10 @@ $string['local:viewplan'] = 'View a user\'s IDPs';
 $string['local:withdrawownplan'] = 'Withdraw own submitted IDPs';
 
 // Local Report capability strings
-$string['local:viewlocalreports'] = 'View reports for all staff in user\'s region';
-$string['local:viewstaffreports'] = 'View reports for a user\'s subordinates';
+$string['local:viewlocalreports'] = 'View reports for all staff in user\'s local region';
+$string['local:viewstaffreports'] = 'View reports for a user\'s staff members';
 $string['local:viewownreports'] = 'View a user\'s own reports';
+$string['local:viewallreports'] = 'View all report builder reports';
 
 // Course categories
 $string['assessments'] = 'Assessments';
