@@ -32,11 +32,7 @@ class block_mitms_report_manager extends block_base {
         }
 
         $this->content = new stdClass;
-        if(has_capability('moodle/local:viewstaffreports',$context) || has_capability('moodle/local:viewlocalreports',$context)) {
-            $this->content->text = mitms_print_report_manager(true);
-        } else {
-            $this->content->text = '';
-        }
+        $this->content->text = mitms_print_report_manager(true);
         $this->content->footer = '';
 
         return $this->content;

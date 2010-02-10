@@ -225,15 +225,11 @@ function mitms_print_report_manager($return=false) {
     foreach ($reports as $report) {
         // go through each restriction looking for capabilities
         $restrictions = unserialize($report->restriction);
-        // allow link to appear if no restriction set
-        $hascap = true;
+        $hascap = false;
         if($restrictions && is_array($restrictions)) {
-            // if restrictions are set, require at least one of the
-            // capabilities
-            $hascap = false;
             foreach($restrictions as $restriction) {
                 $cap = $restriction['capability'];
-                // if they have any, include the link
+                // need at least one of listed capabilities
                 if(has_capability($cap,$context)) {
                     $hascap = true;
                 }
