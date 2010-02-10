@@ -43,7 +43,7 @@ class filter_text extends filter_type {
         $objs = array();
         $objs[] =& $mform->createElement('select', $this->_name.'_op', null, $this->getOperators());
         $objs[] =& $mform->createElement('text', $this->_name, null);
-        $grp =& $mform->addElement('group', $this->_name.'_grp', $this->_label, $objs, '', false);
+        $grp =& $mform->addElement('group', $this->_name.'_grp', $this->_label, $objs, '&nbsp;&nbsp;&nbsp;', false);
         $grp->setHelpButton(array('text',$this->_label,'filters'));
         $mform->disabledIf($this->_name, $this->_name.'_op', 'eq', 5);
         if ($this->_advanced) {
