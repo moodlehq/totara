@@ -31,6 +31,10 @@
 //                  appearance of the pulldown. See formslib docs for details
 //                  of format. 
 
+// used to fix IE issue with fixed width selects
+// You'll also need to add some scripts to the header - see report.php for details
+$selectwidth = array('class' => 'limited-width','onMouseDown'=>"resizeSelect(this,false);",'onBlur'=>"resizeSelect(this,true);",'onChange'=>"resizeSelect(this,true);");
+
 // define filter options for this source
 $filteroptions = array(
     'user' => array(
@@ -58,13 +62,13 @@ $filteroptions = array(
             'filtertype' => 'select',
             'label' => 'Participant\'s Current Office',
             'selectfunc' => 'get_organisations_list',
-            'options' => array('class' => 'limited-width'),
+            'options' => $selectwidth,
         ),
         'positionid' => array(
             'filtertype' => 'select',
             'label' => 'Participant\'s Current Position',
             'selectfunc' => 'get_positions_list',
-            'options' => array('class' => 'limited-width'),
+            'options' => $selectwidth,
         ),
     ),
     'course' => array(
@@ -84,7 +88,7 @@ $filteroptions = array(
             'filtertype' => 'select',
             'label' => 'Status',
             'selectfunc' => 'get_session_status_list',
-            'options' => array('class'=>'limited-width'),
+            'options' => $selectwidth,
         ),
     ),
     'date' => array(
@@ -114,19 +118,19 @@ $filteroptions = array(
             'filtertype' => 'select',
             'label' => 'Pilot',
             'selectfunc' => 'get_yesno_list',
-            'options' => array('class' => 'limited-width'),
+            'options' => $selectwidth,
         ),
         'audit' => array(
             'filtertype' => 'select',
             'label' => 'Audit',
             'selectfunc' => 'get_yesno_list',
-            'options' => array('class' => 'limited-width'),
+            'options' => $selectwidth,
         ),
         'coursedelivery' => array(
             'filtertype' => 'select',
             'label' => 'Course Delivery',
             'selectfunc' => 'get_coursedelivery_list',
-            'options' => array('class' => 'limited-width'),
+            'options' => $selectwidth,
         ),
     ),
     'role' => array(

@@ -23,7 +23,32 @@ $navlinks[] = array('name' => get_string('reportbuilder','local'), 'link'=> '', 
 $navlinks[] = array('name' => $fullname, 'link'=> '', 'type'=>'title');
 
 $navigation = build_navigation($navlinks);
-print_header_simple($pagetitle, '', $navigation, '', '', true, print_edit_button($id));
+
+// need some css styles for pulldowns
+$js = '
+<script type="text/javascript">
+// dummy function for proper browsers
+function resizeSelect(el, way) { return true; }
+</script>
+
+<!--[if IE]>
+<script type="text/javascript">
+// overwrite function for IE
+function resizeSelect(el, way) {
+    if(el.className) {
+        if(way) {
+            el.className=\'limited-width\';
+        } else {
+            el.className=\'full-width\';
+        }
+    }
+    return true;
+}
+</script>
+<![endif]-->
+';
+
+print_header_simple($pagetitle, '', $navigation, '', $js, true, print_edit_button($id));
 
 // display heading including filtering stats
 print_heading("$fullname: ".get_string('showing','local')." $countfiltered / $countall");

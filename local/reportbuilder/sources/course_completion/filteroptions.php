@@ -31,6 +31,10 @@
 //                  appearance of the pulldown. See formslib docs for details
 //                  of format. 
 
+// used to fix IE issue with fixed width selects
+// You'll also need to add some scripts to the header - see report.php for details
+$selectwidth = array('class' => 'limited-width','onMouseDown'=>"resizeSelect(this,false);",'onBlur'=>"resizeSelect(this,true);",'onChange'=>"resizeSelect(this,true);");
+
 // define filter options for this source
 $filteroptions = array(
     'user' => array(
@@ -58,13 +62,13 @@ $filteroptions = array(
             'filtertype' => 'select',
             'label' => 'Participant\'s Current Office',
             'selectfunc' => 'get_organisations_list',
-            'options' => array('class' => 'limited-width'),
+            'options' => $selectwidth,
         ),
         'positionid' => array(
             'filtertype' => 'select',
             'label' => 'Participant\'s Current Position',
             'selectfunc' => 'get_positions_list',
-            'options' => array('class' => 'limited-width'),
+            'options' => $selectwidth,
         ),
         'manager_name' => array(
             'filtertype' => 'text',
@@ -94,7 +98,7 @@ $filteroptions = array(
             'filtertype' => 'select',
             'label' => 'Course Category',
             'selectfunc' => 'get_course_categories_list',
-            'options' => array('class' => 'limited-width'),
+            'options' => $selectwidth,
         ),
     ),
     'course_completion' => array(
@@ -106,19 +110,19 @@ $filteroptions = array(
             'filtertype' => 'select',
             'label' => 'Completion Status',
             'selectfunc' => 'get_completion_status_list',
-            'options' => array('class' => 'limited-width'),
+            'options' => $selectwidth,
         ),
         'organisationid' => array(
             'filtertype' => 'select',
             'label' => 'Office when completed',
             'selectfunc' => 'get_organisations_list',
-            'options' => array('class' => 'limited-width'),
+            'options' => $selectwidth,
         ),
         'positionid' => array(
             'filtertype' => 'select',
             'label' => 'Position when completed',
             'selectfunc' => 'get_positions_list',
-            'options' => array('class' => 'limited-width'),
+            'options' => $selectwidth,
         ),
     ),
     'user_profile' => array(

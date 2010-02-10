@@ -8,6 +8,12 @@
 /* shrink select boxes to fit in filter */
 select.limited-width {
     width: 200px;
+    position: static;
+}
+
+select.full-width {
+    width: auto;
+    position: absolute;
 }
 
 /* override float left on pulldown menus inside table */

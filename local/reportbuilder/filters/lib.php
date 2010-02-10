@@ -132,7 +132,7 @@ class filtering {
                     return new $filtername($fieldname, $label, $advanced, $fieldname, $fieldquery);
                 case 'select':
                     $selectfunc = $filteroptions[$type][$value]['selectfunc'];
-                    $options = $filteroptions[$type][$value]['options'];
+                    $options = (isset($filteroptions[$type][$value]['options'])) ? $filteroptions[$type][$value]['options'] : null ;
                     $selectfield = $selectfunc();
                     return new $filtername($fieldname, $label, $advanced, $fieldname, $fieldquery, $selectfield, null, $options);
                 default:
