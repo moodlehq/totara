@@ -249,11 +249,9 @@ function mitms_print_report_manager($return=false) {
     }
 
     // if there are any links print them
+    $returnstr = '';
     if(count($links)>0) {
-        $returnstr = '';
         $returnstr .= implode("\n",$links);
-
-        $returnstr .= '';
     }
 
     if ($return) {
