@@ -5,7 +5,7 @@ require_once('../../../config.php');
 $contexturl = optional_param('context', null, PARAM_URL);
 $isdialog = optional_param('dlg', false, PARAM_BOOL);
 
-error_log($contexturl, 0);
+#error_log($contexturl, 0);
 
 $lang = substr(current_language(), 0, 2);
 $output = '';
