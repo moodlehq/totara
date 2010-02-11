@@ -830,6 +830,155 @@ function xmldb_local_upgrade($oldversion) {
 
     }
 
+    if ($result && $oldversion < 2010021102) {
+    // Add missing fields
+        $table = new XMLDBTable('position_assignment');
+
+        $field = new XMLDBField('organisationid');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null);
+        $result = $result && add_field($table, $field);
+
+        $table = new XMLDBTable('position_assignment_history');
+
+        $field = new XMLDBField('organisationid');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null);
+        $result = $result && add_field($table, $field);
+
+
+    /// Fix sequences and nullables
+        $table = new XMLDBTable('position_assignment');
+
+        $field = new XMLDBField('userid');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null);
+        $result = $result && change_field_type($table, $field);
+
+        $field = new XMLDBField('positionid');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null);
+        $result = $result && change_field_type($table, $field);
+
+        $field = new XMLDBField('reportstoid');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null);
+        $result = $result && change_field_type($table, $field);
+
+        $field = new XMLDBField('type');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null);
+        $result = $result && change_field_type($table, $field);
+
+
+        $table = new XMLDBTable('competency_depth_info_data');
+
+        $field = new XMLDBField('fieldid');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
+        $result = $result && change_field_type($table, $field);
+
+        $field = new XMLDBField('competencyid');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
+        $result = $result && change_field_type($table, $field);
+
+
+        $table = new XMLDBTable('organisation_depth_info_data');
+
+        $field = new XMLDBField('fieldid');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
+        $result = $result && change_field_type($table, $field);
+
+        $field = new XMLDBField('organisationid');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
+        $result = $result && change_field_type($table, $field);
+
+
+        $table = new XMLDBTable('position_assignment_history');
+
+        $field = new XMLDBField('userid');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null);
+        $result = $result && change_field_type($table, $field);
+
+        $field = new XMLDBField('positionid');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null);
+        $result = $result && change_field_type($table, $field);
+
+        $field = new XMLDBField('reportstoid');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null);
+        $result = $result && change_field_type($table, $field);
+
+        $field = new XMLDBField('type');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null);
+        $result = $result && change_field_type($table, $field);
+
+
+        $table = new XMLDBTable('idp');
+
+        $field = new XMLDBField('userid');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
+        $result = $result && change_field_type($table, $field);
+
+
+        $table = new XMLDBTable('idp_revision');
+
+        $field = new XMLDBField('idp');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
+        $result = $result && change_field_type($table, $field);
+
+
+        $table = new XMLDBTable('idp_approval');
+
+        $field = new XMLDBField('revision');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
+        $result = $result && change_field_type($table, $field);
+
+        $field = new XMLDBField('approvedby');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
+        $result = $result && change_field_type($table, $field);
+
+        $field = new XMLDBField('onbehalfof');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
+        $result = $result && change_field_type($table, $field);
+
+
+        $table = new XMLDBTable('idp_revision_competency');
+
+        $field = new XMLDBField('revision');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
+        $result = $result && change_field_type($table, $field);
+
+        $field = new XMLDBField('competency');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
+        $result = $result && change_field_type($table, $field);
+
+
+        $table = new XMLDBTable('idp_revision_course');
+
+        $field = new XMLDBField('revision');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
+        $result = $result && change_field_type($table, $field);
+
+        $field = new XMLDBField('course');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
+        $result = $result && change_field_type($table, $field);
+
+
+        $table = new XMLDBTable('idp_revision_comment');
+
+        $field = new XMLDBField('revision');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
+        $result = $result && change_field_type($table, $field);
+
+        $field = new XMLDBField('author');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
+        $result = $result && change_field_type($table, $field);
+
+
+        $table = new XMLDBTable('idp_list_item');
+
+        $field = new XMLDBField('revision');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
+        $result = $result && change_field_type($table, $field);
+
+        $field = new XMLDBField('author');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
+        $result = $result && change_field_type($table, $field);
+    }
+
     /// Insert default records
     $defaultdir = $CFG->dirroot.'/local/db/default';
     if (is_dir($defaultdir)) {
