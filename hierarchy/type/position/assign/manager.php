@@ -54,8 +54,8 @@ $managers = get_records_sql(
         WHERE
             r.shortname = 'manager'
         ORDER BY
-            u.lastname,
-            u.firstname
+            u.firstname,
+            u.lastname
     "
 );
 
