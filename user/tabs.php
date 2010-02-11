@@ -283,6 +283,38 @@
             }
         }
     }
+
+    // Position tab
+    if (!empty($user)) {
+        $toprow[] = new tabobject('positions', $CFG->wwwroot.'/user/positions.php?user='.$user->id.'&amp;courseid='.$course->id, get_string('positions', 'position'));
+
+        // Are we currently in the position tab?
+        if (substr($currenttab, 0, 8) == 'position') {
+
+            // Setup second row
+            $secondrow = array();
+
+            // Loop through preset position types
+            foreach ($POSITION_TYPES as $ptype) {
+                $secondrow[] = new tabobject(
+                    'position'.$ptype,
+                    $CFG->wwwroot.'/user/positions.php?user='.$user->id.'&amp;courseid='.$course->id.'&amp;type='.$ptype,
+                    get_string('type'.$ptype, 'position')
+                );
+            }
+
+            // Get current sub tab
+            $positiontab = substr($currenttab, 8);
+
+            if (in_array($positiontab, $POSITION_TYPES)) {
+                $activetwo = array('position'.$positiontab);
+            }
+
+            $currenttab = 'positions';
+        }
+    }
+
+
 /// Add second row to display if there is one
 
     if (!empty($secondrow)) {

@@ -436,6 +436,26 @@ $local_capabilities = array(
         'contextlevel' => CONTEXT_USER,
     ),
 
+    // Assign a position to a user
+    'moodle/local:assignuserposition' => array(
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'legacy' => array(
+            'admin' => CAP_ALLOW,
+        ),
+    ),
+
+    // Assign a position to a user
+    'moodle/local:assignuserposition' => array(
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_USER,
+    ),
+
+    // Assign a position to yourself
+    'moodle/local:assignselfposition' => array(
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_SYSTEM,
+    ),
 );
 
 ?>

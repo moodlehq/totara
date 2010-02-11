@@ -5812,4 +5812,60 @@ function role_cap_duplicate($sourcerole, $targetrole) {
         $cap->roleid = $targetrole;
         insert_record('role_capabilities', $cap);
     }
-}?>
+}
+
+/**
+ * Assign a user a position assignment and create/delete role assignments as required
+ *
+ * @param $assignment position_assignment object, include old reportstoid field (if any)
+ * @param $managerid new manager's user id (optional)
+ */
+function assign_user_position($assignment, $managerid = null) {
+
+    begin_sql();
+
+    // Get old user id
+    $old_managerid = null;
+    if ($assignment->reportstoid) {
+        $old_managerid = get_field('role_assignments', 'userid', 'id', $assignment->reportstoid);
+    }
+
+    // Delete role assignment if manager changed
+    if ($old_managerid && $old_managerid != $managerid) {
+        if (!role_unassign(null, null, null, null, null, $assignment->reportstoid)) {
+            rollback_sql();
+            error_log('assign_user_position: Could not delete old manager role assignment');
+            return false;
+        }
+    }
+
+    // Create new role assignment if manager changed
+    if ($managerid && $old_managerid != $managerid) {
+
+        // Get context
+        $context = get_context_instance(CONTEXT_USER, $assignment->userid);
+
+        // Get manager role id
+        $roleid = get_field('role', 'id', 'shortname', 'manager');
+
+        // Assign manager to user
+        $raid = role_assign(
+                    $roleid,
+                    $managerid,
+                    null,
+                    $context->id,
+                    $assignment->timevalidfrom,
+                    $assignment->timevalidto
+        );
+
+        $assignment->reportstoid = $raid;
+    }
+
+    // Save assignment
+    $assignment->save();
+
+    commit_sql();
+}
+
+
+?>

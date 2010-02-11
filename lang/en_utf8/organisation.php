@@ -4,6 +4,7 @@ $string['organisationplural'] = 'Organisations';
 $string['adddepthlevel'] = 'Add a new depth level';
 $string['addneworganisation'] = 'Add new organisation';
 $string['addnewframework'] = 'Add new organisation framework';
+$string['chooseorganisation'] = 'Choose organisation';
 $string['organisations'] = 'Organisations';
 $string['organisationaddnew'] = 'Add a new organisation';
 $string['organisationbulkaction'] = 'Bulk actions';
