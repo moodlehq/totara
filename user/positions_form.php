@@ -15,7 +15,7 @@ class user_position_assignment_form extends moodleform {
 
         // Check if an aspirational position
         $aspirational = false;
-        if ($type == $POSITION_TYPES[POSITION_TYPE_ASPIRATIONAL]) {
+        if (isset($POSITION_TYPES[POSITION_TYPE_ASPIRATIONAL]) && $type == $POSITION_TYPES[POSITION_TYPE_ASPIRATIONAL]) {
             $aspirational = true;
         }
 
