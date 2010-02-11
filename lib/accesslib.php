@@ -2994,7 +2994,7 @@ function role_assign($roleid, $userid, $groupid, $contextid, $timestart=0, $time
 
     events_trigger('role_assigned', $ra);
 
-    return true;
+    return $ra->id;
 }
 
 
