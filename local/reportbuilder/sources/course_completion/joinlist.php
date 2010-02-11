@@ -14,6 +14,7 @@ $joinlist = array(
     'course' => "LEFT JOIN {$CFG->prefix}course c ON base.course = c.id",
     'course_category' => "LEFT JOIN {$CFG->prefix}course_categories cat ON cat.id = c.category",
     'user' => "LEFT JOIN {$CFG->prefix}user u ON base.userid = u.id",
+    'position_assignment' => "LEFT JOIN {$CFG->prefix}position_assignment pa ON base.userid = pa.userid",
 );
 
 // add all user custom fields to join list
@@ -28,8 +29,8 @@ foreach($custom_fields as $custom_field) {
 
 // add more joins that require custom field data
 $joinlist['manager'] = "LEFT JOIN {$CFG->prefix}user manager ON (CAST(manager.id AS varchar) = user_managerid.data)";
-$joinlist['organisation'] = "LEFT JOIN {$CFG->prefix}organisation organisation ON (CAST(organisation.id AS varchar) = user_organisationid.data)";
-$joinlist['position'] = "LEFT JOIN {$CFG->prefix}position position ON (CAST(position.id AS varchar) = user_positionid.data)";
+$joinlist['organisation'] = "LEFT JOIN {$CFG->prefix}organisation organisation ON organisation.id = pa.organisationid";
+$joinlist['position'] = "LEFT JOIN {$CFG->prefix}position position ON position.id = pa.positionid";
 $joinlist['completion_organisation'] = "LEFT JOIN {$CFG->prefix}organisation completion_organisation ON base.organisationid = completion_organisation.id";
 $joinlist['completion_position'] = "LEFT JOIN {$CFG->prefix}position completion_position ON base.positionid = completion_position.id";
 

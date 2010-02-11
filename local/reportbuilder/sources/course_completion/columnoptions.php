@@ -157,8 +157,8 @@ $columnoptions = array(
         ),
         'organisationid' => array(
             'name' => 'User\'s Organisation ID',
-            'field' => "user_organisationid.data",
-            'joins' => array('user','user_organisationid'),
+            'field' => "pa.organisationid",
+            'joins' => array('position_assignment'),
         ),
         'organisation' => array(
             'name' => 'User\'s Organisation Name',
@@ -167,8 +167,8 @@ $columnoptions = array(
         ),
         'positionid' => array(
             'name' => 'User\'s Position ID',
-            'field' => 'user_positionid.data',
-            'joins' => array('user','user_positionid'),
+            'field' => 'pa.positionid',
+            'joins' => array('position_assignment'),
         ),
         'position' => array(
             'name' => 'User\'s Position',
