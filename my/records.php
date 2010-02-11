@@ -59,6 +59,25 @@
     /// Get database info
     ///
 
+    /// Get the primary position and related meta dat
+    $sql = "SELECT pa.fullname,
+                pa.shortname,
+                pa.idnumber,
+                pa.organisationid,
+                pa.positionid,
+                u.id as managerid,
+                u.email as manageremail,
+                u.firstname as managerfirstname,
+                u.lastname as managerlastname
+            FROM mdl_position_assignment pa
+            JOIN mdl_role_assignments ra
+              ON ra.id=pa.reportstoid
+            JOIN mdl_user u
+               ON u.id=ra.userid
+            WHERE pa.type=1 AND pa.userid={$USER->id}";
+
+    $positionassignment = get_record_sql($sql);
+
     $table = new flexible_table('-recordoflearning-index-'.$user->id);
 
     $columns = array(
@@ -333,8 +352,8 @@
         }
     }
 
-    $organisations = mitms_get_user_hierarchy_lineage($user->organisationid, 'organisation');
-    $positions     = mitms_get_user_hierarchy_lineage($user->positionid, 'position');
+    $organisations = mitms_get_user_hierarchy_lineage($positionassignment->organisationid, 'organisation');
+    $positions     = mitms_get_user_hierarchy_lineage($positionassignment->positionid, 'position');
     $positionids = get_records('position', '', '', '', 'id,fullname');
 
     $columns = array(
@@ -350,8 +369,8 @@
         array(
             'column'      => '2',
             'sortorder'   => '1',
-            'type'        => 'organisation',
-            'value'       => 'fullname',
+            'type'        => 'positionassignment',
+            'value'       => 'organisationfullname',
             'level'       => '2',
             'headingtype' => 'defined',
             'heading'     => 'Conservancy',
@@ -368,8 +387,8 @@
         array(
             'column'      => '2',
             'sortorder'   => '2',
-            'type'        => 'organisation',
-            'value'       => 'fullname',
+            'type'        => 'positionassignment',
+            'value'       => 'organisationfullname',
             'level'       => '3',
             'headingtype' => 'defined',
             'heading'     => 'Area Office',
@@ -377,11 +396,11 @@
         array(
             'column'      => '1',
             'sortorder'   => '3',
-            'type'        => 'usercustom',
-            'value'       => 'title',
+            'type'        => 'positionassignment',
+            'value'       => 'fullname',
             'level'       => '',
             'headingtype' => 'defined',
-            'heading'     => '',
+            'heading'     => 'Title',
         ),
         array(
             'column'      => '2',
@@ -395,8 +414,8 @@
         array(
             'column'      => '1',
             'sortorder'   => '4',
-            'type'        => 'position',
-            'value'       => 'fullname',
+            'type'        => 'positionassignment',
+            'value'       => 'positionfullname',
             'level'       => '1',
             'headingtype' => 'defined',
             'heading'     => 'Role',
@@ -413,7 +432,7 @@
         array(
             'column'      => '1',
             'sortorder'   => '5',
-            'type'        => 'usercustom',
+            'type'        => 'positionassignment',
             'value'       => 'managername',
             'level'       => '',
             'headingtype' => 'defined',
@@ -450,8 +469,6 @@ foreach ($columns as $column) {
             break;
         case 'usercustom':
             if ($column['value'] == 'managername') {
-                $cell1str .= 'Manager name';
-                $managerid = mitms_print_user_profile_field($user->id, 'managerid');
                 if (!empty($managerid)) {
                     $manager = get_record('user', 'id', $managerid);
                     $cell2str .= '<a href="'.$CFG->wwwroot.'/user/view.php?id='.$managerid.'">'.$manager->firstname.' '.$manager->lastname.'</a>';
@@ -468,41 +485,67 @@ foreach ($columns as $column) {
                 }
             }
             break;
-        case 'position':
-            if ($column['headingtype'] == 'defined') {
-                $cell1str .= $column['heading'];
-            } else {
-                $cell1str .= get_string('position', 'position');
-            }
-            if ($positions) {
-                foreach ($positions as $position) {
-                    if ($column['level'] == $position->depthlevel) {
-                        $cell2str .= $position->{$column['value']};
-                        break;
+        case 'positionassignment';
+            switch($column['value']) {
+                case 'fullname':
+                    if ($column['headingtype'] == 'defined') {
+                        $cell1str .= $column['heading'];
+                    } else {
+                        $cell1str .= get_string('title');
                     }
-                }
-            } else {
-                $cell2str .= get_string('notavailable','local');
-            }
-            break;
-        case 'organisation':
-            $testfound = false;
-            if ($column['headingtype'] == 'defined') {
-                $cell1str .= $column['heading'];
-            } else {
-                $cell1str .= get_string('organisation', 'organisation');
-            }
-            if ($organisations) {
-                foreach ($organisations as $organisation) {
-                    if ($column['level'] == $organisation->depthlevel) {
-                        $cell2str .= $organisation->{$column['value']};
-                        $testfound = true;
-                        break;
+                    $cell2str .= $positionassignment->fullname;
+                    break;
+                case 'shortname':
+                    $cell2str .= $positionassignment->shortname;
+                    break;
+                case 'managername':
+                    if ($column['headingtype'] == 'defined') {
+                        $cell1str .= $column['heading'];
+                    } else {
+                        $cell1str .= "Manager name";
                     }
-                }
-            }
-            if (!$testfound) {
-                $cell2str .= get_string('notapplicable', 'local');
+                    $manager = new object();
+                    $manager->firstname = $positionassignment->managerfirstname;
+                    $manager->lastname  = $positionassignment->managerlastname;
+                    $cell2str .= '<a href="'.$CFG->wwwroot.'/user/view.php?id='.$positionassignment->managerid.'">'.fullname($manager, true).'</a>';
+                    break;
+                case 'positionfullname':
+                    if ($column['headingtype'] == 'defined') {
+                        $cell1str .= $column['heading'];
+                    } else {
+                        $cell1str .= get_string('position', 'position');
+                    }
+                    if ($positions) {
+                        foreach ($positions as $position) {
+                            if ($column['level'] == $position->depthlevel) {
+                                $cell2str .= $position->fullname;
+                                break;
+                            }
+                        }
+                    } else {
+                        $cell2str .= get_string('notavailable','local');
+                    }
+                    break;
+                case 'organisationfullname':
+                    if ($column['headingtype'] == 'defined') {
+                        $cell1str .= $column['heading'];
+                    } else {
+                        $cell1str .= get_string('organisation', 'organisation');
+                    }
+                    $testfound = false;
+                    if ($organisations) {
+                        foreach ($organisations as $organisation) {
+                            if ($column['level'] == $organisation->depthlevel) {
+                                $cell2str .= $organisation->fullname;
+                                $testfound = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (!$testfound) {
+                        $cell2str .= get_string('notapplicable', 'local');
+                    }
+                break;
             }
             break;
         default:
