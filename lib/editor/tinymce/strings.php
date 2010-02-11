@@ -58,6 +58,10 @@ if (!is_null($contexturl)) {
     $output .= "}}});";
 }
 
+// Remove trailling comma (causing issues in IE7)
+// Might remove commas from text however!
+$output = str_replace("\",\n}", "\"\n}", $output);
+
 $lifetime = '86400';
 @header('Content-type: text/javascript; charset=utf-8');
 @header('Content-length: '.strlen($output));
