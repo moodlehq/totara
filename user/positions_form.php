@@ -105,4 +105,23 @@ class user_position_assignment_form extends moodleform {
 
         $this->add_action_buttons(true, get_string('updateposition', 'position'));
     }
+
+    function definition_after_data() {
+        $mform =& $this->_form;
+
+        // Fix odd date values
+        if (!$mform->getElementValue('timevalidfrom')) {
+            $mform->setDefault('timevalidfrom', '');
+        }
+        else {
+            $mform->setDefault('timevalidfrom', date('d/m/Y', $mform->getElementValue('timevalidfrom')));
+        }
+
+        if (!$mform->getElementValue('timevalidto')) {
+            $mform->setDefault('timevalidto', '');
+        }
+        else {
+            $mform->setDefault('timevalidto', date('d/m/Y', $mform->getElementValue('timevalidto')));
+        }
+    }
 }

@@ -105,6 +105,8 @@ require_js(
     )
 );
 
+$CFG->stylesheets[] = $CFG->wwwroot.'/local/js/lib/ui-lightness/jquery-ui-1.7.2.custom.css';
+
 print_header("{$course->fullname}: {$fullname}: {$positiontype}", $course->fullname, $navigation);
 
 
@@ -128,6 +130,15 @@ if ($form->is_cancelled()){
     // Do nothing
 }
 elseif ($data = $form->get_data()) {
+
+    // Fix dates
+    if ($data->timevalidfrom) {
+        $data->timevalidfrom = strtotime($data->timevalidfrom);
+    }
+
+    if ($data->timevalidto) {
+        $data->timevalidto = strtotime($data->timevalidto);
+    }
 
     // Setup data
     position_assignment::set_properties($position_assignment, $data);
@@ -158,7 +169,14 @@ if (!$can_edit) {
 <script type="text/javascript">
     
     $(function() {
-        $('#id_timevalidfrom, #id_timevalidto').datepicker();
+        $('#id_timevalidfrom, #id_timevalidto').datepicker(
+            {
+                dateFormat: 'dd/mm/yy',
+                showOn: 'button',
+                buttonImage: '../local/js/images/calendar.gif',
+                buttonImageOnly: true
+            }
+        );
 	});
 </script>
 <?php
