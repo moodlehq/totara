@@ -66,7 +66,7 @@ function managerassignment_load(parentid) {
     // Load managers
     YAHOO.util.Connect.asyncRequest(
         'GET',
-        '/hierarchy/type/manager/assign/find.php?user='+user_id+'&parentid='+parentid,
+        '../hierarchy/type/manager/assign/find.php?user='+user_id+'&parentid='+parentid,
         callback
     );
 }
@@ -109,7 +109,7 @@ function managerassignment_set_framework() {
     var dialog = YAHOO.dialog.manager;
 
     // Update URL
-    var url = '/hierarchy/type/manager/assign/find.php'+
+    var url = '../hierarchy/type/manager/assign/find.php'+
               '?user='+user_id+
               '&frameworkid='+selected;
 

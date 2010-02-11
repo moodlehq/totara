@@ -66,7 +66,7 @@ function organisationassignment_load(parentid) {
     // Load organisations
     YAHOO.util.Connect.asyncRequest(
         'GET',
-        '/hierarchy/type/organisation/assign/find.php?user='+user_id+'&parentid='+parentid,
+        '../hierarchy/type/organisation/assign/find.php?user='+user_id+'&parentid='+parentid,
         callback
     );
 }
@@ -109,7 +109,7 @@ function organisationassignment_set_framework() {
     var dialog = YAHOO.dialog.organisation;
 
     // Update URL
-    var url = '/hierarchy/type/organisation/assign/find.php'+
+    var url = '../hierarchy/type/organisation/assign/find.php'+
               '?user='+user_id+
               '&frameworkid='+selected;
 
