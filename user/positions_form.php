@@ -110,6 +110,10 @@ class user_position_assignment_form extends moodleform {
         $mform =& $this->_form;
 
         // Fix odd date values
+        if (!$mform->elementExists('timevalidfrom')) {
+            return;
+        }
+
         if (!$mform->getElementValue('timevalidfrom')) {
             $mform->setDefault('timevalidfrom', '');
         }
