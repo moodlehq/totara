@@ -182,13 +182,7 @@
         ce.positionid, ce.organisationid, ce.timemodified, ce.assessorid, 
         ce.assessorname, 'competency' AS type, c.idnumber as idnumber
         FROM mdl_competency_evidence ce JOIN mdl_competency c ON c.id=ce.competencyid WHERE ce.userid={$user->id}
-        UNION ALL
-        SELECT c.fullname AS cfullname, cc.course AS cid, 
-        CASE WHEN cc.timecompleted IS NOT NULL THEN 3 ELSE 1 END AS proficiency,
-        positionid, organisationid, cc.timecompleted, null::integer as assessorid, 
-        null::varchar as assessorname, 'course' AS type, c.idnumber as idnumber
-        FROM mdl_course_completions cc JOIN mdl_course c ON c.id=cc.course
-        WHERE cc.userid={$user->id} ORDER BY timemodified DESC";
+        ORDER BY timemodified DESC";
 
     $matchcount1 = count_records_sql('SELECT COUNT (*) '.$from1.$where1);
     $matchcount2 = count_records_sql('SELECT COUNT (*) '.$from2.$where2);
