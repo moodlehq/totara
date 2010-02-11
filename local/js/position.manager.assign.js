@@ -4,7 +4,7 @@ YAHOO.util.Event.onDOMReady(function () {
         'managerassignment',
         'show-manager-dialog',
         {},
-        '/hierarchy/type/position/assign/manager.php?user='+user_id
+        '../hierarchy/type/position/assign/manager.php?user='+user_id
     );
 });
 

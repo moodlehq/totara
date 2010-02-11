@@ -4,7 +4,7 @@ YAHOO.util.Event.onDOMReady(function () {
         'positionassignment',
         'show-position-dialog',
         {},
-        '/hierarchy/type/position/assign/find.php?user='+user_id
+        '../hierarchy/type/position/assign/find.php?user='+user_id
     );
 });
 

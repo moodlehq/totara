@@ -4,7 +4,7 @@ YAHOO.util.Event.onDOMReady(function () {
         'organisationassignment',
         'show-organisation-dialog',
         {},
-        '/hierarchy/type/organisation/assign/find.php?user='+user_id
+        '../hierarchy/type/organisation/assign/find.php?user='+user_id
     );
 });
 
