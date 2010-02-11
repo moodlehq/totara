@@ -10,9 +10,20 @@
 // list so make sure that any dependent joins are done after the dependancy.
 
 // joinlist for this source
+
+$managerroleid = get_field('role','id','shortname','manager');
+
 $joinlist = array(
     'competency' => "LEFT JOIN {$CFG->prefix}competency competency ON base.competencyid = competency.id",
     'user' => "LEFT JOIN {$CFG->prefix}user u ON base.userid = u.id",
+    'position_assignment' => "LEFT JOIN {$CFG->prefix}position_assignment pa ON base.userid = pa.userid",
+    'manager_role_assignment' => "LEFT JOIN {$CFG->prefix}role_assignments mra ON ( pa.reportstoid = mra.id AND mra.roleid = $managerroleid)",
+    'manager' => "LEFT JOIN {$CFG->prefix}user manager ON manager.id = mra.userid",
+    'organisation' => "LEFT JOIN {$CFG->prefix}organisation organisation ON organisation.id = pa.organisationid",
+    'position' => "LEFT JOIN {$CFG->prefix}position position ON position.id = pa.positionid",
+    'completion_organisation' => "LEFT JOIN {$CFG->prefix}organisation completion_organisation ON base.organisationid = completion_organisation.id",
+    'completion_position' => "LEFT JOIN {$CFG->prefix}position completion_position ON base.positionid = completion_position.id",
+
 );
 
 // add all user custom fields to join list
@@ -25,11 +36,5 @@ foreach($custom_fields as $custom_field) {
 
 }
 
-// add more joins that require custom field data
-$joinlist['manager'] = "LEFT JOIN {$CFG->prefix}user manager ON (CAST(manager.id AS varchar) = user_managerid.data)";
-$joinlist['organisation'] = "LEFT JOIN {$CFG->prefix}organisation organisation ON (CAST(organisation.id AS varchar) = user_organisationid.data)";
-$joinlist['position'] = "LEFT JOIN {$CFG->prefix}position position ON (CAST(position.id AS varchar) = user_positionid.data)";
-
-$joinlist['completion_organisation'] = "LEFT JOIN {$CFG->prefix}organisation completion_organisation ON base.organisationid = completion_organisation.id";
-$joinlist['completion_position'] = "LEFT JOIN {$CFG->prefix}position completion_position ON base.positionid = completion_position.id";
+// add more joins that require custom field data here
 

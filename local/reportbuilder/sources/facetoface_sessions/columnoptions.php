@@ -159,44 +159,28 @@ $columnoptions = array(
         'manager_name' => array(
             'name' => 'User\'s Manager Name',
             'field' => sql_fullname("manager.firstname","manager.lastname"),
-            'joins' => array('user','user_managerid','manager'),
+            'joins' => array('signup','user','position_assignment','manager_role_assignment','manager'),
         ),
         'organisationid' => array(
             'name' => 'User\'s Organisation ID',
-            'field' => "user_organisationid.data",
-            'joins' => array('user','user_organisationid'),
+            'field' => "pa.organisationid",
+            'joins' => array('signup','user','position_assignment'),
         ),
         'organisation' => array(
             'name' => 'User\'s Organisation Name',
             'field' => "organisation.fullname",
-            'joins' => array('user','user_organisationid','organisation'),
+            'joins' => array('signup','user','position_assignment','organisation'),
         ),
         'positionid' => array(
             'name' => 'User\'s Position ID',
-            'field' => 'user_positionid.data',
-            'joins' => array('user','user_positionid'),
+            'field' => 'pa.positionid',
+            'joins' => array('signup','user','position_assignment'),
         ),
         'position' => array(
             'name' => 'User\'s Position',
             'field' => "position.fullname",
-            'joins' => array('user','user_positionid','position'),
+            'joins' => array('signup','user','position_assignment','position'),
         ),
-        /*
-        // just get org id for these, convert to correct depth level in table
-        // need a displayfunc to do this
-        'area_office' => array(
-            'field' => "user_organisationid.data",
-            'joins' => array('user','user_organisationid'),
-        ),
-        'conservancy_office' => array(
-            'field' => "user_organisationid.data",
-            'joins' => array('user','user_organisationid'),
-        ),
-        'regional_office' => array(
-            'field' => "user_organisationid.data",
-            'joins' => array('user','user_organisationid'),
-        ),
-         */
     ),
     // be careful using these - they will generate extra results rows
     // if same role is assigned to a session multiple times

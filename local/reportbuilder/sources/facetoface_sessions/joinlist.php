@@ -8,6 +8,8 @@
 // The order of the elements is critical - the earlier elements will be joined in the order in this
 // list so make sure that any dependent joins are done after the dependancy.
 
+$managerroleid = get_field('role','id','shortname','manager');
+
 // joinlist for this source
 $joinlist = array(
     'facetoface' => "LEFT JOIN {$CFG->prefix}facetoface facetoface ON base.facetoface = facetoface.id",
@@ -15,6 +17,11 @@ $joinlist = array(
     'date' => "LEFT JOIN {$CFG->prefix}facetoface_sessions_dates date ON base.id = date.sessionid",
     'role' => "LEFT JOIN {$CFG->prefix}facetoface_session_roles role ON base.id = role.sessionid",
     'signup' => "LEFT JOIN {$CFG->prefix}facetoface_signups signup ON base.id = signup.sessionid",
+    'position_assignment' => "LEFT JOIN {$CFG->prefix}position_assignment pa ON signup.userid = pa.userid",
+    'manager_role_assignment' => "LEFT JOIN {$CFG->prefix}role_assignments mra ON ( pa.reportstoid = mra.id AND mra.roleid = $managerroleid)",
+    'manager' => "LEFT JOIN {$CFG->prefix}user manager ON manager.id = mra.userid",
+    'position' => "LEFT JOIN {$CFG->prefix}position position ON position.id = pa.positionid",
+    'organisation' => "LEFT JOIN {$CFG->prefix}organisation organisation ON organisation.id = pa.organisationid",
     'status' => "LEFT JOIN {$CFG->prefix}facetoface_signups_status status ON ( signup.id = status.signupid AND status.superceded = 0 )",
     'user' => "LEFT JOIN {$CFG->prefix}user u ON u.id = signup.userid",
 );
