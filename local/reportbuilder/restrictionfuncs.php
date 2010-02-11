@@ -16,12 +16,15 @@ function reportbuilder_restriction_own_records() {
 
 // match users who have current user as their manager
 function reportbuilder_restriction_staff_records() {
-    global $USER;
+    global $USER,$CFG;
     $userid = $USER->id;
-    // work out ID of managerid custom field
-    $managerfieldid = get_field('user_info_field','id','shortname','managerid');
+    // work out ID of manager role
+    $managerroleid = get_field('role','id','shortname','manager');
     // return users with this user as manager
-    $staff = get_records_select('user_info_data',"fieldid={$managerfieldid} and data='{$userid}'",'','userid');
+    $sql = "SELECT c.instanceid as userid FROM {$CFG->prefix}role_assignments ra
+        LEFT JOIN {$CFG->prefix}context c ON c.id=ra.contextid
+        WHERE ra.roleid=$managerroleid and ra.userid={$userid}";
+    $staff = get_records_sql($sql);
     // return null if none found
     if(!$staff) {
         return null;
@@ -40,10 +43,8 @@ function reportbuilder_restriction_staff_records() {
 function reportbuilder_restriction_local_records() {
     global $CFG,$USER;
     $userid = $USER->id;
-    // work out ID of organisationid custom field
-    $orgfieldid = get_field('user_info_field','id','shortname','organisationid');
     // get the user's organisationid
-    $orgid = get_field('user_info_data','data','fieldid',$orgfieldid,'userid',$userid);
+    $orgid = get_field('position_assignment','organisationid','userid',$userid);
     // no results if they don't have one
     if(empty($orgid)) {
         return null;
@@ -59,7 +60,7 @@ function reportbuilder_restriction_local_records() {
     }
 
     // return users who are in an organisation in that list
-    $users = get_records_select('user_info_data',"fieldid={$orgfieldid} AND data IN (".implode(',',$olist).")",'','userid');
+    $users = get_records_select('position_assignment',"organisationid IN (".implode(',',$olist).")",'','userid');
     $ulist = array();
     foreach ($users as $user) {
         $ulist[] = $user->userid;
@@ -71,10 +72,8 @@ function reportbuilder_restriction_local_records() {
 function reportbuilder_restriction_local_completed_records() {
     global $CFG,$USER;
     $userid = $USER->id;
-    // work out ID of organisationid custom field
-    $orgfieldid = get_field('user_info_field','id','shortname','organisationid');
     // get the user's organisationid
-    $orgid = get_field('user_info_data','data','fieldid',$orgfieldid,'userid',$userid);
+    $orgid = get_field('position_assignment','organisationid','userid',$userid);
     // no results if they don't have one
     if(empty($orgid)) {
         return null;
