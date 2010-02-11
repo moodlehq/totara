@@ -53,7 +53,6 @@ $managers = get_records_sql(
          ON ra.roleid = r.id
         WHERE
             r.shortname = 'manager'
-        AND ra.contextid = {$systemcontext->id}
         ORDER BY
             u.lastname,
             u.firstname
