@@ -3005,15 +3005,16 @@ function role_assign($roleid, $userid, $groupid, $contextid, $timestart=0, $time
  * @param $groupid
  * @param $contextid
  * @param $enrol unassign only if enrolment type matches, NULL means anything
+ * @param $id A specific role assignment id
  * @return boolean - success or failure
  */
-function role_unassign($roleid=0, $userid=0, $groupid=0, $contextid=0, $enrol=NULL) {
+function role_unassign($roleid=0, $userid=0, $groupid=0, $contextid=0, $enrol=NULL, $id=0) {
     global $USER, $CFG;
     require_once($CFG->dirroot.'/group/lib.php');
 
     $success = true;
 
-    $args = array('roleid', 'userid', 'groupid', 'contextid');
+    $args = array('roleid', 'userid', 'groupid', 'contextid', 'id');
     $select = array();
     foreach ($args as $arg) {
         if ($$arg) {
