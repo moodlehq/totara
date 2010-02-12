@@ -55,7 +55,7 @@ if (!$parentid) {
 
 <div class="selectcompetencies">
 
-<h2><?php echo get_string('addrelatedcompetencies', $hierarchy->prefix) ?></h2>
+<h2><?php echo get_string('addrelatedcompetencies', $hierarchy->prefix); ?></h2>
 
 <div id="selectedcompetencies">
     <p>

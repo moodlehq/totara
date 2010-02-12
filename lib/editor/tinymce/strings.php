@@ -5,7 +5,7 @@ require_once('../../../config.php');
 $contexturl = optional_param('context', null, PARAM_URL);
 $isdialog = optional_param('dlg', false, PARAM_BOOL);
 
-error_log($contexturl, 0);
+#error_log($contexturl, 0);
 
 $lang = substr(current_language(), 0, 2);
 $output = '';
@@ -57,6 +57,10 @@ if (!is_null($contexturl)) {
     } 
     $output .= "}}});";
 }
+
+// Remove trailling comma (causing issues in IE7)
+// Might remove commas from text however!
+$output = str_replace("\",\n}", "\"\n}", $output);
 
 $lifetime = '86400';
 @header('Content-type: text/javascript; charset=utf-8');

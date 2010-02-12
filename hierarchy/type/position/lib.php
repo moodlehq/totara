@@ -34,6 +34,20 @@
  */
 require_once($CFG->dirroot.'/hierarchy/lib.php');
 
+
+define('POSITION_TYPE_PRIMARY',         1);
+define('POSITION_TYPE_SECONDARY',       2);
+define('POSITION_TYPE_ASPIRATIONAL',    3);
+
+$POSITION_TYPES = array(
+    POSITION_TYPE_PRIMARY       => 'primary',
+    POSITION_TYPE_SECONDARY     => 'secondary',
+    POSITION_TYPE_ASPIRATIONAL  => 'aspirational'
+);
+
+$POSITION_CODES = array_flip($POSITION_TYPES);
+
+
 /**
  * Oject that holds methods and attributes for position operations.
  * @abstract
@@ -46,4 +60,114 @@ class position extends hierarchy {
     var $prefix = 'position';
     var $extrafield = null;
 
+}
+
+
+/**
+ * Position assignments
+ */
+class position_assignment extends data_object {
+
+    /**
+     * DB Table
+     * @var string $table
+     */
+    public $table = 'position_assignment';
+
+    /**
+     * Array of required table fields, must start with 'id'.
+     * @var array $required_fields
+     */
+    public $required_fields = array(
+        'id',
+        'userid',
+        'type',
+        'fullname',
+        'shortname',
+        'description',
+        'positionid',
+        'organisationid',
+        'managerid',
+        'reportstoid',
+        'timecreated',
+        'timemodified',
+        'usermodified',
+        'timevalidfrom',
+        'timevalidto'
+    );
+
+    public $userid;
+    public $type;
+    public $fullname;
+    public $shortname;
+    public $description;
+    public $positionid;
+    public $organisationid;
+    public $managerid;
+    public $reportstoid;
+    public $timecreated;
+    public $timemodified;
+    public $usermodified;
+    public $timevalidfrom;
+    public $timevalidto;
+
+    /**
+     * Finds and returns a data_object instance based on params.
+     * @static abstract
+     *
+     * @param array $params associative arrays varname=>value
+     * @return object data_object instance or false if none found.
+     */
+    public function fetch($params) {
+        return self::fetch_helper($this->table, get_class($this), $params);
+    }
+
+    public function save() {
+        global $USER;
+
+        // Get time (expensive on vservers)
+        $time = time();
+
+        $this->timecreated = $time;
+        $this->timemodified = $time;
+        $this->usermodified = $USER->id;
+
+        if (!$this->fullname) {
+            $this->fullname = '';
+        }
+
+        if (!$this->shortname) {
+            $this->shortname = '';
+        }
+
+        if (!$this->positionid) {
+            return false;
+        }
+
+        if (!$this->organisationid) {
+            $this->organisationid = null;
+        }
+
+        if (!$this->reportstoid) {
+            $this->reportstoid = null;
+        }
+
+        if (!$this->timevalidfrom) {
+            $this->timevalidfrom = null;
+        }
+
+        if (!$this->timevalidto) {
+            $this->timevalidto = null;
+        }
+
+        // Check if updating or inserting new
+        if ($this->id) {
+            $this->update();
+        }
+        else {
+            $this->insert();
+        }
+
+        return true;
+    }
 }
