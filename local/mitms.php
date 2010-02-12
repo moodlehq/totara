@@ -115,13 +115,13 @@ function mitms_print_my_learning_nav($return=false) {
     $returnstr = '
        <p style="text-align: left;">
          <a href="'.$CFG->wwwroot.'/plan/index.php" title="'.get_string('developmentplan','local').'"><img src="'. $CFG->wwwroot.'/pix/i/idp.png" width="32" height="32" /></a>
-         <a href="'.$CFG->wwwroot.'/plan/index.php">' . get_string('developmentplan', 'local') . '</a></p>
+         <span style="font-size: small"><a href="'.$CFG->wwwroot.'/plan/index.php">' . get_string('developmentplan', 'local') . '</a></span></p>
        <p style="text-align: left;">
          <a href="'.$CFG->wwwroot.'/blocks/facetoface/mysignups.php" title=""><img src="'.$CFG->wwwroot.'/pix/i/bookings.png" width="32" height="32" /></a>
-         <a href="'.$CFG->wwwroot.'/blocks/facetoface/mysignups.php">'.get_string('bookings','local').'</a></p>
+         <span style="font-size: small"><a href="'.$CFG->wwwroot.'/blocks/facetoface/mysignups.php">'.get_string('bookings','local').'</a></span></p>
        <p style="text-align: left;">
          <a href="'.$CFG->wwwroot.'/my/records.php?id='.$USER->id.'" title=""><img src="' . $CFG->wwwroot . '/pix/i/rol.png" width="32" height="32" /></a>
-         <a href="'.$CFG->wwwroot.'/my/records.php?id='.$USER->id.'">'.get_string('recordoflearning','local').'</a></p>
+         <span style="font-size: small"><a href="'.$CFG->wwwroot.'/my/records.php?id='.$USER->id.'">'.get_string('recordoflearning','local').'</a></span></p>
     ';
     $returnstr .= '
      </ul>
@@ -238,7 +238,7 @@ function mitms_print_report_manager($return=false) {
         if($hascap) {
             $link = '<p><a href="'.$CFG->wwwroot.'/local/reportbuilder/report.php?id='.$report->id.'" title="'.$report->fullname.'">
               <img src="'.$CFG->wwwroot.'/pix/i/reports.png" width="32" height="32" /></a>
-              <a href="'.$CFG->wwwroot.'/local/reportbuilder/report.php?id='.$report->id.'">'.$report->fullname.'</a></p>';
+              <span style="font-size: small;"><a href="'.$CFG->wwwroot.'/local/reportbuilder/report.php?id='.$report->id.'">'.$report->fullname.'</a></span></p>';
             // if admin with edit mode on show settings button too
             if(has_capability('moodle/local:admin',$context) && isset($USER->editing) && $USER->editing) {
                 $link .= '<a href="'.$CFG->wwwroot.'/local/reportbuilder/settings.php?id='.$report->id.'">'.
