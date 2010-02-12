@@ -346,8 +346,14 @@
         }
     }
 
-    $organisations = mitms_get_user_hierarchy_lineage($positionassignment->organisationid, 'organisation');
-    $positions     = mitms_get_user_hierarchy_lineage($positionassignment->positionid, 'position');
+    $organistions = new object();
+    $positions = new object();
+    if (!empty($positionassignment->organisationid)) {
+        $organisations = mitms_get_user_hierarchy_lineage($positionassignment->organisationid, 'organisation');
+    }
+    if (!empty($positionassignment->positionid)) {
+        $positions = mitms_get_user_hierarchy_lineage($positionassignment->positionid, 'position');
+    }
     $positionids = get_records('position', '', '', '', 'id,fullname');
 
     $columns = array(
@@ -487,7 +493,9 @@ foreach ($columns as $column) {
                     } else {
                         $cell1str .= get_string('title');
                     }
-                    $cell2str .= $positionassignment->fullname;
+                    if (!empty($positionassignment)) {
+                       $cell2str .= $positionassignment->fullname;
+                    }
                     break;
                 case 'shortname':
                     $cell2str .= $positionassignment->shortname;
@@ -498,10 +506,12 @@ foreach ($columns as $column) {
                     } else {
                         $cell1str .= "Manager name";
                     }
-                    $manager = new object();
-                    $manager->firstname = $positionassignment->managerfirstname;
-                    $manager->lastname  = $positionassignment->managerlastname;
-                    $cell2str .= '<a href="'.$CFG->wwwroot.'/user/view.php?id='.$positionassignment->managerid.'">'.fullname($manager, true).'</a>';
+                    if (!empty($positionassignment)) {
+                        $manager = new object();
+                        $manager->firstname = $positionassignment->managerfirstname;
+                        $manager->lastname  = $positionassignment->managerlastname;
+                        $cell2str .= '<a href="'.$CFG->wwwroot.'/user/view.php?id='.$positionassignment->managerid.'">'.fullname($manager, true).'</a>';
+                    }
                     break;
                 case 'positionfullname':
                     if ($column['headingtype'] == 'defined') {
@@ -509,7 +519,7 @@ foreach ($columns as $column) {
                     } else {
                         $cell1str .= get_string('position', 'position');
                     }
-                    if ($positions) {
+                    if (!empty($positions)) {
                         foreach ($positions as $position) {
                             if ($column['level'] == $position->depthlevel) {
                                 $cell2str .= $position->fullname;
@@ -527,7 +537,7 @@ foreach ($columns as $column) {
                         $cell1str .= get_string('organisation', 'organisation');
                     }
                     $testfound = false;
-                    if ($organisations) {
+                    if (!empty($organisations)) {
                         foreach ($organisations as $organisation) {
                             if ($column['level'] == $organisation->depthlevel) {
                                 $cell2str .= $organisation->fullname;
