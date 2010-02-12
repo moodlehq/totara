@@ -1,6 +1,6 @@
 <?php
 
-require_once('../../config.php');
+require_once('../../../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
 
 
@@ -142,15 +142,15 @@ if ($values) {
 
         $buttons = array();
         if ($can_edit) {
-            $buttons[] = "<a href=\"{$CFG->wwwroot}/competency/scale/editvalue.php?id={$value->id}\" title=\"$str_edit\">".
+            $buttons[] = "<a href=\"{$CFG->wwwroot}/hierarchy/type/competency/scale/editvalue.php?id={$value->id}\" title=\"$str_edit\">".
                 "<img src=\"{$CFG->pixpath}/t/edit.gif\" class=\"iconsmall\" alt=\"$str_edit\" /></a>";
 
-            $buttons[] = "<a href=\"{$CFG->wwwroot}/competency/scale/deletevalue.php?id={$value->id}\" title=\"$str_delete\">".
+            $buttons[] = "<a href=\"{$CFG->wwwroot}/hierarchy/type/competency/scale/deletevalue.php?id={$value->id}\" title=\"$str_delete\">".
                 "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_delete\" /></a>";
 
             // If value can be moved up
             if ($count > 1) {
-                $buttons[] = "<a href=\"{$CFG->wwwroot}/competency/scale/view.php?id={$scale->id}&moveup={$value->id}\" title=\"$str_moveup\">".
+                $buttons[] = "<a href=\"{$CFG->wwwroot}/hierarchy/type/competency/scale/view.php?id={$scale->id}&moveup={$value->id}\" title=\"$str_moveup\">".
                              "<img src=\"{$CFG->pixpath}/t/up.gif\" class=\"iconsmall\" alt=\"$str_moveup\" /></a>";
             } else {
                 $buttons[] = $spacer;
@@ -158,7 +158,7 @@ if ($values) {
 
             // If value can be moved down
             if ($count < $numvalues) {
-                $buttons[] = "<a href=\"{$CFG->wwwroot}/competency/scale/view.php?id={$scale->id}&movedown={$value->id}\" title=\"$str_movedown\">".
+                $buttons[] = "<a href=\"{$CFG->wwwroot}/hierarchy/type/competency/scale/view.php?id={$scale->id}&movedown={$value->id}\" title=\"$str_movedown\">".
                              "<img src=\"{$CFG->pixpath}/t/down.gif\" class=\"iconsmall\" alt=\"$str_movedown\" /></a>";
             } else {
                 $buttons[] = $spacer;
@@ -182,10 +182,10 @@ echo '<div class="buttons">';
 // Print button for creating new scale value
 if ($can_edit) {
     $options = array('scaleid' => $scale->id);
-    print_single_button($CFG->wwwroot.'/competency/scale/editvalue.php', $options, get_string('addnewscalevalue', 'competency'), 'get');
+    print_single_button($CFG->wwwroot.'/hierarchy/type/competency/scale/editvalue.php', $options, get_string('addnewscalevalue', 'competency'), 'get');
 }
 
-print_single_button($CFG->wwwroot.'/competency/scale/index.php', array(), get_string('returntocompetencyscales', 'competency'), 'get');
+print_single_button($CFG->wwwroot.'/hierarchy/type/competency/scale/index.php', array(), get_string('returntocompetencyscales', 'competency'), 'get');
 
 echo '</div>';
 

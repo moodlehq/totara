@@ -1,6 +1,6 @@
 <?php
 
-require_once('../../config.php');
+require_once('../../../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once('editvalue_form.php');
 
@@ -64,7 +64,7 @@ $valueform->set_data($value);
 // cancelled
 if ($valueform->is_cancelled()) {
 
-    redirect("$CFG->wwwroot/competency/scale/view.php?id={$value->scaleid}");
+    redirect("$CFG->wwwroot/hierarchy/type/competency/scale/view.php?id={$value->scaleid}");
 
 // Update data
 } else if ($valuenew = $valueform->get_data()) {
@@ -98,7 +98,7 @@ if ($valueform->is_cancelled()) {
     // Log
     add_to_log(SITEID, 'competencyscalevalue', 'update', "view.php?id={$valuenew->scaleid}");
 
-    redirect("$CFG->wwwroot/competency/scale/view.php?id={$valuenew->scaleid}");
+    redirect("$CFG->wwwroot/hierarchy/type/competency/scale/view.php?id={$valuenew->scaleid}");
     // never reached
 }
 
