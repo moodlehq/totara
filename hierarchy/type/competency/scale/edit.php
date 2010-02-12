@@ -47,7 +47,7 @@ $mform->set_data($scale);
 // If cancelled
 if ($mform->is_cancelled()) {
 
-    redirect("$CFG->wwwroot/competency/scale/index.php");
+    redirect("$CFG->wwwroot/hierarchy/type/competency/scale/index.php");
 
 // Update data
 } else if ($scalenew = $mform->get_data()) {
@@ -74,7 +74,7 @@ if ($mform->is_cancelled()) {
     // Log
     add_to_log(SITEID, 'competencyscales', 'update', "view.php?id=$scalenew->id", '');
 
-    redirect("$CFG->wwwroot/competency/scale/view.php?id={$scalenew->id}");
+    redirect("$CFG->wwwroot/hierarchy/type/competency/scale/view.php?id={$scalenew->id}");
 }
 
 admin_externalpage_print_header();
