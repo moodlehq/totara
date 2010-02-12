@@ -113,15 +113,33 @@ function mitms_print_my_learning_nav($return=false) {
     global $CFG, $USER;
 
     $returnstr = '
-       <p style="text-align: left;">
-         <a href="'.$CFG->wwwroot.'/plan/index.php" title="'.get_string('developmentplan','local').'"><img src="'. $CFG->wwwroot.'/pix/i/idp.png" width="32" height="32" /></a>
-         <span style="font-size: small"><a href="'.$CFG->wwwroot.'/plan/index.php">' . get_string('developmentplan', 'local') . '</a></span></p>
-       <p style="text-align: left;">
-         <a href="'.$CFG->wwwroot.'/blocks/facetoface/mysignups.php" title=""><img src="'.$CFG->wwwroot.'/pix/i/bookings.png" width="32" height="32" /></a>
-         <span style="font-size: small"><a href="'.$CFG->wwwroot.'/blocks/facetoface/mysignups.php">'.get_string('bookings','local').'</a></span></p>
-       <p style="text-align: left;">
-         <a href="'.$CFG->wwwroot.'/my/records.php?id='.$USER->id.'" title=""><img src="' . $CFG->wwwroot . '/pix/i/rol.png" width="32" height="32" /></a>
-         <span style="font-size: small"><a href="'.$CFG->wwwroot.'/my/records.php?id='.$USER->id.'">'.get_string('recordoflearning','local').'</a></span></p>
+        <table>
+            <tr>
+                <td align="left">
+                    <a href="'.$CFG->wwwroot.'/plan/index.php" title="'.get_string('developmentplan','local').'">
+                    <img src="'. $CFG->wwwroot.'/pix/i/idp.png" width="32" height="32" /></a>
+                </td>
+                <td align="left" valign="center">
+                    <span style="font-size: small"><a href="'.$CFG->wwwroot.'/plan/index.php">' . get_string('developmentplan', 'local') . '</a></span>
+                </td>
+            </tr>
+            <tr>
+                <td align="left">
+                    <a href="'.$CFG->wwwroot.'/blocks/facetoface/mysignups.php" title=""><img src="'.$CFG->wwwroot.'/pix/i/bookings.png" width="32" height="32" /></a>
+                </td>
+                <td align="left" valign="center">
+                    <span style="font-size: small"><a href="'.$CFG->wwwroot.'/blocks/facetoface/mysignups.php">'.get_string('bookings','local').'</a></span>
+                </td>
+            </tr>
+            <tr>
+                <td align="left">
+                    <a href="'.$CFG->wwwroot.'/my/records.php?id='.$USER->id.'" title=""><img src="' . $CFG->wwwroot . '/pix/i/rol.png" width="32" height="32" /></a>
+                </td>
+                <td align="left" valign="center">
+                    <span style="font-size: small"><a href="'.$CFG->wwwroot.'/my/records.php?id='.$USER->id.'">'.get_string('recordoflearning','local').'</a></span>
+                </td>
+            </tr>
+        </table>
     ';
     $returnstr .= '
      </ul>
@@ -221,7 +239,7 @@ function mitms_print_report_manager($return=false) {
     $reports = get_records('report_builder');
     $context = get_context_instance(CONTEXT_SYSTEM);
 
-    $links = array();
+    $rows = array();
     foreach ($reports as $report) {
         // go through each restriction looking for capabilities
         $restrictions = unserialize($report->restriction);
@@ -236,22 +254,36 @@ function mitms_print_report_manager($return=false) {
             }
         }
         if($hascap) {
-            $link = '<p><a href="'.$CFG->wwwroot.'/local/reportbuilder/report.php?id='.$report->id.'" title="'.$report->fullname.'">
-              <img src="'.$CFG->wwwroot.'/pix/i/reports.png" width="32" height="32" /></a>
-              <span style="font-size: small;"><a href="'.$CFG->wwwroot.'/local/reportbuilder/report.php?id='.$report->id.'">'.$report->fullname.'</a></span></p>';
+            $row = '
+            <tr>
+                <td align="left">
+                    <a href="'.$CFG->wwwroot.'/local/reportbuilder/report.php?id='.$report->id.'" title="'.$report->fullname.'">
+                    <img src="'.$CFG->wwwroot.'/pix/i/reports.png" width="32" height="32" /></a>
+                </td>
+                <td align="left" valign="center">
+                    <span style="font-size: small;"><a href="'.$CFG->wwwroot.'/local/reportbuilder/report.php?id='.$report->id.'">'.$report->fullname.'</a>
+                ';
+
+
             // if admin with edit mode on show settings button too
             if(has_capability('moodle/local:admin',$context) && isset($USER->editing) && $USER->editing) {
-                $link .= '<a href="'.$CFG->wwwroot.'/local/reportbuilder/settings.php?id='.$report->id.'">'.
+                $row .= '<a href="'.$CFG->wwwroot.'/local/reportbuilder/settings.php?id='.$report->id.'">'.
                     '<img src="'.$CFG->pixpath.'/t/edit.gif" alt="'.get_string('settings','local').'"></a>';
             }
-            $links[] = $link;
+            $row .= '</span>
+                </td>
+            </tr>
+            ';
+            $rows[] = $row;
         }
     }
 
-    // if there are any links print them
+    // if there are any rows print them
     $returnstr = '';
-    if(count($links)>0) {
-        $returnstr .= implode("\n",$links);
+    if(count($rows)>0) {
+        $returnstr = '<table>';
+        $returnstr .= implode("\n",$rows);
+        $returnstr .= '</table>';
     }
 
     if ($return) {
