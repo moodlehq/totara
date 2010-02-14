@@ -31,8 +31,19 @@ $coursecontext = get_context_instance(CONTEXT_COURSE, $course->id);
 // Check logged in user can view this profile
 require_login($course);
 
-if (!has_capability('moodle/user:viewdetails', $coursecontext) && 
-    !has_capability('moodle/user:viewdetails', $personalcontext)) {
+$canview = false;
+if (!empty($USER->id) && ($user->id == $USER->id)) {
+    // Can view own profile
+    $canview = true;
+}
+elseif (has_capability('moodle/user:viewdetails', $coursecontext)) {
+    $canview = true;
+}
+elseif (has_capability('moodle/user:viewdetails', $personalcontext)) {
+    $canview = true;
+}
+
+if (!$canview) {
     print_error('cannotviewprofile');
 }
 
