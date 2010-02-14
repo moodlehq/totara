@@ -5854,8 +5854,8 @@ function assign_user_position($assignment, $managerid = null) {
                     $managerid,
                     null,
                     $context->id,
-                    $assignment->timevalidfrom,
-                    $assignment->timevalidto
+                    (!$assignment->timevalidfrom ? 0 : $assignment->timevalidfrom),
+                    (!$assignment->timevalidto ? 0 : $assignment->timevalidto)
         );
 
         $assignment->reportstoid = $raid;
