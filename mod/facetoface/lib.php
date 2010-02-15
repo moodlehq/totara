@@ -27,8 +27,8 @@ define('MDL_F2F_CANCEL_BOTH',		11);	// Send a copy of both 8+2+1
 define('MDL_F2F_CANCEL_TEXT',		10);	// Send just a plan email 8+2
 define('MDL_F2F_CANCEL_ICAL',		9);	    // Send just a combined text/ical message 8+1
 
-// Name of the custom field where the manager's email address is stored
-define('MDL_MANAGERSID_FIELD', 'managerid');
+// Name of the role which should be used to determine a users manager
+define('MDL_MANAGER_ROLEID','manager');
 
 // Custom field related constants
 define('CUSTOMFIELD_DELIMITTER', ';');
@@ -2068,16 +2068,23 @@ function facetoface_check_signup($facetofaceid) {
  * @param integer $userid User ID of the staff member
  */
 function facetoface_get_manageremail($userid) {
-    $fieldid = get_field('user_info_field', 'id', 'shortname', MDL_MANAGERSID_FIELD);
+    global $CFG;
+    $roleid = get_field('role','id','shortname',MDL_MANAGER_ROLEID);
 
-    if ($fieldid) {
-        $managerid = get_field('user_info_data', 'data', 'userid', $userid, 'fieldid', $fieldid);
-
-        // Load manager email address
-        return get_field('user', 'email', 'id', $managerid);
+    if ($roleid) {
+        $sql = "SELECT ra.userid AS managerid
+            FROM {$CFG->prefix}position_assignment pa
+            LEFT JOIN {$CFG->prefix}role_assignments ra ON pa.reportstoid=ra.id
+            WHERE pa.userid=$userid AND ra.roleid=$roleid AND pa.type=1"; // just use primary position for now
+        $res = get_record_sql($sql);
+        if($res && isset($res->managerid)) {
+            return get_field('user','email','id',$res->managerid);
+        } else {
+            return ''; // No manager set
+        }
     }
     else {
-        return ''; // No custom field => no manager's email
+        return ''; // No manager role, can't do it
     }
 }
 

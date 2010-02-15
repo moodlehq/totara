@@ -48,14 +48,9 @@ if ($fromform = $mform->get_data()) { // Form submitted
         print_error('error:unknownbuttonclicked', 'facetoface', $returnurl);
     }
 
-    // Update Manager's email if necessary
+    // User can not update Manager's email (depreciated functionality)
     if (!empty($fromform->manageremail)) {
-        if (facetoface_set_manageremail($fromform->manageremail)) {
-            add_to_log($course->id, 'facetoface', 'update manageremail', "signup.php?s=$session->id", $facetoface->id, $cm->id);
-        }
-        else {
-            add_to_log($course->id, 'facetoface', 'update manageremail (FAILED)', "signup.php?s=$session->id", $facetoface->id, $cm->id);
-        }
+        add_to_log($course->id, 'facetoface', 'update manageremail (FAILED)', "signup.php?s=$session->id", $facetoface->id, $cm->id);
     }
 
     // Get signup type
