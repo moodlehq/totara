@@ -234,10 +234,25 @@
                                          '&amp;user='.$user->id.'&amp;mode=grade', get_string('grade'));
         }
 
+        // Course completion tab
+        if (!empty($CFG->enablecompletion) && ($course->id == 1 || !empty($course->enablecompletion)) && // completion enabled
+            ($myreports || $anyreport || ($course->id == 1 || has_capability('coursereport/completion:view', $coursecontext)))) { // permissions to view the report
+
+            // Decide if singular or plural
+            $coursecompletion = $course->id == 1 ? 'coursecompletions' : 'coursecompletion';
+
+            // Add tab
+            $reportsecondrow[] = new tabobject(
+                'completion',
+                $CFG->wwwroot.'/course/user.php?id='.$course->id.'&amp;user='.$user->id.'&amp;mode='.$coursecompletion,
+                get_string($coursecompletion)
+            );
+        }
+
         if ($reportsecondrow) {
             $toprow[] = new tabobject('reports', $CFG->wwwroot.'/course/user.php?id='.$course->id.
                                       '&amp;user='.$user->id.'&amp;mode=outline', get_string('activityreports'));
-            if (in_array($currenttab, array('outline', 'complete', 'todaylogs', 'alllogs', 'stats', 'grade'))) {
+            if (in_array($currenttab, array('outline', 'complete', 'todaylogs', 'alllogs', 'stats', 'grade', 'coursecompletion', 'coursecompletions'))) {
                 $inactive  = array('reports');
                 $activetwo = array('reports');
                 $secondrow = $reportsecondrow;
