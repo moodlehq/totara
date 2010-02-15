@@ -735,7 +735,7 @@ class completion_info {
         // Get current list of users with completion state
         $rs = get_recordset('course_modules_completion', 'coursemoduleid', $cm->id, '', 'userid');
         $keepusers = array();
-        foreach ($rs as $rec) {
+        while ($rec = rs_fetch_next_record($rs)) {
             $keepusers[] = $rec->userid;
         }
         $rs->close();
