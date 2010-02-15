@@ -70,7 +70,7 @@ class reportbuilder {
                 $url->remove_params($name);
             }
         }
-        return $url->out();
+        return html_entity_decode($url->out());
     }
 
     function get_current_params() {
