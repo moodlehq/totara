@@ -93,6 +93,35 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && create_table($table);
     }
 
+    if ($result && $oldversion < 2010021503) {
+
+    /// Define field completiondiscussions to be added to forum
+        $table = new XMLDBTable('forum');
+        $field = new XMLDBField('completiondiscussions');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '9', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0', 'draft');
+
+    /// Launch add field completiondiscussions
+        if(!field_exists($table,$field)) {
+            add_field($table, $field);
+        }
+
+        $field = new XMLDBField('completionreplies');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '9', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0', 'completiondiscussions');
+
+    /// Launch add field completionreplies
+        if(!field_exists($table,$field)) {
+            add_field($table, $field);
+        }
+
+    /// Define field completionposts to be added to forum
+        $field = new XMLDBField('completionposts');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '9', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0', 'completionreplies');
+
+    /// Launch add field completionposts
+        if(!field_exists($table,$field)) {
+            add_field($table, $field);
+        }
+    }
 
     return $result;
 }
