@@ -90,6 +90,7 @@ $position_assignment = new position_assignment(
 // Log
 add_to_log($course->id, "user", "position view", "positions.php?user=$user->id&amp;courseid=$course->id&amp;type=$type", "$user->id");
 
+$strparticipants    = get_string('participants');
 $positions          = get_string('positions', 'position');
 $positiontype       = get_string('type'.$type, 'position');
 $fullname           = fullname($user, true);
