@@ -175,6 +175,15 @@ if (!$can_edit) {
     $form->freezeForm();
 }
 
+if ($form->is_submitted()) {
+    // Print error message if no position chosen
+    if (!optional_param('positionid', 0, PARAM_INT)) {
+        print_box_start('errorbox errorboxcontent boxaligncenter boxwidthnormal');
+        print get_string('nopositionset', 'position');
+        print_box_end();
+    }
+}
+
 // Setup calendar
 ?>
 <script type="text/javascript">

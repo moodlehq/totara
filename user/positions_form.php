@@ -162,7 +162,19 @@ class user_position_assignment_form extends moodleform {
                 $mform->removeElement($element->getName());
             }
         }
+    }
+
+    function validation($data, $files) {
+
+        $mform =& $this->_form;
+
+        $result = array();
+
+        // Check that a position was set
+        if (!$mform->getElement('positionid')->getValue()) {
+            $result['positionid'] = get_string('error:positionnotset', 'position');
+        }
         
-        // Hide buttons
+        return $result;
     }
 }

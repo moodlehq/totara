@@ -46,6 +46,7 @@ $string['nopositionsinframework'] = 'No positions in this framework';
 $string['nodepthlevels'] = 'No depth levels in this framework';
 $string['noframeworks'] = 'No position frameworks available';
 $string['noposition'] = 'No positions defined';
+$string['nopositionset'] = 'No position set';
 $string['numericalvalue'] = 'Numerical value';
 $string['organisation'] = 'Organisation';
 $string['parent'] = 'Parent position';
