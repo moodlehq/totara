@@ -34,7 +34,7 @@
 */
 
 $local_capabilities = array(
-    'moodle/course:viewprogress' => array(
+    'moodle/local:viewprogress' => array(
 
         'riskbitmask' => RISK_PERSONAL,
 
