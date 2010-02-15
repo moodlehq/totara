@@ -274,8 +274,10 @@ if(!$csv) {
     print '<br class="clearer"/>'; // ugh
 
     if(count($progress->users)==0) {
+        print_box_start('errorbox errorboxcontent boxaligncenter boxwidthnormal');
         print '<p class="nousers">'.get_string('err_nousers','completion').'</p>';
         print '<p><a href="'.$CFG->wwwroot.'/course/report.php?id='.$course->id.'">'.get_string('continue').'</a></p>';
+        print_box_end();
         print_footer($course);
         exit;
     }
