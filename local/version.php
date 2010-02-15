@@ -26,4 +26,4 @@
  * Local version information - used to keep track of local changes
  */
 
-$local_version = 2010021503;
+$local_version = 2010021504;
