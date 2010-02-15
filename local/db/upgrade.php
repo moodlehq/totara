@@ -307,7 +307,7 @@ function xmldb_local_upgrade($oldversion) {
     /// Define field enablecompletion to be added to course
         $table = new XMLDBTable('course');
         $field = new XMLDBField('enablecompletion');
-        $field->setAttributes(XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0', 'defaultrole');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0', 'defaultrole');
 
     /// Conditionally launch add field enablecompletion
         if (!field_exists($table, $field)) {
@@ -316,7 +316,7 @@ function xmldb_local_upgrade($oldversion) {
 
     /// Define field completionnotify to be added to course
         $field = new XMLDBField('completionnotify');
-        $field->setAttributes(XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0', 'enablecompletion');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0', 'enablecompletion');
 
     /// Conditionally launch add field completionnotify
         if (!field_exists($table, $field)) {
@@ -329,7 +329,7 @@ function xmldb_local_upgrade($oldversion) {
     /// Add cols to course completion criteria table
         $table = new XMLDBTable('course_completion_criteria');
         $field = new XMLDBField('courseinstance');
-        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, '0', 'moduleinstance');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null, null, '0', 'moduleinstance');
 
         if (!field_exists($table, $field)) {
             add_field($table, $field);

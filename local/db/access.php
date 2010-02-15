@@ -57,7 +57,7 @@ $local_capabilities = array(
         )
     ),
 
-    'coursereport/completion:view' => array(
+    'moodle/local:viewcompletion' => array(
         'captype' => 'read',
         'contextlevel' => CONTEXT_COURSE,
         'legacy' => array(
