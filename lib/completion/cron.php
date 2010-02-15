@@ -80,14 +80,14 @@ function completion_cron_criteria() {
  * @return  void
  */
 function completion_cron_completions() {
-    global $DB;
+    global $CFG;
 
     if (debugging()) {
         mtrace('Aggregating completions');
     }
 
     // Grab all criteria and their associated criteria completions
-    $sql = '
+    $sql = "
         SELECT DISTINCT
             c.id AS course,
             cr.id AS criteriaid,
@@ -95,35 +95,35 @@ function completion_cron_completions() {
             cr.criteriatype AS criteriatype,
             cc.timecompleted AS timecompleted
         FROM
-            {course_completion_criteria} cr
+            {$CFG->prefix}course_completion_criteria cr
         INNER JOIN
-            {course} c
+            {$CFG->prefix}course c
          ON cr.course = c.id
         INNER JOIN
-            {context} con
+            {$CFG->prefix}context con
          ON con.instanceid = c.id
         INNER JOIN
-            {role_assignments} ra
+            {$CFG->prefix}role_assignments ra
          ON ra.contextid = con.id
         LEFT JOIN
-            {course_completion_crit_compl} cc
+            {$CFG->prefix}course_completion_crit_compl cc
          ON cc.criteriaid = cr.id
         AND cc.userid = ra.userid
         LEFT JOIN
-            {course_completions} crc
+            {$CFG->prefix}course_completions crc
          ON crc.course = c.id
         AND crc.userid = ra.userid
         WHERE
-            con.contextlevel = '.CONTEXT_COURSE.'
+            con.contextlevel = ".CONTEXT_COURSE."
         AND c.enablecompletion = 1
         AND crc.id IS NULL
         ORDER BY
             course,
             userid
-    ';
+    ";
 
     // Check if result is empty
-    if (!$rs = $DB->get_recordset_sql($sql)) {
+    if (!$rs = get_recordset_sql($sql)) {
         return;
     }
 
@@ -136,6 +136,7 @@ function completion_cron_completions() {
         // Grab records for current user/course
         foreach ($rs as $record) {
             // If we are still grabbing the same users completions
+            $record = (object)$record;
             if ($record->userid === $current_user && $record->course === $current_course) {
                 $completions[$record->criteriaid] = $record;
             } else {
@@ -198,7 +199,7 @@ function completion_cron_completions() {
         }
 
         // If this is the end of the recordset, break the loop
-        if (!$rs->valid()) {
+        if ($rs->EOF) {
             $rs->close();
             break;
         }

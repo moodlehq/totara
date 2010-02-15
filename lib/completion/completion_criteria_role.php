@@ -116,8 +116,7 @@ class completion_criteria_role extends completion_criteria {
      * @return  string
      */
     public function get_title() {
-        global $DB;
-        $role = $DB->get_field('role', 'name', array('id' => $this->role));
+        $role = get_field('role', 'name', 'id', $this->role);
         return $role;
     }
 }

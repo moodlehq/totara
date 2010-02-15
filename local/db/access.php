@@ -34,10 +34,9 @@
 */
 
 $local_capabilities = array(
+
     'moodle/local:viewprogress' => array(
-
         'riskbitmask' => RISK_PERSONAL,
-
         'captype' => 'read',
         'contextlevel' => CONTEXT_COURSE,
         'legacy' => array(
@@ -46,4 +45,16 @@ $local_capabilities = array(
             'admin' => CAP_ALLOW
         )
     ),
+
+    'moodle/local:markcomplete' => array(
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_COURSE,
+        'legacy' => array(
+            'teacher' => CAP_ALLOW,
+            'editingteacher' => CAP_ALLOW,
+            'coursecreator' => CAP_ALLOW,
+            'admin' => CAP_ALLOW
+        )
+    ),
+
 );
