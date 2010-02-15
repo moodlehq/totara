@@ -163,38 +163,23 @@
 
     $table->initialbars(true);
 
-    $select1 = "SELECT c.fullname AS cfullname, cc.course AS cid, cc.timecompleted";
-    $from1   = " FROM mdl_course_completions cc
-                 JOIN mdl_course c
-                   ON c.id=cc.course";
-    $where1  = " WHERE cc.userid={$user->id}";
-    $sort1   = " ORDER BY cc.timecompleted";
-
-    $select2 = "SELECT c.fullname AS cfullname, ce.competencyid AS cid, ce.proficiency, ce.positionid, ce.organisationid, ce.timemodified";
-    $from2   = " FROM mdl_competency_evidence ce
-                 JOIN mdl_competency c
-                 ON c.id=ce.competencyid";
-    $where2  = " WHERE ce.userid={$user->id}";
-    $sort2   = " ORDER by ce.timemodified DESC";
-
-    $select3 = "SELECT c.fullname as cfullname, ce.competencyid AS cid,
+    $select = "SELECT c.fullname as cfullname, ce.competencyid AS cid,
         ce.proficiency, 
         ce.positionid, ce.organisationid, ce.timemodified, ce.assessorid, 
-        ce.assessorname, 'competency' AS type, c.idnumber as idnumber
-        FROM mdl_competency_evidence ce JOIN mdl_competency c ON c.id=ce.competencyid WHERE ce.userid={$user->id}
-        ORDER BY timemodified DESC";
+        ce.assessorname, 'competency' AS type, c.idnumber as idnumber ";
+    $from = "FROM mdl_competency_evidence ce JOIN mdl_competency c ON c.id=ce.competencyid ";
+    $where = "WHERE ce.userid={$user->id} ";
+    $order = "ORDER BY timemodified DESC";
+    $matchcount = count_records_sql('SELECT COUNT (*) '.$from.$where);
 
-    $matchcount1 = count_records_sql('SELECT COUNT (*) '.$from1.$where1);
-    $matchcount2 = count_records_sql('SELECT COUNT (*) '.$from2.$where2);
-
-    $table->pagesize($perpage, $matchcount1+$matchcount2);
+    $table->pagesize($perpage, $matchcount);
     $extrasql = '';
     if($export!='1') {
-        $records3 = get_recordset_sql($select3,
+        $records = get_recordset_sql($select.$from.$where.$order,
             $table->get_page_start(),  $table->get_page_size());
     } else {
         // don't paginate for export
-        $records3 = get_recordset_sql($select3);
+        $records = get_recordset_sql($select.$from.$where.$order);
     }
     $scalevalues = array(
         array(
@@ -212,8 +197,8 @@
     );
 
     $exportdata = array();
-    if ($records3) {
-        while ($record = rs_fetch_next_record($records3)) {
+    if ($records) {
+        while ($record = rs_fetch_next_record($records)) {
             $tabledata = array();
             foreach ($columns as $column) {
                 switch($column['type']) {
@@ -323,7 +308,7 @@
             $exportdata[] = $tabledata;
 
         }
-        rs_close($records3);
+        rs_close($records);
     }
 
     if($export=='1') {
