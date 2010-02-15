@@ -1023,4 +1023,7 @@
 /// Finish the page
     print_footer($course);
 
+/// Mark as viewed
+    $completion = new completion_info($course);
+    $completion->set_module_viewed($cm);
 ?>
