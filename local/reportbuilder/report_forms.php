@@ -23,7 +23,7 @@ class report_builder_new_form extends moodleform {
             $pick = array(0 => get_string('selectsource','local'));
             $select = array_merge($pick, $sources);
             $mform->addElement('select','source', get_string('source','local'), $select);
-            // TODO invalid if not set
+            // invalid if not set
             $mform->addRule('source', get_string('error:mustselectsource','local'), 'regex','/^[^0]*$/');
 
             $this->add_action_buttons();

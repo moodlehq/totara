@@ -1,5 +1,4 @@
 <?php //$Id$
-//TODO change to relative path
 require_once($CFG->dirroot.'/local/reportbuilder/filters/text.php');
 require_once($CFG->dirroot.'/local/reportbuilder/filters/select.php');
 require_once($CFG->dirroot.'/local/reportbuilder/filters/date.php');

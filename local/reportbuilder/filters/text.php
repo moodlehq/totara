@@ -1,5 +1,4 @@
 <?php //$Id$
-// TODO relative path?
 require_once($CFG->dirroot.'/local/reportbuilder/filters/lib.php');
 
 /**
