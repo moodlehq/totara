@@ -167,6 +167,26 @@ class reportbuilder {
         return "(" . implode(" AND ",$out) . ")";
     }
 
+    // returns an array of restrictions that the user
+    // is capable of viewing, or an empty array if none found
+    function get_permitted_restrictions() {
+        $context = get_context_instance(CONTEXT_SYSTEM);
+        $restrictions = $this->_restriction;
+        $ret = array();
+
+        if(is_array($restrictions)) {
+            foreach($restrictions as $restriction) {
+                $capability = (isset($restriction['capability'])) ? $restriction['capability'] : null;
+                // allow if no capability set, or user has the specificed capability
+                if (!isset($capability) || has_capability($capability, $context)) {
+                    $ret[] = $restriction;
+                }
+
+            }
+        }
+        return $ret;
+    }
+
     // parses input array into set of restrictions and returns single
     // SQL WHERE snippet
     // input argument should be like this
@@ -177,49 +197,37 @@ class reportbuilder {
         $context = get_context_instance(CONTEXT_SYSTEM);
         // import restriction funcs
         include_once($CFG->dirroot.'/local/reportbuilder/restrictionfuncs.php');
-        $restrictions = $this->_restriction;
+        $restrictions = $this->get_permitted_restrictions();
         $queries = array();
         // start with an empty query, so default is display no results
         $queries['default'] = array();
         // go through restrictions
         // saving groups of fields together
-        if(is_array($restrictions)){
-            foreach ($restrictions as $restriction) {
-                $funcname = $restriction['funcname'];
-                $field = $restriction['field'];
-                $capability = $restriction['capability'];
+        foreach ($restrictions as $restriction) {
+            $funcname = $restriction['funcname'];
+            $field = $restriction['field'];
 
-                if(!isset($capability) ||
-                    has_capability($capability,$context)) {
-                        // short circuit and show all if 'all' is set
-                        if($field=='all') {
-                            return "( TRUE )";
-                        }
+            if($field=='all') {
+                return "( TRUE )";
+            }
 
-                    $func = "reportbuilder_restriction_{$funcname}";
-                    if(!function_exists($func)) {
-                        error("Restriction function $func does not exist");
-                    }
-                    $values = $func();
-                    if(!empty($values)) {
-                        if(isset($queries[$field])) {
-                            $queries[$field] = array_merge((array)$queries[$field], (array)$values);
-                        } else {
-                            $queries[$field] = $values;
-                        }
-                    } else {
-                        // add an empty query so failed match shows
-                        // no results (not all results!)
-                        if(!isset($queries[$field])) {
-                            $queries[$field] = array();
-                        }
-                    }
+            $func = "reportbuilder_restriction_{$funcname}";
+            if(!function_exists($func)) {
+                error("Restriction function $func does not exist");
+            }
+            $values = $func();
+            if(!empty($values)) {
+                if(isset($queries[$field])) {
+                    $queries[$field] = array_merge((array)$queries[$field], (array)$values);
                 } else {
-                    if(!isset($queries[$field])) {
-                        $queries[$field] = array();
-                    }
+                    $queries[$field] = $values;
                 }
-
+            } else {
+                // add an empty query so failed match shows
+                // no results (not all results!)
+                if(!isset($queries[$field])) {
+                    $queries[$field] = array();
+                }
             }
         }
         // now go through each grouping, reducing to unique records
