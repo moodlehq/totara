@@ -28,7 +28,7 @@ require_once($CFG->libdir.'/formslib.php');
 class course_completion_form extends moodleform {
 
     function definition() {
-        global $USER, $CFG;
+        global $USER, $CFG, $js_enabled;
 
         $courseconfig = get_config('moodlecourse');
         $mform    =& $this->_form;
@@ -58,6 +58,68 @@ class course_completion_form extends moodleform {
         $mform->addElement('header', 'overallcriteria', get_string('overallcriteriaaggregation', 'completion'));
         $mform->addElement('select', 'overall_aggregation', get_string('aggregationmethod', 'completion'), $aggregation_methods);
         $mform->setDefault('overall_aggregation', $completion->get_aggregation_method());
+
+        // Course prerequisite completion criteria
+        $mform->addElement('header', 'courseprerequisites', get_string('courseprerequisites', 'completion'));
+
+        // Get applicable courses
+        $courses = get_records_sql(
+            "
+                SELECT DISTINCT
+                    c.id,
+                    c.category,
+                    c.fullname,
+                    cc.id AS selected
+                FROM
+                    {$CFG->prefix}course c
+                LEFT JOIN
+                    {$CFG->prefix}course_completion_criteria cc
+                 ON cc.courseinstance = c.id
+                AND cc.course = {$course->id}
+                INNER JOIN
+                    {$CFG->prefix}course_completion_criteria ccc
+                 ON ccc.course = c.id
+                WHERE
+                    c.enablecompletion = ".COMPLETION_ENABLED."
+                AND c.id <> {$course->id}
+            "
+        );
+
+        if (!empty($courses)) {
+            if (count($courses) > 1) {
+                $mform->addElement('select', 'course_aggregation', get_string('aggregationmethod', 'completion'), $aggregation_methods);
+                $mform->setDefault('course_aggregation', $completion->get_aggregation_method(COMPLETION_CRITERIA_TYPE_COURSE));
+            }
+
+            // Get category list
+            $list = array();
+            $parents = array();
+            make_categories_list($list, $parents);
+
+            // Get course list for select box
+            $selectbox = array();
+            $selected = array();
+            foreach ($courses as $c) {
+                $selectbox[$c->id] = $list[$c->category] . ' / ' . s($c->fullname);
+
+                // If already selected
+                if ($c->selected) {
+                    $selected[] = $c->id;
+                }
+            }
+
+            // Show multiselect box
+            $mform->addElement('select', 'criteria_course', get_string('coursesavailable', 'completion'), $selectbox, array('multiple' => 'multiple', 'size' => 6));
+
+            // Select current criteria
+            $mform->setDefault('criteria_course', $selected);
+
+            // Explain list
+            $mform->addElement('static', 'criteria_courses_explaination', '', get_string('coursesavailableexplaination', 'completion'));
+
+        } else {
+            $mform->addElement('static', 'nocourses', '', get_string('err_nocourses', 'completion'));
+        }
 
         // Manual self completion
         $mform->addElement('header', 'manualselfcompletion', get_string('manualselfcompletion', 'completion'));

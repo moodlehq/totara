@@ -157,10 +157,12 @@ function completion_cron_completions() {
             // Setup aggregation
             $overall = $info->get_aggregation_method();
             $activity = $info->get_aggregation_method(COMPLETION_CRITERIA_TYPE_ACTIVITY);
+            $prerequisite = $info->get_aggregation_method(COMPLETION_CRITERIA_TYPE_COURSE);
             $role = $info->get_aggregation_method(COMPLETION_CRITERIA_TYPE_ROLE);
 
             $overall_status = null;
             $activity_status = null;
+            $prerequisite_status = null;
             $role_status = null;
 
             // Check each of the criteria
@@ -170,6 +172,8 @@ function completion_cron_completions() {
                 // Handle aggregation special cases
                 if ($params->criteriatype == COMPLETION_CRITERIA_TYPE_ACTIVITY) {
                     completion_cron_aggregate($activity, $completion->is_complete(), $activity_status);
+                } else if ($params->criteriatype == COMPLETION_CRITERIA_TYPE_COURSE) {
+                    completion_cron_aggregate($prerequisite, $completion->is_complete(), $prerequisite_status);
                 } else if ($params->criteriatype == COMPLETION_CRITERIA_TYPE_ROLE) {
                     completion_cron_aggregate($role, $completion->is_complete(), $role_status);
                 } else {
@@ -185,6 +189,11 @@ function completion_cron_completions() {
             // Include activity criteria aggregation in overall aggregation
             if ($activity_status !== null) {
                 completion_cron_aggregate($overall, $activity_status, $overall_status);
+            }
+
+            // Include prerequisite criteria aggregation in overall aggregation
+            if ($prerequisite_status !== null) {
+                completion_cron_aggregate($overall, $prerequisite_status, $overall_status);
             }
 
             // If aggregation status is true, mark course complete for user

@@ -324,5 +324,16 @@ function xmldb_local_upgrade($oldversion) {
         }
     }
 
+    if ($result && $oldversion < 2010021507) {
+
+    /// Add cols to course completion criteria table
+        $table = new XMLDBTable('course_completion_criteria');
+        $field = new XMLDBField('courseinstance');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, '0', 'moduleinstance');
+
+        if (!field_exists($table, $field)) {
+            add_field($table, $field);
+        }
+    }
     return $result;
 }

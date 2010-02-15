@@ -35,6 +35,7 @@ require_once($CFG->libdir.'/completion/completion_criteria_activity.php');
 require_once($CFG->libdir.'/completion/completion_criteria_duration.php');
 require_once($CFG->libdir.'/completion/completion_criteria_grade.php');
 require_once($CFG->libdir.'/completion/completion_criteria_role.php');
+require_once($CFG->libdir.'/completion/completion_criteria_course.php');
 require_once('completion_form.php');
 
 $id = required_param('id', PARAM_INT);       // course id
@@ -57,7 +58,6 @@ if ($id) { // editing course
     require_login();
     print_error('needcourseid');
 }
-
 
 /// first create the form
 $form = new course_completion_form('completion.php?id='.$id, compact('course'));
@@ -108,6 +108,17 @@ if ($form->is_cancelled()){
     $aggregation->course = $data->id;
     $aggregation->criteriatype = COMPLETION_CRITERIA_TYPE_ACTIVITY;
     $aggregation->setMethod($data->activity_aggregation);
+    $aggregation->insert();
+
+    // Course aggregation
+    if (empty($data->course_aggregation)) {
+        $data->course_aggregation = 0;
+    }
+
+    $aggregation = new completion_aggregation();
+    $aggregation->course = $data->id;
+    $aggregation->criteriatype = COMPLETION_CRITERIA_TYPE_COURSE;
+    $aggregation->setMethod($data->course_aggregation);
     $aggregation->insert();
 
     // Role aggregation
