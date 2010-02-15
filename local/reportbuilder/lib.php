@@ -49,13 +49,28 @@ class reportbuilder {
             $this->_params = $this->get_current_params();
 
             // generate a filter for this report
-            $this->_filtering = new filtering($this, $_SERVER['REQUEST_URI']);
+            $this->_filtering = new filtering($this, $this->get_current_url());
 
 
         } else {
             error("Report '$shortname' not found.");
         }
 
+    }
+
+    // get current url, minus any pagination or sort order elements
+    // good for submitting forms
+    function get_current_url() {
+        // array of parameters to remove from query string
+        $strip_params = array('spage','ssort');
+
+        $url = new moodle_url(qualified_me());
+        foreach ($url->params as $name =>$value) {
+            if(in_array($name, $strip_params)) {
+                $url->remove_params($name);
+            }
+        }
+        return $url->out();
     }
 
     function get_current_params() {
