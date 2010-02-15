@@ -3557,3 +3557,14 @@ function facetoface_get_trainers($sessionid, $roleid = null) {
 
     return $return;
 }
+
+/**
+ * @param string $feature FEATURE_xx constant for requested feature
+ * @return bool True if module supports feature
+ */
+function facetoface_supports($feature) {
+    switch($feature) {
+        case FEATURE_GRADE_HAS_GRADE: return true;
+        default: return null;
+    }
+}
