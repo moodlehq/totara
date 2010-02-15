@@ -19,7 +19,7 @@
 
 function xmldb_main_upgrade($oldversion=0) {
 
-    global $CFG, $THEME, $USER, $SITE, $db;
+    global $CFG, $THEME, $USER, $db;
 
     $result = true;
 
@@ -1780,7 +1780,7 @@ function xmldb_main_upgrade($oldversion=0) {
                 $raw_normalized = clean_param($oldtag->text, PARAM_TAG);
                 $normalized     = moodle_strtolower($raw_normalized);
                 // if this tag does not exist in tag table yet
-                if (!$newtag = get_record('tag', 'name', addslashes($normalized), '', '', '', '', 'id')) {
+                if (!$newtag = get_record('tag', 'name', $normalized, '', '', '', '', 'id')) {
                     $itag = new object();
                     $itag->name         = $normalized;
                     $itag->rawname      = $raw_normalized;
@@ -1793,7 +1793,7 @@ function xmldb_main_upgrade($oldversion=0) {
                         $itag->tagtype  = 'default';
                     }
 
-                    if ($idx = insert_record('tag', addslashes_recursive($itag))) {
+                    if ($idx = insert_record('tag', $itag)) {
                         $tagrefs[$oldtag->id] = $idx;
                     }
                 // if this tag is already used by tag table
@@ -3169,174 +3169,129 @@ function xmldb_main_upgrade($oldversion=0) {
         upgrade_main_savepoint($result, 2007101547);
     }
 
-    if ($result && $oldversion < 2007101551){
-        //insert new record for log_display table
-        //used to record tag update.
-        if (!record_exists("log_display", "action", "update",
-                    "module", "tag")){
-            $log_action = new stdClass();
-            $log_action->module = 'tag';
-            $log_action->action = 'update';
-            $log_action->mtable = 'tag';
-            $log_action->field  = 'name';
+    if ($result && $oldversion < 2007101551) {
 
-            $result  = $result && insert_record('log_display', $log_action);
-        }
+    /// Define field enablecompletion to be added to course
+        $table = new XMLDBTable('course');
+        $field = new XMLDBField('enablecompletion');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0', 'defaultrole');
+
+    /// Launch add field enablecompletion
+        $result = $result && add_field($table, $field);
+
+    /// Main savepoint reached
         upgrade_main_savepoint($result, 2007101551);
     }
 
-    if ($result && $oldversion < 2007101561.01) {
-        // As part of security changes password policy will now be enabled by default.
-        // If it has not already been enabled then we will enable it... Admins will still
-        // be able to switch it off after this upgrade
-        if (record_exists('config', 'name', 'passwordpolicy', 'value', 0)) {
-            unset_config('passwordpolicy');
+    if ($result && $oldversion < 2007101552) {
+
+    /// Define field completion to be added to course_modules
+        $table = new XMLDBTable('course_modules');
+        $field = new XMLDBField('completion');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0', 'groupmembersonly');
+
+    /// Launch add field completion
+        $result = $result && add_field($table, $field);
+
+    /// Define field completiongradeitemnumber to be added to course_modules
+        $field = new XMLDBField('completiongradeitemnumber');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null, null, null, 'completion');
+
+    /// Launch add field completiongradeitemnumber
+        $result = $result && add_field($table, $field);
+
+    /// Define field completionview to be added to course_modules
+        $field = new XMLDBField('completionview');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0', 'completiongradeitemnumber');
+
+    /// Launch add field completionview
+        $result = $result && add_field($table, $field);
+
+    /// Define field completionexpected to be added to course_modules
+        $field = new XMLDBField('completionexpected');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0', 'completionview');
+
+    /// Launch add field completionexpected
+        $result = $result && add_field($table, $field);
+
+   /// Define table course_modules_completion to be created
+        $table = new XMLDBTable('course_modules_completion');
+        if(!table_exists($table)) {
+
+        /// Adding fields to table course_modules_completion
+            $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null, null);
+            $table->addFieldInfo('coursemoduleid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
+            $table->addFieldInfo('userid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
+            $table->addFieldInfo('completionstate', XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
+            $table->addFieldInfo('viewed', XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, null, null, null, null, null);
+            $table->addFieldInfo('timemodified', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
+    
+        /// Adding keys to table course_modules_completion
+            $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
+    
+        /// Adding indexes to table course_modules_completion
+            $table->addIndexInfo('coursemoduleid', XMLDB_INDEX_NOTUNIQUE, array('coursemoduleid'));
+            $table->addIndexInfo('userid', XMLDB_INDEX_NOTUNIQUE, array('userid'));
+    
+        /// Launch create table for course_modules_completion
+            create_table($table);
         }
 
-        $message = get_string('upgrade197notice', 'admin');
-        if (empty($CFG->passwordmainsalt)) {
-            $docspath = $CFG->docroot.'/'.str_replace('_utf8', '', current_language()).'/report/security/report_security_check_passwordsaltmain';
-            $message .= "\n".get_string('upgrade197salt', 'admin', $docspath);
-        }
-        notify($message, 'notifysuccess');
-
-        unset($message);
-
-        upgrade_main_savepoint($result, 2007101561.01);
+        /// Main savepoint reached
+        upgrade_main_savepoint($result, 2007101552);
     }
 
-    if ($result && $oldversion < 2007101561.02) {
-        $messagesubject = s($SITE->shortname).': '.get_string('upgrade197noticesubject', 'admin');
-        $message  = '<p>'.s($SITE->fullname).' ('.s($CFG->wwwroot).'):</p>'.get_string('upgrade197notice', 'admin');
-        if (empty($CFG->passwordmainsalt)) {
-            $docspath = $CFG->docroot.'/'.str_replace('_utf8', '', current_language()).'/report/security/report_security_check_passwordsaltmain';
-            $message .= "\n".get_string('upgrade197salt', 'admin', $docspath);
-        }
+    if ($result && $oldversion < 2007101553) {
 
-        // Force administrators to change password on next login
-        $systemcontext = get_context_instance(CONTEXT_SYSTEM);
-        $sql = "SELECT DISTINCT u.id, u.firstname, u.lastname, u.picture, u.imagealt, u.email, u.password, u.mailformat
-              FROM {$CFG->prefix}role_capabilities rc
-              JOIN {$CFG->prefix}role_assignments ra ON (ra.contextid = rc.contextid AND ra.roleid = rc.roleid)
-              JOIN {$CFG->prefix}user u ON u.id = ra.userid
-             WHERE rc.capability = 'moodle/site:doanything'
-                   AND rc.permission = ".CAP_ALLOW."
-                   AND u.deleted = 0
-                   AND rc.contextid = ".$systemcontext->id." AND (u.auth='manual' OR u.auth='email')";
+    /// Define field availablefrom to be added to course_modules
+        $table = new XMLDBTable('course_modules');
+        $field = new XMLDBField('availablefrom');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0', 'completionexpected');
 
-        $adminusers = get_records_sql($sql);
-        foreach ($adminusers as $adminuser) {
-            if ($preference = get_record('user_preferences', 'userid', $adminuser->id, 'name', 'auth_forcepasswordchange')) {
-                if ($preference->value == '1') {
-                    continue;
-                }
-                set_field('user_preferences', 'value', '1', 'id', $preference->id);
-            } else {
-                $preference = new stdClass;
-                $preference->userid = $adminuser->id;
-                $preference->name   = 'auth_forcepasswordchange';
-                $preference->value  = '1';
-                insert_record('user_preferences', $preference);
-            }
-            $adminuser->maildisplay = 0; // do not use return email to self, it might actually help emails to get through and prevents notices
-            // Message them with the notice about upgrading
-            email_to_user($adminuser, $adminuser, $messagesubject, html_to_text($message), $message);
-        }
+    /// Conditionally launch add field availablefrom
+        $result = $result && add_field($table, $field);
 
-        unset($adminusers);
-        unset($preference);
-        unset($message);
-        unset($messagesubject);
+    /// Define field availableuntil to be added to course_modules
+        $field = new XMLDBField('availableuntil');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0', 'availablefrom');
 
-        upgrade_main_savepoint($result, 2007101561.02);
-    }
+    /// Conditionally launch add field availableuntil
+        $result = $result && add_field($table, $field);
 
-    if ($result && $oldversion < 2007101563.02) {
-        // this block tries to undo incorrect forcing of new passwords for admins that have no
-        // way to change passwords MDL-20933
-        $systemcontext = get_context_instance(CONTEXT_SYSTEM);
-        $sql = "SELECT DISTINCT u.id, u.firstname, u.lastname, u.picture, u.imagealt, u.email, u.password
-                  FROM {$CFG->prefix}role_capabilities rc
-                  JOIN {$CFG->prefix}role_assignments ra ON (ra.contextid = rc.contextid AND ra.roleid = rc.roleid)
-                  JOIN {$CFG->prefix}user u ON u.id = ra.userid
-                 WHERE rc.capability = 'moodle/site:doanything'
-                       AND rc.permission = ".CAP_ALLOW."
-                       AND u.deleted = 0
-                       AND rc.contextid = ".$systemcontext->id." AND u.auth<>'manual' AND u.auth<>'email'";
+    /// Define field showavailability to be added to course_modules
+        $field = new XMLDBField('showavailability');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0', 'availableuntil');
 
-        if ($adminusers = get_records_sql($sql)) {
-            foreach ($adminusers as $adminuser) {
-                delete_records('user_preferences', 'userid', $adminuser->id, 'name', 'auth_forcepasswordchange');
-            }
-        }
-        unset($adminusers);
+    /// Conditionally launch add field showavailability
+        $result = $result && add_field($table, $field);
 
-        upgrade_main_savepoint($result, 2007101563.02);
-    }
+    /// Define table course_modules_availability to be created
+        $table = new XMLDBTable('course_modules_availability');
 
-    if ($result && $oldversion < 2007101563.03) {
-        // NOTE: this is quite hacky, but anyway it should work fine in 1.9,
-        //       in 2.0 we should always use plugin upgrade code for things like this
+    /// Adding fields to table course_modules_availability
+        $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null, null);
+        $table->addFieldInfo('coursemoduleid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
+        $table->addFieldInfo('sourcecmid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null, null, null);
+        $table->addFieldInfo('requiredcompletion', XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, null, null, null, null, null);
+        $table->addFieldInfo('gradeitemid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null, null, null);
+        $table->addFieldInfo('grademin', XMLDB_TYPE_NUMBER, '10, 5', null, null, null, null, null, null);
+        $table->addFieldInfo('grademax', XMLDB_TYPE_NUMBER, '10, 5', null, null, null, null, null, null);
 
-        $authsavailable = get_list_of_plugins('auth');
-        foreach($authsavailable as $authname) {
-            if (!$auth = get_auth_plugin($authname)) {
-                continue;
-            }
-            if ($auth->prevent_local_passwords()) {
-                execute_sql("UPDATE {$CFG->prefix}user SET password='not cached' WHERE auth='$authname'");
-            }
+    /// Adding keys to table course_modules_availability
+        $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
+        $table->addKeyInfo('coursemoduleid', XMLDB_KEY_FOREIGN, array('coursemoduleid'), 'course_modules', array('id'));
+        $table->addKeyInfo('sourcecmid', XMLDB_KEY_FOREIGN, array('sourcecmid'), 'course_modules', array('id'));
+        $table->addKeyInfo('gradeitemid', XMLDB_KEY_FOREIGN, array('gradeitemid'), 'grade_items', array('id'));
+
+    /// Conditionally launch create table for course_modules_availability
+        if (!table_exists($table)) {
+            create_table($table);
         }
 
-        upgrade_main_savepoint($result, 2007101563.03);
+    /// Main savepoint reached
+        upgrade_main_savepoint($result, 2007101553);
     }
-
-    if ($result && $oldversion < 2007101571.01) {
-        // MDL-21011 bring down course sort orders away from maximum values
-        $sql = "SELECT id, category, sortorder from {$CFG->prefix}course
-                ORDER BY sortorder ASC;";
-        if ($courses = get_recordset_sql($sql)) {
-            $i=1000;
-            $old_category = 0;
-            while ($course = rs_fetch_next_record($courses)) {
-                if($course->category!=$old_category) {
-                    //increase i to put a gap between courses in different categories
-                    //don't think we need to but they had one before
-                    $i += 1000;
-                    $old_category = $course->category;
-                }
-                set_field('course', 'sortorder', $i++, 'id', $course->id);
-            }
-            rs_close($courses);
-        }
-        unset($courses);
-
-        upgrade_main_savepoint($result, 2007101571.01);
-    }
-
-    if ($result && $oldversion < 2007101571.02) {
-        upgrade_fix_incorrect_mnethostids();
-        upgrade_main_savepoint($result, 2007101571.02);
-    }
-
-    /// MDL-17863. Increase the portno column length on mnet_host to handle any port number
-    if ($result && $oldversion < 2007101571.03) {
-        $table = new XMLDBTable('mnet_host');
-        $field = new XMLDBField('portno');
-        $field->setAttributes(XMLDB_TYPE_INTEGER, '5', true, true, null, false, false, 0);
-        $result = change_field_precision($table, $field);
-        upgrade_main_savepoint($result, 2007101571.03);
-    }
-
-    // MDL-21407. Trim leading spaces from default tex latexpreamble causing problems under some confs
-    if ($result && $oldversion < 2007101571.04) {
-        if ($preamble = $CFG->filter_tex_latexpreamble) {
-            $preamble = preg_replace('/^ +/m', '', $preamble);
-            set_config('filter_tex_latexpreamble', $preamble);
-        }
-        upgrade_main_savepoint($result, 2007101571.04);
-    }
-
+    
     return $result;
 }
 

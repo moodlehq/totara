@@ -169,6 +169,9 @@ function xmldb_local_upgrade($oldversion) {
         if (!table_exists($table)) {
             create_table($table);
         }
+
+    /// Changes to modinfo mean we need to rebuild course cache
+        rebuild_course_cache(0,true);
     }
 
 

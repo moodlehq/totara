@@ -1,5 +1,9 @@
 <?php
 require_once ($CFG->libdir.'/formslib.php');
+
+if(!empty($CFG->enableavailability)) {
+    require_once($CFG->libdir.'/conditionlib.php');
+}
 /**
  * This class adds extra methods to form wrapper specific to be used for module
  * add / update forms (mod/{modname}.mod_form.php replaces deprecated mod/{modname}/mod.html
@@ -172,6 +176,33 @@ class moodleform_mod extends moodleform {
                 $mform->freeze($this->_customcompletionelements);
             } 
         }
+
+        // Availability conditions
+        if (!empty($CFG->enableavailability) && $this->_cm) {
+            $ci = new condition_info($this->_cm);
+            $fullcm=$ci->get_full_course_module();
+
+            $num=0;
+            foreach($fullcm->conditionsgrade as $gradeitemid=>$minmax) {
+                $groupelements=$mform->getElement('conditiongradegroup['.$num.']')->getElements();
+                $groupelements[0]->setValue($gradeitemid);
+                // These numbers are always in the format 0.00000 - the rtrims remove any final zeros and,
+                // if it is a whole number, the decimal place.
+                $groupelements[2]->setValue(is_null($minmax->min)?'':rtrim(rtrim($minmax->min,'0'),'.'));
+                $groupelements[4]->setValue(is_null($minmax->max)?'':rtrim(rtrim($minmax->max,'0'),'.'));
+                $num++;
+            }
+
+            if ($completion->is_enabled()) {
+                $num=0;
+                foreach($fullcm->conditionscompletion as $othercmid=>$state) {
+                    $groupelements=$mform->getElement('conditioncompletiongroup['.$num.']')->getElements();
+                    $groupelements[0]->setValue($othercmid);
+                    $groupelements[1]->setValue($state);
+                    $num++;
+                }
+            }
+        }
     }
 
     // form verification
@@ -229,7 +260,7 @@ class moodleform_mod extends moodleform {
             $default_values = (array)$default_values;
         }
         $this->data_preprocessing($default_values);
-        parent::set_data($default_values); //never slashed for moodleform_mod
+        parent::set_data($default_values);
     }
 
     /**
@@ -350,9 +381,96 @@ class moodleform_mod extends moodleform {
             $mform->addElement('select', 'gradecat', get_string('gradecategory', 'grades'), $categories);
         }
 
+        if (!empty($CFG->enableavailability)) {
+            // Conditional availability
+            $mform->addElement('header', '', get_string('availabilityconditions', 'condition'));
+            $mform->addElement('date_selector', 'availablefrom', get_string('availablefrom', 'condition'), array('optional'=>true));
+            $mform->setHelpButton('availablefrom', array('conditiondates', get_string('help_conditiondates', 'condition'), 'condition'));
+            $mform->addElement('date_selector', 'availableuntil', get_string('availableuntil', 'condition'), array('optional'=>true));
+            $mform->setHelpButton('availableuntil', array('conditiondates', get_string('help_conditiondates', 'condition'), 'condition'));
+
+            // Conditions based on grades
+            $gradeoptions=array();
+            $items=grade_item::fetch_all(array('courseid'=>$COURSE->id));
+            $items = $items ? $items : array();
+            foreach($items as $id=>$item) {
+                $gradeoptions[$id]=$item->get_name();
+            }
+            asort($gradeoptions);
+            $gradeoptions=array(0=>get_string('none','condition'))+$gradeoptions;
+
+            $grouparray=array();
+            $grouparray[] =& $mform->createElement('select','conditiongradeitemid','',$gradeoptions);
+            $grouparray[] =& $mform->createElement('static', '', '',' '.get_string('grade_atleast','condition').' ');
+            $grouparray[] =& $mform->createElement('text', 'conditiongrademin','',array('size'=>3));
+            $grouparray[] =& $mform->createElement('static', '', '',' '.get_string('grade_upto','condition').' ');
+            $grouparray[] =& $mform->createElement('text', 'conditiongrademax','',array('size'=>3));
+            $mform->setType('conditiongrademin',PARAM_INT);
+            $mform->setType('conditiongrademax',PARAM_INT);
+            $group = $mform->createElement('group','conditiongradegroup',
+                get_string('gradecondition', 'condition'),$grouparray);
+
+            // Get version with condition info and store it so we don't ask
+            // twice
+            if(!empty($this->_cm)) {
+                $ci = new condition_info($this->_cm,CONDITION_MISSING_EXTRATABLE);
+                $this->_cm=$ci->get_full_course_module();
+                $count=count($this->_cm->conditionsgrade)+1;
+            } else {
+                $count=1;
+            }
+
+            $this->repeat_elements(array($group),$count,array(),'conditiongraderepeats','conditiongradeadds',2,
+                get_string('addgrades','condition'),true);
+            $mform->setHelpButton('conditiongradegroup[0]', array('gradecondition', get_string('help_gradecondition', 'condition'), 'condition'));
+
+            // Conditions based on completion
+            $completion = new completion_info($COURSE);
+            if ($completion->is_enabled()) {
+                $completionoptions=array();
+                $modinfo=get_fast_modinfo($COURSE);
+                foreach($modinfo->cms as $id=>$cm) {
+                    if ($cm->completion) {
+                        $completionoptions[$id]=$cm->name;
+                    }
+                }
+                asort($completionoptions);
+                $completionoptions=array(0=>get_string('none','condition'))+$completionoptions;
+
+                $completionvalues=array(
+                    COMPLETION_COMPLETE=>get_string('completion_complete','condition'),
+                    COMPLETION_INCOMPLETE=>get_string('completion_incomplete','condition'),
+                    COMPLETION_COMPLETE_PASS=>get_string('completion_pass','condition'),
+                    COMPLETION_COMPLETE_FAIL=>get_string('completion_fail','condition'));
+
+                $grouparray=array();
+                $grouparray[] =& $mform->createElement('select','conditionsourcecmid','',$completionoptions);
+                $grouparray[] =& $mform->createElement('select','conditionrequiredcompletion','',$completionvalues);
+                $group = $mform->createElement('group','conditioncompletiongroup',
+                    get_string('completioncondition', 'condition'),$grouparray);
+
+                $count=empty($this->_cm) ? 1 : count($this->_cm->conditionscompletion)+1;
+                $this->repeat_elements(array($group),$count,array(),
+                    'conditioncompletionrepeats','conditioncompletionadds',2,
+                    get_string('addcompletions','condition'),true);
+                $mform->setHelpButton('conditioncompletiongroup[0]', array('completioncondition', get_string('help_completioncondition', 'condition'), 'condition'));
+            }
+
+            // Do we display availability info to students?
+            $mform->addElement('select', 'showavailability', get_string('showavailability', 'condition'),
+                    array(CONDITION_STUDENTVIEW_SHOW=>get_string('showavailability_show', 'condition'),
+                    CONDITION_STUDENTVIEW_HIDE=>get_string('showavailability_hide', 'condition')));
+            $mform->setDefault('showavailability', CONDITION_STUDENTVIEW_SHOW);
+            $mform->setHelpButton('showavailability', array('showavailability', get_string('help_showavailability', 'condition'), 'condition'));
+        }
+
         // Conditional activities: completion tracking section 
         require_once($CFG->libdir.'/completionlib.php');
-        $completion=new completion_info($COURSE);
+
+        if (!isset($completion)) {
+            $completion=new completion_info($COURSE);
+        }
+
         if($completion->is_enabled()) {
             $mform->addElement('header', '', get_string('activitycompletion', 'completion'));
 
