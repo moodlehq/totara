@@ -18,8 +18,8 @@ if(!$report->is_capable()) {
 $countfiltered = $report->get_filtered_count();
 $countall = $report->get_full_count();
 $fullname = $report->_fullname;
-$pagetitle = format_string(get_string('reportbuilder','local').': '.$fullname);
-$navlinks[] = array('name' => get_string('reportbuilder','local'), 'link'=> '', 'type'=>'title');
+$pagetitle = format_string(get_string('report','local').': '.$fullname);
+$navlinks[] = array('name' => get_string('report','local'), 'link'=> '', 'type'=>'title');
 $navlinks[] = array('name' => $fullname, 'link'=> '', 'type'=>'title');
 
 $navigation = build_navigation($navlinks);

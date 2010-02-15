@@ -134,6 +134,7 @@ $string['report:nodata'] = 'There is no available data for that combination of c
 $string['report:organisation'] = 'Office';
 $string['report:startdate'] = 'Start date';
 $string['reportbuilder'] = 'Report Builder';
+$string['report'] = 'Report';
 $string['course_completion'] = 'Course Completion';
 $string['competency_evidence'] = 'Competency Evidence';
 $string['reportsettings'] = 'Report Settings';
