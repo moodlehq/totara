@@ -75,6 +75,9 @@ class reportbuilder {
 
     function get_current_params() {
         $out = array();
+        if(!isset($this->_paramoptions)) {
+            return $out;
+        }
         foreach ($this->_paramoptions as $name => $param) {
             $var = optional_param($name, null, PARAM_TEXT); //get as text for max flexibility
             if(isset($var)) {
@@ -634,8 +637,11 @@ class reportbuilder {
     }
 
     function get_filters_select() {
-       $filters = $this->_filteroptions;
+        $filters = $this->_filteroptions;
         $ret = array();
+        if(!isset($this->_filteroptions)) {
+            return $ret;
+        }
         foreach($filters as $type => $info) {
             foreach ($info as $value => $info2) {
                 $label = $info2['label'];
@@ -651,6 +657,9 @@ class reportbuilder {
     function get_columns_select() {
         $columns = $this->_columnoptions;
         $ret = array();
+        if(!isset($this->_columnoptions)) {
+            return $ret;
+        }
         foreach($columns as $type => $info) {
             foreach ($info as $value => $info2) {
                 $key = "{$type}-{$value}";

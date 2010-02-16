@@ -58,122 +58,123 @@ class report_builder_edit_form extends moodleform {
 
         $mform->addElement('header', 'general', get_string('filterfields', 'local'));
 
-        $mform->addElement('html', '<div class="reportbuilderform"><table><tr><th>'.get_string('filter','local').
-            '</th><th>'.get_string('advanced','local').'</th><th>'.get_string('options','local').'</th><tr>');
+        if(isset($report->_filters) && is_array($report->_filters) && count($report->_filters)>0) {
 
-        $filtersselect = $report->get_filters_select();
+            $mform->addElement('html', '<div class="reportbuilderform"><table><tr><th>'.get_string('filter','local').
+                '</th><th>'.get_string('advanced','local').'</th><th>'.get_string('options','local').'</th><tr>');
 
-        $strmovedown = get_string('movedown','local');
-        $strmoveup = get_string('moveup','local');
-        $strdelete = get_string('delete','local');
-        $spacer = '<img src="'.$CFG->wwwroot.'/pix/spacer.gif" class="iconsmall" alt="" />';
+            $filtersselect = $report->get_filters_select();
 
-        if(isset($report->_filters)) {
+            $strmovedown = get_string('movedown','local');
+            $strmoveup = get_string('moveup','local');
+            $strdelete = get_string('delete','local');
+            $spacer = '<img src="'.$CFG->wwwroot.'/pix/spacer.gif" class="iconsmall" alt="" />';
+
             $filters = $report->_filters;
-            if(is_array($filters)) {
-                $filtercount = count($filters);
-                $i = 1;
-                foreach($filters as $index => $filter) {
-                    $row = array();
-                    $type = $filter['type'];
-                    $value = $filter['value'];
-                    $field = "{$type}-{$value}";
-                    $advanced = $filter['advanced'];
-                    $fid = $index;
-                    $mform->addElement('html','<tr><td>');
-                    $mform->addElement('select',"filter{$fid}",'',$filtersselect);
-                    $mform->setDefault("filter{$fid}", $field);
-                    $mform->addElement('html','</td><td>');
-                    $mform->addElement('checkbox',"advanced{$fid}",'');
-                    $mform->setDefault("advanced{$fid}",$advanced);
-                    $mform->addElement('html','</td><td>');
-                    $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/reportbuilder/settings.php?d=1&amp;id='.$id.'&amp;fid='.$fid.'" title="'.$strdelete.'"><img src="'.$CFG->pixpath.'/t/delete.gif" class="iconsmall" alt="'.$strdelete.'" /></a>');
-                    if($i != 1) {
-                        $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/reportbuilder/settings.php?m=up&amp;id='.$id.'&amp;fid='.$fid.'" title="'.$strmoveup.'"><img src="'.$CFG->pixpath.'/t/up.gif" class="iconsmall" alt="'.$strmoveup.'" /></a>');
-                    } else {
-                        $mform->addElement('html', $spacer);
-                    }
-                    if($i != $filtercount) {
-                        $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/reportbuilder/settings.php?m=down&amp;id='.$id.'&amp;fid='.$fid.'" title="'.$strmovedown.'"><img src="'.$CFG->pixpath.'/t/down.gif" class="iconsmall" alt="'.$strmovedown.'" /></a>');
-                    } else {
-                        $mform->addElement('html', $spacer);
-                    }
-                    $mform->addElement('html','</td></tr>');
-                    $i++;
+            $filtercount = count($filters);
+            $i = 1;
+            foreach($filters as $index => $filter) {
+                $row = array();
+                $type = $filter['type'];
+                $value = $filter['value'];
+                $field = "{$type}-{$value}";
+                $advanced = $filter['advanced'];
+                $fid = $index;
+                $mform->addElement('html','<tr><td>');
+                $mform->addElement('select',"filter{$fid}",'',$filtersselect);
+                $mform->setDefault("filter{$fid}", $field);
+                $mform->addElement('html','</td><td>');
+                $mform->addElement('checkbox',"advanced{$fid}",'');
+                $mform->setDefault("advanced{$fid}",$advanced);
+                $mform->addElement('html','</td><td>');
+                $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/reportbuilder/settings.php?d=1&amp;id='.$id.'&amp;fid='.$fid.'" title="'.$strdelete.'"><img src="'.$CFG->pixpath.'/t/delete.gif" class="iconsmall" alt="'.$strdelete.'" /></a>');
+                if($i != 1) {
+                    $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/reportbuilder/settings.php?m=up&amp;id='.$id.'&amp;fid='.$fid.'" title="'.$strmoveup.'"><img src="'.$CFG->pixpath.'/t/up.gif" class="iconsmall" alt="'.$strmoveup.'" /></a>');
+                } else {
+                    $mform->addElement('html', $spacer);
                 }
-
+                if($i != $filtercount) {
+                    $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/reportbuilder/settings.php?m=down&amp;id='.$id.'&amp;fid='.$fid.'" title="'.$strmovedown.'"><img src="'.$CFG->pixpath.'/t/down.gif" class="iconsmall" alt="'.$strmovedown.'" /></a>');
+                } else {
+                    $mform->addElement('html', $spacer);
+                }
+                $mform->addElement('html','</td></tr>');
+                $i++;
             }
-        }
 
-        $mform->addElement('html','<tr><td>');
-        $newfilterselect = array_merge(array(0=>get_string('addanotherfilter','local')),$filtersselect);
-        $mform->addElement('select','newfilter','',$newfilterselect);
-        $mform->addElement('html','</td><td>');
-        $mform->addElement('checkbox','newadvanced','');
-        $mform->disabledIf('newadvanced','newfilter', 'eq', 0);
-        $mform->addElement('html','</td><td>');
-        $mform->addElement('html','</td><td>&nbsp;</td></tr>');
-        $mform->addElement('html','</table></div>');
+
+            $mform->addElement('html','<tr><td>');
+            $newfilterselect = array_merge(array(0=>get_string('addanotherfilter','local')),$filtersselect);
+            $mform->addElement('select','newfilter','',$newfilterselect);
+            $mform->addElement('html','</td><td>');
+            $mform->addElement('checkbox','newadvanced','');
+            $mform->disabledIf('newadvanced','newfilter', 'eq', 0);
+            $mform->addElement('html','</td><td>');
+            $mform->addElement('html','</td><td>&nbsp;</td></tr>');
+            $mform->addElement('html','</table></div>');
+        } else {
+            $mform->addElement('html',"No filters found. Ask your developer to add filter options to /local/reportbuilder/sources/{$report->_source}/filteroptions.php");
+        }
 
         $mform->addElement('header', 'general', get_string('reportcolumns', 'local'));
 
-        $mform->addElement('html', '<div class="reportbuilderform"><table><tr><th>'.get_string('column','local').
-            '</th><th>'.get_string('heading','local').'</th><th>'.get_string('options','local').'</th><tr>');
+        if(isset($report->_columns) && is_array($report->_columns) && count($report->_columns)>0) {
+            $mform->addElement('html', '<div class="reportbuilderform"><table><tr><th>'.get_string('column','local').
+                '</th><th>'.get_string('heading','local').'</th><th>'.get_string('options','local').'</th><tr>');
 
-        $columnsselect = $report->get_columns_select();
+            $columnsselect = $report->get_columns_select();
 
-        if(isset($report->_columns)) {
             $columns = $report->_columns;
 
-            if(is_array($columns)) {
-                $colcount = count($columns);
-                $i = 1;
-                foreach($columns as $index => $column) {
-                    $row = array();
-                    $type = $column['type'];
-                    $value = $column['value'];
-                    $field = "{$type}-{$value}";
-                    $heading = $column['heading'];
-                    $cid = $index;
-                    $mform->addElement('html','<tr><td>');
-                    $mform->addElement('select',"column{$cid}",'',$columnsselect);
-                    $mform->setDefault("column{$cid}", $field);
-                    $mform->addElement('html','</td><td>');
-                    $mform->addElement('text',"heading{$cid}",'');
-                    $mform->setDefault("heading{$cid}",$heading);
-                    $mform->addElement('html','</td><td>');
-                    // delete link
-                    $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/reportbuilder/settings.php?d=1&amp;id='.$id.'&amp;cid='.$cid.'" title="'.$strdelete.'"><img src="'.$CFG->pixpath.'/t/delete.gif" class="iconsmall" alt="'.$strdelete.'" /></a>');
-                    // move up link
-                    if($i != 1) {
-                        $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/reportbuilder/settings.php?m=up&amp;id='.$id.'&amp;cid='.$cid.'" title="'.$strmoveup.'"><img src="'.$CFG->pixpath.'/t/up.gif" class="iconsmall" alt="'.$strmoveup.'" /></a>');
-                    } else {
-                        $mform->addElement('html', $spacer);
-                    }
-
-                    // move down link
-                    if($i != $filtercount) {
-                        $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/reportbuilder/settings.php?m=down&amp;id='.$id.'&amp;cid='.$cid.'" title="'.$strmovedown.'"><img src="'.$CFG->pixpath.'/t/down.gif" class="iconsmall" alt="'.$strmovedown.'" /></a>');
-                    } else {
-                        $mform->addElement('html', $spacer);
-                    }
-
-                    $mform->addElement('html','</td></tr>');
-                    $i++;
+            $colcount = count($columns);
+            $i = 1;
+            foreach($columns as $index => $column) {
+                $row = array();
+                $type = $column['type'];
+                $value = $column['value'];
+                $field = "{$type}-{$value}";
+                $heading = $column['heading'];
+                $cid = $index;
+                $mform->addElement('html','<tr><td>');
+                $mform->addElement('select',"column{$cid}",'',$columnsselect);
+                $mform->setDefault("column{$cid}", $field);
+                $mform->addElement('html','</td><td>');
+                $mform->addElement('text',"heading{$cid}",'');
+                $mform->setDefault("heading{$cid}",$heading);
+                $mform->addElement('html','</td><td>');
+                // delete link
+                $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/reportbuilder/settings.php?d=1&amp;id='.$id.'&amp;cid='.$cid.'" title="'.$strdelete.'"><img src="'.$CFG->pixpath.'/t/delete.gif" class="iconsmall" alt="'.$strdelete.'" /></a>');
+                // move up link
+                if($i != 1) {
+                    $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/reportbuilder/settings.php?m=up&amp;id='.$id.'&amp;cid='.$cid.'" title="'.$strmoveup.'"><img src="'.$CFG->pixpath.'/t/up.gif" class="iconsmall" alt="'.$strmoveup.'" /></a>');
+                } else {
+                    $mform->addElement('html', $spacer);
                 }
 
-            }
-        }
+                // move down link
+                if($i != $filtercount) {
+                    $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/reportbuilder/settings.php?m=down&amp;id='.$id.'&amp;cid='.$cid.'" title="'.$strmovedown.'"><img src="'.$CFG->pixpath.'/t/down.gif" class="iconsmall" alt="'.$strmovedown.'" /></a>');
+                } else {
+                    $mform->addElement('html', $spacer);
+                }
 
-        $mform->addElement('html','<tr><td>');
-        $newcolumnsselect = array_merge(array(0=>get_string('addanothercolumn','local')),$columnsselect);
-        $mform->addElement('select','newcolumns','',$newcolumnsselect);
-        $mform->addElement('html','</td><td>');
-        $mform->addElement('text','newheading','');
-        $mform->disabledIf('newheading','newcolumns', 'eq', 0);
-        $mform->addElement('html','</td><td>');
-        $mform->addElement('html','</td><td>&nbsp;</td></tr>');
-        $mform->addElement('html','</table></div>');
+                $mform->addElement('html','</td></tr>');
+                $i++;
+            }
+
+            $mform->addElement('html','<tr><td>');
+            $newcolumnsselect = array_merge(array(0=>get_string('addanothercolumn','local')),$columnsselect);
+            $mform->addElement('select','newcolumns','',$newcolumnsselect);
+            $mform->addElement('html','</td><td>');
+            $mform->addElement('text','newheading','');
+            $mform->disabledIf('newheading','newcolumns', 'eq', 0);
+            $mform->addElement('html','</td><td>');
+            $mform->addElement('html','</td><td>&nbsp;</td></tr>');
+            $mform->addElement('html','</table></div>');
+        } else {
+
+                $mform->addElement('html',"No columns found. Ask your developer to add column options to /local/reportbuilder/sources/{$report->_source}/columnoptions.php");
+            }
 
 
         $mform->addElement('header', 'general', get_string('onlydisplayrecordsfor', 'local'));
