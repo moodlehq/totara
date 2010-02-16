@@ -112,6 +112,25 @@ class completion_criteria_date extends completion_criteria {
     }
 
     /**
+     * Return a more detailed criteria title for display in reports
+     * @access  public
+     * @return  string
+     */
+    public function get_title_detailed() {
+        return userdate($this->date, '%d-%h-%y');
+    }
+
+    /**
+     * Return criteria type title for display in reports
+     * @access  public
+     * @return  string
+     */
+    public function get_type_title() {
+        return get_string('date');
+    }
+
+
+    /**
      * Return criteria status text for display in reports
      * @access  public
      * @param   object  $completion     The user's completion record

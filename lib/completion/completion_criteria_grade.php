@@ -132,6 +132,24 @@ class completion_criteria_grade extends completion_criteria {
     }
 
     /**
+     * Return a more detailed criteria title for display in reports
+     * @access  public
+     * @return  string
+     */
+    public function get_title_detailed() {
+        return (float) $this->gradepass . '% required';
+    }
+
+    /**
+     * Return criteria type title for display in reports
+     * @access  public
+     * @return  string
+     */
+    public function get_type_title() {
+        return get_string('grade');
+    }
+
+    /**
      * Return criteria status text for display in reports
      * @access  public
      * @param   object  $completion     The user's completion record

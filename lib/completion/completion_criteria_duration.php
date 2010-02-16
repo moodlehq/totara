@@ -129,6 +129,24 @@ class completion_criteria_duration extends completion_criteria {
     }
 
     /**
+     * Return a more detailed criteria title for display in reports
+     * @access  public
+     * @return  string
+     */
+    public function get_title_detailed() {
+        return ceil($this->enrolperiod / (60 * 60 * 24)) . ' days';
+    }
+
+    /**
+     * Return criteria type title for display in reports
+     * @access  public
+     * @return  string
+     */
+    public function get_type_title() {
+        return get_string('days', 'completion');
+    }
+
+    /**
      * Return criteria status text for display in reports
      * @access  public
      * @param   object  $completion     The user's completion record

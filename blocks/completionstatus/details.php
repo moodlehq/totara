@@ -85,8 +85,6 @@ $coursecomplete = $info->is_course_complete($USER->id);
 // Has this user completed any criteria?
 $criteriacomplete = $info->count_course_user_data($USER->id);
 
-#if ($pending_update) {
-#    echo '<i>'.get_string('pending', 'completion').'</i>';
 if ($coursecomplete) {
     echo get_string('complete');
 } else if (!$criteriacomplete) {

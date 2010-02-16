@@ -93,6 +93,24 @@ class completion_criteria_unenrol extends completion_criteria {
     }
 
     /**
+     * Return a more detailed criteria title for display in reports
+     * @access  public
+     * @return  string
+     */
+    public function get_title_detailed() {
+        return $this->get_title();
+    }
+
+    /**
+     * Return criteria type title for display in reports
+     * @access  public
+     * @return  string
+     */
+    public function get_type_title() {
+        return get_string('unenrol');
+    }
+
+    /**
      * Return criteria progress details for display in reports
      * @access  public
      * @param   object  $completion     The user's completion record

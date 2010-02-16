@@ -8,7 +8,7 @@
         $completion = new completion_info($course);
         if ($completion->is_enabled()) {
             echo '<p>';
-            echo '<a href="'.$CFG->wwwroot.'/course/report/progress/index.php?course='.$course->id.'">'.get_string('activitycompletionreport','completion').'</a>';
+            echo '<a href="'.$CFG->wwwroot.'/course/report/completion/index.php?course='.$course->id.'">'.get_string('coursecompletionreport','completion').'</a>';
             echo '</p>';
         }
     }

@@ -181,7 +181,7 @@ class completion_completion extends data_object {
 
     /**
      * Mark this user complete in this course
-     * 
+     *
      * This generally happens when the required completion criteria
      * in the course are complete.
      *
