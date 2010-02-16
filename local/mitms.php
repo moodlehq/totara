@@ -234,13 +234,21 @@ function mitms_print_my_team_nav($return=false) {
     $teammembers = get_records_sql($sql);
     if (!empty($teammembers)) {
         $returnstr = '
-         <ul id="mitms-nav">
+         <table>
         ';
         foreach($teammembers as $teammember) {
-            $returnstr .= '<li><a href="'.$CFG->wwwroot.'/my/records.php?id='.$teammember->id.'">'.$teammember->firstname.' '.$teammember->lastname.'</a></li>';
+            $returnstr .= '<tr>
+                    <td align="left">
+                        <a href="'.$CFG->wwwroot.'/my/records.php?id='.$teammember->id.'"><img src="'.$CFG->wwwroot.'/pix/i/teammember.png" width="32" height="32"></a>
+                    </td>
+                    <td align="left">
+                        <a href="'.$CFG->wwwroot.'/my/records.php?id='.$teammember->id.'">'.$teammember->firstname.' '.$teammember->lastname.'</a>
+                    </td>
+                    </tr>
+             ';
         }
         $returnstr .= '
-         </ul>
+         </table>
         ';
     }
     return $returnstr;
