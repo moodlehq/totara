@@ -175,6 +175,11 @@ $columnoptions = array(
             'field' => "position.fullname",
             'joins' => array('user','position_assignment','position'),
         ),
+        'title' => array(
+            'name' => 'User\'s Job Title',
+            'field' => "pa.fullname",
+            'joins' => array('user','position_assignment'),
+        ),
     ),
 );
 
