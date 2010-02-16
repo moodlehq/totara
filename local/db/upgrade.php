@@ -376,5 +376,17 @@ function xmldb_local_upgrade($oldversion) {
         }
     }
 
+    if ($result && $oldversion < 2010021510) {
+        // Add reaggregate field
+
+        $table = new XMLDBTable('course_completions');
+        $field = new XMLDBField('reaggregate');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0', 'timecompleted');
+
+        if (!field_exists($table, $field)) {
+            add_field($table, $field);
+        }
+    }
+
     return $result;
 }
