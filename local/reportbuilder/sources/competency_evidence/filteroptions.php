@@ -119,10 +119,6 @@ $filteroptions = array(
             'filtertype' => 'text',
             'label' => 'Date of Birth',
         ),
-        'title' => array(
-            'filtertype' => 'text',
-            'label' => 'Job Title',
-        ),
         'nzqaid' => array(
             'filtertype' => 'text',
             'label' => 'NZQA ID',
