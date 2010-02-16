@@ -112,8 +112,13 @@ function mitms_reset_frontpage_blocks() {
 function mitms_print_my_learning_nav($return=false) {
     global $CFG, $USER;
 
+    $usercontext = get_context_instance(CONTEXT_USER, $user->id);
+
     $returnstr = '
         <table>
+    ';
+    if (has_capability('moodle/local:viewownlist', $usercontext)) {
+        $returnstr .= '
             <tr>
                 <td align="left">
                     <a href="'.$CFG->wwwroot.'/plan/index.php" title="'.get_string('developmentplan','local').'">
@@ -123,6 +128,9 @@ function mitms_print_my_learning_nav($return=false) {
                     <span style="font-size: small"><a href="'.$CFG->wwwroot.'/plan/index.php">' . get_string('developmentplan', 'local') . '</a></span>
                 </td>
             </tr>
+        ';
+    }
+    $returnstr .= '
             <tr>
                 <td align="left">
                     <a href="'.$CFG->wwwroot.'/blocks/facetoface/mysignups.php" title=""><img src="'.$CFG->wwwroot.'/pix/i/bookings.png" width="32" height="32" /></a>
