@@ -216,11 +216,11 @@ function mitms_print_my_team_nav($return=false) {
     global $CFG, $USER;
 
     $returnstr = '';
-
+    $context = get_context_instance(CONTEXT_SYSTEM);
     $managerroleid = get_field('role','id','shortname','manager');
 
-    // return users with this user as manager
-    $sql = "SELECT u.id, u.firstname, u.lastname
+    // return count of users with this user as manager
+    $sql = "SELECT COUNT(*)
         FROM {$CFG->prefix}role_assignments ra
         LEFT JOIN {$CFG->prefix}context c
           ON c.id=ra.contextid
@@ -228,26 +228,20 @@ function mitms_print_my_team_nav($return=false) {
           ON u.id=c.instanceid
         WHERE ra.roleid={$managerroleid}
           AND ra.userid={$USER->id}
-          AND c.contextlevel=30
-        ORDER BY u.firstname";
+          AND c.contextlevel=30";
 
-    $teammembers = get_records_sql($sql);
-    if (!empty($teammembers)) {
+    $teammembers = count_records_sql($sql);
+    if (!empty($teammembers) && $teammembers > 0 && has_capability('moodle/local:viewstaffreports',$context)) {
         $returnstr = '
          <table>
-        ';
-        foreach($teammembers as $teammember) {
-            $returnstr .= '<tr>
-                    <td align="left">
-                        <a href="'.$CFG->wwwroot.'/my/records.php?id='.$teammember->id.'"><img src="'.$CFG->wwwroot.'/pix/i/teammember.png" width="32" height="32"></a>
-                    </td>
-                    <td align="left">
-                        <a href="'.$CFG->wwwroot.'/my/records.php?id='.$teammember->id.'">'.$teammember->firstname.' '.$teammember->lastname.'</a>
-                    </td>
-                    </tr>
-             ';
-        }
-        $returnstr .= '
+             <tr>
+                 <td align="left">
+                     <a href="'.$CFG->wwwroot.'/my/team.php"><img src="'.$CFG->wwwroot.'/pix/i/teammember.png" width="32" height="32"></a>
+                 </td>
+                 <td align="left">
+                     <a href="'.$CFG->wwwroot.'/my/team.php">View My Team</a> ('.$teammembers.' staff)
+                 </td>
+             </tr>
          </table>
         ';
     }
