@@ -21,6 +21,7 @@ class reportbuilder {
     var $_filtering;
     var $_params;
     var $_paramoptions;
+    var $_hidden;
 
     function reportbuilder($shortname=null, $extraparams=null) {
         global $CFG;
@@ -36,6 +37,7 @@ class reportbuilder {
             $this->_columns = unserialize($report->columns);
             $this->_restriction = unserialize($report->restriction);
             $this->_id = $report->id;
+            $this->_hidden = $report->hidden;
 
             // pull in data for this report
             $this->_columnoptions = $this->get_source_data('columnoptions');

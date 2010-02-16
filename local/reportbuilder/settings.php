@@ -102,6 +102,7 @@ if ($fromform = $mform->get_data()) {
     $todb->restriction = serialize($result);
     $todb->shortname = $fromform->shortname;
     $todb->fullname = $fromform->fullname;
+    $todb->hidden = $fromform->hidden;
     if(update_record('report_builder',$todb)) {
         redirect($returnurl, get_string('reportupdated','local'));
     } else {

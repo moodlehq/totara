@@ -202,4 +202,5 @@ $string['noteammembers'] = 'You do not currently have any team members. If this 
 $string['learningrecords'] = 'Learning Records';
 $string['f2fbookings'] = 'Face to Face Bookings';
 $string['allteammembers'] = 'All Team Members';
+$string['hidden'] = 'Hide in Report Manager';
 

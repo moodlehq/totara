@@ -26,6 +26,8 @@ class report_builder_new_form extends moodleform {
             // invalid if not set
             $mform->addRule('source', get_string('error:mustselectsource','local'), 'regex','/^[^0]*$/');
 
+            $mform->addElement('advcheckbox','hidden', get_string('hidden','local'), '', null, array(0,1));
+
             $this->add_action_buttons();
 
         } else {
@@ -55,6 +57,8 @@ class report_builder_edit_form extends moodleform {
         $mform->setDefault('shortname', $report->_shortname);
         $mform->addRule('shortname',null,'required');
         $mform->addElement('static', 'reportsource', get_string('source','local'), $report->_source);
+        $mform->addElement('advcheckbox', 'hidden', get_string('hidden','local'), '', null, array(0,1));
+        $mform->setDefault('hidden', $report->_hidden);
 
         $mform->addElement('header', 'general', get_string('filterfields', 'local'));
 

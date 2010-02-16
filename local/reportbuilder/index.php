@@ -53,6 +53,7 @@
         $todb->columns = serialize(get_source_data($fromform->source,'defaultcolumns'));
         $todb->filters = serialize(get_source_data($fromform->source,'defaultfilters'));
         $todb->restriction = serialize(get_default_restrictions($fromform->source));
+        $todb->hidden = $fromform->hidden;
         if($newid = insert_record('report_builder',$todb)) {
             redirect($CFG->wwwroot.'/local/reportbuilder/settings.php?id='.$newid);
         } else {

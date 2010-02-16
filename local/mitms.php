@@ -269,7 +269,8 @@ function mitms_print_report_manager($return=false) {
                 }
             }
         }
-        if($hascap) {
+        // show reports user has permission to view, that are not hidden
+        if($hascap && !$report->hidden) {
             $row = '
             <tr>
                 <td align="left">

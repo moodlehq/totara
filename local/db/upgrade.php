@@ -1054,6 +1054,14 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && create_table($table);
     }
 
+    if ($result && $oldversion < 2010021701) {
+        // add hidden field to report builder table
+        $table = new XMLDBTable('report_builder');
+        $field = new XMLDBField('hidden');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '4', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, 0);
+        $result = $result && add_field($table, $field);
+    }
+
     /// Insert default records
     $defaultdir = $CFG->dirroot.'/local/db/default';
     if (is_dir($defaultdir)) {
