@@ -74,6 +74,10 @@ $filteroptions = array(
             'filtertype' => 'text',
             'label' => 'Manager\'s Name',
         ),
+        'title' => array(
+            'filtertype' => 'text',
+            'label' => 'User\'s Job Title',
+        ),
     ),
     'course' => array(
         'fullname' => array(

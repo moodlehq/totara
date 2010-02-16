@@ -111,6 +111,14 @@ $filteroptions = array(
             'selectfunc' => 'get_positions_list',
             'options' => $selectwidth,
         ),
+        'manager_name' => array(
+            'filtertype' => 'text',
+            'label' => 'Manager\'s Name',
+        ),
+        'title' => array(
+            'filtertype' => 'text',
+            'label' => 'User\'s Job Title',
+        ),
     ),
     'user_profile' => array(
         // just a text field, would be better as date
