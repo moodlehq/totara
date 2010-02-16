@@ -133,7 +133,7 @@ $columnoptions = array(
             'field' => "u.id",
             'joins' => array('user'),
         ),
-        'manager_name' => array(
+        'managername' => array(
             'name' => 'User\'s Manager Name',
             'field' => sql_fullname("manager.firstname","manager.lastname"),
             'joins' => array('user','position_assignment','manager_role_assignment','manager'),

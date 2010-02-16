@@ -70,7 +70,7 @@ $filteroptions = array(
             'selectfunc' => 'get_positions_list',
             'options' => $selectwidth,
         ),
-        'manager_name' => array(
+        'managername' => array(
             'filtertype' => 'text',
             'label' => 'Manager\'s Name',
         ),
