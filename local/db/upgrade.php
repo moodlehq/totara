@@ -335,5 +335,28 @@ function xmldb_local_upgrade($oldversion) {
             add_field($table, $field);
         }
     }
+
+    if ($result && $oldversion < 2010021508) {
+        // Add completion setting to course table
+
+        $table = new XMLDBTable('course');
+        $field = new XMLDBField('completionstartonenrol');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0', 'enablecompletion');
+
+        if (!field_exists($table, $field)) {
+            add_field($table, $field);
+        }
+
+        // Add completion setting to course table
+
+        $table = new XMLDBTable('course_completions');
+        $field = new XMLDBField('timestarted');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null, null, null, 'timeenrolled');
+
+        if (!field_exists($table, $field)) {
+            add_field($table, $field);
+        }
+    }
+
     return $result;
 }
