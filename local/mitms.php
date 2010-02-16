@@ -208,15 +208,21 @@ function mitms_print_my_team_nav($return=false) {
     global $CFG, $USER;
 
     $returnstr = '';
-    $sql = "SELECT u.id,u.firstname,u.lastname
-            FROM mdl_user_info_data uid
-            JOIN mdl_user_info_field uif
-              ON uid.fieldid=uif.id
-            JOIN mdl_user u
-              ON u.id=uid.userid
-            WHERE uif.shortname='managerid'
-            AND uid.data='{$USER->id}'
-            ORDER BY uid.userid";
+
+    $managerroleid = get_field('role','id','shortname','manager');
+
+    // return users with this user as manager
+    $sql = "SELECT u.id, u.firstname, u.lastname
+        FROM {$CFG->prefix}role_assignments ra
+        LEFT JOIN {$CFG->prefix}context c
+          ON c.id=ra.contextid
+        JOIN {$CFG->prefix}user u
+          ON u.id=c.instanceid
+        WHERE ra.roleid={$managerroleid}
+          AND ra.userid={$USER->id}
+          AND c.contextlevel=30
+        ORDER BY u.firstname";
+
     $teammembers = get_records_sql($sql);
     if (!empty($teammembers)) {
         $returnstr = '
