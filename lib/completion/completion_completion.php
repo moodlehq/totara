@@ -42,7 +42,7 @@ class completion_completion extends data_object {
      * Array of required table fields, must start with 'id'.
      * @var array $required_fields
      */
-    public $required_fields = array('id', 'userid', 'course', 'deleted', 'timenotified', 'timeenrolled', 'timestarted', 'timecompleted', 'rpl');
+    public $required_fields = array('id', 'userid', 'course', 'deleted', 'timenotified', 'timeenrolled', 'timestarted', 'timecompleted');
 
     /**
      * User ID
@@ -199,7 +199,11 @@ class completion_completion extends data_object {
             $this->timeenrolled = get_field('role_assignments', 'timestart', 'contextid', $context->id, 'userid', $this->userid);
         }
 
-        // Create record
-        $this->insert();
+        // Save record
+        if ($this->id) {
+            $this->update();
+        } else {
+            $this->insert();
+        }
     }
 }

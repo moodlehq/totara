@@ -140,7 +140,21 @@ class completion_criteria_completion extends data_object {
     public function mark_complete() {
         // Create record
         $this->timecompleted = time();
-        $this->insert();
+
+        // Save record
+        if ($this->id) {
+            $this->update();
+        } else {
+            $this->insert();
+        }
+
+        // Mark course completion record as started (if not already)
+        $cc = array(
+            'course'    => $this->course,
+            'userid'    => $this->userid
+        );
+        $ccompletion = new completion_completion($cc);
+        $ccompletion->mark_inprogress($this->timecompleted);
     }
 
     /**
