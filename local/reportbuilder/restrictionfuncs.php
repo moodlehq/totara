@@ -23,7 +23,7 @@ function reportbuilder_restriction_staff_records() {
     // return users with this user as manager
     $sql = "SELECT c.instanceid as userid FROM {$CFG->prefix}role_assignments ra
         LEFT JOIN {$CFG->prefix}context c ON c.id=ra.contextid
-        WHERE ra.roleid=$managerroleid and ra.userid={$userid}";
+        WHERE ra.roleid=$managerroleid and ra.userid={$userid} and c.contextlevel=30";
     $staff = get_records_sql($sql);
     // return null if none found
     if(!$staff) {
