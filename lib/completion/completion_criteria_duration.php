@@ -87,7 +87,7 @@ class completion_criteria_duration extends completion_criteria {
      * @param   object  $completion
      * @return  int
      */
-    private function get_timeenroled($completion) {
+    private function get_timeenrolled($completion) {
 
         $context = get_context_instance(CONTEXT_COURSE, $this->course);
         return get_field('role_assignments', 'timestart', 'contextid', $context->id, 'userid', $completion->userid);
@@ -101,14 +101,14 @@ class completion_criteria_duration extends completion_criteria {
      * @return  boolean
      */
     public function review($completion, $mark = true) {
-        $timeenroled = $this->get_timeenroled($completion);
+        $timeenrolled = $this->get_timeenrolled($completion);
 
-        // If duration since enrolment has passed
-        if (!$this->enrolperiod || !$timeenroled) {
+        // If duration since enrollment has passed
+        if (!$this->enrolperiod || !$timeenrolled) {
             return false;
         }
 
-        if (time() > ($timeenroled + $this->enrolperiod)) {
+        if (time() > ($timeenrolled + $this->enrolperiod)) {
             if ($mark) {
                 $completion->mark_complete();
             }
@@ -135,8 +135,8 @@ class completion_criteria_duration extends completion_criteria {
      * @return  string
      */
     public function get_status($completion) {
-        $timeenroled = $this->get_timeenroled($completion);
-        $timeleft = $timeenroled + $this->enrolperiod - time();
+        $timeenrolled = $this->get_timeenrolled($completion);
+        $timeleft = $timeenrolled + $this->enrolperiod - time();
         $enrolperiod = ceil($this->enrolperiod / (60 * 60 * 24));
 
         $daysleft = ceil($timeleft / (60 * 60 * 24));
@@ -207,8 +207,8 @@ class completion_criteria_duration extends completion_criteria {
         $details['requirement'] = get_string('xdays', 'completion', ceil($this->enrolperiod / (60*60*24)));
 
         // Get status
-        $timeenroled = $this->get_timeenroled($completion);
-        $timepassed = time() - $timeenroled;
+        $timeenrolled = $this->get_timeenrolled($completion);
+        $timepassed = time() - $timeenrolled;
         $details['status'] = get_string('xdays', 'completion', floor($timepassed / (60*60*24)));
 
         return $details;

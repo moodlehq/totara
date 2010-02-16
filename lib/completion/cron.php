@@ -84,7 +84,7 @@ function completion_cron_mark_started() {
             con.contextlevel = ".CONTEXT_COURSE."
         AND c.enablecompletion = 1
         AND c.completionstartonenrol = 1
-        AND crc.timeenroled IS NULL
+        AND crc.timeenrolled IS NULL
         AND (ra.timeend IS NULL OR ra.timeend > ".time().")
         {$roles}
         GROUP BY
