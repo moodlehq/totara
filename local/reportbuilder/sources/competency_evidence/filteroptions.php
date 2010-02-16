@@ -73,6 +73,10 @@ $filteroptions = array(
             'filtertype' => 'text',
             'label' => 'Manager\'s Name',
         ),
+        'title' => array(
+            'filtertype' => 'text',
+            'label' => 'User\'s Job Title',
+        ),
     ),
     'competency' => array(
         'fullname' => array(
@@ -110,10 +114,6 @@ $filteroptions = array(
             'label' => 'Position when completed',
             'selectfunc' => 'get_positions_list',
             'options' => $selectwidth,
-        ),
-        'title' => array(
-            'filtertype' => 'text',
-            'label' => 'User\'s Job Title',
         ),
     ),
     'user_profile' => array(
