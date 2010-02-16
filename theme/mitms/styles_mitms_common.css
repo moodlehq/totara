@@ -6,12 +6,13 @@
 /** Report Builder **/
 
 /* shrink select boxes to fit in filter */
-select.limited-width {
+select.mitms-limited-width {
     width: 200px;
     position: static;
 }
 
-select.full-width {
+/* expand while selecting option (IE only) */
+select.mitms-expanded-width {
     width: auto;
     position: absolute;
 }

@@ -32,8 +32,7 @@
 //                  of format. 
 
 // used to fix IE issue with fixed width selects
-// You'll also need to add some scripts to the header - see report.php for details
-$selectwidth = array('class' => 'limited-width','onMouseDown'=>"resizeSelect(this,false);",'onBlur'=>"resizeSelect(this,true);",'onChange'=>"resizeSelect(this,true);");
+$selectwidth = array('class' => 'mitms-limited-width','onMouseDown'=>"if(document.all) this.className='mitms-expanded-width';",'onBlur'=>"if(document.all) this.className='mitms-limited-width';",'onChange'=>"if(document.all) this.className='mitms-limited-width';");
 
 // define filter options for this source
 $filteroptions = array(
