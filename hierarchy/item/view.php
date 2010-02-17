@@ -41,9 +41,6 @@ if ($can_edit_item || $can_delete_item || $can_add_depth || $can_edit_depth) {
     $navbaritem = '';
 }
 
-// Make this page appear under the manage items admin menu
-admin_externalpage_setup($type.'manage', $navbaritem);
-
 $sitecontext = get_context_instance(CONTEXT_SYSTEM);
 require_capability('moodle/local:view'.$type, $sitecontext);
 
@@ -59,7 +56,15 @@ $can_edit = has_capability('moodle/local:update'.$type, $sitecontext);
 $hierarchy->hierarchy_page_setup('item/view');
 
 // Display page header
-admin_externalpage_print_header();
+$pagetitle = format_string($depth->fullname.' - '.$item->fullname);
+$navlinks[] = array('name' => get_string('competency','competency'), 'link'=> '', 'type'=>'title');
+$navlinks[] = array('name' => $depth->fullname, 'link'=> '', 'type'=>'title');
+$navlinks[] = array('name' => $item->fullname, 'link'=> '', 'type'=>'title');
+
+$navigation = build_navigation($navlinks);
+
+print_header_simple($pagetitle, '', $navigation, '', null, true, $navbaritem);
+
 
 $heading = "{$depth->fullname} - {$item->fullname}";
 
