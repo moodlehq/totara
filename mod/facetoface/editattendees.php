@@ -80,7 +80,8 @@ if ($frm = data_submitted()) {
                 } else {
                     $status = MDL_F2F_STATUS_WAITLISTED;
                 }
-                elseif (!facetoface_user_signup($session, $facetoface, $course, '', MDL_F2F_BOTH,
+
+                if (!facetoface_user_signup($session, $facetoface, $course, '', MDL_F2F_BOTH,
                                                 false, $adduser, !$suppressemail, $status)) {
                     $erruser = get_record('user', 'id', $adduser, '','','','', 'id, firstname, lastname');
                     $errors[] = get_string('error:addattendee', 'facetoface', fullname($erruser));
