@@ -150,7 +150,7 @@ class mod_facetoface_session_form extends moodleform {
                 rs_close($rs);
 
                 // Show header (if haven't already)
-                if (!$header_shown) {
+                if ($choices && !$header_shown) {
                     $mform->addElement('header', 'trainerroles', get_string('sessionroles', 'facetoface'));
                     $header_shown = true;
                 }
