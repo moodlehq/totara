@@ -46,7 +46,7 @@
     // see which reports exist in db and add columns for them to table
     // these reports should have the "userid" url parameter enabled to allow
     // viewing of individual reports
-    $staff_records = get_field('report_builder','id','shortname','staff_competency_evidence');
+    $staff_records = get_field('report_builder','id','shortname','staff_learning_records');
     $staff_f2f = get_field('report_builder','id','shortname','staff_facetoface_sessions');
 
     $tableheaders = array('',get_string('name'));
