@@ -75,8 +75,7 @@
               ON ra.id=pa.reportstoid
             JOIN mdl_user u
                ON u.id=ra.userid
-            WHERE pa.type=1 AND pa.userid={$USER->id}";
-
+            WHERE pa.type=1 AND pa.userid={$id}";
     $positionassignment = get_record_sql($sql);
 
     $table = new flexible_table('-recordoflearning-index-'.$user->id);
