@@ -216,7 +216,7 @@ function mitms_print_my_team_nav($return=false) {
     global $CFG, $USER;
 
     $returnstr = '';
-    $context = get_context_instance(CONTEXT_SYSTEM);
+
     $managerroleid = get_field('role','id','shortname','manager');
 
     // return count of users with this user as manager
@@ -231,7 +231,7 @@ function mitms_print_my_team_nav($return=false) {
           AND c.contextlevel=30";
 
     $teammembers = count_records_sql($sql);
-    if (!empty($teammembers) && $teammembers > 0 && has_capability('moodle/local:viewstaffreports',$context)) {
+    if (!empty($teammembers) && $teammembers > 0) {
         $returnstr = '
          <table>
              <tr>
@@ -262,9 +262,9 @@ function mitms_print_report_manager($return=false) {
         $hascap = false;
         if($restrictions && is_array($restrictions)) {
             foreach($restrictions as $restriction) {
-                $cap = $restriction['capability'];
-                // need at least one of listed capabilities
-                if(has_capability($cap,$context)) {
+                $cap = (isset($restriction['capability'])) ? $restriction['capability'] : null;
+                // allow if no capability set, or if user has the capability
+                if(!isset($cap) || has_capability($cap,$context)) {
                     $hascap = true;
                 }
             }

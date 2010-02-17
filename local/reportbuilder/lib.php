@@ -132,10 +132,12 @@ class reportbuilder {
 
     // returns true if current user has one or more or required capabilities
     function is_capable() {
-        $context = get_context_instance(CONTEXT_SYSTEM);
-        $capabilities = $this->get_capability_list();
-        // don't allow to view if no capabilities set
-        return has_any_capability($capabilities, $context);
+        $restrictions = $this->get_permitted_restrictions();
+        if($restrictions && is_array($restrictions) && count($restrictions)>0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     function get_param_restrictions() {

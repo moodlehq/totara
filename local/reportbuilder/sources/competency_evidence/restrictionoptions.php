@@ -51,11 +51,11 @@ $restrictionoptions = array(
         'default' => '0',
     ),
     array(
+        // no capability required as report checks for staff
         'funcname' => 'staff_records',
         'title' => 'Direct Reports',
         'field' => 'base.userid',
         'joins' => array(),
-        'capability' => 'moodle/local:viewstaffreports',
         'default' => '0',
     ),
     array(
