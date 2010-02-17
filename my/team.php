@@ -95,7 +95,7 @@
         //$table->pagesize($perpage, $count);
 
         // show row for all staff first
-        $tabledata = array('<img src="'.$CFG->wwwroot.'/pix/i/teammember.png" width="32" height="32" alt="'.get_string('allteammembers','local').'">', '<strong>'.get_string('allteammembers','local').'</strong>');
+        $tabledata = array('<img src="'.$CFG->wwwroot.'/pix/i/teammembers.png" width="32" height="32" alt="'.get_string('allteammembers','local').'">', '<strong>'.get_string('allteammembers','local').'</strong>');
         if($staff_records) {
             $tabledata[] = '<strong><a href="'.$CFG->wwwroot.'/local/reportbuilder/report.php?id='.$staff_records.'">'.get_string('learningrecords','local').'</a></strong>';
         } else {

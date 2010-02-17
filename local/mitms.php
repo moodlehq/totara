@@ -227,7 +227,7 @@ function mitms_print_my_team_nav($return=false) {
          <table>
              <tr>
                  <td align="left">
-                     <a href="'.$CFG->wwwroot.'/my/team.php"><img src="'.$CFG->wwwroot.'/pix/i/teammember.png" width="32" height="32"></a>
+                     <a href="'.$CFG->wwwroot.'/my/team.php"><img src="'.$CFG->wwwroot.'/pix/i/teammembers.png" width="32" height="32"></a>
                  </td>
                  <td align="left">
                      <a href="'.$CFG->wwwroot.'/my/team.php">View My Team</a> ('.count($teammembers).' staff)
