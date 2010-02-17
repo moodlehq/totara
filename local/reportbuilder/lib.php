@@ -135,17 +135,7 @@ class reportbuilder {
         $context = get_context_instance(CONTEXT_SYSTEM);
         $capabilities = $this->get_capability_list();
         // don't allow to view if no capabilities set
-        $ret = false;
-        if($capabilities && is_array($capabilities)) {
-            // if capabilities set, require at least one
-            foreach ($capabilities as $capability) {
-                if(has_capability($capability, $context)) {
-                    $ret = true;
-                }
-            }
-        }
-        return $ret;
-
+        return has_any_capability($capabilities, $context);
     }
 
     function get_param_restrictions() {
