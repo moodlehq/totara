@@ -32,6 +32,24 @@
 require_once($CFG->libdir.'/data_object.php');
 
 /**
+ * Competency evidence type constants
+ * Primarily for storing evidence type in the database
+ */
+define('COMPETENCY_EVIDENCE_TYPE_ACTIVITY_COMPLETION',  'activitycompletion');
+define('COMPETENCY_EVIDENCE_TYPE_COURSE_COMPLETION',    'coursecompletion');
+define('COMPETENCY_EVIDENCE_TYPE_COURSE_GRADE',         'coursegrade');
+
+/**
+ * Competency evidence type constant to class name mapping
+ */
+global $COMPETENCY_EVIDENCE_TYPES;
+$COMPETENCY_EVIDENCE_TYPES = array(
+    COMPETENCY_EVIDENCE_TYPE_ACTIVITY_COMPLETION    => 'activitycompletion',
+    COMPETENCY_EVIDENCE_TYPE_COURSE_COMPLETION      => 'coursecompletion',
+    COMPETENCY_EVIDENCE_TYPE_COURSE_GRADE           => 'coursegrade',
+);
+
+/**
  * An abstract object that holds methods and attributes common to all
  * competency evidence type objects
  * @abstract
@@ -65,11 +83,16 @@ abstract class competency_evidence_type extends data_object {
      * @return  object  comptency_evidence_type_*
      */
     public static function factory($data) {
-        global $CFG;
+        global $CFG, $COMPETENCY_EVIDENCE_TYPES;
 
         // If supplied an ID, load record
         if (is_numeric($data)) {
             $data = get_record('competency_evidence_items', 'id', $data);
+        }
+
+        // Check this competency evidence type is installed
+        if (!isset($data->itemtype) || !isset($COMPETENCY_EVIDENCE_TYPES[$data->itemtype])) {
+            error('invalidevidencetype', 'competency');
         }
 
         // Load class file

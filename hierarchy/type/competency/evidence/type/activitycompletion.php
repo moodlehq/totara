@@ -39,7 +39,7 @@ class competency_evidence_type_activitycompletion extends competency_evidence_ty
      * Evidence item type
      * @var string
      */
-    public $itemtype = 'activitycompletion';
+    public $itemtype = COMPETENCY_EVIDENCE_TYPE_ACTIVITY_COMPLETION;
 
     /**
      * Module instance

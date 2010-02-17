@@ -67,6 +67,7 @@ $string['fullnametemplate'] = 'Template full name';
 $string['idnumber'] = 'Competency ID number';
 $string['idnumberframework'] = 'Framework ID number';
 $string['idnumberview'] = '$a idnumber';
+$string['invalidevidencetype'] = 'Invalid evidence type';
 $string['invalidnumeric'] = 'Numerical value must be numerical (or not set)';
 $string['locatecompetency'] = 'Locate competency';
 $string['managecompetencies'] = 'Manage competencies';

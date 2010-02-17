@@ -39,7 +39,7 @@ class competency_evidence_type_coursegrade extends competency_evidence_type {
      * Evidence item type
      * @var string
      */
-    public $itemtype = 'coursegrade';
+    public $itemtype = COMPETENCY_EVIDENCE_TYPE_COURSE_GRADE;
 
     /**
      * Return evidence name and link

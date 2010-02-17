@@ -39,7 +39,7 @@ class competency_evidence_type_coursecompletion extends competency_evidence_type
      * Evidence item type
      * @var string
      */
-    public $itemtype = 'coursecompletion';
+    public $itemtype = COMPETENCY_EVIDENCE_TYPE_COURSE_COMPLETION;
 
     /**
      * Return evidence name and link
