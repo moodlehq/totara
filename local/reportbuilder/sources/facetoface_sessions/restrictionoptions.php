@@ -69,8 +69,8 @@ $restrictionoptions = array(
     array(
         'funcname' => 'local_completed_records',
         'title' => 'Those Completed Locally',
-        'field' => 'signup.organisationid',
-        'joins' => array('signup'),
+        'field' => 'pa.organisationid',
+        'joins' => array('signup','user','position_assignment'),
         'capability' => 'moodle/local:viewlocalreports',
         'default' => '0',
     ),
