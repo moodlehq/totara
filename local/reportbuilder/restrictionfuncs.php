@@ -30,6 +30,7 @@ function reportbuilder_restriction_staff_records() {
 // user's organisation
 function reportbuilder_restriction_local_records() {
     global $CFG,$USER;
+    require_once($CFG->dirroot.'/hierarchy/lib.php');
     $userid = $USER->id;
     // get the user's organisationid
     $orgid = get_field('position_assignment','organisationid','userid',$userid);
