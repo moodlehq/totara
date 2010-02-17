@@ -124,17 +124,18 @@ if ($cfdata = get_records_sql($sql)) {
 // Print extra info
 $hierarchy->display_extra_view_info($item);
 
-echo '<div class="buttons">';
+if($can_edit) {
+    echo '<div class="buttons">';
 
-$options = array('type'=>$type,'frameworkid' => $framework->id);
-print_single_button(
-    $CFG->wwwroot.'/hierarchy/index.php',
-    $options,
-    get_string('returntoframework', $type),
-    'get'
-);
+    $options = array('type'=>$type,'frameworkid' => $framework->id);
+    print_single_button(
+        $CFG->wwwroot.'/hierarchy/index.php',
+        $options,
+        get_string('returntoframework', $type),
+        'get'
+    );
 
-echo '</div>';
-
+    echo '</div>';
+}
 /// and proper footer
 print_footer();
