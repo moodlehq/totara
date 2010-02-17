@@ -132,20 +132,6 @@ $filteroptions = array(
             'options' => $selectwidth,
         ),
     ),
-    'role' => array(
-        'trainer' => array(
-            'filtertype' => 'text',
-            'label' => 'Session Trainer',
-        ),
-        'assessor' => array(
-            'filtertype' => 'text',
-            'label' => 'Session Assessor',
-        ),
-        'auditor' => array(
-            'filtertype' => 'text',
-            'label' => 'Session Auditor',
-        ),
-    ),
     /*
     'course_category' => array(
         'id' => array(
@@ -156,4 +142,21 @@ $filteroptions = array(
         ),
     ),*/
 );
+
+// roles to allow to be shown as filters - should match role shortnames
+$sessionroles = array('facilitator','auditor','assessor'); // leaving out assistant
+                                                           // as it generates too many extra rows
+$roles = get_records('role','','','','id,shortname');
+foreach ($roles as $role) {
+    if (in_array($role->shortname,$sessionroles)) {
+        $field = $role->shortname;
+        $name = ucfirst($role->shortname);
+        $key = "session_role_$field";
+        $userkey = "session_role_user_$field";
+        $filteroptions['role'][$field] = array(
+            'filtertype' => 'text',
+            'label' => 'Session '.$name,
+        );
+    }
+}
 

@@ -46,7 +46,7 @@ foreach($session_fields as $session_field) {
 }
 
 // add joins for the following roles as "session_role_X" and "session_role_user_X"
-$sessionroles = array('trainer','auditor','assessor','assistanttrainer');
+$sessionroles = array('facilitator','auditor','assessor','assistant');
 $roles = get_records('role','','','','id,shortname');
 foreach ($roles as $role) {
     if (in_array($role->shortname,$sessionroles)) {
@@ -66,7 +66,6 @@ foreach ($roles as $role) {
         $joinlist[$userkey] = "LEFT JOIN {$CFG->prefix}user $userkey ON $key.userid = $userkey.id";
     }
 }
-
 
 
 

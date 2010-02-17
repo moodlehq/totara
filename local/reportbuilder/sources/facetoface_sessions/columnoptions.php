@@ -182,38 +182,8 @@ $columnoptions = array(
             'joins' => array('signup','user','position_assignment','position'),
         ),
     ),
-    // be careful using these - they will generate extra results rows
-    // if same role is assigned to a session multiple times
-    'role' => array(
-        'trainer' => array(
-            'name' => 'Trainer',
-            'field' => sql_fullname("session_role_user_trainer.firstname",
-                "session_role_user_trainer.lastname"),
-            'joins' => array('session_role_trainer','session_role_user_trainer'),
-        ),
-        /*
-        // the problem with this is that it generates extra table rows for multiple assistant trainers
-        'assistanttrainer' => array(
-            'name' => 'Assistant Trainer',
-            'field' => sql_fullname("session_role_user_assistanttrainer.firstname",
-                "session_role_user_assistanttrainer.lastname"),
-            'joins' => array('session_role_assistanttrainer','session_role_user_assistanttrainer'),
-        ),
-         */
-        'auditor' => array(
-            'name' => 'Auditor',
-            'field' => sql_fullname('session_role_user_auditor.firstname',
-                'session_role_user_auditor.lastname'),
-            'joins' => array('session_role_auditor','session_role_user_auditor'),
-        ),
-        'assessor' => array(
-            'name' => 'Assessor',
-            'field' => sql_fullname('session_role_user_assessor.firstname',
-                'session_role_user_assessor.lastname'),
-            'joins' => array('session_role_assessor','session_role_user_assessor'),
-        ),
-    ),
 );
+
 
 $custom_fields = get_records('user_info_field','','','','id,shortname,name');
 foreach($custom_fields as $custom_field) {
@@ -226,5 +196,25 @@ foreach($custom_fields as $custom_field) {
         'field' => "$key.data",
         'joins' => array('signup','user',$key),
     );
+}
+
+// roles to allow to be shown as columns - should match role shortnames
+// be careful adding these as they will generate extra results rows
+// if same role assigned to a session multiple times
+$sessionroles = array('facilitator','auditor','assessor'); // leaving out assistant
+                                                           // as it generates too many extra rows
+$roles = get_records('role','','','','id,shortname');
+foreach ($roles as $role) {
+    if (in_array($role->shortname,$sessionroles)) {
+        $field = $role->shortname;
+        $name = ucfirst($role->shortname);
+        $key = "session_role_$field";
+        $userkey = "session_role_user_$field";
+        $columnoptions['role'][$field] = array(
+            'name' => 'Session '.$name,
+            'field' => sql_fullname($userkey.'.firstname',$userkey.'.lastname'),
+            'joins' => array($key, $userkey),
+        );
+    }
 }
 
