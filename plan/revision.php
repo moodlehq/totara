@@ -15,10 +15,6 @@ $rev = optional_param('rev', 0, PARAM_INT); // Revision ID
 $lp = optional_param('lp', 0, PARAM_INT); // Activity ID
 $print = optional_param('print', 0, PARAM_INT); // Print-friendly view
 
-if ($print) {
-    $CFG->theme = 'MITMS_print'; // for this page only
-}
-
 if (0 == $id) {
     error(get_string('error:idcannotbezero', 'local'));
 }
