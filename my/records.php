@@ -70,10 +70,10 @@
                 u.email as manageremail,
                 u.firstname as managerfirstname,
                 u.lastname as managerlastname
-            FROM mdl_position_assignment pa
-            JOIN mdl_role_assignments ra
+            FROM {$CFG->prefix}position_assignment pa
+            JOIN {$CFG->prefix}role_assignments ra
               ON ra.id=pa.reportstoid
-            JOIN mdl_user u
+            JOIN {$CFG->prefix}user u
                ON u.id=ra.userid
             WHERE pa.type=1 AND pa.userid={$id}";
     $positionassignment = get_record_sql($sql);
