@@ -50,9 +50,7 @@
     $staff_f2f = get_field('report_builder','id','shortname','staff_facetoface_sessions');
 
     $tableheaders = array('',get_string('name'));
-    if($staff_records) {
-        $tableheaders[] = get_string('learningrecords','local');
-    }
+    $tableheaders[] = get_string('learningrecords','local');
     if($staff_f2f) {
         $tableheaders[] = get_string('f2fbookings','local');
     }
@@ -66,12 +64,16 @@
     // return users with this user as manager
     $staff_ids = mitms_get_staff();
 
-    // now get their details
-    $sql = "SELECT id, firstname, lastname, imagealt, picture FROM {$CFG->prefix}user
-        WHERE id IN (".implode(',',$staff_ids).") ORDER BY firstname";
+    if($staff_ids) {
+        // now get their details
+        $sql = "SELECT id, firstname, lastname, imagealt, picture FROM {$CFG->prefix}user
+            WHERE id IN (".implode(',',$staff_ids).") ORDER BY firstname";
 
-    $teammembers = get_records_sql($sql);
-    $count = count($staff_ids);
+        $teammembers = get_records_sql($sql);
+        $count = count($staff_ids);
+    } else {
+        $teammembers = false;
+    }
 
     if($teammembers) {
         $table = new flexible_table('-team-members-for-'.$USER->id);
@@ -96,6 +98,8 @@
         $tabledata = array('<img src="'.$CFG->wwwroot.'/pix/i/teammember.png" width="32" height="32" alt="'.get_string('allteammembers','local').'">', '<strong>'.get_string('allteammembers','local').'</strong>');
         if($staff_records) {
             $tabledata[] = '<strong><a href="'.$CFG->wwwroot.'/local/reportbuilder/report.php?id='.$staff_records.'">'.get_string('learningrecords','local').'</a></strong>';
+        } else {
+            $tabledata[] = '';
         }
         if($staff_f2f) {
             $tabledata[] = '<strong><a href="'.$CFG->wwwroot.'/local/reportbuilder/report.php?id='.$staff_f2f.'">'.get_string('f2fbookings','local').'</a></strong>';
@@ -108,9 +112,11 @@
             $tabledata = array();
             $tabledata[] = print_user_picture($teammember, 1, null, null, true);
             $tabledata[] = $teammember->firstname.' '.$teammember->lastname;
+            /* use this when converting my/records link to a report
             if($staff_records) {
                 $tabledata[] = '<a href="'.$CFG->wwwroot.'/local/reportbuilder/report.php?id='.$staff_records.'&amp;userid='.$teammember->id.'">'.get_string('learningrecords','local').'</a>';
-            }
+            }*/
+            $tabledata[] = '<a href="'.$CFG->wwwroot.'/my/records.php?id='.$teammember->id.'">'.get_string('learningrecords','local').'</a>';
             if($staff_f2f) {
                 $tabledata[] = '<a href="'.$CFG->wwwroot.'/local/reportbuilder/report.php?id='.$staff_f2f.'&amp;userid='.$teammember->id.'">'.get_string('f2fbookings','local').'</a>';
             }
