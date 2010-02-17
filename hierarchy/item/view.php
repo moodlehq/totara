@@ -38,6 +38,7 @@ if ($can_edit_item || $can_delete_item || $can_add_depth || $can_edit_depth) {
     $navbaritem = $hierarchy->get_editing_button($edit, $options);
     $editingon = !empty($USER->{$type.'editing'});
 } else {
+    $editingon = false;
     $navbaritem = '';
 }
 

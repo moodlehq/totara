@@ -63,6 +63,7 @@
         $navbaritem = $hierarchy->get_editing_button($edit, $options);
         $editingon = !empty($USER->{$type.'editing'});
     } else {
+        $editingon = false;
         $navbaritem = '';
     }
 
