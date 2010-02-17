@@ -219,19 +219,10 @@ function mitms_print_my_team_nav($return=false) {
 
     $managerroleid = get_field('role','id','shortname','manager');
 
-    // return count of users with this user as manager
-    $sql = "SELECT COUNT(*)
-        FROM {$CFG->prefix}role_assignments ra
-        LEFT JOIN {$CFG->prefix}context c
-          ON c.id=ra.contextid
-        JOIN {$CFG->prefix}user u
-          ON u.id=c.instanceid
-        WHERE ra.roleid={$managerroleid}
-          AND ra.userid={$USER->id}
-          AND c.contextlevel=30";
+    // return users with this user as manager
+    $teammembers = mitms_get_staff();
 
-    $teammembers = count_records_sql($sql);
-    if (!empty($teammembers) && $teammembers > 0) {
+    if (!empty($teammembers) && count($teammembers) > 0) {
         $returnstr = '
          <table>
              <tr>
@@ -239,7 +230,7 @@ function mitms_print_my_team_nav($return=false) {
                      <a href="'.$CFG->wwwroot.'/my/team.php"><img src="'.$CFG->wwwroot.'/pix/i/teammember.png" width="32" height="32"></a>
                  </td>
                  <td align="left">
-                     <a href="'.$CFG->wwwroot.'/my/team.php">View My Team</a> ('.$teammembers.' staff)
+                     <a href="'.$CFG->wwwroot.'/my/team.php">View My Team</a> ('.count($teammembers).' staff)
                  </td>
              </tr>
          </table>
@@ -327,4 +318,68 @@ function mitms_print_user_profile_field($userid=null, $fieldshortname=null) {
             AND uid.userid='{$userid}'
             ";
     return get_field_sql($sql);
+}
+
+/**
+ * @param int $userid ID of user
+ * @param int $managerid ID of a potential manager to check
+ * @return boolean true if user $userid is managed by user $managerid
+ *
+ * If managerid is not set, uses the current user
+**/
+function mitms_is_manager($userid, $managerid=null) {
+    global $USER;
+    if(!isset($managerid)) {
+        $managerid = $USER->id;
+    }
+    $context = get_context_instance(CONTEXT_USER,$userid);
+    $managerroleid = get_field('role','id','shortname','manager');
+
+    // if a record exists, they are a manager to the user
+    if(get_record('role_assignments','roleid',$managerroleid,'contextid',$context->id, 'userid', $managerid)) {
+        return true;
+    } else {
+        return false;
+    }
+
+}
+
+/**
+ * @param int $userid ID of a user to get the staff of
+ * @return array Array of userids of staff who are managed by user $userid, or false if none
+ *
+ * if $userid is not set, returns staff of current user
+**/
+function mitms_get_staff($userid=null) {
+    global $USER,$CFG;
+
+    if(!isset($userid)) {
+        $userid = $USER->id;
+    }
+    $managerroleid = get_field('role','id','shortname','manager');
+
+    // return users with this user as manager
+    $sql = "SELECT c.instanceid as userid
+        FROM {$CFG->prefix}role_assignments ra
+        LEFT JOIN {$CFG->prefix}context c
+          ON c.id=ra.contextid
+        JOIN {$CFG->prefix}user u
+          ON u.id=c.instanceid
+        WHERE ra.roleid={$managerroleid}
+          AND ra.userid={$userid}
+          AND c.contextlevel=30";
+
+    // no matches
+    if(!$res = get_records_sql($sql)) {
+        return false;
+    }
+
+    $staff = array();
+    if(is_array($res)) {
+        foreach($res as $record) {
+            $staff[] = $record->userid;
+        }
+    }
+
+    return $staff;
 }

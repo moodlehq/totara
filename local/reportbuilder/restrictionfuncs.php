@@ -16,26 +16,14 @@ function reportbuilder_restriction_own_records() {
 
 // match users who have current user as their manager
 function reportbuilder_restriction_staff_records() {
-    global $USER,$CFG;
-    $userid = $USER->id;
-    // work out ID of manager role
-    $managerroleid = get_field('role','id','shortname','manager');
-    // return users with this user as manager
-    $sql = "SELECT c.instanceid as userid FROM {$CFG->prefix}role_assignments ra
-        LEFT JOIN {$CFG->prefix}context c ON c.id=ra.contextid
-        WHERE ra.roleid=$managerroleid and ra.userid={$userid} and c.contextlevel=30";
-    $staff = get_records_sql($sql);
-    // return null if none found
-    if(!$staff) {
+    // returns an array of ids belonging to the current
+    // user's staff
+    if($staff = mitms_get_staff()) {
+        return $staff;
+    } else {
+        // if $staff is false return null
         return null;
     }
-
-    // loop to generate output in correct form (array of userids)
-    $ret = array();
-    foreach($staff as $member) {
-        $ret[] = $member->userid;
-    }
-    return $ret;
 }
 
 // match users who are in an organisation at or below the current

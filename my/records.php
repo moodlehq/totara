@@ -51,8 +51,9 @@
         error('User not found');
     }
 
-    if ($USER->id != $id) {
-        error('You can only view your own records');
+    // users can only view their own and their staff's pages
+    if ($USER->id != $id && !mitms_is_manager($id)) {
+        error('You cannot view this page');
     }
 
     ///

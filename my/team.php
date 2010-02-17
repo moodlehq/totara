@@ -59,27 +59,19 @@
     //TODO add link to user's IDPs
     //$tableheaders[] = get_string('idps','local');
 
-
     print_header($strheading, $strheading, build_navigation($strheading));
 
     echo '<br /><center><h1>'.$strheading.'</h1></center><br />';
 
-    $managerroleid = get_field('role','id','shortname','manager');
-
     // return users with this user as manager
-    $select = "SELECT u.id, u.firstname, u.lastname, u.imagealt, u.picture ";
-    $from = "FROM {$CFG->prefix}role_assignments ra
-        LEFT JOIN {$CFG->prefix}context c
-          ON c.id=ra.contextid
-        JOIN {$CFG->prefix}user u
-          ON u.id=c.instanceid
-        WHERE ra.roleid={$managerroleid}
-          AND ra.userid={$USER->id}
-          AND c.contextlevel=30 ";
-    $order = "ORDER BY u.firstname";
+    $staff_ids = mitms_get_staff();
 
-    $teammembers = get_records_sql($select.$from.$order);
-    $count = count_records_sql("select count(*) ".$from);
+    // now get their details
+    $sql = "SELECT id, firstname, lastname, imagealt, picture FROM {$CFG->prefix}user
+        WHERE id IN (".implode(',',$staff_ids).") ORDER BY firstname";
+
+    $teammembers = get_records_sql($sql);
+    $count = count($staff_ids);
 
     if($teammembers) {
         $table = new flexible_table('-team-members-for-'.$USER->id);
