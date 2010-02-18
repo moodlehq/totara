@@ -22,9 +22,10 @@ class reportbuilder {
     var $_params;
     var $_paramoptions;
     var $_hidden;
+    var $_embeddedparams;
 
     function reportbuilder($shortname=null, $embed=false, $source=null, $fullname=null,
-                           $filters=null, $columns=null, $restriction=null) {
+                           $filters=null, $columns=null, $restriction=null, $embeddedparams=null) {
         global $CFG;
         if($shortname == null) {
             error(get_string('noshortname','local'));
@@ -38,6 +39,7 @@ class reportbuilder {
             $this->_columns = $columns;
             $this->_restriction = $restriction;
             $this->_source = $source;
+            $this->_embeddedparams = $embeddedparams;
         } else {
             // lookup from db
 
@@ -95,7 +97,15 @@ class reportbuilder {
         }
         foreach ($this->_paramoptions as $name => $param) {
             $var = optional_param($name, null, PARAM_TEXT); //get as text for max flexibility
-            if(isset($var)) {
+
+            if(isset($this->_embeddedparams[$name])) {
+                // embeded params take priority over url params
+                $res = array();
+                $res['field'] = $param['field'];
+                $res['joins'] = $param['joins'];
+                $res['value'] = $this->_embeddedparams[$name];
+                $out[] = $res;
+            } else if(isset($var)) {
                 // this url param exists, add to params to use
                 $res = array();
                 $res['field'] = $param['field'];
@@ -103,7 +113,9 @@ class reportbuilder {
                 $res['value'] = $var; // save the value
                 $out[] = $res;
             }
+
         }
+
         return $out;
     }
 
