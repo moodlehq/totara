@@ -738,11 +738,11 @@ class reportbuilder {
     // before header printed
     function export_buttons() {
         print "<center><table><tr><td>";
-        print_single_button(qualified_me(),array('format'=>'xls'),get_string('exportxls','local'));
+        print_single_button(qualified_me(),array('format'=>'xls'),get_string('exportxls','local'),'post');
         print "</td><td>";
-        print_single_button(qualified_me(),array('format'=>'csv'),get_string('exportcsv','local'));
+        print_single_button(qualified_me(),array('format'=>'csv'),get_string('exportcsv','local'),'post');
         print "</td><td>";
-        print_single_button(qualified_me(),array('format'=>'ods'),get_string('exportods','local'));
+        print_single_button(qualified_me(),array('format'=>'ods'),get_string('exportods','local'),'post');
         print "</td><tr></table></center>";
     }
 
