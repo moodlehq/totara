@@ -441,16 +441,10 @@ class reportbuilder {
         $shortname = $this->_shortname;
         $sortarray = isset($SESSION->flextable[$shortname]->sortby) ? $SESSION->flextable[$shortname]->sortby : null;
         foreach($sortarray as $sortelement => $unused) {
-            $parts = explode('_',$sortelement);
-            if(count($parts) !=2 ) {
-                error_log("sort element $sortelement has could not be split correctly");
-            }
-            $type = $parts[0];
-            $value = $parts[1];
             // see if sort element is in columns array
             $set = false;
             foreach($this->_columns as $col) {
-                if($col['type'] == $type && $col['value'] == $value) {
+                if($col['type'].'_'.$col['value'] == $sortelement) {
                     $set = true;
                 }
             }
