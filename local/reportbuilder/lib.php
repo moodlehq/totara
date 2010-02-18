@@ -289,7 +289,7 @@ class reportbuilder {
         $filterjoins = $this->get_filter_joins();
         $restjoins = $this->get_restriction_joins();
         $paramjoins = $this->get_param_joins();
-        $joins = array_merge($columnjoins, $filterjoins, $restjoins);
+        $joins = array_merge($columnjoins, $filterjoins, $restjoins, $paramjoins);
 
         // now build the query from the snippets
 
