@@ -206,4 +206,8 @@ $string['allteammembers'] = 'All Team Members';
 $string['hidden'] = 'Hide in Report Manager';
 $string['mycoursecompletions'] = 'My Course Completions';
 $string['coursecompletionsfor'] = 'Course Completions for ';
+$string['mybookings'] = 'My Bookings';
+$string['bookingsfor'] = 'Bookings For';
+$string['tab:futurebookings'] = 'Future Bookings';
+$string['tab:pastbookings'] = 'Past Bookings';
 
