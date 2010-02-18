@@ -427,6 +427,10 @@ function blocks_find_block($blockid, $blocksarray) {
             continue;
         }
         foreach($blockgroup as $instance) {
+            if (!$instance) {
+                continue;
+            }
+
             if($instance->blockid == $blockid) {
                 return $instance;
             }
