@@ -207,7 +207,7 @@ $string['hidden'] = 'Hide in Report Manager';
 $string['mycoursecompletions'] = 'My Course Completions';
 $string['coursecompletionsfor'] = 'Course Completions for ';
 $string['mybookings'] = 'My Bookings';
-$string['bookingsfor'] = 'Bookings For';
+$string['bookingsfor'] = 'Bookings for ';
 $string['tab:futurebookings'] = 'Future Bookings';
 $string['tab:pastbookings'] = 'Past Bookings';
 
