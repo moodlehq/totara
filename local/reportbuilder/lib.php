@@ -400,6 +400,9 @@ class reportbuilder {
         $table->initialbars(true);
         $table->pagesize($perpage, $countfiltered);
 
+        // check the sort session var doesn't contain old columns that no
+        // longer exist
+        $this->check_sort_keys();
         // get the ORDER BY SQL fragment from table
         $sort = $table->get_sql_sort();
         if($sort!='') {
@@ -416,6 +419,34 @@ class reportbuilder {
         // display the table
         $table->print_html();
 
+    }
+
+    // look up sort keys and make sure they still exist in table
+    // (could have been deleted in report builder)
+    function check_sort_keys() {
+        global $SESSION;
+        $shortname = $this->_shortname;
+        $sortarray = isset($SESSION->flextable[$shortname]->sortby) ? $SESSION->flextable[$shortname]->sortby : null;
+        foreach($sortarray as $sortelement => $unused) {
+            $parts = explode('_',$sortelement);
+            if(count($parts) !=2 ) {
+                error_log("sort element $sortelement has could not be split correctly");
+            }
+            $type = $parts[0];
+            $value = $parts[1];
+            // see if sort element is in columns array
+            $set = false;
+            foreach($this->_columns as $col) {
+                if($col['type'] == $type && $col['value'] == $value) {
+                    $set = true;
+                }
+            }
+            // if it's not remove it from sort SESSION var
+            if($set === false) {
+                unset($SESSION->flextable[$shortname]->sortby[$sortelement]);
+            }
+        }
+        return true;
     }
 
     function get_column_fields() {
