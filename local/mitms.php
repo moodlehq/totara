@@ -136,7 +136,7 @@ function mitms_print_my_learning_nav($return=false) {
                     <a href="'.$CFG->wwwroot.'/blocks/facetoface/mysignups.php" title=""><img src="'.$CFG->wwwroot.'/pix/i/bookings.png" width="32" height="32" /></a>
                 </td>
                 <td align="left" valign="center">
-                    <span style="font-size: small"><a href="'.$CFG->wwwroot.'/blocks/facetoface/mysignups.php">'.get_string('bookings','local').'</a></span>
+                    <span style="font-size: small"><a href="'.$CFG->wwwroot.'/my/bookings.php?id='.$USER->id.'">'.get_string('bookings','local').'</a></span>
                 </td>
             </tr>
             <tr>

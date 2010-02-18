@@ -118,7 +118,7 @@
             }*/
             $tabledata[] = '<a href="'.$CFG->wwwroot.'/my/records.php?id='.$teammember->id.'">'.get_string('learningrecords','local').'</a>';
             if($staff_f2f) {
-                $tabledata[] = '<a href="'.$CFG->wwwroot.'/local/reportbuilder/report.php?id='.$staff_f2f.'&amp;userid='.$teammember->id.'">'.get_string('f2fbookings','local').'</a>';
+                $tabledata[] = '<a href="'.$CFG->wwwroot.'/my/bookings.php?id='.$teammember->id.'">'.get_string('f2fbookings','local').'</a>';
             }
             //TODO add link to user's IDPs
             //            $tabledata[] = '<a href="'.$CFG->wwwroot.'/plan/index.php?userid='.$teammember->id.'">'.get_string('viewidps','local').'</a>';
