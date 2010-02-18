@@ -15,6 +15,11 @@ if(!$report->is_capable()) {
     error(get_string('nopermission','local'));
 }
 
+if($format!='') {
+    $report->export_data($format);
+    die;
+}
+
 $countfiltered = $report->get_filtered_count();
 $countall = $report->get_full_count();
 $fullname = $report->_fullname;

@@ -710,12 +710,10 @@ class reportbuilder {
 
     function export_button() {
         global $CFG;
-        $url = new moodle_url(qualified_me());
-        $current_params = $url->params;
-        print "<div align=\"center\">";
-        print_single_button($CFG->wwwroot.'/local/reportbuilder/download.php', $current_params,
-            get_string('export','local'));
-        print "</div>";
+        require_once($CFG->dirroot.'/local/reportbuilder/export_form.php');
+        $export = new report_builder_export_form(qualified_me());
+        $export->display();
+
     }
 
     function download_ods($fields, $query, $count) {
