@@ -30,7 +30,7 @@ print_header_simple($pagetitle, '', $navigation, '', null, true, print_edit_butt
 print_heading("$fullname: ".get_string('showing','local')." $countfiltered / $countall");
 
 // print filters
-$report->display_add();
+$report->display_search();
 
 print "<br />";
 

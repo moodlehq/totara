@@ -123,7 +123,7 @@ class reportbuilder {
     }
 
     // filtering methods passed from filtering class
-    function display_add() {
+    function display_search() {
         $this->_filtering->display_add();
     }
 
