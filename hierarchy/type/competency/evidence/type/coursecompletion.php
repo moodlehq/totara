@@ -65,7 +65,7 @@ class competency_evidence_type_coursecompletion extends competency_evidence_type
 
         $name = $this->get_type_name();
 
-        return '<a href="'.$CFG->wwwroot.'/course/report/progress/index.php?course='.$this->iteminstance.'">'.$name.'</a>';
+        return '<a href="'.$CFG->wwwroot.'/course/report/completion/index.php?course='.$this->iteminstance.'">'.$name.'</a>';
     }
 
     /**
