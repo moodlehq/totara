@@ -204,4 +204,6 @@ $string['learningrecords'] = 'Learning Records';
 $string['f2fbookings'] = 'Face to Face Bookings';
 $string['allteammembers'] = 'All Team Members';
 $string['hidden'] = 'Hide in Report Manager';
+$string['mycoursecompletions'] = 'My Course Completions';
+$string['coursecompletionsfor'] = 'Course Completions for ';
 
