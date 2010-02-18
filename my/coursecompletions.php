@@ -67,11 +67,6 @@ $embeddedparams = array(
 $report = new reportbuilder($shortname, true, $source, $fullname,
     $filters, $columns, $restriction, $embeddedparams);
 
-
-if(!$report->is_capable()) {
-    error('not capable');
-}
-
 if($format!='') {
     $report->export_data($format);
     die;
@@ -98,10 +93,7 @@ if($countfiltered>0) {
     $report->display_table();
     // export button
     $report->export_buttons();
-} else {
-    print get_string('noresultsfound','local');
 }
-
 
 print_footer();
 
