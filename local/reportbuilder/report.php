@@ -43,7 +43,7 @@ print "<br />";
 if($countfiltered>0) {
     $report->display_table();
     // export button
-    $report->export_button();
+    $report->export_buttons();
 } else {
     print get_string('noresultsfound','local');
 }

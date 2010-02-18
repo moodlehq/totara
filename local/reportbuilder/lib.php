@@ -708,12 +708,30 @@ class reportbuilder {
 
     // export functions
 
-    function export_button() {
+    // prints select box and submit button to export current report
+    // for this to work page must contain:
+    // if($format!=''){$report->export_data($format);die;}
+    // before header printed
+    function export_select() {
         global $CFG;
         require_once($CFG->dirroot.'/local/reportbuilder/export_form.php');
         $export = new report_builder_export_form(qualified_me());
         $export->display();
 
+    }
+
+    // prints three buttons to export current report
+    // for this to work page must contain:
+    // if($format!=''){$report->export_data($format);die;}
+    // before header printed
+    function export_buttons() {
+        print "<center><table><tr><td>";
+        print_single_button(qualified_me(),array('format'=>'xls'),get_string('exportxls','local'));
+        print "</td><td>";
+        print_single_button(qualified_me(),array('format'=>'csv'),get_string('exportcsv','local'));
+        print "</td><td>";
+        print_single_button(qualified_me(),array('format'=>'ods'),get_string('exportods','local'));
+        print "</td><tr></table></center>";
     }
 
     function download_ods($fields, $query, $count) {
