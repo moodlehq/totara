@@ -29,23 +29,16 @@
  */
 
     require_once('../config.php');
-    require_once($CFG->libdir.'/blocklib.php');
-    require_once($CFG->libdir.'/tablelib.php');
-    require_once($CFG->dirroot.'/tag/lib.php');
+    require_once($CFG->dirroot.'/local/reportbuilder/lib.php');
     require_once($CFG->dirroot.'/local/reportlib.php');
 
     require_login();
 
-    define('DEFAULT_PAGE_SIZE', 20);
-    define('SHOW_ALL_PAGE_SIZE', 5000);
-
     global $SESSION,$USER;
 
     $id             = required_param('id', PARAM_INT);                       // which user to show
-    $spage          = optional_param('spage', 0, PARAM_INT);                    // which page to show
-    $perpage        = optional_param('perpage', DEFAULT_PAGE_SIZE, PARAM_INT);  // how many per page
-    $export         = optional_param('export', 0, PARAM_INT); // export or not?
-    $strheading = get_string('myrecordoflearning', 'local');
+    $format         = optional_param('format','',PARAM_TEXT); //export format
+
 
     if (! $user = get_record('user', 'id', $id)) {
         error('User not found');
@@ -54,6 +47,80 @@
     // users can only view their own and their staff's pages
     if ($USER->id != $id && !mitms_is_manager($id)) {
         error('You cannot view this page');
+    }
+    if ($USER->id != $id) {
+        $strheading = get_string('recordoflearningfor','local').fullname($user, true);
+    } else {
+        $strheading = get_string('myrecordoflearning', 'local');
+    }
+
+    $shortname = 'record_of_learning';
+    $source = 'competency_evidence';
+    $fullname = $strheading;
+    $filters = array(); // hide filter block
+    $columns = array(
+        array(
+            'type' => 'competency',
+            'value' => 'competencylink',
+            'heading' => 'Course/Competency',
+        ),
+        array(
+            'type' => 'competency',
+            'value' => 'idnumber',
+            'heading' => 'Competency ID',
+        ),
+        array(
+            'type' => 'competency_evidence',
+            'value' => 'proficiency',
+            'heading' => 'Proficiency',
+        ),
+        array(
+            'type' => 'competency_evidence',
+            'value' => 'position',
+            'heading' => 'Completed As',
+        ),
+        array(
+            'type' => 'competency_evidence',
+            'value' => 'organisation',
+            'heading' => 'Completed At',
+        ),
+        array(
+            'type' => 'competency_evidence',
+            'value' => 'completeddate',
+            'heading' => 'Date',
+        ),
+        array(
+            'type' => 'competency_evidence',
+            'value' => 'assessor',
+            'heading' => 'Assessor',
+        ),
+        array(
+            'type' => 'competency_evidence',
+            'value' => 'assessorname',
+            'heading' => 'Assessor Organisation',
+        ),
+    );
+    // no restrictions set, but embedded params
+    // and in page check ensure only valid users
+    // can see reports
+    $restriction = array(
+        array(
+            'field' => 'all',
+            'funcname' => 'dummy',
+        ),
+    );
+
+    $embeddedparams = array(
+        // show report for a specific user
+        'userid' => $id,
+    );
+
+    $report = new reportbuilder($shortname, true, $source, $fullname,
+        $filters, $columns, $restriction, $embeddedparams);
+
+    if($format!='') {
+        $report->export_data($format);
+        die;
     }
 
     ///
@@ -77,246 +144,6 @@
                ON u.id=ra.userid
             WHERE pa.type=1 AND pa.userid={$id}";
     $positionassignment = get_record_sql($sql);
-
-    $table = new flexible_table('-recordoflearning-index-'.$user->id);
-
-    $columns = array(
-        array(
-            'type'    => 'course',
-            'value'   => 'fullname',
-            'level'   => '',
-            'heading' => 'Course title',
-        ),
-        array(
-            'type'    => 'competency',
-            'value'   => 'idnumber',
-            'level'   => '2',
-            'heading' => 'Unit #',
-        ),
-        array(
-            'type'    => 'proficiency',
-            'value'   => 'proficiency',
-            'level'   => '2',
-            'heading' => 'Proficiency',
-        ),
-        array(
-            'type'    => 'position',
-            'value'   => 'fullname',
-            'level'   => '1',
-            'heading' => 'Role',
-        ),
-        array(
-            'type'    => 'organisation',
-            'value'   => 'fullname',
-            'level'   => '2',
-            'heading' => 'CO',
-        ),
-        array(
-            'type'    => 'organisation',
-            'value'   => 'fullname',
-            'level'   => '3',
-            'heading' => 'AO',
-        ),
-        array(
-            'type'    => 'date',
-            'value'   => 'timecreated',
-            'level'   => '2',
-            'heading' => 'Date',
-        ),
-        array(
-            'type'    => 'competency_evidence',
-            'value'   => 'assessorid',
-            'level'   => '2',
-            'heading' => 'Assessor',
-        ),
-        array(
-            'type'    => 'competency_evidence',
-            'value'   => 'assessororg',
-            'level'   => '2',
-            'heading' => 'Assessor Org',
-        ),
-    );
-
-    foreach ($columns as $column) {
-        $tablecolumns[] = $column['heading'];
-        $tableheaders[] = $column['heading'];
-    }
-
-    $table->define_columns($tablecolumns);
-    $table->define_headers($tableheaders);
-//    $table->column_style($tablecolumncf,'text-align','center');
-    $table->column_style('edit','width','80px');
-
-    $table->set_attribute('cellspacing', '0');
-    $table->set_attribute('id', 'recordoflearning');
-    $table->set_attribute('class', 'logtable generalbox');
-
-    $table->set_control_variables(array(
-                TABLE_VAR_SORT    => 'ssort',
-                TABLE_VAR_HIDE    => 'shide',
-                TABLE_VAR_SHOW    => 'sshow',
-                TABLE_VAR_IFIRST  => 'sifirst',
-                TABLE_VAR_ILAST   => 'silast',
-                TABLE_VAR_PAGE    => 'spage'
-                )); 
-    $table->setup();
-
-    $table->initialbars(true);
-
-    $select = "SELECT c.fullname as cfullname, ce.competencyid AS cid,
-        ce.proficiency, 
-        ce.positionid, ce.organisationid, ce.timemodified, ce.assessorid, 
-        ce.assessorname, 'competency' AS type, c.idnumber as idnumber ";
-    $from = "FROM mdl_competency_evidence ce JOIN mdl_competency c ON c.id=ce.competencyid ";
-    $where = "WHERE ce.userid={$user->id} ";
-    $order = "ORDER BY timemodified DESC";
-    $matchcount = count_records_sql('SELECT COUNT (*) '.$from.$where);
-
-    $table->pagesize($perpage, $matchcount);
-    $extrasql = '';
-    if($export!='1') {
-        $records = get_recordset_sql($select.$from.$where.$order,
-            $table->get_page_start(),  $table->get_page_size());
-    } else {
-        // don't paginate for export
-        $records = get_recordset_sql($select.$from.$where.$order);
-    }
-    $scalevalues = array(
-        array(
-            'id' => 1,
-            'name' => 'Not competent',
-        ),
-        array(
-            'id' => 2,
-            'name' => 'Competent with supervision',
-        ),
-        array(
-            'id' => 3,
-            'name' => 'Competent',
-        )
-    );
-
-    $exportdata = array();
-    if ($records) {
-        while ($record = rs_fetch_next_record($records)) {
-            $tabledata = array();
-            foreach ($columns as $column) {
-                switch($column['type']) {
-                case 'course':
-                        if($record->type=='course') {
-                            $tabledata[] = '<a href="'.$CFG->wwwroot.'/course/view.php?id='.$record->cid.'">'.$record->cfullname.'</a>';
-                        } else {
-                            $tabledata[] = '<a href="'.$CFG->wwwroot.'/hierarchy/item/view.php?type=competency&id='.$record->cid.'">'.$record->cfullname.'</a>';
-                        }
-                        break;
-                    case 'competency':
-                        $tabledata[] = $record->idnumber;
-                        break;
-                    case 'proficiency':
-                        if($record->type=='course') {
-                            if(!empty($record->timemodified)) {
-                                $tabledata[] = get_string('completed', 'completion');
-                            } else {
-                                $tabledata[] = get_string('notcompleted', 'completion');
-                            }
-                        } else {
-                            if(!empty($record->proficiency)) {
-                                foreach ($scalevalues as $scalevalue) {
-                                    if ($record->proficiency == $scalevalue['id']) {
-                                        $tabledata[] = $scalevalue['name'];
-                                    }
-                                }
-                            } else {
-                                $tabledata[] = "-";
-                            }
-                        }
-                        break;
-                    case 'position':
-                        if(!empty($record->positionid) && isset($positionids[$record->positionid])) {
-                            $tabledata[] = $positionids[$record->positionid]->fullname;
-                        } else {
-                            $tabledata[] = '';
-                        }
-                        break;
-                    case 'organisation':
-                        if(!empty($record->organisationid)) {
-                            $testfound = false;
-                            // not very efficient doing this for every loop but don't know
-                            // in advance what possible values will be because we are using recordset
-                            $orgs = mitms_get_user_hierarchy_lineage($record->organisationid, 'organisation');
-                            foreach ($orgs as $org) {
-                                if ($column['level'] == $org->depthlevel) {
-                                    $tabledata[] = $org->{$column['value']};
-                                    $testfound = true;
-                                }
-                            }
-                            if (!$testfound) {
-                                $tabledata[] = get_string('notapplicable', 'local');
-                            }
-                        } else {
-                            $tabledata[] = '';
-                        }
-                        break;
-                    case 'date':
-                        if($record->type=='course') {
-                            if(!empty($record->timemodified)) {
-                                $tabledata[] = userdate($record->timemodified, '%d %b %Y');
-                            } else {
-                                $tabledata[] = '-';
-                            }
-                        } else {
-                            if(!empty($record->timemodified)) {
-                                $tabledata[] = userdate($record->timemodified, '%d %b %Y');
-                            } else {
-                                $tabledata[] = '-';
-                            }
-                        }
-                        break;
-                    case 'competency_evidence':
-                        
-                        if($column['value']=='assessorid') {
-                            if(!empty($record->assessorid) && $record->assessorid != 0) {
-                                $auser = get_record('user','id',$record->assessorid);
-                                if($auser) {
-                                    $tabledata[] = $auser->firstname.' '.$auser->lastname;
-                                } else {
-                                    $tabledata[] = '';
-                                }
-                            } else {
-                                $tabledata[] = '';
-                            }
-                        } else if ($column['value']=='assessororg'){
-                            if (!empty($record->assessorname)) {
-                                $tabledata[] = $record->assessorname;
-                            } else {
-                                $tabledata[] = '';
-                            }
-                        } else {
-                            $tabledata[] = '';
-                        }
-
-
-                        break;
-                    default:
-                        $tabledata[] = '';
-                        break;
-                }
-
-            }
-
-            $table->add_data($tabledata);
-            $exportdata[] = $tabledata;
-
-        }
-        rs_close($records);
-    }
-
-    if($export=='1') {
-        // save exportdata to session
-        $SESSION->download_data = $exportdata;
-        $SESSION->download_cols = $tablecolumns;
-        redirect($CFG->wwwroot.'/my/downloadrecords.php');
-    }
 
     print_header($strheading, $strheading, build_navigation($strheading));
 
@@ -557,19 +384,24 @@ echo "</table>";
     <td></td>
 </tr>
 </table>
-<br>
-<?php
-    if($export!='1') {
-        // Display table
-        $table->print_html();
-        $url = new moodle_url(qualified_me());
-        $current_params = $url->params;
-        $current_params = array_merge($current_params, array('export'=>'1'));
-        echo '<div align=\"center\">'.print_single_button(null,$current_params,'Export').'</div>';
-    } else {
-        // export
-    }
 
-    print_footer();
+<?php
+
+// display table here
+$fullname = $report->_fullname;
+$countfiltered = $report->get_filtered_count();
+$countall = $report->get_full_count();
+
+// display heading including filtering stats
+print_heading("$countall results found.");
+
+$report->display_search();
+
+if($countfiltered>0) {
+    $report->display_table();
+    // export button
+    $report->export_buttons();
+}
+   print_footer();
 
 ?>

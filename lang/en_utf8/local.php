@@ -105,6 +105,7 @@ $string['history'] = 'History';
 $string['induction'] = 'Induction';
 $string['leadership'] = 'Leadership';
 $string['myrecordoflearning'] = 'My Record of Learning';
+$string['recordoflearningfor'] = 'Record of Learning for ';
 $string['myidp'] = 'My IDP';
 $string['idps'] = 'IDPs';
 $string['viewidps'] = 'View IDPs';
