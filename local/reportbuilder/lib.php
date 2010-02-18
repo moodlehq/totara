@@ -23,42 +23,55 @@ class reportbuilder {
     var $_paramoptions;
     var $_hidden;
 
-    function reportbuilder($shortname=null, $extraparams=null) {
+    function reportbuilder($shortname=null, $embed=false, $source=null, $fullname=null,
+                           $filters=null, $columns=null, $restriction=null) {
         global $CFG;
         if($shortname == null) {
             error(get_string('noshortname','local'));
         }
 
-        if ($report = get_record('report_builder', 'shortname', $shortname)) {
-            $this->_source = $report->source;
+        if($embed) {
+            // get data from parameters
             $this->_shortname = $shortname;
-            $this->_fullname = $report->fullname;
-            $this->_filters = unserialize($report->filters);
-            $this->_columns = unserialize($report->columns);
-            $this->_restriction = unserialize($report->restriction);
-            $this->_id = $report->id;
-            $this->_hidden = $report->hidden;
-
-            // pull in data for this report
-            $this->_columnoptions = $this->get_source_data('columnoptions');
-            $this->_defaultcolumns = $this->get_source_data('defaultcolumns');
-            $this->_defaultfilters = $this->get_source_data('defaultfilters');
-            $this->_filteroptions = $this->get_source_data('filteroptions');
-            $this->_joinlist = $this->get_source_data('joinlist');
-            $this->_restrictionoptions = $this->get_source_data('restrictionoptions');
-            $this->_base = $this->get_source_data('base');
-            $this->_paramoptions = $this->get_source_data('paramoptions');
-            $this->_params = $this->get_current_params();
-
-            // generate a filter for this report
-            $this->_filtering = new filtering($this, $this->get_current_url());
-
-
+            $this->_fullname = $fullname;
+            $this->_filters = $filters;
+            $this->_columns = $columns;
+            $this->_restriction = $restriction;
+            $this->_source = $source;
         } else {
-            error("Report '$shortname' not found.");
+            // lookup from db
+
+            if ($report = get_record('report_builder', 'shortname', $shortname)) {
+                $this->_source = $report->source;
+                $this->_shortname = $shortname;
+                $this->_fullname = $report->fullname;
+                $this->_filters = unserialize($report->filters);
+                $this->_columns = unserialize($report->columns);
+                $this->_restriction = unserialize($report->restriction);
+                $this->_id = $report->id;
+                $this->_hidden = $report->hidden;
+
+            } else {
+                error("Report '$shortname' not found in database.");
+            }
         }
 
+        // pull in data for this report from the source
+        $this->_columnoptions = $this->get_source_data('columnoptions');
+        $this->_defaultcolumns = $this->get_source_data('defaultcolumns');
+        $this->_defaultfilters = $this->get_source_data('defaultfilters');
+        $this->_filteroptions = $this->get_source_data('filteroptions');
+        $this->_joinlist = $this->get_source_data('joinlist');
+        $this->_restrictionoptions = $this->get_source_data('restrictionoptions');
+        $this->_base = $this->get_source_data('base');
+        $this->_paramoptions = $this->get_source_data('paramoptions');
+        $this->_params = $this->get_current_params();
+
+        // generate a filter for this report
+        $this->_filtering = new filtering($this, $this->get_current_url());
+
     }
+
 
     // get current url, minus any pagination or sort order elements
     // good for submitting forms
