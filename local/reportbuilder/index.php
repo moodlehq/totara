@@ -76,7 +76,7 @@
         $delete = '<a href="'.$CFG->wwwroot.'/local/reportbuilder/index.php?d=1&amp;id='.$report->id.'" title="'.$strdelete.'">' .
             '<img src="'.$CFG->pixpath.'/t/delete.gif" alt="'.$strdelete.'"></a>';
         $row[] = '<a href="'.$CFG->wwwroot.'/local/reportbuilder/settings.php?id='.$report->id.'">'.$report->fullname.'</a>' . 
-            ' (<a href="'.$CFG->wwwroot.'local/reportbuilder/report.php?id='.$report->id.'">'.get_string('view').'</a>)';
+            ' (<a href="'.$CFG->wwwroot.'/local/reportbuilder/report.php?id='.$report->id.'">'.get_string('view').'</a>)';
         $row[] = $report->shortname;
         $row[] = $report->source;
         $row[] = "$settings &nbsp; $delete";
