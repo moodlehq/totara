@@ -114,6 +114,14 @@ $filteroptions = array(
             'selectfunc' => 'get_positions_list',
             'options' => $selectwidth,
         ),
+        'assessor' => array(
+            'filtertype' => 'text',
+            'label' => 'Assessor Name',
+        ),
+        'assessorname' => array(
+            'filtertype' => 'text',
+            'label' => 'Assessor Organisation',
+        ),
     ),
     'user_profile' => array(
         // just a text field, would be better as date

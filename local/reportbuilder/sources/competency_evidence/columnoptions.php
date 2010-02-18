@@ -65,6 +65,16 @@ $columnoptions = array(
             'field' => "completion_position.fullname",
             'joins' => array('completion_position'),
         ),
+        'assessor' => array(
+            'name' => 'Assessor Name',
+            'field' => sql_fullname("assessor.firstname","assessor.lastname"),
+            'joins' => array('assessor'),
+        ),
+        'assessorname' => array(
+            'name' => 'Assessor Organisation',
+            'field' => 'base.assessorname',
+            'joins' => array(),
+        ),
    ),
     'competency' => array(
         'fullname' => array(

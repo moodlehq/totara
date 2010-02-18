@@ -23,7 +23,7 @@ $joinlist = array(
     'position' => "LEFT JOIN {$CFG->prefix}position position ON position.id = pa.positionid",
     'completion_organisation' => "LEFT JOIN {$CFG->prefix}organisation completion_organisation ON base.organisationid = completion_organisation.id",
     'completion_position' => "LEFT JOIN {$CFG->prefix}position completion_position ON base.positionid = completion_position.id",
-
+    'assessor' => "LEFT JOIN {$CFG->prefix}user assessor ON assessor.id = base.assessorid",
 );
 
 // add all user custom fields to join list
