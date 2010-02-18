@@ -24,7 +24,13 @@ if ($USER->id != $id) {
 $shortname = 'bookings';
 $source = 'facetoface_sessions';
 $fullname = $strheading;
-$filters = array(); // hide filter block
+$filters = array(
+    array(
+        'type' => 'date',
+        'value' => 'sessiondate',
+        'advanced' => '0',
+    ),
+);
 $columns = array(
     array(
         'type' => 'course',
@@ -99,7 +105,6 @@ if($format!='') {
 
 $fullname = $report->_fullname;
 $pagetitle = format_string(get_string('report','local').': '.$fullname);
-$navlinks[] = array('name' => get_string('report','local'), 'link'=> '', 'type'=>'title');
 $navlinks[] = array('name' => $fullname, 'link'=> '', 'type'=>'title');
 
 $navigation = build_navigation($navlinks);
@@ -120,14 +125,13 @@ print_heading("$strheading: $countall results found");
 
 $report->display_search();
 
+print "<br />";
+
 if($countfiltered>0) {
     $report->display_table();
     // export button
     $report->export_buttons();
-} else {
-    print get_string('noresultsfound','local');
 }
-
 
 print_footer();
 
