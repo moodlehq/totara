@@ -54,11 +54,12 @@ if ($search) {
     // Get all Face-to-face signups from the DB
     $signups = get_records_sql("SELECT d.id, c.id as courseid, c.fullname AS coursename, f.name,
                                        f.id as facetofaceid, s.id as sessionid,
-                                       d.timestart, d.timefinish, su.userid, su.timecancelled as status
+                                       d.timestart, d.timefinish, su.userid, ss.statuscode as status
                                   FROM {$CFG->prefix}facetoface_sessions_dates d
                                   JOIN {$CFG->prefix}facetoface_sessions s ON s.id = d.sessionid
                                   JOIN {$CFG->prefix}facetoface f ON f.id = s.facetoface
-                                  JOIN {$CFG->prefix}facetoface_submissions su ON su.sessionid = s.id
+                                  JOIN {$CFG->prefix}facetoface_signups su ON su.sessionid = s.id
+                                  JOIN {$CFG->prefix}facetoface_signups_status ss ON su.id = ss.signupid AND ss.superceded = 0
                                   JOIN {$CFG->prefix}course c ON f.course = c.id
                                  WHERE d.timestart >= $startdate AND d.timefinish <= $enddate AND
                                        su.userid = $user->id");

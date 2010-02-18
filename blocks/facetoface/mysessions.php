@@ -46,8 +46,10 @@ $records = get_records_sql("SELECT d.id, cm.id AS cmid, c.id AS courseid, c.full
                               JOIN {$CFG->prefix}facetoface_sessions s ON s.id = d.sessionid
                               JOIN {$CFG->prefix}facetoface f ON f.id = s.facetoface
                    LEFT OUTER JOIN (SELECT sessionid, count(sessionid) AS nbbookings
-                                      FROM {$CFG->prefix}facetoface_submissions su
-                                     WHERE su.timecancelled = 0
+                                      FROM {$CFG->prefix}facetoface_signups su
+                                 LEFT JOIN {$CFG->prefix}facetoface_signups_status ss
+                                        ON ss.signupid = su.id AND ss.superceded = 0
+                                     WHERE ss.statuscode >= ".MDL_F2F_STATUS_BOOKED."
                                   GROUP BY sessionid) su ON su.sessionid = d.sessionid
                               JOIN {$CFG->prefix}course c ON f.course = c.id
 

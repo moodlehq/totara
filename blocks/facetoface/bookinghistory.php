@@ -39,17 +39,18 @@ print_header_simple($pagetitle, '', $navigation);
 print_box_start();
 
 // Get signups from the DB
-$bookings = get_records_sql("SELECT su.timecreated, su.timecancelled as status, su.grade, su.timegraded, su.cancelreason,
+$bookings = get_records_sql("SELECT ss.timecreated, ss.statuscode as status, ss.grade, ss.timecreated AS timegraded, ss.note,
                                    c.id as courseid, c.fullname AS coursename,
                                    f.name, f.id as facetofaceid, s.id as sessionid,
                                    d.id, d.timestart, d.timefinish
                               FROM {$CFG->prefix}facetoface_sessions_dates d
                               JOIN {$CFG->prefix}facetoface_sessions s ON s.id = d.sessionid
                               JOIN {$CFG->prefix}facetoface f ON f.id = s.facetoface
-                              JOIN {$CFG->prefix}facetoface_submissions su ON su.sessionid = s.id
+                              JOIN {$CFG->prefix}facetoface_signups su ON su.sessionid = s.id
+                              JOIN {$CFG->prefix}facetoface_signups_status ss ON ss.signupid = su.id
                               JOIN {$CFG->prefix}course c ON f.course = c.id
                               WHERE su.userid = $user->id AND su.sessionid = $session->id AND f.id = $session->facetoface
-                              ORDER BY su.timecreated ASC");
+                              ORDER BY ss.timecreated ASC");
 
 // Get session times
 $sessiontimes = facetoface_get_session_dates($session->id);

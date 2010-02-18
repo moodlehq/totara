@@ -36,13 +36,8 @@ function print_dates($dates, $includebookings, $includegrades=false, $includesta
         print '<th>'.get_string('nbbookings', 'block_facetoface').'</th>';
     }
 
-    // include the grades in the display
-    if ($includegrades) {
-        print '<th>'.get_string('grade').'</th>';
-    }
-
-    // include the status (enrolled,cancelled) in the display
-    if ($includestatus) {
+    // include the grades/status in the display
+    if ($includegrades || $includestatus) {
         print '<th>'.get_string('status').'</th>';
     }
 
@@ -70,7 +65,7 @@ function print_dates($dates, $includebookings, $includegrades=false, $includesta
         // include the trainer(s) in the display
         if ($includetrainers) {
             print '<td>';
-            if ($date->trainers and count($date->trainers) > 0) {
+            if (isset($date->trainers) and count($date->trainers) > 0) {
                 foreach ($date->trainers as $trainer) {
                     print $trainer.'<br />'; // FIXME: re-add the link to trainers profile page
                 }
@@ -94,21 +89,9 @@ function print_dates($dates, $includebookings, $includegrades=false, $includesta
             print '<td><a href="'.$attendeelink.$date->sessionid.'">'.(isset($date->nbbookings)? format_string($date->nbbookings) : 0).'</a></td>';
         }
 
-        // include the grades in the display
-        if ($includegrades) {
-            if ((int)$grade->grade > 0) {
-                print '<td><a href="'.$bookinghistorylink.$date->sessionid.'&amp;userid='.$date->userid.'">'.format_string($grade->grade).'</a></td>';
-            } else {
-                print '<td><a href="'.$bookinghistorylink.$date->sessionid.'&amp;userid='.$date->userid.'">'.get_string('didntattend','block_facetoface').'</a></td>';
-            }
-        }
-
-        if ($includestatus) {
-            if ($date->status == 0) {
-                print '<td><a href="'.$bookinghistorylink.$date->sessionid.'&amp;userid='.$date->userid.'">'.get_string('enrolled','block_facetoface').'</a></td>';
-            } else {
-                print '<td><a href="'.$bookinghistorylink.$date->sessionid.'&amp;userid='.$date->userid.'">'.get_string('cancelled','block_facetoface').'</a></td>';
-            }
+        // include the grades/status in the display
+        if ($includegrades || $includestatus) {
+            print '<td><a href="'.$bookinghistorylink.$date->sessionid.'&amp;userid='.$date->userid.'">'.get_string('status_'.facetoface_get_status($date->status),'facetoface').'</a></td>';
         }
         print '</tr>';
     }
@@ -465,23 +448,32 @@ function add_trainer_info(&$sessions)
     $moduleid = get_field('modules', 'id', 'name','facetoface');
     $alltrainers = array(); // all possible trainers for filter dropdown
 
-    foreach ($sessions as $session) {
+    // find role id for trainer
+    $trainerroleid = get_field('role','id','shortname','facilitator');
 
+    foreach ($sessions as $session) {
         // individual session trainers
         $sessiontrainers = array();
+
+        // get trainers for this session from session_roles table
+        // set to null if trainer role id not found
+        $sess_trainers = (isset($trainerroleid)) ? get_records_select('facetoface_session_roles',"sessionid={$session->sessionid} and roleid={$trainerroleid}") : null;
 
         // check if the module instance has already had trainer info added
         if (!array_key_exists($session->cmid, $alltrainers)) {
             $context = get_context_instance(CONTEXT_MODULE, $session->cmid);
-            if ($users = get_users_by_capability($context, 'mod/facetoface:viewattendees', 'u.id, u.firstname, u.lastname', '', '', '', '', '', false)) {
-                foreach ($users as $user) {
+
+            if($sess_trainers && is_array($sess_trainers)) {
+                foreach($sess_trainers as $sess_trainer) {
+                    $user = get_record('user','id',$sess_trainer->userid);
                     $fullname = fullname($user);
                     if (!array_key_exists($fullname, $sessiontrainers)) {
                         $sessiontrainers[$fullname] = $fullname;
                     }
                 }
                 if (!empty($sessiontrainers)) {
-                    $session->trainers = asort($sessiontrainers);
+                    asort($sessiontrainers);
+                    $session->trainers = $sessiontrainers;
                     $alltrainers[$session->cmid] = $sessiontrainers;
                 } else {
                     $session->trainers = '';
