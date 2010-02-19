@@ -49,8 +49,17 @@ function reportbuilder_nice_date($date, $row) {
     }
 }
 
-// reformat a timestamp into a date+time, showing nothing if invalid or null
+// reformat a timestamp into a time, showing nothing if invalid or null
 function reportbuilder_nice_time($date, $row) {
+    if($date && $date > 0) {
+        return userdate($date, '%H:%M');
+    } else {
+        return '';
+    }
+}
+
+// reformat a timestamp into a date+time, showing nothing if invalid or null
+function reportbuilder_nice_datetime($date, $row) {
     if($date && $date > 0) {
         return userdate($date, '%d %B %Y at %H:%M');
     } else {
