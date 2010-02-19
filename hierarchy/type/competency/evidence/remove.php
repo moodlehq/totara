@@ -1,9 +1,9 @@
 <?php
 
-require_once('../../config.php');
+require_once('../../../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
-require_once($CFG->dirroot.'/competency/lib.php');
-require_once($CFG->dirroot.'/competency/evidence/type/abstract.php');
+require_once($CFG->dirroot.'/hierarchy/type/competency/lib.php');
+require_once($CFG->dirroot.'/hierarchy/type/competency/evidence/type/abstract.php');
 
 
 ///
@@ -43,8 +43,8 @@ if (!$delete) {
     $strdelete = get_string('evidenceitemremovecheck', $hierarchy->prefix);
 
     notice_yesno("$strdelete<br /><br />" . format_string($item->get_name()),
-                 "{$CFG->wwwroot}/{$hierarchy->prefix}/evidence/remove.php?id={$item->id}&amp;delete=".md5($item->timemodified)."&amp;sesskey={$USER->sesskey}",
-                 "{$CFG->wwwroot}/{$hierarchy->prefix}/view.php?id={$item->competencyid}");
+                 "{$CFG->wwwroot}/hierarchy/type/{$hierarchy->prefix}/evidence/remove.php?id={$item->id}&amp;delete=".md5($item->timemodified)."&amp;sesskey={$USER->sesskey}",
+                 "{$CFG->wwwroot}/hierarchy/item/view.php?type={$hierarchy->prefix}&id={$item->competencyid}");
 
     print_footer();
     exit;
@@ -68,5 +68,5 @@ $item->delete($competency);
 add_to_log(SITEID, $hierarchy->prefix.'evidence', 'delete', "view.php?id=$item->id", $item->get_name()." (ID $item->id)");
 
 print_heading(get_string('removed'.$hierarchy->prefix.'evidenceitem', $hierarchy->prefix, format_string($item->get_name())));
-print_continue("{$CFG->wwwroot}/{$hierarchy->prefix}/view.php?id={$item->competencyid}");
+print_continue("{$CFG->wwwroot}/hierarchy/item/view.php?type={$hierarchy->prefix}&id={$item->competencyid}");
 print_footer();
