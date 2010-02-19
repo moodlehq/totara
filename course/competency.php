@@ -27,10 +27,10 @@
 
 require_once('../config.php');
 require_once($CFG->dirroot.'/hierarchy/type/competency/lib.php');
+require_once($CFG->dirroot.'/local/js/setup.php');
 
 // Get paramaters
 $id = required_param('id', PARAM_INT);                  // course id
-$js_enabled = optional_param('js', true, PARAM_BOOL);    // js enabled
 
 /// basic access control checks
 if (!$id) {
@@ -53,16 +53,15 @@ $context = get_context_instance(CONTEXT_SYSTEM);
 require_login($course->id);
 require_capability('moodle/local:viewcompetency', $context);
 
-// If js enabled, setup custom javascript
-if ($js_enabled) {
-    require_once($CFG->dirroot.'/local/js/setup.php');
+// Can edit?
+$can_edit = has_capability('moodle/local:updatecompetency', $context);
 
-    setup_lightbox(array(MBE_JS_TREEVIEW, MBE_JS_ADVANCED));
 
-    require_js(array(
-        $CFG->wwwroot.'/local/js/course.competency.js',
-    ));
-}
+setup_lightbox(array(MBE_JS_TREEVIEW, MBE_JS_ADVANCED));
+
+require_js(array(
+    $CFG->wwwroot.'/local/js/course.competency.js',
+));
 
 $strcompetenciesusedincourse = get_string("competenciesusedincourse", 'competency');
 $navlinks = array();
@@ -188,7 +187,7 @@ if ($competencies) {
 
 echo '</table>';
 
-if (has_capability('moodle/local:updatecompetency', $context)) {
+if ($can_edit) {
 
     // Add course competencies button
 ?>
