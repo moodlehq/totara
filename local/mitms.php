@@ -300,6 +300,40 @@ function mitms_print_report_manager($return=false) {
     echo $returnstr;
 }
 
+function mitms_print_my_current_courses($return=false) {
+    global $CFG,$USER;
+    $returnstr = '';
+    $sql = "SELECT cc.id, c.fullname, cc.timestarted, cc.timecompleted
+        FROM {$CFG->prefix}course_completions cc
+        LEFT JOIN {$CFG->prefix}course c ON cc.course=c.id
+        WHERE userid = {$USER->id} AND cc.timestarted IS NOT NULL
+        ORDER BY cc.timestarted DESC,cc.timecompleted DESC LIMIT 5";
+    $data = array();
+    if($courses = get_records_sql($sql)) {
+        $returnstr .= '<table>
+            <tr><th>'.get_string('course').'</th>'.
+            '<th>'.get_string('status').'</th>'.
+            '<th>'.get_string('startdate','local').'</th>'.
+            '<th>'.get_string('completeddate','local').'</th></tr>';
+        foreach($courses as $course) {
+            $name = $course->fullname;
+            $completed = $course->timecompleted;
+            $started = $course->timestarted;
+            $status = isset($completed) ? get_string('completed','local') : get_string('inprogress','local');
+            $completeddate = isset($completed) ? userdate($completed, '%e %b %y') : null;
+            $starteddate = isset($started) ? userdate($started, '%e %b %y') : null;
+            $returnstr .= "<tr><td>$name</td><td>$status</td><td>$starteddate</td><td>$completeddate</td></tr>\n";
+        }
+        $returnstr .= "</table>\n";
+        $returnstr .= '<a href="'.$CFG->wwwroot.'/my/coursecompletions.php?id='.$USER->id.'">'.
+            get_string('allmycourses','local').'</a>';
+    }
+
+    if ($return) {
+        return $returnstr;
+    }
+    echo $returnstr;
+}
 
 /**
 * helper function to return a user's data stored in a given profile field

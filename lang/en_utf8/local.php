@@ -210,4 +210,9 @@ $string['mybookings'] = 'My Bookings';
 $string['bookingsfor'] = 'Bookings for ';
 $string['tab:futurebookings'] = 'Future Bookings';
 $string['tab:pastbookings'] = 'Past Bookings';
+$string['allmycourses'] = 'All My Courses';
+$string['completed'] = 'Completed';
+$string['inprogress'] = 'In Progress';
+$string['startdate'] = 'Start Date';
+$string['completeddate'] = 'Completed Date';
 
