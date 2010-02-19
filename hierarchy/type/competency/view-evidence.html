@@ -28,9 +28,6 @@ print_heading(get_string('evidenceitems', $this->prefix));
     }
 ?>
 
-    <th style="vertical-align:top; text-align:center; white-space:nowrap;" class="header c5" scope="col">
-        <?php echo get_string('achieved', $this->prefix); ?>
-    </th>
 </tr>
 <?php
 
@@ -54,13 +51,12 @@ if ($evidence) {
             echo "</td>";
         }
 
-        echo '<td style="text-align: center">0</td>';
         echo '</tr>';
     }
 
 } else {
     // # cols varies
-    $cols = $editingon ? 5 : 4;
+    $cols = $editingon ? 4 : 3;
     echo '<tr class="noevidenceitems"><td colspan="'.$cols.'"><i>'.get_string('noevidenceitems', $this->prefix).'</i></td></tr>';
 }
 
