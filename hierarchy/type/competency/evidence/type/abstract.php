@@ -148,6 +148,9 @@ abstract class competency_evidence_type extends data_object {
             error('Could not delete evidence item');
         }
 
+        // Delete any evidence items evidence
+        delete_records('competency_evidence_items_evidence', 'itemid', $this->id);
+
         // Update evidence count
         // Get latest count
         $count = get_field('competency_evidence_items', 'COUNT(*)', 'competencyid', $competency->id);
