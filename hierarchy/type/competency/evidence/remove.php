@@ -16,6 +16,8 @@ $sitecontext = get_context_instance(CONTEXT_SYSTEM);
 $id     = required_param('id', PARAM_INT);
 // Delete confirmation hash
 $delete = optional_param('delete', '', PARAM_ALPHANUM);
+// Course id (if coming from the course view)
+$course = optional_param('course', 0, PARAM_INT);
 
 // Load data
 $hierarchy         = new competency();
@@ -39,12 +41,26 @@ admin_externalpage_setup($hierarchy->prefix.'manage');
 
 admin_externalpage_print_header();
 
-if (!$delete) {
-    $strdelete = get_string('evidenceitemremovecheck', $hierarchy->prefix);
+// Cancel/return url
+if (!$course) {
+    $return = "{$CFG->wwwroot}/hierarchy/item/view.php?type={$hierarchy->prefix}&id={$item->competencyid}";
+} else {
+    $return = "{$CFG->wwwroot}/course/competency.php?id={$course}";
+}
 
-    notice_yesno("$strdelete<br /><br />" . format_string($item->get_name()),
-                 "{$CFG->wwwroot}/hierarchy/type/{$hierarchy->prefix}/evidence/remove.php?id={$item->id}&amp;delete=".md5($item->timemodified)."&amp;sesskey={$USER->sesskey}",
-                 "{$CFG->wwwroot}/hierarchy/item/view.php?type={$hierarchy->prefix}&id={$item->competencyid}");
+
+if (!$delete) {
+    $message = get_string('evidenceitemremovecheck', $hierarchy->prefix).'<br /><br />';
+    $message .= format_string($item->get_name());
+
+    $action = "{$CFG->wwwroot}/hierarchy/type/{$hierarchy->prefix}/evidence/remove.php?id={$item->id}&amp;delete=".md5($item->timemodified)."&amp;sesskey={$USER->sesskey}";
+
+    // If called from the course view
+    if ($course) {
+        $action .= "&amp;course={$course}";
+    }
+
+    notice_yesno($message, $action, $return);
 
     print_footer();
     exit;
@@ -67,6 +83,8 @@ $item->delete($competency);
 
 add_to_log(SITEID, $hierarchy->prefix.'evidence', 'delete', "view.php?id=$item->id", $item->get_name()." (ID $item->id)");
 
-print_heading(get_string('removed'.$hierarchy->prefix.'evidenceitem', $hierarchy->prefix, format_string($item->get_name())));
-print_continue("{$CFG->wwwroot}/hierarchy/item/view.php?type={$hierarchy->prefix}&id={$item->competencyid}");
+$message = get_string('removed'.$hierarchy->prefix.'evidenceitem', $hierarchy->prefix, format_string($item->get_name()));
+
+print_heading($message);
+print_continue($return);
 print_footer();

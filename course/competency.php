@@ -98,58 +98,70 @@ print_heading($strcompetenciesusedincourse);
     <th style="vertical-align:top; text-align:left; white-space:nowrap;" class="header c3" scope="col">
         <?php echo get_string('evidence', 'competency'); ?>
     </th>
+
+<?php
+    if ($can_edit) {
+?>
+    <th style="vertical-align:top; text-align:left; white-space:nowrap;" class="header c4" scope="col">
+        <?php echo get_string('options', 'competency'); ?>
+    </th>
+<?php
+    } // if ($can_edit)
+?>
 </tr>
 <?php
 
-    // Get any competencies used in this course
-    $competencies = get_records_sql(
-            "
-            SELECT DISTINCT
-                cei.id AS evidenceid,
-                c.id AS id,
-                c.fullname,
-                f.id AS fid,
-                f.fullname AS framework,
-                d.fullname AS depth,
-                cei.itemtype AS evidencetype,
-                cei.iteminstance AS evidenceinstance,
-                cei.itemmodule AS evidencemodule
-            FROM
-                {$CFG->prefix}competency_evidence_items cei
-            INNER JOIN
-                {$CFG->prefix}competency c
-             ON cei.competencyid = c.id
-            INNER JOIN
-                {$CFG->prefix}competency_framework f
-             ON f.id = c.frameworkid
-            INNER JOIN
-                {$CFG->prefix}competency_depth d
-             ON d.id = c.depthid
-            LEFT JOIN
-                {$CFG->prefix}modules m
-             ON cei.itemtype = 'activitycompletion'
-            AND m.name = cei.itemmodule
-            LEFT JOIN
-                {$CFG->prefix}course_modules cm
-             ON cei.itemtype = 'activitycompletion'
-            AND cm.instance = cei.iteminstance
-            AND cm.module = m.id
-            WHERE
-            (
-                    cei.itemtype <> 'activitycompletion'
-                AND cei.iteminstance = {$id}
-            )
-            OR
-            (
-                    cei.itemtype = 'activitycompletion'
-                AND cm.course = {$id}
-            )
-            ORDER BY
-                c.fullname
-            "
-    );
+// Get any competencies used in this course
+$competencies = get_records_sql(
+        "
+        SELECT DISTINCT
+            cei.id AS evidenceid,
+            c.id AS id,
+            c.fullname,
+            f.id AS fid,
+            f.fullname AS framework,
+            d.fullname AS depth,
+            cei.itemtype AS evidencetype,
+            cei.iteminstance AS evidenceinstance,
+            cei.itemmodule AS evidencemodule
+        FROM
+            {$CFG->prefix}competency_evidence_items cei
+        INNER JOIN
+            {$CFG->prefix}competency c
+         ON cei.competencyid = c.id
+        INNER JOIN
+            {$CFG->prefix}competency_framework f
+         ON f.id = c.frameworkid
+        INNER JOIN
+            {$CFG->prefix}competency_depth d
+         ON d.id = c.depthid
+        LEFT JOIN
+            {$CFG->prefix}modules m
+         ON cei.itemtype = 'activitycompletion'
+        AND m.name = cei.itemmodule
+        LEFT JOIN
+            {$CFG->prefix}course_modules cm
+         ON cei.itemtype = 'activitycompletion'
+        AND cm.instance = cei.iteminstance
+        AND cm.module = m.id
+        WHERE
+        (
+                cei.itemtype <> 'activitycompletion'
+            AND cei.iteminstance = {$id}
+        )
+        OR
+        (
+                cei.itemtype = 'activitycompletion'
+            AND cm.course = {$id}
+        )
+        ORDER BY
+            c.fullname
+        "
+);
 
 if ($competencies) {
+
+    $str_remove = get_string('remove');
 
     $activities = array();
 
@@ -176,6 +188,15 @@ if ($competencies) {
         }
 
         echo '</td>';
+
+        // Options column
+        if ($can_edit) {
+            echo '<td align="center">';
+            echo "<a href=\"{$CFG->wwwroot}/hierarchy/type/competency/evidence/remove.php?id={$evidence->id}&course={$id}\" title=\"$str_remove\">".
+                 "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_remove\" /></a>";
+            echo '</td>';
+        }
+
         echo '</tr>';
     }
 
