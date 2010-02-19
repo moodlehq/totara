@@ -120,11 +120,8 @@ $report->display_search();
 if($countfiltered>0) {
     $report->display_table();
     // export button
-    $report->export_buttons();
-} else {
-    print get_string('noresultsfound','local');
+    $report->export_select();
 }
-
 
 print_footer();
 

@@ -400,7 +400,7 @@ $report->display_search();
 if($countfiltered>0) {
     $report->display_table();
     // export button
-    $report->export_buttons();
+    $report->export_select();
 }
    print_footer();
 
