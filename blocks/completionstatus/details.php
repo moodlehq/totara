@@ -32,12 +32,48 @@ require_once($CFG->libdir.'/completionlib.php');
 /// Load data
 ///
 $id = required_param('course', PARAM_INT);
+// User id
+$userid = optional_param('user', 0, PARAM_INT);
 
 // Load course
 $course = get_record('course', 'id', $id);
 
+// Load user
+if ($userid) {
+    if (!$user = get_record('user', 'id', $userid)) {
+        error('User ID incorrect');
+    }
+} else {
+    $user =& $USER;
+}
+
+
 // Check permissions
 require_login($course);
+
+$coursecontext   = get_context_instance(CONTEXT_COURSE, $course->id);
+$personalcontext = get_context_instance(CONTEXT_USER, $user->id);
+
+$can_view = false;
+
+// Can view own report
+if ($USER->id == $user->id) {
+    $can_view = true;
+}
+elseif (has_capability('moodle/user:viewuseractivitiesreport', $personalcontext)) {
+    $can_view = true;
+}
+elseif (has_capability('coursereport/completion:view', $coursecontext)) {
+    $can_view = true;
+}
+elseif (has_capability('coursereport/completion:view', $personalcontext)) {
+    $can_view = true;
+}
+
+if (!$can_view) {
+    error('You do not have permissions to view this report');
+}
+
 
 // Don't display if completion isn't enabled!
 if (!$course->enablecompletion) {
@@ -46,7 +82,7 @@ if (!$course->enablecompletion) {
 
 // Load criteria to display
 $info = new completion_info($course);
-$completions = $info->get_completions($USER->id);
+$completions = $info->get_completions($user->id);
 
 // Check if this course has any criteria
 if (empty($completions)) {
@@ -55,7 +91,7 @@ if (empty($completions)) {
 
 // Check this user is enroled
 $users = $info->internal_get_tracked_users(true);
-if (!in_array($USER->id, array_keys($users))) {
+if (!in_array($user->id, array_keys($users))) {
     error(get_string('notenroled', 'completion'));
 }
 
@@ -77,21 +113,29 @@ print_heading($title);
 
 // Display completion status
 echo '<table class="generalbox boxaligncenter"><tbody>';
+
+// If not display logged in user, show user name
+if ($USER->id != $user->id) {
+    echo '<tr><td colspan="2"><b>'.get_string('showinguser', 'completion').'</b>: ';
+    echo '<a href="'.$CFG->wwwroot.'/user/view.php?id='.$user->id.'&course='.$course->id.'">'.fullname($user).'</a>';
+    echo '</td></tr>';
+}
+
 echo '<tr><td colspan="2"><b>'.get_string('status').':</b> ';
 
 // Is course complete?
-$coursecomplete = $info->is_course_complete($USER->id);
+$coursecomplete = $info->is_course_complete($user->id);
 
 // Has this user completed any criteria?
-$criteriacomplete = $info->count_course_user_data($USER->id);
+$criteriacomplete = $info->count_course_user_data($user->id);
 
 if ($coursecomplete) {
     echo get_string('complete');
 
     // Check for RPL
     $params = array(
-        'userid' => $USER->id,
-        'course' => $COURSE->id,
+        'userid' => $user->id,
+        'course' => $course->id,
     );
     $ccompletion = new completion_completion($params);
 
