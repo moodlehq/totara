@@ -3499,10 +3499,12 @@ class admin_setting_pickroles extends admin_setting_configmulticheckbox {
             return array(0);
         }
         $result = array();
-        foreach($this->types as $capability) {
-            if ($caproles = get_roles_with_capability($capability, CAP_ALLOW)) {
-                foreach ($caproles as $caprole) {
-                    $result[$caprole->id] = '1';
+        if(isset($this->types) && is_array($this->types)) {
+            foreach($this->types as $capability) {
+                if ($caproles = get_roles_with_capability($capability, CAP_ALLOW)) {
+                    foreach ($caproles as $caprole) {
+                        $result[$caprole->id] = '1';
+                    }
                 }
             }
         }
