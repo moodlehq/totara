@@ -64,13 +64,18 @@ $columns = array(
     ),
     array(
         'type' => 'date',
+        'value' => 'sessiondate',
+        'heading' => 'Session Date',
+    ),
+    array(
+        'type' => 'date',
         'value' => 'timestart',
-        'heading' => 'Session Start',
+        'heading' => 'Start Time',
     ),
     array(
         'type' => 'date',
         'value' => 'timefinish',
-        'heading' => 'Session Finish',
+        'heading' => 'End Time',
     ),
 );
 // only add facilitator column if role exists
