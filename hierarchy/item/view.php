@@ -1,6 +1,9 @@
 <?php
 
 require_once('../../config.php');
+require_once($CFG->libdir.'/adminlib.php');
+
+// Get data
 $type        = required_param('type', PARAM_SAFEDIR);
 $id          = required_param('id', PARAM_INT);
 $edit        = optional_param('edit', -1, PARAM_BOOL);
@@ -13,8 +16,6 @@ if (file_exists($CFG->dirroot.'/hierarchy/type/'.$type.'/lib.php')) {
     error('Hierarchy type '.$type.' does not exist');
 }
 
-require_once($CFG->libdir.'/adminlib.php');
-require_once($CFG->dirroot.'/hierarchy/lib.php');
 
 
 ///
@@ -83,38 +84,47 @@ print_heading($heading);
 $depthstr = $depth->fullname;
 
 ?>
-<table class="generalbox viewhierarchyitem" cellpadding="5" cellspacing="1">
+<table class="generalbox viewhierarchyitem">
 <tbody>
-    <tr>
-        <th class="header" width="200"><?php echo get_string('fullnameview', $type, $depthstr) ?></th>
-        <td class="cell" width="400"><?php echo format_string($item->fullname) ?></td>
-    </tr>
-    <tr>
-        <th class="header"><?php echo get_string('idnumberview', $type, $depthstr) ?></th>
-        <td class="cell"><?php echo format_string($item->idnumber) ?></td>
-    </tr>
-    <tr>
-        <th class="header"><?php echo get_string('descriptionview', $type, $depthstr) ?></th>
-        <td class="cell"><?php echo format_text($item->description, FORMAT_HTML) ?></td>
-    </tr>
-
 <?php
 
-$sql = "SELECT cdif.fullname, cdid.data
-        FROM {$CFG->prefix}{$type}_depth_info_data cdid
-        JOIN {$CFG->prefix}{$type}_depth_info_field cdif ON cdid.fieldid=cdif.id
-        WHERE cdid.{$type}id={$item->id}";
+    // Related data
+    $rdata = array('fullname', 'idnumber', 'description');
 
-if ($cfdata = get_records_sql($sql)) {
-    foreach ($cfdata as $cf) {
-        echo "
-    <tr>
-        <th class=\"header\">$cf->fullname</th>
-        <td class=\"cell\">$cf->data</td>
-    </tr>
-";
+    foreach ($rdata as $datatype) {
+
+        // Check if empty
+        if (!strlen($item->$datatype)) {
+            continue;
+        }
+
+        echo '<tr>';
+        echo '<th class="header">'.get_string($datatype.'view', $type, $depthstr).'</th>';
+        echo '<td class="cell">'.format_string($item->$datatype).'</td>';
+        echo '</tr>'.PHP_EOL;
     }
-}
+
+    // Custom fields
+    $sql = "SELECT cdif.fullname, cdid.data
+            FROM {$CFG->prefix}{$type}_depth_info_data cdid
+            JOIN {$CFG->prefix}{$type}_depth_info_field cdif ON cdid.fieldid=cdif.id
+            WHERE cdid.{$type}id={$item->id}";
+
+    if ($cfdata = get_records_sql($sql)) {
+
+        // Loop through
+        foreach ($cfdata as $cf) {
+
+            if (!strlen($cf->data)) {
+                continue;
+            }
+
+            echo '<tr>';
+            echo '<th class="header">'.format_string($cf->fullname).'</th>';
+            echo '<td class="cell">'.format_string($cf->data).'</td>';
+            echo '</tr>'.PHP_EOL;
+        }
+    }
 
 ?>
 </tbody>

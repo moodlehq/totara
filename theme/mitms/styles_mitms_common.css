@@ -22,3 +22,19 @@ div.reportbuilderform div.fitem div.felement {
     float: none;
 }
 
+
+/** Hierarchies **/
+table.viewhierarchyitem {
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+table.viewhierarchyitem td,
+table.viewhierarchyitem th {
+    padding: 5px 10px;
+}
+
+table.viewhierarchyitem th.header {
+    width: 200px;
+}
