@@ -17,6 +17,7 @@ $id   = optional_param('id', 0, PARAM_INT);
 $frameworkid = optional_param('frameworkid', 0, PARAM_INT);
 $spage       = optional_param('spage', 0, PARAM_INT);
 
+// Load any type specific code
 if (file_exists($CFG->dirroot.'/hierarchy/type/'.$type.'/item/edit.php')) {
     if (file_exists($CFG->dirroot.'/hierarchy/type/'.$type.'/lib.php')) {
         require_once($CFG->dirroot.'/hierarchy/type/'.$type.'/lib.php');
@@ -34,7 +35,7 @@ if (!$id && !$frameworkid) {
 }
 
 // Make this page appear under the manage competencies admin item
-admin_externalpage_setup($type.'manage', '', array(), '', $CFG->wwwroot.'/'.$type.'/edit.php');
+admin_externalpage_setup($type.'manage', '', array(), '', "{$CFG->wwwroot}/hierarchy/type/{$type}/edit.php");
 
 $context = get_context_instance(CONTEXT_SYSTEM);
 
@@ -82,7 +83,7 @@ $itemform->set_data($item);
 // cancelled
 if ($itemform->is_cancelled()) {
 
-    redirect("$CFG->wwwroot/hierarchy/index.php?type=$item&frameworkid=$item->frameworkid&spage=$spage");
+    redirect("{$CFG->wwwroot}/hierarchy/item/view.php?type={$type}&id={$item->id}");
 
 // Update data
 } else if ($itemnew = $itemform->get_data()) {
@@ -165,7 +166,7 @@ if ($itemform->is_cancelled()) {
     // Log
     add_to_log(SITEID, $type, 'update', "view.php?id=$frameworkid", '');
 
-    redirect("$CFG->wwwroot/hierarchy/index.php?type=$type&frameworkid=$frameworkid&spage=$spage");
+    redirect("{$CFG->wwwroot}/hierarchy/item/view.php?type={$type}&id={$item->id}");
     //never reached
 }
 
