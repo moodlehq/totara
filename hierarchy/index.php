@@ -390,7 +390,7 @@
             if ($editingon) {
                 $buttons = array();
                 if ($can_edit_item) {
-                    $buttons[] = "<a href=\"{$CFG->wwwroot}/hierarchy/item/edit.php?type={$type}&frameworkid={$frameworkid}&id={$item->id}\" title=\"$str_edit\">".
+                    $buttons[] = "<a href=\"{$CFG->wwwroot}/hierarchy/item/view.php?type={$type}&frameworkid={$frameworkid}&id={$item->id}&edit=1\" title=\"$str_edit\">".
                         "<img src=\"{$CFG->pixpath}/t/edit.gif\" class=\"iconsmall\" alt=\"$str_edit\" /></a>";
 
                     if ($item->visible) {
