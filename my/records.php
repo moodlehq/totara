@@ -36,9 +36,13 @@
 
     global $SESSION,$USER;
 
-    $id             = required_param('id', PARAM_INT);                       // which user to show
+    $id             = optional_param('id', null, PARAM_INT);                       // which user to show
     $format         = optional_param('format','',PARAM_TEXT); //export format
 
+    // default to current user
+    if(empty($id)) {
+        $id = $USER->id;
+    }
 
     if (! $user = get_record('user', 'id', $id)) {
         error('User not found');
