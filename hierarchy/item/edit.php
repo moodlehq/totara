@@ -3,6 +3,8 @@
 require_once('../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->dirroot.'/customfield/fieldlib.php');
+require_once($CFG->dirroot.'/hierarchy/item/edit_form.php');
+
 
 ///
 /// Setup / loading data
@@ -17,16 +19,20 @@ $id   = optional_param('id', 0, PARAM_INT);
 $frameworkid = optional_param('frameworkid', 0, PARAM_INT);
 $spage       = optional_param('spage', 0, PARAM_INT);
 
-// Load any type specific code
-if (file_exists($CFG->dirroot.'/hierarchy/type/'.$type.'/item/edit.php')) {
-    if (file_exists($CFG->dirroot.'/hierarchy/type/'.$type.'/lib.php')) {
-        require_once($CFG->dirroot.'/hierarchy/type/'.$type.'/lib.php');
-    }
-    require_once($CFG->dirroot.'/hierarchy/type/'.$type.'/item/edit_form.php');
-    require_once($CFG->dirroot.'/hierarchy/type/'.$type.'/item/edit.php');
-    die;
+// Confirm the type exists
+if (file_exists($CFG->dirroot.'/hierarchy/type/'.$type.'/lib.php')) {
+    include($CFG->dirroot.'/hierarchy/type/'.$type.'/lib.php');
 } else {
-    require_once('./edit_form.php');
+    error('Hierarchy type '.$type.' does not exist');
+}
+
+// Load any type specific code
+if (file_exists($CFG->dirroot.'/hierarchy/type/'.$type.'/item/edit_form.php')) {
+    require_once($CFG->dirroot.'/hierarchy/type/'.$type.'/item/edit_form.php');
+    $formname = $type.'_edit_form';
+}
+else {
+    $formname = 'item_edit_form';
 }
 
 // We require either an id for editing, or a framework for creating
@@ -77,7 +83,7 @@ $item->framework = $framework->fullname;
 
 // create form
 $datatosend = array('type' => $type, 'item' => $item, 'spage' => $spage);
-$itemform = new item_edit_form(null, $datatosend);
+$itemform = new $formname(null, $datatosend);
 $itemform->set_data($item);
 
 // cancelled

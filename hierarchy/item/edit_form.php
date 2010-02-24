@@ -17,12 +17,7 @@ class item_edit_form extends moodleform {
         $item = $this->_customdata['item'];
         $spage = $this->_customdata['spage'];
 
-        if (file_exists($CFG->dirroot.'/hierarchy/type/'.$type.'/lib.php')) {
-            require_once($CFG->dirroot.'/hierarchy/type/'.$type.'/lib.php');
-            $hierarchy = new $type();
-        } else {
-            error('error:hierarchytypenotfound', 'hierarchy', $type);
-        }   
+        $this->hierarchy = $hierarchy = new $type();
 
         $framework = $hierarchy->get_framework($item->frameworkid);
         $items     = $hierarchy->get_items();
@@ -124,6 +119,11 @@ class item_edit_form extends moodleform {
         if ($item->id) {
             $mform->addElement('hidden', 'depthid', $item->depthid);
             customfield_definition($mform, $item->id, $type, $item->depthid, $type.'_depth');
+        }
+
+        // See if any hierarchy specific form definition exists
+        if (method_exists($this, 'definition_hierarchy_specific')) {
+            $this->definition_hierarchy_specific();
         }
 
         $this->add_action_buttons();

@@ -506,4 +506,57 @@ class hierarchy {
      * @return void
      */
     function display_extra_view_info($item) {}
+
+    /**
+     * Return hierarchy type specific data about an item
+     *
+     * The returned array should have the structure:
+     * array(
+     *  0 => array('title' => $title, 'value' => $value),
+     *  1 => ...
+     * )
+     *
+     * @param $item object Item being viewed
+     * @param $cols array optional Array of columns and their raw data to be returned
+     * @return array
+     */
+    function get_item_data($item, $cols = NULL) {
+
+        // Item's depth
+        $depth = $this->get_depth_by_id($item->depthid);
+
+        // Cols to loop through
+        if (!is_array($cols)) {
+            $cols = array('fullname', 'shortname', 'idnumber', 'description');
+        }
+
+        // Data to return
+        $data = array();
+
+        foreach ($cols as $datatype) {
+            $data[] = array(
+                'title' => get_string($datatype.'view', $this->prefix, $depth->fullname),
+                'value' => $item->$datatype
+            );
+        }
+
+        return $data;
+    }
+
+    /**
+     * Return the deepest depth in this framework
+     *
+     * @return int
+     */
+    function get_max_depth() {
+
+        // Get depths
+        $depths = $this->get_depths();
+
+        // Get max depth level
+        end($depths);
+        $max_depth = current($depths)->id;
+
+        return $max_depth;
+    }
 }

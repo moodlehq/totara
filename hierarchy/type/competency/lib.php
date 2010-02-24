@@ -248,4 +248,33 @@ class competency extends hierarchy {
         $evidence = $this->get_evidence($item);
         require $CFG->dirroot.'/hierarchy/type/competency/view-evidence.html';
     }
+
+    /**
+     * Return hierarchy type specific data about an item
+     *
+     * The returned array should have the structure:
+     * array(
+     *  0 => array('title' => $title, 'value' => $value),
+     *  1 => ...
+     * )
+     *
+     * @param $item object Item being viewed
+     * @param $cols array optional Array of columns and their raw data to be returned
+     * @return array
+     */
+    function get_item_data($item) {
+
+        $data = parent::get_item_data($item);
+
+        // Item's depth
+        $depth = $this->get_depth_by_id($item->depthid);
+
+        // Add aggregation method
+        $data[] = array(
+            'title' => get_string('aggregationmethodview', $this->prefix, $depth->fullname),
+            'value' => get_string('aggregationmethod'.$item->aggregationmethod, $this->prefix)
+        );
+
+        return $data;
+    }
 }

@@ -81,28 +81,13 @@ if ($editingon) {
 
 print_heading($heading);
 
-$depthstr = $depth->fullname;
-
 ?>
 <table class="generalbox viewhierarchyitem">
 <tbody>
 <?php
 
     // Related data
-    $rdata = array('fullname', 'idnumber', 'description');
-
-    foreach ($rdata as $datatype) {
-
-        // Check if empty
-        if (!strlen($item->$datatype)) {
-            continue;
-        }
-
-        echo '<tr>';
-        echo '<th class="header">'.get_string($datatype.'view', $type, $depthstr).'</th>';
-        echo '<td class="cell">'.format_string($item->$datatype).'</td>';
-        echo '</tr>'.PHP_EOL;
-    }
+    $data = $hierarchy->get_item_data($item);
 
     // Custom fields
     $sql = "SELECT cdif.fullname, cdid.data
@@ -111,19 +96,25 @@ $depthstr = $depth->fullname;
             WHERE cdid.{$type}id={$item->id}";
 
     if ($cfdata = get_records_sql($sql)) {
-
-        // Loop through
         foreach ($cfdata as $cf) {
-
-            if (!strlen($cf->data)) {
-                continue;
-            }
-
-            echo '<tr>';
-            echo '<th class="header">'.format_string($cf->fullname).'</th>';
-            echo '<td class="cell">'.format_string($cf->data).'</td>';
-            echo '</tr>'.PHP_EOL;
+            $data[] = array(
+                'title' => $cf->fullname,
+                'value' => $cf->data
+            );
         }
+    }
+
+    foreach ($data as $ditem) {
+
+        // Check if empty
+        if (!strlen($ditem['value'])) {
+            continue;
+        }
+
+        echo '<tr>';
+        echo '<th class="header">'.format_string($ditem['title']).'</th>';
+        echo '<td class="cell">'.format_string($ditem['value']).'</td>';
+        echo '</tr>'.PHP_EOL;
     }
 
 ?>
