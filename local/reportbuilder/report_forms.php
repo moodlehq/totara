@@ -60,11 +60,11 @@ class report_builder_edit_form extends moodleform {
         $mform->addElement('advcheckbox', 'hidden', get_string('hidden','local'), '', null, array(0,1));
         $mform->setDefault('hidden', $report->_hidden);
 
-        $mform->addElement('header', 'general', get_string('filterfields', 'local'));
+        $mform->addElement('header', 'general', get_string('searchoptions', 'local'));
 
         if(isset($report->_filters) && is_array($report->_filters) && count($report->_filters)>0) {
 
-            $mform->addElement('html', '<div class="reportbuilderform"><table><tr><th>'.get_string('filter','local').
+            $mform->addElement('html', '<div class="reportbuilderform"><table><tr><th>'.get_string('searchfield','local').
                 '</th><th>'.get_string('advanced','local').'</th><th>'.get_string('options','local').'</th><tr>');
 
             $filtersselect = $report->get_filters_select();
