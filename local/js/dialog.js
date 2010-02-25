@@ -327,7 +327,7 @@ var yuiDialog_handler = function() {
             url,
             {
                 success: function(response) { success(handler, response) },
-                failure: function() { failure(dialog, url) },
+                failure: function() { failure(dialog, url) }
             }
         );
     }
