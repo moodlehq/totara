@@ -68,11 +68,11 @@ foreach ($add as $addition) {
     echo '<tr class="r1">';
 
     echo '<td class="cell c0">';
-    echo "<a href=\"{$CFG->wwwroot}/hierarchy/framework/index.php?type=competency&id={$framework->id}\">{$framework->fullname}</a>";
+    echo "<a href=\"{$CFG->wwwroot}/hierarchy/index.php?type=competency&frameworkid={$framework->id}\">{$framework->fullname}</a>";
     echo '</td>';
 
     echo '<td class="cell c1">';
-    echo "<a href=\"{$CFG->wwwroot}/hierarchy/item/view.php?type=competency&id={$related->id}\">{$related->fullname}</a>";
+    echo "<a href=\"{$CFG->wwwroot}/hierarchy/type/competency/template/view.php?id={$related->id}\">{$related->fullname}</a>";
     echo '</td>';
 
     echo '<td class="cell c2">';
