@@ -55,8 +55,6 @@ print_heading("$fullname: ".get_string('showing','local')." $countfiltered / $co
 
 // print filters
 $report->display_add();
-$report->display_active();
-
 // show results
 if($countfiltered>0) {
     $report->display_table();

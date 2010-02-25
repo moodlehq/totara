@@ -112,10 +112,6 @@ class reportbuilder {
         $this->_filtering->display_add();
     }
 
-    function display_active() {
-        $this->_filtering->display_active();
-    }
-
     function get_sql_filter() {
         return $this->_filtering->get_sql_filter();
     }

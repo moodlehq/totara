@@ -24,8 +24,8 @@ class filter_select extends filter_type {
      * @param array $options select options
      * @param mixed $default option
      */
-    function filter_select($name, $label, $advanced, $field, $query, $options, $default=null, $attributes=null) {
-        parent::filter_type($name, $label, $advanced);
+    function filter_select($name, $label, $advanced, $filtertype, $field, $query, $options, $default=null, $attributes=null) {
+        parent::filter_type($name, $label, $advanced, $filtertype);
         $this->_field   = $field;
         $this->_query   = $query;
         $this->_options = $options;
@@ -48,6 +48,8 @@ class filter_select extends filter_type {
      * @param object $mform a MoodleForm object to setup
      */
     function setupForm(&$mform) {
+        global $SESSION;
+        $filtername = $this->_filtername;
         $objs = array();
         $objs[] =& $mform->createElement('select', $this->_name.'_op', null, $this->get_operators());
         $objs[] =& $mform->createElement('select', $this->_name, null, $this->_options, $this->_attributes);
@@ -60,6 +62,19 @@ class filter_select extends filter_type {
         if ($this->_advanced) {
             $mform->setAdvanced($this->_name.'_grp');
         }
+
+        // set default values
+        if(array_key_exists($this->_name, $SESSION->{$filtername})) {
+            $defaults = $SESSION->{$filtername}[$this->_name];
+        }
+        //TODO get rid of need for [0]
+        if(isset($defaults[0]['operator'])) {
+            $mform->setDefault($this->_name.'_op', $defaults[0]['operator']);
+        }
+        if(isset($defaults[0]['value'])) {
+            $mform->setDefault($this->_name, $defaults[0]['value']);
+        }
+
     }
 
     /**
@@ -71,7 +86,7 @@ class filter_select extends filter_type {
         $field    = $this->_name;
         $operator = $field.'_op';
 
-        if (array_key_exists($field, $formdata) and !empty($formdata->$operator)) {
+        if (array_key_exists($field, $formdata) ) {
             return array('operator' => (int)$formdata->$operator,
                          'value'    => (string)$formdata->$field);
         }
@@ -100,7 +115,7 @@ class filter_select extends filter_type {
                 $glue = ' AND ';
                 break;
             default:
-                return '';
+                return ' TRUE ';
         }
 
         // split by comma and look for any items

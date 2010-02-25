@@ -189,5 +189,9 @@ $string['exportods'] = 'Export in ODS format';
 $string['exportxls'] = 'Export in Excel format';
 $string['exportproblem'] = 'There was a problem downloading the file';
 $string['noshortname'] = 'You must provide a report shortname';
-
-
+$string['settings'] = 'Settings';
+$string['allreports'] = 'All Reports';
+$string['viewreport'] = 'View This Report';
+$string['search'] = 'Search';
+$string['clearform'] = 'Clear';
+$string['searchby'] = 'Search by';

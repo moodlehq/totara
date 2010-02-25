@@ -13,6 +13,7 @@ class filtering {
     var $_activeform;
     var $_filter;
     var $_shortname;
+    var $_sessionname;
 
     /**
      * Contructor
@@ -37,6 +38,7 @@ class filtering {
 
         // initialise session var based on unique shortname
         $filtername = "filtering_$shortname";
+        $this->_sessionname = $filtername;
         if (!isset($SESSION->{$filtername})) {
             $SESSION->{$filtername} = array();
         }
@@ -56,48 +58,35 @@ class filtering {
             }
         }
 
-        // first the new filter form
+        // the new filter form
         $this->_addform = new add_filter_form($baseurl, array('fields'=>$this->_fields, 'extraparams'=>$extraparams, 'shortname' => $shortname));
+
         if ($adddata = $this->_addform->get_data(false)) {
-            foreach($this->_fields as $fname=>$field) {
-                $data = $field->check_data($adddata);
-                if ($data === false) {
-                    continue; // nothing new
-                }
-                if (!array_key_exists($fname, $SESSION->{$filtername})) {
-                    $SESSION->{$filtername}[$fname] = array();
-                }
-                $SESSION->{$filtername}[$fname][] = $data;
-            }
-            // clear the form
-            $_POST = array();
-            $this->_addform = new add_filter_form($baseurl, array('fields'=>$this->_fields, 'extraparams'=>$extraparams, 'shortname' => $shortname));
-        }
 
-        // now the active filters
-        $this->_activeform = new active_filter_form($baseurl, array('fields'=>$this->_fields, 'extraparams'=>$extraparams,'shortname'=>$shortname));
-        if ($adddata = $this->_activeform->get_data(false)) {
-            if (!empty($adddata->removeall)) {
-                $SESSION->{$filtername} = array();
+            if(isset($adddata->clearfilter)) {
+                    $SESSION->{$filtername} = array();
+                    $_POST = array();
+                    $this->_addform = new add_filter_form($baseurl, array('fields'=>$this->_fields, 'extraparams'=>$extraparams, 'shortname' => $shortname));
 
-            } else if (!empty($adddata->removeselected) and !empty($adddata->filter)) {
-                foreach($adddata->filter as $fname=>$instances) {
-                    foreach ($instances as $i=>$val) {
-                        if (empty($val)) {
-                            continue;
+            } else {
+
+                foreach($this->_fields as $fname=>$field) {
+                    $data = $field->check_data($adddata);
+                    if ($data === false) {
+                        // unset existing result if field has been set back to "not set" position
+                        if(array_key_exists($fname, $SESSION->{$filtername})){
+                            unset($SESSION->{$filtername}[$fname]);
                         }
-                        unset($SESSION->{$filtername}[$fname][$i]);
+                        continue; 
                     }
-                    if (empty($SESSION->{$filtername}[$fname])) {
-                        unset($SESSION->{$filtername}[$fname]);
+                    if (!array_key_exists($fname, $SESSION->{$filtername})) {
+                        $SESSION->{$filtername}[$fname] = array();
                     }
+                    // TODO stop using array index 0 (no longer needed as only one filter per field)
+                    $SESSION->{$filtername}[$fname][0] = $data;
                 }
             }
-            // clear+reload the form
-            $_POST = array();
-            $this->_activeform = new active_filter_form($baseurl, array('fields'=>$this->_fields, 'extraparams'=>$extraparams, 'shortname'=>$shortname));
         }
-
     }
 
     /**
@@ -112,7 +101,7 @@ class filtering {
         $filteroptions = $this->_report->_filteroptions;
         $columnoptions = $this->_report->_columnoptions;
         $source = $this->_report->_source;
-
+        $sessionname = $this->_sessionname;
         $fieldname = "{$type}-{$value}";
         $fieldquery = $columnoptions[$type][$value]['field'];
 
@@ -128,12 +117,12 @@ class filtering {
             switch($filtertype) {
                 case 'text':
                 case 'date':
-                    return new $filtername($fieldname, $label, $advanced, $fieldname, $fieldquery);
+                    return new $filtername($fieldname, $label, $advanced, $sessionname, $fieldname, $fieldquery);
                 case 'select':
                     $selectfunc = $filteroptions[$type][$value]['selectfunc'];
                     $options = (isset($filteroptions[$type][$value]['options'])) ? $filteroptions[$type][$value]['options'] : null ;
                     $selectfield = $selectfunc();
-                    return new $filtername($fieldname, $label, $advanced, $fieldname, $fieldquery, $selectfield, null, $options);
+                    return new $filtername($fieldname, $label, $advanced, $sessionname, $fieldname, $fieldquery, $selectfield, null, $options);
                 default:
                     trigger_error("No filter found for filter type '$filtertype'.",E_USER_WARNING);
                     return null;
@@ -215,16 +204,18 @@ class filter_type {
      */
     var $_advanced;
 
+    var $_filtername;
     /**
      * Constructor
      * @param string $name the name of the filter instance
      * @param string $label the label of the filter instance
      * @param boolean $advanced advanced form element flag
      */
-    function filter_type($name, $label, $advanced) {
+    function filter_type($name, $label, $advanced, $filtername) {
         $this->_name     = $name;
         $this->_label    = $label;
         $this->_advanced = $advanced;
+        $this->_filtername = $filtername;
     }
 
     /**

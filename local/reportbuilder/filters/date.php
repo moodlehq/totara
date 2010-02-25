@@ -19,8 +19,8 @@ class filter_date extends filter_type {
      * @param boolean $advanced advanced form element flag
      * @param string $field user table filed name
      */
-    function filter_date($name, $label, $advanced, $field, $query) {
-        parent::filter_type($name, $label, $advanced);
+    function filter_date($name, $label, $advanced, $filtertype, $field, $query) {
+        parent::filter_type($name, $label, $advanced, $filtertype);
         $this->_field = $field;
         $this->_query = $query;
     }
@@ -30,6 +30,8 @@ class filter_date extends filter_type {
      * @param object $mform a MoodleForm object to setup
      */
     function setupForm(&$mform) {
+        global $SESSION;
+        $filtername = $this->_filtername;
         $objs = array();
 
         $objs[] =& $mform->createElement('checkbox', $this->_name.'_sck', null, get_string('isafter', 'filters'));
@@ -49,6 +51,20 @@ class filter_date extends filter_type {
         $mform->disabledIf($this->_name.'_edt[day]', $this->_name.'_eck', 'notchecked');
         $mform->disabledIf($this->_name.'_edt[month]', $this->_name.'_eck', 'notchecked');
         $mform->disabledIf($this->_name.'_edt[year]', $this->_name.'_eck', 'notchecked');
+
+        // set default values
+        if(array_key_exists($this->_name, $SESSION->{$filtername})) {
+            $defaults = $SESSION->{$filtername}[$this->_name];
+        }
+        //TODO get rid of need for [0]
+        if(isset($defaults[0]['after']) && $defaults[0]['after']!=0) {
+            $mform->setDefault($this->_name.'_sck', 1);
+            $mform->setDefault($this->_name.'_sdt', $defaults[0]['after']);
+        }
+        if(isset($defaults[0]['before']) && $defaults[0]['before']!=0) {
+            $mform->setDefault($this->_name.'_eck', 1);
+            $mform->setDefault($this->_name.'_edt', $defaults[0]['before']);
+        }
     }
 
     /**

@@ -15,8 +15,8 @@ class filter_text extends filter_type {
      * @param boolean $advanced advanced form element flag
      * @param string $field table field name
      */
-    function filter_text($name, $label, $advanced, $field, $query) {
-        parent::filter_type($name, $label, $advanced);
+    function filter_text($name, $label, $advanced, $filtername, $field, $query) {
+        parent::filter_type($name, $label, $advanced, $filtername);
         $this->_field = $field;
         $this->_query = $query;
     }
@@ -39,6 +39,8 @@ class filter_text extends filter_type {
      * @param object $mform a MoodleForm object to setup
      */
     function setupForm(&$mform) {
+        global $SESSION;
+        $filtername=$this->_filtername;
         $objs = array();
         $objs[] =& $mform->createElement('select', $this->_name.'_op', null, $this->getOperators());
         $objs[] =& $mform->createElement('text', $this->_name, null);
@@ -47,6 +49,18 @@ class filter_text extends filter_type {
         $mform->disabledIf($this->_name, $this->_name.'_op', 'eq', 5);
         if ($this->_advanced) {
             $mform->setAdvanced($this->_name.'_grp');
+        }
+
+        // set default values
+        if(array_key_exists($this->_name,$SESSION->{$filtername})) {
+            $defaults = $SESSION->{$filtername}[$this->_name];
+        }
+        // TODO get rid of need for [0]
+        if(isset($defaults[0]['operator'])) {
+            $mform->setDefault($this->_name.'_op', $defaults[0]['operator']);
+        }
+        if(isset($defaults[0]['value'])) {
+            $mform->setDefault($this->_name, $defaults[0]['value']);
         }
     }
 

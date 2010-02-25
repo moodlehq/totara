@@ -5,12 +5,15 @@ require_once($CFG->libdir.'/formslib.php');
 class add_filter_form extends moodleform {
 
     function definition() {
+        global $SESSION;
         $mform       =& $this->_form;
         $fields      = $this->_customdata['fields'];
         $extraparams = $this->_customdata['extraparams'];
+        $shortname      = $this->_customdata['shortname'];
+        $filtername = 'filtering_'.$shortname;
 
         if($fields && is_array($fields) && count($fields) > 0) {
-            $mform->addElement('header', 'newfilter', get_string('newfilter','filters'));
+            $mform->addElement('header', 'newfilter', get_string('searchby','local'));
 
             foreach($fields as $ft) {
                 $ft->setupForm($mform);
@@ -24,8 +27,18 @@ class add_filter_form extends moodleform {
                 }
             }
 
+            $mform->addElement('html','<br />');
+            $mform->addElement('html','<table align="center"><tr><td align="left">');
+
             // Add button
-            $mform->addElement('submit', 'addfilter', get_string('addfilter','filters'));
+            $mform->addElement('submit', 'addfilter', get_string('search','local'));
+
+            $mform->addElement('html','</td><td align="right">');
+
+            // clear form button
+            $mform->addElement('submit', 'clearfilter', get_string('clearform','local'));
+
+            $mform->addElement('html','</td></tr></table>');
 
             // Don't use last advanced state
             $mform->setShowAdvanced(false);
@@ -33,6 +46,11 @@ class add_filter_form extends moodleform {
     }
 }
 
+/*
+ * This form is no longer used as the filter behaves more like 
+ * a search form now. Left in in-case someone decides they would
+ * prefer a filter interface
+ */
 class active_filter_form extends moodleform {
 
     function definition() {
