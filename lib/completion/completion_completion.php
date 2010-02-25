@@ -228,6 +228,11 @@ class completion_completion extends data_object {
         if ($this->id) {
             $this->update();
         } else {
+            // Make sure reaggregate field is not null
+            if (!$this->reaggregate) {
+                $this->reaggregate = 0;
+            }
+
             $this->insert();
         }
     }
