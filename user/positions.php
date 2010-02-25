@@ -134,7 +134,7 @@ include($CFG->dirroot.'/user/tabs.php');
 $currenturl = "{$CFG->wwwroot}/user/positions.php?user={$user->id}&courseid={$course->id}&type={$type}";
 
 // Form
-$form = new user_position_assignment_form($currenturl, compact('type', 'user', 'position_assignment'));
+$form = new user_position_assignment_form($currenturl, compact('type', 'user', 'position_assignment', 'can_edit'));
 $form->set_data($position_assignment);
 
 if ($form->is_cancelled()){
@@ -172,7 +172,7 @@ elseif ($data = $form->get_data()) {
 }
 
 if (!$can_edit) {
-    $form->_form->hardFreezeAllVisible();
+    $form->freezeForm();
 }
 
 // Setup calendar

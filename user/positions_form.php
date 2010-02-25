@@ -12,6 +12,7 @@ class user_position_assignment_form extends moodleform {
         $type = $this->_customdata['type'];
         $user = $this->_customdata['user'];
         $pa = $this->_customdata['position_assignment'];
+        $can_edit = $this->_customdata['can_edit'];
 
         // Check if an aspirational position
         $aspirational = false;
@@ -74,8 +75,8 @@ class user_position_assignment_form extends moodleform {
             '
                 <script type ="text/javascript"> var user_id = '.$user->id.'; </script>
                 <span id="positiontitle">'.htmlentities($position_title).'</span>
-                <input type="button" value="'.get_string('chooseposition', 'position').'" id="show-position-dialog" />
-            '
+            '.
+            ($can_edit ? '<input type="button" value="'.get_string('chooseposition', 'position').'" id="show-position-dialog" />' : '')
         );
         $mform->addElement('hidden', 'positionid');
         $mform->setDefault('positionid', 0);
@@ -84,17 +85,18 @@ class user_position_assignment_form extends moodleform {
             $mform->addElement('static', 'organisationselector', get_string('organisation', 'position'),
                 '
                     <span id="organisationtitle">'.htmlentities($organisation_title).'</span>
-                    <input type="button" value="'.get_string('chooseorganisation', 'organisation').'" id="show-organisation-dialog" />
-                '
+                '.
+                ($can_edit ? '<input type="button" value="'.get_string('chooseorganisation', 'organisation').'" id="show-organisation-dialog" />' : '')
             );
+
             $mform->addElement('hidden', 'organisationid');
             $mform->setDefault('organisationid', 0);
 
             $mform->addElement('static', 'managerselector', get_string('manager', 'position'),
                 '
                     <span id="managertitle">'.htmlentities($manager_title).'</span>
-                    <input type="button" value="'.get_string('choosemanager', 'position').'" id="show-manager-dialog" />
-                '
+                '.
+                ($can_edit ? '<input type="button" value="'.get_string('choosemanager', 'position').'" id="show-manager-dialog" />' : '')
             );
             $mform->addElement('hidden', 'managerid');
             $mform->setDefault('managerid', 0);
@@ -127,5 +129,40 @@ class user_position_assignment_form extends moodleform {
         else {
             $mform->setDefault('timevalidto', date('d/m/Y', $mform->getElementValue('timevalidto')));
         }
+    }
+
+    function freezeForm() {
+        $mform =& $this->_form;
+        
+        // Freeze values
+        $mform->hardFreezeAllVisibleExcept(array());
+
+        // Hide elements with no values
+        foreach (array_keys($mform->_elements) as $key) {
+
+            $element =& $mform->_elements[$key];
+
+            // Check static elements differently
+            if ($element->getType() == 'static') {
+                // Check if it is a js selector
+                if (substr($element->getName(), -8) == 'selector') {
+                    // Get id element
+                    $elementid = $mform->getElement(substr($element->getName(), 0, -8).'id');
+
+                    if (!$elementid || !$elementid->getValue()) {
+                        $mform->removeElement($element->getName());
+                    }
+
+                    continue;
+                }
+            }
+
+            // Otherwise check if empty
+            if (!$element->getValue()) {
+                $mform->removeElement($element->getName());
+            }
+        }
+        
+        // Hide buttons
     }
 }
