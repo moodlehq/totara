@@ -3,7 +3,9 @@
 
 
 
+/*****************************************************************************/
 /** Report Builder **/
+/*****************************************************************************/
 
 /* shrink select boxes to fit in filter */
 select.mitms-limited-width {
@@ -23,7 +25,9 @@ div.reportbuilderform div.fitem div.felement {
 }
 
 
+/*****************************************************************************/
 /** Hierarchies **/
+/*****************************************************************************/
 body.hierarchy-item h2.main {
     text-align: left;
     width: 95%;
@@ -85,7 +89,9 @@ table#list-assignedcompetencytemplates td[colspan] {
     padding: 0;
 }
 
+/*****************************************************************************/
 /** Dialogs **/
+/*****************************************************************************/
 .selectcompetencies ul.treeview {
     width: 65%;
     overflow: auto;
