@@ -2034,7 +2034,8 @@ body#course-index #middle-column .editcourse .count {
 }
 
 body#course-index .singlebutton,
-body#course-index .addcategory {
+body#course-index .addcategory,
+.buttons .centerbutton {
   text-align: center;
 }
 

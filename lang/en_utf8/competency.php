@@ -1,6 +1,7 @@
 <?php
 
 $string['achieved'] = 'Achieved';
+$string['addcourseevidencetocompetency'] = 'Add course evidence to competency';
 $string['adddepthlevel'] = 'Add a new depth level';
 $string['addnewcompetency'] = 'Add new competency';
 $string['addnewframework'] = 'Add new competency framework';
@@ -20,6 +21,7 @@ $string['assignnewcompetency'] = 'Assign new competency';
 $string['assignnewevidenceitem'] = 'Assign new evidence item';
 $string['cannotupdatedisplaysettings'] = 'Could not update display settings';
 $string['competencies'] = 'Competencies';
+$string['competenciesusedincourse'] = 'Competencies used in course';
 $string['competency'] = 'Competency';
 $string['competencyplural'] = 'Competencies';
 $string['competencyaddnew'] = 'Add a new competency';
@@ -51,6 +53,7 @@ $string['editdepthlevel'] = 'Edit depth level';
 $string['editframework'] = 'Edit competency framework';
 $string['editscalevalue'] = 'Edit scale value';
 $string['edittemplate'] = 'Edit competency template';
+$string['evidence'] = 'Evidence';
 $string['evidenceactivitycompletion'] = 'activity completion';
 $string['evidencecount'] = 'Evidence items';
 $string['evidencecoursecompletion'] = 'course completion';
@@ -84,6 +87,7 @@ $string['missingshortnametemplate'] = 'Missing template short name';
 $string['noassignedcompetencies'] = 'No competencies assigned to this template';
 $string['nocompetenciesinframework'] = 'No competencies in this framework';
 $string['nocompetency'] = 'No competencies defined';
+$string['nocoursecompetencies'] = 'No course competencies';
 $string['nodepthlevels'] = 'No depth levels in this framework';
 $string['noevidenceitems'] = 'No evidence items setup for this competency';
 $string['noevidencetypesavailable'] = 'No evidence types available';

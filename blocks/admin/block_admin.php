@@ -117,6 +117,11 @@ class block_admin extends block_list {
             }
         }
 
+        if ($course->id!==SITEID and has_capability('moodle/local:viewcompetency', get_context_instance(CONTEXT_SYSTEM))) {
+            $this->content->items[]='<a href="'.$CFG->wwwroot.'/course/competency.php?id='.$course->id.'">'.get_string('competencies', 'competency').'</a>';
+            $this->content->icons[]='<img src="'.$CFG->pixpath.'/i/outcomes.gif" class="icon" alt="" />';
+        }
+
     /// Manage metacourses
         if ($course->metacourse) {
             if (has_capability('moodle/course:managemetacourse', $context)) {
