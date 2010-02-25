@@ -91,7 +91,7 @@ function show_rpl($type, $user, $rpl, $describe, $fulldescribe) {
         // Show edit form
         print '<form action="save_rpl.php?type='.$type.'&course='.$course->id.'&sort='.$sort.'&start='.$start.'&redirect=1" method="post">';
         print '<input type="hidden" name="user" value="'.$user->id.'" />';
-        print '<input type="text" name="rpl" value="'.htmlentities($rpl).'" />';
+        print '<input type="text" name="rpl" value="'.htmlentities($rpl).'" maxlength="255" />';
         print '<input type="submit" name="saverpl" value="Save" /></form> ';
         print '<a href="index.php?course='.$course->id.'&sort='.$sort.'&start='.$start.'">Cancel</a>';
     } else {

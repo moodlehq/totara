@@ -158,7 +158,7 @@ YAHOO.util.Event.onDOMReady(function () {
             var inputgroup = $('<span class="rplinputgroup"></span>');
 
             // Create input
-            var input = $('<input class="rplinput" type="text" />');
+            var input = $('<input class="rplinput" type="text" maxlength="255"/>');
             input.val(value.text());
 
             // Bind enter event to input
