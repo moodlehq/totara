@@ -24,6 +24,13 @@ div.reportbuilderform div.fitem div.felement {
 
 
 /** Hierarchies **/
+body.hierarchy-item h2.main {
+    text-align: left;
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 table.viewhierarchyitem {
     width: 95%;
     margin-left: auto;
@@ -36,12 +43,15 @@ table.viewhierarchyitem th {
 }
 
 table.viewhierarchyitem th.header {
-    width: 200px;
+    white-space: nowrap;
+    width: 10%;
     border-bottom: 1px solid #fff;
 }
 
 div.nohierarchyitems {
     padding-bottom: 20px;
+    font-weight: bold;
+    font-style: italic;
 }
 
 table.editcompetency th {
@@ -54,6 +64,7 @@ table#list-assignedcompetencies th.c3,
 table#list-assignedcompetencytemplates th.c0,
 table#list-assignedcompetencytemplates th.c2 {
     width: 15%;
+    white-space: nowrap;
 }
 
 table#list-assignedcompetencies .c3,
