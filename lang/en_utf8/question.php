@@ -8,7 +8,7 @@ $string['categorydoesnotexist'] = 'This category does not exist';
 $string['categorycurrent'] = 'Current Category';
 $string['categorycurrentuse'] = 'Use This Category';
 $string['categorymoveto'] = 'Save in Category';
-$string['changepublishstatuscat'] = '<a href=\"$a->caturl\">Category \"$a->name\"</a> in course \"$a->coursename\" will have it\'s sharing status changed from <strong>$a->changefrom to $a->changeto</strong>.';
+$string['changepublishstatuscat'] = '<a href=\"$a->caturl\">Category \"$a->name\"</a> in course \"$a->coursename\" will have its sharing status changed from <strong>$a->changefrom to $a->changeto</strong>.';
 $string['cwrqpfs'] = 'Random questions selecting questions from sub categories.';
 $string['cwrqpfsinfo'] = '<p>During the upgrade to Moodle 1.9 we will separate question categories into
 different contexts. Some question categories and questions on your site will have to have their sharing
