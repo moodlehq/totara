@@ -1,0 +1,17 @@
+
+/* Stylesheet for MITMS specific CSS */
+
+
+
+/** Report Builder **/
+
+/* shrink select boxes to fit in filter */
+select.limited-width {
+    width: 200px;
+}
+
+/* override float left on pulldown menus inside table */
+div.learningreportsform div.fitem div.felement {
+    float: none;
+}
+
