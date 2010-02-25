@@ -455,7 +455,6 @@ $local_capabilities = array(
             'admin' => CAP_ALLOW,
             'teacher' => CAP_ALLOW,
             'editingteacher' => CAP_ALLOW,
-            'student' => CAP_ALLOW,
         ),
     ),
 
@@ -488,6 +487,16 @@ $local_capabilities = array(
     'moodle/local:assignuserposition' => array(
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM,
+        'legacy' => array(
+            'admin' => CAP_ALLOW,
+        ),
+    ),
+
+    // Ability for a user to view any report builder reports
+    'moodle/local:viewallreports' => array(
+        'captype' => 'read',
+        'contextlevel' => CONTEXT_USER,
+        'riskbitmask' => RISK_PERSONAL,
         'legacy' => array(
             'admin' => CAP_ALLOW,
         ),
