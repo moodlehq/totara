@@ -264,7 +264,9 @@
             $header .= " <a href=\"{$CFG->wwwroot}/hierarchy/depth/edit.php?type={$type}&id={$depth->id}\" title=\"$str_edit\">".
                 "<img src=\"{$CFG->pixpath}/t/edit.gif\" class=\"iconsmall\" alt=\"$str_edit\" /></a> ".
                 "<a href=\"{$CFG->wwwroot}/customfield/index.php?type={$type}&subtype=depth&depthid={$depth->id}\" title=\"$str_customfields\">".
-                "<img src=\"{$CFG->pixpath}/t/customfields.gif\" class=\"iconsmall\" alt=\"$str_customfields\" /></a>";
+                "<img src=\"{$CFG->pixpath}/t/customfields.gif\" class=\"iconsmall\" alt=\"$str_customfields\" /></a> ".
+                "<a href=\"{$CFG->wwwroot}/hierarchy/depth/delete.php?type={$type}&id={$depth->id}\" title=\"$str_delete\">".
+                "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_delete\" /></a>";
         }
         $tableheaders[] = $header;
         $colcount++;

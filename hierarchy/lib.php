@@ -91,7 +91,7 @@ class hierarchy {
      * @return array|false
      */
     function get_depths() {
-        return get_records($this->prefix.'_depth', 'frameworkid', $this->frameworkid, 'id');
+        return get_records($this->prefix.'_depth', 'frameworkid', $this->frameworkid, 'depthlevel');
     }
 
     /**
@@ -474,12 +474,7 @@ class hierarchy {
 
         if ($depths) {
             foreach ($depths as $depth) {
-
-                // Delete all info fields in a depth
-                delete_records($this->prefix.'_depth_info_field', 'depthid', $depth->id);
-
-                // Delete all info categories in a depth
-                delete_records($this->prefix.'_depth_info_category', 'depthid', $depth->id);
+                $this->delete_depth_metadata($depth->id);
             }
         }
 
@@ -492,6 +487,65 @@ class hierarchy {
         // Finally delete this framework
         delete_records($this->prefix.'_framework', 'id', $this->frameworkid);
     }
+
+    /**
+     * Returns whether there are items at this depth level
+     *
+     * @param int $id
+     * @return mixed A hierarchy error string index if it's not safe to delet, boolean true if it is safe
+     */
+    function is_safe_to_delete_depth($id) {
+
+        if ( !$id ){
+            return 'deletedepthnosuchdepth';
+        }
+
+        if ( count_records($this->prefix, 'depthid', $id) > 0 ){
+            return 'deletedepthhaschildren';
+        }
+
+        if ( $id && $id != $this->get_max_depth() ){
+            return 'deletedepthnotdeepest';
+        }
+
+        return true;
+    }
+
+    /**
+     * Delete a depth level. Will fail if there are deeper depth levels for
+     * the framework, or if there are items at this depth level in the framework
+     *
+     * @param int $id id of depth level to delete
+     * @return mixed Boolean true if successful, a hierarchy error index string if not
+     */
+    function delete_depth($id) {
+
+        $safe_or_not = $this->is_safe_to_delete_depth($id);
+        if ( $safe_or_not === true ){
+            $this->delete_depth_metadata($id);
+            delete_records($this->prefix.'_depth', 'id', $id);
+        }
+        return $safe_or_not;
+    }
+
+    /**
+     * Delete the metadata associated with a depth level (separated into a
+     * separate function so that it can be called when all depths are deleted
+     * with a whole framework, or when a single depth level is deleted
+     * individually)
+     *
+     * @param int $id id of depth level with metadata to delete
+     * @return void
+     */
+    function delete_depth_metadata($id) {
+        // Delete all info fields in a depth
+        delete_records($this->prefix.'_depth_info_field', 'depthid', $id);
+
+        // Delete all info categories in a depth
+        delete_records($this->prefix.'_depth_info_category', 'depthid', $id);
+
+    }
+
 
     /**
      * Run any code before printing admin page header
