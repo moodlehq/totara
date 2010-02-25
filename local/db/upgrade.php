@@ -1007,22 +1007,6 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && create_table($table);
     }
 
-    if ($result && $oldversion < 2010020200) {
-    /// Fix imported course_completions records
-        $sql = "
-            UPDATE
-                {$CFG->prefix}course_completions
-            SET
-                timeenrolled = timecompleted,
-                timestarted = timecompleted
-            WHERE
-                timecompleted IS NOT NULL
-            AND timeenrolled IS NULL
-            AND timestarted IS NULL
-        ";
-        $result = $result && execute_sql($sql);
-    }
-
     if ($result && $oldversion < 2010020500) {
     // increase space for restriction data
         $table = new XMLDBTable('learning_report');
