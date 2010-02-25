@@ -41,6 +41,8 @@ if (!$position = $positions->get_item($assignto)) {
 $add = explode(',', $add);
 $time = time();
 
+$str_remove = get_string('remove');
+
 foreach ($add as $addition) {
     // Check id
     if (!is_numeric($addition)) {
@@ -63,7 +65,7 @@ foreach ($add as $addition) {
     $relationship->timecreated = $time;
     $relationship->usermodified = $USER->id;
 
-    insert_record('position_competencies', $relationship);
+    $relationship->id = insert_record('position_competencies', $relationship);
 
     // Return html
     echo '<tr class="r1">';
@@ -81,7 +83,7 @@ foreach ($add as $addition) {
     echo '</td>';
 
     echo '<td class="cell c3">';
-    echo "<a href=\"{$CFG->wwwroot}/{$hierarchy->prefix}/related/remove.php?id={$related->id}\" title=\"$str_remove\">".
+    echo "<a href=\"{$CFG->wwwroot}/hierarchy/type/position/assigncompetency/remove.php?id={$relationship->id}&position={$position->id}\" title=\"$str_remove\">".
          "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_remove\" /></a>";
     echo '</td>';
 
