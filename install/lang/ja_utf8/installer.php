@@ -39,7 +39,7 @@ $string['continue'] = '続ける';
 $string['ctyperecommended'] = 'あなたのサイトが非ラテン言語をサポートしている場合、サイトパフォーマンスを改善するため、PHP ctype拡張モジュールのインストールを強くお勧めします。';
 $string['ctyperequired'] = 'サイトパフォーマンスの改善および多言語サポートを提供するため、MoodleではPHP ctype拡張モジュールが必須です。';
 $string['curlrecommended'] = 'Moodleネットワーキング機能を有効にするため、cURLライブラリのインストールを強くお勧めします。';
-$string['curlrequired'] = 'Moodleリポジトリと通信するため、MoodleではPHP cURL拡張モジュールが必須です。'; // ORPHANED
+$string['curlrequired'] = 'Moodleリポジトリと通信するため、MoodleではPHP cURL拡張モジュールが必須です。';
 $string['customcheck'] = 'その他のチェック';
 $string['database'] = 'データベース';
 $string['databasecreationsettingshead'] = 'ほとんどのMoodleデータが保存されるデータベース設定を行ってください。このデータベースはインストーラーにより、下記の設定が指定された形で自動的に作成されます。';
@@ -232,7 +232,7 @@ $string['previous'] = '前へ';
 $string['qtyperqpwillberemoved'] = 'アップグレード中、RQP問題タイプは削除されます。あなたはこの問題タイプを使用していませんので、トラブルが発生することはありません。';
 $string['qtyperqpwillberemovedanyway'] = 'アップグレード中、RQP問題タイプは削除されます。あなたのデータベース内にRQP問題タイプが登録されています。アップグレードを続ける前に、http://moodle.org/mod/data/view.php?d=13&amp;rid=797 から対応するプログラムをインストールしない場合、これらの問題は動作しなくなります。';
 $string['remotedownloaderror'] = 'あなたのサーバへのコンポーネントのダウンロードに失敗しました。プロクシ設定を確認してください。PHP cURL拡張モジュールの使用を強くお勧めします。<br /><br /><a href=\"$a->url\">$a->url</a>ファイルを手動でダウンロードした後、あなたのサーバの「$a->dest」にコピーおよび解凍してください。';
-$string['remotedownloadnotallowed'] = 'あなたのサーバーにコンポーネントをダウンロードすることができません (allow_url_fopen が無効)。<br /><br /><a href=\"$a->url\">$a->url</a> ファイルを手動でダウンロードして、サーバの「 $a->dest 」にコピーした後、解凍してください。';
+$string['remotedownloadnotallowed'] = 'あなたのサーバにコンポーネントをダウンロードすることができません (allow_url_fopen が無効)。<br /><br /><a href=\"$a->url\">$a->url</a> ファイルを手動でダウンロードして、サーバの「 $a->dest 」にコピーした後、解凍してください。';
 $string['report'] = 'レポート';
 $string['restricted'] = '使用禁止';
 $string['safemode'] = 'セーフモード';

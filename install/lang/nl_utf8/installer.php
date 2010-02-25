@@ -38,7 +38,7 @@ $string['continue'] = 'Ga door';
 $string['ctyperecommended'] = 'Het installeren van de optionele ctype PHP extentie is aanbevolen om de performantie van de site te verhogen, vooral als op je site niet-latijnse talen gebruikt worden.';
 $string['ctyperequired'] = 'De ctype PHP-extentie is nu vereist in Moodle om de performantie te verhogen en om multi-talencompatibiliteit mogelijk te maken.';
 $string['curlrecommended'] = 'Het installeren van de optionele Curl bibliotheek wordt ten zeerste aangeraden om de netwerkmogelijkheden van Moodle in te schakelen';
-$string['curlrequired'] = 'De cURL PHP-extentie is nu vereist in Moodle om te kunnen communiceren met Moodle bewaarplaats';
+$string['curlrequired'] = 'De cURL PHP-extentie is nu vereist in Moodle om te kunnen communiceren met Moodle bewaarplaats'; // ORPHANED
 $string['customcheck'] = 'Andere controles';
 $string['database'] = 'Databank';
 $string['databasecreationsettingshead'] = 'Nu moet je de databankinstellingen configureren. In deze databank zullen de meeste gegevens van Moodle opgeslagen worden. De databank zal automatisch gemaakt worden door het installatiescript met volgende instellingen.';
@@ -139,7 +139,7 @@ $string['environmentrequirecustomcheck'] = 'Deze test moet OK zijn';
 $string['environmentrequireinstall'] = 'moet geïnstalleerd/ingeschakeld zijn';
 $string['environmentrequireversion'] = 'versie $a->needed is vereist en je gebruikt nu versie $a->current';
 $string['environmentsub'] = 'We controleren nu of de versies van verschillende componenten van je server voldoen aan de systeemvereisten van Moodle';
-$string['environmentxmlerror'] = 'Fout bij het lezen van de omgevingsdata ($&->error_code)';
+$string['environmentxmlerror'] = 'Fout bij het lezen van de omgevingsdata ($a->error_code)';
 $string['error'] = 'Fout';
 $string['fail'] = 'Mislukt';
 $string['fileuploads'] = 'Bestanden uploaden';
@@ -216,10 +216,13 @@ $string['password'] = 'Wachtwoord';
 $string['pgsqlextensionisnotpresentinphp'] = 'PHP is niet juist geïnstalleerd met de PGSQL-extentie en kan niet communiceren met PostgreSQL. Controleer je php.ini-bestand of hercompileer PHP.';
 $string['php50restricted'] = 'PHP 5.0.x heeft een heel aantal bekende problemen. Upgrade naar 5.1.x of downgrade naar 4.3.x of 4.4.x';
 $string['phpversion'] = 'PHP-versie';
-$string['phpversionerror'] = 'PHP-versie moet minstens 4.1.0 zijn'; // ORPHANED
+$string['phpversionerror'] = 'PHP-versie moet minstens 4.1.0 zijn';
 $string['phpversionhelp'] = '<p>Moodle heeft minstens PHP-versie 4.3.0 of 5.1.0 nodig (5.0.x heeft veel bekende problemen).</p> <p>De huidige versie op je server is $a</p>
 <p>Je moet PHP upgraden of verhuizen naar een host met een nieuwere versie van PHP!<br />(Als je 5.0.x draait, kun je ook downgraden naar versie 4.4.x)</p>';
 $string['postgres7'] = 'PostgreSQL (postgres 7)';
+$string['postgresqlwarning'] = '<strong>Opmerking:</strong> Als je connectieproblemen ondervindt, kun je proberen het host serverveld in te stellen als volgt:
+host=\'postgresql_host\' port=\'5432\' dbname=\'postgresql_database_name\' user=\'postgresql_user\' password=\'postgresql_user_password\'
+en de Database, User en Password velden leeg laten. Meer informatie vind je op <a href=\"http://docs.moodle.org/nl/Installing_Postgres_for_PHP\">Moodle Docs</a>';
 $string['previous'] = 'Vorige';
 $string['qtyperqpwillberemoved'] = 'Tijdens de upgrade zal het RQP vraagtype verwijderd worden. Je gebruikte deze vraag niet, dus je zult hier geen problemen mee krijgen.';
 $string['qtyperqpwillberemovedanyway'] = 'Tijdens de upgrade zal het RQP vraagtype verwijderd worden. Er zijn vragen van dit type in je database. Die zullen stoppen met werken, tenzij je de code herinstalleert van  http://moodle.org/mod/data/view.php?d=13&amp;rid=797 voor je verder gaat met de upgrade.';

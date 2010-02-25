@@ -23,6 +23,11 @@
 require_once($CFG->dirroot . '/grade/report/lib.php');
 require_once($CFG->libdir.'/tablelib.php');
 
+//showhiddenitems values
+define("GRADE_REPORT_USER_HIDE_HIDDEN", 0);
+define("GRADE_REPORT_USER_HIDE_UNTIL", 1);
+define("GRADE_REPORT_USER_SHOW_HIDDEN", 2);
+
 /**
  * Class providing an API for the user report building and displaying.
  * @uses grade_report
@@ -94,6 +99,7 @@ class grade_report_user extends grade_report {
         $this->showrank        = grade_get_setting($this->courseid, 'report_user_showrank', $CFG->grade_report_user_showrank);
         $this->showpercentage  = grade_get_setting($this->courseid, 'report_user_showpercentage', $CFG->grade_report_user_showpercentage);
         $this->showhiddenitems = grade_get_setting($this->courseid, 'report_user_showhiddenitems', $CFG->grade_report_user_showhiddenitems);
+        $this->showtotalsifcontainhidden = grade_get_setting($this->courseid, 'report_user_showtotalsifcontainhidden', $CFG->grade_report_user_showtotalsifcontainhidden);
 
         $this->showrange = true;
 
@@ -199,10 +205,10 @@ class grade_report_user extends grade_report {
         $excluded = '';
         $class = '';
 
-        // If this is a hidden grade category, hide it completely from the user. showhiddenitems: 0 = hide all, 1 = show only hidden until, 2 = show all
+        // If this is a hidden grade category, hide it completely from the user
         if ($type == 'category' && $grade_object->is_hidden() && !$this->canviewhidden && (
-                $this->showhiddenitems == 0 ||
-                ($this->showhiddenitems == 1 && !$grade_object->is_hiddenuntil()))) {
+                $this->showhiddenitems == GRADE_REPORT_USER_HIDE_HIDDEN ||
+                ($this->showhiddenitems == GRADE_REPORT_USER_HIDE_UNTIL && !$grade_object->is_hiddenuntil()))) {
             return false;
         }
 
@@ -226,10 +232,10 @@ class grade_report_user extends grade_report {
                 $hidden = ' hidden';
             }
 
-            // If this is a hidden grade item, hide it completely from the user. showhiddenitems: 0 = hide all, 1 = show only hidden until, 2 = show all
+            // If this is a hidden grade item, hide it completely from the user.
             if ($grade_grade->is_hidden() && !$this->canviewhidden && (
-                    $this->showhiddenitems == 0 ||
-                    ($this->showhiddenitems == 1 && !$grade_grade->is_hiddenuntil()))) {
+                    $this->showhiddenitems == GRADE_REPORT_USER_HIDE_HIDDEN ||
+                    ($this->showhiddenitems == GRADE_REPORT_USER_HIDE_UNTIL && !$grade_grade->is_hiddenuntil()))) {
                 // return false;
             } else {
 
@@ -269,6 +275,7 @@ class grade_report_user extends grade_report {
                     $data['grade']['content'] = '-';
                 } else {
                     $data['grade']['class'] = $class;
+                    $gradeval = $this->blank_hidden_total($this->courseid, $grade_grade->grade_item, $gradeval);
                     $data['grade']['content'] = grade_format_gradevalue($gradeval, $grade_grade->grade_item, true);
                 }
 
@@ -456,6 +463,21 @@ function grade_report_user_settings_definition(&$mform) {
 
     $mform->addElement('select', 'report_user_showhiddenitems', get_string('showhiddenitems', 'grades'), $options);
     $mform->setHelpButton('report_user_showhiddenitems', array('showhiddenitems', get_string('showhiddenitems', 'grades'), 'grade'));
+
+    //showtotalsifcontainhidden
+    $options = array(-1 => get_string('default', 'grades'),
+                      GRADE_REPORT_HIDE_TOTAL_IF_CONTAINS_HIDDEN => get_string('hide'),
+                      GRADE_REPORT_SHOW_TOTAL_IF_CONTAINS_HIDDEN => get_string('hidetotalshowexhiddenitems', 'grades'),
+                      GRADE_REPORT_SHOW_REAL_TOTAL_IF_CONTAINS_HIDDEN => get_string('hidetotalshowinchiddenitems', 'grades') );
+
+    if (empty($CFG->grade_report_user_showtotalsifcontainhidden)) {
+        $options[-1] = get_string('defaultprev', 'grades', $options[0]);
+    } else {
+        $options[-1] = get_string('defaultprev', 'grades', $options[$CFG->grade_report_user_showtotalsifcontainhidden]);
+    }
+
+    $mform->addElement('select', 'report_user_showtotalsifcontainhidden', get_string('hidetotalifhiddenitems', 'grades'), $options);
+    $mform->setHelpButton('report_user_showtotalsifcontainhidden', array('hidetotalifhiddenitems', get_string('hidetotalifhiddenitems', 'grades'), 'grade'));
 }
 
 function grade_report_user_profilereport($course, $user) {

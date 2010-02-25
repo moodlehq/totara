@@ -290,7 +290,7 @@ $string['coursehelphiddensections'] = 'How the hidden sections in the course are
 $string['coursehelpnewsitemsnumber'] = 'Number of recent items appearing on the course home page, in a news box down the right-hand side <br/>(0 means the news box won\'t appear)
 .';
 $string['coursehelpshowgrades'] = 'Enable the display of the gradebook. It does not prevent grades from being displayed within the individual activities.';
-$string['coursehelpmaximumupload'] = 'Define the largest size of file that can be uploaded by students in this course, limited by the site wide setting.';
+$string['coursehelpmaximumupload'] = 'Define the largest size of file that can be uploaded in this course, limited by the site-wide setting.';
 $string['coursehelpmetacourse'] = 'Set the course a metacourse. A meta course takes enrolments (and other role assignments) from a \"child\" course or courses.';
 $string['coursehidden'] = 'This course is currently unavailable to students';
 $string['courseimportnotaught'] = 'You don\'t seem to be an editing teacher in any other courses, there are no courses for you to import from.';
@@ -1310,7 +1310,8 @@ $string['resortcoursesbyname'] = 'Re-sort courses by name';
 $string['resource'] = 'Resource';
 $string['resources'] = 'Resources';
 $string['restore'] = 'Restore';
-$string['restorecancelled'] = 'Restore canceled';
+$string['restorecancelled'] = 'Restore cancelled';
+$string['restorecannotcreateuser'] = 'Restore needs to create user \'$a\' from backup file and you do not have permission to do so';
 $string['restorecoursenow'] = 'Restore this course now!';
 $string['restoredaccount'] = 'Restored account';
 $string['restoredaccountinfo'] = 'This account was imported from another server and the password has been lost. To set a new password by email, please click \"Continue\"';
@@ -1318,7 +1319,10 @@ $string['restorefinished'] = 'Restore completed successfully';
 $string['restoreto'] = 'Restore to';
 $string['restoretositeadding'] = 'Warning: You are about to restore to the site front page, adding data to it!';
 $string['restoretositedeleting'] = 'Warning: You are about to restore to the site front page, deleting data from it first!';
+$string['restoreuserconflict'] = 'Trying to restore user \'$a\' from backup file will cause conflict';
 $string['restoreuserinfofailed'] = 'The restore process has stopped because you don\'t have permission to restore user data.';
+$string['restoreusersprecheck'] = 'Checking user data';
+$string['restoreusersprecheckerror'] = 'Some problems were detected when checking user data';
 $string['restricted'] = 'Restricted';
 $string['restrictmodules'] = 'Restrict activity modules?';
 $string['returningtosite'] = 'Returning to this web site?';
@@ -1714,4 +1718,6 @@ $string['zippingbackup'] = 'Zipping backup';
 
 $string['authenticationplugins'] = 'Authentication Plugins';
 $string['chooseauthmethod'] = 'Choose authentication plugin';
+$string['nocourses'] = 'No courses';
+$string['requestedcourses'] = 'Requested courses';
 ?>

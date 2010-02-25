@@ -3196,7 +3196,7 @@ function xmldb_main_upgrade($oldversion=0) {
         }
 
         $message = get_string('upgrade197notice', 'admin');
-        if (empty($CFG->passwordmainsalt)) {
+        if (empty($CFG->passwordsaltmain)) {
             $docspath = $CFG->docroot.'/'.str_replace('_utf8', '', current_language()).'/report/security/report_security_check_passwordsaltmain';
             $message .= "\n".get_string('upgrade197salt', 'admin', $docspath);
         }
@@ -3210,7 +3210,7 @@ function xmldb_main_upgrade($oldversion=0) {
     if ($result && $oldversion < 2007101561.02) {
         $messagesubject = s($SITE->shortname).': '.get_string('upgrade197noticesubject', 'admin');
         $message  = '<p>'.s($SITE->fullname).' ('.s($CFG->wwwroot).'):</p>'.get_string('upgrade197notice', 'admin');
-        if (empty($CFG->passwordmainsalt)) {
+        if (empty($CFG->passwordsaltmain)) {
             $docspath = $CFG->docroot.'/'.str_replace('_utf8', '', current_language()).'/report/security/report_security_check_passwordsaltmain';
             $message .= "\n".get_string('upgrade197salt', 'admin', $docspath);
         }
@@ -3353,6 +3353,52 @@ function xmldb_main_upgrade($oldversion=0) {
         }
 
         upgrade_main_savepoint($result, 2007101574);
+    }
+
+    if ($result && $oldversion < 2007101574.01) {
+        // MDL-21011 bring down course sort orders away from maximum values
+        $sql = "SELECT id, category, sortorder from {$CFG->prefix}course
+                ORDER BY sortorder ASC;";
+        if ($courses = get_recordset_sql($sql)) {
+            $i=1000;
+            $old_category = 0;
+            while ($course = rs_fetch_next_record($courses)) {
+                if($course->category!=$old_category) {
+                    //increase i to put a gap between courses in different categories
+                    //don't think we need to but they had one before
+                    $i += 1000;
+                    $old_category = $course->category;
+                }
+                set_field('course', 'sortorder', $i++, 'id', $course->id);
+            }
+            rs_close($courses);
+        }
+        unset($courses);
+
+        upgrade_main_savepoint($result, 2007101574.01);
+    }
+
+    if ($result && $oldversion < 2007101574.02) {
+        upgrade_fix_incorrect_mnethostids();
+        upgrade_main_savepoint($result, 2007101574.02);
+    }
+
+    /// MDL-17863. Increase the portno column length on mnet_host to handle any port number
+    if ($result && $oldversion < 2007101574.03) {
+        $table = new XMLDBTable('mnet_host');
+        $field = new XMLDBField('portno');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '5', true, true, null, false, false, 0);
+        $result = change_field_precision($table, $field);
+        upgrade_main_savepoint($result, 2007101574.03);
+    }
+
+    // MDL-21407. Trim leading spaces from default tex latexpreamble causing problems under some confs
+    if ($result && $oldversion < 2007101574.04) {
+        if ($preamble = $CFG->filter_tex_latexpreamble) {
+            $preamble = preg_replace('/^ +/m', '', $preamble);
+            set_config('filter_tex_latexpreamble', $preamble);
+        }
+        upgrade_main_savepoint($result, 2007101574.04);
     }
 
     return $result;

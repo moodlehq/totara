@@ -216,6 +216,7 @@ $string['hostnotconfiguredforsso'] = 'This remote Moodle Hub is not configured f
 $string['authmnetdisabled'] = 'Moodle Networking authentication is disabled.';
 $string['unknownerror'] = 'Unknown error occurred during negotiation.';
 $string['nolocaluser'] = 'No local record exists for remote user.';
+$string['nolocaluser2'] = 'No local record exists for remote user, and it could not be created, as this host will not auto create users.  Please contact your administrator!';
 $string['databaseerror'] = 'Could not write details to the database.';
 $string['ssoacldescr'] = 'Use this page to grant/deny access to specific users from remote Moodle Network hosts. This is functional when you are offering SSO services to remote users. To control your <em>local</em> users\' ability to roam to other Moodle Network hosts, use the roles system to grant them the <em>mnetlogintoremote</em> capability.';
 $string['ssoaclneeds'] = 'For this functionality to work, you must have Moodle Networking On, plus the Moodle Network authentication plugin enabled with auto-add users enabled .';
@@ -241,6 +242,8 @@ $string['host'] = 'host';
 $string['loginlinkmnetuser'] = '<br />If you are a Moodle Network remote user and can <a href=\"$a\">confirm your email address here</a>, you can be redirected to your login page.<br />';
 $string['mnetidprovider'] = 'MNET ID Provider';
 $string['mnetidprovidermsg'] = 'You should be able to login at your $a provider.';
+$string['mnetidproviderdesc'] = 'You can use this facility to retrieve a link that you can log in at, if you can provide the correct email address to match the username you previously tried to log in with.';
+$string['mnetidprovidernotfound'] = 'Sorry, but no further information could be found.';
 $string['findlogin'] = 'Find Login';
 
 $string['error7020'] = 'This error normally occurs if the remote site has created a record for you with the wrong wwwroot, for example, http://yoursite.com instead of http://www.yoursite.com. You should contact the administrator of the remote site with your wwwroot (as specified in config.php) asking her to update her record for your host.';

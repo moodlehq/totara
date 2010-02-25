@@ -231,6 +231,17 @@ class auth_plugin_mnet extends auth_plugin_base {
     }
 
     /**
+     * after a successful login, land.php will call complete_user_login
+     * which will in turn regenerate the session id.
+     * this means that what is stored in mnet_session table needs updating.
+     *
+     */
+    function update_session_id() {
+        global $USER;
+        return set_field('mnet_session', 'session_id', session_id(), 'username', $USER->username, 'mnethostid', $USER->mnethostid, 'useragent', sha1($_SERVER['HTTP_USER_AGENT']));
+    }
+
+    /**
      * This function confirms the remote (ID provider) host's mnet session
      * by communicating the token and UA over the XMLRPC transport layer, and
      * returns the local user record on success.
@@ -291,18 +302,16 @@ class auth_plugin_mnet extends auth_plugin_base {
         // TODO: refactor into a separate function
         if (empty($localuser) || ! $localuser->id) {
             if (empty($this->config->auto_add_remote_users)) {
-                print_error('nolocaluser', 'mnet');
+                print_error('nolocaluser2', 'mnet');
             }
             $remoteuser->mnethostid = $remotehost->id;
             $remoteuser->firstaccess = time(); // First time user in this server, grab it here
 
-            if (! insert_record('user', addslashes_recursive($remoteuser))) {
+            if (!$remoteuser->id =  insert_record('user', addslashes_recursive($remoteuser))) {
                 print_error('databaseerror', 'mnet');
             }
             $firsttime = true;
-            if (! $localuser = get_record('user', 'username', addslashes($remoteuser->username), 'mnethostid', $remotehost->id)) {
-                print_error('nolocaluser', 'mnet');
-            }
+            $localuser = $remoteuser;
         }
 
         // check sso access control list for permission first

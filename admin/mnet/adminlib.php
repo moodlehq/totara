@@ -64,7 +64,7 @@ function mnet_get_functions($type, $parentname) {
         foreach($rpcrecords as $rpc) {
             if (!array_key_exists($rpc->function_name, $methodServiceArray)) {
                 $rpc->enabled = 0;
-                update_record('mnet_rpc', $rpc);
+                update_record('mnet_rpc', addslashes_recursive($rpc));
             }
         }
     }
@@ -85,7 +85,7 @@ function mnet_get_functions($type, $parentname) {
             } else {
                 array_unshift($profile, $details['returns']);
             }
-            $dataobject->profile       = serialize($profile);
+            $dataobject->profile       = addslashes(serialize($profile));
             $dataobject->help          = addslashes($details['description']);
         } else {
             $dataobject->profile       = serialize(array(array('type' => 'void', 'description' => 'No return value')));

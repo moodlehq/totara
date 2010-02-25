@@ -85,6 +85,7 @@ function data_restore_mods($mod,$restore) {
         $database->rsstitletemplate = backup_todb($info['MOD']['#']['RSSTITLETEMPLATE']['0']['#']);
         $database->csstemplate = backup_todb($info['MOD']['#']['CSSTEMPLATE']['0']['#']);
         $database->jstemplate = backup_todb($info['MOD']['#']['JSTEMPLATE']['0']['#']);
+        $database->asearchtemplate = backup_todb($info['MOD']['#']['ASEARCHTEMPLATE']['0']['#']);
         $database->approval = backup_todb($info['MOD']['#']['APPROVAL']['0']['#']);
         $database->scale = backup_todb($info['MOD']['#']['SCALE']['0']['#']);
         $database->assessed = backup_todb($info['MOD']['#']['ASSESSED']['0']['#']);
@@ -96,6 +97,14 @@ function data_restore_mods($mod,$restore) {
         $database->defaultsortdir = backup_todb($info['MOD']['#']['DEFAULTSORTDIR']['0']['#']);
         $database->editany = backup_todb($info['MOD']['#']['EDITANY']['0']['#']);
         $database->notification = backup_todb($info['MOD']['#']['NOTIFICATION']['0']['#']);
+
+        // We have to recode the scale field if it's <0 (positive is a grade, not a scale)
+        if ($database->scale < 0) {
+            $scale = backup_getid($restore->backup_unique_code, 'scale', abs($database->scale));
+            if ($scale) {
+                $database->scale = -($scale->new_id);
+            }
+        }
 
         $newid = insert_record ('data', $database);
 
@@ -222,7 +231,11 @@ function data_records_restore_mods ($old_data_id, $new_data_id, $info, $restore)
 
     $status = true;
 
-    $records = $info['MOD']['#']['RECORDS']['0']['#']['RECORD'];
+    $records = isset($info['MOD']['#']['RECORDS']['0']['#']['RECORD']) ? $info['MOD']['#']['RECORDS']['0']['#']['RECORD'] : array();
+
+    if (empty($records)) { // no records to restore
+        return true;
+    }
 
     for ($i = 0; $i < sizeof($records); $i++) {
 
@@ -382,7 +395,7 @@ function data_ratings_restore_mods ($oldid, $newid, $info, $rec_info) {
 
     $status = true;
 
-    $ratings= $rec_info['#']['RATINGS']['0']['#']['RATING'];
+    $ratings= isset($rec_info['#']['RATINGS']['0']['#']['RATING']) ? $rec_info['#']['RATINGS']['0']['#']['RATING'] : array();
 
     if (empty($ratings)) { // no ratings to restore
         return true;
@@ -408,7 +421,7 @@ function data_comments_restore_mods ($oldid, $newid, $info, $rec_info) {
 
     $status = true;
 
-    $comments= $rec_info['#']['COMMENTS']['0']['#']['COMMENT'];
+    $comments= isset($rec_info['#']['COMMENTS']['0']['#']['COMMENT']) ? $rec_info['#']['COMMENTS']['0']['#']['COMMENT'] : array();
 
     if (empty($comments)) { // no comments to restore
         return true;

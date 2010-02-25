@@ -1319,19 +1319,20 @@ function usergetdate($time, $timezone=99) {
     $time += dst_offset_on($time, $strtimezone);
     $time += intval((float)$timezone * HOURSECS);
 
-    $datestring = gmstrftime('%S_%M_%H_%d_%m_%Y_%w_%j_%A_%B', $time);
+    $datestring = gmstrftime('%B_%A_%j_%Y_%m_%w_%d_%H_%M_%S', $time);
 
+    //be careful to ensure the returned array matches that produced by getdate() above
     list(
-        $getdate['seconds'],
-        $getdate['minutes'],
-        $getdate['hours'],
-        $getdate['mday'],
-        $getdate['mon'],
-        $getdate['year'],
-        $getdate['wday'],
-        $getdate['yday'],
+        $getdate['month'],
         $getdate['weekday'],
-        $getdate['month']
+        $getdate['yday'],
+        $getdate['year'],
+        $getdate['mon'],
+        $getdate['wday'],
+        $getdate['mday'],
+        $getdate['hours'],
+        $getdate['minutes'],
+        $getdate['seconds']
     ) = explode('_', $datestring);
 
     return $getdate;
@@ -2523,7 +2524,7 @@ function sync_metacourse($course) {
     // not in the meta coure. That is, get a list of the assignments that need to be made.
     if (!$assignments = get_records_sql("
             SELECT
-                ra.id, ra.roleid, ra.userid
+                ra.id, ra.roleid, ra.userid, ra.hidden
             FROM
                 {$CFG->prefix}role_assignments ra,
                 {$CFG->prefix}context con,
@@ -2584,7 +2585,7 @@ function sync_metacourse($course) {
 
     // Make the assignments.
     foreach ($assignments as $assignment) {
-        $success = role_assign($assignment->roleid, $assignment->userid, 0, $context->id) && $success;
+        $success = role_assign($assignment->roleid, $assignment->userid, 0, $context->id, 0, 0, $assignment->hidden) && $success;
     }
 
     return $success;
@@ -3302,7 +3303,7 @@ function complete_user_login($user) {
     $USER = $user; // this is required because we need to access preferences here!
 
     if (!empty($CFG->regenloginsession)) {
-        // please note this setting may break some auth plugins
+        // please note this setting may break some auth plugins        
         session_regenerate_id();
     }
 
@@ -7855,15 +7856,15 @@ function unzip_show_status($list, $removepath, $removepath2) {
             echo "<tr>";
             $item['filename'] = str_replace(cleardoubleslashes($removepath).'/', "", $item['filename']);
             $item['filename'] = str_replace(cleardoubleslashes($removepath2).'/', "", $item['filename']);
-            print_cell("left", s(clean_param($item['filename'], PARAM_PATH)));
+            echo '<td align="left" style="white-space:nowrap ">'.s(clean_param($item['filename'], PARAM_PATH)).'</td>';
             if (! $item['folder']) {
-                print_cell("right", display_size($item['size']));
+                echo '<td align="right" style="white-space:nowrap ">'.display_size($item['size']).'</td>';
             } else {
                 echo "<td>&nbsp;</td>";
             }
             $filedate  = userdate($item['mtime'], get_string("strftimedatetime"));
-            print_cell("right", $filedate);
-            print_cell("right", $item['status']);
+            echo '<td align="right" style="white-space:nowrap ">'.$filedate.'</td>';
+            echo '<td align="right" style="white-space:nowrap ">'.$item['status'].'</td>';
             echo "</tr>";
         }
         echo "</table>";

@@ -16,6 +16,9 @@ class login_signup_form extends moodleform {
         $mform->setType('username', PARAM_NOTAGS);
         $mform->addRule('username', get_string('missingusername'), 'required', null, 'server');
 
+        if (!empty($CFG->passwordpolicy)){
+            $mform->addElement('static', 'passwordpolicyinfo', '', print_password_policy());
+        }
         $mform->addElement('passwordunmask', 'password', get_string('password'), 'maxlength="32" size="12"');
         $mform->setType('password', PARAM_RAW);
         $mform->addRule('password', get_string('missingpassword'), 'required', null, 'server');

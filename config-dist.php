@@ -28,6 +28,7 @@
 //                                                                       //
 ///////////////////////////////////////////////////////////////////////////
 unset($CFG);  // Ignore this line
+$CFG = new stdClass();
 
 //=========================================================================
 // 1. DATABASE SETUP
@@ -175,6 +176,22 @@ $CFG->admin = 'admin';
 // that all your backup files remain only privacy available and are never
 // shared out from your site/institution!
 //      $CFG->includeuserpasswordsinbackup = true;
+//
+// Completely disable user creation when restoring a course, bypassing any
+// permissions granted via roles and capabilities. Enabling this setting
+// results in the restore process stopping when a user attempts to restore a
+// course requiring users to be created.
+//     $CFG->disableusercreationonrestore = true;
+//
+// Modify the restore process in order to force the "user checks" to assume
+// that the backup originated from a different site, so detection of matching
+// users is performed with different (more "relaxed") rules. Note that this is
+// only useful if the backup file has been created using Moodle < 1.9.4 and the
+// site has been rebuilt from scratch using backup files (not the best way btw).
+// If you obtain user conflicts on restore, rather than enabling this setting
+// permanently, try restoring the backup on a different site, back it up again
+// and then restore on the target server.
+//    $CFG->forcedifferentsitecheckingusersonrestore = true;
 //
 // Prevent stats processing and hide the GUI
 //      $CFG->disablestatsprocessing = true;
