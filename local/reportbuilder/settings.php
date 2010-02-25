@@ -1,25 +1,22 @@
 <?php // $Id$
 require_once('../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
-require_once($CFG->dirroot.'/local/learningreports/learningreportslib.php');
-require_once('learning_reports_forms.php');
+require_once($CFG->dirroot.'/local/reportbuilder/lib.php');
+require_once($CFG->dirroot.'/local/reportbuilder/report_forms.php');
 
 global $USER;
-$id = required_param('id',PARAM_INT); // learning report id
+$id = required_param('id',PARAM_INT); // report builder id
 $d = optional_param('d', null, PARAM_TEXT); // delete
 $m = optional_param('m', null, PARAM_TEXT); // move
 $fid = optional_param('fid',null,PARAM_INT); //filter id
 $cid = optional_param('cid',null,PARAM_INT); //column id
 $confirm = optional_param('confirm', 0, PARAM_INT); // confirm delete
 
-admin_externalpage_setup('learningreports');
-$returnurl = $CFG->wwwroot."/local/learningreports/settings.php?id=$id";
+admin_externalpage_setup('reportbuilder');
+$returnurl = $CFG->wwwroot."/local/reportbuilder/settings.php?id=$id";
 
-$shortname = get_field('learning_report','shortname','id',$id);
-$report = new learningreport($shortname);
-//get_record('learning_report','id',$id);
-
-
+$shortname = get_field('report_builder','shortname','id',$id);
+$report = new reportbuilder($shortname);
 
 // delete fields or columns
 if ($d and (isset($cid) || isset($fid)) and $confirm ) {
@@ -83,11 +80,11 @@ if($m && isset($fid)) {
 
 
 // form definition
-$mform =& new learning_reports_edit_form(null, compact('id','report'));
+$mform =& new report_builder_edit_form(null, compact('id','report'));
 
 // form results check
 if ($mform->is_cancelled()) {
-    redirect($CFG->wwwroot.'/local/learningreports/');
+    redirect($CFG->wwwroot.'/local/reportbuilder/index.php');
 }
 if ($fromform = $mform->get_data()) {
 
@@ -105,7 +102,7 @@ if ($fromform = $mform->get_data()) {
     $todb->restriction = serialize($result);
     $todb->shortname = $fromform->shortname;
     $todb->fullname = $fromform->fullname;
-    if(update_record('learning_report',$todb)) {
+    if(update_record('report_builder',$todb)) {
         redirect($returnurl, get_string('reportupdated','local'));
     } else {
         redirect($returnurl, get_string('error:couldnotupdatereport','local'));
@@ -114,7 +111,7 @@ if ($fromform = $mform->get_data()) {
 
 admin_externalpage_print_header();
 
-print_heading(get_string('editlearningreport','local',$report->_fullname));
+print_heading(get_string('editreport','local',$report->_fullname));
 
 
 // display the form

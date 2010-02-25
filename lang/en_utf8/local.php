@@ -89,9 +89,9 @@ $string['local:viewplan'] = 'View a user\'s IDPs';
 $string['local:withdrawownplan'] = 'Withdraw own submitted IDPs';
 
 // Local Report capability strings
-$string['local:viewlocalreports'] = 'View learning reports for all staff in user\'s region';
-$string['local:viewstaffreports'] = 'View learning reports for a user\'s subordinates';
-$string['local:viewownreports'] = 'View a user\'s own learning reports';
+$string['local:viewlocalreports'] = 'View reports for all staff in user\'s region';
+$string['local:viewstaffreports'] = 'View reports for a user\'s subordinates';
+$string['local:viewownreports'] = 'View a user\'s own reports';
 
 // Course categories
 $string['assessments'] = 'Assessments';
@@ -109,7 +109,21 @@ $string['notapplicable'] = 'Not applicable';
 $string['notavailable'] = 'Not available';
 $string['recordoflearning'] = 'Record of Learning';
 
-// Learning record report
+// These are used by the capabilities for editing classifications
+$string['local:editclassifications'] = 'Edit Course Classifications';
+$string['local:editcourseclassification'] = 'Edit Classification of a Course';
+$string['local:searchclassifications'] = 'Search Classifications';
+
+// Login string
+$string['howdoiaccessilearn'] = 'How do I access iLearn?';
+
+$string['reportstartdate'] = 'Start date';
+$string['reportenddate'] = 'End date';
+$string['reportcompetency'] = 'Competency';
+$string['reportorganisation'] = 'Office';
+$string['reportposition'] = 'Position';
+
+// Report Builder
 $string['report:completiondate'] = 'Completion date';
 $string['report:coursetitle'] = 'Course title';
 $string['report:enddate'] = 'End date';
@@ -118,8 +132,7 @@ $string['report:learningrecords'] = 'Learning records';
 $string['report:nodata'] = 'There is no available data for that combination of criteria, start date and end date';
 $string['report:organisation'] = 'Office';
 $string['report:startdate'] = 'Start date';
-
-$string['learningreports'] = 'Learning Reports';
+$string['reportbuilder'] = 'Report Builder';
 $string['course_completion'] = 'Course Completion';
 $string['competency_evidence'] = 'Competency Evidence';
 $string['reportsettings'] = 'Report Settings';
@@ -136,9 +149,9 @@ $string['reportshortname'] = 'Short Name';
 $string['restriction'] = 'Restriction';
 $string['error:couldnotcreatenewreport'] = 'Could not create new report';
 $string['error:mustselectsource'] = 'You must pick a source for the report';
-$string['error:norestrictions'] = 'No restrictions found. To use restrictions ask your developer to add the necessary files to /local/learningreports/restrictions/.';
-$string['error:nosources'] ='No sources found. You must have at least one source before you can add reports. Ask your developer to hadd the necessary files to /local/learningreports/sources/.';
-$string['editlearningreport'] = '$a Settings';
+$string['error:norestrictions'] = 'No restrictions found. To use restrictions ask your developer to add the necessary files to /local/reportbuilder/restrictions/.';
+$string['error:nosources'] ='No sources found. You must have at least one source before you can add reports. Ask your developer to hadd the necessary files to /local/reportbuilder/sources/.';
+$string['editreport'] = 'Edit Report $a';
 $string['filterfields'] = 'Filter Fields';
 $string['reportcolumns'] = 'Report Columns';
 $string['onlydisplayrecordsfor'] = 'Only display records for';
@@ -160,7 +173,7 @@ $string['addanotherfilter'] = 'Add another filter...';
 $string['column'] = 'Column';
 $string['heading'] = 'Heading';
 $string['addanothercolumn'] = 'Add another column...';
-$string['norestrictionsfound'] = 'No restrictions found. Ask your developer to add restrictions to /local/learningreports/sources/$a/restrictionoptions.php';
+$string['norestrictionsfound'] = 'No restrictions found. Ask your developer to add restrictions to /local/reportbuilder/sources/$a/restrictionoptions.php';
 $string['restrictionswarning'] = '<strong>Warning:</strong> If none of these boxes are checked, all users will be able to view all available records from this source.';
 $string['shortnametaken'] = 'That shortname is already in use';
 $string['norepeatcols'] = 'You cannot include the same column more than once';

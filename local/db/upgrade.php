@@ -1033,6 +1033,12 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && add_field($table, $field);
     }
 
+    if ($result && $oldversion < 2010020800) {
+        // rename learning_report to report_builder
+        $table = new XMLDBTable('learning_report');
+        $result = $result && rename_table($table, 'report_builder');
+    }
+
     /// Insert default records
     $defaultdir = $CFG->dirroot.'/local/db/default';
     if (is_dir($defaultdir)) {

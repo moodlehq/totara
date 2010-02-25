@@ -1,9 +1,9 @@
 <?php //$Id$
 //TODO change to relative path
-require_once($CFG->dirroot.'/local/learningreports/filters/text.php');
-require_once($CFG->dirroot.'/local/learningreports/filters/select.php');
-require_once($CFG->dirroot.'/local/learningreports/filters/date.php');
-require_once($CFG->dirroot.'/local/learningreports/filters/filter_forms.php');
+require_once($CFG->dirroot.'/local/reportbuilder/filters/text.php');
+require_once($CFG->dirroot.'/local/reportbuilder/filters/select.php');
+require_once($CFG->dirroot.'/local/reportbuilder/filters/date.php');
+require_once($CFG->dirroot.'/local/reportbuilder/filters/filter_forms.php');
 
 /**
  * Filtering wrapper class.
@@ -117,7 +117,7 @@ class filtering {
         $fieldname = "{$type}-{$value}";
         $fieldquery = $columnoptions[$type][$value]['field'];
 
-        $filtersfile = "{$CFG->dirroot}/local/learningreports/sources/$source/filterfuncs.php";
+        $filtersfile = "{$CFG->dirroot}/local/reportbuilder/sources/$source/filterfuncs.php";
         if(file_exists($filtersfile)) {
             include_once($filtersfile);
         }

@@ -7,13 +7,13 @@ $columnoptions = array(
             'name'  => 'Proficiency',
             'field' => "base.proficiency",
             'joins' => array(),
-            'displayfunc' => 'learningreport_proficiency',
+            'displayfunc' => 'reportbuilder_proficiency',
         ),
         'completeddate' => array(
             'name' => 'Completion Date',
             'field' => "base.timemodified",
             'joins' => array(),
-            'displayfunc' => 'learningreport_nice_date',
+            'displayfunc' => 'reportbuilder_nice_date',
         ),
         'organisationid' => array(
             'name' => 'Completion Organisation ID',
@@ -57,7 +57,7 @@ $columnoptions = array(
             'name' => 'Competency Name (linked to competency page)',
             'field' => 'competency.id AS competency_id, competency.fullname',
             'joins' => array('competency'),
-            'displayfunc' => 'learningreport_link_competency',
+            'displayfunc' => 'reportbuilder_link_competency',
         ),
         'id' => array(
             'name' => 'Competency ID',
@@ -96,7 +96,7 @@ $columnoptions = array(
             'name' => 'User Fullname (linked to profile)',
             'field' => 'u.id AS user_id, '.sql_fullname('u.firstname','u.lastname'),
             'joins' => array('user'),
-            'displayfunc' => 'learningreport_link_user',
+            'displayfunc' => 'reportbuilder_link_user',
         ),
         'id' => array(
             'name' => 'User ID',

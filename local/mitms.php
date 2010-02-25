@@ -217,8 +217,8 @@ function mitms_print_my_team_nav($return=false) {
 
 function mitms_print_report_manager($return=false) {
     global $CFG;
-    require_once($CFG->dirroot.'/local/learningreports/learningreportslib.php');
-    $reports = get_records('learning_report');
+    require_once($CFG->dirroot.'/local/reportbuilder/lib.php');
+    $reports = get_records('report_builder');
     $context = get_context_instance(CONTEXT_SYSTEM);
 
     $links = array();
@@ -240,9 +240,9 @@ function mitms_print_report_manager($return=false) {
             }
         }
         if($hascap) {
-            $links[] = '<p><a href="'.$CFG->wwwroot.'/local/learningreports/report.php?id='.$report->id.'" title="'.$report->fullname.'">
+            $links[] = '<p><a href="'.$CFG->wwwroot.'/local/reportbuilder/report.php?id='.$report->id.'" title="'.$report->fullname.'">
               <img src="'.$CFG->wwwroot.'/pix/i/reports.png" width="32" height="32" /></a>
-              <a href="'.$CFG->wwwroot.'/local/learningreports/report.php?id='.$report->id.'">'.$report->fullname.'</a></p>';
+              <a href="'.$CFG->wwwroot.'/local/reportbuilder/report.php?id='.$report->id.'">'.$report->fullname.'</a></p>';
         }
     }
 

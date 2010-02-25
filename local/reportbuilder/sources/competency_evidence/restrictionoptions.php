@@ -2,7 +2,7 @@
 
 $restrictionoptions = array(
     array(
-        'funcname' => 'own_records',  // function called to apply restriction: see learningreport_restriction_* in learningreports/restrictionfuncs.php
+        'funcname' => 'own_records',  // function called to apply restriction: see reportbuilder_restriction_* in reportbuilder/restrictionfuncs.php
         'title' => 'Self',  // for text describing option in admin settings
         'field' => 'base.userid',      // field to apply limit to
         'joins' => array(), // joins required for above field

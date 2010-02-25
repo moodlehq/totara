@@ -21,7 +21,7 @@ $columnoptions = array(
             'field' => "base.timecompleted",
             'union' => 'timecreated',
             'joins' => array(),
-            'displayfunc' => 'learningreport_nice_date',
+            'displayfunc' => 'reportbuilder_nice_date',
         ),
         'organisationid' => array(
             'name' => 'Completion Organisation ID',
@@ -66,7 +66,7 @@ $columnoptions = array(
             'name' => 'Name (linked to course/competency page)',
             'field' => 'c.id AS course_id, c.fullname',
             'joins' => array('course'),
-            'displayfunc' => 'learningreport_link_course_or_comp',
+            'displayfunc' => 'reportbuilder_link_course_or_comp',
         ),
         'id' => array(
             'name' => 'ID',
@@ -77,7 +77,7 @@ $columnoptions = array(
             'name' => 'Start Date',
             'field' => "c.startdate",
             'joins' => array('course'),
-            'displayfunc' => 'learningreport_nice_date',
+            'displayfunc' => 'reportbuilder_nice_date',
         ),
     ),
     'course_category' => array(
@@ -123,7 +123,7 @@ $columnoptions = array(
             'name' => 'User Fullname (linked to profile)',
             'field' => 'u.id AS user_id, '.sql_fullname('u.firstname','u.lastname'),
             'joins' => array('user'),
-            'displayfunc' => 'learningreport_link_user',
+            'displayfunc' => 'reportbuilder_link_user',
         ),
         'id' => array(
             'name' => 'User ID',

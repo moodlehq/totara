@@ -1,6 +1,6 @@
 <?php //$Id$
 
-require_once($CFG->dirroot.'/admin/learningrecords/filters/lib.php');
+require_once($CFG->dirroot.'/local/reportbuilder/filters/lib.php');
 
 /**
  * Filter based on values of custom profile fields.

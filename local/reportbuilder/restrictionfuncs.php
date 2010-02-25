@@ -9,13 +9,13 @@
 // these functions are assigned by the 'name' defined in sources/*/restrictions.php
 
 // match current user
-function learningreport_restriction_own_records() {
+function reportbuilder_restriction_own_records() {
     global $USER;
     return $USER->id;
 }
 
 // match users who have current user as their manager
-function learningreport_restriction_staff_records() {
+function reportbuilder_restriction_staff_records() {
     global $USER;
     $userid = $USER->id;
     // work out ID of managerid custom field
@@ -37,7 +37,7 @@ function learningreport_restriction_staff_records() {
 
 // match users who are in an organisation at or below the current
 // user's organisation
-function learningreport_restriction_local_records() {
+function reportbuilder_restriction_local_records() {
     global $CFG,$USER;
     $userid = $USER->id;
     // work out ID of organisationid custom field
@@ -68,7 +68,7 @@ function learningreport_restriction_local_records() {
 }
 
 // match records which were completed at or below the current user's organisation
-function learningreport_restriction_local_completed_records() {
+function reportbuilder_restriction_local_completed_records() {
     global $CFG,$USER;
     $userid = $USER->id;
     // work out ID of organisationid custom field

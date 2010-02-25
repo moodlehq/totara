@@ -2,14 +2,14 @@
 
 require_once "$CFG->dirroot/lib/formslib.php";
 
-class learning_reports_new_form extends moodleform {
+class report_builder_new_form extends moodleform {
 
     function definition() {
 
         $mform =& $this->_form;
 
         $mform->addElement('header', 'general', get_string('newreport', 'local'));
-        $sources = learningreports_get_options_from_dir('sources');
+        $sources = reportbuilder_get_options_from_dir('sources');
         if(count($sources)>0) {
 
             $mform->addElement('text', 'fullname', get_string('reportname', 'local'), 'maxlength="255"');
@@ -39,7 +39,7 @@ class learning_reports_new_form extends moodleform {
 }
 
 
-class learning_reports_edit_form extends moodleform {
+class report_builder_edit_form extends moodleform {
     function definition() {
         global $CFG;
         $mform =& $this->_form;
@@ -58,7 +58,7 @@ class learning_reports_edit_form extends moodleform {
 
         $mform->addElement('header', 'general', get_string('filterfields', 'local'));
 
-        $mform->addElement('html', '<div class="learningreportsform"><table><tr><th>'.get_string('filter','local').
+        $mform->addElement('html', '<div class="reportbuilderform"><table><tr><th>'.get_string('filter','local').
             '</th><th>'.get_string('advanced','local').'</th><th>'.get_string('options','local').'</th><tr>');
 
         $filtersselect = $report->get_filters_select();
@@ -87,14 +87,14 @@ class learning_reports_edit_form extends moodleform {
                     $mform->addElement('checkbox',"advanced{$fid}",'');
                     $mform->setDefault("advanced{$fid}",$advanced);
                     $mform->addElement('html','</td><td>');
-                    $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/learningreports/settings.php?d=1&amp;id='.$id.'&amp;fid='.$fid.'" title="'.$strdelete.'"><img src="'.$CFG->pixpath.'/t/delete.gif" class="iconsmall" alt="'.$strdelete.'" /></a>');
+                    $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/reportbuilder/settings.php?d=1&amp;id='.$id.'&amp;fid='.$fid.'" title="'.$strdelete.'"><img src="'.$CFG->pixpath.'/t/delete.gif" class="iconsmall" alt="'.$strdelete.'" /></a>');
                     if($i != 1) {
-                        $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/learningreports/settings.php?m=up&amp;id='.$id.'&amp;fid='.$fid.'" title="'.$strmoveup.'"><img src="'.$CFG->pixpath.'/t/up.gif" class="iconsmall" alt="'.$strmoveup.'" /></a>');
+                        $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/reportbuilder/settings.php?m=up&amp;id='.$id.'&amp;fid='.$fid.'" title="'.$strmoveup.'"><img src="'.$CFG->pixpath.'/t/up.gif" class="iconsmall" alt="'.$strmoveup.'" /></a>');
                     } else {
                         $mform->addElement('html', $spacer);
                     }
                     if($i != $filtercount) {
-                        $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/learningreports/settings.php?m=down&amp;id='.$id.'&amp;fid='.$fid.'" title="'.$strmovedown.'"><img src="'.$CFG->pixpath.'/t/down.gif" class="iconsmall" alt="'.$strmovedown.'" /></a>');
+                        $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/reportbuilder/settings.php?m=down&amp;id='.$id.'&amp;fid='.$fid.'" title="'.$strmovedown.'"><img src="'.$CFG->pixpath.'/t/down.gif" class="iconsmall" alt="'.$strmovedown.'" /></a>');
                     } else {
                         $mform->addElement('html', $spacer);
                     }
@@ -117,7 +117,7 @@ class learning_reports_edit_form extends moodleform {
 
         $mform->addElement('header', 'general', get_string('reportcolumns', 'local'));
 
-        $mform->addElement('html', '<div class="learningreportsform"><table><tr><th>'.get_string('column','local').
+        $mform->addElement('html', '<div class="reportbuilderform"><table><tr><th>'.get_string('column','local').
             '</th><th>'.get_string('heading','local').'</th><th>'.get_string('options','local').'</th><tr>');
 
         $columnsselect = $report->get_columns_select();
@@ -143,17 +143,17 @@ class learning_reports_edit_form extends moodleform {
                     $mform->setDefault("heading{$cid}",$heading);
                     $mform->addElement('html','</td><td>');
                     // delete link
-                    $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/learningreports/settings.php?d=1&amp;id='.$id.'&amp;cid='.$cid.'" title="'.$strdelete.'"><img src="'.$CFG->pixpath.'/t/delete.gif" class="iconsmall" alt="'.$strdelete.'" /></a>');
+                    $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/reportbuilder/settings.php?d=1&amp;id='.$id.'&amp;cid='.$cid.'" title="'.$strdelete.'"><img src="'.$CFG->pixpath.'/t/delete.gif" class="iconsmall" alt="'.$strdelete.'" /></a>');
                     // move up link
                     if($i != 1) {
-                        $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/learningreports/settings.php?m=up&amp;id='.$id.'&amp;cid='.$cid.'" title="'.$strmoveup.'"><img src="'.$CFG->pixpath.'/t/up.gif" class="iconsmall" alt="'.$strmoveup.'" /></a>');
+                        $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/reportbuilder/settings.php?m=up&amp;id='.$id.'&amp;cid='.$cid.'" title="'.$strmoveup.'"><img src="'.$CFG->pixpath.'/t/up.gif" class="iconsmall" alt="'.$strmoveup.'" /></a>');
                     } else {
                         $mform->addElement('html', $spacer);
                     }
 
                     // move down link
                     if($i != $filtercount) {
-                        $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/learningreports/settings.php?m=down&amp;id='.$id.'&amp;cid='.$cid.'" title="'.$strmovedown.'"><img src="'.$CFG->pixpath.'/t/down.gif" class="iconsmall" alt="'.$strmovedown.'" /></a>');
+                        $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/reportbuilder/settings.php?m=down&amp;id='.$id.'&amp;cid='.$cid.'" title="'.$strmovedown.'"><img src="'.$CFG->pixpath.'/t/down.gif" class="iconsmall" alt="'.$strmovedown.'" /></a>');
                     } else {
                         $mform->addElement('html', $spacer);
                     }
@@ -215,7 +215,7 @@ class learning_reports_edit_form extends moodleform {
 function validate_shortname($data) {
     $errors = array();
 
-    if($foundreports = get_records('learning_report','shortname',$data['shortname'])) {
+    if($foundreports = get_records('report_builder','shortname',$data['shortname'])) {
         if(!empty($data['id'])) {
             unset($foundreports[$data['id']]);
         }

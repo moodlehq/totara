@@ -1,39 +1,39 @@
 <?php // $Id$
     require_once('../../config.php');
     require_once($CFG->libdir.'/adminlib.php');
-    require_once($CFG->dirroot.'/local/learningreports/learningreportslib.php');
-    require_once('learning_reports_forms.php');
+    require_once($CFG->dirroot.'/local/reportbuilder/lib.php');
+    require_once('report_forms.php');
 
     $id = optional_param('id',null,PARAM_INT); // id for delete report
     $d = optional_param('d',false, PARAM_BOOL); // delete record?
     $confirm = optional_param('confirm', false, PARAM_BOOL); // confirm delete
 
-    admin_externalpage_setup('learningreports');
+    admin_externalpage_setup('reportbuilder');
 
     global $USER;
 
-    $returnurl = $CFG->wwwroot.'/local/learningreports/index.php';
+    $returnurl = $CFG->wwwroot.'/local/reportbuilder/index.php';
 
     // delete an existing report
     if($d && $confirm) {
         if(!confirm_sesskey()) {
             print_error('confirmsesskeybad','error');
         }
-        if(delete_records('learning_report','id',$id)) {
+        if(delete_records('report_builder','id',$id)) {
             redirect($returnurl, get_string('reportdeleted', 'local'));
         } else {
-            redirect($returnurl, get_string'reportnotdeleted', 'local'));
+            redirect($returnurl, get_string('reportnotdeleted', 'local'));
         }
     } else if($d) {
         admin_externalpage_print_header();
-        print_heading(get_string('learningreports','local'));
+        print_heading(get_string('reportbuilder','local'));
         notice_yesno(get_string('reportconfirmdelete','local'),"index.php?id={$id}&amp;d=1&amp;confirm=1&amp;sesskey={$USER->sesskey}", $returnurl);
         print_footer();
         die;
     }
 
     // form definition
-    $mform =& new learning_reports_new_form();
+    $mform =& new report_builder_new_form();
 
     // form results check
     if ($mform->is_cancelled()) {
@@ -53,8 +53,8 @@
         $todb->columns = serialize(get_source_data($fromform->source,'defaultcolumns'));
         $todb->filters = serialize(get_source_data($fromform->source,'defaultqueries'));
         $todb->restriction = serialize(get_default_restrictions($fromform->source));
-        if($newid = insert_record('learning_report',$todb)) {
-            redirect($CFG->wwwroot.'/local/learningreports/settings.php?id='.$newid);
+        if($newid = insert_record('report_builder',$todb)) {
+            redirect($CFG->wwwroot.'/local/reportbuilder/settings.php?id='.$newid);
         } else {
             redirect($returnurl, get_string('error:couldnotcreatenewreport','local'));
         }
@@ -62,15 +62,15 @@
 
     admin_externalpage_print_header();
 
-    print_heading(get_string('learningreports','local'));
+    print_heading(get_string('reportbuilder','local'));
 
-    $reports = get_records('learning_report');
+    $reports = get_records('report_builder');
     if($reports) {
     foreach($reports as $report) {
         $row = array();
-        $settings = '<a href="'.$CFG->wwwroot.'/local/learningreports/settings.php?id='.$report->id.'">' .
+        $settings = '<a href="'.$CFG->wwwroot.'/local/reportbuilder/settings.php?id='.$report->id.'">' .
             get_string('settings').'</a>';
-        $delete = '<a href="'.$CFG->wwwroot.'/local/learningreports/index.php?d=1&amp;id='.$report->id.'">' .
+        $delete = '<a href="'.$CFG->wwwroot.'/local/reportbuilder/index.php?d=1&amp;id='.$report->id.'">' .
             get_string('delete').'</a>';
         $row[] = $report->fullname;
         $row[] = $report->shortname;

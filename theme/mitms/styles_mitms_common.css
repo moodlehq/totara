@@ -11,7 +11,7 @@ select.limited-width {
 }
 
 /* override float left on pulldown menus inside table */
-div.learningreportsform div.fitem div.felement {
+div.reportbuilderform div.fitem div.felement {
     float: none;
 }
 

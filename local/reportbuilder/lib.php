@@ -1,10 +1,10 @@
 <?php
 
-require_once("{$CFG->dirroot}/local/learningreports/filters/lib.php");
-require_once($CFG->dirroot.'/local/learningreports/download_form.php');
+require_once("{$CFG->dirroot}/local/reportbuilder/filters/lib.php");
+require_once($CFG->dirroot.'/local/reportbuilder/download_form.php');
 require_once($CFG->libdir.'/tablelib.php');
 
-class learningreport {
+class reportbuilder {
     var $_source;
     var $_shortname;
     var $_fullname;
@@ -21,13 +21,13 @@ class learningreport {
     var $_base;
     var $_filtering;
 
-    function learningreport($shortname=null, $extraparams=null) {
+    function reportbuilder($shortname=null, $extraparams=null) {
         global $CFG;
         if($shortname == null) {
             error('You must provide a report shortname');
         }
 
-        if ($report = get_record('learning_report', 'shortname', $shortname)) {
+        if ($report = get_record('report_builder', 'shortname', $shortname)) {
             $this->_source = $report->source;
             $this->_shortname = $shortname;
             $this->_fullname = $report->fullname;
@@ -58,7 +58,7 @@ class learningreport {
     function get_source_data($datatype) {
         global $CFG;
         $source = $this->_source;
-        $file = "{$CFG->dirroot}/local/learningreports/sources/$source/$datatype.php";
+        $file = "{$CFG->dirroot}/local/reportbuilder/sources/$source/$datatype.php";
         if(file_exists($file)) {
             include($file);
         }
@@ -122,7 +122,7 @@ class learningreport {
         global $CFG;
         $context = get_context_instance(CONTEXT_SYSTEM);
         // import restriction funcs
-        include_once($CFG->dirroot.'/local/learningreports/restrictionfuncs.php');
+        include_once($CFG->dirroot.'/local/reportbuilder/restrictionfuncs.php');
         $restrictions = $this->_restriction;
         $queries = array();
         // go through restrictions
@@ -140,7 +140,7 @@ class learningreport {
                             return "( TRUE )";
                         }
 
-                    $func = "learningreport_restriction_{$funcname}";
+                    $func = "reportbuilder_restriction_{$funcname}";
                     if(!function_exists($func)) {
                         error("Restriction function $func does not exist");
                     }
@@ -498,7 +498,7 @@ class learningreport {
         $columnoptions = $this->_columnoptions;
 
         // include display functions
-        $displayfuncfile = "{$CFG->dirroot}/local/learningreports/displayfuncs.php";
+        $displayfuncfile = "{$CFG->dirroot}/local/reportbuilder/displayfuncs.php";
         if(file_exists($displayfuncfile)) {
             include_once($displayfuncfile);
         }
@@ -575,15 +575,15 @@ class learningreport {
     function export_button() {
         global $CFG;
         $reportid = $this->_id;
-        $download = new download_form($CFG->wwwroot.'/local/learningreports/download.php', compact('reportid'));
+        $download = new download_form($CFG->wwwroot.'/local/reportbuilder/download.php', compact('reportid'));
         $download->display();
     }
 
     function download_ods($fields, $query, $count) {
         global $CFG;
         require_once("$CFG->libdir/odslib.class.php");
-
-        $filename = clean_filename('learningrecords.ods');
+        $shortname = $this->_shortname;
+        $filename = clean_filename($shortname.'_report.ods');
 
         header("Content-Type: application/download\n");
         header("Content-Disposition: attachment; filename=$filename");
@@ -633,7 +633,8 @@ class learningreport {
 
         require_once("$CFG->libdir/excellib.class.php");
 
-        $filename = clean_filename('learningreports.xls');
+        $shortname = $this->_shortname;
+        $filename = clean_filename($shortname.'_report.xls');
 
         header("Content-Type: application/download\n");
         header("Content-Disposition: attachment; filename=$filename");
@@ -679,8 +680,8 @@ class learningreport {
 
     function download_csv($fields, $query, $count) {
         global $CFG;
-
-        $filename = clean_filename('learningreports.csv');
+        $shortname = $this->_shortname;
+        $filename = clean_filename($shortname.'_report.csv');
 
         header("Content-Type: application/download\n");
         header("Content-Disposition: attachment; filename=$filename");
@@ -737,7 +738,7 @@ class learningreport {
         $todb = new object();
         $todb->id = $id;
         $todb->columns = serialize($newcolumns);
-        if(update_record('learning_report', $todb)) {
+        if(update_record('report_builder', $todb)) {
             $this->_columns = $newcolumns;
             return true;
         } else {
@@ -760,7 +761,7 @@ class learningreport {
         $todb = new object();
         $todb->id = $id;
         $todb->filters = serialize($newfilters);
-        if(update_record('learning_report', $todb)) {
+        if(update_record('report_builder', $todb)) {
             $this->_filters = $newfilters;
             return true;
         } else {
@@ -792,7 +793,7 @@ class learningreport {
         $todb = new object();
         $todb->id = $id;
         $todb->columns = serialize($this->_columns);
-        if(update_record('learning_report',$todb)) {
+        if(update_record('report_builder',$todb)) {
             return true;
         } else {
             return false;
@@ -824,7 +825,7 @@ class learningreport {
         $todb = new object();
         $todb->id = $id;
         $todb->filters = serialize($this->_filters);
-        if(update_record('learning_report',$todb)) {
+        if(update_record('report_builder',$todb)) {
             return true;
         } else {
             return false;
@@ -833,17 +834,17 @@ class learningreport {
 
 
 
-} // End of learningreport class
+} // End of reportbuilder class
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
 // returns an associative array to be used as an options list
-// of the directories within a learningreports subdirectory
-function learningreports_get_options_from_dir($source) {
+// of the directories within a reportbuilder subdirectory
+function reportbuilder_get_options_from_dir($source) {
     global $CFG;
 
     $ret = array();
-    $dir = "{$CFG->dirroot}/local/learningreports/$source/";
+    $dir = "{$CFG->dirroot}/local/reportbuilder/$source/";
     if (is_dir($dir)) {
         if ($dh = opendir($dir)) {
             while (($file = readdir($dh)) !== false) {
@@ -867,7 +868,7 @@ function learningreports_get_options_from_dir($source) {
 
 function get_source_data($source, $datatype) {
     global $CFG;
-    $file = "{$CFG->dirroot}/local/learningreports/sources/$source/$datatype.php";
+    $file = "{$CFG->dirroot}/local/reportbuilder/sources/$source/$datatype.php";
     if(file_exists($file)) {
         include($file);
     }

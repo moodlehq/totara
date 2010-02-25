@@ -1,16 +1,16 @@
 <?php
 
 require_once('../../config.php');
-require_once('learningreportslib.php');
-require_once($CFG->dirroot.'/local/learningreports/download_form.php');
+require_once($CFG->dirroot.'/local/reportbuilder/lib.php');
+require_once($CFG->dirroot.'/local/reportbuilder/download_form.php');
 
 $format    = optional_param('format', '', PARAM_TEXT);
 $id = required_param('id',PARAM_INT);
 
-$shortname = get_field('learning_report','shortname','id',$id);
+$shortname = get_field('report_builder','shortname','id',$id);
 
 // new report object
-$report = new learningreport($shortname);
+$report = new reportbuilder($shortname);
 
 if(!$report->is_capable()) {
     error(get_string('nopermission','local'));
@@ -19,8 +19,8 @@ if(!$report->is_capable()) {
 $countfiltered = $report->get_filtered_count();
 $countall = $report->get_full_count();
 $fullname = $report->_fullname;
-$pagetitle = format_string(get_string('learningreports','local').': '.$fullname);
-$navlinks[] = array('name' => get_string('learningreports','local'), 'link'=> '', 'type'=>'title');
+$pagetitle = format_string(get_string('reportbuilder','local').': '.$fullname);
+$navlinks[] = array('name' => get_string('reportbuilder','local'), 'link'=> '', 'type'=>'title');
 $navlinks[] = array('name' => $fullname, 'link'=> '', 'type'=>'title');
 
 $navigation = build_navigation($navlinks);
@@ -51,7 +51,7 @@ function print_edit_button($id) {
     $context = get_context_instance(CONTEXT_SYSTEM);
     // TODO what capability should be required here?
     if(has_capability('moodle/local:admin',$context)) {
-        return print_single_button($CFG->wwwroot.'/local/learningreports/settings.php', array('id'=>$id), get_string('editthisreport','local'), 'get', '_self', true);
+        return print_single_button($CFG->wwwroot.'/local/reportbuilder/settings.php', array('id'=>$id), get_string('editthisreport','local'), 'get', '_self', true);
     } else {
         return '';
     }

@@ -43,7 +43,7 @@ $columnoptions = array(
             'name' => 'Status',
             'field' => 'status.statuscode',
             'joins' => array('signup','status'),
-            'displayfunc' => 'learningreport_facetoface_status',
+            'displayfunc' => 'reportbuilder_facetoface_status',
         ),
     ),
     'facetoface' => array(
@@ -64,7 +64,7 @@ $columnoptions = array(
             'name' => 'Course Name (linked to course page)',
             'field' => 'course.id AS course_id, course.fullname',
             'joins' => array('facetoface','course'),
-            'displayfunc' => 'learningreport_link_course',
+            'displayfunc' => 'reportbuilder_link_course',
         ),
     ),
     'date' => array(
@@ -72,19 +72,19 @@ $columnoptions = array(
             'name' => 'Session Date',
             'field' => 'date.timestart',
             'joins' => array('date'),
-            'displayfunc' => 'learningreport_nice_date',
+            'displayfunc' => 'reportbuilder_nice_date',
         ),
         'timestart' => array(
             'name' => 'Session Start Time',
             'field' => "date.timestart",
             'joins' => array('date'),
-            'displayfunc' => 'learningreport_nice_time',
+            'displayfunc' => 'reportbuilder_nice_time',
         ),
         'timefinish' => array(
             'name' => 'Session Finish Time',
             'field' => "date.timefinish",
             'joins' => array('date'),
-            'displayfunc' => 'learningreport_nice_time',
+            'displayfunc' => 'reportbuilder_nice_time',
         ),
     ),
     'user' => array(
@@ -118,7 +118,7 @@ $columnoptions = array(
             'name' => 'User Fullname (linked to profile)',
             'field' => 'u.id AS user_id, '.sql_fullname('u.firstname','u.lastname'),
             'joins' => array('signup','user'),
-            'displayfunc' => 'learningreport_link_user',
+            'displayfunc' => 'reportbuilder_link_user',
         ),
         'id' => array(
             'name' => 'User ID',
