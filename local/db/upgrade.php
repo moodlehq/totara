@@ -1058,6 +1058,16 @@ function xmldb_local_upgrade($oldversion) {
         $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
         $result = $result && create_table($table);
     }
+    
+    if ( $result && oldversion < 2010022601) {
+        // Limit RPL field to 255 characters
+        $table = new XMLDBTable('course_completions');
+        $field = new XMLDBField('rpl');
+        $field->setType(XMLDB_TYPE_CHAR);
+        $field->setLength(255);
+        $result = $result && change_field_type($table, $field, true, true);
+
+    }
 
     /// Insert default records
     $defaultdir = $CFG->dirroot.'/local/db/default';
