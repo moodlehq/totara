@@ -37,4 +37,67 @@ table.viewhierarchyitem th {
 
 table.viewhierarchyitem th.header {
     width: 200px;
+    border-bottom: 1px solid #fff;
+}
+
+div.nohierarchyitems {
+    padding-bottom: 20px;
+}
+
+table.editcompetency th {
+    text-align: left;
+}
+
+table#list-assignedcompetencies th.c0,
+table#list-assignedcompetencies th.c1,
+table#list-assignedcompetencies th.c3,
+table#list-assignedcompetencytemplates th.c0,
+table#list-assignedcompetencytemplates th.c2 {
+    width: 15%;
+}
+
+table#list-assignedcompetencies .c3,
+table#list-assignedcompetencytemplates .c2 {
+    text-align: center;
+}
+
+table.editcompetency td {
+    padding: 4px 5px;
+}
+
+table.editcompetency div.tabledivider {
+    border: 0;
+}
+
+table#list-assignedcompetencies td[colspan],
+table#list-assignedcompetencytemplates td[colspan] {
+    padding: 0;
+}
+
+/** Dialogs **/
+.selectcompetencies ul.treeview {
+    width: 65%;
+    overflow: auto;
+}
+
+.selectcompetencies #selectedcompetencies,
+div.yui-dialog .selected {
+    float: right;
+    width: 30%;
+    border-left: 1px solid #ccc;
+    height: 200px;
+    overflow: auto;
+    padding: 0 10px;
+}
+
+.selectcompetencies #selectedcompetencies p,
+div.yui-dialog .selected p {
+    margin-top: 0;
+}
+
+.selectcompetencies #selectedcompetencies span,
+div.yui-dialog .selected span {
+    display: block;
+    font-size: 0.8em;
+    margin-top: 1em;
 }

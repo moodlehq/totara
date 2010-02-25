@@ -1,0 +1,98 @@
+<?php
+
+require_once $CFG->libdir.'/tablelib.php';
+
+print_heading(get_string($displaytitle, $displaytype));
+
+if ($displaydepth) {
+
+    $columns = array('framework', 'depthlevel', 'name');
+    $headers = array(
+        get_string('framework', $displaytype),
+        get_string('depthlevel', $displaytype),
+        get_string('name', $displaytype)
+    );
+}
+else {
+
+    $columns = array('framework', 'name');
+    $headers = array(
+        get_string('framework', $displaytype),
+        get_string('name', $displaytype)
+    );
+}
+
+if ($editingon) {
+    $columns[] = 'options';
+    $headers[] = get_string('options', $displaytype);
+}
+
+$table = new flexible_table($displaytitle);
+$table->define_columns($columns);
+$table->define_headers($headers);
+$table->set_attribute('id', 'list-'.$displaytitle);
+$table->set_attribute('width', '95%');
+$table->set_attribute('class', 'generalbox edit'.$displaytype.' boxaligncenter');
+$table->setup();
+
+// Add one blank line
+$table->add_data(NULL);
+
+if (is_array($items) && count($items)) {
+
+    foreach ($items as $ritem) {
+
+        $content = array();
+        $content[] = "<a href=\"{$CFG->wwwroot}/hierarchy/frameworks/index.php?type={$this->prefix}&id={$ritem->fid}\">{$ritem->framework}</a>";
+
+        if ($displaydepth) {
+            $content[] = $ritem->depth;
+        }
+
+        $content[] = "<a href=\"{$CFG->wwwroot}/hierarchy/item/view.php?type={$this->prefix}&id={$ritem->id}\">{$ritem->fullname}</a>";
+
+        if ($editingon) {
+            $content[] = "<a href=\"{$CFG->wwwroot}/hierarchy/type/position/assigncompetency/remove.php?id={$ritem->aid}&position={$item->id}\" title=\"$str_remove\">".
+                "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_remove\" /></a>";
+        }
+
+        $table->add_data($content);
+    }
+
+    $table->print_html();
+
+} else {
+
+    $table->print_html();
+
+    print_box_start('boxaligncenter boxwidthnormal centerpara nohierarchyitems noitems-'.$displaytitle);
+    print get_string('no'.$displaytitle, $displaytype);
+    print_box_end();
+}
+
+// Add button
+if ($can_edit && $editingon) {
+
+    $add_button_text = get_string('add'.$displaytitle, $displaytype);
+    ?>
+
+<div class="buttons">
+
+    <script type="text/javascript">
+        <!-- //
+        <?php echo 'var '.$this->prefix.'_id = \''.$item->id.'\';' ?>
+        // -->
+    </script>
+
+    <div class="singlebutton">
+        <form action="<?php echo $addurl ?>" method="get">
+            <div>
+                <input type="submit" id="show-<?php echo $displaytitle ?>-dialog" value="<?php echo $add_button_text ?>" />
+            </div>
+        </form>
+    </div>
+
+</div>
+
+<?php
+}

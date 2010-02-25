@@ -934,30 +934,6 @@ div.mask {
     padding-bottom: 0.25em;
 }
 
-.selectcompetencies ul.treeview {
-    width: 65%;
-    overflow: auto;
-}
-
-.selectcompetencies #selectedcompetencies {
-    float: right;
-    width: 30%;
-    border-left: 1px solid #ccc;
-    height: 200px;
-    overflow: auto;
-    padding: 0 10px;
-}
-
-.selectcompetencies #selectedcompetencies p {
-    margin-top: 0;
-}
-
-.selectcompetencies #selectedcompetencies span {
-    display: block;
-    font-size: 0.8em;
-    margin-top: 1em;
-}
-
 /** Course completion report **/
 .completionreport th {
     white-space: nowrap;

@@ -60,6 +60,112 @@ class position extends hierarchy {
     var $prefix = 'position';
     var $extrafield = null;
 
+    /**
+     * Run any code before printing header
+     * @param $page string Unique identifier for page
+     * @return void
+     */
+    function hierarchy_page_setup($page = '') {
+        global $CFG;
+
+        if ($page !== 'item/view') {
+            return;
+        }
+
+        // Setup custom javascript
+        require_once($CFG->dirroot.'/local/js/setup.php');
+
+        // Setup lightbox
+        setup_lightbox(array(MBE_JS_TREEVIEW, MBE_JS_ADVANCED));
+
+        require_js(array(
+            $CFG->wwwroot.'/local/js/position.item.js.php',
+        ));
+    }
+
+    /**
+     * Print any extra markup to display on the hierarchy view item page
+     * @param $item object Competency being viewed
+     * @return void
+     */
+    function display_extra_view_info($item) {
+        global $CFG, $can_edit, $editingon;
+
+        if ($editingon) {
+            $str_edit = get_string('edit');
+            $str_remove = get_string('remove');
+        }
+
+        // Display assigned competencies
+        $items = $this->get_assigned_competencies($item);
+        $addurl = $CFG->wwwroot.'/hierarchy/type/position/assigncompetency/find.php?assignto='.$item->id;
+        $displaytitle = 'assignedcompetencies';
+        $displaytype = 'competency';
+        $displaydepth = true;
+        require $CFG->dirroot.'/hierarchy/type/position/view-hierarchy-items.html';
+
+        // Display assigned competencies
+        $items = $this->get_assigned_competency_templates($item);
+        $addurl = $CFG->wwwroot.'/hierarchy/type/position/assigncompetencytemplate/find.php?assignto='.$item->id;
+        $displaytitle = 'assignedcompetencytemplates';
+        $displaytype = 'competency';
+        $displaydepth = false;
+        require $CFG->dirroot.'/hierarchy/type/position/view-hierarchy-items.html';
+    }
+
+    function get_assigned_competencies($item) {
+        global $CFG;
+
+        return get_records_sql(
+            "
+                SELECT
+                    c.*,
+                    cf.id AS fid,
+                    cf.fullname AS framework,
+                    cd.fullname AS depth,
+                    pc.id AS aid
+                FROM
+                    {$CFG->prefix}position_competencies pc
+                INNER JOIN
+                    {$CFG->prefix}competency c
+                 ON pc.competencyid = c.id
+                INNER JOIN
+                    {$CFG->prefix}competency_framework cf
+                 ON c.frameworkid = cf.id
+                INNER JOIN
+                    {$CFG->prefix}competency_depth cd
+                 ON c.depthid = cd.id
+                WHERE
+                    pc.templateid IS NULL
+                AND pc.positionid = {$item->id}
+            "
+        );
+    }
+
+    function get_assigned_competency_templates($item) {
+        global $CFG;
+
+        return get_records_sql(
+            "
+                SELECT
+                    c.*,
+                    cf.id AS fid,
+                    cf.fullname AS framework,
+                    pc.id AS aid
+                FROM
+                    {$CFG->prefix}position_competencies pc
+                INNER JOIN
+                    {$CFG->prefix}competency_template c
+                 ON pc.templateid = c.id
+                INNER JOIN
+                    {$CFG->prefix}competency_framework cf
+                 ON c.frameworkid = cf.id
+                WHERE
+                    pc.competencyid IS NULL
+                AND pc.positionid = {$item->id}
+            "
+        );
+    }
 }
 
 

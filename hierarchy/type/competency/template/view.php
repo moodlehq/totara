@@ -130,7 +130,7 @@ if ($competencies) {
 } else {
     // # cols varies
     $cols = $editingon ? 3 : 2;
-    echo '<tr class="noitems"><td colspan="'.$cols.'"><i>'.get_string('noassignedcompetencies', $hierarchy->prefix).'</i></td></tr>';
+    echo '<tr class="noitems"><td colspan="'.$cols.'"><i>'.get_string('noassignedcompetenciestotemplate', $hierarchy->prefix).'</i></td></tr>';
 }
 
 echo '</table>';

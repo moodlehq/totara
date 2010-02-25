@@ -47,5 +47,6 @@ $string['returntoframework'] = 'Return to organisation framework';
 $string['shortname'] = 'Organisation short name';
 $string['shortnamedepth'] = 'Depth level short name';
 $string['shortnameframework'] = 'Framework short name';
+$string['shortnameview'] = '$a short name';
 $string['type'] = 'Type';
 $string['weight'] = 'Weight';
