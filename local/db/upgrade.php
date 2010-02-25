@@ -999,7 +999,7 @@ function xmldb_local_upgrade($oldversion) {
         $table->addFieldInfo('fullname', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
         $table->addFieldInfo('shortname', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
         $table->addFieldInfo('source', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
-        $table->addFieldInfo('restriction', XMLDB_TYPE_TEXT, 'medium', XMLDB_UNSIGNED, null, null, null);
+        $table->addFieldInfo('restriction', XMLDB_TYPE_CHAR, '255', null, null, null, null);
         $table->addFieldInfo('filters', XMLDB_TYPE_TEXT, 'medium', XMLDB_UNSIGNED, null, null, null);
         $table->addFieldInfo('columns', XMLDB_TYPE_TEXT, 'medium', XMLDB_UNSIGNED, null, null, null);
         $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
@@ -1021,6 +1021,16 @@ function xmldb_local_upgrade($oldversion) {
             AND timestarted IS NULL
         ";
         $result = $result && execute_sql($sql);
+    }
+
+    if ($result && $oldversion < 2010020500) {
+    // increase space for restriction data
+        $table = new XMLDBTable('learningreport');
+        $field = new XMLDBField('restriction');
+        $result = $result && drop_field($table, $field);
+        $field = new XMLDBField('restriction');
+        $field->setAttributes(XMLDB_TYPE_TEXT, 'medium', XMLDB_UNSIGNED, null, null, null);
+        $result = $result && add_field($table, $field);
     }
 
     /// Insert default records
