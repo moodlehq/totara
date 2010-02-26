@@ -26,7 +26,13 @@ if ($id == 0) {
     $framework = new object();
     $framework->id = 0;
     $framework->visible = 1;
-    $framework->isdefault = 0;
+    if(get_field($type.'_framework', 'id')) {
+        // only set to default if no other
+        // frameworks of this type exist
+        $framework->isdefault = 0;
+    } else {
+        $framework->isdefault = 1;
+    }
     $framework->sortorder = get_field($type.'_framework', 'MAX(sortorder) + 1', '', '');
     if (!$framework->sortorder) {
         $framework->sortorder = 1;
