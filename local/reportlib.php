@@ -86,10 +86,8 @@ function mitms_print_report_heading($columns, $user, $usercustomfields) {
                     foreach($usercustomfields as $usercustomfield) {
                         $cell2str .= mitms_print_user_profile_field($user->id, $column['value']);
                     }
-                } else {
-                    echo "not found";
                 }
-//                $cell2str .= mitms_print_user_profile_field($user->id, $column['value']);
+                //                $cell2str .= mitms_print_user_profile_field($user->id, $column['value']);
                 break;
             case 'position':
                 if ($column['headingtype'] == 'defined') {
