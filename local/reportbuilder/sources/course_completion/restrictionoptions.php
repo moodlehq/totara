@@ -43,6 +43,7 @@
 // restriction options for this source
 $restrictionoptions = array(
     array(
+        'name' => 'own',
         'funcname' => 'own_records',  // function called to apply restriction
         'title' => 'Self',  // for text describing option in admin settings
         'field' => 'base.userid',      // field to apply limit to
@@ -52,6 +53,7 @@ $restrictionoptions = array(
     ),
     array(
         // no capability required as report checks for staff
+        'name' => 'staff',
         'funcname' => 'staff_records',
         'title' => 'Direct Reports',
         'field' => 'base.userid',
@@ -59,6 +61,7 @@ $restrictionoptions = array(
         'default' => '0',
     ),
     array(
+        'name' => 'local',
         'funcname' => 'local_records',
         'title' => 'Current Local staff',
         'field' => 'base.userid',
@@ -67,6 +70,7 @@ $restrictionoptions = array(
         'default' => '0',
     ),
     array(
+        'name' => 'local_completed',
         'funcname' => 'local_completed_records',
         'title' => 'Those Completed Locally',
         'field' => 'base.organisationid',
@@ -75,6 +79,7 @@ $restrictionoptions = array(
         'default' => '0',
     ),
     array(
+        'name' => 'all',
         'funcname' => 'all',
         'title' => 'All Records',
         // note this is a special value - when field set to "all" and

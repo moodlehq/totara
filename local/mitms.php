@@ -248,12 +248,24 @@ function mitms_print_report_manager($return=false) {
 
     $rows = array();
     foreach ($reports as $report) {
+        $options = get_source_data($report->source,'restrictionoptions');
         // go through each restriction looking for capabilities
         $restrictions = unserialize($report->restriction);
         $hascap = false;
         if($restrictions && is_array($restrictions)) {
             foreach($restrictions as $restriction) {
-                $cap = (isset($restriction['capability'])) ? $restriction['capability'] : null;
+                if(isset($options) && is_array($options)) {
+                    $info = false;
+                    foreach($options as $option) {
+                        if($option['name'] == $restriction) {
+                            $info = $option;
+                        }
+                    }
+                }
+                if(!$info) {
+                    continue;
+                }
+                $cap = (isset($info['capability'])) ? $info['capability'] : null;
                 // allow if no capability set, or if user has the capability
                 if(!isset($cap) || has_capability($cap,$context)) {
                     $hascap = true;

@@ -184,13 +184,12 @@ class report_builder_edit_form extends moodleform {
         $mform->addElement('header', 'general', get_string('onlydisplayrecordsfor', 'local'));
         if(isset($report->_restrictionoptions) && is_array($report->_restrictionoptions)) {
             $restrictions = $report->_restrictionoptions;
-
             foreach($restrictions as $index => $restriction) {
-                $mform->addElement('advcheckbox',"restriction$index",$restriction['title'],null,null,array(0,$restriction['funcname']));
+                $mform->addElement('advcheckbox',"restriction$index",$restriction['title'],null,null,array(0,$restriction['name']));
                 if($report->_restriction) {
                     foreach($report->_restriction as $res) {
-                        if($restriction['funcname'] == $res['funcname']) {
-                            $mform->setDefault("restriction$index",$res['funcname']);
+                        if($restriction['name'] == $res) {
+                            $mform->setDefault("restriction$index",$res);
                         }
                     }
                 }

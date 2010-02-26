@@ -16,7 +16,6 @@ class reportbuilder {
     var $_restrictionoptions;
     var $_defaultfilters;
     var $_joinlist;
-    var $_restrictions;
     var $_base;
     var $_filtering;
     var $_params;
@@ -149,7 +148,11 @@ class reportbuilder {
         $capabilities = array();
         if($restrictions && is_array($restrictions)) {
             foreach ($restrictions as $restriction) {
-                $capabilities[] = $restriction['capability'];
+                $info = $this->get_restriction_info($restriction);
+                if(!$info) {
+                    continue;
+                }
+                $capabilities[] = $info['capability'];
             }
         }
         return array_unique($capabilities);
@@ -194,7 +197,11 @@ class reportbuilder {
 
         if(is_array($restrictions)) {
             foreach($restrictions as $restriction) {
-                $capability = (isset($restriction['capability'])) ? $restriction['capability'] : null;
+                $info = $this->get_restriction_info($restriction);
+                if(!$info) {
+                    continue;
+                }
+                $capability = (isset($info['capability'])) ? $info['capability'] : null;
                 // allow if no capability set, or user has the specificed capability
                 if (!isset($capability) || has_capability($capability, $context)) {
                     $ret[] = $restriction;
@@ -203,6 +210,19 @@ class reportbuilder {
             }
         }
         return $ret;
+    }
+
+    // given a restriction name, return the info from restrictionoptions
+    function get_restriction_info($name) {
+        if(empty($name)) {
+            return false;
+        }
+        foreach($this->_restrictionoptions as $option) {
+            if(isset($option['name']) && $option['name'] == $name) {
+                return $option;
+            }
+        }
+        return false;
     }
 
     // parses input array into set of restrictions and returns single
@@ -222,8 +242,12 @@ class reportbuilder {
         // go through restrictions
         // saving groups of fields together
         foreach ($restrictions as $restriction) {
-            $funcname = $restriction['funcname'];
-            $field = $restriction['field'];
+            $info = $this->get_restriction_info($restriction);
+            if(!$info) {
+                continue;
+            }
+            $funcname = $info['funcname'];
+            $field = $info['field'];
 
             if($field=='all') {
                 return "( TRUE )";
@@ -519,7 +543,11 @@ class reportbuilder {
         $joinlist = $this->_joinlist;
         $joins = array();
         foreach($restrictions as $restriction) {
-            $rest_joins = (isset($restriction['joins'])) ? $restriction['joins'] : null;
+            $info = $this->get_restriction_info($restriction);
+            if(!$info) {
+                continue;
+            }
+            $rest_joins = (isset($info['joins'])) ? $info['joins'] : null;
             if($rest_joins && is_array($rest_joins)) {
                 foreach($rest_joins as $rest_join) {
                     if(array_key_exists($rest_join, $joinlist)) {
