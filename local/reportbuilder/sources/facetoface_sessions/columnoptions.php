@@ -38,6 +38,11 @@ $columnoptions = array(
             'field' => "base.capacity",
             'joins' => array(),
         ),
+        'numattendees' => array(
+            'name' => 'Number of Attendees',
+            'field' => 'attendees.number',
+            'joins' => array('attendees'),
+        ),
         'location' => array(
             'name' => 'Session Location',
             'field' => 'session_location.data',

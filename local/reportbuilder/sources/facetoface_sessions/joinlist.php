@@ -24,6 +24,10 @@ $joinlist = array(
     'organisation' => "LEFT JOIN {$CFG->prefix}organisation organisation ON organisation.id = pa.organisationid",
     'status' => "LEFT JOIN {$CFG->prefix}facetoface_signups_status status ON ( signup.id = status.signupid AND status.superceded = 0 )",
     'user' => "LEFT JOIN {$CFG->prefix}user u ON u.id = signup.userid",
+    'attendees' => "LEFT JOIN (SELECT su.sessionid,count(ss.id) AS number
+        FROM {$CFG->prefix}facetoface_signups su
+        JOIN {$CFG->prefix}facetoface_signups_status ss ON su.id = ss.signupid
+        WHERE ss.superceded=0 AND ss.statuscode >= 50 GROUP BY su.sessionid) AS attendees ON attendees.sessionid = base.id",
 );
 
 // add all user custom fields to join list
