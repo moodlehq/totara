@@ -65,8 +65,6 @@ class completion_criteria_grade extends completion_criteria {
             $mform->setDefault('criteria_grade', 1);
             $mform->setDefault('criteria_grade_value', $this->gradepass);
         }
-
-        $mform->hardFreeze('criteria_grade_value');
     }
 
     /**

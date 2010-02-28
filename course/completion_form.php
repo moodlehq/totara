@@ -220,15 +220,10 @@ class course_completion_form extends moodleform {
         // Completion on course grade
         $mform->addElement('header', 'grade', get_string('grade'));
 
+        // Grade enable and pasing grade
         $course_grade = get_field('grade_items', 'gradepass', 'courseid', $course->id, 'itemtype', 'course');
         $criteria = new completion_criteria_grade($params);
-
-        // Only display criteria enable if the course has a pass grade, or criteria already is setup
-        if ($course_grade > 0 || $criteria->id) {
-            $criteria->config_form_display($mform, $course_grade);
-        } else {
-            $mform->addElement('static', 'nograde', '', get_string('err_nograde', 'completion'));
-        }
+        $criteria->config_form_display($mform, $course_grade);
 
         // Completion on unenrolment
         $mform->addElement('header', 'unenrolment', get_string('unenrolment', 'completion'));

@@ -36,6 +36,7 @@ require_once($CFG->libdir.'/completion/completion_criteria_duration.php');
 require_once($CFG->libdir.'/completion/completion_criteria_grade.php');
 require_once($CFG->libdir.'/completion/completion_criteria_role.php');
 require_once($CFG->libdir.'/completion/completion_criteria_course.php');
+require_once $CFG->libdir.'/gradelib.php';
 require_once('completion_form.php');
 
 // Get paramaters
@@ -129,6 +130,17 @@ if ($form->is_cancelled()){
     $aggregation->criteriatype = COMPLETION_CRITERIA_TYPE_ROLE;
     $aggregation->setMethod($data->role_aggregation);
     $aggregation->insert();
+
+    // Update course total passing grade
+    $grade_item = grade_item::fetch(
+        array(
+            'itemtype'=>'course',
+            'courseid'=>$course->id
+        )
+    );
+    //$grade_item = new grade_item();
+    $grade_item->gradepass = $data->criteria_grade_value;
+    $grade_item->update('course/completion.php');
 
     redirect($CFG->wwwroot."/course/view.php?id=$course->id");
 }
