@@ -1059,7 +1059,7 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && create_table($table);
     }
     
-    if ( $result && oldversion < 2010022601) {
+    if ($result && $oldversion < 2010022601) {
         // Limit RPL field to 255 characters
         $table = new XMLDBTable('course_completions');
         $field = new XMLDBField('rpl');
