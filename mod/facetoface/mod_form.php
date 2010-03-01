@@ -44,10 +44,11 @@ class mod_facetoface_mod_form extends moodleform_mod {
         $mform->setDefault('showoncalendar', true);
         $mform->setHelpButton('showoncalendar', array('showoncalendar', get_string('showoncalendar', 'facetoface'), 'facetoface'));
 
-        $mform->addElement('text', 'shortname', get_string('shortname'), array('size' => 32));
+        $mform->addElement('text', 'shortname', get_string('shortname'), array('size' => 32, 'maxlength' => 32));
         $mform->setType('shortname', PARAM_TEXT);
         $mform->setHelpButton('shortname', array('shortname', get_string('shortname'), 'facetoface'));
         $mform->disabledIf('shortname', 'showoncalendar');
+        $mform->addRule('shortname', null, 'maxlength', 32);
 
         $mform->addElement('htmleditor', 'description', get_string('description'), array('rows'  => 4, 'cols'  => 64));
         $mform->setType('description', PARAM_RAW);
