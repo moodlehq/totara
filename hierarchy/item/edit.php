@@ -172,7 +172,7 @@ if ($itemform->is_cancelled()) {
     // Log
     add_to_log(SITEID, $type, 'update', "view.php?id=$frameworkid", '');
 
-    redirect("{$CFG->wwwroot}/hierarchy/item/view.php?type={$type}&id={$item->id}");
+    redirect("{$CFG->wwwroot}/hierarchy/item/view.php?type={$type}&id={$itemnew->id}");
     //never reached
 }
 
