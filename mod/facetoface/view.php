@@ -90,6 +90,7 @@ print_footer($course);
 function print_session_list($courseid, $facetofaceid, $location)
 {
     global $USER;
+    global $CFG;
 
     $timenow = time();
 
@@ -223,9 +224,12 @@ function print_session_list($courseid, $facetofaceid, $location)
             // Options
             $options = '';
             if ($editsessions) {
-                $options .= ' <a href="sessions.php?s='.$session->id.'" title="'.get_string('editsession', 'facetoface').'">'.get_string('edit', 'facetoface').'</a> '
-                    . '<a href="sessions.php?s='.$session->id.'&amp;c=1" title="'.get_string('copysession', 'facetoface').'">'.get_string('copy', 'facetoface').'</a> '
-                    . '<a href="sessions.php?s='.$session->id.'&amp;d=1" title="'.get_string('deletesession', 'facetoface').'">'.get_string('delete').'</a> ';
+                $options .= ' <a href="sessions.php?s='.$session->id.'" title="'.get_string('editsession', 'facetoface').'">'
+                    . '<img src="'.$CFG->pixpath.'/t/edit.gif" class="iconsmall" alt="'.get_string('edit', 'facetoface').'" /></a> '
+                    . '<a href="sessions.php?s='.$session->id.'&amp;c=1" title="'.get_string('copysession', 'facetoface').'">'
+                    . '<img src="'.$CFG->pixpath.'/t/copy.gif" class="iconsmall" alt="'.get_string('copy', 'facetoface').'" /></a> '
+                    . '<a href="sessions.php?s='.$session->id.'&amp;d=1" title="'.get_string('deletesession', 'facetoface').'">'
+                    . '<img src="'.$CFG->pixpath.'/t/delete.gif" class="iconsmall" alt="'.get_string('delete').'" /></a> ';
             }
             if ($viewattendees){
                 $options .= '<a href="attendees.php?s='.$session->id.'&amp;backtoallsessions='.$facetofaceid.'" title="'.get_string('seeattendees', 'facetoface').'">'.get_string('attendees', 'facetoface').'</a> ';
