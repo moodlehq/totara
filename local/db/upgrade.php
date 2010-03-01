@@ -1071,6 +1071,7 @@ function xmldb_local_upgrade($oldversion) {
 
     /// Insert default records
     $defaultdir = $CFG->dirroot.'/local/db/default';
+    $includes = array();
     if (is_dir($defaultdir)) {
         if ($dh = opendir($defaultdir)) {
             $timenow = time();
@@ -1084,10 +1085,14 @@ function xmldb_local_upgrade($oldversion) {
                     continue;
                 }
                 // include default data file
-                include($CFG->dirroot.'/local/db/default/'.$file);
+                $includes[] = $CFG->dirroot.'/local/db/default/'.$file;
             }
         }
-    
+    }
+    // sort so order of includes is known
+    sort($includes);
+    foreach($includes as $include) {
+        include($include);
     }
 
     return $result;
