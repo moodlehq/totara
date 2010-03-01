@@ -89,7 +89,11 @@ if ($frameworkform->is_cancelled()) {
     $frameworknew = get_record($type.'_framework', 'id', $frameworknew->id);
 
     // Log
-    add_to_log(SITEID, $type.'framework', 'update', "view.php?id=$frameworknew->id", '');
+    if ($type == 'organisation') {
+        add_to_log(SITEID, 'orgframework', 'update', "view.php?id=$frameworknew->id", '');
+    } else {
+        add_to_log(SITEID, $type.'framework', 'update', "view.php?id=$frameworknew->id", '');
+    }
 
     redirect("$CFG->wwwroot/hierarchy/framework/index.php?type=$type");
     //never reached

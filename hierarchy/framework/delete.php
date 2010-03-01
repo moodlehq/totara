@@ -62,7 +62,11 @@ if (!confirm_sesskey()) {
     print_error('confirmsesskeybad', 'error');
 }
 
-add_to_log(SITEID, $type.'framework', 'delete', "view.php?type={$type}&frameworkid=$framework->id", "$framework->fullname (ID $framework->id)");
+if ($type == 'organisation') {
+    add_to_log(SITEID, 'orgframework', 'delete', "view.php?type={$type}&frameworkid=$framework->id", "$framework->fullname (ID $framework->id)");
+} else {
+    add_to_log(SITEID, $type.'framework', 'delete', "view.php?type={$type}&frameworkid=$framework->id", "$framework->fullname (ID $framework->id)");
+}
 
 $hierarchy->delete_framework();
 
