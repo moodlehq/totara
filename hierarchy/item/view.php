@@ -59,7 +59,7 @@ $hierarchy->hierarchy_page_setup('item/view');
 
 // Display page header
 $pagetitle = format_string($depth->fullname.' - '.$item->fullname);
-$navlinks[] = array('name' => get_string('competency','competency'), 'link'=> '', 'type'=>'title');
+$navlinks[] = array('name' => get_string($type,$type), 'link'=> '', 'type'=>'title');
 $navlinks[] = array('name' => $depth->fullname, 'link'=> '', 'type'=>'title');
 $navlinks[] = array('name' => $item->fullname, 'link'=> '', 'type'=>'title');
 
