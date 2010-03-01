@@ -2422,14 +2422,11 @@ function facetoface_print_coursemodule_info($coursemodule)
         return '';
     }
 
-    // Link to display for when there are no sessions to show
-    $strdimmed = '';
-    if (!$coursemodule->visible) {
-        $strdimmed = ' class="dimmed"';
-    }
-    $strfacetoface = get_string('facetoface', 'facetoface');
-    $activitynameonly = "<img src=\"$CFG->pixpath/mod/facetoface/icon.gif\" class=\"activityicon\" alt=\"$strfacetoface\" />".
-                        "<a title=\"$strfacetoface\" $strdimmed href=\"$facetofacepath/view.php?f=$facetofaceid\">$strfacetoface</a>";
+    $htmlactivitynameonly = '<img src="'.$CFG->pixpath.'/mod/facetoface/icon.gif" class="activityicon" alt="'.$facetoface->name.'" /> '
+            .$facetoface->name;
+    $strviewallsessions = get_string('viewallsessions', 'facetoface');
+    $htmlviewallsessions = '<a class="f2fsessionlinks" href="'.$facetofacepath.'/view.php?f='.$facetofaceid.'" title="'.$strviewallsessions.'">'
+        .$strviewallsessions.'</a>';
 
     if ($submissions = facetoface_get_user_submissions($facetofaceid, $USER->id)) {
         // User has signedup for the instance
@@ -2466,7 +2463,6 @@ function facetoface_print_coursemodule_info($coursemodule)
 
             $strmoreinfo = get_string('moreinfo', 'facetoface');
             $strseeattendees = get_string('seeattendees', 'facetoface');
-            $strviewallsessions = get_string('viewallsessions', 'facetoface');
 
             $location = '&nbsp;';
             $venue = '&nbsp;';
@@ -2479,6 +2475,9 @@ function facetoface_print_coursemodule_info($coursemodule)
             }
 
             $table = '<table border="0" cellpadding="1" cellspacing="0" width="90%" summary="">'
+                .'<tr>'
+                .'<td class="f2fsessionnotice" colspan="4">'.$htmlactivitynameonly.'</td>'
+                .'</tr>'
                 .'<tr>'
                 .'<td class="f2fsessionnotice" colspan="4">'.get_string('bookingstatus', 'facetoface').':</td>'
                 .'<td><span class="f2fsessionnotice" >'.get_string('options', 'facetoface').':</span></td>'
@@ -2495,18 +2494,18 @@ function facetoface_print_coursemodule_info($coursemodule)
                 .'</tr>'
                 .$cancellink
                 .'<tr>'
-                ."<td><a class=\"f2fsessionlinks\" href=\"$facetofacepath/view.php?f=$facetofaceid\" title=\"$strviewallsessions\">$strviewallsessions</a></td>"
+                ."<td>$htmlviewallsessions</td>"
                 .'</tr>'
                 .'</table></td></tr>'
                 .'</table>';
         }
     }
-    elseif ($sessions = facetoface_get_sessions($facetofaceid)) {
-        if ($facetoface->display == 0) { // i.e. don't display session times on course page
-            return $activitynameonly;
-        }
+    elseif ($facetoface->display > 0 && $sessions = facetoface_get_sessions($facetofaceid) ) {
 
         $table = '<table border="0" cellpadding="1" cellspacing="0" width="100%" summary="">'
+            .'   <tr>'
+            .'       <td class="f2fsessionnotice" colspan="2">'.$htmlactivitynameonly.'</td>'
+            .'   </tr>'
             .'   <tr>'
             .'       <td class="f2fsessionnotice" colspan="2">'.get_string('signupforsession', 'facetoface').':</td>'
             .'   </tr>';
@@ -2567,15 +2566,14 @@ function facetoface_print_coursemodule_info($coursemodule)
             $table .= '<td>&nbsp;</td>';
         }
 
-        $strviewallsessions = get_string('viewallsessions', 'facetoface');
         $table .= '   </tr>'
             .'   <tr>'
-            ."     <td colspan=\"2\"><a class=\"f2fsessionlinks\" href=\"$facetofacepath/view.php?f=$facetofaceid\" title=\"$strviewallsessions\">$strviewallsessions</a></td>"
+            ."     <td colspan=\"2\">$htmlviewallsessions</td>"
             .'   </tr>'
             .'</table>';
     }
     elseif (has_capability('mod/facetoface:viewemptyactivities', $contextmodule)) {
-        return $activitynameonly;
+        return '<span class="f2fsessionnotice" style="line-height:1.5">'.$htmlactivitynameonly.'<br />'.$htmlviewallsessions.'</span>';
     }
     else {
         // Nothing to display to this user
