@@ -69,6 +69,9 @@ if ($fromform = $mform->get_data()) { // Form submitted
     elseif (facetoface_get_user_submissions($facetoface->id, $USER->id)) {
         print_error('alreadysignedup', 'facetoface', $returnurl);
     }
+    elseif (facetoface_manager_needed($facetoface) && !facetoface_get_manageremail($USER->id)){
+        print_error('error:manageremailaddressmissing', 'facetoface', $returnurl);
+    }
     elseif ($submissionid = facetoface_user_signup($session, $facetoface, $course, $fromform->discountcode, $fromform->notificationtype, $statuscode)) {
         add_to_log($course->id, 'facetoface','signup',"signup.php?s=$session->id", $session->id, $cm->id);
 
@@ -136,7 +139,8 @@ if ($signedup) {
 
     echo '<br/><a href="'.$returnurl.'" title="'.get_string('goback', 'facetoface').'">'.get_string('goback', 'facetoface').'</a>';
 }
-elseif (!facetoface_get_manageremail($USER->id)) {
+// Don't allow signup to proceed if a manager is required
+elseif (facetoface_manager_needed($facetoface) && !facetoface_get_manageremail($USER->id)){
     // Check to see if the user has a managers email set
     echo '<p><strong>'.get_string('error:manageremailaddressmissing', 'facetoface').'</strong></p>';
     echo '<br/><a href="'.$returnurl.'" title="'.get_string('goback', 'facetoface').'">'.get_string('goback', 'facetoface').'</a>';

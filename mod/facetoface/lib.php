@@ -3568,3 +3568,17 @@ function facetoface_supports($feature) {
         default: return null;
     }
 }
+
+/**
+ * Determines whether an activity requires the user to have a manager (either for
+ * manager approval or to send notices to the manager)
+ * 
+ * @param  object $facetoface A database fieldset object for the facetoface activity
+ * @return boolean whether a person needs a manager to sign up for that activity
+ */
+function facetoface_manager_needed($facetoface){
+    return $facetoface->approvalreqd
+        || $facetoface->confirmationinstrmngr
+        || $facetoface->reminderinstrmngr
+        || $facetoface->cancellationinstrmngr;
+}
