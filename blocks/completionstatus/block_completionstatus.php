@@ -68,7 +68,7 @@ class block_completionstatus extends block_base {
         if (!in_array($USER->id, array_keys($users))) {
 
             // If not enrolled, but are can view the report:
-            if (has_capability('coursereport/progress:view', get_context_instance(CONTEXT_COURSE, $COURSE->id))) {
+            if (has_capability('coursereport/completion:view', get_context_instance(CONTEXT_COURSE, $COURSE->id))) {
                 $this->content->text = '<a href="'.$CFG->wwwroot.'/course/report/completion/index.php?course='.$COURSE->id.
                                        '">'.get_string('viewcoursereport', 'completion').'</a>';
                 return $this->content;

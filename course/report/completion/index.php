@@ -79,7 +79,7 @@ function csv_quote($value) {
 require_login($course);
 
 $context=get_context_instance(CONTEXT_COURSE, $course->id);
-require_capability('coursereport/progress:view', $context);
+require_capability('coursereport/completion:view', $context);
 
 // Get group mode
 $group = groups_get_course_group($course, true); // Supposed to verify group
