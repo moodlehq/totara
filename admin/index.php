@@ -218,7 +218,7 @@
                                                    'enrol_plugins_enabled' => 'manual',
                                                    'style' => 'default',
                                                    'template' => 'default',
-                                                   'theme' => 'standardwhite',
+                                                   'theme' => 'mitms',
                                                    'filter_multilang_converted' => 1));
 
             // Write default settings unconditionally (i.e. even if a setting is already set, overwrite it)
