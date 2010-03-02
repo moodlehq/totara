@@ -103,6 +103,7 @@ $string['saved']='Saved';
 $string['seedetails']='See details';
 $string['self']='Self';
 $string['selfcompletion']='Self completion';
+$string['showinguser']='Showing user';
 $string['unit']='Unit';
 $string['unenrolingfromcourse']='Unenroling from course';
 $string['unenrolment']='Unenrolment';
