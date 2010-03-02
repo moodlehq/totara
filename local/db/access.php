@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL
  * @copyright  (C) 1999 onwards Martin Dougiamas  http://dougiamas.com
  *
- * Capability definitions for the Moodle Industry Training Management System.
+ * Capability definitions for course completion
  *
  * The capabilities are loaded into the database table when the module is
  * installed or updated. Whenever the capability definitions are updated,
@@ -35,17 +35,6 @@
 
 $local_capabilities = array(
 
-    'moodle/local:viewprogress' => array(
-        'riskbitmask' => RISK_PERSONAL,
-        'captype' => 'read',
-        'contextlevel' => CONTEXT_COURSE,
-        'legacy' => array(
-            'teacher' => CAP_ALLOW,
-            'editingteacher' => CAP_ALLOW,
-            'admin' => CAP_ALLOW
-        )
-    ),
-
     'moodle/local:markcomplete' => array(
         'captype' => 'write',
         'contextlevel' => CONTEXT_COURSE,
@@ -53,15 +42,6 @@ $local_capabilities = array(
             'teacher' => CAP_ALLOW,
             'editingteacher' => CAP_ALLOW,
             'coursecreator' => CAP_ALLOW,
-            'admin' => CAP_ALLOW
-        )
-    ),
-
-    'moodle/local:viewcompletion' => array(
-        'captype' => 'read',
-        'contextlevel' => CONTEXT_COURSE,
-        'legacy' => array(
-            'teacher' => CAP_ALLOW,
             'admin' => CAP_ALLOW
         )
     ),
