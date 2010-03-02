@@ -81,7 +81,7 @@ $restrictionoptions = array(
     array(
         'name' => 'all',
         'funcname' => 'all',
-        'title' => 'All Records',
+        'title' => 'All Records (admin only)',
         // note this is a special value - when field set to "all" and
         // user has capability skips normal process and displays all
         // records independent of other restrictions
@@ -89,5 +89,13 @@ $restrictionoptions = array(
         'capability' => 'moodle/local:viewallreports',
         'default' => '0',
     ),
+    array(
+        'name' => 'unrestrictedall',
+        'funcname' => 'all',
+        'title' => 'All Records (no restrictions)',
+        'field' => 'all',
+        'default' => '0',
+    ),
+
 );
 
