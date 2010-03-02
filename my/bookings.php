@@ -92,14 +92,9 @@ if(get_field('role','id','shortname','facilitator')) {
     );
 }
 
-$restriction = array(
-    // no restrictions
-    // limited to single user by embedded params
-    array(
-        'field' => 'all',
-        'funcname' => 'dummy',
-    ),
-);
+// no restrictions
+// limited to single user by embedded params
+$restriction = array('unrestrictedall');
 
 $embeddedparams = array(
     'userid' => $id,

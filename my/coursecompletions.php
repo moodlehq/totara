@@ -56,14 +56,9 @@ $columns = array(
         'heading' => 'Completed As',
     ),
 );
-$restriction = array(
-    // no restrictions
-    // limited to single user by embedded params
-    array(
-        'field' => 'all',
-        'funcname' => 'dummy',
-    ),
-);
+// no restrictions
+// limited to single user by embedded params
+$restriction = array('unrestrictedall');
 
 $embeddedparams = array(
     'userid' => $id,

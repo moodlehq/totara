@@ -107,12 +107,7 @@
     // no restrictions set, but embedded params
     // and in page check ensure only valid users
     // can see reports
-    $restriction = array(
-        array(
-            'field' => 'all',
-            'funcname' => 'dummy',
-        ),
-    );
+    $restriction = array('unrestrictedall');
 
     $embeddedparams = array(
         // show report for a specific user
