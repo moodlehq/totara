@@ -42,6 +42,32 @@ function local_postinst() {
     set_config('theme', 'mitms');
     $db->debug = $CFG->debug;
 
+    /// Insert default records
+    $defaultdir = $CFG->dirroot.'/local/db/default';
+    $includes = array();
+    if (is_dir($defaultdir)) {
+        if ($dh = opendir($defaultdir)) {
+            $timenow = time();
+            while (($file = readdir($dh)) !== false) {
+                // exclude directories
+                if (is_dir($file)) {
+                    continue;
+                }
+                // not a php file
+                if (substr($file, -4) != '.php') {
+                    continue;
+                }
+                // include default data file
+                $includes[] = $CFG->dirroot.'/local/db/default/'.$file;
+            }
+        }
+    }
+    // sort so order of includes is known
+    sort($includes);
+    foreach($includes as $include) {
+        include($include);
+    }
+
     mitms_reset_frontpage_blocks();
 
     // set default course categories

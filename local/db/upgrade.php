@@ -1058,7 +1058,7 @@ function xmldb_local_upgrade($oldversion) {
         $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
         $result = $result && create_table($table);
     }
-    
+
     if ($result && $oldversion < 2010022601) {
         // Limit RPL field to 255 characters
         $table = new XMLDBTable('course_completions');
@@ -1069,31 +1069,6 @@ function xmldb_local_upgrade($oldversion) {
 
     }
 
-    /// Insert default records
-    $defaultdir = $CFG->dirroot.'/local/db/default';
-    $includes = array();
-    if (is_dir($defaultdir)) {
-        if ($dh = opendir($defaultdir)) {
-            $timenow = time();
-            while (($file = readdir($dh)) !== false) {
-                // exclude directories
-                if (is_dir($file)) {
-                    continue;
-                }
-                // not a php file
-                if (substr($file, -4) != '.php') {
-                    continue;
-                }
-                // include default data file
-                $includes[] = $CFG->dirroot.'/local/db/default/'.$file;
-            }
-        }
-    }
-    // sort so order of includes is known
-    sort($includes);
-    foreach($includes as $include) {
-        include($include);
-    }
 
     return $result;
 
