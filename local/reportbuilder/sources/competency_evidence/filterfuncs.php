@@ -55,9 +55,15 @@ function get_positions_list() {
 }
 
 function get_proficiency_list() {
+    // use all possible scale values
+    $scale_values = get_records('competency_scale_values', '', '', 'scaleid, sortorder DESC');
+
     $proficiencies = array();
-    $proficiencies[3] = 'Competent';
-    $proficiencies[2] = 'Competent with Supervision';
-    $proficiencies[1] = 'Not Competent';
+    foreach($scale_values as $scale_value) {
+        $id = $scale_value->id;
+        $name = $scale_value->name;
+        $proficiencies[$name] = $name;
+    }
+
     return $proficiencies;
 }

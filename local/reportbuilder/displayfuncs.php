@@ -67,20 +67,6 @@ function reportbuilder_nice_datetime($date, $row) {
     }
 }
 
-// convert proficiency code into text
-function reportbuilder_proficiency($proficiency, $row) {
-    switch ($proficiency) {
-        case '1':
-            return 'Not Competent';
-        case '2':
-            return 'Competent with Supervison';
-        case '3':
-            return 'Competent';
-        default:
-            return $proficiency;
-    }
-}
-
 // convert status code into text
 function reportbuilder_facetoface_status($status, $row) {
     switch ($status) {

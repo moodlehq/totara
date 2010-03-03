@@ -35,9 +35,8 @@ $columnoptions = array(
     'competency_evidence' => array(
         'proficiency' => array(
             'name'  => 'Proficiency',
-            'field' => "base.proficiency",
-            'joins' => array(),
-            'displayfunc' => 'reportbuilder_proficiency',
+            'field' => "scale_values.name",
+            'joins' => array('competency','scale','scale_values'),
         ),
         'completeddate' => array(
             'name' => 'Completion Date',
