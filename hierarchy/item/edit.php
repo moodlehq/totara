@@ -89,7 +89,7 @@ $itemform->set_data($item);
 // cancelled
 if ($itemform->is_cancelled()) {
 
-    redirect("{$CFG->wwwroot}/hierarchy/item/view.php?type={$type}&id={$item->id}");
+    redirect("{$CFG->wwwroot}/hierarchy/index.php?type={$type}&frameworkid={$item->frameworkid}");
 
 // Update data
 } else if ($itemnew = $itemform->get_data()) {
