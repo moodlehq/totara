@@ -578,6 +578,27 @@
 
     require_capability('moodle/site:config', $context);
 
+/// run local customizations
+    if(empty($CFG->local_postinst_hasrun) && file_exists($CFG->dirroot . '/local/lib.php')) {
+        require_once($CFG->dirroot . '/local/lib.php');
+        if (function_exists('local_postinst')) {
+             admin_externalpage_setup('adminnotifications');
+             $strheader = get_string('performinglocalpostinst');
+             $navigation = build_navigation(array(array('name'=>$strheader, 'link'=>null, 'type'=>'misc')));
+             print_header($strheader, $strheader, $navigation,
+                        "", upgrade_get_javascript(), false, "&nbsp;", "&nbsp;");
+            //admin_externalpage_print_header();
+            print_heading($strheader);
+            if (!local_postinst()) {
+                print_error('localpostinstfailed', 'error');
+            }
+            set_config('local_postinst_hasrun', '1');
+            print_continue($CFG->wwwroot . '/admin/index.php');
+            print_footer();
+            exit;
+        }
+    }
+
 /// check that site is properly customized
     if (empty($site->shortname)) {
         // probably new installation - lets return to frontpage after this step
@@ -608,26 +629,6 @@
     }
 
 /// Everything should now be set up, and the user is an admin
-
-    if (array_key_exists('justinstalled', $_SESSION) && file_exists($CFG->dirroot . '/local/lib.php')) {
-        require_once($CFG->dirroot . '/local/lib.php');
-        if (function_exists('local_postinst')) {
-             admin_externalpage_setup('adminnotifications');
-             $strheader = get_string('performinglocalpostinst');
-             $navigation = build_navigation(array(array('name'=>$strheader, 'link'=>null, 'type'=>'misc')));
-             print_header($strheader, $strheader, $navigation,
-                        "", upgrade_get_javascript(), false, "&nbsp;", "&nbsp;");
-            //admin_externalpage_print_header();
-            print_heading($strheader);
-            if (!local_postinst()) {
-                print_error('localpostinstfailed', 'error');
-            }
-            unset($_SESSION['justinstalled']);
-            print_continue($CFG->wwwroot . '/index.php');
-            print_footer();
-            exit;
-        }
-    }
 
 /// Print default admin page with notifications.
 
