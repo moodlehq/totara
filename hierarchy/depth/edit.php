@@ -73,7 +73,7 @@ $depthform->set_data($depth);
 // cancelled
 if ($depthform->is_cancelled()){
 
-    redirect("$CFG->wwwroot/$type/index.php?frameworkid=$framework->id&spage=$spage");
+    redirect("$CFG->wwwroot/hierarchy/index.php?type={$type}&frameworkid={$framework->id}&spage={$spage}");
 
 // update data
 } else if ($depthnew = $depthform->get_data()) {
