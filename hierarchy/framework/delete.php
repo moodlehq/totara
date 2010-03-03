@@ -43,7 +43,7 @@ if (!$delete) {
 
     notice_yesno("$strdelete<br /><br />" . format_string($framework->fullname),
                  "{$CFG->wwwroot}/hierarchy/framework/delete.php?type={$type}&id={$framework->id}&amp;delete=".md5($framework->timemodified)."&amp;sesskey={$USER->sesskey}",
-                 "{$CFG->wwwroot}/hierarchy/framework/index.php&type={$type}");
+                 "{$CFG->wwwroot}/hierarchy/framework/index.php?type={$type}");
 
     print_footer();
     exit;
