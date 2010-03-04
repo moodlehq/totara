@@ -1069,7 +1069,30 @@ function xmldb_local_upgrade($oldversion) {
 
     }
 
+    if ($result && $oldversion < 2010030300) {
+        $table = new XMLDBTable('demo_users');
+        if(!table_exists($table)) {
 
+        /// Adding fields to table demo_users
+            $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null, null);
+            $table->addFieldInfo('idnumber', XMLDB_TYPE_CHAR, '100', null, null, null, null);
+            $table->addFieldInfo('firstname', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
+            $table->addFieldInfo('lastname', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
+            $table->addFieldInfo('username', XMLDB_TYPE_CHAR, '255', XMLDB_INDEX_UNIQUE, XMLDB_NOTNULL, null, null);
+            $table->addFieldInfo('email', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
+
+        /// Adding keys to table demo_users
+            $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
+
+        /// Adding indexes to table demo_users
+            $table->addIndexInfo('username', XMLDB_INDEX_UNIQUE, array('username'));
+            $table->addIndexInfo('email', XMLDB_INDEX_UNIQUE, array('email'));
+
+        /// Launch create table for demo_users
+            create_table($table);
+        }
+
+    }
     return $result;
 
 }
