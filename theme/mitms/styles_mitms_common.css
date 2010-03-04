@@ -103,7 +103,8 @@ table#list-assignedcompetencytemplates td[colspan] {
 /*****************************************************************************/
 /** Dialogs **/
 /*****************************************************************************/
-div.yui-dialog .simpleframeworkpicker {
+div.yui-dialog .simpleframeworkpicker,
+div.yui-dialog #framework-picker {
     float: right;
 }
 
@@ -114,6 +115,10 @@ div.yui-dialog h2 {
 .selectcompetencies ul.treeview {
     width: 65%;
     overflow: auto;
+}
+
+#coursecompetency .selectcompetencies ul.treeview {
+    width: auto;
 }
 
 .selectcompetencies #selectedcompetencies,

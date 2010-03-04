@@ -25,7 +25,7 @@ YAHOO.dialogSetupFunc.coursecompetency = function() {
 // Bind click handler
 function coursecompetency_bind(parent_element) {
 
-    var select = 'span.folder, div.hitarea';
+    var select = 'div.hitarea';
 
     // Load competency on category click
     $(select, parent_element).click(function() {
@@ -39,7 +39,7 @@ function coursecompetency_bind(parent_element) {
     });
 
     // Use competency on click
-    $('span.clickable', parent_element).click(function() {
+    $('span.clickable, span.folder', parent_element).click(function() {
 
         // Get id, format cmp_XX
         var id = $(this).attr('id').substr(4);
@@ -73,7 +73,7 @@ function coursecompetency_load_competency(parentid) {
     // Load courses
     YAHOO.util.Connect.asyncRequest(
         'GET',
-        '../hierarchy/type/competency/course/add.php?id='+competency_id+'&parentid='+parentid,
+        '../hierarchy/type/competency/course/add.php?parentid='+parentid,
         callback
     );
 }
@@ -84,13 +84,13 @@ function coursecompetency_add_competency(response) {
 
     var parent_id = response.argument;
     var competency = response.responseText;
-    var list = $('#coursecompetency #competency li#competency_list_'+parent_id+' ul:first');
+    var list = $('#coursecompetency #competencies li#competency_list_'+parent_id+' ul:first');
 
     // Remove all existing children
     $('li', list).remove();
 
     // Add competency
-    $('#coursecompetency #competency').treeview({add: list.append($(competency))});
+    $('#coursecompetency #competencies').treeview({add: list.append($(competency))});
 
     // Add click handlers for course names
     coursecompetency_bind(list);
