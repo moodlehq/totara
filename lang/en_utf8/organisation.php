@@ -37,6 +37,7 @@ $string['missingfullnameframework'] = 'Missing framework full name';
 $string['missingshortname'] = 'Missing organisation short name';
 $string['missingshortnamedepth'] = 'Missing depth level short name';
 $string['missingshortnameframework'] = 'Missing framework short name';
+$string['nochildorganisations'] = 'No child organisations defined';
 $string['noorganisation'] = 'No organisations defined';
 $string['noorganisationsinframework'] = 'No organisations in this framework';
 $string['nodepthlevels'] = 'No depth levels in this framework';

@@ -121,7 +121,16 @@ if ($positions) {
         echo '</li>'.PHP_EOL;
     }
 } else {
-    echo '<li><span class="empty">'.get_string('noorganisationsinframework', $hierarchy->prefix).'</span></li>'.PHP_EOL;
+    echo '<li><span class="empty">';
+
+    if ($parentid) {
+        echo get_string('nochildorganisations', $hierarchy->prefix);
+    }
+    else {
+        echo get_string('noorganisationsinframework', $hierarchy->prefix);
+    }
+
+    echo '</span></li>'.PHP_EOL;
 }
 
 // If no parent id, close list
