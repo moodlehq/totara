@@ -103,12 +103,21 @@ table#list-assignedcompetencytemplates td[colspan] {
 /*****************************************************************************/
 /** Dialogs **/
 /*****************************************************************************/
+div.yui-dialog .simpleframeworkpicker {
+    float: right;
+}
+
+div.yui-dialog h2 {
+    padding-top: 2px;
+}
+
 .selectcompetencies ul.treeview {
     width: 65%;
     overflow: auto;
 }
 
 .selectcompetencies #selectedcompetencies,
+.selectcourses #selectedcourses,
 div.yui-dialog .selected {
     float: right;
     width: 30%;
@@ -119,11 +128,13 @@ div.yui-dialog .selected {
 }
 
 .selectcompetencies #selectedcompetencies p,
+.selectcourses #selectedcourses p,
 div.yui-dialog .selected p {
     margin-top: 0;
 }
 
 .selectcompetencies #selectedcompetencies span,
+.selectcourses #selectedcourses span,
 div.yui-dialog .selected span {
     display: block;
     font-size: 0.8em;

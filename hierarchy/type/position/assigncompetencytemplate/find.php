@@ -51,6 +51,8 @@ $items = $hierarchy->get_templates();
 
 <div class="selectcompetencies">
 
+<?php $hierarchy->display_framework_selector('', true) ?>
+
 <h2><?php echo get_string($pagetitle, $hierarchy->prefix); ?></h2>
 
 <div class="selected">
@@ -79,7 +81,7 @@ if ($items) {
         echo '</li>'.PHP_EOL;
     }
 } else {
-    echo '<li><span class="empty">'.get_string('nounassignedcompetencytemplates').'</span></li>'.PHP_EOL;
+    echo '<li><span class="empty">'.get_string('nounassignedcompetencytemplates', 'position').'</span></li>'.PHP_EOL;
 }
 
 echo '</ul></div>';

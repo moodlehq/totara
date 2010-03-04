@@ -58,10 +58,12 @@ var assignDialog = function(name, find_url, save_url) {
  */
 var assignDialog_handler = function() {
 
+    this.first_load = function() {}
+
     /**
      * Setup treeview and enable dragging
      */
-    this.first_load = function() {
+    this.every_load = function() {
         this._setup_treeview_draggable();
     }
 }

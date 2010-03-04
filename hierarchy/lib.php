@@ -240,23 +240,40 @@ class hierarchy {
     /**
      * Display pulldown menu of frameworks
      * @param string $page Page to redirect to
+     * @param boolean $simple optional Display simple selector
      * @return boolean success
      */
-    function display_framework_selector($page = 'index.php') {
+    function display_framework_selector($page = 'index.php', $simple = false) {
         global $CFG;
 
         $frameworks = $this->get_frameworks();
 
-        if (count($frameworks) > 1) {
+        if (count($frameworks) <= 1) {
+            return;
+        }
+
+        if (!$simple) {
+
             $fwoptions = array();
+
+            echo '<div class="frameworkpicker">';
 
             foreach ($frameworks as $fw) {
                 $fwoptions[$fw->id] = $fw->fullname;
             }
 
-            echo '<div class="frameworkpicker">';
             popup_form($CFG->wwwroot.'/hierarchy/'.$page.'?type='.$this->prefix.'&frameworkid=', $fwoptions, 'switchframework', $this->frameworkid, '');
+
             echo '</div>';
+
+        }
+        else {
+
+            echo '<select class="simpleframeworkpicker">';
+            foreach ($frameworks as $fw) {
+                echo '<option value="'.$fw->id.'">'.htmlentities($fw->fullname).'</option>';
+            }
+            echo '</select>';
         }
     }
 

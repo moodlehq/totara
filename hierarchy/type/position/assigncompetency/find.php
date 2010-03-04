@@ -60,6 +60,8 @@ if (!$parentid) {
 
 <div class="selectcompetencies">
 
+<?php $hierarchy->display_framework_selector('', true) ?>
+
 <h2><?php echo get_string($pagetitle, $hierarchy->prefix); ?></h2>
 
 <div class="selected">
@@ -100,7 +102,7 @@ if ($competencies) {
         echo '</li>'.PHP_EOL;
     }
 } else {
-    echo '<li><span class="empty">'.get_string('nounassignedcompetencies').'</span></li>'.PHP_EOL;
+    echo '<li><span class="empty">'.get_string('nounassignedcompetencies', 'position').'</span></li>'.PHP_EOL;
 }
 
 // If no parent id, close list

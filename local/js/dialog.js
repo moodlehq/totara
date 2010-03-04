@@ -245,6 +245,8 @@ function yuiDialog(title, buttonid, config, default_url, handler) {
      * @return void
      */
     this.hide = function() {
+        this.handler._loaded = false;
+        this.dialog.setBody('');
         this.dialog.hide();
     }
 
@@ -259,6 +261,7 @@ function yuiDialog(title, buttonid, config, default_url, handler) {
     // Setup object
     this.setup();
 }
+
 
 var yuiDialog_handler = function() {
 
@@ -306,6 +309,9 @@ var yuiDialog_handler = function() {
 
             this._loaded = true;
         }
+            
+        // Run decendant method
+        this.every_load();
     }
 
     /**
@@ -314,8 +320,9 @@ var yuiDialog_handler = function() {
      * @param string request url
      * @param function call on success
      * @param function call on failure
+     * @param mixed argument
      */
-    this._request = function(url, success, failure) {
+    this._request = function(url, success, failure, argument) {
 
         // Setting up callbacks
         var handler = this;
@@ -327,7 +334,8 @@ var yuiDialog_handler = function() {
             url,
             {
                 success: function(response) { success(handler, response) },
-                failure: function() { failure(dialog, url) }
+                failure: function() { failure(dialog, url) },
+                argument: argument
             }
         );
     }
@@ -403,6 +411,15 @@ var yuiDialog_handler = function() {
         // Setup treeview
         $('.treeview', this._container).treeview();
 
+        var handler = this;
+        // Setup framework picker
+        $('.simpleframeworkpicker', this._container).change(function() {
+            handler._set_framework();
+        });
+
+        // Setup hierarchy
+        this._make_hierarchy($('.treeview', this._container));
+
         // Setup droppable region
         $('.selected', this._container).droppable({
             drop: this._event_drop
@@ -413,6 +430,50 @@ var yuiDialog_handler = function() {
     }
 
     /**
+     * Setup hierarchy click handlers
+     *
+     * @return void
+     */
+    this._make_hierarchy = function(parent_element) {
+        var handler = this;
+
+        // Load courses on category click
+        $('span.folder, div.hitarea', parent_element).one('click', function() {
+
+            // Get parent for id
+            var par = $(this).parent();
+
+            // Id in format item_list_XX
+            var id = par.attr('id').substr(10);
+
+            var url = handler._dialog.url+'&parentid='+id;
+            handler._request(url, handler._update_hierarchy, handler._dialog.request_failure, id);
+        });
+    }
+
+    /**
+     * @param yuiDialog_handler this handler object
+     * @param yuiresponse YUI repsonse object
+     * @return void
+     */
+    this._update_hierarchy = function(handler, response) {
+        
+        var parent_id = response.argument;
+        var items = response.responseText;
+        var list = $('.treeview li#item_list_'+parent_id+' ul:first', handler._container);
+        
+        // Remove all existing children
+        $('li', list).remove();
+
+        // Add items
+        $('.treeview', handler._container).treeview({add: list.append($(items))});
+
+        // Setup new items
+        handler._make_hierarchy(list);
+        handler._make_draggable(list);
+    }
+
+    /**
      * Make decending spans draggable
      *
      * @param jQuery element list
@@ -420,7 +481,7 @@ var yuiDialog_handler = function() {
      */
     this._make_draggable = function(parent_element) {
 
-        $('span', parent_element).draggable({
+        $('span:not(.empty)', parent_element).draggable({
             containment: 'body',
             helper: 'clone'
         });
@@ -462,5 +523,40 @@ var yuiDialog_handler = function() {
 
         // Send to server
         this._request(url, this._update, this._dialog.request_failure);
+    }
+
+    /**
+     * Change framework
+     *
+     * @return void
+     */
+    this._set_framework = function() {
+
+        // Get currently selected option
+        var selected = $('.simpleframeworkpicker option:selected', this._container).val();
+
+        // Update URL
+        var url = this._dialog.url;
+
+        // See if framework specific
+        if (url.indexOf('frameworkid=') == -1) {
+            url = url + '&frameworkid=' + selected;
+        } else {
+            // Get start of frameworkid
+            var start = url.indexOf('frameworkid=') + 12;
+
+            // Find how many characters long the value is
+            var end = url.indexOf('&', start);
+
+            // If no following &, it is the end of the url
+            if (end == -1) {
+                url = url.substring(0, start) + selected;
+            // Just replace the value
+            } else {
+                url = url.substring(0, start) + selected + url.substring(end);
+            }
+        }
+
+        this._dialog.load(url, 'GET');
     }
 }
