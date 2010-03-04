@@ -1,0 +1,161 @@
+<?php
+    $yesno = array('0'=>get_string('no'), '1'=>get_string('yes'));
+?>
+
+<table cellspacing="0" cellpadding="5" border="0" class="boxaligncenter">
+<tr>
+<th colspan="2" scope="col">
+    <?php print_string("server_settings", "enrol_dbpositions") ?>
+</th>
+</tr>
+<tr>
+    <td align="right">enrol_dbpositions_type:</td>
+    <td>
+    <?php
+       $dbtypes = array("access","ado_access", "ado", "ado_mssql", "borland_ibase", "csv", "db2", "fbsql", "firebird", "ibase", "informix72", "informix", "mssql", "mssql_n", "mysql", "mysqlt", "oci805", "oci8", "oci8po", "odbc", "odbc_mssql", "odbc_oracle", "oracle", "postgres64", "postgres7", "postgres", "proxy", "sqlanywhere", "sybase", "vfp");
+       foreach ($dbtypes as $dbtype) {
+           $dboptions[$dbtype] = $dbtype;
+       }
+       if (!isset($frm->enrol_dbpositions_type)) {
+           $frm->enrol_dbpositions_type = 'mysql';
+       }
+       choose_from_menu($dboptions, "enrol_dbpositions_type", $frm->enrol_dbpositions_type, '', '', '');
+    ?>
+
+    </td>
+    <td>
+    <?php  print_string("dbtype","enrol_dbpositions") ?>
+    </td>
+</tr>
+
+<tr>
+    <td align="right">enrol_dbpositions_host:</td>
+    <td>
+    <?php
+        if (!isset($frm->enrol_dbpositions_host)) {
+            $frm->enrol_dbpositions_host = '';
+        }
+    ?>
+        <input size="15" type="text" name="enrol_dbpositions_host" value="<?php p($frm->enrol_dbpositions_host) ?>" />
+    </td>
+    <td>
+    <?php  print_string("dbhost","enrol_dbpositions") ?>
+    </td>
+</tr>
+
+<tr>
+    <td align="right">enrol_dbpositions_user:</td>
+    <td>
+        <input size="15" type="text" name="enrol_dbpositions_user" value="<?php echo $frm->enrol_dbpositions_user ?>" />
+    </td>
+    <td>
+    <?php  print_string("dbuser","enrol_dbpositions") ?>
+    </td>
+</tr>
+
+<tr>
+    <td align="right">enrol_dbpositions_pass:</td>
+    <td>
+        <input size="15" type="password" name="enrol_dbpositions_pass" value="<?php echo $frm->enrol_dbpositions_pass ?>" />
+    </td>
+    <td>
+    <?php  print_string("dbpass","enrol_dbpositions") ?>
+    </td>
+</tr>
+
+<tr>
+    <td align="right">enrol_dbpositions_name:</td>
+    <td>
+        <input size="15" type="text" name="enrol_dbpositions_name" value="<?php echo $frm->enrol_dbpositions_name ?>" />
+    </td>
+    <td>
+    <?php  print_string("dbname","enrol_dbpositions") ?>
+    </td>
+</tr>
+<tr>
+    <td align="right">enrol_dbpositions_useenroldatabase:</td>
+    <td colspan="2">
+        <input size="15" type="checkbox" name="enrol_dbpositions_useenroldatabase" value="1" <?php echo ($frm->enrol_dbpositions_useenroldatabase ? 'checked="checked"' : "");  ?>" />
+    <?php print_string("useenroldatabase", "enrol_dbpositions"); ?>
+    </td>
+</tr>
+<tr>
+    <td align="right">enrol_dbpositions_useauthdb:</td>
+    <td colspan="2">
+        <input size="15" type="checkbox" name="enrol_dbpositions_useauthdb" value="1" <?php echo ($frm->enrol_dbpositions_useauthdb ? 'checked="checked"' : '') ?>" />
+    <?php print_string("useauthdb", "enrol_dbpositions"); ?>
+    </td>
+</tr>
+<tr>
+    <td align="right">enrol_dbpositions_table:</td>
+    <td>
+        <input size="15" type="text" name="enrol_dbpositions_table" value="<?php echo $frm->enrol_dbpositions_table ?>" />
+    </td>
+    <td>
+    <?php  print_string("dbtable","enrol_dbpositions") ?>
+    </td>
+</tr>
+<tr>
+    <th colspan="2" scope="col">
+        <?php print_string("remote_fields_mapping", "enrol_dbpositions") ?>
+    </th>
+</tr>
+<tr>
+    <td align="right">enrol_dbpositions_localsubjectuserfield:</td>
+    <td>
+        <input size="15" type="text" name="enrol_dbpositions_localsubjectuserfield" value="<?php echo $frm->enrol_dbpositions_localsubjectuserfield ?>" />
+    </td>
+    <td>
+    <?php  print_string("localsubjectuserfield","enrol_dbpositions") ?>
+    </td>
+</tr>
+
+<tr>
+    <td align="right">enrol_dbpositions_localobjectuserfield:</td>
+    <td>
+        <input size="15" type="text" name="enrol_dbpositions_localobjectuserfield" value="<?php echo $frm->enrol_dbpositions_localobjectuserfield ?>" />
+    </td>
+    <td>
+    <?php  print_string("localobjectuserfield","enrol_dbpositions") ?>
+    </td>
+</tr>
+
+<tr>
+    <td align="right">enrol_dbpositions_localrolefield:</td>
+    <td>
+        <input size="15" type="text" name="enrol_dbpositions_localrolefield" value="<?php echo $frm->enrol_dbpositions_localrolefield ?>" />
+    </td>
+    <td>
+    <?php  print_string("localrolefield","enrol_dbpositions") ?>
+    </td>
+</tr>
+
+<tr>
+    <td align="right">enrol_dbpositions_remotesubjectuserfield:</td>
+    <td>
+        <input size="15" type="text" name="enrol_dbpositions_remotesubjectuserfield" value="<?php echo $frm->enrol_dbpositions_remotesubjectuserfield ?>" />
+    </td>
+    <td>
+    <?php  print_string("remotesubjectuserfield","enrol_dbpositions") ?>
+    </td>
+</tr>
+<tr>
+    <td align="right">enrol_dbpositions_remoteobjectuserfield:</td>
+    <td>
+        <input size="15" type="text" name="enrol_dbpositions_remoteobjectuserfield" value="<?php echo $frm->enrol_dbpositions_remoteobjectuserfield ?>" />
+    </td>
+    <td>
+    <?php  print_string("remoteobjectuserfield","enrol_dbpositions") ?>
+    </td>
+</tr>
+
+<tr>
+    <td align="right">enrol_dbpositions_remoterolefield:</td>
+    <td>
+        <input size="15" type="text" name="enrol_dbpositions_remoterolefield" value="<?php echo $frm->enrol_dbpositions_remoterolefield ?>" />
+    </td>
+    <td>
+    <?php  print_string("remoterolefield","enrol_dbpositions") ?>
+    </td>
+</tr>
+</table>
