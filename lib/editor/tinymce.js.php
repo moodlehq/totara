@@ -189,17 +189,16 @@ echo <<<EOF
         theme_advanced_layout_manager: "SimpleLayout",
         theme_advanced_toolbar_align : "left",
         theme_advanced_buttons1: "fontselect,fontsizeselect,formatselect,styleselect",
-        theme_advanced_buttons1_add: "|,undo,redo,|,search,spellchecker",
-        theme_advanced_buttons2: "bold,italic,underline,strikethrough,sub,sup,|,justifyleft,justifycenter,justifyright,justifyfull",
-        theme_advanced_buttons2_add: "|,emoticons,image,,dragmath,advhr,nonbreaking,charmap,|,forecolor,backcolor,|,ltr,rtl",
-        theme_advanced_buttons3: "bullist,numlist,outdent,indent,|,link,unlink,moodlenolink,anchor,|,insertdate,inserttime,|,selectall,cleanup,removeformat,pastetext,pasteword",
-        theme_advanced_buttons3_add: "|,table,insertlayer,styleprops,visualchars,|,code,preview",
+        theme_advanced_buttons2: "undo,redo,|,search,spellchecker,|,bold,italic,underline,strikethrough,sub,sup,|,emoticons,image,dragmath,advhr,nonbreaking,charmap",
+        theme_advanced_buttons3: "forecolor,backcolor,|,ltr,rtl,|,bullist,numlist,outdent,indent,|,link,unlink,moodlenolink,anchor,|,insertdate,inserttime",
+        theme_advanced_buttons4: "selectall,cleanup,removeformat,pastetext,pasteword,|,table,insertlayer,styleprops,visualchars,|,code,preview,|,justifyleft,justifycenter,justifyright,justifyfull",
         theme_advanced_fonts: "Trebuchet=Trebuchet MS,Verdana,Arial,Helvetica,sans-serif;Arial=arial,helvetica,sans-serif;Courier New=courier new,courier,monospace;Georgia=georgia,times new roman,times,serif;Tahoma=tahoma,arial,helvetica,sans-serif;Times New Roman=times new roman,times,serif;Verdana=verdana,arial,helvetica,sans-serif;Impact=impact;Wingdings=wingdings", 
         theme_advanced_resize_horizontal: true,
         theme_advanced_resizing: true,
         theme_advanced_toolbar_location : "top",
         theme_advanced_statusbar_location : "bottom",
         file_browser_callback : "mce_moodlefilemanager",
+        width : "100%",
 
 EOF;
 // the xhtml ruleset must be the last one - no comma at the end of the file
