@@ -22,7 +22,6 @@ if ($depthid != 0) {
     }
 }
 
-$redirect = $CFG->wwwroot.'/customfield/index.php?type='.$type;
 if ($subtype !== null) {
     $redirect .= '&subtype='.$subtype;
 }
@@ -36,7 +35,8 @@ if ($subtype !== null) {
     $tableprefix = $type;
 }
 
-admin_externalpage_setup($type.'depthcustomfields', '', array(), '', $redirect);
+$sitecontext = get_context_instance(CONTEXT_SYSTEM);
+require_capability('moodle/local:view'.$type, $sitecontext);
 
 // check if any actions need to be performed
 switch ($action) {
@@ -110,7 +110,15 @@ switch ($action) {
     default:
 }
 
-admin_externalpage_print_header();
+// Display page header
+$pagetitle = format_string($depth->fullname.' - '.$item->fullname);
+$navlinks[] = array('name' => get_string('administration'), 'link'=> '', 'type'=>'title');
+$navlinks[] = array('name' => get_string($type.'plural',$type), 'link'=> '', 'type'=>'title');
+$navlinks[] = array('name' => get_string($type.'depthcustomfields',$type), 'link'=> '', 'type'=>'title');
+
+$navigation = build_navigation($navlinks);
+
+print_header_simple($pagetitle, '', $navigation, '', null, true, $navbaritem);
 print_heading(get_string($type.'depthcustomfields', $type));
 
 // show custom fields for the given depth
@@ -214,5 +222,4 @@ if ($depthid) {
     }
 }
 
-admin_externalpage_print_footer();
-die;
+print_footer();
