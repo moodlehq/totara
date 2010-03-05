@@ -2474,7 +2474,7 @@ function facetoface_print_coursemodule_info($coursemodule)
                 $venue = $customfielddata['venue']->data;
             }
 
-            $table = '<table border="0" cellpadding="1" cellspacing="0" width="90%" summary="">'
+            $table = '<table border="0" cellpadding="1" cellspacing="0" width="90%" summary="" style="display:inline-table">'
                 .'<tr>'
                 .'<td class="f2fsessionnotice" colspan="4">'.$htmlactivitynameonly.'</td>'
                 .'</tr>'
@@ -2502,7 +2502,7 @@ function facetoface_print_coursemodule_info($coursemodule)
     }
     elseif ($facetoface->display > 0 && $sessions = facetoface_get_sessions($facetofaceid) ) {
 
-        $table = '<table border="0" cellpadding="1" cellspacing="0" width="100%" summary="">'
+        $table = '<table border="0" cellpadding="1" cellspacing="0" width="100%" summary="" style="display:inline-table">'
             .'   <tr>'
             .'       <td class="f2fsessionnotice" colspan="2">'.$htmlactivitynameonly.'</td>'
             .'   </tr>'
