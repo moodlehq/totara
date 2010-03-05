@@ -22,6 +22,7 @@ if ($depthid != 0) {
     }
 }
 
+$redirect = $CFG->wwwroot.'/customfield/index.php?type='.$type;
 if ($subtype !== null) {
     $redirect .= '&subtype='.$subtype;
 }

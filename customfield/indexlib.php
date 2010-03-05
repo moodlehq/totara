@@ -378,10 +378,18 @@ function customfield_edit_category($id, $depthid=0, $redirect, $tableprefix, $ty
         }
 
         /// Print the page
-        admin_externalpage_print_header();
+        // Display page header
+        $pagetitle = format_string($depth->fullname.' - '.$item->fullname);
+        $navlinks[] = array('name' => get_string('administration'), 'link'=> '', 'type'=>'title');
+        $navlinks[] = array('name' => get_string($type.'plural',$type), 'link'=> '', 'type'=>'title');
+        $navlinks[] = array('name' => get_string($type.'depthcustomfields',$type), 'link'=> '', 'type'=>'title');
+
+        $navigation = build_navigation($navlinks);
+
+        print_header_simple($pagetitle, '', $navigation, '', null, true, $navbaritem);
         print_heading($strheading);
         $categoryform->display();
-        admin_externalpage_print_footer();
+        print_footer();
         die;
     }
 
@@ -423,10 +431,18 @@ function customfield_edit_field($id, $datatype, $depthid=0, $redirect, $tablepre
         }
 
         /// Print the page
-        admin_externalpage_print_header();
+        // Display page header
+        $pagetitle = format_string($depth->fullname.' - '.$item->fullname);
+        $navlinks[] = array('name' => get_string('administration'), 'link'=> '', 'type'=>'title');
+        $navlinks[] = array('name' => get_string($type.'plural',$type), 'link'=> '', 'type'=>'title');
+        $navlinks[] = array('name' => get_string($type.'depthcustomfields',$type), 'link'=> '', 'type'=>'title');
+
+        $navigation = build_navigation($navlinks);
+
+        print_header_simple($pagetitle, '', $navigation, '', null, true, $navbaritem);
         print_heading($strheading);
         $fieldform->display();
-        admin_externalpage_print_footer();
+        print_footer();
         die;
     }
 }
