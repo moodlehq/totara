@@ -763,6 +763,16 @@ table.minicalendar .weekend {
   background: transparent;
 }
 
+#calendar .duration_global, .minicalendar .duration_global {
+  border-bottom-color:#d6e4ef !important;
+  border-top-color:#d6e4ef !important;
+}
+
+#calendar .event_global, .minicalendar .event_global, .block_calendar_month .event_global {
+  background-color:#cce0ef;
+  border-color:#d6e4ef !important;
+}
+
 /**
  * YUI Drop-down menu
  **/
