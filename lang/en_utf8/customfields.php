@@ -39,4 +39,4 @@ $string['shortname'] = 'Short name (must be unique in depth level)';
 $string['shortnamenotunique'] = 'This short name is already in use in the depth level';
 $string['specificsettings'] = 'Specific settings';
 $string['required'] = 'Is this field required?';
-$string['visible'] = 'Who is this field visible to?';
+$string['visible'] = 'Hidden on the index page?';
