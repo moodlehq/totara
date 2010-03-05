@@ -145,3 +145,54 @@ div.yui-dialog .selected span {
     font-size: 0.8em;
     margin-top: 1em;
 }
+/*****************************************************************************/
+/** Dashboards **/
+/*****************************************************************************/
+table.centerblock td, th {
+  text-align: left;
+  padding: 2px;
+}
+
+table.centerblock td.startdate, table.centerblock td.completeddate {
+  text-align: right;
+}
+
+table.centerblock td.status, table.centerblock td.status {
+  text-align: center;
+}
+
+#site-index #middle-column div.mycurrentcourses div.mycourses {
+  margin-top: 5px;
+  margin-left: 2px;
+  margin-bottom: 0px;
+  font-weight: bold;
+}
+
+#site-index #middle-column div.mycurrentcourses {
+  width: 552px;
+  margin-top: 9px;
+  margin-left: 12px;
+  background: url(images/centercontent_bg.jpg) no-repeat center top !important;
+}
+
+#site-index #middle-column div.mycurrentcourses div.header h2 {
+  color:#002C3F;
+  font-size:1em;
+  margin:0;
+  padding-left: 7px;
+  padding-top: 7px;
+  padding-bottom: 6px;
+  font-size: 11px;
+  font-weight: bold;
+  border:none;
+}
+
+#site-index #middle-column div.mycurrentcourses div.header {
+  border:none;
+  background: #b3d4ed url(images/centerheader_bg.png) no-repeat left top;
+}
+
+#site-index #middle-column div.mycurrentcourses .content {
+  padding: 7px 7px 12px 7px;
+  background: transparent url(images/centerfooter_bg.png) no-repeat left bottom;
+}

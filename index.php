@@ -187,10 +187,11 @@
         $frontpagelayout = $CFG->frontpage;
     }
 
-
-    if (file_exists($CFG->dirroot.'/theme/'.$CFG->theme.'/frontpage.html')) {
-        include($CFG->dirroot.'/theme/'.$CFG->theme.'/frontpage.html');
+    if (file_exists($CFG->dirroot.'/local/mitms.php')) {
+        require_once($CFG->dirroot.'/local/mitms.php');
+        mitms_print_my_current_courses();
     }
+
     foreach (explode(',',$frontpagelayout) as $v) {
         switch ($v) {     /// Display the main part of the front page.
             case FRONTPAGENEWS:
