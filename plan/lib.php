@@ -1974,8 +1974,8 @@ function print_revision_trainee($revision, $plan, $options=array()) {
         $revision->owner = $USER;
     }
 
-    print_revision_details($revision, $options['can_submit'], false, false, true);
-    print_revision_list($plan->id, $revision->id);
+//    print_revision_details($revision, $options['can_submit'], false, false, true);
+//    print_revision_list($plan->id, $revision->id);
 
     if ($options['can_edit']) {
         print_comment_textbox($revision->id);
@@ -2026,7 +2026,7 @@ function print_revision_preview($revision, $plan, $printable=true) {
         print print_button();
     }
 
-    print_revision_details($revision, false, false, false, false);
+//    print_revision_details($revision, false, false, false, false);
 
     $competencies = idp_get_user_competencies($plan->userid, $revision->id);
     if ($competencies) {

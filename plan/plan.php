@@ -54,79 +54,119 @@ elseif ('create' == $action or 'rename' == $action) {
     $stridps = get_string('idps', 'idp');
     $pagetitle = get_string("{$action}planbreadcrumb", 'idp');
 
+    $PAGE = page_create_object('MITMS', $USER->id);
+    $pageblocks = blocks_setup($PAGE,BLOCKS_PINNED_BOTH);
+    $blocks_preferred_width = bounded_number(180, blocks_preferred_width($pageblocks[BLOCK_POS_LEFT]), 210);
+
     $navlinks = array();
     $navlinks[] = array('name' => $stridps, 'link' => $CFG->wwwroot."/plan/index.php", 'type' => 'home');
     $navlinks[] = array('name' => $pagetitle, 'link' => '', 'type' => 'home');
 
-    $navigation = build_navigation($navlinks);
+    $PAGE->print_header($stridps, $navlinks);
 
-    // Add YUI javascript and CSS.
-    $CFG->stylesheets[] = $CFG->wwwroot . '/lib/yui/calendar/assets/skins/sam/calendar.css';
-    require_js(array('yui_yahoo', 'yui_event', 'yui_connection', 'yui_json', 'yui_dom', 'yui_dom-event', 'yui_calendar'));
-    require_js($CFG->wwwroot . '/local/js/PopupCalendar.js');
+    echo '<table id="layout-table">';
+    echo '<tr valign="top">';
 
-    print_header_simple($pagetitle, '', $navigation, '', '', true);
+    $lt = (empty($THEME->layouttable)) ? array('left', 'middle', 'right') : $THEME->layouttable;
+    foreach ($lt as $column) {
+        switch ($column) {
+        case 'left':
 
-    print '<h1>'.get_string("{$action}plantitle", 'idp').'</h1>';
+            if(blocks_have_content($pageblocks, BLOCK_POS_LEFT) || $PAGE->user_is_editing()) {
+                echo '<td style="vertical-align: top; width: '.$blocks_preferred_width.'px;" id="left-column">';
+                print_container_start();
+                blocks_print_group($PAGE, $pageblocks, BLOCK_POS_LEFT);
+                print_container_end();
+                echo '</td>';
+            } else {
+                echo '<td id="left-column"></td>';
+            }
 
-    $defaultname = get_string('defaultplanname', 'idp');
-    $defaultstartdate = strtotime('now');
-    $defaultenddate = strtotime('now + 3 months');
+        break;
+        case 'middle':
 
-    if ('create' != $action) {
-        // Get the current values from the DB
-        $plan = get_record('idp', 'id', $planid);
-        $defaultname = $plan->name;
-        $defaultstartdate = $plan->startdate;
-        $defaultenddate = $plan->enddate;
+            echo '<td valign="top" id="middle-column">';
+            // Add YUI javascript and CSS.
+            $CFG->stylesheets[] = $CFG->wwwroot . '/lib/yui/calendar/assets/skins/sam/calendar.css';
+            require_js(array('yui_yahoo', 'yui_event', 'yui_connection', 'yui_json', 'yui_dom', 'yui_dom-event', 'yui_calendar'));
+            require_js($CFG->wwwroot . '/local/js/PopupCalendar.js');
+
+            print '<h1>'.get_string("{$action}plantitle", 'idp').'</h1>';
+
+            $defaultname = get_string('defaultplanname', 'idp');
+            $defaultstartdate = strtotime('now');
+            $defaultenddate = strtotime('now + 3 months');
+
+            if ('create' != $action) {
+                // Get the current values from the DB
+                $plan = get_record('idp', 'id', $planid);
+                $defaultname = $plan->name;
+                $defaultstartdate = $plan->startdate;
+                $defaultenddate = $plan->enddate;
+            }
+
+            print '<form method="get" action="plan.php">';
+
+            // Ask for a name
+            print '<p>'.get_string('plannameexplanation1', 'idp')."</p>\n";
+            print '<blockquote><p>';
+            print '<input type="hidden" name="planid" value="'.$planid.'" />';
+            print '<input type="hidden" name="action" value="'.$action.'" />';
+            print '<input id="planname" type="text" name="name" value="'.$defaultname.'" size="30" maxlength="255" />';
+            //print '<br />'.get_string('plannameexplanation2', 'idp');
+            print '</p></blockquote>';
+
+            // Start/end dates
+            print '<p>'.get_string('trainingperiodexplanation', 'idp').'</p>';
+            print '<blockquote><p>';
+            print '<input type="text" id="startdate" name="startdate" value="'.strftime('%d-%m-%Y', $defaultstartdate).'" size="15" maxlength="30" />';
+            print ' '.get_string('to', 'idp').' ';
+            print '<input type="text" name="enddate" id="enddate" value="'.strftime('%d-%m-%Y', $defaultenddate).'" size="15" maxlength="30" />';
+            print '</p></blockquote>';
+
+            // Submit button
+            print '<p><input type="submit" value="'.get_string("{$action}plan", 'idp').'" /></p>';
+            print '</form>';
+
+            // Put the focus on the name editbox
+            print '<script type="text/javascript">';
+            print 'var editbox = getobject(\'planname\');';
+            print 'editbox.focus();';
+            print '</script>'."\n";
+
+            // Add .js for popup-calendars
+            print '
+                <script type="text/javascript">
+
+                    // this is needed for the YUI calendar skinning, for some reason.
+                    document.body.className = document.body.className + " yui-skin-sam";
+
+                    YAHOO.util.Event.onDOMReady( function(e) {
+                            try {
+                                var cal1 = new PopupCalendar("startdate");
+                                var cal2 = new PopupCalendar("enddate");
+                            } catch(e) {
+                                // Something broke, so we\'ll leave it to the server end.
+                            }
+                        });
+                </script>
+            ';
+            echo '</td>';
+
+    break;
+    case 'right':
+        echo '<td style="vertical-align: top; width: '.$blocks_preferred_width.'px;" id="right-column">';
+        print_container_start();
+        blocks_print_group($PAGE, $pageblocks, BLOCK_POS_RIGHT);
+        print_container_end();
+        echo '</td>';
+    break;
     }
+}
 
-    print '<form method="get" action="plan.php">';
 
-    // Ask for a name
-    print '<p>'.get_string('plannameexplanation1', 'idp')."</p>\n";
-    print '<blockquote><p>';
-    print '<input type="hidden" name="planid" value="'.$planid.'" />';
-    print '<input type="hidden" name="action" value="'.$action.'" />';
-    print '<input id="planname" type="text" name="name" value="'.$defaultname.'" size="30" maxlength="255" />';
-    //print '<br />'.get_string('plannameexplanation2', 'idp');
-    print '</p></blockquote>';
-
-    // Start/end dates
-    print '<p>'.get_string('trainingperiodexplanation', 'idp').'</p>';
-    print '<blockquote><p>';
-    print '<input type="text" id="startdate" name="startdate" value="'.strftime('%d-%m-%Y', $defaultstartdate).'" size="15" maxlength="30" />';
-    print ' '.get_string('to', 'idp').' ';
-    print '<input type="text" name="enddate" id="enddate" value="'.strftime('%d-%m-%Y', $defaultenddate).'" size="15" maxlength="30" />';
-    print '</p></blockquote>';
-
-    // Submit button
-    print '<p><input type="submit" value="'.get_string("{$action}plan", 'idp').'" /></p>';
-    print '</form>';
-
-    // Put the focus on the name editbox
-    print '<script type="text/javascript">';
-    print 'var editbox = getobject(\'planname\');';
-    print 'editbox.focus();';
-    print '</script>'."\n";
-
-    // Add .js for popup-calendars
-    print '
-        <script type="text/javascript">
-
-            // this is needed for the YUI calendar skinning, for some reason.
-            document.body.className = document.body.className + " yui-skin-sam";
-
-            YAHOO.util.Event.onDOMReady( function(e) {
-                    try {
-                        var cal1 = new PopupCalendar("startdate");
-                        var cal2 = new PopupCalendar("enddate");
-                    } catch(e) {
-                        // Something broke, so we\'ll leave it to the server end.
-                    }
-                });
-        </script>
-    ';
+    /// Finish the page
+    print '</tr></table>';
 
     print_footer();
 }

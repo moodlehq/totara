@@ -47,6 +47,10 @@ add_to_log(SITEID, 'idp', 'view', "plan/index.php");
 
 $stridps = get_string('idps', 'idp');
 
+$PAGE = page_create_object('MITMS', $USER->id);
+$pageblocks = blocks_setup($PAGE,BLOCKS_PINNED_BOTH);
+$blocks_preferred_width = bounded_number(180, blocks_preferred_width($pageblocks[BLOCK_POS_LEFT]), 210);
+
 $navlinks = array();
 
 if ($summary) {
@@ -63,142 +67,178 @@ else {
         $navlinks[] = array('name' => fullname($user), 'link' => '', 'type' => 'home');
     }
 }
-$navigation = build_navigation($navlinks);
 
-print_header_simple(format_string($stridps), '', $navigation, '', '', true, '', '');
+$PAGE->print_header($stridps, $navlinks);
 
-if ($summary) {
-    // Evaluation Summary page
-    print print_button();
-    print '<h1>'.get_string('evaluationsummarytitle', 'idp').'</h1>';
+echo '<table id="layout-table">';
+echo '<tr valign="top">';
 
-    $usercurriculum = get_field('user', 'curriculum', 'id', $userid);
-    if (!empty($usercurriculum)) {
-        print '<h2>'.get_string("curriculum_{$usercurriculum}_title", 'idp').'</h2>';
-        print '<blockquote>' . evaluation_summary($usercurriculum, $userid) . '</blockquote>';
-    }
-    else {
-        print '<p style="border-style: dashed; border-color: #FF0000"><i><b>'.get_string('error:nousercurriculum', 'idp').'</b></i></p>';
-    }
+$lt = (empty($THEME->layouttable)) ? array('left', 'middle', 'right') : $THEME->layouttable;
+foreach ($lt as $column) {
+    switch ($column) {
+    case 'left':
 
-    print '<h2>'.get_string("curriculum_Q_title", 'idp').'</h2>';
-    print '<blockquote>' . evaluation_summary('Q', $userid) . '</blockquote>';
-
-    print '<p id="backtoplanslink"><a href="index.php?userid='.$userid.'">'.
-        get_string('backlearningplans', 'idp').'</a></p>';
-}
-elseif ($manageroverview) {
-    $perpage = 20;
-    $hasplans = false;
-    $canviewplans = true;
-    print '<h1>'.get_string('traineesummarytitle', 'idp', format_user_link($userid)).'</h1>';
-    $hasplans = print_user_learning_plans($userid, $canviewplans, $page, $perpage, $orderby);
-    if ($ownpage && has_capability('moodle/local:editownplan', $contextsite)) {
-        // Create new plan button
-        print '<table width="80%"><tr><td><form method="get" action="plan.php"><div>';
-        print '<input type="hidden" name="action" value="create" />';
-        print '<input type="submit" value="'.get_string('createnewplan', 'idp').'" />';
-        print "</div></form></td>\n";
-    }
-
-    if ($hasplans) {
-        // Evaluation Summary button
-        print '<td align="right"><form method="get" action="index.php"><div>';
-        print '<input type="hidden" name="userid" value="'.$userid.'" />';
-        print '<input type="hidden" name="summary" value="1" />';
-        print '<input type="submit" value="'.get_string('viewsummary', 'idp').'" />';
-        print '</div></form></td>';
-    }
-    print "</tr></table>\n";
-
-    // manager overview
-    print '<h1>'.get_string('manageroverviewtitle', 'idp').'</h1>';
-
-    // Get all of the plans
-    $plans = get_plans($userid);
-    $nbplans = count($plans);
-
-    $trainees = get_trainees($userid);
-
-    if ($trainees and count($trainees) > 0) {
-        // Show submitted/approved plans
-        print '<h2>'.get_string('learningplanapproval', 'idp')."</h2>\n";
-
-        // JavaScript selector to filter in/out the approved plans
-        print '<p><b>'.get_string('filter', 'idp').'</b>&nbsp;<select name="showapproved"';
-        print " onchange=\"window.location='index.php?userid=$userid&amp;orderby=$orderby&amp;showapproved=' + this.value\">";
-        print '<option '.($showapproved ? 'selected="selected"' : '').' value="1">';
-        print get_string('showapprovedplans', 'idp').'</option>';
-        print '<option '.($showapproved ? '' : 'selected="selected"').' value="0">';
-        print get_string('hideapprovedplans', 'idp').'</option>';
-        print "</select></p>\n";
-
-        print_pending_plans($trainees, $orderby, $showapproved);
-    }
-
-    // User search
-    print '<h2>'.get_string('searchforusers', 'idp').'</h2>';
-    print usersearch_form();
-
-    // Show the trainees
-    if ($ownpage) {
-        print '<h2>'.get_string('yourtrainees', 'idp')."</h2>\n";
-    }
-    else {
-        print '<h2>'.get_string('userstrainees', 'idp', format_user_link($userid))."</h2>\n";
-    }
-
-    if ($trainees and count($trainees) > 0) {
-        print_trainees_summary($trainees);
-    }
-    else {
-        print '<p><i>'.get_string('notrainees', 'idp')."</i></p>\n";
-    }
-}
-else {
-    // Trainee summary
-    print '<h1>'.get_string('traineesummarytitle', 'idp', format_user_link($userid, false)).'</h1>';
-
-    $hasplans = false;
-    {
-        $perpage = 20;
-
-        $canviewplans = false;
-        if ($ownpage) {
-            if (has_capability('moodle/local:viewownplan', $contextsite)) {
-                $canviewplans = true;
-            }
+        if(blocks_have_content($pageblocks, BLOCK_POS_LEFT) || $PAGE->user_is_editing()) {
+            echo '<td style="vertical-align: top; width: '.$blocks_preferred_width.'px;" id="left-column">';
+            print_container_start();
+            blocks_print_group($PAGE, $pageblocks, BLOCK_POS_LEFT);
+            print_container_end();
+            echo '</td>';
         } else {
-            if (has_capability('moodle/local:viewplan', $contextuser)) {
-                $canviewplans = true;
+            echo '<td id="left-column"></td>';
+        }
+
+    break;
+    case 'middle':
+
+        echo '<td valign="top" id="middle-column">';
+        if ($summary) {
+            // Evaluation Summary page
+            print print_button();
+            print '<h1>'.get_string('evaluationsummarytitle', 'idp').'</h1>';
+
+            $usercurriculum = get_field('user', 'curriculum', 'id', $userid);
+            if (!empty($usercurriculum)) {
+                print '<h2>'.get_string("curriculum_{$usercurriculum}_title", 'idp').'</h2>';
+                print '<blockquote>' . evaluation_summary($usercurriculum, $userid) . '</blockquote>';
+            }
+            else {
+                print '<p style="border-style: dashed; border-color: #FF0000"><i><b>'.get_string('error:nousercurriculum', 'idp').'</b></i></p>';
+            }
+
+            print '<h2>'.get_string("curriculum_Q_title", 'idp').'</h2>';
+            print '<blockquote>' . evaluation_summary('Q', $userid) . '</blockquote>';
+
+            print '<p id="backtoplanslink"><a href="index.php?userid='.$userid.'">'.
+                get_string('backlearningplans', 'idp').'</a></p>';
+        }
+        elseif ($manageroverview) {
+            $perpage = 20;
+            $hasplans = false;
+            $canviewplans = true;
+            print '<h1>'.get_string('traineesummarytitle', 'idp', format_user_link($userid)).'</h1>';
+            $hasplans = print_user_learning_plans($userid, $canviewplans, $page, $perpage, $orderby);
+            if ($ownpage && has_capability('moodle/local:editownplan', $contextsite)) {
+                // Create new plan button
+                print '<table width="80%"><tr><td><form method="get" action="plan.php"><div>';
+                print '<input type="hidden" name="action" value="create" />';
+                print '<input type="submit" value="'.get_string('createnewplan', 'idp').'" />';
+                print "</div></form></td>\n";
+            }
+
+            if ($hasplans) {
+                // Evaluation Summary button
+                print '<td align="right"><form method="get" action="index.php"><div>';
+                print '<input type="hidden" name="userid" value="'.$userid.'" />';
+                print '<input type="hidden" name="summary" value="1" />';
+                print '<input type="submit" value="'.get_string('viewsummary', 'idp').'" />';
+                print '</div></form></td>';
+            }
+            print "</tr></table>\n";
+
+            // manager overview
+            print '<h1>'.get_string('manageroverviewtitle', 'idp').'</h1>';
+
+            // Get all of the plans
+            $plans = get_plans($userid);
+            $nbplans = count($plans);
+
+            $trainees = get_trainees($userid);
+
+            if ($trainees and count($trainees) > 0) {
+                // Show submitted/approved plans
+                print '<h2>'.get_string('learningplanapproval', 'idp')."</h2>\n";
+
+                // JavaScript selector to filter in/out the approved plans
+                print '<p><b>'.get_string('filter', 'idp').'</b>&nbsp;<select name="showapproved"';
+                print " onchange=\"window.location='index.php?userid=$userid&amp;orderby=$orderby&amp;showapproved=' + this.value\">";
+                print '<option '.($showapproved ? 'selected="selected"' : '').' value="1">';
+                print get_string('showapprovedplans', 'idp').'</option>';
+                print '<option '.($showapproved ? '' : 'selected="selected"').' value="0">';
+                print get_string('hideapprovedplans', 'idp').'</option>';
+                print "</select></p>\n";
+
+                print_pending_plans($trainees, $orderby, $showapproved);
+            }
+
+            // User search
+            print '<h2>'.get_string('searchforusers', 'idp').'</h2>';
+            print usersearch_form();
+
+            // Show the trainees
+            if ($ownpage) {
+                print '<h2>'.get_string('yourtrainees', 'idp')."</h2>\n";
+            }
+            else {
+                print '<h2>'.get_string('userstrainees', 'idp', format_user_link($userid))."</h2>\n";
+            }
+
+            if ($trainees and count($trainees) > 0) {
+                print_trainees_summary($trainees);
+            }
+            else {
+                print '<p><i>'.get_string('notrainees', 'idp')."</i></p>\n";
             }
         }
+        else {
+            // Trainee summary
+            print '<h1>'.get_string('traineesummarytitle', 'idp', format_user_link($userid, false)).'</h1>';
 
-        if (empty($orderby) || $orderby == 'approvaltime') {
-            $orderby = 'mtime';
+            $hasplans = false;
+            {
+                $perpage = 20;
+
+                $canviewplans = false;
+                if ($ownpage) {
+                    if (has_capability('moodle/local:viewownplan', $contextsite)) {
+                        $canviewplans = true;
+                    }
+                } else {
+                    if (has_capability('moodle/local:viewplan', $contextuser)) {
+                        $canviewplans = true;
+                    }
+                }
+
+                if (empty($orderby) || $orderby == 'approvaltime') {
+                    $orderby = 'mtime';
+                }
+                $hasplans = print_user_learning_plans($userid, $canviewplans, $page, $perpage, $orderby);
+            }
+
+            if ($ownpage && has_capability('moodle/local:editownplan', $contextsite)) {
+                // Create new plan button
+                print '<table width="80%"><tr><td><form method="get" action="plan.php"><div>';
+                print '<input type="hidden" name="action" value="create" />';
+                print '<input type="submit" value="'.get_string('createnewplan', 'idp').'" />';
+                print "</div></form></td>\n";
+            }
+
+            if ($hasplans) {
+                // Evaluation Summary button
+                print '<td align="right"><form method="get" action="index.php"><div>';
+                print '<input type="hidden" name="userid" value="'.$userid.'" />';
+                print '<input type="hidden" name="summary" value="1" />';
+                print '<input type="submit" value="'.get_string('viewsummary', 'idp').'" />';
+                print '</div></form></td>';
+            }
+
+            print "</tr></table>\n";
         }
-        $hasplans = print_user_learning_plans($userid, $canviewplans, $page, $perpage, $orderby);
-    }
+        echo '</td>';
 
-    if ($ownpage && has_capability('moodle/local:editownplan', $contextsite)) {
-        // Create new plan button
-        print '<table width="80%"><tr><td><form method="get" action="plan.php"><div>';
-        print '<input type="hidden" name="action" value="create" />';
-        print '<input type="submit" value="'.get_string('createnewplan', 'idp').'" />';
-        print "</div></form></td>\n";
+    break;
+    case 'right':
+        echo '<td style="vertical-align: top; width: '.$blocks_preferred_width.'px;" id="right-column">';
+        print_container_start();
+        blocks_print_group($PAGE, $pageblocks, BLOCK_POS_RIGHT);
+        print_container_end();
+        echo '</td>';
+    break;
     }
-
-    if ($hasplans) {
-        // Evaluation Summary button
-        print '<td align="right"><form method="get" action="index.php"><div>';
-        print '<input type="hidden" name="userid" value="'.$userid.'" />';
-        print '<input type="hidden" name="summary" value="1" />';
-        print '<input type="submit" value="'.get_string('viewsummary', 'idp').'" />';
-        print '</div></form></td>';
-    }
-
-    print "</tr></table>\n";
 }
+
+/// Finish the page
+echo '</tr></table>';
 
 print_footer();
 

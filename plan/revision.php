@@ -58,91 +58,129 @@ if ($js_enabled) {
 
 $stridps = get_string('idps', 'idp');
 
+$PAGE = page_create_object('MITMS', $USER->id);
+$pageblocks = blocks_setup($PAGE,BLOCKS_PINNED_BOTH);
+$blocks_preferred_width = bounded_number(180, blocks_preferred_width($pageblocks[BLOCK_POS_LEFT]), 210);
+
 $pagetitle = format_string($plan->name);
 
 $navlinks = array();
 $navlinks[] = array('name' => $stridps, 'link' => "index.php", 'type' => 'home');
 $navlinks[] = array('name' => $pagetitle, 'link' => '', 'type' => 'home');
 
-$navigation = build_navigation($navlinks);
-
 // Hack to add print stylesheet
 $meta = '<link rel="stylesheet" type="text/css" media="print" href="'.$CFG->themewww.'/MITMS_print/user_styles.css" />'."\n";
 
-print_header_simple($pagetitle, '', $navigation, '', $meta, true);
+$PAGE->print_header($stridps, $navlinks);
 
-if ($currevision) {
-    // Whether or not to see the can_edit view
-    $can_edit = false;
-    $can_submit = false;
-    if (is_my_plan($currevision->id) and has_capability('moodle/local:editownplan', $contextsite)) {
-        $can_submit = true;
-        if ('notsubmitted' == $currevision->status or 'inrevision' == $currevision->status) {
-            $can_edit = true;
+echo '<table id="layout-table">';
+echo '<tr valign="top">';
+
+$lt = (empty($THEME->layouttable)) ? array('left', 'middle', 'right') : $THEME->layouttable;
+foreach ($lt as $column) {
+    switch ($column) {
+    case 'left':
+
+        if(blocks_have_content($pageblocks, BLOCK_POS_LEFT) || $PAGE->user_is_editing()) {
+            echo '<td style="vertical-align: top; width: '.$blocks_preferred_width.'px;" id="left-column">';
+            print_container_start();
+            blocks_print_group($PAGE, $pageblocks, BLOCK_POS_LEFT);
+            print_container_end();
+            echo '</td>';
+        } else {
+            echo '<td id="left-column"></td>';
         }
-    }
-    $can_edit = $can_edit && !$print;
 
-    // Whether or not the current user can approve this plan
-    $can_approve = false;
-    if (!$can_submit && has_capability('moodle/local:approveplan', $contextuser)) {
-        $can_approve = true;
-    }
+    break;
+    case 'middle':
 
-    if ($can_edit) {
-        print '<h1>'.get_string('revisionedittitle', 'idp', $plan->name).'</h1>';
-    } else {
-        print '<h1>'.get_string('revisionviewtitle', 'idp', $plan->name).'</h1>';
-    }
+        echo '<td valign="top" id="middle-column">';
+        if ($currevision) {
+            // Whether or not to see the can_edit view
+            $can_edit = false;
+            $can_submit = false;
+            if (is_my_plan($currevision->id) and has_capability('moodle/local:editownplan', $contextsite)) {
+                $can_submit = true;
+                if ('notsubmitted' == $currevision->status or 'inrevision' == $currevision->status) {
+                    $can_edit = true;
+                }
+            }
+            $can_edit = $can_edit && !$print;
 
-    if ($can_approve) {
-        print_revision_manager($currevision, $plan, array(
-            'can_submit' => $can_submit,
-            'can_edit'   => $can_edit,
-            'can_approve' => $can_approve,
-        ));
-    } else {
-        print_revision_trainee($currevision, $plan, array(
-            'can_edit'  => $can_edit,
-            'can_submit' => $can_submit,
-        ));
-    }
+            // Whether or not the current user can approve this plan
+            $can_approve = false;
+            if (!$can_submit && has_capability('moodle/local:approveplan', $contextuser)) {
+                $can_approve = true;
+            }
 
-    if ($can_submit) {
+            if ($can_edit) {
+                print '<h1>'.get_string('revisionedittitle', 'idp', $plan->name).'</h1>';
+            } else {
+                print '<h1>'.get_string('revisionviewtitle', 'idp', $plan->name).'</h1>';
+            }
 
-        if ($can_edit) {
+            if ($can_approve) {
+                print_revision_manager($currevision, $plan, array(
+                    'can_submit' => $can_submit,
+                    'can_edit'   => $can_edit,
+                    'can_approve' => $can_approve,
+                ));
+            } else {
+                print_revision_trainee($currevision, $plan, array(
+                    'can_edit'  => $can_edit,
+                    'can_submit' => $can_submit,
+                ));
+            }
 
-            print '<table cellpadding="10" summary="Three buttons side by side"><tr><td>';
+            if ($can_submit) {
 
-            // Save and continue later
-            print '</td><td>';
-            print '<form method="get" action="index.php"><div>';
-            print '<input type="submit" value="'.get_string('savecontinuelaterbutton', 'idp').'" />';
-            print '</div></form>';
+                if ($can_edit) {
 
-            // Submit button
-            print '</td><td>';
-            print '<form method="get" action="submit.php"><div style="text-align: center">';
-            print '<input type="hidden" name="rev" value="'.$currevision->id.'" />';
-            print '<input type="submit" value="'.get_string('submitplan', 'idp').'" />';
-            print '</div></form>';
-            print "</td></tr></table>\n";
+                    print '<table cellpadding="10" summary="Three buttons side by side"><tr><td>';
+
+                    // Save and continue later
+                    print '</td><td>';
+                    print '<form method="get" action="index.php"><div>';
+                    print '<input type="submit" value="'.get_string('savecontinuelaterbutton', 'idp').'" />';
+                    print '</div></form>';
+
+                    // Submit button
+                    print '</td><td>';
+                    print '<form method="get" action="submit.php"><div style="text-align: center">';
+                    print '<input type="hidden" name="rev" value="'.$currevision->id.'" />';
+                    print '<input type="submit" value="'.get_string('submitplan', 'idp').'" />';
+                    print '</div></form>';
+                    print "</td></tr></table>\n";
+                }
+                elseif ('approved' == $currevision->status or 'overdue' == $currevision->status) {
+                    // Evaluate button
+                    print '<form method="get" action="evaluation.php"><p style="text-align: center">';
+                    print '<input type="hidden" name="id" value="'.$plan->id.'" />';
+                    print '<input type="hidden" name="rev" value="'.$currevision->id.'" />';
+                    print '<input type="submit" value="'.get_string('evaluateplan', 'idp').'" />';
+                    print "</p></form>\n";
+                }
+            }
+
+            print '<p id="backtotop" style="text-align: center"><a href="#top">'.get_string('backtotoplink', 'idp').'</a></p>';
+
+        } else {
+            print '<p><i>'.get_string('norevisions', 'idp')."</i></p>\n";
         }
-        elseif ('approved' == $currevision->status or 'overdue' == $currevision->status) {
-            // Evaluate button
-            print '<form method="get" action="evaluation.php"><p style="text-align: center">';
-            print '<input type="hidden" name="id" value="'.$plan->id.'" />';
-            print '<input type="hidden" name="rev" value="'.$currevision->id.'" />';
-            print '<input type="submit" value="'.get_string('evaluateplan', 'idp').'" />';
-            print "</p></form>\n";
-        }
+        echo '</td>';
+
+    break;
+    case 'right':
+        echo '<td style="vertical-align: top; width: '.$blocks_preferred_width.'px;" id="right-column">';
+        print_container_start();
+        blocks_print_group($PAGE, $pageblocks, BLOCK_POS_RIGHT);
+        print_container_end();
+        echo '</td>';
+    break;
     }
-
-    print '<p id="backtotop" style="text-align: center"><a href="#top">'.get_string('backtotoplink', 'idp').'</a></p>';
-
-} else {
-    print '<p><i>'.get_string('norevisions', 'idp')."</i></p>\n";
 }
+/// Finish the page
+echo '</tr></table>';
 ?>
 
 <script type="text/javascript">
