@@ -156,7 +156,7 @@ class report_builder_edit_form extends moodleform {
                 }
 
                 // move down link
-                if($i != $filtercount) {
+                if($i != $colcount) {
                     $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/reportbuilder/settings.php?m=down&amp;id='.$id.'&amp;cid='.$cid.'" title="'.$strmovedown.'"><img src="'.$CFG->pixpath.'/t/down.gif" class="iconsmall" alt="'.$strmovedown.'" /></a>');
                 } else {
                     $mform->addElement('html', $spacer);
