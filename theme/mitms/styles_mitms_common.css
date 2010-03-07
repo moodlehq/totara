@@ -251,3 +251,38 @@ table.centerblock td.status, table.centerblock td.status {
   padding: 7px 7px 12px 7px;
   background: transparent url(images/centerfooter_bg.png) no-repeat left bottom;
 }
+
+/*****************************************************************************/
+/** My Team **/
+/*****************************************************************************/
+
+table.allmyteam {
+  margin: 10px;
+}
+table.allmyteam td {
+  vertical-align: center;
+}
+
+table.allmyteam td.c2 {
+  padding-left: 10px;
+}
+
+#my-team #middle-column table.flexible td {
+  padding: 2px 2px 2px 2px;
+}
+#my-team #middle-column table.flexible th.c1 {
+  vertical-align: top;
+  width: 140px;
+}
+#my-team #middle-column table.flexible th.c2 {
+  vertical-align: top;
+  width: 140px;
+}
+#my-team #middle-column table.flexible th.c3 {
+  vertical-align: top;
+  width: 110px;
+}
+#my-team #middle-column table.flexible th.c4 {
+  vertical-align: top;
+  width: 102px;
+}
