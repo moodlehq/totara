@@ -190,17 +190,18 @@ $columnoptions = array(
 );
 
 
-$custom_fields = get_records('user_info_field','','','','id,shortname,name');
-foreach($custom_fields as $custom_field) {
-    $field = $custom_field->shortname;
-    $name = $custom_field->name;
-    $id = $custom_field->id;
-    $key = "user_$field";
-    $columnoptions['user_profile'][$field] = array(
-        'name' => $name,
-        'field' => "$key.data",
-        'joins' => array('signup','user',$key),
-    );
+if($custom_fields = get_records('user_info_field','','','','id,shortname,name')) {
+    foreach($custom_fields as $custom_field) {
+        $field = $custom_field->shortname;
+        $name = $custom_field->name;
+        $id = $custom_field->id;
+        $key = "user_$field";
+        $columnoptions['user_profile'][$field] = array(
+            'name' => $name,
+            'field' => "$key.data",
+            'joins' => array('signup','user',$key),
+        );
+    }
 }
 
 // roles to allow to be shown as columns - should match role shortnames
@@ -208,18 +209,18 @@ foreach($custom_fields as $custom_field) {
 // if same role assigned to a session multiple times
 $sessionroles = array('facilitator','auditor','assessor'); // leaving out assistant
                                                            // as it generates too many extra rows
-$roles = get_records('role','','','','id,shortname');
-foreach ($roles as $role) {
-    if (in_array($role->shortname,$sessionroles)) {
-        $field = $role->shortname;
-        $name = ucfirst($role->shortname);
-        $key = "session_role_$field";
-        $userkey = "session_role_user_$field";
-        $columnoptions['role'][$field] = array(
-            'name' => 'Session '.$name,
-            'field' => sql_fullname($userkey.'.firstname',$userkey.'.lastname'),
-            'joins' => array($key, $userkey),
-        );
+if($roles = get_records('role','','','','id,shortname')) {
+    foreach ($roles as $role) {
+        if (in_array($role->shortname,$sessionroles)) {
+            $field = $role->shortname;
+            $name = ucfirst($role->shortname);
+            $key = "session_role_$field";
+            $userkey = "session_role_user_$field";
+            $columnoptions['role'][$field] = array(
+                'name' => 'Session '.$name,
+                'field' => sql_fullname($userkey.'.firstname',$userkey.'.lastname'),
+                'joins' => array($key, $userkey),
+            );
+        }
     }
 }
-

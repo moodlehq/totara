@@ -31,45 +31,46 @@ $joinlist = array(
 );
 
 // add all user custom fields to join list
-$custom_fields = get_records('user_info_field','','','','id,shortname');
-foreach($custom_fields as $custom_field) {
-    $field = $custom_field->shortname;
-    $id = $custom_field->id;
-    $key = "user_$field";
-    $joinlist[$key] = "LEFT JOIN {$CFG->prefix}user_info_data $key ON (u.id = $key.userid AND $key.fieldid = $id )";
-
+if($custom_fields = get_records('user_info_field','','','','id,shortname')) {
+    foreach($custom_fields as $custom_field) {
+        $field = $custom_field->shortname;
+        $id = $custom_field->id;
+        $key = "user_$field";
+        $joinlist[$key] = "LEFT JOIN {$CFG->prefix}user_info_data $key ON (u.id = $key.userid AND $key.fieldid = $id )";
+    }
 }
 
 // add all session custom fields to join list
-$session_fields = get_records('facetoface_session_field','','','','id,shortname');
-foreach($session_fields as $session_field) {
-    $field = $session_field->shortname;
-    $id = $session_field->id;
-    $key = "session_$field";
-    $joinlist[$key] = "LEFT JOIN {$CFG->prefix}facetoface_session_data $key ON (base.id = $key.sessionid AND $key.fieldid = $id )";
+if($session_fields = get_records('facetoface_session_field','','','','id,shortname')) {
+    foreach($session_fields as $session_field) {
+        $field = $session_field->shortname;
+        $id = $session_field->id;
+        $key = "session_$field";
+        $joinlist[$key] = "LEFT JOIN {$CFG->prefix}facetoface_session_data $key ON (base.id = $key.sessionid AND $key.fieldid = $id )";
+    }
 }
 
 // add joins for the following roles as "session_role_X" and "session_role_user_X"
 $sessionroles = array('facilitator','auditor','assessor','assistant');
-$roles = get_records('role','','','','id,shortname');
-foreach ($roles as $role) {
-    if (in_array($role->shortname,$sessionroles)) {
-        $field = $role->shortname;
-        $id = $role->id;
-        $key = "session_role_$field";
-        $userkey = "session_role_user_$field";
-        // join to session roles to get userid of role
-        // we have a problem here because there can be more than one assigned user per session per role
-        // two ways to handle, the first includes one row per user (increasing the total number of results):
-        $joinlist[$key] = "LEFT JOIN {$CFG->prefix}facetoface_session_roles $key ON (base.id = $key.sessionid AND $key.roleid = $id )";
-        // the second method only shows one record, in this case the first user found by id, but requires MIN() which is postgres only
-        // TODO come up with a better approach? would be nice to merge results
-        //$joinlist[$key] = "LEFT JOIN ( SELECT sessionid,roleid,min(userid) as userid FROM {$CFG->prefix}facetoface_session_roles GROUP BY sessionid,roleid) AS $key ON (base.id = $key.sessionid AND $key.roleid = $id )";
+if($roles = get_records('role','','','','id,shortname')) {
+    foreach ($roles as $role) {
+        if (in_array($role->shortname,$sessionroles)) {
+            $field = $role->shortname;
+            $id = $role->id;
+            $key = "session_role_$field";
+            $userkey = "session_role_user_$field";
+            // join to session roles to get userid of role
+            // we have a problem here because there can be more than one assigned user per session per role
+            // two ways to handle, the first includes one row per user (increasing the total number of results):
+            $joinlist[$key] = "LEFT JOIN {$CFG->prefix}facetoface_session_roles $key ON (base.id = $key.sessionid AND $key.roleid = $id )";
+            // the second method only shows one record, in this case the first user found by id, but requires MIN() which is postgres only
+            // TODO come up with a better approach? would be nice to merge results
+            //$joinlist[$key] = "LEFT JOIN ( SELECT sessionid,roleid,min(userid) as userid FROM {$CFG->prefix}facetoface_session_roles GROUP BY sessionid,roleid) AS $key ON (base.id = $key.sessionid AND $key.roleid = $id )";
 
-        // join again to user table to get role's info
-        $joinlist[$userkey] = "LEFT JOIN {$CFG->prefix}user $userkey ON $key.userid = $userkey.id";
+            // join again to user table to get role's info
+            $joinlist[$userkey] = "LEFT JOIN {$CFG->prefix}user $userkey ON $key.userid = $userkey.id";
+        }
     }
 }
-
 
 

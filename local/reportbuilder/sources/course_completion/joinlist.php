@@ -26,13 +26,13 @@ $joinlist = array(
 );
 
 // add all user custom fields to join list
-$custom_fields = get_records('user_info_field','','','','id,shortname');
-foreach($custom_fields as $custom_field) {
-    $field = $custom_field->shortname;
-    $id = $custom_field->id;
-    $key = "user_$field";
-    $joinlist[$key] = "LEFT JOIN {$CFG->prefix}user_info_data $key ON (u.id = $key.userid AND $key.fieldid = $id )";
-
+if($custom_fields = get_records('user_info_field','','','','id,shortname')) {
+    foreach($custom_fields as $custom_field) {
+        $field = $custom_field->shortname;
+        $id = $custom_field->id;
+        $key = "user_$field";
+        $joinlist[$key] = "LEFT JOIN {$CFG->prefix}user_info_data $key ON (u.id = $key.userid AND $key.fieldid = $id )";
+    }
 }
 
 // add more joins that require custom field data here
