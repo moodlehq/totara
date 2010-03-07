@@ -69,6 +69,9 @@ class reportbuilder {
         $this->_params = $this->get_current_params();
 
         // check the requested columns exist in column options
+        // chose to use this in display_table() and export_data() instead of
+        // here as that allows the bad filters/columns to appear in the
+        // settings.php page to be seen and fixed by admin
         //$this->check_columns($this->_columns, $this->_columnoptions);
 
         // generate a filter for this report
@@ -78,17 +81,21 @@ class reportbuilder {
 
     // makes sure that columns exist in columnoptions
     // if not, remove them and print a warning
-    function check_columns(&$columns, $columnoptions) {
+    function check_columns(&$columns, $columnoptions, $silent=false) {
         if(isset($columns) and is_array($columns)) {
             foreach($columns as $index => $column) {
                 $type = $column['type'];
                 $value = $column['value'];
                 if(!array_key_exists($type, $columnoptions)) {
                     unset($columns[$index]); // remove column
-                    trigger_error("Column type '$type' not found in column options.", E_USER_WARNING);
+                    if(!$silent) {
+                        trigger_error("Column type '$type' not found in column options.", E_USER_WARNING);
+                    }
                 } else if (!array_key_exists($value, $columnoptions[$type])) {
                     unset($columns[$index]); // remove column
-                    trigger_error("Column value '$value' not found for type '$type' in column options.", E_USER_WARNING);
+                    if(!$silent) {
+                        trigger_error("Column value '$value' not found for type '$type' in column options.", E_USER_WARNING);
+                    }
                 }
             }
         }
@@ -399,7 +406,7 @@ class reportbuilder {
     }
 
     function export_data($format) {
-        $this->check_columns($this->_columns,$this->_columnoptions);
+        $this->check_columns($this->_columns,$this->_columnoptions, true);
         $columns = $this->_columns;
         $shortname = $this->_shortname;
         $count = $this->get_filtered_count();
