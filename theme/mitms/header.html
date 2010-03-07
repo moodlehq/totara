@@ -17,19 +17,6 @@
 
 <div id="page"><strong></strong>
 
-<?php //Accessibility: 'headermain' is now H1, see theme/standard/styles_layout.css: .headermain
-      if ($home) {  // This is what gets printed on the home page only
-?>
-    <?php print_container_start(true, '', 'header-home'); ?>
-        <div class="headermenu"><div class="login-container"><?php echo $menu ?></div></div>
-<div id="header-logo-container">
-        <div class="headersearch"><input type="text" class="input-text" name="q" size="35" maxlength="255"/><input type="submit" class="input-submit" name="sa" value="Search"/></div>
-        <div class="logo"><img alt="mitms logo" src="<?php echo $CFG->wwwroot.'/theme/'.current_theme() ?>/images/logo.png" /></div>
-        </div>
-
-    <?php print_container_end(); ?>
-<?php } else if ($heading) {  // This is what gets printed on any other page with a heading
-?>
     <?php print_container_start(true, '', 'header'); ?>
         <div class="headermenu"><div class="login-container"><?php echo $menu ?></div></div>
         <div id="header-logo-container">
@@ -37,17 +24,11 @@
         <div class="logo"><img alt="mitms logo" src="<?php echo $CFG->wwwroot.'/theme/'.current_theme() ?>/images/logo.png" /></div>
         </div>
     <?php print_container_end(); ?>
-<?php } ?>
-<?php //Accessibility: breadcrumb trail/navbar now a DIV, not a table.
-      if ($navigation) { // This is the navigation bar with breadcrumbs  ?>
     <div class="tertiary nav">
-    <ul><li><a href="<?php echo $CFG->wwwroot ?>/hierarchy/index.php?type=competency">Competencies</a></li><li> <a href="<?php echo $CFG->wwwroot ?>/hierarchy/index.php?type=position">Positions</a></li><li> <a href="<?php echo $CFG->wwwroot ?>/course/index.php">Courses</a></li><li> <a href="<?php echo $CFG->wwwroot ?>/blocks/facetoface/calendar.php">Calendar</a></li></ul><div class="clear"></div></div>
+    <ul><li><a href="<?php echo $CFG->wwwroot ?>/hierarchy/index.php?type=organisation">Organisations</a></li> <li><a href="<?php echo $CFG->wwwroot ?>/hierarchy/index.php?type=competency">Competencies</a></li><li> <a href="<?php echo $CFG->wwwroot ?>/hierarchy/index.php?type=position">Positions</a></li><li> <a href="<?php echo $CFG->wwwroot ?>/course/index.php">Courses</a></li><li> <a href="<?php echo $CFG->wwwroot ?>/blocks/facetoface/calendar.php">Calendar</a></li></ul><div class="clear"></div></div>
     <div class="navbar clearfix">
         <div class="breadcrumb"><?php print_navigation($navigation); ?></div>
         <div class="navbutton"><?php echo $button; ?></div>
     </div>
-<?php } else if ($heading) { // If no navigation, but a heading, then print a line
-?>
-<?php } ?>
     <!-- END OF HEADER -->
     <?php print_container_start(true, '', 'content'); ?>

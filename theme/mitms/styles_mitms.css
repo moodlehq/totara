@@ -38,15 +38,10 @@ input, select, button {
 }
 div.course-content  #layout-table {
   margin-top:-5px;
-  *margin-top:0;
-}
-#site-index #layout-table {
-  margin-top:0;
-  border-top: 1px solid #DDD;
 }
 #left-column {
   width: 180px !important;
-  padding-top: 5px;
+  padding-top: 12px;
 }
 #right-column {
   width: 180px !important;
@@ -87,7 +82,7 @@ div.course-content #middle-column {
 }
 
 div#header-home {
-  height: 110px;
+  height: 193px;
 }
 div#header {
   height: 193px;
