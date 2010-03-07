@@ -113,6 +113,11 @@ $string['notapplicable'] = 'Not applicable';
 $string['notavailable'] = 'Not available';
 $string['recordoflearning'] = 'Record of Learning';
 
+// Hierarchy
+$string['framework'] = 'Framework';
+$string['template'] = 'Template';
+$string['type'] = 'Type';
+
 // These are used by the capabilities for editing classifications
 $string['local:editclassifications'] = 'Edit Course Classifications';
 $string['local:editcourseclassification'] = 'Edit Classification of a Course';

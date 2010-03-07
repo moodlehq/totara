@@ -6,20 +6,24 @@ $editingon = true;
 $str_remove = get_string('remove');
 
 ?>
-<table width="95%" cellpadding="5" cellspacing="1" id="list-idp-competencytemplates" class="generalbox edit competency boxaligncenter">
+<table id="list-idp-competencytemplates" class="generalbox planitems boxaligncenter">
 <tr>
-    <th style="vertical-align:top; text-align: left; white-space:nowrap;" class="header c0" scope="col">
-        <?php echo get_string('framework', 'competency') ?>
+    <th class="framework" scope="col">
+        <?php echo get_string('framework', 'local') ?>
     </th>
 
-    <th style="vertical-align:top; text-align:left; white-space:nowrap;" class="header c2" scope="col">
-        <?php echo get_string('name'); ?>
+    <th class="name" scope="col">
+        <?php echo get_string('template', 'local'); ?>
+    </th>
+
+    <th class="type" scope="col">
+        <?php echo get_string('type', 'local') ?>
     </th>
 
 <?php
     if ($editingon) {
 ?>
-    <th style="vertical-align:top; text-align:center; white-space:nowrap;" class="header c4" scope="col">
+    <th class="options" scope="col">
         <?php echo get_string('options', 'competency') ?>
     </th>
 <?php
@@ -38,14 +42,15 @@ if ($competencytemplates) {
         echo '<tr>';
         echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/index.php?type=competency&frameworkid={$competency->fid}\">{$competency->framework}</a></td>";
         echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/type/competency/template/view.php?id={$competency->id}\">{$competency->fullname}</a></td>";
+        echo "<td></td>";
 
         if ($editingon) {
-            echo "<td style=\"text-align: center;\">";
+            echo '<td class="options">';
 
             echo "<a href=\"{$CFG->wwwroot}/competency/idp/remove.php?id={$competency->id}\" title=\"$str_remove\">".
                  "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_remove\" /></a>";
 
-            echo "</td>";
+            echo '</td>';
         }
 
         echo '</tr>';
@@ -61,7 +66,7 @@ if ($competencytemplates) {
     if (!empty($options) and $options['can_edit']) {
 
 ?>
-<table width="95%" cellpadding="5" cellspacing="1" class="generalbox edit competency boxaligncenter">
+<table class="generalbox planbuttons boxaligncenter">
     <tr class="noitems" colspan="<?php echo $cols ?>">
         <td>
             <div class="singlebutton">
@@ -71,6 +76,7 @@ if ($competencytemplates) {
         </td>
     </tr>
 </table>
+
 <?php
 
     }

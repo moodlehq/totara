@@ -71,6 +71,66 @@ div.nohierarchyitems {
 
 table.editcompetency th {
     text-align: left;
+    vertical-align: top;
+    white-space: nowrap;
+    padding: 5px;
+}
+
+table.editcompetency td {
+    text-align: left;
+    vertical-align: top;
+    padding: 5px;
+}
+
+table.planitems {
+    margin: 8px 0px 0px 8px;
+    width: 532px;
+}
+table.planitems th {
+    text-align: left;
+    vertical-align: top;
+    white-space: nowrap;
+    padding: 0px 0px 2px 5px;
+}
+
+table.planitems th.framework {
+    width: 150px;
+}
+table.planitems th.type {
+    width: 80px;
+}
+table.planitems th.name {
+    width: 257px;
+}
+table.planitems th.options {
+    width: 45px;
+    text-align: center;
+}
+table.planitems td {
+    text-align: left;
+    vertical-align: top;
+    padding: 0px 0px 2px 5px;
+}
+
+table.planitems td.options {
+    text-align: center;
+}
+
+table.planbuttons {
+    margin-left: 8px;
+    width: 532px;
+    margin-bottom: 0px;
+}
+
+table.planbuttons td {
+    text-align: left;
+    vertical-align: top;
+    padding: 0px 0px 5px 5px;
+}
+
+#plan #middle-column div.workflow {
+    text-align: center;
+    padding: 25px 25px 25px 25px;
 }
 
 table#list-assignedcompetencies th.c0,
@@ -85,10 +145,6 @@ table#list-assignedcompetencytemplates th.c2 {
 table#list-assignedcompetencies .c3,
 table#list-assignedcompetencytemplates .c2 {
     text-align: center;
-}
-
-table.editcompetency td {
-    padding: 4px 5px;
 }
 
 table.editcompetency div.tabledivider {

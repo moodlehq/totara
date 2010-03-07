@@ -135,8 +135,7 @@ foreach ($lt as $column) {
             if ($can_submit) {
 
                 if ($can_edit) {
-
-                    print '<table cellpadding="10" summary="Three buttons side by side"><tr><td>';
+                    print '<br><center><table><tr><td>';
 
                     // Save and continue later
                     print '</td><td>';
@@ -150,7 +149,7 @@ foreach ($lt as $column) {
                     print '<input type="hidden" name="rev" value="'.$currevision->id.'" />';
                     print '<input type="submit" value="'.get_string('submitplan', 'idp').'" />';
                     print '</div></form>';
-                    print "</td></tr></table>\n";
+                    print "</td></tr></table></center>\n";
                 }
                 elseif ('approved' == $currevision->status or 'overdue' == $currevision->status) {
                     // Evaluate button

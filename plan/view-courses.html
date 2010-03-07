@@ -6,20 +6,24 @@ $str_remove = get_string('remove');
 $editingon = true;
 
 ?>
-<table width="95%" cellpadding="5" cellspacing="1" id="list-idp-courses" class="generalbox edit boxaligncenter viewcourses">
+<table id="list-idp-courses" class="generalbox planitems boxaligncenter viewcourses">
 <tr>
-    <th style="vertical-align:top; text-align: left; white-space:nowrap;" class="header c0" scope="col">
+    <th class="framework" scope="col">
         <?php echo get_string('category') ?>
     </th>
 
-    <th style="vertical-align:top; text-align:left; white-space:nowrap;" class="header c2" scope="col">
+    <th class="name" scope="col">
         <?php echo get_string('course'); ?>
     </th>
+
+    <th class="type" scope="col">
+        <?php echo get_string('type', 'local') ?>
+     </th>
 
 <?php
     if ($editingon) {
 ?>
-    <th style="vertical-align:top; text-align:center; white-space:nowrap;" class="header c4" scope="col">
+    <th class="options" scope="col">
         <?php echo get_string('options', 'idp') ?>
     </th>
 <?php
@@ -38,14 +42,15 @@ if ($courses) {
         echo '<tr>';
         echo "<td><a href=\"{$CFG->wwwroot}/course/category.php?id={$course->ccid}\">{$course->category}</a></td>";
         echo "<td><a href=\"{$CFG->wwwroot}/course/view.php?id={$course->id}\">{$course->fullname}</a></td>";
+        echo '<td></td>';
 
         if ($editingon) {
-            echo "<td style=\"text-align: center;\">";
+            echo '<td class="options">';
 
             echo "<a href=\"{$CFG->wwwroot}/course/idp/remove.php?id={$course->id}\" title=\"$str_remove\">".
                  "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_remove\" /></a>";
 
-            echo "</td>";
+            echo '</td>';
         }
 
         echo '</tr>';
@@ -61,7 +66,7 @@ if ($courses) {
     if ($options['can_edit']) {
 
 ?>
-<table width="95%" cellpadding="5" cellspacing="1" class="generalbox edit course boxaligncenter">
+<table class="generalbox planbuttons boxaligncenter">
     <tr class="noitems" colspan="<?php echo $cols ?>">
         <td>
             <div class="singlebutton">
