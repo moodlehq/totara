@@ -160,6 +160,7 @@ $string['deleteplanbutton'] = 'Delete this plan';
 $string['deleteitembutton'] = 'Delete this item from the list';
 $string['disclaimer'] = 'New plan disclaimer';
 $string['dragheretoassign'] = 'Drag here to assign';
+$string['duedate'] = 'Due date';
 $string['edititembutton'] = 'Edit or rename this item';
 $string['editlatestrevision'] = 'Edit latest revision of this plan';
 $string['emailnotificationfromname'] = 'IDP Module';
