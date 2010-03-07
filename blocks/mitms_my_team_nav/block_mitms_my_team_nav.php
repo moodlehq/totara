@@ -7,12 +7,8 @@ class block_mitms_my_team_nav extends block_base {
         $this->version = 2009120100;
     }
 
-    function applicable_formats() {
-        return array('site' => true);
-    }
-
     function instance_allow_multiple() {
-        return false;
+        return true;
     }
 
     function specialization() {
