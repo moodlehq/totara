@@ -29,6 +29,16 @@ function reportbuilder_link_competency($comp, $row) {
     return "<a href=\"{$CFG->wwwroot}/hierarchy/item/view.php?type=competency&id={$compid}\">{$comp}</a>";
 }
 
+/*
+// convert a site log action into a link to that page
+function reportbuilder_link_action($action, $row) {
+    global $CFG;
+    $url = $row->log_url;
+    return "<a href=\"{$CFG->wwwroot}/course/$url\">{$action}</a>";
+}
+ */
+
+
 // print the appropriate link depending on record type
 function reportbuilder_link_course_or_comp($name, $row) {
     global $CFG;
@@ -37,6 +47,18 @@ function reportbuilder_link_course_or_comp($name, $row) {
         return reportbuilder_link_course($name, $row);
     } else {
         return reportbuilder_link_competency($name, $row);
+    }
+}
+
+function reportbuilder_iplookup($ip, $row) {
+    global $CFG;
+    if(isset($ip) && $ip != '' && isset($row->user_id)) {
+        return '<a href="'.$CFG->wwwroot.'/iplookup/index.php?ip='.$ip.'&amp;user='.$row->user_id.'">'.$ip.'</a>';
+    }
+    else if ($ip && $ip != '') {
+        return '<a href="'.$CFG->wwwroot.'/iplookup/index.php?ip='.$ip.'">'.$ip.'</a>';
+    } else {
+        return '';
     }
 }
 
