@@ -2130,6 +2130,26 @@ function idp_get_user_competencies($userid, $currevisionid) {
 }
 
 /**
+ * @param int $userid ID of user
+ * @return array of the user's current positions
+ *
+ *
+**/
+function idp_get_user_positions($userid) {
+    global $CFG;
+
+    $sql = "SELECT p.id, p.fullname
+            FROM {$CFG->prefix}position_assignment pa
+            JOIN {$CFG->prefix}position p
+              ON pa.positionid=p.id
+            WHERE userid={$userid}";
+
+    return get_records_sql($sql);
+
+}
+
+
+/**
  * Get this users competency templates for this revision.
  *
  * @param class $revision       Revision object as returned by get_revision()
