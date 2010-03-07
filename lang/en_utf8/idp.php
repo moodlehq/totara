@@ -101,12 +101,12 @@ $string['error:revisionnotvisible'] = 'This revision is not visible to you.';
 # Other strings
 $string['addbutton'] = 'Add competency to plan';
 $string['addcomment'] = 'Add a comment:';
-$string['addcompetenciesbutton'] = 'Add competencies to plan';
-$string['addcompetenciestoplan'] = 'Add competencies to plan';
-$string['addcompetencytemplatesbutton'] = 'Add competency templates to plan';
-$string['addcompetencytemplatestoplan'] = 'Add competency templates to plan';
-$string['addcoursesbutton'] = 'Add courses to plan';
+$string['addfromframeworks'] = 'Add from frameworks';
 $string['addcoursestoplan'] = 'Add courses to plan';
+$string['addcompetenciestoplan'] = 'Add competencies to plan';
+$string['addcompetencytemplatestoplan'] = 'Add competency templates to plan';
+$string['addfrompositions'] = 'Add from positions';
+$string['addfromcategories'] = 'Add from categories';
 $string['additembutton'] = 'Add';
 $string['additionalobjectives'] = 'Add additional Learning Objectives';
 $string['adminnotifications'] = 'IDP email notifications';
