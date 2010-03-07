@@ -16,8 +16,12 @@ $editingon = true;
         <?php echo get_string('course'); ?>
     </th>
 
-    <th class="type" scope="col">
-        <?php echo get_string('type', 'local') ?>
+    <th class="status" scope="col">
+        <?php echo get_string('status', 'idp') ?>
+    </th>
+
+    <th class="duedate" scope="col">
+        <?php echo get_string('duedate', 'idp') ?>
      </th>
 
 <?php
@@ -42,12 +46,13 @@ if ($courses) {
         echo '<tr>';
         echo "<td><a href=\"{$CFG->wwwroot}/course/category.php?id={$course->ccid}\">{$course->category}</a></td>";
         echo "<td><a href=\"{$CFG->wwwroot}/course/view.php?id={$course->id}\">{$course->fullname}</a></td>";
+        echo '<td>'.$course->status.'</td>';
         echo '<td></td>';
 
         if ($editingon) {
             echo '<td class="options">';
 
-            echo "<a href=\"{$CFG->wwwroot}/course/idp/remove.php?id={$course->id}\" title=\"$str_remove\">".
+            echo "<a href=\"{$CFG->wwwroot}/hierarchy/type/course/idp/remove.php?id={$course->id}\" title=\"$str_remove\">".
                  "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_remove\" /></a>";
 
             echo '</td>';

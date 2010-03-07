@@ -16,8 +16,12 @@ $str_remove = get_string('remove');
         <?php echo get_string('template', 'local'); ?>
     </th>
 
-    <th class="type" scope="col">
-        <?php echo get_string('type', 'local') ?>
+    <th class="status" scope="col">
+        <?php echo get_string('status', 'idp') ?>
+    </th>
+
+    <th class="duedate" scope="col">
+        <?php echo get_string('duedate', 'idp') ?>
     </th>
 
 <?php
@@ -42,6 +46,7 @@ if ($competencytemplates) {
         echo '<tr>';
         echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/index.php?type=competency&frameworkid={$competency->fid}\">{$competency->framework}</a></td>";
         echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/type/competency/template/view.php?id={$competency->id}\">{$competency->fullname}</a></td>";
+        echo "<td></td>";
         echo "<td></td>";
 
         if ($editingon) {

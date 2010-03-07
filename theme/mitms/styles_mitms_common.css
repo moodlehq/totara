@@ -98,13 +98,16 @@ table.planitems th {
 }
 
 table.planitems th.framework {
-    width: 150px;
-}
-table.planitems th.type {
-    width: 80px;
+    width: 120px;
 }
 table.planitems th.name {
-    width: 257px;
+    width: 227px;
+}
+table.planitems th.status {
+    width: 70px;
+}
+table.planitems th.duedate {
+    width: 70px;
 }
 table.planitems th.options {
     width: 45px;

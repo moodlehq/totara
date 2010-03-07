@@ -62,6 +62,7 @@ foreach ($add as $addition) {
     echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/framework/index.php?type={$hierarchy->prefix}&id={$framework->id}\">{$framework->fullname}</a></td>";
     echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/type/competency/template/view.php?id={$template->id}\">{$template->fullname}</a></td>";
     echo '<td></td>';
+    echo '<td></td>';
 
 //    if ($editingon) {
 /*

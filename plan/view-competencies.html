@@ -16,8 +16,12 @@ $str_remove = get_string('remove');
         <?php echo get_string('competency', 'competency'); ?>
     </th>
 
-    <th class="type" scope="col">
-        <?php echo get_string('type', 'local') ?>
+    <th class="status" scope="col">
+        <?php echo get_string('status', 'idp') ?>
+    </th>
+
+    <th class="duedate" scope="col">
+        <?php echo get_string('duedate', 'idp') ?>
     </th>
 
 <?php
@@ -42,7 +46,8 @@ if ($competencies) {
         echo '<tr>';
         echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/index.php?type=competency&frameworkid={$competency->fid}\">{$competency->framework}</a></td>";
         echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/item/view.php?type=competency&id={$competency->id}\">{$competency->fullname}</a></td>";
-        echo '<td>'.$competency->depth.'</td>';
+        echo '<td>'.$competency->status.'</td>';
+        echo '<td></td>';
 
         if ($editingon) {
             echo '<td class="options">';

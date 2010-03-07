@@ -57,6 +57,7 @@ foreach ($add as $addition) {
     echo "<td><a href=\"{$CFG->wwwroot}/course/category.php?id={$course->category}\">".format_string($category->name)."</a></td>";
     echo "<td><a href=\"{$CFG->wwwroot}/course/view.php?id={$course->id}\">".format_string($course->fullname)."</a></td>";
     echo '<td></td>';
+    echo '<td></td>';
 
     echo "<td style=\"text-align: center;\">";
 

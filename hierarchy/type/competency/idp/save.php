@@ -46,9 +46,6 @@ foreach ($add as $addition) {
     // Load framework
     $framework = $hierarchy->get_framework($competency->frameworkid);
 
-    // Load depths
-    $depths = $hierarchy->get_depths();
-
     // Add idp competency
     $idpcompetency = new Object();
     $idpcompetency->revision = $id;
@@ -61,7 +58,8 @@ foreach ($add as $addition) {
     echo '<tr>';
     echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/framework/index.php?type={$hierarchy->prefix}&id={$framework->id}\">{$framework->fullname}</a></td>";
     echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/item/view.php?type={$hierarchy->prefix}&id={$competency->id}\">{$competency->fullname}</a></td>";
-    echo '<td>'.$depths[$competency->depthid]->fullname.'</td>';
+    echo "<td></td>";
+    echo "<td></td>";
 
 //    if ($editingon) {
         echo "<td style=\"text-align: center;\">";
