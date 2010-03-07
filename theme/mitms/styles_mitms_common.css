@@ -128,11 +128,6 @@ table.planbuttons td {
     padding: 0px 0px 5px 5px;
 }
 
-#plan #middle-column div.workflow {
-    text-align: center;
-    padding: 25px 25px 25px 25px;
-}
-
 table#list-assignedcompetencies th.c0,
 table#list-assignedcompetencies th.c1,
 table#list-assignedcompetencies th.c3,
