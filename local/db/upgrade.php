@@ -1093,6 +1093,11 @@ function xmldb_local_upgrade($oldversion) {
         }
 
     }
+
+    if ($result && $oldversion < 2010030600) {
+        mitms_reset_stickyblocks(true);
+    }
+
     return $result;
 
 }

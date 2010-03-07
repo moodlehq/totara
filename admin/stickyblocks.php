@@ -16,6 +16,10 @@
                        // ... more?
                        );
 
+    if (function_exists('local_get_sticky_pagetypes')) {
+        $pagetypes = array_merge($pagetypes, local_get_sticky_pagetypes());
+    }
+
     // for choose_from_menu
     $options = array();
     foreach ($pagetypes as $p) {

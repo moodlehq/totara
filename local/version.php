@@ -2,5 +2,5 @@
 /**
  * local version information - used to keep track of local changes
  */
-$local_version = 2010030300;
+$local_version = 2010030600;
 ?>

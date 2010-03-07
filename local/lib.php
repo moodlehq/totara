@@ -122,4 +122,18 @@ function local_postinst() {
 
 }
 
+/**
+* hook to add extra sticky-able page types.
+*/
+function local_get_sticky_pagetypes() {
+    return array(
+    // not using a constant here because we're doing funky overrides to PAGE_COURSE_VIEW in the learning path format
+    // and it clobbers the page mapping having them both defined at the same time
+        'MITMS' => array(
+            'id' => 'MITMS',
+            'lib' => '/local/lib.php',
+            'name' => 'MITMS'
+        ),
+    );
+}
 

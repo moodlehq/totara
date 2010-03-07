@@ -433,3 +433,122 @@ function mitms_get_staff($userid=null) {
 
     return $staff;
 }
+
+/**
+* hacked page lib that gets used on any page that doesn't have one.
+* really just exists to fulfil requirements and allow stickyblocks
+*/
+class mitms_page_class_hack extends page_base {
+    function get_type() {
+        return 'MITMS';
+    }
+
+    function user_is_editing() {
+        if (defined('ADMIN_STICKYBLOCKS')) {
+            return true;
+        }
+        return false;
+    }
+
+    function blocks_default_position() {
+        return BLOCK_POS_LEFT; // avoid getting the admin block
+    }
+
+    function blocks_get_positions() {
+        return array(BLOCK_POS_LEFT, BLOCK_POS_RIGHT);
+    }
+
+    function blocks_move_position(&$instance, $move) {
+        if($instance->position == BLOCK_POS_LEFT && $move == BLOCK_MOVE_RIGHT) {
+            return BLOCK_POS_RIGHT;
+        } else if ($instance->position == BLOCK_POS_RIGHT && $move == BLOCK_MOVE_LEFT) {
+            return BLOCK_POS_LEFT;
+        }
+        return $instance->position;
+    }
+
+    function get_id() {
+        return 0;
+    }
+
+    function user_allowed_editing() {
+        return $this->user_is_editing();
+    }
+    function url_get_path() {
+        global $CFG;
+        if (defined('ADMIN_STICKYBLOCKS')) {
+            return $CFG->wwwroot . '/admin/stickyblocks.php';
+        }
+        return '';
+    }
+
+    function url_get_parameters() {
+        if (defined('ADMIN_STICKYBLOCKS')) {
+            return array('pt' => 'MITMS');
+        }
+    }
+
+    function print_header($title, $morenavlinks=NULL) {
+        $nav = build_navigation($morenavlinks);
+        print_header($title, $title, $nav);
+    }
+}
+page_map_class('MITMS', 'mitms_page_class_hack');
+
+/**
+* local footer hook. nothing yet but this could print right blocks
+*/
+function mitms_local_footer_hook() {
+    if (!defined('MITMS_HEADER_OVERRIDDEN')) {
+        return;
+    }
+    echo '</td></tr></table>';
+}
+
+/**
+ * resets the customised sticky blocks settings.  designed to be called from /local/db/upgrade.php
+ *
+ * @param bool   $remove   dictates whether to remove existing sticky blocks
+ * @param string $path     path to the stickyblocks definition file
+ *
+ * @return bool
+ */
+function mitms_reset_stickyblocks($remove=false, $path='local') {
+    global $CFG;
+
+    if ($remove) {
+        // remove existing.  we only remove from the custom pagetypes format_learning and my-collaboration
+        delete_records('block_pinned', 'pagetype', 'format_learning');
+    }
+
+    // get the sticky block object
+    $filepath = $CFG->dirroot .  '/' . $path . '/stickyblocks.php';
+    if (!file_exists($filepath)) {
+        debugging("Local caps reassignment called with invalid path $path");
+        return false;
+    }
+    require_once($filepath);
+    $blocks = get_custom_stickyblocks();
+    if (!isset($blocks)) {
+        return true; // nothing to do.
+    }
+
+    foreach($blocks as $block) {
+
+        // check for existing record
+        $id = get_field('block_pinned', 'id', 'blockid', $block->blockid, 'pagetype', $block->pagetype);
+
+        if (empty($id)) {
+            // if not there then insert a new record
+            insert_record('block_pinned', $block);
+        } else {
+            // if there then just update the relevant settings
+            $block->id = $id;
+            update_record('block_pinned', $block);
+        }
+    }
+
+    return true;
+
+}
+
