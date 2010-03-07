@@ -84,12 +84,19 @@ class report_builder_edit_form extends moodleform {
                 $field = "{$type}-{$value}";
                 $advanced = $filter['advanced'];
                 $fid = $index;
-                $mform->addElement('html','<tr><td>');
-                $mform->addElement('select',"filter{$fid}",'',$filtersselect);
-                $mform->setDefault("filter{$fid}", $field);
-                $mform->addElement('html','</td><td>');
-                $mform->addElement('checkbox',"advanced{$fid}",'');
-                $mform->setDefault("advanced{$fid}",$advanced);
+                // check filter exists in filteroptions
+                if(array_key_exists($type, $report->_filteroptions) && array_key_exists($value, $report->_filteroptions[$type])) {
+                    $mform->addElement('html','<tr><td>');
+                    $mform->addElement('select',"filter{$fid}",'',$filtersselect);
+                    $mform->setDefault("filter{$fid}", $field);
+                    $mform->addElement('html','</td><td>');
+                    $mform->addElement('checkbox',"advanced{$fid}",'');
+                    $mform->setDefault("advanced{$fid}",$advanced);
+                } else {
+                    $mform->addElement('hidden',"filter{$fid}", $field);
+                    $mform->addElement('html','<tr><td colspan="2" style="color:red;padding:10px;">Filter with type of \''.$type.'\' and value of \''.$value.'\' not found in filter options.');
+                }
+
                 $mform->addElement('html','</td><td>');
                 $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/reportbuilder/settings.php?d=1&amp;id='.$id.'&amp;fid='.$fid.'" title="'.$strdelete.'"><img src="'.$CFG->pixpath.'/t/delete.gif" class="iconsmall" alt="'.$strdelete.'" /></a>');
                 if($i != 1) {
@@ -104,7 +111,7 @@ class report_builder_edit_form extends moodleform {
                 }
                 $mform->addElement('html','</td></tr>');
                 $i++;
-            }
+                }
 
 
             $mform->addElement('html','<tr><td>');
@@ -139,12 +146,17 @@ class report_builder_edit_form extends moodleform {
                 $field = "{$type}-{$value}";
                 $heading = $column['heading'];
                 $cid = $index;
-                $mform->addElement('html','<tr><td>');
-                $mform->addElement('select',"column{$cid}",'',$columnsselect);
-                $mform->setDefault("column{$cid}", $field);
-                $mform->addElement('html','</td><td>');
-                $mform->addElement('text',"heading{$cid}",'');
-                $mform->setDefault("heading{$cid}",$heading);
+                if(array_key_exists($type, $report->_columnoptions) && array_key_exists($value, $report->_columnoptions[$type])) {
+                    $mform->addElement('html','<tr><td>');
+                    $mform->addElement('select',"column{$cid}",'',$columnsselect);
+                    $mform->setDefault("column{$cid}", $field);
+                    $mform->addElement('html','</td><td>');
+                    $mform->addElement('text',"heading{$cid}",'');
+                    $mform->setDefault("heading{$cid}",$heading);
+                } else {
+                    $mform->addElement('hidden',"column{$cid}", $field);
+                    $mform->addElement('html','<tr><td colspan="2" style="color:red;padding:10px;">Column with type of \''.$type.'\' and value of \''.$value.'\' not found in column options.');
+                }
                 $mform->addElement('html','</td><td>');
                 // delete link
                 $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/reportbuilder/settings.php?d=1&amp;id='.$id.'&amp;cid='.$cid.'" title="'.$strdelete.'"><img src="'.$CFG->pixpath.'/t/delete.gif" class="iconsmall" alt="'.$strdelete.'" /></a>');

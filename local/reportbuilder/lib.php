@@ -68,9 +68,30 @@ class reportbuilder {
         $this->_paramoptions = $this->get_source_data('paramoptions');
         $this->_params = $this->get_current_params();
 
+        // check the requested columns exist in column options
+        //$this->check_columns($this->_columns, $this->_columnoptions);
+
         // generate a filter for this report
         $this->_filtering = new filtering($this, $this->get_current_url());
 
+    }
+
+    // makes sure that columns exist in columnoptions
+    // if not, remove them and print a warning
+    function check_columns(&$columns, $columnoptions) {
+        if(isset($columns) and is_array($columns)) {
+            foreach($columns as $index => $column) {
+                $type = $column['type'];
+                $value = $column['value'];
+                if(!array_key_exists($type, $columnoptions)) {
+                    unset($columns[$index]); // remove column
+                    trigger_error("Column type '$type' not found in column options.", E_USER_WARNING);
+                } else if (!array_key_exists($value, $columnoptions[$type])) {
+                    unset($columns[$index]); // remove column
+                    trigger_error("Column value '$value' not found for type '$type' in column options.", E_USER_WARNING);
+                }
+            }
+        }
     }
 
 
@@ -378,6 +399,7 @@ class reportbuilder {
     }
 
     function export_data($format) {
+        $this->check_columns($this->_columns,$this->_columnoptions);
         $columns = $this->_columns;
         $shortname = $this->_shortname;
         $count = $this->get_filtered_count();
@@ -388,7 +410,7 @@ class reportbuilder {
         $table = new flexible_table($shortname);
         $sort = $table->get_sql_sort($shortname);
         $order = ($sort!='') ? "ORDER BY $sort" : '';
- 
+
         $headings = array();
         foreach($columns as $column) {
             if(isset($column['heading']) && $column['heading'] != '') {
@@ -414,6 +436,7 @@ class reportbuilder {
         $perpage   = optional_param('perpage', DEFAULT_PAGE_SIZE, PARAM_INT);
         $ssort     = optional_param('ssort');
 
+        $this->check_columns($this->_columns, $this->_columnoptions);
         $columns = $this->_columns;
         $shortname = $this->_shortname;
         $countfiltered = $this->get_filtered_count();
@@ -507,10 +530,10 @@ class reportbuilder {
                     // use type_value as alias for each field
                     $fields[] = $columnoptions[$type][$value]['field']." ".sql_as()." {$type}_{$value}";
                 } else {
-                    error("get_column_fields(): column value '$value' not found in source '$source' for type '$type'");
+                    trigger_error("get_column_fields(): column value '$value' not found in source '$source' for type '$type'", E_USER_WARNING);
                 }
             } else {
-                error("get_column_fields(): column type '$type' not found in source '$source'");
+                trigger_error("get_column_fields(): column type '$type' not found in source '$source'", E_USER_WARNING);
             }
         }
         return $fields;
@@ -583,14 +606,14 @@ class reportbuilder {
                             // is only stored once (as required)
                             $joins[$join] = $joinlist[$join];
                         } else {
-                            error("get_column_joins(): join name $join not in joinlist");
+                            trigger_error("get_column_joins(): join name $join not in joinlist", E_USER_WARNING);
                         }
                     }
                 } else {
-                    error("get_column_joins(): column value '$value' not found in source '$source' for type '$type'");
+                    trigger_error("get_column_joins(): column value '$value' not found in source '$source' for type '$type'", E_USER_WARNING);
                 }
             } else {
-                error("get_column_joins(): column type '$type' not found in source '$source'");
+                trigger_error("get_column_joins(): column type '$type' not found in source '$source'", E_USER_WARNING);
             }
         }
         return $joins;

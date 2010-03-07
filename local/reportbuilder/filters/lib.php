@@ -50,9 +50,14 @@ class filtering {
                 $type = $filter['type'];
                 $value = $filter['value'];
                 $advanced = $filter['advanced'];
-                $fieldname = "{$type}-{$value}";
-                if ($field = $this->get_field($type, $value, $advanced)) {
-                    $this->_fields[$fieldname] = $field;
+                // check filter exists in available options
+                if(array_key_exists($type, $report->_filteroptions) && array_key_exists($value, $report->_filteroptions[$type])) {
+                    $fieldname = "{$type}-{$value}";
+                    if ($field = $this->get_field($type, $value, $advanced)) {
+                        $this->_fields[$fieldname] = $field;
+                    }
+                } else {
+                    trigger_error("Filter with type of '$type' and value of '$value' not found in filter options.",E_USER_WARNING);
                 }
 
             }
