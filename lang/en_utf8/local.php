@@ -219,3 +219,5 @@ $string['inprogress'] = 'In Progress';
 $string['startdate'] = 'Start Date';
 $string['completeddate'] = 'Completed Date';
 
+// Report Headings
+$string['reportheadings'] = 'Report Headings';
