@@ -192,6 +192,7 @@ $string['idp'] = 'Individual Development Plan';
 $string['idps'] = 'Individual Development Plans';
 $string['inrevision'] = 'In revision';
 $string['lastevaluatedcolumn'] = 'Last Evaluated';
+$string['lastchanged'] = 'Last changed';
 $string['lastmodifiedon'] = 'Last modified on:';
 $string['learningobjectivescolumn'] = 'Learning Objectives';
 $string['learningplanapproval'] = 'IDP Approval';

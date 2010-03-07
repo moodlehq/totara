@@ -1309,19 +1309,6 @@ function approval_plan_column_heading($columnname, $showapproved) {
 }
 
 /**
- * Return the clickable column heading for the approval table on the
- * user's overview page.
- */
-function user_learning_plan_column_heading($columnname, $userid) {
-
-    $link  = '<a href="index.php?orderby='.$columnname;
-    $link .= '&amp;userid='.$userid;
-    $link .= '">'.get_string("column:$columnname", 'idp').'</a>';
-    return $link;
-}
-
-
-/**
  * Print a table of the plans pending approvals
  */
 function print_pending_plans($trainees, $orderby, $showapproved) {
@@ -1503,78 +1490,63 @@ function print_user_learning_plans($userid, $canviewplans, $page, $perpage, $ord
     $visibleplans = 0; // Number of plans that could be displayed on the page if perpage was equal to infinity
 
     if ($plans and count($plans) > 0) {
+        $table = '<table class="generalbox planlist boxaligncenter">';
 
-        $table = new stdclass();
-        $table->summary = 'List of your Learning Plans';
-        $table->class = 'generaltable learningplanlist';
-        $table->tablealign = 'left';
-
-        $table->head = array(user_learning_plan_column_heading('planname', $userid));
+        $table .= '<tr><th class="name">'.get_string('name').'</td>';
         if ($canviewplans) {
-            $table->head[] = user_learning_plan_column_heading('mtime', $userid);
-            $table->head[] = user_learning_plan_column_heading('status', $userid);
+            $table .= '<th class="lastchanged">'.get_string('lastchanged', 'idp').'</td>';
+            $table .= '<th class="status">'.get_string('status', 'idp').'</td>';
         }
         if ($ownpage) {
-            $table->head[] = '&nbsp;';
+            $table .= '<th class="options">'.get_string('options', 'idp').'</td>';
         }
+        $table .= '</tr>';
 
         // Load the button strings now, rather than doing it each time in the loop.
         $renameplanstr = get_string('renameplanbutton', 'idp');
         $deleteplanstr = get_string('deleteplanbutton', 'idp');
-
-        $firstplantoshow = $page * $perpage;
-        $lastplantoshow = $firstplantoshow + $perpage - 1;
-        foreach($plans as $plan) {
-            // Hide unsubmitted revisions from others
-            if (($userid != $USER->id) and ($plan->visible != 1)) {
-                continue;
-            }
-
-            // Deal with paging stuff
-            ++$visibleplans;
-            if ($visibleplans < $firstplantoshow) {
-                continue; // Skip this plan, it's on a previous page
-            }
-            elseif ($visibleplans > $lastplantoshow) {
-                continue; // We have already displayed enough plans on this page
-            }
-
-            if ($canviewplans) {
-                // Get the full status of the plan
-                $formattedstatus = format_revision_status($plan, false, false, false);
-                if ($ownpage and ('approved' == $plan->status or 'overdue' == $plan->status)) {
-                    $evaluationdeadline = idp_get_evaluation_deadline($plan);
-                    $formattedstatus .= ' (<a href="evaluation.php?id='.$plan->id.'">'.
-                        get_string('selfevaluationdueby', 'idp',
-                                   strftime('%d-%m-%Y', $evaluationdeadline)).'</a>)';
+        if ($plans) {
+            $rowcount = 0;
+            foreach($plans as $plan) {
+                // Hide unsubmitted revisions from others
+                if (($userid != $USER->id) and ($plan->visible != 1)) {
+                    continue;
                 }
 
-                // Begin table row
-                $row = array("<a href=\"revision.php?id={$plan->id}\">{$plan->planname}</a>",
-                             userdate($plan->mtime),
-                             $formattedstatus
-                             );
-                // Add editing buttons if appropriate
-                if ($ownpage) {
-                    if ('notsubmitted' == $plan->status) {
-                        $row[] = user_learning_plan_editbutton($plan->id, $renameplanstr)
-                            .' '. user_learning_plan_deletebutton($plan->id, $deleteplanstr);
-                        $showeditcolumn = true;
+                if ($canviewplans) {
+                    // Get the full status of the plan
+                    $formattedstatus = format_revision_status($plan, false, false, false);
+                    if ($ownpage and ('approved' == $plan->status or 'overdue' == $plan->status)) {
+                        $evaluationdeadline = idp_get_evaluation_deadline($plan);
+                        $formattedstatus .= ' (<a href="evaluation.php?id='.$plan->id.'">'.
+                            get_string('selfevaluationdueby', 'idp',
+                                       strftime('%d-%m-%Y', $evaluationdeadline)).'</a>)';
                     }
-                    else {
-                        $row[] = '&nbsp;';
-                    }
-                }
-                $table->data[] = $row;
-            }
-            else {
-                $table->data[] = array("<a href=\"revision.php?id={$plan->id}\">{$plan->planname}</a>");
-            }
-        }
 
-        if ($visibleplans) {
-            print_table($table);
-            print_paging_bar($visibleplans, $page, $perpage, "index.php?userid={$userid}&amp;orderby={$orderby}&amp;", $pagevar='page');
+                    // Begin table row
+                    $table .= "<tr class=\"r{$rowcount}\"><td><a href=\"revision.php?id={$plan->id}\">{$plan->planname}</a></td>";
+                    $table .= '<td>'.userdate($plan->mtime, '%e %b %y').'</td>';
+                    $table .= "<td>{$formattedstatus}</td>";
+
+                    // Add editing buttons if appropriate
+                    if ($ownpage) {
+                        if ('notsubmitted' == $plan->status) {
+                            $table .= '<td class="options">'.user_learning_plan_editbutton($plan->id, $renameplanstr)
+                                .' '. user_learning_plan_deletebutton($plan->id, $deleteplanstr).'</td>';
+                        }
+                        else {
+                            $table .= '<td></td>';
+                        }
+                    }
+                    $table .= '</tr>';
+                }
+                else {
+                    $table .= "<tr><td><a href=\"revision.php?id={$plan->id}\">{$plan->planname}</a><td></tr>";
+                }
+                $rowcount = ($rowcount + 1) % 2;
+            }
+            $table .= '</table>';
+            echo $table;
         } else {
             print '<i>'.get_string('noplansubmittedorapproved', 'idp').'</i>';
         }

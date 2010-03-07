@@ -86,6 +86,29 @@ table.editcompetency td {
 /** Individual Development Plans **/
 /*****************************************************************************/
 
+table.planlist {
+    border: 0px;
+    margin: 8px 0px 5px 0px;
+    width: 548px;
+}
+table.planlist th {
+    padding: 0px 0px 0px 2px;
+    text-align: left;
+}
+table.planlist tr.r1 {
+    background-color: #F0F0F0;
+    height: 20px;
+}
+table.planlist th.name {
+    width: 245px;
+}
+table.planlist th.options {
+    width: 45px;
+    text-align: center;
+}
+table.planlist td.options {
+    text-align: center;
+}
 table.planitems {
     margin: 8px 0px 0px 8px;
     width: 532px;
