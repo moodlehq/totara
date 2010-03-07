@@ -96,7 +96,7 @@ $filteroptions = array(
             'filtertype' => 'date',
             'label' => 'Completed Date',
         ),
-        'proficiency' => array(
+        'proficiencyid' => array(
             'filtertype' => 'select',
             'label' => 'Proficiency',
             'selectfunc' => 'get_proficiency_list',

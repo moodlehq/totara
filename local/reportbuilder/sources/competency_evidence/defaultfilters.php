@@ -38,7 +38,7 @@ $defaultfilters = array(
     ),
     array(
         'type' => 'competency_evidence',
-        'value' => 'proficiency',
+        'value' => 'proficiencyid',
         'advanced' => 0,
     ),
 );

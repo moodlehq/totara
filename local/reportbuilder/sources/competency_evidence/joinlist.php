@@ -15,8 +15,7 @@ $managerroleid = get_field('role','id','shortname','manager');
 
 $joinlist = array(
     'competency' => "LEFT JOIN {$CFG->prefix}competency competency ON base.competencyid = competency.id",
-    'scale' => "LEFT JOIN {$CFG->prefix}competency_scale scale ON competency.scaleid = scale.id",
-    'scale_values' => "LEFT JOIN {$CFG->prefix}competency_scale_values scale_values ON ( scale_values.scaleid = scale.id AND scale_values.id = base.proficiency )",
+    'scale_values' => "LEFT JOIN {$CFG->prefix}competency_scale_values scale_values ON scale_values.id = base.proficiency",
     'user' => "LEFT JOIN {$CFG->prefix}user u ON base.userid = u.id",
     'position_assignment' => "LEFT JOIN {$CFG->prefix}position_assignment pa ON base.userid = pa.userid",
     'manager_role_assignment' => "LEFT JOIN {$CFG->prefix}role_assignments mra ON ( pa.reportstoid = mra.id AND mra.roleid = $managerroleid)",

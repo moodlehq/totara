@@ -62,7 +62,7 @@ function get_proficiency_list() {
     foreach($scale_values as $scale_value) {
         $id = $scale_value->id;
         $name = $scale_value->name;
-        $proficiencies[$name] = $name;
+        $proficiencies[$id] = $name;
     }
 
     return $proficiencies;

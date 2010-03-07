@@ -36,7 +36,12 @@ $columnoptions = array(
         'proficiency' => array(
             'name'  => 'Proficiency',
             'field' => "scale_values.name",
-            'joins' => array('competency','scale','scale_values'),
+            'joins' => array('scale_values'),
+        ),
+        'proficiencyid' => array(
+            'name' => 'Proficiency ID',
+            'field' => 'base.proficiency',
+            'joins' => array(),
         ),
         'completeddate' => array(
             'name' => 'Completion Date',
