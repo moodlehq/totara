@@ -39,6 +39,13 @@ if ($subtype !== null) {
 $sitecontext = get_context_instance(CONTEXT_SYSTEM);
 require_capability('moodle/local:view'.$type, $sitecontext);
 
+$pagetitle = format_string($depth->fullname.' - '.$item->fullname);
+$navlinks[] = array('name' => get_string('administration'), 'link'=> '', 'type'=>'title');
+$navlinks[] = array('name' => get_string($type.'plural',$type), 'link'=> '', 'type'=>'title');
+$navlinks[] = array('name' => get_string($type.'depthcustomfields',$type), 'link'=> '', 'type'=>'title');
+
+$navigation = build_navigation($navlinks);
+
 // check if any actions need to be performed
 switch ($action) {
     case 'movecategory':
@@ -71,10 +78,10 @@ switch ($action) {
         //ask for confirmation
         $fieldcount = count_records($tableprefix.'_info_field', 'categoryid', $id);
         $optionsyes = array ('id'=>$id, 'confirm'=>1, 'action'=>'deletecategory', 'sesskey'=>sesskey());
-        admin_externalpage_print_header();
+        print_header_simple($pagetitle, '', $navigation, '', null, true, $navbaritem);
         print_heading('deletecategory', 'customfields');
         notice_yesno(get_string('confirmcategorydeletion', 'customfields', $fieldcount), $redirect, $redirect, $optionsyes, null, 'post', 'get');
-        admin_externalpage_print_footer();
+        print_footer();
         die;
         break;
     case 'deletefield':
@@ -89,10 +96,10 @@ switch ($action) {
         //ask for confirmation
         $datacount = count_records('user_info_data', 'fieldid', $id);
         $optionsyes = array ('id'=>$id, 'confirm'=>1, 'action'=>'deletefield', 'sesskey'=>sesskey());
-        admin_externalpage_print_header();
+        print_header_simple($pagetitle, '', $navigation, '', null, true, $navbaritem);
         print_heading('deletefield', 'customfields');
         notice_yesno(get_string('confirmfielddeletion', 'customfields', $datacount), $redirect, $redirect, $optionsyes, null, 'post', 'get');
-        admin_externalpage_print_footer();
+        print_footer();
         die;
         break;
     case 'editfield':
@@ -112,13 +119,6 @@ switch ($action) {
 }
 
 // Display page header
-$pagetitle = format_string($depth->fullname.' - '.$item->fullname);
-$navlinks[] = array('name' => get_string('administration'), 'link'=> '', 'type'=>'title');
-$navlinks[] = array('name' => get_string($type.'plural',$type), 'link'=> '', 'type'=>'title');
-$navlinks[] = array('name' => get_string($type.'depthcustomfields',$type), 'link'=> '', 'type'=>'title');
-
-$navigation = build_navigation($navlinks);
-
 print_header_simple($pagetitle, '', $navigation, '', null, true, $navbaritem);
 print_heading(get_string($type.'depthcustomfields', $type));
 
