@@ -226,6 +226,12 @@ $string['inprogress'] = 'In Progress';
 $string['startdate'] = 'Start Date';
 $string['completeddate'] = 'Completed Date';
 
+// Installation and Demo data
+$string['installingdemodata'] = 'Installing Demo Data';
+$string['installdemoquestion'] = 'Do you want to include demo data with this installation?<br /><br />(this will take a long time)';
+$string['performinglocalpostinst'] = 'Local Post-installation setup';
+$string['localpostinstfailed'] = 'There was a problem setting up local modifications to this installation';
+
 // Report Headings
 $string['reportheadings'] = 'Report Headings';
 

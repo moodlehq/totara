@@ -583,14 +583,14 @@
         require_once($CFG->dirroot . '/local/lib.php');
         if (function_exists('local_postinst')) {
              admin_externalpage_setup('adminnotifications');
-             $strheader = get_string('performinglocalpostinst');
+             $strheader = get_string('performinglocalpostinst','local');
              $navigation = build_navigation(array(array('name'=>$strheader, 'link'=>null, 'type'=>'misc')));
              print_header($strheader, $strheader, $navigation,
                         "", upgrade_get_javascript(), false, "&nbsp;", "&nbsp;");
             //admin_externalpage_print_header();
             print_heading($strheader);
             if (!local_postinst()) {
-                print_error('localpostinstfailed', 'error');
+                print_error('localpostinstfailed', 'local');
             }
             set_config('local_postinst_hasrun', '1');
             print_continue($CFG->wwwroot . '/admin/index.php');

@@ -71,11 +71,11 @@ if(isset($submit) && $submit == 'yes') {
 
 
     admin_externalpage_setup('adminnotifications');
-    $strheader = get_string('installingdemodata');
+    $strheader = get_string('installingdemodata','local');
     $navigation = build_navigation(array(array('name'=>$strheader, 'link'=>null, 'type'=>'misc')));
     print_header($strheader, $strheader, $navigation);
 
-    notice_yesno('Do you want to include demo data?',me(),me(),array('submit'=>'yes'),array('submit'=>'no'));
+    notice_yesno(get_string('installdemoquestion','local'),me(),me(),array('submit'=>'yes'),array('submit'=>'no'));
 
     print_footer();
 }
