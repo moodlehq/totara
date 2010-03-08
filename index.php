@@ -187,9 +187,11 @@
         $frontpagelayout = $CFG->frontpage;
     }
 
-    if (file_exists($CFG->dirroot.'/local/mitms.php')) {
-        require_once($CFG->dirroot.'/local/mitms.php');
-        mitms_print_my_current_courses();
+    if ($CFG->courseprogress) {
+        if (file_exists($CFG->dirroot.'/local/mitms.php')) {
+            require_once($CFG->dirroot.'/local/mitms.php');
+            mitms_print_my_current_courses();
+        }
     }
 
     foreach (explode(',',$frontpagelayout) as $v) {
