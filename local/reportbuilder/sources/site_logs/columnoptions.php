@@ -57,16 +57,15 @@ $columnoptions = array(
         ),
         'action' => array(
             'name' => 'Action',
-            'field' => 'base.action',
+            'field' => sql_fullname("base.module","base.action"),
             'joins' => array(),
         ),
-        /*
         'actionlink' => array(
             'name' => 'Action (linked to URL)',
-            'field' => 'base.url AS log_url, base.action',
+            'field' => 'base.module AS log_module, base.url AS log_url, '.sql_fullname("base.module","base.action"),
             'joins' => array(),
             'displayfunc' => 'reportbuilder_link_action',
-        ),*/
+        ),
         'url' => array(
             'name' => 'URL',
             'field' => 'base.url',
@@ -77,7 +76,8 @@ $columnoptions = array(
             'field' => 'base.info',
             'joins' => array(),
         ),
-   ),
+
+    ),
     'course' => array(
         'fullname' => array(
             'name' => 'Course Name',
@@ -162,6 +162,36 @@ $columnoptions = array(
             'name' => 'User ID',
             'field' => "u.id",
             'joins' => array('user'),
+        ),
+        'managername' => array(
+            'name' => 'User\'s Manager Name',
+            'field' => sql_fullname("manager.firstname","manager.lastname"),
+            'joins' => array('user','position_assignment','manager_role_assignment','manager'),
+        ),
+        'organisationid' => array(
+            'name' => 'User\'s Organisation ID',
+            'field' => "pa.organisationid",
+            'joins' => array('user','position_assignment'),
+        ),
+        'organisation' => array(
+            'name' => 'User\'s Organisation Name',
+            'field' => "organisation.fullname",
+            'joins' => array('user','position_assignment','organisation'),
+        ),
+        'positionid' => array(
+            'name' => 'User\'s Position ID',
+            'field' => 'pa.positionid',
+            'joins' => array('user','position_assignment'),
+        ),
+        'position' => array(
+            'name' => 'User\'s Position',
+            'field' => "position.fullname",
+            'joins' => array('user','position_assignment','position'),
+        ),
+        'title' => array(
+            'name' => 'User\'s Job Title',
+            'field' => "pa.fullname",
+            'joins' => array('user','position_assignment'),
         ),
     ),
 );

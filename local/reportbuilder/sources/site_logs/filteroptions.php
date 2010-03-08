@@ -39,8 +39,29 @@ $filteroptions = array(
     'user' => array(
         'fullname' => array(
             'filtertype' => 'text',
-            'label' => 'Participant Name',
+            'label' => 'User\'s Name',
         ),
+        'organisationid' => array(
+            'filtertype' => 'select',
+            'label' => 'User\'s Current Office',
+            'selectfunc' => 'get_organisations_list',
+            'options' => $selectwidth,
+        ),
+        'positionid' => array(
+            'filtertype' => 'select',
+            'label' => 'User\'s Current Position',
+            'selectfunc' => 'get_positions_list',
+            'options' => $selectwidth,
+        ),
+        'managername' => array(
+            'filtertype' => 'text',
+            'label' => 'User\'s Manager\'s Name',
+        ),
+        'title' => array(
+            'filtertype' => 'text',
+            'label' => 'User\'s Job Title',
+        ),
+
     ),
     'course' => array(
         'fullname' => array(

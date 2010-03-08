@@ -29,14 +29,16 @@ function reportbuilder_link_competency($comp, $row) {
     return "<a href=\"{$CFG->wwwroot}/hierarchy/item/view.php?type=competency&id={$compid}\">{$comp}</a>";
 }
 
-/*
+
 // convert a site log action into a link to that page
 function reportbuilder_link_action($action, $row) {
     global $CFG;
     $url = $row->log_url;
-    return "<a href=\"{$CFG->wwwroot}/course/$url\">{$action}</a>";
+    $module = $row->log_module;
+    require_once($CFG->dirroot.'/course/lib.php');
+    $logurl = make_log_url($module, $url);
+    return "<a href=\"{$CFG->wwwroot}$logurl\">{$action}</a>";
 }
- */
 
 
 // print the appropriate link depending on record type

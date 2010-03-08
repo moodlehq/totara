@@ -18,6 +18,11 @@ $defaultfilters = array(
         'advanced' => 0,
     ),
     array(
+        'type' => 'log',
+        'value' => 'action',
+        'advanced' => 0,
+    ),
+    array(
         'type' => 'course',
         'value' => 'fullname',
         'advanced' => 1,
@@ -28,9 +33,14 @@ $defaultfilters = array(
         'advanced' => 1,
     ),
     array(
-        'type' => 'log',
-        'value' => 'action',
-        'advanced' => 0,
+        'type' => 'user',
+        'value' => 'positionid',
+        'advanced' => 1,
+    ),
+    array(
+        'type' => 'user',
+        'value' => 'organisationid',
+        'advanced' => 1,
     ),
 );
 

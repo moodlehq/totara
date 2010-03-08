@@ -22,6 +22,16 @@ $defaultcolumns = array(
         'heading' => 'User',
     ),
     array(
+        'type' => 'user',
+        'value' => 'position',
+        'heading' => 'Position',
+    ),
+    array(
+        'type' => 'user',
+        'value' => 'organisation',
+        'heading' => 'Organisation',
+    ),
+    array(
         'type' => 'course',
         'value' => 'courselink',
         'heading' => 'Course',
@@ -33,13 +43,8 @@ $defaultcolumns = array(
     ),
     array(
         'type' => 'log',
-        'value' => 'action',
+        'value' => 'actionlink',
         'heading' => 'Action',
-    ),
-    array(
-        'type' => 'log',
-        'value' => 'url',
-        'heading' => 'URL',
     ),
     array(
         'type' => 'log',
