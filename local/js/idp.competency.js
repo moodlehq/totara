@@ -123,7 +123,7 @@ function idpcompetencies_save() {
 
     YAHOO.util.Connect.asyncRequest(
         'GET',
-        '../hierarchy/type/competency/idp/save.php?id='+idp_revision_id+'&add='+assignments,
+        '../hierarchy/type/competency/idp/save.php?id='+idp_revision_id+'&rowcount='+idp_competency_row_count+'&add='+assignments,
         callback
     );
 }

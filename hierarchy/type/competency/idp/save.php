@@ -12,6 +12,9 @@ require_once($CFG->dirroot.'/hierarchy/type/competency/lib.php');
 // Competency id
 $id = required_param('id', PARAM_INT);
 
+// Courses to add
+$rowcount = required_param('rowcount', PARAM_SEQUENCE);
+
 // Competencies to add
 $add = required_param('add', PARAM_SEQUENCE);
 
@@ -55,7 +58,7 @@ foreach ($add as $addition) {
     insert_record('idp_revision_competency', $idpcompetency);
 
     // Return html
-    echo '<tr>';
+    echo '<tr class=r'.$rowcount.'>';
     echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/framework/index.php?type={$hierarchy->prefix}&id={$framework->id}\">{$framework->fullname}</a></td>";
     echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/item/view.php?type={$hierarchy->prefix}&id={$competency->id}\">{$competency->fullname}</a></td>";
     echo "<td></td>";
@@ -71,4 +74,5 @@ foreach ($add as $addition) {
 //    }
 
     echo '</tr>'.PHP_EOL;
+    $rowcount = ($rowcount + 1) % 2;
 }

@@ -78,7 +78,7 @@ function idpcompetencytemplates_save() {
 
     YAHOO.util.Connect.asyncRequest(
         'GET',
-        '../hierarchy/type/competency/idp/save-template.php?id='+idp_revision_id+'&add='+assignments,
+        '../hierarchy/type/competency/idp/save-template.php?id='+idp_revision_id+'&rowcount='+idp_competencytemplate_row_count+'&add='+assignments,
         callback
     );
 }

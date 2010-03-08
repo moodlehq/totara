@@ -36,14 +36,16 @@ $editingon = true;
 </tr>
 <?php
 
-    // # cols varies
-    $cols = $editingon ? 4 : 3;
+// # cols varies
+$cols = $editingon ? 4 : 3;
+
+$rowcount=0;
 
 if ($courses) {
 
     foreach ($courses as $course) {
 
-        echo '<tr>';
+        echo '<tr class=r'.$rowcount.'>';
         echo "<td><a href=\"{$CFG->wwwroot}/course/category.php?id={$course->ccid}\">{$course->category}</a></td>";
         echo "<td><a href=\"{$CFG->wwwroot}/course/view.php?id={$course->id}\">{$course->fullname}</a></td>";
         echo '<td>'.$course->status.'</td>';
@@ -59,6 +61,7 @@ if ($courses) {
         }
 
         echo '</tr>';
+        $rowcount = ($rowcount + 1) % 2;
     }
 
 } else {
@@ -82,6 +85,11 @@ if ($courses) {
         </td>
     </tr>
 </table>
+<script type="text/javascript">
+<!-- //
+var idp_course_row_count = <?php echo $rowcount ?>
+// -->
+</script>
 <?php
 
     }

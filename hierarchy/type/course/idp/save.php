@@ -11,7 +11,10 @@ require_once($CFG->libdir.'/adminlib.php');
 // Plan id
 $id = required_param('id', PARAM_INT);
 
-// Competencies to add
+// Courses to add
+$rowcount = required_param('rowcount', PARAM_SEQUENCE);
+
+// Courses to add
 $add = required_param('add', PARAM_SEQUENCE);
 
 // Setup page
@@ -53,13 +56,13 @@ foreach ($add as $addition) {
 
 
     // Return html
-    echo '<tr>';
+    echo '<tr class=r'.$rowcount.'>';
     echo "<td><a href=\"{$CFG->wwwroot}/course/category.php?id={$course->category}\">".format_string($category->name)."</a></td>";
     echo "<td><a href=\"{$CFG->wwwroot}/course/view.php?id={$course->id}\">".format_string($course->fullname)."</a></td>";
     echo '<td></td>';
     echo '<td></td>';
 
-    echo "<td style=\"text-align: center;\">";
+    echo "<td class=\"options\">";
 
     echo "<a href=\"{$CFG->wwwroot}/course/idp/remove.php?id={$course->id}\" title=\"$str_remove\">".
          "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_remove\" /></a>";
@@ -67,4 +70,5 @@ foreach ($add as $addition) {
     echo "</td>";
 
     echo '</tr>'.PHP_EOL;
+    $rowcount = ($rowcount + 1) % 2;
 }
