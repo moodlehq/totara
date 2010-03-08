@@ -28,6 +28,17 @@ if ($subtype !== null) {
 }
 if ($depthid) {
     $redirect .= '&depthid='.$depthid;
+    $depth      = $hierarchy->get_depth_by_id($depthid);
+
+    $pagetitle = format_string($depth->fullname);
+    $navlinks[] = array('name' => get_string('administration'), 'link'=> '', 'type'=>'title');
+    $navlinks[] = array('name' => get_string($type.'plural',$type), 'link'=> '', 'type'=>'title');
+    $navlinks[] = array('name' => get_string($type.'depthcustomfields',$type), 'link'=> '', 'type'=>'title');
+} else {
+    $pagetitle = format_string(get_string($type.'depthcustomfields',$type));
+    $navlinks[] = array('name' => get_string('administration'), 'link'=> '', 'type'=>'title');
+    $navlinks[] = array('name' => get_string($type.'plural',$type), 'link'=> '', 'type'=>'title');
+    $navlinks[] = array('name' => get_string($type.'depthcustomfields',$type), 'link'=> '', 'type'=>'title');
 }
 
 if ($subtype !== null) {
@@ -38,11 +49,6 @@ if ($subtype !== null) {
 
 $sitecontext = get_context_instance(CONTEXT_SYSTEM);
 require_capability('moodle/local:view'.$type, $sitecontext);
-
-$pagetitle = format_string($depth->fullname.' - '.$item->fullname);
-$navlinks[] = array('name' => get_string('administration'), 'link'=> '', 'type'=>'title');
-$navlinks[] = array('name' => get_string($type.'plural',$type), 'link'=> '', 'type'=>'title');
-$navlinks[] = array('name' => get_string($type.'depthcustomfields',$type), 'link'=> '', 'type'=>'title');
 
 $navigation = build_navigation($navlinks);
 
@@ -78,7 +84,7 @@ switch ($action) {
         //ask for confirmation
         $fieldcount = count_records($tableprefix.'_info_field', 'categoryid', $id);
         $optionsyes = array ('id'=>$id, 'confirm'=>1, 'action'=>'deletecategory', 'sesskey'=>sesskey());
-        print_header_simple($pagetitle, '', $navigation, '', null, true, $navbaritem);
+        print_header_simple($pagetitle, '', $navigation, '', null, true);
         print_heading('deletecategory', 'customfields');
         notice_yesno(get_string('confirmcategorydeletion', 'customfields', $fieldcount), $redirect, $redirect, $optionsyes, null, 'post', 'get');
         print_footer();
@@ -96,7 +102,7 @@ switch ($action) {
         //ask for confirmation
         $datacount = count_records('user_info_data', 'fieldid', $id);
         $optionsyes = array ('id'=>$id, 'confirm'=>1, 'action'=>'deletefield', 'sesskey'=>sesskey());
-        print_header_simple($pagetitle, '', $navigation, '', null, true, $navbaritem);
+        print_header_simple($pagetitle, '', $navigation, '', null, true);
         print_heading('deletefield', 'customfields');
         notice_yesno(get_string('confirmfielddeletion', 'customfields', $datacount), $redirect, $redirect, $optionsyes, null, 'post', 'get');
         print_footer();
@@ -119,13 +125,12 @@ switch ($action) {
 }
 
 // Display page header
-print_header_simple($pagetitle, '', $navigation, '', null, true, $navbaritem);
+print_header_simple($pagetitle, '', $navigation, '', null, true);
 print_heading(get_string($type.'depthcustomfields', $type));
 
 // show custom fields for the given depth
 if ($depthid) {
 
-    $depth      = $hierarchy->get_depth_by_id($depthid);
     $framework  = $hierarchy->get_framework($depth->frameworkid);
     $categories = get_records_select($tableprefix.'_info_category', "depthid='$depthid'", 'sortorder ASC');
     $categorycount = count($categories);
@@ -175,7 +180,8 @@ if ($depthid) {
 } else {
 // show custom fields for all frameworks
 
-    $sql = "SELECT cf.shortname as frameworkshortname, cd.fullname as depthfullname, cdc.name as categoryname, cdf.fullname as depthfieldfullname
+    $sql = "SELECT cf.shortname as frameworkshortname, cf.fullname as frameworkfullname,
+              cd.fullname as depthfullname, cdc.name as categoryname, cdf.fullname as depthfieldfullname
             FROM {$CFG->prefix}{$type}_framework cf
             JOIN {$CFG->prefix}{$type}_depth cd on cd.frameworkid=cf.id
             LEFT OUTER JOIN {$CFG->prefix}{$type}_depth_info_category cdc on cdc.depthid=cd.id
@@ -212,14 +218,14 @@ if ($depthid) {
                     $table .= "<td></td>";
                 }
                 $table .= "<td>$u->depthfieldfullname</td></tr>";
+                $frameworkfullname = $u->frameworkfullname;
             }
         }
 
         $table .= "</table>";
         echo $table;
 
-        $groupcontent = '<tr><td>'.$u->frameworkfullname.'</td>';
-                
+        $groupcontent = '<tr><td>'.$frameworkfullname.'</td>';
     }
 }
 
