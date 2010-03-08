@@ -95,7 +95,7 @@ table.planlist th {
     padding: 0px 0px 0px 2px;
     text-align: left;
 }
-table.planlist tr.r1 {
+table.planlist tr.r0 {
     background-color: #F0F0F0;
     height: 20px;
 }
@@ -112,6 +112,12 @@ table.planlist td.options {
 table.planitems {
     margin: 8px 0px 0px 8px;
     width: 532px;
+}
+table.planitems tr {
+    height: 25px;
+}
+table.planitems tr.r0 {
+    background-color: #F0F0F0;
 }
 table.planitems th {
     text-align: left;

@@ -36,14 +36,16 @@ $str_remove = get_string('remove');
 </tr>
 <?php
 
-    // # cols varies
-    $cols = $editingon ? 4 : 3;
+// # cols varies
+$cols = $editingon ? 4 : 3;
+
+$rowcount=0;
 
 if ($competencies) {
 
     foreach ($competencies as $competency) {
 
-        echo '<tr>';
+        echo '<tr class=r'.$rowcount.'>';
         echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/index.php?type=competency&frameworkid={$competency->fid}\">{$competency->framework}</a></td>";
         echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/item/view.php?type=competency&id={$competency->id}\">{$competency->fullname}</a></td>";
         echo '<td>'.$competency->status.'</td>';
@@ -59,6 +61,7 @@ if ($competencies) {
         }
 
         echo '</tr>';
+        $rowcount = ($rowcount + 1) % 2;
     }
 
 } else {
@@ -82,6 +85,11 @@ if ($competencies) {
         </td>
     </tr>
 </table>
+<script type="text/javascript">
+<!-- //
+var idp_competency_row_count = <?php echo $rowcount ?>
+// -->
+</script>
 <?php
 
     }

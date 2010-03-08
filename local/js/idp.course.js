@@ -137,7 +137,7 @@ function idpcourses_save() {
 
     YAHOO.util.Connect.asyncRequest(
         'GET',
-        '../hierarchy/type/course/idp/save.php?id='+idp_revision_id+'&add='+assignments,
+        '../hierarchy/type/course/idp/save.php?id='+idp_revision_id+'&rowcount='+idp_course_row_count+'&add='+assignments,
         callback
     );
 }
