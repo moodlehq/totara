@@ -496,7 +496,9 @@
                                 if ($depth->id == $depthid) {
                                     break;
                                 } else {
-                                    $j += $customfieldtrack[$depth->depthlevel];
+                                    if(!empty($customfieldtrack)) {
+                                        $j += $customfieldtrack[$depth->depthlevel];
+                                    }
                                 }
                             }
                         }
