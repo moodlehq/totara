@@ -1,3 +1,3 @@
 <?php
 
-$string['progress:view'] = 'View course progress report';
+$string['progress:view'] = 'View activity completion reports';

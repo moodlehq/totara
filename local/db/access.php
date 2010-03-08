@@ -495,5 +495,16 @@ $local_capabilities = array(
             'admin' => CAP_ALLOW,
         ),
     ),
-);
 
+    // Mark another user complete in course completion
+    'moodle/local:markcomplete' => array(
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_COURSE,
+        'legacy' => array(
+            'teacher' => CAP_ALLOW,
+            'editingteacher' => CAP_ALLOW,
+            'coursecreator' => CAP_ALLOW,
+            'admin' => CAP_ALLOW
+        )
+    ),
+);

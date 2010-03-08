@@ -132,13 +132,7 @@ if ($form->is_cancelled()){
     $aggregation->insert();
 
     // Update course total passing grade
-    $grade_item = grade_item::fetch(
-        array(
-            'itemtype'=>'course',
-            'courseid'=>$course->id
-        )
-    );
-    //$grade_item = new grade_item();
+    $grade_item = grade_category::fetch_course_category($course->id)->grade_item;
     $grade_item->gradepass = $data->criteria_grade_value;
     $grade_item->update('course/completion.php');
 

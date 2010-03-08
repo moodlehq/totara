@@ -23,9 +23,9 @@
 //                                                                       //
 ///////////////////////////////////////////////////////////////////////////
 
-$coursereport_progress_capabilities = array(
+$coursereport_completion_capabilities = array(
 
-    'coursereport/progress:view' => array(
+    'coursereport/completion:view' => array(
         'riskbitmask' => RISK_PERSONAL,
         'captype' => 'read',
         'contextlevel' => CONTEXT_COURSE,

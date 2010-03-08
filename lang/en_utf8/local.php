@@ -228,3 +228,5 @@ $string['completeddate'] = 'Completed Date';
 
 // Report Headings
 $string['reportheadings'] = 'Report Headings';
+
+$string['local:markcomplete'] = 'Mark user\'s complete in course completion';
