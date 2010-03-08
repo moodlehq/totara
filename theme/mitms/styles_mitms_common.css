@@ -190,6 +190,16 @@ table#list-assignedcompetencytemplates td[colspan] {
 /*****************************************************************************/
 /** Dialogs **/
 /*****************************************************************************/
+div.yui-dialog div.yui-isloading {
+    background-image: url(loading_small.gif);
+    background-position: 698px 10px;
+    background-repeat: no-repeat;
+}
+
+div.yui-dialog div.yui-isloading .bd {
+    padding-bottom: 22px;
+}
+
 div.yui-dialog .simpleframeworkpicker,
 div.yui-dialog #framework-picker {
     float: right;

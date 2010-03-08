@@ -135,6 +135,10 @@ function yuiDialog(title, buttonid, config, default_url, handler) {
      * @return  void
      */
     this.load = function(url, method) {
+        // Add loading animation
+        this.showLoading();
+        this.dialog.setBody('');
+
         // Save url
         this.url = url;
 
