@@ -21,7 +21,7 @@ $submit = optional_param('submit',null,PARAM_TEXT);
 if(isset($submit) && $submit == 'no') {
     // set flag and continue
     set_config('mitms_demo_setup',$submit);
-    redirect($CFG->wwwrrot.'/admin/index.php');
+    redirect($CFG->wwwroot.'/admin/index.php');
     exit;
 }
 
