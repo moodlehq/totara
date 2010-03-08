@@ -377,10 +377,10 @@ class course_edit_form extends moodleform {
             $mform->addElement('header', '', get_string('progress', 'completion'));
             $mform->addElement('select', 'enablecompletion', get_string('completion', 'completion'),
                 array(0 => get_string('completiondisabled', 'completion'), 1 => get_string('completionenabled', 'completion')));
-            $mform->setDefault('enablecompletion', $courseconfig->enablecompletion);
+            $mform->setDefault('enablecompletion', !empty($courseconfig->enablecompletion));
 
             $mform->addElement('checkbox', 'completionstartonenrol', get_string('completionstartonenrol', 'completion'));
-            $mform->setDefault('completionstartonenrol', $courseconfig->completionstartonenrol);
+            $mform->setDefault('completionstartonenrol', !empty($courseconfig->completionstartonenrol));
             $mform->disabledIf('completionstartonenrol', 'enablecompletion', 'eq', 0);
         } else {
             $mform->addElement('hidden', 'enablecompletion');
