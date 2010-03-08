@@ -123,7 +123,6 @@
     $from   = " FROM {$CFG->prefix}{$type}";
     $where  = " WHERE frameworkid=$frameworkid";
     $sort   = " ORDER BY sortorder";
-
     // create the filter form
     $filtering = new hierarchy_filtering($type, null, $returnurl);
     $extrasql = $filtering->get_sql_filter();
@@ -149,7 +148,6 @@
                     ON cd.id=cdf.depthid
                 WHERE cd.frameworkid=$frameworkid AND cdf.hidden=0
                 ORDER BY cdc.depthid, cdc.sortorder, cdf.sortorder";
-
         $customfields = get_records_sql($sql);
         $customfieldtrack  = array();
     }
@@ -449,11 +447,10 @@
                             ON cdf.depthid=c.depthid
                         LEFT OUTER JOIN {$CFG->prefix}{$type}_depth_info_data cdd
                             ON cdd.fieldid=cdf.id AND cdd.{$type}id=c.id";
-                $where  = " WHERE c.frameworkid=$frameworkid AND c.id IN (".implode(",", $itemtrack).") AND cdf.hidden=0";
+                $where  = " WHERE c.frameworkid=$frameworkid AND c.id IN (".implode(",", $itemtrack).") AND (cdf.hidden=0 or cdf.hidden is null)";
                 $sort   = " ORDER BY c.sortorder, cdf.categoryid, cdf.sortorder";
 
                 $customdatalist = get_recordset_sql($select.$from.$where.$sort);
-
                 if ($customdatalist) {
 
                     $customdatafound = false;
