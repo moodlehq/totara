@@ -1,9 +1,9 @@
 <?php
 
 require_once('../hierarchy/type/competency/lib.php');
-require_once( $CFG->dirroot.'/plan/view-competencies.html' );
-require_once( $CFG->dirroot.'/plan/view-competencytemplates.html' );
-require_once( $CFG->dirroot.'/plan/view-courses.html' );
+require_once( $CFG->dirroot.'/plan/view-competencies.php' );
+require_once( $CFG->dirroot.'/plan/view-competencytemplates.php' );
+require_once( $CFG->dirroot.'/plan/view-courses.php' );
 
 $CFG->idpenablefavourites = false;
 
