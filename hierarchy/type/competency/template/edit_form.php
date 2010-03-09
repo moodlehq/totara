@@ -30,7 +30,7 @@ class competencytemplate_edit_form extends moodleform {
         $mform->addRule('shortname', get_string('missingshortnametemplate', 'competency'), 'required', null, 'client');
         $mform->setType('shortname', PARAM_MULTILANG);
 
-        $mform->addElement('htmleditor', 'description', get_string('description'), array('rows'=> '10', 'cols'=>'65'));
+        $mform->addElement('htmleditor', 'description', get_string('description'));
         $mform->setHelpButton('description', array('text', get_string('helptext')), true);
         $mform->setType('description', PARAM_RAW);
 

@@ -111,7 +111,7 @@ class item_edit_form extends moodleform {
         $mform->setHelpButton('idnumber', array($type.'idnumber', get_string('idnumber', $type)), true);
         $mform->setType('idnumber', PARAM_RAW);
 
-        $mform->addElement('htmleditor', 'description', get_string('description'), array('rows'=> '10', 'cols'=>'65'));
+        $mform->addElement('htmleditor', 'description', get_string('description'));
         $mform->setHelpButton('description', array('text', get_string('helptext')), true);
         $mform->setType('description', PARAM_RAW);
 
