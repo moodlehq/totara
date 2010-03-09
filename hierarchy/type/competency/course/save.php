@@ -57,7 +57,7 @@ $evidence->iteminstance = $instance;
 $evidence->add($competency);
 
 echo '<tr>';
-echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/frameworks/index.php?type=competency&id={$framework->id}\">{$framework->fullname}</a></td>";
+echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/index.php?type=competency&frameworkid={$framework->id}\">{$framework->fullname}</a></td>";
 echo '<td>'.$depth->fullname.'</td>';
 echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/item/view.php?type=competency&id={$competency->id}\">{$competency->fullname}</a></td>";
 

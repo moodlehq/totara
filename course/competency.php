@@ -168,7 +168,7 @@ if ($competencies) {
     foreach ($competencies as $competency) {
 
         echo '<tr>';
-        echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/frameworks/index.php?type=competency&id={$competency->fid}\">{$competency->framework}</a></td>";
+        echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/index.php?type=competency&frameworkid={$competency->fid}\">{$competency->framework}</a></td>";
         echo '<td>'.$competency->depth.'</td>';
         echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/item/view.php?type=competency&id={$competency->id}\">{$competency->fullname}</a></td>";
         echo '<td>';

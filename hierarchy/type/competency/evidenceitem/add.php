@@ -61,5 +61,4 @@ if (!empty($USER->competencyediting)) {
     echo "</td>";
 }
 
-echo '<td style="text-align: center">0</td>';
 echo '</tr>';
