@@ -103,13 +103,6 @@ if ($templates) {
         if ($editingon && $can_edit) {
             $buttons[] = "<a href=\"{$CFG->wwwroot}/hierarchy/type/{$hierarchy->prefix}/template/edit.php?id={$template->id}\" title=\"$str_edit\">".
                 "<img src=\"{$CFG->pixpath}/t/edit.gif\" class=\"iconsmall\" alt=\"$str_edit\" /></a>";
-            if ($template->visible) {
-                $buttons[] = "<a href=\"{$CFG->wwwroot}/hierarchy/type/{$hierarchy->prefix}/template/index.php?hide={$template->id}\" title=\"$str_hide\">".
-                    "<img src=\"{$CFG->pixpath}/t/hide.gif\" class=\"iconsmall\" alt=\"$str_hide\" /></a>";
-            } else {
-                $buttons[] = "<a href=\"{$CFG->wwwroot}/hierarchy/type/{$hierarchy->prefix}/template/index.php?show={$template->id}\" title=\"$str_show\">".
-                    "<img src=\"{$CFG->pixpath}/t/show.gif\" class=\"iconsmall\" alt=\"$str_show\" /></a>";
-            }
         }
         if ($editingon && $can_delete) {
             $buttons[] = "<a href=\"{$CFG->wwwroot}/hierarchy/type/{$hierarchy->prefix}/template/delete.php?id={$template->id}\" title=\"$str_delete\">".
