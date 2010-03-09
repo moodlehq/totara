@@ -49,7 +49,7 @@ class framework_edit_form extends moodleform {
         $mform->setHelpButton('idnumber', array('competencyframeworkidnumber', get_string('idnumberframework', 'competency')), true);
         $mform->setType('idnumber', PARAM_RAW);
 
-        $mform->addElement('htmleditor', 'description', get_string('description'), array('rows'=> '10', 'cols'=>'65'));
+        $mform->addElement('htmleditor', 'description', get_string('description'));
         $mform->setHelpButton('description', array('text', get_string('helptext')), true);
         $mform->setType('description', PARAM_RAW);
 
