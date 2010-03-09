@@ -173,9 +173,17 @@ if ($depthid) {
     $options = customfield_list_datatypes();
     popup_form('index.php?type='.$type.'&amp;subtype='.$subtype.'&id=0&amp;action=editfield&amp;depthid='.$depthid.'&amp;datatype=', $options, 'newfieldform','','choose','','',false,'self',get_string('createnewcustomfield', 'customfields'));
 
+    print '<div class="buttons">';
+
     // Create a new category link
     $options = array('action'=>'editcategory', 'type'=>$type, 'subtype' => $subtype, 'depthid'=>$depthid);
     print_single_button('index.php', $options, get_string('createcustomfieldcategory', 'customfields'));
+
+    // Create a return to framework link
+    $options = array('frameworkid' => $framework->id, 'type' => $type);
+    print_single_button("{$CFG->wwwroot}/hierarchy/index.php", $options, get_string('returntoframework', $type));
+
+    print '</div>';
 
 } else {
 // show custom fields for all frameworks
