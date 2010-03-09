@@ -31,15 +31,15 @@
  */
 
 /**
- * Course grade competency evidence type
+ * Course completion competency evidence type
  */
-class competency_evidence_type_coursegrade extends competency_evidence_type {
+class competency_evidence_type_coursecompletion extends competency_evidence_type {
 
     /**
      * Evidence item type
      * @var string
      */
-    public $itemtype = COMPETENCY_EVIDENCE_TYPE_COURSE_GRADE;
+    public $itemtype = COMPETENCY_EVIDENCE_TYPE_COURSE_COMPLETION;
 
     /**
      * Return evidence name and link
@@ -65,12 +65,12 @@ class competency_evidence_type_coursegrade extends competency_evidence_type {
 
         $name = $this->get_type_name();
 
-        return '<a href="'.$CFG->wwwroot.'/grade/report/grader/index.php?id='.$this->iteminstance.'">'.$name.'</a>';
+        return '<a href="'.$CFG->wwwroot.'/course/report/completion/index.php?course='.$this->iteminstance.'">'.$name.'</a>';
     }
 
     /**
      * Get human readable type name
-     * 
+     *
      * @return  string
      */
     public function get_activity_type() {

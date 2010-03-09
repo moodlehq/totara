@@ -50,7 +50,7 @@ function evidence_load_courses(cat) {
     // Load courses
     YAHOO.util.Connect.asyncRequest(
         'GET',
-        '../type/competency/evidence/category.php?id='+cat,
+        '../type/competency/evidenceitem/category.php?id='+cat,
         callback
     );
 }
@@ -108,7 +108,7 @@ function evidence_load_coursedata(course) {
     // Load data
     YAHOO.util.Connect.asyncRequest(
         'GET',
-        '../type/competency/evidence/course.php?id='+course+'&competency='+competency_id,
+        '../type/competency/evidenceitem/course.php?id='+course+'&competency='+competency_id,
         callback
     );
 }

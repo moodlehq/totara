@@ -96,7 +96,7 @@ abstract class competency_evidence_type extends data_object {
         }
 
         // Load class file
-        require_once($CFG->dirroot.'/hierarchy/type/competency/evidence/type/'.$data->itemtype.'.php');
+        require_once($CFG->dirroot.'/hierarchy/type/competency/evidenceitem/type/'.$data->itemtype.'.php');
         $class = 'competency_evidence_type_'.$data->itemtype;
 
         // Create new and return

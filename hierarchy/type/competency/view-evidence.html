@@ -45,7 +45,7 @@ if ($evidence) {
         if ($editingon) {
             echo "<td style=\"text-align: center;\">";
 
-            echo "<a href=\"{$CFG->wwwroot}/hierarchy/type/{$this->prefix}/evidence/remove.php?id={$eitem->id}\" title=\"$str_remove\">".
+            echo "<a href=\"{$CFG->wwwroot}/hierarchy/type/{$this->prefix}/evidenceitem/remove.php?id={$eitem->id}\" title=\"$str_remove\">".
                  "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_remove\" /></a>";
 
             echo "</td>";
@@ -77,7 +77,7 @@ if ($can_edit) {
 </script>
 
 <div class="singlebutton">
-<form action="<?php echo $CFG->wwwroot ?>/hierarchy/type/competency/evidence/edit.php?id=<?php echo $item->id ?>" method="get">
+<form action="<?php echo $CFG->wwwroot ?>/hierarchy/type/competency/evidenceitem/edit.php?id=<?php echo $item->id ?>" method="get">
 <div>
 <input type="submit" id="show-evidence-dialog" value="<?php echo get_string('assignnewevidenceitem', $this->prefix) ?>" />
 </div>

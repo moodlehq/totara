@@ -3,7 +3,7 @@
 require_once('../../../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->dirroot.'/hierarchy/type/competency/lib.php');
-require_once($CFG->dirroot.'/hierarchy/type/competency/evidence/type/abstract.php');
+require_once($CFG->dirroot.'/hierarchy/type/competency/evidenceitem/type/abstract.php');
 
 
 ///
@@ -53,7 +53,7 @@ if (!$delete) {
     $message = get_string('evidenceitemremovecheck', $hierarchy->prefix).'<br /><br />';
     $message .= format_string($item->get_name());
 
-    $action = "{$CFG->wwwroot}/hierarchy/type/{$hierarchy->prefix}/evidence/remove.php?id={$item->id}&amp;delete=".md5($item->timemodified)."&amp;sesskey={$USER->sesskey}";
+    $action = "{$CFG->wwwroot}/hierarchy/type/{$hierarchy->prefix}/evidenceitem/remove.php?id={$item->id}&amp;delete=".md5($item->timemodified)."&amp;sesskey={$USER->sesskey}";
 
     // If called from the course view
     if ($course) {

@@ -192,7 +192,7 @@ if ($competencies) {
         // Options column
         if ($can_edit) {
             echo '<td align="center">';
-            echo "<a href=\"{$CFG->wwwroot}/hierarchy/type/competency/evidence/remove.php?id={$evidence->id}&course={$id}\" title=\"$str_remove\">".
+            echo "<a href=\"{$CFG->wwwroot}/hierarchy/type/competency/evidenceitem/remove.php?id={$evidence->id}&course={$id}\" title=\"$str_remove\">".
                  "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_remove\" /></a>";
             echo '</td>';
         }

@@ -55,7 +55,7 @@ if (!empty($USER->competencyediting)) {
 
     echo "<td style=\"text-align: center;\">";
 
-    echo "<a href=\"{$CFG->wwwroot}/hierarchy/type/competency/evidence/remove.php?id={$evidence->id}\" title=\"$str_remove\">".
+    echo "<a href=\"{$CFG->wwwroot}/hierarchy/type/competency/evidenceitem/remove.php?id={$evidence->id}\" title=\"$str_remove\">".
          "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_remove\" /></a>";
 
     echo "</td>";

@@ -33,7 +33,7 @@
  * @package MITMS
  */
 require_once($CFG->dirroot.'/hierarchy/lib.php');
-require_once($CFG->dirroot.'/hierarchy/type/competency/evidence/type/abstract.php');
+require_once($CFG->dirroot.'/hierarchy/type/competency/evidenceitem/type/abstract.php');
 
 /**
  * Competency aggregation methods
