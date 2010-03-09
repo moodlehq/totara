@@ -504,7 +504,9 @@
                                 if ($depth->id == $depthid) {
                                     break;
                                 } else {
-                                    $j += $customfieldtrack[$depth->depthlevel];
+                                    if (isset($customfieldtrack[$depth->depthlevel])) {
+                                        $j += $customfieldtrack[$depth->depthlevel];
+                                    }
                                 }
                             }
 
