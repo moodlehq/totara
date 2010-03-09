@@ -1,8 +1,18 @@
 <?php
+/**
+ * Display the competency templates box for an IDP
+ * todo: move this into plan/lib.php
+ *
+ * @param db_record $revision from the idp_revision table
+ * @param array $competencytemplates
+ * @param boolean $editingon
+ */
+function print_idp_competency_templates_view( $revision, $competencytemplates, $editingon=false ){
+
+global $CFG;
 
 // Display competencies
 print_heading(get_string('competencytemplates', 'competency'));
-$editingon = true;
 $str_remove = get_string('remove');
 
 ?>
@@ -93,4 +103,5 @@ var idp_competencytemplate_row_count = <?php echo $rowcount ?>
 <?php
 
     }
-
+}
+?>

@@ -1,9 +1,20 @@
 <?php
 
+/**
+ * Display the courses box for an IDP
+ * todo: move this into plan/lib.php
+ *
+ * @param db_record $revision from the idp_revision table
+ * @param array $courses
+ * @param boolean $editingon
+ */
+function print_idp_courses_view( $revision, $courses, $editingon=false){
+
+global $CFG;
+
 // Display competencies
 print_heading(get_string('courses'));
 $str_remove = get_string('remove');
-$editingon = true;
 
 ?>
 <table id="list-idp-courses" class="generalbox planitems boxaligncenter viewcourses">
@@ -71,7 +82,7 @@ if ($courses) {
     echo '</table>';
 
     // Add courses button
-    if ($options['can_edit']) {
+    if ($editingon) {
 
 ?>
 <table class="generalbox planbuttons boxaligncenter">
@@ -93,4 +104,5 @@ var idp_course_row_count = <?php echo $rowcount ?>
 <?php
 
     }
-
+}
+?>

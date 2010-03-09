@@ -1,6 +1,10 @@
 <?php
 
 require_once('../hierarchy/type/competency/lib.php');
+require_once( $CFG->dirroot.'/plan/view-competencies.html' );
+require_once( $CFG->dirroot.'/plan/view-competencytemplates.html' );
+require_once( $CFG->dirroot.'/plan/view-courses.html' );
+
 $CFG->idpenablefavourites = false;
 
 /**
@@ -1907,6 +1911,7 @@ function print_revision_manager($revision, $plan, $options=array()) {
     $options = array_merge(array(
         'can_submit'  =>  false,
         'can_approve' =>  false,
+        'can_edit' => false
     ), $options);
 
 
@@ -1924,7 +1929,7 @@ function print_revision_manager($revision, $plan, $options=array()) {
     $usercurriculum = get_field('user', 'curriculum', 'id', $plan->userid);
 
     $competencies = idp_get_user_competencies($plan->userid, $revision->id);
-    include $CFG->dirroot.'/plan/view-competencies.html';
+    print_idp_competencies_view($revision, $competencies, $options['can_edit']);
 
     // Free-form lists
 //    $objhtml = print_freeform_list($revision->id, 0, false, true);
@@ -1957,13 +1962,13 @@ function print_revision_trainee($revision, $plan, $options=array()) {
     print revision_comments($revision);
 
     $competencies = idp_get_user_competencies($plan->userid, $revision->id);
-    include $CFG->dirroot.'/plan/view-competencies.html';
+    print_idp_competencies_view($revision, $competencies, $options['can_edit']);
 
     $competencytemplates = idp_get_user_competencytemplates($plan->userid, $revision->id);
-    include $CFG->dirroot.'/plan/view-competencytemplates.html';
+    print_idp_competency_templates_view($revision, $competencytemplates, $options['can_edit']);
 
     $courses = idp_get_user_courses($plan->userid, $revision->id);
-    include $CFG->dirroot.'/plan/view-courses.html';
+    print_idp_courses_view($revision, $courses, $options['can_edit']);
 
     // Free-form lists
 //    $objhtml = print_freeform_list($revision->id, 0, $options['can_edit'], true);
@@ -2004,7 +2009,7 @@ function print_revision_preview($revision, $plan, $printable=true) {
 
     $competencies = idp_get_user_competencies($plan->userid, $revision->id);
     if ($competencies) {
-       require $CFG->dirroot.'/plan/view-competencies.html';
+        print_idp_competencies_view($revision, $competencies, false);
     } else {
        print '<p><i>'.get_string('emptyplancompetencies', 'idp')."</i></p>\n";
     }
@@ -2048,7 +2053,7 @@ function print_revision_pdf($revision, $plan, $options=array()) {
 
     $competencies = idp_get_user_competencies($plan->userid, $revision->id);
     if ($competencies) {
-       require $CFG->dirroot.'/plan/view-competencies.html';
+        print_idp_competencies_view($revision, $competencies, false);
     } else {
        print '<p><i>'.get_string('emptyplancompetencies', 'idp')."</i></p>\n";
     }
