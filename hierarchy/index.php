@@ -504,14 +504,17 @@
                                 if ($depth->id == $depthid) {
                                     break;
                                 } else {
-                                    if(!empty($customfieldtrack)) {
-                                        $j += $customfieldtrack[$depth->depthlevel];
-                                    }
+                                    $j += $customfieldtrack[$depth->depthlevel];
                                 }
                             }
+
+                            continue;
                         }
 
-                        $data[$i][$j] = $customdata->data;
+                        if ($customdata->fieldid !== NULL) {
+                            $data[$i][$j] = $customdata->data;
+                        }
+
                         $j++;
 
                     }
