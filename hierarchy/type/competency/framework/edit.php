@@ -75,20 +75,28 @@ if ($frameworkform->is_cancelled()) {
 
     // Handle scale assignments
     // Get new assignments
-    $scales_new = array_diff($frameworknew->scale, $framework->scale);
-    foreach ($scales_new as $key) {
-        $assignment = new object();
-        $assignment->scaleid = $key;
-        $assignment->frameworkid = $frameworknew->id;
-        $assignment->timemodified = $time;
-        $assignment->usermodified = $USER->id;
-        if (!insert_record($type.'_scale_assignments', $assignment)) {
-            error('Could not add scale assignment');
+    if (isset($frameworknew->scale)) {
+        $scales_new = array_diff($frameworknew->scale, $framework->scale);
+        foreach ($scales_new as $key) {
+            $assignment = new object();
+            $assignment->scaleid = $key;
+            $assignment->frameworkid = $frameworknew->id;
+            $assignment->timemodified = $time;
+            $assignment->usermodified = $USER->id;
+            if (!insert_record($type.'_scale_assignments', $assignment)) {
+                error('Could not add scale assignment');
+            }
         }
     }
 
     // Get removed assignments
-    $scales_removed = array_diff($framework->scale, $frameworknew->scale);
+    if (isset($frameworknew->scale)) {
+        $scales_removed = array_diff($framework->scale, $frameworknew->scale);
+    }
+    else {
+        $scales_removed = array_diff($framework->scale, array());
+    }
+
     foreach ($scales_removed as $key) {
         if (!delete_records($type.'_scale_assignments', 'scaleid', $key, 'frameworkid', $frameworknew->id)) {
             error('Could not delete scale assignment');
