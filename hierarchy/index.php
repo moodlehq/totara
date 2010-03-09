@@ -54,7 +54,15 @@
     $can_edit_depth  = has_capability('moodle/local:update'.$type.'depth', $sitecontext);
 
     // Load framework
-    $framework   = $hierarchy->get_framework($frameworkid);
+    $framework   = $hierarchy->get_framework($frameworkid, true);
+
+    // If no frameworks exist
+    if (!$framework) {
+        // Redirect to frameworks page
+        redirect($CFG->wwwroot.'/hierarchy/framework/index.php?type='.$type);
+        exit();
+    }
+
     $frameworkid = $framework->id;
 
     // Display editing button in navbar
