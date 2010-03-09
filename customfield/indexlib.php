@@ -432,14 +432,14 @@ function customfield_edit_field($id, $datatype, $depthid=0, $redirect, $tablepre
 
         /// Print the page
         // Display page header
-        $pagetitle = format_string($depth->fullname.' - '.$item->fullname);
+        $pagetitle = format_string(get_field($tableprefix, 'fullname', 'id', $depthid));
         $navlinks[] = array('name' => get_string('administration'), 'link'=> '', 'type'=>'title');
         $navlinks[] = array('name' => get_string($type.'plural',$type), 'link'=> '', 'type'=>'title');
         $navlinks[] = array('name' => get_string($type.'depthcustomfields',$type), 'link'=> '', 'type'=>'title');
 
         $navigation = build_navigation($navlinks);
 
-        print_header_simple($pagetitle, '', $navigation, '', null, true, $navbaritem);
+        print_header_simple($pagetitle, '', $navigation, '', null, true);
         print_heading($strheading);
         $fieldform->display();
         print_footer();
