@@ -24,12 +24,12 @@ if (!$plan = get_record('idp', 'id', $id)) {
 
 require_login();
 
-$contextmodule = get_context_instance(CONTEXT_MODULE, $cm->id);
+$contextsite = get_context_instance(CONTEXT_SYSTEM);
 $contextuser = get_context_instance(CONTEXT_USER, $plan->userid);
 
 $errorurl = $CFG->wwwroot . "/plan/revision.php?id=$plan->id";
 if ($USER->id == $plan->userid) {
-    require_capability('moodle/local:editownplan', $contextmodule);
+    require_capability('moodle/local:editownplan', $contextsite);
 } else {
     error(get_string('error:cannotevaluateplan', 'idp'), $errorurl);
 }
