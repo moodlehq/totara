@@ -3,7 +3,7 @@
  * This page prints out a given plan revision
  **/
 
-require_once('../../config.php');
+require_once('../config.php');
 require_once('lib.php');
 
 require_login();

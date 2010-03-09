@@ -3,7 +3,7 @@
  * This page is for trainee's self-evaluation of Learning Plans
  **/
 
-require_once('../../config.php');
+require_once('../config.php');
 require_once('lib.php');
 
 require_js(array('yui_yahoo', 'yui_event', 'yui_connection', 'yui_json'));
