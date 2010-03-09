@@ -12,7 +12,6 @@ fieldset#newfilter input[type="text"] {
     margin-left: 5px;
 }
 
-
 /*****************************************************************************/
 /** Report Builder **/
 /*****************************************************************************/
@@ -38,15 +37,19 @@ div.reportbuilderform div.fitem div.felement {
 /*****************************************************************************/
 /** Hierarchies **/
 /*****************************************************************************/
-body.hierarchy select#switchframework_jump {
-    margin-top: 1em;
-}
-
-body.hierarchy .buttons .singlebutton {
+body.hierarchy .buttons .singlebutton,
+body.hierarchy-framework .buttons .singlebutton,
+body.hierarchy-type-competency-template .buttons .singlebutton,
+body.hierarchy-type-competency-scale .buttons .singlebutton
+{
   display: inline;
 }
 
-body.hierarchy .buttons {
+body.hierarchy .buttons,
+body.hierarchy-framework .buttons,
+body.hierarchy-type-competency-template .buttons,
+body.hierarchy-type-competency-scale .buttons
+{
   text-align: center;
   margin-bottom: 30px;
 }
