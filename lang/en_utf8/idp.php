@@ -94,7 +94,7 @@ $string['error:noobjectivestoevaluate'] = 'There are no learning objectives to e
 $string['error:norejectreason'] = 'You must provide a reason for rejecting this IDP.';
 $string['error:nousercurriculum'] = 'No curriculum has been specified in the profile data for this user. Contact the site administrator.';
 $string['error:planalreadyevaluated'] = 'A self-evaluation has already been submitted for this IDP.';
-$string['error:plannotempty'] = 'You can only delete empty plans which are not empty';
+$string['error:plannotempty'] = 'You can only delete empty plans, and this plan is not empty.';
 $string['error:plannotsubmitted'] = 'You can only delete empty plans which have never been submitted.';
 $string['error:revisionnotvisible'] = 'This revision is not visible to you.';
 
