@@ -54,6 +54,14 @@ body.hierarchy-type-competency-scale .buttons
   margin-bottom: 30px;
 }
 
+body.hierarchy-item form.mform,
+body.hierarchy-framework form.mform,
+body.hierarchy-type-competency-template form.mform,
+body.hierarchy-type-competency-scale form.mform
+{
+    width: 95%;
+}
+
 body.hierarchy-item h2.main {
     text-align: left;
     width: 95%;
