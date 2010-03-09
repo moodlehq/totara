@@ -1,6 +1,6 @@
 <?php
 
-require_once('../../config.php');
+require_once('../../../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
 
 
@@ -31,12 +31,17 @@ if (!$value = get_record('competency_scale_values', 'id', $id)) {
 
 admin_externalpage_print_header();
 
+$returnurl = "{$CFG->wwwroot}/hierarchy/type/competency/scale/view.php?id={$value->scaleid}";
+$deleteurl = "{$CFG->wwwroot}/hierarchy/type/competency/scale/deletevalue.php?id={$value->id}&amp;delete=".md5($value->timemodified)."&amp;sesskey={$USER->sesskey}";
+
 if (!$delete) {
     $strdelete = get_string('deletecheckscalevalue', 'competency');
 
-    notice_yesno("$strdelete<br /><br />" . format_string($value->name),
-                 "{$CFG->wwwroot}/competency/scale/deletevalue.php?id={$value->id}&amp;delete=".md5($value->timemodified)."&amp;sesskey={$USER->sesskey}",
-                 "{$CFG->wwwroot}/competency/scale/view.php?id={$value->scaleid}");
+    notice_yesno(
+        "{$strdelete}<br /><br />" . format_string($value->name),
+        $deleteurl,
+        $returnurl
+    );
 
     print_footer();
     exit;
@@ -60,5 +65,5 @@ add_to_log(SITEID, 'competencyscalesvalu', 'delete', "view.php?id=$value->scalei
 delete_records('competency_scale_values', 'id', $value->id);
 
 print_heading(get_string('deletedcompetencyscalevalue', 'competency', format_string($value->name)));
-print_continue("{$CFG->wwwroot}/competency/scale/view.php?id={$value->scaleid}");
+print_continue($returnurl);
 print_footer();
