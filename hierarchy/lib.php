@@ -72,7 +72,7 @@ class hierarchy {
                         return false;
                     }
                     else {
-                        error('Default '.$this->prefix.' framework does not exist');
+                        error('No '.$this->prefix.' frameworks exist');
                     }
                 }
 
