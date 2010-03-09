@@ -38,6 +38,18 @@ div.reportbuilderform div.fitem div.felement {
 /*****************************************************************************/
 /** Hierarchies **/
 /*****************************************************************************/
+body.hierarchy select#switchframework_jump {
+    margin-top: 1em;
+}
+
+body.hierarchy .buttons .singlebutton {
+  display: inline;
+}
+
+body.hierarchy .buttons {
+  text-align: center;
+  margin-bottom: 30px;
+}
 
 body.hierarchy-item h2.main {
     text-align: left;
