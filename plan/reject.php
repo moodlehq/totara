@@ -3,7 +3,7 @@
  * This page asks for a message before rejecting a submitted Learning Plan.
  **/
 
-require_once('../../config.php');
+require_once('../config.php');
 require_once('lib.php');
 
 require_login();
