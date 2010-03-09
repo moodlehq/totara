@@ -10,16 +10,16 @@ $js_enabled = optional_param('js', true, PARAM_BOOL);    // js enabled
 
 require_login();
 
-$id = required_param('id', PARAM_INT); // Plan ID
+$planid = required_param('id', PARAM_INT); // Plan ID
 $rev = optional_param('rev', 0, PARAM_INT); // Revision ID
 $lp = optional_param('lp', 0, PARAM_INT); // Activity ID
 $print = optional_param('print', 0, PARAM_INT); // Print-friendly view
 
-if (0 == $id) {
+if (0 == $planid) {
     error(get_string('error:idcannotbezero', 'local'));
 }
 
-if (!$plan = get_record('idp', 'id', $id)) {
+if (!$plan = get_record('idp', 'id', $planid)) {
     error('Plan ID is incorrect');
 }
 
@@ -184,7 +184,7 @@ echo '</tr></table>';
 
 <script type="text/javascript">
 <!-- //
-var idp_revision_id = <?php echo $id ?>
+var idp_revision_id = <?php echo $currevision->id ?>
 // -->
 </script>
 <?php
