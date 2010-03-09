@@ -447,7 +447,8 @@ function print_revision_list($planid, $currevisionid) {
     $revisions = get_records('idp_revision', 'idp', $planid, 'ctime DESC');
 
     if (count($revisions) > 1) {
-        print '<div>'.collapsing_tree_node('revisionslabel', 'revisions', get_string('allrevisions', 'idp')).'</div>';
+        print '<h2>'.get_string('allrevisions','idp').'</h2>';
+//        print '<div>'.collapsing_tree_node('revisionslabel', 'revisions', get_string('allrevisions', 'idp')).'</div>';
 
         print '<div id="revisions" style="display:none"><ul>';
         foreach ($revisions as $revision) {
@@ -479,7 +480,8 @@ function revision_comments($revision) {
     // Print list of all comments with their contents
     if ($comments and count($comments) > 0) {
 
-        $out .= '<div>'.collapsing_tree_node('commentslabel', 'comments', get_string('allcomments', 'idp'), 0, '', true).'</div>';
+        print '<h2>'.get_string('allcomments','idp').'</h2>';
+        //$out .= '<div>'.collapsing_tree_node('commentslabel', 'comments', get_string('allcomments', 'idp'), 0, '', true).'</div>';
 
         $out .= '<div id="comments" style="display:block"><blockquote>';
         $firsttime = true;

@@ -122,8 +122,9 @@ function print_curriculum_evaluation($curriculumcode, $revisionid) {
     print '</div>';
 
     $divid = "additionalobj$curriculumcode";
-    print collapsing_tree_node("caption_$divid", $divid, get_string('additionalobjectives', 'idp'),
-                               0, '', false, 'curriculum');
+    print '<h2>'.get_string('additionalobjectives').'</h2>';
+//    print collapsing_tree_node("caption_$divid", $divid, get_string('additionalobjectives', 'idp'),
+//                               0, '', false, 'curriculum');
     print '<div id="'.$divid.'" style="display: none">';
     print can_edit_curriculum_browser($curriculumcode, $revisionid, false, 50);
     print '</div>';
