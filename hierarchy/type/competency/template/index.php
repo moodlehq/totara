@@ -22,7 +22,16 @@ $movedown    = optional_param('movedown', 0, PARAM_INT);
 $hierarchy = new competency();
 
 // Load framework
-$framework  = $hierarchy->get_framework($frameworkid);
+$framework   = $hierarchy->get_framework($frameworkid, true);
+
+// If no frameworks exist
+if (!$framework) {
+    // Redirect to frameworks page
+    redirect($CFG->wwwroot.'/hierarchy/framework/index.php?type=competency');
+    exit();
+}
+
+$frameworkid = $framework->id;
 
 // Cache user capabilities
 $can_add = has_capability('moodle/local:create'.$hierarchy->prefix.'template', $sitecontext);
@@ -38,25 +47,6 @@ if ($can_add || $can_edit || $can_delete) {
 
 // Setup page and check permissions
 admin_externalpage_setup($hierarchy->prefix.'templatemanage', $navbaritem);
-
-
-///
-/// Process any actions
-///
-
-if ($editingon) {
-    // Hide or show a framework
-    if ($hide or $show) {
-        require_capability('moodle/local:update'.$hierarchy->prefix.'template', $sitecontext);
-        // Hide an item
-        if ($hide) {
-            $hierarchy->hide_template($hide);
-        } elseif ($show) {
-            $hierarchy->show_template($show);
-        }
-    }
-
-} // End of editing stuff
 
 
 ///
