@@ -13,18 +13,22 @@ require_once($CFG->dirroot.'/hierarchy/type/competency/evidenceitem/type/abstrac
 $sitecontext = get_context_instance(CONTEXT_SYSTEM);
 
 // Get params
-$id     = required_param('id', PARAM_INT);
+$id      = required_param('id', PARAM_INT); // Competency ID
+$related = required_param('related', PARAM_INT); // Related competency ID
+
 // Delete confirmation hash
 $delete = optional_param('delete', '', PARAM_ALPHANUM);
-// Course id (if coming from the course view)
-$course = optional_param('course', 0, PARAM_INT);
 
 // Load data
 $hierarchy         = new competency();
-$item              = competency_evidence_type::factory($id);
+$item              = get_record('competency_relations', 'id1', $id, 'id2', $related);
 
-// Load competency
-if (!$competency = get_record('competency', 'id', $item->competencyid)) {
+if (!$item) {
+    error('Could not find competency relationship');
+}
+
+// Load related competency
+if (!$rcompetency = get_record('competency', 'id', $related)) {
     error('Competency ID was incorrect');
 }
 
@@ -42,23 +46,14 @@ admin_externalpage_setup($hierarchy->prefix.'manage');
 admin_externalpage_print_header();
 
 // Cancel/return url
-if (!$course) {
-    $return = "{$CFG->wwwroot}/hierarchy/item/view.php?type={$hierarchy->prefix}&id={$item->competencyid}";
-} else {
-    $return = "{$CFG->wwwroot}/course/competency.php?id={$course}";
-}
+$return = "{$CFG->wwwroot}/hierarchy/item/view.php?type={$hierarchy->prefix}&id={$id}";
 
 
 if (!$delete) {
-    $message = get_string('evidenceitemremovecheck', $hierarchy->prefix).'<br /><br />';
-    $message .= format_string($item->get_name());
+    $message = get_string('relateditemremovecheck', $hierarchy->prefix).'<br /><br />';
+    $message .= format_string($rcompetency->fullname);
 
-    $action = "{$CFG->wwwroot}/hierarchy/type/{$hierarchy->prefix}/evidenceitem/remove.php?id={$item->id}&amp;delete=".md5($item->timemodified)."&amp;sesskey={$USER->sesskey}";
-
-    // If called from the course view
-    if ($course) {
-        $action .= "&amp;course={$course}";
-    }
+    $action = "{$CFG->wwwroot}/hierarchy/type/competency/related/remove.php?id={$id}&amp;related={$related}&amp;delete=".md5($rcompetency->timemodified)."&amp;sesskey={$USER->sesskey}";
 
     notice_yesno($message, $action, $return);
 
@@ -71,7 +66,7 @@ if (!$delete) {
 /// Delete
 ///
 
-if ($delete != md5($item->timemodified)) {
+if ($delete != md5($rcompetency->timemodified)) {
     error("The check variable was wrong - try again");
 }
 
@@ -79,11 +74,12 @@ if (!confirm_sesskey()) {
     print_error('confirmsesskeybad', 'error');
 }
 
-$item->delete($competency);
+// Delete relationship
+delete_records('competency_relations', 'id1', $id, 'id2', $related);
 
-add_to_log(SITEID, $hierarchy->prefix.'evidence', 'delete', "view.php?id=$item->id", $item->get_name()." (ID $item->id)");
+add_to_log(SITEID, $hierarchy->prefix.'related', 'delete', "view.php?id=$id", $rcompetency->fullname." (ID $related)");
 
-$message = get_string('removed'.$hierarchy->prefix.'evidenceitem', $hierarchy->prefix, format_string($item->get_name()));
+$message = get_string('removed'.$hierarchy->prefix.'relateditem', $hierarchy->prefix, format_string($rcompetency->fullname));
 
 print_heading($message);
 print_continue($return);

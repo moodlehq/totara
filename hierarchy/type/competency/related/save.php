@@ -70,14 +70,14 @@ foreach ($add as $addition) {
 
     // Return html
     echo '<tr>';
-    echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/framework/index.php?type={$hierarchy->prefix}&id={$framework->id}\">{$framework->fullname}</a></td>";
+    echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/index.php?type={$hierarchy->prefix}&frameworkid={$framework->id}\">{$framework->fullname}</a></td>";
     echo '<td>'.$depths[$related->depthid]->fullname.'</td>';
     echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/item/view.php?type={$hierarchy->prefix}&id={$related->id}\">{$related->fullname}</a></td>";
 
     if ($editingon) {
         echo "<td style=\"text-align: center;\">";
 
-        echo "<a href=\"{$CFG->wwwroot}/{$hierarchy->prefix}/related/remove.php?id={$related->id}\" title=\"$str_remove\">".
+        echo "<a href=\"{$CFG->wwwroot}/hierarchy/type/competency/related/remove.php?id={$competency->id}&related={$related->id}\" title=\"$str_remove\">".
              "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_remove\" /></a>";
 
         echo "</td>";

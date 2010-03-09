@@ -72,9 +72,13 @@ if (!$parentid) {
 }
 
 
-// Foreach competency
+$added = false;
+
+// Loop through competencies
 if ($competencies) {
     foreach ($competencies as $competency) {
+
+        // If this competency is in the max depth, don't make it expandable
         if ($competency->depthid == $max_depth) {
             $li_class = '';
             $span_class = '';
@@ -90,8 +94,12 @@ if ($competencies) {
             echo '<ul></ul>';
         }
         echo '</li>'.PHP_EOL;
+
+        $added = true;
     }
-} else {
+}
+
+if (!$added) {
     echo '<li><span class="empty">No child competencies found</span></li>'.PHP_EOL;
 }
 
