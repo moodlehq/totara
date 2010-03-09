@@ -79,10 +79,6 @@ if ($templates) {
     $table->align[] = 'left';
     $table->head[] = get_string('competencies', $hierarchy->prefix);
     $table->align[] = 'center';
-    $table->head[] = get_string('positions', $hierarchy->prefix);
-    $table->align[] = 'center';
-    $table->head[] = get_string('users');
-    $table->align[] = 'center';
     $table->head[] = get_string('createdon', $hierarchy->prefix);
     $table->align[] = 'left';
 
@@ -100,8 +96,6 @@ if ($templates) {
 
         $row[] = "<a $cssclass href=\"{$CFG->wwwroot}/hierarchy/type/{$hierarchy->prefix}/template/view.php?id={$template->id}\">{$template->fullname}</a>";
         $row[] = "<a $cssclass href=\"{$CFG->wwwroot}/hierarchy/type/{$hierarchy->prefix}/template/view.php?id={$template->id}\">{$template->competencycount}</a>";
-        $row[] = '0';
-        $row[] = '0';
         $row[] = userdate($template->timecreated, '%A, %e %B %Y');
 
         // Add edit link
