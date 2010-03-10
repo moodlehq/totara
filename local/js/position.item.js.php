@@ -37,7 +37,7 @@ YAHOO.util.Event.onDOMReady(function () {
 
 var assignDialog = function(name, find_url, save_url) {
 
-    var handler = new assignDialog_handler();
+    var handler = new yuiDialog_handler_treeview_draggable();
 
     YAHOO.dialog[name] = new yuiDialog(
         name,
@@ -52,20 +52,3 @@ var assignDialog = function(name, find_url, save_url) {
     );
 
 }
-
-/**
- * Assign competencies to position dialog handler
- */
-var assignDialog_handler = function() {
-
-    this.first_load = function() {}
-
-    /**
-     * Setup treeview and enable dragging
-     */
-    this.every_load = function() {
-        this._setup_treeview_draggable();
-    }
-}
-
-assignDialog_handler.prototype = new yuiDialog_handler();

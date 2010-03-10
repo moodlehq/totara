@@ -268,304 +268,349 @@ function yuiDialog(title, buttonid, config, default_url, handler) {
 }
 
 
-var yuiDialog_handler = function() {
+/*****************************************************************************/
+/** yuiDialog_handler **/
+
+function yuiDialog_handler() {
 
     // Reference to the yuiDialog object
-    this._dialog;
+    var _dialog;
 
     // Dialog title/name
-    this._title;
+    var _title;
 
     // Dialog container
-    this._container;
+    var _container;
 
     // Has the dialog loaded its first page?
-    this._loaded = false;
+    var _loaded = false;
+}
 
-    /**
-     * Setup the dialog handler
-     * Run when the dialog is constructed
-     *
-     * @param yuiDialog dialog object
-     * @return void
-     */
-    this._setup = function(dialog) {
-        this._dialog = dialog;
-        this._title = dialog.title;
+/**
+ * Setup the dialog handler
+ * Run when the dialog is constructed
+ *
+ * @param yuiDialog dialog object
+ * @return void
+ */
+yuiDialog_handler.prototype._setup = function(dialog) {
+    this._dialog = dialog;
+    this._title = dialog.title;
+}
+
+/**
+ * Run on page load
+ * Calls this.first_load() on first page load
+ *
+ * @param yuiDialog dialog object
+ * @return void
+ */
+yuiDialog_handler.prototype._load = function(dialog) {
+
+    // First page load
+    if (!this._loaded) {
+
+        // Setup container
+        this._container = $('#'+this._title);
+
+        // Run decendant method
+        if (this.first_load != undefined) {
+            this.first_load();
+        }
+
+        this._loaded = true;
     }
 
-    /**
-     * Run on page load
-     * Calls this.first_load() on first page load
-     *
-     * @param yuiDialog dialog object
-     * @return void
-     */
-    this._load = function(dialog) {
-
-        // First page load
-        if (!this._loaded) {
-
-            // Setup container
-            this._container = $('#'+this._title);
-
-            // Run decendant method
-            this.first_load();
-
-            this._loaded = true;
-        }
-            
-        // Run decendant method
+    // Run decendant method
+    if (this.every_load != undefined) {
         this.every_load();
     }
+}
 
-    /**
-     * Make an HTTP GET request
-     *
-     * @param string request url
-     * @param function call on success
-     * @param function call on failure
-     * @param mixed argument
-     */
-    this._request = function(url, success, failure, argument) {
+/**
+ * Make an HTTP GET request
+ *
+ * @param string request url
+ * @param function call on success
+ * @param function call on failure
+ * @param mixed argument
+ */
+yuiDialog_handler.prototype._request = function(url, success, failure, argument) {
 
-        // Setting up callbacks
-        var handler = this;
-        var dialog = this._dialog;
+    // Setting up callbacks
+    var handler = this;
+    var dialog = this._dialog;
 
-        // Send to server
-        YAHOO.util.Connect.asyncRequest(
-            'GET',
-            url,
-            {
-                success: function(response) { success(handler, response) },
-                failure: function() { failure(dialog, url) },
-                argument: argument
-            }
-        );
-    }
-
-    /**
-     * Add a row to a table on the calling page
-     * Also hides the dialog and any no item notice
-     *
-     * @param yuiDialog_handler this handler object
-     * @param yuiresponse YUI repsonse object
-     * @return void
-     */
-    this._update = function(handler, response) {
-
-        // Hide dialog
-        handler._dialog.hide();
-
-        // Remove no item warning (if exists)
-        $('div.noitems-'+handler._title).remove();
-
-        // Add row to table
-        $('table#list-'+handler._title+' tbody').append(response.responseText);
-    }
-
-
-    /**
-     * Utility function for getting ids from
-     * a list of elements
-     *
-     * @param jQuery jquery element list
-     * @param string ID prefix string
-     * @return array
-     */
-    this._get_ids = function(elements, prefix) {
-
-        // Set default prefix
-        if (prefix == undefined) {
-            var prefix = 'item_';
+    // Send to server
+    YAHOO.util.Connect.asyncRequest(
+        'GET',
+        url,
+        {
+            success: function(response) { success(handler, response) },
+            failure: function() { failure(dialog, url) },
+            argument: argument
         }
+    );
+}
 
-        var ids = [];
-        var prefix_length = prefix.length;
+/**
+ * Add a row to a table on the calling page
+ * Also hides the dialog and any no item notice
+ *
+ * @param yuiDialog_handler this handler object
+ * @param yuiresponse YUI repsonse object
+ * @return void
+ */
+yuiDialog_handler.prototype._update = function(handler, response) {
 
-        // Loop through elements
-        elements.each(
-            function (intIndex) {
+    // Hide dialog
+    handler._dialog.hide();
 
-                // Get id attr
-                var id = $(this).attr('id');
+    // Remove no item warning (if exists)
+    $('div.noitems-'+handler._title).remove();
 
-                // Check the prefix matches
-                if (id.substr(0, prefix_length) != prefix) {
-                    return;
-                }
+    // Add row to table
+    $('table#list-'+handler._title+' tbody').append(response.responseText);
+}
 
-                // Remove the prefix
-                id = id.substr(prefix_length);
 
-                // Append to list
-                ids.push(id);
+/**
+ * Utility function for getting ids from
+ * a list of elements
+ *
+ * @param jQuery jquery element list
+ * @param string ID prefix string
+ * @return array
+ */
+yuiDialog_handler.prototype._get_ids = function(elements, prefix) {
+
+    // Set default prefix
+    if (prefix == undefined) {
+        var prefix = 'item_';
+    }
+
+    var ids = [];
+    var prefix_length = prefix.length;
+
+    // Loop through elements
+    elements.each(
+        function (intIndex) {
+
+            // Get id attr
+            var id = $(this).attr('id');
+
+            // Check the prefix matches
+            if (id.substr(0, prefix_length) != prefix) {
+                return;
             }
-        );
 
-        return ids;
-    }
+            // Remove the prefix
+            id = id.substr(prefix_length);
 
-    /**
-     * Setup a treeview and drag/drop infrastructure
-     *
-     * @return void
-     */
-    this._setup_treeview_draggable = function() {
-        // Setup treeview
-        $('.treeview', this._container).treeview({
-            prerendered: true
-        });
-
-        var handler = this;
-        // Setup framework picker
-        $('.simpleframeworkpicker', this._container).change(function() {
-            handler._set_framework();
-        });
-
-        // Setup hierarchy
-        this._make_hierarchy($('.treeview', this._container));
-
-        // Setup droppable region
-        $('.selected', this._container).droppable({
-            drop: this._event_drop
-        });
-
-        // Make decending spans draggable
-        this._make_draggable($('.treeview', this._container));
-    }
-
-    /**
-     * Setup hierarchy click handlers
-     *
-     * @return void
-     */
-    this._make_hierarchy = function(parent_element) {
-        var handler = this;
-
-        // Load courses on category click
-        $('span.folder, div.hitarea', parent_element).live('click', function() {
-
-            // Get parent for id
-            var par = $(this).parent();
-
-            // Id in format item_list_XX
-            var id = par.attr('id').substr(10);
-
-            var url = handler._dialog.url+'&parentid='+id;
-            handler._request(url, handler._update_hierarchy, handler._dialog.request_failure, id);
-
-            return false;
-        });
-    }
-
-    /**
-     * @param yuiDialog_handler this handler object
-     * @param yuiresponse YUI repsonse object
-     * @return void
-     */
-    this._update_hierarchy = function(handler, response) {
-        
-        var parent_id = response.argument;
-        var items = response.responseText;
-        var list = $('.treeview li#item_list_'+parent_id+' ul:first', handler._container);
-        
-        // Remove all existing children
-        $('li', list).remove();
-
-        // Add items
-        $('.treeview', handler._container).treeview({add: list.append($(items))});
-
-        // Setup new items
-        handler._make_hierarchy(list);
-        handler._make_draggable(list);
-    }
-
-    /**
-     * Make decending spans draggable
-     *
-     * @param jQuery element list
-     * @return void
-     */
-    this._make_draggable = function(parent_element) {
-
-        $('span:not(.empty)', parent_element).draggable({
-            containment: 'body',
-            helper: 'clone'
-        });
-    }
-
-    /**
-     * Add element to drop box when dropped
-     *
-     * @param event
-     * @param ui
-     * @return void
-     */
-    this._event_drop = function(event, ui) {
-        // Append clone to drop box
-        $('.selected', this._container).append(ui.draggable.clone());
-    }
-
-    /**
-     * Serialize dropped items and send to url,
-     * update table with result
-     *
-     * @param string URL to send dropped items to
-     * @return void
-     */
-    this._save = function(url) {
-
-        // Serialize data
-        var elements = $('.selected span', this._container);
-        var dropped = this._get_ids(elements).join(',');
-
-        // Nothing dropped
-        if (!dropped.length) {
-            this._dialog.hide();
-            return;
+            // Append to list
+            ids.push(id);
         }
+    );
 
-        // Add to url
-        url = url + dropped;
+    return ids;
+}
 
-        // Send to server
-        this._request(url, this._update, this._dialog.request_failure);
+/**
+ * Serialize dropped items and send to url,
+ * update table with result
+ *
+ * @param string URL to send dropped items to
+ * @return void
+ */
+yuiDialog_handler.prototype._save = function(url) {
+
+    // Serialize data
+    var elements = $('.selected span', this._container);
+    var dropped = this._get_ids(elements).join(',');
+
+    // Nothing dropped
+    if (!dropped.length) {
+        this._dialog.hide();
+        return;
     }
 
-    /**
-     * Change framework
-     *
-     * @return void
-     */
-    this._set_framework = function() {
+    // Add to url
+    url = url + dropped;
 
-        // Get currently selected option
-        var selected = $('.simpleframeworkpicker option:selected', this._container).val();
+    // Send to server
+    this._request(url, this._update, this._dialog.request_failure);
+}
 
-        // Update URL
-        var url = this._dialog.url;
+/**
+ * Change framework
+ *
+ * @return void
+ */
+yuiDialog_handler.prototype._set_framework = function() {
 
-        // See if framework specific
-        if (url.indexOf('frameworkid=') == -1) {
-            url = url + '&frameworkid=' + selected;
+    // Get currently selected option
+    var selected = $('.simpleframeworkpicker option:selected', this._container).val();
+
+    // Update URL
+    var url = this._dialog.url;
+
+    // See if framework specific
+    if (url.indexOf('frameworkid=') == -1) {
+        url = url + '&frameworkid=' + selected;
+    } else {
+        // Get start of frameworkid
+        var start = url.indexOf('frameworkid=') + 12;
+
+        // Find how many characters long the value is
+        var end = url.indexOf('&', start);
+
+        // If no following &, it is the end of the url
+        if (end == -1) {
+            url = url.substring(0, start) + selected;
+        // Just replace the value
         } else {
-            // Get start of frameworkid
-            var start = url.indexOf('frameworkid=') + 12;
-
-            // Find how many characters long the value is
-            var end = url.indexOf('&', start);
-
-            // If no following &, it is the end of the url
-            if (end == -1) {
-                url = url.substring(0, start) + selected;
-            // Just replace the value
-            } else {
-                url = url.substring(0, start) + selected + url.substring(end);
-            }
+            url = url.substring(0, start) + selected + url.substring(end);
         }
+    }
 
-        this._dialog.load(url, 'GET');
+    this._dialog.load(url, 'GET');
+}
+
+
+/*****************************************************************************/
+/** yuiDialog_handler_treeview **/
+
+yuiDialog_handler_treeview = function() {};
+yuiDialog_handler_treeview.prototype = new yuiDialog_handler();
+
+/**
+ * Setup a treeview infrastructure
+ *
+ * @return void
+ */
+yuiDialog_handler_treeview.prototype.every_load = function() {
+
+    // Setup treeview
+    $('.treeview', this._container).treeview({
+        prerendered: true
+    });
+
+    var handler = this;
+    // Setup framework picker
+    $('.simpleframeworkpicker', this._container).change(function() {
+        handler._set_framework();
+    });
+
+    // Setup hierarchy
+    this._make_hierarchy($('.treeview', this._container));
+}
+
+/**
+ * Setup hierarchy click handlers
+ *
+ * @return void
+ */
+yuiDialog_handler_treeview.prototype._make_hierarchy = function(parent_element) {
+    var handler = this;
+
+    // Load courses on category click
+    $('span.folder, div.hitarea', parent_element).live('click', function() {
+
+        // Get parent for id
+        var par = $(this).parent();
+
+        // Id in format item_list_XX
+        var id = par.attr('id').substr(10);
+
+        var url = handler._dialog.url+'&parentid='+id;
+        handler._request(url, handler._update_hierarchy, handler._dialog.request_failure, id);
+
+        return false;
+    });
+}
+
+/**
+ * @param yuiDialog_handler this handler object
+ * @param yuiresponse YUI repsonse object
+ * @return void
+ */
+yuiDialog_handler_treeview.prototype._update_hierarchy = function(handler, response) {
+
+    var parent_id = response.argument;
+    var items = response.responseText;
+    var list = $('.treeview li#item_list_'+parent_id+' ul:first', handler._container);
+
+    // Remove all existing children
+    $('li', list).remove();
+
+    // Add items
+    $('.treeview', handler._container).treeview({add: list.append($(items))});
+
+    // Setup new items
+    handler._make_hierarchy(list);
+    handler._make_draggable(list);
+}
+
+
+/*****************************************************************************/
+/** yuiDialog_handler_treeview_draggable **/
+
+yuiDialog_handler_treeview_draggable = function() {};
+yuiDialog_handler_treeview_draggable.prototype = new yuiDialog_handler_treeview();
+
+/**
+ * Setup treeview and drag/drop infrastructure
+ *
+ * @return void
+ */
+yuiDialog_handler_treeview_draggable.prototype.every_load = function() {
+
+    // Setup treeview
+    yuiDialog_handler_treeview.prototype.every_load.call(this);
+
+    // Setup droppable region
+    $('.selected', this._container).droppable({
+        drop: this._event_drop,
+        scope: this._title
+    });
+
+    // Make decending spans draggable
+    this._make_draggable($('.treeview', this._container));
+}
+
+/**
+ * Make decending spans draggable
+ *
+ * @param jQuery element list
+ * @return void
+ */
+yuiDialog_handler_treeview_draggable.prototype._make_draggable = function(parent_element) {
+
+    $('span:not(.empty)', parent_element).draggable({
+        containment: 'body',
+        helper: 'clone',
+        scope: this._title
+    });
+}
+
+/**
+ * Add element to drop box when dropped
+ *
+ * @param event
+ * @param ui
+ * @return void
+ */
+yuiDialog_handler_treeview_draggable.prototype._event_drop = function(event, ui) {
+
+    // Get clone
+    var clone = ui.draggable.clone();
+
+    // Get droppage region
+    var droppable = $(this);
+
+    // Check if an element with the same ID already exists
+    if ($('#'+clone.attr('id'), droppable).size() < 1) {
+        // Append clone to drop box
+        droppable.append(clone);
     }
 }
