@@ -553,7 +553,10 @@ yuiDialog_handler_treeview.prototype._update_hierarchy = function(handler, respo
 
     // Setup new items
     handler._make_hierarchy(list);
-    handler._make_draggable(list);
+
+    if (handler._handle_update_hierarchy != undefined) {
+        handler._handle_update_hierarchy(list);
+    }
 }
 
 
@@ -599,6 +602,16 @@ yuiDialog_handler_treeview_draggable.prototype._make_draggable = function(parent
 }
 
 /**
+ * Hierarchy update handler
+ *
+ * @param element
+ * @return void
+ */
+yuiDialog_handler_treeview_draggable.prototype._handle_update_hierarchy = function(parent_element) {
+    this._make_draggable(parent_element);
+}
+
+/**
  * Add element to drop box when dropped
  *
  * @param event
@@ -618,4 +631,70 @@ yuiDialog_handler_treeview_draggable.prototype._event_drop = function(event, ui)
         // Append clone to drop box
         droppable.append(clone);
     }
+}
+
+
+/*****************************************************************************/
+/** yuiDialog_handler_treeview_clickable **/
+
+yuiDialog_handler_treeview_clickable = function() {
+    /**
+     * Function for handling clicks
+     */
+    var clickhandler;
+};
+
+yuiDialog_handler_treeview_clickable.prototype = new yuiDialog_handler_treeview();
+
+/**
+ * Hierarchy update handler
+ *
+ * @param element
+ * @return void
+ */
+yuiDialog_handler_treeview_clickable.prototype._handle_update_hierarchy = function(parent_element) {
+    this._make_clickable(parent_element);
+}
+
+/**
+ * Setup treeview and click infrastructure
+ *
+ * @return void
+ */
+yuiDialog_handler_treeview_clickable.prototype.every_load = function() {
+
+    // Setup treeview
+    yuiDialog_handler_treeview.prototype.every_load.call(this);
+
+    this._make_clickable($('.treeview', this._container));
+}
+
+/**
+ * Make elements run the clickhandler when clicked
+ *
+ * @parent element
+ * @return void
+ */
+yuiDialog_handler_treeview_clickable.prototype._make_clickable = function(parent_element) {
+
+    // Get selectable/clickable elements
+    var selectables = $('span:not(.empty)', parent_element);
+
+    // Remove old handlers
+    selectables.unbind('click');
+
+    // Add clickable class
+    selectables.addClass('clickable');
+
+    // Setup closure
+    var dialog = this;
+
+    // Bind click handler
+    selectables.click(function() {
+
+        dialog.clickhandler($(this));
+        dialog._dialog.hide();
+
+        return false;
+    });
 }
