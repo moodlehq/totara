@@ -10,7 +10,7 @@ require_once($CFG->dirroot.'/hierarchy/type/competency/lib.php');
 ///
 
 // Revision id
-$id = required_param('id', PARAM_INT);
+$revisionid = required_param('id', PARAM_INT);
 
 // Courses to add
 $rowcount = required_param('rowcount', PARAM_SEQUENCE);
@@ -54,7 +54,7 @@ foreach ($add as $addition) {
 
     // Add idp competency
     $idpcompetency = new Object();
-    $idpcompetency->revision = $id;
+    $idpcompetency->revision = $revisionid;
     $idpcompetency->competencytemplate = $template->id;
     $idpcompetency->ctime = time();
 
@@ -71,7 +71,7 @@ foreach ($add as $addition) {
 
         echo "<td style=\"text-align: center;\">";
 
-        echo "<a href=\"{$CFG->wwwroot}/{$hierarchy->prefix}/competency/remove.php?id={$template->id}\" title=\"$str_remove\">".
+        echo "<a href=\"{$CFG->wwwroot}/hierarchy/type/competency/template/remove.php?id={$template->id}&revision={$revisionid}\" title=\"$str_remove\">".
              "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_remove\" /></a>";
 
         echo "</td>";

@@ -9,8 +9,8 @@ require_once($CFG->dirroot.'/hierarchy/type/competency/lib.php');
 /// Setup / loading data
 ///
 
-// Competency id
-$id = required_param('id', PARAM_INT);
+// Revision id
+$revisionid = required_param('id', PARAM_INT);
 
 // Parent id
 $parentid = optional_param('parentid', 0, PARAM_INT);

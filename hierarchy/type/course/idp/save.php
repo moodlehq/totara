@@ -9,7 +9,7 @@ require_once($CFG->libdir.'/adminlib.php');
 ///
 
 // Plan id
-$id = required_param('id', PARAM_INT);
+$revisionid = required_param('id', PARAM_INT);
 
 // Courses to add
 $rowcount = required_param('rowcount', PARAM_SEQUENCE);
@@ -48,7 +48,7 @@ foreach ($add as $addition) {
 
     // Add idp course
     $idpcourse = new Object();
-    $idpcourse->revision = $id;
+    $idpcourse->revision = $revisionid;
     $idpcourse->course = $course->id;
     $idpcourse->ctime = time();
 
@@ -64,7 +64,7 @@ foreach ($add as $addition) {
 
     echo "<td class=\"options\">";
 
-    echo "<a href=\"{$CFG->wwwroot}/course/idp/remove.php?id={$course->id}\" title=\"$str_remove\">".
+    echo "<a href=\"{$CFG->wwwroot}/hierarchy/type/course/idp/remove.php?id={$course->id}&revision={$revisionid}\" title=\"$str_remove\">".
          "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_remove\" /></a>";
 
     echo "</td>";
