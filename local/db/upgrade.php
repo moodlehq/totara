@@ -1107,6 +1107,24 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && change_field_notnull($table, $field, true, true);
     }
 
+    if ($result && $oldversion < 2010031100) {
+        // Add due dates to IDP components
+        $table = new XMLDBTable('idp_revision_course');
+        $field = new XMLDBField('duedate');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null);
+        $result = $result && add_field($table, $field);
+
+        $table = new XMLDBTable('idp_revision_competency');
+        $field = new XMLDBField('duedate');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null);
+        $result = $result && add_field($table, $field);
+
+        $table = new XMLDBTable('idp_revision_competencytemplate');
+        $field = new XMLDBField('duedate');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null);
+        $result = $result && add_field($table, $field);
+    }
+
     return $result;
 
 }
