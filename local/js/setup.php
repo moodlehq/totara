@@ -46,3 +46,73 @@ function setup_lightbox($options = array()) {
         ));
     }
 }
+
+/**
+ * Return markup for a branch of a hierarchy based treeview
+ *
+ * @param   $elements       array       Single level array of elements
+ * @param   $error_string   string      String to display if no elements supplied
+ * @param   $max_depth      int         Maximum depthid for the hierarchy framework, or true is single level
+ * @return  $html
+ */
+function build_treeview($elements, $error_string, $max_depth = true) {
+
+    $html = '';
+
+    if (is_array($elements) && !empty($elements)) {
+
+        $total = count($elements);
+        $count = 0;
+        $is_max_depth = false;
+
+        // If this is the max depth
+        if ($max_depth === true || reset($elements)->depthid == $max_depth) {
+            $is_max_depth = true;
+        }
+
+        // Loop through elements
+        foreach ($elements as $element) {
+            ++$count;
+
+            // Initialise class vars
+            $li_class = '';
+            $div_class = '';
+            $span_class = '';
+
+            // If last element
+            if ($count == $total) {
+                $li_class .= ' last';
+            }
+
+            // If this isn't the max depth level, assume children
+            if (!$is_max_depth) {
+                $li_class = 'expandable closed';
+                $div_class = 'hitarea closed-hitarea expandable-hitarea';
+                $span_class = 'folder';
+
+                if ($count == $total) {
+                    $li_class .= ' lastExpandable';
+                    $div_class .= ' lastExpandable-hitarea';
+                }
+            }
+
+            $html .= '<li class="'.$li_class.'" id="item_list_'.$element->id.'">';
+            $html .= '<div class="'.$div_class.'"></div>';
+            $html .= '<span id="item_'.$element->id.'" class="'.$span_class.'">';
+            $html .= format_string($element->fullname);
+            $html .= '</span>';
+
+            if ($div_class !== '') {
+                $html .= '<ul style="display: none;"></ul>';
+            }
+            echo '</li>'.PHP_EOL;
+        }
+    }
+    else {
+        $html .= '<li class="last"><span class="empty">';
+        $html .= $error_string;
+        $html .= '</span></li>'.PHP_EOL;
+    }
+
+    return $html;
+}

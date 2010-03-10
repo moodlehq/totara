@@ -413,7 +413,9 @@ var yuiDialog_handler = function() {
      */
     this._setup_treeview_draggable = function() {
         // Setup treeview
-        $('.treeview', this._container).treeview();
+        $('.treeview', this._container).treeview({
+            prerendered: true
+        });
 
         var handler = this;
         // Setup framework picker
@@ -442,7 +444,7 @@ var yuiDialog_handler = function() {
         var handler = this;
 
         // Load courses on category click
-        $('span.folder, div.hitarea', parent_element).one('click', function() {
+        $('span.folder, div.hitarea', parent_element).live('click', function() {
 
             // Get parent for id
             var par = $(this).parent();
@@ -452,6 +454,8 @@ var yuiDialog_handler = function() {
 
             var url = handler._dialog.url+'&parentid='+id;
             handler._request(url, handler._update_hierarchy, handler._dialog.request_failure, id);
+
+            return false;
         });
     }
 

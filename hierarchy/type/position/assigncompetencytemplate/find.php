@@ -3,6 +3,7 @@
 require_once('../../../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->dirroot.'/hierarchy/type/competency/lib.php');
+require_once($CFG->dirroot.'/local/js/setup.php');
 
 // Page title
 $pagetitle = 'assigncompetencytemplates';
@@ -68,20 +69,9 @@ $items = $hierarchy->get_templates();
 <ul class="treeview filetree">
 <?php
 
-if ($items) {
-
-    foreach ($items as $item) {
-
-        $li_class = '';
-        $span_class = '';
-
-        echo '<li class="'.$li_class.'" id="item_list_'.$item->id.'">';
-        echo '<span id="item_'.$item->id.'" class="'.$span_class.'">'.format_string($item->fullname).'</span>';
-
-        echo '</li>'.PHP_EOL;
-    }
-} else {
-    echo '<li><span class="empty">'.get_string('nounassignedcompetencytemplates', 'position').'</span></li>'.PHP_EOL;
-}
+echo build_treeview(
+    $items,
+    get_string('nounassignedcompetencytemplates', 'position')
+);
 
 echo '</ul></div>';
