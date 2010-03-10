@@ -135,7 +135,7 @@ foreach ($lt as $column) {
             if ($can_submit) {
 
                 if ($can_edit) {
-                    print '<br><center><table><tr><td>';
+                    print '<br /><center><table><tr><td>';
 
                     // Save and continue later
                     print '</td><td>';
