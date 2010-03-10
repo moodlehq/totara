@@ -112,6 +112,7 @@ $string['viewidps'] = 'View IDPs';
 $string['notapplicable'] = 'Not applicable';
 $string['notavailable'] = 'Not available';
 $string['recordoflearning'] = 'Record of Learning';
+$string['viewmyteam'] = 'View My Team';
 
 // Hierarchy
 $string['framework'] = 'Framework';

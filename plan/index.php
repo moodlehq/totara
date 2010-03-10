@@ -8,11 +8,17 @@ require_once('lib.php');
 
 $userid = optional_param('userid', $USER->id, PARAM_INT); // listing this user's IDP
 $summary = optional_param('summary', false, PARAM_BOOL); // show the evaluation summary page
+$recordoflearning = optional_param('recordoflearning', false, PARAM_BOOL); // show the record of learning page
 $page = optional_param('page', 0, PARAM_INT);  // current page number
 $orderby = optional_param('orderby', 'approvaltime', PARAM_ALPHA); // Column to sort by in the manager overview page
 $ovorderby = optional_param('ovorderby', 'name', PARAM_ALPHA); // Column to sort by in the manager overview page
 $showapproved = optional_param('showapproved', 0, PARAM_INT); // Set to 1 to show only pending plans
 $print = optional_param('print', 0, PARAM_INT); // Print-friendly view
+
+// If they requested to view the user's record of learning, then send them there
+if ( $recordoflearning ){
+    redirect($CFG->wwwroot . '/my/records?id=' . $userid);
+}
 
 require_login();
 
@@ -118,9 +124,12 @@ foreach ($lt as $column) {
             $canviewplans = true;
             print '<h1>'.get_string('traineesummarytitle', 'idp', format_user_link($userid)).'</h1>';
             $hasplans = print_user_learning_plans($userid, $canviewplans, $page, $perpage, $orderby);
+            if ( $hasplans || ($ownpage && has_capability('moodle/local:editownplan',$contextsite)) ){
+                print '<table width="80%"><tr>';
+            }
             if ($ownpage && has_capability('moodle/local:editownplan', $contextsite)) {
                 // Create new plan button
-                print '<table width="80%"><tr><td><form method="get" action="plan.php"><div>';
+                print '<td><form method="get" action="plan.php"><div>';
                 print '<input type="hidden" name="action" value="create" />';
                 print '<input type="submit" value="'.get_string('createnewplan', 'idp').'" />';
                 print "</div></form></td>\n";
@@ -134,7 +143,9 @@ foreach ($lt as $column) {
                 print '<input type="submit" value="'.get_string('viewsummary', 'idp').'" />';
                 print '</div></form></td>';
             }
-            print "</tr></table>\n";
+            if ( $hasplans || ($ownpage && has_capability('moodle/local:editownplan',$contextsite)) ){
+                print '</tr></table>';
+            }
 
             // manager overview
             print '<h1>'.get_string('manageroverviewtitle', 'idp').'</h1>';
@@ -205,9 +216,12 @@ foreach ($lt as $column) {
                 $hasplans = print_user_learning_plans($userid, $canviewplans, $page, $perpage, $orderby);
             }
 
+            if ( $hasplans || ($ownpage && has_capability('moodle/local:editownplan', $contextsite)) ){
+                print '<table width="80%"><tr>';
+            }
             if ($ownpage && has_capability('moodle/local:editownplan', $contextsite)) {
                 // Create new plan button
-                print '<table width="80%"><tr><td><form method="get" action="plan.php"><div>';
+                print '<td><form method="get" action="plan.php"><div>';
                 print '<input type="hidden" name="action" value="create" />';
                 print '<input type="submit" value="'.get_string('createnewplan', 'idp').'" />';
                 print "</div></form></td>\n";
@@ -217,12 +231,15 @@ foreach ($lt as $column) {
                 // Evaluation Summary button
                 print '<td align="right"><form method="get" action="index.php"><div>';
                 print '<input type="hidden" name="userid" value="'.$userid.'" />';
-                print '<input type="hidden" name="summary" value="1" />';
-                print '<input type="submit" value="'.get_string('viewsummary', 'idp').'" />';
+                print '<input type="hidden" name="recordoflearning" value="1" />';
+                print '<input type="submit" value="'.get_string('recordoflearning', 'local').'" />';
                 print '</div></form></td>';
             }
 
-            print "</tr></table>\n";
+            if ( $hasplans || ($ownpage && has_capability('moodle/local:editownplan', $contextsite)) ){
+                print "</tr></table>\n";
+            }
+
         }
         echo '</td>';
 

@@ -1498,13 +1498,13 @@ function print_user_learning_plans($userid, $canviewplans, $page, $perpage, $ord
     if ($plans and count($plans) > 0) {
         $table = '<table class="generalbox planlist boxaligncenter">';
 
-        $table .= '<tr><th class="name">'.get_string('name').'</td>';
+        $table .= '<tr><th class="name">'.get_string('name').'</th>';
         if ($canviewplans) {
-            $table .= '<th class="lastchanged">'.get_string('lastchanged', 'idp').'</td>';
-            $table .= '<th class="status">'.get_string('status', 'idp').'</td>';
+            $table .= '<th class="lastchanged">'.get_string('lastchanged', 'idp').'</th>';
+            $table .= '<th class="status">'.get_string('status', 'idp').'</th>';
         }
         if ($ownpage) {
-            $table .= '<th class="options">'.get_string('options', 'idp').'</td>';
+            $table .= '<th class="options">'.get_string('options', 'idp').'</th>';
         }
         $table .= '</tr>';
 
@@ -1551,11 +1551,11 @@ function print_user_learning_plans($userid, $canviewplans, $page, $perpage, $ord
                 }
                 $rowcount = ($rowcount + 1) % 2;
             }
-            $table .= '</table>';
-            echo $table;
         } else {
             print '<i>'.get_string('noplansubmittedorapproved', 'idp').'</i>';
         }
+        $table .= '</table>';
+        echo $table;
     }
     else {
         print '<i>'.get_string('noplans', 'idp').'</i>';
