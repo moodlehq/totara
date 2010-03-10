@@ -1626,7 +1626,7 @@ function current_plan_url($userid, $evaluation=false) {
 
     if ($record) {
         $page = $evaluation ? 'evaluation' : 'revision';
-        return $CFG->wwwroot.'/mod/idp/'.$page.'.php?id='.$record->planid.'&amp;rev='.$record->revid;
+        return $CFG->wwwroot.'/plan/'.$page.'.php?id='.$record->planid.'&amp;rev='.$record->revid;
     }
     else {
         return '';
@@ -1651,7 +1651,7 @@ function upcoming_plan_url($userid) {
                             ORDER BY r.mtime DESC");
 
     if ($record) {
-        return $CFG->wwwroot.'/mod/idp/revision.php?id='.$record->planid.'&amp;rev='.$record->revid;
+        return $CFG->wwwroot.'/plan/revision.php?id='.$record->planid.'&amp;rev='.$record->revid;
     }
     else {
         return '';
@@ -1809,7 +1809,7 @@ function idp_email_notification($type, $revision, $subsargs) {
     }
     // link is always valid
     $validkeys[] = 'link';
-    $subsargs->link = $CFG->wwwroot . '/mod/idp/revision.php?rev=' . $revision->id . '&id=' . $revision->idp;
+    $subsargs->link = $CFG->wwwroot . '/plan/revision.php?rev=' . $revision->id . '&id=' . $revision->idp;
     foreach ($validkeys as $key) {
         if (!isset($subsargs->{$key})) {
             $subsargs->{$key} = ''; //  Still replace the placeholder, we don't want the {{xyz}} tags appearing in output.
