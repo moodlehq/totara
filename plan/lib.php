@@ -1931,6 +1931,12 @@ function print_revision_manager($revision, $plan, $options=array()) {
     $competencies = idp_get_user_competencies($plan->userid, $revision->id);
     print_idp_competencies_view($revision, $competencies, $options['can_edit']);
 
+    $competencytemplates = idp_get_user_competencytemplates($plan->userid, $revision->id);
+    print_idp_competency_templates_view($revision, $competencytemplates, $options['can_edit']);
+
+    $courses = idp_get_user_courses($plan->userid, $revision->id);
+    print_idp_courses_view($revision, $courses, $options['can_edit']);
+
     // Free-form lists
 //    $objhtml = print_freeform_list($revision->id, 0, false, true);
 //    $objhtml .= print_freeform_list($revision->id, 1, false, true);
@@ -2014,6 +2020,20 @@ function print_revision_preview($revision, $plan, $printable=true) {
        print '<p><i>'.get_string('emptyplancompetencies', 'idp')."</i></p>\n";
     }
 
+    $competencytemplates = idp_get_user_competencytemplates($plan->userid, $revision->id);
+    if ($competencytemplates) {
+        print_idp_competency_templates_view($revision, $competencytemplates, $options['can_edit']);
+    } else {
+        print '<p><i>'.get_string('emptyplancompetencytemplates','idp')."</i></p>\n";
+    }
+
+    $courses = idp_get_user_courses($plan->userid, $revision->id);
+    if ( $courses ) {
+        print_idp_courses_view($revision, $courses, $options['can_edit']);
+    } else {
+        print '<p><i>'.get_string('emptyplancourses','idp')."</i></p>\n";
+    }
+
 /*
     // Free-form lists
     $objhtml = print_freeform_list($revision->id, 0, false, true);
@@ -2056,6 +2076,20 @@ function print_revision_pdf($revision, $plan, $options=array()) {
         print_idp_competencies_view($revision, $competencies, false);
     } else {
        print '<p><i>'.get_string('emptyplancompetencies', 'idp')."</i></p>\n";
+    }
+
+    $competencytemplates = idp_get_user_competencytemplates($plan->userid, $revision->id);
+    if ($competencytemplates) {
+        print_idp_competency_templates_view($revision, $competencytemplates, $options['can_edit']);
+    } else {
+        print '<p><i>'.get_string('emptyplancompetencytemplates','idp')."</i></p>\n";
+    }
+
+    $courses = idp_get_user_courses($plan->userid, $revision->id);
+    if ( $courses ) {
+        print_idp_courses_view($revision, $courses, $options['can_edit']);
+    } else {
+        print '<p><i>'.get_string('emptyplancourses','idp')."</i></p>\n";
     }
 
     // Free-form lists
