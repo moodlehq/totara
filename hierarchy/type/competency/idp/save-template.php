@@ -71,7 +71,7 @@ foreach ($add as $addition) {
 
         echo "<td style=\"text-align: center;\">";
 
-        echo "<a href=\"{$CFG->wwwroot}/hierarchy/type/competency/template/remove.php?id={$template->id}&revision={$revisionid}\" title=\"$str_remove\">".
+        echo "<a href=\"{$CFG->wwwroot}/hierarchy/type/competency/template/idp/remove.php?id={$template->id}&revision={$revisionid}\" title=\"$str_remove\">".
              "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_remove\" /></a>";
 
         echo "</td>";

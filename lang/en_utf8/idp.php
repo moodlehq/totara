@@ -97,6 +97,7 @@ $string['error:planalreadyevaluated'] = 'A self-evaluation has already been subm
 $string['error:plannotempty'] = 'You can only delete empty plans, and this plan is not empty.';
 $string['error:plannotsubmitted'] = 'You can only delete empty plans which have never been submitted.';
 $string['error:revisionnotvisible'] = 'This revision is not visible to you.';
+$string['error:removalfailed'] = 'Removal failed.';
 
 # Other strings
 $string['addbutton'] = 'Add competency to plan';

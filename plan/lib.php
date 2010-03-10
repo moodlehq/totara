@@ -1,6 +1,6 @@
 <?php
 
-require_once('../hierarchy/type/competency/lib.php');
+require_once( $CFG->dirroot.'/hierarchy/type/competency/lib.php');
 require_once( $CFG->dirroot.'/plan/view-competencies.php' );
 require_once( $CFG->dirroot.'/plan/view-competencytemplates.php' );
 require_once( $CFG->dirroot.'/plan/view-courses.php' );
@@ -148,6 +148,23 @@ function get_revision($planid, $revid=0, $pdf=false) {
     }
 
     return $revision;
+}
+
+/**
+ * Return the plan that a given revision belongs to
+ *
+ * @param int $revisionid
+ * @return object
+ */
+function get_plan_for_revision($revisionid){
+    global $CFG;
+    
+    return get_record_sql(
+            "SELECT p.* from "
+            . "{$CFG->prefix}idp_revision r, "
+            . "{$CFG->prefix}idp p "
+            . "WHERE r.id = $revisionid and r.idp = p.id"
+    );
 }
 
 /**

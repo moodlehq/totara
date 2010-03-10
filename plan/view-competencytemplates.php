@@ -64,7 +64,7 @@ if ($competencytemplates) {
         if ($editingon) {
             echo '<td class="options">';
 
-            echo "<a href=\"{$CFG->wwwroot}/competency/idp/remove.php?id={$competency->id}\" title=\"$str_remove\">".
+            echo "<a href=\"{$CFG->wwwroot}/hierarchy/type/competency/template/idp/remove.php?id={$competency->id}&revision={$revision->id}\" title=\"$str_remove\">".
                  "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_remove\" /></a>";
 
             echo '</td>';
