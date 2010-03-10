@@ -3,6 +3,7 @@
 require_once('../../../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->dirroot.'/hierarchy/type/position/lib.php');
+require_once($CFG->dirroot.'/local/js/setup.php');
 
 
 ///
@@ -70,21 +71,12 @@ $managers = get_records_sql(
 
 <h2><?php echo get_string('choosemanager', 'position'); ?></h2>
 
-<ul id="managers" class="filetree">
+<ul class="treeview filetree">
 <?php
 
-// Foreach manager
-if ($managers) {
-    foreach ($managers as $manager) {
-        $li_class = '';
-        $span_class = 'clickable';
-
-        echo '<li class="'.$li_class.'" id="manager_list_'.$manager->id.'">';
-        echo '<span id="man_'.$manager->id.'" class="'.$span_class.'">'.fullname($manager).'</span>';
-        echo '</li>'.PHP_EOL;
-    }
-} else {
-    echo '<li><span class="empty">'.get_string('nomanagersavailable', 'position').'</span></li>'.PHP_EOL;
-}
+echo build_treeview(
+    $managers,
+    get_string('nomanagersavailable', 'position')
+);
 
 echo '</ul></div>';

@@ -3,6 +3,7 @@
 require_once('../../../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->dirroot.'/hierarchy/type/position/lib.php');
+require_once($CFG->dirroot.'/local/js/setup.php');
 
 
 ///
@@ -69,60 +70,25 @@ if (!$parentid) {
 
 <div class="selectposition">
 
+<?php $hierarchy->display_framework_selector('', true) ?>
+
 <h2>
-<?php
-    echo get_string('chooseposition', $hierarchy->prefix);
-
-   // Display framework picker
-   $frameworks = $hierarchy->get_frameworks();
-
-   if (count($frameworks) > 1) {
-       echo '<select id="framework-picker">';
-
-       foreach ($frameworks as $fw) {
-           echo '<option value="'.$fw->id.'"';
-
-           // Is current?
-           if ($fw->id == $framework->id) {
-               echo ' selected="selected"';
-           }
-
-           echo '>'.$fw->fullname.'</option>';
-       }
-
-       echo '</select>';
-   }
-
-?>
+<?php echo get_string('chooseposition', $hierarchy->prefix); ?>
 </h2>
 
-<ul id="positions" class="filetree">
 <?php
 }
 
-
-// Foreach competency
-if ($positions) {
-    foreach ($positions as $position) {
-        if ($position->depthid == $max_depth) {
-            $li_class = '';
-            $span_class = 'clickable';
-        } else {
-            $li_class = 'closed';
-            $span_class = 'folder';
-        }
-
-        echo '<li class="'.$li_class.'" id="position_list_'.$position->id.'">';
-        echo '<span id="pos_'.$position->id.'" class="'.$span_class.'">'.$position->fullname.'</span>';
-
-        if ($span_class == 'folder') {
-            echo '<ul></ul>';
-        }
-        echo '</li>'.PHP_EOL;
-    }
-} else {
-    echo '<li><span class="empty">'.get_string('nopositionsinframework', $hierarchy->prefix).'</span></li>'.PHP_EOL;
+// If this is the root node
+if (!$parentid) {
+    echo '<ul class="treeview filetree">';
 }
+
+echo build_treeview(
+    $positions,
+    get_string('nopositionsinframework', 'position'),
+    $max_depth
+);
 
 // If no parent id, close list
 if (!$parentid) {

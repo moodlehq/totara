@@ -111,9 +111,7 @@ setup_lightbox(array(MBE_JS_TREEVIEW, MBE_JS_ADVANCED));
 require_js(
     array(
         $CFG->wwwroot.'/local/js/lib/ui.datepicker.js',
-        $CFG->wwwroot.'/local/js/position.assign.js',
-        $CFG->wwwroot.'/local/js/position.manager.assign.js',
-        $CFG->wwwroot.'/local/js/position.organisation.assign.js'
+        $CFG->wwwroot.'/local/js/position.user.js.php'
     )
 );
 
@@ -188,7 +186,7 @@ if ($form->is_submitted()) {
 // Setup calendar
 ?>
 <script type="text/javascript">
-    
+
     $(function() {
         $('#id_timevalidfrom, #id_timevalidto').datepicker(
             {

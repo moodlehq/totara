@@ -3,6 +3,7 @@
 require_once('../../../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->dirroot.'/hierarchy/type/organisation/lib.php');
+require_once($CFG->dirroot.'/local/js/setup.php');
 
 
 ///
@@ -96,42 +97,15 @@ if (!$parentid) {
 ?>
 </h2>
 
-<ul id="organisations" class="filetree">
+<ul class="treeview filetree">
 <?php
 }
 
-
-// Foreach competency
-if ($positions) {
-    foreach ($positions as $position) {
-        if ($position->depthid == $max_depth) {
-            $li_class = '';
-            $span_class = 'clickable';
-        } else {
-            $li_class = 'closed';
-            $span_class = 'folder';
-        }
-
-        echo '<li class="'.$li_class.'" id="organisation_list_'.$position->id.'">';
-        echo '<span id="org_'.$position->id.'" class="'.$span_class.'">'.$position->fullname.'</span>';
-
-        if ($span_class == 'folder') {
-            echo '<ul></ul>';
-        }
-        echo '</li>'.PHP_EOL;
-    }
-} else {
-    echo '<li><span class="empty">';
-
-    if ($parentid) {
-        echo get_string('nochildorganisations', $hierarchy->prefix);
-    }
-    else {
-        echo get_string('noorganisationsinframework', $hierarchy->prefix);
-    }
-
-    echo '</span></li>'.PHP_EOL;
-}
+echo build_treeview(
+    $positions,
+    get_string(($parentid ? 'nochildorganisations' : 'noorganisationsinframework'), $hierarchy->prefix),
+    $max_depth
+);
 
 // If no parent id, close list
 if (!$parentid) {
