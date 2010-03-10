@@ -82,7 +82,7 @@ if ($competencies) {
     echo '</table>';
 
     // Add competencies button
-    if (!empty($options) and $options['can_edit']) {
+    if ($editingon) {
 
 ?>
 <table class="generalbox planbuttons boxaligncenter">
