@@ -1098,6 +1098,15 @@ function xmldb_local_upgrade($oldversion) {
         mitms_reset_stickyblocks(true);
     }
 
+    if ($result && $oldversion < 2010031000) {
+        // Remove not-null constraint from idp_approval.onbehalfof
+        $table = new XMLDBTable('idp_approval');
+        $field = new XMLDBField('onbehalfof');
+        $field->setType(XMLDB_TYPE_INTEGER);
+        $field->setNotNull(false);
+        $result = $result && change_field_notnull($table, $field, true, true);
+    }
+
     return $result;
 
 }
