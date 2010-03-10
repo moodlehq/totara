@@ -60,7 +60,7 @@ foreach ($add as $addition) {
     echo "<td><a href=\"{$CFG->wwwroot}/course/category.php?id={$course->category}\">".format_string($category->name)."</a></td>";
     echo "<td><a href=\"{$CFG->wwwroot}/course/view.php?id={$course->id}\">".format_string($course->fullname)."</a></td>";
     echo '<td></td>';
-    echo '<td></td>';
+    echo '<td width="25%"><input size="10" maxlength="10" type="text" name="courseduedate['.$course->id.']" id="courseduedate'.$course->id.'"/></td>';
 
     echo "<td class=\"options\">";
 
@@ -69,6 +69,9 @@ foreach ($add as $addition) {
 
     echo "</td>";
 
-    echo '</tr>'.PHP_EOL;
+    echo '</tr>';
+    echo '<script type="text/javascript"> $(function() { $(\'[id^=courseduedate]\').datepicker( ';
+    echo '{ dateFormat: \'dd/mm/yy\', showOn: \'button\', buttonImage: \'../local/js/images/calendar.gif\',';
+    echo 'buttonImageOnly: true } ); }); </script>'.PHP_EOL;
     $rowcount = ($rowcount + 1) % 2;
 }

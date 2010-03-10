@@ -2142,7 +2142,8 @@ function idp_get_user_competencies($userid, $currevisionid) {
             c.fullname,
             f.id AS fid,
             f.fullname AS framework,
-            d.fullname AS depth
+            d.fullname AS depth,
+            r.duedate as duedate
         FROM
             {$CFG->prefix}idp_revision_competency r
         INNER JOIN
@@ -2193,7 +2194,8 @@ function idp_get_user_competencytemplates($userid, $currevisionid) {
             c.id AS id,
             c.fullname,
             f.id AS fid,
-            f.fullname AS framework
+            f.fullname AS framework,
+            r.duedate as duedate
         FROM
             {$CFG->prefix}idp_revision_competencytemplate r
         INNER JOIN
@@ -2222,7 +2224,8 @@ function idp_get_user_courses($userid, $currevisionid) {
             c.id,
             c.fullname,
             cc.id as ccid,
-            cc.name as category
+            cc.name as category,
+            r.duedate as duedate
         FROM {$CFG->prefix}idp_revision_course r
         INNER JOIN {$CFG->prefix}course c
           ON c.id=r.course

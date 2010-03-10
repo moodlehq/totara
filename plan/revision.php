@@ -49,11 +49,12 @@ if ($js_enabled) {
     require_once($CFG->dirroot.'/local/js/setup.php');
     setup_lightbox(array(MBE_JS_TREEVIEW, MBE_JS_ADVANCED));
     require_js(array(
+        $CFG->wwwroot.'/local/js/lib/ui.datepicker.js',
         $CFG->wwwroot.'/local/js/idp.competency.js',
         $CFG->wwwroot.'/local/js/idp.competencytemplate.js',
         $CFG->wwwroot.'/local/js/idp.course.js',
     ));
-
+    $CFG->stylesheets[] = $CFG->wwwroot.'/local/js/lib/ui-lightness/jquery-ui-1.7.2.custom.css';
 }
 
 $stridps = get_string('idps', 'idp');
@@ -119,6 +120,9 @@ foreach ($lt as $column) {
                 print '<h1>'.get_string('revisionviewtitle', 'idp', $plan->name).'</h1>';
             }
 
+//            if ( $can_submit || $can_edit ){
+//                echo '<form method="get" action="submit.php">';
+//            }
             if ($can_approve) {
                 print_revision_manager($currevision, $plan, array(
                     'can_submit' => $can_submit,
@@ -160,6 +164,9 @@ foreach ($lt as $column) {
                     print "</p></form>\n";
                 }
             }
+//            if ( $can_submit || $can_edit ){
+//                echo '</form>';
+//            }
 
             print '<p id="backtotop" style="text-align: center"><a href="#top">'.get_string('backtotoplink', 'idp').'</a></p>';
 

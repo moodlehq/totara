@@ -65,7 +65,7 @@ foreach ($add as $addition) {
     echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/framework/index.php?type={$hierarchy->prefix}&id={$framework->id}\">{$framework->fullname}</a></td>";
     echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/type/competency/template/view.php?id={$template->id}\">{$template->fullname}</a></td>";
     echo '<td></td>';
-    echo '<td></td>';
+    echo '<td width="25%"><input size="10" maxlength="10" type="text" name="comptempduedate['.$template->id.']" id="comptempduedate'.$template->id.'"/></td>';
 
 //    if ($editingon) {
 
@@ -78,6 +78,9 @@ foreach ($add as $addition) {
 
 //    }
 
-    echo '</tr>'.PHP_EOL;
+    echo '</tr>';
+    echo '<script type="text/javascript"> $(function() { $(\'[id^=comptempduedate]\').datepicker( ';
+    echo '{ dateFormat: \'dd/mm/yy\', showOn: \'button\', buttonImage: \'../local/js/images/calendar.gif\',';
+    echo 'buttonImageOnly: true } ); }); </script>'.PHP_EOL;
     $rowcount = ($rowcount + 1) % 2;
 }

@@ -10,99 +10,118 @@
  */
 function print_idp_courses_view( $revision, $courses, $editingon=false){
 
-global $CFG;
+    global $CFG;
 
-// Display competencies
-print_heading(get_string('courses'));
-$str_remove = get_string('remove');
+    // Display competencies
+    print_heading(get_string('courses'));
+    $str_remove = get_string('remove');
 
-?>
-<table id="list-idp-courses" class="generalbox planitems boxaligncenter viewcourses">
-<tr>
-    <th class="framework" scope="col">
-        <?php echo get_string('category') ?>
-    </th>
+    ?>
+    <table id="list-idp-courses" class="generalbox planitems boxaligncenter viewcourses">
+    <tr>
+        <th class="framework" scope="col">
+            <?php echo get_string('category') ?>
+        </th>
 
-    <th class="name" scope="col">
-        <?php echo get_string('course'); ?>
-    </th>
+        <th class="name" scope="col">
+            <?php echo get_string('course'); ?>
+        </th>
 
-    <th class="status" scope="col">
-        <?php echo get_string('status', 'idp') ?>
-    </th>
+        <th class="status" scope="col">
+            <?php echo get_string('status', 'idp') ?>
+        </th>
 
-    <th class="duedate" scope="col">
-        <?php echo get_string('duedate', 'idp') ?>
-     </th>
+        <th class="duedate" scope="col">
+            <?php echo get_string('duedate', 'idp') ?>
+         </th>
 
-<?php
-    if ($editingon) {
-?>
-    <th class="options" scope="col">
-        <?php echo get_string('options', 'idp') ?>
-    </th>
-<?php
-    }
-?>
-</tr>
-<?php
+    <?php
+        if ($editingon) {
+    ?>
+        <th class="options" scope="col">
+            <?php echo get_string('options', 'idp') ?>
+        </th>
+    <?php
+        }
+    ?>
+    </tr>
+    <?php
 
-// # cols varies
-$cols = $editingon ? 4 : 3;
+    // # cols varies
+    $cols = $editingon ? 5 : 4;
 
 $rowcount=0;
 
-if ($courses) {
+    if ($courses) {
 
-    foreach ($courses as $course) {
+        foreach ($courses as $course) {
 
         echo '<tr class=r'.$rowcount.'>';
-        echo "<td><a href=\"{$CFG->wwwroot}/course/category.php?id={$course->ccid}\">{$course->category}</a></td>";
-        echo "<td><a href=\"{$CFG->wwwroot}/course/view.php?id={$course->id}\">{$course->fullname}</a></td>";
-        echo '<td>'.$course->status.'</td>';
-        echo '<td></td>';
+            echo "<td><a href=\"{$CFG->wwwroot}/course/category.php?id={$course->ccid}\">{$course->category}</a></td>";
+            echo "<td><a href=\"{$CFG->wwwroot}/course/view.php?id={$course->id}\">{$course->fullname}</a></td>";
+            echo '<td>'.$course->status.'</td>';
+            echo '<td width="25%">';
+            $duedatestr = $course->duedate == NULL ? '' : date('d/m/Y', $course->duedate );
+            if ($editingon) {
+                echo '<input size="10" maxlength="10" type="text" value="'.$duedatestr.'"name="courseduedate['.$course->id.']" id="courseduedate'.$course->id.'"/>';
+            } else {
+                // todo: make this work
+                echo $duedatestr;
+            }
+            echo '</td>';
 
-        if ($editingon) {
-            echo '<td class="options">';
+            if ($editingon) {
+                echo '<td class="options">';
 
             echo "<a href=\"{$CFG->wwwroot}/hierarchy/type/course/idp/remove.php?id={$course->id}&revision={$revision->id}\" title=\"$str_remove\">".
-                 "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_remove\" /></a>";
+                     "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_remove\" /></a>";
 
-            echo '</td>';
+                echo '</td>';
+            }
+
+            echo '</tr>';
+        $rowcount = ($rowcount + 1) % 2;
         }
 
-        echo '</tr>';
-        $rowcount = ($rowcount + 1) % 2;
+    } else {
+        echo '<tr class="noitems"><td colspan="'.$cols.'"><i>'.get_string('emptyplancourses', 'idp').'</i></td></tr>';
     }
 
-} else {
-    echo '<tr class="noitems"><td colspan="'.$cols.'"><i>'.get_string('emptyplancourses', 'idp').'</i></td></tr>';
-}
+        echo '</table>';
 
-    echo '</table>';
+        // Add courses button
+        if ($editingon) {
 
-    // Add courses button
-    if ($editingon) {
-
-?>
-<table class="generalbox planbuttons boxaligncenter">
-    <tr class="noitems" colspan="<?php echo $cols ?>">
-        <td>
-            <div class="singlebutton">
+    ?>
+    <table class="generalbox planbuttons boxaligncenter">
+        <tr class="noitems" colspan="<?php echo $cols ?>">
+            <td>
+                <div class="singlebutton">
             <form action="<?php echo $CFG->wwwroot ?>/hierarchy/type/course/idp/add.php?id=<?php echo $revision->id ?>" method="get">
-            <input type="submit" id="show-idpcourse-dialog" value="<?php echo get_string('addfromcategories', 'idp') ?>" />
-            <input type="submit" id="" value="<?php echo get_string('addfrompositions', 'idp') ?>" />
+                <input type="submit" id="show-idpcourse-dialog" value="<?php echo get_string('addfromcategories', 'idp') ?>" />
+                <input type="submit" id="" value="<?php echo get_string('addfrompositions', 'idp') ?>" />
             </form></div>
-        </td>
-    </tr>
-</table>
+            </td>
+        </tr>
+    </table>
 <script type="text/javascript">
 <!-- //
 var idp_course_row_count = <?php echo $rowcount ?>
+
+$(function() {
+    $('[id^=courseduedate]').datepicker(
+        {
+            dateFormat: 'dd/mm/yy',
+            showOn: 'button',
+            buttonImage: '../local/js/images/calendar.gif',
+            buttonImageOnly: true
+        }
+    );
+    });
 // -->
 </script>
-<?php
+    <?php
 
-    }
+        }
 }
 ?>
