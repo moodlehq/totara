@@ -38,6 +38,7 @@ if ($ownpage) {
     }
 }
 else {
+    $user = get_record('user', 'id', $userid);
     // Looking at another user's page
     if (has_capability('moodle/local:manageroverview', $contextuser) &&
         has_capability('moodle/local:managerownoverview', $contextsite, $userid)) {
@@ -68,7 +69,6 @@ else {
         $navlinks[] = array('name' => $stridps, 'link' => $CFG->wwwroot."/plan/index.php", 'type' => 'home');
     }
     else {
-        $user = get_record('user', 'id', $userid);
         $navlinks[] = array('name' => $stridps, 'link' => $CFG->wwwroot."/plan/index.php", 'type' => 'home');
         $navlinks[] = array('name' => fullname($user), 'link' => '', 'type' => 'home');
     }
@@ -122,7 +122,13 @@ foreach ($lt as $column) {
             $perpage = 20;
             $hasplans = false;
             $canviewplans = true;
-            print '<h1>'.get_string('traineesummarytitle', 'idp', format_user_link($userid)).'</h1>';
+            print '<h1>';
+            if ( $ownpage ) {
+                print get_string('myidps', 'idp');
+            } else {
+                print get_string('idpsfor', 'idp', fullname($user, true));
+            }
+            print '</h1>';
             $hasplans = print_user_learning_plans($userid, $canviewplans, $page, $perpage, $orderby);
             if ( $hasplans || ($ownpage && has_capability('moodle/local:editownplan',$contextsite)) ){
                 print '<table width="80%"><tr>';
@@ -193,7 +199,13 @@ foreach ($lt as $column) {
         }
         else {
             // Trainee summary
-            print '<h1>'.get_string('traineesummarytitle', 'idp', format_user_link($userid, false)).'</h1>';
+            print '<h1>';
+            if ( $ownpage ) {
+                print get_string('myidps', 'idp');
+            } else {
+                print get_string('idpsfor', 'idp', fullname($user, true));
+            }
+            print '</h1>';
 
             $hasplans = false;
             {
