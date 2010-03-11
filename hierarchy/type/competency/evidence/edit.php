@@ -61,8 +61,7 @@ setup_lightbox(array(MBE_JS_TREEVIEW, MBE_JS_ADVANCED));
 require_js(
     array(
         $CFG->wwwroot.'/local/js/lib/ui.datepicker.js',
-        $CFG->wwwroot.'/local/js/position.assign.ce.js',
-        $CFG->wwwroot.'/local/js/position.organisation.assign.ce.js'
+        $CFG->wwwroot.'/local/js/position.user.js.php',
     )
 );
 
