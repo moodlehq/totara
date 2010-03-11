@@ -99,10 +99,9 @@ $rowcount=0;
         <tr colspan="<?php echo $cols ?>">
             <td>
                 <div class="singlebutton">
-            <form action="<?php echo $CFG->wwwroot ?>/hierarchy/type/competency/idp/add-template.php?id=<?php echo $revision->id ?>" method="get">
                 <input type="submit" id="show-idpcompetencytemplate-dialog" value="<?php echo get_string('addfromframeworks', 'idp') ?>" />
                 <input type="submit" id="" value="<?php echo get_string('addfrompositions', 'idp') ?>" />
-            </form></div>
+                </div>
             </td>
         </tr>
     </table>

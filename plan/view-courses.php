@@ -97,10 +97,9 @@ $rowcount=0;
         <tr class="noitems" colspan="<?php echo $cols ?>">
             <td>
                 <div class="singlebutton">
-            <form action="<?php echo $CFG->wwwroot ?>/hierarchy/type/course/idp/add.php?id=<?php echo $revision->id ?>" method="get">
                 <input type="submit" id="show-idpcourse-dialog" value="<?php echo get_string('addfromcategories', 'idp') ?>" />
                 <input type="submit" id="" value="<?php echo get_string('addfrompositions', 'idp') ?>" />
-            </form></div>
+                </div>
             </td>
         </tr>
     </table>

@@ -9,8 +9,17 @@ require_once('lib.php');
 require_login();
 
 $rev = required_param('rev', PARAM_INT); // Revision ID
+$submitbutton = optional_param('submitbutton', false, PARAM_BOOL);
+$saveandcontinuebutton = optional_param('saveandcontinuebutton',false, PARAM_BOOL);
 $confirm = optional_param('confirm', false, PARAM_BOOL);
 $print = optional_param('print', 0, PARAM_INT); // Print-friendly view
+
+// If they didn't click the "submit" or "confirm" buttons, then they 
+// actually clicked "save and continue"
+if ( !$confirm && !$submitbutton ){
+    //todo: save info
+    redirect($CFG->wwwroot.'/plan/index.php');
+}
 
 if ($print) {
     $CFG->theme = 'MITMS_print'; // for this page only

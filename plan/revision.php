@@ -119,9 +119,9 @@ foreach ($lt as $column) {
                 print '<h1>'.get_string('revisionviewtitle', 'idp', $plan->name).'</h1>';
             }
 
-//            if ( $can_submit || $can_edit ){
-//                echo '<form method="get" action="submit.php">';
-//            }
+            if ( $can_submit && $can_edit ){
+                echo '<form method="get" action="submit.php">';
+            }
             if ($can_approve) {
                 print_revision_manager($currevision, $plan, array(
                     'can_submit' => $can_submit,
@@ -142,16 +142,16 @@ foreach ($lt as $column) {
 
                     // Save and continue later
                     print '</td><td>';
-                    print '<form method="get" action="index.php"><div>';
-                    print '<input type="submit" value="'.get_string('savecontinuelaterbutton', 'idp').'" />';
-                    print '</div></form>';
+                    print '<div>';
+                    print '<input type="submit" name="saveandcontinuebutton" value="'.get_string('savecontinuelaterbutton', 'idp').'" />';
+                    print '</div>';
 
                     // Submit button
                     print '</td><td>';
-                    print '<form method="get" action="submit.php"><div style="text-align: center">';
+                    print '<div style="text-align: center">';
                     print '<input type="hidden" name="rev" value="'.$currevision->id.'" />';
-                    print '<input type="submit" value="'.get_string('submitplan', 'idp').'" />';
-                    print '</div></form>';
+                    print '<input type="submit" name="submitbutton" value="'.get_string('submitplan', 'idp').'" />';
+                    print '</div>';
                     print "</td></tr></table></center>\n";
                 }
                 elseif ('approved' == $currevision->status or 'overdue' == $currevision->status) {
@@ -163,9 +163,9 @@ foreach ($lt as $column) {
                     print "</p></form>\n";
                 }
             }
-//            if ( $can_submit || $can_edit ){
-//                echo '</form>';
-//            }
+            if ( $can_submit && $can_edit ){
+                echo '</form>';
+            }
 
             print '<p id="backtotop" style="text-align: center"><a href="#top">'.get_string('backtotoplink', 'idp').'</a></p>';
 
