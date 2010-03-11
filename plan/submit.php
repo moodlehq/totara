@@ -17,7 +17,10 @@ $print = optional_param('print', 0, PARAM_INT); // Print-friendly view
 // If they didn't click the "submit" or "confirm" buttons, then they 
 // actually clicked "save and continue"
 if ( !$confirm && !$submitbutton ){
-    //todo: save info
+    update_idp_component_duedate('compduedate', 'idp_revision_competency','competency', $rev);
+    update_idp_component_duedate('comptempduedate', 'idp_revision_competencytemplate', 'competencytemplate', $rev);
+    update_idp_component_duedate('courseduedate', 'idp_revision_course', 'course', $rev);
+
     redirect($CFG->wwwroot.'/plan/index.php');
 }
 
@@ -140,5 +143,28 @@ foreach ($lt as $column) {
 echo '</tr></table>';
 
 print_footer();
+
+/**
+ * Updates the due dates for a particular IDP component (abstracting this to a
+ * function since it's the exact same behavior for competencies, competency
+ * templates, and courses)
+ * 
+ * @param string $duedateformelement
+ * @param string $tablename
+ * @param string $componentcolumn
+ * @param string $rev
+ */
+function update_idp_component_duedate($duedateformelement, $tablename, $componentcolumn,$rev){
+    // fetching as PARAM_RAW because calendar dates are in DD/MM/YYYY format,
+    // and there's no other PARAM setting that'll do numbers and slashes
+    $formelementlist = optional_param($duedateformelement,array(),PARAM_RAW);
+    foreach( $formelementlist as $rawid=>$rawduedate ){
+        $componentid = clean_param($rawid, PARAM_INT);
+        $duedate = ereg_replace('/[^0-9\/]/', '', $rawduedate);
+        list($d, $m, $y) = explode('/',$duedate,3);
+        $duedate = mktime(0,0,0,$m,$d,$y);
+        $result = set_field($tablename,'duedate',$duedate,'revision',$rev,$componentcolumn,$componentid);
+    }
+}
 
 ?>
