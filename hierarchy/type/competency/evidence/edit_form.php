@@ -51,8 +51,8 @@ class mitms_competency_evidence_form extends moodleform {
             ORDER BY ".sql_fullname('u.firstname','u.lastname');
         $selectoptions = get_records_sql_menu($sql);
         if($selectoptions) {
-            array_unshift($selectoptions,'Select an assessor...');
-            $mform->addElement('select', 'assessorid', get_string('assessor','local'), $selectoptions);
+            $selector = array(0 => 'Select an assessor...');
+            $mform->addElement('select', 'assessorid', get_string('assessor','local'), $selector + $selectoptions);
         } else {
             // if assessorid set but no assessor roles defined, this should pass the current value
             $mform->addElement('hidden', 'assessorid','');
