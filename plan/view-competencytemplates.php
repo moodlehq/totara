@@ -5,9 +5,10 @@
  *
  * @param db_record $revision from the idp_revision table
  * @param array $competencytemplates
- * @param boolean $editingon
+ * @param boolean $editingon (optional)
+ * @param boolean $haspositions (optional)
  */
-function print_idp_competency_templates_view( $revision, $competencytemplates, $editingon=false ){
+function print_idp_competency_templates_view( $revision, $competencytemplates, $editingon = false, $haspositions = false){
 
     global $CFG;
 
@@ -100,7 +101,13 @@ $rowcount=0;
             <td>
                 <div class="singlebutton">
                 <input type="submit" id="show-idpcompetencytemplate-dialog" value="<?php echo get_string('addfromframeworks', 'idp') ?>" />
-                <input type="submit" id="" value="<?php echo get_string('addfrompositions', 'idp') ?>" />
+
+        <?php
+            // Only display add from position button if the user has positions assigned
+            if ($haspositions) {
+                echo '<input type="submit" id="show-idppositioncompetencytemplate-dialog" value="'.get_string('addfrompositions', 'idp').'" />';
+            }
+        ?>
                 </div>
             </td>
         </tr>

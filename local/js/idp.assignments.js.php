@@ -44,4 +44,17 @@ YAHOO.util.Event.onDOMReady(function () {
             url+'save.php?id='+idp_revision_id+'&rowcount='+idp_competency_row_count+'&add='
         );
     })();
+
+    ///
+    /// Assign competency template from position dialog
+    ///
+    (function() {
+        var url = '<?php echo $CFG->wwwroot ?>/hierarchy/type/competency/idp/';
+
+        yuiAssignDialog(
+            'idppositioncompetencytemplate',
+            url+'find-position-template.php?id='+idp_revision_id,
+            url+'save-template.php?id='+idp_revision_id+'&rowcount='+idp_competencytemplate_row_count+'&add='
+        );
+    })();
 });

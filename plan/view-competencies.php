@@ -5,13 +5,12 @@
  *
  * @param db_record $revision from the idp_revision table
  * @param array $competencies
- * @param boolean $editingon
+ * @param boolean $editingon (optional)
  * @param boolean $haspositions (optional)
  */
-function print_idp_competencies_view($revision, $competencies, $editingon, $haspositions = false) {
+function print_idp_competencies_view($revision, $competencies, $editingon = false, $haspositions = false) {
 
     global $CFG;
-
 
     // Display competencies
     print_heading(get_string('competencies', 'competency'));

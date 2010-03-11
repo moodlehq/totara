@@ -78,6 +78,7 @@ $string['idnumberview'] = '$a idnumber';
 $string['invalidevidencetype'] = 'Invalid evidence type';
 $string['invalidnumeric'] = 'Numerical value must be numerical (or not set)';
 $string['locatecompetency'] = 'Locate competency';
+$string['locatecompetencytemplate'] = 'Locate competency template';
 $string['managecompetencies'] = 'Manage competencies';
 $string['missingscale'] = 'Missing scale';
 $string['missingfullname'] = 'Missing competency full name';

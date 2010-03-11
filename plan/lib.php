@@ -1956,7 +1956,7 @@ function print_revision_manager($revision, $plan, $options=array()) {
     print_idp_competencies_view($revision, $competencies, $options['can_edit'], $haspositions);
 
     $competencytemplates = idp_get_user_competencytemplates($plan->userid, $revision->id);
-    print_idp_competency_templates_view($revision, $competencytemplates, $options['can_edit']);
+    print_idp_competency_templates_view($revision, $competencytemplates, $options['can_edit'], $haspositions);
 
     $courses = idp_get_user_courses($plan->userid, $revision->id);
     print_idp_courses_view($revision, $courses, $options['can_edit']);
@@ -2001,7 +2001,7 @@ function print_revision_trainee($revision, $plan, $options=array()) {
     print_idp_competencies_view($revision, $competencies, $options['can_edit'], $haspositions);
 
     $competencytemplates = idp_get_user_competencytemplates($plan->userid, $revision->id);
-    print_idp_competency_templates_view($revision, $competencytemplates, $options['can_edit']);
+    print_idp_competency_templates_view($revision, $competencytemplates, $options['can_edit'], $haspositions);
 
     $courses = idp_get_user_courses($plan->userid, $revision->id);
     print_idp_courses_view($revision, $courses, $options['can_edit']);

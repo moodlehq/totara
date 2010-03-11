@@ -15,9 +15,6 @@ require_once($CFG->dirroot.'/plan/lib.php');
 // Revision id
 $revisionid = required_param('id', PARAM_INT);
 
-// Parent id
-$parentid = optional_param('parentid', 0, PARAM_INT);
-
 // Position id (a bit hackey, we are using the framework picker unmodified)
 $positionid = optional_param('frameworkid', 0, PARAM_INT);
 
@@ -25,11 +22,11 @@ $positionid = optional_param('frameworkid', 0, PARAM_INT);
 /// Permissions checks
 ///
 
-admin_externalpage_setup('competencymanage');
+admin_externalpage_setup('competencytemplatemanage');
 
 // Check permissions
 $sitecontext = get_context_instance(CONTEXT_SYSTEM);
-require_capability('moodle/local:updatecompetency', $sitecontext);
+require_capability('moodle/local:updatecompetencytemplate', $sitecontext);
 
 // Setup hierarchy objects
 $competency = new competency();
@@ -64,8 +61,8 @@ if (!isset($cur_position)) {
     $cur_position = reset($positions);
 }
 
-// Load competencies to display
-$competencies = $position->get_assigned_competencies($cur_position);
+// Load competency templates to display
+$templates = $position->get_assigned_competency_templates($cur_position);
 
 ///
 /// Display page
@@ -73,11 +70,11 @@ $competencies = $position->get_assigned_competencies($cur_position);
 
 ?>
 
-<div class="selectcompetencies">
+<div class="selectcompetencytemplates">
 
 <?php echo $position->user_positions_picker($owner, $cur_position->id); ?>
 
-<h2><?php echo get_string('addcompetenciestoplan', 'idp') ?></h2>
+<h2><?php echo get_string('addcompetencytemplatestoplan', 'idp') ?></h2>
 
 <div class="selected">
     <p>
@@ -86,7 +83,7 @@ $competencies = $position->get_assigned_competencies($cur_position);
 </div>
 
 <p>
-    <?php echo get_string('locatecompetency', 'competency') ?>:
+    <?php echo get_string('locatecompetencytemplate', 'competency') ?>:
 </p>
 
 <ul class="treeview filetree">
@@ -94,8 +91,8 @@ $competencies = $position->get_assigned_competencies($cur_position);
 <?php
 
 echo build_treeview(
-    $competencies,
-    get_string('nocompetenciesassignedtoposition', 'position')
+    $templates,
+    get_string('nounassignedcompetencytemplates', 'position')
 );
 
 ?>
