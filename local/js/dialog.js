@@ -692,7 +692,13 @@ yuiDialog_handler_treeview_clickable.prototype._make_clickable = function(parent
     // Bind click handler
     selectables.click(function() {
 
-        dialog.clickhandler($(this));
+        var clicked = $(this);
+
+        // Fix the element id
+        clicked.attr('id', clicked.attr('id').substr(5));
+
+        // Run handler and close
+        dialog.clickhandler(clicked);
         dialog._dialog.hide();
 
         return false;
