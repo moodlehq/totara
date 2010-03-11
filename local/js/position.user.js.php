@@ -55,4 +55,39 @@ YAHOO.util.Event.onDOMReady(function () {
             }
         );
     })();
+
+
+    ///
+    /// Competency dialog
+    ///
+    (function() {
+        var url = '<?php echo $CFG->wwwroot ?>/hierarchy/type/competency/assign/';
+
+        yuiLocateDialog(
+            'competency',
+            url+'find.php?user='+user_id,
+            function(selected) {
+                var jsonurl = '<?php echo $CFG->wwwroot ?>/hierarchy/type/competency/evidence/competency_scale.json.php';
+                var compid = selected.attr('id');
+                $('input[name=competencyid]').val(compid);
+                $('span#competencytitle').text(selected.text());
+
+                var profinput = $('select#id_proficiency');
+                // only do JSON request if a proficiency select found to fill
+                if(profinput) {
+                    // used by add competency evidence page to populate proficiency pulldown based on competency chosen
+                    $.getJSON(jsonurl, {competencyid:compid}, function(scales) {
+                        var i, htmlstr = '';
+                        for (i in scales) {
+                            htmlstr += '<option value="'+scales[i].name+'">'+scales[i].value+'</option>';
+                        }
+                        profinput.removeAttr('disabled').html(htmlstr);
+                    });
+                }
+            }
+        );
+    })();
+
+
+
 });
