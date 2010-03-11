@@ -5,7 +5,7 @@ require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->dirroot.'/course/lib.php');
 require_once($CFG->dirroot.'/hierarchy/type/position/lib.php');
 require_once($CFG->dirroot.'/local/js/setup.php');
-require_once('edit_form.php');
+require_once('competency_evidence_form.php');
 ///
 /// Setup / loading data
 ///
