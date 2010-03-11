@@ -730,3 +730,29 @@ yuiLocateDialog = function(name, find_url, clickhandler) {
         handler
     );
 }
+
+/**
+ * Setup draggable treeview dialog that calls a save page, and
+ * prints the html response to an underlying table
+ *
+ * @param string dialog name
+ * @param string find page url
+ * @param string save page url
+ * @return void
+ */
+yuiAssignDialog = function(name, find_url, save_url) {
+
+    var handler = new yuiDialog_handler_treeview_draggable();
+
+    YAHOO.dialog[name] = new yuiDialog(
+        name,
+        'show-'+name+'-dialog',
+        {
+            buttons : [
+                { text: 'Save changes', handler: function() { handler._save(save_url) } }
+            ]
+        },
+        find_url,
+        handler
+    );
+}
