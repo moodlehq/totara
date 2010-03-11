@@ -170,6 +170,9 @@ class position extends hierarchy {
     /**
      * Returns array of positions assigned to a user,
      * indexed by assignment type
+     *
+     * @param   $user   object  User object
+     * @return  array|false
      */
     function get_user_positions($user) {
         global $CFG;
@@ -190,6 +193,33 @@ class position extends hierarchy {
                    pa.type ASC
             "
         );
+    }
+
+    /**
+     * Return markup for user's assigned positions picker
+     *
+     * @param   $user       object  User object
+     * @param   $selected   int     Id of currently selected position
+     * @return  $html
+     */
+    function user_positions_picker($user, $selected) {
+        global $POSITION_TYPES;
+
+        // Get user's positions
+        $positions = $this->get_user_positions($user);
+
+        if (!$positions || count($positions) < 2) {
+            return '';
+        }
+
+        // Format options
+        $options = array();
+        foreach ($positions as $type => $pos) {
+            $text = get_string('type'.$POSITION_TYPES[$type], 'position').': '.$pos->fullname;
+            $options[$pos->id] = $text;
+        }
+
+        return display_dialog_selector($options, $selected, 'simpleframeworkpicker');
     }
 }
 

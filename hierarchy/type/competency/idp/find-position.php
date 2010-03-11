@@ -18,8 +18,8 @@ $revisionid = required_param('id', PARAM_INT);
 // Parent id
 $parentid = optional_param('parentid', 0, PARAM_INT);
 
-// Position id
-$positionid = optional_param('positionid', 0, PARAM_INT);
+// Position id (a bit hackey, we are using the framework picker unmodified)
+$positionid = optional_param('frameworkid', 0, PARAM_INT);
 
 
 ///
@@ -76,7 +76,7 @@ $competencies = $position->get_assigned_competencies($cur_position);
 
 <div class="selectcompetencies">
 
-<?php /*$position->display_selector($cur_position);*/ ?>
+<?php echo $position->user_positions_picker($owner, $cur_position->id); ?>
 
 <h2><?php echo get_string('addcompetenciestoplan', 'idp') ?></h2>
 
