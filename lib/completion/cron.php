@@ -85,7 +85,7 @@ function completion_cron_mark_started() {
         AND c.enablecompletion = 1
         AND c.completionstartonenrol = 1
         AND crc.timeenrolled IS NULL
-        AND (ra.timeend IS NULL OR ra.timeend > ".time().")
+        AND (ra.timeend = 0 OR ra.timeend > ".time().")
         {$roles}
         GROUP BY
             c.id,
