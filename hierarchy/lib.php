@@ -639,12 +639,16 @@ class hierarchy {
     /**
      * Return the deepest depth in this framework
      *
-     * @return int
+     * @return int|null
      */
     function get_max_depth() {
 
         // Get depths
         $depths = $this->get_depths();
+
+        if (!$depths) {
+            return null;
+        }
 
         // Get max depth level
         end($depths);
