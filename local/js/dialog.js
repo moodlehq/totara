@@ -698,3 +698,29 @@ yuiDialog_handler_treeview_clickable.prototype._make_clickable = function(parent
         return false;
     });
 }
+
+
+/*****************************************************************************/
+/** Factory methods **/
+
+/**
+ * Setup clickable treeview dialog that calls a handler on click
+ *
+ * @param string dialog name
+ * @param string find page url
+ * @param function handler
+ * @return void
+ */
+yuiLocateDialog = function(name, find_url, clickhandler) {
+
+    var handler = new yuiDialog_handler_treeview_clickable();
+    handler.clickhandler = clickhandler;
+
+    YAHOO.dialog[name] = new yuiDialog(
+        name,
+        'show-'+name+'-dialog',
+        {},
+        find_url,
+        handler
+    );
+}

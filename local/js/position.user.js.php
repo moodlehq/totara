@@ -12,7 +12,7 @@ YAHOO.util.Event.onDOMReady(function () {
     (function() {
         var url = '<?php echo $CFG->wwwroot ?>/hierarchy/type/position/assign/';
 
-        locateDialog(
+        yuiLocateDialog(
             'position',
             url+'find.php?user='+user_id,
             function(selected) {
@@ -29,7 +29,7 @@ YAHOO.util.Event.onDOMReady(function () {
     (function() {
         var url = '<?php echo $CFG->wwwroot ?>/hierarchy/type/organisation/assign/';
 
-        locateDialog(
+        yuiLocateDialog(
             'organisation',
             url+'find.php?user='+user_id,
             function(selected) {
@@ -46,7 +46,7 @@ YAHOO.util.Event.onDOMReady(function () {
     (function() {
         var url = '<?php echo $CFG->wwwroot ?>/hierarchy/type/position/assign/';
 
-        locateDialog(
+        yuiLocateDialog(
             'manager',
             url+'manager.php?user='+user_id,
             function(selected) {
@@ -56,19 +56,3 @@ YAHOO.util.Event.onDOMReady(function () {
         );
     })();
 });
-
-
-var locateDialog = function(name, find_url, clickhandler) {
-
-    var handler = new yuiDialog_handler_treeview_clickable();
-    handler.clickhandler = clickhandler;
-
-    YAHOO.dialog[name] = new yuiDialog(
-        name,
-        'show-'+name+'-dialog',
-        {},
-        find_url,
-        handler
-    );
-
-}
