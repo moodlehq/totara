@@ -367,7 +367,7 @@ yuiDialog_handler.prototype._update = function(handler, response) {
     handler._dialog.hide();
 
     // Remove no item warning (if exists)
-    $('div.noitems-'+handler._title).remove();
+    $('.noitems-'+handler._title).remove();
 
     // Add row to table
     $('table#list-'+handler._title+' tbody').append(response.responseText);
