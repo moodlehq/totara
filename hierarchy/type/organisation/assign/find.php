@@ -70,31 +70,10 @@ if (!$parentid) {
 
 <div class="selectorganisation">
 
+<?php $hierarchy->display_framework_selector('', true) ?>
+
 <h2>
-<?php
-    echo get_string('chooseorganisation', $hierarchy->prefix);
-
-   // Display framework picker
-   $frameworks = $hierarchy->get_frameworks();
-
-   if (count($frameworks) > 1) {
-       echo '<select id="framework-picker">';
-
-       foreach ($frameworks as $fw) {
-           echo '<option value="'.$fw->id.'"';
-
-           // Is current?
-           if ($fw->id == $framework->id) {
-               echo ' selected="selected"';
-           }
-
-           echo '>'.$fw->fullname.'</option>';
-       }
-
-       echo '</select>';
-   }
-
-?>
+<?php echo get_string('chooseorganisation', $hierarchy->prefix); ?>
 </h2>
 
 <ul class="treeview filetree">
