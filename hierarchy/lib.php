@@ -290,11 +290,12 @@ class hierarchy {
         }
         else {
 
-            echo '<select class="simpleframeworkpicker">';
+            $options = array();
             foreach ($frameworks as $fw) {
-                echo '<option value="'.$fw->id.'">'.htmlentities($fw->fullname).'</option>';
+                $options[$fw->id] = $fw->fullname;
             }
-            echo '</select>';
+
+            echo display_dialog_selector($options, $this->frameworkid, 'simpleframeworkpicker');
         }
     }
 

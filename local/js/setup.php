@@ -136,3 +136,30 @@ function treeview_error($error_string, $child = false) {
 
     die();
 }
+
+/**
+ * Return markup for a simple picker in a dialog
+ *
+ * @param   $options    array   options/values
+ * @param   $selected   mixed   $options key for currently selected element
+ * @param   $class      string  select element's class
+ * @return  $html
+ */
+function display_dialog_selector($options, $selected, $class) {
+
+    $html = '<select class="'.$class.'">';
+
+    foreach ($options as $key => $value) {
+        $html .= '<option value="'.$key.'"';
+
+        if ($key == $selected) {
+            $html .= ' selected="selected"';
+        }
+
+        $html .= '>'.htmlentities($value).'</option>';
+    }
+
+    $html .= '</select>';
+
+    return $html;
+}
