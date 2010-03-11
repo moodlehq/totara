@@ -227,6 +227,27 @@ $string['inprogress'] = 'In Progress';
 $string['startdate'] = 'Start Date';
 $string['completeddate'] = 'Completed Date';
 
+// Add/Edit competency evidence
+$string['error:unknownbuttonclicked'] = 'Unknown Button Clicked';
+$string['participant'] = 'Participant';
+$string['assessor'] = 'Assessor';
+$string['assessorname'] = 'Assessor Name';
+$string['assessmenttype'] = 'Assessment Type';
+$string['proficiency'] = 'Proficiency';
+$string['positionatcompletion'] = 'Position at completion';
+$string['organisationatcompletion'] = 'Organisation at completion';
+$string['timecompleted'] = 'Time completed';
+$string['editcompetencyevidence'] = 'Edit Competency Evidence Record';
+$string['addcompetencyevidence'] = 'Add Competency Evidence Record';
+$string['usernotfound'] = 'User not found';
+$string['addforthisuser'] = 'Add new competency evidence for this user';
+$string['selectaproficiency'] = 'Select a proficiency...';
+$string['recordnotcreated'] = 'Record could not be created';
+$string['selectanassessor'] = 'Select an assessor...';
+$string['noassessors'] = 'No assessors found';
+$string['firstselectcompetency'] = 'First select a competency';
+$string['selectcompetency'] = 'Select a competency';
+
 // Installation and Demo data
 $string['installingdemodata'] = 'Installing Demo Data';
 $string['installdemoquestion'] = 'Do you want to include demo data with this installation?<br /><br />(this will take a long time)';

@@ -8,10 +8,17 @@ require_once('competency_evidence_form.php');
 /// Setup / loading data
 ///
 
-// competency id
-$id = required_param('id', PARAM_INT);
+$userid = required_param('userid', PARAM_INT);
 $returnurl = optional_param('returnurl', $CFG->wwwroot, PARAM_TEXT);
+$proficiency = optional_param('proficiency', null, PARAM_INT);
 $s = optional_param('s', null, PARAM_TEXT);
+
+if($u = get_record('user','id',$userid)) {
+    $toform = new object();
+    $toform->user = $u->firstname.' '.$u->lastname;
+} else {
+    error('error:usernotfound','local');
+}
 
 // only redirect back if we are sure that's where they came from
 if($s != sesskey()) {
@@ -22,25 +29,7 @@ if($s != sesskey()) {
 $sitecontext = get_context_instance(CONTEXT_SYSTEM);
 require_capability('moodle/local:updatecompetency', $sitecontext);
 
-if (!$competencyevidence = get_record('competency_evidence', 'id', $id)) {
-    error('Competency Evidence ID was incorrect');
-}
-
-if (!$competency = get_record('competency', 'id', $competencyevidence->competencyid)) {
-    error('Competency ID was incorrect');
-}
-
-// Load framework
-if (!$framework = get_record('competency_framework', 'id', $competency->frameworkid)) {
-    error('Competency framework could not be found');
-}
-
-// Load depth
-if (!$depth = get_record('competency_depth', 'id', $competency->depthid)) {
-    error('Competency depth could not be found');
-}
-
-$mform =& new mitms_competency_evidence_form(null, compact('id','competencyevidence','returnurl','s'));
+$mform =& new mitms_competency_evidence_form(null, compact('id','userid','user','returnurl','s'));
 if($fromform = $mform->get_data()) { // Form submitted
     if ($mform->is_cancelled()) {
         redirect($returnurl);
@@ -48,28 +37,27 @@ if($fromform = $mform->get_data()) { // Form submitted
     if (empty($fromform->submitbutton)) {
         print_error('error:unknownbuttonclicked', 'local', $returnurl);
     }
-
     $todb = new object();
-    $todb->id = $fromform->id;
-    // don't include userid or competencyid as form won't change them
+    $todb->userid = $fromform->userid;
+    $todb->competencyid = $fromform->competencyid;
     $todb->positionid = $fromform->positionid != 0 ? $fromform->positionid : null;
     $todb->organisationid = $fromform->organisationid != 0 ? $fromform->organisationid : null;
     $todb->assessorid = $fromform->assessorid != 0 ? $fromform->assessorid : null;
     $todb->assessorname = $fromform->assessorname;
     $todb->assessmenttype = $fromform->assessmenttype;
-    $todb->proficiency = $fromform->proficiency;
+    // proficiency not obtained by get_data() because form element is populated
+    // via javascript after page load. Get via optional POST parameter instead.
+    $todb->proficiency = $proficiency;
+    $todb->timecreated = time();
     $todb->timemodified = $fromform->timemodified;
-    if(update_record('competency_evidence',$todb)) {
+    if(insert_record('competency_evidence',$todb)) {
         redirect($returnurl);
     } else {
-        redirect($returnurl, 'Record could not be updated');
+        redirect($returnurl, get_string('recordnotreated','local'));
     }
 
-} else if ($competencyevidence != null) { // editing form
-    $u = get_record('user','id',$competencyevidence->userid);
-    $competencyevidence->user = $u->firstname.' '.$u->lastname;
-    $competencyevidence->compname = $competency->fullname;
-    $mform->set_data($competencyevidence);
+} else {
+    $mform->set_data($toform);
 }
 
 ///
@@ -90,7 +78,7 @@ $CFG->stylesheets[] = $CFG->wwwroot.'/local/js/lib/ui-lightness/jquery-ui-1.7.2.
 
 print_header();
 
-print '<h2>'.get_string('editcompetencyevidence', 'local').'</h2>';
+print '<h2>'.get_string('addcompetencyevidence', 'local').'</h2>';
 
 $mform->display();
 
