@@ -1,9 +1,10 @@
 <?php
 
-require_once( $CFG->dirroot.'/hierarchy/type/competency/lib.php');
-require_once( $CFG->dirroot.'/plan/view-competencies.php' );
-require_once( $CFG->dirroot.'/plan/view-competencytemplates.php' );
-require_once( $CFG->dirroot.'/plan/view-courses.php' );
+require_once($CFG->dirroot.'/hierarchy/type/competency/lib.php');
+require_once($CFG->dirroot.'/plan/view-competencies.php');
+require_once($CFG->dirroot.'/plan/view-competencytemplates.php');
+require_once($CFG->dirroot.'/plan/view-courses.php');
+require_once($CFG->dirroot.'/hierarchy/type/position/lib.php');
 
 $CFG->idpenablefavourites = false;
 
@@ -1945,8 +1946,14 @@ function print_revision_manager($revision, $plan, $options=array()) {
 
     $usercurriculum = get_field('user', 'curriculum', 'id', $plan->userid);
 
+    // Get user's positions
+    $user = (object) array('id' => $plan->userid);
+
+    $position = new position();
+    $haspositions = (bool) $position->get_user_positions($user);
+
     $competencies = idp_get_user_competencies($plan->userid, $revision->id);
-    print_idp_competencies_view($revision, $competencies, $options['can_edit']);
+    print_idp_competencies_view($revision, $competencies, $options['can_edit'], $haspositions);
 
     $competencytemplates = idp_get_user_competencytemplates($plan->userid, $revision->id);
     print_idp_competency_templates_view($revision, $competencytemplates, $options['can_edit']);
@@ -1984,8 +1991,14 @@ function print_revision_trainee($revision, $plan, $options=array()) {
     }
     print revision_comments($revision);
 
+    // Get user's positions
+    $user = (object) array('id' => $plan->userid);
+
+    $position = new position();
+    $haspositions = (bool) $position->get_user_positions($user);
+
     $competencies = idp_get_user_competencies($plan->userid, $revision->id);
-    print_idp_competencies_view($revision, $competencies, $options['can_edit']);
+    print_idp_competencies_view($revision, $competencies, $options['can_edit'], $haspositions);
 
     $competencytemplates = idp_get_user_competencytemplates($plan->userid, $revision->id);
     print_idp_competency_templates_view($revision, $competencytemplates, $options['can_edit']);

@@ -44,6 +44,7 @@ $string['missingfullnameframework'] = 'Missing framework full name';
 $string['missingshortname'] = 'Missing position short name';
 $string['missingshortnamedepth'] = 'Missing depth level short name';
 $string['missingshortnameframework'] = 'Missing framework short name';
+$string['nocompetenciesassignedtoposition'] = 'No competencies assigned to position';
 $string['nomanagersavailable'] = 'No managers available';
 $string['nopositionsinframework'] = 'No positions in this framework';
 $string['nodepthlevels'] = 'No depth levels in this framework';

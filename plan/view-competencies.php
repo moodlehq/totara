@@ -2,22 +2,23 @@
 
 /**
  * Display the competencies box for an IDP
- * todo: move this into plan/lib.php
  *
  * @param db_record $revision from the idp_revision table
  * @param array $competencies
  * @param boolean $editingon
+ * @param boolean $haspositions (optional)
  */
-function print_idp_competencies_view( $revision, $competencies, $editingon ){
+function print_idp_competencies_view($revision, $competencies, $editingon, $haspositions = false) {
 
     global $CFG;
+
 
     // Display competencies
     print_heading(get_string('competencies', 'competency'));
     $str_remove = get_string('remove');
 
 ?>
-    <table id="list-idpcompetency" class="generalbox planitems boxaligncenter">
+    <table id="list-idpcompetency" class="list-idppositioncompetency generalbox planitems boxaligncenter">
     <thead>
     <tr>
         <th class="framework" scope="col">
@@ -87,7 +88,7 @@ $rowcount=0;
         }
 
     } else {
-        echo '<tr class="noitems-idpcompetency"><td colspan="'.$cols.'"><i>'.get_string('emptyplancompetencies', 'idp').'</i></td></tr>';
+        echo '<tr class="noitems-idpcompetency noitems-idppositioncompetency"><td colspan="'.$cols.'"><i>'.get_string('emptyplancompetencies', 'idp').'</i></td></tr>';
     }
 
         echo '</tbody></table>';
@@ -101,7 +102,13 @@ $rowcount=0;
             <td>
                 <div class="singlebutton">
                 <input type="submit" id="show-idpcompetency-dialog" value="<?php echo get_string('addfromframeworks', 'idp') ?>" />
-                <input type="submit" id="" value="<?php echo get_string('addfrompositions', 'idp') ?>" />
+
+        <?php
+            // Only display add from position button if the user has positions assigned
+            if ($haspositions) {
+                echo '<input type="submit" id="show-idppositioncompetency-dialog" value="'.get_string('addfrompositions', 'idp').'" />';
+            }
+        ?>
                 </div>
             </td>
         </tr>
