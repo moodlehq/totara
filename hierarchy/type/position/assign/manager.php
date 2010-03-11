@@ -41,8 +41,7 @@ $managers = get_records_sql(
     "
         SELECT
             u.id,        
-            u.firstname,
-            u.lastname,
+            ".sql_fullname('u.firstname', 'u.lastname')." AS fullname,
             ra.id AS ra
         FROM
             {$CFG->prefix}user u
