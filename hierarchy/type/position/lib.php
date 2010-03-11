@@ -166,6 +166,31 @@ class position extends hierarchy {
             "
         );
     }
+
+    /**
+     * Returns array of positions assigned to a user,
+     * indexed by assignment type
+     */
+    function get_user_positions($user) {
+        global $CFG;
+
+        return get_records_sql(
+            "
+                SELECT
+                    pa.type,
+                    p.*
+                FROM
+                    {$CFG->prefix}position p
+                INNER JOIN
+                    {$CFG->prefix}position_assignment pa
+                 ON p.id = pa.positionid
+                WHERE
+                    pa.userid = {$user->id}
+                ORDER BY
+                   pa.type ASC
+            "
+        );
+    }
 }
 
 
