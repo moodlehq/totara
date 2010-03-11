@@ -369,8 +369,17 @@ yuiDialog_handler.prototype._update = function(handler, response) {
     // Remove no item warning (if exists)
     $('.noitems-'+handler._title).remove();
 
+    // Sometimes we want to have two dialogs changing the same table,
+    // so here we support tagging tables by id, or class
+    var table = $('table#list-'+handler._title);
+
+    // If no table found by ID
+    if (table.size() < 1) {
+        table = $('table.list-'+handler._title);
+    }
+
     // Add row to table
-    $('table#list-'+handler._title+' tbody').append(response.responseText);
+    $('tbody', table).append(response.responseText);
 }
 
 
