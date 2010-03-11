@@ -10,6 +10,8 @@ class mitms_competency_evidence_form extends moodleform {
 
         $mform =& $this->_form;
 
+        $s = $this->_customdata['s'];
+        $returnurl = $this->_customdata['returnurl'];
         $ce = $this->_customdata['competencyevidence'];
         $editing = isset($ce); // if competency evidence passed to form, we are editing
 
@@ -36,13 +38,21 @@ class mitms_competency_evidence_form extends moodleform {
         }
 
         $mform->addElement('hidden', 'id', $id);
+        $mform->addElement('hidden', 's', $s);
+        $mform->addElement('hidden', 'returnurl', $returnurl);
+
         $mform->addElement('header', 'general', get_string('general', 'form'));
+
         $mform->addElement('static', 'user', get_string('participant','local'));
+        $mform->addElement('hidden', 'userid', $userid);
+
         if($editing) {
+            $mform->addElement('hidden', 'competencyid', $ce->competencyid);
             $mform->addElement('static', 'compname', get_string('competency','competency'));
         } else {
             // js competency picker here
         }
+
         $assessorroleid = get_field('role','id','shortname','assessor');
         $sql = "SELECT DISTINCT u.id,".sql_fullname('u.firstname','u.lastname')." AS name
             FROM {$CFG->prefix}role_assignments ra
@@ -74,7 +84,7 @@ class mitms_competency_evidence_form extends moodleform {
             $mform->addElement('static', 'proficiency',get_string('proficiency','local'), 'First select a competency');
         }
         // position selector
-        $mform->addElement('static', 'positionselector', get_string('position', 'position'),
+        $mform->addElement('static', 'positionselector', get_string('positionatcompletion', 'local'),
             '
             <script type ="text/javascript"> var user_id = '.$userid.'; </script>
             <span id="positiontitle">'.htmlentities($position_title).'</span>
@@ -84,7 +94,7 @@ class mitms_competency_evidence_form extends moodleform {
         $mform->setDefault('positionid', 0);
 
         // organisation selector
-        $mform->addElement('static', 'organisationselector', get_string('organisation', 'position'),
+        $mform->addElement('static', 'organisationselector', get_string('organisationatcompletion', 'local'),
             '
             <span id="organisationtitle">'.htmlentities($organisation_title).'</span>
             <input type="button" value="'.get_string('chooseorganisation', 'organisation').'" id="show-organisation-dialog" />

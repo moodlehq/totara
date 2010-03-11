@@ -13,9 +13,15 @@ require_once('edit_form.php');
 // competency id
 $id = required_param('id', PARAM_INT);
 $type = optional_param('type', -1, PARAM_INT);
+$returnurl = optional_param('returnurl', $CFG->wwwroot, PARAM_TEXT);
+$s = optional_param('s', null, PARAM_TEXT);
+
+// only redirect back if we are sure that's where they came from
+if($s != sesskey()) {
+    $returnurl = $CFG->wwwroot;
+}
 
 // Check perms
-
 $sitecontext = get_context_instance(CONTEXT_SYSTEM);
 require_capability('moodle/local:updatecompetency', $sitecontext);
 
@@ -37,12 +43,27 @@ if (!$depth = get_record('competency_depth', 'id', $competency->depthid)) {
     error('Competency depth could not be found');
 }
 
-$mform =& new mitms_competency_evidence_form(null, compact('id','competencyevidence'));
+$mform =& new mitms_competency_evidence_form(null, compact('id','competencyevidence','returnurl','s'));
 if($fromform = $mform->get_data()) { // Form submitted
     if (empty($fromform->submitbutton)) {
         print_error('error:unknownbuttonclicked', 'facetoface', $returnurl);
     }
-    // process then redirect
+
+    $todb = new object();
+    $todb->id = $fromform->id;
+    // don't include userid or competencyid as form won't change them
+    $todb->positionid = $fromform->positionid;
+    $todb->organisationid = $fromform->organisationid;
+    $todb->assessorid = $fromform->assessorid;
+    $todb->assessorname = $fromform->assessorname;
+    $todb->assessmenttype = $fromform->assessmenttype;
+    $todb->proficiency = $fromform->proficiency;
+    $todb->timemodified = $fromform->timemodified;
+    if(update_record('competency_evidence',$todb)) {
+        redirect($returnurl);
+    } else {
+        redirect($returnurl, 'Record could not be updated');
+    }
 
 } else if ($competencyevidence != null) { // editing form
     $u = get_record('user','id',$competencyevidence->userid);
@@ -50,7 +71,6 @@ if($fromform = $mform->get_data()) { // Form submitted
     $competencyevidence->compname = $competency->fullname;
     $mform->set_data($competencyevidence);
 }
-
 
 ///
 /// Display page
@@ -71,7 +91,6 @@ $CFG->stylesheets[] = $CFG->wwwroot.'/local/js/lib/ui-lightness/jquery-ui-1.7.2.
 print_header();
 
 print '<h2>'.get_string('editcompetencyevidence', 'competency').'</h2>';
-print_r($competencyevidence);
 
 $mform->display();
 
