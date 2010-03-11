@@ -17,7 +17,8 @@ function print_idp_competencies_view( $revision, $competencies, $editingon ){
     $str_remove = get_string('remove');
 
 ?>
-    <table id="list-idp-competencies" class="generalbox planitems boxaligncenter">
+    <table id="list-idpcompetency" class="generalbox planitems boxaligncenter">
+    <thead>
     <tr>
         <th class="framework" scope="col">
             <?php echo get_string('framework', 'local') ?>
@@ -45,6 +46,8 @@ function print_idp_competencies_view( $revision, $competencies, $editingon ){
         }
     ?>
     </tr>
+    </thead>
+    <tbody>
     <?php
 
         // # cols varies
@@ -84,17 +87,17 @@ $rowcount=0;
         }
 
     } else {
-        echo '<tr class="noitems"><td colspan="'.$cols.'"><i>'.get_string('emptyplancompetencies', 'idp').'</i></td></tr>';
+        echo '<tr class="noitems-idpcompetency"><td colspan="'.$cols.'"><i>'.get_string('emptyplancompetencies', 'idp').'</i></td></tr>';
     }
 
-        echo '</table>';
+        echo '</tbody></table>';
 
         // Add competencies button
         if ($editingon) {
 
     ?>
     <table class="generalbox planbuttons boxaligncenter">
-        <tr class="noitems" colspan="<?php echo $cols ?>">
+        <tr colspan="<?php echo $cols ?>">
             <td>
                 <div class="singlebutton">
                 <form action="<?php echo $CFG->wwwroot ?>/hierarchy/type/competency/idp/add.php?id=<?php echo $revision->id ?>" method="get">

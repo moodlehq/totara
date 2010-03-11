@@ -50,8 +50,7 @@ if ($js_enabled) {
     setup_lightbox(array(MBE_JS_TREEVIEW, MBE_JS_ADVANCED));
     require_js(array(
         $CFG->wwwroot.'/local/js/lib/ui.datepicker.js',
-        $CFG->wwwroot.'/local/js/idp.competency.js',
-        $CFG->wwwroot.'/local/js/idp.competencytemplate.js',
+        $CFG->wwwroot.'/local/js/idp.assignments.js.php',
         $CFG->wwwroot.'/local/js/idp.course.js',
     ));
     $CFG->stylesheets[] = $CFG->wwwroot.'/local/js/lib/ui-lightness/jquery-ui-1.7.2.custom.css';
