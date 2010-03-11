@@ -33,8 +33,8 @@ YAHOO.util.Event.onDOMReady(function () {
             'organisation',
             url+'find.php?user='+user_id,
             function(selected) {
-                $('input[name=templateid]').val(selected.attr('id'));
-                $('span#templatetitle').text(selected.text());
+                $('input[name=organisationid]').val(selected.attr('id'));
+                $('span#organisationtitle').text(selected.text());
             }
         );
     })();
