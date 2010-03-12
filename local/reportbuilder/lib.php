@@ -22,6 +22,8 @@ class reportbuilder {
     var $_paramoptions;
     var $_hidden;
     var $_embeddedparams;
+    var $_admin;
+    var $_adminoptions;
 
     function reportbuilder($shortname=null, $embed=false, $source=null, $fullname=null,
                            $filters=null, $columns=null, $restriction=null, $embeddedparams=null) {
@@ -62,6 +64,8 @@ class reportbuilder {
         $this->_defaultcolumns = $this->get_source_data('defaultcolumns');
         $this->_defaultfilters = $this->get_source_data('defaultfilters');
         $this->_filteroptions = $this->get_source_data('filteroptions');
+        $this->_adminoptions = $this->get_source_data('adminoptions');
+        $this->_admin = $this->get_current_admin_options();
         $this->_joinlist = $this->get_source_data('joinlist');
         $this->_restrictionoptions = $this->get_source_data('restrictionoptions');
         $this->_base = $this->get_source_data('base');
@@ -115,6 +119,21 @@ class reportbuilder {
             }
         }
         return html_entity_decode($url->out());
+    }
+
+    function get_current_admin_options() {
+        $out = array();
+        $context = get_context_instance(CONTEXT_SYSTEM);
+        if(!isset($this->_adminoptions)) {
+            return $out;
+        }
+        foreach ($this->_adminoptions as $adminoption) {
+            // only include column if no capability set, or if it is set and user has it
+            if(!isset($adminoption['capability']) || has_capability($adminoption['capability'],$context)) {
+                $out[] = $adminoption;
+            }
+        }
+        return $out;
     }
 
     function get_current_params() {
@@ -334,15 +353,17 @@ class reportbuilder {
         $base = $this->_base;
 
         // get the fields needed to display requested columns
-        $fields = $this->get_column_fields();
+        $columnfields = $this->get_column_fields();
+        $adminfields = $this->get_admin_fields();
+        $fields = array_merge($columnfields, $adminfields);
 
         // get the joins needed to display requested columns and do filtering and restrictions
         $columnjoins = $this->get_column_joins();
         $filterjoins = $this->get_filter_joins();
         $restjoins = $this->get_restriction_joins();
-        $paramjoins = $this->get_param_joins();
-        $joins = array_merge($columnjoins, $filterjoins, $restjoins, $paramjoins);
-
+        $paramjoins = $this->get_joins($this->_params,'param');
+        $adminjoins = $this->get_joins($this->_admin,'admin');
+        $joins = array_merge($columnjoins, $filterjoins, $restjoins, $paramjoins, $adminjoins);
         // now build the query from the snippets
 
         // need a unique field for get_records() so include id as first column
@@ -436,6 +457,7 @@ class reportbuilder {
     }
 
     function display_table() {
+        global $CFG;
         define('DEFAULT_PAGE_SIZE', 40);
         define('SHOW_ALL_PAGE_SIZE', 5000);
 
@@ -459,6 +481,14 @@ class reportbuilder {
                 $tableheaders[] = $column['heading'];
             }
         }
+        // also add any admin columns
+        if(isset($this->_admin) && is_array($this->_admin) && count($this->_admin)>0) {
+            foreach($this->_admin as $admincol) {
+                $tablecolumns[] = $admincol['name'];
+                $tableheaders[] = $admincol['heading'];
+            }
+        }
+
         $table = new flexible_table($shortname);
         $table->define_columns($tablecolumns);
         $table->define_headers($tableheaders);
@@ -489,7 +519,7 @@ class reportbuilder {
         } else {
            $order = '';
         }
-        $data = $this->fetch_data($sql.$order, $table->get_page_start(), $table->get_page_size());
+        $data = $this->fetch_data($sql.$order, $table->get_page_start(), $table->get_page_size(), false, true);
         // add data to flexible table
         foreach ($data as $row) {
             $table->add_data($row);
@@ -547,19 +577,42 @@ class reportbuilder {
 
     }
 
-    function get_param_joins() {
+    function get_admin_fields() {
         $source = $this->_source;
-        $params = $this->_params;
+        $columns = $this->_admin;
+        $fields = array();
+        foreach($columns as $column) {
+            if(isset($column['name'])) {
+                $name = $column['name'];
+            } else {
+                // we need a name
+                continue;
+            }
+            if(isset($column['fields']) && is_array($column['fields'])) {
+                foreach($column['fields'] as $key => $field) {
+                    $fields[] = $field.' '.sql_as()." {$name}_{$key}";
+                }
+            }
+        }
+        return $fields;
+    }
+
+    // input is array of elements, each with a 'joins' key with array
+    // of joins as the value
+    // type is string to identify source in case of error
+    // TODO string other get_*_joins() functions to use this
+    function get_joins($inputs, $type) {
+        $source = $this->_source;
         $joinlist = $this->_joinlist;
         $joins = array();
-        foreach($params as $param) {
-            $param_joins = (isset($param['joins'])) ? $param['joins'] : null;
-            if($param_joins && is_array($param_joins)) {
-                foreach($param_joins as $param_join) {
-                    if(array_key_exists($param_join, $joinlist)) {
-                        $joins[$param_join] = $joinlist[$param_join];
+        foreach($inputs as $input) {
+            $input_joins = (isset($input['joins'])) ? $input['joins'] : null;
+            if($input_joins && is_array($input_joins)) {
+                foreach($input_joins as $input_join) {
+                    if(array_key_exists($input_join, $joinlist)) {
+                        $joins[$input_join] = $joinlist[$input_join];
                     } else {
-                        error("get_param_joins(): join name $param_join not in joinlist");
+                        error("get_joins(): join for $type with name $input_join not in joinlist");
                     }
                 }
             }
@@ -692,7 +745,7 @@ class reportbuilder {
     }
 
     // get 2d array of data for a given query
-    function fetch_data($sql, $start=null, $size=null, $striptags=false) {
+    function fetch_data($sql, $start=null, $size=null, $striptags=false, $incadmin=false) {
         global $CFG;
         $columns = $this->_columns;
         $columnoptions = $this->_columnoptions;
@@ -723,6 +776,9 @@ class reportbuilder {
                         }
                     }
                 }
+                if($incadmin) {
+                    $this->add_admin_columns($tabledata, $record);
+                }
                 $ret[] = $tabledata;
             }
             rs_close($records);
@@ -733,6 +789,22 @@ class reportbuilder {
             return $ret;
         }
     }
+
+    // appends any admin columns to the fetch_data result row
+    function add_admin_columns(&$row, $record) {
+        global $CFG;
+        if(isset($this->_admin) && is_array($this->_admin) && count($this->_admin)>0) {
+            require_once($CFG->dirroot.'/local/reportbuilder/displayfuncs.php');
+            foreach($this->_admin as $admincol) {
+                $name = $admincol['name'];
+                $displayfunc = $admincol['displayfunc'];
+                if(function_exists($displayfunc)) {
+                    $row[] = $displayfunc($record);
+                }
+            }
+        }
+    }
+
 
     function get_filters_select() {
         $filters = $this->_filteroptions;
