@@ -12,9 +12,8 @@ class mitms_competency_evidence_form extends moodleform {
 
         $s = $this->_customdata['s'];
         $returnurl = $this->_customdata['returnurl'];
-        $ce = $this->_customdata['competencyevidence'];
-        $editing = isset($ce); // if competency evidence passed to form, we are editing
-
+        $editing = isset($this->_customdata['competencyevidence']); // if competency evidence passed to form, we are editing
+        $ce = $editing ? $this->_customdata['competencyevidence'] : null;
         if($editing) {
             // get id and userid from competency evidence object
             $userid = $ce->userid;
@@ -35,6 +34,8 @@ class mitms_competency_evidence_form extends moodleform {
             // for new record, userid must also be passed to form
             $userid = $this->_customdata['userid'];
             $id = null;
+            $position_title = '';
+            $organisation_title = '';
         }
 
         $mform->addElement('hidden', 'id', $id);
@@ -99,6 +100,7 @@ class mitms_competency_evidence_form extends moodleform {
             $mform->disabledIf('proficiency','competencyid','eq',0);
         }
         $mform->addRule('proficiency',null,'required');
+        $mform->addRule('proficiency',get_string('err_required','form'),'nonzero');
 
         // position selector
         $mform->addElement('static', 'positionselector', get_string('positionatcompletion', 'local'),
