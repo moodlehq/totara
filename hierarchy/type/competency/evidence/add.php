@@ -75,8 +75,11 @@ require_js(
 
 $CFG->stylesheets[] = $CFG->wwwroot.'/local/js/lib/ui-lightness/jquery-ui-1.7.2.custom.css';
 
+$pagetitle = format_string(get_string('addcompetencyevidence','local'));
+$navlinks[] = array('name' => get_string('addcompetencyevidence','local'), 'link'=> '', 'type'=>'title');
+$navigation = build_navigation($navlinks);
 
-print_header();
+print_header($pagetitle, '', $navigation, '', null, true, null);
 
 print '<h2>'.get_string('addcompetencyevidence', 'local').'</h2>';
 
