@@ -92,7 +92,7 @@ $pagetitle = format_string(get_string('editcompetencyevidence','local'));
 $navlinks[] = array('name' => get_string('editcompetencyevidence','local'), 'link'=> '', 'type'=>'title');
 $navigation = build_navigation($navlinks);
 
-print_header($pagetitle, '', $navigation, '', null, true, null);
+print_header_simple($pagetitle, '', $navigation, '', null, true, null);
 
 print '<h2>'.get_string('editcompetencyevidence', 'local').'</h2>';
 
