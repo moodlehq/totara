@@ -8,26 +8,24 @@ require_once('../../../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->dirroot.'/plan/lib.php');
 
-///
-/// Setup / loading data
-///
-
 // Course ID
 $courseid = required_param('id', PARAM_INT);
-
 // Revision id
 $revisionid = required_param('revision', PARAM_INT);
 
-$planid = get_plan_for_revision($revisionid)->id;
+$plan = get_plan_for_revision($revisionid)->id;
+if ( !$plan ){
+    error('Plan ID is incorrect');
+}
 
-// Setup page
-// todo: Review permissions for this page
-admin_externalpage_setup('competencymanage', '', array(), '', $CFG->wwwroot.'/hierarchy/course/idp/remove.php');
+// Users can only edit their own IDP
+if ( $plan->userid != $USER->id ){
+    error(get_string('error:revisionnotvisible', 'idp'));
+}
 
 $dbresult = delete_records('idp_revision_course', 'revision', $revisionid, 'course', $courseid);
-
 if ( $dbresult ){
-    redirect($CFG->wwwroot.'/plan/revision.php?id='.$planid);
+    redirect($CFG->wwwroot.'/plan/revision.php?id='.$plan->id);
 } else {
     print_error('error:removalfailed','idp');
 }

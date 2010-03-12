@@ -161,7 +161,7 @@ function get_plan_for_revision($revisionid){
     global $CFG;
     
     return get_record_sql(
-            "SELECT p.* from "
+            "SELECT p.id, p.name, p.startdate, p.enddate, p.userid from "
             . "{$CFG->prefix}idp_revision r, "
             . "{$CFG->prefix}idp p "
             . "WHERE r.id = $revisionid and r.idp = p.id"
