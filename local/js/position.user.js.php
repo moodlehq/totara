@@ -72,7 +72,7 @@ YAHOO.util.Event.onDOMReady(function () {
                 $('input[name=competencyid]').val(compid);
                 $('span#competencytitle').text(selected.text());
 
-                var profinput = $('select#id_proficiency');
+                var profinput = $('body.hierarchy-type-competency-evidence select#id_proficiency');
                 // only do JSON request if a proficiency select found to fill
                 if(profinput) {
                     // used by add competency evidence page to populate proficiency pulldown based on competency chosen
