@@ -247,6 +247,9 @@ $string['selectanassessor'] = 'Select an assessor...';
 $string['noassessors'] = 'No assessors found';
 $string['firstselectcompetency'] = 'First select a competency';
 $string['selectcompetency'] = 'Select a competency';
+$string['deletecompetencyevidence'] = 'Delete Competency Evidence';
+$string['confirmdeletece'] = 'Are you sure you want to delete this competency evidence record?';
+$string['couldnotdeletece'] = 'Could not delete that competency evidence record';
 
 // Installation and Demo data
 $string['installingdemodata'] = 'Installing Demo Data';
