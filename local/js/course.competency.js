@@ -47,7 +47,7 @@ function coursecompetency_bind(parent_element) {
         var callback =
         {
             success:    coursecompetency_evidence,
-            failure:    function(o) {},
+            failure:    function(o) {}
         }
 
         // Load data
