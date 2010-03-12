@@ -46,6 +46,7 @@ $PAGE = page_create_object('MITMS', $USER->id);
 $pageblocks = blocks_setup($PAGE,BLOCKS_PINNED_BOTH);
 $blocks_preferred_width = bounded_number(180, blocks_preferred_width($pageblocks[BLOCK_POS_LEFT]), 210);
 
+
 // see which reports exist in db and add columns for them to table
 // these reports should have the "userid" url parameter enabled to allow
 // viewing of individual reports
@@ -145,7 +146,11 @@ foreach ($lt as $column) {
                 if($staff_f2f) {
                     $cellcontent .= '<a href="'.$CFG->wwwroot.'/my/bookings.php?id='.$teammember->id.'"><img src="'.$CFG->wwwroot.'/pix/i/bookings.png" title="'.get_string('f2fbookings','local').'"></a>';
                 }
-                $cellcontent .= '<a href="'.$CFG->wwwroot.'/plan/index.php?userid='.$teammember->id.'"><img src="'.$CFG->wwwroot.'/pix/i/idp.png" title="'.get_string('idp','idp').'"></a>';
+
+                $usercontext = get_context_instance(CONTEXT_USER, $teammember->id);
+                if(has_capability('moodle/local:viewlist', $usercontext)) {
+                    $cellcontent .= '<a href="'.$CFG->wwwroot.'/plan/index.php?userid='.$teammember->id.'"><img src="'.$CFG->wwwroot.'/pix/i/idp.png" title="'.get_string('idp','idp').'"></a>';
+                }
                 $tabledata[] = $cellcontent;
                 $table->add_data($tabledata);
             }
