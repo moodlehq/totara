@@ -41,10 +41,11 @@ if (!$depth = get_record('competency_depth', 'id', $competency->depthid)) {
 }
 
 $mform =& new mitms_competency_evidence_form(null, compact('id','competencyevidence','returnurl','s'));
+if ($mform->is_cancelled()) {
+    redirect($returnurl);
+}
+
 if($fromform = $mform->get_data()) { // Form submitted
-    if ($mform->is_cancelled()) {
-        redirect($returnurl);
-    }
     if (empty($fromform->submitbutton)) {
         print_error('error:unknownbuttonclicked', 'local', $returnurl);
     }

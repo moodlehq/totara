@@ -30,10 +30,10 @@ $sitecontext = get_context_instance(CONTEXT_SYSTEM);
 require_capability('moodle/local:updatecompetency', $sitecontext);
 
 $mform =& new mitms_competency_evidence_form(null, compact('id','userid','user','returnurl','s'));
+if ($mform->is_cancelled()) {
+    redirect($returnurl);
+}
 if($fromform = $mform->get_data()) { // Form submitted
-    if ($mform->is_cancelled()) {
-        redirect($returnurl);
-    }
     if (empty($fromform->submitbutton)) {
         print_error('error:unknownbuttonclicked', 'local', $returnurl);
     }
