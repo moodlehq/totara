@@ -79,12 +79,6 @@ $columnoptions = array(
             'field' => 'base.assessorname',
             'joins' => array(),
         ),
-        'options' => array(
-            'name' => 'Show Options (for admin only)',
-            'field' => 'base.id',
-            'joins' => array(),
-            'displayfunc' => 'reportbuilder_comp_ev_options',
-        ),
    ),
     'competency' => array(
         'fullname' => array(

@@ -64,24 +64,6 @@ function reportbuilder_iplookup($ip, $row) {
     }
 }
 
-// displays a column containing links to edit/delete item, if you have permissions to do that
-function reportbuilder_comp_ev_options($id, $row) {
-    global $CFG;
-    $sitecontext = get_context_instance(CONTEXT_SYSTEM);
-    if(!has_capability('moodle/local:updatecompetency', $sitecontext)) {
-        // don't display links unless they have permission to edit competency evidence
-        return '';
-    }
-    $editstr = get_string('edit');
-    $deletestr = get_string('delete');
-    $editlink = '<a href="'.$CFG->wwwroot.'/hierarchy/type/competency/evidence/edit.php?id='.$id.'&amp;s='.sesskey().
-        '&amp;returnurl='.urlencode(qualified_me()).'" title="'.$editstr.
-        '"><img src="'.$CFG->pixpath.'/t/edit.gif" class="iconsmall" alt='.$editstr.'" /></a>';
-    $deletelink = '<a href="'.$CFG->wwwroot.'/hierarchy/type/competency/evidence/delete.php?id='.$id.'" title="'.$deletestr.
-        '"><img src="'.$CFG->pixpath.'/t/delete.gif" class="iconsmall" alt='.$deletestr.'" /></a>';
-    return $editlink .' '.$deletelink;
-}
-
 // reformat a timestamp, showing nothing if invalid or null
 function reportbuilder_nice_date($date, $row) {
     if($date && $date > 0) {
