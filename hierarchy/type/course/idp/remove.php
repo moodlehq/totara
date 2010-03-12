@@ -13,7 +13,7 @@ $courseid = required_param('id', PARAM_INT);
 // Revision id
 $revisionid = required_param('revision', PARAM_INT);
 
-$plan = get_plan_for_revision($revisionid)->id;
+$plan = get_plan_for_revision($revisionid);
 if ( !$plan ){
     error('Plan ID is incorrect');
 }
