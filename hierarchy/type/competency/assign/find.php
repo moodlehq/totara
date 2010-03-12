@@ -3,7 +3,7 @@
 require_once('../../../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->dirroot.'/hierarchy/type/competency/lib.php');
-
+require_once($CFG->dirroot.'/local/js/setup.php');
 
 ///
 /// Setup / loading data
@@ -60,36 +60,11 @@ if (!$parentid) {
     echo '<ul class="treeview filetree">';
 }
 
-
-// Foreach competency
-if ($competencies) {
-    foreach ($competencies as $competency) {
-        if ($competency->depthid == $max_depth) {
-            $li_class = '';
-            $span_class = '';
-        } else {
-            $li_class = 'closed';
-            $span_class = 'folder';
-        }
-
-        echo '<li class="'.$li_class.'" id="competency_list_'.$competency->id.'">';
-        echo '<span id="cmp_'.$competency->id.'" class="'.$span_class.'">'.$competency->fullname.'</span>';
-
-        if ($span_class == 'folder') {
-            echo '<ul></ul>';
-        }
-        echo '</li>'.PHP_EOL;
-    }
-} else {
-    echo '<li><span class="empty">No child competencies found</span></li>'.PHP_EOL;
-}
-
-/*
 echo build_treeview(
     $competencies,
     get_string('nocompetenciesinframework', 'competency'),
     $max_depth
-);*/
+);
 
 // If no parent id, close list
 if (!$parentid) {
