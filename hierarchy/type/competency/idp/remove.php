@@ -19,6 +19,7 @@ if ( !$plan ){
 }
 
 // Users can only edit their own IDP
+require_capability('moodle/local:editownplan', get_context_instance(CONTEXT_SYSTEM));
 if ( $plan->userid != $USER->id ){
     error(get_string('error:revisionnotvisible', 'idp'));
 }
@@ -29,4 +30,6 @@ if ( $dbresult ){
 } else {
     print_error('error:removalfailed','idp');
 }
+add_to_log(SITEID, 'idp', 'delete IDP competency', "revision.php?id={$plan->id}", $competencyid);
+
 ?>

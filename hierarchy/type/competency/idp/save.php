@@ -3,6 +3,7 @@
 require_once('../../../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->dirroot.'/hierarchy/type/competency/lib.php');
+require_once($CFG->dirroot.'/plan/lib.php');
 
 
 ///
@@ -23,7 +24,16 @@ admin_externalpage_setup('competencymanage', '', array(), '', $CFG->wwwroot.'/co
 
 // Check permissions
 $sitecontext = get_context_instance(CONTEXT_SYSTEM);
-require_capability('moodle/local:updatecompetency', $sitecontext);
+$plan = get_plan_for_revision($revisionid);
+if ( !$plan ){
+    error('Plan ID is incorrect');
+}
+
+// Users can only edit their own IDP
+require_capability('moodle/local:editownplan', $sitecontext);
+if ( $plan->userid != $USER->id ){
+    error(get_string('error:revisionnotvisible', 'idp'));
+}
 
 // Setup hierarchy object
 $hierarchy = new competency();
@@ -79,3 +89,4 @@ foreach ($add as $addition) {
     echo 'buttonImageOnly: true } ); }); </script>'.PHP_EOL;
     $rowcount = ($rowcount + 1) % 2;
 }
+add_to_log(SITEID, 'idp', 'add IDP competencies', "revision.php?id={$plan->id}", $plan->id);

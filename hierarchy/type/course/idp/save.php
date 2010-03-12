@@ -2,6 +2,7 @@
 
 require_once('../../../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
+require_once($CFG->dirroot.'/plan/lib.php');
 
 
 ///
@@ -17,8 +18,18 @@ $rowcount = required_param('rowcount', PARAM_SEQUENCE);
 // Courses to add
 $add = required_param('add', PARAM_SEQUENCE);
 
-// Setup page
-admin_externalpage_setup('competencymanage', '', array(), '', $CFG->wwwroot.'/hierarchy/course/idp/save.php');
+// Check permissions
+$sitecontext = get_context_instance(CONTEXT_SYSTEM);
+$plan = get_plan_for_revision($revisionid);
+if ( !$plan ){
+    error('Plan ID is incorrect');
+}
+
+// Users can only edit their own IDP
+require_capability('moodle/local:editownplan', $sitecontext);
+if ( $plan->userid != $USER->id ){
+    error(get_string('error:revisionnotvisible', 'idp'));
+}
 
 $str_remove = get_string('remove');
 
@@ -75,3 +86,4 @@ foreach ($add as $addition) {
     echo 'buttonImageOnly: true } ); }); </script>'.PHP_EOL;
     $rowcount = ($rowcount + 1) % 2;
 }
+add_to_log(SITEID, 'idp', 'add IDP courses', "revision.php?id={$plan->id}", $plan->id);

@@ -96,6 +96,7 @@ $string['error:nousercurriculum'] = 'No curriculum has been specified in the pro
 $string['error:planalreadyevaluated'] = 'A self-evaluation has already been submitted for this IDP.';
 $string['error:plannotempty'] = 'You can only delete empty plans, and this plan is not empty.';
 $string['error:plannotsubmitted'] = 'You can only delete empty plans which have never been submitted.';
+$string['error:plannotyours'] = 'You do not have access to this plan because it is not your plan.';
 $string['error:revisionnotvisible'] = 'This revision is not visible to you.';
 $string['error:removalfailed'] = 'Removal failed.';
 

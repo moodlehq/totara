@@ -14,12 +14,25 @@ $saveandcontinuebutton = optional_param('saveandcontinuebutton',false, PARAM_BOO
 $confirm = optional_param('confirm', false, PARAM_BOOL);
 $print = optional_param('print', 0, PARAM_INT); // Print-friendly view
 
+$plan = get_plan_for_revision($rev);
+if (!$plan ) {
+    error('Plan ID is incorrect');
+}
+
 // If they didn't click the "submit" or "confirm" buttons, then they 
 // actually clicked "save and continue"
 if ( !$confirm && !$submitbutton ){
+    // Check permissions
+    // Users can only edit their own IDP
+    $sitecontext = get_context_instance(CONTEXT_SYSTEM);
+    require_capability('moodle/local:editownplan', $sitecontext);
+    if ( $plan->userid != $USER->id ){
+        error(get_string('error:revisionnotvisible', 'idp'));
+    }
     update_idp_component_duedate('compduedate', 'idp_revision_competency','competency', $rev);
     update_idp_component_duedate('comptempduedate', 'idp_revision_competencytemplate', 'competencytemplate', $rev);
     update_idp_component_duedate('courseduedate', 'idp_revision_course', 'course', $rev);
+    add_to_log(SITEID, 'idp', 'save/update plan', "revision.php?id={$plan->id}", $plan->id);
 
     redirect($CFG->wwwroot.'/plan/index.php');
 }
@@ -30,10 +43,6 @@ if ($print) {
 
 if (!$revision = get_revision(0, $rev)) {
     error('Revision ID is incorrect');
-}
-
-if (!$plan = get_record('idp', 'id', $revision->idp)) {
-    error('Plan ID is incorrect');
 }
 
 $contextsite = get_context_instance(CONTEXT_SYSTEM);
