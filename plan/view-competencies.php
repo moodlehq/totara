@@ -68,7 +68,6 @@ $rowcount=0;
             if ($editingon) {
                 echo '<input size="10" maxlength="10" type="text" value="'.$duedatestr.'" name="compduedate['.$competency->id.']" id="compduedate'.$competency->id.'"/>';
             } else {
-                // todo: make this work
                 echo $duedatestr;
             }
             echo '</td>';
