@@ -130,17 +130,17 @@ function reportbuilder_ce_admin_options($row) {
     $userid = $row->settings_user;
     $ceid = $row->settings_id;
     $addstr = get_string('addforthisuser','local');
-    $editstr = get_string('edit');
-    $deletestr = get_string('delete');
+    $editstr = trim(get_string('edit'));
+    $deletestr = trim(get_string('delete'));
     $addlink = '<a href="'.$CFG->wwwroot.'/hierarchy/type/competency/evidence/add.php?userid='.$userid.'&amp;s='.sesskey().
         '&amp;returnurl='.urlencode(qualified_me()).'" title="'.$addstr.
-        '"><img src="'.$CFG->pixpath.'/t/add.gif" class="iconsmall" alt='.$addstr.'" /></a>';
+        '"><img src="'.$CFG->pixpath.'/t/add.gif" class="iconsmall" alt="'.$addstr.'" /></a>';
     $editlink = '<a href="'.$CFG->wwwroot.'/hierarchy/type/competency/evidence/edit.php?id='.$ceid.'&amp;s='.sesskey().
         '&amp;returnurl='.urlencode(qualified_me()).'" title="'.$editstr.
-        '"><img src="'.$CFG->pixpath.'/t/edit.gif" class="iconsmall" alt='.$editstr.'" /></a>';
+        '"><img src="'.$CFG->pixpath.'/t/edit.gif" class="iconsmall" alt="'.$editstr.'" /></a>';
     $deletelink = '<a href="'.$CFG->wwwroot.'/hierarchy/type/competency/evidence/delete.php?id='.$ceid.'&amp;s='.sesskey().
         '&amp;returnurl='.urlencode(qualified_me()).'" title="'.$deletestr.
-        '"><img src="'.$CFG->pixpath.'/t/delete.gif" class="iconsmall" alt='.$deletestr.'" /></a>';
+        '"><img src="'.$CFG->pixpath.'/t/delete.gif" class="iconsmall" alt="'.$deletestr.'" /></a>';
     return $addlink.' '.$editlink .' '.$deletelink;
 }
 
