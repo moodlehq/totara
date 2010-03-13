@@ -43,6 +43,7 @@ $string['noorganisationsinframework'] = 'No organisations in this framework';
 $string['nodepthlevels'] = 'No depth levels in this framework';
 $string['noframeworks'] = 'No organisation frameworks available';
 $string['numericalvalue'] = 'Numerical value';
+$string['organisationdepthcustomfields'] = 'Organisation depth custom fields';
 $string['parent'] = 'Parent organisation';
 $string['returntoframework'] = 'Return to organisation framework';
 $string['shortname'] = 'Organisation short name';
