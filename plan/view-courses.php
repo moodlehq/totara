@@ -97,7 +97,6 @@ $rowcount=0;
             <td>
                 <div class="singlebutton">
                 <input type="submit" id="show-idpcourse-dialog" value="<?php echo get_string('addfromcategories', 'idp') ?>" />
-                <input type="submit" id="" value="<?php echo get_string('addfrompositions', 'idp') ?>" />
                 </div>
             </td>
         </tr>
