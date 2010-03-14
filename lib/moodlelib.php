@@ -4236,6 +4236,11 @@ function email_to_user($user, $from, $subject, $messagetext, $messagehtml='', $a
     global $CFG, $FULLME, $MNETIDPJUMPURL;
     static $mnetjumps = array();
 
+    if ($messagehtml == 'ical') {
+        $messagehtml = '';
+        $is_this_an_ical_request = TRUE;
+    }
+
     if (empty($user) || empty($user->email)) {
         return false;
     }
@@ -4395,6 +4400,11 @@ function email_to_user($user, $from, $subject, $messagetext, $messagehtml='', $a
             $mail->Body = $textlib->convert($mail->Body, 'utf-8', $mail->CharSet);         //Body
             $mail->AltBody = $textlib->convert($mail->AltBody, 'utf-8', $mail->CharSet);   //Subject
         }
+    }
+
+    if ($is_this_an_ical_request) {
+        $mail->ContentType = 'text/calendar; method=REQUEST; charset="UTF-8"';
+        $mail->Encoding = 'quoted-printable';
     }
 
     if ($mail->Send()) {
