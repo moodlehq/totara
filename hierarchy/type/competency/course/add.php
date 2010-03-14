@@ -25,17 +25,19 @@ require_capability('moodle/local:updatecompetency', $sitecontext);
 // Setup hierarchy object
 $hierarchy = new competency();
 
+// If parentid, load correct framework
+if ($parentid) {
+    $parent = $hierarchy->get_item($parentid);
+    $frameworkid = $parent->frameworkid;
+}
+
 // Load framework
 if (!$framework = $hierarchy->get_framework($frameworkid)) {
     error('Competency framework could not be found');
 }
 
-// Load competency depths
-$depths = $hierarchy->get_depths();
-
 // Get max depth level
-end($depths);
-$max_depth = current($depths)->id;
+$max_depth = $hierarchy->get_max_depth();
 
 // Load competencies to display
 $competencies = $hierarchy->get_items_by_parent($parentid);
