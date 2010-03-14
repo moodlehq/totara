@@ -58,7 +58,7 @@ $templates = $hierarchy->get_templates();
 
 echo build_treeview(
     $templates,
-    get_string('notemplateinframework', 'competency')
+    get_string('notemplates', 'competency')
 );
 
 echo '</ul></div>';
