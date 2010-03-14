@@ -184,7 +184,7 @@
             'value'       => 'organisationfullname',
             'level'       => '2',
             'headingtype' => 'defined',
-            'heading'     => 'Conservancy',
+            'heading'     => 'District Office',
         ),
         array(
             'column'      => '1',
