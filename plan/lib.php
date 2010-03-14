@@ -309,7 +309,7 @@ function print_revision_details($revision, $can_submit, $can_approve=false, $pdf
             'value'       => 'fullname',
             'level'       => '2',
             'headingtype' => 'defined',
-            'heading'     => 'Conservancy',
+            'heading'     => 'District Office',
         ),
         array(
             'column'      => '1',
