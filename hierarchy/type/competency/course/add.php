@@ -67,7 +67,7 @@ if (!$parentid) {
             echo '<option value="'.$fw->id.'"';
 
             // Is current?
-            if ($fw->id == $frameworkid) {
+            if ($fw->id == $framework->id) {
                 echo ' selected="selected"';
             }
 
