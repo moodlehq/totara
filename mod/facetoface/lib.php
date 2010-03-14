@@ -2378,7 +2378,8 @@ function facetoface_take_individual_attendance($submissionid, $grading) {
     
     $record = get_record_sql("SELECT f.*, s.userid
                                 FROM {$CFG->prefix}facetoface_signups s
-                                JOIN {$CFG->prefix}facetoface f ON f.id = s.facetoface
+                                JOIN {$CFG->prefix}facetoface_sessions fs ON s.sessionid = fs.id
+                                JOIN {$CFG->prefix}facetoface f ON f.id = fs.facetoface
                                 JOIN {$CFG->prefix}course_modules cm ON cm.instance = f.id
                                 JOIN {$CFG->prefix}modules m ON m.id = cm.module
                                WHERE s.id = $submissionid AND m.name='facetoface'");
