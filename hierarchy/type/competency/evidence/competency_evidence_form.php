@@ -68,13 +68,17 @@ class mitms_competency_evidence_form extends moodleform {
         $mform->addRule('competencyid',null,'required');
         $mform->addRule('competencyid',null,'numeric');
 
-        $assessorroleid = get_field('role','id','shortname','assessor');
-        $sql = "SELECT DISTINCT u.id,".sql_fullname('u.firstname','u.lastname')." AS name
-            FROM {$CFG->prefix}role_assignments ra
-            JOIN {$CFG->prefix}user u ON ra.userid = u.id
-            WHERE roleid=$assessorroleid
-            ORDER BY ".sql_fullname('u.firstname','u.lastname');
-        $selectoptions = get_records_sql_menu($sql);
+        if($assessorroleid = get_field('role','id','shortname','assessor')) {
+            $sql = "SELECT DISTINCT u.id,".sql_fullname('u.firstname','u.lastname')." AS name
+                FROM {$CFG->prefix}role_assignments ra
+                JOIN {$CFG->prefix}user u ON ra.userid = u.id
+                WHERE roleid=$assessorroleid
+                ORDER BY ".sql_fullname('u.firstname','u.lastname');
+            $selectoptions = get_records_sql_menu($sql);
+        } else {
+            // no assessor role
+            $selectoptions = false;
+        }
         if($selectoptions) {
             $selector = array(0 => get_string('selectanassessor','local'));
             $mform->addElement('select', 'assessorid', get_string('assessor','local'), $selector + $selectoptions);
