@@ -38,7 +38,7 @@
     }
 
     // Setup page and check permissions
-    admin_externalpage_setup($type.'frameworkmanage', $navbaritem);
+    admin_externalpage_setup($type.'frameworkmanage', $navbaritem, array('type'=>$type));
 
     ///
     /// Process any actions
