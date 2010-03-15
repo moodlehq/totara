@@ -138,11 +138,7 @@ class hierarchy {
      * @return array|false
      */
     function get_items_by_parent($parentid) {
-        if(empty($this->frameworkid)) {
-            return get_records_select($this->prefix, "parentid = {$parentid}", 'frameworkid,sortorder');
-        } else {
-            return get_records_select($this->prefix, "frameworkid = {$this->frameworkid} AND parentid = {$parentid}", 'frameworkid, sortorder, fullname');
-        }
+        return get_records_select($this->prefix, "parentid = {$parentid}", 'frameworkid, sortorder, fullname');
     }
 
     /**
