@@ -35,3 +35,7 @@ foreach($items as $item) {
     $i++;
 }
 print "<br>";
+
+set_config("guestloginbutton", 0);
+set_config("langmenu", 0);
+set_config("forcelogin", 1);

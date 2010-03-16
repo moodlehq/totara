@@ -454,6 +454,10 @@ array('id' => '449','course' => '45','userid' => '2','display' => '0',),
 array('id' => '450','course' => '131','userid' => '2','display' => '0',),
 array('id' => '451','course' => '176','userid' => '2','display' => '0',),
 array('id' => '452','course' => '53','userid' => '2','display' => '0',),
+array('id' => '453','course' => '77','userid' => '1705','display' => '0',),
+array('id' => '454','course' => '2','userid' => '2386','display' => '0',),
+array('id' => '455','course' => '92','userid' => '2','display' => '0',),
+array('id' => '456','course' => '87','userid' => '2','display' => '0',),
 );
 print "\n";print "Inserting ".count($items)." records<br />\n";
 $i=1;
@@ -486,3 +490,7 @@ foreach($items as $item) {
     $i++;
 }
 print "<br>";
+
+set_config("guestloginbutton", 0);
+set_config("langmenu", 0);
+set_config("forcelogin", 1);

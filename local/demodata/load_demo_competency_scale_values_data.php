@@ -2,9 +2,9 @@
 @raise_memory_limit('392M');
 @ini_set('max_execution_time','3000');
 print "Loading data for table 'competency_scale_values'<br>";
-$items = array(array('id' => '1','name' => 'Not Competent','idnumber' => '','description' => '','scaleid' => '1','numeric' => '','sortorder' => '1','timemodified' => '1267736958','usermodified' => '2',),
-array('id' => '2','name' => 'Competent With Supervision','idnumber' => '','description' => '','scaleid' => '1','numeric' => '','sortorder' => '2','timemodified' => '1267736968','usermodified' => '2',),
-array('id' => '3','name' => 'Competent','idnumber' => '','description' => '','scaleid' => '1','numeric' => '','sortorder' => '3','timemodified' => '1267736958','usermodified' => '2',),
+$items = array(array('id' => '1','name' => 'Not Competent','idnumber' => '','description' => '','scaleid' => '1','sortorder' => '1','timemodified' => '1267736958','usermodified' => '2',),
+array('id' => '2','name' => 'Competent With Supervision','idnumber' => '','description' => '','scaleid' => '1','sortorder' => '2','timemodified' => '1267736968','usermodified' => '2',),
+array('id' => '3','name' => 'Competent','scaleid' => '1','sortorder' => '3','timemodified' => '1267736958','usermodified' => '2',),
 );
 print "\n";print "Inserting ".count($items)." records<br />\n";
 $i=1;
@@ -37,3 +37,7 @@ foreach($items as $item) {
     $i++;
 }
 print "<br>";
+
+set_config("guestloginbutton", 0);
+set_config("langmenu", 0);
+set_config("forcelogin", 1);

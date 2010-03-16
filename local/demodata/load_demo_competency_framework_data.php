@@ -2,9 +2,9 @@
 @raise_memory_limit('392M');
 @ini_set('max_execution_time','3000');
 print "Loading data for table 'competency_framework'<br>";
-$items = array(array('id' => '1','fullname' => 'Unit Standards','shortname' => 'Units','idnumber' => '','description' => '','isdefault' => '1','sortorder' => '2','visible' => '1','hidecustomfields' => '0','showitemfullname' => '1','showdepthfullname' => '1','timecreated' => '1263433929','timemodified' => '1263433929','usermodified' => '2',),
-array('id' => '2','fullname' => 'Qualifications','shortname' => 'Quals','idnumber' => '','description' => '','isdefault' => '0','sortorder' => '1','visible' => '1','hidecustomfields' => '0','showitemfullname' => '1','showdepthfullname' => '1','timecreated' => '1263433929','timemodified' => '1263433929','usermodified' => '2',),
-array('id' => '3','fullname' => 'Course based competencies','shortname' => 'Course based','idnumber' => '','description' => '','isdefault' => '0','sortorder' => '3','visible' => '1','hidecustomfields' => '0','showitemfullname' => '1','showdepthfullname' => '1','timecreated' => '1265963591','timemodified' => '1265963591','usermodified' => '0',),
+$items = array(array('id' => '1','fullname' => 'Unit Standards','shortname' => 'Units','idnumber' => '','description' => '','isdefault' => '0','sortorder' => '2','visible' => '1','hidecustomfields' => '1','showitemfullname' => '1','showdepthfullname' => '1','timecreated' => '1263433929','timemodified' => '1263433929','usermodified' => '2',),
+array('id' => '2','fullname' => 'Qualifications','shortname' => 'Quals','idnumber' => '','description' => '','isdefault' => '0','sortorder' => '3','visible' => '1','hidecustomfields' => '0','showitemfullname' => '1','showdepthfullname' => '1','timecreated' => '1263433929','timemodified' => '1263433929','usermodified' => '2',),
+array('id' => '3','fullname' => 'Course based competencies','shortname' => 'Course based','isdefault' => '1','sortorder' => '1','visible' => '1','hidecustomfields' => '0','showitemfullname' => '1','showdepthfullname' => '1','timecreated' => '1265963591','timemodified' => '1265963591','usermodified' => '0',),
 array('id' => '4','fullname' => 'Sample framework','shortname' => 'Sample framework','idnumber' => '','description' => '','isdefault' => '0','sortorder' => '4','visible' => '1','hidecustomfields' => '0','showitemfullname' => '1','showdepthfullname' => '1','timecreated' => '1267736603','timemodified' => '1267736603','usermodified' => '2',),
 );
 print "\n";print "Inserting ".count($items)." records<br />\n";
@@ -38,3 +38,7 @@ foreach($items as $item) {
     $i++;
 }
 print "<br>";
+
+set_config("guestloginbutton", 0);
+set_config("langmenu", 0);
+set_config("forcelogin", 1);

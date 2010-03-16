@@ -4,7 +4,7 @@
 print "Loading data for table 'competency_depth'<br>";
 $items = array(array('id' => '1','fullname' => 'Unit Standard','shortname' => 'Unit','description' => '','depthlevel' => '1','frameworkid' => '1','timecreated' => '1263433929','timemodified' => '1263433929','usermodified' => '2',),
 array('id' => '2','fullname' => 'Qualification','shortname' => 'Qual','description' => '','depthlevel' => '1','frameworkid' => '2','timecreated' => '1263433929','timemodified' => '1263433929','usermodified' => '2',),
-array('id' => '3','fullname' => 'Course based competencies','shortname' => 'Course based','description' => '','depthlevel' => '1','frameworkid' => '3','timecreated' => '1265963591','timemodified' => '1265963591','usermodified' => '0',),
+array('id' => '3','fullname' => 'Course based competencies','shortname' => 'Course based','depthlevel' => '1','frameworkid' => '3','timecreated' => '1265963591','timemodified' => '1265963591','usermodified' => '0',),
 array('id' => '4','fullname' => 'Competency Area','shortname' => 'CA','description' => '','depthlevel' => '1','frameworkid' => '4','timecreated' => '1267736622','timemodified' => '1267736622','usermodified' => '2',),
 array('id' => '5','fullname' => 'Competency Heading','shortname' => 'CH','description' => '','depthlevel' => '2','frameworkid' => '4','timecreated' => '1267736644','timemodified' => '1267736644','usermodified' => '2',),
 array('id' => '6','fullname' => 'Competencies','shortname' => 'Competencies','description' => '','depthlevel' => '3','frameworkid' => '4','timecreated' => '1267736677','timemodified' => '1267736677','usermodified' => '2',),
@@ -40,3 +40,7 @@ foreach($items as $item) {
     $i++;
 }
 print "<br>";
+
+set_config("guestloginbutton", 0);
+set_config("langmenu", 0);
+set_config("forcelogin", 1);

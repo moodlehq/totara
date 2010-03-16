@@ -2,13 +2,13 @@
 @raise_memory_limit('392M');
 @ini_set('max_execution_time','3000');
 print "Loading data for table 'course_modules_availability'<br>";
-$items = array(array('id' => '35','coursemoduleid' => '667','sourcecmid' => '','requiredcompletion' => '','gradeitemid' => '388','grademin' => '','grademax' => '',),
-array('id' => '36','coursemoduleid' => '667','sourcecmid' => '667','requiredcompletion' => '1','gradeitemid' => '','grademin' => '','grademax' => '',),
-array('id' => '39','coursemoduleid' => '832','sourcecmid' => '831','requiredcompletion' => '1','gradeitemid' => '','grademin' => '','grademax' => '',),
-array('id' => '40','coursemoduleid' => '974','sourcecmid' => '963','requiredcompletion' => '1','gradeitemid' => '','grademin' => '','grademax' => '',),
-array('id' => '41','coursemoduleid' => '921','sourcecmid' => '','requiredcompletion' => '','gradeitemid' => '442','grademin' => '80.00000','grademax' => '',),
-array('id' => '42','coursemoduleid' => '968','sourcecmid' => '988','requiredcompletion' => '1','gradeitemid' => '','grademin' => '','grademax' => '',),
-array('id' => '43','coursemoduleid' => '978','sourcecmid' => '982','requiredcompletion' => '1','gradeitemid' => '','grademin' => '','grademax' => '',),
+$items = array(array('id' => '35','coursemoduleid' => '667','gradeitemid' => '388',),
+array('id' => '36','coursemoduleid' => '667','sourcecmid' => '667','requiredcompletion' => '1',),
+array('id' => '39','coursemoduleid' => '832','sourcecmid' => '831','requiredcompletion' => '1',),
+array('id' => '40','coursemoduleid' => '974','sourcecmid' => '963','requiredcompletion' => '1',),
+array('id' => '41','coursemoduleid' => '921','gradeitemid' => '442','grademin' => '80.00000',),
+array('id' => '42','coursemoduleid' => '968','sourcecmid' => '988','requiredcompletion' => '1',),
+array('id' => '43','coursemoduleid' => '978','sourcecmid' => '982','requiredcompletion' => '1',),
 );
 print "\n";print "Inserting ".count($items)." records<br />\n";
 $i=1;
@@ -41,3 +41,7 @@ foreach($items as $item) {
     $i++;
 }
 print "<br>";
+
+set_config("guestloginbutton", 0);
+set_config("langmenu", 0);
+set_config("forcelogin", 1);

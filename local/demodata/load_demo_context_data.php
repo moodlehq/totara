@@ -5965,6 +5965,21 @@ array('id' => '14594','contextlevel' => '80','instanceid' => '682','path' => '/1
 array('id' => '14595','contextlevel' => '80','instanceid' => '683','path' => '/1/3/12057/14595','depth' => '4',),
 array('id' => '14596','contextlevel' => '80','instanceid' => '684','path' => '/1/3/12057/14596','depth' => '4',),
 array('id' => '14597','contextlevel' => '80','instanceid' => '685','path' => '/1/3/12057/14597','depth' => '4',),
+array('id' => '14598','contextlevel' => '80','instanceid' => '993','path' => '/1/3/12105/14598','depth' => '4',),
+array('id' => '14599','contextlevel' => '80','instanceid' => '994','path' => '/1/3/12105/14599','depth' => '4',),
+array('id' => '14600','contextlevel' => '80','instanceid' => '995','path' => '/1/3/12105/14600','depth' => '4',),
+array('id' => '14601','contextlevel' => '80','instanceid' => '996','path' => '/1/3/12105/14601','depth' => '4',),
+array('id' => '14602','contextlevel' => '80','instanceid' => '997','path' => '/1/3/12105/14602','depth' => '4',),
+array('id' => '14603','contextlevel' => '80','instanceid' => '1188','path' => '/1/3/12135/14603','depth' => '4',),
+array('id' => '14604','contextlevel' => '80','instanceid' => '1189','path' => '/1/3/12135/14604','depth' => '4',),
+array('id' => '14605','contextlevel' => '80','instanceid' => '1190','path' => '/1/3/12135/14605','depth' => '4',),
+array('id' => '14606','contextlevel' => '80','instanceid' => '1191','path' => '/1/3/12135/14606','depth' => '4',),
+array('id' => '14607','contextlevel' => '80','instanceid' => '1192','path' => '/1/3/12135/14607','depth' => '4',),
+array('id' => '14608','contextlevel' => '80','instanceid' => '1123','path' => '/1/3/12125/14608','depth' => '4',),
+array('id' => '14609','contextlevel' => '80','instanceid' => '1124','path' => '/1/3/12125/14609','depth' => '4',),
+array('id' => '14610','contextlevel' => '80','instanceid' => '1125','path' => '/1/3/12125/14610','depth' => '4',),
+array('id' => '14611','contextlevel' => '80','instanceid' => '1126','path' => '/1/3/12125/14611','depth' => '4',),
+array('id' => '14612','contextlevel' => '80','instanceid' => '1127','path' => '/1/3/12125/14612','depth' => '4',),
 );
 print "\n";print "Inserting ".count($items)." records<br />\n";
 $i=1;
@@ -5997,3 +6012,7 @@ foreach($items as $item) {
     $i++;
 }
 print "<br>";
+
+set_config("guestloginbutton", 0);
+set_config("langmenu", 0);
+set_config("forcelogin", 1);

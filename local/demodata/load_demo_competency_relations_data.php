@@ -846,8 +846,8 @@ array('id' => '841','description' => '','id1' => '3476','id2' => '3242',),
 array('id' => '842','description' => '','id1' => '3476','id2' => '2158',),
 array('id' => '843','description' => '','id1' => '3476','id2' => '3289',),
 array('id' => '844','description' => '','id1' => '3476','id2' => '3404',),
-array('id' => '845','description' => '','id1' => '4194','id2' => '234',),
-array('id' => '846','description' => '','id1' => '234','id2' => '2994',),
+array('id' => '845','id1' => '4194','id2' => '234',),
+array('id' => '846','id1' => '234','id2' => '2994',),
 );
 print "\n";print "Inserting ".count($items)." records<br />\n";
 $i=1;
@@ -880,3 +880,7 @@ foreach($items as $item) {
     $i++;
 }
 print "<br>";
+
+set_config("guestloginbutton", 0);
+set_config("langmenu", 0);
+set_config("forcelogin", 1);
