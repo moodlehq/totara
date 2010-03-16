@@ -44,10 +44,12 @@ require_once($CFG->dirroot.'/hierarchy/type/competency/evidenceitem/type/abstrac
 $COMP_AGGREGATION = array(
     'ALL'       => 1,
     'ANY'       => 2,
+/*
     'UNIT'      => 3,
     'FRACTION'  => 4,
     'SUM'       => 5,
     'AVERAGE'   => 6,
+*/
 );
 
 /**
