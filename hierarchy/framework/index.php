@@ -95,7 +95,7 @@ if ($frameworks) {
     // Add edit column
     if ($editingon && $can_edit) {
         $table->head[] = get_string('edit');
-        $table->align[] = 'center';
+        $table->align[] = 'left';
     }
 
     // Add rows to table
