@@ -36,8 +36,8 @@ $str_edit = get_string('edit');
 $str_delete = get_string('delete');
 $str_moveup = get_string('moveup');
 $str_movedown = get_string('movedown');
-$str_setproficient = get_string('setproficient');
-$str_setdefault = get_string('setdefault');
+$str_changeto = get_string('changeto', 'competency');
+$str_set = get_string('set', 'competency');
 
 
 ///
@@ -149,10 +149,16 @@ if ($values) {
     $table->data = array();
 
     // Headers
-    $table->head = array(get_string('name'), get_string('idnumber'), get_string('numericalvalue', 'competency'));
-    $table->align = array('left', 'center', 'center');
+    $table->head = array(get_string('name'));
+    $table->align = array('left');
 
     if ($can_edit) {
+        $table->head[] = get_string('defaultvalue', 'competency');
+        $table->align[] = 'center';
+
+        $table->head[] = get_string('proficientvalue', 'competency');
+        $table->align[] = 'center';
+
         $table->head[] = get_string('edit');
         $table->align[] = 'center';
     }
@@ -167,11 +173,28 @@ if ($values) {
 
         $row = array();
         $row[] = $value->name;
-        $row[] = $value->idnumber;
-        $row[] = $value->numeric;
 
         $buttons = array();
         if ($can_edit) {
+
+            // Is this the default value?
+            if ($value->id == $scale->defaultid) {
+                $row[] = $str_set;
+            }
+            else {
+                $row[] = "<a href=\"{$CFG->wwwroot}/hierarchy/type/competency/scale/view.php?id={$scale->id}&default={$value->id}\" title=\"$str_changeto\">".
+                            $str_changeto."</a>";
+            }
+
+            // Is this the proficient value?
+            if ($value->id == $scale->proficient) {
+                $row[] = $str_set;
+            }
+            else {
+                $row[] = "<a href=\"{$CFG->wwwroot}/hierarchy/type/competency/scale/view.php?id={$scale->id}&proficient={$value->id}\" title=\"$str_changeto\">".
+                            $str_changeto."</a>";
+            }
+
             $buttons[] = "<a href=\"{$CFG->wwwroot}/hierarchy/type/competency/scale/editvalue.php?id={$value->id}\" title=\"$str_edit\">".
                 "<img src=\"{$CFG->pixpath}/t/edit.gif\" class=\"iconsmall\" alt=\"$str_edit\" /></a>";
 
@@ -192,24 +215,6 @@ if ($values) {
                              "<img src=\"{$CFG->pixpath}/t/down.gif\" class=\"iconsmall\" alt=\"$str_movedown\" /></a>";
             } else {
                 $buttons[] = $spacer;
-            }
-
-            // Is this the proficient value?
-            if ($value->id == $scale->proficient) {
-                $buttons[] = 'proficient';
-            }
-            else {
-                $buttons[] = "<a href=\"{$CFG->wwwroot}/hierarchy/type/competency/scale/view.php?id={$scale->id}&proficient={$value->id}\" title=\"$str_setproficient\">".
-                            $str_setproficient."</a>";
-            }
-
-            // Is this the default value?
-            if ($value->id == $scale->defaultid) {
-                $buttons[] = 'default';
-            }
-            else {
-                $buttons[] = "<a href=\"{$CFG->wwwroot}/hierarchy/type/competency/scale/view.php?id={$scale->id}&default={$value->id}\" title=\"$str_setdefault\">".
-                            $str_setdefault."</a>";
             }
         }
 
