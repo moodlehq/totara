@@ -1065,8 +1065,12 @@ function facetoface_get_attendees($sessionid)
                                      reset($records)->facetofaceid, $userids);
 
     // Update the records
-    foreach ($records as $record) {
-        $record->grade = $grading_info->items[0]->grades[$record->id]->str_grade;
+    if (!empty($grading_info->items)) {
+        foreach ($records as $record) {
+            if (!empty($grading_info->items[0]->grades[$record->id])) {
+                $record->grade = $grading_info->items[0]->grades[$record->id]->str_grade;
+            }
+        }
     }
 
     return $records;
