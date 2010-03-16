@@ -138,7 +138,18 @@ class hierarchy {
      * @return array|false
      */
     function get_items_by_parent($parentid) {
-        return get_records_select($this->prefix, "parentid = {$parentid}", 'frameworkid, sortorder, fullname');
+        if ($parentid) {
+            // Parentid supplied, do not specify frameworkid as
+            // sometimes it is not set correctly. And a parentid
+            // is enough to get the right results
+            $whereclause = "parentid = {$parentid}";
+        }
+        else {
+            // If no parentid, grab the root node of this framework
+            $whereclause = "parentid = 0 AND frameworkid = {$this->frameworkid}";
+        }
+
+        return get_records_select($this->prefix, $whereclause, 'frameworkid, sortorder, fullname');
     }
 
     /**
