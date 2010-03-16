@@ -387,6 +387,11 @@ echo "</table>";
 </table>
 
 <?php
+if(has_capability('moodle/local:updatecompetency',$context)) {
+    print '<p>';
+    print_single_button($CFG->wwwroot.'/hierarchy/type/competency/evidence/add.php', array('userid' => $user->id, 's' => sesskey(), 'returnurl' => urlencode(qualified_me())),get_string('addforthisuser','local'));
+    print '</p>';
+}
 
 // display table here
 $fullname = $report->_fullname;
