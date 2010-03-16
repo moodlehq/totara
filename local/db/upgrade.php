@@ -1125,6 +1125,46 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && add_field($table, $field);
     }
 
+    if ($result && $oldversion < 2010031200) {
+    /// Add reaggregate to competency evidence table
+        $table = new XMLDBTable('competency_evidence');
+        $field = new XMLDBField('reaggregate');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0', 'timemodified');
+        $result = $result && add_field($table, $field);
+    }
+
+    if ($result && $oldversion < 2010031500) {
+    /// Add proficient to competency scale table
+        $table = new XMLDBTable('competency_scale');
+        $field = new XMLDBField('proficient');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, null, null, null, null, null, 'description');
+        $result = $result && add_field($table, $field);
+    }
+
+    if ($result && $oldversion < 2010031600) {
+    /// Add manual flag to competency evidence table
+        $table = new XMLDBTable('competency_evidence');
+        $field = new XMLDBField('manual');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0');
+        $result = $result && add_field($table, $field);
+
+    /// Make sure all existing evidence are set to manual
+        execute_sql("
+            UPDATE
+                {$CFG->prefix}competency_evidence
+            SET
+                manual = 1
+        ");
+    }
+
+    if ($result && $oldversion < 2010031601) {
+    /// Add default to competency scale table
+        $table = new XMLDBTable('competency_scale');
+        $field = new XMLDBField('defaultid');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, null, null, null, null, null, 'proficient');
+        $result = $result && add_field($table, $field);
+    }
+
     return $result;
 
 }
