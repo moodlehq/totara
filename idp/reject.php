@@ -33,7 +33,7 @@ add_to_log(SITEID, 'idp', 'reject plan', "revision.php?id=$plan->id", $plan->id)
 $stridps = get_string('idps', 'idp');
 
 $navlinks = array();
-$navlinks[] = array('name' => $stridps, 'link' => $CFG->wwwroot."/plan/index.php", 'type' => 'home');
+$navlinks[] = array('name' => $stridps, 'link' => $CFG->wwwroot."/idp/index.php", 'type' => 'home');
 $navlinks[] = array('name' => format_string($plan->name), 'link' => "revision.php?id={$revision->idp}&amp;rev=$revision->id", 'type' => 'home');
 $navlinks[] = array('name' => get_string('rejectplan', ''), 'link' => 'idp', 'type' => 'home');
 
@@ -43,10 +43,10 @@ $pagetitle = get_string('rejecting', 'idp').' '.format_string($plan->name);
 
 if ($confirm) {
     if (empty($comments)) {
-        error(get_string('error:norejectreason', 'idp'), $CFG->wwwroot.'/plan/reject.php?rev='.$rev);
+        error(get_string('error:norejectreason', 'idp'), $CFG->wwwroot.'/idp/reject.php?rev='.$rev);
     }
     elseif (reject_revision($revision->id, $comments)) {
-        redirect($CFG->wwwroot.'/plan/index.php');
+        redirect($CFG->wwwroot.'/idp/index.php');
     }
     else {
         error(get_string('rejectionerror', 'idp'));

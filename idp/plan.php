@@ -48,13 +48,13 @@ if (('create' == $action or 'rename' == $action) && !empty($name) && !empty($sta
         if (!$id = create_new_plan($name, $starttime, $endtime)) {
             error(get_string('error:cannotcreateplan', 'idp'), "index.php");
         }
-        redirect($CFG->wwwroot.'/plan/revision.php?id='.$id);
+        redirect($CFG->wwwroot.'/idp/revision.php?id='.$id);
     }
     else {
         if (!rename_plan($planid, $name, $starttime, $endtime)) {
             error(get_string('error:cannotrenameplan', 'idp'), "index.php");
         }
-        redirect($CFG->wwwroot.'/plan/index.php');
+        redirect($CFG->wwwroot.'/idp/index.php');
     }
 }
 elseif ('create' == $action or 'rename' == $action) {
@@ -66,7 +66,7 @@ elseif ('create' == $action or 'rename' == $action) {
     $blocks_preferred_width = bounded_number(180, blocks_preferred_width($pageblocks[BLOCK_POS_LEFT]), 210);
 
     $navlinks = array();
-    $navlinks[] = array('name' => $stridps, 'link' => $CFG->wwwroot."/plan/index.php", 'type' => 'home');
+    $navlinks[] = array('name' => $stridps, 'link' => $CFG->wwwroot."/idp/index.php", 'type' => 'home');
     $navlinks[] = array('name' => $pagetitle, 'link' => '', 'type' => 'home');
 
     $PAGE->print_header($stridps, $navlinks);
@@ -183,7 +183,7 @@ elseif ('delete' == $action) {
     }
     else {
         if (delete_plan($planid)) {
-            redirect($CFG->wwwroot.'/plan/index.php');
+            redirect($CFG->wwwroot.'/idp/index.php');
         }
         else {
             error(get_string('error:plannotempty', 'idp'), "index.php");

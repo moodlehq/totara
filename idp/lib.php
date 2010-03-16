@@ -1,9 +1,9 @@
 <?php
 
 require_once($CFG->dirroot.'/hierarchy/type/competency/lib.php');
-require_once($CFG->dirroot.'/plan/view-competencies.php');
-require_once($CFG->dirroot.'/plan/view-competencytemplates.php');
-require_once($CFG->dirroot.'/plan/view-courses.php');
+require_once($CFG->dirroot.'/idp/view-competencies.php');
+require_once($CFG->dirroot.'/idp/view-competencytemplates.php');
+require_once($CFG->dirroot.'/idp/view-courses.php');
 require_once($CFG->dirroot.'/hierarchy/type/position/lib.php');
 
 $CFG->idpenablefavourites = false;
@@ -408,39 +408,39 @@ function print_revision_details($revision, $can_submit, $can_approve=false, $pdf
     $nextactions = '';
     if ('approved' == $revision->status or 'overdue' == $revision->status) {
         if ($can_submit) {
-            $nextactions .= '<a href="'.$CFG->wwwroot.'/plan/evaluation.php?id=' . $revision->idp . '">'.get_string('evaluateplan', 'idp').'</a> - ';
+            $nextactions .= '<a href="'.$CFG->wwwroot.'/idp/evaluation.php?id=' . $revision->idp . '">'.get_string('evaluateplan', 'idp').'</a> - ';
         }
-        $nextactions .= '<a href="'.$CFG->wwwroot.'/plan/revision.php?id=' . $revision->idp . '&amp;print=1">'.get_string('printableview', 'idp').'</a>';
-        $nextactions .= '<a href="'.$CFG->wwwroot.'/plan/revision_pdf.php?id=' . $revision->idp . '">' . get_string('exporttopdf', 'idp') . '</a>';
+        $nextactions .= '<a href="'.$CFG->wwwroot.'/idp/revision.php?id=' . $revision->idp . '&amp;print=1">'.get_string('printableview', 'idp').'</a>';
+        $nextactions .= '<a href="'.$CFG->wwwroot.'/idp/revision_pdf.php?id=' . $revision->idp . '">' . get_string('exporttopdf', 'idp') . '</a>';
     }
     elseif ('withdrawn' == $revision->status) {
         if ($can_submit) {
             $nextactions .= '<a href="'.$moduledir .'/revision.php?id='.$revision->idp.'">'.get_string('editlatestrevision', 'idp').'</a>';
         }
         else {
-            $nextactions .= '<a href="'.$CFG->wwwroot.'/plan/revision.php?id='.$revision->idp.'">'.get_string('viewlatestrevision', 'idp').'</a>';
+            $nextactions .= '<a href="'.$CFG->wwwroot.'/idp/revision.php?id='.$revision->idp.'">'.get_string('viewlatestrevision', 'idp').'</a>';
         }
     }
     elseif ('submitted' == $revision->status) {
         if ($can_approve) {
-            $nextactions .= '<a href="'.$CFG->wwwroot.'/plan/approve.php?rev='.$revision->id.'">'.get_string('approveplan', 'idp').'</a> - ';
-            $nextactions .= '<a href="'.$CFG->wwwroot.'/plan/reject.php?rev='.$revision->id.'">'.get_string('rejectplan', 'idp').'</a>';
+            $nextactions .= '<a href="'.$CFG->wwwroot.'/idp/approve.php?rev='.$revision->id.'">'.get_string('approveplan', 'idp').'</a> - ';
+            $nextactions .= '<a href="'.$CFG->wwwroot.'/idp/reject.php?rev='.$revision->id.'">'.get_string('rejectplan', 'idp').'</a>';
         }
 
     }
     elseif ('inrevision' == $revision->status) {
         if ($can_submit) {
-            $nextactions .= '<a href="'.$CFG->wwwroot.'/plan/submit.php?rev='.$revision->id.'">'.get_string('submitplan', 'idp').'</a> - ';
+            $nextactions .= '<a href="'.$CFG->wwwroot.'/idp/submit.php?rev='.$revision->id.'">'.get_string('submitplan', 'idp').'</a> - ';
         }
         $nextactions .= '<a style="cursor: pointer;" onclick="toggle_addcomments(); return 0;">' . get_string('commentonplan', 'idp') . '</a>';
     }
     elseif ('notsubmitted' == $revision->status) {
         if ($can_submit) {
-            $nextactions .= '<a href="'.$CFG->wwwroot.'/plan/submit.php?rev='.$revision->id.'">'.get_string('submitplan', 'idp').'</a>';
+            $nextactions .= '<a href="'.$CFG->wwwroot.'/idp/submit.php?rev='.$revision->id.'">'.get_string('submitplan', 'idp').'</a>';
         }
     }
     elseif ('completed' == $revision->status) {
-        $nextactions .= '<a href="'.$CFG->wwwroot.'/plan/revision.php?id=' . $revision->idp . '&amp;print=1">'.get_string('printableview', 'idp').'</a>';
+        $nextactions .= '<a href="'.$CFG->wwwroot.'/idp/revision.php?id=' . $revision->idp . '&amp;print=1">'.get_string('printableview', 'idp').'</a>';
     }
 
     if (empty($pdf)) {
@@ -1627,7 +1627,7 @@ function current_plan_url($userid, $evaluation=false) {
 
     if ($record) {
         $page = $evaluation ? 'evaluation' : 'revision';
-        return $CFG->wwwroot.'/plan/'.$page.'.php?id='.$record->planid.'&amp;rev='.$record->revid;
+        return $CFG->wwwroot.'/idp/'.$page.'.php?id='.$record->planid.'&amp;rev='.$record->revid;
     }
     else {
         return '';
@@ -1652,7 +1652,7 @@ function upcoming_plan_url($userid) {
                             ORDER BY r.mtime DESC");
 
     if ($record) {
-        return $CFG->wwwroot.'/plan/revision.php?id='.$record->planid.'&amp;rev='.$record->revid;
+        return $CFG->wwwroot.'/idp/revision.php?id='.$record->planid.'&amp;rev='.$record->revid;
     }
     else {
         return '';
@@ -1810,7 +1810,7 @@ function idp_email_notification($type, $revision, $subsargs) {
     }
     // link is always valid
     $validkeys[] = 'link';
-    $subsargs->link = $CFG->wwwroot . '/plan/revision.php?rev=' . $revision->id . '&id=' . $revision->idp;
+    $subsargs->link = $CFG->wwwroot . '/idp/revision.php?rev=' . $revision->id . '&id=' . $revision->idp;
     foreach ($validkeys as $key) {
         if (!isset($subsargs->{$key})) {
             $subsargs->{$key} = ''; //  Still replace the placeholder, we don't want the {{xyz}} tags appearing in output.
@@ -2672,7 +2672,7 @@ function idp_grade_objective($roid, $grade=null) {
 function usersearch_form($search='') {
     global $CFG;
 
-    $url  = $CFG->wwwroot .'/plan/user_search.php';
+    $url  = $CFG->wwwroot .'/idp/user_search.php';
     $text = '<form id="idp_search" method="get" action="'.  $url . '">';
     $text .= '<div>';
     $text .= '<input type="text" name="search" value="' . s($search) . '"/>';

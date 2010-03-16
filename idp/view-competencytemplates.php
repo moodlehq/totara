@@ -1,7 +1,7 @@
 <?php
 /**
  * Display the competency templates box for an IDP
- * todo: move this into plan/lib.php
+ * todo: move this into idp/lib.php
  *
  * @param db_record $revision from the idp_revision table
  * @param array $competencytemplates

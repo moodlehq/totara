@@ -50,7 +50,7 @@ else {
     }
 }
 
-add_to_log(SITEID, 'idp', 'view', "plan/index.php");
+add_to_log(SITEID, 'idp', 'view', "idp/index.php");
 
 $stridps = get_string('idps', 'idp');
 
@@ -61,15 +61,15 @@ $blocks_preferred_width = bounded_number(180, blocks_preferred_width($pageblocks
 $navlinks = array();
 
 if ($summary) {
-    $navlinks[] = array('name' => $stridps, 'link' => $CFG->wwwroot."/plan/index.php", 'type' => 'home');
+    $navlinks[] = array('name' => $stridps, 'link' => $CFG->wwwroot."/idp/index.php", 'type' => 'home');
     $navlinks[] = array('name' => get_string('evaluationsummary', 'idp'), 'link' => '', 'type' => 'home');
 }
 else {
     if ($ownpage) {
-        $navlinks[] = array('name' => $stridps, 'link' => $CFG->wwwroot."/plan/index.php", 'type' => 'home');
+        $navlinks[] = array('name' => $stridps, 'link' => $CFG->wwwroot."/idp/index.php", 'type' => 'home');
     }
     else {
-        $navlinks[] = array('name' => $stridps, 'link' => $CFG->wwwroot."/plan/index.php", 'type' => 'home');
+        $navlinks[] = array('name' => $stridps, 'link' => $CFG->wwwroot."/idp/index.php", 'type' => 'home');
         $navlinks[] = array('name' => fullname($user), 'link' => '', 'type' => 'home');
     }
 }

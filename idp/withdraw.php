@@ -35,7 +35,7 @@ if ($USER->id == $plan->userid) {
 $stridps = get_string('idps', 'idp');
 
 $navlinks = array();
-$navlinks[] = array('name' => $stridps, 'link' => $CFG->wwwroot."/plan/index.php", 'type' => 'home');
+$navlinks[] = array('name' => $stridps, 'link' => $CFG->wwwroot."/idp/index.php", 'type' => 'home');
 $navlinks[] = array('name' => format_string($plan->name), 'link' => "revision.php?id={$revision->idp}&amp;rev=$revision->id", 'type' => 'home');
 $navlinks[] = array('name' => get_string('withdrawplan', 'idp'), 'link' => '', 'type' => 'home');
 
@@ -45,7 +45,7 @@ $pagetitle = get_string('withdrawing', 'idp').' '.format_string($plan->name);
 
 if ($confirm) {
     if ($newid = withdraw_revision($revision->id)) {
-        redirect($CFG->wwwroot.'/plan/revision.php?id='.$revision->idp.'&amp;rev='.$newid);
+        redirect($CFG->wwwroot.'/idp/revision.php?id='.$revision->idp.'&amp;rev='.$newid);
     }
     else {
         error(get_string('withdrawerror', 'idp'));

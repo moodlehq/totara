@@ -1,6 +1,6 @@
 <?php
     require_once ('../config.php');
-    require_once($CFG->dirroot.'/plan/lib.php');
+    require_once($CFG->dirroot.'/idp/lib.php');
     require_once($CFG->dirroot.'/user/filters/lib.php');
 
     $search       = optional_param('search', '', PARAM_TEXT);
@@ -29,7 +29,7 @@
     //
 
     $navlinks   = array();
-    $navlinks[] = array('name' => $stridps, 'link' => $CFG->wwwroot."/plan/index.php", 'type' => 'home');
+    $navlinks[] = array('name' => $stridps, 'link' => $CFG->wwwroot."/idp/index.php", 'type' => 'home');
     $navlinks[] = array('name' => $stridps, 'link' => "index.php", 'type' => 'home');
     $navlinks[] = array('name' => get_string('search'), 'link' => '', 'type' => 'home');
     $navigation = build_navigation($navlinks);
@@ -94,7 +94,7 @@
             $row[] = $user->city;
             $row[] = $user->country;
             $row[] = $strlastaccess;
-            $row[] = " <a href=\"{$CFG->wwwroot}/plan/index.php?userid={$user->id}\">$stridps</a>";
+            $row[] = " <a href=\"{$CFG->wwwroot}/idp/index.php?userid={$user->id}\">$stridps</a>";
             $row[] = " <a href=\"{$CFG->wwwroot}/user/view.php?id={$user->id}\">$strprofile</a>";
             $table->data[] = $row;
         }

@@ -36,7 +36,7 @@ add_to_log(SITEID, 'idp', 'approve plan', "approve.php?rev=$rev&amp;confirm=$con
 $stridps = get_string('idps', 'idp');
 
 $navlinks = array();
-$navlinks[] = array('name' => $stridps, 'link' => $CFG->wwwroot."/plan/index.php", 'type' => 'home');
+$navlinks[] = array('name' => $stridps, 'link' => $CFG->wwwroot."/idp/index.php", 'type' => 'home');
 $navlinks[] = array('name' => format_string($plan->name), 'link' => "revision.php?id={$revision->idp}&amp;rev=$revision->id", 'type' => 'home');
 $navlinks[] = array('name' => get_string('approving', 'idp'), 'link' => '', 'type' => 'home');
 
@@ -46,7 +46,7 @@ $pagetitle = get_string('approving', 'idp').' '.format_string($plan->name);
 
 if ($confirm) {
     if (approve_revision($revision, $onbehalfof)) {
-        redirect($CFG->wwwroot.'/plan/index.php');
+        redirect($CFG->wwwroot.'/idp/index.php');
     }
     else {
         error(get_string('approvalerror', 'idp'));

@@ -27,7 +27,7 @@ require_login();
 $contextsite = get_context_instance(CONTEXT_SYSTEM);
 $contextuser = get_context_instance(CONTEXT_USER, $plan->userid);
 
-$errorurl = $CFG->wwwroot . "/plan/revision.php?id=$plan->id";
+$errorurl = $CFG->wwwroot . "/idp/revision.php?id=$plan->id";
 if ($USER->id == $plan->userid) {
     require_capability('moodle/local:editownplan', $contextsite);
 } else {
@@ -62,7 +62,7 @@ $stridps = get_string('idps', 'idp');
 $pagetitle = format_string($plan->name);
 
 $navlinks = array();
-$navlinks[] = array('name' => $stridps, 'link' => $CFG->wwwroot."/plan/index.php", 'type' => 'home');
+$navlinks[] = array('name' => $stridps, 'link' => $CFG->wwwroot."/idp/index.php", 'type' => 'home');
 $navlinks[] = array('name' => $pagetitle, 'link' => '', 'type' => 'home');
 
 $navigation = build_navigation($navlinks);

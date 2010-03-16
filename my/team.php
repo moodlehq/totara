@@ -149,7 +149,7 @@ foreach ($lt as $column) {
 
                 $usercontext = get_context_instance(CONTEXT_USER, $teammember->id);
                 if(has_capability('moodle/local:viewlist', $usercontext)) {
-                    $cellcontent .= '<a href="'.$CFG->wwwroot.'/plan/index.php?userid='.$teammember->id.'"><img src="'.$CFG->wwwroot.'/pix/i/idp.png" title="'.get_string('idp','idp').'"></a>';
+                    $cellcontent .= '<a href="'.$CFG->wwwroot.'/idp/index.php?userid='.$teammember->id.'"><img src="'.$CFG->wwwroot.'/pix/i/idp.png" title="'.get_string('idp','idp').'"></a>';
                 }
                 $tabledata[] = $cellcontent;
                 $table->add_data($tabledata);

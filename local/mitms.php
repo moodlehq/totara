@@ -121,11 +121,11 @@ function mitms_print_my_learning_nav($return=false) {
         $returnstr .= '
             <tr>
                 <td align="left">
-                    <a href="'.$CFG->wwwroot.'/plan/index.php" title="'.get_string('developmentplan','local').'">
+                    <a href="'.$CFG->wwwroot.'/idp/index.php" title="'.get_string('developmentplan','local').'">
                     <img src="'. $CFG->wwwroot.'/pix/i/idp.png" width="32" height="32" /></a>
                 </td>
                 <td align="left" valign="center">
-                    <span style="font-size: small"><a href="'.$CFG->wwwroot.'/plan/index.php">' . get_string('developmentplan', 'local') . '</a></span>
+                    <span style="font-size: small"><a href="'.$CFG->wwwroot.'/idp/index.php">' . get_string('developmentplan', 'local') . '</a></span>
                 </td>
             </tr>
         ';

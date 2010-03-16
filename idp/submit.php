@@ -34,7 +34,7 @@ if ( !$confirm && !$submitbutton ){
     update_idp_component_duedate('courseduedate', 'idp_revision_course', 'course', $rev);
     add_to_log(SITEID, 'idp', 'save/update plan', "revision.php?id={$plan->id}", $plan->id);
 
-    redirect($CFG->wwwroot.'/plan/index.php');
+    redirect($CFG->wwwroot.'/idp/index.php');
 }
 
 if ($print) {
@@ -52,7 +52,7 @@ add_to_log(SITEID, 'idp', 'submit plan', "revision.php?id=$plan->id", $plan->id)
 
 if ($confirm) {
     if (submit_revision($revision->id)) {
-        redirect($CFG->wwwroot.'/plan/index.php');
+        redirect($CFG->wwwroot.'/idp/index.php');
     }
     else {
         error(get_string('submissionerror', 'idp'));
@@ -73,7 +73,7 @@ $pageblocks = blocks_setup($PAGE,BLOCKS_PINNED_BOTH);
 $blocks_preferred_width = bounded_number(180, blocks_preferred_width($pageblocks[BLOCK_POS_LEFT]), 210);
 
 $navlinks = array();
-$navlinks[] = array('name' => $stridps, 'link' => $CFG->wwwroot."/plan/index.php", 'type' => 'home');
+$navlinks[] = array('name' => $stridps, 'link' => $CFG->wwwroot."/idp/index.php", 'type' => 'home');
 $navlinks[] = array('name' => format_string($plan->name), 'link' => "revision.php?id={$revision->idp}&amp;rev=$revision->id", 'type' => 'home');
 $navlinks[] = array('name' => get_string('submitting', 'idp'), 'link' => '', 'type' => 'home');
 

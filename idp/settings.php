@@ -1,6 +1,6 @@
 <?php  //$Id$
 
-require_once($CFG->dirroot.'/plan/lib.php');
+require_once($CFG->dirroot.'/idp/lib.php');
 
 $settings->add(new admin_setting_configtextarea('idp_submitted_text',
                                     get_string('admin:submittedtext', 'idp'),

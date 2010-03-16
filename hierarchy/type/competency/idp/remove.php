@@ -6,7 +6,7 @@
 
 require_once('../../../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
-require_once($CFG->dirroot.'/plan/lib.php');
+require_once($CFG->dirroot.'/idp/lib.php');
 
 // Competency ID
 $competencyid = required_param('id', PARAM_INT);
@@ -26,7 +26,7 @@ if ( $plan->userid != $USER->id ){
 
 $dbresult = delete_records('idp_revision_competency', 'revision', $revisionid, 'competency', $competencyid);
 if ( $dbresult ){
-    redirect($CFG->wwwroot.'/plan/revision.php?id='.$plan->id);
+    redirect($CFG->wwwroot.'/idp/revision.php?id='.$plan->id);
 } else {
     print_error('error:removalfailed','idp');
 }
