@@ -97,7 +97,10 @@ if ($itemform->is_cancelled()) {
     $itemnew->timemodified = time();
     $itemnew->usermodified = $USER->id;
 
-    $itemnew->scaleid = 1;
+    if (isset($itemnew->scaleid)) {
+        $itemnew->scaleid = $itemnew->scaleid;
+    }
+
     $itemnew->proficiencyexpected = 1;
     $itemnew->evidencecount = 0;
 
