@@ -41,7 +41,7 @@ if (!$id && !$frameworkid) {
 }
 
 // Make this page appear under the manage competencies admin item
-admin_externalpage_setup($type.'manage', '', array(), '', "{$CFG->wwwroot}/hierarchy/type/{$type}/edit.php");
+admin_externalpage_setup($type.'manage', '', array('type'=>$type));
 
 $context = get_context_instance(CONTEXT_SYSTEM);
 

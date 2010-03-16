@@ -76,7 +76,7 @@
     }
 
     // Setup page and check permissions
-    admin_externalpage_setup($type.'manage', $navbaritem);
+    admin_externalpage_setup($type.'manage', $navbaritem, array('type'=>$type));
 
     // Build return url path
     $returnurl = "{$CFG->wwwroot}/hierarchy/index.php";

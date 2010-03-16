@@ -26,7 +26,7 @@ if (file_exists($CFG->dirroot.'/hierarchy/type/'.$type.'/lib.php')) {
 }   
 
 // Setup page and check permissions
-admin_externalpage_setup($type.'frameworkmanage');
+admin_externalpage_setup($type.'frameworkmanage','',array('type'=>$type));
 
 require_capability('moodle/local:delete'.$type.'frameworks', $sitecontext);
 

@@ -17,7 +17,7 @@ if (file_exists($CFG->dirroot.'/hierarchy/type/'.$type.'/framework/edit.php')) {
 }
 
 // Make this page appear under the manage 'hierarchy' admin menu
-admin_externalpage_setup($type.'frameworkmanage', '', array(), '', $CFG->wwwroot.'/hierarchy/framework/edit.php?type='.$type);
+admin_externalpage_setup($type.'frameworkmanage', '', array('type'=>$type), $CFG->wwwroot.'/hierarchy/framework/edit.php?type='.$type);
 
 if ($id == 0) {
     // Creating new framework

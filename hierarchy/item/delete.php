@@ -31,7 +31,7 @@ $item = $hierarchy->get_item($id);
 require_capability('moodle/local:delete'.$type, $sitecontext);
 
 // Setup page and check permissions
-admin_externalpage_setup($type.'manage');
+admin_externalpage_setup($type.'manage','',array('type'=>$type));
 
 ///
 /// Display page

@@ -34,7 +34,7 @@ if (!$id && !$frameworkid) {
 }
 
 // Make this page appear under the manage hierachy items admin menu
-admin_externalpage_setup($type.'manage', '', array(), '', $CFG->wwwroot.'/'.$type.'/depthlevel.php');
+admin_externalpage_setup($type.'manage', '', array('type'=>$type));
 
 $context = get_context_instance(CONTEXT_SYSTEM);
 
