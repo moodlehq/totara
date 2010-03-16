@@ -29,7 +29,7 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
  * @package MITMS
  */
-require_once($CFG->dirroot.'/completionlib.php');
+require_once($CFG->libdir.'/completionlib.php');
 
 /**
  * Activity completion competency evidence type
@@ -150,7 +150,7 @@ class competency_evidence_type_activitycompletion extends competency_evidence_ty
                 ceie.id AS id,
                 cei.id AS itemid,
                 cei.competencyid,
-                cc.userid,
+                cmc.userid,
                 ceie.timecreated,
                 cmc.completionstate,
                 cs.proficient,
