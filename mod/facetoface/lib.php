@@ -2246,7 +2246,9 @@ function facetoface_take_attendance($data) {
                     break;
 
                 default:
-                    continue;
+                    // This use has not had attendance set
+                    // Jump to the next item in the foreach loop
+                    continue 2;
             }
 
             facetoface_update_signup_status($submissionid, $value, $USER->id, '', $grade);
