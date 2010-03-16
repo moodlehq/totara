@@ -48,8 +48,10 @@
         error('User not found');
     }
 
+    $context = get_context_instance(CONTEXT_SYSTEM);
     // users can only view their own and their staff's pages
-    if ($USER->id != $id && !mitms_is_manager($id)) {
+    // or if they are an admin
+    if ($USER->id != $id && !mitms_is_manager($id) && !has_capability('moodle/site:doanything',$context)) {
         error('You cannot view this page');
     }
     if ($USER->id != $id) {
