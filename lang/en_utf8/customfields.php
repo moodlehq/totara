@@ -40,3 +40,4 @@ $string['shortnamenotunique'] = 'This short name is already in use in the depth 
 $string['specificsettings'] = 'Specific settings';
 $string['required'] = 'Is this field required?';
 $string['visible'] = 'Hidden on the index page?';
+$string['nocustomfieldcategories'] = 'To add custom fields, first create a custom field category';

@@ -167,11 +167,16 @@ if ($depthid) {
                 notify(get_string('nocustomfieldsdefined', 'customfields'));
             }
         }
-    }
 
-    // Create a new custom field dropdown menu
-    $options = customfield_list_datatypes();
-    popup_form('index.php?type='.$type.'&amp;subtype='.$subtype.'&id=0&amp;action=editfield&amp;depthid='.$depthid.'&amp;datatype=', $options, 'newfieldform','','choose','','',false,'self',get_string('createnewcustomfield', 'customfields'));
+
+        // Create a new custom field dropdown menu
+        $options = customfield_list_datatypes();
+        popup_form('index.php?type='.$type.'&amp;subtype='.$subtype.'&id=0&amp;action=editfield&amp;depthid='.$depthid.'&amp;datatype=', $options, 'newfieldform','','choose','','',false,'self',get_string('createnewcustomfield', 'customfields'));
+
+    } else {
+        // don't let them create a custom field if there are no categories for them to go in
+        print '<p>'.get_string('nocustomfieldcategories','customfields').'</p>';
+    }
 
     print '<div class="buttons">';
 
