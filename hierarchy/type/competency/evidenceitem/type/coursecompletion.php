@@ -30,6 +30,8 @@
  * @package MITMS
  */
 
+require_once $CFG->dirroot.'/hierarchy/type/competency/evidenceitem/type/evidence.php';
+
 /**
  * Course completion competency evidence type
  */
@@ -75,5 +77,90 @@ class competency_evidence_type_coursecompletion extends competency_evidence_type
      */
     public function get_activity_type() {
         return '';
+    }
+
+    /**
+     * Find user's who have completed this evidence type
+     * @access  public
+     * @return  void
+     */
+    public function cron() {
+
+        global $CFG;
+
+        // Only select course completions that have changed
+        // since an evidence item evidence was last changed
+        $sql = "
+            SELECT DISTINCT
+                ceie.id AS id,
+                cei.id AS itemid,
+                cei.competencyid,
+                cc.userid,
+                ceie.timecreated,
+                cc.timecompleted,
+                cs.proficient,
+                cs.defaultid
+            FROM
+                {$CFG->prefix}competency_evidence_items cei
+            INNER JOIN
+                {$CFG->prefix}competency co
+             ON cei.competencyid = co.id
+            INNER JOIN
+                {$CFG->prefix}course c
+             ON cei.iteminstance = c.id
+            INNER JOIN
+                {$CFG->prefix}course_completions cc
+             ON cc.course = c.id
+            INNER JOIN
+                {$CFG->prefix}competency_scale cs
+             ON co.scaleid = cs.id
+            LEFT JOIN
+                {$CFG->prefix}competency_evidence_items_evidence ceie
+             ON ceie.itemid = cei.id
+            AND ceie.userid = cc.userid
+            WHERE
+                cei.itemtype = 'coursecompletion'
+            AND cc.id IS NOT NULL
+            AND cs.proficient IS NOT NULL
+            AND cs.defaultid IS NOT NULL
+            AND
+            (
+                (
+                ceie.proficiencymeasured <> cs.proficient
+                AND
+                    (
+                        ceie.timemodified < cc.timecompleted
+                     OR ceie.timemodified < cc.timeenrolled
+                     OR ceie.timemodified < cc.timestarted
+                    )
+                )
+             OR ceie.proficiencymeasured IS NULL
+            )
+        ";
+
+        // Loop through evidence itmes, and mark as complete
+        if ($rs = get_recordset_sql($sql)) {
+            foreach ($rs as $record) {
+
+                if (debugging()) {
+                    mtrace('.', '');
+                }
+
+                $evidence = new competency_evidence_item_evidence((array)$record, false);
+
+                if ($record['timecompleted']) {
+                    $evidence->proficiencymeasured = $record['proficient'];
+                } else {
+                    $evidence->proficiencymeasured = $record['defaultid'];
+                }
+
+                $evidence->save();
+            }
+
+            if (debugging() && isset($evidence)) {
+                mtrace('');
+            }
+            $rs->close();
+        }
     }
 }
