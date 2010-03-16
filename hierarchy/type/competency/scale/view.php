@@ -153,10 +153,12 @@ if ($values) {
     $table->align = array('left');
 
     if ($can_edit) {
-        $table->head[] = get_string('defaultvalue', 'competency');
+        $table->head[] = get_string('defaultvalue', 'competency').' '.
+            helpbutton('competency/scale/default', 'Help with Default Value', 'moodle', true, false, '', true);
         $table->align[] = 'center';
 
-        $table->head[] = get_string('proficientvalue', 'competency');
+        $table->head[] = get_string('proficientvalue', 'competency').' '.
+            helpbutton('competency/scale/proficient', 'Help with Proficient Value', 'moodle', true, false, '', true);
         $table->align[] = 'center';
 
         $table->head[] = get_string('edit');
