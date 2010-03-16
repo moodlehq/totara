@@ -265,7 +265,7 @@ function competency_cron_aggregate_evidence() {
         SET
             reaggregate = 0
         WHERE
-            reaggregate < {$timestarted}
+            reaggregate <= {$timestarted}
     ";
 
     execute_sql($sql, false);
