@@ -121,7 +121,7 @@ if ($templates) {
 // Display page
 admin_externalpage_print_header();
 
-$hierarchy->display_framework_selector('template/index.php');
+$hierarchy->display_framework_selector('type/competency/template/index.php');
 
 if ($templates) {
     print_table($table);
