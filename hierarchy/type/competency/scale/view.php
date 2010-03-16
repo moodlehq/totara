@@ -13,6 +13,10 @@ $id = required_param('id', PARAM_INT);
 // Move up / down
 $moveup = optional_param('moveup', 0, PARAM_INT);
 $movedown = optional_param('movedown', 0, PARAM_INT);
+// Set proficient value
+$proficient = optional_param('proficient', 0, PARAM_INT);
+// Set default value
+$default = optional_param('default', 0, PARAM_INT);
 
 // Page setup and check permissions
 admin_externalpage_setup('competencyscales');
@@ -32,6 +36,8 @@ $str_edit = get_string('edit');
 $str_delete = get_string('delete');
 $str_moveup = get_string('moveup');
 $str_movedown = get_string('movedown');
+$str_setproficient = get_string('setproficient');
+$str_setdefault = get_string('setdefault');
 
 
 ///
@@ -80,6 +86,30 @@ if ($can_edit) {
                 error('Could not update that scale value!');
             }
             commit_sql();
+        }
+    }
+
+    // Handle proficient/default settings
+    if ($proficient || $default) {
+
+        $value = max($proficient, $default);
+
+        // Check value exists
+        if (!get_record('competency_scale_values', 'id', $value)) {
+            error('Incorrect scale value id supplied');
+        }
+
+        // Update
+        if ($proficient) {
+            $scale->proficient = $proficient;
+        }
+
+        if ($default) {
+            $scale->defaultid = $default;
+        }
+
+        if (!update_record('competency_scale', $scale)) {
+            error('Could not update competency scale');
         }
     }
 }
@@ -162,6 +192,24 @@ if ($values) {
                              "<img src=\"{$CFG->pixpath}/t/down.gif\" class=\"iconsmall\" alt=\"$str_movedown\" /></a>";
             } else {
                 $buttons[] = $spacer;
+            }
+
+            // Is this the proficient value?
+            if ($value->id == $scale->proficient) {
+                $buttons[] = 'proficient';
+            }
+            else {
+                $buttons[] = "<a href=\"{$CFG->wwwroot}/hierarchy/type/competency/scale/view.php?id={$scale->id}&proficient={$value->id}\" title=\"$str_setproficient\">".
+                            $str_setproficient."</a>";
+            }
+
+            // Is this the default value?
+            if ($value->id == $scale->defaultid) {
+                $buttons[] = 'default';
+            }
+            else {
+                $buttons[] = "<a href=\"{$CFG->wwwroot}/hierarchy/type/competency/scale/view.php?id={$scale->id}&default={$value->id}\" title=\"$str_setdefault\">".
+                            $str_setdefault."</a>";
             }
         }
 
