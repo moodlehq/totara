@@ -492,7 +492,6 @@ class reportbuilder {
         $table = new flexible_table($shortname);
         $table->define_columns($tablecolumns);
         $table->define_headers($tableheaders);
-        $table->column_style('edit','width','80px');
         $table->set_attribute('cellspacing', '0');
         $table->set_attribute('id', $shortname);
         $table->set_attribute('class', 'logtable generalbox');
@@ -508,6 +507,13 @@ class reportbuilder {
         $table->setup();
         $table->initialbars(true);
         $table->pagesize($perpage, $countfiltered);
+
+        // center the contents of all the admin columns
+        if(isset($this->_admin) && is_array($this->_admin) && count($this->_admin)>0) {
+            foreach($this->_admin as $admincol) {
+                $table->column_style($admincol['name'],'text-align','center');
+            }
+        }
 
         // check the sort session var doesn't contain old columns that no
         // longer exist
