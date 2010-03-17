@@ -45,6 +45,7 @@ if($fromform = $mform->get_data()) { // Form submitted
     $todb->assessorid = $fromform->assessorid != 0 ? $fromform->assessorid : null;
     $todb->assessorname = $fromform->assessorname;
     $todb->assessmenttype = $fromform->assessmenttype;
+    $todb->manual = 1;
     // proficiency not obtained by get_data() because form element is populated
     // via javascript after page load. Get via optional POST parameter instead.
     $todb->proficiency = $proficiency;

@@ -60,6 +60,7 @@ if($fromform = $mform->get_data()) { // Form submitted
     $todb->assessmenttype = $fromform->assessmenttype;
     $todb->proficiency = $fromform->proficiency;
     $todb->timemodified = $fromform->timemodified;
+    $todb->manual = 1;
     if(update_record('competency_evidence',$todb)) {
         redirect($returnurl);
     } else {
