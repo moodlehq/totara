@@ -379,14 +379,14 @@ function customfield_edit_category($id, $depthid=0, $redirect, $tableprefix, $ty
 
         /// Print the page
         // Display page header
-        $pagetitle = format_string($depth->fullname.' - '.$item->fullname);
+        $pagetitle = format_string(get_string($type.'depthcustomfields',$type));
         $navlinks[] = array('name' => get_string('administration'), 'link'=> '', 'type'=>'title');
         $navlinks[] = array('name' => get_string($type.'plural',$type), 'link'=> '', 'type'=>'title');
         $navlinks[] = array('name' => get_string($type.'depthcustomfields',$type), 'link'=> '', 'type'=>'title');
 
         $navigation = build_navigation($navlinks);
 
-        print_header_simple($pagetitle, '', $navigation, '', null, true, $navbaritem);
+        print_header_simple($pagetitle, '', $navigation, '', null, true, null);
         print_heading($strheading);
         $categoryform->display();
         print_footer();
