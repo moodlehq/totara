@@ -31,7 +31,7 @@ function get_custom_stickyblocks() {
     $blocks[] = $pinnedblock;
 
     $pinnedblock = new_stickyblock_def();
-    $id = get_field('block', 'id', 'name', 'calendar');
+    $id = get_field('block', 'id', 'name', 'calendar_month');
     $pinnedblock->pagetype ='MITMS';
     $pinnedblock->position = 'r';
     $pinnedblock->weight = '0';
