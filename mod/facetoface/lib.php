@@ -1052,27 +1052,6 @@ function facetoface_get_attendees($sessionid)
             ss.timecreated ASC
     ");
 
-    if (!$records) {
-        return $records;
-    }
-
-    // Get all grades at once
-    $userids = array();
-    foreach ($records as $record) {
-        $userids[] = $record->id;
-    }
-    $grading_info = grade_get_grades(reset($records)->course, 'mod', 'facetoface',
-                                     reset($records)->facetofaceid, $userids);
-
-    // Update the records
-    if (!empty($grading_info->items)) {
-        foreach ($records as $record) {
-            if (!empty($grading_info->items[0]->grades[$record->id])) {
-                $record->grade = $grading_info->items[0]->grades[$record->id]->str_grade;
-            }
-        }
-    }
-
     return $records;
 }
 
