@@ -4239,6 +4239,8 @@ function email_to_user($user, $from, $subject, $messagetext, $messagehtml='', $a
     if ($messagehtml == 'ical') {
         $messagehtml = '';
         $is_this_an_ical_request = TRUE;
+    } else {
+        $is_this_an_ical_request = FALSE;
     }
 
     if (empty($user) || empty($user->email)) {
