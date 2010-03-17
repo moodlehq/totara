@@ -128,6 +128,7 @@ function competency_cron_aggregate_evidence() {
         AND ce.userid = ceie.userid
         WHERE
             ce.reaggregate > 0
+        AND ce.reaggregate <= {$timestarted}
         AND ce.manual = 0
         ORDER BY
             competencyid,
@@ -258,7 +259,7 @@ function competency_cron_aggregate_evidence() {
         $item_evidence[$record->itemid] = $record;
     }
 
-    // Mark all users as aggregated
+    // Mark all aggregated evidence as aggregated
     $sql = "
         UPDATE
             {$CFG->prefix}competency_evidence
