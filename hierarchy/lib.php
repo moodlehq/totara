@@ -142,14 +142,33 @@ class hierarchy {
             // Parentid supplied, do not specify frameworkid as
             // sometimes it is not set correctly. And a parentid
             // is enough to get the right results
-            $whereclause = "parentid = {$parentid}";
+            return get_records_select($this->prefix, "parentid = {$parentid}", 'frameworkid, sortorder, fullname');
         }
         else {
             // If no parentid, grab the root node of this framework
-            $whereclause = "parentid = 0 AND frameworkid = {$this->frameworkid}";
+            return $this->get_all_root_items();
         }
+    }
 
-        return get_records_select($this->prefix, $whereclause, 'frameworkid, sortorder, fullname');
+    /*
+     * Returns all items at the root level (parentid=0) for the current framework (obtained
+     * from $this->frameworkid)
+     * If no framework is specified, returns root items across all frameworks
+     * This behaviour can also be forced by setting $all = true
+     *
+     * @param int $fwid Framework ID or null for all frameworks
+     * @param boolean $all If true return root items for all frameworks even if $this->frameworkid is set
+     * @return array|false
+     */
+    function get_all_root_items($all=false) {
+        if(empty($this->frameworkid) || $all) {
+            // all root level items across frameworks
+            return get_records($this->prefix, 'parentid', 0, 'frameworkid, sortorder, fullname');
+        } else {
+            // root level items for current framework only
+            $fwid = $this->frameworkid;
+            return get_records_select($this->prefix, "parentid = 0 AND frameworkid = $fwid", 'sortorder, fullname');
+        }
     }
 
     /**
@@ -213,7 +232,14 @@ class hierarchy {
             }
         }
 
-        if($children = $this->get_items_by_parent($id)) {
+        if($id == 0) {
+            // treat root level differently
+            $children = $this->get_all_root_items(true);
+        } else {
+            $children = $this->get_items_by_parent($id);
+        }
+
+        if($children) {
             foreach($children as $child) {
                 $this->make_hierarchy_list($list, $child->id, $showchildren, $shortname, $path);
             }
