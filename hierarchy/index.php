@@ -406,13 +406,13 @@
                                 "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_delete\" /></a>";
                         }
                         // TODO fix up down buttons
-                        if (true) {
+                        if (false) {
                             $buttons[] = "<a href=\"index.php?type={$type}&amp;frameworkid={$frameworkid}&amp;spage={$spage}&amp;moveup={$item->id}\" title=\"$str_moveup\">".
                                 "<img src=\"{$CFG->pixpath}/t/up.gif\" class=\"iconsmall\" alt=\"$str_moveup\" /></a> ";
                         } else {
                            $buttons[] = $str_spacer;
                         }
-                        if (true) {
+                        if (false) {
                             $buttons[] = "<a href=\"index.php?type={$type}&amp;frameworkid={$frameworkid}&amp;spage={$spage}&amp;movedown=".$item->id."\" title=\"$str_movedown\">".
                                 "<img src=\"{$CFG->pixpath}/t/down.gif\" class=\"iconsmall\" alt=\"$str_movedown\" /></a> ";
                         }
