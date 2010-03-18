@@ -19,7 +19,6 @@
     /// Hierarchy type, framework params
     $type           = required_param('type', PARAM_SAFEDIR);
     $frameworkid    = optional_param('frameworkid', 0, PARAM_INT);
-
     // Page display params
     $spage          = optional_param('spage', 0, PARAM_INT);                     // which page to show
     $perpage        = optional_param('perpage', DEFAULT_PAGE_SIZE, PARAM_INT);  // how many per page
@@ -45,6 +44,15 @@
     }
 
     $hierarchy = new $type();
+
+    $str_edit         = get_string('edit');
+    $str_delete       = get_string('delete');
+    $str_moveup       = get_string('moveup');
+    $str_movedown     = get_string('movedown');
+    $str_hide         = get_string('hide');
+    $str_show         = get_string('show');
+    $str_customfields = get_string('customfields', 'customfields');
+    $str_spacer       = "<img src=\"{$CFG->wwwroot}/pix/spacer.gif\" class=\"iconsmall\" alt=\"\" /> ";
 
     // Cache user capabilities
     $can_add_item    = has_capability('moodle/local:create'.$type, $sitecontext);
@@ -123,43 +131,52 @@
     /// Get database info
     ///
 
-    // prepare SQL to get page data
-    $select = "SELECT id, depthid, shortname, fullname, visible";
-    if(!empty($hierarchy->extrafields)) {
-        $select .= ', ' . implode(', ', $hierarchy->extrafields);
-    }
-    $from   = " FROM {$CFG->prefix}{$type}";
-    $where  = " WHERE frameworkid=$frameworkid";
-    $sort   = " ORDER BY sortorder";
-    // create the filter form
-    $filtering = new hierarchy_filtering($type, null, $returnurl);
+    // create the filter form (we need the extrasql snippet for query)
+    $filtering = new hierarchy_filtering($type, null, htmlspecialchars_decode($returnurl));
     $extrasql = $filtering->get_sql_filter();
     if ($extrasql !== '') {
         $extrasql = ' AND '.$extrasql;
     }
 
-    $matchcount = count_records_sql('SELECT COUNT (DISTINCT id) '.$from.$where);
+    // build the query to get the items
+    // not actually called until further down but need sql for the count
+    $select = "SELECT id, depthid, shortname, fullname, visible";
+    if(!empty($hierarchy->extrafields)) {
+        $select .= ', ' . implode(', ', $hierarchy->extrafields);
+    }
+    $from   = " FROM {$CFG->prefix}{$type}";
+    $where  = " WHERE frameworkid={$framework->id}";
+    $order  = " ORDER BY sortorder";
+
+    // figure out how many matches there are
     $filteredmatchcount = count_records_sql('SELECT COUNT (DISTINCT id) '.$from
         .$where.$extrasql);
-
     if ($extrasql !== '') {
+        $matchcount = count_records_sql('SELECT COUNT (DISTINCT id) '.$from.$where);
+    } else {
         $matchcount = $filteredmatchcount;
     }
 
-    if (!$framework->hidecustomfields) {
-        // Retreive visible customfields definitions
-        $sql = "SELECT cdf.id, cdf.depthid, cdf.shortname, cdf.fullname, cdf.hidden
-                FROM {$CFG->prefix}{$type}_depth_info_field cdf
-                JOIN {$CFG->prefix}{$type}_depth_info_category cdc
-                    ON cdc.id=cdf.categoryid
-                JOIN {$CFG->prefix}{$type}_depth cd
-                    ON cd.id=cdf.depthid
-                WHERE cd.frameworkid=$frameworkid AND cdf.hidden=0
-                ORDER BY cdc.depthid, cdc.sortorder, cdf.sortorder";
-        $customfields = get_records_sql($sql);
-        $customfieldtrack  = array();
-    }
- 
+    // second query to get custom field fields
+    $sql = "SELECT cdf.id,cdf.shortname,cdf.fullname,cdf.depthid, cdf.id AS fieldid
+        FROM {$CFG->prefix}{$type}_depth_info_field cdf join {$CFG->prefix}{$type}_depth cd ON cdf.depthid=cd.id
+        WHERE cd.frameworkid = {$framework->id} AND cdf.hidden = 0
+        ORDER BY cdf.categoryid, cdf.sortorder";
+    $customfieldcols = get_records_sql($sql);
+
+    // third query to get custom field data
+    // these are split because of the way moodle aggregates data by id
+    // if we use field id as the key we only get one data item per field, if we use competency id
+    // we don't get any rows for fields without any data
+    $sql = "SELECT cdd.id, cdd.{$type}id AS itemid, cdf.depthid, cdf.id AS fieldid,cdd.data
+        FROM {$CFG->prefix}{$type}_depth_info_field cdf
+        JOIN {$CFG->prefix}{$type}_depth cd ON cdf.depthid=cd.id
+        LEFT JOIN {$CFG->prefix}{$type}_depth_info_data cdd ON cdf.id=cdd.fieldid
+        WHERE cd.frameworkid = {$framework->id} AND cdf.hidden = 0";
+
+    $customfielddata = get_records_sql($sql);
+    // remove any records with no cdd.id set (fields without values)
+    unset($customfielddata['']);
 
     ///
     /// Process any actions
@@ -195,7 +212,7 @@
             $fromform->hidecustomfields = 0;
         }
         $todb->hidecustomfields = $fromform->hidecustomfields;
-        
+
         if(!isset($fromform->showitemfullname)) {
             $fromform->showitemfullname = 0;
         }
@@ -220,26 +237,213 @@
         $display_options->set_data($toform);
     }
 
+    //
+    // Prepare table info
+    //
+
+    // build the header column from depth information
+    $myhead = array();
+    foreach($depths as $depth) {
+        $row = new object();
+        $row->type = 'depth';
+        $row->value = $depth;
+        $myhead[] = $row;
+        if (!$framework->hidecustomfields && isset($customfieldcols) && is_array($customfieldcols)) {
+            foreach ($customfieldcols AS $customfield) {
+                if ($depth->id == $customfield->depthid) {
+                    $row = new object();
+                    $row->type = 'custom';
+                    $row->value = $customfield;
+                    $myhead[] = $row;
+                }
+            }
+        }
+    }
+
+    // show settings column
+    if ($editingon) {
+        $row = new object();
+        $row->type = 'settings';
+        $row->value->fullname = get_string('settings');
+        $myhead[] = $row;
+    }
+
+    // show any extra columns
+    if (!empty($hierarchy->extrafields)) {
+        foreach($hierarchy->extrafields as $extrafield) {
+            $row = new object();
+            $row->type = 'extrafield';
+            $row->extrafield = $extrafield;
+            $row->value->fullname = get_string($extrafield, $type);
+            $myhead[] = $row;
+        }
+    }
+
+
+    // display options
+    $displaydepth = ($framework->showdepthfullname) ? 'fullname' : 'shortname';
+    $displayitem = ($framework->showitemfullname) ? 'fullname' : 'shortname';
+
+    $table_cols = array();
+    $table_cols_cf = array();
+    $table_data = array();
+
+    // build header row
+    foreach($myhead AS $head) {
+        if ($head->type == 'depth') {
+            // depth level header
+            $header = $head->value->$displaydepth;
+
+            if ($editingon && $can_edit_depth) {
+                $header .= " <a href=\"{$CFG->wwwroot}/hierarchy/depth/edit.php?type={$type}&amp;id={$head->value->id}\"
+                    title=\"$str_edit\">".
+                    "<img src=\"{$CFG->pixpath}/t/edit.gif\" class=\"iconsmall\" alt=\"$str_edit\" /></a> ".
+                    "<a href=\"{$CFG->wwwroot}/customfield/index.php?type={$type}&amp;subtype=depth&amp;depthid={$head->value->id}\"
+                    title=\"$str_customfields\">".
+                    "<img src=\"{$CFG->pixpath}/t/customfields.gif\" class=\"iconsmall\" alt=\"$str_customfields\" /></a> ".
+                    "<a href=\"{$CFG->wwwroot}/hierarchy/depth/delete.php?type={$type}&amp;id={$head->value->id}\"
+                    title=\"$str_delete\">".
+                    "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_delete\" /></a>";
+            }
+            $table_cols[] = $header;
+
+        } else if ($head->type == 'custom') {
+            // custom field header
+            $header = $head->value->$displaydepth;
+
+            if ($editingon && $can_edit_depth) {
+                $header .= ' <a title="'.$str_edit.'" href="'.$CFG->wwwroot.'/customfield/index.php?type='.$type.'&amp;subtype=depth&amp;depthid='.$depth->id.'&amp;id='.$head->value->id.'&amp;action=editfield"><img src="'.$CFG->pixpath.'/t/edit.gif" alt="'.$str_edit.'" class="iconsmall" /></a>';
+            }
+            $table_cols[] = $header;
+            $table_cols_cf[]= $header; // keep track of custom field headers for styling below
+        } else {
+            // extrafield or settings header
+            $table_cols[] = $head->value->fullname;
+        }
+    }
+
+    $table = new flexible_table($type.'-framework-index-'.$frameworkid);
+
+    $table->define_columns($table_cols);
+    $table->define_headers($table_cols);
+    // center custom field columns
+    foreach ($table_cols_cf as $table_col_cf) {
+        $table->column_style($table_col_cf,'text-align','center');
+    }
+    $table->column_style('Settings','width','80px');
+    $table->set_attribute('cellspacing', '0');
+    $table->set_attribute('id', $type);
+    $table->set_attribute('class', 'generaltable generalbox');
+
+    $table->set_control_variables(array(
+                TABLE_VAR_SORT    => 'ssort',
+                TABLE_VAR_HIDE    => 'shide',
+                TABLE_VAR_SHOW    => 'sshow',
+                TABLE_VAR_IFIRST  => 'sifirst',
+                TABLE_VAR_ILAST   => 'silast',
+                TABLE_VAR_PAGE    => 'spage'
+                ));
+    $table->setup();
+
+    $table->initialbars(true);
+
+
+    $table->pagesize($perpage, $filteredmatchcount);
+
+
+    $itemlist = get_records_sql($select.$from.$where.$extrasql.$order, $table->get_page_start(), $table->get_page_size());
+
+    // loop round data rows
+    $i = 0;
+    if (isset($itemlist) && is_array($itemlist)) {
+        foreach($itemlist AS $rowid => $item) {
+            $table_data[$i] = array();
+            // loop round columns
+            $j = 0;
+            foreach($myhead AS $head) {
+                if ($head->type == 'depth') {
+                    if ($item->depthid == $head->value->id) {
+                        $cssclass = !$item->visible ? 'class="dimmed"' : '';
+                        $cell = "<a $cssclass href=\"{$CFG->wwwroot}/hierarchy/item/view.php?type={$type}&amp;id={$item->id}\">{$item->$displayitem}</a>";
+                        $table_data[$i][$j] = $cell;
+                    }
+                }
+                if ($head->type == 'custom') {
+                    // check each custom field
+                    foreach($customfielddata AS $customfield) {
+                        if ($customfield->fieldid == $head->value->fieldid && $customfield->itemid == $rowid) {
+                            $table_data[$i][$j] = $customfield->data;
+                        }
+                    }
+                }
+                if ($head->type == 'extrafield') {
+                    foreach($hierarchy->extrafields as $extrafield) {
+                        if($head->extrafield == $extrafield) {
+                            $table_data[$i][$j] = "<a href=\"{$CFG->wwwroot}/hierarchy/item/view.php?type={$type}&amp;id={$item->id}\">{$item->$extrafield}</a>";
+
+                        }
+                    }
+                }
+                if ($head->type == 'settings') {
+
+                // Add edit and delete buttons
+                    if ($editingon) {
+                        $buttons = array();
+                        if ($can_edit_item) {
+                            $buttons[] = "<a href=\"{$CFG->wwwroot}/hierarchy/item/edit.php?type={$type}&amp;frameworkid={$frameworkid}&amp;id={$item->id}\" title=\"$str_edit\">".
+                                "<img src=\"{$CFG->pixpath}/t/edit.gif\" class=\"iconsmall\" alt=\"$str_edit\" /></a>";
+
+                            if ($item->visible) {
+                                $buttons[] = "<a href=\"{$CFG->wwwroot}/hierarchy/index.php?type={$type}&amp;spage={$spage}&amp;frameworkid={$frameworkid}&amp;hide={$item->id}\" title=\"$str_hide\">".
+                                    "<img src=\"{$CFG->pixpath}/t/hide.gif\" class=\"iconsmall\" alt=\"$str_hide\" /></a>";
+                            } else {
+                                $buttons[] = "<a href=\"{$CFG->wwwroot}/hierarchy/index.php?type={$type}&amp;spage={$spage}&amp;frameworkid={$frameworkid}&amp;show={$item->id}\" title=\"$str_show\">".
+                                    "<img src=\"{$CFG->pixpath}/t/show.gif\" class=\"iconsmall\" alt=\"$str_show\" /></a>";
+                            }
+                        }
+                        if ($can_delete_item) {
+                            $buttons[] = "<a href=\"{$CFG->wwwroot}/hierarchy/item/delete.php?type={$type}&amp;spage={$spage}&amp;frameworkid={$frameworkid}&amp;id={$item->id}&amp;spage={$spage}\" title=\"$str_delete\">".
+                                "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_delete\" /></a>";
+                        }
+                        // TODO fix up down buttons
+                        if (true) {
+                            $buttons[] = "<a href=\"index.php?type={$type}&amp;frameworkid={$frameworkid}&amp;spage={$spage}&amp;moveup={$item->id}\" title=\"$str_moveup\">".
+                                "<img src=\"{$CFG->pixpath}/t/up.gif\" class=\"iconsmall\" alt=\"$str_moveup\" /></a> ";
+                        } else {
+                           $buttons[] = $str_spacer;
+                        }
+                        if (true) {
+                            $buttons[] = "<a href=\"index.php?type={$type}&amp;frameworkid={$frameworkid}&amp;spage={$spage}&amp;movedown=".$item->id."\" title=\"$str_movedown\">".
+                                "<img src=\"{$CFG->pixpath}/t/down.gif\" class=\"iconsmall\" alt=\"$str_movedown\" /></a> ";
+                        }
+                    }
+                    $table_data[$i][$j] = implode($buttons, ' ');
+
+                }
+                // if nothing set for this cell, fill with a dummy value
+                if (!isset($table_data[$i][$j])) {
+                    $table_data[$i][$j] = '';
+                }
+                $j++;
+            }
+            $table->add_data($table_data[$i]);
+            $i++;
+        }
+    }
+
     // Download form
     $download = new hierarchy_download_form(null, array('type'=>$type,'frameworkid'=>$frameworkid));
     if ($fromform = $download->get_data()) {
         require_once($CFG->dirroot.'/hierarchy/get_download_data.php');
         redirect($CFG->wwwroot.'/hierarchy/download.php?type='.$type);
-    }    
-  
+    }
+
+
+
     ///
     /// Generate / display page
     ///
-    $str_edit         = get_string('edit');
-    $str_delete       = get_string('delete');
-    $str_moveup       = get_string('moveup');
-    $str_movedown     = get_string('movedown');
-    $str_hide         = get_string('hide');
-    $str_show         = get_string('show');
-    $str_customfields = get_string('customfields', 'customfields');
-    $str_spacer       = "<img src=\"{$CFG->wwwroot}/pix/spacer.gif\" class=\"iconsmall\" alt=\"\" /> ";
 
-    // Display page
     admin_externalpage_print_header();
 
     $hierarchy->display_framework_selector();
@@ -250,6 +454,9 @@
         print_heading("$matchcount ".get_string('featureplural', $type));
     }
 
+
+//////////////////////////////////////////////////////////////////////////
+/*
     $colcount = 0;
 
     $tablecolumns   = array(); // all columns
@@ -547,6 +754,8 @@
         }
         rs_close($itemlist);
     }
+*/
+/////////////////////////////////////////////////////////////////////
 
     // Add filters
     $filtering->display_add();
@@ -567,7 +776,7 @@
     // Display table
     $table->print_html();
 
-    if (!$itemsfound) {
+    if ($matchcount == 0) {
         echo "<i>".get_string('no'.$type, $type)."</i><br><br>";
     } else {
         $download->display();

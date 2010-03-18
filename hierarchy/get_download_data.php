@@ -5,73 +5,25 @@
 // Called from download.php
 //
 
-// build the header column from depth information
-$myhead = array();
-foreach($depths as $depth) {
-    $row = new object();
-    $row->type = 'depth';
-    $row->value = $depth;
-    $myhead[] = $row;
-    if(is_array($customfields)) {
-        foreach ($customfields AS $customfield) {
-            if ($depth->id == $customfield->depthid) {
-                $row = new object();
-                $row->type = 'custom';
-                $row->value = $customfield;
-                $myhead[] = $row;
-            }
-        }
-    }
-}
-
-if (!empty($hierarchy->extrafield)) {
-    $row = new object();
-    $row->type = $hierarchy->extrafield;
-    $row->value->fullname = get_string($hierarchy->extrafield, $type);
-    $myhead[] = $row;
-}
-
-// query to get the items
-$select = "SELECT id, depthid, shortname, fullname, visible";
-if (!empty($hierarchy->extrafield)) {
-    $select .= ', '.$hierarchy->extrafield;
-}
-$from   = " FROM {$CFG->prefix}{$type}";
-$where  = " WHERE frameworkid={$framework->id} {$extrasql}";
-$order  = " ORDER BY sortorder";
-$myitemlist = get_records_sql($select.$from.$where.$order);
-
-// query to get custom fields
-$sql = "SELECT cdd.id,c.id as itemid, cdf.depthid, cdf.id as fieldid, cdd.data
-            FROM {$CFG->prefix}{$type} c
-            LEFT OUTER JOIN {$CFG->prefix}{$type}_depth_info_field cdf
-            ON cdf.depthid=c.depthid
-            LEFT OUTER JOIN {$CFG->prefix}{$type}_depth_info_data cdd
-            ON cdd.fieldid=cdf.id AND cdd.{$type}id=c.id
-            WHERE c.frameworkid=$framework->id AND cdf.hidden=0
-            ORDER BY c.sortorder, cdf.categoryid, cdf.sortorder";
-$mycustomfields = get_records_sql($sql);
-// remove any records with no cdd.id set (fields without values)
-unset($mycustomfields['']);
-
-// display options
-$displaydepth = ($framework->showdepthfullname) ? 'fullname' : 'shortname';
-$displayitem = ($framework->showitemfullname) ? 'fullname' : 'shortname';
+// query to get the items (no pagination this time)
+$exportitemlist = get_records_sql($select.$from.$where.$extrasql.$order);
 
 $download_cols = array();
 $download_data = array();
-
-// build header row
+// build header row (use existing info)
 foreach($myhead AS $head) {
-    if ($head->type == 'depth' || $head->type == 'custom') {
+    // print all headings except settings
+    if ($head->type == 'depth' || ($head->type == 'custom' && !$framework->hidecustomfields)) {
         $download_cols[] = $head->value->$displaydepth;
-    } else {
+        //TODO get ride of settings column in export without breaking
+        // evidence count or other columns
+    } else { // if ($head->type == 'extrafield') {
         $download_cols[] = $head->value->fullname;
     }
 }
 // loop round data rows
 $i = 0;
-foreach($myitemlist AS $rowid => $item) {
+foreach($exportitemlist AS $rowid => $item) {
     $download_data[$i] = array();
     // loop round columns
     $j = 0;
@@ -83,16 +35,16 @@ foreach($myitemlist AS $rowid => $item) {
         }
         if ($head->type == 'custom') {
             // check each custom field
-            foreach($mycustomfields AS $unused => $mycustomfield) {
-                if ($mycustomfield->fieldid == $head->value->id && $mycustomfield->itemid == $rowid) {
-                    $download_data[$i][$j] = $mycustomfield->data;
+            foreach($customfielddata AS $customfield) {
+                if ($customfield->fieldid == $head->value->fieldid && $customfield->itemid == $rowid) {
+                    $download_data[$i][$j] = $customfield->data;
                 }
             }
         }
-        if (!empty($hierarchy->extrafield)) {
-            if ($head->type == $hierarchy->extrafield) {
-                if($item->id == $rowid) {
-                    $download_data[$i][$j] = $item->{$hierarchy->extrafield};
+        if ($head->type == 'extrafield') {
+            foreach($hierarchy->extrafields as $extrafield) {
+                if($head->extrafield == $extrafield) {
+                    $download_data[$i][$j] = $item->$extrafield;
                 }
             }
         }
@@ -100,7 +52,6 @@ foreach($myitemlist AS $rowid => $item) {
     }
     $i++;
 }
-
 // save data to session for use on download page
 $SESSION->download_cols = $download_cols;
 $SESSION->download_data = $download_data;
