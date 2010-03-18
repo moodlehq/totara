@@ -114,6 +114,13 @@ $string['notavailable'] = 'Not available';
 $string['recordoflearning'] = 'Record of Learning';
 $string['viewmyteam'] = 'View My Team';
 
+// My Current Courses block
+$string['mycourses'] = 'My Courses';
+$string['notenrolled'] = '<i>You are not currently enrolled in any courses.</i>';
+$string['completed'] = 'Completed';
+$string['enrolled'] = 'Enrolled';
+$string['started'] = 'Started';
+
 // Hierarchy
 $string['framework'] = 'Framework';
 $string['template'] = 'Template';
@@ -206,8 +213,6 @@ $string['search'] = 'Search';
 $string['clearform'] = 'Clear';
 $string['searchby'] = 'Search by';
 $string['myteam'] = 'My Team';
-$string['mycurrentcourses'] = 'My Current Courses';
-$string['nocurrentcourses'] = '<i>You do not have any current courses.</i>';
 $string['noteammembers'] = '<i>You do not currently have any team members.</i>';
 $string['alllearningrecords'] = 'All Learning Records';
 $string['allf2fbookings'] = 'All Face to Face Bookings';

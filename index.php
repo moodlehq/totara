@@ -190,7 +190,7 @@
     if (isloggedin() and !isguest() and isset($CFG->courseprogress) and $CFG->courseprogress) {
         if (file_exists($CFG->dirroot.'/local/mitms.php')) {
             require_once($CFG->dirroot.'/local/mitms.php');
-            mitms_print_my_current_courses();
+            mitms_print_my_courses();
         }
     }
 

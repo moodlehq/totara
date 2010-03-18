@@ -309,41 +309,54 @@ function mitms_print_report_manager($return=false) {
     echo $returnstr;
 }
 
-function mitms_print_my_current_courses() {
+function mitms_print_my_courses() {
     global $CFG,$USER;
     $content = '';
-    $sql = "SELECT c.id, c.fullname, cc.timestarted, cc.timecompleted
+    $sql = "SELECT c.id, c.fullname, cc.timeenrolled, cc.timestarted, cc.timecompleted
         FROM {$CFG->prefix}course_completions cc
         LEFT JOIN {$CFG->prefix}course c ON cc.course=c.id
         WHERE userid = {$USER->id} AND cc.timestarted IS NOT NULL
-        ORDER BY cc.timestarted DESC,cc.timecompleted DESC LIMIT 5";
+        ORDER BY cc.timeenrolled DESC, cc.timestarted DESC,cc.timecompleted DESC LIMIT 10";
     $data = array();
     if($courses = get_records_sql($sql)) {
         $content .= '<table class="centerblock">
             <tr><th class="course">'.get_string('course').'</th>'.
             '<th class="status">'.get_string('status').'</th>'.
-            '<th class="startdate">'.get_string('startdate','local').'</th>'.
-            '<th class="completeddate">'.get_string('completeddate','local').'</th></tr>';
+            '<th class="enroldate">'.get_string('enrolled', 'local').'</th>'.
+            '<th class="startdate">'.get_string('started','local').'</th>'.
+            '<th class="completeddate">'.get_string('completed','local').'</th></tr>';
         foreach($courses as $course) {
             $id = $course->id;
             $name = $course->fullname;
+            $enrolled = $course->timeenrolled;
             $completed = $course->timecompleted;
-            $started = $course->timestarted;
-            $status = isset($completed) ? get_string('completed','local') : get_string('inprogress','local');
+            $status = '';
+            if ($course->timestarted == 0) {
+                $status  = get_string('notyetstarted','completion');
+            } elseif (isset($completed)) {
+                $status = get_string('completed','local');
+            } else {
+                $status = get_string('inprogress','local');
+            }
+            $starteddate = '';
+            if ($course->timestarted != 0) {
+                $starteddate = userdate($course->timestarted, '%e %b %y');
+            } 
+            $enroldate = isset($enrolled) ? userdate($enrolled, '%e %b %y') : null;
             $completeddate = isset($completed) ? userdate($completed, '%e %b %y') : null;
-            $starteddate = isset($started) ? userdate($started, '%e %b %y') : null;
             $content .= "<tr><td class=\"course\"><a href=\"{$CFG->wwwroot}/course/view.php?id={$id}\" title=\"$name\">$name</a></td>";
-            $content .=     "<td class=\"status\">$status</td><td class=\"startdate\">$starteddate</td><td class=\"completeddate\">$completeddate</td></tr>\n";
+            $content .=     "<td class=\"status\">$status</td><td class=\"enroldate\">$enroldate</td>";
+            $content .=     "<td class=\"startdate\">$starteddate</td><td class=\"completeddate\">$completeddate</td></tr>\n";
         }
         $content .= "</table>\n";
-        $content .= '<div class="mycourses"><a href="'.$CFG->wwwroot.'/my/coursecompletions.php?id='.$USER->id.'">'.get_string('allmycourses','local').'</a></div>';
+        $content .= '<div class="allmycourses"><a href="'.$CFG->wwwroot.'/my/coursecompletions.php?id='.$USER->id.'">'.get_string('allmycourses','local').'</a></div>';
     }
 
     if (empty($content)) {
-        $content = get_string('nocurrentcourses','local');
+        $content = get_string('notenrolled','local');
     }
-    echo '<div class="mycurrentcourses">';
-    echo '<div class="header"><div class="title"><h2>'.get_string('mycurrentcourses','local').'</h2></div></div><div class="content">';
+    echo '<div class="mycourses">';
+    echo '<div class="header"><div class="title"><h2>'.get_string('mycourses','local').'</h2></div></div><div class="content">';
     echo $content;
     echo '</div></div>';
 }
