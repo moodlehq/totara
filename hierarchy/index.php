@@ -429,6 +429,9 @@
             $table->add_data($table_data[$i]);
             $i++;
         }
+    } else {
+        // dummy row so table headings are shown
+        $table->add_data(array());
     }
 
     // Download form
