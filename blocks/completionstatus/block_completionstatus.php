@@ -165,23 +165,24 @@ class block_completionstatus extends block_base {
         // Has this user completed any criteria?
         $criteriacomplete = $info->count_course_user_data($USER->id);
 
+        // Load course completion
+        $params = array(
+            'userid' => $USER->id,
+            'course' => $COURSE->id,
+        );
+        $ccompletion = new completion_completion($params);
+
         if ($pending_update) {
             $this->content->text .= '<i>'.get_string('pending', 'completion').'</i>';
         } else if ($coursecomplete) {
             $this->content->text .= get_string('complete');
 
             // Check for RPL
-            $params = array(
-                'userid' => $USER->id,
-                'course' => $COURSE->id,
-            );
-            $ccompletion = new completion_completion($params);
-
             if (strlen($ccompletion->rpl)) {
                 $this->content->text .= ' '. get_string('viarpl', 'completion');
             }
 
-        } else if (!$criteriacomplete) {
+        } else if (!$criteriacomplete && !$ccompletion->timestarted) {
             $this->content->text .= '<i>'.get_string('notyetstarted', 'completion').'</i>';
         } else {
             $this->content->text .= '<i>'.get_string('inprogress','completion').'</i>';
