@@ -129,21 +129,22 @@ $coursecomplete = $info->is_course_complete($user->id);
 // Has this user completed any criteria?
 $criteriacomplete = $info->count_course_user_data($user->id);
 
+// Load course completion
+$params = array(
+    'userid' => $user->id,
+    'course' => $course->id,
+);
+$ccompletion = new completion_completion($params);
+
 if ($coursecomplete) {
     echo get_string('complete');
 
     // Check for RPL
-    $params = array(
-        'userid' => $user->id,
-        'course' => $course->id,
-    );
-    $ccompletion = new completion_completion($params);
-
     if (strlen($ccompletion->rpl)) {
         echo ' '.get_string('viarpl', 'completion');
     }
 
-} else if (!$criteriacomplete) {
+} else if (!$criteriacomplete && !$ccompletion->timestarted) {
     echo '<i>'.get_string('notyetstarted', 'completion').'</i>';
 } else {
     echo '<i>'.get_string('inprogress','completion').'</i>';
