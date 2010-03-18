@@ -523,7 +523,7 @@ yuiDialog_handler_treeview.prototype._make_hierarchy = function(parent_element) 
     var handler = this;
 
     // Load courses on category click
-    $('span.folder, div.hitarea', parent_element).live('click', function() {
+    $('span.folder, div.hitarea', parent_element).click(function() {
 
         // Get parent
         var par = $(this).parent();
