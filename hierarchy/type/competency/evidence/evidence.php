@@ -48,11 +48,21 @@ class competency_evidence extends data_object {
      */
     public $required_fields = array(
         'id', 'userid', 'competencyid', 'positionid', 'organisationid',
-        'assessorid', 'assessorname', 'assessortype', 'proficiency',
+        'assessorid', 'assessorname', 'assessmenttype', 'proficiency',
         'timecreated', 'timemodified', 'reaggregate'
     );
 
+    public $userid;
+    public $competencyid;
+    public $positionid;
+    public $organisationid;
+    public $assessorid;
+    public $assessorname;
+    public $assessmenttype;
+    public $proficiency;
     public $timecreated;
+    public $timemodified;
+    public $reaggregate;
 
     /**
      * Finds and returns a data_object instance based on params.
@@ -65,16 +75,18 @@ class competency_evidence extends data_object {
     }
 
     /**
-     * Trigger a reaggregation of evidence items
+     * Trigger a reaggregation of this evidence item
      *
      * @return  void
      */
     public function trigger_reaggregation() {
+        $this->reaggregate = time();
+
         return $this->_save();
     }
 
     /**
-     * Update the user's proficiency
+     * Update the user's proficiency for this evidence item
      *
      * @param   $proficiency    int
      * @return  void
@@ -82,11 +94,18 @@ class competency_evidence extends data_object {
     public function update_proficiency($proficiency) {
         $this->proficiency = $proficiency;
 
-        return $this->_save();
+        // Save new proficiency value
+        $this->_save();
+
+        // Trigger reaggregation of parent records as
+        // obviously their child evidence items have changed
+        $this->_trigger_parent_reaggregation();
     }
 
     /**
-     * Save an evidence record
+     * Save an evidence record (create or update as neccessary)
+     *
+     * Also, create any parent records if they do not exist.
      *
      * @return  void
      */
@@ -99,7 +118,6 @@ class competency_evidence extends data_object {
         }
 
         $this->timemodified = $now;
-        $this->reaggregate = $now;
 
         // Update database
         if (!$this->id) {
@@ -112,5 +130,31 @@ class competency_evidence extends data_object {
                 error('Could not update evidence item evidence');
             }
         }
+    }
+
+    /**
+     * Trigger reaggregation of any parent competencies
+     *
+     * @return  void
+     */
+    private function _trigger_parent_reaggregation() {
+
+        // Check if this competency has a parent
+        $competency = get_record('competency', 'id', $this->competencyid);
+
+        if (!$competency->parentid) {
+            return;
+        }
+
+        $pevidence = new competency_evidence(
+            array(
+                'competencyid'  => $competency->parentid,
+                'userid'        => $this->userid
+            )
+        );
+
+        // Save parent's competency evidence. This will create the record
+        // if it doesn't exist, and recursively call parent reaggregation
+        $pevidence->trigger_reaggregation();
     }
 }

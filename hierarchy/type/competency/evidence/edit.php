@@ -4,6 +4,8 @@ require_once('../../../../config.php');
 require_once($CFG->dirroot.'/hierarchy/type/position/lib.php');
 require_once($CFG->dirroot.'/local/js/setup.php');
 require_once('competency_evidence_form.php');
+require_once('evidence.php');
+
 ///
 /// Setup / loading data
 ///
@@ -50,21 +52,31 @@ if($fromform = $mform->get_data()) { // Form submitted
         print_error('error:unknownbuttonclicked', 'local', $returnurl);
     }
 
-    $todb = new object();
-    $todb->id = $fromform->id;
-    // don't include userid or competencyid as form won't change them
+    $todb = new competency_evidence(
+        array(
+            'id'            => $fromform->id,
+            'competencyid'  => $fromform->competencyid,
+            'userid'        => $fromform->userid
+        )
+    );
+
+    if (!$todb->id) {
+        print_error('error:evidencecouldnotbefound', 'local', $returnurl);
+    }
+
     $todb->positionid = $fromform->positionid != 0 ? $fromform->positionid : null;
     $todb->organisationid = $fromform->organisationid != 0 ? $fromform->organisationid : null;
     $todb->assessorid = $fromform->assessorid != 0 ? $fromform->assessorid : null;
-    $todb->assessorname = $fromform->assessorname;
-    $todb->assessmenttype = $fromform->assessmenttype;
-    $todb->proficiency = $fromform->proficiency;
-    $todb->timemodified = $fromform->timemodified;
+    $todb->assessorname = $fromform->assessorname ? $fromform->assessorname : '';
+    $todb->assessmenttype = $fromform->assessmenttype ? $fromform->assessmenttype : '';
     $todb->manual = 1;
-    if(update_record('competency_evidence',$todb)) {
+
+    $todb->update_proficiency($fromform->proficiency);
+
+    if ($todb->id) {
         redirect($returnurl);
     } else {
-        redirect($returnurl, 'Record could not be updated');
+        redirect($returnurl, get_string('recordnotupdated','local'));
     }
 
 } else if ($competencyevidence != null) { // editing form

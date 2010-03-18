@@ -174,7 +174,6 @@ class competency_evidence_type_activitycompletion extends competency_evidence_ty
                 cei.itemtype = 'activitycompletion'
             AND cmc.id IS NOT NULL
             AND cs.proficient IS NOT NULL
-            AND cs.defaultid IS NOT NULL
             AND
             (
                 (
@@ -197,8 +196,12 @@ class competency_evidence_type_activitycompletion extends competency_evidence_ty
 
                 if (in_array($record['completionstate'], array(COMPLETION_COMPLETE, COMPLETION_COMPLETE_PASS))) {
                     $evidence->proficiencymeasured = $record['proficient'];
-                } else {
+                }
+                elseif ($record['defaultid']) {
                     $evidence->proficiencymeasured = $record['defaultid'];
+                }
+                else {
+                    continue;
                 }
 
                 $evidence->save();

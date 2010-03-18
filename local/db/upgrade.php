@@ -1165,6 +1165,100 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && add_field($table, $field);
     }
 
+    if ($result && $oldversion < 2010031800) {
+    /// Add missing indexes
+        $table = new XMLDBTable('competency');
+
+        $index = new XMLDBIndex('parentid');
+        $index->setAttributes(XMLDB_INDEX_NOTUNIQUE, array('parentid'));
+        $result = $result && add_index($table, $index);
+
+        $index = new XMLDBIndex('frameworkid');
+        $index->setAttributes(XMLDB_INDEX_NOTUNIQUE, array('frameworkid'));
+        $result = $result && add_index($table, $index);
+
+        $index = new XMLDBIndex('depthid');
+        $index->setAttributes(XMLDB_INDEX_NOTUNIQUE, array('depthid'));
+        $result = $result && add_index($table, $index);
+
+        $index = new XMLDBIndex('scaleid');
+        $index->setAttributes(XMLDB_INDEX_NOTUNIQUE, array('scaleid'));
+        $result = $result && add_index($table, $index);
+
+
+        $table = new XMLDBTable('competency_evidence');
+
+        $index = new XMLDBIndex('competencyid');
+        $index->setAttributes(XMLDB_INDEX_NOTUNIQUE, array('competencyid'));
+        $result = $result && add_index($table, $index);
+
+        $index = new XMLDBIndex('userid');
+        $index->setAttributes(XMLDB_INDEX_NOTUNIQUE, array('userid'));
+        $result = $result && add_index($table, $index);
+
+        $index = new XMLDBIndex('reaggregate');
+        $index->setAttributes(XMLDB_INDEX_NOTUNIQUE, array('reaggregate'));
+        $result = $result && add_index($table, $index);
+
+        $index = new XMLDBIndex('manual');
+        $index->setAttributes(XMLDB_INDEX_NOTUNIQUE, array('manual'));
+        $result = $result && add_index($table, $index);
+
+
+        $table = new XMLDBTable('competency_evidence_items');
+
+        $index = new XMLDBIndex('competencyid');
+        $index->setAttributes(XMLDB_INDEX_NOTUNIQUE, array('competencyid'));
+        $result = $result && add_index($table, $index);
+
+        $index = new XMLDBIndex('itemtype');
+        $index->setAttributes(XMLDB_INDEX_NOTUNIQUE, array('itemtype'));
+        $result = $result && add_index($table, $index);
+
+        $index = new XMLDBIndex('iteminstance');
+        $index->setAttributes(XMLDB_INDEX_NOTUNIQUE, array('iteminstance'));
+        $result = $result && add_index($table, $index);
+
+
+        $table = new XMLDBTable('competency_evidence_items_evidence');
+
+        $index = new XMLDBIndex('itemid');
+        $index->setAttributes(XMLDB_INDEX_NOTUNIQUE, array('itemid'));
+        $result = $result && add_index($table, $index);
+
+        $index = new XMLDBIndex('userid');
+        $index->setAttributes(XMLDB_INDEX_NOTUNIQUE, array('userid'));
+        $result = $result && add_index($table, $index);
+
+        $index = new XMLDBIndex('proficiencymeasured');
+        $index->setAttributes(XMLDB_INDEX_NOTUNIQUE, array('proficiencymeasured'));
+        $result = $result && add_index($table, $index);
+
+        $index = new XMLDBIndex('timemodified');
+        $index->setAttributes(XMLDB_INDEX_NOTUNIQUE, array('timemodified'));
+        $result = $result && add_index($table, $index);
+
+
+        $table = new XMLDBTable('competency_scale');
+
+        $index = new XMLDBIndex('proficient');
+        $index->setAttributes(XMLDB_INDEX_NOTUNIQUE, array('proficient'));
+        $result = $result && add_index($table, $index);
+    }
+
+    if ($result && $oldversion < 2010031801) {
+    /// Remove not null constraints from competency_evidence
+        $table = new XMLDBTable('competency_evidence');
+
+        $field = new XMLDBField('assessorname');
+        $field->setAttributes(XMLDB_TYPE_CHAR, '100', null, null, null, null);
+        $result = $result && change_field_type($table, $field);
+
+        $field = new XMLDBField('assessmenttype');
+        $field->setAttributes(XMLDB_TYPE_CHAR, '100', null, null, null, null);
+        $result = $result && change_field_type($table, $field);
+    }
+
     return $result;
 
 }

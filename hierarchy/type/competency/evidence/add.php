@@ -4,6 +4,8 @@ require_once('../../../../config.php');
 require_once($CFG->dirroot.'/hierarchy/type/position/lib.php');
 require_once($CFG->dirroot.'/local/js/setup.php');
 require_once('competency_evidence_form.php');
+require_once('evidence.php');
+
 ///
 /// Setup / loading data
 ///
@@ -37,24 +39,37 @@ if($fromform = $mform->get_data()) { // Form submitted
     if (empty($fromform->submitbutton)) {
         print_error('error:unknownbuttonclicked', 'local', $returnurl);
     }
-    $todb = new object();
-    $todb->userid = $fromform->userid;
-    $todb->competencyid = $fromform->competencyid;
+
+    $todb = new competency_evidence(
+        array(
+            'competencyid'  => $fromform->competencyid,
+            'userid'        => $fromform->userid
+        )
+    );
+
+    if ($todb->id) {
+        print_error('error:evidencealreadyexists', 'local', $returnurl);
+    }
+
     $todb->positionid = $fromform->positionid != 0 ? $fromform->positionid : null;
     $todb->organisationid = $fromform->organisationid != 0 ? $fromform->organisationid : null;
     $todb->assessorid = $fromform->assessorid != 0 ? $fromform->assessorid : null;
     $todb->assessorname = $fromform->assessorname;
     $todb->assessmenttype = $fromform->assessmenttype;
     $todb->manual = 1;
+
     // proficiency not obtained by get_data() because form element is populated
     // via javascript after page load. Get via optional POST parameter instead.
-    $todb->proficiency = $proficiency;
-    $todb->timecreated = time();
-    $todb->timemodified = $fromform->timemodified;
-    if(insert_record('competency_evidence',$todb)) {
+    if (!$proficiency) {
+        print_error('error:noproficiencysupplied', 'local', $returnurl);
+    }
+
+    $todb->update_proficiency($proficiency);
+
+    if ($todb->id) {
         redirect($returnurl);
     } else {
-        redirect($returnurl, get_string('recordnotreated','local'));
+        redirect($returnurl, get_string('recordnotcreated','local'));
     }
 
 } else {

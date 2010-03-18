@@ -33,16 +33,56 @@ require_once $CFG->dirroot.'/hierarchy/type/competency/evidence/evidence.php';
  *
  * The order in which we do things is important
  *  1) update all competency items evidence
- *  2) aggregate and update competency items evidence
- *  3) aggregate competency hierarchy
+ *  2) aggregate competency hierarchy depth levels
  *
  * @return  void
  */
 function competency_cron() {
+    global $CFG;
 
     competency_cron_evidence_items();
 
-    competency_cron_aggregate_evidence();
+    // Save time started
+    $timestarted = time();
+
+    // Loop through each depth level, lowest levels first, processing individually
+    $sql = "
+        SELECT
+            *
+        FROM
+            {$CFG->prefix}competency_depth
+        ORDER BY
+            frameworkid,
+            depthlevel DESC
+    ";
+
+    if ($rs = get_recordset_sql($sql)) {
+
+        while ($record = rs_fetch_next_record($rs)) {
+            // Aggregate this depth level
+            competency_cron_aggregate_evidence($timestarted, $record);
+        }
+
+        $rs->close();
+    }
+
+    // Mark only aggregated evidence as aggregated
+    if (debugging()) {
+        mtrace('Mark all aggregated evidence as aggregated');
+    }
+
+    $sql = "
+        UPDATE
+            {$CFG->prefix}competency_evidence
+        SET
+            reaggregate = 0
+        WHERE
+            reaggregate <= {$timestarted}
+        AND reaggregate > 0
+    ";
+
+    execute_sql($sql, false);
+
 }
 
 /**
@@ -84,35 +124,89 @@ function competency_cron_evidence_items() {
 /**
  * Aggregate competency's evidence items
  *
+ * @param   $imtestarted    int         Time we started aggregating
+ * @param   $depth          object      Depth level record
  * @return  void
  */
-function competency_cron_aggregate_evidence() {
+function competency_cron_aggregate_evidence($timestarted, $depth) {
     global $CFG, $COMP_AGGREGATION;
 
     if (debugging()) {
-        mtrace('Aggregating competency evidence');
+        mtrace('Aggregating competency evidence for depthid '.$depth->id);
     }
-
-    // Save time started
-    $timestarted = time();
 
     // Grab all competency scale values
     $scale_values = get_records('competency_scale_values');
 
-    // Grab all competency evidence items
+    // Grab all competency evidence items for a depth level
+    //
+    // A little discussion on what is happening in this horrendous query:
+    // In order to keep the number of queries run down, we try grab everything
+    // we need in one query, and in an intelligent order.
+    //
+    // By running a query for each depth level, starting at the "lowest" depth
+    // we are using up-to-date data when aggregating any competencies with children.
+    //
+    // This query will return a group of rows for every competency a user needs
+    // reaggregating in. The SQL knows the user needs reaggregating by looking
+    // for a competency_evidence field with the reaggregate field set.
+    //
+    // The group of rows for each competency/user includes one for each of the
+    // evidence items, or child competencies for this competency. If either the
+    // evidence item or the child competency has data relating to this particular
+    // user's competency state in it, we try grab that data too and add it to the
+    // related row.
+    //
+    // Cols returned:
+    // evidenceid = the user's competency evidence record id
+    // userid = the userid this all relates to
+    // competencyid = the competency id
+    // path = the competency's path, shows competency and parents, / delimited
+    // aggregationmethod = the competency's aggregation method
+    // proficienyexpected = the proficiency scale value for this competencies scale
+    // itemid = the competencies evidence item id (if we are selecting an evidence item)
+    // itemstatus = the competency evidence item status for this user
+    // itemproficiency = the competency evidence item proficiency for this user
+    // itemmodified = the competency evidence item's last modified time
+    // childid = the competencies child id (this is either a child comp or an evidence item)
+    // childmodified = the child competency evidence last modified time
+    // childproficieny = the child competency evidence proficieny for this user
+    //
     $sql = "
         SELECT DISTINCT
             ce.id AS evidenceid,
+            ce.userid,
             c.id AS competencyid,
-            cei.id AS itemid,
+            c.path,
+            c.aggregationmethod,
+            cs.proficient AS proficiencyexpected,
+            cei.evidenceid AS itemid,
             ceie.status AS itemstatus,
             ceie.proficiencymeasured AS itemproficiency,
-            c.aggregationmethod,
-            ceie.userid,
-            ceie.timemodified,
-            cs.proficient AS proficiencyexpected
+            ceie.timemodified AS itemmodified,
+            cei.childid AS childid,
+            cce.timemodified AS childmodified,
+            cce.proficiency AS childproficiency
         FROM
-            {$CFG->prefix}competency_evidence_items cei
+            (
+                SELECT
+                    id AS evidenceid,
+                    competencyid,
+                    NULL AS childid
+                FROM
+                    {$CFG->prefix}competency_evidence_items
+                UNION
+                SELECT
+                    NULL AS evidenceid,
+                    parentid AS competencyid,
+                    id AS childid
+                FROM
+                    {$CFG->prefix}competency
+                WHERE
+                    parentid <> 0
+                AND frameworkid = {$depth->frameworkid}
+                AND depthid <> {$depth->id}
+            ) cei
         INNER JOIN
             {$CFG->prefix}competency c
          ON cei.competencyid = c.id
@@ -124,12 +218,17 @@ function competency_cron_aggregate_evidence() {
          ON c.scaleid = cs.id
         LEFT JOIN
             {$CFG->prefix}competency_evidence_items_evidence ceie
-         ON cei.id = ceie.itemid
+         ON cei.evidenceid = ceie.itemid
         AND ce.userid = ceie.userid
+        LEFT JOIN
+            {$CFG->prefix}competency_evidence cce
+         ON cce.competencyid = cei.childid
+        AND ce.userid = cce.userid
         WHERE
             ce.reaggregate > 0
         AND ce.reaggregate <= {$timestarted}
         AND ce.manual = 0
+        AND c.depthid = {$depth->id}
         ORDER BY
             competencyid,
             userid
@@ -152,8 +251,9 @@ function competency_cron_aggregate_evidence() {
             // If we are still grabbing the same users evidence
             $record = (object)$record;
             if ($record->userid === $current_user && $record->competencyid === $current_competency) {
-                $item_evidence[$record->itemid] = $record;
+                $item_evidence[] = $record;
             } else {
+                // If this record is not for the current user/competency, break out of this loop
                 break;
             }
         }
@@ -170,24 +270,25 @@ function competency_cron_aggregate_evidence() {
             // Check each of the items
             foreach ($item_evidence as $params) {
 
-                // Skip incomplete evidence items
-                if ($params->itemproficiency == 0) {
-                    continue;
-                }
+                // Get proficiency
+                $proficiency = max($params->itemproficiency, $params->childproficiency);
 
-                if (!isset($scale_values[$params->itemproficiency]) || 
-                    !isset($scale_values[$params->proficiencyexpected])) {
-
+                if (!isset($scale_values[$params->proficiencyexpected])) {
                     if (debugging()) {
-                        mtrace('Could not find scale value');
+                        mtrace('Could not find proficiency expected scale value');
                     }
 
                     $aggregated_status = null;
                     break;
                 }
 
-                // Get item's evidence scale value
-                $evidence_value = $scale_values[$params->itemproficiency];
+                // Get item's scale value
+                if (isset($scale_values[$proficiency])) {
+                    $item_value = $scale_values[$proficiency];
+                }
+                else {
+                    $item_value = null;
+                }
 
                 // Get the competencies minimum proficiency
                 $min_value = $scale_values[$params->proficiencyexpected];
@@ -198,7 +299,8 @@ function competency_cron_aggregate_evidence() {
                 // Handle different aggregation types
                 switch ($params->aggregationmethod) {
                     case $COMP_AGGREGATION['ALL']:
-                        if ($evidence_value->sortorder > $min_value->sortorder) {
+                        // Check for no proficiency, or a higher sortorder (which equals lower item)
+                        if (!$item_value || $item_value->sortorder > $min_value->sortorder) {
                             $aggregated_status = null;
                             $stop_agg = true;
                         }
@@ -209,7 +311,8 @@ function competency_cron_aggregate_evidence() {
                         break;
 
                     case $COMP_AGGREGATION['ANY']:
-                        if ($evidence_value->sortorder <= $min_value->sortorder) {
+                        // Check for a lower sortorder (which equals higher item)
+                        if ($item_value && $item_value->sortorder <= $min_value->sortorder) {
                             $aggregated_status = $min_value->id;
                             $stop_agg = true;
                         }
@@ -256,20 +359,13 @@ function competency_cron_aggregate_evidence() {
         $current_user = $record->userid;
         $current_competency = $record->competencyid;
         $item_evidence = array();
-        $item_evidence[$record->itemid] = $record;
+        $item_evidence[] = $record;
     }
 
-    // Mark all aggregated evidence as aggregated
-    $sql = "
-        UPDATE
-            {$CFG->prefix}competency_evidence
-        SET
-            reaggregate = 0
-        WHERE
-            reaggregate <= {$timestarted}
-    ";
-
-    execute_sql($sql, false);
+    // Get total records returned
+    if (debugging()) {
+        mtrace($rs->RecordCount().' records returned');
+    }
 }
 
 /**

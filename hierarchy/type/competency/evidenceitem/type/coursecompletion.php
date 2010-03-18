@@ -122,7 +122,6 @@ class competency_evidence_type_coursecompletion extends competency_evidence_type
                 cei.itemtype = 'coursecompletion'
             AND cc.id IS NOT NULL
             AND cs.proficient IS NOT NULL
-            AND cs.defaultid IS NOT NULL
             AND
             (
                 (
@@ -150,8 +149,12 @@ class competency_evidence_type_coursecompletion extends competency_evidence_type
 
                 if ($record['timecompleted']) {
                     $evidence->proficiencymeasured = $record['proficient'];
-                } else {
+                }
+                elseif ($record['defaultid']) {
                     $evidence->proficiencymeasured = $record['defaultid'];
+                }
+                else {
+                    continue;
                 }
 
                 $evidence->save();
