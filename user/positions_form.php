@@ -102,7 +102,9 @@ class user_position_assignment_form extends moodleform {
             $mform->setDefault('managerid', 0);
 
             $mform->addElement('text', 'timevalidfrom', get_string('startdate', 'position'));
+            $mform->setDefault('timevalidfrom','DD/MM/YYYY');
             $mform->addElement('text', 'timevalidto', get_string('finishdate', 'position'));
+            $mform->setDefault('timevalidto','DD/MM/YYYY');
         }
 
         $this->add_action_buttons(true, get_string('updateposition', 'position'));

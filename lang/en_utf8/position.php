@@ -59,6 +59,7 @@ $string['parent'] = 'Parent position';
 $string['position'] = 'Position';
 $string['positionhistory'] = 'Position history';
 $string['positions'] = 'Positions';
+$string['positionsaved'] = 'Position saved.';
 $string['returntoframework'] = 'Return to position framework';
 $string['shortname'] = 'Position short name';
 $string['shortnamedepth'] = 'Depth level short name';

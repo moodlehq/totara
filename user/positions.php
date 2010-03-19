@@ -167,7 +167,7 @@ elseif ($data = $form->get_data()) {
     assign_user_position($position_assignment, $managerid);
 
     commit_sql();
-    redirect($currenturl);
+    redirect($currenturl, get_string('positionsaved','position'), 0);
 }
 
 if (!$can_edit) {
