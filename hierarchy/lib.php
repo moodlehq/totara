@@ -191,6 +191,54 @@ class hierarchy {
     }
 
     /**
+     * Given an item id, returns the adjacent item at the same depth level
+     * @param object $item An item object to find the peer for. Must include id,
+     *                     frameworkid, sortorder and depthid
+     * @param boolean $above If true returns the item above, otherwise the item below
+     * @return int|false Returns the ID of the peer or false if there isn't one
+     *                   in the direction specified
+     **/
+    function get_item_adjacent_peer($item, $above=true) {
+        global $CFG;
+        // check that item has required properties
+        if( !isset($item->depthid) ||
+            !isset($item->sortorder) || !isset($item->id)) {
+            return false;
+        }
+        // try and use item's fwid if not set by hierarchy
+        if(isset($this->frameworkid)) {
+            $frameworkid = $this->frameworkid;
+        } else if (isset($item->frameworkid)) {
+            $frameworkid = $item->frameworkid;
+        } else {
+            return false;
+        }
+
+        $depthid = $item->depthid;
+        $sortorder = $item->sortorder;
+        $id = $item->id;
+        $type = $this->prefix;
+
+        // are we looking above or below for a peer?
+        $sqlop = $above ? '<' : '>';
+        $sqlsort = $above ? 'DESC' : 'ASC';
+
+        $sql = "SELECT id FROM {$CFG->prefix}{$type}
+            WHERE frameworkid = $frameworkid AND
+            depthid = $depthid AND
+            sortorder $sqlop $sortorder
+            ORDER BY sortorder $sqlsort";
+        // only return first match
+        $dest = get_record_sql($sql, true);
+        if($dest) {
+            return $dest->id;
+        } else {
+            // no peer in that direction
+            return false;
+        }
+    }
+
+    /**
      * Returns an object that can be used to
      * build a select form element based on the hierarchy
      *
