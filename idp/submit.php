@@ -5,7 +5,6 @@
 
 require_once('../config.php');
 require_once('lib.php');
-require_once($CFG->dirroot.'/local/lib.php');
 
 require_login();
 
@@ -170,7 +169,7 @@ function update_idp_component_duedate($duedateformelement, $tablename, $componen
     $formelementlist = optional_param($duedateformelement,array(),PARAM_RAW);
     foreach( $formelementlist as $rawid=>$rawduedate ){
         $componentid = clean_param($rawid, PARAM_INT);
-        $duedate = strtotime_dmy($rawduedate);
+        $duedate = convert_userdate($rawduedate);
         $result = set_field($tablename,'duedate',$duedate,'revision',$rev,$componentcolumn,$componentid);
     }
 }

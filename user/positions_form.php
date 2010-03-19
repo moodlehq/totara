@@ -1,7 +1,7 @@
 <?php
 
 require_once($CFG->dirroot.'/lib/formslib.php');
-require_once($CFG->dirroot.'/local/lib.php');
+require_once($CFG->dirroot.'/idp/lib.php');
 
 class user_position_assignment_form extends moodleform {
 
@@ -174,9 +174,9 @@ class user_position_assignment_form extends moodleform {
         $result = array();
 
         $timevalidfromstr = $data['timevalidfrom'];
-        $timevalidfrom = strtotime_dmy( $timevalidfromstr );
+        $timevalidfrom = convert_userdate( $timevalidfromstr );
         $timevalidtostr = $data['timevalidto'];
-        $timevalidto = strtotime_dmy( $timevalidtostr );
+        $timevalidto = convert_userdate( $timevalidtostr );
 
         // Enforce valid dates
         if ( false === $timevalidfrom && $timevalidfromstr !== 'dd/mm/yy' && $timevalidfromstr !== '' ){

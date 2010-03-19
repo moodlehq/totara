@@ -135,29 +135,31 @@ elseif ('create' == $action or 'rename' == $action) {
             print '<p><input type="submit" value="'.get_string("{$action}plan", 'idp').'" /></p>';
             print '</form>';
 
-            // Put the focus on the name editbox
-            print '<script type="text/javascript">';
-            print 'var editbox = getobject(\'planname\');';
-            print 'editbox.focus();';
-            print '</script>'."\n";
+//            // Put the focus on the name editbox
+//            print '<script type="text/javascript">';
+//            print 'var editbox = getobject(\'planname\');';
+//            print 'editbox.focus();';
+//            print '</script>'."\n";
 
             // Add .js for popup-calendars
-            print '
-                <script type="text/javascript">
+?>
+<script type="text/javascript">
 
-                    // this is needed for the YUI calendar skinning, for some reason.
-                    document.body.className = document.body.className + " yui-skin-sam";
+// this is needed for the YUI calendar skinning, for some reason.
+//document.body.className = document.body.className + " yui-skin-sam";
+alert("hey!");
 
-                    YAHOO.util.Event.onDOMReady( function(e) {
-                            try {
-                                var cal1 = new PopupCalendar("startdate");
-                                var cal2 = new PopupCalendar("enddate");
-                            } catch(e) {
-                                // Something broke, so we\'ll leave it to the server end.
-                            }
-                        });
-                </script>
-            ';
+//YAHOO.util.Event.onDOMReady( function(e) {
+//        try {
+//            var cal1 = new PopupCalendar("startdate");
+//            var cal2 = new PopupCalendar("enddate");
+//        } catch(e) {
+//            // Something broke, so we\'ll leave it to the server end.
+//        }
+//    });
+
+</script>
+<?php
             echo '</td>';
 
     break;
