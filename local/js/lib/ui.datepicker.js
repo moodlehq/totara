@@ -1602,6 +1602,14 @@ function isArray(a) {
    @return  jQuery object */
 $.fn.datepicker = function(options){
 
+        // Overlay the date format in the text field
+        var dateFormat = options.dateFormat !== undefined ?
+                            options.dateFormat : $.datepicker._defaults.dateFormat;
+        this
+            .each( function(){ if (this.value==''){ this.value=dateFormat; } } )
+            .focus( function(){ if (this.value==dateFormat){ this.value=''; } } )
+            .blur( function(){ if (this.value==''){ this.value=dateFormat; } } );
+
 	/* Initialise the date picker. */
 	if (!$.datepicker.initialized) {
 		$(document).mousedown($.datepicker._checkExternalClick).
