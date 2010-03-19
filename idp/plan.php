@@ -30,29 +30,31 @@ if ( $action != 'create' ){
 
 if (('create' == $action or 'rename' == $action) && !empty($name) && !empty($startdate) && !empty($enddate)) {
 
+    $errorurl = "plan.php?action={$action}" . (($action=='create')?'':"&planid={$planid}");
+
     // Parse dates from the user
     if (!$starttime = convert_userdate($startdate)) {
-        error(get_string('error:badstartdate', 'idp'), "index.php");
+        error(get_string('error:badstartdate', 'idp'), $errorurl);
     }
     if (!$endtime = convert_userdate($enddate)) {
-        error(get_string('error:badenddate', 'idp'), "index.php");
+        error(get_string('error:badenddate', 'idp'), $errorurl);
     }
 
     // Simple validation check
     if ($endtime < $starttime) {
-        error(get_string('error:endbeforestart', 'idp'), "index.php");
+        error(get_string('error:endbeforestart', 'idp'), $errorurl);
     }
 
     // Perform the action
     if ('create' == $action) {
         if (!$id = create_new_plan($name, $starttime, $endtime)) {
-            error(get_string('error:cannotcreateplan', 'idp'), "index.php");
+            error(get_string('error:cannotcreateplan', 'idp'), $errorurl);
         }
         redirect($CFG->wwwroot.'/idp/revision.php?id='.$id);
     }
     else {
         if (!rename_plan($planid, $name, $starttime, $endtime)) {
-            error(get_string('error:cannotrenameplan', 'idp'), "index.php");
+            error(get_string('error:cannotrenameplan', 'idp'), $errorurl);
         }
         redirect($CFG->wwwroot.'/idp/index.php');
     }
@@ -60,6 +62,13 @@ if (('create' == $action or 'rename' == $action) && !empty($name) && !empty($sta
 elseif ('create' == $action or 'rename' == $action) {
     $stridps = get_string('idps', 'idp');
     $pagetitle = get_string("{$action}planbreadcrumb", 'idp');
+
+    // Stylesheet and javascript for pop-up calendar
+    $CFG->stylesheets[] = $CFG->wwwroot.'/local/js/lib/ui-lightness/jquery-ui-1.7.2.custom.css';
+    require_js(array(
+        $CFG->wwwroot.'/local/js/jquery-1.3.2.min.js',
+        $CFG->wwwroot.'/local/js/lib/ui.datepicker.js'
+    ));
 
     $PAGE = page_create_object('MITMS', $USER->id);
     $pageblocks = blocks_setup($PAGE,BLOCKS_PINNED_BOTH);
@@ -94,9 +103,6 @@ elseif ('create' == $action or 'rename' == $action) {
 
             echo '<td valign="top" id="middle-column">';
             // Add YUI javascript and CSS.
-            $CFG->stylesheets[] = $CFG->wwwroot . '/lib/yui/calendar/assets/skins/sam/calendar.css';
-            require_js(array('yui_yahoo', 'yui_event', 'yui_connection', 'yui_json', 'yui_dom', 'yui_dom-event', 'yui_calendar'));
-            require_js($CFG->wwwroot . '/local/js/PopupCalendar.js');
 
             print '<h1>'.get_string("{$action}plantitle", 'idp').'</h1>';
 
@@ -126,40 +132,33 @@ elseif ('create' == $action or 'rename' == $action) {
             // Start/end dates
             print '<p>'.get_string('trainingperiodexplanation', 'idp').'</p>';
             print '<blockquote><p>';
-            print '<input type="text" id="startdate" name="startdate" value="'.strftime('%d-%m-%Y', $defaultstartdate).'" size="15" maxlength="30" />';
+            print '<input type="text" id="startdate" name="startdate" value="'.strftime('%d/%m/%Y', $defaultstartdate).'" size="15" maxlength="30" />';
             print ' '.get_string('to', 'idp').' ';
-            print '<input type="text" name="enddate" id="enddate" value="'.strftime('%d-%m-%Y', $defaultenddate).'" size="15" maxlength="30" />';
+            print '<input type="text" name="enddate" id="enddate" value="'.strftime('%d/%m/%Y', $defaultenddate).'" size="15" maxlength="30" />';
             print '</p></blockquote>';
 
             // Submit button
             print '<p><input type="submit" value="'.get_string("{$action}plan", 'idp').'" /></p>';
             print '</form>';
 
-//            // Put the focus on the name editbox
-//            print '<script type="text/javascript">';
-//            print 'var editbox = getobject(\'planname\');';
-//            print 'editbox.focus();';
-//            print '</script>'."\n";
-
-            // Add .js for popup-calendars
-?>
+            require_once($CFG->dirroot.'/local/js/setup.php');
+            setup_lightbox(array(MBE_JS_TREEVIEW, MBE_JS_ADVANCED));
+            print <<<HEREDOC
 <script type="text/javascript">
 
-// this is needed for the YUI calendar skinning, for some reason.
-//document.body.className = document.body.className + " yui-skin-sam";
-alert("hey!");
-
-//YAHOO.util.Event.onDOMReady( function(e) {
-//        try {
-//            var cal1 = new PopupCalendar("startdate");
-//            var cal2 = new PopupCalendar("enddate");
-//        } catch(e) {
-//            // Something broke, so we\'ll leave it to the server end.
-//        }
-//    });
-
+    $(function() {
+        $('#startdate, #enddate').datepicker(
+            {
+                dateFormat: 'dd/mm/yy',
+                showOn: 'button',
+                buttonImage: '../local/js/images/calendar.gif',
+                buttonImageOnly: true
+            }
+        );
+	});
 </script>
-<?php
+HEREDOC;
+
             echo '</td>';
 
     break;
