@@ -1,6 +1,7 @@
 <?php
 
 require_once($CFG->dirroot.'/lib/formslib.php');
+require_once($CFG->dirroot.'/local/lib.php');
 
 class user_position_assignment_form extends moodleform {
 
@@ -102,9 +103,9 @@ class user_position_assignment_form extends moodleform {
             $mform->setDefault('managerid', 0);
 
             $mform->addElement('text', 'timevalidfrom', get_string('startdate', 'position'));
-            $mform->setDefault('timevalidfrom','DD/MM/YYYY');
+            $mform->setDefault('timevalidfrom','dd/mm/yy');
             $mform->addElement('text', 'timevalidto', get_string('finishdate', 'position'));
-            $mform->setDefault('timevalidto','DD/MM/YYYY');
+            $mform->setDefault('timevalidto','dd/mm/yy');
         }
 
         $this->add_action_buttons(true, get_string('updateposition', 'position'));
@@ -171,6 +172,27 @@ class user_position_assignment_form extends moodleform {
         $mform =& $this->_form;
 
         $result = array();
+
+        $timevalidfromstr = $data['timevalidfrom'];
+        $timevalidfrom = strtotime_dmy( $timevalidfromstr );
+        $timevalidtostr = $data['timevalidto'];
+        $timevalidto = strtotime_dmy( $timevalidtostr );
+
+        // Enforce valid dates
+        if ( false === $timevalidfrom && $timevalidfromstr !== 'dd/mm/yy' && $timevalidfromstr !== '' ){
+            $result['timevalidfrom'] = get_string('error:dateformat','position');
+        }
+        if ( false === $timevalidto && $timevalidtostr !== 'dd/mm/yy' && $timevalidtostr !== '' ){
+            $result['timevalidto'] = get_string('error:dateformat','position');
+        }
+
+        // Enforce start date before finish date
+        if ( $timevalidfrom > $timevalidto && $timevalidfrom !== false && $timevalidto !== false ){
+            $errstr = get_string('error:startafterfinish','position');
+            $result['timevalidfrom'] = $errstr;
+            $result['timevalidto'] = $errstr;
+            unset($errstr);
+        }
 
         // Check that a position was set
         if (!$mform->getElement('positionid')->getValue()) {

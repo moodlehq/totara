@@ -74,3 +74,5 @@ $string['typesecondary'] = 'Secondary position';
 $string['typeaspirational'] = 'Aspirational position';
 $string['updateposition'] = 'Update position';
 $string['weight'] = 'Weight';
+$string['error:dateformat'] = 'Please enter a date in the format dd/mm/yy.';
+$string['error:startafterfinish'] = 'Start date must not be later than finish date';

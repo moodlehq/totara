@@ -143,11 +143,11 @@ elseif ($data = $form->get_data()) {
 
     // Fix dates
     if ($data->timevalidfrom) {
-        $data->timevalidfrom = strtotime($data->timevalidfrom);
+        $data->timevalidfrom = strtotime_dmy($data->timevalidfrom);
     }
 
     if ($data->timevalidto) {
-        $data->timevalidto = strtotime($data->timevalidto);
+        $data->timevalidto = strtotime_dmy($data->timevalidto);
     }
 
     // Setup data

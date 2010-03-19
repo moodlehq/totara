@@ -96,3 +96,16 @@ function local_get_sticky_pagetypes() {
     );
 }
 
+/**
+ * The normal strtotime() PHP function uses a library that can only handle dates
+ * in the American format, mm/dd/yy. This string expects dates in the NZ format,
+ * dd/mm/yy. (The better way to do this is with the function strptime(), but that
+ * isn't PHP5-compatible).
+ *
+ * @param string $datestr The date string, in d/m/y or d-m-y format
+ */
+function strtotime_dmy( $datestr ){
+    $datestrfiltered = ereg_replace('/[^0-9\/-]/', '', $datestr );
+    list($d, $m, $y) = explode('/',$datestrfiltered,3);
+    return mktime(0,0,0,$m,$d,$y);
+}
