@@ -181,7 +181,7 @@ class hierarchy {
         $path = get_field($this->prefix, 'path', 'id', $id);
         if ($path) {
             $paths = explode('/', substr($path, 1));
-            $sql = "SELECT id, fullname, parentid, path
+            $sql = "SELECT id, fullname, parentid, path, sortorder
                     FROM {$CFG->prefix}{$this->prefix}
                     WHERE path LIKE '{$path}%' ORDER BY path";
             return get_records_sql($sql);
