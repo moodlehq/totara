@@ -420,36 +420,54 @@ class hierarchy {
     }
 
     /**
-     * Move the item in the sortorder
+     * Move the item and its subtree in the sortorder
      * @var int - the item id to move
      * @var boolean $up - up if true, down if false
      * @return boolean success
      */
     function move_item($id, $up) {
-        $move = NULL;
-        $swap = NULL;
-        $this->validate_sortorder();
-        $sortoffset = $this->get_item_sortorder_offset();
-        $move = get_record($this->prefix, 'id', $id);
-        if ($up) {
-            $swap = get_record($this->prefix, 'frameworkid',  $this->frameworkid, 'sortorder', $move->sortorder - 1);
+        $source = get_record($this->prefix, 'id', $id);
+        // get nearest neighbour in direction of move
+        $destid = $this->get_item_adjacent_peer($source, $up);
+        if(!$destid) {
+            // source not a valid record or no peer in that direction
+            notify(get_string('error:couldnotmoveitemnopeer','hierarchy',$this->prefix));
+            return false;
+        }
+
+        // how many members in each tree?
+        $sourcetree = $this->get_item_descendants($source->id);
+        $desttree = $this->get_item_descendants($destid);
+        $sourcecount = count($sourcetree);
+        $destcount = count($desttree);
+
+        $status = true;
+        begin_sql();
+
+        // update the sort orders
+        foreach($sourcetree as $item) {
+            $id = $item->id;
+            $sortorder = $item->sortorder;
+            $newso = $up ? $sortorder - $destcount : $sortorder + $destcount;
+            $status = $status && set_field($this->prefix, 'sortorder', $newso, 'id', $id);
+        }
+        foreach($desttree as $item) {
+            $id = $item->id;
+            $sortorder = $item->sortorder;
+            $newso = $up ? $sortorder + $sourcecount : $sortorder - $sourcecount;
+            $status = $status && set_field($this->prefix, 'sortorder', $newso, 'id', $id);
+        }
+
+        // only commit if all changes worked
+        if($status) {
+            commit_sql();
+            return true;
         } else {
-            $swap = get_record($this->prefix, 'frameworkid',  $this->frameworkid, 'sortorder', $move->sortorder + 1);
+            rollback_sql();
+            notify(get_string('error:couldnotmoveitem','hierarchy',$this->prefix));
+            return false;
         }
-        if ($move && $swap) {
-            if ($move->depthid != $swap->depthid) {
-                notify('Cannot move a '.$this->prefix.' to a different depth level!');
-            } else {
-                begin_sql();
-                if (!(    set_field($this->prefix, 'sortorder', $sortoffset, 'id', $swap->id)
-                       && set_field($this->prefix, 'sortorder', $swap->sortorder, 'id', $move->id)
-                       && set_field($this->prefix, 'sortorder', $move->sortorder, 'id', $swap->id)
-                    )) {
-                    notify('Could not update that '.$this->prefix.'!');
-                }
-                commit_sql();
-            }
-        }
+
     }
 
     /**

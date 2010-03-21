@@ -372,8 +372,6 @@
                     if ($item->depthid == $head->value->id) {
                         $cssclass = !$item->visible ? 'class="dimmed"' : '';
                         $cell = "<a $cssclass href=\"{$CFG->wwwroot}/hierarchy/item/view.php?type={$type}&amp;id={$item->id}\">{$item->$displayitem}</a>";
-                        $cell .= 'Above: '.$hierarchy->get_item_adjacent_peer($item, true).'|';
-                        $cell .= 'Below: '.$hierarchy->get_item_adjacent_peer($item, false);
                         $table_data[$i][$j] = $cell;
                     }
                 }
@@ -414,14 +412,13 @@
                             $buttons[] = "<a href=\"{$CFG->wwwroot}/hierarchy/item/delete.php?type={$type}&amp;spage={$spage}&amp;frameworkid={$frameworkid}&amp;id={$item->id}&amp;spage={$spage}\" title=\"$str_delete\">".
                                 "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_delete\" /></a>";
                         }
-                        // TODO fix up down buttons
-                        if ($item->sortorder != $sortmin) {
+                        if ($hierarchy->get_item_adjacent_peer($item, true)) {
                             $buttons[] = "<a href=\"index.php?type={$type}&amp;frameworkid={$frameworkid}&amp;spage={$spage}&amp;moveup={$item->id}\" title=\"$str_moveup\">".
                                 "<img src=\"{$CFG->pixpath}/t/up.gif\" class=\"iconsmall\" alt=\"$str_moveup\" /></a> ";
                         } else {
                            $buttons[] = $str_spacer;
                         }
-                        if ($item->sortorder != $sortmax) {
+                        if ($hierarchy->get_item_adjacent_peer($item, false)) {
                             $buttons[] = "<a href=\"index.php?type={$type}&amp;frameworkid={$frameworkid}&amp;spage={$spage}&amp;movedown=".$item->id."\" title=\"$str_movedown\">".
                                 "<img src=\"{$CFG->pixpath}/t/down.gif\" class=\"iconsmall\" alt=\"$str_movedown\" /></a> ";
                         }
