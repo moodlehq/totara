@@ -105,7 +105,7 @@ function build_treeview($elements, $error_string, $max_depth = true) {
             if ($div_class !== '') {
                 $html .= '<ul style="display: none;"></ul>';
             }
-            echo '</li>'.PHP_EOL;
+            $html .= '</li>'.PHP_EOL;
         }
     }
     else {
