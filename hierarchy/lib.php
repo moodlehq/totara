@@ -181,12 +181,60 @@ class hierarchy {
         $path = get_field($this->prefix, 'path', 'id', $id);
         if ($path) {
             $paths = explode('/', substr($path, 1));
-            $sql = "SELECT id, fullname, parentid, path
+            $sql = "SELECT id, fullname, parentid, path, sortorder
                     FROM {$CFG->prefix}{$this->prefix}
                     WHERE path LIKE '{$path}%' ORDER BY path";
             return get_records_sql($sql);
         } else {
             error('No path found for '.$this->prefix.' id '.$id);
+        }
+    }
+
+    /**
+     * Given an item id, returns the adjacent item at the same depth level
+     * @param object $item An item object to find the peer for. Must include id,
+     *                     frameworkid, sortorder and depthid
+     * @param boolean $above If true returns the item above, otherwise the item below
+     * @return int|false Returns the ID of the peer or false if there isn't one
+     *                   in the direction specified
+     **/
+    function get_item_adjacent_peer($item, $above=true) {
+        global $CFG;
+        // check that item has required properties
+        if( !isset($item->depthid) ||
+            !isset($item->sortorder) || !isset($item->id)) {
+            return false;
+        }
+        // try and use item's fwid if not set by hierarchy
+        if(isset($this->frameworkid)) {
+            $frameworkid = $this->frameworkid;
+        } else if (isset($item->frameworkid)) {
+            $frameworkid = $item->frameworkid;
+        } else {
+            return false;
+        }
+
+        $depthid = $item->depthid;
+        $sortorder = $item->sortorder;
+        $id = $item->id;
+        $type = $this->prefix;
+
+        // are we looking above or below for a peer?
+        $sqlop = $above ? '<' : '>';
+        $sqlsort = $above ? 'DESC' : 'ASC';
+
+        $sql = "SELECT id FROM {$CFG->prefix}{$type}
+            WHERE frameworkid = $frameworkid AND
+            depthid = $depthid AND
+            sortorder $sqlop $sortorder
+            ORDER BY sortorder $sqlsort";
+        // only return first match
+        $dest = get_record_sql($sql, true);
+        if($dest) {
+            return $dest->id;
+        } else {
+            // no peer in that direction
+            return false;
         }
     }
 
@@ -372,36 +420,54 @@ class hierarchy {
     }
 
     /**
-     * Move the item in the sortorder
+     * Move the item and its subtree in the sortorder
      * @var int - the item id to move
      * @var boolean $up - up if true, down if false
      * @return boolean success
      */
     function move_item($id, $up) {
-        $move = NULL;
-        $swap = NULL;
-        $this->validate_sortorder();
-        $sortoffset = $this->get_item_sortorder_offset();
-        $move = get_record($this->prefix, 'id', $id);
-        if ($up) {
-            $swap = get_record($this->prefix, 'frameworkid',  $this->frameworkid, 'sortorder', $move->sortorder - 1);
+        $source = get_record($this->prefix, 'id', $id);
+        // get nearest neighbour in direction of move
+        $destid = $this->get_item_adjacent_peer($source, $up);
+        if(!$destid) {
+            // source not a valid record or no peer in that direction
+            notify(get_string('error:couldnotmoveitemnopeer','hierarchy',$this->prefix));
+            return false;
+        }
+
+        // how many members in each tree?
+        $sourcetree = $this->get_item_descendants($source->id);
+        $desttree = $this->get_item_descendants($destid);
+        $sourcecount = count($sourcetree);
+        $destcount = count($desttree);
+
+        $status = true;
+        begin_sql();
+
+        // update the sort orders
+        foreach($sourcetree as $item) {
+            $id = $item->id;
+            $sortorder = $item->sortorder;
+            $newso = $up ? $sortorder - $destcount : $sortorder + $destcount;
+            $status = $status && set_field($this->prefix, 'sortorder', $newso, 'id', $id);
+        }
+        foreach($desttree as $item) {
+            $id = $item->id;
+            $sortorder = $item->sortorder;
+            $newso = $up ? $sortorder + $sourcecount : $sortorder - $sourcecount;
+            $status = $status && set_field($this->prefix, 'sortorder', $newso, 'id', $id);
+        }
+
+        // only commit if all changes worked
+        if($status) {
+            commit_sql();
+            return true;
         } else {
-            $swap = get_record($this->prefix, 'frameworkid',  $this->frameworkid, 'sortorder', $move->sortorder + 1);
+            rollback_sql();
+            notify(get_string('error:couldnotmoveitem','hierarchy',$this->prefix));
+            return false;
         }
-        if ($move && $swap) {
-            if ($move->depthid != $swap->depthid) {
-                notify('Cannot move a '.$this->prefix.' to a different depth level!');
-            } else {
-                begin_sql();
-                if (!(    set_field($this->prefix, 'sortorder', $sortoffset, 'id', $swap->id)
-                       && set_field($this->prefix, 'sortorder', $swap->sortorder, 'id', $move->id)
-                       && set_field($this->prefix, 'sortorder', $move->sortorder, 'id', $swap->id)
-                    )) {
-                    notify('Could not update that '.$this->prefix.'!');
-                }
-                commit_sql();
-            }
-        }
+
     }
 
     /**

@@ -140,7 +140,7 @@
 
     // build the query to get the items
     // not actually called until further down but need sql for the count
-    $select = "SELECT id, depthid, shortname, fullname, visible";
+    $select = "SELECT id, depthid, shortname, fullname, visible, sortorder";
     if(!empty($hierarchy->extrafields)) {
         $select .= ', ' . implode(', ', $hierarchy->extrafields);
     }
@@ -163,6 +163,14 @@
         WHERE cd.frameworkid = {$framework->id} AND cdf.hidden = 0
         ORDER BY cdf.categoryid, cdf.sortorder";
     $customfieldcols = get_records_sql($sql);
+
+    // get the sort order range (min/max) for this framework
+    // used to work out if sorting arrows are needed
+    $max = get_record_sql("SELECT ".sql_max('sortorder')." AS sortorder FROM {$CFG->prefix}{$type} WHERE frameworkid={$framework->id}");
+    $sortmax = $max ? $max->sortorder : null;
+    // hack because there is no sql_min(). Just get first record, sorted by sortorder
+    $min = get_record_sql("SELECT sortorder FROM {$CFG->prefix}{$type} WHERE frameworkid={$framework->id} ORDER BY sortorder ASC", true);
+    $sortmin = $min ? $min->sortorder : null;
 
     // third query to get custom field data
     // these are split because of the way moodle aggregates data by id
@@ -350,7 +358,6 @@
 
     $table->pagesize($perpage, $filteredmatchcount);
 
-
     $itemlist = get_records_sql($select.$from.$where.$extrasql.$order, $table->get_page_start(), $table->get_page_size());
 
     // loop round data rows
@@ -405,14 +412,13 @@
                             $buttons[] = "<a href=\"{$CFG->wwwroot}/hierarchy/item/delete.php?type={$type}&amp;spage={$spage}&amp;frameworkid={$frameworkid}&amp;id={$item->id}&amp;spage={$spage}\" title=\"$str_delete\">".
                                 "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_delete\" /></a>";
                         }
-                        // TODO fix up down buttons
-                        if (false) {
+                        if ($hierarchy->get_item_adjacent_peer($item, true)) {
                             $buttons[] = "<a href=\"index.php?type={$type}&amp;frameworkid={$frameworkid}&amp;spage={$spage}&amp;moveup={$item->id}\" title=\"$str_moveup\">".
                                 "<img src=\"{$CFG->pixpath}/t/up.gif\" class=\"iconsmall\" alt=\"$str_moveup\" /></a> ";
                         } else {
                            $buttons[] = $str_spacer;
                         }
-                        if (false) {
+                        if ($hierarchy->get_item_adjacent_peer($item, false)) {
                             $buttons[] = "<a href=\"index.php?type={$type}&amp;frameworkid={$frameworkid}&amp;spage={$spage}&amp;movedown=".$item->id."\" title=\"$str_movedown\">".
                                 "<img src=\"{$CFG->pixpath}/t/down.gif\" class=\"iconsmall\" alt=\"$str_movedown\" /></a> ";
                         }
