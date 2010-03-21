@@ -30,4 +30,4 @@ $string['deletedepthnosuchdepth'] = 'Bad depth level id. Please try again.';
 $string['deleteddepth'] = 'The depth level $a has been deleted.';
 $string['error:couldnotmoveitem'] = 'Could not move that $a. There was an error updating the database.';
 $string['error:couldnotmoveitemnopeer'] = 'Could not move that $a, no adjacent item at same depth level to swap with.';
-
+$string['error:badsortorder'] = 'Could not move that $a, there is something wrong with the sort orders.';

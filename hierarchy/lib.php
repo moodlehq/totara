@@ -449,13 +449,27 @@ class hierarchy {
             $id = $item->id;
             $sortorder = $item->sortorder;
             $newso = $up ? $sortorder - $destcount : $sortorder + $destcount;
-            $status = $status && set_field($this->prefix, 'sortorder', $newso, 'id', $id);
+            if($newso < 0) {
+                // something must be wrong with sort orders, abort
+                rollback_sql();
+                notify(get_string('error:badsortorder','hierarchy',$this->prefix));
+                return false;
+            } else {
+                $status = $status && set_field($this->prefix, 'sortorder', $newso, 'id', $id);
+            }
         }
         foreach($desttree as $item) {
             $id = $item->id;
             $sortorder = $item->sortorder;
             $newso = $up ? $sortorder + $sourcecount : $sortorder - $sourcecount;
-            $status = $status && set_field($this->prefix, 'sortorder', $newso, 'id', $id);
+            if($newso < 0) {
+                // something must be wrong with sort orders, abort
+                rollback_sql();
+                notify(get_string('error:badsortorder','hierarchy',$this->prefix));
+                return false;
+            } else {
+                $status = $status && set_field($this->prefix, 'sortorder', $newso, 'id', $id);
+            }
         }
 
         // only commit if all changes worked
