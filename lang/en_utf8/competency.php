@@ -134,4 +134,4 @@ $string['templatecompetencyremovecheck'] = 'Are you absolutely sure you want to 
 $string['type'] = 'Type';
 $string['unknownbuttonclicked'] = 'Unknown button clicked';
 $string['weight'] = 'Weight';
-
+$string['error:compevidencealreadyexists'] = 'This user already has competency evidence for the chosen competency. You can <a href=\'edit.php?id=$a\'>edit the existing competency</a>, or add a different one.';

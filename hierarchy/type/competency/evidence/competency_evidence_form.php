@@ -132,4 +132,15 @@ class mitms_competency_evidence_form extends moodleform {
         $this->add_action_buttons();
     }
 
+    function validation($data) {
+        $errors = array();
+        $editing = isset($this->_customdata['competencyevidence']);
+        if(!$editing) {
+            if( $existing = get_record('competency_evidence','userid',$data['userid'], 'competencyid', $data['competencyid'])) {
+                $errors['competencyselector'] = get_string('error:compevidencealreadyexists','competency', $existing->id);
+            }
+        }
+        return $errors;
+    }
+
 }
