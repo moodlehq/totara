@@ -1,57 +1,57 @@
 // Bind functionality to page on load
-YAHOO.util.Event.onDOMReady(function () {
-    YAHOO.dialog.courses = new yuiDialog(
-        'idpcourses',
-        'show-idpcourse-dialog',
-        {   
-            buttons : [ 
-                { text: 'Save changes', handler: idpcourses_save }
-            ]   
-        }   
-    );
-});
+//YAHOO.util.Event.onDOMReady(function () {
+//    YAHOO.dialog.courses = new yuiDialog(
+//        'idpcourses',
+//        'show-idpcourse-dialog',
+//        {
+//            buttons : [
+//                { text: 'Save changes', handler: idpcourse_save }
+//            ]
+//        }
+//    );
+//});
 
 
 // Setup function
 // Run on dialog load
-YAHOO.dialogSetupFunc.idpcourses = function() {
+YAHOO.dialogSetupFunc.idpcourse = function() {
 
-    $('#idpcourses #categories').treeview();
+    $('#idpcourse #categories').treeview();
 
     // Setup droppable
-    $('#idpcourses #selectedcourses').droppable({
-        drop: idpcourses_drop
+    $('#idpcourse #selectedcourses').droppable({
+        drop: idpcourse_drop
     });
 
-    idpcourses_bind($('#idpcourses #categories'));
+    idpcourse_bind($('#idpcourse #categories'));
 }
 
 // Handle dropping
-function idpcourses_drop(event, ui) {
+function idpcourse_drop(event, ui) {
     // Get drop box
-    var dropbox = $('#idpcourses #selectedcourses');
+    var dropbox = $('#idpcourse #selectedcourses');
 
     // Append clone
     dropbox.append(ui.draggable.clone());
 }
 
 // Bind click handler
-function idpcourses_bind(parent_element) {
+function idpcourse_bind(parent_element) {
 
     var select = 'span.folder, div.hitarea';
 
     // Load courses on category click
-    $(select, parent_element).one('click', idpcourses_load_courses);
+    $(select, parent_element).one('click', idpcourse_load_courses);
 
     // Make draggable
     $('span:not(.empty)', parent_element).draggable({
         containment: 'body',
         helper: 'clone'
-    }); 
+    });
 }
 
 // Load child courses
-function idpcourses_load_courses() {
+function idpcourse_load_courses() {
 
     // Get parent for id
     var par = $(this).parent();
@@ -60,7 +60,7 @@ function idpcourses_load_courses() {
     var parentid = par.attr('id').substr(9);
 
     // Check for loading list item
-    var loading = $('#idpcourses #categories li#cat_list_'+parentid+' ul:first > li.loading');
+    var loading = $('#idpcourse #categories li#cat_list_'+parentid+' ul:first > li.loading');
 
     if (loading.length == 0) {
         // Already loaded, so ignore
@@ -69,7 +69,7 @@ function idpcourses_load_courses() {
 
     var callback =
     {
-        success:    idpcourses_add_courses,
+        success:    idpcourse_add_courses,
         failure:    function(o) {},
         argument:   parentid
     }
@@ -83,11 +83,11 @@ function idpcourses_load_courses() {
 }
 
 // Add courses to parent
-function idpcourses_add_courses(response) {
+function idpcourse_add_courses(response) {
 
     var cat_id = response.argument;
     var courses = YAHOO.lang.JSON.parse(response.responseText);
-    var list = $('#idpcourses #categories li#cat_list_'+cat_id+' ul:first');
+    var list = $('#idpcourse #categories li#cat_list_'+cat_id+' ul:first');
 
     // Remove "Loading courses..." list item
     $('> li.loading', list).remove();
@@ -106,17 +106,17 @@ function idpcourses_add_courses(response) {
         html = '<li><span>No courses</span></li>';
     }
 
-    $('#idpcourses #categories').treeview({add: list.append($(html))});
+    $('#idpcourse #categories').treeview({add: list.append($(html))});
 
-    idpcourses_bind(list);
+    idpcourse_bind(list);
 }
 
 // Save new courses
-function idpcourses_save() {
+function idpcourse_save() {
 
     // Serialize data
     var assignments = '';
-    $('#idpcourses #selectedcourses span').each(
+    $('#idpcourse #selectedcourses span').each(
         function (intIndex) {
             var id = $(this).attr('id').substr(4);
 
@@ -131,7 +131,7 @@ function idpcourses_save() {
     // Send to server
     var callback =
     {
-        success:    idpcourses_update,
+        success:    idpcourse_update,
         failure:    function(o) {}
     }
 
@@ -142,7 +142,7 @@ function idpcourses_save() {
     );
 }
 
-function idpcourses_update(response) {
+function idpcourse_update(response) {
 
     // Hide dialog
     YAHOO.dialog.courses.dialog.hide();

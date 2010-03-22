@@ -33,6 +33,19 @@ YAHOO.util.Event.onDOMReady(function () {
     })();
 
     ///
+    /// Assign course template dialog
+    ///
+    (function() {
+        var url = '<?php echo $CFG->wwwroot ?>/hierarchy/type/course/idp/';
+
+        yuiAssignDialog(
+            'idpcourse',
+            url+'add.php?id='+idp_revision_id,
+            url+'save.php?id='+idp_revision_id+'&rowcount='+idp_competencytemplate_row_count+'&add='
+        );
+    })();
+
+    ///
     /// Assign competency from position dialog
     ///
     (function() {

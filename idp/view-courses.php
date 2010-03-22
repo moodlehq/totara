@@ -18,6 +18,7 @@ function print_idp_courses_view( $revision, $courses, $editingon=false){
 
     ?>
     <table id="list-idp-courses" class="generalbox planitems boxaligncenter viewcourses">
+    <thead>
     <tr>
         <th class="framework" scope="col">
             <?php echo get_string('category') ?>
@@ -45,6 +46,8 @@ function print_idp_courses_view( $revision, $courses, $editingon=false){
         }
     ?>
     </tr>
+    </thead>
+    <tbody>
     <?php
 
     // # cols varies
@@ -86,10 +89,10 @@ $rowcount=0;
         echo '<tr class="noitems"><td colspan="'.$cols.'"><i>'.get_string('emptyplancourses', 'idp').'</i></td></tr>';
     }
 
-        echo '</table>';
+    echo '</tbody></table>';
 
-        // Add courses button
-        if ($editingon) {
+    // Add courses button
+    if ($editingon) {
 
     ?>
     <table class="generalbox planbuttons boxaligncenter">
