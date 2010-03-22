@@ -260,7 +260,7 @@ class competency extends hierarchy {
     function hierarchy_page_setup($page = '') {
         global $CFG;
 
-        if (!in_array($page, array('template/view', 'item/view'))) {
+        if (!in_array($page, array('template/view', 'item/view', 'item/add'))) {
             return;
         }
 
@@ -280,6 +280,11 @@ class competency extends hierarchy {
             case 'template/view':
                 require_js(array(
                     $CFG->wwwroot.'/local/js/competency.template.js',
+                ));
+                break;
+            case 'item/add':
+                require_js(array(
+                    $CFG->wwwroot.'/local/js/competency.add.js.php',
                 ));
                 break;
         }

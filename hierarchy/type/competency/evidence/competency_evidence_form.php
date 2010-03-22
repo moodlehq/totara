@@ -60,6 +60,8 @@ class mitms_competency_evidence_form extends moodleform {
                 <script type ="text/javascript"> var user_id = '.$userid.'; </script>
                 <span id="competencytitle"></span>
                 <input type="button" value="'.get_string('selectcompetency', 'local').'" id="show-competency-dialog" />
+                or
+                <input type="button" value="'.get_string('createnewcompetency', 'competency').'" id="show-add-dialog" />
                 ');
             $mform->addElement('hidden', 'competencyid');
             $mform->setDefault('competencyid', 0);

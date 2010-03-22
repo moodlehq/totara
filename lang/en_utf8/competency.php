@@ -136,4 +136,4 @@ $string['unknownbuttonclicked'] = 'Unknown button clicked';
 $string['weight'] = 'Weight';
 $string['error:compevidencealreadyexists'] = 'This user already has competency evidence for the chosen competency. You can <a href=\'edit.php?id=$a\'>edit the existing competency</a>, or add a different one.';
 $string['error:evidencealreadyexists'] = 'Could not create new competency evidence because a record already exists for that user and competency';
-
+$string['createnewcompetency'] = 'Create a new competency';
