@@ -99,12 +99,12 @@ class item_edit_form extends moodleform {
 
         $mform->addElement('text', 'fullname', get_string('fullname', $type), 'maxlength="254" size="50"');
         $mform->setHelpButton('fullname', array($type.'fullname', get_string('fullname', $type)), true);
-        $mform->addRule('fullname', get_string('missingfullname', $type), 'required', null, 'client');
+        $mform->addRule('fullname', get_string('missingfullname', $type), 'required', null);
         $mform->setType('fullname', PARAM_MULTILANG);
 
         $mform->addElement('text', 'shortname', get_string('shortname', $type), 'maxlength="100" size="20"');
         $mform->setHelpButton('shortname', array($type.'shortname', get_string('shortname', $type)), true);
-        $mform->addRule('shortname', get_string('missingshortname', $type), 'required', null, 'client');
+        $mform->addRule('shortname', get_string('missingshortname', $type), 'required', null);
         $mform->setType('shortname', PARAM_MULTILANG);
 
         $mform->addElement('text', 'idnumber', get_string('idnumber', $type), 'maxlength="100"  size="10"');

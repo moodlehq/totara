@@ -51,7 +51,7 @@ class competency_edit_form extends item_edit_form {
 
         $mform->addElement('select', 'aggregationmethod', get_string('aggregationmethod', 'competency'), $aggregations);
         $mform->setHelpButton('aggregationmethod', array('competencyaggregationmethod', get_string('aggregationmethod', 'competency')), true);
-        $mform->addRule('aggregationmethod', get_string('aggregationmethod', 'competency'), 'required', null, 'client');
+        $mform->addRule('aggregationmethod', get_string('aggregationmethod', 'competency'), 'required', null);
 
         if (count($scales)) {
             $mform->addElement('select', 'scaleid', get_string('scale'), $scales);
