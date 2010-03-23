@@ -245,12 +245,15 @@ class hierarchy {
      * Called recursively to get full hierarchy
      * @param array &$list Array used to build and return results. Passed by reference
      * @param integer $id ID of node to start from or null for all
-     * @param boolean $children If true select will include an additional option to
+     * @param boolean $showchildren If true select will include an additional option to
      *                          include item and all its children
      * @param boolean $shortname If true use shortname in select, otherwise fullname
      * @param string $path Current path for select, used recursively
+     * @param array $records Records to be passed as function is recursively called. Generated the first
+     *                       time it is called so no need to set this. Used to save db calls
+     * @return Nothing returned, output obtained via reference to &$list
      */
-    function make_hierarchy_list(&$list, $id = NULL, $showchildren=false, $shortname=false, $path = "") {
+    function make_hierarchy_list(&$list, $id = NULL, $showchildren=false, $shortname=false, $path = "", $records=null) {
         // initialize the array if needed
         if(!is_array($list)) {
             $list = array();
@@ -258,8 +261,18 @@ class hierarchy {
         if(empty($id)) {
             // start at top level
             $id = 0;
+        }
+
+        if(empty($records)) {
+            // must be first time through function, get the records, and pass to
+            // future uses to save db calls
+            $records = get_records($this->prefix,'','','path','id,fullname,shortname,parentid,sortorder,path');
+        }
+
+        if($id == 0) {
+            $children = $this->get_all_root_items(true);
         } else {
-            $item = get_record($this->prefix, 'id', $id, '','','','','*','sortorder');
+            $item = $records[$id];
             $name = ($shortname) ? $item->shortname : $item->fullname ;
             if($path) {
                 $path = $path.' / '.$name;
@@ -271,25 +284,37 @@ class hierarchy {
             if($showchildren === true) {
                 // if children wanted and there are some
                 // show a second option with children
-                $descendants = $this->get_item_descendants($id);
+                // does the same as:
+                //$descendants = $this->get_item_descendants($id);
+                // but without the db calls
+                $descendants = array();
+                foreach($records as $key => $record) {
+                    if(substr($record->path,0,strlen($item->path)) == $item->path) {
+                    //print "{$record->path} child of {$item->path}<br>";
+                        $descendants[$key] = $record;
+                    }
+                }
                 if(count($descendants)>1) {
                     // add comma separated list of all children too
                     $idstr = implode(',',array_keys($descendants));
                     $list[$idstr] = $path." (and all children)";
                 }
             }
+            // does the same as:
+            // $children = $this->get_items_by_parent($id);
+            // but without the db calls
+            $children = array();
+            foreach($records as $key => $record) {
+                if($record->parentid == $id) {
+                    $children[$key] = $record;
+                }
+            }
         }
 
-        if($id == 0) {
-            // treat root level differently
-            $children = $this->get_all_root_items(true);
-        } else {
-            $children = $this->get_items_by_parent($id);
-        }
-
+        // now deal with children of this item
         if($children) {
             foreach($children as $child) {
-                $this->make_hierarchy_list($list, $child->id, $showchildren, $shortname, $path);
+                $this->make_hierarchy_list($list, $child->id, $showchildren, $shortname, $path, $records);
             }
         }
     }
