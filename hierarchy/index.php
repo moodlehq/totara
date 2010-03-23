@@ -297,7 +297,7 @@
     $table_data = array();
 
     // build header row
-    foreach($myhead AS $head) {
+    foreach($myhead AS $key => $head) {
         if ($head->type == 'depth') {
             // depth level header
             $header = $head->value->$displaydepth;
@@ -313,7 +313,8 @@
                     title=\"$str_delete\">".
                     "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_delete\" /></a>";
             }
-            $table_cols[] = $header;
+            $table_cols[] = $head->value->fullname.$key;
+            $table_header[] = $header;
 
         } else if ($head->type == 'custom') {
             // custom field header
@@ -322,18 +323,19 @@
             if ($editingon && $can_edit_depth) {
                 $header .= ' <a title="'.$str_edit.'" href="'.$CFG->wwwroot.'/customfield/index.php?type='.$type.'&amp;subtype=depth&amp;id='.$head->value->id.'&amp;action=editfield"><img src="'.$CFG->pixpath.'/t/edit.gif" alt="'.$str_edit.'" class="iconsmall" /></a>';
             }
-            $table_cols[] = $header;
+            $table_cols[] = $head->value->fullname.$key;
+            $table_header[] = $header;
             $table_cols_cf[]= $header; // keep track of custom field headers for styling below
         } else {
             // extrafield or settings header
-            $table_cols[] = $head->value->fullname;
+            $table_cols[] = $head->value->fullname.$key;
+            $table_header[] = $head->value->fullname;
         }
     }
-
     $table = new flexible_table($type.'-framework-index-'.$frameworkid);
 
     $table->define_columns($table_cols);
-    $table->define_headers($table_cols);
+    $table->define_headers($table_header);
     // center custom field columns
     foreach ($table_cols_cf as $table_col_cf) {
         $table->column_style($table_col_cf,'text-align','center');
