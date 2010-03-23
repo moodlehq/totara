@@ -607,6 +607,12 @@
         } else {
             fwrite ($bf,full_tag("GRADEBOOKHISTORIES",3,false,"false"));
         }
+        //The competency evidence items
+        if ($preferences->backup_competency_evidence_items == 1) {
+            fwrite ($bf,full_tag("COMPETENCY_EVIDENCE_ITEMS",3,false,"true"));
+        } else {
+            fwrite ($bf,full_tag("COMPETENCY_EVIDENCE_ITEMS",3,false,"false"));
+        }
         //The messages in backup
         if ($preferences->backup_messages == 1 && $preferences->backup_course == SITEID) {
             fwrite ($bf,full_tag("MESSAGES",3,false,"true"));
