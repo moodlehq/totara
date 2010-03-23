@@ -320,7 +320,7 @@
             $header = $head->value->$displaydepth;
 
             if ($editingon && $can_edit_depth) {
-                $header .= ' <a title="'.$str_edit.'" href="'.$CFG->wwwroot.'/customfield/index.php?type='.$type.'&amp;subtype=depth&amp;depthid='.$depth->id.'&amp;id='.$head->value->id.'&amp;action=editfield"><img src="'.$CFG->pixpath.'/t/edit.gif" alt="'.$str_edit.'" class="iconsmall" /></a>';
+                $header .= ' <a title="'.$str_edit.'" href="'.$CFG->wwwroot.'/customfield/index.php?type='.$type.'&amp;subtype=depth&amp;id='.$head->value->id.'&amp;action=editfield"><img src="'.$CFG->pixpath.'/t/edit.gif" alt="'.$str_edit.'" class="iconsmall" /></a>';
             }
             $table_cols[] = $header;
             $table_cols_cf[]= $header; // keep track of custom field headers for styling below
