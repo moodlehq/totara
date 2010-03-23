@@ -31,7 +31,6 @@ if (file_exists($CFG->dirroot.'/hierarchy/type/'.$type.'/lib.php')) {
 
 if(!$frameworkid) {
     // let the user pick the framework from a list
-    // TODO improve appearance
     if($frameworks = get_records($type.'_framework')) {
         print "<h2>Select a $type framework</h2>";
         foreach ($frameworks as $framework) {
