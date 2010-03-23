@@ -34,8 +34,13 @@ class mitms_competency_evidence_form extends moodleform {
             // for new record, userid must also be passed to form
             $userid = $this->_customdata['userid'];
             $id = null;
-            $position_title = '';
-            $organisation_title = '';
+            // repopulate if set but validation failed
+            $position_title = isset($_POST['positionid']) ?
+                get_field('position', 'fullname', 'id', $_POST['positionid']) : '';
+            $organisation_title = isset($_POST['organisationid']) ?
+                get_field('organisation', 'fullname', 'id', $_POST['organisationid']) : '';
+            $competency_title = isset($_POST['competencyid']) ?
+                get_field('competency', 'fullname', 'id', $_POST['competencyid']) : '';
         }
 
         $mform->addElement('hidden', 'id', $id);
@@ -58,7 +63,7 @@ class mitms_competency_evidence_form extends moodleform {
             $mform->addElement('static', 'competencyselector', get_string('competency', 'competency'),
                 '
                 <script type ="text/javascript"> var user_id = '.$userid.'; </script>
-                <span id="competencytitle"></span>
+                <span id="competencytitle">'.htmlentities($competency_title).'</span>
                 <input type="button" value="'.get_string('selectcompetency', 'local').'" id="show-competency-dialog" />
                 or
                 <input type="button" value="'.get_string('createnewcompetency', 'competency').'" id="show-add-dialog" />
@@ -97,6 +102,11 @@ class mitms_competency_evidence_form extends moodleform {
             // editing existing competency evidence item
             // get id of the scale referred to by the evidence's proficiency
             $scaleid = get_field('competency_scale_values','scaleid','id',$ce->proficiency);
+            $selectoptions = get_records_menu('competency_scale_values','scaleid',$scaleid,'sortorder');
+            $mform->addElement('select', 'proficiency',get_string('proficiency','local'), $selectoptions);
+        } else if (isset($_POST['competencyid'])) {
+            // competency set but validation failed. Refill scale options
+            $scaleid = get_field('competency','scaleid','id',$_POST['competencyid']);
             $selectoptions = get_records_menu('competency_scale_values','scaleid',$scaleid,'sortorder');
             $mform->addElement('select', 'proficiency',get_string('proficiency','local'), $selectoptions);
         } else {
