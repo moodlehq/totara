@@ -56,7 +56,7 @@ function get_positions_list() {
 
 function get_proficiency_list() {
     // use all possible scale values
-    $scale_values = get_records('competency_scale_values', '', '', 'scaleid, sortorder DESC');
+    $scale_values = get_records('competency_scale_values', '', '', 'scaleid, sortorder');
 
     $proficiencies = array();
     foreach($scale_values as $scale_value) {
