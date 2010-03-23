@@ -197,6 +197,62 @@ class competency extends hierarchy {
     }
 
     /**
+     * Get competency evidence using in a course
+     *
+     * @param   $courseid   int
+     * @return  array|false
+     */
+    function get_course_evidence($courseid) {
+
+        return get_records_sql(
+                "
+                SELECT DISTINCT
+                    cei.id AS evidenceid,
+                    c.id AS id,
+                    c.fullname,
+                    f.id AS fid,
+                    f.fullname AS framework,
+                    d.fullname AS depth,
+                    cei.itemtype AS evidencetype,
+                    cei.iteminstance AS evidenceinstance,
+                    cei.itemmodule AS evidencemodule
+                FROM
+                    {$CFG->prefix}competency_evidence_items cei
+                INNER JOIN
+                    {$CFG->prefix}competency c
+                 ON cei.competencyid = c.id
+                INNER JOIN
+                    {$CFG->prefix}competency_framework f
+                 ON f.id = c.frameworkid
+                INNER JOIN
+                    {$CFG->prefix}competency_depth d
+                 ON d.id = c.depthid
+                LEFT JOIN
+                    {$CFG->prefix}modules m
+                 ON cei.itemtype = 'activitycompletion'
+                AND m.name = cei.itemmodule
+                LEFT JOIN
+                    {$CFG->prefix}course_modules cm
+                 ON cei.itemtype = 'activitycompletion'
+                AND cm.instance = cei.iteminstance
+                AND cm.module = m.id
+                WHERE
+                (
+                        cei.itemtype <> 'activitycompletion'
+                    AND cei.iteminstance = {$courseid}
+                )
+                OR
+                (
+                        cei.itemtype = 'activitycompletion'
+                    AND cm.course = {$courseid}
+                )
+                ORDER BY
+                    c.fullname
+                "
+        );
+    }
+
+    /**
      * Run any code before printing header
      * @param $page string Unique identifier for page
      * @return void

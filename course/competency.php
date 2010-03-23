@@ -48,6 +48,8 @@ if (!$course = get_record('course', 'id', $id)) {
     print_error('invalidcourseid');
 }
 
+$hierarchy = new competency();
+
 $context = get_context_instance(CONTEXT_SYSTEM);
 
 require_login($course->id);
@@ -112,53 +114,7 @@ print_heading($strcompetenciesusedincourse);
 <?php
 
 // Get any competencies used in this course
-$competencies = get_records_sql(
-        "
-        SELECT DISTINCT
-            cei.id AS evidenceid,
-            c.id AS id,
-            c.fullname,
-            f.id AS fid,
-            f.fullname AS framework,
-            d.fullname AS depth,
-            cei.itemtype AS evidencetype,
-            cei.iteminstance AS evidenceinstance,
-            cei.itemmodule AS evidencemodule
-        FROM
-            {$CFG->prefix}competency_evidence_items cei
-        INNER JOIN
-            {$CFG->prefix}competency c
-         ON cei.competencyid = c.id
-        INNER JOIN
-            {$CFG->prefix}competency_framework f
-         ON f.id = c.frameworkid
-        INNER JOIN
-            {$CFG->prefix}competency_depth d
-         ON d.id = c.depthid
-        LEFT JOIN
-            {$CFG->prefix}modules m
-         ON cei.itemtype = 'activitycompletion'
-        AND m.name = cei.itemmodule
-        LEFT JOIN
-            {$CFG->prefix}course_modules cm
-         ON cei.itemtype = 'activitycompletion'
-        AND cm.instance = cei.iteminstance
-        AND cm.module = m.id
-        WHERE
-        (
-                cei.itemtype <> 'activitycompletion'
-            AND cei.iteminstance = {$id}
-        )
-        OR
-        (
-                cei.itemtype = 'activitycompletion'
-            AND cm.course = {$id}
-        )
-        ORDER BY
-            c.fullname
-        "
-);
-
+$competencies = $hierarchy->get_course_evidence($course->id);
 if ($competencies) {
 
     $str_remove = get_string('remove');
