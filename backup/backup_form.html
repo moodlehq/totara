@@ -71,6 +71,7 @@
     $backup_course_files = optional_param('backup_course_files',1);
     $backup_site_files = optional_param('backup_site_files',1);
     $backup_gradebook_history =  optional_param('backup_gradebook_history', 0, PARAM_INT);
+    $backup_competency_evidence_items =  optional_param('backup_competency_evidence_items', 0, PARAM_INT);
     $backup_messages = optional_param('backup_messages',1);
     $backup_blogs = optional_param('backup_blogs',1);
 
@@ -302,6 +303,19 @@ function selectItemInCheckboxByName(formId, checkName, checked ) {
             echo "</td></tr>";
         } else {
             $hidden_options .= '<input type="hidden" name="backup_gradebook_history" value="0" />';
+        }
+
+        // do you want competency evidence items to be backed up?
+        if (empty($to) && $course->id != SITEID) {
+            echo "<tr>";
+            echo "<td align=\"right\" colspan=\"2\"><b>";
+            echo '<label for="menubackup_competency_evidence_types">'.get_string('competencyevidence', 'competency').'</label>';
+            echo "</b></td><td colspan=\"2\">";
+            $competency_options = array();
+            $competency_options[0] = get_string("no");
+            $competency_options[1] = get_string("yes");
+            choose_from_menu($competency_options, "backup_competency_evidence_items", $backup_competency_evidence_items, "");
+            echo "</td></tr>";
         }
 
         if (empty($to) and $backupuserinfo and $course->id == SITEID) {

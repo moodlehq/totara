@@ -277,6 +277,17 @@
             print_table($table);
             echo "</td></tr>";
         }
+
+        //Now print the competency evidence information conditionally
+        if (!empty($backupprefs->backup_competency_evidence_items)) {
+            echo "<tr>";
+            echo "<td colspan=\"2\"><b>";
+            echo get_string("includecompetencyevidence", 'competency').'</b>';
+            //Print info
+            $table->data = competency_evidence_items_check_backup($id, $backupprefs->backup_unique_code);
+            print_table($table);
+            echo "</td></tr>";
+        }
     }
 
     // now keep it for next time.

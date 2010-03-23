@@ -1,4 +1,7 @@
 <?php //$Id$
+
+    require_once($CFG->dirroot.'/hierarchy/type/competency/lib.php');
+
     //This file contains all the function needed in the backup utility
     //except the mod-related funtions that are into every backuplib.php inside
     //every mod directory
@@ -266,6 +269,32 @@
         $info[0][0] = get_string("files");
         if ($ids) {
             $info[0][1] = count($ids);
+        } else {
+            $info[0][1] = 0;
+        }
+
+        return $info;
+    }
+
+    /**
+     * Calculate the number of competency evidence items to backup
+     * and put them in backup_ids
+     * Return an array of info (name,value)
+     */
+    function competency_evidence_items_check_backup($course, $backup_unique_code) {
+
+        global $CFG;
+
+        // Get all course evidence
+        $hierarchy = new competency();
+        $evidence = $hierarchy->get_course_evidence($course);
+
+        //Gets the user data
+        $info = array();
+        $info[0] = array();
+        $info[0][0] = get_string('competencyevidence', 'competency');
+        if ($evidence) {
+            $info[0][1] = count($evidence);
         } else {
             $info[0][1] = 0;
         }
@@ -1707,6 +1736,94 @@
         return $status;
     }
 
+    //Backup competency evidence items info
+    function backup_competency_evidence_items_info($bf, $preferences) {
+        global $CFG;
+
+        $status = true;
+        $silent = defined('BACKUP_SILENTLY');
+
+        // Get all evidence
+        $hierarchy = new competency();
+        $evidence = $hierarchy->get_course_evidence($preferences->backup_course);
+
+        if (!$silent) {
+            echo '<ul>';
+        }
+
+        // check modules associated with activity completion evidence types are also being
+        // backed up
+        $frameworks = array();
+
+        foreach ($evidence as $id => $ev) {
+
+            // Check if activity completion. If so, check modules is being backed up
+            if ($ev->evidencetype == COMPETENCY_EVIDENCE_TYPE_ACTIVITY_COMPLETION) {
+                if (!backup_mod_selected($preferences, $ev->evidencemodule, $ev->evidenceinstance)) {
+                    // Remove from evidence list
+                    if (!$silent) {
+                        echo '<li>Ignoring activity completion evidence as activity not included in backup</li>';
+                    }
+                    unset($evidence[$id]);
+                    continue;
+                }
+            }
+
+            // Organise by frameworks
+            if (!isset($frameworks[$ev->fid])) {
+                $frameworks[$ev->fid] = array();
+            }
+
+            // Add competency id
+            if (!isset($frameworks[$ev->fid][$ev->id])) {
+                $frameworks[$ev->fid][$ev->id] = array();
+            }
+
+            $frameworks[$ev->fid][$ev->id][] = $ev->evidenceid;
+        }
+
+        // Gradebook header
+        if (!count($evidence)) {
+            return;
+        }
+        $status = fwrite($bf, start_tag("COMPETENCY_FRAMEWORKS", 2, true));
+
+        foreach ($frameworks as $fid => $fcompetencies) {
+
+            // Load framework
+            $framework = $hierarchy->get_framework($fid);
+            $status = fwrite($bf, start_tag('COMPETENCY_FRAMEWORK', 3, true));
+            $status = fwrite($bf, full_tag('FULLNAME', 4, false, $framework->fullname));
+
+            foreach ($fcompetencies as $fcompetency => $fevidence) {
+
+                $competency = $hierarchy->get_item($fcompetency);
+                $status = fwrite($bf, start_tag('COMPETENCY', 4, true));
+                $status = fwrite($bf, full_tag('FULLNAME', 5, false, $competency->fullname));
+                $status = fwrite($bf, full_tag('IDNUMBER', 5, false, $competency->idnumber));
+
+                foreach ($fevidence as $eid) {
+                    $status = fwrite($bf, start_tag('COMPETENCY_EVIDENCE_ITEMS', 5, true));
+                    $status = fwrite($bf, full_tag('ITEMTYPE', 6, false, $evidence[$eid]->evidencetype));
+                    $status = fwrite($bf, full_tag('ITEMMODULE', 6, false, $evidence[$eid]->evidencemodule));
+                    $status = fwrite($bf, full_tag('ITEMINSTANCE', 6, false, $evidence[$eid]->evidenceinstance));
+                    $status = fwrite($bf, end_tag('COMPETENCY_EVIDENCE_ITEMS', 5, true));
+                }
+
+                $status = fwrite($bf, end_tag('COMPETENCY', 4, true));
+            }
+
+            $status = fwrite($bf, end_tag('COMPETENCY_FRAMEWORK', 3, true));
+        }
+
+        $status = fwrite($bf, end_tag("COMPETENCY_FRAMEWORKS", 2, true));
+
+        if (!$silent) {
+            echo '</ul>';
+        }
+        return $status;
+    }
+
     //Backup gradebook info
     function backup_gradebook_info($bf, $preferences) {
         global $CFG;
@@ -2946,6 +3063,7 @@
         $preferences->backup_user_files = optional_param('backup_user_files',1,PARAM_INT);
         $preferences->backup_course_files = optional_param('backup_course_files',1,PARAM_INT);
         $preferences->backup_gradebook_history = optional_param('backup_gradebook_history', 1, PARAM_INT);
+        $preferences->backup_competency_evidence_items = optional_param('backup_competency_evidence_items', 0, PARAM_INT);
         $preferences->backup_site_files = optional_param('backup_site_files',1,PARAM_INT);
         $preferences->backup_messages = optional_param('backup_messages',1,PARAM_INT);
         $preferences->backup_blogs = optional_param('backup_blogs',1,PARAM_INT);
@@ -3480,6 +3598,25 @@
                             return false;
                         }
                     }
+                }
+            }
+
+            //Print competency evidence info
+            if ($status) {
+                if (!defined('BACKUP_SILENTLY')) {
+                    echo "<li>".get_string("writingcompetencyevidenceinfo");
+                }
+                if (!$status = backup_competency_evidence_items_info($backup_file,$preferences)) {
+                    if (!defined('BACKUP_SILENTLY')) {
+                        notify("An error occurred while backing up competency evidence items");
+                    }
+                    else {
+                        $errorstr = "An error occurred while backing up competency evidence items";
+                        return false;
+                    }
+                }
+                if (!defined('BACKUP_SILENTLY')) {
+                    echo '</li>';
                 }
             }
 
