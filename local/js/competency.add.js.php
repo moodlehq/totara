@@ -10,7 +10,7 @@ YAHOO.util.Event.onDOMReady(function () {
         'addcompetency',
         'show-add-dialog',
         {},
-        'http://192.168.2.133/moodle-itms/hierarchy/item/add.php?type=competency'
+        '<?php echo $CFG->wwwroot ?>/hierarchy/item/add.php?type=competency'
 
     );
 });
@@ -36,7 +36,7 @@ function addcompetency_bind() {
         // submit form
         YAHOO.util.Connect.asyncRequest(
             'GET',
-            '../../../item/add.php?'+formdata.serialize(),
+            '<?php echo $CFG->wwwroot ?>/hierarchy/item/add.php?'+formdata.serialize(),
             callback
         );
 
