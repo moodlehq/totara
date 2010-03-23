@@ -203,6 +203,7 @@ class competency extends hierarchy {
      * @return  array|false
      */
     function get_course_evidence($courseid) {
+        global $CFG;
 
         return get_records_sql(
                 "
