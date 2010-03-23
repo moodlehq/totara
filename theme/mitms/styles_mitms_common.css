@@ -352,6 +352,12 @@ div.yui-dialog .selected span {
     font-size: 0.8em;
     margin-top: 1em;
 }
+
+/* fix for add competency display width */
+#hierarchy-type-competency-evidence-add #mform1 {
+    width: 95%;
+}
+
 /*****************************************************************************/
 /** Dashboards **/
 /*****************************************************************************/
