@@ -35,6 +35,7 @@ class mitms_competency_evidence_form extends moodleform {
             $userid = $this->_customdata['userid'];
             $id = null;
             // repopulate if set but validation failed
+            //TODO don't use POST!
             $position_title = isset($_POST['positionid']) ?
                 get_field('position', 'fullname', 'id', $_POST['positionid']) : '';
             $organisation_title = isset($_POST['organisationid']) ?
@@ -50,6 +51,7 @@ class mitms_competency_evidence_form extends moodleform {
         $mform->addElement('header', 'general', get_string('general', 'form'));
 
         $mform->addElement('static', 'user', get_string('participant','local'));
+        $mform->setHelpButton('user',array('competencyevidenceuser',get_string('participant','local'),'moodle'));
         $mform->addElement('hidden', 'userid', $userid);
         $mform->addRule('userid', null, 'required');
         $mform->addRule('userid', null, 'numeric');
@@ -57,6 +59,7 @@ class mitms_competency_evidence_form extends moodleform {
         if($editing) {
             $mform->addElement('hidden', 'competencyid', $ce->competencyid);
             $mform->addElement('static', 'compname', get_string('competency','competency'));
+            $mform->setHelpButton('compname',array('competencyevidencecompetency',get_string('competency','competency'),'moodle'));
         } else {
 
             // competency selector
@@ -70,6 +73,7 @@ class mitms_competency_evidence_form extends moodleform {
                 ');
             $mform->addElement('hidden', 'competencyid');
             $mform->setDefault('competencyid', 0);
+            $mform->setHelpButton('competencyselector',array('competencyevidencecompetency',get_string('help:competencyevidencecompetency','local'),'moodle'));
 
         }
         $mform->addRule('competencyid',null,'required');
@@ -89,14 +93,18 @@ class mitms_competency_evidence_form extends moodleform {
         if($selectoptions) {
             $selector = array(0 => get_string('selectanassessor','local'));
             $mform->addElement('select', 'assessorid', get_string('assessor','local'), $selector + $selectoptions);
+            $mform->setHelpButton('assessorid',array('competencyevidenceassessor',get_string('assessor','local'),'moodle'));
         } else {
             // if assessorid set but no assessor roles defined, this should pass the current value
             $mform->addElement('hidden', 'assessorid','');
             $mform->addElement('static', 'assessoriderror', get_string('assessor','local'), get_string('noassessors','local'));
+            $mform->setHelpButton('assessoriderror',array('competencyevidenceassessor',get_string('assessor','local'),'moodle'));
         }
 
         $mform->addElement('text', 'assessorname', get_string('assessorname','local'));
+        $mform->setHelpButton('assessorname',array('competencyevidenceassessorname',get_string('assessorname','local'),'moodle'));
         $mform->addElement('text', 'assessmenttype', get_string('assessmenttype','local'));
+        $mform->setHelpButton('assessmenttype',array('competencyevidenceassessmenttype',get_string('assessmenttype','local'),'moodle'));
 
         if(isset($ce)) {
             // editing existing competency evidence item
@@ -115,6 +123,7 @@ class mitms_competency_evidence_form extends moodleform {
             $mform->addElement('select', 'proficiency',get_string('proficiency','local'), array(get_string('firstselectcompetency','local')));
             $mform->disabledIf('proficiency','competencyid','eq',0);
         }
+        $mform->setHelpButton('proficiency',array('competencyevidenceproficiency',get_string('proficiency','local'),'moodle'));
         $mform->addRule('proficiency',null,'required');
         $mform->addRule('proficiency',get_string('err_required','form'),'nonzero');
 
@@ -125,6 +134,8 @@ class mitms_competency_evidence_form extends moodleform {
             <span id="positiontitle">'.htmlentities($position_title).'</span>
             <input type="button" value="'.get_string('chooseposition', 'position').'" id="show-position-dialog" />
             ');
+        $mform->setHelpButton('positionselector',array('competencyevidenceposition',get_string('positionatcompletion','local'),'moodle'));
+
         $mform->addElement('hidden', 'positionid');
         $mform->setDefault('positionid', 0);
         $mform->addRule('positionid', null, 'numeric');
@@ -135,11 +146,13 @@ class mitms_competency_evidence_form extends moodleform {
             <span id="organisationtitle">'.htmlentities($organisation_title).'</span>
             <input type="button" value="'.get_string('chooseorganisation', 'organisation').'" id="show-organisation-dialog" />
             ');
+        $mform->setHelpButton('organisationselector',array('competencyevidenceorganisation',get_string('organisationatcompletion','local'),'moodle'));
         $mform->addElement('hidden', 'organisationid');
         $mform->setDefault('organisationid', 0);
         $mform->addRule('organisationid', null, 'numeric');
 
         $mform->addElement('date_selector', 'timemodified', get_string('timecompleted','local'));
+        $mform->setHelpButton('timemodified',array('competencyevidencetimecompleted',get_string('timecompleted','local'),'moodle'));
 
         $this->add_action_buttons();
     }
