@@ -26,7 +26,7 @@ admin_externalpage_setup('competencytemplatemanage');
 
 // Check permissions
 $sitecontext = get_context_instance(CONTEXT_SYSTEM);
-require_capability('moodle/local:viewcompetency', $sitecontext);
+require_capability('moodle/local:idpaddcompetencytemplatefrompos', $sitecontext);
 
 // Setup hierarchy objects
 $competency = new competency();

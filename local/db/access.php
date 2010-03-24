@@ -507,4 +507,40 @@ $local_capabilities = array(
             'admin' => CAP_ALLOW
         )
     ),
+
+    // Add a competency to an IDP
+    'moodle/local:idpaddcompetency' => array(
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'legacy' => array(
+            'user' => CAP_ALLOW
+        )
+    ),
+
+    // Add a competency template to an IDP
+    'moodle/local:idpaddcompetencytemplate' => array(
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'legacy' => array(
+            'user' => CAP_ALLOW
+        )
+    ),
+
+    // Add a competency to an IDP from position
+    'moodle/local:idpaddcompetencyfrompos' => array(
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'legacy' => array(
+            'user' => CAP_ALLOW
+        )
+    ),
+
+    // Add a competency template to an IDP from position
+    'moodle/local:idpaddcompetencytemplatefrompos' => array(
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'legacy' => array(
+            'user' => CAP_ALLOW
+        )
+    ),
 );

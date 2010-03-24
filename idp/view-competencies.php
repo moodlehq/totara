@@ -16,6 +16,14 @@ function print_idp_competencies_view($revision, $competencies, $editingon = fals
     print_heading(get_string('competencies', 'competency'));
     $str_remove = get_string('remove');
 
+    // Check permissions
+    if ($editingon) {
+        $addcomp = has_capability('moodle/local:idpaddcompetency', get_context_instance(CONTEXT_SYSTEM));
+    }
+
+    if ($editingon && $haspositions) {
+        $addpos = has_capability('moodle/local:idpaddcompetencyfrompos', get_context_instance(CONTEXT_SYSTEM));
+    }
 ?>
     <table id="list-idpcompetency" class="list-idppositioncompetency generalbox planitems boxaligncenter">
     <thead>
@@ -94,6 +102,7 @@ $rowcount=0;
         // Add competencies button
         if ($editingon) {
 
+            if ($addcomp) {
     ?>
     <table class="generalbox planbuttons boxaligncenter">
         <tr colspan="<?php echo $cols ?>">
@@ -101,9 +110,11 @@ $rowcount=0;
                 <div class="singlebutton">
                 <input type="submit" id="show-idpcompetency-dialog" value="<?php echo get_string('addfromframeworks', 'idp') ?>" />
 
-        <?php
+    <?php
+            }
+
             // Only display add from position button if the user has positions assigned
-            if ($haspositions) {
+            if ($haspositions && $addpos) {
                 echo '<input type="submit" id="show-idppositioncompetency-dialog" value="'.get_string('addfrompositions', 'idp').'" />';
             }
         ?>
