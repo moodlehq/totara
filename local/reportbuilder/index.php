@@ -50,8 +50,8 @@
         $todb->shortname = $fromform->shortname;
         $todb->source = ($fromform->source != '0') ? $fromform->source : null;
         // create with default columns, restrictions and filters
-        $todb->columns = serialize(get_source_data($fromform->source,'defaultcolumns'));
-        $todb->filters = serialize(get_source_data($fromform->source,'defaultfilters'));
+        $todb->columns = serialize(reportbuilder::get_source_data('defaultcolumns',$fromform->source));
+        $todb->filters = serialize(reportbuilder::get_source_data('defaultfilters',$fromform->source));
         $todb->restriction = serialize(get_default_restrictions($fromform->source));
         $todb->hidden = $fromform->hidden;
         if($newid = insert_record('report_builder',$todb)) {
@@ -105,7 +105,7 @@
 
 
     function get_default_restrictions($source) {
-        $options = get_source_data($source,'restrictionoptions');
+        $options = reportbuilder::get_source_data('restrictionoptions',$source);
         $restrictions = array();
         if(is_array($options)) {
             foreach ($options as $option) {

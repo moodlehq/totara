@@ -196,7 +196,7 @@ function build_filters($fromform) {
 
 function build_restrictions($fromform) {
     $source = $fromform->source;
-    $options = get_source_data($source,'restrictionoptions');
+    $options = reportbuilder::get_source_data('restrictionoptions',$source);
     $i = 0;
     $rest = "restriction$i";
     $ret = array();

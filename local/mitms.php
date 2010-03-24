@@ -245,7 +245,7 @@ function mitms_print_report_manager($return=false) {
 
     $rows = array();
     foreach ($reports as $report) {
-        $options = get_source_data($report->source,'restrictionoptions');
+        $options = reportbuilder::get_source_data('restrictionoptions',$report->source);
         // go through each restriction looking for capabilities
         $restrictions = unserialize($report->restriction);
         $hascap = false;

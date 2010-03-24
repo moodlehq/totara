@@ -60,18 +60,17 @@ class reportbuilder {
         }
 
         // pull in data for this report from the source
-        $this->_columnoptions = $this->get_source_data('columnoptions');
-        $this->_defaultcolumns = $this->get_source_data('defaultcolumns');
-        $this->_defaultfilters = $this->get_source_data('defaultfilters');
-        $this->_filteroptions = $this->get_source_data('filteroptions');
-        $this->_adminoptions = $this->get_source_data('adminoptions');
+        $this->_columnoptions = reportbuilder::get_source_data('columnoptions', $this->_source);
+        $this->_defaultcolumns = reportbuilder::get_source_data('defaultcolumns', $this->_source);
+        $this->_defaultfilters = reportbuilder::get_source_data('defaultfilters', $this->_source);
+        $this->_filteroptions = reportbuilder::get_source_data('filteroptions', $this->_source);
+        $this->_adminoptions = reportbuilder::get_source_data('adminoptions', $this->_source);
         $this->_admin = $this->get_current_admin_options();
-        $this->_joinlist = $this->get_source_data('joinlist');
-        $this->_restrictionoptions = $this->get_source_data('restrictionoptions');
-        $this->_base = $this->get_source_data('base');
-        $this->_paramoptions = $this->get_source_data('paramoptions');
+        $this->_joinlist = reportbuilder::get_source_data('joinlist', $this->_source);
+        $this->_restrictionoptions = reportbuilder::get_source_data('restrictionoptions', $this->_source);
+        $this->_base = reportbuilder::get_source_data('base', $this->_source);
+        $this->_paramoptions = reportbuilder::get_source_data('paramoptions', $this->_source);
         $this->_params = $this->get_current_params();
-
         // check the requested columns exist in column options
         // chose to use this in display_table() and export_data() instead of
         // here as that allows the bad filters/columns to appear in the
@@ -166,9 +165,8 @@ class reportbuilder {
     }
 
     // get a particular type of data from the specified source
-    function get_source_data($datatype) {
+    public static function get_source_data($datatype, $source) {
         global $CFG;
-        $source = $this->_source;
         $file = "{$CFG->dirroot}/local/reportbuilder/sources/$source/$datatype.php";
         if(file_exists($file)) {
             include($file);
@@ -1164,22 +1162,4 @@ function reportbuilder_get_options_from_dir($source) {
     }
     return $ret;
 }
-
-
-// get a particular type of data from the specified source
-// TODO combine two versions of this function
-
-function get_source_data($source, $datatype) {
-    global $CFG;
-    $file = "{$CFG->dirroot}/local/reportbuilder/sources/$source/$datatype.php";
-    if(file_exists($file)) {
-        include($file);
-    }
-    if(isset($$datatype)) {
-        return $$datatype;
-    } else {
-        return null;
-    }
-}
-
 
