@@ -339,13 +339,14 @@ class reportbuilder {
      */
     function get_restrictions() {
         global $CFG;
-        $context = get_context_instance(CONTEXT_SYSTEM);
         // import restriction funcs
         include_once($CFG->dirroot.'/local/reportbuilder/restrictionfuncs.php');
         $restrictions = $this->get_permitted_restrictions();
+
         $queries = array();
         // start with an empty query, so default is display no results
         $queries['default'] = array();
+
         // go through restrictions
         // saving groups of fields together
         foreach ($restrictions as $restriction) {
@@ -380,6 +381,7 @@ class reportbuilder {
                 }
             }
         }
+
         // now go through each grouping, reducing to unique records
         $out = array();
         foreach ($queries as $field=>$query) {
@@ -640,11 +642,12 @@ class reportbuilder {
 
         // get the joins needed to display requested columns and do filtering and restrictions
         $columnjoins = $this->get_column_joins();
-        $filterjoins = $this->get_filter_joins();
+        $filterjoins = ($filtered === true) ? $this->get_filter_joins() : array();
         $restjoins = $this->get_restriction_joins();
         $paramjoins = $this->get_joins($this->_params,'param');
         $adminjoins = $this->get_joins($this->_admin,'admin');
         $joins = array_merge($columnjoins, $filterjoins, $restjoins, $paramjoins, $adminjoins);
+
         // now build the query from the snippets
 
         // need a unique field for get_records() so include id as first column
@@ -653,38 +656,30 @@ class reportbuilder {
         } else {
             $select = "SELECT base.id,".implode($fields,',')." ";
         }
+
         // sort joins in order determined by sort_join function
         // this ensures joins are processed in the correct order
         // sort_join callback is method within this class
         uksort($joins, array($this,'sort_join'));
 
         // build query starting from base table then adding required joins
-        $from = "FROM $base ".implode($joins,' ')." ";
-
+        $from = "FROM $base ".implode(' ', $joins)." ";
 
         // restrictions
+        $whereclauses = array();
         $restrictions = $this->get_restrictions();
-        if ($restrictions != '') {
-            $where = "WHERE $restrictions";
-        } else {
-            $where = '';
+        if($restrictions != '') {
+            $whereclauses[] = $restrictions;
         }
-
-        // also apply filter to query
-        if($filtered===true) {
-            $extrasql = $this->get_sql_filter();
-            if($extrasql!='' && $where=='') {
-                $where = "WHERE $extrasql";
-            } else if ($extrasql!='') {
-                $where = $where." AND $extrasql";
-            }
+        $extrasql = ($filtered===true) ? $this->get_sql_filter() : '';
+        if($extrasql != '') {
+            $whereclauses[] = $extrasql;
         }
         $paramrestrictions = $this->get_param_restrictions();
-        if($paramrestrictions != '' && $where=='') {
-            $where = "WHERE $paramrestrictions";
-        } else if ($paramrestrictions != '') {
-            $where = $where . " AND $paramrestrictions";
+        if($paramrestrictions != '') {
+            $whereclauses[] = $paramrestrictions;
         }
+        $where = (count($whereclauses) > 0) ? "WHERE ".implode(' AND ',$whereclauses) : '';
 
         $sql = "$select $from $where";
         return $sql;
@@ -707,10 +702,8 @@ class reportbuilder {
      * @return integer Filtered record count
      */
     function get_filtered_count() {
-
         $sql = $this->build_query(true, true);
         return count_records_sql($sql);
-
     }
 
     /*
@@ -999,6 +992,7 @@ class reportbuilder {
         require_once("$CFG->libdir/odslib.class.php");
         $shortname = $this->shortname;
         $filename = clean_filename($shortname.'_report.ods');
+        $blocksize = 1000;
 
         header("Content-Type: application/download\n");
         header("Content-Disposition: attachment; filename=$filename");
@@ -1021,7 +1015,6 @@ class reportbuilder {
 
         $numfields = count($fields);
 
-        $blocksize = 1000;
         //break the data into blocks as single array gets too big
         for($k=0;$k<=floor($count/$blocksize);$k++) {
             $start = $k*$blocksize;
@@ -1037,7 +1030,6 @@ class reportbuilder {
                 $row++;
             }
         }
-
 
         $workbook->close();
         die;
@@ -1056,6 +1048,7 @@ class reportbuilder {
 
         $shortname = $this->shortname;
         $filename = clean_filename($shortname.'_report.xls');
+        $blocksize = 1000;
 
         header("Content-Type: application/download\n");
         header("Content-Disposition: attachment; filename=$filename");
@@ -1078,7 +1071,6 @@ class reportbuilder {
 
         $numfields = count($fields);
 
-        $blocksize = 1000;
         // break the data into blocks as single array gets too big
         for($k=0;$k<=floor($count/$blocksize);$k++) {
             $start = $k*$blocksize;
@@ -1109,6 +1101,7 @@ class reportbuilder {
         global $CFG;
         $shortname = $this->shortname;
         $filename = clean_filename($shortname.'_report.csv');
+        $blocksize = 1000;
 
         header("Content-Type: application/download\n");
         header("Content-Disposition: attachment; filename=$filename");
@@ -1126,7 +1119,6 @@ class reportbuilder {
         echo implode($delimiter, $row)."\n";
 
         $numfields = count($fields);
-        $blocksize = 1000;
         // break the data into blocks as single array gets too big
         for($k=0;$k<=floor($count/$blocksize);$k++) {
             $start = $k*$blocksize;
@@ -1288,11 +1280,7 @@ class reportbuilder {
         $todb = new object();
         $todb->id = $id;
         $todb->columns = serialize($this->columns);
-        if(update_record('report_builder',$todb)) {
-            return true;
-        } else {
-            return false;
-        }
+        return update_record('report_builder',$todb);
     }
 
 
@@ -1327,40 +1315,11 @@ class reportbuilder {
         $todb = new object();
         $todb->id = $id;
         $todb->filters = serialize($this->filters);
-        if(update_record('report_builder',$todb)) {
-            return true;
-        } else {
-            return false;
-        }
+        return update_record('report_builder',$todb);
     }
 
 
 
 } // End of reportbuilder class
 
-///////////////////////////////////////////////////////////////////////////////////////
-
-// returns an associative array to be used as an options list
-// of the directories within a reportbuilder subdirectory
-function reportbuilder_get_options_from_dir($source) {
-    global $CFG;
-
-    $ret = array();
-    $dir = "{$CFG->dirroot}/local/reportbuilder/$source/";
-    if (is_dir($dir)) {
-        if ($dh = opendir($dir)) {
-            while (($file = readdir($dh)) !== false) {
-                if(filetype($dir.$file)!='dir' || // exclude non-directories
-                    $file=='.' || $file=='..' || // exclude current and parent
-                    $file=='shared') { // exclude shared as this may be used in future for shared code
-                    continue;
-                }
-                $desc = ucwords(str_replace(array('-','_'),' ',$file));
-                $ret[$file] = $desc;
-            }
-            closedir($dh);
-        }
-    }
-    return $ret;
-}
 
