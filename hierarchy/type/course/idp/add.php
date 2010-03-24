@@ -12,11 +12,7 @@ require_once($CFG->dirroot.'/hierarchy/type/competency/lib.php');
 // Competency id
 $id = required_param('id', PARAM_INT);
 
-admin_externalpage_setup('competencymanage', '', array(), '', $CFG->wwwroot.'/hierarchy/type/competency/idp/add.php');
-
-// Check permissions
-$sitecontext = get_context_instance(CONTEXT_SYSTEM);
-require_capability('moodle/local:updatecompetency', $sitecontext);
+require_login();
 
 // Load all categories
 $categories = array();
@@ -64,7 +60,7 @@ make_categories_list($categories, $parents);
             } else {
                 $this_parents = array_reverse($parents[$i]);
                 $this_parent = $parents[$i];
-            }   
+            }
         // If placeholder category at end
         } else {
             $this_parent = array();

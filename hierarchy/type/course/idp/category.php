@@ -14,10 +14,7 @@ require_once('HTML/AJAX/JSON.php');
 $id = required_param('id', PARAM_INT);
 
 // Check perms
-admin_externalpage_setup('competencymanage', '', array(), '', $CFG->wwwroot.'/competency/edit.php');
-
-$sitecontext = get_context_instance(CONTEXT_SYSTEM);
-require_capability('moodle/local:updatecompetency', $sitecontext);
+require_login();
 
 // Load category
 if (!$category = get_record('course_categories', 'id', $id)) {

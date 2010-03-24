@@ -29,7 +29,7 @@ admin_externalpage_setup('competencymanage');
 
 // Check permissions
 $sitecontext = get_context_instance(CONTEXT_SYSTEM);
-require_capability('moodle/local:updatecompetency', $sitecontext);
+require_capability('moodle/local:viewcompetency', $sitecontext);
 
 // Setup hierarchy objects
 $competency = new competency();
