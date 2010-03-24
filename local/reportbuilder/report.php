@@ -22,7 +22,7 @@ if($format!='') {
 
 $countfiltered = $report->get_filtered_count();
 $countall = $report->get_full_count();
-$fullname = $report->_fullname;
+$fullname = $report->fullname;
 $pagetitle = format_string(get_string('report','local').': '.$fullname);
 $navlinks[] = array('name' => get_string('report','local'), 'link'=> '', 'type'=>'title');
 $navlinks[] = array('name' => $fullname, 'link'=> '', 'type'=>'title');

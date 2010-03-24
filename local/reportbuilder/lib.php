@@ -4,26 +4,10 @@ require_once("{$CFG->dirroot}/local/reportbuilder/filters/lib.php");
 require_once($CFG->libdir.'/tablelib.php');
 
 class reportbuilder {
-    var $_source;
-    var $_shortname;
-    var $_fullname;
-    var $_filters;
-    var $_columns;
-    var $_restriction;
-    var $_id;
-    var $_columnoptions;
-    var $_defaultcolumns;
-    var $_restrictionoptions;
-    var $_defaultfilters;
-    var $_joinlist;
-    var $_base;
-    var $_filtering;
-    var $_params;
-    var $_paramoptions;
-    var $_hidden;
-    var $_embeddedparams;
-    var $_admin;
-    var $_adminoptions;
+    public $fullname, $shortname, $source, $hidden, $filters, $filteroptions, $columns;
+    public $columnoptions, $restriction, $restrictionoptions, $_filtering;
+    private $_id, $_defaultcolumns, $_defaultfilters, $_joinlist, $_base, $_params;
+    private $_paramoptions, $_embeddedparams, $_admin, $_adminoptions;
 
     function reportbuilder($shortname=null, $embed=false, $source=null, $fullname=null,
                            $filters=null, $columns=null, $restriction=null, $embeddedparams=null) {
@@ -34,25 +18,25 @@ class reportbuilder {
 
         if($embed) {
             // get data from parameters
-            $this->_shortname = $shortname;
-            $this->_fullname = $fullname;
-            $this->_filters = $filters;
-            $this->_columns = $columns;
-            $this->_restriction = $restriction;
-            $this->_source = $source;
+            $this->shortname = $shortname;
+            $this->fullname = $fullname;
+            $this->filters = $filters;
+            $this->columns = $columns;
+            $this->restriction = $restriction;
+            $this->source = $source;
             $this->_embeddedparams = $embeddedparams;
         } else {
             // lookup from db
 
             if ($report = get_record('report_builder', 'shortname', $shortname)) {
-                $this->_source = $report->source;
-                $this->_shortname = $shortname;
-                $this->_fullname = $report->fullname;
-                $this->_filters = unserialize($report->filters);
-                $this->_columns = unserialize($report->columns);
-                $this->_restriction = unserialize($report->restriction);
+                $this->source = $report->source;
+                $this->shortname = $shortname;
+                $this->fullname = $report->fullname;
+                $this->filters = unserialize($report->filters);
+                $this->columns = unserialize($report->columns);
+                $this->restriction = unserialize($report->restriction);
                 $this->_id = $report->id;
-                $this->_hidden = $report->hidden;
+                $this->hidden = $report->hidden;
 
             } else {
                 error("Report '$shortname' not found in database.");
@@ -60,22 +44,22 @@ class reportbuilder {
         }
 
         // pull in data for this report from the source
-        $this->_columnoptions = reportbuilder::get_source_data('columnoptions', $this->_source);
-        $this->_defaultcolumns = reportbuilder::get_source_data('defaultcolumns', $this->_source);
-        $this->_defaultfilters = reportbuilder::get_source_data('defaultfilters', $this->_source);
-        $this->_filteroptions = reportbuilder::get_source_data('filteroptions', $this->_source);
-        $this->_adminoptions = reportbuilder::get_source_data('adminoptions', $this->_source);
+        $this->columnoptions = reportbuilder::get_source_data('columnoptions', $this->source);
+        $this->_defaultcolumns = reportbuilder::get_source_data('defaultcolumns', $this->source);
+        $this->_defaultfilters = reportbuilder::get_source_data('defaultfilters', $this->source);
+        $this->filteroptions = reportbuilder::get_source_data('filteroptions', $this->source);
+        $this->_adminoptions = reportbuilder::get_source_data('adminoptions', $this->source);
         $this->_admin = $this->get_current_admin_options();
-        $this->_joinlist = reportbuilder::get_source_data('joinlist', $this->_source);
-        $this->_restrictionoptions = reportbuilder::get_source_data('restrictionoptions', $this->_source);
-        $this->_base = reportbuilder::get_source_data('base', $this->_source);
-        $this->_paramoptions = reportbuilder::get_source_data('paramoptions', $this->_source);
+        $this->_joinlist = reportbuilder::get_source_data('joinlist', $this->source);
+        $this->restrictionoptions = reportbuilder::get_source_data('restrictionoptions', $this->source);
+        $this->_base = reportbuilder::get_source_data('base', $this->source);
+        $this->_paramoptions = reportbuilder::get_source_data('paramoptions', $this->source);
         $this->_params = $this->get_current_params();
         // check the requested columns exist in column options
         // chose to use this in display_table() and export_data() instead of
         // here as that allows the bad filters/columns to appear in the
         // settings.php page to be seen and fixed by admin
-        //$this->check_columns($this->_columns, $this->_columnoptions);
+        //$this->check_columns($this->columns, $this->columnoptions);
 
         // generate a filter for this report
         $this->_filtering = new filtering($this, $this->get_current_url());
@@ -189,7 +173,7 @@ class reportbuilder {
 
     // returns array of capabilities associated with this report
     function get_capability_list() {
-        $restrictions = $this->_restriction;
+        $restrictions = $this->restriction;
         $capabilities = array();
         if($restrictions && is_array($restrictions)) {
             foreach ($restrictions as $restriction) {
@@ -237,7 +221,7 @@ class reportbuilder {
     // is capable of viewing, or an empty array if none found
     function get_permitted_restrictions() {
         $context = get_context_instance(CONTEXT_SYSTEM);
-        $restrictions = $this->_restriction;
+        $restrictions = $this->restriction;
         $ret = array();
 
         if(is_array($restrictions)) {
@@ -262,7 +246,7 @@ class reportbuilder {
         if(empty($name)) {
             return false;
         }
-        foreach($this->_restrictionoptions as $option) {
+        foreach($this->restrictionoptions as $option) {
             if(isset($option['name']) && $option['name'] == $name) {
                 return $option;
             }
@@ -345,8 +329,8 @@ class reportbuilder {
     // fields as required
     function build_query($countonly=false, $filtered=false) {
         global $CFG;
-        $source = $this->_source;
-        $columns = $this->_columns;
+        $source = $this->source;
+        $columns = $this->columns;
         $joinlist = $this->_joinlist;
         $base = $this->_base;
 
@@ -425,9 +409,9 @@ class reportbuilder {
     }
 
     function export_data($format) {
-        $this->check_columns($this->_columns,$this->_columnoptions, true);
-        $columns = $this->_columns;
-        $shortname = $this->_shortname;
+        $this->check_columns($this->columns,$this->columnoptions, true);
+        $columns = $this->columns;
+        $shortname = $this->shortname;
         $count = $this->get_filtered_count();
         $sql = $this->build_query(false, true);
 
@@ -463,9 +447,9 @@ class reportbuilder {
         $perpage   = optional_param('perpage', DEFAULT_PAGE_SIZE, PARAM_INT);
         $ssort     = optional_param('ssort');
 
-        $this->check_columns($this->_columns, $this->_columnoptions);
-        $columns = $this->_columns;
-        $shortname = $this->_shortname;
+        $this->check_columns($this->columns, $this->columnoptions);
+        $columns = $this->columns;
+        $shortname = $this->shortname;
         $countfiltered = $this->get_filtered_count();
 
         $sql = $this->build_query(false, true);
@@ -538,12 +522,12 @@ class reportbuilder {
     // (could have been deleted in report builder)
     function check_sort_keys() {
         global $SESSION;
-        $shortname = $this->_shortname;
+        $shortname = $this->shortname;
         $sortarray = isset($SESSION->flextable[$shortname]->sortby) ? $SESSION->flextable[$shortname]->sortby : null;
         foreach($sortarray as $sortelement => $unused) {
             // see if sort element is in columns array
             $set = false;
-            foreach($this->_columns as $col) {
+            foreach($this->columns as $col) {
                 if($col['type'].'_'.$col['value'] == $sortelement) {
                     $set = true;
                 }
@@ -558,9 +542,9 @@ class reportbuilder {
 
     function get_column_fields() {
 
-        $source = $this->_source;
-        $columns = $this->_columns;
-        $columnoptions = $this->_columnoptions;
+        $source = $this->source;
+        $columns = $this->columns;
+        $columnoptions = $this->columnoptions;
         $fields = array();
         foreach($columns as $column) {
             $type = isset($column['type']) ? $column['type'] : '';
@@ -582,7 +566,7 @@ class reportbuilder {
     }
 
     function get_admin_fields() {
-        $source = $this->_source;
+        $source = $this->source;
         $columns = $this->_admin;
         $fields = array();
         foreach($columns as $column) {
@@ -606,7 +590,7 @@ class reportbuilder {
     // type is string to identify source in case of error
     // TODO string other get_*_joins() functions to use this
     function get_joins($inputs, $type) {
-        $source = $this->_source;
+        $source = $this->source;
         $joinlist = $this->_joinlist;
         $joins = array();
         foreach($inputs as $input) {
@@ -625,8 +609,8 @@ class reportbuilder {
     }
 
     function get_restriction_joins() {
-        $source = $this->_source;
-        $restrictions = $this->_restriction;
+        $source = $this->source;
+        $restrictions = $this->restriction;
         $joinlist = $this->_joinlist;
         $joins = array();
         foreach($restrictions as $restriction) {
@@ -650,9 +634,9 @@ class reportbuilder {
 
 
     function get_column_joins() {
-        $source = $this->_source;
-        $columns = $this->_columns;
-        $columnoptions = $this->_columnoptions;
+        $source = $this->source;
+        $columns = $this->columns;
+        $columnoptions = $this->columnoptions;
         $joinlist = $this->_joinlist;
         $joins = array();
         foreach($columns as $column) {
@@ -686,8 +670,8 @@ class reportbuilder {
 
 
     function get_filter_joins() {
-        $shortname = $this->_shortname;
-        $columnoptions = $this->_columnoptions;
+        $shortname = $this->shortname;
+        $columnoptions = $this->columnoptions;
         $joinlist = $this->_joinlist;
         global $SESSION;
         $joins = array();
@@ -751,8 +735,8 @@ class reportbuilder {
     // get 2d array of data for a given query
     function fetch_data($sql, $start=null, $size=null, $striptags=false, $incadmin=false) {
         global $CFG;
-        $columns = $this->_columns;
-        $columnoptions = $this->_columnoptions;
+        $columns = $this->columns;
+        $columnoptions = $this->columnoptions;
 
         // include display functions
         $displayfuncfile = "{$CFG->dirroot}/local/reportbuilder/displayfuncs.php";
@@ -811,9 +795,9 @@ class reportbuilder {
 
 
     function get_filters_select() {
-        $filters = $this->_filteroptions;
+        $filters = $this->filteroptions;
         $ret = array();
-        if(!isset($this->_filteroptions)) {
+        if(!isset($this->filteroptions)) {
             return $ret;
         }
         foreach($filters as $type => $info) {
@@ -829,9 +813,9 @@ class reportbuilder {
     // parses the column options data structure to return an array suitable
     // for use as a select pulldown
     function get_columns_select() {
-        $columns = $this->_columnoptions;
+        $columns = $this->columnoptions;
         $ret = array();
-        if(!isset($this->_columnoptions)) {
+        if(!isset($this->columnoptions)) {
             return $ret;
         }
         foreach($columns as $type => $info) {
@@ -883,7 +867,7 @@ class reportbuilder {
     function download_ods($fields, $query, $count) {
         global $CFG;
         require_once("$CFG->libdir/odslib.class.php");
-        $shortname = $this->_shortname;
+        $shortname = $this->shortname;
         $filename = clean_filename($shortname.'_report.ods');
 
         header("Content-Type: application/download\n");
@@ -934,7 +918,7 @@ class reportbuilder {
 
         require_once("$CFG->libdir/excellib.class.php");
 
-        $shortname = $this->_shortname;
+        $shortname = $this->shortname;
         $filename = clean_filename($shortname.'_report.xls');
 
         header("Content-Type: application/download\n");
@@ -981,7 +965,7 @@ class reportbuilder {
 
     function download_csv($fields, $query, $count) {
         global $CFG;
-        $shortname = $this->_shortname;
+        $shortname = $this->shortname;
         $filename = clean_filename($shortname.'_report.csv');
 
         header("Content-Type: application/download\n");
@@ -1029,7 +1013,7 @@ class reportbuilder {
         // generate new version of columns, minus the one to delete
         // this will update the array indices
         $newcolumns = array();
-        foreach($this->_columns as $index => $column) {
+        foreach($this->columns as $index => $column) {
             if($index != $cid) {
                 $newcolumns[] = $column;
             }
@@ -1040,7 +1024,7 @@ class reportbuilder {
         $todb->id = $id;
         $todb->columns = serialize($newcolumns);
         if(update_record('report_builder', $todb)) {
-            $this->_columns = $newcolumns;
+            $this->columns = $newcolumns;
             return true;
         } else {
             return false;
@@ -1052,7 +1036,7 @@ class reportbuilder {
         // generate new version of filters, minus the one to delete
         // this will update the array indices
         $newfilters = array();
-        foreach($this->_filters as $index => $filter) {
+        foreach($this->filters as $index => $filter) {
             if($index != $fid) {
                 $newfilters[] = $filter;
             }
@@ -1063,7 +1047,7 @@ class reportbuilder {
         $todb->id = $id;
         $todb->filters = serialize($newfilters);
         if(update_record('report_builder', $todb)) {
-            $this->_filters = $newfilters;
+            $this->filters = $newfilters;
             return true;
         } else {
             return false;
@@ -1075,25 +1059,25 @@ class reportbuilder {
 
         // assumes array is well behaved (indexes 0 -> N-1)
         $first = 0;
-        $last = count($this->_columns)-1;
-        foreach($this->_columns as $index => $column) {
+        $last = count($this->columns)-1;
+        foreach($this->columns as $index => $column) {
             // do a down move
             if($index == $cid && $updown == 'down' && $index != $last) {
                 $temp = $column;
-                $this->_columns[$index] = $this->_columns[$index+1];
-                $this->_columns[$index+1] = $temp;
+                $this->columns[$index] = $this->columns[$index+1];
+                $this->columns[$index+1] = $temp;
             }
             // do an up move
             if($index == $cid && $updown == 'up' && $index != $first) {
                 $temp = $column;
-                $this->_columns[$index] = $this->_columns[$index-1];
-                $this->_columns[$index-1] = $temp;
+                $this->columns[$index] = $this->columns[$index-1];
+                $this->columns[$index-1] = $temp;
             }
         }
         // save results
         $todb = new object();
         $todb->id = $id;
-        $todb->columns = serialize($this->_columns);
+        $todb->columns = serialize($this->columns);
         if(update_record('report_builder',$todb)) {
             return true;
         } else {
@@ -1107,25 +1091,25 @@ class reportbuilder {
 
         // assumes array is well behaved (indexes 0 -> N-1)
         $first = 0;
-        $last = count($this->_filters)-1;
-        foreach($this->_filters as $index => $filter) {
+        $last = count($this->filters)-1;
+        foreach($this->filters as $index => $filter) {
             // do a down move
             if($index == $fid && $updown == 'down' && $index != $last) {
                 $temp = $filter;
-                $this->_filters[$index] = $this->_filters[$index+1];
-                $this->_filters[$index+1] = $temp;
+                $this->filters[$index] = $this->filters[$index+1];
+                $this->filters[$index+1] = $temp;
             }
             // do an up move
             if($index == $fid && $updown == 'up' && $index != $first) {
                 $temp = $filter;
-                $this->_filters[$index] = $this->_filters[$index-1];
-                $this->_filters[$index-1] = $temp;
+                $this->filters[$index] = $this->filters[$index-1];
+                $this->filters[$index-1] = $temp;
             }
         }
         // save results
         $todb = new object();
         $todb->id = $id;
-        $todb->filters = serialize($this->_filters);
+        $todb->filters = serialize($this->filters);
         if(update_record('report_builder',$todb)) {
             return true;
         } else {

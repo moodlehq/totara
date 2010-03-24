@@ -108,7 +108,7 @@ if($format!='') {
     die;
 }
 
-$fullname = $report->_fullname;
+$fullname = $report->fullname;
 $pagetitle = format_string(get_string('report','local').': '.$fullname);
 $navlinks[] = array('name' => $fullname, 'link'=> '', 'type'=>'title');
 

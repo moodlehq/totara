@@ -394,7 +394,7 @@ if(has_capability('moodle/local:updatecompetency',$context)) {
 }
 
 // display table here
-$fullname = $report->_fullname;
+$fullname = $report->fullname;
 $countfiltered = $report->get_filtered_count();
 $countall = $report->get_full_count();
 

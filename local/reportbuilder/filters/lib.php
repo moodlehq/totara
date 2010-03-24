@@ -30,7 +30,7 @@ class filtering {
 
         $this->_report = $report;
 
-        $shortname = $report->_shortname;
+        $shortname = $report->shortname;
 
         if($shortname == null) {
             error('Report shortname must be defined');
@@ -45,13 +45,13 @@ class filtering {
 
         // generate arrays of field names and queries based on input array
         $this->_fields  = array();
-        if($report->_filters) {
-            foreach ($report->_filters as $filter) {
+        if($report->filters) {
+            foreach ($report->filters as $filter) {
                 $type = $filter['type'];
                 $value = $filter['value'];
                 $advanced = $filter['advanced'];
                 // check filter exists in available options
-                if(array_key_exists($type, $report->_filteroptions) && array_key_exists($value, $report->_filteroptions[$type])) {
+                if(array_key_exists($type, $report->filteroptions) && array_key_exists($value, $report->filteroptions[$type])) {
                     $fieldname = "{$type}-{$value}";
                     if ($field = $this->get_field($type, $value, $advanced)) {
                         $this->_fields[$fieldname] = $field;
@@ -103,9 +103,9 @@ class filtering {
     function get_field($type, $value, $advanced) {
         global $USER, $CFG, $SITE;
 
-        $filteroptions = $this->_report->_filteroptions;
-        $columnoptions = $this->_report->_columnoptions;
-        $source = $this->_report->_source;
+        $filteroptions = $this->_report->filteroptions;
+        $columnoptions = $this->_report->columnoptions;
+        $source = $this->_report->source;
         $sessionname = $this->_sessionname;
         $fieldname = "{$type}-{$value}";
         $fieldquery = $columnoptions[$type][$value]['field'];
@@ -126,7 +126,7 @@ class filtering {
                 case 'select':
                     $selectfunc = $filteroptions[$type][$value]['selectfunc'];
                     $options = (isset($filteroptions[$type][$value]['options'])) ? $filteroptions[$type][$value]['options'] : null ;
-                    $selectfield = $selectfunc($this->_report->_restriction);
+                    $selectfield = $selectfunc($this->_report->restriction);
                     return new $filtername($fieldname, $label, $advanced, $sessionname, $fieldname, $fieldquery, $selectfield, null, $options);
                 default:
                     trigger_error("No filter found for filter type '$filtertype'.",E_USER_WARNING);
@@ -146,7 +146,7 @@ class filtering {
     function get_sql_filter($extra='') {
         global $SESSION;
 
-        $shortname = $this->_report->_shortname;
+        $shortname = $this->_report->shortname;
         $filtername = 'filtering_'.$shortname;
 
         $sqls = array();

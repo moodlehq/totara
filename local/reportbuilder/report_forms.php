@@ -54,25 +54,25 @@ class report_builder_edit_form extends moodleform {
         $mform->addElement('header', 'general', get_string('reportsettings', 'local'));
 
         $mform->addElement('text', 'fullname', get_string('reporttitle','local'), array('size'=>'30'));
-        $mform->setDefault('fullname', $report->_fullname);
+        $mform->setDefault('fullname', $report->fullname);
         $mform->addRule('fullname',null,'required');
         $mform->setHelpButton('fullname', array('reportbuilderfullname',get_string('reporttitle','local'),'moodle'));
 
         $mform->addElement('text', 'shortname', get_string('uniquename','local'), array('size'=>'30'));
-        $mform->setDefault('shortname', $report->_shortname);
+        $mform->setDefault('shortname', $report->shortname);
         $mform->addRule('shortname',null,'required');
         $mform->setHelpButton('shortname', array('reportbuildershortname',get_string('uniquename','local'),'moodle'));
 
-        $mform->addElement('static', 'reportsource', get_string('source','local'), $report->_source);
+        $mform->addElement('static', 'reportsource', get_string('source','local'), $report->source);
         $mform->setHelpButton('reportsource', array('reportbuildersource',get_string('source','local'),'moodle'));
 
         $mform->addElement('advcheckbox', 'hidden', get_string('hidden','local'), '', null, array(0,1));
-        $mform->setDefault('hidden', $report->_hidden);
+        $mform->setDefault('hidden', $report->hidden);
         $mform->setHelpButton('hidden', array('reportbuilderhidden',get_string('hidden','local'),'moodle'));
 
         $mform->addElement('header', 'general', get_string('searchoptions', 'local'));
 
-        if(isset($report->_filters) && is_array($report->_filters) && count($report->_filters)>0) {
+        if(isset($report->filters) && is_array($report->filters) && count($report->filters)>0) {
 
             $mform->addElement('html','<div>'.get_string('help:searchdesc','local').'</div><br />');
 
@@ -86,7 +86,7 @@ class report_builder_edit_form extends moodleform {
             $strdelete = get_string('delete','local');
             $spacer = '<img src="'.$CFG->wwwroot.'/pix/spacer.gif" class="iconsmall" alt="" />';
 
-            $filters = $report->_filters;
+            $filters = $report->filters;
             $filtercount = count($filters);
             $i = 1;
             foreach($filters as $index => $filter) {
@@ -97,7 +97,7 @@ class report_builder_edit_form extends moodleform {
                 $advanced = $filter['advanced'];
                 $fid = $index;
                 // check filter exists in filteroptions
-                if(array_key_exists($type, $report->_filteroptions) && array_key_exists($value, $report->_filteroptions[$type])) {
+                if(array_key_exists($type, $report->filteroptions) && array_key_exists($value, $report->filteroptions[$type])) {
                     $mform->addElement('html','<tr><td>');
                     $mform->addElement('select',"filter{$fid}",'',$filtersselect);
                     $mform->setDefault("filter{$fid}", $field);
@@ -136,12 +136,12 @@ class report_builder_edit_form extends moodleform {
             $mform->addElement('html','</td><td>&nbsp;</td></tr>');
             $mform->addElement('html','</table></div>');
         } else {
-            $mform->addElement('html',"No filters found. Ask your developer to add filter options to /local/reportbuilder/sources/{$report->_source}/filteroptions.php");
+            $mform->addElement('html',"No filters found. Ask your developer to add filter options to /local/reportbuilder/sources/{$report->source}/filteroptions.php");
         }
 
         $mform->addElement('header', 'general', get_string('reportcolumns', 'local'));
 
-        if(isset($report->_columns) && is_array($report->_columns) && count($report->_columns)>0) {
+        if(isset($report->columns) && is_array($report->columns) && count($report->columns)>0) {
 
 
             $mform->addElement('html','<div>'.get_string('help:columnsdesc','local').'</div><br />');
@@ -151,7 +151,7 @@ class report_builder_edit_form extends moodleform {
 
             $columnsselect = $report->get_columns_select();
 
-            $columns = $report->_columns;
+            $columns = $report->columns;
 
             $colcount = count($columns);
             $i = 1;
@@ -162,7 +162,7 @@ class report_builder_edit_form extends moodleform {
                 $field = "{$type}-{$value}";
                 $heading = $column['heading'];
                 $cid = $index;
-                if(array_key_exists($type, $report->_columnoptions) && array_key_exists($value, $report->_columnoptions[$type])) {
+                if(array_key_exists($type, $report->columnoptions) && array_key_exists($value, $report->columnoptions[$type])) {
                     $mform->addElement('html','<tr><td>');
                     $mform->addElement('select',"column{$cid}",'',$columnsselect);
                     $mform->setDefault("column{$cid}", $field);
@@ -205,20 +205,20 @@ class report_builder_edit_form extends moodleform {
             $mform->addElement('html','</table></div>');
         } else {
 
-                $mform->addElement('html',"No columns found. Ask your developer to add column options to /local/reportbuilder/sources/{$report->_source}/columnoptions.php");
+                $mform->addElement('html',"No columns found. Ask your developer to add column options to /local/reportbuilder/sources/{$report->source}/columnoptions.php");
             }
 
 
         $mform->addElement('header', 'general', get_string('onlydisplayrecordsfor', 'local'));
-        if(isset($report->_restrictionoptions) && is_array($report->_restrictionoptions)) {
+        if(isset($report->restrictionoptions) && is_array($report->restrictionoptions)) {
             $mform->addElement('static','restrictionoptions','&nbsp;',get_string('help:restrictionoptions','local'));
             $mform->setHelpButton('restrictionoptions', array('reportbuilderrestrictionoptions',get_string('onlydisplayrecordsfor','local'),'moodle'));
 
-            $restrictions = $report->_restrictionoptions;
+            $restrictions = $report->restrictionoptions;
             foreach($restrictions as $index => $restriction) {
                 $mform->addElement('advcheckbox',"restriction$index",$restriction['title'],null,null,array(0,$restriction['name']));
-                if($report->_restriction) {
-                    foreach($report->_restriction as $res) {
+                if($report->restriction) {
+                    foreach($report->restriction as $res) {
                         if($restriction['name'] == $res) {
                             $mform->setDefault("restriction$index",$res);
                         }
@@ -226,11 +226,11 @@ class report_builder_edit_form extends moodleform {
                 }
             }
         } else {
-            $mform->addElement('html',get_string('norestrictionsfound','local',$report->_source));
+            $mform->addElement('html',get_string('norestrictionsfound','local',$report->source));
         }
 
         $mform->addElement('hidden','id',$this->_customdata['id']);
-        $mform->addElement('hidden','source',$report->_source);
+        $mform->addElement('hidden','source',$report->source);
         $this->add_action_buttons();
     }
 
