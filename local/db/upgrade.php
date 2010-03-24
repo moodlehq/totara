@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL
  * @copyright  (C) 1999 onwards Martin Dougiamas  http://dougiamas.com
  *
- * local db upgrades for MITMS 
+ * local db upgrades for MITMS
  */
 function xmldb_local_upgrade($oldversion) {
     global $CFG, $db;
@@ -1257,6 +1257,32 @@ function xmldb_local_upgrade($oldversion) {
         $field = new XMLDBField('assessmenttype');
         $field->setAttributes(XMLDB_TYPE_CHAR, '100', null, null, null, null);
         $result = $result && change_field_type($table, $field);
+    }
+
+    if ($result && $oldversion < 2010032401) {
+    /// Update existing IDP capability assignments
+        $caps = array(
+            'viewowncomment',
+            'viewownlist',
+            'viewownplan',
+            'withdrawownplan',
+            'submitownplan',
+            'editownplan',
+            'addowncomment'
+        );
+
+        $system_context = get_context_instance(CONTEXT_SYSTEM);
+        $user_role = get_record('role', 'shortname', 'user');
+
+        foreach ($caps as $cap) {
+            assign_capability(
+                'moodle/local:'.$cap,
+                CAP_ALLOW,
+                $user_role->id,
+                $system_context->id,
+                true
+            );
+        }
     }
 
     return $result;

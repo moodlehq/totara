@@ -272,6 +272,7 @@ $local_capabilities = array(
         'contextlevel' => CONTEXT_SYSTEM,
         'legacy' => array(
             'admin' => CAP_ALLOW,
+            'user' => CAP_ALLOW,
         ),
     ),
 
@@ -281,6 +282,7 @@ $local_capabilities = array(
         'contextlevel' => CONTEXT_SYSTEM,
         'legacy' => array(
             'admin' => CAP_ALLOW,
+            'user' => CAP_ALLOW,
         ),
     ),
 
@@ -314,6 +316,7 @@ $local_capabilities = array(
         'contextlevel' => CONTEXT_SYSTEM,
         'legacy' => array(
             'admin' => CAP_ALLOW,
+            'user' => CAP_ALLOW,
         ),
     ),
 
@@ -323,6 +326,7 @@ $local_capabilities = array(
         'contextlevel' => CONTEXT_SYSTEM,
         'legacy' => array(
             'admin' => CAP_ALLOW,
+            'user' => CAP_ALLOW,
         ),
     ),
 
@@ -344,6 +348,7 @@ $local_capabilities = array(
         'contextlevel' => CONTEXT_SYSTEM,
         'legacy' => array(
             'admin' => CAP_ALLOW,
+            'user' => CAP_ALLOW,
         ),
     ),
 
@@ -353,6 +358,7 @@ $local_capabilities = array(
         'contextlevel' => CONTEXT_SYSTEM,
         'legacy' => array(
             'admin' => CAP_ALLOW,
+            'user' => CAP_ALLOW,
         ),
     ),
 
@@ -381,6 +387,7 @@ $local_capabilities = array(
         'contextlevel' => CONTEXT_SYSTEM,
         'legacy' => array(
             'admin' => CAP_ALLOW,
+            'user' => CAP_ALLOW,
         ),
     ),
 
