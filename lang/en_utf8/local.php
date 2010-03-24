@@ -270,3 +270,13 @@ $string['localpostinstfailed'] = 'There was a problem setting up local modificat
 $string['reportheadings'] = 'Report Headings';
 
 $string['local:markcomplete'] = 'Mark user\'s complete in course completion';
+
+// Help Buttons
+$string['help:reportbuilderfullname'] = 'Report Title';
+$string['help:reportbuildershortname'] = 'Report Unique Name';
+$string['help:reportbuildersource'] = 'Report Source';
+$string['help:reportbuilderhidden'] = 'Hide in Report Manager';
+$string['help:reportbuilderrestrictionoptions'] = 'Display records for';
+$string['help:searchdesc'] = 'The choices below determine which options appear in the search box at the top of the report.';
+$string['help:columnsdesc'] = 'The choices below determine which columns appear in the report and how those columns are labelled.';
+$string['help:restrictionoptions'] = 'The checkboxes below determine who has access to this report, and which records they are able to view. If no options are checked no results are visible. Click the help icon for more information';
