@@ -2,6 +2,7 @@
     //Functions used in restore
 
     require_once($CFG->libdir.'/gradelib.php');
+    require_once($CFG->dirroot.'/hierarchy/type/competency/lib.php');
 
 /**
  * Group backup/restore constants, 0.
@@ -439,6 +440,15 @@ define('RESTORE_GROUPS_GROUPINGS', 3);
         return $info;
     }
 
+    //This function read the xml file and store its data from the competency evidence items in
+    function restore_read_xml_competency_evidence_items($restore, $xml_file) {
+
+        //We call the main read_xml function, with todo = COMPETENCY_FRAMEWORKS
+        $info = restore_read_xml($xml_file, 'COMPETENCY_FRAMEWORKS', $restore);
+
+        return $info;
+    }
+
     //This function read the xml file and store its data from the groups in
     //backup_ids->info db (and group's id in $info)
     function restore_read_xml_groups ($restore,$xml_file) {
@@ -630,6 +640,14 @@ define('RESTORE_GROUPS_GROUPINGS', 3);
             //gradebook history info
             $tab[$elem][0] = "<b>".get_string('gradebookhistories', 'grades').":</b>";
             if (isset($info->gradebook_histories) && $info->gradebook_histories == "true") {
+                $tab[$elem][1] = get_string("yes");
+            } else {
+                $tab[$elem][1] = get_string("no");
+            }
+            $elem++;
+            // competency evidence info
+            $tab[$elem][0] = "<b>".get_string('competencyevidence', 'competency').":</b>";
+            if (isset($info->backup_competency_evidence_items) && $info->backup_competency_evidence_items == "true") {
                 $tab[$elem][1] = get_string("yes");
             } else {
                 $tab[$elem][1] = get_string("no");
@@ -3766,6 +3784,110 @@ define('RESTORE_GROUPS_GROUPINGS', 3);
         return $status;
     }
 
+    //This function creates all the competency evidence items
+    function restore_create_competency_evidence_items($restore, $xml_file) {
+        global $CFG, $USER, $db;
+
+        $silent = defined('RESTORE_SILENTLY');
+
+        $status = true;
+        // Check it exists
+        if (!file_exists($xml_file)) {
+            return false;
+        }
+
+        // Get info from xml
+        if (!$evidence_items = restore_read_xml_competency_evidence_items($restore, $xml_file)) {
+            return false;
+        }
+
+        if ($evidence_items === true) {
+            return true;
+        }
+
+        // Get target course
+        $courseid = $restore->course_id;;
+
+        if (!$silent) {
+            echo '<ul>';
+        }
+
+        // Iterate over each framework
+        foreach ($evidence_items->data['COMPETENCY_FRAMEWORKS']['#']['COMPETENCY_FRAMEWORK'] as $framework) {
+
+            $framework_fullname = backup_todb($framework['#']['FULLNAME']['0']['#']);
+
+            // Check if framework exists
+            $framework_db = get_record('competency_framework', 'fullname', $framework_fullname);
+            if (!$framework_db) {
+                if (!$silent) {
+                    echo '<li>Competency framework "'.htmlentities($framework_fullname).'" could not be found</li>';
+                }
+                continue;
+            }
+
+            // Iterate over each competency
+            foreach ($framework['#']['COMPETENCY'] as $competency) {
+
+                $competency_fullname = backup_todb($competency['#']['FULLNAME']['0']['#']);
+                $competency_idnumber = backup_todb($competency['#']['IDNUMBER']['0']['#']);
+
+                // Check if competency exists
+                $competency_db = get_record(
+                    'competency',
+                    'fullname', $competency_fullname,
+                    'idnumber', $competency_idnumber,
+                    'frameworkid', $framework_db->id
+                );
+
+                if (!$competency_db) {
+                    if (!$silent) {
+                        echo '<li>Competency "'.htmlentities($competency_fullname).'" could not be found</li>';
+                    }
+                    continue;
+                }
+
+                // Iterate over each evidence
+                foreach ($competency['#']['COMPETENCY_EVIDENCE_ITEMS'] as $evidence_info) {
+
+                    $evidence = new object();
+                    $evidence->competencyid = $competency_db->id;
+                    $evidence->itemtype = backup_todb($evidence_info['#']['ITEMTYPE']['0']['#']);
+                    $evidence->itemmodule = backup_todb($evidence_info['#']['ITEMMODULE']['0']['#']);
+                    $evidence->iteminstance = backup_todb($evidence_info['#']['ITEMINSTANCE']['0']['#']);
+
+                    if ($evidence->itemtype == COMPETENCY_EVIDENCE_TYPE_ACTIVITY_COMPLETION) {
+                        // If activity completion, check destination course has that activity
+                        $cm = backup_getid($restore->backup_unique_code, $evidence->itemmodule, $evidence->iteminstance);
+                        $evidence->iteminstance = $cm->new_id;
+
+                    }
+                    elseif ($evidence->itemtype == COMPETENCY_EVIDENCE_TYPE_COURSE_COMPLETION ||
+                            $evidence->itemtype == COMPETENCY_EVIDENCE_TYPE_COURSE_GRADE) {
+                        $evidence->iteminstance = $courseid;
+                    }
+
+                    $evidence->timecreated = time();
+                    $evidence->timemodified = time();
+                    $evidence->usermodified = $USER->id;
+
+                    if (!insert_record('competency_evidence_items', $evidence)) {
+                        if (!$silent) {
+                            echo '<li>New competency evidence item insert failed</li>';
+                        }
+                    }
+
+                    var_dump($evidence);
+                }
+            }
+        }
+
+        if (!$silent) {
+            echo '</ul>';
+        }
+
+        return $status;
+    }
     /**
      * Recode group ID field, and set group ID based on restore options.
      * @return object Group object with new_id field.
@@ -5514,6 +5636,22 @@ define('RESTORE_GROUPS_GROUPINGS', 3);
             }
         }
 
+        //This is the startTag handler we use where we are reading the completion zone (todo="COMPETENCY_FRAMEWORKS")
+        function startElementCompetencyEvidenceInfo($parser, $tagName, $attrs) {
+
+            //Refresh properties
+            $this->level++;
+            $this->tree[$this->level] = $tagName;
+
+            //Accumulate all the data inside this tag
+            if (isset($this->tree[3]) and $this->tree[3] == "COMPETENCY_FRAMEWORKS") {
+                if (!isset($this->temp)) {
+                    $this->temp = "";
+                }
+                $this->temp .= "<".$tagName.">";
+            }
+        }
+
         function startElementGroups($parser, $tagName, $attrs) {
             //Refresh properties
             $this->level++;
@@ -5752,6 +5890,9 @@ define('RESTORE_GROUPS_GROUPINGS', 3);
                                 break;
                             case "GRADEBOOKHISTORIES":
                                 $this->info->gradebook_histories = $this->getContents();
+                                break;
+                            case "COMPETENCY_EVIDENCE_ITEMS":
+                                $this->info->backup_competency_evidence_items = $this->getContents();
                                 break;
                             case "MESSAGES":
                                 $this->info->backup_messages = $this->getContents();
@@ -7659,6 +7800,33 @@ define('RESTORE_GROUPS_GROUPINGS', 3);
 
         }
 
+        //This is the endTag handler we use where we are reading the zone (todo="COMPETENCY_FRAMEWORKS")
+        function endElementCompetencyEvidenceInfo($parser, $tagName) {
+            //Check if we are into COMPETENCY_FRAMEWORKS zone
+            if ($this->tree[3] == "COMPETENCY_FRAMEWORKS") {
+                if (!isset($this->temp)) {
+                    $this->temp = "";
+                }
+                $this->temp .= htmlspecialchars(trim($this->content))."</".$tagName.">";
+            }
+
+            //Stop parsing if todo = SCALES and tagName = SCALE (en of the tag, of course)
+            //Speed up a lot (avoid parse all)
+            if ($tagName == "COMPETENCY_FRAMEWORKS" and $this->level == 3) {
+
+                $xml_data = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n".$this->temp;
+                $this->info->data = xmlize($xml_data, 0);
+
+                $this->finished = true;
+            }
+
+            //Clear things
+            $this->tree[$this->level] = "";
+            $this->level--;
+            $this->content = "";
+
+        }
+
         //This is the endTag handler we use where we are reading the groups zone (todo="GROUPS")
         function endElementGroups($parser, $tagName) {
             //Check if we are into GROUPS zone
@@ -8076,6 +8244,8 @@ define('RESTORE_GROUPS_GROUPINGS', 3);
             xml_set_element_handler($xml_parser, "startElementQuestions", "endElementQuestions");
         } else if ($todo == "SCALES") {
             xml_set_element_handler($xml_parser, "startElementScales", "endElementScales");
+        } else if ($todo == "COMPETENCY_FRAMEWORKS") {
+            xml_set_element_handler($xml_parser, "startElementCompetencyEvidenceInfo", "endElementCompetencyEvidenceInfo");
         } else if ($todo == "GROUPS") {
             xml_set_element_handler($xml_parser, "startElementGroups", "endElementGroups");
         } else if ($todo == "GROUPINGS") {
@@ -9003,6 +9173,24 @@ define('RESTORE_GROUPS_GROUPINGS', 3);
                 if (!defined('RESTORE_SILENTLY')) {
                     echo '</li>';
                 }
+            }
+        }
+
+        //Now create competency evidence items as needed
+        if ($status && $restore->backup_competency_evidence_items) {
+            if (!defined('RESTORE_SILENTLY')) {
+                echo "<li>".get_string("createcompetencyevidencedata");
+            }
+            if (!$status = restore_create_competency_evidence_items($restore, $xml_file)) {
+                if (!defined('RESTORE_SILENTLY')) {
+                    notify("Could not restore competency evidence!");
+                } else {
+                    $errorstr = "Could not restore competency evidence!";
+                    return false;
+                }
+            }
+            if (!defined('RESTORE_SILENTLY')) {
+                echo '</li>';
             }
         }
 

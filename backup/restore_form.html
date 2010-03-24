@@ -108,6 +108,10 @@
         $restore_site_files = 1;
     }
 
+    if (!isset($restore_competency_evidence_items)) {
+        $restore_competency_evidence_items = 1;
+    }
+
     if (!isset($restore_messages)) {
         $restore_messages = 1;
     }
@@ -565,6 +569,21 @@ function selectItemInCheckboxByName(formId, checkName, checked ) {
             echo "</td></tr>";
         } else {
             $hidden_options .= '<input type="hidden" name="restore_gradebook_history" value="0" />';
+        }
+
+        // do you want competency evidence items to be restored?
+        if (isset($info->backup_competency_evidence_items) && $info->backup_competency_evidence_items == 'true') {
+            echo "<tr>";
+            echo "<td align=\"right\" colspan=\"2\"><b>";
+            echo '<label for="restore_competency_evidence_items">'.get_string ('competencyevidence', 'competency').'</label>';
+            echo "</b></td><td colspan=\"2\">";
+            $competency_options = array();
+            $competency_options[0] = get_string("no");
+            $competency_options[1] = get_string("yes");
+            choose_from_menu($competency_options, "restore_competency_evidence_items", $restore_competency_evidence_items, "");
+            echo "</td></tr>";
+        } else {
+            $hidden_options .= '<input type="hidden" name="restore_competency_evidence_items" value="0" />';
         }
 
         //This tr is slighty different. Everything becomes hidden if
