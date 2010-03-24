@@ -91,9 +91,12 @@ class reportbuilder {
         }
     }
 
-
-    // get current url, minus any pagination or sort order elements
-    // good for submitting forms
+    /*
+     * Get the current page url, minus any pagination or sort order elements
+     * Good for submitting forms
+     *
+     * @return string Current URL, minus any spage and ssort parameters
+     */
     function get_current_url() {
         // array of parameters to remove from query string
         $strip_params = array('spage','ssort');
@@ -107,6 +110,13 @@ class reportbuilder {
         return html_entity_decode($url->out());
     }
 
+    /*
+     * Returns an array of admin options that the current user has
+     * permission to view. Used to reduce the table joins to only
+     * those required.
+     *
+     * @return array Array of arrays containing valid admin options
+     */
     function get_current_admin_options() {
         $out = array();
         $context = get_context_instance(CONTEXT_SYSTEM);
@@ -122,6 +132,13 @@ class reportbuilder {
         return $out;
     }
 
+    /*
+     * Returns an array of arrays containing information about any currently
+     * set URL parameters. Used to determine which joins are required to
+     * match against URL parameters
+     *
+     * @return array Array of set URL parameters and their values
+     */
     function get_current_params() {
         $out = array();
         if(!isset($this->_paramoptions)) {
@@ -151,7 +168,14 @@ class reportbuilder {
         return $out;
     }
 
-    // get a particular type of data from the specified source
+    /*
+     * Returns the data stored a source file for use by the report
+     *
+     * @param string $datatype The name of the data to be obtained. Should match the filename
+     *                         in the source directory
+     * @param string $source The data source to obtain the data from
+     * @return mixed The data is returned, usually as an array of arrays
+     */
     public static function get_source_data($datatype, $source) {
         global $CFG;
         $file = "{$CFG->dirroot}/local/reportbuilder/sources/$source/$datatype.php";
@@ -165,16 +189,56 @@ class reportbuilder {
         }
     }
 
-    // filtering methods passed from filtering class
+    /*
+     * Wrapper for displaying search form from filtering class
+     *
+     * @return Nothing returned but prints the search box
+     */
     function display_search() {
         $this->_filtering->display_add();
     }
 
+    /*
+     * Wrapper for displaying active fileter from filtering class
+     * No longer used as filtering behaviour modified to be
+     * more like a search
+     *
+     * @return Nothing returned but prints active filters
+     */
     function get_sql_filter() {
         return $this->_filtering->get_sql_filter();
     }
 
-    // returns array of capabilities associated with this report
+    /*
+     * Given a restriction name (as stored in db), return an array
+     * of information about that restriction (from restrictionoptions)
+     *
+     * @param string $name Name of the required restriction
+     * @return array Array of information about the restriction or
+     *               false if no restriction is found
+     */
+    function get_restriction_info($name) {
+        if(empty($name)) {
+            return false;
+        }
+        foreach($this->restrictionoptions as $option) {
+            if(isset($option['name']) && $option['name'] == $name) {
+                return $option;
+            }
+        }
+        return false;
+    }
+
+
+    /*
+     * Looks up the restrictions that are applied to this report and
+     * returns an array of capabilities which are required to access
+     * this report
+     *
+     * This function is no longer in use
+     *
+     * @return array Array of capabilities associated with this report
+     */
     function get_capability_list() {
         $restrictions = $this->restriction;
         $capabilities = array();
@@ -190,38 +254,15 @@ class reportbuilder {
         return array_unique($capabilities);
     }
 
-    // returns true if current user has one or more or required capabilities
-    function is_capable() {
-        $restrictions = $this->get_permitted_restrictions();
-        if($restrictions && is_array($restrictions) && count($restrictions)>0) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    function get_param_restrictions() {
-        $out=array();
-        $params = $this->_params;
-        if(is_array($params)) {
-            foreach($params as $param) {
-                $field = isset($param['field']) ? $param['field'] : null;
-                $value = isset($param['value']) ? $param['value'] : null;
-                // don't include if param not set to anything
-                if(!isset($value) || $value=='') {
-                    continue;
-                }
-                $out[] = "$field = $value";
-            }
-        }
-        if(count($out)==0) {
-            return '';
-        }
-        return "(" . implode(" AND ",$out) . ")";
-    }
-
-    // returns an array of restrictions that the user
-    // is capable of viewing, or an empty array if none found
+    /*
+     * Looks up the restrictions that are associated with the current
+     * report and returns an array of restrictions that the current
+     * user has permission to view (either because no capability is
+     * set for that restriction or the user has the required capability)
+     *
+     * @return array Array of restrictions the user has the capabilities
+     *               for, or an empty array if none found
+     */
     function get_permitted_restrictions() {
         $context = get_context_instance(CONTEXT_SYSTEM);
         $restrictions = $this->restriction;
@@ -244,24 +285,58 @@ class reportbuilder {
         return $ret;
     }
 
-    // given a restriction name, return the info from restrictionoptions
-    function get_restriction_info($name) {
-        if(empty($name)) {
+
+    /* Returns true if the current user has one or more of the required capabilities
+     * to view this report
+     *
+     * @return boolean True if they have any of the required capabilities
+     */
+    function is_capable() {
+        $restrictions = $this->get_permitted_restrictions();
+        if($restrictions && is_array($restrictions) && count($restrictions)>0) {
+            return true;
+        } else {
             return false;
         }
-        foreach($this->restrictionoptions as $option) {
-            if(isset($option['name']) && $option['name'] == $name) {
-                return $option;
-            }
-        }
-        return false;
     }
 
-    // parses input array into set of restrictions and returns single
-    // SQL WHERE snippet
-    // input argument should be like this
-    // $arg = array('own', 'local', 'staff');
-    // that would give access to all three groups
+    /*
+     * Returns an SQL snippet that, when applied to the WHERE clause of the query,
+     * reduces the results to only include those matched by any specified URL parameters
+     *
+     * return string SQL snippet created from URL parameters
+     */
+    function get_param_restrictions() {
+        $out=array();
+        $params = $this->_params;
+        if(is_array($params)) {
+            foreach($params as $param) {
+                $field = isset($param['field']) ? $param['field'] : null;
+                $value = isset($param['value']) ? $param['value'] : null;
+                // don't include if param not set to anything
+                if(!isset($value) || $value=='') {
+                    continue;
+                }
+                $out[] = "$field = $value";
+            }
+        }
+        if(count($out)==0) {
+            return '';
+        }
+        return "(" . implode(" AND ",$out) . ")";
+    }
+
+    /*
+     * Takes the list of restrictions that the user has the capability to view
+     * and converts it into an SQL snipped that, when applied to the WHERE clause
+     * of the query, reduces the results to only include those matched by the
+     * restrictions
+     *
+     * This is done by calling restriction functions, which are tasked with
+     * determining matches for their restriction
+     *
+     * return string SQL snippet created from allowed restrictions
+     */
     function get_restrictions() {
         global $CFG;
         $context = get_context_instance(CONTEXT_SYSTEM);
@@ -281,6 +356,7 @@ class reportbuilder {
             $funcname = $info['funcname'];
             $field = $info['field'];
 
+            // shortcut, all matches everything
             if($field=='all') {
                 return "( TRUE )";
             }
@@ -327,9 +403,229 @@ class reportbuilder {
             return '';
         }
     }
-    // generate an sql query for this report
-    // if countonly is true, just returns count of query, otherwise return
-    // fields as required
+
+    /*
+     * Returns an array of fields that must form part of the SQL query
+     * in order to provide the data need to display the columns required
+     *
+     * Each element in the array is an SQL snippet with an alias built
+     * from the $type and $value of that column
+     *
+     * @return array Array of SQL snippets for use by SELECT query
+     *
+     */
+    function get_column_fields() {
+
+        $source = $this->source;
+        $columns = $this->columns;
+        $columnoptions = $this->columnoptions;
+        $fields = array();
+        foreach($columns as $column) {
+            $type = isset($column['type']) ? $column['type'] : '';
+            if(array_key_exists($type, $columnoptions)) {
+                $value = isset($column['value']) ? $column['value'] : '';
+                if(array_key_exists($value, $columnoptions[$type])) {
+                    // add field to list to be selected
+                    // use type_value as alias for each field
+                    $fields[] = $columnoptions[$type][$value]['field']." ".sql_as()." {$type}_{$value}";
+                } else {
+                    trigger_error("get_column_fields(): column value '$value' not found in source '$source' for type '$type'", E_USER_WARNING);
+                }
+            } else {
+                trigger_error("get_column_fields(): column type '$type' not found in source '$source'", E_USER_WARNING);
+            }
+        }
+        return $fields;
+
+    }
+
+    /*
+     * Returns an array of fields that must form part of the SQL query
+     * in order to provide the data needed to display the admin column
+     *
+     * @return array Array of SQL snippets for use by SELECT query
+     *
+     */
+    function get_admin_fields() {
+        $source = $this->source;
+        $columns = $this->_admin;
+        $fields = array();
+        foreach($columns as $column) {
+            if(isset($column['name'])) {
+                $name = $column['name'];
+            } else {
+                // we need a name
+                continue;
+            }
+            if(isset($column['fields']) && is_array($column['fields'])) {
+                foreach($column['fields'] as $key => $field) {
+                    $fields[] = $field.' '.sql_as()." {$name}_{$key}";
+                }
+            }
+        }
+        return $fields;
+    }
+
+
+    /*
+     * Given an array of arrays with the 'joins' key set, returns
+     * an array of SQL snippets of the actual join code
+     *
+     * @param array $inputs Array of arrays. The inner array should contain
+     *                      a key called 'joins' which lists the names of the
+     *                      required joins (names must match the keys in the
+     *                      joinlist.php file)
+     * @param string $type The function is called to obtain joins for various
+     *                     different elements of the query. The type is displayed
+     *                     in the error message to help with debugging
+     * @return array An array of SQL snippets used to build the join part of the query
+     */
+    // TODO  other get_*_joins() functions to use this
+    function get_joins($inputs, $type) {
+        $source = $this->source;
+        $joinlist = $this->_joinlist;
+        $joins = array();
+        foreach($inputs as $input) {
+            $input_joins = (isset($input['joins'])) ? $input['joins'] : null;
+            if($input_joins && is_array($input_joins)) {
+                foreach($input_joins as $input_join) {
+                    if(array_key_exists($input_join, $joinlist)) {
+                        $joins[$input_join] = $joinlist[$input_join];
+                    } else {
+                        error("get_joins(): join for $type with name $input_join not in joinlist");
+                    }
+                }
+            }
+        }
+        return $joins;
+    }
+
+    /*
+     * Get the restriction info and format for use by get_joins()
+     *
+     * @return array An array of arrays containing restriction join information
+     */
+    function get_restriction_joins() {
+        $restrictions = $this->restriction;
+        $restjoins = array();
+        foreach($restrictions as $restriction) {
+            if($info = $this->get_restriction_info($restriction)) {
+                $restjoins[] = $info;
+            }
+        }
+        return $this->get_joins($restjoins, 'restriction');
+    }
+
+    /*
+     * Check the requested columns exist in column options, and if so
+     * collect together data into a format suitable for get_joins()
+     *
+     * @return array An array of arrays containing column join information
+     */
+    function get_column_joins() {
+        $source = $this->source;
+        $columns = $this->columns;
+        $columnoptions = $this->columnoptions;
+        $coljoins = array();
+        foreach($columns as $column) {
+            $type = isset($column['type']) ? $column['type'] : '';
+
+            if(array_key_exists($type, $columnoptions)) {
+                $value = isset($column['value']) ? $column['value'] : '';
+
+                if(array_key_exists($value, $columnoptions[$type])) {
+
+                    $coljoins[] = $columnoptions[$type][$value];
+
+                } else {
+                    trigger_error("get_column_joins(): column value '$value' not found in source '$source' for type '$type'", E_USER_WARNING);
+                }
+            } else {
+                trigger_error("get_column_joins(): column type '$type' not found in source '$source'", E_USER_WARNING);
+            }
+        }
+        return $this->get_joins($coljoins, 'column');
+    }
+
+
+    /*
+     * Check the current session for active filters, and if found
+     * collect together join data into a format suitable for get_joins()
+     *
+     * @return array An array of arrays containing filter join information
+     */
+    function get_filter_joins() {
+        $shortname = $this->shortname;
+        $columnoptions = $this->columnoptions;
+        global $SESSION;
+        $filterjoins = array();
+        // check session variable for any active filters
+        // if they exist we need to make sure we have included joins for them too
+        $filtername = 'filtering_'.$shortname;
+        if (isset($SESSION->$filtername)) {
+            foreach ($SESSION->$filtername as $filter => $unused) {
+                // parse the filtername for type and value
+                $parts = explode('-',$filter);
+                if (count($parts) != 2) {
+                    error("get_filter_joins(): filter name format incorrect. Query snippets may have included a dash character.");
+                    continue;
+                }
+                $type = $parts[0];
+                $value = $parts[1];
+                $filterjoins[] = $columnoptions[$type][$value];
+            }
+        }
+        return $this->get_joins($filterjoins, 'filter');
+    }
+
+
+    /*
+     * Function used as callback for uksort() to sort join arrays
+     * Order of sort should be the same as the order of the joinlist array
+     *
+     * @param mixed The first element to compare
+     * @param mixed The second element to compare
+     * @return integer -1, 1 or 0 depending on order of elements
+     */
+    function sort_join($el1, $el2) {
+        $joinlist = $this->_joinlist;
+        // order of this array determines order of joins
+        // earlier elements joined first
+        $order = array_keys($joinlist);
+
+        $el1key = array_search($el1, $order);
+        $el2key = array_search($el2, $order);
+
+        // determine sort order
+        // if key is missing, put at the end
+        if($el1key !== false && $el2key === false) {
+            trigger_error("Missing array key in sort_join(). Add '$el2' to order array.",E_USER_WARNING);
+            return -1;
+        } else if ($el2key !== false && $el1key === false) {
+            trigger_error("Missing array key in sort_join(). Add '$el1' to order array.",E_USER_WARNING);
+            return 1;
+        } else if ($el1key === false && $el2key === false) {
+            trigger_error("Missing array keys in sort_join(). Add '$el1' and '$el2' to order array.",E_USER_WARNING);
+            return 0;
+        } else if($el1key < $el2key) {
+            return -1;
+        } else if($el1key > $el2key) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
+
+    /*
+     * This function builds the main SQL query used to get the data for the page
+     *
+     * @param boolean $countonly If true returns SQL to count results, otherwise the
+     *                           query requests the fields needed for columns too.
+     * @param boolean $filtered If true, includes any active filters in the query,
+     *                           otherwise returns results without filtering
+     * @return string The full SQL query
+     */
     function build_query($countonly=false, $filtered=false) {
         global $CFG;
         $source = $this->source;
@@ -383,8 +679,6 @@ class reportbuilder {
                 $where = $where." AND $extrasql";
             }
         }
-
-        // also apply parameter restrictions
         $paramrestrictions = $this->get_param_restrictions();
         if($paramrestrictions != '' && $where=='') {
             $where = "WHERE $paramrestrictions";
@@ -396,14 +690,22 @@ class reportbuilder {
         return $sql;
     }
 
-
-    // return the total number of records in this report
+    /*
+     * Return the total number of records in this report (after any
+     * restrictions have been applied but before any filters)
+     *
+     * @return integer Record count
+     */
     function get_full_count() {
         $sql = $this->build_query(true);
         return count_records_sql($sql);
     }
 
-    // return the filtered number of records in this report
+    /*
+     * Return the number of filtered records in this report
+     *
+     * @return integer Filtered record count
+     */
     function get_filtered_count() {
 
         $sql = $this->build_query(true, true);
@@ -411,6 +713,13 @@ class reportbuilder {
 
     }
 
+    /*
+     * Exports the data from the current results, maintaining
+     * sort order and active filters but removing pagination
+     *
+     * @param string $format Format for the export ods/csv/xls
+     * @return No return but initiates save dialog
+     */
     function export_data($format) {
         $this->check_columns(true);
         $columns = $this->columns;
@@ -441,6 +750,11 @@ class reportbuilder {
         die;
     }
 
+    /*
+     * Display the results table
+     *
+     * @return No return value but prints the current data table
+     */
     function display_table() {
         global $CFG;
         define('DEFAULT_PAGE_SIZE', 40);
@@ -521,8 +835,13 @@ class reportbuilder {
 
     }
 
-    // look up sort keys and make sure they still exist in table
-    // (could have been deleted in report builder)
+    /*
+     * Look up the sort keys and make sure they still exist in table
+     * (could have been deleted in report builder)
+     *
+     * @return true May unset flexible table sort keys if they are not
+     *              found in the column list
+     */
     function check_sort_keys() {
         global $SESSION;
         $shortname = $this->shortname;
@@ -543,199 +862,19 @@ class reportbuilder {
         return true;
     }
 
-    function get_column_fields() {
 
-        $source = $this->source;
-        $columns = $this->columns;
-        $columnoptions = $this->columnoptions;
-        $fields = array();
-        foreach($columns as $column) {
-            $type = isset($column['type']) ? $column['type'] : '';
-            if(array_key_exists($type, $columnoptions)) {
-                $value = isset($column['value']) ? $column['value'] : '';
-                if(array_key_exists($value, $columnoptions[$type])) {
-                    // add field to list to be selected
-                    // use type_value as alias for each field
-                    $fields[] = $columnoptions[$type][$value]['field']." ".sql_as()." {$type}_{$value}";
-                } else {
-                    trigger_error("get_column_fields(): column value '$value' not found in source '$source' for type '$type'", E_USER_WARNING);
-                }
-            } else {
-                trigger_error("get_column_fields(): column type '$type' not found in source '$source'", E_USER_WARNING);
-            }
-        }
-        return $fields;
-
-    }
-
-    function get_admin_fields() {
-        $source = $this->source;
-        $columns = $this->_admin;
-        $fields = array();
-        foreach($columns as $column) {
-            if(isset($column['name'])) {
-                $name = $column['name'];
-            } else {
-                // we need a name
-                continue;
-            }
-            if(isset($column['fields']) && is_array($column['fields'])) {
-                foreach($column['fields'] as $key => $field) {
-                    $fields[] = $field.' '.sql_as()." {$name}_{$key}";
-                }
-            }
-        }
-        return $fields;
-    }
-
-    // input is array of elements, each with a 'joins' key with array
-    // of joins as the value
-    // type is string to identify source in case of error
-    // TODO string other get_*_joins() functions to use this
-    function get_joins($inputs, $type) {
-        $source = $this->source;
-        $joinlist = $this->_joinlist;
-        $joins = array();
-        foreach($inputs as $input) {
-            $input_joins = (isset($input['joins'])) ? $input['joins'] : null;
-            if($input_joins && is_array($input_joins)) {
-                foreach($input_joins as $input_join) {
-                    if(array_key_exists($input_join, $joinlist)) {
-                        $joins[$input_join] = $joinlist[$input_join];
-                    } else {
-                        error("get_joins(): join for $type with name $input_join not in joinlist");
-                    }
-                }
-            }
-        }
-        return $joins;
-    }
-
-    function get_restriction_joins() {
-        $source = $this->source;
-        $restrictions = $this->restriction;
-        $joinlist = $this->_joinlist;
-        $joins = array();
-        foreach($restrictions as $restriction) {
-            $info = $this->get_restriction_info($restriction);
-            if(!$info) {
-                continue;
-            }
-            $rest_joins = (isset($info['joins'])) ? $info['joins'] : null;
-            if($rest_joins && is_array($rest_joins)) {
-                foreach($rest_joins as $rest_join) {
-                    if(array_key_exists($rest_join, $joinlist)) {
-                        $joins[$rest_join] = $joinlist[$rest_join];
-                    } else {
-                        error("get_restriction_joins(): join name $rest_join not in joinlist");
-                    }
-                }
-            }
-        }
-        return $joins;
-    }
-
-
-    function get_column_joins() {
-        $source = $this->source;
-        $columns = $this->columns;
-        $columnoptions = $this->columnoptions;
-        $joinlist = $this->_joinlist;
-        $joins = array();
-        foreach($columns as $column) {
-            $type = isset($column['type']) ? $column['type'] : '';
-
-            if(array_key_exists($type, $columnoptions)) {
-                $value = isset($column['value']) ? $column['value'] : '';
-
-                if(array_key_exists($value, $columnoptions[$type])) {
-
-                    foreach ($columnoptions[$type][$value]['joins'] as $join) {
-                        if(array_key_exists($join, $joinlist)) {
-                            // add any joins that are required to an array of joins
-                            // because we are storing in associative array, each join
-                            // is only stored once (as required)
-                            $joins[$join] = $joinlist[$join];
-                        } else {
-                            trigger_error("get_column_joins(): join name $join not in joinlist", E_USER_WARNING);
-                        }
-                    }
-                } else {
-                    trigger_error("get_column_joins(): column value '$value' not found in source '$source' for type '$type'", E_USER_WARNING);
-                }
-            } else {
-                trigger_error("get_column_joins(): column type '$type' not found in source '$source'", E_USER_WARNING);
-            }
-        }
-        return $joins;
-
-    }
-
-
-    function get_filter_joins() {
-        $shortname = $this->shortname;
-        $columnoptions = $this->columnoptions;
-        $joinlist = $this->_joinlist;
-        global $SESSION;
-        $joins = array();
-        // check session variable for any active filters
-        // if they exist we need to make sure we have included joins for them too
-        $filtername = 'filtering_'.$shortname;
-        if (isset($SESSION->$filtername)) {
-            foreach ($SESSION->$filtername as $filter => $unused) {
-                // parse the filtername for type and value
-                $parts = explode('-',$filter);
-                if (count($parts) != 2) {
-                    error("get_filter_joins(): filter name format incorrect. Query snippets may have included a dash character.");
-                    continue;
-                }
-                $type = $parts[0];
-                $value = $parts[1];
-                foreach($columnoptions[$type][$value]['joins'] as $join) {
-                    if(array_key_exists($join, $joinlist)) {
-                        $joins[$join] = $joinlist[$join];
-                    } else {
-                        error("get_filter_joins(): join name $join not in joinlist");
-                    }
-                }
-            }
-        }
-        return $joins;
-
-    }
-
-
-    // sort function for uksort()
-    function sort_join($el1, $el2) {
-        $joinlist = $this->_joinlist;
-        // order of this array determines order of joins
-        // earlier elements joined first
-        $order = array_keys($joinlist);
-
-        $el1key = array_search($el1, $order);
-        $el2key = array_search($el2, $order);
-
-        // determine sort order
-        // if key is missing, put at the end
-        if($el1key !== false && $el2key === false) {
-            trigger_error("Missing array key in sort_join(). Add '$el2' to order array.",E_USER_WARNING);
-            return -1;
-        } else if ($el2key !== false && $el1key === false) {
-            trigger_error("Missing array key in sort_join(). Add '$el1' to order array.",E_USER_WARNING);
-            return 1;
-        } else if ($el1key === false && $el2key === false) {
-            trigger_error("Missing array keys in sort_join(). Add '$el1' and '$el2' to order array.",E_USER_WARNING);
-            return 0;
-        } else if($el1key < $el2key) {
-            return -1;
-        } else if($el1key > $el2key) {
-            return 1;
-        } else {
-            return 0;
-        }
-    }
-
-    // get 2d array of data for a given query
+    /*
+     * Given an SQL query and some addition parameters, returns a 2d array of the data
+     * obtained by running the query. If display functions exist for any columns the
+     * data is passed to the display function and the result included instead.
+     *
+     * @param string $sql The SQL query, excluding offset/limit
+     * @param integer $start The first row to extract
+     * @param integer $size The total number of rows to extract
+     * @param boolean $striptags If true, returns the data with any html tags removed
+     * @param boolean $incadmin If true, add any admin columns defined by adminoptions.php
+     * @return array Outer array are table rows, inner array are columns
+     */
     function fetch_data($sql, $start=null, $size=null, $striptags=false, $incadmin=false) {
         global $CFG;
         $columns = $this->columns;
@@ -781,7 +920,15 @@ class reportbuilder {
         }
     }
 
-    // appends any admin columns to the fetch_data result row
+    /*
+     * Appends any admin columns to the fetch_data result row
+     *
+     * @param array &$row The current row that would be returned if no admin options set
+     *                    Passed by reference.
+     * @param array $record The db record for the current row, which includes the admin
+     *                      fields required to build the admin column
+     * @param No return value but may modify &$row
+     */
     function add_admin_columns(&$row, $record) {
         global $CFG;
         if(isset($this->_admin) && is_array($this->_admin) && count($this->_admin)>0) {
@@ -797,54 +944,25 @@ class reportbuilder {
     }
 
 
-    function get_filters_select() {
-        $filters = $this->filteroptions;
-        $ret = array();
-        if(!isset($this->filteroptions)) {
-            return $ret;
-        }
-        foreach($filters as $type => $info) {
-            foreach ($info as $value => $info2) {
-                $label = $info2['label'];
-                $key = "{$type}-{$value}";
-                $ret[$key] = $label;
-            }
-        }
-        return $ret;
-    }
-
-    // parses the column options data structure to return an array suitable
-    // for use as a select pulldown
-    function get_columns_select() {
-        $columns = $this->columnoptions;
-        $ret = array();
-        if(!isset($this->columnoptions)) {
-            return $ret;
-        }
-        foreach($columns as $type => $info) {
-            foreach ($info as $value => $info2) {
-                $key = "{$type}-{$value}";
-                $text = $info2['name'];
-                $ret[$key] = $text;
-            }
-        }
-        return $ret;
-    }
-
-
-    // recursive version of strip_tags
+    /*
+     * Recursive version of strip_tags
+     *
+     * @param array $value A nested array of strings
+     * @return array The same array with HTML stripped from all strings
+     */
     function strip_tags_r($value) {
         return is_array($value) ? array_map(array($this,'strip_tags_r'), $value) :
             strip_tags($value);
     }
 
 
-    // export functions
-
-    // prints select box and submit button to export current report
-    // for this to work page must contain:
-    // if($format!=''){$report->export_data($format);die;}
-    // before header printed
+    /* Prints select box and submit button to export current report
+     * for this to work page must contain:
+     * if($format!=''){$report->export_data($format);die;}
+     * before header printed
+     *
+     * @return No return value but prints export select form
+     */
     function export_select() {
         global $CFG;
         require_once($CFG->dirroot.'/local/reportbuilder/export_form.php');
@@ -853,10 +971,13 @@ class reportbuilder {
 
     }
 
-    // prints three buttons to export current report
-    // for this to work page must contain:
-    // if($format!=''){$report->export_data($format);die;}
-    // before header printed
+    /* Prints three buttons to export current report
+     * for this to work page must contain:
+     * if($format!=''){$report->export_data($format);die;}
+     * before header printed
+     *
+     * @return No return value but prints export buttons
+     */
     function export_buttons() {
         print "<center><table><tr><td>";
         print_single_button(qualified_me(),array('format'=>'xls'),get_string('exportxls','local'),'post');
@@ -867,6 +988,12 @@ class reportbuilder {
         print "</td><tr></table></center>";
     }
 
+    /* Download current table in ODS format
+     * @param array $fields Array of column headings
+     * @param string $query SQL query to run to get results
+     * @param integer $count Number of filtered records in query
+     * @return Returns the ODS file
+     */
     function download_ods($fields, $query, $count) {
         global $CFG;
         require_once("$CFG->libdir/odslib.class.php");
@@ -916,6 +1043,12 @@ class reportbuilder {
         die;
     }
 
+    /* Download current table in XLS format
+     * @param array $fields Array of column headings
+     * @param string $query SQL query to run to get results
+     * @param integer $count Number of filtered records in query
+     * @return Returns the Excel file
+     */
     function download_xls($fields, $query, $count) {
         global $CFG;
 
@@ -966,6 +1099,12 @@ class reportbuilder {
         die;
     }
 
+     /* Download current table in CSV format
+     * @param array $fields Array of column headings
+     * @param string $query SQL query to run to get results
+     * @param integer $count Number of filtered records in query
+     * @return Returns the CSV file
+     */
     function download_csv($fields, $query, $count) {
         global $CFG;
         $shortname = $this->shortname;
@@ -1011,6 +1150,61 @@ class reportbuilder {
 
     }
 
+    ///
+    /// Functions for Editing Reports
+    ///
+
+
+    /*
+     * Parses the filter options data for this source into a data structure
+     * suitable for an HTML select pulldown.
+     *
+     * @return array An Array with $type-$value as key and $label as value
+     */
+    function get_filters_select() {
+        $filters = $this->filteroptions;
+        $ret = array();
+        if(!isset($this->filteroptions)) {
+            return $ret;
+        }
+        foreach($filters as $type => $info) {
+            foreach ($info as $value => $info2) {
+                $label = $info2['label'];
+                $key = "{$type}-{$value}";
+                $ret[$key] = $label;
+            }
+        }
+        return $ret;
+    }
+
+    /*
+     * Parses the column options data for this source into a data structure
+     * suitable for an HTML select pulldown
+     *
+     * @return array An array with $type-$value as key and $name as value
+     */
+    function get_columns_select() {
+        $columns = $this->columnoptions;
+        $ret = array();
+        if(!isset($this->columnoptions)) {
+            return $ret;
+        }
+        foreach($columns as $type => $info) {
+            foreach ($info as $value => $info2) {
+                $key = "{$type}-{$value}";
+                $text = $info2['name'];
+                $ret[$key] = $text;
+            }
+        }
+        return $ret;
+    }
+
+    /*
+     * Given a column id, removes that column from the current report
+     *
+     * @param integer $cid ID of the column to be removed
+     * @return boolean True on success, false otherwise
+     */
     function delete_column($cid) {
         $id = $this->_id;
         // generate new version of columns, minus the one to delete
@@ -1034,6 +1228,12 @@ class reportbuilder {
         }
     }
 
+    /*
+     * Given a filter id, removes that filter from the current report
+     *
+     * @param integer $fid ID of the filter to be removed
+     * @return boolean True on success, false otherwise
+     */
     function delete_filter($fid) {
         $id = $this->_id;
         // generate new version of filters, minus the one to delete
@@ -1057,6 +1257,13 @@ class reportbuilder {
         }
     }
 
+    /*
+     * Given a column id and a direction, moves a column up or down
+     *
+     * @param integer $cid ID of the column to be moved
+     * @param string $updown String 'up' or 'down'
+     * @return boolean True on success, false otherwise
+     */
     function move_column($cid, $updown) {
         $id = $this->_id;
 
@@ -1089,6 +1296,13 @@ class reportbuilder {
     }
 
 
+    /*
+     * Given a filter id and a direction, moves a filter up or down
+     *
+     * @param integer $fid ID of the filter to be moved
+     * @param string $updown String 'up' or 'down'
+     * @return boolean True on success, false otherwise
+     */
     function move_filter($fid, $updown) {
         $id = $this->_id;
 
