@@ -239,38 +239,84 @@ function backup_facetoface_session_data($bf, $sessionid)
 }
 
 /**
- * Backup the facetoface_submissions table entries for a given
+ * Backup the facetoface_signups table entries for a given
  * facetoface activity
  */
 function backup_facetoface_submissions($bf, $facetofaceid)
 {
+    global $CFG;
+
     $status = true;
 
-    $submissions = get_records('facetoface_submissions', 'facetoface', $facetofaceid, 'id');
-    if (!$submissions) {
+    $signups = get_records_sql(
+        "
+            SELECT
+                ss.id AS statusid,
+                s.id,
+                s.sessionid,
+                s.userid,
+                s.mailedreminder,
+                s.discountcode,
+                s.notificationtype,
+                ss.statuscode,
+                ss.superceded,
+                ss.grade,
+                ss.note,
+                ss.advice,
+                ss.createdby,
+                ss.timecreated
+            FROM
+                {$CFG->prefix}facetoface_signups_status ss
+            INNER JOIN
+                {$CFG->prefix}facetoface_signups s
+             ON ss.signupid = s.id
+            INNER JOIN
+                {$CFG->prefix}facetoface_sessions sess
+             ON s.sessionid = sess.id
+            WHERE
+                sess.facetoface = {$facetofaceid}
+        "
+    );
+
+    if (!$signups) {
         return $status;
     }
 
-    $status &= fwrite($bf, start_tag('SUBMISSIONS', 4, true)) > 0;
-    foreach ($submissions as $submission) {
-        $status &= fwrite($bf, start_tag('SUBMISSION', 5, true)) > 0;
+    $status &= fwrite($bf, start_tag('SIGNUPS', 4, true)) > 0;
 
-        // facetoface_submissions table
-        $status &= fwrite($bf, full_tag('ID', 6, false, $submission->id)) > 0;
-        $status &= fwrite($bf, full_tag('FACETOFACE', 6, false, $submission->facetoface)) > 0;
-        $status &= fwrite($bf, full_tag('SESSIONID', 6, false, $submission->sessionid)) > 0;
-        $status &= fwrite($bf, full_tag('USERID', 6, false, $submission->userid)) > 0;
-        $status &= fwrite($bf, full_tag('MAILEDCONFIRMATION', 6, false, $submission->mailedconfirmation)) > 0;
-        $status &= fwrite($bf, full_tag('MAILEDREMINDER', 6, false, $submission->mailedreminder)) > 0;
-        $status &= fwrite($bf, full_tag('DISCOUNTCODE', 6, false, $submission->discountcode)) > 0;
-        $status &= fwrite($bf, full_tag('TIMECREATED', 6, false, $submission->timecreated)) > 0;
-        $status &= fwrite($bf, full_tag('TIMEMODIFIED', 6, false, $submission->timemodified)) > 0;
-        $status &= fwrite($bf, full_tag('TIMECANCELLED', 6, false, $submission->timecancelled)) > 0;
-        $status &= fwrite($bf, full_tag('NOTIFICATIONTYPE', 6, false, $submission->notificationtype)) > 0;
+    $signupid = null;
+    foreach ($signups as $signup) {
 
-        $status &= fwrite($bf, end_tag('SUBMISSION', 5, true)) > 0;
+        if ($signup->id != $signupid) {
+            $status &= fwrite($bf, start_tag('SIGNUP', 5, true)) > 0;
+            $status &= fwrite($bf, full_tag('ID', 6, false, $signup->id)) > 0;
+            $status &= fwrite($bf, full_tag('SESSIONID', 6, false, $signup->sessionid)) > 0;
+            $status &= fwrite($bf, full_tag('USERID', 6, false, $signup->userid)) > 0;
+            $status &= fwrite($bf, full_tag('MAILEDREMINDER', 6, false, $signup->mailedreminder)) > 0;
+            $status &= fwrite($bf, full_tag('DISCOUNTCODE', 6, false, $signup->discountcode)) > 0;
+            $status &= fwrite($bf, full_tag('NOTIFICATIONTYPE', 6, false, $signup->notificationtype)) > 0;
+
+            // If this isn't the first signup tag, close the previous one
+            if ($signupid !== null) {
+                $status &= fwrite($bf, end_tag('SIGNUP', 5, true)) > 0;
+            }
+
+            $signupid = $signup->id;
+        }
+
+        $status &= fwrite($bf, start_tag('SIGNUP_STATUS', 6, true)) > 0;
+        $status &= fwrite($bf, full_tag('STATUSCODE', 7, false, $signup->statuscode)) > 0;
+        $status &= fwrite($bf, full_tag('SUPERCEDED', 7, false, $signup->superceded)) > 0;
+        $status &= fwrite($bf, full_tag('GRADE', 7, false, $signup->grade)) > 0;
+        $status &= fwrite($bf, full_tag('NOTE', 7, false, $signup->note)) > 0;
+        $status &= fwrite($bf, full_tag('ADVICE', 7, false, $signup->advice)) > 0;
+        $status &= fwrite($bf, full_tag('CREATEDBY', 7, false, $signup->createdby)) > 0;
+        $status &= fwrite($bf, full_tag('TIMECREATED', 7, false, $signup->timecreated)) > 0;
+        $status &= fwrite($bf, end_tag('SIGNUP_STATUS', 6, true)) > 0;
     }
-    $status &= fwrite($bf, end_tag('SUBMISSIONS', 4, true)) > 0;
+
+    $status &= fwrite($bf, end_tag('SIGNUP', 5, true)) > 0;
+    $status &= fwrite($bf, end_tag('SIGNUPS', 4, true)) > 0;
 
     return $status;
 }
