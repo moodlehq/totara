@@ -60,11 +60,11 @@
         $strheading = get_string('myrecordoflearning', 'local');
     }
 
-    $shortname = 'record_of_learning';
-    $source = 'competency_evidence';
-    $fullname = $strheading;
-    $filters = array(); // hide filter block
-    $columns = array(
+    $embed = new object();
+    $embed->source = 'competency_evidence';
+    $embed->fullname = $strheading;
+    $embed->filters = array(); //hide filter block
+    $embed->columns = array(
         array(
             'type' => 'competency',
             'value' => 'competencylink',
@@ -106,18 +106,13 @@
             'heading' => 'Assessor Organisation',
         ),
     );
-    // no restrictions set, but embedded params
-    // and in page check ensure only valid users
-    // can see reports
-    $restriction = array('unrestrictedall');
-
-    $embeddedparams = array(
+    $embed->restriction = array('unrestrictedall');
+    $embed->embeddedparams = array(
         // show report for a specific user
         'userid' => $id,
     );
-
-    $report = new reportbuilder($shortname, true, $source, $fullname,
-        $filters, $columns, $restriction, $embeddedparams);
+    $shortname = 'record_of_learning';
+    $report = new reportbuilder($shortname, $embed);
 
     if($format!='') {
         $report->export_data($format);

@@ -26,10 +26,10 @@ if ($USER->id != $id) {
 }
 
 $shortname = 'course_completions';
-$source = 'course_completion';
-$fullname = $strheading;
-$filters = array(); // hide filter block
-$columns = array(
+$embed->source = 'course_completion';
+$embed->fullname = $strheading;
+$embed->filters = array(); // hide filter block
+$embed->columns = array(
     array(
         'type' => 'course',
         'value' => 'courselink',
@@ -58,14 +58,13 @@ $columns = array(
 );
 // no restrictions
 // limited to single user by embedded params
-$restriction = array('unrestrictedall');
+$embed->restriction = array('unrestrictedall');
 
-$embeddedparams = array(
+$embed->embeddedparams = array(
     'userid' => $id,
 );
 
-$report = new reportbuilder($shortname, true, $source, $fullname,
-    $filters, $columns, $restriction, $embeddedparams);
+$report = new reportbuilder($shortname, $embed);
 
 if($format!='') {
     $report->export_data($format);

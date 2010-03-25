@@ -9,8 +9,7 @@ class reportbuilder {
     private $_id, $_defaultcolumns, $_defaultfilters, $_joinlist, $_base, $_params;
     private $_paramoptions, $_embeddedparams, $_admin, $_adminoptions;
 
-    function reportbuilder($shortname=null, $embed=false, $source=null, $fullname=null,
-                           $filters=null, $columns=null, $restriction=null, $embeddedparams=null) {
+    function reportbuilder($shortname=null, $embed=false) {
         global $CFG;
         if($shortname == null) {
             error(get_string('noshortname','local'));
@@ -19,12 +18,12 @@ class reportbuilder {
         if($embed) {
             // get data from parameters
             $this->shortname = $shortname;
-            $this->fullname = $fullname;
-            $this->filters = $filters;
-            $this->columns = $columns;
-            $this->restriction = $restriction;
-            $this->source = $source;
-            $this->_embeddedparams = $embeddedparams;
+            $this->fullname = isset($embed->fullname) ? $embed->fullname : null;
+            $this->filters = isset($embed->filters) ? $embed->filters : null;
+            $this->columns = isset($embed->columns) ? $embed->columns : null;
+            $this->restriction = isset($embed->restriction) ? $embed->restriction : null;
+            $this->source = isset($embed->source) ? $embed->source : null;
+            $this->_embeddedparams = isset($embed->embeddedparams) ? $embed->embeddedparams : null;
         } else {
             // lookup from db
 

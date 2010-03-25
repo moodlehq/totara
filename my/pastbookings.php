@@ -27,10 +27,10 @@ if ($USER->id != $id) {
 }
 
 $shortname = 'pastbookings';
-$source = 'facetoface_sessions';
-$fullname = $strheading;
-$filters = array(); // hide filter block
-$columns = array(
+$embed->source = 'facetoface_sessions';
+$embed->fullname = $strheading;
+$embed->filters = array(); // hide filter block
+$embed->columns = array(
     array(
         'type' => 'course',
         'value' => 'courselink',
@@ -74,7 +74,7 @@ $columns = array(
 );
 // only add facilitator column if role exists
 if(get_field('role','id','shortname','facilitator')) {
-    $columns[] = array(
+    $embed->columns[] = array(
         'type' => 'role',
         'value' => 'facilitator',
         'heading' => 'Facilitator',
@@ -83,14 +83,13 @@ if(get_field('role','id','shortname','facilitator')) {
 
 // no restrictions
 // limited to single user by embedded params
-$restriction = array('unrestrictedall');
+$embed->restriction = array('unrestrictedall');
 
-$embeddedparams = array(
+$embed->embeddedparams = array(
     'userid' => $id,
 );
 
-$report = new reportbuilder($shortname, true, $source, $fullname,
-    $filters, $columns, $restriction, $embeddedparams);
+$report = new reportbuilder($shortname, $embed);
 
 if($format!='') {
     $report->export_data($format);
