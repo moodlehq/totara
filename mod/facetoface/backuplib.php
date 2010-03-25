@@ -281,6 +281,8 @@ function backup_facetoface_submissions($bf, $facetofaceid)
  */
 function facetoface_check_backup_mods_instances($instance, $backup_unique_code)
 {
+    global $CFG;
+
     $info[$instance->id.'0'][0] = '<b>'.$instance->name.'</b>';
     $info[$instance->id.'0'][1] = '';
 
@@ -288,8 +290,20 @@ function facetoface_check_backup_mods_instances($instance, $backup_unique_code)
     $info[$instance->id.'1'][1] = count_records('facetoface_sessions', 'facetoface', $instance->id);
 
     if (!empty($instance->userdata)) {
-        $info[$instance->id.'2'][0] = get_string('submissions', 'facetoface');
-        $info[$instance->id.'2'][1] = count_records('facetoface_submissions', 'facetoface', $instance->id);
+        $info[$instance->id.'2'][0] = get_string('signups', 'facetoface');
+        $info[$instance->id.'2'][1] = count_records_sql(
+            "
+                SELECT
+                    COUNT(s.id)
+                FROM
+                    {$CFG->prefix}facetoface_signups s
+                INNER JOIN
+                    {$CFG->prefix}facetoface_sessions sess
+                 ON sess.id = s.sessionid
+                WHERE
+                    sess.facetoface = {$instance->id}
+            "
+        );
     }
 
     return $info;
