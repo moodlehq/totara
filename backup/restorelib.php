@@ -9177,7 +9177,7 @@ define('RESTORE_GROUPS_GROUPINGS', 3);
         }
 
         //Now create competency evidence items as needed
-        if ($status && $restore->backup_competency_evidence_items) {
+        if ($status && isset($info->backup_competency_evidence_items) && $info->backup_competency_evidence_items == "true") {
             if (!defined('RESTORE_SILENTLY')) {
                 echo "<li>".get_string("createcompetencyevidencedata");
             }
