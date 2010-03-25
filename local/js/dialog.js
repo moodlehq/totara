@@ -206,7 +206,8 @@ function yuiDialog(title, buttonid, config, default_url, handler) {
     this.bindLinks = function() {
         var anchors = YAHOO.util.Dom.getElementsBy(
             function(el) {
-                if (el.className != 'container-close') {
+                if (el.className != 'container-close' &&
+                    el.parentNode.className != 'helplink') {
                     return true;
                 } else {
                     return false;
