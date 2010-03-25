@@ -336,12 +336,23 @@ function facetoface_check_backup_mods($course, $user_data=false, $backup_unique_
                                            AND f.course = $course");
 
     if ($user_data) {
-        $info[2][0] = get_string('submissions', 'facetoface');
-        $info[2][1] = count_records_sql("SELECT COUNT(*)
-                                             FROM {$CFG->prefix}facetoface f,
-                                                  {$CFG->prefix}facetoface_submissions s
-                                             WHERE f.id = s.facetoface
-                                               AND f.course = $course");
+        $info[2][0] = get_string('signups', 'facetoface');
+        $info[2][1] = count_records_sql(
+            "
+                SELECT
+                    COUNT(s.id)
+                FROM
+                    {$CFG->prefix}facetoface_signups s
+                INNER JOIN
+                    {$CFG->prefix}facetoface_sessions sess
+                 ON sess.id = s.sessionid
+                INNER JOIN
+                    {$CFG->prefix}facetoface f
+                 ON sess.facetoface = f.id
+                WHERE
+                    f.course = {$course}
+            "
+        );
     }
 
     return $info;
