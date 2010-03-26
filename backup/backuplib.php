@@ -1753,6 +1753,10 @@
         $hierarchy = new competency();
         $evidence = $hierarchy->get_course_evidence($preferences->backup_course);
 
+        if (!$evidence) {
+            return $status;
+        }
+
         if (!$silent) {
             echo '<ul>';
         }
@@ -1788,10 +1792,10 @@
             $frameworks[$ev->fid][$ev->id][] = $ev->evidenceid;
         }
 
-        // Gradebook header
         if (!count($evidence)) {
-            return;
+            return $status;
         }
+
         $status = fwrite($bf, start_tag("COMPETENCY_FRAMEWORKS", 2, true));
 
         foreach ($frameworks as $fid => $fcompetencies) {
