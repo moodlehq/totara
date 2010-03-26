@@ -587,15 +587,26 @@ class hierarchy {
      * @return boolean success
      */
     function move_framework($id, $up) {
+        global $CFG;
         $move = NULL;
         $swap = NULL;
         $this->validate_sortorder();
         $sortoffset = $this->get_framework_sortorder_offset();
         $move = get_record($this->prefix.'_framework', 'id', $id);
         if ($up) {
-            $swap = get_record($this->prefix.'_framework', 'sortorder', $move->sortorder - 1);
+            $swap = get_record_sql(
+                    "SELECT *
+                    FROM {$CFG->prefix}{$this->prefix}_framework
+                    WHERE sortorder < {$move->sortorder}
+                    ORDER BY sortorder DESC", true
+            );
         } else {
-            $swap = get_record($this->prefix.'_framework', 'sortorder', $move->sortorder + 1);
+            $swap = get_record_sql(
+                    "SELECT *
+                    FROM {$CFG->prefix}{$this->prefix}_framework
+                    WHERE sortorder > {$move->sortorder}
+                    ORDER BY sortorder ASC", true
+            );
         }
         if ($move && $swap) {
             begin_sql();
@@ -635,6 +646,7 @@ class hierarchy {
      * @return  void
      */
     function delete_framework() {
+        global $CFG;
 
         // Get all items in the framework
         $items = $this->get_items();
@@ -663,6 +675,14 @@ class hierarchy {
 
         // Finally delete this framework
         delete_records($this->prefix.'_framework', 'id', $this->frameworkid);
+
+        // Rewrite the sort order to account for the missing framework
+        $sortorder = 1;
+        $records = get_records_sql("SELECT id FROM {$CFG->prefix}{$this->prefix}_framework ORDER BY sortorder ASC");
+        foreach( $records as $rec ){
+            set_field( "{$this->prefix}_framework", 'sortorder', $sortorder, 'id', $rec->id );
+            $sortorder++;
+        }
     }
 
     /**
