@@ -147,7 +147,6 @@ function restore_facetoface_signups_status($info, $restore) {
 
     $signups = $info['#']['SIGNUPS_STATUS']['0']['#']['STATUS'];
     foreach ($signups as $signupinfo) {
-        $oldid = backup_todb($signupinfo['#']['ID']['0']['#']);
 
         $signup = new Object();
         $signup->signupid           = backup_todb($signupinfo['#']['SIGNUPID']['0']['#']);
@@ -159,11 +158,9 @@ function restore_facetoface_signups_status($info, $restore) {
         $signup->createdby          = backup_todb($signupinfo['#']['CREATEDBY']['0']['#']);
         $signup->timecreated        = backup_todb($signupinfo['#']['TIMECREATED']['0']['#']);
 
-        // Fix the sessionid
+        // Fix the signupid
         $signupid = backup_getid($restore->backup_unique_code, 'facetoface_signups', $signup->signupid);
-        if ($session) {
-            $signup->signupnid = $signupid->new_id;
-        }
+        $signup->signupid = $signupid->new_id;
 
         $newid = insert_record('facetoface_signups_status', $signup);
 
@@ -177,9 +174,7 @@ function restore_facetoface_signups_status($info, $restore) {
         }
         backup_flush(300);
 
-        if ($newid) {
-            backup_putid($restore->backup_unique_code, 'facetoface_signups_status', $oldid, $newid);
-        } else {
+        if (!$newid) {
             $status = false;
         }
     }
@@ -260,7 +255,7 @@ function restore_facetoface_session_roles($newsessionid, $sessioninfo, $restore)
 
     if (empty($sessioninfo['#']['ROLES'])) {
         return $status; // Nothing to restore
-    }   
+    }
 
     $roles = $sessioninfo['#']['ROLES']['0']['#']['ROLE'];
     foreach ($roles as $roleinfo) {
@@ -279,16 +274,16 @@ function restore_facetoface_session_roles($newsessionid, $sessioninfo, $restore)
                 echo '.';
             } else {
                 echo 'X';
-            }   
-        }   
+            }
+        }
         backup_flush(300);
 
         if ($newid) {
             backup_putid($restore->backup_unique_code, 'facetoface_session_roles', $oldid, $newid);
         } else {
             $status = false;
-        }   
-    }   
+        }
+    }
 
     return $status;
 }
