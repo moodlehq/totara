@@ -53,28 +53,32 @@ if ($can_edit) {
         // Get value to move, and value to replace
         if (!empty($moveup)) {
             $move = get_record('competency_scale_values', 'id', $moveup);
-            $swap = get_record_sql("
-                SELECT
-                    *
-                FROM
-                    {$CFG->prefix}competency_scale_values
+            $resultset = get_records_sql("
+                SELECT *
+                FROM {$CFG->prefix}competency_scale_values
                 WHERE
                     scaleid = {$scale->id}
-                AND sortorder < {$move->sortorder}
-                LIMIT 1", false, true
+                    AND sortorder < {$move->sortorder}
+                ORDER BY sortorder DESC", 0, 1
             );
+            if ( $resultset && count($resultset) ){
+                $swap = reset($resultset);
+                unset($resultset);
+            }
         } else {
             $move = get_record('competency_scale_values', 'id', $movedown);
-            $swap = get_record_sql("
-                SELECT
-                    *
-                FROM
-                    {$CFG->prefix}competency_scale_values
+            $resultset = get_records_sql("
+                SELECT *
+                FROM {$CFG->prefix}competency_scale_values
                 WHERE
                     scaleid = {$scale->id}
-                AND sortorder > {$move->sortorder}
-                LIMIT 1", false, true
+                    AND sortorder > {$move->sortorder}
+                ORDER BY sortorder ASC", 0, 1
             );
+            if ( $resultset && count($resultset) ){
+                $swap = reset($resultset);
+                unset($resultset);
+            }
         }
 
         if ($swap && $move) {
