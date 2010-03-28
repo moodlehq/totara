@@ -328,7 +328,7 @@ class hierarchy {
         $path = get_field($this->prefix, 'path', 'id', $id);
         if ($path) {
             $paths = explode('/', substr($path, 1));
-            $sql = "SELECT o.id, o.fullname, od.depthlevel
+            $sql = "SELECT o.id, o.fullname, o.parentid, od.depthlevel
                     FROM {$CFG->prefix}{$this->prefix} o
                     JOIN {$CFG->prefix}{$this->prefix}_depth od
                       ON o.depthid=od.id
