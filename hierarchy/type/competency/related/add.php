@@ -48,6 +48,16 @@ $max_depth = current($depths)->id;
 // Load competencies to display
 $competencies = $hierarchy->get_items_by_parent($parentid);
 
+// Get IDs of all competencies that are parents
+// (to see if we should link to sub-competencies)
+if(!$parentcomps = get_records_sql("
+    SELECT DISTINCT parentid AS id
+    FROM {$CFG->prefix}{$hierarchy->prefix}
+    WHERE parentid != 0")) {
+        // default to empty array if none found
+        $parentcomps = array();
+    }
+
 
 ///
 /// Display page
@@ -97,8 +107,8 @@ if ($competencies) {
         // make competencies links if JS disabled
         $compname = $nojs ? '<a href="'.$CFG->wwwroot.'/hierarchy/type/competency/related/save.php?id='.$id.'&amp;add='.$competency->id.'&amp;nojs=1&amp;returnurl='.$returnurl.'&amp;s='.$s.'">'.$competency->fullname.'</a>' : $competency->fullname;
 
-        // If this competency is in the max depth, don't make it expandable
-        if ($competency->depthid == $max_depth) {
+        // If this competency is in the max depth, or there are no children don't make it expandable
+        if ($competency->depthid == $max_depth || !array_key_exists($competency->id, $parentcomps) ) {
             $li_class = '';
             $span_class = '';
         } else {
