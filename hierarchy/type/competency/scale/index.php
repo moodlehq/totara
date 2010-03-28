@@ -53,7 +53,15 @@ if ($scales) {
     foreach($scales as $scale) {
         $line = array();
         $line[] = "<a href=\"$CFG->wwwroot/hierarchy/type/competency/scale/view.php?id={$scale->id}\">".format_string($scale->name)."</a>";
-        $line[] = get_string('no');
+        if (
+                count_records('competency_scale_assignments','scaleid',$scale->id)
+                || count_records('competency', 'scaleid', $scale->id )
+                || count_records_sql("select count(*) from {$CFG->prefix}competency_scale_values sv join {$CFG->prefix}competency_evidence e on sv.id=e.proficiency where sv.scaleid={$scale->id}")
+        ) {
+            $line[] = get_string('yes');
+        } else {
+            $line[] = get_string('no');
+        }
 
         $buttons = array();
         if ($can_edit) {
