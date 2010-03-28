@@ -23,6 +23,9 @@ $nojs = optional_param('nojs', false, PARAM_BOOL);
 $returnurl = optional_param('returnurl', '', PARAM_TEXT);
 $s = optional_param('s', '', PARAM_TEXT);
 
+// string of params needed in non-js url strings
+$urlparams = 'id='.$id.'&amp;frameworkid='.$frameworkid.'&amp;nojs='.$nojs.'&amp;returnurl='.urlencode($returnurl).'&amp;s='.$s;
+
 // Setup page
 admin_externalpage_setup('competencymanage', '', array(), '', $CFG->wwwroot.'/competency/related/add.php');
 
@@ -65,10 +68,37 @@ if(!$parentcomps = get_records_sql("
 
 if($nojs) {
     admin_externalpage_print_header();
+    ?>
+<h2><?php echo get_string('addrelatedcompetencies', $hierarchy->prefix); ?></h2>
+<div id="nojsinstructions">
+    <p>
+        <?php echo get_string('clicktoassign', $hierarchy->prefix); ?>
+    </p>
+</div>
+<?php
+    if($parentid) {
+        echo '<div class="breadcrumb"><h2 class="accesshide " >You are here</h2> <ul>';
+        echo '<li class="first"><a href="'.$CFG->wwwroot.'/hierarchy/type/'.$hierarchy->prefix.'/related/add.php?'.$urlparams.'">'.$framework->fullname.'</a></li>';
+        if($lineage = $hierarchy->get_item_lineage($parentid)) {
+            // correct order for breadcrumbs
+            $items = array_reverse($lineage);
+            $first = true;
+            foreach($items as $item) {
+                if($first) {
+                    $first = false;
+                    continue;
+                }
+                echo '<li> <span class="accesshide " >/&nbsp;</span><span class="arrow sep">&#x25BA;</span>'.
+                '<a href="'.$CFG->wwwroot.'/hierarchy/type/'.$hierarchy->prefix.'/related/add.php?'.$urlparams.'&amp;parentid='.$item->parentid.'">'.$item->fullname.'</a></li>';
+            }
+        }
+        echo '</ul></div>';
+    }
+    echo '<div class="nojsselectcompetencies"><ul>'; // start list of competencies
 }
 
 // If parent id is not supplied, we must be displaying the main page
-if (!$parentid) {
+if (!$parentid && !$nojs) {
 
 ?>
 
@@ -76,13 +106,7 @@ if (!$parentid) {
 
 <h2><?php echo get_string('addrelatedcompetencies', $hierarchy->prefix); ?></h2>
 
-<?php if ($nojs) { ?>
-<div id="nojsinstructions">
-    <p>
-        <?php echo get_string('clicktoassign', $hierarchy->prefix); ?>
-    </p>
-</div>
-<?php } else { ?>
+
 <div id="selectedcompetencies">
     <p>
         <?php echo get_string('dragheretoassign', $hierarchy->prefix) ?>
@@ -92,12 +116,10 @@ if (!$parentid) {
 <p>
     <?php echo get_string('locatecompetency', $hierarchy->prefix) ?>:
 </p>
-<?php } ?>
 
 <ul id="competencies" class="filetree">
 <?php
 }
-
 
 $added = false;
 
@@ -105,7 +127,7 @@ $added = false;
 if ($competencies) {
     foreach ($competencies as $competency) {
         // make competencies links if JS disabled
-        $compname = $nojs ? '<a href="'.$CFG->wwwroot.'/hierarchy/type/competency/related/save.php?id='.$id.'&amp;add='.$competency->id.'&amp;nojs=1&amp;returnurl='.$returnurl.'&amp;s='.$s.'">'.$competency->fullname.'</a>' : $competency->fullname;
+        $compname = $nojs ? '<a href="'.$CFG->wwwroot.'/hierarchy/type/competency/related/save.php?'.$urlparams.'&amp;add='.$competency->id.'">'.$competency->fullname.'</a>' : $competency->fullname;
 
         // If this competency is in the max depth, or there are no children don't make it expandable
         if ($competency->depthid == $max_depth || !array_key_exists($competency->id, $parentcomps) ) {
@@ -117,6 +139,9 @@ if ($competencies) {
         }
 
         echo '<li class="'.$li_class.'" id="competency_list_'.$competency->id.'">';
+        if($nojs && $span_class == 'folder') {
+            echo '[<a href="'.$CFG->wwwroot.'/hierarchy/type/competency/related/add.php?'.$urlparams.'&amp;parentid='.$competency->id.'" title="'.get_string('viewchildren','local').'">+</a>] ';
+        }
         echo '<span id="cmp_'.$competency->id.'" class="'.$span_class.'">'.$compname.'</span>';
 
         if ($span_class == 'folder') {

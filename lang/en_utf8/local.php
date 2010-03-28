@@ -63,6 +63,7 @@ $string['local:deleteorganisationdepth'] = 'Delete an organisational depth';
 $string['local:createorganisationframeworks'] = 'Create an organisational framework';
 $string['local:updateorganisationframeworks'] = 'Update an organisational framework';
 $string['local:deleteorganisationframeworks'] = 'Delete an organisational framework';
+$string['viewchildren'] = 'View Children';
 
 // Local IDP capability strings
 $string['local:addcomment'] = 'Comment on a user\'s IDP';
