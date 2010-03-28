@@ -70,7 +70,7 @@ $rowcount=0;
         echo '<tr class=r'.$rowcount.'>';
             echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/index.php?type=competency&frameworkid={$competency->fid}\">{$competency->framework}</a></td>";
             echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/item/view.php?type=competency&id={$competency->id}\">{$competency->fullname}</a></td>";
-            echo '<td>'.$competency->status.'</td>';
+            echo '<td>'.(isset($competency->status)?$competency->status:'').'</td>';
             echo '<td width="25%">';
             $duedatestr = $competency->duedate == NULL ? '' : date('d/m/Y', $competency->duedate );
             if ($editingon) {
