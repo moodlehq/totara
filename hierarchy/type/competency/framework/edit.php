@@ -76,7 +76,7 @@ if ($frameworkform->is_cancelled()) {
     // Handle scale assignments
     // Get new assignments
     if (isset($frameworknew->scale)) {
-        $scales_new = array_diff($frameworknew->scale, $framework->scale);
+        $scales_new = array_diff(array($frameworknew->scale), $framework->scale);
         foreach ($scales_new as $key) {
             $assignment = new object();
             $assignment->scaleid = $key;
@@ -87,14 +87,12 @@ if ($frameworkform->is_cancelled()) {
                 error('Could not add scale assignment');
             }
         }
-    }
 
-    // Get removed assignments
-    if (isset($frameworknew->scale)) {
-        $scales_removed = array_diff($framework->scale, $frameworknew->scale);
+        // Get removed assignments
+        $scales_removed = array_diff($framework->scale, array($frameworknew->scale));
     }
     else {
-        $scales_removed = array_diff($framework->scale, array());
+        $scales_removed = $framework->scale;
     }
 
     foreach ($scales_removed as $key) {

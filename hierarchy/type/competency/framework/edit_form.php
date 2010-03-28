@@ -54,7 +54,7 @@ class framework_edit_form extends moodleform {
         $mform->setType('description', PARAM_RAW);
 
         if ($scales) {
-            $mform->addElement('select', 'scale', get_string('scale'), $scales, array('multiple' => true));
+            $mform->addElement('select', 'scale', get_string('scale'), $scales);
             $mform->setHelpButton('scale', array('competencyframeworkscale', get_string('scale')), true);
             $mform->addRule('scale', get_string('missingscale', 'competency'), 'required', null, 'client');
         }
