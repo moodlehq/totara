@@ -15,6 +15,11 @@ $id = required_param('id', PARAM_INT);
 // Competencies to add
 $add = required_param('add', PARAM_SEQUENCE);
 
+// Non JS parameters
+$nojs = optional_param('nojs', false, PARAM_BOOL);
+$returnurl = optional_param('returnurl', '', PARAM_TEXT);
+$s = optional_param('s', '', PARAM_TEXT);
+
 // Setup page
 admin_externalpage_setup('competencymanage', '', array(), '', $CFG->wwwroot.'/competency/related/save.php');
 
@@ -68,20 +73,26 @@ foreach ($add as $addition) {
 
     insert_record('competency_relations', $relationship);
 
-    // Return html
-    echo '<tr>';
-    echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/index.php?type={$hierarchy->prefix}&frameworkid={$framework->id}\">{$framework->fullname}</a></td>";
-    echo '<td>'.$depths[$related->depthid]->fullname.'</td>';
-    echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/item/view.php?type={$hierarchy->prefix}&id={$related->id}\">{$related->fullname}</a></td>";
+    if($nojs) {
+        // If JS disabled, redirect back to original page (only if session key matches)
+        $url = ($s == sesskey()) ? $returnurl : $CFG->wwwroot;
+        redirect($url);
+    } else {
+        // Return html
+        echo '<tr>';
+        echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/index.php?type={$hierarchy->prefix}&frameworkid={$framework->id}\">{$framework->fullname}</a></td>";
+        echo '<td>'.$depths[$related->depthid]->fullname.'</td>';
+        echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/item/view.php?type={$hierarchy->prefix}&id={$related->id}\">{$related->fullname}</a></td>";
 
-    if ($editingon) {
-        echo "<td style=\"text-align: center;\">";
+        if ($editingon) {
+            echo "<td style=\"text-align: center;\">";
 
-        echo "<a href=\"{$CFG->wwwroot}/hierarchy/type/competency/related/remove.php?id={$competency->id}&related={$related->id}\" title=\"$str_remove\">".
-             "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_remove\" /></a>";
+            echo "<a href=\"{$CFG->wwwroot}/hierarchy/type/competency/related/remove.php?id={$competency->id}&related={$related->id}\" title=\"$str_remove\">".
+                 "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_remove\" /></a>";
 
-        echo "</td>";
+            echo "</td>";
+        }
+
+        echo '</tr>'.PHP_EOL;
     }
-
-    echo '</tr>'.PHP_EOL;
 }

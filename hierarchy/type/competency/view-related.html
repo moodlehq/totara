@@ -72,9 +72,13 @@ if ($can_edit) {
 </script>
 
 <div class="singlebutton">
-<form action="<?php echo $CFG->wwwroot ?>/hierarchy/type/<?php echo $this->prefix ?>/related/add.php?id=<?php echo $item->id ?>" method="get">
+    <form action="<?php echo $CFG->wwwroot ?>/hierarchy/type/<?php echo $this->prefix ?>/related/add.php?id=<?php echo $item->id ?> method="get">
 <div>
-<input type="submit" id="show-related-dialog" value="<?php echo get_string('addrelatedcompetencies', $this->prefix) ?>" />
+    <input type="submit" id="show-related-dialog" value="<?php echo get_string('addrelatedcompetencies', $this->prefix) ?>" />
+    <input type="hidden" name="id" value="<?php echo $item->id ?>">
+    <input type="hidden" name="nojs" value="1">
+    <input type="hidden" name="returnurl" value="<?php echo urlencode(qualified_me()); ?>">
+    <input type="hidden" name="s" value="<?php echo sesskey(); ?>">
 </div>
 </form>
 </div>

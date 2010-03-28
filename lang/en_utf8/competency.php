@@ -56,6 +56,7 @@ $string['deletedtemplate'] = 'The competency template $a and its data have been 
 $string['depthlevel'] = 'Depth level';
 $string['descriptionview'] = '$a description';
 $string['dragheretoassign'] = 'Drag here to assign:';
+$string['clicktoassign'] = 'Click competency name to assign';
 $string['editcompetency'] = 'Edit competency';
 $string['editdepthlevel'] = 'Edit depth level';
 $string['editframework'] = 'Edit competency framework';

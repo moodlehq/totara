@@ -18,6 +18,11 @@ $parentid = optional_param('parentid', 0, PARAM_INT);
 // Framework id
 $frameworkid = optional_param('frameworkid', 0, PARAM_INT);
 
+// No javascript parameters
+$nojs = optional_param('nojs', false, PARAM_BOOL);
+$returnurl = optional_param('returnurl', '', PARAM_TEXT);
+$s = optional_param('s', '', PARAM_TEXT);
+
 // Setup page
 admin_externalpage_setup('competencymanage', '', array(), '', $CFG->wwwroot.'/competency/related/add.php');
 
@@ -48,6 +53,10 @@ $competencies = $hierarchy->get_items_by_parent($parentid);
 /// Display page
 ///
 
+if($nojs) {
+    admin_externalpage_print_header();
+}
+
 // If parent id is not supplied, we must be displaying the main page
 if (!$parentid) {
 
@@ -57,6 +66,13 @@ if (!$parentid) {
 
 <h2><?php echo get_string('addrelatedcompetencies', $hierarchy->prefix); ?></h2>
 
+<?php if ($nojs) { ?>
+<div id="nojsinstructions">
+    <p>
+        <?php echo get_string('clicktoassign', $hierarchy->prefix); ?>
+    </p>
+</div>
+<?php } else { ?>
 <div id="selectedcompetencies">
     <p>
         <?php echo get_string('dragheretoassign', $hierarchy->prefix) ?>
@@ -66,6 +82,7 @@ if (!$parentid) {
 <p>
     <?php echo get_string('locatecompetency', $hierarchy->prefix) ?>:
 </p>
+<?php } ?>
 
 <ul id="competencies" class="filetree">
 <?php
@@ -77,6 +94,8 @@ $added = false;
 // Loop through competencies
 if ($competencies) {
     foreach ($competencies as $competency) {
+        // make competencies links if JS disabled
+        $compname = $nojs ? '<a href="'.$CFG->wwwroot.'/hierarchy/type/competency/related/save.php?id='.$id.'&amp;add='.$competency->id.'&amp;nojs=1&amp;returnurl='.$returnurl.'&amp;s='.$s.'">'.$competency->fullname.'</a>' : $competency->fullname;
 
         // If this competency is in the max depth, don't make it expandable
         if ($competency->depthid == $max_depth) {
@@ -88,7 +107,7 @@ if ($competencies) {
         }
 
         echo '<li class="'.$li_class.'" id="competency_list_'.$competency->id.'">';
-        echo '<span id="cmp_'.$competency->id.'" class="'.$span_class.'">'.$competency->fullname.'</span>';
+        echo '<span id="cmp_'.$competency->id.'" class="'.$span_class.'">'.$compname.'</span>';
 
         if ($span_class == 'folder') {
             echo '<ul></ul>';
@@ -106,4 +125,9 @@ if (!$added) {
 // If no parent id, close list
 if (!$parentid) {
     echo '</ul></div>';
+}
+
+
+if($nojs) {
+    print_footer();
 }
