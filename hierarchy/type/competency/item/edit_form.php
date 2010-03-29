@@ -19,49 +19,24 @@ class competency_edit_form extends item_edit_form {
             $aggregations[$key] = get_string('aggregationmethod'.$key, 'competency');
         }
 
-        // Get all available scales and their values
-        $scales_raw = get_records_sql("
-            SELECT
-                v.id AS vid,
-                s.id AS sid,
-                s.name AS scale,
-                v.name AS value
-            FROM
-                {$CFG->prefix}{$this->hierarchy->prefix}_scale_values v,
-                {$CFG->prefix}{$this->hierarchy->prefix}_scale_assignments a,
-                {$CFG->prefix}{$this->hierarchy->prefix}_scale s
-            WHERE
+        // Get the name of the framework's scale. (Note this code expects there
+        // to be only one scale per framework, even though the DB structure
+        // allows there to be multiple since we're using a go-between table)
+        $scaledesc = get_field_sql("
+            select s.name
+            from
+                {$CFG->prefix}{$this->hierarchy->prefix}_scale s,
+                {$CFG->prefix}{$this->hierarchy->prefix}_scale_assignments a
+            where
                 a.frameworkid = {$item->frameworkid}
-            AND a.scaleid = s.id
-            AND s.id = v.scaleid
+                and a.scaleid = s.id
         ");
-
-        $scales = array();
-        $values = array();
-        if ($scales_raw) {
-            foreach ($scales_raw as $value) {
-                if (!isset($scales[$value->sid])) {
-                    $scales[$value->sid] = $value->scale;
-                    $values[$value->sid] = array();
-                }
-
-                $values[$value->sid][$value->vid] = $value->value;
-            }
-        }
 
         $mform->addElement('select', 'aggregationmethod', get_string('aggregationmethod', 'competency'), $aggregations);
         $mform->setHelpButton('aggregationmethod', array('competencyaggregationmethod', get_string('aggregationmethod', 'competency')), true);
         $mform->addRule('aggregationmethod', get_string('aggregationmethod', 'competency'), 'required', null);
 
-        if (count($scales)) {
-            $mform->addElement('select', 'scaleid', get_string('scale'), $scales);
-            $mform->setHelpButton('scaleid', array('competencyscale', get_string('scale')), true);
-            $mform->addRule('scaleid', get_string('scale'), 'required', null, 'client');
-            if (count($scales) == 1) {
-                $keys = array_keys($scales);
-                $mform->setDefault('scaleid', $keys[0]);
-                $mform->hardFreeze('scaleid');
-            }
-        }
+        $mform->addElement('static', 'scalename', get_string('scale'), ($scaledesc)?$scaledesc:get_string('none'));
+        $mform->setHelpButton('scalename', array('competencyscale', get_string('scale')), true);
     }
 }
