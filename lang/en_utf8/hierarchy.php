@@ -18,6 +18,7 @@ $string['error:norestorefiles'] = 'No files found to restore from. {$a}';
 $string['pickfileone'] = 'One file found. Would you like to restore the file {$a}?';
 $string['pickfilemultiple'] = 'Pick a file to restore';
 $string['error:restoreerror'] = 'An error occurred during the restore process: {$a}';
+$string['error:nodeletescaleinuse'] = 'You cannot delete a scale that is in use. To delete this scale, it must not be assigned to any framework which contains at least one competency.';
 $string['restoreusers'] = '{$a} Users found to restore.';
 $string['restorenousers'] = 'No Users found to restore.';
 $string['restoreusersanddata'] = 'Restore users and user data';

@@ -24,7 +24,6 @@ if (!$scale = get_record('competency_scale', 'id', $id)) {
     error('Competency scale ID was incorrect');
 }
 
-
 ///
 /// Display page
 ///
@@ -33,6 +32,12 @@ admin_externalpage_print_header();
 
 $returnurl = "{$CFG->wwwroot}/hierarchy/type/competency/scale/index.php";
 $deleteurl = "{$CFG->wwwroot}/hierarchy/type/competency/scale/delete.php?id={$scale->id}&amp;delete=".md5($scale->timemodified)."&amp;sesskey={$USER->sesskey}";
+
+// Can't delete if the scale is in use (assigned to at least one framework
+// which has at least one competency)
+if ( count_records_sql("select count(*) from {$CFG->prefix}competency_scale_assignments sa, {$CFG->prefix}competency c where sa.scaleid={$id} and sa.frameworkid=c.id") ) {
+    print_error('error:nodeletescaleinuse', 'hierarchy', $returnurl);
+}
 
 if (!$delete) {
     $strdelete = get_string('deletecheckscale', 'competency');
