@@ -3210,7 +3210,7 @@ function load_capability_def($component) {
 function get_cached_capabilities($component='moodle') {
     if ($component == 'moodle') {
         $storedcaps = get_records_select('capabilities',
-                        "name LIKE 'moodle/%:%' AND name NOT LIKE 'moodle/local:%");
+                        "name LIKE 'moodle/%:%' AND name NOT LIKE 'moodle/local:%'");
     } else if ($component == 'local') {
         $storedcaps = get_records_select('capabilities',
                         "name LIKE 'moodle/local:%'");
