@@ -57,6 +57,11 @@ class framework_edit_form extends moodleform {
             $mform->addElement('select', 'scale', get_string('scale'), $scales);
             $mform->setHelpButton('scale', array('competencyframeworkscale', get_string('scale')), true);
             $mform->addRule('scale', get_string('missingscale', 'competency'), 'required', null, 'client');
+
+            // Don't allow reassigning the scale, if the framework has at least one competency
+            if ( isset($this->_customdata['frameworkid']) && count_records('competency','frameworkid',$this->_customdata['frameworkid'])){
+                $mform->getElement('scale')->freeze();
+            }
         }
 
         $this->add_action_buttons();

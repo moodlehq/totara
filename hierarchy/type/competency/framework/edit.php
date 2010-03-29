@@ -39,7 +39,7 @@ if ($id == 0) {
 }
 
 // create form
-$frameworkform = new framework_edit_form();
+$frameworkform = new framework_edit_form(null, array('frameworkid'=>$id));
 $frameworkform->set_data($framework);
 
 // cancelled
