@@ -217,6 +217,7 @@ $string['placeholder:finishtime'] = '[finishtime]';
 $string['placeholder:duration'] = '[duration]';
 $string['placeholder:details'] = '[details]';
 $string['placeholder:reminderperiod'] = '[reminderperiod]';
+$string['placeholder:attendeeslink'] = '[attendeeslink]';
 $string['points'] = 'Points';
 $string['pointsplural'] = 'Points';
 $string['previoussessions'] = 'Previous sessions';

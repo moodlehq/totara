@@ -731,7 +731,7 @@ function facetoface_email_substitutions($msg, $facetofacename, $reminderperiod, 
     $msg = str_replace(get_string('placeholder:reminderperiod', 'facetoface'), $reminderperiod,$msg);
 
     // Replace more meta data
-    $msg = str_replace('[attendeeslink]', $CFG->wwwroot.'/mod/facetoface/attendees.php?s='.$session->id, $msg);
+    $msg = str_replace(get_string('placeholder:attendeeslink', 'facetoface'), $CFG->wwwroot.'/mod/facetoface/attendees.php?s='.$session->id, $msg);
 
     // Custom session fields (they look like "session:shortname" in the templates)
     $customfields = facetoface_get_session_customfields();
