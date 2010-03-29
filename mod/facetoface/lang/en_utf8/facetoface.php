@@ -259,7 +259,7 @@ $string['setting:defaultcancellationinstrmngr'] = 'Default cancellation message 
 $string['setting:defaultcancellationinstrmngr_caption'] = 'Cancellation message (managers)';
 $string['setting:defaultcancellationinstrmngrdefault'] = "*** Advice only ****
 
-This is advise that [firstname] [lastname] is no longer signed-up for the following course and listed you as their Team Leader / Manager.
+This is to advise that [firstname] [lastname] is no longer signed-up for the following course and listed you as their Team Leader / Manager.
 
 *** [firstname] [lastname]'s booking cancellation is copied below ****
 ";
@@ -287,7 +287,7 @@ $string['setting:defaultconfirmationinstrmngr'] = 'Default confirmation message 
 $string['setting:defaultconfirmationinstrmngr_caption'] = 'Confirmation message (managers)';
 $string['setting:defaultconfirmationinstrmngrdefault'] = "*** Advice only ****
 
-This is advise that [firstname] [lastname] has been booked for the following course and listed you as their Team Leader / Manager.
+This is to advise that [firstname] [lastname] has been booked for the following course and listed you as their Team Leader / Manager.
 
 If you are not their Team Leader / Manager and believe you have received this email by mistake please reply to this email.  If have concerns about your staff member taking this course please discuss this with them directly.
 
@@ -357,26 +357,40 @@ To re-schedule your booking you need to cancel this booking and then re-book a n
 $string['setting:defaultremindersubject'] = 'Default subject line for reminder emails.';
 $string['setting:defaultremindersubject_caption'] = 'Reminder subject';
 $string['setting:defaultremindersubjectdefault'] = 'Course booking reminder: [facetofacename], [starttime]-[finishtime], [sessiondate]';
-$string['setting:defaultrequestinstrmngrdefault'] = "*** Action required ****
-
-Your staff member [firstname] [lastname] has requested a booking to attend the above course and has also received this email.
-
-To confirm or decline their request, visit the following link:
-[attendeeslink]
-
-If you are not their Team Leader / Manager and believe you have received this email by mistake please reply to this email.
-
-*** [firstname] [lastname]'s email is copied below ****
-";
-$string['setting:defaultrequestmessagedefault'] = 'This is to advise that your manager has been sent your request to be booked to:
+$string['setting:defaultrequestinstrmngrdefault'] = 'This is to advise that [firstname] [lastname] has requested to be booked into the following course, and you are listed as their Team Leader / Manager.
 
 Course:   [facetofacename]
-Location:  [session:location]
-Participant:   [firstname] [lastname]
+Cost:   [cost]
 
-***Please note this is not a course booking confirmation***
+Duration:   [duration]
+Date(s):
+[alldates]
+
+Location:   [session:location]
+Venue:   [session:venue]
+Room:   [session:room]
+
+Please follow the link below to approve the request:
+[attendeeslink]
+
+
+*** [firstname] [lastname]\'s booking request is copied below ****
 ';
-$string['setting:defaultrequestsubjectdefault'] = 'Course booking request for [facetofacename]';
+$string['setting:defaultrequestmessagedefault'] = 'Your request to book into the following course has been sent to your manager:
+
+Participant:   [firstname] [lastname]
+Course:   [facetofacename]
+Cost:   [cost]
+
+Duration:   [duration]
+Date(s):
+[alldates]
+
+Location:   [session:location]
+Venue:   [session:venue]
+Room:   [session:room]
+';
+$string['setting:defaultrequestsubjectdefault'] = 'Course booking request: [facetofacename], [starttime]-[finishtime]';
 $string['setting:defaultvalue'] = 'Default value';
 $string['setting:defaultwaitlistedmessage'] = 'Default wait-listed message sent to users.';
 $string['setting:defaultwaitlistedmessage_caption'] = 'Wait-listed message';
