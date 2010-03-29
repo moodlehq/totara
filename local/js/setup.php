@@ -52,10 +52,10 @@ function setup_lightbox($options = array()) {
  *
  * @param   $elements       array       Single level array of elements
  * @param   $error_string   string      String to display if no elements supplied
- * @param   $max_depth      int         Maximum depthid for the hierarchy framework, or true is single level
+ * @param   $parents        array       Array of IDs of items which have children
  * @return  $html
  */
-function build_treeview($elements, $error_string, $max_depth = true) {
+function build_treeview($elements, $error_string, $parents = array()) {
 
     $html = '';
 
@@ -63,12 +63,6 @@ function build_treeview($elements, $error_string, $max_depth = true) {
 
         $total = count($elements);
         $count = 0;
-        $is_max_depth = false;
-
-        // If this is the max depth
-        if ($max_depth === true || reset($elements)->depthid == $max_depth) {
-            $is_max_depth = true;
-        }
 
         // Loop through elements
         foreach ($elements as $element) {
@@ -84,8 +78,8 @@ function build_treeview($elements, $error_string, $max_depth = true) {
                 $li_class .= ' last';
             }
 
-            // If this isn't the max depth level, assume children
-            if (!$is_max_depth) {
+            // Element has children
+            if (array_key_exists($element->id, $parents)) {
                 $li_class = 'expandable closed';
                 $div_class = 'hitarea closed-hitarea expandable-hitarea';
                 $span_class = 'folder';

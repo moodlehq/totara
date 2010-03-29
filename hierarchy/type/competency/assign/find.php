@@ -30,11 +30,19 @@ if (!$framework = $hierarchy->get_framework($frameworkid)) {
     error('Competency framework could not be found');
 }
 
-// Load max depth
-$max_depth = $hierarchy->get_max_depth();
-
 // Load competencies to display
 $competencies = $hierarchy->get_items_by_parent($parentid);
+
+// Get IDs of all items that are parents
+// (to see if we should link to children)
+if(!$parents = get_records_sql("
+    SELECT DISTINCT parentid AS id
+    FROM {$CFG->prefix}{$hierarchy->prefix}
+    WHERE parentid != 0")) {
+    // default to empty array if none found
+    $parents = array();
+}
+
 ///
 /// Display page
 ///
@@ -63,7 +71,7 @@ if (!$parentid) {
 echo build_treeview(
     $competencies,
     get_string('nocompetenciesinframework', 'competency'),
-    $max_depth
+    $parents
 );
 
 // If no parent id, close list

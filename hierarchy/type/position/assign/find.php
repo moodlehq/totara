@@ -48,15 +48,18 @@ if (!$framework = $hierarchy->get_framework($frameworkid)) {
     error('Hierarchy framework could not be found');
 }
 
-// Load depths
-$depths = $hierarchy->get_depths();
-
-// Get max depth level
-end($depths);
-$max_depth = current($depths)->id;
-
 // Load items to display
 $positions = $hierarchy->get_items_by_parent($parentid);
+
+// Get IDs of all items that are parents
+// (to see if we should link to children)
+if(!$parents = get_records_sql("
+    SELECT DISTINCT parentid AS id
+    FROM {$CFG->prefix}{$hierarchy->prefix}
+    WHERE parentid != 0")) {
+    // default to empty array if none found
+    $parents = array();
+}
 
 
 ///
@@ -87,7 +90,7 @@ if (!$parentid) {
 echo build_treeview(
     $positions,
     get_string('nopositionsinframework', 'position'),
-    $max_depth
+    $parents
 );
 
 // If no parent id, close list

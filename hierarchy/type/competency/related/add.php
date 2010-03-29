@@ -41,13 +41,6 @@ if (!$framework = $hierarchy->get_framework($frameworkid)) {
     error('Competency framework could not be found');
 }
 
-// Load competency depths
-$depths = $hierarchy->get_depths();
-
-// Get max depth level
-end($depths);
-$max_depth = current($depths)->id;
-
 // Load competencies to display
 $competencies = $hierarchy->get_items_by_parent($parentid);
 
@@ -129,8 +122,8 @@ if ($competencies) {
         // make competencies links if JS disabled
         $compname = $nojs ? '<a href="'.$CFG->wwwroot.'/hierarchy/type/competency/related/save.php?'.$urlparams.'&amp;add='.$competency->id.'">'.$competency->fullname.'</a>' : $competency->fullname;
 
-        // If this competency is in the max depth, or there are no children don't make it expandable
-        if ($competency->depthid == $max_depth || !array_key_exists($competency->id, $parentcomps) ) {
+        // If there are no children don't make it expandable
+        if (!array_key_exists($competency->id, $parentcomps)) {
             $li_class = '';
             $span_class = '';
         } else {
