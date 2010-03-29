@@ -58,30 +58,14 @@ if(!$parents = get_records_sql("
 // If parent id is not supplied, we must be displaying the main page
 if (!$parentid) {
 
-?>
-
-<div class="selectcompetencies">
-
-<?php $hierarchy->display_framework_selector('', true); ?>
-
-<h2><?php echo get_string('addcompetenciestoplan', 'idp') ?></h2>
-
-<div class="selected">
-    <p>
-        <?php echo get_string('dragheretoassign', $hierarchy->prefix) ?>
-    </p>
-</div>
-
-<p>
-    <?php echo get_string('locatecompetency', $hierarchy->prefix) ?>:
-</p>
-
-<?php
-}
-
-// If this is the root node
-if (!$parentid) {
-    echo '<ul class="treeview filetree">';
+    echo '<div class="selectcompetencies">'.PHP_EOL;
+    $hierarchy->display_framework_selector('', true);
+    echo '<h2>' . get_string('addcompetenciestoplan', 'idp') . '</h2>'.PHP_EOL;
+    echo '<div class="selected">';
+    echo '<p>' . get_string('dragheretoassign', $hierarchy->prefix).'</p>'.PHP_EOL;
+    echo '</div>'.PHP_EOL;
+    echo '<p>' . get_string('locatecompetency', $hierarchy->prefix).':'.'</p>'.PHP_EOL;
+    echo '<ul class="treeview filetree">'.PHP_EOL;
 }
 
 echo build_treeview(
