@@ -111,6 +111,40 @@ function build_treeview($elements, $error_string, $parents = array()) {
     return $html;
 }
 
+
+function build_nojs_treeview($elements, $error_string, $actionurl, $expandurl, $parents = array()) {
+
+    $html = '';
+
+    if (is_array($elements) && !empty($elements)) {
+
+        // Loop through elements
+        foreach ($elements as $element) {
+
+            $html .= '<li>';
+
+            // Element has children
+            if (array_key_exists($element->id, $parents)) {
+                $html .= '[<a href="'.$expandurl.'&amp;parentid='.$element->id.'">+</a>]';
+            }
+
+            $html .= '<a href="'.$actionurl.'&amp;add='.$element->id.'">';
+            $html .= format_string($element->fullname);
+            $html .= '</a>';
+
+            $html .= '</li>'.PHP_EOL;
+        }
+    }
+    else {
+        $html .= '<li>';
+        $html .= $error_string;
+        $html .= '</li>'.PHP_EOL;
+    }
+
+    return $html;
+}
+
+
 /**
  * Display markup for an error in a hierarchy based treeview and die
  *

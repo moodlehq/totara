@@ -15,6 +15,14 @@ $parentid = optional_param('parentid', 0, PARAM_INT);
 // Framework id
 $frameworkid = optional_param('frameworkid', 0, PARAM_INT);
 
+// No javascript parameters
+$nojs = optional_param('nojs', false, PARAM_BOOL);
+$returnurl = optional_param('returnurl', '', PARAM_TEXT);
+$s = optional_param('s', '', PARAM_TEXT);
+
+// string of params needed in non-js url strings
+$urlparams = 'id='.$id.'&amp;frameworkid='.$frameworkid.'&amp;nojs='.$nojs.'&amp;returnurl='.urlencode($returnurl).'&amp;s='.$s;
+
 // Setup page
 admin_externalpage_setup('competencymanage', '', array(), '', $CFG->wwwroot.'/competency/evidence/add.php');
 
@@ -47,34 +55,36 @@ if(!$parents = get_records_sql("
 /// Display page
 ///
 
-// If parent id is not supplied, we must be displaying the main page
-if (!$parentid) {
+if(!$nojs) {
+    // build Javascript Treeview
 
-?>
+    // If parent id is not supplied, we must be displaying the main page
+    if (!$parentid) {
+        echo '<div class="selectcompetency">'.PHP_EOL;
+        $hierarchy->display_framework_selector('', true);
+        echo '<h2>'.get_string('addnewcompetency', $hierarchy->prefix).'</h2>'.PHP_EOL;
+        echo '<ul class="treeview filetree">'.PHP_EOL;
+    }
 
-<div class="selectcompetency">
+    echo build_treeview(
+        $competencies,
+        get_string('nocompetenciesinframework', 'competency'),
+        $parents
+    );
 
-<?php $hierarchy->display_framework_selector('', true) ?>
+    // If no parent id, close list
+    if (!$parentid) {
+        echo '</ul></div>'.PHP_EOL;
+    }
 
-<h2>
-<?php echo get_string('addnewcompetency', $hierarchy->prefix); ?>
-</h2>
+} else {
+    // none JS version of page
+    echo build_nojs_treeview(
+        $competencies,
+        get_string('nocompetenciesinframework', 'competency'),
+        $CFG->wwwroot.'/hierarchy/type/competency/related/save.php?'.$urlparams,
+        $CFG->wwwroot.'/hierarchy/type/competency/related/add.php?'.$urlparams,
+        $parents
+    );
 
-<?php
-}
-
-// If this is the root node
-if (!$parentid) {
-    echo '<ul class="treeview filetree">';
-}
-
-echo build_treeview(
-    $competencies,
-    get_string('nocompetenciesinframework', 'competency'),
-    $parents
-);
-
-// If no parent id, close list
-if (!$parentid) {
-    echo '</ul></div>';
 }

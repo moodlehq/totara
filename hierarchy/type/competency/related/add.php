@@ -50,9 +50,9 @@ if(!$parentcomps = get_records_sql("
     SELECT DISTINCT parentid AS id
     FROM {$CFG->prefix}{$hierarchy->prefix}
     WHERE parentid != 0")) {
-        // default to empty array if none found
-        $parentcomps = array();
-    }
+    // default to empty array if none found
+    $parentcomps = array();
+}
 
 
 ///
@@ -77,6 +77,7 @@ if($nojs) {
             $items = array_reverse($lineage);
             $first = true;
             foreach($items as $item) {
+                // the first item is the same as the link to the framework, so don't display
                 if($first) {
                     $first = false;
                     continue;
