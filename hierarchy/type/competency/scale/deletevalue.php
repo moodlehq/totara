@@ -2,6 +2,7 @@
 
 require_once('../../../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
+require_once('lib.php');
 
 
 ///
@@ -33,6 +34,12 @@ admin_externalpage_print_header();
 
 $returnurl = "{$CFG->wwwroot}/hierarchy/type/competency/scale/view.php?id={$value->scaleid}";
 $deleteurl = "{$CFG->wwwroot}/hierarchy/type/competency/scale/deletevalue.php?id={$value->id}&amp;delete=".md5($value->timemodified)."&amp;sesskey={$USER->sesskey}";
+
+// Can't delete if the scale is in use (assigned to at least one framework
+// which has at least one competency)
+if ( competency_scale_is_used($value->scaleid) ) {
+    print_error('error:nodeletescalevalueinuse', 'hierarchy', $returnurl);
+}
 
 if (!$delete) {
     $strdelete = get_string('deletecheckscalevalue', 'competency');

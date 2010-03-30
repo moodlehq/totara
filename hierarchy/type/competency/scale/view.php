@@ -2,6 +2,7 @@
 
 require_once('../../../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
+require_once('lib.php');
 
 
 ///
@@ -47,6 +48,13 @@ $str_set = get_string('set', 'competency');
 if ($can_edit) {
     /// Move a value up or down
     if ((!empty($moveup) or !empty($movedown))) {
+
+        // Can't reorder a scale that's in use
+        if ( competency_scale_is_used($scale->id) ) {
+            $returnurl = "{$CFG->wwwroot}/hierarchy/type/competency/scale/view.php?id={$scale->id}";
+            print_error('error:noreorderscaleinuse', 'hierarchy', $returnurl);
+        }
+
         $move = NULL;
         $swap = NULL;
 
