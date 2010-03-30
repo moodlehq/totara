@@ -5,6 +5,7 @@
 
 require_once('../config.php');
 require_once('lib.php');
+require_once($CFG->dirroot.'/local/js/lib/setup.php');
 
 require_login();
 
@@ -63,11 +64,11 @@ elseif ('create' == $action or 'rename' == $action) {
     $stridps = get_string('idps', 'idp');
     $pagetitle = get_string("{$action}planbreadcrumb", 'idp');
 
-    // Stylesheet and javascript for pop-up calendar
-    $CFG->stylesheets[] = $CFG->wwwroot.'/local/js/lib/ui-lightness/jquery-ui-1.7.2.custom.css';
-    require_js(array(
-        $CFG->wwwroot.'/local/js/jquery-1.3.2.min.js',
-        $CFG->wwwroot.'/local/js/lib/ui.datepicker.js'
+    // Stylesheet and javascript
+    local_js(array(
+        MBE_JS_DIALOG,
+        MBE_JS_TREEVIEW,
+        MBE_JS_DATEPICKER
     ));
 
     $PAGE = page_create_object('MITMS', $USER->id);
@@ -141,8 +142,6 @@ elseif ('create' == $action or 'rename' == $action) {
             print '<p><input type="submit" value="'.get_string("{$action}plan", 'idp').'" /></p>';
             print '</form>';
 
-            require_once($CFG->dirroot.'/local/js/setup.php');
-            setup_lightbox(array(MBE_JS_TREEVIEW, MBE_JS_ADVANCED));
             print <<<HEREDOC
 <script type="text/javascript">
 

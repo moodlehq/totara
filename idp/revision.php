@@ -46,14 +46,18 @@ add_to_log(SITEID, 'idp', 'view plan', "revision.php?id=$plan->id", $plan->id);
 // If js enabled, setup custom javascript
 if ($js_enabled) {
 
-    require_once($CFG->dirroot.'/local/js/setup.php');
-    setup_lightbox(array(MBE_JS_TREEVIEW, MBE_JS_ADVANCED));
-    require_js(array(
-        $CFG->wwwroot.'/local/js/lib/ui.datepicker.js',
-        $CFG->wwwroot.'/local/js/idp.assignments.js.php',
-        $CFG->wwwroot.'/local/js/idp.course.js',
+    require_once($CFG->dirroot.'/local/js/lib/setup.php');
+
+    local_js(array(
+        MBE_JS_DIALOG,
+        MBE_JS_TREEVIEW,
+        MBE_JS_DATEPICKER
     ));
-    $CFG->stylesheets[] = $CFG->wwwroot.'/local/js/lib/ui-lightness/jquery-ui-1.7.2.custom.css';
+
+    require_js(array(
+        $CFG->wwwroot.'/local/js/idp.assignments.js.php',
+#        $CFG->wwwroot.'/local/js/idp.course.js',
+    ));
 }
 
 $stridps = get_string('idps', 'idp');

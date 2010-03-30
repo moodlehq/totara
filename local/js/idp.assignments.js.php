@@ -4,7 +4,7 @@
 
 ?>
 // Bind functionality to page on load
-YAHOO.util.Event.onDOMReady(function () {
+$(function() {
 
     ///
     /// Assign competency dialog
@@ -12,7 +12,7 @@ YAHOO.util.Event.onDOMReady(function () {
     (function() {
         var url = '<?php echo $CFG->wwwroot ?>/hierarchy/type/competency/idp/';
 
-        yuiAssignDialog(
+        mitmsAssignDialog(
             'idpcompetency',
             url+'find.php?id='+idp_revision_id,
             url+'save.php?id='+idp_revision_id+'&rowcount='+idp_competency_row_count+'&add='
@@ -25,7 +25,7 @@ YAHOO.util.Event.onDOMReady(function () {
     (function() {
         var url = '<?php echo $CFG->wwwroot ?>/hierarchy/type/competency/idp/';
 
-        yuiAssignDialog(
+        mitmsAssignDialog(
             'idpcompetencytemplate',
             url+'find-template.php?id='+idp_revision_id,
             url+'save-template.php?id='+idp_revision_id+'&rowcount='+idp_competencytemplate_row_count+'&add='
@@ -38,7 +38,7 @@ YAHOO.util.Event.onDOMReady(function () {
     (function() {
         var url = '<?php echo $CFG->wwwroot ?>/hierarchy/type/course/idp/';
 
-        yuiAssignDialog(
+        mitmsAssignDialog(
             'idpcourse',
             url+'add.php?id='+idp_revision_id,
             url+'save.php?id='+idp_revision_id+'&rowcount='+idp_competencytemplate_row_count+'&add='
@@ -51,7 +51,7 @@ YAHOO.util.Event.onDOMReady(function () {
     (function() {
         var url = '<?php echo $CFG->wwwroot ?>/hierarchy/type/competency/idp/';
 
-        yuiAssignDialog(
+        mitmsAssignDialog(
             'idppositioncompetency',
             url+'find-position.php?id='+idp_revision_id,
             url+'save.php?id='+idp_revision_id+'&rowcount='+idp_competency_row_count+'&add='
@@ -64,10 +64,11 @@ YAHOO.util.Event.onDOMReady(function () {
     (function() {
         var url = '<?php echo $CFG->wwwroot ?>/hierarchy/type/competency/idp/';
 
-        yuiAssignDialog(
+        mitmsAssignDialog(
             'idppositioncompetencytemplate',
             url+'find-position-template.php?id='+idp_revision_id,
             url+'save-template.php?id='+idp_revision_id+'&rowcount='+idp_competencytemplate_row_count+'&add='
         );
     })();
+
 });
