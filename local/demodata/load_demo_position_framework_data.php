@@ -2,7 +2,7 @@
 @raise_memory_limit('392M');
 @ini_set('max_execution_time','3000');
 print "Loading data for table 'position_framework'<br>";
-$items = array(array('id' => '1','fullname' => 'General Positions','shortname' => 'General','idnumber' => '','description' => '','isdefault' => '1','sortorder' => '1','timecreated' => '1263434099','timemodified' => '1267833824','usermodified' => '2','visible' => '1','hidecustomfields' => '0','showitemfullname' => '1','showdepthfullname' => '1',),
+$items = array(array('id' => '1','fullname' => 'General Positions','shortname' => 'General','idnumber' => '','description' => '','sortorder' => '1','timecreated' => '1263434099','timemodified' => '1267833824','usermodified' => '2','visible' => '1','hidecustomfields' => '0','showitemfullname' => '1','showdepthfullname' => '1',),
 );
 print "\n";print "Inserting ".count($items)." records<br />\n";
 $i=1;

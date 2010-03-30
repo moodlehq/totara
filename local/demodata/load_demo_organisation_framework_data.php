@@ -2,9 +2,9 @@
 @raise_memory_limit('392M');
 @ini_set('max_execution_time','3000');
 print "Loading data for table 'organisation_framework'<br>";
-$items = array(array('id' => '1','fullname' => 'Regional Offices','shortname' => 'Regions','idnumber' => '','description' => '','isdefault' => '1','sortorder' => '1','visible' => '1','hidecustomfields' => '0','showitemfullname' => '1','showdepthfullname' => '1','timecreated' => '1263434099','timemodified' => '1263434099','usermodified' => '2',),
-array('id' => '2','fullname' => 'National Office','shortname' => 'National','idnumber' => '','description' => '','isdefault' => '0','sortorder' => '2','visible' => '1','hidecustomfields' => '0','showitemfullname' => '1','showdepthfullname' => '1','timecreated' => '1263434099','timemodified' => '1263846072','usermodified' => '72',),
-array('id' => '3','fullname' => 'External Organisations','shortname' => 'External','idnumber' => '','description' => '','isdefault' => '0','sortorder' => '3','visible' => '1','hidecustomfields' => '0','showitemfullname' => '1','showdepthfullname' => '1','timecreated' => '1263434099','timemodified' => '1267685020','usermodified' => '2',),
+$items = array(array('id' => '1','fullname' => 'Regional Offices','shortname' => 'Regions','idnumber' => '','description' => '','sortorder' => '1','visible' => '1','hidecustomfields' => '0','showitemfullname' => '1','showdepthfullname' => '1','timecreated' => '1263434099','timemodified' => '1263434099','usermodified' => '2',),
+array('id' => '2','fullname' => 'National Office','shortname' => 'National','idnumber' => '','description' => '','sortorder' => '2','visible' => '1','hidecustomfields' => '0','showitemfullname' => '1','showdepthfullname' => '1','timecreated' => '1263434099','timemodified' => '1263846072','usermodified' => '72',),
+array('id' => '3','fullname' => 'External Organisations','shortname' => 'External','idnumber' => '','description' => '','sortorder' => '3','visible' => '1','hidecustomfields' => '0','showitemfullname' => '1','showdepthfullname' => '1','timecreated' => '1263434099','timemodified' => '1267685020','usermodified' => '2',),
 );
 print "\n";print "Inserting ".count($items)." records<br />\n";
 $i=1;

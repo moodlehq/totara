@@ -58,14 +58,10 @@ class hierarchy {
      * @return boolean success
      */
     function get_framework($id = 0, $noframeworkok = false) {
-        // If no framework id supplied, use default
+        // If no framework id supplied, use first in sortorder
         if ($id == 0) {
-            if (!$framework = get_record($this->prefix.'_framework', 'isdefault', 1)) {
-                // No default framework exists
-                // If frameworks exist, set one to be the default
-
                 // Get frameworks
-                $frameworks = get_records_select($this->prefix.'_framework', '1 = 1 ORDER BY id ASC');
+                $frameworks = get_records_select($this->prefix.'_framework', '1 = 1 ORDER BY sortorder ASC');
 
                 if (!$frameworks) {
                     if ($noframeworkok) {
@@ -79,9 +75,6 @@ class hierarchy {
                 // Get first
                 $framework = array_shift($frameworks);
 
-                $framework->isdefault = 1;
-                update_record($this->prefix.'_framework', $framework);
-            }
         } else {
             if (!$framework = get_record($this->prefix.'_framework', 'id', $id)) {
                 error('The '.$this->prefix.' framework does not exist');

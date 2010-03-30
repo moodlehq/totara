@@ -596,29 +596,6 @@ function get_matches($xmlinfo, $matchfields, $tablename, $where=null) {
 }
 
 /**
- * Given an isdefault setting (1 or 0), checks to see if any other rows are
- * already set as the default. If so, this new row is not allowed to be default
- * too.
- *
- * @param string $table Name of database table to check, without moodle prefix
- * @param boolean $isdefault Current setting for this row from backup file
- * @return boolean New value for the specified row, taking into account existing
- *                 values in db.
-**/
-function getdefault($table, $isdefault) {
-    if($isdefault) {
-        if(count_records($table,'isdefault',1)) {
-            return 0;
-        } else {
-            return 1;
-        }
-    }
-    else {
-        return 0;
-    }
-}
-
-/**
  * Given a table and a sortorder ID, returns the sortorder to use for a new
  * record. This is either the next available ID or the current one if unused
  *

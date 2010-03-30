@@ -21,7 +21,6 @@ function position_restore_framework($fwinfo, $options, $backup_unique_code) {
     $framework->shortname = backup_todb($fwinfo['#']['SHORTNAME']['0']['#']);
     $framework->idnumber = backup_todb($fwinfo['#']['IDNUMBER']['0']['#']);
     $framework->description = backup_todb($fwinfo['#']['DESCRIPTION']['0']['#']);
-    $framework->isdefault = backup_todb($fwinfo['#']['ISDEFAULT']['0']['#']);
     $framework->sortorder = backup_todb($fwinfo['#']['SORTORDER']['0']['#']);
     $framework->timecreated = backup_todb($fwinfo['#']['TIMECREATED']['0']['#']);
     $framework->timemodified = backup_todb($fwinfo['#']['TIMEMODIFIED']['0']['#']);
@@ -33,9 +32,6 @@ function position_restore_framework($fwinfo, $options, $backup_unique_code) {
 
     // rewrite the framework sort order
     $framework->sortorder = get_sortorder('position_framework',$framework->sortorder);
-
-    // prevent multiple default frameworks
-    $framework->isdefault = getdefault('position_framework', $framework->isdefault);
 
     // TODO may want to:
     // - append number to shortname

@@ -27,14 +27,6 @@ if ($id == 0) {
     $framework->id = 0;
     $framework->visible = 1;
 
-    // Only set to default if no other default
-    // framework for this type exists
-    if (!count_records($type.'_framework', 'isdefault', 1)) {
-        $framework->isdefault = 1;
-    } else {
-        $framework->isdefault = 0;
-    }
-
     $framework->sortorder = get_field($type.'_framework', 'MAX(sortorder) + 1', '', '');
     if (!$framework->sortorder) {
         $framework->sortorder = 1;

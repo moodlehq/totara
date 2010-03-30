@@ -17,7 +17,6 @@ class framework_edit_form extends moodleform {
         $mform->addElement('hidden', 'id');
         $mform->addElement('hidden', 'visible');
         $mform->addElement('hidden', 'sortorder');
-        $mform->addElement('hidden', 'isdefault');
         $mform->addElement('hidden', 'hidecustomfields');
         $mform->addElement('hidden', 'showitemfullname');
         $mform->addElement('hidden', 'showdepthfullname');

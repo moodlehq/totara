@@ -42,7 +42,6 @@ function competency_backup_framework($bf, $fwid, $options) {
     fwrite($bf, full_tag('SHORTNAME', 5, false, $framework->shortname));
     fwrite($bf, full_tag('IDNUMBER', 5, false, $framework->idnumber));
     fwrite($bf, full_tag('DESCRIPTION', 5, false, $framework->description));
-    fwrite($bf, full_tag('ISDEFAULT', 5, false, $framework->isdefault));
     fwrite($bf, full_tag('SORTORDER', 5, false, $framework->sortorder));
     fwrite($bf, full_tag('TIMECREATED', 5, false, $framework->timecreated));
     fwrite($bf, full_tag('TIMEMODIFIED', 5, false, $framework->timemodified));

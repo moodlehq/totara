@@ -1285,6 +1285,21 @@ function xmldb_local_upgrade($oldversion) {
         }
     }
 
+    if ($result && $oldversion < 2010033000) {
+    // increase space for restriction data
+        $table = new XMLDBTable('competency_framework');
+        $field = new XMLDBField('isdefault');
+        $result = $result && drop_field($table, $field);
+
+        $table = new XMLDBTable('organisation_framework');
+        $field = new XMLDBField('isdefault');
+        $result = $result && drop_field($table, $field);
+
+        $table = new XMLDBTable('position_framework');
+        $field = new XMLDBField('isdefault');
+        $result = $result && drop_field($table, $field);
+    }
+
     return $result;
 
 }

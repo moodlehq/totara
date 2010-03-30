@@ -10,7 +10,6 @@ if ($id == 0) {
     $framework = new object();
     $framework->id = 0;
     $framework->visible = 1;
-    $framework->isdefault = 0;
     $framework->sortorder = get_field($type.'_framework', 'MAX(sortorder) + 1', '', '');
     $framework->hidecustomfields = 0;
     $framework->showitemfullname = 0;
