@@ -19,6 +19,13 @@ $parentid = optional_param('parentid', 0, PARAM_INT);
 // Framework id
 $frameworkid = optional_param('frameworkid', 0, PARAM_INT);
 
+// No javascript parameters
+$nojs = optional_param('nojs', false, PARAM_BOOL);
+$returnurl = optional_param('returnurl', '', PARAM_TEXT);
+$s = optional_param('s', '', PARAM_TEXT);
+
+// string of params needed in non-js url strings
+$urlparams = 'id='.$revisionid.'&amp;frameworkid='.$frameworkid.'&amp;nojs='.$nojs.'&amp;returnurl='.urlencode($returnurl).'&amp;s='.$s;
 
 ///
 /// Permissions checks
@@ -55,26 +62,96 @@ if(!$parents = get_records_sql("
 /// Display page
 ///
 
-// If parent id is not supplied, we must be displaying the main page
-if (!$parentid) {
+if(!$nojs) {
+    // build Javascript Treeview
 
-    echo '<div class="selectcompetencies">'.PHP_EOL;
-    $hierarchy->display_framework_selector('', true);
-    echo '<h2>' . get_string('addcompetenciestoplan', 'idp') . '</h2>'.PHP_EOL;
-    echo '<div class="selected">';
-    echo '<p>' . get_string('dragheretoassign', $hierarchy->prefix).'</p>'.PHP_EOL;
-    echo '</div>'.PHP_EOL;
-    echo '<p>' . get_string('locatecompetency', $hierarchy->prefix).':'.'</p>'.PHP_EOL;
-    echo '<ul class="treeview filetree">'.PHP_EOL;
+    // If parent id is not supplied, we must be displaying the main page
+    if (!$parentid) {
+
+        echo '<div class="selectcompetencies">'.PHP_EOL;
+        $hierarchy->display_framework_selector('', true);
+        echo '<h2>' . get_string('addcompetenciestoplan', 'idp') . '</h2>'.PHP_EOL;
+        echo '<div class="selected">';
+        echo '<p>' . get_string('dragheretoassign', $hierarchy->prefix).'</p>'.PHP_EOL;
+        echo '</div>'.PHP_EOL;
+        echo '<p>' . get_string('locatecompetency', $hierarchy->prefix).':'.'</p>'.PHP_EOL;
+        echo '<ul class="treeview filetree">'.PHP_EOL;
+    }
+
+    echo build_treeview(
+        $competencies,
+        get_string('nocompetenciesinframework', 'competency'),
+        $parents
+    );
+
+    // If no parent id, close div
+    if (!$parentid) {
+        echo '</ul></div>';
+    }
+} else {
+    // none JS version of page
+    admin_externalpage_print_header();
+    echo '<h2>'.get_string('addcompetenciestoplan', 'idp').'</h2>';
+
+    echo '<p><a href="'.$returnurl.'">'.get_string('cancelwithoutassigning','hierarchy').'</a></p>';
+
+    if(empty($frameworkid) || $frameworkid == 0) {
+
+        echo build_nojs_frameworkpicker(
+            $hierarchy,
+            $CFG->wwwroot.'/hierarchy/type/competency/idp/find.php',
+            array(
+                'returnurl' => $returnurl,
+                's' => $s,
+                'nojs' => 1,
+                'id' => $revisionid,
+            )
+        );
+
+    } else {
+
+        ?>
+<div id="nojsinstructions">
+<?php
+        echo build_nojs_breadcrumbs($hierarchy,
+            $parentid,
+            $CFG->wwwroot.'/hierarchy/type/competency/idp/find.php',
+            array(
+                'id' => $revisionid,
+                'returnurl' => $returnurl,
+                's' => $s,
+                'nojs' => $nojs,
+                'frameworkid' => $frameworkid,
+            )
+        );
+
+?>
+<p>
+<?php echo  get_string('clicktoassign', $hierarchy->prefix) ?>
+</p>
+</div>
+<div class="nojsselect">
+<?php
+         echo build_nojs_treeview(
+            $competencies,
+            get_string('nocompetenciesinframework', 'competency'),
+            $CFG->wwwroot.'/hierarchy/type/competency/idp/save.php',
+            array(
+                'rowcount' => 0,
+                's' => $s,
+                'returnurl' => $returnurl,
+                'nojs' => 1,
+                'frameworkid' => $frameworkid,
+                'id' => $revisionid,
+            ),
+            $CFG->wwwroot.'/hierarchy/type/competency/idp/find.php?'.$urlparams,
+            $parents
+        );
+
+?>
+</div>
+<?php
+    }
+    print_footer();
 }
 
-echo build_treeview(
-    $competencies,
-    get_string('nocompetenciesinframework', 'competency'),
-    $parents
-);
-
-// If no parent id, close div
-if (!$parentid) {
-    echo '</ul></div>';
-}

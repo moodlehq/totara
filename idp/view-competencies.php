@@ -110,7 +110,7 @@ $rowcount=0;
                 <div class="singlebutton">
                 <input type="submit" id="show-idpcompetency-dialog" value="<?php echo get_string('addfromframeworks', 'idp') ?>" />
                 <?php
-                echo '<noscript><a href="'.$CFG->wwwroot.'/hierarchy/type/competency/idp/find.php?id='.$competency->id .
+                echo '<noscript><a href="'.$CFG->wwwroot.'/hierarchy/type/competency/idp/find.php?id='.$revision->id .
                     '&amp;nojs=1&amp;returnurl='.qualified_me().'&amp;s='.sesskey().'">'.get_string('addfromframeworks','idp').'</a></noscript>';
                 ?>
     <?php

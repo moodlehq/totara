@@ -106,39 +106,116 @@ function build_treeview($elements, $error_string, $parents = array()) {
     return $html;
 }
 
-
-function build_nojs_treeview($elements, $error_string, $actionurl, $expandurl, $parents = array()) {
-
-    $html = '';
+/*
+ * Create a none javascript version of treeview
+ *
+ * @param array $elements Array of items to display
+ * @param string $error_string String to print if something goes wrong
+ * @param string $actionurl URL to go to to assign an item
+ * @param array $actionparams Array of url parameters to include when going to $actionurl
+ * @param string $expandurl URL to go to to expand an item to view its children
+ * @param array $parents Array of IDs of items that are parents. Used to decide if link to children
+ *                       should be shown
+ * @return string HTML code displaying the treeview based on input params
+ *
+ */
+function build_nojs_treeview($elements, $error_string, $actionurl, $actionparams, $expandurl, $parents = array()) {
+    $html = '<table>';
 
     if (is_array($elements) && !empty($elements)) {
 
         // Loop through elements
         foreach ($elements as $element) {
-
-            $html .= '<li>';
+            $params = $actionparams + array('add' => $element->id);
+            $html .= '<tr>';
+            $html .= '<td>';
+            $html .= print_single_button($actionurl, $params, get_string('assign','hierarchy'), 'get', '_self', true);
+            $html .= '</td><td>';
 
             // Element has children
             if (array_key_exists($element->id, $parents)) {
-                $html .= '[<a href="'.$expandurl.'&amp;parentid='.$element->id.'">+</a>]';
+                $html .= '<a href="'.$expandurl.'&amp;parentid='.$element->id.'">';
+                $html .= format_string($element->fullname);
+                if(!empty($element->idnumber)) $html .= ' - '.$element->idnumber;
+                $html .= '</a>';
+            } else {
+                $html .= format_string($element->fullname);
+                if(!empty($element->idnumber)) $html .= ' - '.$element->idnumber;
             }
 
-            $html .= '<a href="'.$actionurl.'&amp;add='.$element->id.'">';
-            $html .= format_string($element->fullname);
-            $html .= '</a>';
-
-            $html .= '</li>'.PHP_EOL;
+            $html .= '</td></tr>'.PHP_EOL;
         }
     }
     else {
-        $html .= '<li>';
+        $html .= '<tr><td>';
         $html .= $error_string;
-        $html .= '</li>'.PHP_EOL;
+        $html .= '</td></tr>'.PHP_EOL;
     }
-
+    $html .= '</table>';
     return $html;
 }
 
+/*
+ * Create a none js breadcrumb trail, indicating the current position in the framework
+ * hierarchy and allowing the user to navigate between levels
+ *
+ * @param object $hierarchy Hierarchy to generate breadcrumbs for
+ * @param integer $parentid Current items parent ID, used to determine what to show
+ * @param string $url URL to assign to the breadcrumbs links
+ * @param array $urlparams Array of url parameters to pass along with URL
+ * @return string HTML to print the breadcrumbs trail
+ *
+ */
+function build_nojs_breadcrumbs($hierarchy, $parentid, $url, $urlparams) {
+
+    $murl = new moodle_url($url, $urlparams);
+    $nofwurl = $murl->out(false, array('frameworkid' => 0));
+
+    $html = '<div class="breadcrumb"><h2 class="accesshide " >You are here</h2> <ul>';
+    $html .= '<li class="first"><a href="'.$nofwurl.'">'.
+        get_string('allframeworks','hierarchy').'</a></li>';
+    if($parentid) {
+        if($lineage = $hierarchy->get_item_lineage($parentid)) {
+            // correct order for breadcrumbs
+            $items = array_reverse($lineage);
+            foreach($items as $item) {
+                $itemurl = $murl->out(false, array('parentid'=>$item->parentid));
+                $html .= '<li> <span class="accesshide " >/&nbsp;</span>';
+                $html .= '<span class="arrow sep">&#x25BA;</span>';
+                $html .= '<a href="'.$itemurl.'">'.$item->fullname.'</a></li>';
+            }
+        }
+    }
+    $html .= '</ul></div>';
+    return $html;
+}
+
+/*
+ * Create a none javascript framework picker page, allowing the user to select which
+ * framework to use to assign an item
+ *
+ * @param object $hierarchy Hierarchy to generate picker for
+ * @param string $url URL to take the user to when they click a framework link
+ * @params array $urlparams array of url parameters to pass along with URL
+ * @return string HTML to print the framework picker list
+ *
+ */
+function build_nojs_frameworkpicker($hierarchy, $url, $urlparams) {
+    $murl = new moodle_url($url, $urlparams);
+    if($fws = get_records($hierarchy->prefix.'_framework')) {
+        echo '<div id="nojsinstructions"><p>'.PHP_EOL;
+        echo get_string('pickaframework','hierarchy');
+        echo '</p></div>'.PHP_EOL;
+        echo '<div class="nojsselect"><ul>'.PHP_EOL;
+        foreach ($fws as $fw) {
+            $fullurl = $murl->out(false, array('frameworkid' => $fw->id));
+            echo '<li><a href="'.$fullurl.'">'.$fw->fullname.'</a></li>'.PHP_EOL;
+        }
+        echo '</ul></div>'.PHP_EOL;
+    } else {
+        error('noframeworks',$hierarchy->prefix);
+    }
+}
 
 /**
  * Display markup for an error in a hierarchy based treeview and die

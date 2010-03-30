@@ -19,6 +19,11 @@ $rowcount = required_param('rowcount', PARAM_SEQUENCE);
 // Competencies to add
 $add = required_param('add', PARAM_SEQUENCE);
 
+// No javascript parameters
+$nojs = optional_param('nojs', false, PARAM_BOOL);
+$returnurl = optional_param('returnurl', '', PARAM_TEXT);
+$s = optional_param('s', '', PARAM_TEXT);
+
 // Setup page
 admin_externalpage_setup('competencymanage', '', array(), '', $CFG->wwwroot.'/competency/idp/save.php');
 
@@ -67,26 +72,35 @@ foreach ($add as $addition) {
 
     insert_record('idp_revision_competency', $idpcompetency);
 
-    // Return html
-    echo '<tr class=r'.$rowcount.'>';
-    echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/framework/index.php?type={$hierarchy->prefix}&id={$framework->id}\">{$framework->fullname}</a></td>";
-    echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/item/view.php?type={$hierarchy->prefix}&id={$competency->id}\">{$competency->fullname}</a></td>";
-    echo "<td></td>";
-    echo '<td width="25%"><input size="10" maxlength="10" type="text" name="compduedate['.$competency->id.']" id="compduedate'.$competency->id.'"/></td>';
+    if($nojs) {
+        // if javascript disabled redirect back to original page (if sesskey matches)
+        $url = ($s == sesskey()) ? $returnurl : $CFG->wwwroot;
+        redirect($url);
 
-//    if ($editingon) {
-        echo "<td style=\"text-align: center;\">";
+    } else {
 
-        echo "<a href=\"{$CFG->wwwroot}/hierarchy/type/competency/idp/remove.php?id={$competency->id}&revision={$revisionid}\" title=\"$str_remove\">".
-             "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_remove\" /></a>";
+        // Return html
+        echo '<tr class=r'.$rowcount.'>';
+        echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/framework/index.php?type={$hierarchy->prefix}&id={$framework->id}\">{$framework->fullname}</a></td>";
+        echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/item/view.php?type={$hierarchy->prefix}&id={$competency->id}\">{$competency->fullname}</a></td>";
+        echo "<td></td>";
+        echo '<td width="25%"><input size="10" maxlength="10" type="text" name="compduedate['.$competency->id.']" id="compduedate'.$competency->id.'"/></td>';
 
-        echo "</td>";
-//    }
+    //    if ($editingon) {
+            echo "<td style=\"text-align: center;\">";
 
-    echo '</tr>';
-    echo '<script type="text/javascript"> $(function() { $(\'[id^=compduedate]\').datepicker( ';
-    echo '{ dateFormat: \'dd/mm/yy\', showOn: \'button\', buttonImage: \'../local/js/images/calendar.gif\',';
-    echo 'buttonImageOnly: true } ); }); </script>'.PHP_EOL;
-    $rowcount = ($rowcount + 1) % 2;
+            echo "<a href=\"{$CFG->wwwroot}/hierarchy/type/competency/idp/remove.php?id={$competency->id}&revision={$revisionid}\" title=\"$str_remove\">".
+                 "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_remove\" /></a>";
+
+            echo "</td>";
+    //    }
+
+        echo '</tr>';
+        echo '<script type="text/javascript"> $(function() { $(\'[id^=compduedate]\').datepicker( ';
+        echo '{ dateFormat: \'dd/mm/yy\', showOn: \'button\', buttonImage: \'../local/js/images/calendar.gif\',';
+        echo 'buttonImageOnly: true } ); }); </script>'.PHP_EOL;
+        $rowcount = ($rowcount + 1) % 2;
+    }
+    add_to_log(SITEID, 'idp', 'add IDP competencies', "revision.php?id={$plan->id}", $plan->id);
+
 }
-add_to_log(SITEID, 'idp', 'add IDP competencies', "revision.php?id={$plan->id}", $plan->id);
