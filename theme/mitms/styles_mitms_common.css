@@ -221,30 +221,76 @@ table#list-assignedcompetencytemplates td[colspan] {
 /** Dialogs **/
 /*****************************************************************************/
 
-div.yui-dialog div.yui-panel {
+div.mitms-dialog {
     border: 5px solid #666;
+    background: none;
     background-color: #fff;
     padding: 10px 10px 5px;
 }
 
-div.yui-dialog div.yui-panel .bd {
-    padding-bottom: 10px;
-    border-bottom: 1px solid #ccc;
-    margin-bottom: 5px;
-    overflow: auto;
+div.mitms-dialog div.ui-widget-content,
+div.mitms-dialog div.ui-widget-header {
+    background: none;
+    background-color: #fff;
 }
 
-div.yui-dialog div.yui-panel a.container-close {
+div.mitms-dialog div.ui-widget-header .ui-state-hover {
+    border-color: transparent;
+    background: none;
+}
+
+div.mitms-dialog div.ui-widget-header {
+    position: relative;
+    float: right;
+    top: 322px;
+    margin: 0;
+    padding: 0;
+    border: none;
+}
+
+div.mitms-dialog div.ui-dialog-titlebar a.ui-dialog-titlebar-close span {
+    position: relative;
     float: right;
     width: 66px;
     height: 22px;
     background-image: url(closelabel.gif);
+    background-position: 0 0;
+    border: none;
+    margin: 0;
+    padding: 0;
+    display: block;
 }
 
-div.yui-dialog div.yui-panel .bd h2 {
+div.mitms-dialog div.ui-dialog-buttonpane {
+    position: relative;
+    float: left;
+    top: -25px;
+    background: none;
+    border: none;
+    margin: 0;
+    padding: 0;
+}
+
+div.mitms-dialog div.ui-dialog-buttonpane button {
+    margin: 0;
+}
+
+div.mitms-dialog div.ui-dialog-content {
+    padding: 0 0 10px;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 5px;
+    overflow: hidden;
+    font-size: 0.9em;
+    position: relative;
+    height: 300px;
+    top: -25px;
+}
+
+div.mitms-dialog div.ui-dialog-content h2 {
     border-bottom: 1px solid #CACACA;
     font-size: 1em;
     margin: 0 0 10px;
+    padding-top: 2px;
     padding-bottom: 5px;
     text-align: left;
     font-weight: bold;
@@ -252,102 +298,79 @@ div.yui-dialog div.yui-panel .bd h2 {
     color: #002C3F;
 }
 
-div.yui-dialog div.yui-panel .ft {
-    float: left;
+div.mitms-dialog div.ui-dialog-content p {
+    margin: 0;
+    padding: 0;
 }
 
-div.yui-dialog div.yui-panel ul.treeview {
-    height: 170px;
+div.mitms-dialog ul.treeview {
+    margin-top: 10px;
+    height: 245px;
+    overflow: auto;
 }
 
-div.yui-dialog div.yui-panel ul.treeview li {
+div.mitms-dialog ul.treeview li {
     font-size: 0.8em;
 }
 
-div.yui-dialog div.yui-panel ul.treeview li li {
+div.mitms-dialog ul.treeview li li {
     font-size: 1em;
 }
 
-div.yui-dialog div.yui-panel ul.treeview li span {
+div.mitms-dialog ul.treeview li span {
     padding-left: 0.25em;
 }
 
-div.yui-dialog div.yui-panel ul.treeview li span.folder {
+div.mitms-dialog ul.treeview li span.folder {
     padding-left: 1.75em;
 }
 
-div.yui-dialog div.yui-panel ul.treeview li span.clickable {
+div.mitms-dialog ul.treeview li span.clickable {
     cursor: pointer;
 }
 
-div.yui-dialog div.yui-panel ul.treeview li span.clickable:hover {
+div.mitms-dialog ul.treeview li span.clickable:hover {
     color: #f00;
 }
 
-div.yui-dialog div.yui-panel ul.treeview li span.ui-draggable {
+div.mitms-dialog ul.treeview li span.ui-draggable {
     cursor: pointer;
 }
 
-div.yui-dialog div.yui-panel ul.treeview li span.ui-draggable:hover {
+div.mitms-dialog ul.treeview li span.ui-draggable:hover {
     color: #f00;
 }
 
-div.mask {
-    background-color: #666;
-	filter:alpha(opacity=50);
-	-moz-opacity:0.5;
-	-khtml-opacity: 0.5;
-	opacity: 0.5;
-}
-
-div.yui-dialog div.yui-isloading {
+div.mitms-dialog div.yui-isloading {
     background-image: url(loading_small.gif);
-    background-position: 698px 10px;
+    background-position: 690px 0;
     background-repeat: no-repeat;
 }
 
-div.yui-dialog div.yui-isloading .bd {
+div.mitms-dialog div.yui-isloading .bd {
     padding-bottom: 22px;
 }
 
-div.yui-dialog .simpleframeworkpicker,
-div.yui-dialog #framework-picker {
+div.mitms-dialog .simpleframeworkpicker,
+div.mitms-dialog #framework-picker {
     float: right;
 }
 
-div.yui-dialog h2 {
-    padding-top: 2px;
-}
-
-.selectcompetencies ul.treeview {
-    width: 65%;
-    overflow: auto;
-}
-
-#coursecompetency .selectcompetencies ul.treeview {
-    width: auto;
-}
-
-.selectcompetencies #selectedcompetencies,
-.selectcourses #selectedcourses,
-div.yui-dialog .selected {
+div.mitms-dialog .selected {
     float: right;
-    width: 30%;
+    width: 200px;
     border-left: 1px solid #ccc;
-    height: 200px;
+    height: 272px;
     overflow: auto;
     padding: 0 10px;
+    margin-left: 10px;
 }
 
-.selectcompetencies #selectedcompetencies p,
-.selectcourses #selectedcourses p,
-div.yui-dialog .selected p {
+div.mitms-dialog .selected p {
     margin-top: 0;
 }
 
-.selectcompetencies #selectedcompetencies span,
-.selectcourses #selectedcourses span,
-div.yui-dialog .selected span {
+div.mitms-dialog .selected span {
     display: block;
     font-size: 0.8em;
     margin-top: 1em;
@@ -374,7 +397,7 @@ table.centerblock th.status, table.centerblock td.status {
   width: 85px;
 }
 
-table.centerblock th.enroldate, table.centerblock td.enroldate, 
+table.centerblock th.enroldate, table.centerblock td.enroldate,
 table.centerblock th.startdate, table.centerblock td.startdate,
 table.centerblock th.completeddate, table.centerblock td.completeddate {
   width: 65px;

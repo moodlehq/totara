@@ -3,47 +3,42 @@
 /**
  * Constants for defining JS to load
  */
-define('MBE_JS_TREEVIEW',       1);
-define('MBE_JS_ADVANCED',       2);
+define('MBE_JS_DIALOG',         1);
+define('MBE_JS_TREEVIEW',       2);
+define('MBE_JS_DATEPICKER',     3);
 
 /**
  * Load appropriate JS and CSS files for lightbox
  *
  * @param $options array Array of option constants
  */
-function setup_lightbox($options = array()) {
+function local_js($options = array()) {
     global $CFG;
 
     // Include required javascript libraries
     require_js(array(
-        'yui_yahoo',
-        'yui_dom',
-        'yui_event',
-        'yui_element',
-        'yui_animation',
-        'yui_connection',
-        'yui_container',
-        'yui_json',
-        $CFG->wwwroot.'/local/js/jquery-1.3.2.min.js',
-        $CFG->wwwroot.'/local/js/dialog.js',
+        $CFG->wwwroot.'/local/js/lib/jquery-1.3.2.min.js',
     ));
+
+    $CFG->stylesheets[] = $CFG->wwwroot.'/local/js/lib/ui-lightness/jquery-ui-1.7.2.custom.css';
+
+    // If dialog
+    if (in_array(MBE_JS_DIALOG, $options)) {
+
+        require_js(array(
+            $CFG->wwwroot.'/local/js/lib/jquery-ui-1.7.2.custom.min.js',
+            $CFG->wwwroot.'/local/js/lib/dialog.js',
+        ));
+    }
 
     // If treeview enabled
     if (in_array(MBE_JS_TREEVIEW, $options)) {
 
-        $CFG->stylesheets[] = $CFG->wwwroot.'/local/js/jquery.treeview.css';
-
         require_js(array(
-            $CFG->wwwroot.'/local/js/jquery.treeview.min.js',
+            $CFG->wwwroot.'/local/js/lib/jquery.treeview.min.js',
         ));
-    }
 
-    // If advanced enabled
-    if (in_array(MBE_JS_ADVANCED, $options)) {
-
-        require_js(array(
-            $CFG->wwwroot.'/local/js/jquery-ui-1.7.2.custom.min.js',
-        ));
+        $CFG->stylesheets[] = $CFG->wwwroot.'/local/js/lib/jquery.treeview.css';
     }
 }
 

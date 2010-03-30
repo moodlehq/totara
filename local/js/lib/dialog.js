@@ -1,10 +1,8 @@
 // Setup
-YAHOO.namespace('dialog');
-YAHOO.namespace('dialogSetupFunc');
-
+var mitmsDialogs = {};
 
 // Dialog object
-function yuiDialog(title, buttonid, config, default_url, handler) {
+function mitmsDialog(title, buttonid, config, default_url, handler) {
 
     /**
      * ID of dialog
@@ -17,14 +15,14 @@ function yuiDialog(title, buttonid, config, default_url, handler) {
     this.buttonid = buttonid;
 
     /**
-     * YUI Dialog widget instance
+     * Dialog widget instance
      */
     this.dialog;
 
     /**
      * Default URL
      */
-    this.default_url;
+    this.default_url = default_url;
 
     /**
      * Currently loaded URL
@@ -46,29 +44,24 @@ function yuiDialog(title, buttonid, config, default_url, handler) {
      * @return  void
      */
     this.setup = function() {
-        // Get form action
-        if (default_url) {
-            this.default_url = default_url;
-        } else {
-            this.default_url = $('#'+this.buttonid).closest('form').attr('action');
-        }
 
-        // Default config
         var default_config = {
-            x : 205,
-            y : 300,
-            width : "705px",
-            effect : {effect: YAHOO.widget.ContainerEffect.FADE, duration: 0.5},
-            visible : false,
-            draggable : false,
-            modal : true,
-            underlay : 'shadow',
-            zIndex : 1500
+            autoOpen: false,
+            closeOnEscape: true,
+            draggable: false,
+            height: 350,
+            width: 705,
+            modal: true,
+            position: [205, 'center'],
+            resizable: false,
+            zIndex: 1500,
+            dialogClass: 'mitms-dialog'
         };
 
         // Instantiate the Dialog
-        this.dialog = new YAHOO.widget.Dialog(
-            this.title,
+        $('<div class="mitms-dialog" style="display: none;"><div id="'+this.title+'"></div></div>').appendTo($('body'));
+
+        this.dialog = $('#'+this.title).dialog(
             $.extend(default_config, this.config)
         );
 
@@ -80,51 +73,34 @@ function yuiDialog(title, buttonid, config, default_url, handler) {
         // Set up obj for closure
         var obj = this;
 
-        // Bind a hide event to the rest of the document
-        // Will hide the dialog if we click anywhere in the document other than the dialog
-        YAHOO.util.Event.addListener(
-            document,
-            'click',
-            function(e) {
-                var el = YAHOO.util.Event.getTarget(e);
-                var dialogEl = obj.dialog.element;
-                var element = new YAHOO.util.Element(el);
-
-                if (el != dialogEl && !YAHOO.util.Dom.isAncestor(dialogEl, el) && element.get('id') != obj.buttonid) {
-                    obj.dialog.hide();
-                }
-            }
-        );
-
         // Bind open event to button
-        YAHOO.util.Event.addListener(
-            this.buttonid,
-            'click',
-            this.open,
-            this,
-            true
-        );
+        $('#'+this.buttonid).click(function(event) {
+
+            // Stop any default event occuring
+            event.preventDefault();
+
+            // Open default url
+            obj.open();
+        });
     }
 
 
     /**
      * Open dialog and load external page
-     * @param   event
      * @return  void
      */
-    this.open = function(event) {
-        // Stop any default event occuring
-        YAHOO.util.Event.stopEvent(event);
-
+    this.open = function() {
         // Open default url in dialog
         var url = this.default_url;
         var method = 'GET';
 
-        // Need to run setBody so the body
-        // appears above the close button
-        this.dialog.setBody('');
-        this.dialog.render(document.body);
-        this.dialog.show();
+        this.dialog.html('');
+        this.dialog.dialog('open');
+
+        // Override some auto defined styling
+        this.dialog.parent().css({ height: '350px' });
+        this.dialog.css({ height: '310px', width: '705px' });
+
         this.load(url, method);
     }
 
@@ -137,8 +113,8 @@ function yuiDialog(title, buttonid, config, default_url, handler) {
      */
     this.load = function(url, method) {
         // Add loading animation
+        this.dialog.html('');
         this.showLoading();
-        this.dialog.setBody('');
 
         // Save url
         this.url = url;
@@ -146,13 +122,12 @@ function yuiDialog(title, buttonid, config, default_url, handler) {
         // Set up obj for closure
         var obj = this;
 
-        var callback =
-        {
+        $.ajax({
+            url: this.url,
+            type: method,
             success: function(o) { obj.render(o) },
-            failure: function(o) {}
-        }
-
-        YAHOO.util.Connect.asyncRequest(method, url, callback);
+            error: function(o) { obj.error(o) }
+        });
     }
 
 
@@ -174,23 +149,30 @@ function yuiDialog(title, buttonid, config, default_url, handler) {
 
 
     /**
+     * Display error information
+     * @param   string  ajax response
+     * @return  void
+     */
+    this.error = function(o) {
+        // Hide loading animation
+        this.hideLoading();
+
+        this.dialog.html('<div class="error">An unknown error has occurred</div>');
+    }
+
+
+    /**
      * Render dialog and contents
      * @param   o   asyncRequest response
      * @return  void
      */
     this.render = function(o) {
-        this.dialog.setBody(o.responseText);
-        this.dialog.render(document.body);
-
-        this.bindLinks();
-
         // Hide loading animation
         this.hideLoading();
 
-        // Run old style setup function
-        if (YAHOO.dialogSetupFunc[this.title] != undefined) {
-            YAHOO.dialogSetupFunc[this.title]();
-        }
+        this.dialog.html(o);
+
+//        this.bindLinks();
 
         // Run new style setup function
         if (this.handler != undefined) {
@@ -252,17 +234,10 @@ function yuiDialog(title, buttonid, config, default_url, handler) {
      */
     this.hide = function() {
         this.handler._loaded = false;
-        this.dialog.setBody('');
-        this.dialog.hide();
+        this.dialog.html('');
+        this.dialog.dialog('close');
     }
 
-
-    /**
-     * Handle HTTP request failures
-     * @return void
-     */
-    this.request_failure = function(url) {
-    }
 
     // Setup object
     this.setup();
@@ -270,9 +245,9 @@ function yuiDialog(title, buttonid, config, default_url, handler) {
 
 
 /*****************************************************************************/
-/** yuiDialog_handler **/
+/** mitmsDialog_handler **/
 
-function yuiDialog_handler() {
+function mitmsDialog_handler() {
 
     // Reference to the yuiDialog object
     var _dialog;
@@ -294,7 +269,7 @@ function yuiDialog_handler() {
  * @param yuiDialog dialog object
  * @return void
  */
-yuiDialog_handler.prototype._setup = function(dialog) {
+mitmsDialog_handler.prototype._setup = function(dialog) {
     this._dialog = dialog;
     this._title = dialog.title;
 }
@@ -306,7 +281,7 @@ yuiDialog_handler.prototype._setup = function(dialog) {
  * @param yuiDialog dialog object
  * @return void
  */
-yuiDialog_handler.prototype._load = function(dialog) {
+mitmsDialog_handler.prototype._load = function(dialog) {
 
     // First page load
     if (!this._loaded) {
@@ -336,7 +311,7 @@ yuiDialog_handler.prototype._load = function(dialog) {
  * @param function call on failure
  * @param mixed argument
  */
-yuiDialog_handler.prototype._request = function(url, success, failure, argument) {
+mitmsDialog_handler.prototype._request = function(url, success, failure, argument) {
 
     // Setting up callbacks
     var handler = this;
@@ -362,7 +337,7 @@ yuiDialog_handler.prototype._request = function(url, success, failure, argument)
  * @param yuiresponse YUI repsonse object
  * @return void
  */
-yuiDialog_handler.prototype._update = function(handler, response) {
+mitmsDialog_handler.prototype._update = function(handler, response) {
 
     // Hide dialog
     handler._dialog.hide();
@@ -392,7 +367,7 @@ yuiDialog_handler.prototype._update = function(handler, response) {
  * @param string ID prefix string
  * @return array
  */
-yuiDialog_handler.prototype._get_ids = function(elements, prefix) {
+mitmsDialog_handler.prototype._get_ids = function(elements, prefix) {
 
     // Set default prefix
     if (prefix == undefined) {
@@ -432,7 +407,7 @@ yuiDialog_handler.prototype._get_ids = function(elements, prefix) {
  * @param string URL to send dropped items to
  * @return void
  */
-yuiDialog_handler.prototype._save = function(url) {
+mitmsDialog_handler.prototype._save = function(url) {
 
     // Serialize data
     var elements = $('.selected span', this._container);
@@ -456,7 +431,7 @@ yuiDialog_handler.prototype._save = function(url) {
  *
  * @return void
  */
-yuiDialog_handler.prototype._set_framework = function() {
+mitmsDialog_handler.prototype._set_framework = function() {
 
     // Get currently selected option
     var selected = $('.simpleframeworkpicker option:selected', this._container).val();
@@ -488,17 +463,17 @@ yuiDialog_handler.prototype._set_framework = function() {
 
 
 /*****************************************************************************/
-/** yuiDialog_handler_treeview **/
+/** mitmsDialog_handler_treeview **/
 
-yuiDialog_handler_treeview = function() {};
-yuiDialog_handler_treeview.prototype = new yuiDialog_handler();
+mitmsDialog_handler_treeview = function() {};
+mitmsDialog_handler_treeview.prototype = new mitmsDialog_handler();
 
 /**
  * Setup a treeview infrastructure
  *
  * @return void
  */
-yuiDialog_handler_treeview.prototype.every_load = function() {
+mitmsDialog_handler_treeview.prototype.every_load = function() {
 
     // Setup treeview
     $('.treeview', this._container).treeview({
@@ -520,7 +495,7 @@ yuiDialog_handler_treeview.prototype.every_load = function() {
  *
  * @return void
  */
-yuiDialog_handler_treeview.prototype._make_hierarchy = function(parent_element) {
+mitmsDialog_handler_treeview.prototype._make_hierarchy = function(parent_element) {
     var handler = this;
 
     // Load courses on category click
@@ -545,11 +520,11 @@ yuiDialog_handler_treeview.prototype._make_hierarchy = function(parent_element) 
 }
 
 /**
- * @param yuiDialog_handler this handler object
+ * @param mitmsDialog_handler this handler object
  * @param yuiresponse YUI repsonse object
  * @return void
  */
-yuiDialog_handler_treeview.prototype._update_hierarchy = function(handler, response) {
+mitmsDialog_handler_treeview.prototype._update_hierarchy = function(handler, response) {
 
     var parent_id = response.argument;
     var items = response.responseText;
@@ -571,20 +546,20 @@ yuiDialog_handler_treeview.prototype._update_hierarchy = function(handler, respo
 
 
 /*****************************************************************************/
-/** yuiDialog_handler_treeview_draggable **/
+/** mitmsDialog_handler_treeview_draggable **/
 
-yuiDialog_handler_treeview_draggable = function() {};
-yuiDialog_handler_treeview_draggable.prototype = new yuiDialog_handler_treeview();
+mitmsDialog_handler_treeview_draggable = function() {};
+mitmsDialog_handler_treeview_draggable.prototype = new mitmsDialog_handler_treeview();
 
 /**
  * Setup treeview and drag/drop infrastructure
  *
  * @return void
  */
-yuiDialog_handler_treeview_draggable.prototype.every_load = function() {
+mitmsDialog_handler_treeview_draggable.prototype.every_load = function() {
 
     // Setup treeview
-    yuiDialog_handler_treeview.prototype.every_load.call(this);
+    mitmsDialog_handler_treeview.prototype.every_load.call(this);
 
     // Setup droppable region
     $('.selected', this._container).droppable({
@@ -602,7 +577,7 @@ yuiDialog_handler_treeview_draggable.prototype.every_load = function() {
  * @param jQuery element list
  * @return void
  */
-yuiDialog_handler_treeview_draggable.prototype._make_draggable = function(parent_element) {
+mitmsDialog_handler_treeview_draggable.prototype._make_draggable = function(parent_element) {
 
     $('span:not(.empty)', parent_element).draggable({
         containment: 'body',
@@ -617,7 +592,7 @@ yuiDialog_handler_treeview_draggable.prototype._make_draggable = function(parent
  * @param element
  * @return void
  */
-yuiDialog_handler_treeview_draggable.prototype._handle_update_hierarchy = function(parent_element) {
+mitmsDialog_handler_treeview_draggable.prototype._handle_update_hierarchy = function(parent_element) {
     this._make_draggable(parent_element);
 }
 
@@ -628,7 +603,7 @@ yuiDialog_handler_treeview_draggable.prototype._handle_update_hierarchy = functi
  * @param ui
  * @return void
  */
-yuiDialog_handler_treeview_draggable.prototype._event_drop = function(event, ui) {
+mitmsDialog_handler_treeview_draggable.prototype._event_drop = function(event, ui) {
 
     // Get clone
     var clone = ui.draggable.clone();
@@ -645,16 +620,16 @@ yuiDialog_handler_treeview_draggable.prototype._event_drop = function(event, ui)
 
 
 /*****************************************************************************/
-/** yuiDialog_handler_treeview_clickable **/
+/** mitmsDialog_handler_treeview_clickable **/
 
-yuiDialog_handler_treeview_clickable = function() {
+mitmsDialog_handler_treeview_clickable = function() {
     /**
      * Function for handling clicks
      */
     var clickhandler;
 };
 
-yuiDialog_handler_treeview_clickable.prototype = new yuiDialog_handler_treeview();
+mitmsDialog_handler_treeview_clickable.prototype = new mitmsDialog_handler_treeview();
 
 /**
  * Hierarchy update handler
@@ -662,7 +637,7 @@ yuiDialog_handler_treeview_clickable.prototype = new yuiDialog_handler_treeview(
  * @param element
  * @return void
  */
-yuiDialog_handler_treeview_clickable.prototype._handle_update_hierarchy = function(parent_element) {
+mitmsDialog_handler_treeview_clickable.prototype._handle_update_hierarchy = function(parent_element) {
     this._make_clickable(parent_element);
 }
 
@@ -671,10 +646,10 @@ yuiDialog_handler_treeview_clickable.prototype._handle_update_hierarchy = functi
  *
  * @return void
  */
-yuiDialog_handler_treeview_clickable.prototype.every_load = function() {
+mitmsDialog_handler_treeview_clickable.prototype.every_load = function() {
 
     // Setup treeview
-    yuiDialog_handler_treeview.prototype.every_load.call(this);
+    mitmsDialog_handler_treeview.prototype.every_load.call(this);
 
     this._make_clickable($('.treeview', this._container));
 }
@@ -685,7 +660,7 @@ yuiDialog_handler_treeview_clickable.prototype.every_load = function() {
  * @parent element
  * @return void
  */
-yuiDialog_handler_treeview_clickable.prototype._make_clickable = function(parent_element) {
+mitmsDialog_handler_treeview_clickable.prototype._make_clickable = function(parent_element) {
 
     // Get selectable/clickable elements
     var selectables = $('span:not(.empty)', parent_element);
@@ -727,12 +702,12 @@ yuiDialog_handler_treeview_clickable.prototype._make_clickable = function(parent
  * @param function handler
  * @return void
  */
-yuiLocateDialog = function(name, find_url, clickhandler) {
+mitmsLocateDialog = function(name, find_url, clickhandler) {
 
-    var handler = new yuiDialog_handler_treeview_clickable();
+    var handler = new mitmsDialog_handler_treeview_clickable();
     handler.clickhandler = clickhandler;
 
-    YAHOO.dialog[name] = new yuiDialog(
+    mitmsDialogs[name] = new mitmsDialog(
         name,
         'show-'+name+'-dialog',
         {},
@@ -750,17 +725,17 @@ yuiLocateDialog = function(name, find_url, clickhandler) {
  * @param string save page url
  * @return void
  */
-yuiAssignDialog = function(name, find_url, save_url) {
+mitmsAssignDialog = function(name, find_url, save_url) {
 
-    var handler = new yuiDialog_handler_treeview_draggable();
+    var handler = new mitmsDialog_handler_treeview_draggable();
 
-    YAHOO.dialog[name] = new yuiDialog(
+    mitmsDialogs[name] = new mitmsDialog(
         name,
         'show-'+name+'-dialog',
         {
-            buttons : [
-                { text: 'Save changes', handler: function() { handler._save(save_url) } }
-            ]
+            buttons: {
+                'Save changes': function() { handler._save(save_url) }
+            }
         },
         find_url,
         handler
