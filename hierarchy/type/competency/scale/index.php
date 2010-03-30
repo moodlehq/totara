@@ -18,6 +18,7 @@
 
 require_once '../../../../config.php';
 require_once $CFG->libdir.'/adminlib.php';
+require_once 'lib.php';
 
 ///
 /// Setup / loading data
@@ -56,7 +57,7 @@ if ($scales) {
         // Whether or not the scale is "used" is really the question of whether
         // it's assigned to at least one framework that has at least one
         // competency
-        if ( count_records_sql("select count(*) from {$CFG->prefix}competency_scale_assignments sa, {$CFG->prefix}competency c where sa.scaleid={$scale->id} and sa.frameworkid=c.id") ) {
+        if ( competency_scale_is_used( $scale->id ) ) {
             $line[] = get_string('yes');
         } else {
             $line[] = get_string('no');

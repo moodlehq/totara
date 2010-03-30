@@ -2,6 +2,7 @@
 
 require_once('../../../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
+require_once('lib.php');
 
 
 ///
@@ -35,7 +36,7 @@ $deleteurl = "{$CFG->wwwroot}/hierarchy/type/competency/scale/delete.php?id={$sc
 
 // Can't delete if the scale is in use (assigned to at least one framework
 // which has at least one competency)
-if ( count_records_sql("select count(*) from {$CFG->prefix}competency_scale_assignments sa, {$CFG->prefix}competency c where sa.scaleid={$id} and sa.frameworkid=c.id") ) {
+if ( competency_scale_is_used($id) ) {
     print_error('error:nodeletescaleinuse', 'hierarchy', $returnurl);
 }
 
