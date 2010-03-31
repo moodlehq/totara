@@ -111,7 +111,7 @@ $rowcount=0;
                 <input type="submit" id="show-idpcompetency-dialog" value="<?php echo get_string('addfromframeworks', 'idp') ?>" />
                 <?php
                 echo '<noscript><a href="'.$CFG->wwwroot.'/hierarchy/type/competency/idp/find.php?id='.$revision->id .
-                    '&amp;nojs=1&amp;returnurl='.qualified_me().'&amp;s='.sesskey().'">'.get_string('addfromframeworks','idp').'</a></noscript>';
+                    '&amp;nojs=1&amp;returnurl='.qualified_me().'&amp;s='.sesskey().'" class="noscript-button">'.get_string('addfromframeworks','idp').'</a></noscript>';
                 ?>
     <?php
             }
@@ -119,6 +119,8 @@ $rowcount=0;
             // Only display add from position button if the user has positions assigned
             if ($haspositions && $addpos) {
                 echo '<input type="submit" id="show-idppositioncompetency-dialog" value="'.get_string('addfrompositions', 'idp').'" />';
+                echo '<noscript><a href="'.$CFG->wwwroot.'/hierarchy/type/competency/idp/find-position.php?id='.$revision->id .
+                    '&amp;nojs=1&amp;returnurl='.qualified_me().'&amp;s='.sesskey().'" class="noscript-button">'.get_string('addfrompositions','idp').'</a></noscript>';
             }
         ?>
                 </div>

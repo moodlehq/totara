@@ -376,6 +376,27 @@ div.mitms-dialog .selected span {
     margin-top: 1em;
 }
 
+/* hide lightbox activation buttons */
+/* (displayed using JS if enabled) */
+input#show-idppositioncompetency-dialog,
+input#show-idpcompetency-dialog,
+input#show-idpcompetencytemplate-dialog,
+input#show-idppositioncompetencytemplate-dialog {
+    display: none;
+}
+
+/* Make none JS links look more like buttons */
+a.noscript-button {
+    padding: 5px;
+    margin: 5px;
+    border: 1px solid #999;
+    background: #eee;
+    display: block;
+    width: 150px;
+    float: left;
+    text-align: center;
+}
+
 /* fix for add competency display width */
 #hierarchy-type-competency-evidence-add #mform1 {
     width: 95%;
