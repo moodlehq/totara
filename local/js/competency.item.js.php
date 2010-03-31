@@ -23,14 +23,13 @@ $(function() {
     /// Add new evidence item dialog
     ///
     (function() {
-        var url = '<?php echo $CFG->wwwroot ?>/hierarchy/type/competency/idp/';
-/*
+        var url = '<?php echo $CFG->wwwroot ?>/hierarchy/type/competency/evidence/';
+
         mitmsAssignDialog(
-            'idppositioncompetency',
-            url+'find-position.php?id='+idp_revision_id,
-            url+'save.php?id='+idp_revision_id+'&rowcount='+idp_competency_row_count+'&add='
+            'evidence',
+            url+'find.php?id='+competency_id,
+            url+'save.php?id='+competency_id+'&add='
         );
-*/
     })();
 
 });
