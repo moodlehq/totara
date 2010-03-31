@@ -4,7 +4,7 @@
 
 ?>
 // Bind functionality to page on load
-YAHOO.util.Event.onDOMReady(function () {
+$(function() {
 
     ///
     /// Competency dialog
@@ -12,7 +12,7 @@ YAHOO.util.Event.onDOMReady(function () {
     (function() {
         var url = '<?php echo $CFG->wwwroot ?>/hierarchy/type/position/assigncompetency/';
 
-        yuiAssignDialog(
+        mitmsAssignDialog(
             'assignedcompetencies',
             url+'find.php?assignto='+position_id+'&add=',
             url+'assign.php?assignto='+position_id+'&add='
@@ -25,7 +25,7 @@ YAHOO.util.Event.onDOMReady(function () {
     (function() {
         var url = '<?php echo $CFG->wwwroot ?>/hierarchy/type/position/assigncompetencytemplate/';
 
-        yuiAssignDialog(
+        mitmsAssignDialog(
             'assignedcompetencytemplates',
             url+'find.php?assignto='+position_id+'&add=',
             url+'assign.php?assignto='+position_id+'&add='

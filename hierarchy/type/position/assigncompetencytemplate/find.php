@@ -3,7 +3,7 @@
 require_once('../../../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->dirroot.'/hierarchy/type/competency/lib.php');
-require_once($CFG->dirroot.'/local/js/setup.php');
+require_once($CFG->dirroot.'/local/js/lib/setup.php');
 
 // Page title
 $pagetitle = 'assigncompetencytemplates';
