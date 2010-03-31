@@ -278,13 +278,12 @@ class competency extends hierarchy {
         switch ($page) {
             case 'item/view':
                 require_js(array(
-                    $CFG->wwwroot.'/local/js/competency.edit.js.php',
-#                    $CFG->wwwroot.'/local/js/competency.evidence.js',
+                    $CFG->wwwroot.'/local/js/competency.item.js.php',
                 ));
                 break;
             case 'template/view':
                 require_js(array(
-                    $CFG->wwwroot.'/local/js/competency.template.js',
+                    $CFG->wwwroot.'/local/js/competency.template.js.php',
                 ));
                 break;
             case 'item/add':
