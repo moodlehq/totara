@@ -218,26 +218,6 @@ function build_nojs_frameworkpicker($hierarchy, $url, $urlparams) {
 }
 
 /**
- * Display markup for an error in a hierarchy based treeview and die
- *
- * @param   $error_string   string      String to display if no elements supplied
- * @param   $child          boolean     This is a child node (print treeview branch markup)
- * @return  $html
- */
-function treeview_error($error_string, $child = false) {
-
-    if ($child) {
-        echo build_treeview(null, $error_string);
-    }
-    else {
-        print_heading(get_string('error'));
-        print_simple_box($error_string, '', '', '', '', 'errorbox');
-    }
-
-    die();
-}
-
-/**
  * Return markup for a simple picker in a dialog
  *
  * @param   $options    array   options/values
