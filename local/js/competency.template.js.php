@@ -15,8 +15,8 @@ $(function() {
 
         mitmsAssignDialog(
             'assignment',
-            url+'assign_competency.php?templateid='+competency_template_id,
-            url+'update_assignments.php?templateid='+competency_template_id+'&assign='
+            url+'find_competency.php?templateid='+competency_template_id,
+            url+'save_competency.php?templateid='+competency_template_id+'&assign='
         );
     })();
 
