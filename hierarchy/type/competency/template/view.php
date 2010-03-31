@@ -85,7 +85,7 @@ $depthstr = get_string('template', $hierarchy->prefix);
 print_heading(get_string('assignedcompetencies', $hierarchy->prefix));
 
 ?>
-<table width="95%" cellpadding="5" cellspacing="1" class="generalbox edit<?php echo $hierarchy->prefix ?> boxaligncenter">
+<table width="95%" cellpadding="5" cellspacing="1" id="list-assignment" class="generalbox edit<?php echo $hierarchy->prefix ?> boxaligncenter">
 <tr>
     <th style="vertical-align:top; text-align: left; white-space:nowrap;" class="header c0" scope="col">
         <?php echo get_string('depthlevel', $hierarchy->prefix); ?>
@@ -130,7 +130,7 @@ if ($competencies) {
 } else {
     // # cols varies
     $cols = $editingon ? 3 : 2;
-    echo '<tr class="noitems"><td colspan="'.$cols.'"><i>'.get_string('noassignedcompetenciestotemplate', $hierarchy->prefix).'</i></td></tr>';
+    echo '<tr class="noitems-assignment"><td colspan="'.$cols.'"><i>'.get_string('noassignedcompetenciestotemplate', $hierarchy->prefix).'</i></td></tr>';
 }
 
 echo '</table>';

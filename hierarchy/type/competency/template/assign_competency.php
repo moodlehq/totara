@@ -3,6 +3,7 @@
 require_once('../../../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->dirroot.'/hierarchy/type/competency/lib.php');
+require_once($CFG->dirroot.'/local/js/lib/setup.php');
 
 
 ///
@@ -35,13 +36,6 @@ if (!$framework = $hierarchy->get_framework($template->frameworkid)) {
     error('Competency framework could not be found');
 }
 
-// Load competency depths
-$depths = $hierarchy->get_depths();
-
-// Get max depth level
-end($depths);
-$max_depth = current($depths)->id;
-
 // Load competencies to display
 $competencies = $hierarchy->get_items_by_parent($parentid);
 
@@ -59,42 +53,25 @@ if (!$parentid) {
 
 <h2><?php echo get_string('assignnewcompetency', $hierarchy->prefix) ?></h2>
 
-<div id="selectedcompetencies">
+<div class="selected">
     <p>
-        <?php echo get_string('dragheretoassign', $hierarchy->prefix) ?></p>
+        <?php echo get_string('dragheretoassign', $hierarchy->prefix) ?>
+    </p>
 </div>
 
 <p>
     <?php echo get_string('locatecompetency', $hierarchy->prefix) ?>:
 </p>
 
-<ul id="competencies" class="filetree">
+<ul class="treeview filetree">
 <?php
 }
 
-
-// Foreach competency
-if ($competencies) {
-    foreach ($competencies as $competency) {
-        if ($competency->depthid == $max_depth) {
-            $li_class = '';
-            $span_class = '';
-        } else {
-            $li_class = 'closed';
-            $span_class = 'folder';
-        }
-
-        echo '<li class="'.$li_class.'" id="competency_list_'.$competency->id.'">';
-        echo '<span id="cmp_'.$competency->id.'" class="'.$span_class.'">'.$competency->fullname.'</span>';
-
-        if ($span_class == 'folder') {
-            echo '<ul></ul>';
-        }
-        echo '</li>'.PHP_EOL;
-    }
-} else {
-    echo '<li><span class="empty">No child competencies found</span></li>'.PHP_EOL;
-}
+echo build_treeview(
+    $competencies,
+    get_string('nochildcompetenciesfound', 'competency'),
+    $hierarchy
+);
 
 // If no parent id, close list
 if (!$parentid) {
