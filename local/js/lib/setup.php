@@ -59,6 +59,8 @@ function build_treeview($elements, $error_string, $hierarchy = null) {
         // Get parents array
         if ($hierarchy) {
             $parents = $hierarchy->get_all_parents();
+        } else {
+            $parents = array();
         }
 
         $total = count($elements);
