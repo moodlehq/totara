@@ -222,6 +222,47 @@ function build_nojs_frameworkpicker($hierarchy, $url, $urlparams) {
     }
 }
 
+/*
+ * Create a none javascript position picker page, allowing the user to select which
+ * position to use to assign an item
+ *
+ * @param string $url URL to take the user to when they click a position link
+ * @params array $urlparams array of url parameters to pass along with URL
+ * @return string HTML to print the position picker list
+ */
+function build_nojs_positionpicker($url, $urlparams) {
+    global $USER, $CFG;
+    // TODO add other html to this function (see picker above)
+    $murl = new moodle_url($url, $urlparams);
+    $html = '';
+    if($positions = get_records('position_assignment','userid',$USER->id)) {
+        $html .= '<div id="nojsinstructions"><p>'.PHP_EOL;
+        $html .= get_string('chooseposition','position');
+        $html .= '</p></div>'.PHP_EOL;
+        $html .= '<div class="nojsselect"><ul>'.PHP_EOL;
+        foreach($positions as $position) {
+            $fullurl = $murl->out(false, array('frameworkid' => $position->positionid));
+            $html .= '<li><a href="'.$fullurl.'">'.$position->fullname.'</a>';
+            switch ($position->type) {
+            case 1:
+                $html .= ' (Primary Position)';
+                break;
+            case 2:
+                $html .= ' (Secondary Position)';
+                break;
+            case 3:
+                $html .= ' (Aspirational Position)';
+                break;
+            }
+            $html .= '</li>';
+        }
+        $html .= '</ul></div>'.PHP_EOL;
+    } else {
+        error('nopositions','position');
+    }
+    return $html;
+}
+
 /**
  * Return markup for a simple picker in a dialog
  *
