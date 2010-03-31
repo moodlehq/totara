@@ -126,7 +126,7 @@ function mitmsDialog(title, buttonid, config, default_url, handler) {
             url: this.url,
             type: method,
             success: function(o) { obj.render(o) },
-            error: function(o) { obj.error(o) }
+            error: function(o) { obj.error(obj, o, url) }
         });
     }
 
@@ -150,14 +150,17 @@ function mitmsDialog(title, buttonid, config, default_url, handler) {
 
     /**
      * Display error information
+     * @param   object  dialog object
      * @param   string  ajax response
+     * @param   string  url
      * @return  void
      */
-    this.error = function(o) {
+    this.error = function(dialog, response, url) {
         // Hide loading animation
-        this.hideLoading();
+        dialog.hideLoading();
 
-        this.dialog.html('<div class="error">An unknown error has occurred</div>');
+        var message = 'An error has occured';
+        dialog.dialog.html('<div class="box errorbox errorboxcontent">'+message+'</div>');
     }
 
 
@@ -323,7 +326,7 @@ mitmsDialog_handler.prototype._request = function(url, success, failure, argumen
         url,
         {
             success: function(response) { success(handler, response) },
-            failure: function() { failure(dialog, url) },
+            failure: function(response) { failure(dialog, response, url) },
             argument: argument
         }
     );
@@ -423,7 +426,7 @@ mitmsDialog_handler.prototype._save = function(url) {
     url = url + dropped;
 
     // Send to server
-    this._request(url, this._update, this._dialog.request_failure);
+    this._request(url, this._update, this._dialog.error);
 }
 
 /**
@@ -513,7 +516,7 @@ mitmsDialog_handler_treeview.prototype._make_hierarchy = function(parent_element
         var id = par.attr('id').substr(10);
 
         var url = handler._dialog.url+'&parentid='+id;
-        handler._request(url, handler._update_hierarchy, handler._dialog.request_failure, id);
+        handler._request(url, handler._update_hierarchy, handler._dialog.error, id);
 
         return false;
     });
