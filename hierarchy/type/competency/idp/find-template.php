@@ -10,8 +10,19 @@ require_once($CFG->dirroot.'/local/js/lib/setup.php');
 /// Setup / loading data
 ///
 
+// Revision id
+$revisionid = optional_param('id', 0, PARAM_INT);
+
 // Framework id
 $frameworkid = optional_param('frameworkid', 0, PARAM_INT);
+
+// No javascript parameters
+$nojs = optional_param('nojs', false, PARAM_BOOL);
+$returnurl = optional_param('returnurl', '', PARAM_TEXT);
+$s = optional_param('s', '', PARAM_TEXT);
+
+// string of params needed in non-js url strings
+$urlparams = 'id='.$revisionid.'&amp;frameworkid='.$frameworkid.'&amp;nojs='.$nojs.'&amp;returnurl='.urlencode($returnurl).'&amp;s='.$s;
 
 admin_externalpage_setup('competencymanage');
 
@@ -34,6 +45,7 @@ $templates = $hierarchy->get_templates();
 /// Display page
 ///
 
+if(!$nojs) {
 ?>
 
 <div class="selectcompetencies">
@@ -61,3 +73,44 @@ echo build_treeview(
 );
 
 echo '</ul></div>';
+
+} else {
+    // none JS version of page
+    admin_externalpage_print_header();
+    echo '<h2>'.get_string('addcompetencytemplatestoplan', 'idp').'</h2>';
+    echo '<p><a href="'.$returnurl.'">'.get_string('cancelwithoutassigning','hierarchy').'</a></p>';
+
+
+    if(empty($frameworkid) || $frameworkid == 0) {
+        echo build_nojs_frameworkpicker(
+            $hierarchy,
+            $CFG->wwwroot.'/hierarchy/type/competency/idp/find-template.php',
+            array(
+                'returnurl' => $returnurl,
+                's' => $s,
+                'nojs' => 1,
+                'id' => $revisionid,
+            )
+        );
+    } else {
+
+        echo  '<p>'.get_string('clicktoassigntemplate', $hierarchy->prefix);
+        echo '</div><div class="nojsselect">';
+        echo build_nojs_treeview(
+            $templates,
+            get_string('nounassignedcompetencytemplates', 'position'),
+            $CFG->wwwroot.'/hierarchy/type/competency/idp/save-template.php',
+            array(
+                'rowcount' => 0,
+                's' => $s,
+                'returnurl' => $returnurl,
+                'nojs' => 1,
+                'frameworkid' => $frameworkid,
+                'id' => $revisionid,
+            ),
+            $CFG->wwwroot.'/hierarchy/type/competency/idp/find-template.php?'.$urlparams
+        );
+        echo '</div>';
+    }
+    print_footer();
+}

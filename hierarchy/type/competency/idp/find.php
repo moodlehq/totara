@@ -117,7 +117,8 @@ if(!$nojs) {
 
 ?>
 <p>
-<?php echo  get_string('clicktoassign', $hierarchy->prefix) ?>
+<?php echo  get_string('clicktoassign', $hierarchy->prefix).' '.
+            get_string('clicktoviewchildren', $hierarchy->prefix) ?>
 </p>
 </div>
 <div class="nojsselect">

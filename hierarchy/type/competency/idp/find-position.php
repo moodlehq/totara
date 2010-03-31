@@ -21,6 +21,14 @@ $parentid = optional_param('parentid', 0, PARAM_INT);
 // Position id (a bit hackey, we are using the framework picker unmodified)
 $positionid = optional_param('frameworkid', 0, PARAM_INT);
 
+// No javascript parameters
+$nojs = optional_param('nojs', false, PARAM_BOOL);
+$returnurl = optional_param('returnurl', '', PARAM_TEXT);
+$s = optional_param('s', '', PARAM_TEXT);
+
+// string of params needed in non-js url strings
+$urlparams = 'id='.$revisionid.'&amp;frameworkid='.$positionid.'&amp;nojs='.$nojs.'&amp;returnurl='.urlencode($returnurl).'&amp;s='.$s;
+
 ///
 /// Permissions checks
 ///
@@ -71,6 +79,9 @@ $competencies = $position->get_assigned_competencies($cur_position);
 /// Display page
 ///
 
+
+if(!$nojs) {
+    // build Javascript Treeview
 ?>
 
 <div class="selectcompetencies">
@@ -100,3 +111,44 @@ echo build_treeview(
 
 ?>
 </ul></div>
+
+<?php
+} else {
+    // none JS version of page
+    admin_externalpage_print_header();
+    echo '<h2>'.get_string('addcompetenciestoplan', 'idp').'</h2>';
+    echo '<p><a href="'.$returnurl.'">'.get_string('cancelwithoutassigning','hierarchy').'</a></p>';
+
+
+    if(empty($positionid) || $positionid == 0) {
+        echo build_nojs_positionpicker(
+            $CFG->wwwroot.'/hierarchy/type/competency/idp/find-position.php',
+            array(
+                'returnurl' => $returnurl,
+                's' => $s,
+                'nojs' => 1,
+                'id' => $revisionid,
+            )
+        );
+    } else {
+        echo  '<p>'.get_string('clicktoassign', $competency->prefix).'</p>';
+        echo '</div><div class="nojsselect">';
+        echo build_nojs_treeview(
+            $competencies,
+            get_string('nocompetenciesassignedtoposition', 'position'),
+            $CFG->wwwroot.'/hierarchy/type/competency/idp/save.php',
+            array(
+                'rowcount' => 0,
+                's' => $s,
+                'returnurl' => $returnurl,
+                'nojs' => 1,
+                'frameworkid' => $positionid,
+                'id' => $revisionid,
+            ),
+            $CFG->wwwroot.'/hierarchy/type/competency/idp/find-position.php?'.$urlparams
+        );
+        echo '</div>';
+    }
+    print_footer();
+
+}
