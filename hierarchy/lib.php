@@ -807,4 +807,26 @@ class hierarchy {
 
         return $max_depth;
     }
+
+    /**
+     * Get all items that are parents
+     * (Use in hierarchy treeviews to know if an item is a parent of others, and
+     * therefore has children)
+     *
+     * @return  array
+     */
+    function get_all_parents() {
+        global $CFG;
+
+        return (array) get_records_sql(
+            "
+            SELECT DISTINCT
+                parentid AS id
+            FROM
+                {$CFG->prefix}{$this->prefix}
+            WHERE
+                parentid != 0
+            "
+        );
+    }
 }

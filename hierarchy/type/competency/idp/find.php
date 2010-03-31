@@ -48,16 +48,6 @@ if (!$framework = $hierarchy->get_framework($frameworkid)) {
 // Load competencies to display
 $competencies = $hierarchy->get_items_by_parent($parentid);
 
-// Get IDs of all items that are parents
-// (to see if we should link to children)
-if(!$parents = get_records_sql("
-    SELECT DISTINCT parentid AS id
-    FROM {$CFG->prefix}{$hierarchy->prefix}
-    WHERE parentid != 0")) {
-    // default to empty array if none found
-    $parents = array();
-}
-
 ///
 /// Display page
 ///
@@ -81,7 +71,7 @@ if(!$nojs) {
     echo build_treeview(
         $competencies,
         get_string('nocompetenciesinframework', 'competency'),
-        $parents
+        $hierarchy
     );
 
     // If no parent id, close div
@@ -145,7 +135,7 @@ if(!$nojs) {
                 'id' => $revisionid,
             ),
             $CFG->wwwroot.'/hierarchy/type/competency/idp/find.php?'.$urlparams,
-            $parents
+            $hierarchy->get_all_parents()
         );
 
 ?>

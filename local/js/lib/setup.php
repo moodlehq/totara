@@ -47,14 +47,19 @@ function local_js($options = array()) {
  *
  * @param   $elements       array       Single level array of elements
  * @param   $error_string   string      String to display if no elements supplied
- * @param   $parents        array       Array of IDs of items which have children
+ * @param   $hierarchy      object      The hierarchy object (optional)
  * @return  $html
  */
-function build_treeview($elements, $error_string, $parents = array()) {
+function build_treeview($elements, $error_string, $hierarchy = null) {
 
     $html = '';
 
     if (is_array($elements) && !empty($elements)) {
+
+        // Get parents array
+        if ($hierarchy) {
+            $parents = $hierarchy->get_all_parents();
+        }
 
         $total = count($elements);
         $count = 0;
