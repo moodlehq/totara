@@ -266,16 +266,20 @@ class competency extends hierarchy {
         }
 
         // Setup custom javascript
-        require_once($CFG->dirroot.'/local/js/setup.php');
+        require_once($CFG->dirroot.'/local/js/lib/setup.php');
 
         // Setup lightbox
-        setup_lightbox(array(MBE_JS_TREEVIEW, MBE_JS_ADVANCED));
+        local_js(array(
+            MBE_JS_DIALOG,
+            MBE_JS_TREEVIEW,
+            MBE_JS_DATEPICKER
+        ));
 
         switch ($page) {
             case 'item/view':
                 require_js(array(
-                    $CFG->wwwroot.'/local/js/competency.related.js',
-                    $CFG->wwwroot.'/local/js/competency.evidence.js',
+                    $CFG->wwwroot.'/local/js/competency.edit.js.php',
+#                    $CFG->wwwroot.'/local/js/competency.evidence.js',
                 ));
                 break;
             case 'template/view':

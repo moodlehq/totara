@@ -3,6 +3,7 @@
 require_once('../../../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->dirroot.'/hierarchy/type/competency/lib.php');
+require_once($CFG->dirroot.'/local/js/lib/setup.php');
 
 
 ///
@@ -43,17 +44,6 @@ if (!$framework = $hierarchy->get_framework($frameworkid)) {
 
 // Load competencies to display
 $competencies = $hierarchy->get_items_by_parent($parentid);
-
-// Get IDs of all competencies that are parents
-// (to see if we should link to sub-competencies)
-if(!$parentcomps = get_records_sql("
-    SELECT DISTINCT parentid AS id
-    FROM {$CFG->prefix}{$hierarchy->prefix}
-    WHERE parentid != 0")) {
-    // default to empty array if none found
-    $parentcomps = array();
-}
-
 
 ///
 /// Display page
@@ -98,10 +88,12 @@ if (!$parentid && !$nojs) {
 
 <div class="selectcompetencies">
 
+<?php echo $hierarchy->display_framework_selector('', true); ?>
+
 <h2><?php echo get_string('addrelatedcompetencies', $hierarchy->prefix); ?></h2>
 
 
-<div id="selectedcompetencies">
+<div class="selected">
     <p>
         <?php echo get_string('dragheretoassign', $hierarchy->prefix) ?>
     </p>
@@ -111,14 +103,22 @@ if (!$parentid && !$nojs) {
     <?php echo get_string('locatecompetency', $hierarchy->prefix) ?>:
 </p>
 
-<ul id="competencies" class="filetree">
+<ul class="treeview filetree">
 <?php
 }
 
 $added = false;
 
+if (!$nojs) {
+    echo build_treeview(
+        $competencies,
+        get_string('nochildcompetenciesfound', 'competency'),
+        $hierarchy
+    );
+}
+
 // Loop through competencies
-if ($competencies) {
+if ($competencies && $nojs) {
     foreach ($competencies as $competency) {
         // make competencies links if JS disabled
         $compname = $nojs ? '<a href="'.$CFG->wwwroot.'/hierarchy/type/competency/related/save.php?'.$urlparams.'&amp;add='.$competency->id.'">'.$competency->fullname.'</a>' : $competency->fullname;
@@ -147,7 +147,7 @@ if ($competencies) {
     }
 }
 
-if (!$added) {
+if (!$added && $nojs) {
     echo '<li><span class="empty">No child competencies found</span></li>'.PHP_EOL;
 }
 
