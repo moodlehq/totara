@@ -15,6 +15,9 @@ $parentid = optional_param('parentid', 0, PARAM_INT);
 // Framework id
 $frameworkid = optional_param('frameworkid', 0, PARAM_INT);
 
+// competency evidence id - may be 0 for new competency evidence
+$id = optional_param('id', 0, PARAM_INT);
+
 // No javascript parameters
 $nojs = optional_param('nojs', false, PARAM_BOOL);
 $returnurl = optional_param('returnurl', '', PARAM_TEXT);
@@ -69,12 +72,69 @@ if(!$nojs) {
 
 } else {
     // none JS version of page
-    echo build_nojs_treeview(
-        $competencies,
-        get_string('nocompetenciesinframework', 'competency'),
-        $CFG->wwwroot.'/hierarchy/type/competency/related/save.php?'.$urlparams,
-        $CFG->wwwroot.'/hierarchy/type/competency/related/add.php?'.$urlparams,
-        $hierarchy->get_all_parents()
-    );
+    admin_externalpage_print_header();
+    echo '<h2>'.get_string('addcompetency', $hierarchy->prefix).'</h2>';
+
+    echo '<p><a href="'.$returnurl.'">'.get_string('cancelwithoutassigning','hierarchy').'</a></p>';
+
+    if(empty($frameworkid) || $frameworkid == 0) {
+
+        echo build_nojs_frameworkpicker(
+            $hierarchy,
+            $CFG->wwwroot.'/hierarchy/type/competency/assign/find.php',
+            array(
+                'returnurl' => $returnurl,
+                's' => $s,
+                'nojs' => 1,
+                'id' => $id,
+                'frameworkid' => $frameworkid,
+            )
+        );
+
+    } else {
+        ?>
+<div id="nojsinstructions">
+<?php
+        echo build_nojs_breadcrumbs($hierarchy,
+            $parentid,
+            $CFG->wwwroot.'/hierarchy/type/competency/assign/find.php',
+            array(
+                'id' => $id,
+                'returnurl' => $returnurl,
+                's' => $s,
+                'nojs' => $nojs,
+                'frameworkid' => $frameworkid,
+            )
+        );
+
+?>
+<p>
+<?php echo  get_string('clicktoassign', $hierarchy->prefix).' '.
+            get_string('clicktoviewchildren', $hierarchy->prefix) ?>
+</p>
+</div>
+<div class="nojsselect">
+<?php
+         echo build_nojs_treeview(
+            $competencies,
+            get_string('nochildcompetenciesfound', 'competency'),
+            $CFG->wwwroot.'/hierarchy/type/competency/assign/save.php',
+            array(
+                's' => $s,
+                'returnurl' => $returnurl,
+                'nojs' => 1,
+                'frameworkid' => $frameworkid,
+                'id' => $id,
+            ),
+            $CFG->wwwroot.'/hierarchy/type/competency/assign/find.php?'.$urlparams,
+            $hierarchy->get_all_parents()
+        );
+
+?>
+</div>
+<?php
+    }
+
+    print_footer();
 
 }

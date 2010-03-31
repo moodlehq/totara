@@ -70,6 +70,7 @@ class mitms_competency_evidence_form extends moodleform {
                 <input type="button" value="'.get_string('selectcompetency', 'local').'" id="show-competency-dialog" />
                 or
                 <input type="button" value="'.get_string('createnewcompetency', 'competency').'" id="show-add-dialog" />
+                <noscript><a href="'.$CFG->wwwroot.'/hierarchy/type/competency/assign/find.php?id='.$id.'&amp;nojs=1&amp;returnurl='.qualified_me().'&amp;s='.sesskey().'" class="noscript-button">'.get_string('selectcompetency','local').'</a></noscript>
                 ');
             $mform->addElement('hidden', 'competencyid');
             $mform->setDefault('competencyid', 0);
