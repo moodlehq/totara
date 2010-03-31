@@ -3,7 +3,7 @@
 require_once('../../../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->dirroot.'/hierarchy/type/position/lib.php');
-require_once($CFG->dirroot.'/local/js/setup.php');
+require_once($CFG->dirroot.'/local/js/lib/setup.php');
 
 
 ///
@@ -51,17 +51,6 @@ if (!$framework = $hierarchy->get_framework($frameworkid)) {
 // Load items to display
 $positions = $hierarchy->get_items_by_parent($parentid);
 
-// Get IDs of all items that are parents
-// (to see if we should link to children)
-if(!$parents = get_records_sql("
-    SELECT DISTINCT parentid AS id
-    FROM {$CFG->prefix}{$hierarchy->prefix}
-    WHERE parentid != 0")) {
-    // default to empty array if none found
-    $parents = array();
-}
-
-
 ///
 /// Display page
 ///
@@ -90,7 +79,7 @@ if (!$parentid) {
 echo build_treeview(
     $positions,
     get_string('nopositionsinframework', 'position'),
-    $parents
+    $hierarchy
 );
 
 // If no parent id, close list

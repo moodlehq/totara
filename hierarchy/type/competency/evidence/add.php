@@ -3,7 +3,7 @@
 require_once('../../../../config.php');
 require_once($CFG->dirroot.'/hierarchy/type/position/lib.php');
 require_once($CFG->dirroot.'/hierarchy/type/competency/lib.php');
-require_once($CFG->dirroot.'/local/js/setup.php');
+require_once($CFG->dirroot.'/local/js/lib/setup.php');
 require_once('competency_evidence_form.php');
 require_once('evidence.php');
 ///
@@ -81,19 +81,9 @@ if($fromform = $mform->get_data()) { // Form submitted
 /// Display page
 ///
 
-$CFG->stylesheets[] = $CFG->wwwroot.'/local/js/lib/ui-lightness/jquery-ui-1.7.2.custom.css';
-
 $type = 'competency';
 $hierarchy = new $type();
 $hierarchy->hierarchy_page_setup('item/add');
-// Setup custom javascript
-require_js(
-    array(
-        $CFG->wwwroot.'/local/js/lib/ui.datepicker.js',
-        $CFG->wwwroot.'/local/js/position.user.js.php',
-    )
-);
-
 
 $pagetitle = format_string(get_string('addcompetencyevidence','local'));
 $navlinks[] = array('name' => get_string('addcompetencyevidence','local'), 'link'=> '', 'type'=>'title');

@@ -4,7 +4,7 @@
 
 ?>
 // Bind functionality to page on load
-YAHOO.util.Event.onDOMReady(function () {
+$(function() {
 
     ///
     /// Position dialog
@@ -12,7 +12,7 @@ YAHOO.util.Event.onDOMReady(function () {
     (function() {
         var url = '<?php echo $CFG->wwwroot ?>/hierarchy/type/position/assign/';
 
-        yuiLocateDialog(
+        mitmsLocateDialog(
             'position',
             url+'find.php?user='+user_id,
             function(selected) {
@@ -29,7 +29,7 @@ YAHOO.util.Event.onDOMReady(function () {
     (function() {
         var url = '<?php echo $CFG->wwwroot ?>/hierarchy/type/organisation/assign/';
 
-        yuiLocateDialog(
+        mitmsLocateDialog(
             'organisation',
             url+'find.php?user='+user_id,
             function(selected) {
@@ -46,7 +46,7 @@ YAHOO.util.Event.onDOMReady(function () {
     (function() {
         var url = '<?php echo $CFG->wwwroot ?>/hierarchy/type/position/assign/';
 
-        yuiLocateDialog(
+        mitmsLocateDialog(
             'manager',
             url+'manager.php?user='+user_id,
             function(selected) {
@@ -63,7 +63,7 @@ YAHOO.util.Event.onDOMReady(function () {
     (function() {
         var url = '<?php echo $CFG->wwwroot ?>/hierarchy/type/competency/assign/';
 
-        yuiLocateDialog(
+        mitmsLocateDialog(
             'competency',
             url+'find.php?user='+user_id,
             function(selected) {
