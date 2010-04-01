@@ -97,7 +97,7 @@ function show_rpl($type, $user, $rpl, $describe, $fulldescribe) {
     } else {
         // Show RPL status icon
         $rplicon = strlen($rpl) ? 'completion-rpl-y' : 'completion-rpl-n';
-        print '<a href="index.php?course='.$course->id.'&sort='.$sort.'&start='.$start.'&edituser='.$user->id.'#user-'.$user->id.'" class="rpledit"><img src="'.$CFG->pixpath.'/i/'.$rplicon.'.gif'.
+        print '<a href="index.php?course='.$course->id.'&sort='.$sort.'&start='.$start.'&edituser='.$user->id.'#user-'.$user->id.'" class="rpledit"><img src="'.$CFG->wwwroot.'/theme/mitms/pix/i/'.$rplicon.'.gif'.
             '" alt="'.$describe.'" class="icon" title="'.$fulldescribe.'" /></a>';
 
         // Show status text
@@ -219,7 +219,7 @@ if ($csv) {
             'yui_event',
             $CFG->wwwroot.'/course/report/completion/textrotate.js',
             $CFG->wwwroot.'/local/js/jquery-1.3.2.min.js',
-            $CFG->wwwroot.'/local/js/completion.report.js',
+            $CFG->wwwroot.'/local/js/completion.report.js.php',
         )
     );
 
