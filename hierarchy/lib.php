@@ -186,7 +186,7 @@ class hierarchy {
     /**
      * Given an item id, returns the adjacent item at the same depth level
      * @param object $item An item object to find the peer for. Must include id,
-     *                     frameworkid, sortorder and depthid
+     *                     frameworkid, sortorder, parentid and depthid
      * @param boolean $above If true returns the item above, otherwise the item below
      * @return int|false Returns the ID of the peer or false if there isn't one
      *                   in the direction specified
@@ -209,6 +209,7 @@ class hierarchy {
 
         $depthid = $item->depthid;
         $sortorder = $item->sortorder;
+        $parentid = $item->parentid;
         $id = $item->id;
         $type = $this->prefix;
 
@@ -219,6 +220,7 @@ class hierarchy {
         $sql = "SELECT id FROM {$CFG->prefix}{$type}
             WHERE frameworkid = $frameworkid AND
             depthid = $depthid AND
+            parentid = $parentid AND
             sortorder $sqlop $sortorder
             ORDER BY sortorder $sqlsort";
         // only return first match

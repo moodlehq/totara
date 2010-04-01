@@ -140,7 +140,7 @@
 
     // build the query to get the items
     // not actually called until further down but need sql for the count
-    $select = "SELECT id, depthid, shortname, fullname, visible, sortorder";
+    $select = "SELECT id, depthid, parentid, shortname, fullname, visible, sortorder";
     if(!empty($hierarchy->extrafields)) {
         $select .= ', ' . implode(', ', $hierarchy->extrafields);
     }
