@@ -30,6 +30,13 @@ class edit_scale_form extends moodleform {
         $mform->addRule('name', get_string('required'), 'required', null, 'client');
         $mform->setType('name', PARAM_TEXT);
 
+        // If it's a new scale, give them the option to define scale values.
+        if ( $this->_customdata['scaleid'] == 0 ){
+            $mform->addElement('textarea', 'scalevalues', 'Scale values');
+            $mform->setHelpButton('scalevalues', array('competency/scale/scalevalues', get_string('scale')));
+            $mform->setType('scalevalues', PARAM_TEXT);
+        }
+
         $mform->addElement('htmleditor', 'description', get_string('description'));
 
         // hidden params

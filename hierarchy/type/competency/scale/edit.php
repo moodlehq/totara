@@ -41,7 +41,12 @@ if ($id == 0) {
 /// Handle form data
 ///
 
-$mform = new edit_scale_form();
+$mform = new edit_scale_form(
+        null, // method (default)
+        array( // customdata
+            'scaleid'=>$id
+        )
+);
 $mform->set_data($scale);
 
 // If cancelled
@@ -55,13 +60,33 @@ if ($mform->is_cancelled()) {
     $scalenew->timemodified = time();
     $scalenew->usermodified = $USER->id;
 
+    // New scale
     if (empty($scalenew->id)) {
         unset($scalenew->id);
+
+        $scalevalues = array_reverse( explode(',',trim($scalenew->scalevalues)) );
+        unset($scalenew->scalevalues);
 
         if (!$scalenew->id = insert_record('competency_scale', $scalenew)) {
             error('Error creating new competency scale');
         }
 
+        $sortorder = 1;
+        foreach( $scalevalues as $scaleval ){
+            if ( trim($scaleval) != '' ){
+                $scalevalrec = new stdClass();
+                $scalevalrec->scaleid = $scalenew->id;
+                $scalevalrec->name = trim($scaleval);
+                $scalevalrec->sortorder = $sortorder;
+                $scalevalrec->timemodified = time();
+                $scalevalrec->usermodified = $USER->id;
+
+                insert_record('competency_scale_values', $scalevalrec);
+                $sortorder++;
+            }
+        }
+
+    // Existing scale
     } else {
         if (!update_record('competency_scale', $scalenew)) {
             error('Error updating competency scale');
