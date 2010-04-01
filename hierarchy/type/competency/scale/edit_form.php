@@ -35,6 +35,8 @@ class edit_scale_form extends moodleform {
             $mform->addElement('textarea', 'scalevalues', 'Scale values');
             $mform->setHelpButton('scalevalues', array('competency/scale/scalevalues', get_string('scale')));
             $mform->setType('scalevalues', PARAM_TEXT);
+        } else {
+            $mform->addELement('html', '<div class="fitem"><div class="fitemtitle">&nbsp;</div><div class="felement">'.get_string('linktoscalevalues','competency',clean_param($this->_customdata['scaleid'], PARAM_INT))."</div></div>\n");
         }
 
         $mform->addElement('htmleditor', 'description', get_string('description'));

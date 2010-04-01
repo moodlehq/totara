@@ -84,6 +84,7 @@ $string['idnumberview'] = '$a idnumber';
 $string['includecompetencyevidence'] = 'Include competency evidence';
 $string['invalidevidencetype'] = 'Invalid evidence type';
 $string['invalidnumeric'] = 'Numerical value must be numerical (or not set)';
+$string['linktoscalevalues'] = '<a href=\\"view.php?id=$a\\">Click here</a> to view/edit the scale values for this competency scale.';
 $string['locatecompetency'] = 'Locate competency';
 $string['locatecompetencytemplate'] = 'Locate competency template';
 $string['managecompetencies'] = 'Manage competencies';
