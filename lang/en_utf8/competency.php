@@ -110,6 +110,7 @@ $string['noevidenceitems'] = 'No evidence items setup for this competency';
 $string['noevidencetypesavailable'] = 'No evidence types available in this course';
 $string['noframeworks'] = 'No competency frameworks defined';
 $string['norelatedcompetencies'] = 'No related competencies';
+$string['noscalevalues'] = 'There are no scale values defined for this scale.';
 $string['notemplates'] = 'No competency templates defined in this framework';
 $string['numericalvalue'] = 'Numerical value';
 $string['options'] = 'Options';

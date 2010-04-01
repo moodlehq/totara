@@ -241,6 +241,9 @@ if ($values) {
 
     print_heading(get_string('scalevalues', 'competency'));
     print_table($table);
+} else {
+    echo '<br /><div>'.get_string('noscalevalues','competency').'</div><br />';
+
 }
 
 // Navigation / editing buttons
