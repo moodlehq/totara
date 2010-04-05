@@ -18,6 +18,13 @@ $assignto = required_param('assignto', PARAM_INT);
 // Framework id
 $frameworkid = optional_param('frameworkid', 0, PARAM_INT);
 
+// No javascript parameters
+$nojs = optional_param('nojs', false, PARAM_BOOL);
+$returnurl = optional_param('returnurl', '', PARAM_TEXT);
+$s = optional_param('s', '', PARAM_TEXT);
+
+// string of params needed in non-js url strings
+$urlparams = 'assignto='.$assignto.'&amp;frameworkid='.$frameworkid.'&amp;nojs='.$nojs.'&amp;returnurl='.urlencode($returnurl).'&amp;s='.$s;
 
 ///
 /// Permissions checks
@@ -48,30 +55,72 @@ $items = $hierarchy->get_templates();
 /// Display page
 ///
 
-?>
+if(!$nojs) {
 
-<div class="selectcompetencies">
+    echo '<div class="selectcompetencies">';
+    $hierarchy->display_framework_selector('', true);
+    echo '<h2>'.get_string($pagetitle, $hierarchy->prefix).'</h2>';
+    echo '<div class="selected">';
+    echo '<p>'.get_string('dragheretoassign', $hierarchy->prefix).'</p>';
+    echo '</div>';
+    echo '<p>'.get_string('locatecompetency', $hierarchy->prefix).':</p>';
+    echo '<ul class="treeview filetree">';
+    echo build_treeview(
+        $items,
+        get_string('nounassignedcompetencytemplates', 'position')
+    );
+    echo '</ul></div>';
 
-<?php $hierarchy->display_framework_selector('', true) ?>
+} else {
+    // none JS version of page
+    admin_externalpage_print_header();
+    echo '<h2>'.get_string('assigncompetencytemplate', 'competency').'</h2>';
 
-<h2><?php echo get_string($pagetitle, $hierarchy->prefix); ?></h2>
+    echo '<p><a href="'.$returnurl.'">'.get_string('cancelwithoutassigning','hierarchy').'</a></p>';
 
-<div class="selected">
-    <p>
-        <?php echo get_string('dragheretoassign', $hierarchy->prefix) ?>
-    </p>
-</div>
+    if(empty($frameworkid) || $frameworkid == 0) {
 
+        echo build_nojs_frameworkpicker(
+            $hierarchy,
+            $CFG->wwwroot.'/hierarchy/type/position/assigncompetencytemplate/find.php',
+            array(
+                'returnurl' => $returnurl,
+                's' => $s,
+                'nojs' => 1,
+                'assignto' => $assignto,
+                'frameworkid' => $frameworkid,
+            )
+        );
+
+    } else {
+        ?>
+<div id="nojsinstructions">
 <p>
-    <?php echo get_string('locatecompetency', $hierarchy->prefix) ?>:
+<?php echo  get_string('clicktoassigntemplate', $hierarchy->prefix).' ' ?>
 </p>
-
-<ul class="treeview filetree">
+</div>
+<div class="nojsselect">
 <?php
+         echo build_nojs_treeview(
+            $items,
+            get_string('nounassignedcompetencytemplates', 'position'),
+            $CFG->wwwroot.'/hierarchy/type/position/assigncompetencytemplate/assign.php',
+            array(
+                's' => $s,
+                'returnurl' => $returnurl,
+                'nojs' => 1,
+                'frameworkid' => $frameworkid,
+                'assignto' => $assignto,
+            ),
+            $CFG->wwwroot.'/hierarchy/type/position/assigncompetencytemplate/find.php?'.$urlparams,
+            $hierarchy->get_all_parents()
+        );
 
-echo build_treeview(
-    $items,
-    get_string('nounassignedcompetencytemplates', 'position')
-);
+?>
+</div>
+<?php
+    }
 
-echo '</ul></div>';
+    print_footer();
+
+}

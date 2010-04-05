@@ -16,6 +16,11 @@ $assignto = required_param('assignto', PARAM_INT);
 // Competencies to add
 $add = required_param('add', PARAM_SEQUENCE);
 
+// Non JS parameters
+$nojs = optional_param('nojs', false, PARAM_BOOL);
+$returnurl = optional_param('returnurl', '', PARAM_TEXT);
+$s = optional_param('s', '', PARAM_TEXT);
+
 // Setup page
 admin_externalpage_setup('positionmanage');
 
@@ -67,25 +72,31 @@ foreach ($add as $addition) {
 
     $relationship->id = insert_record('position_competencies', $relationship);
 
-    // Return html
-    echo '<tr class="r1">';
+    if($nojs) {
+        // If JS disabled, redirect back to original page (only if session key matches)
+        $url = ($s == sesskey()) ? $returnurl : $CFG->wwwroot;
+        redirect($url);
+    } else {
+        // Return html
+        echo '<tr class="r1">';
 
-    echo '<td class="cell c0">';
-    echo "<a href=\"{$CFG->wwwroot}/hierarchy/index.php?type=competency&frameworkid={$framework->id}\">{$framework->fullname}</a>";
-    echo '</td>';
+        echo '<td class="cell c0">';
+        echo "<a href=\"{$CFG->wwwroot}/hierarchy/index.php?type=competency&frameworkid={$framework->id}\">{$framework->fullname}</a>";
+        echo '</td>';
 
-    echo '<td class="cell c1">';
-    echo format_string($depths[$related->depthid]->fullname);
-    echo '</td>';
+        echo '<td class="cell c1">';
+        echo format_string($depths[$related->depthid]->fullname);
+        echo '</td>';
 
-    echo '<td class="cell c2">';
-    echo "<a href=\"{$CFG->wwwroot}/hierarchy/item/view.php?type=competency&id={$related->id}\">{$related->fullname}</a>";
-    echo '</td>';
+        echo '<td class="cell c2">';
+        echo "<a href=\"{$CFG->wwwroot}/hierarchy/item/view.php?type=competency&id={$related->id}\">{$related->fullname}</a>";
+        echo '</td>';
 
-    echo '<td class="cell c3">';
-    echo "<a href=\"{$CFG->wwwroot}/hierarchy/type/position/assigncompetency/remove.php?id={$relationship->id}&position={$position->id}\" title=\"$str_remove\">".
-         "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_remove\" /></a>";
-    echo '</td>';
+        echo '<td class="cell c3">';
+        echo "<a href=\"{$CFG->wwwroot}/hierarchy/type/position/assigncompetency/remove.php?id={$relationship->id}&position={$position->id}\" title=\"$str_remove\">".
+             "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_remove\" /></a>";
+        echo '</td>';
 
-    echo '</tr>'.PHP_EOL;
+        echo '</tr>'.PHP_EOL;
+    }
 }

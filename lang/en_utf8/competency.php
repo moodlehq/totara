@@ -2,6 +2,8 @@
 
 $string['achieved'] = 'Achieved';
 $string['addassignedcompetencies'] = 'Assign competencies';
+$string['assigncompetency'] = 'Assign competency';
+$string['assigncompetencytemplate'] = 'Assign competency template';
 $string['addassignedcompetencytemplates'] = 'Assign competency templates';
 $string['addcourseevidencetocompetency'] = 'Add course evidence to competency';
 $string['adddepthlevel'] = 'Add a new depth level';
