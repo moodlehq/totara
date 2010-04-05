@@ -73,7 +73,7 @@ if (!$parentid) {
 
 // If this is the root node
 if (!$parentid) {
-    echo '<ul class="treeview filetree">';
+    echo '<ul class="treeview filetree picker">';
 }
 
 echo build_treeview(

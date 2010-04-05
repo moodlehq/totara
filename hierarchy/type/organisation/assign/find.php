@@ -68,7 +68,7 @@ if (!$parentid) {
 <?php echo get_string('chooseorganisation', $hierarchy->prefix); ?>
 </h2>
 
-<ul class="treeview filetree">
+<ul class="treeview filetree picker">
 <?php
 }
 

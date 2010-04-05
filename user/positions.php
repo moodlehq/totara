@@ -3,7 +3,7 @@
 // Display user position information
 
 require_once('../config.php');
-require_once($CFG->dirroot.'/local/js/setup.php');
+require_once($CFG->dirroot.'/local/js/lib/setup.php');
 require_once($CFG->dirroot.'/hierarchy/type/position/lib.php');
 require_once('positions_form.php');
 
@@ -72,7 +72,7 @@ elseif ($USER->id == $user->id &&
 // Check a valid position type was supplied
 if ($type === '') {
     $type = reset($POSITION_TYPES);
-} 
+}
 elseif (!in_array($type, $POSITION_TYPES)) {
     // Redirect to default position
     redirect("{$CFG->wwwroot}/user/positions.php?user={$user->id}&amp;courseid={$course->id}");
@@ -107,15 +107,17 @@ $navigation = build_navigation($navlinks);
 
 
 // Setup custom javascript
-setup_lightbox(array(MBE_JS_TREEVIEW, MBE_JS_ADVANCED));
+local_js(array(
+    MBE_JS_DIALOG,
+    MBE_JS_TREEVIEW,
+    MBE_JS_DATEPICKER
+));
+
 require_js(
     array(
-        $CFG->wwwroot.'/local/js/lib/ui.datepicker.js',
         $CFG->wwwroot.'/local/js/position.user.js.php'
     )
 );
-
-$CFG->stylesheets[] = $CFG->wwwroot.'/local/js/lib/ui-lightness/jquery-ui-1.7.2.custom.css';
 
 print_header("{$course->fullname}: {$fullname}: {$positiontype}", $course->fullname, $navigation);
 

@@ -309,6 +309,10 @@ div.mitms-dialog ul.treeview {
     overflow: auto;
 }
 
+div.mitms-dialog ul.picker {
+    height: 275px;
+}
+
 div.mitms-dialog ul.treeview li {
     font-size: 0.8em;
 }

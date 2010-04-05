@@ -3,7 +3,7 @@
 require_once('../../../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->dirroot.'/hierarchy/type/position/lib.php');
-require_once($CFG->dirroot.'/local/js/setup.php');
+require_once($CFG->dirroot.'/local/js/lib/setup.php');
 
 
 ///
@@ -40,7 +40,7 @@ if (!$can_edit) {
 $managers = get_records_sql(
     "
         SELECT
-            u.id,        
+            u.id,
             ".sql_fullname('u.firstname', 'u.lastname')." AS fullname,
             ra.id AS ra
         FROM
@@ -70,7 +70,7 @@ $managers = get_records_sql(
 
 <h2><?php echo get_string('choosemanager', 'position'); ?></h2>
 
-<ul class="treeview filetree">
+<ul class="treeview filetree picker">
 <?php
 
 echo build_treeview(

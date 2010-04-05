@@ -5,7 +5,7 @@
 ?>
 
 // Bind functionality to page on load
-YAHOO.util.Event.onDOMReady(function () {
+$(function() {
     YAHOO.dialog.add = new yuiDialog(
         'addcompetency',
         'show-add-dialog',
