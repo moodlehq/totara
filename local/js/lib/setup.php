@@ -170,17 +170,22 @@ function build_nojs_treeview($elements, $error_string, $actionurl, $actionparams
  * @param integer $parentid Current items parent ID, used to determine what to show
  * @param string $url URL to assign to the breadcrumbs links
  * @param array $urlparams Array of url parameters to pass along with URL
+ * @param boolean $allfws If true include link to all frameworks at start of breadcrumbs
  * @return string HTML to print the breadcrumbs trail
  *
  */
-function build_nojs_breadcrumbs($hierarchy, $parentid, $url, $urlparams) {
+function build_nojs_breadcrumbs($hierarchy, $parentid, $url, $urlparams, $allfws=true) {
 
     $murl = new moodle_url($url, $urlparams);
     $nofwurl = $murl->out(false, array('frameworkid' => 0));
 
     $html = '<div class="breadcrumb"><h2 class="accesshide " >You are here</h2> <ul>';
-    $html .= '<li class="first"><a href="'.$nofwurl.'">'.
-        get_string('allframeworks','hierarchy').'</a></li>';
+    $first = true;
+    if($allfws) {
+        $first = false;
+        $html .= '<li class="first"><a href="'.$nofwurl.'">'.
+            get_string('allframeworks','hierarchy').'</a></li>';
+    }
     if($parentid) {
         if($lineage = $hierarchy->get_item_lineage($parentid)) {
             // correct order for breadcrumbs
@@ -188,7 +193,11 @@ function build_nojs_breadcrumbs($hierarchy, $parentid, $url, $urlparams) {
             foreach($items as $item) {
                 $itemurl = $murl->out(false, array('parentid'=>$item->parentid));
                 $html .= '<li> <span class="accesshide " >/&nbsp;</span>';
-                $html .= '<span class="arrow sep">&#x25BA;</span>';
+                if(!$first) {
+                    $html .= '<span class="arrow sep">&#x25BA;</span>';
+                } else {
+                    $first = false;
+                }
                 $html .= '<a href="'.$itemurl.'">'.$item->fullname.'</a></li>';
             }
         }
