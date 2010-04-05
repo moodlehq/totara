@@ -13,7 +13,7 @@ require_once($CFG->dirroot.'/hierarchy/type/competency/lib.php');
 $id = required_param('templateid', PARAM_INT);
 
 // Competencies to assign
-$assignments = required_param('assign', PARAM_SEQUENCE);
+$assignments = required_param('add', PARAM_SEQUENCE);
 
 // Setup page
 admin_externalpage_setup('competencytemplatemanage', '', array(), '', $CFG->wwwroot.'/competency/template/update_assignments.php');
