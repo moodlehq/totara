@@ -151,9 +151,14 @@ if ($can_edit) {
 </script>
 
 <div class="singlebutton">
-<form action="<?php echo $CFG->wwwroot ?>/hierarchy/type/<?php echo $hierarchy->prefix ?>/template/assign_competency.php?templateid=<?php echo $item->id ?>" method="get">
+<form action="<?php echo $CFG->wwwroot ?>/hierarchy/type/<?php echo $hierarchy->prefix ?>/template/find_competency.php?templateid=<?php echo $item->id ?>" method="get">
 <div>
 <input type="submit" id="show-assignment-dialog" value="<?php echo get_string('assignnewcompetency', $hierarchy->prefix) ?>" />
+<input type="hidden" name="templateid" value="<?php echo $item->id ?>">
+<input type="hidden" name="nojs" value="1">
+<input type="hidden" name="returnurl" value="<?php echo qualified_me(); ?>">
+<input type="hidden" name="s" value="<?php echo sesskey(); ?>">
+<input type="hidden" name="frameworkid" value="<?php echo $item->frameworkid ?>">
 </div>
 </form>
 </div>

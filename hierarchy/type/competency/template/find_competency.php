@@ -16,6 +16,14 @@ $id = required_param('templateid', PARAM_INT);
 // Parent competency
 $parentid = optional_param('parentid', 0, PARAM_INT);
 
+// No javascript parameters
+$nojs = optional_param('nojs', false, PARAM_BOOL);
+$returnurl = optional_param('returnurl', '', PARAM_TEXT);
+$s = optional_param('s', '', PARAM_TEXT);
+
+// string of params needed in non-js url strings
+$urlparams = 'templateid='.$id.'&amp;nojs='.$nojs.'&amp;returnurl='.urlencode($returnurl).'&amp;s='.$s;
+
 // Setup page
 admin_externalpage_setup('competencytemplatemanage', '', array(), '', $CFG->wwwroot.'/competency/template/assign_competency.php');
 
@@ -44,36 +52,79 @@ $competencies = $hierarchy->get_items_by_parent($parentid);
 /// Display page
 ///
 
-// If parent id is not supplied, we must be displaying the main page
-if (!$parentid) {
+if(!$nojs) {
+    // If parent id is not supplied, we must be displaying the main page
+    if (!$parentid) {
+
+        echo '<div class="selectcompetencies">';
+        echo '<h2>' . get_string('assignnewcompetency', $hierarchy->prefix) . '</h2>';
+        echo '<div class="selected"><p>';
+        echo get_string('dragheretoassign', $hierarchy->prefix);
+        echo '</p></div>';
+        echo '<p>' . get_string('locatecompetency', $hierarchy->prefix) . ':</p>';
+        echo '<ul class="treeview filetree">';
+    }
+
+    echo build_treeview(
+        $competencies,
+        get_string('nochildcompetenciesfound', 'competency'),
+        $hierarchy
+    );
+
+    // If no parent id, close list
+    if (!$parentid) {
+        echo '</ul></div>';
+    }
+
+} else {
+    // none JS version of page
+    admin_externalpage_print_header();
+    echo '<h2>'.get_string('assigncompetency', $hierarchy->prefix).'</h2>';
+
+    echo '<p><a href="'.$returnurl.'">'.get_string('cancelwithoutassigning','hierarchy').'</a></p>';
+
+    ?>
+<div id="nojsinstructions">
+<?php
+    echo build_nojs_breadcrumbs($hierarchy,
+        $parentid,
+        $CFG->wwwroot.'/hierarchy/type/competency/template/find_competency.php',
+        array(
+            'templateid' => $id,
+            'returnurl' => $returnurl,
+            's' => $s,
+            'nojs' => $nojs,
+        ),
+        false
+    );
 
 ?>
-
-<div class="selectcompetencies">
-
-<h2><?php echo get_string('assignnewcompetency', $hierarchy->prefix) ?></h2>
-
-<div class="selected">
-    <p>
-        <?php echo get_string('dragheretoassign', $hierarchy->prefix) ?>
-    </p>
-</div>
-
 <p>
-    <?php echo get_string('locatecompetency', $hierarchy->prefix) ?>:
+<?php echo  get_string('clicktoassign', $hierarchy->prefix).' '.
+            get_string('clicktoviewchildren', $hierarchy->prefix) ?>
 </p>
-
-<ul class="treeview filetree">
+</div>
+<div class="nojsselect">
 <?php
-}
+     echo build_nojs_treeview(
+        $competencies,
+        get_string('nochildcompetenciesfound', 'competency'),
+        $CFG->wwwroot.'/hierarchy/type/competency/template/save_competency.php',
+        array(
+            's' => $s,
+            'returnurl' => $returnurl,
+            'nojs' => 1,
+            'templateid' => $id,
+        ),
+        $CFG->wwwroot.'/hierarchy/type/competency/template/find_competency.php?'.$urlparams,
+        $hierarchy->get_all_parents()
+    );
 
-echo build_treeview(
-    $competencies,
-    get_string('nochildcompetenciesfound', 'competency'),
-    $hierarchy
-);
+?>
+</div>
+<?php
 
-// If no parent id, close list
-if (!$parentid) {
-    echo '</ul></div>';
+    print_footer();
+
+
 }

@@ -15,6 +15,11 @@ $id = required_param('templateid', PARAM_INT);
 // Competencies to assign
 $assignments = required_param('add', PARAM_SEQUENCE);
 
+// Non JS parameters
+$nojs = optional_param('nojs', false, PARAM_BOOL);
+$returnurl = optional_param('returnurl', '', PARAM_TEXT);
+$s = optional_param('s', '', PARAM_TEXT);
+
 // Setup page
 admin_externalpage_setup('competencytemplatemanage', '', array(), '', $CFG->wwwroot.'/competency/template/update_assignments.php');
 
@@ -73,25 +78,33 @@ foreach ($assignments as $assignment) {
 
     insert_record('competency_template_assignment', $assign);
 
-    // Return html
-    echo '<tr>';
-    echo '<td>'.$depths[$competency->depthid]->fullname.'</td>';
-    echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/item/view.php?type={$hierarchy->prefix}&id={$competency->id}\">{$competency->fullname}</a></td>";
+    // Update competency count for template
+    $count = get_field('competency_template_assignment', 'COUNT(*)', 'templateid', $template->id);
+    $template->competencycount = (int) $count;
 
-    if ($editingon) {
-        echo "<td style=\"text-align: center;\">";
+    update_record('competency_template', $template);
 
-        echo "<a href=\"{$CFG->wwwroot}/hierarchy/type/{$hierarchy->prefix}/template/remove_assignment.php?templateid={$template->id}&assignment={$competency->id}\" title=\"$str_remove\">".
-"<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_remove\" /></a>";
+    if($nojs) {
+        // If JS disabled, redirect back to original page (only if session key matches)
+        $url = ($s == sesskey()) ? $returnurl : $CFG->wwwroot;
+        redirect($url);
+    } else {
 
-        echo "</td>";
+        // Return html
+        echo '<tr>';
+        echo '<td>'.$depths[$competency->depthid]->fullname.'</td>';
+        echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/item/view.php?type={$hierarchy->prefix}&id={$competency->id}\">{$competency->fullname}</a></td>";
+
+        if ($editingon) {
+            echo "<td style=\"text-align: center;\">";
+
+            echo "<a href=\"{$CFG->wwwroot}/hierarchy/type/{$hierarchy->prefix}/template/remove_assignment.php?templateid={$template->id}&assignment={$competency->id}\" title=\"$str_remove\">".
+    "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_remove\" /></a>";
+
+            echo "</td>";
+        }
+
+        echo '</tr>'.PHP_EOL;
     }
-
-    echo '</tr>'.PHP_EOL;
 }
 
-// Update competency count for template
-$count = get_field('competency_template_assignment', 'COUNT(*)', 'templateid', $template->id);
-$template->competencycount = (int) $count;
-
-update_record('competency_template', $template);
