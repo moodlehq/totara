@@ -107,11 +107,12 @@ function mitmsDialog(title, buttonid, config, default_url, handler) {
 
     /**
      * Load an external page in the dialog
-     * @param   url     Url of page
-     * @param   method  Page fetch method, POST or GET
+     * @param   string      Url of page
+     * @param   string      Page fetch method, POST or GET
+     * @param   function    Optional function to run on success
      * @return  void
      */
-    this.load = function(url, method) {
+    this.load = function(url, method, onsuccess) {
         // Add loading animation
         this.dialog.html('');
         this.showLoading();
@@ -125,26 +126,22 @@ function mitmsDialog(title, buttonid, config, default_url, handler) {
         $.ajax({
             url: this.url,
             type: method,
-            success: function(o) { obj.render(o) },
+            success: function(o) {
+
+                var result = true;
+
+                // Check the result of onsuccess
+                // If false, do not run the render method
+                if (onsuccess != undefined) {
+                    result = onsuccess(o);
+                }
+
+                if (result) {
+                    obj.render(o);
+                }
+            },
             error: function(o) { obj.error(obj, o, url) }
         });
-    }
-
-
-    /**
-     * Navigate to a new page in the dialog
-     * @param   event
-     * @return  void
-     */
-    this.navigate = function(event) {
-        // Stop any default event occuring
-        YAHOO.util.Event.stopEvent(event);
-
-        // Get element that was clicked
-        var el = YAHOO.util.Event.getTarget(event);
-
-        // Load the page
-        this.load(el.href, 'GET');
     }
 
 
@@ -175,7 +172,7 @@ function mitmsDialog(title, buttonid, config, default_url, handler) {
 
         this.dialog.html(o);
 
-//        this.bindLinks();
+        this.bindLinks();
 
         // Run new style setup function
         if (this.handler != undefined) {
@@ -189,27 +186,19 @@ function mitmsDialog(title, buttonid, config, default_url, handler) {
      * @return void
      */
     this.bindLinks = function() {
-        var anchors = YAHOO.util.Dom.getElementsBy(
-            function(el) {
-                if (el.className != 'container-close' &&
-                    el.parentNode.className != 'helplink') {
-                    return true;
-                } else {
-                    return false;
-                }
-            },
-            'A',
-            this.dialog.element
-        );
+
+        var dialog = this;
 
         // Bind this.navigate to any links in the dialog
-        YAHOO.util.Event.addListener(
-            anchors,
-            'click',
-            this.navigate,
-            this,
-            true
-        );
+        $('a:not(.helplink)', this.dialog).one('click', function(e) {
+
+            dialog.load($(this).attr('href'), 'GET');
+
+            // Stop any default event occuring
+            e.preventDefault();
+
+            return false;
+        });
     }
 
 
