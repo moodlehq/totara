@@ -70,38 +70,46 @@ foreach ($add as $addition) {
     $idpcompetency->competencytemplate = $template->id;
     $idpcompetency->ctime = time();
 
-    insert_record('idp_revision_competencytemplate', $idpcompetency);
-
-    if($nojs) {
-        // if javascript disabled redirect back to original page (if sesskey matches)
-        $url = ($s == sesskey()) ? $returnurl : $CFG->wwwroot;
-        redirect($url);
-
+    // Insert the competency template and update the modification time for the parent revision
+    begin_sql();
+    $dbresult = insert_record('idp_revision_competencytemplate', $idpcompetency, false);
+    $dbresult = $dbresult && update_modification_time($revisionid);
+    if (!$dbresult ){
+        rollback_sql();
     } else {
+        commit_sql();
 
-        // Return html
-        echo '<tr class=r'.$rowcount.'>';
-        echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/framework/index.php?type={$hierarchy->prefix}&id={$framework->id}\">{$framework->fullname}</a></td>";
-        echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/type/competency/template/view.php?id={$template->id}\">{$template->fullname}</a></td>";
-        echo '<td></td>';
-        echo '<td width="25%"><input size="10" maxlength="10" type="text" name="comptempduedate['.$template->id.']" id="comptempduedate'.$template->id.'"/></td>';
+        if($nojs) {
+            // if javascript disabled redirect back to original page (if sesskey matches)
+            $url = ($s == sesskey()) ? $returnurl : $CFG->wwwroot;
+            redirect($url);
 
-    //    if ($editingon) {
+        } else {
 
-            echo "<td style=\"text-align: center;\">";
+            // Return html
+            echo '<tr class=r'.$rowcount.'>';
+            echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/framework/index.php?type={$hierarchy->prefix}&id={$framework->id}\">{$framework->fullname}</a></td>";
+            echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/type/competency/template/view.php?id={$template->id}\">{$template->fullname}</a></td>";
+            echo '<td></td>';
+            echo '<td width="25%"><input size="10" maxlength="10" type="text" name="comptempduedate['.$template->id.']" id="comptempduedate'.$template->id.'"/></td>';
 
-            echo "<a href=\"{$CFG->wwwroot}/hierarchy/type/competency/template/idp/remove.php?id={$template->id}&revision={$revisionid}\" title=\"$str_remove\">".
-                 "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_remove\" /></a>";
+        //    if ($editingon) {
 
-            echo "</td>";
+                echo "<td style=\"text-align: center;\">";
 
-    //    }
+                echo "<a href=\"{$CFG->wwwroot}/hierarchy/type/competency/template/idp/remove.php?id={$template->id}&revision={$revisionid}\" title=\"$str_remove\">".
+                     "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_remove\" /></a>";
 
-        echo '</tr>';
-        echo '<script type="text/javascript"> $(function() { $(\'[id^=comptempduedate]\').datepicker( ';
-        echo '{ dateFormat: \'dd/mm/yy\', showOn: \'button\', buttonImage: \'../local/js/images/calendar.gif\',';
-        echo 'buttonImageOnly: true } ); }); </script>'.PHP_EOL;
-        $rowcount = ($rowcount + 1) % 2;
+                echo "</td>";
+
+        //    }
+
+            echo '</tr>';
+            echo '<script type="text/javascript"> $(function() { $(\'[id^=comptempduedate]\').datepicker( ';
+            echo '{ dateFormat: \'dd/mm/yy\', showOn: \'button\', buttonImage: \'../local/js/images/calendar.gif\',';
+            echo 'buttonImageOnly: true } ); }); </script>'.PHP_EOL;
+            $rowcount = ($rowcount + 1) % 2;
+        }
     }
 }
 add_to_log(SITEID, 'idp', 'add IDP competency templates', "revision.php?id={$plan->id}", $plan->id);

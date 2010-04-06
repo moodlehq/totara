@@ -24,10 +24,15 @@ if ( $plan->userid != $USER->id ){
     error(get_string('error:revisionnotvisible', 'idp'));
 }
 
-$dbresult = delete_records('idp_revision_competencytemplate', 'revision', $revisionid, 'competencytemplate', $competencytemplateid);
-if ( $dbresult ){
+// Delete the competency template and update the modification time for the parent revision
+begin_sql();
+$dbresult = (boolean) delete_records('idp_revision_competencytemplate', 'revision', $revisionid, 'competencytemplate', $competencytemplateid);
+$dbresult = $dbresult && update_modification_time($revisionid);
+if ($dbresult ){
+    commit_sql();
     redirect($CFG->wwwroot.'/idp/revision.php?id='.$plan->id);
 } else {
+    rollback_sql();
     print_error('error:removalfailed','idp');
 }
 add_to_log(SITEID, 'idp', 'delete IDP competency template', "revision.php?id={$plan->id}", $competencytemplateid);

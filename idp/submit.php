@@ -170,7 +170,19 @@ function update_idp_component_duedate($duedateformelement, $tablename, $componen
     foreach( $formelementlist as $rawid=>$rawduedate ){
         $componentid = clean_param($rawid, PARAM_INT);
         $duedate = convert_userdate($rawduedate);
-        $result = set_field($tablename,'duedate',$duedate,'revision',$rev,$componentcolumn,$componentid);
+
+        $component = get_record($tablename, 'revision', $rev, $componentcolumn, $componentid);
+        if ( $duedate && ( !isset($component->duedate) || $duedate <> $component->duedate) ){
+
+            begin_sql();
+            $result = set_field($tablename,'duedate',$duedate,'revision',$rev,$componentcolumn,$componentid);
+            $result = $result && update_modification_time($rev);
+            if ( $result ) {
+                commit_sql();
+            } else {
+                rollback_sql();
+            }
+        }
     }
 }
 

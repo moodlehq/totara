@@ -63,27 +63,34 @@ foreach ($add as $addition) {
     $idpcourse->course = $course->id;
     $idpcourse->ctime = time();
 
-    insert_record('idp_revision_course', $idpcourse);
+    // Insert the course and update the modification time for the parent revision
+    begin_sql();
+    $dbresult = insert_record('idp_revision_course', $idpcourse, false);
+    $dbresult = $dbresult && update_modification_time($revisionid);
+    if (!$dbresult ){
+        rollback_sql();
+    } else {
+        commit_sql();
 
+        // Return html
+        echo '<tr class=r'.$rowcount.'>';
+        echo "<td><a href=\"{$CFG->wwwroot}/course/category.php?id={$course->category}\">".format_string($category->name)."</a></td>";
+        echo "<td><a href=\"{$CFG->wwwroot}/course/view.php?id={$course->id}\">".format_string($course->fullname)."</a></td>";
+        echo '<td></td>';
+        echo '<td width="25%"><input size="10" maxlength="10" type="text" name="courseduedate['.$course->id.']" id="courseduedate'.$course->id.'"/></td>';
 
-    // Return html
-    echo '<tr class=r'.$rowcount.'>';
-    echo "<td><a href=\"{$CFG->wwwroot}/course/category.php?id={$course->category}\">".format_string($category->name)."</a></td>";
-    echo "<td><a href=\"{$CFG->wwwroot}/course/view.php?id={$course->id}\">".format_string($course->fullname)."</a></td>";
-    echo '<td></td>';
-    echo '<td width="25%"><input size="10" maxlength="10" type="text" name="courseduedate['.$course->id.']" id="courseduedate'.$course->id.'"/></td>';
+        echo "<td class=\"options\">";
 
-    echo "<td class=\"options\">";
+        echo "<a href=\"{$CFG->wwwroot}/hierarchy/type/course/idp/remove.php?id={$course->id}&revision={$revisionid}\" title=\"$str_remove\">".
+             "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_remove\" /></a>";
 
-    echo "<a href=\"{$CFG->wwwroot}/hierarchy/type/course/idp/remove.php?id={$course->id}&revision={$revisionid}\" title=\"$str_remove\">".
-         "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_remove\" /></a>";
+        echo "</td>";
 
-    echo "</td>";
-
-    echo '</tr>';
-    echo '<script type="text/javascript"> $(function() { $(\'[id^=courseduedate]\').datepicker( ';
-    echo '{ dateFormat: \'dd/mm/yy\', showOn: \'button\', buttonImage: \'../local/js/images/calendar.gif\',';
-    echo 'buttonImageOnly: true } ); }); </script>'.PHP_EOL;
-    $rowcount = ($rowcount + 1) % 2;
+        echo '</tr>';
+        echo '<script type="text/javascript"> $(function() { $(\'[id^=courseduedate]\').datepicker( ';
+        echo '{ dateFormat: \'dd/mm/yy\', showOn: \'button\', buttonImage: \'../local/js/images/calendar.gif\',';
+        echo 'buttonImageOnly: true } ); }); </script>'.PHP_EOL;
+        $rowcount = ($rowcount + 1) % 2;
+    }
 }
 add_to_log(SITEID, 'idp', 'add IDP courses', "revision.php?id={$plan->id}", $plan->id);
