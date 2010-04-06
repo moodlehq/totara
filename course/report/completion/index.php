@@ -218,7 +218,7 @@ if ($csv) {
             'yui_element',
             'yui_event',
             $CFG->wwwroot.'/course/report/completion/textrotate.js',
-            $CFG->wwwroot.'/local/js/jquery-1.3.2.min.js',
+            $CFG->wwwroot.'/local/js/lib/jquery-1.3.2.min.js',
             $CFG->wwwroot.'/local/js/completion.report.js.php',
         )
     );
@@ -245,7 +245,7 @@ if($progress->total > COMPLETION_REPORT_PAGE) {
             $newstart=0;
         }
         $pagingbar.=link_arrow_left(get_string('previous'),'./?course='.$course->id.
-            ($newstart ? '&amp;start='.$newstart : ''),false,'completion_prev');
+            ($newstart ? '&amp;start='.$newstart : '').'&sort='.$sort,false,'completion_prev');
     }
 
     $a=new StdClass;
@@ -256,7 +256,7 @@ if($progress->total > COMPLETION_REPORT_PAGE) {
 
     if($start+COMPLETION_REPORT_PAGE < $progress->total) {
         $pagingbar.=link_arrow_right(get_string('next'),'./?course='.$course->id.
-            '&amp;start='.($start+COMPLETION_REPORT_PAGE),false,'completion_next');
+            '&amp;start='.($start+COMPLETION_REPORT_PAGE).'&sort='.$sort,false,'completion_next');
     }
 
     $pagingbar.='</div>';
