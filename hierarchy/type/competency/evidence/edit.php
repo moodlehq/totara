@@ -2,7 +2,7 @@
 
 require_once('../../../../config.php');
 require_once($CFG->dirroot.'/hierarchy/type/position/lib.php');
-require_once($CFG->dirroot.'/local/js/setup.php');
+require_once($CFG->dirroot.'/local/js/lib/setup.php');
 require_once('competency_evidence_form.php');
 require_once('evidence.php');
 
@@ -91,15 +91,16 @@ if($fromform = $mform->get_data()) { // Form submitted
 ///
 
 // Setup custom javascript
-setup_lightbox(array(MBE_JS_TREEVIEW, MBE_JS_ADVANCED));
-require_js(
-    array(
-        $CFG->wwwroot.'/local/js/lib/ui.datepicker.js',
-        $CFG->wwwroot.'/local/js/position.user.js.php',
-    )
-);
+local_js(array(
+    MBE_JS_DIALOG,
+    MBE_JS_TREEVIEW,
+    MBE_JS_DATEPICKER
+));
 
-$CFG->stylesheets[] = $CFG->wwwroot.'/local/js/lib/ui-lightness/jquery-ui-1.7.2.custom.css';
+require_js(array(
+        $CFG->wwwroot.'/local/js/position.user.js.php',
+));
+
 
 $pagetitle = format_string(get_string('editcompetencyevidence','local'));
 $navlinks[] = array('name' => get_string('editcompetencyevidence','local'), 'link'=> '', 'type'=>'title');

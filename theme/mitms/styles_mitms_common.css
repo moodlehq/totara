@@ -303,6 +303,11 @@ div.mitms-dialog div.ui-dialog-content p {
     padding: 0;
 }
 
+div.mitms-dialog div.ui-dialog-content .dialog-static-content {
+    height: 275px;
+    overflow: auto;
+}
+
 div.mitms-dialog ul.treeview {
     margin-top: 10px;
     height: 245px;

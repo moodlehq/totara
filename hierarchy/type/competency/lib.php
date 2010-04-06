@@ -288,7 +288,7 @@ class competency extends hierarchy {
                 break;
             case 'item/add':
                 require_js(array(
-#                    $CFG->wwwroot.'/local/js/competency.add.js.php',
+                    $CFG->wwwroot.'/local/js/competency.add.js.php',
                     $CFG->wwwroot.'/local/js/position.user.js.php',
                 ));
                 break;

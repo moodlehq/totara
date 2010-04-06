@@ -6,52 +6,64 @@
 
 // Bind functionality to page on load
 $(function() {
-    YAHOO.dialog.add = new yuiDialog(
+
+    var handler = new mitmsDialog_handler_addcompetency();
+
+    mitmsDialogs['addcompetency'] = new mitmsDialog(
         'addcompetency',
         'show-add-dialog',
         {},
-        '<?php echo $CFG->wwwroot ?>/hierarchy/item/add.php?type=competency'
-
+        '<?php echo $CFG->wwwroot ?>/hierarchy/item/add.php?type=competency',
+        handler
     );
 });
 
 
-// Setup function
-// Run on dialog load
-YAHOO.dialogSetupFunc.addcompetency = function() {
-    addcompetency_bind();
-}
+// Create handler for the addcompetency dialog
+mitmsDialog_handler_addcompetency = function() {};
+mitmsDialog_handler_addcompetency.prototype = new mitmsDialog_handler();
 
-function addcompetency_bind() {
+/**
+ * Do handler specific binding
+ *
+ * @return void
+ */
+mitmsDialog_handler_addcompetency.prototype.every_load = function() {
+
+    var handler = this;
 
     $('#addcompetency #id_submitbutton').click(function() {
         var formdata = $('#addcompetency #mform1');
 
-        var callback =
-        {
-            success:    addcompetency_submit_form,
-            failure:    function(o) {}
-        }
-
         // submit form
-        YAHOO.util.Connect.asyncRequest(
-            'GET',
+        handler._dialog.load(
             '<?php echo $CFG->wwwroot ?>/hierarchy/item/add.php?'+formdata.serialize(),
-            callback
+            'GET',
+            function(response) {
+                return handler.submission(response);
+            }
         );
 
         return false;
     });
+
     $('#addcompetency #id_cancel').click(function() {
-        YAHOO.dialog.add.dialog.hide();
+        handler._dialog.hide();
         return false;
     });
 }
 
-function addcompetency_submit_form(response) {
-    if (response.responseText.substr(0,8) == 'newcomp:') {
+/**
+ * Handle form submission
+ *
+ * @param   post request response
+ * @return  boolean
+ */
+mitmsDialog_handler_addcompetency.prototype.submission = function(response) {
+
+    if (response.substr(0,8) == 'newcomp:') {
         // competency created, grab info and close popup
-        if(match = response.responseText.match(/^newcomp:([0-9]*):(.*)$/)) {
+        if(match = response.match(/^newcomp:([0-9]*):(.*)$/)) {
             var compid = match[1];
             var compname = match[2];
             $('input[name=competencyid]').val(compid);
@@ -71,17 +83,11 @@ function addcompetency_submit_form(response) {
                 });
             }
 
-
-            YAHOO.dialog.add.dialog.hide();
-        } else {
-            // new competency creation failed, show error
-            YAHOO.dialog.add.render(response);
-            //YAHOO.dialog.add.dialog.hide();
+            this._dialog.hide();
+            return false;
         }
-    } else {
-        // validation failed, rerender form
-    YAHOO.dialog.add.render(response);
     }
+
+    // Failed, rerender form
+    return true;
 }
-
-

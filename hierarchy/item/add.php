@@ -85,7 +85,7 @@ $item->framework = $framework->fullname;
 ///
 
 // create form
-$datatosend = array('type' => $type, 'item' => $item, 'spage' => 0);
+$datatosend = array('type' => $type, 'item' => $item, 'spage' => 0, 'dialog' => true);
 $itemform = new $formname(null, $datatosend);
 $itemform->set_data($item);
 
@@ -170,4 +170,6 @@ if ($itemnew = $itemform->get_data()) {
 print_heading(get_string('addnew'.$type, $type));
 
 /// Finally display THE form
+echo '<div class="dialog-static-content">';
 $itemform->display();
+echo '</div>';

@@ -16,6 +16,7 @@ class item_edit_form extends moodleform {
         $type = $this->_customdata['type'];
         $item = $this->_customdata['item'];
         $spage = $this->_customdata['spage'];
+        $dialog = !empty($this->_customdata['dialog']);
 
         $this->hierarchy = $hierarchy = new $type();
 
@@ -111,9 +112,12 @@ class item_edit_form extends moodleform {
         $mform->setHelpButton('idnumber', array($type.'idnumber', get_string('idnumber', $type)), true);
         $mform->setType('idnumber', PARAM_RAW);
 
-        $mform->addElement('htmleditor', 'description', get_string('description'));
-        $mform->setHelpButton('description', array('text', get_string('helptext')), true);
-        $mform->setType('description', PARAM_RAW);
+        // If we are in a dialog, hide the htmleditor. It messes with the jquery code
+        if (!$dialog) {
+            $mform->addElement('htmleditor', 'description', get_string('description'));
+            $mform->setHelpButton('description', array('text', get_string('helptext')), true);
+            $mform->setType('description', PARAM_RAW);
+        }
 
         /// Next show the custom fields if we're editing an existing items (otherwise we don't know the depthid)
         if ($item->id) {

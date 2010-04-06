@@ -56,7 +56,7 @@ if(!$nojs) {
         echo '<div class="selectcompetency">'.PHP_EOL;
         $hierarchy->display_framework_selector('', true);
         echo '<h2>'.get_string('addnewcompetency', $hierarchy->prefix).'</h2>'.PHP_EOL;
-        echo '<ul class="treeview filetree">'.PHP_EOL;
+        echo '<ul class="treeview filetree picker">'.PHP_EOL;
     }
 
     echo build_treeview(
