@@ -97,7 +97,7 @@ if ($depthform->is_cancelled()){
         $depthinfocategorynew->sortorder = 1;
         $depthinfocategorynew->depthid   = $depthnew->id;
 
-        if (!$depthnew->id = insert_record($type.'_depth_info_category', $depthinfocategorynew)) {
+        if (!insert_record($type.'_depth_info_category', $depthinfocategorynew)) {
             error('Error creating '.$type.' depth info category record');
         }
 
