@@ -1944,8 +1944,6 @@ function print_revision_manager($revision, $plan, $options=array()) {
     print revision_comments($revision);
     print_comment_textbox($revision->id);
 
-    $usercurriculum = get_field('user', 'curriculum', 'id', $plan->userid);
-
     // Get user's positions
     $user = (object) array('id' => $plan->userid);
 
