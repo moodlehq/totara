@@ -469,8 +469,8 @@ function print_revision_list($planid, $currevisionid) {
     $revisions = get_records('idp_revision', 'idp', $planid, 'ctime DESC');
 
     if (count($revisions) > 1) {
-        print '<h2>'.get_string('allrevisions','idp').'</h2>';
-//        print '<div>'.collapsing_tree_node('revisionslabel', 'revisions', get_string('allrevisions', 'idp')).'</div>';
+//        print '<h2>'.get_string('allrevisions','idp').'</h2>';
+        print '<div>'.collapsing_tree_node('revisionslabel', 'revisions', get_string('allrevisions', 'idp')).'</div>';
 
         print '<div id="revisions" style="display:none"><ul>';
         foreach ($revisions as $revision) {
@@ -502,8 +502,8 @@ function revision_comments($revision) {
     // Print list of all comments with their contents
     if ($comments and count($comments) > 0) {
 
-        print '<h2>'.get_string('allcomments','idp').'</h2>';
-        //$out .= '<div>'.collapsing_tree_node('commentslabel', 'comments', get_string('allcomments', 'idp'), 0, '', true).'</div>';
+        //print '<h2>'.get_string('allcomments','idp').'</h2>';
+        $out .= '<div>'.collapsing_tree_node('commentslabel', 'comments', get_string('allcomments', 'idp'), 0, '', true).'</div>';
 
         $out .= '<div id="comments" style="display:block"><blockquote>';
         $firsttime = true;
@@ -1981,8 +1981,8 @@ function print_revision_trainee($revision, $plan, $options=array()) {
         $revision->owner = $USER;
     }
 
-//    print_revision_details($revision, $options['can_submit'], false, false, true);
-//    print_revision_list($plan->id, $revision->id);
+    print_revision_details($revision, $options['can_submit'], false, false, true);
+    print_revision_list($plan->id, $revision->id);
 
     if ($options['can_edit']) {
         print_comment_textbox($revision->id);
@@ -2759,5 +2759,58 @@ function json_headers() {
 function get_user_light($id) {
     return get_record('user', 'id', $id, '', '', '', '', 'id,firstname,lastname,email,idnumber');
 }
+
+/**
+ * Return a clickable arrow which hides/shows the corresponding div.
+ * Can optionally include a caption which will also be clickable.
+ *
+ * @param $id         ID of the clickable caption
+ * @param $divid      ID of the div which will be hidden/displayed when collapsing/expanding
+ * @param $caption    If a caption isn't provided, only the clickable arrow will be displayed
+ * @param $spacing    Extra space (in pixels) to add before the arrow
+ * @param $extracell  Extra cell to append at the end of the row
+ * @param $initialexpanded  False if the node should be collapsed by default
+ * @param $groupmutexid     Optionally specify a group which this node will
+ *                          belong to.  This allows only one node of each group
+ *                          to be open at a time.  Make sure to 'print collapse_groups_script()'
+ *                          at the end of your page.
+ */
+function collapsing_tree_node($id, $divid, $caption='', $spacing=0, $extracell='',
+                              $initialexpanded=false, $groupmutexid='') {
+    global $CFG;
+    global $collapsing_tree_node_groups;
+
+    require_js($CFG->wwwroot.'/idp/collapsing_tree_node.js');
+
+    $defaultimage = '/t/switch_plus.gif';
+    if ($initialexpanded) {
+        $defaultimage = '/t/switch_minus.gif';
+    }
+    $image = "<img id=\"arrow_{$divid}\" src=\"{$CFG->pixpath}{$defaultimage}\" alt=\"expand/collapse\" />";
+    $arrowlink = "<a style=\"cursor: pointer\" onclick=\"toggle_div('{$divid}', '{$groupmutexid}');\">{$image}</a>";
+    if ($spacing > 0) {
+        $spacercell = '<td>'.print_spacer(1, $spacing, false, true).'</td>';
+    } else {
+        $spacercell = '';
+    }
+
+    if (!empty($extracell)) {
+        $extracell = "<td class=\"extracell\">{$extracell}</td>";
+    }
+
+    if (!empty($groupmutexid)) {
+        $collapsing_tree_node_groups[$groupmutexid][] = $divid;
+    }
+
+    if (empty($caption)) {
+        return $arrowlink;
+    } else {
+        $captionlink = "<a style=\"cursor: pointer\" id=\"{$id}\" onclick=\"toggle_div('{$divid}', '{$groupmutexid}');\">{$caption}</a>";
+        return "<table summary=\"\"><tr>{$spacercell}<td>{$arrowlink}</td>".
+            "<td valign=\"middle\">{$captionlink}</td>{$extracell}</tr></table>".
+            "<script type=\"text/javascript\">var config = {'pixpath': '{$CFG->pixpath}'};</script>";
+    }
+}
+
 
 ?>
