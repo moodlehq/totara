@@ -415,7 +415,7 @@ function print_revision_details($revision, $can_submit, $can_approve=false, $pdf
     }
     elseif ('withdrawn' == $revision->status) {
         if ($can_submit) {
-            $nextactions .= '<a href="'.$moduledir .'/revision.php?id='.$revision->idp.'">'.get_string('editlatestrevision', 'idp').'</a>';
+            $nextactions .= '<a href="'.$CFG->wwwroot.'/idp/revision.php?id='.$revision->idp.'">'.get_string('editlatestrevision', 'idp').'</a>';
         }
         else {
             $nextactions .= '<a href="'.$CFG->wwwroot.'/idp/revision.php?id='.$revision->idp.'">'.get_string('viewlatestrevision', 'idp').'</a>';
@@ -1098,16 +1098,14 @@ function clone_revision($revisionid) {
         return false;
     }
 
-    // Copy objectives from original revision
-    $objectives = get_records('idp_revision_objective', 'revision', $originalrev->id);
-    if ($objectives and count($objectives) > 0) {
-        foreach ($objectives as $objective) {
-            $objective->revision = $newid;
-            if (!insert_record('idp_revision_objective', $objective)) {
-                rollback_sql();
-                return false;
-            }
-        }
+    if (!_clone_revision_objectives( 'idp_revision_competency', $originalrev->id, $newid )){
+        rollback_sql();
+    }
+    if (!_clone_revision_objectives( 'idp_revision_competencytemplate', $originalrev->id, $newid )){
+        rollback_sql();
+    }
+    if ( !_clone_revision_objectives( 'idp_revision_course', $originalrev->id, $newid ) ){
+        rollback_sql();
     }
 
     // Copy list items from original revision
@@ -1126,6 +1124,26 @@ function clone_revision($revisionid) {
 
     commit_sql();
     return $newid;
+}
+
+/**
+ * Function to clone one of the objective tables for an IDP revision
+ *
+ * @param string $table name of the table
+ * @return boolean success or failure
+ */
+function _clone_revision_objectives( $table, $origrevid, $newrevid ){
+    $objectives = get_records($table, 'revision', $origrevid);
+    if ($objectives and count($objectives) > 0) {
+        foreach ($objectives as $objective) {
+            $objective->revision = $newrevid;
+            if (!insert_record($table, $objective)) {
+                //rollback_sql();
+                return false;
+            }
+        }
+    }
+    return true;
 }
 
 /**

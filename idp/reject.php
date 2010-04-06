@@ -46,7 +46,7 @@ if ($confirm) {
         error(get_string('error:norejectreason', 'idp'), $CFG->wwwroot.'/idp/reject.php?rev='.$rev);
     }
     elseif (reject_revision($revision->id, $comments)) {
-        redirect($CFG->wwwroot.'/idp/index.php');
+        redirect($CFG->wwwroot."/idp/index.php?userid={$plan->userid}");
     }
     else {
         error(get_string('rejectionerror', 'idp'));
