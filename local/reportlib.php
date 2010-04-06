@@ -53,14 +53,24 @@ function mitms_print_report_heading($columns, $user, $usercustomfields) {
 
     global $CFG;
 
-    $organisations = new object();
-    if ($user->organisationid) {
-        $organisations = mitms_get_user_hierarchy_lineage($user->organisationid, 'organisation');
+    $positions = array();
+    $organisations = array();
+
+    if ( $positionrecs = get_records('position_assignment', 'userid', $user->id ) ){
+        foreach( $positionrecs as $position ){
+            $positions += mitms_get_user_hierarchy_lineage($user->positionid, 'position');
+            $organisations += mitms_get_user_hierarchy_lineage($user->organisationid, 'organisation');
+        }
     }
-    $positions = new object();
-    if ($user->positionid) {
-        $positions = mitms_get_user_hierarchy_lineage($user->positionid, 'position');
-    }
+
+//    $organisations = new object();
+//    if ($user->organisationid) {
+//        $organisations = mitms_get_user_hierarchy_lineage($user->organisationid, 'organisation');
+//    }
+//    $positionrecs = new object();
+//    if ($user->positionid) {
+//        $positionrecs = mitms_get_user_hierarchy_lineage($user->positionid, 'position');
+//    }
 
     $table = '<table cellpadding="4">';
     foreach ($columns as $column) {
@@ -95,8 +105,8 @@ function mitms_print_report_heading($columns, $user, $usercustomfields) {
                 } else {
                     $cell1str .= get_string('position', 'position');
                 }   
-                if ($positions) {
-                    foreach ($positions as $position) {
+                if ($positionrecs) {
+                    foreach ($positionrecs as $position) {
                         if ($column['level'] == $position->depthlevel) {
                             $cell2str .= $position->{$column['value']};
                             break;
