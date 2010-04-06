@@ -278,6 +278,12 @@ function validate_unique_columns($data) {
         $i++;
         $field = "column$i";
     }
+    // also check new column if set
+    if(isset($data['newcolumns'])) {
+        if(array_key_exists($data['newcolumns'], $used_cols)) {
+            $errors['newcolumns'] = get_string('norepeatcols','local');
+        }
+    }
     return $errors;
 }
 
