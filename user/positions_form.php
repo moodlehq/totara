@@ -119,18 +119,18 @@ class user_position_assignment_form extends moodleform {
             return;
         }
 
-        if (!$mform->getElementValue('timevalidfrom')) {
+        if (!(int) $mform->getElementValue('timevalidfrom')) {
             $mform->setDefault('timevalidfrom', '');
         }
         else {
-            $mform->setDefault('timevalidfrom', date('d/m/Y', $mform->getElementValue('timevalidfrom')));
+            $mform->setDefault('timevalidfrom', date('d/m/Y', (int) $mform->getElementValue('timevalidfrom')));
         }
 
-        if (!$mform->getElementValue('timevalidto')) {
+        if (!(int) $mform->getElementValue('timevalidto')) {
             $mform->setDefault('timevalidto', '');
         }
         else {
-            $mform->setDefault('timevalidto', date('d/m/Y', $mform->getElementValue('timevalidto')));
+            $mform->setDefault('timevalidto', date('d/m/Y', (int) $mform->getElementValue('timevalidto')));
         }
     }
 
@@ -173,9 +173,9 @@ class user_position_assignment_form extends moodleform {
 
         $result = array();
 
-        $timevalidfromstr = $data['timevalidfrom'];
+        $timevalidfromstr = isset($data['timevalidfrom'])?$data['timevalidfrom']:'';
         $timevalidfrom = convert_userdate( $timevalidfromstr );
-        $timevalidtostr = $data['timevalidto'];
+        $timevalidtostr = isset($data['timevalidto'])?$data['timevalidto']:'';
         $timevalidto = convert_userdate( $timevalidtostr );
 
         // Enforce valid dates

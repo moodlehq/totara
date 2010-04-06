@@ -144,11 +144,11 @@ if ($form->is_cancelled()){
 elseif ($data = $form->get_data()) {
 
     // Fix dates
-    if ($data->timevalidfrom) {
+    if (isset($data->timevalidfrom) && $data->timevalidfrom) {
         $data->timevalidfrom = convert_userdate($data->timevalidfrom);
     }
 
-    if ($data->timevalidto) {
+    if (isset($data->timevalidto) && $data->timevalidto) {
         $data->timevalidto = convert_userdate($data->timevalidto);
     }
 
