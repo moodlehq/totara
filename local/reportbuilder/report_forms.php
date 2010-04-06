@@ -168,6 +168,7 @@ class report_builder_edit_form extends moodleform {
                     $mform->setDefault("column{$cid}", $field);
                     $mform->addElement('html','</td><td>');
                     $mform->addElement('text',"heading{$cid}",'');
+                    $mform->addRule("heading{$cid}", null, 'nopunctuation');
                     $mform->setDefault("heading{$cid}",$heading);
                 } else {
                     $mform->addElement('hidden',"column{$cid}", $field);
