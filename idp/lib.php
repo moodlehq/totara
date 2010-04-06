@@ -2052,14 +2052,14 @@ function print_revision_preview($revision, $plan, $printable=true) {
 
     $competencytemplates = idp_get_user_competencytemplates($plan->userid, $revision->id);
     if ($competencytemplates) {
-        print_idp_competency_templates_view($revision, $competencytemplates, $options['can_edit']);
+        print_idp_competency_templates_view($revision, $competencytemplates, false);
     } else {
         print '<p><i>'.get_string('emptyplancompetencytemplates','idp')."</i></p>\n";
     }
 
     $courses = idp_get_user_courses($plan->userid, $revision->id);
     if ( $courses ) {
-        print_idp_courses_view($revision, $courses, $options['can_edit']);
+        print_idp_courses_view($revision, $courses, false);
     } else {
         print '<p><i>'.get_string('emptyplancourses','idp')."</i></p>\n";
     }
