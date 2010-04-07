@@ -120,28 +120,8 @@ function mitmsDialog(title, buttonid, config, default_url, handler) {
         // Save url
         this.url = url;
 
-        // Set up obj for closure
-        var obj = this;
-
-        $.ajax({
-            url: this.url,
-            type: method,
-            success: function(o) {
-
-                var result = true;
-
-                // Check the result of onsuccess
-                // If false, do not run the render method
-                if (onsuccess != undefined) {
-                    result = onsuccess(o);
-                }
-
-                if (result) {
-                    obj.render(o);
-                }
-            },
-            error: function(o) { obj.error(obj, o, url) }
-        });
+        // Load page
+        this._request(this.url);
     }
 
 
@@ -231,6 +211,48 @@ function mitmsDialog(title, buttonid, config, default_url, handler) {
     }
 
 
+    /**
+     * Make an HTTP request
+     *
+     * Optionally pass an object and method name to be called on success.
+     * This method is passed the HTML response, and optionally the data variable.
+     *
+     * If no object/method name are passed, or they return 'true' - the dialog.render
+     * method is called on success also.
+     *
+     * @param string    request url
+     * @param object    Object to call on success (optional)
+     * @param string    Object's method name to call on success (optional)
+     * @param mixed     extra data to send to success method (optional)
+     */
+    this._request = function(url, s_object, s_method, data) {
+
+        var dialog = this;
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            success: function(o) {
+
+                var result = true;
+
+                // Check the result of onsuccess
+                // If false, do not run the render method
+                if (s_object != undefined) {
+                    result = s_object[s_method](o, data);
+                }
+
+                if (result) {
+                    dialog.render(o);
+                }
+            },
+            error: function(o) {
+                dialog.error(dialog, o, url);
+            }
+        });
+    }
+
+
     // Setup object
     this.setup();
 }
@@ -296,58 +318,31 @@ mitmsDialog_handler.prototype._load = function(dialog) {
 }
 
 /**
- * Make an HTTP GET request
- *
- * @param string request url
- * @param function call on success
- * @param function call on failure
- * @param mixed argument
- */
-mitmsDialog_handler.prototype._request = function(url, success, failure, argument) {
-
-    // Setting up callbacks
-    var handler = this;
-    var dialog = this._dialog;
-
-    // Send to server
-    YAHOO.util.Connect.asyncRequest(
-        'GET',
-        url,
-        {
-            success: function(response) { success(handler, response) },
-            failure: function(response) { failure(dialog, response, url) },
-            argument: argument
-        }
-    );
-}
-
-/**
  * Add a row to a table on the calling page
  * Also hides the dialog and any no item notice
  *
- * @param yuiDialog_handler this handler object
- * @param yuiresponse YUI repsonse object
+ * @param string    HTML response
  * @return void
  */
-mitmsDialog_handler.prototype._update = function(handler, response) {
+mitmsDialog_handler.prototype._update = function(response) {
 
     // Hide dialog
-    handler._dialog.hide();
+    this._dialog.hide();
 
     // Remove no item warning (if exists)
-    $('.noitems-'+handler._title).remove();
+    $('.noitems-'+this._title).remove();
 
     // Sometimes we want to have two dialogs changing the same table,
     // so here we support tagging tables by id, or class
-    var table = $('table#list-'+handler._title);
+    var table = $('table#list-'+this._title);
 
     // If no table found by ID
     if (table.size() < 1) {
-        table = $('table.list-'+handler._title);
+        table = $('table.list-'+this._title);
     }
 
     // Add row to table
-    $('tbody', table).append(response.responseText);
+    $('tbody', table).append(response);
 }
 
 
@@ -415,7 +410,7 @@ mitmsDialog_handler.prototype._save = function(url) {
     url = url + dropped;
 
     // Send to server
-    this._request(url, this._update, this._dialog.error);
+    this._dialog._request(url, this, '_update');
 }
 
 /**
@@ -496,11 +491,6 @@ mitmsDialog_handler_treeview.prototype._make_hierarchy = function(parent_element
         // Get parent
         var par = $(this).parent();
 
-        // If we have just collapsed this branch, don't reload stuff
-        if ($('li:visible', $(par)).size() == 0) {
-            return false;
-        }
-
         // Check this category doesn't have any children already
         if ($('> ul > li', par).size()) {
             return false;
@@ -510,34 +500,33 @@ mitmsDialog_handler_treeview.prototype._make_hierarchy = function(parent_element
         var id = par.attr('id').substr(10);
 
         var url = handler._dialog.url+'&parentid='+id;
-        handler._request(url, handler._update_hierarchy, handler._dialog.error, id);
+        handler._dialog._request(url, handler, '_update_hierarchy', id);
 
         return false;
     });
 }
 
 /**
- * @param mitmsDialog_handler this handler object
- * @param yuiresponse YUI repsonse object
+ * @param string    HTML response
+ * @param int       Parent id
  * @return void
  */
-mitmsDialog_handler_treeview.prototype._update_hierarchy = function(handler, response) {
+mitmsDialog_handler_treeview.prototype._update_hierarchy = function(response, parent_id) {
 
-    var parent_id = response.argument;
-    var items = response.responseText;
-    var list = $('.treeview li#item_list_'+parent_id+' ul:first', handler._container);
+    var items = response;
+    var list = $('.treeview li#item_list_'+parent_id+' ul:first', this._container);
 
     // Remove all existing children
     $('li', list).remove();
 
     // Add items
-    $('.treeview', handler._container).treeview({add: list.append($(items))});
+    $('.treeview', this._container).treeview({add: list.append($(items))});
 
     // Setup new items
-    handler._make_hierarchy(list);
+    this._make_hierarchy(list);
 
-    if (handler._handle_update_hierarchy != undefined) {
-        handler._handle_update_hierarchy(list);
+    if (this._handle_update_hierarchy != undefined) {
+        this._handle_update_hierarchy(list);
     }
 }
 
