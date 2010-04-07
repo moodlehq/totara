@@ -27,7 +27,6 @@ class report_builder_new_form extends moodleform {
             $mform->addElement('select','source', get_string('source','local'), $select);
             // invalid if not set
             $mform->addRule('source', get_string('error:mustselectsource','local'), 'regex','/^[^0]*$/');
-            $mform->setType('source', PARAM_TEXT);
             $mform->setHelpButton('source', array('reportbuildersource',get_string('source','local'),'moodle'));
 
             $mform->addElement('advcheckbox','hidden', get_string('hidden','local'), '', null, array(0,1));
@@ -67,7 +66,6 @@ class report_builder_edit_form extends moodleform {
         $mform->setHelpButton('shortname', array('reportbuildershortname',get_string('uniquename','local'),'moodle'));
 
         $mform->addElement('static', 'reportsource', get_string('source','local'), $report->source);
-        $mform->setType('reportsource', PARAM_TEXT);
         $mform->setHelpButton('reportsource', array('reportbuildersource',get_string('source','local'),'moodle'));
 
         $mform->addElement('advcheckbox', 'hidden', get_string('hidden','local'), '', null, array(0,1));
@@ -105,11 +103,9 @@ class report_builder_edit_form extends moodleform {
                 if(array_key_exists($type, $report->filteroptions) && array_key_exists($value, $report->filteroptions[$type])) {
                     $mform->addElement('html','<tr><td>');
                     $mform->addElement('select',"filter{$fid}",'',$filtersselect);
-                    $mform->setType("filter{$fid}", PARAM_TEXT);
                     $mform->setDefault("filter{$fid}", $field);
                     $mform->addElement('html','</td><td>');
                     $mform->addElement('checkbox',"advanced{$fid}",'');
-                    $mform->setType("advanced{$fid}", PARAM_INT);
                     $mform->setDefault("advanced{$fid}",$advanced);
                 } else {
                     $mform->addElement('hidden',"filter{$fid}", $field);
@@ -137,10 +133,8 @@ class report_builder_edit_form extends moodleform {
             $mform->addElement('html','<tr><td>');
             $newfilterselect = array_merge(array(0=>get_string('addanotherfilter','local')),$filtersselect);
             $mform->addElement('select','newfilter','',$newfilterselect);
-            $mform->setType('newfilter', PARAM_TEXT);
             $mform->addElement('html','</td><td>');
             $mform->addElement('checkbox','newadvanced','');
-            $mform->setType('newadvanced', PARAM_INT);
             $mform->disabledIf('newadvanced','newfilter', 'eq', 0);
             $mform->addElement('html','</td><td>');
             $mform->addElement('html','</td><td>&nbsp;</td></tr>');
@@ -175,7 +169,6 @@ class report_builder_edit_form extends moodleform {
                 if(array_key_exists($type, $report->columnoptions) && array_key_exists($value, $report->columnoptions[$type])) {
                     $mform->addElement('html','<tr><td>');
                     $mform->addElement('select',"column{$cid}",'',$columnsselect);
-                    $mform->setType("column{$cid}", PARAM_TEXT);
                     $mform->setDefault("column{$cid}", $field);
                     $mform->addElement('html','</td><td>');
                     $mform->addElement('text',"heading{$cid}",'');
@@ -211,7 +204,6 @@ class report_builder_edit_form extends moodleform {
             $mform->addElement('html','<tr><td>');
             $newcolumnsselect = array_merge(array(0=>get_string('addanothercolumn','local')),$columnsselect);
             $mform->addElement('select','newcolumns','',$newcolumnsselect);
-            $mform->setType('newcolumns', PARAM_TEXT);
             $mform->addElement('html','</td><td>');
             $mform->addElement('text','newheading','');
             $mform->setType('newheading', PARAM_TEXT);
@@ -233,7 +225,6 @@ class report_builder_edit_form extends moodleform {
             $restrictions = $report->restrictionoptions;
             foreach($restrictions as $index => $restriction) {
                 $mform->addElement('advcheckbox',"restriction$index",$restriction['title'],null,null,array(0,$restriction['name']));
-                $mform->setType("restriction$index", PARAM_INT);
                 if($report->restriction) {
                     foreach($report->restriction as $res) {
                         if($restriction['name'] == $res) {
@@ -249,7 +240,7 @@ class report_builder_edit_form extends moodleform {
         $mform->addElement('hidden','id',$this->_customdata['id']);
         $mform->setType('id', PARAM_INT);
         $mform->addElement('hidden','source',$report->source);
-        $mform->setType('source', PARAM_INT);
+        $mform->setType('source', PARAM_TEXT);
         $this->add_action_buttons();
     }
 
