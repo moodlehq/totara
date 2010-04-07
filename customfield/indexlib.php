@@ -460,8 +460,10 @@ function customfield_reorder_categories($depthid=0, $tableprefix) {
 
     if ($categories = get_records_select($tableprefix.'_info_category', $depthstr, 'sortorder ASC')) {
         foreach ($categories as $cat) {
-            $cat->sortorder = $i++;
-            update_record($tableprefix.'_info_category', $cat);
+            $c = new object();
+            $c->id = $cat->id;
+            $c->sortorder = $i++;
+            update_record($tableprefix.'_info_category', $c);
         }
     }
 }
