@@ -41,6 +41,9 @@ $currevision->owner = get_record('user', 'id', $plan->userid, '', '', '', '', 'i
 if ('completed' == $currevision->status) {
     error(get_string('error:planalreadyevaluated', 'idp'), $errorurl);
 }
+if ($currevision->status != 'approved' && $currevision->status != 'overdue'){
+    error(get_string('error:plannotapproved', 'idp'), $errorurl);
+}
 
 if ($submit) {
     add_to_log(SITEID, 'idp', 'submit evaluation', "revision.php?id=$plan->id&amp;rev=$currevision->id", $plan->id);
