@@ -490,11 +490,16 @@ mitmsDialog_handler_treeview.prototype.every_load = function() {
 mitmsDialog_handler_treeview.prototype._make_hierarchy = function(parent_element) {
     var handler = this;
 
-    // Load courses on category click
+    // Load children on parent click
     $('span.folder, div.hitarea', parent_element).click(function() {
 
         // Get parent
         var par = $(this).parent();
+
+        // If we have just collapsed this branch, don't reload stuff
+        if ($('li:visible', $(par)).size() == 0) {
+            return false;
+        }
 
         // Check this category doesn't have any children already
         if ($('> ul > li', par).size()) {
