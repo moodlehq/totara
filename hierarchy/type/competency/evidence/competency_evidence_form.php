@@ -37,27 +37,32 @@ class mitms_competency_evidence_form extends moodleform {
             // repopulate if set but validation failed
             //TODO don't use POST!
             $position_title = isset($_POST['positionid']) ?
-                get_field('position', 'fullname', 'id', $_POST['positionid']) : '';
+                get_field('position', 'fullname', 'id', (int) $_POST['positionid']) : '';
             $organisation_title = isset($_POST['organisationid']) ?
-                get_field('organisation', 'fullname', 'id', $_POST['organisationid']) : '';
+                get_field('organisation', 'fullname', 'id', (int) $_POST['organisationid']) : '';
             $competency_title = isset($_POST['competencyid']) ?
-                get_field('competency', 'fullname', 'id', $_POST['competencyid']) : '';
+                get_field('competency', 'fullname', 'id', (int) $_POST['competencyid']) : '';
         }
 
         $mform->addElement('hidden', 'id', $id);
+        $mform->setType('id', PARAM_INT);
         $mform->addElement('hidden', 's', $s);
+        $mform->setType('s', PARAM_TEXT);
         $mform->addElement('hidden', 'returnurl', $returnurl);
+        $mform->setType('returnurl', PARAM_TEXT);
 
         $mform->addElement('header', 'general', get_string('general', 'form'));
 
         $mform->addElement('static', 'user', get_string('participant','local'));
         $mform->setHelpButton('user',array('competencyevidenceuser',get_string('participant','local'),'moodle'));
         $mform->addElement('hidden', 'userid', $userid);
+        $mform->setType('userid', PARAM_INT);
         $mform->addRule('userid', null, 'required');
         $mform->addRule('userid', null, 'numeric');
 
         if($editing) {
             $mform->addElement('hidden', 'competencyid', $ce->competencyid);
+            $mform->setType('competencyid', PARAM_INT);
             $mform->addElement('static', 'compname', get_string('competency','competency'));
             $mform->setHelpButton('compname',array('competencyevidencecompetency',get_string('competency','competency'),'moodle'));
         } else {
@@ -73,6 +78,7 @@ class mitms_competency_evidence_form extends moodleform {
                 <noscript><a href="'.$CFG->wwwroot.'/hierarchy/type/competency/assign/find.php?id='.$id.'&amp;nojs=1&amp;returnurl='.qualified_me().'&amp;s='.sesskey().'" class="noscript-button">'.get_string('selectcompetency','local').'</a></noscript>
                 ');
             $mform->addElement('hidden', 'competencyid');
+            $mform->setType('competencyid', PARAM_INT);
             $mform->setDefault('competencyid', 0);
             $mform->setHelpButton('competencyselector',array('competencyevidencecompetency',get_string('help:competencyevidencecompetency','local'),'moodle'));
 
@@ -94,17 +100,21 @@ class mitms_competency_evidence_form extends moodleform {
         if($selectoptions) {
             $selector = array(0 => get_string('selectanassessor','local'));
             $mform->addElement('select', 'assessorid', get_string('assessor','local'), $selector + $selectoptions);
+            $mform->setType('assessorid', PARAM_INT);
             $mform->setHelpButton('assessorid',array('competencyevidenceassessor',get_string('assessor','local'),'moodle'));
         } else {
             // if assessorid set but no assessor roles defined, this should pass the current value
             $mform->addElement('hidden', 'assessorid','');
+            $mform->setType('assessorid', PARAM_INT);
             $mform->addElement('static', 'assessoriderror', get_string('assessor','local'), get_string('noassessors','local'));
             $mform->setHelpButton('assessoriderror',array('competencyevidenceassessor',get_string('assessor','local'),'moodle'));
         }
 
         $mform->addElement('text', 'assessorname', get_string('assessorname','local'));
+        $mform->setType('assessorname', PARAM_TEXT);
         $mform->setHelpButton('assessorname',array('competencyevidenceassessorname',get_string('assessorname','local'),'moodle'));
         $mform->addElement('text', 'assessmenttype', get_string('assessmenttype','local'));
+        $mform->setType('assessmenttype', PARAM_TEXT);
         $mform->setHelpButton('assessmenttype',array('competencyevidenceassessmenttype',get_string('assessmenttype','local'),'moodle'));
 
         if(isset($ce)) {
@@ -118,10 +128,12 @@ class mitms_competency_evidence_form extends moodleform {
             $scaleid = get_field('competency','scaleid','id',$_POST['competencyid']);
             $selectoptions = get_records_menu('competency_scale_values','scaleid',$scaleid,'sortorder');
             $mform->addElement('select', 'proficiency',get_string('proficiency','local'), $selectoptions);
+            $mform->setType('proficiency', PARAM_INT);
         } else {
             // new competency evidence item
             // create a placeholder element to be filled when competency is selected
             $mform->addElement('select', 'proficiency',get_string('proficiency','local'), array(get_string('firstselectcompetency','local')));
+            $mform->setType('proficiency', PARAM_INT);
             $mform->disabledIf('proficiency','competencyid','eq',0);
         }
         $mform->setHelpButton('proficiency',array('competencyevidenceproficiency',get_string('proficiency','local'),'moodle'));
@@ -138,6 +150,7 @@ class mitms_competency_evidence_form extends moodleform {
         $mform->setHelpButton('positionselector',array('competencyevidenceposition',get_string('positionatcompletion','local'),'moodle'));
 
         $mform->addElement('hidden', 'positionid');
+        $mform->setType('positionid', PARAM_INT);
         $mform->setDefault('positionid', 0);
         $mform->addRule('positionid', null, 'numeric');
 
@@ -149,6 +162,7 @@ class mitms_competency_evidence_form extends moodleform {
             ');
         $mform->setHelpButton('organisationselector',array('competencyevidenceorganisation',get_string('organisationatcompletion','local'),'moodle'));
         $mform->addElement('hidden', 'organisationid');
+        $mform->setType('organisationid', PARAM_INT);
         $mform->setDefault('organisationid', 0);
         $mform->addRule('organisationid', null, 'numeric');
 
