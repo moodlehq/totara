@@ -3,7 +3,6 @@
 require_once('../../../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->dirroot.'/course/lib.php');
-require_once('HTML/AJAX/JSON.php');
 
 
 ///
@@ -27,5 +26,22 @@ if (!$category = get_record('course_categories', 'id', $id)) {
 // Load courses in category
 $courses = get_courses($category->id, "c.sortorder ASC", 'c.id, c.fullname');
 
-// Return courses as JSON
-echo json_encode($courses);
+if ($courses) {
+    $len = count($courses);
+    $i = 0;
+    foreach ($courses as $course) {
+        $i++;
+
+        echo '<li id="course_'.$course->id.'"';
+
+        if ($i == $len) {
+            echo ' class="last"';
+        }
+
+        echo '>';
+        echo '<span class="clickable">'.format_string($course->fullname).'</span></li>';
+    }
+}
+else {
+    echo '<li class="last">'.get_string('nocourses').'</li>';
+}

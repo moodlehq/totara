@@ -837,32 +837,6 @@ div.yuimenu .yuichildtree .yuimenuitem {
   border:none;
 }
 
-/** Competencies lightbox styling **/
-#addevidence #available-evidence {
-    float: right;
-    width: 40%;
-    border-left: 1px solid #ccc;
-    height: 200px;
-    overflow: auto;
-    padding: 0 10px;
-}
-
-#addevidence #available-evidence h3 {
-    margin: 0 0 0.5em;
-}
-
-#addevidence #available-evidence ul {
-    font-size: 0.8em;
-    margin: 0.25em 0 1em;
-    list-style: none;
-    padding: 0;
-}
-
-#addevidence #available-evidence ul li {
-    font-size: 1em;
-    padding-bottom: 0.25em;
-}
-
 /** Course completion report **/
 .completionreport th {
     white-space: nowrap;

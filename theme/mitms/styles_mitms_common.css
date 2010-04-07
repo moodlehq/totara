@@ -367,7 +367,7 @@ div.mitms-dialog #framework-picker {
 
 div.mitms-dialog .selected {
     float: right;
-    width: 200px;
+    width: 250px;
     border-left: 1px solid #ccc;
     height: 272px;
     overflow: auto;
@@ -410,6 +410,33 @@ a.noscript-button {
 #hierarchy-type-competency-evidence-add #mform1 {
     width: 95%;
 }
+
+/** Competencies lightbox styling **/
+#evidence #available-evidence {
+    float: right;
+    width: 40%;
+    border-left: 1px solid #ccc;
+    height: 200px;
+    overflow: auto;
+    padding: 0 10px;
+}
+
+#evidence #available-evidence h3 {
+    margin: 0 0 0.5em;
+}
+
+#evidence #available-evidence ul {
+    font-size: 0.8em;
+    margin: 0.25em 0 1em;
+    list-style: none;
+    padding: 0;
+}
+
+#evidence #available-evidence ul li {
+    font-size: 1em;
+    padding-bottom: 0.25em;
+}
+
 
 /*****************************************************************************/
 /** Dashboards **/

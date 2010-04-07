@@ -23,26 +23,13 @@ if (!$competency = get_record('competency', 'id', $id)) {
     error('Competency ID was incorrect');
 }
 
-// Load framework
-if (!$framework = get_record('competency_framework', 'id', $competency->frameworkid)) {
-    error('Competency framework could not be found');
-}
-
-// Load depth
-if (!$depth = get_record('competency_depth', 'id', $competency->depthid)) {
-    error('Competency depth could not be found');
-}
-
-// Cache user capabilities
-$can_edit_comp = has_capability('moodle/local:updatecompetency', $sitecontext);
-
 
 ///
 /// Display page
 ///
 
 
-// Load all categories
+// Load categories by parent id
 $categories = array();
 $parents = array();
 make_categories_list($categories, $parents);
@@ -51,14 +38,14 @@ make_categories_list($categories, $parents);
 
 <h2><?php echo get_string('assignnewevidenceitem', 'competency') ?></h2>
 
-<div id="available-evidence">
+<div id="available-evidence" class="selected">
 </div>
 
 <p>
     Locate course:
 </p>
 
-<ul id="categories" class="filetree">
+<ul class="filetree treeview">
 <?php
 
     $len = count($categories);
@@ -87,14 +74,14 @@ make_categories_list($categories, $parents);
 
         if ($this_parent == $parent) {
             if ($i > 1) {
-                echo '<li><span>Loading courses...</span></li></ul></li>';
+                echo '<li class="last loading"><div></div><span>Loading courses...</span></li></ul></li>';
             }
         } else {
             // If there are less parents now
             $diff = count($parent) - count($this_parent);
 
             if ($diff) {
-                echo str_repeat('</li><li><span>Loading courses...</span></li></ul>', $diff + 1);
+                echo str_repeat('</li><li class="last loading"><div></div><span>Loading courses...</span></li></ul>', $diff + 1);
             }
 
             $parent = $this_parent;
@@ -106,7 +93,17 @@ make_categories_list($categories, $parents);
             if ($rpos) {
                 $category = substr($category, $rpos + 3);
             }
-            echo '<li class="closed" id="cat_list_'.$id.'"><span class="folder">'.$category.'</span><ul>'.PHP_EOL;
+
+            $li_class = 'expandable closed';
+            $div_class = 'hitarea closed-hitarea expandable-hitarea';
+
+            if ($i == $len) {
+                $li_class .= ' lastExpandable';
+                $div_class .= ' lastExpandable-hitarea';
+            }
+
+            echo '<li class="'.$li_class.'" id="item_list_'.$id.'"><div class="'.$div_class.'"></div>';
+            echo '<span class="folder">'.$category.'</span><ul style="display: none;">'.PHP_EOL;
         }
     }
 
