@@ -112,15 +112,18 @@ if ($can_edit) {
         }
 
         // Update
+        $s = new object();
+        $s->id = $scale->id;
+
         if ($proficient) {
-            $scale->proficient = $proficient;
+            $s->proficient = $proficient;
         }
 
         if ($default) {
-            $scale->defaultid = $default;
+            $s->defaultid = $default;
         }
 
-        if (!update_record('competency_scale', $scale)) {
+        if (!update_record('competency_scale', $s)) {
             error('Could not update competency scale');
         }
     }
