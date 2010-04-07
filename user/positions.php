@@ -13,6 +13,7 @@ $user       = required_param('user', PARAM_INT);               // user id
 $type       = optional_param('type', '', PARAM_ALPHA);      // position type
 $courseid   = required_param('courseid', PARAM_INT);           // course id
 
+$nojs = optional_param('nojs', 0, PARAM_INT);
 
 // Load some basic data
 if (!$course = get_record('course', 'id', $courseid)) {
@@ -131,11 +132,13 @@ print_header("{$course->fullname}: {$fullname}: {$positiontype}", $course->fulln
 $currenttab = 'position'.$type;
 $showroles = 1;
 include($CFG->dirroot.'/user/tabs.php');
-
-$currenturl = "{$CFG->wwwroot}/user/positions.php?user={$user->id}&courseid={$course->id}&type={$type}";
-
+if($nojs) {
+    $currenturl = "{$CFG->wwwroot}/user/positions.php?user={$user->id}&courseid={$course->id}&type={$type}&nojs=1";
+} else {
+    $currenturl = "{$CFG->wwwroot}/user/positions.php?user={$user->id}&courseid={$course->id}&type={$type}";
+}
 // Form
-$form = new user_position_assignment_form($currenturl, compact('type', 'user', 'position_assignment', 'can_edit'));
+$form = new user_position_assignment_form($currenturl, compact('type', 'user', 'position_assignment', 'can_edit', 'nojs'));
 $form->set_data($position_assignment);
 
 if ($form->is_cancelled()){

@@ -14,6 +14,7 @@ class user_position_assignment_form extends moodleform {
         $user = $this->_customdata['user'];
         $pa = $this->_customdata['position_assignment'];
         $can_edit = $this->_customdata['can_edit'];
+        $nojs = $this->_customdata['nojs'];
 
         // Check if an aspirational position
         $aspirational = false;
@@ -35,6 +36,7 @@ class user_position_assignment_form extends moodleform {
 
         // Get manager title
         $manager_title = '';
+        $manager_id = 0;
         if ($pa->reportstoid) {
             $manager = get_record_sql(
                 "
@@ -55,6 +57,7 @@ class user_position_assignment_form extends moodleform {
 
             if ($manager) {
                 $manager_title = fullname($manager);
+                $manager_id = $manager->id;
             }
         }
 
@@ -62,6 +65,10 @@ class user_position_assignment_form extends moodleform {
         $mform->addElement('hidden', 'id');
         $mform->setType('id', PARAM_INT);
 
+        if(!$nojs) {
+            $mform->addElement('html','<noscript><p>This form requires Javascript to be enabled.
+                <a href="'.qualified_me().'&amp;nojs=1">Click here for a none javascript version of this form</a>.</p></noscript>');
+        }
         $mform->addElement('header', 'general', get_string('type'.$type, 'position'));
 
         if (!$aspirational) {
@@ -72,35 +79,69 @@ class user_position_assignment_form extends moodleform {
             $mform->setType('description', PARAM_RAW);
         }
 
-        $mform->addElement('static', 'positionselector', get_string('position', 'position'),
-            '
-                <script type ="text/javascript"> var user_id = '.$user->id.'; </script>
-                <span id="positiontitle">'.htmlentities($position_title).'</span>
-            '.
-            ($can_edit ? '<input type="button" value="'.get_string('chooseposition', 'position').'" id="show-position-dialog" />' : '')
-        );
-        $mform->addElement('hidden', 'positionid');
-        $mform->setDefault('positionid', 0);
-
+        if($nojs) {
+            $allpositions = get_records_menu('position','','','frameworkid,sortorder','id,fullname');
+            $mform->addElement('select','positionid', get_string('chooseposition','position'), $allpositions);
+        } else {
+            $mform->addElement('static', 'positionselector', get_string('position', 'position'),
+                '
+                    <script type ="text/javascript"> var user_id = '.$user->id.'; </script>
+                    <span id="positiontitle">'.htmlentities($position_title).'</span>
+                '.
+                ($can_edit ? '<input type="button" value="'.get_string('chooseposition', 'position').'" id="show-position-dialog" />' : '')
+            );
+            $mform->addElement('hidden', 'positionid');
+            $mform->setDefault('positionid', 0);
+        }
         if (!$aspirational) {
-            $mform->addElement('static', 'organisationselector', get_string('organisation', 'position'),
-                '
-                    <span id="organisationtitle">'.htmlentities($organisation_title).'</span>
-                '.
-                ($can_edit ? '<input type="button" value="'.get_string('chooseorganisation', 'organisation').'" id="show-organisation-dialog" />' : '')
-            );
+            if($nojs) {
+                $allorgs = get_records_menu('organisation','','','frameworkid,sortorder','id,fullname');
+                $mform->addElement('select','organisationid', get_string('chooseorganisation','organisation'),
+                    array(0 => get_string('chooseorganisation','organisation')) + $allorgs);
+            } else {
+                $mform->addElement('static', 'organisationselector', get_string('organisation', 'position'),
+                    '
+                        <span id="organisationtitle">'.htmlentities($organisation_title).'</span>
+                    '.
+                    ($can_edit ? '<input type="button" value="'.get_string('chooseorganisation', 'organisation').'" id="show-organisation-dialog" />' : '')
+                );
 
-            $mform->addElement('hidden', 'organisationid');
-            $mform->setDefault('organisationid', 0);
+                $mform->addElement('hidden', 'organisationid');
+                $mform->setDefault('organisationid', 0);
+            }
 
-            $mform->addElement('static', 'managerselector', get_string('manager', 'position'),
-                '
-                    <span id="managertitle">'.htmlentities($manager_title).'</span>
-                '.
-                ($can_edit ? '<input type="button" value="'.get_string('choosemanager', 'position').'" id="show-manager-dialog" />' : '')
-            );
-            $mform->addElement('hidden', 'managerid');
-            $mform->setDefault('managerid', 0);
+            if($nojs) {
+             $allmanagers = get_records_sql_menu("
+                    SELECT
+                        u.id,
+                        ".sql_fullname('u.firstname', 'u.lastname')." AS fullname,
+                        ra.id AS ra
+                    FROM
+                        {$CFG->prefix}user u
+                    INNER JOIN
+                        {$CFG->prefix}role_assignments ra
+                     ON u.id = ra.userid
+                    INNER JOIN
+                        {$CFG->prefix}role r
+                     ON ra.roleid = r.id
+                    WHERE
+                        r.shortname = 'manager'
+                    ORDER BY
+                        u.firstname,
+                        u.lastname");
+             $mform->addElement('select', 'managerid', get_string('choosemanager','position'),
+                array(0 => get_string('choosemanager','position')) + $allmanagers);
+                $mform->setDefault('managerid', $manager_id);
+            } else {
+                $mform->addElement('static', 'managerselector', get_string('manager', 'position'),
+                    '
+                        <span id="managertitle">'.htmlentities($manager_title).'</span>
+                    '.
+                    ($can_edit ? '<input type="button" value="'.get_string('choosemanager', 'position').'" id="show-manager-dialog" />' : '')
+                );
+                $mform->addElement('hidden', 'managerid');
+                $mform->setDefault('managerid', $manager_id);
+            }
 
             $mform->addElement('text', 'timevalidfrom', get_string('startdate', 'position'));
             $mform->setDefault('timevalidfrom','dd/mm/yy');

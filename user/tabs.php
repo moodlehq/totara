@@ -303,11 +303,14 @@
                 // Setup second row
                 $secondrow = array();
 
+                // update links for none js version of form
+                $js = $nojs ? '&amp;nojs=1' : '';
+
                 // Loop through preset position types
                 foreach ($POSITION_TYPES as $ptype) {
                     $secondrow[] = new tabobject(
                         'position'.$ptype,
-                        $CFG->wwwroot.'/user/positions.php?user='.$user->id.'&amp;courseid='.$course->id.'&amp;type='.$ptype,
+                        $CFG->wwwroot.'/user/positions.php?user='.$user->id.'&amp;courseid='.$course->id.'&amp;type='.$ptype.$js,
                         get_string('type'.$ptype, 'position')
                     );
                 }
