@@ -782,25 +782,6 @@ function get_modification_time($revisionid) {
 }
 
 /**
- * Remove a learning objective from a plan revision
- *
- * @param integer $objectiveid   ID of the objective to delete
- * @param integer $revision      ID of the revision containing the objective
- * @param boolean $postapproval  Whether or not this action is being performed
- *                               after the revision has been approved
- */
-function delete_plan_objective($objectiveid, $revisionid, $postapproval=0) {
-    begin_sql();
-    if (delete_records('idp_revision_objective', 'objective', $objectiveid,
-                       'revision', $revisionid, 'postapproval', $postapproval)) {
-        commit_sql();
-        return true;
-    }
-    rollback_sql();
-    return false;
-}
-
-/**
  * Delete the given plan if it only contains one empty revision.
  */
 function delete_plan($planid) {
