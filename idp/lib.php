@@ -2899,4 +2899,78 @@ function get_all_competency_frameworks($fullcompetencylist){
     
     return $frameworklist;
 }
+
+/**
+ * Print a revision that has been completed (i.e. its evaluation was submitted)
+ * You won't be able to edit it, and you'll just see its competencies and their
+ * evaluations, rather than competency templates.
+ * 
+ * @global object $USER
+ * @global object $CFG
+ * @param object $revision
+ * @param object $plan
+ */
+function print_revision_completed($revision, $plan) {
+    global $USER, $CFG;
+
+    // Personal details
+    print  '<h2>'.get_string('personaldetailsheading', 'idp').'</h2>';
+    if (empty($revision->owner)) {
+        $revision->owner = $USER;
+    }
+
+    print_revision_details($revision, false, false, false, false);
+    print_revision_list($plan->id, $revision->id);
+    print revision_comments($revision);
+    print_comment_textbox($revision->id);
+
+    print_heading(get_string('competencies', 'competency'));
+    $table = new stdClass();
+    $table->head = array('Framework', 'Competency', 'Evaluation');
+    $table->class = 'generalbox planitems boxaligncenter viewcoures';
+    $table->summary = 'Each competency in this plan, and its evaluation.';
+    $table->data = array();
+
+    $frameworks = get_all_competency_frameworks(get_all_revision_competencies($revision->id));
+    foreach( $frameworks as $framework ){
+        foreach( $framework->competencies as $competency ){
+            $eval = get_competency_evaluation( $revision->id, $competency->id );
+            $table->data[] = array($framework->fullname, $competency->fullname, $eval->name);
+        }
+    }
+
+    print_table($table, false);
+
+    $courses = idp_get_user_courses($plan->userid, $revision->id);
+    print_idp_courses_view($revision, $courses, false);
+
+    print_revision_extracomment($revision);
+}
+
+/**
+ * Get the competency scale value for the evaluation of the given competency
+ * in the given IDP revision
+ *
+ * @param int $revisionid
+ * @param int $competencyid
+ * @return string
+ */
+function get_competency_evaluation($revisionid, $competencyid){
+    global $CFG;
+    $sql = <<<SQL
+        select value.*
+        from
+            {$CFG->prefix}competency_scale_values value,
+            {$CFG->prefix}idp_competency_eval compeval
+        where
+            compeval.scalevalueid = value.id
+            and compeval.revisionid = {$revisionid}
+            and compeval.competencyid = {$competencyid}
+SQL;
+    $eval = get_record_sql($sql);
+    if ( !$eval ){
+        $eval = '';
+    }
+    return $eval;
+}
 ?>

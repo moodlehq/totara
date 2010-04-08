@@ -100,79 +100,82 @@ foreach ($lt as $column) {
 
         echo '<td valign="top" id="middle-column">';
         if ($currevision) {
-            // Whether or not to see the can_edit view
-            $can_edit = false;
-            $can_submit = false;
-            if (is_my_plan($currevision->id) and has_capability('moodle/local:editownplan', $contextsite)) {
-                $can_submit = true;
-                if ('notsubmitted' == $currevision->status or 'inrevision' == $currevision->status) {
-                    $can_edit = true;
+            if ( $currevision->status == 'completed' ){
+                print_revision_completed($currevision, $plan);
+            } else {
+                // Whether or not to see the can_edit view
+                $can_edit = false;
+                $can_submit = false;
+                if (is_my_plan($currevision->id) and has_capability('moodle/local:editownplan', $contextsite)) {
+                    $can_submit = true;
+                    if ('notsubmitted' == $currevision->status or 'inrevision' == $currevision->status) {
+                        $can_edit = true;
+                    }
                 }
-            }
-            $can_edit = $can_edit && !$print;
+                $can_edit = $can_edit && !$print;
 
-            // Whether or not the current user can approve this plan
-            $can_approve = false;
-            if (!$can_submit && has_capability('moodle/local:approveplan', $contextuser)) {
-                $can_approve = true;
-            }
-
-            if ($can_edit) {
-                print '<h1>'.get_string('revisionedittitle', 'idp', $plan->name).'</h1>';
-            } else {
-                print '<h1>'.get_string('revisionviewtitle', 'idp', $plan->name).'</h1>';
-            }
-
-            if ( $can_submit && $can_edit ){
-                echo '<form method="get" action="submit.php">';
-            }
-            if ($can_approve) {
-                print_revision_manager($currevision, $plan, array(
-                    'can_submit' => $can_submit,
-                    'can_edit'   => $can_edit,
-                    'can_approve' => $can_approve,
-                ));
-            } else {
-                print_revision_trainee($currevision, $plan, array(
-                    'can_edit'  => $can_edit,
-                    'can_submit' => $can_submit,
-                ));
-            }
-
-            if ($can_submit) {
+                // Whether or not the current user can approve this plan
+                $can_approve = false;
+                if (!$can_submit && has_capability('moodle/local:approveplan', $contextuser)) {
+                    $can_approve = true;
+                }
 
                 if ($can_edit) {
-                    print '<br /><center><table><tr><td>';
-
-                    // Save and continue later
-                    print '</td><td>';
-                    print '<div>';
-                    print '<input type="submit" name="saveandcontinuebutton" value="'.get_string('savecontinuelaterbutton', 'idp').'" />';
-                    print '</div>';
-
-                    // Submit button
-                    print '</td><td>';
-                    print '<div style="text-align: center">';
-                    print '<input type="hidden" name="rev" value="'.$currevision->id.'" />';
-                    print '<input type="submit" name="submitbutton" value="'.get_string('submitplan', 'idp').'" />';
-                    print '</div>';
-                    print "</td></tr></table></center>\n";
+                    print '<h1>'.get_string('revisionedittitle', 'idp', $plan->name).'</h1>';
+                } else {
+                    print '<h1>'.get_string('revisionviewtitle', 'idp', $plan->name).'</h1>';
                 }
-                elseif ('approved' == $currevision->status or 'overdue' == $currevision->status) {
-                    // Evaluate button
-                    print '<form method="get" action="evaluation.php"><p style="text-align: center">';
-                    print '<input type="hidden" name="id" value="'.$plan->id.'" />';
-                    print '<input type="hidden" name="rev" value="'.$currevision->id.'" />';
-                    print '<input type="submit" value="'.get_string('evaluateplan', 'idp').'" />';
-                    print "</p></form>\n";
+
+                if ( $can_submit && $can_edit ){
+                    echo '<form method="get" action="submit.php">';
                 }
-            }
-            if ( $can_submit && $can_edit ){
-                echo '</form>';
-            }
+                if ($can_approve) {
+                    print_revision_manager($currevision, $plan, array(
+                        'can_submit' => $can_submit,
+                        'can_edit'   => $can_edit,
+                        'can_approve' => $can_approve,
+                    ));
+                } else {
+                    print_revision_trainee($currevision, $plan, array(
+                        'can_edit'  => $can_edit,
+                        'can_submit' => $can_submit,
+                    ));
+                }
 
-            print '<p id="backtotop" style="text-align: center"><a href="#top">'.get_string('backtotoplink', 'idp').'</a></p>';
+                if ($can_submit) {
 
+                    if ($can_edit) {
+                        print '<br /><center><table><tr><td>';
+
+                        // Save and continue later
+                        print '</td><td>';
+                        print '<div>';
+                        print '<input type="submit" name="saveandcontinuebutton" value="'.get_string('savecontinuelaterbutton', 'idp').'" />';
+                        print '</div>';
+
+                        // Submit button
+                        print '</td><td>';
+                        print '<div style="text-align: center">';
+                        print '<input type="hidden" name="rev" value="'.$currevision->id.'" />';
+                        print '<input type="submit" name="submitbutton" value="'.get_string('submitplan', 'idp').'" />';
+                        print '</div>';
+                        print "</td></tr></table></center>\n";
+                    }
+                    elseif ('approved' == $currevision->status or 'overdue' == $currevision->status) {
+                        // Evaluate button
+                        print '<form method="get" action="evaluation.php"><p style="text-align: center">';
+                        print '<input type="hidden" name="id" value="'.$plan->id.'" />';
+                        print '<input type="hidden" name="rev" value="'.$currevision->id.'" />';
+                        print '<input type="submit" value="'.get_string('evaluateplan', 'idp').'" />';
+                        print "</p></form>\n";
+                    }
+                }
+                if ( $can_submit && $can_edit ){
+                    echo '</form>';
+                }
+
+                print '<p id="backtotop" style="text-align: center"><a href="#top">'.get_string('backtotoplink', 'idp').'</a></p>';
+            }
         } else {
             print '<p><i>'.get_string('norevisions', 'idp')."</i></p>\n";
         }
