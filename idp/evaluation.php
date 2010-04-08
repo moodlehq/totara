@@ -5,6 +5,7 @@
 
 require_once('../config.php');
 require_once('lib.php');
+require_once($CFG->dirroot.'/hierarchy/type/competency/lib.php');
 
 require_js(array('yui_yahoo', 'yui_event', 'yui_connection', 'yui_json'));
 require_login();
@@ -48,14 +49,15 @@ if ($currevision->status != 'approved' && $currevision->status != 'overdue'){
 if ($submit) {
     add_to_log(SITEID, 'idp', 'submit evaluation', "revision.php?id=$plan->id&amp;rev=$currevision->id", $plan->id);
 
-    $grades = data_submitted();
+    $compevals = optional_param('compeval',array(),PARAM_INT);
 
-    $returnurl = $CFG->wwwroot.'/moodle/local/revision.php?id='.$plan->id.'&amp;rev='.$currevision->id;
-    if (idp_submit_evaluation($currevision, $grades, $extracomment)) {
-        redirect($returnurl);
+    $successurl = "{$CFG->wwwroot}/idp/revision.php?id={$plan->id}";
+    $backurl = "{$CFG->wwwroot}/idp/evaluation.php?id={$id}";
+    if (idp_submit_evaluation($currevision, $compevals, $extracomment)) {
+        redirect($successurl);
     }
     else {
-        error(get_string('error:evaluationsubmissionerror', 'idp'), $returnurl);
+        error(get_string('error:evaluationsubmissionerror', 'idp'), $backurl);
     }
 }
 add_to_log(SITEID, 'idp', 'evaluate plan', "revision.php?id=$plan->id", $plan->id);
@@ -83,14 +85,7 @@ if ($currevision) {
     print '<input type="hidden" name="rev" value="'.$currevision->id.'" />';
     print '<input type="hidden" name="submit" value="1" /></div>';
 
-    $usercurriculum = get_field('user', 'curriculum', 'id', $plan->userid);
-    if (empty($usercurriculum)) {
-        print '<p style="border-style: dashed; border-color: #FF0000"><i><b>'.get_string('error:nousercurriculum', 'idp').'</b></i></p>';
-    }
-    else {
-        print_curriculum_evaluation($usercurriculum, $currevision->id);
-    }
-    print_curriculum_evaluation('Q', $currevision->id);
+    print_idp_evaluation($currevision->id);
 
     print '<h2>'.get_string('extracommentsheading', 'idp').'</h2>';
     print '<blockquote><p><textarea name="extracomment" rows="4" cols="80"></textarea></p></blockquote>';
@@ -114,25 +109,69 @@ print '<script type="text/javascript" src="evaluation.js"></script>'."\n";
 
 print_footer();
 
-// Print the table and the simple curriculum browser
-function print_curriculum_evaluation($curriculumcode, $revisionid) {
+/**
+ * Print the evaluation table for this IDP revision
+ * @global object $CFG
+ * @param int $revisionid
+ */
+function print_idp_evaluation($revisionid) {
+    global $CFG;
 
-    print '<h2>'.get_string("curriculum_{$curriculumcode}_title", 'idp').'</h2>';
-    print '<blockquote>';
+    $sql = <<<SQL
+    select comp.*
+    from
+        {$CFG->prefix}competency comp,
+        {$CFG->prefix}competency_framework fwork
+    where
+        comp.id in (
+            select distinct revcomp.competency
+            from {$CFG->prefix}idp_revision_competency revcomp
+            where revcomp.revision = {$revisionid}
+        union
+            select distinct complist.instanceid
+            from
+                {$CFG->prefix}idp_revision_competencytemplate revtemp,
+                {$CFG->prefix}competency_template_assignment complist
+            where
+                revtemp.revision = {$revisionid}
+                and revtemp.competencytemplate = complist.templateid
+        )
+        and comp.frameworkid = fwork.id
+    order by
+        fwork.sortorder,
+        comp.sortorder
+SQL;
+    $fullcompetencylist = get_all_revision_competencies($revisionid);
+    if ( !$fullcompetencylist ){
+        return false;
+    }
+    $frameworklist = get_all_competency_frameworks($fullcompetencylist);
 
-    print '<div id="objectivelist'.$curriculumcode.'">';
-    print curriculum_evaluations($curriculumcode, $revisionid);
-    print '</div>';
+    foreach( $frameworklist as $framework ){
+        print '<h2>Framework: '.s($framework->fullname).'</h2>';
+        print '<blockquote>';
 
-    $divid = "additionalobj$curriculumcode";
-//    print '<h2>'.get_string('additionalobjectives').'</h2>';
-    print collapsing_tree_node("caption_$divid", $divid, get_string('additionalobjectives', 'idp'),
-                               0, '', false, 'curriculum');
-    print '<div id="'.$divid.'" style="display: none">';
-    print can_edit_curriculum_browser($curriculumcode, $revisionid, false, 50);
-    print '</div>';
+//        print '<pre>';
+//        var_dump($competencylist);
+//        print '</pre>';
+        print '<div id="objectivelist'.$framework->id.'">';
+        //unction framework_evaluations($revisionid, $framework, $scale, $competencylist) {
+        print framework_evaluations($revisionid, $framework);
+        print '</div>';
 
-    print '</blockquote>';
+// TODO: Let people add stuff to the plan while submitting their evaluation?
+//        $divid = "additionalobj$frameworkid";
+//    //    print '<h2>'.get_string('additionalobjectives').'</h2>';
+//        print collapsing_tree_node("caption_$divid", $divid, get_string('additionalobjectives', 'idp'),
+//                                   0, '', false, 'curriculum');
+
+//        print '<div id="'.$divid.'" style="display: none">';
+//        print can_edit_curriculum_browser($curriculumcode, $revisionid, false, 50);
+//        print '</div>';
+
+        print '</blockquote>';
+    }
+
 }
 
 ?>

@@ -2251,37 +2251,55 @@ function idp_get_user_courses($userid, $currevisionid) {
  * revision objective.
  *
  * @param class $revision       Revision object as returned by get_revision()
-/**
- * Mark the given revision as "evaluated" and give a grade to each
- * revision objective.
- *
- * @param class $revision       Revision object as returned by get_revision()
- * @param array $grades         Array of grades as submitted by the grades form
+ * @param array $compevals         Array of grades as submitted by the grades form
  * @param string $extracomment  Optional comment added to the evaluation
  */
-function idp_submit_evaluation($revision, $grades, $extracomment) {
+function idp_submit_evaluation($revision, $compevals, $extracomment) {
+    global $USER;
 
     $record = new stdclass();
     $record->id = $revision->id;
     $record->evaluatedtime = time();
     $record->evaluationcomment = $extracomment;
 
+    $allcompetencies = get_all_revision_competencies($revision->id);
+    if ( !$allcompetencies ){
+        return false;
+    }
+    $frameworklist = get_all_competency_frameworks($allcompetencies);
+
     begin_sql();
-    if ($grades->objid) {
-        foreach ($grades->objid as $roid) {
-            if (!isset($grades->{"grade$roid"})) {
-                // One of the objectives was not evaluated
-                return false;
-            }
+    foreach ($allcompetencies as $competency ) {
+        if (!isset($compevals[$competency->id])) {
+            // One of the objectives was not evaluated
+            rollback_sql();
+            return false;
+        }
 
-            $rorecord = new stdclass();
-            $rorecord->id = clean_param($roid, PARAM_NUMBER);
-            $rorecord->grade = clean_param($grades->{"grade$roid"}, PARAM_NUMBER);
-
-            if (!update_record('idp_revision_objective', $rorecord)) {
-                rollback_sql();
-                return false;
+        // Verify the scale value entered is valid
+        $isscalevaluecorrect = false;
+        foreach( $frameworklist[$competency->frameworkid]->scale->valuelist as $scalevalue ){
+            if ( $scalevalue->id == $compevals[$competency->id] ){
+                $isscalevaluecorrect = true;
+                break;
             }
+        }
+        if ( !$isscalevaluecorrect ){
+            rollback_sql();
+            return false;
+        }
+
+        $evalrecord = new stdclass();
+        $evalrecord->revisionid = $revision->id;
+        $evalrecord->competencyid = $competency->id;
+        $evalrecord->scalevalueid = $compevals[$competency->id];
+        $evalrecord->timecreated = time();
+        $evalrecord->timemodified = time();
+        $evalrecord->usermodified = $USER->id;
+
+        if (!insert_record('idp_competency_eval', $evalrecord)) {
+            rollback_sql();
+            return false;
         }
     }
 
@@ -2309,85 +2327,85 @@ function idp_get_evaluation_deadline($plan) {
  * Return a table of themes and objectives along with the
  * self-evaluation "grade" for a given curriculum
  */
-function curriculum_evaluations($curriculumcode, $revisionid) {
+/**
+ * Return a table of competencies for a particular framework, along with the
+ * self-evaluation "grade" for a given competency
+ * 
+ * @global <type> $CFG
+ * @param int $revisionid
+ * @param object $framework
+ * @return boolean success or failure
+ */
+function framework_evaluations($revisionid, $framework) {
     global $CFG;
 
-    $objectives = get_records_sql("SELECT ro.id AS roid, o.id AS objectiveid, t.name AS themename,
-                                          d.name AS domainname, o.name AS objectivename, ro.postapproval,
-                                          o.deleted AS objectivedeleted, o.urlsuffix AS objectiveurlsuffix,
-                                          t.urlsuffix AS themeurlsuffix, c.baseurl, ro.grade
-                                     FROM {$CFG->prefix}idp_revision_objective ro,
-                                          {$CFG->prefix}racp_curriculum c,
-                                          {$CFG->prefix}racp_domain d,
-                                          {$CFG->prefix}racp_theme t,
-                                          {$CFG->prefix}racp_objective o
-                                    WHERE ro.revision = $revisionid AND
-                                          c.code = '$curriculumcode' AND
-                                          ro.objective = o.id AND o.theme = t.id AND
-                                          t.domain = d.id AND d.curriculum = c.id");
-
-    if ($objectives and count($objectives) > 0) {
-
-        sort_objectives($objectives);
+    if ($framework->competencies and count($framework->competencies) > 0) {
 
         $table = new stdclass();
         $table->class = 'generaltable objectiveevaluation';
         $table->rowclass[] = 'header';
-        $table->data[] = array(get_string('themeorobjectivecolumn', 'idp'),
-                               get_string('plangrade1', 'idp'),
-                               get_string('plangrade2', 'idp'),
-                               get_string('plangrade3', 'idp'),
-                               get_string('plangrade4', 'idp'),
-                               get_string('plangrade0', 'idp'),
-                               '&nbsp;');
+        $firstrow = array(get_string('themeorobjectivecolumn', 'idp'));
+        foreach( $framework->scale->valuelist as $scalevalue ){
+            $firstrow[] = $scalevalue->name;
+        }
+  //      $firstrow[] = '&nbsp;';
+        $table->data[] = $firstrow;
         $table->tablealign = 'left';
-        $table->summary = 'List of Learning Objectives and a way to grade them';
+        $table->summary = 'List of Competencies and a way to grade them';
 
         $lasttheme = '';
-        foreach ($objectives as $objective) {
-            if ($lasttheme != $objective->themename) {
-                // Theme sub heading
-                $table->rowclass[] = 'themename';
-                $table->data[] = array(get_string('themeprefix', 'local') .
-                                       s($objective->themename),
-                                       '&nbsp;', '&nbsp;', '&nbsp;', '&nbsp;', '&nbsp;',
-                                       online_curriculum_link($objective->baseurl,
-                                                              $objective->themeurlsuffix));
-                $lasttheme = $objective->themename;
-            }
+        foreach ($framework->competencies as $competency) {
+//            if ($lasttheme != $competency->themename) {
+//                // Theme sub heading
+//                $table->rowclass[] = 'themename';
+//                $table->data[] = array(get_string('themeprefix', 'local') .
+//                                       s($competency->themename),
+//                                       '&nbsp;', '&nbsp;', '&nbsp;', '&nbsp;', '&nbsp;',
+//                                       online_curriculum_link($competency->baseurl,
+//                                                              $competency->themeurlsuffix));
+//                $lasttheme = $competency->themename;
+//            }
 
             // Form elements
-            $idfield = '<input type="hidden" name="objid[]" value="'.$objective->roid .'" />';
+            //$idfield = '<input type="hidden" name="compid[]" value="'.$competency->id .'" />';
             $grades = array();
-            for ($i = 0; $i <= 4; $i += 1) {
-                $grades[$i] = '<input type="radio" name="grade'.$objective->roid.'" value="'.$i.'" ';
-                if ($objective->grade !== null and $objective->grade == $i) {
-                    $grades[$i] .= 'checked="checked" ';
-                }
-                $grades[$i] .= "onclick=\"grade_objective($objective->roid, $i)\" />";
+            foreach( $framework->scale->valuelist as $scalevalue ){
+                $gradestr = '<input type="radio" name="compeval['.$competency->id.']" value="'.$scalevalue->id.'" ';
+                // TODO: handle partially completed forms
+//                if ($competency->grade !== null and $competency->grade == $i) {
+//                    $grades[$i] .= 'checked="checked" ';
+//                }
+
+                // TODO: apparently this is an ajax function to store the thing 
+                // as soon as you click it!
+                //$gradestr .= "onclick=\"grade_objective($competency->id, $i)\" ";
+                $gradestr .= "/>";
+                $grades[] = $gradestr;
             }
 
-            $deletebutton = '';
-            if ($objective->postapproval) {
-                $id = $objective->objectiveid;
-                $deletebutton = '&nbsp;';
-                $deletebutton .= "<img id=\"delobj$objective->objectiveid\"";
-                $deletebutton .= " onclick=\"toggle_objective($revisionid, $objective->objectiveid, '$curriculumcode', true, 'deleteobj', this)\"";
-                $deletebutton .= ' style="cursor: pointer"';
-                $deletebutton .= ' alt="'.get_string('deletebutton', 'local').'"';
-                $deletebutton .= ' title="'.get_string('deletebutton', 'local').'"';
-                $deletebutton .= " src=\"{$CFG->pixpath}/delete.gif\" />";
+//            $deletebutton = '';
+//            if ($competency->postapproval) {
+//                $id = $competency->objectiveid;
+//                $deletebutton = '&nbsp;';
+//                $deletebutton .= "<img id=\"delobj$competency->objectiveid\"";
+//                $deletebutton .= " onclick=\"toggle_objective($revisionid, $competency->objectiveid, '$curriculumcode', true, 'deleteobj', this)\"";
+//                $deletebutton .= ' style="cursor: pointer"';
+//                $deletebutton .= ' alt="'.get_string('deletebutton', 'local').'"';
+//                $deletebutton .= ' title="'.get_string('deletebutton', 'local').'"';
+//                $deletebutton .= " src=\"{$CFG->pixpath}/delete.gif\" />";
+//
+//                $table->rowclass[] = 'postapproval';
+//            }
+//            else {
+//                $table->rowclass[] = '';
+//            }
 
-                $table->rowclass[] = 'postapproval';
+            $row = array( s($competency->fullname) );
+            foreach ( $grades as $grade ){
+                $row[] = $grade;
             }
-            else {
-                $table->rowclass[] = '';
-            }
-
-            $table->data[] = array($idfield . s($objective->objectivename),
-                                   $grades[1], $grades[2], $grades[3], $grades[4], $grades[0],
-                                   online_curriculum_link($objective->baseurl,
-                                                          $objective->objectiveurlsuffix).$deletebutton);
+//            $row[] = online_curriculum_link($competency->baseurl, $competency->objectiveurlsuffix).$deletebutton;
+            $table->data[] = $row;
 
         }
 
@@ -2812,4 +2830,73 @@ function collapsing_tree_node($id, $divid, $caption='', $spacing=0, $extracell='
 }
 
 
+/**
+ * Get a list of all the distinct competencies for this revision. This includes
+ * competencies that are in competency templates.
+ *
+ * @global object $CFG
+ * @param int $revisionid
+ * @return array
+ */
+function get_all_revision_competencies($revisionid){
+    global $CFG;
+
+    $sql = <<<SQL
+    select comp.*
+    from
+        {$CFG->prefix}competency comp,
+        {$CFG->prefix}competency_framework fwork
+    where
+        comp.id in (
+            select distinct revcomp.competency
+            from {$CFG->prefix}idp_revision_competency revcomp
+            where revcomp.revision = {$revisionid}
+        union
+            select distinct complist.instanceid
+            from
+                {$CFG->prefix}idp_revision_competencytemplate revtemp,
+                {$CFG->prefix}competency_template_assignment complist
+            where
+                revtemp.revision = {$revisionid}
+                and revtemp.competencytemplate = complist.templateid
+        )
+        and comp.frameworkid = fwork.id
+    order by
+        fwork.sortorder,
+        comp.sortorder
+SQL;
+    return get_records_sql($sql);
+}
+
+/**
+ * Given a list of competencies such as that returned by get_all_revision_competencies,
+ * return details (including competency scales) for all the frameworks shared
+ * by those competencies.
+ * 
+ * @param <type> $fullcompetencylist
+ * @return array
+ */
+function get_all_competency_frameworks($fullcompetencylist){
+    $frameworktocompetencyhash = array();
+
+    // Sort all the competencies by framework
+    foreach( $fullcompetencylist as $competency ){
+        $frameworktocompetencyhash[$competency->frameworkid][] = $competency;
+    }
+
+    $frameworklist = array();
+    $hierarchy = new competency();
+    foreach( $frameworktocompetencyhash as $frameworkid => $competencylist ){
+        $framework = get_record('competency_framework', 'id', $frameworkid);
+
+        $hierarchy->frameworkid = $frameworkid;
+        $scale = $hierarchy->get_competency_scale();
+        $framework->scale = $scale;
+        $framework->competencies = $competencylist;
+
+        $frameworklist[$frameworkid] = $framework;
+    }
+    
+    return $frameworklist;
+}
 ?>

@@ -345,4 +345,29 @@ class competency extends hierarchy {
 
         return $data;
     }
+
+    function get_competency_scale(){
+        global $CFG;
+        $sql = <<<SQL
+            select scale.*
+            from
+                {$CFG->prefix}competency_scale_assignments sa,
+                {$CFG->prefix}competency_scale scale
+            where
+                sa.scaleid = scale.id
+                and sa.frameworkid = {$this->frameworkid}
+SQL;
+        $scale = get_record_sql($sql);
+        if ( !$scale ){
+            return false;
+        }
+
+        $valuelist = get_records('competency_scale_values', 'scaleid', $scale->id, 'sortorder');
+        if ( $valuelist ){
+            $scale->valuelist = $valuelist;
+        } else {
+            $scale->valuelist = array();
+        }
+        return $scale;
+    }
 }
