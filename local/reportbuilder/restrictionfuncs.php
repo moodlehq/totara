@@ -32,8 +32,8 @@ function reportbuilder_restriction_local_records() {
     global $CFG,$USER;
     require_once($CFG->dirroot.'/hierarchy/lib.php');
     $userid = $USER->id;
-    // get the user's organisationid
-    $orgid = get_field('position_assignment','organisationid','userid',$userid);
+    // get the user's organisationid (for primary position)
+    $orgid = get_field('position_assignment','organisationid','userid',$userid, 'type', 1);
     // no results if they don't have one
     if(empty($orgid)) {
         return null;
@@ -61,13 +61,12 @@ function reportbuilder_restriction_local_records() {
 function reportbuilder_restriction_local_completed_records() {
     global $CFG,$USER;
     $userid = $USER->id;
-    // get the user's organisationid
-    $orgid = get_field('position_assignment','organisationid','userid',$userid);
+    // get the user's organisationid (for primary position)
+    $orgid = get_field('position_assignment','organisationid','userid',$userid, 'type', 1);
     // no results if they don't have one
     if(empty($orgid)) {
         return null;
     }
-
     // get list of organisations to find users for
     $hierarchy = new hierarchy();
     $hierarchy->prefix = 'organisation';
