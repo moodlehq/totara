@@ -132,7 +132,9 @@ function customfield_delete_category($id, $depthid=0, $tableprefix) {
         error('Incorrect category id');
     }   
 
-    if (!$categories = get_records_select($tableprefix.'_info_category', '', 'sortorder ASC')) {
+    // get other categories at same depth level
+    // get sortorder as first field so array keys will be sortorder
+    if (!$categories = get_records($tableprefix.'_info_category', 'depthid', $category->depthid, 'sortorder ASC','sortorder,id')) {
         error('Error no categories!?!?');
     }   
 
@@ -161,7 +163,6 @@ function customfield_delete_category($id, $depthid=0, $tableprefix) {
                 $f->sortorder = $sortorder++;
                 $f->categoryid = $newcategory->id;
                 update_record($tableprefix.'_info_field', $f);
-                echo "<pre>";var_dump($f);echo"</pre>";
             }   
         }   
     }   
