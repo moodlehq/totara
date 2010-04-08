@@ -789,7 +789,6 @@ function xmldb_local_upgrade($oldversion) {
         $table->addFieldInfo('revision', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
         $table->addFieldInfo('competency', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
         $table->addFieldInfo('ctime', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $table->addFieldInfo('grade', XMLDB_TYPE_INTEGER, '8', XMLDB_UNSIGNED, null, null, null);
         $table->addFieldInfo('postapproval', XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, null, null, null);
         $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
         $table->addIndexInfo('revision', XMLDB_INDEX_NOTUNIQUE, array('revision'));
@@ -836,7 +835,6 @@ function xmldb_local_upgrade($oldversion) {
         $table->addFieldInfo('revision', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
         $table->addFieldInfo('competencytemplate', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
         $table->addFieldInfo('ctime', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $table->addFieldInfo('grade', XMLDB_TYPE_INTEGER, '8', XMLDB_UNSIGNED, null, null, null);
         $table->addFieldInfo('postapproval', XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, null, null, null);
         $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
         $table->addIndexInfo('revision', XMLDB_INDEX_NOTUNIQUE, array('revision'));
@@ -1300,6 +1298,40 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && drop_field($table, $field);
     }
 
+    if ($result && $oldversion < 2010040800) {
+        // Create new table idp_competency_eval
+        $table = new XMLDBTable('idp_competency_eval');
+        if(!table_exists($table)) {
+
+            // Adding fields to table
+            $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null, null);
+            $table->addFieldInfo('revisionid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
+            $table->addFieldInfo('competencyid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
+            $table->addFieldInfo('scalevalueid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
+            $table->addFieldInfo('timecreated', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
+            $table->addFieldInfo('timemodified', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
+            $table->addFieldInfo('usermodified', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
+
+            // Adding keys to table
+            $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
+
+            // Adding indexes to table
+            $table->addIndexInfo('revisionid', XMLDB_INDEX_NOTUNIQUE, array('revisionid'));
+
+            // Launch create table for course_modules_completion
+            $result = $result && create_table($table);
+        }
+
+        // Drop obsolete column idp_revision_competency.grade
+        $table = new XMLDBTable('idp_revision_competency');
+        $field = new XMLDBField('grade');
+        $result = $result && drop_field($table, $field);
+
+        // Drop obsolete column idp_revision_competencytemplate.grade
+        $table = new XMLDBTable('idp_revision_competencytemplate');
+        $field = new XMLDBField('grade');
+        $result = $result && drop_field($table, $field);
+    }
     return $result;
 
 }
