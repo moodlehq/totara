@@ -73,7 +73,7 @@ if(!$nojs) {
 } else {
     // none JS version of page
     admin_externalpage_print_header();
-    echo '<h2>'.get_string('addcompetency', $hierarchy->prefix).'</h2>';
+    echo '<h2>'.get_string('assigncompetency', $hierarchy->prefix).'</h2>';
 
     echo '<p><a href="'.$returnurl.'">'.get_string('cancelwithoutassigning','hierarchy').'</a></p>';
 

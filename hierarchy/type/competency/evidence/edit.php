@@ -14,6 +14,10 @@ require_once('evidence.php');
 $id = required_param('id', PARAM_INT);
 $returnurl = optional_param('returnurl', $CFG->wwwroot, PARAM_TEXT);
 $s = optional_param('s', null, PARAM_TEXT);
+$competencyid = optional_param('competencyid', 0, PARAM_INT);
+$positionid = optional_param('positionid', 0, PARAM_INT);
+$organisationid = optional_param('organisationid', 0, PARAM_INT);
+$nojs = optional_param('nojs', 0, PARAM_INT);
 
 // only redirect back if we are sure that's where they came from
 if($s != sesskey()) {
@@ -42,7 +46,8 @@ if (!$depth = get_record('competency_depth', 'id', $competency->depthid)) {
     error('Competency depth could not be found');
 }
 
-$mform =& new mitms_competency_evidence_form(null, compact('id','competencyevidence','returnurl','s'));
+$mform =& new mitms_competency_evidence_form(null, compact('id','competencyid','positionid',
+    'organisationid','competencyevidence','returnurl','s','nojs'));
 if ($mform->is_cancelled()) {
     redirect($returnurl);
 }

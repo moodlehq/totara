@@ -9,11 +9,16 @@ class mitms_competency_evidence_form extends moodleform {
         global $CFG;
 
         $mform =& $this->_form;
-
         $s = $this->_customdata['s'];
         $returnurl = $this->_customdata['returnurl'];
         $editing = isset($this->_customdata['competencyevidence']); // if competency evidence passed to form, we are editing
         $ce = $editing ? $this->_customdata['competencyevidence'] : null;
+
+        $competencyid = isset($this->_customdata['competencyid']) ? $this->_customdata['competencyid'] : 0;
+        $positionid = isset($this->_customdata['positionid']) ? $this->_customdata['positionid'] : 0;
+        $organisationid = isset($this->_customdata['organisationid']) ? $this->_customdata['organisationid'] : 0;
+        $nojs = $this->_customdata['nojs'];
+
         if($editing) {
             // get id and userid from competency evidence object
             $userid = $ce->userid;
@@ -35,13 +40,12 @@ class mitms_competency_evidence_form extends moodleform {
             $userid = $this->_customdata['userid'];
             $id = null;
             // repopulate if set but validation failed
-            //TODO don't use POST!
-            $position_title = isset($_POST['positionid']) ?
-                get_field('position', 'fullname', 'id', (int) $_POST['positionid']) : '';
-            $organisation_title = isset($_POST['organisationid']) ?
-                get_field('organisation', 'fullname', 'id', (int) $_POST['organisationid']) : '';
-            $competency_title = isset($_POST['competencyid']) ?
-                get_field('competency', 'fullname', 'id', (int) $_POST['competencyid']) : '';
+            $position_title = ($positionid != 0) ?
+                get_field('position', 'fullname', 'id', $positionid) : '';
+            $organisation_title = ($organisationid != 0) ?
+                get_field('organisation', 'fullname', 'id', $organisationid) : '';
+            $competency_title = ($competencyid != 0) ?
+                get_field('competency', 'fullname', 'id', $competencyid) : '';
         }
 
         $mform->addElement('hidden', 'id', $id);
@@ -50,6 +54,15 @@ class mitms_competency_evidence_form extends moodleform {
         $mform->setType('s', PARAM_TEXT);
         $mform->addElement('hidden', 'returnurl', $returnurl);
         $mform->setType('returnurl', PARAM_TEXT);
+
+        if(!$nojs && $competencyid == 0) {
+            // replace previous return url with a new url
+            // submitting the form won't return the user to
+            // the record of learning page if JS is ofe
+            $murl = new moodle_url(qualified_me());
+            $mform->addElement('html','<noscript><p>This form requires Javascript to be enabled.
+                <a href="'.$murl->out(false,array('nojs'=>1)).'">Click here for a none javascript version of this form</a>.</p></noscript>');
+        }
 
         $mform->addElement('header', 'general', get_string('general', 'form'));
 
@@ -66,21 +79,29 @@ class mitms_competency_evidence_form extends moodleform {
             $mform->addElement('static', 'compname', get_string('competency','competency'));
             $mform->setHelpButton('compname',array('competencyevidencecompetency',get_string('competency','competency'),'moodle'));
         } else {
-
-            // competency selector
-            $mform->addElement('static', 'competencyselector', get_string('competency', 'competency'),
-                '
-                <script type ="text/javascript"> var user_id = '.$userid.'; </script>
-                <span id="competencytitle">'.htmlentities($competency_title).'</span>
-                <input type="button" value="'.get_string('selectcompetency', 'local').'" id="show-competency-dialog" />
-                or
-                <input type="button" value="'.get_string('createnewcompetency', 'competency').'" id="show-add-dialog" />
-                <noscript><a href="'.$CFG->wwwroot.'/hierarchy/type/competency/assign/find.php?id='.$id.'&amp;nojs=1&amp;returnurl='.qualified_me().'&amp;s='.sesskey().'" class="noscript-button">'.get_string('selectcompetency','local').'</a></noscript>
-                ');
-            $mform->addElement('hidden', 'competencyid');
-            $mform->setType('competencyid', PARAM_INT);
-            $mform->setDefault('competencyid', 0);
-            $mform->setHelpButton('competencyselector',array('competencyevidencecompetency',get_string('help:competencyevidencecompetency','local'),'moodle'));
+            if($nojs) {
+                $murl = new moodle_url(qualified_me());
+                $murl->remove_params('returnurl');
+                $newreturn = urlencode($murl->out());
+                $mform->addElement('static','assigncompetency',get_string('assigncompetency','competency'),'<div id="competencytitle">'.htmlentities($competency_title).'</div><a href="'.$CFG->wwwroot.'/hierarchy/type/competency/assign/find.php?nojs=1&amp;s='.sesskey().'&amp;returnurl='.$newreturn.'&amp;userid='.$userid.'">'.get_string('assigncompetency','competency').'</a>.');
+                $mform->addElement('hidden', 'competencyid');
+                $mform->setType('competencyid', PARAM_INT);
+                $mform->setDefault('competencyid', $competencyid);
+            } else {
+                // competency selector
+                $mform->addElement('static', 'competencyselector', get_string('competency', 'competency'),
+                    '
+                    <script type ="text/javascript"> var user_id = '.$userid.'; </script>
+                    <span id="competencytitle">'.htmlentities($competency_title).'</span>
+                    <input type="button" value="'.get_string('selectcompetency', 'local').'" id="show-competency-dialog" />
+                    or
+                    <input type="button" value="'.get_string('createnewcompetency', 'competency').'" id="show-add-dialog" />
+                    ');
+                $mform->addElement('hidden', 'competencyid');
+                $mform->setType('competencyid', PARAM_INT);
+                $mform->setDefault('competencyid', $competencyid);
+                $mform->setHelpButton('competencyselector',array('competencyevidencecompetency',get_string('help:competencyevidencecompetency','local'),'moodle'));
+            }
 
         }
         $mform->addRule('competencyid',null,'required');
@@ -123,9 +144,9 @@ class mitms_competency_evidence_form extends moodleform {
             $scaleid = get_field('competency_scale_values','scaleid','id',$ce->proficiency);
             $selectoptions = get_records_menu('competency_scale_values','scaleid',$scaleid,'sortorder');
             $mform->addElement('select', 'proficiency',get_string('proficiency','local'), $selectoptions);
-        } else if (isset($_POST['competencyid'])) {
+        } else if ($competencyid != 0) {
             // competency set but validation failed. Refill scale options
-            $scaleid = get_field('competency','scaleid','id',$_POST['competencyid']);
+            $scaleid = get_field('competency','scaleid','id',$competencyid);
             $selectoptions = get_records_menu('competency_scale_values','scaleid',$scaleid,'sortorder');
             $mform->addElement('select', 'proficiency',get_string('proficiency','local'), $selectoptions);
             $mform->setType('proficiency', PARAM_INT);
@@ -140,31 +161,42 @@ class mitms_competency_evidence_form extends moodleform {
         $mform->addRule('proficiency',null,'required');
         $mform->addRule('proficiency',get_string('err_required','form'),'nonzero');
 
-        // position selector
-        $mform->addElement('static', 'positionselector', get_string('positionatcompletion', 'local'),
-            '
-            <script type ="text/javascript"> var user_id = '.$userid.'; </script>
-            <span id="positiontitle">'.htmlentities($position_title).'</span>
-            <input type="button" value="'.get_string('chooseposition', 'position').'" id="show-position-dialog" />
-            ');
-        $mform->setHelpButton('positionselector',array('competencyevidenceposition',get_string('positionatcompletion','local'),'moodle'));
 
-        $mform->addElement('hidden', 'positionid');
-        $mform->setType('positionid', PARAM_INT);
-        $mform->setDefault('positionid', 0);
-        $mform->addRule('positionid', null, 'numeric');
+        if($nojs) {
+            $allpositions = get_records_menu('position','','','frameworkid,sortorder','id,fullname');
+            $mform->addElement('select','positionid', get_string('chooseposition','position'), array(0 => get_string('chooseposition','position')) + $allpositions);
+        } else {
+            // position selector
+            $mform->addElement('static', 'positionselector', get_string('positionatcompletion', 'local'),
+                '
+                <script type ="text/javascript"> var user_id = '.$userid.'; </script>
+                <span id="positiontitle">'.htmlentities($position_title).'</span>
+                <input type="button" value="'.get_string('chooseposition', 'position').'" id="show-position-dialog" />
+                ');
+            $mform->setHelpButton('positionselector',array('competencyevidenceposition',get_string('positionatcompletion','local'),'moodle'));
 
-        // organisation selector
-        $mform->addElement('static', 'organisationselector', get_string('organisationatcompletion', 'local'),
-            '
-            <span id="organisationtitle">'.htmlentities($organisation_title).'</span>
-            <input type="button" value="'.get_string('chooseorganisation', 'organisation').'" id="show-organisation-dialog" />
-            ');
-        $mform->setHelpButton('organisationselector',array('competencyevidenceorganisation',get_string('organisationatcompletion','local'),'moodle'));
-        $mform->addElement('hidden', 'organisationid');
-        $mform->setType('organisationid', PARAM_INT);
-        $mform->setDefault('organisationid', 0);
-        $mform->addRule('organisationid', null, 'numeric');
+            $mform->addElement('hidden', 'positionid');
+            $mform->setType('positionid', PARAM_INT);
+            $mform->setDefault('positionid', 0);
+            $mform->addRule('positionid', null, 'numeric');
+        }
+
+        if($nojs) {
+            $allorgs = get_records_menu('organisation','','','frameworkid,sortorder','id,fullname');
+            $mform->addElement('select','organisationid', get_string('chooseorganisation','organisation'), array(0 => get_string('chooseorganisation','organisation')) + $allorgs);
+        } else {
+            // organisation selector
+            $mform->addElement('static', 'organisationselector', get_string('organisationatcompletion', 'local'),
+                '
+                <span id="organisationtitle">'.htmlentities($organisation_title).'</span>
+                <input type="button" value="'.get_string('chooseorganisation', 'organisation').'" id="show-organisation-dialog" />
+                ');
+            $mform->setHelpButton('organisationselector',array('competencyevidenceorganisation',get_string('organisationatcompletion','local'),'moodle'));
+            $mform->addElement('hidden', 'organisationid');
+            $mform->setType('organisationid', PARAM_INT);
+            $mform->setDefault('organisationid', 0);
+            $mform->addRule('organisationid', null, 'numeric');
+        }
 
         $mform->addElement('date_selector', 'timemodified', get_string('timecompleted','local'));
         $mform->setHelpButton('timemodified',array('competencyevidencetimecompleted',get_string('timecompleted','local'),'moodle'));

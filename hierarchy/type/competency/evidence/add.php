@@ -14,6 +14,11 @@ $userid = required_param('userid', PARAM_INT);
 $returnurl = optional_param('returnurl', $CFG->wwwroot, PARAM_TEXT);
 $proficiency = optional_param('proficiency', null, PARAM_INT);
 $s = optional_param('s', null, PARAM_TEXT);
+$competencyid = optional_param('competencyid', 0, PARAM_INT);
+$positionid = optional_param('positionid', 0, PARAM_INT);
+$organisationid = optional_param('organisationid', 0, PARAM_INT);
+
+$nojs = optional_param('nojs', 0, PARAM_INT);
 
 if($u = get_record('user','id',$userid)) {
     $toform = new object();
@@ -31,7 +36,8 @@ if($s != sesskey()) {
 $sitecontext = get_context_instance(CONTEXT_SYSTEM);
 require_capability('moodle/local:updatecompetency', $sitecontext);
 
-$mform =& new mitms_competency_evidence_form(null, compact('id','userid','user','returnurl','s'));
+$mform =& new mitms_competency_evidence_form(null, compact('id','competencyid','positionid',
+    'organisationid','userid','user','returnurl','s','nojs'));
 if ($mform->is_cancelled()) {
     redirect($returnurl);
 }
