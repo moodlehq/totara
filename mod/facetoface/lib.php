@@ -2396,6 +2396,9 @@ function facetoface_print_coursemodule_info($coursemodule)
     if (!has_capability('mod/facetoface:view', $contextmodule)) {
         return ''; // not allowed to view this activity
     }
+    $contextcourse = get_context_instance(CONTEXT_COURSE, $coursemodule->course);
+    // can view attendees
+    $viewattendees = has_capability('mod/facetoface:viewattendees', $contextcourse);
 
     $table = '';
     $timenow = time();
@@ -2460,6 +2463,12 @@ function facetoface_print_coursemodule_info($coursemodule)
                 $venue = $customfielddata['venue']->data;
             }
 
+            // don't include the link to view attendees if user is lacking capability
+            $attendeeslink = '';
+            if ($viewattendees) {
+                $attendeeslink = "<tr><td><a class=\"f2fsessionlinks\" href=\"$facetofacepath/attendees.php?s=$session->id\" title=\"$strseeattendees\">$strseeattendees</a></td></tr>";
+            }
+
             $table = '<table border="0" cellpadding="1" cellspacing="0" width="90%" summary="" style="display:inline-table">'
                 .'<tr>'
                 .'<td class="f2fsessionnotice" colspan="4">'.$htmlactivitynameonly.'</td>'
@@ -2475,9 +2484,7 @@ function facetoface_print_coursemodule_info($coursemodule)
                 .'<td>'.$sessiontime.'</td>'
                 ."<td><table border=\"0\" summary=\"\"><tr><td><a class=\"f2fsessionlinks\" href=\"$facetofacepath/signup.php?s=$session->id\" title=\"$strmoreinfo\">$strmoreinfo</a></td>"
                 .'</tr>'
-                .'<tr>'
-                ."<td><a class=\"f2fsessionlinks\" href=\"$facetofacepath/attendees.php?s=$session->id\" title=\"$strseeattendees\">$strseeattendees</a></td>"
-                .'</tr>'
+                .$attendeeslink
                 .$cancellink
                 .'<tr>'
                 ."<td>$htmlviewallsessions</td>"

@@ -237,10 +237,6 @@ function print_session_list($courseid, $facetofaceid, $location)
             if ($isbookedsession) {
                 $options .= '<a href="signup.php?s='.$session->id.'&amp;backtoallsessions='.$facetofaceid.'" title="'.get_string('moreinfo', 'facetoface').'">'.get_string('moreinfo', 'facetoface').'</a><br />';
 
-                if (!$viewattendees) {
-                    $options .= '<a href="attendees.php?s='.$session->id.'&amp;backtoallsessions='.$facetofaceid.'" title="'.get_string('seeattendees', 'facetoface').'">'.get_string('seeattendees', 'facetoface').'</a>';
-                    $options .= '<br />';
-                }
                 $options .= '<a href="cancelsignup.php?s='.$session->id.'&amp;backtoallsessions='.$facetofaceid.'" title="'.get_string('cancelbooking', 'facetoface').'">'.get_string('cancelbooking', 'facetoface').'</a>';
             }
             elseif (!$sessionstarted and !$bookedsession) {
