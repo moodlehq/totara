@@ -91,6 +91,7 @@ class user_position_assignment_form extends moodleform {
                 ($can_edit ? '<input type="button" value="'.get_string('chooseposition', 'position').'" id="show-position-dialog" />' : '')
             );
             $mform->addElement('hidden', 'positionid');
+            $mform->setType('positionid', PARAM_INT);
             $mform->setDefault('positionid', 0);
         }
         if (!$aspirational) {
@@ -107,6 +108,7 @@ class user_position_assignment_form extends moodleform {
                 );
 
                 $mform->addElement('hidden', 'organisationid');
+                $mform->setType('organisationid', PARAM_INT);
                 $mform->setDefault('organisationid', 0);
             }
 
@@ -140,6 +142,7 @@ class user_position_assignment_form extends moodleform {
                     ($can_edit ? '<input type="button" value="'.get_string('choosemanager', 'position').'" id="show-manager-dialog" />' : '')
                 );
                 $mform->addElement('hidden', 'managerid');
+                $mform->setType('managerid', PARAM_INT);
                 $mform->setDefault('managerid', $manager_id);
             }
 
