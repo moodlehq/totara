@@ -14,7 +14,15 @@ require_once('../../../../config.php');
 
 $competencyid = required_param('competencyid',PARAM_INT);
 
-$scaleid = get_field('competency','scaleid','id',$competencyid);
+$frameworkid = get_field('competency','frameworkid','id',$competencyid);
+if(!$frameworkid) {
+    error('Could not find competency framework');
+}
+
+$scaleid = get_field('competency_scale_assignments','scaleid','frameworkid',$frameworkid);
+if(!$scaleid) {
+    error('Could not find framework scale id');
+}
 
 $sql = "SELECT id AS name, name AS value from {$CFG->prefix}competency_scale_values
     WHERE scaleid = $scaleid";
