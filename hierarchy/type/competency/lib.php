@@ -370,6 +370,13 @@ SQL;
         return $data;
     }
 
+    /**
+     * Get the competency scale for this competency (including all the scale's
+     * values in an attribute called valuelist)
+     *
+     * @global object $CFG
+     * @return object
+     */
     function get_competency_scale(){
         global $CFG;
         $sql = <<<SQL
