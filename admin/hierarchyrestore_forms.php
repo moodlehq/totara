@@ -11,11 +11,13 @@ class hierarchyrestore_pickfile_form extends moodleform {
 
         // action for next page
         $mform->addElement('hidden','action','selectoptions');
+        $mform->setType('action', PARAM_TEXT);
 
         if(count($filelist) == 1) {
             // only one file available
             $file = array_shift($filelist);
             $mform->addElement('hidden', 'file', $file);
+            $mform->setType('file', PARAM_TEXT);
             $mform->addElement('html', '<p>' . get_string('pickfileone', 'hierarchy', $file) . '</p>');
             $mform->addElement('html','<p>' . get_string('pickfilehelp','hierarchy', "$CFG->dataroot/hierarchies") . '</p>');
         } else if (count($filelist) > 0) {
@@ -39,6 +41,7 @@ class hierarchyrestore_chooseitems_form extends moodleform {
 
         // action for next page
         $mform->addElement('hidden','action','confirm');
+        $mform->setType('action', PARAM_TEXT);
 
         // general hierarchy restore options go here
         // TODO if no options other than usercount, only show header if section required
@@ -88,6 +91,7 @@ class hierarchyrestore_chooseitems_form extends moodleform {
                 }
             }
             $mform->addElement('hidden','backup_unique_code',$contents->backup_unique_code);
+            $mform->setType('backup_unique_code', PARAM_TEXT);
 
         }
         $this->add_action_buttons(true,get_string('continue'));

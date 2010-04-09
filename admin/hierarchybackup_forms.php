@@ -11,6 +11,7 @@ class hierarchybackup_select_form extends moodleform {
 
         $mform->addElement('header','hierarchybackup','Hierarchy Backup');
         $mform->addElement('text','backupfilename','Name',array('size'=>'40'));
+        $mform->setType('backupfilename', PARAM_TEXT);
         $backup_filename = 'hierarchy-backup-'.userdate(time(),"%Y%m%d-%H%M",99,false).'.zip';
         $mform->setDefault('backupfilename',$backup_filename);
         $mform->addElement('selectyesno', 'userdata', 'Include users and user data');
@@ -45,6 +46,7 @@ class hierarchybackup_select_form extends moodleform {
                     $options = $setoptionsfunc();
                     foreach ($options AS $option) {
                         $mform->addElement($option['type'], $option['name'], $option['label']);
+                        $mfrom->setType($option['name'], PARAM_RAW);
                         $mform->setDefault($option['name'], $option['default']);
                     }
                 }                
