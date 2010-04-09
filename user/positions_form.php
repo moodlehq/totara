@@ -73,7 +73,9 @@ class user_position_assignment_form extends moodleform {
 
         if (!$aspirational) {
             $mform->addElement('text', 'fullname', get_string('titlefullname', 'position'));
+            $mform->setType('fullname', PARAM_TEXT);
             $mform->addElement('text', 'shortname', get_string('titleshortname', 'position'));
+            $mform->setType('shortname', PARAM_TEXT);
 
             $mform->addElement('htmleditor', 'description', get_string('description'), array('rows'=> '10', 'cols'=>'35'));
             $mform->setType('description', PARAM_RAW);
@@ -147,8 +149,10 @@ class user_position_assignment_form extends moodleform {
             }
 
             $mform->addElement('text', 'timevalidfrom', get_string('startdate', 'position'));
+            $mform->setType('timevalidfrom', PARAM_TEXT);
             $mform->setDefault('timevalidfrom','dd/mm/yy');
             $mform->addElement('text', 'timevalidto', get_string('finishdate', 'position'));
+            $mform->setType('timevalidto', PARAM_TEXT);
             $mform->setDefault('timevalidto','dd/mm/yy');
         }
 

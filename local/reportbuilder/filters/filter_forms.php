@@ -78,6 +78,7 @@ class active_filter_form extends moodleform {
             }
 
             $mform->addElement('hidden','shortname',$shortname);
+            $mform->setType('shortname', PARAM_TEXT);
 
             if ($extraparams) {
                 foreach ($extraparams as $key=>$value) {

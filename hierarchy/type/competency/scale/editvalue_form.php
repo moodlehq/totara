@@ -12,8 +12,11 @@ class competencyscalevalue_edit_form extends moodleform {
 
         /// Add some extra hidden fields
         $mform->addElement('hidden', 'id');
+        $mform->setType('id', PARAM_INT);
         $mform->addElement('hidden', 'scaleid');
+        $mform->setType('scaleid', PARAM_INT);
         $mform->addElement('hidden', 'sortorder');
+        $mform->setType('sortorder', PARAM_INT);
 
         /// Print the required moodle fields first
         $mform->addElement('header', 'moodle', get_string('general'));

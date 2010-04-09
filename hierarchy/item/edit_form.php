@@ -77,11 +77,17 @@ class item_edit_form extends moodleform {
 
         /// Add some extra hidden fields
         $mform->addElement('hidden', 'id');
+        $mform->setType('id', PARAM_INT);
         $mform->addElement('hidden', 'type', $type);
+        $mform->setType('type', PARAM_SAFEDIR);
         $mform->addElement('hidden', 'frameworkid');
+        $mform->setType('frameworkid', PARAM_INT);
         $mform->addElement('hidden', 'visible');
+        $mform->setType('visible', PARAM_INT);
         $mform->addElement('hidden', 'sortorder');
+        $mform->setType('sortorder', PARAM_INT);
         $mform->addElement('hidden', 'spage', $spage);
+        $mform->setType('spage', PARAM_INT);
 
         /// Print the required moodle fields first
         $mform->addElement('header', 'moodle', $strgeneral);
@@ -122,6 +128,7 @@ class item_edit_form extends moodleform {
         /// Next show the custom fields if we're editing an existing items (otherwise we don't know the depthid)
         if ($item->id) {
             $mform->addElement('hidden', 'depthid', $item->depthid);
+            $mform->setType('depthid', PARAM_INT);
             customfield_definition($mform, $item->id, $type, $item->depthid, $type.'_depth');
         }
 

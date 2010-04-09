@@ -39,6 +39,7 @@ class hierarchy_filter_text extends hierarchy_filter_type {
         $objs = array();
         $objs[] =& $mform->createElement('select', $this->_name.'_op', null, $this->getOperators());
         $objs[] =& $mform->createElement('text', $this->_name, null);
+        $mform->setType($this->_name, PARAM_TEXT);
         $grp =& $mform->addElement('group', $this->_name.'_grp', $this->_label, $objs, '', false);
         $grp->setHelpButton(array('text',$this->_label,'filters'));
         $mform->disabledIf($this->_name, $this->_name.'_op', 'eq', 5);

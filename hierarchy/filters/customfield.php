@@ -63,6 +63,7 @@ class hierarchy_filter_customfield extends hierarchy_filter_type {
         $objs[] =& $mform->createElement('select', $this->_name.'_fld', null, $custom_fields);
         $objs[] =& $mform->createElement('select', $this->_name.'_op', null, $this->get_operators());
         $objs[] =& $mform->createElement('text', $this->_name, null);
+        $mform->setType($this->_name, PARAM_TEXT);
         $grp =& $mform->addElement('group', $this->_name.'_grp', $this->_label, $objs, '', false);
         $grp->setHelpButton(array('customfield',$this->_label,'filters'));
         if ($this->_advanced) {

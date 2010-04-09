@@ -14,8 +14,11 @@ class competencytemplate_edit_form extends moodleform {
 
         /// Add some extra hidden fields
         $mform->addElement('hidden', 'id');
+        $mform->setType('id', PARAM_INT);
         $mform->addElement('hidden', 'visible');
+        $mform->setType('visible', PARAM_INT);
         $mform->addElement('hidden', 'frameworkid');
+        $mform->setType('frameworkid', PARAM_INT);
 
         /// Print the required moodle fields first
         $mform->addElement('header', 'moodle', $strgeneral);

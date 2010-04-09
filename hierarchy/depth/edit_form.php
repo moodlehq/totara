@@ -16,9 +16,13 @@ class depth_edit_form extends moodleform {
 
         /// Add some extra hidden fields
         $mform->addElement('hidden', 'id');
+        $mform->setType('id', PARAM_INT);
         $mform->addElement('hidden', 'type', $type);
+        $mform->setType('type', PARAM_SAFEDIR);
         $mform->addElement('hidden', 'frameworkid');
+        $mform->setType('frameworkid', PARAM_INT);
         $mform->addElement('hidden', 'spage', $spage);
+        $mform->setType('spage', PARAM_INT);
 
         /// Print the required moodle fields first
         $mform->addElement('header', 'moodle', $strgeneral);

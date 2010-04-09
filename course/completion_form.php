@@ -239,6 +239,7 @@ class course_completion_form extends moodleform {
                     continue;
                 }
                 $mform->addelement('hidden', "criteria_course[{$key}]", $key);
+                $mform->setType("criteria_course[{$key}]", PARAM_INT);
             }
         }
 

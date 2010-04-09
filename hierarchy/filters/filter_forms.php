@@ -20,11 +20,13 @@ class hierarchy_add_filter_form extends moodleform {
         if ($extraparams) {
             foreach ($extraparams as $key=>$value) {
                 $mform->addElement('hidden', $key, $value);
+                $mform->setType($key, PARAM_TEXT);
             }
         }
 
         // Add the hierarchy prefix and type
         $mform->addElement('hidden', 'type', $type);
+        $mform->setType('type', PARAM_SAFEDIR);
 
         // Add button
         $mform->addElement('submit', 'addfilter', get_string('addfilter','filters'));

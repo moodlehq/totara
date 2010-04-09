@@ -15,12 +15,19 @@ class framework_edit_form extends moodleform {
 
         /// Add some extra hidden fields
         $mform->addElement('hidden', 'id');
+        $mform->setType('id', PARAM_INT);
         $mform->addElement('hidden', 'visible');
+        $mform->setType('visible', PARAM_INT);
         $mform->addElement('hidden', 'sortorder');
+        $mform->setType('sortorder', PARAM_INT);
         $mform->addElement('hidden', 'hidecustomfields');
+        $mform->setType('hidecustomfields', PARAM_INT);
         $mform->addElement('hidden', 'showitemfullname');
+        $mform->setType('showitemfullname', PARAM_INT);
         $mform->addElement('hidden', 'showdepthfullname');
+        $mform->setType('showdepthfullname', PARAM_INT);
         $mform->addElement('hidden', 'type', $type);
+        $mform->setType('type', PARAM_SAFEDIR);
 
         /// Print the required moodle fields first
         $mform->addElement('header', 'moodle', $strgeneral);
