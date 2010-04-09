@@ -39,7 +39,7 @@ if (!$framework = $hierarchy->get_framework($frameworkid)) {
 }
 
 // Load competency templates to display
-$templates = $hierarchy->get_templates();
+$templates = $hierarchy->get_templates($revisionid);
 
 ///
 /// Display page

@@ -92,6 +92,11 @@ function build_treeview($elements, $error_string, $hierarchy = null) {
                 }
             }
 
+            // Make disabled elements non-draggable and greyed out
+            if (isset($element->disabled) && $element->disabled){
+                $span_class = trim($span_class . ' undraggable');
+            }
+
             $html .= '<li class="'.$li_class.'" id="item_list_'.$element->id.'">';
             $html .= '<div class="'.$div_class.'"></div>';
             $html .= '<span id="item_'.$element->id.'" class="'.$span_class.'">';
@@ -136,7 +141,7 @@ function build_nojs_treeview($elements, $error_string, $actionurl, $actionparams
             $params = $actionparams + array('add' => $element->id);
             $html .= '<tr>';
             $html .= '<td>';
-            $html .= print_single_button($actionurl, $params, get_string('assign','hierarchy'), 'get', '_self', true);
+            $html .= print_single_button($actionurl, $params, get_string('assign','hierarchy'), 'get', '_self', true, '', (isset($element->disabled) && $element->disabled));
             $html .= '</td><td>';
 
             // Element has children

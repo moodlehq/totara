@@ -55,6 +55,12 @@ foreach ($add as $addition) {
         error('Supplied bad data - non numeric id');
     }
 
+    // If the template is already present in this plan, don't add it a second
+    // time
+    if ( count_records('idp_revision_competencytemplate', 'revision', $revisionid, 'competencytemplate', $addition) ){
+        continue;
+    }
+
     // Load competency
     $template = $hierarchy->get_template($addition);
 
@@ -74,6 +80,7 @@ foreach ($add as $addition) {
     begin_sql();
     $dbresult = insert_record('idp_revision_competencytemplate', $idpcompetency, false);
     $dbresult = $dbresult && update_modification_time($revisionid);
+    add_to_log(SITEID, 'idp', 'add IDP competency tempates', "revision.php?id={$plan->id}", "plan: {$plan->id}, template: {$template->id}");
     if (!$dbresult ){
         rollback_sql();
     } else {
@@ -112,4 +119,3 @@ foreach ($add as $addition) {
         }
     }
 }
-add_to_log(SITEID, 'idp', 'add IDP competency templates', "revision.php?id={$plan->id}", $plan->id);

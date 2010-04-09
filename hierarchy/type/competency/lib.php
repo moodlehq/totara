@@ -74,11 +74,35 @@ class competency extends hierarchy {
     }
 
     /**
-     * Get templates
+     * Get templates. If a revisionid is supplied, it adds an 'disabled' flag
+     * to each template that is already present in that revision, to indicate
+     * that the template should be disabled in the treeview
+     * 
+     * @global object $CFG
+     * @param int $revisionid
      * @return array|false
      */
-    function get_templates() {
-        return get_records($this->prefix.'_template', 'frameworkid', $this->frameworkid, 'fullname');
+    function get_templates( $revisionid = 0 ) {
+        global $CFG;
+        if ( !$revisionid ){
+            return get_records($this->prefix.'_template', 'frameworkid', $this->frameworkid, 'fullname');
+        } else {
+            $sql = <<<SQL
+                select
+                    t.*,
+                    (
+                        select count(*)
+                        from {$CFG->prefix}idp_revision_competencytemplate ct
+                        where
+                            ct.revision = {$revisionid}
+                            and ct.competencytemplate = t.id
+                    ) as disabled
+                from {$CFG->prefix}{$this->prefix}_template t
+                where t.frameworkid = {$this->frameworkid}
+                order by t.fullname
+SQL;
+            return get_records_sql($sql);
+        }
     }
 
     /**

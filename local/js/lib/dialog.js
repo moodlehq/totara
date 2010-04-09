@@ -565,7 +565,7 @@ mitmsDialog_handler_treeview_draggable.prototype.every_load = function() {
  */
 mitmsDialog_handler_treeview_draggable.prototype._make_draggable = function(parent_element) {
 
-    $('span:not(.empty)', parent_element).draggable({
+    $('span:not(.empty, .undraggable)', parent_element).draggable({
         containment: 'body',
         helper: 'clone',
         scope: this._title
