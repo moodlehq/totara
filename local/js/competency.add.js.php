@@ -36,12 +36,10 @@ mitmsDialog_handler_addcompetency.prototype.every_load = function() {
         var formdata = $('#addcompetency #mform1');
 
         // submit form
-        handler._dialog.load(
+        handler._dialog._request(
             '<?php echo $CFG->wwwroot ?>/hierarchy/item/add.php?'+formdata.serialize(),
-            'GET',
-            function(response) {
-                return handler.submission(response);
-            }
+            handler,
+            'submission'
         );
 
         return false;
