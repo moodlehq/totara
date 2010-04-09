@@ -46,7 +46,7 @@ if (!$framework = $hierarchy->get_framework($frameworkid)) {
 }
 
 // Load competencies to display
-$competencies = $hierarchy->get_items_by_parent($parentid);
+$competencies = $hierarchy->get_items_by_parent($parentid, $revisionid);
 
 ///
 /// Display page
