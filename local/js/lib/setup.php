@@ -94,7 +94,7 @@ function build_treeview($elements, $error_string, $hierarchy = null) {
 
             // Make disabled elements non-draggable and greyed out
             if (isset($element->disabled) && $element->disabled){
-                $span_class = trim($span_class . ' undraggable');
+                $span_class = trim($span_class . ' ui-undraggable');
             }
 
             $html .= '<li class="'.$li_class.'" id="item_list_'.$element->id.'">';
