@@ -678,6 +678,97 @@ mitmsDialog_handler_treeview_clickable.prototype._make_clickable = function(pare
 
 
 /*****************************************************************************/
+/** mitmsDialog_handler_skeletalTreeview **/
+
+mitmsDialog_handler_skeletalTreeview = function() {};
+mitmsDialog_handler_skeletalTreeview.prototype = new mitmsDialog_handler_treeview();
+
+/**
+ * Setup a treeview infrastructure
+ *
+ * @return void
+ */
+mitmsDialog_handler_skeletalTreeview.prototype.every_load = function() {
+
+    // Setup treeview
+    $('.treeview', this._container).treeview({
+        prerendered: true
+    });
+
+    var handler = this;
+
+    // Setup hierarchy
+    this._make_hierarchy($('.treeview', this._container));
+}
+
+/**
+ * Setup hierarchy click handlers
+ *
+ * @return void
+ */
+mitmsDialog_handler_skeletalTreeview.prototype._make_hierarchy = function(parent_element) {
+    var handler = this;
+
+    // Load courses on parent click
+    $('span.folder, div.hitarea', parent_element).click(function() {
+
+        // Get parent
+        var par = $(this).parent();
+
+        // If we have just collapsed this branch, don't reload stuff
+        if ($('li:visible', $(par)).size() == 0) {
+            return false;
+        }
+
+        // Check to see if the loading placeholder exists
+        if ($('> ul > li.loading', par).size() == 0) {
+            return false;
+        }
+
+        // Id in format item_list_XX
+        var id = par.attr('id').substr(10);
+
+        // To be overridden in child classes
+        handler._handle_hierarchy_expand(id);
+
+        return false;
+    });
+}
+
+/**
+ * @param string    HTML response
+ * @param int       Parent id
+ * @return void
+ */
+mitmsDialog_handler_skeletalTreeview.prototype._update_hierarchy = function(response, parent_id) {
+
+    var items = response;
+    var list = $('.treeview li#item_list_'+parent_id+' ul:first', this._container);
+
+    // Remove placeholder child
+    $('> li.loading', list).remove();
+
+    // Add items
+    $('.treeview', this._container).treeview({add: list.append($(items))});
+
+    var handler = this;
+
+    // Bind course names
+    $('span.clickable', list).click(function() {
+
+        // Get parent
+        var par = $(this).parent();
+
+        // Get the id in format course_XX
+        var id = par.attr('id').substr(7);
+
+        // To be overridden in child classes
+        handler._handle_course_click(id);
+    });
+}
+
+
+/*****************************************************************************/
 /** Factory methods **/
 
 /**

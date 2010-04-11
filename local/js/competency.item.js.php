@@ -41,94 +41,22 @@ $(function() {
 
 // Create handler for the assign evidence dialog
 mitmsDialog_handler_assignEvidence = function() {
+    // Base url
     var baseurl = '';
-};
-
-mitmsDialog_handler_assignEvidence.prototype = new mitmsDialog_handler();
-
-/**
- * Setup a treeview infrastructure
- *
- * @return void
- */
-mitmsDialog_handler_assignEvidence.prototype.every_load = function() {
-
-    // Setup treeview
-    $('.treeview', this._container).treeview({
-        prerendered: true
-    });
-
-    var handler = this;
-
-    // Setup hierarchy
-    this._make_hierarchy($('.treeview', this._container));
 }
 
-/**
- * Setup hierarchy click handlers
- *
- * @return void
- */
-mitmsDialog_handler_assignEvidence.prototype._make_hierarchy = function(parent_element) {
-    var handler = this;
+mitmsDialog_handler_assignEvidence.prototype = new mitmsDialog_handler_skeletalTreeview();
 
-    // Load courses on parent click
-    $('span.folder, div.hitarea', parent_element).click(function() {
-
-        // Get parent
-        var par = $(this).parent();
-
-        // If we have just collapsed this branch, don't reload stuff
-        if ($('li:visible', $(par)).size() == 0) {
-            return false;
-        }
-
-        // Check to see if the loading placeholder exists
-        if ($('> ul > li.loading', par).size() == 0) {
-            return false;
-        }
-
-        // Id in format item_list_XX
-        var id = par.attr('id').substr(10);
-
-        var url = handler.baseurl+'category.php?id='+id;
-        handler._dialog._request(url, handler, '_update_hierarchy', id);
-
-        return false;
-    });
+mitmsDialog_handler_assignEvidence.prototype._handle_hierarchy_expand = function(id) {
+    var url = this.baseurl+'category.php?id='+id;
+    this._dialog._request(url, this, '_update_hierarchy', id);
 }
 
-/**
- * @param string    HTML response
- * @param int       Parent id
- * @return void
- */
-mitmsDialog_handler_assignEvidence.prototype._update_hierarchy = function(response, parent_id) {
 
-    var items = response;
-    var list = $('.treeview li#item_list_'+parent_id+' ul:first', this._container);
-
-    // Remove placeholder child
-    $('> li.loading', list).remove();
-
-    // Add items
-    $('.treeview', this._container).treeview({add: list.append($(items))});
-
-    var handler = this;
-
-    // Bind course names
-    $('span.clickable', list).click(function() {
-
-        // Get parent
-        var par = $(this).parent();
-
-        // Get the id in format course_XX
-        var id = par.attr('id').substr(7);
-
-        // Load course details
-        var url = handler.baseurl+'course.php?id='+id+'&competency='+competency_id;
-        handler._dialog._request(url, handler, '_display_evidence');
-    });
+mitmsDialog_handler_assignEvidence.prototype._handle_course_click = function(id) {
+    // Load course details
+    var url = this.baseurl+'course.php?id='+id+'&competency='+competency_id;
+    this._dialog._request(url, this, '_display_evidence');
 }
 
 /**

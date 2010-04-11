@@ -118,6 +118,86 @@ function build_treeview($elements, $error_string, $hierarchy = null) {
     return $html;
 }
 
+/**
+ * Return markup for category treeview skeleton
+ *
+ * @param   $list           array       Array of full cat path names
+ * @param   $parents        array       Array of category parents
+ * @param   $load_string    string      String to display as a placeholder for unloaded branches
+ * @return  $html
+ */
+function build_category_treeview($list, $parents, $load_string) {
+
+    $html = '';
+
+    if (is_array($list) && !empty($list)) {
+
+        $len = count($list);
+        $i = 0;
+        $parent = array();
+
+        // Add empty category to end of array to trigger
+        // closing nested lists
+        $list[] = null;
+
+        foreach ($list as $id => $category) {
+            $i++;
+
+            // If an actual category
+            if ($category !== null) {
+                if (!isset($parents[$i])) {
+                    $this_parent = array();
+                } else {
+                    $this_parents = array_reverse($parents[$i]);
+                    $this_parent = $parents[$i];
+                }
+            // If placeholder category at end
+            } else {
+                $this_parent = array();
+            }
+
+            if ($this_parent == $parent) {
+                if ($i > 1) {
+                    $html .= '<li class="last loading"><div></div><span>'.$load_string.'</span></li></ul></li>';
+                }
+            } else {
+                // If there are less parents now
+                $diff = count($parent) - count($this_parent);
+
+                if ($diff) {
+                    $html .= str_repeat(
+                        '</li><li class="last loading"><div></div><span>'.$load_string.'</span></li></ul>',
+                         $diff + 1
+                    );
+                }
+
+                $parent = $this_parent;
+            }
+
+            if ($category !== null) {
+                // Grab category name
+                $rpos = strrpos($category, ' / ');
+                if ($rpos) {
+                    $category = substr($category, $rpos + 3);
+                }
+
+                $li_class = 'expandable closed';
+                $div_class = 'hitarea closed-hitarea expandable-hitarea';
+
+                if ($i == $len) {
+                    $li_class .= ' lastExpandable';
+                    $div_class .= ' lastExpandable-hitarea';
+                }
+
+                $html .= '<li class="'.$li_class.'" id="item_list_'.$id.'"><div class="'.$div_class.'"></div>';
+                $html .= '<span class="folder">'.$category.'</span><ul style="display: none;">'.PHP_EOL;
+            }
+        }
+    }
+
+    return $html;
+}
+
 /*
  * Create a none javascript version of treeview
  *

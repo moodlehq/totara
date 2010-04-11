@@ -146,12 +146,15 @@ if ($form->is_cancelled()){
 
 // If js enabled, setup custom javascript
 if ($js_enabled) {
-    require_once($CFG->dirroot.'/local/js/setup.php');
+    require_once($CFG->dirroot.'/local/js/lib/setup.php');
 
-    setup_lightbox(array(MBE_JS_TREEVIEW, MBE_JS_ADVANCED));
+    local_js(array(
+        MBE_JS_DIALOG,
+        MBE_JS_TREEVIEW
+    ));
 
     require_js(array(
-        $CFG->wwwroot.'/local/js/completion.prerequisite.js',
+        $CFG->wwwroot.'/local/js/completion.prerequisite.js.php',
     ));
 }
 
