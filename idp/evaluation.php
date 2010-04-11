@@ -117,30 +117,6 @@ print_footer();
 function print_idp_evaluation($revisionid) {
     global $CFG;
 
-    $sql = <<<SQL
-    select comp.*
-    from
-        {$CFG->prefix}competency comp,
-        {$CFG->prefix}competency_framework fwork
-    where
-        comp.id in (
-            select distinct revcomp.competency
-            from {$CFG->prefix}idp_revision_competency revcomp
-            where revcomp.revision = {$revisionid}
-        union
-            select distinct complist.instanceid
-            from
-                {$CFG->prefix}idp_revision_competencytemplate revtemp,
-                {$CFG->prefix}competency_template_assignment complist
-            where
-                revtemp.revision = {$revisionid}
-                and revtemp.competencytemplate = complist.templateid
-        )
-        and comp.frameworkid = fwork.id
-    order by
-        fwork.sortorder,
-        comp.sortorder
-SQL;
     $fullcompetencylist = get_all_revision_competencies($revisionid);
     if ( !$fullcompetencylist ){
         return false;
