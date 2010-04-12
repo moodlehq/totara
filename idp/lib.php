@@ -430,13 +430,13 @@ function print_revision_details($revision, $can_submit, $can_approve=false, $pdf
     }
     elseif ('inrevision' == $revision->status) {
         if ($can_submit) {
-            $nextactions .= '<a href="'.$CFG->wwwroot.'/idp/submit.php?rev='.$revision->id.'">'.get_string('submitplan', 'idp').'</a> - ';
+            $nextactions .= '<a href="'.$CFG->wwwroot.'/idp/submit.php?submitbutton=1&rev='.$revision->id.'">'.get_string('submitplan', 'idp').'</a> - ';
         }
         $nextactions .= '<a style="cursor: pointer;" onclick="toggle_addcomments(); return 0;">' . get_string('commentonplan', 'idp') . '</a>';
     }
     elseif ('notsubmitted' == $revision->status) {
         if ($can_submit) {
-            $nextactions .= '<a href="'.$CFG->wwwroot.'/idp/submit.php?rev='.$revision->id.'">'.get_string('submitplan', 'idp').'</a>';
+            $nextactions .= '<a href="'.$CFG->wwwroot.'/idp/submit.php?submitbutton=1&rev='.$revision->id.'">'.get_string('submitplan', 'idp').'</a>';
         }
     }
     elseif ('completed' == $revision->status) {
