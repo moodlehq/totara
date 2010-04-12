@@ -27,7 +27,7 @@
 
 require_once('../config.php');
 require_once($CFG->dirroot.'/hierarchy/type/competency/lib.php');
-require_once($CFG->dirroot.'/local/js/setup.php');
+require_once($CFG->dirroot.'/local/js/lib/setup.php');
 
 // Get paramaters
 $id = required_param('id', PARAM_INT);                  // course id
@@ -59,10 +59,13 @@ require_capability('moodle/local:viewcompetency', $context);
 $can_edit = has_capability('moodle/local:updatecompetency', $context);
 
 
-setup_lightbox(array(MBE_JS_TREEVIEW, MBE_JS_ADVANCED));
+local_js(array(
+    MBE_JS_DIALOG,
+    MBE_JS_TREEVIEW
+));
 
 require_js(array(
-    $CFG->wwwroot.'/local/js/course.competency.js',
+    $CFG->wwwroot.'/local/js/course.competency.js.php',
 ));
 
 $strcompetenciesusedincourse = get_string("competenciesusedincourse", 'competency');
@@ -83,7 +86,7 @@ print_heading($strcompetenciesusedincourse);
     var course_id = '<?php echo $course->id ?>';
 </script>
 
-<table width="95%" cellpadding="5" cellspacing="1" id="list-course-competencies" class="generalbox editcompetency boxaligncenter">
+<table width="95%" cellpadding="5" cellspacing="1" id="list-coursecompetency" class="generalbox editcompetency boxaligncenter">
 <tr>
     <th style="vertical-align:top; text-align: left; white-space:nowrap;" class="header c0" scope="col">
         <?php echo get_string('framework', 'competency'); ?>
@@ -159,7 +162,7 @@ if ($competencies) {
 } else {
 
     $cols = 4;
-    echo '<tr class="noitems"><td colspan="'.$cols.'"><i>'.get_string('nocoursecompetencies', 'competency').'</i></td></tr>';
+    echo '<tr class="noitems-coursecompetency"><td colspan="'.$cols.'"><i>'.get_string('nocoursecompetencies', 'competency').'</i></td></tr>';
 }
 
 echo '</table>';
