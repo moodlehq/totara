@@ -48,9 +48,10 @@ function local_js($options = array()) {
  * @param   $elements       array       Single level array of elements
  * @param   $error_string   string      String to display if no elements supplied
  * @param   $hierarchy      object      The hierarchy object (optional)
+ * @param   $disabledlist   array       Array of IDs of elements that should be disabled
  * @return  $html
  */
-function build_treeview($elements, $error_string, $hierarchy = null) {
+function build_treeview($elements, $error_string, $hierarchy = null, $disabledlist = array()) {
 
     $html = '';
 
@@ -93,7 +94,7 @@ function build_treeview($elements, $error_string, $hierarchy = null) {
             }
 
             // Make disabled elements non-draggable and greyed out
-            if (isset($element->disabled) && $element->disabled){
+            if (array_key_exists($element->id, $disabledlist)){
                 $span_class = trim($span_class . ' ui-undraggable');
             }
 
@@ -208,10 +209,11 @@ function build_category_treeview($list, $parents, $load_string) {
  * @param string $expandurl URL to go to to expand an item to view its children
  * @param array $parents Array of IDs of items that are parents. Used to decide if link to children
  *                       should be shown
+ * @param array $disabledlist Array of IDs of items that should be disabled (non-draggable)
  * @return string HTML code displaying the treeview based on input params
  *
  */
-function build_nojs_treeview($elements, $error_string, $actionurl, $actionparams, $expandurl, $parents = array()) {
+function build_nojs_treeview($elements, $error_string, $actionurl, $actionparams, $expandurl, $parents = array(), $disabledlist = array()) {
     $html = '<table>';
 
     if (is_array($elements) && !empty($elements)) {
@@ -221,7 +223,7 @@ function build_nojs_treeview($elements, $error_string, $actionurl, $actionparams
             $params = $actionparams + array('add' => $element->id);
             $html .= '<tr>';
             $html .= '<td>';
-            $html .= print_single_button($actionurl, $params, get_string('assign','hierarchy'), 'get', '_self', true, '', (isset($element->disabled) && $element->disabled));
+            $html .= print_single_button($actionurl, $params, get_string('assign','hierarchy'), 'get', '_self', true, '', array_key_exists($element->id, $disabledlist));
             $html .= '</td><td>';
 
             // Element has children

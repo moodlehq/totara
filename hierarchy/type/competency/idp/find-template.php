@@ -39,7 +39,11 @@ if (!$framework = $hierarchy->get_framework($frameworkid)) {
 }
 
 // Load competency templates to display
-$templates = $hierarchy->get_templates($revisionid);
+$templates = $hierarchy->get_templates();
+$assignedtemplates = get_records('idp_revision_competencytemplate', 'revision', $revisionid, '', 'competencytemplate');
+if( !is_array($assignedtemplates) ){
+    $assignedtemplates = array();
+};
 
 ///
 /// Display page
@@ -69,7 +73,9 @@ if(!$nojs) {
 
 echo build_treeview(
     $templates,
-    get_string('notemplates', 'competency')
+    get_string('notemplates', 'competency'),
+    null,
+    $assignedtemplates
 );
 
 echo '</ul></div>';
@@ -108,7 +114,9 @@ echo '</ul></div>';
                 'frameworkid' => $frameworkid,
                 'id' => $revisionid,
             ),
-            $CFG->wwwroot.'/hierarchy/type/competency/idp/find-template.php?'.$urlparams
+            $CFG->wwwroot.'/hierarchy/type/competency/idp/find-template.php?'.$urlparams,
+            array(),
+            $assignedtemplates
         );
         echo '</div>';
     }
