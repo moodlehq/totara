@@ -637,8 +637,18 @@ class hierarchy {
             }
         }
 
-        // Finally delete this item
-        delete_records($this->prefix, 'id', $id);
+        begin_sql();
+        // delete any custom field data for this item
+        if(delete_records($this->prefix.'_depth_info_data', $this->prefix.'id', $id)) {
+            // Finally delete this item
+            if(delete_records($this->prefix, 'id', $id)) {
+                commit_sql();
+            } else {
+                rollback_sql();
+            }
+        } else {
+            rollback_sql();
+        }
     }
 
     /**

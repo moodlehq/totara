@@ -478,7 +478,8 @@ class hierarchylib_test extends prefix_changing_test_case {
         $this->assertFalse($competency->get_item(1));
         // the item's children should also have been deleted
         $this->assertFalse($competency->get_items_by_parent(1));
-        //TODO should depth_info_data be deleted too?
+        // custom field data for items and children should also be deleted
+        $this->assertFalse(get_records('competency_depth_info_data','competencyid', 2));
         // non descendants in same framework should not be deleted
         $this->assertEqual(count($competency->get_items()), 1);
     }
