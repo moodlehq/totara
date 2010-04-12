@@ -823,7 +823,7 @@ class hierarchy {
     function get_all_parents() {
         global $CFG;
 
-        return (array) get_records_sql(
+        $parents = get_records_sql(
             "
             SELECT DISTINCT
                 parentid AS id
@@ -833,5 +833,10 @@ class hierarchy {
                 parentid != 0
             "
         );
+        if($parents) {
+            return $parents;
+        } else {
+            return array();
+        }
     }
 }
