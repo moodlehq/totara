@@ -65,6 +65,11 @@ foreach ($assignments as $assignment) {
         error('Supplied bad data - non numeric assignment');
     }
 
+    // If the competency is already assigned to the template, skip it over
+    if ( count_records('competency_template_assignment','templateid', $template->id, 'instanceid', $assignment)){
+        continue;
+    }
+
     // Load competency
     $competency = $hierarchy->get_item($assignment);
 
