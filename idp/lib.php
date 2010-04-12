@@ -2235,7 +2235,8 @@ function idp_get_user_courses($userid, $currevisionid) {
             c.fullname,
             cc.id as ccid,
             cc.name as category,
-            r.duedate as duedate
+            r.duedate as duedate,
+            NULL as status
         FROM {$CFG->prefix}idp_revision_course r
         INNER JOIN {$CFG->prefix}course c
           ON c.id=r.course
