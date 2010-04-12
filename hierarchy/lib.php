@@ -603,8 +603,8 @@ class hierarchy {
                     ORDER BY sortorder ASC", true
             );
         }
+        begin_sql();
         if ($move && $swap) {
-            begin_sql();
             if (!(    set_field($this->prefix.'_framework', 'sortorder', $sortoffset, 'id', $swap->id)
                    && set_field($this->prefix.'_framework', 'sortorder', $swap->sortorder, 'id', $move->id)
                    && set_field($this->prefix.'_framework', 'sortorder', $move->sortorder, 'id', $swap->id)
@@ -612,7 +612,10 @@ class hierarchy {
                 notify('Could not update that '.$this->prefix.' framework!');
             }
             commit_sql();
+            return true;
         }
+        rollback_sql();
+        return false;
     }
 
     /**
