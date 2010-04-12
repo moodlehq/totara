@@ -2420,116 +2420,100 @@ function framework_evaluations($revisionid, $framework) {
  * Show each learning objective which has been evaluated along with
  * the latest grade.
  */
-function evaluation_summary($curriculumcode, $userid) {
+function print_evaluation_summary($userid) {
     global $CFG;
+    require_once($CFG->libdir.'/tablelib.php');
 
-    $themeobjectives = array(); // hash: $themename => array of $objective records
-    {
-        $themes = get_records_sql("SELECT t.name AS themename, d.name AS domainname,
-                                          t.urlsuffix, c.baseurl
-                                     FROM {$CFG->prefix}racp_theme t
-                                     JOIN {$CFG->prefix}racp_domain d ON d.id = t.domain
-                                     JOIN {$CFG->prefix}racp_curriculum c ON c.id = d.curriculum
-                                    WHERE t.deleted = 0 AND c.code = '$curriculumcode'");
-        sort_themes($themes);
-
-        foreach ($themes as $theme) {
-            $themeobjectives[$theme->themename] = $theme;
-            $themeobjectives[$theme->themename]->objectives = array();
+    // Get all the evaluated competencies for this user
+    $sql = <<<SQL
+        select
+            eval.id as eval_id,
+            comp.id,
+            comp.fullname,
+            comp.frameworkid,
+            comp.sortorder as comp_sortorder,
+            eval.scalevalueid,
+            eval.timemodified as evaltime,
+            fw.sortorder as fw_sortorder
+        from
+            {$CFG->prefix}competency comp,
+            {$CFG->prefix}idp_competency_eval eval,
+            {$CFG->prefix}idp idp,
+            {$CFG->prefix}idp_revision rev,
+            {$CFG->prefix}competency_framework fw
+        where
+            idp.userid = {$userid}
+            and eval.competencyid = comp.id
+            and eval.revisionid = rev.id
+            and rev.idp = idp.id
+            and comp.frameworkid = fw.id
+        order by
+            fw_sortorder,
+            comp_sortorder,
+            comp.id,
+            eval.timemodified desc
+SQL;
+    $comps = get_records_sql($sql);
+    
+    // Get only the most recent evaluation for each competency (probably more
+    // efficient to do this here in PHP rather than on the DB side, but it
+    // depends on the DB particulars)
+    //
+    // Note this code depends heavily on the ORDER BY clause of the preceeding SQL
+    $uniquecomps = array();
+    foreach( $comps as $comp ){
+        if( !array_key_exists( $comp->id, $uniquecomps ) ){
+            $uniquecomps[$comp->id] = $comp;
         }
     }
 
-    {
-        $joinsql = "FROM {$CFG->prefix}racp_curriculum c
-                    JOIN {$CFG->prefix}racp_domain d ON d.curriculum = c.id
-                    JOIN {$CFG->prefix}racp_theme t ON t.domain = d.id
-                    JOIN {$CFG->prefix}racp_objective o ON o.theme = t.id
-                    JOIN {$CFG->prefix}idp_revision_objective ro ON ro.objective = o.id
-                    JOIN {$CFG->prefix}idp_revision r ON ro.revision = r.id
-                    JOIN {$CFG->prefix}idp p ON r.idp = p.id";
+    $frameworks = get_all_competency_frameworks($uniquecomps);
 
-        $wheresql = "WHERE p.userid = $userid AND c.code = '$curriculumcode' AND
-                           r.evaluatedtime > 0";
+    foreach( $frameworks as $framework ){
+        print "<h2>{$framework->fullname}</h2>\n";
+        $tableid = "idp-eval-summary-user{$userid}-framework{$framework->id}";
+        $table = new flexible_table($tableid);
 
-        $objectives = get_records_sql("SELECT ro.id AS roid, o.id, t.name AS themename,
-                                              ro.grade, r.evaluatedtime, d.name AS domainname,
-                                              o.deleted AS objectivedeleted, o.name AS objectivename,
-                                              o.urlsuffix, c.baseurl
-                                              {$joinsql},
-                                              (SELECT o.id, MAX(r.evaluatedtime) AS latesttime
-                                                      $joinsql $wheresql GROUP BY o.id) sq
-                                              $wheresql AND
-                                              o.id = sq.id AND r.evaluatedtime = sq.latesttime");
+        $compcollabel = "{$tableid}-competencyname";
+        $columnids = array($compcollabel);
+        $columnlabels = array('Competency');
 
-        if ($objectives and count($objectives) > 0) {
-            sort_objectives($objectives);
-
-            foreach ($objectives as $obj) {
-                $themeobjectives[$obj->themename]->objectives[] = $obj;
-            }
+        $scalevalues = $framework->scale->valuelist;
+        $scalecollabel = "{$tableid}-value";
+        foreach( $scalevalues as $scalevalue ){
+            $columnids[] = $scalecollabel . $scalevalue->id;
+            $columnlabels[] = $scalevalue->name;
         }
+
+        $evalcollabel = "{$tableid}-evaldate";
+        $columnids[] = $evalcollabel;
+        $columnlabels[] = get_string('lastevaluatedcolumn','idp');
+
+        $table->define_columns($columnids);
+        $table->define_headers($columnlabels);
+        $table->set_attribute('class','generaltable objectiveevaluation');
+//        $table->rowclass[] = 'header';
+        $table->collapsible(false);
+        $table->sortable(false);
+        $table->pageable(false);
+        $table->initialbars(true);
+        $table->setup();
+
+        foreach( $framework->competencies as $competency ){
+            $row = array();
+            $row[$compcollabel] = $competency->fullname;
+            $row[$scalecollabel . $competency->scalevalueid] =
+                    '<img src="'
+                    . $CFG->wwwroot
+                    . '/theme/mitms/pix/t/clear.gif" alt="'
+                    . htmlspecialchars($scalevalues[$competency->scalevalueid]->name)
+                    . '" />';
+            $row[$evalcollabel] = userdate($competency->evaltime, '%e %b %y');
+            $table->add_data_keyed($row);
+        }
+        $table->print_html();
+        print "<br />\n";
     }
-
-    $table = new stdclass();
-    $table->class = 'generaltable objectiveevaluation';
-
-    // Table heading
-    $table->rowclass[] = 'header';
-    $table->data[] = array(get_string('themeorobjectivecolumn', 'idp'),
-                           get_string('plangrade1', 'idp'),
-                           get_string('plangrade2', 'idp'),
-                           get_string('plangrade3', 'idp'),
-                           get_string('plangrade4', 'idp'),
-                           get_string('plangrade0', 'idp'),
-                           get_string('lastevaluatedcolumn', 'idp'),
-                           '&nbsp;');
-
-    $table->tablealign = 'left';
-    $table->summary = 'List of Learning Objectives and their self-evaluation grade';
-
-    $lasttheme = '';
-    foreach ($themeobjectives as $theme) {
-
-        // Theme sub heading
-        if ($lasttheme != $theme->themename) {
-            $table->rowclass[] = 'themename';
-            $table->data[] = array(get_string('themeprefix', 'local') .
-                                   s($theme->themename),
-                                   '&nbsp;', '&nbsp;', '&nbsp;', '&nbsp;', '&nbsp;', '&nbsp;',
-                                   online_curriculum_link($theme->baseurl,
-                                                          $theme->urlsuffix));
-            $lasttheme = $theme->themename;
-        }
-
-        foreach ($theme->objectives as $objective) {
-
-            $grades = array(0 => '&nbsp;', 1 => '&nbsp;', 2 => '&nbsp;', 3 => '&nbsp;', 4 => '&nbsp;');
-            switch ($objective->grade) {
-            case '0':
-                $grades[0] = '<img title="'.get_string('plangrade0', 'idp').'"';
-                $grades[0] .= ' alt="'.get_string('plangrade0', 'idp').'"';
-                $grades[0] .= " src=\"{$CFG->pixpath}/redx.gif\" />";
-                break;
-            case '1':
-            case '2':
-            case '3':
-            case '4':
-                $grades[$objective->grade] = '<img title="'.get_string('plangrade'.$objective->grade, 'idp').'"';
-                $grades[$objective->grade] .= ' alt="'.get_string('plangrade'.$objective->grade, 'idp').'"';
-                $grades[$objective->grade] .= " src=\"{$CFG->pixpath}/greentick.gif\" />";
-                break;
-            }
-
-            $table->rowclass[] = '';
-            $table->data[] = array(s($objective->objectivename),
-                                   $grades[1], $grades[2], $grades[3], $grades[4], $grades[0],
-                                   strftime('%d-%m-%Y', $objective->evaluatedtime),
-                                   online_curriculum_link($objective->baseurl,
-                                                          $objective->urlsuffix));
-        }
-    }
-
-    return print_table($table, true);
 }
 
 /**
@@ -2879,7 +2863,9 @@ SQL;
 function get_all_competency_frameworks($fullcompetencylist){
     $frameworktocompetencyhash = array();
 
-    // Sort all the competencies by framework
+    // Create an array with one entry for each framework. The key will be
+    // the framework id, and the value will be an array of all the competencies
+    // under that framework
     foreach( $fullcompetencylist as $competency ){
         $frameworktocompetencyhash[$competency->frameworkid][] = $competency;
     }

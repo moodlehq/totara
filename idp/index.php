@@ -103,17 +103,7 @@ foreach ($lt as $column) {
             print print_button();
             print '<h1>'.get_string('evaluationsummarytitle', 'idp').'</h1>';
 
-            $usercurriculum = get_field('user', 'curriculum', 'id', $userid);
-            if (!empty($usercurriculum)) {
-                print '<h2>'.get_string("curriculum_{$usercurriculum}_title", 'idp').'</h2>';
-                print '<blockquote>' . evaluation_summary($usercurriculum, $userid) . '</blockquote>';
-            }
-            else {
-                print '<p style="border-style: dashed; border-color: #FF0000"><i><b>'.get_string('error:nousercurriculum', 'idp').'</b></i></p>';
-            }
-
-            print '<h2>'.get_string("curriculum_Q_title", 'idp').'</h2>';
-            print '<blockquote>' . evaluation_summary('Q', $userid) . '</blockquote>';
+            print_evaluation_summary($userid);
 
             print '<p id="backtoplanslink"><a href="index.php?userid='.$userid.'">'.
                 get_string('backlearningplans', 'idp').'</a></p>';
