@@ -46,7 +46,7 @@ if (!$framework = $hierarchy->get_framework($template->frameworkid)) {
 
 // Load competencies to display
 $competencies = $hierarchy->get_items_by_parent($parentid);
-
+$competenciesintemplate = $hierarchy->get_assigned_to_template($id);
 
 ///
 /// Display page
@@ -68,7 +68,8 @@ if(!$nojs) {
     echo build_treeview(
         $competencies,
         get_string('nochildcompetenciesfound', 'competency'),
-        $hierarchy
+        $hierarchy,
+        $competenciesintemplate
     );
 
     // If no parent id, close list
@@ -117,7 +118,8 @@ if(!$nojs) {
             'templateid' => $id,
         ),
         $CFG->wwwroot.'/hierarchy/type/competency/template/find_competency.php?'.$urlparams,
-        $hierarchy->get_all_parents()
+        $hierarchy->get_all_parents(),
+        $competenciesintemplate
     );
 
 ?>
