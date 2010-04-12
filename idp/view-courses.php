@@ -17,7 +17,7 @@ function print_idp_courses_view( $revision, $courses, $editingon=false){
     $str_remove = get_string('remove');
 
     ?>
-    <table id="list-idp-courses" class="generalbox planitems boxaligncenter viewcourses">
+    <table id="list-idpcourse" class="generalbox planitems boxaligncenter viewcourses">
     <thead>
     <tr>
         <th class="framework" scope="col">
@@ -86,7 +86,7 @@ $rowcount=0;
         }
 
     } else {
-        echo '<tr class="noitems"><td colspan="'.$cols.'"><i>'.get_string('emptyplancourses', 'idp').'</i></td></tr>';
+        echo '<tr class="noitems-idpcourse"><td colspan="'.$cols.'"><i>'.get_string('emptyplancourses', 'idp').'</i></td></tr>';
     }
 
     echo '</tbody></table>';

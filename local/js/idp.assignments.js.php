@@ -37,19 +37,6 @@ $(function() {
     })();
 
     ///
-    /// Assign course template dialog
-    ///
-    (function() {
-        var url = '<?php echo $CFG->wwwroot ?>/hierarchy/type/course/idp/';
-
-        mitmsAssignDialog(
-            'idpcourse',
-            url+'add.php?id='+idp_revision_id,
-            url+'save.php?id='+idp_revision_id+'&rowcount='+idp_competencytemplate_row_count+'&add='
-        );
-    })();
-
-    ///
     /// Assign competency from position dialog
     ///
     (function() {
@@ -79,4 +66,45 @@ $(function() {
         $('#show-idppositioncompetencytemplate-dialog').css('display','inline');
     })();
 
+    ///
+    /// Assign course dialog
+    ///
+    (function() {
+        var url = '<?php echo $CFG->wwwroot ?>/hierarchy/type/course/idp/';
+
+        var handler = new mitmsDialog_handler_idpCourse();
+        handler.baseurl = url;
+
+        //url+'save.php?id='+idp_revision_id+'&rowcount='+idp_competencytemplate_row_count+'&add=',
+        mitmsDialogs['idpcourse'] = new mitmsDialog(
+            'idpcourse',
+            'show-idpcourse-dialog',
+            {},
+            url+'add.php?id='+idp_revision_id,
+            handler
+        );
+    })();
+
 });
+
+// Create handler for the course dialog
+mitmsDialog_handler_idpCourse = function() {
+    // Base url
+    var baseurl = '';
+};
+mitmsDialog_handler_idpCourse.prototype = new mitmsDialog_handler_skeletalTreeview();
+
+mitmsDialog_handler_idpCourse.prototype._handle_hierarchy_expand = function(id) {
+
+    var url = this.baseurl+'category.php?id='+id;
+    this._dialog._request(url, this, '_update_hierarchy', id);
+}
+
+
+mitmsDialog_handler_idpCourse.prototype._handle_course_click = function(id) {
+
+    var url = this.baseurl+'save.php?id='+idp_revision_id+'&rowcount='+idp_competencytemplate_row_count+'&add='+id;
+
+    // Update db
+    this._dialog._request(url, this, '_update');
+}
