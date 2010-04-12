@@ -2476,7 +2476,7 @@ SQL;
 
         $compcollabel = "{$tableid}-competencyname";
         $columnids = array($compcollabel);
-        $columnlabels = array('Competency');
+        $columnlabels = array(get_string('competency','competency'));
 
         $scalevalues = $framework->scale->valuelist;
         $scalecollabel = "{$tableid}-value";
