@@ -317,6 +317,8 @@ class hierarchy {
      * Get items in a lineage
      * @param int $id
      * @return array|false
+     * NOTE: does not check that lineage items are in same framework
+     *       as $id specified or as hierarchy object this method is called from
      */
     function get_item_lineage($id) {
         global $CFG;
