@@ -130,7 +130,7 @@ class hierarchy {
      * @param int $parentid
      * @return array|false
      */
-    function get_items_by_parent($parentid) {
+    function get_items_by_parent($parentid=false) {
         if ($parentid) {
             // Parentid supplied, do not specify frameworkid as
             // sometimes it is not set correctly. And a parentid
