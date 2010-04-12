@@ -691,7 +691,7 @@ class hierarchy {
      */
     function is_safe_to_delete_depth($id) {
 
-        if ( !$id ){
+        if ( !get_record($this->prefix.'_depth', 'id', $id) ){
             return 'deletedepthnosuchdepth';
         }
 
