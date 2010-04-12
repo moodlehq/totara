@@ -668,9 +668,15 @@ mitmsDialog_handler_treeview_clickable.prototype._make_clickable = function(pare
         // Fix the element id
         clicked.attr('id', clicked.attr('id').substr(5));
 
-        // Run handler and close
-        dialog.clickhandler(clicked);
-        dialog._dialog.hide();
+        // Check for new style click handler
+        if (dialog.handle_click != undefined) {
+            dialog.handle_click(clicked);
+        }
+        else {
+            // Run handler and close
+            dialog.clickhandler(clicked);
+            dialog._dialog.hide();
+        }
 
         return false;
     });
