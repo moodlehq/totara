@@ -12,7 +12,6 @@ require_login();
 
 $planid = required_param('id', PARAM_INT); // Plan ID
 $rev = optional_param('rev', 0, PARAM_INT); // Revision ID
-$lp = optional_param('lp', 0, PARAM_INT); // Activity ID
 $print = optional_param('print', 0, PARAM_INT); // Print-friendly view
 
 if (0 == $planid) {
