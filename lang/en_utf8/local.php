@@ -87,7 +87,6 @@ $string['local:idpviewowncomment'] = 'View own comments';
 $string['local:idpviewownlist'] = 'View own IDP list';
 $string['local:idpviewownplan'] = 'View own IDPs';
 $string['local:idpviewplan'] = 'View a user\'s IDPs';
-$string['local:withdrawownplan'] = 'Withdraw own submitted IDPs';
 
 // Local Report capability strings
 $string['local:admin'] = 'Perform administrative tasks on report builder reports';

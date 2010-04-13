@@ -1006,7 +1006,6 @@ array('id' => '1944','contextid' => '1','roleid' => '1','capability' => 'moodle/
 array('id' => '1947','contextid' => '1','roleid' => '1','capability' => 'moodle/local:idpviewowncomment','permission' => '1','timemodified' => '1267734202','modifierid' => '2',),
 array('id' => '1950','contextid' => '1','roleid' => '1','capability' => 'moodle/local:idpaddowncomment','permission' => '1','timemodified' => '1267734202','modifierid' => '2',),
 array('id' => '1953','contextid' => '1','roleid' => '1','capability' => 'moodle/local:idpsubmitownplan','permission' => '1','timemodified' => '1267734202','modifierid' => '2',),
-array('id' => '1956','contextid' => '1','roleid' => '1','capability' => 'moodle/local:withdrawownplan','permission' => '1','timemodified' => '1267734202','modifierid' => '2',),
 array('id' => '1959','contextid' => '1','roleid' => '1','capability' => 'moodle/local:approveplan','permission' => '1','timemodified' => '1267734202','modifierid' => '2',),
 array('id' => '1962','contextid' => '1','roleid' => '1','capability' => 'moodle/local:idpapproveplanonbehalf','permission' => '1','timemodified' => '1267734202','modifierid' => '2',),
 array('id' => '1965','contextid' => '1','roleid' => '1','capability' => 'moodle/local:idpviewownlist','permission' => '1','timemodified' => '1267734202','modifierid' => '2',),

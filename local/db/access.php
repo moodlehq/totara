@@ -334,16 +334,6 @@ $local_capabilities = array(
         ),
     ),
 
-    // Ability for users to withdraw their own submitted plans
-    'moodle/local:withdrawownplan' => array(
-        'captype' => 'write',
-        'contextlevel' => CONTEXT_SYSTEM,
-        'legacy' => array(
-            'admin' => CAP_ALLOW,
-            'user' => CAP_ALLOW,
-        ),
-    ),
-
     // Ability for managers to approve a specific user's plan
     'moodle/local:approveplan' => array(
         'captype' => 'write',
