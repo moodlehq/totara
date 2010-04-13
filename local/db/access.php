@@ -293,7 +293,7 @@ $local_capabilities = array(
     ),
 
     // Ability for users to view the comments on their own plans
-    'moodle/local:viewowncomment' => array(
+    'moodle/local:idpviewowncomment' => array(
         'captype' => 'read',
         'contextlevel' => CONTEXT_SYSTEM,
         'legacy' => array(
