@@ -25,7 +25,7 @@ function print_idp_competency_templates_view( $revision, $competencytemplates, $
         $addpos = has_capability('moodle/local:idpaddcompetencytemplatefrompos', get_context_instance(CONTEXT_SYSTEM));
     }
 ?>
-    <table id="list-idpcompetencytemplate" class="generalbox planitems boxaligncenter">
+    <table id="list-idpcompetencytemplate" class="generalbox planitems boxaligncenter list-idppositioncompetencytemplate">
     <thead>
     <tr>
         <th class="framework" scope="col">
@@ -94,7 +94,7 @@ $rowcount=0;
         }
 
     } else {
-        echo '<tr class="noitems-idpcompetencytemplate"><td colspan="'.$cols.'"><i>'.get_string('emptyplancompetencytemplates', 'idp').'</i></td></tr>';
+        echo '<tr class="noitems-idpcompetencytemplate noitems-idppositioncompetencytemplate"><td colspan="'.$cols.'"><i>'.get_string('emptyplancompetencytemplates', 'idp').'</i></td></tr>';
     }
 
         echo '</tbody></table>';
