@@ -27,7 +27,7 @@ $contextuser = get_context_instance(CONTEXT_USER, $plan->userid);
 add_to_log(SITEID, 'idp', 'withdraw plan', "revision.php?id=$plan->id", $plan->id);
 
 if ($USER->id == $plan->userid) {
-    require_capability('moodle/local:submitownplan', $contextsite);
+    require_capability('moodle/local:idpsubmitownplan', $contextsite);
 } else {
     error(get_string('onlycreatorwithdraw', 'idp'));
 }

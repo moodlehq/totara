@@ -61,7 +61,7 @@ if ($confirm) {
 
 if ($USER->id == $plan->userid) {
     require_capability('moodle/local:viewownplan', $contextsite);
-    require_capability('moodle/local:submitownplan', $contextsite);
+    require_capability('moodle/local:idpsubmitownplan', $contextsite);
 } else {
     error(get_string('onlycreatorsubmit', 'idp'));
 }

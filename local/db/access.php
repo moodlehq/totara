@@ -337,7 +337,7 @@ $local_capabilities = array(
     ),
 
     // Ability for users to submit their own plans for approval
-    'moodle/local:submitownplan' => array(
+    'moodle/local:idpsubmitownplan' => array(
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM,
         'legacy' => array(
