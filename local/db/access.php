@@ -416,7 +416,7 @@ $local_capabilities = array(
     ),
 
     // Ability for managers to look at a trainee's overview page
-    'moodle/local:traineeoverview' => array(
+    'moodle/local:idptraineeoverview' => array(
         'captype' => 'read',
         'contextlevel' => CONTEXT_USER,
     ),
