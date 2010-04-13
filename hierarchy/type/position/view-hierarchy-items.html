@@ -2,6 +2,16 @@
 
 require_once $CFG->libdir.'/tablelib.php';
 
+?>
+
+<script type="text/javascript">
+    <!-- //
+    <?php echo 'var '.$this->prefix.'_id = \''.$item->id.'\';' ?>
+    // -->
+</script>
+
+<?php
+
 print_heading(get_string($displaytitle, $displaytype));
 
 if ($displaydepth) {
@@ -83,12 +93,6 @@ if ($can_edit && $editingon) {
     ?>
 
 <div class="buttons">
-
-    <script type="text/javascript">
-        <!-- //
-        <?php echo 'var '.$this->prefix.'_id = \''.$item->id.'\';' ?>
-        // -->
-    </script>
 
     <div class="singlebutton">
         <form action="<?php echo $addurl ?>" method="get">
