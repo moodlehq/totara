@@ -68,7 +68,6 @@ $string['viewchildren'] = 'View Children';
 // Local IDP capability strings
 $string['local:idpaddcomment'] = 'Comment on a user\'s IDP';
 $string['local:idpaddowncomment'] = 'Comment on your own IDPs';
-$string['local:admin'] = 'Perform administrative tasks on a IDP activity';
 $string['local:approveplan'] = 'Approve a user\'s IDP';
 $string['local:approveplanonbehalf'] = 'Approve a user\'s IDP on behalf of someone else';
 $string['local:editownfavourite'] = 'Edit own favourites';
@@ -94,6 +93,7 @@ $string['local:viewplan'] = 'View a user\'s IDPs';
 $string['local:withdrawownplan'] = 'Withdraw own submitted IDPs';
 
 // Local Report capability strings
+$string['local:admin'] = 'Perform administrative tasks on report builder reports';
 $string['local:viewlocalreports'] = 'View reports for all staff in user\'s local region';
 $string['local:viewstaffreports'] = 'View reports for a user\'s staff members';
 $string['local:viewownreports'] = 'View a user\'s own reports';
