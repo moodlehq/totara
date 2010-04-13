@@ -76,7 +76,7 @@ else {
 
     // Get people we can approve on behalf of
     $otherapprovers = array();
-    if (has_capability('moodle/local:approveplanonbehalf', $contextuser)) {
+    if (has_capability('moodle/local:idpapproveplanonbehalf', $contextuser)) {
         $otherapprovers = get_approvers($contextuser);
     }
 

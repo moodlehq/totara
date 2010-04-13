@@ -373,7 +373,7 @@ $local_capabilities = array(
 
     // Ability for managers to approve a specific user's plan on
     // behalf of someone else who has approval rights for that user
-    'moodle/local:approveplanonbehalf' => array(
+    'moodle/local:idpapproveplanonbehalf' => array(
         'captype' => 'write',
         'contextlevel' => CONTEXT_USER,
         'legacy' => array(
