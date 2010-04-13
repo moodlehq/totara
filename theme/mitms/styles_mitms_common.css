@@ -342,6 +342,10 @@ div.mitms-dialog ul.treeview li span.clickable:hover {
     color: #f00;
 }
 
+div.mitms-dialog ul.treeview li span.unclickable {
+    color: #777;
+}
+
 div.mitms-dialog ul.treeview li span.ui-draggable {
     cursor: pointer;
 }

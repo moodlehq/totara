@@ -47,6 +47,12 @@ foreach ($add as $addition) {
         error('Supplied bad data - non numeric id');
     }
 
+    // If the course is already present in this plan, don't add it a second
+    // time
+    if ( count_records('idp_revision_course', 'revision', $revisionid, 'course', $addition) ){
+        continue;
+    }
+
     // Load course
     if (!$course = get_record('course', 'id', (int)$addition)) {
         error('Could not load course');

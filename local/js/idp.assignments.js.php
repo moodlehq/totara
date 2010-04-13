@@ -96,7 +96,7 @@ mitmsDialog_handler_idpCourse.prototype = new mitmsDialog_handler_skeletalTreevi
 
 mitmsDialog_handler_idpCourse.prototype._handle_hierarchy_expand = function(id) {
 
-    var url = this.baseurl+'category.php?id='+id;
+    var url = this.baseurl+'category.php?id='+id+'&rev='+idp_revision_id;
     this._dialog._request(url, this, '_update_hierarchy', id);
 }
 

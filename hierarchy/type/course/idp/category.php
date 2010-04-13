@@ -11,6 +11,7 @@ require_once($CFG->dirroot.'/course/lib.php');
 
 // category id
 $id = required_param('id', PARAM_INT);
+$rev = optional_param('rev', false, PARAM_INT);
 
 // Check perms
 require_login();
@@ -24,6 +25,7 @@ if (!$category = get_record('course_categories', 'id', $id)) {
 $courses = get_courses($category->id, "c.sortorder ASC", 'c.id, c.fullname');
 
 if ($courses) {
+    $registeredcourses = get_records('idp_revision_course', 'revision', $rev, '', 'course');
     $len = count($courses);
     $i = 0;
     foreach ($courses as $course) {
@@ -36,7 +38,13 @@ if ($courses) {
         }
 
         echo '>';
-        echo '<span class="clickable">'.format_string($course->fullname).'</span></li>';
+        echo '<span class="';
+        if ( isset($registeredcourses[$course->id]) ){
+            echo 'unclickable';
+        } else {
+            echo 'clickable';
+        }
+        echo '">'.format_string($course->fullname).'</span></li>';
     }
 }
 else {
