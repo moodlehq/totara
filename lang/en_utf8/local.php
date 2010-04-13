@@ -84,7 +84,6 @@ $string['local:idptraineeownoverview'] = 'View own trainee overview page';
 $string['local:viewcomment'] = 'View a user\'s IDP comments';
 $string['local:viewlist'] = 'View a user\'s list of IDPs';
 $string['local:viewowncomment'] = 'View own comments';
-$string['local:viewownfavourite'] = 'View own favourites';
 $string['local:viewownlist'] = 'View own IDP list';
 $string['local:viewownplan'] = 'View own IDPs';
 $string['local:viewplan'] = 'View a user\'s IDPs';
