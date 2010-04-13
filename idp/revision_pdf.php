@@ -59,7 +59,7 @@ if ($currevision) {
 
     // Whether or not the current user can approve this plan
     $can_approve = false;
-    if (!$isauthor && has_capability('moodle/local:approveplan', $contextuser)) {
+    if (!$isauthor && has_capability('moodle/local:idpapproveplan', $contextuser)) {
         $can_approve = true;
     }
 

@@ -115,7 +115,7 @@ foreach ($lt as $column) {
 
                 // Whether or not the current user can approve this plan
                 $can_approve = false;
-                if (!$can_submit && has_capability('moodle/local:approveplan', $contextuser)) {
+                if (!$can_submit && has_capability('moodle/local:idpapproveplan', $contextuser)) {
                     $can_approve = true;
                 }
 

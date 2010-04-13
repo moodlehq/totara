@@ -29,7 +29,7 @@ $contextsite = get_context_instance(CONTEXT_SYSTEM);
 $contextuser = get_context_instance(CONTEXT_USER, $plan->userid);
 
 require_capability('moodle/local:idpviewplan', $contextuser);
-require_capability('moodle/local:approveplan', $contextuser);
+require_capability('moodle/local:idpapproveplan', $contextuser);
 
 add_to_log(SITEID, 'idp', 'approve plan', "approve.php?rev=$rev&amp;confirm=$confirm", $plan->id);
 

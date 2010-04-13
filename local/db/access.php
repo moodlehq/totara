@@ -335,7 +335,7 @@ $local_capabilities = array(
     ),
 
     // Ability for managers to approve a specific user's plan
-    'moodle/local:approveplan' => array(
+    'moodle/local:idpapproveplan' => array(
         'captype' => 'write',
         'contextlevel' => CONTEXT_USER,
         'legacy' => array(

@@ -1228,7 +1228,7 @@ function get_approvers($contextuser) {
 
     $approvers = array();
 
-    $users = get_users_by_capability($contextuser, 'mod/idp:approveplan', '', 'firstname,lastname');
+    $users = get_users_by_capability($contextuser, 'moodle/local:idpapproveplan', '', 'firstname,lastname');
     if ($users and count($users) > 0) {
         foreach ($users as $key => $user) {
             if ($user->id != $USER->id) {

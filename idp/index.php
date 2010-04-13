@@ -318,7 +318,7 @@ function print_trainees_summary($trainees) {
 
         $canview    = has_capability('moodle/local:idpviewplan', $userctx, $userid);
         $cancomment = has_capability('moodle/local:idpaddcomment', $userctx, $userid);
-        $can_approve = has_capability('moodle/local:approveplan', $userctx, $userid);
+        $can_approve = has_capability('moodle/local:idpapproveplan', $userctx, $userid);
 
         $trainee            = new stdclass;
         $trainee->id        = $traineeuser->id;

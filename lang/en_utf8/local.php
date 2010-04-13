@@ -68,7 +68,7 @@ $string['viewchildren'] = 'View Children';
 // Local IDP capability strings
 $string['local:idpaddcomment'] = 'Comment on a user\'s IDP';
 $string['local:idpaddowncomment'] = 'Comment on your own IDPs';
-$string['local:approveplan'] = 'Approve a user\'s IDP';
+$string['local:idpapproveplan'] = 'Approve or reject a user\'s IDP';
 $string['local:idpapproveplanonbehalf'] = 'Approve or reject a user\'s IDP on behalf of someone else';
 $string['local:idpeditownplan'] = 'Edit own IDPs';
 $string['local:idpaddcompetency'] = 'Add competencies to an IDP';
