@@ -66,7 +66,7 @@ $string['local:deleteorganisationframeworks'] = 'Delete an organisational framew
 $string['viewchildren'] = 'View Children';
 
 // Local IDP capability strings
-$string['local:addcomment'] = 'Comment on a user\'s IDP';
+$string['local:idpaddcomment'] = 'Comment on a user\'s IDP';
 $string['local:addowncomment'] = 'Comment on your own IDPs';
 $string['local:admin'] = 'Perform administrative tasks on a IDP activity';
 $string['local:approveplan'] = 'Approve a user\'s IDP';

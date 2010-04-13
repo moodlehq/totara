@@ -337,7 +337,7 @@ $local_capabilities = array(
     ),
 
     // Ability for managers to comment on a user's plan
-    'moodle/local:addcomment' => array(
+    'moodle/local:idpaddcomment' => array(
         'captype' => 'write',
         'contextlevel' => CONTEXT_USER,
     ),
