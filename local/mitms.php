@@ -117,7 +117,7 @@ function mitms_print_my_learning_nav($return=false) {
     $returnstr = '
         <table>
     ';
-    if (has_capability('moodle/local:viewownlist', $usercontext)) {
+    if (has_capability('moodle/local:idpviewownlist', $usercontext)) {
         $returnstr .= '
             <tr>
                 <td align="left">

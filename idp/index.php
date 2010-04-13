@@ -34,7 +34,7 @@ if ($ownpage) {
         $manageroverview = true;
     }
     else {
-        require_capability('moodle/local:viewownlist', $contextsite);
+        require_capability('moodle/local:idpviewownlist', $contextsite);
     }
 }
 else {
@@ -203,11 +203,11 @@ foreach ($lt as $column) {
 
                 $canviewplans = false;
                 if ($ownpage) {
-                    if (has_capability('moodle/local:viewownplan', $contextsite)) {
+                    if (has_capability('moodle/local:idpviewownplan', $contextsite)) {
                         $canviewplans = true;
                     }
                 } else {
-                    if (has_capability('moodle/local:viewplan', $contextuser)) {
+                    if (has_capability('moodle/local:idpviewplan', $contextuser)) {
                         $canviewplans = true;
                     }
                 }
@@ -316,7 +316,7 @@ function print_trainees_summary($trainees) {
         $userrole   = array_shift($userroles);
         $userrole   = $userrole->name;
 
-        $canview    = has_capability('moodle/local:viewplan', $userctx, $userid);
+        $canview    = has_capability('moodle/local:idpviewplan', $userctx, $userid);
         $cancomment = has_capability('moodle/local:idpaddcomment', $userctx, $userid);
         $can_approve = has_capability('moodle/local:approveplan', $userctx, $userid);
 

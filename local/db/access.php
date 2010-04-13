@@ -267,7 +267,7 @@ $local_capabilities = array(
 
   // Capability definitions for the lplan module
     // Ability for users to view their own plans
-    'moodle/local:viewownplan' => array(
+    'moodle/local:idpviewownplan' => array(
         'captype' => 'read',
         'contextlevel' => CONTEXT_SYSTEM,
         'legacy' => array(
@@ -287,7 +287,7 @@ $local_capabilities = array(
     ),
 
     // Ability for managers to view a user's plan
-    'moodle/local:viewplan' => array(
+    'moodle/local:idpviewplan' => array(
         'captype' => 'read',
         'contextlevel' => CONTEXT_USER,
     ),
@@ -364,7 +364,7 @@ $local_capabilities = array(
     ),
 
     // Ability for users to view their own list of plans
-    'moodle/local:viewownlist' => array(
+    'moodle/local:idpviewownlist' => array(
         'captype' => 'read',
         'contextlevel' => CONTEXT_SYSTEM,
         'legacy' => array(

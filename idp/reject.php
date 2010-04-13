@@ -25,7 +25,7 @@ require_login();
 $contextsite = get_context_instance(CONTEXT_SYSTEM);
 $contextuser = get_context_instance(CONTEXT_USER, $plan->userid);
 
-require_capability('moodle/local:viewplan', $contextuser);
+require_capability('moodle/local:idpviewplan', $contextuser);
 require_capability('moodle/local:approveplan', $contextuser);
 
 add_to_log(SITEID, 'idp', 'reject plan', "revision.php?id=$plan->id", $plan->id);

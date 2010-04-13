@@ -26,9 +26,9 @@ $contextsite = get_context_instance(CONTEXT_SYSTEM);
 $contextuser = get_context_instance(CONTEXT_USER, $plan->userid);
 
 if ($USER->id == $plan->userid) {
-    require_capability('moodle/local:viewownplan', $contextsite);
+    require_capability('moodle/local:idpviewownplan', $contextsite);
 } else {
-    require_capability('moodle/local:viewplan', $contextuser);
+    require_capability('moodle/local:idpviewplan', $contextuser);
 }
 
 // Get the requested revision (default: the last one)

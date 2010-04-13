@@ -84,9 +84,9 @@ $string['local:idptraineeownoverview'] = 'View own trainee overview page';
 $string['local:idpviewcomment'] = 'View a user\'s IDP comments';
 $string['local:idpviewlist'] = 'View a user\'s list of IDPs';
 $string['local:idpviewowncomment'] = 'View own comments';
-$string['local:viewownlist'] = 'View own IDP list';
-$string['local:viewownplan'] = 'View own IDPs';
-$string['local:viewplan'] = 'View a user\'s IDPs';
+$string['local:idpviewownlist'] = 'View own IDP list';
+$string['local:idpviewownplan'] = 'View own IDPs';
+$string['local:idpviewplan'] = 'View a user\'s IDPs';
 $string['local:withdrawownplan'] = 'Withdraw own submitted IDPs';
 
 // Local Report capability strings
