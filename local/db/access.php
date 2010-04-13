@@ -392,7 +392,7 @@ $local_capabilities = array(
     ),
 
     // Ability for managers to look at their own overview page
-    'moodle/local:managerownoverview' => array(
+    'moodle/local:idpmanagerownoverview' => array(
         'captype' => 'read',
         'contextlevel' => CONTEXT_SYSTEM,
         'legacy' => array(

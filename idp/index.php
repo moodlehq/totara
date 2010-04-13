@@ -30,7 +30,7 @@ $ownpage = ($USER->id == $userid);
 
 if ($ownpage) {
     // Looking at your own page
-    if (has_capability('moodle/local:managerownoverview', $contextsite)) {
+    if (has_capability('moodle/local:idpmanagerownoverview', $contextsite)) {
         $manageroverview = true;
     }
     else {
@@ -41,7 +41,7 @@ else {
     $user = get_record('user', 'id', $userid);
     // Looking at another user's page
     if (has_capability('moodle/local:idpmanageroverview', $contextuser) &&
-        has_capability('moodle/local:managerownoverview', $contextsite, $userid)) {
+        has_capability('moodle/local:idpmanagerownoverview', $contextsite, $userid)) {
 
         $manageroverview = true;
     }
