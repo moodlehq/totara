@@ -401,7 +401,7 @@ $local_capabilities = array(
     ),
 
     // Ability to look at managers overview pages
-    'moodle/local:manageroverview' => array(
+    'moodle/local:idpmanageroverview' => array(
         'captype' => 'read',
         'contextlevel' => CONTEXT_USER,
     ),

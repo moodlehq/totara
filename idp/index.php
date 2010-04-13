@@ -40,7 +40,7 @@ if ($ownpage) {
 else {
     $user = get_record('user', 'id', $userid);
     // Looking at another user's page
-    if (has_capability('moodle/local:manageroverview', $contextuser) &&
+    if (has_capability('moodle/local:idpmanageroverview', $contextuser) &&
         has_capability('moodle/local:managerownoverview', $contextsite, $userid)) {
 
         $manageroverview = true;
