@@ -298,12 +298,6 @@ $local_capabilities = array(
         'contextlevel' => CONTEXT_SYSTEM,
     ),
 
-    // Ability for users to edit their own favourites
-    'moodle/local:editownfavourite' => array(
-        'captype' => 'write',
-        'contextlevel' => CONTEXT_SYSTEM,
-    ),
-
     // Ability for managers to view a user's favourites
     'moodle/local:viewfavourite' => array(
         'captype' => 'read',

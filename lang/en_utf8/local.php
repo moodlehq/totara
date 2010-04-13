@@ -70,7 +70,6 @@ $string['local:idpaddcomment'] = 'Comment on a user\'s IDP';
 $string['local:idpaddowncomment'] = 'Comment on your own IDPs';
 $string['local:approveplan'] = 'Approve a user\'s IDP';
 $string['local:idpapproveplanonbehalf'] = 'Approve or reject a user\'s IDP on behalf of someone else';
-$string['local:editownfavourite'] = 'Edit own favourites';
 $string['local:editownplan'] = 'Edit own IDPs';
 $string['local:idpaddcompetency'] = 'Add competencies to an IDP';
 $string['local:idpaddcompetencyfrompos'] = 'Add competencies to an IDP from a position';
