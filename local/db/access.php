@@ -313,7 +313,7 @@ $local_capabilities = array(
     ),
 
     // Ability for managers to view a user's plan comments
-    'moodle/local:viewcomment' => array(
+    'moodle/local:idpviewcomment' => array(
         'captype' => 'read',
         'contextlevel' => CONTEXT_USER,
     ),
@@ -374,7 +374,7 @@ $local_capabilities = array(
     ),
 
     // Ability for managers to view the list of a user's plan
-    'moodle/local:viewlist' => array(
+    'moodle/local:idpviewlist' => array(
         'captype' => 'read',
         'contextlevel' => CONTEXT_USER,
     ),

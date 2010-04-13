@@ -1590,7 +1590,7 @@ array('id' => '2558','contextid' => '1','roleid' => '3','capability' => 'moodle/
 array('id' => '2559','contextid' => '1','roleid' => '3','capability' => 'moodle/course:create','permission' => '1','timemodified' => '1266525609','modifierid' => '6857',),
 array('id' => '2561','contextid' => '1','roleid' => '12','capability' => 'moodle/course:create','permission' => '1','timemodified' => '1267734151','modifierid' => '2',),
 array('id' => '2568','contextid' => '1','roleid' => '1','capability' => 'moodle/restore:createuser','permission' => '1','timemodified' => '1267734202','modifierid' => '2',),
-array('id' => '2569','contextid' => '1','roleid' => '8','capability' => 'moodle/local:viewlist','permission' => '1','timemodified' => '1267944066','modifierid' => '2',),
+array('id' => '2569','contextid' => '1','roleid' => '8','capability' => 'moodle/local:idpviewlist','permission' => '1','timemodified' => '1267944066','modifierid' => '2',),
 array('id' => '2570','contextid' => '1','roleid' => '5','capability' => 'mod/facetoface:viewattendees','permission' => '-1','timemodified' => '1268602321','modifierid' => '2',),
 );
 print "\n";print "Inserting ".count($items)." records<br />\n";

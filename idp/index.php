@@ -46,7 +46,7 @@ else {
         $manageroverview = true;
     }
     else {
-        require_capability('moodle/local:viewlist', $contextuser);
+        require_capability('moodle/local:idpviewlist', $contextuser);
     }
 }
 
