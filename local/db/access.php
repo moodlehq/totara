@@ -321,7 +321,7 @@ $local_capabilities = array(
     ),
 
     // Ability for users to comment on their own plans
-    'moodle/local:addowncomment' => array(
+    'moodle/local:idpaddowncomment' => array(
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM,
         'legacy' => array(
