@@ -1011,7 +1011,7 @@ array('id' => '1959','contextid' => '1','roleid' => '1','capability' => 'moodle/
 array('id' => '1962','contextid' => '1','roleid' => '1','capability' => 'moodle/local:idpapproveplanonbehalf','permission' => '1','timemodified' => '1267734202','modifierid' => '2',),
 array('id' => '1965','contextid' => '1','roleid' => '1','capability' => 'moodle/local:viewownlist','permission' => '1','timemodified' => '1267734202','modifierid' => '2',),
 array('id' => '1968','contextid' => '1','roleid' => '1','capability' => 'moodle/local:idpmanagerownoverview','permission' => '1','timemodified' => '1267734202','modifierid' => '2',),
-array('id' => '1971','contextid' => '1','roleid' => '1','capability' => 'moodle/local:traineeownoverview','permission' => '1','timemodified' => '1267734202','modifierid' => '2',),
+array('id' => '1971','contextid' => '1','roleid' => '1','capability' => 'moodle/local:idptraineeownoverview','permission' => '1','timemodified' => '1267734202','modifierid' => '2',),
 array('id' => '1974','contextid' => '1','roleid' => '1','capability' => 'moodle/local:admin','permission' => '1','timemodified' => '1267734202','modifierid' => '2',),
 array('id' => '1977','contextid' => '1','roleid' => '1','capability' => 'moodle/local:viewlocalreports','permission' => '1','timemodified' => '1267734202','modifierid' => '2',),
 array('id' => '1980','contextid' => '1','roleid' => '1','capability' => 'moodle/local:viewstaffreports','permission' => '1','timemodified' => '1267734202','modifierid' => '2',),

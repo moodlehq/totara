@@ -407,7 +407,7 @@ $local_capabilities = array(
     ),
 
     // Ability for trainees to look at their own overview page
-    'moodle/local:traineeownoverview' => array(
+    'moodle/local:idptraineeownoverview' => array(
         'captype' => 'read',
         'contextlevel' => CONTEXT_SYSTEM,
         'legacy' => array(
