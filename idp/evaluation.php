@@ -29,9 +29,12 @@ $contextsite = get_context_instance(CONTEXT_SYSTEM);
 $contextuser = get_context_instance(CONTEXT_USER, $plan->userid);
 
 $errorurl = $CFG->wwwroot . "/idp/revision.php?id=$plan->id";
-if ($USER->id == $plan->userid) {
-    require_capability('moodle/local:editownplan', $contextsite);
-} else {
+
+// User must have permission to edit own plans in order to submit an evaluation
+require_capability('moodle/local:idpeditownplan', $contextsite);
+
+// Only the owner of a plan can evaluate it
+if ($USER->id != $plan->userid) {
     error(get_string('error:cannotevaluateplan', 'idp'), $errorurl);
 }
 

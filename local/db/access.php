@@ -277,7 +277,7 @@ $local_capabilities = array(
     ),
 
     // Ability for users to edit their own plans
-    'moodle/local:editownplan' => array(
+    'moodle/local:idpeditownplan' => array(
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM,
         'legacy' => array(

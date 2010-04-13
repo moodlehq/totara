@@ -19,7 +19,7 @@ if ( !$plan ){
 }
 
 // Users can only edit their own IDP
-require_capability('moodle/local:editownplan', get_context_instance(CONTEXT_SYSTEM));
+require_capability('moodle/local:idpeditownplan', get_context_instance(CONTEXT_SYSTEM));
 if ( $plan->userid != $USER->id ){
     error(get_string('error:revisionnotvisible', 'idp'));
 }

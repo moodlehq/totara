@@ -1002,7 +1002,7 @@ array('id' => '1936','contextid' => '1','roleid' => '1','capability' => 'moodle/
 array('id' => '1938','contextid' => '1','roleid' => '15','capability' => 'moodle/local:editcourseclassification','permission' => '1','timemodified' => '1266525605','modifierid' => '1059',),
 array('id' => '1939','contextid' => '1','roleid' => '3','capability' => 'moodle/local:editcourseclassification','permission' => '1','timemodified' => '1266525610','modifierid' => '6857',),
 array('id' => '1941','contextid' => '1','roleid' => '1','capability' => 'moodle/local:viewownplan','permission' => '1','timemodified' => '1267734202','modifierid' => '2',),
-array('id' => '1944','contextid' => '1','roleid' => '1','capability' => 'moodle/local:editownplan','permission' => '1','timemodified' => '1267734202','modifierid' => '2',),
+array('id' => '1944','contextid' => '1','roleid' => '1','capability' => 'moodle/local:idpeditownplan','permission' => '1','timemodified' => '1267734202','modifierid' => '2',),
 array('id' => '1947','contextid' => '1','roleid' => '1','capability' => 'moodle/local:viewowncomment','permission' => '1','timemodified' => '1267734202','modifierid' => '2',),
 array('id' => '1950','contextid' => '1','roleid' => '1','capability' => 'moodle/local:idpaddowncomment','permission' => '1','timemodified' => '1267734202','modifierid' => '2',),
 array('id' => '1953','contextid' => '1','roleid' => '1','capability' => 'moodle/local:submitownplan','permission' => '1','timemodified' => '1267734202','modifierid' => '2',),

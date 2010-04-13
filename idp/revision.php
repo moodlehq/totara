@@ -105,7 +105,7 @@ foreach ($lt as $column) {
                 // Whether or not to see the can_edit view
                 $can_edit = false;
                 $can_submit = false;
-                if (is_my_plan($currevision->id) and has_capability('moodle/local:editownplan', $contextsite)) {
+                if (is_my_plan($currevision->id) and has_capability('moodle/local:idpeditownplan', $contextsite)) {
                     $can_submit = true;
                     if ('notsubmitted' == $currevision->status or 'inrevision' == $currevision->status) {
                         $can_edit = true;

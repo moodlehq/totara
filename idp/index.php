@@ -120,10 +120,10 @@ foreach ($lt as $column) {
             }
             print '</h1>';
             $hasplans = print_user_learning_plans($userid, $canviewplans, $page, $perpage, $orderby);
-            if ( $hasplans || ($ownpage && has_capability('moodle/local:editownplan',$contextsite)) ){
+            if ( $hasplans || ($ownpage && has_capability('moodle/local:idpeditownplan',$contextsite)) ){
                 print '<table width="80%"><tr>';
             }
-            if ($ownpage && has_capability('moodle/local:editownplan', $contextsite)) {
+            if ($ownpage && has_capability('moodle/local:idpeditownplan', $contextsite)) {
                 // Create new plan button
                 print '<td><form method="get" action="plan.php"><div>';
                 print '<input type="hidden" name="action" value="create" />';
@@ -139,7 +139,7 @@ foreach ($lt as $column) {
                 print '<input type="submit" value="'.get_string('viewsummary', 'idp').'" />';
                 print '</div></form></td>';
             }
-            if ( $hasplans || ($ownpage && has_capability('moodle/local:editownplan',$contextsite)) ){
+            if ( $hasplans || ($ownpage && has_capability('moodle/local:idpeditownplan',$contextsite)) ){
                 print '</tr></table>';
             }
 
@@ -218,10 +218,10 @@ foreach ($lt as $column) {
                 $hasplans = print_user_learning_plans($userid, $canviewplans, $page, $perpage, $orderby);
             }
 
-            if ( $hasplans || ($ownpage && has_capability('moodle/local:editownplan', $contextsite)) ){
+            if ( $hasplans || ($ownpage && has_capability('moodle/local:idpeditownplan', $contextsite)) ){
                 print '<table width="80%"><tr>';
             }
-            if ($ownpage && has_capability('moodle/local:editownplan', $contextsite)) {
+            if ($ownpage && has_capability('moodle/local:idpeditownplan', $contextsite)) {
                 // Create new plan button
                 print '<td><form method="get" action="plan.php"><div>';
                 print '<input type="hidden" name="action" value="create" />';
@@ -238,7 +238,7 @@ foreach ($lt as $column) {
                 print '</div></form></td>';
             }
 
-            if ( $hasplans || ($ownpage && has_capability('moodle/local:editownplan', $contextsite)) ){
+            if ( $hasplans || ($ownpage && has_capability('moodle/local:idpeditownplan', $contextsite)) ){
                 print "</tr></table>\n";
             }
 

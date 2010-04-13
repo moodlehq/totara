@@ -22,7 +22,7 @@ $instance = required_param('instance', PARAM_INT);
 admin_externalpage_setup('competencymanage', '', array(), '', $CFG->wwwroot.'/competency/edit.php');
 
 $sitecontext = get_context_instance(CONTEXT_SYSTEM);
-require_capability('moodle/local:editownplan', $sitecontext);
+require_capability('moodle/local:idpeditownplan', $sitecontext);
 
 // Setup hierarchy object
 $hierarchy = new competency();

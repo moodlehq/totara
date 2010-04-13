@@ -20,7 +20,7 @@ $contextuser = get_context_instance(CONTEXT_USER, $USER->id);
 
 add_to_log(SITEID, 'idp', 'create plan', "plan.php", '');
 
-require_capability('moodle/local:editownplan', $sitecontext);
+require_capability('moodle/local:idpeditownplan', $sitecontext);
 if ( $action != 'create' ){
     $plan = get_record('idp','id',$planid);
     if ( $USER->id != $plan->userid ){

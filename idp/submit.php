@@ -25,7 +25,7 @@ if ( !$confirm && !$submitbutton ){
     // Check permissions
     // Users can only edit their own IDP
     $sitecontext = get_context_instance(CONTEXT_SYSTEM);
-    require_capability('moodle/local:editownplan', $sitecontext);
+    require_capability('moodle/local:idpeditownplan', $sitecontext);
     if ( $plan->userid != $USER->id ){
         error(get_string('error:revisionnotvisible', 'idp'));
     }
