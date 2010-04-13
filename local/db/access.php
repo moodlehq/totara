@@ -298,12 +298,6 @@ $local_capabilities = array(
         'contextlevel' => CONTEXT_SYSTEM,
     ),
 
-    // Ability for managers to view a user's favourites
-    'moodle/local:viewfavourite' => array(
-        'captype' => 'read',
-        'contextlevel' => CONTEXT_USER,
-    ),
-
     // Ability for users to view the comments on their own plans
     'moodle/local:viewowncomment' => array(
         'captype' => 'read',

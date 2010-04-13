@@ -82,7 +82,6 @@ $string['local:idpmanagerownoverview'] = 'View own manager overview page';
 $string['local:idptraineeoverview'] = 'View a trainee\'s overview page';
 $string['local:idptraineeownoverview'] = 'View own trainee overview page';
 $string['local:viewcomment'] = 'View a user\'s IDP comments';
-$string['local:viewfavourite'] = 'View a user\'s favourites';
 $string['local:viewlist'] = 'View a user\'s list of IDPs';
 $string['local:viewowncomment'] = 'View own comments';
 $string['local:viewownfavourite'] = 'View own favourites';
