@@ -145,8 +145,13 @@ class completion_criteria_completion extends data_object {
      * @return  void
      */
     public function mark_complete() {
-        // Create record
-        $this->timecompleted = time();
+
+        // Never change a completion time
+        if (!$this->timecompleted) {
+
+            // Set time complete
+            $this->timecompleted = time();
+        }
 
         // Save record
         if ($this->id) {
