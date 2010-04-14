@@ -199,17 +199,16 @@ class completion_completion extends data_object {
     public function mark_complete($timecomplete = null) {
 
         // Never change a completion time
-        if ($this->timecompleted) {
-            return;
-        }
+        if (!$this->timecompleted) {
 
-        // Use current time if nothing supplied
-        if (!$timecomplete) {
-            $timecomplete = time();
-        }
+            // Use current time if nothing supplied
+            if (!$timecomplete) {
+                $timecomplete = time();
+            }
 
-        // Set time complete
-        $this->timecompleted = $timecomplete;
+            // Set time complete
+            $this->timecompleted = $timecomplete;
+        }
 
         // Save record
         $this->_save();
