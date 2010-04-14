@@ -1334,4 +1334,60 @@ function xmldb_local_upgrade($oldversion) {
     }
     return $result;
 
+    // Reorganizing the IDP-related capabilities
+    if ($result && $oldversion < 2010041400){
+        // Delete these because they're not in use
+        $deletelist = array(
+            'moodle/local:editownfavourite',
+            'moodle/local:receivenotification',
+            'moodle/local:viewfavourite',
+            'moodle/local:viewownfavourite',
+            'moodle/local:withdrawownplan'
+        );
+        foreach ( $deletelist as $deletecap ){
+            if ( false === delete_records('role_capabilities','capability',$deletecap) ){
+                $result = false;
+            }
+            if ( false === delete_records('capabilities','name',$deletecap) ){
+                $result = false;
+            }
+        }
+
+        // These are having their names changed.
+        $oldnewmap = array(
+            'moodle/local:addcomment' => 'moodle/local:idpaddcomment',
+            'moodle/local:addowncomment' => 'moodle/local:idpaddowncomment',
+            'moodle/local:approveplan' => 'moodle/local:idpapproveplan',
+            'moodle/local:approveplanonbehalf' => 'moodle/local:idpapproveplanonbehalf',
+            'moodle/local:editownplan' => 'moodle/local:idpeditownplan',
+            'moodle/local:submitownplan' => 'moodle/local:idpsubmitownplan',
+            'moodle/local:manageroverview' => 'moodle/local:idpmanageroverview',
+            'moodle/local:managerownoverview' => 'moodle/local:idpmanagerownoverview',
+            'moodle/local:traineeoverview' => 'moodle/local:idptraineeoverview',
+            'moodle/local:traineeownoverview' => 'moodle/local:idptraineeownoverview',
+            'moodle/local:viewcomment' => 'moodle/local:idpviewcomment',
+            'moodle/local:viewlist' => 'moodle/local:idpviewlist',
+            'moodle/local:viewowncomment' => 'moodle/local:idpviewowncomment',
+            'moodle/local:viewownlist' => 'moodle/local:idpviewownlist',
+            'moodle/local:viewownplan' => 'moodle/local:idpviewownplan',
+            'moodle/local:viewplan' => 'moodle/local:idpviewplan',
+        );
+
+        foreach ( $oldnewmap as $oldname => $newname ){
+            // Delete the old named capability (the new one will be created when
+            // access.php is processed)
+            if ( false === delete_records('capabilities','name',$oldname) ){
+                $result = false;
+            }
+            // Update the role->capability mappings to use the new name
+            if ( false === execute_sql("
+                update {$CFG->prefix}role_capabilities
+                set capability='{$nename}'
+                where capability='{$oldname}'
+            ") ){
+                $result = false;
+            }
+        }
+    }
+
 }
