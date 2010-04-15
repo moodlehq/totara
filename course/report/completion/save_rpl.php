@@ -68,7 +68,7 @@
 
     // Complete
     if (strlen($rpl)) {
-        $completion->rpl = $rpl;
+        $completion->rpl = addslashes($rpl);
         $completion->mark_complete();
 
     // If no RPL, uncomplete user, and let aggregation do its thing
