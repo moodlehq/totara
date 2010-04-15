@@ -1332,7 +1332,6 @@ function xmldb_local_upgrade($oldversion) {
         $field = new XMLDBField('grade');
         $result = $result && drop_field($table, $field);
     }
-    return $result;
 
     // Reorganizing the IDP-related capabilities
     if ($result && $oldversion < 2010041400){
@@ -1382,12 +1381,12 @@ function xmldb_local_upgrade($oldversion) {
             // Update the role->capability mappings to use the new name
             if ( false === execute_sql("
                 update {$CFG->prefix}role_capabilities
-                set capability='{$nename}'
+                set capability='{$newname}'
                 where capability='{$oldname}'
             ") ){
                 $result = false;
             }
         }
     }
-
+    return $result;
 }
