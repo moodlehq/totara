@@ -412,7 +412,7 @@ SQL;
      * @param int $revisionid
      * @return array
      */
-    function get_items_by_parent($parentid, $revisionid=0) {
+    function get_items_by_parent($parentid=false, $revisionid=0) {
         global $CFG;
 
         // If there's no revisionid, we can use the parent class's implementation
