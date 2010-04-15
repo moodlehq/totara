@@ -354,9 +354,9 @@ SQL;
      * @param $cols array optional Array of columns and their raw data to be returned
      * @return array
      */
-    function get_item_data($item) {
+    function get_item_data($item, $cols = NULL) {
 
-        $data = parent::get_item_data($item);
+        $data = parent::get_item_data($item, $cols);
 
         // Item's depth
         $depth = $this->get_depth_by_id($item->depthid);
