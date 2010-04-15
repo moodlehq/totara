@@ -37,12 +37,12 @@ require_once($CFG->dirroot.'/local/mitms.php');
 require_once($CFG->dirroot.'/hierarchy/lib.php');
 
 function mitms_get_user_hierarchy_lineage($id=null, $type=null) {
-
+    global $CFG;
     $lineage = array();
 
     if ((!empty($id) and !empty($type))) {
-        $hierarchy = new hierarchy();
-        $hierarchy->prefix = $type;
+        require_once($CFG->dirroot.'/hierarchy/type/'.$type.'/lib.php');
+        $hierarchy = new $type();
         $lineage = $hierarchy->get_item_lineage($id);
     }
 

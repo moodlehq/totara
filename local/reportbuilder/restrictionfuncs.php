@@ -31,6 +31,8 @@ function reportbuilder_restriction_staff_records() {
 function reportbuilder_restriction_local_records() {
     global $CFG,$USER;
     require_once($CFG->dirroot.'/hierarchy/lib.php');
+    require_once($CFG->dirroot.'/hierarchy/type/organisation/lib.php');
+
     $userid = $USER->id;
     // get the user's organisationid (for primary position)
     $orgid = get_field('position_assignment','organisationid','userid',$userid, 'type', 1);
@@ -40,8 +42,7 @@ function reportbuilder_restriction_local_records() {
     }
 
     // get list of organisations to find users for
-    $hierarchy = new hierarchy();
-    $hierarchy->prefix = 'organisation';
+    $hierarchy = new organisation();
     $children = $hierarchy->get_item_descendants($orgid);
     $olist = array();
     foreach($children as $child) {
@@ -60,6 +61,9 @@ function reportbuilder_restriction_local_records() {
 // match records which were completed at or below the current user's organisation
 function reportbuilder_restriction_local_completed_records() {
     global $CFG,$USER;
+    require_once($CFG->dirroot.'/hierarchy/lib.php');
+    require_once($CFG->dirroot.'/hierarchy/type/organisation/lib.php');
+
     $userid = $USER->id;
     // get the user's organisationid (for primary position)
     $orgid = get_field('position_assignment','organisationid','userid',$userid, 'type', 1);
@@ -68,8 +72,7 @@ function reportbuilder_restriction_local_completed_records() {
         return null;
     }
     // get list of organisations to find users for
-    $hierarchy = new hierarchy();
-    $hierarchy->prefix = 'organisation';
+    $hierarchy = new organisation();
     $children = $hierarchy->get_item_descendants($orgid);
     $olist = array();
     foreach($children as $child) {

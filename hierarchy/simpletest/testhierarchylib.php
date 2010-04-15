@@ -11,6 +11,8 @@ if (!defined('MOODLE_INTERNAL')) {
 }
 
 require_once($CFG->dirroot . '/hierarchy/lib.php');
+require_once($CFG->dirroot . '/hierarchy/type/competency/lib.php');
+
 require_once($CFG->libdir . '/simpletestlib.php');
 
 class hierarchylib_test extends prefix_changing_test_case {
@@ -74,12 +76,10 @@ class hierarchylib_test extends prefix_changing_test_case {
         load_test_table($CFG->prefix . 'competency_depth_info_data', $this->depth_data_data, $db);
 
         // create the competency object
-        $this->competency = new hierarchy();
-        $this->competency->prefix = 'competency';
+        $this->competency = new competency();
         $this->competency->frameworkid = 1;
         // create 2nd competency object with no frameworkid specified
-        $this->nofwid = new hierarchy();
-        $this->nofwid->prefix = 'competency';
+        $this->nofwid = new competency();
 
         // create some sample objects
         // framework
@@ -547,9 +547,9 @@ class hierarchylib_test extends prefix_changing_test_case {
         // should return an array of info
         $this->assertTrue(is_array($competency->get_item_data($c1)));
         // if no params requested, should return default ones
-        $this->assertEqual(count($competency->get_item_data($c1)), 4);
+        $this->assertEqual(count($competency->get_item_data($c1)), 5);
         // should return the correct number of fields requested
-        $this->assertEqual(count($competency->get_item_data($c1, array('sortorder', 'description'))), 2);
+        $this->assertEqual(count($competency->get_item_data($c1, array('sortorder', 'description'))), 3);
         // should return the correct information based on fields requested
         $result = current($competency->get_item_data($c1, array('description')));
         $this->assertEqual($result['title'], 'Depth Level 1 description');

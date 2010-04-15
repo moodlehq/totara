@@ -6,6 +6,7 @@
 function get_organisations_list($restrictions) {
     global $CFG,$USER;
     require_once($CFG->dirroot.'/hierarchy/lib.php');
+    require_once($CFG->dirroot.'/hierarchy/type/organisation/lib.php');
 
     $baseorg = null; // default to top of tree
 
@@ -32,9 +33,7 @@ function get_organisations_list($restrictions) {
         }
     }
 
-
-    $hierarchy = new hierarchy();
-    $hierarchy->prefix = 'organisation';
+    $hierarchy = new organisation();
     $hierarchy->make_hierarchy_list($orgs, $baseorg, true, true);
 
     return $orgs;
@@ -44,9 +43,9 @@ function get_organisations_list($restrictions) {
 function get_positions_list() {
     global $CFG;
     require_once($CFG->dirroot.'/hierarchy/lib.php');
+    require_once($CFG->dirroot.'/hierarchy/type/position/lib.php');
 
-    $hierarchy = new hierarchy();
-    $hierarchy->prefix = 'position';
+    $hierarchy = new position();
     $hierarchy->make_hierarchy_list($positions, null, false, false);
 
     return $positions;
