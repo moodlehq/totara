@@ -60,6 +60,7 @@
     $can_delete_item = has_capability('moodle/local:delete'.$type, $sitecontext);
     $can_add_depth   = has_capability('moodle/local:create'.$type.'depth', $sitecontext);
     $can_edit_depth  = has_capability('moodle/local:update'.$type.'depth', $sitecontext);
+    $can_delete_depth = has_capability('moodle/local:delete'.$type.'depth', $sitecontext);
 
     // Load framework
     $framework   = $hierarchy->get_framework($frameworkid, true);
@@ -74,7 +75,7 @@
     $frameworkid = $framework->id;
 
     // Display editing button in navbar
-    if ($can_edit_item || $can_delete_item || $can_add_depth || $can_edit_depth) {
+    if ($can_edit_item || $can_delete_item || $can_add_depth || $can_edit_depth || $can_delete_depth) {
         $options = array('type' => $type, 'frameworkid' => $frameworkid, 'spage' => $spage);
         $navbaritem = $hierarchy->get_editing_button($edit, $options);
         $editingon = !empty($USER->{$type.'editing'});
@@ -308,8 +309,10 @@
                     "<img src=\"{$CFG->pixpath}/t/edit.gif\" class=\"iconsmall\" alt=\"$str_edit\" /></a> ".
                     "<a href=\"{$CFG->wwwroot}/customfield/index.php?type={$type}&amp;subtype=depth&amp;depthid={$head->value->id}\"
                     title=\"$str_customfields\">".
-                    "<img src=\"{$CFG->pixpath}/t/customfields.gif\" class=\"iconsmall\" alt=\"$str_customfields\" /></a> ".
-                    "<a href=\"{$CFG->wwwroot}/hierarchy/depth/delete.php?type={$type}&amp;id={$head->value->id}\"
+                    "<img src=\"{$CFG->pixpath}/t/customfields.gif\" class=\"iconsmall\" alt=\"$str_customfields\" /></a> ";
+            }
+            if ($editingon && $can_delete_depth) {
+                $header .= "<a href=\"{$CFG->wwwroot}/hierarchy/depth/delete.php?type={$type}&amp;id={$head->value->id}\"
                     title=\"$str_delete\">".
                     "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_delete\" /></a>";
             }
