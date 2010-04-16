@@ -35,6 +35,7 @@
         $editingon = !empty($USER->{$type.'editing'});
     } else {
         $navbaritem = '';
+        $editingon = false;
     }
 
     // Setup page and check permissions

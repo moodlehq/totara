@@ -43,6 +43,7 @@ if ($can_add || $can_edit || $can_delete) {
     $editingon = !empty($USER->{$hierarchy->prefix.'editing'});
 } else {
     $navbaritem = '';
+    $editingon = false;
 }
 
 // Setup page and check permissions
