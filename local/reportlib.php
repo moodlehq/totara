@@ -49,6 +49,15 @@ function mitms_get_user_hierarchy_lineage($id=null, $type=null) {
     return $lineage;
 }
 
+/**
+ * Generates a string containing a semi-configurable personal details box in a table 4 columns wide.
+ *
+ * @global object $CFG
+ * @param array $columns The data to print, via an array with a nested array for each cell
+ * @param object $user
+ * @param array $usercustomfields
+ * @return string
+ */
 function mitms_print_report_heading($columns, $user, $usercustomfields) {
 
     global $CFG;
@@ -63,19 +72,10 @@ function mitms_print_report_heading($columns, $user, $usercustomfields) {
         }
     }
 
-//    $organisations = new object();
-//    if ($user->organisationid) {
-//        $organisations = mitms_get_user_hierarchy_lineage($user->organisationid, 'organisation');
-//    }
-//    $positionrecs = new object();
-//    if ($user->positionid) {
-//        $positionrecs = mitms_get_user_hierarchy_lineage($user->positionid, 'position');
-//    }
-
     $table = '<table cellpadding="4">';
     foreach ($columns as $column) {
         if ($column['column'] == 1) {
-            echo "<tr>";
+            $table .= "<tr>";
         }   
         $cell1str = "<td><strong>";
         $cell2str = "<td>";
@@ -129,11 +129,9 @@ function mitms_print_report_heading($columns, $user, $usercustomfields) {
                     }   
                 }   
                 break;
-            default:
-                $cell1str = "<td></td>";
-                $cell2str = "<td></td>";
-                break;
         }
+        $cell1str .= '</strong></td>';
+        $cell2str .= '</td>';
         $table .= $cell1str.$cell2str;
         if ($column['column'] == 2) {
             $table .= "</tr>";
