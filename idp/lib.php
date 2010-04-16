@@ -469,22 +469,25 @@ function print_revision_list($planid, $currevisionid) {
     $revisions = get_records('idp_revision', 'idp', $planid, 'ctime DESC');
 
     if (count($revisions) > 1) {
-//        print '<h2>'.get_string('allrevisions','idp').'</h2>';
-        print '<div>'.collapsing_tree_node('revisionslabel', 'revisions', get_string('allrevisions', 'idp')).'</div>';
-
-        print '<div id="revisions" style="display:none"><ul>';
-        foreach ($revisions as $revision) {
+        print "<ul id=\"revisionlist\">\n";
+        print "  <li>".get_string('allrevisions','idp')."\n";
+        print "    <ul>\n";
+        foreach ($revisions as $revision){
             $datestring = userdate($revision->ctime);
-
-            print '<li>';
-            if ($revision->id != $currevisionid) {
-                print "<a href=\"revision.php?id=$planid&amp;rev=$revision->id\">$datestring</a>";
+            if ($revision->id != $currevisionid){
+                print "      <li><a href=\"revision.php?id={$planid}&amp;rev={$revision->id}\">{$datestring}</a></li>\n";
             } else {
-                print $datestring;
+                print "      <li>{$datestring}</li>\n";
             }
-            print "</li>\n";
         }
-        print "</ul></div>\n";
+        print "    </ul>\n";
+        print "  </li>\n";
+        print "</ul>\n";
+        print "<script type=\"text/javascript\">\n";
+        print "  $(\"#revisionlist\").treeview({\n";
+        print "    collapsed: true\n";
+        print "  });\n";
+        print "</script>\n";
     }
 }
 
