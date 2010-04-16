@@ -1,3 +1,11 @@
+// Temp fix to sniff browser
+$(function() {
+    if ($.browser.mozilla) {
+        $('body').addClass('mozilla');
+    }
+});
+
+
 // Setup
 var mitmsDialogs = {};
 

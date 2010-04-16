@@ -248,6 +248,17 @@ div.mitms-dialog div.ui-widget-header {
     border: none;
 }
 
+div.mitms-dialog div.ui-dialog-titlebar span#ui-dialog-title-related {
+    display: none;
+}
+
+div.mitms-dialog div.ui-dialog-titlebar a.ui-dialog-titlebar-close {
+    border: 0;
+    margin: 0;
+    padding: 0;
+    background: transparent;
+}
+
 div.mitms-dialog div.ui-dialog-titlebar a.ui-dialog-titlebar-close span {
     position: relative;
     float: right;
@@ -256,9 +267,14 @@ div.mitms-dialog div.ui-dialog-titlebar a.ui-dialog-titlebar-close span {
     background-image: url(closelabel.gif);
     background-position: 0 0;
     border: none;
+    top: -8px;
     margin: 0;
     padding: 0;
     display: block;
+}
+
+body.mozilla div.mitms-dialog div.ui-dialog-titlebar a.ui-dialog-titlebar-close span {
+    top: 3px;
 }
 
 div.mitms-dialog div.ui-dialog-buttonpane {
@@ -271,8 +287,13 @@ div.mitms-dialog div.ui-dialog-buttonpane {
     padding: 0;
 }
 
+body.mozilla div.mitms-dialog div.ui-dialog-buttonpane {
+    top: 0;
+}
+
 div.mitms-dialog div.ui-dialog-buttonpane button {
     margin: 0;
+    float: left;
 }
 
 div.mitms-dialog div.ui-dialog-content {
@@ -284,6 +305,10 @@ div.mitms-dialog div.ui-dialog-content {
     position: relative;
     height: 300px;
     top: -25px;
+}
+
+body.mozilla div.mitms-dialog div.ui-dialog-content {
+    top: 0;
 }
 
 div.mitms-dialog div.ui-dialog-content h2 {
