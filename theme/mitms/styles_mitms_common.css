@@ -273,10 +273,6 @@ div.mitms-dialog div.ui-dialog-titlebar a.ui-dialog-titlebar-close span {
     display: block;
 }
 
-body.mozilla div.mitms-dialog div.ui-dialog-titlebar a.ui-dialog-titlebar-close span {
-    top: 3px;
-}
-
 div.mitms-dialog div.ui-dialog-buttonpane {
     position: relative;
     float: left;
@@ -285,10 +281,6 @@ div.mitms-dialog div.ui-dialog-buttonpane {
     border: none;
     margin: 0;
     padding: 0;
-}
-
-body.mozilla div.mitms-dialog div.ui-dialog-buttonpane {
-    top: 0;
 }
 
 div.mitms-dialog div.ui-dialog-buttonpane button {
@@ -305,10 +297,6 @@ div.mitms-dialog div.ui-dialog-content {
     position: relative;
     height: 300px;
     top: -25px;
-}
-
-body.mozilla div.mitms-dialog div.ui-dialog-content {
-    top: 0;
 }
 
 div.mitms-dialog div.ui-dialog-content h2 {
