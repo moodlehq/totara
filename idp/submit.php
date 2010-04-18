@@ -30,7 +30,7 @@ if ( !$confirm && !$submitbutton ){
         error(get_string('error:revisionnotvisible', 'idp'));
     }
     update_idp_component_duedate('compduedate', 'idp_revision_competency','competency', $rev);
-    update_idp_component_duedate('comptempduedate', 'idp_revision_competencytemplate', 'competencytemplate', $rev);
+    update_idp_component_duedate('comptempduedate', 'idp_revision_competencytmpl', 'competencytemplate', $rev);
     update_idp_component_duedate('courseduedate', 'idp_revision_course', 'course', $rev);
     add_to_log(SITEID, 'idp', 'save/update plan', "revision.php?id={$plan->id}", $plan->id);
 

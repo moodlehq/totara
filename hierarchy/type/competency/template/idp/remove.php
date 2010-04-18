@@ -26,7 +26,7 @@ if ( $plan->userid != $USER->id ){
 
 // Delete the competency template and update the modification time for the parent revision
 begin_sql();
-$dbresult = (boolean) delete_records('idp_revision_competencytemplate', 'revision', $revisionid, 'competencytemplate', $competencytemplateid);
+$dbresult = (boolean) delete_records('idp_revision_competencytmpl', 'revision', $revisionid, 'competencytemplate', $competencytemplateid);
 $dbresult = $dbresult && update_modification_time($revisionid);
 if ($dbresult ){
     commit_sql();

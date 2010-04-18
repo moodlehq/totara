@@ -1444,6 +1444,9 @@ function xmldb_local_upgrade($oldversion) {
             $result = $result && rename_table($table, $newtablename);
         }
 
+        // Rename the one IDP table whose name is too long
+        $table = new XMLDBTable('idp_revision_competencytemplate');
+        $result = $result && rename_table($table, 'idp_revision_competencytmpl');
     }
     return $result;
 }

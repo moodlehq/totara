@@ -1085,7 +1085,7 @@ function clone_revision($revisionid) {
     if (!_clone_revision_objectives( 'idp_revision_competency', $originalrev->id, $newid )){
         rollback_sql();
     }
-    if (!_clone_revision_objectives( 'idp_revision_competencytemplate', $originalrev->id, $newid )){
+    if (!_clone_revision_objectives( 'idp_revision_competencytmpl', $originalrev->id, $newid )){
         rollback_sql();
     }
     if ( !_clone_revision_objectives( 'idp_revision_course', $originalrev->id, $newid ) ){
@@ -2210,7 +2210,7 @@ function idp_get_user_competencytemplates($userid, $currevisionid) {
             f.fullname AS framework,
             r.duedate as duedate
         FROM
-            {$CFG->prefix}idp_revision_competencytemplate r
+            {$CFG->prefix}idp_revision_competencytmpl r
         INNER JOIN
             {$CFG->prefix}competency_template c
          ON r.competencytemplate = c.id
@@ -2842,7 +2842,7 @@ function get_all_revision_competencies($revisionid){
         union
             select distinct complist.instanceid
             from
-                {$CFG->prefix}idp_revision_competencytemplate revtemp,
+                {$CFG->prefix}idp_revision_competencytmpl revtemp,
                 {$CFG->prefix}competency_template_assignment complist
             where
                 revtemp.revision = {$revisionid}

@@ -92,7 +92,7 @@ class competency extends hierarchy {
                     t.*,
                     (
                         select count(*)
-                        from {$CFG->prefix}idp_revision_competencytemplate ct
+                        from {$CFG->prefix}idp_revision_competencytmpl ct
                         where
                             ct.revision = {$revisionid}
                             and ct.competencytemplate = t.id

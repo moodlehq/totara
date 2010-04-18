@@ -40,7 +40,7 @@ if (!$framework = $hierarchy->get_framework($frameworkid)) {
 
 // Load competency templates to display
 $templates = $hierarchy->get_templates();
-$assignedtemplates = get_records('idp_revision_competencytemplate', 'revision', $revisionid, '', 'competencytemplate');
+$assignedtemplates = get_records('idp_revision_competencytmpl', 'revision', $revisionid, '', 'competencytemplate');
 if( !is_array($assignedtemplates) ){
     $assignedtemplates = array();
 };

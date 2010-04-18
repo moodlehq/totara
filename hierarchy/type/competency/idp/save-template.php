@@ -57,7 +57,7 @@ foreach ($add as $addition) {
 
     // If the template is already present in this plan, don't add it a second
     // time
-    if ( count_records('idp_revision_competencytemplate', 'revision', $revisionid, 'competencytemplate', $addition) ){
+    if ( count_records('idp_revision_competencytmpl', 'revision', $revisionid, 'competencytemplate', $addition) ){
         continue;
     }
 
@@ -78,7 +78,7 @@ foreach ($add as $addition) {
 
     // Insert the competency template and update the modification time for the parent revision
     begin_sql();
-    $dbresult = insert_record('idp_revision_competencytemplate', $idpcompetency, false);
+    $dbresult = insert_record('idp_revision_competencytmpl', $idpcompetency, false);
     $dbresult = $dbresult && update_modification_time($revisionid);
     add_to_log(SITEID, 'idp', 'add IDP competency tempates', "revision.php?id={$plan->id}", "plan: {$plan->id}, template: {$template->id}");
     if (!$dbresult ){
