@@ -18,6 +18,11 @@ $type = required_param('type', PARAM_TEXT);
 // Evidence instance id
 $instance = required_param('instance', PARAM_INT);
 
+// No javascript parameters
+$nojs = optional_param('nojs', false, PARAM_BOOL);
+$returnurl = optional_param('returnurl', '', PARAM_TEXT);
+$s = optional_param('s', '', PARAM_TEXT);
+
 // Check perms
 admin_externalpage_setup('competencymanage', '', array(), '', $CFG->wwwroot.'/competency/edit.php');
 
@@ -56,16 +61,29 @@ $evidence->iteminstance = $instance;
 
 $evidence->add($competency);
 
-echo '<tr>';
-echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/index.php?type=competency&frameworkid={$framework->id}\">{$framework->fullname}</a></td>";
-echo '<td>'.$depth->fullname.'</td>';
-echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/item/view.php?type=competency&id={$competency->id}\">{$competency->fullname}</a></td>";
+if($nojs) {
+    // redirect back to original page for none JS version
+    if($s == sesskey()) {
+        $murl = new moodle_url($returnurl);
+        $returnurl = $murl->out(false, array('nojs' => 1));
+    } else {
+        $returnurl = $CFG->wwwroot;
+    }
+    redirect($returnurl);
+} else {
+    // return code to be included in page for JS version
+    echo '<tr>';
+    echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/index.php?type=competency&frameworkid={$framework->id}\">{$framework->fullname}</a></td>";
+    echo '<td>'.$depth->fullname.'</td>';
+    echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/item/view.php?type=competency&id={$competency->id}\">{$competency->fullname}</a></td>";
 
-echo '<td>'.$evidence->get_type();
+    echo '<td>'.$evidence->get_type();
 
-if ($evidence->itemtype == 'activitycompletion') {
-    echo ' - '.$evidence->get_name();
+    if ($evidence->itemtype == 'activitycompletion') {
+        echo ' - '.$evidence->get_name();
+    }
+
+    echo '</td>';
+    echo '</tr>';
+
 }
-
-echo '</td>';
-echo '</tr>';
