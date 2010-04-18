@@ -1388,5 +1388,62 @@ function xmldb_local_upgrade($oldversion) {
             }
         }
     }
+
+    if ($result && $oldversion < 2010041700){
+
+        // Renaming hierarchy items types to be shorter, so the tables named
+        // after them won't break Oracle's 30-char size limit
+        $substlist = array(
+            'competency' => 'comp',
+            'organisation' => 'org',
+            'position' => 'pos'
+        );
+
+        $tablelist = array(
+            'competency',
+            'competency_depth',
+            'competency_depth_info_category',
+            'competency_depth_info_data',
+            'competency_depth_info_field',
+            'competency_evidence',
+            'competency_evidence_items',
+            'competency_evidence_items_evidence',
+            'competency_framework',
+            'competency_relations',
+            'competency_scale',
+            'competency_scale_assignments',
+            'competency_scale_values',
+            'competency_template',
+            'competency_template_assignment',
+            'competency_template_competencies',
+            'organisation',
+            'organisation_depth',
+            'organisation_depth_info_category',
+            'organisation_depth_info_data',
+            'organisation_depth_info_field',
+            'organisation_framework',
+            'organisation_relations',
+            'position',
+            'position_assignment',
+            'position_assignment_history',
+            'position_competencies',
+            'position_depth',
+            'position_depth_info_category',
+            'position_depth_info_data',
+            'position_depth_info_field',
+            'position_framework',
+            'position_relations'
+        );
+
+        foreach( $tablelist as $oldtablename ){
+            $newtablename = $oldtablename;
+            foreach( $substlist as $oldtype => $newtype ){
+                $newtablename = str_replace($oldtype, $newtype, $newtablename);
+            }
+            $table = new XMLDBTable($oldtablename);
+            $result = $result && rename_table($table, $newtablename);
+        }
+
+    }
     return $result;
 }
