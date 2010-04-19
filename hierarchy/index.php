@@ -17,7 +17,8 @@
     $sitecontext    = get_context_instance(CONTEXT_SYSTEM);
 
     /// Hierarchy type, framework params
-    $type           = required_param('type', PARAM_SAFEDIR);
+    $type           = required_param('type', PARAM_ALPHA);
+    $shortprefix = hierarchy::get_short_prefix($type);
     $frameworkid    = optional_param('frameworkid', 0, PARAM_INT);
     // Page display params
     $spage          = optional_param('spage', 0, PARAM_INT);                     // which page to show
@@ -145,7 +146,7 @@
     if(!empty($hierarchy->extrafields)) {
         $select .= ', ' . implode(', ', $hierarchy->extrafields);
     }
-    $from   = " FROM {$CFG->prefix}{$type}";
+    $from   = " FROM {$CFG->prefix}{$shortprefix}";
     $where  = " WHERE frameworkid={$framework->id}";
     $order  = " ORDER BY sortorder";
 
@@ -160,17 +161,17 @@
 
     // second query to get custom field fields
     $sql = "SELECT cdf.id,cdf.shortname,cdf.fullname,cdf.depthid, cdf.id AS fieldid
-        FROM {$CFG->prefix}{$type}_depth_info_field cdf join {$CFG->prefix}{$type}_depth cd ON cdf.depthid=cd.id
+        FROM {$CFG->prefix}{$shortprefix}_depth_info_field cdf join {$CFG->prefix}{$shortprefix}_depth cd ON cdf.depthid=cd.id
         WHERE cd.frameworkid = {$framework->id} AND cdf.hidden = 0
         ORDER BY cdf.categoryid, cdf.sortorder";
     $customfieldcols = get_records_sql($sql);
 
     // get the sort order range (min/max) for this framework
     // used to work out if sorting arrows are needed
-    $max = get_record_sql("SELECT ".sql_max('sortorder')." AS sortorder FROM {$CFG->prefix}{$type} WHERE frameworkid={$framework->id}");
+    $max = get_record_sql("SELECT ".sql_max('sortorder')." AS sortorder FROM {$CFG->prefix}{$shortprefix} WHERE frameworkid={$framework->id}");
     $sortmax = $max ? $max->sortorder : null;
     // hack because there is no sql_min(). Just get first record, sorted by sortorder
-    $min = get_record_sql("SELECT sortorder FROM {$CFG->prefix}{$type} WHERE frameworkid={$framework->id} ORDER BY sortorder ASC", true);
+    $min = get_record_sql("SELECT sortorder FROM {$CFG->prefix}{$shortprefix} WHERE frameworkid={$framework->id} ORDER BY sortorder ASC", true);
     $sortmin = $min ? $min->sortorder : null;
 
     // third query to get custom field data
@@ -178,9 +179,9 @@
     // if we use field id as the key we only get one data item per field, if we use competency id
     // we don't get any rows for fields without any data
     $sql = "SELECT cdd.id, cdd.{$type}id AS itemid, cdf.depthid, cdf.id AS fieldid,cdd.data
-        FROM {$CFG->prefix}{$type}_depth_info_field cdf
-        JOIN {$CFG->prefix}{$type}_depth cd ON cdf.depthid=cd.id
-        LEFT JOIN {$CFG->prefix}{$type}_depth_info_data cdd ON cdf.id=cdd.fieldid
+        FROM {$CFG->prefix}{$shortprefix}_depth_info_field cdf
+        JOIN {$CFG->prefix}{$shortprefix}_depth cd ON cdf.depthid=cd.id
+        LEFT JOIN {$CFG->prefix}{$shortprefix}_depth_info_data cdd ON cdf.id=cdd.fieldid
         WHERE cd.frameworkid = {$framework->id} AND cdf.hidden = 0";
 
     $customfielddata = get_records_sql($sql);
@@ -233,7 +234,7 @@
         $todb->showdepthfullname = $fromform->showdepthfullname;
         $todb->id = $fromform->frameworkid; 
 
-        if(!update_record($type.'_framework', $todb)) {
+        if(!update_record($shortprefix.'_framework', $todb)) {
             print_error('cannotupdatedisplaysettings', $type, $returnurl);
         }
         redirect($returnurl);
@@ -671,10 +672,10 @@
             // Get the custom data and populate the table
 
                 $select = "SELECT c.id as itemid, cdf.depthid, cdf.id as fieldid, cdd.data";
-                $from   = " FROM {$CFG->prefix}{$type} c
-                        LEFT OUTER JOIN {$CFG->prefix}{$type}_depth_info_field cdf
+                $from   = " FROM {$CFG->prefix}{$shortprefix} c
+                        LEFT OUTER JOIN {$CFG->prefix}{$shortprefix}_depth_info_field cdf
                             ON cdf.depthid=c.depthid
-                        LEFT OUTER JOIN {$CFG->prefix}{$type}_depth_info_data cdd
+                        LEFT OUTER JOIN {$CFG->prefix}{$shortprefix}_depth_info_data cdd
                             ON cdd.fieldid=cdf.id AND cdd.{$type}id=c.id";
                 $where  = " WHERE c.frameworkid=$frameworkid AND c.id IN (".implode(",", $itemtrack).") AND (cdf.hidden=0 or cdf.hidden is null)";
                 $sort   = " ORDER BY c.sortorder, cdf.categoryid, cdf.sortorder";

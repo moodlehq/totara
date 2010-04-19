@@ -31,7 +31,7 @@ function competency_backup($bf, $frameworks, $options) {
 
 function competency_backup_framework($bf, $fwid, $options) {
     if(is_numeric($fwid)) {
-        $framework = get_record('competency_framework','id',$fwid);
+        $framework = get_record('comp_framework','id',$fwid);
     }
 
     $status = true;
@@ -63,7 +63,7 @@ function competency_backup_framework($bf, $fwid, $options) {
 
 function competency_backup_depth($bf, $fwid, $options) {
     if(is_numeric($fwid)) {
-        $depths = get_records('competency_depth', 'frameworkid', $fwid);
+        $depths = get_records('comp_depth', 'frameworkid', $fwid);
     }
     if($depths) {
         fwrite($bf, start_tag('DEPTHS', 5, true));
@@ -89,7 +89,7 @@ function competency_backup_depth($bf, $fwid, $options) {
 
 function competency_backup_custom_category($bf, $depthid, $options) {
     if(is_numeric($depthid)) {
-        $categories = get_records('competency_depth_info_category','depthid', $depthid);
+        $categories = get_records('comp_depth_info_category','depthid', $depthid);
     }
     if($categories) {
         fwrite($bf, start_tag('DEPTH_CATEGORIES', 7, true));
@@ -110,7 +110,7 @@ function competency_backup_custom_category($bf, $depthid, $options) {
 
 function competency_backup_custom_field($bf, $categoryid, $options) {
     if(is_numeric($categoryid)) {
-        $fields = get_records('competency_depth_info_field','categoryid', $categoryid);
+        $fields = get_records('comp_depth_info_field','categoryid', $categoryid);
     }
     if($fields) {
         fwrite($bf, start_tag('CUSTOM_FIELDS', 9, true));
@@ -142,7 +142,7 @@ function competency_backup_custom_field($bf, $categoryid, $options) {
 
 function competency_backup_competency($bf, $fwid, $options) {
     if(is_numeric($fwid)) {
-        $competencies = get_records('competency', 'frameworkid', $fwid);
+        $competencies = get_records('comp', 'frameworkid', $fwid);
     }
     if($competencies) {
         fwrite($bf, start_tag('COMPETENCIES', 5, true));
@@ -192,7 +192,7 @@ function competency_backup_competency($bf, $fwid, $options) {
 
 function competency_backup_custom_data($bf, $compid, $options) {
     if(is_numeric($compid)) {
-        $values = get_records('competency_depth_info_data','competencyid',$compid);
+        $values = get_records('comp_depth_info_data','competencyid',$compid);
     }
     if($values) {
         fwrite($bf, start_tag('CUSTOM_VALUES', 7, true));

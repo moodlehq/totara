@@ -50,7 +50,7 @@ function competency_cron() {
         SELECT
             *
         FROM
-            {$CFG->prefix}competency_depth
+            {$CFG->prefix}comp_depth
         ORDER BY
             frameworkid,
             depthlevel DESC
@@ -73,7 +73,7 @@ function competency_cron() {
 
     $sql = "
         UPDATE
-            {$CFG->prefix}competency_evidence
+            {$CFG->prefix}comp_evidence
         SET
             reaggregate = 0
         WHERE
@@ -136,7 +136,7 @@ function competency_cron_aggregate_evidence($timestarted, $depth) {
     }
 
     // Grab all competency scale values
-    $scale_values = get_records('competency_scale_values');
+    $scale_values = get_records('comp_scale_values');
 
     // Grab all competency evidence items for a depth level
     //
@@ -194,34 +194,34 @@ function competency_cron_aggregate_evidence($timestarted, $depth) {
                     competencyid,
                     NULL AS childid
                 FROM
-                    {$CFG->prefix}competency_evidence_items
+                    {$CFG->prefix}comp_evidence_items
                 UNION
                 SELECT
                     NULL AS evidenceid,
                     parentid AS competencyid,
                     id AS childid
                 FROM
-                    {$CFG->prefix}competency
+                    {$CFG->prefix}comp
                 WHERE
                     parentid <> 0
                 AND frameworkid = {$depth->frameworkid}
                 AND depthid <> {$depth->id}
             ) cei
         INNER JOIN
-            {$CFG->prefix}competency c
+            {$CFG->prefix}comp c
          ON cei.competencyid = c.id
         INNER JOIN
-            {$CFG->prefix}competency_evidence ce
+            {$CFG->prefix}comp_evidence ce
          ON ce.competencyid = c.id
         INNER JOIN
-            {$CFG->prefix}competency_scale cs
+            {$CFG->prefix}comp_scale cs
          ON c.scaleid = cs.id
         LEFT JOIN
-            {$CFG->prefix}competency_evidence_items_evidence ceie
+            {$CFG->prefix}comp_evidence_items_evidence ceie
          ON cei.evidenceid = ceie.itemid
         AND ce.userid = ceie.userid
         LEFT JOIN
-            {$CFG->prefix}competency_evidence cce
+            {$CFG->prefix}comp_evidence cce
          ON cce.competencyid = cei.childid
         AND ce.userid = cce.userid
         WHERE

@@ -23,7 +23,7 @@ function position_backup($bf, $frameworks, $options) {
 
 function position_backup_framework($bf, $fwid, $options) {
      if(is_numeric($fwid)) {
-        $framework = get_record('position_framework','id',$fwid);
+        $framework = get_record('pos_framework','id',$fwid);
     }
 
     $status = true;
@@ -51,7 +51,7 @@ function position_backup_framework($bf, $fwid, $options) {
 
 function position_backup_depth($bf, $fwid, $options) {
     if(is_numeric($fwid)) {
-        $depths = get_records('position_depth', 'frameworkid', $fwid);
+        $depths = get_records('pos_depth', 'frameworkid', $fwid);
     }
     if($depths) {
         fwrite($bf, start_tag('DEPTHS', 5, true));
@@ -77,7 +77,7 @@ function position_backup_depth($bf, $fwid, $options) {
 
 function position_backup_custom_category($bf, $depthid, $options) {
     if(is_numeric($depthid)) {
-        $categories = get_records('position_depth_info_category','depthid', $depthid);
+        $categories = get_records('pos_depth_info_category','depthid', $depthid);
     }
     if($categories) {
         fwrite($bf, start_tag('DEPTH_CATEGORIES', 7, true));
@@ -98,7 +98,7 @@ function position_backup_custom_category($bf, $depthid, $options) {
 
 function position_backup_custom_field($bf, $categoryid, $options) {
     if(is_numeric($categoryid)) {
-        $fields = get_records('position_depth_info_field','categoryid', $categoryid);
+        $fields = get_records('pos_depth_info_field','categoryid', $categoryid);
     }
     if($fields) {
         fwrite($bf, start_tag('CUSTOM_FIELDS', 9, true));
@@ -130,7 +130,7 @@ function position_backup_custom_field($bf, $categoryid, $options) {
 
 function position_backup_position($bf, $fwid, $options) {
     if(is_numeric($fwid)) {
-        $positions = get_records('position', 'frameworkid', $fwid);
+        $positions = get_records('pos', 'frameworkid', $fwid);
     }
     if($positions) {
         fwrite($bf, start_tag('POSITIONS', 5, true));
@@ -165,7 +165,7 @@ function position_backup_position($bf, $fwid, $options) {
 
 function position_backup_custom_data($bf, $posid, $options) {
     if(is_numeric($posid)) {
-        $values = get_records('position_depth_info_data','positionid',$posid);
+        $values = get_records('pos_depth_info_data','positionid',$posid);
     }
     if($values) {
         fwrite($bf, start_tag('CUSTOM_VALUES', 7, true));

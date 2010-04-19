@@ -24,17 +24,17 @@ require_capability('moodle/local:updateposition', $sitecontext);
 admin_externalpage_setup('positionmanage');
 
 // Load assignment
-if (!$assignment = get_record('position_competencies', 'id', $id)) {
+if (!$assignment = get_record('pos_competencies', 'id', $id)) {
     error('Position competency assignment does not exist');
 }
 
 // Load competency
 if ($assignment->competencyid) {
-    $competency = get_record('competency', 'id', $assignment->competencyid);
+    $competency = get_record('comp', 'id', $assignment->competencyid);
     $fullname = $competency->fullname;
 }
 else {
-    $template = get_record('competency_template', 'id', $assignment->templateid);
+    $template = get_record('comp_template', 'id', $assignment->templateid);
     $fullname = $template->fullname;
 }
 
@@ -74,7 +74,7 @@ if (!confirm_sesskey()) {
     print_error('confirmsesskeybad', 'error');
 }
 
-delete_records('position_competencies', 'id', $id);
+delete_records('pos_competencies', 'id', $id);
 
 add_to_log(SITEID, 'position', 'deleteassignment', "view.php?id=$id", "$fullname (ID $assignment->id)");
 

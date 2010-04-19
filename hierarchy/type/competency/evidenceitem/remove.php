@@ -24,7 +24,7 @@ $hierarchy         = new competency();
 $item              = competency_evidence_type::factory($id);
 
 // Load competency
-if (!$competency = get_record('competency', 'id', $item->competencyid)) {
+if (!$competency = get_record('comp', 'id', $item->competencyid)) {
     error('Competency ID was incorrect');
 }
 

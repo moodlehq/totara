@@ -25,7 +25,7 @@ $sitecontext = get_context_instance(CONTEXT_SYSTEM);
 require_capability('moodle/local:updatecompetency', $sitecontext);
 
 // Load competency
-if (!$competency = get_record('competency', 'id', $id)) {
+if (!$competency = get_record('comp', 'id', $id)) {
     error('Competency ID was incorrect');
 }
 

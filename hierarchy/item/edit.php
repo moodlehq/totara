@@ -4,13 +4,14 @@ require_once('../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->dirroot.'/customfield/fieldlib.php');
 require_once($CFG->dirroot.'/hierarchy/item/edit_form.php');
-
+require_once($CFG->dirroot.'/hierarchy/lib.php');
 
 ///
 /// Setup / loading data
 ///
 
 $type = required_param('type', PARAM_SAFEDIR);
+$shortprefix = hierarchy::get_short_prefix($type);
 
 // item id; 0 if creating new item
 $id   = optional_param('id', 0, PARAM_INT);
@@ -21,7 +22,7 @@ $spage       = optional_param('spage', 0, PARAM_INT);
 
 // Confirm the type exists
 if (file_exists($CFG->dirroot.'/hierarchy/type/'.$type.'/lib.php')) {
-    include($CFG->dirroot.'/hierarchy/type/'.$type.'/lib.php');
+    require_once($CFG->dirroot.'/hierarchy/type/'.$type.'/lib.php');
 } else {
     error('Hierarchy type '.$type.' does not exist');
 }
@@ -60,18 +61,18 @@ if ($id == 0) {
     // editing existing item
     require_capability('moodle/local:update'.$type, $context);
 
-    if (!$item = get_record($type, 'id', $id)) {
+    if (!$item = get_record($shortprefix, 'id', $id)) {
         error($type.' ID was incorrect');
     }
 
     // load custom fields data
     if ($id != 0) {
-        customfield_load_data($item, $type, $type.'_depth');
+        customfield_load_data($item, $type, $shortprefix.'_depth');
     }
 }
 
 // Load framework
-if (!$framework = get_record($type.'_framework', 'id', $frameworkid)) {
+if (!$framework = get_record($shortprefix.'_framework', 'id', $frameworkid)) {
     error($type.' framework ID was incorrect');
 }
 $item->framework = $framework->fullname;
@@ -102,16 +103,16 @@ if ($itemform->is_cancelled()) {
 
     // Load parent item if set
     if ($itemnew->parentid) {
-        if (!$parent = get_record($type, 'id', $itemnew->parentid)) {
+        if (!$parent = get_record($shortprefix, 'id', $itemnew->parentid)) {
             error('Parent '.$type.' ID was incorrect');
         }
-        $parent_depth = get_field($type.'_depth', 'depthlevel', 'id', $parent->depthid);
+        $parent_depth = get_field($shortprefix.'_depth', 'depthlevel', 'id', $parent->depthid);
 
     } else {
         $parent_depth = 0;
     }
 
-    $itemnew->depthid = get_field($type.'_depth', 'id', 'frameworkid', $itemnew->frameworkid, 'depthlevel', $parent_depth + 1);
+    $itemnew->depthid = get_field($shortprefix.'_depth', 'id', 'frameworkid', $itemnew->frameworkid, 'depthlevel', $parent_depth + 1);
 
     // Start db operations
     begin_sql();
@@ -122,7 +123,7 @@ if ($itemform->is_cancelled()) {
 
         // Find highest sortorder of siblings
         $path = $itemnew->parentid ? $parent->path : '';
-        $sql = "SELECT MAX(sortorder) FROM {$CFG->prefix}{$type} WHERE frameworkid = {$itemnew->frameworkid}";
+        $sql = "SELECT MAX(sortorder) FROM {$CFG->prefix}{$shortprefix} WHERE frameworkid = {$itemnew->frameworkid}";
         if ($path) {
             $sql .= " AND path LIKE '{$path}%'";
         }
@@ -133,7 +134,7 @@ if ($itemform->is_cancelled()) {
         $itemnew->sortorder = $sortorder + 1;
 
         // Increment all following items
-        execute_sql("UPDATE {$CFG->prefix}{$type} SET sortorder = sortorder + 1 WHERE sortorder > $sortorder AND frameworkid = {$itemnew->frameworkid}", false);
+        execute_sql("UPDATE {$CFG->prefix}{$shortprefix} SET sortorder = sortorder + 1 WHERE sortorder > $sortorder AND frameworkid = {$itemnew->frameworkid}", false);
     }
 
     // Create path for finding ancestors
@@ -146,17 +147,17 @@ if ($itemform->is_cancelled()) {
 
         $itemnew->timecreated = time();
 
-        if (!$itemnew->id = insert_record($type, $itemnew)) {
+        if (!$itemnew->id = insert_record($shortprefix, $itemnew)) {
             error('Error creating '.$type.' record');
         }
 
         // Can't set the full path till we know the id!
-        set_field($type, 'path', $itemnew->path.$itemnew->id, 'id', $itemnew->id);
+        set_field($shortprefix, 'path', $itemnew->path.$itemnew->id, 'id', $itemnew->id);
 
     // Existing item
     } else {
-        if (update_record($type, $itemnew)) {
-            customfield_save_data($itemnew, $type, $type.'_depth');
+        if (update_record($shortprefix, $itemnew)) {
+            customfield_save_data($itemnew, $type, $shortprefix.'_depth');
         } else {
             error('Error updating '.$type.' record');
         }
@@ -166,7 +167,7 @@ if ($itemform->is_cancelled()) {
     commit_sql();
 
     // Reload from db
-    $itemnew = get_record($type, 'id', $itemnew->id);
+    $itemnew = get_record($shortprefix, 'id', $itemnew->id);
 
     // Log
     add_to_log(SITEID, $type, 'update', "view.php?id=$frameworkid", '');

@@ -30,7 +30,7 @@ $sitecontext = get_context_instance(CONTEXT_SYSTEM);
 admin_externalpage_setup('competencyscales');
 
 // Load all scales
-$scales = get_records('competency_scale', null, null, 'name');
+$scales = get_records('comp_scale', null, null, 'name');
 
 // Cache permissions
 $can_edit = has_capability('moodle/local:updatecompetency', $sitecontext);

@@ -41,6 +41,7 @@ require_once($CFG->dirroot.'/hierarchy/type/competency/evidenceitem/type/abstrac
  * These are mapped to lang strings in the competency lang file
  * with the key as a suffix e.g. for ALL, 'aggregationmethod1'
  */
+global $COMP_AGGREGATION;
 $COMP_AGGREGATION = array(
     'ALL'       => 1,
     'ANY'       => 2,
@@ -61,7 +62,10 @@ class competency extends hierarchy {
     /**
      * The base table prefix for the class
      */
-    var $prefix = 'competency';
+    const PREFIX = 'competency';
+    const SHORT_PREFIX = 'comp';
+    var $prefix = self::PREFIX;
+    var $shortprefix = self::SHORT_PREFIX;
     var $extrafields = array('evidencecount');
 
     /**
@@ -70,7 +74,7 @@ class competency extends hierarchy {
      * @return object|false
      */
     function get_template($id) {
-        return get_record($this->prefix.'_template', 'id', $id);
+        return get_record($this->shortprefix.'_template', 'id', $id);
     }
 
     /**
@@ -85,7 +89,7 @@ class competency extends hierarchy {
     function get_templates( $revisionid = 0 ) {
         global $CFG;
         if ( !$revisionid ){
-            return get_records($this->prefix.'_template', 'frameworkid', $this->frameworkid, 'fullname');
+            return get_records($this->shortprefix.'_template', 'frameworkid', $this->frameworkid, 'fullname');
         } else {
             $sql = <<<SQL
                 select
@@ -97,7 +101,7 @@ class competency extends hierarchy {
                             ct.revision = {$revisionid}
                             and ct.competencytemplate = t.id
                     ) as disabled
-                from {$CFG->prefix}{$this->prefix}_template t
+                from {$CFG->prefix}{$this->shortprefix}_template t
                 where t.frameworkid = {$this->frameworkid}
                 order by t.fullname
 SQL;
@@ -114,7 +118,7 @@ SQL;
         $template = $this->get_template($id);
         if ($template) {
             $visible = 0;
-            if (!set_field($this->prefix.'_template', 'visible', $visible, 'id', $template->id)) {
+            if (!set_field($this->shortprefix.'_template', 'visible', $visible, 'id', $template->id)) {
                 notify('Could not update that '.$this->prefix.' template!');
             }
         }
@@ -129,7 +133,7 @@ SQL;
         $template = $this->get_template($id);
         if ($template) {
             $visible = 1;
-            if (!set_field($this->prefix.'_template', 'visible', $visible, 'id', $template->id)) {
+            if (!set_field($this->shortprefix.'_template', 'visible', $visible, 'id', $template->id)) {
                 notify('Could not update that '.$this->prefix.' template!');
             }
         }
@@ -142,7 +146,7 @@ SQL;
      */
     function delete_template($id) {
         // Delete this item
-        delete_records($this->prefix.'_template', 'id', $id);
+        delete_records($this->shortprefix.'_template', 'id', $id);
     }
 
     /**
@@ -160,15 +164,15 @@ SQL;
                 d.fullname AS depth,
                 c.fullname AS competency
             FROM
-                {$CFG->prefix}competency_template_assignment a
+                {$CFG->prefix}{$this->shortprefix}_template_assignment a
             LEFT JOIN
-                {$CFG->prefix}competency_template t
+                {$CFG->prefix}{$this->shortprefix}_template t
              ON t.id = a.templateid
             LEFT JOIN
-                {$CFG->prefix}competency c
+                {$CFG->prefix}{$this->shortprefix} c
              ON a.instanceid = c.id
             LEFT JOIN
-                {$CFG->prefix}competency_depth d
+                {$CFG->prefix}{$this->shortprefix}_depth d
              ON c.depthid = d.id
             WHERE
                 t.id = {$id}
@@ -182,7 +186,7 @@ SQL;
      * @return array|false
      */
     function get_evidence($item) {
-        return get_records('competency_evidence_items', 'competencyid', $item->id);
+        return get_records($this->shortprefix.'_evidence_items', 'competencyid', $item->id);
     }
 
     /**
@@ -202,16 +206,16 @@ SQL;
                 f.fullname AS framework,
                 d.fullname AS depth
             FROM
-                {$CFG->prefix}competency_relations r
+                {$CFG->prefix}{$this->shortprefix}_relations r
             INNER JOIN
-                {$CFG->prefix}competency c
+                {$CFG->prefix}{$this->shortprefix} c
              ON r.id1 = c.id
              OR r.id2 = c.id
             INNER JOIN
-                {$CFG->prefix}competency_framework f
+                {$CFG->prefix}{$this->shortprefix}_framework f
              ON f.id = c.frameworkid
             INNER JOIN
-                {$CFG->prefix}competency_depth d
+                {$CFG->prefix}{$this->shortprefix}_depth d
              ON d.id = c.depthid
             WHERE
                 (r.id1 = {$item->id} OR r.id2 = {$item->id})
@@ -242,15 +246,15 @@ SQL;
                     cei.iteminstance AS evidenceinstance,
                     cei.itemmodule AS evidencemodule
                 FROM
-                    {$CFG->prefix}competency_evidence_items cei
+                    {$CFG->prefix}{$this->shortprefix}_evidence_items cei
                 INNER JOIN
-                    {$CFG->prefix}competency c
+                    {$CFG->prefix}{$this->shortprefix} c
                  ON cei.competencyid = c.id
                 INNER JOIN
-                    {$CFG->prefix}competency_framework f
+                    {$CFG->prefix}{$this->shortprefix}_framework f
                  ON f.id = c.frameworkid
                 INNER JOIN
-                    {$CFG->prefix}competency_depth d
+                    {$CFG->prefix}{$this->shortprefix}_depth d
                  ON d.id = c.depthid
                 LEFT JOIN
                     {$CFG->prefix}modules m
@@ -382,8 +386,8 @@ SQL;
         $sql = <<<SQL
             select scale.*
             from
-                {$CFG->prefix}competency_scale_assignments sa,
-                {$CFG->prefix}competency_scale scale
+                {$CFG->prefix}{$this->shortprefix}_scale_assignments sa,
+                {$CFG->prefix}{$this->shortprefix}_scale scale
             where
                 sa.scaleid = scale.id
                 and sa.frameworkid = {$this->frameworkid}
@@ -393,7 +397,7 @@ SQL;
             return false;
         }
 
-        $valuelist = get_records('competency_scale_values', 'scaleid', $scale->id, 'sortorder');
+        $valuelist = get_records($this->shortprefix.'_scale_values', 'scaleid', $scale->id, 'sortorder');
         if ( $valuelist ){
             $scale->valuelist = $valuelist;
         } else {
@@ -434,7 +438,7 @@ SQL;
                             rc.revision = {$revisionid}
                             and rc.competency = c.id
                     ) as disabled
-                from {$CFG->prefix}{$this->prefix} c
+                from {$CFG->prefix}{$this->shortprefix} c
                 where c.parentid = {$parentid}
                 order by frameworkid, sortorder, fullname
 SQL;
@@ -480,7 +484,7 @@ SQL;
                             rc.revision = {$revisionid}
                             and rc.competency = c.id
                     ) as disabled
-                from {$CFG->prefix}{$this->prefix} c
+                from {$CFG->prefix}{$this->shortprefix} c
                 where 
                     c.parentid = 0
                     and c.frameworkid = {$this->frameworkid}

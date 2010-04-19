@@ -74,7 +74,7 @@ if (!confirm_sesskey()) {
 }
 
 // Delete assignment
-delete_records('competency_template_assignment', 'templateid', $template->id, 'instanceid', $competency->id);
+delete_records('comp_template_assignment', 'templateid', $template->id, 'instanceid', $competency->id);
 
 // Reduce competency count for template
 $template->competencycount--;
@@ -83,7 +83,7 @@ if ($template->competencycount < 0) {
     $template->competencycount = 0;
 }
 
-update_record('competency_template', $template);
+update_record('comp_template', $template);
 
 add_to_log(SITEID, $hierarchy->prefix.'template', 'removeassignment', "view.php?id={$template->id}", $competency->fullname." (ID $competency->id)");
 

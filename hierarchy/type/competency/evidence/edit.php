@@ -28,21 +28,21 @@ if($s != sesskey()) {
 $sitecontext = get_context_instance(CONTEXT_SYSTEM);
 require_capability('moodle/local:updatecompetency', $sitecontext);
 
-if (!$competencyevidence = get_record('competency_evidence', 'id', $id)) {
+if (!$competencyevidence = get_record('comp_evidence', 'id', $id)) {
     error('Competency Evidence ID was incorrect');
 }
 
-if (!$competency = get_record('competency', 'id', $competencyevidence->competencyid)) {
+if (!$competency = get_record('comp', 'id', $competencyevidence->competencyid)) {
     error('Competency ID was incorrect');
 }
 
 // Load framework
-if (!$framework = get_record('competency_framework', 'id', $competency->frameworkid)) {
+if (!$framework = get_record('comp_framework', 'id', $competency->frameworkid)) {
     error('Competency framework could not be found');
 }
 
 // Load depth
-if (!$depth = get_record('competency_depth', 'id', $competency->depthid)) {
+if (!$depth = get_record('comp_depth', 'id', $competency->depthid)) {
     error('Competency depth could not be found');
 }
 

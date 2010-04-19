@@ -40,10 +40,20 @@
 class hierarchy {
 
     /**
-     * The base table prefix for the hierarchy
+     * The base prefix for the hierarchy
      * @var string
      */
     var $prefix;
+
+    /**
+     * Shortened version of the base prefix for table names. In order to meet the
+     * Oracle 30-character limit, this should be no more than 4 characters.
+     * @var string
+     */
+    var $shortprefix;
+
+    const PREFIX = '';
+    const SHORT_PREFIX = '';
 
     /**
      * The current framework id
@@ -61,7 +71,7 @@ class hierarchy {
         // If no framework id supplied, use first in sortorder
         if ($id == 0) {
                 // Get frameworks
-                $frameworks = get_records_select($this->prefix.'_framework', '1 = 1 ORDER BY sortorder ASC');
+                $frameworks = get_records_select($this->shortprefix.'_framework', '1 = 1 ORDER BY sortorder ASC');
 
                 if (!$frameworks) {
                     if ($noframeworkok) {
@@ -76,7 +86,7 @@ class hierarchy {
                 $framework = array_shift($frameworks);
 
         } else {
-            if (!$framework = get_record($this->prefix.'_framework', 'id', $id)) {
+            if (!$framework = get_record($this->shortprefix.'_framework', 'id', $id)) {
                 error('The '.$this->prefix.' framework does not exist');
             }
         }
@@ -89,7 +99,7 @@ class hierarchy {
      * @return object|false
      */
     function get_depth_by_id($id) {
-        return get_record($this->prefix.'_depth', 'id', $id);
+        return get_record($this->shortprefix.'_depth', 'id', $id);
     }
 
     /**
@@ -97,7 +107,7 @@ class hierarchy {
      * @return array|false
      */
     function get_frameworks() {
-        return get_records($this->prefix.'_framework', '', '', 'sortorder, fullname');
+        return get_records($this->shortprefix.'_framework', '', '', 'sortorder, fullname');
     }
 
     /**
@@ -105,7 +115,7 @@ class hierarchy {
      * @return array|false
      */
     function get_depths() {
-        return get_records($this->prefix.'_depth', 'frameworkid', $this->frameworkid, 'depthlevel');
+        return get_records($this->shortprefix.'_depth', 'frameworkid', $this->frameworkid, 'depthlevel');
     }
 
     /**
@@ -114,7 +124,7 @@ class hierarchy {
      * @return object|false
      */
     function get_item($id) {
-        return get_record($this->prefix, 'id', $id);
+        return get_record($this->shortprefix, 'id', $id);
     }
 
     /**
@@ -122,7 +132,7 @@ class hierarchy {
      * @return array|false
      */
     function get_items() {
-        return get_records($this->prefix, 'frameworkid', $this->frameworkid, 'sortorder, fullname');
+        return get_records($this->shortprefix, 'frameworkid', $this->frameworkid, 'sortorder, fullname');
     }
 
     /**
@@ -135,7 +145,7 @@ class hierarchy {
             // Parentid supplied, do not specify frameworkid as
             // sometimes it is not set correctly. And a parentid
             // is enough to get the right results
-            return get_records_select($this->prefix, "parentid = {$parentid}", 'frameworkid, sortorder, fullname');
+            return get_records_select($this->shortprefix, "parentid = {$parentid}", 'frameworkid, sortorder, fullname');
         }
         else {
             // If no parentid, grab the root node of this framework
@@ -156,11 +166,11 @@ class hierarchy {
     function get_all_root_items($all=false) {
         if(empty($this->frameworkid) || $all) {
             // all root level items across frameworks
-            return get_records($this->prefix, 'parentid', 0, 'frameworkid, sortorder, fullname');
+            return get_records($this->shortprefix, 'parentid', 0, 'frameworkid, sortorder, fullname');
         } else {
             // root level items for current framework only
             $fwid = $this->frameworkid;
-            return get_records_select($this->prefix, "parentid = 0 AND frameworkid = $fwid", 'sortorder, fullname');
+            return get_records_select($this->shortprefix, "parentid = 0 AND frameworkid = $fwid", 'sortorder, fullname');
         }
     }
 
@@ -171,11 +181,11 @@ class hierarchy {
      */
     function get_item_descendants($id) {
         global $CFG;
-        $path = get_field($this->prefix, 'path', 'id', $id);
+        $path = get_field($this->shortprefix, 'path', 'id', $id);
         if ($path) {
             $paths = explode('/', substr($path, 1));
             $sql = "SELECT id, fullname, parentid, path, sortorder
-                    FROM {$CFG->prefix}{$this->prefix}
+                    FROM {$CFG->prefix}{$this->shortprefix}
                     WHERE path LIKE '{$path}%' ORDER BY path";
             return get_records_sql($sql);
         } else {
@@ -211,13 +221,12 @@ class hierarchy {
         $sortorder = $item->sortorder;
         $parentid = $item->parentid;
         $id = $item->id;
-        $type = $this->prefix;
 
         // are we looking above or below for a peer?
         $sqlop = $above ? '<' : '>';
         $sqlsort = $above ? 'DESC' : 'ASC';
 
-        $sql = "SELECT id FROM {$CFG->prefix}{$type}
+        $sql = "SELECT id FROM {$CFG->prefix}{$this->shortprefix}
             WHERE frameworkid = $frameworkid AND
             depthid = $depthid AND
             parentid = $parentid AND
@@ -261,7 +270,7 @@ class hierarchy {
         if(empty($records)) {
             // must be first time through function, get the records, and pass to
             // future uses to save db calls
-            $records = get_records($this->prefix,'','','path','id,fullname,shortname,parentid,sortorder,path');
+            $records = get_records($this->shortprefix,'','','path','id,fullname,shortname,parentid,sortorder,path');
         }
 
         if($id == 0) {
@@ -322,12 +331,12 @@ class hierarchy {
      */
     function get_item_lineage($id) {
         global $CFG;
-        $path = get_field($this->prefix, 'path', 'id', $id);
+        $path = get_field($this->shortprefix, 'path', 'id', $id);
         if ($path) {
             $paths = explode('/', substr($path, 1));
             $sql = "SELECT o.id, o.fullname, o.parentid, od.depthlevel
-                    FROM {$CFG->prefix}{$this->prefix} o
-                    JOIN {$CFG->prefix}{$this->prefix}_depth od
+                    FROM {$CFG->prefix}{$this->shortprefix} o
+                    JOIN {$CFG->prefix}{$this->shortprefix}_depth od
                       ON o.depthid=od.id
                     WHERE o.id IN (".implode(",", $paths).")";
             return get_records_sql($sql);
@@ -437,7 +446,7 @@ class hierarchy {
     function get_item_sortorder_offset() {
         global $CFG;
         $max = get_record_sql('SELECT MAX(sortorder) AS max, 1
-                FROM ' . $CFG->prefix . $this->prefix .' WHERE frameworkid=' . $this->frameworkid);
+                FROM ' . $CFG->prefix . $this->shortprefix .' WHERE frameworkid=' . $this->frameworkid);
         return $max->max + 1000;
     }
 
@@ -448,7 +457,7 @@ class hierarchy {
      * @return boolean success
      */
     function move_item($id, $up) {
-        $source = get_record($this->prefix, 'id', $id);
+        $source = get_record($this->shortprefix, 'id', $id);
         // get nearest neighbour in direction of move
         $destid = $this->get_item_adjacent_peer($source, $up);
         if(!$destid) {
@@ -477,7 +486,7 @@ class hierarchy {
                 notify(get_string('error:badsortorder','hierarchy',$this->prefix));
                 return false;
             } else {
-                $status = $status && set_field($this->prefix, 'sortorder', $newso, 'id', $id);
+                $status = $status && set_field($this->shortprefix, 'sortorder', $newso, 'id', $id);
             }
         }
         foreach($desttree as $item) {
@@ -490,7 +499,7 @@ class hierarchy {
                 notify(get_string('error:badsortorder','hierarchy',$this->prefix));
                 return false;
             } else {
-                $status = $status && set_field($this->prefix, 'sortorder', $newso, 'id', $id);
+                $status = $status && set_field($this->shortprefix, 'sortorder', $newso, 'id', $id);
             }
         }
 
@@ -515,7 +524,7 @@ class hierarchy {
         $item = $this->get_item($id);
         if ($item) {
             $visible = 0;
-            if (!set_field($this->prefix, 'visible', $visible, 'id', $item->id)) {
+            if (!set_field($this->shortprefix, 'visible', $visible, 'id', $item->id)) {
                 notify('Could not update that '.$this->prefix.'!');
             }
         }
@@ -530,7 +539,7 @@ class hierarchy {
         $item = $this->get_item($id);
         if ($item) {
             $visible = 1;
-            if (!set_field($this->prefix, 'visible', $visible, 'id', $item->id)) {
+            if (!set_field($this->shortprefix, 'visible', $visible, 'id', $item->id)) {
                 notify('Could not update that '.$this->prefix.'!');
             }
         }
@@ -545,7 +554,7 @@ class hierarchy {
         $framework = $this->get_framework($id);
         if ($framework) {
             $visible = 0;
-            if (!set_field($this->prefix.'_framework', 'visible', $visible, 'id', $framework->id)) {
+            if (!set_field($this->shortprefix.'_framework', 'visible', $visible, 'id', $framework->id)) {
                 notify('Could not update that '.$this->prefix.' framework!');
             }
         }
@@ -560,7 +569,7 @@ class hierarchy {
         $framework = $this->get_framework($id);
         if ($framework) {
             $visible = 1;
-            if (!set_field($this->prefix.'_framework', 'visible', $visible, 'id', $framework->id)) {
+            if (!set_field($this->shortprefix.'_framework', 'visible', $visible, 'id', $framework->id)) {
                 notify('Could not update that '.$this->prefix.' framework!');
             }
         }
@@ -573,7 +582,7 @@ class hierarchy {
     function get_framework_sortorder_offset() {
         global $CFG;
         $max = get_record_sql('SELECT MAX(sortorder) AS max, 1
-                FROM ' . $CFG->prefix . $this->prefix .'_framework');
+                FROM ' . $CFG->prefix . $this->shortprefix .'_framework');
         return $max->max + 1000;
     }
 
@@ -589,27 +598,27 @@ class hierarchy {
         $swap = NULL;
         $this->validate_sortorder();
         $sortoffset = $this->get_framework_sortorder_offset();
-        $move = get_record($this->prefix.'_framework', 'id', $id);
+        $move = get_record($this->shortprefix.'_framework', 'id', $id);
         if ($up) {
             $swap = get_record_sql(
                     "SELECT *
-                    FROM {$CFG->prefix}{$this->prefix}_framework
+                    FROM {$CFG->prefix}{$this->shortprefix}_framework
                     WHERE sortorder < {$move->sortorder}
                     ORDER BY sortorder DESC", true
             );
         } else {
             $swap = get_record_sql(
                     "SELECT *
-                    FROM {$CFG->prefix}{$this->prefix}_framework
+                    FROM {$CFG->prefix}{$this->shortprefix}_framework
                     WHERE sortorder > {$move->sortorder}
                     ORDER BY sortorder ASC", true
             );
         }
         begin_sql();
         if ($move && $swap) {
-            if (!(    set_field($this->prefix.'_framework', 'sortorder', $sortoffset, 'id', $swap->id)
-                   && set_field($this->prefix.'_framework', 'sortorder', $swap->sortorder, 'id', $move->id)
-                   && set_field($this->prefix.'_framework', 'sortorder', $move->sortorder, 'id', $swap->id)
+            if (!(    set_field($this->shortprefix.'_framework', 'sortorder', $sortoffset, 'id', $swap->id)
+                   && set_field($this->shortprefix.'_framework', 'sortorder', $swap->sortorder, 'id', $move->id)
+                   && set_field($this->shortprefix.'_framework', 'sortorder', $move->sortorder, 'id', $swap->id)
                 )) {
                 notify('Could not update that '.$this->prefix.' framework!');
             }
@@ -628,7 +637,7 @@ class hierarchy {
     function delete_framework_item($id) {
 
         // Delete all child items
-        $children = get_records($this->prefix, 'parentid', $id);
+        $children = get_records($this->shortprefix, 'parentid', $id);
 
         if ($children) {
             // Call this function recursively
@@ -639,9 +648,9 @@ class hierarchy {
 
         begin_sql();
         // delete any custom field data for this item
-        if(delete_records($this->prefix.'_depth_info_data', $this->prefix.'id', $id)) {
+        if(delete_records($this->shortprefix.'_depth_info_data', $this->prefix.'id', $id)) {
             // Finally delete this item
-            if(delete_records($this->prefix, 'id', $id)) {
+            if(delete_records($this->shortprefix, 'id', $id)) {
                 commit_sql();
             } else {
                 rollback_sql();
@@ -664,7 +673,7 @@ class hierarchy {
         if ($items) {
             foreach ($items as $item) {
                 // Delete all info data for each framework item
-                delete_records($this->prefix.'_depth_info_data', $this->prefix.'id', $item->id);
+                delete_records($this->shortprefix.'_depth_info_data', $this->prefix.'id', $item->id);
             }
         }
 
@@ -678,19 +687,19 @@ class hierarchy {
         }
 
         // Delete all depths in the framework
-        delete_records($this->prefix.'_depth', 'frameworkid', $this->frameworkid);
+        delete_records($this->shortprefix.'_depth', 'frameworkid', $this->frameworkid);
 
         // Delete all items in the framework
-        delete_records($this->prefix, 'frameworkid', $this->frameworkid);
+        delete_records($this->shortprefix, 'frameworkid', $this->frameworkid);
 
         // Finally delete this framework
-        delete_records($this->prefix.'_framework', 'id', $this->frameworkid);
+        delete_records($this->shortprefix.'_framework', 'id', $this->frameworkid);
 
         // Rewrite the sort order to account for the missing framework
         $sortorder = 1;
-        $records = get_records_sql("SELECT id FROM {$CFG->prefix}{$this->prefix}_framework ORDER BY sortorder ASC");
+        $records = get_records_sql("SELECT id FROM {$CFG->prefix}{$this->shortprefix}_framework ORDER BY sortorder ASC");
         foreach( $records as $rec ){
-            set_field( "{$this->prefix}_framework", 'sortorder', $sortorder, 'id', $rec->id );
+            set_field( "{$this->shortprefix}_framework", 'sortorder', $sortorder, 'id', $rec->id );
             $sortorder++;
         }
     }
@@ -703,11 +712,11 @@ class hierarchy {
      */
     function is_safe_to_delete_depth($id) {
 
-        if ( !get_record($this->prefix.'_depth', 'id', $id) ){
+        if ( !get_record($this->shortprefix.'_depth', 'id', $id) ){
             return 'deletedepthnosuchdepth';
         }
 
-        if ( count_records($this->prefix, 'depthid', $id) > 0 ){
+        if ( count_records($this->shortprefix, 'depthid', $id) > 0 ){
             return 'deletedepthhaschildren';
         }
 
@@ -730,7 +739,7 @@ class hierarchy {
         $safe_or_not = $this->is_safe_to_delete_depth($id);
         if ( $safe_or_not === true ){
             $this->delete_depth_metadata($id);
-            delete_records($this->prefix.'_depth', 'id', $id);
+            delete_records($this->shortprefix.'_depth', 'id', $id);
         }
         return $safe_or_not;
     }
@@ -746,10 +755,10 @@ class hierarchy {
      */
     function delete_depth_metadata($id) {
         // Delete all info fields in a depth
-        delete_records($this->prefix.'_depth_info_field', 'depthid', $id);
+        delete_records($this->shortprefix.'_depth_info_field', 'depthid', $id);
 
         // Delete all info categories in a depth
-        delete_records($this->prefix.'_depth_info_category', 'depthid', $id);
+        delete_records($this->shortprefix.'_depth_info_category', 'depthid', $id);
 
     }
 
@@ -840,7 +849,7 @@ class hierarchy {
             SELECT DISTINCT
                 parentid AS id
             FROM
-                {$CFG->prefix}{$this->prefix}
+                {$CFG->prefix}{$this->shortprefix}
             WHERE
                 parentid != 0
             "
@@ -850,5 +859,20 @@ class hierarchy {
         } else {
             return array();
         }
+    }
+
+    /**
+     * Returns the short prefix for the given type name. Note that it will error
+     * out if the typename is for a non-existent hierarchy type.
+     * 
+     * @param string $typename
+     * @return string
+     */
+    static function get_short_prefix($typename){
+        global $CFG;
+        $cleantypename = clean_param($typename, PARAM_ALPHA);
+        require_once($CFG->dirroot . '/hierarchy/type/' . $cleantypename . '/lib.php');
+        $instance = new $typename();
+        return $instance->shortprefix;
     }
 }

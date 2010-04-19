@@ -68,12 +68,12 @@ class hierarchylib_test extends prefix_changing_test_case {
     function setUp() {
         global $db,$CFG;
         parent::setup();
-        load_test_table($CFG->prefix . 'competency_framework', $this->framework_data, $db);
-        load_test_table($CFG->prefix . 'competency_depth', $this->depth_data, $db);
-        load_test_table($CFG->prefix . 'competency', $this->competency_data, $db);
-        load_test_table($CFG->prefix . 'competency_depth_info_category', $this->depth_category_data, $db);
-        load_test_table($CFG->prefix . 'competency_depth_info_field', $this->depth_field_data, $db);
-        load_test_table($CFG->prefix . 'competency_depth_info_data', $this->depth_data_data, $db);
+        load_test_table($CFG->prefix . 'comp_framework', $this->framework_data, $db);
+        load_test_table($CFG->prefix . 'comp_depth', $this->depth_data, $db);
+        load_test_table($CFG->prefix . 'comp', $this->competency_data, $db);
+        load_test_table($CFG->prefix . 'comp_depth_info_category', $this->depth_category_data, $db);
+        load_test_table($CFG->prefix . 'comp_depth_info_field', $this->depth_field_data, $db);
+        load_test_table($CFG->prefix . 'comp_depth_info_data', $this->depth_data_data, $db);
 
         // create the competency object
         $this->competency = new competency();
@@ -152,12 +152,12 @@ class hierarchylib_test extends prefix_changing_test_case {
 
     function tearDown() {
         global $db,$CFG;
-        remove_test_table('mdl_unittest_competency_depth_info_data', $db);
-        remove_test_table('mdl_unittest_competency_depth_info_field', $db);
-        remove_test_table('mdl_unittest_competency_depth_info_category', $db);
-        remove_test_table('mdl_unittest_competency', $db);
-        remove_test_table('mdl_unittest_competency_depth', $db);
-        remove_test_table('mdl_unittest_competency_framework', $db);
+        remove_test_table('mdl_unittest_comp_depth_info_data', $db);
+        remove_test_table('mdl_unittest_comp_depth_info_field', $db);
+        remove_test_table('mdl_unittest_comp_depth_info_category', $db);
+        remove_test_table('mdl_unittest_comp', $db);
+        remove_test_table('mdl_unittest_comp_depth', $db);
+        remove_test_table('mdl_unittest_comp_framework', $db);
         parent::tearDown();
     }
 
@@ -172,7 +172,7 @@ class hierarchylib_test extends prefix_changing_test_case {
         // the framework returned should contain all the necessary fields
         $this->assertEqual($competency->get_framework(1), $fw1);
         // clear all frameworks
-        delete_records('competency_framework');
+        delete_records('comp_framework');
         // if no frameworks exist should return false
         $this->assertFalse($competency->get_framework(0, true));
     }
@@ -199,7 +199,7 @@ class hierarchylib_test extends prefix_changing_test_case {
         // each array element should contain a framework
         $this->assertEqual(current($competency->get_frameworks()), $fw1);
         // clear out the framework
-        delete_records('competency_framework');
+        delete_records('comp_framework');
         // if no frameworks exist should return false
         $this->assertFalse($competency->get_frameworks());
     }
@@ -214,7 +214,7 @@ class hierarchylib_test extends prefix_changing_test_case {
         // each array element should contain a depth level
         $this->assertEqual(current($competency->get_depths()), $d1);
         // clear out the depth levels
-        delete_records('competency_depth');
+        delete_records('comp_depth');
         // if no depth levels exist should return false
         $this->assertFalse($competency->get_depths());
     }
@@ -240,7 +240,7 @@ class hierarchylib_test extends prefix_changing_test_case {
         // each array element should contain an item object
         $this->assertEqual(current($competency->get_items()), $c1);
         // clear out the items
-        delete_records('competency');
+        delete_records('comp');
         // if no items exist should return false
         $this->assertFalse($competency->get_items());
     }
@@ -257,7 +257,7 @@ class hierarchylib_test extends prefix_changing_test_case {
         // if no parent specified should return root level items
         $this->assertEqual(current($competency->get_items_by_parent()), $c1);
         // clear out the items
-        delete_records('competency');
+        delete_records('comp');
         // if no items exist should return false for root items and parents
         $this->assertFalse($competency->get_items_by_parent());
         $this->assertFalse($competency->get_items_by_parent(1));
@@ -274,7 +274,7 @@ class hierarchylib_test extends prefix_changing_test_case {
         // should return all root items, even if fwid given, if $all set to true
         $this->assertEqual(count($competency->get_all_root_items(true)), 3);
         // clear out the items
-        delete_records('competency');
+        delete_records('comp');
         // if no items exist should return false
         $this->assertFalse($competency->get_all_root_items());
         $this->assertFalse($nofwid->get_all_root_items());
@@ -338,7 +338,7 @@ class hierarchylib_test extends prefix_changing_test_case {
         $this->assertEqual(array_search('Comp 1 (and all children)', $list2),'1,2,4');
 
         // clear out the items
-        delete_records('competency');
+        delete_records('comp');
         // if no items exist should return false
         $competency->make_hierarchy_list($list3);
         // should return empty list if no items found
@@ -354,7 +354,7 @@ class hierarchylib_test extends prefix_changing_test_case {
         $obj = new stdClass();
         $obj->fullname = $c1->fullname;
         $obj->parentid = $c1->parentid;
-        $obj->depthlevel = get_field('competency_depth','depthlevel','id', $c1->depthid);
+        $obj->depthlevel = get_field('comp_depth','depthlevel','id', $c1->depthid);
         $obj->id = (int) $c1->id;
 
         // should return an array of items
@@ -387,20 +387,20 @@ class hierarchylib_test extends prefix_changing_test_case {
 
     function test_hierarchy_move_item() {
         $competency = $this->competency;
-        $item1_before = get_field('competency','sortorder','id',4);
-        $item2_before = get_field('competency','sortorder','id',2);
+        $item1_before = get_field('comp','sortorder','id',4);
+        $item2_before = get_field('comp','sortorder','id',2);
         // should return if item is successfully moved
         $this->assertTrue($competency->move_item(4, true));
-        $item1_after = get_field('competency','sortorder','id',4);
-        $item2_after = get_field('competency','sortorder','id',2);
+        $item1_after = get_field('comp','sortorder','id',4);
+        $item2_after = get_field('comp','sortorder','id',2);
         // adjacent items should have swapped sort order after move
         $this->assertEqual($item1_before, $item2_after);
         $this->assertEqual($item2_before, $item1_after);
 
         // sort orders before move
-        $p_before = get_field('competency','sortorder', 'id', 1);
-        $c1_before = get_field('competency','sortorder', 'id', 2);
-        $c2_before = get_field('competency','sortorder', 'id', 4);
+        $p_before = get_field('comp','sortorder', 'id', 1);
+        $c1_before = get_field('comp','sortorder', 'id', 2);
+        $c2_before = get_field('comp','sortorder', 'id', 4);
         $c1_diff_before = $c1_before - $p_before;
         $c2_diff_before = $c2_before - $p_before;
 
@@ -408,9 +408,9 @@ class hierarchylib_test extends prefix_changing_test_case {
         $this->assertTrue($competency->move_item(1, false));
 
         // sort orders after move
-        $p_after = get_field('competency','sortorder', 'id', 1);
-        $c1_after = get_field('competency','sortorder', 'id', 2);
-        $c2_after = get_field('competency','sortorder', 'id', 4);
+        $p_after = get_field('comp','sortorder', 'id', 1);
+        $c1_after = get_field('comp','sortorder', 'id', 2);
+        $c2_after = get_field('comp','sortorder', 'id', 4);
         $c1_diff_after = $c1_after - $p_after;
         $c2_diff_after = $c2_after - $p_after;
 
@@ -427,12 +427,12 @@ class hierarchylib_test extends prefix_changing_test_case {
     function test_hierarchy_hide_item() {
         $competency = $this->competency;
         $competency->hide_item(1);
-        $visible = get_field('competency', 'visible', 'id', 1);
+        $visible = get_field('comp', 'visible', 'id', 1);
         // item should not be visible
         $this->assertEqual($visible, 0);
         // also test show item
         $competency->show_item(1);
-        $visible = get_field('competency', 'visible', 'id', 1);
+        $visible = get_field('comp', 'visible', 'id', 1);
         // item should be visible again
         $this->assertEqual($visible, 1);
     }
@@ -440,12 +440,12 @@ class hierarchylib_test extends prefix_changing_test_case {
     function test_hierarchy_hide_framework() {
         $competency = $this->competency;
         $competency->hide_framework(1);
-        $visible = get_field('competency_framework', 'visible', 'id', 1);
+        $visible = get_field('comp_framework', 'visible', 'id', 1);
         // framework should not be visible
         $this->assertEqual($visible, 0);
         // also test show framework
         $competency->show_framework(1);
-        $visible = get_field('competency_framework', 'visible', 'id', 1);
+        $visible = get_field('comp_framework', 'visible', 'id', 1);
         // framework should be visible again
         $this->assertEqual($visible, 1);
     }
@@ -457,12 +457,12 @@ class hierarchylib_test extends prefix_changing_test_case {
 
     function test_hierarchy_move_framework() {
         $competency = $this->competency;
-        $f1_before = get_field('competency_framework', 'sortorder', 'id', 1);
-        $f2_before = get_field('competency_framework', 'sortorder', 'id', 2);
+        $f1_before = get_field('comp_framework', 'sortorder', 'id', 1);
+        $f2_before = get_field('comp_framework', 'sortorder', 'id', 2);
         // a successful move should return true
         $this->assertTrue($competency->move_framework(2, true));
-        $f1_after = get_field('competency_framework', 'sortorder', 'id', 1);
-        $f2_after = get_field('competency_framework', 'sortorder', 'id', 2);
+        $f1_after = get_field('comp_framework', 'sortorder', 'id', 1);
+        $f2_after = get_field('comp_framework', 'sortorder', 'id', 2);
         // frameworks should have swapped sort orders
         $this->assertEqual($f1_before, $f2_after);
         $this->assertEqual($f2_before, $f1_after);
@@ -479,7 +479,7 @@ class hierarchylib_test extends prefix_changing_test_case {
         // the item's children should also have been deleted
         $this->assertFalse($competency->get_items_by_parent(1));
         // custom field data for items and children should also be deleted
-        $this->assertFalse(get_records('competency_depth_info_data','competencyid', 2));
+        $this->assertFalse(get_records('comp_depth_info_data','competencyid', 2));
         // non descendants in same framework should not be deleted
         $this->assertEqual(count($competency->get_items()), 1);
     }
@@ -493,7 +493,7 @@ class hierarchylib_test extends prefix_changing_test_case {
         // depth levels should have been deleted
         $this->assertFalse($competency->get_depths());
         // the framework should have been deleted
-        $this->assertFalse(get_record('competency_framework', 'id', 1));
+        $this->assertFalse(get_record('comp_framework', 'id', 1));
     }
 
     function test_hierarchy_is_safe_to_delete_depth() {
@@ -505,7 +505,7 @@ class hierarchylib_test extends prefix_changing_test_case {
         $this->assertEqual($competency->is_safe_to_delete_depth(1),'deletedepthhaschildren');
 
         // delete all items so depth levels don't have any children
-        delete_records('competency');
+        delete_records('comp');
 
         // should return error if attempt to delete depth level that isn't lowest in framework
         $this->assertEqual($competency->is_safe_to_delete_depth(1), 'deletedepthnotdeepest');
@@ -517,7 +517,7 @@ class hierarchylib_test extends prefix_changing_test_case {
         $competency = $this->competency;
 
         // delete all items to make deleting depth levels possible
-        delete_records('competency');
+        delete_records('comp');
 
         // shouldn't be able to delete depth level if it is not the lowest
         $this->assertEqual($competency->delete_depth(1),'deletedepthnotdeepest');
@@ -535,9 +535,9 @@ class hierarchylib_test extends prefix_changing_test_case {
         // function should return null
         $this->assertEqual($competency->delete_depth_metadata(2), null);
         // should have deleted all categories for the depth level
-        $this->assertFalse(get_records('competency_depth_info_category', 'depthid', 2));
+        $this->assertFalse(get_records('comp_depth_info_category', 'depthid', 2));
         // should have deleted all fields for the depth level
-        $this->assertFalse(get_records('competency_depth_info_field', 'depthid', 2));
+        $this->assertFalse(get_records('comp_depth_info_field', 'depthid', 2));
 
     }
 
@@ -578,8 +578,13 @@ class hierarchylib_test extends prefix_changing_test_case {
         $this->assertFalse(array_key_exists(3, $nofwid->get_all_parents()));
 
         // clear out all items
-        delete_records('competency');
+        delete_records('comp');
         // should return an empty array if no parents found
         $this->assertEqual($competency->get_all_parents(), array());
+    }
+
+    function test_get_short_prefix(){
+        $shortprefix = hierarchy::get_short_prefix('competency');
+        $this->assertEqual('comp', $shortprefix);
     }
 }

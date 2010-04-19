@@ -2,6 +2,7 @@
 
 require_once($CFG->dirroot.'/lib/formslib.php');
 require_once($CFG->dirroot.'/hierarchy/lib.php');
+require_once($CFG->dirroot.'/hierarchy/type/competency/lib.php');
 
 class competency_edit_form extends item_edit_form {
 
@@ -25,8 +26,8 @@ class competency_edit_form extends item_edit_form {
         $scaledesc = get_field_sql("
             select s.name
             from
-                {$CFG->prefix}{$this->hierarchy->prefix}_scale s,
-                {$CFG->prefix}{$this->hierarchy->prefix}_scale_assignments a
+                {$CFG->prefix}{$this->hierarchy->shortprefix}_scale s,
+                {$CFG->prefix}{$this->hierarchy->shortprefix}_scale_assignments a
             where
                 a.frameworkid = {$item->frameworkid}
                 and a.scaleid = s.id

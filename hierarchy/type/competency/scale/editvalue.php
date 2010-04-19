@@ -31,7 +31,7 @@ if ($id == 0) {
     $value = new object();
     $value->id = 0;
     $value->scaleid = $scaleid;
-    $value->sortorder = get_field('competency_scale_values', 'MAX(sortorder) + 1', 'scaleid', $value->scaleid);
+    $value->sortorder = get_field('comp_scale_values', 'MAX(sortorder) + 1', 'scaleid', $value->scaleid);
     if (!$value->sortorder) {
         $value->sortorder = 1;
     }
@@ -40,12 +40,12 @@ if ($id == 0) {
     // Editing scale value
     require_capability('moodle/local:updatecompetency', $sitecontext);
 
-    if (!$value = get_record('competency_scale_values', 'id', $id)) {
+    if (!$value = get_record('comp_scale_values', 'id', $id)) {
         error('Scale value ID was incorrect');
     }
 }
 
-if (!$scale = get_record('competency_scale', 'id', $value->scaleid)) {
+if (!$scale = get_record('comp_scale', 'id', $value->scaleid)) {
     error('Competency scale ID was incorrect');
 }
 
@@ -81,19 +81,19 @@ if ($valueform->is_cancelled()) {
     if ($valuenew->id == 0) {
         unset($valuenew->id);
 
-        if (!$valuenew->id = insert_record('competency_scale_values', $valuenew)) {
+        if (!$valuenew->id = insert_record('comp_scale_values', $valuenew)) {
             error('Error creating scale value record');
         }
 
     // Updating scale value
     } else {
-        if (!update_record('competency_scale_values', $valuenew)) {
+        if (!update_record('comp_scale_values', $valuenew)) {
             error('Error updating scale value record');
         }
     }
 
     // Reload from database
-    $valuenew = get_record('competency_scale_values', 'id', $valuenew->id);
+    $valuenew = get_record('comp_scale_values', 'id', $valuenew->id);
 
     // Log
     add_to_log(SITEID, 'competencyscalevalue', 'update', "view.php?id={$valuenew->scaleid}");

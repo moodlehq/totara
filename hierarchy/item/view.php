@@ -2,16 +2,18 @@
 
 require_once('../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
+require_once($CFG->dirroot.'/hierarchy/lib.php');
 
 // Get data
 $type        = required_param('type', PARAM_SAFEDIR);
 $id          = required_param('id', PARAM_INT);
 $edit        = optional_param('edit', -1, PARAM_BOOL);
 $sitecontext = get_context_instance(CONTEXT_SYSTEM);
+$shortprefix = hierarchy::get_short_prefix($type);
 
 // Confirm the type exists
 if (file_exists($CFG->dirroot.'/hierarchy/type/'.$type.'/lib.php')) {
-    include($CFG->dirroot.'/hierarchy/type/'.$type.'/lib.php');
+    require_once($CFG->dirroot.'/hierarchy/type/'.$type.'/lib.php');
 } else {
     error('Hierarchy type '.$type.' does not exist');
 }
@@ -91,8 +93,8 @@ print_heading($heading);
 
     // Custom fields
     $sql = "SELECT cdif.fullname, cdid.data
-            FROM {$CFG->prefix}{$type}_depth_info_data cdid
-            JOIN {$CFG->prefix}{$type}_depth_info_field cdif ON cdid.fieldid=cdif.id
+            FROM {$CFG->prefix}{$shortprefix}_depth_info_data cdid
+            JOIN {$CFG->prefix}{$shortprefix}_depth_info_field cdif ON cdid.fieldid=cdif.id
             WHERE cdid.{$type}id={$item->id}";
 
     if ($cfdata = get_records_sql($sql)) {

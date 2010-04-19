@@ -71,7 +71,7 @@ foreach ($add as $addition) {
     $relationship->id1 = $competency->id;
     $relationship->id2 = $related->id;
 
-    insert_record('competency_relations', $relationship);
+    insert_record('comp_relations', $relationship);
 
     if($nojs) {
         // If JS disabled, redirect back to original page (only if session key matches)

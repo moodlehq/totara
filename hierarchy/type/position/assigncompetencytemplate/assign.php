@@ -67,7 +67,7 @@ foreach ($add as $addition) {
     $relationship->timecreated = $time;
     $relationship->usermodified = $USER->id;
 
-    $relationship->id = insert_record('position_competencies', $relationship);
+    $relationship->id = insert_record('pos_competencies', $relationship);
 
     if($nojs) {
         // If JS disabled, redirect back to original page (only if session key matches)

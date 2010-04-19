@@ -58,6 +58,7 @@ class position extends hierarchy {
      * The base table prefix for the class
      */
     var $prefix = 'position';
+    var $shortprefix = 'pos';
     var $extrafield = null;
 
     /**
@@ -129,15 +130,15 @@ class position extends hierarchy {
                     cd.fullname AS depth,
                     pc.id AS aid
                 FROM
-                    {$CFG->prefix}position_competencies pc
+                    {$CFG->prefix}pos_competencies pc
                 INNER JOIN
-                    {$CFG->prefix}competency c
+                    {$CFG->prefix}comp c
                  ON pc.competencyid = c.id
                 INNER JOIN
-                    {$CFG->prefix}competency_framework cf
+                    {$CFG->prefix}comp_framework cf
                  ON c.frameworkid = cf.id
                 INNER JOIN
-                    {$CFG->prefix}competency_depth cd
+                    {$CFG->prefix}comp_depth cd
                  ON c.depthid = cd.id
                 WHERE
                     pc.templateid IS NULL
@@ -157,12 +158,12 @@ class position extends hierarchy {
                     cf.fullname AS framework,
                     pc.id AS aid
                 FROM
-                    {$CFG->prefix}position_competencies pc
+                    {$CFG->prefix}pos_competencies pc
                 INNER JOIN
-                    {$CFG->prefix}competency_template c
+                    {$CFG->prefix}comp_template c
                  ON pc.templateid = c.id
                 INNER JOIN
-                    {$CFG->prefix}competency_framework cf
+                    {$CFG->prefix}comp_framework cf
                  ON c.frameworkid = cf.id
                 WHERE
                     pc.competencyid IS NULL
@@ -187,9 +188,9 @@ class position extends hierarchy {
                     pa.type,
                     p.*
                 FROM
-                    {$CFG->prefix}position p
+                    {$CFG->prefix}pos p
                 INNER JOIN
-                    {$CFG->prefix}position_assignment pa
+                    {$CFG->prefix}pos_assignment pa
                  ON p.id = pa.positionid
                 WHERE
                     pa.userid = {$user->id}

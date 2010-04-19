@@ -6,6 +6,7 @@ require_once($CFG->dirroot.'/hierarchy/lib.php');
 
 // depth level id; 0 if creating a new depth level
 $type    = required_param('type', PARAM_SAFEDIR); // hierarchy type
+$shortprefix = hierarchy::get_short_prefix($type);
 $id      = optional_param('id', 0, PARAM_INT);    // depth level id; 0 if creating a new depth level
 
 // framework id; required if creating a new depth level
@@ -47,7 +48,7 @@ if ($id == 0) {
     $depth->frameworkid = $frameworkid;
 
     // Calculate next depth level
-    $depth->depthlevel = get_field($type.'_depth', 'MAX(depthlevel) + 1', 'frameworkid', $frameworkid);
+    $depth->depthlevel = get_field($shortprefix.'_depth', 'MAX(depthlevel) + 1', 'frameworkid', $frameworkid);
     if (!$depth->depthlevel) {
         $depth->depthlevel = 1;
     }
@@ -61,7 +62,7 @@ if ($id == 0) {
 }
 
 // Load framework
-if (!$framework = get_record($type.'_framework', 'id', $depth->frameworkid)) {
+if (!$framework = get_record($shortprefix.'_framework', 'id', $depth->frameworkid)) {
     error('Framework ID was incorrect');
 }
 
@@ -87,7 +88,7 @@ if ($depthform->is_cancelled()){
 
         $depthnew->timecreated = time();
 
-        if (!$depthnew->id = insert_record($type.'_depth', $depthnew)) {
+        if (!$depthnew->id = insert_record($shortprefix.'_depth', $depthnew)) {
             error('Error creating '.$type.' depth level record');
         }
 
@@ -97,19 +98,19 @@ if ($depthform->is_cancelled()){
         $depthinfocategorynew->sortorder = 1;
         $depthinfocategorynew->depthid   = $depthnew->id;
 
-        if (!insert_record($type.'_depth_info_category', $depthinfocategorynew)) {
+        if (!insert_record($shortprefix.'_depth_info_category', $depthinfocategorynew)) {
             error('Error creating '.$type.' depth info category record');
         }
 
     // Existing depth level
     } else {
-        if (!update_record($type.'_depth', $depthnew)) {
+        if (!update_record($shortprefix.'_depth', $depthnew)) {
             error('Error updating '.$type.' depth level record');
         }
     }
 
     // Reload from db
-    $depthnew = get_record($type.'_depth', 'id', $depthnew->id);
+    $depthnew = get_record($shortprefix.'_depth', 'id', $depthnew->id);
 
     // Log
     add_to_log(SITEID, $type, 'update depth level', "depth/edit.php?id=$depthnew->id", '');

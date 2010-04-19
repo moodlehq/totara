@@ -21,7 +21,7 @@ admin_externalpage_setup('competencyscales');
 
 require_capability('moodle/local:deletecompetency', $sitecontext);
 
-if (!$scale = get_record('competency_scale', 'id', $id)) {
+if (!$scale = get_record('comp_scale', 'id', $id)) {
     error('Competency scale ID was incorrect');
 }
 
@@ -69,11 +69,11 @@ if (!confirm_sesskey()) {
 add_to_log(SITEID, 'competencyscales', 'delete', "view.php?id=$scale->id", "$scale->name (ID $scale->id)");
 
 // Delete assignment of scale to frameworks
-delete_records('competency_scale_assignments', 'scaleid', $scale->id);
+delete_records('comp_scale_assignments', 'scaleid', $scale->id);
 // Delete scale values
-delete_records('competency_scale_values', 'scaleid', $scale->id);
+delete_records('comp_scale_values', 'scaleid', $scale->id);
 // Delete scale itself
-delete_records('competency_scale', 'id', $scale->id);
+delete_records('comp_scale', 'id', $scale->id);
 
 print_heading(get_string('deletedcompetencyscale', 'competency', format_string($scale->name)));
 print_continue($returnurl);

@@ -23,9 +23,9 @@ $delete = optional_param('delete', '', PARAM_ALPHANUM);
 $hierarchy         = new competency();
 
 // The relationship could be recorded in one of two directions
-$item              = get_record('competency_relations', 'id1', $id, 'id2', $related);
+$item              = get_record('comp_relations', 'id1', $id, 'id2', $related);
 if (!$item) {
-    $item = get_record('competency_relations', 'id2', $id, 'id1', $related);
+    $item = get_record('comp_relations', 'id2', $id, 'id1', $related);
 }
 
 // If the relationship's not recorded in either direction
@@ -34,7 +34,7 @@ if (!$item) {
 }
 
 // Load related competency
-if (!$rcompetency = get_record('competency', 'id', $related)) {
+if (!$rcompetency = get_record('comp', 'id', $related)) {
     error('Competency ID was incorrect');
 }
 
@@ -81,8 +81,8 @@ if (!confirm_sesskey()) {
 }
 
 // Delete relationship
-delete_records('competency_relations', 'id1', $id, 'id2', $related);
-delete_records('competency_relations', 'id2', $id, 'id1', $related);
+delete_records('comp_relations', 'id1', $id, 'id2', $related);
+delete_records('comp_relations', 'id2', $id, 'id1', $related);
 
 add_to_log(SITEID, $hierarchy->prefix.'related', 'delete', "view.php?id=$id", $rcompetency->fullname." (ID $related)");
 

@@ -13,7 +13,7 @@ class framework_edit_form extends moodleform {
         $strgeneral  = get_string('general');
 
         /// Load competency scales
-        $scales_raw = get_records('competency_scale', '', '', 'name');
+        $scales_raw = get_records('comp_scale', '', '', 'name');
         $scales = array();
 
         if ($scales_raw) {
@@ -65,7 +65,7 @@ class framework_edit_form extends moodleform {
             $mform->addRule('scale', get_string('missingscale', 'competency'), 'required', null, 'client');
 
             // Don't allow reassigning the scale, if the framework has at least one competency
-            if ( isset($this->_customdata['frameworkid']) && count_records('competency','frameworkid',$this->_customdata['frameworkid'])){
+            if ( isset($this->_customdata['frameworkid']) && count_records('comp','frameworkid',$this->_customdata['frameworkid'])){
                 $mform->getElement('scale')->freeze();
             }
         }

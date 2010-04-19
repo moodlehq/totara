@@ -20,7 +20,7 @@ admin_externalpage_setup('competencymanage', '', array(), '', $CFG->wwwroot.'/co
 $sitecontext = get_context_instance(CONTEXT_SYSTEM);
 require_capability('moodle/local:updatecompetency', $sitecontext);
 
-if (!$competency = get_record('competency', 'id', $id)) {
+if (!$competency = get_record('comp', 'id', $id)) {
     error('Competency ID was incorrect');
 }
 

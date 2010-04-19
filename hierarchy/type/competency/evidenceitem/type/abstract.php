@@ -60,7 +60,7 @@ abstract class competency_evidence_type extends data_object {
      * Database table
      * @var string
      */
-    public $table = 'competency_evidence_items';
+    public $table = 'comp_evidence_items';
 
     /**
      * Evidence item type, to be defined in child classes
@@ -87,7 +87,7 @@ abstract class competency_evidence_type extends data_object {
 
         // If supplied an ID, load record
         if (is_numeric($data)) {
-            $data = get_record('competency_evidence_items', 'id', $data);
+            $data = get_record('comp_evidence_items', 'id', $data);
         }
 
         // Check this competency evidence type is installed
@@ -127,10 +127,10 @@ abstract class competency_evidence_type extends data_object {
 
         // Update evidence count
         // Get latest count
-        $count = get_field('competency_evidence_items', 'COUNT(*)', 'competencyid', $competency->id);
+        $count = get_field('comp_evidence_items', 'COUNT(*)', 'competencyid', $competency->id);
         $competency->evidencecount = (int) $count;
 
-        if (!update_record('competency', $competency)) {
+        if (!update_record('comp', $competency)) {
             error('Could not update competency evidence count');
         }
     }
@@ -149,14 +149,14 @@ abstract class competency_evidence_type extends data_object {
         }
 
         // Delete any evidence items evidence
-        delete_records('competency_evidence_items_evidence', 'itemid', $this->id);
+        delete_records('comp_evidence_items_evidence', 'itemid', $this->id);
 
         // Update evidence count
         // Get latest count
-        $count = get_field('competency_evidence_items', 'COUNT(*)', 'competencyid', $competency->id);
+        $count = get_field('comp_evidence_items', 'COUNT(*)', 'competencyid', $competency->id);
         $competency->evidencecount = (int) $count;
 
-        if (!update_record('competency', $competency)) {
+        if (!update_record('comp', $competency)) {
             error('Could not update competency evidence count');
         }
     }

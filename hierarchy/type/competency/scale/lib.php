@@ -25,8 +25,8 @@ function competency_scale_is_used( $scaleid ){
     return (boolean) count_records_sql("
         select count(*) 
         from 
-            {$CFG->prefix}competency_scale_assignments sa, 
-            {$CFG->prefix}competency c 
+            {$CFG->prefix}comp_scale_assignments sa, 
+            {$CFG->prefix}comp c 
         where 
             sa.scaleid={$scaleid}
             and sa.frameworkid=c.id"

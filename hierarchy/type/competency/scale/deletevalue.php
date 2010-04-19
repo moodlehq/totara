@@ -21,7 +21,7 @@ admin_externalpage_setup('competencyscales');
 
 require_capability('moodle/local:deletecompetency', $sitecontext);
 
-if (!$value = get_record('competency_scale_values', 'id', $id)) {
+if (!$value = get_record('comp_scale_values', 'id', $id)) {
     error('Competency scale value ID was incorrect');
 }
 
@@ -69,7 +69,7 @@ if (!confirm_sesskey()) {
 
 add_to_log(SITEID, 'competencyscalesvalu', 'delete', "view.php?id=$value->scaleid", "$value->name (ID $value->id)");
 
-delete_records('competency_scale_values', 'id', $value->id);
+delete_records('comp_scale_values', 'id', $value->id);
 
 print_heading(get_string('deletedcompetencyscalevalue', 'competency', format_string($value->name)));
 print_continue($returnurl);

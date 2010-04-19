@@ -31,17 +31,17 @@ function position_restore_framework($fwinfo, $options, $backup_unique_code) {
     $framework->showdepthfullname = backup_todb($fwinfo['#']['SHOWDEPTHFULLNAME']['0']['#']);
 
     // rewrite the framework sort order
-    $framework->sortorder = get_sortorder('position_framework',$framework->sortorder);
+    $framework->sortorder = get_sortorder('pos_framework',$framework->sortorder);
 
     // TODO may want to:
     // - append number to shortname
     // - append number to fullname
 
-    $newid = insert_record('position_framework',$framework);
+    $newid = insert_record('pos_framework',$framework);
     print "Restored framework $oldid to $newid<br />";
 
     if($newid) {
-        backup_putid($backup_unique_code, 'position_framework', $oldid, $newid);
+        backup_putid($backup_unique_code, 'pos_framework', $oldid, $newid);
 
         // now restore depth levels within this framework
         position_restore_depth($oldid, $newid, $fwinfo, $options, $backup_unique_code);
@@ -86,10 +86,10 @@ function position_restore_depth($oldfwid, $newfwid, $fwinfo, $options, $backup_u
 
         // TODO need to rewrite:
         // - depthlevel ? depends on if we allow partial restores. not at moment
-        $newid = insert_record('position_depth',$depth);
+        $newid = insert_record('pos_depth',$depth);
 
         if($newid) {
-            backup_putid($backup_unique_code, 'position_depth', $oldid, $newid);
+            backup_putid($backup_unique_code, 'pos_depth', $oldid, $newid);
 
             // restore custom fields if specified by options
             if(isset($options['inc_custom']) && $options['inc_custom']) {
@@ -120,11 +120,11 @@ function position_restore_custom_category($olddepthid, $newdepthid, $depthinfo, 
         $category->depthid = $newdepthid;
 
         // rewrite the sort order
-        $category->sortorder = get_sortorder('position_depth_info_category',$category->sortorder);
+        $category->sortorder = get_sortorder('pos_depth_info_category',$category->sortorder);
 
-        $newid = insert_record('position_depth_info_category', $category);
+        $newid = insert_record('pos_depth_info_category', $category);
         if($newid) {
-            backup_putid($backup_unique_code, 'position_depth_info_category', $oldid, $newid);
+            backup_putid($backup_unique_code, 'pos_depth_info_category', $oldid, $newid);
 
             position_restore_custom_field($oldid, $newid, $cat_info, $options, $backup_unique_code);
         }
@@ -167,16 +167,16 @@ function position_restore_custom_field($oldcatid, $newcatid, $catinfo, $options,
         $field->param5 = backup_todb($field_info['#']['PARAM5']['0']['#']);
 
         // rewrite the sort order
-        $field->sortorder = get_sortorder('position_depth_info_field',$field->sortorder);
+        $field->sortorder = get_sortorder('pos_depth_info_field',$field->sortorder);
 
         // rewrite depthid
-        $depthid = backup_getid($backup_unique_code, 'position_depth', $field->depthid);
+        $depthid = backup_getid($backup_unique_code, 'pos_depth', $field->depthid);
         if($depthid) {
             $field->depthid = $depthid->new_id;
         }
-        $newid = insert_record('position_depth_info_field', $field);
+        $newid = insert_record('pos_depth_info_field', $field);
         if($newid) {
-            backup_putid($backup_unique_code, 'position_depth_info_field', $oldid, $newid);
+            backup_putid($backup_unique_code, 'pos_depth_info_field', $oldid, $newid);
         }
         else {
             $status = false;
@@ -214,13 +214,13 @@ function position_restore_positions($oldfwid, $newfwid, $fwinfo, $options, $back
         $position->usermodified = backup_todb($position_info['#']['USERMODIFIED']['0']['#']);
 
         // rewrite parentid
-        $parentid = backup_getid($backup_unique_code, 'position', $position->parentid);
+        $parentid = backup_getid($backup_unique_code, 'pos', $position->parentid);
         if($parentid) {
             $position->parentid = $parentid->new_id;
         }
 
         // rewrite the depthid
-        $depthid = backup_getid($backup_unique_code, 'position_depth', $position->depthid);
+        $depthid = backup_getid($backup_unique_code, 'pos_depth', $position->depthid);
         if($depthid) {
             $position->depthid = $depthid->new_id;
         }
@@ -232,17 +232,17 @@ function position_restore_positions($oldfwid, $newfwid, $fwinfo, $options, $back
         }
 
         // make sure sortorder is unique
-        $position->sortorder = get_sortorder('position',$position->sortorder);
+        $position->sortorder = get_sortorder('pos',$position->sortorder);
 
-        $newid = insert_record('position',$position);
+        $newid = insert_record('pos',$position);
 
         if($newid) {
-            backup_putid($backup_unique_code, 'position', $oldid, $newid);
+            backup_putid($backup_unique_code, 'pos', $oldid, $newid);
 
             // last element in path is current ID, but we don't know the new
             // ID for that yet. So we need to do this *after* record insert
             // then run an update to correct path
-            $position->path = update_path($position->path, $newid, 'position', 'position', $backup_unique_code);
+            $position->path = update_path($position->path, $newid, 'pos', 'pos', $backup_unique_code);
 
             // restore custom field data if specified by options
             if(isset($options['inc_custom']) && $options['inc_custom']) {
@@ -275,13 +275,13 @@ function position_restore_custom_data($oldposid, $newposid, $posinfo, $options, 
         $value->data = $value_info['#']['DATA']['0']['#'];
 
         // rewrite fieldid
-        $fieldid = backup_getid($backup_unique_code, 'position_depth_info_field', $value->fieldid);
+        $fieldid = backup_getid($backup_unique_code, 'pos_depth_info_field', $value->fieldid);
         if($fieldid) {
             $value->fieldid = $fieldid->new_id;
         }
-        $newid = insert_record('position_depth_info_data',$value);
+        $newid = insert_record('pos_depth_info_data',$value);
         if($newid) {
-            backup_putid($backup_unique_code, 'position_depth_info_data', $oldid, $newid);
+            backup_putid($backup_unique_code, 'pos_depth_info_data', $oldid, $newid);
         } else {
             $status = false;
         }

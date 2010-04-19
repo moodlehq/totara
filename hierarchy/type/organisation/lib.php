@@ -44,6 +44,7 @@ class organisation extends hierarchy {
      * The base table prefix for the class
      */
     var $prefix = 'organisation';
+    var $shortprefix = 'org';
     var $extrafield = null;
 
 }

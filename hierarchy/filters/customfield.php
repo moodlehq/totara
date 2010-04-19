@@ -1,5 +1,7 @@
 <?php //$Id$
 
+require_once($CFG->dirroot . '/hierarchy/lib.php');
+
 /**
  * Hierarchy filter based on values of custom fields.
  */
@@ -36,9 +38,10 @@ class hierarchy_filter_customfield extends hierarchy_filter_type {
      */
     function get_custom_fields($type) {
         global $CFG;
+        $shortprefix = hierarchy::get_short_prefix($type);
         $sql = "SELECT f.id, f.fullname AS fieldname, d.fullname AS depthname FROM
-                {$CFG->prefix}{$type}_depth_info_field f JOIN
-                {$CFG->prefix}{$type}_depth d ON f.depthid = d.id
+                {$CFG->prefix}{$shortprefix}_depth_info_field f JOIN
+                {$CFG->prefix}{$shortprefix}_depth d ON f.depthid = d.id
                 WHERE hidden = 0 ORDER BY f.depthid, f.sortorder";
         if (!$fields = get_records_sql($sql)) {
             return null;
@@ -155,7 +158,8 @@ class hierarchy_filter_customfield extends hierarchy_filter_type {
         if ($where !== '') {
             $where = "WHERE $where";
         }
-        return "id $op (SELECT {$type}id FROM {$CFG->prefix}{$type}_depth_info_data $where)";
+        $shortprefix = hierarchy::get_short_prefix($type);
+        return "id $op (SELECT {$type}id FROM {$CFG->prefix}{$shortprefix}_depth_info_data $where)";
     }
 
     /**

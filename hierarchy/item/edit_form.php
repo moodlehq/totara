@@ -14,6 +14,7 @@ class item_edit_form extends moodleform {
         // Get all items in this framework that we can use
         // as parents
         $type = $this->_customdata['type'];
+        $shortprefix = hierarchy::get_short_prefix($type);
         $item = $this->_customdata['item'];
         $spage = $this->_customdata['spage'];
         $dialog = !empty($this->_customdata['dialog']);
@@ -129,7 +130,7 @@ class item_edit_form extends moodleform {
         if ($item->id) {
             $mform->addElement('hidden', 'depthid', $item->depthid);
             $mform->setType('depthid', PARAM_INT);
-            customfield_definition($mform, $item->id, $type, $item->depthid, $type.'_depth');
+            customfield_definition($mform, $item->id, $type, $item->depthid, $shortprefix.'_depth');
         }
 
         // See if any hierarchy specific form definition exists
@@ -145,10 +146,11 @@ class item_edit_form extends moodleform {
         $mform =& $this->_form;
         $itemid = $mform->getElementValue('id');
         $type   = $mform->getElementValue('type');
+        $shortprefix = hierarchy::get_short_prefix($type);
 
-        if ($item = get_record($type, 'id', $itemid)) {
+        if ($item = get_record($shortprefix, 'id', $itemid)) {
 
-            customfield_definition_after_data($mform, $item->id, $type, $item->depthid, $type.'_depth');
+            customfield_definition_after_data($mform, $item->id, $type, $item->depthid, $shortprefix.'_depth');
 
         }
 
@@ -160,11 +162,12 @@ class item_edit_form extends moodleform {
         $errors = parent::validation($itemnew, $files);
 
         $itemnew = (object)$itemnew;
-        $item    = get_record($itemnew->type, 'id', $itemnew->id);
+        $item    = get_record(hierarchy::get_short_prefix($itemnew->type), 'id', $itemnew->id);
+        $shortprefix = hierarchy::get_short_prefix($itemnew->type);
 
         if ($itemnew->id) {
             /// Check custom fields
-            $errors += customfield_validation($itemnew, $itemnew->type, $itemnew->type.'_depth');
+            $errors += customfield_validation($itemnew, $itemnew->type, $shortprefix.'_depth');
         }
 
         return $errors;

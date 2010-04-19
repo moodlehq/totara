@@ -13,7 +13,7 @@ function competency_restore($compinfo, $fwtobackup, $options, $backup_unique_cod
     }
 /*
     // function to return matches to existing values
-    $res = get_matches($comp, array('idnumber','shortname','fullname'), 'competency');
+    $res = get_matches($comp, array('idnumber','shortname','fullname'), 'comp');
 
      */
 }
@@ -38,17 +38,17 @@ function competency_restore_framework($fwinfo, $options, $backup_unique_code) {
     $framework->showdepthfullname = backup_todb($fwinfo['#']['SHOWDEPTHFULLNAME']['0']['#']);
 
     // rewrite the framework sort order
-    $framework->sortorder = get_sortorder('competency_framework',$framework->sortorder);
+    $framework->sortorder = get_sortorder('comp_framework',$framework->sortorder);
 
     // TODO may want to:
     // - append number to shortname
     // - append number to fullname
 
-    $newid = insert_record('competency_framework',$framework);
+    $newid = insert_record('comp_framework',$framework);
     print "Restored framework $oldid to $newid<br />";
 
     if($newid) {
-        backup_putid($backup_unique_code, 'competency_framework', $oldid, $newid);
+        backup_putid($backup_unique_code, 'comp_framework', $oldid, $newid);
 
         // now restore depth levels within this framework
         competency_restore_depth($oldid, $newid, $fwinfo, $options, $backup_unique_code);
@@ -94,10 +94,10 @@ function competency_restore_depth($oldfwid, $newfwid, $fwinfo, $options, $backup
 
         // TODO need to rewrite:
         // - depthlevel ? depends on if we allow partial restores. not at moment
-        $newid = insert_record('competency_depth',$depth);
+        $newid = insert_record('comp_depth',$depth);
 
         if($newid) {
-            backup_putid($backup_unique_code, 'competency_depth', $oldid, $newid);
+            backup_putid($backup_unique_code, 'comp_depth', $oldid, $newid);
 
             // restore custom fields if specified by options
             if(isset($options['inc_custom']) && $options['inc_custom']) {
@@ -128,11 +128,11 @@ function competency_restore_custom_category($olddepthid, $newdepthid, $depthinfo
         $category->depthid = $newdepthid;
 
         // rewrite the sort order
-        $category->sortorder = get_sortorder('competency_depth_info_category',$category->sortorder);
+        $category->sortorder = get_sortorder('comp_depth_info_category',$category->sortorder);
 
-        $newid = insert_record('competency_depth_info_category', $category);
+        $newid = insert_record('comp_depth_info_category', $category);
         if($newid) {
-            backup_putid($backup_unique_code, 'competency_depth_info_category', $oldid, $newid);
+            backup_putid($backup_unique_code, 'comp_depth_info_category', $oldid, $newid);
 
             competency_restore_custom_field($oldid, $newid, $cat_info, $options, $backup_unique_code);
         }
@@ -175,16 +175,16 @@ function competency_restore_custom_field($oldcatid, $newcatid, $catinfo, $option
         $field->param5 = backup_todb($field_info['#']['PARAM5']['0']['#']);
 
         // rewrite the sort order
-        $field->sortorder = get_sortorder('competency_depth_info_field',$field->sortorder);
+        $field->sortorder = get_sortorder('comp_depth_info_field',$field->sortorder);
 
         // rewrite depthid
-        $depthid = backup_getid($backup_unique_code, 'competency_depth', $field->depthid);
+        $depthid = backup_getid($backup_unique_code, 'comp_depth', $field->depthid);
         if($depthid) {
             $field->depthid = $depthid->new_id;
         }
-        $newid = insert_record('competency_depth_info_field', $field);
+        $newid = insert_record('comp_depth_info_field', $field);
         if($newid) {
-            backup_putid($backup_unique_code, 'competency_depth_info_field', $oldid, $newid);
+            backup_putid($backup_unique_code, 'comp_depth_info_field', $oldid, $newid);
         }
         else {
             $status = false;
@@ -225,13 +225,13 @@ function competency_restore_competencies($oldfwid, $newfwid, $fwinfo, $options, 
         $competency->visible = backup_todb($competency_info['#']['VISIBLE']['0']['#']);
 
         // rewrite parentid
-        $parentid = backup_getid($backup_unique_code, 'competency', $competency->parentid);
+        $parentid = backup_getid($backup_unique_code, 'comp', $competency->parentid);
         if($parentid) {
             $competency->parentid = $parentid->new_id;
         }
 
         // rewrite the depthid
-        $depthid = backup_getid($backup_unique_code, 'competency_depth', $competency->depthid);
+        $depthid = backup_getid($backup_unique_code, 'comp_depth', $competency->depthid);
         if($depthid) {
             $competency->depthid = $depthid->new_id;
         }
@@ -242,21 +242,21 @@ function competency_restore_competencies($oldfwid, $newfwid, $fwinfo, $options, 
             $competency->usermodified = $userid->new_id;
         }
         // make sure sortorder is unique
-        $competency->sortorder = get_sortorder('competency',$competency->sortorder);
+        $competency->sortorder = get_sortorder('comp',$competency->sortorder);
         // TODO
         // rewrite scaleid
         // rewrite proficiencyexpected
         // evidencecount to 0 if no evidence included
 
-        $newid = insert_record('competency',$competency);
+        $newid = insert_record('comp',$competency);
 
         if($newid) {
-            backup_putid($backup_unique_code, 'competency', $oldid, $newid);
+            backup_putid($backup_unique_code, 'comp', $oldid, $newid);
 
             // last element in path is current ID, but we don't know the new
             // ID for that yet. So we need to do this *after* record insert
             // then run an update to correct path
-            $competency->path = update_path($competency->path, $newid, 'competency', 'competency', $backup_unique_code);
+            $competency->path = update_path($competency->path, $newid, 'comp', 'comp', $backup_unique_code);
 
             // restore custom field data if specified by options
             if(isset($options['inc_custom']) && $options['inc_custom']) {
@@ -289,13 +289,13 @@ function competency_restore_custom_data($oldcompid, $newcompid, $compinfo, $opti
         $value->data = $value_info['#']['DATA']['0']['#'];
 
         // rewrite fieldid
-        $fieldid = backup_getid($backup_unique_code, 'competency_depth_info_field', $value->fieldid);
+        $fieldid = backup_getid($backup_unique_code, 'comp_depth_info_field', $value->fieldid);
         if($fieldid) {
             $value->fieldid = $fieldid->new_id;
         }
-        $newid = insert_record('competency_depth_info_data',$value);
+        $newid = insert_record('comp_depth_info_data',$value);
         if($newid) {
-            backup_putid($backup_unique_code, 'competency_depth_info_data', $oldid, $newid);
+            backup_putid($backup_unique_code, 'comp_depth_info_data', $oldid, $newid);
         } else {
             $status = false;
         }

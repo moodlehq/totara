@@ -38,13 +38,13 @@ if ($id == 0) {
     // Editing existing competency template
     require_capability('moodle/local:updatecompetencytemplate', $context);
 
-    if (!$template = get_record('competency_template', 'id', $id)) {
+    if (!$template = get_record('comp_template', 'id', $id)) {
         error('Competency template ID was incorrect');
     }
 }
 
 // Load framework
-if (!$framework = get_record('competency_framework', 'id', $template->frameworkid)) {
+if (!$framework = get_record('comp_framework', 'id', $template->frameworkid)) {
     error('Competency framework ID was incorrect');
 }
 
@@ -73,19 +73,19 @@ if ($form->is_cancelled()) {
         $templatenew->timecreated = $time;
         $templatenew->competencycount = 0;
 
-        if (!$frameworknew->id = insert_record('competency_template', $templatenew)) {
+        if (!$frameworknew->id = insert_record('comp_template', $templatenew)) {
             error('Error creating competency template record');
         }
 
     // Existing template
     } else {
-        if (!update_record('competency_template', $templatenew)) {
+        if (!update_record('comp_template', $templatenew)) {
             error('Error updating competency template record');
         }
     }
 
     // Reload from db
-    $templatenew = get_record('competency_template', 'id', $templatenew->id);
+    $templatenew = get_record('comp_template', 'id', $templatenew->id);
 
     // Log
     add_to_log(SITEID, 'competencytemplate', 'update', "view.php?id=$templatenew->id", '');

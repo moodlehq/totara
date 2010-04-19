@@ -23,7 +23,7 @@ function organisation_backup($bf, $frameworks, $options) {
 
 function organisation_backup_framework($bf, $fwid, $options) {
      if(is_numeric($fwid)) {
-        $framework = get_record('organisation_framework','id',$fwid);
+        $framework = get_record('org_framework','id',$fwid);
     }
 
     $status = true;
@@ -51,7 +51,7 @@ function organisation_backup_framework($bf, $fwid, $options) {
 
 function organisation_backup_depth($bf, $fwid, $options) {
     if(is_numeric($fwid)) {
-        $depths = get_records('organisation_depth', 'frameworkid', $fwid);
+        $depths = get_records('org_depth', 'frameworkid', $fwid);
     }
     if($depths) {
         fwrite($bf, start_tag('DEPTHS', 5, true));
@@ -77,7 +77,7 @@ function organisation_backup_depth($bf, $fwid, $options) {
 
 function organisation_backup_custom_category($bf, $depthid, $options) {
     if(is_numeric($depthid)) {
-        $categories = get_records('organisation_depth_info_category','depthid', $depthid);
+        $categories = get_records('org_depth_info_category','depthid', $depthid);
     }
     if($categories) {
         fwrite($bf, start_tag('DEPTH_CATEGORIES', 7, true));
@@ -98,7 +98,7 @@ function organisation_backup_custom_category($bf, $depthid, $options) {
 
 function organisation_backup_custom_field($bf, $categoryid, $options) {
     if(is_numeric($categoryid)) {
-        $fields = get_records('organisation_depth_info_field','categoryid', $categoryid);
+        $fields = get_records('org_depth_info_field','categoryid', $categoryid);
     }
     if($fields) {
         fwrite($bf, start_tag('CUSTOM_FIELDS', 9, true));
@@ -130,7 +130,7 @@ function organisation_backup_custom_field($bf, $categoryid, $options) {
 
 function organisation_backup_organisation($bf, $fwid, $options) {
     if(is_numeric($fwid)) {
-        $organisations = get_records('organisation', 'frameworkid', $fwid);
+        $organisations = get_records('org', 'frameworkid', $fwid);
     }
     if($organisations) {
         fwrite($bf, start_tag('ORGANISATIONS', 5, true));
@@ -165,7 +165,7 @@ function organisation_backup_organisation($bf, $fwid, $options) {
 
 function organisation_backup_custom_data($bf, $posid, $options) {
     if(is_numeric($posid)) {
-        $values = get_records('organisation_depth_info_data','organisationid',$posid);
+        $values = get_records('org_depth_info_data','organisationid',$posid);
     }
     if($values) {
         fwrite($bf, start_tag('CUSTOM_VALUES', 7, true));

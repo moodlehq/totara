@@ -66,7 +66,7 @@ foreach ($assignments as $assignment) {
     }
 
     // If the competency is already assigned to the template, skip it over
-    if ( count_records('competency_template_assignment','templateid', $template->id, 'instanceid', $assignment)){
+    if ( count_records('comp_template_assignment','templateid', $template->id, 'instanceid', $assignment)){
         continue;
     }
 
@@ -81,13 +81,13 @@ foreach ($assignments as $assignment) {
     $assign->timecreated = $time;
     $assign->usermodified = $USER->id;
 
-    insert_record('competency_template_assignment', $assign);
+    insert_record('comp_template_assignment', $assign);
 
     // Update competency count for template
-    $count = get_field('competency_template_assignment', 'COUNT(*)', 'templateid', $template->id);
+    $count = get_field('comp_template_assignment', 'COUNT(*)', 'templateid', $template->id);
     $template->competencycount = (int) $count;
 
-    update_record('competency_template', $template);
+    update_record('comp_template', $template);
 
     if($nojs) {
         // If JS disabled, redirect back to original page (only if session key matches)

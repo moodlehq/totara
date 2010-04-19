@@ -25,7 +25,7 @@ admin_externalpage_setup('competencyscales');
 $sitecontext = get_context_instance(CONTEXT_SYSTEM);
 require_capability('moodle/local:viewcompetency', $sitecontext);
 
-if (!$scale = get_record('competency_scale', 'id', $id)) {
+if (!$scale = get_record('comp_scale', 'id', $id)) {
     error('Competency scale ID was incorrect');
 }
 
@@ -60,10 +60,10 @@ if ($can_edit) {
 
         // Get value to move, and value to replace
         if (!empty($moveup)) {
-            $move = get_record('competency_scale_values', 'id', $moveup);
+            $move = get_record('comp_scale_values', 'id', $moveup);
             $resultset = get_records_sql("
                 SELECT *
-                FROM {$CFG->prefix}competency_scale_values
+                FROM {$CFG->prefix}comp_scale_values
                 WHERE
                     scaleid = {$scale->id}
                     AND sortorder < {$move->sortorder}
@@ -74,10 +74,10 @@ if ($can_edit) {
                 unset($resultset);
             }
         } else {
-            $move = get_record('competency_scale_values', 'id', $movedown);
+            $move = get_record('comp_scale_values', 'id', $movedown);
             $resultset = get_records_sql("
                 SELECT *
-                FROM {$CFG->prefix}competency_scale_values
+                FROM {$CFG->prefix}comp_scale_values
                 WHERE
                     scaleid = {$scale->id}
                     AND sortorder > {$move->sortorder}
@@ -92,8 +92,8 @@ if ($can_edit) {
         if ($swap && $move) {
             // Swap sortorders
             begin_sql();
-            if (!(    set_field('competency_scale_values', 'sortorder', $move->sortorder, 'id', $swap->id)
-                   && set_field('competency_scale_values', 'sortorder', $swap->sortorder, 'id', $move->id)
+            if (!(    set_field('comp_scale_values', 'sortorder', $move->sortorder, 'id', $swap->id)
+                   && set_field('comp_scale_values', 'sortorder', $swap->sortorder, 'id', $move->id)
                 )) {
                 error('Could not update that scale value!');
             }
@@ -107,7 +107,7 @@ if ($can_edit) {
         $value = max($proficient, $default);
 
         // Check value exists
-        if (!get_record('competency_scale_values', 'id', $value)) {
+        if (!get_record('comp_scale_values', 'id', $value)) {
             error('Incorrect scale value id supplied');
         }
 
@@ -123,7 +123,7 @@ if ($can_edit) {
             $s->defaultid = $default;
         }
 
-        if (!update_record('competency_scale', $s)) {
+        if (!update_record('comp_scale', $s)) {
             error('Could not update competency scale');
         }
     }
@@ -134,7 +134,7 @@ if ($can_edit) {
 ///
 
 // Load values
-$values = get_records('competency_scale_values', 'scaleid', $scale->id, 'sortorder');
+$values = get_records('comp_scale_values', 'scaleid', $scale->id, 'sortorder');
 
 
 admin_externalpage_print_header();

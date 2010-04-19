@@ -156,18 +156,18 @@ class competency_evidence_type_activitycompletion extends competency_evidence_ty
                 cs.proficient,
                 cs.defaultid
             FROM
-                {$CFG->prefix}competency_evidence_items cei
+                {$CFG->prefix}comp_evidence_items cei
             INNER JOIN
-                {$CFG->prefix}competency co
+                {$CFG->prefix}comp co
              ON cei.competencyid = co.id
             INNER JOIN
                 {$CFG->prefix}course_modules_completion cmc
              ON cei.iteminstance = cmc.coursemoduleid
             INNER JOIN
-                {$CFG->prefix}competency_scale cs
+                {$CFG->prefix}comp_scale cs
              ON co.scaleid = cs.id
             LEFT JOIN
-                {$CFG->prefix}competency_evidence_items_evidence ceie
+                {$CFG->prefix}comp_evidence_items_evidence ceie
              ON ceie.itemid = cei.id
             AND ceie.userid = cmc.userid
             WHERE

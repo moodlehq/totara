@@ -27,12 +27,12 @@ class mitms_competency_evidence_form extends moodleform {
             // Get position title
             $position_title = '';
             if ($ce->positionid) {
-                $position_title = get_field('position', 'fullname', 'id', $ce->positionid);
+                $position_title = get_field('pos', 'fullname', 'id', $ce->positionid);
             }
             // Get organisation title
             $organisation_title = '';
             if ($ce->organisationid) {
-                $organisation_title = get_field('organisation', 'fullname', 'id', $ce->organisationid);
+                $organisation_title = get_field('org', 'fullname', 'id', $ce->organisationid);
             }
 
         } else {
@@ -41,11 +41,11 @@ class mitms_competency_evidence_form extends moodleform {
             $id = null;
             // repopulate if set but validation failed
             $position_title = ($positionid != 0) ?
-                get_field('position', 'fullname', 'id', $positionid) : '';
+                get_field('pos', 'fullname', 'id', $positionid) : '';
             $organisation_title = ($organisationid != 0) ?
-                get_field('organisation', 'fullname', 'id', $organisationid) : '';
+                get_field('org', 'fullname', 'id', $organisationid) : '';
             $competency_title = ($competencyid != 0) ?
-                get_field('competency', 'fullname', 'id', $competencyid) : '';
+                get_field('comp', 'fullname', 'id', $competencyid) : '';
         }
 
         $mform->addElement('hidden', 'id', $id);
@@ -141,13 +141,13 @@ class mitms_competency_evidence_form extends moodleform {
         if(isset($ce)) {
             // editing existing competency evidence item
             // get id of the scale referred to by the evidence's proficiency
-            $scaleid = get_field('competency_scale_values','scaleid','id',$ce->proficiency);
-            $selectoptions = get_records_menu('competency_scale_values','scaleid',$scaleid,'sortorder');
+            $scaleid = get_field('comp_scale_values','scaleid','id',$ce->proficiency);
+            $selectoptions = get_records_menu('comp_scale_values','scaleid',$scaleid,'sortorder');
             $mform->addElement('select', 'proficiency',get_string('proficiency','local'), $selectoptions);
         } else if ($competencyid != 0) {
             // competency set but validation failed. Refill scale options
-            $scaleid = get_field('competency','scaleid','id',$competencyid);
-            $selectoptions = get_records_menu('competency_scale_values','scaleid',$scaleid,'sortorder');
+            $scaleid = get_field('comp','scaleid','id',$competencyid);
+            $selectoptions = get_records_menu('comp_scale_values','scaleid',$scaleid,'sortorder');
             $mform->addElement('select', 'proficiency',get_string('proficiency','local'), $selectoptions);
             $mform->setType('proficiency', PARAM_INT);
         } else {
@@ -163,7 +163,7 @@ class mitms_competency_evidence_form extends moodleform {
 
 
         if($nojs) {
-            $allpositions = get_records_menu('position','','','frameworkid,sortorder','id,fullname');
+            $allpositions = get_records_menu('pos','','','frameworkid,sortorder','id,fullname');
             $mform->addElement('select','positionid', get_string('chooseposition','position'), array(0 => get_string('chooseposition','position')) + $allpositions);
         } else {
             // position selector
@@ -182,7 +182,7 @@ class mitms_competency_evidence_form extends moodleform {
         }
 
         if($nojs) {
-            $allorgs = get_records_menu('organisation','','','frameworkid,sortorder','id,fullname');
+            $allorgs = get_records_menu('org','','','frameworkid,sortorder','id,fullname');
             $mform->addElement('select','organisationid', get_string('chooseorganisation','organisation'), array(0 => get_string('chooseorganisation','organisation')) + $allorgs);
         } else {
             // organisation selector
@@ -208,7 +208,7 @@ class mitms_competency_evidence_form extends moodleform {
         $errors = array();
         $editing = isset($this->_customdata['competencyevidence']);
         if(!$editing) {
-            if( $existing = get_record('competency_evidence','userid',$data['userid'], 'competencyid', $data['competencyid'])) {
+            if( $existing = get_record('comp_evidence','userid',$data['userid'], 'competencyid', $data['competencyid'])) {
                 $errors['competencyselector'] = get_string('error:compevidencealreadyexists','competency', $existing->id);
             }
         }

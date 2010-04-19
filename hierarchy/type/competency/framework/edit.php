@@ -1,5 +1,7 @@
 <?php
+require_once($CFG->dirroot.'/hierarchy/lib.php');
 
+$shortprefix = hierarchy::get_short_prefix($type);
 // Make this page appear under the manage 'hierarchy' admin menu
 admin_externalpage_setup($type.'frameworkmanage', '', array(), '', $CFG->wwwroot.'/hierarchy/type/competency/framework/edit.php?type='.$type);
 
@@ -10,7 +12,7 @@ if ($id == 0) {
     $framework = new object();
     $framework->id = 0;
     $framework->visible = 1;
-    $framework->sortorder = get_field($type.'_framework', 'MAX(sortorder) + 1', '', '');
+    $framework->sortorder = get_field($shortprefix.'_framework', 'MAX(sortorder) + 1', '', '');
     $framework->hidecustomfields = 0;
     $framework->showitemfullname = 0;
     $framework->showdepthfullname = 0;
@@ -23,12 +25,12 @@ if ($id == 0) {
     // Editing existing framework
     require_capability('moodle/local:update'.$type.'frameworks', $context);
 
-    if (!$framework = get_record($type.'_framework', 'id', $id)) {
+    if (!$framework = get_record($shortprefix.'_framework', 'id', $id)) {
         error($type.' framework ID was incorrect');
     }
 
     // Load scale assignments
-    $scales = get_records($type.'_scale_assignments', 'frameworkid', $framework->id);
+    $scales = get_records($shortprefix.'_scale_assignments', 'frameworkid', $framework->id);
     $framework->scale = array();
     if ($scales) {
         foreach ($scales as $scale) {
@@ -61,13 +63,13 @@ if ($frameworkform->is_cancelled()) {
 
         $frameworknew->timecreated = $time;
 
-        if (!$frameworknew->id = insert_record($type.'_framework', $frameworknew)) {
+        if (!$frameworknew->id = insert_record($shortprefix.'_framework', $frameworknew)) {
             error('Error creating '.$type.' framework record');
         }
 
     // Existing framework
     } else {
-        if (!update_record($type.'_framework', $frameworknew)) {
+        if (!update_record($shortprefix.'_framework', $frameworknew)) {
             error('Error updating '.$type.' framework record');
         }
     }
@@ -82,7 +84,7 @@ if ($frameworkform->is_cancelled()) {
             $assignment->frameworkid = $frameworknew->id;
             $assignment->timemodified = $time;
             $assignment->usermodified = $USER->id;
-            if (!insert_record($type.'_scale_assignments', $assignment)) {
+            if (!insert_record($shortprefix.'_scale_assignments', $assignment)) {
                 error('Could not add scale assignment');
             }
         }
@@ -95,14 +97,14 @@ if ($frameworkform->is_cancelled()) {
     }
 
     foreach ($scales_removed as $key) {
-        if (!delete_records($type.'_scale_assignments', 'scaleid', $key, 'frameworkid', $frameworknew->id)) {
+        if (!delete_records($shortprefix.'_scale_assignments', 'scaleid', $key, 'frameworkid', $frameworknew->id)) {
             error('Could not delete scale assignment');
         }
     }
 
 
     // Reload from db
-    $frameworknew = get_record($type.'_framework', 'id', $frameworknew->id);
+    $frameworknew = get_record($shortprefix.'_framework', 'id', $frameworknew->id);
 
     // Log
     add_to_log(SITEID, $type.'frameworks', 'update', "view.php?id=$frameworknew->id", '');

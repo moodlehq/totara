@@ -24,7 +24,7 @@ require_capability('moodle/local:updatecompetency', $sitecontext);
 
 if($confirm) { // confirmation made
     if(confirm_sesskey()) {
-        if(delete_records('competency_evidence','id',$id)) {
+        if(delete_records('comp_evidence','id',$id)) {
             redirect($returnurl);
         } else {
             redirect($returnurl,get_string('couldnotdeletece','local'));

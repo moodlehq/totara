@@ -140,7 +140,7 @@ class competency_evidence extends data_object {
     private function _trigger_parent_reaggregation() {
 
         // Check if this competency has a parent
-        $competency = get_record('competency', 'id', $this->competencyid);
+        $competency = get_record('comp', 'id', $this->competencyid);
 
         if (!$competency->parentid) {
             return;
