@@ -2056,7 +2056,7 @@ function facetoface_get_manageremail($userid) {
 
     if ($roleid) {
         $sql = "SELECT ra.userid AS managerid
-            FROM {$CFG->prefix}position_assignment pa
+            FROM {$CFG->prefix}pos_assignment pa
             LEFT JOIN {$CFG->prefix}role_assignments ra ON pa.reportstoid=ra.id
             WHERE pa.userid=$userid AND ra.roleid=$roleid AND pa.type=1"; // just use primary position for now
         $res = get_record_sql($sql);

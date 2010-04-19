@@ -86,9 +86,9 @@ foreach ($lt as $column) {
             // now get their details
             $sql = "SELECT u.id, u.firstname, u.lastname, u.imagealt, u.picture, pa.shortname AS position, o.shortname AS organisation
                     FROM {$CFG->prefix}user u
-                    JOIN {$CFG->prefix}position_assignment pa
+                    JOIN {$CFG->prefix}pos_assignment pa
                       ON pa.userid=u.id
-                    JOIN {$CFG->prefix}organisation o
+                    JOIN {$CFG->prefix}org o
                       ON o.id=pa.organisationid
                     WHERE u.id IN (".implode(',',$staff_ids).")
                     ORDER BY firstname";

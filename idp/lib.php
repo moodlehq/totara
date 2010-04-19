@@ -2160,13 +2160,13 @@ function idp_get_user_competencies($userid, $currevisionid) {
         FROM
             {$CFG->prefix}idp_revision_competency r
         INNER JOIN
-            {$CFG->prefix}competency c
+            {$CFG->prefix}comp c
          ON r.competency = c.id
         INNER JOIN
-            {$CFG->prefix}competency_framework f
+            {$CFG->prefix}comp_framework f
          ON f.id = c.frameworkid
         INNER JOIN
-            {$CFG->prefix}competency_depth d
+            {$CFG->prefix}comp_depth d
          ON d.id = c.depthid
         WHERE r.revision = {$currevisionid}
         ";
@@ -2183,8 +2183,8 @@ function idp_get_user_positions($userid) {
     global $CFG;
 
     $sql = "SELECT p.id, p.fullname
-            FROM {$CFG->prefix}position_assignment pa
-            JOIN {$CFG->prefix}position p
+            FROM {$CFG->prefix}pos_assignment pa
+            JOIN {$CFG->prefix}pos p
               ON pa.positionid=p.id
             WHERE userid={$userid}";
 
@@ -2212,10 +2212,10 @@ function idp_get_user_competencytemplates($userid, $currevisionid) {
         FROM
             {$CFG->prefix}idp_revision_competencytmpl r
         INNER JOIN
-            {$CFG->prefix}competency_template c
+            {$CFG->prefix}comp_template c
          ON r.competencytemplate = c.id
         INNER JOIN
-            {$CFG->prefix}competency_framework f
+            {$CFG->prefix}comp_framework f
          ON f.id = c.frameworkid
         WHERE r.revision = {$currevisionid}
         ";
@@ -2440,11 +2440,11 @@ function print_evaluation_summary($userid) {
             eval.timemodified as evaltime,
             fw.sortorder as fw_sortorder
         from
-            {$CFG->prefix}competency comp,
+            {$CFG->prefix}comp comp,
             {$CFG->prefix}idp_competency_eval eval,
             {$CFG->prefix}idp idp,
             {$CFG->prefix}idp_revision rev,
-            {$CFG->prefix}competency_framework fw
+            {$CFG->prefix}comp_framework fw
         where
             idp.userid = {$userid}
             and eval.competencyid = comp.id
@@ -2832,8 +2832,8 @@ function get_all_revision_competencies($revisionid){
     $sql = <<<SQL
     select comp.*
     from
-        {$CFG->prefix}competency comp,
-        {$CFG->prefix}competency_framework fwork
+        {$CFG->prefix}comp comp,
+        {$CFG->prefix}comp_framework fwork
     where
         comp.id in (
             select distinct revcomp.competency
@@ -2843,7 +2843,7 @@ function get_all_revision_competencies($revisionid){
             select distinct complist.instanceid
             from
                 {$CFG->prefix}idp_revision_competencytmpl revtemp,
-                {$CFG->prefix}competency_template_assignment complist
+                {$CFG->prefix}comp_template_assignment complist
             where
                 revtemp.revision = {$revisionid}
                 and revtemp.competencytemplate = complist.templateid
@@ -2877,7 +2877,7 @@ function get_all_competency_frameworks($fullcompetencylist){
     $frameworklist = array();
     $hierarchy = new competency();
     foreach( $frameworktocompetencyhash as $frameworkid => $competencylist ){
-        $framework = get_record('competency_framework', 'id', $frameworkid);
+        $framework = get_record('comp_framework', 'id', $frameworkid);
 
         $hierarchy->frameworkid = $frameworkid;
         $scale = $hierarchy->get_competency_scale();
@@ -2950,7 +2950,7 @@ function get_competency_evaluation($revisionid, $competencyid){
     $sql = <<<SQL
         select value.*
         from
-            {$CFG->prefix}competency_scale_values value,
+            {$CFG->prefix}comp_scale_values value,
             {$CFG->prefix}idp_competency_eval compeval
         where
             compeval.scalevalueid = value.id

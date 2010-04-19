@@ -3818,7 +3818,7 @@ define('RESTORE_GROUPS_GROUPINGS', 3);
             $framework_fullname = backup_todb($framework['#']['FULLNAME']['0']['#']);
 
             // Check if framework exists
-            $framework_db = get_record('competency_framework', 'fullname', $framework_fullname);
+            $framework_db = get_record('comp_framework', 'fullname', $framework_fullname);
             if (!$framework_db) {
                 if (!$silent) {
                     echo '<li>Competency framework "'.htmlentities($framework_fullname).'" could not be found</li>';
@@ -3871,7 +3871,7 @@ define('RESTORE_GROUPS_GROUPINGS', 3);
                     $evidence->timemodified = time();
                     $evidence->usermodified = $USER->id;
 
-                    if (!insert_record('competency_evidence_items', $evidence)) {
+                    if (!insert_record('comp_evidence_items', $evidence)) {
                         if (!$silent) {
                             echo '<li>New competency evidence item insert failed</li>';
                         }

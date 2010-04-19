@@ -5,22 +5,21 @@ require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->dirroot.'/customfield/indexlib.php');
 require_once($CFG->dirroot.'/customfield/fieldlib.php');
 require_once($CFG->dirroot.'/customfield/definelib.php');
+require_once($CFG->dirroot.'/hierarchy/lib.php');
 
 $type    = required_param('type', PARAM_SAFEDIR);        // hierarchy name or mod name
 $subtype = optional_param('subtype', null, PARAM_ALPHA); // e.g., 'depth' or f2f 'session'
 $depthid = optional_param('depthid', '0', PARAM_INT);    // depthid if hierarchy
 $action  = optional_param('action', '', PARAM_ALPHA);    // param for some action
 
-if ($depthid != 0) {
-    require_once($CFG->dirroot.'/hierarchy/lib.php');
-    // Confirm the hierarchy type exists
-    if (file_exists($CFG->dirroot.'/hierarchy/type/'.$type.'/lib.php')) {
-        require_once($CFG->dirroot.'/hierarchy/type/'.$type.'/lib.php');
-        $hierarchy = new $type();
-    } else {
-        error('error:hierarchytypenotfound', 'hierarchy', $type);
-    }
+// Confirm the hierarchy type exists
+if (file_exists($CFG->dirroot.'/hierarchy/type/'.$type.'/lib.php')) {
+    require_once($CFG->dirroot.'/hierarchy/type/'.$type.'/lib.php');
+    $hierarchy = new $type();
+} else {
+    error('error:hierarchytypenotfound', 'hierarchy', $type);
 }
+$shortprefix = hierarchy::get_short_prefix($type);
 
 $redirect = $CFG->wwwroot.'/customfield/index.php?type='.$type;
 if ($subtype !== null) {
@@ -42,9 +41,9 @@ if ($depthid) {
 }
 
 if ($subtype !== null) {
-    $tableprefix = $type.'_'.$subtype;
+    $tableprefix = $shortprefix.'_'.$subtype;
 } else {
-    $tableprefix = $type;
+    $tableprefix = $shortprefix;
 }
 
 $sitecontext = get_context_instance(CONTEXT_SYSTEM);
@@ -195,10 +194,10 @@ if ($depthid) {
 
     $sql = "SELECT cf.shortname as frameworkshortname, cf.fullname as frameworkfullname,
               cd.fullname as depthfullname, cdc.name as categoryname, cdf.fullname as depthfieldfullname
-            FROM {$CFG->prefix}{$type}_framework cf
-            JOIN {$CFG->prefix}{$type}_depth cd on cd.frameworkid=cf.id
-            LEFT OUTER JOIN {$CFG->prefix}{$type}_depth_info_category cdc on cdc.depthid=cd.id
-            LEFT OUTER JOIN {$CFG->prefix}{$type}_depth_info_field cdf on cdf.depthid=cd.id AND cdf.categoryid=cdc.id
+            FROM {$CFG->prefix}{$shortprefix}_framework cf
+            JOIN {$CFG->prefix}{$shortprefix}_depth cd on cd.frameworkid=cf.id
+            LEFT OUTER JOIN {$CFG->prefix}{$shortprefix}_depth_info_category cdc on cdc.depthid=cd.id
+            LEFT OUTER JOIN {$CFG->prefix}{$shortprefix}_depth_info_field cdf on cdf.depthid=cd.id AND cdf.categoryid=cdc.id
             ORDER BY cf.sortorder, cd.depthlevel, cdc.sortorder, cdf.sortorder";
 
     if ($rs = get_recordset_sql($sql)) {
