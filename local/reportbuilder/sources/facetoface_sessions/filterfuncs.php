@@ -54,7 +54,7 @@ function get_organisations_list($restrictions) {
     }
     // only local restrictions set - limit pulldown options
     if($localset && !$nonlocal) {
-        $orgid = get_field('position_assignment','organisationid','userid',$USER->id);
+        $orgid = get_field('pos_assignment','organisationid','userid',$USER->id);
         // set to use users org id if it's set
         if(isset($orgid)) {
             $baseorg = $orgid;

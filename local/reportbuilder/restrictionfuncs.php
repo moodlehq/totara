@@ -35,7 +35,7 @@ function reportbuilder_restriction_local_records() {
 
     $userid = $USER->id;
     // get the user's organisationid (for primary position)
-    $orgid = get_field('position_assignment','organisationid','userid',$userid, 'type', 1);
+    $orgid = get_field('pos_assignment','organisationid','userid',$userid, 'type', 1);
     // no results if they don't have one
     if(empty($orgid)) {
         return null;
@@ -50,7 +50,7 @@ function reportbuilder_restriction_local_records() {
     }
 
     // return users who are in an organisation in that list
-    $users = get_records_select('position_assignment',"organisationid IN (".implode(',',$olist).")",'','userid');
+    $users = get_records_select('pos_assignment',"organisationid IN (".implode(',',$olist).")",'','userid');
     $ulist = array();
     foreach ($users as $user) {
         $ulist[] = $user->userid;
@@ -66,7 +66,7 @@ function reportbuilder_restriction_local_completed_records() {
 
     $userid = $USER->id;
     // get the user's organisationid (for primary position)
-    $orgid = get_field('position_assignment','organisationid','userid',$userid, 'type', 1);
+    $orgid = get_field('pos_assignment','organisationid','userid',$userid, 'type', 1);
     // no results if they don't have one
     if(empty($orgid)) {
         return null;

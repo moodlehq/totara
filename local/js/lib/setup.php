@@ -81,7 +81,7 @@ function build_treeview($elements, $error_string, $hierarchy = null, $disabledli
                 $li_class .= ' last';
             }
 
-            // Element has children
+            // Elemefint has children
             if (array_key_exists($element->id, $parents)) {
                 $li_class = 'expandable closed';
                 $div_class = 'hitarea closed-hitarea expandable-hitarea';
@@ -333,7 +333,7 @@ function build_nojs_positionpicker($url, $urlparams) {
     // TODO add other html to this function (see picker above)
     $murl = new moodle_url($url, $urlparams);
     $html = '';
-    if($positions = get_records('position_assignment','userid',$USER->id)) {
+    if($positions = get_records('pos_assignment','userid',$USER->id)) {
         $html .= '<div id="nojsinstructions"><p>'.PHP_EOL;
         $html .= get_string('chooseposition','position');
         $html .= '</p></div>'.PHP_EOL;

@@ -1,7 +1,7 @@
 <?php
 @raise_memory_limit('392M');
 @ini_set('max_execution_time','3000');
-print "Loading data for table 'position'<br>";
+print "Loading data for table 'pos'<br>";
 $items = array(array('id' => '1','fullname' => 'Data Analyst','shortname' => 'Data Analyst','idnumber' => 'DATA1','description' => '','frameworkid' => '1','path' => '/1','depthid' => '1','parentid' => '0','sortorder' => '1','visible' => '1','timevalidfrom' => '0','timevalidto' => '0','timecreated' => '0','timemodified' => '1267682496','usermodified' => '2',),
 array('id' => '2','fullname' => 'Programme Manager','shortname' => 'ProgrammeManager','idnumber' => 'PROG2','description' => '','frameworkid' => '1','path' => '/2','depthid' => '1','parentid' => '0','sortorder' => '2','visible' => '1','timevalidfrom' => '0','timevalidto' => '0','timecreated' => '0','timemodified' => '0','usermodified' => '2',),
 array('id' => '3','fullname' => 'Area Manager','shortname' => 'AreaManager','idnumber' => 'AREA3','description' => '','frameworkid' => '1','path' => '/3','depthid' => '1','parentid' => '0','sortorder' => '3','visible' => '1','timevalidfrom' => '0','timevalidto' => '0','timecreated' => '0','timemodified' => '0','usermodified' => '2',),
@@ -21,21 +21,21 @@ array('id' => '15','fullname' => 'External','shortname' => 'External','idnumber'
 print "\n";print "Inserting ".count($items)." records<br />\n";
 $i=1;
 foreach($items as $item) {
-    if(get_field('position', 'id', 'id', $item['id'])) {
+    if(get_field('pos', 'id', 'id', $item['id'])) {
         print "Record with id of {$item['id']} already exists!<br>\n";
         continue;
     }
-    $newid = insert_record('position',(object) $item);
+    $newid = insert_record('pos',(object) $item);
     if($newid != $item['id']) {
-        if(!set_field('position', 'id', $item['id'], 'id', $newid)) {
+        if(!set_field('pos', 'id', $item['id'], 'id', $newid)) {
             print "Could not change id from $newid to {$item['id']}<br>\n";
             continue;
         }
     }
     // record the highest id in the table
-    $maxid = get_field_sql('SELECT '.sql_max('id').' FROM '.$CFG->prefix.'position');
+    $maxid = get_field_sql('SELECT '.sql_max('id').' FROM '.$CFG->prefix.'pos');
     // make sure sequence is higher than highest ID
-    bump_sequence('position', $CFG->prefix, $maxid);
+    bump_sequence('pos', $CFG->prefix, $maxid);
     // print output
     // 1 dot per 10 inserts
     if($i%10==0) {

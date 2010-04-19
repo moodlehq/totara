@@ -1389,7 +1389,7 @@ function xmldb_local_upgrade($oldversion) {
         }
     }
 
-    if ($result && $oldversion < 2010041700){
+    if ($result && $oldversion < 2010041900){
 
         // Renaming hierarchy items types to be shorter, so the tables named
         // after them won't break Oracle's 30-char size limit
@@ -1400,7 +1400,7 @@ function xmldb_local_upgrade($oldversion) {
         );
 
         $tablelist = array(
-            'competency',
+            '\'competency\'',
             'competency_depth',
             'competency_depth_info_category',
             'competency_depth_info_data',
@@ -1416,14 +1416,14 @@ function xmldb_local_upgrade($oldversion) {
             'competency_template',
             'competency_template_assignment',
             'competency_template_competencies',
-            'organisation',
+            '\'organisation\'',
             'organisation_depth',
             'organisation_depth_info_category',
             'organisation_depth_info_data',
             'organisation_depth_info_field',
             'organisation_framework',
             'organisation_relations',
-            'position',
+            '\'position\'',
             'position_assignment',
             'position_assignment_history',
             'position_competencies',

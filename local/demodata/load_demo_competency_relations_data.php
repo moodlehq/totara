@@ -1,7 +1,7 @@
 <?php
 @raise_memory_limit('392M');
 @ini_set('max_execution_time','3000');
-print "Loading data for table 'competency_relations'<br>";
+print "Loading data for table 'comp_relations'<br>";
 $items = array(array('id' => '1','description' => '','id1' => '3466','id2' => '3283',),
 array('id' => '2','description' => '','id1' => '3466','id2' => '141',),
 array('id' => '3','description' => '','id1' => '3466','id2' => '1091',),
@@ -852,21 +852,21 @@ array('id' => '846','id1' => '234','id2' => '2994',),
 print "\n";print "Inserting ".count($items)." records<br />\n";
 $i=1;
 foreach($items as $item) {
-    if(get_field('competency_relations', 'id', 'id', $item['id'])) {
+    if(get_field('comp_relations', 'id', 'id', $item['id'])) {
         print "Record with id of {$item['id']} already exists!<br>\n";
         continue;
     }
-    $newid = insert_record('competency_relations',(object) $item);
+    $newid = insert_record('comp_relations',(object) $item);
     if($newid != $item['id']) {
-        if(!set_field('competency_relations', 'id', $item['id'], 'id', $newid)) {
+        if(!set_field('comp_relations', 'id', $item['id'], 'id', $newid)) {
             print "Could not change id from $newid to {$item['id']}<br>\n";
             continue;
         }
     }
     // record the highest id in the table
-    $maxid = get_field_sql('SELECT '.sql_max('id').' FROM '.$CFG->prefix.'competency_relations');
+    $maxid = get_field_sql('SELECT '.sql_max('id').' FROM '.$CFG->prefix.'comp_relations');
     // make sure sequence is higher than highest ID
-    bump_sequence('competency_relations', $CFG->prefix, $maxid);
+    bump_sequence('comp_relations', $CFG->prefix, $maxid);
     // print output
     // 1 dot per 10 inserts
     if($i%10==0) {

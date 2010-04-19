@@ -1,7 +1,7 @@
 <?php
 @raise_memory_limit('392M');
 @ini_set('max_execution_time','3000');
-print "Loading data for table 'organisation'<br>";
+print "Loading data for table 'org'<br>";
 $items = array(array('id' => '1','fullname' => 'Northland District Office','shortname' => 'Northland DO','description' => '','idnumber' => '1','frameworkid' => '1','path' => '/21/1','depthid' => '2','parentid' => '21','sortorder' => '2','visible' => '1','timecreated' => '0','timemodified' => '1267684145','usermodified' => '2',),
 array('id' => '2','fullname' => 'Auckland District Office','shortname' => 'Auckland DO','description' => '','idnumber' => '2','frameworkid' => '1','path' => '/21/2','depthid' => '2','parentid' => '21','sortorder' => '7','visible' => '1','timecreated' => '0','timemodified' => '1267683923','usermodified' => '2',),
 array('id' => '3','fullname' => 'Waikato District Office','shortname' => 'Waikato DO','description' => '','idnumber' => '3','frameworkid' => '1','path' => '/21/3','depthid' => '2','parentid' => '21','sortorder' => '11','visible' => '1','timecreated' => '0','timemodified' => '1267684122','usermodified' => '2',),
@@ -143,21 +143,21 @@ array('id' => '3047','fullname' => 'University of Otago (External)','shortname' 
 print "\n";print "Inserting ".count($items)." records<br />\n";
 $i=1;
 foreach($items as $item) {
-    if(get_field('organisation', 'id', 'id', $item['id'])) {
+    if(get_field('org', 'id', 'id', $item['id'])) {
         print "Record with id of {$item['id']} already exists!<br>\n";
         continue;
     }
-    $newid = insert_record('organisation',(object) $item);
+    $newid = insert_record('org',(object) $item);
     if($newid != $item['id']) {
-        if(!set_field('organisation', 'id', $item['id'], 'id', $newid)) {
+        if(!set_field('org', 'id', $item['id'], 'id', $newid)) {
             print "Could not change id from $newid to {$item['id']}<br>\n";
             continue;
         }
     }
     // record the highest id in the table
-    $maxid = get_field_sql('SELECT '.sql_max('id').' FROM '.$CFG->prefix.'organisation');
+    $maxid = get_field_sql('SELECT '.sql_max('id').' FROM '.$CFG->prefix.'org');
     // make sure sequence is higher than highest ID
-    bump_sequence('organisation', $CFG->prefix, $maxid);
+    bump_sequence('org', $CFG->prefix, $maxid);
     // print output
     // 1 dot per 10 inserts
     if($i%10==0) {

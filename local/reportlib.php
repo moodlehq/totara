@@ -65,7 +65,7 @@ function mitms_print_report_heading($columns, $user, $usercustomfields) {
     $positions = array();
     $organisations = array();
 
-    if ( $positionassignmentlist = get_records('position_assignment', 'userid', $user->id ) ){
+    if ( $positionassignmentlist = get_records('pos_assignment', 'userid', $user->id ) ){
         foreach( $positionassignmentlist as $positionassignment ){
             $positions += mitms_get_user_hierarchy_lineage($positionassignment->positionid, 'position');
             $organisations += mitms_get_user_hierarchy_lineage($positionassignment->organisationid, 'organisation');

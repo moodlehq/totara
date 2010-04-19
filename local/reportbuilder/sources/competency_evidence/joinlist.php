@@ -14,16 +14,16 @@
 $managerroleid = get_field('role','id','shortname','manager');
 
 $joinlist = array(
-    'competency' => "LEFT JOIN {$CFG->prefix}competency competency ON base.competencyid = competency.id",
-    'scale_values' => "LEFT JOIN {$CFG->prefix}competency_scale_values scale_values ON scale_values.id = base.proficiency",
+    'competency' => "LEFT JOIN {$CFG->prefix}comp competency ON base.competencyid = competency.id",
+    'scale_values' => "LEFT JOIN {$CFG->prefix}comp_scale_values scale_values ON scale_values.id = base.proficiency",
     'user' => "LEFT JOIN {$CFG->prefix}user u ON base.userid = u.id",
-    'position_assignment' => "LEFT JOIN {$CFG->prefix}position_assignment pa ON base.userid = pa.userid",
+    'position_assignment' => "LEFT JOIN {$CFG->prefix}pos_assignment pa ON base.userid = pa.userid",
     'manager_role_assignment' => "LEFT JOIN {$CFG->prefix}role_assignments mra ON ( pa.reportstoid = mra.id AND mra.roleid = $managerroleid)",
     'manager' => "LEFT JOIN {$CFG->prefix}user manager ON manager.id = mra.userid",
-    'organisation' => "LEFT JOIN {$CFG->prefix}organisation organisation ON organisation.id = pa.organisationid",
-    'position' => "LEFT JOIN {$CFG->prefix}position position ON position.id = pa.positionid",
-    'completion_organisation' => "LEFT JOIN {$CFG->prefix}organisation completion_organisation ON base.organisationid = completion_organisation.id",
-    'completion_position' => "LEFT JOIN {$CFG->prefix}position completion_position ON base.positionid = completion_position.id",
+    'organisation' => "LEFT JOIN {$CFG->prefix}org organisation ON organisation.id = pa.organisationid",
+    'position' => "LEFT JOIN {$CFG->prefix}pos position ON position.id = pa.positionid",
+    'completion_organisation' => "LEFT JOIN {$CFG->prefix}org completion_organisation ON base.organisationid = completion_organisation.id",
+    'completion_position' => "LEFT JOIN {$CFG->prefix}pos completion_position ON base.positionid = completion_position.id",
     'assessor' => "LEFT JOIN {$CFG->prefix}user assessor ON assessor.id = base.assessorid",
 );
 

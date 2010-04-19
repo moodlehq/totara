@@ -1,7 +1,7 @@
 <?php
 @raise_memory_limit('392M');
 @ini_set('max_execution_time','3000');
-print "Loading data for table 'competency'<br>";
+print "Loading data for table 'comp'<br>";
 $items = array(array('id' => '1','fullname' => 'Break and bone mutton carcasses','shortname' => 'BREA1','description' => '','idnumber' => '16449 (V2E)','frameworkid' => '1','path' => '/1','depthid' => '1','parentid' => '0','sortorder' => '1','visible' => '1','aggregationmethod' => '1','scaleid' => '1','proficiencyexpected' => '1','evidencecount' => '0','timecreated' => '0','timemodified' => '0','usermodified' => '0',),
 array('id' => '2','fullname' => 'Prepare a case for obtaining finance to establish, extend, or diversify an agribusiness','shortname' => 'PREP2','description' => '','idnumber' => '11853 (V4E)','frameworkid' => '1','path' => '/2','depthid' => '1','parentid' => '0','sortorder' => '2','visible' => '1','aggregationmethod' => '1','scaleid' => '1','proficiencyexpected' => '1','evidencecount' => '0','timecreated' => '0','timemodified' => '0','usermodified' => '0',),
 array('id' => '3','fullname' => 'Communicate within an organisational context','shortname' => 'COMM3','description' => '','idnumber' => '09680 (V2E)','frameworkid' => '1','path' => '/3','depthid' => '1','parentid' => '0','sortorder' => '3','visible' => '1','aggregationmethod' => '1','scaleid' => '1','proficiencyexpected' => '1','evidencecount' => '0','timecreated' => '0','timemodified' => '0','usermodified' => '0',),
@@ -4300,21 +4300,21 @@ array('id' => '4294','fullname' => 'Can project voice adequately','shortname' =>
 print "\n";print "Inserting ".count($items)." records<br />\n";
 $i=1;
 foreach($items as $item) {
-    if(get_field('competency', 'id', 'id', $item['id'])) {
+    if(get_field('comp', 'id', 'id', $item['id'])) {
         print "Record with id of {$item['id']} already exists!<br>\n";
         continue;
     }
-    $newid = insert_record('competency',(object) $item);
+    $newid = insert_record('comp',(object) $item);
     if($newid != $item['id']) {
-        if(!set_field('competency', 'id', $item['id'], 'id', $newid)) {
+        if(!set_field('comp', 'id', $item['id'], 'id', $newid)) {
             print "Could not change id from $newid to {$item['id']}<br>\n";
             continue;
         }
     }
     // record the highest id in the table
-    $maxid = get_field_sql('SELECT '.sql_max('id').' FROM '.$CFG->prefix.'competency');
+    $maxid = get_field_sql('SELECT '.sql_max('id').' FROM '.$CFG->prefix.'comp');
     // make sure sequence is higher than highest ID
-    bump_sequence('competency', $CFG->prefix, $maxid);
+    bump_sequence('comp', $CFG->prefix, $maxid);
     // print output
     // 1 dot per 10 inserts
     if($i%10==0) {

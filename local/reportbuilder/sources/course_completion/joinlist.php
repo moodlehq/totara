@@ -16,13 +16,13 @@ $joinlist = array(
     'course' => "LEFT JOIN {$CFG->prefix}course c ON base.course = c.id",
     'course_category' => "LEFT JOIN {$CFG->prefix}course_categories cat ON cat.id = c.category",
     'user' => "LEFT JOIN {$CFG->prefix}user u ON base.userid = u.id",
-    'position_assignment' => "LEFT JOIN {$CFG->prefix}position_assignment pa ON base.userid = pa.userid",
+    'position_assignment' => "LEFT JOIN {$CFG->prefix}pos_assignment pa ON base.userid = pa.userid",
     'manager_role_assignment' => "LEFT JOIN {$CFG->prefix}role_assignments mra ON ( pa.reportstoid = mra.id AND mra.roleid = $managerroleid)",
     'manager' => "LEFT JOIN {$CFG->prefix}user manager ON manager.id = mra.userid",
-    'organisation' => "LEFT JOIN {$CFG->prefix}organisation organisation ON organisation.id = pa.organisationid",
-    'position' => "LEFT JOIN {$CFG->prefix}position position ON position.id = pa.positionid",
-    'completion_organisation' => "LEFT JOIN {$CFG->prefix}organisation completion_organisation ON base.organisationid = completion_organisation.id",
-    'completion_position' => "LEFT JOIN {$CFG->prefix}position completion_position ON base.positionid = completion_position.id",
+    'organisation' => "LEFT JOIN {$CFG->prefix}org organisation ON organisation.id = pa.organisationid",
+    'position' => "LEFT JOIN {$CFG->prefix}pos position ON position.id = pa.positionid",
+    'completion_organisation' => "LEFT JOIN {$CFG->prefix}org completion_organisation ON base.organisationid = completion_organisation.id",
+    'completion_position' => "LEFT JOIN {$CFG->prefix}pos completion_position ON base.positionid = completion_position.id",
 );
 
 // add all user custom fields to join list

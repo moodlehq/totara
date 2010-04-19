@@ -1,7 +1,7 @@
 <?php
 @raise_memory_limit('392M');
 @ini_set('max_execution_time','3000');
-print "Loading data for table 'competency_depth'<br>";
+print "Loading data for table 'comp_depth'<br>";
 $items = array(array('id' => '1','fullname' => 'Unit Standard','shortname' => 'Unit','description' => '','depthlevel' => '1','frameworkid' => '1','timecreated' => '1263433929','timemodified' => '1263433929','usermodified' => '2',),
 array('id' => '2','fullname' => 'Qualification','shortname' => 'Qual','description' => '','depthlevel' => '1','frameworkid' => '2','timecreated' => '1263433929','timemodified' => '1263433929','usermodified' => '2',),
 array('id' => '3','fullname' => 'Course based competencies','shortname' => 'Course based','depthlevel' => '1','frameworkid' => '3','timecreated' => '1265963591','timemodified' => '1265963591','usermodified' => '0',),
@@ -12,21 +12,21 @@ array('id' => '6','fullname' => 'Competencies','shortname' => 'Competencies','de
 print "\n";print "Inserting ".count($items)." records<br />\n";
 $i=1;
 foreach($items as $item) {
-    if(get_field('competency_depth', 'id', 'id', $item['id'])) {
+    if(get_field('comp_depth', 'id', 'id', $item['id'])) {
         print "Record with id of {$item['id']} already exists!<br>\n";
         continue;
     }
-    $newid = insert_record('competency_depth',(object) $item);
+    $newid = insert_record('comp_depth',(object) $item);
     if($newid != $item['id']) {
-        if(!set_field('competency_depth', 'id', $item['id'], 'id', $newid)) {
+        if(!set_field('comp_depth', 'id', $item['id'], 'id', $newid)) {
             print "Could not change id from $newid to {$item['id']}<br>\n";
             continue;
         }
     }
     // record the highest id in the table
-    $maxid = get_field_sql('SELECT '.sql_max('id').' FROM '.$CFG->prefix.'competency_depth');
+    $maxid = get_field_sql('SELECT '.sql_max('id').' FROM '.$CFG->prefix.'comp_depth');
     // make sure sequence is higher than highest ID
-    bump_sequence('competency_depth', $CFG->prefix, $maxid);
+    bump_sequence('comp_depth', $CFG->prefix, $maxid);
     // print output
     // 1 dot per 10 inserts
     if($i%10==0) {
