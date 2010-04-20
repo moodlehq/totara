@@ -111,14 +111,14 @@ $rowcount=0;
                 <input type="submit" id="show-idpcompetencytemplate-dialog" value="<?php echo get_string('addfromframeworks', 'idp') ?>" />
 <?php
                 echo '<noscript><a href="'.$CFG->wwwroot.'/hierarchy/type/competency/idp/find-template.php?id='.$revision->id .
-                    '&amp;nojs=1&amp;returnurl='.qualified_me().'&amp;s='.sesskey().'" class="noscript-button">'.get_string('addfromframeworks','idp').'</a></noscript>';
+                    '&amp;nojs=1&amp;returnurl='.urlencode(qualified_me()).'&amp;s='.sesskey().'" class="noscript-button">'.get_string('addfromframeworks','idp').'</a></noscript>';
             }
 
             // Only display add from position button if the user has positions assigned
             if ($haspositions && $addpos) {
                 echo '<input type="submit" id="show-idppositioncompetencytemplate-dialog" value="'.get_string('addfrompositions', 'idp').'" />';
                 echo '<noscript><a href="'.$CFG->wwwroot.'/hierarchy/type/competency/idp/find-position-template.php?id='.$revision->id .
-                    '&amp;nojs=1&amp;returnurl='.qualified_me().'&amp;s='.sesskey().'" class="noscript-button">'.get_string('addfrompositions','idp').'</a></noscript>';
+                    '&amp;nojs=1&amp;returnurl='.urlencode(qualified_me()).'&amp;s='.sesskey().'" class="noscript-button">'.get_string('addfrompositions','idp').'</a></noscript>';
             }
         ?>
                 </div>

@@ -18,6 +18,11 @@ $rowcount = required_param('rowcount', PARAM_SEQUENCE);
 // Courses to add
 $add = required_param('add', PARAM_SEQUENCE);
 
+// No javascript parameters
+$nojs = optional_param('nojs', false, PARAM_BOOL);
+$returnurl = optional_param('returnurl', '', PARAM_TEXT);
+$s = optional_param('s', '', PARAM_TEXT);
+
 // Check permissions
 $sitecontext = get_context_instance(CONTEXT_SYSTEM);
 $plan = get_plan_for_revision($revisionid);
@@ -78,25 +83,36 @@ foreach ($add as $addition) {
     } else {
         commit_sql();
 
-        // Return html
-        echo '<tr class=r'.$rowcount.'>';
-        echo "<td><a href=\"{$CFG->wwwroot}/course/category.php?id={$course->category}\">".format_string($category->name)."</a></td>";
-        echo "<td><a href=\"{$CFG->wwwroot}/course/view.php?id={$course->id}\">".format_string($course->fullname)."</a></td>";
-        echo '<td></td>';
-        echo '<td width="25%"><input size="10" maxlength="10" type="text" name="courseduedate['.$course->id.']" id="courseduedate'.$course->id.'"/></td>';
+        if(!$nojs) {
+            // Return html
+            echo '<tr class=r'.$rowcount.'>';
+            echo "<td><a href=\"{$CFG->wwwroot}/course/category.php?id={$course->category}\">".format_string($category->name)."</a></td>";
+            echo "<td><a href=\"{$CFG->wwwroot}/course/view.php?id={$course->id}\">".format_string($course->fullname)."</a></td>";
+            echo '<td></td>';
+            echo '<td width="25%"><input size="10" maxlength="10" type="text" name="courseduedate['.$course->id.']" id="courseduedate'.$course->id.'"/></td>';
 
-        echo "<td class=\"options\">";
+            echo "<td class=\"options\">";
 
-        echo "<a href=\"{$CFG->wwwroot}/hierarchy/type/course/idp/remove.php?id={$course->id}&revision={$revisionid}\" title=\"$str_remove\">".
-             "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_remove\" /></a>";
+            echo "<a href=\"{$CFG->wwwroot}/hierarchy/type/course/idp/remove.php?id={$course->id}&revision={$revisionid}\" title=\"$str_remove\">".
+                 "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_remove\" /></a>";
 
-        echo "</td>";
+            echo "</td>";
 
-        echo '</tr>';
-        echo '<script type="text/javascript"> $(function() { $(\'[id^=courseduedate]\').datepicker( ';
-        echo '{ dateFormat: \'dd/mm/yy\', showOn: \'button\', buttonImage: \'../local/js/images/calendar.gif\',';
-        echo 'buttonImageOnly: true } ); }); </script>'.PHP_EOL;
-        $rowcount = ($rowcount + 1) % 2;
+            echo '</tr>';
+            echo '<script type="text/javascript"> $(function() { $(\'[id^=courseduedate]\').datepicker( ';
+            echo '{ dateFormat: \'dd/mm/yy\', showOn: \'button\', buttonImage: \'../local/js/images/calendar.gif\',';
+            echo 'buttonImageOnly: true } ); }); </script>'.PHP_EOL;
+            $rowcount = ($rowcount + 1) % 2;
+        }
     }
 }
 add_to_log(SITEID, 'idp', 'add IDP courses', "revision.php?id={$plan->id}", $plan->id);
+
+if($nojs) {
+    // redirect for none JS version
+    if($s == sesskey()) {
+        redirect($returnurl);
+    } else {
+        redirect($CFG->wwwroot);
+    }
+}

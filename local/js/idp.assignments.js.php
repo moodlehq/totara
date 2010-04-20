@@ -83,6 +83,8 @@ $(function() {
             url+'add.php?id='+idp_revision_id,
             handler
         );
+        // display the button on page load
+        $('#show-idpcourse-dialog').css('display','inline');
     })();
 
 });

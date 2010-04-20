@@ -100,6 +100,11 @@ $rowcount=0;
             <td>
                 <div class="singlebutton">
                 <input type="submit" id="show-idpcourse-dialog" value="<?php echo get_string('addfromcategories', 'idp') ?>" />
+<?php
+                echo '<noscript><a href="'.$CFG->wwwroot.'/hierarchy/type/course/idp/add.php?id='.$revision->id .
+                    '&amp;nojs=1&amp;returnurl='.urlencode(qualified_me()).'&amp;s='.sesskey().'" class="noscript-button">'.get_string('addfromcategories','idp').'</a></noscript>';
+
+?>
                 </div>
             </td>
         </tr>

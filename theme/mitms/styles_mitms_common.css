@@ -409,6 +409,7 @@ div.mitms-dialog .selected span {
 /* hide lightbox activation buttons */
 /* (displayed using JS if enabled) */
 input#show-idppositioncompetency-dialog,
+input#show-idpcourse-dialog,
 input#show-idpcompetency-dialog,
 input#show-idpcompetencytemplate-dialog,
 input#show-idppositioncompetencytemplate-dialog {
