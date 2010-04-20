@@ -1,4 +1,5 @@
 <?php
+require_once($CFG->dirroot.'/hierarchy/type/position/lib.php');
 
 /**
  * Constants for defining JS to load
@@ -333,13 +334,15 @@ function build_nojs_positionpicker($url, $urlparams) {
     // TODO add other html to this function (see picker above)
     $murl = new moodle_url($url, $urlparams);
     $html = '';
-    if($positions = get_records('pos_assignment','userid',$USER->id)) {
+    $positionhierarchy = new position();
+    $positions = $positionhierarchy->get_user_positions($USER);
+    if ($positions) {
         $html .= '<div id="nojsinstructions"><p>'.PHP_EOL;
         $html .= get_string('chooseposition','position');
         $html .= '</p></div>'.PHP_EOL;
         $html .= '<div class="nojsselect"><ul>'.PHP_EOL;
         foreach($positions as $position) {
-            $fullurl = $murl->out(false, array('frameworkid' => $position->positionid));
+            $fullurl = $murl->out(false, array('frameworkid' => $position->id));
             $html .= '<li><a href="'.$fullurl.'">'.$position->fullname.'</a>';
             switch ($position->type) {
             case 1:
