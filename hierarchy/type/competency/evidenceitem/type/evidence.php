@@ -41,7 +41,7 @@ class competency_evidence_item_evidence extends data_object {
      * Database table
      * @var string
      */
-    public $table = 'competency_evidence_items_evidence';
+    public $table = 'comp_evidence_items_evidence';
 
     /**
      * Database required fields

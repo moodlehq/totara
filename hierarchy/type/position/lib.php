@@ -238,7 +238,7 @@ class position_assignment extends data_object {
      * DB Table
      * @var string $table
      */
-    public $table = 'position_assignment';
+    public $table = 'pos_assignment';
 
     /**
      * Array of required table fields, must start with 'id'.
