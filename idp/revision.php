@@ -125,17 +125,18 @@ foreach ($lt as $column) {
                     print '<h1>'.get_string('revisionviewtitle', 'idp', $plan->name).'</h1>';
                 }
 
+                $formstartstr = '';
                 if ( $can_submit && $can_edit ){
-                    echo '<form method="get" action="submit.php">';
+                    $formstartstr = '<form method="get" action="submit.php">';
                 }
                 if ($can_approve) {
-                    print_revision_manager($currevision, $plan, array(
+                    print_revision_manager($currevision, $plan, $formstartstr, array(
                         'can_submit' => $can_submit,
                         'can_edit'   => $can_edit,
                         'can_approve' => $can_approve,
                     ));
                 } else {
-                    print_revision_trainee($currevision, $plan, array(
+                    print_revision_trainee($currevision, $plan, $formstartstr, array(
                         'can_edit'  => $can_edit,
                         'can_submit' => $can_submit,
                     ));

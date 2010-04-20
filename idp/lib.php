@@ -432,7 +432,7 @@ function print_revision_details($revision, $can_submit, $can_approve=false, $pdf
         if ($can_submit) {
             $nextactions .= '<a href="'.$CFG->wwwroot.'/idp/submit.php?submitbutton=1&rev='.$revision->id.'">'.get_string('submitplan', 'idp').'</a> - ';
         }
-        $nextactions .= '<a style="cursor: pointer;" onclick="toggle_addcomments(); return 0;">' . get_string('commentonplan', 'idp') . '</a>';
+        $nextactions .= '<a href="#" id="toggle_addcomments">' . get_string('commentonplan', 'idp') . '</a>';
     }
     elseif ('notsubmitted' == $revision->status) {
         if ($can_submit) {
@@ -492,44 +492,45 @@ function print_revision_list($planid, $currevisionid) {
 }
 
 /**
- * Print the latest comment as well as links to all other comments
+ * Print a list of the comments for a revision
+ * @global object $CFG
+ * @param int $revision
  */
-function revision_comments($revision) {
+function print_comment_list($revision) {
     global $CFG;
 
     $comments = get_records('idp_revision_comment', 'revision', $revision->id, 'ctime DESC');
     $out = '';
-
-    $out .= '<div id="commentscontainer">';
-
     // Print list of all comments with their contents
     if ($comments and count($comments) > 0) {
 
-        //print '<h2>'.get_string('allcomments','idp').'</h2>';
-        $out .= '<div>'.collapsing_tree_node('commentslabel', 'comments', get_string('allcomments', 'idp'), 0, '', true).'</div>';
+        $out .= "<ul id=\"commentscontainer\">\n";
+        $out .= "  <li>".get_string('allcommentsonthisrevision','idp')."\n";
+        $out .= "    <ul>\n";
 
-        $out .= '<div id="comments" style="display:block"><blockquote>';
-        $firsttime = true;
         foreach ($comments as $comment) {
-            $authorlink = format_user_link($comment->author, '', 'You');
+            $out .= "      <li>";
+            $authorlink = format_user_link($comment->author, 'You');
             $datestring = userdate($comment->ctime);
 
-            if (!$firsttime) {
-                $out .= '<hr />';
-            } else {
-                $firsttime = false;
-            }
-
-            $out .= '<p><b>'.get_string('usersaid', 'idp', $authorlink);
+            $out .= '<b>'.get_string('usersaid', 'idp', $authorlink);
             $out .= ' ('.get_string('ondate', 'idp',$datestring).'):';
             // Ensure line-breaks are represented.
-            $comment->contents = preg_replace('/[\r\n]/', '<br />', $comment->contents);
-            $out .= '</b><br />'.s($comment->contents).'</p>';
+            $contents = s($comment->contents);
+            $contents = preg_replace('/\n/', '<br />', $contents);
+            $out .= '</b><br />'.$contents.'<br /><br />';
+            $out .= "</li>\n";
         }
-        $out .= "</blockquote></div>\n";
+        $out .= "    </ul>\n";
+        $out .= "  </li>\n";
+        $out .= "</ul>\n";
+        $out .= "<script type=\"text/javascript\">\n";
+        $out .= "  \$(\"#commentscontainer\").treeview({\n";
+        $out .= "    collapsed: true\n";
+        $out .= "  });\n";
+        $out .= "</script>\n";
     }
-    $out .= "</div>\n";
-    return $out;
+    print $out;
 }
 
 /**
@@ -749,18 +750,38 @@ function print_freeform_textbox($revisionid, $listtype, $return=false) {
 }
 
 /**
- * Print a textbox which allows trainees to add comment
+ * Prints a textbox to allow the user to comment on a revision of an IDP
+ * @global object $CFG
+ * @param int $revisionid
  */
 function print_comment_textbox($revisionid) {
+    global $CFG;
 
-    print '<div id="commentsadd" style="display:none">';
+    print '<form method="get" id="commentsadd-form" action="'.$CFG->wwwroot.'/idp/revision-addcomment.php">';
+    print '<input type="hidden" name="rev" value="'.$revisionid.'"/>';
+    print '<div id="commentsadd">';
     print '<p>'.get_string('addcomment', 'idp').'&nbsp;';
 
-    print '<textarea rows="5" cols="60" style="vertical-align:top; display: block;" id="commentfield"></textarea>';
+    print '<textarea name="comment" id="commentfield" rows="5" cols="60" style="vertical-align:top; display: block;"></textarea>';
 
-    print '<input type="button" value="'.get_string('additembutton', 'idp').'"';
-    print " onclick=\"add_comment($revisionid)\" /></p>";
+    print '<input type="submit" value="'.get_string('additembutton', 'idp').'" /></p>';
     print "</div>\n";
+    print '</form>';
+    // todo: add some code to do this comment adding by Ajax
+    print <<<HTML
+        <script type="text/javascript">
+            $("#commentsadd").css( "display", "none" );
+            $("#toggle_addcomments").click(function(){
+                var display = $("#commentsadd").css( "display" );
+                if ( display == "none" ){
+                    $("#commentsadd").css( "display", "block" );
+                } else {
+                    $("#commentsadd").css( "display", "none" );
+                }
+                return false;
+            });
+        </script>
+HTML;
 }
 
 /**
@@ -960,18 +981,24 @@ function delete_list_item($revisionid, $itemid) {
 }
 
 /**
- * Add comments to the learning plan
+ * Add a comment to a plan
+ *
+ * @global object $USER
+ * @global object $CFG
+ * @param int $revisionid
+ * @param string $comment
+ * @return boolean success/failure
  */
-function add_comment($revisionid, $itemtext) {
+function add_comment($revisionid, $comment) {
     global $USER, $CFG;
 
-    if (empty($itemtext)) {
+    if (empty($comment)) {
         return true; // Ignore empty strings
     }
 
     $record = new stdclass();
     $record->revision = $revisionid;
-    $record->contents = $itemtext;
+    $record->contents = $comment;
     $record->author = $USER->id;
     $record->ctime = time();
 
@@ -1001,7 +1028,7 @@ function add_comment($revisionid, $itemtext) {
         idp_email_notification($type, $revision,
             array(
                 $namekey => $fullname,
-                'comment' => stripslashes($itemtext),
+                'comment' => stripslashes($comment),
                 'planname' => $planname,
             )
         );
@@ -1924,7 +1951,7 @@ function print_freeform_list($revisionid, $listtype, $can_edit = false, $return 
 }
 
 
-function print_revision_manager($revision, $plan, $options=array()) {
+function print_revision_manager($revision, $plan, $formstartstr, $options=array()) {
     global $USER, $CFG;
 
     // merge in options array, in case of unset options, defaults are provided.
@@ -1943,7 +1970,7 @@ function print_revision_manager($revision, $plan, $options=array()) {
 
     print_revision_details($revision, $options['can_submit'], $options['can_approve'], false, true);
     print_revision_list($plan->id, $revision->id);
-    print revision_comments($revision);
+    print_comment_list($revision);
     print_comment_textbox($revision->id);
 
     // Get user's positions
@@ -1951,6 +1978,8 @@ function print_revision_manager($revision, $plan, $options=array()) {
 
     $position = new position();
     $haspositions = (bool) $position->get_user_positions($user);
+
+    echo "{$formstartstr}\n";
 
     $competencies = idp_get_user_competencies($plan->userid, $revision->id);
     print_idp_competencies_view($revision, $competencies, $options['can_edit'], $haspositions);
@@ -1968,7 +1997,7 @@ function print_revision_manager($revision, $plan, $options=array()) {
     print_revision_extracomment($revision);
 }
 
-function print_revision_trainee($revision, $plan, $options=array()) {
+function print_revision_trainee($revision, $plan, $formstartstr, $options=array()) {
     global $USER, $CFG;
     // merge in options array, in case of unset options, defaults are provided.
     $options = array_merge(array(
@@ -1989,13 +2018,15 @@ function print_revision_trainee($revision, $plan, $options=array()) {
     if ($options['can_edit']) {
         print_comment_textbox($revision->id);
     }
-    print revision_comments($revision);
+    print_comment_list($revision);
 
     // Get user's positions
     $user = (object) array('id' => $plan->userid);
 
     $position = new position();
     $haspositions = (bool) $position->get_user_positions($user);
+
+    echo "{$formstartstr}\n";
 
     $competencies = idp_get_user_competencies($plan->userid, $revision->id);
     print_idp_competencies_view($revision, $competencies, $options['can_edit'], $haspositions);
@@ -2098,7 +2129,7 @@ function print_revision_pdf($revision, $plan, $options=array()) {
 
     print_revision_details($revision, $options['can_submit'], false, true, false);
     if ($options['show_comments']) {
-        print revision_comments($revision);
+        print_comment_list($revision);
     }
 
     $competencies = idp_get_user_competencies($plan->userid, $revision->id);
@@ -2695,12 +2726,12 @@ function usersearch_form($search='') {
 function format_user_link($userid, $youstring='Yourself') {
     global $CFG, $USER;
 
-    $user = get_record('user', 'id', $userid);
-    $link = $CFG->wwwroot."/user/view.php?id=$userid";
-
-    if ($user->id == $USER->id and $youstring !== false) {
+    if ($userid == $USER->id and $youstring !== false) {
         return $youstring;
     }
+
+    $user = get_record('user', 'id', $userid);
+    $link = $CFG->wwwroot."/user/view.php?id=$userid";
 
     return "<a href=\"$link\">".fullname($user).'</a>';
 }
@@ -2911,7 +2942,7 @@ function print_revision_completed($revision, $plan) {
 
     print_revision_details($revision, false, false, false, false);
     print_revision_list($plan->id, $revision->id);
-    print revision_comments($revision);
+    print_comment_list($revision);
     print_comment_textbox($revision->id);
 
     print_heading(get_string('competencies', 'competency'));

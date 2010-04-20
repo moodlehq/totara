@@ -114,6 +114,7 @@ $string['additembutton'] = 'Add';
 $string['additionalobjectives'] = 'Add additional Learning Objectives';
 $string['adminnotifications'] = 'IDP email notifications';
 $string['allcomments'] = 'All comments:';
+$string['allcommentsonthisrevision'] = 'Comments on this revision:';
 $string['allrevisions'] = 'All revisions:';
 $string['approvalerror'] = 'Cannot approve IDP';
 $string['approved'] = 'Approved';
