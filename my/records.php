@@ -133,7 +133,7 @@
                 u.email as manageremail,
                 u.firstname as managerfirstname,
                 u.lastname as managerlastname
-            FROM {$CFG->prefix}position_assignment pa
+            FROM {$CFG->prefix}pos_assignment pa
             JOIN {$CFG->prefix}role_assignments ra
               ON ra.id=pa.reportstoid
             JOIN {$CFG->prefix}user u
@@ -162,7 +162,7 @@
     if (!empty($positionassignment->positionid)) {
         $positions = mitms_get_user_hierarchy_lineage($positionassignment->positionid, 'position');
     }
-    $positionids = get_records('position', '', '', '', 'id,fullname');
+    $positionids = get_records('pos', '', '', '', 'id,fullname');
 
     $columns = array(
         array(
