@@ -25,13 +25,13 @@ class user_position_assignment_form extends moodleform {
         // Get position title
         $position_title = '';
         if ($pa->positionid) {
-            $position_title = get_field('position', 'fullname', 'id', $pa->positionid);
+            $position_title = get_field('pos', 'fullname', 'id', $pa->positionid);
         }
 
         // Get organisation title
         $organisation_title = '';
         if ($pa->organisationid) {
-            $organisation_title = get_field('organisation', 'fullname', 'id', $pa->organisationid);
+            $organisation_title = get_field('org', 'fullname', 'id', $pa->organisationid);
         }
 
         // Get manager title
