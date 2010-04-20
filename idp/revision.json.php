@@ -1,4 +1,7 @@
 <?php
+// This page is obsolete. Keeping it around for now since the code may be useful,
+// but a user shouldn't be able to execute it.
+die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
 
 require_once('../config.php');
 require_once('lib.php');
