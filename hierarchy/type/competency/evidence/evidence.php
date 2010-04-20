@@ -71,7 +71,7 @@ class competency_evidence extends data_object {
      * @return object data_object instance or false if none found.
      */
     public static function fetch($params) {
-        return self::fetch_helper('competency_evidence', __CLASS__, $params);
+        return self::fetch_helper('comp_evidence', __CLASS__, $params);
     }
 
     /**
