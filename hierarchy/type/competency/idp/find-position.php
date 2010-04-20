@@ -74,6 +74,10 @@ if (!isset($cur_position)) {
 
 // Load competencies to display
 $competencies = $position->get_assigned_competencies($cur_position);
+$assignedcomps = get_records('idp_revision_competency', 'revision', $revisionid, '', 'competency');
+if( !is_array($assignedcomps) ){
+    $assignedcomps = array();
+};
 
 ///
 /// Display page
@@ -106,7 +110,9 @@ if(!$nojs) {
 
 echo build_treeview(
     $competencies,
-    get_string('nocompetenciesassignedtoposition', 'position')
+    get_string('nocompetenciesassignedtoposition', 'position'),
+    null,
+    $assignedcomps
 );
 
 ?>
@@ -145,7 +151,9 @@ echo build_treeview(
                 'frameworkid' => $positionid,
                 'id' => $revisionid,
             ),
-            $CFG->wwwroot.'/hierarchy/type/competency/idp/find-position.php?'.$urlparams
+            $CFG->wwwroot.'/hierarchy/type/competency/idp/find-position.php?'.$urlparams,
+            array(),
+            $assignedcomps
         );
         echo '</div>';
     }
