@@ -27,7 +27,7 @@ $s = optional_param('s', '', PARAM_TEXT);
 admin_externalpage_setup('competencymanage', '', array(), '', $CFG->wwwroot.'/competency/edit.php');
 
 $sitecontext = get_context_instance(CONTEXT_SYSTEM);
-require_capability('moodle/local:idpeditownplan', $sitecontext);
+require_capability('moodle/local:updatecompetency', $sitecontext);
 
 // Setup hierarchy object
 $hierarchy = new competency();
