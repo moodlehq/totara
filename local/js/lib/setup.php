@@ -306,7 +306,7 @@ function build_nojs_breadcrumbs($hierarchy, $parentid, $url, $urlparams, $allfws
  */
 function build_nojs_frameworkpicker($hierarchy, $url, $urlparams) {
     $murl = new moodle_url($url, $urlparams);
-    if($fws = get_records($hierarchy->prefix.'_framework')) {
+    if($fws = get_records($hierarchy->shortprefix.'_framework')) {
         echo '<div id="nojsinstructions"><p>'.PHP_EOL;
         echo get_string('pickaframework','hierarchy');
         echo '</p></div>'.PHP_EOL;
