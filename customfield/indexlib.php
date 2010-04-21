@@ -130,22 +130,23 @@ function customfield_delete_category($id, $depthid=0, $tableprefix) {
     /// Retrieve the category
     if (!$category = get_record($tableprefix.'_info_category', 'id', $id)) {
         error('Incorrect category id');
-    }   
+    }
 
     // get other categories at same depth level
     // get sortorder as first field so array keys will be sortorder
     if (!$categories = get_records($tableprefix.'_info_category', 'depthid', $category->depthid, 'sortorder ASC','sortorder,id')) {
         error('Error no categories!?!?');
-    }   
+    }
 
-    unset($categories[$category->id]);
+    $fieldcount = count_records($tableprefix.'_info_field', 'categoryid', $id);
+    if ( $fieldcount > 0 && count($categories) == 1 ){
+        error('Can\'t delete the last custom field category if it contains at least one field.');
+    }
 
-    if (!count($categories)) {
-        return; //we can not delete the last category
-    }   
+    unset($categories[$category->sortorder]);
 
     /// Does the category contain any fields
-    if (count_records($tableprefix.'_info_field', 'categoryid', $category->id)) {
+    if ( $fieldcount ) {
         if (array_key_exists($category->sortorder-1, $categories)) {
             $newcategory = $categories[$category->sortorder-1];
         } else if (array_key_exists($category->sortorder+1, $categories)) {
@@ -169,7 +170,7 @@ function customfield_delete_category($id, $depthid=0, $tableprefix) {
 
     /// Finally we get to delete the category
     if (!delete_records($tableprefix.'_info_category', 'id', $category->id)) {
-        error('Error while deliting category');
+        error('Error while deleting category');
     }   
     customfield_reorder_categories($depthid, $tableprefix);
     return true;
