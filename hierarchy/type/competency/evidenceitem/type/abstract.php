@@ -107,7 +107,7 @@ abstract class competency_evidence_type extends data_object {
      * Add this evidence to a competency
      *
      * @param   $competency Competency object
-     * @return  void
+     * @return  int The ID of the newly created evidence record
      */
     public function add($competency) {
         global $USER;
@@ -121,7 +121,8 @@ abstract class competency_evidence_type extends data_object {
         $this->usermodified = $USER->id;
 
         // Insert into database
-        if (!parent::insert()) {
+        $newid = parent::insert();
+        if (!$newid) {
             error('Could not insert new evidence item');
         }
 
@@ -133,6 +134,7 @@ abstract class competency_evidence_type extends data_object {
         if (!update_record('comp', $competency)) {
             error('Could not update competency evidence count');
         }
+        return $newid;
     }
 
     /**

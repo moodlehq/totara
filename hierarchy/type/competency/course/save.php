@@ -17,6 +17,8 @@ $id = required_param('competency', PARAM_INT);
 $type = required_param('type', PARAM_TEXT);
 // Evidence instance id
 $instance = required_param('instance', PARAM_INT);
+// Id of the course to return to
+$courseid = optional_param('course', 0, PARAM_INT);
 
 // No javascript parameters
 $nojs = optional_param('nojs', false, PARAM_BOOL);
@@ -59,7 +61,7 @@ $data->itemtype = $type;
 $evidence = competency_evidence_type::factory($data);
 $evidence->iteminstance = $instance;
 
-$evidence->add($competency);
+$newevidenceid = $evidence->add($competency);
 
 if($nojs) {
     // redirect back to original page for none JS version
@@ -83,6 +85,15 @@ if($nojs) {
         echo ' - '.$evidence->get_name();
     }
 
+    echo '</td>';
+    echo '<td align="center">';
+    $str_remove = get_string('remove');
+    echo "<a href=\"{$CFG->wwwroot}/hierarchy/type/competency/evidenceitem/remove.php?id={$newevidenceid}";
+    if ( $courseid ){
+        echo "&course={$courseid}";
+    }
+    echo "\" title=\"$str_remove\">".
+         "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"{$str_remove}\" /></a>";
     echo '</td>';
     echo '</tr>';
 
