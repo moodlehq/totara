@@ -47,13 +47,14 @@ if ($subtype !== null) {
 }
 
 $sitecontext = get_context_instance(CONTEXT_SYSTEM);
-require_capability('moodle/local:view'.$type, $sitecontext);
+require_capability('moodle/local:update'.$type.'customfield', $sitecontext);
 
 $navigation = build_navigation($navlinks);
 
 // check if any actions need to be performed
 switch ($action) {
     case 'movecategory':
+        require_capability('moodle/local:update'.$type.'customfield', $sitecontext);
         $id  = required_param('id', PARAM_INT);
         $dir = required_param('dir', PARAM_ALPHA);
 
@@ -63,6 +64,7 @@ switch ($action) {
         redirect($redirect);
         break;
    case 'movefield':
+        require_capability('moodle/local:update'.$type.'customfield', $sitecontext);
         $id  = required_param('id', PARAM_INT);
         $dir = required_param('dir', PARAM_ALPHA);
 
@@ -72,6 +74,7 @@ switch ($action) {
         redirect($redirect);
         break;
     case 'deletecategory':
+        require_capability('moodle/local:delete'.$type.'customfield', $sitecontext);
         $id      = required_param('id', PARAM_INT);
         $confirm = optional_param('confirm', 0, PARAM_BOOL);
 
@@ -90,6 +93,7 @@ switch ($action) {
         die;
         break;
     case 'deletefield':
+        require_capability('moodle/local:delete'.$type.'customfield', $sitecontext);
         $id      = required_param('id', PARAM_INT);
         $confirm = optional_param('confirm', 0, PARAM_BOOL);
 
@@ -108,6 +112,7 @@ switch ($action) {
         die;
         break;
     case 'editfield':
+        require_capability('moodle/local:update'.$type.'customfield', $sitecontext);
         $id       = optional_param('id', 0, PARAM_INT);
         $datatype = optional_param('datatype', '', PARAM_ALPHA);
 
@@ -115,6 +120,7 @@ switch ($action) {
         die;
         break;
     case 'editcategory':
+        require_capability('moodle/local:update'.$type.'customfield', $sitecontext);
         $id = optional_param('id', 0, PARAM_INT);
 
         customfield_edit_category($id, $depthid, $redirect, $tableprefix, $type, $subtype);
