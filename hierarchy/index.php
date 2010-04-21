@@ -132,9 +132,9 @@
     ///
     /// Get database info
     ///
-
     // create the filter form (we need the extrasql snippet for query)
-    $filtering = new hierarchy_filtering($type, null, htmlspecialchars_decode($returnurl));
+    $showfullsearch = ($framework->showitemfullname > 0);
+    $filtering = new hierarchy_filtering($type, null, htmlspecialchars_decode($returnurl), null, $showfullsearch);
     $extrasql = $filtering->get_sql_filter();
     if ($extrasql !== '') {
         $extrasql = ' AND '.$extrasql;

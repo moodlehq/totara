@@ -19,10 +19,10 @@ class hierarchy_filtering {
      * @param array array of visible hierarchy items
      * @param string base url used for submission/return, null if the same of current page
      * @param array extra page parameters
+     * @param boolean $showfullsearch if true show fullname search box by default, otherwise show shortname search box
      */
-    function hierarchy_filtering($type=null, $fieldnames=null, $baseurl=null, $extraparams=null) {
+    function hierarchy_filtering($type=null, $fieldnames=null, $baseurl=null, $extraparams=null, $showfullsearch=true) {
         global $SESSION;
-
         if($type == null) {
             error('hierarchy type must be defined');
         }
@@ -34,7 +34,7 @@ class hierarchy_filtering {
         }
 
         if (empty($fieldnames)) {
-            $fieldnames = array('fullname'=>0, 'shortname'=>1, 'idnumber'=>1, 'description'=>1, 'custom'=>1);
+            $fieldnames = array('fullname'=> (int) !$showfullsearch, 'shortname'=> (int) $showfullsearch, 'idnumber'=>1, 'description'=>1, 'custom'=>1);
         }
 
         $this->_fields  = array();
