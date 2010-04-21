@@ -82,7 +82,7 @@ class user_position_assignment_form extends moodleform {
         }
 
         if($nojs) {
-            $allpositions = get_records_menu('position','','','frameworkid,sortorder','id,fullname');
+            $allpositions = get_records_menu('pos','','','frameworkid,sortorder','id,fullname');
             $mform->addElement('select','positionid', get_string('chooseposition','position'), $allpositions);
         } else {
             $mform->addElement('static', 'positionselector', get_string('position', 'position'),
@@ -98,7 +98,7 @@ class user_position_assignment_form extends moodleform {
         }
         if (!$aspirational) {
             if($nojs) {
-                $allorgs = get_records_menu('organisation','','','frameworkid,sortorder','id,fullname');
+                $allorgs = get_records_menu('org','','','frameworkid,sortorder','id,fullname');
                 $mform->addElement('select','organisationid', get_string('chooseorganisation','organisation'),
                     array(0 => get_string('chooseorganisation','organisation')) + $allorgs);
             } else {
