@@ -4,10 +4,7 @@
 print "Emptytable flag set, deleting all data from block_instance.<br>";
 delete_records('block_instance');
 print "Loading data for table 'block_instance'<br>";
-$items = array(array('id' => '5','blockid' => '21','pageid' => '1','pagetype' => 'course-view','position' => 'l','weight' => '0','visible' => '1','configdata' => '',),
-array('id' => '7','blockid' => '4','pageid' => '1','pagetype' => 'course-view','position' => 'l','weight' => '1','visible' => '1','configdata' => '',),
-array('id' => '9','blockid' => '7','pageid' => '1','pagetype' => 'course-view','position' => 'r','weight' => '1','visible' => '1','configdata' => '',),
-array('id' => '18','blockid' => '28','pageid' => '2','pagetype' => 'course-view','position' => 'l','weight' => '0','visible' => '1','configdata' => 'Tjs=',),
+$items = array(array('id' => '18','blockid' => '28','pageid' => '2','pagetype' => 'course-view','position' => 'l','weight' => '0','visible' => '1','configdata' => 'Tjs=',),
 array('id' => '19','blockid' => '9','pageid' => '2','pagetype' => 'course-view','position' => 'l','weight' => '1','visible' => '1','configdata' => 'Tjs=',),
 array('id' => '20','blockid' => '2','pageid' => '2','pagetype' => 'course-view','position' => 'l','weight' => '2','visible' => '1','configdata' => 'Tjs=',),
 array('id' => '21','blockid' => '7','pageid' => '2','pagetype' => 'course-view','position' => 'r','weight' => '0','visible' => '1','configdata' => 'Tjs=',),
@@ -554,8 +551,6 @@ array('id' => '1535','blockid' => '7','pageid' => '121','pagetype' => 'course-vi
 array('id' => '1536','blockid' => '9','pageid' => '121','pagetype' => 'course-view','position' => 'r','weight' => '1','visible' => '1','configdata' => '',),
 array('id' => '1748','blockid' => '5','pageid' => '72','pagetype' => 'blog-view','position' => 'r','weight' => '0','visible' => '1',),
 array('id' => '1749','blockid' => '6','pageid' => '72','pagetype' => 'blog-view','position' => 'r','weight' => '1','visible' => '1',),
-array('id' => '1759','blockid' => '43','pageid' => '1','pagetype' => 'course-view','position' => 'r','weight' => '3','visible' => '1','configdata' => '',),
-array('id' => '1760','blockid' => '23','pageid' => '1','pagetype' => 'course-view','position' => 'r','weight' => '2','visible' => '1','configdata' => '',),
 array('id' => '1834','blockid' => '5','pageid' => '6869','pagetype' => 'blog-view','position' => 'r','weight' => '0','visible' => '1',),
 array('id' => '1835','blockid' => '6','pageid' => '6869','pagetype' => 'blog-view','position' => 'r','weight' => '1','visible' => '1',),
 array('id' => '1919','blockid' => '5','pageid' => '2596','pagetype' => 'blog-view','position' => 'r','weight' => '0','visible' => '1',),
@@ -590,6 +585,11 @@ array('id' => '2438','blockid' => '10','pageid' => '217','pagetype' => 'course-v
 array('id' => '2439','blockid' => '26','pageid' => '217','pagetype' => 'course-view','position' => 'r','weight' => '0','visible' => '1','configdata' => '',),
 array('id' => '2440','blockid' => '8','pageid' => '217','pagetype' => 'course-view','position' => 'r','weight' => '1','visible' => '1','configdata' => '',),
 array('id' => '2441','blockid' => '30','pageid' => '217','pagetype' => 'course-view','position' => 'r','weight' => '2','visible' => '1','configdata' => '',),
+array('id' => '2442','blockid' => '21','pageid' => '1','pagetype' => 'course-view','position' => 'l','weight' => '1','visible' => '1','configdata' => '',),
+array('id' => '2443','blockid' => '22','pageid' => '1','pagetype' => 'course-view','position' => 'l','weight' => '2','visible' => '1','configdata' => '',),
+array('id' => '2444','blockid' => '4','pageid' => '1','pagetype' => 'course-view','position' => 'l','weight' => '3','visible' => '1','configdata' => '',),
+array('id' => '2445','blockid' => '20','pageid' => '1','pagetype' => 'course-view','position' => 'r','weight' => '1','visible' => '1','configdata' => '',),
+array('id' => '2446','blockid' => '7','pageid' => '1','pagetype' => 'course-view','position' => 'r','weight' => '2','visible' => '1','configdata' => '',),
 );
 print "\n";print "Inserting ".count($items)." records<br />\n";
 $i=1;

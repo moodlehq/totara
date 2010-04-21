@@ -6,6 +6,9 @@ delete_records('block_pinned');
 print "Loading data for table 'block_pinned'<br>";
 $items = array(array('id' => '3','blockid' => '21','pagetype' => 'MITMS','position' => 'l','weight' => '0','visible' => '1','configdata' => '',),
 array('id' => '4','blockid' => '7','pagetype' => 'MITMS','position' => 'r','weight' => '0','visible' => '1','configdata' => '',),
+array('id' => '5','blockid' => '2','pagetype' => 'MITMS','position' => 'l','weight' => '1','visible' => '1','configdata' => '',),
+array('id' => '6','blockid' => '23','pagetype' => 'MITMS','position' => 'r','weight' => '1','visible' => '1','configdata' => '',),
+array('id' => '7','blockid' => '43','pagetype' => 'MITMS','position' => 'r','weight' => '2','visible' => '1','configdata' => '',),
 );
 print "\n";print "Inserting ".count($items)." records<br />\n";
 $i=1;

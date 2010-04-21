@@ -5980,6 +5980,11 @@ array('id' => '14609','contextlevel' => '80','instanceid' => '1124','path' => '/
 array('id' => '14610','contextlevel' => '80','instanceid' => '1125','path' => '/1/3/12125/14610','depth' => '4',),
 array('id' => '14611','contextlevel' => '80','instanceid' => '1126','path' => '/1/3/12125/14611','depth' => '4',),
 array('id' => '14612','contextlevel' => '80','instanceid' => '1127','path' => '/1/3/12125/14612','depth' => '4',),
+array('id' => '14613','contextlevel' => '80','instanceid' => '2442','path' => '/1/2/14613','depth' => '3',),
+array('id' => '14614','contextlevel' => '80','instanceid' => '2443','path' => '/1/2/14614','depth' => '3',),
+array('id' => '14615','contextlevel' => '80','instanceid' => '2444','path' => '/1/2/14615','depth' => '3',),
+array('id' => '14616','contextlevel' => '80','instanceid' => '2445','path' => '/1/2/14616','depth' => '3',),
+array('id' => '14617','contextlevel' => '80','instanceid' => '2446','path' => '/1/2/14617','depth' => '3',),
 );
 print "\n";print "Inserting ".count($items)." records<br />\n";
 $i=1;

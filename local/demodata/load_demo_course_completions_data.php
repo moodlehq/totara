@@ -6873,7 +6873,7 @@ array('id' => '7146','userid' => '2705','course' => '110','organisationid' => '3
 array('id' => '7147','userid' => '2741','course' => '110','organisationid' => '1311','positionid' => '2','timecompleted' => '1222772400','timestarted' => '1222772400','timeenrolled' => '1222772400','reaggregate' => '0',),
 array('id' => '7148','userid' => '2792','course' => '110','organisationid' => '213','positionid' => '2','timecompleted' => '1237978800','timestarted' => '1237978800','timeenrolled' => '1237978800','reaggregate' => '0',),
 array('id' => '7149','userid' => '354','course' => '111','organisationid' => '1412','positionid' => '2','timecompleted' => '1244116800','timestarted' => '1244116800','timeenrolled' => '1244116800','reaggregate' => '0',),
-array('id' => '7150','userid' => '2','course' => '3','rpl' => 'Completed','organisationid' => '1011','positionid' => '6','timecompleted' => '1266021729','timeenrolled' => '0','reaggregate' => '0',),
+array('id' => '7150','userid' => '2','course' => '3','organisationid' => '1011','positionid' => '6','timecompleted' => '1266021729','timeenrolled' => '0','reaggregate' => '0','rpl' => 'Completed',),
 array('id' => '7153','userid' => '700','course' => '3','organisationid' => '26','positionid' => '11','timestarted' => '1266318819','timeenrolled' => '1266318700','reaggregate' => '0',),
 array('id' => '7154','userid' => '700','course' => '58','organisationid' => '26','positionid' => '11','timestarted' => '1266318820','timeenrolled' => '1266318700','reaggregate' => '0',),
 array('id' => '7155','userid' => '2596','course' => '58','organisationid' => '26','positionid' => '11','timestarted' => '1266318820','timeenrolled' => '1266318700','reaggregate' => '0',),
