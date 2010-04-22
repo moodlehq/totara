@@ -56,12 +56,13 @@ class hierarchy_filter_text extends hierarchy_filter_type {
     function check_data($formdata) {
         $field    = $this->_name;
         $operator = $field.'_op';
+        $value = (isset($formdata->$field)) ? $formdata->$field : '';
         if (array_key_exists($operator, $formdata)) {
             if ($formdata->$operator != 5 and $formdata->$field == '') {
                 // no data - no change except for empty filter
                 return false;
             }
-            return array('operator'=>(int)$formdata->$operator, 'value'=>$formdata->$field);
+            return array('operator'=>(int)$formdata->$operator, 'value'=>$value);
         }
 
         return false;
