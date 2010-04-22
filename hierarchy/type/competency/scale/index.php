@@ -38,14 +38,14 @@ $can_delete = has_capability('moodle/local:deletecompetency', $sitecontext);
 
 $stredit = get_string('edit');
 $strdelete = get_string('delete');
-
+$stroptions = get_string('options','local');
 ///
 /// Build page
 ///
 
 if ($scales) {
     $table = new stdClass();
-    $table->head  = array(get_string('scale'), get_string('used'), $strdelete);
+    $table->head  = array(get_string('scale'), get_string('used'), $stroptions);
     $table->size = array('70%', '20%', '10%');
     $table->align = array('left', 'center', 'center');
     $table->width = '90%';
