@@ -107,10 +107,19 @@ abstract class competency_evidence_type extends data_object {
      * Add this evidence to a competency
      *
      * @param   $competency Competency object
-     * @return  int The ID of the newly created evidence record
+     * @return  mixed The ID of the newly created evidence record, or false if the record is a duplicate
      */
     public function add($competency) {
         global $USER;
+
+        // Don't allow duplicate evidence items
+        $wherestr = "competencyid={$competency->id}";
+        $wherestr .= " and itemtype='" . ( isset($this->itemtype) ? $this->itemtype : '' ) . "'";
+        $wherestr .= " and itemmodule='" . ( isset($this->itemmodule) ? $this->itemmodule : '' ) . "'";
+        $wherestr .= " and iteminstance={$this->iteminstance}";
+        if ( count_records_select('comp_evidence_items',$wherestr) ){
+            return false;
+        }
 
         $now = time();
 
