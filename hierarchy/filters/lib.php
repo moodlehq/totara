@@ -1,6 +1,7 @@
 <?php //$Id$
 
 require_once($CFG->dirroot.'/hierarchy/filters/text.php');
+require_once($CFG->dirroot.'/hierarchy/filters/textarea.php');
 require_once($CFG->dirroot.'/hierarchy/filters/customfield.php');
 require_once($CFG->dirroot.'/hierarchy/filters/filter_forms.php');
 
@@ -101,7 +102,7 @@ class hierarchy_filtering {
             case 'fullname':    return new hierarchy_filter_text('fullname', get_string('fullname'), $advanced, 'fullname');
             case 'shortname':    return new hierarchy_filter_text('shortname', get_string('shortname'), $advanced, 'shortname');
             case 'idnumber':    return new hierarchy_filter_text('idnumber', get_string('idnumber'), $advanced, 'idnumber');
-            case 'description':       return new hierarchy_filter_text('description', get_string('description'), $advanced, 'description');
+            case 'description':       return new hierarchy_filter_textarea('description', get_string('description'), $advanced, 'description');
             case 'custom':      return new hierarchy_filter_customfield('custom', get_string('customfield', 'customfields'), $advanced);
             default:            return null;
         }
