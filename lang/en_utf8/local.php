@@ -265,6 +265,7 @@ $string['selectcompetency'] = 'Select a competency';
 $string['deletecompetencyevidence'] = 'Delete Competency Evidence';
 $string['confirmdeletece'] = 'Are you sure you want to delete this competency evidence record?';
 $string['couldnotdeletece'] = 'Could not delete that competency evidence record';
+$string['alreadyselected'] = '(already selected)';
 
 // Installation and Demo data
 $string['installingdemodata'] = 'Installing Demo Data';

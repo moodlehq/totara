@@ -371,6 +371,10 @@ div.mitms-dialog ul.treeview li span.ui-undraggable {
     color: #777;
 }
 
+.unclickable {
+    color: #777;
+}
+
 div.mitms-dialog div.yui-isloading {
     background-image: url(loading_small.gif);
     background-position: 690px 0;

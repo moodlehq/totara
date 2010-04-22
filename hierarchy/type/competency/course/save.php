@@ -73,28 +73,29 @@ if($nojs) {
     }
     redirect($returnurl);
 } else {
-    // return code to be included in page for JS version
-    echo '<tr>';
-    echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/index.php?type=competency&frameworkid={$framework->id}\">{$framework->fullname}</a></td>";
-    echo '<td>'.$depth->fullname.'</td>';
-    echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/item/view.php?type=competency&id={$competency->id}\">{$competency->fullname}</a></td>";
+    if ( $newevidenceid !== false ){
+        // return code to be included in page for JS version
+        echo '<tr>';
+        echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/index.php?type=competency&frameworkid={$framework->id}\">{$framework->fullname}</a></td>";
+        echo '<td>'.$depth->fullname.'</td>';
+        echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/item/view.php?type=competency&id={$competency->id}\">{$competency->fullname}</a></td>";
 
-    echo '<td>'.$evidence->get_type();
+        echo '<td>'.$evidence->get_type();
 
-    if ($evidence->itemtype == 'activitycompletion') {
-        echo ' - '.$evidence->get_name();
+        if ($evidence->itemtype == 'activitycompletion') {
+            echo ' - '.$evidence->get_name();
+        }
+
+        echo '</td>';
+        echo '<td align="center">';
+        $str_remove = get_string('remove');
+        echo "<a href=\"{$CFG->wwwroot}/hierarchy/type/competency/evidenceitem/remove.php?id={$newevidenceid}";
+        if ( $courseid ){
+            echo "&course={$courseid}";
+        }
+        echo "\" title=\"$str_remove\">".
+             "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"{$str_remove}\" /></a>";
+        echo '</td>';
+        echo '</tr>';
     }
-
-    echo '</td>';
-    echo '<td align="center">';
-    $str_remove = get_string('remove');
-    echo "<a href=\"{$CFG->wwwroot}/hierarchy/type/competency/evidenceitem/remove.php?id={$newevidenceid}";
-    if ( $courseid ){
-        echo "&course={$courseid}";
-    }
-    echo "\" title=\"$str_remove\">".
-         "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"{$str_remove}\" /></a>";
-    echo '</td>';
-    echo '</tr>';
-
 }

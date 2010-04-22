@@ -3,7 +3,7 @@
 require_once('../../../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->libdir.'/completionlib.php');
-
+require_once($CFG->dirroot.'/hierarchy/type/competency/evidenceitem/lib.php');
 
 ///
 /// Setup / loading data
@@ -51,52 +51,7 @@ if($nojs) {
 
 <?php
 
-// Evidence type available
-$available = false;
-
-echo '<ul>';
-
-// Activity completion
-$completion_info = new completion_info($course);
-if ($completion_info->is_enabled()) {
-    $evidence = $completion_info->get_activities();
-
-    if ($evidence) {
-        $available = true;
-        foreach ($evidence as $activity) {
-            echo '<li><a href="'.$CFG->wwwroot.'/hierarchy/type/competency/course/save.php?competency='.$competency_id.'&type=activitycompletion&instance='.$activity->id.'&course='.$course->id.'&amp;'.$nojsparams.'">';
-            echo 'Activity completion - '.$activity->name;
-            echo '</a></li>';
-        }
-    }
-}
-
-// Course completion
-if ($completion_info->is_enabled() &&
-    $completion_info->has_criteria()) {
-
-    $available = true;
-    echo '<li><a href="'.$CFG->wwwroot.'/hierarchy/type/competency/course/save.php?competency='.$competency_id.'&type=coursecompletion&instance='.$course->id.'&course='.$course->id.'&amp;'.$nojsparams.'">Course completion</a></li>';
-}
-
-// Course grade
-$course_grade = get_record_select('grade_items', 'itemtype = \'course\' AND courseid = '.$course->id);
-
-if ($course_grade) {
-    $available = true;
-    echo '<li><a href="'.$CFG->wwwroot.'/hierarchy/type/competency/course/save.php?competency='.$competency_id.'&type=coursegrade&instance='.$course->id.'&course='.$course->id.'&amp;'.$nojsparams.'">Course grade</a></li>';
-}
-/*
-echo '<h3>Activity Grade</h3><p>Unavailable</p></h3>';
-echo '<h3>Activity Outcome</h3><p>Unavailable</p></h3>';
-echo '<h3>File</h3><p>Unavailable</p></h3>';
- */
-
-if (!$available) {
-    echo '<li><em>'.get_string('noevidencetypesavailable', 'competency').'</em></li>';
-}
-
-echo '</ul>';
+comp_evitem_print_course_evitems( $course, $competency_id, "{$CFG->wwwroot}/hierarchy/type/competency/course/save.php?competency={$competency_id}&course={$course->id}&{$nojsparams}" );
 
 if($nojs) {
     // include footer for none JS version

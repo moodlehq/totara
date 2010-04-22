@@ -46,7 +46,7 @@ $data->itemtype = $type;
 $evidence = competency_evidence_type::factory($data);
 $evidence->iteminstance = $instance;
 
-$evidence->add($competency);
+$newevidenceid = $evidence->add($competency);
 
 if($nojs) {
     // redirect for none JS version
@@ -60,23 +60,28 @@ if($nojs) {
 } else {
     // HTML to return for JS version
 
-    echo '<tr>';
-    echo '<td>'.$evidence->get_name().'</td>';
-    echo '<td>'.$evidence->get_type().'</td>';
-    echo '<td>'.$evidence->get_activity_type().'</td>';
+    // If $newevidenceid is false, it means the evidence item wasn't added, so
+    // return nothing
+    if ( $newevidenceid !== false ){
 
-    if (!empty($USER->competencyediting)) {
+        echo '<tr>';
+        echo '<td>'.$evidence->get_name().'</td>';
+        echo '<td>'.$evidence->get_type().'</td>';
+        echo '<td>'.$evidence->get_activity_type().'</td>';
 
-        $str_edit = get_string('edit');
-        $str_remove = get_string('remove');
+        if (!empty($USER->competencyediting)) {
 
-        echo "<td style=\"text-align: center;\">";
+            $str_edit = get_string('edit');
+            $str_remove = get_string('remove');
 
-        echo "<a href=\"{$CFG->wwwroot}/hierarchy/type/competency/evidenceitem/remove.php?id={$evidence->id}\" title=\"$str_remove\">".
-             "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_remove\" /></a>";
+            echo "<td style=\"text-align: center;\">";
 
-        echo "</td>";
+            echo "<a href=\"{$CFG->wwwroot}/hierarchy/type/competency/evidenceitem/remove.php?id={$evidence->id}\" title=\"$str_remove\">".
+                 "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_remove\" /></a>";
+
+            echo "</td>";
+        }
+
+        echo '</tr>';
     }
-
-    echo '</tr>';
 }
