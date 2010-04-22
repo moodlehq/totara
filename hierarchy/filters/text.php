@@ -56,7 +56,6 @@ class hierarchy_filter_text extends hierarchy_filter_type {
     function check_data($formdata) {
         $field    = $this->_name;
         $operator = $field.'_op';
-
         if (array_key_exists($operator, $formdata)) {
             if ($formdata->$operator != 5 and $formdata->$field == '') {
                 // no data - no change except for empty filter
@@ -88,7 +87,8 @@ class hierarchy_filter_text extends hierarchy_filter_type {
             case 0: // contains
                 $res = "$ilike '%$value%'"; break;
             case 1: // does not contain
-                $res = "NOT $ilike '%$value%'"; break;
+                $res = "NOT $ilike '%$value%' OR ($field) IS NULL )";
+                $field = "($field"; break;
             case 2: // equal to
                 $res = "$ilike '$value'"; break;
             case 3: // starts with
@@ -96,7 +96,8 @@ class hierarchy_filter_text extends hierarchy_filter_type {
             case 4: // ends with
                 $res = "$ilike '%$value'"; break;
             case 5: // empty
-                $res = "=''"; break;
+                $res = "='' OR ($field) IS NULL )";
+                $field = "($field"; break;
             default:
                 return '';
         }
