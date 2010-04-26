@@ -744,7 +744,7 @@ class completion_info {
         $this->delete_all_state($cm);
 
         // Merge this with list of planned users (according to roles)
-        $trackedusers = $this->internal_get_tracked_users(false);
+        $trackedusers = $this->get_tracked_users();
         foreach ($trackedusers as $trackeduser) {
             $keepusers[] = $trackeduser->id;
         }
@@ -947,30 +947,134 @@ class completion_info {
         return $result;
     }
 
+
     /**
-     * Gets list of users in a course whose progress is tracked for display on the
-     * progress report.
+     * Checks to see if the userid supplied has a tracked role in
+     * this course
      *
-     * @global object
-     * @uses CONTEXT_COURSE
-     * @param bool $sortfirstname Optional True to sort with firstname
-     * @param int $groupid Optionally restrict to groupid
-     * @return array Array of user objects containing id, firstname, lastname (empty if none)
+     * @param   $userid     User id
+     * @return  bool
      */
-    function internal_get_tracked_users($sortfirstname = false, $groupid = 0) {
+    function is_tracked_user($userid) {
+        $sql  = "SELECT u.id ";
+        $sql .= $this->generate_tracked_user_sql();
+        $sql .= ' AND u.id = '.(int)$userid;
+
+        return record_exists_sql($sql);
+    }
+
+
+    /**
+     * Return number of users whose progress is tracked in this course
+     *
+     * Optionally supply a search's where clause, or a group id
+     *
+     * @param   string  $where      Where clause
+     * @param   int     $groupid    Group id
+     * @return  int
+     */
+    function get_num_tracked_users($where = '', $groupid = 0) {
+        $sql  = "SELECT COUNT(u.id) ";
+        $sql .= $this->generate_tracked_user_sql($groupid);
+
+        if ($where) {
+            $sql .= " AND $where";
+        }
+
+        return count_records_sql($sql);
+    }
+
+
+    /**
+     * Return array of users whose progress is tracked in this course
+     *
+     * Optionally supply a search's where caluse, group id, sorting, paging
+     *
+     * @param   string      $where      Where clause (optional)
+     * @param   integer     $groupid    Group ID to restrict to (optional)
+     * @param   string      $sort       Order by clause (optional)
+     * @param   integer     $limitfrom  Result start (optional)
+     * @param   integer     $limitnum   Result max size (optional)
+     * @return  array
+     */
+    function get_tracked_users($where = '', $groupid = 0, $sort = '',
+             $limitfrom = '', $limitnum = '') {
+
+        $sql = "
+            SELECT
+                u.id,
+                u.firstname,
+                u.lastname,
+                u.idnumber,
+                ra.roleid
+        ";
+
+        $sql .= $this->generate_tracked_user_sql($groupid);
+
+        if ($where) {
+            $sql .= " AND $where";
+        }
+
+        if ($sort) {
+            $sql .= " ORDER BY $sort";
+        }
+
+        $users = get_records_sql($sql, $limitfrom, $limitnum);
+        return $users ? $users : array(); // In case it returns false
+    }
+
+
+    /**
+     * Generate the SQL for finding tracked users in this course
+     *
+     * Optionally supply a group id
+     *
+     * @param   integer $groupid
+     * @return  string
+     */
+    function generate_tracked_user_sql($groupid = 0) {
         global $CFG;
 
         if (!empty($CFG->progresstrackedroles)) {
-            $roles = explode(', ', $CFG->progresstrackedroles);
+            $roles = ' AND ra.roleid IN ('.$CFG->progresstrackedroles.')';
         } else {
             // This causes it to default to everyone (if there is no student role)
-            $roles = array();
+            $roles = '';
         }
-        $users = get_role_users($roles, get_context_instance(CONTEXT_COURSE, $this->course->id), true,
-            'u.id, u.firstname, u.lastname, u.idnumber',
-            $sortfirstname ? 'u.firstname ASC' : 'u.lastname ASC', true, $groupid);
-        $users = $users ? $users : array(); // In case it returns false
-        return $users;
+
+        // Build context sql
+        $context = get_context_instance(CONTEXT_COURSE, $this->course->id);
+        $parentcontexts = substr($context->path, 1); // kill leading slash
+        $parentcontexts = str_replace('/', ',', $parentcontexts);
+        if ($parentcontexts !== '') {
+            $parentcontexts = ' OR ra.contextid IN ('.$parentcontexts.' )';
+        }
+
+        $groupjoin   = '';
+        $groupselect = '';
+        if ($groupid) {
+            $groupjoin   = "JOIN {$CFG->prefix}groups_members gm
+                              ON gm.userid = u.id";
+            $groupselect = " AND gm.groupid = $groupid ";
+        }
+
+        $sql = "
+            FROM
+                {$CFG->prefix}role_assignments ra
+            JOIN
+                {$CFG->prefix}user u
+             ON u.id = ra.userid
+            JOIN
+                {$CFG->prefix}role r
+             ON ra.roleid = r.id
+            $groupjoin
+            WHERE
+                (ra.contextid = {$context->id} $parentcontexts)
+                $roles
+                $groupselect
+        ";
+
+        return $sql;
     }
 
     /**
@@ -987,31 +1091,27 @@ class completion_info {
      * @param bool $sortfirstname If true, sort by first name, otherwise sort by
      *   last name
      * @param int $groupid Group ID or 0 (default)/false for all groups
-     * @param int $pagesize Number of users to actually return (0 = unlimited)
-     * @param int $start User to start at if paging (0 = first set)
+     * @param int $pagesize Number of users to actually return (optional)
+     * @param int $start User to start at if paging (optional)
      * @return Object with ->total and ->start (same as $start) and ->users;
      *   an array of user objects (like mdl_user id, firstname, lastname)
      *   containing an additional ->progress array of coursemoduleid => completionstate
      */
-    public function get_progress_all($sortfirstname=false, $groupid=0,
-        $pagesize=0,$start=0) {
+    public function get_progress_all($where = '', $groupid = 0, $sort = '', $pagesize = '', $start = '') {
         global $CFG;
         $resultobject=new StdClass;
 
         // Get list of applicable users
-        $users = $this->internal_get_tracked_users($sortfirstname, $groupid);
-        $resultobject->start=$start;
-        $resultobject->total=count($users);
-        $users=array_slice($users,$start,$pagesize==0 ? count($users)-$start : $pagesize);
+        $users = $this->get_tracked_users($where, $groupid, $sort, $start, $pagesize);
 
         // Get progress information for these users in groups of 1, 000 (if needed)
         // to avoid making the SQL IN too long
-        $resultobject->users=array();
+        $results = array();
         $userids = array();
         foreach ($users as $user) {
             $userids[] = $user->id;
-            $resultobject->users[$user->id]=$user;
-            $resultobject->users[$user->id]->progress=array();
+            $results[$user->id] = $user;
+            $results[$user->id]->progress = array();
         }
 
         for($i=0; $i<count($userids); $i+=1000) {
@@ -1029,13 +1129,12 @@ WHERE
 
             foreach ($rs as $progress) {
                 $progress = (object)$progress;
-
-                $resultobject->users[$progress->userid]->progress[$progress->coursemoduleid]=$progress;
+                $results[$progress->userid]->progress[$progress->coursemoduleid] = $progress;
             }
             $rs->close();
         }
 
-        return $resultobject;
+        return $results;
     }
 
     /**
