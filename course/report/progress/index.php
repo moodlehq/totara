@@ -212,6 +212,9 @@ if($total > COMPLETION_REPORT_PAGE) {
 if(!$csv) {
     print '<br class="clearer"/>'; // ugh
 
+    $total_header = ($total == $grandtotal) ? $total : "{$total}/{$grandtotal}";
+    print_heading(get_string('allparticipants').": {$total_header}", '', 3);
+
     print $pagingbar;
 
     if (!$total) {
