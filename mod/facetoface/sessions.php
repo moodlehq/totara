@@ -160,7 +160,7 @@ if ($fromform = $mform->get_data()) { // Form submitted
 
     foreach ($customfields as $field) {
         $fieldname = "custom_$field->shortname";
-        if (empty($fromform->$fieldname)) {
+        if (!isset($fromform->$fieldname)) {
             continue; // skip missing fields
         }
 

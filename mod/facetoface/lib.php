@@ -3304,10 +3304,6 @@ function facetoface_save_customfield($fieldid, $data, $sessionid)
         $dbdata = trim($data);
     }
 
-    if (empty($dbdata)) {
-        return true; // no need to store empty values
-    }
-
     $newrecord = new object();
     $newrecord->data = $dbdata;
 
@@ -3316,6 +3312,9 @@ function facetoface_save_customfield($fieldid, $data, $sessionid)
         return update_record('facetoface_session_data', $newrecord);
     }
     else {
+        if (empty($dbdata)) {
+            return true; // no need to store empty values
+        }
         $newrecord->fieldid = $fieldid;
         $newrecord->sessionid = $sessionid;
         return insert_record('facetoface_session_data', $newrecord);
