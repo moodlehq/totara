@@ -120,6 +120,11 @@ function reportbuilder_facetoface_status($status, $row) {
 
 }
 
+// convert first letters of each word to uppercase
+function reportbuilder_ucfirst($item, $row) {
+    return ucfirst($item);
+}
+
 ///////////////////////////////////////////
 
 // Functions for use by adminoptions.php only
