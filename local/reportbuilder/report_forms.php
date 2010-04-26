@@ -75,8 +75,12 @@ class report_builder_edit_form extends moodleform {
 
         $mform->addElement('header', 'general', get_string('searchoptions', 'local'));
 
-        if(isset($report->filters) && is_array($report->filters) && count($report->filters)>0) {
+        $strmovedown = get_string('movedown','local');
+        $strmoveup = get_string('moveup','local');
+        $strdelete = get_string('delete','local');
+        $spacer = '<img src="'.$CFG->wwwroot.'/pix/spacer.gif" class="iconsmall" alt="" />';
 
+        if(isset($report->_filteroptions) && is_array($report->_filteroptions) && count($report->_filteroptions)>0) {
             $mform->addElement('html','<div>'.get_string('help:searchdesc','local').'</div><br />');
 
             $mform->addElement('html', '<div class="reportbuilderform"><table><tr><th>'.get_string('searchfield','local').
@@ -84,50 +88,49 @@ class report_builder_edit_form extends moodleform {
 
             $filtersselect = $report->get_filters_select();
 
-            $strmovedown = get_string('movedown','local');
-            $strmoveup = get_string('moveup','local');
-            $strdelete = get_string('delete','local');
-            $spacer = '<img src="'.$CFG->wwwroot.'/pix/spacer.gif" class="iconsmall" alt="" />';
+            if(isset($report->_filters) && is_array($report->_filters) && count($report->_filters)>0) {
+                $filters = $report->_filters;
+                $filtercount = count($filters);
+                $i = 1;
+                foreach($filters as $index => $filter) {
+                    $row = array();
+                    $type = $filter['type'];
+                    $value = $filter['value'];
+                    $field = "{$type}-{$value}";
+                    $advanced = $filter['advanced'];
+                    $fid = $index;
+                    // check filter exists in filteroptions
+                    if(array_key_exists($type, $report->_filteroptions) && array_key_exists($value, $report->_filteroptions[$type])) {
+                        $mform->addElement('html','<tr><td>');
+                        $mform->addElement('select',"filter{$fid}",'',$filtersselect);
+                        $mform->setDefault("filter{$fid}", $field);
+                        $mform->addElement('html','</td><td>');
+                        $mform->addElement('checkbox',"advanced{$fid}",'');
+                        $mform->setDefault("advanced{$fid}",$advanced);
+                    } else {
+                        $mform->addElement('hidden',"filter{$fid}", $field);
+                        $mform->setType("filter{$fid}", PARAM_TEXT);
+                        $mform->addElement('html','<tr><td colspan="2" style="color:red;padding:10px;">Filter with type of \''.$type.'\' and value of \''.$value.'\' not found in filter options.');
+                    }
 
-            $filters = $report->filters;
-            $filtercount = count($filters);
-            $i = 1;
-            foreach($filters as $index => $filter) {
-                $row = array();
-                $type = $filter['type'];
-                $value = $filter['value'];
-                $field = "{$type}-{$value}";
-                $advanced = $filter['advanced'];
-                $fid = $index;
-                // check filter exists in filteroptions
-                if(array_key_exists($type, $report->filteroptions) && array_key_exists($value, $report->filteroptions[$type])) {
-                    $mform->addElement('html','<tr><td>');
-                    $mform->addElement('select',"filter{$fid}",'',$filtersselect);
-                    $mform->setDefault("filter{$fid}", $field);
                     $mform->addElement('html','</td><td>');
-                    $mform->addElement('checkbox',"advanced{$fid}",'');
-                    $mform->setDefault("advanced{$fid}",$advanced);
-                } else {
-                    $mform->addElement('hidden',"filter{$fid}", $field);
-                    $mform->setType("filter{$fid}", PARAM_TEXT);
-                    $mform->addElement('html','<tr><td colspan="2" style="color:red;padding:10px;">Filter with type of \''.$type.'\' and value of \''.$value.'\' not found in filter options.');
+                    $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/reportbuilder/settings.php?d=1&amp;id='.$id.'&amp;fid='.$fid.'" title="'.$strdelete.'"><img src="'.$CFG->pixpath.'/t/delete.gif" class="iconsmall" alt="'.$strdelete.'" /></a>');
+                    if($i != 1) {
+                        $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/reportbuilder/settings.php?m=up&amp;id='.$id.'&amp;fid='.$fid.'" title="'.$strmoveup.'"><img src="'.$CFG->pixpath.'/t/up.gif" class="iconsmall" alt="'.$strmoveup.'" /></a>');
+                    } else {
+                        $mform->addElement('html', $spacer);
+                    }
+                    if($i != $filtercount) {
+                        $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/reportbuilder/settings.php?m=down&amp;id='.$id.'&amp;fid='.$fid.'" title="'.$strmovedown.'"><img src="'.$CFG->pixpath.'/t/down.gif" class="iconsmall" alt="'.$strmovedown.'" /></a>');
+                    } else {
+                        $mform->addElement('html', $spacer);
+                    }
+                    $mform->addElement('html','</td></tr>');
+                    $i++;
                 }
-
-                $mform->addElement('html','</td><td>');
-                $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/reportbuilder/settings.php?d=1&amp;id='.$id.'&amp;fid='.$fid.'" title="'.$strdelete.'"><img src="'.$CFG->pixpath.'/t/delete.gif" class="iconsmall" alt="'.$strdelete.'" /></a>');
-                if($i != 1) {
-                    $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/reportbuilder/settings.php?m=up&amp;id='.$id.'&amp;fid='.$fid.'" title="'.$strmoveup.'"><img src="'.$CFG->pixpath.'/t/up.gif" class="iconsmall" alt="'.$strmoveup.'" /></a>');
-                } else {
-                    $mform->addElement('html', $spacer);
-                }
-                if($i != $filtercount) {
-                    $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/reportbuilder/settings.php?m=down&amp;id='.$id.'&amp;fid='.$fid.'" title="'.$strmovedown.'"><img src="'.$CFG->pixpath.'/t/down.gif" class="iconsmall" alt="'.$strmovedown.'" /></a>');
-                } else {
-                    $mform->addElement('html', $spacer);
-                }
-                $mform->addElement('html','</td></tr>');
-                $i++;
-                }
+            } else {
+                $mform->addElement('html',"<p>No search fields have been created yet - add them by selecting a search term in the pulldown below.</p>");
+            }
 
 
             $mform->addElement('html','<tr><td>');
