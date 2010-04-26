@@ -12,6 +12,19 @@ fieldset#newfilter input[type="text"] {
     margin-left: 5px;
 }
 
+/**
+ * Course completion report
+ */
+body#course-report-completion-index div.firstinitial,
+body#course-report-progress-index div.firstinitial {
+    margin-top: 10px;
+}
+
+body#course-report-completion-index div.lastinitial,
+body#course-report-progress-index div.lastinitial {
+    margin-bottom: 10px;
+}
+
 /*****************************************************************************/
 /** Report Builder **/
 /*****************************************************************************/
