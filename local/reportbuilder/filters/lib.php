@@ -1,5 +1,6 @@
 <?php //$Id$
 require_once($CFG->dirroot.'/local/reportbuilder/filters/text.php');
+require_once($CFG->dirroot.'/local/reportbuilder/filters/number.php');
 require_once($CFG->dirroot.'/local/reportbuilder/filters/select.php');
 require_once($CFG->dirroot.'/local/reportbuilder/filters/date.php');
 require_once($CFG->dirroot.'/local/reportbuilder/filters/filter_forms.php');
@@ -121,6 +122,7 @@ class filtering {
             $label = $filteroptions[$type][$value]['label'];
             switch($filtertype) {
                 case 'text':
+                case 'number':
                 case 'date':
                     return new $filtername($fieldname, $label, $advanced, $sessionname, $fieldname, $fieldquery);
                 case 'select':
