@@ -20,11 +20,11 @@ $joinlist = array(
     'sco' => "LEFT JOIN {$CFG->prefix}scorm_scoes sco ON sco.id=base.scoid",
     'course' => "LEFT JOIN {$CFG->prefix}course c ON c.id=scorm.course",
     'course_category' => "LEFT JOIN {$CFG->prefix}course_categories cat ON cat.id=c.category",
-    'position_assignment' => "LEFT JOIN {$CFG->prefix}position_assignment pa ON base.userid = pa.userid",
+    'position_assignment' => "LEFT JOIN {$CFG->prefix}pos_assignment pa ON base.userid = pa.userid",
     'manager_role_assignment' => "LEFT JOIN {$CFG->prefix}role_assignments mra ON ( pa.reportstoid = mra.id AND mra.roleid = $managerroleid)",
     'manager' => "LEFT JOIN {$CFG->prefix}user manager ON manager.id = mra.userid",
-    'organisation' => "LEFT JOIN {$CFG->prefix}organisation organisation ON organisation.id = pa.organisationid",
-    'position' => "LEFT JOIN {$CFG->prefix}position position ON position.id = pa.positionid",
+    'organisation' => "LEFT JOIN {$CFG->prefix}org organisation ON organisation.id = pa.organisationid",
+    'position' => "LEFT JOIN {$CFG->prefix}pos position ON position.id = pa.positionid",
 );
 
 

@@ -80,7 +80,7 @@ class report_builder_edit_form extends moodleform {
         $strdelete = get_string('delete','local');
         $spacer = '<img src="'.$CFG->wwwroot.'/pix/spacer.gif" class="iconsmall" alt="" />';
 
-        if(isset($report->_filteroptions) && is_array($report->_filteroptions) && count($report->_filteroptions)>0) {
+        if(isset($report->filteroptions) && is_array($report->filteroptions) && count($report->filteroptions)>0) {
             $mform->addElement('html','<div>'.get_string('help:searchdesc','local').'</div><br />');
 
             $mform->addElement('html', '<div class="reportbuilderform"><table><tr><th>'.get_string('searchfield','local').
@@ -88,8 +88,8 @@ class report_builder_edit_form extends moodleform {
 
             $filtersselect = $report->get_filters_select();
 
-            if(isset($report->_filters) && is_array($report->_filters) && count($report->_filters)>0) {
-                $filters = $report->_filters;
+            if(isset($report->filters) && is_array($report->filters) && count($report->filters)>0) {
+                $filters = $report->filters;
                 $filtercount = count($filters);
                 $i = 1;
                 foreach($filters as $index => $filter) {
@@ -100,7 +100,7 @@ class report_builder_edit_form extends moodleform {
                     $advanced = $filter['advanced'];
                     $fid = $index;
                     // check filter exists in filteroptions
-                    if(array_key_exists($type, $report->_filteroptions) && array_key_exists($value, $report->_filteroptions[$type])) {
+                    if(array_key_exists($type, $report->filteroptions) && array_key_exists($value, $report->filteroptions[$type])) {
                         $mform->addElement('html','<tr><td>');
                         $mform->addElement('select',"filter{$fid}",'',$filtersselect);
                         $mform->setDefault("filter{$fid}", $field);
