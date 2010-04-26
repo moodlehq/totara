@@ -7,7 +7,7 @@ class reportbuilder {
     public $fullname, $shortname, $source, $hidden, $filters, $filteroptions, $columns;
     public $columnoptions, $restriction, $restrictionoptions, $_filtering;
     private $_id, $_defaultcolumns, $_defaultfilters, $_joinlist, $_base, $_params;
-    private $_paramoptions, $_embeddedparams, $_admin, $_adminoptions;
+    private $_paramoptions, $_embeddedparams, $_admin, $_adminoptions, $_fullcount, $_filteredcount;
 
     function reportbuilder($shortname=null, $embed=false) {
         global $CFG;
@@ -691,8 +691,12 @@ class reportbuilder {
      * @return integer Record count
      */
     function get_full_count() {
-        $sql = $this->build_query(true);
-        return count_records_sql($sql);
+        // use cached value if present
+        if(empty($this->_fullcount)) {
+            $sql = $this->build_query(true);
+            $this->_fullcount = count_records_sql($sql);
+        }
+        return $this->_fullcount;
     }
 
     /*
@@ -701,8 +705,12 @@ class reportbuilder {
      * @return integer Filtered record count
      */
     function get_filtered_count() {
-        $sql = $this->build_query(true, true);
-        return count_records_sql($sql);
+        // use cached value if present
+        if(empty($this->_filteredcount)) {
+            $sql = $this->build_query(true, true);
+            $this->_filteredcount = count_records_sql($sql);
+        }
+        return $this->_filteredcount;
     }
 
     /*
