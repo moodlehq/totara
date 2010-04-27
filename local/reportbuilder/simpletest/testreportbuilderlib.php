@@ -172,8 +172,6 @@ class reportbuilderlib_test extends prefix_changing_test_case {
 
     // leaving the following until after changes to capabilities:
     // get_restriction_info()
-    // get_capability_list()
-    // get_permitted_restrictions()
     // is_capable()
     // get_restrictions()
 

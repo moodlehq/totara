@@ -248,32 +248,8 @@ function mitms_print_report_manager($return=false) {
 
     $rows = array();
     foreach ($reports as $report) {
-        $options = reportbuilder::get_source_data('restrictionoptions',$report->source);
-        // go through each restriction looking for capabilities
-        $restrictions = unserialize($report->restriction);
-        $hascap = false;
-        if($restrictions && is_array($restrictions)) {
-            foreach($restrictions as $restriction) {
-                if(isset($options) && is_array($options)) {
-                    $info = false;
-                    foreach($options as $option) {
-                        if($option['name'] == $restriction) {
-                            $info = $option;
-                        }
-                    }
-                }
-                if(!$info) {
-                    continue;
-                }
-                $cap = (isset($info['capability'])) ? $info['capability'] : null;
-                // allow if no capability set, or if user has the capability
-                if(!isset($cap) || has_capability($cap,$context)) {
-                    $hascap = true;
-                }
-            }
-        }
         // show reports user has permission to view, that are not hidden
-        if($hascap && !$report->hidden) {
+        if(reportbuilder::is_capable($report->id) && !$report->hidden) {
             $row = '
             <tr>
                 <td align="left">

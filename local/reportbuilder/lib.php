@@ -229,74 +229,35 @@ class reportbuilder {
     }
 
 
-    /*
-     * Looks up the restrictions that are applied to this report and
-     * returns an array of capabilities which are required to access
-     * this report
+    /* Returns true if the current user has permission to view this report
      *
-     * This function is no longer in use
-     *
-     * @return array Array of capabilities associated with this report
-     */
-    function get_capability_list() {
-        $restrictions = $this->restriction;
-        $capabilities = array();
-        if($restrictions && is_array($restrictions)) {
-            foreach ($restrictions as $restriction) {
-                $info = $this->get_restriction_info($restriction);
-                if(!$info) {
-                    continue;
-                }
-                $capabilities[] = $info['capability'];
-            }
-        }
-        return array_unique($capabilities);
-    }
-
-    /*
-     * Looks up the restrictions that are associated with the current
-     * report and returns an array of restrictions that the current
-     * user has permission to view (either because no capability is
-     * set for that restriction or the user has the required capability)
-     *
-     * @return array Array of restrictions the user has the capabilities
-     *               for, or an empty array if none found
-     */
-    function get_permitted_restrictions() {
-        $context = get_context_instance(CONTEXT_SYSTEM);
-        $restrictions = $this->restriction;
-        $ret = array();
-
-        if(is_array($restrictions)) {
-            foreach($restrictions as $restriction) {
-                $info = $this->get_restriction_info($restriction);
-                if(!$info) {
-                    continue;
-                }
-                $capability = (isset($info['capability'])) ? $info['capability'] : null;
-                // allow if no capability set, or user has the specificed capability
-                if (!isset($capability) || has_capability($capability, $context)) {
-                    $ret[] = $restriction;
-                }
-
-            }
-        }
-        return $ret;
-    }
-
-
-    /* Returns true if the current user has one or more of the required capabilities
-     * to view this report
-     *
+     * @param integer $id ID of the report to be viewed
      * @return boolean True if they have any of the required capabilities
      */
-    function is_capable() {
-        $restrictions = $this->get_permitted_restrictions();
-        if($restrictions && is_array($restrictions) && count($restrictions)>0) {
+    public static function is_capable($id) {
+
+        // if the 'all' accesstype is found let anyone view it
+        if(get_records_select('report_builder_access', "reportid=$id AND accesstype='all'")) {
             return true;
-        } else {
-            return false;
         }
+
+        // get array of roles the user has
+        $context = get_context_instance(CONTEXT_SYSTEM);
+        $userroles = array();
+        if($data = get_user_roles($context, 0, false)) {
+            foreach($data as $item) {
+                $userroles[$item->id] = 1;
+            }
+        }
+        // see if user has any allowed roles
+        if($allowedroles = get_records_select('report_builder_access', "reportid=$id AND accesstype='role'")) {
+            foreach($allowedroles as $allowedrole) {
+                if(array_key_exists($allowedrole->typeid, $userroles)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /*
@@ -326,10 +287,9 @@ class reportbuilder {
     }
 
     /*
-     * Takes the list of restrictions that the user has the capability to view
-     * and converts it into an SQL snipped that, when applied to the WHERE clause
-     * of the query, reduces the results to only include those matched by the
-     * restrictions
+     * Takes the list of restrictions and converts it into an SQL snipped that,
+     * when applied to the WHERE clause of the query, reduces the results to only
+     * include those matched by the restrictions
      *
      * This is done by calling restriction functions, which are tasked with
      * determining matches for their restriction
@@ -340,7 +300,7 @@ class reportbuilder {
         global $CFG;
         // import restriction funcs
         include_once($CFG->dirroot.'/local/reportbuilder/restrictionfuncs.php');
-        $restrictions = $this->get_permitted_restrictions();
+        $restrictions = $this->restriction;
 
         $queries = array();
         // start with an empty query, so default is display no results

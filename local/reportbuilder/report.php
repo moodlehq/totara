@@ -11,7 +11,7 @@ $shortname = get_field('report_builder','shortname','id',$id);
 // new report object
 $report = new reportbuilder($shortname);
 
-if(!$report->is_capable()) {
+if(!$report->is_capable($id)) {
     error(get_string('nopermission','local'));
 }
 
