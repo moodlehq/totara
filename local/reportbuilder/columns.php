@@ -8,18 +8,17 @@ global $USER;
 $id = required_param('id',PARAM_INT); // report builder id
 $d = optional_param('d', null, PARAM_TEXT); // delete
 $m = optional_param('m', null, PARAM_TEXT); // move
-$fid = optional_param('fid',null,PARAM_INT); //filter id
 $cid = optional_param('cid',null,PARAM_INT); //column id
 $confirm = optional_param('confirm', 0, PARAM_INT); // confirm delete
 
 admin_externalpage_setup('reportbuilder');
-$returnurl = $CFG->wwwroot."/local/reportbuilder/settings.php?id=$id";
+$returnurl = $CFG->wwwroot."/local/reportbuilder/columns.php?id=$id";
 
 $shortname = get_field('report_builder','shortname','id',$id);
 $report = new reportbuilder($shortname);
 
-// delete fields or columns
-if ($d and (isset($cid) || isset($fid)) and $confirm ) {
+// delete column
+if ($d and $confirm ) {
     if(!confirm_sesskey()) {
         print_error('confirmsesskeybad','error');
     }
@@ -31,29 +30,15 @@ if ($d and (isset($cid) || isset($fid)) and $confirm ) {
             redirect($returnurl, 'Column could not be deleted');
         }
     }
-
-    if(isset($fid)) {
-        if($report->delete_filter($fid)) {
-            redirect($returnurl);
-        } else {
-            redirect($returnurl, 'Field could not be deleted');
-        }
-    }
 }
 
-
-
-// confirm deletion of field or column
-if ($d && (isset($cid) || isset($fid))) {
+// confirm deletion column
+if ($d) {
 
     admin_externalpage_print_header();
 
     if(isset($cid)) {
-        notice_yesno('Are you sure you want to delete this column?',"settings.php?d=1&amp;id=$id&amp;cid=$cid&amp;confirm=1&amp;sesskey=$USER->sesskey", $returnurl);
-    }
-
-    if(isset($fid)) {
-        notice_yesno('Are you sure you want to delete this filter?',"settings.php?d=1&amp;id=$id&amp;fid=$fid&amp;confirm=1&amp;sesskey=$USER->sesskey", $returnurl);
+        notice_yesno('Are you sure you want to delete this column?',"columns.php?d=1&amp;id=$id&amp;cid=$cid&amp;confirm=1&amp;sesskey=$USER->sesskey", $returnurl);
     }
 
     admin_externalpage_print_footer();
@@ -69,18 +54,8 @@ if($m && isset($cid)) {
     }
 }
 
-// move filter
-if($m && isset($fid)) {
-    if($report->move_filter($fid, $m)) {
-        redirect($returnurl);
-    } else {
-        redirect($returnurl, 'Filter could not be moved');
-    }
-}
-
-
 // form definition
-$mform =& new report_builder_edit_form(null, compact('id','report'));
+$mform =& new report_builder_edit_columns_form(null, compact('id','report'));
 
 // form results check
 if ($mform->is_cancelled()) {
@@ -94,12 +69,14 @@ if ($fromform = $mform->get_data()) {
 
     $todb = new object();
     $todb->id = $id;
-    $todb->shortname = $fromform->shortname;
-    $todb->fullname = $fromform->fullname;
-    $todb->hidden = $fromform->hidden;
+    $result = build_columns($fromform);
+    $todb->columns = serialize($result);
+    begin_sql();
     if(update_record('report_builder',$todb)) {
-        redirect($returnurl, get_string('reportupdated','local'));
+        commit_sql();
+        redirect($returnurl);
     } else {
+        rollback_sql();
         redirect($returnurl, get_string('error:couldnotupdatereport','local'));
     }
 }
@@ -114,13 +91,46 @@ print "</td><td>";
 print_single_button($CFG->wwwroot.'/local/reportbuilder/report.php', array('id'=>$id), get_string('viewreport','local'));
 print "</td></tr></table>";
 
-$currenttab = 'general';
+$currenttab = 'columns';
 include_once('tabs.php');
 
 // display the form
 $mform->display();
 
 admin_externalpage_print_footer();
+
+function build_columns($fromform) {
+    // build the results
+    // first recreated existing columns
+    $i = 0;
+    $col = "column$i";
+    $head = "heading$i";
+    $ret = array();
+    while(isset($fromform->$col)) {
+        $parts = explode('-',$fromform->$col);
+        $ret[$i] = array(
+            'type' => $parts[0],
+            'value' => $parts[1],
+            'heading' => $fromform->$head,
+        );
+
+        $i++;
+        $col = "column$i";
+        $head = "heading$i";
+    }
+
+    // add the new column if set
+    if(isset($fromform->newcolumns) && $fromform->newcolumns != '0') {
+        $parts = explode('-',$fromform->newcolumns);
+        $ret[$i] = array(
+            'type' => $parts[0],
+            'value' => $parts[1],
+            'heading' => $fromform->newheading,
+        );
+    }
+
+    return $ret;
+}
 
 
 ?>

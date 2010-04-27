@@ -175,6 +175,10 @@ $string['newreport'] = 'New Report';
 $string['reportname'] = 'Report Name';
 $string['reportshortname'] = 'Short Name';
 $string['restriction'] = 'Restriction';
+$string['columns'] = 'Columns';
+$string['filters'] = 'Filters';
+$string['content'] = 'Content';
+$string['access'] = 'Access';
 $string['error:couldnotcreatenewreport'] = 'Could not create new report';
 $string['error:mustselectsource'] = 'You must pick a source for the report';
 $string['error:norestrictions'] = 'No restrictions found. To use restrictions ask your developer to add the necessary files to /local/reportbuilder/restrictions/.';
@@ -183,6 +187,9 @@ $string['editreport'] = 'Edit Report $a';
 $string['searchoptions'] = 'Report Search Options';
 $string['reportcolumns'] = 'Report Columns';
 $string['onlydisplayrecordsfor'] = 'Only display records for';
+$string['accesscontrols'] = 'Access Controls';
+$string['error:norolesfound'] = 'No roles found';
+$string['roleswithaccess'] = 'Roles with permission to view this report';
 $string['reportupdated'] = 'Report Updated';
 $string['nopermission'] = 'You do not have permission to view this page';
 $string['editthisreport'] = 'Edit this report';
@@ -241,6 +248,10 @@ $string['completed'] = 'Completed';
 $string['inprogress'] = 'In Progress';
 $string['startdate'] = 'Start Date';
 $string['completeddate'] = 'Completed Date';
+$string['norestriction'] = 'All users can view this report';
+$string['withrestriction'] = 'Only certain users can view this report (see below)';
+$string['restrictaccess'] = 'Restrict access';
+$string['accessbyrole'] = 'Restrict access by role';
 
 // Add/Edit competency evidence
 $string['error:unknownbuttonclicked'] = 'Unknown Button Clicked';
@@ -285,3 +296,4 @@ $string['help:restrictionoptions'] = 'The checkboxes below determine who has acc
 
 // Course competencies
 $string['returntocourse'] = 'Return to the course';
+

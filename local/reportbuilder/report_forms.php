@@ -73,7 +73,31 @@ class report_builder_edit_form extends moodleform {
         $mform->setDefault('hidden', $report->hidden);
         $mform->setHelpButton('hidden', array('reportbuilderhidden',get_string('hidden','local'),'moodle'));
 
-        $mform->addElement('header', 'general', get_string('searchoptions', 'local'));
+        $mform->addElement('hidden','id',$id);
+        $mform->setType('id', PARAM_INT);
+        $mform->addElement('hidden','source',$report->source);
+        $mform->setType('source', PARAM_TEXT);
+        $this->add_action_buttons();
+    }
+
+
+    function validation($data) {
+        $err = array();
+        $err += validate_shortname($data);
+        return $err;
+    }
+
+
+}
+
+class report_builder_edit_filters_form extends moodleform {
+    function definition() {
+        global $CFG;
+        $mform =& $this->_form;
+        $report = $this->_customdata['report'];
+        $id = $this->_customdata['id'];
+
+        $mform->addElement('header', 'searchoptions', get_string('searchoptions', 'local'));
 
         $strmovedown = get_string('movedown','local');
         $strmoveup = get_string('moveup','local');
@@ -114,14 +138,14 @@ class report_builder_edit_form extends moodleform {
                     }
 
                     $mform->addElement('html','</td><td>');
-                    $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/reportbuilder/settings.php?d=1&amp;id='.$id.'&amp;fid='.$fid.'" title="'.$strdelete.'"><img src="'.$CFG->pixpath.'/t/delete.gif" class="iconsmall" alt="'.$strdelete.'" /></a>');
+                    $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/reportbuilder/filters.php?d=1&amp;id='.$id.'&amp;fid='.$fid.'" title="'.$strdelete.'"><img src="'.$CFG->pixpath.'/t/delete.gif" class="iconsmall" alt="'.$strdelete.'" /></a>');
                     if($i != 1) {
-                        $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/reportbuilder/settings.php?m=up&amp;id='.$id.'&amp;fid='.$fid.'" title="'.$strmoveup.'"><img src="'.$CFG->pixpath.'/t/up.gif" class="iconsmall" alt="'.$strmoveup.'" /></a>');
+                        $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/reportbuilder/filters.php?m=up&amp;id='.$id.'&amp;fid='.$fid.'" title="'.$strmoveup.'"><img src="'.$CFG->pixpath.'/t/up.gif" class="iconsmall" alt="'.$strmoveup.'" /></a>');
                     } else {
                         $mform->addElement('html', $spacer);
                     }
                     if($i != $filtercount) {
-                        $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/reportbuilder/settings.php?m=down&amp;id='.$id.'&amp;fid='.$fid.'" title="'.$strmovedown.'"><img src="'.$CFG->pixpath.'/t/down.gif" class="iconsmall" alt="'.$strmovedown.'" /></a>');
+                        $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/reportbuilder/filters.php?m=down&amp;id='.$id.'&amp;fid='.$fid.'" title="'.$strmovedown.'"><img src="'.$CFG->pixpath.'/t/down.gif" class="iconsmall" alt="'.$strmovedown.'" /></a>');
                     } else {
                         $mform->addElement('html', $spacer);
                     }
@@ -146,7 +170,28 @@ class report_builder_edit_form extends moodleform {
             $mform->addElement('html',"No filters found. Ask your developer to add filter options to /local/reportbuilder/sources/{$report->source}/filteroptions.php");
         }
 
-        $mform->addElement('header', 'general', get_string('reportcolumns', 'local'));
+        $mform->addElement('hidden','id',$id);
+        $mform->setType('id', PARAM_INT);
+        $mform->addElement('hidden','source',$report->source);
+        $mform->setType('source', PARAM_TEXT);
+        $this->add_action_buttons();
+    }
+}
+
+
+class report_builder_edit_columns_form extends moodleform {
+    function definition() {
+        global $CFG;
+        $mform =& $this->_form;
+        $report = $this->_customdata['report'];
+        $id = $this->_customdata['id'];
+
+        $strmovedown = get_string('movedown','local');
+        $strmoveup = get_string('moveup','local');
+        $strdelete = get_string('delete','local');
+        $spacer = '<img src="'.$CFG->wwwroot.'/pix/spacer.gif" class="iconsmall" alt="" />';
+
+        $mform->addElement('header', 'reportcolumns', get_string('reportcolumns', 'local'));
 
         if(isset($report->columns) && is_array($report->columns) && count($report->columns)>0) {
 
@@ -185,17 +230,17 @@ class report_builder_edit_form extends moodleform {
                 }
                 $mform->addElement('html','</td><td>');
                 // delete link
-                $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/reportbuilder/settings.php?d=1&amp;id='.$id.'&amp;cid='.$cid.'" title="'.$strdelete.'"><img src="'.$CFG->pixpath.'/t/delete.gif" class="iconsmall" alt="'.$strdelete.'" /></a>');
+                $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/reportbuilder/columns.php?d=1&amp;id='.$id.'&amp;cid='.$cid.'" title="'.$strdelete.'"><img src="'.$CFG->pixpath.'/t/delete.gif" class="iconsmall" alt="'.$strdelete.'" /></a>');
                 // move up link
                 if($i != 1) {
-                    $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/reportbuilder/settings.php?m=up&amp;id='.$id.'&amp;cid='.$cid.'" title="'.$strmoveup.'"><img src="'.$CFG->pixpath.'/t/up.gif" class="iconsmall" alt="'.$strmoveup.'" /></a>');
+                    $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/reportbuilder/columns.php?m=up&amp;id='.$id.'&amp;cid='.$cid.'" title="'.$strmoveup.'"><img src="'.$CFG->pixpath.'/t/up.gif" class="iconsmall" alt="'.$strmoveup.'" /></a>');
                 } else {
                     $mform->addElement('html', $spacer);
                 }
 
                 // move down link
                 if($i != $colcount) {
-                    $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/reportbuilder/settings.php?m=down&amp;id='.$id.'&amp;cid='.$cid.'" title="'.$strmovedown.'"><img src="'.$CFG->pixpath.'/t/down.gif" class="iconsmall" alt="'.$strmovedown.'" /></a>');
+                    $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/reportbuilder/columns.php?m=down&amp;id='.$id.'&amp;cid='.$cid.'" title="'.$strmovedown.'"><img src="'.$CFG->pixpath.'/t/down.gif" class="iconsmall" alt="'.$strmovedown.'" /></a>');
                 } else {
                     $mform->addElement('html', $spacer);
                 }
@@ -219,8 +264,33 @@ class report_builder_edit_form extends moodleform {
                 $mform->addElement('html',"No columns found. Ask your developer to add column options to /local/reportbuilder/sources/{$report->source}/columnoptions.php");
             }
 
+        $mform->addElement('hidden','id',$id);
+        $mform->setType('id', PARAM_INT);
+        $mform->addElement('hidden','source',$report->source);
+        $mform->setType('source', PARAM_TEXT);
+        $this->add_action_buttons();
+    }
 
-        $mform->addElement('header', 'general', get_string('onlydisplayrecordsfor', 'local'));
+
+    function validation($data) {
+        $err = array();
+        $err += validate_unique_columns($data);
+        return $err;
+    }
+
+
+}
+
+
+
+class report_builder_edit_content_form extends moodleform {
+    function definition() {
+        global $CFG;
+        $mform =& $this->_form;
+        $report = $this->_customdata['report'];
+        $id = $this->_customdata['id'];
+
+        $mform->addElement('header', 'restrictions', get_string('onlydisplayrecordsfor', 'local'));
         if(isset($report->restrictionoptions) && is_array($report->restrictionoptions)) {
             $mform->addElement('static','restrictionoptions','&nbsp;',get_string('help:restrictionoptions','local'));
             $mform->setHelpButton('restrictionoptions', array('reportbuilderrestrictionoptions',get_string('onlydisplayrecordsfor','local'),'moodle'));
@@ -240,23 +310,59 @@ class report_builder_edit_form extends moodleform {
             $mform->addElement('html',get_string('norestrictionsfound','local',$report->source));
         }
 
-        $mform->addElement('hidden','id',$this->_customdata['id']);
+        $mform->addElement('hidden','id',$id);
+        $mform->setType('id', PARAM_INT);
+        $mform->addElement('hidden','source',$report->source);
+        $mform->setType('source', PARAM_TEXT);
+        $this->add_action_buttons();
+    }
+}
+
+
+class report_builder_edit_access_form extends moodleform {
+    function definition() {
+        global $CFG;
+        $mform =& $this->_form;
+        $report = $this->_customdata['report'];
+        $id = $this->_customdata['id'];
+
+        $mform->addElement('header', 'access', get_string('accesscontrols', 'local'));
+
+        $radiogroup = array();
+        $radiogroup[] =& $mform->createElement('radio', 'accessenabled', '', get_string('norestriction','local'), 1);
+        $radiogroup[] =& $mform->createElement('radio', 'accessenabled', '', get_string('withrestriction','local'), 0);
+        $mform->addGroup($radiogroup, 'radiogroup', get_string('restrictaccess','local'), '<br />', false);
+        if(get_record('report_builder_access', 'reportid', $id, 'accesstype', 'all')) {
+            $mform->setDefault('accessenabled', 1);
+        } else {
+            $mform->setDefault('accessenabled', 0);
+        }
+
+
+        $mform->addElement('header', 'accessbyroles', get_string('accessbyrole', 'local'));
+
+        if ($roles = get_records('role','','','sortorder')) {
+            $rolesgroup = array();
+            foreach($roles as $role) {
+                $rolesgroup[] =& $mform->createElement('advcheckbox', "role[{$role->id}]", '', $role->name, null, array(0, 1));
+                if(get_record('report_builder_access','reportid', $id, 'accesstype', 'role', 'typeid', $role->id)) {
+                    $mform->setDefault("role[{$role->id}]", 1);
+                }
+            }
+            $mform->addGroup($rolesgroup, 'roles', get_string('roleswithaccess','local'), '<br />', false);
+            $mform->disabledIf('roles', 'accessenabled', 'eq', 1);
+        } else {
+            $mform->addElement('html', '<p>'.get_string('error:norolesfound','local').'</p>');
+        }
+        $mform->addElement('hidden','id',$id);
         $mform->setType('id', PARAM_INT);
         $mform->addElement('hidden','source',$report->source);
         $mform->setType('source', PARAM_TEXT);
         $this->add_action_buttons();
     }
 
-
-    function validation($data) {
-        $err = array();
-        $err += validate_shortname($data);
-        $err += validate_unique_columns($data);
-        return $err;
-    }
-
-
 }
+
 
 // check shortname is unique in db
 function validate_shortname($data) {
