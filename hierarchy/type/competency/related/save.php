@@ -10,10 +10,10 @@ require_once($CFG->dirroot.'/hierarchy/type/competency/lib.php');
 ///
 
 // Competency id
-$id = required_param('id', PARAM_INT);
+$compid = required_param('id', PARAM_INT);
 
-// Competencies to add
-$add = required_param('add', PARAM_SEQUENCE);
+// Competencies to relate
+$relidlist = required_param('add', PARAM_SEQUENCE);
 
 // Non JS parameters
 $nojs = optional_param('nojs', false, PARAM_BOOL);
@@ -31,7 +31,7 @@ require_capability('moodle/local:updatecompetency', $sitecontext);
 $hierarchy = new competency();
 
 // Load competency
-if (!$competency = $hierarchy->get_item($id)) {
+if (!$competency = $hierarchy->get_item($compid)) {
     error('Competency could not be found');
 }
 
@@ -48,17 +48,30 @@ if (!empty($USER->competencyediting)) {
 ///
 
 // Parse input
-$add = explode(',', $add);
+$relidlist = explode(',', $relidlist);
 $time = time();
 
-foreach ($add as $addition) {
+foreach ($relidlist as $relid) {
     // Check id
-    if (!is_numeric($addition)) {
+    if (!is_numeric($relid)) {
         error('Supplied bad data - non numeric id');
     }
 
+    // Check to see if the relationship already exists.
+    $alreadyrelated = get_records_select(
+            'comp_relations',
+            "(id1={$compid} and id2={$relid}) or (id1={$relid} and id2={$compid})",
+            '',
+            'id',
+            0,
+            1
+    );
+    if ( is_array($alreadyrelated) && count($alreadyrelated) > 0 ){
+        continue;
+    }
+
     // Load competency
-    $related = $hierarchy->get_item($addition);
+    $related = $hierarchy->get_item($relid);
 
     // Load framework
     $framework = $hierarchy->get_framework($related->frameworkid);
@@ -73,11 +86,7 @@ foreach ($add as $addition) {
 
     insert_record('comp_relations', $relationship);
 
-    if($nojs) {
-        // If JS disabled, redirect back to original page (only if session key matches)
-        $url = ($s == sesskey()) ? $returnurl : $CFG->wwwroot;
-        redirect($url);
-    } else {
+    if(!$nojs) {
         // Return html
         echo '<tr>';
         echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/index.php?type={$hierarchy->prefix}&frameworkid={$framework->id}\">{$framework->fullname}</a></td>";
@@ -95,4 +104,10 @@ foreach ($add as $addition) {
 
         echo '</tr>'.PHP_EOL;
     }
+}
+
+if($nojs) {
+    // If JS disabled, redirect back to original page (only if session key matches)
+    $url = ($s == sesskey()) ? $returnurl : $CFG->wwwroot;
+    redirect($url);
 }
