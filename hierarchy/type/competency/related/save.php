@@ -57,6 +57,11 @@ foreach ($relidlist as $relid) {
         error('Supplied bad data - non numeric id');
     }
 
+    // Don't relate a competency to itself
+    if ( $compid == $relid ){
+        continue;
+    }
+
     // Check to see if the relationship already exists.
     $alreadyrelated = get_records_select(
             'comp_relations',
