@@ -3,6 +3,9 @@
 require_once('../../../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once('lib.php');
+require_js(array(
+    $CFG->wwwroot.'/local/js/lib/jquery-1.3.2.min.js',
+));
 
 
 ///
@@ -163,7 +166,7 @@ if (strlen(trim($scale->description))) {
 // Display scale values
 if ($values) {
     if ($can_edit){
-        echo "<form action=\"{$CFG->wwwroot}/hierarchy/type/competency/scale/view.php?id={$id}\" method=\"POST\">\n";
+        echo "<form id=\"compscaledefaultprofform\" action=\"{$CFG->wwwroot}/hierarchy/type/competency/scale/view.php?id={$id}\" method=\"POST\">\n";
         echo "<input type=\"hidden\" name=\"id\" value=\"{$id}\" />\n";
     }
     $table = new object();
@@ -252,14 +255,23 @@ if ($values) {
     if ($can_edit ){
         $row = array();
         $row[] = '';
-        $row[] = '<input type="submit" value="Update" />';
-        $row[] = '<input type="submit" value="Update" />';
+        $row[] = '<noscript><input type="submit" value="Update" /></noscript>';
+        $row[] = '<noscript><input type="submit" value="Update" /></noscript>';
         $row[] = '';
         $table->data[] = $row;
     }
     print_table($table);
     if ($can_edit){
         echo "</form>\n";
+        ?>
+<script type="text/javascript">
+    $("#compscaledefaultprofform input:radio").change(
+        function(eventObject){
+            $("#compscaledefaultprofform").submit();
+        }
+    );
+</script>
+<?php
     }
 } else {
     echo '<br /><div>'.get_string('noscalevalues','competency').'</div><br />';
