@@ -21,12 +21,16 @@ if (file_exists($CFG->dirroot.'/hierarchy/type/'.$type.'/lib.php')) {
 }
 $shortprefix = hierarchy::get_short_prefix($type);
 
-$redirect = $CFG->wwwroot.'/customfield/index.php?type='.$type;
+$baseredirect = $CFG->wwwroot . '/customfield/index.php';
+$redirect = $baseredirect.'?type='.$type;
+$redirectoptions = array('type'=>$type);
 if ($subtype !== null) {
     $redirect .= '&subtype='.$subtype;
+    $redirectoptions['subtype'] = $subtype;
 }
 if ($depthid) {
     $redirect .= '&depthid='.$depthid;
+    $redirectoptions['depthid'] = $depthid;
     $depth      = $hierarchy->get_depth_by_id($depthid);
 
     $pagetitle = format_string($depth->fullname);
@@ -88,7 +92,7 @@ switch ($action) {
         $optionsyes = array ('id'=>$id, 'confirm'=>1, 'action'=>'deletecategory', 'sesskey'=>sesskey());
         print_header_simple($pagetitle, '', $navigation, '', null, true);
         print_heading(get_string('deletecategory', 'customfields'));
-        notice_yesno(get_string('confirmcategorydeletion', 'customfields', $fieldcount), $redirect, $redirect, $optionsyes, null, 'post', 'get');
+        notice_yesno(get_string('confirmcategorydeletion', 'customfields', $fieldcount), $redirect, $baseredirect, $optionsyes, $redirectoptions, 'post', 'get');
         print_footer();
         die;
         break;
@@ -107,7 +111,7 @@ switch ($action) {
         $optionsyes = array ('id'=>$id, 'confirm'=>1, 'action'=>'deletefield', 'sesskey'=>sesskey());
         print_header_simple($pagetitle, '', $navigation, '', null, true);
         print_heading(get_string('deletefield', 'customfields'));
-        notice_yesno(get_string('confirmfielddeletion', 'customfields', $datacount), $redirect, $redirect, $optionsyes, null, 'post', 'get');
+        notice_yesno(get_string('confirmfielddeletion', 'customfields', $datacount), $redirect, $baseredirect, $optionsyes, $redirectoptions, 'post', 'get');
         print_footer();
         die;
         break;
