@@ -87,7 +87,7 @@ switch ($action) {
         $fieldcount = count_records($tableprefix.'_info_field', 'categoryid', $id);
         $optionsyes = array ('id'=>$id, 'confirm'=>1, 'action'=>'deletecategory', 'sesskey'=>sesskey());
         print_header_simple($pagetitle, '', $navigation, '', null, true);
-        print_heading('deletecategory', 'customfields');
+        print_heading(get_string('deletecategory', 'customfields'));
         notice_yesno(get_string('confirmcategorydeletion', 'customfields', $fieldcount), $redirect, $redirect, $optionsyes, null, 'post', 'get');
         print_footer();
         die;
@@ -106,7 +106,7 @@ switch ($action) {
         $datacount = count_records('user_info_data', 'fieldid', $id);
         $optionsyes = array ('id'=>$id, 'confirm'=>1, 'action'=>'deletefield', 'sesskey'=>sesskey());
         print_header_simple($pagetitle, '', $navigation, '', null, true);
-        print_heading('deletefield', 'customfields');
+        print_heading(get_string('deletefield', 'customfields'));
         notice_yesno(get_string('confirmfielddeletion', 'customfields', $datacount), $redirect, $redirect, $optionsyes, null, 'post', 'get');
         print_footer();
         die;
