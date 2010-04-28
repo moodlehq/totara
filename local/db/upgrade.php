@@ -1450,5 +1450,25 @@ function xmldb_local_upgrade($oldversion) {
         $table = new XMLDBTable('idp_revision_competencytemplate');
         $result = $result && rename_table($table, 'idp_revision_competencytmpl');
     }
+
+    if ($result && $oldversion < 2010042800){
+            // Delete related competency records where a competency is being related to itself
+            $result = $result && execute_sql("delete from {$CFG->prefix}comp_relations where id1=id2");
+
+            // Delete duplicate related competency records
+            $sql = 'select count(*), min(id) as m, least(id1,id2) as a, greatest(id1,id2) as b ';
+            $sql .= "from {$CFG->prefix}comp_relations ";
+            $sql .= 'group by least(id1,id2), greatest(id1,id2) ';
+            $sql .= 'having count(*) > 1';
+            $duperecords = get_records_sql($sql);
+            if ( is_array( $duperecords ) ){
+                foreach ($duperecords as $duperec){
+                    $result = $result && execute_sql(
+                            "delete from {$CFG->prefix}comp_relations where id<>{$duperec->m} and "
+                            . "((id1={$duperec->a} and id2={$duperec->b}) or (id1={$duperec->b} and  id2={$duperec->a}))"
+                    );
+                }
+            }
+    }
     return $result;
 }
