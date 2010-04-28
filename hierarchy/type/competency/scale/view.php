@@ -125,6 +125,9 @@ if ($can_edit) {
 
         if (!update_record('comp_scale', $s)) {
             error('Could not update competency scale');
+        } else {
+            // Fetch the update scale record so it'll show up to the user.
+            $scale = get_record('comp_scale', 'id', $id);
         }
     }
 }
@@ -159,6 +162,10 @@ if (strlen(trim($scale->description))) {
 
 // Display scale values
 if ($values) {
+    if ($can_edit){
+        echo "<form action=\"{$CFG->wwwroot}/hierarchy/type/competency/scale/view.php?id={$id}\" method=\"POST\">\n";
+        echo "<input type=\"hidden\" name=\"id\" value=\"{$id}\" />\n";
+    }
     $table = new object();
     $table->class = 'generalbox';
     $table->data = array();
@@ -196,20 +203,18 @@ if ($values) {
 
             // Is this the default value?
             if ($value->id == $scale->defaultid) {
-                $row[] = $str_set;
+                $row[] = '<input type="radio" name="default" value="'.$value->id.'" checked="checked" />';
             }
             else {
-                $row[] = "<a href=\"{$CFG->wwwroot}/hierarchy/type/competency/scale/view.php?id={$scale->id}&default={$value->id}\" title=\"$str_changeto\">".
-                            $str_changeto."</a>";
+                $row[] = '<input type="radio" name="default" value="'.$value->id.'" />';
             }
 
             // Is this the proficient value?
             if ($value->id == $scale->proficient) {
-                $row[] = $str_set;
+                $row[] = '<input type="radio" name="proficient" value="'.$value->id.'" checked="checked" />';
             }
             else {
-                $row[] = "<a href=\"{$CFG->wwwroot}/hierarchy/type/competency/scale/view.php?id={$scale->id}&proficient={$value->id}\" title=\"$str_changeto\">".
-                            $str_changeto."</a>";
+                $row[] = '<input type="radio" name="proficient" value="'.$value->id.'" />';
             }
 
             $buttons[] = "<a href=\"{$CFG->wwwroot}/hierarchy/type/competency/scale/editvalue.php?id={$value->id}\" title=\"$str_edit\">".
@@ -243,7 +248,19 @@ if ($values) {
     }
 
     print_heading(get_string('scalevalues', 'competency'));
+
+    if ($can_edit ){
+        $row = array();
+        $row[] = '';
+        $row[] = '<input type="submit" value="Update" />';
+        $row[] = '<input type="submit" value="Update" />';
+        $row[] = '';
+        $table->data[] = $row;
+    }
     print_table($table);
+    if ($can_edit){
+        echo "</form>\n";
+    }
 } else {
     echo '<br /><div>'.get_string('noscalevalues','competency').'</div><br />';
 
