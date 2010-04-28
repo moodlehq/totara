@@ -3,9 +3,9 @@
 $string['category'] = 'Category';
 $string['categorynamemustbeunique'] = 'Category name (must be unique)';
 $string['categorynamenotunique'] = 'This category name is already in use';
-$string['confirmcategorydeletion'] = 'There is/are $a field/s in this category which will be moved into the category above (or below if in the top category).<br />Do you still wish to delete this category?';
+$string['confirmcategorydeletion'] = 'There is/are $a field/s in this category which will be moved into the category above (or below if in the top category). <br />Do you still wish to delete this category?';
 $string['commonsettings'] = 'Common settings';
-$string['confirmfielddeletion'] = 'There is/are $a record/s for this field which will be deleted.<br/>Do you still wish to delete this field?';
+$string['confirmfielddeletion'] = 'There is/are $a record/s for this field which will be deleted. <br />Do you still wish to delete this field?';
 $string['createcustomfieldcategory'] = 'Create custom field category';
 $string['createnewcustomfield'] = 'Create a new custom field';
 $string['createnewfield'] = 'Create a new &quot;$a&quot; custom field';
