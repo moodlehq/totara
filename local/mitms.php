@@ -342,8 +342,8 @@ function mitms_print_my_courses() {
             if ($course->timestarted != 0) {
                 $starteddate = userdate($course->timestarted, '%e %b %y');
             } 
-            $enroldate = isset($enrolled) ? userdate($enrolled, '%e %b %y') : null;
-            $completeddate = isset($completed) ? userdate($completed, '%e %b %y') : null;
+            $enroldate = isset($enrolled) && $enrolled != 0 ? userdate($enrolled, '%e %b %y') : null;
+            $completeddate = isset($completed) && $completed != 0 ? userdate($completed, '%e %b %y') : null;
             $content .= "<tr><td class=\"course\"><a href=\"{$CFG->wwwroot}/course/view.php?id={$id}\" title=\"$name\">$name</a></td>";
             $content .=     "<td class=\"status\">$status</td><td class=\"enroldate\">$enroldate</td>";
             $content .=     "<td class=\"startdate\">$starteddate</td><td class=\"completeddate\">$completeddate</td></tr>\n";
