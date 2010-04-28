@@ -61,7 +61,7 @@ class mitms_competency_evidence_form extends moodleform {
             // the record of learning page if JS is ofe
             $murl = new moodle_url(qualified_me());
             $mform->addElement('html','<noscript><p>This form requires Javascript to be enabled.
-                <a href="'.$murl->out(false,array('nojs'=>1)).'">Click here for a none javascript version of this form</a>.</p></noscript>');
+                <a href="'.$murl->out(false,array('nojs'=>1)).'">'.get_string('clickfornonjsform','competency').'</a>.</p></noscript>');
         }
 
         $mform->addElement('header', 'general', get_string('general', 'form'));

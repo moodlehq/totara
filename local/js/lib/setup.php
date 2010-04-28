@@ -201,7 +201,7 @@ function build_category_treeview($list, $parents, $load_string) {
 }
 
 /*
- * Create a none javascript version of treeview
+ * Create a non-javascript version of treeview
  *
  * @param array $elements Array of items to display
  * @param string $error_string String to print if something goes wrong
@@ -295,7 +295,7 @@ function build_nojs_breadcrumbs($hierarchy, $parentid, $url, $urlparams, $allfws
 }
 
 /*
- * Create a none javascript framework picker page, allowing the user to select which
+ * Create a non-javascript framework picker page, allowing the user to select which
  * framework to use to assign an item
  *
  * @param object $hierarchy Hierarchy to generate picker for
@@ -322,7 +322,7 @@ function build_nojs_frameworkpicker($hierarchy, $url, $urlparams) {
 }
 
 /*
- * Create a none javascript position picker page, allowing the user to select which
+ * Create a non-javascript position picker page, allowing the user to select which
  * position to use to assign an item
  *
  * @param string $url URL to take the user to when they click a position link

@@ -67,7 +67,7 @@ class user_position_assignment_form extends moodleform {
 
         if(!$nojs) {
             $mform->addElement('html','<noscript><p>This form requires Javascript to be enabled.
-                <a href="'.qualified_me().'&amp;nojs=1">Click here for a none javascript version of this form</a>.</p></noscript>');
+                <a href="'.qualified_me().'&amp;nojs=1">'.get_string('clickfornonjsform','position').'</a>.</p></noscript>');
         }
         $mform->addElement('header', 'general', get_string('type'.$type, 'position'));
 

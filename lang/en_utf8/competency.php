@@ -148,4 +148,5 @@ $string['error:evidencealreadyexists'] = 'Could not create new competency eviden
 $string['createnewcompetency'] = 'Create a new competency';
 $string['selectcategoryandcourse'] = 'Select a course category then choose a course to pick evidence items from:';
 $string['nocoursesincat'] = 'No courses found in that category';
+$string['clickfornonjsform'] = 'Click here for a non-javascript version of this form';
 
