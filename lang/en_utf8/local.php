@@ -264,14 +264,14 @@ $string['firstselectcompetency'] = 'First select a competency';
 $string['selectcompetency'] = 'Select a competency';
 $string['deletecompetencyevidence'] = 'Delete Competency Evidence';
 $string['confirmdeletece'] = 'Are you sure you want to delete this competency evidence record?';
-$string['couldnotdeletece'] = 'Could not delete that competency evidence record';
+$string['couldnotdeletece'] = 'Could not delete that competency evidence record.';
 $string['alreadyselected'] = '(already selected)';
 
 // Installation and Demo data
 $string['installingdemodata'] = 'Installing Demo Data';
-$string['installdemoquestion'] = 'Do you want to include demo data with this installation?<br /><br />(this will take a long time)';
+$string['installdemoquestion'] = 'Do you want to include demo data with this installation?<br /><br />(This will take a long time.)';
 $string['performinglocalpostinst'] = 'Local Post-installation setup';
-$string['localpostinstfailed'] = 'There was a problem setting up local modifications to this installation';
+$string['localpostinstfailed'] = 'There was a problem setting up local modifications to this installation.';
 
 // Report Headings
 $string['reportheadings'] = 'Report Headings';
