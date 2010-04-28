@@ -128,7 +128,7 @@ class filtering {
                 case 'select':
                     $selectfunc = $filteroptions[$type][$value]['selectfunc'];
                     $options = (isset($filteroptions[$type][$value]['options'])) ? $filteroptions[$type][$value]['options'] : null ;
-                    $selectfield = $selectfunc($this->_report->contentsettings);
+                    $selectfield = $selectfunc($this->_report->contentmode, $this->_report->contentsettings);
                     return new $filtername($fieldname, $label, $advanced, $sessionname, $fieldname, $fieldquery, $selectfield, null, $options);
                 default:
                     trigger_error("No filter found for filter type '$filtertype'.",E_USER_WARNING);

@@ -2,36 +2,50 @@
 
 // functions to return list of options for filter select elements
 // specified in filteroptions.php
-function get_organisations_list($restrictions) {
+function get_organisations_list($contentmode, $contentsettings) {
     global $CFG,$USER;
     require_once($CFG->dirroot.'/hierarchy/lib.php');
     require_once($CFG->dirroot.'/hierarchy/type/organisation/lib.php');
 
-    //TODO fix this to use only available options
-    $restrictions = null;
+    // show all options if no content restrictions set
+    if($contentmode == 0) {
+        $hierarchy = new organisation();
+        $hierarchy->make_hierarchy_list($orgs, null, true, true);
+        return $orgs;
+    }
 
     $baseorg = null; // default to top of tree
 
     $localset = false;
     $nonlocal = false;
-    // go through restrictions, to see if only local
-    // restrictions are set
-    if(isset($restrictions) && is_array($restrictions)) {
-        foreach ($restrictions as $restriction) {
-            if($restriction['funcname']=='local_records' ||
-                $restriction['funcname']=='local_completed_records') {
+    // are enabled content restrictions local or not?
+    foreach($contentsettings as $name => $value) {
+        if($name == 'completed_org' || $name == 'current_org') {
+            if(isset($value['enable']) && $value['enable'] == 1) {
                 $localset = true;
-                } else {
+            }
+        } else {
+            if(isset($value['enable']) && $value['enable'] == 1) {
                 $nonlocal = true;
             }
         }
     }
-    // only local restrictions set - limit pulldown options
-    if($localset && !$nonlocal) {
-        $orgid = get_field('pos_assignment','organisationid','userid',$USER->id);
-        // set to use users org id if it's set
-        if(isset($orgid)) {
-            $baseorg = $orgid;
+
+    // 'any' mode
+    if($contentmode == 1) {
+        if($localset && !$nonlocal) {
+            // only restrict the org list if all content restrictions are local ones
+            if($orgid = get_field('pos_assignment','organisationid','userid',$USER->id)) {
+                $baseorg = $orgid;
+            }
+        }
+    // 'all' mode
+    } else if ($contentmode == 2) {
+        if($localset) {
+            // restrict the org list if any content restrictions are local ones
+            if($orgid = get_field('pos_assignment','organisationid','userid',$USER->id)) {
+                $baseorg = $orgid;
+            }
         }
     }
 
