@@ -178,13 +178,12 @@ if ($attendees = facetoface_get_attendees($session->id)) {
         }
         $table->data[] = $data;
     }
+
+    print_table($table);
 }
 else {
-    $table->data = array();
-    $table->data[] = array_pad(array(get_string('nosignedupusers', 'facetoface')), count($table->head), '');
+    print_heading(get_string('nosignedupusers', 'facetoface'));
 }
-
-print_table($table);
 
 if ($takeattendance) {
     echo '<p>';
