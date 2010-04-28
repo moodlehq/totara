@@ -26,15 +26,12 @@ if ($fromform = $mform->get_data()) {
         print_error('error:unknownbuttonclicked', 'local', $returnurl);
     }
 
-    $todb = new object();
-    $todb->id = $id;
-    $result = build_restrictions($fromform);
-    $todb->restriction = serialize($result);
-    if(update_record('report_builder',$todb)) {
+    if(update_content($id, $report, $fromform)) {
         redirect($returnurl);
     } else {
         redirect($returnurl, get_string('error:couldnotupdatereport','local'));
     }
+
 }
 
 admin_externalpage_print_header();
@@ -55,28 +52,49 @@ $mform->display();
 
 admin_externalpage_print_footer();
 
-function build_restrictions($fromform) {
-    $source = $fromform->source;
-    $options = reportbuilder::get_source_data('restrictionoptions',$source);
-    $i = 0;
-    $rest = "restriction$i";
-    $ret = array();
-    while(isset($fromform->$rest)) {
-        if($fromform->$rest != '0') {
-            if(isset($options) && is_array($options)) {
-                foreach($options as $option) {
-                    if($option['name'] == $fromform->$rest) {
-                        $ret[] = $fromform->$rest;
-                    }
-                }
+function update_content($id, $report, $fromform) {
+    begin_sql();
+
+    // first check if there are any content restrictions at all
+    $contentenabled = isset($fromform->contentenabled) ? $fromform->contentenabled : 0;
+
+    // update content enabled setting
+    $todb = new object();
+    $todb->id = $id;
+    $todb->contentmode = $contentenabled;
+    if(!update_record('report_builder', $todb)) {
+        rollback_sql();
+        return false;
+    }
+    // no need to go further if all content allowed
+    if($contentenabled == 0) {
+        commit_sql();
+        return true;
+    }
+
+    // convert form data into a settings array
+    $contentoptions = $report->get_content_options();
+    $settings = array();
+    foreach($fromform as $input => $value) {
+        foreach($contentoptions as $option) {
+            if(substr($input, 0, strlen($option)) == $option) {
+                $inputname = substr($input, strlen($option)+1);
+                $settings[$option][$inputname] = $value;
             }
         }
-        $i++;
-        $rest = "restriction$i";
     }
-    return $ret;
-}
 
+    $todb = new object();
+    $todb->id = $id;
+    $todb->contentsettings = serialize($settings);
+    if(!update_record('report_builder', $todb)) {
+        rollback_sql();
+        return false;
+    }
+
+    commit_sql();
+    return true;
+}
 
 
 ?>

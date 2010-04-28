@@ -4,8 +4,8 @@ require_once("{$CFG->dirroot}/local/reportbuilder/filters/lib.php");
 require_once($CFG->libdir.'/tablelib.php');
 
 class reportbuilder {
-    public $fullname, $shortname, $source, $hidden, $filters, $filteroptions, $columns;
-    public $columnoptions, $restriction, $restrictionoptions, $_filtering;
+    public $fullname, $shortname, $source, $hidden, $filters, $filteroptions, $columns, $contentsettings;
+    public $columnoptions, $_filtering, $contentoptions, $contentmode;
     private $_id, $_defaultcolumns, $_defaultfilters, $_joinlist, $_base, $_params;
     private $_paramoptions, $_embeddedparams, $_admin, $_adminoptions, $_fullcount, $_filteredcount;
 
@@ -21,9 +21,10 @@ class reportbuilder {
             $this->fullname = isset($embed->fullname) ? $embed->fullname : null;
             $this->filters = isset($embed->filters) ? $embed->filters : null;
             $this->columns = isset($embed->columns) ? $embed->columns : null;
-            $this->restriction = isset($embed->restriction) ? $embed->restriction : null;
             $this->source = isset($embed->source) ? $embed->source : null;
             $this->_embeddedparams = isset($embed->embeddedparams) ? $embed->embeddedparams : null;
+            $this->contentmode = isset($embed->contentmode) ? $embed->contentmode : 0;
+            $this->contentsettings = isset($embed->contentsettings) ? $embed->contentsettings : array();
         } else {
             // lookup from db
 
@@ -33,10 +34,10 @@ class reportbuilder {
                 $this->fullname = $report->fullname;
                 $this->filters = unserialize($report->filters);
                 $this->columns = unserialize($report->columns);
-                $this->restriction = unserialize($report->restriction);
                 $this->_id = $report->id;
                 $this->hidden = $report->hidden;
-
+                $this->contentmode = $report->contentmode;
+                $this->contentsettings = unserialize($report->contentsettings);
             } else {
                 error("Report '$shortname' not found in database.");
             }
@@ -44,13 +45,13 @@ class reportbuilder {
 
         // pull in data for this report from the source
         $this->columnoptions = reportbuilder::get_source_data('columnoptions', $this->source);
+        $this->contentoptions = reportbuilder::get_source_data('contentoptions', $this->source);
         $this->_defaultcolumns = reportbuilder::get_source_data('defaultcolumns', $this->source);
         $this->_defaultfilters = reportbuilder::get_source_data('defaultfilters', $this->source);
         $this->filteroptions = reportbuilder::get_source_data('filteroptions', $this->source);
         $this->_adminoptions = reportbuilder::get_source_data('adminoptions', $this->source);
         $this->_admin = $this->get_current_admin_options();
         $this->_joinlist = reportbuilder::get_source_data('joinlist', $this->source);
-        $this->restrictionoptions = reportbuilder::get_source_data('restrictionoptions', $this->source);
         $this->_base = reportbuilder::get_source_data('base', $this->source);
         $this->_paramoptions = reportbuilder::get_source_data('paramoptions', $this->source);
         $this->_params = $this->get_current_params();
@@ -208,26 +209,6 @@ class reportbuilder {
         return $this->_filtering->get_sql_filter();
     }
 
-    /*
-     * Given a restriction name (as stored in db), return an array
-     * of information about that restriction (from restrictionoptions)
-     *
-     * @param string $name Name of the required restriction
-     * @return array Array of information about the restriction or
-     *               false if no restriction is found
-     */
-    function get_restriction_info($name) {
-        if(empty($name)) {
-            return false;
-        }
-        foreach($this->restrictionoptions as $option) {
-            if(isset($option['name']) && $option['name'] == $name) {
-                return $option;
-            }
-        }
-        return false;
-    }
-
 
     /* Returns true if the current user has permission to view this report
      *
@@ -236,8 +217,9 @@ class reportbuilder {
      */
     public static function is_capable($id) {
 
-        // if the 'all' accesstype is found let anyone view it
-        if(get_records_select('report_builder_access', "reportid=$id AND accesstype='all'")) {
+        // if the 'accessmode' flag is set to 0 let anyone view it
+        $accessmode = get_field('report_builder', 'accessmode', 'id', $id);
+        if($accessmode == 0) {
             return true;
         }
 
@@ -286,83 +268,45 @@ class reportbuilder {
         return "(" . implode(" AND ",$out) . ")";
     }
 
-    /*
-     * Takes the list of restrictions and converts it into an SQL snipped that,
-     * when applied to the WHERE clause of the query, reduces the results to only
-     * include those matched by the restrictions
-     *
-     * This is done by calling restriction functions, which are tasked with
-     * determining matches for their restriction
-     *
-     * return string SQL snippet created from allowed restrictions
-     */
-    function get_restrictions() {
+    function get_content_restrictions() {
         global $CFG;
-        // import restriction funcs
-        include_once($CFG->dirroot.'/local/reportbuilder/restrictionfuncs.php');
-        $restrictions = $this->restriction;
-
-        $queries = array();
-        // start with an empty query, so default is display no results
-        $queries['default'] = array();
-
-        // go through restrictions
-        // saving groups of fields together
-        foreach ($restrictions as $restriction) {
-            $info = $this->get_restriction_info($restriction);
-            if(!$info) {
-                continue;
-            }
-            $funcname = $info['funcname'];
-            $field = $info['field'];
-
-            // shortcut, all matches everything
-            if($field=='all') {
-                return "( TRUE )";
-            }
-
-            $func = "reportbuilder_restriction_{$funcname}";
-            if(!function_exists($func)) {
-                error("Restriction function $func does not exist");
-            }
-            $values = $func();
-            if(!empty($values)) {
-                if(isset($queries[$field])) {
-                    $queries[$field] = array_merge((array)$queries[$field], (array)$values);
-                } else {
-                    $queries[$field] = $values;
-                }
-            } else {
-                // add an empty query so failed match shows
-                // no results (not all results!)
-                if(!isset($queries[$field])) {
-                    $queries[$field] = array();
-                }
-            }
-        }
-
-        // now go through each grouping, reducing to unique records
-        $out = array();
-        foreach ($queries as $field=>$query) {
-            // build query
-            if(count($query) > 0) {
-            $string = $field;
-            $string .= " IN (";
-            $string .= implode(',',array_unique((array)$query));
-            $string .= ")";
-            // if no entries query is false
-            } else {
-                $string = "false";
-            }
-            $out[] = $string;
-        }
-
-        // finally build the output
-        if(count($out)>0) {
-            return '('.implode(' OR ',$out).')';
+        // if no content restrictions enabled return a TRUE snippet
+        if($this->contentmode == 0) {
+            return "( TRUE )";
+        } else if ($this->contentmode == 2) {
+            // require all to match
+            $op = ' AND ';
         } else {
-            return '';
+            // require any to match
+            $op = ' OR ';
         }
+
+        $out = array();
+        $settings = $this->contentsettings;
+        // include the content functions
+        include_once($CFG->dirroot.'/local/reportbuilder/contentfuncs.php');
+
+        // go through the content options
+        foreach($this->contentoptions as $option) {
+            $name = $option['name'];
+            $field = $option['field'];
+            $options = isset($settings[$name]) ? $settings[$name] : null;
+            if(isset($options['enable']) && $options['enable'] == 1) {
+                // this content option is enabled
+                $funcname = 'reportbuilder_content_'.$name;
+                if(function_exists($funcname)) {
+                    // call function to get SQL snippet
+                    $out[] = $funcname($field, $options);
+                } else {
+                    error("Content function $funcname does not exist");
+                }
+            }
+        }
+        // show nothing if no content restrictions enabled
+        if(count($out)==0) {
+            return '(FALSE)';
+        }
+        return '('.implode($op, $out).')';
     }
 
     /*
@@ -461,21 +405,26 @@ class reportbuilder {
         return $joins;
     }
 
-    /*
-     * Get the restriction info and format for use by get_joins()
-     *
-     * @return array An array of arrays containing restriction join information
-     */
-    function get_restriction_joins() {
-        $restrictions = $this->restriction;
-        $restjoins = array();
-        foreach($restrictions as $restriction) {
-            if($info = $this->get_restriction_info($restriction)) {
-                $restjoins[] = $info;
-            }
+    function get_content_joins() {
+        if($this->contentmode == 0) {
+            // no limit on content so no joins necessary
+            return array();
         }
-        return $this->get_joins($restjoins, 'restriction');
+        $settings = $this->contentsettings;
+        $contentjoins = array();
+        foreach($this->contentoptions as $option) {
+                $optionname = $option['name'];
+                if(array_key_exists($optionname, $settings)) {
+                    if(array_key_exists('enable',$settings[$optionname])) {
+                        if($settings[$optionname]['enable'] == 1) {
+                            $contentjoins[] = $option;
+                        }
+                    }
+                }
+        }
+        return $this->get_joins($contentjoins, 'content');
     }
+
 
     /*
      * Check the requested columns exist in column options, and if so
@@ -602,10 +551,10 @@ class reportbuilder {
         // get the joins needed to display requested columns and do filtering and restrictions
         $columnjoins = $this->get_column_joins();
         $filterjoins = ($filtered === true) ? $this->get_filter_joins() : array();
-        $restjoins = $this->get_restriction_joins();
         $paramjoins = $this->get_joins($this->_params,'param');
         $adminjoins = $this->get_joins($this->_admin,'admin');
-        $joins = array_merge($columnjoins, $filterjoins, $restjoins, $paramjoins, $adminjoins);
+        $contentjoins = $this->get_content_joins();
+        $joins = array_merge($columnjoins, $filterjoins, $paramjoins, $adminjoins, $contentjoins);
 
         // now build the query from the snippets
 
@@ -624,9 +573,10 @@ class reportbuilder {
         // build query starting from base table then adding required joins
         $from = "FROM $base ".implode(' ', $joins)." ";
 
+
         // restrictions
         $whereclauses = array();
-        $restrictions = $this->get_restrictions();
+        $restrictions = $this->get_content_restrictions();
         if($restrictions != '') {
             $whereclauses[] = $restrictions;
         }
@@ -1107,6 +1057,18 @@ class reportbuilder {
         }
         die;
 
+    }
+
+    // returns array of content options allowed for this report's source
+    function get_content_options() {
+
+        $contentoptions = array();
+        if(isset($this->contentoptions) && is_array($this->contentoptions)) {
+            foreach($this->contentoptions as $option) {
+                $contentoptions[] = $option['name'];
+            }
+        }
+        return $contentoptions;
     }
 
     ///

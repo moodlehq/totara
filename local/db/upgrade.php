@@ -1523,5 +1523,35 @@ function xmldb_local_upgrade($oldversion) {
 
     }
 
+    if ($result && $oldversion < 2010042800) {
+        /// Define fields access and content to be added to report_builder
+        $table = new XMLDBTable('report_builder');
+        $field = new XMLDBField('accessmode');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '4', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0');
+        // add access field to report_builder
+        $result = $result && add_field($table, $field);
+
+        $field = new XMLDBField('contentmode');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '4', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0');
+        // add content field to report_builder
+        $result = $result && add_field($table, $field);
+
+        $field = new XMLDBField('contentsettings');
+        $field->setAttributes(XMLDB_TYPE_TEXT, 'medium', XMLDB_UNSIGNED, null, null, null);
+        // add content settings field to report builder
+        $result = $result && add_field($table, $field);
+
+        $field = new XMLDBField('accesssettings');
+        $field->setAttributes(XMLDB_TYPE_TEXT, 'medium', XMLDB_UNSIGNED, null, null, null);
+        // add access settings field to report builder
+        $result = $result && add_field($table, $field);
+
+        // TODO write migration code to upgrade existing installations
+
+        // drop the old restriction field
+        $field = new XMLDBField('restriction');
+        $result = $result && drop_field($table, $field);
+    }
+
     return $result;
 }

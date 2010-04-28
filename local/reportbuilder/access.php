@@ -55,27 +55,22 @@ admin_externalpage_print_footer();
 
 function update_access($reportid, $accessenabled, $newroles) {
 
-    // is this report set to access all?
-    if(get_record('report_builder_access', 'reportid', $reportid, 'accesstype', 'all')) {
+    begin_sql();
 
-        if(!$accessenabled) {
-            // remove if no longer set
-            if(!delete_records('report_builder_access', 'reportid', $reportid, 'accesstype', 'all')) {
-                return false;
-            }
-        }
-    } else {
-        if($accessenabled) {
-            // add if set now but not before
-            $todb = new object();
-            $todb->reportid = $reportid;
-            $todb->accesstype = 'all';
-            $todb->typeid = 0;
-            if(!insert_record('report_builder_access', $todb)) {
-                return false;
-            }
-        }
+    // update content enabled setting
+    $todb = new object();
+    $todb->id = $reportid;
+    $todb->accessmode = $accessenabled;
+    if(!update_record('report_builder', $todb)) {
+        rollback_sql();
+        return false;
     }
+    // no need to go further if all access allowed
+    if($accessenabled == 0) {
+        commit_sql();
+        return true;
+    }
+
 
     // get existing settings into an array
     $oldroles = array();
@@ -90,6 +85,7 @@ function update_access($reportid, $accessenabled, $newroles) {
             if($set == 0) {
                 // remove if no longer set
                 if(!delete_records('report_builder_access','reportid', $reportid, 'accesstype', 'role', 'typeid', $roleid)) {
+                    rollback_sql();
                     return false;
                 }
             }
@@ -101,11 +97,13 @@ function update_access($reportid, $accessenabled, $newroles) {
                 $todb->accesstype = 'role';
                 $todb->typeid = $roleid;
                 if(!insert_record('report_builder_access', $todb)) {
+                    rollback_sql();
                     return false;
                 }
             }
         }
     }
+    commit_sql();
     return true;
 }
 

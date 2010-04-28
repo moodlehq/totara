@@ -58,7 +58,7 @@ $embed->columns = array(
 );
 // no restrictions
 // limited to single user by embedded params
-$embed->restriction = array('unrestrictedall');
+$embed->contentmode = 0;
 
 $embed->embeddedparams = array(
     'userid' => $id,

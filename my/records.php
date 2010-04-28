@@ -106,7 +106,7 @@
             'heading' => 'Assessor Organisation',
         ),
     );
-    $embed->restriction = array('unrestrictedall');
+    $embed->contentmode = 0;
     $embed->embeddedparams = array(
         // show report for a specific user
         'userid' => $id,

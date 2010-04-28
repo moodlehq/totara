@@ -290,24 +290,72 @@ class report_builder_edit_content_form extends moodleform {
         $report = $this->_customdata['report'];
         $id = $this->_customdata['id'];
 
-        $mform->addElement('header', 'restrictions', get_string('onlydisplayrecordsfor', 'local'));
-        if(isset($report->restrictionoptions) && is_array($report->restrictionoptions)) {
-            $mform->addElement('static','restrictionoptions','&nbsp;',get_string('help:restrictionoptions','local'));
-            $mform->setHelpButton('restrictionoptions', array('reportbuilderrestrictionoptions',get_string('onlydisplayrecordsfor','local'),'moodle'));
+        $mform->addElement('header', 'contentheader', get_string('contentcontrols', 'local'));
 
-            $restrictions = $report->restrictionoptions;
-            foreach($restrictions as $index => $restriction) {
-                $mform->addElement('advcheckbox',"restriction$index",$restriction['title'],null,null,array(0,$restriction['name']));
-                if($report->restriction) {
-                    foreach($report->restriction as $res) {
-                        if($restriction['name'] == $res) {
-                            $mform->setDefault("restriction$index",$res);
-                        }
-                    }
-                }
-            }
-        } else {
-            $mform->addElement('html',get_string('norestrictionsfound','local',$report->source));
+        $radiogroup = array();
+        $radiogroup[] =& $mform->createElement('radio', 'contentenabled', '', get_string('nocontentrestriction','local'), 0);
+        $radiogroup[] =& $mform->createElement('radio', 'contentenabled', '', get_string('withcontentrestrictionany','local'), 1);
+        $radiogroup[] =& $mform->createElement('radio', 'contentenabled', '', get_string('withcontentrestrictionall','local'), 2);
+        $mform->addGroup($radiogroup, 'radiogroup', get_string('restrictcontent','local'), '<br />', false);
+        $mform->setDefault('contentenabled', get_field('report_builder', 'contentmode', 'id', $id));
+
+        // convert content options for this source into an array
+        $contentoptions = $report->get_content_options();
+
+        // display any content restriction form sections that are enabled for this source
+
+        $settings = $report->contentsettings;
+
+        // user content options
+        if(in_array('user', $contentoptions)) {
+            $enable = isset($settings['user']['enable']) ? $settings['user']['enable'] : 0;
+            $who = isset($settings['user']['who']) ? $settings['user']['who'] : 1;
+            $mform->addElement('header', 'user_header', 'Show by user');
+            $mform->addElement('checkbox', 'user_enable', '', 'Show records by user');
+            $mform->disabledIf('user_enable','contentenabled', 'eq', 0);
+            $mform->setDefault('user_enable', $enable);
+            $radiogroup = array();
+            $radiogroup[] =& $mform->createElement('radio', 'user_who', '', 'A user\'s own records', 1);
+            $radiogroup[] =& $mform->createElement('radio', 'user_who', '', 'Records for user\'s direct reports', 2);
+            $radiogroup[] =& $mform->createElement('radio', 'user_who', '', 'Both', 3);
+            $mform->addGroup($radiogroup, 'user_who_group', 'Include records from particular users', '<br />', false);
+            $mform->setDefault('user_who', $who);
+            $mform->disabledIf('user_who_group','contentenabled', 'eq', 0);
+            $mform->disabledIf('user_who_group','user_enable', 'notchecked');
+        }
+
+        // completed organisation content options
+        if(in_array('completed_org', $contentoptions)) {
+            $enable = isset($settings['completed_org']['enable']) ? $settings['completed_org']['enable'] : 0;
+            $recursive = isset($settings['completed_org']['recursive']) ? $settings['completed_org']['recursive'] : 0;
+            $mform->addElement('header', 'completed_org_header', 'Show by completed organisation');
+            $mform->addElement('checkbox', 'completed_org_enable', '', 'Show records completed in the user\'s organisation');
+            $mform->setDefault('completed_org_enable', $enable);
+            $mform->disabledIf('completed_org_enable','contentenabled', 'eq', 0);
+            $radiogroup = array();
+            $radiogroup[] =& $mform->createElement('radio', 'completed_org_recursive', '', 'Yes', 1);
+            $radiogroup[] =& $mform->createElement('radio', 'completed_org_recursive', '', 'No', 0);
+            $mform->addGroup($radiogroup, 'completed_org_recursive_group', 'Include records from child organisations', '<br />', false);
+            $mform->setDefault('completed_org_recursive', $recursive);
+            $mform->disabledIf('completed_org_recursive_group','contentenabled', 'eq', 0);
+            $mform->disabledIf('completed_org_recursive_group','completed_org_enable', 'notchecked');
+        }
+
+        // current organisation content options
+        if(in_array('current_org', $contentoptions)) {
+            $enable = isset($settings['current_org']['enable']) ? $settings['current_org']['enable'] : 0;
+            $recursive = isset($settings['current_org']['recursive']) ? $settings['current_org']['recursive'] : 0;
+            $mform->addElement('header', 'current_org_header', 'Show by current organisation');
+            $mform->addElement('checkbox', 'current_org_enable', '', 'Show records from staff in the user\'s organisation');
+            $mform->setDefault('current_org_enable', $enable);
+            $mform->disabledIf('current_org_enable','contentenabled', 'eq', 0);
+            $radiogroup = array();
+            $radiogroup[] =& $mform->createElement('radio', 'current_org_recursive', '', 'Yes', 1);
+            $radiogroup[] =& $mform->createElement('radio', 'current_org_recursive', '', 'No', 0);
+            $mform->addGroup($radiogroup, 'current_org_recursive_group', 'Include records from child organisations', '<br />', false);
+            $mform->setDefault('current_org_recursive', $recursive);
+            $mform->disabledIf('current_org_recursive_group','contentenabled', 'eq', 0);
+            $mform->disabledIf('current_org_recursive_group','current_org_enable', 'notchecked');
         }
 
         $mform->addElement('hidden','id',$id);
@@ -329,15 +377,10 @@ class report_builder_edit_access_form extends moodleform {
         $mform->addElement('header', 'access', get_string('accesscontrols', 'local'));
 
         $radiogroup = array();
-        $radiogroup[] =& $mform->createElement('radio', 'accessenabled', '', get_string('norestriction','local'), 1);
-        $radiogroup[] =& $mform->createElement('radio', 'accessenabled', '', get_string('withrestriction','local'), 0);
+        $radiogroup[] =& $mform->createElement('radio', 'accessenabled', '', get_string('norestriction','local'), 0);
+        $radiogroup[] =& $mform->createElement('radio', 'accessenabled', '', get_string('withrestriction','local'), 1);
         $mform->addGroup($radiogroup, 'radiogroup', get_string('restrictaccess','local'), '<br />', false);
-        if(get_record('report_builder_access', 'reportid', $id, 'accesstype', 'all')) {
-            $mform->setDefault('accessenabled', 1);
-        } else {
-            $mform->setDefault('accessenabled', 0);
-        }
-
+        $mform->setDefault('accessenabled', get_field('report_builder', 'accessmode', 'id', $id));
 
         $mform->addElement('header', 'accessbyroles', get_string('accessbyrole', 'local'));
 
@@ -350,7 +393,7 @@ class report_builder_edit_access_form extends moodleform {
                 }
             }
             $mform->addGroup($rolesgroup, 'roles', get_string('roleswithaccess','local'), '<br />', false);
-            $mform->disabledIf('roles', 'accessenabled', 'eq', 1);
+            $mform->disabledIf('roles', 'accessenabled', 'eq', 0);
         } else {
             $mform->addElement('html', '<p>'.get_string('error:norolesfound','local').'</p>');
         }

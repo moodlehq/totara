@@ -16,8 +16,8 @@ require_once($CFG->libdir . '/simpletestlib.php');
 class reportbuilderlib_test extends prefix_changing_test_case {
     // test data for database
     var $reportbuilder_data = array(
-        array('id', 'fullname', 'shortname', 'source','filters','columns','restriction','hidden'),
-        array(1, 'Test Report', 'test_report', 'competency_evidence','a:8:{i:0;a:3:{s:4:"type";s:4:"user";s:5:"value";s:8:"fullname";s:8:"advanced";i:0;}i:1;a:3:{s:4:"type";s:4:"user";s:5:"value";s:14:"organisationid";s:8:"advanced";i:0;}i:2;a:3:{s:4:"type";s:19:"competency_evidence";s:5:"value";s:14:"organisationid";s:8:"advanced";i:0;}i:3;a:3:{s:4:"type";s:4:"user";s:5:"value";s:10:"positionid";s:8:"advanced";i:0;}i:4;a:3:{s:4:"type";s:19:"competency_evidence";s:5:"value";s:10:"positionid";s:8:"advanced";i:0;}i:5;a:3:{s:4:"type";s:10:"competency";s:5:"value";s:8:"fullname";s:8:"advanced";i:0;}i:6;a:3:{s:4:"type";s:19:"competency_evidence";s:5:"value";s:13:"completeddate";s:8:"advanced";i:0;}i:7;a:3:{s:4:"type";s:19:"competency_evidence";s:5:"value";s:13:"proficiencyid";s:8:"advanced";i:0;}}', 'a:8:{i:0;a:3:{s:4:"type";s:4:"user";s:5:"value";s:8:"namelink";s:7:"heading";s:11:"Participant";}i:1;a:3:{s:4:"type";s:10:"competency";s:5:"value";s:14:"competencylink";s:7:"heading";s:10:"Competency";}i:2;a:3:{s:4:"type";s:4:"user";s:5:"value";s:12:"organisation";s:7:"heading";s:6:"Office";}i:3;a:3:{s:4:"type";s:19:"competency_evidence";s:5:"value";s:12:"organisation";s:7:"heading";s:17:"Completion Office";}i:4;a:3:{s:4:"type";s:4:"user";s:5:"value";s:8:"position";s:7:"heading";s:8:"Position";}i:5;a:3:{s:4:"type";s:19:"competency_evidence";s:5:"value";s:8:"position";s:7:"heading";s:19:"Completion Position";}i:6;a:3:{s:4:"type";s:19:"competency_evidence";s:5:"value";s:11:"proficiency";s:7:"heading";s:11:"Proficiency";}i:7;a:3:{s:4:"type";s:19:"competency_evidence";s:5:"value";s:13:"completeddate";s:7:"heading";s:15:"Completion Date";}}', 'a:1:{i:0;s:3:"all";}', 0),
+        array('id', 'fullname', 'shortname', 'source','filters','columns','hidden','accessmode', 'contentmode', 'contentsettings', 'accesssettings'),
+        array(1, 'Test Report', 'test_report', 'competency_evidence','a:8:{i:0;a:3:{s:4:"type";s:4:"user";s:5:"value";s:8:"fullname";s:8:"advanced";i:0;}i:1;a:3:{s:4:"type";s:4:"user";s:5:"value";s:14:"organisationid";s:8:"advanced";i:0;}i:2;a:3:{s:4:"type";s:19:"competency_evidence";s:5:"value";s:14:"organisationid";s:8:"advanced";i:0;}i:3;a:3:{s:4:"type";s:4:"user";s:5:"value";s:10:"positionid";s:8:"advanced";i:0;}i:4;a:3:{s:4:"type";s:19:"competency_evidence";s:5:"value";s:10:"positionid";s:8:"advanced";i:0;}i:5;a:3:{s:4:"type";s:10:"competency";s:5:"value";s:8:"fullname";s:8:"advanced";i:0;}i:6;a:3:{s:4:"type";s:19:"competency_evidence";s:5:"value";s:13:"completeddate";s:8:"advanced";i:0;}i:7;a:3:{s:4:"type";s:19:"competency_evidence";s:5:"value";s:13:"proficiencyid";s:8:"advanced";i:0;}}', 'a:8:{i:0;a:3:{s:4:"type";s:4:"user";s:5:"value";s:8:"namelink";s:7:"heading";s:11:"Participant";}i:1;a:3:{s:4:"type";s:10:"competency";s:5:"value";s:14:"competencylink";s:7:"heading";s:10:"Competency";}i:2;a:3:{s:4:"type";s:4:"user";s:5:"value";s:12:"organisation";s:7:"heading";s:6:"Office";}i:3;a:3:{s:4:"type";s:19:"competency_evidence";s:5:"value";s:12:"organisation";s:7:"heading";s:17:"Completion Office";}i:4;a:3:{s:4:"type";s:4:"user";s:5:"value";s:8:"position";s:7:"heading";s:8:"Position";}i:5;a:3:{s:4:"type";s:19:"competency_evidence";s:5:"value";s:8:"position";s:7:"heading";s:19:"Completion Position";}i:6;a:3:{s:4:"type";s:19:"competency_evidence";s:5:"value";s:11:"proficiency";s:7:"heading";s:11:"Proficiency";}i:7;a:3:{s:4:"type";s:19:"competency_evidence";s:5:"value";s:13:"completeddate";s:7:"heading";s:15:"Completion Date";}}', 0, 0, 0, '', ''),
     );
 
     var $role_data = array(
@@ -101,7 +101,8 @@ class reportbuilderlib_test extends prefix_changing_test_case {
                 'heading' => 'Assessor Organisation',
             ),
         );
-        $this->embed->restriction = array('unrestrictedall');
+        $this->embed->contentmode = 0;
+        $this->embed->accessmode = 0;
         $this->embed->embeddedparams = array(
             // show report for a specific user
             'userid' => 2,
@@ -170,11 +171,6 @@ class reportbuilderlib_test extends prefix_changing_test_case {
 
     // display_search() and get_sql_filter() not tested as they print output directly to screen
 
-    // leaving the following until after changes to capabilities:
-    // get_restriction_info()
-    // is_capable()
-    // get_restrictions()
-
     function test_reportbuilder_get_param_restrictions() {
         $rb = new reportbuilder($this->shortname, $this->embed);
         // should return the correct SQL fragment if a parameter restriction is set
@@ -220,16 +216,6 @@ class reportbuilderlib_test extends prefix_changing_test_case {
         $this->assertEqual(count($columns), 3);
         // the strings should have the correct format
         $this->assertEqual($columns['user'], 'LEFT JOIN mdl_unittest_user u ON base.userid = u.id');
-    }
-
-    function test_reportbuilder_get_restriction_joins() {
-        $rb = new reportbuilder($this->shortname, $this->embed);
-        $columns = $rb->get_restriction_joins();
-        // should return an array
-        $this->assertTrue(is_array($columns));
-        // the array should contain the correct number of columns
-        // (in this case zero as none of the restrictions require joins)
-        $this->assertEqual(count($columns), 0);
     }
 
     function test_reportbuilder_get_column_joins() {

@@ -49,11 +49,13 @@
         $todb->fullname = $fromform->fullname;
         $todb->shortname = $fromform->shortname;
         $todb->source = ($fromform->source != '0') ? $fromform->source : null;
-        // create with default columns, restrictions and filters
+        // create with default columns and filters
         $todb->columns = serialize(reportbuilder::get_source_data('defaultcolumns',$fromform->source));
         $todb->filters = serialize(reportbuilder::get_source_data('defaultfilters',$fromform->source));
-        $todb->restriction = serialize(get_default_restrictions($fromform->source));
         $todb->hidden = $fromform->hidden;
+        $todb->contentmode = 0;
+        $todb->accessmode = 0;
+        //TODO set default content and access settings here?
         if($newid = insert_record('report_builder',$todb)) {
             redirect($CFG->wwwroot.'/local/reportbuilder/access.php?id='.$newid);
         } else {
@@ -104,22 +106,4 @@
     admin_externalpage_print_footer();
 
 
-    function get_default_restrictions($source) {
-        $options = reportbuilder::get_source_data('restrictionoptions',$source);
-        $restrictions = array();
-        if(is_array($options)) {
-            foreach ($options as $option) {
-                if($option['default'] == '1') {
-                    $row = array();
-                    $row['funcname'] = (isset($option['funcname'])) ? $option['funcname'] : null;
-                    $row['title'] = (isset($option['title'])) ? $option['title'] : null;
-                    $row['field'] = (isset($option['field'])) ? $option['field'] : null;
-                    $row['joins'] = (isset($option['joins'])) ? $option['joins'] : null;
-                    $row['capability'] = (isset($option['capability'])) ? $option['capability'] : null;
-                    $restrictions[] = $row;
-                }
-            }
-        }
-        return $restrictions;
-    }
 ?>

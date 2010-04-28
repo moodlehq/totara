@@ -252,6 +252,15 @@ $string['norestriction'] = 'All users can view this report';
 $string['withrestriction'] = 'Only certain users can view this report (see below)';
 $string['restrictaccess'] = 'Restrict access';
 $string['accessbyrole'] = 'Restrict access by role';
+$string['norestriction'] = 'All users can view this report';
+$string['withrestriction'] = 'Only certain users can view this report (see below)';
+$string['restrictaccess'] = 'Restrict access';
+$string['accessbyrole'] = 'Restrict access by role';
+$string['nocontentrestriction'] = 'Show all records';
+$string['withcontentrestrictionany'] = 'Show records matching <b>any</b> of the checked criteria';
+$string['withcontentrestrictionall'] = 'Show records matching <b>all</b> of the checked criteria';
+$string['contentcontrols'] = 'Content Controls';
+$string['restrictcontent'] = 'Report content';
 
 // Add/Edit competency evidence
 $string['error:unknownbuttonclicked'] = 'Unknown Button Clicked';
@@ -296,4 +305,5 @@ $string['help:restrictionoptions'] = 'The checkboxes below determine who has acc
 
 // Course competencies
 $string['returntocourse'] = 'Return to the course';
+
 
