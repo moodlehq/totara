@@ -283,3 +283,5 @@ $string['help:searchdesc'] = 'The choices below determine which options appear i
 $string['help:columnsdesc'] = 'The choices below determine which columns appear in the report and how those columns are labelled.';
 $string['help:restrictionoptions'] = 'The checkboxes below determine who has access to this report, and which records they are able to view. If no options are checked no results are visible. Click the help icon for more information';
 
+// Course competencies
+$string['returntocourse'] = 'Return to the course';

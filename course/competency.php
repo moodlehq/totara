@@ -198,6 +198,18 @@ if ($can_edit) {
 
 }
 
+echo '<br /><div class="buttons"><div class="centerbutton">';
+
+$options = array('id'=>$id);
+print_single_button(
+    $CFG->wwwroot.'/course/view.php',
+    $options,
+    get_string('returntocourse', 'local'),
+    'get'
+);
+
+echo '</div></div>';
+
 print_footer($course);
 
 ?>
