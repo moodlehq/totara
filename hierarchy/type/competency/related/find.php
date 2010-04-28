@@ -46,6 +46,7 @@ if (!$framework = $hierarchy->get_framework($frameworkid)) {
 // Load competencies to display
 $competencies = $hierarchy->get_items_by_parent($parentid);
 $alreadyrelated = comp_relation_get_relations($compid);
+$alreadyrelated[$compid] = $compid;
 
 ///
 /// Display page
