@@ -3201,9 +3201,10 @@ function facetoface_print_session($session, $showcapacity, $calendaroutput=false
                 $data = $customdata[$field->id]->data;
             }
         }
-        $table->data[] = array(format_string($field->name), format_string($data));
+        $table->data[] = array(str_replace(' ', '&nbsp;', format_string($field->name)), format_string($data));
     }
 
+    $strdatetime = str_replace(' ', '&nbsp;', get_string('sessiondatetime', 'facetoface'));
     if ($session->datetimeknown) {
         $html = '';
         foreach($session->sessiondates as $date) {
@@ -3214,10 +3215,10 @@ function facetoface_print_session($session, $showcapacity, $calendaroutput=false
             $timefinish = userdate($date->timefinish, get_string('strftimedatetime'));
             $html .= "$timestart &ndash; $timefinish";
         }
-        $table->data[] = array(get_string('sessiondatetime', 'facetoface'), $html);
+        $table->data[] = array($strdatetime, $html);
     }
     else {
-        $table->data[] = array(get_string('sessiondatetime', 'facetoface'), '<i>'.get_string('wait-listed', 'facetoface').'</i>');
+        $table->data[] = array($strdatetime, '<i>'.get_string('wait-listed', 'facetoface').'</i>');
     }
 
     $signupcount = facetoface_get_num_attendees($session->id);
