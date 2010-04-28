@@ -4,6 +4,7 @@ require_once('../../../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->dirroot.'/hierarchy/type/competency/lib.php');
 require_once($CFG->dirroot.'/local/js/lib/setup.php');
+require_once($CFG->dirroot.'/hierarchy/type/competency/related/lib.php');
 
 
 ///
@@ -11,7 +12,7 @@ require_once($CFG->dirroot.'/local/js/lib/setup.php');
 ///
 
 // Competency id
-$id = required_param('id', PARAM_INT);
+$compid = required_param('id', PARAM_INT);
 
 // Parent id
 $parentid = optional_param('parentid', 0, PARAM_INT);
@@ -25,7 +26,7 @@ $returnurl = optional_param('returnurl', '', PARAM_TEXT);
 $s = optional_param('s', '', PARAM_TEXT);
 
 // string of params needed in non-js url strings
-$urlparams = 'id='.$id.'&amp;frameworkid='.$frameworkid.'&amp;nojs='.$nojs.'&amp;returnurl='.urlencode($returnurl).'&amp;s='.$s;
+$urlparams = 'id='.$compid.'&amp;frameworkid='.$frameworkid.'&amp;nojs='.$nojs.'&amp;returnurl='.urlencode($returnurl).'&amp;s='.$s;
 
 // Setup page
 admin_externalpage_setup('competencymanage', '', array(), '', $CFG->wwwroot.'/competency/related/add.php');
@@ -44,6 +45,7 @@ if (!$framework = $hierarchy->get_framework($frameworkid)) {
 
 // Load competencies to display
 $competencies = $hierarchy->get_items_by_parent($parentid);
+$alreadyrelated = comp_relation_get_relations($compid);
 
 ///
 /// Display page
@@ -69,7 +71,8 @@ if(!$nojs) {
     echo build_treeview(
         $competencies,
         get_string('nochildcompetenciesfound', 'competency'),
-        $hierarchy
+        $hierarchy,
+        $alreadyrelated
     );
 
     // If no parent id, close div
@@ -93,7 +96,7 @@ if(!$nojs) {
                 'returnurl' => $returnurl,
                 's' => $s,
                 'nojs' => 1,
-                'id' => $id,
+                'id' => $compid,
             )
         );
 
@@ -105,7 +108,7 @@ if(!$nojs) {
             $parentid,
             $CFG->wwwroot.'/hierarchy/type/competency/related/find.php',
             array(
-                'id' => $id,
+                'id' => $compid,
                 'returnurl' => $returnurl,
                 's' => $s,
                 'nojs' => $nojs,
@@ -130,10 +133,11 @@ if(!$nojs) {
                 'returnurl' => $returnurl,
                 'nojs' => 1,
                 'frameworkid' => $frameworkid,
-                'id' => $id,
+                'id' => $compid,
             ),
             $CFG->wwwroot.'/hierarchy/type/competency/related/find.php?'.$urlparams,
-            $hierarchy->get_all_parents()
+            $hierarchy->get_all_parents(),
+            $alreadyrelated
         );
 
 ?>
