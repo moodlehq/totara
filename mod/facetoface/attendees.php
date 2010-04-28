@@ -217,7 +217,7 @@ else {
 // View unapproved requests
 if (!$takeattendance && ($attendees = facetoface_get_requests($session->id))) {
 
-    echo '<br />';
+    echo '<br id="unapproved" />';
     print_heading(get_string('unapprovedrequests', 'facetoface'), 'center');
 
     echo '<form action="attendees.php?s='.$s.'" method="post">';
