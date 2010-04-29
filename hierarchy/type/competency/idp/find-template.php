@@ -34,17 +34,18 @@ require_capability('moodle/local:idpaddcompetencytemplate', $sitecontext);
 $hierarchy = new competency();
 
 // Load framework
-if (!$framework = $hierarchy->get_framework($frameworkid)) {
-    error('Competency framework could not be found');
-}
-
-// Load competency templates to display
-$templates = $hierarchy->get_templates();
-$assignedtemplates = get_records('idp_revision_competencytmpl', 'revision', $revisionid, '', 'competencytemplate');
-if( !is_array($assignedtemplates) ){
+if (!$framework = $hierarchy->get_framework($frameworkid, true)) {
+    $templates = array();
     $assignedtemplates = array();
-};
+} else {
 
+    // Load competency templates to display
+    $templates = $hierarchy->get_templates();
+    $assignedtemplates = get_records('idp_revision_competencytmpl', 'revision', $revisionid, '', 'competencytemplate');
+    if( !is_array($assignedtemplates) ){
+        $assignedtemplates = array();
+    };
+}
 ///
 /// Display page
 ///
@@ -73,7 +74,7 @@ if(!$nojs) {
 
 echo build_treeview(
     $templates,
-    get_string('notemplateinframework', 'competency'),
+    get_string( ($framework?'notemplateinframework':'notemplate'), 'competency'),
     null,
     $assignedtemplates
 );

@@ -119,6 +119,7 @@ $string['noframeworks'] = 'No competency frameworks defined';
 $string['norelatedcompetencies'] = 'No related competencies';
 $string['noscalevalues'] = 'There are no scale values defined for this scale.';
 $string['notemplateinframework'] = 'No competency templates defined in this framework';
+$string['notemplate'] = 'No competency templates defined';
 $string['numericalvalue'] = 'Numerical value';
 $string['options'] = 'Options';
 $string['parent'] = 'Parent competency';
