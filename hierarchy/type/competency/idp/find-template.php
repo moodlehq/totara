@@ -73,7 +73,7 @@ if(!$nojs) {
 
 echo build_treeview(
     $templates,
-    get_string('notemplates', 'competency'),
+    get_string('notemplateinframework', 'competency'),
     null,
     $assignedtemplates
 );

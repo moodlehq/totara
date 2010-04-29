@@ -127,7 +127,7 @@ $hierarchy->display_framework_selector('type/competency/template/index.php');
 if ($templates) {
     print_table($table);
 } else {
-    print_heading(get_string('notemplates', $hierarchy->prefix));
+    print_heading(get_string('notemplateinframework', $hierarchy->prefix));
 }
 
 
