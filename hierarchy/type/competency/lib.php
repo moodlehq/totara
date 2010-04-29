@@ -140,6 +140,72 @@ SQL;
     }
 
     /**
+     * Delete a competency and everything to do with it.
+     * 
+     * @param int $id
+     * @param boolean $usetransaction
+     * @return boolean
+     */
+    function delete_framework_item($id, $usetransaction = true) {
+        global $CFG;
+        global $USER;
+        
+        if ( $usetransaction ){
+            begin_sql();
+        }
+
+        if ( parent::delete_framework_item($id, false) ){
+            $result = true;
+            $result = $result && delete_records('idp_revision_competency','competency',$id);
+            $result = $result && delete_records('idp_competency_eval','competencyid',$id);
+            $result = $result && delete_records($this->shortprefix.'_evidence','competencyid',$id);
+            $result = $result && delete_records($this->shortprefix.'_evidence_items','competencyid',$id);
+            $result = $result && delete_records($this->shortprefix.'_evidence_items_evidence','competencyid',$id);
+            $result = $result && delete_records($this->shortprefix.'_template_competencies','competencyid',$id);
+
+            // Update competencycount of templates this competency belongs to
+            $sql = <<<SQL
+                select t.id as id, t.competencycount as competencycount
+                from
+                    {$CFG->prefix}{$this->shortprefix}_template_assignment ta,
+                    {$CFG->prefix}{$this->shortprefix}_template t
+                where 
+                    ta.instanceid = {$id}
+                    and ta.templateid = t.id
+SQL;
+            $templates = get_records_sql($sql);
+            if ( is_array($templates) ) foreach ( $templates as $origtemplate ){
+                $newtemplate = new stdClass();
+                $newtemplate->id = $origtemplate->id;
+                $newtemplate->competencycount = ($origtemplate->competencycount - 1);
+                $newtemplate->timemodified = time();
+                $newtemplate->usermodified = $USER->id;
+                $result = $result && update_record($this->shortprefix.'_template', $newtemplate);
+            }
+            $result = $result && delete_records($this->shortprefix.'_template_assignment','instanceid',$id);
+            $result = $result && delete_records(hierarchy::get_short_prefix('position').'_competencies','competencyid',$id);
+            $result = $result && delete_records($this->shortprefix.'_relations','id1',$id);
+            $result = $result && delete_records($this->shortprefix.'_relations','id2',$id);
+            if ( $result ){
+                if ( $usetransaction ){
+                    commit_sql();
+                }
+                return true;
+            } else {
+                if ( $usetransaction ){
+                    rollback_sql();
+                }
+                return false;
+            }
+        } else {
+            if ($usetransaction){
+                rollback_sql();
+            }
+            return false;
+        }
+    }
+
+    /**
      * Delete template and associated data
      * @var int - the template id to delete
      * @return  void
