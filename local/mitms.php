@@ -241,6 +241,9 @@ function mitms_print_report_manager($return=false) {
     global $CFG,$USER;
     require_once($CFG->dirroot.'/local/reportbuilder/lib.php');
     $reports = get_records('report_builder');
+    if (!is_array($reports)){
+        $reports = array();
+    }
     $context = get_context_instance(CONTEXT_SYSTEM);
 
     $rows = array();
