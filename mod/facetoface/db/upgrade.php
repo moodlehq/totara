@@ -399,7 +399,6 @@ function xmldb_facetoface_upgrade($oldversion=0) {
                 }
             }
 
-
             // If cancelled, create status
             if ($submission->timecancelled) {
                 $status->statucode = MDL_F2F_STATUS_USER_CANCELLED;
