@@ -80,11 +80,15 @@ if(get_field('role','id','shortname','facilitator')) {
         'heading' => 'Facilitator',
     );
 }
-
-// no restrictions
-// limited to single user by embedded params
-$embed->contentmode = 0;
-
+// only show past bookings
+$embed->contentmode = 2; // all
+$embed->contentsettings = array(
+    'date' => array(
+        'enable' => 1,
+        'when' => 'past',
+    ),
+);
+// also limited to single user by embedded params
 $embed->embeddedparams = array(
     'userid' => $id,
 );
@@ -115,6 +119,8 @@ $countall = $report->get_full_count();
 print_heading("$strheading: $countall results found");
 
 $report->display_search();
+
+print '<br />';
 
 if($countfiltered>0) {
     $report->display_table();

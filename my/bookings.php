@@ -30,13 +30,7 @@ $shortname = 'bookings';
 $embed = new object();
 $embed->source = 'facetoface_sessions';
 $embed->fullname = $strheading;
-$embed->filters = array(
-    array(
-        'type' => 'date',
-        'value' => 'sessiondate',
-        'advanced' => '0',
-    ),
-);
+$embed->filters = array();
 $embed->columns = array(
     array(
         'type' => 'course',
@@ -93,10 +87,15 @@ if(get_field('role','id','shortname','facilitator')) {
     );
 }
 
-// no restrictions
-// limited to single user by embedded params
-$embed->contentmode = 0;
-
+// only show future bookings
+$embed->contentmode = 2; // all
+$embed->contentsettings = array(
+    'date' => array(
+        'enable' => 1,
+        'when' => 'future',
+    ),
+);
+// also limited to single user by embedded params
 $embed->embeddedparams = array(
     'userid' => $id,
 );
@@ -116,11 +115,8 @@ $navigation = build_navigation($navlinks);
 
 print_header_simple($pagetitle, '', $navigation, '', null, true, null);
 
-/* TODO split page into past and future bookings
- * all ready using tabs but need way of limiting by date
 $currenttab = "futurebookings";
 include('tabs.php');
- */
 
 $countfiltered = $report->get_filtered_count();
 $countall = $report->get_full_count();
