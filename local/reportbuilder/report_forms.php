@@ -73,6 +73,11 @@ class report_builder_edit_form extends moodleform {
         $mform->setDefault('hidden', $report->hidden);
         $mform->setHelpButton('hidden', array('reportbuilderhidden',get_string('hidden','local'),'moodle'));
 
+        $reporttype = ($report->embeddedurl === null) ? get_string('usergenerated','local') :
+            get_string('embedded', 'local');
+
+        $mform->addElement('static', 'reporttype', get_string('reporttype', 'local'), $reporttype);
+
         $mform->addElement('hidden','id',$id);
         $mform->setType('id', PARAM_INT);
         $mform->addElement('hidden','source',$report->source);

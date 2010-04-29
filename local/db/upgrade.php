@@ -1546,6 +1546,11 @@ function xmldb_local_upgrade($oldversion) {
         // add access settings field to report builder
         $result = $result && add_field($table, $field);
 
+        $field = new XMLDBField('embeddedurl');
+        $field->setAttributes(XMLDB_TYPE_CHAR, '255', null, null, null, null);
+        // add embeddedurl field to report builder
+        $result = $result && add_field($table, $field);
+
         // TODO write migration code to upgrade existing installations
 
         // drop the old restriction field

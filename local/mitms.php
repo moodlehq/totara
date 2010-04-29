@@ -250,6 +250,9 @@ function mitms_print_report_manager($return=false) {
     foreach ($reports as $report) {
         // show reports user has permission to view, that are not hidden
         if(reportbuilder::is_capable($report->id) && !$report->hidden) {
+            $viewurl = ($report->embeddedurl === null) ? $CFG->wwwroot .
+                '/local/reportbuilder/report.php?id='.$report->id :
+                $report->embeddedurl;
             $row = '
             <tr>
                 <td align="left">
@@ -257,7 +260,7 @@ function mitms_print_report_manager($return=false) {
                     <img src="'.$CFG->wwwroot.'/pix/i/reports.png" width="32" height="32" /></a>
                 </td>
                 <td align="left" valign="center">
-                    <span style="font-size: small;"><a href="'.$CFG->wwwroot.'/local/reportbuilder/report.php?id='.$report->id.'">'.$report->fullname.'</a>
+                    <span style="font-size: small;"><a href="'.$viewurl.'">'.$report->fullname.'</a>
                 ';
 
 

@@ -5,7 +5,7 @@ require_once($CFG->libdir.'/tablelib.php');
 
 class reportbuilder {
     public $fullname, $shortname, $source, $hidden, $filters, $filteroptions, $columns, $contentsettings;
-    public $columnoptions, $_filtering, $contentoptions, $contentmode;
+    public $columnoptions, $_filtering, $contentoptions, $contentmode, $embeddedurl;
     private $_id, $_defaultcolumns, $_defaultfilters, $_joinlist, $_base, $_params;
     private $_paramoptions, $_embeddedparams, $_admin, $_adminoptions, $_fullcount, $_filteredcount;
 
@@ -15,32 +15,33 @@ class reportbuilder {
             error(get_string('noshortname','local'));
         }
 
-        if($embed) {
-            // get data from parameters
-            $this->shortname = $shortname;
-            $this->fullname = isset($embed->fullname) ? $embed->fullname : null;
-            $this->filters = isset($embed->filters) ? $embed->filters : null;
-            $this->columns = isset($embed->columns) ? $embed->columns : null;
-            $this->source = isset($embed->source) ? $embed->source : null;
-            $this->_embeddedparams = isset($embed->embeddedparams) ? $embed->embeddedparams : null;
-            $this->contentmode = isset($embed->contentmode) ? $embed->contentmode : 0;
-            $this->contentsettings = isset($embed->contentsettings) ? $embed->contentsettings : array();
-        } else {
-            // lookup from db
-
-            if ($report = get_record('report_builder', 'shortname', $shortname)) {
-                $this->source = $report->source;
-                $this->shortname = $shortname;
-                $this->fullname = $report->fullname;
-                $this->filters = unserialize($report->filters);
-                $this->columns = unserialize($report->columns);
-                $this->_id = $report->id;
-                $this->hidden = $report->hidden;
-                $this->contentmode = $report->contentmode;
-                $this->contentsettings = unserialize($report->contentsettings);
+        if(!get_field('report_builder','id','shortname', $shortname)) {
+            if($embed) {
+                if(!$this->create_embedded_record($shortname, $embed, $error)) {
+                    error('Error creating embedded record: '.$error);
+                }
             } else {
                 error("Report '$shortname' not found in database.");
             }
+        }
+
+        if ($report = get_record('report_builder', 'shortname', $shortname)) {
+            $this->source = $report->source;
+            $this->shortname = $shortname;
+            $this->fullname = $report->fullname;
+            $this->filters = unserialize($report->filters);
+            $this->columns = unserialize($report->columns);
+            $this->_id = $report->id;
+            $this->hidden = $report->hidden;
+            $this->contentmode = $report->contentmode;
+            $this->contentsettings = unserialize($report->contentsettings);
+            $this->embeddedurl = $report->embeddedurl;
+        } else {
+            error("Report '$shortname' not found in database.");
+        }
+
+        if($embed) {
+            $this->_embeddedparams = $embed->embeddedparams;
         }
 
         // pull in data for this report from the source
@@ -61,6 +62,66 @@ class reportbuilder {
 
     }
 
+    /*
+     * Creates a database entry for an embedded report when it is first viewed so the settings can be
+     * edited
+     */
+    function create_embedded_record($shortname, $embed, &$error) {
+        $error = null;
+
+        // check input
+        if(!isset($shortname)) {
+            $error = 'Bad shortname';
+            return false;
+        }
+        if(!isset($embed->source)) {
+            $error = 'Bad source';
+            return false;
+        }
+        if(!isset($embed->filters) || !is_array($embed->filters)) {
+            $embed->filters = array();
+        }
+        if(!isset($embed->columns) || !is_array($embed->columns)) {
+            $error = 'Bad columns';
+            return false;
+        }
+        // hide embedded reports from report manager by default
+        $embed->hidden = isset($embed->hidden) ? $embed->hidden : 1;
+        $embed->accessmode = isset($embed->accessmode) ? $embed->accessmode : 0;
+        $embed->contentmode = isset($embed->contentmode) ? $embed->contentmode : 0;
+
+        $embed->accesssettings = isset($embed->accesssettings) ? $embed->accesssettings : array();
+        $embed->contentsettings = isset($embed->contentsettings) ? $embed->contentsettings : array();
+
+        $todb = new object();
+        $todb->shortname = $shortname;
+        $todb->fullname = $embed->fullname;
+        $todb->source = $embed->source;
+        $todb->filters = serialize($embed->filters);
+        $todb->columns = serialize($embed->columns);
+        $todb->hidden = 1; // hide embedded reports by default
+        $todb->accessmode = $embed->accessmode;
+        $todb->contentmode = $embed->contentmode;
+        $todb->contentsettings = serialize($embed->contentsettings);
+        $todb->accesssettings = serialize($embed->accesssettings);
+        $todb->embeddedurl = qualified_me();
+        if (insert_record('report_builder', $todb)) {
+            return true;
+        } else {
+            $error = 'DB insert error';
+            return false;
+        }
+    }
+
+    // return the URL to view the current report
+    function report_url() {
+        global $CFG;
+        if($this->embeddedurl === null) {
+            return $CFG->wwwroot.'/local/reportbuilder/report.php?id='.$this->_id;
+        } else {
+            return $this->embeddedurl;
+        }
+    }
     /*
      * Makes sure that columns exist in columnoptions
      * if not, remove them and print a warning
@@ -164,7 +225,6 @@ class reportbuilder {
             }
 
         }
-
         return $out;
     }
 
@@ -896,6 +956,24 @@ class reportbuilder {
         print "</td><td>";
         print_single_button(qualified_me(),array('format'=>'ods'),get_string('exportods','local'),'post');
         print "</td><tr></table></center>";
+    }
+
+    function view_button() {
+        global $CFG;
+        $viewurl = $this->report_url();
+        $url = new moodle_url($this->report_url());
+        return print_single_button($url->out(true), $url->params, get_string('viewreport','local'), 'get', '_self', true);
+    }
+
+    function edit_button() {
+        global $CFG;
+        $context = get_context_instance(CONTEXT_SYSTEM);
+        // TODO what capability should be required here?
+        if(has_capability('moodle/local:admin',$context)) {
+            return print_single_button($CFG->wwwroot.'/local/reportbuilder/settings.php', array('id'=>$this->_id), get_string('editthisreport','local'), 'get', '_self', true);
+        } else {
+            return '';
+        }
     }
 
     /* Download current table in ODS format

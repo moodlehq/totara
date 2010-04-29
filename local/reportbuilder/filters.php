@@ -89,7 +89,7 @@ admin_externalpage_print_header();
 print "<table id=\"reportbuilder-navbuttons\"><tr><td>";
 print_single_button($CFG->wwwroot.'/local/reportbuilder/index.php', null, get_string('allreports','local'));
 print "</td><td>";
-print_single_button($CFG->wwwroot.'/local/reportbuilder/report.php', array('id'=>$id), get_string('viewreport','local'));
+print $report->view_button();
 print "</td></tr></table>";
 
 print_heading(get_string('editreport','local',$report->fullname));

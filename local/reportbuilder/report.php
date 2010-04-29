@@ -15,6 +15,11 @@ if(!$report->is_capable($id)) {
     error(get_string('nopermission','local'));
 }
 
+if($report->embeddedurl !== null) {
+    // redirect to embedded url
+    redirect($report->embeddedurl);
+}
+
 if($format!='') {
     $report->export_data($format);
     die;
@@ -30,7 +35,7 @@ $navlinks[] = array('name' => $fullname, 'link'=> '', 'type'=>'title');
 
 $navigation = build_navigation($navlinks);
 
-print_header_simple($pagetitle, '', $navigation, '', null, true, print_edit_button($id));
+print_header_simple($pagetitle, '', $navigation, '', null, true, $report->edit_button());
 
 // display heading including filtering stats
 print_heading("$fullname: ".get_string('showing','local')." $countfiltered / $countall");
@@ -52,14 +57,3 @@ if($countfiltered>0) {
 
 print_footer();
 
-
-function print_edit_button($id) {
-    global $CFG;
-    $context = get_context_instance(CONTEXT_SYSTEM);
-    // TODO what capability should be required here?
-    if(has_capability('moodle/local:admin',$context)) {
-        return print_single_button($CFG->wwwroot.'/local/reportbuilder/settings.php', array('id'=>$id), get_string('editthisreport','local'), 'get', '_self', true);
-    } else {
-        return '';
-    }
-}
