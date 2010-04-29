@@ -99,8 +99,12 @@ class user_position_assignment_form extends moodleform {
         if (!$aspirational) {
             if($nojs) {
                 $allorgs = get_records_menu('org','','','frameworkid,sortorder','id,fullname');
-                $mform->addElement('select','organisationid', get_string('chooseorganisation','organisation'),
-                    array(0 => get_string('chooseorganisation','organisation')) + $allorgs);
+                if (is_array($allorgs) && !empty($allorgs) ){
+                    $mform->addElement('select','organisationid', get_string('chooseorganisation','organisation'),
+                        array(0 => get_string('chooseorganisation','organisation')) + $allorgs);
+                } else {
+                    $mform->addElement('static', 'organisationid', get_string('chooseorganisation','organisation'), get_string('noorganisation','organisation') );
+                }
             } else {
                 $mform->addElement('static', 'organisationselector', get_string('organisation', 'position'),
                     '
@@ -133,9 +137,13 @@ class user_position_assignment_form extends moodleform {
                     ORDER BY
                         u.firstname,
                         u.lastname");
-             $mform->addElement('select', 'managerid', get_string('choosemanager','position'),
-                array(0 => get_string('choosemanager','position')) + $allmanagers);
-                $mform->setDefault('managerid', $manager_id);
+                if ( is_array($allmanagers) && !empty($allmanagers) ){
+                    $mform->addElement('select', 'managerid', get_string('choosemanager','position'),
+                        array(0 => get_string('choosemanager','position')) + $allmanagers);
+                    $mform->setDefault('managerid', $manager_id);
+                } else {
+                    $mform->addElement('static','managerid',get_string('choosemanager','position'), get_string('nomanagersavailable','position'));
+                }
             } else {
                 $mform->addElement('static', 'managerselector', get_string('manager', 'position'),
                     '
