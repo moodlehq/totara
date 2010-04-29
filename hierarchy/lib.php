@@ -632,9 +632,14 @@ class hierarchy {
     /**
      * Recursively called function for deleting items and their children
      * @var int $id the item id to delete
+     * @var boolean $transaction whether or not to wrap the DB calls in a transaction
      * @return boolean success or failure
      */
-    function delete_framework_item($id) {
+    function delete_framework_item($id, $usetransaction = true) {
+
+        if ( $usetransaction ){
+            begin_sql();
+        }
 
         // Delete all child items
         $children = get_records($this->shortprefix, 'parentid', $id);
@@ -642,23 +647,33 @@ class hierarchy {
         if ($children) {
             // Call this function recursively
             foreach ($children as $child) {
-                $this->delete_framework_item($child->id);
+                if ( !$this->delete_framework_item($child->id, false) ){
+                    if ( $usetransaction ){
+                        rollback_sql();
+                    }
+                    return false;
+                }
             }
         }
 
-        begin_sql();
         // delete any custom field data for this item
         if(delete_records($this->shortprefix.'_depth_info_data', $this->prefix.'id', $id)) {
             // Finally delete this item
             if(delete_records($this->shortprefix, 'id', $id)) {
-                commit_sql();
+                if ( $usetransaction ){
+                    commit_sql();
+                }
                 return true;
             } else {
-                rollback_sql();
+                if ( $usetransaction ){
+                    rollback_sql();
+                }
                 return false;
             }
         } else {
-            rollback_sql();
+            if ( $usetransaction ){
+                rollback_sql();
+            }
             return false;
         }
     }
