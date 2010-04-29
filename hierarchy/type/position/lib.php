@@ -226,6 +226,65 @@ class position extends hierarchy {
 
         return display_dialog_selector($options, $selected, 'simpleframeworkpicker');
     }
+
+    /**
+     * Delete a position and everything to do with it.
+     *
+     * @param int $id
+     * @param boolean $usetransaction
+     * @return boolean
+     */
+    function delete_framework_item($id, $usetransaction = true) {
+        global $CFG;
+        global $USER;
+
+        if ( $usetransaction ){
+            begin_sql();
+        }
+
+        // First call the deleter for the parent class
+        if ( parent::delete_framework_item($id, false) ){
+            $result = true;
+
+            // Null out the positionid column in these tables
+            $result = $result && execute_sql(
+                    'update '.$CFG->prefix . hierarchy::get_short_prefix('competency').'_evidence'
+                        . ' set positionid = NULL'
+                        . ' where positionid = ' . $id
+                    ,false
+            );
+            $result = $result && execute_sql(
+                    'update '.$CFG->prefix . 'course_completions'
+                        . ' set positionid = NULL'
+                        . ' where positionid = ' . $id
+                    ,false
+            );
+
+            // Delete the records from these tables
+            $result = $result && delete_records($this->shortprefix.'_assignment','positionid',$id);
+            $result = $result && delete_records($this->shortprefix.'_assignment_history','positionid',$id);
+            $result = $result && delete_records($this->shortprefix.'_competencies','positionid',$id);
+            $result = $result && delete_records($this->shortprefix.'_relations','id1',$id);
+            $result = $result && delete_records($this->shortprefix.'_relations','id2',$id);
+
+            if ( $result ){
+                if ( $usetransaction ){
+                    commit_sql();
+                }
+                return true;
+            } else {
+                if ( $usetransaction ){
+                    rollback_sql();
+                }
+                return false;
+            }
+        } else {
+            if ($usetransaction){
+                rollback_sql();
+            }
+            return false;
+        }
+    }
 }
 
 
