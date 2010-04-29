@@ -141,70 +141,78 @@ if($nojs) {
 $form = new user_position_assignment_form($currenturl, compact('type', 'user', 'position_assignment', 'can_edit', 'nojs'));
 $form->set_data($position_assignment);
 
-if ($form->is_cancelled()){
+// Don't show the page if there are no positions
+if ( !count_records('pos') ){
+
+    print_heading(get_string('noposition','position'));
+
+} else {
+
+    if ($form->is_cancelled()){
     // Do nothing
-}
-elseif ($data = $form->get_data()) {
+    }
+    elseif ($data = $form->get_data()) {
 
-    // Fix dates
-    if (isset($data->timevalidfrom) && $data->timevalidfrom) {
-        $data->timevalidfrom = convert_userdate($data->timevalidfrom);
+        // Fix dates
+        if (isset($data->timevalidfrom) && $data->timevalidfrom) {
+            $data->timevalidfrom = convert_userdate($data->timevalidfrom);
+        }
+
+        if (isset($data->timevalidto) && $data->timevalidto) {
+            $data->timevalidto = convert_userdate($data->timevalidto);
+        }
+
+        // Setup data
+        position_assignment::set_properties($position_assignment, $data);
+
+        $data->type = $POSITION_CODES[$type];
+        $data->userid = $user->id;
+
+        // Get new manager id
+        $managerid = isset($data->managerid) ? $data->managerid : null;
+
+        // If aspiration type, make sure no manager is set
+        if ($data->type == POSITION_TYPE_ASPIRATIONAL) {
+            $managerid = null;
+        }
+
+        assign_user_position($position_assignment, $managerid);
+
+        commit_sql();
+        redirect($currenturl, get_string('positionsaved','position'), 0);
     }
 
-    if (isset($data->timevalidto) && $data->timevalidto) {
-        $data->timevalidto = convert_userdate($data->timevalidto);
+    if (!$can_edit) {
+        $form->freezeForm();
     }
 
-    // Setup data
-    position_assignment::set_properties($position_assignment, $data);
-
-    $data->type = $POSITION_CODES[$type];
-    $data->userid = $user->id;
-
-    // Get new manager id
-    $managerid = isset($data->managerid) ? $data->managerid : null;
-
-    // If aspiration type, make sure no manager is set
-    if ($data->type == POSITION_TYPE_ASPIRATIONAL) {
-        $managerid = null;
+    if ($form->is_submitted()) {
+        // Print error message if no position chosen
+        if (!optional_param('positionid', 0, PARAM_INT)) {
+            print_box_start('errorbox errorboxcontent boxaligncenter boxwidthnormal');
+            print get_string('nopositionset', 'position');
+            print_box_end();
+        }
     }
 
-    assign_user_position($position_assignment, $managerid);
+    // Setup calendar
+    ?>
+    <script type="text/javascript">
 
-    commit_sql();
-    redirect($currenturl, get_string('positionsaved','position'), 0);
+        $(function() {
+            $('#id_timevalidfrom, #id_timevalidto').datepicker(
+                {
+                    dateFormat: 'dd/mm/yy',
+                    showOn: 'button',
+                    buttonImage: '../local/js/images/calendar.gif',
+                    buttonImageOnly: true
+                }
+            );
+            });
+    </script>
+    <?php
+
+    $form->display();
 }
-
-if (!$can_edit) {
-    $form->freezeForm();
-}
-
-if ($form->is_submitted()) {
-    // Print error message if no position chosen
-    if (!optional_param('positionid', 0, PARAM_INT)) {
-        print_box_start('errorbox errorboxcontent boxaligncenter boxwidthnormal');
-        print get_string('nopositionset', 'position');
-        print_box_end();
-    }
-}
-
-// Setup calendar
-?>
-<script type="text/javascript">
-
-    $(function() {
-        $('#id_timevalidfrom, #id_timevalidto').datepicker(
-            {
-                dateFormat: 'dd/mm/yy',
-                showOn: 'button',
-                buttonImage: '../local/js/images/calendar.gif',
-                buttonImageOnly: true
-            }
-        );
-	});
-</script>
-<?php
-
-$form->display();
 
 print_footer($course);
