@@ -44,12 +44,13 @@ if (!$can_edit) {
 $hierarchy = new organisation();
 
 // Load framework
-if (!$framework = $hierarchy->get_framework($frameworkid)) {
-    error('Hierarchy framework could not be found');
+$framework = $hierarchy->get_framework($frameworkid, true);
+if ( $framework ){
+    // Load items to display
+    $positions = $hierarchy->get_items_by_parent($parentid);
+} else {
+    $positions = array();
 }
-
-// Load items to display
-$positions = $hierarchy->get_items_by_parent($parentid);
 
 ///
 /// Display page
@@ -72,9 +73,20 @@ if (!$parentid) {
 <?php
 }
 
+// Determine which error message
+if ( $parentid ){
+    $errorstr = 'nochildorganisations';
+} else {
+    if ( $frameworkid ){
+        $errorstr = 'noorganisationsinframework';
+    } else {
+        $errorstr = 'noorganisation';
+    }
+}
+
 echo build_treeview(
     $positions,
-    get_string(($parentid ? 'nochildorganisations' : 'noorganisationsinframework'), $hierarchy->prefix),
+    get_string($errorstr, $hierarchy->prefix),
     $hierarchy
 );
 
