@@ -631,8 +631,8 @@ class hierarchy {
 
     /**
      * Recursively called function for deleting items and their children
-     * @var int - the item id to delete
-     * @return  void
+     * @var int $id the item id to delete
+     * @return boolean success or failure
      */
     function delete_framework_item($id) {
 
@@ -652,11 +652,14 @@ class hierarchy {
             // Finally delete this item
             if(delete_records($this->shortprefix, 'id', $id)) {
                 commit_sql();
+                return true;
             } else {
                 rollback_sql();
+                return false;
             }
         } else {
             rollback_sql();
+            return false;
         }
     }
 
