@@ -87,8 +87,7 @@ echo '</ul></div>';
     echo '<h2>'.get_string('addcompetencytemplatestoplan', 'idp').'</h2>';
     echo '<p><a href="'.$returnurl.'">'.get_string('cancelwithoutassigning','hierarchy').'</a></p>';
 
-
-    if(empty($frameworkid) || $frameworkid == 0) {
+    if( $framework && ( empty($frameworkid) || $frameworkid == 0 )) {
         echo build_nojs_frameworkpicker(
             $hierarchy,
             $CFG->wwwroot.'/hierarchy/type/competency/idp/find-template.php',
@@ -105,7 +104,7 @@ echo '</ul></div>';
         echo '</div><div class="nojsselect">';
         echo build_nojs_treeview(
             $templates,
-            get_string('nounassignedcompetencytemplates', 'position'),
+            get_string(($framework?'notemplateinframework':'notemplate'), 'competency'),
             $CFG->wwwroot.'/hierarchy/type/competency/idp/save-template.php',
             array(
                 'rowcount' => 0,
