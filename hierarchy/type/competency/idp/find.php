@@ -86,13 +86,12 @@ if(!$nojs) {
         echo '</ul></div>';
     }
 } else {
-    // none JS version of page
+    // non JS version of page
     admin_externalpage_print_header();
     echo '<h2>'.get_string('addcompetenciestoplan', 'idp').'</h2>';
-
     echo '<p><a href="'.$returnurl.'">'.get_string('cancelwithoutassigning','hierarchy').'</a></p>';
 
-    if(empty($frameworkid) || $frameworkid == 0) {
+    if ($framework && (empty($frameworkid) || $frameworkid == 0)) {
 
         echo build_nojs_frameworkpicker(
             $hierarchy,
@@ -107,32 +106,32 @@ if(!$nojs) {
 
     } else {
 
-        ?>
-<div id="nojsinstructions">
-<?php
-        echo build_nojs_breadcrumbs($hierarchy,
-            $parentid,
-            $CFG->wwwroot.'/hierarchy/type/competency/idp/find.php',
-            array(
-                'id' => $revisionid,
-                'returnurl' => $returnurl,
-                's' => $s,
-                'nojs' => $nojs,
-                'frameworkid' => $frameworkid,
-            )
-        );
+        echo '<div id="nojsinstructions">';
 
-?>
-<p>
-<?php echo  get_string('clicktoassign', $hierarchy->prefix).' '.
-            get_string('clicktoviewchildren', $hierarchy->prefix) ?>
-</p>
-</div>
-<div class="nojsselect">
-<?php
-         echo build_nojs_treeview(
+        // If there's no frameworks defined, don't show the breadcrumbs because they'll confuse the user
+        if ( $framework ){
+            echo build_nojs_breadcrumbs($hierarchy,
+                $parentid,
+                $CFG->wwwroot.'/hierarchy/type/competency/idp/find.php',
+                array(
+                    'id' => $revisionid,
+                    'returnurl' => $returnurl,
+                    's' => $s,
+                    'nojs' => $nojs,
+                    'frameworkid' => $frameworkid,
+                )
+            );
+        }
+
+        echo '<p>';
+        echo  get_string('clicktoassign', $hierarchy->prefix).' '.
+                get_string('clicktoviewchildren', $hierarchy->prefix);
+        echo '</p>';
+        echo '</div>';
+        echo '<div class="nojsselect">';
+        echo build_nojs_treeview(
             $competencies,
-            get_string('nocompetenciesinframework', 'competency'),
+            get_string(($framework?'nocompetenciesinframework':'nocompetency'), 'competency'),
             $CFG->wwwroot.'/hierarchy/type/competency/idp/save.php',
             array(
                 'rowcount' => 0,
@@ -147,9 +146,7 @@ if(!$nojs) {
             $assignedcomps
         );
 
-?>
-</div>
-<?php
+        echo '</div>';
     }
     print_footer();
 }
