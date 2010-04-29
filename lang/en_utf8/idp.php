@@ -99,6 +99,7 @@ $string['error:plannotempty'] = 'You can only delete empty plans, and this plan 
 $string['error:plannotsubmitted'] = 'You can only delete empty plans which have never been submitted.';
 $string['error:plannotyours'] = 'You do not have access to this plan because it is not your plan.';
 $string['error:revisionnotvisible'] = 'This revision is not visible to you.';
+$string['error:revisioncantbecommented'] = 'This revision can\'t be commented on, because it hasn\'t been submitted yet.';
 $string['error:removalfailed'] = 'Removal failed.';
 
 # Other strings
