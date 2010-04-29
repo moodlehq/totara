@@ -20,4 +20,9 @@ $contentoptions = array(
         'field' => 'base.userid',
         'joins' => array(),
     ),
+    array(
+        'name' => 'date',
+        'field' => 'CAST(starttime.value AS int)',
+        'joins' => array('sco_starttime'),
+    ),
 );

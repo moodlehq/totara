@@ -20,4 +20,9 @@ $contentoptions = array(
         'field' => 'base.userid',
         'joins' => array(),
     ),
+    array(
+        'name' => 'date',
+        'field' => 'base.timecompleted',
+        'joins' => array(),
+    ),
 );

@@ -358,6 +358,26 @@ class report_builder_edit_content_form extends moodleform {
             $mform->disabledIf('current_org_recursive_group','current_org_enable', 'notchecked');
         }
 
+        // date content options
+        if(in_array('date', $contentoptions)) {
+            $enable = isset($settings['date']['enable']) ? $settings['date']['enable'] : 0;
+            $when = isset($settings['date']['when']) ? $settings['date']['when'] : 'past';
+            $mform->addElement('header', 'date_header', 'Show by date');
+            $mform->addElement('checkbox', 'date_enable', '', 'Show records based on the record date');
+            $mform->setDefault('date_enable', $enable);
+            $mform->disabledIf('date_enable', 'contentenabled', 'eq', 0);
+            $radiogroup = array();
+            $radiogroup[] =& $mform->createElement('radio', 'date_when', '', 'The past', 'past');
+            $radiogroup[] =& $mform->createElement('radio', 'date_when', '', 'The future', 'future');
+            $radiogroup[] =& $mform->createElement('radio', 'date_when', '', 'The last 30 days', 'last30days');
+            $radiogroup[] =& $mform->createElement('radio', 'date_when', '', 'The next 30 days', 'next30days');
+            $mform->addGroup($radiogroup, 'date_when_group', 'Include records from', '<br />', false);
+            $mform->setDefault('date_when', $when);
+            $mform->disabledIf('date_when_group','contentenabled', 'eq', 0);
+            $mform->disabledIf('date_when_group','date_enable', 'notchecked');
+
+        }
+
         $mform->addElement('hidden','id',$id);
         $mform->setType('id', PARAM_INT);
         $mform->addElement('hidden','source',$report->source);

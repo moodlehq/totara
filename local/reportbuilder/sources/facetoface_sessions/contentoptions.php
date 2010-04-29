@@ -20,4 +20,9 @@ $contentoptions = array(
         'field' => 'signup.userid',
         'joins' => array('signup'),
     ),
+    array(
+        'name' => 'date',
+        'field' => 'date.timestart',
+        'joins' => array('date'),
+    ),
 );

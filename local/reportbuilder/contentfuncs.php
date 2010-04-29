@@ -86,3 +86,21 @@ function reportbuilder_content_user($field, $options) {
         return 'FALSE';
     }
 }
+
+function reportbuilder_content_date($field, $options) {
+    $now = time();
+    switch ($options['when']) {
+    case 'past':
+        return $field.' < '. $now;
+    case 'future':
+        return $field.' > '. $now;
+    case 'last30days':
+        return '(' . $field . ' < ' . $now . ' AND ' . $field. ' > '. ($now - 60*60*24*30) . ')';
+    case 'next30days':
+        return '(' . $field . ' > '. $now . ' AND ' . $field. ' < '. ($now + 60*60*24*30) . ')';
+    default:
+        // no match
+        return 'FALSE';
+    }
+
+}
