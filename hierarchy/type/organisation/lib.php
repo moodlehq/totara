@@ -47,4 +47,59 @@ class organisation extends hierarchy {
     var $shortprefix = 'org';
     var $extrafield = null;
 
+    /**
+     * Delete an organisation and everything to do with it.
+     *
+     * @param int $id
+     * @param boolean $usetransaction
+     * @return boolean
+     */
+    function delete_framework_item($id, $usetransaction = true) {
+        global $CFG;
+        global $USER;
+
+        if ( $usetransaction ){
+            begin_sql();
+        }
+
+        // First call the deleter for the parent class
+        if ( parent::delete_framework_item($id, false) ){
+            $result = true;
+
+            // Null out the organisationid column in these tables
+            $tablelist = array(
+                hierarchy::get_short_prefix('competency').'_evidence',
+                'course_completions',
+                hierarchy::get_short_prefix('position').'_assignment',
+                hierarchy::get_short_prefix('position').'_assignment_history',
+            );
+
+            foreach( $tablelist as $tablename ){
+                $records = get_records($tablename, 'organisationid', $id);
+                foreach( $records as $rec ){
+                    $newrec = new stdClass();
+                    $newrec->id = $rec->id;
+                    $newrec->organisationid = null;
+                    $result = $result && update_record($tablename, $newrec);
+                }
+            }
+
+            if ( $result ){
+                if ( $usetransaction ){
+                    commit_sql();
+                }
+                return true;
+            } else {
+                if ( $usetransaction ){
+                    rollback_sql();
+                }
+                return false;
+            }
+        } else {
+            if ($usetransaction){
+                rollback_sql();
+            }
+            return false;
+        }
+    }
 }
