@@ -16,8 +16,8 @@ require_once($CFG->libdir . '/simpletestlib.php');
 class reportbuilderlib_test extends prefix_changing_test_case {
     // test data for database
     var $reportbuilder_data = array(
-        array('id', 'fullname', 'shortname', 'source','filters','columns','hidden','accessmode', 'contentmode', 'contentsettings', 'accesssettings'),
-        array(1, 'Test Report', 'test_report', 'competency_evidence','a:8:{i:0;a:3:{s:4:"type";s:4:"user";s:5:"value";s:8:"fullname";s:8:"advanced";i:0;}i:1;a:3:{s:4:"type";s:4:"user";s:5:"value";s:14:"organisationid";s:8:"advanced";i:0;}i:2;a:3:{s:4:"type";s:19:"competency_evidence";s:5:"value";s:14:"organisationid";s:8:"advanced";i:0;}i:3;a:3:{s:4:"type";s:4:"user";s:5:"value";s:10:"positionid";s:8:"advanced";i:0;}i:4;a:3:{s:4:"type";s:19:"competency_evidence";s:5:"value";s:10:"positionid";s:8:"advanced";i:0;}i:5;a:3:{s:4:"type";s:10:"competency";s:5:"value";s:8:"fullname";s:8:"advanced";i:0;}i:6;a:3:{s:4:"type";s:19:"competency_evidence";s:5:"value";s:13:"completeddate";s:8:"advanced";i:0;}i:7;a:3:{s:4:"type";s:19:"competency_evidence";s:5:"value";s:13:"proficiencyid";s:8:"advanced";i:0;}}', 'a:8:{i:0;a:3:{s:4:"type";s:4:"user";s:5:"value";s:8:"namelink";s:7:"heading";s:11:"Participant";}i:1;a:3:{s:4:"type";s:10:"competency";s:5:"value";s:14:"competencylink";s:7:"heading";s:10:"Competency";}i:2;a:3:{s:4:"type";s:4:"user";s:5:"value";s:12:"organisation";s:7:"heading";s:6:"Office";}i:3;a:3:{s:4:"type";s:19:"competency_evidence";s:5:"value";s:12:"organisation";s:7:"heading";s:17:"Completion Office";}i:4;a:3:{s:4:"type";s:4:"user";s:5:"value";s:8:"position";s:7:"heading";s:8:"Position";}i:5;a:3:{s:4:"type";s:19:"competency_evidence";s:5:"value";s:8:"position";s:7:"heading";s:19:"Completion Position";}i:6;a:3:{s:4:"type";s:19:"competency_evidence";s:5:"value";s:11:"proficiency";s:7:"heading";s:11:"Proficiency";}i:7;a:3:{s:4:"type";s:19:"competency_evidence";s:5:"value";s:13:"completeddate";s:7:"heading";s:15:"Completion Date";}}', 0, 0, 0, '', ''),
+        array('id', 'fullname', 'shortname', 'source','filters','columns','hidden','accessmode', 'contentmode', 'contentsettings', 'accesssettings','embeddedurl'),
+        array(1, 'Test Report', 'test_report', 'competency_evidence','a:8:{i:0;a:3:{s:4:"type";s:4:"user";s:5:"value";s:8:"fullname";s:8:"advanced";i:0;}i:1;a:3:{s:4:"type";s:4:"user";s:5:"value";s:14:"organisationid";s:8:"advanced";i:0;}i:2;a:3:{s:4:"type";s:19:"competency_evidence";s:5:"value";s:14:"organisationid";s:8:"advanced";i:0;}i:3;a:3:{s:4:"type";s:4:"user";s:5:"value";s:10:"positionid";s:8:"advanced";i:0;}i:4;a:3:{s:4:"type";s:19:"competency_evidence";s:5:"value";s:10:"positionid";s:8:"advanced";i:0;}i:5;a:3:{s:4:"type";s:10:"competency";s:5:"value";s:8:"fullname";s:8:"advanced";i:0;}i:6;a:3:{s:4:"type";s:19:"competency_evidence";s:5:"value";s:13:"completeddate";s:8:"advanced";i:0;}i:7;a:3:{s:4:"type";s:19:"competency_evidence";s:5:"value";s:13:"proficiencyid";s:8:"advanced";i:0;}}', 'a:8:{i:0;a:3:{s:4:"type";s:4:"user";s:5:"value";s:8:"namelink";s:7:"heading";s:11:"Participant";}i:1;a:3:{s:4:"type";s:10:"competency";s:5:"value";s:14:"competencylink";s:7:"heading";s:10:"Competency";}i:2;a:3:{s:4:"type";s:4:"user";s:5:"value";s:12:"organisation";s:7:"heading";s:6:"Office";}i:3;a:3:{s:4:"type";s:19:"competency_evidence";s:5:"value";s:12:"organisation";s:7:"heading";s:17:"Completion Office";}i:4;a:3:{s:4:"type";s:4:"user";s:5:"value";s:8:"position";s:7:"heading";s:8:"Position";}i:5;a:3:{s:4:"type";s:19:"competency_evidence";s:5:"value";s:8:"position";s:7:"heading";s:19:"Completion Position";}i:6;a:3:{s:4:"type";s:19:"competency_evidence";s:5:"value";s:11:"proficiency";s:7:"heading";s:11:"Proficiency";}i:7;a:3:{s:4:"type";s:19:"competency_evidence";s:5:"value";s:13:"completeddate";s:7:"heading";s:15:"Completion Date";}}', 0, 0, 0, '', '', null),
     );
 
     var $role_data = array(
@@ -108,7 +108,7 @@ class reportbuilderlib_test extends prefix_changing_test_case {
             'userid' => 2,
         );
         $this->shortname = 'record_of_learning';
-
+        $this->embeddedurl = 'test';
     }
 
     function tearDown() {
@@ -138,7 +138,7 @@ class reportbuilderlib_test extends prefix_changing_test_case {
         $this->assertEqual($rb->fullname,'My Record of Learning');
         $this->assertEqual($rb->shortname,'record_of_learning');
         $this->assertEqual($rb->source, 'competency_evidence');
-        $this->assertEqual($rb->hidden, null);
+        $this->assertEqual($rb->hidden, 1);
     }
 
     function test_reportbuilder_check_columns() {
