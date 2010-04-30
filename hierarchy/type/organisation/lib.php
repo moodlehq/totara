@@ -66,24 +66,30 @@ class organisation extends hierarchy {
         if ( parent::delete_framework_item($id, false) ){
             $result = true;
 
-            // Null out the organisationid column in these tables
-            $tablelist = array(
-                hierarchy::get_short_prefix('competency').'_evidence',
-                'course_completions',
-                hierarchy::get_short_prefix('position').'_assignment',
-                hierarchy::get_short_prefix('position').'_assignment_history',
+            $result = $result && execute_sql(
+                    'update '.$CFG->prefix . hierarchy::get_short_prefix('competency') . '_evidence'
+                        . ' set organisationid = NULL'
+                        . ' where organisationid = ' . $id
+                    ,false
             );
-
-            foreach( $tablelist as $tablename ){
-                $records = get_records($tablename, 'organisationid', $id);
-                foreach( $records as $rec ){
-                    $newrec = new stdClass();
-                    $newrec->id = $rec->id;
-                    $newrec->organisationid = null;
-                    $result = $result && update_record($tablename, $newrec);
-                }
-            }
-
+            $result = $result && execute_sql(
+                    'update '.$CFG->prefix . 'course_completions'
+                        . ' set organisationid = NULL'
+                        . ' where organisationid = ' . $id
+                    ,false
+            );
+            $result = $result && execute_sql(
+                    'update '.$CFG->prefix . hierarchy::get_short_prefix('position').'_assignment'
+                        . ' set organisationid = NULL'
+                        . ' where organisationid = ' . $id
+                    ,false
+            );
+            $result = $result && execute_sql(
+                    'update '.$CFG->prefix . hierarchy::get_short_prefix('position').'_assignment_history'
+                        . ' set organisationid = NULL'
+                        . ' where organisationid = ' . $id
+                    ,false
+            );
             if ( $result ){
                 if ( $usetransaction ){
                     commit_sql();

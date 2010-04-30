@@ -27,6 +27,10 @@ if (file_exists($CFG->dirroot.'/hierarchy/type/'.$type.'/lib.php')) {
 }
 
 $item = $hierarchy->get_item($id);
+if ( !$item ){
+    add_to_log(SITEID,$type,'delete','',"invalid hierarchy item id (ID $id)");
+    error('No item with that ID.');
+}
 
 require_capability('moodle/local:delete'.$type, $sitecontext);
 
@@ -54,7 +58,6 @@ if (!$delete) {
 ///
 /// Delete
 ///
-
 if ($delete != md5($item->timemodified)) {
     error("The check variable was wrong - try again");
 }
