@@ -1191,6 +1191,11 @@ function facetoface_write_worksheet_header(&$worksheet)
     $worksheet->write_string(0, $pos++, get_string('duration', 'facetoface'));
     $worksheet->write_string(0, $pos++, get_string('status', 'facetoface'));
 
+    $trainerroles = facetoface_get_trainer_roles();
+    foreach ($trainerroles as $role) {
+        $worksheet->write_string(0, $pos++, get_string('role').': '.$role->name);
+    }
+
     $userfields = facetoface_get_userfields();
     foreach ($userfields as $shortname => $fullname) {
         $worksheet->write_string(0, $pos++, $fullname);
@@ -1221,6 +1226,7 @@ function facetoface_write_activity_attendance(&$worksheet, $startingrow, $faceto
 {
     global $CFG;
 
+    $trainerroles = facetoface_get_trainer_roles();
     $userfields = facetoface_get_userfields();
     $customsessionfields = facetoface_get_session_customfields();
     $timenow = time();
@@ -1291,6 +1297,8 @@ function facetoface_write_activity_attendance(&$worksheet, $startingrow, $faceto
             $finishtime  = get_string('wait-listed', 'facetoface');
             $status      = get_string('wait-listed', 'facetoface');
 
+            $sessiontrainers = facetoface_get_trainers($session->id);
+
             if ($session->datetimeknown) {
                 // Display only the first date
                 if (method_exists($worksheet, 'write_date')) {
@@ -1352,6 +1360,23 @@ function facetoface_write_activity_attendance(&$worksheet, $startingrow, $faceto
                     $worksheet->write_string($i,$j++,$finishtime);
                     $worksheet->write_number($i,$j++,(int)$session->duration);
                     $worksheet->write_string($i,$j++,$status);
+
+                    foreach (array_keys($trainerroles) as $roleid) {
+                        if (!empty($sessiontrainers[$roleid])) {
+                            $trainers = array();
+                            foreach ($sessiontrainers[$roleid] as $trainer) {
+                                $trainers[] = fullname($trainer);
+                            }
+
+                            $trainers = implode(', ', $trainers);
+                        }
+                        else {
+                            $trainers = '-';
+                        }
+
+                        $worksheet->write_string($i, $j++, $trainers);
+                    }
+
                     foreach ($userfields as $shortname => $fullname) {
                         $value = '-';
                         if (!empty($attendee->$shortname)) {
