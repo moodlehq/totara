@@ -3468,6 +3468,11 @@ function facetoface_update_trainers($sessionid, $form) {
 }
 
 
+/**
+ * Return array of trainer roles configured for face-to-face
+ *
+ * @return  array
+ */
 function facetoface_get_trainer_roles() {
     global $CFG;
 
@@ -3492,10 +3497,26 @@ function facetoface_get_trainer_roles() {
     ");
 
     // Return roles and names
+    if (!$rolenames) {
+        return array();
+    }
+
     return $rolenames;
 }
 
 
+/**
+ * Get all trainers associated with a session, optionally
+ * restricted to a certain roleid
+ *
+ * If a roleid is not specified, will return a multi-dimensional
+ * array keyed by roleids, with an array of the chosen roles
+ * for each role
+ *
+ * @param   integer     $sessionid
+ * @param   integer     $roleid (optional)
+ * @return  array
+ */
 function facetoface_get_trainers($sessionid, $roleid = null) {
     global $CFG;
 
