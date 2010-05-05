@@ -9,25 +9,35 @@ class reportbuilder {
     private $_id, $_defaultcolumns, $_defaultfilters, $_joinlist, $_base, $_params;
     private $_paramoptions, $_embeddedparams, $_admin, $_adminoptions, $_fullcount, $_filteredcount;
 
-    function reportbuilder($shortname=null, $embed=false) {
-        global $CFG;
-        if($shortname == null) {
-            error(get_string('noshortname','local'));
+    function reportbuilder($id=null, $shortname=null, $embed=false) {
+	global $CFG;
+
+	if($id != null) {
+	    // look for existing report by id
+	    $report = get_record('report_builder', 'id', $id);
+	} else if ($shortname != null) {
+	    // look for existing report by shortname
+	    $report = get_record('report_builder', 'shortname', $shortname);
+	} else {
+	    // either id or shortname is required
+            error(get_string('noshortnameorid','local'));
         }
 
-        if(!get_field('report_builder','id','shortname', $shortname)) {
+	// handle if report not found in db
+        if(!$report) {
             if($embed) {
-                if(!$this->create_embedded_record($shortname, $embed, $error)) {
+                if(! $id = $this->create_embedded_record($shortname, $embed, $error)) {
                     error('Error creating embedded record: '.$error);
-                }
+		}
+		$report = get_record('report_builder','id', $id);
             } else {
-                error("Report '$shortname' not found in database.");
+                error("Report with ID of '$id' not found in database.");
             }
         }
 
-        if ($report = get_record('report_builder', 'shortname', $shortname)) {
+        if ($report) {
             $this->source = $report->source;
-            $this->shortname = $shortname;
+            $this->shortname = $report->shortname;
             $this->fullname = $report->fullname;
             $this->filters = unserialize($report->filters);
             $this->columns = unserialize($report->columns);
@@ -37,7 +47,7 @@ class reportbuilder {
             $this->contentsettings = unserialize($report->contentsettings);
             $this->embeddedurl = $report->embeddedurl;
         } else {
-            error("Report '$shortname' not found in database.");
+            error("Report with id of '$id' not found in database.");
         }
 
         if($embed) {
@@ -105,12 +115,34 @@ class reportbuilder {
         $todb->contentsettings = serialize($embed->contentsettings);
         $todb->accesssettings = serialize($embed->accesssettings);
         $todb->embeddedurl = qualified_me();
-        if (insert_record('report_builder', $todb)) {
-            return true;
+        if ($newid = insert_record('report_builder', $todb)) {
+            return $newid;
         } else {
             $error = 'DB insert error';
             return false;
         }
+    }
+
+    // given a report fullname, try to generate a sensible shortname that will be unique
+    public static function create_shortname($fullname) {
+	// leaves only letters and numbers
+	// replaces spaces + dashes with underscores
+        $validchars = strtolower(preg_replace(array('/[^a-zA-Z\d\s-_]/','/[\s-]/'), array('','_'), $fullname));
+	$shortname = "report_{$validchars}";
+	$try = $shortname;
+	$i = 1;
+	while($i<1000) {
+	    if(get_field('report_builder','id','shortname',$try)) {
+                // name exists, try adding a number to make unique
+	        $try = $shortname + $i;
+		$i++;
+	    } else {
+		// return the shortname
+		return $try;
+            }
+	}
+	// if all 1000 name tries fail, give up and use a timestamp
+	return "report_".time();
     }
 
     // return the URL to view the current report

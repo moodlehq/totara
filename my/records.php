@@ -112,7 +112,7 @@
         'userid' => $id,
     );
     $shortname = 'record_of_learning';
-    $report = new reportbuilder($shortname, $embed);
+    $report = new reportbuilder(null, $shortname, $embed);
 
     if($format!='') {
         $report->export_data($format);

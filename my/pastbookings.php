@@ -93,7 +93,7 @@ $embed->embeddedparams = array(
     'userid' => $id,
 );
 
-$report = new reportbuilder($shortname, $embed);
+$report = new reportbuilder(null, $shortname, $embed);
 
 if($format!='') {
     $report->export_data($format);
@@ -124,6 +124,7 @@ print '<br />';
 
 if($countfiltered>0) {
     $report->display_table();
+    print $report->edit_button();
     // export button
     $report->export_select();
 }

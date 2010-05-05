@@ -15,8 +15,7 @@ $confirm = optional_param('confirm', 0, PARAM_INT); // confirm delete
 admin_externalpage_setup('reportbuilder');
 $returnurl = $CFG->wwwroot."/local/reportbuilder/settings.php?id=$id";
 
-$shortname = get_field('report_builder','shortname','id',$id);
-$report = new reportbuilder($shortname);
+$report = new reportbuilder($id);
 
 // delete fields or columns
 if ($d and (isset($cid) || isset($fid)) and $confirm ) {
@@ -94,11 +93,10 @@ if ($fromform = $mform->get_data()) {
 
     $todb = new object();
     $todb->id = $id;
-    $todb->shortname = $fromform->shortname;
     $todb->fullname = $fromform->fullname;
     $todb->hidden = $fromform->hidden;
     if(update_record('report_builder',$todb)) {
-        redirect($returnurl, get_string('reportupdated','local'));
+        redirect($returnurl);
     } else {
         redirect($returnurl, get_string('error:couldnotupdatereport','local'));
     }

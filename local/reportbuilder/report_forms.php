@@ -17,11 +17,6 @@ class report_builder_new_form extends moodleform {
             $mform->addRule('fullname',null,'required');
             $mform->setHelpButton('fullname', array('reportbuilderfullname',get_string('reportname','local'),'moodle'));
 
-            $mform->addElement('text', 'shortname', get_string('reportshortname', 'local'), 'maxlength="255"');
-            $mform->setType('shortname', PARAM_TEXT);
-            $mform->addRule('shortname',null,'required');
-            $mform->setHelpButton('shortname', array('reportbuildershortname',get_string('reportshortname','local'),'moodle'));
-
             $pick = array(0 => get_string('selectsource','local'));
             $select = array_merge($pick, $sources);
             $mform->addElement('select','source', get_string('source','local'), $select);
@@ -38,9 +33,6 @@ class report_builder_new_form extends moodleform {
         }
     }
 
-    function validation($data) {
-        return validate_shortname($data);
-    }
 }
 
 
@@ -58,12 +50,6 @@ class report_builder_edit_form extends moodleform {
         $mform->setType('fullname', PARAM_TEXT);
         $mform->addRule('fullname',null,'required');
         $mform->setHelpButton('fullname', array('reportbuilderfullname',get_string('reporttitle','local'),'moodle'));
-
-        $mform->addElement('text', 'shortname', get_string('uniquename','local'), array('size'=>'30'));
-        $mform->setType('shortname', PARAM_TEXT);
-        $mform->setDefault('shortname', $report->shortname);
-        $mform->addRule('shortname',null,'required');
-        $mform->setHelpButton('shortname', array('reportbuildershortname',get_string('uniquename','local'),'moodle'));
 
         $mform->addElement('static', 'reportsource', get_string('source','local'), $report->source);
         $mform->setHelpButton('reportsource', array('reportbuildersource',get_string('source','local'),'moodle'));
@@ -84,14 +70,6 @@ class report_builder_edit_form extends moodleform {
         $mform->setType('source', PARAM_TEXT);
         $this->add_action_buttons();
     }
-
-
-    function validation($data) {
-        $err = array();
-        $err += validate_shortname($data);
-        return $err;
-    }
-
 
 }
 

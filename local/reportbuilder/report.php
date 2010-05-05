@@ -6,11 +6,8 @@ require_once($CFG->dirroot.'/local/reportbuilder/lib.php');
 $format    = optional_param('format', '', PARAM_TEXT);
 $id = required_param('id',PARAM_INT);
 
-$shortname = get_field('report_builder','shortname','id',$id);
-
 // new report object
-$report = new reportbuilder($shortname);
-
+$report = new reportbuilder($id);
 if(!$report->is_capable($id)) {
     error(get_string('nopermission','local'));
 }

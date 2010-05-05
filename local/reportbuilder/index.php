@@ -54,7 +54,7 @@
         // create new record here
         $todb = new object();
         $todb->fullname = $fromform->fullname;
-        $todb->shortname = $fromform->shortname;
+        $todb->shortname = reportbuilder::create_shortname($fromform->fullname);
         $todb->source = ($fromform->source != '0') ? $fromform->source : null;
         // create with default columns and filters
         $todb->columns = serialize(reportbuilder::get_source_data('defaultcolumns',$fromform->source));
@@ -91,14 +91,12 @@
                 '<img src="'.$CFG->pixpath.'/t/delete.gif" alt="'.$strdelete.'"></a>';
             $row[] = '<a href="'.$CFG->wwwroot.'/local/reportbuilder/settings.php?id='.$report->id.'">'.$report->fullname.'</a>' .
                 ' (<a href="'.$viewurl.'">'.get_string('view').'</a>)';
-            $row[] = $report->shortname;
             $row[] = $report->source;
             $row[] = "$settings &nbsp; $delete";
             $data[] = $row;
         }
 
         $tableheader = array(get_string('name','local'),
-                             get_string('uniquename','local'),
                              get_string('source','local'),
                              get_string('options','local')
                          );
@@ -131,7 +129,6 @@
                 '<img src="'.$CFG->pixpath.'/i/reload.gif" alt="'.$strreload.'"></a>';
             $row[] = '<a href="'.$CFG->wwwroot.'/local/reportbuilder/settings.php?id='.$report->id.'">'.$report->fullname.'</a>' .
                 ' (<a href="'.$viewurl.'">'.get_string('view').'</a>)';
-            $row[] = $report->shortname;
             $row[] = $report->source;
             $row[] = "$settings &nbsp; $reload";
             $data[] = $row;

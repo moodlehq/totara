@@ -10,8 +10,7 @@ $id = required_param('id',PARAM_INT); // report builder id
 admin_externalpage_setup('reportbuilder');
 $returnurl = $CFG->wwwroot."/local/reportbuilder/content.php?id=$id";
 
-$shortname = get_field('report_builder','shortname','id',$id);
-$report = new reportbuilder($shortname);
+$report = new reportbuilder($id);
 
 // form definition
 $mform =& new report_builder_edit_content_form(null, compact('id','report'));

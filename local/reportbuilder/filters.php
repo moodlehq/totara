@@ -14,8 +14,7 @@ $confirm = optional_param('confirm', 0, PARAM_INT); // confirm delete
 admin_externalpage_setup('reportbuilder');
 $returnurl = $CFG->wwwroot."/local/reportbuilder/filters.php?id=$id";
 
-$shortname = get_field('report_builder','shortname','id',$id);
-$report = new reportbuilder($shortname);
+$report = new reportbuilder($id);
 
 // delete fields or columns
 if ($d and $confirm ) {
