@@ -285,6 +285,7 @@ function print_session_list($courseid, $facetofaceid, $location)
         $upcomingtable->summary = get_string('upcomingsessionslist', 'facetoface');
         $upcomingtable->head = $tableheader;
         $upcomingtable->rowclass = array_merge($upcomingrowclass, $upcomingtbdrowclass);
+        $upcomingtable->width = '100%';
         $upcomingtable->data = array_merge($upcomingdata, $upcomingtbddata);
         print_table($upcomingtable);
     }
@@ -300,6 +301,7 @@ function print_session_list($courseid, $facetofaceid, $location)
         $previoustable->summary = get_string('previoussessionslist', 'facetoface');
         $previoustable->head = $tableheader;
         $previoustable->rowclass = $previousrowclass;
+        $previoustable->width = '100%';
         $previoustable->data = $previousdata;
         print_table($previoustable);
     }
