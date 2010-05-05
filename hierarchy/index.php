@@ -151,10 +151,10 @@
     $order  = " ORDER BY sortorder";
 
     // figure out how many matches there are
-    $filteredmatchcount = count_records_sql('SELECT COUNT (DISTINCT id) '.$from
+    $filteredmatchcount = count_records_sql('SELECT COUNT(DISTINCT id) '.$from
         .$where.$extrasql);
     if ($extrasql !== '') {
-        $matchcount = count_records_sql('SELECT COUNT (DISTINCT id) '.$from.$where);
+        $matchcount = count_records_sql('SELECT COUNT(DISTINCT id) '.$from.$where);
     } else {
         $matchcount = $filteredmatchcount;
     }
