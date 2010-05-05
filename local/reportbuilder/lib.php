@@ -701,7 +701,7 @@ class reportbuilder {
         // from session var
         $table = new flexible_table($shortname);
         $sort = $table->get_sql_sort($shortname);
-        $order = ($sort!='') ? "ORDER BY $sort" : '';
+        $order = ($sort!='') ? " ORDER BY $sort" : '';
 
         $headings = array();
         foreach($columns as $column) {
@@ -790,7 +790,7 @@ class reportbuilder {
         // get the ORDER BY SQL fragment from table
         $sort = $table->get_sql_sort();
         if($sort!='') {
-            $order = "ORDER BY $sort";
+            $order = " ORDER BY $sort";
         } else {
            $order = '';
         }
