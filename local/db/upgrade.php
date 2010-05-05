@@ -1471,7 +1471,7 @@ function xmldb_local_upgrade($oldversion) {
             }
     }
 
-    if ($result && $oldversion < 2010050300) {
+    if ($result && $oldversion < 2010050600) {
         $table = new XMLDBTable('report_builder_access');
         if(!table_exists($table)) {
 
@@ -1536,6 +1536,57 @@ function xmldb_local_upgrade($oldversion) {
         $index = new XMLDBIndex('fieldid');
         $index->setAttributes(XMLDB_INDEX_NOTUNIQUE, array('fieldid'));
         $result = $result && add_index($table, $index);
+
+
+        // create tables for columns
+        $table = new XMLDBTable('report_builder_columns');
+        if(!table_exists($table)) {
+
+        /// Adding fields to table report_builder_access
+            $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null, null);
+            $table->addFieldInfo('reportid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
+            $table->addFieldInfo('type', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
+            $table->addFieldInfo('value', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
+            $table->addFieldInfo('heading', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
+            $table->addFieldInfo('sortorder', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
+
+        /// Adding keys to table report_builder_access
+            $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
+
+        /// Launch create table for report_builder_access
+            create_table($table);
+        }
+
+        // create tables for columns
+        $table = new XMLDBTable('report_builder_filters');
+        if(!table_exists($table)) {
+
+        /// Adding fields to table report_builder_access
+            $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null, null);
+            $table->addFieldInfo('reportid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
+            $table->addFieldInfo('type', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
+            $table->addFieldInfo('value', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
+            $table->addFieldInfo('advanced', XMLDB_TYPE_INTEGER, '4', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
+            $table->addFieldInfo('sortorder', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
+
+        /// Adding keys to table report_builder_access
+            $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
+
+        /// Launch create table for report_builder_access
+            create_table($table);
+        }
+
+        //TODO write migration functions for filters and columns
+
+
+        // drop the old columns and filters fields
+        $table = new XMLDBTable('report_builder');
+        $field = new XMLDBField('columns');
+        $result = $result && drop_field($table, $field);
+
+        $field = new XMLDBField('filters');
+        $result = $result && drop_field($table, $field);
+
     }
 
     return $result;
