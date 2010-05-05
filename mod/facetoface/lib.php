@@ -1263,7 +1263,8 @@ function facetoface_write_activity_attendance(&$worksheet, $startingrow, $faceto
             s.id AS sessionid,
             u.*,
             f.course AS courseid,
-            ss.grade
+            ss.grade,
+            sign.timecreated
         FROM
             {$CFG->prefix}facetoface f
         JOIN
@@ -1275,6 +1276,26 @@ function facetoface_write_activity_attendance(&$worksheet, $startingrow, $faceto
         JOIN
             {$CFG->prefix}facetoface_signups_status ss
          ON su.id = ss.signupid
+	JOIN
+	    (
+		SELECT
+		    ss.signupid,
+		    MAX(ss.timecreated) AS timecreated
+		FROM
+            {$CFG->prefix}facetoface_signups_status ss
+		INNER JOIN
+		    {$CFG->prefix}facetoface_signups s
+		 ON s.id = ss.signupid
+		INNER JOIN
+		    {$CFG->prefix}facetoface_sessions se
+		 ON s.sessionid = se.id
+		AND se.facetoface = $facetofaceid
+		WHERE
+		    ss.statuscode = ".MDL_F2F_STATUS_BOOKED."
+		GROUP BY
+		    ss.signupid
+	    ) sign
+	 ON su.id = sign.signupid
         JOIN
             {$CFG->prefix}user u
          ON u.id = su.userid
@@ -1313,7 +1334,7 @@ function facetoface_write_activity_attendance(&$worksheet, $startingrow, $faceto
                 $signup->grade = $grading_info->items[0]->grades[$userid]->str_grade;
             }
 
-            $sessionsignups[$signup->sessionid][] = $signup;
+            $sessionsignups[$signup->sessionid][$signup->id] = $signup;
         }
     }
 
@@ -1438,6 +1459,16 @@ function facetoface_write_activity_attendance(&$worksheet, $startingrow, $faceto
                         }
                     }
                     $worksheet->write_string($i,$j++,$attendee->grade);
+
+                    if (method_exists($worksheet,'write_date')) {
+                        $worksheet->write_date($i, $j++, (int)$attendee->timecreated, $dateformat);
+                    } else {
+                        $signupdate = userdate($attendee->timecreated, get_string('strftimedatetime'));
+                        if (empty($signupdate)){
+                            $signupdate = '-';
+                        }
+                        $worksheet->write_string($i,$j++, $signupdate);
+                    }
 
                     if (!empty($coursename)) {
                         $worksheet->write_string($i, $j++, $coursename);
