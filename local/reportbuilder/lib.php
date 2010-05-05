@@ -946,16 +946,17 @@ class reportbuilder {
      * if($format!=''){$report->export_data($format);die;}
      * before header printed
      *
-     * @return No return value but prints export buttons
+     * @return string Returns the code for the export buttons
      */
     function export_buttons() {
-        print "<center><table><tr><td>";
-        print_single_button(qualified_me(),array('format'=>'xls'),get_string('exportxls','local'),'post');
-        print "</td><td>";
-        print_single_button(qualified_me(),array('format'=>'csv'),get_string('exportcsv','local'),'post');
-        print "</td><td>";
-        print_single_button(qualified_me(),array('format'=>'ods'),get_string('exportods','local'),'post');
-        print "</td><tr></table></center>";
+        $out = "<center><table><tr><td>";
+        $out .= print_single_button(qualified_me(),array('format'=>'xls'),get_string('exportxls','local'),'post','_self', true);
+        $out .= "</td><td>";
+        $out .= print_single_button(qualified_me(),array('format'=>'csv'),get_string('exportcsv','local'),'post','_self', true);
+        $out .= "</td><td>";
+        $out .= print_single_button(qualified_me(),array('format'=>'ods'),get_string('exportods','local'),'post','_self', true);
+	$out .= "</td><tr></table></center>";
+	return $out;
     }
 
     function view_button() {
