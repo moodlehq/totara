@@ -576,7 +576,7 @@ function facetoface_get_facetoface_menu() {
         return $facetofacemenu;
 
     } else {
-        
+
         return '';
 
     }
@@ -1029,18 +1029,36 @@ function facetoface_get_attendees($sessionid)
             f.id AS facetofaceid,
             f.course,
             ss.grade,
-            ss.statuscode
+            ss.statuscode,
+            sign.timecreated
         FROM
             {$CFG->prefix}facetoface f
         JOIN
             {$CFG->prefix}facetoface_sessions s
-         ON s.facetoface = f.id 
+         ON s.facetoface = f.id
         JOIN
             {$CFG->prefix}facetoface_signups su
          ON s.id = su.sessionid
         JOIN
             {$CFG->prefix}facetoface_signups_status ss
          ON su.id = ss.signupid
+	JOIN
+	    (
+		SELECT
+		    ss.signupid,
+		    MAX(ss.timecreated) AS timecreated
+		FROM
+            {$CFG->prefix}facetoface_signups_status ss
+		INNER JOIN
+		    {$CFG->prefix}facetoface_signups s
+		 ON s.id = ss.signupid
+		AND s.sessionid = $sessionid
+		WHERE
+		    ss.statuscode = ".MDL_F2F_STATUS_BOOKED."
+		GROUP BY
+		    ss.signupid
+	    ) sign
+	 ON su.id = sign.signupid
         JOIN
             {$CFG->prefix}user u
          ON u.id = su.userid
@@ -1049,7 +1067,7 @@ function facetoface_get_attendees($sessionid)
         AND ss.superceded != 1
         AND ss.statuscode >= ".MDL_F2F_STATUS_APPROVED."
         ORDER BY
-            ss.timecreated ASC
+            sign.timecreated ASC
     ");
 
     return $records;
@@ -2247,7 +2265,7 @@ function facetoface_take_attendance($data) {
     // to zero, to indicate non attendance, but only the ticked attendees come through from the web interface.
     // Hence the need for a diff
     $selectedsubmissionids = array();
-    
+
     // FIXME: This is not very efficient, we should do the grade
     // query outside of the loop to get all submissions for a
     // given Face-to-face ID, then call
@@ -2271,7 +2289,7 @@ function facetoface_take_attendance($data) {
                     $grade = 50;
                     break;
 
-                case MDL_F2F_STATUS_FULLY_ATTENDED: 
+                case MDL_F2F_STATUS_FULLY_ATTENDED:
                     $grade = 100;
                     break;
 
@@ -2405,9 +2423,9 @@ function facetoface_approve_requests($data) {
  */
 function facetoface_take_individual_attendance($submissionid, $grading) {
     global $USER, $CFG;
-    
+
     $timenow = time();
-    
+
     $record = get_record_sql("SELECT f.*, s.userid
                                 FROM {$CFG->prefix}facetoface_signups s
                                 JOIN {$CFG->prefix}facetoface_sessions fs ON s.sessionid = fs.id
@@ -2635,7 +2653,7 @@ function facetoface_get_ical_attachment($method, $facetoface, $session, $user)
     // First, generate all the VEVENT blocks
     $VEVENTS = '';
     foreach ($session->sessiondates as $date) {
-        // Date that this representation of the calendar information was created - 
+        // Date that this representation of the calendar information was created -
         // we use the time the session was created
         // http://www.kanzaki.com/docs/ical/dtstamp.html
         $DTSTAMP = facetoface_ical_generate_timestamp($session->timecreated);
@@ -2676,9 +2694,9 @@ function facetoface_get_ical_attachment($method, $facetoface, $session, $user)
             $locationstring .= $customfielddata['location']->data;
         }
 
-        // NOTE: Newlines are meant to be encoded with the literal sequence 
-        // '\n'. But evolution presents a single line text field for location, 
-        // and shows the newlines as [0x0A] junk. So we switch it for commas 
+        // NOTE: Newlines are meant to be encoded with the literal sequence
+        // '\n'. But evolution presents a single line text field for location,
+        // and shows the newlines as [0x0A] junk. So we switch it for commas
         // here. Remember commas need to be escaped too.
         $LOCATION    = str_replace('\n', '\, ', facetoface_ical_escape($locationstring));
 
@@ -2698,7 +2716,7 @@ function facetoface_get_ical_attachment($method, $facetoface, $session, $user)
         $USERNAME = fullname($user);
         $MAILTO   = $user->email;
 
-        // The extra newline at the bottom is so multiple events start on their 
+        // The extra newline at the bottom is so multiple events start on their
         // own lines. The very last one is trimmed outside the loop
         $VEVENTS .= <<<EOF
 BEGIN:VEVENT
@@ -2781,7 +2799,7 @@ function facetoface_ical_escape($text, $converthtml=false) {
         $text
     );
 
-    // Text should be wordwrapped at 75 octets, and there should be one 
+    // Text should be wordwrapped at 75 octets, and there should be one
     // whitespace after the newline that does the wrapping
     $text = wordwrap($text, 75, "\n ", true);
 
@@ -2871,7 +2889,7 @@ function facetoface_grade_item_delete($facetoface) {
  */
 function facetoface_get_num_attendees($session_id) {
     global $CFG;
-    // for the session, pick signups that haven't been superceded, or cancelled  
+    // for the session, pick signups that haven't been superceded, or cancelled
     return (int) count_records_sql("select count(ss.id) from {$CFG->prefix}facetoface_signups su
         JOIN {$CFG->prefix}facetoface_signups_status ss ON su.id = ss.signupid
         WHERE sessionid=$session_id AND ss.superceded=0 AND ss.statuscode >= ".MDL_F2F_STATUS_APPROVED);
@@ -2901,7 +2919,7 @@ function facetoface_get_user_submissions($facetofaceid, $userid, $includecancell
             su.id,
             s.facetoface,
             s.id as sessionid,
-            su.userid, 
+            su.userid,
             0 as mailedconfirmation,
             su.mailedreminder,
             su.discountcode,
@@ -2912,7 +2930,7 @@ function facetoface_get_user_submissions($facetofaceid, $userid, $includecancell
             su.notificationtype,
             ss.statuscode
         FROM
-            mdl_facetoface_sessions s 
+            mdl_facetoface_sessions s
         JOIN
             mdl_facetoface_signups su
          ON su.sessionid = s.id
@@ -3631,7 +3649,7 @@ function facetoface_supports($feature) {
 /**
  * Determines whether an activity requires the user to have a manager (either for
  * manager approval or to send notices to the manager)
- * 
+ *
  * @param  object $facetoface A database fieldset object for the facetoface activity
  * @return boolean whether a person needs a manager to sign up for that activity
  */
