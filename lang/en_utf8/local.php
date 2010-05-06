@@ -180,6 +180,7 @@ $string['filters'] = 'Filters';
 $string['content'] = 'Content';
 $string['access'] = 'Access';
 $string['error:couldnotcreatenewreport'] = 'Could not create new report';
+$string['error:couldnotupdatereport'] = 'Could not update report';
 $string['error:mustselectsource'] = 'You must pick a source for the report';
 $string['error:norestrictions'] = 'No restrictions found. To use restrictions ask your developer to add the necessary files to /local/reportbuilder/restrictions/.';
 $string['error:nosources'] ='No sources found. You must have at least one source before you can add reports. Ask your developer to hadd the necessary files to /local/reportbuilder/sources/.';
@@ -273,6 +274,8 @@ $string['usergenerated'] = 'User generated';
 $string['embeddedreports'] = 'Embedded Reports';
 $string['usergeneratedreports'] = 'User generated Reports';
 $string['noembeddedreports'] = 'There are no embedded reports. Embedded reports are reports that are hard-coded directly into a page. Typically they will be set up by your site developer. If you have any embedded reports then they will appear here once the page has been viewed for the first time.';
+$string['nocolumnsyet'] = 'No columns have been created yet - add them by selecting a column name in the pulldown below.';
+$string['nofiltersyet'] = 'No search fields have been created yet - add them by selecting a search term in the pulldown below.';
 
 // Add/Edit competency evidence
 $string['error:unknownbuttonclicked'] = 'Unknown Button Clicked';

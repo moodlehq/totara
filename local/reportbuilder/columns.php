@@ -66,18 +66,12 @@ if ($fromform = $mform->get_data()) {
         print_error('error:unknownbuttonclicked', 'local', $returnurl);
     }
 
-    $todb = new object();
-    $todb->id = $id;
-    $result = build_columns($fromform);
-    $todb->columns = serialize($result);
-    begin_sql();
-    if(update_record('report_builder',$todb)) {
-        commit_sql();
+    if(build_columns($id, $fromform)) {
         redirect($returnurl);
     } else {
-        rollback_sql();
         redirect($returnurl, get_string('error:couldnotupdatereport','local'));
     }
+
 }
 
 admin_externalpage_print_header();
@@ -98,37 +92,55 @@ $mform->display();
 
 admin_externalpage_print_footer();
 
-function build_columns($fromform) {
-    // build the results
-    // first recreated existing columns
-    $i = 0;
-    $col = "column$i";
-    $head = "heading$i";
-    $ret = array();
-    while(isset($fromform->$col)) {
-        $parts = explode('-',$fromform->$col);
-        $ret[$i] = array(
-            'type' => $parts[0],
-            'value' => $parts[1],
-            'heading' => $fromform->$head,
-        );
 
-        $i++;
-        $col = "column$i";
-        $head = "heading$i";
+
+function build_columns($id, $fromform) {
+    begin_sql();
+
+    if ($oldcolumns = get_records('report_builder_columns', 'reportid', $id)) {
+        // see if existing columns have changed
+        foreach($oldcolumns as $cid => $oldcolumn) {
+            $columnname = "column{$cid}";
+            $headingname = "heading{$cid}";
+            // update db only if column has changed
+            if(isset($fromform->$columnname) &&
+                ($fromform->$columnname != $oldcolumn->type.'-'.$oldcolumn->value ||
+                $fromform->$headingname != $oldcolumn->heading)) {
+                $todb = new object();
+                $todb->id = $cid;
+                $parts = explode('-', $fromform->$columnname);
+                $todb->type = $parts[0];
+                $todb->value = $parts[1];
+                $todb->heading = $fromform->$headingname;
+                if(!update_record('report_builder_columns', $todb)) {
+                    rollback_sql();
+                    return false;
+                }
+            }
+        }
     }
 
-    // add the new column if set
+    // add any new columns
     if(isset($fromform->newcolumns) && $fromform->newcolumns != '0') {
+        $todb = new object();
+        $todb->reportid = $id;
         $parts = explode('-',$fromform->newcolumns);
-        $ret[$i] = array(
-            'type' => $parts[0],
-            'value' => $parts[1],
-            'heading' => $fromform->newheading,
-        );
+        $todb->type = $parts[0];
+        $todb->value = $parts[1];
+        $todb->heading = $fromform->newheading;
+        $sortorder = get_field('report_builder_columns', 'MAX(sortorder) + 1', 'reportid', $id);
+        if(!$sortorder) {
+            $sortorder = 1;
+        }
+        $todb->sortorder = $sortorder;
+        if(!insert_record('report_builder_columns', $todb)) {
+            rollback_sql();
+            return false;
+        }
     }
 
-    return $ret;
+    commit_sql();
+    return true;
 }
 
 

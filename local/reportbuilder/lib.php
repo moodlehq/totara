@@ -36,12 +36,12 @@ class reportbuilder {
         }
 
         if ($report) {
+            $this->_id = $report->id;
             $this->source = $report->source;
             $this->shortname = $report->shortname;
             $this->fullname = $report->fullname;
-            $this->filters = unserialize($report->filters);
-            $this->columns = unserialize($report->columns);
-            $this->_id = $report->id;
+            $this->filters = $this->get_filters();
+            $this->columns = $this->get_columns();
             $this->hidden = $report->hidden;
             $this->contentmode = $report->contentmode;
             $this->contentsettings = unserialize($report->contentsettings);
@@ -72,6 +72,53 @@ class reportbuilder {
 
     }
 
+    /*
+     * Gets any filters set for the current report from the database
+     *
+     * @returns array Array of filters for current report or empty array if none set
+     */
+    function get_filters() {
+        $out = array();
+        $id = isset($this->_id) ? $this->_id : null;
+        if(empty($id)) {
+            return $out;
+        }
+        if($filters = get_records('report_builder_filters','reportid', $id, 'sortorder')) {
+            foreach ($filters as $filter) {
+                $item = array(
+                    'type' => $filter->type,
+                    'value' => $filter->value,
+                    'advanced' => $filter->advanced,
+                );
+                $out[$filter->id] = $item;
+            }
+        }
+        return $out;
+    }
+
+    /*
+     * Gets any columns set for the current report from the database
+     *
+     * @returns array Array of columns for current report or empty array if none set
+     */
+    function get_columns() {
+        $out = array();
+        $id = isset($this->_id) ? $this->_id : null;
+        if(empty($id)) {
+            return $out;
+        }
+        if($columns = get_records('report_builder_columns','reportid', $id, 'sortorder')) {
+            foreach ($columns as $column) {
+                $item = array(
+                    'type' => $column->type,
+                    'value' => $column->value,
+                    'heading' => $column->heading,
+                );
+                $out[$column->id] = $item;
+            }
+        }
+        return $out;
+    }
     /*
      * Creates a database entry for an embedded report when it is first viewed so the settings can be
      * edited
@@ -1239,54 +1286,68 @@ class reportbuilder {
      */
     function delete_column($cid) {
         $id = $this->_id;
-        // generate new version of columns, minus the one to delete
-        // this will update the array indices
-        $newcolumns = array();
-        foreach($this->columns as $index => $column) {
-            if($index != $cid) {
-                $newcolumns[] = $column;
-            }
-        }
-
-        // update record in db
-        $todb = new object();
-        $todb->id = $id;
-        $todb->columns = serialize($newcolumns);
-        if(update_record('report_builder', $todb)) {
-            $this->columns = $newcolumns;
-            return true;
-        } else {
+        begin_sql();
+        $sortorder = get_field('report_builder_columns','sortorder', 'id', $cid);
+        if(!$sortorder) {
+            rollback_sql();
             return false;
         }
+        if(!delete_records('report_builder_columns','id',$cid)) {
+            rollback_sql();
+            return false;
+        }
+        if($allcolumns = get_records('report_builder_columns', 'reportid', $id)) {
+            foreach($allcolumns as $column) {
+                if($column->sortorder > $sortorder) {
+                    $todb = new object();
+                    $todb->id = $column->id;
+                    $todb->sortorder = $column->sortorder - 1;
+                    if(!update_record('report_builder_columns', $todb)) {
+                        rollback_sql();
+                        return false;
+                    }
+                }
+            }
+        }
+        commit_sql();
+        return true;
+
     }
 
     /*
-     * Given a filter id, removes that filter from the current report
+     * Given a filter id, removes that filter from the current report and
+     * updates the sortorder for other filters
      *
      * @param integer $fid ID of the filter to be removed
      * @return boolean True on success, false otherwise
      */
     function delete_filter($fid) {
         $id = $this->_id;
-        // generate new version of filters, minus the one to delete
-        // this will update the array indices
-        $newfilters = array();
-        foreach($this->filters as $index => $filter) {
-            if($index != $fid) {
-                $newfilters[] = $filter;
-            }
-        }
-
-        // update record in db
-        $todb = new object();
-        $todb->id = $id;
-        $todb->filters = serialize($newfilters);
-        if(update_record('report_builder', $todb)) {
-            $this->filters = $newfilters;
-            return true;
-        } else {
+        begin_sql();
+        $sortorder = get_field('report_builder_filters','sortorder', 'id', $fid);
+        if(!$sortorder) {
+            rollback_sql();
             return false;
         }
+        if(!delete_records('report_builder_filters','id',$fid)) {
+            rollback_sql();
+            return false;
+        }
+        if($allfilters = get_records('report_builder_filters', 'reportid', $id)) {
+            foreach($allfilters as $filter) {
+                if($filter->sortorder > $sortorder) {
+                    $todb = new object();
+                    $todb->id = $filter->id;
+                    $todb->sortorder = $filter->sortorder - 1;
+                    if(!update_record('report_builder_filters', $todb)) {
+                        rollback_sql();
+                        return false;
+                    }
+                }
+            }
+        }
+        commit_sql();
+        return true;
     }
 
     /*
@@ -1299,28 +1360,46 @@ class reportbuilder {
     function move_column($cid, $updown) {
         $id = $this->_id;
 
-        // assumes array is well behaved (indexes 0 -> N-1)
-        $first = 0;
-        $last = count($this->columns)-1;
-        foreach($this->columns as $index => $column) {
-            // do a down move
-            if($index == $cid && $updown == 'down' && $index != $last) {
-                $temp = $column;
-                $this->columns[$index] = $this->columns[$index+1];
-                $this->columns[$index+1] = $temp;
-            }
-            // do an up move
-            if($index == $cid && $updown == 'up' && $index != $first) {
-                $temp = $column;
-                $this->columns[$index] = $this->columns[$index-1];
-                $this->columns[$index-1] = $temp;
-            }
+        begin_sql();
+
+        // assumes sort order is well behaved (no gaps)
+        if(!$itemsort = get_field('report_builder_columns', 'sortorder', 'id', $cid)) {
+            rollback_sql();
+            return false;
         }
-        // save results
-        $todb = new object();
-        $todb->id = $id;
-        $todb->columns = serialize($this->columns);
-        return update_record('report_builder',$todb);
+
+        if($updown == 'up') {
+            $newsort = $itemsort - 1;
+        } else if ($updown == 'down') {
+            $newsort = $itemsort + 1;
+        } else {
+            // invalid updown string
+            rollback_sql();
+            return false;
+        }
+
+        if($neighbour = get_record('report_builder_columns', 'reportid', $id, 'sortorder', $newsort)) {
+            // swap sort orders
+            $todb = new object();
+            $todb->id = $cid;
+            $todb->sortorder = $neighbour->sortorder;
+            $todb2 = new object();
+            $todb2->id = $neighbour->id;
+            $todb2->sortorder = $itemsort;
+            if(!update_record('report_builder_columns', $todb) ||
+               !update_record('report_builder_columns', $todb2)) {
+                rollback_sql();
+                return false;
+            }
+        } else {
+            // no neighbour
+            rollback_sql();
+            return false;
+        }
+
+        commit_sql();
+        return true;
+
     }
 
 
@@ -1334,28 +1413,46 @@ class reportbuilder {
     function move_filter($fid, $updown) {
         $id = $this->_id;
 
-        // assumes array is well behaved (indexes 0 -> N-1)
-        $first = 0;
-        $last = count($this->filters)-1;
-        foreach($this->filters as $index => $filter) {
-            // do a down move
-            if($index == $fid && $updown == 'down' && $index != $last) {
-                $temp = $filter;
-                $this->filters[$index] = $this->filters[$index+1];
-                $this->filters[$index+1] = $temp;
-            }
-            // do an up move
-            if($index == $fid && $updown == 'up' && $index != $first) {
-                $temp = $filter;
-                $this->filters[$index] = $this->filters[$index-1];
-                $this->filters[$index-1] = $temp;
-            }
+        begin_sql();
+
+        // assumes sort order is well behaved (no gaps)
+        if(!$itemsort = get_field('report_builder_filters', 'sortorder', 'id', $fid)) {
+            rollback_sql();
+            return false;
         }
-        // save results
-        $todb = new object();
-        $todb->id = $id;
-        $todb->filters = serialize($this->filters);
-        return update_record('report_builder',$todb);
+
+        if($updown == 'up') {
+            $newsort = $itemsort - 1;
+        } else if ($updown == 'down') {
+            $newsort = $itemsort + 1;
+        } else {
+            // invalid updown string
+            rollback_sql();
+            return false;
+        }
+
+        if($neighbour = get_record('report_builder_filters', 'reportid', $id, 'sortorder', $newsort)) {
+            // swap sort orders
+            $todb = new object();
+            $todb->id = $fid;
+            $todb->sortorder = $neighbour->sortorder;
+            $todb2 = new object();
+            $todb2->id = $neighbour->id;
+            $todb2->sortorder = $itemsort;
+            if(!update_record('report_builder_filters', $todb) ||
+               !update_record('report_builder_filters', $todb2)) {
+                rollback_sql();
+                return false;
+            }
+        } else {
+            // no neighbour
+            rollback_sql();
+            return false;
+        }
+
+        commit_sql();
+        return true;
+
     }
 
 

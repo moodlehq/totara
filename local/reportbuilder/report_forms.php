@@ -136,7 +136,7 @@ class report_builder_edit_filters_form extends moodleform {
                     $i++;
                 }
             } else {
-                $mform->addElement('html',"<p>No search fields have been created yet - add them by selecting a search term in the pulldown below.</p>");
+                $mform->addElement('html','<p>'. get_string('nofiltersyet','local').'</p>');
             }
 
 
@@ -176,7 +176,7 @@ class report_builder_edit_columns_form extends moodleform {
 
         $mform->addElement('header', 'reportcolumns', get_string('reportcolumns', 'local'));
 
-        if(isset($report->columns) && is_array($report->columns) && count($report->columns)>0) {
+        if(isset($report->columnoptions) && is_array($report->columnoptions) && count($report->columnoptions)>0) {
 
 
             $mform->addElement('html','<div>'.get_string('help:columnsdesc','local').'</div><br />');
@@ -186,50 +186,53 @@ class report_builder_edit_columns_form extends moodleform {
 
             $columnsselect = $report->get_columns_select();
 
-            $columns = $report->columns;
-
-            $colcount = count($columns);
-            $i = 1;
-            foreach($columns as $index => $column) {
-                $row = array();
-                $type = $column['type'];
-                $value = $column['value'];
-                $field = "{$type}-{$value}";
-                $heading = $column['heading'];
-                $cid = $index;
-                if(array_key_exists($type, $report->columnoptions) && array_key_exists($value, $report->columnoptions[$type])) {
-                    $mform->addElement('html','<tr><td>');
-                    $mform->addElement('select',"column{$cid}",'',$columnsselect);
-                    $mform->setDefault("column{$cid}", $field);
+            if(isset($report->columns) && is_array($report->columns) && count($report->columns)>0) {
+                $columns = $report->columns;
+                $colcount = count($columns);
+                $i = 1;
+                foreach($columns as $index => $column) {
+                    $row = array();
+                    $type = $column['type'];
+                    $value = $column['value'];
+                    $field = "{$type}-{$value}";
+                    $heading = $column['heading'];
+                    $cid = $index;
+                    if(array_key_exists($type, $report->columnoptions) && array_key_exists($value, $report->columnoptions[$type])) {
+                        $mform->addElement('html','<tr><td>');
+                        $mform->addElement('select',"column{$cid}",'',$columnsselect);
+                        $mform->setDefault("column{$cid}", $field);
+                        $mform->addElement('html','</td><td>');
+                        $mform->addElement('text',"heading{$cid}",'');
+                        $mform->setType("heading{$cid}", PARAM_TEXT);
+                        $mform->addRule("heading{$cid}", null, 'nopunctuation');
+                        $mform->setDefault("heading{$cid}",$heading);
+                    } else {
+                        $mform->addElement('hidden',"column{$cid}", $field);
+                        $mform->setType("column{$cid}", PARAM_TEXT);
+                        $mform->addElement('html','<tr><td colspan="2" style="color:red;padding:10px;">Column with type of \''.$type.'\' and value of \''.$value.'\' not found in column options.');
+                    }
                     $mform->addElement('html','</td><td>');
-                    $mform->addElement('text',"heading{$cid}",'');
-                    $mform->setType("heading{$cid}", PARAM_TEXT);
-                    $mform->addRule("heading{$cid}", null, 'nopunctuation');
-                    $mform->setDefault("heading{$cid}",$heading);
-                } else {
-                    $mform->addElement('hidden',"column{$cid}", $field);
-                    $mform->setType("column{$cid}", PARAM_TEXT);
-                    $mform->addElement('html','<tr><td colspan="2" style="color:red;padding:10px;">Column with type of \''.$type.'\' and value of \''.$value.'\' not found in column options.');
-                }
-                $mform->addElement('html','</td><td>');
-                // delete link
-                $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/reportbuilder/columns.php?d=1&amp;id='.$id.'&amp;cid='.$cid.'" title="'.$strdelete.'"><img src="'.$CFG->pixpath.'/t/delete.gif" class="iconsmall" alt="'.$strdelete.'" /></a>');
-                // move up link
-                if($i != 1) {
-                    $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/reportbuilder/columns.php?m=up&amp;id='.$id.'&amp;cid='.$cid.'" title="'.$strmoveup.'"><img src="'.$CFG->pixpath.'/t/up.gif" class="iconsmall" alt="'.$strmoveup.'" /></a>');
-                } else {
-                    $mform->addElement('html', $spacer);
-                }
+                    // delete link
+                    $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/reportbuilder/columns.php?d=1&amp;id='.$id.'&amp;cid='.$cid.'" title="'.$strdelete.'"><img src="'.$CFG->pixpath.'/t/delete.gif" class="iconsmall" alt="'.$strdelete.'" /></a>');
+                    // move up link
+                    if($i != 1) {
+                        $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/reportbuilder/columns.php?m=up&amp;id='.$id.'&amp;cid='.$cid.'" title="'.$strmoveup.'"><img src="'.$CFG->pixpath.'/t/up.gif" class="iconsmall" alt="'.$strmoveup.'" /></a>');
+                    } else {
+                        $mform->addElement('html', $spacer);
+                    }
 
-                // move down link
-                if($i != $colcount) {
-                    $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/reportbuilder/columns.php?m=down&amp;id='.$id.'&amp;cid='.$cid.'" title="'.$strmovedown.'"><img src="'.$CFG->pixpath.'/t/down.gif" class="iconsmall" alt="'.$strmovedown.'" /></a>');
-                } else {
-                    $mform->addElement('html', $spacer);
-                }
+                    // move down link
+                    if($i != $colcount) {
+                        $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/reportbuilder/columns.php?m=down&amp;id='.$id.'&amp;cid='.$cid.'" title="'.$strmovedown.'"><img src="'.$CFG->pixpath.'/t/down.gif" class="iconsmall" alt="'.$strmovedown.'" /></a>');
+                    } else {
+                        $mform->addElement('html', $spacer);
+                    }
 
-                $mform->addElement('html','</td></tr>');
-                $i++;
+                    $mform->addElement('html','</td></tr>');
+                    $i++;
+                }
+            } else {
+                $mform->addElement('html','<p>'.get_string('nocolumnsyet','local').'</p>');
             }
 
             $mform->addElement('html','<tr><td>');
@@ -430,18 +433,22 @@ function validate_shortname($data) {
 // (breaks flexible table otherwise)
 function validate_unique_columns($data) {
     $errors = array();
-    $i = 0;
-    $field = "column$i";
+
+    $id = $data['id'];
     $used_cols = array();
-    while(isset($data[$field])) {
-        if(array_key_exists($data[$field], $used_cols)) {
-            $errors[$field] = get_string('norepeatcols','local');
-        } else {
-            $used_cols[$data[$field]] = 1;
+    if($currentcols = get_records('report_builder_columns','reportid', $id)) {
+        foreach($currentcols as $col) {
+            $field = "column{$col->id}";
+            if(isset($data[$field])) {
+                if(array_key_exists($data[$field], $used_cols)) {
+                    $errors[$field] = get_string('norepeatcols','local');
+                } else {
+                    $used_cols[$data[$field]] = 1;
+                }
+            }
         }
-        $i++;
-        $field = "column$i";
     }
+
     // also check new column if set
     if(isset($data['newcolumns'])) {
         if(array_key_exists($data['newcolumns'], $used_cols)) {

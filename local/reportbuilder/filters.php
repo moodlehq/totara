@@ -69,18 +69,12 @@ if ($fromform = $mform->get_data()) {
         print_error('error:unknownbuttonclicked', 'local', $returnurl);
     }
 
-    $todb = new object();
-    $todb->id = $id;
-    $result = build_filters($fromform);
-    $todb->filters = serialize($result);
-    begin_sql();
-    if(update_record('report_builder',$todb)) {
-        commit_sql();
+    if(build_filters($id, $fromform)) {
         redirect($returnurl);
     } else {
-        rollback_sql();
         redirect($returnurl, get_string('error:couldnotupdatereport','local'));
     }
+
 }
 
 admin_externalpage_print_header();
@@ -101,40 +95,55 @@ $mform->display();
 
 admin_externalpage_print_footer();
 
-function build_filters($fromform) {
-    // build the results
-    // first recreate existing filters
-    $i = 0;
-    $filt = "filter$i";
-    $adv = "advanced$i";
-    $ret = array();
-    while(isset($fromform->$filt)) {
-        $parts = explode('-',$fromform->$filt);
-        $thisadv = (isset($fromform->$adv)) ? 1 : 0;
-        $ret[$i] = array(
-            'type' => $parts[0],
-            'value' => $parts[1],
-            'advanced' => $thisadv,
-        );
+function build_filters($id, $fromform) {
+    begin_sql();
 
-        $i++;
-        $filt = "filter$i";
-        $adv = "advanced$i";
+    if ($oldfilters = get_records('report_builder_filters', 'reportid', $id)) {
+        // see if existing filters have changed
+        foreach($oldfilters as $fid => $oldfilter) {
+            $filtername = "filter{$fid}";
+            $advancedname = "advanced{$fid}";
+            // update db only if filter has changed
+            if(isset($fromform->$filtername) &&
+                ($fromform->$filtername != $oldfilter->type.'-'.$oldfilter->value ||
+                $fromform->$filtername != $oldfilter->advanced)) {
+                $todb = new object();
+                $todb->id = $fid;
+                $parts = explode('-', $fromform->$filtername);
+                $thisadv = isset($fromform->$advancedname) ? 1 : 0;
+                $todb->type = $parts[0];
+                $todb->value = $parts[1];
+                $todb->advanced = $thisadv;
+                if(!update_record('report_builder_filters', $todb)) {
+                    rollback_sql();
+                    return false;
+                }
+            }
+        }
     }
 
-    // add the new filter if set
+    // add any new filters
     if(isset($fromform->newfilter) && $fromform->newfilter != '0') {
+        $todb = new object();
+        $todb->reportid = $id;
         $parts = explode('-',$fromform->newfilter);
-        $thisadv = (isset($fromform->newadvanced)) ? 1 : 0;
-        $ret[$i] = array(
-            'type' => $parts[0],
-            'value' => $parts[1],
-            'advanced' => $thisadv,
-        );
+        $thisadv = isset($fromform->newadvanced) ? 1 : 0;
+        $todb->type = $parts[0];
+        $todb->value = $parts[1];
+        $todb->advanced = $thisadv;
+        $sortorder = get_field('report_builder_filters', 'MAX(sortorder) + 1', 'reportid', $id);
+        if(!$sortorder) {
+            $sortorder = 1;
+        }
+        $todb->sortorder = $sortorder;
+        if(!insert_record('report_builder_filters', $todb)) {
+            rollback_sql();
+            return false;
+        }
     }
-    return $ret;
 
+    commit_sql();
+    return true;
 }
-
 
 ?>
