@@ -154,20 +154,56 @@ class reportbuilder {
         $todb->shortname = $shortname;
         $todb->fullname = $embed->fullname;
         $todb->source = $embed->source;
-        $todb->filters = serialize($embed->filters);
-        $todb->columns = serialize($embed->columns);
         $todb->hidden = 1; // hide embedded reports by default
         $todb->accessmode = $embed->accessmode;
         $todb->contentmode = $embed->contentmode;
         $todb->contentsettings = serialize($embed->contentsettings);
         $todb->accesssettings = serialize($embed->accesssettings);
         $todb->embeddedurl = qualified_me();
-        if ($newid = insert_record('report_builder', $todb)) {
-            return $newid;
-        } else {
+
+        begin_sql();
+        if (!$newid = insert_record('report_builder', $todb)) {
             $error = 'DB insert error';
+            rollback_sql();
             return false;
         }
+
+        // add columns
+        $so = 1;
+        foreach($embed->columns as $column) {
+            $todb = new object();
+            $todb->reportid = $newid;
+            $todb->type = $column['type'];
+            $todb->value = $column['value'];
+            $todb->heading = $column['heading'];
+            $todb->sortorder = $so;
+            if(!insert_record('report_builder_columns', $todb)) {
+                rollback_sql();
+                $error = 'Error inserting columns';
+                return false;
+            }
+            $so++;
+        }
+
+        // add filters
+        $so = 1;
+        foreach($embed->filters as $filter) {
+            $todb = new object();
+            $todb->reportid = $newid;
+            $todb->type = $filter['type'];
+            $todb->value = $filter['value'];
+            $todb->advanced = $filter['advanced'];
+            $todb->sortorder = $so;
+            if(!insert_record('report_builder_filters', $todb)) {
+                rollback_sql();
+                $error = 'Error inserting filters';
+                return false;
+            }
+            $so++;
+        }
+
+        commit_sql();
+        return $newid;
     }
 
     // given a report fullname, try to generate a sensible shortname that will be unique
