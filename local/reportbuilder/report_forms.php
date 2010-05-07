@@ -301,9 +301,9 @@ class report_builder_edit_content_form extends moodleform {
             $mform->disabledIf('user_enable','contentenabled', 'eq', 0);
             $mform->setDefault('user_enable', $enable);
             $radiogroup = array();
-            $radiogroup[] =& $mform->createElement('radio', 'user_who', '', 'A user\'s own records', 1);
-            $radiogroup[] =& $mform->createElement('radio', 'user_who', '', 'Records for user\'s direct reports', 2);
-            $radiogroup[] =& $mform->createElement('radio', 'user_who', '', 'Both', 3);
+            $radiogroup[] =& $mform->createElement('radio', 'user_who', '', 'A user\'s own records', 'own');
+            $radiogroup[] =& $mform->createElement('radio', 'user_who', '', 'Records for user\'s direct reports', 'reports');
+            $radiogroup[] =& $mform->createElement('radio', 'user_who', '', 'Both', 'ownandreports');
             $mform->addGroup($radiogroup, 'user_who_group', 'Include records from particular users', '<br />', false);
             $mform->setDefault('user_who', $who);
             $mform->disabledIf('user_who_group','contentenabled', 'eq', 0);

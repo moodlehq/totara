@@ -64,17 +64,17 @@ function reportbuilder_content_completed_org($field, $options) {
 
 function reportbuilder_content_user($field, $options) {
     global $USER;
-    if($options['who'] == 1) {
+    if($options['who'] == 'own') {
         // show own records
         return $field.' = '.$USER->id;
-    } else if ($options['who'] == 2) {
+    } else if ($options['who'] == 'reports') {
         // show staff records
         if($staff = mitms_get_staff()) {
             return $field.' IN ('. implode(',', $staff).')';
         } else {
             return 'FALSE';
         }
-    } else if ($options['who'] == 3) {
+    } else if ($options['who'] == 'ownandreports') {
         // show own and staff records
         if($staff = mitms_get_staff()) {
             return $field.' IN ('. $USER->id.','. implode(',', $staff).')';
