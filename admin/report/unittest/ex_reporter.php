@@ -66,22 +66,39 @@ class ExHtmlReporter extends HtmlReporter {
     function paintFail($message) {
         // Explicitly call grandparent, not parent::paintFail.
         SimpleScorer::paintFail($message);
-        $this->_paintPassFail('fail', $message);
+        $this->_paintPassFail('fail', $message, debug_backtrace());
     }
 
     /**
      * Called when an error (uncaught exception or PHP error) needs to be output.
      */
     function paintError($message) {
-        // Explicitly call grandparent, not parent::paintFail.
+        // Explicitly call grandparent, not parent::paintError.
         SimpleScorer::paintError($message);
         $this->_paintPassFail('exception', $message);
     }
 
     /**
-     * Private method. Used by printPass/Fail/Error.
+     * Called when a caught exception needs to be output.
      */
-    function _paintPassFail($passorfail, $message) {
+    function paintException($exception) {
+        // Explicitly call grandparent, not parent::paintException.
+        SimpleScorer::paintException($exception);
+        $message = 'Unexpected exception of type [' . get_class($exception) .
+                '] with message ['. $exception->getMessage() .
+                '] in ['. $exception->getFile() .
+                ' line ' . $exception->getLine() . ']';
+        $stacktrace = null;
+        if (method_exists($exception, 'getTrace')) {
+            $stacktrace = $exception->getTrace();
+        }
+        $this->_paintPassFail('exception', $message, $stacktrace);
+    }
+
+    /**
+     * Private method. Used by printPass/Fail/Error/Exception.
+     */
+    function _paintPassFail($passorfail, $message, $stacktrace = null) {
         global $FULLME, $CFG;
 
         print_simple_box_start('', '100%', '', 5, $passorfail . ' generalbox');
@@ -100,6 +117,25 @@ class ExHtmlReporter extends HtmlReporter {
         echo "<a href=\"{$url}path=$folder$file\" title=\"$this->strrunonlyfile\">$file</a>";
         echo $this->strseparator, implode($this->strseparator, $breadcrumb);
         echo $this->strseparator, '<br />', $this->_htmlEntities($message), "\n\n";
+        if ($stacktrace) {
+            $dotsadded = false;
+            $interestinglines = 0;
+            $filteredstacktrace = array();
+            foreach ($stacktrace as $frame) {
+                if (empty($frame['file']) || (strpos($frame['file'], 'simpletestlib') === false
+                        && strpos($frame['file'], 'report/unittest') === false)) {
+                    $filteredstacktrace[] = $frame;
+                    $interestinglines += 1;
+                    $dotsadded = false;
+                } else if (!$dotsadded) {
+                    $filteredstacktrace[] = array('line' => '...', 'file' => '...');
+                    $dotsadded = true;
+                }
+            }
+            if ($interestinglines > 1 || $passorfail == 'exception') {
+                echo '<div class="notifytiny">' . format_backtrace($filteredstacktrace) . "</div>\n\n";
+            }
+        }
         print_simple_box_end();
         flush();
     }
@@ -192,5 +228,46 @@ class ExHtmlReporter extends HtmlReporter {
     function get_string($identifier, $a = NULL) {
         return get_string($identifier, 'simpletest', $a);
     }
+}
+
+/**
+ * Formats a backtrace ready for output.
+ *
+ * @param array $callers backtrace array, as returned by debug_backtrace().
+ * @param boolean $plaintext if false, generates HTML, if true generates plain text.
+ * @return string formatted backtrace, ready for output.
+ */
+function format_backtrace($callers, $plaintext = false) {
+    // do not use $CFG->dirroot because it might not be available in destructors
+    $dirroot = dirname(dirname(__FILE__));
+
+    if (empty($callers)) {
+        return '';
+    }
+
+    $from = $plaintext ? '' : '<ul style="text-align: left">';
+    foreach ($callers as $caller) {
+        if (!isset($caller['line'])) {
+            $caller['line'] = '?'; // probably call_user_func()
+        }
+        if (!isset($caller['file'])) {
+            $caller['file'] = 'unknownfile'; // probably call_user_func()
+        }
+        $from .= $plaintext ? '* ' : '<li>';
+        $from .= 'line ' . $caller['line'] . ' of ' . str_replace($dirroot, '', $caller['file']);
+        if (isset($caller['function'])) {
+            $from .= ': call to ';
+            if (isset($caller['class'])) {
+                $from .= $caller['class'] . $caller['type'];
+            }
+            $from .= $caller['function'] . '()';
+        } else if (isset($caller['exception'])) {
+            $from .= ': '.$caller['exception'].' thrown';
+        }
+        $from .= $plaintext ? "\n" : '</li>';
+    }
+    $from .= $plaintext ? '' : '</ul>';
+
+    return $from;
 }
 ?>

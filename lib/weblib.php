@@ -119,7 +119,7 @@ $ALLOWED_PROTOCOLS = array('http', 'https', 'ftp', 'news', 'mailto', 'rtsp', 'te
  */
 function s($var, $strip=false) {
 
-    if ($var == '0') {  // for integer 0, boolean false, string '0'
+    if ($var === '0' or $var === false or $var === 0) {
         return '0';
     }
 
@@ -2524,14 +2524,16 @@ function print_header ($title='', $heading='', $navigation='', $focus='',
     if (isloggedin() && !empty($CFG->excludeoldflashclients) && empty($SESSION->flashversion)) {
         // Unfortunately we can't use require_js here and keep it all clean in 1.9 ...
         // require_js(array('yui_yahoo', 'yui_event', 'yui_connection', $CFG->httpswwwroot."/lib/swfobject/swfobject.js"));
-        $meta .= '<script type="text/javascript"  src="'.$CFG->wwwroot.'/lib/yui/yahoo/yahoo-min.js"></script>';
-        $meta .= '<script type="text/javascript"  src="'.$CFG->wwwroot.'/lib/yui/event/event-min.js"></script>';
-        $meta .= '<script type="text/javascript"  src="'.$CFG->wwwroot.'/lib/yui/connection/connection-min.js"></script>';
-        $meta .= '<script type="text/javascript"  src="'.$CFG->wwwroot.'/lib/swfobject/swfobject.js"></script>';
+        $meta .= '<script type="text/javascript"  src="'.$CFG->httpswwwroot.'/lib/yui/yahoo/yahoo-min.js"></script>';
+        $meta .= '<script type="text/javascript"  src="'.$CFG->httpswwwroot.'/lib/yui/event/event-min.js"></script>';
+        $meta .= '<script type="text/javascript"  src="'.$CFG->httpswwwroot.'/lib/yui/connection/connection-min.js"></script>';
+        $meta .= '<script type="text/javascript"  src="'.$CFG->httpswwwroot.'/lib/swfobject/swfobject.js"></script>';
         $meta .= 
            "<script type=\"text/javascript\">\n".
+           "//<![CDATA[\n".
            "  var flashversion = swfobject.getFlashPlayerVersion();\n".
-           "  YAHOO.util.Connect.asyncRequest('GET','".$CFG->wwwroot."/login/environment.php?sesskey=".sesskey()."&amp;flashversion='+flashversion.major+'.'+flashversion.minor+'.'+flashversion.release);\n".
+           "  YAHOO.util.Connect.asyncRequest('GET','".$CFG->httpswwwroot."/login/environment.php?sesskey=".sesskey()."&flashversion='+flashversion.major+'.'+flashversion.minor+'.'+flashversion.release);\n".
+           "//]]>\n".
            "</script>";
     }
 
@@ -4722,6 +4724,12 @@ function print_group_picture($group, $courseid, $large=false, $return=false, $li
 
     $context = get_context_instance(CONTEXT_COURSE, $courseid);
 
+    // If there is no picture, do nothing
+    if (!$group->picture) {
+        return '';
+    }
+
+    // If picture is hidden, only show to those with course:managegroups
     if ($group->hidepicture and !has_capability('moodle/course:managegroups', $context)) {
         return '';
     }
@@ -4736,12 +4744,13 @@ function print_group_picture($group, $courseid, $large=false, $return=false, $li
     } else {
         $file = 'f2';
     }
-    if ($group->picture) {  // Print custom group picture
-        require_once($CFG->libdir.'/filelib.php');
-        $grouppictureurl = get_file_url($group->id.'/'.$file.'.jpg', null, 'usergroup');
-        $output .= '<img class="grouppicture" src="'.$grouppictureurl.'"'.
-            ' alt="'.s(get_string('group').' '.$group->name).'" title="'.s($group->name).'"/>';
-    }
+    
+    // Print custom group picture
+    require_once($CFG->libdir.'/filelib.php');
+    $grouppictureurl = get_file_url($group->id.'/'.$file.'.jpg', null, 'usergroup');
+    $output .= '<img class="grouppicture" src="'.$grouppictureurl.'"'.
+        ' alt="'.s(get_string('group').' '.$group->name).'" title="'.s($group->name).'"/>';
+
     if ($link or has_capability('moodle/site:accessallgroups', $context)) {
         $output .= '</a>';
     }

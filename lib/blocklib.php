@@ -584,7 +584,7 @@ function blocks_execute_action($page, &$pageblocks, $blockaction, $instanceorid,
                 if (!empty($pageblocks[$instance->position][$instance->weight - 1])) {
                     //define instance's position in the array
                     foreach ($pageblocks[$instance->position] as $instancekeysindex => $index ){
-                        if ($pageblocks[$instance->position][$instancekeysindex]->blockid == $instance->blockid){
+                        if ($pageblocks[$instance->position][$instancekeysindex]->id == $instance->id){
                             $instanceindex = $instancekeysindex;
                         }
                     }
@@ -626,7 +626,7 @@ function blocks_execute_action($page, &$pageblocks, $blockaction, $instanceorid,
                 if (!empty($pageblocks[$instance->position][$instance->weight + 1])) {
                     //define instance's position in the array
                     foreach ($pageblocks[$instance->position] as $instancekeysindex => $index ){
-                        if ($pageblocks[$instance->position][$instancekeysindex]->blockid == $instance->blockid){
+                        if ($pageblocks[$instance->position][$instancekeysindex]->id == $instance->id){
                             $instanceindex = $instancekeysindex;
                         }
                     }

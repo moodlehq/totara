@@ -4257,6 +4257,12 @@ function email_to_user($user, $from, $subject, $messagetext, $messagehtml='', $a
         return true;
     }
 
+    if (!empty($CFG->divertallemailsto)) {
+        $subject = "[DIVERTED {$user->email}] $subject";
+        $user = clone($user);
+        $user->email = $CFG->divertallemailsto;
+    }
+
     // skip mail to suspended users
     if (isset($user->auth) && $user->auth=='nologin') {
         return true;
@@ -6800,8 +6806,8 @@ function notify_login_failures() {
                 "\n\n".get_string('notifyloginfailuresmessageend','',$CFG->wwwroot)."\n\n";
 
     /// For each destination, send mail
+        mtrace('Emailing admins about '. $count .' failed login attempts');
         foreach ($recip as $admin) {
-            mtrace('Emailing '. $admin->username .' about '. $count .' failed login attempts');
             email_to_user($admin,get_admin(), $subject, $body);
         }
 

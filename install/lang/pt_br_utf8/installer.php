@@ -37,7 +37,7 @@ $string['configurationcompletehead'] = 'Configuração completada';
 $string['configurationcompletesub'] = 'Moodle tentou salvar a sua configuração em um arquivo na área principal (root) da sua instalação do Moodle';
 $string['continue'] = 'Continuar';
 $string['ctyperecommended'] = 'Instalar a extensão ctype opcional do PHP para melhorar a performance do site, especialmente se são utilizados idiomas não latinos';
-$string['ctyperequired'] = 'A extensão ctype do PHP ´necessária para melhorar a performance e a compatibilidade com funcionalidades multi-lingua.';
+$string['ctyperequired'] = 'A extensão ctype do PHP é necessária para melhorar a performance e a compatibilidade com funcionalidades multilíngua.';
 $string['curlrecommended'] = 'Instalar a biblioteca opcional cURL é altamente recomendável para permitir a ativação de Redes Moodle';
 $string['customcheck'] = 'Outros controles';
 $string['database'] = 'Base de dados';
@@ -167,7 +167,7 @@ $string['globalsquoteshelp'] = '<p>Não é aconselhável habilitar Register Glob
 </p>';
 $string['globalswarning'] = '<p><strong>Aviso de segurança</strong>: para operar propriamente, Moodle requer <br /> que você faça certas mudanças nas configurações atuais do seu PHP.<p/><p>Você <em>deve</em> ajustar<code>register_globals=off</code>.<p>Essa configuração é controlada editando a configuração de <code>php.ini</code>, Apache/IIS <br /> ou <code>.htaccess</code> file.</p>';
 $string['help'] = 'Ajuda';
-$string['iconvrecommended'] = 'Instalar ICONV library é altamente recomendável para aumentar a performance do site, especialmente quando o site suporta o uso de idiomas não-latinos';
+$string['iconvrecommended'] = 'Instalar a extensão ICONV é altamente recomendável para aumentar a performance do site, especialmente quando o site suporta o uso de idiomas não-latinos';
 $string['info'] = 'Informação';
 $string['installation'] = 'Instalação';
 $string['invalidmd5'] = 'md5 inválido';
@@ -197,7 +197,7 @@ Com esta operação Moodle será capaz de configurar o limite de memória sózin
 <li>Se você tiver acesso ao arquivo php.ini, você pode mudar o parâmetro <b>memory_limit</b> para um valor próximo a 40M. Se você não tiver acesso direto, peça ao administrador do sistema para fazer esta operação.</li>
 <li>Em alguns servidores é possível fazer esta mudança criando um arquivo .htaccess no diretório Moodle. O arquivo deve conter a seguinte expressão:
 <p><blockquote>php_value memory_limit 40M</blockquote></p>
-<p>Alguns servidores não aceitam este procedimento e <b>todas</b> as páginas PHP do servidor ficam bloqueadas ou imprimem mensagens de erro. Neste caso será necessário cancelar o arquivo .htaccess .</p>
+<p>Alguns servidores não aceitam este procedimento e <b>todas</b> as páginas PHP do servidor ficam bloqueadas ou imprimem mensagens de erro. Neste caso será necessário excluir o arquivo .htaccess .</p>
 </li></ol>';
 $string['missingrequiredfield'] = 'Faltam informações obrigatórias';
 $string['moodledocslink'] = 'Documentação de Moodle relativa a esta página';
@@ -206,7 +206,7 @@ $string['mssqlextensionisnotpresentinphp'] = 'O PHP não foi configurado correta
 $string['mssql_n'] = 'Servidor SQL com suporte a UTF-8 (mssql_n)';
 $string['mysql'] = 'MySQL (mysql)';
 $string['mysql416bypassed'] = 'Entretanto, se o seu site usa apenas idiomas iso-8859-1 (latin), você pode continuar a usar a sua base de dados atual MySQL 4.1.12 (ou superior).';
-$string['mysql416required'] = 'MySQL 4.1.16 é a versão mínima necessária para ainstalação de Moodle 1.6 em modo que os dados possam ser convertidos para UTF-8.';
+$string['mysql416required'] = 'MySQL 4.1.16 é a versão mínima necessária para a instalação do Moodle 1.6 de modo que os dados possam ser convertidos para UTF-8.';
 $string['mysqlextensionisnotpresentinphp'] = 'O PHP não foi configurado corretamente com a extensão MySQL para que possa se comunicar com MySQL. Por favor, verifique o seu arquivo php.ini ou faça a recompilação do PHP.';
 $string['mysqli'] = 'MySQL aperfeiçoado (mysqli)';
 $string['mysqliextensionisnotpresentinphp'] = 'O PHP não foi configurado corretamente com a extensão MySQLi para que possa se comunicar com MySQL. Por favor, verifique o seu arquivo php.ini ou faça a recompilação do PHP. A extensão MySQL não está disponível para PHP 4.';
@@ -269,5 +269,5 @@ $string['wrongzipfilename'] = 'Nome do arquivo ZIP errado';
 $string['wwwroot'] = 'Endereço web';
 $string['wwwrooterror'] = 'Este endereço web não está correto - a instalação do Moodle não foi encontrada.';
 $string['xmlrpcrecommended'] = 'Instalar a extensão opcional xmlrpc é útil para a funcionalidade Moodle Networking.';
-$string['ziprequired'] = 'A extensão Zip do PHP é necessária. Binários infoZIP ou PclZip não são mais utilizados.';
+$string['ziprequired'] = 'A extensão Zip do PHP é obrigatória. Binários infoZIP ou PclZip não são mais utilizados.';
 ?>

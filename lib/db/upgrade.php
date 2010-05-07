@@ -3191,7 +3191,7 @@ function xmldb_main_upgrade($oldversion=0) {
         // As part of security changes password policy will now be enabled by default.
         // If it has not already been enabled then we will enable it... Admins will still
         // be able to switch it off after this upgrade
-        if (record_exists('config', 'name', 'passwordpolicy', 'value', 0)) {
+        if (record_exists('config', 'name', 'passwordpolicy', sql_compare_text('value'), 0)) {
             unset_config('passwordpolicy');
         }
 
@@ -3399,6 +3399,14 @@ function xmldb_main_upgrade($oldversion=0) {
             set_config('filter_tex_latexpreamble', $preamble);
         }
         upgrade_main_savepoint($result, 2007101574.04);
+    }
+
+    if ($result && $oldversion < 2007101571.05) {
+        // make the session regeneration setting enabled by default
+        if (empty($CFG->regenloginsession)) {
+            unset_config('regenloginsession');
+        }
+        upgrade_main_savepoint($result, 2007101571.05);
     }
 
     return $result;

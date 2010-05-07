@@ -299,9 +299,11 @@ function scorm_get_scoes($id,$organisation=false) {
 function scorm_insert_track($userid,$scormid,$scoid,$attempt,$element,$value) {
     $id = null;
     if ($track = get_record_select('scorm_scoes_track',"userid='$userid' AND scormid='$scormid' AND scoid='$scoid' AND attempt='$attempt' AND element='$element'")) {
-        $track->value = addslashes_js($value);
-        $track->timemodified = time();
-        $id = update_record('scorm_scoes_track',$track);
+        if ($element != 'x.start.time' ) { //don't update x.start.time - keep the original value.
+            $track->value = addslashes_js($value);
+            $track->timemodified = time();
+            $id = update_record('scorm_scoes_track',$track);
+        }
     } else {
         $track->userid = $userid;
         $track->scormid = $scormid;
@@ -350,9 +352,6 @@ function scorm_get_tracks($scoid,$userid,$attempt='') {
             $track->value = stripslashes_safe($track->value);
             $usertrack->{$element} = $track->value;
             switch ($element) {
-                case 'x.start.time':
-                    $usertrack->x_start_time = $track->value;
-                    break;
                 case 'cmi.core.lesson_status':
                 case 'cmi.completion_status':
                     if ($track->value == 'not attempted') {
@@ -405,11 +404,7 @@ function scorm_get_sco_runtime($scormid, $scoid, $userid, $attempt=1) {
         $tracks = array_values($tracks);
     }
 
-    if ($start_track = get_records_select('scorm_scoes_track',"$sql AND element='x.start.time' ORDER BY scoid ASC")) {
-        $start_track = array_values($start_track);
-        $timedata->start = $start_track[0]->value;
-    }
-    else if ($tracks) {
+    if ($tracks) {
         $timedata->start = $tracks[0]->timemodified;
     }
     else {
@@ -515,7 +510,7 @@ function scorm_grade_user($scorm, $userid, $time=false) {
             return scorm_grade_user_attempt($scorm, $userid, 1, $time);
         break;
         case LASTATTEMPT:
-            return scorm_grade_user_attempt($scorm, $userid, scorm_get_last_attempt($scorm->id, $userid), $time);
+            return scorm_grade_user_attempt($scorm, $userid, scorm_get_last_completed_attempt($scorm->id, $userid), $time);
         break;
         case HIGHESTATTEMPT:
             $maxscore = 0;
@@ -581,6 +576,17 @@ function scorm_count_launchable($scormid,$organization='') {
 function scorm_get_last_attempt($scormid, $userid) {
 /// Find the last attempt number for the given user id and scorm id
     if ($lastattempt = get_record('scorm_scoes_track', 'userid', $userid, 'scormid', $scormid, '', '', 'max(attempt) as a')) {
+        if (empty($lastattempt->a)) {
+            return '1';
+        } else {
+            return $lastattempt->a;
+        }
+    }
+}
+
+function scorm_get_last_completed_attempt($scormid, $userid) {
+/// Find the last attempt number for the given user id and scorm id
+    if ($lastattempt = get_record('scorm_scoes_track', 'userid', $userid, 'scormid', $scormid, 'value', 'completed', 'max(attempt) as a')) {
         if (empty($lastattempt->a)) {
             return '1';
         } else {
@@ -1154,7 +1160,10 @@ function scorm_reconstitute_array_element($sversion, $userdata, $element_name, $
     $current_sub = '';
     $count = 0;
     $count_sub = 0;
-
+    $scormseperator = '_';
+    if ($sversion == 'scorm_13') { //scorm 1.3 elements use a . instead of an _
+    	$scormseperator = '.';
+    }
     // filter out the ones we want
     $element_list = array();
     foreach($userdata as $element => $value){
@@ -1177,7 +1186,7 @@ function scorm_reconstitute_array_element($sversion, $userdata, $element_name, $
         }
         if (count($matches) > 0 && $current != $matches[1]) {
             if ($count_sub > 0) {
-                echo '    '.$element_name.'_'.$current.'.'.$current_subelement.'._count = '.$count_sub.";\n";
+                echo '    '.$element_name.$scormseperator.$current.'.'.$current_subelement.'._count = '.$count_sub.";\n";
             }
             $current = $matches[1];
             $count++;
@@ -1206,12 +1215,7 @@ function scorm_reconstitute_array_element($sversion, $userdata, $element_name, $
         // check the sub element type
         if (count($matches) > 0 && $current_subelement != $matches[1]) {
             if ($count_sub > 0) {
-                if ($sversion == 'scorm_13') {
-                    echo '    '.$element_name.'.'.$current.'.'.$current_subelement.'._count = '.$count_sub.";\n";
-                }
-                else {
-                    echo '    '.$element_name.'_'.$current.'.'.$current_subelement.'._count = '.$count_sub.";\n";
-                }
+                echo '    '.$element_name.$scormseperator.$current.'.'.$current_subelement.'._count = '.$count_sub.";\n";
             }
             $current_subelement = $matches[1];
             $current_sub = '';
@@ -1233,12 +1237,7 @@ function scorm_reconstitute_array_element($sversion, $userdata, $element_name, $
         echo '    '.$element.' = \''.$value."';\n";
     }
     if ($count_sub > 0) {
-        if ($sversion == 'scorm_13') {
-            echo '    '.$element_name.'.'.$current.'.'.$current_subelement.'._count = '.$count_sub.";\n";
-        }
-        else {
-            echo '    '.$element_name.'_'.$current.'.'.$current_subelement.'._count = '.$count_sub.";\n";
-        }
+        echo '    '.$element_name.$scormseperator.$current.'.'.$current_subelement.'._count = '.$count_sub.";\n";
     }
     if ($count > 0) {
         echo '    '.$element_name.'._count = '.$count.";\n";
@@ -1334,4 +1333,45 @@ function scorm_delete_attempt($userid, $scormid, $attemptid) {
     delete_records('scorm_scoes_track', 'userid', $userid, 'scormid', $scormid, 'attempt', $attemptid);
     return true;
 }
+
+/**
+ * Converts SCORM date/time notation to human-readable format
+ * The function works with both SCORM 1.2 and SCORM 2004 time formats
+ * @param $datetime string SCORM date/time
+ * @return string human-readable date/time
+ */
+function scorm_format_date_time($datetime) {
+    // fetch date/time strings
+    $stryears = get_string('numyears');
+    $strmonths = get_string('nummonths');
+    $strdays = get_string('numdays');
+    $strhours = get_string('numhours');
+    $strminutes = get_string('numminutes');
+    $strseconds = get_string('numseconds'); 
+    
+    if ($datetime[0] == 'P') {
+        // if timestamp starts with 'P' - it's a SCORM 2004 format
+        // this regexp discards empty sections, takes Month/Minute ambiguity into consideration,
+        // and outputs filled sections, discarding leading zeroes and any format literals
+        // also saves the only zero before seconds decimals (if there are any) and discards decimals if they are zero
+        $pattern = array( '#([A-Z])0+Y#', '#([A-Z])0+M#', '#([A-Z])0+D#', '#P(|\d+Y)0*(\d+)M#', '#0*(\d+)Y#', '#0*(\d+)D#', '#P#',
+                          '#([A-Z])0+H#', '#([A-Z])[0.]+S#', '#\.0+S#', '#T(|\d+H)0*(\d+)M#', '#0*(\d+)H#', '#0+\.(\d+)S#', '#0*([\d.]+)S#', '#T#' );
+        $replace = array( '$1', '$1', '$1', '$1$2'.$strmonths.' ', '$1'.$stryears.' ', '$1'.$strdays.' ', '',
+                          '$1', '$1', 'S', '$1$2'.$strminutes.' ', '$1'.$strhours.' ', '0.$1'.$strseconds, '$1'.$strseconds, '');
+    } else {
+        // else we have SCORM 1.2 format there
+        // first convert the timestamp to some SCORM 2004-like format for conveniency
+        $datetime = preg_replace('#^(\d+):(\d+):([\d.]+)$#', 'T$1H$2M$3S', $datetime);
+        // then convert in the same way as SCORM 2004
+        $pattern = array( '#T0+H#', '#([A-Z])0+M#', '#([A-Z])[0.]+S#', '#\.0+S#', '#0*(\d+)H#', '#0*(\d+)M#', '#0+\.(\d+)S#', '#0*([\d.]+)S#', '#T#' );
+        $replace = array( 'T', '$1', '$1', 'S', '$1'.$strhours.' ', '$1'.$strminutes.' ', '0.$1'.$strseconds, '$1'.$strseconds, '' );
+        //$pattern = '##';
+        //$replace = '';
+    }
+
+    $result = preg_replace($pattern, $replace, $datetime);
+
+    return $result;
+}
+
 ?>

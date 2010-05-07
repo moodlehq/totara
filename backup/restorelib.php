@@ -201,11 +201,31 @@ define('RESTORE_GROUPS_GROUPINGS', 3);
         return $status;
     }
 
+    /**
+     * This function decodes some well-know links to course
+     */
+    function course_decode_content_links($content, $restore) {
+
+        global $CFG;
+
+        // Links to course
+        $searchstring = '/\$@(COURSEVIEWBYID)\*([0-9]+)@\$/';
+        $replacestring= $CFG->wwwroot . '/course/view.php?id=' . $restore->course_id;
+        $result = preg_replace($searchstring, $replacestring, $content);
+
+        return $result;
+    }
+
     //This function is called from all xxxx_decode_content_links_caller(),
     //its task is to ask all modules (maybe other linkable objects) to restore
     //links to them.
     function restore_decode_content_links_worker($content,$restore) {
         global $CFG;
+
+        // Course links decoder
+        $content = course_decode_content_links($content, $restore);
+
+        // Module links decoders
         foreach($restore->mods as $name => $info) {
             $function_name = $name."_decode_content_links";
             if (function_exists($function_name)) {
@@ -9545,6 +9565,7 @@ define('RESTORE_GROUPS_GROUPINGS', 3);
      * It isn't now, just overwriting
      */
     function restore_create_roles($restore, $xmlfile) {
+        global $CFG;
         if (!defined('RESTORE_SILENTLY')) {
             echo "<li>".get_string("creatingrolesdefinitions").'</li>';
         }
@@ -9579,7 +9600,8 @@ define('RESTORE_GROUPS_GROUPINGS', 3);
                     $status = backup_putid($restore->backup_unique_code,"role",$oldroleid,
                                      $rolemappings[$oldroleid]); // adding a new id
 
-                } else {
+                // check for permissions before create new roles
+                } else if (has_capability('moodle/role:manage', get_context_instance(CONTEXT_SYSTEM))) {
 
                     // code to make new role name/short name if same role name or shortname exists
                     $fullname = $roledata->name;
@@ -9622,7 +9644,14 @@ define('RESTORE_GROUPS_GROUPINGS', 3);
 
                         insert_record('role_capabilities', $roleinfo);
                     }
+                } else {
+                    // map the new role to course default role
+                    if (!$default_role = get_field("course", "defaultrole", "id", $restore->course_id)) {
+                        $default_role = $CFG->defaultcourseroleid;
+                    }
+                    $status = backup_putid($restore->backup_unique_code, "role", $oldroleid, $default_role);
                 }
+
             /// Now, restore role nameincourse (only if the role had nameincourse in backup)
                 if (!empty($roledata->nameincourse)) {
                     $newrole = backup_getid($restore->backup_unique_code, 'role', $oldroleid); /// Look for target role

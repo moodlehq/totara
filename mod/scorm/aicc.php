@@ -1,18 +1,17 @@
 <?php
-	header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
-	header("Cache-Control: no-cache");
-	header("Pragma: no-cache");
+    header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
+    header("Cache-Control: no-cache");
+    header("Pragma: no-cache");
 
     require_once('../../config.php');
-    include_once('lib.php');
-    require_once('locallib.php');
-    require_once('datamodels/aicclib.php');
+    include_once($CFG->dirroot.'/mod/scorm/lib.php');
+    require_once($CFG->dirroot.'/mod/scorm/locallib.php');
+    require_once($CFG->dirroot.'/mod/scorm/datamodels/aicclib.php');
 
-	foreach ($_POST as $key => $value)
-		{
-			$tempkey = strtolower($key);
-			$_POST[$tempkey] = $value;
-	}
+    foreach ($_POST as $key => $value) {
+        $tempkey = strtolower($key);
+        $_POST[$tempkey] = $value;
+    }
 
     $command = required_param('command', PARAM_ALPHA);
     $sessionid = required_param('session_id', PARAM_ALPHANUM);
@@ -261,19 +260,18 @@
                                 $id = scorm_insert_track($USER->id, $scorm->id, $sco->id, $attempt, 'cmi.core.lesson_status', 'browsed');
                             }
                             if ($mode == 'normal') {
-                                if ($lessonstatus == 'completed') {
-									if ($sco = scorm_get_sco($scoid)) {
-                                        if (!empty($sco->mastery_score)) {
-                                            if (!empty($score)) {
-                                                if ($score >= $sco->mastery_score) {
-                                                    $lessonstatus = 'passed';
-                                                } else {
-                                                    $lessonstatus = 'failed';
-                                                }
+
+                                if ($sco = scorm_get_sco($scoid)) {
+                                    if (!empty($sco->mastery_score)) {
+                                        if (!empty($score)) {
+                                            if ($score >= $sco->mastery_score) {
+                                                $lessonstatus = 'passed';
+                                            } else {
+                                                $lessonstatus = 'failed';
                                             }
                                         }
-										$id = scorm_insert_track($USER->id, $scorm->id, $sco->id, $attempt, 'cmi.core.lesson_status', $lessonstatus);
-									}
+                                    }
+                                    $id = scorm_insert_track($USER->id, $scorm->id, $sco->id, $attempt, 'cmi.core.lesson_status', $lessonstatus);
                                 }
                             }
                         }
@@ -332,7 +330,7 @@
                 case 'exitau':
                     if ($status == 'Running') {
                         if (isset($SESSION->scorm_session_time) && ($SESSION->scorm_session_time != '')) {
-                            if ($track = get_record_select('scorm_scoes_track',"userid='$USER->id' AND scormid='$scorm->id' AND scoid='$sco->id' AND element='cmi.core.total_time'")) {
+                            if ($track = get_record_select('scorm_scoes_track',"userid='$USER->id' AND scormid='$scorm->id' AND scoid='$sco->id' AND attempt='$attempt' AND element='cmi.core.total_time'")) {
                                // Add session_time to total_time
                                 $value = scorm_add_time($track->value, $SESSION->scorm_session_time);
                                 $track->value = $value;
@@ -346,6 +344,7 @@
                                 $track->scoid = $sco->id;
                                 $track->element = 'cmi.core.total_time';
                                 $track->value = $SESSION->scorm_session_time;
+                                $track->attempt = $attempt;
                                 $track->timemodified = time();
                                 $id = insert_record('scorm_scoes_track',$track);
                             }

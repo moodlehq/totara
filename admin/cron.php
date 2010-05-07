@@ -223,6 +223,9 @@
     grade_cron();
     mtrace('done.');
 
+    mtrace('Starting processing the event queue...');
+    events_cron();
+    mtrace('done.');
 
     if ($CFG->enablecompletion) {
         // Completion cron
