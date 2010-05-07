@@ -277,7 +277,7 @@ $string['usergeneratedreports'] = 'User generated Reports';
 $string['noembeddedreports'] = 'There are no embedded reports. Embedded reports are reports that are hard-coded directly into a page. Typically they will be set up by your site developer. If you have any embedded reports then they will appear here once the page has been viewed for the first time.';
 $string['nocolumnsyet'] = 'No columns have been created yet - add them by selecting a column name in the pulldown below.';
 $string['nofiltersyet'] = 'No search fields have been created yet - add them by selecting a search term in the pulldown below.';
-$string['embeddedaccessnotes'] = '<strong>Warning:</strong> Embedded reports may have their own access restrictions applied to the page they are embedded into. They may ignore the settings below, or they may apply them, depending on how they have been created.';
+$string['embeddedaccessnotes'] = '<strong>Warning:</strong> Embedded reports may have their own access restrictions applied to the page they are embedded into. They may ignore the settings below, or they may apply them as well as their own restrictions.';
 $string['embeddedcontentnotes'] = '<strong>Warning:</strong> Embedded reports may have further content restrictions applied via <em>embedded parameters</em>. These can further limit the content that is shown in the report';
 
 // Add/Edit competency evidence
