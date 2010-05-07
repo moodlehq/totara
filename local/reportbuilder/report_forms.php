@@ -278,6 +278,10 @@ class report_builder_edit_content_form extends moodleform {
 
         $mform->addElement('header', 'contentheader', get_string('contentcontrols', 'local'));
 
+        if($report->embeddedurl !== null) {
+            $mform->addElement('html','<p>'.get_string('embeddedcontentnotes','local').'</p>');
+        }
+
         $radiogroup = array();
         $radiogroup[] =& $mform->createElement('radio', 'contentenabled', '', get_string('nocontentrestriction','local'), 0);
         $radiogroup[] =& $mform->createElement('radio', 'contentenabled', '', get_string('withcontentrestrictionany','local'), 1);
@@ -382,6 +386,9 @@ class report_builder_edit_access_form extends moodleform {
 
         $mform->addElement('header', 'access', get_string('accesscontrols', 'local'));
 
+        if($report->embeddedurl !== null) {
+            $mform->addElement('html','<p>'. get_string('embeddedaccessnotes','local').'</p>');
+        }
         $radiogroup = array();
         $radiogroup[] =& $mform->createElement('radio', 'accessenabled', '', get_string('norestriction','local'), 0);
         $radiogroup[] =& $mform->createElement('radio', 'accessenabled', '', get_string('withrestriction','local'), 1);
