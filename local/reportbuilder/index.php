@@ -119,18 +119,18 @@
         foreach($embeddedreports as $report) {
             $row = array();
             $strsettings = get_string('settings','local');
-            $strreload = get_string('reloadsettings','local');
+            $strdelete = get_string('delete','local');
             $viewurl = ($report->embeddedurl === null) ? $CFG->wwwroot .
                 '/local/reportbuilder/report.php?id='.$report->id :
                 $report->embeddedurl;
             $settings = '<a href="'.$CFG->wwwroot.'/local/reportbuilder/settings.php?id='.$report->id.'" title="'.$strsettings.'">' .
                 '<img src="'.$CFG->pixpath.'/t/edit.gif" alt="'.$strsettings.'"></a>';
-            $reload = '<a href="'.$CFG->wwwroot.'/local/reportbuilder/index.php?em=1&amp;d=1&amp;id='.$report->id.'" title="'.$strreload.'">' .
-                '<img src="'.$CFG->pixpath.'/i/reload.gif" alt="'.$strreload.'"></a>';
+            $delete = '<a href="'.$CFG->wwwroot.'/local/reportbuilder/index.php?em=1&amp;d=1&amp;id='.$report->id.'" title="'.$strdelete.'">' .
+                '<img src="'.$CFG->pixpath.'/t/delete.gif" alt="'.$strdelete.'"></a>';
             $row[] = '<a href="'.$CFG->wwwroot.'/local/reportbuilder/settings.php?id='.$report->id.'">'.$report->fullname.'</a>' .
                 ' (<a href="'.$viewurl.'">'.get_string('view').'</a>)';
             $row[] = $report->source;
-            $row[] = "$settings &nbsp; $reload";
+            $row[] = "$settings &nbsp; $delete";
             $data[] = $row;
         }
         $embeddedreportstable = new object();
