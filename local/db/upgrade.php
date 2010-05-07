@@ -1471,55 +1471,7 @@ function xmldb_local_upgrade($oldversion) {
             }
     }
 
-    if ($result && $oldversion < 2010050600) {
-        $table = new XMLDBTable('report_builder_access');
-        if(!table_exists($table)) {
-
-        /// Adding fields to table report_builder_access
-            $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null, null);
-            $table->addFieldInfo('reportid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
-            $table->addFieldInfo('accesstype', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
-            $table->addFieldInfo('typeid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
-
-        /// Adding keys to table report_builder_access
-            $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
-
-        /// Launch create table for report_builder_access
-            create_table($table);
-        }
-
-        /// Define fields access and content to be added to report_builder
-        $table = new XMLDBTable('report_builder');
-        $field = new XMLDBField('accessmode');
-        $field->setAttributes(XMLDB_TYPE_INTEGER, '4', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0');
-        // add access field to report_builder
-        $result = $result && add_field($table, $field);
-
-        $field = new XMLDBField('contentmode');
-        $field->setAttributes(XMLDB_TYPE_INTEGER, '4', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0');
-        // add content field to report_builder
-        $result = $result && add_field($table, $field);
-
-        $field = new XMLDBField('contentsettings');
-        $field->setAttributes(XMLDB_TYPE_TEXT, 'medium', XMLDB_UNSIGNED, null, null, null);
-        // add content settings field to report builder
-        $result = $result && add_field($table, $field);
-
-        $field = new XMLDBField('accesssettings');
-        $field->setAttributes(XMLDB_TYPE_TEXT, 'medium', XMLDB_UNSIGNED, null, null, null);
-        // add access settings field to report builder
-        $result = $result && add_field($table, $field);
-
-        $field = new XMLDBField('embeddedurl');
-        $field->setAttributes(XMLDB_TYPE_CHAR, '255', null, null, null, null);
-        // add embeddedurl field to report builder
-        $result = $result && add_field($table, $field);
-
-        // TODO write migration code to upgrade existing installations
-
-        // drop the old restriction field
-        $field = new XMLDBField('restriction');
-        $result = $result && drop_field($table, $field);
+    if ($result && $oldversion < 2010050700) {
 
         // add indexes to speed up report performance
         $table = new XMLDBTable('pos_assignment');
@@ -1537,55 +1489,8 @@ function xmldb_local_upgrade($oldversion) {
         $index->setAttributes(XMLDB_INDEX_NOTUNIQUE, array('fieldid'));
         $result = $result && add_index($table, $index);
 
-
-        // create tables for columns
-        $table = new XMLDBTable('report_builder_columns');
-        if(!table_exists($table)) {
-
-        /// Adding fields to table report_builder_access
-            $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null, null);
-            $table->addFieldInfo('reportid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
-            $table->addFieldInfo('type', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
-            $table->addFieldInfo('value', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
-            $table->addFieldInfo('heading', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
-            $table->addFieldInfo('sortorder', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-
-        /// Adding keys to table report_builder_access
-            $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
-
-        /// Launch create table for report_builder_access
-            create_table($table);
-        }
-
-        // create tables for columns
-        $table = new XMLDBTable('report_builder_filters');
-        if(!table_exists($table)) {
-
-        /// Adding fields to table report_builder_access
-            $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null, null);
-            $table->addFieldInfo('reportid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
-            $table->addFieldInfo('type', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
-            $table->addFieldInfo('value', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
-            $table->addFieldInfo('advanced', XMLDB_TYPE_INTEGER, '4', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
-            $table->addFieldInfo('sortorder', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-
-        /// Adding keys to table report_builder_access
-            $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
-
-        /// Launch create table for report_builder_access
-            create_table($table);
-        }
-
-        //TODO write migration functions for filters and columns
-
-
-        // drop the old columns and filters fields
-        $table = new XMLDBTable('report_builder');
-        $field = new XMLDBField('columns');
-        $result = $result && drop_field($table, $field);
-
-        $field = new XMLDBField('filters');
-        $result = $result && drop_field($table, $field);
+        // lots of changes to report builder db structure
+        mitms_migrate_old_report_builder_reports($result);
 
     }
 
