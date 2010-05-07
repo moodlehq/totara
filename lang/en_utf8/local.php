@@ -184,6 +184,7 @@ $string['error:couldnotupdatereport'] = 'Could not update report';
 $string['error:mustselectsource'] = 'You must pick a source for the report';
 $string['error:norestrictions'] = 'No restrictions found. To use restrictions ask your developer to add the necessary files to /local/reportbuilder/restrictions/.';
 $string['error:nosources'] ='No sources found. You must have at least one source before you can add reports. Ask your developer to hadd the necessary files to /local/reportbuilder/sources/.';
+$string['error:nocolumnsdefined'] = 'No columns have been defined for this report. Ask you site administrator to add some columns.';
 $string['editreport'] = 'Edit Report \'$a\'';
 $string['searchoptions'] = 'Report Search Options';
 $string['reportcolumns'] = 'Report Columns';

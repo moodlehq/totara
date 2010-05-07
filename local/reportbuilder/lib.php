@@ -818,8 +818,15 @@ class reportbuilder {
         $shortname = $this->shortname;
         $countfiltered = $this->get_filtered_count();
 
+        if(count($columns) == 0) {
+            print '<p>' . get_string('error:nocolumnsdefined','local') . '</p>';
+            return false;
+        }
+
         $sql = $this->build_query(false, true);
 
+        $tablecolumns = array();
+        $tableheaders = array();
         foreach($columns as $column) {
             $type = $column['type'];
             $value = $column['value'];
@@ -895,17 +902,19 @@ class reportbuilder {
         global $SESSION;
         $shortname = $this->shortname;
         $sortarray = isset($SESSION->flextable[$shortname]->sortby) ? $SESSION->flextable[$shortname]->sortby : null;
-        foreach($sortarray as $sortelement => $unused) {
-            // see if sort element is in columns array
-            $set = false;
-            foreach($this->columns as $col) {
-                if($col['type'].'_'.$col['value'] == $sortelement) {
-                    $set = true;
+        if(is_array($sortarray)) {
+            foreach($sortarray as $sortelement => $unused) {
+                // see if sort element is in columns array
+                $set = false;
+                foreach($this->columns as $col) {
+                    if($col['type'].'_'.$col['value'] == $sortelement) {
+                        $set = true;
+                    }
                 }
-            }
-            // if it's not remove it from sort SESSION var
-            if($set === false) {
-                unset($SESSION->flextable[$shortname]->sortby[$sortelement]);
+                // if it's not remove it from sort SESSION var
+                if($set === false) {
+                    unset($SESSION->flextable[$shortname]->sortby[$sortelement]);
+                }
             }
         }
         return true;
