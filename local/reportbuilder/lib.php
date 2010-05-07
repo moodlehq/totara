@@ -119,9 +119,16 @@ class reportbuilder {
         }
         return $out;
     }
+
     /*
      * Creates a database entry for an embedded report when it is first viewed so the settings can be
      * edited
+     *
+     * @param string $shortname The unique name for this embedded report
+     * @param object $embed An object containing the embedded reports settings
+     * @param string &$error Error string to return on failure
+     *
+     * @return boolean ID of new database record, or false on failure
      */
     function create_embedded_record($shortname, $embed, &$error) {
         $error = null;
@@ -206,7 +213,12 @@ class reportbuilder {
         return $newid;
     }
 
-    // given a report fullname, try to generate a sensible shortname that will be unique
+    /*
+     * Given a report fullname, try to generate a sensible shortname that will be unique
+     *
+     * @param string $fullname The report's full name
+     * @return string A unique shortname suitable for this report
+     */
     public static function create_shortname($fullname) {
 	// leaves only letters and numbers
 	// replaces spaces + dashes with underscores
@@ -228,7 +240,12 @@ class reportbuilder {
 	return "report_".time();
     }
 
-    // return the URL to view the current report
+
+    /*
+     * Return the URL to view the current report
+     *
+     * @return string URL of current report
+     */
     function report_url() {
         global $CFG;
         if($this->embeddedurl === null) {
@@ -237,6 +254,8 @@ class reportbuilder {
             return $this->embeddedurl;
         }
     }
+
+
     /*
      * Makes sure that columns exist in columnoptions
      * if not, remove them and print a warning
@@ -267,6 +286,7 @@ class reportbuilder {
         }
     }
 
+
     /*
      * Get the current page url, minus any pagination or sort order elements
      * Good for submitting forms
@@ -285,6 +305,7 @@ class reportbuilder {
         }
         return html_entity_decode($url->out());
     }
+
 
     /*
      * Returns an array of admin options that the current user has
@@ -307,6 +328,7 @@ class reportbuilder {
         }
         return $out;
     }
+
 
     /*
      * Returns an array of arrays containing information about any currently
@@ -342,6 +364,7 @@ class reportbuilder {
         }
         return $out;
     }
+
 
     /*
      * Returns the data stored a source file for use by the report
@@ -421,7 +444,7 @@ class reportbuilder {
      * Returns an SQL snippet that, when applied to the WHERE clause of the query,
      * reduces the results to only include those matched by any specified URL parameters
      *
-     * return string SQL snippet created from URL parameters
+     * @return string SQL snippet created from URL parameters
      */
     function get_param_restrictions() {
         $out=array();
@@ -443,6 +466,14 @@ class reportbuilder {
         return "(" . implode(" AND ",$out) . ")";
     }
 
+
+    /*
+     * Returns an SQL snippet that, when applied to the WHERE clause of the query,
+     * reduces the results to only include those matched by any specified content
+     * restrictions
+     *
+     * @return string SQL snippet created from content restrictions
+     */
     function get_content_restrictions() {
         global $CFG;
         // if no content restrictions enabled return a TRUE snippet
@@ -483,6 +514,7 @@ class reportbuilder {
         }
         return '('.implode($op, $out).')';
     }
+
 
     /*
      * Returns an array of fields that must form part of the SQL query
@@ -560,7 +592,6 @@ class reportbuilder {
      *                     in the error message to help with debugging
      * @return array An array of SQL snippets used to build the join part of the query
      */
-    // TODO  other get_*_joins() functions to use this
     function get_joins($inputs, $type) {
         $source = $this->source;
         $joinlist = $this->_joinlist;
@@ -580,6 +611,12 @@ class reportbuilder {
         return $joins;
     }
 
+    /*
+     * Collects together the content restriction joins data in a format
+     * suitable for get_joins()
+     *
+     * @return array An array of arrays containing content join information
+     */
     function get_content_joins() {
         if($this->contentmode == 0) {
             // no limit on content so no joins necessary
@@ -1083,6 +1120,12 @@ class reportbuilder {
 	return $out;
     }
 
+    /*
+     * Returns a button that when clicked, takes the user to a page which displays
+     * the report
+     *
+     * @return string HTML to display the button
+     */
     function view_button() {
         global $CFG;
         $viewurl = $this->report_url();
@@ -1090,6 +1133,12 @@ class reportbuilder {
         return print_single_button($url->out(true), $url->params, get_string('viewreport','local'), 'get', '_self', true);
     }
 
+    /*
+     * Returns HTML for a button that when clicked, takes the user to a page which
+     * allows them to edit this report
+     *
+     * @return string HTML to display the button
+     */
     function edit_button() {
         global $CFG;
         $context = get_context_instance(CONTEXT_SYSTEM);
@@ -1262,7 +1311,11 @@ class reportbuilder {
 
     }
 
-    // returns array of content options allowed for this report's source
+    /*
+     * Returns array of content options allowed for this report's source
+     *
+     * @return array An array of content option names
+     */
     function get_content_options() {
 
         $contentoptions = array();
@@ -1273,6 +1326,7 @@ class reportbuilder {
         }
         return $contentoptions;
     }
+
 
     ///
     /// Functions for Editing Reports
