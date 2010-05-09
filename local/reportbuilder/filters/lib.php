@@ -190,6 +190,30 @@ class filtering {
         $this->_activeform->display();
     }
 
+    /**
+     * Same as display_active() but returns array of strings describing active
+     * filters instead of form
+     */
+    function return_active() {
+        global $SESSION;
+        $shortname = $this->_report->shortname;
+        $filtername = 'filtering_'.$shortname;
+        $fields = $this->_fields;
+        $out = array();
+        if(!empty($SESSION->{$filtername})) {
+            foreach($SESSION->{$filtername} as $fname => $datas) {
+                if(!array_key_exists($fname, $fields)) {
+                    continue; // filter not used
+                }
+                $field = $fields[$fname];
+                foreach($datas as $i => $data) {
+                    $out[] = $field->get_label($data);
+                }
+            }
+        }
+        return $out;
+    }
+
 }
 
 /**

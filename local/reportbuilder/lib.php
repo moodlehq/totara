@@ -408,6 +408,15 @@ class reportbuilder {
     }
 
 
+    /*
+     * Wrapper for getting description of active filters from
+     * filtering code
+     *
+     * @return array An array of strings containing filter descriptions
+     */
+    function get_return_active() {
+        return $this->_filtering->return_active();
+    }
     /* Returns true if the current user has permission to view this report
      *
      * @param integer $id ID of the report to be viewed
