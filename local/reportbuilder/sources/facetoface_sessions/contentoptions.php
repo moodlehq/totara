@@ -11,11 +11,6 @@ $contentoptions = array(
         'joins' => array('signup'),
     ),
     array(
-        'name' => 'completed_org',
-        'field' => 'pa.organisationid',
-        'joins' => array('signup','user','position_assignment'),
-    ),
-    array(
         'name' => 'user',
         'field' => 'signup.userid',
         'joins' => array('signup'),

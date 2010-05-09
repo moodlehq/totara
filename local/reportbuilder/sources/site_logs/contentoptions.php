@@ -8,12 +8,7 @@ $contentoptions = array(
     array(
         'name' => 'current_org',
         'field' => 'base.userid',
-        'joins' => array('signup'),
-    ),
-    array(
-        'name' => 'completed_org',
-        'field' => 'pa.organisationid',
-        'joins' => array('position_assignment'),
+        'joins' => array(),
     ),
     array(
         'name' => 'user',
