@@ -98,7 +98,7 @@ $filteroptions = array(
     ),
     'session' => array(
         'capacity' => array(
-            'filtertype' => 'text',
+            'filtertype' => 'number',
             'label' => 'Session Capacity',
         ),
         'location' => array(
