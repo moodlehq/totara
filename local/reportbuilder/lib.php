@@ -864,6 +864,10 @@ class reportbuilder {
         $sort = $table->get_sql_sort($shortname);
         $order = ($sort!='') ? " ORDER BY $sort" : '';
 
+        // array of filters that have been applied
+        // for including in report where possible
+        $restrictions = $this->get_return_active();
+
         $headings = array();
         foreach($columns as $column) {
             if(isset($column['heading']) && $column['heading'] != '') {
@@ -872,9 +876,9 @@ class reportbuilder {
         }
         switch($format) {
             case 'ods':
-                $this->download_ods($headings, $sql.$order, $count);
+                $this->download_ods($headings, $sql.$order, $count, $restrictions);
             case 'xls':
-                $this->download_xls($headings, $sql.$order, $count);
+                $this->download_xls($headings, $sql.$order, $count, $restrictions);
             case 'csv':
                 $this->download_csv($headings, $sql.$order, $count);
         }
@@ -1163,9 +1167,11 @@ class reportbuilder {
      * @param array $fields Array of column headings
      * @param string $query SQL query to run to get results
      * @param integer $count Number of filtered records in query
+     * @param array $restrictions Array of strings containing info
+     *                            about the content of the report
      * @return Returns the ODS file
      */
-    function download_ods($fields, $query, $count) {
+    function download_ods($fields, $query, $count, $restrictions=array()) {
         global $CFG;
         require_once("$CFG->libdir/odslib.class.php");
         $shortname = $this->shortname;
@@ -1185,11 +1191,24 @@ class reportbuilder {
         $worksheet = array();
 
         $worksheet[0] =& $workbook->add_worksheet('');
+        $row = 0;
         $col = 0;
+
+        if(is_array($restrictions) && count($restrictions)>0) {
+            $worksheet[0]->write($row, 0, get_string('reportcontents','local'));
+            $row++;
+            foreach($restrictions as $restriction) {
+                $worksheet[0]->write($row, 0, $restriction);
+                $row++;
+            }
+            $row++;
+        }
+
         foreach ($fields as $fieldname) {
-            $worksheet[0]->write(0, $col, $fieldname);
+            $worksheet[0]->write($row, $col, $fieldname);
             $col++;
         }
+        $row++;
 
         $numfields = count($fields);
 
@@ -1198,13 +1217,14 @@ class reportbuilder {
             $start = $k*$blocksize;
             $data = $this->fetch_data($query, $start, $blocksize, true);
 
-            $row = 0;
+            $filerow = 0;
             foreach ($data as $datarow) {
                 for($col=0; $col<$numfields;$col++) {
-                    if(isset($data[$row][$col])) {
-                        $worksheet[0]->write($row+1+$start, $col, htmlspecialchars_decode($data[$row][$col]));
+                    if(isset($data[$filerow][$col])) {
+                        $worksheet[0]->write($row+$start, $col, htmlspecialchars_decode($data[$filerow][$col]));
                     }
                 }
+                $filerow++;
                 $row++;
             }
         }
@@ -1217,9 +1237,11 @@ class reportbuilder {
      * @param array $fields Array of column headings
      * @param string $query SQL query to run to get results
      * @param integer $count Number of filtered records in query
+     * @param array $restrictions Array of strings containing info
+     *                            about the content of the report
      * @return Returns the Excel file
      */
-    function download_xls($fields, $query, $count) {
+    function download_xls($fields, $query, $count, $restrictions=array()) {
         global $CFG;
 
         require_once("$CFG->libdir/excellib.class.php");
@@ -1241,11 +1263,24 @@ class reportbuilder {
         $worksheet = array();
 
         $worksheet[0] =& $workbook->add_worksheet('');
+        $row = 0;
         $col = 0;
+
+        if(is_array($restrictions) && count($restrictions)>0) {
+            $worksheet[0]->write($row, 0, get_string('reportcontents','local'));
+            $row++;
+            foreach($restrictions as $restriction) {
+                $worksheet[0]->write($row, 0, $restriction);
+                $row++;
+            }
+            $row++;
+        }
+
         foreach ($fields as $fieldname) {
-            $worksheet[0]->write(0, $col, $fieldname);
+            $worksheet[0]->write($row, $col, $fieldname);
             $col++;
         }
+        $row++;
 
         $numfields = count($fields);
 
@@ -1254,14 +1289,15 @@ class reportbuilder {
             $start = $k*$blocksize;
             $data = $this->fetch_data($query, $start, $blocksize, true);
 
-            $row = 0;
+            $filerow = 0;
             foreach ($data as $datarow) {
                 for($col=0; $col<$numfields; $col++) {
-                    if(isset($data[$row][$col])) {
-                        $worksheet[0]->write($row+1+$start, $col, htmlspecialchars_decode($data[$row][$col]));
+                    if(isset($data[$filerow][$col])) {
+                        $worksheet[0]->write($row+$start, $col, htmlspecialchars_decode($data[$filerow][$col]));
                     }
                 }
                 $row++;
+                $filerow++;
             }
         }
 

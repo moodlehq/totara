@@ -228,6 +228,7 @@ $string['exportcsv'] = 'Export in text format';
 $string['exportods'] = 'Export in ODS format';
 $string['exportxls'] = 'Export in Excel format';
 $string['exportproblem'] = 'There was a problem downloading the file';
+$string['reportcontents'] = 'This report contains records matching the following criteria:';
 $string['noshortnameorid'] = 'Invalid report id or shortname';
 $string['settings'] = 'Settings';
 $string['allreports'] = 'All Reports';
