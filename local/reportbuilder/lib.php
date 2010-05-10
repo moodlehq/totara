@@ -1183,6 +1183,42 @@ class reportbuilder {
     }
 
     /*
+     * Returns a button that when clicked, takes the user to a page where they can
+     * save the results of a search for the current report
+     *
+     * @return string HTML to display the button
+     */
+    function save_button() {
+        global $CFG;
+        $search = optional_param('addfilter', null, PARAM_TEXT);
+        if($search) {
+            $params = array('id' => $this->_id);
+            return print_single_button($CFG->wwwroot.'/local/reportbuilder/save.php', $params, get_string('savesearch','local'), 'get', '_self', true);
+        } else {
+            return '';
+        }
+    }
+
+    /*
+     * Returns a button that when clicked, takes the user to a page where they can
+     * see a list of saved searches for the current report
+     *
+     * @return string HTML to display the button
+     */
+    function view_saved_button() {
+        global $CFG,$USER;
+        $id = $this->_id;
+        // only show if there are saved searches for this report and user
+        if(get_records('report_builder_saved', 'userid', $USER->id, 'reportid', $id)) {
+            $params = array('id' => $id);
+            return print_single_button($CFG->wwwroot.'/local/reportbuilder/savedsearches.php', $params, get_string('viewsavedsearches','local'), 'get', '_self', true);
+        } else {
+            return '';
+        }
+    }
+
+
+    /*
      * Returns HTML for a button that when clicked, takes the user to a page which
      * allows them to edit this report
      *

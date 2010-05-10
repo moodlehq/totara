@@ -40,7 +40,13 @@ print_heading("$fullname: ".get_string('showing','local')." $countfiltered / $co
 // print filters
 $report->display_search();
 
-print "<br />";
+// print saved search buttons if appropriate
+print '<table align="right" border="0"><tr><td>';
+print $report->save_button();
+print '</td><td>';
+print $report->view_saved_button();
+print '</td></tr></table>';
+print "<br /><br />";
 
 // show results
 if($countfiltered>0) {

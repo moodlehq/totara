@@ -287,6 +287,8 @@ $string['occurredbefore'] = 'occurred before';
 $string['occurredafter'] = 'occurred after';
 $string['orsuborg'] = '(or a sub organisation)';
 $string['reportsto'] = 'reports to';
+$string['viewsavedsearches'] = 'View saved searches';
+$string['savesearch'] = 'Save this search';
 
 // Add/Edit competency evidence
 $string['error:unknownbuttonclicked'] = 'Unknown Button Clicked';
