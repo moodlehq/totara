@@ -310,10 +310,15 @@ function add_location_info(&$sessions)
         return;
     }
 
+    $locationfieldid = get_field('facetoface_session_field', 'id', 'shortname', 'location');
+    if (!$locationfieldid) {
+        return array();
+    }
+
     $alllocations = get_records_sql("SELECT d.sessionid, d.data
-                                       FROM {$CFG->prefix}facetoface_session_data d
-                                       JOIN {$CFG->prefix}facetoface_session_field f ON f.id = d.fieldid
-                                      WHERE f.shortname = 'location'");
+              FROM {$CFG->prefix}facetoface_sessions s
+              JOIN {$CFG->prefix}facetoface_session_data d ON d.sessionid = s.id
+             WHERE d.fieldid = $locationfieldid");
 
     foreach ($sessions as $session) {
         if (!empty($alllocations[$session->sessionid])) {
@@ -352,23 +357,6 @@ function print_facetoface_filters($startdate, $enddate, $currentcoursename, $cur
                                     WHERE c.visible = 1
                                     GROUP BY c.id, c.idnumber, c.fullname, s.id, f.id, cm.id
                                     ORDER BY c.fullname ASC");
-
-    // retrieve the cached trainerlist flag
-    if (!$flag = get_cache_flags('blocks/facetoface')) {
-        add_trainer_info($results);
-    } else {
-        if (empty($flag['trainers'])) {
-            add_trainer_info($results);
-        } else {
-            // unserialize the cached trainers list
-            $data   = unserialize($flag['trainers']);
-            foreach (array_values($data) as $trainerlist) {
-                foreach($trainerlist as $value) {
-                    $trainers[$value] = $value;
-                }
-            }
-        }
-    }
 
     add_location_info($results);
 
@@ -412,10 +400,6 @@ function print_facetoface_filters($startdate, $enddate, $currentcoursename, $cur
                            print_date_selector('endday', 'endmonth', 'endyear', $enddate, true));
     $table->data[] = array('<label for="menucoursename">'.get_string('coursefullname','block_facetoface').': </label>',
                            choose_from_menu($coursenames, 'coursename', $currentcoursename, get_string('all'), '', '', true));
-    $table->data[] = array('<label for="menucourseid">'.get_string('idnumbercourse').': </label>',
-                           choose_from_menu($courseids, 'courseid', $currentcourseid, get_string('all'), '', '', true));
-    $table->data[] = array('<label for="menutrainer">'.get_string('trainer', 'block_facetoface').': </label>',
-                           choose_from_menu($trainers, 'trainer', $currenttrainer, get_string('all'), '', '', true));
     $table->data[] = array('<label for="menulocation">'.get_string('location', 'facetoface').': </label>',
                            choose_from_menu($locations, 'location', $currentlocation, get_string('all'), '', '', true));
     print_table($table);
