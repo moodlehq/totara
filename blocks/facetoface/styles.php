@@ -64,15 +64,6 @@ div#calendarcontainer table.calendarmonth td.weekend {
     background-color: #EEEEEE;
 }
 
-/* The CSS-equivalent of <table align=center> :( */
-div#calendarcontainer div.filters {
-    text-align: center;
-}
-div#calendarcontainer div.filters table {
-    margin: 0 auto;
-    text-align: left;
-}
-
 div.calendarfilters table.generaltable {
     border-style: none;
 }
