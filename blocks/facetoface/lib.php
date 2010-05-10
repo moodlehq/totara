@@ -22,12 +22,6 @@ function print_dates($dates, $includebookings, $includegrades=false, $includesta
     }
 
     print '<th>'.get_string('course').'</th>';
-
-    // include the course id in the display
-    if ($includetrainers) {
-        print '<th>'.get_string('trainer','block_facetoface').'</th>';
-    }
-
     print '<th>'.get_string('name').'</th>';
     print '<th>'.get_string('location').'</th>';
     print '<th>'.get_string('date','block_facetoface').'</th>';
@@ -61,17 +55,6 @@ function print_dates($dates, $includebookings, $includegrades=false, $includesta
             print '<td>'.$date->cidnumber.'</td>';
         }
         print '<td><a href="'.$courselink.$date->courseid.'">'.format_string($date->coursename).'</a></td>';
-
-        // include the trainer(s) in the display
-        if ($includetrainers) {
-            print '<td>';
-            if (isset($date->trainers) and count($date->trainers) > 0) {
-                foreach ($date->trainers as $trainer) {
-                    print $trainer.'<br />'; // FIXME: re-add the link to trainers profile page
-                }
-            }
-            print '</td>';
-        }
 
         print '<td><a href="'.$facetofacelink.$date->facetofaceid.'">'.format_string($date->name).'</a></td>';
         print '<td>'.format_string($date->location).'</td>';

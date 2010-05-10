@@ -63,7 +63,6 @@ $records = get_records_sql("SELECT d.id, cm.id AS cmid, c.id AS courseid, c.full
                                 $courseidsql");
 
 add_location_info($records);
-add_trainer_info($records);
 
 // Only keep the sessions for which this user can see attendees
 $dates = array();
@@ -170,7 +169,7 @@ if (empty($users)) {
 // Show all session dates
 if ($nbdates > 0) {
     print '<h2>'.get_string('sessiondatesview', 'block_facetoface').'</h2>';
-    print_dates($groupeddates, true, false, false, true, true);
+    print_dates($groupeddates, true, false, false, false, false);
 
     // Export form
     print '<h3>'.get_string('exportsessiondates', 'block_facetoface').'</h3>';
