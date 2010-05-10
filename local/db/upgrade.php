@@ -1494,5 +1494,30 @@ function xmldb_local_upgrade($oldversion) {
 
     }
 
+
+    if ($result && $oldversion < 2010051100) {
+        $table = new XMLDBTable('report_builder_saved');
+        if(!table_exists($table)) {
+
+        /// Adding fields to table report_builder_saved
+            $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null, null);
+            $table->addFieldInfo('reportid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
+            $table->addFieldInfo('userid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
+            $table->addFieldInfo('name', XMLDB_TYPE_CHAR, '255', null, null, null, null);
+            $table->addFieldInfo('search', XMLDB_TYPE_TEXT, 'medium', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
+            $table->addFieldInfo('public', XMLDB_TYPE_INTEGER, '4', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
+
+        /// Adding keys to table report_builder_saved
+            $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
+
+        /// Adding indexes to table report_builder_saved
+            $table->addIndexInfo('reportid', XMLDB_INDEX_NOTUNIQUE, array('reportid'));
+            $table->addIndexInfo('userid', XMLDB_INDEX_NOTUNIQUE, array('userid'));
+
+        /// Launch create table for report_builder_saved
+            create_table($table);
+        }
+    }
+
     return $result;
 }
