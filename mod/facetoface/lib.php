@@ -3275,8 +3275,9 @@ function facetoface_session_has_capacity($session, $context = false) {
  * @param boolean $showcapacity   Show the capacity (true) or only the seats available (false)
  * @param boolean $calendaroutput Whether the output should be formatted for a calendar event
  * @param boolean $return         Whether to return (true) the html or print it directly (true)
+ * @param boolean $hidesignup     Hide any messages relating to signing up
  */
-function facetoface_print_session($session, $showcapacity, $calendaroutput=false, $return=false)
+function facetoface_print_session($session, $showcapacity, $calendaroutput=false, $return=false, $hidesignup=false)
 {
     global $CFG;
 
@@ -3344,7 +3345,7 @@ function facetoface_print_session($session, $showcapacity, $calendaroutput=false
     }
 
     // Display waitlist notification
-    if ($session->allowoverbook && $placesleft < 1) {
+    if (!$hidesignup && $session->allowoverbook && $placesleft < 1) {
         $table->data[] = array('', get_string('userwillbewaitlisted', 'facetoface'));
     }
 

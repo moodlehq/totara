@@ -39,7 +39,7 @@ print_header_simple($pagetitle, '', $navigation);
 print_box_start();
 
 // Get signups from the DB
-$bookings = get_records_sql("SELECT ss.timecreated, ss.statuscode as status, ss.grade, ss.timecreated AS timegraded, ss.note,
+$bookings = get_records_sql("SELECT ss.timecreated, ss.statuscode, ss.grade, ss.note,
                                    c.id as courseid, c.fullname AS coursename,
                                    f.name, f.id as facetofaceid, s.id as sessionid,
                                    d.id, d.timestart, d.timefinish
@@ -69,7 +69,7 @@ print_heading(get_string('sessiondetails', 'block_facetoface'), 'center');
 $cm = get_coursemodule_from_instance('facetoface', $facetoface->id, $course->id);
 $contextmodule = get_context_instance(CONTEXT_MODULE, $cm->id);
 $viewattendees = has_capability('mod/facetoface:viewattendees', $contextmodule);
-facetoface_print_session($session, $viewattendees);
+facetoface_print_session($session, $viewattendees, false, false, true);
 
 // print the booking history
 if ($bookings and count($bookings) > 0) {
@@ -79,22 +79,17 @@ if ($bookings and count($bookings) > 0) {
     $table->width = '50%';
 
     foreach ($bookings as $booking) {
-        if (isset($booking->status) and $booking->status == 0) {
-            $table->data[] = array(get_string('enrolled', 'block_facetoface'), userdate($booking->timecreated, get_string('strftimedatetime')));
-        } else {
-            // if the booking status is cancelled print out the original enrollment date (timecreated) too
-            $table->data[] = array(get_string('enrolled', 'block_facetoface'),userdate($booking->timecreated, get_string('strftimedatetime')));
-            $table->data[] = array(get_string('cancelled', 'block_facetoface'),userdate($booking->status, get_string('strftimedatetime')), $booking->cancelreason);
-        }
-    }
 
-    // if the grade is 100 mark the user as 'attended'
-    if ($grade = facetoface_get_grade($user->id, $course->id, $facetoface->id) and $grade->grade == 100) {
-        // just use the first session time of the multi-session facetoface
-        if ($sessiontimes and count($sessiontimes) > 0) {
-            $firstsession = current(array_values($sessiontimes));
+        $row = array(
+            get_string('status_'.facetoface_get_status($booking->statuscode), 'facetoface'),
+            userdate($booking->timecreated, get_string('strftimedatetime'))
+        );
+
+        if (strlen(trim($booking->note))) {
+            $row[] = $booking->note;
         }
-        $table->data[] = array(get_string('attended', 'block_facetoface'),userdate($firstsession->timestart, get_string('strftimedate'))) ;
+
+        $table->data[] = $row;
     }
 
 } else {
