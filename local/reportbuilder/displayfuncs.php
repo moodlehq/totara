@@ -15,6 +15,20 @@ function reportbuilder_link_course($course, $row) {
     return "<a href=\"{$CFG->wwwroot}/course/view.php?id={$courseid}\">{$course}</a>";
 }
 
+// convert a f2f activity name into a link to that activity
+function reportbuilder_link_f2f($name, $row) {
+    global $CFG;
+    $activityid = $row->activity_id;
+    return "<a href=\"{$CFG->wwwroot}/mod/facetoface/view.php?f={$activityid}\">{$name}</a>";
+}
+
+// convert a f2f date into a link to that session
+function reportbuilder_link_f2f_session($date, $row) {
+    global $CFG;
+    $sessionid = $row->session_id;
+    return "<a href=\"{$CFG->wwwroot}/mod/facetoface/attendees.php?s={$sessionid}\">".userdate($date,'%d %B %Y')."</a>";
+}
+
 // convert a users name into a link to their profile
 function reportbuilder_link_user($user, $row) {
     global $CFG;

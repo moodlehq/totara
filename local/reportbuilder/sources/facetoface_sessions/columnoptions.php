@@ -88,6 +88,12 @@ $columnoptions = array(
             'field' => "facetoface.name",
             'joins' => array('facetoface'),
         ),
+        'namelink' => array(
+            'name' => 'Face to Face Name (linked to activity)',
+            'field' => "facetoface.id AS activity_id, facetoface.name",
+            'joins' => array('facetoface'),
+            'displayfunc' => 'reportbuilder_link_f2f',
+        ),
     ),
     'course' => array(
         'fullname' => array(
@@ -109,6 +115,12 @@ $columnoptions = array(
             'field' => 'date.timestart',
             'joins' => array('date'),
             'displayfunc' => 'reportbuilder_nice_date',
+        ),
+        'sessiondate_link' => array(
+            'name' => 'Session Date (linked to session page)',
+            'field' => 'base.id AS session_id, date.timestart',
+            'joins' => array('date'),
+            'displayfunc' => 'reportbuilder_link_f2f_session',
         ),
         'timestart' => array(
             'name' => 'Session Start Time',
