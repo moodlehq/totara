@@ -1859,6 +1859,8 @@ function facetoface_update_signup_status($signupid, $statuscode, $createdby, $no
     $signupstatus->timecreated = $timenow;
     $signupstatus->note = $note;
     $signupstatus->grade = $grade;
+    $signupstatus->superceded = 0;
+    $signupstatus->mailed = 0;
 
     begin_sql();
     if ($statusid = insert_record('facetoface_signups_status', $signupstatus)) {
