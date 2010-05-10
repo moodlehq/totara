@@ -83,7 +83,7 @@ if(get_field('role','id','shortname','facilitator')) {
 // only show past bookings
 $embed->contentmode = 2; // all
 $embed->contentsettings = array(
-    'date' => array(
+    'thedate' => array(
         'enable' => 1,
         'when' => 'past',
     ),
