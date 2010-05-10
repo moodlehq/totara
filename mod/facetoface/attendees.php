@@ -174,7 +174,7 @@ if ($attendees = facetoface_get_attendees($session->id)) {
                     $data[] = $attendee->discountcode;
                 }
             }
-            $data[] = get_string('status_'.facetoface_get_status($attendee->statuscode), 'facetoface');
+            $data[] = str_replace(' ', '&nbsp;', get_string('status_'.facetoface_get_status($attendee->statuscode), 'facetoface'));
         }
         $table->data[] = $data;
     }
