@@ -280,6 +280,13 @@ $string['nocolumnsyet'] = 'No columns have been created yet - add them by select
 $string['nofiltersyet'] = 'No search fields have been created yet - add them by selecting a search term in the pulldown below.';
 $string['embeddedaccessnotes'] = '<strong>Warning:</strong> Embedded reports may have their own access restrictions applied to the page they are embedded into. They may ignore the settings below, or they may apply them as well as their own restrictions.';
 $string['embeddedcontentnotes'] = '<strong>Warning:</strong> Embedded reports may have further content restrictions applied via <em>embedded parameters</em>. These can further limit the content that is shown in the report';
+$string['is'] = 'is';
+$string['or'] = ' or ';
+$string['and'] = ' and ';
+$string['occurredbefore'] = 'occurred before';
+$string['occurredafter'] = 'occurred after';
+$string['orsuborg'] = '(or a sub organisation)';
+$string['reportsto'] = 'reports to';
 
 // Add/Edit competency evidence
 $string['error:unknownbuttonclicked'] = 'Unknown Button Clicked';

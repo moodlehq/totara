@@ -1,6 +1,7 @@
 <?php
 
 require_once "$CFG->dirroot/lib/formslib.php";
+include_once($CFG->dirroot.'/local/reportbuilder/contentclass.php');
 
 class report_builder_new_form extends moodleform {
 
@@ -291,81 +292,15 @@ class report_builder_edit_content_form extends moodleform {
 
         // convert content options for this source into an array
         $contentoptions = $report->get_content_options();
-
-        // display any content restriction form sections that are enabled for this source
-
         $settings = $report->contentsettings;
 
-        // user content options
-        if(in_array('user', $contentoptions)) {
-            $enable = isset($settings['user']['enable']) ? $settings['user']['enable'] : 0;
-            $who = isset($settings['user']['who']) ? $settings['user']['who'] : 1;
-            $mform->addElement('header', 'user_header', 'Show by user');
-            $mform->addElement('checkbox', 'user_enable', '', 'Show records by user');
-            $mform->disabledIf('user_enable','contentenabled', 'eq', 0);
-            $mform->setDefault('user_enable', $enable);
-            $radiogroup = array();
-            $radiogroup[] =& $mform->createElement('radio', 'user_who', '', 'A user\'s own records', 'own');
-            $radiogroup[] =& $mform->createElement('radio', 'user_who', '', 'Records for user\'s direct reports', 'reports');
-            $radiogroup[] =& $mform->createElement('radio', 'user_who', '', 'Both', 'ownandreports');
-            $mform->addGroup($radiogroup, 'user_who_group', 'Include records from particular users', '<br />', false);
-            $mform->setDefault('user_who', $who);
-            $mform->disabledIf('user_who_group','contentenabled', 'eq', 0);
-            $mform->disabledIf('user_who_group','user_enable', 'notchecked');
-        }
-
-        // completed organisation content options
-        if(in_array('completed_org', $contentoptions)) {
-            $enable = isset($settings['completed_org']['enable']) ? $settings['completed_org']['enable'] : 0;
-            $recursive = isset($settings['completed_org']['recursive']) ? $settings['completed_org']['recursive'] : 0;
-            $mform->addElement('header', 'completed_org_header', 'Show by completed organisation');
-            $mform->addElement('checkbox', 'completed_org_enable', '', 'Show records completed in the user\'s organisation');
-            $mform->setDefault('completed_org_enable', $enable);
-            $mform->disabledIf('completed_org_enable','contentenabled', 'eq', 0);
-            $radiogroup = array();
-            $radiogroup[] =& $mform->createElement('radio', 'completed_org_recursive', '', 'Yes', 1);
-            $radiogroup[] =& $mform->createElement('radio', 'completed_org_recursive', '', 'No', 0);
-            $mform->addGroup($radiogroup, 'completed_org_recursive_group', 'Include records from child organisations', '<br />', false);
-            $mform->setDefault('completed_org_recursive', $recursive);
-            $mform->disabledIf('completed_org_recursive_group','contentenabled', 'eq', 0);
-            $mform->disabledIf('completed_org_recursive_group','completed_org_enable', 'notchecked');
-        }
-
-        // current organisation content options
-        if(in_array('current_org', $contentoptions)) {
-            $enable = isset($settings['current_org']['enable']) ? $settings['current_org']['enable'] : 0;
-            $recursive = isset($settings['current_org']['recursive']) ? $settings['current_org']['recursive'] : 0;
-            $mform->addElement('header', 'current_org_header', 'Show by current organisation');
-            $mform->addElement('checkbox', 'current_org_enable', '', 'Show records from staff in the user\'s organisation');
-            $mform->setDefault('current_org_enable', $enable);
-            $mform->disabledIf('current_org_enable','contentenabled', 'eq', 0);
-            $radiogroup = array();
-            $radiogroup[] =& $mform->createElement('radio', 'current_org_recursive', '', 'Yes', 1);
-            $radiogroup[] =& $mform->createElement('radio', 'current_org_recursive', '', 'No', 0);
-            $mform->addGroup($radiogroup, 'current_org_recursive_group', 'Include records from child organisations', '<br />', false);
-            $mform->setDefault('current_org_recursive', $recursive);
-            $mform->disabledIf('current_org_recursive_group','contentenabled', 'eq', 0);
-            $mform->disabledIf('current_org_recursive_group','current_org_enable', 'notchecked');
-        }
-
-        // date content options
-        if(in_array('date', $contentoptions)) {
-            $enable = isset($settings['date']['enable']) ? $settings['date']['enable'] : 0;
-            $when = isset($settings['date']['when']) ? $settings['date']['when'] : 'past';
-            $mform->addElement('header', 'date_header', 'Show by date');
-            $mform->addElement('checkbox', 'date_enable', '', 'Show records based on the record date');
-            $mform->setDefault('date_enable', $enable);
-            $mform->disabledIf('date_enable', 'contentenabled', 'eq', 0);
-            $radiogroup = array();
-            $radiogroup[] =& $mform->createElement('radio', 'date_when', '', 'The past', 'past');
-            $radiogroup[] =& $mform->createElement('radio', 'date_when', '', 'The future', 'future');
-            $radiogroup[] =& $mform->createElement('radio', 'date_when', '', 'The last 30 days', 'last30days');
-            $radiogroup[] =& $mform->createElement('radio', 'date_when', '', 'The next 30 days', 'next30days');
-            $mform->addGroup($radiogroup, 'date_when_group', 'Include records from', '<br />', false);
-            $mform->setDefault('date_when', $when);
-            $mform->disabledIf('date_when_group','contentenabled', 'eq', 0);
-            $mform->disabledIf('date_when_group','date_enable', 'notchecked');
-
+        // display any content restriction form sections that are enabled for
+        // this source
+        foreach($contentoptions as $classname) {
+            if(class_exists($classname)) {
+                $obj = new $classname();
+                $obj->form_template($mform, $settings);
+            }
         }
 
         $mform->addElement('hidden','id',$id);

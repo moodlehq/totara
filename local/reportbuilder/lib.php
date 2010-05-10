@@ -2,6 +2,7 @@
 
 require_once("{$CFG->dirroot}/local/reportbuilder/filters/lib.php");
 require_once($CFG->libdir.'/tablelib.php');
+include_once($CFG->dirroot.'/local/reportbuilder/contentclass.php');
 
 class reportbuilder {
     public $fullname, $shortname, $source, $hidden, $filters, $filteroptions, $columns, $contentsettings;
@@ -408,15 +409,7 @@ class reportbuilder {
     }
 
 
-    /*
-     * Wrapper for getting description of active filters from
-     * filtering code
-     *
-     * @return array An array of strings containing filter descriptions
-     */
-    function get_return_active() {
-        return $this->_filtering->return_active();
-    }
+
     /* Returns true if the current user has permission to view this report
      *
      * @param integer $id ID of the report to be viewed
@@ -498,8 +491,6 @@ class reportbuilder {
 
         $out = array();
         $settings = $this->contentsettings;
-        // include the content functions
-        include_once($CFG->dirroot.'/local/reportbuilder/contentfuncs.php');
 
         // go through the content options
         foreach($this->contentoptions as $option) {
@@ -508,12 +499,12 @@ class reportbuilder {
             $options = isset($settings[$name]) ? $settings[$name] : null;
             if(isset($options['enable']) && $options['enable'] == 1) {
                 // this content option is enabled
-                $funcname = 'reportbuilder_content_'.$name;
-                if(function_exists($funcname)) {
+                if(class_exists($name)) {
                     // call function to get SQL snippet
-                    $out[] = $funcname($field, $options);
+                    $klass = new $name();
+                    $out[] = $klass->sql_restriction($field, $options);
                 } else {
-                    error("Content function $funcname does not exist");
+                    error("Content class $name does not exist");
                 }
             }
         }
@@ -523,6 +514,51 @@ class reportbuilder {
         }
         return '('.implode($op, $out).')';
     }
+
+    /*
+     * Returns human readable descriptions of any content or
+     * filter restrictions that are limiting the number of results
+     * shown. Used to let the user known what a report contains
+     *
+     * @return array An array of strings containing descriptions
+     *               of any restrictions applied to this report
+     */
+    function get_restriction_descriptions() {
+        global $CFG;
+        // include content restrictions
+        $content_restrictions = array();
+        $settings = $this->contentsettings;
+        $res = array();
+        if($this->contentmode != 0) {
+            foreach($this->contentoptions as $option) {
+                $name = $option['name'];
+                $title = $option['title'];
+                $options = isset($settings[$name]) ? $settings[$name] : null;
+                if(isset($options['enable']) && $options['enable'] == 1) {
+                    if(class_exists($name)) {
+                        $klass = new $name();
+                        $res[] = $klass->human_restriction($title, $options);
+                    } else {
+                        error("Content class function $name does not exist");
+                    }
+                }
+            }
+            if($this->contentmode == 2) {
+                // 'and' show one per line
+                $content_restrictions = $res;
+            } else {
+                // 'or' show as a single line
+                $content_restrictions[] = implode(get_string('or','local'), $res);
+            }
+        }
+
+        $filter_restrictions = $this->_filtering->return_active();
+
+        $restrictions = array_merge($content_restrictions, $filter_restrictions);
+        return $restrictions;
+    }
+
+
 
 
     /*
@@ -866,7 +902,7 @@ class reportbuilder {
 
         // array of filters that have been applied
         // for including in report where possible
-        $restrictions = $this->get_return_active();
+        $restrictions = $this->get_restriction_descriptions();
 
         $headings = array();
         foreach($columns as $column) {
