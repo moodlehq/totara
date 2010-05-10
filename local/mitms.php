@@ -240,7 +240,7 @@ function mitms_print_my_team_nav($return=false) {
 function mitms_print_report_manager($return=false) {
     global $CFG,$USER;
     require_once($CFG->dirroot.'/local/reportbuilder/lib.php');
-    $reports = get_records('report_builder');
+    $reports = get_records('report_builder','','','fullname');
     if (!is_array($reports)){
         $reports = array();
     }
