@@ -56,19 +56,55 @@
         $todb->fullname = $fromform->fullname;
         $todb->shortname = reportbuilder::create_shortname($fromform->fullname);
         $todb->source = ($fromform->source != '0') ? $fromform->source : null;
-        // create with default columns and filters
-        $todb->columns = serialize(reportbuilder::get_source_data('defaultcolumns',$fromform->source));
-        $todb->filters = serialize(reportbuilder::get_source_data('defaultfilters',$fromform->source));
         $todb->hidden = $fromform->hidden;
         $todb->contentmode = 0;
         $todb->accessmode = 0;
         $todb->embeddedurl = null;
         //TODO set default content and access settings here?
-        if($newid = insert_record('report_builder',$todb)) {
-            redirect($CFG->wwwroot.'/local/reportbuilder/access.php?id='.$newid);
-        } else {
+
+        begin_sql();
+        if(!$newid = insert_record('report_builder',$todb)) {
+            rollback_sql();
             redirect($returnurl, get_string('error:couldnotcreatenewreport','local'));
         }
+
+        // create with default columns and filters
+        $columns = reportbuilder::get_source_data('defaultcolumns',$fromform->source);
+        $filters = reportbuilder::get_source_data('defaultfilters',$fromform->source);
+
+        $so = 1;
+        foreach($columns as $column) {
+            $todb = new object();
+            $todb->reportid = $newid;
+            $todb->type = $column['type'];
+            $todb->value = $column['value'];
+            $todb->heading = $column['heading'];
+            $todb->sortorder = $so;
+            if(!insert_record('report_builder_columns', $todb)) {
+                rollback_sql();
+                redirect($returnurl, get_string('error:couldnotcreatenewreport','local'));
+            }
+            $so++;
+        }
+
+        // add filters
+        $so = 1;
+        foreach($filters as $filter) {
+            $todb = new object();
+            $todb->reportid = $newid;
+            $todb->type = $filter['type'];
+            $todb->value = $filter['value'];
+            $todb->advanced = $filter['advanced'];
+            $todb->sortorder = $so;
+            if(!insert_record('report_builder_filters', $todb)) {
+                rollback_sql();
+                redirect($returnurl, get_string('error:couldnotcreatenewreport','local'));
+            }
+            $so++;
+        }
+
+        commit_sql();
+        redirect($CFG->wwwroot.'/local/reportbuilder/access.php?id='.$newid);
     }
 
     admin_externalpage_print_header();
