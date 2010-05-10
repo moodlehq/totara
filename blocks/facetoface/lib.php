@@ -14,7 +14,7 @@ function print_dates($dates, $includebookings, $includegrades=false, $includesta
     $attendeelink = $CFG->wwwroot.'/mod/facetoface/attendees.php?s=';
     $bookinghistorylink = $CFG->wwwroot.'/blocks/facetoface/bookinghistory.php?session=';
 
-    print '<table border="1" cellpadding="0" summary="'.get_string('sessiondatestable', 'block_facetoface').'"><tr>';
+    print '<table border="1" cellpadding="5" summary="'.get_string('sessiondatestable', 'block_facetoface').'"><tr>';
 
     // include the course id in the display
     if ($includecourseid) {
