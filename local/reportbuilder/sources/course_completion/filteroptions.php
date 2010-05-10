@@ -128,22 +128,19 @@ $filteroptions = array(
             'options' => $selectwidth,
         ),
     ),
-    'user_profile' => array(
-        // just a text field, would be better as date
-        // but field is text not timestamp
-        'dob' => array(
-            'filtertype' => 'text',
-            'label' => 'Date of Birth',
-        ),
-        'nzqaid' => array(
-            'filtertype' => 'text',
-            'label' => 'NZQA ID',
-        ),
-        'jade' => array(
-            'filtertype' => 'text',
-            'label' => 'Jade Number',
-        ),
-    ),
 );
 
+// automatic text filters for user custom fields
+if($custom_fields = get_records('user_info_field','','','','id,shortname,name')) {
+    foreach($custom_fields as $custom_field) {
+        $field = $custom_field->shortname;
+        $name = $custom_field->name;
+        $id = $custom_field->id;
+        $key = "user_$field";
+        $filteroptions['user_profile'][$field] = array(
+            'filtertype' => 'text',
+            'label' => $name,
+        );
+    }
+}
 
