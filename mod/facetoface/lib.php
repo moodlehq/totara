@@ -37,7 +37,7 @@ define('CUSTOMFIELD_TYPE_SELECT',      1);
 define('CUSTOMFIELD_TYPE_MULTISELECT', 2);
 
 // Calendar-related constants
-define('CALENDAR_MAX_NAME_LENGTH', 10);
+define('CALENDAR_MAX_NAME_LENGTH', 15);
 
 // Signup status codes (remember to update $MDL_F2F_STATUS)
 define('MDL_F2F_STATUS_USER_CANCELLED',     10);
@@ -632,6 +632,9 @@ function facetoface_delete_session($session)
         rollback_sql();
         return false;
     }
+
+    // Remove entry from site-wide calendar
+    facetoface_remove_session_from_site_calendar($session);
 
     // Remove entry from site-wide calendar
     facetoface_remove_session_from_site_calendar($session);
@@ -3328,7 +3331,7 @@ function facetoface_print_session($session, $showcapacity, $calendaroutput=false
         }
     }
     elseif (!$calendaroutput) {
-        $table->data[] = array(get_string('capacity', 'facetoface'), max(0, $placesleft));
+        $table->data[] = array(get_string('seatsavailable', 'facetoface'), max(0, $placesleft));
     }
 
     // Display requires approval notification
@@ -3384,18 +3387,19 @@ function facetoface_print_session($session, $showcapacity, $calendaroutput=false
 }
 
 /**
- * Update the value of a customfield for the given session.
+ * Update the value of a customfield for the given session/notice.
  *
  * @param integer $fieldid    ID of a record from the facetoface_session_field table
  * @param string  $data       Value for that custom field
- * @param integer $sessionid  ID of a record from the facetoface_sessions table
+ * @param integer $otherid    ID of a record from the facetoface_(sessions|notice) table
+ * @param string  $table      'session' or 'notice' (part of the table name)
  * @returns true if it succeeded, false otherwise
  */
-function facetoface_save_customfield($fieldid, $data, $sessionid)
+function facetoface_save_customfield_value($fieldid, $data, $otherid, $table)
 {
     $dbdata = null;
     if (is_array($data)) {
-        $dbdata = implode(CUSTOMFIELD_DELIMITTER, $data);
+        $dbdata = trim(implode(CUSTOMFIELD_DELIMITTER, $data), ';');
     }
     else {
         $dbdata = trim($data);
@@ -3404,30 +3408,38 @@ function facetoface_save_customfield($fieldid, $data, $sessionid)
     $newrecord = new object();
     $newrecord->data = $dbdata;
 
-    if ($record = get_record('facetoface_session_data', 'fieldid', $fieldid, 'sessionid', $sessionid)) {
+    $fieldname = "{$table}id";
+    if ($record = get_record("facetoface_{$table}_data", 'fieldid', $fieldid, $fieldname, $otherid)) {
+        if (empty($dbdata)) {
+            // Clear out the existing value
+            return delete_records("facetoface_{$table}_data", 'id', $record->id);
+        }
+
         $newrecord->id = $record->id;
-        return update_record('facetoface_session_data', $newrecord);
+        return update_record("facetoface_{$table}_data", $newrecord);
     }
     else {
         if (empty($dbdata)) {
             return true; // no need to store empty values
         }
+
         $newrecord->fieldid = $fieldid;
-        $newrecord->sessionid = $sessionid;
-        return insert_record('facetoface_session_data', $newrecord);
+        $newrecord->$fieldname = $otherid;
+        return insert_record("facetoface_{$table}_data", $newrecord);
     }
 }
 
 /**
- * Return the value of a customfield for the given session.
+ * Return the value of a customfield for the given session/notice.
  *
- * @param object  $field      A record from the facetoface_session_field table
- * @param integer $sessionid  ID of a record from the facetoface_sessions table
+ * @param object  $field    A record from the facetoface_session_field table
+ * @param integer $otherid  ID of a record from the facetoface_(sessions|notice) table
+ * @param string  $table    'session' or 'notice' (part of the table name)
  * @returns string The data contained in this custom field (empty string if it doesn't exist)
  */
-function facetoface_get_customfield($field, $sessionid)
+function facetoface_get_customfield_value($field, $otherid, $table)
 {
-    if ($record = get_record('facetoface_session_data', 'fieldid', $field->id, 'sessionid', $sessionid)) {
+    if ($record = get_record("facetoface_{$table}_data", 'fieldid', $field->id, "{$table}id", $otherid)) {
         if (!empty($record->data)) {
             if (CUSTOMFIELD_TYPE_MULTISELECT == $field->type) {
                 return explode(CUSTOMFIELD_DELIMITTER, $record->data);
@@ -3472,6 +3484,9 @@ function facetoface_get_session_customfields()
     return $customfields;
 }
 
+/**
+ * Display the list of custom fields in the site-wide settings page
+ */
 function facetoface_list_of_customfields()
 {
     global $CFG, $USER;
@@ -3495,7 +3510,6 @@ function facetoface_list_of_customfields()
 
     return get_string('nocustomfields', 'facetoface');
 }
-
 
 function facetoface_update_trainers($sessionid, $form) {
 
@@ -3689,4 +3703,75 @@ function facetoface_manager_needed($facetoface){
         || $facetoface->confirmationinstrmngr
         || $facetoface->reminderinstrmngr
         || $facetoface->cancellationinstrmngr;
+}
+
+/**
+ * Display the list of site notices in the site-wide settings page
+ */
+function facetoface_list_of_sitenotices()
+{
+    global $CFG, $USER;
+
+    if ($notices = get_records('facetoface_notice', '', '', 'name', 'id, name')) {
+        $table = new stdClass;
+        $table->width = '50%';
+        $table->tablealign = 'left';
+        $table->data = array();
+        $table->size = array('100%');
+        foreach ($notices as $notice) {
+            $noticename = format_string($notice->name);
+            $editlink = '<a href="'.$CFG->wwwroot.'/mod/facetoface/sitenotice.php?id='.$notice->id.'">'.
+                '<img class="iconsmall" src="'.$CFG->pixpath.'/t/edit.gif" alt="'.get_string('edit').'" /></a>';
+            $deletelink = '<a href="'.$CFG->wwwroot.'/mod/facetoface/sitenotice.php?id='.$notice->id.'&amp;d=1&amp;sesskey='.$USER->sesskey.'">'.
+                '<img class="iconsmall" src="'.$CFG->pixpath.'/t/delete.gif" alt="'.get_string('delete').'" /></a>';
+            $table->data[] = array($noticename, $editlink, $deletelink);
+        }
+        return print_table($table, true);
+    }
+
+    return get_string('nositenotices', 'facetoface');
+}
+
+/**
+ * Add formslib fields for all custom fields defined site-wide.
+ * (used by the session add/edit page and the site notices)
+ */
+function facetoface_add_customfields_to_form(&$mform, $customfields, $alloptional=false)
+{
+    foreach ($customfields as $field) {
+        $fieldname = "custom_$field->shortname";
+
+        $options = array();
+        if (!$field->required) {
+            $options[''] = get_string('none');
+        }
+        foreach (explode(CUSTOMFIELD_DELIMITTER, $field->possiblevalues) as $value) {
+            $v = trim($value);
+            if (!empty($v)) {
+                $options[$v] = $v;
+            }
+        }
+
+        switch ($field->type) {
+        case CUSTOMFIELD_TYPE_TEXT:
+            $mform->addElement('text', $fieldname, $field->name);
+            break;
+        case CUSTOMFIELD_TYPE_SELECT:
+            $mform->addElement('select', $fieldname, $field->name, $options);
+            break;
+        case CUSTOMFIELD_TYPE_MULTISELECT:
+            $select = &$mform->addElement('select', $fieldname, $field->name, $options);
+            $select->setMultiple(true);
+            break;
+        default:
+            error_log("facetoface: invalid field type for custom field ID $field->id");
+            continue;
+        }
+
+        $mform->setType($fieldname, PARAM_TEXT);
+        $mform->setDefault($fieldname, $field->defaultvalue);
+        if ($field->required and !$alloptional) {
+            $mform->addRule($fieldname, null, 'required', null, 'client');
+        }
+    }
 }

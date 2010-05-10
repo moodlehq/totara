@@ -35,3 +35,9 @@ $html = facetoface_list_of_customfields();
 $html .= '<p><a href="'.$CFG->wwwroot.'/mod/facetoface/customfield.php?id=0">' . get_string('addnewfieldlink', 'facetoface') . '</a></p>';
 
 $settings->add(new admin_setting_heading('facetoface_customfields_header', get_string('customfieldsheading', 'facetoface'), $html));
+
+// List of existing site notices
+$html = facetoface_list_of_sitenotices();
+$html .= '<p><a href="'.$CFG->wwwroot.'/mod/facetoface/sitenotice.php?id=0">' . get_string('addnewnoticelink', 'facetoface') . '</a></p>';
+
+$settings->add(new admin_setting_heading('facetoface_sitenotices_header', get_string('sitenoticesheading', 'facetoface'), $html));

@@ -10,6 +10,9 @@ body#mod-facetoface-signup div#content div.generalbox {
 body#mod-facetoface-view div#content div.generalbox {
     text-align: center;
 }
+body#mod-facetoface-view div#content div.generalbox div#description {
+    text-align: left;
+}
 body#mod-facetoface-attendees div#content div.generalbox {
     text-align: center;
 }

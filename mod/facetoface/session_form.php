@@ -20,39 +20,7 @@ class mod_facetoface_session_form extends moodleform {
 
         // Show all custom fields
         $customfields = $this->_customdata['customfields'];
-        foreach ($customfields as $field) {
-            $fieldname = "custom_$field->shortname";
-
-            $options = array();
-            foreach (explode(CUSTOMFIELD_DELIMITTER, $field->possiblevalues) as $value) {
-                $v = trim($value);
-                if (!empty($v)) {
-                    $options[$v] = $v;
-                }
-            }
-
-            switch ($field->type) {
-            case CUSTOMFIELD_TYPE_TEXT:
-                $mform->addElement('text', $fieldname, $field->name);
-                break;
-            case CUSTOMFIELD_TYPE_SELECT:
-                $mform->addElement('select', $fieldname, $field->name, $options);
-                break;
-            case CUSTOMFIELD_TYPE_MULTISELECT:
-                $select = &$mform->addElement('select', $fieldname, $field->name, $options);
-                $select->setMultiple(true);
-                break;
-            default:
-                error_log("facetoface: invalid field type for custom field ID $field->id");
-                continue;
-            }
-
-            $mform->setType($fieldname, PARAM_TEXT);
-            $mform->setDefault($fieldname, $field->defaultvalue);
-            if ($field->required) {
-                $mform->addRule($fieldname, null, 'required', null, 'client');
-            }
-        }
+        facetoface_add_customfields_to_form($mform, $customfields);
 
         $mform->addElement('selectyesno', 'datetimeknown', get_string('sessiondatetimeknown', 'facetoface'));
         $mform->addRule('datetimeknown', null, 'required', null, 'client');

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="mod/facetoface/db" VERSION="20091210" COMMENT="XMLDB file for Moodle mod/facetoface"
+<XMLDB PATH="mod/facetoface/db" VERSION="20100510" COMMENT="XMLDB file for Moodle mod/facetoface"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >
@@ -131,7 +131,7 @@
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
       </KEYS>
     </TABLE>
-    <TABLE NAME="facetoface_session_data" COMMENT="Contents of custom info fields for Face-to-face session" PREVIOUS="facetoface_session_field">
+    <TABLE NAME="facetoface_session_data" COMMENT="Contents of custom info fields for Face-to-face session" PREVIOUS="facetoface_session_field" NEXT="facetoface_notice">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" NEXT="fieldid"/>
         <FIELD NAME="fieldid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="ID in facetoface_session_field" PREVIOUS="id" NEXT="sessionid"/>
@@ -141,6 +141,30 @@
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
       </KEYS>
+    </TABLE>
+    <TABLE NAME="facetoface_notice" COMMENT="Site-wide notices shown on the Training Calendar" PREVIOUS="facetoface_session_data" NEXT="facetoface_notice_data">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" NEXT="name"/>
+        <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" ENUM="false" COMMENT="Name displayed to admins in list of notices" PREVIOUS="id" NEXT="text"/>
+        <FIELD NAME="text" TYPE="text" LENGTH="medium" NOTNULL="false" SEQUENCE="false" ENUM="false" COMMENT="Text shown to users on the Training Calendar" PREVIOUS="name"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="facetoface_notice_data" COMMENT="Custom field filters for site notices" PREVIOUS="facetoface_notice">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" NEXT="fieldid"/>
+        <FIELD NAME="fieldid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="ID from the facetoface_session_field table" PREVIOUS="id" NEXT="noticeid"/>
+        <FIELD NAME="noticeid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="ID from the facetoface_notice table" PREVIOUS="fieldid" NEXT="data"/>
+        <FIELD NAME="data" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" ENUM="false" COMMENT="Value of the custom field required for the notice to be shown on the training calendar" PREVIOUS="noticeid"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="facetoface_notice_date_fieldid" UNIQUE="false" FIELDS="fieldid"/>
+      </INDEXES>
     </TABLE>
   </TABLES>
   <STATEMENTS>

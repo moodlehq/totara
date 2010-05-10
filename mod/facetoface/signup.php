@@ -23,12 +23,33 @@ if (!$cm = get_coursemodule_from_instance("facetoface", $facetoface->id, $course
 require_course_login($course);
 $context = get_context_instance(CONTEXT_COURSE, $course->id);
 require_capability('mod/facetoface:view', $context);
-require_capability('mod/facetoface:signup', $context);
 
 $returnurl = "$CFG->wwwroot/course/view.php?id=$course->id";
 if ($backtoallsessions) {
     $returnurl = "$CFG->wwwroot/mod/facetoface/view.php?f=$backtoallsessions";
 }
+
+$pagetitle = format_string($facetoface->name);
+$navlinks[] = array('name' => get_string('modulenameplural', 'facetoface'), 'link' => "index.php?id=$course->id", 'type' => 'title');
+$navlinks[] = array('name' => $pagetitle, 'link' => '', 'type' => 'activityinstance');
+$navigation = build_navigation($navlinks);
+
+// Guests can't signup for a session, so offer them a choice of logging in or going back.
+if (isguestuser()) {
+    $loginurl = $CFG->wwwroot.'/login/index.php';
+    if (!empty($CFG->loginhttps)) {
+        $loginurl = str_replace('http:','https:', $loginurl);
+    }
+
+    print_header_simple($pagetitle, '', $navigation, '', '', true,
+                    update_module_button($cm->id, $course->id, get_string('modulename', 'facetoface')));
+    notice_yesno('<p>' . get_string('guestsno', 'facetoface') . "</p>\n\n</p>" .
+        get_string('liketologin') . '</p>', $loginurl, get_referer(false));
+    print_footer();
+    exit();
+}
+
+require_capability('mod/facetoface:signup', $context);
 
 $manageremail = false;
 if (get_config(NULL, 'facetoface_addchangemanageremail')) {
@@ -100,10 +121,6 @@ elseif ($manageremail !== false) {
     $mform->set_data($toform);
 }
 
-$pagetitle = format_string($facetoface->name);
-$navlinks[] = array('name' => get_string('modulenameplural', 'facetoface'), 'link' => "index.php?id=$course->id", 'type' => 'title');
-$navlinks[] = array('name' => $pagetitle, 'link' => '', 'type' => 'activityinstance');
-$navigation = build_navigation($navlinks);
 print_header_simple($pagetitle, '', $navigation, '', '', true,
                     update_module_button($cm->id, $course->id, get_string('modulename', 'facetoface')));
 
