@@ -447,7 +447,7 @@ class reportbuilder {
         $userroles = array();
         if($data = get_user_roles($context, 0, false)) {
             foreach($data as $item) {
-                $userroles[$item->id] = 1;
+                $userroles[$item->roleid] = 1;
             }
         }
         // see if user has any allowed roles
