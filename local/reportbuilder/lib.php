@@ -7,10 +7,10 @@ include_once($CFG->dirroot.'/local/reportbuilder/contentclass.php');
 class reportbuilder {
     public $fullname, $shortname, $source, $hidden, $filters, $filteroptions, $columns, $contentsettings;
     public $columnoptions, $_filtering, $contentoptions, $contentmode, $embeddedurl;
-    private $_id, $_defaultcolumns, $_defaultfilters, $_joinlist, $_base, $_params;
+    private $_id, $_defaultcolumns, $_defaultfilters, $_joinlist, $_base, $_params, $_sid;
     private $_paramoptions, $_embeddedparams, $_admin, $_adminoptions, $_fullcount, $_filteredcount;
 
-    function reportbuilder($id=null, $shortname=null, $embed=false) {
+    function reportbuilder($id=null, $shortname=null, $embed=false, $sid=null) {
 	global $CFG;
 
 	if($id != null) {
@@ -47,6 +47,7 @@ class reportbuilder {
             $this->contentmode = $report->contentmode;
             $this->contentsettings = unserialize($report->contentsettings);
             $this->embeddedurl = $report->embeddedurl;
+            $this->_sid = $sid;
         } else {
             error("Report with id of '$id' not found in database.");
         }
@@ -68,9 +69,27 @@ class reportbuilder {
         $this->_paramoptions = reportbuilder::get_source_data('paramoptions', $this->source);
         $this->_params = $this->get_current_params();
 
+        if($sid) {
+            $this->restore_saved_search();
+        }
+
         // generate a filter for this report
         $this->_filtering = new filtering($this, $this->get_current_url());
 
+    }
+
+    function restore_saved_search() {
+        global $SESSION,$USER;
+        $filtername = 'filtering_'.$this->shortname;
+        if($saved = get_record('report_builder_saved','id',$this->_sid)) {
+            if($saved->public != 0 || $saved->userid == $USER->id) {
+                $SESSION->$filtername = unserialize($saved->search);
+            } else {
+                error('Saved search not found or search is not public');
+            }
+        } else {
+            error('Saved search not found or search is not public');
+        }
     }
 
     /*
@@ -296,7 +315,7 @@ class reportbuilder {
      */
     function get_current_url() {
         // array of parameters to remove from query string
-        $strip_params = array('spage','ssort');
+        $strip_params = array('spage','ssort','sid');
 
         $url = new moodle_url(qualified_me());
         foreach ($url->params as $name =>$value) {
@@ -520,10 +539,13 @@ class reportbuilder {
      * filter restrictions that are limiting the number of results
      * shown. Used to let the user known what a report contains
      *
+     * @param string $which Which restrictions to return, defaults to all
+     *                      but can be 'filter' or 'content' to just return
+     *                      restrictions of that type
      * @return array An array of strings containing descriptions
      *               of any restrictions applied to this report
      */
-    function get_restriction_descriptions() {
+    function get_restriction_descriptions($which='all') {
         global $CFG;
         // include content restrictions
         $content_restrictions = array();
@@ -554,7 +576,16 @@ class reportbuilder {
 
         $filter_restrictions = $this->_filtering->return_active();
 
-        $restrictions = array_merge($content_restrictions, $filter_restrictions);
+        switch($which) {
+        case 'content':
+            $restrictions = $content_restrictions;
+            break;
+        case 'filter':
+            $restrictions = $filter_restrictions;
+            break;
+        default:
+            $restrictions = array_merge($content_restrictions, $filter_restrictions);
+        }
         return $restrictions;
     }
 
@@ -1209,7 +1240,7 @@ class reportbuilder {
         global $CFG,$USER;
         $id = $this->_id;
         // only show if there are saved searches for this report and user
-        if(get_records('report_builder_saved', 'userid', $USER->id, 'reportid', $id)) {
+        if(get_records_select('report_builder_saved', 'reportid='.$id.'AND userid='.$USER->id)) {
             $params = array('id' => $id);
             return print_single_button($CFG->wwwroot.'/local/reportbuilder/savedsearches.php', $params, get_string('viewsavedsearches','local'), 'get', '_self', true);
         } else {

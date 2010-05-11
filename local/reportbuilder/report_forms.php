@@ -400,7 +400,34 @@ function validate_unique_columns($data) {
     return $errors;
 }
 
+class report_builder_save_form extends moodleform {
+    function definition() {
+        global $CFG,$USER,$SESSION;
+        $mform =& $this->_form;
+        $report = $this->_customdata['report'];
+        $id = $this->_customdata['id'];
+        $filterparams = $report->get_restriction_descriptions('filter');
+        $shortname = $report->shortname;
+        $filtername = 'filtering_'.$shortname;
+        $searchsettings = serialize($SESSION->$filtername);
+        $params = implode('<br />',$filterparams);
 
+        $mform->addElement('header', 'savesearch', get_string('createasavedsearch', 'local'));
+        $mform->addElement('static', 'description', '', get_string('savedsearchdesc','local'));
+        $mform->addElement('static', 'params', get_string('currentsearchparams','local'), $params);
+        $mform->addElement('text','name', get_string('searchname','local'));
+        $mform->setType('name', PARAM_TEXT);
+        $mform->addElement('advcheckbox', 'public', get_string('publicallyavailable','local'), '', null, array(0,1));
+        $mform->addElement('hidden','id',$id);
+        $mform->setType('id', PARAM_INT);
+        $mform->addElement('hidden', 'search', $searchsettings);
+        $mform->setType('search', PARAM_TEXT);
+        $mform->addElement('hidden', 'userid', $USER->id);
+        $mform->setType('userid', PARAM_INT);
+
+        $this->add_action_buttons();
+    }
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////
 

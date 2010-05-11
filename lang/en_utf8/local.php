@@ -289,6 +289,14 @@ $string['orsuborg'] = '(or a sub organisation)';
 $string['reportsto'] = 'reports to';
 $string['viewsavedsearches'] = 'View saved searches';
 $string['savesearch'] = 'Save this search';
+$string['searchname'] = 'Search Name';
+$string['publicallyavailable'] = 'Let other users view';
+$string['createasavedsearch'] = 'Create a saved search';
+$string['savedsearchdesc'] = 'By giving this search a name you will be able to easily access it later or save it to your bookmarks.';
+$string['currentsearchparams'] = 'Settings to be saved';
+$string['error:couldnotsavesearch'] = 'Could not save search';
+$string['error:nosavedsearches'] = 'This report does not yet have any saved searches';
+$string['savedsearches'] = 'Saved Searches';
 
 // Add/Edit competency evidence
 $string['error:unknownbuttonclicked'] = 'Unknown Button Clicked';
