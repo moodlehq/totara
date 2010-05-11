@@ -21,7 +21,7 @@
         if(!confirm_sesskey()) {
             print_error('confirmsesskeybad','error');
         }
-        if(delete_records('report_builder','id',$id)) {
+        if(delete_report($id)) {
             redirect($returnurl, get_string($type.'report', 'local'));
         } else {
             redirect($returnurl, get_string('no'.$type.'report', 'local'));
@@ -183,5 +183,51 @@
 
     admin_externalpage_print_footer();
 
+
+// page specific functions
+
+/*
+ * Deletes a report and any associated data
+ *
+ * @param integer $id ID of the report to delete
+ */
+function delete_report($id) {
+
+    if(!$id) {
+        return false;
+    }
+
+    begin_sql();
+    // delete the report
+    if(!delete_records('report_builder','id',$id)) {
+        rollback_sql();
+        return false;
+    }
+    // delete any columns
+    if(!delete_records('report_builder_columns','reportid',$id)) {
+        rollback_sql();
+        return false;
+    }
+    // delete any filters
+    if(!delete_records('report_builder_filters','reportid',$id)) {
+        rollback_sql();
+        return false;
+    }
+    // delete any access settings
+    if(!delete_records('report_builder_access','reportid',$id)) {
+        rollback_sql();
+        return false;
+    }
+    // delete any saved searches
+    if(!delete_records('report_builder_saved','reportid',$id)) {
+        rollback_sql();
+        return false;
+    }
+
+    // all okay commit changes
+    commit_sql();
+    return true;
+
+}
 
 ?>
