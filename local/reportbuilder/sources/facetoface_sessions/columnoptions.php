@@ -43,36 +43,6 @@ $columnoptions = array(
             'field' => 'attendees.number',
             'joins' => array('attendees'),
         ),
-        'location' => array(
-            'name' => 'Session Location',
-            'field' => 'session_location.data',
-            'joins' => array('session_location'),
-        ),
-        'venue' => array(
-            'name' => 'Session Venue',
-            'field' => 'session_venue.data',
-            'joins' => array('session_venue'),
-        ),
-        'room' => array(
-            'name' => 'Session Room',
-            'field' => 'session_room.data',
-            'joins' => array('session_room'),
-        ),
-        'audit' => array(
-            'name' => 'Audit',
-            'field' => 'session_audit.data',
-            'joins' => array('session_audit'),
-        ),
-        'pilot' => array(
-            'name' => 'Pilot',
-            'field' => 'session_pilot.data',
-            'joins' => array('session_pilot'),
-        ),
-        'coursedelivery' => array(
-            'name' => 'Course Delivery Method',
-            'field' => 'session_coursedelivery.data',
-            'joins' => array('session_coursedelivery'),
-        ),
     ),
     'status' => array(
         'statuscode' => array(
@@ -212,6 +182,20 @@ if($custom_fields = get_records('user_info_field','','','','id,shortname,name'))
             'name' => $name,
             'field' => "$key.data",
             'joins' => array('signup','user',$key),
+        );
+    }
+}
+
+// add all session custom fields to column options list
+if($session_fields = get_records('facetoface_session_field','','','','id,shortname,name')) {
+    foreach($session_fields as $session_field) {
+        $field = $session_field->shortname;
+        $name = $session_field->name;
+        $key = "session_$field";
+        $columnoptions['session'][$field] = array(
+            'name' => 'Session '.$name,
+            'field' => $key.'.data',
+            'joins' => array($key),
         );
     }
 }
