@@ -29,8 +29,8 @@ class reportbuilder {
             if($embed) {
                 if(! $id = $this->create_embedded_record($shortname, $embed, $error)) {
                     error('Error creating embedded record: '.$error);
-		}
-		$report = get_record('report_builder','id', $id);
+		        }
+		        $report = get_record('report_builder','id', $id);
             } else {
                 error("Report with ID of '$id' not found in database.");
             }
