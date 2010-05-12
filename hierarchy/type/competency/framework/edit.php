@@ -9,6 +9,16 @@ if ($id == 0) {
     // Creating new framework
     require_capability('moodle/local:create'.$type.'frameworks', $context);
 
+    // Don't show the page if there are no positions
+    if ( !count_records('comp_scale') ){
+
+        /// Display page header
+        admin_externalpage_print_header();
+        notice(get_string('nocompetencyscales','competency'), "{$CFG->wwwroot}/hierarchy/type/competency/scale/index.php" );
+        print_footer();
+        die();
+
+    }
     $framework = new object();
     $framework->id = 0;
     $framework->visible = 1;

@@ -111,6 +111,7 @@ $string['noassignedcompetenciestotemplate'] = 'No competencies assigned to this 
 $string['nocoursesincat'] = 'No courses found in that category';
 $string['nocompetenciesinframework'] = 'No competencies in this framework';
 $string['nocompetency'] = 'No competencies defined';
+$string['nocompetencyscales'] = 'You must define at least one competency scale before you can define a competency framework.';
 $string['nocoursecompetencies'] = 'No course competencies';
 $string['nodepthlevels'] = 'No depth levels in this framework';
 $string['noevidenceitems'] = 'No evidence items setup for this competency';
