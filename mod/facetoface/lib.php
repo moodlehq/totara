@@ -1070,7 +1070,8 @@ function facetoface_get_attendees($sessionid)
         AND ss.superceded != 1
         AND ss.statuscode >= ".MDL_F2F_STATUS_APPROVED."
         ORDER BY
-            sign.timecreated ASC
+            sign.timecreated ASC,
+            ss.timecreated ASC
     ");
 
     return $records;
