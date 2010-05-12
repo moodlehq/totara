@@ -1231,18 +1231,22 @@ class reportbuilder {
     }
 
     /*
-     * Returns a button that when clicked, takes the user to a page where they can
-     * see a list of saved searches for the current report
+     * Returns a menu that when selected, takes the user to the specified saved search
      *
-     * @return string HTML to display the button
+     * @return string HTML to display a pulldown menu with saved search options
      */
-    function view_saved_button() {
+    function view_saved_menu() {
         global $CFG,$USER;
         $id = $this->_id;
+        $sid = $this->_sid;
         // only show if there are saved searches for this report and user
-        if(get_records_select('report_builder_saved', 'reportid='.$id.'AND userid='.$USER->id)) {
-            $params = array('id' => $id);
-            return print_single_button($CFG->wwwroot.'/local/reportbuilder/savedsearches.php', $params, get_string('viewsavedsearches','local'), 'get', '_self', true);
+        if($saved = get_records_select('report_builder_saved', 'reportid='.$id.'AND userid='.$USER->id)) {
+            $common = $CFG->wwwroot.'/local/reportbuilder/report.php?id='.$id.'&amp;sid=';
+            $options = array();
+            foreach($saved as $item) {
+                $options[$item->id] = $item->name;
+            }
+            return popup_form($common, $options, 'viewsavedsearch', $sid, get_string('viewsavedsearch','local'),'','',true);
         } else {
             return '';
         }

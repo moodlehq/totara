@@ -45,7 +45,7 @@ $report->display_search();
 print '<table align="right" border="0"><tr><td>';
 print $report->save_button();
 print '</td><td>';
-print $report->view_saved_button();
+print $report->view_saved_menu();
 print '</td></tr></table>';
 print "<br /><br />";
 
