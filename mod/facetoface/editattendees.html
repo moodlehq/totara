@@ -97,6 +97,17 @@
          ?>
        </td>
     </tr>
-  </table>
+    </table>
+
+    <?php
+
+        if ($nonattendees) {
+            echo '<br />';
+            print_heading(get_string('unapprovedrequests', 'facetoface').' ('.$nonattendees.')');
+            print_table($table);
+        }
+
+    ?>
+
 </div>
 </form>

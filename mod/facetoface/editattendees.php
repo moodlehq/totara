@@ -172,6 +172,54 @@ $availableusers = get_recordset_sql('SELECT id, firstname, lastname, email
 
 $usercount = count_records_select('user', $select) - $existingcount;
 
+
+// Get all signed up non-attendees
+$nonattendees = 0;
+$nonattendees_rs = get_recordset_sql(
+    "
+        SELECT
+            u.id,
+            u.firstname,
+            u.lastname,
+            u.email,
+            ss.statuscode
+        FROM
+            {$CFG->prefix}facetoface_sessions s
+        JOIN
+            {$CFG->prefix}facetoface_signups su
+         ON s.id = su.sessionid
+        JOIN
+            {$CFG->prefix}facetoface_signups_status ss
+         ON su.id = ss.signupid
+        JOIN
+            {$CFG->prefix}user u
+         ON u.id = su.userid
+        WHERE
+            s.id = {$session->id}
+        AND ss.superceded != 1
+        AND ss.statuscode = ".MDL_F2F_STATUS_REQUESTED."
+        ORDER BY
+            u.lastname, u.firstname
+    "
+);
+
+$table = new object();
+$table->head = array(get_string('name'), get_string('email'), get_string('status'));
+$table->align = array('left');
+$table->size = array('50%');
+$table->width = '70%';
+
+while ($user = rs_fetch_next_record($nonattendees_rs)) {
+    $data = array();
+    $data[] = fullname($user);
+    $data[] = $user->email;
+    $data[] = get_string('status_'.facetoface_get_status($user->statuscode), 'facetoface');
+
+    $table->data[] = $data;
+    $nonattendees++;
+}
+
+
 /// Prints a form to add/remove users from the session
 include('editattendees.html');
 
