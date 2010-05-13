@@ -19,14 +19,16 @@ function get_organisations_list($contentmode, $contentsettings) {
     $localset = false;
     $nonlocal = false;
     // are enabled content restrictions local or not?
-    foreach($contentsettings as $name => $value) {
-        if($name == 'completed_org' || $name == 'current_org') {
-            if(isset($value['enable']) && $value['enable'] == 1) {
-                $localset = true;
-            }
-        } else {
-            if(isset($value['enable']) && $value['enable'] == 1) {
-                $nonlocal = true;
+    if(isset($contentsettings) && is_array($contentsettings)) {
+        foreach($contentsettings as $name => $value) {
+            if($name == 'completed_org' || $name == 'current_org') {
+                if(isset($value['enable']) && $value['enable'] == 1) {
+                    $localset = true;
+                }
+            } else {
+                if(isset($value['enable']) && $value['enable'] == 1) {
+                    $nonlocal = true;
+                }
             }
         }
     }
