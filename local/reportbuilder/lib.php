@@ -521,18 +521,20 @@ class reportbuilder {
         $settings = $this->contentsettings;
 
         // go through the content options
-        foreach($this->contentoptions as $option) {
-            $name = $option['name'];
-            $field = $option['field'];
-            $options = isset($settings[$name]) ? $settings[$name] : null;
-            if(isset($options['enable']) && $options['enable'] == 1) {
-                // this content option is enabled
-                if(class_exists($name)) {
-                    // call function to get SQL snippet
-                    $klass = new $name();
-                    $out[] = $klass->sql_restriction($field, $options);
-                } else {
-                    error("Content class $name does not exist");
+        if(isset($this->contentoptions) && is_array($this->contentoptions)) {
+            foreach($this->contentoptions as $option) {
+                $name = $option['name'];
+                $field = $option['field'];
+                $options = isset($settings[$name]) ? $settings[$name] : null;
+                if(isset($options['enable']) && $options['enable'] == 1) {
+                    // this content option is enabled
+                    if(class_exists($name)) {
+                        // call function to get SQL snippet
+                        $klass = new $name();
+                        $out[] = $klass->sql_restriction($field, $options);
+                    } else {
+                        error("Content class $name does not exist");
+                    }
                 }
             }
         }
