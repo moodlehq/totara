@@ -78,6 +78,12 @@ class reportbuilder {
 
     }
 
+    /*
+     * Looks up the saved search ID specified and attempts to restore
+     * the SESSION variable if access is permitted
+     *
+     * @return Boolean True if user can view, error otherwise
+     */
     function restore_saved_search() {
         global $SESSION,$USER;
         $filtername = 'filtering_'.$this->shortname;
@@ -86,10 +92,13 @@ class reportbuilder {
                 $SESSION->$filtername = unserialize($saved->search);
             } else {
                 error('Saved search not found or search is not public');
+                return false;
             }
         } else {
             error('Saved search not found or search is not public');
+            return false;
         }
+        return true;
     }
 
     /*
