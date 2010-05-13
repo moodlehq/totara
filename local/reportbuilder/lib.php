@@ -1572,6 +1572,7 @@ class reportbuilder {
             }
         }
         commit_sql();
+        $this->columns = $this->get_columns();
         return true;
 
     }
@@ -1609,6 +1610,7 @@ class reportbuilder {
             }
         }
         commit_sql();
+        $this->filters = $this->get_filters();
         return true;
     }
 
@@ -1621,7 +1623,6 @@ class reportbuilder {
      */
     function move_column($cid, $updown) {
         $id = $this->_id;
-
         begin_sql();
 
         // assumes sort order is well behaved (no gaps)
@@ -1629,7 +1630,6 @@ class reportbuilder {
             rollback_sql();
             return false;
         }
-
         if($updown == 'up') {
             $newsort = $itemsort - 1;
         } else if ($updown == 'down') {
@@ -1639,7 +1639,6 @@ class reportbuilder {
             rollback_sql();
             return false;
         }
-
         if($neighbour = get_record('report_builder_columns', 'reportid', $id, 'sortorder', $newsort)) {
             // swap sort orders
             $todb = new object();
@@ -1660,6 +1659,7 @@ class reportbuilder {
         }
 
         commit_sql();
+        $this->columns = $this->get_columns();
         return true;
 
     }
@@ -1713,6 +1713,7 @@ class reportbuilder {
         }
 
         commit_sql();
+        $this->filters = $this->get_filters();
         return true;
 
     }
