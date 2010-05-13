@@ -240,24 +240,24 @@ class reportbuilder {
      * @return string A unique shortname suitable for this report
      */
     public static function create_shortname($fullname) {
-	// leaves only letters and numbers
-	// replaces spaces + dashes with underscores
+        // leaves only letters and numbers
+        // replaces spaces + dashes with underscores
         $validchars = strtolower(preg_replace(array('/[^a-zA-Z\d\s-_]/','/[\s-]/'), array('','_'), $fullname));
-	$shortname = "report_{$validchars}";
-	$try = $shortname;
-	$i = 1;
-	while($i<1000) {
-	    if(get_field('report_builder','id','shortname',$try)) {
-                // name exists, try adding a number to make unique
-	        $try = $shortname + $i;
-		$i++;
-	    } else {
-		// return the shortname
-		return $try;
-            }
-	}
-	// if all 1000 name tries fail, give up and use a timestamp
-	return "report_".time();
+        $shortname = "report_{$validchars}";
+        $try = $shortname;
+        $i = 1;
+        while($i<1000) {
+            if(get_field('report_builder','id','shortname',$try)) {
+                    // name exists, try adding a number to make unique
+                $try = $shortname . $i;
+            $i++;
+            } else {
+            // return the shortname
+            return $try;
+                }
+        }
+        // if all 1000 name tries fail, give up and use a timestamp
+        return "report_".time();
     }
 
 
