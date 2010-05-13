@@ -241,6 +241,7 @@ class competencylib_test extends prefix_changing_test_case {
 
     function test_competency_get_assigned_to_template() {
         $competency = $this->competency;
-        var_dump($competency->get_assigned_to_template(1));
+        // TODO finish this test
+        //var_dump($competency->get_assigned_to_template(1));
     }
 }
