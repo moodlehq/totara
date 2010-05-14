@@ -1,3 +1,4 @@
 /config.php
 *.swp
 /build/logs/
+/build/docs/

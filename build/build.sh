@@ -7,7 +7,7 @@ echo "Create new database mdl19-hudsontesting";
 createdb -O hudson mdl19-hudsontesting
 
 echo "Restore baseline.pgdump";
-pg_restore -Fc -O -U hudson -w -d mdl19-hudsontesting build/baseline.pgdump
+nice pg_restore -Fc -O -U hudson -w -d mdl19-hudsontesting build/baseline.pgdump
 
 echo "Delete old moodledata";
 rm -Rf ../moodledata/
@@ -28,10 +28,20 @@ echo "Run simpletests";
 wget -O build/logs/simpletest-results.xml http://hudson.spastk.wgtn.cat-it.co.nz/admin/report/unittest/xml.php
 
 echo "Convert to Junit XML";
-xsltproc build/simpletest_to_junit.xsl build/logs/simpletest-results.xml > build/logs/TEST-suite.xml
+nice xsltproc build/simpletest_to_junit.xsl build/logs/simpletest-results.xml > build/logs/TEST-suite.xml
 
 echo "Count lines of code";
-sloccount --wide --details . > build/logs/sloccount.sc
+nice sloccount --wide --details . > build/logs/sloccount.sc
 
 echo "Run pDepend";
-/home/aaronb/code/dev/pdepend/pdepend.php --jdepend-xml=build/logs/jdepend.xml .
+# TOO CPU/MEMORY INTENSIVE
+# pdepend --jdepend-xml=build/logs/jdepend.xml .
+
+echo "Run phpDoc";
+nice phpdoc -t build/docs/ --directory . -ti 'Test Job Docs' --parseprivate on --undocumentedelements on --output HTML:Smarty:PHP
+
+echo "Run phpcpd";
+nice phpcpd --log-pmd=build/logs/pmd.xml .
+
+echo "Run phpcs";
+nice phpcs --report=checkstyle . > build/logs/checkstyle.xml
