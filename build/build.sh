@@ -30,5 +30,8 @@ wget -O build/logs/simpletest-results.xml http://hudson.spastk.wgtn.cat-it.co.nz
 echo "Convert to Junit XML";
 xsltproc build/simpletest_to_junit.xsl build/logs/simpletest-results.xml > build/logs/TEST-suite.xml
 
-echo "Count lines off code";
+echo "Count lines of code";
 sloccount --wide --details . > build/logs/sloccount.sc
+
+echo "Run pDepend";
+/home/aaronb/code/dev/pdepend/pdepend.php --jdepend-xml=build/logs/jdepend.xml .
