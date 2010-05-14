@@ -176,7 +176,7 @@ class Notice {
 
     function run(&$reporter) {
         $reporter->paintGroupStart(basename(__FILE__), $this->getSize());
-        $reporter->paintNotice(get_class_ex($this) .
+        $reporter->paintMessage(get_class_ex($this) .
                 ' ['. $this->getLabel() .'] with status [' . $this->status . ']');
         $reporter->paintGroupEnd($this->getLabel());
         return $reporter->getStatus();
