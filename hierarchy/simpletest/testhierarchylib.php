@@ -65,6 +65,11 @@ class hierarchylib_test extends prefix_changing_test_case {
         array(1, 1, 1, 2),
     );
 
+    var $dummy_data = array(
+        array('id', 'competency', 'competencyid','competencycount','instanceid','templateid','id1','id2'),
+        array(1, 1, 1, 1, 1, 1, 1, 2),
+    );
+
     function setUp() {
         global $db,$CFG;
         parent::setup();
@@ -74,6 +79,16 @@ class hierarchylib_test extends prefix_changing_test_case {
         load_test_table($CFG->prefix . 'comp_depth_info_category', $this->depth_category_data, $db);
         load_test_table($CFG->prefix . 'comp_depth_info_field', $this->depth_field_data, $db);
         load_test_table($CFG->prefix . 'comp_depth_info_data', $this->depth_data_data, $db);
+        load_test_table($CFG->prefix . 'idp_revision_competency', $this->dummy_data, $db);
+        load_test_table($CFG->prefix . 'idp_competency_eval', $this->dummy_data, $db);
+        load_test_table($CFG->prefix . 'comp_evidence', $this->dummy_data, $db);
+        load_test_table($CFG->prefix . 'comp_evidence_items', $this->dummy_data, $db);
+        load_test_table($CFG->prefix . 'comp_evidence_items_evidence', $this->dummy_data, $db);
+        load_test_table($CFG->prefix . 'comp_template_competencies', $this->dummy_data, $db);
+        load_test_table($CFG->prefix . 'comp_template', $this->dummy_data, $db);
+        load_test_table($CFG->prefix . 'comp_template_assignment', $this->dummy_data, $db);
+        load_test_table($CFG->prefix . 'pos_competencies', $this->dummy_data, $db);
+        load_test_table($CFG->prefix . 'comp_relations', $this->dummy_data, $db);
 
         // create the competency object
         $this->competency = new competency();
@@ -152,6 +167,16 @@ class hierarchylib_test extends prefix_changing_test_case {
 
     function tearDown() {
         global $db,$CFG;
+        remove_test_table('mdl_unittest_comp_relations', $db);
+        remove_test_table('mdl_unittest_pos_competencies', $db);
+        remove_test_table('mdl_unittest_comp_template_assignment', $db);
+        remove_test_table('mdl_unittest_comp_template', $db);
+        remove_test_table('mdl_unittest_comp_template_competencies', $db);
+        remove_test_table('mdl_unittest_comp_evidence_items_evidence', $db);
+        remove_test_table('mdl_unittest_comp_evidence_items', $db);
+        remove_test_table('mdl_unittest_comp_evidence', $db);
+        remove_test_table('mdl_unittest_idp_competency_eval', $db);
+        remove_test_table('mdl_unittest_idp_revision_competency', $db);
         remove_test_table('mdl_unittest_comp_depth_info_data', $db);
         remove_test_table('mdl_unittest_comp_depth_info_field', $db);
         remove_test_table('mdl_unittest_comp_depth_info_category', $db);
@@ -472,8 +497,8 @@ class hierarchylib_test extends prefix_changing_test_case {
 
     function test_hierarchy_delete_framework_item() {
         $competency = $this->competency;
-        // function should return null
-        $this->assertEqual($competency->delete_framework_item(1), null);
+        // function should return true
+        $this->assertTrue($competency->delete_framework_item(1));
         // the item should have be deleted
         $this->assertFalse($competency->get_item(1));
         // the item's children should also have been deleted

@@ -82,6 +82,16 @@ class competencylib_test extends prefix_changing_test_case {
         array(1, 1, 1, 0, 0, 0),
     );
 
+    var $comp_template_competencies_data = array(
+        array('id', 'templateid', 'competencyid', 'priority', 'proficiencyexpected', 'hidden', 'timecreated', 'usermodified'),
+        array(1, 1, 1, 1, 1, 0, 1265963591, 1265963591),
+    );
+
+    var $pos_competencies_data = array(
+        array('id', 'positionid', 'competencyid', 'templateid', 'timecreated', 'usermodified'),
+        array(1, 1, 1, 1, 1265963591, 1265963591),
+    );
+
     function setUp() {
         global $db,$CFG;
         parent::setup();
@@ -94,6 +104,8 @@ class competencylib_test extends prefix_changing_test_case {
         load_test_table($CFG->prefix . 'comp_template', $this->template_data, $db);
         load_test_table($CFG->prefix . 'idp_revision_competencytmpl', $this->template_revision_data, $db);
         load_test_table($CFG->prefix . 'comp_template_assignment', $this->template_assignment_data, $db);
+        load_test_table($CFG->prefix . 'comp_template_competencies', $this->comp_template_competencies_data, $db);
+        load_test_table($CFG->prefix . 'pos_competencies', $this->pos_competencies_data, $db);
 
         // create the competency object
         $this->competency = new competency();
@@ -185,6 +197,8 @@ class competencylib_test extends prefix_changing_test_case {
 
     function tearDown() {
         global $db,$CFG;
+        remove_test_table('mdl_unittest_pos_competencies', $db);
+        remove_test_table('mdl_unittest_comp_template_competencies', $db);
         remove_test_table('mdl_unittest_comp_template_assignment', $db);
         remove_test_table('mdl_unittest_idp_revision_competencytmpl', $db);
         remove_test_table('mdl_unittest_comp_template', $db);
