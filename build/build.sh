@@ -29,7 +29,7 @@ nice sloccount --wide --details . > build/logs/sloccount.sc
 # pdepend --jdepend-xml=build/logs/jdepend.xml .
 
 echo "Run phpDoc";
-nice phpdoc -t build/docs/ --directory . -ti 'Test Job Docs' --parseprivate on --undocumentedelements on --output HTML:Smarty:PHP
+nice phpdoc -t build/docs/ --directory local/ -ti 'Test Job Docs' --parseprivate on --undocumentedelements on --output HTML:Smarty:PHP
 
 # echo "Run phpcpd";
 # nice phpcpd --log-pmd=build/logs/pmd.xml .
