@@ -83,6 +83,8 @@ class report_builder_edit_filters_form extends moodleform {
 
         $mform->addElement('header', 'searchoptions', get_string('searchoptions', 'local'));
 
+        $mform->setHelpButton('searchoptions', array('reportbuilderfilters',get_string('filters','local'),'moodle'));
+
         $strmovedown = get_string('movedown','local');
         $strmoveup = get_string('moveup','local');
         $strdelete = get_string('delete','local');
@@ -177,10 +179,13 @@ class report_builder_edit_columns_form extends moodleform {
 
         $mform->addElement('header', 'reportcolumns', get_string('reportcolumns', 'local'));
 
+        $mform->setHelpButton('reportcolumns', array('reportbuildercolumns',get_string('columns','local'),'moodle'));
+
         if(isset($report->columnoptions) && is_array($report->columnoptions) && count($report->columnoptions)>0) {
 
 
             $mform->addElement('html','<div>'.get_string('help:columnsdesc','local').'</div><br />');
+
 
             $mform->addElement('html', '<div class="reportbuilderform"><table><tr><th>'.get_string('column','local').
                 '</th><th>'.get_string('heading','local').'</th><th>'.get_string('options','local').'</th><tr>');
@@ -288,6 +293,7 @@ class report_builder_edit_content_form extends moodleform {
         $radiogroup[] =& $mform->createElement('radio', 'contentenabled', '', get_string('withcontentrestrictionany','local'), 1);
         $radiogroup[] =& $mform->createElement('radio', 'contentenabled', '', get_string('withcontentrestrictionall','local'), 2);
         $mform->addGroup($radiogroup, 'radiogroup', get_string('restrictcontent','local'), '<br />', false);
+        $mform->setHelpButton('radiogroup', array('reportbuildercontentmode',get_string('reportcontent','local'),'moodle'));
         $mform->setDefault('contentenabled', get_field('report_builder', 'contentmode', 'id', $id));
 
         // convert content options for this source into an array
@@ -329,6 +335,7 @@ class report_builder_edit_access_form extends moodleform {
         $radiogroup[] =& $mform->createElement('radio', 'accessenabled', '', get_string('withrestriction','local'), 1);
         $mform->addGroup($radiogroup, 'radiogroup', get_string('restrictaccess','local'), '<br />', false);
         $mform->setDefault('accessenabled', get_field('report_builder', 'accessmode', 'id', $id));
+        $mform->setHelpButton('radiogroup', array('reportbuilderaccessmode',get_string('restrictaccess','local'),'moodle'));
 
         $mform->addElement('header', 'accessbyroles', get_string('accessbyrole', 'local'));
 
@@ -342,6 +349,7 @@ class report_builder_edit_access_form extends moodleform {
             }
             $mform->addGroup($rolesgroup, 'roles', get_string('roleswithaccess','local'), '<br />', false);
             $mform->disabledIf('roles', 'accessenabled', 'eq', 0);
+            $mform->setHelpButton('roles', array('reportbuilderrolesaccess',get_string('roleswithaccess','local'),'moodle'));
         } else {
             $mform->addElement('html', '<p>'.get_string('error:norolesfound','local').'</p>');
         }

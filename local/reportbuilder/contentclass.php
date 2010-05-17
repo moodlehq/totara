@@ -57,17 +57,18 @@ class current_org extends content_base {
 
         $enable = isset($settings['current_org']['enable']) ? $settings['current_org']['enable'] : 0;
         $recursive = isset($settings['current_org']['recursive']) ? $settings['current_org']['recursive'] : 0;
-        $mform->addElement('header', 'current_org_header', 'Show by current organisation');
-        $mform->addElement('checkbox', 'current_org_enable', '', 'Show records from staff in the user\'s organisation');
+        $mform->addElement('header', 'current_org_header', get_string('showbycurrentorg','local'));
+        $mform->addElement('checkbox', 'current_org_enable', '', get_string('currentorgenable','local'));
         $mform->setDefault('current_org_enable', $enable);
         $mform->disabledIf('current_org_enable','contentenabled', 'eq', 0);
         $radiogroup = array();
-        $radiogroup[] =& $mform->createElement('radio', 'current_org_recursive', '', 'Yes', 1);
-        $radiogroup[] =& $mform->createElement('radio', 'current_org_recursive', '', 'No', 0);
-        $mform->addGroup($radiogroup, 'current_org_recursive_group', 'Include records from child organisations', '<br />', false);
+        $radiogroup[] =& $mform->createElement('radio', 'current_org_recursive', '', get_string('yes'), 1);
+        $radiogroup[] =& $mform->createElement('radio', 'current_org_recursive', '', get_string('no'), 0);
+        $mform->addGroup($radiogroup, 'current_org_recursive_group', get_string('includechildorgs','local'), '<br />', false);
         $mform->setDefault('current_org_recursive', $recursive);
         $mform->disabledIf('current_org_recursive_group','contentenabled', 'eq', 0);
         $mform->disabledIf('current_org_recursive_group','current_org_enable', 'notchecked');
+        $mform->setHelpButton('current_org_header', array('reportbuildercurrentorg',get_string('showbycurrentorg','local'),'moodle'));
     }
 }
 
@@ -114,17 +115,18 @@ class completed_org extends content_base {
     function form_template(&$mform, $settings) {
         $enable = isset($settings['completed_org']['enable']) ? $settings['completed_org']['enable'] : 0;
         $recursive = isset($settings['completed_org']['recursive']) ? $settings['completed_org']['recursive'] : 0;
-        $mform->addElement('header', 'completed_org_header', 'Show by completed organisation');
-        $mform->addElement('checkbox', 'completed_org_enable', '', 'Show records completed in the user\'s organisation');
+        $mform->addElement('header', 'completed_org_header', get_string('showbycompletedorg','local'));
+        $mform->addElement('checkbox', 'completed_org_enable', '', get_string('completedorgenable','local'));
         $mform->setDefault('completed_org_enable', $enable);
         $mform->disabledIf('completed_org_enable','contentenabled', 'eq', 0);
         $radiogroup = array();
-        $radiogroup[] =& $mform->createElement('radio', 'completed_org_recursive', '', 'Yes', 1);
-        $radiogroup[] =& $mform->createElement('radio', 'completed_org_recursive', '', 'No', 0);
-        $mform->addGroup($radiogroup, 'completed_org_recursive_group', 'Include records from child organisations', '<br />', false);
+        $radiogroup[] =& $mform->createElement('radio', 'completed_org_recursive', '', get_string('yes'), 1);
+        $radiogroup[] =& $mform->createElement('radio', 'completed_org_recursive', '', get_string('no'), 0);
+        $mform->addGroup($radiogroup, 'completed_org_recursive_group', get_string('includechildorgs','local'), '<br />', false);
         $mform->setDefault('completed_org_recursive', $recursive);
         $mform->disabledIf('completed_org_recursive_group','contentenabled', 'eq', 0);
         $mform->disabledIf('completed_org_recursive_group','completed_org_enable', 'notchecked');
+        $mform->setHelpButton('completed_org_header', array('reportbuildercompletedorg',get_string('showbycompletedorg','local'),'moodle'));
     }
 }
 
@@ -173,18 +175,19 @@ class user extends content_base {
     function form_template(&$mform, $settings) {
         $enable = isset($settings['user']['enable']) ? $settings['user']['enable'] : 0;
         $who = isset($settings['user']['who']) ? $settings['user']['who'] : 1;
-        $mform->addElement('header', 'user_header', 'Show by user');
-        $mform->addElement('checkbox', 'user_enable', '', 'Show records by user');
+        $mform->addElement('header', 'user_header', get_string('showbyuser','local'));
+        $mform->addElement('checkbox', 'user_enable', '', get_string('byuserenable','local'));
         $mform->disabledIf('user_enable','contentenabled', 'eq', 0);
         $mform->setDefault('user_enable', $enable);
         $radiogroup = array();
-        $radiogroup[] =& $mform->createElement('radio', 'user_who', '', 'A user\'s own records', 'own');
-        $radiogroup[] =& $mform->createElement('radio', 'user_who', '', 'Records for user\'s direct reports', 'reports');
-        $radiogroup[] =& $mform->createElement('radio', 'user_who', '', 'Both', 'ownandreports');
-        $mform->addGroup($radiogroup, 'user_who_group', 'Include records from particular users', '<br />', false);
+        $radiogroup[] =& $mform->createElement('radio', 'user_who', '', get_string('userownrecords','local'), 'own');
+        $radiogroup[] =& $mform->createElement('radio', 'user_who', '', get_string('userstaffrecords','local'), 'reports');
+        $radiogroup[] =& $mform->createElement('radio', 'user_who', '', get_string('both','local'), 'ownandreports');
+        $mform->addGroup($radiogroup, 'user_who_group', get_string('includeuserrecords','local'), '<br />', false);
         $mform->setDefault('user_who', $who);
         $mform->disabledIf('user_who_group','contentenabled', 'eq', 0);
         $mform->disabledIf('user_who_group','user_enable', 'notchecked');
+        $mform->setHelpButton('user_header', array('reportbuilderuser',get_string('showbyuser','local'),'moodle'));
     }
 }
 
@@ -227,19 +230,20 @@ class thedate extends content_base {
     function form_template(&$mform, $settings) {
         $enable = isset($settings['thedate']['enable']) ? $settings['thedate']['enable'] : 0;
         $when = isset($settings['thedate']['when']) ? $settings['thedate']['when'] : 'past';
-        $mform->addElement('header', 'thedate_header', 'Show by date');
-        $mform->addElement('checkbox', 'thedate_enable', '', 'Show records based on the record date');
+        $mform->addElement('header', 'thedate_header', get_string('showbydate','local'));
+        $mform->addElement('checkbox', 'thedate_enable', '', get_string('bydateenable','local'));
         $mform->setDefault('thedate_enable', $enable);
         $mform->disabledIf('thedate_enable', 'contentenabled', 'eq', 0);
         $radiogroup = array();
-        $radiogroup[] =& $mform->createElement('radio', 'thedate_when', '', 'The past', 'past');
-        $radiogroup[] =& $mform->createElement('radio', 'thedate_when', '', 'The future', 'future');
-        $radiogroup[] =& $mform->createElement('radio', 'thedate_when', '', 'The last 30 days', 'last30days');
-        $radiogroup[] =& $mform->createElement('radio', 'thedate_when', '', 'The next 30 days', 'next30days');
-        $mform->addGroup($radiogroup, 'thedate_when_group', 'Include records from', '<br />', false);
+        $radiogroup[] =& $mform->createElement('radio', 'thedate_when', '', get_string('thepast','local'), 'past');
+        $radiogroup[] =& $mform->createElement('radio', 'thedate_when', '', get_string('thefuture','local'), 'future');
+        $radiogroup[] =& $mform->createElement('radio', 'thedate_when', '', get_string('last30days','local'), 'last30days');
+        $radiogroup[] =& $mform->createElement('radio', 'thedate_when', '', get_string('next30days','local'), 'next30days');
+        $mform->addGroup($radiogroup, 'thedate_when_group', get_string('includerecordsfrom','local'), '<br />', false);
         $mform->setDefault('thedate_when', $when);
         $mform->disabledIf('thedate_when_group','contentenabled', 'eq', 0);
         $mform->disabledIf('thedate_when_group','thedate_enable', 'notchecked');
+        $mform->setHelpButton('thedate_header', array('reportbuilderdate',get_string('showbydate','local'),'moodle'));
     }
 
 }
