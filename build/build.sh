@@ -1,28 +1,19 @@
 #!/bin/sh
 
-echo "Drop old database mdl19-hudsontesting";
-dropdb mdl19-hudsontesting
-
-echo "Create new database mdl19-hudsontesting";
-createdb -O hudson mdl19-hudsontesting
-
-echo "Restore baseline.pgdump";
-nice pg_restore -Fc -O -U hudson -w -d mdl19-hudsontesting build/baseline.pgdump
-
-echo "Delete old moodledata";
-rm -Rf ../moodledata/
-
-echo "Re-create moodledata";
-mkdir ../moodledata
-chmod 777 ../moodledata
-
-echo "Reset apache logs";
-rm ../moodle_error.log
-touch ../moodle_error.log
-chmod 777 ../moodle_error.log
-
-echo "Copy config.php into workspace";
-cp build/config.php config.php
+# Notes on setting up machine this runs on
+#
+# Apache needs a vserver set up to point to the hudson workspace,
+# for selenium to use for testing
+#
+# First, you need to create a second firefox profile, named "selenium"
+# (firefox will on run in one instance per profile)
+#
+# As the user hudson, you need to turn on xvfb and set it up:
+# Xvfb :99 -ac
+# export DISPLAY=:99
+#
+# In the Hudson selenium config, you then need to load the browser as so:
+#
 
 echo "Run simpletests";
 wget -O build/logs/simpletest-results.xml http://hudson.spastk.wgtn.cat-it.co.nz/admin/report/unittest/xml.php
@@ -33,15 +24,15 @@ nice xsltproc build/simpletest_to_junit.xsl build/logs/simpletest-results.xml > 
 echo "Count lines of code";
 nice sloccount --wide --details . > build/logs/sloccount.sc
 
-echo "Run pDepend";
+# echo "Run pDepend";
 # TOO CPU/MEMORY INTENSIVE
 # pdepend --jdepend-xml=build/logs/jdepend.xml .
 
 echo "Run phpDoc";
 nice phpdoc -t build/docs/ --directory . -ti 'Test Job Docs' --parseprivate on --undocumentedelements on --output HTML:Smarty:PHP
 
-echo "Run phpcpd";
-nice phpcpd --log-pmd=build/logs/pmd.xml .
+# echo "Run phpcpd";
+# nice phpcpd --log-pmd=build/logs/pmd.xml .
 
 echo "Run phpcs";
 nice phpcs --report=checkstyle . > build/logs/checkstyle.xml
