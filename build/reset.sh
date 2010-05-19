@@ -2,14 +2,39 @@
 
 # .git/hooks/post-checkout must by symbolicly linked to this file
 
+echo "Delete config.php";
+rm config.php
+
 echo "Drop old database mdl19-hudsontesting";
 dropdb mdl19-hudsontesting
 
 echo "Create new database mdl19-hudsontesting";
 createdb -O hudson mdl19-hudsontesting
 
-echo "Restore baseline.pgdump";
-nice pg_restore -Fc -O -U hudson -w -d mdl19-hudsontesting build/baseline.pgdump
+echo "Initialize installation";
+/usr/bin/php admin/cliupgrade.php \
+      --lang=en_utf8 \
+      --webaddr="http://hudson.spastk.wgtn.cat-it.co.nz" \
+      --moodledir="/var/lib/hudson/jobs/Totara/workspace" \
+      --datadir="/var/lib/hudson/jobs/Totara/moodledata/" \
+      --dbtype="postgres7" \
+      --dbname="mdl19-hudsontesting" \
+      --dbhost="localhost" \
+      --dbuser="hudson" \
+      --dbpass="password" \
+      --prefix="mdl_" \
+      --verbose=3 \
+      --sitefullname="Totara" \
+      --siteshortname="Totara" \
+      --sitesummary="" \
+      --sitenewsitems=0 \
+      --adminfirstname=Admin \
+      --adminlastname=User \
+      --adminemail=aaronb@catalyst.net.nz \
+      --adminusername=admin \
+      --adminpassword="passworD1!" \
+      --interactivelevel=0
+
 
 echo "Delete old moodledata";
 rm -Rf ../moodledata/
@@ -22,6 +47,3 @@ echo "Reset apache logs";
 rm ../moodle_error.log
 touch ../moodle_error.log
 chmod 777 ../moodle_error.log
-
-echo "Copy config.php into workspace";
-cp build/config.php config.php
