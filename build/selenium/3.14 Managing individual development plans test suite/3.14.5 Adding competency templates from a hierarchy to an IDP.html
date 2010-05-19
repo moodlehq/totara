@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="" />
+<title>3.14.5 Adding competency templates from a hierarchy to an IDP</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">3.14.5 Adding competency templates from a hierarchy to an IDP</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/login/index.php</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>username</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>password</td>
+	<td>passworD1!</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@value='Login']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Development Planner</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Selenium IDP</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>show-idpcompetencytemplate-dialog</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//body[@id='idp-revision']/div[13]/div[3]/button</td>
+	<td>Save changes</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>show-idpcompetencytemplate-dialog</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//body[@id='idp-revision']/div[13]/div[1]/a/span</td>
+	<td>CLOSE</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>show-idpcompetencytemplate-dialog</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>item_1</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>item_1</td>
+	<td></td>
+</tr>
+<tr>
+	<td>dragAndDrop</td>
+	<td>item_1</td>
+	<td>+332,+65</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//body[@id='idp-revision']/div[13]/div[3]/button</td>
+	<td>Save changes</td>
+</tr>
+<tr>
+	<td>assertTextPresent</td>
+	<td>Selenium test framework fullname</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertTextPresent</td>
+	<td>Selenium test framework fullname Template 1</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//table[@id='list-idpcompetencytemplate']/tbody/tr/td[4]/img</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//div[@id='ui-datepicker-div']/table/tbody/tr[3]/td[3]/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertElementPresent</td>
+	<td>comptempduedate1</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Logout</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>

@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="" />
+<title>3.2.11 Creating a new custom field</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">3.2.11 Creating a new custom field</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/login/index.php</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>username</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>password</td>
+	<td>passworD1!</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@value='Login']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Organisations</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Manage organisations</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>switchframework_jump</td>
+	<td>label=Selenium test framework fullname</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@value='Turn editing on']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//img[@alt='Custom fields']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>newfieldform_jump</td>
+	<td>label=Checkbox</td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_submitbutton</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_cancel</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>newfieldform_jump</td>
+	<td>label=Checkbox</td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id_shortname</td>
+	<td>New checkbox field short</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id_fullname</td>
+	<td>New checkbox field full</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_submitbutton</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@value='Return to organisation framework']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//table[@id='organisation']/tbody/tr[1]/th[3]/a[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>newfieldform_jump</td>
+	<td>label=Menu of choices</td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_submitbutton</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_cancel</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>newfieldform_jump</td>
+	<td>label=Menu of choices</td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id_shortname</td>
+	<td>New Menu of choices Short</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id_fullname</td>
+	<td>New Menu of choices Full</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id_param1</td>
+	<td>A<br /><br />B<br /><br />C</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id_defaultdata</td>
+	<td>B</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_submitbutton</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>newfieldform_jump</td>
+	<td>label=Text input</td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_submitbutton</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_cancel</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>newfieldform_jump</td>
+	<td>label=Text input</td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id_shortname</td>
+	<td>Text input field shortname</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id_fullname</td>
+	<td>Text input field fullname</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id_required</td>
+	<td>label=Yes</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id_locked</td>
+	<td>label=No</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id_forceunique</td>
+	<td>label=Yes</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id_hidden</td>
+	<td>label=No</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id_categoryid</td>
+	<td>label=New unique category to delete</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_submitbutton</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@value='Return to organisation framework']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Logout</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>

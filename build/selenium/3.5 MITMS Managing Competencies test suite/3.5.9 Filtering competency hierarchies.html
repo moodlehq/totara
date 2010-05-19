@@ -1,0 +1,822 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="" />
+<title>3.5.9 Filtering competency hierarchies</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">3.5.9 Filtering competency hierarchies</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/login/index.php</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>username</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>password</td>
+	<td>passworD1!</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@value='Login']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Competencies</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Manage competencies</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>selectAndWait</td>
+	<td>switchframework_jump</td>
+	<td>label=Unit Standards</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id_fullname</td>
+	<td>Demonstrate</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_addfilter</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>filter[fullname][0]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_removeselected</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>mform_showadvanced</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id_fullname_op</td>
+	<td>label=doesn't contain</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id_fullname</td>
+	<td>Break</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_addfilter</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>filter[fullname][0]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_removeselected</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>mform_showadvanced</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id_fullname_op</td>
+	<td>label=is equal to</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id_fullname</td>
+	<td>Demonstrate knowledge of soil properties</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_addfilter</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>filter[fullname][0]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_removeselected</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>mform_showadvanced</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id_fullname_op</td>
+	<td>label=starts with</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id_fullname</td>
+	<td>Demonstrate</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_addfilter</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>filter[fullname][0]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_removeselected</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>mform_showadvanced</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id_fullname_op</td>
+	<td>label=ends with</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id_fullname</td>
+	<td>Control</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_addfilter</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>filter[fullname][0]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_removeselected</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>mform_showadvanced</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id_fullname_op</td>
+	<td>label=is empty</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_addfilter</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>filter[fullname][0]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_removeselected</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>selectAndWait</td>
+	<td>switchframework_jump</td>
+	<td>label=Selenium test framework fullname 2</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>mform_showadvanced</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id_shortname_op</td>
+	<td>label=contains</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id_shortname</td>
+	<td>2</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_addfilter</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>filter[shortname][0]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_removeselected</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>mform_showadvanced</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id_idnumber</td>
+	<td>T2</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_addfilter</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>filter[idnumber][0]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_removeselected</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>mform_showadvanced</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id_description_op</td>
+	<td>label=contains</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id_description</td>
+	<td>Describe 2</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id_addfilter</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>filter[description][0]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_removeselected</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>mform_showadvanced</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id_description_op</td>
+	<td>label=doesn't contain</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id_description</td>
+	<td>Describe 2</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id_addfilter</td>
+	<td></td>
+</tr>
+<tr>
+	<td>check</td>
+	<td>filter[description][0]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_removeselected</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Turn editing on']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//table[@id='competency']/tbody/tr[4]/td[4]/a[1]/img</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@name=&quot;customfield_NewCheck&quot;][2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_submitbutton</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Turn editing off']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@value='Return to competency framework']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>mform_showadvanced</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id_custom_fld</td>
+	<td>label=Selenium test depth &gt; New check name</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id_custom_op</td>
+	<td>label=contains</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id_custom</td>
+	<td>1</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_addfilter</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@name=&quot;filter[custom][0]&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_removeselected</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>mform_showadvanced</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id_custom_fld</td>
+	<td>label=Selenium test depth &gt; New check name</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id_custom_op</td>
+	<td>label=doesn't contain</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id_custom</td>
+	<td>1</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_addfilter</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@name=&quot;filter[custom][0]&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_removeselected</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>mform_showadvanced</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id_custom_fld</td>
+	<td>label=Selenium test depth &gt; New check name</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id_custom_op</td>
+	<td>label=is equal to</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id_custom</td>
+	<td>1</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_addfilter</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>filter[custom][0]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_removeselected</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>mform_showadvanced</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id_custom_fld</td>
+	<td>label=Selenium test depth &gt; New check name</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id_custom_op</td>
+	<td>label=starts with</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id_custom</td>
+	<td>0</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_addfilter</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>filter[custom][0]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_removeselected</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>mform_showadvanced</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id_custom_fld</td>
+	<td>label=Selenium test depth &gt; New check name</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id_custom_op</td>
+	<td>label=ends with</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id_custom</td>
+	<td>1</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_addfilter</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@name=&quot;filter[custom][0]&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_removeselected</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>mform_showadvanced</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id_custom_fld</td>
+	<td>label=Selenium test depth &gt; New check name</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id_custom_op</td>
+	<td>label=is empty</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_addfilter</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@name=&quot;filter[custom][0]&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_removeselected</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>mform_showadvanced</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id_custom_fld</td>
+	<td>label=Selenium test depth &gt; New check name</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id_custom_op</td>
+	<td>label=isn't defined</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id_addfilter</td>
+	<td></td>
+</tr>
+<tr>
+	<td>check</td>
+	<td>filter[custom][0]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_removeselected</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>mform_showadvanced</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id_custom_fld</td>
+	<td>label=Selenium test depth &gt; New check name</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id_custom_op</td>
+	<td>label=is defined</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id_addfilter</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>filter[custom][0]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_removeselected</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Logout</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>

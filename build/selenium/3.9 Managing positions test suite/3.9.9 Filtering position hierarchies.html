@@ -1,0 +1,792 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="" />
+<title>3.9.9 Filtering position hierarchies</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">3.9.9 Filtering position hierarchies</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/login/index.php</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>username</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>password</td>
+	<td>passworD1!</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@value='Login']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Positions</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Manage positions</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id_shortname</td>
+	<td>2 shortname</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id_addfilter</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>filter[shortname][0]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_removeselected</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id_fullname_op</td>
+	<td>label=doesn't contain</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id_fullname</td>
+	<td>Manager</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_addfilter</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>filter[fullname][0]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_removeselected</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id_fullname_op</td>
+	<td>label=is equal to</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id_fullname</td>
+	<td>Area manager</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_addfilter</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>filter[fullname][0]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_removeselected</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id_fullname_op</td>
+	<td>label=starts with</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id_fullname</td>
+	<td>Test item</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_addfilter</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>filter[fullname][0]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_removeselected</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id_fullname_op</td>
+	<td>label=ends with</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id_fullname</td>
+	<td>fullname</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_addfilter</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>filter[fullname][0]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_removeselected</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id_fullname_op</td>
+	<td>label=is empty</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_addfilter</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>filter[fullname][0]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_removeselected</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>mform_showadvanced</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id_shortname</td>
+	<td>Test item 2 shortname</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_addfilter</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>filter[shortname][0]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_removeselected</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>mform_showadvanced</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id_shortname_op</td>
+	<td>label=doesn't contain</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id_shortname</td>
+	<td>Test item 2 shortname</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_addfilter</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>filter[shortname][0]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_removeselected</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>mform_showadvanced</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id_shortname_op</td>
+	<td>label=is equal to</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id_shortname</td>
+	<td>Test item 2 shortname</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_addfilter</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>filter[shortname][0]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_removeselected</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>mform_showadvanced</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id_shortname_op</td>
+	<td>label=starts with</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id_shortname</td>
+	<td>Test</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_addfilter</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>filter[shortname][0]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_removeselected</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>mform_showadvanced</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id_shortname_op</td>
+	<td>label=ends with</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id_shortname</td>
+	<td>Shortname</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_addfilter</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>filter[shortname][0]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_removeselected</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>mform_showadvanced</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id_shortname_op</td>
+	<td>label=is empty</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_addfilter</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>filter[shortname][0]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_removeselected</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>mform_showadvanced</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id_idnumber</td>
+	<td>TI2S</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_addfilter</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>filter[idnumber][0]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_removeselected</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>mform_showadvanced</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id_idnumber_op</td>
+	<td>label=doesn't contain</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id_idnumber</td>
+	<td>Data1</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_addfilter</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>filter[idnumber][0]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_removeselected</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id_idnumber_op</td>
+	<td>label=is equal to</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id_idnumber</td>
+	<td>TI2S</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_addfilter</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>filter[idnumber][0]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_removeselected</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>mform_showadvanced</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id_idnumber_op</td>
+	<td>label=starts with</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id_idnumber</td>
+	<td>T</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_addfilter</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>filter[idnumber][0]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_removeselected</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>mform_showadvanced</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id_idnumber_op</td>
+	<td>label=ends with</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id_idnumber</td>
+	<td>S</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_addfilter</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>filter[idnumber][0]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_removeselected</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>mform_showadvanced</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id_idnumber_op</td>
+	<td>label=is empty</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_addfilter</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>filter[idnumber][0]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_removeselected</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>mform_showadvanced</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id_description</td>
+	<td>2 Short</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_addfilter</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>filter[description][0]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_removeselected</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>mform_showadvanced</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id_description_op</td>
+	<td>label=doesn't contain</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id_description</td>
+	<td>Analyst</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_addfilter</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>filter[description][0]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_removeselected</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Logout</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>

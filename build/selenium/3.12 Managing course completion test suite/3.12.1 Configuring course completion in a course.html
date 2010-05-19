@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="" />
+<title>3.12.1 Configuring course completion in a course</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">3.12.1 Configuring course completion in a course</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>http://qa-mbe.moodle.spastk.wgtn.cat-it.co.nz/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Login</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>username</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>password</td>
+	<td>passworD1!</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@value='Login']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Courses</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Add/edit courses</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//td[1]/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Assign roles</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Miscellaneous</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Course Fullname 101</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Completion</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>check</td>
+	<td>criteria_self</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertValue</td>
+	<td>criteria_self</td>
+	<td>on</td>
+</tr>
+<tr>
+	<td>check</td>
+	<td>criteria_duration</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertValue</td>
+	<td>criteria_duration</td>
+	<td>on</td>
+</tr>
+<tr>
+	<td>check</td>
+	<td>criteria_unenrol</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertValue</td>
+	<td>criteria_unenrol</td>
+	<td>on</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_submitbutton</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Logout</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>
