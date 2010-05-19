@@ -39,6 +39,13 @@ function xmldb_local_upgrade($oldversion) {
     /// Launch add field enablecompletion
         $result = $result && add_field($table, $field);
 
+    /// Define field completionstartonenrol to be added to course
+        $field = new XMLDBField('compleitonstartonenrol');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0', 'enablecompletion');
+
+    /// Launch add field enablecompletion
+        $result = $result && add_field($table, $field);
+
     /// Define field completion to be added to course_modules
         $table = new XMLDBTable('course_modules');
         $field = new XMLDBField('completion');

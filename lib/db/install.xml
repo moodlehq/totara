@@ -73,9 +73,7 @@
         <FIELD NAME="enrolstartdate" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="enrollable" NEXT="enrolenddate"/>
         <FIELD NAME="enrolenddate" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="enrolstartdate" NEXT="enrol"/>
         <FIELD NAME="enrol" TYPE="char" LENGTH="20" NOTNULL="true" SEQUENCE="false" ENUM="false" PREVIOUS="enrolenddate" NEXT="defaultrole"/>
-        <FIELD NAME="defaultrole" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The default role given to participants who self-enrol" PREVIOUS="enrol" NEXT="enablecompletion"/>
-        <FIELD NAME="enablecompletion" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="1 = allow use of 'completion' progress-tracking on this course. 0 = disable completion tracking on this course." PREVIOUS="defaultrole" NEXT="completionstartonenrol"/>
-        <FIELD NAME="completionstartonenrol" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="1 = Mark a user as started in course completion on course enrolment" PREVIOUS="enablecompletion"/>
+        <FIELD NAME="defaultrole" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The default role given to participants who self-enrol" PREVIOUS="enrol"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
@@ -247,17 +245,7 @@
         <FIELD NAME="visibleold" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="false" DEFAULT="1" SEQUENCE="false" ENUM="false" PREVIOUS="visible" NEXT="groupmode"/>
         <FIELD NAME="groupmode" TYPE="int" LENGTH="4" NOTNULL="true" UNSIGNED="false" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="visibleold" NEXT="groupingid"/>
         <FIELD NAME="groupingid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="groupmode" NEXT="groupmembersonly"/>
-        <FIELD NAME="groupmembersonly" TYPE="int" LENGTH="4" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="only members of any group are allowed to access the activity" PREVIOUS="groupingid" NEXT="completion"/>
-        <FIELD NAME="completion" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="Whether the completion-tracking facilities are enabled for this activity.
-0 = not enabled (database default)
-1 = manual tracking, user can tick this activity off (UI default for most activity types)
-2 = automatic tracking, system should mark completion according to rules specified in course_moduleS_completion" PREVIOUS="groupmembersonly" NEXT="completiongradeitemnumber"/>
-        <FIELD NAME="completiongradeitemnumber" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" ENUM="false" COMMENT="Grade-item number used to track automatic completion, if applicable." PREVIOUS="completion" NEXT="completionview"/>
-        <FIELD NAME="completionview" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="Controls whether a page view is part of the automatic completion requirements for this activity. 0 = view not required 1 = view required" PREVIOUS="completiongradeitemnumber" NEXT="completionexpected"/>
-        <FIELD NAME="completionexpected" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="Date at which students are expected to complete this activity. This field is used when displaying student progress." PREVIOUS="completionview" NEXT="availablefrom"/>
-        <FIELD NAME="availablefrom" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="If set non-zero, the activity only becomes available from the time given here." PREVIOUS="completionexpected" NEXT="availableuntil"/>
-        <FIELD NAME="availableuntil" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="If set non-zero, the activity is only available until the time given here." PREVIOUS="availablefrom" NEXT="showavailability"/>
-        <FIELD NAME="showavailability" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="If this field is set to 1 and the activity is not available because the 'availablefrom' date has not been reached, or one of the conditions in course_modules_availability is not matched, then the item will be displayed greyed-out (unclickable) with an information message such as 'Available from (date)'. Otherwise, the item will not be displayed to students at all." PREVIOUS="availableuntil"/>
+        <FIELD NAME="groupmembersonly" TYPE="int" LENGTH="4" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="only members of any group are allowed to access the activity" PREVIOUS="groupingid"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id" NEXT="groupingid"/>
