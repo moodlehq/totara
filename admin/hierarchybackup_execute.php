@@ -164,7 +164,7 @@ if (!defined('BACKUP_SILENTLY')) {
 
 $zipprefs = new object();
 $zipprefs->backup_unique_code = $backup_unique_code;
-$zipprefs->backup_name = '1234567.zip'; //TODO $backupfilename;
+$zipprefs->backup_name = $backupfilename;
 // save to hierarchies directory at same level as courses
 $zipprefs->backup_destination = "$CFG->dataroot/hierarchies";
 $status = backup_zip($zipprefs);

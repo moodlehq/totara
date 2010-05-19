@@ -147,8 +147,6 @@ function organisation_backup_organisation($bf, $fwid, $options) {
             fwrite($bf, full_tag('PARENTID', 7, false, $organisation->parentid));
             fwrite($bf, full_tag('SORTORDER', 7, false, $organisation->sortorder));
             fwrite($bf, full_tag('VISIBLE', 7, false, $organisation->visible));
-            fwrite($bf, full_tag('TIMEVALIDFROM', 7, false, $organisation->timevalidfrom));
-            fwrite($bf, full_tag('TIMEVALIDTO', 7, false, $organisation->timevalidto));
             fwrite($bf, full_tag('TIMECREATED', 7, false, $organisation->timecreated));
             fwrite($bf, full_tag('TIMEMODIFIED', 7, false, $organisation->timemodified));
             fwrite($bf, full_tag('USERMODIFIED', 7, false, $organisation->usermodified));

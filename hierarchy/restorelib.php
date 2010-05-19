@@ -271,8 +271,8 @@ function get_backup_contents($info, $backup_unique_code, &$errorstr) {
             $frameworks = $hierarchy['#']['FRAMEWORKS']['0']['#']['FRAMEWORK'];
             $contents->$name->frameworks = array();
             foreach($frameworks AS $framework) {
-                $fullname = $framework['#']['FULLNAME']['0']['#'];
-                $id = $framework['#']['ID']['0']['#'];
+                $fullname = addslashes($framework['#']['FULLNAME']['0']['#']);
+                $id = addslashes($framework['#']['ID']['0']['#']);
                 $contents->$name->frameworks[$id] = new object();
                 $contents->$name->frameworks[$id]->fullname = $fullname;
 
@@ -353,9 +353,9 @@ function match_users($info, $backup_unique_code) {
         $users = $info['MOODLE_BACKUP']['#']['COURSE']['0']['#']['USERS']['0']['#']['USER'];
         foreach($users as $user) {
             $todb = new object();
-            $todb->oid = $user['#']['ID']['0']['#'];
-            $todb->username = $user['#']['USERNAME']['0']['#'];
-            $todb->email = $user['#']['EMAIL']['0']['#'];
+            $todb->oid = addslashes($user['#']['ID']['0']['#']);
+            $todb->username = addslashes($user['#']['USERNAME']['0']['#']);
+            $todb->email = addslashes($user['#']['EMAIL']['0']['#']);
             $todb->backup_unique_code = $backup_unique_code;
             insert_record($tempusers,$todb); 
         }
@@ -367,7 +367,7 @@ function match_users($info, $backup_unique_code) {
     $sql = "SELECT b.oid, SUM(CASE WHEN b.oid=u.id THEN 1 ELSE 0 END) AS idmatch,
                 SUM(CASE WHEN b.username=u.username THEN 1 ELSE 0 END) AS usernamematch,
                 SUM(CASE WHEN b.email=u.email THEN 1 ELSE 0 END) AS emailmatch 
-                FROM mdl_user u, mdl_hbackup_temp_user b
+                FROM {$CFG->prefix}user u, {$CFG->prefix}hbackup_temp_user b
                 WHERE b.backup_unique_code = $backup_unique_code 
                 GROUP BY b.oid ORDER BY oid;";
     $matches = get_records_sql($sql);
@@ -396,6 +396,7 @@ function match_users($info, $backup_unique_code) {
 }
 
 function match_items($frameworkinfo, $hname, $fwid, $tempitems, $backup_unique_code) {
+    global $CFG;
     $hbackupfile = "$CFG->dirroot/hierarchy/type/$hname/backuplib.php";
     if(file_exists($hbackupfile)) {
         include_once($hbackupfile);
@@ -409,17 +410,22 @@ function match_items($frameworkinfo, $hname, $fwid, $tempitems, $backup_unique_c
         $itemplural = strtoupper($hname.'s');
         $itemsingle = strtoupper($hname);
     }
+    // figure out the table name based on the hierarchy
+    include_once($CFG->dirroot.'/hierarchy/type/'.$hname.'/lib.php');
+    $hierarchy = new $hname();
+    $shorthname = $hierarchy->shortprefix;
+
     // write items from XML file to temporary table
     if (isset($frameworkinfo['#'][$itemplural]['0']['#'][$itemsingle])) {
         $items = $frameworkinfo['#'][$itemplural]['0']['#'][$itemsingle];
         //print_object($items);
         foreach ($items AS $item) {
             $todb = new object();
-            $todb->oid = $item['#']['ID']['0']['#'];
-            $todb->idnumber = $item['#']['IDNUMBER']['0']['#'];
-            $todb->frameworkid = $item['#']['FRAMEWORKID']['0']['#'];
-            $todb->shortname = $item['#']['SHORTNAME']['0']['#'];
-            $todb->fullname = $item['#']['FULLNAME']['0']['#'];
+            $todb->oid = addslashes($item['#']['ID']['0']['#']);
+            $todb->idnumber = addslashes($item['#']['IDNUMBER']['0']['#']);
+            $todb->frameworkid = addslashes($item['#']['FRAMEWORKID']['0']['#']);
+            $todb->shortname = addslashes($item['#']['SHORTNAME']['0']['#']);
+            $todb->fullname = addslashes($item['#']['FULLNAME']['0']['#']);
             $todb->backup_unique_code = $backup_unique_code;
             $res = insert_record($tempitems, $todb);
         }
@@ -429,12 +435,12 @@ function match_items($frameworkinfo, $hname, $fwid, $tempitems, $backup_unique_c
 
     $sql = "SELECT b.oid, SUM(CASE WHEN b.idnumber=i.idnumber THEN 1 ELSE 0 END) AS idnumbermatch,
                 SUM(CASE WHEN b.shortname = i.shortname THEN 1 ELSE 0 END) AS shortnamematch,
-                SUM(CASE WHEN b.fullname = i.fullname THEN 1 ELSE 0 END) AS fullnamematch 
-                FROM mdl_$hname i, mdl_hbackup_temp_items b
+                SUM(CASE WHEN b.fullname = i.fullname THEN 1 ELSE 0 END) AS fullnamematch
+                FROM {$CFG->prefix}$shorthname i, {$CFG->prefix}hbackup_temp_items b
                 WHERE b.frameworkid=$fwid AND backup_unique_code=$backup_unique_code
                 GROUP BY b.oid ORDER BY b.oid;";
     $matches = get_records_sql($sql);
-    
+
     $total = $idnumbermatch = $shortnamematch = $fullnamematch = $unmatched = 0;
     foreach ($matches AS $match) {
         $total++;
@@ -474,7 +480,7 @@ function create_temp_items_table($tname) {
                          null, null, null, null, null);
     $table->addFieldInfo('shortname', XMLDB_TYPE_CHAR, '100', null,
                          XMLDB_NOTNULL, null, null, null, null);
-    $table->addFieldInfo('fullname', XMLDB_TYPE_TEXT, 'medium', null, 
+    $table->addFieldInfo('fullname', XMLDB_TYPE_TEXT, 'medium', null,
                          XMLDB_NOTNULL, null, null, null, null);
     $table->addFieldInfo('backup_unique_code', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED,
                          XMLDB_NOTNULL, null, null, null, null);
@@ -483,9 +489,9 @@ function create_temp_items_table($tname) {
     if(table_exists($table)) {
         return true;
     }
-    
+
     return create_table($table, true, false);
-    
+
 }
 
 

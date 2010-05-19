@@ -46,7 +46,7 @@ class hierarchybackup_select_form extends moodleform {
                     $options = $setoptionsfunc();
                     foreach ($options AS $option) {
                         $mform->addElement($option['type'], $option['name'], $option['label']);
-                        $mfrom->setType($option['name'], PARAM_RAW);
+                        $mform->setType($option['name'], PARAM_RAW);
                         $mform->setDefault($option['name'], $option['default']);
                     }
                 }                

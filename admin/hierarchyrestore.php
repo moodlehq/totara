@@ -217,7 +217,7 @@ if($action == 'selectoptions') {
         print '<h2>Restoring '.get_string($hname.'plural',$hname).'</h2>';
         $restorefile = "$CFG->dirroot/hierarchy/type/$hname/restorelib.php";
         $restorefunc = $hname.'_restore';
-        $hoptions = $options[$hname];
+        $hoptions = isset($options[$hname]) ? $options[$hname] : null;
         if(isset($tobackup[$hname])){
             $fwtobackup = $tobackup[$hname];
         }
