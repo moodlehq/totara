@@ -179,7 +179,7 @@ if ( !count_records('pos') ){
         assign_user_position($position_assignment, $managerid);
 
         commit_sql();
-        redirect($currenturl, get_string('positionsaved','position'), 0);
+        redirect($currenturl, get_string('positionsaved','position'));
     }
 
     if (!$can_edit) {
