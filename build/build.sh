@@ -9,14 +9,14 @@
 # (firefox will on run in one instance per profile)
 #
 # As the user hudson, you need to turn on xvfb and set it up:
-# Xvfb :99 -ac
+# Xvfb :99 -ac &
 # export DISPLAY=:99
 #
 # In the Hudson selenium config, you then need to load the browser as so:
 #
 
 echo "Run simpletests";
-wget -O build/logs/simpletest-results.xml http://hudson.spastk.wgtn.cat-it.co.nz/admin/report/unittest/xml.php
+python simpletests.py
 
 echo "Convert to Junit XML";
 nice xsltproc build/simpletest_to_junit.xsl build/logs/simpletest-results.xml > build/logs/TEST-suite.xml
@@ -28,11 +28,11 @@ nice sloccount --wide --details . > build/logs/sloccount.sc
 # TOO CPU/MEMORY INTENSIVE
 # pdepend --jdepend-xml=build/logs/jdepend.xml .
 
-echo "Run phpDoc";
-nice phpdoc -t build/docs/ --directory local/ -ti 'Test Job Docs' --parseprivate on --undocumentedelements on --output HTML:Smarty:PHP
+#echo "Run phpDoc";
+#nice phpdoc -t build/docs/ --directory local/ -ti 'Test Job Docs' --parseprivate on --undocumentedelements on --output HTML:Smarty:PHP
 
 # echo "Run phpcpd";
 # nice phpcpd --log-pmd=build/logs/pmd.xml .
 
-echo "Run phpcs";
-nice phpcs --report=checkstyle . > build/logs/checkstyle.xml
+#echo "Run phpcs";
+#nice phpcs --report=checkstyle . > build/logs/checkstyle.xml
