@@ -16,7 +16,7 @@
 #
 
 echo "Run simpletests";
-python simpletests.py
+python build/simpletests.py
 
 echo "Convert to Junit XML";
 nice xsltproc build/simpletest_to_junit.xsl build/logs/simpletest-results.xml > build/logs/TEST-suite.xml
