@@ -19,7 +19,7 @@ error_reporting(E_ALL);
 ini_set('display_errors', 0);
 
 // Setup
-$path = 'hierarchy,local';
+$path = '';
 $showpasses = true;
 $showsearch = false;
 $thorough = true;
