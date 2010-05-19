@@ -72,8 +72,8 @@ if ($valueform->is_cancelled()) {
     $valuenew->timemodified = time();
     $valuenew->usermodified = $USER->id;
 
-    if (!strlen($valuenew->numeric)) {
-        $valuenew->numeric = null;
+    if (!strlen($valuenew->numericscore)) {
+        $valuenew->numericscore = null;
     }
 
     // Save

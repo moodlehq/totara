@@ -32,9 +32,9 @@ class competencyscalevalue_edit_form extends moodleform {
         $mform->setHelpButton('idnumber', array('competencyscalevalueidnumber', get_string('scalevalueidnumber', 'competency')), true);
         $mform->setType('idnumber', PARAM_RAW);
 
-        $mform->addElement('text', 'numeric', get_string('scalevaluenumericalvalue', 'competency'), 'maxlength="100"  size="10"');
-        $mform->setHelpButton('numeric', array('competencyscalevaluenumeric', get_string('scalevaluenumericalvalue', 'competency')), true);
-        $mform->setType('numeric', PARAM_RAW);
+        $mform->addElement('text', 'numericscore', get_string('scalevaluenumericalvalue', 'competency'), 'maxlength="100"  size="10"');
+        $mform->setHelpButton('numericscore', array('competencyscalevaluenumeric', get_string('scalevaluenumericalvalue', 'competency')), true);
+        $mform->setType('numericscore', PARAM_RAW);
 
         $mform->addElement('htmleditor', 'description', get_string('description'));
         $mform->setHelpButton('description', array('text', get_string('helptext')), true);
@@ -48,17 +48,17 @@ class competencyscalevalue_edit_form extends moodleform {
         $err = array();
         $valuenew = (object)$valuenew;
 
-        // Check the numeric field was either empty or a number
-        if (strlen($valuenew->numeric)) {
+        // Check the numericscore field was either empty or a number
+        if (strlen($valuenew->numericscore)) {
             // Is a number
-            if (is_numeric($valuenew->numeric)) {
-                $valuenew->numeric = (float)$valuenew->numeric;
+            if (is_numeric($valuenew->numericscore)) {
+                $valuenew->numericscore = (float)$valuenew->numericscore;
             } else {
-                $err['numeric'] = get_string('invalidnumeric', 'competency');
+                $err['numericscore'] = get_string('invalidnumeric', 'competency');
                 return $err;
             }
         } else {
-            $valuenew->numeric = null;
+            $valuenew->numericscore = null;
         }
 
         return true;

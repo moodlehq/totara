@@ -1519,5 +1519,15 @@ function xmldb_local_upgrade($oldversion) {
         }
     }
 
+    // rename field to avoid mysql reserved word
+    if ($result && $oldversion < 2010051900) {
+        $table = new XMLDBTable('comp_scale_values');
+        $field = new XMLDBField('numeric');
+        $field->setAttributes(XMLDB_TYPE_NUMBER, '10, 5', null, null, null, null);
+        if(field_exists($table, $field)) {
+            $result = $result && rename_field($table, $field, 'numericscore');
+        }
+    }
+
     return $result;
 }
