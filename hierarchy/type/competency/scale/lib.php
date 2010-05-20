@@ -14,7 +14,9 @@
  */
 
 /**
- * A function to determine whether a scale is in use or not
+ * A function to determine whether a scale is in use or not. (In this context,
+ * "in use" means that if we change this scale or its values, it'll cause
+ * the data in the database to become corrupt)
  *
  * @param <type> $scaleid
  * @return boolean
@@ -22,15 +24,7 @@
 function competency_scale_is_used( $scaleid ){
     global $CFG;
 
-    return (boolean) count_records_sql("
-        select count(*) 
-        from 
-            {$CFG->prefix}comp_scale_assignments sa, 
-            {$CFG->prefix}comp c 
-        where 
-            sa.scaleid={$scaleid}
-            and sa.frameworkid=c.frameworkid"
-    );
+    return (boolean) count_records('comp_scale_assignments','scaleid',$scaleid);
 }
 
 ?>

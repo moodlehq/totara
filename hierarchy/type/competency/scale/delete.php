@@ -34,8 +34,7 @@ admin_externalpage_print_header();
 $returnurl = "{$CFG->wwwroot}/hierarchy/type/competency/scale/index.php";
 $deleteurl = "{$CFG->wwwroot}/hierarchy/type/competency/scale/delete.php?id={$scale->id}&amp;delete=".md5($scale->timemodified)."&amp;sesskey={$USER->sesskey}";
 
-// Can't delete if the scale is in use (assigned to at least one framework
-// which has at least one competency)
+// Can't delete if the scale is in use
 if ( competency_scale_is_used($id) ) {
     print_error('error:nodeletescaleinuse', 'hierarchy', $returnurl);
 }

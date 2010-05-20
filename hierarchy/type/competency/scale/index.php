@@ -54,9 +54,6 @@ if ($scales) {
     foreach($scales as $scale) {
         $line = array();
         $line[] = "<a href=\"$CFG->wwwroot/hierarchy/type/competency/scale/view.php?id={$scale->id}\">".format_string($scale->name)."</a>";
-        // Whether or not the scale is "used" is really the question of whether
-        // it's assigned to at least one framework that has at least one
-        // competency
         if ( competency_scale_is_used( $scale->id ) ) {
             $line[] = get_string('yes');
         } else {
