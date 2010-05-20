@@ -61,6 +61,11 @@ if ($frameworkform->is_cancelled()) {
 // Update data
 } else if ($frameworknew = $frameworkform->get_data()) {
 
+    // Validate that the selected framework contains at least one framework value
+    if ( !isset($frameworknew->scale) || 0 == count_records('comp_scale_values','scaleid',$frameworknew->scale) ){
+        error("Can't assign a scale that contains no scale values.");
+    }
+
     $time = time();
 
     $frameworknew->timemodified = $time;
