@@ -1345,12 +1345,19 @@ if ( file_exists(dirname(dirname(__FILE__)) . '/config.php')) {
     set_config('chat_serverhost', 'localhost'); // won't be set correctly since it relies on $_SERVER['HTTP_HOST']
 
     if (file_exists($CFG->dirroot . '/local/lib.php')) {
+        require_once($CFG->dirroot . '/local/lib.php');
         if (function_exists('local_postinst')) {
             if (!local_postinst()) {
                 print_error('localpostinstfailed', 'error');
             }
+
+            // Prevent this running again
+            set_config('local_postinst_hasrun', '1');
         }
     }
+
+    // Not testing demo data at the moment
+    set_config('mitms_demo_setup', '1');
 
     if ( $verbose > CLI_NO ) {
         print_newline();
