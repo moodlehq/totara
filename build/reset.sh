@@ -2,6 +2,10 @@
 
 # .git/hooks/post-checkout must by symbolicly linked to this file
 
+# Warning! It appears when an update to this file is checked out,
+# the hook runs the previous version. So it takes an extra build
+# to run the new reset file
+
 echo "Delete config.php";
 rm config.php
 
