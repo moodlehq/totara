@@ -30,12 +30,12 @@ $backup_unique_code = time();
 if (!defined('BACKUP_SILENTLY')) {
     echo "<li>".get_string("creatingtemporarystructures").'</li>';
 }
-$status = check_and_create_backup_dir($backup_unique_code);
+$status = $status && check_and_create_backup_dir($backup_unique_code);
 if(!$status) {
     print_error('Backup directory not present');
 }
 
-$status = clear_backup_dir($backup_unique_code);
+$status = $status && clear_backup_dir($backup_unique_code);
 if(!$status) {
     print_error('Backup directory could not be emptied');
 }
@@ -45,7 +45,7 @@ if (!defined('BACKUP_SILENTLY')) {
     echo "<li>".get_string("deletingolddata").'</li>';
 }
 
-$status = backup_delete_old_data();
+$status = $status && backup_delete_old_data();
 if (!$status) {
     print_error('An error occurred deleting old backup data');
 }
@@ -75,7 +75,7 @@ if($userdata) {
     }
 
    // this writes the userids to the backup table. Args provided does backup of all users for all courses
-    $status = user_check_backup(1, $backup_unique_code, 0, false, false);
+    $status = $status && user_check_backup(1, $backup_unique_code, 0, false, false);
     if (!$status) {
         print_error('An error occurred while preparing to back up user info');
     }
@@ -84,7 +84,7 @@ if($userdata) {
     // back up the users
     // COURSE tags required to put USER tags at right level for restore
     fwrite ($bf,start_tag("COURSE",1,true));
-    $status = backup_user_info($bf, $userprefs);
+    $status = $status && backup_user_info($bf, $userprefs);
     fwrite ($bf,end_tag("COURSE",1,true));
 
     if (!$status) {
@@ -137,7 +137,7 @@ foreach($frameworks AS $hname => $fwid) {
     $options->inc_users = $userdata;
 
     $backup_file = "{$hname}_backup";
-    $status = $backup_file($bf, $hframeworks, $options);
+    $status = $status && $backup_file($bf, $hframeworks, $options);
     if(!defined('BACKUP_SILENTLY')) {
         print '</ul>';
     }
@@ -167,7 +167,7 @@ $zipprefs->backup_unique_code = $backup_unique_code;
 $zipprefs->backup_name = $backupfilename;
 // save to hierarchies directory at same level as courses
 $zipprefs->backup_destination = "$CFG->dataroot/hierarchies";
-$status = backup_zip($zipprefs);
+$status = $status && backup_zip($zipprefs);
 
 if(!$status) {
     print_error('Error while zipping the backup');
@@ -177,7 +177,7 @@ if (!defined('BACKUP_SILENTLY')) {
     echo "<li>".get_string("copyingzipfile").'</li>';
 }
 
-$status = copy_zip_to_course_dir($zipprefs);
+$status = $status && copy_zip_to_course_dir($zipprefs);
 
 if(!$status) {
     print_error('Error while copying the zip file to hierarchies directory');
@@ -187,7 +187,7 @@ if (!defined('BACKUP_SILENTLY')) {
     echo "<li>".get_string("cleaningtempdata").'</li>';
 }
 
-$status = clean_temp_data($zipprefs);
+$status = $status && clean_temp_data($zipprefs);
 
 if(!$status) {
     print_error('Error while cleaning up temporary data');
