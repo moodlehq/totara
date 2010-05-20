@@ -1,7 +1,6 @@
 <?php
-
+if($heading) {
     print_container_end(); // content container
-
     print_container_start(false, '', 'footer');
 
     echo '<p class="helplink">';
@@ -24,6 +23,7 @@
         </ul></div>
 <?php } 
     print_container_end();
+}
 ?>
 <div class="clearer"></div>
 </div>
