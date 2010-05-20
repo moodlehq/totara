@@ -77,6 +77,8 @@ function local_postinst() {
 
     rebuild_course_cache(SITEID);
 
+    // ensure page scrolls right to bottom when debugging on
+    print "<div></div>";
     return true;
 
 }
