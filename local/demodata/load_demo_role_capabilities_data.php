@@ -205,9 +205,7 @@ array('id' => '241','contextid' => '1','roleid' => '6','capability' => 'moodle/b
 array('id' => '242','contextid' => '1','roleid' => '7','capability' => 'moodle/block:view','permission' => '1','timemodified' => '1266525703','modifierid' => '1059',),
 array('id' => '245','contextid' => '1','roleid' => '3','capability' => 'moodle/block:view','permission' => '1','timemodified' => '1266525613','modifierid' => '6857',),
 array('id' => '246','contextid' => '1','roleid' => '2','capability' => 'moodle/block:view','permission' => '1','timemodified' => '1263433917','modifierid' => '0',),
-array('id' => '248','contextid' => '1','roleid' => '3','capability' => 'moodle/course:markcomplete','permission' => '1','timemodified' => '1266525610','modifierid' => '6857',),
 array('id' => '249','contextid' => '1','roleid' => '2','capability' => 'moodle/course:markcomplete','permission' => '1','timemodified' => '1263433917','modifierid' => '0',),
-array('id' => '250','contextid' => '1','roleid' => '1','capability' => 'moodle/course:markcomplete','permission' => '1','timemodified' => '1267734202','modifierid' => '2',),
 array('id' => '253','contextid' => '1','roleid' => '6','capability' => 'mod/assignment:view','permission' => '-1','timemodified' => '1266525742','modifierid' => '1059',),
 array('id' => '256','contextid' => '1','roleid' => '3','capability' => 'mod/assignment:view','permission' => '1','timemodified' => '1266525611','modifierid' => '6857',),
 array('id' => '257','contextid' => '1','roleid' => '1','capability' => 'mod/assignment:view','permission' => '1','timemodified' => '1267734203','modifierid' => '2',),
@@ -598,7 +596,6 @@ array('id' => '1127','contextid' => '1','roleid' => '6','capability' => 'moodle/
 array('id' => '1128','contextid' => '1','roleid' => '6','capability' => 'moodle/course:managegroups','permission' => '-1','timemodified' => '1266525741','modifierid' => '1059',),
 array('id' => '1129','contextid' => '1','roleid' => '6','capability' => 'moodle/course:managemetacourse','permission' => '-1','timemodified' => '1266525741','modifierid' => '1059',),
 array('id' => '1130','contextid' => '1','roleid' => '6','capability' => 'moodle/course:managescales','permission' => '-1','timemodified' => '1266525741','modifierid' => '1059',),
-array('id' => '1131','contextid' => '1','roleid' => '6','capability' => 'moodle/course:markcomplete','permission' => '-1','timemodified' => '1266525741','modifierid' => '1059',),
 array('id' => '1132','contextid' => '1','roleid' => '6','capability' => 'moodle/course:reset','permission' => '-1','timemodified' => '1266525741','modifierid' => '1059',),
 array('id' => '1133','contextid' => '1','roleid' => '6','capability' => 'moodle/course:sectionvisibility','permission' => '-1','timemodified' => '1266525741','modifierid' => '1059',),
 array('id' => '1134','contextid' => '1','roleid' => '6','capability' => 'moodle/course:setcurrentsection','permission' => '-1','timemodified' => '1266525741','modifierid' => '1059',),
@@ -829,7 +826,6 @@ array('id' => '1646','contextid' => '1','roleid' => '15','capability' => 'mod/da
 array('id' => '1647','contextid' => '1','roleid' => '15','capability' => 'mod/data:viewrating','permission' => '1','timemodified' => '1266525607','modifierid' => '1059',),
 array('id' => '1648','contextid' => '1','roleid' => '15','capability' => 'mod/data:writeentry','permission' => '1','timemodified' => '1266525607','modifierid' => '1059',),
 array('id' => '1650','contextid' => '1','roleid' => '15','capability' => 'moodle/user:readuserposts','permission' => '1','timemodified' => '1266525605','modifierid' => '1059',),
-array('id' => '1651','contextid' => '1','roleid' => '15','capability' => 'moodle/course:markcomplete','permission' => '1','timemodified' => '1266525606','modifierid' => '1059',),
 array('id' => '1652','contextid' => '1','roleid' => '15','capability' => 'mod/assignment:grade','permission' => '1','timemodified' => '1266525607','modifierid' => '1059',),
 array('id' => '1653','contextid' => '1','roleid' => '15','capability' => 'mod/assignment:view','permission' => '1','timemodified' => '1266525607','modifierid' => '1059',),
 array('id' => '1654','contextid' => '1','roleid' => '15','capability' => 'mod/certificate:manage','permission' => '1','timemodified' => '1266525607','modifierid' => '1059',),
@@ -1104,7 +1100,6 @@ array('id' => '2080','contextid' => '1','roleid' => '16','capability' => 'moodle
 array('id' => '2081','contextid' => '1','roleid' => '16','capability' => 'moodle/tag:manage','permission' => '1','timemodified' => '1266464930','modifierid' => '1059',),
 array('id' => '2082','contextid' => '1','roleid' => '16','capability' => 'moodle/tag:editblocks','permission' => '1','timemodified' => '1266464930','modifierid' => '1059',),
 array('id' => '2083','contextid' => '1','roleid' => '16','capability' => 'moodle/block:view','permission' => '1','timemodified' => '1266464933','modifierid' => '1059',),
-array('id' => '2084','contextid' => '1','roleid' => '16','capability' => 'moodle/course:markcomplete','permission' => '1','timemodified' => '1266464931','modifierid' => '1059',),
 array('id' => '2085','contextid' => '1','roleid' => '16','capability' => 'mod/assignment:view','permission' => '1','timemodified' => '1266464932','modifierid' => '1059',),
 array('id' => '2086','contextid' => '1','roleid' => '16','capability' => 'mod/assignment:grade','permission' => '1','timemodified' => '1266464932','modifierid' => '1059',),
 array('id' => '2087','contextid' => '1','roleid' => '16','capability' => 'mod/certificate:view','permission' => '1','timemodified' => '1266464932','modifierid' => '1059',),
@@ -1309,7 +1304,6 @@ array('id' => '2287','contextid' => '1','roleid' => '10','capability' => 'moodle
 array('id' => '2288','contextid' => '1','roleid' => '10','capability' => 'moodle/tag:manage','permission' => '1','timemodified' => '1266525631','modifierid' => '1059',),
 array('id' => '2289','contextid' => '1','roleid' => '10','capability' => 'moodle/tag:editblocks','permission' => '1','timemodified' => '1266525631','modifierid' => '1059',),
 array('id' => '2290','contextid' => '1','roleid' => '10','capability' => 'moodle/block:view','permission' => '1','timemodified' => '1266525634','modifierid' => '1059',),
-array('id' => '2291','contextid' => '1','roleid' => '10','capability' => 'moodle/course:markcomplete','permission' => '1','timemodified' => '1266525632','modifierid' => '1059',),
 array('id' => '2292','contextid' => '1','roleid' => '10','capability' => 'mod/assignment:view','permission' => '1','timemodified' => '1266525633','modifierid' => '1059',),
 array('id' => '2293','contextid' => '1','roleid' => '10','capability' => 'mod/assignment:grade','permission' => '1','timemodified' => '1266525633','modifierid' => '1059',),
 array('id' => '2294','contextid' => '1','roleid' => '10','capability' => 'mod/certificate:view','permission' => '1','timemodified' => '1266525633','modifierid' => '1059',),
@@ -1513,7 +1507,6 @@ array('id' => '2495','contextid' => '1','roleid' => '11','capability' => 'moodle
 array('id' => '2496','contextid' => '1','roleid' => '11','capability' => 'moodle/course:manageactivities','permission' => '1','timemodified' => '1267734174','modifierid' => '2',),
 array('id' => '2497','contextid' => '1','roleid' => '11','capability' => 'moodle/course:managefiles','permission' => '1','timemodified' => '1267734174','modifierid' => '2',),
 array('id' => '2498','contextid' => '1','roleid' => '11','capability' => 'moodle/course:managegroups','permission' => '1','timemodified' => '1267734174','modifierid' => '2',),
-array('id' => '2499','contextid' => '1','roleid' => '11','capability' => 'moodle/course:markcomplete','permission' => '1','timemodified' => '1267734174','modifierid' => '2',),
 array('id' => '2500','contextid' => '1','roleid' => '11','capability' => 'moodle/course:sectionvisibility','permission' => '1','timemodified' => '1267734174','modifierid' => '2',),
 array('id' => '2501','contextid' => '1','roleid' => '11','capability' => 'moodle/course:setcurrentsection','permission' => '1','timemodified' => '1267734174','modifierid' => '2',),
 array('id' => '2502','contextid' => '1','roleid' => '11','capability' => 'moodle/course:update','permission' => '1','timemodified' => '1267734174','modifierid' => '2',),
@@ -1637,3 +1630,4 @@ print "<br>";
 set_config("guestloginbutton", 0);
 set_config("langmenu", 0);
 set_config("forcelogin", 1);
+        

@@ -5985,6 +5985,7 @@ array('id' => '14614','contextlevel' => '80','instanceid' => '2443','path' => '/
 array('id' => '14615','contextlevel' => '80','instanceid' => '2444','path' => '/1/2/14615','depth' => '3',),
 array('id' => '14616','contextlevel' => '80','instanceid' => '2445','path' => '/1/2/14616','depth' => '3',),
 array('id' => '14617','contextlevel' => '80','instanceid' => '2446','path' => '/1/2/14617','depth' => '3',),
+array('id' => '14618','contextlevel' => '80','instanceid' => '2447','path' => '/1/2/14618','depth' => '3',),
 );
 print "\n";print "Inserting ".count($items)." records<br />\n";
 $i=1;
@@ -6021,3 +6022,4 @@ print "<br>";
 set_config("guestloginbutton", 0);
 set_config("langmenu", 0);
 set_config("forcelogin", 1);
+        

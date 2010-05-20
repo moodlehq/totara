@@ -590,6 +590,7 @@ array('id' => '2443','blockid' => '22','pageid' => '1','pagetype' => 'course-vie
 array('id' => '2444','blockid' => '4','pageid' => '1','pagetype' => 'course-view','position' => 'l','weight' => '3','visible' => '1','configdata' => '',),
 array('id' => '2445','blockid' => '20','pageid' => '1','pagetype' => 'course-view','position' => 'r','weight' => '1','visible' => '1','configdata' => '',),
 array('id' => '2446','blockid' => '7','pageid' => '1','pagetype' => 'course-view','position' => 'r','weight' => '2','visible' => '1','configdata' => '',),
+array('id' => '2447','blockid' => '43','pageid' => '1','pagetype' => 'course-view','position' => 'r','weight' => '3','visible' => '1','configdata' => '',),
 );
 print "\n";print "Inserting ".count($items)." records<br />\n";
 $i=1;
@@ -626,3 +627,4 @@ print "<br>";
 set_config("guestloginbutton", 0);
 set_config("langmenu", 0);
 set_config("forcelogin", 1);
+        
