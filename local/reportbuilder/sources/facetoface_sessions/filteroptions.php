@@ -101,36 +101,6 @@ $filteroptions = array(
             'filtertype' => 'number',
             'label' => 'Session Capacity',
         ),
-        'location' => array(
-            'filtertype' => 'text',
-            'label' => 'Session Location',
-        ),
-        'venue' => array(
-            'filtertype' => 'text',
-            'label' => 'Session Venue',
-        ),
-        'room' => array(
-            'filtertype' => 'text',
-            'label' => 'Session Room',
-        ),
-        'pilot' => array(
-            'filtertype' => 'select',
-            'label' => 'Pilot',
-            'selectfunc' => 'get_yesno_list',
-            'options' => $selectwidth,
-        ),
-        'audit' => array(
-            'filtertype' => 'select',
-            'label' => 'Audit',
-            'selectfunc' => 'get_yesno_list',
-            'options' => $selectwidth,
-        ),
-        'coursedelivery' => array(
-            'filtertype' => 'select',
-            'label' => 'Course Delivery',
-            'selectfunc' => 'get_coursedelivery_list',
-            'options' => $selectwidth,
-        ),
     ),
     /*
     'course_category' => array(
@@ -157,6 +127,51 @@ foreach ($roles as $role) {
             'filtertype' => 'text',
             'label' => 'Session '.$name,
         );
+    }
+}
+
+// some possible session fields
+$sessionfieldoptions = array(
+    'location' => array(
+        'filtertype' => 'text',
+        'label' => 'Session Location',
+    ),
+    'venue' => array(
+        'filtertype' => 'text',
+        'label' => 'Session Venue',
+    ),
+    'room' => array(
+        'filtertype' => 'text',
+        'label' => 'Session Room',
+    ),
+    'pilot' => array(
+        'filtertype' => 'select',
+        'label' => 'Pilot',
+        'selectfunc' => 'get_yesno_list',
+        'options' => $selectwidth,
+    ),
+    'audit' => array(
+        'filtertype' => 'select',
+        'label' => 'Audit',
+        'selectfunc' => 'get_yesno_list',
+        'options' => $selectwidth,
+    ),
+    'coursedelivery' => array(
+        'filtertype' => 'select',
+        'label' => 'Course Delivery',
+        'selectfunc' => 'get_coursedelivery_list',
+        'options' => $selectwidth,
+    ),
+);
+
+// add all session custom fields to column options list
+if($session_fields = get_records('facetoface_session_field','','','','id,shortname,name')) {
+    foreach($session_fields as $session_field) {
+        $field = $session_field->shortname;
+        // don't try and add if it's not defined above
+        if(isset($sessionfieldoptions[$field])) {
+            $filteroptions['session'][$field] = $sessionfieldoptions[$field];
+        }
     }
 }
 
