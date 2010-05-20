@@ -29,7 +29,7 @@ function competency_scale_is_used( $scaleid ){
             {$CFG->prefix}comp c 
         where 
             sa.scaleid={$scaleid}
-            and sa.frameworkid=c.id"
+            and sa.frameworkid=c.frameworkid"
     );
 }
 
