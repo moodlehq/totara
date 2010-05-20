@@ -111,6 +111,10 @@
 
     print_heading(get_string('usergeneratedreports','local'));
 
+    $tableheader = array(get_string('name','local'),
+                         get_string('source','local'),
+                         get_string('options','local'));
+
     $reports = get_records_select('report_builder','embeddedurl IS NULL','fullname');
     if($reports) {
         $data = array();
@@ -131,11 +135,6 @@
             $row[] = "$settings &nbsp; $delete";
             $data[] = $row;
         }
-
-        $tableheader = array(get_string('name','local'),
-                             get_string('source','local'),
-                             get_string('options','local')
-                         );
 
         $reportstable = new object();
         $reportstable->summary = '';
