@@ -35,7 +35,7 @@ $test =& new AutoGroupTest($showsearch, $thorough);
 // OU specific. We use the _nonproject folder for stuff we want to
 // keep in CVS, but which is not really relevant. It does no harm
 // to leave this here.
-$test->addIgnoreFolder($CFG->dirroot . '/_nonproject');
+$test->addIgnoreFolder($CFG->dirroot . '/.git/');
 
 // Make the reporter, which is what displays the results.
 $reporter = new XmlReporter();
