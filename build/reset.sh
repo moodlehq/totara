@@ -47,3 +47,6 @@ echo "Reset apache logs";
 rm ../moodle_error.log
 touch ../moodle_error.log
 chmod 777 ../moodle_error.log
+
+echo "Hit notifications page to complete installation";
+wget -O - http://hudson.spastk.wgtn.cat-it.co.nz/admin/index.php
