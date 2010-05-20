@@ -349,7 +349,16 @@ h6 {
 
 ul.tabrow1 li a,
 ul.tabrow1 li a:link,
-ul.tabrow1 li a:visited,
+ul.tabrow1 li a:visited {
+  color: #2970A6;
+  text-decoration: underline;
+}
+
+ul.tabrow1 li a:hover {
+  color: #002C3F;
+  text-decoration: underline;
+}
+
 .tabrow0 ul li a:hover span,
 .tabrow0 ul a {
   color: #002C3F;
