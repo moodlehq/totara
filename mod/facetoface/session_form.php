@@ -22,6 +22,18 @@ class mod_facetoface_session_form extends moodleform {
         $customfields = $this->_customdata['customfields'];
         facetoface_add_customfields_to_form($mform, $customfields);
 
+        // Hack to put help files on these custom fields.
+        // TODO: add to the admin page a feature to put help text on custom fields
+        if ($mform->elementExists('custom_location')){
+            $mform->setHelpButton('custom_location',array('location',get_string('location','facetoface'),'facetoface'));
+        }
+        if ($mform->elementExists('custom_venue')){
+            $mform->setHelpButton('custom_venue',array('venue',get_string('venue','facetoface'),'facetoface'));
+        }
+        if ($mform->elementExists('custom_room')){
+            $mform->setHelpButton('custom_room',array('room',get_string('room','facetoface'),'facetoface'));
+        }
+
         $mform->addElement('selectyesno', 'datetimeknown', get_string('sessiondatetimeknown', 'facetoface'));
         $mform->addRule('datetimeknown', null, 'required', null, 'client');
         $mform->setDefault('datetimeknown', false);
