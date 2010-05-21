@@ -32,14 +32,19 @@ if (file_exists($CFG->dirroot.'/hierarchy/type/'.$type.'/lib.php')) {
 
 
 if(!$frameworkid) {
+    // only show frameworks which have depth levels
+    $sql = "SELECT f.*
+        FROM {$CFG->prefix}{$shortprefix}_framework f
+        JOIN {$CFG->prefix}{$shortprefix}_depth d
+        ON f.id = d.frameworkid";
     // let the user pick the framework from a list
-    if($frameworks = get_records($shortprefix.'_framework')) {
+    if($frameworks = get_records_sql($sql)) {
         print "<h2>Select a $type framework</h2>";
         foreach ($frameworks as $framework) {
             print '<p><a href="'.qualified_me().'&amp;frameworkid='.$framework->id.'">'.$framework->fullname.'</a></p>';
         }
     } else {
-        print "<h2>No $type frameworks found</h2>";
+        print '<h2>' . get_string('error:noframeworksfound','hierarchy', $type) . '</h2>';
     }
     exit;
 }
