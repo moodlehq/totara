@@ -18,6 +18,8 @@ $frameworks = optional_param('frameworks', null, PARAM_BOOL);
 $userdata = optional_param('userdata', null, PARAM_BOOL);
 $backupfilename = required_param('backupfilename', PARAM_TEXT);
 
+$status = true;
+
 if(!is_array($frameworks)) {
     print_error('No frameworks selected');
 }
