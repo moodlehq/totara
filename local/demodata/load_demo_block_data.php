@@ -25,7 +25,6 @@ array('id' => '18','name' => 'login','version' => '2007101509','cron' => '0','la
 array('id' => '19','name' => 'mentees','version' => '2007101509','cron' => '0','lastcron' => '0','visible' => '1','multiple' => '1',),
 array('id' => '20','name' => 'messages','version' => '2007101509','cron' => '0','lastcron' => '0','visible' => '1','multiple' => '0',),
 array('id' => '21','name' => 'mitms_my_learning_nav','version' => '2009120100','cron' => '0','lastcron' => '0','visible' => '1','multiple' => '0',),
-array('id' => '22','name' => 'mitms_my_performance_nav','version' => '2009120100','cron' => '0','lastcron' => '0','visible' => '1','multiple' => '0',),
 array('id' => '23','name' => 'mitms_my_team_nav','version' => '2009120100','cron' => '0','lastcron' => '0','visible' => '1','multiple' => '0',),
 array('id' => '24','name' => 'mitms_my_tools_nav','version' => '2009120100','cron' => '0','lastcron' => '0','visible' => '1','multiple' => '0',),
 array('id' => '25','name' => 'mnet_hosts','version' => '2007101509','cron' => '0','lastcron' => '0','visible' => '1','multiple' => '0',),
@@ -84,4 +83,4 @@ print "<br>";
 set_config("guestloginbutton", 0);
 set_config("langmenu", 0);
 set_config("forcelogin", 1);
-        
+

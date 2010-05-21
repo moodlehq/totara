@@ -60,15 +60,6 @@ function mitms_reset_frontpage_blocks() {
             'configdata' => '',
         ),
         (object)array(
-            'blockid'  =>  get_field('block', 'id', 'name', 'mitms_my_performance_nav'),
-            'pageid'   => SITEID,
-            'pagetype' => 'course-view',
-            'position' => 'l',
-            'weight'   => 2,
-            'visible'  => 1,
-            'configdata' => '',
-        ),
-        (object)array(
             'blockid'  =>  get_field('block', 'id', 'name', 'admin_tree'),
             'pageid'   => SITEID,
             'pagetype' => 'course-view',
@@ -148,28 +139,6 @@ function mitms_print_my_learning_nav($return=false) {
                 </td>
             </tr>
         </table>
-    ';
-
-    if ($return) {
-        return $returnstr;
-    }
-    echo $returnstr;
-}
-
-/**
-* print out the MITMS My Performance nav section
-*/
-function mitms_print_my_performance_nav($return=false) {
-    global $CFG, $USER;
-
-    $returnstr = '
-     <ul id="mitms-nav">
-       <li><a href="' . $CFG->wwwroot . '">' . get_string('goals', 'local') . '</a></li>
-       <li><a href="' . $CFG->wwwroot . '">' . get_string('assessments', 'local') . '</a></li>
-       <li><a href="' . $CFG->wwwroot . '">' . get_string('evaluations', 'local') . '</a></li>
-    ';
-    $returnstr .= '
-     </ul>
     ';
 
     if ($return) {
@@ -323,7 +292,7 @@ function mitms_print_my_courses() {
             $starteddate = '';
             if ($course->timestarted != 0) {
                 $starteddate = userdate($course->timestarted, '%e %b %y');
-            } 
+            }
             $enroldate = isset($enrolled) && $enrolled != 0 ? userdate($enrolled, '%e %b %y') : null;
             $completeddate = isset($completed) && $completed != 0 ? userdate($completed, '%e %b %y') : null;
             $content .= "<tr><td class=\"course\"><a href=\"{$CFG->wwwroot}/course/view.php?id={$id}\" title=\"$name\">$name</a></td>";
