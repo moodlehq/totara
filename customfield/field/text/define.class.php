@@ -16,11 +16,6 @@ class customfield_define_text extends customfield_define_base {
         $form->addElement('text', 'param2', get_string('fieldmaxlength', 'customfields'), 'size="6"');
         $form->setDefault('param2', 2048);
         $form->setType('param2', PARAM_INT);
-
-        /// Param 3 for text type detemines if this is a password field or not
-        $form->addElement('selectyesno', 'param3', get_string('fieldispassword', 'customfields'));
-        $form->setDefault('param3', 0); // defaults to 'no'
-        $form->setType('param3', PARAM_INT);
     }
 
 }
