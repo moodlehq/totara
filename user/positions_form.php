@@ -74,16 +74,21 @@ class user_position_assignment_form extends moodleform {
         if (!$aspirational) {
             $mform->addElement('text', 'fullname', get_string('titlefullname', 'position'));
             $mform->setType('fullname', PARAM_TEXT);
+            $mform->setHelpButton('fullname', array('userpositionfullname', get_string('titlefullname', 'position')), true);
+
             $mform->addElement('text', 'shortname', get_string('titleshortname', 'position'));
             $mform->setType('shortname', PARAM_TEXT);
+            $mform->setHelpButton('shortname', array('userpositionshortname', get_string('titleshortname', 'position')), true);
 
             $mform->addElement('htmleditor', 'description', get_string('description'), array('rows'=> '10', 'cols'=>'35'));
             $mform->setType('description', PARAM_RAW);
+            $mform->setHelpButton('description', array('text', get_string('helptext')), true);
         }
 
         if($nojs) {
             $allpositions = get_records_menu('pos','','','frameworkid,sortorder','id,fullname');
             $mform->addElement('select','positionid', get_string('chooseposition','position'), $allpositions);
+            $mform->setHelpButton('positionid', array('userpositionposition', get_string('chooseposition', 'position')), true);
         } else {
             $mform->addElement('static', 'positionselector', get_string('position', 'position'),
                 '
@@ -95,6 +100,7 @@ class user_position_assignment_form extends moodleform {
             $mform->addElement('hidden', 'positionid');
             $mform->setType('positionid', PARAM_INT);
             $mform->setDefault('positionid', 0);
+            $mform->setHelpButton('positionselector', array('userpositionposition', get_string('chooseposition', 'position')), true);
         }
         if (!$aspirational) {
             if($nojs) {
@@ -105,6 +111,7 @@ class user_position_assignment_form extends moodleform {
                 } else {
                     $mform->addElement('static', 'organisationid', get_string('chooseorganisation','organisation'), get_string('noorganisation','organisation') );
                 }
+                $mform->setHelpButton('organisationid', array('userpositionorganisation', get_string('chooseorganisation', 'organisation')), true);
             } else {
                 $mform->addElement('static', 'organisationselector', get_string('organisation', 'position'),
                     '
@@ -116,6 +123,7 @@ class user_position_assignment_form extends moodleform {
                 $mform->addElement('hidden', 'organisationid');
                 $mform->setType('organisationid', PARAM_INT);
                 $mform->setDefault('organisationid', 0);
+                $mform->setHelpButton('organisationselector', array('userpositionorganisation', get_string('chooseorganisation', 'organisation')), true);
             }
 
             if($nojs) {
@@ -144,6 +152,7 @@ class user_position_assignment_form extends moodleform {
                 } else {
                     $mform->addElement('static','managerid',get_string('choosemanager','position'), get_string('nomanagersavailable','position'));
                 }
+                $mform->setHelpButton('managerid', array('userpositionmanager', get_string('choosemanager', 'position')), true);
             } else {
                 $mform->addElement('static', 'managerselector', get_string('manager', 'position'),
                     '
@@ -154,6 +163,7 @@ class user_position_assignment_form extends moodleform {
                 $mform->addElement('hidden', 'managerid');
                 $mform->setType('managerid', PARAM_INT);
                 $mform->setDefault('managerid', $manager_id);
+                $mform->setHelpButton('managerselector', array('userpositionmanager', get_string('choosemanager', 'position')), true);
             }
 
             $group = array();
@@ -162,6 +172,7 @@ class user_position_assignment_form extends moodleform {
             $mform->addGroup($group, 'timevalidfrom_group', get_string('startdate', 'position'), array(' '), false);
             $mform->setType('timevalidfrom', PARAM_TEXT);
             $mform->setDefault('timevalidfrom','dd/mm/yy');
+            $mform->setHelpButton('timevalidfrom_group', array('userpositionstartdate', get_string('startdate', 'position')), true);
 
             $group = array();
             $group[] = $mform->createElement('text', 'timevalidto', get_string('finishdate', 'position'));
@@ -169,6 +180,8 @@ class user_position_assignment_form extends moodleform {
             $mform->addGroup($group, 'timevalidto_group', get_string('finishdate', 'position'), array(' '), false);
             $mform->setType('timevalidto', PARAM_TEXT);
             $mform->setDefault('timevalidto','dd/mm/yy');
+            $mform->setHelpButton('managerselector', array('userpositionmanager', get_string('choosemanager', 'position')), true);
+            $mform->setHelpButton('timevalidto_group', array('userpositionfinishdate', get_string('finishdate', 'position')), true);
         }
 
         $this->add_action_buttons(true, get_string('updateposition', 'position'));
