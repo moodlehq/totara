@@ -27,6 +27,7 @@ class edit_scale_form extends moodleform {
         $mform->addElement('header', 'general', get_string('scale'));
 
         $mform->addElement('text', 'name', get_string('name'), 'size="40"');
+        $mform->setHelpButton('name', array('competency/scale/scalename', get_string('name')));
         $mform->addRule('name', get_string('required'), 'required', null, 'client');
         $mform->setType('name', PARAM_TEXT);
 

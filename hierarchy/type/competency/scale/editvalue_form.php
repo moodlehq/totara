@@ -22,6 +22,7 @@ class competencyscalevalue_edit_form extends moodleform {
         $mform->addElement('header', 'moodle', get_string('general'));
 
         $mform->addElement('static', 'scalename', get_string('competencyscale', 'competency'));
+        $mform->setHelpButton('scalename', array('competencyscaleassign', get_string('competencyscale', 'competency')), true);
 
         $mform->addElement('text', 'name', get_string('scalevaluename', 'competency'), 'maxlength="100" size="20"');
         $mform->setHelpButton('name', array('competencyscalevaluename', get_string('scalevaluename', 'competency')), true);

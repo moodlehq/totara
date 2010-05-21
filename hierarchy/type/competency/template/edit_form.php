@@ -22,6 +22,7 @@ class competencytemplate_edit_form extends moodleform {
 
         /// Print the required moodle fields first
         $mform->addElement('header', 'moodle', $strgeneral);
+        $mform->setHelpButton('moodle', array('competencytemplategeneral', $strgeneral), true);
 
         $mform->addElement('text', 'fullname', get_string('fullnametemplate', 'competency'), 'maxlength="254" size="50"');
         $mform->setHelpButton('fullname', array('competencytemplatefullname', get_string('fullnametemplate', 'competency')), true);
