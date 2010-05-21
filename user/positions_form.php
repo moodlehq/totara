@@ -41,7 +41,7 @@ class user_position_assignment_form extends moodleform {
             $manager = get_record_sql(
                 "
                     SELECT
-                        u.id,        
+                        u.id,
                         u.firstname,
                         u.lastname,
                         ra.id AS ra
@@ -156,10 +156,17 @@ class user_position_assignment_form extends moodleform {
                 $mform->setDefault('managerid', $manager_id);
             }
 
-            $mform->addElement('text', 'timevalidfrom', get_string('startdate', 'position'));
+            $group = array();
+            $group[] = $mform->createElement('text', 'timevalidfrom', get_string('startdate', 'position'));
+            $group[] = $mform->createElement('static', 'timevalidfrom_hint', '', get_string('startdatehint', 'position'));
+            $mform->addGroup($group, 'timevalidfrom_group', get_string('startdate', 'position'), array(' '), false);
             $mform->setType('timevalidfrom', PARAM_TEXT);
             $mform->setDefault('timevalidfrom','dd/mm/yy');
-            $mform->addElement('text', 'timevalidto', get_string('finishdate', 'position'));
+
+            $group = array();
+            $group[] = $mform->createElement('text', 'timevalidto', get_string('finishdate', 'position'));
+            $group[] = $mform->createElement('static', 'timevalidto_hint', '', get_string('finishdatehint', 'position'));
+            $mform->addGroup($group, 'timevalidto_group', get_string('finishdate', 'position'), array(' '), false);
             $mform->setType('timevalidto', PARAM_TEXT);
             $mform->setDefault('timevalidto','dd/mm/yy');
         }
@@ -192,7 +199,7 @@ class user_position_assignment_form extends moodleform {
 
     function freezeForm() {
         $mform =& $this->_form;
-        
+
         // Freeze values
         $mform->hardFreezeAllVisibleExcept(array());
 
@@ -254,7 +261,7 @@ class user_position_assignment_form extends moodleform {
         if (!$mform->getElement('positionid')->getValue()) {
             $result['positionid'] = get_string('error:positionnotset', 'position');
         }
-        
+
         return $result;
     }
 }
