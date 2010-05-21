@@ -177,15 +177,22 @@ function mitmsDialog(title, buttonid, config, default_url, handler) {
 
         var dialog = this;
 
-        // Bind this.navigate to any links in the dialog
-        $('a:not(.helplink)', this.dialog).one('click', function(e) {
+        // Bind dialog.load to any links in the dialog
+        $('a', this.dialog).each(function() {
 
-            dialog.load($(this).attr('href'), 'GET');
+            // Check this is not a help popup link
+            if ($(this).parent().is('span.helplink')) {
+                return;
+            }
 
-            // Stop any default event occuring
-            e.preventDefault();
+            $(this).one('click', function(e) {
+                dialog.load($(this).attr('href'), 'GET');
 
-            return false;
+                // Stop any default event occuring
+                e.preventDefault();
+
+                return false;
+            });
         });
     }
 
