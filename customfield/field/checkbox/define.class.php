@@ -7,6 +7,7 @@ class customfield_define_checkbox extends customfield_define_base {
         $form->addElement('selectyesno', 'defaultdata', get_string('defaultchecked', 'customfields'));
         $form->setDefault('defaultdata', 0); // defaults to 'no'
         $form->setType('defaultdata', PARAM_BOOL);
+        $form->setHelpButton('defaultdata', array('customfielddefaultdatacheckbox', get_string('defaultchecked', 'customfields')), true);
     }
 }
 

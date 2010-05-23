@@ -24,6 +24,7 @@ class category_form extends moodleform {
         $mform->addElement('text', 'name', get_string('categorynamemustbeunique', 'customfields'), 'maxlength="255" size="30"');
         $mform->setType('name', PARAM_MULTILANG);
         $mform->addRule('name', $strrequired, 'required', null, 'client');
+        $mform->setHelpButton('name', array('customfieldcategoryname', get_string('categorynamemustbeunique', 'customfields')), true);
 
         $this->add_action_buttons(true);
 

@@ -6,10 +6,12 @@ class customfield_define_menu extends customfield_define_base {
         /// Param 1 for menu type contains the options
         $form->addElement('textarea', 'param1', get_string('menuoptions', 'customfields'), array('rows' => 6, 'cols' => 40));
         $form->setType('param1', PARAM_MULTILANG);
+        $form->setHelpButton('param1', array('customfieldmenuoptions', get_string('menuoptions', 'customfields')), true);
 
         /// Default data
         $form->addElement('text', 'defaultdata', get_string('defaultdata', 'customfields'), 'size="50"');
         $form->setType('defaultdata', PARAM_MULTILANG);
+        $form->setHelpButton('defaultdata', array('customfielddefaultdatamenu', get_string('defaultdata', 'customfields')), true);
     }
 
     function define_validate_specific($data, $files) {

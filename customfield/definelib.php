@@ -26,24 +26,31 @@ class customfield_define_base {
         $form->addElement('text', 'shortname', get_string('shortname', 'customfields'), 'maxlength="100" size="25"');
         $form->addRule('shortname', $strrequired, 'required', null, 'client');
         $form->setType('shortname', PARAM_ALPHANUM);
+        $form->setHelpButton('shortname', array('customfieldshortname', get_string('shortname', 'customfields')), true);
 
         $form->addElement('text', 'fullname', get_string('fullname'), 'size="50"');
         $form->addRule('fullname', $strrequired, 'required', null, 'client');
         $form->setType('fullname', PARAM_MULTILANG);
+        $form->setHelpButton('fullname', array('customfieldfullname', get_string('fullname')), true);
 
         $form->addElement('htmleditor', 'description', get_string('description', 'customfields'));
         $form->setHelpButton('description', array('text', get_string('helptext')));
 
         $form->addElement('selectyesno', 'required', get_string('required', 'customfields'));
+        $form->setHelpButton('required', array('customfieldrequired', get_string('required','customfields')), true);
 
         $form->addElement('selectyesno', 'locked', get_string('locked', 'customfields'));
+        $form->setHelpButton('locked', array('customfieldlocked', get_string('locked','customfields')), true);
 
         $form->addElement('selectyesno', 'forceunique', get_string('forceunique', 'customfields'));
-        
+        $form->setHelpButton('forceunique', array('customfieldforceunique', get_string('forceunique','customfields')), true);
+
         $form->addElement('selectyesno', 'hidden', get_string('visible', 'customfields'));
+        $form->setHelpButton('hidden', array('customfieldhidden', get_string('visible','customfields')), true);
 
         $choices = customfield_list_categories($depthid, $tableprefix);
         $form->addElement('select', 'categoryid', get_string('category', 'customfields'), $choices);
+        $form->setHelpButton('categoryid', array('customfieldcategory', get_string('category','customfields')), true);
     }
 
     /**
