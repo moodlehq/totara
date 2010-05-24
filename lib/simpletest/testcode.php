@@ -17,7 +17,7 @@ class code_test extends UnitTestCase {
 
     var $badstrings;
     var $extensions_to_ignore = array('exe', 'gif', 'ico', 'jpg', 'png', 'ttf');
-    var $ignore_folders = array();
+    var $ignore_folders = array('.git','build');
 
     function test_dnc() {
         global $CFG;
@@ -30,7 +30,11 @@ class code_test extends UnitTestCase {
         foreach ($this->badstrings as $description => $ignored) {
             $this->allok[$description] = true;
         }
-        recurseFolders($CFG->dirroot, array($this, 'search_file_for_dnc'), $regexp, true);
+        $skip = array();
+        foreach ($this->ignore_folders as $ignore) {
+            $skip[] = $CFG->dirroot.'/'.$ignore;
+        }
+        recurseFolders($CFG->dirroot, array($this, 'search_file_for_dnc'), $regexp, true, $skip);
         foreach ($this->badstrings as $description => $ignored) {
             if ($this->allok[$description]) {
                 $this->pass("No files contain $description.");
