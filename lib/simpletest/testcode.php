@@ -23,7 +23,9 @@ class code_test extends UnitTestCase {
         global $CFG;
         $regexp = '/\.(' . implode('|', $this->extensions_to_ignore) . ')$/';
         $this->badstrings = array();
-        $this->badstrings['DONOT' . 'COMMIT'] = 'DONOT' . 'COMMIT'; // If we put the literal string here, it fails the test!
+        $this->badstrings['DONOT' .
+            'COMMIT'] = 'DONOT' .
+            'COMMIT'; // If we put the literal string here, it fails the test!
         $this->badstrings['trailing whitespace'] = "[\t ][\r\n]";
         foreach ($this->badstrings as $description => $ignored) {
             $this->allok[$description] = true;
