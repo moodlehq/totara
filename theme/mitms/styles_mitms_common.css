@@ -25,6 +25,13 @@ body#course-report-progress-index div.lastinitial {
     margin-bottom: 10px;
 }
 
+/**
+ * Improve help icon in form legend display
+ */
+fieldset legend span.helplink {
+    margin-left: 5px;
+}
+
 /*****************************************************************************/
 /** Report Builder **/
 /*****************************************************************************/
