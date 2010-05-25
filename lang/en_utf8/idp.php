@@ -4,12 +4,12 @@
 $string['help:list0'] = 'How to Measure Objectives';
 $string['help:list1'] = 'How to Meet Objectives';
 
-# admin settings 
+# admin settings
 $string['admin:submittedtext'] = 'Email notification text for IDP submissions';
 $string['admin:submittedtextdesc'] = 'Configure the email notification text for when a IDP gets submitted.  These emails go to designated managers.  There are a few placeholders you can use which will be replaced with the appropriate text before the email goes out:  {{traineename}} - the name of the trainee who has submitted the plan, {{recipientname}} - the name of the email recipient, and {{link}} - the link to view the submitted plan.';
 $string['admin:submittedtextdefault'] = 'Hi {{recipientname}},
 
-A new IDP has been submitted for a trainee you are supervising, {{traineename}}.  
+A new IDP has been submitted for a trainee you are supervising, {{traineename}}.
 
 Please click on the following link to view this plan:
 
@@ -29,9 +29,9 @@ $string['admin:traineecommentedtext'] = 'Email notification text for IDP comment
 $string['admin:traineecommentedtextdesc'] = 'Configure the email notification text for when a trainee comments on their own plan.  These emails go to designated managers.  There are a few placeholders you can use which will be replaced with the appropriate text before the email goes out: {{traineename}} - the name of the trainee who has commented on their plan, {{planname}} - the name of the IDP, {{recipientname}} - the name of the email recipient, and {{link}} - the link to view the plan with comments.';
 $string['admin:traineecommentedtextdefault'] = 'Hi {{recipientname}},
 
-A trainee, {{traineename}}, has written a new comment on their IDP {{planname}}.  
+A trainee, {{traineename}}, has written a new comment on their IDP {{planname}}.
 
-Please click on the following link to review this plan and comment in return:  
+Please click on the following link to review this plan and comment in return:
 
 {{link}}
 
@@ -181,6 +181,7 @@ $string['emptyplancompetencytemplates'] = 'This IDP does not have any competency
 $string['emptyplancourses'] = 'This IDP does not have any courses yet.';
 $string['enablefavourites'] = 'Enable favourites';
 $string['enablesearch'] = 'Enable search';
+$string['enddate'] = 'End date';
 $string['evaluateplan'] = 'Evaluate plan';
 $string['evaluation'] = 'Evaluation';
 $string['evaluationsummary'] = 'Self-Evaluation Summary';
@@ -265,6 +266,7 @@ $string['searchresults'] = 'Search results';
 $string['searchforusers'] = 'Search for users';
 $string['selfevaluationdueby'] = 'Self-evaluation due by $a';
 $string['showapprovedplans'] = 'Show approved plans';
+$string['startdate'] = 'Start date';
 $string['starttoenddates'] = '$a->start to $a->end';
 $string['status'] = 'Status';
 $string['submissiondate'] = 'Submission Date';

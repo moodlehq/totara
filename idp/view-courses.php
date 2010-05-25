@@ -105,6 +105,7 @@ $rowcount=0;
                     '&amp;nojs=1&amp;returnurl='.urlencode(qualified_me()).'&amp;s='.sesskey().'" class="noscript-button">'.get_string('addfromcategories','idp').'</a></noscript>';
 
 ?>
+                <?php print helpbutton('idpaddcourses', get_string('addfromcategories', 'idp')); ?>
                 </div>
             </td>
         </tr>

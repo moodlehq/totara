@@ -237,6 +237,10 @@ table#list-assignedcompetencytemplates td[colspan] {
     padding: 0;
 }
 
+body#idp-plan img.ui-datepicker-trigger {
+    margin-right: 5px;
+}
+
 /*****************************************************************************/
 /** Dialogs **/
 /*****************************************************************************/

@@ -121,6 +121,7 @@ $rowcount=0;
                     '&amp;nojs=1&amp;returnurl='.urlencode(qualified_me()).'&amp;s='.sesskey().'" class="noscript-button">'.get_string('addfrompositions','idp').'</a></noscript>';
             }
         ?>
+                <?php print helpbutton('idpaddcompetencytemplates', get_string('addcompetencytemplatestoplan', 'idp')); ?>
                 </div>
             </td>
         </tr>

@@ -105,7 +105,9 @@ elseif ('create' == $action or 'rename' == $action) {
             echo '<td valign="top" id="middle-column">';
             // Add YUI javascript and CSS.
 
-            print '<h1>'.get_string("{$action}plantitle", 'idp').'</h1>';
+            print '<h1>'.get_string("{$action}plantitle", 'idp');
+            print helpbutton('idp', get_string('idp', 'idp'));
+            print '</h1>';
 
             $defaultname = get_string('defaultplanname', 'idp');
             $defaultstartdate = strtotime('now');
@@ -133,8 +135,10 @@ elseif ('create' == $action or 'rename' == $action) {
             // Start/end dates
             print '<p>'.get_string('trainingperiodexplanation', 'idp').'</p>';
             print '<blockquote><p>';
+            print helpbutton('idpstartdate', get_string('startdate', 'idp'));
             print '<input type="text" id="startdate" name="startdate" value="'.strftime('%d/%m/%Y', $defaultstartdate).'" size="15" maxlength="30" />';
             print ' '.get_string('to', 'idp').' ';
+            print helpbutton('idpenddate', get_string('enddate', 'idp'));
             print '<input type="text" name="enddate" id="enddate" value="'.strftime('%d/%m/%Y', $defaultenddate).'" size="15" maxlength="30" />';
             print '</p></blockquote>';
 
