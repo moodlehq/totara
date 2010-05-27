@@ -35,12 +35,12 @@ class reportheading {
         $todb = new object;
         $todb->type = 'user-firstname';
         $todb->heading = 'First Name';
-        $todb->defaultvalue = 'Not found';
+        $todb->defaultvalue = 'Not Found';
         $todb->sortorder = 1;
         $todb2 = new object();
         $todb2->type = 'user-lastname';
         $todb2->heading = 'Last Name';
-        $todb2->defaultvalue = 'Not found';
+        $todb2->defaultvalue = 'Not Found';
         $todb2->sortorder = 2;
         if(insert_record('report_heading_items', $todb) &&
            insert_record('report_heading_items', $todb2)) {
