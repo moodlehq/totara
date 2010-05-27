@@ -177,6 +177,28 @@ class report_builder_edit_columns_form extends moodleform {
         $strdelete = get_string('delete','local');
         $spacer = '<img src="'.$CFG->wwwroot.'/pix/spacer.gif" class="iconsmall" alt="" />';
 
+        // javascript to update the heading columns.
+        $onchange = array(
+            'onChange' => "
+                var currentoption = this.options[this.selectedIndex].text;
+                var headid = 'id_heading'+this.name.substr(6);
+                document.getElementById(headid).value = currentoption;
+            ",
+        );
+        $newonchange = array(
+            'onChange' => "
+                var heading = document.getElementById('id_newheading');
+                var currentvalue = this.options[this.selectedIndex].value;
+                if(currentvalue == 0) {
+                    heading.value = '';
+                    heading.disabled=true;
+                } else {
+                    heading.disabled=false;
+                    heading.value = this.options[this.selectedIndex].text;
+                }
+            ",
+        );
+
         $mform->addElement('header', 'reportcolumns', get_string('reportcolumns', 'local'));
 
         $mform->setHelpButton('reportcolumns', array('reportbuildercolumns',get_string('columns','local'),'moodle'));
@@ -205,7 +227,7 @@ class report_builder_edit_columns_form extends moodleform {
                     $cid = $index;
                     if(array_key_exists($type, $report->columnoptions) && array_key_exists($value, $report->columnoptions[$type])) {
                         $mform->addElement('html','<tr><td>');
-                        $mform->addElement('select',"column{$cid}",'',$columnsselect);
+                        $mform->addElement('select',"column{$cid}",'',$columnsselect, $onchange);
                         $mform->setDefault("column{$cid}", $field);
                         $mform->addElement('html','</td><td>');
                         $mform->addElement('text',"heading{$cid}",'');
@@ -243,11 +265,12 @@ class report_builder_edit_columns_form extends moodleform {
 
             $mform->addElement('html','<tr><td>');
             $newcolumnsselect = array_merge(array(0=>get_string('addanothercolumn','local')),$columnsselect);
-            $mform->addElement('select','newcolumns','',$newcolumnsselect);
+            $mform->addElement('select','newcolumns','',$newcolumnsselect, $newonchange);
             $mform->addElement('html','</td><td>');
             $mform->addElement('text','newheading','');
             $mform->setType('newheading', PARAM_TEXT);
-            $mform->disabledIf('newheading','newcolumns', 'eq', 0);
+            // do manually as disabledIf doesn't play nicely with using JS to update heading values
+            // $mform->disabledIf('newheading','newcolumns', 'eq', 0);
             $mform->addElement('html','</td><td>');
             $mform->addElement('html','</td><td>&nbsp;</td></tr>');
             $mform->addElement('html','</table></div>');

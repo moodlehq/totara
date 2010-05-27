@@ -79,6 +79,14 @@ print_heading(get_string('editheading','local'));
 // display the form
 $mform->display();
 
+// disable heading and defaultvalue when page loads
+print<<<EOF
+<script>
+document.getElementById('id_newheading').disabled = true;
+document.getElementById('id_newdefaultvalue').disabled = true;
+</script>
+EOF;
+
 admin_externalpage_print_footer();
 
 

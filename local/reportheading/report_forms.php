@@ -31,14 +31,14 @@ class report_heading_columns_form extends moodleform {
                     heading.disabled=true;
                     defaultvalue.disabled=true;
                 } else {
-                    heading.value = this.options[this.selectedIndex].text;
                     heading.disabled=false;
                     defaultvalue.disabled=false;
+                    heading.value = this.options[this.selectedIndex].text;
                 }
             ",
         );
 
-        $mform->addElement('header', 'reportheading', get_string('reportheading', 'local'));
+        $mform->addElement('header', 'reportheading', get_string('general'));
         $mform->setHelpButton('reportheading', array('reportheadinggeneral',get_string('reportheading','local'),'moodle'));
 
         $columnoptions = $heading->columnoptions;
@@ -105,13 +105,15 @@ class report_heading_columns_form extends moodleform {
             $newcolumnsselect = array_merge(array(0=>get_string('addanothercolumn','local')),$columnoptions);
             $mform->addElement('select','newcolumns','',$newcolumnsselect, $newonchange);
             $mform->addElement('html','</td><td>');
-            // manually set disabled so onChange JS will work
-            $mform->addElement('text','newheading','','disabled');
+            $mform->addElement('text','newheading','');
             $mform->setType('newheading', PARAM_TEXT);
+            // do manually as disabledIf doesn't play nicely with using JS to update heading values
+            // $mform->disabledIf('newheading','newcolumns', 'eq', 0);
             $mform->addElement('html','</td><td>');
-            // manually set disabled so onChange JS will work
-            $mform->addElement('text','newdefaultvalue','','disabled');
+            $mform->addElement('text','newdefaultvalue','');
             $mform->setType('newdefaultvalue', PARAM_TEXT);
+            // do manually as disabledIf doesn't play nicely with using JS to update heading values
+            // $mform->disabledIf('newdefaultvalue','newcolumns', 'eq', 0);
             $mform->setDefault("newdefaultvalue", get_string('notfound','local'));
             $mform->addElement('html','</td><td>');
             $mform->addElement('html','</td><td>&nbsp;</td></tr>');

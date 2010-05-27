@@ -90,6 +90,13 @@ include_once('tabs.php');
 // display the form
 $mform->display();
 
+// disable heading when page loads
+print<<<EOF
+<script>
+document.getElementById('id_newheading').disabled = true;
+</script>
+EOF;
+
 admin_externalpage_print_footer();
 
 
