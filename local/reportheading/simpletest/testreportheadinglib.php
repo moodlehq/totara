@@ -13,7 +13,7 @@ if (!defined('MOODLE_INTERNAL')) {
 require_once($CFG->dirroot . '/local/reportheading/lib.php');
 require_once($CFG->libdir . '/simpletestlib.php');
 
-class reportbuilderlib_test extends prefix_changing_test_case {
+class reportheadinglib_test extends prefix_changing_test_case {
     // test data for database
 
     var $reportheading_items_data = array(
