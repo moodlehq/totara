@@ -316,6 +316,21 @@ $string['error:couldnotsavesearch'] = 'Could not save search';
 $string['error:nosavedsearches'] = 'This report does not yet have any saved searches';
 $string['savedsearches'] = 'Saved Searches';
 
+// Report Headings
+$string['reportheading'] = 'Report Heading Block';
+$string['headingcolumnsdescription'] = 'The fields below define which data appear in the Report Heading Block. This block contains information about a specific user, and can appear in many locations throughout the site.';
+$string['nocolumnsdefined'] = 'No columns have yet been defined. Add them by selecting from the \'Add another column...\' menu.';
+$string['editheading'] = 'Edit the Report Heading Block';
+$string['headingmissingvalue'] = 'Value to display if no data found';
+$string['reportedat'] = 'Reported at';
+$string['notfound'] = 'Not found';
+$string['error:columntypenotfound'] = 'Column with type of \'$a\' not found in column options.';
+$string['managers'] = 'Manager\'s ';
+$string['positionsarrow'] = 'Positions > ';
+$string['organisationsarrow'] = 'Organisations > ';
+$string['error:columntypenotfound'] = 'The column type \'$a\' was defined but is not a valid option. This can happen if you have deleted a custom field or hierarchy depth level. The best course of action is to delete this column by pressing the red cross to the right.';
+$string['error:couldnotcreatedefaultfields'] = 'Could not create default fields';
+
 // Add/Edit competency evidence
 $string['error:unknownbuttonclicked'] = 'Unknown Button Clicked';
 $string['participant'] = 'Participant';

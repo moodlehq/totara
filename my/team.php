@@ -32,7 +32,6 @@ require_once('../config.php');
 require_once($CFG->libdir.'/blocklib.php');
 require_once($CFG->libdir.'/tablelib.php');
 require_once($CFG->dirroot.'/tag/lib.php');
-require_once($CFG->dirroot.'/local/reportlib.php');
 
 require_login();
 

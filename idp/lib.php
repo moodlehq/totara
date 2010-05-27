@@ -5,6 +5,7 @@ require_once($CFG->dirroot.'/idp/view-competencies.php');
 require_once($CFG->dirroot.'/idp/view-competencytemplates.php');
 require_once($CFG->dirroot.'/idp/view-courses.php');
 require_once($CFG->dirroot.'/hierarchy/type/position/lib.php');
+require_once($CFG->dirroot.'/local/reportheading/lib.php');
 
 $CFG->idpenablefavourites = false;
 
@@ -277,115 +278,17 @@ function print_revision_details($revision, $can_submit, $can_approve=false, $pdf
 
     global $CFG;
 
-    require_once($CFG->dirroot.'/local/reportlib.php');
-
     if (! $user = get_record('user', 'id', $revision->owner->id)) {
         error('User not found');
     }
 
-    /// Add the custom profile fields to the user record
-    include_once($CFG->dirroot.'/user/profile/lib.php');
-    $usercustomfields = (array)profile_user_record($user->id);
-    foreach ($usercustomfields as $cname=>$cvalue) {
-        if (!isset($user->$cname)) { // Don't overwrite any standard fields
-            $user->$cname = $cvalue;
-        }
-    }
+    // display heading block for this user
+    $heading = new reportheading($user->id);
+    print $heading->display(2,false);
+    print '<br />';
 
-    $columns = array(
-        array(
-            'column'      => '1',
-            'sortorder'   => '1',
-            'type'        => 'user',
-            'value'       => 'fullname',
-            'level'       => '',
-            'headingtype' => 'lang',
-            'heading'     => 'fullname',
-        ),
-        array(
-            'column'      => '2',
-            'sortorder'   => '1',
-            'type'        => 'organisation',
-            'value'       => 'fullname',
-            'level'       => '2',
-            'headingtype' => 'defined',
-            'heading'     => 'District Office',
-        ),
-        array(
-            'column'      => '1',
-            'sortorder'   => '2',
-            'type'        => 'user',
-            'value'       => 'email',
-            'level'       => '',
-            'headingtype' => 'lang',
-            'heading'     => 'email',
-        ),
-        array(
-            'column'      => '2',
-            'sortorder'   => '2',
-            'type'        => 'organisation',
-            'value'       => 'fullname',
-            'level'       => '3',
-            'headingtype' => 'defined',
-            'heading'     => 'Area Office',
-        ),
-        array(
-            'column'      => '1',
-            'sortorder'   => '3',
-            'type'        => 'usercustom',
-            'value'       => 'title',
-            'level'       => '',
-            'headingtype' => 'defined',
-            'heading'     => '',
-        ),
-        array(
-            'column'      => '2',
-            'sortorder'   => '3',
-            'type'        => 'user',
-            'value'       => 'idnumber',
-            'level'       => '',
-            'headingtype' => 'defined',
-            'heading'     => 'Jade id',
-        ),
-        array(
-            'column'      => '1',
-            'sortorder'   => '4',
-            'type'        => 'position',
-            'value'       => 'fullname',
-            'level'       => '1',
-            'headingtype' => 'defined',
-            'heading'     => 'Role',
-        ),
-        array(
-            'column'      => '2',
-            'sortorder'   => '4',
-            'type'        => 'usercustom',
-            'value'       => 'nzqaid',
-            'level'       => '',
-            'headingtype' => 'defined',
-            'heading'     => '',
-        ),
-        array(
-            'column'      => '1',
-            'sortorder'   => '5',
-            'type'        => 'usercustom',
-            'value'       => 'managerempcode',
-            'level'       => '',
-            'headingtype' => 'defined',
-            'heading'     => '',
-        ),
-        array(
-            'column'      => '2',
-            'sortorder'   => '5',
-            'type'        => 'usercustom',
-            'value'       => 'datejoined',
-            'level'       => '',
-            'headingtype' => 'defined',
-            'heading'     => '',
-        ),
-    );
-
-    echo mitms_print_report_heading($columns, $user, $usercustomfields);
+    // display another table with training info
+    // TODO merge these two tables?
 
     $table->tablealign = 'left';
     $table->class = 'generaltable personaldetails';

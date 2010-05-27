@@ -30,7 +30,7 @@
 
     require_once('../config.php');
     require_once($CFG->dirroot.'/local/reportbuilder/lib.php');
-    require_once($CFG->dirroot.'/local/reportlib.php');
+    require_once($CFG->dirroot.'/local/reportheading/lib.php');
 
     require_login();
 
@@ -120,290 +120,40 @@
     }
 
     ///
-    /// Get database info
+    /// Display the page
     ///
-
-    /// Get the primary position and related meta dat
-    $sql = "SELECT pa.fullname,
-                pa.shortname,
-                pa.idnumber,
-                pa.organisationid,
-                pa.positionid,
-                u.id as managerid,
-                u.email as manageremail,
-                u.firstname as managerfirstname,
-                u.lastname as managerlastname
-            FROM {$CFG->prefix}pos_assignment pa
-            JOIN {$CFG->prefix}role_assignments ra
-              ON ra.id=pa.reportstoid
-            JOIN {$CFG->prefix}user u
-               ON u.id=ra.userid
-            WHERE pa.type=1 AND pa.userid={$id}";
-    $positionassignment = get_record_sql($sql);
 
     print_header($strheading, $strheading, build_navigation($strheading));
 
     echo '<h1>'.$strheading.'</h1>';
 
-    /// Add the custom profile fields to the user record
-    include_once($CFG->dirroot.'/user/profile/lib.php');
-    $usercustomfields = (array)profile_user_record($user->id);
-    foreach ($usercustomfields as $cname=>$cvalue) {
-        if (!isset($user->$cname)) { // Don't overwrite any standard fields
-            $user->$cname = $cvalue;
-        }
+    // add heading block
+    $heading = new reportheading();
+    print $heading->display();
+
+    // add competency evidence button
+    if(has_capability('moodle/local:updatecompetency',$context)) {
+        print '<p>';
+        print_single_button($CFG->wwwroot.'/hierarchy/type/competency/evidence/add.php', array('userid' => $user->id, 's' => sesskey(), 'returnurl' => qualified_me()),get_string('addforthisuser','local'));
+        print '</p>';
     }
 
-    $organistions = new object();
-    $positions = new object();
-    if (!empty($positionassignment->organisationid)) {
-        $organisations = mitms_get_user_hierarchy_lineage($positionassignment->organisationid, 'organisation');
+    // display table here
+    $fullname = $report->fullname;
+    $countfiltered = $report->get_filtered_count();
+    $countall = $report->get_full_count();
+
+    // display heading including filtering stats
+    print_heading("$countall results found.");
+
+    $report->display_search();
+
+    if($countfiltered>0) {
+        $report->display_table();
+        print $report->edit_button();
+        // export button
+        $report->export_select();
     }
-    if (!empty($positionassignment->positionid)) {
-        $positions = mitms_get_user_hierarchy_lineage($positionassignment->positionid, 'position');
-    }
-    $positionids = get_records('pos', '', '', '', 'id,fullname');
-
-    $columns = array(
-        array(
-            'column'      => '1',
-            'sortorder'   => '1',
-            'type'        => 'user',
-            'value'       => 'fullname',
-            'level'       => '',
-            'headingtype' => 'lang',
-            'heading'     => 'fullname',
-        ),
-        array(
-            'column'      => '2',
-            'sortorder'   => '1',
-            'type'        => 'positionassignment',
-            'value'       => 'organisationfullname',
-            'level'       => '2',
-            'headingtype' => 'defined',
-            'heading'     => 'District Office',
-        ),
-        array(
-            'column'      => '1',
-            'sortorder'   => '2',
-            'type'        => 'user',
-            'value'       => 'email',
-            'level'       => '',
-            'headingtype' => 'lang',
-            'heading'     => 'email',
-        ),
-        array(
-            'column'      => '2',
-            'sortorder'   => '2',
-            'type'        => 'positionassignment',
-            'value'       => 'organisationfullname',
-            'level'       => '3',
-            'headingtype' => 'defined',
-            'heading'     => 'Area Office',
-        ),
-        array(
-            'column'      => '1',
-            'sortorder'   => '3',
-            'type'        => 'positionassignment',
-            'value'       => 'fullname',
-            'level'       => '',
-            'headingtype' => 'defined',
-            'heading'     => 'Title',
-        ),
-        array(
-            'column'      => '2',
-            'sortorder'   => '3',
-            'type'        => 'user',
-            'value'       => 'idnumber',
-            'level'       => '',
-            'headingtype' => 'defined',
-            'heading'     => 'Jade id',
-        ),
-        array(
-            'column'      => '1',
-            'sortorder'   => '4',
-            'type'        => 'positionassignment',
-            'value'       => 'positionfullname',
-            'level'       => '1',
-            'headingtype' => 'defined',
-            'heading'     => 'Role',
-        ),
-        array(
-            'column'      => '2',
-            'sortorder'   => '4',
-            'type'        => 'usercustom',
-            'value'       => 'nzqaid',
-            'level'       => '',
-            'headingtype' => 'defined',
-            'heading'     => '',
-        ),
-        array(
-            'column'      => '1',
-            'sortorder'   => '5',
-            'type'        => 'positionassignment',
-            'value'       => 'managername',
-            'level'       => '',
-            'headingtype' => 'defined',
-            'heading'     => 'Manager name',
-        ),
-        array(
-            'column'      => '2',
-            'sortorder'   => '5',
-            'type'        => 'usercustom',
-            'value'       => 'datejoined',
-            'level'       => '',
-            'headingtype' => 'defined',
-            'heading'     => '',
-        ),
-    );
-
-echo '<table cellpadding="4">';
-foreach ($columns as $column) {
-    if ($column['column'] == 1) {
-        echo "<tr>";
-    }
-    $cell1str = "<td><strong>";
-    $cell2str = "<td>";
-    switch($column['type']) {
-        case 'user':
-            $cell1str .= get_string($column['value']);
-            if ($column['value'] == 'fullname') {
-                $cell2str .= '<a href="'.$CFG->wwwroot.'/user/view.php?id='.$user->id.'">'.fullname($user, true).'</a>';
-            } elseif ($column['value'] == 'email') {
-                $cell2str .= obfuscate_mailto($user->email);
-            } else {
-                $cell2str .= $user->{$column['value']};
-            }
-            break;
-        case 'usercustom':
-            if ($column['value'] == 'managername') {
-                if (!empty($managerid)) {
-                    $manager = get_record('user', 'id', $managerid);
-                    $cell2str .= '<a href="'.$CFG->wwwroot.'/user/view.php?id='.$managerid.'">'.$manager->firstname.' '.$manager->lastname.'</a>';
-                } else {
-                    $cell2str .= get_string('notavailable', 'local');
-                }
-            } else {
-                $cell1str .= get_field('user_info_field', 'name', 'shortname', $column['value']);
-                $usercustom = mitms_print_user_profile_field($user->id, $column['value']);
-                if (!$usercustom == '') {
-                    $cell2str .= $usercustom;
-                } else {
-                    $cell2str .= get_string('notavailable', 'local');
-                }
-            }
-            break;
-        case 'positionassignment';
-            switch($column['value']) {
-                case 'fullname':
-                    if ($column['headingtype'] == 'defined') {
-                        $cell1str .= $column['heading'];
-                    } else {
-                        $cell1str .= get_string('title');
-                    }
-                    if (!empty($positionassignment)) {
-                       $cell2str .= $positionassignment->fullname;
-                    }
-                    break;
-                case 'shortname':
-                    $cell2str .= $positionassignment->shortname;
-                    break;
-                case 'managername':
-                    if ($column['headingtype'] == 'defined') {
-                        $cell1str .= $column['heading'];
-                    } else {
-                        $cell1str .= "Manager name";
-                    }
-                    if (!empty($positionassignment)) {
-                        $manager = new object();
-                        $manager->firstname = $positionassignment->managerfirstname;
-                        $manager->lastname  = $positionassignment->managerlastname;
-                        $cell2str .= '<a href="'.$CFG->wwwroot.'/user/view.php?id='.$positionassignment->managerid.'">'.fullname($manager, true).'</a>';
-                    }
-                    break;
-                case 'positionfullname':
-                    if ($column['headingtype'] == 'defined') {
-                        $cell1str .= $column['heading'];
-                    } else {
-                        $cell1str .= get_string('position', 'position');
-                    }
-                    if (!empty($positions)) {
-                        foreach ($positions as $position) {
-                            if ($column['level'] == $position->depthlevel) {
-                                $cell2str .= $position->fullname;
-                                break;
-                            }
-                        }
-                    } else {
-                        $cell2str .= get_string('notavailable','local');
-                    }
-                    break;
-                case 'organisationfullname':
-                    if ($column['headingtype'] == 'defined') {
-                        $cell1str .= $column['heading'];
-                    } else {
-                        $cell1str .= get_string('organisation', 'organisation');
-                    }
-                    $testfound = false;
-                    if (!empty($organisations)) {
-                        foreach ($organisations as $organisation) {
-                            if ($column['level'] == $organisation->depthlevel) {
-                                $cell2str .= $organisation->fullname;
-                                $testfound = true;
-                                break;
-                            }
-                        }
-                    }
-                    if (!$testfound) {
-                        $cell2str .= get_string('notapplicable', 'local');
-                    }
-                break;
-            }
-            break;
-        default:
-            $cell1str = "<td></td>";
-            $cell2str = "<td></td>";
-            break;
-    }
-    echo $cell1str.$cell2str;
-    if ($column['column'] == 2) {
-        echo "</tr>";
-    }
-}
-echo "</table>";
-?>
-<table cellpadding="4">
-<tr>
-    <td><strong>Reported at: </strong></td>
-    <td><?php echo userdate(time()) ?></td>
-    <td></td>
-    <td></td>
-</tr>
-</table>
-
-<?php
-if(has_capability('moodle/local:updatecompetency',$context)) {
-    print '<p>';
-    print_single_button($CFG->wwwroot.'/hierarchy/type/competency/evidence/add.php', array('userid' => $user->id, 's' => sesskey(), 'returnurl' => qualified_me()),get_string('addforthisuser','local'));
-    print '</p>';
-}
-
-// display table here
-$fullname = $report->fullname;
-$countfiltered = $report->get_filtered_count();
-$countall = $report->get_full_count();
-
-// display heading including filtering stats
-print_heading("$countall results found.");
-
-$report->display_search();
-
-if($countfiltered>0) {
-    $report->display_table();
-    print $report->edit_button();
-    // export button
-    $report->export_select();
-}
    print_footer();
 
 ?>

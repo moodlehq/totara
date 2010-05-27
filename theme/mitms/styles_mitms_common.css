@@ -49,8 +49,15 @@ select.mitms-expanded-width {
 }
 
 /* override float left on pulldown menus inside table */
-div.reportbuilderform div.fitem div.felement {
+div.reportbuilderform div.fitem div.felement,
+div.reportheadingform div.fitem div.felement {
     float: none;
+}
+
+/* hide the label entirely so form fits in table */
+div.reportheadingform div.fitemtitle,
+#local-reportheading-index div.fdescription.required {
+    display: none;
 }
 
 
