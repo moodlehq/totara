@@ -128,7 +128,7 @@
     echo '<h1>'.$strheading.'</h1>';
 
     // add heading block
-    $heading = new reportheading();
+    $heading = new reportheading($id);
     print $heading->display();
 
     // add competency evidence button
