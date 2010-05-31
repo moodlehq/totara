@@ -52,13 +52,18 @@
 	<td></td>
 </tr>
 <tr>
-	<td>click</td>
+	<td>clickAndWait</td>
 	<td>//input[@value='Turn editing on']</td>
 	<td></td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>//table[@id='organisation']/tbody/tr[5]/td[3]/a[3]/img</td>
+	<td>//table[@id='organisation']/tbody/tr[5]/td[3]/a[3]/img[@alt='Delete']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertElementPresent</td>
+	<td>//table[@id='organisation']/tbody/tr[5]/td[3]/a[3]/img[@alt='Delete']</td>
 	<td></td>
 </tr>
 <tr>
@@ -78,7 +83,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>//table[@id='organisation']/tbody/tr[5]/td[3]/a[3]/img</td>
+	<td>//table[@id='organisation']/tbody/tr[5]/td[3]/a[3]/img[@alt='Delete']</td>
 	<td></td>
 </tr>
 <tr>
@@ -154,6 +159,11 @@
 <tr>
 	<td>click</td>
 	<td>link=Logout</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
 	<td></td>
 </tr>
 
