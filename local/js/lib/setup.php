@@ -102,7 +102,8 @@ function build_treeview($elements, $error_string, $hierarchy = null, $disabledli
             $html .= '<li class="'.$li_class.'" id="item_list_'.$element->id.'">';
             $html .= '<div class="'.$div_class.'"></div>';
             $html .= '<span id="item_'.$element->id.'" class="'.$span_class.'">';
-            $html .= format_string($element->fullname);
+            // format_string() really slow here...
+            $html .= htmlentities($element->fullname);
             $html .= '</span>';
 
             if ($div_class !== '') {
@@ -230,11 +231,11 @@ function build_nojs_treeview($elements, $error_string, $actionurl, $actionparams
             // Element has children
             if (array_key_exists($element->id, $parents)) {
                 $html .= '<a href="'.$expandurl.'&amp;parentid='.$element->id.'">';
-                $html .= format_string($element->fullname);
+                $html .= htmlentities($element->fullname);
                 if(!empty($element->idnumber)) $html .= ' - '.$element->idnumber;
                 $html .= '</a>';
             } else {
-                $html .= format_string($element->fullname);
+                $html .= htmlentities($element->fullname);
                 if(!empty($element->idnumber)) $html .= ' - '.$element->idnumber;
             }
 
