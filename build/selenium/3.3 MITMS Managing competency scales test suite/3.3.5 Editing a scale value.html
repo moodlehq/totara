@@ -4,12 +4,12 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="" />
-<title>3.4.5 Editing a scale value</title>
+<title>3.3.5 Editing a scale value.html</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">3.4.5 Editing a scale value</td></tr>
+<tr><td rowspan="1" colspan="3">3.3.5 Editing a scale value.html</td></tr>
 </thead><tbody>
 <tr>
 	<td>open</td>
@@ -47,23 +47,18 @@
 	<td></td>
 </tr>
 <tr>
+	<td>click</td>
+	<td>link=MITMS selenium scale 01</td>
+	<td></td>
+</tr>
+<tr>
 	<td>waitForPageToLoad</td>
 	<td>30000</td>
 	<td></td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>link=This new scale</td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForPageToLoad</td>
-	<td>30000</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>//form[@id='compscaledefaultprofform']/table/tbody/tr[5]/td[4]/a[1]/img</td>
+	<td>//img[@alt='Edit ']</td>
 	<td></td>
 </tr>
 <tr>
@@ -82,19 +77,14 @@
 	<td></td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
-	<td>//form[@id='compscaledefaultprofform']/table/tbody/tr[5]/td[4]/a[1]/img</td>
+	<td>click</td>
+	<td>//img[@alt='Edit ']</td>
 	<td></td>
 </tr>
 <tr>
 	<td>waitForPageToLoad</td>
 	<td>30000</td>
 	<td></td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>id_name</td>
-	<td>New scale value1</td>
 </tr>
 <tr>
 	<td>click</td>
@@ -117,8 +107,13 @@
 	<td></td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
+	<td>click</td>
 	<td>link=Logout</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
 	<td></td>
 </tr>
 

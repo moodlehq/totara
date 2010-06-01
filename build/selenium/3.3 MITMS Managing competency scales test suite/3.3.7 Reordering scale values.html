@@ -4,12 +4,12 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="" />
-<title>3.4.7 Reordering scale values</title>
+<title>3.3.7 Reordering scale values.html</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">3.4.7 Reordering scale values</td></tr>
+<tr><td rowspan="1" colspan="3">3.3.7 Reordering scale values.html</td></tr>
 </thead><tbody>
 <tr>
 	<td>open</td>
@@ -53,22 +53,17 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>link=This new scale</td>
+	<td>link=MITMS selenium scale 01</td>
 	<td></td>
 </tr>
 <tr>
-	<td>waitForPageToLoad</td>
-	<td>30000</td>
+	<td>clickAndWait</td>
+	<td>//form[@id='compscaledefaultprofform']/table/tbody/tr[3]/td[4]/a[3]</td>
 	<td></td>
 </tr>
 <tr>
-	<td>click</td>
+	<td>clickAndWait</td>
 	<td>//img[@alt='Move down']</td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForPageToLoad</td>
-	<td>30000</td>
 	<td></td>
 </tr>
 <tr>
@@ -82,33 +77,13 @@
 	<td></td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
-	<td>link=This new scale</td>
-	<td></td>
-</tr>
-<tr>
 	<td>click</td>
-	<td>//img[@alt='Move down']</td>
-	<td></td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>//img[@alt='Move up']</td>
-	<td></td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>//input[@value='Return to competency scales']</td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForPageToLoad</td>
-	<td>30000</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
 	<td>link=Logout</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
 	<td></td>
 </tr>
 

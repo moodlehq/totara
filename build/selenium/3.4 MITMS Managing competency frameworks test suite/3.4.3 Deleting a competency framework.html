@@ -4,12 +4,12 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="" />
-<title>3.3.2 Editing a framework</title>
+<title>3.4.3 Deleting a competency framework</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">3.3.2 Editing a framework</td></tr>
+<tr><td rowspan="1" colspan="3">3.4.3 Deleting a competency framework</td></tr>
 </thead><tbody>
 <tr>
 	<td>open</td>
@@ -63,7 +63,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>//td[@id='middle-column']/div/table/tbody/tr[6]/td[2]/a[1]/img</td>
+	<td>//tr[3]/td[2]/a[3]/img</td>
 	<td></td>
 </tr>
 <tr>
@@ -73,7 +73,17 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>id_cancel</td>
+	<td>//input[@value='No']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//tr[3]/td[2]/a[3]/img</td>
 	<td></td>
 </tr>
 <tr>
@@ -83,37 +93,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>//td[@id='middle-column']/div/table/tbody/tr[6]/td[2]/a[1]/img</td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForPageToLoad</td>
-	<td>30000</td>
-	<td></td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>id_fullname</td>
-	<td>Selenium test framework fullname1</td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>id_shortname</td>
-	<td>Selenium test framework shortname1</td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>id_submitbutton</td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitforpagetoloa</td>
-	<td>30000</td>
-	<td></td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>//td[@id='middle-column']/div/table/tbody/tr[6]/td[2]/a[1]/img</td>
+	<td>//input[@value='Yes']</td>
 	<td></td>
 </tr>
 <tr>
@@ -123,7 +103,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>id_submitbutton</td>
+	<td>//input[@value='Continue']</td>
 	<td></td>
 </tr>
 <tr>

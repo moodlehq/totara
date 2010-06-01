@@ -4,12 +4,12 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="" />
-<title>3.3.4 Reordering frameworks</title>
+<title>3.4.2 Editing a competency framework</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">3.3.4 Reordering frameworks</td></tr>
+<tr><td rowspan="1" colspan="3">3.4.2 Editing a competency framework</td></tr>
 </thead><tbody>
 <tr>
 	<td>open</td>
@@ -63,17 +63,77 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>//img[@alt='Move down']</td>
+	<td>//img[@alt='Edit ']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
 	<td></td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>//img[@alt='Move up']</td>
+	<td>id_cancel</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
 	<td></td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>link=Selenium test framework fullname</td>
+	<td>//img[@alt='Edit ']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id_fullname</td>
+	<td>MITMS Selenium competency framework fullname</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id_shortname</td>
+	<td>MITMS Selenium framework shortname</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_submitbutton</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//img[@alt='Edit ']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id_fullname</td>
+	<td>MITMS Selenium competency framework fullname1</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id_shortname</td>
+	<td>MITMS Selenium framework shortname1</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_submitbutton</td>
 	<td></td>
 </tr>
 <tr>

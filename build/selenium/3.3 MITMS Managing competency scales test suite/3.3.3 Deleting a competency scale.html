@@ -4,12 +4,12 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="" />
-<title>3.4.3 Deleting a competency scale</title>
+<title>3.3.3 Deleting a competency scale</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">3.4.3 Deleting a competency scale</td></tr>
+<tr><td rowspan="1" colspan="3">3.3.3 Deleting a competency scale</td></tr>
 </thead><tbody>
 <tr>
 	<td>open</td>
@@ -52,8 +52,8 @@
 	<td></td>
 </tr>
 <tr>
-	<td>click</td>
-	<td>//td[@id='middle-column']/div/table/tbody/tr[3]/td[3]/a[2]/img</td>
+	<td>clickAndWait</td>
+	<td>//tr[3]/td[3]/a[2]/img</td>
 	<td></td>
 </tr>
 <tr>
@@ -62,13 +62,28 @@
 	<td></td>
 </tr>
 <tr>
-	<td>click</td>
+	<td>clickAndWait</td>
+	<td>//input[@value='No']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//tr[3]/td[3]/a[2]/img</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
 	<td>//input[@value='Yes']</td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForPageToLoad</td>
-	<td>30000</td>
 	<td></td>
 </tr>
 <tr>
