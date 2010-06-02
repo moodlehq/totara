@@ -379,18 +379,8 @@
                 ';
             }
 
-            // Check if result is empty
-            if (!$rs = get_recordset_sql($sql)) {
-
-                if ($course->id != 1) {
-                    $error = get_string('nocompletions', 'coursereport_completion');
-                } else {
-                    $error = get_string('nocompletioncoursesenroled', 'coursereport_completion');
-                }
-
-                echo $OUTPUT->notification($error);
-                break;
-            }
+            // Get result
+            $rs = get_recordset_sql($sql);
 
             // Categorize courses by their status
             $courses = array(
@@ -400,7 +390,10 @@
             );
 
             // Sort courses by the user's status in each
+            $num_completions = 0;
             foreach ($rs as $course_completion) {
+                $num_completions++;
+
                 $c_info = new completion_info((object)$course_completion);
 
                 // Is course complete?
@@ -419,6 +412,18 @@
             }
 
             $rs->close();
+
+            // Check if results were empty
+            if (!$num_completions) {
+                if ($course->id != 1) {
+                    $error = get_string('nocompletions', 'coursereport_completion');
+                } else {
+                    $error = get_string('nocompletioncoursesenroled', 'coursereport_completion');
+                }
+
+                print_heading($error);
+                break;
+            }
 
             // Loop through course status groups
             foreach ($courses as $type => $infos) {
