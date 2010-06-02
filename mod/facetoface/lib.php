@@ -1057,7 +1057,7 @@ function facetoface_get_attendees($sessionid)
              ON s.id = ss.signupid
             AND s.sessionid = $sessionid
             WHERE
-                ss.statuscode = ".MDL_F2F_STATUS_BOOKED."
+                ss.statuscode IN (".MDL_F2F_STATUS_BOOKED.",".MDL_F2F_STATUS_WAITLISTED.")
             GROUP BY
                 ss.signupid
             ) sign
