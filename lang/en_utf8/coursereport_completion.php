@@ -9,5 +9,5 @@ $string['detailedview'] = 'Detail view';
 $string['incomplete'] = 'Incomplete';
 $string['inprogress'] = 'Courses in progress';
 $string['nocompletioncoursesenroled'] = 'User not enrolled in any courses with completion enabled';
-$string['nocompletions'] = 'No completion information exists for this user';
+$string['nocompletions'] = 'This user has enrolled in this course, but has not yet started this course.';
 $string['unstarted'] = 'Courses not yet started';
