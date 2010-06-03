@@ -57,18 +57,13 @@
 	<td>label=Selenium test framework fullname 2</td>
 </tr>
 <tr>
-	<td>click</td>
+	<td>clickAndWait</td>
 	<td>//input[@value='Turn editing on']</td>
 	<td></td>
 </tr>
 <tr>
-	<td>waitForPageToLoad</td>
-	<td>30000</td>
-	<td></td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>//table[@id='competency']/tbody/tr[5]/td[3]/a[3]/img</td>
+	<td>clickAndWait</td>
+	<td>//tr[5]/td[3]/a[3]/img</td>
 	<td></td>
 </tr>
 <tr>
@@ -87,8 +82,8 @@
 	<td></td>
 </tr>
 <tr>
-	<td>click</td>
-	<td>//table[@id='competency']/tbody/tr[5]/td[3]/a[3]/img</td>
+	<td>clickAndWait</td>
+	<td>//tr[5]/td[3]/a[3]/img</td>
 	<td></td>
 </tr>
 <tr>
@@ -118,7 +113,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//table[@id='competency']/tbody/tr[2]/td[3]/a[3]/img</td>
+	<td>//td[3]/a[3]/img</td>
 	<td></td>
 </tr>
 <tr>
@@ -147,8 +142,13 @@
 	<td></td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
+	<td>click</td>
 	<td>link=Logout</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
 	<td></td>
 </tr>
 
