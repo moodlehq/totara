@@ -2015,8 +2015,8 @@ function facetoface_send_notice($postsubject, $posttext, $posttextmgrheading,
 	// Send email with iCal attachment
 	if ($notificationtype & MDL_F2F_ICAL) {
         foreach ($icalattachments as $attachment) {
-            if (!email_to_user($user, $fromaddress, $attachment['subject'], file_get_contents($CFG->dataroot . '/' .
-                               $attachment['filename']),'ical')) {
+            if (!email_to_user($user, $fromaddress, $attachment['subject'], $attachment['body'],
+                    $attachment['htmlbody'], $attachment['filename'], $attachmentfilename)) {
 
                 return get_string('error:cannotsendconfirmationuser', 'facetoface');
             }
