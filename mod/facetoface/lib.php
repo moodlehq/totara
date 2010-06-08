@@ -658,15 +658,7 @@ function facetoface_delete_session($session)
             FROM
                 {$CFG->prefix}facetoface_signups
             WHERE
-                sessionid IN
-                (
-                    SELECT
-                        id
-                    FROM
-                        {$CFG->prefix}facetoface_sessions
-                    WHERE
-                        facetoface = {$facetoface->id}
-                )
+                sessionid = {$session->id}
         )
         ")) {
         $result = false;
