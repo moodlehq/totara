@@ -66,24 +66,7 @@
 	<td>30000</td>
 	<td></td>
 </tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>link=Export in text format</td>
-	<td></td>
-</tr>
-<!--Selenium can't record the next action so the Ok button has to be hit manually-->
-<tr>
-	<td>clickAndWait</td>
-	<td>link=Export in ODS format</td>
-	<td></td>
-</tr>
-<!--Selenium can't record the next action so the Ok button has to be hit manually-->
-<tr>
-	<td>clickAndWait</td>
-	<td>link=Export in Excel format</td>
-	<td></td>
-</tr>
-<!--Selenium can't record the next action so the Ok button has to be hit manually-->
+<!-- Can't click links as they start a download - test manually -->
 <tr>
 	<td>click</td>
 	<td>//input[@value='Continue']</td>
@@ -94,7 +77,16 @@
 	<td>30000</td>
 	<td></td>
 </tr>
-
+<tr>
+	<td>click</td>
+	<td>link=Logout</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td>30000</td>
+	<td></td>
+</tr>
 </tbody></table>
 </body>
 </html>
