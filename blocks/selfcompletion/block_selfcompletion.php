@@ -83,7 +83,17 @@ class block_selfcompletion extends block_base {
         if ($completion->is_complete()) {
             return $this->content;
         } else {
-            $this->content->text = '';
+	    // Get generic blurb text
+            $this->content->text = get_string('blurb', 'block_selfcompletion');
+
+	    // Get course specific blurb text
+	    $blurbkey = 'blurb_course_'.$COURSE->id;
+	    $blurbstr = get_string($blurbkey, 'block_selfcompletion');
+
+	    if ($blurbstr !== '[['.$blurbkey.']]') {
+		$this->content->text .= '<br />'.$blurbstr;
+	    }
+
             $this->content->footer = '<br /><a href="'.$CFG->wwwroot.'/course/togglecompletion.php?course='.$COURSE->id.'">'.
                                        get_string('completecourse', 'block_selfcompletion').'</a>...';
         }
