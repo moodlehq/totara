@@ -115,7 +115,7 @@ class completion_completion extends data_object {
 
     /**
      * Finds and returns a data_object instance based on params.
-     * @static abstract
+     * @static static
      *
      * @param array $params associative arrays varname=>value
      * @return object data_object instance or false if none found.
@@ -124,6 +124,62 @@ class completion_completion extends data_object {
         $params['deleted'] = null;
         return self::fetch_helper('course_completions', __CLASS__, $params);
     }
+
+
+    /**
+     * Return user's status
+     *
+     * Uses the following properties to calculate:
+     *  - $timeenrolled
+     *  - $timestarted
+     *  - $timecompleted
+     *  - $rpl
+     *
+     * @static static
+     *
+     * @param   object  $completion  Object with at least the described columns
+     * @return  str     Completion status lang string key
+     */
+    public static function get_status($completion) {
+        // Check if a completion record was supplied
+        if (is_object($completion)) {
+            // Check we have the required data
+           if (!isset($completion->timeenrolled) ||
+                !isset($completion->timestarted) ||
+                !isset($completion->timecompleted))
+            {
+                error('Not enough data supplied to calculate Completion status');
+            }
+        }
+
+        // Check if complete
+        if ($completion->timecompleted) {
+
+            // Check for RPL
+            if (isset($completion->rpl) && strlen($completion->rpl)) {
+                return 'completeviarpl';
+            }
+            else {
+                return 'complete';
+            }
+        }
+
+        // Check if in progress
+        elseif ($completion->timestarted) {
+            return 'inprogress';
+        }
+
+        // Otherwise not yet started
+        elseif ($completion->timeenrolled) {
+            return 'notyetstarted';
+        }
+
+        // Otherwise they are not participating in this course
+        else {
+            return '';
+        }
+    }
+
 
     /**
      * Return status of this completion
