@@ -73,9 +73,12 @@ function print_dates($dates, $includebookings, $includegrades=false, $includesta
         }
 
         // include the grades/status in the display
-        if ($includegrades || $includestatus) {
-            print '<td><a href="'.$bookinghistorylink.$date->sessionid.'&amp;userid='.$date->userid.'">'.get_string('status_'.facetoface_get_status($date->status),'facetoface').'</a></td>';
+        foreach (array($includegrades, $includestatus) as $col) {
+            if ($col) {
+                print '<td><a href="'.$bookinghistorylink.$date->sessionid.'&amp;userid='.$date->userid.'">'.ucfirst(facetoface_get_status($date->status)).'</a></td>';
+            }
         }
+
         print '</tr>';
     }
     print '</table>';
