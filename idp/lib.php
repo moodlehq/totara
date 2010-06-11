@@ -311,10 +311,11 @@ function print_revision_details($revision, $can_submit, $can_approve=false, $pdf
     $nextactions = '';
     if ('approved' == $revision->status or 'overdue' == $revision->status) {
         if ($can_submit) {
-            $nextactions .= '<a href="'.$CFG->wwwroot.'/idp/evaluation.php?id=' . $revision->idp . '">'.get_string('evaluateplan', 'idp').'</a> - ';
+            $nextactions .= '<a href="'.$CFG->wwwroot.'/idp/evaluation.php?id=' . $revision->idp . '">'.get_string('evaluateplan', 'idp').'</a>';
         }
-        $nextactions .= '<a href="'.$CFG->wwwroot.'/idp/revision.php?id=' . $revision->idp . '&amp;print=1">'.get_string('printableview', 'idp').'</a>';
-        $nextactions .= '<a href="'.$CFG->wwwroot.'/idp/revision_pdf.php?id=' . $revision->idp . '">' . get_string('exporttopdf', 'idp') . '</a>';
+        //Disabled Temporarily
+        //$nextactions .= '<a href="'.$CFG->wwwroot.'/idp/revision.php?id=' . $revision->idp . '&amp;print=1">'.get_string('printableview', 'idp').'</a> - ';
+        //$nextactions .= '<a href="'.$CFG->wwwroot.'/idp/revision_pdf.php?id=' . $revision->idp . '">' . get_string('exporttopdf', 'idp') . '</a>';
     }
     elseif ('withdrawn' == $revision->status) {
         if ($can_submit) {
@@ -2067,10 +2068,10 @@ function print_revision_pdf($revision, $plan, $options=array()) {
 /**
  * Display a floating print button at the
  */
-function print_button() {
-    return  '<div id="page_print_button" style="float:right;">'
+function print_button() { //Currently disabled
+    return '';/* '<div id="page_print_button" style="float:right;">'
         . '<button onclick="document.location += \'&amp;print=1\';">'
-        . get_string('printviewbutton', 'idp').'</button></div>';
+        . get_string('printviewbutton', 'idp').'</button></div>';*/
 }
 
 /**
