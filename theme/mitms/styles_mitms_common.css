@@ -32,6 +32,25 @@ fieldset legend span.helplink {
     margin-left: 5px;
 }
 
+/**
+ * MITMS my courses
+ */
+div.mycourses td.status span {
+    text-indent: -1000px;
+    display: block;
+    width: 39px;
+    height: 12px;
+    background: transparent url(../../pix/i/progress-icons.png) no-repeat;
+}
+
+div.mycourses td.status span.completion-inprogress {
+    background-position: 0px -12px;
+}
+
+div.mycourses td.status span.completion-completed {
+    background-position: 0px -24px;
+}
+
 /*****************************************************************************/
 /** Report Builder **/
 /*****************************************************************************/
