@@ -16,9 +16,10 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 
-require_once '../../../../config.php';
-require_once $CFG->libdir.'/adminlib.php';
-require_once 'lib.php';
+require_once('../../../../config.php');
+require_once($CFG->libdir.'/adminlib.php');
+require_once('../lib.php');
+require_once('lib.php');
 
 ///
 /// Setup / loading data
@@ -29,9 +30,7 @@ $sitecontext = get_context_instance(CONTEXT_SYSTEM);
 // Setup page and check permissions
 admin_externalpage_setup('competencyscales');
 
-// Load all scales
-$scales = get_records('comp_scale', null, null, 'name');
-
+/*
 // Cache permissions
 $can_edit = has_capability('moodle/local:updatecompetency', $sitecontext);
 $can_delete = has_capability('moodle/local:deletecompetency', $sitecontext);
@@ -87,5 +86,13 @@ if ($scales) {
 echo '<div class="buttons">';
 print_single_button('edit.php', null, get_string('scalescustomcreate'));
 echo '</div>';
+*/
 
+admin_externalpage_print_header();
+
+$hierarchy = new competency();
+$scales = $hierarchy->get_scales();
+if ($scales) {
+    competency_scale_display_table($scales, $editingon=1);
+}
 admin_externalpage_print_footer();

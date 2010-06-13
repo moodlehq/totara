@@ -104,18 +104,79 @@ class hierarchy {
 
     /**
      * Get framework
+     * @var array $extra_data optional param specifying extra info to be fetched and returned
      * @return array|false
      */
-    function get_frameworks() {
-        return get_records($this->shortprefix.'_framework', '', '', 'sortorder, fullname');
+    function get_frameworks($extra_data=array()) {
+        if (!count($extra_data)) {
+            return get_records($this->shortprefix.'_framework', '', '', 'sortorder, fullname');
+        }
+
+        global $CFG;
+
+        $sql = "SELECT f.* ";
+        if ($extra_data['depth_count']) {
+            $sql .= ",(SELECT MAX(depthlevel) FROM {$CFG->prefix}{$this->shortprefix}_depth d1 
+                        WHERE d1.frameworkid = f.id) AS depth_count "; 
+        }
+        if ($extra_data['custom_field_count']) {
+            $sql .= ",(SELECT COUNT(*) FROM {$CFG->prefix}{$this->shortprefix}_depth d2 
+                        JOIN {$CFG->prefix}{$this->shortprefix}_depth_info_field if ON d2.id = if.depthid 
+                        WHERE d2.frameworkid=f.id) AS custom_field_count ";
+        }
+        $sql .= "FROM {$CFG->prefix}{$this->shortprefix}_framework f";
+
+        return get_records_sql($sql);
+
     }
 
     /**
      * Get depths for a framework
+     * @var array $extra_data optional param specifying extra info to be fetched and returned
      * @return array|false
      */
-    function get_depths() {
-        return get_records($this->shortprefix.'_depth', 'frameworkid', $this->frameworkid, 'depthlevel');
+    function get_depths($extra_data=array()) {
+        if (!count($extra_data)) {
+           return get_records($this->shortprefix.'_depth', 'frameworkid', $this->frameworkid, 'depthlevel');
+        }
+
+        global $CFG;
+
+        $sql = "SELECT d.* ";
+        if ($extra_data['custom_field_count']) {
+            $sql .= ", (SELECT COUNT(*) FROM {$CFG->prefix}{$this->shortprefix}_depth_info_field if 
+                        WHERE if.depthid = d.id) AS custom_field_count ";
+        }
+        $sql .= " FROM {$CFG->prefix}{$this->shortprefix}_depth d 
+                  WHERE d.frameworkid = {$this->frameworkid}
+                  ORDER BY d.fullname";
+        
+        return get_records_sql($sql);
+    }
+
+    function get_custom_field_categories($depthid) {
+        global $CFG;
+
+        $sql = "SELECT c.*,
+                (SELECT COUNT(*) FROM {$CFG->prefix}{$this->shortprefix}_depth_info_field f 
+                    WHERE f.categoryid = c.id) AS custom_field_count
+                FROM {$CFG->prefix}{$this->shortprefix}_depth_info_category c 
+                WHERE c.depthid = {$depthid}
+                ORDER BY c.name";
+
+        return get_records_sql($sql);
+    }
+
+    function get_custom_field_category_by_id($id) {
+        return get_record($this->shortprefix.'_depth_info_category', 'id', $id);
+    }
+
+    /**
+     * Get scales for a hierachy
+     * @return array|false
+     */
+    function get_scales() {
+        return get_records($this->shortprefix.'_scale', '', '', 'name');
     }
 
     /**

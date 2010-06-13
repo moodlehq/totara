@@ -146,22 +146,8 @@ $values = get_records('comp_scale_values', 'scaleid', $scale->id, 'sortorder');
 admin_externalpage_print_header();
 
 // Display info about scale
-print_heading(get_string('competencyscalename', 'competency', $scale->name));
-
-if (strlen(trim($scale->description))) {
-
-?>
-<table class="generalbox boxaligncenter viewcompetency" cellpadding="5" cellspacing="1">
-<tbody>
-    <tr>
-        <th class="header"><?php echo get_string('description') ?></th>
-        <td class="cell"><?php echo format_text($scale->description, FORMAT_HTML) ?></td>
-    </tr>
-</tbody>
-</table>
-<?php
-
-}
+print_heading(format_string($scale->name), 'left', 1);
+echo '<p>'.format_string($scale->description, FORMAT_HTML).'</p>';
 
 // Display scale values
 if ($values) {
@@ -170,7 +156,7 @@ if ($values) {
         echo "<input type=\"hidden\" name=\"id\" value=\"{$id}\" />\n";
     }
     $table = new object();
-    $table->class = 'generalbox';
+    $table->class = 'generaltable';
     $table->data = array();
 
     // Headers
@@ -250,7 +236,7 @@ if ($values) {
         $table->data[] = $row;
     }
 
-    print_heading(get_string('scalevalues', 'competency'));
+    print_heading(get_string('scales', 'competency'));
 
     if ($can_edit ){
         $row = array();
@@ -287,7 +273,7 @@ if ($can_edit) {
     print_single_button($CFG->wwwroot.'/hierarchy/type/competency/scale/editvalue.php', $options, get_string('addnewscalevalue', 'competency'), 'get');
 }
 
-print_single_button($CFG->wwwroot.'/hierarchy/type/competency/scale/index.php', array(), get_string('returntocompetencyscales', 'competency'), 'get');
+//print_single_button($CFG->wwwroot.'/hierarchy/type/competency/scale/index.php', array(), get_string('returntocompetencyscales', 'competency'), 'get');
 
 echo '</div>';
 

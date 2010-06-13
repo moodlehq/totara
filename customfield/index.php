@@ -7,10 +7,11 @@ require_once($CFG->dirroot.'/customfield/fieldlib.php');
 require_once($CFG->dirroot.'/customfield/definelib.php');
 require_once($CFG->dirroot.'/hierarchy/lib.php');
 
-$type    = required_param('type', PARAM_SAFEDIR);        // hierarchy name or mod name
-$subtype = optional_param('subtype', null, PARAM_ALPHA); // e.g., 'depth' or f2f 'session'
-$depthid = optional_param('depthid', '0', PARAM_INT);    // depthid if hierarchy
-$action  = optional_param('action', '', PARAM_ALPHA);    // param for some action
+$type       = required_param('type', PARAM_SAFEDIR);        // hierarchy name or mod name
+$subtype    = optional_param('subtype', null, PARAM_ALPHA); // e.g., 'depth' or f2f 'session'
+$depthid    = optional_param('depthid', '0', PARAM_INT);    // depthid if hierarchy
+$categoryid = optional_param('categoryid', '0', PARAM_INT);    // categoryid if hierarchy and depth
+$action     = optional_param('action', '', PARAM_ALPHA);    // param for some action
 
 // Confirm the hierarchy type exists
 if (file_exists($CFG->dirroot.'/hierarchy/type/'.$type.'/lib.php')) {
@@ -32,6 +33,11 @@ if ($depthid) {
     $redirect .= '&depthid='.$depthid;
     $redirectoptions['depthid'] = $depthid;
     $depth      = $hierarchy->get_depth_by_id($depthid);
+    if ($categoryid) {
+        $redirect .= '&categoryid='.$categoryid;
+        $redirectoptions['categoryid'] = $categoryid;
+        $category = $hierarchy->get_custom_field_category_by_id($categoryid);
+    }
 
     $pagetitle = format_string($depth->fullname);
     $navlinks[] = array('name' => get_string('administration'), 'link'=> '', 'type'=>'title');
@@ -132,13 +138,50 @@ switch ($action) {
         break;
     default:
 }
-
 // Display page header
-print_header_simple($pagetitle, '', $navigation, '', null, true);
-print_heading(get_string($type.'depthcustomfields', $type));
+if (!($depthid && $categoryid)) {
+    print_header_simple($pagetitle, '', $navigation, '', null, true);
+    print_heading(get_string($type.'depthcustomfields', $type));
+} else {
+    admin_externalpage_setup($type.'frameworkmanage', '', array('type'=>$type));
+}
+// show custom fields for the given depth and category
+if ($categoryid && $depthid) {
+    admin_externalpage_print_header();
+    print_heading(format_string($depth->fullname)." : ".format_string($category->name), 'left', 1);
+    print_heading(get_string('customfields', 'customfields'));
+    $table = new object();
+    $table->head  = array(get_string('customfield', 'customfields'), get_string('edit'));
+    $table->align = array('left', 'right');
+    $table->width = '95%';
+    $table->class = 'generaltable customfields';
+    $table->data = array();
 
+
+    if ($fields = get_records_select($tableprefix.'_info_field', "categoryid=$categoryid", 'sortorder ASC')) {
+
+        $fieldcount = count($fields);
+
+        foreach ($fields as $field) {
+            $table->data[] = array($field->fullname, customfield_edit_icons($field, $fieldcount, $depthid, $type, $subtype));
+        }   
+    } else {
+        print_heading(format_string($category->name).' '.customfield_category_icons($category, $categorycount, 0, $depthid, $type, $subtype));
+    }
+    if (count($table->data)) {
+        print_table($table);
+    } else {
+        notify(get_string('nocustomfieldsdefined', 'customfields'));
+    }
+    echo "<br>";
+    // Create a new custom field dropdown menu
+    $options = customfield_list_datatypes();
+    popup_form('index.php?type='.$type.'&amp;subtype='.$subtype.'&id=0&amp;action=editfield&amp;depthid='.$depthid.'&amp;datatype=', $options, 'newfieldform','','choose','','',false,'self',get_string('createnewcustomfield', 'customfields'));
+
+
+
+} else if ($depthid) {
 // show custom fields for the given depth
-if ($depthid) {
 
     $framework  = $hierarchy->get_framework($depth->frameworkid);
     $categories = get_records_select($tableprefix.'_info_category', "depthid='$depthid'", 'sortorder ASC');
@@ -169,7 +212,6 @@ if ($depthid) {
             } else {
                 print_heading(format_string($category->name).' '.customfield_category_icons($category, $categorycount, 0, $depthid, $type, $subtype));
             }
-
             if (count($table->data)) {
                 print_table($table);
             } else {

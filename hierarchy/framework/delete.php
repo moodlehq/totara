@@ -39,9 +39,11 @@ $framework = $hierarchy->get_framework($id);
 admin_externalpage_print_header();
 
 if (!$delete) {
-    $strdelete = get_string('deletecheckframework', $type);
+    $strdelete = get_string('deletecheckframework', $type, format_string($framework->fullname));
 
-    notice_yesno("$strdelete<br /><br />" . format_string($framework->fullname),
+    print_heading("Delete ".format_string($framework->fullname), 'left', 1);
+
+    notice_yesno("$strdelete<br /><br />",
                  "{$CFG->wwwroot}/hierarchy/framework/delete.php?type={$type}&id={$framework->id}&amp;delete=".md5($framework->timemodified)."&amp;sesskey={$USER->sesskey}",
                  "{$CFG->wwwroot}/hierarchy/framework/index.php?type={$type}");
 

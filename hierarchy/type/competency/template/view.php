@@ -48,7 +48,7 @@ $hierarchy->hierarchy_page_setup('template/view');
 /// Display page header
 admin_externalpage_print_header();
 
-$heading = "{$framework->fullname} - {$item->fullname}";
+$heading = "{$item->fullname}";
 
 // If editing on, add edit icon
 if ($editingon) {
@@ -59,82 +59,50 @@ if ($editingon) {
             "<img src=\"{$CFG->pixpath}/t/edit.gif\" class=\"iconsmall\" alt=\"$str_edit\" /></a>";
 }
 
-print_heading($heading);
+print_heading($heading, 'left', 1);
 
 $depthstr = get_string('template', $hierarchy->prefix);
 
-?>
-<table class="generalbox viewhierarchyitem" cellpadding="5" cellspacing="1">
-<tbody>
-    <tr>
-        <th class="header" width="200"><?php echo get_string('fullnameview', $hierarchy->prefix, $depthstr) ?></th>
-        <td class="cell" width="400"><?php echo format_string($item->fullname) ?></td>
-    </tr>
-    <tr>
-        <th class="header"><?php echo get_string('descriptionview', $hierarchy->prefix, $depthstr) ?></th>
-        <td class="cell"><?php echo format_text($item->description, FORMAT_HTML) ?></td>
-    </tr>
-</tbody>
-</table>
+echo '<p>'.format_text($item->description, FORMAT_HTML).'</p>';
 
-<?php
 
 ///
 /// Display assigned competencies
 ///
 print_heading(get_string('assignedcompetencies', $hierarchy->prefix));
 
-?>
-<table width="95%" cellpadding="5" cellspacing="1" id="list-assignment" class="generalbox edit<?php echo $hierarchy->prefix ?> boxaligncenter">
-<tr>
-    <th style="vertical-align:top; text-align: left; white-space:nowrap;" class="header c0" scope="col">
-        <?php echo get_string('depthlevel', $hierarchy->prefix); ?>
-    </th>
-
-    <th style="vertical-align:top; text-align: left; white-space:nowrap;" class="header c1" scope="col">
-        <?php echo get_string('name'); ?>
-    </th>
-
-<?php
-    if ($editingon) {
-?>
-    <th style="vertical-align:top; text-align:center; white-space:nowrap;" class="header c4" scope="col">
-        <?php echo get_string('options', $hierarchy->prefix); ?>
-    </th>
-<?php
-    }
-?>
-</tr>
-<?php
-
 if ($competencies) {
+    $table = new object();
+    $table->class = 'generaltable';
+    $table->data = array();
+
+    // Headers
+    $table->head = array(get_string('name'), get_string('depthlevel', $hierarchy->prefix));
+    $table->align = array('left', 'left');
+    if ($editingon) {
+        $table->head[] = get_string('options', $hierarchy->prefix);
+        $table->align[] = 'center';
+    }
 
     foreach ($competencies as $competency) {
-
-        echo '<tr>';
-        echo '<td>'.$competency->depth.'</td>';
-        echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/item/view.php?type={$hierarchy->prefix}&id={$competency->id}\">{$competency->competency}</a></td>";
-
+        $row = array();
+        $row[] = $competency->competency;        
+        $row[] = $competency->depth;        
         if ($editingon) {
-            echo "<td style=\"text-align: center;\">";
 
-            echo "<a href=\"{$CFG->wwwroot}/hierarchy/type/{$hierarchy->prefix}/template/remove_assignment.php?templateid={$item->id}&assignment={$competency->id}\" title=\"$str_remove\">".
+            $row[] = "<a href=\"{$CFG->wwwroot}/hierarchy/type/{$hierarchy->prefix}/template/remove_assignment.php?templateid={$item->id}&assignment={$competency->id}\" title=\"$str_remove\">".
     "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_remove\" /></a>";
 
-            echo "</td>";
         }
 
-        echo '</tr>';
+        $table->data[] = $row;
     }
-
+    print_table($table);    
 } else {
-    // # cols varies
+    // # cols varies TODO
     $cols = $editingon ? 3 : 2;
     echo '<tr class="noitems-assignment"><td colspan="'.$cols.'"><i>'.get_string('noassignedcompetenciestotemplate', $hierarchy->prefix).'</i></td></tr>';
 }
-
-echo '</table>';
-
 
 // Navigation / editing buttons
 echo '<div class="buttons">';
@@ -166,7 +134,7 @@ if ($can_edit) {
 <?php
 
 }
-
+/*
 // Return to template list
 $options = array('frameworkid' => $framework->id);
 print_single_button(
@@ -175,7 +143,7 @@ print_single_button(
     get_string('returntotemplates', $hierarchy->prefix),
     'get'
 );
-
+*/
 echo '</div>';
 
 /// and proper footer

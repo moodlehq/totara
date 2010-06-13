@@ -27,4 +27,82 @@ function competency_scale_is_used( $scaleid ){
     return (boolean) count_records('comp_scale_assignments','scaleid',$scaleid);
 }
 
+
+/**
+ * A function to display a table list of competency scales
+ * @param array $scales the scales to display in the table
+ * @return html
+ */
+function competency_scale_display_table($scales, $editingon=0) {
+    global $CFG;
+
+    $sitecontext = get_context_instance(CONTEXT_SYSTEM);
+
+    // Cache permissions
+    $can_edit = has_capability('moodle/local:updatecompetency', $sitecontext);
+    $can_delete = has_capability('moodle/local:deletecompetency', $sitecontext);
+
+    // Make sure user has capability to edit
+    if (!(($can_edit || $can_delete) && $editingon)) {
+        $editingon = 0;
+    }
+
+    $stredit = get_string('edit');
+    $strdelete = get_string('delete');
+    $stroptions = get_string('options','local');
+    ///
+    /// Build page
+    ///
+
+    if ($scales) {
+        $table = new stdClass();
+        $table->head  = array(get_string('scale'), get_string('used'));
+        $table->size = array('70%', '20%');
+        $table->align = array('left', 'center');
+        $table->width = '95%';
+        if ($editingon) {
+            $table->head[] = $stroptions;
+            $table->align[] = array('center');
+            $table->size[] = array('10%');
+        }
+
+        $table->data = array();
+        foreach($scales as $scale) {
+            $line = array();
+            $line[] = "<a href=\"$CFG->wwwroot/hierarchy/type/competency/scale/view.php?id={$scale->id}\">".format_string($scale->name)."</a>";
+            if ( competency_scale_is_used( $scale->id ) ) {
+                $line[] = get_string('yes');
+            } else {
+                $line[] = get_string('no');
+            }
+
+            $buttons = array();
+            if ($editingon) {
+                if ($can_edit) {
+                    $buttons[] = "<a title=\"$stredit\" href=\"$CFG->wwwroot/hierarchy/type/competency/scale/edit.php?id=$scale->id\"><img".
+                        " src=\"$CFG->pixpath/t/edit.gif\" class=\"iconsmall\" alt=\"$stredit\" /></a> ";
+                }
+
+                if ($can_delete) {
+                    $buttons[] = "<a title=\"$strdelete\" href=\"$CFG->wwwroot/hierarchy/type/competency/scale/delete.php?id=$scale->id\"><img".
+                                " src=\"$CFG->pixpath/t/delete.gif\" class=\"iconsmall\" alt=\"$strdelete\" /></a> ";
+                }
+                $line[] = implode($buttons, ' ');
+            }
+
+            $table->data[] = $line;
+        }
+    }
+
+    print_heading(get_string('competencyscales', 'competency'));
+
+    if ($scales) {
+        print_table($table);
+    }
+
+    echo '<div class="buttons">';
+    print_single_button("$CFG->wwwroot/hierarchy/type/competency/scale/edit.php", null, get_string('scalescustomcreate'));
+    echo '</div>';
+}
+
 ?>
