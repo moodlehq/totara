@@ -88,7 +88,7 @@ if ($frameworks) {
     $table->width = '95%';
 
     // Setup column headers
-    $table->head = array(get_string('name', $type), get_string('depths', $type), get_string('competencycustomfields', $type));
+    $table->head = array(get_string('name', $type), get_string('depths', $type), get_string("{$type}customfields", $type));
     $table->align = array('left', 'center', 'center');
 
     // Add edit column

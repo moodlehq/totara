@@ -1,6 +1,7 @@
 <?php
 $string['organisation'] = 'Organisation';
 $string['organisationplural'] = 'Organisations';
+$string['depths'] = 'Depths';
 $string['adddepthlevel'] = 'Add a new depth level';
 $string['addneworganisation'] = 'Add new organisation';
 $string['addnewframework'] = 'Add new organisation framework';
@@ -9,6 +10,8 @@ $string['organisations'] = 'Organisations';
 $string['organisationaddnew'] = 'Add a new organisation';
 $string['organisationbulkaction'] = 'Bulk actions';
 $string['organisationcustomfields'] = 'Custom fields';
+$string['frameworks'] = 'Organisation frameworks';
+$string['organisationframeworks'] = 'Organisation Frameworks';
 $string['organisationframeworkmanage'] = 'Manage frameworks';
 $string['organisationmanage'] = 'Manage organisations';
 $string['deletecheck'] = 'Are you absolutely sure you want to completely delete this organisation, all its children and the data they contain?';
@@ -52,3 +55,6 @@ $string['shortnameframework'] = 'Shortname';
 $string['shortnameview'] = '$a short name';
 $string['type'] = 'Type';
 $string['weight'] = 'Weight';
+$string['name'] = 'Name';
+$string['depthlevels'] = 'Depth levels';
+$string['editgeneric'] = 'Edit $a';
