@@ -33,7 +33,7 @@ require_capability('moodle/local:delete'.$type.'depth', $sitecontext);
 $depth = $hierarchy->get_depth_by_id($id);
 $hierarchy->get_framework($depth->frameworkid);
 
-$back_url = "{$CFG->wwwroot}/hierarchy/index.php?type={$type}&amp;frameworkid={$depth->frameworkid}";
+$back_url = "{$CFG->wwwroot}/hierarchy/framework/view.php?type={$type}&amp;frameworkid={$depth->frameworkid}";
 
 ///
 /// Display page

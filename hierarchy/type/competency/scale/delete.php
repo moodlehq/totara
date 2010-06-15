@@ -31,7 +31,7 @@ if (!$scale = get_record('comp_scale', 'id', $id)) {
 
 admin_externalpage_print_header();
 
-$returnurl = "{$CFG->wwwroot}/hierarchy/type/competency/scale/index.php";
+$returnurl = "{$CFG->wwwroot}/hierarchy/framework/index.php?type=competency";
 $deleteurl = "{$CFG->wwwroot}/hierarchy/type/competency/scale/delete.php?id={$scale->id}&amp;delete=".md5($scale->timemodified)."&amp;sesskey={$USER->sesskey}";
 
 // Can't delete if the scale is in use

@@ -46,7 +46,16 @@ require_capability('moodle/local:view'.$hierarchy->prefix, $sitecontext);
 $hierarchy->hierarchy_page_setup('template/view');
 
 /// Display page header
-admin_externalpage_print_header();
+$navlinks = array();    // Breadcrumbs
+$navlinks[] = array('name'=>get_string("competencyframeworks", 'competency'), 
+                    'link'=>"{$CFG->wwwroot}/hierarchy/framework/index.php?type=competency", 
+                    'type'=>'misc');
+$navlinks[] = array('name'=>format_string($framework->fullname), 
+                    'link'=>"{$CFG->wwwroot}/hierarchy/framework/view.php?type=competency&frameworkid={$framework->id}", 
+                    'type'=>'misc');    // Framework View    
+$navlinks[] = array('name'=>format_string($item->fullname), 'link'=>'', 'type'=>'misc');
+
+admin_externalpage_print_header('', $navlinks);
 
 $heading = "{$item->fullname}";
 

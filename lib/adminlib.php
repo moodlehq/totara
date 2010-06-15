@@ -4369,8 +4369,9 @@ function admin_externalpage_setup($section, $extrabutton='', $extraurlparams=arr
 /**
  * Print header for admin page
  * @param string $focus focus element
+ * @param array $navlinks array of $navlinks array (keys: name, link, type) for use as breadcrumbs
  */
-function admin_externalpage_print_header($focus='') {
+function admin_externalpage_print_header($focus='', $navlinks='') {
 
     if (!is_string($focus)) {
         $focus = ''; // BC compatibility, there used to be adminroot parameter
@@ -4390,7 +4391,7 @@ function admin_externalpage_print_header($focus='') {
                                                blocks_preferred_width($pageblocks[BLOCK_POS_RIGHT]),
                                                BLOCK_R_MAX_WIDTH);
 
-        $PAGE->print_header('', $focus);
+        $PAGE->print_header('', $focus, $navlinks);
         echo '<table id="layout-table" summary=""><tr>';
 
         $lt = (empty($THEME->layouttable)) ? array('left', 'middle', 'right') : $THEME->layouttable;

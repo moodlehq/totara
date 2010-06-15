@@ -18,7 +18,9 @@ class category_form extends moodleform {
         $mform->addElement('hidden', 'action', 'editcategory');
         $mform->addElement('hidden', 'type', $datasent['type']);
         $mform->addElement('hidden', 'subtype', $datasent['subtype']);
+        $mform->addElement('hidden', 'frameworkid', $datasent['frameworkid']);
         $mform->addElement('hidden', 'depthid', $datasent['depthid']);
+        $mform->addElement('hidden', 'categoryid', $datasent['categoryid']);
         $mform->addElement('hidden', 'tableprefix', $datasent['tableprefix']);
 
         $mform->addElement('text', 'name', get_string('categorynamemustbeunique', 'customfields'), 'maxlength="255" size="30"');

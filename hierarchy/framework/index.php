@@ -146,7 +146,11 @@ if ($frameworks) {
 }
 
 // Display page
-admin_externalpage_print_header();
+
+$navlinks = array();    // Breadcrumbs
+$navlinks[] = array('name'=>get_string("{$type}frameworks", $type), 'link'=>'', 'type'=>'misc');
+
+admin_externalpage_print_header('', $navlinks);
 
 if ($frameworks) {
     print_heading(get_string('frameworks', $type));

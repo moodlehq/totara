@@ -130,7 +130,17 @@ if ($frameworkform->is_cancelled()) {
 
 
 /// Display page header
-admin_externalpage_print_header();
+$navlinks = array();    // Breadcrumbs
+$navlinks[] = array('name'=>get_string("{$type}frameworks", $type), 
+                    'link'=>"{$CFG->wwwroot}/hierarchy/framework/index.php?type={$type}", 
+                    'type'=>'misc');
+if ($id == 0) {
+    $navlinks[] = array('name'=>get_string('addnewframework', $type), 'link'=>'', 'type'=>'misc');
+} else {
+    $navlinks[] = array('name'=>format_string($framework->fullname), 'link'=>'', 'type'=>'misc');
+}
+
+admin_externalpage_print_header('', $navlinks);
 
 if ($framework->id == 0) {
     print_heading(get_string('addnewframework', $type));

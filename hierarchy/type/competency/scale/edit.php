@@ -52,7 +52,7 @@ $mform->set_data($scale);
 // If cancelled
 if ($mform->is_cancelled()) {
 
-    redirect("$CFG->wwwroot/hierarchy/type/competency/scale/index.php");
+    redirect("$CFG->wwwroot/hierarchy/framework/index.php?type=competency");
 
 // Update data
 } else if ($scalenew = $mform->get_data()) {
@@ -124,8 +124,21 @@ if ($mform->is_cancelled()) {
     redirect("$CFG->wwwroot/hierarchy/type/competency/scale/view.php?id={$scalenew->id}");
 }
 
-admin_externalpage_print_header();
-print_heading(get_string('scalescustomcreate'));
+/// Print Page
+$navlinks = array();    // Breadcrumbs
+$navlinks[] = array('name'=>get_string("competencyframeworks", 'competency'), 
+                    'link'=>"{$CFG->wwwroot}/hierarchy/framework/index.php?type=competency", 
+                    'type'=>'misc');
+if ($id == 0) { // Add
+    $navlinks[] = array('name'=>get_string('scalescustomcreate'), 'link'=>'', 'type'=>'misc');
+    $heading = get_string('scalescustomcreate');
+} else {    //Edit
+    $navlinks[] = array('name'=>get_string('editscale', 'grades', format_string($scale->name)), 'link'=>'', 'type'=>'misc');
+    $heading = get_string('editscale', 'grades');
+}
+
+admin_externalpage_print_header('', $navlinks);
+print_heading($heading);
 $mform->display();
 
 admin_externalpage_print_footer();

@@ -30,6 +30,7 @@ class field_form extends moodleform {
         $mform->addElement('hidden', 'datatype', $datasent['datatype']);
         $mform->addElement('hidden', 'type', $datasent['type']);
         $mform->addElement('hidden', 'subtype', $datasent['subtype']);
+        $mform->addElement('hidden', 'frameworkid', $datasent['frameworkid']);
         $mform->addElement('hidden', 'depthid', $datasent['depthid']);
         $mform->addElement('hidden', 'tableprefix', $datasent['tableprefix']);
 

@@ -142,8 +142,13 @@ if ($can_edit) {
 // Load values
 $values = get_records('comp_scale_values', 'scaleid', $scale->id, 'sortorder');
 
+$navlinks = array();    // Breadcrumbs
+$navlinks[] = array('name'=>get_string("competencyframeworks", 'competency'), 
+                    'link'=>"{$CFG->wwwroot}/hierarchy/framework/index.php?type=competency", 
+                    'type'=>'misc');
+$navlinks[] = array('name'=>format_string($scale->name), 'link'=>'', 'type'=>'misc');
 
-admin_externalpage_print_header();
+admin_externalpage_print_header('', $navlinks);
 
 // Display info about scale
 print_heading(format_string($scale->name), 'left', 1);

@@ -126,7 +126,7 @@ class page_admin extends page_base {
         parent::init_quick($data);
     }
 
-    function print_header($section = '', $focus='') {
+    function print_header($section = '', $focus='', $navlinks='') {
         global $USER, $CFG, $SITE;
 
         $this->init_full($section); // we're trusting that init_full() has already been called by now; it should have.
@@ -148,9 +148,12 @@ class page_admin extends page_base {
         }
         $buttons .= $this->extrabutton;
 
-        $navlinks = array();
-        foreach ($this->visiblepathtosection as $element) {
-            $navlinks[] = array('name' => $element, 'link' => null, 'type' => 'misc');
+        // Print some default breadcrumbs if no $navlinks specified
+        if (empty($navlinks)) {
+            $navlinks = array();
+            foreach ($this->visiblepathtosection as $element) {
+                $navlinks[] = array('name' => $element, 'link' => null, 'type' => 'misc');
+            }
         }
         $navigation = build_navigation($navlinks);
 

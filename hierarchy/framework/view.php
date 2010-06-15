@@ -76,17 +76,17 @@ if ($depths) {
 
         $cssclass = '';
 
-        $row[] = "<a $cssclass href=\"{$CFG->wwwroot}/customfield/custom_field_categories.php?type={$type}&depthid={$depth->id}\">{$depth->fullname}</a>";
+        $row[] = "<a $cssclass href=\"{$CFG->wwwroot}/customfield/custom_field_categories.php?type={$type}&frameworkid={$framework->id}&depthid={$depth->id}\">{$depth->fullname}</a>";
         $row[] = $depth->custom_field_count;
 
         // Add edit link
         $buttons = array();
         if ($editingon && $can_edit) {
-            $buttons[] = "<a href=\"{$CFG->wwwroot}/hierarchy/depth/edit.php?type={$type}&id={$depth->id}\" title=\"$str_edit\">".
+            $buttons[] = "<a href=\"{$CFG->wwwroot}/hierarchy/depth/edit.php?type={$type}&frameworkid={$frameworkid}&id={$depth->id}\" title=\"$str_edit\">".
                 "<img src=\"{$CFG->pixpath}/t/edit.gif\" class=\"iconsmall\" alt=\"$str_edit\" /></a>";
         }
         if ($editingon && $can_delete) {
-            $buttons[] = "<a href=\"{$CFG->wwwroot}/hierarchy/depth/delete.php?type={$type}&id={$depth->id}\" title=\"$str_delete\">".
+            $buttons[] = "<a href=\"{$CFG->wwwroot}/hierarchy/depth/delete.php?type={$type}&frameworkid={$frameworkid}&id={$depth->id}\" title=\"$str_delete\">".
                 "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_delete\" /></a>";
         }
         if ($buttons) {
@@ -100,7 +100,13 @@ if ($depths) {
 }
 
 // Display page
-admin_externalpage_print_header();
+$navlinks = array();    // Breadcrumbs
+$navlinks[] = array('name'=>get_string("{$type}frameworks", $type), 
+                    'link'=>"{$CFG->wwwroot}/hierarchy/framework/index.php?type={$type}", 
+                    'type'=>'misc');
+$navlinks[] = array('name'=>format_string($framework->fullname), 'link'=>'', 'type'=>'misc');
+
+admin_externalpage_print_header('', $navlinks);
 
 print_heading($framework->fullname, 'left', 1);
 echo "<p>{$framework->description}</p>";
