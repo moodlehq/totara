@@ -152,11 +152,11 @@ $navlinks[] = array('name'=>get_string("{$type}frameworks", $type), 'link'=>'', 
 
 admin_externalpage_print_header('', $navlinks);
 
+print_heading(get_string('frameworks', $type));
 if ($frameworks) {
-    print_heading(get_string('frameworks', $type));
     print_table($table);
 } else {
-    print_heading(get_string('noframeworks', $type));
+    echo '<p>'.get_string('noframeworks', $type).'</p><br>';
 }
 
 
@@ -174,9 +174,7 @@ if ($can_add) {
 if (file_exists($CFG->dirroot.'/hierarchy/type/'.$type.'/scale/lib.php')) {
     include($CFG->dirroot.'/hierarchy/type/'.$type.'/scale/lib.php');
     $scales = $hierarchy->get_scales();
-    if ($scales) {
-        call_user_func("{$type}_scale_display_table", $scales, $editingon);
-    }
+    call_user_func("{$type}_scale_display_table", $scales, $editingon);
 } 
 
 print_footer();

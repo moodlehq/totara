@@ -43,6 +43,7 @@ admin_externalpage_print_header();
 
 // User hasn't confirmed deletion yet
 if (!$delete) {
+    print_heading(get_string('deletedepth', $type, format_string($depth->fullname)), 'left', 1);
 
     // Check whether the depth level even can be deleted
     $safetodelete = $hierarchy->is_safe_to_delete_depth($depth->id);
@@ -50,7 +51,7 @@ if (!$delete) {
     // If safe, prompt for confirmation
     if ( $safetodelete === true ){
         $strdelete = get_string('deletecheckdepth', 'hierarchy');
-        notice_yesno("$strdelete<br /><br />" . format_string($depth->fullname),
+        notice_yesno("$strdelete<br /><br />",
                      "{$CFG->wwwroot}/hierarchy/depth/delete.php?type={$type}&amp;id={$depth->id}&amp;delete=".md5($depth->timemodified)."&amp;sesskey={$USER->sesskey}",
                      $back_url);
     } else {

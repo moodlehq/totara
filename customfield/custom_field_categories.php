@@ -44,7 +44,7 @@ if ($can_add || $can_edit || $can_delete) {
 }
 
 // Setup page and check permissions
-admin_externalpage_setup($type.'frameworkmanage', $navbaritem, array('type'=>$type));  //TODO: fix
+admin_externalpage_setup($type.'frameworkmanage', $navbaritem, array('type'=>$type));
 
 ///
 /// Perform actions first
@@ -118,8 +118,6 @@ if ($categories) {
 
         $table->data[] = $row;
     }
-} else {
-    echo "<p>No custom field categories found</p>";
 }
 
 // Display page
@@ -144,7 +142,7 @@ print_heading(get_string('customfieldcategories', 'customfields'));
 if ($categories) {
     print_table($table);
 } else {
-    print_heading(get_string('noframeworks', $type)); //TODO: fix
+    echo '<p>'.get_string('nocustomfieldcategoriesdefined', 'customfields').'</p>';
 }
 // Depth Add button
 if ($can_add) {

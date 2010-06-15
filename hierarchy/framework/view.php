@@ -19,7 +19,6 @@
         $hierarchy = new $type();
         $framework = $hierarchy->get_framework($frameworkid);
     } else {
-        // don't error, just echo!
         error('error:depthnotfound', 'hierarchy', $type);
     }
 
@@ -95,8 +94,6 @@ if ($depths) {
 
         $table->data[] = $row;
     }
-} else {
-    echo "<p>No depth levels found</p>";
 }
 
 // Display page
@@ -116,7 +113,7 @@ print_heading(get_string('depthlevels', $type));
 if ($depths) {
     print_table($table);
 } else {
-    print_heading(get_string('noframeworks', $type));
+    echo "<p>".get_string('nodepthlevels', $type)."</p>";
 }
 // Depth Add button
 if ($can_add) {
@@ -132,9 +129,8 @@ if ($can_add) {
 if (file_exists($CFG->dirroot.'/hierarchy/type/'.$type.'/template/lib.php')) {
     include($CFG->dirroot.'/hierarchy/type/'.$type.'/template/lib.php');
     $templates = $hierarchy->get_templates();
-    if ($templates) {
-        call_user_func("{$type}_template_display_table", $templates, $frameworkid);
-    }
+    
+    call_user_func("{$type}_template_display_table", $templates, $frameworkid);
 } 
 
 print_footer();

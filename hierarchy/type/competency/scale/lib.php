@@ -98,6 +98,8 @@ function competency_scale_display_table($scales, $editingon=0) {
 
     if ($scales) {
         print_table($table);
+    } else {
+        echo '<p>'.get_string('noscalesdefined', 'competency').'</p>';
     }
 
     echo '<div class="buttons">';

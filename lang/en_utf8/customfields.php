@@ -41,4 +41,5 @@ $string['specificsettings'] = 'Specific settings';
 $string['required'] = 'Is this field required?';
 $string['visible'] = 'Hidden on the index page?';
 $string['nocustomfieldcategories'] = 'To add custom fields, first create a custom field category';
+$string['nocustomfieldcategoriesdefined'] = 'No custom field categories defined';
 $string['customfieldcategories'] = 'Custom Field Categories';

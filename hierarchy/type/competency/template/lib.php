@@ -106,7 +106,7 @@ function competency_template_display_table($templates, $frameworkid) {
     if ($templates) {
         print_table($table);
     } else {
-        print_heading(get_string('notemplateinframework', 'competency'));
+        echo '<p>'.get_string('notemplateinframework', 'competency').'</p>';
     }
 
 

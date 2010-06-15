@@ -109,8 +109,9 @@ if ($competencies) {
     print_table($table);    
 } else {
     // # cols varies TODO
-    $cols = $editingon ? 3 : 2;
-    echo '<tr class="noitems-assignment"><td colspan="'.$cols.'"><i>'.get_string('noassignedcompetenciestotemplate', $hierarchy->prefix).'</i></td></tr>';
+    //$cols = $editingon ? 3 : 2;
+    echo '<p>'.get_string('noassignedcompetenciestotemplate', $hierarchy->prefix).'</p>';
+    //echo '<tr class="noitems-assignment"><td colspan="'.$cols.'"><i>'.get_string('noassignedcompetenciestotemplate', $hierarchy->prefix).'</i></td></tr>';
 }
 
 // Navigation / editing buttons
@@ -127,6 +128,7 @@ if ($can_edit) {
     // -->
 </script>
 
+<br>
 <div class="singlebutton">
 <form action="<?php echo $CFG->wwwroot ?>/hierarchy/type/<?php echo $hierarchy->prefix ?>/template/find_competency.php?templateid=<?php echo $item->id ?>" method="get">
 <div>

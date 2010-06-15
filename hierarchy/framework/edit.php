@@ -101,7 +101,11 @@ $navlinks = array();    // Breadcrumbs
 $navlinks[] = array('name'=>get_string("{$type}frameworks", $type), 
                     'link'=>"{$CFG->wwwroot}/hierarchy/framework/index.php?type={$type}", 
                     'type'=>'misc');
-$navlinks[] = array('name'=>format_string('Edit '.$framework->fullname), 'link'=>'', 'type'=>'misc');
+if ($framework->id == 0) {
+    $navlinks[] = array('name'=>get_string('addnewframework', $type), 'link'=>'', 'type'=>'misc');
+} else {
+    $navlinks[] = array('name'=>get_string('editgeneric ', $type, $framework->fullname), 'link'=>'', 'type'=>'misc');
+}
 
 admin_externalpage_print_header('', $navlinks);
 

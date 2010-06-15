@@ -197,8 +197,6 @@ if ($frameworkid && $depthid) {
         foreach ($fields as $field) {
             $table->data[] = array($field->fullname, customfield_edit_icons($field, $fieldcount, $depthid, $type, $subtype, $frameworkid, $categoryid));
         }   
-    } else {
-        print_heading(format_string($category->name).' '.customfield_category_icons($category, $categorycount, 0, $depthid, $type, $subtype));
     }
     if (count($table->data)) {
         print_table($table);
