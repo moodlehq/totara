@@ -74,6 +74,6 @@ delete_records('comp_scale_values', 'scaleid', $scale->id);
 // Delete scale itself
 delete_records('comp_scale', 'id', $scale->id);
 
-print_heading(get_string('deletedcompetencyscale', 'competency', format_string($scale->name)));
+echo '<p>'.get_string('deletedcompetencyscale', 'competency', format_string($scale->name)).'</p>';
 print_continue($returnurl);
 print_footer();

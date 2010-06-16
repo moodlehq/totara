@@ -22,7 +22,7 @@
         error('error:depthnotfound', 'hierarchy', $type);
     }
 
-    // Cache user capabilities  //TODO: use right capabilities!!!
+    // Cache user capabilities
     $can_add = has_capability('moodle/local:create'.$type.'frameworks', $sitecontext);
     $can_edit = has_capability('moodle/local:update'.$type.'frameworks', $sitecontext);
     $can_delete = has_capability('moodle/local:delete'.$type.'frameworks', $sitecontext);
@@ -96,7 +96,6 @@ if ($depths) {
     }
 }
 
-// Display page
 $navlinks = array();    // Breadcrumbs
 $navlinks[] = array('name'=>get_string("{$type}frameworks", $type), 
                     'link'=>"{$CFG->wwwroot}/hierarchy/framework/index.php?type={$type}", 

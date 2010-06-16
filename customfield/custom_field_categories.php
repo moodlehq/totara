@@ -30,10 +30,10 @@ if (file_exists($CFG->dirroot.'/hierarchy/type/'.$type.'/lib.php')) {
     error('error:depthnotfound', 'hierarchy', $type);
 }
 
-// Cache user capabilities  //TODO: use right capabilities!!!
-$can_add = has_capability('moodle/local:create'.$type.'frameworks', $sitecontext);
-$can_edit = has_capability('moodle/local:update'.$type.'frameworks', $sitecontext);
-$can_delete = has_capability('moodle/local:delete'.$type.'frameworks', $sitecontext);
+// Cache user capabilities
+$can_add = has_capability('moodle/local:create'.$type.'customfield', $sitecontext);
+$can_edit = has_capability('moodle/local:update'.$type.'customfield', $sitecontext);
+$can_delete = has_capability('moodle/local:delete'.$type.'customfield', $sitecontext);
 
 if ($can_add || $can_edit || $can_delete) {
     $navbaritem = $hierarchy->get_editing_button($edit, array('depthid'=>$depthid, 'frameworkid'=>$frameworkid));

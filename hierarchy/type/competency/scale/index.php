@@ -30,69 +30,16 @@ $sitecontext = get_context_instance(CONTEXT_SYSTEM);
 // Setup page and check permissions
 admin_externalpage_setup('competencyscales');
 
-/*
-// Cache permissions
-$can_edit = has_capability('moodle/local:updatecompetency', $sitecontext);
-$can_delete = has_capability('moodle/local:deletecompetency', $sitecontext);
-
-$stredit = get_string('edit');
-$strdelete = get_string('delete');
-$stroptions = get_string('options','local');
 ///
 /// Build page
 ///
-
-if ($scales) {
-    $table = new stdClass();
-    $table->head  = array(get_string('scale'), get_string('used'), $stroptions);
-    $table->size = array('70%', '20%', '10%');
-    $table->align = array('left', 'center', 'center');
-    $table->width = '90%';
-
-    $table->data = array();
-    foreach($scales as $scale) {
-        $line = array();
-        $line[] = "<a href=\"$CFG->wwwroot/hierarchy/type/competency/scale/view.php?id={$scale->id}\">".format_string($scale->name)."</a>";
-        if ( competency_scale_is_used( $scale->id ) ) {
-            $line[] = get_string('yes');
-        } else {
-            $line[] = get_string('no');
-        }
-
-        $buttons = array();
-        if ($can_edit) {
-            $buttons[] = "<a title=\"$stredit\" href=\"edit.php?id=$scale->id\"><img".
-                " src=\"$CFG->pixpath/t/edit.gif\" class=\"iconsmall\" alt=\"$stredit\" /></a> ";
-        }
-
-        if ($can_delete) {
-            $buttons[] = "<a title=\"$strdelete\" href=\"delete.php?id=$scale->id\"><img".
-                        " src=\"$CFG->pixpath/t/delete.gif\" class=\"iconsmall\" alt=\"$strdelete\" /></a> ";
-        }
-        $line[] = implode($buttons, ' ');
-
-        $table->data[] = $line;
-    }
-}
-
-admin_externalpage_print_header();
-
-print_heading(get_string('competencyscales', 'competency'));
-
-if ($scales) {
-    print_table($table);
-}
-
-echo '<div class="buttons">';
-print_single_button('edit.php', null, get_string('scalescustomcreate'));
-echo '</div>';
-*/
-
 admin_externalpage_print_header();
 
 $hierarchy = new competency();
 $scales = $hierarchy->get_scales();
 if ($scales) {
     competency_scale_display_table($scales, $editingon=1);
+} else {
+    echo '<p>'.get_string('noscalesdefined', 'competency').'</p>';
 }
 admin_externalpage_print_footer();

@@ -568,4 +568,12 @@ SQL;
             return get_records_sql($sql);
         }
     }
+
+    /**
+     * Get scales for a competency
+     * @return array|false
+     */
+    function get_scales() {
+        return get_records($this->shortprefix.'_scale', '', '', 'name');
+    }
 }

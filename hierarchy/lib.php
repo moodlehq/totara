@@ -104,8 +104,9 @@ class hierarchy {
 
     /**
      * Get framework
-     * @var array $extra_data optional param specifying extra info to be fetched and returned
+     * @var array $extra_data optional - specifying extra info to be fetched and returned
      * @return array|false
+     * @uses $CFG when extra_data specified 
      */
     function get_frameworks($extra_data=array()) {
         if (!count($extra_data)) {
@@ -132,8 +133,9 @@ class hierarchy {
 
     /**
      * Get depths for a framework
-     * @var array $extra_data optional param specifying extra info to be fetched and returned
+     * @var array $extra_data optional - specifying extra info to be fetched and returned
      * @return array|false
+     * @uses $CFG when extra_data specified 
      */
     function get_depths($extra_data=array()) {
         if (!count($extra_data)) {
@@ -169,14 +171,6 @@ class hierarchy {
 
     function get_custom_field_category_by_id($id) {
         return get_record($this->shortprefix.'_depth_info_category', 'id', $id);
-    }
-
-    /**
-     * Get scales for a hierachy
-     * @return array|false
-     */
-    function get_scales() {
-        return get_records($this->shortprefix.'_scale', '', '', 'name');
     }
 
     /**
