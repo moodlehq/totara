@@ -78,7 +78,7 @@ add_to_log(SITEID, $type.'depths', 'delete', $back_url, "$depth->fullname (ID $d
 $deleteresult = $hierarchy->delete_depth($depth->id);
 
 if ( $deleteresult === true ){
-    print_heading(get_string('deleteddepth', 'hierarchy', format_string($depth->fullname)));
+    echo '<p>'.get_string('deleteddepth', 'hierarchy', format_string($depth->fullname)).'</p>';
     print_continue($back_url);
 } else {
     notice( get_string($deleteresult, 'hierarchy'), $back_url);

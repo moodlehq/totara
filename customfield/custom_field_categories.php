@@ -36,7 +36,7 @@ $can_edit = has_capability('moodle/local:update'.$type.'frameworks', $sitecontex
 $can_delete = has_capability('moodle/local:delete'.$type.'frameworks', $sitecontext);
 
 if ($can_add || $can_edit || $can_delete) {
-    $navbaritem = $hierarchy->get_editing_button($edit, array('depthid'=>$depthid));
+    $navbaritem = $hierarchy->get_editing_button($edit, array('depthid'=>$depthid, 'frameworkid'=>$frameworkid));
     $editingon = !empty($USER->{$type.'editing'});
 } else {
     $navbaritem = '';
