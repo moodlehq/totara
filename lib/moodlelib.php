@@ -428,16 +428,16 @@ function clean_param($param, $type) {
             return (float)$param;  // Convert to integer
 
         case PARAM_ALPHA:        // Remove everything not a-z
-            return eregi_replace('[^a-zA-Z]', '', $param);
+            return preg_replace('/[^a-zA-Z]/i', '', $param);
 
         case PARAM_ALPHANUM:     // Remove everything not a-zA-Z0-9
-            return eregi_replace('[^A-Za-z0-9]', '', $param);
+            return preg_replace('/[^A-Za-z0-9]/i', '', $param);
 
         case PARAM_ALPHAEXT:     // Remove everything not a-zA-Z/_-
-            return eregi_replace('[^a-zA-Z/_-]', '', $param);
+            return preg_replace('/[^a-zA-Z\/_-]/i', '', $param);
 
         case PARAM_SEQUENCE:     // Remove everything not 0-9,
-            return eregi_replace('[^0-9,]', '', $param);
+            return preg_replace('/[^0-9,]/i', '', $param);
 
         case PARAM_BOOL:         // Convert to 1 or 0
             $tempstr = strtolower($param);
@@ -457,27 +457,25 @@ function clean_param($param, $type) {
             return clean_param(strip_tags($param, '<lang><span>'), PARAM_CLEAN);
 
         case PARAM_SAFEDIR:      // Remove everything not a-zA-Z0-9_-
-            return eregi_replace('[^a-zA-Z0-9_-]', '', $param);
+            return preg_replace('/[^a-zA-Z0-9_-]/i', '', $param);
 
         case PARAM_CLEANFILE:    // allow only safe characters
             return clean_filename($param);
 
         case PARAM_FILE:         // Strip all suspicious characters from filename
-            $param = ereg_replace('[[:cntrl:]]|[<>"`\|\':\\/]', '', $param);
-            $param = ereg_replace('\.\.+', '', $param);
-            if($param == '.') {
+            $param = preg_replace('~[[:cntrl:]]|[&<>"`\|\':\\\\/]~u', '', $param);
+            $param = preg_replace('~\.\.+~', '', $param);
+            if ($param === '.') {
                 $param = '';
             }
             return $param;
 
         case PARAM_PATH:         // Strip all suspicious characters from file path
-            $param = str_replace('\\\'', '\'', $param);
-            $param = str_replace('\\"', '"', $param);
             $param = str_replace('\\', '/', $param);
-            $param = ereg_replace('[[:cntrl:]]|[<>"`\|\':]', '', $param);
-            $param = ereg_replace('\.\.+', '', $param);
-            $param = ereg_replace('//+', '/', $param);
-            return ereg_replace('/(\./)+', '/', $param);
+            $param = preg_replace('~[[:cntrl:]]|[&<>"`\|\':]~u', '', $param);
+            $param = preg_replace('~\.\.+~', '', $param);
+            $param = preg_replace('~//+~', '/', $param);
+            return preg_replace('~/(\./)+~', '/', $param);
 
         case PARAM_HOST:         // allow FQDN or IPv4 dotted quad
             $param = preg_replace('/[^\.\d\w-]/','', $param ); // only allowed chars
@@ -3004,6 +3002,9 @@ function create_user_record($username, $password, $auth='manual') {
     }
     $newuser->confirmed = 1;
     $newuser->lastip = getremoteaddr();
+    if (empty($newuser->lastip)) {
+        $newuser->lastip = '0.0.0.0';
+    }
     $newuser->timemodified = time();
     $newuser->mnethostid = $CFG->mnet_localhost_id;
 
@@ -3173,6 +3174,9 @@ function guest_user() {
         $newuser->confirmed = 1;
         $newuser->lang = $CFG->lang;
         $newuser->lastip = getremoteaddr();
+        if (empty($newuser->lastip)) {
+            $newuser->lastip = '0.0.0.0';
+        }
     }
 
     return $newuser;
@@ -4494,7 +4498,7 @@ function setnew_password_and_mail($user) {
 
     $newpassword = generate_password();
 
-    if (! set_field('user', 'password', md5($newpassword), 'id', $user->id) ) {
+    if (! set_field('user', 'password', hash_internal_user_password($newpassword), 'id', $user->id) ) {
         trigger_error('Could not set user password!');
         return false;
     }
