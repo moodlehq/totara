@@ -326,7 +326,7 @@ function customfield_list_categories($depthid=0, $tableprefix) {
     return $categories;
 }
 
-function customfield_edit_category($id, $depthid=0, $redirect, $tableprefix, $type, $subtype, $frameworkid=0) {
+function customfield_edit_category($id, $depthid=0, $redirect, $tableprefix, $type, $subtype, $frameworkid=0, $navlinks=array()) {
     global $CFG;
 
     require_once($CFG->dirroot.'/customfield/index_category_form.php');
@@ -390,9 +390,12 @@ function customfield_edit_category($id, $depthid=0, $redirect, $tableprefix, $ty
         // Display page header
         $pagetitle = format_string(get_string($type.'depthcustomfields',$type));
         
-        $navlinks[] = array('name' => get_string('administration'), 'link'=> '', 'type'=>'title');
-        $navlinks[] = array('name' => get_string($type.'plural',$type), 'link'=> '', 'type'=>'title');
-        $navlinks[] = array('name' => get_string($type.'depthcustomfields',$type), 'link'=> '', 'type'=>'title');
+        if (!count($navlinks)) {    
+            // Use default breadcrumbs
+            $navlinks[] = array('name' => get_string('administration'), 'link'=> '', 'type'=>'title');
+            $navlinks[] = array('name' => get_string($type.'plural',$type), 'link'=> '', 'type'=>'title');
+            $navlinks[] = array('name' => get_string($type.'depthcustomfields',$type), 'link'=> '', 'type'=>'title');
+        }
 
         $navigation = build_navigation($navlinks);
         
@@ -402,7 +405,7 @@ function customfield_edit_category($id, $depthid=0, $redirect, $tableprefix, $ty
         } else {
             print_header_simple($pagetitle, '', $navigation, '', null, true, null);
         }
-        print_heading($strheading);
+        print_heading($strheading, 'left', 1);
         $categoryform->display();
         print_footer();
         die;
@@ -410,13 +413,15 @@ function customfield_edit_category($id, $depthid=0, $redirect, $tableprefix, $ty
 
 }
 
-function customfield_edit_field($id, $datatype, $depthid=0, $redirect, $tableprefix, $type, $subtype, $frameworkid=0, $categoryid=0) {
+function customfield_edit_field($id, $datatype, $depthid=0, $redirect, $tableprefix, $type, $subtype, $frameworkid=0, $categoryid=0, $navlinks=array()) {
     global $CFG;
 
     if (!$field = get_record($tableprefix.'_info_field', 'id', $id)) {
         $field = new object();
         $field->datatype = $datatype;
     }
+
+    $displayadminheader = $frameworkid ? 1 : 0;
 
     require_once($CFG->dirroot.'/customfield/index_field_form.php');
     $datatosend = array('datatype' => $field->datatype, 'type' => $type, 'subtype' => $subtype, 
@@ -449,14 +454,21 @@ function customfield_edit_field($id, $datatype, $depthid=0, $redirect, $tablepre
         /// Print the page
         // Display page header
         $pagetitle = format_string(get_field($tableprefix, 'fullname', 'id', $depthid));
-        $navlinks[] = array('name' => get_string('administration'), 'link'=> '', 'type'=>'title');
-        $navlinks[] = array('name' => get_string($type.'plural',$type), 'link'=> '', 'type'=>'title');
-        $navlinks[] = array('name' => get_string($type.'depthcustomfields',$type), 'link'=> '', 'type'=>'title');
+        if (!count($navlinks)) {
+            $navlinks[] = array('name' => get_string('administration'), 'link'=> '', 'type'=>'title');
+            $navlinks[] = array('name' => get_string($type.'plural',$type), 'link'=> '', 'type'=>'title');
+            $navlinks[] = array('name' => get_string($type.'depthcustomfields',$type), 'link'=> '', 'type'=>'title');
+        }
 
         $navigation = build_navigation($navlinks);
-
-        print_header_simple($pagetitle, '', $navigation, '', null, true);
-        print_heading($strheading);
+    
+        if ($displayadminheader) {
+            admin_externalpage_setup($type.'frameworkmanage', '', array('type'=>$type));
+            admin_externalpage_print_header('', $navlinks);
+        } else {
+            print_header_simple($pagetitle, '', $navigation, '', null, true);
+        }
+        print_heading($strheading, 'left', '1');
         $fieldform->display();
         print_footer();
         die;

@@ -23,6 +23,8 @@ if (file_exists($CFG->dirroot.'/hierarchy/type/'.$type.'/lib.php')) {
 }
 $shortprefix = hierarchy::get_short_prefix($type);
 
+$breadcrumbnavigation = $depthid && $frameworkid ? 1 : 0;
+
 $baseredirect = $CFG->wwwroot . '/customfield/index.php';
 $redirect = $baseredirect.'?type='.$type;
 $redirectoptions = array('type'=>$type);
@@ -48,6 +50,30 @@ if ($depthid) {
     $navlinks[] = array('name' => get_string('administration'), 'link'=> '', 'type'=>'title');
     $navlinks[] = array('name' => get_string($type.'plural',$type), 'link'=> '', 'type'=>'title');
     $navlinks[] = array('name' => get_string($type.'depthcustomfields',$type), 'link'=> '', 'type'=>'title');
+    if ($breadcrumbnavigation) {
+        $framework  = $hierarchy->get_framework($depth->frameworkid);
+        // Override navlinks with detailed breadcrumbs
+        $navlinks = array();
+        $navlinks[] = array('name'=>get_string("{$type}frameworks", $type), 
+                            'link'=>"{$CFG->wwwroot}/hierarchy/framework/index.php?type={$type}", 
+                            'type'=>'misc');    // Framework List
+        $navlinks[] = array('name'=>format_string($framework->fullname), 
+                            'link'=>"{$CFG->wwwroot}/hierarchy/framework/view.php?type={$type}&frameworkid={$framework->id}", 
+                            'type'=>'misc');    // Framework View    
+
+/*        $navlinks[] = array('name'=>get_string('customfieldcategories', 'customfields'), 
+                            'link'=>"{$CFG->wwwroot}/customfield/index.php?type={$type}&frameworkid={$framework->id}&depthid={$depth->id}", 
+                            'type'=>'misc');    // Custom field categories    */
+        $navlinks[] = array('name'=>format_string($depth->fullname), 
+                            'link'=>"{$CFG->wwwroot}/customfield/custom_field_categories.php?type={$type}&frameworkid={$framework->id}&depthid={$depth->id}", 
+                            'type'=>'misc');    // Current page
+        if (isset($category)) {
+            $navlinks[] = array('name'=>format_string($category->name), 
+                                'link'=>"{$CFG->wwwroot}/customfield/index.php?type={$type}&frameworkid={$framework->id}", 
+                                'type'=>'misc');    // Category View    
+        }
+               
+    }
 } else {
     $pagetitle = format_string(get_string($type.'depthcustomfields',$type));
     $navlinks[] = array('name' => get_string('administration'), 'link'=> '', 'type'=>'title');
@@ -105,8 +131,13 @@ switch ($action) {
         //ask for confirmation
         $fieldcount = count_records($tableprefix.'_info_field', 'categoryid', $id);
         $optionsyes = array ('categoryid'=>$id, 'confirm'=>1, 'action'=>'deletecategory', 'sesskey'=>sesskey());
-        print_header_simple($pagetitle, '', $navigation, '', null, true);
-        print_heading(get_string('deletecategory', 'customfields'));
+        if ($breadcrumbnavigation) {
+            admin_externalpage_setup($type.'frameworkmanage', '', array('type'=>$type));
+            admin_externalpage_print_header('', $navlinks);
+        } else {
+            print_header_simple($pagetitle, '', $navigation, '', null, true);
+        }
+        print_heading(get_string('deletecategory', 'customfields'), 'left', '1');
         notice_yesno(get_string('confirmcategorydeletion', 'customfields', $fieldcount), $redirect, $redirect, $optionsyes, $redirectoptions, 'post', 'get');
         print_footer();
         die;
@@ -127,8 +158,13 @@ switch ($action) {
         //ask for confirmation
         $datacount = count_records('user_info_data', 'fieldid', $id);
         $optionsyes = array ('id'=>$id, 'confirm'=>1, 'action'=>'deletefield', 'sesskey'=>sesskey());
-        print_header_simple($pagetitle, '', $navigation, '', null, true);
-        print_heading(get_string('deletefield', 'customfields'));
+        if ($breadcrumbnavigation) {
+            admin_externalpage_setup($type.'frameworkmanage', '', array('type'=>$type));
+            admin_externalpage_print_header('', $navlinks);
+        } else {
+            print_header_simple($pagetitle, '', $navigation, '', null, true);
+        }
+        print_heading(get_string('deletefield', 'customfields'), 'left', '1');
         notice_yesno(get_string('confirmfielddeletion', 'customfields', $datacount), $redirect, $redirect, $optionsyes, $redirectoptions, 'post', 'get');
         print_footer();
         die;
@@ -141,20 +177,20 @@ switch ($action) {
             $redirect = "{$CFG->wwwroot}/customfield/index.php?type={$type}&subtype={$subtype}&frameworkid={$frameworkid}&depthid={$depthid}&categoryid={$categoryid}";
         }
 
-        customfield_edit_field($id, $datatype, $depthid, $redirect, $tableprefix, $type, $subtype, $frameworkid, $categoryid);
+        customfield_edit_field($id, $datatype, $depthid, $redirect, $tableprefix, $type, $subtype, $frameworkid, $categoryid, $navlinks);
         die;
         break;
     case 'editcategory':
         require_capability('moodle/local:update'.$type.'customfield', $sitecontext);
         $id = optional_param('categoryid', 0, PARAM_INT);
 
-        customfield_edit_category($id, $depthid, $redirect, $tableprefix, $type, $subtype, $frameworkid);
+        customfield_edit_category($id, $depthid, $redirect, $tableprefix, $type, $subtype, $frameworkid, $navlinks);
         die;
         break;
     default:
 }
 // Display page header
-if (!($depthid && $frameworkid)) {
+if (!($breadcrumbnavigation)) {
     print_header_simple($pagetitle, '', $navigation, '', null, true);
     print_heading(get_string($type.'depthcustomfields', $type));
 } else {
@@ -169,19 +205,19 @@ if (!($depthid && $frameworkid)) {
     $navlinks[] = array('name'=>format_string($framework->fullname), 
                         'link'=>"{$CFG->wwwroot}/hierarchy/framework/view.php?type={$type}&frameworkid={$framework->id}", 
                         'type'=>'misc');    // Framework View    
-    $navlinks[] = array('name'=>format_string($category->name), 
-                        'link'=>"{$CFG->wwwroot}/customfield/custom_field_categories.php?type={$type}&frameworkid={$framework->id}&depthid={$depth->id}", 
-                        'type'=>'misc');    // Category View    
     $navlinks[] = array('name'=>format_string($depth->fullname), 
-                        'link'=>'', 
+                        'link'=>"{$CFG->wwwroot}/customfield/custom_field_categories.php?type={$type}&frameworkid={$framework->id}&depthid={$depth->id}", 
                         'type'=>'misc');    // Current page
+    $navlinks[] = array('name'=>format_string($category->name), 
+                        'link'=>'', 
+                        'type'=>'misc');    // Category View    
     admin_externalpage_print_header('', $navlinks);
 
     print_heading(format_string($depth->fullname)." : ".format_string($category->name), 'left', 1);
     print_heading(get_string('customfields', 'customfields'));
 }
 // show custom fields for the given depth and category
-if ($frameworkid && $depthid) {
+if ($breadcrumbnavigation) {
     $table = new object();
     $table->head  = array(get_string('customfield', 'customfields'), get_string('edit'));
     $table->align = array('left', 'right');
