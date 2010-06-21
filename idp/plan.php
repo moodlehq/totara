@@ -14,6 +14,7 @@ $name = optional_param('name', '', PARAM_NOTAGS); // Plan name
 $startdate = optional_param('startdate', '', PARAM_NOTAGS); // Start of the training period
 $enddate = optional_param('enddate', '', PARAM_NOTAGS); // End of the training period
 $planid = optional_param('planid', 0, PARAM_INT); // IDP ID (idp.id)
+$confirm = optional_param('confirm', 0, PARAM_INT); // confirm deletion
 
 $sitecontext = get_context_instance(CONTEXT_SYSTEM);
 $contextuser = get_context_instance(CONTEXT_USER, $USER->id);
@@ -181,17 +182,39 @@ HEREDOC;
 
     print_footer();
 }
-elseif ('delete' == $action) {
+elseif ('delete' == $action && $confirm) {
     if (0 == $planid) {
         error(get_string('error:invalidplanid', 'idp'));
     }
     else {
+        if(!confirm_sesskey()) {
+            print_error('configrmsesskeybad','error');
+        }
         if (delete_plan($planid)) {
             redirect($CFG->wwwroot.'/idp/index.php');
         }
         else {
             error(get_string('error:plannotempty', 'idp'), "index.php");
         }
+    }
+}
+elseif ('delete' == $action) {
+    $stridps = get_string('idps', 'idp');
+    $pagetitle = get_string("{$action}planbreadcrumb", 'idp');
+
+    $PAGE = page_create_object('MITMS', $USER->id);
+    $pageblocks = blocks_setup($PAGE,BLOCKS_PINNED_BOTH);
+    $blocks_preferred_width = bounded_number(180, blocks_preferred_width($pageblocks[BLOCK_POS_LEFT]), 210);
+
+    $navlinks = array();
+    $navlinks[] = array('name' => $stridps, 'link' => $CFG->wwwroot."/idp/index.php", 'type' => 'home');
+    $navlinks[] = array('name' => $pagetitle, 'link' => '', 'type' => 'home');
+    $PAGE->print_header($stridps, $navlinks);
+    if(isset($planid)) {
+        $plan = get_record('idp','id',$planid);
+        notice_yesno(get_string('deleteconfirm', 'idp', $plan->name),"plan.php?action=delete&amp;planid=$planid&amp;confirm=1&amp;sesskey=$USER->sesskey", 'index.php');
+    } else {
+        print_error('error:invalidplanid','idp');
     }
 }
 else {
