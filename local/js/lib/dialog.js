@@ -107,7 +107,7 @@ function mitmsDialog(title, buttonid, config, default_url, handler) {
 
         // Override some auto defined styling
         this.dialog.parent().css({ height: '350px' });
-        this.dialog.css({ height: '310px', width: '705px' });
+        this.dialog.css({ height: '330px', width: '705px' });
 
         this.load(url, method);
     }
@@ -429,6 +429,17 @@ mitmsDialog_handler.prototype._save = function(url) {
 }
 
 /**
+ * Handle a 'cancel' request, by just closing the dialog
+ *
+ * @return void
+ */
+mitmsDialog_handler.prototype._cancel = function() {
+    this._dialog.hide();
+    return;
+}
+
+
+/**
  * Change framework
  *
  * @return void
@@ -569,7 +580,8 @@ mitmsDialog_handler_treeview_draggable.prototype.every_load = function() {
     });
 
     // Make decending spans draggable
-    this._make_draggable($('.treeview', this._container));
+    //this._make_draggable($('.treeview', this._container));
+    this._make_assignable($('.treeview', this._container));
 }
 
 /**
@@ -588,13 +600,77 @@ mitmsDialog_handler_treeview_draggable.prototype._make_draggable = function(pare
 }
 
 /**
+ * Make elements run the clickhandler when clicked
+ *
+ * @parent element
+ * @return void
+ */
+mitmsDialog_handler_treeview_draggable.prototype._make_assignable = function(parent_element) {
+
+    // Get assignable/clickable elements
+    var assignable_items = $('span:not(.unclickable)', parent_element);
+
+    // Remove old handlers
+    //assignables.unbind('click');
+
+    // Add selectable class
+    //assignables.addClass('clickable');
+
+    // Bind hover handler
+    assignable_items.mouseenter(function() {
+        $(".addbutton", this._container).css("display", "none");
+        $(this).find(".addbutton").css('display', 'inline')
+
+        return false;
+    });
+    
+    var assignable_buttons = $('span:not(.unclickable)', parent_element).children('.addbutton');
+
+    // Bind click handler to add icons
+    assignable_buttons.click(function() {
+
+        var clicked = $(this);
+        var clone = clicked.parent().clone();  // Make a clone of the list item
+        var selected_area = $('.selected', this._container)
+
+        // Check if an element with the same ID already exists
+        if ($('#'+clone.attr('id'), selected_area).size() < 1) {
+            // First, remove addbutton from clone and add delete button
+            clone.find('.addbutton').remove();
+            deletebutton = $('#deletebutton_ex').clone();
+            deletebutton.attr('style', 'display: inline;');
+            clone.append(deletebutton);
+
+            deletebutton.unbind('click');
+
+            // Bind event to delete button
+            deletebutton.click(function() {
+                // Remove the button and its parent
+                $(this).parent().remove();
+
+                return false;
+            });
+            
+            // Append item clone to selected items
+            selected_area.append(clone);
+        }
+
+        return false;
+    });
+    
+}
+
+
+
+/**
  * Hierarchy update handler
  *
  * @param element
  * @return void
  */
 mitmsDialog_handler_treeview_draggable.prototype._handle_update_hierarchy = function(parent_element) {
-    this._make_draggable(parent_element);
+    //this._make_draggable(parent_element);
+    this._make_assignable(parent_element);
 }
 
 /**
@@ -832,7 +908,8 @@ mitmsAssignDialog = function(name, find_url, save_url) {
         'show-'+name+'-dialog',
         {
             buttons: {
-                'Save changes': function() { handler._save(save_url) }
+                'Ok': function() { handler._save(save_url) },
+                'Cancel': function() { handler._cancel() }
             }
         },
         find_url,

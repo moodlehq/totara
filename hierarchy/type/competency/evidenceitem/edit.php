@@ -70,6 +70,7 @@ if($nojs) {
     }
     print_footer();
 } else {
+    echo "eugene";
     // JS version
     echo '<h2>' . get_string('assignnewevidenceitem', 'competency') . '</h2>';
     echo '<div id="available-evidence" class="selected">';
@@ -77,6 +78,7 @@ if($nojs) {
     echo '<p>Locate course:</p>';
     echo '<ul class="filetree treeview">';
     echo build_category_treeview($categories, $parents, 'Loading courses...');
+
     echo '</ul>';
 }
 

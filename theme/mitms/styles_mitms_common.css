@@ -298,15 +298,16 @@ div.mitms-dialog div.ui-dialog-titlebar a.ui-dialog-titlebar-close span {
     background-image: url(closelabel.gif);
     background-position: 0 0;
     border: none;
-    top: -8px;
+    top: -320px;
     margin: 0;
     padding: 0;
     display: block;
+    z-index: 1;
 }
 
 div.mitms-dialog div.ui-dialog-buttonpane {
     position: relative;
-    float: left;
+    float: right;
     top: -25px;
     background: none;
     border: none;
@@ -315,7 +316,7 @@ div.mitms-dialog div.ui-dialog-buttonpane {
 }
 
 div.mitms-dialog div.ui-dialog-buttonpane button {
-    margin: 0;
+    margin-left: 10px;
     float: left;
 }
 
@@ -366,12 +367,17 @@ div.mitms-dialog ul.treeview li {
     font-size: 0.8em;
 }
 
+div.mitms-dialog ul.treeview li:hover {
+    background-color: #EEEEEE;
+}
+
 div.mitms-dialog ul.treeview li li {
     font-size: 1em;
 }
 
 div.mitms-dialog ul.treeview li span {
     padding-left: 0.25em;
+    display: block;
 }
 
 div.mitms-dialog ul.treeview li span.folder {
@@ -402,6 +408,23 @@ div.mitms-dialog ul.treeview li span.ui-undraggable {
     color: #777;
 }
 
+.addbutton {
+    display: none;
+    cursor: pointer;
+    float: right;
+    padding-right: 15px;
+    /*
+    position: relative;
+    left: 5px;
+    */
+}
+
+.deletebutton {
+    cursor: pointer;
+    position: relative;
+    left: 5px;
+}
+
 .unclickable {
     color: #777;
 }
@@ -416,7 +439,7 @@ div.mitms-dialog div.yui-isloading .bd {
     padding-bottom: 22px;
 }
 
-div.mitms-dialog .simpleframeworkpicker,
+/*div.mitms-dialog .simpleframeworkpicker,*/
 div.mitms-dialog #framework-picker {
     float: right;
 }

@@ -50,9 +50,12 @@ function local_js($options = array()) {
  * @param   $error_string   string      String to display if no elements supplied
  * @param   $hierarchy      object      The hierarchy object (optional)
  * @param   $disabledlist   array       Array of IDs of elements that should be disabled
+ * @uses    $CFG
  * @return  $html
  */
 function build_treeview($elements, $error_string, $hierarchy = null, $disabledlist = array()) {
+
+    global $CFG;
 
     $html = '';
 
@@ -94,9 +97,14 @@ function build_treeview($elements, $error_string, $hierarchy = null, $disabledli
                 }
             }
 
+            //TODO: fix the theme path; add tooltip (title) getstring
+            $addbutton_str = '<img src="'.$CFG->pixpath.'/t/add.gif" class="addbutton" width="10px" height="10px" />';
+            //$addbutton_str = '<span class="addbutton"></span>';
+
             // Make disabled elements non-draggable and greyed out
             if (array_key_exists($element->id, $disabledlist)){
-                $span_class = trim($span_class . ' ui-undraggable');
+                $span_class = trim($span_class . ' unclickable');
+                $addbutton_str = '';
             }
 
             $html .= '<li class="'.$li_class.'" id="item_list_'.$element->id.'">';
@@ -104,6 +112,7 @@ function build_treeview($elements, $error_string, $hierarchy = null, $disabledli
             $html .= '<span id="item_'.$element->id.'" class="'.$span_class.'">';
             // format_string() really slow here...
             $html .= htmlentities($element->fullname);
+            $html .= $addbutton_str;
             $html .= '</span>';
 
             if ($div_class !== '') {
@@ -117,6 +126,10 @@ function build_treeview($elements, $error_string, $hierarchy = null, $disabledli
         $html .= $error_string;
         $html .= '</span></li>'.PHP_EOL;
     }
+
+
+    // Add hidden button images that can later be used/cloned by js TODO: add generic theme path, add tooltip get_string
+    $html .= '<img id="deletebutton_ex" src="'.$CFG->pixpath.'/t/delete.gif" class="deletebutton" width="10px" height="10px" style="display: none;" />';
 
     return $html;
 }

@@ -59,13 +59,14 @@ if(!$nojs) {
     // If parent id is not supplied, we must be displaying the main page
     if (!$parentid) {
 
+        echo '<br><br>'.PHP_EOL;
         echo '<div class="selectcompetencies">'.PHP_EOL;
-        $hierarchy->display_framework_selector('', true);
-        echo '<h2>' . get_string('addrelatedcompetencies', $hierarchy->prefix) . '</h2>'.PHP_EOL;
+        echo '<h2>' . get_string('assignrelatedcompetencies', $hierarchy->prefix) . '</h2>'.PHP_EOL;
         echo '<div class="selected">';
-        echo '<p>' . get_string('dragheretoassign', $hierarchy->prefix).'</p>'.PHP_EOL;
+        echo '<p>' . get_string('selectedcompetencies', $hierarchy->prefix).'</p>'.PHP_EOL;
         echo '</div>'.PHP_EOL;
         echo '<p>' . get_string('locatecompetency', $hierarchy->prefix).':'.'</p>'.PHP_EOL;
+        $hierarchy->display_framework_selector('', true);
         echo '<ul class="treeview filetree">'.PHP_EOL;
     }
 
@@ -84,7 +85,7 @@ if(!$nojs) {
 } else {
     // none JS version of page
     admin_externalpage_print_header();
-    echo '<h2>'.get_string('addrelatedcompetencies', $hierarchy->prefix).'</h2>';
+    echo '<h2>'.get_string('assignrelatedcompetencies', $hierarchy->prefix).'</h2>';
 
     echo '<p><a href="'.$returnurl.'">'.get_string('cancelwithoutassigning','hierarchy').'</a></p>';
 

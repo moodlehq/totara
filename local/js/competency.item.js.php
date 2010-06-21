@@ -28,6 +28,13 @@ $(function() {
         var handler = new mitmsDialog_handler_assignEvidence();
         handler.baseurl = url;
 
+/*      TODO!!  
+        mitmsAssignDialog(
+            'evidence',
+            url+'edit.php?id='+competency_id,
+            url+'save.php?id='+competency_id+'&add='
+        ); 
+*/
         mitmsDialogs['evidence'] = new mitmsDialog(
             'evidence',
             'show-evidence-dialog',
