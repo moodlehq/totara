@@ -46,6 +46,8 @@ if (!$framework = $hierarchy->get_framework($frameworkid)) {
 // Load competencies to display
 $competencies = $hierarchy->get_items_by_parent($parentid);
 $alreadyrelated = comp_relation_get_relations($compid);
+$alreadyselected = get_records_select('comp', 'id IN ('.implode(',', $alreadyrelated).')',
+                                      '', 'id, fullname');
 $alreadyrelated[$compid] = $compid;
 
 ///
@@ -63,6 +65,7 @@ if(!$nojs) {
         echo '<h2>' . get_string('assignrelatedcompetencies', $hierarchy->prefix) . '</h2>'.PHP_EOL;
         echo '<div class="selected">';
         echo '<p>' . get_string('selectedcompetencies', $hierarchy->prefix).'</p>'.PHP_EOL;
+        echo populate_selected_items_pane($alreadyselected);
         echo '</div>'.PHP_EOL;
         echo '<p>' . get_string('locatecompetency', $hierarchy->prefix).':'.'</p>'.PHP_EOL;
         $hierarchy->display_framework_selector('', true);

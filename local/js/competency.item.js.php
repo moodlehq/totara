@@ -16,7 +16,7 @@ $(function() {
         mitmsMultiSelectDialog(
             'related',
             url+'find.php?id='+competency_id,
-            url+'save.php?id='+competency_id+'&add='
+            url+'save.php?id='+competency_id+'&deleteexisting=1&add='
         );
     })();
 

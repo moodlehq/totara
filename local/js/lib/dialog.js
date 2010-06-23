@@ -356,7 +356,14 @@ mitmsDialog_handler.prototype._update = function(response) {
         table = $('table.list-'+this._title);
     }
 
-    // Add row to table
+    if (response.search(/~~~RELOAD PAGE~~~/) > 0) {
+        // Reload the page 
+        $('tbody', table).html('<p><strong>Loading...</strong></p>');
+        location.reload();
+        return;
+    } 
+    
+    // Add row(s) to table
     $('tbody', table).append(response);
 }
 
@@ -575,16 +582,18 @@ mitmsDialog_handler_treeview_multiselect.prototype.every_load = function() {
 
     // Make decending spans assignable
     this._make_selectable($('.treeview', this._container));
+
+    // Make spans in selected pane deletable
+    this._make_deletable($('.selected', this._container));
 }
 
 /**
- * Make elements run the clickhandler when clicked
+ * Bind hover/click event to elements, i.o to make them selectable
  *
  * @parent element
  * @return void
  */
 mitmsDialog_handler_treeview_multiselect.prototype._make_selectable = function(parent_element) {
-
     // Get assignable/clickable elements
     var selectable_items = $('span:not(.unclickable)', parent_element);
 
@@ -612,10 +621,16 @@ mitmsDialog_handler_treeview_multiselect.prototype._make_selectable = function(p
             // First, remove addbutton from clone and add delete button
             clone.find('.addbutton').remove();
             deletebutton = $('#deletebutton_ex').clone();
-            deletebutton.attr('style', 'display: inline;');
             clone.append(deletebutton);
 
             deletebutton.unbind('click');
+
+            // Bind hover handler to clone
+            clone.mouseenter(function() {
+                $(".deletebutton", this._container).css("display", "none");
+                $(this).find(".deletebutton").css('display', 'inline')
+                
+            });
 
             // Bind event to delete button
             deletebutton.click(function() {
@@ -632,6 +647,31 @@ mitmsDialog_handler_treeview_multiselect.prototype._make_selectable = function(p
         return false;
     });
     
+}
+
+/**
+ * Bind click event to elements, i.o to make them deletable
+ *
+ * @parent element
+ * @return void
+ */
+mitmsDialog_handler_treeview_multiselect.prototype._make_deletable = function(parent_element) {
+    var deletables = $('.deletebutton', parent_element);
+    
+    // Bind hover handler to button parent
+    deletables.parent().mouseenter(function() {
+        $(".deletebutton", this._container).css("display", "none");
+        $(this).find(".deletebutton").css('display', 'inline')
+        
+    });
+     
+    // Bind event to delete button
+    deletables.click(function() {
+        // Remove the button and its parent
+        $(this).parent().remove();
+
+        return false;
+    });
 }
 
 /**
@@ -768,10 +808,16 @@ mitmsDialog_handler_treeview_singleselect.prototype._make_selectable = function(
         // First, remove addbutton from clone and add delete button
         clone.find('.addbutton').remove();
         deletebutton = $('#deletebutton_ex').clone();
-        deletebutton.attr('style', 'display: inline;');
         clone.append(deletebutton);
 
         deletebutton.unbind('click');
+
+        // Bind hover handler to clone
+        clone.mouseenter(function() {
+            $(".deletebutton", this._container).css("display", "none");
+            $(this).find(".deletebutton").css('display', 'inline')
+            
+        });
 
         // Bind event to delete button
         deletebutton.click(function() {

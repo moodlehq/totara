@@ -96,8 +96,8 @@ function build_treeview($elements, $error_string, $hierarchy = null, $disabledli
                     $div_class .= ' lastExpandable-hitarea';
                 }
             }
-
-            //TODO: fix the theme path; add tooltip (title) getstring
+    
+            //TODO: add tooltip (title) getstring
             $addbutton_str = '<img src="'.$CFG->pixpath.'/t/add.gif" class="addbutton" width="15px" height="15px" />';
 
             // Make disabled elements non-draggable and greyed out
@@ -127,8 +127,26 @@ function build_treeview($elements, $error_string, $hierarchy = null, $disabledli
     }
 
 
-    // Add hidden button images that can later be used/cloned by js TODO: add generic theme path, add tooltip get_string
+    // Add hidden button images that can later be used/cloned by js TODO: add tooltip get_string
     $html .= '<img id="deletebutton_ex" src="'.$CFG->pixpath.'/t/delete.gif" class="deletebutton" width="13px" height="13px" style="display: none;" />';
+
+    return $html;
+}
+
+function populate_selected_items_pane($elements) {
+
+    global $CFG;
+
+    $html = '';
+    $deletebutton = '<img id="deletebutton_ex" src="'.$CFG->pixpath.'/t/delete.gif" class="deletebutton" width="13px" height="13px" />'; 
+
+    foreach ($elements as $element) {
+        $html .= '<span id="item_'.$element->id.'" class="">';
+        // format_string() really slow here...
+        $html .= htmlentities($element->fullname);
+        $html .= $deletebutton;
+        $html .= '</span>';
+    }
 
     return $html;
 }

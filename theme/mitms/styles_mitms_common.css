@@ -412,16 +412,14 @@ div.mitms-dialog ul.treeview li span.ui-undraggable {
     float: right;
     padding-right: 15px;
     padding-bottom: 2px;
-    /*
-    position: relative;
-    left: 5px;
-    */
 }
 
 .deletebutton {
+    display: none;
     cursor: pointer;
-    position: relative;
-    left: 5px;
+    float: right;
+    padding-right: 5px;
+    padding-bottom: 2px;
 }
 
 .unclickable {
