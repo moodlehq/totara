@@ -24,7 +24,7 @@
 ///////////////////////////////////////////////////////////////////////////
 
 /**
- * position/lib.php
+ * hierarchy/type/position/lib.php
  *
  * Library to construct position hierarchies
  * @copyright Catalyst IT Limited
@@ -35,10 +35,13 @@
 require_once($CFG->dirroot.'/hierarchy/lib.php');
 
 
+// DO NOT COMMENT OUT IF UNUSED
 define('POSITION_TYPE_PRIMARY',         1);
 define('POSITION_TYPE_SECONDARY',       2);
 define('POSITION_TYPE_ASPIRATIONAL',    3);
 
+// List available position types
+// (Commented out unused types here)
 $POSITION_TYPES = array(
     POSITION_TYPE_PRIMARY       => 'primary',
     POSITION_TYPE_SECONDARY     => 'secondary',
