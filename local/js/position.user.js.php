@@ -12,13 +12,11 @@ $(function() {
     (function() {
         var url = '<?php echo $CFG->wwwroot ?>/hierarchy/type/position/assign/';
 
-        mitmsLocateDialog(
+        mitmsSingleSelectDialog(
             'position',
             url+'find.php?user='+user_id,
-            function(selected) {
-                $('input[name=positionid]').val(selected.attr('id'));
-                $('span#positiontitle').text(selected.text());
-            }
+            'positionid',
+            'positiontitle'
         );
     })();
 
@@ -29,13 +27,11 @@ $(function() {
     (function() {
         var url = '<?php echo $CFG->wwwroot ?>/hierarchy/type/organisation/assign/';
 
-        mitmsLocateDialog(
+        mitmsSingleSelectDialog(
             'organisation',
             url+'find.php?user='+user_id,
-            function(selected) {
-                $('input[name=organisationid]').val(selected.attr('id'));
-                $('span#organisationtitle').text(selected.text());
-            }
+            'organisationid',
+            'organisationtitle'
         );
     })();
 
@@ -46,13 +42,11 @@ $(function() {
     (function() {
         var url = '<?php echo $CFG->wwwroot ?>/hierarchy/type/position/assign/';
 
-        mitmsLocateDialog(
+        mitmsSingleSelectDialog(
             'manager',
             url+'manager.php?user='+user_id,
-            function(selected) {
-                $('input[name=managerid]').val(selected.attr('id'));
-                $('span#managertitle').text(selected.text());
-            }
+            'managerid',
+            'managertitle'
         );
     })();
 
@@ -63,14 +57,14 @@ $(function() {
     (function() {
         var url = '<?php echo $CFG->wwwroot ?>/hierarchy/type/competency/assign/';
 
-        mitmsLocateDialog(
+        mitmsSingleSelectDialog(
             'competency',
             url+'find.php?user='+user_id,
-            function(selected) {
+            'competencyid',
+            'competencytitle',
+            function() {
                 var jsonurl = '<?php echo $CFG->wwwroot ?>/hierarchy/type/competency/evidence/competency_scale.json.php';
-                var compid = selected.attr('id');
-                $('input[name=competencyid]').val(compid);
-                $('span#competencytitle').text(selected.text());
+                compid = $('input[name=competencyid]').val();
 
                 var profinput = $('body.hierarchy-type-competency-evidence select#id_proficiency');
                 // only do JSON request if a proficiency select found to fill

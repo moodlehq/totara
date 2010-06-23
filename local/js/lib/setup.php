@@ -98,8 +98,7 @@ function build_treeview($elements, $error_string, $hierarchy = null, $disabledli
             }
 
             //TODO: fix the theme path; add tooltip (title) getstring
-            $addbutton_str = '<img src="'.$CFG->pixpath.'/t/add.gif" class="addbutton" width="10px" height="10px" />';
-            //$addbutton_str = '<span class="addbutton"></span>';
+            $addbutton_str = '<img src="'.$CFG->pixpath.'/t/add.gif" class="addbutton" width="15px" height="15px" />';
 
             // Make disabled elements non-draggable and greyed out
             if (array_key_exists($element->id, $disabledlist)){
@@ -129,7 +128,7 @@ function build_treeview($elements, $error_string, $hierarchy = null, $disabledli
 
 
     // Add hidden button images that can later be used/cloned by js TODO: add generic theme path, add tooltip get_string
-    $html .= '<img id="deletebutton_ex" src="'.$CFG->pixpath.'/t/delete.gif" class="deletebutton" width="10px" height="10px" style="display: none;" />';
+    $html .= '<img id="deletebutton_ex" src="'.$CFG->pixpath.'/t/delete.gif" class="deletebutton" width="13px" height="13px" style="display: none;" />';
 
     return $html;
 }
@@ -401,6 +400,22 @@ function display_dialog_selector($options, $selected, $class) {
     }
 
     $html .= '</select>';
+
+    return $html;
+}
+
+/**
+ * Return markup for 'Currently selected' info in a dialog
+ * @param $label the label
+ * @return  $html
+ */
+function dialog_display_currently_selected($label) {
+
+    $html = '<label for="treeview_selected_text">'.$label.'</label>:&nbsp;';
+    $html .= '<span id="treeview_selected_text"></span>'; 
+
+    // Also add a hidden field that can hold the currently selected value
+    $html .= '<input type="hidden" id="treeview_selected_val" name="treeview_selected_val" value="" />';
 
     return $html;
 }

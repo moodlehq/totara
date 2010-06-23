@@ -13,7 +13,7 @@ $(function() {
     (function() {
         var url = '<?php echo $CFG->wwwroot ?>/hierarchy/type/competency/related/';
 
-        mitmsAssignDialog(
+        mitmsMultiSelectDialog(
             'related',
             url+'find.php?id='+competency_id,
             url+'save.php?id='+competency_id+'&add='
@@ -29,7 +29,7 @@ $(function() {
         handler.baseurl = url;
 
 /*      TODO!!  
-        mitmsAssignDialog(
+        mitmsMultiSelectDialog(
             'evidence',
             url+'edit.php?id='+competency_id,
             url+'save.php?id='+competency_id+'&add='

@@ -88,3 +88,4 @@ $string['error:startafterfinish'] = 'Start date must not be later than finish da
 $string['clickfornonjsform'] = 'Click here for a non-javascript version of this form';
 $string['name'] = 'Name';
 $string['editgeneric'] = 'Edit $a';
+$string['currentlyselected'] = 'Currently selected';

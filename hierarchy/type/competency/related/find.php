@@ -59,7 +59,6 @@ if(!$nojs) {
     // If parent id is not supplied, we must be displaying the main page
     if (!$parentid) {
 
-        echo '<br><br>'.PHP_EOL;
         echo '<div class="selectcompetencies">'.PHP_EOL;
         echo '<h2>' . get_string('assignrelatedcompetencies', $hierarchy->prefix) . '</h2>'.PHP_EOL;
         echo '<div class="selected">';

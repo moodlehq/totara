@@ -13,7 +13,7 @@ $(function() {
     (function() {
         var url = '<?php echo $CFG->wwwroot ?>/hierarchy/type/competency/template/';
 
-        mitmsAssignDialog(
+        mitmsMultiSelectDialog(
             'assignment',
             url+'find_competency.php?templateid='+competency_template_id,
             url+'save_competency.php?templateid='+competency_template_id+'&add='

@@ -61,3 +61,4 @@ $string['weight'] = 'Weight';
 $string['name'] = 'Name';
 $string['depthlevels'] = 'Depth levels';
 $string['editgeneric'] = 'Edit $a';
+$string['currentlyselected'] = 'Currently selected';

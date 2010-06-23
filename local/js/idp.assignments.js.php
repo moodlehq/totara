@@ -12,7 +12,7 @@ $(function() {
     (function() {
         var url = '<?php echo $CFG->wwwroot ?>/hierarchy/type/competency/idp/';
 
-        mitmsAssignDialog(
+        mitmsMultiSelectDialog(
             'idpcompetency',
             url+'find.php?id='+idp_revision_id,
             url+'save.php?id='+idp_revision_id+'&rowcount='+idp_competency_row_count+'&add='
@@ -27,7 +27,7 @@ $(function() {
     (function() {
         var url = '<?php echo $CFG->wwwroot ?>/hierarchy/type/competency/idp/';
 
-        mitmsAssignDialog(
+        mitmsMultiSelectDialog(
             'idpcompetencytemplate',
             url+'find-template.php?id='+idp_revision_id,
             url+'save-template.php?id='+idp_revision_id+'&rowcount='+idp_competencytemplate_row_count+'&add='
@@ -42,7 +42,7 @@ $(function() {
     (function() {
         var url = '<?php echo $CFG->wwwroot ?>/hierarchy/type/competency/idp/';
 
-        mitmsAssignDialog(
+        mitmsMultiSelectDialog(
             'idppositioncompetency',
             url+'find-position.php?id='+idp_revision_id,
             url+'save.php?id='+idp_revision_id+'&rowcount='+idp_competency_row_count+'&add='
@@ -57,7 +57,7 @@ $(function() {
     (function() {
         var url = '<?php echo $CFG->wwwroot ?>/hierarchy/type/competency/idp/';
 
-        mitmsAssignDialog(
+        mitmsMultiSelectDialog(
             'idppositioncompetencytemplate',
             url+'find-position-template.php?id='+idp_revision_id,
             url+'save-template.php?id='+idp_revision_id+'&rowcount='+idp_competencytemplate_row_count+'&add='

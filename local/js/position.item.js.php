@@ -12,7 +12,7 @@ $(function() {
     (function() {
         var url = '<?php echo $CFG->wwwroot ?>/hierarchy/type/position/assigncompetency/';
 
-        mitmsAssignDialog(
+        mitmsMultiSelectDialog(
             'assignedcompetencies',
             url+'find.php?assignto='+position_id+'&add=',
             url+'assign.php?assignto='+position_id+'&add='
@@ -25,7 +25,7 @@ $(function() {
     (function() {
         var url = '<?php echo $CFG->wwwroot ?>/hierarchy/type/position/assigncompetencytemplate/';
 
-        mitmsAssignDialog(
+        mitmsMultiSelectDialog(
             'assignedcompetencytemplates',
             url+'find.php?assignto='+position_id+'&add=',
             url+'assign.php?assignto='+position_id+'&add='

@@ -106,7 +106,7 @@ function mitmsDialog(title, buttonid, config, default_url, handler) {
         this.dialog.dialog('open');
 
         // Override some auto defined styling
-        this.dialog.parent().css({ height: '350px' });
+        this.dialog.parent().css({ height: '400px' });
         this.dialog.css({ height: '330px', width: '705px' });
 
         this.load(url, method);
@@ -558,45 +558,23 @@ mitmsDialog_handler_treeview.prototype._update_hierarchy = function(response, pa
 
 
 /*****************************************************************************/
-/** mitmsDialog_handler_treeview_draggable **/
+/** mitmsDialog_handler_treeview_multiselect **/
 
-mitmsDialog_handler_treeview_draggable = function() {};
-mitmsDialog_handler_treeview_draggable.prototype = new mitmsDialog_handler_treeview();
+mitmsDialog_handler_treeview_multiselect = function() {};
+mitmsDialog_handler_treeview_multiselect.prototype = new mitmsDialog_handler_treeview();
 
 /**
  * Setup treeview and drag/drop infrastructure
  *
  * @return void
  */
-mitmsDialog_handler_treeview_draggable.prototype.every_load = function() {
+mitmsDialog_handler_treeview_multiselect.prototype.every_load = function() {
 
     // Setup treeview
     mitmsDialog_handler_treeview.prototype.every_load.call(this);
 
-    // Setup droppable region
-    $('.selected', this._container).droppable({
-        drop: this._event_drop,
-        scope: this._title
-    });
-
-    // Make decending spans draggable
-    //this._make_draggable($('.treeview', this._container));
-    this._make_assignable($('.treeview', this._container));
-}
-
-/**
- * Make decending spans draggable
- *
- * @param jQuery element list
- * @return void
- */
-mitmsDialog_handler_treeview_draggable.prototype._make_draggable = function(parent_element) {
-
-    $('span:not(.empty, .ui-undraggable)', parent_element).draggable({
-        containment: 'body',
-        helper: 'clone',
-        scope: this._title
-    });
+    // Make decending spans assignable
+    this._make_selectable($('.treeview', this._container));
 }
 
 /**
@@ -605,19 +583,13 @@ mitmsDialog_handler_treeview_draggable.prototype._make_draggable = function(pare
  * @parent element
  * @return void
  */
-mitmsDialog_handler_treeview_draggable.prototype._make_assignable = function(parent_element) {
+mitmsDialog_handler_treeview_multiselect.prototype._make_selectable = function(parent_element) {
 
     // Get assignable/clickable elements
-    var assignable_items = $('span:not(.unclickable)', parent_element);
-
-    // Remove old handlers
-    //assignables.unbind('click');
-
-    // Add selectable class
-    //assignables.addClass('clickable');
+    var selectable_items = $('span:not(.unclickable)', parent_element);
 
     // Bind hover handler
-    assignable_items.mouseenter(function() {
+    selectable_items.mouseenter(function() {
         $(".addbutton", this._container).css("display", "none");
         $(this).find(".addbutton").css('display', 'inline')
 
@@ -625,6 +597,8 @@ mitmsDialog_handler_treeview_draggable.prototype._make_assignable = function(par
     });
     
     var assignable_buttons = $('span:not(.unclickable)', parent_element).children('.addbutton');
+
+    assignable_buttons.unbind('click');
 
     // Bind click handler to add icons
     assignable_buttons.click(function() {
@@ -660,53 +634,30 @@ mitmsDialog_handler_treeview_draggable.prototype._make_assignable = function(par
     
 }
 
-
-
 /**
  * Hierarchy update handler
  *
  * @param element
  * @return void
  */
-mitmsDialog_handler_treeview_draggable.prototype._handle_update_hierarchy = function(parent_element) {
-    //this._make_draggable(parent_element);
-    this._make_assignable(parent_element);
-}
-
-/**
- * Add element to drop box when dropped
- *
- * @param event
- * @param ui
- * @return void
- */
-mitmsDialog_handler_treeview_draggable.prototype._event_drop = function(event, ui) {
-
-    // Get clone
-    var clone = ui.draggable.clone();
-
-    // Get droppage region
-    var droppable = $(this);
-
-    // Check if an element with the same ID already exists
-    if ($('#'+clone.attr('id'), droppable).size() < 1) {
-        // Append clone to drop box
-        droppable.append(clone);
-    }
+mitmsDialog_handler_treeview_multiselect.prototype._handle_update_hierarchy = function(parent_element) {
+    this._make_selectable(parent_element);
 }
 
 
 /*****************************************************************************/
-/** mitmsDialog_handler_treeview_clickable **/
+/** mitmsDialog_handler_treeview_singleselect **/
 
-mitmsDialog_handler_treeview_clickable = function() {
-    /**
-     * Function for handling clicks
-     */
-    var clickhandler;
+mitmsDialog_handler_treeview_singleselect = function(value_element_name, text_element_id) {
+
+    // Can hold an externally assigned function
+    var external_function;
+
+    this.value_element_name = value_element_name;
+    this.text_element_id = text_element_id;
 };
 
-mitmsDialog_handler_treeview_clickable.prototype = new mitmsDialog_handler_treeview();
+mitmsDialog_handler_treeview_singleselect.prototype = new mitmsDialog_handler_treeview();
 
 /**
  * Hierarchy update handler
@@ -714,8 +665,17 @@ mitmsDialog_handler_treeview_clickable.prototype = new mitmsDialog_handler_treev
  * @param element
  * @return void
  */
-mitmsDialog_handler_treeview_clickable.prototype._handle_update_hierarchy = function(parent_element) {
-    this._make_clickable(parent_element);
+mitmsDialog_handler_treeview_singleselect.prototype._handle_update_hierarchy = function(parent_element) {
+    this._make_selectable(parent_element);
+}
+
+/**
+ * Setup run this on first load 
+ *
+ * @return void
+ */
+mitmsDialog_handler_treeview_singleselect.prototype.first_load = function() {
+    this._set_current_selected();
 }
 
 /**
@@ -723,13 +683,58 @@ mitmsDialog_handler_treeview_clickable.prototype._handle_update_hierarchy = func
  *
  * @return void
  */
-mitmsDialog_handler_treeview_clickable.prototype.every_load = function() {
+mitmsDialog_handler_treeview_singleselect.prototype.every_load = function() {
 
     // Setup treeview
     mitmsDialog_handler_treeview.prototype.every_load.call(this);
 
-    this._make_clickable($('.treeview', this._container));
+    this._make_selectable($('.treeview', this._container));
+    this._set_current_selected();
 }
+
+mitmsDialog_handler_treeview_singleselect.prototype._set_current_selected = function() {
+    var current_val = $('input[name='+this.value_element_name+']').val();
+    var current_text = $('#'+this.text_element_id).text();
+    if (!(current_val && current_text)) {
+        current_val = 0;
+        current_text = 'None';
+    }
+
+    $('#treeview_selected_text').text(current_text);
+    $('#treeview_selected_val').text(current_val);
+}
+
+/**
+ * Take clicked/selected item and 
+ * either update specified element(s)
+ *
+ * @param string element name to update value
+ * @param string element id to update text (optional)
+ * @return void
+ */
+mitmsDialog_handler_treeview_singleselect.prototype._save = function() {
+
+    // Get selected id
+    var selected_val = $('#treeview_selected_val', this._container).val();
+    // Get selected text
+    var selected_text = $('#treeview_selected_text').text();
+
+    // Update value element
+    $('input[name='+this.value_element_name+']').val(selected_val);
+    
+    // Update text element
+    if (this.text_element_id) {
+        $('#'+this.text_element_id).text(selected_text);
+    }
+
+    if (this.external_function) {
+        // Execute the extra function
+        this.external_function();
+    }
+
+    this._dialog.hide();
+}
+
 
 /**
  * Make elements run the clickhandler when clicked
@@ -737,39 +742,49 @@ mitmsDialog_handler_treeview_clickable.prototype.every_load = function() {
  * @parent element
  * @return void
  */
-mitmsDialog_handler_treeview_clickable.prototype._make_clickable = function(parent_element) {
+mitmsDialog_handler_treeview_singleselect.prototype._make_selectable = function(parent_element) {
 
     // Get selectable/clickable elements
     var selectables = $('span:not(.empty)', parent_element);
-
-    // Remove old handlers
-    selectables.unbind('click');
-
-    // Add clickable class
-    selectables.addClass('clickable');
-
-    // Setup closure
-    var dialog = this;
-
-    // Bind click handler
-    selectables.click(function() {
-
-        var clicked = $(this);
-
-        // Fix the element id
-        clicked.attr('id', clicked.attr('id').substr(5));
-
-        // Check for new style click handler
-        if (dialog.handle_click != undefined) {
-            dialog.handle_click(clicked);
-        }
-        else {
-            // Run handler and close
-            dialog.clickhandler(clicked);
-            dialog._dialog.hide();
-        }
+    
+    // Bind hover handler
+    selectables.mouseenter(function() {
+        $('.addbutton', this._container).css("display", "none");
+        $(this).find('.addbutton').css('display', 'inline')
 
         return false;
+    });
+    
+    var assignable_buttons = $('span:not(.unclickable)', parent_element).children('.addbutton');
+
+    // Remove old handlers
+    assignable_buttons.unbind('click');
+
+    // Bind click handler to add icons
+    assignable_buttons.click(function() {
+        var item = $(this).parent();
+        var clone = item.clone();
+
+        // First, remove addbutton from clone and add delete button
+        clone.find('.addbutton').remove();
+        deletebutton = $('#deletebutton_ex').clone();
+        deletebutton.attr('style', 'display: inline;');
+        clone.append(deletebutton);
+
+        deletebutton.unbind('click');
+
+        // Bind event to delete button
+        deletebutton.click(function() {
+            // Remove the button and its parent
+            $(this).parent().remove();
+            $('#treeview_selected_val').val(0);
+
+            return false;
+        });
+
+        $('#treeview_selected_text').html(clone);
+        var selected_id = clone.attr('id').split('_')[1];
+        $('#treeview_selected_val').val(selected_id);
     });
 }
 
@@ -869,29 +884,36 @@ mitmsDialog_handler_skeletalTreeview.prototype._update_hierarchy = function(resp
 /** Factory methods **/
 
 /**
- * Setup clickable treeview dialog that calls a handler on click
+ * Setup single-select treeview dialog that calls a handler on click
  *
  * @param string dialog name
  * @param string find page url
- * @param function handler
+ * @param string value_element bound to this dialog (value will be updated after dialog selection)
+ * @param string text_element bound to this dialog (text will be updated after dialog selection)
+ * @param function handler_extra extra code to be executed with handler
  * @return void
  */
-mitmsLocateDialog = function(name, find_url, clickhandler) {
+mitmsSingleSelectDialog = function(name, find_url, value_element, text_element, handler_extra) {
 
-    var handler = new mitmsDialog_handler_treeview_clickable();
-    handler.clickhandler = clickhandler;
+    var handler = new mitmsDialog_handler_treeview_singleselect(value_element, text_element);
+    handler.external_function = handler_extra;
 
     mitmsDialogs[name] = new mitmsDialog(
         name,
         'show-'+name+'-dialog',
-        {},
+        {
+            buttons: {
+                'Ok': function() { handler._save(); },
+                'Cancel': function() { handler._cancel() }
+            }
+        },
         find_url,
         handler
     );
 }
 
 /**
- * Setup draggable treeview dialog that calls a save page, and
+ * Setup multi-select treeview dialog that calls a save page, and
  * prints the html response to an underlying table
  *
  * @param string dialog name
@@ -899,9 +921,9 @@ mitmsLocateDialog = function(name, find_url, clickhandler) {
  * @param string save page url
  * @return void
  */
-mitmsAssignDialog = function(name, find_url, save_url) {
+mitmsMultiSelectDialog = function(name, find_url, save_url) {
 
-    var handler = new mitmsDialog_handler_treeview_draggable();
+    var handler = new mitmsDialog_handler_treeview_multiselect();
 
     mitmsDialogs[name] = new mitmsDialog(
         name,

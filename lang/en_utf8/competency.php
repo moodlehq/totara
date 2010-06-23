@@ -162,5 +162,6 @@ $string['templatecompetencyremovecheck'] = 'Are you absolutely sure you want to 
 $string['type'] = 'Type';
 $string['unknownbuttonclicked'] = 'Unknown button clicked';
 $string['weight'] = 'Weight';
+$string['currentlyselected'] = 'Currently selected';
 
 ?>
