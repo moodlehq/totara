@@ -1,0 +1,61 @@
+/***** page/styles_buttons.css start *****/
+
+/***
+ *** Submit Buttons
+ ***/
+
+span.button {
+  background: transparent url(http://ciscoinstitute.net/theme/cisco/pix/btn/btn_left.gif) left no-repeat; /* changed from top left to left for ie7 fix*/
+  padding: 5px 0 5px 5px;
+  margin: 2px;
+  font-size: 12px;
+}
+
+span.button a,
+span.button input {
+  background: transparent url(http://ciscoinstitute.net/theme/cisco/pix/btn/btn_right.gif) top right no-repeat;
+  text-align: center;
+  font-weight: bold;
+  font-size: 12px;
+}
+
+/* Tag specific */
+span.button input {
+  border: 0px;
+  margin: 0px;
+  padding: 5px 5px 5px 0px;
+}
+
+span.button a {
+  padding: 5px 5px 5px 0px;
+}
+
+span.button a:link, 
+span.button a:visited,
+span.button a:active {
+  color: #000000;
+  text-decoration: none;
+}
+
+/***
+ *** Submit Button Style Fixes
+ ***/
+
+/* For login/index.php */
+#login-index .loginbox td.left #login .button {
+  margin-right: 20px;
+}
+
+/* For admin settings pages */
+#adminsettings .button input {
+  float: none;
+  margin: 0px;
+}
+
+/* For quiz module, when taking the quiz */
+.que .submit {
+  float: none; /* Prevent the button from breaking in half */
+}/***** page/styles_buttons.css end *****/
+
+
+
