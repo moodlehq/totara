@@ -46,6 +46,12 @@ class completion_completion extends data_object {
         'timeenrolled', 'timestarted', 'timecompleted', 'rpl', 'reaggregate');
 
     /**
+     * Array of optional table fields
+     * @var array $optional_fields
+     */
+    public $optional_fields = array('name' => '');
+
+    /**
      * User ID
      * @access  public
      * @var     int
@@ -112,6 +118,12 @@ class completion_completion extends data_object {
      */
     public $reaggregate;
 
+    /**
+     * Course name (optional field)
+     * @access  public
+     * @var     string
+     */
+    public $name;
 
     /**
      * Finds and returns a data_object instance based on params.
