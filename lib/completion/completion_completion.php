@@ -142,14 +142,16 @@ class completion_completion extends data_object {
      */
     public static function get_status($completion) {
         // Check if a completion record was supplied
-        if (is_object($completion)) {
-            // Check we have the required data
-           if (!isset($completion->timeenrolled) ||
-                !isset($completion->timestarted) ||
-                !isset($completion->timecompleted))
-            {
-                error('Not enough data supplied to calculate Completion status');
-            }
+        if (!is_object($completion)) {
+            error('Incorrect data supplied to calculate Completion status');
+        }
+
+        // Check we have the required data
+        if (empty($completion->timeenrolled) &&
+            empty($completion->timestarted) &&
+            empty($completion->timecompleted))
+        {
+            error('Not enough data supplied to calculate Completion status');
         }
 
         // Check if complete
