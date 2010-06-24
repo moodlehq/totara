@@ -281,17 +281,10 @@ function mitms_print_my_courses() {
             $name = $course->fullname;
             $enrolled = $course->timeenrolled;
             $completed = $course->timecompleted;
-            $status = '';
-            if ($course->timestarted == 0) {
-                $status  = get_string('notyetstarted','completion');
-                $class   = 'notyetstarted';
-            } elseif (isset($completed)) {
-                $status = get_string('completed','local');
-                $class  = 'completed';
-            } else {
-                $status = get_string('inprogress','local');
-                $class  = 'inprogress';
-            }
+
+            $statusstring = completion_completion::get_status($course);
+            $status = get_string($statusstring, 'completion');
+
             $starteddate = '';
             if ($course->timestarted != 0) {
                 $starteddate = userdate($course->timestarted, '%e %b %y');
