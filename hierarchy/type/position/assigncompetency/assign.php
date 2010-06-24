@@ -16,6 +16,9 @@ $assignto = required_param('assignto', PARAM_INT);
 // Competencies to add
 $add = required_param('add', PARAM_SEQUENCE);
 
+// Indicates whether current related items, not in $add list, should be deleted
+$deleteexisting = optional_param('deleteexisting', 0, PARAM_BOOL);
+
 // Non JS parameters
 $nojs = optional_param('nojs', false, PARAM_BOOL);
 $returnurl = optional_param('returnurl', '', PARAM_TEXT);
@@ -37,18 +40,43 @@ if (!$position = $positions->get_item($assignto)) {
     error('Position could not be found');
 }
 
+// Currently assigned competencies
+if (!$currentlyassigned = $positions->get_assigned_competencies($assignto)) {
+    $currentlyassigned = array();
+}
+
+
+// Parse input
+$add = $add ? explode(',', $add) : array();
+$time = time();
+
+///
+/// Delete removed assignments (if specified)
+///
+
+if ($deleteexisting) {
+    $removeditems = array_diff(array_keys($currentlyassigned), $add);
+    
+    foreach ($removeditems as $rid) {
+        delete_records('pos_competencies', 'positionid', $position->id, 'competencyid', $rid);
+        add_to_log(SITEID, 'position', 'deleteassignment', "view.php?id=$rid", "Position (ID $position->id)");
+
+        echo " ~~~RELOAD PAGE~~~ ";  // Indicate that a page reload is required
+    }
+}
+
 
 ///
 /// Assign competencies
 ///
 
-// Parse input
-$add = explode(',', $add);
-$time = time();
-
 $str_remove = get_string('remove');
 
 foreach ($add as $addition) {
+    if (in_array($addition, array_keys($currentlyassigned))) {
+        // Skip assignment
+        continue;
+    }
     // Check id
     if (!is_numeric($addition)) {
         error('Supplied bad data - non numeric id');

@@ -15,6 +15,9 @@ $id = required_param('templateid', PARAM_INT);
 // Competencies to assign
 $assignments = required_param('add', PARAM_SEQUENCE);
 
+// Indicates whether current related items, not in $relidlist, should be deleted
+$deleteexisting = optional_param('deleteexisting', 0, PARAM_BOOL);
+
 // Non JS parameters
 $nojs = optional_param('nojs', false, PARAM_BOOL);
 $returnurl = optional_param('returnurl', '', PARAM_TEXT);
@@ -35,6 +38,11 @@ if (!$template = $hierarchy->get_template($id)) {
     error('Template ID was incorrect');
 }
 
+// Currently assigned competencies
+if (!$currentlyassigned = $hierarchy->get_assigned_to_template($id)) {
+    $currentlyassigned = array();
+}
+
 // Load framework
 if (!$framework = $hierarchy->get_framework($template->frameworkid)) {
     error('Competency framework could not be found');
@@ -51,14 +59,26 @@ if (!empty($USER->competencyediting)) {
 }
 
 
+// Parse assignments
+$assignments = $assignments ? explode(',', $assignments) : array();
+$time = time();
+
+///
+/// Delete removed assignments (if specified)
+///
+if ($deleteexisting) {
+    $removeditems = array_diff(array_keys($currentlyassigned), $assignments);
+    
+    foreach ($removeditems as $ritem) {
+        $hierarchy->delete_assigned_template_competency($id, $ritem);
+
+        echo " ~~~RELOAD PAGE~~~ ";  // Indicate that a page reload is required
+    }
+}
+
 ///
 /// Assign competencies
 ///
-
-// Parse assignments
-$assignments = explode(',', $assignments);
-$time = time();
-
 foreach ($assignments as $assignment) {
     // Check id
     if (!is_numeric($assignment)) {
@@ -97,8 +117,8 @@ foreach ($assignments as $assignment) {
 
         // Return html
         echo '<tr>';
+        echo "<td>{$competency->fullname}</td>";
         echo '<td>'.$depths[$competency->depthid]->fullname.'</td>';
-        echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/item/view.php?type={$hierarchy->prefix}&id={$competency->id}\">{$competency->fullname}</a></td>";
 
         if ($editingon) {
             echo "<td style=\"text-align: center;\">";

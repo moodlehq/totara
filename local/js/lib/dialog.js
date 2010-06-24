@@ -356,9 +356,14 @@ mitmsDialog_handler.prototype._update = function(response) {
         table = $('table.list-'+this._title);
     }
 
-    if (response.search(/~~~RELOAD PAGE~~~/) > 0) {
+    if (response.search(/~~~RELOAD PAGE~~~/) > 0 || table.size() < 1) {
         // Reload the page 
-        $('tbody', table).html('<p><strong>Loading...</strong></p>');
+        if ($('#middle-column').size()) {
+            $('#middle-column').html('<p><strong>Loading...</strong></p>');
+        } else {
+            $('#content').html('<p><strong>Loading...</strong></p>');
+        }
+
         location.reload();
         return;
     } 
@@ -420,16 +425,10 @@ mitmsDialog_handler.prototype._save = function(url) {
 
     // Serialize data
     var elements = $('.selected span', this._container);
-    var dropped = this._get_ids(elements).join(',');
-
-    // Nothing dropped
-    if (!dropped.length) {
-        this._dialog.hide();
-        return;
-    }
+    var selected_str = this._get_ids(elements).join(',');
 
     // Add to url
-    url = url + dropped;
+    url = url + selected_str;
 
     // Send to server
     this._dialog._request(url, this, '_update');

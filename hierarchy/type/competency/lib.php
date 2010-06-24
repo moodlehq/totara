@@ -237,7 +237,8 @@ SQL;
             SELECT
                 c.id AS id,
                 d.fullname AS depth,
-                c.fullname AS competency
+                c.fullname AS competency,
+                c.fullname AS fullname    /* used in some places (for genericness) */
             FROM
                 {$CFG->prefix}{$this->shortprefix}_template_assignment a
             LEFT JOIN
@@ -575,5 +576,33 @@ SQL;
      */
     function get_scales() {
         return get_records($this->shortprefix.'_scale', '', '', 'name');
+    }
+
+    /**
+     * Delete  a competency assigned to a template
+     * @param $templateid
+     * @param $competencyid
+     * @return void;
+     */
+    function delete_assigned_template_competency($templateid, $competencyid) {
+        if (!$template = $this->get_template($templateid)) {
+            return;
+        }
+
+        // Delete assignment
+        delete_records('comp_template_assignment', 'templateid', $template->id, 'instanceid', $competencyid);
+
+        // Reduce competency count for template
+        $template->competencycount--;
+
+        if ($template->competencycount < 0) {
+            $template->competencycount = 0;
+        }
+
+        update_record('comp_template', $template);
+
+        add_to_log(SITEID, $this->prefix.'template', 'removeassignment', 
+                    "view.php?id={$template->id}", "Competency ID $competencyid");
+
     }
 }

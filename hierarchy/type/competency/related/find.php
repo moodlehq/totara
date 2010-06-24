@@ -46,8 +46,8 @@ if (!$framework = $hierarchy->get_framework($frameworkid)) {
 // Load competencies to display
 $competencies = $hierarchy->get_items_by_parent($parentid);
 $alreadyrelated = comp_relation_get_relations($compid);
-$alreadyselected = get_records_select('comp', 'id IN ('.implode(',', $alreadyrelated).')',
-                                      '', 'id, fullname');
+$alreadyselected = $alreadyrelated ? get_records_select('comp', 'id IN ('.implode(',', $alreadyrelated).')',
+                                                        '', 'id, fullname') : array();
 $alreadyrelated[$compid] = $compid;
 
 ///

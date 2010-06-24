@@ -133,6 +133,12 @@ function build_treeview($elements, $error_string, $hierarchy = null, $disabledli
     return $html;
 }
 
+/**
+ * Returns markup to be used in the 'Selected Items' pane of a multi-select dialog
+ *
+ * @param   $elements    array elements to be created in the pane
+ * @return  $html
+ */
 function populate_selected_items_pane($elements) {
 
     global $CFG;

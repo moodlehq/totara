@@ -13,19 +13,21 @@ require_once($CFG->dirroot.'/hierarchy/type/competency/lib.php');
 // Competency id
 $compid = required_param('id', PARAM_INT);
 
-// Get currently-related competencies
-$currentlyrelated = comp_relation_get_relations($compid);
-
 // Competencies to relate
 $relidlist = required_param('add', PARAM_SEQUENCE);
-
-// Indicates whether current related items, not in $relidlist, should be deleted
-$deleteexisting = optional_param('deleteexisting', 0, PARAM_BOOL);
 
 // Non JS parameters
 $nojs = optional_param('nojs', false, PARAM_BOOL);
 $returnurl = optional_param('returnurl', '', PARAM_TEXT);
 $s = optional_param('s', '', PARAM_TEXT);
+
+// Indicates whether current related items, not in $relidlist, should be deleted
+$deleteexisting = optional_param('deleteexisting', 0, PARAM_BOOL);
+
+// Get currently-related competencies
+if (!$currentlyrelated = comp_relation_get_relations($compid)) {
+    $currentlyrelated = array();
+}
 
 // Setup page
 admin_externalpage_setup('competencymanage', '', array(), '', $CFG->wwwroot.'/competency/related/save.php');
@@ -50,7 +52,7 @@ if (!empty($USER->competencyediting)) {
 }
 
 // Parse input
-$relidlist = explode(',', $relidlist);
+$relidlist = $relidlist ? explode(',', $relidlist) : array();
 $time = time();
 
 ///

@@ -82,6 +82,7 @@ print_heading(get_string('assignedcompetencies', $hierarchy->prefix));
 
 if ($competencies) {
     $table = new object();
+    $table->id = 'list-assignment';
     $table->class = 'generaltable';
     $table->data = array();
 

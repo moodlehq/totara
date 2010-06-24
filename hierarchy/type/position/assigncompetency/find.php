@@ -3,6 +3,7 @@
 require_once('../../../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->dirroot.'/hierarchy/type/competency/lib.php');
+require_once($CFG->dirroot.'/hierarchy/type/position/lib.php');
 require_once($CFG->dirroot.'/local/js/lib/setup.php');
 
 // Page title
@@ -40,8 +41,9 @@ admin_externalpage_setup('positionmanage');
 $sitecontext = get_context_instance(CONTEXT_SYSTEM);
 require_capability('moodle/local:updateposition', $sitecontext);
 
-// Setup hierarchy object
+// Setup hierarchy objects
 $hierarchy = new competency();
+$position = new position();     // Used to determine the currently-assigned competencies
 
 // Load framework
 if (!$framework = $hierarchy->get_framework($frameworkid)) {
@@ -50,9 +52,10 @@ if (!$framework = $hierarchy->get_framework($frameworkid)) {
 
 // Load competencies to display
 $competencies = $hierarchy->get_items_by_parent($parentid);
-
-// Load currently assigned competencies
-// TODO
+$currentlyassigned = $position->get_assigned_competencies($assignto);
+if (!is_array($currentlyassigned)) {
+    $currentlyassigned = array();
+}
 
 ///
 /// Display page
@@ -63,19 +66,21 @@ if (!$nojs) {
     // If parent id is not supplied, we must be displaying the main page
     if (!$parentid) {
         echo '<div class="selectcompetencies">'.PHP_EOL;
-        $hierarchy->display_framework_selector('', true);
         echo '<h2>'.get_string($pagetitle, $hierarchy->prefix).'</h2>';
         echo '<div class="selected"><p>';
-        echo get_string('dragheretoassign', $hierarchy->prefix);
+        echo get_string('selectedcompetencies', $hierarchy->prefix);
+        echo populate_selected_items_pane($currentlyassigned);
         echo '</p></div>';
         echo '<p>'.get_string('locatecompetency', $hierarchy->prefix).':</p>';
+        $hierarchy->display_framework_selector('', true);
         echo '<ul class="treeview filetree">';
     }
 
     echo build_treeview(
         $competencies,
         get_string('nounassignedcompetencies', 'position'),
-        $hierarchy
+        $hierarchy,
+        $currentlyassigned
     );
 
     // If no parent id, close div

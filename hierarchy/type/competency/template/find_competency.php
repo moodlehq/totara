@@ -47,7 +47,7 @@ if (!$framework = $hierarchy->get_framework($template->frameworkid)) {
 // Load competencies to display
 $competencies = $hierarchy->get_items_by_parent($parentid);
 $competenciesintemplate = $hierarchy->get_assigned_to_template($id);
-if ( !is_array($competenciesintemplate) ){
+if (!is_array($competenciesintemplate) ){
     $competenciesintemplate = array();
 }
 
@@ -62,7 +62,8 @@ if(!$nojs) {
         echo '<div class="selectcompetencies">';
         echo '<h2>' . get_string('assignnewcompetency', $hierarchy->prefix) . '</h2>';
         echo '<div class="selected"><p>';
-        echo get_string('dragheretoassign', $hierarchy->prefix);
+        echo get_string('selectedcompetencies', $hierarchy->prefix);
+        echo populate_selected_items_pane($competenciesintemplate);
         echo '</p></div>';
         echo '<p>' . get_string('locatecompetency', $hierarchy->prefix) . ':</p>';
         echo '<ul class="treeview filetree">';
