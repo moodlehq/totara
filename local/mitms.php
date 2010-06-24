@@ -263,7 +263,7 @@ function mitms_print_report_manager($return=false) {
 function mitms_print_my_courses() {
     global $CFG,$USER;
     $content = '';
-    $courses = completion_info::get_all_completions($USER->id, 10);
+    $courses = completion_info::get_all_courses($USER->id, 10);
 
     if ($courses) {
         $content .= '<table class="centerblock">

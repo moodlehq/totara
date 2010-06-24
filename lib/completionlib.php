@@ -265,13 +265,13 @@ class completion_info {
     }
 
     /**
-     * Get all completions a user has across the site
+     * Get all couse completions a user has across the site
      * @access  public
      * @param   $user_id    int     User id
      * @param   $limit      int     Limit number of records returned (0 = no limit, optional)
      * @return  array
      */
-    public static function get_all_completions($user_id, $limit = 0) {
+    public static function get_all_courses($user_id, $limit = 0) {
 
         global $CFG;
 
