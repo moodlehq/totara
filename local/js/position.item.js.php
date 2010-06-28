@@ -28,7 +28,7 @@ $(function() {
         mitmsMultiSelectDialog(
             'assignedcompetencytemplates',
             url+'find.php?assignto='+position_id+'&add=',
-            url+'assign.php?assignto='+position_id+'&add='
+            url+'assign.php?assignto='+position_id+'&deleteexisting=1&add='
         );
     })();
 
