@@ -382,30 +382,17 @@ mitmsDialog_handler.prototype._update = function(response) {
  * @return array
  */
 mitmsDialog_handler.prototype._get_ids = function(elements, prefix) {
-
-    // Set default prefix
-    if (prefix == undefined) {
-        var prefix = 'item_';
-    }
-
+    
     var ids = [];
-    var prefix_length = prefix.length;
 
     // Loop through elements
     elements.each(
         function (intIndex) {
 
             // Get id attr
-            var id = $(this).attr('id');
-
-            // Check the prefix matches
-            if (id.substr(0, prefix_length) != prefix) {
-                return;
-            }
-
-            // Remove the prefix
-            id = id.substr(prefix_length);
-
+            var id = $(this).attr('id').split('_');
+            id = id[id.length-1];  // The last item is the actual id
+            
             // Append to list
             ids.push(id);
         }
@@ -562,6 +549,69 @@ mitmsDialog_handler_treeview.prototype._update_hierarchy = function(response, pa
     }
 }
 
+/**
+ * Bind click event to elements, i.o to make them deletable
+ *
+ * @parent element
+ * @return void
+ */
+mitmsDialog_handler_treeview.prototype._make_deletable = function(parent_element) {
+    var deletables = $('.deletebutton', parent_element);
+    
+    // Bind hover handler to button parent
+    deletables.parent().mouseenter(function() {
+        $(".deletebutton", this._container).css("display", "none");
+        $(this).find(".deletebutton").css('display', 'inline')
+        
+    });
+     
+    // Bind event to delete button
+    deletables.click(function() {
+        // Remove the button and its parent
+        $(this).parent().remove();
+
+        return false;
+    });
+}
+
+/**
+ * @param object element the element to append
+ * @return void
+ */
+mitmsDialog_handler_treeview.prototype._append_to_selected = function(element) {
+    var clone = element.parent().clone();  // Make a clone of the list item
+    var selected_area = $('.selected', this._container)
+
+    // Check if an element with the same ID already exists
+    if ($('#'+clone.attr('id'), selected_area).size() < 1) {
+        // First, remove addbutton from clone and add delete button
+        clone.find('.addbutton').remove();
+        deletebutton = $('#deletebutton_ex').clone();
+        clone.append(deletebutton);
+
+        deletebutton.unbind('click');
+
+        // Bind hover handler to clone
+        clone.mouseenter(function() {
+            $(".deletebutton", this._container).css("display", "none");
+            $(this).find(".deletebutton").css('display', 'inline')
+            
+        });
+
+        // Bind event to delete button
+        deletebutton.click(function() {
+            // Remove the button and its parent
+            $(this).parent().remove();
+
+            return false;
+        });
+        
+        // Append item clone to selected items
+        selected_area.append(clone);
+    }
+}
+
+
 
 /*****************************************************************************/
 /** mitmsDialog_handler_treeview_multiselect **/
@@ -595,6 +645,7 @@ mitmsDialog_handler_treeview_multiselect.prototype.every_load = function() {
 mitmsDialog_handler_treeview_multiselect.prototype._make_selectable = function(parent_element) {
     // Get assignable/clickable elements
     var selectable_items = $('span:not(.unclickable)', parent_element);
+    var handler = this;
 
     // Bind hover handler
     selectable_items.mouseenter(function() {
@@ -612,65 +663,11 @@ mitmsDialog_handler_treeview_multiselect.prototype._make_selectable = function(p
     assignable_buttons.click(function() {
 
         var clicked = $(this);
-        var clone = clicked.parent().clone();  // Make a clone of the list item
-        var selected_area = $('.selected', this._container)
-
-        // Check if an element with the same ID already exists
-        if ($('#'+clone.attr('id'), selected_area).size() < 1) {
-            // First, remove addbutton from clone and add delete button
-            clone.find('.addbutton').remove();
-            deletebutton = $('#deletebutton_ex').clone();
-            clone.append(deletebutton);
-
-            deletebutton.unbind('click');
-
-            // Bind hover handler to clone
-            clone.mouseenter(function() {
-                $(".deletebutton", this._container).css("display", "none");
-                $(this).find(".deletebutton").css('display', 'inline')
-                
-            });
-
-            // Bind event to delete button
-            deletebutton.click(function() {
-                // Remove the button and its parent
-                $(this).parent().remove();
-
-                return false;
-            });
-            
-            // Append item clone to selected items
-            selected_area.append(clone);
-        }
+        handler._append_to_selected(clicked);
 
         return false;
     });
     
-}
-
-/**
- * Bind click event to elements, i.o to make them deletable
- *
- * @parent element
- * @return void
- */
-mitmsDialog_handler_treeview_multiselect.prototype._make_deletable = function(parent_element) {
-    var deletables = $('.deletebutton', parent_element);
-    
-    // Bind hover handler to button parent
-    deletables.parent().mouseenter(function() {
-        $(".deletebutton", this._container).css("display", "none");
-        $(this).find(".deletebutton").css('display', 'inline')
-        
-    });
-     
-    // Bind event to delete button
-    deletables.click(function() {
-        // Remove the button and its parent
-        $(this).parent().remove();
-
-        return false;
-    });
 }
 
 /**
@@ -687,13 +684,20 @@ mitmsDialog_handler_treeview_multiselect.prototype._handle_update_hierarchy = fu
 /*****************************************************************************/
 /** mitmsDialog_handler_treeview_singleselect **/
 
-mitmsDialog_handler_treeview_singleselect = function(value_element_name, text_element_id) {
+mitmsDialog_handler_treeview_singleselect = function(value_element_name, text_element_id, dualpane) {
 
     // Can hold an externally assigned function
     var external_function;
 
     this.value_element_name = value_element_name;
     this.text_element_id = text_element_id;
+
+    // Use 2 panes in the dialog for getting to the selection items
+    if (dualpane != 'undefined') {
+        this.dualpane = dualpane
+    } else {
+        this.dualpane=false;
+    }
 };
 
 mitmsDialog_handler_treeview_singleselect.prototype = new mitmsDialog_handler_treeview();
@@ -759,7 +763,9 @@ mitmsDialog_handler_treeview_singleselect.prototype._save = function() {
     var selected_text = $('#treeview_selected_text').text();
 
     // Update value element
-    $('input[name='+this.value_element_name+']').val(selected_val);
+    if (this.value_element_name) {
+        $('input[name='+this.value_element_name+']').val(selected_val);
+    }
     
     // Update text element
     if (this.text_element_id) {
@@ -785,6 +791,28 @@ mitmsDialog_handler_treeview_singleselect.prototype._make_selectable = function(
 
     // Get selectable/clickable elements
     var selectables = $('span:not(.empty)', parent_element);
+    var dialog = this;
+
+    if (this.dualpane) {
+        selectables.unbind('click');
+
+        selectables.addClass('clickable');
+
+        selectables.click(function() {
+            var clicked = $(this);
+
+            var clicked_id = clicked.attr('id').split('_');
+            clicked_id = clicked_id[clicked_id.length-1];  // The last item is the actual id
+            clicked.attr('id', clicked_id);
+
+            // Check for new-style clickhandlers
+            if (dialog.handle_click != undefined) {
+                dialog.handle_click($(this));
+            }
+        });
+
+        return;
+    }
     
     // Bind hover handler
     selectables.mouseenter(function() {
@@ -831,8 +859,8 @@ mitmsDialog_handler_treeview_singleselect.prototype._make_selectable = function(
         var selected_id = clone.attr('id').split('_')[1];
         $('#treeview_selected_val').val(selected_id);
     });
-}
 
+}
 
 /*****************************************************************************/
 /** mitmsDialog_handler_skeletalTreeview **/
@@ -854,8 +882,16 @@ mitmsDialog_handler_skeletalTreeview.prototype.every_load = function() {
 
     var handler = this;
 
+    // Setup framework picker if one exists
+    $('.simpleframeworkpicker', this._container).change(function() {
+        handler._set_framework();
+    });
+
     // Setup hierarchy
     this._make_hierarchy($('.treeview', this._container));
+    
+    // Make spans in selected pane deletable
+    this._make_deletable($('.selected', this._container));
 }
 
 /**
@@ -910,18 +946,31 @@ mitmsDialog_handler_skeletalTreeview.prototype._update_hierarchy = function(resp
 
     var handler = this;
 
-    // Bind course names
-    $('span.clickable', list).click(function() {
+    if (handler._handle_course_click != undefined) {
+        // Bind clickable function to course
+        $('span.clickable', list).click(function() {
+            var par = $(this).parent();
 
-        // Get parent
-        var par = $(this).parent();
+            // Get the id in format course_XX
+            var id = par.attr('id').substr(7);
 
-        // Get the id in format course_XX
-        var id = par.attr('id').substr(7);
+            // To be overridden in child classes
+            handler._handle_course_click(id);           
+        });
+    } else {
+        // Bind hover event to clickable items
+        $('span.clickable', list).parent().mouseenter(function() {
+            $('.addbutton', this._container).css("display", "none");
+            $(this).find('.addbutton').css('display', 'inline'); 
+        });
 
-        // To be overridden in child classes
-        handler._handle_course_click(id);
-    });
+        // Bind addbutton
+        $('span.clickable', list).find('.addbutton').click(function() {
+            // Assign id attribute to 
+            //$(this).attr($(this).parent().attr('id'));
+            handler._append_to_selected($(this));
+        });
+    }
 }
 
 
