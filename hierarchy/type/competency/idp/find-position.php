@@ -44,8 +44,7 @@ $competency = new competency();
 $position = new position();
 
 // Load plan this revision relates to
-$plan = get_plan_for_revision($revisionid);
-if (!$plan) {
+if (!$plan = get_plan_for_revision($revisionid)) {
     error('Revision plan could not be found');
 }
 
@@ -73,16 +72,17 @@ if (!isset($cur_position)) {
 }
 
 // Load competencies to display
-$competencies = $position->get_assigned_competencies($cur_position);
-$assignedcomps = get_records('idp_revision_competency', 'revision', $revisionid, '', 'competency');
-if( !is_array($assignedcomps) ){
-    $assignedcomps = array();
-};
+if (!$competencies = $position->get_assigned_competencies($cur_position)) {
+    $competencies = array();
+}
+if (!$currentlyassigned = idp_get_user_competencies($plan->userid, $revisionid)) {
+    $currentlyassigned = array();
+}
+
 
 ///
 /// Display page
 ///
-
 
 if(!$nojs) {
     // build Javascript Treeview
@@ -90,18 +90,21 @@ if(!$nojs) {
 
 <div class="selectcompetencies">
 
-<?php echo $position->user_positions_picker($owner, $cur_position->id); ?>
-
 <h2><?php echo get_string('addcompetenciestoplan', 'idp') ?></h2>
 
 <div class="selected">
     <p>
-        <?php echo get_string('dragheretoassign', 'competency') ?>
+        <?php 
+            echo get_string('selecteditems', 'hierarchy');
+            echo populate_selected_items_pane($currentlyassigned);
+        ?>
     </p>
 </div>
 
 <p>
     <?php echo get_string('locatecompetency', 'competency') ?>:
+    <br>
+    <?php echo $position->user_positions_picker($owner, $cur_position->id); ?>
 </p>
 
 <ul class="treeview filetree">
@@ -112,7 +115,7 @@ echo build_treeview(
     $competencies,
     get_string('nocompetenciesassignedtoposition', 'position'),
     null,
-    $assignedcomps
+    $currentlyassigned
 );
 
 ?>
@@ -153,7 +156,7 @@ echo build_treeview(
             ),
             $CFG->wwwroot.'/hierarchy/type/competency/idp/find-position.php?'.$urlparams,
             array(),
-            $assignedcomps
+            $curretnlyassigned
         );
         echo '</div>';
     }

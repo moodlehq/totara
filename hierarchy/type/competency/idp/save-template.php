@@ -19,6 +19,9 @@ $rowcount = required_param('rowcount', PARAM_SEQUENCE);
 // Competency templates to add
 $add = required_param('add', PARAM_SEQUENCE);
 
+// Indicates whether current related items, should be deleted
+$deleteexisting = optional_param('deleteexisting', 0, PARAM_BOOL);
+
 // No javascript parameters
 $nojs = optional_param('nojs', false, PARAM_BOOL);
 $returnurl = optional_param('returnurl', '', PARAM_TEXT);
@@ -41,14 +44,41 @@ if ( $plan->userid != $USER->id ){
 $hierarchy = new competency();
 $str_remove = get_string('remove');
 
+// Parse input
+$add = $add ? explode(',', $add) : array();
+$time = time();
+
+///
+/// Delete removed assignments (if specified)
+///
+if ($deleteexisting) {
+    // Currently assigned templates
+    if (!$currentlyassigned = idp_get_user_competencytemplates($plan->userid, $revisionid)) {
+        $currentlyassigned = array();
+    }
+
+    $removeditems = array_diff(array_keys($currentlyassigned), $add);
+    
+    foreach ($removeditems as $rid) {
+        begin_sql();
+        $dbresult = (boolean) delete_records('idp_revision_competencytmpl', 'revision', $revisionid, 'competencytemplate', $rid);
+        $dbresult = $dbresult && update_modification_time($revisionid);
+        if ($dbresult ){
+            commit_sql();
+        } else {
+            rollback_sql();
+            print_error('error:removalfailed','idp');
+        }
+        add_to_log(SITEID, 'idp', 'delete IDP competency template', "revision.php?id={$plan->id}", $rid);
+
+        echo " ~~~RELOAD PAGE~~~ ";  // Indicate that a page reload is required
+    }
+}
+
+
 ///
 /// Add competencies
 ///
-
-// Parse input
-$add = explode(',', $add);
-$time = time();
-
 foreach ($add as $addition) {
     // Check id
     if (!is_numeric($addition)) {

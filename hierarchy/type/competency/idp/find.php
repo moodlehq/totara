@@ -4,6 +4,7 @@ require_once('../../../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->dirroot.'/hierarchy/type/competency/lib.php');
 require_once($CFG->dirroot.'/local/js/lib/setup.php');
+require_once($CFG->dirroot.'/idp/lib.php');
 
 
 ///
@@ -37,21 +38,25 @@ admin_externalpage_setup('competencymanage');
 $sitecontext = get_context_instance(CONTEXT_SYSTEM);
 require_capability('moodle/local:idpaddcompetency', $sitecontext);
 
+// Load plan this revision relates to
+if (!$plan = get_plan_for_revision($revisionid)) {
+    error('Revision plan could not be found');
+}
+
 // Setup hierarchy object
 $hierarchy = new competency();
 
 // Load framework
 if (!$framework = $hierarchy->get_framework($frameworkid, true)) {
     $competencies = array();
-    $assignedcomps = array();
+    $currentlyassigned = array();
 } else {
 
     // Load competencies to display
     $competencies = $hierarchy->get_items_by_parent($parentid, $revisionid);
-    $assignedcomps = get_records('idp_revision_competency', 'revision', $revisionid, '', 'competency');
-    if( !is_array($assignedcomps) ){
-        $assignedcomps = array();
-    };
+    if (!$currentlyassigned = idp_get_user_competencies($plan->userid, $revisionid)) {
+        $currentlyassigned = array();
+    }
 }
 
 ///
@@ -65,12 +70,13 @@ if(!$nojs) {
     if (!$parentid) {
 
         echo '<div class="selectcompetencies">'.PHP_EOL;
-        $hierarchy->display_framework_selector('', true);
         echo '<h2>' . get_string('addcompetenciestoplan', 'idp') . '</h2>'.PHP_EOL;
         echo '<div class="selected">';
-        echo '<p>' . get_string('dragheretoassign', $hierarchy->prefix).'</p>'.PHP_EOL;
+        echo '<p>' . get_string('selecteditems', 'hierarchy').'</p>'.PHP_EOL;
+        echo populate_selected_items_pane($currentlyassigned);
         echo '</div>'.PHP_EOL;
         echo '<p>' . get_string('locatecompetency', $hierarchy->prefix).':'.'</p>'.PHP_EOL;
+        $hierarchy->display_framework_selector('', true);
         echo '<ul class="treeview filetree">'.PHP_EOL;
     }
 
@@ -78,7 +84,7 @@ if(!$nojs) {
         $competencies,
         get_string(($framework?'nocompetenciesinframework':'nocompetency'), 'competency'),
         $hierarchy,
-        $assignedcomps
+        $currentlyassigned
     );
 
     // If no parent id, close div
@@ -143,7 +149,7 @@ if(!$nojs) {
             ),
             $CFG->wwwroot.'/hierarchy/type/competency/idp/find.php?'.$urlparams,
             $hierarchy->get_all_parents(),
-            $assignedcomps
+            $currentlyassigned
         );
 
         echo '</div>';
