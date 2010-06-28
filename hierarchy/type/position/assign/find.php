@@ -70,7 +70,7 @@ if (!$parentid) {
 ?>
 </h2>
 <?php 
-    $hierarchy->display_framework_selector('', true)
+    $hierarchy->display_framework_selector('', true);
 }
 
 // If this is the root node
