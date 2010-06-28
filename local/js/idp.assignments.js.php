@@ -75,11 +75,18 @@ $(function() {
         var handler = new mitmsDialog_handler_idpCourse();
         handler.baseurl = url;
 
-        //url+'save.php?id='+idp_revision_id+'&rowcount='+idp_competencytemplate_row_count+'&add=',
+        save_url = url+'save.php?id='+idp_revision_id+'&rowcount='+idp_competencytemplate_row_count+'&deleteexisting=1&add=',
+    
         mitmsDialogs['idpcourse'] = new mitmsDialog(
             'idpcourse',
             'show-idpcourse-dialog',
-            {},
+            {
+                 buttons: {
+                'Ok': function() { handler._save(save_url) },
+                'Cancel': function() { handler._cancel() }
+            }
+    
+            },
             url+'add.php?id='+idp_revision_id,
             handler
         );
@@ -100,13 +107,4 @@ mitmsDialog_handler_idpCourse.prototype._handle_hierarchy_expand = function(id) 
 
     var url = this.baseurl+'category.php?id='+id+'&rev='+idp_revision_id;
     this._dialog._request(url, this, '_update_hierarchy', id);
-}
-
-
-mitmsDialog_handler_idpCourse.prototype._handle_course_click = function(id) {
-
-    var url = this.baseurl+'save.php?id='+idp_revision_id+'&rowcount='+idp_competencytemplate_row_count+'&add='+id;
-
-    // Update db
-    this._dialog._request(url, this, '_update');
 }

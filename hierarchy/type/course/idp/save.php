@@ -18,6 +18,9 @@ $rowcount = required_param('rowcount', PARAM_SEQUENCE);
 // Courses to add
 $add = required_param('add', PARAM_SEQUENCE);
 
+// Indicates whether current related items, not in $relidlist, should be deleted
+$deleteexisting = optional_param('deleteexisting', 0, PARAM_BOOL);
+
 // No javascript parameters
 $nojs = optional_param('nojs', false, PARAM_BOOL);
 $returnurl = optional_param('returnurl', '', PARAM_TEXT);
@@ -36,16 +39,33 @@ if ( $plan->userid != $USER->id ){
     error(get_string('error:revisionnotvisible', 'idp'));
 }
 
+// Currently assigned competencies
+if (!$currentlyassigned = idp_get_user_courses($plan->userid, $revisionid)) {
+    $currentlyassigned = array();
+}
+
+// Parse input
+$add = $add ? explode(',', $add) : array();
+$time = time();
+
+///
+/// Delete removed assignments (if specified)
+///
+if ($deleteexisting) {
+    $removeditems = array_diff(array_keys($currentlyassigned), $add);
+    
+    foreach ($removeditems as $rid) {
+        delete_course_from_revision($revisionid, $rid, $plan->id);
+
+        echo " ~~~RELOAD PAGE~~~ ";  // Indicate that a page reload is required
+    }
+}
+
 $str_remove = get_string('remove');
 
 ///
 /// Add competencies
 ///
-
-// Parse input
-$add = explode(',', $add);
-$time = time();
-
 foreach ($add as $addition) {
     // Check id
     if (!is_numeric($addition)) {
