@@ -40,3 +40,4 @@ $string['error:couldnotmoveitemnopeer'] = 'Could not move that $a, no adjacent i
 $string['error:badsortorder'] = 'Could not move that $a, there is something wrong with the sort orders.';
 $string['error:noframeworksfound'] = 'No $a frameworks with one or more depth levels found.';
 $string['switchframework'] = 'Switch framework: ';
+$string['selecteditems'] = 'Selected items';
