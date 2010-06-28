@@ -58,6 +58,10 @@ function build_treeview($elements, $error_string, $hierarchy = null, $disabledli
     global $CFG;
 
     $html = '';
+    
+    //TODO: add tooltip (title) getstring
+    $addbutton = '<img src="'.$CFG->pixpath.'/t/add.gif" class="addbutton" width="15px" height="15px" />';
+    $deletebutton = '<img id="deletebutton_ex" src="'.$CFG->pixpath.'/t/delete.gif" class="deletebutton" width="13px" height="13px" style="display: none;" />';
 
     if (is_array($elements) && !empty($elements)) {
 
@@ -97,13 +101,12 @@ function build_treeview($elements, $error_string, $hierarchy = null, $disabledli
                 }
             }
     
-            //TODO: add tooltip (title) getstring
-            $addbutton_str = '<img src="'.$CFG->pixpath.'/t/add.gif" class="addbutton" width="15px" height="15px" />';
+            $addbutton_html = $addbutton; 
 
             // Make disabled elements non-draggable and greyed out
             if (array_key_exists($element->id, $disabledlist)){
                 $span_class = trim($span_class . ' unclickable');
-                $addbutton_str = '';
+                $addbutton_html = '';
             }
 
             $html .= '<li class="'.$li_class.'" id="item_list_'.$element->id.'">';
@@ -111,7 +114,7 @@ function build_treeview($elements, $error_string, $hierarchy = null, $disabledli
             $html .= '<span id="item_'.$element->id.'" class="'.$span_class.'">';
             // format_string() really slow here...
             $html .= htmlentities($element->fullname);
-            $html .= $addbutton_str;
+            $html .= $addbutton_html;
             $html .= '</span>';
 
             if ($div_class !== '') {
@@ -128,7 +131,7 @@ function build_treeview($elements, $error_string, $hierarchy = null, $disabledli
 
 
     // Add hidden button images that can later be used/cloned by js TODO: add tooltip get_string
-    $html .= '<img id="deletebutton_ex" src="'.$CFG->pixpath.'/t/delete.gif" class="deletebutton" width="13px" height="13px" style="display: none;" />';
+    $html .= $deletebutton;
 
     return $html;
 }
@@ -163,11 +166,17 @@ function populate_selected_items_pane($elements) {
  * @param   $list           array       Array of full cat path names
  * @param   $parents        array       Array of category parents
  * @param   $load_string    string      String to display as a placeholder for unloaded branches
+ * @uses    $CFG
  * @return  $html
  */
 function build_category_treeview($list, $parents, $load_string) {
 
+    global $CFG;
+
     $html = '';
+
+    $addbutton = '<img src="'.$CFG->pixpath.'/t/add.gif" class="addbutton" width="15px" height="15px" display="none" />';
+    $deletebutton = '<img id="deletebutton_ex" src="'.$CFG->pixpath.'/t/delete.gif" class="deletebutton" width="13px" height="13px" style="display: none;" />';
 
     if (is_array($list) && !empty($list)) {
 
@@ -232,6 +241,9 @@ function build_category_treeview($list, $parents, $load_string) {
                 $html .= '<span class="folder">'.$category.'</span><ul style="display: none;">'.PHP_EOL;
             }
         }
+
+        $html .= $addbutton;
+        $html .= $deletebutton;
     }
 
     return $html;
@@ -436,7 +448,7 @@ function display_dialog_selector($options, $selected, $class) {
 function dialog_display_currently_selected($label) {
 
     $html = '<label for="treeview_selected_text">'.$label.'</label>:&nbsp;';
-    $html .= '<span id="treeview_selected_text"></span>'; 
+    $html .= '<em><span id="treeview_selected_text"></span></em>'; 
 
     // Also add a hidden field that can hold the currently selected value
     $html .= '<input type="hidden" id="treeview_selected_val" name="treeview_selected_val" value="" />';
