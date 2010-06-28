@@ -158,6 +158,12 @@ class position extends hierarchy {
     function get_assigned_competency_templates($item) {
         global $CFG;
 
+        if (is_object($item)) {
+            $itemid = $item->id;
+        } elseif (is_numeric($item)) {
+            $itemid = $item;
+        }
+
         return get_records_sql(
             "
                 SELECT
@@ -175,7 +181,7 @@ class position extends hierarchy {
                  ON c.frameworkid = cf.id
                 WHERE
                     pc.competencyid IS NULL
-                AND pc.positionid = {$item->id}
+                AND pc.positionid = {$itemid}
             "
         );
     }
