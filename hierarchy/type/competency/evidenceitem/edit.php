@@ -70,7 +70,6 @@ if($nojs) {
     }
     print_footer();
 } else {
-    echo "eugene";
     // JS version
     echo '<h2>' . get_string('assignnewevidenceitem', 'competency') . '</h2>';
     echo '<div id="available-evidence" class="selected">';

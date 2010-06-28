@@ -28,13 +28,6 @@ $(function() {
         var handler = new mitmsDialog_handler_assignEvidence();
         handler.baseurl = url;
 
-/*      TODO!!  
-        mitmsMultiSelectDialog(
-            'evidence',
-            url+'edit.php?id='+competency_id,
-            url+'save.php?id='+competency_id+'&add='
-        ); 
-*/
         mitmsDialogs['evidence'] = new mitmsDialog(
             'evidence',
             'show-evidence-dialog',
@@ -77,9 +70,21 @@ mitmsDialog_handler_assignEvidence.prototype._display_evidence = function(respon
 
     var handler = this;
 
-    // Handle add evidence links
-    $('.selected a', this._dialog.dialog).click(function(e) {
-        e.preventDefault();
-        handler._dialog._request($(this).attr('href'), handler, '_update');
+    // Bind hover event
+    $('#available-evidence li', this._dialog.dialog).mouseenter(function() {
+        console.log('hover');
+        $('.addbutton').css('display', 'none');
+        $('.addbutton', $(this)).css('display', 'inline');
     });
+    
+    // Bind click event
+    $('#available-evidence', this._dialog.dialog).find('.addbutton').click(function(e) {
+        e.preventDefault();
+        var type = $(this).parent().attr('type');
+        var instance = $(this).parent().attr('id');
+        var url = handler.baseurl+'add.php?competency='+competency_id+'&type='+type+'&instance='+instance;
+        console.log(url);
+        handler._dialog._request(url, handler, '_update');
+    });
+
 }
