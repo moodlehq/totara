@@ -62,9 +62,11 @@ if(!$nojs) {
     // If parent id is not supplied, we must be displaying the main page
     if (!$parentid) {
         echo '<div class="selectcompetencies">';
-        $hierarchy->display_framework_selector('', true);
         echo '<h2>' . get_string('addcourseevidencetocompetency', $hierarchy->prefix) . '</h2>';
-        echo '<p>' . get_string('locatecompetency', $hierarchy->prefix) . '</p>';
+        echo '<div id="available-evidence" class="selected">';
+        echo '</div>';
+        echo '<p><strong>' . get_string('locatecompetency', $hierarchy->prefix) . '</strong></p>';
+        $hierarchy->display_framework_selector('', true);
         echo '<ul class="filetree treeview">';
     }
 
