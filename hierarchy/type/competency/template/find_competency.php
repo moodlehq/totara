@@ -46,8 +46,7 @@ if (!$framework = $hierarchy->get_framework($template->frameworkid)) {
 
 // Load competencies to display
 $competencies = $hierarchy->get_items_by_parent($parentid);
-$competenciesintemplate = $hierarchy->get_assigned_to_template($id);
-if (!is_array($competenciesintemplate) ){
+if (!$competenciesintemplate = $hierarchy->get_assigned_to_template($id)) {
     $competenciesintemplate = array();
 }
 
