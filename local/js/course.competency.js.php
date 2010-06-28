@@ -33,7 +33,7 @@ mitmsDialog_handler_assignCourseEvidence = function() {
     var baseurl = '';
 }
 
-mitmsDialog_handler_assignCourseEvidence.prototype = new mitmsDialog_handler_treeview_clickable();
+mitmsDialog_handler_assignCourseEvidence.prototype = new mitmsDialog_handler_treeview_singleselect(null, null, dualpane=true);
 
 mitmsDialog_handler_assignCourseEvidence.prototype.handle_click = function(clicked) {
 
@@ -51,12 +51,23 @@ mitmsDialog_handler_assignCourseEvidence.prototype.display_evidence = function(r
     // Hide loading animation
     this._dialog.hideLoading();
 
-    this._dialog.dialog.html(response);
+    $('.selected', this._dialog.dialog).html(response);
 
-    // Handle add evidence links
-    $('#coursecompetency .selectcompetencies a').live('click', function(event) {
-        event.preventDefault();
-        handler._dialog._request($(this).attr('href'), handler, '_update');
+    // Bind hover event
+    $('#available-evidence li', this._dialog.dialog).mouseenter(function() {
+        $('.addbutton').css('display', 'none');
+        $('.addbutton', $(this)).css('display', 'inline');
+    });
+    
+    // Bind click event
+    $('#available-evidence', this._dialog.dialog).find('.addbutton').click(function(e) {
+        e.preventDefault();
+        var competency_id=$('#evitem_competency_id').val();
+        var type = $(this).parent().attr('type');
+        var instance = $(this).parent().attr('id');
+        var url = handler.baseurl+'save.php?competency='+competency_id+'&course='+course_id+'&type='+type+'&instance='+instance;
+        console.log(url);
+        handler._dialog._request(url, handler, '_update');
     });
 
     return false;
