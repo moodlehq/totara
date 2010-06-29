@@ -290,7 +290,12 @@ class completion_info {
              ON cc.course = c.id
             WHERE
                 cc.userid = {$user_id}
-            AND cc.timestarted IS NOT NULL
+            AND
+            (
+                cc.timeenrolled > 0
+             OR cc.timestarted > 0
+             OR cc.timecompleted > 0
+            )
             ORDER BY
                 cc.timeenrolled DESC,
                 cc.timestarted DESC,
@@ -741,7 +746,7 @@ class completion_info {
             array_key_exists($cm->id, $SESSION->completioncache[$cm->course])) {
 
             unset($SESSION->completioncache[$cm->course][$cm->id]);
-            }
+        }
 
         // Check if there is an associated course completion criteria
         $criteria = $this->get_criteria(COMPLETION_CRITERIA_TYPE_ACTIVITY);
