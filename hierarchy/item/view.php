@@ -57,7 +57,9 @@ $can_edit = has_capability('moodle/local:update'.$type, $sitecontext);
 ///
 
 // Run any hierarchy type specific code
-$hierarchy->hierarchy_page_setup('item/view');
+if ($editingon) {
+    $hierarchy->hierarchy_page_setup('item/view');
+}
 
 // Display page header
 $pagetitle = format_string($depth->fullname.' - '.$item->fullname);
