@@ -451,7 +451,7 @@ class hierarchy {
                 $fwoptions[$fw->id] = $fw->fullname;
             }
 
-            popup_form($CFG->wwwroot.'/hierarchy/'.$page.'?type='.$this->prefix.'&frameworkid=', $fwoptions, 'switchframework', $this->frameworkid, '', null, null, null, null, get_string('switchframework', 'hierarchy'));
+            popup_form($CFG->wwwroot.'/hierarchy/'.$page.'?type='.$this->prefix.'&frameworkid=', $fwoptions, 'switchframework', $this->frameworkid, '', '', '', false, 'self', get_string('switchframework', 'hierarchy'));
 
             echo '</div>';
 
