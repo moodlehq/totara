@@ -274,7 +274,7 @@ function mitms_print_my_courses() {
             '<th class="completeddate">'.get_string('completed','local').'</th></tr>';
 
         foreach($courses as $course) {
-            $id = $course->id;
+            $id = $course->course;
             $name = $course->name;
             $enrolled = $course->timeenrolled;
             $completed = $course->timecompleted;

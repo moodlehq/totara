@@ -277,7 +277,7 @@ class completion_info {
 
         $sql = "
             SELECT
-                c.id,
+                c.id AS course,
                 c.fullname AS name,
                 cc.timeenrolled,
                 cc.timestarted,
