@@ -66,7 +66,6 @@ mitmsDialog_handler_assignCourseEvidence.prototype.display_evidence = function(r
         var type = $(this).parent().attr('type');
         var instance = $(this).parent().attr('id');
         var url = handler.baseurl+'save.php?competency='+competency_id+'&course='+course_id+'&type='+type+'&instance='+instance;
-        console.log(url);
         handler._dialog._request(url, handler, '_update');
     });
 
