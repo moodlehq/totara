@@ -158,12 +158,13 @@ class completion_completion extends data_object {
             error('Incorrect data supplied to calculate Completion status');
         }
 
-        // Check we have the required data
+        // Check we have the required data, if not the user is probably not
+        // participationg in the course
         if (empty($completion->timeenrolled) &&
             empty($completion->timestarted) &&
             empty($completion->timecompleted))
         {
-            error('Not enough data supplied to calculate Completion status');
+            return '';
         }
 
         // Check if complete
