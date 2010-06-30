@@ -44,6 +44,36 @@ function competency_scale_is_used( $scaleid ){
 
 
 /**
+ * Get competency scales available for use by frameworks
+ *
+ * @return  array|false
+ */
+function competency_scales_available() {
+    global $CFG;
+
+    $sql = "
+        SELECT
+            id,
+            name
+        FROM {$CFG->prefix}comp_scale scale
+        WHERE EXISTS
+        (
+            SELECT
+                1
+            FROM
+                {$CFG->prefix}comp_scale_values scaleval
+            WHERE
+                scaleval.scaleid = scale.id
+        )
+        ORDER BY
+            name ASC
+    ";
+
+    return get_records_sql($sql);
+}
+
+
+/**
  * A function to display a table list of competency scales
  * @param array $scales the scales to display in the table
  * @return html
