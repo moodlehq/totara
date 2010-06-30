@@ -429,19 +429,26 @@ div.mitms-dialog ul.treeview li span.ui-undraggable {
 
 div.mitms-dialog ul.treeview span table {
     width: 100%;
+    border: 0;
 }
 
 div.mitms-dialog ul.treeview span table tr {
-    height: 1.6em;
+    height: 1.8em;
+}
+
+div.mitms-dialog ul.treeview span table tr {
+    padding: 2px 0;
 }
 
 div.mitms-dialog ul.treeview span table tr td.list-item-name {
     width: 90%;
+    border: 0;
 }
 
 div.mitms-dialog ul.treeview span table tr td.list-item-action {
     width: 10%;
     text-align: center;
+    border: 0;
 }
 
 div.mitms-dialog ul.treeview img.addbutton, div.mitms-dialog ul.treeview img.deletebutton {
@@ -486,7 +493,7 @@ div.mitms-dialog .selected p {
 div.mitms-dialog .selected span {
     display: block;
     font-size: 0.8em;
-    margin-top: 1em;
+    padding: 0.4em 0;
 }
 
 div.mitms-dialog .selected span:hover {

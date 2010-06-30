@@ -557,13 +557,20 @@ mitmsDialog_handler_treeview.prototype._update_hierarchy = function(response, pa
  */
 mitmsDialog_handler_treeview.prototype._make_deletable = function(parent_element) {
     var deletables = $('.deletebutton', parent_element);
-      var del_span_element = deletables.closest('span');
+    var del_span_element = deletables.closest('span');
     
-    // Bind hover handler to button parent
+    // Bind hover handlers to button parent
     del_span_element.mouseenter(function() {
         $(".deletebutton", this._container).css("display", "none");
         $(this).find(".deletebutton").css('display', 'inline')
         
+        return false;
+        
+    });
+    del_span_element.mouseleave(function() {
+        $(this).find(".deletebutton").css('display', 'none')
+        
+        return false;
     });
      
     // Bind event to delete button
@@ -593,11 +600,14 @@ mitmsDialog_handler_treeview.prototype._append_to_selected = function(element) {
 
         deletebutton.unbind('click');
 
-        // Bind hover handler to clone
+        // Bind hover handlers to clone
         clone.mouseenter(function() {
             $(".deletebutton", this._container).css("display", "none");
             $(this).find(".deletebutton").css('display', 'inline')
             
+        });
+        clone.mouseleave(function() {
+            $(this).find(".deletebutton").css('display', 'none')
         });
 
         // Bind event to delete button
@@ -650,13 +660,19 @@ mitmsDialog_handler_treeview_multiselect.prototype._make_selectable = function(p
     var selectable_items = $('span:not(.unclickable)', parent_element);
     var handler = this;
 
-    // Bind hover handler
+    // Bind hover handlers
     selectable_items.mouseenter(function() {
         $(".addbutton", this._container).css("display", "none");
         $(this).find(".addbutton").css('display', 'inline')
 
         return false;
     });
+    selectable_items.mouseleave(function() {
+        $(this).find(".addbutton").css('display', 'none')
+
+        return false;
+    });
+
     
     var assignable_buttons = $('.list-item-action', parent_element).children('.addbutton');
 
@@ -961,10 +977,13 @@ mitmsDialog_handler_skeletalTreeview.prototype._update_hierarchy = function(resp
             handler._handle_course_click(id);           
         });
     } else {
-        // Bind hover event to clickable items
+        // Bind hover handlers to clickable items
         $('span.clickable', list).parent().mouseenter(function() {
             $('.addbutton', this._container).css("display", "none");
             $(this).find('.addbutton').css('display', 'inline'); 
+        });
+        $('span.clickable', list).parent().mouseleave(function() {
+            $(this).find('.addbutton').css('display', 'none'); 
         });
 
         // Bind addbutton
