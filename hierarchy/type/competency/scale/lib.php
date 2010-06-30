@@ -24,7 +24,22 @@
 function competency_scale_is_used( $scaleid ){
     global $CFG;
 
-    return (boolean) count_records('comp_scale_assignments','scaleid',$scaleid);
+    // Inner join the framework table to ignore any
+    // old scale assignments from when deleting a
+    // competency framework didn't delete related assignments
+    $sql = "
+        SELECT
+            a.id
+        FROM
+            {$CFG->prefix}comp_scale_assignments a
+        INNER JOIN
+            {$CFG->prefix}comp_framework f
+         ON f.id = a.frameworkid
+        WHERE
+            a.scaleid = {$scaleid}
+    ";
+
+    return (boolean) count_records_sql($sql);
 }
 
 
