@@ -5,6 +5,7 @@
     require_once("../config.php");
     require_once($CFG->dirroot.'/user/profile/lib.php');
     require_once($CFG->dirroot.'/tag/lib.php');
+    require_once($CFG->dirroot.'/local/mitms.php');
 
     $id      = optional_param('id',     0,      PARAM_INT);   // user id
     $course  = optional_param('course', SITEID, PARAM_INT);   // course id (defaults to Site)
@@ -330,6 +331,10 @@
     /// Print the Custom User Fields
     profile_display_fields($user->id);
 
+    // only display link on own profile page
+    if($currentuser || mitms_is_manager($user->id) || has_capability('moodle/site:doanything', $systemcontext)) {
+        print_row(get_string('recordoflearning','local').':', '<a href="'.$CFG->wwwroot.'/my/records.php?id='.$user->id.'">'.get_string('recordoflearning','local').'</a>');
+    }
 
     if (!isset($hiddenfields['mycourses'])) {
         if ($mycourses = get_my_courses($user->id, 'visible DESC,sortorder ASC', null, false, 21)) {
@@ -361,6 +366,7 @@
             print_row(get_string('courses').':', rtrim($courselisting,', '));
         }
     }
+
     if (!isset($hiddenfields['firstaccess'])) {
         if ($user->firstaccess) {
             $datestring = userdate($user->firstaccess)."&nbsp; (".format_time(time() - $user->firstaccess).")";
