@@ -1,4 +1,5 @@
 <?php
 
-$string['selfcompletion'] = 'Self Completion';
+$string['blurb'] = '';
 $string['completecourse'] = 'Complete Course';
+$string['selfcompletion'] = 'Self Completion';

@@ -260,6 +260,7 @@ h2, h2.main {
 
 h1, h1.main {
   font-size: 1.6em;
+  line-height: 1.4;
 }
 
 h2.headingblock,

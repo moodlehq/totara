@@ -58,7 +58,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>link=Charlie Parker</td>
+	<td>link=Admin User</td>
 	<td></td>
 </tr>
 <tr>
@@ -112,6 +112,11 @@
 	<td></td>
 </tr>
 <tr>
+    <td>waitForElementPresent</td>
+    <td>//body[@id='user-positions']/div[11]/div[1]/a/span</td>
+    <td></td>
+</tr>
+<tr>
 	<td>click</td>
 	<td>//body[@id='user-positions']/div[11]/div[1]/a/span</td>
 	<td></td>
@@ -120,6 +125,21 @@
 	<td>click</td>
 	<td>show-position-dialog</td>
 	<td></td>
+</tr>
+<tr>
+    <td>waitForElementPresent</td>
+    <td>//div[@class='selectposition']/select[@class='simpleframeworkpicker']</td>
+    <td></td>
+</tr>
+<tr>
+    <td>select</td>
+    <td>//div[@class='selectposition']/select[@class='simpleframeworkpicker']</td>
+    <td>label=Selenium framework 2</td>
+</tr>
+<tr>
+    <td>waitForElementPresent</td>
+    <td>//li[1]/span</td>
+    <td></td>
 </tr>
 <tr>
 	<td>click</td>
@@ -132,6 +152,11 @@
 	<td></td>
 </tr>
 <tr>
+    <td>waitForElementPresent</td>
+    <td>//body[@id='user-positions']/div[11]/div[1]/a/span</td>
+    <td></td>
+</tr>
+<tr>
 	<td>click</td>
 	<td>//body[@id='user-positions']/div[11]/div[1]/a/span</td>
 	<td></td>
@@ -142,9 +167,9 @@
 	<td></td>
 </tr>
 <tr>
-	<td>select</td>
-	<td>//div[@class='selectorganisation']/select[@class='simpleframeworkpicker']</td>
-	<td>label=Selenium test framework fullname</td>
+    <td>waitForElementPresent</td>
+	<td>//li[@id='item_list_5']/span</td>
+    <td></td>
 </tr>
 <tr>
 	<td>click</td>
@@ -155,6 +180,11 @@
 	<td>click</td>
 	<td>show-manager-dialog</td>
 	<td></td>
+</tr>
+<tr>
+    <td>waitForElementPresent</td>
+    <td>//body[@id='user-positions']/div[11]/div[1]/a/span</td>
+    <td></td>
 </tr>
 <tr>
 	<td>click</td>
@@ -174,36 +204,26 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>//fieldset[@id='general']/div[2]/div[8]/div[2]/img</td>
-	<td></td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>//img[@alt='...']</td>
-	<td></td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>//div[@id='ui-datepicker-div']/div/a[2]/span</td>
-	<td></td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>//a[contains(text(),'30')]</td>
-	<td></td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>//fieldset[@id='general']/div[2]/div[8]/div[2]/img</td>
-	<td></td>
-</tr>
-<tr>
-	<td>click</td>
 	<td>link=1</td>
 	<td></td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
+	<td>click</td>
+	<td>//fieldset[@id='general']/div[2]/div[8]/fieldset/img</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=10</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id_submitbutton</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
 	<td>id_submitbutton</td>
 	<td></td>
 </tr>

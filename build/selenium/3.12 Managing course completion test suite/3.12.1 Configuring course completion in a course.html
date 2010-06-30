@@ -13,12 +13,7 @@
 </thead><tbody>
 <tr>
 	<td>open</td>
-	<td>http://qa-mbe.moodle.spastk.wgtn.cat-it.co.nz/</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>link=Login</td>
+	<td>/login/index.php</td>
 	<td></td>
 </tr>
 <tr>
@@ -77,9 +72,24 @@
 	<td></td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
-	<td>link=Course Fullname 101</td>
-	<td></td>
+    <td>clickAndWait</td>
+    <td>//input[@value='Add a new course']</td>
+    <td></td>
+</tr>
+<tr>
+    <td>select</td>
+    <td>id_enablecompletion</td>
+    <td>label=Enabled, control via completion and activity settings</td>
+</tr>
+<tr>
+    <td>clickAndWait</td>
+    <td>id_submitbutton</td>
+    <td></td>
+</tr>
+<tr>
+    <td>clickAndWait</td>
+    <td>//input[@value='Click here to enter your course']</td>
+    <td></td>
 </tr>
 <tr>
 	<td>click</td>

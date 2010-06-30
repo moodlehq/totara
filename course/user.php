@@ -344,74 +344,42 @@
             require_once $CFG->libdir.'/completionlib.php';
 
             // Grab all courses the user is enrolled in and their completion status
-            $sql = "
-                SELECT DISTINCT
-                    c.id AS id
-                FROM
-                    {$CFG->prefix}course c
-                INNER JOIN
-                    {$CFG->prefix}context con
-                 ON con.instanceid = c.id
-                INNER JOIN
-                    {$CFG->prefix}role_assignments ra
-                 ON ra.contextid = con.id
-                AND ra.userid = {$user->id}
-            ";
-
-            // Get roles that are tracked by course completion
-            if ($roles = $CFG->progresstrackedroles) {
-                $sql .= '
-                    AND ra.roleid IN ('.$roles.')
-                ';
+            if ($course->id == 1) {
+                $course_completions = completion_info::get_all_courses($user->id);
             }
+            else {
+                $ccompletion = new completion_completion(
+                    array(
+                        'userid'    => $user->id,
+                        'course'    => $course->id
+                    )
+                );
 
-            $sql .= '
-                WHERE
-                    con.contextlevel = '.CONTEXT_COURSE.'
-                AND c.enablecompletion = 1
-            ';
-
-
-            // If we are looking at a specific course
-            if ($course->id != 1) {
-                $sql .= '
-                    AND c.id = '.(int)$course->id.'
-                ';
+                $course_completions = array($ccompletion);
             }
-
-            // Get result
-            $rs = get_recordset_sql($sql);
 
             // Categorize courses by their status
             $courses = array(
                 'inprogress'    => array(),
                 'complete'      => array(),
-                'unstarted'     => array()
+                'notyetstarted' => array()
             );
 
             // Sort courses by the user's status in each
-            $num_completions = 0;
-            foreach ($rs as $course_completion) {
-                $num_completions++;
+            $num_completions = count($course_completions);
+            foreach ($course_completions as $course_completion) {
 
-                $c_info = new completion_info((object)$course_completion);
+                // Get status
+                $status = completion_completion::get_status($course_completion);
 
-                // Is course complete?
-                $coursecomplete = $c_info->is_course_complete($user->id);
-
-                // Has this user completed any criteria?
-                $criteriacomplete = $c_info->count_course_user_data($user->id);
-
-                if ($coursecomplete) {
-                    $courses['complete'][] = $c_info;
-                } else if ($criteriacomplete) {
-                    $courses['inprogress'][] = $c_info;
-                } else {
-                    $courses['unstarted'][] = $c_info;
+                // Combine complete and completeviarpl
+                if ($status == 'completeviarpl') {
+                    $status = 'complete';
                 }
-            }
 
-            $rs->close();
+                $c = (object) array('id' => $course_completion->course);
+                $courses[$status][] = new completion_info($c);
+            }
 
             // Check if results were empty
             if (!$num_completions) {

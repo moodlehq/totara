@@ -17,7 +17,7 @@ $print = optional_param('print', 0, PARAM_INT); // Print-friendly view
 
 // If they requested to view the user's record of learning, then send them there
 if ( $recordoflearning ){
-    redirect($CFG->wwwroot . '/my/records?id=' . $userid);
+    redirect($CFG->wwwroot . '/my/records.php?id=' . $userid);
 }
 
 require_login();

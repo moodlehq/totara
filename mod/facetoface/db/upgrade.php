@@ -376,7 +376,7 @@ function xmldb_facetoface_upgrade($oldversion=0) {
             $status = new stdClass();
             $status->signupid = $signup->id;
             $status->statuscode = MDL_F2F_STATUS_BOOKED;
-            $status->superceded = ($grade->grade || $submission->timecancelled) ? 1 : 0;
+            $status->superceded = ($grade->grade > 0 || $submission->timecancelled) ? 1 : 0;
             $status->createdby = $USER->id;
             $status->timecreated = $submission->timecreated;
             $status->mailed = 0;
@@ -388,7 +388,7 @@ function xmldb_facetoface_upgrade($oldversion=0) {
 
             // Create attended signup status
             if ($grade->grade > 0) {
-                $status->statucode = MDL_F2F_STATUS_FULLY_ATTENDED;
+                $status->statuscode = MDL_F2F_STATUS_FULLY_ATTENDED;
                 $status->grade = $grade->grade;
                 $status->timecreated = $grade->dategraded;
                 $status->superceded = $submission->timecancelled ? 1 : 0;
@@ -401,7 +401,7 @@ function xmldb_facetoface_upgrade($oldversion=0) {
 
             // If cancelled, create status
             if ($submission->timecancelled) {
-                $status->statucode = MDL_F2F_STATUS_USER_CANCELLED;
+                $status->statuscode = MDL_F2F_STATUS_USER_CANCELLED;
                 $status->timecreated = $submission->timecancelled;
                 $status->superceded = 0;
 
