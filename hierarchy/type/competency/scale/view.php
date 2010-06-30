@@ -261,6 +261,11 @@ if ($values) {
             $("#compscaledefaultprofform").submit();
         }
     );
+
+    // On page load, remove last row in table (it's for non-js users only)
+    $(function() {
+        $('form#compscaledefaultprofform table.generaltable tr.lastrow').remove();
+    });
 </script>
 <?php
     }

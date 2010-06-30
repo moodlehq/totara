@@ -99,13 +99,9 @@ body.hierarchy-type-competency-template .buttons,
 body.hierarchy-type-competency-scale .buttons,
 body.customfield .buttons
 {
-  text-align: center;
-  margin-bottom: 30px;
-}
-
-body.customfield .buttons
-{
     margin-top: 20px;
+    text-align: center;
+    margin-bottom: 30px;
 }
 
 body.hierarchy-item form.mform,
