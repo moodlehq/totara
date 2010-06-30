@@ -43,8 +43,7 @@
 ///
 
 // Get depths for this page
-$depths = $hierarchy->get_depths($frameworkid);
-
+$depths = $hierarchy->get_depths(array('custom_field_count' => 1, 'item_count'=>1));
 ///
 /// Generate / display page
 ///
@@ -59,7 +58,9 @@ if ($depths) {
     $table->width = '95%';
 
     // Setup column headers
-    $table->head = array(get_string('name', $type), get_string("{$type}customfields", $type));
+    $table->head = array(get_string('name', $type),
+        get_string($type . 'plural', $type),
+        get_string("{$type}customfields", $type));
     $table->align = array('left', 'center');
 
     // Add edit column
@@ -76,6 +77,7 @@ if ($depths) {
         $cssclass = '';
 
         $row[] = "<a $cssclass href=\"{$CFG->wwwroot}/customfield/custom_field_categories.php?type={$type}&frameworkid={$framework->id}&depthid={$depth->id}\">{$depth->fullname}</a>";
+        $row[] = $depth->item_count;
         $row[] = $depth->custom_field_count;
 
         // Add edit link

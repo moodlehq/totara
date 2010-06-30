@@ -68,7 +68,7 @@
 ///
 
 // Get frameworks for this page
-$frameworks = $hierarchy->get_frameworks(array('depth_count'=>1, 'custom_field_count'=>1));
+$frameworks = $hierarchy->get_frameworks(array('depth_count'=>1, 'custom_field_count'=>1, 'item_count'=>1));
 
 ///
 /// Generate / display page
@@ -88,7 +88,8 @@ if ($frameworks) {
     $table->width = '95%';
 
     // Setup column headers
-    $table->head = array(get_string('name', $type), get_string('depths', $type), get_string("{$type}customfields", $type));
+    $table->head = array(get_string('name', $type), get_string($type.'plural', $type), get_string('depths', $type),
+        get_string("{$type}customfields", $type));
     $table->align = array('left', 'center', 'center');
 
     // Add edit column
@@ -105,6 +106,7 @@ if ($frameworks) {
         $cssclass = !$framework->visible ? 'class="dimmed"' : '';
 
         $row[] = "<a $cssclass href=\"{$CFG->wwwroot}/hierarchy/framework/view.php?type={$type}&frameworkid={$framework->id}\">{$framework->fullname}</a>";
+        $row[] = $framework->item_count;
         $row[] = $framework->depth_count;
         $row[] = $framework->custom_field_count;
 
