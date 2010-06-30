@@ -116,14 +116,18 @@ class hierarchy {
         global $CFG;
 
         $sql = "SELECT f.* ";
-        if ($extra_data['depth_count']) {
+        if (isset($extra_data['depth_count'])) {
             $sql .= ",(SELECT COALESCE(MAX(depthlevel), 0) FROM {$CFG->prefix}{$this->shortprefix}_depth d1 
                         WHERE d1.frameworkid = f.id) AS depth_count "; 
         }
-        if ($extra_data['custom_field_count']) {
+        if (isset($extra_data['custom_field_count'])) {
             $sql .= ",(SELECT COUNT(*) FROM {$CFG->prefix}{$this->shortprefix}_depth d2 
                         JOIN {$CFG->prefix}{$this->shortprefix}_depth_info_field if ON d2.id = if.depthid 
                         WHERE d2.frameworkid=f.id) AS custom_field_count ";
+        }
+        if (isset($extra_data['item_count'])) {
+            $sql .= ",(SELECT COUNT(*) FROM {$CFG->prefix}{$this->shortprefix} ic
+                        WHERE ic.frameworkid=f.id) AS item_count ";
         }
         $sql .= "FROM {$CFG->prefix}{$this->shortprefix}_framework f 
                  ORDER BY f.fullname";
@@ -146,14 +150,17 @@ class hierarchy {
         global $CFG;
 
         $sql = "SELECT d.* ";
-        if ($extra_data['custom_field_count']) {
-            $sql .= ", (SELECT COUNT(*) FROM {$CFG->prefix}{$this->shortprefix}_depth_info_field if 
+        if (isset($extra_data['custom_field_count'])) {
+            $sql .= ", (SELECT COUNT(*) FROM {$CFG->prefix}{$this->shortprefix}_depth_info_field if
                         WHERE if.depthid = d.id) AS custom_field_count ";
         }
-        $sql .= " FROM {$CFG->prefix}{$this->shortprefix}_depth d 
+        if (isset($extra_data['item_count'])) {
+            $sql .= ", (SELECT COUNT(*) FROM {$CFG->prefix}{$this->shortprefix} ic
+                 WHERE ic.depthid = d.id) AS item_count";
+        }
+        $sql .= " FROM {$CFG->prefix}{$this->shortprefix}_depth d
                   WHERE d.frameworkid = {$this->frameworkid}
                   ORDER BY d.depthlevel";
-        
         return get_records_sql($sql);
     }
 
