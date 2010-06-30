@@ -48,7 +48,7 @@ if ($can_add || $can_edit || $can_delete) {
 }
 
 // Setup page and check permissions
-admin_externalpage_setup($hierarchy->prefix.'templatemanage', $navbaritem);
+admin_externalpage_setup($hierarchy->prefix.'frameworkmanage', $navbaritem);
 
 /*
 ///

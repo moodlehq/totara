@@ -19,7 +19,7 @@ $delete = optional_param('delete', '', PARAM_ALPHANUM);
 $hierarchy = new competency();
 
 // Setup page and check permissions
-admin_externalpage_setup($hierarchy->prefix.'templatemanage');
+admin_externalpage_setup($hierarchy->prefix.'frameworkmanage');
 
 require_capability('moodle/local:delete'.$hierarchy->prefix.'template', $sitecontext);
 

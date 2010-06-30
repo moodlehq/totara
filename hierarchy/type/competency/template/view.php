@@ -32,7 +32,7 @@ if ($can_edit) {
 }
 
 // Make this page appear under the manage items admin menu
-admin_externalpage_setup($hierarchy->prefix.'templatemanage', $navbaritem);
+admin_externalpage_setup($hierarchy->prefix.'frameworkmanage', $navbaritem);
 
 $sitecontext = get_context_instance(CONTEXT_SYSTEM);
 require_capability('moodle/local:view'.$hierarchy->prefix, $sitecontext);

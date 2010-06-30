@@ -11,7 +11,6 @@ require_once($CFG->dirroot.'/hierarchy/type/competency/template/edit_form.php');
 
 // Template id; 0 if creating new template
 $id = optional_param('id', 0, PARAM_INT);
-
 // framework id; required when creating a new template
 $frameworkid = optional_param('frameworkid', 0, PARAM_INT);
 
@@ -21,7 +20,7 @@ if (!$id && !$frameworkid) {
 }
 
 // Make this page appear under the manage templates admin item
-admin_externalpage_setup('competencytemplatemanage', '', array(), '', $CFG->wwwroot.'/competency/template/edit.php');
+admin_externalpage_setup('competencyframeworkmanage', '', array(), '', $CFG->wwwroot.'/competency/template/edit.php');
 
 $context = get_context_instance(CONTEXT_SYSTEM);
 

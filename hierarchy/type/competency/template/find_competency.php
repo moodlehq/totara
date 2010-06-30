@@ -25,7 +25,7 @@ $s = optional_param('s', '', PARAM_TEXT);
 $urlparams = 'templateid='.$id.'&amp;nojs='.$nojs.'&amp;returnurl='.urlencode($returnurl).'&amp;s='.$s;
 
 // Setup page
-admin_externalpage_setup('competencytemplatemanage', '', array(), '', $CFG->wwwroot.'/competency/template/assign_competency.php');
+admin_externalpage_setup('competencyframeworkmanage', '', array(), '', $CFG->wwwroot.'/competency/template/assign_competency.php');
 
 // Check permissions
 $sitecontext = get_context_instance(CONTEXT_SYSTEM);
