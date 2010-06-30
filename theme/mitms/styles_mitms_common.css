@@ -431,6 +431,10 @@ div.mitms-dialog ul.treeview span table {
     width: 100%;
 }
 
+div.mitms-dialog ul.treeview span table tr {
+    height: 1.6em;
+}
+
 div.mitms-dialog ul.treeview span table tr td.list-item-name {
     width: 90%;
 }
@@ -491,6 +495,10 @@ div.mitms-dialog .selected span:hover {
 
 div.mitms-dialog .selected span table {
     width: 100%;
+}
+
+div.mitms-dialog .selected span table tr{
+    height: 1.6em;
 }
 
 div.mitms-dialog .selected span table tr td.list-item-name {
