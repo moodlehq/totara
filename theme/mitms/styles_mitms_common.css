@@ -314,7 +314,7 @@ div.mitms-dialog div.ui-dialog-titlebar a.ui-dialog-titlebar-close span {
     background-image: url(closelabel.gif);
     background-position: 0 0;
     border: none;
-    bottom: 330px;
+    bottom: 335px;
     margin: 0;
     padding: 0;
     display: block;
@@ -344,11 +344,12 @@ div.mitms-dialog div.ui-dialog-content {
     font-size: 0.9em;
     position: relative;
     height: 300px;
+    top: -25px;
 }
 
 div.mitms-dialog div.ui-dialog-content h2 {
     border-bottom: 1px solid #CACACA;
-    font-size: 1em;
+    font-size: 17px;
     margin: 0 0 10px;
     padding-top: 2px;
     padding-bottom: 5px;
@@ -453,13 +454,17 @@ div.mitms-dialog ul.treeview img.addbutton, div.mitms-dialog ul.treeview img.del
     vertical-align: middle;
 }
 
-.unclickable {
+div.mitms-dialog ul.treeview li ul {
+    margin-top: 0;
+}
+
+div.mitms-dialog .unclickable {
     color: #777;
 }
 
 div.mitms-dialog div.yui-isloading {
     background-image: url(loading_small.gif);
-    background-position: 690px 0;
+    background-position: 690px 27px;
     background-repeat: no-repeat;
 }
 
