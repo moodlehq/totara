@@ -12,8 +12,9 @@ require_once 'edit_form.php';
 // Get paramters
 // Scale id; 0 if creating a new scale
 $id = optional_param('id', 0, PARAM_INT);
-
-admin_externalpage_setup('competencyscales');
+$type = required_param('type', PARAM_TEXT);
+// Page setup and check permissions
+admin_externalpage_setup($type.'frameworkmanage');
 $sitecontext = get_context_instance(CONTEXT_SYSTEM);
 
 if ($id == 0) {
@@ -119,9 +120,9 @@ if ($mform->is_cancelled()) {
     $scalenew = get_record('comp_scale', 'id', $scalenew->id);
 
     // Log
-    add_to_log(SITEID, 'competencyscales', 'update', "view.php?id=$scalenew->id", '');
+    add_to_log(SITEID, 'competencyscales', 'update', "view.php?id=$scalenew->id&amp;typ=competency", '');
 
-    redirect("$CFG->wwwroot/hierarchy/type/competency/scale/view.php?id={$scalenew->id}");
+    redirect("$CFG->wwwroot/hierarchy/type/competency/scale/view.php?id={$scalenew->id}&amp;type=competency");
 }
 
 /// Print Page

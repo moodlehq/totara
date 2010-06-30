@@ -10,6 +10,3 @@
 
     $ADMIN->add('competencies', new admin_externalpage('competencytemplatemanage', get_string('competencytemplatemanage', 'competency'), "$CFG->wwwroot/hierarchy/type/competency/template/index.php",
             array('moodle/local:viewcompetency')));
-
-    $ADMIN->add('competencies', new admin_externalpage('competencyscales', get_string('competencyscales', 'competency'), "$CFG->wwwroot/hierarchy/type/competency/scale/index.php",
-            array('moodle/local:viewcompetency')));

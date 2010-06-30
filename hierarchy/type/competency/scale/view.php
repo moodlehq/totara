@@ -21,9 +21,9 @@ $movedown = optional_param('movedown', 0, PARAM_INT);
 $proficient = optional_param('proficient', 0, PARAM_INT);
 // Set default value
 $default = optional_param('default', 0, PARAM_INT);
-
+$type = required_param ('type', PARAM_TEXT);
 // Page setup and check permissions
-admin_externalpage_setup('competencyscales');
+admin_externalpage_setup($type.'frameworkmanage');
 
 $sitecontext = get_context_instance(CONTEXT_SYSTEM);
 require_capability('moodle/local:viewcompetency', $sitecontext);
@@ -54,7 +54,7 @@ if ($can_edit) {
 
         // Can't reorder a scale that's in use
         if ( competency_scale_is_used($scale->id) ) {
-            $returnurl = "{$CFG->wwwroot}/hierarchy/type/competency/scale/view.php?id={$scale->id}";
+            $returnurl = "{$CFG->wwwroot}/hierarchy/type/competency/scale/view.php?id={$scale->id}&amp;type=competency";
             print_error('error:noreorderscaleinuse', 'hierarchy', $returnurl);
         }
 
@@ -157,7 +157,7 @@ echo '<p>'.format_string($scale->description, FORMAT_HTML).'</p>';
 // Display scale values
 if ($values) {
     if ($can_edit){
-        echo "<form id=\"compscaledefaultprofform\" action=\"{$CFG->wwwroot}/hierarchy/type/competency/scale/view.php?id={$id}\" method=\"POST\">\n";
+        echo "<form id=\"compscaledefaultprofform\" action=\"{$CFG->wwwroot}/hierarchy/type/competency/scale/view.php?id={$id}&amp;type=competency\" method=\"POST\">\n";
         echo "<input type=\"hidden\" name=\"id\" value=\"{$id}\" />\n";
     }
     $table = new object();
@@ -211,15 +211,15 @@ if ($values) {
                 $row[] = '<input type="radio" name="proficient" value="'.$value->id.'" />';
             }
 
-            $buttons[] = "<a href=\"{$CFG->wwwroot}/hierarchy/type/competency/scale/editvalue.php?id={$value->id}\" title=\"$str_edit\">".
+            $buttons[] = "<a href=\"{$CFG->wwwroot}/hierarchy/type/competency/scale/editvalue.php?id={$value->id}&amp;type=competency\" title=\"$str_edit\">".
                 "<img src=\"{$CFG->pixpath}/t/edit.gif\" class=\"iconsmall\" alt=\"$str_edit\" /></a>";
 
-            $buttons[] = "<a href=\"{$CFG->wwwroot}/hierarchy/type/competency/scale/deletevalue.php?id={$value->id}\" title=\"$str_delete\">".
+            $buttons[] = "<a href=\"{$CFG->wwwroot}/hierarchy/type/competency/scale/deletevalue.php?id={$value->id}&amp;type=competency\" title=\"$str_delete\">".
                 "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_delete\" /></a>";
 
             // If value can be moved up
             if ($count > 1) {
-                $buttons[] = "<a href=\"{$CFG->wwwroot}/hierarchy/type/competency/scale/view.php?id={$scale->id}&moveup={$value->id}\" title=\"$str_moveup\">".
+                $buttons[] = "<a href=\"{$CFG->wwwroot}/hierarchy/type/competency/scale/view.php?id={$scale->id}&moveup={$value->id}&amp;type=competency\" title=\"$str_moveup\">".
                              "<img src=\"{$CFG->pixpath}/t/up.gif\" class=\"iconsmall\" alt=\"$str_moveup\" /></a>";
             } else {
                 $buttons[] = $spacer;
@@ -227,7 +227,7 @@ if ($values) {
 
             // If value can be moved down
             if ($count < $numvalues) {
-                $buttons[] = "<a href=\"{$CFG->wwwroot}/hierarchy/type/competency/scale/view.php?id={$scale->id}&movedown={$value->id}\" title=\"$str_movedown\">".
+                $buttons[] = "<a href=\"{$CFG->wwwroot}/hierarchy/type/competency/scale/view.php?id={$scale->id}&movedown={$value->id}&amp;type=competency\" title=\"$str_movedown\">".
                              "<img src=\"{$CFG->pixpath}/t/down.gif\" class=\"iconsmall\" alt=\"$str_movedown\" /></a>";
             } else {
                 $buttons[] = $spacer;
@@ -274,11 +274,9 @@ echo '<div class="buttons">';
 
 // Print button for creating new scale value
 if ($can_edit) {
-    $options = array('scaleid' => $scale->id);
+    $options = array('scaleid' => $scale->id, 'type' => 'competency');
     print_single_button($CFG->wwwroot.'/hierarchy/type/competency/scale/editvalue.php', $options, get_string('addnewscalevalue', 'competency'), 'get');
 }
-
-//print_single_button($CFG->wwwroot.'/hierarchy/type/competency/scale/index.php', array(), get_string('returntocompetencyscales', 'competency'), 'get');
 
 echo '</div>';
 

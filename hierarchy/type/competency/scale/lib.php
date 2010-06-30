@@ -69,7 +69,7 @@ function competency_scale_display_table($scales, $editingon=0) {
         $table->data = array();
         foreach($scales as $scale) {
             $line = array();
-            $line[] = "<a href=\"$CFG->wwwroot/hierarchy/type/competency/scale/view.php?id={$scale->id}\">".format_string($scale->name)."</a>";
+            $line[] = "<a href=\"$CFG->wwwroot/hierarchy/type/competency/scale/view.php?id={$scale->id}&amp;type=competency\">".format_string($scale->name)."</a>";
             if ( competency_scale_is_used( $scale->id ) ) {
                 $line[] = get_string('yes');
             } else {
@@ -79,12 +79,12 @@ function competency_scale_display_table($scales, $editingon=0) {
             $buttons = array();
             if ($editingon) {
                 if ($can_edit) {
-                    $buttons[] = "<a title=\"$stredit\" href=\"$CFG->wwwroot/hierarchy/type/competency/scale/edit.php?id=$scale->id\"><img".
+                    $buttons[] = "<a title=\"$stredit\" href=\"$CFG->wwwroot/hierarchy/type/competency/scale/edit.php?id=$scale->id&amp;type=competency\"><img".
                         " src=\"$CFG->pixpath/t/edit.gif\" class=\"iconsmall\" alt=\"$stredit\" /></a> ";
                 }
 
                 if ($can_delete) {
-                    $buttons[] = "<a title=\"$strdelete\" href=\"$CFG->wwwroot/hierarchy/type/competency/scale/delete.php?id=$scale->id\"><img".
+                    $buttons[] = "<a title=\"$strdelete\" href=\"$CFG->wwwroot/hierarchy/type/competency/scale/delete.php?id=$scale->id&amp;type=competency\"><img".
                                 " src=\"$CFG->pixpath/t/delete.gif\" class=\"iconsmall\" alt=\"$strdelete\" /></a> ";
                 }
                 $line[] = implode($buttons, ' ');
@@ -103,7 +103,7 @@ function competency_scale_display_table($scales, $editingon=0) {
     }
 
     echo '<div class="buttons">';
-    print_single_button("$CFG->wwwroot/hierarchy/type/competency/scale/edit.php", null, get_string('scalescustomcreate'));
+    print_single_button("$CFG->wwwroot/hierarchy/type/competency/scale/edit.php", array('type'=>'competency'), get_string('scalescustomcreate'));
     echo '</div>';
 }
 
