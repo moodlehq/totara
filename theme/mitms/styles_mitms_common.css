@@ -443,13 +443,13 @@ div.mitms-dialog ul.treeview span table tr td.list-item-name {
 }
 
 div.mitms-dialog ul.treeview span table tr td.list-item-action {
+    cursor: pointer;
     width: 10%;
     text-align: center;
     border: 0;
 }
 
 div.mitms-dialog ul.treeview img.addbutton, div.mitms-dialog ul.treeview img.deletebutton {
-    cursor: pointer;
     display: none;
     vertical-align: middle;
 }
@@ -514,13 +514,13 @@ div.mitms-dialog .selected span table tr td.list-item-name {
 }
 
 div.mitms-dialog .selected span table tr td.list-item-action {
+    cursor: pointer;
     width: 10%;
     text-align: center;
 }
 
 div.mitms-dialog .selected img.deletebutton, div.mitms-dialog .selected img.addbutton {
     display: none;
-    cursor: pointer;
     vertical-align: middle;
 }
 
