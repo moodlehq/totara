@@ -763,7 +763,7 @@ mitmsDialog_handler_treeview_singleselect.prototype._set_current_selected = func
     }
 
     $('#treeview_selected_text').text(current_text);
-    $('#treeview_selected_val').text(current_val);
+    $('#treeview_selected_val').val(current_val);
 }
 
 /**
@@ -811,13 +811,12 @@ mitmsDialog_handler_treeview_singleselect.prototype._make_selectable = function(
     // Get selectable/clickable elements
     var selectables = $('span:not(.empty)', parent_element);
     var dialog = this;
-
+    
+    selectables.addClass('clickable');
+    
     if (this.dualpane) {
-        selectables.unbind('click');
-
-        selectables.addClass('clickable');
-
         selectables.click(function() {
+            
             var clicked = $(this);
 
             var clicked_id = clicked.attr('id').split('_');
@@ -833,48 +832,13 @@ mitmsDialog_handler_treeview_singleselect.prototype._make_selectable = function(
         return;
     }
     
-    // Bind hover handler TODO: addbuttons/deletebuttons will soon become redundant here
-    selectables.mouseenter(function() {
-        $('.addbutton', this._container).css("display", "none");
-        $(this).find('.addbutton').css('display', 'inline')
-
-        return false;
-    });
-    
-    var assignable_buttons = $('span:not(.unclickable)', parent_element).children('.addbutton');
-
-    // Remove old handlers
-    assignable_buttons.unbind('click');
-
-    // Bind click handler to add icons
-    assignable_buttons.click(function() {
-        var item = $(this).parent();
+    // Bind click handler to selectables
+    selectables.click(function() {
+        
+        var item = $(this);
         var clone = item.clone();
 
-        // First, remove addbutton from clone and add delete button
-        clone.find('.addbutton').remove();
-        deletebutton = $('#deletebutton_ex').clone();
-        clone.append(deletebutton);
-
-        deletebutton.unbind('click');
-
-        // Bind hover handler to clone
-        clone.mouseenter(function() {
-            $(".deletebutton", this._container).css("display", "none");
-            $(this).find(".deletebutton").css('display', 'inline')
-            
-        });
-
-        // Bind event to delete button
-        deletebutton.click(function() {
-            // Remove the button and its parent
-            $(this).parent().remove();
-            $('#treeview_selected_val').val(0);
-
-            return false;
-        });
-
-        $('#treeview_selected_text').html(clone);
+        $('#treeview_selected_text').html(clone.find('.list-item-name').html());
         var selected_id = clone.attr('id').split('_')[1];
         $('#treeview_selected_val').val(selected_id);
     });
