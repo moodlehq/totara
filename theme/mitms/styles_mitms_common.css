@@ -337,6 +337,7 @@ div.mitms-dialog div.ui-dialog-buttonpane {
 div.mitms-dialog div.ui-dialog-buttonpane button {
     margin-left: 10px;
     float: left;
+    min-width: 100px;
 }
 
 div.mitms-dialog div.ui-dialog-content {
