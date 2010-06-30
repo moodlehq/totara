@@ -263,32 +263,25 @@ function mitms_print_report_manager($return=false) {
 function mitms_print_my_courses() {
     global $CFG,$USER;
     $content = '';
-    $sql = "SELECT c.id, c.fullname, cc.timeenrolled, cc.timestarted, cc.timecompleted
-        FROM {$CFG->prefix}course_completions cc
-        LEFT JOIN {$CFG->prefix}course c ON cc.course=c.id
-        WHERE userid = {$USER->id} AND cc.timestarted IS NOT NULL
-        ORDER BY cc.timeenrolled DESC, cc.timestarted DESC,cc.timecompleted DESC LIMIT 10";
-    $data = array();
-    if($courses = get_records_sql($sql)) {
+    $courses = completion_info::get_all_courses($USER->id, 10);
+
+    if ($courses) {
         $content .= '<table class="centerblock">
             <tr><th class="course">'.get_string('course').'</th>'.
             '<th class="status">'.get_string('status').'</th>'.
             '<th class="enroldate">'.get_string('enrolled', 'local').'</th>'.
             '<th class="startdate">'.get_string('started','local').'</th>'.
             '<th class="completeddate">'.get_string('completed','local').'</th></tr>';
+
         foreach($courses as $course) {
-            $id = $course->id;
-            $name = $course->fullname;
+            $id = $course->course;
+            $name = $course->name;
             $enrolled = $course->timeenrolled;
             $completed = $course->timecompleted;
-            $status = '';
-            if ($course->timestarted == 0) {
-                $status  = get_string('notyetstarted','completion');
-            } elseif (isset($completed)) {
-                $status = get_string('completed','local');
-            } else {
-                $status = get_string('inprogress','local');
-            }
+
+            $statusstring = completion_completion::get_status($course);
+            $status = get_string($statusstring, 'completion');
+
             $starteddate = '';
             if ($course->timestarted != 0) {
                 $starteddate = userdate($course->timestarted, '%e %b %y');
@@ -296,7 +289,7 @@ function mitms_print_my_courses() {
             $enroldate = isset($enrolled) && $enrolled != 0 ? userdate($enrolled, '%e %b %y') : null;
             $completeddate = isset($completed) && $completed != 0 ? userdate($completed, '%e %b %y') : null;
             $content .= "<tr><td class=\"course\"><a href=\"{$CFG->wwwroot}/course/view.php?id={$id}\" title=\"$name\">$name</a></td>";
-            $content .=     "<td class=\"status\">$status</td><td class=\"enroldate\">$enroldate</td>";
+            $content .=     "<td class=\"status\"><span class=\"completion-$statusstring\" title=\"$status\">$status</span></td><td class=\"enroldate\">$enroldate</td>";
             $content .=     "<td class=\"startdate\">$starteddate</td><td class=\"completeddate\">$completeddate</td></tr>\n";
         }
         $content .= "</table>\n";

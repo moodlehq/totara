@@ -146,7 +146,8 @@ class mitms_competency_evidence_form extends moodleform {
             $mform->addElement('select', 'proficiency',get_string('proficiency','local'), $selectoptions);
         } else if ($competencyid != 0) {
             // competency set but validation failed. Refill scale options
-            $scaleid = get_field('comp','scaleid','id',$competencyid);
+            $frameworkid = get_field('comp','frameworkid','id',$competencyid);
+            $scaleid = get_field('comp_scale_assignments','scaleid','frameworkid',$frameworkid);
             $selectoptions = get_records_menu('comp_scale_values','scaleid',$scaleid,'sortorder');
             $mform->addElement('select', 'proficiency',get_string('proficiency','local'), $selectoptions);
             $mform->setType('proficiency', PARAM_INT);

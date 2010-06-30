@@ -1,0 +1,52 @@
+/***** page/styles_menu.css start *****/
+
+/***
+ *** Menu CSS for the header menu
+ ***/
+
+/* This fixes sub-menu placement for Safari */
+body {
+  margin: 0pt;
+  padding: 0pt;
+}
+
+ /* YUI will show the menu and move it to an appropiate location */
+.menutreeroot {
+ visibility: hidden;
+ position: absolute;
+}
+
+div.yuimenu {
+  background-color: #FFFFFF;
+}
+
+div.yuimenu .yuimenuitem a.selected {
+  background-color: #FFFFFF;
+}
+
+div.yuimenu .yuimenuitemlabel.hassubmenu em {
+    background-image: url(http://ciscoinstitute.net/theme/cisco/pix/mod/pagemenu/pix/inactive.gif);
+    background-position:0 0;
+}
+
+div.yuimenu .yuimenuitemlabel.hassubmenu.selected em {
+    background-image: url(http://ciscoinstitute.net/theme/cisco/pix/mod/pagemenu/pix/active.gif);
+    background-position:0 0;
+}
+
+div.yuimenu .yuimenuitem a {
+  color: #0000FF;
+}
+
+div.yuimenu li.selected a.selected {
+  color: #FF0000;
+  text-decoration: underline;
+}
+
+div.yuimenu .yuimenuitem a.yuicurrent,
+div.yuimenu .yuimenuitem a.yuicurrent:hover,
+div.yuimenu li.yuicurrent.selected a.yuicurrent.selected {
+  text-decoration: none;
+  color: #000000;
+}/***** page/styles_menu.css end *****/
+

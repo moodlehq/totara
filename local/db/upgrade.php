@@ -1548,5 +1548,25 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && create_table($table);
     }
 
+    if ($result && $oldversion < 2010062300) {
+        // Add pos/org data to course_completions
+        // (to bring it up to spec with upstream)
+        $table = new XMLDBTable('course_completions');
+
+        $field = new XMLDBField('organisationid');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null, null, null, 'rpl');
+
+        if (!field_exists($table, $field)) {
+            add_field($table, $field);
+        }
+
+        $field = new XMLDBField('positionid');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null, null, null, 'organisationid');
+
+        if (!field_exists($table, $field)) {
+            add_field($table, $field);
+        }
+    }
+
     return $result;
 }

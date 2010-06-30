@@ -11,7 +11,6 @@
 <thead>
 <tr><td rowspan="1" colspan="3">3.12.2.2</td></tr>
 </thead><tbody>
-<!--This is the earlier version of the script when there was demo data in the application, so this can be used to test when there is demo data:D -->
 <tr>
 	<td>open</td>
 	<td>/login/index.php</td>
@@ -39,7 +38,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>link=Charlie Parker</td>
+	<td>link=Admin User</td>
 	<td></td>
 </tr>
 <tr>
@@ -68,12 +67,6 @@
 	<td></td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
-	<td>link=Course Fullname 101</td>
-	<td></td>
-</tr>
-<!--Click the back arrow manually to execute next step-->
-<tr>
 	<td>click</td>
 	<td>link=Detail view</td>
 	<td></td>
@@ -84,62 +77,95 @@
 	<td></td>
 </tr>
 <tr>
-	<td>select</td>
-	<td>menulocation</td>
-	<td>label=Northland District Office</td>
+    <td>clickAndWait</td>
+    <td>link=CF101</td>
+    <td></td>
 </tr>
 <tr>
-	<td>click</td>
-	<td>//input[@value='Show by location']</td>
-	<td></td>
+    <td>clickAndWait</td>
+    <td>//input[@value='Turn editing on']</td>
+    <td></td>
 </tr>
 <tr>
-	<td>waitForPageToLoad</td>
-	<td>30000</td>
-	<td></td>
+    <td>selectAndWait</td>
+    <td>section0_jump</td>
+    <td>label=Face-to-face</td>
 </tr>
 <tr>
-	<td>click</td>
-	<td>link=Attendees</td>
-	<td></td>
+    <td>type</td>
+    <td>id_name</td>
+    <td>Test Face to face</td>
 </tr>
 <tr>
-	<td>waitForPageToLoad</td>
-	<td>30000</td>
-	<td></td>
+    <td>clickAndWait</td>
+    <td>id_submitbutton</td>
+    <td></td>
 </tr>
 <tr>
-	<td>click</td>
-	<td>link=Go back</td>
-	<td></td>
+    <td>clickAndWait</td>
+    <td>link=Add a new session</td>
+    <td></td>
 </tr>
 <tr>
-	<td>waitForPageToLoad</td>
-	<td>30000</td>
-	<td></td>
+    <td>clickAndWait</td>
+    <td>id_submitbutton</td>
+    <td></td>
 </tr>
 <tr>
-	<td>click</td>
-	<td>//input[@value='Export to file']</td>
-	<td></td>
-</tr>
-<!--Ok button has to be done manually as Slenium can't record-->
-<tr>
-	<td>select</td>
-	<td>menudownload</td>
-	<td>label=OpenDocument</td>
+    <td>clickAndWait</td>
+    <td>link=Attendees</td>
+    <td></td>
 </tr>
 <tr>
-	<td>click</td>
-	<td>//input[@value='Export to file']</td>
-	<td></td>
+    <td>clickAndWait</td>
+    <td>link=Add/remove attendees</td>
+    <td></td>
+</tr>
+<tr>
+    <td>addSelection</td>
+    <td>addselect</td>
+    <td>label=Admin User*</td>
+</tr>
+<tr>
+    <td>click</td>
+    <td>suppressemail</td>
+    <td></td>
+</tr>
+<tr>
+    <td>clickAndWait</td>
+    <td>add</td>
+    <td></td>
+</tr>
+<tr>
+    <td>clickAndWait</td>
+    <td>link=Go back</td>
+    <td></td>
+</tr>
+<tr>
+    <td>clickAndWait</td>
+    <td>link=Go back</td>
+    <td></td>
+</tr>
+<tr>
+    <td>click</td>
+    <td>link=Attendees</td>
+    <td></td>
+</tr>
+<tr>
+    <td>waitForPageToLoad</td>
+    <td>30000</td>
+    <td></td>
+</tr>
+<tr>
+    <td>click</td>
+    <td>link=Go back</td>
+    <td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
 	<td>link=Logout</td>
 	<td></td>
 </tr>
-
 </tbody></table>
 </body>
 </html>

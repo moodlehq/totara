@@ -265,6 +265,60 @@ class completion_info {
     }
 
     /**
+     * Get all couse completions a user has across the site
+     * @access  public
+     * @param   $user_id    int     User id
+     * @param   $limit      int     Limit number of records returned (0 = no limit, optional)
+     * @return  array
+     */
+    public static function get_all_courses($user_id, $limit = 0) {
+
+        global $CFG;
+
+        $sql = "
+            SELECT
+                c.id AS course,
+                c.fullname AS name,
+                cc.timeenrolled,
+                cc.timestarted,
+                cc.timecompleted,
+                cc.rpl
+            FROM
+                {$CFG->prefix}course_completions cc
+            LEFT JOIN
+                {$CFG->prefix}course c
+             ON cc.course = c.id
+            WHERE
+                cc.userid = {$user_id}
+            AND
+            (
+                cc.timeenrolled > 0
+             OR cc.timestarted > 0
+             OR cc.timecompleted > 0
+            )
+            ORDER BY
+                cc.timeenrolled DESC,
+                cc.timestarted DESC,
+                cc.timecompleted DESC
+        ";
+
+        if ($limit) {
+            $sql .= " LIMIT $limit";
+        }
+
+        $completions = array();
+
+        if ($ccompletions = get_records_sql($sql)) {
+            foreach ($ccompletions as $course) {
+                // Create completion_completion instance (without reloading from db)
+                $completions[$course->id] = new completion_completion($course, false);
+            }
+        }
+
+        return $completions;
+    }
+
+    /**
      * Get completion object for a user and a criteria
      * @access  public
      * @param   $user_id        int     User id
@@ -692,7 +746,7 @@ class completion_info {
             array_key_exists($cm->id, $SESSION->completioncache[$cm->course])) {
 
             unset($SESSION->completioncache[$cm->course][$cm->id]);
-            }
+        }
 
         // Check if there is an associated course completion criteria
         $criteria = $this->get_criteria(COMPLETION_CRITERIA_TYPE_ACTIVITY);

@@ -191,22 +191,33 @@ class user_position_assignment_form extends moodleform {
         $mform =& $this->_form;
 
         // Fix odd date values
-        if (!$mform->elementExists('timevalidfrom')) {
-            return;
+        // Check if form is frozen
+        if ($mform->elementExists('timevalidfrom_group')) {
+
+            $groupfrom = $mform->getElement('timevalidfrom_group');
+            $date = $groupfrom->getValue();
+            $timevalidfromdateint = (int)$date["timevalidfrom"];
+
+            if (!$timevalidfromdateint) {
+                $mform->setDefault('timevalidfrom', '');
+            }
+            else {
+                $mform->setDefault('timevalidfrom', date('d/m/Y', $timevalidfromdateint));
+            }
         }
 
-        if (!(int) $mform->getElementValue('timevalidfrom')) {
-            $mform->setDefault('timevalidfrom', '');
-        }
-        else {
-            $mform->setDefault('timevalidfrom', date('d/m/Y', (int) $mform->getElementValue('timevalidfrom')));
-        }
+        if ($mform->elementExists('timevalidto_group')) {
 
-        if (!(int) $mform->getElementValue('timevalidto')) {
-            $mform->setDefault('timevalidto', '');
-        }
-        else {
-            $mform->setDefault('timevalidto', date('d/m/Y', (int) $mform->getElementValue('timevalidto')));
+            $groupto = $mform->getElement('timevalidto_group');
+            $date2 = $groupto->getValue();
+            $timevalidtodateint = (int)$date2["timevalidto"];
+
+            if (!$timevalidtodateint) {
+                $mform->setDefault('timevalidto', '');
+            }
+            else {
+                $mform->setDefault('timevalidto', date('d/m/Y', $timevalidtodateint));
+            }
         }
     }
 
@@ -236,8 +247,23 @@ class user_position_assignment_form extends moodleform {
                 }
             }
 
+            // Get element value
+            $value = $element->getValue();
+
+            // Check groups
+            // (matches date groups and action buttons)
+            if (is_array($value)) {
+
+                // If values are strings (e.g. buttons, or date format string), remove
+                foreach ($value as $k => $v) {
+                    if (!is_numeric($v)) {
+                        $mform->removeElement($element->getName());
+                        break;
+                    }
+                }
+            }
             // Otherwise check if empty
-            if (!$element->getValue()) {
+            elseif (!$value) {
                 $mform->removeElement($element->getName());
             }
         }
