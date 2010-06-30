@@ -140,8 +140,33 @@ SQL;
     }
 
     /**
+     * Delete competency framework and updated associated scales
+     * @access  public
+     * @return  void
+     */
+    function delete_framework() {
+
+        // Start transaction
+        begin_sql();
+
+        // Run parent method
+        parent::delete_framework();
+
+        // Delete references to scales
+        if (count_records($this->shortprefix.'_scale_assignments', 'frameworkid', $this->frameworkid)) {
+            if (!delete_records($this->shortprefix.'_scale_assignments', 'frameworkid', $this->frameworkid)) {
+                rollback_sql();
+                error('Could not delete scale assignments');
+            }
+        }
+
+        // End transaction
+        commit_sql();
+    }
+
+    /**
      * Delete a competency and everything to do with it.
-     * 
+     *
      * @param int $id
      * @param boolean $usetransaction
      * @return boolean
@@ -149,7 +174,7 @@ SQL;
     function delete_framework_item($id, $usetransaction = true) {
         global $CFG;
         global $USER;
-        
+
         if ( $usetransaction ){
             begin_sql();
         }
