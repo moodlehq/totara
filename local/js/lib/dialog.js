@@ -107,7 +107,7 @@ function mitmsDialog(title, buttonid, config, default_url, handler) {
 
         // Override some auto defined styling
         this.dialog.parent().css({ height: '400px' });
-        this.dialog.css({ height: '330px', width: '705px' });
+        this.dialog.css({ height: '360px', width: '705px' });
 
         this.load(url, method);
     }

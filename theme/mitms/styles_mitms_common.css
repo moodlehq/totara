@@ -328,12 +328,14 @@ div.mitms-dialog div.ui-dialog-buttonpane {
     border: none;
     margin: 0;
     padding: 0;
+    top: -28px;
 }
 
 div.mitms-dialog div.ui-dialog-buttonpane button {
     margin-left: 10px;
     float: left;
     min-width: 100px;
+    margin-right: 0;
 }
 
 div.mitms-dialog div.ui-dialog-content {
@@ -371,7 +373,7 @@ div.mitms-dialog div.ui-dialog-content .dialog-static-content {
 
 div.mitms-dialog ul.treeview {
     margin-top: 10px;
-    height: 245px;
+    height: 285px;
     overflow: auto;
 }
 
@@ -481,7 +483,7 @@ div.mitms-dialog .selected {
     float: right;
     width: 250px;
     border-left: 1px solid #ccc;
-    height: 272px;
+    height: 312px;
     overflow: auto;
     padding: 0 10px;
     margin-left: 10px;
