@@ -35,7 +35,7 @@ if (!$competency) {
 require_capability('moodle/local:update'.$hierarchy->prefix.'template', $sitecontext);
 
 // Setup page and check permissions
-admin_externalpage_setup($hierarchy->prefix.'templatemanage');
+admin_externalpage_setup($hierarchy->prefix.'frameworkmanage');
 
 
 ///

@@ -24,7 +24,7 @@ $returnurl = optional_param('returnurl', '', PARAM_TEXT);
 $s = optional_param('s', '', PARAM_TEXT);
 
 // Setup page
-admin_externalpage_setup('competencytemplatemanage', '', array(), '', $CFG->wwwroot.'/competency/template/update_assignments.php');
+admin_externalpage_setup('competencyframeworkmanage', '', array(), '', $CFG->wwwroot.'/competency/template/update_assignments.php');
 
 // Check permissions
 $sitecontext = get_context_instance(CONTEXT_SYSTEM);
