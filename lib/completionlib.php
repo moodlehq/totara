@@ -311,7 +311,7 @@ class completion_info {
         if ($ccompletions = get_records_sql($sql)) {
             foreach ($ccompletions as $course) {
                 // Create completion_completion instance (without reloading from db)
-                $completions[$course->id] = new completion_completion($course, false);
+                $completions[$course->course] = new completion_completion($course, false);
             }
         }
 

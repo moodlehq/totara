@@ -1,5 +1,6 @@
 <?php
 require_once($CFG->dirroot.'/hierarchy/lib.php');
+require_once($CFG->dirroot.'/hierarchy/type/competency/scale/lib.php');
 
 $shortprefix = hierarchy::get_short_prefix($type);
 // Make this page appear under the manage 'hierarchy' admin menu
@@ -9,16 +10,16 @@ if ($id == 0) {
     // Creating new framework
     require_capability('moodle/local:create'.$type.'frameworks', $context);
 
-    // Don't show the page if there are no positions
-    if ( !count_records('comp_scale') ){
+    // Don't show the page if there are no scales
+    if (!competency_scales_available()) {
 
         /// Display page header
         admin_externalpage_print_header();
-        notice(get_string('nocompetencyscales','competency'), "{$CFG->wwwroot}/hierarchy/type/competency/scale/index.php" );
+        notice(get_string('nocompetencyscales','competency'), "{$CFG->wwwroot}/hierarchy/framework/index.php?type=competency" );
         print_footer();
         die();
-
     }
+
     $framework = new object();
     $framework->id = 0;
     $framework->visible = 1;

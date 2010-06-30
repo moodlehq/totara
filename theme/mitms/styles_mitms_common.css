@@ -386,7 +386,7 @@ div.mitms-dialog ul.treeview li {
     font-size: 0.8em;
 }
 
-div.mitms-dialog ul.treeview li:hover {
+div.mitms-dialog ul.treeview span:hover {
     background-color: #EEEEEE;
 }
 
@@ -397,7 +397,6 @@ div.mitms-dialog ul.treeview li li {
 div.mitms-dialog ul.treeview li span {
     padding-left: 0.25em;
     display: block;
-    width: 375px;
 }
 
 div.mitms-dialog ul.treeview li span.folder {
@@ -428,13 +427,27 @@ div.mitms-dialog ul.treeview li span.ui-undraggable {
     color: #777;
 }
 
+div.mitms-dialog ul.treeview span table {
+    width: 100%;
+}
+
+div.mitms-dialog ul.treeview span table tr {
+    height: 1.6em;
+}
+
+div.mitms-dialog ul.treeview span table tr td.list-item-name {
+    width: 90%;
+}
+
+div.mitms-dialog ul.treeview span table tr td.list-item-action {
+    width: 10%;
+    text-align: center;
+}
+
 div.mitms-dialog ul.treeview img.addbutton, div.mitms-dialog ul.treeview img.deletebutton {
-    cursor:pointer;
-    display:none;
-    float:right;
-    left:390px;
-    position:absolute;
-    vertical-align:middle;
+    cursor: pointer;
+    display: none;
+    vertical-align: middle;
 }
 
 .unclickable {
@@ -474,15 +487,33 @@ div.mitms-dialog .selected span {
     display: block;
     font-size: 0.8em;
     margin-top: 1em;
-    width: 240px;
+}
+
+div.mitms-dialog .selected span:hover {
+    background-color: #EEEEEE;
+}
+
+div.mitms-dialog .selected span table {
+    width: 100%;
+}
+
+div.mitms-dialog .selected span table tr{
+    height: 1.6em;
+}
+
+div.mitms-dialog .selected span table tr td.list-item-name {
+    width: 90%;
+}
+
+div.mitms-dialog .selected span table tr td.list-item-action {
+    width: 10%;
+    text-align: center;
 }
 
 div.mitms-dialog .selected img.deletebutton, div.mitms-dialog .selected img.addbutton {
     display: none;
     cursor: pointer;
-    float: right;
-    position: absolute;
-    right: 15px;
+    vertical-align: middle;
 }
 
 /* hide lightbox activation buttons */

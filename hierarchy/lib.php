@@ -772,9 +772,11 @@ class hierarchy {
         // Rewrite the sort order to account for the missing framework
         $sortorder = 1;
         $records = get_records_sql("SELECT id FROM {$CFG->prefix}{$this->shortprefix}_framework ORDER BY sortorder ASC");
-        if (is_array($records)) foreach( $records as $rec ){
-            set_field( "{$this->shortprefix}_framework", 'sortorder', $sortorder, 'id', $rec->id );
-            $sortorder++;
+        if (is_array($records)) {
+            foreach( $records as $rec ){
+                set_field( "{$this->shortprefix}_framework", 'sortorder', $sortorder, 'id', $rec->id );
+                $sortorder++;
+            }
         }
     }
 

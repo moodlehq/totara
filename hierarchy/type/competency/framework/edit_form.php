@@ -13,9 +13,8 @@ class framework_edit_form extends moodleform {
         $strgeneral  = get_string('general');
 
         /// Load competency scales
-        $sql = "select id, name from {$CFG->prefix}comp_scale scale where exists (select 1 from {$CFG->prefix}comp_scale_values scaleval where scaleval.scaleid=scale.id) order by name asc";
-        $scales_raw = get_records_sql($sql);
         $scales = array();
+        $scales_raw = competency_scales_available();
 
         if ($scales_raw) {
             foreach ($scales_raw as $scale) {

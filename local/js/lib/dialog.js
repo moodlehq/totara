@@ -557,9 +557,10 @@ mitmsDialog_handler_treeview.prototype._update_hierarchy = function(response, pa
  */
 mitmsDialog_handler_treeview.prototype._make_deletable = function(parent_element) {
     var deletables = $('.deletebutton', parent_element);
+      var del_span_element = deletables.closest('span');
     
     // Bind hover handler to button parent
-    deletables.parent().mouseenter(function() {
+    del_span_element.mouseenter(function() {
         $(".deletebutton", this._container).css("display", "none");
         $(this).find(".deletebutton").css('display', 'inline')
         
@@ -567,8 +568,9 @@ mitmsDialog_handler_treeview.prototype._make_deletable = function(parent_element
      
     // Bind event to delete button
     deletables.click(function() {
-        // Remove the button and its parent
-        $(this).parent().remove();
+        // Remove the span element with the containing button
+        var span_element = $(this).closest('span');
+        span_element.remove();
 
         return false;
     });
@@ -579,7 +581,7 @@ mitmsDialog_handler_treeview.prototype._make_deletable = function(parent_element
  * @return void
  */
 mitmsDialog_handler_treeview.prototype._append_to_selected = function(element) {
-    var clone = element.parent().clone();  // Make a clone of the list item
+    var clone = element.closest('span').clone();  // Make a clone of the list item
     var selected_area = $('.selected', this._container)
 
     // Check if an element with the same ID already exists
@@ -587,7 +589,7 @@ mitmsDialog_handler_treeview.prototype._append_to_selected = function(element) {
         // First, remove addbutton from clone and add delete button
         clone.find('.addbutton').remove();
         deletebutton = $('#deletebutton_ex').clone();
-        clone.append(deletebutton);
+        clone.find('.list-item-action').append(deletebutton);
 
         deletebutton.unbind('click');
 
@@ -601,7 +603,8 @@ mitmsDialog_handler_treeview.prototype._append_to_selected = function(element) {
         // Bind event to delete button
         deletebutton.click(function() {
             // Remove the button and its parent
-            $(this).parent().remove();
+            span_element = $(this).closest('span');
+            span_element.remove();
 
             return false;
         });
@@ -655,7 +658,7 @@ mitmsDialog_handler_treeview_multiselect.prototype._make_selectable = function(p
         return false;
     });
     
-    var assignable_buttons = $('span:not(.unclickable)', parent_element).children('.addbutton');
+    var assignable_buttons = $('.list-item-action', parent_element).children('.addbutton');
 
     assignable_buttons.unbind('click');
 
@@ -814,7 +817,7 @@ mitmsDialog_handler_treeview_singleselect.prototype._make_selectable = function(
         return;
     }
     
-    // Bind hover handler
+    // Bind hover handler TODO: addbuttons/deletebuttons will soon become redundant here
     selectables.mouseenter(function() {
         $('.addbutton', this._container).css("display", "none");
         $(this).find('.addbutton').css('display', 'inline')

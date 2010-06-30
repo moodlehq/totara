@@ -113,8 +113,10 @@ function build_treeview($elements, $error_string, $hierarchy = null, $disabledli
             $html .= '<div class="'.$div_class.'"></div>';
             $html .= '<span id="item_'.$element->id.'" class="'.$span_class.'">';
             // format_string() really slow here...
-            $html .= htmlentities($element->fullname);
-            $html .= $addbutton_html;
+            $html .= '<table><tr>';
+            $html .= '<td class="list-item-name">'.htmlentities($element->fullname).'</td>';
+            $html .= '<td class="list-item-action">'.$addbutton_html.'</td>';
+            $html .= '</tr></table>';
             $html .= '</span>';
 
             if ($div_class !== '') {
@@ -152,8 +154,11 @@ function populate_selected_items_pane($elements) {
     foreach ($elements as $element) {
         $html .= '<span id="item_'.$element->id.'" class="">';
         // format_string() really slow here...
-        $html .= htmlentities($element->fullname);
-        $html .= $deletebutton;
+        $html .= '<table><tr>';
+        $html .= '<td class="list-item-name">'.htmlentities($element->fullname).'</td>';
+        $html .= '<td class="list-item-action">'.$deletebutton.'</td>';
+        $html .= '</tr></table>';
+
         $html .= '</span>';
     }
 
@@ -214,7 +219,7 @@ function build_category_treeview($list, $parents, $load_string) {
 
                 if ($diff) {
                     $html .= str_repeat(
-                        '</li><li class="last loading"><div></div><span>'.$load_string.'</span></li></ul>',
+                        '<li class="last loading"><div></div><span>'.$load_string.'</span></li></ul>',
                          $diff + 1
                     );
                 }

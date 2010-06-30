@@ -46,8 +46,11 @@ if ($courses) {
             //TODO: add tooltip (title) getstring
             $addbutton = '<img src="'.$CFG->pixpath.'/t/add.gif" class="addbutton" width="15px" height="15px" />';
         }
-        echo '<span class="'.$spanclass.'" id="course_'.$course->id.'">'.format_string($course->fullname);
-        echo $addbutton;
+        echo '<span class="'.$spanclass.'" id="course_'.$course->id.'">';
+        echo '<table><tr>';
+        echo '<td class="list-item-name">'.format_string($course->fullname).'</td>';
+        echo '<td class="list-item-action">'.$addbutton.'</td>';
+        echo '</tr></table>';
         echo '</span></li>';
     }
 }
