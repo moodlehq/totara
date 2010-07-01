@@ -447,9 +447,18 @@ div.mitms-dialog ul.treeview span table tr td.list-item-action {
     border: 0;
 }
 
-div.mitms-dialog ul.treeview img.addbutton, div.mitms-dialog ul.treeview img.deletebutton {
+div.mitms-dialog ul.treeview img.addbutton {
     display: none;
     vertical-align: middle;
+    width: 15px;
+    height: 15px;
+}
+
+div.mitms-dialog ul.treeview img.deletebutton {
+    display: none;
+    vertical-align: middle;
+    width: 13px;
+    height: 13px;
 }
 
 div.mitms-dialog ul.treeview li ul {
@@ -517,9 +526,18 @@ div.mitms-dialog .selected span table tr td.list-item-action {
     text-align: center;
 }
 
-div.mitms-dialog .selected img.deletebutton, div.mitms-dialog .selected img.addbutton {
+div.mitms-dialog .selected img.addbutton {
     display: none;
     vertical-align: middle;
+    width: 15px;
+    height: 15px;
+}
+
+div.mitms-dialog .selected img.deletebutton {
+    display: none;
+    vertical-align: middle;
+    width: 13px;
+    height: 13px;
 }
 
 /* hide lightbox activation buttons */

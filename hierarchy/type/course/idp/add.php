@@ -71,7 +71,7 @@ if($nojs) {
     echo '<div class="selectcompetencies">';
     echo '<div class="selected"><br>';
     echo '<h3>' . get_string('selecteditems', 'hierarchy') . '</h3>';
-    echo populate_selected_items_pane($currentlyassigned);
+    echo populate_selected_items_pane($currentlyassigned, 'course');
     echo '</div>';
 
     // JS version

@@ -569,26 +569,40 @@ mitmsDialog_handler_treeview.prototype._update_hierarchy = function(response, pa
  */
 mitmsDialog_handler_treeview.prototype._make_deletable = function(parent_element) {
     var deletables = $('.deletebutton', parent_element).closest('td');
-    var del_span_element = deletables.closest('span');
+    var del_span_elements = deletables.closest('span');
+    var handler = this;
 
     // Bind hover handlers to button parent
-    del_span_element.mouseenter(function() {
+    del_span_elements.mouseenter(function() {
         $(".deletebutton", this._container).css("display", "none");
         $(this).find(".deletebutton").css('display', 'inline');
 
         return false;
 
     });
-    del_span_element.mouseleave(function() {
+    del_span_elements.mouseleave(function() {
         $(this).find(".deletebutton").css('display', 'none');
 
         return false;
     });
 
     // Bind event to delete button
+    deletables.unbind('click');
     deletables.click(function() {
-        // Remove the span element with the containing button
+        // Get the span element, containing the clicked button
         var span_element = $(this).closest('span');
+
+        // Make sure removed element is now selectable in treeview
+        var selectable_span = $('.treeview').find('span#'+span_element.attr('id'));
+        var addbutton = $('#addbutton_ex', '.treeview').clone();
+        addbutton.removeAttr('id');
+        selectable_span.removeClass('unclickable');
+        selectable_span.find('.list-item-action').html(addbutton);
+        if (handler._make_selectable != undefined) {
+            handler._make_selectable($('.treeview', this._dialog), selectable_span);
+        }
+
+        // Finally, remove the span element from the selected pane
         span_element.remove();
 
         return false;
@@ -935,9 +949,23 @@ mitmsDialog_handler_skeletalTreeview.prototype._update_hierarchy = function(resp
 
     var handler = this;
 
+    handler._make_selectable(list, false);
+}
+
+/**
+* @param object element to make selectable
+* @return void
+*/
+mitmsDialog_handler_skeletalTreeview.prototype._make_selectable = function(elements, addclickable) {
+    var handler = this;
+
+    if (addclickable) {
+        addclickable.addClass('clickable');
+    }
+
     if (handler._handle_course_click != undefined) {
         // Bind clickable function to course
-        $('span.clickable', list).click(function() {
+        $('span.clickable', elements).click(function() {
             var par = $(this).parent();
 
             // Get the id in format course_XX
@@ -948,22 +976,22 @@ mitmsDialog_handler_skeletalTreeview.prototype._update_hierarchy = function(resp
         });
     } else {
         // Bind hover handlers to clickable items
-        $('span.clickable', list).parent().mouseenter(function() {
+        $('span.clickable', elements).parent().mouseenter(function() {
             $('.addbutton', this._container).css("display", "none");
             $(this).find('.addbutton').css('display', 'inline');
         });
-        $('span.clickable', list).parent().mouseleave(function() {
+        $('span.clickable', elements).parent().mouseleave(function() {
             $(this).find('.addbutton').css('display', 'none');
         });
 
         // Bind addbutton
-        $('span.clickable', list).find('.list-item-action').click(function() {
+        $('span.clickable', elements).find('.list-item-action').click(function() {
             // Assign id attribute to
             handler._append_to_selected($(this));
         });
     }
-}
 
+}
 
 /*****************************************************************************/
 /** Factory methods **/

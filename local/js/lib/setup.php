@@ -59,9 +59,8 @@ function build_treeview($elements, $error_string, $hierarchy = null, $disabledli
 
     $html = '';
     
-    //TODO: add tooltip (title) getstring
-    $addbutton = '<img src="'.$CFG->pixpath.'/t/add.gif" class="addbutton" width="15px" height="15px" />';
-    $deletebutton = '<img id="deletebutton_ex" src="'.$CFG->pixpath.'/t/delete.gif" class="deletebutton" width="13px" height="13px" style="display: none;" />';
+    $buttons = array('addbutton' => 'add.gif', 
+                     'deletebutton' => 'delete.gif');
 
     if (is_array($elements) && !empty($elements)) {
 
@@ -100,8 +99,8 @@ function build_treeview($elements, $error_string, $hierarchy = null, $disabledli
                     $div_class .= ' lastExpandable-hitarea';
                 }
             }
-    
-            $addbutton_html = $addbutton; 
+
+            $addbutton_html = '<img src="'.$CFG->pixpath.'/t/'.$buttons['addbutton'].'" class="addbutton" />';
 
             // Make disabled elements non-draggable and greyed out
             if (array_key_exists($element->id, $disabledlist)){
@@ -131,9 +130,11 @@ function build_treeview($elements, $error_string, $hierarchy = null, $disabledli
         $html .= '</span></li>'.PHP_EOL;
     }
 
-
     // Add hidden button images that can later be used/cloned by js TODO: add tooltip get_string
-    $html .= $deletebutton;
+    foreach ($buttons as $classname => $pic) {
+        $html .= '<img id="'.$classname.'_ex" src="'.$CFG->pixpath.'/t/'.$pic.'"
+            class="'.$classname.'" style="display: none;" />';
+    }
 
     return $html;
 }
@@ -144,7 +145,7 @@ function build_treeview($elements, $error_string, $hierarchy = null, $disabledli
  * @param   $elements    array elements to be created in the pane
  * @return  $html
  */
-function populate_selected_items_pane($elements) {
+function populate_selected_items_pane($elements, $prefix='item') {
 
     global $CFG;
 
@@ -152,7 +153,7 @@ function populate_selected_items_pane($elements) {
     $deletebutton = '<img id="deletebutton_ex" src="'.$CFG->pixpath.'/t/delete.gif" class="deletebutton" width="13px" height="13px" />'; 
 
     foreach ($elements as $element) {
-        $html .= '<span id="item_'.$element->id.'" class="">';
+        $html .= '<span id="'.$prefix.'_'.$element->id.'" class="">';
         // format_string() really slow here...
         $html .= '<table><tr>';
         $html .= '<td class="list-item-name">'.htmlentities($element->fullname).'</td>';
@@ -178,10 +179,10 @@ function build_category_treeview($list, $parents, $load_string) {
 
     global $CFG;
 
-    $html = '';
+    $buttons = array('addbutton' => 'add.gif', 
+                     'deletebutton' => 'delete.gif');
 
-    $addbutton = '<img src="'.$CFG->pixpath.'/t/add.gif" class="addbutton" width="15px" height="15px" display="none" />';
-    $deletebutton = '<img id="deletebutton_ex" src="'.$CFG->pixpath.'/t/delete.gif" class="deletebutton" width="13px" height="13px" style="display: none;" />';
+    $html = '';
 
     if (is_array($list) && !empty($list)) {
 
@@ -247,8 +248,11 @@ function build_category_treeview($list, $parents, $load_string) {
             }
         }
 
-        $html .= $addbutton;
-        $html .= $deletebutton;
+        // Add hidden button images that can later be used/cloned by js TODO: add tooltip get_string
+        foreach ($buttons as $classname => $pic) {
+            $html .= '<img id="'.$classname.'_ex" src="'.$CFG->pixpath.'/t/'.$pic.'"
+                class="'.$classname.'" style="display: none;" />';
+        }
     }
 
     return $html;
