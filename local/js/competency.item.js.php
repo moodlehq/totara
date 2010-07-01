@@ -31,7 +31,11 @@ $(function() {
         mitmsDialogs['evidence'] = new mitmsDialog(
             'evidence',
             'show-evidence-dialog',
-            {},
+            {
+                buttons: {
+                    'Cancel': function() { handler._cancel() }
+                }
+            },
             url+'edit.php?id='+competency_id,
             handler
         );
