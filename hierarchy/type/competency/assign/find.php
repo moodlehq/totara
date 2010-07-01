@@ -67,7 +67,7 @@ if(!$nojs) {
     if (!$parentid) {
         echo '<div class="selectcompetency">'.PHP_EOL;
         echo '<h2>'.get_string('addnewcompetency', $hierarchy->prefix).PHP_EOL;
-        echo ' ('.dialog_display_currently_selected(get_string('currentlyselected', $hierarchy->prefix)).' )';
+        echo dialog_display_currently_selected(get_string('currentlyselected', $hierarchy->prefix));
         echo '</h2>'.PHP_EOL;
         $hierarchy->display_framework_selector('', true);
         echo '<ul class="treeview filetree picker">'.PHP_EOL;

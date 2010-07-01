@@ -90,7 +90,7 @@ if (!$parentid) {
 <h2>
 <?php 
     echo get_string('chooseorganisation', $hierarchy->prefix);
-    echo ' ('.dialog_display_currently_selected(get_string('currentlyselected', $hierarchy->prefix)).' )';
+    echo dialog_display_currently_selected(get_string('currentlyselected', $hierarchy->prefix));
 ?>
 </h2>
 
