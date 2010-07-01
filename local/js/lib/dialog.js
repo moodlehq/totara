@@ -151,14 +151,21 @@ function mitmsDialog(title, buttonid, config, default_url, handler) {
 
     /**
      * Render dialog and contents
-     * @param   o   asyncRequest response
-     * @return  void
+     * @param string o             asyncRequest response
+     * @param object outputelement (optional) element in which output should be generated
+     * @return void
      */
-    this.render = function(o) {
+    this.render = function(o, outputelement) {
         // Hide loading animation
         this.hideLoading();
 
-        this.dialog.html(o);
+        if (outputelement) {
+            // Render the output in the specified element
+            outputelement.html(o);
+        } else {
+            // Just reload the whole dialog
+            this.dialog.html(o);
+        }
 
         this.bindLinks();
 
@@ -239,8 +246,9 @@ function mitmsDialog(title, buttonid, config, default_url, handler) {
      * @param object    Object to call on success (optional)
      * @param string    Object's method name to call on success (optional)
      * @param mixed     extra data to send to success method (optional)
+     * @param object outputelement (optional) element in which request output should be generated
      */
-    this._request = function(url, s_object, s_method, data) {
+    this._request = function(url, s_object, s_method, data, outputelement) {
 
         var dialog = this;
 
@@ -258,7 +266,7 @@ function mitmsDialog(title, buttonid, config, default_url, handler) {
                 }
 
                 if (result) {
-                    dialog.render(o);
+                    dialog.render(o, outputelement);
                 }
             },
             error: function(o) {
@@ -447,7 +455,8 @@ mitmsDialog_handler.prototype._set_framework = function() {
 
     // See if framework specific
     if (url.indexOf('frameworkid=') == -1) {
-        url = url + '&frameworkid=' + selected;
+        // Only return tree html
+        url = url + '&frameworkid=' + selected + '&treeonly=1';
     } else {
         // Get start of frameworkid
         var start = url.indexOf('frameworkid=') + 12;
@@ -464,7 +473,9 @@ mitmsDialog_handler.prototype._set_framework = function() {
         }
     }
 
-    this._dialog.load(url, 'GET');
+    this._dialog.showLoading();  // Show loading icon and then perform request
+
+    this._dialog._request(url, undefined, undefined, undefined, $('.treeview', this._container));
 }
 
 
@@ -488,6 +499,7 @@ mitmsDialog_handler_treeview.prototype.every_load = function() {
 
     var handler = this;
     // Setup framework picker
+    $('.simpleframeworkpicker', this._container).unbind('change');  // Unbind any previous events
     $('.simpleframeworkpicker', this._container).change(function() {
         handler._set_framework();
     });
@@ -744,7 +756,7 @@ mitmsDialog_handler_treeview_singleselect.prototype.every_load = function() {
     mitmsDialog_handler_treeview.prototype.every_load.call(this);
 
     this._make_selectable($('.treeview', this._container));
-    this._set_current_selected();
+    //this._set_current_selected();
 }
 
 mitmsDialog_handler_treeview_singleselect.prototype._set_current_selected = function() {
@@ -859,6 +871,7 @@ mitmsDialog_handler_skeletalTreeview.prototype.every_load = function() {
     var handler = this;
 
     // Setup framework picker if one exists
+    $('.simpleframeworkpicker', this._container).unbind('change');  // Unbind any previous events
     $('.simpleframeworkpicker', this._container).change(function() {
         handler._set_framework();
     });
