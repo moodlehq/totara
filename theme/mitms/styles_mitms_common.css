@@ -450,7 +450,7 @@ div.mitms-dialog ul.treeview span table tr td.list-item-action {
 div.mitms-dialog ul.treeview img.addbutton {
     display: none;
     vertical-align: middle;
-    width: 15px;
+    width: 17px;
     height: 15px;
 }
 
@@ -529,14 +529,14 @@ div.mitms-dialog .selected span table tr td.list-item-action {
 div.mitms-dialog .selected img.addbutton {
     display: none;
     vertical-align: middle;
-    width: 15px;
-    height: 15px;
+    width: 16px;
+    height: 14px;
 }
 
 div.mitms-dialog .selected img.deletebutton {
     display: none;
     vertical-align: middle;
-    width: 13px;
+    width: 15px;
     height: 13px;
 }
 

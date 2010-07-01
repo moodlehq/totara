@@ -71,16 +71,16 @@ mitmsDialog_handler_assignEvidence.prototype._display_evidence = function(respon
     var handler = this;
 
     // Bind hover event
-    $('#available-evidence li', this._dialog.dialog).mouseenter(function() {
+    $('#available-evidence span', this._dialog.dialog).mouseenter(function() {
         $('.addbutton').css('display', 'none');
         $('.addbutton', $(this)).css('display', 'inline');
     });
-    
+
     // Bind click event
     $('#available-evidence', this._dialog.dialog).find('.addbutton').click(function(e) {
         e.preventDefault();
-        var type = $(this).parent().attr('type');
-        var instance = $(this).parent().attr('id');
+        var type = $(this).closest('span').attr('type');
+        var instance = $(this).closest('span').attr('id');
         var url = handler.baseurl+'add.php?competency='+competency_id+'&type='+type+'&instance='+instance;
         handler._dialog._request(url, handler, '_update');
     });
