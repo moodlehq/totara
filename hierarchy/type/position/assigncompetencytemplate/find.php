@@ -18,6 +18,9 @@ $assignto = required_param('assignto', PARAM_INT);
 // Framework id
 $frameworkid = optional_param('frameworkid', 0, PARAM_INT);
 
+// Only return generated tree html
+$treeonly = optional_param('treeonly', false, PARAM_BOOL);
+
 // No javascript parameters
 $nojs = optional_param('nojs', false, PARAM_BOOL);
 $returnurl = optional_param('returnurl', '', PARAM_TEXT);
@@ -61,6 +64,16 @@ if (!$currentlyassigned = $positions->get_assigned_competency_templates($assignt
 ///
 
 if(!$nojs) {
+
+    if ($treeonly) {
+        echo build_treeview(
+            $items,
+            get_string('nounassignedcompetencytemplates', 'position'),
+            null,
+            $currentlyassigned
+        );
+        exit;
+    }
 
     echo '<div class="selectcompetencies">';
     echo '<h2>'.get_string($pagetitle, $hierarchy->prefix).'</h2>';

@@ -20,6 +20,9 @@ $parentid = optional_param('parentid', 0, PARAM_INT);
 // Framework id
 $frameworkid = optional_param('frameworkid', 0, PARAM_INT);
 
+// Only return generated tree html
+$treeonly = optional_param('treeonly', false, PARAM_BOOL);
+
 // No javascript parameters
 $nojs = optional_param('nojs', false, PARAM_BOOL);
 $returnurl = optional_param('returnurl', '', PARAM_TEXT);
@@ -56,6 +59,15 @@ $alreadyrelated[$compid] = $compid;
 
 
 if(!$nojs) {
+    if ($treeonly) {
+        echo build_treeview(
+            $competencies,
+            get_string('nochildcompetenciesfound', 'competency'),
+            $hierarchy,
+            $alreadyrelated
+        );
+        exit;
+    }
     // build Javascript Treeview
 
     // If parent id is not supplied, we must be displaying the main page

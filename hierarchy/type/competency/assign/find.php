@@ -18,6 +18,9 @@ $frameworkid = optional_param('frameworkid', 0, PARAM_INT);
 // competency evidence id - may be 0 for new competency evidence
 $id = optional_param('id', 0, PARAM_INT);
 
+// Only return generated tree html
+$treeonly = optional_param('treeonly', false, PARAM_BOOL);
+
 // No javascript parameters
 $nojs = optional_param('nojs', false, PARAM_BOOL);
 $returnurl = optional_param('returnurl', '', PARAM_TEXT);
@@ -50,6 +53,15 @@ $competencies = $hierarchy->get_items_by_parent($parentid);
 
 if(!$nojs) {
     // build Javascript Treeview
+
+    if ($treeonly) {
+        echo build_treeview(
+            $competencies,
+            get_string('nocompetenciesinframework', 'competency'),
+            $hierarchy
+        );
+        exit;
+    }
 
     // If parent id is not supplied, we must be displaying the main page
     if (!$parentid) {

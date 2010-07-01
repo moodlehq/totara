@@ -21,6 +21,9 @@ $parentid = optional_param('parentid', 0, PARAM_INT);
 // Position id (a bit hackey, we are using the framework picker unmodified)
 $positionid = optional_param('frameworkid', 0, PARAM_INT);
 
+// Only return generated tree html
+$treeonly = optional_param('treeonly', false, PARAM_BOOL);
+
 // No javascript parameters
 $nojs = optional_param('nojs', false, PARAM_BOOL);
 $returnurl = optional_param('returnurl', '', PARAM_TEXT);
@@ -86,6 +89,16 @@ if (!$currentlyassigned = idp_get_user_competencies($plan->userid, $revisionid))
 
 if(!$nojs) {
     // build Javascript Treeview
+
+    if ($treeonly) {
+        echo build_treeview(
+            $competencies,
+            get_string('nocompetenciesassignedtoposition', 'position'),
+            null,
+            $currentlyassigned
+        );
+        exit;
+    }
 ?>
 
 <div class="selectcompetencies">

@@ -18,6 +18,9 @@ $revisionid = required_param('id', PARAM_INT);
 // Position id (a bit hackey, we are using the framework picker unmodified)
 $positionid = optional_param('frameworkid', 0, PARAM_INT);
 
+// Only return generated tree html
+$treeonly = optional_param('treeonly', false, PARAM_BOOL);
+
 // No javascript parameters
 $nojs = optional_param('nojs', false, PARAM_BOOL);
 $returnurl = optional_param('returnurl', '', PARAM_TEXT);
@@ -30,7 +33,7 @@ $urlparams = 'id='.$revisionid.'&amp;frameworkid='.$positionid.'&amp;nojs='.$noj
 /// Permissions checks
 ///
 
-admin_externalpage_setup('competencytemplatemanage');
+admin_externalpage_setup('competencymanage');
 
 // Check permissions
 $sitecontext = get_context_instance(CONTEXT_SYSTEM);
@@ -80,6 +83,15 @@ if (!$currentlyassigned = idp_get_user_competencytemplates($plan->userid, $revis
 
 if(!$nojs) {
 
+    if ($treeonly) {
+        echo build_treeview(
+            $templates,
+            get_string('nounassignedcompetencytemplates', 'position'),
+            null,
+            $currentlyassigned
+        );
+        exit;
+    }
 ?>
 
 <div class="selectcompetencytemplates">

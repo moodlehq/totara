@@ -19,6 +19,9 @@ $parentid = optional_param('parentid', 0, PARAM_INT);
 // Framework id
 $frameworkid = optional_param('frameworkid', 0, PARAM_INT);
 
+// Only return generated tree html
+$treeonly = optional_param('treeonly', false, PARAM_BOOL);
+
 // Setup page
 require_login();
 
@@ -55,6 +58,15 @@ $positions = $hierarchy->get_items_by_parent($parentid);
 /// Display page
 ///
 
+if ($treeonly) {
+    echo build_treeview(
+        $positions,
+        get_string('nopositionsinframework', 'position'),
+        $hierarchy
+    );
+    exit;
+}
+
 // If parent id is not supplied, we must be displaying the main page
 if (!$parentid) {
 
@@ -64,12 +76,12 @@ if (!$parentid) {
 
 
 <h2>
-<?php 
-    echo get_string('chooseposition', $hierarchy->prefix); 
+<?php
+    echo get_string('chooseposition', $hierarchy->prefix);
     echo ' ('.dialog_display_currently_selected(get_string('currentlyselected', $hierarchy->prefix)).' )';
 ?>
 </h2>
-<?php 
+<?php
     $hierarchy->display_framework_selector('', true);
 }
 

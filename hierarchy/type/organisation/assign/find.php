@@ -19,6 +19,9 @@ $parentid = optional_param('parentid', 0, PARAM_INT);
 // Framework id
 $frameworkid = optional_param('frameworkid', 0, PARAM_INT);
 
+// Only return generated tree html
+$treeonly = optional_param('treeonly', false, PARAM_BOOL);
+
 // Setup page
 require_login();
 
@@ -52,12 +55,32 @@ if ( $framework ){
     $positions = array();
 }
 
+// Determine which error message
+if ( $parentid ){
+    $errorstr = 'nochildorganisations';
+} else {
+    if ( $frameworkid ){
+        $errorstr = 'noorganisationsinframework';
+    } else {
+        $errorstr = 'noorganisation';
+    }
+}
+
 ///
 /// Display page
 ///
 
 // If parent id is not supplied, we must be displaying the main page
 if (!$parentid) {
+
+    if ($treeonly) {
+        echo build_treeview(
+            $positions,
+            get_string($errorstr, $hierarchy->prefix),
+            $hierarchy
+        );
+        exit;
+    }
 
 ?>
 
@@ -75,17 +98,6 @@ if (!$parentid) {
 
 <ul class="treeview filetree picker">
 <?php
-}
-
-// Determine which error message
-if ( $parentid ){
-    $errorstr = 'nochildorganisations';
-} else {
-    if ( $frameworkid ){
-        $errorstr = 'noorganisationsinframework';
-    } else {
-        $errorstr = 'noorganisation';
-    }
 }
 
 echo build_treeview(

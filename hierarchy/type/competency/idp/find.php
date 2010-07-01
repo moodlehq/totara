@@ -20,6 +20,9 @@ $parentid = optional_param('parentid', 0, PARAM_INT);
 // Framework id
 $frameworkid = optional_param('frameworkid', 0, PARAM_INT);
 
+// Only return generated tree html
+$treeonly = optional_param('treeonly', false, PARAM_BOOL);
+
 // No javascript parameters
 $nojs = optional_param('nojs', false, PARAM_BOOL);
 $returnurl = optional_param('returnurl', '', PARAM_TEXT);
@@ -64,6 +67,16 @@ if (!$framework = $hierarchy->get_framework($frameworkid, true)) {
 ///
 
 if(!$nojs) {
+    if ($treeonly) {
+        echo build_treeview(
+            $competencies,
+            get_string(($framework?'nocompetenciesinframework':'nocompetency'), 'competency'),
+            $hierarchy,
+            $currentlyassigned
+        );
+        exit;
+    }
+
     // build Javascript Treeview
 
     // If parent id is not supplied, we must be displaying the main page
