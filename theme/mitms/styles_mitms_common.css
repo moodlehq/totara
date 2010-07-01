@@ -295,10 +295,6 @@ div.mitms-dialog div.ui-widget-header {
     border: none;
 }
 
-div.mitms-dialog div.ui-dialog-titlebar span#ui-dialog-title-related {
-    display: none;
-}
-
 div.mitms-dialog div.ui-dialog-titlebar a.ui-dialog-titlebar-close {
     border: 0;
     margin: 0;
