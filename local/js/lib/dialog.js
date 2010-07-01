@@ -783,6 +783,10 @@ mitmsDialog_handler_treeview_singleselect.prototype._set_current_selected = func
 
     $('#treeview_selected_text').text(current_text);
     $('#treeview_selected_val').val(current_val);
+
+    if (current_val != 0) {
+        $('#treeview_currently_selected_span').css('display', 'inline');
+    }
 }
 
 /**
@@ -860,6 +864,9 @@ mitmsDialog_handler_treeview_singleselect.prototype._make_selectable = function(
         $('#treeview_selected_text').html(clone.find('.list-item-name').html());
         var selected_id = clone.attr('id').split('_')[1];
         $('#treeview_selected_val').val(selected_id);
+
+        // Make sure the info is displayed
+        $('#treeview_currently_selected_span').css('display', 'inline');
     });
 
 }

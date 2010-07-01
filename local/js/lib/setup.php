@@ -456,8 +456,10 @@ function display_dialog_selector($options, $selected, $class) {
  */
 function dialog_display_currently_selected($label) {
 
-    $html = '<label for="treeview_selected_text">'.$label.'</label>:&nbsp;';
+    $html = ' <span id="treeview_currently_selected_span" style="display: none;">';
+    $html .= '(<label for="treeview_selected_text">'.$label.'</label>:&nbsp;';
     $html .= '<em><span id="treeview_selected_text"></span></em>'; 
+    $html .= ')</span>';
 
     // Also add a hidden field that can hold the currently selected value
     $html .= '<input type="hidden" id="treeview_selected_val" name="treeview_selected_val" value="" />';

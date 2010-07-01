@@ -41,3 +41,4 @@ $string['error:badsortorder'] = 'Could not move that $a, there is something wron
 $string['error:noframeworksfound'] = 'No $a frameworks with one or more depth levels found.';
 $string['switchframework'] = 'Switch framework: ';
 $string['selecteditems'] = 'Selected items';
+$string['selected'] = 'Selected';
