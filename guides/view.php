@@ -26,7 +26,7 @@ if(!empty($startguide)) {
         $validguide = get_record('block_guides_guide','deleted', 0, 'id', $startguide);
         if ($validguide) {
             #Create a new guide instance as requested
-            $gi->currentstep = 1;
+            $gi->currentstep = 0;
             $gi->guide = $startguide;
             $gi->userid = $USER->id;
             $giid = insert_record('block_guides_guide_instance', $gi, true);
@@ -85,6 +85,10 @@ $efforttotal = 0;
 $effortdone = 0;
 $stepnumber = 0;
 
+if ($gi->currentstep == 0) {
+    # Guide has just started - start the 1st step
+    increment_currentstep($gi, $steps);
+}
 
 foreach ($stepnames as $stepname) {
     $stepnumber++;
@@ -95,8 +99,7 @@ foreach ($stepnames as $stepname) {
             # If the set_complete function is called, and succeeds, adjust the visible steps,
             # If any new steps are visible, load them
             if($steps[$stepnumber]->set_complete()) {
-                $gi->currentstep++;
-                update_currentstep($gi);
+                increment_currentstep($gi, $steps);
                 if (!$reqstepnumber) {
                     // No step has been explicity requested - we're just tracking the active step
                     // update the target step, and load a new step (if necessary)

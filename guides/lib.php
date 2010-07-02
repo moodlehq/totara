@@ -35,8 +35,12 @@ function identify_visible_steps($stepnames, $targetstep, &$showfrom, &$showto) {
     return range($showfrom,$showto);
 }
 
-function update_currentstep($gi) {
+function increment_currentstep(&$gi, $steps) {
     $updategi->id = addslashes($gi->id);
+    $gi->currentstep++;
+    if (isset($steps[$gi->currentstep])) {
+        $steps[$gi->currentstep]->start_step();
+    }
     $updategi->currentstep = addslashes($gi->currentstep);
     return update_record('block_guides_guide_instance', $updategi);
 }
