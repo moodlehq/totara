@@ -30,7 +30,6 @@
 
 
     if (! $delete) {
-        $strdeletecheck = get_string("deletecheck", "block/guides", $gi->name);
         $strdeleteguidecheck = get_string("deleteguidecheck", 'block/guides');
 
         print_header($gi->name. ": ", $gi->name . ": ", $navigation, "", "", true);

@@ -6,7 +6,6 @@ $uid = optional_param('uid', 0, PARAM_INT);
 $context = get_context_instance(CONTEXT_SYSTEM);
 
 $navlinks = array();
-$strguide = get_string('guide','block/guides');
 $strguides = get_string('guides','block/guides');
 $strstartguide = get_string('startguide','block/guides');
 $strcontinueguide = get_string('continueguide','block/guides');
