@@ -52,7 +52,7 @@ class block_guides extends block_list {
                 $inprogresscontent .= '<a href="' . $CFG->wwwroot . '/guides/view.php?gi=' . $guideinstance->giid . '">' .
                         $guideinstance->name . '</a>';
                 $inprogresscontent .= ' <input type="hidden" name="gi" value="' . $guideinstance->giid . '" />';
-                $inprogresscontent .= '<input type="image" src="' . $CFG->wwwroot . '/pix/t/delete.gif" alt="finish step" />';
+                $inprogresscontent .= '<input type="image" src="' . $CFG->themedir . '/pix/t/delete.gif" alt="finish step" />';
                 $inprogresscontent .= '<img src="' . $CFG->wwwroot . '/guides/percentImage.png" alt="' . $percent . '%" style="background: white url(/guides/percentImage_back.png) top left no-repeat;padding: 0;margin: 5px 0 0 0;background-position: ' . $pixeloffset . 'px 0pt;" /> ';
                 $inprogresscontent .= " $percent %";
                 $inprogresscontent .= '</form>';
