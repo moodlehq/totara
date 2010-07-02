@@ -1,0 +1,62 @@
+<?php // $Id$
+      // Admin-only code to delete a course utterly
+
+    require_once("../config.php");
+    require_once($CFG->dirroot . "/guides/lib.php");
+    $giid = required_param('gi', PARAM_INT);              // course id
+    $delete = optional_param('delete', '', PARAM_ALPHANUM); // delete confirmation hash
+
+    require_login();
+    $context = get_context_instance(CONTEXT_SYSTEM);
+    require_capability('block/guides:deleteownguide', $context);
+
+    $strdeleteguide = get_string("deleteguide",'block/guides');
+    $strdelete = get_string('delete');
+    $guidesql = 'SELECT gi.*, g.steps, g.name, g.description ' .
+                'FROM ' . $CFG->prefix . 'block_guides_guide_instance gi ' .
+                ' INNER JOIN ' . $CFG->prefix . 'block_guides_guide g on gi.guide=g.id ' .
+                'WHERE gi.id = ' . $giid . ' AND gi.deleted = 0';
+    $gi = get_record_sql($guidesql);
+    if (! $gi ) {
+        error("No such guide in progress");
+    }
+
+    $navlinks = array();
+    $strguides = get_string('guides','block/guides');
+    $navlinks[] = array('name' => $strguides, 'link' => "index.php", 'type' => 'misc');
+    $navlinks[] = array('name' => $gi->name, 'link' => "view.php?gi=$giid", 'type' => 'misc');
+    $navlinks[] = array('name' => $strdelete, 'link' => null, 'type' => 'misc');
+    $navigation = build_navigation($navlinks);
+
+
+    if (! $delete) {
+        $strdeletecheck = get_string("deletecheck", "block/guides", $gi->name);
+        $strdeleteguidecheck = get_string("deleteguidecheck", 'block/guides');
+
+        print_header($gi->name. ": ", $gi->name . ": ", $navigation, "", "", true);
+
+        notice_yesno("$strdeleteguidecheck<br /><br />",
+                     "delete.php?gi=$gi->id&amp;delete=".md5($gi->name . $gi->currentstep)."&amp;sesskey=$USER->sesskey",
+                     "view.php?gi=$gi->id");
+
+        print_footer();
+        exit;
+    }
+
+    if ($delete != md5($gi->name . $gi->currentstep)) {
+        error("The check variable was wrong - try again");
+    }
+
+    if (!confirm_sesskey()) {
+        print_error('confirmsesskeybad', 'error');
+    }
+
+    print_header($gi->name. ": ", $gi->name . ": ", $navigation, "", "", true);
+    print_heading(get_string("deleteguide",'block/guides'));
+    delete_gi($gi);
+    print_heading( get_string("deletedguide", "block/guides", $gi->name));
+    print_continue($CFG->wwwroot);
+
+    print_footer();
+
+?>
