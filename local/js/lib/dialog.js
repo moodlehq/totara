@@ -596,7 +596,7 @@ mitmsDialog_handler_treeview.prototype._make_deletable = function(parent_element
 
         // Make sure removed element is now selectable in treeview
         var selectable_span = $('.treeview').find('span#'+span_element.attr('id'));
-        var addbutton = $('#addbutton_ex', '.treeview').clone();
+        var addbutton = $('#addbutton_ex:first', '.treeview').clone();
         addbutton.removeAttr('id');
         selectable_span.removeClass('unclickable');
         selectable_span.find('.list-item-action').html(addbutton);
@@ -623,7 +623,7 @@ mitmsDialog_handler_treeview.prototype._append_to_selected = function(element) {
     if ($('#'+clone.attr('id'), selected_area).size() < 1) {
         // First, remove addbutton from clone and add delete button
         clone.find('.addbutton').remove();
-        deletebutton = $('#deletebutton_ex').clone();
+        deletebutton = $('#deletebutton_ex:first').clone();
         clone.find('.list-item-action').append(deletebutton);
 
         deletebutton.unbind('click');
