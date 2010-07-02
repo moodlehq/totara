@@ -19,7 +19,11 @@ $(function() {
         mitmsDialogs['coursecompetency'] = new mitmsDialog(
             'coursecompetency',
             'show-coursecompetency-dialog',
-            {},
+            {
+                buttons: {
+                    'Cancel': function() { handler._cancel() }
+                }
+            },
             url+'add.php?id='+course_id,
             handler
         );
