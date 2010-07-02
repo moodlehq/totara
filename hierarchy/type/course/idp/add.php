@@ -69,8 +69,8 @@ if($nojs) {
     print_footer();
 } else {
     echo '<div class="selectcompetencies">';
-    echo '<div class="selected"><br>';
-    echo '<h3>' . get_string('selecteditems', 'hierarchy') . '</h3>';
+    echo '<div class="selected"><br><br>';
+    echo '<p>' . get_string('selecteditems', 'hierarchy') . '</p>';
     echo populate_selected_items_pane($currentlyassigned, 'course');
     echo '</div>';
 
