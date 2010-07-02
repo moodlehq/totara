@@ -338,6 +338,8 @@ mitmsDialog_handler.prototype._load = function(dialog) {
     if (this.every_load != undefined) {
         this.every_load();
     }
+
+    return true;
 }
 
 /**
@@ -475,7 +477,7 @@ mitmsDialog_handler.prototype._set_framework = function() {
 
     this._dialog.showLoading();  // Show loading icon and then perform request
 
-    this._dialog._request(url, undefined, undefined, undefined, $('.treeview', this._container));
+    this._dialog._request(url, this, '_load', undefined, $('.treeview', this._container));
 }
 
 
