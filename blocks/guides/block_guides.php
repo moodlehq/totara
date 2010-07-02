@@ -57,8 +57,10 @@ class block_guides extends block_list {
                 $inprogresscontent .= " $percent %";
                 $inprogresscontent .= '</form>';
                 $this->content->items[] = $inprogresscontent;
-                $this->content->footer = '<a href="' . $CFG->wwwroot . '/guides/index.php">more detail</a>';
             }
+            $this->content->footer = '<a href="' . $CFG->wwwroot . '/guides/index.php">more detail</a>';
+        } else {
+            $this->content->footer = '<a href="' . $CFG->wwwroot . '/guides/index.php">view all guides</a>';
         }
         return $this->content;
     }
