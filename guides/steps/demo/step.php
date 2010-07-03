@@ -1,10 +1,6 @@
 <?php
-
-class guide_default_step {
-    function name() {
-        return "demo";
-    }
-
+require_once ($CFG->dirroot . '/guides/steps/default.php');
+class guide_demo_step extends guide_default_step {
     ## Return the content the step should display when it is the active step in a guide:
     #function content_step_active () {
     #    return '';

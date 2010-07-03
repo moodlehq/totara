@@ -1,10 +1,6 @@
 <?php
 
 class guide_default_step {
-    function name() {
-        return "Default";
-    }
-
     # Content - return the step's content section
     # The actual content returned depends on the two parameters;
     # The step may want to produce different output depending on whether the step is active,
