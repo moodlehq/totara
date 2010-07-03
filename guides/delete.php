@@ -24,13 +24,12 @@
     $navlinks = array();
     $strguides = get_string('guides','block/guides');
     $navlinks[] = array('name' => $strguides, 'link' => "index.php", 'type' => 'misc');
-    $navlinks[] = array('name' => $gi->name, 'link' => "view.php?gi=$giid", 'type' => 'misc');
-    $navlinks[] = array('name' => $strdelete, 'link' => null, 'type' => 'misc');
-    $navigation = build_navigation($navlinks);
-
 
     if (! $delete) {
         $strdeleteguidecheck = get_string("deleteguidecheck", 'block/guides');
+        $navlinks[] = array('name' => $gi->name, 'link' => "view.php?gi=$giid", 'type' => 'misc');
+        $navlinks[] = array('name' => $strdelete, 'link' => null, 'type' => 'misc');
+        $navigation = build_navigation($navlinks);
 
         print_header($gi->name. ": ", $gi->name . ": ", $navigation, "", "", true);
 
@@ -50,6 +49,9 @@
         print_error('confirmsesskeybad', 'error');
     }
 
+    $navlinks[] = array('name' => $gi->name, 'link' => null, 'type' => 'misc');
+    $navlinks[] = array('name' => $strdelete, 'link' => null, 'type' => 'misc');
+    $navigation = build_navigation($navlinks);
     print_header($gi->name. ": ", $gi->name . ": ", $navigation, "", "", true);
     delete_gi($gi);
     print_heading( get_string("deletedguide", "block/guides", $gi->name));
