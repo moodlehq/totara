@@ -7,7 +7,7 @@ class block_guides extends block_list {
         $this->title = get_string('guides','block/guides');
         $this->version = 2010061400;
     }
-    
+
     function has_config() {
         return false;
     }

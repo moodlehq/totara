@@ -82,7 +82,6 @@ if ($guideinstances) {
 } else {
     print_heading($strnoguidesinprogress,'center',3);
 }
-    
 print_heading($strguidesavailable);
 
 if ($guides) {
@@ -101,7 +100,7 @@ if ($guides) {
             print ' <a href="' . $CFG->wwwroot . '/guides/view.php?startguide=' . $guide->id . '">';
             print $strstartguide;
         }
-        print '</a></spann></div>' . "\n";
+        print '</a></span></div>' . "\n";
     }
     print "</div>\n";
 } else {
