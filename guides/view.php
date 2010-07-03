@@ -22,10 +22,16 @@ if(!empty($startguide)) {
                             'deleted', 0,
                             'guide', $startguide,
                             'userid', $USER->id);
-    if (!$existinggi) {
+    if ($existinggi) {
+        if (empty($giid)) {
+            // The user asked to start a guide they're already in the middle of
+            // Show them the existing guide instance;
+            $giid = addslashes($existinggi->id);
+        }
+    } else {
         $validguide = get_record('block_guides_guide','deleted', 0, 'id', $startguide);
         if ($validguide) {
-            #Create a new guide instance as requested
+            #The asked-for guide exists, Create a new guide instance as requested
             $gi->currentstep = 0;
             $gi->guide = $startguide;
             $gi->userid = $USER->id;
