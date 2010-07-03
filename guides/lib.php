@@ -5,9 +5,15 @@ function load_steps(&$steps, $stepnames) {
     foreach ($stepnames as $stepname) {
         $stepnumber++;
         if (!isset($steps[$stepnumber])) {
-            require_once($CFG->dirroot . '/guides/steps/' . $stepname . '/step.php');
-            $stepname = 'guide_' . $stepname . '_step';
-            $steps[$stepnumber] = new $stepname();
+            $stepfile = $CFG->dirroot . '/guides/steps/' . $stepname . '/step.php';
+            if (file_exists($stepfile)) {
+                require_once($stepfile);
+                $newstepname = 'guide_' . $stepname . '_step';
+            } else {
+                require_once($CFG->dirroot . '/guides/steps/missingstep.php');
+                $newstepname = 'guide_missing_step';
+            }
+            $steps[$stepnumber] = new $newstepname();
         }
     }
     return true;

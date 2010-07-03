@@ -27,7 +27,7 @@ class guide_default_step {
 
     # Return the content the step should display when it is the active step in a guide:
     function content_step_active () {
-        return "Default content<br/>";
+        return '';
     }
 
     # Return content the step should display when it is not active, and is not complete:
