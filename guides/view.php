@@ -164,6 +164,7 @@ foreach ($visiblesteps as $stepnumber) {
     }
     print '</div></div>';
 }
+print '<div class="clearer"></div>';
 print "</div>";
 print_footer();
 
