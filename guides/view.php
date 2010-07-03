@@ -106,6 +106,10 @@ foreach ($stepnames as $stepname) {
                     $targetstep = $gi->currentstep;
                     $visiblesteps = identify_visible_steps($steps, $targetstep, $showfrom, $showto);
                 }
+            } elseif ($finishstep == $stepnumber) {
+                # User has explicity requested that a step be marked as finished, but
+                # set_complete failed - step not finished.
+                $finishfailed = $finishstep;
             }
         }
     }
@@ -120,6 +124,9 @@ if(isset($gi->description)) {
     print_heading($gi->description,'left',3);
 }
 print "Showing steps $showfrom to $showto of " . count($stepnames) . "<br />\n";
+if (!empty($finishfailed)) {
+    print '<span class="error">Step ' . $finishfailed . ' can not yet be marked as completed</span>';
+}
 $percentvalue = $effortdone / $efforttotal * 100;
 $pixelvalue = $effortdone / $efforttotal * 121;
 $pixeloffset = round($pixelvalue - 120);
