@@ -125,7 +125,7 @@ if(isset($gi->description)) {
 }
 print "Showing steps $showfrom to $showto of " . count($stepnames) . "<br />\n";
 if (!empty($finishfailed)) {
-    print '<span class="error">Step ' . $finishfailed . ' can not yet be marked as completed</span>';
+    print '<span class="error">Step ' . $finishfailed . ' can not yet be marked as completed.  Ensure that you have met the steps requirements, then try again.</span>';
 }
 $percentvalue = $effortdone / $efforttotal * 100;
 $pixelvalue = $effortdone / $efforttotal * 121;
