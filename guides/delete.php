@@ -17,8 +17,8 @@
                 ' INNER JOIN ' . $CFG->prefix . 'block_guides_guide g on gi.guide=g.id ' .
                 'WHERE gi.id = ' . $giid . ' AND gi.deleted = 0';
     $gi = get_record_sql($guidesql);
-    if (! $gi ) {
-        error("No such guide in progress");
+    if (! $gi || ($USER->id != $gi->userid)) {
+        error("No such guide matching those detail able to be deleted");
     }
 
     $navlinks = array();
