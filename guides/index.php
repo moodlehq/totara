@@ -73,7 +73,7 @@ if ($guideinstances) {
         print $guideinstance->name;
         print '</a>';
         print ' <input type="hidden" name="gi" value="' . $guideinstance->giid . '" />';
-        print '<input type="image" src="' . $CFG->themewww . '/pix/t/delete.gif" alt="delete guide progress" />';
+        print '<input type="image" src="' . $CFG->wwwroot . '/theme/' . $CFG->theme . '/pix/t/delete.gif" alt="delete guide progress" />';
         print '</span>';
         print '</form>';
         print '</div>';

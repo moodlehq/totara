@@ -144,7 +144,7 @@ print '<img src="' . $CFG->wwwroot . '/guides/percentImage.png" alt="' . $percen
 print " $percent % complete<br />\n";
 print '<form action="' . $CFG->wwwroot . '/guides/delete.php?gi=' . $gi->id . '" method="post">';
 print '<input type="hidden" name="gi" value="' . $gi->id . '" />';
-print '<input type="image" src="' . $CFG->themewww . '/pix/t/delete.gif" alt="delete guide" /> Delete Guide';
+print '<input type="image" src="' . $CFG->wwwroot . '/theme/' . $CFG->theme . '/pix/t/delete.gif" alt="delete guide" /> Delete Guide';
 print '</form>';
 print "</div>";
 print "<div class=guidesteps>";
