@@ -7,7 +7,7 @@ class guide_mitms_guide_competencies_step extends guide_default_step {
         $returnstring = 'This step requires you to complete the ';
         $guide = get_record('block_guides_guide', 'name', 'Configure Competencies');
         if ($guide) {
-            $returnstring .= '<a href=' . $CFG->wwwroot . '/guides/view.php?startguide=' . $guide->id . '">Configure Competencies</a> guide.';
+            $returnstring .= '<a href="' . $CFG->wwwroot . '/guides/view.php?startguide=' . $guide->id . '">Configure Competencies</a> guide.';
         } else {
             $returnstring .= 'Configure Competencies guide.';
         }

@@ -7,7 +7,7 @@ class guide_mitms_guide_hierarchies_step extends guide_default_step {
         $returnstring = 'This step requires you to complete the ';
         $guide = get_record('block_guides_guide','name','Configure Hierarchies');
         if ($guide) {
-            $returnstring .= '<a href=' . $CFG->wwwroot . '/guides/view.php?startguide=' . $guide->id . '">Configure Hierarchies</a> guide.';
+            $returnstring .= '<a href="' . $CFG->wwwroot . '/guides/view.php?startguide=' . $guide->id . '">Configure Hierarchies</a> guide.';
         } else {
             $returnstring .= 'Configure Hierarchies guide.';
         }
