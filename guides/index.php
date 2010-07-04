@@ -106,6 +106,7 @@ if ($guides) {
 } else {
     print_heading($strnoguidesavailable,'center',3);
 }
+print '<div class="clearer"></div>';
 print_footer();
 
 ?>
