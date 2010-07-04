@@ -31,6 +31,13 @@ function xmldb_block_guides_upgrade($oldversion=0) {
 /// if ($result && $oldversion < YYYYMMDD00) { //New version in version.php
 ///     $result = result of "/lib/ddllib.php" function calls
 /// }
+    if ($result && $oldversion < 2010070400) {
+        /// Define key 'name' (unique) to be added to guides
+        $table = new XMLDBTable('block_guides_guide');
+        $key = new XMLDBKey('name');
+        $key->setAttributes(XMLDB_KEY_UNIQUE, array('name'));
+        $result = $result && add_key($table, $key);
+    }
 
     return $result;
 }
