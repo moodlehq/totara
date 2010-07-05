@@ -59,6 +59,14 @@ $block_guides_capabilities = array(
             'admin' => CAP_ALLOW
         )
     ),
+    'block/guides:addguides' => array(
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'legacy' => array(
+            'guest' => CAP_PREVENT,
+            'admin' => CAP_ALLOW
+        )
+    ),
     'block/guides:viewothersguide' => array(
         'captype' => 'read',
         'contextlevel' => CONTEXT_SYSTEM,

@@ -22,11 +22,17 @@ if(!empty($startguide)) {
                             'deleted', 0,
                             'guide', $startguide,
                             'userid', $USER->id);
-    if (!$existinggi) {
+    if ($existinggi) {
+        if (empty($giid)) {
+            // The user asked to start a guide they're already in the middle of
+            // Show them the existing guide instance;
+            $giid = addslashes($existinggi->id);
+        }
+    } else {
         $validguide = get_record('block_guides_guide','deleted', 0, 'id', $startguide);
         if ($validguide) {
-            #Create a new guide instance as requested
-            $gi->currentstep = 1;
+            #The asked-for guide exists, Create a new guide instance as requested
+            $gi->currentstep = 0;
             $gi->guide = $startguide;
             $gi->userid = $USER->id;
             $giid = insert_record('block_guides_guide_instance', $gi, true);
@@ -85,6 +91,10 @@ $efforttotal = 0;
 $effortdone = 0;
 $stepnumber = 0;
 
+if ($gi->currentstep == 0) {
+    # Guide has just started - start the 1st step
+    increment_currentstep($gi, $steps);
+}
 
 foreach ($stepnames as $stepname) {
     $stepnumber++;
@@ -95,14 +105,17 @@ foreach ($stepnames as $stepname) {
             # If the set_complete function is called, and succeeds, adjust the visible steps,
             # If any new steps are visible, load them
             if($steps[$stepnumber]->set_complete()) {
-                $gi->currentstep++;
-                update_currentstep($gi);
+                increment_currentstep($gi, $steps);
                 if (!$reqstepnumber) {
                     // No step has been explicity requested - we're just tracking the active step
                     // update the target step, and load a new step (if necessary)
                     $targetstep = $gi->currentstep;
                     $visiblesteps = identify_visible_steps($steps, $targetstep, $showfrom, $showto);
                 }
+            } elseif ($finishstep == $stepnumber) {
+                # User has explicity requested that a step be marked as finished, but
+                # set_complete failed - step not finished.
+                $finishfailed = $finishstep;
             }
         }
     }
@@ -117,6 +130,9 @@ if(isset($gi->description)) {
     print_heading($gi->description,'left',3);
 }
 print "Showing steps $showfrom to $showto of " . count($stepnames) . "<br />\n";
+if (!empty($finishfailed)) {
+    print '<span class="error">Step ' . $finishfailed . ' can not yet be marked as completed.  Ensure that you have met the steps requirements, then try again.</span>';
+}
 $percentvalue = $effortdone / $efforttotal * 100;
 $pixelvalue = $effortdone / $efforttotal * 121;
 $pixeloffset = round($pixelvalue - 120);
@@ -128,7 +144,7 @@ print '<img src="' . $CFG->wwwroot . '/guides/percentImage.png" alt="' . $percen
 print " $percent % complete<br />\n";
 print '<form action="' . $CFG->wwwroot . '/guides/delete.php?gi=' . $gi->id . '" method="post">';
 print '<input type="hidden" name="gi" value="' . $gi->id . '" />';
-print '<input type="image" src="' . $CFG->wwwroot . '/pix/t/delete.gif" alt="finish step" /> Delete Guide';
+print '<input type="image" src="' . $CFG->wwwroot . '/theme/' . $CFG->theme . '/pix/t/delete.gif" alt="delete guide" /> Delete Guide';
 print '</form>';
 print "</div>";
 print "<div class=guidesteps>";
@@ -161,6 +177,7 @@ foreach ($visiblesteps as $stepnumber) {
     }
     print '</div></div>';
 }
+print '<div class="clearer"></div>';
 print "</div>";
 print_footer();
 

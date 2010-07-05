@@ -17,21 +17,19 @@
                 ' INNER JOIN ' . $CFG->prefix . 'block_guides_guide g on gi.guide=g.id ' .
                 'WHERE gi.id = ' . $giid . ' AND gi.deleted = 0';
     $gi = get_record_sql($guidesql);
-    if (! $gi ) {
-        error("No such guide in progress");
+    if (! $gi || ($USER->id != $gi->userid)) {
+        error("No such guide matching those detail able to be deleted");
     }
 
     $navlinks = array();
     $strguides = get_string('guides','block/guides');
     $navlinks[] = array('name' => $strguides, 'link' => "index.php", 'type' => 'misc');
-    $navlinks[] = array('name' => $gi->name, 'link' => "view.php?gi=$giid", 'type' => 'misc');
-    $navlinks[] = array('name' => $strdelete, 'link' => null, 'type' => 'misc');
-    $navigation = build_navigation($navlinks);
-
 
     if (! $delete) {
-        $strdeletecheck = get_string("deletecheck", "block/guides", $gi->name);
         $strdeleteguidecheck = get_string("deleteguidecheck", 'block/guides');
+        $navlinks[] = array('name' => $gi->name, 'link' => "view.php?gi=$giid", 'type' => 'misc');
+        $navlinks[] = array('name' => $strdelete, 'link' => null, 'type' => 'misc');
+        $navigation = build_navigation($navlinks);
 
         print_header($gi->name. ": ", $gi->name . ": ", $navigation, "", "", true);
 
@@ -51,8 +49,10 @@
         print_error('confirmsesskeybad', 'error');
     }
 
+    $navlinks[] = array('name' => $gi->name, 'link' => null, 'type' => 'misc');
+    $navlinks[] = array('name' => $strdelete, 'link' => null, 'type' => 'misc');
+    $navigation = build_navigation($navlinks);
     print_header($gi->name. ": ", $gi->name . ": ", $navigation, "", "", true);
-    print_heading(get_string("deleteguide",'block/guides'));
     delete_gi($gi);
     print_heading( get_string("deletedguide", "block/guides", $gi->name));
     print_continue($CFG->wwwroot);

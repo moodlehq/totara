@@ -5,9 +5,15 @@ function load_steps(&$steps, $stepnames) {
     foreach ($stepnames as $stepname) {
         $stepnumber++;
         if (!isset($steps[$stepnumber])) {
-            require_once($CFG->dirroot . '/guides/steps/' . $stepname . '/step.php');
-            $stepname = 'guide_' . $stepname . '_step';
-            $steps[$stepnumber] = new $stepname();
+            $stepfile = $CFG->dirroot . '/guides/steps/' . $stepname . '/step.php';
+            if (file_exists($stepfile)) {
+                require_once($stepfile);
+                $newstepname = 'guide_' . $stepname . '_step';
+            } else {
+                require_once($CFG->dirroot . '/guides/steps/missingstep.php');
+                $newstepname = 'guide_missing_step';
+            }
+            $steps[$stepnumber] = new $newstepname();
         }
     }
     return true;
@@ -35,8 +41,12 @@ function identify_visible_steps($stepnames, $targetstep, &$showfrom, &$showto) {
     return range($showfrom,$showto);
 }
 
-function update_currentstep($gi) {
+function increment_currentstep(&$gi, $steps) {
     $updategi->id = addslashes($gi->id);
+    $gi->currentstep++;
+    if (isset($steps[$gi->currentstep])) {
+        $steps[$gi->currentstep]->start_step();
+    }
     $updategi->currentstep = addslashes($gi->currentstep);
     return update_record('block_guides_guide_instance', $updategi);
 }

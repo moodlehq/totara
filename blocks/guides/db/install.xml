@@ -13,7 +13,8 @@
         <FIELD NAME="deleted" TYPE="int" LENGTH="2" NOTNULL="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="steps"/>
       </FIELDS>
       <KEYS>
-        <KEY NAME="primary" TYPE="primary" FIELDS="id" />
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" NEXT="name" />
+        <KEY NAME="name" TYPE="unique" FIELDS="name" PREVIOUS="primary" />
       </KEYS>
       <INDEXES>
         <INDEX NAME="mdl_guides_deleted" UNIQUE="false" FIELDS="deleted"/>

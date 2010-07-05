@@ -5,9 +5,9 @@ require_once($CFG->dirroot . '/blocks/moodleblock.class.php');
 class block_guides extends block_list {
     function init() {
         $this->title = get_string('guides','block/guides');
-        $this->version = 2010061400;
+        $this->version = 2010070400;
     }
-    
+
     function has_config() {
         return false;
     }
@@ -52,13 +52,15 @@ class block_guides extends block_list {
                 $inprogresscontent .= '<a href="' . $CFG->wwwroot . '/guides/view.php?gi=' . $guideinstance->giid . '">' .
                         $guideinstance->name . '</a>';
                 $inprogresscontent .= ' <input type="hidden" name="gi" value="' . $guideinstance->giid . '" />';
-                $inprogresscontent .= '<input type="image" src="' . $CFG->wwwroot . '/pix/t/delete.gif" alt="finish step" />';
+                $inprogresscontent .= '<input type="image" src="' . $CFG->wwwroot . '/theme/' . $CFG->theme . '/pix/t/delete.gif" alt="delete guide progress" />';
                 $inprogresscontent .= '<img src="' . $CFG->wwwroot . '/guides/percentImage.png" alt="' . $percent . '%" style="background: white url(/guides/percentImage_back.png) top left no-repeat;padding: 0;margin: 5px 0 0 0;background-position: ' . $pixeloffset . 'px 0pt;" /> ';
                 $inprogresscontent .= " $percent %";
                 $inprogresscontent .= '</form>';
                 $this->content->items[] = $inprogresscontent;
-                $this->content->footer = '<a href="' . $CFG->wwwroot . '/guides/index.php">more detail</a>';
             }
+            $this->content->footer = '<a href="' . $CFG->wwwroot . '/guides/index.php">more detail</a>';
+        } else {
+            $this->content->footer = '<a href="' . $CFG->wwwroot . '/guides/index.php">view all guides</a>';
         }
         return $this->content;
     }

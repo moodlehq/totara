@@ -6,7 +6,6 @@ $uid = optional_param('uid', 0, PARAM_INT);
 $context = get_context_instance(CONTEXT_SYSTEM);
 
 $navlinks = array();
-$strguide = get_string('guide','block/guides');
 $strguides = get_string('guides','block/guides');
 $strstartguide = get_string('startguide','block/guides');
 $strcontinueguide = get_string('continueguide','block/guides');
@@ -74,7 +73,7 @@ if ($guideinstances) {
         print $guideinstance->name;
         print '</a>';
         print ' <input type="hidden" name="gi" value="' . $guideinstance->giid . '" />';
-        print '<input type="image" src="' . $CFG->wwwroot . '/pix/t/delete.gif" alt="finish step" />';
+        print '<input type="image" src="' . $CFG->wwwroot . '/theme/' . $CFG->theme . '/pix/t/delete.gif" alt="delete guide progress" />';
         print '</span>';
         print '</form>';
         print '</div>';
@@ -83,7 +82,6 @@ if ($guideinstances) {
 } else {
     print_heading($strnoguidesinprogress,'center',3);
 }
-    
 print_heading($strguidesavailable);
 
 if ($guides) {
@@ -102,12 +100,13 @@ if ($guides) {
             print ' <a href="' . $CFG->wwwroot . '/guides/view.php?startguide=' . $guide->id . '">';
             print $strstartguide;
         }
-        print '</a></spann></div>' . "\n";
+        print '</a></span></div>' . "\n";
     }
     print "</div>\n";
 } else {
     print_heading($strnoguidesavailable,'center',3);
 }
+print '<div class="clearer"></div>';
 print_footer();
 
 ?>

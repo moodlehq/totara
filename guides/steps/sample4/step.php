@@ -15,6 +15,9 @@ class guide_sample4_step extends guide_default_step {
     function content_step_complete () {
         return "Sample4 Step complete<br/>";
     }
+    function is_completeable() {
+        return false;
+    }
 
 }
 ?>
