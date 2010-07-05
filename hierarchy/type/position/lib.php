@@ -93,7 +93,7 @@ class position extends hierarchy {
 
     /**
      * Print any extra markup to display on the hierarchy view item page
-     * @param $item object Competency being viewed
+     * @param $item object Position being viewed
      * @return void
      */
     function display_extra_view_info($item) {
