@@ -1,0 +1,56 @@
+/***** page/styles_page.css start *****/
+
+/***
+ *** General CSS File
+ ***/
+
+/**
+ * Give the header tabs some breathing room
+ **/
+.header-tabs {
+  margin-top: 20px;
+}
+
+#site-index .header-tabs {
+  margin-bottom: -32px;
+}
+
+/**
+ * Clean up the formatting of the navbutton area
+ **/
+
+.navbar .navbutton form {
+  float: left;
+}
+
+
+.navbar .navbutton .popupform {
+  padding-top: 2px;
+}
+
+.navbar .navbutton #switchrole .helplink {
+  display: block;
+  float: left;
+  margin-top: 2px;
+}
+
+/**
+ * This toggles block visibility
+ **/
+
+.sideblock.hidden .content {
+    display: none;
+}
+
+.sideblock.hidden .header {
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+}
+
+/**
+ * Add block
+ **/
+
+.block_adminblock {
+  width: 100%;
+}/***** page/styles_page.css end *****/
