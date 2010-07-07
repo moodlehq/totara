@@ -236,6 +236,7 @@ $string['viewreport'] = 'View This Report';
 $string['search'] = 'Search';
 $string['clearform'] = 'Clear';
 $string['searchby'] = 'Search by';
+$string['myreports'] = 'My Reports';
 $string['myteam'] = 'My Team';
 $string['noteammembers'] = '<i>You do not currently have any team members.</i>';
 $string['alllearningrecords'] = 'All Learning Records';
