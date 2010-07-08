@@ -3293,68 +3293,6 @@ function xmldb_main_upgrade($oldversion=0) {
         upgrade_main_savepoint($result, 2007101563.03);
     }
 
-    if ($result && $oldversion < 2007101571) {
-        // Add completion setting to course table
-
-        $table = new XMLDBTable('course');
-        $field = new XMLDBField('completionstartonenrol');
-        $field->setAttributes(XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0', 'enablecompletion');
-
-        if (!field_exists($table, $field)) {
-            add_field($table, $field);
-        }
-
-        upgrade_main_savepoint($result, 2007101571);
-    }
-
-    if ($result && $oldversion < 2007101572) {
-        // Add completion setting to course table
-
-        $table = new XMLDBTable('course_completions');
-        $field = new XMLDBField('timestarted');
-        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null, null, null, 'timeenrolled');
-
-        if (!field_exists($table, $field)) {
-            add_field($table, $field);
-        }
-
-        upgrade_main_savepoint($result, 2007101572);
-    }
-
-    if ($result && $oldversion < 2007101573) {
-        // Rename timeenroled to timeenrolled
-
-        $table = new XMLDBTable('course_completions');
-        $field = new XMLDBField('timeenroled');
-
-        if (field_exists($table, $field)) {
-            drop_field($table, $field);
-        }
-
-        $field = new XMLDBField('timeenrolled');
-        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null, null, null, 'timeenrolled');
-
-        if (!field_exists($table, $field)) {
-            add_field($table, $field);
-        }
-
-        upgrade_main_savepoint($result, 2007101573);
-    }
-
-    if ($result && $oldversion < 2007101574) {
-        // Add reaggregate field
-
-        $table = new XMLDBTable('course_completions');
-        $field = new XMLDBField('reaggregate');
-        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0', 'rpl');
-
-        if (!field_exists($table, $field)) {
-            add_field($table, $field);
-        }
-
-        upgrade_main_savepoint($result, 2007101574);
-    }
-
     if ($result && $oldversion < 2007101574.01) {
         // MDL-21011 bring down course sort orders away from maximum values
         $sql = "SELECT id, category, sortorder from {$CFG->prefix}course

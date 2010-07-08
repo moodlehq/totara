@@ -40,7 +40,7 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && add_field($table, $field);
 
     /// Define field completionstartonenrol to be added to course
-        $field = new XMLDBField('compleitonstartonenrol');
+        $field = new XMLDBField('completionstartonenrol');
         $field->setAttributes(XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0', 'enablecompletion');
 
     /// Launch add field enablecompletion
@@ -1562,6 +1562,35 @@ function xmldb_local_upgrade($oldversion) {
 
         $field = new XMLDBField('positionid');
         $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null, null, null, 'organisationid');
+
+        if (!field_exists($table, $field)) {
+            add_field($table, $field);
+        }
+    }
+
+    if ($result && $oldversion < 2010070900) {
+
+        // Rename misspelled column if exists
+        $table = new XMLDBTable('course');
+        $field = new XMLDBField('compleitonstartonenrol');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0', 'enablecompletion');
+
+        if(field_exists($table, $field)) {
+            $result = $result && rename_field($table, $field, 'completionstartonenrol');
+        }
+
+        // Add completion setting to course table
+        $table = new XMLDBTable('course_completions');
+        $field = new XMLDBField('timestarted');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null, null, null, 'timeenrolled');
+
+        if (!field_exists($table, $field)) {
+            add_field($table, $field);
+        }
+
+        // Add reaggregate field
+        $field = new XMLDBField('reaggregate');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0', 'rpl');
 
         if (!field_exists($table, $field)) {
             add_field($table, $field);
