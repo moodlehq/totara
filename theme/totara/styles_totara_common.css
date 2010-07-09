@@ -47,7 +47,8 @@ div.mycourses td.status span.completion-inprogress {
     background-position: 0px -12px;
 }
 
-div.mycourses td.status span.completion-completed {
+div.mycourses td.status span.completion-complete
+div.mycourses td.status span.completion-completeviarpl {
     background-position: 0px -24px;
 }
 
@@ -98,13 +99,9 @@ body.hierarchy-type-competency-template .buttons,
 body.hierarchy-type-competency-scale .buttons,
 body.customfield .buttons
 {
+  margin-top: 20px;
   text-align: center;
   margin-bottom: 30px;
-}
-
-body.customfield .buttons
-{
-    margin-top: 20px;
 }
 
 body.hierarchy-item form.mform,
@@ -122,21 +119,27 @@ body.hierarchy-item h2.main {
     margin-right: auto;
 }
 
+#hierarchy-item-view table tr td {
+       border: 1px solid #DDDDDD;
+}
+
 table.viewhierarchyitem {
     width: 95%;
     margin-left: auto;
     margin-right: auto;
+    border: 1px solid #DDDDDD;
 }
 
 table.viewhierarchyitem td,
 table.viewhierarchyitem th {
     padding: 5px 10px;
+    border: 1px solid #DDDDDD;
 }
 
 table.viewhierarchyitem th.header {
     white-space: nowrap;
     width: 10%;
-    border-bottom: 1px solid #fff;
+    background: none;
 }
 
 div.nohierarchyitems {
@@ -145,17 +148,33 @@ div.nohierarchyitems {
     font-style: italic;
 }
 
+table.editcompetency {
+    width: 95%;
+}
+
 table.editcompetency th {
-    text-align: left;
+    text-align: center;
     vertical-align: top;
     white-space: nowrap;
     padding: 5px;
 }
 
 table.editcompetency td {
-    text-align: left;
     vertical-align: top;
     padding: 5px;
+    border: 1px solid #dddddd;
+}
+
+table.reportbuilder-table .r0 {
+    background: #FFFFFF;
+}
+
+table.reportbuilder-table .r1 {
+    background: #F5F5F5;
+}
+
+table.reportbuilder-table td {
+    border: 1px solid #DDDDDD;
 }
 
 /*****************************************************************************/
@@ -199,7 +218,7 @@ table.planitems th {
     text-align: left;
     vertical-align: top;
     white-space: nowrap;
-    padding: 0px 0px 2px 5px;
+    padding: 2px 5px;
 }
 
 table.planitems th.framework {
@@ -221,7 +240,7 @@ table.planitems th.options {
 table.planitems td {
     text-align: left;
     vertical-align: top;
-    padding: 0px 0px 2px 5px;
+    padding: 3px;
 }
 
 table.planitems td.options {
@@ -229,7 +248,7 @@ table.planitems td.options {
 }
 
 table.planbuttons {
-    margin-left: 8px;
+    margin-left: 0px;
     width: 532px;
     margin-bottom: 0px;
 }
@@ -237,7 +256,7 @@ table.planbuttons {
 table.planbuttons td {
     text-align: left;
     vertical-align: top;
-    padding: 0px 0px 5px 5px;
+    padding: 0px 0px 5px 0px;
 }
 
 table#list-assignedcompetencies th.c0,
@@ -298,10 +317,6 @@ div.mitms-dialog div.ui-widget-header {
     border: none;
 }
 
-div.mitms-dialog div.ui-dialog-titlebar span#ui-dialog-title-related {
-    display: none;
-}
-
 div.mitms-dialog div.ui-dialog-titlebar a.ui-dialog-titlebar-close {
     border: 0;
     margin: 0;
@@ -317,20 +332,21 @@ div.mitms-dialog div.ui-dialog-titlebar a.ui-dialog-titlebar-close span {
     background-image: url(closelabel.gif);
     background-position: 0 0;
     border: none;
-    top: -8px;
+    bottom: 335px;
     margin: 0;
     padding: 0;
     display: block;
+    z-index: 1;
 }
 
 div.mitms-dialog div.ui-dialog-buttonpane {
     position: relative;
-    float: left;
-    top: -25px;
+    float: right;
     background: none;
     border: none;
     margin: 0;
     padding: 0;
+    top: -28px;
 }
 
 div.mitms-dialog div.ui-dialog-buttonpane button {
@@ -351,7 +367,7 @@ div.mitms-dialog div.ui-dialog-content {
 
 div.mitms-dialog div.ui-dialog-content h2 {
     border-bottom: 1px solid #CACACA;
-    font-size: 1em;
+    font-size: 17px;
     margin: 0 0 10px;
     padding-top: 2px;
     padding-bottom: 5px;
@@ -373,16 +389,20 @@ div.mitms-dialog div.ui-dialog-content .dialog-static-content {
 
 div.mitms-dialog ul.treeview {
     margin-top: 10px;
-    height: 245px;
+    height: 295px;
     overflow: auto;
 }
 
 div.mitms-dialog ul.picker {
-    height: 275px;
+    height: 322px;
 }
 
 div.mitms-dialog ul.treeview li {
     font-size: 0.8em;
+}
+
+div.mitms-dialog ul.treeview span:hover {
+    background-color: #EEEEEE;
 }
 
 div.mitms-dialog ul.treeview li li {
@@ -391,6 +411,7 @@ div.mitms-dialog ul.treeview li li {
 
 div.mitms-dialog ul.treeview li span {
     padding-left: 0.25em;
+    display: block;
 }
 
 div.mitms-dialog ul.treeview li span.folder {
@@ -421,13 +442,56 @@ div.mitms-dialog ul.treeview li span.ui-undraggable {
     color: #777;
 }
 
-.unclickable {
+div.mitms-dialog ul.treeview span table {
+    width: 100%;
+    border: 0;
+}
+
+div.mitms-dialog ul.treeview span table tr {
+    height: 1.8em;
+}
+
+div.mitms-dialog ul.treeview span table tr {
+    padding: 2px 0;
+}
+
+div.mitms-dialog ul.treeview span table tr td.list-item-name {
+    width: 90%;
+    border: 0;
+}
+
+div.mitms-dialog ul.treeview span table tr td.list-item-action {
+    cursor: pointer;
+    width: 10%;
+    text-align: center;
+    border: 0;
+}
+
+div.mitms-dialog ul.treeview img.addbutton {
+    display: none;
+    vertical-align: middle;
+    width: 17px;
+    height: 15px;
+}
+
+div.mitms-dialog ul.treeview img.deletebutton {
+    display: none;
+    vertical-align: middle;
+    width: 13px;
+    height: 13px;
+}
+
+div.mitms-dialog ul.treeview li ul {
+    margin-top: 0;
+}
+
+div.mitms-dialog .unclickable {
     color: #777;
 }
 
 div.mitms-dialog div.yui-isloading {
     background-image: url(loading_small.gif);
-    background-position: 690px 0;
+    background-position: 690px 32px;
     background-repeat: no-repeat;
 }
 
@@ -444,7 +508,7 @@ div.mitms-dialog .selected {
     float: right;
     width: 250px;
     border-left: 1px solid #ccc;
-    height: 272px;
+    height: 322px;
     overflow: auto;
     padding: 0 10px;
     margin-left: 10px;
@@ -457,7 +521,43 @@ div.mitms-dialog .selected p {
 div.mitms-dialog .selected span {
     display: block;
     font-size: 0.8em;
-    margin-top: 1em;
+    padding: 0.4em 0;
+}
+
+div.mitms-dialog .selected span:hover {
+    background-color: #EEEEEE;
+}
+
+div.mitms-dialog .selected span table {
+    width: 100%;
+}
+
+div.mitms-dialog .selected span table tr{
+    height: 1.6em;
+}
+
+div.mitms-dialog .selected span table tr td.list-item-name {
+    width: 90%;
+}
+
+div.mitms-dialog .selected span table tr td.list-item-action {
+    cursor: pointer;
+    width: 10%;
+    text-align: center;
+}
+
+div.mitms-dialog .selected img.addbutton {
+    display: none;
+    vertical-align: middle;
+    width: 16px;
+    height: 14px;
+}
+
+div.mitms-dialog .selected img.deletebutton {
+    display: none;
+    vertical-align: middle;
+    width: 15px;
+    height: 13px;
 }
 
 /* hide lightbox activation buttons */
@@ -492,7 +592,7 @@ a.noscript-button {
     float: right;
     width: 40%;
     border-left: 1px solid #ccc;
-    height: 200px;
+    height: 322px;
     overflow: auto;
     padding: 0 10px;
 }
@@ -683,4 +783,162 @@ table.allmyteam td a {
 #my-team #middle-column table.flexible th.c4,
 #my-team #middle-column table.flexible td.c4 {
   border-right:1px solid #d2d2d2;
+}
+
+/*****************************************************************************/
+/** Tables **/
+/*****************************************************************************/
+
+.generaltable {
+    width: 100%;
+}
+
+.generaltable .cell {
+    background-color: none !important;
+}
+
+.cell {
+    padding: 3px;
+}
+
+
+tr.r1 .cell {
+    background: #f5f5f5;
+}
+td.c0 {
+    text-align: left;
+}
+
+th.header {
+    background: #EDEDED url(images/gradient.png) top left repeat-x;
+    border: 1px solid #e2e2e2;
+    padding:3px;
+}
+
+table.customfields th.lastcol {
+    width: 100px;
+    text-align:center;
+}
+
+table.customfields th.lastcol,
+table.customfields td.lastcol{
+    text-align: center !important;
+}
+table.borderless td {
+    border-color: #ffffff;
+    vertical-align: top;
+}
+
+
+table#list-idpcompetency,
+table#list-idpcompetencytemplate,
+table#list-idpcourse{
+    margin:5px 0 0;
+    width:100%;
+}
+
+.logtable td, .logtable th {
+    padding-left:5px;
+    padding-right:5px;
+}
+
+
+body#hierarchy-index table#competency tr.r0 td.customfield {
+    background: #fdfdfd;
+}
+body#hierarchy-index table#competency tr.r1 td.customfield {
+    background: #f2f2f2;
+}
+
+body#hierarchy-index table#competency tr.r1 td
+
+/*****************************************************************************/
+/** Form **/
+/*****************************************************************************/
+
+form#newfieldform {
+    padding:10px 0 0;
+    display: table;
+}
+
+.mform {
+    width: 100%
+}
+
+.mform fieldset .advancedbutton  {
+    width: 99%
+}
+
+.guideheadings {
+    float: left;
+    width: 66%;
+}
+.guidenavigation {
+    float: left;
+    width: 34%;
+}
+.guidesteps {
+    clear: left;
+    height: 100%;
+}
+.guidestepcontainer {
+    float: left;
+    width: 25%;
+    height: 100%;
+}
+
+.guidesteptitle {
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+}
+h2.guidesteptitle.pending {
+    background-color: #eaeaea;
+}
+h2.guidesteptitle.active {
+    background-color: #eff8ef;
+}
+h2.guidesteptitle.complete {
+    background-color: #eaeaea;
+}
+.guidestep {
+    border-width: 1px;
+    border-style: solid;
+    border-color: black;
+    margin: 4px;
+    height: 100%;
+}
+img.percentImage {
+ background: white url(/guides/percentImage_back.png) top left no-repeat;
+ padding: 0;
+ margin: 5px 0 0 0;
+ background-position: 1px 0;
+}
+.guidestep.active {
+    background-color: white;
+}
+.guidestep.pending {
+    background-color: white;
+}
+.guidestep.complete {
+    background-color: white;
+}
+
+.guideindexbody {
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
+}
+.guideindextitle {
+    font-weight:bold;
+}
+.guideindexlink {
+}
+
+.guideindexindication {
+    width: 260px;
+    padding: 0px;
+    margin: 0px;
+}
+.guideindexdetail {
+    width: auto;
 }
