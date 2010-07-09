@@ -200,7 +200,7 @@ class reportheading {
     function display($columns = 1, $timestamp = true) {
         $col = 1;
         $out = '';
-        $out .= '<table cellpadding="4">';
+        $out .= '<table cellpadding="4" class="reportheading-table">';
         foreach($this->items as $item) {
             $heading = $item->heading;
             $defaultvalue = $item->defaultvalue;

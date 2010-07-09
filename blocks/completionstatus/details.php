@@ -202,8 +202,11 @@ foreach ($completions as $completion) {
 // Print table
 $last_type = '';
 $agg_type = false;
+$oddeven = 0;
 
 foreach ($rows as $row) {
+
+    echo '<tr class="r' . $oddeven . '">';
 
     // Criteria group
     echo '<td class="c0">';
@@ -261,6 +264,8 @@ foreach ($rows as $row) {
     }
     echo '</td>';
     echo '</tr>';
+    // for row striping
+    $oddeven = $oddeven ? 0 : 1;
 }
 
 echo '</tbody></table>';

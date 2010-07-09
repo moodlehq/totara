@@ -400,7 +400,7 @@
                 if (!empty($infos)) {
 
                     echo '<h1 align="center">'.get_string($type, 'coursereport_completion').'</h1>';
-                    echo '<table class="generalbox boxaligncenter">';
+                    echo '<table class="generalbox boxaligncenter course-completion-table">';
                     echo '<tr class="ccheader">';
                     echo '<th class="c0 header" scope="col">'.get_string('course').'</th>';
                     echo '<th class="c1 header" scope="col">'.get_string('requiredcriteria', 'completion').'</th>';
@@ -412,6 +412,7 @@
                     }
 
                     echo '</tr>';
+                    $oddeven = 1;
 
                     // For each course
                     foreach ($infos as $c_info) {
@@ -438,6 +439,8 @@
                         foreach ($completions as $completion) {
                             $criteria = $completion->get_criteria();
                             $complete = $completion->is_complete();
+                            // for row striping (per course)
+                            $oddeven = $oddeven ? 0 : 1;
 
                             // Activities are a special case, so cache them and leave them till last
                             if ($criteria->criteriatype == COMPLETION_CRITERIA_TYPE_ACTIVITY) {
@@ -492,9 +495,9 @@
 
                             // Display course name on first row
                             if ($first_row) {
-                                echo '<tr><td class="c0"><a href="'.$CFG->wwwroot.'/course/view.php?id='.$c_course->id.'">'.format_string($course_name).'</a></td>';
+                                echo '<tr class="r' . $oddeven .'"><td class="c0"><a href="'.$CFG->wwwroot.'/course/view.php?id='.$c_course->id.'">'.format_string($course_name).'</a></td>';
                             } else {
-                                echo '<tr><td class="c0"></td>';
+                                echo '<tr class="r' . $oddeven .'"><td class="c0"></td>';
                             }
 
                             echo '<td class="c1">';

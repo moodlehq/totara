@@ -118,6 +118,7 @@ print_heading($strcompetenciesusedincourse);
 
 // Get any competencies used in this course
 $competencies = $hierarchy->get_course_evidence($course->id);
+$oddeven = 0;
 if ($competencies) {
 
     $str_remove = get_string('remove');
@@ -126,7 +127,7 @@ if ($competencies) {
 
     foreach ($competencies as $competency) {
 
-        echo '<tr>';
+        echo '<tr class="r' . $oddeven . '">';
         echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/index.php?type=competency&frameworkid={$competency->fid}\">{$competency->framework}</a></td>";
         echo '<td>'.$competency->depth.'</td>';
         echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/item/view.php?type=competency&id={$competency->id}\">{$competency->fullname}</a></td>";
@@ -157,6 +158,9 @@ if ($competencies) {
         }
 
         echo '</tr>';
+
+        // for row striping
+        $oddeven = $oddeven ? 0 : 1;
     }
 
 } else {
