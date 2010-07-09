@@ -329,7 +329,7 @@
             }
             $table_cols[] = $head->value->fullname.$key;
             $table_header[] = $header;
-            $table_cols_cf[]= $header; // keep track of custom field headers for styling below
+            $table_cols_cf[]= $head->value->fullname.$key; // keep track of custom field headers for styling below
         } else {
             // extrafield or settings header
             $table_cols[] = $head->value->fullname.$key;
@@ -341,8 +341,11 @@
     $table->define_columns($table_cols);
     $table->define_headers($table_header);
     // center custom field columns
-    foreach ($table_cols_cf as $table_col_cf) {
-        $table->column_style($table_col_cf,'text-align','center');
+    foreach ($table_cols as $table_col) {
+        if(in_array($table_col, $table_cols_cf)) {
+            $table->column_style($table_col,'text-align','center');
+            $table->column_class($table_col,'customfield');
+        }
     }
     $table->column_style('Settings','width','80px');
     $table->set_attribute('cellspacing', '0');
