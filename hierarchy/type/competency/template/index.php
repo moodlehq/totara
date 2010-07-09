@@ -2,6 +2,7 @@
 
 require_once('../../../../config.php');
 require_once('../lib.php');
+require_once('lib.php');
 require_once($CFG->libdir.'/adminlib.php');
 
 ///
@@ -47,9 +48,9 @@ if ($can_add || $can_edit || $can_delete) {
 }
 
 // Setup page and check permissions
-admin_externalpage_setup($hierarchy->prefix.'templatemanage', $navbaritem);
+admin_externalpage_setup($hierarchy->prefix.'frameworkmanage', $navbaritem);
 
-
+/*
 ///
 /// Load framework templates after any changes
 ///
@@ -140,6 +141,15 @@ if ($can_add) {
     print_single_button($CFG->wwwroot.'/hierarchy/type/'.$hierarchy->prefix.'/template/edit.php', $data, get_string('addnewtemplate', $hierarchy->prefix), 'get');
 
     echo '</div>';
+}
+*/
+admin_externalpage_print_header();
+
+$hierarchy->display_framework_selector('type/competency/template/index.php');
+$templates = $hierarchy->get_templates();
+
+if ($templates) {
+    competency_template_display_table($templates, $frameworkid);
 }
 
 print_footer();

@@ -83,5 +83,7 @@ if($nojs) {
         }
 
         echo '</tr>';
+    } else {
+        echo '';
     }
 }

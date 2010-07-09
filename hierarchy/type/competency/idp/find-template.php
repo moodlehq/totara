@@ -4,6 +4,7 @@ require_once('../../../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->dirroot.'/hierarchy/type/competency/lib.php');
 require_once($CFG->dirroot.'/local/js/lib/setup.php');
+require_once($CFG->dirroot.'/idp/lib.php');
 
 
 ///
@@ -15,6 +16,9 @@ $revisionid = optional_param('id', 0, PARAM_INT);
 
 // Framework id
 $frameworkid = optional_param('frameworkid', 0, PARAM_INT);
+
+// Only return generated tree html
+$treeonly = optional_param('treeonly', false, PARAM_BOOL);
 
 // No javascript parameters
 $nojs = optional_param('nojs', false, PARAM_BOOL);
@@ -33,40 +37,60 @@ require_capability('moodle/local:idpaddcompetencytemplate', $sitecontext);
 // Setup hierarchy object
 $hierarchy = new competency();
 
+// Load plan this revision relates to
+if (!$plan = get_plan_for_revision($revisionid)) {
+    error('Revision plan could not be found');
+}
+
 // Load framework
 if (!$framework = $hierarchy->get_framework($frameworkid, true)) {
     $templates = array();
-    $assignedtemplates = array();
+    $currentlyassigned = array();
 } else {
 
     // Load competency templates to display
     $templates = $hierarchy->get_templates();
-    $assignedtemplates = get_records('idp_revision_competencytmpl', 'revision', $revisionid, '', 'competencytemplate');
-    if( !is_array($assignedtemplates) ){
-        $assignedtemplates = array();
-    };
+    if (!$currentlyassigned = idp_get_user_competencytemplates($plan->userid, $revisionid)) {
+        $currentlyassigned = array();
+    }
 }
+
+
 ///
 /// Display page
 ///
 
 if(!$nojs) {
+
+    if ($treeonly) {
+        echo build_treeview(
+            $templates,
+            get_string( ($framework?'notemplateinframework':'notemplate'), 'competency'),
+            null,
+            $currentlyassigned
+        );
+        exit;
+    }
 ?>
 
 <div class="selectcompetencies">
 
-<?php $hierarchy->display_framework_selector('', true); ?>
 
 <h2><?php echo get_string('addcompetencytemplatestoplan', 'idp') ?></h2>
 
 <div class="selected">
     <p>
-        <?php echo get_string('dragheretoassign', $hierarchy->prefix) ?>
+        <?php 
+            echo get_string('selecteditems', 'hierarchy'); 
+            echo populate_selected_items_pane($currentlyassigned);
+        ?>
     </p>
 </div>
 
 <p>
     <?php echo get_string('locatecompetency', $hierarchy->prefix) ?>:
+    <br>
+    <?php $hierarchy->display_framework_selector('', true); ?>
 </p>
 
 <ul class="treeview filetree">
@@ -76,7 +100,7 @@ echo build_treeview(
     $templates,
     get_string( ($framework?'notemplateinframework':'notemplate'), 'competency'),
     null,
-    $assignedtemplates
+    $currentlyassigned
 );
 
 echo '</ul></div>';
@@ -116,7 +140,7 @@ echo '</ul></div>';
             ),
             $CFG->wwwroot.'/hierarchy/type/competency/idp/find-template.php?'.$urlparams,
             array(),
-            $assignedtemplates
+            $currentlyassigned
         );
         echo '</div>';
     }

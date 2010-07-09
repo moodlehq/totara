@@ -885,6 +885,32 @@ function delete_list_item($revisionid, $itemid) {
 }
 
 /**
+ * Delete an assigned course from an idp revision
+ *
+ * @param int $revisionid
+ * @param int $courseid
+ * @param int $planid (optional) used for logging
+ * @return boolean success/failure
+ */
+function delete_course_from_revision($revisionid, $courseid, $planid=0) {
+    $plan = get_plan_for_revision($planid);
+    // Delete the course and update the modification time for the parent revision
+    begin_sql();
+    $dbresult = (boolean) delete_records('idp_revision_course', 'revision', $revisionid, 'course', $courseid);
+    $dbresult = $dbresult && update_modification_time($revisionid);
+    if ($dbresult) {
+        commit_sql();
+    } else {
+        rollback_sql();
+        return false;
+    }
+
+    add_to_log(SITEID, 'idp', 'deleted IDP course', "revision.php?id={$planid}", $courseid);
+
+    return true;
+}
+
+/**
  * Add a comment to a plan
  *
  * @global object $USER

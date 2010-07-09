@@ -97,12 +97,22 @@ if ($frameworkform->is_cancelled()) {
 
 
 /// Display page header
-admin_externalpage_print_header();
+$navlinks = array();    // Breadcrumbs
+$navlinks[] = array('name'=>get_string("{$type}frameworks", $type), 
+                    'link'=>"{$CFG->wwwroot}/hierarchy/framework/index.php?type={$type}", 
+                    'type'=>'misc');
+if ($framework->id == 0) {
+    $navlinks[] = array('name'=>get_string('addnewframework', $type), 'link'=>'', 'type'=>'misc');
+} else {
+    $navlinks[] = array('name'=>get_string('editgeneric ', $type, $framework->fullname), 'link'=>'', 'type'=>'misc');
+}
+
+admin_externalpage_print_header('', $navlinks);
 
 if ($framework->id == 0) {
     print_heading(get_string('addnewframework', $type));
 } else {
-    print_heading(get_string('editframework', $type));
+    print_heading(format_string($framework->fullname), 'left', 1);
 }
 
 /// Finally display THE form

@@ -140,8 +140,33 @@ SQL;
     }
 
     /**
+     * Delete competency framework and updated associated scales
+     * @access  public
+     * @return  void
+     */
+    function delete_framework() {
+
+        // Start transaction
+        begin_sql();
+
+        // Run parent method
+        parent::delete_framework();
+
+        // Delete references to scales
+        if (count_records($this->shortprefix.'_scale_assignments', 'frameworkid', $this->frameworkid)) {
+            if (!delete_records($this->shortprefix.'_scale_assignments', 'frameworkid', $this->frameworkid)) {
+                rollback_sql();
+                error('Could not delete scale assignments');
+            }
+        }
+
+        // End transaction
+        commit_sql();
+    }
+
+    /**
      * Delete a competency and everything to do with it.
-     * 
+     *
      * @param int $id
      * @param boolean $usetransaction
      * @return boolean
@@ -149,7 +174,7 @@ SQL;
     function delete_framework_item($id, $usetransaction = true) {
         global $CFG;
         global $USER;
-        
+
         if ( $usetransaction ){
             begin_sql();
         }
@@ -237,7 +262,8 @@ SQL;
             SELECT
                 c.id AS id,
                 d.fullname AS depth,
-                c.fullname AS competency
+                c.fullname AS competency,
+                c.fullname AS fullname    /* used in some places (for genericness) */
             FROM
                 {$CFG->prefix}{$this->shortprefix}_template_assignment a
             LEFT JOIN
@@ -567,5 +593,41 @@ SQL;
 SQL;
             return get_records_sql($sql);
         }
+    }
+
+    /**
+     * Get scales for a competency
+     * @return array|false
+     */
+    function get_scales() {
+        return get_records($this->shortprefix.'_scale', '', '', 'name');
+    }
+
+    /**
+     * Delete  a competency assigned to a template
+     * @param $templateid
+     * @param $competencyid
+     * @return void;
+     */
+    function delete_assigned_template_competency($templateid, $competencyid) {
+        if (!$template = $this->get_template($templateid)) {
+            return;
+        }
+
+        // Delete assignment
+        delete_records('comp_template_assignment', 'templateid', $template->id, 'instanceid', $competencyid);
+
+        // Reduce competency count for template
+        $template->competencycount--;
+
+        if ($template->competencycount < 0) {
+            $template->competencycount = 0;
+        }
+
+        update_record('comp_template', $template);
+
+        add_to_log(SITEID, $this->prefix.'template', 'removeassignment', 
+                    "view.php?id={$template->id}", "Competency ID $competencyid");
+
     }
 }

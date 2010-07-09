@@ -12,8 +12,9 @@ require_once 'edit_form.php';
 // Get paramters
 // Scale id; 0 if creating a new scale
 $id = optional_param('id', 0, PARAM_INT);
-
-admin_externalpage_setup('competencyscales');
+$type = required_param('type', PARAM_TEXT);
+// Page setup and check permissions
+admin_externalpage_setup($type.'frameworkmanage');
 $sitecontext = get_context_instance(CONTEXT_SYSTEM);
 
 if ($id == 0) {
@@ -52,7 +53,7 @@ $mform->set_data($scale);
 // If cancelled
 if ($mform->is_cancelled()) {
 
-    redirect("$CFG->wwwroot/hierarchy/type/competency/scale/index.php");
+    redirect("$CFG->wwwroot/hierarchy/framework/index.php?type=competency");
 
 // Update data
 } else if ($scalenew = $mform->get_data()) {
@@ -119,13 +120,26 @@ if ($mform->is_cancelled()) {
     $scalenew = get_record('comp_scale', 'id', $scalenew->id);
 
     // Log
-    add_to_log(SITEID, 'competencyscales', 'update', "view.php?id=$scalenew->id", '');
+    add_to_log(SITEID, 'competencyscales', 'update', "view.php?id=$scalenew->id&amp;typ=competency", '');
 
-    redirect("$CFG->wwwroot/hierarchy/type/competency/scale/view.php?id={$scalenew->id}");
+    redirect("$CFG->wwwroot/hierarchy/type/competency/scale/view.php?id={$scalenew->id}&amp;type=competency");
 }
 
-admin_externalpage_print_header();
-print_heading(get_string('scalescustomcreate'));
+/// Print Page
+$navlinks = array();    // Breadcrumbs
+$navlinks[] = array('name'=>get_string("competencyframeworks", 'competency'), 
+                    'link'=>"{$CFG->wwwroot}/hierarchy/framework/index.php?type=competency", 
+                    'type'=>'misc');
+if ($id == 0) { // Add
+    $navlinks[] = array('name'=>get_string('scalescustomcreate'), 'link'=>'', 'type'=>'misc');
+    $heading = get_string('scalescustomcreate');
+} else {    //Edit
+    $navlinks[] = array('name'=>get_string('editscale', 'grades', format_string($scale->name)), 'link'=>'', 'type'=>'misc');
+    $heading = get_string('editscale', 'grades');
+}
+
+admin_externalpage_print_header('', $navlinks);
+print_heading($heading);
 $mform->display();
 
 admin_externalpage_print_footer();

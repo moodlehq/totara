@@ -45,6 +45,8 @@ class edit_scale_form extends moodleform {
         // hidden params
         $mform->addElement('hidden', 'id', 0);
         $mform->setType('id', PARAM_INT);
+        $mform->addElement('hidden', 'type', 'competency');
+        $mform->setType('type', PARAM_TEXT);
 
 //-------------------------------------------------------------------------------
         // buttons

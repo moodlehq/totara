@@ -74,7 +74,7 @@ if ($can_edit && $editingon) {
 <div class="singlebutton">
     <form action="<?php echo $CFG->wwwroot ?>/hierarchy/type/<?php echo $this->prefix ?>/related/find.php?id=<?php echo $item->id ?>&amp;frameworkid=<?php echo $item->frameworkid ?>" method="get">
 <div>
-    <input type="submit" id="show-related-dialog" value="<?php echo get_string('addrelatedcompetencies', $this->prefix) ?>" />
+    <input type="submit" id="show-related-dialog" value="<?php echo get_string('assignrelatedcompetencies', $this->prefix) ?>" />
     <input type="hidden" name="id" value="<?php echo $item->id ?>">
     <input type="hidden" name="nojs" value="1">
     <input type="hidden" name="returnurl" value="<?php echo qualified_me(); ?>">

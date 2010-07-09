@@ -18,6 +18,9 @@ $frameworkid = optional_param('frameworkid', 0, PARAM_INT);
 // competency evidence id - may be 0 for new competency evidence
 $id = optional_param('id', 0, PARAM_INT);
 
+// Only return generated tree html
+$treeonly = optional_param('treeonly', false, PARAM_BOOL);
+
 // No javascript parameters
 $nojs = optional_param('nojs', false, PARAM_BOOL);
 $returnurl = optional_param('returnurl', '', PARAM_TEXT);
@@ -51,11 +54,22 @@ $competencies = $hierarchy->get_items_by_parent($parentid);
 if(!$nojs) {
     // build Javascript Treeview
 
+    if ($treeonly) {
+        echo build_treeview(
+            $competencies,
+            get_string('nocompetenciesinframework', 'competency'),
+            $hierarchy
+        );
+        exit;
+    }
+
     // If parent id is not supplied, we must be displaying the main page
     if (!$parentid) {
         echo '<div class="selectcompetency">'.PHP_EOL;
+        echo '<h2>'.get_string('addnewcompetency', $hierarchy->prefix).PHP_EOL;
+        echo dialog_display_currently_selected(get_string('currentlyselected', $hierarchy->prefix));
+        echo '</h2>'.PHP_EOL;
         $hierarchy->display_framework_selector('', true);
-        echo '<h2>'.get_string('addnewcompetency', $hierarchy->prefix).'</h2>'.PHP_EOL;
         echo '<ul class="treeview filetree picker">'.PHP_EOL;
     }
 

@@ -19,7 +19,7 @@ $delete = optional_param('delete', '', PARAM_ALPHANUM);
 $hierarchy = new competency();
 
 // Setup page and check permissions
-admin_externalpage_setup($hierarchy->prefix.'templatemanage');
+admin_externalpage_setup($hierarchy->prefix.'frameworkmanage');
 
 require_capability('moodle/local:delete'.$hierarchy->prefix.'template', $sitecontext);
 
@@ -36,7 +36,7 @@ if (!$delete) {
 
     notice_yesno("$strdelete<br /><br />" . format_string($template->fullname),
                  "{$CFG->wwwroot}/hierarchy/type/{$hierarchy->prefix}/template/delete.php?id={$template->id}&amp;delete=".md5($template->timemodified)."&amp;sesskey={$USER->sesskey}",
-                 "{$CFG->wwwroot}/hierarchy/type/{$hierarchy->prefix}/template/index.php?frameworkid={$template->frameworkid}");
+                 "{$CFG->wwwroot}/hierarchy/framework/view.php?type=competency&frameworkid={$template->frameworkid}");
 
     print_footer();
     exit;
@@ -60,5 +60,5 @@ add_to_log(SITEID, $hierarchy->prefix.'template', 'delete', "view.php?id=$templa
 $hierarchy->delete_template($id);
 
 print_heading(get_string('deletedtemplate', $hierarchy->prefix, format_string($template->fullname)));
-print_continue("{$CFG->wwwroot}/hierarchy/type/{$hierarchy->prefix}/template/index.php?frameworkid={$template->frameworkid}");
+print_continue("{$CFG->wwwroot}/hierarchy/framework/view.php?type=competency&frameworkid={$template->frameworkid}");
 print_footer();

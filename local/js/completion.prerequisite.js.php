@@ -18,7 +18,12 @@ $(function() {
         mitmsDialogs['evidence'] = new mitmsDialog(
             'courseprerequisite',
             'id_add_criteria_course',
-            {},
+            {
+                 buttons: {
+                'Ok': function() { handler._save() },
+                'Cancel': function() { handler._cancel() }
+                 }
+            },
             url+'completion_prerequisite.php?id='+course_id,
             handler
         );
@@ -44,6 +49,16 @@ mitmsDialog_handler_preRequisite.prototype._handle_hierarchy_expand = function(i
 mitmsDialog_handler_preRequisite.prototype._handle_course_click = function(id) {
 
     var course = $('#course_'+id+' > span').text();
+
+    $('#treeview_currently_selected_span').css('display', 'inline');
+    $('#treeview_selected_text').text(course);
+    $('#treeview_selected_val').val(id);
+}
+
+
+mitmsDialog_handler_preRequisite.prototype._save = function() {
+    var id = $('#treeview_selected_val').val();
+    var course = $('#treeview_selected_text').text();
 
     // Get button fitem
     var button_fitem = $('#id_add_criteria_course').parent().parent();

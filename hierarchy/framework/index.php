@@ -68,7 +68,7 @@
 ///
 
 // Get frameworks for this page
-$frameworks = $hierarchy->get_frameworks();
+$frameworks = $hierarchy->get_frameworks(array('depth_count'=>1, 'custom_field_count'=>1, 'item_count'=>1));
 
 ///
 /// Generate / display page
@@ -84,14 +84,13 @@ if ($frameworks) {
 
     // Create display table
     $table = new stdclass();
-    $table->class = 'generalbox edit'.$type;
+    $table->class = 'generaltable edit'.$type;
     $table->width = '95%';
 
     // Setup column headers
-    $table->head = array();
-    $table->align = array();
-    $table->head[] = get_string('framework', $type);
-    $table->align[] = 'left';
+    $table->head = array(get_string('name', $type), get_string($type.'plural', $type), get_string('depths', $type),
+        get_string("{$type}customfields", $type));
+    $table->align = array('left', 'center', 'center');
 
     // Add edit column
     if ($editingon && $can_edit) {
@@ -106,7 +105,10 @@ if ($frameworks) {
 
         $cssclass = !$framework->visible ? 'class="dimmed"' : '';
 
-        $row[] = "<a $cssclass href=\"{$CFG->wwwroot}/hierarchy/index.php?type={$type}&frameworkid={$framework->id}\">{$framework->fullname}</a>";
+        $row[] = "<a $cssclass href=\"{$CFG->wwwroot}/hierarchy/framework/view.php?type={$type}&frameworkid={$framework->id}\">{$framework->fullname}</a>";
+        $row[] = $framework->item_count;
+        $row[] = $framework->depth_count;
+        $row[] = $framework->custom_field_count;
 
         // Add edit link
         $buttons = array();
@@ -145,14 +147,18 @@ if ($frameworks) {
     }
 }
 
-
 // Display page
-admin_externalpage_print_header();
 
+$navlinks = array();    // Breadcrumbs
+$navlinks[] = array('name'=>get_string("{$type}frameworks", $type), 'link'=>'', 'type'=>'misc');
+
+admin_externalpage_print_header('', $navlinks);
+
+print_heading(get_string('frameworks', $type));
 if ($frameworks) {
     print_table($table);
 } else {
-    print_heading(get_string('noframeworks', $type));
+    echo '<p>'.get_string('noframeworks', $type).'</p><br>';
 }
 
 
@@ -165,5 +171,12 @@ if ($can_add) {
 
     echo '</div>';
 }
+
+// Display scales
+if (file_exists($CFG->dirroot.'/hierarchy/type/'.$type.'/scale/lib.php')) {
+    include($CFG->dirroot.'/hierarchy/type/'.$type.'/scale/lib.php');
+    $scales = $hierarchy->get_scales();
+    call_user_func("{$type}_scale_display_table", $scales, $editingon);
+} 
 
 print_footer();

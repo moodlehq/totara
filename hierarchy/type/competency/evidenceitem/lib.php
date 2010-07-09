@@ -34,7 +34,7 @@ function comp_evitem_get_lookup($competency_id){
     if ( !$existingevidencerecs ){
         return array();
     }
-    
+
     $existingevidencelookup = array();
     foreach( $existingevidencerecs as $rec ){
         // itemtype-iteminstance => itemtype-iteminstance
@@ -57,11 +57,10 @@ function comp_evitem_print_course_evitems($course, $competency_id, $addurl ){
 
     $alreadystr = get_string('alreadyselected','local');
     $existingevidencelookup = comp_evitem_get_lookup($competency_id);
+    $addbutton = '<img src="'.$CFG->pixpath.'/t/add.gif" class="addbutton" width="15px" height="15px" />';
 
     // Evidence type available
     $available = false;
-
-    echo '<ul>';
 
     // Activity completion
     $completion_info = new completion_info($course);
@@ -72,11 +71,17 @@ function comp_evitem_print_course_evitems($course, $competency_id, $addurl ){
             $available = true;
             foreach ($evidence as $activity) {
                 if ( array_key_exists("activitycompletion-{$activity->id}", $existingevidencelookup) ){
-                    echo "<li><span class=\"unclickable\">Activity completion - {$activity-> name} {$alreadystr} </span></li>";
+                    echo "<span class=\"unclickable\">Activity completion - {$activity-> name} {$alreadystr} </span>";
                 } else {
-                    echo '<li><a href="'.$addurl.'&type=activitycompletion&instance='.$activity->id.'">';
-                    echo 'Activity completion - '.$activity->name;
-                    echo '</a></li>';
+                    echo '<span type="activitycompletion" id="'.$activity->id.'">';
+
+                    echo '<table><tr>';
+                    echo '<td class="list-item-name">Activity completion - '.format_string($activity->name).'</td>';
+                    echo '<td class="list-item-action">'.$addbutton.'</td>';
+                    echo '</tr></table>';
+
+                    echo '</span>';
+
                 }
             }
         }
@@ -88,9 +93,16 @@ function comp_evitem_print_course_evitems($course, $competency_id, $addurl ){
 
         $available = true;
         if ( array_key_exists("coursecompletion-{$course->id}", $existingevidencelookup ) ){
-            echo "<li><span class=\"unclickable\">Course completion {$alreadystr}</span></li>";
+            echo "<span class=\"unclickable\">Course completion {$alreadystr}</span>";
         } else {
-            echo '<li><a href="'.$addurl.'&type=coursecompletion&instance='.$course->id.'">Course completion</a></li>';
+            echo '<span type="coursecompletion" id="'.$course->id.'">';
+
+            echo '<table><tr>';
+            echo '<td class="list-item-name">Course completion</td>';
+            echo '<td class="list-item-action">'.$addbutton.'</td>';
+            echo '</tr></table>';
+
+            echo '</span>';
         }
     }
 
@@ -100,16 +112,24 @@ function comp_evitem_print_course_evitems($course, $competency_id, $addurl ){
     if ($course_grade) {
         $available = true;
         if ( array_key_exists("coursegrade-{$course->id}", $existingevidencelookup ) ){
-            echo "<li><span class=\"unclickable\">Course grade {$alreadystr}</span></li>";
+            echo "<span class=\"unclickable\">Course grade {$alreadystr}</span>";
         } else {
-            echo '<li><a href="'.$addurl.'&type=coursegrade&instance='.$course->id.'">Course grade</a></li>';
+            echo '<span type="coursegrade" id="'.$course->id.'">';
+
+            echo '<table><tr>';
+            echo '<td class="list-item-name">Course grade</td>';
+            echo '<td class="list-item-action">'.$addbutton.'</td>';
+            echo '</tr></table>';
+
+            echo '</span>';
         }
     }
 
-    if (!$available) {
-        echo '<li><em>'.get_string('noevidencetypesavailable', 'competency').'</em></li>';
-    }
+    // Keep a hidden competency id val for use by javascripts
+    echo '<input type="hidden" id="evitem_competency_id" value="'.$competency_id.'" />';
 
-    echo '</ul>';
+    if (!$available) {
+        echo '<em>'.get_string('noevidencetypesavailable', 'competency').'</em>';
+    }
 }
 ?>

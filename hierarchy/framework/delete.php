@@ -35,13 +35,21 @@ $framework = $hierarchy->get_framework($id);
 ///
 /// Display page
 ///
+$navlinks = array();    // Breadcrumbs
+$navlinks[] = array('name'=>get_string("{$type}frameworks", $type), 
+                    'link'=>"{$CFG->wwwroot}/hierarchy/framework/index.php?type={$type}", 
+                    'type'=>'misc');
+$navlinks[] = array('name'=>get_string('deleteframework', $type, format_string($framework->fullname)), 'link'=>'', 'type'=>'misc');
 
-admin_externalpage_print_header();
+
+admin_externalpage_print_header('', $navlinks);
 
 if (!$delete) {
-    $strdelete = get_string('deletecheckframework', $type);
+    $strdelete = get_string('deletecheckframework', $type, format_string($framework->fullname));
 
-    notice_yesno("$strdelete<br /><br />" . format_string($framework->fullname),
+    print_heading(get_string('deleteframework', $type, format_string($framework->fullname)), 'left', 1);
+
+    notice_yesno("$strdelete<br /><br />",
                  "{$CFG->wwwroot}/hierarchy/framework/delete.php?type={$type}&id={$framework->id}&amp;delete=".md5($framework->timemodified)."&amp;sesskey={$USER->sesskey}",
                  "{$CFG->wwwroot}/hierarchy/framework/index.php?type={$type}");
 

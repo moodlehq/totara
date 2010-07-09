@@ -13,11 +13,12 @@ $sitecontext = get_context_instance(CONTEXT_SYSTEM);
 
 // Get params
 $id = required_param('id', PARAM_INT);
+$type = required_param('type', PARAM_TEXT);
 // Delete confirmation hash
 $delete = optional_param('delete', '', PARAM_ALPHANUM);
 
 // Setup page and check permissions
-admin_externalpage_setup('competencyscales');
+admin_externalpage_setup($type.'frameworkmanage');
 
 require_capability('moodle/local:deletecompetency', $sitecontext);
 
@@ -31,8 +32,8 @@ if (!$scale = get_record('comp_scale', 'id', $id)) {
 
 admin_externalpage_print_header();
 
-$returnurl = "{$CFG->wwwroot}/hierarchy/type/competency/scale/index.php";
-$deleteurl = "{$CFG->wwwroot}/hierarchy/type/competency/scale/delete.php?id={$scale->id}&amp;delete=".md5($scale->timemodified)."&amp;sesskey={$USER->sesskey}";
+$returnurl = "{$CFG->wwwroot}/hierarchy/framework/index.php?type=competency";
+$deleteurl = "{$CFG->wwwroot}/hierarchy/type/competency/scale/delete.php?id={$scale->id}&amp;delete=".md5($scale->timemodified)."&amp;sesskey={$USER->sesskey}&amp;type=competency";
 
 // Can't delete if the scale is in use
 if ( competency_scale_is_used($id) ) {
@@ -65,7 +66,7 @@ if (!confirm_sesskey()) {
     print_error('confirmsesskeybad', 'error');
 }
 
-add_to_log(SITEID, 'competencyscales', 'delete', "view.php?id=$scale->id", "$scale->name (ID $scale->id)");
+add_to_log(SITEID, 'competencyscales', 'delete', "view.php?id=$scale->id&amp;type=competency", "$scale->name (ID $scale->id)");
 
 // Delete assignment of scale to frameworks
 delete_records('comp_scale_assignments', 'scaleid', $scale->id);
@@ -74,6 +75,6 @@ delete_records('comp_scale_values', 'scaleid', $scale->id);
 // Delete scale itself
 delete_records('comp_scale', 'id', $scale->id);
 
-print_heading(get_string('deletedcompetencyscale', 'competency', format_string($scale->name)));
+echo '<p>'.get_string('deletedcompetencyscale', 'competency', format_string($scale->name)).'</p>';
 print_continue($returnurl);
 print_footer();

@@ -39,3 +39,6 @@ $string['error:couldnotmoveitem'] = 'Could not move that $a. There was an error 
 $string['error:couldnotmoveitemnopeer'] = 'Could not move that $a, no adjacent item at same depth level to swap with.';
 $string['error:badsortorder'] = 'Could not move that $a, there is something wrong with the sort orders.';
 $string['error:noframeworksfound'] = 'No $a frameworks with one or more depth levels found.';
+$string['switchframework'] = 'Switch framework: ';
+$string['selecteditems'] = 'Selected items';
+$string['selected'] = 'Selected';

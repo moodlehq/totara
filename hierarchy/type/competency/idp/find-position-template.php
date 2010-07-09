@@ -18,6 +18,9 @@ $revisionid = required_param('id', PARAM_INT);
 // Position id (a bit hackey, we are using the framework picker unmodified)
 $positionid = optional_param('frameworkid', 0, PARAM_INT);
 
+// Only return generated tree html
+$treeonly = optional_param('treeonly', false, PARAM_BOOL);
+
 // No javascript parameters
 $nojs = optional_param('nojs', false, PARAM_BOOL);
 $returnurl = optional_param('returnurl', '', PARAM_TEXT);
@@ -30,7 +33,7 @@ $urlparams = 'id='.$revisionid.'&amp;frameworkid='.$positionid.'&amp;nojs='.$noj
 /// Permissions checks
 ///
 
-admin_externalpage_setup('competencytemplatemanage');
+admin_externalpage_setup('competencymanage');
 
 // Check permissions
 $sitecontext = get_context_instance(CONTEXT_SYSTEM);
@@ -41,8 +44,7 @@ $competency = new competency();
 $position = new position();
 
 // Load plan this revision relates to
-$plan = get_plan_for_revision($revisionid);
-if (!$plan) {
+if (!$plan = get_plan_for_revision($revisionid)) {
     error('Revision plan could not be found');
 }
 
@@ -71,10 +73,9 @@ if (!isset($cur_position)) {
 
 // Load competency templates to display
 $templates = $position->get_assigned_competency_templates($cur_position);
-$assignedtemplates = get_records('idp_revision_competencytmpl', 'revision', $revisionid, '', 'competencytemplate');
-if( !is_array($assignedtemplates) ){
-    $assignedtemplates = array();
-};
+if (!$currentlyassigned = idp_get_user_competencytemplates($plan->userid, $revisionid)) {
+    $currentlyassigned = array();
+}
 
 ///
 /// Display page
@@ -82,22 +83,35 @@ if( !is_array($assignedtemplates) ){
 
 if(!$nojs) {
 
+    if ($treeonly) {
+        echo build_treeview(
+            $templates,
+            get_string('nounassignedcompetencytemplates', 'position'),
+            null,
+            $currentlyassigned
+        );
+        exit;
+    }
 ?>
 
 <div class="selectcompetencytemplates">
 
-<?php echo $position->user_positions_picker($owner, $cur_position->id); ?>
 
 <h2><?php echo get_string('addcompetencytemplatestoplan', 'idp') ?></h2>
 
 <div class="selected">
     <p>
-        <?php echo get_string('dragheretoassign', 'competency') ?>
+        <?php 
+            echo get_string('selecteditems', 'hierarchy'); 
+            echo populate_selected_items_pane($currentlyassigned);
+        ?>
     </p>
 </div>
 
 <p>
     <?php echo get_string('locatecompetencytemplate', 'competency') ?>:
+    <br>
+    <?php echo $position->user_positions_picker($owner, $cur_position->id); ?>
 </p>
 
 <ul class="treeview filetree">
@@ -108,7 +122,7 @@ echo build_treeview(
     $templates,
     get_string('nounassignedcompetencytemplates', 'position'),
     null,
-    $assignedtemplates
+    $currentlyassigned
 );
 
 ?>
@@ -149,7 +163,7 @@ echo build_treeview(
             ),
             $CFG->wwwroot.'/hierarchy/type/competency/idp/find-position-template.php?'.$urlparams,
             array(),
-            $assignedtemplates
+            $currentlyassigned
         );
         echo '</div>';
     }

@@ -104,18 +104,81 @@ class hierarchy {
 
     /**
      * Get framework
+     * @var array $extra_data optional - specifying extra info to be fetched and returned
      * @return array|false
+     * @uses $CFG when extra_data specified 
      */
-    function get_frameworks() {
-        return get_records($this->shortprefix.'_framework', '', '', 'sortorder, fullname');
+    function get_frameworks($extra_data=array()) {
+        if (!count($extra_data)) {
+            return get_records($this->shortprefix.'_framework', '', '', 'sortorder, fullname');
+        }
+
+        global $CFG;
+
+        $sql = "SELECT f.* ";
+        if (isset($extra_data['depth_count'])) {
+            $sql .= ",(SELECT COALESCE(MAX(depthlevel), 0) FROM {$CFG->prefix}{$this->shortprefix}_depth d1 
+                        WHERE d1.frameworkid = f.id) AS depth_count "; 
+        }
+        if (isset($extra_data['custom_field_count'])) {
+            $sql .= ",(SELECT COUNT(*) FROM {$CFG->prefix}{$this->shortprefix}_depth d2 
+                        JOIN {$CFG->prefix}{$this->shortprefix}_depth_info_field if ON d2.id = if.depthid 
+                        WHERE d2.frameworkid=f.id) AS custom_field_count ";
+        }
+        if (isset($extra_data['item_count'])) {
+            $sql .= ",(SELECT COUNT(*) FROM {$CFG->prefix}{$this->shortprefix} ic
+                        WHERE ic.frameworkid=f.id) AS item_count ";
+        }
+        $sql .= "FROM {$CFG->prefix}{$this->shortprefix}_framework f 
+                 ORDER BY f.fullname";
+
+        return get_records_sql($sql);
+
     }
 
     /**
      * Get depths for a framework
+     * @var array $extra_data optional - specifying extra info to be fetched and returned
      * @return array|false
+     * @uses $CFG when extra_data specified 
      */
-    function get_depths() {
-        return get_records($this->shortprefix.'_depth', 'frameworkid', $this->frameworkid, 'depthlevel');
+    function get_depths($extra_data=array()) {
+        if (!count($extra_data)) {
+           return get_records($this->shortprefix.'_depth', 'frameworkid', $this->frameworkid, 'depthlevel');
+        }
+
+        global $CFG;
+
+        $sql = "SELECT d.* ";
+        if (isset($extra_data['custom_field_count'])) {
+            $sql .= ", (SELECT COUNT(*) FROM {$CFG->prefix}{$this->shortprefix}_depth_info_field if
+                        WHERE if.depthid = d.id) AS custom_field_count ";
+        }
+        if (isset($extra_data['item_count'])) {
+            $sql .= ", (SELECT COUNT(*) FROM {$CFG->prefix}{$this->shortprefix} ic
+                 WHERE ic.depthid = d.id) AS item_count";
+        }
+        $sql .= " FROM {$CFG->prefix}{$this->shortprefix}_depth d
+                  WHERE d.frameworkid = {$this->frameworkid}
+                  ORDER BY d.depthlevel";
+        return get_records_sql($sql);
+    }
+
+    function get_custom_field_categories($depthid) {
+        global $CFG;
+
+        $sql = "SELECT c.*,
+                (SELECT COUNT(*) FROM {$CFG->prefix}{$this->shortprefix}_depth_info_field f 
+                    WHERE f.categoryid = c.id) AS custom_field_count
+                FROM {$CFG->prefix}{$this->shortprefix}_depth_info_category c 
+                WHERE c.depthid = {$depthid}
+                ORDER BY c.name";
+
+        return get_records_sql($sql);
+    }
+
+    function get_custom_field_category_by_id($id) {
+        return get_record($this->shortprefix.'_depth_info_category', 'id', $id);
     }
 
     /**
@@ -395,7 +458,7 @@ class hierarchy {
                 $fwoptions[$fw->id] = $fw->fullname;
             }
 
-            popup_form($CFG->wwwroot.'/hierarchy/'.$page.'?type='.$this->prefix.'&frameworkid=', $fwoptions, 'switchframework', $this->frameworkid, '');
+            popup_form($CFG->wwwroot.'/hierarchy/'.$page.'?type='.$this->prefix.'&frameworkid=', $fwoptions, 'switchframework', $this->frameworkid, '', '', '', false, 'self', get_string('switchframework', 'hierarchy'));
 
             echo '</div>';
 
@@ -716,9 +779,11 @@ class hierarchy {
         // Rewrite the sort order to account for the missing framework
         $sortorder = 1;
         $records = get_records_sql("SELECT id FROM {$CFG->prefix}{$this->shortprefix}_framework ORDER BY sortorder ASC");
-        if (is_array($records)) foreach( $records as $rec ){
-            set_field( "{$this->shortprefix}_framework", 'sortorder', $sortorder, 'id', $rec->id );
-            $sortorder++;
+        if (is_array($records)) {
+            foreach( $records as $rec ){
+                set_field( "{$this->shortprefix}_framework", 'sortorder', $sortorder, 'id', $rec->id );
+                $sortorder++;
+            }
         }
     }
 

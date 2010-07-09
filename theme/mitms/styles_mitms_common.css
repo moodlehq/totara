@@ -99,13 +99,9 @@ body.hierarchy-type-competency-template .buttons,
 body.hierarchy-type-competency-scale .buttons,
 body.customfield .buttons
 {
-  text-align: center;
-  margin-bottom: 30px;
-}
-
-body.customfield .buttons
-{
     margin-top: 20px;
+    text-align: center;
+    margin-bottom: 30px;
 }
 
 body.hierarchy-item form.mform,
@@ -321,10 +317,6 @@ div.mitms-dialog div.ui-widget-header {
     border: none;
 }
 
-div.mitms-dialog div.ui-dialog-titlebar span#ui-dialog-title-related {
-    display: none;
-}
-
 div.mitms-dialog div.ui-dialog-titlebar a.ui-dialog-titlebar-close {
     border: 0;
     margin: 0;
@@ -340,25 +332,28 @@ div.mitms-dialog div.ui-dialog-titlebar a.ui-dialog-titlebar-close span {
     background-image: url(closelabel.gif);
     background-position: 0 0;
     border: none;
-    top: -8px;
+    bottom: 335px;
     margin: 0;
     padding: 0;
     display: block;
+    z-index: 1;
 }
 
 div.mitms-dialog div.ui-dialog-buttonpane {
     position: relative;
-    float: left;
-    top: -25px;
+    float: right;
     background: none;
     border: none;
     margin: 0;
     padding: 0;
+    top: -28px;
 }
 
 div.mitms-dialog div.ui-dialog-buttonpane button {
-    margin: 0;
+    margin-left: 10px;
     float: left;
+    min-width: 100px;
+    margin-right: 0;
 }
 
 div.mitms-dialog div.ui-dialog-content {
@@ -374,7 +369,7 @@ div.mitms-dialog div.ui-dialog-content {
 
 div.mitms-dialog div.ui-dialog-content h2 {
     border-bottom: 1px solid #CACACA;
-    font-size: 1em;
+    font-size: 17px;
     margin: 0 0 10px;
     padding-top: 2px;
     padding-bottom: 5px;
@@ -396,16 +391,20 @@ div.mitms-dialog div.ui-dialog-content .dialog-static-content {
 
 div.mitms-dialog ul.treeview {
     margin-top: 10px;
-    height: 245px;
+    height: 295px;
     overflow: auto;
 }
 
 div.mitms-dialog ul.picker {
-    height: 275px;
+    height: 322px;
 }
 
 div.mitms-dialog ul.treeview li {
     font-size: 0.8em;
+}
+
+div.mitms-dialog ul.treeview span:hover {
+    background-color: #EEEEEE;
 }
 
 div.mitms-dialog ul.treeview li li {
@@ -414,6 +413,7 @@ div.mitms-dialog ul.treeview li li {
 
 div.mitms-dialog ul.treeview li span {
     padding-left: 0.25em;
+    display: block;
 }
 
 div.mitms-dialog ul.treeview li span.folder {
@@ -444,13 +444,56 @@ div.mitms-dialog ul.treeview li span.ui-undraggable {
     color: #777;
 }
 
-.unclickable {
+div.mitms-dialog ul.treeview span table {
+    width: 100%;
+    border: 0;
+}
+
+div.mitms-dialog ul.treeview span table tr {
+    height: 1.8em;
+}
+
+div.mitms-dialog ul.treeview span table tr {
+    padding: 2px 0;
+}
+
+div.mitms-dialog ul.treeview span table tr td.list-item-name {
+    width: 90%;
+    border: 0;
+}
+
+div.mitms-dialog ul.treeview span table tr td.list-item-action {
+    cursor: pointer;
+    width: 10%;
+    text-align: center;
+    border: 0;
+}
+
+div.mitms-dialog ul.treeview img.addbutton {
+    display: none;
+    vertical-align: middle;
+    width: 17px;
+    height: 15px;
+}
+
+div.mitms-dialog ul.treeview img.deletebutton {
+    display: none;
+    vertical-align: middle;
+    width: 13px;
+    height: 13px;
+}
+
+div.mitms-dialog ul.treeview li ul {
+    margin-top: 0;
+}
+
+div.mitms-dialog .unclickable {
     color: #777;
 }
 
 div.mitms-dialog div.yui-isloading {
     background-image: url(loading_small.gif);
-    background-position: 690px 0;
+    background-position: 690px 32px;
     background-repeat: no-repeat;
 }
 
@@ -458,7 +501,7 @@ div.mitms-dialog div.yui-isloading .bd {
     padding-bottom: 22px;
 }
 
-div.mitms-dialog .simpleframeworkpicker,
+/*div.mitms-dialog .simpleframeworkpicker,*/
 div.mitms-dialog #framework-picker {
     float: right;
 }
@@ -467,7 +510,7 @@ div.mitms-dialog .selected {
     float: right;
     width: 250px;
     border-left: 1px solid #ccc;
-    height: 272px;
+    height: 322px;
     overflow: auto;
     padding: 0 10px;
     margin-left: 10px;
@@ -480,7 +523,43 @@ div.mitms-dialog .selected p {
 div.mitms-dialog .selected span {
     display: block;
     font-size: 0.8em;
-    margin-top: 1em;
+    padding: 0.4em 0;
+}
+
+div.mitms-dialog .selected span:hover {
+    background-color: #EEEEEE;
+}
+
+div.mitms-dialog .selected span table {
+    width: 100%;
+}
+
+div.mitms-dialog .selected span table tr{
+    height: 1.6em;
+}
+
+div.mitms-dialog .selected span table tr td.list-item-name {
+    width: 90%;
+}
+
+div.mitms-dialog .selected span table tr td.list-item-action {
+    cursor: pointer;
+    width: 10%;
+    text-align: center;
+}
+
+div.mitms-dialog .selected img.addbutton {
+    display: none;
+    vertical-align: middle;
+    width: 16px;
+    height: 14px;
+}
+
+div.mitms-dialog .selected img.deletebutton {
+    display: none;
+    vertical-align: middle;
+    width: 15px;
+    height: 13px;
 }
 
 /* hide lightbox activation buttons */
@@ -515,7 +594,7 @@ a.noscript-button {
     float: right;
     width: 40%;
     border-left: 1px solid #ccc;
-    height: 200px;
+    height: 322px;
     overflow: auto;
     padding: 0 10px;
 }

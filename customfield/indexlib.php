@@ -40,7 +40,7 @@
  * @param   object   the depthid of the object if used
  * @return  string   the icon string
  */
-function customfield_edit_icons($field, $fieldcount, $depthid=0, $type, $subtype) {
+function customfield_edit_icons($field, $fieldcount, $depthid=0, $type, $subtype, $frameworkid=0, $categoryid=0) {
     global $CFG;
 
     if (empty($str)) {
@@ -51,22 +51,22 @@ function customfield_edit_icons($field, $fieldcount, $depthid=0, $type, $subtype
     }
 
     /// Edit
-    $editstr = '<a title="'.$stredit.'" href="index.php?type='.$type.'&subtype='.$subtype.'&id='.$field->id.'&amp;depthid='.$depthid.'&amp;action=editfield"><img src="'.$CFG->pixpath.'/t/edit.gif" alt="'.$stredit.'" class="iconsmall" /></a> ';
+    $editstr = '<a title="'.$stredit.'" href="index.php?type='.$type.'&subtype='.$subtype.'&id='.$field->id.'&amp;frameworkid='.$frameworkid.'&amp;categoryid='.$categoryid.'&amp;depthid='.$depthid.'&amp;action=editfield"><img src="'.$CFG->pixpath.'/t/edit.gif" alt="'.$stredit.'" class="iconsmall" /></a> ';
 
     /// Delete
-    $editstr .= '<a title="'.$strdelete.'" href="index.php?type='.$type.'&subtype='.$subtype.'&id='.$field->id.'&amp;depthid='.$depthid.'&amp;action=deletefield';
+    $editstr .= '<a title="'.$strdelete.'" href="index.php?type='.$type.'&subtype='.$subtype.'&id='.$field->id.'&amp;frameworkid='.$frameworkid.'&amp;categoryid='.$categoryid.'&amp;depthid='.$depthid.'&amp;action=deletefield';
     $editstr .= '"><img src="'.$CFG->pixpath.'/t/delete.gif" alt="'.$strdelete.'" class="iconsmall" /></a> ';
 
     /// Move up
     if ($field->sortorder > 1) {
-        $editstr .= '<a title="'.$strmoveup.'" href="index.php?type='.$type.'&subtype='.$subtype.'&id='.$field->id.'&amp;depthid='.$depthid.'&amp;action=movefield&amp;dir=up&amp;sesskey='.sesskey().'"><img src="'.$CFG->pixpath.'/t/up.gif" alt="'.$strmoveup.'" class="iconsmall" /></a> ';
+        $editstr .= '<a title="'.$strmoveup.'" href="index.php?type='.$type.'&subtype='.$subtype.'&id='.$field->id.'&amp;frameworkid='.$frameworkid.'&amp;categoryid='.$categoryid.'&amp;depthid='.$depthid.'&amp;action=movefield&amp;dir=up&amp;sesskey='.sesskey().'"><img src="'.$CFG->pixpath.'/t/up.gif" alt="'.$strmoveup.'" class="iconsmall" /></a> ';
      } else {
         $editstr .= '<img src="'.$CFG->pixpath.'/spacer.gif" alt="" class="iconsmall" /> ';
     }
 
     /// Move down
     if ($field->sortorder < $fieldcount) {
-        $editstr .= '<a title="'.$strmovedown.'" href="index.php?type='.$type.'&subtype='.$subtype.'&id='.$field->id.'&amp;depthid='.$depthid.'&amp;action=movefield&amp;dir=down&amp;sesskey='.sesskey().'"><img src="'.$CFG->pixpath.'/t/down.gif" alt="'.$strmovedown.'" class="iconsmall" /></a> ';
+        $editstr .= '<a title="'.$strmovedown.'" href="index.php?type='.$type.'&subtype='.$subtype.'&id='.$field->id.'&amp;frameworkid='.$frameworkid.'&amp;categoryid='.$categoryid.'&amp;depthid='.$depthid.'&amp;action=movefield&amp;dir=down&amp;sesskey='.sesskey().'"><img src="'.$CFG->pixpath.'/t/down.gif" alt="'.$strmovedown.'" class="iconsmall" /></a> ';
     } else {
         $editstr .= '<img src="'.$CFG->pixpath.'/spacer.gif" alt="" class="iconsmall" /> ';
     }
@@ -326,12 +326,19 @@ function customfield_list_categories($depthid=0, $tableprefix) {
     return $categories;
 }
 
-function customfield_edit_category($id, $depthid=0, $redirect, $tableprefix, $type, $subtype) {
+function customfield_edit_category($id, $depthid=0, $redirect, $tableprefix, $type, $subtype, $frameworkid=0, $navlinks=array()) {
     global $CFG;
 
     require_once($CFG->dirroot.'/customfield/index_category_form.php');
 
-    $datatosend = array('type' => $type, 'subtype' => $subtype, 'depthid' => $depthid, 'tableprefix' => $tableprefix);
+    $displayadminheader = $frameworkid ? 1 : 0;
+
+    $datatosend = array('type' => $type, 
+                        'subtype' => $subtype,
+                        'frameworkid' => $frameworkid,
+                        'depthid' => $depthid, 
+                        'categoryid' => $id, 
+                        'tableprefix' => $tableprefix);
     $categoryform = new category_form(null, $datatosend);
 
     if ($category = get_record($tableprefix.'_info_category', 'id', $id)) {
@@ -365,7 +372,7 @@ function customfield_edit_category($id, $depthid=0, $redirect, $tableprefix, $ty
             }
             customfield_reorder_categories($depthid, $tableprefix);
 
-            if ($data->depthid) {
+            if ($data->depthid && !$displayadminheader) {  // Redirect to the right place (customfield/index.php or admin)
                 $redirect .= '?depthid='.$data->depthid;
             }
 
@@ -382,14 +389,23 @@ function customfield_edit_category($id, $depthid=0, $redirect, $tableprefix, $ty
         /// Print the page
         // Display page header
         $pagetitle = format_string(get_string($type.'depthcustomfields',$type));
-        $navlinks[] = array('name' => get_string('administration'), 'link'=> '', 'type'=>'title');
-        $navlinks[] = array('name' => get_string($type.'plural',$type), 'link'=> '', 'type'=>'title');
-        $navlinks[] = array('name' => get_string($type.'depthcustomfields',$type), 'link'=> '', 'type'=>'title');
+        
+        if (!count($navlinks)) {    
+            // Use default breadcrumbs
+            $navlinks[] = array('name' => get_string('administration'), 'link'=> '', 'type'=>'title');
+            $navlinks[] = array('name' => get_string($type.'plural',$type), 'link'=> '', 'type'=>'title');
+            $navlinks[] = array('name' => get_string($type.'depthcustomfields',$type), 'link'=> '', 'type'=>'title');
+        }
 
         $navigation = build_navigation($navlinks);
-
-        print_header_simple($pagetitle, '', $navigation, '', null, true, null);
-        print_heading($strheading);
+        
+        if ($displayadminheader) {
+            admin_externalpage_setup($type.'frameworkmanage', '', array('type'=>$type));
+            admin_externalpage_print_header('', $navlinks);
+        } else {
+            print_header_simple($pagetitle, '', $navigation, '', null, true, null);
+        }
+        print_heading($strheading, 'left', 1);
         $categoryform->display();
         print_footer();
         die;
@@ -397,7 +413,7 @@ function customfield_edit_category($id, $depthid=0, $redirect, $tableprefix, $ty
 
 }
 
-function customfield_edit_field($id, $datatype, $depthid=0, $redirect, $tableprefix, $type, $subtype) {
+function customfield_edit_field($id, $datatype, $depthid=0, $redirect, $tableprefix, $type, $subtype, $frameworkid=0, $categoryid=0, $navlinks=array()) {
     global $CFG;
 
     if (!$field = get_record($tableprefix.'_info_field', 'id', $id)) {
@@ -405,8 +421,11 @@ function customfield_edit_field($id, $datatype, $depthid=0, $redirect, $tablepre
         $field->datatype = $datatype;
     }
 
+    $displayadminheader = $frameworkid ? 1 : 0;
+
     require_once($CFG->dirroot.'/customfield/index_field_form.php');
-    $datatosend = array('datatype' => $field->datatype, 'type' => $type, 'subtype' => $subtype, 'depthid' => $depthid, 'tableprefix' => $tableprefix);
+    $datatosend = array('datatype' => $field->datatype, 'type' => $type, 'subtype' => $subtype, 
+                        'frameworkid' => $frameworkid, 'depthid' => $depthid, 'categoryid' => $categoryid, 'tableprefix' => $tableprefix);
     $fieldform = new field_form(null, $datatosend);
     $fieldform->set_data($field);
 
@@ -435,14 +454,21 @@ function customfield_edit_field($id, $datatype, $depthid=0, $redirect, $tablepre
         /// Print the page
         // Display page header
         $pagetitle = format_string(get_field($tableprefix, 'fullname', 'id', $depthid));
-        $navlinks[] = array('name' => get_string('administration'), 'link'=> '', 'type'=>'title');
-        $navlinks[] = array('name' => get_string($type.'plural',$type), 'link'=> '', 'type'=>'title');
-        $navlinks[] = array('name' => get_string($type.'depthcustomfields',$type), 'link'=> '', 'type'=>'title');
+        if (!count($navlinks)) {
+            $navlinks[] = array('name' => get_string('administration'), 'link'=> '', 'type'=>'title');
+            $navlinks[] = array('name' => get_string($type.'plural',$type), 'link'=> '', 'type'=>'title');
+            $navlinks[] = array('name' => get_string($type.'depthcustomfields',$type), 'link'=> '', 'type'=>'title');
+        }
 
         $navigation = build_navigation($navlinks);
-
-        print_header_simple($pagetitle, '', $navigation, '', null, true);
-        print_heading($strheading);
+    
+        if ($displayadminheader) {
+            admin_externalpage_setup($type.'frameworkmanage', '', array('type'=>$type));
+            admin_externalpage_print_header('', $navlinks);
+        } else {
+            print_header_simple($pagetitle, '', $navigation, '', null, true);
+        }
+        print_heading($strheading, 'left', '1');
         $fieldform->display();
         print_footer();
         die;

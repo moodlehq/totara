@@ -74,7 +74,7 @@ $depthform->set_data($depth);
 // cancelled
 if ($depthform->is_cancelled()){
 
-    redirect("$CFG->wwwroot/hierarchy/index.php?type={$type}&frameworkid={$framework->id}&spage={$spage}");
+    redirect("{$CFG->wwwroot}/hierarchy/framework/view.php?type={$type}&frameworkid={$framework->id}");
 
 // update data
 } else if ($depthnew = $depthform->get_data()) {
@@ -115,18 +115,31 @@ if ($depthform->is_cancelled()){
     // Log
     add_to_log(SITEID, $type, 'update depth level', "depth/edit.php?id=$depthnew->id", '');
 
-    redirect("$CFG->wwwroot/hierarchy/index.php?type=$type&frameworkid=$framework->id&spage=$spage");
+    redirect("{$CFG->wwwroot}/hierarchy/framework/view.php?type={$type}&frameworkid={$framework->id}");
     //never reached
 }
 
 
 /// Display page header
-admin_externalpage_print_header();
+$navlinks = array();    // Breadcrumbs
+$navlinks[] = array('name'=>get_string("{$type}frameworks", $type), 
+                    'link'=>"{$CFG->wwwroot}/hierarchy/framework/index.php?type={$type}", 
+                    'type'=>'misc');
+$navlinks[] = array('name'=>format_string($framework->fullname),
+                    'link'=>"{$CFG->wwwroot}/hierarchy/framework/view.php?type={$type}&frameworkid={$frameworkid}", 
+                    'type'=>'misc');
+if ($id == 0) {
+    $navlinks[] = array('name'=>get_string('adddepthlevel', $type), 'link'=>'', 'type'=>'misc');
+} else {
+    $navlinks[] = array('name'=>get_string('editgeneric', $type, format_string($depth->fullname)), 'link'=>'', 'type'=>'misc');
+}
+
+admin_externalpage_print_header('', $navlinks);
 
 if ($depth->id == 0) {
     print_heading(get_string('adddepthlevel', $type));
 } else {
-    print_heading(get_string('editdepthlevel', $type));
+    print_heading(get_string('editgeneric', $type, format_string($depth->fullname)));
 }
 
 /// Finally display the form

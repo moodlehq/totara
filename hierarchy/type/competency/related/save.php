@@ -1,6 +1,7 @@
 <?php
 
 require_once('../../../../config.php');
+require_once('lib.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->dirroot.'/hierarchy/type/competency/lib.php');
 
@@ -19,6 +20,14 @@ $relidlist = required_param('add', PARAM_SEQUENCE);
 $nojs = optional_param('nojs', false, PARAM_BOOL);
 $returnurl = optional_param('returnurl', '', PARAM_TEXT);
 $s = optional_param('s', '', PARAM_TEXT);
+
+// Indicates whether current related items, not in $relidlist, should be deleted
+$deleteexisting = optional_param('deleteexisting', 0, PARAM_BOOL);
+
+// Get currently-related competencies
+if (!$currentlyrelated = comp_relation_get_relations($compid)) {
+    $currentlyrelated = array();
+}
 
 // Setup page
 admin_externalpage_setup('competencymanage', '', array(), '', $CFG->wwwroot.'/competency/related/save.php');
@@ -42,14 +51,28 @@ if (!empty($USER->competencyediting)) {
     $editingon = true;
 }
 
+// Parse input
+$relidlist = $relidlist ? explode(',', $relidlist) : array();
+$time = time();
+
+///
+/// Delete removed relationships (if specified)
+///
+if ($deleteexisting) {
+    $removeditems = array_diff($currentlyrelated, $relidlist);
+    
+    foreach ($removeditems as $ritem) {
+        delete_records('comp_relations', 'id1', $compid, 'id2', $ritem);
+        delete_records('comp_relations', 'id2', $compid, 'id1', $ritem);
+
+        echo " ~~~RELOAD PAGE~~~ ";  // Indicate that a page reload is required
+    }
+}
+
 
 ///
 /// Add related competencies
 ///
-
-// Parse input
-$relidlist = explode(',', $relidlist);
-$time = time();
 
 foreach ($relidlist as $relid) {
     // Check id

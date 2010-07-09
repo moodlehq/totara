@@ -16,6 +16,9 @@ $assignto = required_param('assignto', PARAM_INT);
 // Competencies to add
 $add = required_param('add', PARAM_SEQUENCE);
 
+// Indicates whether current related items, should be deleted
+$deleteexisting = optional_param('deleteexisting', 0, PARAM_BOOL);
+
 // Non JS parameters
 $nojs = optional_param('nojs', false, PARAM_BOOL);
 $returnurl = optional_param('returnurl', '', PARAM_TEXT);
@@ -37,21 +40,44 @@ if (!$position = $positions->get_item($assignto)) {
     error('Position could not be found');
 }
 
+// Currently assigned competencies
+if (!$currentlyassigned = $positions->get_assigned_competency_templates($assignto)) {
+    $currentlyassigned = array();
+}
+
+
+// Parse input
+$add = $add ? explode(',', $add) : array();
+$time = time();
+
+///
+/// Delete removed assignments (if specified)
+///
+if ($deleteexisting) {
+    $removeditems = array_diff(array_keys($currentlyassigned), $add);
+    
+    foreach ($removeditems as $rid) {
+        delete_records('pos_competencies', 'positionid', $position->id, 'templateid', $rid);
+        //TODO: add delete log
+
+        echo " ~~~RELOAD PAGE~~~ ";  // Indicate that a page reload is required
+    }
+}
 
 ///
 /// Assign competencies
 ///
-
-// Parse input
-$add = explode(',', $add);
-$time = time();
-
 $str_remove = get_string('remove');
 
 foreach ($add as $addition) {
     // Check id
     if (!is_numeric($addition)) {
         error('Supplied bad data - non numeric id');
+    }
+
+    // If the template is already assigned to the position, skip it over
+    if ( count_records('pos_competencies','positionid', $position->id, 'templateid', $addition)){
+        continue;
     }
 
     // Load competency

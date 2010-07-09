@@ -19,6 +19,9 @@ $parentid = optional_param('parentid', 0, PARAM_INT);
 // Framework id
 $frameworkid = optional_param('frameworkid', 0, PARAM_INT);
 
+// Only return generated tree html
+$treeonly = optional_param('treeonly', false, PARAM_BOOL);
+
 // Setup page
 require_login();
 
@@ -52,27 +55,6 @@ if ( $framework ){
     $positions = array();
 }
 
-///
-/// Display page
-///
-
-// If parent id is not supplied, we must be displaying the main page
-if (!$parentid) {
-
-?>
-
-<div class="selectorganisation">
-
-<?php $hierarchy->display_framework_selector('', true) ?>
-
-<h2>
-<?php echo get_string('chooseorganisation', $hierarchy->prefix); ?>
-</h2>
-
-<ul class="treeview filetree picker">
-<?php
-}
-
 // Determine which error message
 if ( $parentid ){
     $errorstr = 'nochildorganisations';
@@ -82,6 +64,40 @@ if ( $parentid ){
     } else {
         $errorstr = 'noorganisation';
     }
+}
+
+///
+/// Display page
+///
+
+// If parent id is not supplied, we must be displaying the main page
+if (!$parentid) {
+
+    if ($treeonly) {
+        echo build_treeview(
+            $positions,
+            get_string($errorstr, $hierarchy->prefix),
+            $hierarchy
+        );
+        exit;
+    }
+
+?>
+
+<div class="selectorganisation">
+
+
+<h2>
+<?php 
+    echo get_string('chooseorganisation', $hierarchy->prefix);
+    echo dialog_display_currently_selected(get_string('currentlyselected', $hierarchy->prefix));
+?>
+</h2>
+
+<?php $hierarchy->display_framework_selector('', true) ?>
+
+<ul class="treeview filetree picker">
+<?php
 }
 
 echo build_treeview(

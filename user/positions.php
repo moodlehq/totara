@@ -114,15 +114,7 @@ local_js(array(
     MBE_JS_DATEPICKER
 ));
 
-require_js(
-    array(
-        $CFG->wwwroot.'/local/js/position.user.js.php'
-    )
-);
-
 print_header("{$course->fullname}: {$fullname}: {$positiontype}", $course->fullname, $navigation);
-
-
 
 /// Print tabs at top
 /// This same call is made in:
@@ -140,6 +132,15 @@ if($nojs) {
 // Form
 $form = new user_position_assignment_form($currenturl, compact('type', 'user', 'position_assignment', 'can_edit', 'nojs'));
 $form->set_data($position_assignment);
+
+// Only load dialog js if form is not submitted atm
+if (!$form->is_submitted()) {
+    require_js(
+        array(
+            $CFG->wwwroot.'/local/js/position.user.js.php'
+        )
+    );
+}
 
 // Don't show the page if there are no positions
 if ( !count_records('pos') ){

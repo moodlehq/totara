@@ -11,7 +11,6 @@ require_once($CFG->dirroot.'/hierarchy/type/competency/template/edit_form.php');
 
 // Template id; 0 if creating new template
 $id = optional_param('id', 0, PARAM_INT);
-
 // framework id; required when creating a new template
 $frameworkid = optional_param('frameworkid', 0, PARAM_INT);
 
@@ -21,7 +20,7 @@ if (!$id && !$frameworkid) {
 }
 
 // Make this page appear under the manage templates admin item
-admin_externalpage_setup('competencytemplatemanage', '', array(), '', $CFG->wwwroot.'/competency/template/edit.php');
+admin_externalpage_setup('competencyframeworkmanage', '', array(), '', $CFG->wwwroot.'/competency/template/edit.php');
 
 $context = get_context_instance(CONTEXT_SYSTEM);
 
@@ -55,7 +54,7 @@ $form->set_data($template);
 // cancelled
 if ($form->is_cancelled()) {
 
-    redirect("$CFG->wwwroot/hierarchy/type/competency/template/index.php?frameworkid=".$framework->id);
+    redirect("$CFG->wwwroot/hierarchy/framework/view.php?type=competency&frameworkid=".$framework->id);
 
 // Update data
 } else if ($templatenew = $form->get_data()) {
@@ -90,19 +89,30 @@ if ($form->is_cancelled()) {
     // Log
     add_to_log(SITEID, 'competencytemplate', 'update', "view.php?id=$templatenew->id", '');
 
-    redirect("$CFG->wwwroot/hierarchy/type/competency/template/view.php?id=$templatenew->id");
+    redirect("$CFG->wwwroot/hierarchy/framework/view.php?type=competency&frameworkid=".$framework->id);
     //never reached
 }
 
 
 /// Display page header
-admin_externalpage_print_header();
-
+$navlinks = array();    // Breadcrumbs
+$navlinks[] = array('name'=>get_string("competencyframeworks", 'competency'), 
+                    'link'=>"{$CFG->wwwroot}/hierarchy/framework/index.php?type=competency", 
+                    'type'=>'misc');
+$navlinks[] = array('name'=>format_string($framework->fullname), 
+                    'link'=>"{$CFG->wwwroot}/hierarchy/framework/view.php?type=competency&frameworkid={$framework->id}", 
+                    'type'=>'misc');    // Framework View    
 if ($template->id == 0) {
-    print_heading(get_string('addnewtemplate', 'competency'));
+    $heading = get_string('addnewtemplate', 'competency');
+    $navlinks[] = array('name'=>$heading, 'link'=>'', 'type'=>'misc');
 } else {
-    print_heading(get_string('edittemplate', 'competency'));
+    $heading = get_string('editgeneric', 'competency', format_string($template->fullname));
+    $navlinks[] = array('name'=>format_string($template->fullname), 'link'=>'', 'type'=>'misc');
 }
+
+admin_externalpage_print_header('', $navlinks);
+
+print_heading($heading);
 
 /// Finally display THE form
 $form->display();

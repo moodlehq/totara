@@ -38,13 +38,20 @@ if ($courses) {
         }
 
         echo '>';
-        echo '<span class="';
-        if ( isset($registeredcourses[$course->id]) ){
-            echo 'unclickable';
+        if (isset($registeredcourses[$course->id])) {
+            $spanclass = 'unclickable';
+            $addbutton = '';
         } else {
-            echo 'clickable';
+            $spanclass = 'clickable';
+            //TODO: add tooltip (title) getstring
+            $addbutton = '<img src="'.$CFG->pixpath.'/t/add.gif" class="addbutton" width="15px" height="15px" />';
         }
-        echo '">'.format_string($course->fullname).'</span></li>';
+        echo '<span class="'.$spanclass.'" id="course_'.$course->id.'">';
+        echo '<table><tr>';
+        echo '<td class="list-item-name">'.format_string($course->fullname).'</td>';
+        echo '<td class="list-item-action">'.$addbutton.'</td>';
+        echo '</tr></table>';
+        echo '</span></li>';
     }
 }
 else {

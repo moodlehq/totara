@@ -13,10 +13,10 @@ $(function() {
     (function() {
         var url = '<?php echo $CFG->wwwroot ?>/hierarchy/type/competency/related/';
 
-        mitmsAssignDialog(
+        mitmsMultiSelectDialog(
             'related',
             url+'find.php?id='+competency_id,
-            url+'save.php?id='+competency_id+'&add='
+            url+'save.php?id='+competency_id+'&deleteexisting=1&add='
         );
     })();
 
@@ -31,7 +31,11 @@ $(function() {
         mitmsDialogs['evidence'] = new mitmsDialog(
             'evidence',
             'show-evidence-dialog',
-            {},
+            {
+                buttons: {
+                    'Cancel': function() { handler._cancel() }
+                }
+            },
             url+'edit.php?id='+competency_id,
             handler
         );
@@ -70,9 +74,19 @@ mitmsDialog_handler_assignEvidence.prototype._display_evidence = function(respon
 
     var handler = this;
 
-    // Handle add evidence links
-    $('.selected a', this._dialog.dialog).click(function(e) {
-        e.preventDefault();
-        handler._dialog._request($(this).attr('href'), handler, '_update');
+    // Bind hover event
+    $('#available-evidence span', this._dialog.dialog).mouseenter(function() {
+        $('.addbutton').css('display', 'none');
+        $('.addbutton', $(this)).css('display', 'inline');
     });
+
+    // Bind click event
+    $('#available-evidence', this._dialog.dialog).find('.addbutton').click(function(e) {
+        e.preventDefault();
+        var type = $(this).closest('span').attr('type');
+        var instance = $(this).closest('span').attr('id');
+        var url = handler.baseurl+'add.php?competency='+competency_id+'&type='+type+'&instance='+instance;
+        handler._dialog._request(url, handler, '_update');
+    });
+
 }

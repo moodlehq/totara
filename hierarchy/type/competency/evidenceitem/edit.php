@@ -77,6 +77,7 @@ if($nojs) {
     echo '<p>Locate course:</p>';
     echo '<ul class="filetree treeview">';
     echo build_category_treeview($categories, $parents, 'Loading courses...');
+
     echo '</ul>';
 }
 

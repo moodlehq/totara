@@ -897,4 +897,77 @@ div.yuimenu .yuichildtree .yuimenuitem {
     display: inline;
 }
 
+.guideheadings {
+    float: left;
+    width: 66%;
+}
+.guidenavigation {
+    float: left;
+    width: 34%;
+}
+.guidesteps {
+    clear: left;
+    height: 100%;
+}
+.guidestepcontainer {
+    float: left;
+    width: 25%;
+    height: 100%;
+}
+
+.guidesteptitle {
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+}
+h2.guidesteptitle.pending {
+    background-color: #eaeaea;
+}
+h2.guidesteptitle.active {
+    background-color: #eff8ef;
+}
+h2.guidesteptitle.complete {
+    background-color: #eaeaea;
+}
+.guidestep {
+    border-width: 1px;
+    border-style: solid;
+    border-color: black;
+    margin: 4px;
+    height: 100%;
+}
+img.percentImage {
+ background: white url(/guides/percentImage_back.png) top left no-repeat;
+ padding: 0;
+ margin: 5px 0 0 0;
+ background-position: 1px 0;
+}
+.guidestep.active {
+    background-color: white;
+}
+.guidestep.pending {
+    background-color: white;
+}
+.guidestep.complete {
+    background-color: white;
+}
+
+.guideindexbody {
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
+}
+.guideindextitle {
+    font-weight:bold;
+}
+.guideindexlink {
+}
+
+.guideindexindication {
+    width: 260px;
+    padding: 0px;
+    margin: 0px;
+}
+.guideindexdetail {
+    width: auto;
+}
 

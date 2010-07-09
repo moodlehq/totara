@@ -1013,7 +1013,7 @@ class reportbuilder {
         $table->define_headers($tableheaders);
         $table->set_attribute('cellspacing', '0');
         $table->set_attribute('id', $shortname);
-        $table->set_attribute('class', 'logtable generalbox');
+        $table->set_attribute('class', 'logtable generalbox reportbuilder-table');
         $table->set_control_variables(array(
             TABLE_VAR_SORT    => 'ssort',
             TABLE_VAR_HIDE    => 'shide',

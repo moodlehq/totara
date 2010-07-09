@@ -25,7 +25,7 @@ $s = optional_param('s', '', PARAM_TEXT);
 $urlparams = 'templateid='.$id.'&amp;nojs='.$nojs.'&amp;returnurl='.urlencode($returnurl).'&amp;s='.$s;
 
 // Setup page
-admin_externalpage_setup('competencytemplatemanage', '', array(), '', $CFG->wwwroot.'/competency/template/assign_competency.php');
+admin_externalpage_setup('competencyframeworkmanage', '', array(), '', $CFG->wwwroot.'/competency/template/assign_competency.php');
 
 // Check permissions
 $sitecontext = get_context_instance(CONTEXT_SYSTEM);
@@ -46,8 +46,7 @@ if (!$framework = $hierarchy->get_framework($template->frameworkid)) {
 
 // Load competencies to display
 $competencies = $hierarchy->get_items_by_parent($parentid);
-$competenciesintemplate = $hierarchy->get_assigned_to_template($id);
-if ( !is_array($competenciesintemplate) ){
+if (!$competenciesintemplate = $hierarchy->get_assigned_to_template($id)) {
     $competenciesintemplate = array();
 }
 
@@ -62,7 +61,8 @@ if(!$nojs) {
         echo '<div class="selectcompetencies">';
         echo '<h2>' . get_string('assignnewcompetency', $hierarchy->prefix) . '</h2>';
         echo '<div class="selected"><p>';
-        echo get_string('dragheretoassign', $hierarchy->prefix);
+        echo get_string('selectedcompetencies', $hierarchy->prefix);
+        echo populate_selected_items_pane($competenciesintemplate);
         echo '</p></div>';
         echo '<p>' . get_string('locatecompetency', $hierarchy->prefix) . ':</p>';
         echo '<ul class="treeview filetree">';

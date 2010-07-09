@@ -35,7 +35,7 @@ if (!$competency) {
 require_capability('moodle/local:update'.$hierarchy->prefix.'template', $sitecontext);
 
 // Setup page and check permissions
-admin_externalpage_setup($hierarchy->prefix.'templatemanage');
+admin_externalpage_setup($hierarchy->prefix.'frameworkmanage');
 
 
 ///
@@ -73,19 +73,7 @@ if (!confirm_sesskey()) {
     print_error('confirmsesskeybad', 'error');
 }
 
-// Delete assignment
-delete_records('comp_template_assignment', 'templateid', $template->id, 'instanceid', $competency->id);
-
-// Reduce competency count for template
-$template->competencycount--;
-
-if ($template->competencycount < 0) {
-    $template->competencycount = 0;
-}
-
-update_record('comp_template', $template);
-
-add_to_log(SITEID, $hierarchy->prefix.'template', 'removeassignment', "view.php?id={$template->id}", $competency->fullname." (ID $competency->id)");
+$hierarchy->delete_assigned_template_competency($template->id, $competency->id);
 
 $message = get_string('removed'.$hierarchy->prefix.'templatecompetency', $hierarchy->prefix, format_string($competency->fullname));
 

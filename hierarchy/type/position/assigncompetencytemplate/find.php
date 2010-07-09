@@ -18,6 +18,9 @@ $assignto = required_param('assignto', PARAM_INT);
 // Framework id
 $frameworkid = optional_param('frameworkid', 0, PARAM_INT);
 
+// Only return generated tree html
+$treeonly = optional_param('treeonly', false, PARAM_BOOL);
+
 // No javascript parameters
 $nojs = optional_param('nojs', false, PARAM_BOOL);
 $returnurl = optional_param('returnurl', '', PARAM_TEXT);
@@ -40,6 +43,9 @@ require_capability('moodle/local:updateposition', $sitecontext);
 // Setup hierarchy object
 $hierarchy = new competency();
 
+// Setup positions object i.o to utilise functions
+$positions = new position();
+
 // Load framework
 if (!$framework = $hierarchy->get_framework($frameworkid)) {
     error('Competency framework could not be found');
@@ -49,7 +55,9 @@ if (!$framework = $hierarchy->get_framework($frameworkid)) {
 $items = $hierarchy->get_templates();
 
 // Load currently assigned competency templates
-// TODO
+if (!$currentlyassigned = $positions->get_assigned_competency_templates($assignto)) {
+    $currentlyassigned = array();
+}
 
 ///
 /// Display page
@@ -57,17 +65,30 @@ $items = $hierarchy->get_templates();
 
 if(!$nojs) {
 
+    if ($treeonly) {
+        echo build_treeview(
+            $items,
+            get_string('nounassignedcompetencytemplates', 'position'),
+            null,
+            $currentlyassigned
+        );
+        exit;
+    }
+
     echo '<div class="selectcompetencies">';
-    $hierarchy->display_framework_selector('', true);
     echo '<h2>'.get_string($pagetitle, $hierarchy->prefix).'</h2>';
     echo '<div class="selected">';
-    echo '<p>'.get_string('dragheretoassign', $hierarchy->prefix).'</p>';
+    echo '<p>'.get_string('selecteditems', 'hierarchy').'</p>';
+    echo populate_selected_items_pane($currentlyassigned);
     echo '</div>';
     echo '<p>'.get_string('locatecompetency', $hierarchy->prefix).':</p>';
+    $hierarchy->display_framework_selector('', true);
     echo '<ul class="treeview filetree">';
     echo build_treeview(
         $items,
-        get_string('nounassignedcompetencytemplates', 'position')
+        get_string('nounassignedcompetencytemplates', 'position'),
+        null,
+        $currentlyassigned
     );
     echo '</ul></div>';
 

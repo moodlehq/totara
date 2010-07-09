@@ -50,11 +50,17 @@ function local_js($options = array()) {
  * @param   $error_string   string      String to display if no elements supplied
  * @param   $hierarchy      object      The hierarchy object (optional)
  * @param   $disabledlist   array       Array of IDs of elements that should be disabled
+ * @uses    $CFG
  * @return  $html
  */
 function build_treeview($elements, $error_string, $hierarchy = null, $disabledlist = array()) {
 
+    global $CFG;
+
     $html = '';
+    
+    $buttons = array('addbutton' => 'add.gif', 
+                     'deletebutton' => 'delete.gif');
 
     if (is_array($elements) && !empty($elements)) {
 
@@ -94,16 +100,22 @@ function build_treeview($elements, $error_string, $hierarchy = null, $disabledli
                 }
             }
 
+            $addbutton_html = '<img src="'.$CFG->pixpath.'/t/'.$buttons['addbutton'].'" class="addbutton" />';
+
             // Make disabled elements non-draggable and greyed out
             if (array_key_exists($element->id, $disabledlist)){
-                $span_class = trim($span_class . ' ui-undraggable');
+                $span_class = trim($span_class . ' unclickable');
+                $addbutton_html = '';
             }
 
             $html .= '<li class="'.$li_class.'" id="item_list_'.$element->id.'">';
             $html .= '<div class="'.$div_class.'"></div>';
             $html .= '<span id="item_'.$element->id.'" class="'.$span_class.'">';
             // format_string() really slow here...
-            $html .= htmlentities($element->fullname);
+            $html .= '<table><tr>';
+            $html .= '<td class="list-item-name">'.htmlentities($element->fullname).'</td>';
+            $html .= '<td class="list-item-action">'.$addbutton_html.'</td>';
+            $html .= '</tr></table>';
             $html .= '</span>';
 
             if ($div_class !== '') {
@@ -118,6 +130,39 @@ function build_treeview($elements, $error_string, $hierarchy = null, $disabledli
         $html .= '</span></li>'.PHP_EOL;
     }
 
+    // Add hidden button images that can later be used/cloned by js TODO: add tooltip get_string
+    foreach ($buttons as $classname => $pic) {
+        $html .= '<img id="'.$classname.'_ex" src="'.$CFG->pixpath.'/t/'.$pic.'"
+            class="'.$classname.'" style="display: none;" />';
+    }
+
+    return $html;
+}
+
+/**
+ * Returns markup to be used in the 'Selected Items' pane of a multi-select dialog
+ *
+ * @param   $elements    array elements to be created in the pane
+ * @return  $html
+ */
+function populate_selected_items_pane($elements, $prefix='item') {
+
+    global $CFG;
+
+    $html = '';
+    $deletebutton = '<img id="deletebutton_ex" src="'.$CFG->pixpath.'/t/delete.gif" class="deletebutton" width="13px" height="13px" />'; 
+
+    foreach ($elements as $element) {
+        $html .= '<span id="'.$prefix.'_'.$element->id.'" class="">';
+        // format_string() really slow here...
+        $html .= '<table><tr>';
+        $html .= '<td class="list-item-name">'.htmlentities($element->fullname).'</td>';
+        $html .= '<td class="list-item-action">'.$deletebutton.'</td>';
+        $html .= '</tr></table>';
+
+        $html .= '</span>';
+    }
+
     return $html;
 }
 
@@ -127,9 +172,15 @@ function build_treeview($elements, $error_string, $hierarchy = null, $disabledli
  * @param   $list           array       Array of full cat path names
  * @param   $parents        array       Array of category parents
  * @param   $load_string    string      String to display as a placeholder for unloaded branches
+ * @uses    $CFG
  * @return  $html
  */
 function build_category_treeview($list, $parents, $load_string) {
+
+    global $CFG;
+
+    $buttons = array('addbutton' => 'add.gif', 
+                     'deletebutton' => 'delete.gif');
 
     $html = '';
 
@@ -169,7 +220,7 @@ function build_category_treeview($list, $parents, $load_string) {
 
                 if ($diff) {
                     $html .= str_repeat(
-                        '</li><li class="last loading"><div></div><span>'.$load_string.'</span></li></ul>',
+                        '<li class="last loading"><div></div><span>'.$load_string.'</span></li></ul>',
                          $diff + 1
                     );
                 }
@@ -195,6 +246,12 @@ function build_category_treeview($list, $parents, $load_string) {
                 $html .= '<li class="'.$li_class.'" id="item_list_'.$id.'"><div class="'.$div_class.'"></div>';
                 $html .= '<span class="folder">'.$category.'</span><ul style="display: none;">'.PHP_EOL;
             }
+        }
+
+        // Add hidden button images that can later be used/cloned by js TODO: add tooltip get_string
+        foreach ($buttons as $classname => $pic) {
+            $html .= '<img id="'.$classname.'_ex" src="'.$CFG->pixpath.'/t/'.$pic.'"
+                class="'.$classname.'" style="display: none;" />';
         }
     }
 
@@ -388,6 +445,24 @@ function display_dialog_selector($options, $selected, $class) {
     }
 
     $html .= '</select>';
+
+    return $html;
+}
+
+/**
+ * Return markup for 'Currently selected' info in a dialog
+ * @param $label the label
+ * @return  $html
+ */
+function dialog_display_currently_selected($label) {
+
+    $html = ' <span id="treeview_currently_selected_span" style="display: none;">';
+    $html .= '(<label for="treeview_selected_text">'.$label.'</label>:&nbsp;';
+    $html .= '<em><span id="treeview_selected_text"></span></em>'; 
+    $html .= ')</span>';
+
+    // Also add a hidden field that can hold the currently selected value
+    $html .= '<input type="hidden" id="treeview_selected_val" name="treeview_selected_val" value="" />';
 
     return $html;
 }
