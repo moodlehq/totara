@@ -340,10 +340,9 @@
 
     $table->define_columns($table_cols);
     $table->define_headers($table_header);
-    // center custom field columns
+    // label custom field columns for styling
     foreach ($table_cols as $table_col) {
         if(in_array($table_col, $table_cols_cf)) {
-            $table->column_style($table_col,'text-align','center');
             $table->column_class($table_col,'customfield');
         }
     }
