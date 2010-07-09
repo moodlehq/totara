@@ -18,7 +18,7 @@ if (file_exists($CFG->dirroot.'/hierarchy/type/'.$type.'/lib.php')) {
     $hierarchy = new $type();
 } else {
     error('error:hierarchytypenotfound', 'hierarchy', $type);
-}   
+}
 
 // If the hierarchy type has depth editing files use them else use the generic files
 if (file_exists($CFG->dirroot.'/hierarchy/type/'.$type.'/depth/edit.php')) {
@@ -34,8 +34,8 @@ if (!$id && !$frameworkid) {
     error('Incorrect parameters');
 }
 
-// Make this page appear under the manage hierachy items admin menu
-admin_externalpage_setup($type.'manage', '', array('type'=>$type));
+// Manage frameworks
+admin_externalpage_setup($type.'frameworkmanage');
 
 $context = get_context_instance(CONTEXT_SYSTEM);
 

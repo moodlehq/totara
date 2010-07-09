@@ -62,3 +62,7 @@ $string['name'] = 'Name';
 $string['depthlevels'] = 'Depth levels';
 $string['editgeneric'] = 'Edit $a';
 $string['currentlyselected'] = 'Currently selected';
+$string['nounassignedcompetencies'] = 'No unassigned competencies';
+$string['nounassignedcompetencytemplates'] = 'No unassigned competency templates';
+$string['competencyassigndeletecheck'] = 'Are you sure you would like to remove this competency assignment?';
+$string['deletedassignedcompetency'] = 'Competency successfully unassigned from this organisation';
