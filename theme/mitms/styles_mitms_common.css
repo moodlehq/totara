@@ -119,6 +119,11 @@ body.hierarchy-item h2.main {
     margin-right: auto;
 }
 
+
+#hierarchy-item-view table tr td {
+	border: 1px solid #DDDDDD;
+}
+
 table.viewhierarchyitem {
     width: 95%;
     margin-left: auto;
@@ -128,12 +133,13 @@ table.viewhierarchyitem {
 table.viewhierarchyitem td,
 table.viewhierarchyitem th {
     padding: 5px 10px;
+	border: 1px solid #DDDDDD;
 }
 
 table.viewhierarchyitem th.header {
     white-space: nowrap;
     width: 10%;
-    border-bottom: 1px solid #fff;
+	background: none;
 }
 
 div.nohierarchyitems {
@@ -142,18 +148,34 @@ div.nohierarchyitems {
     font-style: italic;
 }
 
+table.editcompetency {
+	width: 95%;
+}
 table.editcompetency th {
-    text-align: left;
+    text-align: center;
     vertical-align: top;
     white-space: nowrap;
     padding: 5px;
 }
 
 table.editcompetency td {
-    text-align: left;
     vertical-align: top;
     padding: 5px;
+	border: 1px solid #dddddd;
 }
+
+table.reportbuilder-table .r0 {
+	background: #FFFFFF;
+}
+
+table.reportbuilder-table .r1 {
+	background: #F5F5F5;
+}
+
+table.reportbuilder-table td {
+	border: 1px solid #DDDDDD;
+}
+
 
 /*****************************************************************************/
 /** Individual Development Plans **/
@@ -196,7 +218,7 @@ table.planitems th {
     text-align: left;
     vertical-align: top;
     white-space: nowrap;
-    padding: 0px 0px 2px 5px;
+    padding: 2px 5px;
 }
 
 table.planitems th.framework {
@@ -218,7 +240,7 @@ table.planitems th.options {
 table.planitems td {
     text-align: left;
     vertical-align: top;
-    padding: 0px 0px 2px 5px;
+    padding: 3px;
 }
 
 table.planitems td.options {
@@ -226,7 +248,7 @@ table.planitems td.options {
 }
 
 table.planbuttons {
-    margin-left: 8px;
+    margin-left: 0px;
     width: 532px;
     margin-bottom: 0px;
 }
@@ -234,7 +256,7 @@ table.planbuttons {
 table.planbuttons td {
     text-align: left;
     vertical-align: top;
-    padding: 0px 0px 5px 5px;
+    padding: 0px 0px 5px 0px;
 }
 
 table#list-assignedcompetencies th.c0,
@@ -690,4 +712,90 @@ table.allmyteam td.c2 {
 #my-team #middle-column table.flexible th.c4 {
   vertical-align: top;
   width: 102px;
+}
+
+/*****************************************************************************/
+/** Tables **/
+/*****************************************************************************/
+
+.generaltable {
+	width: 100%;
+}
+
+.generaltable .cell {
+	background-color: none !important;
+}
+
+.cell {
+	padding: 3px;
+}
+
+
+tr.r1 .cell {
+	background: #f5f5f5;
+}
+td.c0 {
+	text-align: left;
+}
+
+
+
+th.header {
+	background: #EDEDED url(images/gradient.png) top left repeat-x;
+	border: 1px solid #e2e2e2;
+	padding:3px;
+}
+
+table.customfields th.lastcol {
+	width: 100px;
+	text-align:center;
+}
+
+table.customfields th.lastcol,
+table.customfields td.lastcol{
+	text-align: center !important;
+}
+table.borderless td {
+	border-color: #ffffff;
+	vertical-align: top;
+}
+
+
+table#list-idpcompetency,
+table#list-idpcompetencytemplate,
+table#list-idpcourse{
+	margin:5px 0 0;
+	width:100%;
+}
+
+.logtable td, .logtable th {
+	padding-left:5px;
+	padding-right:5px;
+}
+
+
+body#hierarchy-index table#competency tr.r0 td.customfield {
+background: #fdfdfd;
+}
+body#hierarchy-index table#competency tr.r1 td.customfield {
+		background: #f2f2f2;
+	}
+
+body#hierarchy-index table#competency tr.r1 td
+
+/*****************************************************************************/
+/** Form **/
+/*****************************************************************************/
+
+form#newfieldform {
+	padding:10px 0 0;
+	display: table;
+}
+
+.mform {
+	width: 100%
+}
+
+.mform fieldset .advancedbutton  {
+	width: 99%
 }
