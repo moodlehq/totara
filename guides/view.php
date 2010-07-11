@@ -162,7 +162,7 @@ foreach ($visiblesteps as $stepnumber) {
         print '<div class="guidestepcontainer"><div class="guidestep inactive incomplete">';
         print_heading('Step ' . $stepnumber,'center',2,'guidesteptitle pending');
     }
-    print $steps[$stepnumber]->content($activestep, $completedstep);
+    print '<div class="guidesteptext">' . $steps[$stepnumber]->content($activestep, $completedstep) . '</div>';
     print '<div class="stepstatusimg">';
     if ($activestep) {
         print '<form action="' . $CFG->wwwroot . '/guides/view.php?gi=' . $gi->id . '" method="post">';
