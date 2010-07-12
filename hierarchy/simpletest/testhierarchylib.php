@@ -70,6 +70,11 @@ class hierarchylib_test extends prefix_changing_test_case {
         array(1, 1, 1, 1, 1, 1, 1, 2),
     );
 
+    var $comp_scale_assignments_data = array(
+        array('id', 'scaleid', 'frameworkid', 'timemodified', 'usermodified'),
+        array(1,1,1,1,1),
+    );
+
     function setUp() {
         global $db,$CFG;
         parent::setup();
@@ -89,6 +94,7 @@ class hierarchylib_test extends prefix_changing_test_case {
         load_test_table($CFG->prefix . 'comp_template_assignment', $this->dummy_data, $db);
         load_test_table($CFG->prefix . 'pos_competencies', $this->dummy_data, $db);
         load_test_table($CFG->prefix . 'comp_relations', $this->dummy_data, $db);
+        load_test_table($CFG->prefix . 'comp_scale_assignments', $this->comp_scale_assignments_data, $db);
 
         // create the competency object
         $this->competency = new competency();
@@ -183,6 +189,7 @@ class hierarchylib_test extends prefix_changing_test_case {
         remove_test_table('mdl_unittest_comp', $db);
         remove_test_table('mdl_unittest_comp_depth', $db);
         remove_test_table('mdl_unittest_comp_framework', $db);
+        remove_test_table('mdl_unittest_comp_scale_assignments', $db);
         parent::tearDown();
     }
 
