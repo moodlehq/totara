@@ -170,7 +170,7 @@ if ($overall == COMPLETION_AGGREGATION_ALL) {
 echo '</td></tr></tbody></table>';
 
 // Generate markup for criteria statuses
-echo '<table class="generalbox boxaligncenter" cellpadding="3"><tbody>';
+echo '<table class="generalbox boxaligncenter" id="criteriastatus" cellpadding="3"><tbody>';
 echo '<tr class="ccheader">';
 echo '<th class="c0 header" scope="col">'.get_string('criteriagroup', 'block_completionstatus').'</th>';
 echo '<th class="c1 header" scope="col">'.get_string('criteria', 'completion').'</th>';
