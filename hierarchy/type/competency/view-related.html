@@ -32,9 +32,12 @@ print_heading(get_string('relatedcompetencies', $this->prefix));
 
 if ($related) {
 
+    $oddeven = 1;
     foreach ($related as $ritem) {
 
-        echo '<tr>';
+        $oddeven = ++$oddeven % 2;
+
+        echo '<tr class="r'.$oddeven.'">';
         echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/index.php?type={$this->prefix}&frameworkid={$ritem->fid}\">{$ritem->framework}</a></td>";
         echo '<td>'.$ritem->depth.'</td>';
         echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/item/view.php?type={$this->prefix}&id={$ritem->id}\">{$ritem->fullname}</a></td>";

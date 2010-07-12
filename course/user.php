@@ -439,8 +439,9 @@
                         foreach ($completions as $completion) {
                             $criteria = $completion->get_criteria();
                             $complete = $completion->is_complete();
+
                             // for row striping (per course)
-                            $oddeven = $oddeven ? 0 : 1;
+                            $oddeven = ++$oddeven % 2;
 
                             // Activities are a special case, so cache them and leave them till last
                             if ($criteria->criteriatype == COMPLETION_CRITERIA_TYPE_ACTIVITY) {
@@ -492,6 +493,8 @@
 
                         // Print table
                         foreach ($rows as $row) {
+
+                            $oddeven = ++$oddeven % 2;
 
                             // Display course name on first row
                             if ($first_row) {

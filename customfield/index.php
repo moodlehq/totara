@@ -223,6 +223,7 @@ if ($breadcrumbnavigation) {
     $table->align = array('left', 'right');
     $table->width = '95%';
     $table->class = 'generaltable customfields';
+    $table->id = 'customfields_'.$hierarchy->prefix;
     $table->data = array();
 
 
@@ -265,6 +266,7 @@ if ($breadcrumbnavigation) {
             $table->align = array('left', 'right');
             $table->width = '95%';
             $table->class = 'generaltable customfields';
+            $table->id = 'customfields_'.$hierarchy->prefix;
             $table->data = array();
 
             if ($fields = get_records_select($tableprefix.'_info_field', "categoryid=$category->id", 'sortorder ASC')) {
