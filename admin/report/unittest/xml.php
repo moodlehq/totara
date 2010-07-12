@@ -15,7 +15,7 @@ require_once($CFG->libdir.'/simpletestlib.php');
 require_once('ex_simple_test.php');
 require_once($CFG->libdir.'/simpletestlib/xml.php');
 
-error_reporting(E_ALL);
+error_reporting(E_ALL ^ E_DEPRECATED);
 ini_set('display_errors', 0);
 
 // Setup
