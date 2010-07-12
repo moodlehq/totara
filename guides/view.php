@@ -163,17 +163,19 @@ foreach ($visiblesteps as $stepnumber) {
         print_heading('Step ' . $stepnumber,'center',2,'guidesteptitle pending');
     }
     print '<div class="guidesteptext">' . $steps[$stepnumber]->content($activestep, $completedstep) . '</div>';
-    print '<div class="stepstatusimg">';
+    print '<div class="stepstatus">';
     if ($activestep) {
         print '<form action="' . $CFG->wwwroot . '/guides/view.php?gi=' . $gi->id . '" method="post">';
         print '<input type="hidden" name="gi" value="' . $gi->id . '"/>';
         print '<input type="hidden" name="finish" value="' . $stepnumber . '"/>';
-        print '<input type="image" src="' . $CFG->wwwroot . '/blocks/guides/finishstep.png" alt="finish step"/>';
+        print '<input type="submit" value="'.get_string('finishstep', 'blocks/guides').'"/>';
         print '</form></div>';
     } elseif ($completedstep) {
-        print '<img src="' . $CFG->wwwroot . '/blocks/guides/completed.png" alt="completed"/></div>';
+        print get_string('completed', 'block/guides');
+        print '</div>';
     } else {
-        print '<img src="' . $CFG->wwwroot . '/blocks/guides/unavailable.png" alt="unavailable"/></div>';
+        print get_string('unavailable', 'block/guides');
+        print '</div>';
     }
     print '</div></div>';
 }
