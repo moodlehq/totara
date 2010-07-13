@@ -52,6 +52,49 @@ div.mycourses td.status span.completion-completeviarpl {
     background-position: 0px -24px;
 }
 
+
+/*****************************************************************************/
+/** TABS **/
+/*****************************************************************************/
+.tabtree {
+	height: 50px;	
+}
+
+.tabrow0 li.selected a span,
+.tabrow0 li.selected a:hover span,
+.tabrow0 li.active a span  {
+	background:url("images/tab/right-selected.gif") no-repeat scroll right top transparent;
+}
+.tabrow0 li.selected a,
+.tabrow0 li.selected a:hover,
+.tabrow0 li.active a {
+	background:url("images/tab/left-selected.gif") no-repeat scroll left top transparent;
+}
+
+.tabrow0 div, .tabrow0 ul {
+	background:url("images/tab/tab-nav-row.gif") repeat scroll 0 0 transparent;
+	border-color:#CCCCCC;
+	margin-top:1px;
+	padding:6px 0;
+}
+
+ul.tabrow1 li.here.selected a,
+ul.tabrow1 li.active a{
+	background: none;	
+}
+ul.tabrow1 li a,
+ul.tabrow1 li a:link,
+ul.tabrow1 li a:visited,
+.tabrow0 ul li a:hover span,
+.tabrow0 ul a {
+	text-decoration:none;
+	background: none;
+}
+
+ul.tabrow1 li a:hover {
+	text-decoration: underline;	
+}
+
 /*****************************************************************************/
 /** Report Builder **/
 /*****************************************************************************/
@@ -120,9 +163,7 @@ body.hierarchy-item h2.main {
 }
 
 
-#hierarchy-item-view table tr td {
-	border: 1px solid #DDDDDD;
-}
+
 
 table.viewhierarchyitem {
     width: 95%;
@@ -133,7 +174,7 @@ table.viewhierarchyitem {
 table.viewhierarchyitem td,
 table.viewhierarchyitem th {
     padding: 5px 10px;
-	border: 1px solid #DDDDDD;
+	border: 1px solid #EEEEEE;
 }
 
 table.viewhierarchyitem th.header {
@@ -148,32 +189,45 @@ div.nohierarchyitems {
     font-style: italic;
 }
 
-table.editcompetency {
-	width: 95%;
-}
+
 table.editcompetency th {
     text-align: center;
     vertical-align: top;
     white-space: nowrap;
     padding: 5px;
 }
+table.editcompetency td.cell.c0,
+table.editcompetency th.c0 {
+	text-align:left;	
+}
 
+table.editcompetency td.cell {
+	text-align: center;	
+}
 table.editcompetency td {
     vertical-align: top;
     padding: 5px;
-	border: 1px solid #dddddd;
+	border: 1px solid #EEEEEE;
+}
+
+table.editcompetency td.last {
+	text-align: center;
 }
 
 table.reportbuilder-table .r0 {
-	background: #FFFFFF;
+	background: #FFFFFF;	
 }
 
 table.reportbuilder-table .r1 {
-	background: #F5F5F5;
+	background: #F5F5F5;	
+}
+table.course-completion-table td,
+table.reportbuilder-table td {
+	border: 1px solid #EEEEEE;	
 }
 
-table.reportbuilder-table td {
-	border: 1px solid #DDDDDD;
+#customfield-index table{
+	width: 100%;
 }
 
 
@@ -211,9 +265,7 @@ table.planitems {
 table.planitems tr {
     height: 25px;
 }
-table.planitems tr.r0 {
-    background-color: #F0F0F0;
-}
+
 table.planitems th {
     text-align: left;
     vertical-align: top;
@@ -250,7 +302,7 @@ table.planitems td.options {
 table.planbuttons {
     margin-left: 0px;
     width: 532px;
-    margin-bottom: 0px;
+    margin-bottom: 10px;
 }
 
 table.planbuttons td {
@@ -622,6 +674,7 @@ a.noscript-button {
 table.centerblock td, th {
   text-align: left;
   padding: 2px;
+  text
 }
 
 table.centerblock th.course, table.centerblock td.course {
@@ -718,27 +771,31 @@ table.allmyteam td.c2 {
 /** Tables **/
 /*****************************************************************************/
 
+
+
 .generaltable {
 	width: 100%;
+	margin-top: 10px;
 }
-
+.generaltable th.lastcol,
+.generaltable td.lastcol{
+	text-align: center;	
+}
 .generaltable .cell {
 	background-color: none !important;
 }
 
 .cell {
-	padding: 3px;
+	padding: 3px;	
 }
 
-
+.r1,
 tr.r1 .cell {
-	background: #f5f5f5;
+	background: #f5f5f5;	
 }
 td.c0 {
-	text-align: left;
+	text-align: left;	
 }
-
-
 
 th.header {
 	background: #EDEDED url(images/gradient.png) top left repeat-x;
@@ -746,26 +803,59 @@ th.header {
 	padding:3px;
 }
 
+div.customfields {
+	width: 80%;
+	margin: 0 auto;
+}
+
+div.customfields h2.main {
+	border-color:-moz-use-text-color -moz-use-text-color #CACACA;
+	border-style:none none solid;
+	border-width:medium medium 1px;
+	font-size:1em;
+	font-weight:bold;
+	padding-bottom:5px;
+	text-align:left;
+}
+
 table.customfields th.lastcol {
 	width: 100px;
 	text-align:center;
 }
 
+
+table#competency th.extrafield,
+table#competency td.extrafield,
 table.customfields th.lastcol,
 table.customfields td.lastcol{
-	text-align: center !important;
+	text-align: center !important;	
 }
+
+
+
+
 table.borderless td {
 	border-color: #ffffff;
 	vertical-align: top;
 }
 
-
+table#list-idpcourse th,
+table#list-idpcompetencytemplate th,
+table#list-idpcompetency th {
+	background: #EDEDED url(images/gradient.png) top left repeat-x;
+	border: 1px solid #e2e2e2;
+	padding:3px;
+}
+table#list-idpcourse td,
+table#list-idpcompetencytemplate td,
+table#list-idpcompetency td {
+	border: 1px solid #EEEEEE;	
+}
 table#list-idpcompetency,
 table#list-idpcompetencytemplate,
 table#list-idpcourse{
-	margin:5px 0 0;
-	width:100%;
+	margin:5px 0 10px;
+	width:100%;	
 }
 
 .logtable td, .logtable th {
@@ -773,15 +863,50 @@ table#list-idpcourse{
 	padding-right:5px;
 }
 
-
-body#hierarchy-index table#competency tr.r0 td.customfield {
-background: #fdfdfd;
+body#hierarchy-index table#competency tr.r0 td.customfield { 
+	background: #fdfdfd;
 }
 body#hierarchy-index table#competency tr.r1 td.customfield {
-		background: #f2f2f2;
-	}
+	background: #f2f2f2;
+}
 
-body#hierarchy-index table#competency tr.r1 td
+table#course_completions {
+	width: 80%	
+}
+
+#my-coursecompletions .singlebutton {	
+	text-align: center;
+}
+
+#criteriastatus td {
+	border: 1px solid #EEEEEE;	
+}
+
+table.reportheading-table {
+	background: url("images/table-grad-blue.png") top left repeat-x;
+	border: 1px solid #BDD8EF;
+	margin-top: 5px;
+}
+table.reportheading-table td,
+table.reportheading-table th {
+	padding: 3px 7px;
+	vertical-align:top;
+}
+
+table.reportheading-table th{
+	white-space:nowrap;
+}	
+
+table.personaldetails {
+	padding-bottom: 10px;
+	
+}
+
+
+table.personaldetails td.lastcol {
+		text-align: left;
+}
+
 
 /*****************************************************************************/
 /** Form **/
@@ -797,5 +922,110 @@ form#newfieldform {
 }
 
 .mform fieldset .advancedbutton  {
-	width: 99%
+	width: 99%	
+}
+
+/*****************************************************************************/
+/** Guide Steps **/
+/*****************************************************************************/
+
+.guidestep {
+	border: 1px solid #EEEEEE;
+	word-wrap: break-word;
+}
+
+body#guides-view #content {
+	position: relative;	
+}
+
+body#guides-view #content .guidenavigation {
+	position:absolute;
+	right:20px;
+	top:24px;
+	width: auto;
+}
+
+
+.guideheadings {
+	padding: 5px;	
+}
+
+.guideheadings h2{
+	text-align: left;
+}
+
+.guidesteptitle {
+	border-bottom: none;
+	padding: 5px;
+}
+h2.guidesteptitle {
+	margin: 0;
+	background: url(images/gradient.png) top left repeat-x;
+}
+
+h2.guidesteptitle.complete {
+	background: #DDEDF3 url(images/gradient-blue.png) top left repeat-x;
+	color: #2970A6;
+}
+.guidestep.complete {
+	border: 1px solid #DDEDF3;	
+}
+
+
+h2.guidesteptitle.active {
+	background: #D9F3E1 url(images/gradient-grn.png) top left repeat-x;	
+	color: #3E8F56;
+}
+
+.guidestep.active {
+	border: 1px solid #D9F3E1;	
+}
+.stepstatusimg {
+	font-weight: bold;
+	font-size: 1em;
+	padding: 5px;
+}
+.guidesteptext {
+	padding: 5px;	
+}
+
+h2.guidesteptitle.pending {
+	color: #999999;	
+}
+
+
+.guidestep.complete .stepstatus {
+	background:none repeat scroll 0 0 #F4F9FB;
+	color:#2970A6;
+	margin:5px;
+	padding:5px;
+	text-align:center;
+	text-transform:uppercase;
+}
+
+.guidestep.incomplete .stepstatus {
+	background:none repeat scroll 0 0 #FAFAFA;
+	color:#999999;
+	margin:5px;
+	padding:5px;
+	text-align:center;
+	text-transform:uppercase;
+}
+
+.guidestep.active .stepstatus {
+	background:none repeat scroll 0 0 #EFFAF3;
+	color:#3E8F56;
+	margin:5px;
+	padding:5px;
+	text-align:center;
+	text-transform:uppercase;
+}
+
+.guidestep.active .stepstatusimg input {
+		border: 1px solid #EFF8EF;
+		background: #D9F3E1 url(images/gradient-grn.png) top left repeat-x;
+}
+
+.guideindexdetail {
+	padding: 5px;	
 }
