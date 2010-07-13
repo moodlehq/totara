@@ -331,11 +331,15 @@
             $table_cols[] = $head->value->fullname.$key;
             $table_header[] = $header;
             $table_cols_cf[]= $head->value->fullname.$key; // keep track of custom field headers for styling below
-        } else {
-            // extrafield or settings header
+        } else if ($head->type == 'extrafield') {
+            // extrafield header
             $table_cols[] = $head->value->fullname.$key;
             $table_header[] = $head->value->fullname;
             $table_cols_ef[]= $head->value->fullname.$key; // keep track of extra field headers for styling below
+        } else {
+            // settings header
+            $table_cols[] = $head->value->fullname.$key;
+            $table_header[] = $head->value->fullname;
         }
     }
     $table = new flexible_table($type.'-framework-index-'.$frameworkid);
