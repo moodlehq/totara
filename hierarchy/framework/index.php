@@ -85,17 +85,14 @@ if ($frameworks) {
     // Create display table
     $table = new stdclass();
     $table->class = 'generaltable edit'.$type;
-    $table->width = '95%';
 
     // Setup column headers
     $table->head = array(get_string('name', $type), get_string($type.'plural', $type), get_string('depths', $type),
         get_string("{$type}customfields", $type));
-    $table->align = array('left', 'center', 'center');
 
     // Add edit column
     if ($editingon && $can_edit) {
         $table->head[] = get_string('edit');
-        $table->align[] = 'left';
     }
 
     // Add rows to table
@@ -131,10 +128,14 @@ if ($frameworks) {
             if ($rowcount != 1) {
                 $buttons[] = "<a href=\"index.php?type={$type}&moveup={$framework->id}\" title=\"$str_moveup\">".
                    "<img src=\"{$CFG->pixpath}/t/up.gif\" class=\"iconsmall\" alt=\"$str_moveup\" /></a> ";
+            } else {
+                $buttons[] = "<img src=\"{$CFG->pixpath}/spacer.gif\"  class=\"iconsmall\"  alt=\"\" /> ";
             }
             if ($rowcount != count($frameworks)) {
                 $buttons[] = "<a href=\"index.php?type={$type}&movedown={$framework->id}\" title=\"$str_movedown\">".
                     "<img src=\"{$CFG->pixpath}/t/down.gif\" class=\"iconsmall\" alt=\"$str_movedown\" /></a>";
+            } else {
+                $buttons[] = "<img src=\"{$CFG->pixpath}/spacer.gif\"  class=\"iconsmall\"  alt=\"\" /> ";
             }
             $rowcount++;
         }
