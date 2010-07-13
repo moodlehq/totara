@@ -1251,7 +1251,7 @@ class reportbuilder {
         $id = $this->_id;
         $sid = $this->_sid;
         // only show if there are saved searches for this report and user
-        if($saved = get_records_select('report_builder_saved', 'reportid='.$id.'AND userid='.$USER->id)) {
+        if($saved = get_records_select('report_builder_saved', 'reportid='.$id.' AND userid='.$USER->id)) {
             $common = $CFG->wwwroot.'/local/reportbuilder/report.php?id='.$id.'&amp;sid=';
             $options = array();
             foreach($saved as $item) {

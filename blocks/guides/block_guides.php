@@ -28,7 +28,7 @@ class block_guides extends block_list {
                  " class=\"icon\" alt=\"".get_string("coursecategory")."\" />";
         $inprogresscontent = '';
         require_once($CFG->dirroot . '/guides/lib.php');
-        $gissql = 'SELECT g.id, gi.currentstep, gi,guide, gi.id as giid, g.steps, g.name, g.description ' .
+        $gissql = 'SELECT g.id, gi.currentstep, gi.guide, gi.id as giid, g.steps, g.name, g.description ' .
                     'FROM ' . $CFG->prefix . 'block_guides_guide g' .
                     ' INNER JOIN ' . $CFG->prefix . 'block_guides_guide_instance gi ON gi.guide = g.id ' .
                     'WHERE gi.deleted = 0 AND gi.userid = ' . $USER->id . ' ' .
