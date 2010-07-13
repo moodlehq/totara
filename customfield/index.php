@@ -254,6 +254,7 @@ if ($breadcrumbnavigation) {
     $categories = get_records_select($tableprefix.'_info_category', "depthid='$depthid'", 'sortorder ASC');
     $categorycount = count($categories);
 
+    echo "<div class=\"customfields\">";
     echo "<b>".get_string('framework', $type).":</b> <a href=\"".$CFG->wwwroot."/hierarchy/index.php?type={$type}&frameworkid={$framework->id}\">$framework->fullname</a><br>";
     echo "<b>".get_string('depthlevel', $type).":</b> $depth->fullname<br>";
 
@@ -263,8 +264,6 @@ if ($breadcrumbnavigation) {
 
             $table = new object();
             $table->head  = array(get_string('customfield', 'customfields'), get_string('edit'));
-            $table->align = array('left', 'right');
-            $table->width = '95%';
             $table->class = 'generaltable customfields';
             $table->id = 'customfields_'.$hierarchy->prefix;
             $table->data = array();
@@ -307,7 +306,7 @@ if ($breadcrumbnavigation) {
     $options = array('frameworkid' => $framework->id, 'type' => $type);
     print_single_button("{$CFG->wwwroot}/hierarchy/index.php", $options, get_string('returntoframework', $type));
 
-    print '</div>';
+    print '</div></div>';
 
 } else {
 // show custom fields for all frameworks
