@@ -271,7 +271,7 @@ if ($breadcrumbnavigation) {
             if ($fields = get_records_select($tableprefix.'_info_field', "categoryid=$category->id", 'sortorder ASC')) {
 
                 $fieldcount = count($fields);
-                print_heading(format_string($category->name).' '.customfield_category_icons($category, $categorycount, $fieldcount, $depthid, $type, $subtype));
+                print_heading(get_string('category').': '.format_string($category->name).' '.customfield_category_icons($category, $categorycount, $fieldcount, $depthid, $type, $subtype));
 
                 foreach ($fields as $field) {
                     $table->data[] = array($field->fullname, customfield_edit_icons($field, $fieldcount, $depthid, $type, $subtype));
