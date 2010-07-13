@@ -305,6 +305,7 @@
             // depth level header
             $header = $head->value->$displaydepth;
 
+            $header .= "<div class=\"options\">";
             if ($editingon && $can_edit_depth) {
                 $header .= " <a href=\"{$CFG->wwwroot}/hierarchy/depth/edit.php?type={$type}&amp;id={$head->value->id}\"
                     title=\"$str_edit\">".
@@ -318,6 +319,7 @@
                     title=\"$str_delete\">".
                     "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_delete\" /></a>";
             }
+            $header .= "</div>";
             $table_cols[] = $head->value->fullname.$key;
             $table_header[] = $header;
 
