@@ -2682,11 +2682,9 @@ function format_user_link($userid, $youstring='Yourself') {
  */
 function convert_userdate($datestring) {
     // Check for DD/MM/YYYY
-    if ($datearray = strptime($datestring, '%d/%m/%Y')) {
-        return mktime($datearray['tm_hour'], $datearray['tm_min'], $datearray['tm_sec'],
-                      1 + $datearray['tm_mon'], $datearray['tm_mday'], 1900 + $datearray['tm_year']);
+    if (preg_match('|(\d{1,2})/(\d{1,2})/(\d{4})|', $datestring, $matches)) {
+        return mktime(0,0,0,$matches[2], $matches[1], $matches[3]);
     }
-
     return strtotime($datestring);
 }
 
