@@ -296,6 +296,7 @@
 
     $table_cols = array();
     $table_cols_cf = array();
+    $table_cols_ef = array();
     $table_data = array();
 
     // build header row
@@ -334,6 +335,7 @@
             // extrafield or settings header
             $table_cols[] = $head->value->fullname.$key;
             $table_header[] = $head->value->fullname;
+            $table_cols_ef[]= $head->value->fullname.$key; // keep track of extra field headers for styling below
         }
     }
     $table = new flexible_table($type.'-framework-index-'.$frameworkid);
@@ -344,6 +346,8 @@
     foreach ($table_cols as $table_col) {
         if(in_array($table_col, $table_cols_cf)) {
             $table->column_class($table_col,'customfield');
+        } elseif(in_array($table_col, $table_cols_ef)) {
+            $table->column_class($table_col,'extrafield');
         }
     }
     $table->column_style('Settings','width','80px');
