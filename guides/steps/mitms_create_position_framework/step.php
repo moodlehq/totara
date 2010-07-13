@@ -1,24 +1,23 @@
 <?php
 require_once ($CFG->dirroot . '/guides/steps/default.php');
-class guide_mitms_create_depth_levels_step extends guide_default_step {
+class guide_mitms_create_position_framework_step extends guide_default_step {
     ## Return the content the step should display when it is the active step in a guide:
     function content_step_active () {
-        return '<p>This step requires you to set up a depth level under your competency framework.</p>
-            <p>When you are ready to start go back to the framework you created and click the Add a new depth level button.</p>
-            <p>Refer to the <a href="">Setting up Depth Levels help file</a> for further instructions.</p>
-            <p>On completing your depth level(s) set up, return to this guide and click <b>Finish step</b> to see the instructions for the next step.</p>';
+        return '<p>The first step is to set up a position framework.</p>
+            <p>Setting up a position framework is like setting up a folder in which you create the job role structure.  You can set up multiple position frameworks.</p>
+            <p>When you are ready to start click <a href="' . $CFG->wwwroot . '/hierarchy/framework/index.php?type=position">Position frameworks</a>.</p>
+            <p>On completing your position framework return to this guide and click <b>Finish step</b> to see the instructions for the next step.</p>';
     }
 
     # Return content the step should display when it is not active, and is not complete:
     function content_step_pending () {
-        return '<p>A competency framework requires at least one depth level to be set up.</p>
-            <p>Depth levels allow you to set up a hierarchical structure for the competency framework</p>';
+        return '';
     }
 
     # Return content the step should display when it is not active, and is complete:
     function content_step_complete () {
         return '<p>This step has been completed.</p>
-            <p>You can set up more depth levels at any stage by clicking <b>Add a depth level</b> from the Manage competencies frameworks screen.</p>';
+            <p>You can set up multiple position frameworks if required from Positions> Manage frameworks on the Site Administration menu.</p>';
     }
 
     ## An indication of how involved this step is - default to 100 points

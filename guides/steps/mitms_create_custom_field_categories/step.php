@@ -3,17 +3,22 @@ require_once ($CFG->dirroot . '/guides/steps/default.php');
 class guide_mitms_create_custom_field_categories_step extends guide_default_step {
     ## Return the content the step should display when it is the active step in a guide:
     function content_step_active () {
-        return 'This is the mitms_create_custom_field_categories step.<br /> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis nowus.';
+        return '<p>Setting up custom field categories for each depth level is optional. Click <b>Finish step</b> if you wish to move on.</p>
+            <p>When you are ready to start open the depth level you created and click the <b>Create custom field category</b> button.</p>
+            <p>Refer to the <a href="">Setting up Custom Categories and Custom Fields help file</a> for further instructions.</p>
+            <p>On completing your custom categories set up, return to this guide and click <b>Finish step</b> to see the instructions for the next step.</p>';
     }
 
     # Return content the step should display when it is not active, and is not complete:
     function content_step_pending () {
-        return 'This is the mitms_create_custom_field_categories step.<br /> This step is pending.  Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Dous soonish.';
+        return '<p>Custom field categories can be set up for each depth level.</p>
+            <p>Custom field categories allow you to group custom fields on the <b>Add new Organisation</b> page.</p>';
     }
 
     # Return content the step should display when it is not active, and is complete:
     function content_step_complete () {
-        return 'This is the mitms_create_custom_field_categories step. <br /> This step is now complete: Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur? Donus maximus.';
+        return '<p>This step has been completed.</p>
+            <p>You can set up more custom categories at any stage by clicking the <b>Custom fields</b> button on any depth level.</p>';
     }
 
     ## An indication of how involved this step is - default to 100 points

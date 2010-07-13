@@ -4,24 +4,27 @@ class guide_mitms_guide_organisations_step extends guide_default_step {
     ## Return the content the step should display when it is the active step in a guide:
     function content_step_active () {
         global $CFG;
-        $returnstring = 'This step requires you to complete the ';
+        $returnstring = '<p>This step requires you to set up the organisation structure.</p>
+                <p>When you are ready to start open the ';
         $guide = get_record('block_guides_guide','name','Configure Organisations');
         if ($guide) {
-            $returnstring .= '<a href="' . $CFG->wwwroot . '/guides/view.php?startguide=' . $guide->id . '">Configure Organisations</a> guide.';
+            $returnstring .= 'by clicking <a href="' . $CFG->wwwroot . '/guides/view.php?startguide=' . $guide->id . '">Configure Organisations</a>';
         } else {
             $returnstring .= 'Configure Organisations guide.';
         }
+        $returnstring .= ' this will open a step by step guide that will help you with this process.</p>';
         return $returnstring;
     }
 
     # Return content the step should display when it is not active, and is not complete:
     function content_step_pending () {
-        return 'This is the mitms_guide_organisations step.<br /> This step is pending.  When you get to this step you will need to complete the Configure Organisations guide.';
+        return '<p>Set up your organisation structure allows you to set up an organisational heirarchy in the system.</p>';
     }
 
     # Return content the step should display when it is not active, and is complete:
     function content_step_complete () {
-        return 'The organisations guide has been marked as completed. <br /> If you would like to run through the organisations guide again, you can delete your guide progress, and start again.';
+        return '<p>This step has been completed.</p>
+            <p>You can add, modify or delete organisation information from <b>Organisations</b> on the Site Administration menu.</p>';
     }
 
     function effort() {

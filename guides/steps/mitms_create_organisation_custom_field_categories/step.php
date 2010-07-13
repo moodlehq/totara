@@ -1,24 +1,24 @@
 <?php
 require_once ($CFG->dirroot . '/guides/steps/default.php');
-class guide_mitms_create_depth_levels_step extends guide_default_step {
+class guide_mitms_create_organisation_custom_field_categories_step extends guide_default_step {
     ## Return the content the step should display when it is the active step in a guide:
     function content_step_active () {
-        return '<p>This step requires you to set up a depth level under your competency framework.</p>
-            <p>When you are ready to start go back to the framework you created and click the Add a new depth level button.</p>
-            <p>Refer to the <a href="">Setting up Depth Levels help file</a> for further instructions.</p>
-            <p>On completing your depth level(s) set up, return to this guide and click <b>Finish step</b> to see the instructions for the next step.</p>';
+        return '<p>Setting up custom field categories for each depth level is optional. Click <b>Finish step</b> if you wish to move on.</p>
+            <p>When you are ready to start open the depth level you created and click the <b>Create custom field category</b> button.</p>
+            <p>Refer to the <a href="">Setting up Custom Categories and Custom Fields help file</a> for further instructions.</p>
+            <p>On completing your custom categories set up, return to this guide and click <b>Finish step</b> to see the instructions for the next step.</p>';
     }
 
     # Return content the step should display when it is not active, and is not complete:
     function content_step_pending () {
-        return '<p>A competency framework requires at least one depth level to be set up.</p>
-            <p>Depth levels allow you to set up a hierarchical structure for the competency framework</p>';
+        return '<p>Custom field categories can be set up for each depth level.</p>            
+            <p>Custom field categories allow you to group custom fields on the <b>Add new Organisation</b> page.</p>';
     }
 
     # Return content the step should display when it is not active, and is complete:
     function content_step_complete () {
-        return '<p>This step has been completed.</p>
-            <p>You can set up more depth levels at any stage by clicking <b>Add a depth level</b> from the Manage competencies frameworks screen.</p>';
+        return '<p>This step has been completed. </p>
+            <p>You can set up more custom categories at any stage by clicking the <b>Custom field</b> button on any depth level.</p>';
     }
 
     ## An indication of how involved this step is - default to 100 points

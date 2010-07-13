@@ -3,17 +3,22 @@ require_once ($CFG->dirroot . '/guides/steps/default.php');
 class guide_mitms_assign_user_manager_role_step extends guide_default_step {
     ## Return the content the step should display when it is the active step in a guide:
     function content_step_active () {
-        return 'This is the mitms_assign_user_manager_role step.<br /> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis nowus.';
+        $manager = get_record('role','shortname','manager');
+        return '<p>The first step is to assign users to the role of manager.</p>
+            <p>When you are ready to start click <a href="' . $CFG->wwwroot . '/admin/roles/assign.php?contextid=1&roleid=' . $manager->id  . '">Assign user the role of manager</a>.</p>
+            <p>Refer to the <a href="">Assign users the role of manager help file</a> for further information.</p>
+            <p>On completing this step return to this guide and click <b>Finish step</b>.</p>';
     }
 
     # Return content the step should display when it is not active, and is not complete:
     function content_step_pending () {
-        return 'This is the mitms_assign_user_manager_role step.<br /> This step is pending.  Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Dous soonish.';
+        return '<p>Assign users to the role of manager allows them to see the development plans, face-to-face bookings and records of learning for the staff who report to them.</p>';
     }
 
     # Return content the step should display when it is not active, and is complete:
     function content_step_complete () {
-        return 'This is the mitms_assign_user_manager_role step. <br /> This step is now complete: Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur? Donus maximus.';
+        return '<p>This step has been completed.</p>
+            <p>You can assign a user to the role of manager from Assign system roles on the Site Administration menu.</p>';
     }
 
     ## An indication of how involved this step is - default to 100 points

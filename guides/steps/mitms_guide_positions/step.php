@@ -4,24 +4,27 @@ class guide_mitms_guide_positions_step extends guide_default_step {
     ## Return the content the step should display when it is the active step in a guide:
     function content_step_active () {
         global $CFG;
-        $returnstring = 'This step requires you to complete the ';
+        $returnstring = '<p>This step requires you to set up the positions structure.</p>
+           <p>When you are ready to start open the ';
         $guide = get_record('block_guides_guide','name','Configure Positions');
         if ($guide) {
-            $returnstring .= '<a href="' . $CFG->wwwroot . '/guides/view.php?startguide=' . $guide->id . '">Configure Positions</a> guide.';
+            $returnstring .= 'by clicking <a href="' . $CFG->wwwroot . '/guides/view.php?startguide=' . $guide->id . '">Configure Positions</a>';
         } else {
             $returnstring .= 'Configure Positions guide.';
         }
+        $returnstring .= ' this will open a step by step guide that will help you with this process.</p>';
         return $returnstring;
     }
 
     # Return content the step should display when it is not active, and is not complete:
     function content_step_pending () {
-        return 'This is the mitms_guide_positions step.<br /> This step is pending.  When you get to this step you will need to complete the Configure Positions guide.';
+        return '<p>Set up positions allows you to set up the job roles for your organisation.</p>';
     }
 
     # Return content the step should display when it is not active, and is complete:
     function content_step_complete () {
-        return 'The positions guide has been marked as completed. <br /> If you would like to run through the positions guide again, you can delete your guide progress, and start again.';
+        return '<p>This step has been completed.</p>
+            <p>You can add, modify or delete position information from <b>Positions</b> on the Site Administration menu.</p>';
     }
 
     function effort() {

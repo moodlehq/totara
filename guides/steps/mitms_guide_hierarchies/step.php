@@ -4,24 +4,27 @@ class guide_mitms_guide_hierarchies_step extends guide_default_step {
     ## Return the content the step should display when it is the active step in a guide:
     function content_step_active () {
         global $CFG;
-        $returnstring = 'This step requires you to complete the ';
+        $returnstring = '<p>This is the final step to configuring MITMS for your organisation.</p>
+           <p>When you are ready to start open the ';
         $guide = get_record('block_guides_guide','name','Configure Hierarchies');
         if ($guide) {
-            $returnstring .= '<a href="' . $CFG->wwwroot . '/guides/view.php?startguide=' . $guide->id . '">Configure Hierarchies</a> guide.';
+            $returnstring .= 'by clicking <a href="' . $CFG->wwwroot . '/guides/view.php?startguide=' . $guide->id . '">Configure Hierarchies</a>';
         } else {
             $returnstring .= 'Configure Hierarchies guide.';
         }
+        $returnstring .= ' this will open a step by step guide that will help you with this process.</p>';
         return $returnstring;
     }
 
     # Return content the step should display when it is not active, and is not complete:
     function content_step_pending () {
-        return 'This is the mitms_guide_hierarchies step.<br /> This step is pending.  When you get to this step you will need to complete the Configure Hierarchies guide.';
+        return '<p>Assigning a user\'s organisational details allows you to assign a manager, organisation and position to each user.</p>';
     }
 
     # Return content the step should display when it is not active, and is complete:
     function content_step_complete () {
-        return 'The Hierarchies guide has been marked as completed. <br /> If you would like to run through the Hierarchies guide again, you can delete your guide progress, and start again.';
+        return '<p>This step has been completed.</p>
+            <p>You can modify a user\'s assigned organisational details by editing the user\'s profile.</p>';
     }
 
     function effort() {
