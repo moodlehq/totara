@@ -3,6 +3,7 @@ require_once ($CFG->dirroot . '/guides/steps/default.php');
 class guide_mitms_create_framework_step extends guide_default_step {
     ## Return the content the step should display when it is the active step in a guide:
     function content_step_active () {
+        global $CFG;
         return '<p>This step requires you to set up a competency framework.</p>
             <p>When you are ready to start click <a href="' . $CFG->wwwroot  . '/hierarchy/framework/edit.php?type=competency">Competency Frameworks</a>.</p>
             <p>Refer to the <a href="">Setting up a competency framework help file</a> for further instructions.</p>

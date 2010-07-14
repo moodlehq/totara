@@ -3,6 +3,7 @@ require_once ($CFG->dirroot . '/guides/steps/default.php');
 class guide_mitms_create_position_framework_step extends guide_default_step {
     ## Return the content the step should display when it is the active step in a guide:
     function content_step_active () {
+        global $CFG;
         return '<p>The first step is to set up a position framework.</p>
             <p>Setting up a position framework is like setting up a folder in which you create the job role structure.  You can set up multiple position frameworks.</p>
             <p>When you are ready to start click <a href="' . $CFG->wwwroot . '/hierarchy/framework/index.php?type=position">Position frameworks</a>.</p>

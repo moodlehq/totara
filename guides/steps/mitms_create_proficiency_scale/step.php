@@ -3,6 +3,7 @@ require_once ($CFG->dirroot . '/guides/steps/default.php');
 class guide_mitms_create_proficiency_scale_step extends guide_default_step {
     ## Return the content the step should display when it is the active step in a guide:
     function content_step_active () {
+        global $CFG;
         return '<p>The first step is to set up a competency scale.</p>
             <p>A competency scale defines the criteria by which a competency can be measured.</p>
             <p>When you are ready to start click <a href="'. $CFG->wwwroot . '/hierarchy/type/competency/scale/edit.php?type=competency">Competency Scale</a>.</p>

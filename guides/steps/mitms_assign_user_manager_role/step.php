@@ -3,6 +3,7 @@ require_once ($CFG->dirroot . '/guides/steps/default.php');
 class guide_mitms_assign_user_manager_role_step extends guide_default_step {
     ## Return the content the step should display when it is the active step in a guide:
     function content_step_active () {
+        global $CFG;
         $manager = get_record('role','shortname','manager');
         return '<p>The first step is to assign users to the role of manager.</p>
             <p>When you are ready to start click <a href="' . $CFG->wwwroot . '/admin/roles/assign.php?contextid=1&roleid=' . $manager->id  . '">Assign user the role of manager</a>.</p>
