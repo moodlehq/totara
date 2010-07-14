@@ -236,7 +236,7 @@ table.reportbuilder-table td {
 /*****************************************************************************/
 
 table.planlist {
-    border: 0px;
+    border: 1px solid #EEEEEE;
     margin: 8px 0px 5px 0px;
     width: 548px;
 }
@@ -245,8 +245,14 @@ table.planlist th {
     text-align: left;
 }
 table.planlist tr.r0 {
-    background-color: #F0F0F0;
+    background-color: #FFFFFF;
     height: 20px;
+}
+
+table.planlist th {
+	background:url("images/gradient.png") repeat-x scroll left top #EDEDED;
+	border:1px solid #E2E2E2;
+	padding:3px;
 }
 table.planlist th.name {
     width: 245px;
@@ -254,6 +260,11 @@ table.planlist th.name {
 table.planlist th.options {
     width: 45px;
     text-align: center;
+}
+
+table.planlist td {
+    border: 1px solid #EEEEEE;
+	padding:3px;
 }
 table.planlist td.options {
     text-align: center;
