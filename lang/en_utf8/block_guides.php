@@ -2,6 +2,7 @@
       // block_course_list.php - created with Moodle 1.7 beta + (2006101003)
 
 
+$string['action'] = 'Action';
 $string['blockname'] = 'Guides';
 $string['continueguide'] = 'Continue Guide';
 $string['completed'] = 'Completed';
@@ -9,6 +10,7 @@ $string['deletedguide'] = 'Deleted guide.';
 $string['deleteguide'] = 'Deleting guide.';
 $string['deleteguidecheck'] = 'Are you sure you want to delete your record of progress on this guide?';
 $string['finishstep'] = 'Finish step';
+$string['guide'] = 'Guide';
 $string['guides'] = 'Guides';
 $string['guidesavailable'] = 'Guides available';
 $string['guidesinprogress'] = 'Guides in progress';

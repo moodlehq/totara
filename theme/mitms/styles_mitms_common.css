@@ -834,16 +834,12 @@ table.customfields th.lastcol {
 	text-align:center;
 }
 
-
 table#competency th.extrafield,
 table#competency td.extrafield,
 table.customfields th.lastcol,
 table.customfields td.lastcol{
 	text-align: center !important;	
 }
-
-
-
 
 table.borderless td {
 	border-color: #ffffff;
@@ -857,6 +853,7 @@ table#list-idpcompetency th {
 	border: 1px solid #e2e2e2;
 	padding:3px;
 }
+
 table#list-idpcourse td,
 table#list-idpcompetencytemplate td,
 table#list-idpcompetency td {
@@ -889,6 +886,7 @@ table#course_completions {
 	text-align: center;
 }
 
+body#guides-index td,
 #criteriastatus td {
 	border: 1px solid #EEEEEE;	
 }
@@ -916,6 +914,19 @@ table.personaldetails {
 
 table.personaldetails td.lastcol {
 		text-align: left;
+}
+
+#guides-index tr.header{
+	background: #EDEDED url(images/gradient.png) top left repeat-x;
+}
+
+#guides-index tr th {
+	border: 1px solid #e2e2e2;
+	padding: 3px;
+}
+
+#guides-index table td {
+	padding: 3px;
 }
 
 

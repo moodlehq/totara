@@ -73,7 +73,7 @@ if ($guideinstances) {
         print $guideinstance->name;
         print '</a>';
         print ' <input type="hidden" name="gi" value="' . $guideinstance->giid . '" />';
-        print '<input type="image" src="' . $CFG->wwwroot . '/theme/' . $CFG->theme . '/pix/t/delete.gif" alt="delete guide progress" />';
+        print '<input type="image" src="' . $CFG->wwwroot . '/theme/' . $CFG->theme . '/pix/t/delete.gif" class="iconsmall" alt="delete guide progress" />';
         print '</span>';
         print '</form>';
         print '</div>';
@@ -85,10 +85,13 @@ if ($guideinstances) {
 print_heading($strguidesavailable);
 
 if ($guides) {
-    print '<div class="guideindexbody">';
+    print '<table class="generalbox guides boxaligncenter">';
+    print '<tr class="header"><th class="name">'.get_string('guide', 'blocks/guides').'</th><th class="description">'.get_string('description').'</th><th class="link">'.get_string('action', 'blocks/guides').'</th></tr>';
+    $rowcount = 0;
     foreach ($guides as $guide) {
-        print '<div class="guideindexdetail">' . "\n" . '<span class="guideindextitle">';
-        print $guide->name . '</span><span class="guideindexdescription"> - ' . $guide->description . '</span><span class="guideindexlink">';
+        print '<tr class="r'.$rowcount.'">' . "\n" . '<td><span class="guideindextitle">'.$guide->name . '</span>';
+        print '<td><span class="guideindexdescription">' . $guide->description . '</span>';
+        print '<td><span class="guideindexlink">';
         if (isset($guideinstances[$guide->id])) {
             print ' <a href="' . $CFG->wwwroot . '/guides/view.php?gi=' . $guideinstances[$guide->id]->giid . '">';
             if ($guideinstances[$guide->id]->progress == 100) {
@@ -100,9 +103,10 @@ if ($guides) {
             print ' <a href="' . $CFG->wwwroot . '/guides/view.php?startguide=' . $guide->id . '">';
             print $strstartguide;
         }
-        print '</a></span></div>' . "\n";
+        print '</a></span></td></tr>' . "\n";
+        $rowcount = ($rowcount + 1) % 2;
     }
-    print "</div>\n";
+    print "</table>\n";
 } else {
     print_heading($strnoguidesavailable,'center',3);
 }
