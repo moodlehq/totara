@@ -477,7 +477,7 @@ function curriculum_objectives($curriculumcode, $revision, $can_edit=false) {
                 $html .= ' style="cursor: pointer"';
                 $html .= ' title="'.get_string('removefromplanbutton', 'idp').'"';
                 $html .= ' alt="'.get_string('removefromplanbutton', 'idp').'"';
-                $html .= " src=\"{$CFG->pixpath}/delete.gif\" />";
+                $html .= " src=\"{$CFG->pixpath}/delete.gif\" class=\"iconsmall\" alt=\"Remove\" />";
 
                 $table->data[] = array(s($objective->themename),
                                        s($objective->objectivename),
@@ -539,7 +539,7 @@ function list_item_edit_controls($revid, $listtype, $item) {
     $html .= ' style="cursor: pointer"';
     $html .= ' alt="'.get_string('editbutton', 'local').'"';
     $html .= ' title="'.get_string('editbutton', 'local').'"';
-    $html .= " src=\"{$CFG->pixpath}/edit.gif\" />";
+    $html .= " src=\"{$CFG->pixpath}/edit.gif\" class=\"iconsmall\" alt=\"Edit\" />";
 
     // Delete button
     $html .= '&nbsp;';
@@ -548,7 +548,7 @@ function list_item_edit_controls($revid, $listtype, $item) {
     $html .= ' style="cursor: pointer"';
     $html .= ' alt="'.get_string('deletebutton', 'local').'"';
     $html .= ' title="'.get_string('deletebutton', 'local').'"';
-    $html .= " src=\"{$CFG->pixpath}/delete.gif\" />";
+    $html .= " src=\"{$CFG->pixpath}/delete.gif\" class=\"iconsmall\" alt=\"Remove\" />";
 
     return $html;
 }
@@ -1549,7 +1549,7 @@ function user_learning_plan_editbutton($planid, $renameplanstr) {
             . "&amp;planid={$planid}\">"
             . "<img id=\"renameplan{$planid}\" "
             . "style=\"cursor: pointer\" alt=\"$renameplanstr\" "
-            . "title=\"$renameplanstr\" src=\"{$CFG->pixpath}/t/edit.gif\" "
+            . "title=\"$renameplanstr\" src=\"{$CFG->pixpath}/t/edit.gif\" class=\"iconsmall\" alt=\"Edit\""
             . "/></a>";
     return $link;
 }
@@ -1560,7 +1560,7 @@ function user_learning_plan_deletebutton($planid, $deleteplanstr) {
         . "&amp;planid={$planid}\">"
         . "<img id=\"deleteplan{$planid}\" "
         . "style=\"cursor: pointer\" alt=\"$deleteplanstr\" "
-        . "title=\"$deleteplanstr\" src=\"{$CFG->pixpath}/t/delete.gif\" "
+        . "title=\"$deleteplanstr\" src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"Remove\" "
         . "/></a>";
     return $link;
 }
@@ -1695,7 +1695,7 @@ function format_favourites($favourites, $revisionid, $curriculumcode) {
             $html .= ' style="cursor: pointer"';
             $html .= ' alt="'.get_string('delfavouritebutton', 'local').'"';
             $html .= ' title="'.get_string('delfavouritebutton', 'local').'"';
-            $html .= " src=\"{$CFG->pixpath}/delete.gif\" />";
+            $html .= " src=\"{$CFG->pixpath}/delete.gif\" class=\"iconsmall\" alt=\"Remove\" />";
 
             $html .= $closediv;
         }
