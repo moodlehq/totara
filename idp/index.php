@@ -30,12 +30,7 @@ $ownpage = ($USER->id == $userid);
 
 if ($ownpage) {
     // Looking at your own page
-    if (has_capability('moodle/local:idpmanagerownoverview', $contextsite)) {
-        $manageroverview = true;
-    }
-    else {
-        require_capability('moodle/local:idpviewownlist', $contextsite);
-    }
+    require_capability('moodle/local:idpviewownlist', $contextsite);
 }
 else {
     $user = get_record('user', 'id', $userid);
@@ -168,24 +163,6 @@ foreach ($lt as $column) {
                 print_pending_plans($trainees, $orderby, $showapproved);
             }
 
-            // User search
-            print '<h2>'.get_string('searchforusers', 'idp').'</h2>';
-            print usersearch_form();
-
-            // Show the trainees
-            if ($ownpage) {
-                print '<h2>'.get_string('yourtrainees', 'idp')."</h2>\n";
-            }
-            else {
-                print '<h2>'.get_string('userstrainees', 'idp', format_user_link($userid))."</h2>\n";
-            }
-
-            if ($trainees and count($trainees) > 0) {
-                print_trainees_summary($trainees);
-            }
-            else {
-                print '<p><i>'.get_string('notrainees', 'idp')."</i></p>\n";
-            }
         }
         else {
             // Trainee summary
@@ -260,94 +237,5 @@ foreach ($lt as $column) {
 echo '</tr></table>';
 
 print_footer();
-
-function format_boolean($val) {
-    global $CFG;
-    return ($val)
-        ? '<img src="' . $CFG->pixpath . '/static_tick.gif' . '" alt="Yes" />'
-        : '<img src="' . $CFG->pixpath . '/static_cross.gif' . '" alt="No" />';
-}
-
-
-function idp_overview_column_heading($string) {
-    global $orderby, $showapproved, $id, $lp, $ovorderby, $userid, $CFG;
-
-    $sortmark = '';
-    if ($ovorderby == $string) {
-        $sortmark = '&nbsp;<img src="' . $CFG->pixpath . '/sortmarker.gif" />';
-    }
-    $url = htmlentities($_SERVER['PHP_SELF']
-        . "?orderby={$orderby}"
-        . "&showapproved={$showapproved}"
-        . "&ovorderby={$string}&id={$id}"
-        . "&userid={$userid}"
-        . "&id={$id}"
-        . "&lp={$lp}"
-    );
-    $text = get_string("column:$string", 'idp');
-
-    return  "<a href=\"$url\">$text</a>" . $sortmark
-            . ( ($string != 'name' && $string != 'role')
-                    ? helpbutton('manageroverview:'.$string, $text, 'idp', true, false, '', true)
-                    : '' );
-}
-
-
-function print_trainees_summary($trainees) {
-    global $userid;
-
-    $table = new stdclass();
-    $table->class="userplans generaltable";
-    $table->tablealign = 'left';
-    $table->head = array(
-        idp_overview_column_heading('name'),
-        idp_overview_column_heading('role'),
-        idp_overview_column_heading('view'),
-        idp_overview_column_heading('comment'),
-        idp_overview_column_heading('approve'),
-    );
-    $table->data = array();
-    $orderedtrainees = array();
-    $canview = $cancomment = $can_approve = false;
-
-    foreach ($trainees as $traineeuser) {
-        $userctx    = get_context_instance(CONTEXT_USER, $traineeuser->id);
-        $userroles  = get_user_roles($userctx, $userid, false);
-        $userrole   = array_shift($userroles);
-        $userrole   = $userrole->name;
-
-        $canview    = has_capability('moodle/local:idpviewplan', $userctx, $userid);
-        $cancomment = has_capability('moodle/local:idpaddcomment', $userctx, $userid);
-        $can_approve = has_capability('moodle/local:idpapproveplan', $userctx, $userid);
-
-        $trainee            = new stdclass;
-        $trainee->id        = $traineeuser->id;
-        $trainee->name      = fullname($traineeuser);
-        $trainee->role      = $userrole;
-        $trainee->view      = $canview;
-        $trainee->comment   = $cancomment;
-        $trainee->approve   = $can_approve;
-
-        $orderedtrainees[]  = $trainee;
-    };
-
-    uasort($orderedtrainees, 'idp_order_trainees_cb');
-
-    foreach($orderedtrainees as $traineeuser) {
-        $table->data[] = array(
-            '<a href="?userid=' . $traineeuser->id . '">' . $traineeuser->name . "</a>",
-            $traineeuser->role,
-            format_boolean($traineeuser->view),
-            format_boolean($traineeuser->comment),
-            format_boolean($traineeuser->approve),
-        );
-    }
-    print_table($table);
-}
-
-function idp_order_trainees_cb($a, $b) {
-    global $ovorderby;
-    return strcmp($a->{$ovorderby}, $b->{$ovorderby});
-}
 
 ?>
