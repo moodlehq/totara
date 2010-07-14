@@ -2628,25 +2628,6 @@ function idp_grade_objective($roid, $grade=null) {
 }
 
 /**
- * Return a form to search for users and take
- * users to a results page linking to Learning Plan and profile pages.
- *
- * @param string  $search     Initial search string
- */
-function usersearch_form($search='') {
-    global $CFG;
-
-    $url  = $CFG->wwwroot .'/idp/user_search.php';
-    $text = '<form id="idp_search" method="get" action="'.  $url . '">';
-    $text .= '<div>';
-    $text .= '<input type="text" name="search" value="' . s($search) . '"/>';
-    $text .= '<input type="submit" value="Search" />';
-    $text .= '</div>';
-    $text .= '</form>';
-    return $text;
-}
-
-/**
  * Return the fullname of the user linking to his profile page.
  *
  * @param $userid     User ID of the user to display
