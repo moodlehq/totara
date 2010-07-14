@@ -47,7 +47,7 @@ if(!empty($startguide)) {
     }
 }
 
-$guidesql = 'SELECT gi.*, g.steps, g.name, g.userid, g.description ' .
+$guidesql = 'SELECT gi.*, g.steps, g.name, gi.userid, g.description ' .
             'FROM ' . $CFG->prefix . 'block_guides_guide_instance gi ' .
             ' INNER JOIN ' . $CFG->prefix . 'block_guides_guide g on gi.guide=g.id ' .
             'WHERE gi.id = ' . $giid . ' AND gi.deleted = 0';
