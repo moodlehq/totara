@@ -2,6 +2,7 @@
 
 require_once('../config.php');
 require_once($CFG->dirroot.'/local/reportbuilder/lib.php');
+require_once($CFG->dirroot.'/local/reportheading/lib.php');
 
 $id = optional_param('id', null, PARAM_INT); // which user to show
 $format = optional_param('format','', PARAM_TEXT); // export format
@@ -73,15 +74,24 @@ if($format!='') {
 
 $fullname = $report->fullname;
 $pagetitle = format_string(get_string('report','local').': '.$fullname);
-$navlinks[] = array('name' => get_string('report','local'), 'link'=> '', 'type'=>'title');
 $navlinks[] = array('name' => $fullname, 'link'=> '', 'type'=>'title');
 
 $navigation = build_navigation($navlinks);
 
-print_header_simple($pagetitle, '', $navigation, '', null, true, null);
+print_header_simple($strheading, $strheading, $navigation, '', null, true, null);
+
+echo '<h1>'.$strheading.'</h1>';
+
+// add heading block
+$heading = new reportheading($id);
+print $heading->display();
 
 $countfiltered = $report->get_filtered_count();
 $countall = $report->get_full_count();
+
+// tab bar
+$currenttab = "course_completions";
+include('learning_tabs.php');
 
 // display heading including filtering stats
 print_heading("$strheading: $countall results found");

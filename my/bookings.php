@@ -96,7 +96,7 @@ $navigation = build_navigation($navlinks);
 print_header_simple($pagetitle, '', $navigation, '', null, true, null);
 
 $currenttab = "futurebookings";
-include('tabs.php');
+include('booking_tabs.php');
 
 $countfiltered = $report->get_filtered_count();
 $countall = $report->get_full_count();

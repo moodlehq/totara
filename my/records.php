@@ -68,7 +68,7 @@
         array(
             'type' => 'competency',
             'value' => 'competencylink',
-            'heading' => 'Course/Competency',
+            'heading' => 'Competency',
         ),
         array(
             'type' => 'competency',
@@ -130,6 +130,10 @@
     // add heading block
     $heading = new reportheading($id);
     print $heading->display();
+
+    // tab bar
+    $currenttab = "competency_evidence";
+    include('learning_tabs.php');
 
     // add competency evidence button
     if(has_capability('moodle/local:updatecompetency',$context)) {

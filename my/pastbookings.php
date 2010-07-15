@@ -82,7 +82,6 @@ if($format!='') {
 
 $fullname = $report->fullname;
 $pagetitle = format_string(get_string('report','local').': '.$fullname);
-$navlinks[] = array('name' => get_string('report','local'), 'link'=> '', 'type'=>'title');
 $navlinks[] = array('name' => $fullname, 'link'=> '', 'type'=>'title');
 
 $navigation = build_navigation($navlinks);
@@ -90,7 +89,7 @@ $navigation = build_navigation($navlinks);
 print_header_simple($pagetitle, '', $navigation, '', null, true, null);
 
 $currenttab = "pastbookings";
-include('tabs.php');
+include('booking_tabs.php');
 
 $countfiltered = $report->get_filtered_count();
 $countall = $report->get_full_count();
