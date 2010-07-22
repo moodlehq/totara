@@ -79,6 +79,62 @@ class reminder extends data_object {
     public $required_fields = array('id', 'courseid', 'title', 'type',
         'timecreated', 'timemodified', 'modifierid', 'config', 'deleted');
 
+    /**
+     * The course this reminder is associated with
+     * @access  public
+     * @var     int
+     */
+    public $courseid;
+
+    /**
+     * Reminder title, for configuration display purposes
+     * @access  public
+     * @var     string
+     */
+    public $title;
+
+    /**
+     * Reminder message type - needs to be supported in code
+     * @access  public
+     * @var     string
+     */
+    public $type;
+
+    /**
+     * Time the reminder was created
+     * @access  public
+     * @var     int
+     */
+    public $timecreated;
+
+    /**
+     * Time the reminder or it's messages were last modified
+     * @access  public
+     * @var     int
+     */
+    public $timemodified;
+
+    /**
+     * ID of the last user to modifiy the reminder or messages
+     * @access  public
+     * @var     int
+     */
+    public $modifierid;
+
+    /**
+     * Config data, used by the code handling the reminder's "type"
+     * @access  public
+     * @var     mixed
+     */
+    public $config;
+
+    /**
+     * Deleted flag
+     * @access  public
+     * @var     int
+     */
+    public $deleted;
+
 
     /**
      * Finds and returns all data_object instances based on params.
