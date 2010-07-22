@@ -69,6 +69,7 @@ function local_postinst() {
     }
 
     mitms_reset_frontpage_blocks();
+    mitms_add_guide_block_to_adminpages();
 
     // set up frontpage
     set_config('frontpage', '');

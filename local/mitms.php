@@ -86,6 +86,15 @@ function mitms_reset_frontpage_blocks() {
             'visible'  => 1,
             'configdata' => '',
         ),
+        (object)array(
+            'blockid'  =>  get_field('block', 'id', 'name', 'guides'),
+            'pageid'   => SITEID,
+            'pagetype' => 'course-view',
+            'position' => 'r',
+            'weight'   => 3,
+            'visible'  => 1,
+            'configdata' => '',
+        ),
     );
 
     // insert blocks
@@ -94,6 +103,27 @@ function mitms_reset_frontpage_blocks() {
     }
 
     return 1;
+
+}
+
+/**
+ * adds guides block on the site admin pages.  designed to be called from local_postinst
+ *
+ * @return bool
+ */
+function mitms_add_guide_block_to_adminpages() {
+    global $CFG;
+
+        $b = (object)array(
+            'blockid'  =>  get_field('block', 'id', 'name', 'guides'),
+            'pageid'   => 0,
+            'pagetype' => 'admin',
+            'position' => 'r',
+            'weight'   => 0,
+            'visible'  => 1,
+            'configdata' => '',
+        );
+    insert_record('block_instance', $b);
 
 }
 
