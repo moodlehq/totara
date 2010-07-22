@@ -5,6 +5,7 @@
 $string['action'] = 'Action';
 $string['blockname'] = 'Guides';
 $string['continueguide'] = 'Continue Guide';
+$string['restartguide'] = 'Restart Guide';
 $string['completed'] = 'Completed';
 $string['deletedguide'] = 'Deleted guide.';
 $string['deleteguide'] = 'Deleting guide.';
@@ -19,4 +20,9 @@ $string['noguidesavailable'] = 'No guides are available to be started';
 $string['startguide'] = 'Start Guide';
 $string['unavailable'] = 'Unavailable';
 $string['viewguide'] = 'View Guide';
+
+$string['guides:addguides'] = 'User add guides';
+$string['guides:deleteownguide'] = 'User restart own guide';
+$string['guides:viewothersguide'] = 'View another users guide';
+$string['guides:viewownguide'] = 'View own guide';
 ?>
