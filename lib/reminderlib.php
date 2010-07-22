@@ -610,20 +610,25 @@ function reminder_email_substitutions($content, $user, $course, $message, $remin
 /**
  * Check that required time has still passed even if ignoring weekends
  *
- * @TODO create some simpletests
  * @access  private
  * @param   $timestamp  int Event timestamp
  * @param   $period     int Number of days since
+ * @param   $check      int Timestamp to check against (optional, used in tests)
  * @return  boolean
  */
-function reminder_check_businessdays($timestamp, $period) {
+function reminder_check_businessdays($timestamp, $period, $check = null) {
     // If no period, then it's instantaneous and has already passed
     if (!$period) {
         return true;
     }
 
+    // Setup current time
+    if (!$check) {
+        $check = time();
+    }
+
     // Loop through each day and if not a weekend, add it to the timestamp
-    for ($reminderday = 0; $reminderday < $period + 1; $reminderday++ ) {
+    for ($reminderday = 1; $reminderday <= $period; $reminderday++ ) {
 
         // Add 24 hours to the timestamp
         $timestamp += (24 * 3600);
@@ -631,14 +636,14 @@ function reminder_check_businessdays($timestamp, $period) {
         // Saturdays and Sundays are not included in the
         // reminder period as entered by the user, extend
         // that period by 1
-        $reminderdaycheck = userdate($reminderdaytime, '%u');
+        $reminderdaycheck = userdate($timestamp, '%u');
         if ($reminderdaycheck > 5) {
             $period++;
         }
 
         // If the timestamp move into the future after ignoring weekends,
         // return false
-        if ($timestamp >= time()) {
+        if ($timestamp > $check) {
             return false;
         }
     }
