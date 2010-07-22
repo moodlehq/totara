@@ -178,34 +178,6 @@ function mitms_print_my_learning_nav($return=false) {
 }
 
 /**
-* print out the MITMS My Tools nav section
-*/
-function mitms_print_my_tools_nav($return=false) {
-    global $CFG, $USER;
-
-    $returnstr = '
-     <ul id="mitms-nav">
-    ';
-    if (!isloggedin()) {
-        $returnstr .= '
-       <li><a href="' . $CFG->wwwroot . '/login/index.php">' . get_string('login') . '</a></li>
-        ';
-    } else {
-        $returnstr .= '
-       <li><a href="' . $CFG->wwwroot . '/login/logout.php">' . get_string('logout') . '</a></li>
-        ';
-    }
-    $returnstr .= '
-     </ul>
-    ';
-
-    if ($return) {
-        return $returnstr;
-    }
-    echo $returnstr;
-}
-
-/**
 * print out the MITMS My Team nav section
 */
 function mitms_print_my_team_nav($return=false) {
