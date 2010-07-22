@@ -33,7 +33,7 @@ Please visit the course page link below to access the evaluation:
 Please action this within three days.
 
 Should this still be outstanding in [days count down] days time we will escalate this to your Team Leader.';
-$string['invitationsubjectdefault'] = 'Please evaluate [courseName]';
+$string['invitationsubjectdefault'] = 'Please evaluate [coursename]';
 $string['message'] = 'Message';
 $string['missingtitle'] = 'Missing title';
 $string['new'] = 'Add New';
@@ -60,7 +60,7 @@ Please visit the course page link below to access the evaluation:
 [coursepageurl]
 
 Should this remain outstanding we will escalate that this to your team leader.';
-$string['remindersubjectdefault'] = 'Reminder to evaluate [CourseName]';
+$string['remindersubjectdefault'] = 'Reminder to evaluate [coursename]';
 $string['remindersmenuitem'] = 'Reminders';
 $string['sameday'] = 'Same day';
 $string['skipmanager'] = 'Don\'t send to Team Leader / Manager';
