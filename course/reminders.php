@@ -13,6 +13,9 @@ $id = optional_param('id', 0, PARAM_INT);
 // Course id
 $courseid = required_param('courseid', PARAM_INT);
 
+// Actions
+$delete = optional_param('delete', 0, PARAM_INT);
+
 
 // Basic access control checks
 if ($courseid) { // editing course
@@ -38,6 +41,33 @@ if ($courseid) { // editing course
 // Get all course reminders
 $reminders = get_course_reminders($course->id);
 
+
+// Check if we are deleting any reminders
+if ($delete) {
+
+    // Check reminder exists
+    if (in_array($id, array_keys($reminders))) {
+        $reminder = $reminders[$id];
+    }
+    else {
+        redirect($CFG->wwwroot.'/course/reminders.php?courseid='.$course->id);
+    }
+
+    // Check sesskey
+    if (!confirm_sesskey()) {
+        print_error('confirmsesskeybad', 'error');
+    }
+
+    // Delete reminder
+    $reminder->deleted = 1;
+    $reminder->update();
+
+    print_header(get_string('editcoursereminder', 'reminders'), $course->fullname);
+    print_heading(get_string('deletedreminder', 'reminders', format_string($reminder->title)));
+    print_continue("{$CFG->wwwroot}/course/reminders.php?courseid={$course->id}");
+    print_footer();
+    exit();
+}
 
 // Get current reminder
 // Specified in get params
@@ -72,7 +102,8 @@ if ($reminderform->is_cancelled()){
     begin_sql();
 
     $config = array(
-        'tracking' => $data->tracking
+        'tracking' => $data->tracking,
+        'requirement' => $data->requirement
     );
 
     // Create the reminder object
@@ -159,7 +190,26 @@ if ($reminderform->is_cancelled()){
 
 // Print the page
 
-$site = get_site();
+// Generate the button HTML
+$buttonhtml = '';
+if ($reminder->id > 0) {
+    $options = array(
+        'courseid'  => $course->id,
+        'id'        => $reminder->id,
+        'delete'    => 1,
+        'sesskey'   => sesskey()
+    );
+
+    $buttonhtml = print_single_button(
+        $CFG->wwwroot.'/course/reminders.php',
+        $options,
+        get_string('deletereminder', 'reminders', format_string($reminder->title)),
+        'get',
+        '',
+        true
+    );
+}
+
 
 $streditcoursereminders = get_string('editcoursereminders', 'reminders');
 $navlinks = array();
@@ -170,7 +220,7 @@ $title = $streditcoursereminders;
 $fullname = $course->fullname;
 
 $navigation = build_navigation($navlinks);
-print_header($title, $fullname, $navigation, $reminderform->focus());
+print_header($title, $fullname, $navigation, $reminderform->focus(), null, true, $buttonhtml);
 print_heading($streditcoursereminders);
 
 

@@ -192,6 +192,7 @@ class reminder extends data_object {
         if (!empty($this->config)) {
             $config = unserialize($this->config);
             $formdata->tracking = $config['tracking'];
+            $formdata->requirement = isset($config['requirement']) ? $config['requirement'] : '';
         }
 
         // Get an existing reminder messages
@@ -388,6 +389,13 @@ function reminder_cron() {
                 // Get the tracked activity/course
                 $config = unserialize($reminder->config);
 
+                // Get the required feedback's id
+                $requirementid = get_field(
+                    'course_modules',
+                    'instance',
+                    'id', $config['requirement']
+                );
+
                 // Check if we are tracking the course
                 if ($config['tracking'] == 0) {
                     $tsql = "
@@ -432,8 +440,8 @@ function reminder_cron() {
 
                     $now = time();
 
-                    // Get anyone that needs a reminder sent
-                    // and hasn't had one already
+                    // Get anyone that needs a reminder sent that hasn't had one already
+                    // and has yet to complete the required feedback
                     $sql = "
                         SELECT
                             u.*,
@@ -443,11 +451,16 @@ function reminder_cron() {
                         {$tsql}
                         LEFT JOIN
                             {$CFG->prefix}reminder_sent rs
-                            ON rs.userid = u.id
+                         ON rs.userid = u.id
                         AND rs.reminderid = {$reminder->id}
                         AND rs.messageid = {$message->id}
+                        LEFT JOIN
+                            {$CFG->prefix}feedback_completed fc
+                         ON fc.feedback = {$requirementid}
+                        AND fc.userid = u.id
                         WHERE
-                            rs.id IS NULL
+                            fc.id IS NULL
+                        AND rs.id IS NULL
                         AND (cc.timecompleted + {$periodsecs}) >= {$reminder->timecreated}
                         AND (cc.timecompleted + {$periodsecs}) < {$now}
                     ";

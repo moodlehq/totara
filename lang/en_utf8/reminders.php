@@ -5,6 +5,8 @@ $string['completion'] = 'Completion';
 $string['completiontotrack'] = 'Completion to track';
 $string['coursecompletion'] = 'Course completion';
 $string['deadline'] = 'Deadline for action';
+$string['deletereminder'] = 'Delete reminder \"$a\"';
+$string['deletedreminder'] = 'Successfully deleted reminder \"$a\"';
 $string['dontsend'] = 'Don\'t send this message';
 $string['editcoursereminders'] = 'Edit course reminders';
 $string['escalation'] = 'Escalation';
@@ -62,6 +64,7 @@ Please visit the course page link below to access the evaluation:
 Should this remain outstanding we will escalate that this to your team leader.';
 $string['remindersubjectdefault'] = 'Reminder to evaluate [coursename]';
 $string['remindersmenuitem'] = 'Reminders';
+$string['requirement'] = 'Requirement';
 $string['sameday'] = 'Same day';
 $string['skipmanager'] = 'Don\'t send to Team Leader / Manager';
 $string['subject'] = 'Subject';
