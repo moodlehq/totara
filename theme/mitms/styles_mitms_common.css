@@ -1051,3 +1051,7 @@ h2.guidesteptitle.pending {
 .guideindexdetail {
 	padding: 5px;	
 }
+
+.guides tr.header th.status{
+    width:170px;
+}

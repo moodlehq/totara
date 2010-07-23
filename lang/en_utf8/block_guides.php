@@ -20,6 +20,8 @@ $string['noguidesavailable'] = 'No guides are available to be started';
 $string['startguide'] = 'Start Guide';
 $string['unavailable'] = 'Unavailable';
 $string['viewguide'] = 'View Guide';
+$string['status'] = 'Status';
+$string['options'] = 'Options';
 
 $string['guides:addguides'] = 'User add guides';
 $string['guides:deleteownguide'] = 'User restart own guide';
