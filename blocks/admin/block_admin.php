@@ -71,8 +71,10 @@ class block_admin extends block_list {
                 $this->content->icons[]='<img src="'.$CFG->pixpath.'/i/outcomes.gif" class="icon" alt="" />';
             }
 
-            $this->content->items[]='<a href="'.$CFG->wwwroot.'/course/reminders.php?courseid='.$course->id.'">'.get_string('remindersmenuitem', 'reminders').'</a>';
-            $this->content->icons[]='<img src="'.$CFG->pixpath.'/i/email.gif" class="icon" alt="" />';
+            if (has_capability('moodle/site:doanything', $context)) {
+                $this->content->items[]='<a href="'.$CFG->wwwroot.'/course/reminders.php?courseid='.$course->id.'">'.get_string('remindersmenuitem', 'reminders').'</a>';
+                $this->content->icons[]='<img src="'.$CFG->pixpath.'/i/email.gif" class="icon" alt="" />';
+            }
         }
 
     /// Assign roles to the course

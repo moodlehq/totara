@@ -27,7 +27,7 @@ if ($courseid) { // editing course
     }
 
     require_login($course->id);
-    require_capability('moodle/course:update', get_context_instance(CONTEXT_COURSE, $course->id));
+    require_capability('moodle/site:doanything', get_context_instance(CONTEXT_COURSE, $course->id));
 
 } else {
     require_login();
