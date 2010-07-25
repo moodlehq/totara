@@ -26,7 +26,7 @@ if ($fromform = $mform->get_data()) {
         print_error('error:unknownbuttonclicked', 'local', $returnurl);
     }
 
-    if(update_access($id, $fromform->accessenabled, $fromform->role)) {
+    if(update_access($id, $fromform)) {
         redirect($returnurl);
     } else {
         redirect($returnurl, get_string('error:couldnotupdatereport','local'));
@@ -52,11 +52,13 @@ $mform->display();
 admin_externalpage_print_footer();
 
 
-function update_access($reportid, $accessenabled, $newroles) {
+function update_access($reportid, $fromform) {
 
     begin_sql();
 
-    // update content enabled setting
+    // first check if there are any access restrictions at all
+    $accessenabled = isset($fromform->accessenabled) ? $fromform->accessenabled : 0;
+    // update access enabled setting
     $todb = new object();
     $todb->id = $reportid;
     $todb->accessmode = $accessenabled;
@@ -64,44 +66,18 @@ function update_access($reportid, $accessenabled, $newroles) {
         rollback_sql();
         return false;
     }
-    // no need to go further if all access allowed
-    if($accessenabled == 0) {
-        commit_sql();
-        return true;
-    }
 
-
-    // get existing settings into an array
-    $oldroles = array();
-    if($data = get_records_select('report_builder_access',"reportid=$reportid AND accesstype='role'")) {
-        foreach($data as $item) {
-            $oldroles[$item->typeid] = 1;
-        }
-    }
-
-    foreach($newroles as $roleid => $set) {
-        if(array_key_exists($roleid, $oldroles)) {
-            if($set == 0) {
-                // remove if no longer set
-                if(!delete_records('report_builder_access','reportid', $reportid, 'accesstype', 'role', 'typeid', $roleid)) {
-                    rollback_sql();
-                    return false;
-                }
-            }
-        } else {
-            if($set == 1) {
-                // add if set now but not before
-                $todb = new object();
-                $todb->reportid = $reportid;
-                $todb->accesstype = 'role';
-                $todb->typeid = $roleid;
-                if(!insert_record('report_builder_access', $todb)) {
-                    rollback_sql();
-                    return false;
-                }
+    // loop round classes, only considering classes that extend rb_base_access
+    foreach(get_declared_classes() as $class) {
+        if(is_subclass_of($class, 'rb_base_access')) {
+            $obj = new $class();
+            if(!$obj->form_process($reportid, $fromform)) {
+                rollback_sql();
+                return false;
             }
         }
     }
+
     commit_sql();
     return true;
 }

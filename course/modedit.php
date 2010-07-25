@@ -6,6 +6,7 @@
     require_once("lib.php");
     require_once($CFG->libdir.'/gradelib.php');
     require_once($CFG->libdir.'/conditionlib.php');
+    require_once($CFG->dirroot.'/tag/lib.php');
 
     require_login();
 
@@ -166,6 +167,11 @@
             $pageheading = get_string("updatinga", "moodle", $fullmodulename);
         }
 
+        // Retrieve module's official tags
+        if ($itemotags = tag_get_tags_array($module->name, $cm->instance, 'official')) {
+            $form->otags = array_keys($itemotags);
+        }
+
         $navlinksinstancename = array('name' => format_string($form->name,true), 'link' => "$CFG->wwwroot/mod/$module->name/view.php?id=$cm->id", 'type' => 'activityinstance');
 
         $CFG->pagepath = 'mod/'.$module->name;
@@ -316,6 +322,8 @@
                 print_error('cannotupdatecoursemodule');
             }
 
+            add_tags_info($fromform->modulename, $fromform->instance);
+
             add_to_log($course->id, "course", "update mod",
                        "../mod/$fromform->modulename/view.php?id=$fromform->coursemodule",
                        "$fromform->modulename $fromform->instance");
@@ -375,6 +383,8 @@
                 condition_info::update_cm_from_form(
                     (object)array('id'=>$fromform->coursemodule),$fromform,false);
             }
+
+            add_tags_info($fromform->modulename, $fromform->instance);
 
             add_to_log($course->id, "course", "add mod",
                        "../mod/$fromform->modulename/view.php?id=$fromform->coursemodule",
@@ -519,4 +529,19 @@
         $mform->display();
         print_footer($course);
     }
-?>
+
+/**
+ * Function to attach tag to a course module
+ */
+function add_tags_info($modulename, $instance) {
+
+    $tags = array();
+    if ($otags = optional_param('otags', '', PARAM_INT)) {
+        foreach ($otags as $tagid) {
+            if ($tag = tag_get('id', $tagid)) {
+                $tags[] = $tag->name;
+            }
+        }
+    }
+    tag_set($modulename, $instance, $tags);
+}

@@ -5,20 +5,14 @@ require_once($CFG->dirroot.'/local/reportbuilder/filters/lib.php');
  * Generic filter for text fields.
  */
 class filter_text extends filter_type {
-    var $_field;
-    var $_query;
 
     /**
      * Constructor
-     * @param string $name the name of the filter instance
-     * @param string $label the label of the filter instance
-     * @param boolean $advanced advanced form element flag
-     * @param string $field table field name
+     * @param object $filter rb_filter object for this filter
+     * @param string $sessionname Unique name for the report for storing sessions
      */
-    function filter_text($name, $label, $advanced, $filtername, $field, $query) {
-        parent::filter_type($name, $label, $advanced, $filtername);
-        $this->_field = $field;
-        $this->_query = $query;
+    function filter_text($filter, $sessionname) {
+        parent::filter_type($filter, $sessionname);
     }
 
     /**
@@ -40,21 +34,24 @@ class filter_text extends filter_type {
      */
     function setupForm(&$mform) {
         global $SESSION;
-        $filtername=$this->_filtername;
+        $sessionname=$this->_sessionname;
+        $label = $this->_filter->label;
+        $advanced = $this->_filter->advanced;
+
         $objs = array();
         $objs[] =& $mform->createElement('select', $this->_name.'_op', null, $this->getOperators());
         $objs[] =& $mform->createElement('text', $this->_name, null);
         $mform->setType($this->_name, PARAM_TEXT);
-        $grp =& $mform->addElement('group', $this->_name.'_grp', $this->_label, $objs, '', false);
-        $grp->setHelpButton(array('text',$this->_label,'filters'));
+        $grp =& $mform->addElement('group', $this->_name.'_grp', $label, $objs, '', false);
+        $grp->setHelpButton(array('text',$label,'filters'));
         $mform->disabledIf($this->_name, $this->_name.'_op', 'eq', 5);
-        if ($this->_advanced) {
+        if ($advanced) {
             $mform->setAdvanced($this->_name.'_grp');
         }
 
         // set default values
-        if(array_key_exists($this->_name,$SESSION->{$filtername})) {
-            $defaults = $SESSION->{$filtername}[$this->_name];
+        if(array_key_exists($this->_name,$SESSION->{$sessionname})) {
+            $defaults = $SESSION->{$sessionname}[$this->_name];
         }
         // TODO get rid of need for [0]
         if(isset($defaults[0]['operator'])) {
@@ -93,8 +90,7 @@ class filter_text extends filter_type {
     function get_sql_filter($data) {
         $operator = $data['operator'];
         $value    = addslashes($data['value']);
-        $field    = $this->_field;
-        $query    = $this->_query;
+        $query    = $this->_filter->get_field();
 
         if ($operator != 5 and $value === '') {
             return '';
@@ -114,7 +110,7 @@ class filter_text extends filter_type {
             case 4: // ends with
                 $res = "$ilike '%$value'"; break;
             case 5: // empty - may also be null
-                // hack required to get query to user
+                // hack required to get query to use
                 // correct operator precendence
                 // result should be:
                 // ( query = '' OR (query) IS NULL )
@@ -135,9 +131,10 @@ class filter_text extends filter_type {
         $operator  = $data['operator'];
         $value     = $data['value'];
         $operators = $this->getOperators();
+        $label     = $this->_filter->label;
 
         $a = new object();
-        $a->label    = $this->_label;
+        $a->label    = $label;
         $a->value    = '"'.s($value).'"';
         $a->operator = $operators[$operator];
 

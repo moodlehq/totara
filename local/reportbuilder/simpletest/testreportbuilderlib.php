@@ -16,8 +16,8 @@ require_once($CFG->libdir . '/simpletestlib.php');
 class reportbuilderlib_test extends prefix_changing_test_case {
     // test data for database
     var $reportbuilder_data = array(
-        array('id', 'fullname', 'shortname', 'source', 'hidden', 'accessmode', 'contentmode', 'contentsettings', 'accesssettings','embeddedurl'),
-        array(1, 'Test Report', 'test_report', 'competency_evidence', 0, 0, 0, '', '', null),
+        array('id', 'fullname', 'shortname', 'source', 'hidden', 'accessmode', 'contentmode','embeddedurl'),
+        array(1, 'Test Report', 'test_report', 'competency_evidence', 0, 0, 0, null),
     );
 
     var $reportbuilder_columns_data = array(
@@ -44,9 +44,10 @@ class reportbuilderlib_test extends prefix_changing_test_case {
         array(8, 1, 'competency_evidence', 'proficiencyid', 0, 8),
     );
 
-    var $reportbuilder_access_data = array(
-        array('id', 'reportid', 'accesstype', 'typeid'),
-        array(1, 1, 'role', 1),
+    var $reportbuilder_settings_data = array(
+        array('id', 'reportid', 'type', 'name', 'value'),
+        array(1, 1, 'role_access', 'activeroles', '1|2'),
+        array(2, 1, 'role_access', 'enable', '1'),
     );
 
     var $reportbuilder_saved_data = array(
@@ -109,7 +110,7 @@ class reportbuilderlib_test extends prefix_changing_test_case {
         load_test_table($CFG->prefix . 'report_builder', $this->reportbuilder_data, $db, 2000);
         load_test_table($CFG->prefix . 'report_builder_columns', $this->reportbuilder_columns_data, $db);
         load_test_table($CFG->prefix . 'report_builder_filters', $this->reportbuilder_filters_data, $db);
-        load_test_table($CFG->prefix . 'report_builder_access', $this->reportbuilder_access_data, $db);
+        load_test_table($CFG->prefix . 'report_builder_settings', $this->reportbuilder_settings_data, $db);
         load_test_table($CFG->prefix . 'report_builder_saved', $this->reportbuilder_saved_data, $db);
         load_test_table($CFG->prefix . 'role', $this->role_data, $db);
         load_test_table($CFG->prefix . 'user_info_field', $this->user_info_field_data, $db);
@@ -192,7 +193,7 @@ class reportbuilderlib_test extends prefix_changing_test_case {
         remove_test_table('mdl_unittest_user_info_field', $db);
         remove_test_table('mdl_unittest_role', $db);
         remove_test_table('mdl_unittest_report_builder_saved', $db);
-        remove_test_table('mdl_unittest_report_builder_access', $db);
+        remove_test_table('mdl_unittest_report_builder_settings', $db);
         remove_test_table('mdl_unittest_report_builder_filters', $db);
         remove_test_table('mdl_unittest_report_builder_columns', $db);
         remove_test_table('mdl_unittest_report_builder', $db);
@@ -236,7 +237,12 @@ class reportbuilderlib_test extends prefix_changing_test_case {
         // should return the current filters for this report
         $this->assertTrue(is_array($filters));
         $this->assertEqual(count($filters), 8);
-        $this->assertEqual(current($filters), array('type'=>'user','value'=>'fullname','advanced'=>0));
+        $this->assertEqual(current($filters)->type, 'user');
+        $this->assertEqual(current($filters)->value, 'fullname');
+        $this->assertEqual(current($filters)->advanced, '0');
+        $this->assertEqual(current($filters)->label, 'User\'s Full name');
+        $this->assertEqual(current($filters)->joins, array('user'));
+        $this->assertEqual(current($filters)->selectfunc, null);
     }
 
     function test_reportbuilder_get_columns() {
@@ -244,8 +250,10 @@ class reportbuilderlib_test extends prefix_changing_test_case {
         $columns = $rb->get_columns();
         // should return the current columns for this report
         $this->assertTrue(is_array($columns));
-        $this->assertEqual(count($columns), 8);
-        $this->assertEqual(current($columns), array('type'=>'user','value'=>'namelink','heading'=>'Participant'));
+        $this->assertEqual(count($columns), 9);
+        $this->assertEqual(current($columns)->type, 'user');
+        $this->assertEqual(current($columns)->value, 'namelink');
+        $this->assertEqual(current($columns)->heading, 'Participant');
     }
 
     function test_reportbuilder_create_embedded_record() {
@@ -284,34 +292,22 @@ class reportbuilderlib_test extends prefix_changing_test_case {
     }
 
 
-    function test_reportbuilder_check_columns() {
-        $rb = $this->rb;
-        // add an invalid column to object
-        $rb->columns[] = array('type'=>'invalid','value'=>'position','heading'=>'Position');
-        // run check_columns, storing number of columns before and after call
-        $before = count($rb->columns);
-        $rb->check_columns(true);
-        $after = count($rb->columns);
-        // should have removed one invalid column
-        $this->assertEqual($before - $after, 1);
-    }
-
     // not tested as difficult to do in a useful way
     // get_current_url() not tested
     // leaving get_current_admin_options() until after changes to capabilities
 
     function test_reportbuilder_get_current_params() {
         $rb = new reportbuilder(null, $this->shortname, $this->embed);
-        $param = array(array('field' => 'base.userid','joins'=>array(),'value'=>2));
+        $paramoption = new object();
+        $paramoption->name = 'userid';
+        $paramoption->field = 'base.userid';
+        $paramoption->joins = null;
+        $param = new rb_param('userid',array($paramoption));
+        $param->value = 2;
         // should return the expected embedded param
-        $this->assertEqual($rb->get_current_params(), $param);
+        $this->assertEqual($rb->get_current_params(), array($param));
     }
 
-    function test_reportbuilder_get_source_data() {
-        $rb = $this->rb;
-        // should return the base table string from the source file
-        $this->assertEqual($rb->get_source_data('base', $rb->source),'mdl_unittest_comp_evidence base');
-    }
 
     // display_search() and get_sql_filter() not tested as they print output directly to screen
 
@@ -323,19 +319,24 @@ class reportbuilderlib_test extends prefix_changing_test_case {
         $todb->id = 1;
         $todb->accessmode = 1;
         update_record('report_builder',$todb);
-        // should return true if accessmode is 1 and admin is the allowed role
+        // should return true if accessmode is 1 and admin an allowed role
         $this->assertTrue($rb->is_capable(1));
         // should return false if access mode is 1 and admin not an allowed role
-        delete_records('report_builder_access','id',1);
+        delete_records('report_builder_settings','reportid',1);
         $this->assertFalse($rb->is_capable(1));
         $todb = new object();
         $todb->reportid = 1;
-        $todb->accesstype = 'role';
-        $todb->typeid = 1;
-        insert_record('report_builder_access',$todb);
-        $todb->typeid = 2;
-        insert_record('report_builder_access',$todb);
-        // should return true if accessmode is 1 and admin is one of several allowed roles
+        $todb->type = 'role_access';
+        $todb->name = 'activeroles';
+        $todb->value = 1;
+        insert_record('report_builder_settings',$todb);
+        $todb = new object();
+        $todb->reportid = 1;
+        $todb->type = 'role_access';
+        $todb->name = 'enable';
+        $todb->value = '1';
+        insert_record('report_builder_settings', $todb);
+        // should return true if accessmode is 1 and admin is only allowed role
         $this->assertTrue($rb->is_capable(1));
     }
 
@@ -356,11 +357,27 @@ class reportbuilderlib_test extends prefix_changing_test_case {
         $rb = new reportbuilder(1);
         // should return (FALSE) if content mode = 1 but no restrictions set
         $this->assertEqual($rb->get_content_restrictions(),'(FALSE)');
-        $todb->contentsettings = 'a:2:{s:7:"thedate";a:2:{s:6:"enable";i:1;s:4:"when";s:6:"future";}s:4:"user";a:2:{s:6:"enable";i:1;s:3:"who";s:3:"own";}}';
-        update_record('report_builder', $todb);
+        $todb = new object();
+        $todb->reportid = 1;
+        $todb->type = 'date_content';
+        $todb->name = 'enable';
+        $todb->value = 1;
+        insert_record('report_builder_settings', $todb);
+        $todb->name = 'when';
+        $todb->value = 'future';
+        insert_record('report_builder_settings', $todb);
+        $todb->type = 'user_content';
+        $todb->name = 'enable';
+        $todb->value = 1;
+        insert_record('report_builder_settings', $todb);
+        $todb->name = 'who';
+        $todb->value = 'own';
+        insert_record('report_builder_settings', $todb);
         $rb = new reportbuilder(1);
         // should return the appropriate SQL snippet to OR the restrictions if content mode = 1
         $this->assertPattern('/(base\.userid = 2 OR base\.timemodified > \d+)/',$rb->get_content_restrictions());
+        $todb = new object();
+        $todb->id = 1;
         $todb->contentmode = 2;
         update_record('report_builder', $todb);
         $rb = new reportbuilder(1);
@@ -381,11 +398,27 @@ class reportbuilderlib_test extends prefix_changing_test_case {
         $rb = new reportbuilder(1);
         // should return an array with empty string if content mode = 1 but no restrictions set
         $this->assertEqual($rb->get_restriction_descriptions('content'), array(''));
-        $todb->contentsettings = 'a:2:{s:7:"thedate";a:2:{s:6:"enable";i:1;s:4:"when";s:6:"future";}s:4:"user";a:2:{s:6:"enable";i:1;s:3:"who";s:3:"own";}}';
-        update_record('report_builder', $todb);
+        $todb = new object();
+        $todb->reportid = 1;
+        $todb->type = 'date_content';
+        $todb->name = 'enable';
+        $todb->value = 1;
+        insert_record('report_builder_settings', $todb);
+        $todb->name = 'when';
+        $todb->value = 'future';
+        insert_record('report_builder_settings', $todb);
+        $todb->type = 'user_content';
+        $todb->name = 'enable';
+        $todb->value = 1;
+        insert_record('report_builder_settings', $todb);
+        $todb->name = 'who';
+        $todb->value = 'own';
+        insert_record('report_builder_settings', $todb);
         $rb = new reportbuilder(1);
         // should return the appropriate text description if content mode = 1
         $this->assertPattern('/The user is "Admin User" or The completion date occurred after .*/', current($rb->get_restriction_descriptions('content')));
+        $todb = new object();
+        $todb->id = 1;
         $todb->contentmode = 2;
         update_record('report_builder', $todb);
         $rb = new reportbuilder(1);
@@ -403,39 +436,33 @@ class reportbuilderlib_test extends prefix_changing_test_case {
         // should return an array
         $this->assertTrue(is_array($columns));
         // the array should contain the correct number of columns
-        $this->assertEqual(count($columns), 8);
+        $this->assertEqual(count($columns), 11);
         // the strings should have the correct format
-        $this->assertEqual(current($columns), "u.id AS user_id, ''||u.firstname||' '||u.lastname AS user_namelink");
+        $this->assertEqual(current($columns), "''||u.firstname||' '||u.lastname AS user_namelink");
     }
 
-    function test_reportbuilder_get_admin_fields() {
+    function test_reportbuilder_get_joins() {
         $rb = $this->rb;
-        $columns = $rb->get_admin_fields();
+        $obj1 = new stdClass();
+        $obj1->joins = array('user','competency');
+        $obj2 = new stdClass();
+        $obj2->joins = 'position';
+        $columns = $rb->get_joins($obj1, 'test');
         // should return an array
         $this->assertTrue(is_array($columns));
         // the array should contain the correct number of columns
         $this->assertEqual(count($columns), 2);
         // the strings should have the correct format
-        $this->assertEqual(current($columns), 'base.userid AS settings_user');
-    }
-
-    function test_reportbuilder_get_joins() {
-        $rb = $this->rb;
-        $inputs = array(
-            array(
-                'joins' => array('user','competency'),
-            ),
-            array(
-                'joins' => array('position'),
-            ),
-        );
-        $columns = $rb->get_joins($inputs, 'test');
-        // should return an array
-        $this->assertTrue(is_array($columns));
-        // the array should contain the correct number of columns
-        $this->assertEqual(count($columns), 3);
-        // the strings should have the correct format
         $this->assertEqual($columns['user'], 'LEFT JOIN mdl_unittest_user u ON base.userid = u.id');
+        // should also work with string instead of array
+        $columns2 = $rb->get_joins($obj2, 'test');
+        $this->assertTrue(is_array($columns2));
+        // the array should contain the correct number of columns
+        $this->assertEqual(count($columns2), 1);
+        // the strings should have the correct format
+        $this->assertEqual($columns2['position'], 'LEFT JOIN mdl_unittest_pos position
+                ON position.id = pa.positionid');
+
     }
 
     function test_reportbuilder_get_content_joins() {
@@ -527,8 +554,8 @@ class reportbuilderlib_test extends prefix_changing_test_case {
         $this->assertNoPattern('/count\(\*\)/i', $sql_query_filtered);
         $this->assertNoPattern('/count\(\*\)/i', $sql_query_unfiltered);
         // if not filtered, the SQL should include the string "where (true) " with no other clauses
-        $this->assertPattern('/where \( true \) *$/i', $sql_count_unfiltered);
-        $this->assertPattern('/where \( true \) *$/i', $sql_query_unfiltered);
+        $this->assertPattern('/where \(\s+true\s+\)\s*/i', $sql_count_unfiltered);
+        $this->assertPattern('/where \(\s+true\s+\)\s*/i', $sql_query_unfiltered);
         // hard to do further testing as no actual data or tables exist
     }
 
@@ -601,7 +628,7 @@ class reportbuilderlib_test extends prefix_changing_test_case {
         // should return an array
         $this->assertTrue(is_array($options));
         // the strings should have the correct format
-        $this->assertEqual($options['user-fullname'], 'Participant Name');
+        $this->assertEqual($options['user-fullname'], "User's Full name");
     }
 
     function test_reportbuilder_get_columns_select() {

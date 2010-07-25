@@ -1,17 +1,15 @@
 <?php //$Id$
 
-require_once($CFG->dirroot.'/user/filters/lib.php');
+require_once($CFG->dirroot.'/local/reportbuilder/filters/lib.php');
 
 /**
  * Generic filter based on a list of values.
  */
-class user_filter_simpleselect extends user_filter_type {
+class filter_simpleselect extends filter_type {
     /**
      * options for the list values
      */
     var $_options;
-
-    var $_field;
 
     /**
      * Constructor
@@ -21,23 +19,41 @@ class user_filter_simpleselect extends user_filter_type {
      * @param string $field user table filed name
      * @param array $options select options
      */
-    function user_filter_simpleselect($name, $label, $advanced, $field, $options) {
-        parent::user_filter_type($name, $label, $advanced);
-        $this->_field   = $field;
-        $this->_options = $options;
+    function filter_simpleselect($filter, $sessionname, $selectoptions, $attributes=null) {
+        parent::filter_type($filter, $sessionname);
+        $this->_options = $selectoptions;
+        $this->_attributes = $attributes;
     }
+
 
     /**
      * Adds controls specific to this filter in the form.
      * @param object $mform a MoodleForm object to setup
      */
     function setupForm(&$mform) {
-        $choices = array(''=>get_string('anyvalue', 'filters')) + $this->_options;
-        $mform->addElement('select', $this->_name, $this->_label, $choices);
-        $mform->setHelpButton($this->_name, array('simpleselect', $this->_label, 'filters'));
-        if ($this->_advanced) {
+        global $SESSION;
+        $sessionname = $this->_sessionname;
+        $label = $this->_filter->label;
+        $advanced = $this->_filter->advanced;
+        $options = $this->_options;
+        $attr = $this->_attributes;
+
+        $choices = array(''=>get_string('anyvalue','filters')) + $options;
+        $mform->addElement('select', $this->_name, $label, $choices, $attr);
+        $mform->setHelpButton($this->_name, array('simpleselect', $label, 'filters'));
+        if ($advanced) {
             $mform->setAdvanced($this->_name);
         }
+
+        // set default values
+        if(array_key_exists($this->_name, $SESSION->{$sessionname})) {
+            $defaults = $SESSION->{$sessionname}[$this->_name];
+        }
+        //TODO get rid of need for [0]
+        if(isset($defaults[0]['value'])) {
+            $mform->setDefault($this->_name, $defaults[0]['value']);
+        }
+
     }
 
     /**
@@ -46,10 +62,10 @@ class user_filter_simpleselect extends user_filter_type {
      * @return mixed array filter data or false when filter not set
      */
     function check_data($formdata) {
-        $field = $this->_name;
+        $field    = $this->_name;
 
-        if (array_key_exists($field, $formdata) and $formdata->$field !== '') {
-            return array('value'=>(string)$formdata->$field);
+        if (array_key_exists($field, $formdata) && $formdata->$field !== '') {
+            return array('value'    => (string)$formdata->$field);
         }
 
         return false;
@@ -61,12 +77,14 @@ class user_filter_simpleselect extends user_filter_type {
      * @return string the filtering condition or null if the filter is disabled
      */
     function get_sql_filter($data) {
-        $value = addslashes($data['value']);
-        $field = $this->_field;
+        $value    = addslashes($data['value']);
+        $query    = $this->_filter->get_field();
+
         if ($value == '') {
-            return '';
+            return ' TRUE ';
         }
-        return "$field='$value'";
+
+        return "$query = $value";
     }
 
     /**
@@ -75,10 +93,15 @@ class user_filter_simpleselect extends user_filter_type {
      * @return string active filter label
      */
     function get_label($data) {
-        $value = $data['value'];
+        $value     = $data['value'];
+        $label = $this->_filter->label;
+
+        if($value == '') {
+            return '';
+        }
 
         $a = new object();
-        $a->label    = $this->_label;
+        $a->label    = $label;
         $a->value    = '"'.s($this->_options[$value]).'"';
         $a->operator = get_string('isequalto','filters');
 

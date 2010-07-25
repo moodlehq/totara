@@ -389,7 +389,7 @@ div.mitms-dialog div.ui-dialog-content .dialog-static-content {
     overflow: auto;
 }
 
-div.mitms-dialog ul.treeview {
+div.mitms-dialog ul.treeview, div.mitms-dialog div#column-checkboxes {
     margin-top: 10px;
     height: 295px;
     overflow: auto;

@@ -1610,5 +1610,203 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && create_table($table);
     }
 
+    if ($result && $oldversion < 2010072601) {
+    /// Create table report_heading_items
+        $table = new XMLDBTable('report_builder_settings');
+        $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->addFieldInfo('reportid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
+        $table->addFieldInfo('type', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
+        $table->addFieldInfo('name', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
+        $table->addFieldInfo('value', XMLDB_TYPE_CHAR, '255', null, null, null, null);
+        $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
+        $table->addIndexInfo('reportid-type-name', XMLDB_INDEX_UNIQUE, array('reportid', 'type', 'name'));
+        $result = $result && create_table($table);
+
+        // migrate content settings from report_builder table
+        if($records = get_records('report_builder')) {
+            foreach($records as $record) {
+                if($row = unserialize($record->contentsettings)) {
+                    $reportid = $record->id;
+                    foreach($row as $classname => $settings) {
+                        $type = $classname . '_content';
+                        foreach($settings as $name => $value) {
+                            $todb = new object();
+                            $todb->reportid = $reportid;
+                            $todb->type = $type;
+                            $todb->name = $name;
+                            $todb->value = $value;
+                            $result = $result &&
+                                insert_record('report_builder_settings', $todb);
+                        }
+                    }
+                }
+            }
+        }
+
+        if($result) {
+            // delete old content settings field
+            $table = new XMLDBTable('report_builder');
+            $field = new XMLDBField('contentsettings');
+            $result = $result && drop_field($table, $field);
+
+            // delete old access settings field
+            $table = new XMLDBTable('report_builder');
+            $field = new XMLDBField('accesssettings');
+            $result = $result && drop_field($table, $field);
+        }
+
+        // migrate old access records to new format
+        if($records = get_records('report_builder_access')) {
+            $out = array();
+            foreach($records as $record) {
+                if($record->accesstype == 'role') {
+                    $reportid = $record->reportid;
+                    $out[$reportid][] = $record->typeid;
+                }
+            }
+            foreach($out as $reportid => $roles) {
+                $todb = new object();
+                $todb->reportid = $reportid;
+                $todb->type = 'role_access';
+                $todb->name = 'activeroles';
+                $todb->value = implode('|', $roles);
+                $result = $result && insert_record('report_builder_settings',
+                    $todb);
+                $todb->name = 'enable';
+                $todb->value = 1;
+                $result = $result && insert_record('report_builder_settings',
+                    $todb);
+            }
+        }
+
+        // remove old access table
+        if($result) {
+            $table = new XMLDBTable('report_builder_access');
+            $result = $result && drop_table($table);
+        }
+
+        // rename thedate_content to date_content in settings
+        if($result) {
+            if($daterecords = get_records('report_builder_settings', 'type', 'thedate_content')) {
+                foreach($daterecords as $daterecord) {
+                    $todb = new object();
+                    $todb->id = $daterecord->id;
+                    $todb->type = 'date_content';
+                    $result = $result && update_record('report_builder_settings', $todb);
+                }
+            }
+        }
+
+        // create stored procedure for aggregating text by concatenation
+        // mysql supports by default. The code below adds postgres support
+        // see sql_group_concat() function for usage
+        if($CFG->dbfamily == 'postgres') {
+            $sql = 'CREATE TYPE tp_concat AS (data TEXT[], delimiter TEXT);
+                CREATE OR REPLACE FUNCTION group_concat_iterate(_state
+                    tp_concat, _value TEXT, delimiter TEXT, is_distinct boolean)
+                    RETURNS tp_concat AS
+                $BODY$
+                    SELECT
+                        CASE
+                            WHEN $1 IS NULL THEN ARRAY[$2]
+                            WHEN $4 AND $1.data @> ARRAY[$2] THEN $1.data
+                            ELSE $1.data || $2
+                    END,
+                    $3
+                $BODY$
+                    LANGUAGE \'sql\' VOLATILE;
+
+                CREATE OR REPLACE FUNCTION group_concat_finish(_state tp_concat)
+                    RETURNS text AS
+                $BODY$
+                    SELECT array_to_string($1.data, $1.delimiter)
+                $BODY$
+                    LANGUAGE \'sql\' VOLATILE;
+
+                CREATE AGGREGATE group_concat(text, text, boolean) (SFUNC =
+                    group_concat_iterate, STYPE = tp_concat, FINALFUNC =
+                    group_concat_finish)';
+
+
+            $result = $result && execute_sql($sql, false);
+            /* To undo this, use the following:
+             * DROP AGGREGATE group_concat(text, text, boolean);
+             * DROP FUNCTION group_concat_finish(tp_concat);
+             * DROP FUNCTION group_concat_iterate(tp_concat, text, text, boolean);
+             * DROP TYPE tp_concat;
+             */
+        }
+
+        /// Define table report_builder_group
+        $table = new XMLDBTable('report_builder_group');
+        if(!table_exists($table)) {
+
+            /// Adding fields to table report_builder_group
+            $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null, null);
+            $table->addFieldInfo('name', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
+            $table->addFieldInfo('preproc', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
+            $table->addFieldInfo('baseitem', XMLDB_TYPE_CHAR, '255', null, null, null, null);
+            $table->addFieldInfo('assigntype', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
+            $table->addFieldInfo('assignvalue', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null, null, null);
+
+            /// Adding keys to table report_builder_group
+            $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
+
+            /// Launch create table for report_builder_group
+            create_table($table);
+        }
+
+        /// Define table report_builder_group_assign
+        $table = new XMLDBTable('report_builder_group_assign');
+        if(!table_exists($table)) {
+
+        /// Adding fields to table report_builder_group_assign
+            $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null, null);
+            $table->addFieldInfo('groupid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
+            $table->addFieldInfo('itemid', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
+
+        /// Adding keys to table report_builder_group_assign
+            $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
+
+        /// Adding indexes to table report_builder_group_assign
+            $table->addIndexInfo('groupid-itemid', XMLDB_INDEX_UNIQUE, array('groupid','itemid'));
+
+        /// Launch create table for report_builder_group_assign
+            create_table($table);
+        }
+
+
+        /// Define table report_builder_preproc_track
+        $table = new XMLDBTable('report_builder_preproc_track');
+        if(!table_exists($table)) {
+
+        /// Adding fields to table report_builder_preproc_track
+            $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null, null);
+            $table->addFieldInfo('groupid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
+            $table->addFieldInfo('itemid', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
+            $table->addFieldInfo('lastchecked', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
+            $table->addFieldInfo('disabled', XMLDB_TYPE_INTEGER, '4', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
+
+        /// Adding keys to table report_builder_preproc_track
+            $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
+
+        /// Adding indexes to table report_builder_preproc track
+            $table->addIndexInfo('groupid-itemid', XMLDB_INDEX_UNIQUE, array('groupid','itemid'));
+
+        /// Launch create table for report_builder_preproc_track
+            create_table($table);
+        }
+
+        /// Add hidden column to columns table
+        $table = new XMLDBTable('report_builder_columns');
+        $field = new XMLDBField('hidden');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '4', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0', null);
+
+        /// Conditionally add field hidden
+        if (!field_exists($table, $field)) {
+            add_field($table, $field);
+        }
+    }
+
     return $result;
 }

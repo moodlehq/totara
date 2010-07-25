@@ -534,6 +534,23 @@ class moodleform_mod extends moodleform {
             $mform->disabledIf('completionexpected','completion','eq',COMPLETION_TRACKING_NONE);    
         }
 
+        if (!empty($CFG->usetags)) {
+            $mform->createElement('select', 'otags', get_string('otags','tag'));
+
+            $js_escape = array(
+                "\r"    => '\r',
+                "\n"    => '\n',
+                "\t"    => '\t',
+                "'"     => "\\'",
+                '"'     => '\"',
+                '\\'    => '\\\\'
+            );
+
+            $otagsselEl =& $mform->addElement('select', 'otags', get_string('otags', 'tag'), array(), 'size="5"');
+            $otagsselEl->setMultiple(true);
+            $this->otags_select_setup();
+        }
+
         $this->standard_hidden_coursemodule_elements();
     }
     
@@ -629,6 +646,23 @@ class moodleform_mod extends moodleform {
         $mform->addGroup($buttonarray, 'buttonar', '', array(' '), false);
         $mform->setType('buttonar', PARAM_RAW);
         $mform->closeHeaderBefore('buttonar');
+    }
+
+    /**
+     * This function sets up options of otag select element. This is called from definitio
+     * after adding new official tags with the add tag button.
+     *
+     */
+    function otags_select_setup() {
+        global $CFG;
+        $mform =& $this->_form;
+        if ($otagsselect =& $mform->getElement('otags')) {
+            $otagsselect->removeOptions();
+        }
+        $namefield = empty($CFG->keeptagnamecase) ? 'name' : 'rawname';
+        if ($otags = get_records_sql_menu('SELECT id, '.$namefield.' from '.$CFG->prefix.'tag WHERE tagtype=\'official\' ORDER by name ASC')){
+            $otagsselect->loadArray($otags);
+        }
     }
 }
 

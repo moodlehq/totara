@@ -70,11 +70,12 @@ if(get_field('role','id','shortname','facilitator')) {
 // only show future bookings
 $embed->contentmode = 2; // all
 $embed->contentsettings = array(
-    'thedate' => array(
+    'date' => array(
         'enable' => 1,
         'when' => 'future',
     ),
 );
+
 // also limited to single user by embedded params
 $embed->embeddedparams = array(
     'userid' => $id,

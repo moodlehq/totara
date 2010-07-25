@@ -9,20 +9,14 @@ class filter_date extends filter_type {
     /**
      * the fields available for comparisson
      */
-    var $_field;
-    var $_query;
 
     /**
      * Constructor
-     * @param string $name the name of the filter instance
-     * @param string $label the label of the filter instance
-     * @param boolean $advanced advanced form element flag
-     * @param string $field user table filed name
+     * @param object $filter rb_filter object for this filter
+     * @param string $sessionname Unique name for the report for storing sessions
      */
-    function filter_date($name, $label, $advanced, $filtertype, $field, $query) {
-        parent::filter_type($name, $label, $advanced, $filtertype);
-        $this->_field = $field;
-        $this->_query = $query;
+    function filter_date($filter, $sessionname) {
+        parent::filter_type($filter, $sessionname);
     }
 
     /**
@@ -31,17 +25,20 @@ class filter_date extends filter_type {
      */
     function setupForm(&$mform) {
         global $SESSION;
-        $filtername = $this->_filtername;
+        $sessionname = $this->_sessionname;
+        $label = $this->_filter->label;
+        $advanced = $this->_filter->advanced;
+
         $objs = array();
 
         $objs[] =& $mform->createElement('checkbox', $this->_name.'_sck', null, get_string('isafter', 'filters'));
         $objs[] =& $mform->createElement('date_selector', $this->_name.'_sdt', null);
         $objs[] =& $mform->createElement('checkbox', $this->_name.'_eck', null, get_string('isbefore', 'filters'));
         $objs[] =& $mform->createElement('date_selector', $this->_name.'_edt', null);
-        $grp =& $mform->addElement('group', $this->_name.'_grp', $this->_label, $objs, '', false);
-        $grp->setHelpButton(array('date',$this->_label,'filters'));
+        $grp =& $mform->addElement('group', $this->_name.'_grp', $label, $objs, '', false);
+        $grp->setHelpButton(array('date',$label,'filters'));
 
-        if ($this->_advanced) {
+        if ($advanced) {
             $mform->setAdvanced($this->_name.'_grp');
         }
 
@@ -53,8 +50,8 @@ class filter_date extends filter_type {
         $mform->disabledIf($this->_name.'_edt[year]', $this->_name.'_eck', 'notchecked');
 
         // set default values
-        if(array_key_exists($this->_name, $SESSION->{$filtername})) {
-            $defaults = $SESSION->{$filtername}[$this->_name];
+        if(array_key_exists($this->_name, $SESSION->{$sessionname})) {
+            $defaults = $SESSION->{$sessionname}[$this->_name];
         }
         //TODO get rid of need for [0]
         if(isset($defaults[0]['after']) && $defaults[0]['after']!=0) {
@@ -104,8 +101,7 @@ class filter_date extends filter_type {
     function get_sql_filter($data) {
         $after  = $data['after'];
         $before = $data['before'];
-        $field  = $this->_field;
-        $query  = $this->_query;
+        $query  = $this->_filter->get_field();
 
         if (empty($after) and empty($before)) {
             return '';
@@ -130,10 +126,10 @@ class filter_date extends filter_type {
     function get_label($data) {
         $after  = $data['after'];
         $before = $data['before'];
-        $field  = $this->_field;
+        $label  = $this->_filter->label;
 
         $a = new object();
-        $a->label  = $this->_label;
+        $a->label  = $label;
         $a->after  = userdate($after);
         $a->before = userdate($before);
 

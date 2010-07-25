@@ -10,7 +10,6 @@
 
 /// Library of functions and constants for module feedback
 
-define('FEEDBACK_INCLUDE_TEST', 1);
 define('FEEDBACK_ANONYMOUS_YES', 1);
 define('FEEDBACK_ANONYMOUS_NO', 2);
 define('FEEDBACK_MIN_ANONYMOUS_COUNT_IN_GROUP', 2);

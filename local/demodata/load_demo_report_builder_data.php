@@ -14,8 +14,8 @@ array('id' => '13','fullname' => 'My Staff Course Completions','shortname' => 's
 array('id' => '14','fullname' => 'All Site Logs','shortname' => 'all_site_logs','source' => 'site_logs','hidden' => '0','accessmode' => '1','contentmode' => '0',),
 array('id' => '15','fullname' => 'My Local Site Logs','shortname' => 'local_site_logs','source' => 'site_logs','hidden' => '0','accessmode' => '1','contentmode' => '1','contentsettings' => 'a:2:{s:11:\\\"current_org\\\";a:2:{s:6:\\\"enable\\\";i:1;s:9:\\\"recursive\\\";i:1;}s:13:\\\"completed_org\\\";a:2:{s:6:\\\"enable\\\";i:1;s:9:\\\"recursive\\\";i:1;}}',),
 array('id' => '16','fullname' => 'My Staff Site Logs','shortname' => 'staff_site_logs','source' => 'site_logs','hidden' => '1','accessmode' => '1','contentmode' => '1','contentsettings' => 'a:1:{s:4:\\\"user\\\";a:2:{s:6:\\\"enable\\\";i:1;s:3:\\\"who\\\";s:7:\\\"reports\\\";}}',),
-array('id' => '17','fullname' => 'My Bookings','shortname' => 'bookings','source' => 'facetoface_sessions','hidden' => '1','accessmode' => '0','contentmode' => '2','contentsettings' => 'a:1:{s:7:\\\"thedate\\\";a:2:{s:6:\\\"enable\\\";i:1;s:4:\\\"when\\\";s:6:\\\"future\\\";}}','accesssettings' => 'a:0:{}','embeddedurl' => 'http://192.168.2.133/moodle-itms/my/bookings.php?id=2',),
-array('id' => '18','fullname' => 'My Past Bookings','shortname' => 'pastbookings','source' => 'facetoface_sessions','hidden' => '1','accessmode' => '0','contentmode' => '2','contentsettings' => 'a:1:{s:7:\\\"thedate\\\";a:2:{s:6:\\\"enable\\\";i:1;s:4:\\\"when\\\";s:4:\\\"past\\\";}}','accesssettings' => 'a:0:{}','embeddedurl' => 'http://192.168.2.133/moodle-itms/my/pastbookings.php?id=2',),
+array('id' => '17','fullname' => 'My Bookings','shortname' => 'bookings','source' => 'facetoface_sessions','hidden' => '1','accessmode' => '0','contentmode' => '2','contentsettings' => 'a:1:{s:7:\\\"date\\\";a:2:{s:6:\\\"enable\\\";i:1;s:4:\\\"when\\\";s:6:\\\"future\\\";}}','accesssettings' => 'a:0:{}','embeddedurl' => 'http://192.168.2.133/moodle-itms/my/bookings.php?id=2',),
+array('id' => '18','fullname' => 'My Past Bookings','shortname' => 'pastbookings','source' => 'facetoface_sessions','hidden' => '1','accessmode' => '0','contentmode' => '2','contentsettings' => 'a:1:{s:7:\\\"date\\\";a:2:{s:6:\\\"enable\\\";i:1;s:4:\\\"when\\\";s:4:\\\"past\\\";}}','accesssettings' => 'a:0:{}','embeddedurl' => 'http://192.168.2.133/moodle-itms/my/pastbookings.php?id=2',),
 array('id' => '19','fullname' => 'My Record of Learning','shortname' => 'record_of_learning','source' => 'competency_evidence','hidden' => '1','accessmode' => '0','contentmode' => '0','contentsettings' => 'a:0:{}','accesssettings' => 'a:0:{}','embeddedurl' => 'http://192.168.2.133/moodle-itms/my/records.php?id=2',),
 );
 print "\n";print "Inserting ".count($items)." records<br />\n";
@@ -53,4 +53,3 @@ print "<br>";
 set_config("guestloginbutton", 0);
 set_config("langmenu", 0);
 set_config("forcelogin", 1);
-        

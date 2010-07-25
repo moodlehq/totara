@@ -1,5 +1,5 @@
 <?php  // $Id: lib.php,v 1.1.4.2 2008/01/15 23:53:28 agrabs Exp $
-defined('FEEDBACK_INCLUDE_TEST') OR die('not allowed');
+defined('MOODLE_INTERNAL') OR die('not allowed');
 require_once($CFG->dirroot.'/mod/feedback/item/feedback_item_class.php');
 
 define('FEEDBACK_RADIORATED_MAXCOUNT', 10); //count of possible items

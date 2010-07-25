@@ -10,9 +10,6 @@ class filter_select extends filter_type {
      * options for the list values
      */
     var $_options;
-
-    var $_field;
-
     var $_default;
 
     /**
@@ -24,11 +21,9 @@ class filter_select extends filter_type {
      * @param array $options select options
      * @param mixed $default option
      */
-    function filter_select($name, $label, $advanced, $filtertype, $field, $query, $options, $default=null, $attributes=null) {
-        parent::filter_type($name, $label, $advanced, $filtertype);
-        $this->_field   = $field;
-        $this->_query   = $query;
-        $this->_options = $options;
+    function filter_select($filter, $sessionname, $selectoptions, $default=null, $attributes=null) {
+        parent::filter_type($filter, $sessionname);
+        $this->_options = $selectoptions;
         $this->_default = $default;
         $this->_attributes = $attributes;
     }
@@ -49,23 +44,26 @@ class filter_select extends filter_type {
      */
     function setupForm(&$mform) {
         global $SESSION;
-        $filtername = $this->_filtername;
+        $sessionname = $this->_sessionname;
+        $label = $this->_filter->label;
+        $advanced = $this->_filter->advanced;
+
         $objs = array();
         $objs[] =& $mform->createElement('select', $this->_name.'_op', null, $this->get_operators());
         $objs[] =& $mform->createElement('select', $this->_name, null, $this->_options, $this->_attributes);
-        $grp =& $mform->addElement('group', $this->_name.'_grp', $this->_label, $objs, '', false);
-        $grp->setHelpButton(array('select', $this->_label, 'filters'));
+        $grp =& $mform->addElement('group', $this->_name.'_grp', $label, $objs, '', false);
+        $grp->setHelpButton(array('select', $label, 'filters'));
         $mform->disabledIf($this->_name, $this->_name.'_op', 'eq', 0);
         if (!is_null($this->_default)) {
             $mform->setDefault($this->_name, $this->_default);
         }
-        if ($this->_advanced) {
+        if ($advanced) {
             $mform->setAdvanced($this->_name.'_grp');
         }
 
         // set default values
-        if(array_key_exists($this->_name, $SESSION->{$filtername})) {
-            $defaults = $SESSION->{$filtername}[$this->_name];
+        if(array_key_exists($this->_name, $SESSION->{$sessionname})) {
+            $defaults = $SESSION->{$sessionname}[$this->_name];
         }
         //TODO get rid of need for [0]
         if(isset($defaults[0]['operator'])) {
@@ -102,8 +100,7 @@ class filter_select extends filter_type {
     function get_sql_filter($data) {
         $operator = $data['operator'];
         $value    = addslashes($data['value']);
-        $field    = $this->_field;
-        $query    = $this->_query;
+        $query    = $this->_filter->get_field();
 
         switch($operator) {
             case 1:
@@ -137,13 +134,14 @@ class filter_select extends filter_type {
         $operators = $this->get_operators();
         $operator  = $data['operator'];
         $value     = $data['value'];
+        $label = $this->_filter->label;
 
         if (empty($operator)) {
             return '';
         }
 
         $a = new object();
-        $a->label    = $this->_label;
+        $a->label    = $label;
         $a->value    = '"'.s($this->_options[$value]).'"';
         $a->operator = $operators[$operator];
 

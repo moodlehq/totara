@@ -5,20 +5,14 @@ require_once($CFG->dirroot.'/local/reportbuilder/filters/lib.php');
  * Generic filter for numbers.
  */
 class filter_number extends filter_type {
-    var $_field;
-    var $_query;
 
     /**
      * Constructor
-     * @param string $name the name of the filter instance
-     * @param string $label the label of the filter instance
-     * @param boolean $advanced advanced form element flag
-     * @param string $field table field name
+     * @param object $filter rb_filter object for this filter
+     * @param string $sessionname Unique name for the report for storing sessions
      */
-    function filter_number($name, $label, $advanced, $filtername, $field, $query) {
-        parent::filter_type($name, $label, $advanced, $filtername);
-        $this->_field = $field;
-        $this->_query = $query;
+    function filter_number($filter, $sessionname) {
+        parent::filter_type($filter, $sessionname);
     }
 
     /**
@@ -40,19 +34,22 @@ class filter_number extends filter_type {
      */
     function setupForm(&$mform) {
         global $SESSION;
-        $filtername=$this->_filtername;
+        $sessionname=$this->_sessionname;
+        $label = $this->_filter->label;
+        $advanced = $this->_filter->advanced;
+
         $objs = array();
         $objs[] =& $mform->createElement('select', $this->_name.'_op', null, $this->getOperators());
         $objs[] =& $mform->createElement('text', $this->_name, null);
-        $grp =& $mform->addElement('group', $this->_name.'_grp', $this->_label, $objs, '', false);
-        $grp->setHelpButton(array('number',$this->_label,'filters'));
-        if ($this->_advanced) {
+        $grp =& $mform->addElement('group', $this->_name.'_grp', $label, $objs, '', false);
+        $grp->setHelpButton(array('number',$label,'filters'));
+        if ($advanced) {
             $mform->setAdvanced($this->_name.'_grp');
         }
 
         // set default values
-        if(array_key_exists($this->_name,$SESSION->{$filtername})) {
-            $defaults = $SESSION->{$filtername}[$this->_name];
+        if(array_key_exists($this->_name,$SESSION->{$sessionname})) {
+            $defaults = $SESSION->{$sessionname}[$this->_name];
         }
         // TODO get rid of need for [0]
         if(isset($defaults[0]['operator'])) {
@@ -91,8 +88,7 @@ class filter_number extends filter_type {
     function get_sql_filter($data) {
         $operator = $data['operator'];
         $value    = (float) addslashes($data['value']);
-        $field    = $this->_field;
-        $query    = $this->_query;
+        $query    = $this->_filter->get_field();
 
         if ($value === '') {
             return '';
@@ -128,9 +124,10 @@ class filter_number extends filter_type {
         $operator  = $data['operator'];
         $value     = $data['value'];
         $operators = $this->getOperators();
+        $label     = $this->_filter->label;
 
         $a = new object();
-        $a->label    = $this->_label;
+        $a->label    = $label;
         $a->value    = '"'.s($value).'"';
         $a->operator = $operators[$operator];
 

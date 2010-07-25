@@ -2,10 +2,23 @@
 
 require_once('../../config.php');
 require_once($CFG->dirroot.'/local/reportbuilder/lib.php');
+require_once($CFG->dirroot.'/local/js/lib/setup.php');
+
+// Setup custom javascript
+local_js(array(
+    MBE_JS_DIALOG,
+));
+
+require_js(
+    array(
+        $CFG->wwwroot.'/local/reportbuilder/showhide.js.php'
+    )
+);
 
 $format    = optional_param('format', '', PARAM_TEXT);
 $id = required_param('id',PARAM_INT);
 $sid = optional_param('sid', '0', PARAM_INT);
+$debug = optional_param('debug', 0, PARAM_INT);
 
 // new report object
 $report = new reportbuilder($id, null, false, $sid);
@@ -38,6 +51,10 @@ print_header_simple($pagetitle, '', $navigation, '', null, true, $report->edit_b
 // display heading including filtering stats
 print_heading("$fullname: ".get_string('showing','local')." $countfiltered / $countall");
 
+if($debug) {
+    $report->debug($debug);
+}
+
 // print filters
 $report->display_search();
 
@@ -51,6 +68,7 @@ print "<br /><br />";
 
 // show results
 if($countfiltered>0) {
+    print $report->showhide_button();
     $report->display_table();
     // export button
     $report->export_select();

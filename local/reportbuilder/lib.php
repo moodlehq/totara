@@ -2,35 +2,50 @@
 
 require_once("{$CFG->dirroot}/local/reportbuilder/filters/lib.php");
 require_once($CFG->libdir.'/tablelib.php');
-include_once($CFG->dirroot.'/local/reportbuilder/contentclass.php');
+require_once($CFG->dirroot.'/local/reportbuilder/classes/rb_base_source.php');
+require_once($CFG->dirroot.'/local/reportbuilder/classes/rb_base_content.php');
+require_once($CFG->dirroot.'/local/reportbuilder/classes/rb_base_access.php');
+require_once($CFG->dirroot.'/local/reportbuilder/classes/rb_base_preproc.php');
+require_once($CFG->dirroot.'/local/reportbuilder/classes/rb_column.php');
+require_once($CFG->dirroot.'/local/reportbuilder/classes/rb_column_option.php');
+require_once($CFG->dirroot.'/local/reportbuilder/classes/rb_filter.php');
+require_once($CFG->dirroot.'/local/reportbuilder/classes/rb_filter_option.php');
+require_once($CFG->dirroot.'/local/reportbuilder/classes/rb_param.php');
+require_once($CFG->dirroot.'/local/reportbuilder/classes/rb_param_option.php');
+require_once($CFG->dirroot.'/local/reportbuilder/classes/rb_content_option.php');
+
+// name of directories containing report builder source files
+define('SOURCE_DIR_NAME', 'rb_sources');
 
 class reportbuilder {
-    public $fullname, $shortname, $source, $hidden, $filters, $filteroptions, $columns, $contentsettings;
+    public $fullname, $shortname, $source, $hidden, $filters, $filteroptions, $columns, $requiredcolumns;
     public $columnoptions, $_filtering, $contentoptions, $contentmode, $embeddedurl;
-    private $_id, $_defaultcolumns, $_defaultfilters, $_joinlist, $_base, $_params, $_sid;
-    private $_paramoptions, $_embeddedparams, $_admin, $_adminoptions, $_fullcount, $_filteredcount;
+    private $_joinlist, $_base, $_params, $_sid;
+    public $_id;
+    private $_paramoptions, $_embeddedparams, $_fullcount, $_filteredcount;
+    public $src, $grouped;
 
     function reportbuilder($id=null, $shortname=null, $embed=false, $sid=null) {
-	global $CFG;
+        global $CFG;
 
-	if($id != null) {
-	    // look for existing report by id
-	    $report = get_record('report_builder', 'id', $id);
-	} else if ($shortname != null) {
-	    // look for existing report by shortname
-	    $report = get_record('report_builder', 'shortname', $shortname);
-	} else {
-	    // either id or shortname is required
+        if($id != null) {
+            // look for existing report by id
+            $report = get_record('report_builder', 'id', $id);
+        } else if ($shortname != null) {
+            // look for existing report by shortname
+            $report = get_record('report_builder', 'shortname', $shortname);
+        } else {
+            // either id or shortname is required
             error(get_string('noshortnameorid','local'));
         }
 
-	// handle if report not found in db
+        // handle if report not found in db
         if(!$report) {
             if($embed) {
                 if(! $id = $this->create_embedded_record($shortname, $embed, $error)) {
                     error('Error creating embedded record: '.$error);
-		        }
-		        $report = get_record('report_builder','id', $id);
+                }
+                $report = get_record('report_builder','id', $id);
             } else {
                 error("Report with ID of '$id' not found in database.");
             }
@@ -39,15 +54,27 @@ class reportbuilder {
         if ($report) {
             $this->_id = $report->id;
             $this->source = $report->source;
+            $this->src = self::get_source_object($this->source);
             $this->shortname = $report->shortname;
             $this->fullname = $report->fullname;
-            $this->filters = $this->get_filters();
-            $this->columns = $this->get_columns();
             $this->hidden = $report->hidden;
             $this->contentmode = $report->contentmode;
-            $this->contentsettings = unserialize($report->contentsettings);
             $this->embeddedurl = $report->embeddedurl;
             $this->_sid = $sid;
+            // assume no grouping initially
+            $this->grouped = false;
+
+            // pull in data for this report from the source
+            $this->_base = $this->src->base . ' base';
+            $this->_joinlist = $this->src->joinlist;
+            $this->columnoptions = $this->src->columnoptions;
+            $this->filteroptions = $this->src->filteroptions;
+            $this->_paramoptions = $this->src->paramoptions;
+            $this->contentoptions = $this->src->contentoptions;
+            $this->requiredcolumns = $this->src->requiredcolumns;
+            $this->columns = $this->get_columns();
+            $this->filters = $this->get_filters();
+
         } else {
             error("Report with id of '$id' not found in database.");
         }
@@ -55,18 +82,6 @@ class reportbuilder {
         if($embed) {
             $this->_embeddedparams = $embed->embeddedparams;
         }
-
-        // pull in data for this report from the source
-        $this->columnoptions = reportbuilder::get_source_data('columnoptions', $this->source);
-        $this->contentoptions = reportbuilder::get_source_data('contentoptions', $this->source);
-        $this->_defaultcolumns = reportbuilder::get_source_data('defaultcolumns', $this->source);
-        $this->_defaultfilters = reportbuilder::get_source_data('defaultfilters', $this->source);
-        $this->filteroptions = reportbuilder::get_source_data('filteroptions', $this->source);
-        $this->_adminoptions = reportbuilder::get_source_data('adminoptions', $this->source);
-        $this->_admin = $this->get_current_admin_options();
-        $this->_joinlist = reportbuilder::get_source_data('joinlist', $this->source);
-        $this->_base = reportbuilder::get_source_data('base', $this->source);
-        $this->_paramoptions = reportbuilder::get_source_data('paramoptions', $this->source);
         $this->_params = $this->get_current_params();
 
         if($sid) {
@@ -78,6 +93,269 @@ class reportbuilder {
 
     }
 
+    function debug($level=1) {
+        print '<div style="border: 1px solid black; background-color: #ffc; padding: 10px;">';
+        print '<h3>Query:</h3>';
+        print '<pre>';
+        print_r($this->build_query(false, true));
+        print '</pre>';
+        if($level>1) {
+            print '<h3>Reportbuilder Object</h3>';
+            var_dump($this);
+        }
+        print '</div>';
+    }
+
+    /*
+     * Searches for and returns an instance of the specified preprocessor class
+     * for a particular activity group
+     *
+     * @param string $preproc The name of the preproc class to return
+     *                       (excluding the rb_preproc prefix)
+     * @param integer $groupid The group id to create the preprocessor for
+     * @return object An instance of the preproc. Returns false if
+     *                the preproc can't be found
+     */
+    static function get_preproc_object($preproc, $groupid) {
+        $sourcepaths = self::find_source_dirs();
+        foreach($sourcepaths as $sourcepath) {
+            $classfile = $sourcepath . 'rb_preproc_' . $preproc . '.php';
+            if(is_readable($classfile)) {
+                include_once($classfile);
+                $classname = 'rb_preproc_'.$preproc;
+                if(class_exists($classname)) {
+                    return new $classname($groupid);
+                }
+            }
+        }
+        return false;
+    }
+
+    /*
+     * Searches for and returns an instance of the specified source class
+     *
+     * @param string $source The name of the source class to return
+     *                       (excluding the rb_source prefix)
+     * @return object An instance of the source. Returns false if
+     *                the source can't be found
+     */
+    static function get_source_object($source) {
+        $sourcepaths = self::find_source_dirs();
+        foreach($sourcepaths as $sourcepath) {
+            $classfile = $sourcepath . 'rb_source_' . $source . '.php';
+            if(is_readable($classfile)) {
+                include_once($classfile);
+                $classname = 'rb_source_'.$source;
+                if(class_exists($classname)) {
+                    return new $classname();
+                }
+            }
+        }
+
+        // if exact match not found, look for match with group suffix
+        // of the form: [sourcename]_grp_[grp_id]
+        // if found, call the base source passing the groupid as an argument
+        if(preg_match('/^(.+)_grp_([0-9]+)$/', $source, $matches)) {
+            $basesource = $matches[1];
+            $groupid = $matches[2];
+            foreach($sourcepaths as $sourcepath) {
+                $classfile = $sourcepath . 'rb_source_' . $basesource . '.php';
+                if(is_readable($classfile)) {
+                    include_once($classfile);
+                    $classname = 'rb_source_' . $basesource;
+                    if(class_exists($classname)) {
+                        return new $classname($groupid);
+                    }
+                }
+            }
+        }
+
+        // if still not found, look for match with group suffix
+        // of the form: [sourcename]_grp_all
+        // if found, call the base source passing a groupid of 0 as an argument
+        if(preg_match('/^(.+)_grp_all$/', $source, $matches)) {
+            $basesource = $matches[1];
+            foreach($sourcepaths as $sourcepath) {
+                $classfile = $sourcepath . 'rb_source_' . $basesource . '.php';
+                if(is_readable($classfile)) {
+                    include_once($classfile);
+                    $classname = 'rb_source_' . $basesource;
+                    if(class_exists($classname)) {
+                        return new $classname(0);
+                    }
+                }
+            }
+        }
+
+
+        // bad source
+        throw new ReportBuilderException("Source '$source' not found");
+    }
+
+    /*
+     * Searches codebase for report builder source files and returns a list
+     *
+     * @return array Associative array of all available sources, formatted
+     *               to be used in a select element.
+     */
+    static function get_source_list() {
+        $output = array();
+
+        foreach(self::find_source_dirs() as $dir) {
+            if(is_dir($dir) && $dh = opendir($dir)) {
+                while(($file = readdir($dh)) !== false) {
+                    if(is_dir($file) ||
+                    !preg_match('|^rb_source_(.*)\.php$|', $file, $matches)) {
+                        continue;
+                    }
+                    $source = $matches[1];
+                    $sourcename = ucwords(str_replace(array('-','_'), ' ', $source));
+                    $src = reportbuilder::get_source_object($source);
+                    $preproc = $src->preproc;
+
+                    if($src->grouptype == 'all') {
+                        $sourcestr = $source . '_grp_all';
+                        $output[$sourcestr] = $sourcename;
+                    } else if($src->grouptype != 'none') {
+                        // create a source for every group that's based on
+                        // this source's preprocessor
+                        if($groups = get_records('report_builder_group',
+                            'preproc', $preproc)) {
+                            foreach($groups as $group) {
+                                $sourcestr = $source . '_grp_' . $group->id;
+                                $output[$sourcestr] = $sourcename . ': ' . $group->name;
+                            }
+                        }
+                    } else {
+                        // otherwise, just create a single source
+                        $output[$source] = $sourcename;
+                    }
+                }
+                closedir($dh);
+            }
+        }
+
+        return $output;
+    }
+
+    /*
+     * Recursively locates source directories with in the current source search paths
+     *
+     * Uses $SOURCE_SEARCH_PATH and SOURCE_DIR_NAME to choose where to look
+     * and what to match against.
+     *
+     * @return array An array of paths to source directories
+     */
+    static function find_source_dirs() {
+        global $CFG;
+        // list of directories to look in for source classes
+        // from dirroot, include leading slash
+        $SOURCE_SEARCH_PATH = array('/local','/mod');
+        $sourcepaths = array();
+        foreach($SOURCE_SEARCH_PATH as $path) {
+            $sourcepaths = array_merge($sourcepaths,
+                self::glob_r(SOURCE_DIR_NAME, GLOB_ONLYDIR|GLOB_MARK, $CFG->dirroot.$path));
+        }
+
+        return $sourcepaths;
+    }
+
+    /*
+     * Recursive version of the glob() function
+     *
+     * Finds files or directories the match a pattern by recursively searching the
+     * specified path
+     *
+     * @param string $pattern Pattern to match against
+     * @param integer $flags Flags to pass to glob function
+     * @param string $path Path to start search from
+     * @returns array An array of matching paths
+     */
+    static function glob_r($pattern='*', $flags = 0, $path='') {
+        $paths = glob($path.'*', GLOB_MARK|GLOB_ONLYDIR|GLOB_NOSORT);
+        $files = glob($path.$pattern, $flags);
+        foreach ($paths as $path) {
+            $files = array_merge($files, self::glob_r($pattern, $flags, $path));
+        }
+        return $files;
+    }
+
+    /*
+     * Reduces an array of objects to those that match all specified conditions
+     *
+     * @param array $items An array of objects to reduce
+     * @param array $conditions An associative array of conditions.
+     *                          key is the object's property, value is the value
+     *                          to match against
+     * @param boolean $multiple If true, returns all matches, as an array,
+     *                          otherwise returns first match as an object
+     *
+     * @return mixed An array of objects or a single object that match all
+     *               the conditions
+     */
+    function reduce_items($items, $conditions, $multiple=true) {
+        if(!is_array($items)) {
+            throw new ReportBuilderException('Input not an array');
+        }
+        if(!is_array($conditions)) {
+            throw new ReportBuilderException('Conditions not an array');
+        }
+        $output = array();
+        foreach($items as $item) {
+            $status = true;
+            foreach($conditions as $name => $value) {
+                // condition fails if property missing
+                if (!property_exists($item, $name)) {
+                    $status = false;
+                    break;
+                }
+                if ($item->$name != $value) {
+                    $status = false;
+                    break;
+                }
+            }
+            if($status && $multiple) {
+                $output[] = $item;
+            } else if ($status) {
+                return $item;
+            }
+        }
+        return $output;
+    }
+
+    static function get_single_item($items, $type, $value) {
+        $cond = array('type' => $type, 'value' => $value);
+        return self::reduce_items($items, $cond, false);
+    }
+
+    /*
+     * Check the joins provided are in the joinlist
+     *
+     * @param array $joinlist Join list to check for joins
+     * @param mixed $joins Single, or array of joins to check
+     * @returns boolean True if all specified joins are in the list
+     *
+     */
+    static function check_joins($joinlist, $joins) {
+        // nothing to check
+        if($joins === null) {
+            return true;
+        }
+
+        // return false if any listed joins don't exist
+        if(is_array($joins)) {
+            foreach($joins as $join) {
+                if(!array_key_exists($join, $joinlist)) {
+                    return false;
+                }
+            }
+        } else {
+            if(!array_key_exists($joins, $joinlist)) {
+                return false;
+            }
+        }
+        return true;
+    }
     /*
      * Looks up the saved search ID specified and attempts to restore
      * the SESSION variable if access is permitted
@@ -104,7 +382,7 @@ class reportbuilder {
     /*
      * Gets any filters set for the current report from the database
      *
-     * @returns array Array of filters for current report or empty array if none set
+     * @return array Array of filters for current report or empty array if none set
      */
     function get_filters() {
         $out = array();
@@ -114,12 +392,19 @@ class reportbuilder {
         }
         if($filters = get_records('report_builder_filters','reportid', $id, 'sortorder')) {
             foreach ($filters as $filter) {
-                $item = array(
-                    'type' => $filter->type,
-                    'value' => $filter->value,
-                    'advanced' => $filter->advanced,
-                );
-                $out[$filter->id] = $item;
+                try {
+                    $out[$filter->id] = $this->src->new_filter_from_option(
+                        $filter->type,
+                        $filter->value,
+                        $filter->advanced
+                    );
+                    // enabled report grouping if any filters are grouped
+                    if($out[$filter->id]->grouping != 'none') {
+                        $this->grouped = true;
+                    }
+                } catch (ReportBuilderException $e) {
+                    trigger_error($e->getMessage(), E_USER_WARNING);
+                }
             }
         }
         return $out;
@@ -128,7 +413,7 @@ class reportbuilder {
     /*
      * Gets any columns set for the current report from the database
      *
-     * @returns array Array of columns for current report or empty array if none set
+     * @return array Array of columns for current report or empty array if none set
      */
     function get_columns() {
         $out = array();
@@ -136,22 +421,45 @@ class reportbuilder {
         if(empty($id)) {
             return $out;
         }
-        if($columns = get_records('report_builder_columns','reportid', $id, 'sortorder')) {
+        if($columns = get_records('report_builder_columns',
+            'reportid', $id, 'sortorder')) {
             foreach ($columns as $column) {
-                $item = array(
-                    'type' => $column->type,
-                    'value' => $column->value,
-                    'heading' => $column->heading,
-                );
-                $out[$column->id] = $item;
+                try {
+                    $out[$column->id] = $this->src->new_column_from_option(
+                        $column->type,
+                        $column->value,
+                        $column->heading,
+                        $column->hidden
+                    );
+                    // enabled report grouping if any columns are grouped
+                    if($out[$column->id]->grouping != 'none') {
+                        $this->grouped = true;
+                    }
+                }
+                catch (ReportBuilderException $e) {
+                    trigger_error($e->getMessage(), E_USER_WARNING);
+                }
             }
         }
+
+        // now append any required columns
+        if(is_array($this->requiredcolumns)) {
+            foreach($this->requiredcolumns as $column) {
+                $column->required = true;
+                $out[] = $column;
+                // enabled report grouping if any columns are grouped
+                if($column->grouping != 'none') {
+                    $this->grouped = true;
+                }
+            }
+        }
+
         return $out;
     }
 
     /*
-     * Creates a database entry for an embedded report when it is first viewed so the settings can be
-     * edited
+     * Creates a database entry for an embedded report when it is first viewed
+     * so the settings can be edited
      *
      * @param string $shortname The unique name for this embedded report
      * @param object $embed An object containing the embedded reports settings
@@ -193,8 +501,6 @@ class reportbuilder {
         $todb->hidden = 1; // hide embedded reports by default
         $todb->accessmode = $embed->accessmode;
         $todb->contentmode = $embed->contentmode;
-        $todb->contentsettings = serialize($embed->contentsettings);
-        $todb->accesssettings = serialize($embed->accesssettings);
         $todb->embeddedurl = qualified_me();
 
         begin_sql();
@@ -236,6 +542,36 @@ class reportbuilder {
                 return false;
             }
             $so++;
+        }
+
+        // add content restrictions
+        foreach($embed->contentsettings as $option => $settings) {
+            $classname = 'rb_' . $option . '_content';
+            if(class_exists($classname)) {
+                foreach($settings as $name => $value) {
+                    if(!reportbuilder::update_setting($newid, $classname, $name,
+                        $value)) {
+                        rollback_sql();
+                        $error = 'Error inserting content restrictions';
+                        return false;
+                    }
+                }
+            }
+        }
+
+        // add access restrictions
+        foreach($embed->accesssettings as $option => $settings) {
+            $classname = $option . '_access';
+            if(class_exists($classname)) {
+                foreach($settings as $name => $value) {
+                    if(!reportbuilder::update_setting($newid, $classname, $name,
+                        $value)) {
+                        rollback_sql();
+                        $error = 'Error inserting access restrictions';
+                        return false;
+                    }
+                }
+            }
         }
 
         commit_sql();
@@ -286,37 +622,6 @@ class reportbuilder {
 
 
     /*
-     * Makes sure that columns exist in columnoptions
-     * if not, remove them and print a warning
-     *
-     * @param boolean $silent If true, removes column but doesn't raise a warning
-     *                        Used by export function so file still exports
-     * @return No return value, but $this->columns may be modified
-     */
-    function check_columns($silent=false) {
-        $columns =& $this->columns;
-        $columnoptions = $this->columnoptions;
-        if(isset($columns) and is_array($columns)) {
-            foreach($columns as $index => $column) {
-                $type = $column['type'];
-                $value = $column['value'];
-                if(!array_key_exists($type, $columnoptions)) {
-                    unset($columns[$index]); // remove column
-                    if(!$silent) {
-                        trigger_error("Column type '$type' not found in column options.", E_USER_WARNING);
-                    }
-                } else if (!array_key_exists($value, $columnoptions[$type])) {
-                    unset($columns[$index]); // remove column
-                    if(!$silent) {
-                        trigger_error("Column value '$value' not found for type '$type' in column options.", E_USER_WARNING);
-                    }
-                }
-            }
-        }
-    }
-
-
-    /*
      * Get the current page url, minus any pagination or sort order elements
      * Good for submitting forms
      *
@@ -337,29 +642,6 @@ class reportbuilder {
 
 
     /*
-     * Returns an array of admin options that the current user has
-     * permission to view. Used to reduce the table joins to only
-     * those required.
-     *
-     * @return array Array of arrays containing valid admin options
-     */
-    function get_current_admin_options() {
-        $out = array();
-        $context = get_context_instance(CONTEXT_SYSTEM);
-        if(!isset($this->_adminoptions)) {
-            return $out;
-        }
-        foreach ($this->_adminoptions as $adminoption) {
-            // only include column if no capability set, or if it is set and user has it
-            if(!isset($adminoption['capability']) || has_capability($adminoption['capability'],$context)) {
-                $out[] = $adminoption;
-            }
-        }
-        return $out;
-    }
-
-
-    /*
      * Returns an array of arrays containing information about any currently
      * set URL parameters. Used to determine which joins are required to
      * match against URL parameters
@@ -368,25 +650,22 @@ class reportbuilder {
      */
     function get_current_params() {
         $out = array();
-        if(!isset($this->_paramoptions)) {
+        if(empty($this->_paramoptions)) {
             return $out;
         }
-        foreach ($this->_paramoptions as $name => $param) {
-            $var = optional_param($name, null, PARAM_TEXT); //get as text for max flexibility
+        foreach ($this->_paramoptions as $param) {
+            $name = $param->name;
+            $var = optional_param($name, null, PARAM_TEXT);
 
             if(isset($this->_embeddedparams[$name])) {
-                // embeded params take priority over url params
-                $res = array();
-                $res['field'] = $param['field'];
-                $res['joins'] = $param['joins'];
-                $res['value'] = $this->_embeddedparams[$name];
+                // embedded params take priority over url params
+                $res = new rb_param($name, $this->_paramoptions);
+                $res->value = $this->_embeddedparams[$name];
                 $out[] = $res;
             } else if(isset($var)) {
                 // this url param exists, add to params to use
-                $res = array();
-                $res['field'] = $param['field'];
-                $res['joins'] = $param['joins'];
-                $res['value'] = $var; // save the value
+                $res = new rb_param($name, $this->_paramoptions);
+                $res->value = $var; // save the value
                 $out[] = $res;
             }
 
@@ -394,27 +673,6 @@ class reportbuilder {
         return $out;
     }
 
-
-    /*
-     * Returns the data stored a source file for use by the report
-     *
-     * @param string $datatype The name of the data to be obtained. Should match the filename
-     *                         in the source directory
-     * @param string $source The data source to obtain the data from
-     * @return mixed The data is returned, usually as an array of arrays
-     */
-    public static function get_source_data($datatype, $source) {
-        global $CFG;
-        $file = "{$CFG->dirroot}/local/reportbuilder/sources/$source/$datatype.php";
-        if(file_exists($file)) {
-            include($file);
-        }
-        if(isset($$datatype)) {
-            return $$datatype;
-        } else {
-            return null;
-        }
-    }
 
     /*
      * Wrapper for displaying search form from filtering class
@@ -426,7 +684,7 @@ class reportbuilder {
     }
 
     /*
-     * Wrapper for displaying active fileter from filtering class
+     * Wrapper for displaying active filter from filtering class
      * No longer used as filtering behaviour modified to be
      * more like a search
      *
@@ -451,23 +709,32 @@ class reportbuilder {
             return true;
         }
 
-        // get array of roles the user has
-        $context = get_context_instance(CONTEXT_SYSTEM);
-        $userroles = array();
-        if($data = get_user_roles($context, 0, false)) {
-            foreach($data as $item) {
-                $userroles[$item->roleid] = 1;
-            }
-        }
-        // see if user has any allowed roles
-        if($allowedroles = get_records_select('report_builder_access', "reportid=$id AND accesstype='role'")) {
-            foreach($allowedroles as $allowedrole) {
-                if(array_key_exists($allowedrole->typeid, $userroles)) {
-                    return true;
+        $any = false;
+        $all = true;
+        // loop round classes, only considering classes that extend rb_base_access
+        foreach(get_declared_classes() as $class) {
+            if(is_subclass_of($class, 'rb_base_access')) {
+                // remove rb_ prefix
+                $settingname = substr($class, 3);
+                $obj = new $class();
+                // is this option enabled?
+                if(reportbuilder::get_setting($id, $settingname, 'enable')) {
+                    // does user have permission for this access option?
+                    $allowed = $obj->access_restriction($id);
+                    $any = $any || $allowed;
+                    $all = $all && $allowed;
                 }
             }
         }
-        return false;
+
+        if($accessmode == 1) {
+            // any enabled options can be true
+            return $any;
+        } else {
+            // all enabled options must be true
+            return $all;
+        }
+
     }
 
     /*
@@ -481,8 +748,8 @@ class reportbuilder {
         $params = $this->_params;
         if(is_array($params)) {
             foreach($params as $param) {
-                $field = isset($param['field']) ? $param['field'] : null;
-                $value = isset($param['value']) ? $param['value'] : null;
+                $field = $param->field;
+                $value = $param->value;
                 // don't include if param not set to anything
                 if(!isset($value) || $value=='') {
                     continue;
@@ -517,24 +784,26 @@ class reportbuilder {
             $op = ' OR ';
         }
 
+        $reportid = $this->_id;
         $out = array();
-        $settings = $this->contentsettings;
 
         // go through the content options
         if(isset($this->contentoptions) && is_array($this->contentoptions)) {
             foreach($this->contentoptions as $option) {
-                $name = $option['name'];
-                $field = $option['field'];
-                $options = isset($settings[$name]) ? $settings[$name] : null;
-                if(isset($options['enable']) && $options['enable'] == 1) {
-                    // this content option is enabled
-                    if(class_exists($name)) {
+                $name = $option->classname;
+                $classname = 'rb_' . $name . '_content';
+                $settingname = $name . '_content';
+                $field = $option->field;
+                if(class_exists($classname)) {
+                    $class = new $classname();
+                    if(reportbuilder::get_setting($reportid, $settingname,
+                        'enable')) {
+                        // this content option is enabled
                         // call function to get SQL snippet
-                        $klass = new $name();
-                        $out[] = $klass->sql_restriction($field, $options);
-                    } else {
-                        error("Content class $name does not exist");
+                        $out[] = $class->sql_restriction($field, $reportid);
                     }
+                } else {
+                    error("Content class $classname does not exist");
                 }
             }
         }
@@ -560,20 +829,24 @@ class reportbuilder {
         global $CFG;
         // include content restrictions
         $content_restrictions = array();
-        $settings = $this->contentsettings;
+        $reportid = $this->_id;
         $res = array();
         if($this->contentmode != 0) {
             foreach($this->contentoptions as $option) {
-                $name = $option['name'];
-                $title = $option['title'];
-                $options = isset($settings[$name]) ? $settings[$name] : null;
-                if(isset($options['enable']) && $options['enable'] == 1) {
-                    if(class_exists($name)) {
-                        $klass = new $name();
-                        $res[] = $klass->human_restriction($title, $options);
-                    } else {
-                        error("Content class function $name does not exist");
+                $name = $option->classname;
+                $classname = 'rb_' . $name . '_content';
+                $settingname = $name . '_content';
+                $title = $option->title;
+                if(class_exists($classname)) {
+                    $class = new $classname();
+                    if(reportbuilder::get_setting($reportid, $settingname,
+                        'enable')) {
+                        // this content option is enabled
+                        // call function to get text string
+                        $res[] = $class->text_restriction($title, $reportid);
                     }
+                } else {
+                    error("Content class function $classname does not exist");
                 }
             }
             if($this->contentmode == 2) {
@@ -614,148 +887,115 @@ class reportbuilder {
      *
      */
     function get_column_fields() {
-
-        $source = $this->source;
-        $columns = $this->columns;
-        $columnoptions = $this->columnoptions;
         $fields = array();
-        foreach($columns as $column) {
-            $type = isset($column['type']) ? $column['type'] : '';
-            if(array_key_exists($type, $columnoptions)) {
-                $value = isset($column['value']) ? $column['value'] : '';
-                if(array_key_exists($value, $columnoptions[$type])) {
-                    // add field to list to be selected
-                    // use type_value as alias for each field
-                    $fields[] = $columnoptions[$type][$value]['field']." ".sql_as()." {$type}_{$value}";
-                } else {
-                    trigger_error("get_column_fields(): column value '$value' not found in source '$source' for type '$type'", E_USER_WARNING);
-                }
-            } else {
-                trigger_error("get_column_fields(): column type '$type' not found in source '$source'", E_USER_WARNING);
-            }
-        }
-        return $fields;
-
-    }
-
-    /*
-     * Returns an array of fields that must form part of the SQL query
-     * in order to provide the data needed to display the admin column
-     *
-     * @return array Array of SQL snippets for use by SELECT query
-     *
-     */
-    function get_admin_fields() {
-        $source = $this->source;
-        $columns = $this->_admin;
-        $fields = array();
-        foreach($columns as $column) {
-            if(isset($column['name'])) {
-                $name = $column['name'];
-            } else {
-                // we need a name
-                continue;
-            }
-            if(isset($column['fields']) && is_array($column['fields'])) {
-                foreach($column['fields'] as $key => $field) {
-                    $fields[] = $field.' '.sql_as()." {$name}_{$key}";
-                }
-            }
+        $src = $this->src;
+        foreach($this->columns as $column) {
+            $fields = array_merge($fields, $column->get_fields($src));
         }
         return $fields;
     }
 
 
     /*
-     * Given an array of arrays with the 'joins' key set, returns
-     * an array of SQL snippets of the actual join code
+     * Given an item, returns an array of SQL snippets needed by this item
      *
-     * @param array $inputs Array of arrays. The inner array should contain
-     *                      a key called 'joins' which lists the names of the
-     *                      required joins (names must match the keys in the
-     *                      joinlist.php file)
-     * @param string $type The function is called to obtain joins for various
-     *                     different elements of the query. The type is displayed
+     * @param object $item An object containing a 'joins' property
+     * @param string $usage The function is called to obtain joins for various
+     *                     different elements of the query. The usage is displayed
      *                     in the error message to help with debugging
      * @return array An array of SQL snippets used to build the join part of the query
      */
-    function get_joins($inputs, $type) {
-        $source = $this->source;
+    function get_joins($item, $usage) {
+        $output = array();
         $joinlist = $this->_joinlist;
-        $joins = array();
-        foreach($inputs as $input) {
-            $input_joins = (isset($input['joins'])) ? $input['joins'] : null;
-            if($input_joins && is_array($input_joins)) {
-                foreach($input_joins as $input_join) {
-                    if(array_key_exists($input_join, $joinlist)) {
-                        $joins[$input_join] = $joinlist[$input_join];
-                    } else {
-                        error("get_joins(): join for $type with name $input_join not in joinlist");
-                    }
-                }
+        if(isset($item->joins) && is_array($item->joins)) {
+            foreach($item->joins as $join) {
+                $output[$join] = $this->get_single_join($join, $usage);
             }
+        } else if (isset($item->joins)) {
+            $join = $item->joins;
+            $output[$join] = $this->get_single_join($join, $usage);
         }
-        return $joins;
+        return $output;
     }
 
     /*
-     * Collects together the content restriction joins data in a format
-     * suitable for get_joins()
+     * Given a join name, look for it in the joinlist and return the SQL snippet
      *
-     * @return array An array of arrays containing content join information
+     * @param string $join A single join name (should match joinlist key)
+     * @param string $usage The function is called to obtain joins for various
+     *                      different elements of the query. The usage is
+     *                      displayed in the error message to help with debugging
+     * @return string An SQL snippet for the specified join, or error
+     */
+    function get_single_join($join, $usage) {
+        $joinlist = $this->_joinlist;
+        if(isset($joinlist[$join])) {
+            return $joinlist[$join];
+        } else {
+            error("'{$join}' not in join list for {$usage}");
+            return false;
+        }
+    }
+
+    /*
+     * Return an array of SQL snippets containing the joins required by
+     * the current enabled content restrictions
+     *
+     * @return array An array of SQL snippets containing join information
      */
     function get_content_joins() {
+        $reportid = $this->_id;
+
         if($this->contentmode == 0) {
             // no limit on content so no joins necessary
             return array();
         }
-        $settings = $this->contentsettings;
         $contentjoins = array();
         foreach($this->contentoptions as $option) {
-                $optionname = $option['name'];
-                if(array_key_exists($optionname, $settings)) {
-                    if(array_key_exists('enable',$settings[$optionname])) {
-                        if($settings[$optionname]['enable'] == 1) {
-                            $contentjoins[] = $option;
-                        }
-                    }
+            $name = $option->classname;
+            $classname = 'rb_' . $name . '_content';
+            if(class_exists($classname)) {
+                if(reportbuilder::get_setting($reportid, $classname, 'enable')) {
+                    // this content option is enabled
+                    // get required joins
+                    $contentjoins = array_merge($contentjoins,
+                        $this->get_joins($option, 'content'));
                 }
+            }
         }
-        return $this->get_joins($contentjoins, 'content');
+        return $contentjoins;
     }
 
 
     /*
-     * Check the requested columns exist in column options, and if so
-     * collect together data into a format suitable for get_joins()
+     * Return an array of SQL snippets containing the joins required by
+     * the current column list
      *
-     * @return array An array of arrays containing column join information
+     * @return array An array of SQL snippets containing join information
      */
     function get_column_joins() {
-        $source = $this->source;
-        $columns = $this->columns;
-        $columnoptions = $this->columnoptions;
         $coljoins = array();
-        foreach($columns as $column) {
-            $type = isset($column['type']) ? $column['type'] : '';
-
-            if(array_key_exists($type, $columnoptions)) {
-                $value = isset($column['value']) ? $column['value'] : '';
-
-                if(array_key_exists($value, $columnoptions[$type])) {
-
-                    $coljoins[] = $columnoptions[$type][$value];
-
-                } else {
-                    trigger_error("get_column_joins(): column value '$value' not found in source '$source' for type '$type'", E_USER_WARNING);
-                }
-            } else {
-                trigger_error("get_column_joins(): column type '$type' not found in source '$source'", E_USER_WARNING);
-            }
+        foreach($this->columns as $column) {
+            $coljoins = array_merge($coljoins, $this->get_joins($column, 'column'));
         }
-        return $this->get_joins($coljoins, 'column');
+        return $coljoins;
     }
 
+    /*
+     * Return an array of SQL snippets containing the joins required by
+     * the current param list
+     *
+     * @return array An array of SQL snippets containing join information
+     */
+    function get_param_joins() {
+        $paramjoins = array();
+        foreach($this->_params as $param) {
+            $paramjoins = array_merge($paramjoins,
+                $this->get_joins($param, 'param'));
+        }
+        return $paramjoins;
+    }
 
     /*
      * Check the current session for active filters, and if found
@@ -781,10 +1021,12 @@ class reportbuilder {
                 }
                 $type = $parts[0];
                 $value = $parts[1];
-                $filterjoins[] = $columnoptions[$type][$value];
+                $item = $this->get_single_item($columnoptions, $type, $value);
+                $filterjoins = array_merge($filterjoins,
+                    $this->get_joins($item, 'filter'));
             }
         }
-        return $this->get_joins($filterjoins, 'filter');
+        return $filterjoins;
     }
 
 
@@ -843,17 +1085,14 @@ class reportbuilder {
         $base = $this->_base;
 
         // get the fields needed to display requested columns
-        $columnfields = $this->get_column_fields();
-        $adminfields = $this->get_admin_fields();
-        $fields = array_merge($columnfields, $adminfields);
+        $fields = $this->get_column_fields();
 
         // get the joins needed to display requested columns and do filtering and restrictions
         $columnjoins = $this->get_column_joins();
         $filterjoins = ($filtered === true) ? $this->get_filter_joins() : array();
-        $paramjoins = $this->get_joins($this->_params,'param');
-        $adminjoins = $this->get_joins($this->_admin,'admin');
+        $paramjoins = $this->get_param_joins();
         $contentjoins = $this->get_content_joins();
-        $joins = array_merge($columnjoins, $filterjoins, $paramjoins, $adminjoins, $contentjoins);
+        $joins = array_merge($columnjoins, $filterjoins, $paramjoins, $contentjoins);
 
         // now build the query from the snippets
 
@@ -861,7 +1100,8 @@ class reportbuilder {
         if($countonly) {
             $select = "SELECT COUNT(*) ";
         } else {
-            $select = "SELECT base.id,".implode($fields,',')." ";
+            $baseid = ($this->grouped) ? "min(base.id),\n    " : "base.id,\n    ";
+            $select = "SELECT $baseid ".implode($fields,",\n     ")." \n";
         }
 
         // sort joins in order determined by sort_join function
@@ -870,26 +1110,63 @@ class reportbuilder {
         uksort($joins, array($this,'sort_join'));
 
         // build query starting from base table then adding required joins
-        $from = "FROM $base ".implode(' ', $joins)." ";
+        $from = "FROM $base\n    ".implode("    \n", $joins)." \n";
 
 
         // restrictions
         $whereclauses = array();
+        $havingclauses = array();
+
         $restrictions = $this->get_content_restrictions();
         if($restrictions != '') {
             $whereclauses[] = $restrictions;
         }
-        $extrasql = ($filtered===true) ? $this->get_sql_filter() : '';
-        if($extrasql != '') {
-            $whereclauses[] = $extrasql;
+
+        if($filtered===true) {
+            $sqls = $this->get_sql_filter();
+            if(isset($sqls['where']) && $sqls['where'] != '') {
+                $whereclauses[] = $sqls['where'];
+            }
+            if(isset($sqls['having']) && $sqls['having'] != '') {
+                $havingclauses[] = $sqls['having'];
+            }
         }
+
         $paramrestrictions = $this->get_param_restrictions();
         if($paramrestrictions != '') {
             $whereclauses[] = $paramrestrictions;
         }
-        $where = (count($whereclauses) > 0) ? "WHERE ".implode(' AND ',$whereclauses) : '';
+        $where = (count($whereclauses) > 0) ? "WHERE ".implode(' AND ',$whereclauses)."\n" : '';
 
-        $sql = "$select $from $where";
+        $groupby = '';
+        if($this->grouped) {
+            $groups_array = array();
+            $allgrouped = true;
+            foreach($this->columns as $column) {
+                if($column->grouping == 'none') {
+                    $allgrouped = false;
+                    $groups_array[] = $column->field;
+                    if($column->extrafields !== null) {
+                        foreach($column->extrafields as $field) {
+                            $groups_array[] = $field;
+                        }
+                    }
+                }
+            }
+            if(count($groups_array) > 0 && !$allgrouped) {
+                $groupby .= ' GROUP BY ' . implode(', ', $groups_array) . ' ';
+            }
+
+            if(count($havingclauses) > 0) {
+                $groupby .= ' HAVING ' . implode(' AND ', $havingclauses) . "\n";
+            }
+        }
+
+        if($countonly && $this->grouped) {
+            $sql = "SELECT COUNT(*) FROM ($select $from $where $groupby) AS query";
+        } else {
+            $sql = "$select $from $where $groupby";
+        }
         return $sql;
     }
 
@@ -930,7 +1207,6 @@ class reportbuilder {
      * @return No return but initiates save dialog
      */
     function export_data($format) {
-        $this->check_columns(true);
         $columns = $this->columns;
         $shortname = $this->shortname;
         $count = $this->get_filtered_count();
@@ -948,8 +1224,9 @@ class reportbuilder {
 
         $headings = array();
         foreach($columns as $column) {
-            if(isset($column['heading']) && $column['heading'] != '') {
-                $headings[] = strip_tags($column['heading']);
+            // check that column should be included
+            if($column->display_column(true)) {
+                $headings[] = strip_tags($column->heading);
             }
         }
         switch($format) {
@@ -969,7 +1246,7 @@ class reportbuilder {
      * @return No return value but prints the current data table
      */
     function display_table() {
-        global $CFG;
+        global $CFG, $SESSION;
         define('DEFAULT_PAGE_SIZE', 40);
         define('SHOW_ALL_PAGE_SIZE', 5000);
 
@@ -977,7 +1254,6 @@ class reportbuilder {
         $perpage   = optional_param('perpage', DEFAULT_PAGE_SIZE, PARAM_INT);
         $ssort     = optional_param('ssort');
 
-        $this->check_columns();
         $columns = $this->columns;
         $shortname = $this->shortname;
         $countfiltered = $this->get_filtered_count();
@@ -992,25 +1268,34 @@ class reportbuilder {
         $tablecolumns = array();
         $tableheaders = array();
         foreach($columns as $column) {
-            $type = $column['type'];
-            $value = $column['value'];
-            // don't print the column if heading is blank
-            if(isset($column['heading']) && $column['heading'] != '') {
+            $type = $column->type;
+            $value = $column->value;
+            if($column->display_column()) {
                 $tablecolumns[] = "{$type}_{$value}"; // used for sorting
-                $tableheaders[] = $column['heading'];
-            }
-        }
-        // also add any admin columns
-        if(isset($this->_admin) && is_array($this->_admin) && count($this->_admin)>0) {
-            foreach($this->_admin as $admincol) {
-                $tablecolumns[] = $admincol['name'];
-                $tableheaders[] = $admincol['heading'];
+                $tableheaders[] = $column->heading;
             }
         }
 
         $table = new flexible_table($shortname);
         $table->define_columns($tablecolumns);
         $table->define_headers($tableheaders);
+        foreach($columns as $column) {
+            if($column->display_column()) {
+                $ident = "{$column->type}_{$column->value}";
+                // assign $type_$value class to each column
+                $table->column_class($ident, ' '.$ident);
+                // apply any column-specific styling
+                if(is_array($column->style)) {
+                    foreach($column->style as $property => $value) {
+                        $table->column_style($ident, $property, $value);
+                    }
+                }
+                // hide any columns where hidden flag is set
+                if($column->hidden != 0) {
+                    $table->column_style($ident, 'display', 'none');
+                }
+            }
+        }
         $table->set_attribute('cellspacing', '0');
         $table->set_attribute('id', $shortname);
         $table->set_attribute('class', 'logtable generalbox reportbuilder-table');
@@ -1027,13 +1312,6 @@ class reportbuilder {
         $table->initialbars(true);
         $table->pagesize($perpage, $countfiltered);
 
-        // center the contents of all the admin columns
-        if(isset($this->_admin) && is_array($this->_admin) && count($this->_admin)>0) {
-            foreach($this->_admin as $admincol) {
-                $table->column_style($admincol['name'],'text-align','center');
-            }
-        }
-
         // check the sort session var doesn't contain old columns that no
         // longer exist
         $this->check_sort_keys();
@@ -1044,7 +1322,7 @@ class reportbuilder {
         } else {
            $order = '';
         }
-        $data = $this->fetch_data($sql.$order, $table->get_page_start(), $table->get_page_size(), false, true);
+        $data = $this->fetch_data($sql.$order, $table->get_page_start(), $table->get_page_size());
         // add data to flexible table
         foreach ($data as $row) {
             $table->add_data($row);
@@ -1053,6 +1331,35 @@ class reportbuilder {
         // display the table
         $table->print_html();
 
+        print $this->hide_columns();
+    }
+
+
+    /*
+     * Produce javascript to hide any columns as indicated by the session
+     *
+     * @return string HTML to display javascript to hide required columns
+     */
+    function hide_columns() {
+        global $SESSION;
+        $out = '';
+        $shortname = $this->shortname;
+        // javascript to hide columns based on session variable
+        if(isset($SESSION->rb_showhide_columns[$shortname])) {
+            $out .= '<script type="text/javascript">';
+            $out .= "$(document).ready(function(){";
+            foreach($this->columns as $column) {
+                $ident = "{$column->type}_{$column->value}";
+                if(isset($SESSION->rb_showhide_columns[$shortname][$ident])) {
+                    if($SESSION->rb_showhide_columns[$shortname][$ident] == 0) {
+                        $out .= "$('#$shortname .$ident').hide();";
+                    }
+                }
+            }
+            $out .= '});';
+            $out .= '</script>';
+        }
+        return $out;
     }
 
     /*
@@ -1071,7 +1378,7 @@ class reportbuilder {
                 // see if sort element is in columns array
                 $set = false;
                 foreach($this->columns as $col) {
-                    if($col['type'].'_'.$col['value'] == $sortelement) {
+                    if($col->type.'_'.$col->value == $sortelement) {
                         $set = true;
                     }
                 }
@@ -1094,42 +1401,37 @@ class reportbuilder {
      * @param integer $start The first row to extract
      * @param integer $size The total number of rows to extract
      * @param boolean $striptags If true, returns the data with any html tags removed
-     * @param boolean $incadmin If true, add any admin columns defined by adminoptions.php
+     * @param boolean $isexport If true, data is being exported
      * @return array Outer array are table rows, inner array are columns
      */
-    function fetch_data($sql, $start=null, $size=null, $striptags=false, $incadmin=false) {
+    function fetch_data($sql, $start=null, $size=null, $striptags=false, $isexport=false) {
         global $CFG;
         $columns = $this->columns;
         $columnoptions = $this->columnoptions;
 
-        // include display functions
-        $displayfuncfile = "{$CFG->dirroot}/local/reportbuilder/displayfuncs.php";
-        if(file_exists($displayfuncfile)) {
-            include_once($displayfuncfile);
-        }
         $records = get_recordset_sql($sql, $start, $size);
         $ret = array();
         if ($records) {
             while ($record = rs_fetch_next_record($records)) {
                 $tabledata = array();
                 foreach ($columns as $column) {
-                    // don't print a column if heading is blank
-                    if(isset($column['heading']) && $column['heading'] != '') {
-                        $type = $column['type'];
-                        $value = $column['value'];
+                    // check column should be shown
+                    if($column->display_column($isexport)) {
+                        $type = $column->type;
+                        $value = $column->value;
                         $field = "{$type}_{$value}";
                         // treat fields different if display function exists
-                        if (isset($columnoptions[$type][$value]['displayfunc']) &&
-                            function_exists($columnoptions[$type][$value]['displayfunc'])) {
-                            $func = $columnoptions[$type][$value]['displayfunc'];
-                            $tabledata[] = $func($record->$field, $record);
+                        if (isset($column->displayfunc)) {
+                            $func = 'rb_display_'.$column->displayfunc;
+                            if(method_exists($this->src, $func)) {
+                                $tabledata[] = $this->src->$func($record->$field, $record);
+                            } else {
+                                $tabledata[] = $record->$field;
+                            }
                         } else {
                             $tabledata[] = $record->$field;
                         }
                     }
-                }
-                if($incadmin) {
-                    $this->add_admin_columns($tabledata, $record);
                 }
                 $ret[] = $tabledata;
             }
@@ -1139,29 +1441,6 @@ class reportbuilder {
             return $this->strip_tags_r($ret);
         } else {
             return $ret;
-        }
-    }
-
-    /*
-     * Appends any admin columns to the fetch_data result row
-     *
-     * @param array &$row The current row that would be returned if no admin options set
-     *                    Passed by reference.
-     * @param array $record The db record for the current row, which includes the admin
-     *                      fields required to build the admin column
-     * @param No return value but may modify &$row
-     */
-    function add_admin_columns(&$row, $record) {
-        global $CFG;
-        if(isset($this->_admin) && is_array($this->_admin) && count($this->_admin)>0) {
-            require_once($CFG->dirroot.'/local/reportbuilder/displayfuncs.php');
-            foreach($this->_admin as $admincol) {
-                $name = $admincol['name'];
-                $displayfunc = $admincol['displayfunc'];
-                if(function_exists($displayfunc)) {
-                    $row[] = $displayfunc($record);
-                }
-            }
         }
     }
 
@@ -1281,6 +1560,27 @@ class reportbuilder {
         }
     }
 
+    /*
+     * Returns HTML for a button that lets users show and hide report columns
+     * interactively within the report
+     *
+     * JQuery, dialog code and showhide.js.php should be included in page
+     * when this is used (see code in report.php)
+     *
+     * @return string HTML to display the button
+     */
+    function showhide_button() {
+        // hide if javascript disabled
+        return '<script type="text/javascript">
+            var id = ' . $this->_id . ';' .
+            "var shortname = '{$this->shortname}';" .
+            '</script><form><input type="button" name="rb_showhide_columns" ' .
+            'id="show-showhide-dialog" value="' .
+            get_string('showhidecolumns', 'local') .
+            '" style="display:none; float: right;"></form>';
+
+    }
+
     /* Download current table in ODS format
      * @param array $fields Array of column headings
      * @param string $query SQL query to run to get results
@@ -1333,7 +1633,7 @@ class reportbuilder {
         //break the data into blocks as single array gets too big
         for($k=0;$k<=floor($count/$blocksize);$k++) {
             $start = $k*$blocksize;
-            $data = $this->fetch_data($query, $start, $blocksize, true);
+            $data = $this->fetch_data($query, $start, $blocksize, true, true);
 
             $filerow = 0;
             foreach ($data as $datarow) {
@@ -1405,7 +1705,7 @@ class reportbuilder {
         // break the data into blocks as single array gets too big
         for($k=0;$k<=floor($count/$blocksize);$k++) {
             $start = $k*$blocksize;
-            $data = $this->fetch_data($query, $start, $blocksize, true);
+            $data = $this->fetch_data($query, $start, $blocksize, true, true);
 
             $filerow = 0;
             foreach ($data as $datarow) {
@@ -1454,7 +1754,7 @@ class reportbuilder {
         // break the data into blocks as single array gets too big
         for($k=0;$k<=floor($count/$blocksize);$k++) {
             $start = $k*$blocksize;
-            $data = $this->fetch_data($query, $start, $blocksize, true);
+            $data = $this->fetch_data($query, $start, $blocksize, true, true);
             $i = 0;
             foreach ($data AS $row) {
                 $row = array();
@@ -1484,7 +1784,7 @@ class reportbuilder {
         $contentoptions = array();
         if(isset($this->contentoptions) && is_array($this->contentoptions)) {
             foreach($this->contentoptions as $option) {
-                $contentoptions[] = $option['name'];
+                $contentoptions[] = $option->classname;
             }
         }
         return $contentoptions;
@@ -1508,12 +1808,9 @@ class reportbuilder {
         if(!isset($this->filteroptions)) {
             return $ret;
         }
-        foreach($filters as $type => $info) {
-            foreach ($info as $value => $info2) {
-                $label = $info2['label'];
-                $key = "{$type}-{$value}";
-                $ret[$key] = $label;
-            }
+        foreach($filters as $filter) {
+            $key = $filter->type . '-' . $filter->value;
+            $ret[$key] = $filter->label;
         }
         return $ret;
     }
@@ -1530,14 +1827,32 @@ class reportbuilder {
         if(!isset($this->columnoptions)) {
             return $ret;
         }
-        foreach($columns as $type => $info) {
-            foreach ($info as $value => $info2) {
-                $key = "{$type}-{$value}";
-                $text = $info2['name'];
-                $ret[$key] = $text;
-            }
+        foreach($columns as $column) {
+            $key = $column->type . '-' . $column->value;
+            $ret[$key] = $column->name;
         }
         return $ret;
+    }
+
+    /*
+     * Given a column id, sets the default visibility to show or hide
+     * for that column on current report
+     *
+     * @param integer $cid ID of the column to be changed
+     * @param integer $hide 0 to show column, 1 to hide it
+     * @return boolean True on success, false otherwise
+     */
+    function showhide_column($cid, $hide) {
+        $col = get_record('report_builder_columns', 'id', $cid);
+        if(!$col) {
+            return false;
+        }
+
+        $todb = new object();
+        $todb->id = $cid;
+        $todb->hidden = $hide;
+        return update_record('report_builder_columns', $todb);
+
     }
 
     /*
@@ -1718,8 +2033,102 @@ class reportbuilder {
 
     }
 
+    /*
+     * Method for obtaining a report builder setting
+     *
+     * @param integer $reportid ID for the report to obtain a setting for
+     * @param string $type Identifies the class using the setting
+     * @param string $name Identifies the particular setting
+     * @return mixed The value of the setting $name or null if it doesn't exist
+     */
+    static function get_setting($reportid, $type, $name) {
+        return get_field('report_builder_settings', 'value', 'reportid',
+            $reportid, 'type', $type, 'name', $name);
+    }
+
+    /*
+     * Return an associative array of all settings of a particular type
+     *
+     * @param integer $reportid ID of the report to get settings for
+     * @param string $type Identifies the class to get settings from
+     * @return array Associative array of name|value settings
+     */
+    static function get_all_settings($reportid, $type) {
+        $settings = array();
+        if($records = get_records_select('report_builder_settings',
+            "reportid = $reportid AND type = '$type'")) {
+            foreach($records as $record) {
+                $settings[$record->name] = $record->value;
+            }
+        }
+        return $settings;
+    }
+
+    /*
+     * Method for updating a setting for a particular report
+     *
+     * Will create a DB record if no setting is found
+     *
+     * @param integer $reportid ID of the report to update the settings of
+     * @param string $type Identifies the class to be updated
+     * @param string $name Identifies the particular setting to update
+     * @param string $value The new value of the setting
+     * @return boolean True if the setting could be updated or created
+     */
+    static function update_setting($reportid, $type, $name, $value) {
+        if($record = get_record('report_builder_settings', 'reportid',
+            $reportid, 'type', $type, 'name', $name)) {
+            // update record
+            $todb = new object();
+            $todb->id = $record->id;
+            $todb->value = addslashes($value);
+            if(!update_record('report_builder_settings', $todb)) {
+                return false;
+            }
+        } else {
+            // insert record
+            $todb = new object();
+            $todb->reportid = $reportid;
+            $todb->type = $type;
+            $todb->name = $name;
+            $todb->value = $value;
+            if(!insert_record('report_builder_settings', $todb)) {
+                return false;
+            }
+        }
+        return true;
+    }
 
 
 } // End of reportbuilder class
 
+class ReportBuilderException extends Exception { }
+
+/*
+ * Returns the proper SQL to aggregate a field by joining with a specified delimiter
+ *
+ *
+ */
+function sql_group_concat($field, $delimiter=', ', $unique=false) {
+    global $CFG;
+
+    // if not supported, just return single value - use min()
+    $sql = " MIN($field) ";
+
+    switch ($CFG->dbfamily) {
+        case 'mysql':
+            // use native function
+            $distinct = $unique ? 'DISTINCT' : '';
+            $sql = " GROUP_CONCAT($distinct $field SEPARATOR $delimiter) ";
+            break;
+        case 'postgres':
+            // use custom aggregate function - must have been defined
+            // in local/db/upgrade.php
+            $distinct = $unique ? 'TRUE' : 'FALSE';
+            $sql = " GROUP_CONCAT($field, '$delimiter', $distinct) ";
+            break;
+    }
+
+    return $sql;
+}
 

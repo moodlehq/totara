@@ -74,7 +74,6 @@ $MDL_F2F_STATUS = array(
  */
 function facetoface_get_status($statuscode) {
     global $MDL_F2F_STATUS;
-
     // Check code exists
     if (!isset($MDL_F2F_STATUS[$statuscode])) {
         error('F2F status code does not exist: '.$statuscode);

@@ -1,32 +1,59 @@
 <?php // $Id$
-require_once('../../config.php');
+
+require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->dirroot.'/local/reportbuilder/lib.php');
 require_once($CFG->dirroot.'/local/reportbuilder/report_forms.php');
+
+define('REPORT_BUILDER_COLUMNS_CONFIRM_SHOWHIDE', 1);
+define('REPORT_BUILDER_COLUMNS_FAILED_SHOWHIDE', 2);
+define('REPORT_BUILDER_COLUMNS_CONFIRM_DELETE', 3);
+define('REPORT_BUILDER_COLUMNS_FAILED_DELETE_SESSKEY', 4);
+define('REPORT_BUILDER_COLUMNS_FAILED_DELETE', 5);
+define('REPORT_BUILDER_COLUMNS_CONFIRM_MOVE', 6);
+define('REPORT_BUILDER_COLUMNS_FAILED_MOVE', 7);
+define('REPORT_BUILDER_COLUMNS_CONFIRM_UPDATE', 8);
+define('REPORT_BUILDER_COLUMNS_FAILED_UPDATE', 9);
 
 global $USER;
 $id = required_param('id',PARAM_INT); // report builder id
 $d = optional_param('d', null, PARAM_TEXT); // delete
 $m = optional_param('m', null, PARAM_TEXT); // move
+$h = optional_param('h', null, PARAM_TEXT); // show/hide
 $cid = optional_param('cid',null,PARAM_INT); //column id
 $confirm = optional_param('confirm', 0, PARAM_INT); // confirm delete
+$notice = optional_param('notice', 0, PARAM_INT); // notice flag
 
 admin_externalpage_setup('reportbuilder');
 $returnurl = $CFG->wwwroot."/local/reportbuilder/columns.php?id=$id";
 
 $report = new reportbuilder($id);
 
+// toggle show/hide column
+if ($h !== null && isset($cid)) {
+    if($report->showhide_column($cid, $h)) {
+        redirect($returnurl . '&amp;notice=' .
+            REPORT_BUILDER_COLUMNS_CONFIRM_SHOWHIDE);
+    } else {
+        redirect($returnurl . '&amp;notice=' .
+            REPORT_BUILDER_COLUMNS_FAILED_SHOWHIDE);
+    }
+}
+
 // delete column
 if ($d and $confirm ) {
     if(!confirm_sesskey()) {
-        print_error('confirmsesskeybad','error');
+        redirect($returnurl . '&amp;notice=' .
+            REPORT_BUILDER_COLUMNS_FAILED_DELETE_SESSKEY);
     }
 
     if(isset($cid)) {
         if($report->delete_column($cid)) {
-            redirect($returnurl);
+            redirect($returnurl . '&amp;notice=' .
+            REPORT_BUILDER_COLUMNS_CONFIRM_DELETE);
         } else {
-            redirect($returnurl, 'Column could not be deleted');
+            redirect($returnurl . '&amp;notice=' .
+            REPORT_BUILDER_COLUMNS_FAILED_DELETE);
         }
     }
 }
@@ -47,9 +74,11 @@ if ($d) {
 // move column
 if($m && isset($cid)) {
     if($report->move_column($cid, $m)) {
-        redirect($returnurl);
+        redirect($returnurl . '&amp;notice=' .
+            REPORT_BUILDER_COLUMNS_CONFIRM_MOVE);
     } else {
-        redirect($returnurl, 'Column could not be moved');
+        redirect($returnurl, '&amp;notice=' .
+            REPORT_BUILDER_COLUMNS_FAILED_MOVE);
     }
 }
 
@@ -67,9 +96,11 @@ if ($fromform = $mform->get_data()) {
     }
 
     if(build_columns($id, $fromform)) {
-        redirect($returnurl);
+        redirect($returnurl . '&amp;notice=' .
+            REPORT_BUILDER_COLUMNS_CONFIRM_UPDATE);
     } else {
-        redirect($returnurl, get_string('error:couldnotupdatereport','local'));
+        redirect($returnurl . '&amp;notice=' .
+            REPORT_BUILDER_COLUMNS_FAILED_UPDATE);
     }
 
 }
@@ -86,6 +117,38 @@ print_heading(get_string('editreport','local',$report->fullname));
 
 $currenttab = 'columns';
 include_once('tabs.php');
+
+if($notice) {
+    switch($notice) {
+    case REPORT_BUILDER_COLUMNS_CONFIRM_SHOWHIDE:
+        notify(get_string('column_vis_updated','local'),'notifysuccess');
+        break;
+    case REPORT_BUILDER_COLUMNS_FAILED_SHOWHIDE:
+        notify(get_string('error:column_vis_not_updated','local'));
+        break;
+    case REPORT_BUILDER_COLUMNS_CONFIRM_DELETE:
+        notify(get_string('column_deleted','local'),'notifysuccess');
+        break;
+    case REPORT_BUILDER_COLUMNS_FAILED_DELETE_SESSKEY:
+        notify(get_string('error:column_not_deleted_sesskey','local'));
+        break;
+    case REPORT_BUILDER_COLUMNS_FAILED_DELETE:
+        notify(get_string('error:column_not_deleted','local'));
+        break;
+    case REPORT_BUILDER_COLUMNS_CONFIRM_MOVE:
+        notify(get_string('column_moved','local'),'notifysuccess');
+        break;
+    case REPORT_BUILDER_COLUMNS_FAILED_MOVE:
+        notify(get_string('error:column_not_moved','local'));
+        break;
+    case REPORT_BUILDER_COLUMNS_CONFIRM_UPDATE:
+        notify(get_string('columns_updated','local'),'notifysuccess');
+        break;
+    case REPORT_BUILDER_COLUMNS_FAILED_UPDATE:
+        get_string('error:columns_not_updated','local');
+        break;
+    }
+}
 
 // display the form
 $mform->display();

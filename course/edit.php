@@ -6,6 +6,7 @@
     require_once($CFG->libdir.'/blocklib.php');
     require_once('lib.php');
     require_once('edit_form.php');
+    require_once($CFG->dirroot.'/tag/lib.php');
 
     $id         = optional_param('id', 0, PARAM_INT);       // course id
     $categoryid = optional_param('category', 0, PARAM_INT); // course category - can be changed in edit form
@@ -22,6 +23,10 @@
         if (!$course = get_record('course', 'id', $id)) {
             error('Course ID was incorrect');
         }
+        if ($itemotags = tag_get_tags_array('course', $course->id, 'official')) {
+            $course->otags = array_keys($itemotags);
+        }
+
         require_login($course->id);
         $category = get_record('course_categories', 'id', $course->category);
         require_capability('moodle/course:update', get_context_instance(CONTEXT_COURSE, $course->id));
@@ -98,6 +103,7 @@
             if (!$course = create_course($data)) {
                 print_error('coursenotcreated');
             }
+            add_tags_info($course->id);
 
             $context = get_context_instance(CONTEXT_COURSE, $course->id);
 
@@ -122,6 +128,7 @@
             if (!update_course($data)) {
                 print_error('coursenotupdated');
             }
+            add_tags_info($course->id);
             redirect($CFG->wwwroot."/course/view.php?id=$course->id");
         }
     }
@@ -164,5 +171,23 @@
     $editform->display();
 
     print_footer($course);
+
+/**
+ * function to attach tags into a course
+ * @param int courseid - id of the blog
+ */
+function add_tags_info($courseid) {
+
+    $tags = array();
+    if ($otags = optional_param('otags', '', PARAM_INT)) {
+        foreach ($otags as $tagid) {
+            // TODO : make this use the tag name in the form
+            if ($tag = tag_get('id', $tagid)) {
+                $tags[] = $tag->name;
+            }
+        }
+    }
+    tag_set('course', $courseid, $tags);
+}
 
 ?>

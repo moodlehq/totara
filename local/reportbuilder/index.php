@@ -68,39 +68,65 @@
             redirect($returnurl, get_string('error:couldnotcreatenewreport','local'));
         }
 
-        // create with default columns and filters
-        $columns = reportbuilder::get_source_data('defaultcolumns',$fromform->source);
-        $filters = reportbuilder::get_source_data('defaultfilters',$fromform->source);
+        // create columns for new report based on default columns
+        $src = reportbuilder::get_source_object($fromform->source);
+        if(isset($src->defaultcolumns) && is_array($src->defaultcolumns)) {
+            $defaultcolumns = $src->defaultcolumns;
+            $so = 1;
+            foreach($defaultcolumns as $option) {
+                try {
+                    $heading = isset($option['heading']) ? $option['heading'] :
+                        null;
+                    $column = $src->new_column_from_option($option['type'],
+                        $option['value'], $heading);
 
-        $so = 1;
-        foreach($columns as $column) {
-            $todb = new object();
-            $todb->reportid = $newid;
-            $todb->type = $column['type'];
-            $todb->value = $column['value'];
-            $todb->heading = $column['heading'];
-            $todb->sortorder = $so;
-            if(!insert_record('report_builder_columns', $todb)) {
-                rollback_sql();
-                redirect($returnurl, get_string('error:couldnotcreatenewreport','local'));
+                    $todb = new object();
+                    $todb->reportid = $newid;
+                    $todb->type = addslashes($column->type);
+                    $todb->value = addslashes($column->value);
+                    $todb->heading = addslashes($column->heading);
+                    $todb->hidden = addslashes($column->hidden);
+                    $todb->sortorder = $so;
+                    if(!insert_record('report_builder_columns', $todb)) {
+                        rollback_sql();
+                        redirect($returnurl, get_string('error:couldnotcreatenewreport','local'));
+                    }
+                    $so++;
+                }
+                catch (ReportBuilderException $e) {
+                    trigger_error($e->getMessage(), E_USER_WARNING);
+                }
             }
-            $so++;
         }
 
-        // add filters
-        $so = 1;
-        foreach($filters as $filter) {
-            $todb = new object();
-            $todb->reportid = $newid;
-            $todb->type = $filter['type'];
-            $todb->value = $filter['value'];
-            $todb->advanced = $filter['advanced'];
-            $todb->sortorder = $so;
-            if(!insert_record('report_builder_filters', $todb)) {
-                rollback_sql();
-                redirect($returnurl, get_string('error:couldnotcreatenewreport','local'));
+        // create filters for new report based on default filters
+        $src = reportbuilder::get_source_object($fromform->source);
+        if(isset($src->defaultfilters) && is_array($src->defaultfilters)) {
+            $defaultfilters = $src->defaultfilters;
+            $so = 1;
+            foreach($defaultfilters as $option) {
+                try {
+                    $advanced = isset($option['advanced']) ? $option['advanced'] :
+                        null;
+                    $filter = $src->new_filter_from_option($option['type'],
+                        $option['value'], $advanced);
+
+                    $todb = new object();
+                    $todb->reportid = $newid;
+                    $todb->type = addslashes($filter->type);
+                    $todb->value = addslashes($filter->value);
+                    $todb->advanced = addslashes($filter->advanced);
+                    $todb->sortorder = $so;
+                    if(!insert_record('report_builder_filters', $todb)) {
+                        rollback_sql();
+                        redirect($returnurl, get_string('error:couldnotcreatenewreport','local'));
+                    }
+                    $so++;
+                }
+                catch (ReportBuilderException $e) {
+                    trigger_error($e->getMessage(), E_USER_WARNING);
+                }
             }
-            $so++;
         }
 
         commit_sql();
@@ -212,8 +238,8 @@ function delete_report($id) {
         rollback_sql();
         return false;
     }
-    // delete any access settings
-    if(!delete_records('report_builder_access','reportid',$id)) {
+    // delete any content and access settings
+    if(!delete_records('report_builder_settings','reportid',$id)) {
         rollback_sql();
         return false;
     }
@@ -227,6 +253,17 @@ function delete_report($id) {
     commit_sql();
     return true;
 
+}
+
+/*
+ * Sort two objects by isdefault property (used for usort callback)
+ *
+ * @param object $a First item
+ * @param object $b Second item
+ * @return Sort status (-1, 0, 1)
+ */
+function rb_sort_by_default($a, $b) {
+    return $a->isdefault == $b->isdefault ? 0 : ($a->isdefault > $b->isdefault) ? 1 : -1;
 }
 
 ?>

@@ -1,6 +1,7 @@
 <?php //$Id$
 require_once($CFG->dirroot.'/local/reportbuilder/filters/text.php');
 require_once($CFG->dirroot.'/local/reportbuilder/filters/number.php');
+require_once($CFG->dirroot.'/local/reportbuilder/filters/simpleselect.php');
 require_once($CFG->dirroot.'/local/reportbuilder/filters/select.php');
 require_once($CFG->dirroot.'/local/reportbuilder/filters/date.php');
 require_once($CFG->dirroot.'/local/reportbuilder/filters/filter_forms.php');
@@ -48,19 +49,12 @@ class filtering {
         $this->_fields  = array();
         if($report->filters) {
             foreach ($report->filters as $filter) {
-                $type = $filter['type'];
-                $value = $filter['value'];
-                $advanced = $filter['advanced'];
-                // check filter exists in available options
-                if(array_key_exists($type, $report->filteroptions) && array_key_exists($value, $report->filteroptions[$type])) {
-                    $fieldname = "{$type}-{$value}";
-                    if ($field = $this->get_field($type, $value, $advanced)) {
-                        $this->_fields[$fieldname] = $field;
-                    }
-                } else {
-                    trigger_error("Filter with type of '$type' and value of '$value' not found in filter options.",E_USER_WARNING);
+                $type = $filter->type;
+                $value = $filter->value;
+                $fieldname = "{$type}-{$value}";
+                if ($field = $this->get_field($filter)) {
+                    $this->_fields[$fieldname] = $field;
                 }
-
             }
         }
 
@@ -83,7 +77,7 @@ class filtering {
                         if(array_key_exists($fname, $SESSION->{$filtername})){
                             unset($SESSION->{$filtername}[$fname]);
                         }
-                        continue; 
+                        continue;
                     }
                     if (!array_key_exists($fname, $SESSION->{$filtername})) {
                         $SESSION->{$filtername}[$fname] = array();
@@ -97,42 +91,104 @@ class filtering {
 
     /**
      * Creates known filter if present
-     * @param string $fieldname
-     * @param boolean $advanced
+     * @param object $filter rb_filter object from report builder
      * @return object filter
      */
-    function get_field($type, $value, $advanced) {
+    function get_field($filter) {
         global $USER, $CFG, $SITE;
 
-        $filteroptions = $this->_report->filteroptions;
-        $columnoptions = $this->_report->columnoptions;
-        $source = $this->_report->source;
+        $type = $filter->type;
+        $value = $filter->value;
         $sessionname = $this->_sessionname;
-        $fieldname = "{$type}-{$value}";
-        $fieldquery = $columnoptions[$type][$value]['field'];
 
-        $filtersfile = "{$CFG->dirroot}/local/reportbuilder/filterfuncs.php";
-        if(file_exists($filtersfile)) {
-            include_once($filtersfile);
-        }
-
-        if(isset($filteroptions[$type][$value]['filtertype'])) {
-            $filtertype = $filteroptions[$type][$value]['filtertype'];
+        if(isset($filter->filtertype)) {
+            $filtertype = $filter->filtertype;
             $filtername = "filter_{$filtertype}";
-            $label = $filteroptions[$type][$value]['label'];
+            $filtergrouping = $filter->grouping;
+
+            // pick type of filter to show
+            // need to consider 'normal' type (from rb_filter->filtertype)
+            // and any grouping functions that have been applied as, for example:
+            // count(text) => number
             switch($filtertype) {
-                case 'text':
-                case 'number':
-                case 'date':
-                    return new $filtername($fieldname, $label, $advanced, $sessionname, $fieldname, $fieldquery);
-                case 'select':
-                    $selectfunc = $filteroptions[$type][$value]['selectfunc'];
-                    $options = (isset($filteroptions[$type][$value]['options'])) ? $filteroptions[$type][$value]['options'] : null ;
-                    $selectfield = $selectfunc($this->_report->contentmode, $this->_report->contentsettings);
-                    return new $filtername($fieldname, $label, $advanced, $sessionname, $fieldname, $fieldquery, $selectfield, null, $options);
+            case 'text':
+            case 'textarea':
+                // use number if aggregation would result in number
+                switch($filtergrouping) {
+                case 'sum':
+                case 'count':
+                case 'unique_count':
+                case 'average':
+                    return new filter_number($filter, $sessionname);
+                // otherwise use type indicated
+                case 'none':
+                case 'min':
+                case 'max':
                 default:
-                    trigger_error("No filter found for filter type '$filtertype'.",E_USER_WARNING);
-                    return null;
+                    return new $filtername($filter, $sessionname);
+                }
+
+            case 'number':
+                return new $filtername($filter, $sessionname);
+            case 'date':
+                switch($filtergrouping) {
+                case 'count':
+                case 'unique_count':
+                    return new filter_number($filter, $sessionname);
+                // otherwise use type indicated
+                case 'average':
+                case 'none':
+                case 'min':
+                case 'max':
+                case 'sum': // sum doesn't make much sense in this context
+                default:
+                    return new $filtername($filter, $sessionname);
+                }
+            case 'simpleselect':
+                switch($filtergrouping) {
+                case 'count':
+                case 'unique_count':
+                case 'average':
+                case 'sum':
+                    return new filter_number($filter, $sessionname);
+                case 'none':
+                case 'min':
+                case 'max':
+                default:
+                    $choices = $filter->selectchoices;
+                    $options = $filter->selectoptions;
+                    return new $filtername($filter, $sessionname, $choices, $options);
+                }
+            case 'select':
+                switch($filtergrouping) {
+                case 'count':
+                case 'unique_count':
+                case 'average':
+                case 'sum':
+                    return new filter_number($filter, $sessionname);
+                // case 'join':
+                //    return new filter_text($filter, $sessionname);
+                case 'none':
+                case 'min':
+                case 'max':
+                default:
+                    $selectfunc = 'rb_filter_'.$filter->selectfunc;
+                    $options = $filter->selectoptions;
+                    if(method_exists($this->_report->src, $selectfunc)) {
+                        $selectfield = $this->_report->src->$selectfunc(
+                            $this->_report->contentmode,
+                            $this->_report->contentoptions,
+                            $this->_report->_id
+                        );
+                    } else {
+                        trigger_error("Filter function '{$selectfunc}' not found", E_USER_WARNING);
+                        $selectfield = array();
+                    }
+                    return new $filtername($filter, $sessionname, $selectfield, null, $options);
+                }
+            default:
+                trigger_error("No filter found for filter type '$filtertype'.",E_USER_WARNING);
+                return null;
             }
 
         } else {
@@ -143,7 +199,7 @@ class filtering {
     /**
      * Returns sql where statement based on active filters
      * @param string $extra sql
-     * @return string
+     * @return array Associative array containing 'where' and 'having' strings
      */
     function get_sql_filter($extra='') {
         global $SESSION;
@@ -151,9 +207,11 @@ class filtering {
         $shortname = $this->_report->shortname;
         $filtername = 'filtering_'.$shortname;
 
-        $sqls = array();
+        $where_sqls = array();
+        $having_sqls = array();
+
         if ($extra != '') {
-            $sqls[] = $extra;
+            $where_sqls[] = $extra;
         }
 
 
@@ -164,16 +222,23 @@ class filtering {
                 }
                 $field = $this->_fields[$fname];
                 foreach($datas as $i=>$data) {
-                    $sqls[] = $field->get_sql_filter($data);
+                    if($field->_filter->is_grouped()) {
+                        $having_sqls[] = $field->get_sql_filter($data);
+                    } else {
+                        $where_sqls[] = $field->get_sql_filter($data);
+                    }
                 }
             }
         }
 
-        if (empty($sqls)) {
-            return '';
-        } else {
-            return implode(' AND ', $sqls);
+        $out = array();
+        if(!empty($having_sqls)) {
+            $out['having'] = implode(' AND ', $having_sqls);
         }
+        if(!empty($where_sqls)) {
+            $out['where'] = implode(' AND ', $where_sqls);
+        }
+        return $out;
     }
 
     /**
@@ -220,33 +285,18 @@ class filtering {
  * The base filter class. All abstract classes must be implemented.
  */
 class filter_type {
-    /**
-     * The name of this filter instance.
-     */
     var $_name;
-
-    /**
-     * The label of this filter instance.
-     */
-    var $_label;
-
-    /**
-     * Advanced form element flag
-     */
-    var $_advanced;
-
-    var $_filtername;
+    var $_sessionname;
+    var $_filter;
     /**
      * Constructor
-     * @param string $name the name of the filter instance
-     * @param string $label the label of the filter instance
-     * @param boolean $advanced advanced form element flag
+     * @param object $filter rb_filter object for this filter
+     * @param string $sessionname Unique name for the report for storing sessions
      */
-    function filter_type($name, $label, $advanced, $filtername) {
-        $this->_name     = $name;
-        $this->_label    = $label;
-        $this->_advanced = $advanced;
-        $this->_filtername = $filtername;
+    function filter_type($filter, $sessionname) {
+        $this->_filter = $filter;
+        $this->_name     = $filter->type . '-' . $filter->value;
+        $this->_sessionname = $sessionname;
     }
 
     /**

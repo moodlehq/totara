@@ -65,30 +65,20 @@ function update_content($id, $report, $fromform) {
         rollback_sql();
         return false;
     }
-    // no need to go further if all content allowed
-    if($contentenabled == 0) {
-        commit_sql();
-        return true;
-    }
 
-    // convert form data into a settings array
-    $contentoptions = $report->get_content_options();
-    $settings = array();
-    foreach($fromform as $input => $value) {
-        foreach($contentoptions as $option) {
-            if(substr($input, 0, strlen($option)) == $option) {
-                $inputname = substr($input, strlen($option)+1);
-                $settings[$option][$inputname] = $value;
+    $contentoptions = isset($report->contentoptions) ?
+        $report->contentoptions : array();
+
+    // pass form data to content class for processing
+    foreach($contentoptions as $option) {
+        $classname = 'rb_' . $option->classname . '_content';
+        if(class_exists($classname)) {
+            $obj = new $classname();
+            if(!$obj->form_process($id, $fromform)) {
+                rollback_sql();
+                return false;
             }
         }
-    }
-
-    $todb = new object();
-    $todb->id = $id;
-    $todb->contentsettings = serialize($settings);
-    if(!update_record('report_builder', $todb)) {
-        rollback_sql();
-        return false;
     }
 
     commit_sql();

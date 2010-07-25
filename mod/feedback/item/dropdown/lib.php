@@ -1,5 +1,5 @@
 <?PHP  // $Id: lib.php,v 1.1.4.2 2008/01/15 23:53:27 agrabs Exp $
-defined('FEEDBACK_INCLUDE_TEST') OR die('not allowed');
+defined('MOODLE_INTERNAL') OR die('not allowed');
 require_once($CFG->dirroot.'/mod/feedback/item/feedback_item_class.php');
 
 class feedback_item_dropdown extends feedback_item_base {
