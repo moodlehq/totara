@@ -499,11 +499,6 @@ div.mitms-dialog div.yui-isloading .bd {
     padding-bottom: 22px;
 }
 
-div.mitms-dialog .simpleframeworkpicker,
-div.mitms-dialog #framework-picker {
-    float: right;
-}
-
 div.mitms-dialog .selected {
     float: right;
     width: 250px;
