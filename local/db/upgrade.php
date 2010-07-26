@@ -1597,7 +1597,6 @@ function xmldb_local_upgrade($oldversion) {
         }
     }
 
-<<<<<<< HEAD
     if ($result && $oldversion < 2010071000) {
         // Create a table for organisational competencies
         $table = new XMLDBTable('org_competencies');
