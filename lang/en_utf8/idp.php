@@ -220,6 +220,7 @@ $string['curriculum_Q_title'] = 'Professional Qualities Curriculum';
 $string['defaultplanname'] = 'My IDP';
 $string['deleteplanbutton'] = 'Delete this plan';
 $string['deleteitembutton'] = 'Delete this item from the list';
+$string['developmentplans'] = 'Development Plans';
 $string['disclaimer'] = 'New plan disclaimer';
 $string['dragheretoassign'] = 'Drag here to assign';
 $string['duedate'] = 'Due date';
