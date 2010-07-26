@@ -593,7 +593,7 @@ class rb_preproc_feedback_questions extends rb_base_preproc {
                 FROM {$CFG->prefix}feedback f
                 LEFT JOIN {$CFG->prefix}feedback_item i
                 ON f.id = i.feedback
-                WHERE f.id = {$item}
+                WHERE f.id = {$item} AND i.hasvalue != 0
                 ORDER BY i.position")) {
 
                 $i = 1;
