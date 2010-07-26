@@ -15,6 +15,18 @@ dropdb mdl19-hudsontesting
 echo "Create new database mdl19-hudsontesting";
 createdb -O hudson mdl19-hudsontesting
 
+echo "Delete old moodledata";
+rm -Rf ../moodledata/
+
+echo "Re-create moodledata";
+mkdir ../moodledata
+chmod 777 ../moodledata
+
+echo "Reset apache logs";
+rm ../moodle_error.log
+touch ../moodle_error.log
+chmod 777 ../moodle_error.log
+
 echo "Initialize installation";
 /usr/bin/php admin/cliupgrade.php \
       --lang=en_utf8 \
@@ -39,18 +51,6 @@ echo "Initialize installation";
       --adminpassword="passworD1!" \
       --interactivelevel=0
 
-
-echo "Delete old moodledata";
-rm -Rf ../moodledata/
-
-echo "Re-create moodledata";
-mkdir ../moodledata
-chmod 777 ../moodledata
-
-echo "Reset apache logs";
-rm ../moodle_error.log
-touch ../moodle_error.log
-chmod 777 ../moodle_error.log
 
 echo "Hit notifications page to complete installation";
 wget -O - http://hudson.spastk.wgtn.cat-it.co.nz/admin/index.php
