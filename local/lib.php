@@ -39,7 +39,7 @@ function local_postinst() {
 
     global $db, $CFG;
     $olddebug = $db->debug;
-    set_config('theme', 'mitms');
+    set_config('theme', 'totara');
     $db->debug = $CFG->debug;
 
     /// Insert default records

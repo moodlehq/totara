@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html<?php echo $direction ?>>
+<head>
+    <?php echo $meta ?>
+    <meta name="keywords" content="moodle, <?php echo $title ?> " />
+    <title><?php echo $title ?></title>
+    <link rel="shortcut icon" href="<?php echo $CFG->themewww .'/'. current_theme() ?>/favicon.ico" />
+    <?php include("$CFG->javascript"); ?>
+</head>
+
+<body<?php
+    echo " $bodytags";
+    if ($focus) {
+        echo " onload=\"setfocus()\"";
+    }
+    ?>>
+<div id="wrapper">
+<div id="container">
+<div id="page"><strong></strong>
+
+<?php if ($home || $heading) { // home or any page with a header ?>
+    <?php print_container_start(true, '', 'header'); ?>
+        <div id="header-logo-container">
+        <div class="tagline"><img alt="changing the way we learn" src="<?php echo $CFG->wwwroot.'/theme/'.current_theme() ?>/images/tagline.gif" /></div>
+        <div class="logo"><img alt="totara logo" src="<?php echo $CFG->wwwroot.'/theme/'.current_theme() ?>/images/logo_main.gif" /></div>
+        </div>
+    <?php print_container_end(); ?>
+    <div id="totara_menu">
+    <?php
+
+        {
+        include('totara_menu.php'); 
+        }   
+?>		
+</div>
+    <div class="clear"></div></div>
+    <div class="navbar clearfix">
+        <div class="login-container"><?php echo $menu ?></div>
+        <div class="breadcrumb"><?php print_navigation($navigation); ?></div>
+        <div class="navbutton"><?php echo $button; ?></div>
+    </div>
+    <!-- END OF HEADER -->
+    <?php print_container_start(true, '', 'content'); ?>
+<?php } ?>

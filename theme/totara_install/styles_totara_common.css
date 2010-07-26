@@ -1,0 +1,952 @@
+
+/* Stylesheet for MITMS specific CSS */
+
+/*****************************************************************************/
+/** General **/
+/*****************************************************************************/
+
+html, body {
+  height: 100%;
+}
+
+/* Opera Fix for sticky footer :) */
+body:before {
+    content:"";
+    height:100%;
+    float:left;
+    width:0;
+    margin-top:-32767px;
+}
+
+/**
+ * Fix for filter
+ */
+fieldset#newfilter input[type="text"] {
+    margin-left: 5px;
+}
+
+/**
+ * Course completion report
+ */
+body#course-report-completion-index div.firstinitial,
+body#course-report-progress-index div.firstinitial {
+    margin-top: 10px;
+}
+
+body#course-report-completion-index div.lastinitial,
+body#course-report-progress-index div.lastinitial {
+    margin-bottom: 10px;
+}
+
+/**
+ * Improve help icon in form legend display
+ */
+fieldset legend span.helplink {
+    margin-left: 5px;
+}
+
+/**
+ * MITMS my courses
+ */
+div.mycourses td.status span {
+    text-indent: -1000px;
+    display: block;
+    width: 39px;
+    height: 12px;
+    background: transparent url(images/progress-icons.png) no-repeat;
+}
+
+div.mycourses td.status span.completion-inprogress {
+    background-position: 0px -12px;
+}
+
+div.mycourses td.status span.completion-complete
+div.mycourses td.status span.completion-completeviarpl {
+    background-position: 0px -24px;
+}
+
+/*****************************************************************************/
+/** Report Builder **/
+/*****************************************************************************/
+
+/* shrink select boxes to fit in filter */
+select.mitms-limited-width {
+    width: 200px;
+    position: static;
+}
+
+/* expand while selecting option (IE only) */
+select.mitms-expanded-width {
+    width: auto;
+    position: absolute;
+}
+
+/* override float left on pulldown menus inside table */
+div.reportbuilderform div.fitem div.felement,
+div.reportheadingform div.fitem div.felement {
+    float: none;
+}
+
+/* hide the label entirely so form fits in table */
+div.reportheadingform div.fitemtitle,
+#local-reportheading-index div.fdescription.required {
+    display: none;
+}
+
+
+/*****************************************************************************/
+/** Hierarchies **/
+/*****************************************************************************/
+body.hierarchy .buttons .singlebutton,
+body.hierarchy-framework .buttons .singlebutton,
+body.hierarchy-type-competency-template .buttons .singlebutton,
+body.hierarchy-type-competency-scale .buttons .singlebutton,
+body.customfield .buttons .singlebutton
+{
+  display: inline;
+}
+
+body.hierarchy .buttons,
+body.hierarchy-framework .buttons,
+body.hierarchy-type-competency-template .buttons,
+body.hierarchy-type-competency-scale .buttons,
+body.customfield .buttons
+{
+  margin-top: 20px;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+body.hierarchy-item form.mform,
+body.hierarchy-framework form.mform,
+body.hierarchy-type-competency-template form.mform,
+body.hierarchy-type-competency-scale form.mform
+{
+    width: 95%;
+}
+
+body.hierarchy-item h2.main {
+    text-align: left;
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#hierarchy-item-view table tr td {
+       border: 1px solid #DDDDDD;
+}
+
+table.viewhierarchyitem {
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+    border: 1px solid #DDDDDD;
+}
+
+table.viewhierarchyitem td,
+table.viewhierarchyitem th {
+    padding: 5px 10px;
+    border: 1px solid #DDDDDD;
+}
+
+table.viewhierarchyitem th.header {
+    white-space: nowrap;
+    width: 10%;
+    background: none;
+}
+
+div.nohierarchyitems {
+    padding-bottom: 20px;
+    font-weight: bold;
+    font-style: italic;
+}
+
+table.editcompetency {
+    width: 95%;
+}
+
+table.editcompetency th {
+    text-align: center;
+    vertical-align: top;
+    white-space: nowrap;
+    padding: 5px;
+}
+
+table.editcompetency td {
+    vertical-align: top;
+    padding: 5px;
+    border: 1px solid #dddddd;
+}
+
+table.reportbuilder-table .r0 {
+    background: #FFFFFF;
+}
+
+table.reportbuilder-table .r1 {
+    background: #F5F5F5;
+}
+
+table.reportbuilder-table td {
+    border: 1px solid #DDDDDD;
+}
+
+/*****************************************************************************/
+/** Individual Development Plans **/
+/*****************************************************************************/
+
+table.planlist {
+    border: 0px;
+    margin: 8px 0px 5px 0px;
+    width: 548px;
+}
+table.planlist th {
+    padding: 0px 0px 0px 2px;
+    text-align: left;
+}
+table.planlist tr.r0 {
+    background-color: #F0F0F0;
+    height: 20px;
+}
+table.planlist th.name {
+    width: 245px;
+}
+table.planlist th.options {
+    width: 45px;
+    text-align: center;
+}
+table.planlist td.options {
+    text-align: center;
+}
+table.planitems {
+    margin: 8px 0px 0px 8px;
+    width: 532px;
+}
+table.planitems tr {
+    height: 25px;
+}
+table.planitems tr.r0 {
+    background-color: #F0F0F0;
+}
+table.planitems th {
+    text-align: left;
+    vertical-align: top;
+    white-space: nowrap;
+    padding: 2px 5px;
+}
+
+table.planitems th.framework {
+    width: 120px;
+}
+table.planitems th.name {
+    width: 227px;
+}
+table.planitems th.status {
+    width: 70px;
+}
+table.planitems th.duedate {
+    width: 70px;
+}
+table.planitems th.options {
+    width: 45px;
+    text-align: center;
+}
+table.planitems td {
+    text-align: left;
+    vertical-align: top;
+    padding: 3px;
+}
+
+table.planitems td.options {
+    text-align: center;
+}
+
+table.planbuttons {
+    margin-left: 0px;
+    width: 532px;
+    margin-bottom: 0px;
+}
+
+table.planbuttons td {
+    text-align: left;
+    vertical-align: top;
+    padding: 0px 0px 5px 0px;
+}
+
+table#list-assignedcompetencies th.c0,
+table#list-assignedcompetencies th.c1,
+table#list-assignedcompetencies th.c3,
+table#list-assignedcompetencytemplates th.c0,
+table#list-assignedcompetencytemplates th.c2 {
+    width: 15%;
+    white-space: nowrap;
+}
+
+table#list-assignedcompetencies .c3,
+table#list-assignedcompetencytemplates .c2 {
+    text-align: center;
+}
+
+table.editcompetency div.tabledivider {
+    border: 0;
+}
+
+table#list-assignedcompetencies td[colspan],
+table#list-assignedcompetencytemplates td[colspan] {
+    padding: 0;
+}
+
+body#idp-plan img.ui-datepicker-trigger {
+    margin-right: 5px;
+}
+
+/*****************************************************************************/
+/** Dialogs **/
+/*****************************************************************************/
+
+div.mitms-dialog {
+    border: 5px solid #666;
+    background: none;
+    background-color: #fff;
+    padding: 10px 10px 5px;
+}
+
+div.mitms-dialog div.ui-widget-content,
+div.mitms-dialog div.ui-widget-header {
+    background: none;
+    background-color: #fff;
+}
+
+div.mitms-dialog div.ui-widget-header .ui-state-hover {
+    border-color: transparent;
+    background: none;
+}
+
+div.mitms-dialog div.ui-widget-header {
+    position: relative;
+    float: right;
+    top: 322px;
+    margin: 0;
+    padding: 0;
+    border: none;
+}
+
+div.mitms-dialog div.ui-dialog-titlebar a.ui-dialog-titlebar-close {
+    border: 0;
+    margin: 0;
+    padding: 0;
+    background: transparent;
+}
+
+div.mitms-dialog div.ui-dialog-titlebar a.ui-dialog-titlebar-close span {
+    position: relative;
+    float: right;
+    width: 66px;
+    height: 22px;
+    background-image: url(closelabel.gif);
+    background-position: 0 0;
+    border: none;
+    bottom: 335px;
+    margin: 0;
+    padding: 0;
+    display: block;
+    z-index: 1;
+}
+
+div.mitms-dialog div.ui-dialog-buttonpane {
+    position: relative;
+    float: right;
+    background: none;
+    border: none;
+    margin: 0;
+    padding: 0;
+    top: -28px;
+}
+
+div.mitms-dialog div.ui-dialog-buttonpane button {
+    margin: 0;
+    float: left;
+}
+
+div.mitms-dialog div.ui-dialog-content {
+    padding: 0 0 10px;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 5px;
+    overflow: hidden;
+    font-size: 0.9em;
+    position: relative;
+    height: 300px;
+    top: -25px;
+}
+
+div.mitms-dialog div.ui-dialog-content h2 {
+    border-bottom: 1px solid #CACACA;
+    font-size: 17px;
+    margin: 0 0 10px;
+    padding-top: 2px;
+    padding-bottom: 5px;
+    text-align: left;
+    font-weight: bold;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    color: #002C3F;
+}
+
+div.mitms-dialog div.ui-dialog-content p {
+    margin: 0;
+    padding: 0;
+}
+
+div.mitms-dialog div.ui-dialog-content .dialog-static-content {
+    height: 275px;
+    overflow: auto;
+}
+
+div.mitms-dialog ul.treeview {
+    margin-top: 10px;
+    height: 295px;
+    overflow: auto;
+}
+
+div.mitms-dialog ul.picker {
+    height: 322px;
+}
+
+div.mitms-dialog ul.treeview li {
+    font-size: 0.8em;
+}
+
+div.mitms-dialog ul.treeview span:hover {
+    background-color: #EEEEEE;
+}
+
+div.mitms-dialog ul.treeview li li {
+    font-size: 1em;
+}
+
+div.mitms-dialog ul.treeview li span {
+    padding-left: 0.25em;
+    display: block;
+}
+
+div.mitms-dialog ul.treeview li span.folder {
+    padding-left: 1.75em;
+}
+
+div.mitms-dialog ul.treeview li span.clickable {
+    cursor: pointer;
+}
+
+div.mitms-dialog ul.treeview li span.clickable:hover {
+    color: #f00;
+}
+
+div.mitms-dialog ul.treeview li span.unclickable {
+    color: #777;
+}
+
+div.mitms-dialog ul.treeview li span.ui-draggable {
+    cursor: pointer;
+}
+
+div.mitms-dialog ul.treeview li span.ui-draggable:hover {
+    color: #f00;
+}
+
+div.mitms-dialog ul.treeview li span.ui-undraggable {
+    color: #777;
+}
+
+div.mitms-dialog ul.treeview span table {
+    width: 100%;
+    border: 0;
+}
+
+div.mitms-dialog ul.treeview span table tr {
+    height: 1.8em;
+}
+
+div.mitms-dialog ul.treeview span table tr {
+    padding: 2px 0;
+}
+
+div.mitms-dialog ul.treeview span table tr td.list-item-name {
+    width: 90%;
+    border: 0;
+}
+
+div.mitms-dialog ul.treeview span table tr td.list-item-action {
+    cursor: pointer;
+    width: 10%;
+    text-align: center;
+    border: 0;
+}
+
+div.mitms-dialog ul.treeview img.addbutton {
+    display: none;
+    vertical-align: middle;
+    width: 17px;
+    height: 15px;
+}
+
+div.mitms-dialog ul.treeview img.deletebutton {
+    display: none;
+    vertical-align: middle;
+    width: 13px;
+    height: 13px;
+}
+
+div.mitms-dialog ul.treeview li ul {
+    margin-top: 0;
+}
+
+div.mitms-dialog .unclickable {
+    color: #777;
+}
+
+div.mitms-dialog div.yui-isloading {
+    background-image: url(loading_small.gif);
+    background-position: 690px 32px;
+    background-repeat: no-repeat;
+}
+
+div.mitms-dialog div.yui-isloading .bd {
+    padding-bottom: 22px;
+}
+
+div.mitms-dialog .selected {
+    float: right;
+    width: 250px;
+    border-left: 1px solid #ccc;
+    height: 322px;
+    overflow: auto;
+    padding: 0 10px;
+    margin-left: 10px;
+}
+
+div.mitms-dialog .selected p {
+    margin-top: 0;
+}
+
+div.mitms-dialog .selected span {
+    display: block;
+    font-size: 0.8em;
+    padding: 0.4em 0;
+}
+
+div.mitms-dialog .selected span:hover {
+    background-color: #EEEEEE;
+}
+
+div.mitms-dialog .selected span table {
+    width: 100%;
+}
+
+div.mitms-dialog .selected span table tr{
+    height: 1.6em;
+}
+
+div.mitms-dialog .selected span table tr td.list-item-name {
+    width: 90%;
+}
+
+div.mitms-dialog .selected span table tr td.list-item-action {
+    cursor: pointer;
+    width: 10%;
+    text-align: center;
+}
+
+div.mitms-dialog .selected img.addbutton {
+    display: none;
+    vertical-align: middle;
+    width: 16px;
+    height: 14px;
+}
+
+div.mitms-dialog .selected img.deletebutton {
+    display: none;
+    vertical-align: middle;
+    width: 15px;
+    height: 13px;
+}
+
+/* hide lightbox activation buttons */
+/* (displayed using JS if enabled) */
+input#show-idppositioncompetency-dialog,
+input#show-idpcourse-dialog,
+input#show-idpcompetency-dialog,
+input#show-idpcompetencytemplate-dialog,
+input#show-idppositioncompetencytemplate-dialog {
+    display: none;
+}
+
+/* Make none JS links look more like buttons */
+a.noscript-button {
+    padding: 5px;
+    margin: 5px;
+    border: 1px solid #999;
+    background: #eee;
+    display: block;
+    width: 150px;
+    float: left;
+    text-align: center;
+}
+
+/* fix for add competency display width */
+#hierarchy-type-competency-evidence-add #mform1 {
+    width: 95%;
+}
+
+/** Competencies lightbox styling **/
+#evidence #available-evidence {
+    float: right;
+    width: 40%;
+    border-left: 1px solid #ccc;
+    height: 322px;
+    overflow: auto;
+    padding: 0 10px;
+}
+
+#evidence #available-evidence h3 {
+    margin: 0 0 0.5em;
+}
+
+#evidence #available-evidence ul {
+    font-size: 0.8em;
+    margin: 0.25em 0 1em;
+    list-style: none;
+    padding: 0;
+}
+
+#evidence #available-evidence ul li {
+    font-size: 1em;
+    padding-bottom: 0.25em;
+}
+
+
+/*****************************************************************************/
+/** Dashboards **/
+/*****************************************************************************/
+table.centerblock td, th {
+  text-align: left;
+  padding: 2px;
+}
+
+table.centerblock th.course, table.centerblock td.course {
+  width: 322px;
+}
+
+table.centerblock th.status, table.centerblock td.status {
+  width: 40px;
+}
+
+table.centerblock th.enroldate, table.centerblock td.enroldate,
+table.centerblock th.startdate, table.centerblock td.startdate,
+table.centerblock th.completeddate, table.centerblock td.completeddate {
+  width: 50px;
+  text-align: center;
+}
+
+table.centerblock th.status, table.centerblock td.status {
+  text-align: left;
+}
+
+#site-index #middle-column div.mycourses div.allmycourses {
+  margin-top: 5px;
+  margin-left: 2px;
+  margin-bottom: 0px;
+  font-weight: bold;
+}
+
+#site-index #middle-column div.mycourses {
+  width: 527px;
+  margin-top: 0px;
+  margin-left: 12px;
+  border:none;
+  background: none;
+}
+
+#site-index #middle-column div.mycourses div.header h2 {
+  color:#FFFFFF;
+  font-size:1.5em;
+  margin:0;
+  padding-left: 7px;
+  padding-top: 7px;
+  padding-bottom: 6px;
+  font-weight: normal;
+  border:none;
+}
+
+#site-index #middle-column div.mycourses div.header {
+  border:1px solid #d2d2d2;
+  border-bottom:none;
+  background: #a2b001;
+}
+
+#site-index #middle-column div.mycourses .content {
+  padding: 0 1px;
+  background: transparent url('images/course_bg_ftr.gif') no-repeat bottom left;
+}
+#site-index #middle-column div.mycourses .content th {
+  padding:6px 7px;
+  font-size: 1.1em;
+  color: #a2b001;
+  background: #f5f5f5;
+}
+#site-index #middle-column div.mycourses .content td {
+  padding:6px 7px;
+  font-size: 0.9em;
+
+}
+#site-index #middle-column div.mycourses .content a {
+   color:#322f2c;
+}
+#site-index #middle-column div.mycourses .content .allmycourses {
+   font-family: 'Trebuchet ms', Verdana, Arial, Helvetica, sans-serif;
+   text-align:right;
+   font-size: 1em;  
+   font-weight:normal; 
+   padding: 5px 7px 5px 7px;
+}
+#site-index #middle-column div.mycourses .content .allmycourses a {
+   padding-right: 17px;
+   background: url('images/arrow_grn.gif') no-repeat right center;
+}
+
+/*****************************************************************************/
+/** My Team **/
+/*****************************************************************************/
+
+table.allmyteam {
+  margin:0;
+  width:100%;
+}
+table.allmyteam td {
+  text-align:right;
+  padding-right: 10px;
+  vertical-align: center;
+}
+table.allmyteam td.c2 {
+  padding:5px;
+  background: url('images/course_bg_ftr.gif') no-repeat left bottom;  
+}
+table.allmyteam td.c2 img {
+  display:none;
+}
+table.allmyteam td.c3 {
+  padding:15px 7px 5px 7px;
+  background: url('images/course_bg_ftr.gif') no-repeat right bottom; 
+}  
+table.allmyteam td a {
+  font-family: 'Trebuchet ms', verdana, helvetica, sans-serif;
+  font-weight: normal;
+  font-size: 1em;
+  padding-right: 17px;
+  background: url('images/arw_blu.gif') no-repeat right 3px;
+}
+#my-team h1 {
+  margin:0;
+  color:#FFFFFF;
+  font-size: 1.5em;
+  padding: 5px 10px 4px 10px;
+  background:#34b9e4;
+  border: 1px solid #d2d2d2;
+}
+#my-team #middle-column table.flexible {
+  width:100%;
+  margin-bottom:0;
+}
+#my-team #middle-column table.flexible td {
+  font-size:0.9em;
+  padding: 6px 2px 6px 2px;
+  background: #FFFFFF;
+}
+#my-team #middle-column table.flexible th {
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  color: #34b9e4;
+  padding:6px 3px;
+  background: #f5f5f5;
+}
+#my-team #middle-column table.flexible th.c0,
+#my-team #middle-column table.flexible td.c0 {
+  display:none;
+}
+#my-team #middle-column table.flexible th.c1,
+#my-team #middle-column table.flexible td.c1 {
+  vertical-align: top;
+  width: 140px;
+  padding-left: 10px;
+  border-left:1px solid #d2d2d2;
+}
+#my-team #middle-column table.flexible th.c2 {
+  vertical-align: top;
+  width: 110px;
+}
+#my-team #middle-column table.flexible th.c3 {
+  vertical-align: top;
+  width: 110px;
+}
+#my-team #middle-column table.flexible th.c4 {
+  vertical-align: top;
+  width: 115px;
+}
+#my-team #middle-column table.flexible th.c4,
+#my-team #middle-column table.flexible td.c4 {
+  border-right:1px solid #d2d2d2;
+}
+
+/*****************************************************************************/
+/** Tables **/
+/*****************************************************************************/
+
+.generaltable {
+    width: 100%;
+}
+
+.generaltable .cell {
+    background-color: none !important;
+}
+
+.cell {
+    padding: 3px;
+}
+
+
+tr.r1 .cell {
+    background: #f5f5f5;
+}
+td.c0 {
+    text-align: left;
+}
+
+th.header {
+    background: #EDEDED url(images/gradient.png) top left repeat-x;
+    border: 1px solid #e2e2e2;
+    padding:3px;
+}
+
+table.customfields th.lastcol {
+    width: 100px;
+    text-align:center;
+}
+
+table.customfields th.lastcol,
+table.customfields td.lastcol{
+    text-align: center !important;
+}
+table.borderless td {
+    border-color: #ffffff;
+    vertical-align: top;
+}
+
+
+table#list-idpcompetency,
+table#list-idpcompetencytemplate,
+table#list-idpcourse{
+    margin:5px 0 0;
+    width:100%;
+}
+
+.logtable td, .logtable th {
+    padding-left:5px;
+    padding-right:5px;
+}
+
+
+body#hierarchy-index table#competency tr.r0 td.customfield {
+    background: #fdfdfd;
+}
+body#hierarchy-index table#competency tr.r1 td.customfield {
+    background: #f2f2f2;
+}
+
+body#hierarchy-index table#competency tr.r1 td
+
+/*****************************************************************************/
+/** Form **/
+/*****************************************************************************/
+
+form#newfieldform {
+    padding:10px 0 0;
+    display: table;
+}
+
+.mform {
+    width: 100%
+}
+
+.mform fieldset .advancedbutton  {
+    width: 99%
+}
+
+.guideheadings {
+    float: left;
+    width: 66%;
+}
+.guidenavigation {
+    float: left;
+    width: 34%;
+}
+.guidesteps {
+    clear: left;
+    height: 100%;
+}
+.guidestepcontainer {
+    float: left;
+    width: 25%;
+    height: 100%;
+}
+
+.guidesteptitle {
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+}
+h2.guidesteptitle.pending {
+    background-color: #eaeaea;
+}
+h2.guidesteptitle.active {
+    background-color: #eff8ef;
+}
+h2.guidesteptitle.complete {
+    background-color: #eaeaea;
+}
+.guidestep {
+    border-width: 1px;
+    border-style: solid;
+    border-color: black;
+    margin: 4px;
+    height: 100%;
+}
+img.percentImage {
+ background: white url(/guides/percentImage_back.png) top left no-repeat;
+ padding: 0;
+ margin: 5px 0 0 0;
+ background-position: 1px 0;
+}
+.guidestep.active {
+    background-color: white;
+}
+.guidestep.pending {
+    background-color: white;
+}
+.guidestep.complete {
+    background-color: white;
+}
+
+.guideindexbody {
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
+}
+.guideindextitle {
+    font-weight:bold;
+}
+.guideindexlink {
+}
+
+.guideindexindication {
+    width: 260px;
+    padding: 0px;
+    margin: 0px;
+}
+.guideindexdetail {
+    width: auto;
+}

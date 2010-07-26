@@ -292,7 +292,7 @@ function xmldb_local_upgrade($oldversion) {
             add_field($table, $field);
         }
 
-        set_config('theme', 'mitms');
+        set_config('theme', 'totara');
         set_config('defaulthtmleditor', 'tinymce');
 
     /// Create table competency_framework
