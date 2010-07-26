@@ -40,6 +40,7 @@ function local_postinst() {
     global $db, $CFG;
     $olddebug = $db->debug;
     set_config('theme', 'totara');
+    set_config("langmenu", 0);
     $db->debug = $CFG->debug;
 
     /// Insert default records
