@@ -122,7 +122,7 @@ class hierarchy {
         }
         if (isset($extra_data['custom_field_count'])) {
             $sql .= ",(SELECT COUNT(*) FROM {$CFG->prefix}{$this->shortprefix}_depth d2 
-                        JOIN {$CFG->prefix}{$this->shortprefix}_depth_info_field if ON d2.id = if.depthid 
+                        JOIN {$CFG->prefix}{$this->shortprefix}_depth_info_field dif ON d2.id = dif.depthid
                         WHERE d2.frameworkid=f.id) AS custom_field_count ";
         }
         if (isset($extra_data['item_count'])) {
@@ -151,8 +151,8 @@ class hierarchy {
 
         $sql = "SELECT d.* ";
         if (isset($extra_data['custom_field_count'])) {
-            $sql .= ", (SELECT COUNT(*) FROM {$CFG->prefix}{$this->shortprefix}_depth_info_field if
-                        WHERE if.depthid = d.id) AS custom_field_count ";
+            $sql .= ", (SELECT COUNT(*) FROM {$CFG->prefix}{$this->shortprefix}_depth_info_field dif
+                        WHERE dif.depthid = d.id) AS custom_field_count ";
         }
         if (isset($extra_data['item_count'])) {
             $sql .= ", (SELECT COUNT(*) FROM {$CFG->prefix}{$this->shortprefix} ic

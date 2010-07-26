@@ -33,11 +33,14 @@ print_heading(get_string('evidenceitems', $this->prefix));
 
 if ($evidence) {
 
+    $oddeven = 1;
     foreach ($evidence as $eitem) {
+
+        $oddeven = ++$oddeven % 2;
 
         $eitem = competency_evidence_type::factory($eitem);
 
-        echo '<tr>';
+        echo '<tr class="r'.$oddeven.'">';
         echo '<td>'.$eitem->get_name().'</td>';
         echo '<td>'.$eitem->get_type().'</td>';
         echo '<td>'.$eitem->get_activity_type().'</td>';

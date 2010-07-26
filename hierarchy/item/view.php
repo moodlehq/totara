@@ -108,6 +108,8 @@ print_heading($heading);
         }
     }
 
+    $oddeven = 1;
+
     foreach ($data as $ditem) {
 
         // Check if empty
@@ -115,7 +117,9 @@ print_heading($heading);
             continue;
         }
 
-        echo '<tr>';
+        $oddeven = ++$oddeven % 2;
+
+        echo '<tr class="r'.$oddeven.'">';
         echo '<th class="header">'.format_string($ditem['title']).'</th>';
         echo '<td class="cell">'.format_string($ditem['value']).'</td>';
         echo '</tr>'.PHP_EOL;

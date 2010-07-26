@@ -58,9 +58,7 @@ div.course-content  #layout-table {
   padding-top: 0;
   background: transparent;
 }
-#site-index #layout-table #middle-column {
-  padding-left: 0 !important;
-}
+
 #course-view #middle-column {
   padding-top:0;
 }

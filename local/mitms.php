@@ -86,6 +86,15 @@ function mitms_reset_frontpage_blocks() {
             'visible'  => 1,
             'configdata' => '',
         ),
+        (object)array(
+            'blockid'  =>  get_field('block', 'id', 'name', 'guides'),
+            'pageid'   => SITEID,
+            'pagetype' => 'course-view',
+            'position' => 'r',
+            'weight'   => 3,
+            'visible'  => 1,
+            'configdata' => '',
+        ),
     );
 
     // insert blocks
@@ -94,6 +103,27 @@ function mitms_reset_frontpage_blocks() {
     }
 
     return 1;
+
+}
+
+/**
+ * adds guides block on the site admin pages.  designed to be called from local_postinst
+ *
+ * @return bool
+ */
+function mitms_add_guide_block_to_adminpages() {
+    global $CFG;
+
+        $b = (object)array(
+            'blockid'  =>  get_field('block', 'id', 'name', 'guides'),
+            'pageid'   => 0,
+            'pagetype' => 'admin',
+            'position' => 'r',
+            'weight'   => 0,
+            'visible'  => 1,
+            'configdata' => '',
+        );
+    insert_record('block_instance', $b);
 
 }
 
@@ -139,34 +169,6 @@ function mitms_print_my_learning_nav($return=false) {
                 </td>
             </tr>
         </table>
-    ';
-
-    if ($return) {
-        return $returnstr;
-    }
-    echo $returnstr;
-}
-
-/**
-* print out the MITMS My Tools nav section
-*/
-function mitms_print_my_tools_nav($return=false) {
-    global $CFG, $USER;
-
-    $returnstr = '
-     <ul id="mitms-nav">
-    ';
-    if (!isloggedin()) {
-        $returnstr .= '
-       <li><a href="' . $CFG->wwwroot . '/login/index.php">' . get_string('login') . '</a></li>
-        ';
-    } else {
-        $returnstr .= '
-       <li><a href="' . $CFG->wwwroot . '/login/logout.php">' . get_string('logout') . '</a></li>
-        ';
-    }
-    $returnstr .= '
-     </ul>
     ';
 
     if ($return) {

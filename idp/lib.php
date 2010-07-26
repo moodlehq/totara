@@ -501,7 +501,7 @@ function curriculum_objectives($curriculumcode, $revision, $can_edit=false) {
                 $html .= ' style="cursor: pointer"';
                 $html .= ' title="'.get_string('removefromplanbutton', 'idp').'"';
                 $html .= ' alt="'.get_string('removefromplanbutton', 'idp').'"';
-                $html .= " src=\"{$CFG->pixpath}/delete.gif\" />";
+                $html .= " src=\"{$CFG->pixpath}/delete.gif\" class=\"iconsmall\" alt=\"Remove\" />";
 
                 $table->data[] = array(s($objective->themename),
                                        s($objective->objectivename),
@@ -563,7 +563,7 @@ function list_item_edit_controls($revid, $listtype, $item) {
     $html .= ' style="cursor: pointer"';
     $html .= ' alt="'.get_string('editbutton', 'local').'"';
     $html .= ' title="'.get_string('editbutton', 'local').'"';
-    $html .= " src=\"{$CFG->pixpath}/edit.gif\" />";
+    $html .= " src=\"{$CFG->pixpath}/edit.gif\" class=\"iconsmall\" alt=\"Edit\" />";
 
     // Delete button
     $html .= '&nbsp;';
@@ -572,7 +572,7 @@ function list_item_edit_controls($revid, $listtype, $item) {
     $html .= ' style="cursor: pointer"';
     $html .= ' alt="'.get_string('deletebutton', 'local').'"';
     $html .= ' title="'.get_string('deletebutton', 'local').'"';
-    $html .= " src=\"{$CFG->pixpath}/delete.gif\" />";
+    $html .= " src=\"{$CFG->pixpath}/delete.gif\" class=\"iconsmall\" alt=\"Remove\" />";
 
     return $html;
 }
@@ -1590,7 +1590,7 @@ function user_learning_plan_editbutton($planid, $renameplanstr) {
             . "&amp;planid={$planid}\">"
             . "<img id=\"renameplan{$planid}\" "
             . "style=\"cursor: pointer\" alt=\"$renameplanstr\" "
-            . "title=\"$renameplanstr\" src=\"{$CFG->pixpath}/t/edit.gif\" "
+            . "title=\"$renameplanstr\" src=\"{$CFG->pixpath}/t/edit.gif\" class=\"iconsmall\" alt=\"Edit\""
             . "/></a>";
     return $link;
 }
@@ -1601,7 +1601,7 @@ function user_learning_plan_deletebutton($planid, $deleteplanstr) {
         . "&amp;planid={$planid}\">"
         . "<img id=\"deleteplan{$planid}\" "
         . "style=\"cursor: pointer\" alt=\"$deleteplanstr\" "
-        . "title=\"$deleteplanstr\" src=\"{$CFG->pixpath}/t/delete.gif\" "
+        . "title=\"$deleteplanstr\" src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"Remove\" "
         . "/></a>";
     return $link;
 }
@@ -1758,7 +1758,7 @@ function format_favourites($favourites, $revisionid, $curriculumcode) {
             $html .= ' style="cursor: pointer"';
             $html .= ' alt="'.get_string('delfavouritebutton', 'local').'"';
             $html .= ' title="'.get_string('delfavouritebutton', 'local').'"';
-            $html .= " src=\"{$CFG->pixpath}/delete.gif\" />";
+            $html .= " src=\"{$CFG->pixpath}/delete.gif\" class=\"iconsmall\" alt=\"Remove\" />";
 
             $html .= $closediv;
         }
@@ -2725,25 +2725,6 @@ function idp_grade_objective($roid, $grade=null) {
 }
 
 /**
- * Return a form to search for users and take
- * users to a results page linking to Learning Plan and profile pages.
- *
- * @param string  $search     Initial search string
- */
-function usersearch_form($search='') {
-    global $CFG;
-
-    $url  = $CFG->wwwroot .'/idp/user_search.php';
-    $text = '<form id="idp_search" method="get" action="'.  $url . '">';
-    $text .= '<div>';
-    $text .= '<input type="text" name="search" value="' . s($search) . '"/>';
-    $text .= '<input type="submit" value="Search" />';
-    $text .= '</div>';
-    $text .= '</form>';
-    return $text;
-}
-
-/**
  * Return the fullname of the user linking to his profile page.
  *
  * @param $userid     User ID of the user to display
@@ -2779,11 +2760,9 @@ function format_user_link($userid, $youstring='Yourself') {
  */
 function convert_userdate($datestring) {
     // Check for DD/MM/YYYY
-    if ($datearray = strptime($datestring, DATE_FORMAT)) {
-        return mktime($datearray['tm_hour'], $datearray['tm_min'], $datearray['tm_sec'],
-                      1 + $datearray['tm_mon'], $datearray['tm_mday'], 1900 + $datearray['tm_year']);
+    if (preg_match('|(\d{1,2})/(\d{1,2})/(\d{4})|', $datestring, $matches)) {
+        return mktime(0,0,0,$matches[2], $matches[1], $matches[3]);
     }
-
     return strtotime($datestring);
 }
 

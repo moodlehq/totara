@@ -3,17 +3,21 @@ require_once ($CFG->dirroot . '/guides/steps/default.php');
 class guide_mitms_assign_user_positions_step extends guide_default_step {
     ## Return the content the step should display when it is the active step in a guide:
     function content_step_active () {
-        return 'This is the mitms_assign_user_positions step.<br /> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis nowus.';
+        return '<p>This is the final step to assigning a user\'s organisational details. It requires you to assign a position, organisation and a manager to a user.</p> 
+            <p>When you are ready to start open the positions tab on a user\'s profile. On completing this step return to this guide and click <b>Finish step</b>.</p> 
+            <p>You have now completed the assign user\'s organisational details step.</p>';
     }
 
     # Return content the step should display when it is not active, and is not complete:
     function content_step_pending () {
-        return 'This is the mitms_assign_user_positions step.<br /> This step is pending.  Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Dous soonish.';
+        return '<p>Assigning a user to a position allows information about the user to be tracked when courses are completed and competencies are marked as achieved.</p>
+            <p>The position assignment also allows a user to identify competencies and courses that are required for the postion when creating an IDP.</p>';
     }
 
     # Return content the step should display when it is not active, and is complete:
     function content_step_complete () {
-        return 'This is the mitms_assign_user_positions step. <br /> This step is now complete: Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur? Donus maximus.';
+        return '<p>This step has been completed.</p>
+            <p>You can modify a user\'s assigned position, organisation or manager by editing returning to the positions tab in a user\'s profile.';
     }
 
     ## An indication of how involved this step is - default to 100 points

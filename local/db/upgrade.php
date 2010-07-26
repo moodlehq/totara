@@ -1597,6 +1597,7 @@ function xmldb_local_upgrade($oldversion) {
         }
     }
 
+<<<<<<< HEAD
     if ($result && $oldversion < 2010071000) {
         // Create a table for organisational competencies
         $table = new XMLDBTable('org_competencies');
@@ -1815,6 +1816,65 @@ function xmldb_local_upgrade($oldversion) {
         $field = new XMLDBField('current');
         $field->setAttributes(XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0', null);
         $result = $result && add_field($table, $field);
+    }
+
+    if ($result && $oldversion < 2010072603) {
+        $table = new XMLDBTable('block_guides_guide');
+        $field = new XMLDBField('identifier');
+        $field->setAttributes(XMLDB_TYPE_CHAR, '50', null, null, null, null, null);
+        $result = $result && add_field($table, $field);
+    }
+
+    if ($result && $oldversion < 2010070904) {
+        $success = true;
+        $guides = get_records('block_guides_guide');
+        if (!$guides) {
+            $guides = array();
+        }
+
+        $navlinks = array();
+        $strguides = get_string('guides','block/guides');
+        $navlinks[] = array('name' => $strguides, 'link' => "index.php", 'type' => 'misc');
+        $navlinks[] = array('name' => 'addguides', 'link' => null, 'type' => 'misc');
+        $navigation = build_navigation($navlinks);
+        print_header('Add Guides: ', 'Add Guides: ', $navigation, "", "", true);
+
+        # TODO: opendir, readdir, if !exists, require
+
+        $dir = $CFG->dirroot . '/guides/guidedata/';
+        $files = scandir($dir);
+        foreach ($files as $file){
+            if (strpos($file, '.') === 0) {
+                continue;
+            }
+            if (!is_file($dir . $file)) {
+                // Not interested in directories etc
+                continue;
+            }
+            $matches = array();
+            if (!preg_match('/[0-9]*_([A-Za-z_-][A-Za-z0-9_\ -]*)\.php/', $file, $matches)) {
+                continue;
+            }
+            $basename = $matches[1];
+            $found = false;
+            foreach ($guides as $guide) {
+                if ($guide->identifier == $basename) {
+                    $found = true;
+                }
+            }
+            if ($found) {
+                # We already know about that guide
+                continue;
+            }
+            unset($guide);
+            require_once($dir . $file);
+            print "New guide found - adding $guide->name <br />\n";
+            if(!insert_record("block_guides_guide",addslashes_object($guide)))
+                $success = false;
+        }
+
+        $result = $result && $success;
+
     }
 
     return $result;

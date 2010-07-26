@@ -296,6 +296,7 @@
 
     $table_cols = array();
     $table_cols_cf = array();
+    $table_cols_ef = array();
     $table_data = array();
 
     // build header row
@@ -304,6 +305,7 @@
             // depth level header
             $header = $head->value->$displaydepth;
 
+            $header .= "<div class=\"options\">";
             if ($editingon && $can_edit_depth) {
                 $header .= " <a href=\"{$CFG->wwwroot}/hierarchy/depth/edit.php?type={$type}&amp;id={$head->value->id}\"
                     title=\"$str_edit\">".
@@ -317,6 +319,7 @@
                     title=\"$str_delete\">".
                     "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_delete\" /></a>";
             }
+            $header .= "</div>";
             $table_cols[] = $head->value->fullname.$key;
             $table_header[] = $header;
 
@@ -330,8 +333,13 @@
             $table_cols[] = $head->value->fullname.$key;
             $table_header[] = $header;
             $table_cols_cf[]= $head->value->fullname.$key; // keep track of custom field headers for styling below
+        } else if ($head->type == 'extrafield') {
+            // extrafield header
+            $table_cols[] = $head->value->fullname.$key;
+            $table_header[] = $head->value->fullname;
+            $table_cols_ef[]= $head->value->fullname.$key; // keep track of extra field headers for styling below
         } else {
-            // extrafield or settings header
+            // settings header
             $table_cols[] = $head->value->fullname.$key;
             $table_header[] = $head->value->fullname;
         }
@@ -344,6 +352,8 @@
     foreach ($table_cols as $table_col) {
         if(in_array($table_col, $table_cols_cf)) {
             $table->column_class($table_col,'customfield');
+        } elseif(in_array($table_col, $table_cols_ef)) {
+            $table->column_class($table_col,'extrafield');
         }
     }
     $table->column_style('Settings','width','80px');

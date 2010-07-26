@@ -4,24 +4,27 @@ class guide_mitms_guide_competencies_step extends guide_default_step {
     ## Return the content the step should display when it is the active step in a guide:
     function content_step_active () {
         global $CFG;
-        $returnstring = 'This step requires you to complete the ';
+        $returnstring = '<p>The first step to configuring MITMS is to set up competencies.</p>
+           <p>When you are ready to start open the ';
         $guide = get_record('block_guides_guide', 'name', 'Configure Competencies');
         if ($guide) {
-            $returnstring .= '<a href="' . $CFG->wwwroot . '/guides/view.php?startguide=' . $guide->id . '">Configure Competencies</a> guide.';
+            $returnstring .= 'by clicking <a href="' . $CFG->wwwroot . '/guides/view.php?startguide=' . $guide->id . '">Configure Competencies</a>';
         } else {
             $returnstring .= 'Configure Competencies guide.';
         }
+        $returnstring .= ' this will open a step by step guide that will help you with this process.</p>';
         return $returnstring;
     }
 
     # Return content the step should display when it is not active, and is not complete:
     function content_step_pending () {
-        return 'This is the mitms_guide_competencies step.<br /> This step is pending.  When you get to this step you will need to complete the Configure Competencies guide.';
+        return '<p>Set up competencies allows you to set up a range of skills, knowledge and behavioural competencies you expect staff to achieve.</p>';
     }
 
     # Return content the step should display when it is not active, and is complete:
     function content_step_complete () {
-        return 'The competencies guide has been marked as completed. <br /> If you would like to run through the competencies guide again, you can delete your guide progress, and start again.';
+        return '<p>The step has been completed.</p>
+            <p>You can add, modify or delete competency information from <b>Competencies</b> on the Site Administration menu.</p>';
     }
 
     function effort() {

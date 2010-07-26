@@ -3,17 +3,22 @@ require_once ($CFG->dirroot . '/guides/steps/default.php');
 class guide_mitms_add_competency_templates_step extends guide_default_step {
     ## Return the content the step should display when it is the active step in a guide:
     function content_step_active () {
-        return 'This is the mitms_add_competency_templates step.<br /> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis nowus.';
+        return '<p>Setting up competency templates is optional. Click <b>Finish step</b> if you wish to move on.</p>
+            <p>When you are ready to start click go back to the Competency framework you created and click the Add new competency template button.</p>
+            <p>Refer to the <a href="">Setting Competency Templates help file</a> for further instructions.</p>
+            <p>On completing your competency template, return to this guide and click <b>Finish step.</b></p>';
     }
 
     # Return content the step should display when it is not active, and is not complete:
     function content_step_pending () {
-        return 'This is the mitms_add_competency_templates step.<br /> This step is pending.  Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Dous soonish.';
+        return '<p>A competency template allows you to group competencies together from one framework.</p>
+            <p>This allows you to assign the group of competencies to a course or a position in one step, rather than assigning each one individually.</p>';
     }
 
     # Return content the step should display when it is not active, and is complete:
     function content_step_complete () {
-        return 'This is the mitms_add_competency_templates step. <br /> This step is now complete: Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur? Donus maximus.';
+        return '<p>This step has been completed.</p>
+            <p>You can set up multiple competency templates from Competencies>Manage Frameworks on the Site Administration menu.</p>';
     }
 
     ## An indication of how involved this step is - default to 100 points

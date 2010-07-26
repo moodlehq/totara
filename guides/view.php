@@ -47,7 +47,7 @@ if(!empty($startguide)) {
     }
 }
 
-$guidesql = 'SELECT gi.*, g.steps, g.name, g,userid, g.description ' .
+$guidesql = 'SELECT gi.*, g.steps, g.name, gi.userid, g.description ' .
             'FROM ' . $CFG->prefix . 'block_guides_guide_instance gi ' .
             ' INNER JOIN ' . $CFG->prefix . 'block_guides_guide g on gi.guide=g.id ' .
             'WHERE gi.id = ' . $giid . ' AND gi.deleted = 0';
@@ -162,18 +162,20 @@ foreach ($visiblesteps as $stepnumber) {
         print '<div class="guidestepcontainer"><div class="guidestep inactive incomplete">';
         print_heading('Step ' . $stepnumber,'center',2,'guidesteptitle pending');
     }
-    print $steps[$stepnumber]->content($activestep, $completedstep);
-    print '<div class="stepstatusimg">';
+    print '<div class="guidesteptext">' . $steps[$stepnumber]->content($activestep, $completedstep) . '</div>';
+    print '<div class="stepstatus">';
     if ($activestep) {
         print '<form action="' . $CFG->wwwroot . '/guides/view.php?gi=' . $gi->id . '" method="post">';
         print '<input type="hidden" name="gi" value="' . $gi->id . '"/>';
         print '<input type="hidden" name="finish" value="' . $stepnumber . '"/>';
-        print '<input type="image" src="' . $CFG->wwwroot . '/blocks/guides/finishstep.png" alt="finish step"/>';
+        print '<input type="submit" value="'.get_string('finishstep', 'blocks/guides').'"/>';
         print '</form></div>';
     } elseif ($completedstep) {
-        print '<img src="' . $CFG->wwwroot . '/blocks/guides/completed.png" alt="completed"/></div>';
+        print get_string('completed', 'block/guides');
+        print '</div>';
     } else {
-        print '<img src="' . $CFG->wwwroot . '/blocks/guides/unavailable.png" alt="unavailable"/></div>';
+        print get_string('unavailable', 'block/guides');
+        print '</div>';
     }
     print '</div></div>';
 }

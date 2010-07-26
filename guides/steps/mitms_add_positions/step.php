@@ -3,17 +3,21 @@ require_once ($CFG->dirroot . '/guides/steps/default.php');
 class guide_mitms_add_positions_step extends guide_default_step {
     ## Return the content the step should display when it is the active step in a guide:
     function content_step_active () {
-        return 'This is the mitms_add_positions step.<br /> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis nowus.';
+        global $CFG;
+        return '<p>This step requires you to set up the positions for the position framework.</p>
+            <p>When you are ready to start click <a href="' . $CFG->wwwroot . '/hierarchy/index.php?type=position">Manage positions</a>.</p>
+            <p>On completing your positions set up, return to this guide and click <b>Finish step</b>.</p>';
     }
 
     # Return content the step should display when it is not active, and is not complete:
     function content_step_pending () {
-        return 'This is the mitms_add_positions step.<br /> This step is pending.  Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Dous soonish.';
+        return '<p>Positions are the job roles that exist in your organisation.</p>';
     }
 
     # Return content the step should display when it is not active, and is complete:
     function content_step_complete () {
-        return 'This is the mitms_add_positions step. <br /> This step is now complete: Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur? Donus maximus.';
+        return '<p>This step has been completed.</p>
+            <p>You add more positions to the position framework at any stage by clicking <b>Add new position</b> from the manage positions screen.</p>';
     }
 
     ## An indication of how involved this step is - default to 100 points

@@ -170,7 +170,7 @@ div#header .logo {
 	line-height:26px;
 	margin:0;
 	padding:0 5px 0 0;
-	text-align: right;
+	text-align: left;
 	width:945px;
 }
 .clear {
@@ -878,57 +878,45 @@ div.yuimenu .yuichildtree .yuimenuitem {
   border:none;
 }
 
-/** Course completion report **/
-.completionreport th {
-    white-space: nowrap;
-    vertical-align: top;
+/** Pop Up window headers **/
+body#help div#page #header-logo-container,
+body#message-index div#page #header-logo-container {
+	background: url(images/header-sml.jpg) top left repeat-x;
 }
 
-.completionreport th.rowheader {
-    text-align: right;
-    font-style: italic;
-    font-weight: normal;
-    font-size: 90%;
-}
-
-.completionreport th.criteriagroup,
-.completionreport th.aggheader {
-    text-align: center;
-}
-
-.completionreport th.aggheader {
-    font-weight: normal;
-    font-style: italic;
-}
-
-.completionreport span.completion-rplheader {
-    display: block;
-    color: #238E23;
-}
-
-.completionreport th a.rplexpand {
-    display: none;
-}
-
-.completionreport td.completion-progresscell {
-    text-align: left;
-    white-space: nowrap;
-}
-
-.completionreport td.completion-progresscell span.rplvalue {
-/*    display: none;*/
-}
-
-.completionreport td.completion-progresscell a.rplshow {
-    color: #238E23;
-    display: none;
-}
-
-.completionreport form {
-    display: inline;
+body#help #header,
+body#message-index #header {
+	height: 90px;
 }
 
 
-form#add_block select#add_block_jump {
-	width: 163px;
+
+#site-index #middle-column div.mycourses div.allmycourses {
+  margin-top: 5px;
+  margin-left: 2px;
+  margin-bottom: 0px;
+  font-weight: bold;
+}
+
+#site-index #middle-column div.mycourses {
+  width: 552px;
+  margin: 9px 0 15px;
+  background: url(images/center-header-bg.jpg) no-repeat center top !important;
+}
+
+
+#site-index #middle-column div.mycourses div.header {
+  border:none;
+  background: #bfbfbf url(images/middle-header-bg.jpg) repeat-x left top;
+  border: 1px solid #CACACA;
+}
+
+#site-index #middle-column div.mycourses div.header h2 {
+	border:medium none;
+	font-size:1em;
+	font-weight:normal;
+	margin:0;
+	padding-bottom:6px;
+	padding-left:7px;
+	padding-top:7px;
 }
