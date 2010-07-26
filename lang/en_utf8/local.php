@@ -107,9 +107,11 @@ $string['local:viewallreports'] = 'View all report builder reports';
 // Course categories
 $string['assessments'] = 'Assessments';
 $string['bookings'] = 'Bookings';
+$string['browsecategories'] = 'Browse Categories';
 $string['coursetitle'] = 'Course Title';
 $string['developmentplan'] = 'Development Planner';
 $string['evaluations'] = 'Evaluations';
+$string['findcourses'] = 'Find Courses';
 $string['goals'] = 'Goals';
 $string['history'] = 'History';
 $string['induction'] = 'Induction';
@@ -125,6 +127,7 @@ $string['viewidps'] = 'View IDPs';
 $string['notapplicable'] = 'Not applicable';
 $string['notavailable'] = 'Not available';
 $string['recordoflearning'] = 'Record of Learning';
+$string['searchcourses'] = 'Search Courses';
 $string['viewmyteam'] = 'View My Team';
 
 // My Current Courses block
