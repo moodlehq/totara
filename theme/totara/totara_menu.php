@@ -1,5 +1,5 @@
 <div id="header-search">
-<form id="coursesearch" action="/course/search.php" method="get">
+<form id="coursesearch" action="<?php echo $CFG->wwwroot ?>/course/search.php" method="get">
   <fieldset class="coursesearchbox invisiblefieldset">
     <input type="text" id="coursesearchbox" size="30" name="search" value="" />
     <input id="coursesubmit" type="submit" value="Go" />
@@ -15,32 +15,28 @@
         <ul>
         <?php
 
- $text ='<li class="first"><a href="'.$CFG->wwwroot.'">Help</a></li>';
- $text .='<li><a href="'.$CFG->wwwroot.'/mod/forum/view.php">News</a></li>';
-// $text .='<li><a href="">New courses</a></li>';
- $text .='<li><a href="'.$CFG->wwwroot.'/mod/forum/index.php">Forums</a></li>';
+ $text ='<li class="first"><a href="'.$CFG->wwwroot . '/user/view.php?id=' . $USER->id . '">' . get_string('myprofile', 'local') . '</a></li>';
  
  echo $text;
 ?>
 
            </ul></div>
  
-        <li id="menu2"><div><a href="<?php echo $CFG->wwwroot.'/my/' ?>">My learning</a>
+        <li id="menu2"><div><a href="<?php echo $CFG->wwwroot.'/my/' ?>"><?php echo get_string('mylearning', 'local') ?></a>
 					
         <ul>
         <?php
 
- $text ='<li class="first"><a href="'.$CFG->wwwroot.'/my/">My learning summary</a></li>';
- $text .='<li><a href="'.$CFG->wwwroot.'/idp/index.php">My development plan</a></li>';
- $text .='<li><a href="'.$CFG->wwwroot.'/my/bookings.php">My bookings</a></li>';
- $text .='<li class="last"><a href="'.$CFG->wwwroot.'/my/records.php">My learning record</a></li>';
+ $text ='<li><a href="'.$CFG->wwwroot.'/idp/index.php">'.get_string('mydevelopmentplans', 'local').'</a></li>';
+ $text .='<li><a href="'.$CFG->wwwroot.'/my/bookings.php">'.get_string('mybookings', 'local').'</a></li>';
+ $text .='<li class="last"><a href="'.$CFG->wwwroot.'/my/records.php">'.get_string('myrecordoflearning', 'local').'</a></li>';
  
  echo $text;
 ?>
 
            </ul></div>
            
-        <li id="menu3"><div><a href="<?php echo $CFG->wwwroot.'/my/team.php' ?>">My team</a>
+        <li id="menu3"><div><a href="<?php echo $CFG->wwwroot.'/my/team.php' ?>"><?php echo get_string('myteam', 'local') ?></a>
 					
         <ul>
         <?php
@@ -51,13 +47,12 @@
  $text .='<li><a href="">Item Four</a></li>';
  $text .='<li class="last"><a href="">Item Five</a></li>';
  
-// echo $text;
 ?>
 	
 
            </ul></div>
         
-        <li id="menu4"><div><a href="<?php echo $CFG->wwwroot.'/my/reports.php' ?>">My reports</a>
+        <li id="menu4"><div><a href="<?php echo $CFG->wwwroot.'/my/reports.php' ?>"><?php echo get_string('myreports', 'local') ?></a>
 					
         <ul>
         <?php
