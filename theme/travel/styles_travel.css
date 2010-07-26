@@ -331,12 +331,9 @@ h6 {
   background-image: url(images/tab/right_hover.gif);
 }
 
-.tabrow0 .here a:hover {
-  background-image: url(images/tab/left.gif);
-}
 
 .tabrow0 .here a:hover span {
-  background-image: url(images/tab/right.gif);
+  background-image: url(images/tab/right-selected.gif);
 }
 
 .tabrow0 .here a,
@@ -348,23 +345,20 @@ h6 {
 ul.tabrow1 li a,
 ul.tabrow1 li a:link,
 ul.tabrow1 li a:visited,
-.tabrow0 ul li a:hover span,
 .tabrow0 ul a {
-  color: #003466;
+  color: #444444;
   text-decoration: none;
 }
 
-.tabrow0 ul li.here a:hover span {
-  color: #444;
+ul.tabrow1 li a:hover span{
+	text-decoration: underline;
 }
 
-.tabrow0 div, .tabrow0 ul {
-  border-color: #cccccc;
-  padding-top: .55em;
-  background: url(images/navbar_bg.jpg) repeat-x top center;
-  margin-top: 1px;
-  *margin-top: 3px;
+.tabrow0 ul li a:hover span,
+.tabrow0 ul li.here a:hover span {
+  color: #2970A6;
 }
+
 
 /* Header tabs */
 .header-tabs .tabtree {
@@ -639,7 +633,7 @@ ul.tabrow1 li a:visited,
 #site-index #left-column .sideblock div.header {
   border:none;
   padding-bottom: 6px;
-  background: #b4d2d6 url(images/sideblock-header-bg.jpg) repeat-x left top;
+  background: #2D9AC3 url(images/sideblock-header-bg.jpg) repeat-x left top;
 }
 #right-column .sideblock div.header .title h2,
 #right-column .sideblock div.header .title h2 a
@@ -903,3 +897,22 @@ div.yuimenu .yuichildtree .yuimenuitem {
 form#add_block select#add_block_jump {
 	width: 163px;
 }
+
+
+#site-index #middle-column div.mycourses div.header {
+	background: url("images/centerheader_bg.png") repeat-x scroll left top #E4E2E3 !important;
+	border: 1px solid #CACACA !important;
+}
+
+/** Pop-up windows **/
+body#help div#page #header-logo-container,
+body#message-index div#page #header-logo-container {
+	background-position: right top;
+}
+
+body#help #header,
+body#message-index #header {
+	height: 90px;
+}
+
+

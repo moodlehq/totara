@@ -52,6 +52,9 @@ div.mycourses td.status span.completion-completeviarpl {
     background-position: 0px -24px;
 }
 
+.block_admin li.r1 {
+	background: transparent;
+}
 
 /*****************************************************************************/
 /** TABS **/
@@ -161,9 +164,6 @@ body.hierarchy-item h2.main {
     margin-left: auto;
     margin-right: auto;
 }
-
-
-
 
 table.viewhierarchyitem {
     width: 95%;
@@ -717,7 +717,6 @@ table.centerblock th.status, table.centerblock td.status {
 #site-index #middle-column div.mycourses {
   width: 552px;
   margin-top: 9px;
-  margin-left: 12px;
   background: url(images/centercontent_bg.jpg) no-repeat center top !important;
 }
 
@@ -781,8 +780,6 @@ table.allmyteam td.c2 {
 /*****************************************************************************/
 /** Tables **/
 /*****************************************************************************/
-
-
 
 .generaltable {
 	width: 100%;
@@ -1052,6 +1049,48 @@ h2.guidesteptitle.pending {
 	padding: 5px;	
 }
 
-.guides tr.header th.status{
-    width:170px;
+/*****************************************************************************/
+/** Pop-up Page Size Fix **/
+/*****************************************************************************/
+
+body#help div#page div.tertiary,
+body#help div#page div#content,
+body#help div#page div.navbar,
+body#help div#page #header-logo-container,
+body#help div#page div#footer,
+body#help div#page div.login-container {
+	width: auto;
 }
+
+body#message-index div#page div.tertiary,
+body#message-index div#page div#content,
+body#message-index div#page div.navbar,
+body#message-index div#page #header-logo-container,
+body#message-index div#footer,
+body#message-index div#page div.login-container {
+	width: auto;
+}
+
+body#help .headermenu,
+body#message-index .headermenu {
+	height: 0;
+	margin: 0;
+	padding: 0;
+}
+body#help #header-logo-container,
+body#message-index #header-logo-container {
+	height: 90px;
+}
+
+body#help #header-logo-container div.logo img,
+body#message-index #header-logo-container div.logo img {
+	width: 68%;
+	padding: 0;
+	margin: 0;
+}
+body#help #header div.logo,
+body#message-index #header div.logo  {
+	padding:10px 0 0 8px;
+}
+
+
