@@ -1824,7 +1824,7 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && add_field($table, $field);
     }
 
-    if ($result && $oldversion < 2010070904) {
+    if ($result && $oldversion < 2010072604) {
         $success = true;
         $guides = get_records('block_guides_guide');
         if (!$guides) {
@@ -1873,6 +1873,87 @@ function xmldb_local_upgrade($oldversion) {
         }
 
         $result = $result && $success;
+
+    }
+
+    if ($result && $oldversion < 2010072605) {
+    /// Define table reminder to be created
+        $table = new XMLDBTable('reminder');
+
+    /// Adding fields to table reminder
+        $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->addFieldInfo('courseid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0');
+        $table->addFieldInfo('title', XMLDB_TYPE_TEXT, 'small', null, null, null, null);
+        $table->addFieldInfo('type', XMLDB_TYPE_CHAR, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
+        $table->addFieldInfo('config', XMLDB_TYPE_TEXT, 'medium', null, null, null, null);
+        $table->addFieldInfo('timecreated', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
+        $table->addFieldInfo('timemodified', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
+        $table->addFieldInfo('modifierid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
+        $table->addFieldInfo('deleted', XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0');
+
+    /// Adding keys to table reminder
+        $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
+
+    /// Adding indexes to table reminder
+        $table->addIndexInfo('courseid', XMLDB_INDEX_NOTUNIQUE, array('courseid'));
+        $table->addIndexInfo('type', XMLDB_INDEX_NOTUNIQUE, array('type'));
+        $table->addIndexInfo('deleted', XMLDB_INDEX_NOTUNIQUE, array('deleted'));
+
+    /// Conditionally launch create table for reminder
+        if (!table_exists($table)) {
+            create_table($table);
+        }
+
+
+    /// Define table reminder_message to be created
+        $table = new XMLDBTable('reminder_message');
+
+    /// Adding fields to table reminder
+        $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->addFieldInfo('reminderid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
+        $table->addFieldInfo('type', XMLDB_TYPE_CHAR, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
+        $table->addFieldInfo('period', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
+        $table->addFieldInfo('copyto', XMLDB_TYPE_TEXT, 'small', null, null, null, null);
+        $table->addFieldInfo('subject', XMLDB_TYPE_TEXT, 'small', null, null, null, null);
+        $table->addFieldInfo('message', XMLDB_TYPE_TEXT, 'medium', null, null, null, null);
+        $table->addFieldInfo('deleted', XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0');
+
+    /// Adding keys to table reminder_message
+        $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
+
+    /// Adding indexes to table reminder_message
+        $table->addIndexInfo('reminderid', XMLDB_INDEX_NOTUNIQUE, array('reminderid'));
+        $table->addIndexInfo('type', XMLDB_INDEX_NOTUNIQUE, array('type'));
+        $table->addIndexInfo('deleted', XMLDB_INDEX_NOTUNIQUE, array('deleted'));
+
+    /// Conditionally launch create table for reminder_message
+        if (!table_exists($table)) {
+            create_table($table);
+        }
+
+
+    /// Define table reminder_sent to be created
+        $table = new XMLDBTable('reminder_sent');
+
+    /// Adding fields to table reminder_sent
+        $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->addFieldInfo('reminderid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
+        $table->addFieldInfo('messageid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
+        $table->addFieldInfo('userid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
+        $table->addFieldInfo('timesent', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
+
+    /// Adding keys to table reminder_sent
+        $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
+
+    /// Adding indexes to table reminder_sent
+        $table->addIndexInfo('reminderid', XMLDB_INDEX_NOTUNIQUE, array('reminderid'));
+        $table->addIndexInfo('messageid', XMLDB_INDEX_NOTUNIQUE, array('messageid'));
+        $table->addIndexInfo('userid', XMLDB_INDEX_NOTUNIQUE, array('userid'));
+
+    /// Conditionally launch create table for reminder_sent
+        if (!table_exists($table)) {
+            create_table($table);
+        }
 
     }
 

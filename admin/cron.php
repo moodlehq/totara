@@ -246,6 +246,12 @@
     competency_cron();
     mtrace('done');
 
+    // Reminder cron
+    mtrace('Starting the reminder cron...');
+    require_once($CFG->libdir . '/reminderlib.php');
+    reminder_cron();
+    mtrace('done');
+
 /// Run all core cron jobs, but not every time since they aren't too important.
 /// These don't have a timer to reduce load, so we'll use a random number 
 /// to randomly choose the percentage of times we should run these jobs.
