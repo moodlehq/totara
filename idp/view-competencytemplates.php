@@ -74,7 +74,7 @@ $rowcount=0;
             echo '<td width="25%">';
             $duedatestr = $comptemp->duedate == NULL ? '' : date('d/m/Y', $comptemp->duedate );
             if ($editingon ){
-                echo '<input size="10" maxlength="10" type="text" value="'.$duedatestr.'" name="comptempduedate['.$comptemp->id.']" id="comptempduedate'.$comptemp->id.'"/>';
+                echo '<input size="10" maxlength="10" type="text" class="idpdate" value="'.$duedatestr.'" name="comptempduedate['.$comptemp->id.']" id="comptempduedate'.$comptemp->id.'"/>';
             } else {
                 echo $duedatestr;
             }
@@ -90,7 +90,22 @@ $rowcount=0;
             }
 
             echo '</tr>';
-        $rowcount = ($rowcount + 1) % 2;
+            $rowcount = ($rowcount + 1) % 2;
+
+            $hierachy = new competency();
+            if($competencies = idp_get_assigned_to_comptemplate($comptemp->id, $revision->userid)){
+                foreach ($competencies as $comp){
+                    echo '<tr>';
+                    echo "<td colspan=2>$comp->competency</td>";
+                    if(isset($comp->status)){
+                        echo "<td>$comp->status</td>";
+                    } else {
+                        echo '<td></td>';
+                    }
+                    echo '<td><input size="10" maxlength="10" type="text" value="" class="idpdate" name="comptempitemduedate['.$comp->id.']" id="comptempitemduedate'.$comp->id.'"/></td>';
+                    echo'</tr>';
+                }
+            }
         }
 
     } else {
@@ -131,7 +146,7 @@ $rowcount=0;
 var idp_competencytemplate_row_count = <?php echo $rowcount ?>
 
 $(function() {
-    $('[id^=comptempduedate]').datepicker(
+    $('[id^=comptempduedate],[id^=comptempitemduedate]').datepicker(
         {
             dateFormat: 'dd/mm/yy',
             showOn: 'button',

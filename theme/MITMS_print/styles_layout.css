@@ -1,0 +1,217 @@
+@page default { size 21cm 29.7cm; margin: 1.5cm }
+
+* {
+    font-family: Times New Roman, serif;
+}
+
+td,th {
+    font-family: Times New Roman, serif;
+}
+
+td#left-column {
+    display: none;
+}
+
+body {
+    font-size: 10pt;
+    background-color: white;
+    color: black;
+}
+
+a:link, a:visited { 
+    color: black;
+    text-decoration: none;
+}
+
+a img {
+    border: none;
+}
+
+h1 { font-size: 15pt; }
+h2 { font-size: 13pt; }
+h3 { font-size: 12pt; }
+h4 { font-size: 11pt; }
+h5 { font-size: 10pt; }
+h6 { font-size: 9pt; }
+
+
+.generaltable .r1 { color: inherit; }
+
+.list-idppositioncompetency {
+    color: inherit;
+}
+
+div#header, div.navbar, div#revision_legend, div#page_print_button
+{
+    display:none; 
+}
+
+table#layout-table tr td#left-column {
+    display:none;
+}
+
+div#content {
+    line-height: 1.5em;
+    margin: 0;
+    padding: 0px 10px;  
+    border: none;
+    text-align: left;
+    vertical-align: top;
+    letter-spacing: 0px !important;
+    text-align: left; 
+}
+
+/* Competencies Table */
+table.list-idppositioncompetency th {
+	border-width: 1px;
+	border-style: solid;
+	border-color: #EFEFEF;
+    background-color: #EFEFEF;
+}
+
+table.list-idppositioncompetency {
+    margin-top: 10px;
+    margin-bottom: 15px;
+    width :auto;
+}
+
+table.list-idppositioncompetency{
+    width: 99%;
+    margin-left: 0;
+}
+
+/* Courses Table */
+table#list-idpcourse td.category {
+    width:20%;
+}
+
+table#list-idpcourse th {
+    width:25%;
+}
+
+table.planitems {
+    margin-top: 10px;
+    margin-bottom: 15px;
+    width :auto;
+    margin-left:0;
+    margin-right:0;
+}
+
+table.planitems th {
+	border-width: 1px;
+	border-style: solid;
+	border-color: #EFEFEF;
+    background-color: #EFEFEF;
+}
+
+table.planitems {
+    width: 99%;
+}
+
+/* Personal Details Table */
+table.personaldetails tr.r0 {
+}
+
+
+/* Framework column */
+table.list-idppositioncompetency td.c0{
+    width: 20%;
+}
+
+
+
+
+table.list-idppositioncompetency th {
+    width:25%;
+}
+
+
+/* Button column */
+table.noevaluations .c2 {
+    display: none;
+}
+
+table.personaldetails {
+    font-size: 0.8em;
+    border: none;
+}
+
+table.personaldetails td.c0 {
+    font-weight: bold;
+}
+
+table.personaldetails tr.actions {
+    display: none;
+}
+
+
+p#backtotop {
+    display: none;
+}
+
+div.pagesection {
+    page-break-inside: avoid;
+}
+
+div#phpself {
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 0;
+    text-align: center;
+}
+
+div#previewcontainer {
+    border-style: none;
+    border-width: 0;
+    padding: 0;
+}
+
+form { display: none; }
+p.explanation { display: none; }
+
+table.objectiveevaluation tr.postapproval .c6 {
+    white-space: nowrap;
+}
+
+table.learningplanlist .c3 {
+    display: none;
+}
+
+table.objectiveevaluation .c7 {
+    display: none;
+}
+
+p#backtoplanslink {
+    display: none;
+}
+
+img.iconsmall {
+    display:none;
+}
+
+/* Fonts Colours  */
+h2 {
+    font-size: 1.2em;
+    margin-bottom: 0px;
+}
+
+body, td, th, li {
+    font-family:Verdana,Helvetica,sans-serif;
+}
+
+h1,h2,h3,h4,h5,h6 {
+    font-family:Verdana,Helvetica,sans-serif;
+    color: #FF7700;
+    background: none !important;
+    border: none !important;
+    padding: 0 !important;
+}
+
+h2:before {
+    content: "\025aa ";
+}
+
+h2,h2.main,h2.headingblock {
+    border-bottom: 1px solid gray;
+    text-align: left;
+}

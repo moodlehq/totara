@@ -9,12 +9,11 @@ require_once($CFG->dirroot.'/local/js/lib/setup.php');
 
 require_login();
 
-$action = required_param('action', PARAM_ACTION); // One of: create, delete, rename
+$action = required_param('action', PARAM_ACTION); // One of: clone, create, delete, rename
 $name = optional_param('name', '', PARAM_NOTAGS); // Plan name
 $startdate = optional_param('startdate', '', PARAM_NOTAGS); // Start of the training period
 $enddate = optional_param('enddate', '', PARAM_NOTAGS); // End of the training period
 $planid = optional_param('planid', 0, PARAM_INT); // IDP ID (idp.id)
-$confirm = optional_param('confirm', 0, PARAM_INT); // confirm deletion
 
 $sitecontext = get_context_instance(CONTEXT_SYSTEM);
 $contextuser = get_context_instance(CONTEXT_USER, $USER->id);
@@ -30,7 +29,7 @@ if ( $action != 'create' ){
     unset($plan);
 }
 
-if (('create' == $action or 'rename' == $action) && !empty($name) && !empty($startdate) && !empty($enddate)) {
+if (('create' == $action or 'rename' == $action or 'clone' == $action) && !empty($name) && !empty($startdate) && !empty($enddate)) {
 
     $errorurl = "plan.php?action={$action}" . (($action=='create')?'':"&planid={$planid}");
 
@@ -54,6 +53,16 @@ if (('create' == $action or 'rename' == $action) && !empty($name) && !empty($sta
         }
         redirect($CFG->wwwroot.'/idp/revision.php?id='.$id);
     }
+    else if ('clone' == $action){
+        $currevision = get_revision($planid);
+        if (!$newplanid = clone_plan($currevision->id)){
+            error(get_string('error:cannotcloneplan','idp'), $errorurl);
+        }
+        if(!rename_plan($newplanid, $name, $starttime, $endtime)){
+            error(get_string('error:cannotupdateclonedplan', 'idp'), $errorurl);
+        }
+        redirect($CFG->wwwroot . '/idp/revision.php?id=' . $newplanid);
+    }
     else {
         if (!rename_plan($planid, $name, $starttime, $endtime)) {
             error(get_string('error:cannotrenameplan', 'idp'), $errorurl);
@@ -61,7 +70,7 @@ if (('create' == $action or 'rename' == $action) && !empty($name) && !empty($sta
         redirect($CFG->wwwroot.'/idp/index.php');
     }
 }
-elseif ('create' == $action or 'rename' == $action) {
+elseif ('create' == $action or 'rename' == $action or 'clone' == $action) {
     $stridps = get_string('idps', 'idp');
     $pagetitle = get_string("{$action}planbreadcrumb", 'idp');
 
@@ -111,8 +120,12 @@ elseif ('create' == $action or 'rename' == $action) {
             print '</h1>';
 
             $defaultname = get_string('defaultplanname', 'idp');
-            $defaultstartdate = strtotime('now');
-            $defaultenddate = strtotime('now + 3 months');
+            if(!$defaultstartdate = convert_userdate(get_config(NULL, idp_start_date))){
+                $defaultstartdate = '';
+            }
+            if(!$defaultenddate = convert_userdate(get_config(NULL, idp_end_date))){
+                $defaultenddate = '';
+            }
 
             if ('create' != $action) {
                 // Get the current values from the DB
@@ -182,39 +195,17 @@ HEREDOC;
 
     print_footer();
 }
-elseif ('delete' == $action && $confirm) {
+elseif ('delete' == $action) {
     if (0 == $planid) {
         error(get_string('error:invalidplanid', 'idp'));
     }
     else {
-        if(!confirm_sesskey()) {
-            print_error('configrmsesskeybad','error');
-        }
         if (delete_plan($planid)) {
             redirect($CFG->wwwroot.'/idp/index.php');
         }
         else {
             error(get_string('error:plannotempty', 'idp'), "index.php");
         }
-    }
-}
-elseif ('delete' == $action) {
-    $stridps = get_string('idps', 'idp');
-    $pagetitle = get_string("{$action}planbreadcrumb", 'idp');
-
-    $PAGE = page_create_object('MITMS', $USER->id);
-    $pageblocks = blocks_setup($PAGE,BLOCKS_PINNED_BOTH);
-    $blocks_preferred_width = bounded_number(180, blocks_preferred_width($pageblocks[BLOCK_POS_LEFT]), 210);
-
-    $navlinks = array();
-    $navlinks[] = array('name' => $stridps, 'link' => $CFG->wwwroot."/idp/index.php", 'type' => 'home');
-    $navlinks[] = array('name' => $pagetitle, 'link' => '', 'type' => 'home');
-    $PAGE->print_header($stridps, $navlinks);
-    if(isset($planid)) {
-        $plan = get_record('idp','id',$planid);
-        notice_yesno(get_string('deleteconfirm', 'idp', $plan->name),"plan.php?action=delete&amp;planid=$planid&amp;confirm=1&amp;sesskey=$USER->sesskey", 'index.php');
-    } else {
-        print_error('error:invalidplanid','idp');
     }
 }
 else {

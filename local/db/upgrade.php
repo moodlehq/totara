@@ -1806,6 +1806,15 @@ function xmldb_local_upgrade($oldversion) {
         if (!field_exists($table, $field)) {
             add_field($table, $field);
         }
+
+    }
+
+    if ($result && $oldversion < 2010072602) {
+    /// Add current flag to idp table
+        $table = new XMLDBTable('idp');
+        $field = new XMLDBField('current');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0', null);
+        $result = $result && add_field($table, $field);
     }
 
     return $result;

@@ -393,6 +393,18 @@ $local_capabilities = array(
         'contextlevel' => CONTEXT_USER,
     ),
 
+    //Ability for managers to set users current IDP
+    'moodle/local:idpsetcurrent' => array(
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_USER
+    ),
+
+    //Ability for managers to evaluate a users IDP
+    'moodle/local:idpuserevaluate' => array(
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_USER
+    ),
+
     // Ability for users to submit their own plans for approval
     'moodle/local:idpsubmitownplan' => array(
         'captype' => 'write',

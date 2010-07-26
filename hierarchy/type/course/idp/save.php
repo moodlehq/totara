@@ -18,9 +18,6 @@ $rowcount = required_param('rowcount', PARAM_SEQUENCE);
 // Courses to add
 $add = required_param('add', PARAM_SEQUENCE);
 
-// Indicates whether current related items, not in $relidlist, should be deleted
-$deleteexisting = optional_param('deleteexisting', 0, PARAM_BOOL);
-
 // No javascript parameters
 $nojs = optional_param('nojs', false, PARAM_BOOL);
 $returnurl = optional_param('returnurl', '', PARAM_TEXT);
@@ -39,33 +36,16 @@ if ( $plan->userid != $USER->id ){
     error(get_string('error:revisionnotvisible', 'idp'));
 }
 
-// Currently assigned competencies
-if (!$currentlyassigned = idp_get_user_courses($plan->userid, $revisionid)) {
-    $currentlyassigned = array();
-}
-
-// Parse input
-$add = $add ? explode(',', $add) : array();
-$time = time();
-
-///
-/// Delete removed assignments (if specified)
-///
-if ($deleteexisting) {
-    $removeditems = array_diff(array_keys($currentlyassigned), $add);
-    
-    foreach ($removeditems as $rid) {
-        delete_course_from_revision($revisionid, $rid, $plan->id);
-
-        echo " ~~~RELOAD PAGE~~~ ";  // Indicate that a page reload is required
-    }
-}
-
 $str_remove = get_string('remove');
 
 ///
 /// Add competencies
 ///
+
+// Parse input
+$add = explode(',', $add);
+$time = time();
+
 foreach ($add as $addition) {
     // Check id
     if (!is_numeric($addition)) {
@@ -109,7 +89,7 @@ foreach ($add as $addition) {
             echo "<td><a href=\"{$CFG->wwwroot}/course/category.php?id={$course->category}\">".format_string($category->name)."</a></td>";
             echo "<td><a href=\"{$CFG->wwwroot}/course/view.php?id={$course->id}\">".format_string($course->fullname)."</a></td>";
             echo '<td></td>';
-            echo '<td width="25%"><input size="10" maxlength="10" type="text" name="courseduedate['.$course->id.']" id="courseduedate'.$course->id.'"/></td>';
+            echo '<td width="25%"><input size="10" maxlength="10" type="text" class="idpdate" name="courseduedate['.$course->id.']" id="courseduedate'.$course->id.'"/></td>';
 
             echo "<td class=\"options\">";
 

@@ -79,12 +79,63 @@ Note that you will need to submit a self-evaluation for this plan by {{duedate}}
 Please contact a site administrator if you had not requested this approval.
 ';
 
+#Settings page
+$string['generalsettings'] = 'General Settings';
+$string['adminsettings'] = 'Admin Settings';
+
+$string['setting:startdate'] = 'Start date for all users';
+$string['setting:configstartdate'] = '';
+
+$string['setting:enddate'] = 'End date for all users';
+$string['setting:configenddate'] = '';
+
+$string['setting:competencyaddfromposition'] = 'Add Competencies from positions';
+$string['setting:configcompetencyaddfromposition'] = '';
+
+$string['setting:length'] = 'Lenth of IDP';
+$string['setting:configlength'] = 'The Length of Individual Development Plan for all users in days.';
+
+$string['setting:autonewcreation'] = 'Automatic new creation';
+$string['setting:configautonewcreation'] = 'Automatically create new IDP when the current one expires';
+
+$string['setting:manyidpperuser'] = 'More than one at once per user';
+$string['setting:configmanyidpperuser'] = 'Allow more than one IDP per user at any given time';
+
+$string['setting:approval'] = 'Approval Required';
+$string['setting:configapproval'] = '';
+
+$string['setting:items'] = 'Items';
+$string['setting:configitems'] = '';
+
+$string['setting:duedates'] = 'Due dates for items';
+$string['setting:configduedates'] = '';
+$string['setting:duedateno'] = 'No';
+$string['setting:duedateopt'] = 'Optional';
+$string['setting:duedatereq'] = 'Required';
+
+$string['setting:priorities'] = 'Priorities for items';
+$string['setting:configpriorities'] = '';
+
+$string['setting:objectives'] = 'Objectives';
+$string['setting:configobjectives'] = '';
+
+$string['setting:enableeval'] = 'Enable evaluations';
+$string['setting:configenableeval'] = '';
+
+$string['setting:showgap'] = 'Show gap analysis';
+$string['setting:configshowgap'] = '';
+
+$string['setting:showlearnrec'] = 'Show record of learning';
+$string['setting:configshowlearnrec'] = '';
+
 # Errors
-$string['error:badstartdate'] = 'Invalid format for the starting date of the training period.  Enter the date in the YYYY-MM-DD format.';
-$string['error:badenddate'] = 'Invalid format for the end date of the training period.  Enter the date in the YYYY-MM-DD format.';
+$string['error:badstartdate'] = 'Invalid format for the starting date of the training period.  Enter the date in the DD/MM/YYYY format.';
+$string['error:badenddate'] = 'Invalid format for the end date of the training period.  Enter the date in the DD/MM/YYYY format.';
 $string['error:cannotcreateplan'] = 'Unknown error while attempting to create a new plan.';
 $string['error:cannotevaluateplan'] = 'You cannot evaluate someone else\'s IDP.';
 $string['error:cannotrenameplan'] = 'You can only rename plans which have not been submitted or have been withdrawn.';
+$string['error:cannotcloneplan'] = 'Unknown error while attempting to clone plan.';
+$string['error:cannotupdateclonedplan'] = 'There was a problem while attempting to update cloned plan';
 $string['error:endbeforestart'] = 'The end date cannot come before the start date.';
 $string['error:evaluationsubmissionerror'] = 'Could not submit the self-evaluation. Did you rate all objectives?';
 $string['error:invalidaction'] = 'Invalid Action: $a';
@@ -130,6 +181,10 @@ $string['backlearningplans'] = 'Back to IDPs';
 $string['backtotoplink'] = 'Back to top';
 $string['byuser'] = 'by $a';
 $string['cancel'] = 'Cancel';
+$string['cloneplan'] = 'Clone plan';
+$string['cloneplanbreadcrumb'] = 'Clone IDP';
+$string['cloneplantitle'] = 'Clone IDP';
+$string['cloneplanbutton'] = 'Clone this plan';
 $string['column:name'] = 'Name';
 $string['column:role'] = 'Role';
 $string['column:view'] = 'View';
@@ -154,6 +209,8 @@ $string['createplan'] = 'Create plan';
 $string['createplanbreadcrumb'] = 'Create IDP';
 $string['createplantitle'] = 'Create IDP';
 $string['currentstatus'] = 'Current status:';
+$string['currentset'] = 'Set Current';
+$string['currentplan'] = 'Current plan';
 $string['curriculum_A'] = 'Adult Internal Medicine';
 $string['curriculum_P'] = 'Paediatrics and Child Health';
 $string['curriculum_Q'] = 'Professional Qualities Curriculum';
@@ -163,8 +220,6 @@ $string['curriculum_Q_title'] = 'Professional Qualities Curriculum';
 $string['defaultplanname'] = 'My IDP';
 $string['deleteplanbutton'] = 'Delete this plan';
 $string['deleteitembutton'] = 'Delete this item from the list';
-$string['deleteplanbreadcrumb'] = 'Delete IDP';
-$string['deleteconfirm'] = 'Are you sure you want to delete the plan \'$a\'?';
 $string['disclaimer'] = 'New plan disclaimer';
 $string['dragheretoassign'] = 'Drag here to assign';
 $string['duedate'] = 'Due date';
@@ -288,7 +343,7 @@ $string['to'] = 'to';
 $string['myidps'] = 'My IDPs';
 $string['idpsfor'] = 'IDPs for $a';
 $string['trainingperiod'] = 'Training Period:';
-$string['trainingperiodexplanation'] = 'Enter a training period to display along with the given name.  Note that the training period should be <b>approximately 3 to 4 months in duration</b> to correspond with your scheduled meetings with your Manager.';
+$string['trainingperiodexplanation'] = 'Enter a training period to display along with the given name.  Note that the training period must be <b> within the financial year </b>(July 1 - June 30).';
 $string['usersaid'] = '$a said';
 $string['userstrainees'] = '$a\'s trainees';
 $string['viewlatestrevision'] = 'View latest revision of this plan';

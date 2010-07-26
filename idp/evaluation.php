@@ -30,12 +30,15 @@ $contextuser = get_context_instance(CONTEXT_USER, $plan->userid);
 
 $errorurl = $CFG->wwwroot . "/idp/revision.php?id=$plan->id";
 
-// User must have permission to edit own plans in order to submit an evaluation
-require_capability('moodle/local:idpeditownplan', $contextsite);
 
-// Only the owner of a plan can evaluate it
-if ($USER->id != $plan->userid) {
-    error(get_string('error:cannotevaluateplan', 'idp'), $errorurl);
+if(!has_capability('moodle/local:idpuserevaluate', $contextuser)){
+    // User must have permission to edit own plans in order to submit an evaluation
+    require_capability('moodle/local:idpeditownplan', $contextsite);
+
+    // Only the owner of a plan can evaluate it
+    if ($USER->id != $plan->userid) {
+        error(get_string('error:cannotevaluateplan', 'idp'), $errorurl);
+    }
 }
 
 // Get the requested revision (default: the last one)
@@ -125,14 +128,10 @@ function print_idp_evaluation($revisionid) {
         return false;
     }
     $frameworklist = get_all_competency_frameworks($fullcompetencylist);
-
     foreach( $frameworklist as $framework ){
         print '<h2>Framework: '.s($framework->fullname).'</h2>';
         print '<blockquote>';
 
-//        print '<pre>';
-//        var_dump($competencylist);
-//        print '</pre>';
         print '<div id="objectivelist'.$framework->id.'">';
         //unction framework_evaluations($revisionid, $framework, $scale, $competencylist) {
         print framework_evaluations($revisionid, $framework);

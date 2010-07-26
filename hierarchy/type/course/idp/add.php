@@ -2,7 +2,6 @@
 
 require_once('../../../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
-require_once($CFG->dirroot.'/idp/lib.php');
 require_once($CFG->dirroot.'/hierarchy/type/competency/lib.php');
 require_once($CFG->dirroot.'/local/js/lib/setup.php');
 
@@ -23,13 +22,6 @@ $category = optional_param('category', 0, PARAM_INT);
 
 admin_externalpage_setup('competencymanage');
 require_login();
-
-$plan = get_plan_for_revision($id);
-$currentlyassigned = idp_get_user_courses($plan->userid, $id);
-if (!is_array($currentlyassigned)) {
-    $currentlyassigned = array();
-}
-unset($plan);
 
 // Load all categories
 $categories = array();
@@ -68,12 +60,6 @@ if($nojs) {
     }
     print_footer();
 } else {
-    echo '<div class="selectcompetencies">';
-    echo '<div class="selected"><br><br>';
-    echo '<p>' . get_string('selecteditems', 'hierarchy') . '</p>';
-    echo populate_selected_items_pane($currentlyassigned, 'course');
-    echo '</div>';
-
     // JS version
     echo '<div class="selectcourses">';
     echo '<h2>' . get_string('addcoursestoplan', 'idp') . '</h2>';

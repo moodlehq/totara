@@ -37,8 +37,9 @@ if ($USER->id == $plan->userid) {
 
 //
 // set up all the pdf stuff
-require_once($CFG->dirroot . '/local/lib/html2fpdf.php');
-$pdf = new HTML2FPDF('P');
+require_once($CFG->libdir . '/tcpdf/tcpdf.php');
+//$pdf = new HTML2FPDF('P');
+$pdf = new TCPDF('P');
 $pdf->AliasNbPages();
 $pdf->AddPage();
 
@@ -53,6 +54,10 @@ add_to_log(SITEID, 'idp', 'view plan', "revision_pdf.php?id=$plan->id", $plan->i
 $stridps = get_string('idps', 'idp');
 
 if ($currevision) {
+    /*$filename = "{$CFG->wwwroot}/idp/revision_pdf.php?id='{$currevision->idp}'&amp;print=1";
+    $html = file_get_contents($filename);
+    $pdf->writeHTML($html, true, false, true, false, '');*/
+
     // Whether or not to see the can_edit view
     $can_edit = false;
     $isauthor = false;
@@ -63,8 +68,11 @@ if ($currevision) {
         $can_approve = true;
     }
 
+    $pdf->WriteHTML('<h1>'.get_string('revisionviewtitle', 'idp', $plan->name).'</h1>');
+
+    $pdf->WriteHTML('<br/><h3>'.get_string('personaldetailsheading', 'idp').'</h3>');
     // Information at the top
-    lpheading( get_string('personaldetailsheading', 'idp') );
+    //idpheading(get_string('personaldetailsheading', 'idp') );
 
     ob_start();
     print_revision_details($currevision, $isauthor, $can_approve, true);
@@ -72,75 +80,40 @@ if ($currevision) {
     ob_end_clean();
     $pdf->WriteHTML($details);
 
-    // Objectives
-    lpheading(get_string('objectiveheading', 'idp').'&nbsp;');
-    $usercurriculum = get_field('user', 'curriculum', 'id', $plan->userid);
+    //Revision History
+    ob_start();
+    print_revision_list($plan->id, $currevision->id);
+    $details = ob_get_contents();
+    ob_end_clean();
+    $pdf->WriteHTML($details);
 
-    print_curriculum_pdf($usercurriculum, $currevision, $can_edit);
-    print_curriculum_pdf('Q', $currevision, $can_edit);
+    //Competencies
+    ob_start();
+    $competencies = idp_get_user_competencies($plan->userid, $currevision->id);
+    print_idp_competencies_view($currevision, $competencies);
+    $details = ob_get_contents();
+    $details = preg_replace('/<table /','<table border="1" ', $details);
+    ob_end_clean();
+    $pdf->WriteHTML($details);
 
-    // Free-form lists
-    print_freeform_list_pdf($currevision->id, 0, $can_edit);
-    print_freeform_list_pdf($currevision->id, 1, $can_edit);
+
+    //Courses
+    ob_start();
+    $courses = idp_get_user_courses($plan->userid, $currevision->id);
+    print_idp_courses_view($currevision, $courses);
+    $details = ob_get_contents();
+    $details = preg_replace('/<table /','<table border="1" ', $details);
+    ob_end_clean();
+    $pdf->WriteHTML($details);
 
 } else {
     $pdf->WriteHTML('<p><i>'.get_string('norevisions', 'idp')."</i></p>\n");
 }
 
 
+ob_end_clean();
 // Send the PDF data
-$pdf->Output(''. 'learningplan.pdf', 'I');
-$pdf->Output('', 'S');// send
+$pdf->Output('idp.pdf', 'I');
+//$pdf->Output('', 'S');// send
 
-
-
-
-//
-// End of page logic, function defs follow.
-//
-
-function lpheading($text, $level=1) {
-    global $pdf;
-    $fontsizes = array(
-            1   =>  15,
-            2   =>  14,
-            3   =>  13,
-            4   =>  12,
-            5   =>  11,
-            6   =>  11,
-        );
-    if (strlen($text) > 30) { $level += 1; }    // try to reduce header size for long texts
-    $pdf->SetFontSize($fontsizes[$level]);
-    $pdf->WriteHTML("<h$level>$text</h$level>");
-    $pdf->SetFontSize(12);
-}
-
-function print_curriculum_pdf($curriculumcode, $revision, $can_edit) {
-    global $pdf;
-    $table = curriculum_objectives($curriculumcode, $revision, $can_edit);
-    $table = preg_replace('/<table /','<table border="1" ', $table);
-
-    if ($table) {
-        lpheading(format_string(get_field('racp_curriculum', 'name', 'code', $curriculumcode)), 2);
-
-        $pdf->WriteHTML('<blockquote>');
-        $pdf->WriteHTML($table);
-
-        $pdf->WriteHTML('</blockquote>');
-    }
-
-}
-
-function print_freeform_list_pdf($revisionid, $listtype, $can_edit) {
-    global $pdf;
-
-    lpheading(get_string("list{$listtype}heading", 'idp').'&nbsp;');
-
-    $pdf->WriteHTML('<blockquote>');
-
-    $table = get_list_items($revisionid, $listtype, $can_edit);
-    $table = preg_replace('/<table /','<table border="1" ', $table);
-    $pdf->WriteHTML($table);
-    $pdf->WriteHTML('</blockquote>');
-}
 ?>

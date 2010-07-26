@@ -1,0 +1,40 @@
+
+</div> <!-- end div containerContent -->
+<!-- START OF FOOTER -->
+<div id="footer">
+<!--
+<?php
+    echo '<p class="helplink">';
+    echo page_doc_link(get_string('moodledocslink'));
+    echo '</p>';
+?>
+-->
+
+<?php if ($navigation and false) { ?>
+    <div class="navbar clearfix">
+        <div class="breadcrumb"><?php print_navigation($navigation); ?></div>
+        <div class="menu"><?php echo $menu; ?></div>
+    </div>
+<?php } ?>
+<div class="housekeeping"><a>&#169; MITMS </a></div>
+
+<!--<?php echo $loggedinas ?>
+<?php echo $homelink ?>-->
+<?php if (!empty($performanceinfo)) {
+          echo $performanceinfo;
+} ?>
+
+</div>
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+var config = {
+    'pixpath': '<?php echo $CFG->pixpath; ?>',
+    'sessionkey': '<?php echo $USER->sesskey; ?>'
+};
+//]]>
+</script>
+
+</body>
+</html>

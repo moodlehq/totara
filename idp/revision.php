@@ -14,6 +14,10 @@ $planid = required_param('id', PARAM_INT); // Plan ID
 $rev = optional_param('rev', 0, PARAM_INT); // Revision ID
 $print = optional_param('print', 0, PARAM_INT); // Print-friendly view
 
+if ($print){
+    $CFG->theme = 'MITMS_print'; // for this page only
+}
+
 if (0 == $planid) {
     error(get_string('error:idcannotbezero', 'local'));
 }
@@ -105,6 +109,7 @@ foreach ($lt as $column) {
                 // Whether or not to see the can_edit view
                 $can_edit = false;
                 $can_submit = false;
+                $can_evaluate = false;
                 if (is_my_plan($currevision->id) and has_capability('moodle/local:idpeditownplan', $contextsite)) {
                     $can_submit = true;
                     if ('notsubmitted' == $currevision->status or 'inrevision' == $currevision->status) {
@@ -119,6 +124,10 @@ foreach ($lt as $column) {
                     $can_approve = true;
                 }
 
+                if(has_capability('moodle/local:idpuserevaluate', $contextuser)){
+                    $can_evaluate = true;
+                }
+
                 if ($can_edit) {
                     print '<h1>'.get_string('revisionedittitle', 'idp', $plan->name).'</h1>';
                 } else {
@@ -127,7 +136,7 @@ foreach ($lt as $column) {
 
                 $formstartstr = '';
                 if ( $can_submit && $can_edit ){
-                    $formstartstr = '<form method="get" action="submit.php">';
+                    $formstartstr = '<form method="get" action="submit.php" class="plansubmission">';
                 }
                 if ($can_approve) {
                     print_revision_manager($currevision, $plan, $formstartstr, array(
@@ -150,44 +159,57 @@ foreach ($lt as $column) {
                         // Save and continue later
                         print '</td><td>';
                         print '<div>';
-                        print '<input type="submit" name="saveandcontinuebutton" value="'.get_string('savecontinuelaterbutton', 'idp').'" />';
+
+                        if(get_config(NULL, 'idp_duedates')==2){
+                            print '<input type="submit" id="saveandcontinuebutton" name="saveandcontinuebutton" value="'.get_string('savecontinuelaterbutton', 'idp').'" onClick="return checkDateSet()" />';
+                        }
+                        else{
+                            print '<input type="submit" name="saveandcontinuebutton" value="'.get_string('savecontinuelaterbutton', 'idp').'" />';
+                        }
                         print '</div>';
 
                         // Submit button
                         print '</td><td>';
                         print '<div style="text-align: center">';
                         print '<input type="hidden" name="rev" value="'.$currevision->id.'" />';
-                        print '<input type="submit" name="submitbutton" value="'.get_string('submitplan', 'idp').'" />';
+                        if(get_config(NULL, 'idp_duedates')==2){
+                            print '<input type="submit" name="submitbutton" value="'.get_string('submitplan', 'idp'). '" onClick="return checkDateSet()" />';
+                        }
+                        else{
+                            print '<input type="submit" name="submitbutton" value="'.get_string('submitplan', 'idp').'" />';
+                        }
                         print '</div>';
                         print "</td></tr></table></center>\n";
                     }
-                    elseif ('approved' == $currevision->status or 'overdue' == $currevision->status) {
+                    /*elseif (('approved' == $currevision->status or 'overdue' == $currevision->status) && (get_config(NULL, 'idp_enableeval')==2)) {
                         // Evaluate button
                         print '<form method="get" action="evaluation.php"><p style="text-align: center">';
                         print '<input type="hidden" name="id" value="'.$plan->id.'" />';
                         print '<input type="hidden" name="rev" value="'.$currevision->id.'" />';
                         print '<input type="submit" value="'.get_string('evaluateplan', 'idp').'" />';
                         print "</p></form>\n";
-                    }
+                    }*/
+                } 
+                if(('approved' == $currevision->status or 'overdue' == $currevision->status) && ($can_evaluate || ((get_config(NULL, 'idp_enableeval')==2) && $can_submit))){
+                        // Evaluate button
+                        print '<div style="width:722px"><form method="get" action="evaluation.php"><p style="text-align: center">';
+                        print '<input type="hidden" name="id" value="'.$plan->id.'" />';
+                        print '<input type="hidden" name="rev" value="'.$currevision->id.'" />';
+                        print '<input type="submit" value="'.get_string('evaluateplan', 'idp').'" />';
+                        print "</p></form></div>\n";
                 }
+
                 if ( $can_submit && $can_edit ){
                     echo '</form>';
                 }
 
-                print '<p id="backtotop" style="text-align: center"><a href="#top">'.get_string('backtotoplink', 'idp').'</a></p>';
+                print '<div style="width:722px"><p id="backtotop" style="text-align: center"><a href="#top">'.get_string('backtotoplink', 'idp').'</a></p></div>';
             }
         } else {
             print '<p><i>'.get_string('norevisions', 'idp')."</i></p>\n";
         }
         echo '</td>';
 
-    break;
-    case 'right':
-        echo '<td style="vertical-align: top; width: '.$blocks_preferred_width.'px;" id="right-column">';
-        print_container_start();
-        blocks_print_group($PAGE, $pageblocks, BLOCK_POS_RIGHT);
-        print_container_end();
-        echo '</td>';
     break;
     }
 }
@@ -197,7 +219,30 @@ echo '</tr></table>';
 
 <script type="text/javascript">
 <!-- //
-var idp_revision_id = <?php echo $currevision->id ?>
+    var idp_revision_id = <?php echo $currevision->id ?>
+
+    //var valid=true;
+
+    function checkDateSet(){
+        console.log($('input[@type=text].idpdate'));
+        valid=true;
+        $('input[@type=text].idpdate').each(
+            function(){
+                if(this.value==''){
+                    console.log('Missing Date!!');
+                    valid=false;
+                }
+            }
+        );
+
+        if(valid==false){
+            alert('Error, please fill in all dates'); return false;
+        }
+        else{
+            return true;
+        }
+    }
+
 // -->
 </script>
 <?php

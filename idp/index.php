@@ -14,6 +14,8 @@ $orderby = optional_param('orderby', 'approvaltime', PARAM_ALPHA); // Column to 
 $ovorderby = optional_param('ovorderby', 'name', PARAM_ALPHA); // Column to sort by in the manager overview page
 $showapproved = optional_param('showapproved', 0, PARAM_INT); // Set to 1 to show only pending plans
 $print = optional_param('print', 0, PARAM_INT); // Print-friendly view
+$planid = optional_param('planid', PARAM_INT);
+$current = optional_param('current', PARAM_INT);
 
 // If they requested to view the user's record of learning, then send them there
 if ( $recordoflearning ){
@@ -48,6 +50,21 @@ else {
     else {
         require_capability('moodle/local:idpviewlist', $contextuser);
     }
+}
+
+//Sets current an IDP to current and unsets all others
+if ($planid && $userid && ($current==1)){
+    require_capability('moodle/local:idpsetcurrent', $contextuser);
+
+    $sql = "UPDATE {$CFG->prefix}idp "
+        . "SET current=0 "
+        . "WHERE userid={$userid};";
+    execute_sql($sql, false);
+
+    $sql2 = "UPDATE {$CFG->prefix}idp "
+        . "SET current=1 "
+        . "WHERE id={$planid};";
+    execute_sql($sql2, false);
 }
 
 add_to_log(SITEID, 'idp', 'view', "idp/index.php");
@@ -219,7 +236,7 @@ foreach ($lt as $column) {
             }
 
             if ( $hasplans || ($ownpage && has_capability('moodle/local:idpeditownplan', $contextsite)) ){
-                print '<table width="80%"><tr>';
+                print '<table width="738px"><tr>';
             }
             if ($ownpage && has_capability('moodle/local:idpeditownplan', $contextsite)) {
                 // Create new plan button
@@ -245,13 +262,6 @@ foreach ($lt as $column) {
         }
         echo '</td>';
 
-    break;
-    case 'right':
-        echo '<td style="vertical-align: top; width: '.$blocks_preferred_width.'px;" id="right-column">';
-        print_container_start();
-        blocks_print_group($PAGE, $pageblocks, BLOCK_POS_RIGHT);
-        print_container_end();
-        echo '</td>';
     break;
     }
 }

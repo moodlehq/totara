@@ -7,6 +7,20 @@ require_once($CFG->dirroot.'/idp/view-courses.php');
 require_once($CFG->dirroot.'/hierarchy/type/position/lib.php');
 require_once($CFG->dirroot.'/local/reportheading/lib.php');
 
+
+/**
+ * IDP related constants
+ */
+define('DATE_FORMAT', '%d/%m/%Y');
+
+/**
+ * Config options
+ */
+define('IDP_NO',  0);
+define('IDP_OPT', 1);
+define('IDP_REQ', 2);
+
+
 $CFG->idpenablefavourites = false;
 
 /**
@@ -139,8 +153,8 @@ function get_revision($planid, $revid=0, $pdf=false) {
 
         // Text representation of the training period (start and end dates)
         $dates = new stdclass();
-        $dates->start = strftime('%d-%m-%Y', $plan->startdate);
-        $dates->end = strftime('%d-%m-%Y', $plan->enddate);
+        $dates->start = strftime('%e %h %Y', $plan->startdate);
+        $dates->end = strftime('%e %h %Y', $plan->enddate);
         $revision->period = get_string('starttoenddates', 'idp', $dates);
 
         // Extra information not directly in the revision table
@@ -297,7 +311,15 @@ function print_revision_details($revision, $can_submit, $can_approve=false, $pdf
     $suffix = ($pdf) ? '</b>' : '';
 
     // Personal information
-    $table->data[] = array($prefix . get_string('trainingperiod', 'idp') . $suffix, $revision->period);
+    if(!$pdf && $showactions){
+        $printoptions .= '<a href="'.$CFG->wwwroot.'/idp/revision.php?id=' . $revision->idp . '&amp;print=1">'.get_string('printableview', 'idp').'</a> - ';
+        $printoptions .= '<a href="'.$CFG->wwwroot.'/idp/revision_pdf.php?id=' . $revision->idp . '">' . get_string('exporttopdf', 'idp') . '</a>';
+
+        $table->data[] = array ($prefix . 'Display options' . $suffix, "<b>" . $printoptions . "</b>");
+    }
+    else {
+        $table->data[] = array($prefix . get_string('trainingperiod', 'idp') . $suffix, $revision->period);
+    }
 
     // Creation and modification time
     $mtime = userdate($revision->mtime);
@@ -310,12 +332,14 @@ function print_revision_details($revision, $can_submit, $can_approve=false, $pdf
     // Next actions
     $nextactions = '';
     if ('approved' == $revision->status or 'overdue' == $revision->status) {
-        if ($can_submit) {
+        if ($can_submit && get_config(NULL, 'idp_enableeval')==2) {
             $nextactions .= '<a href="'.$CFG->wwwroot.'/idp/evaluation.php?id=' . $revision->idp . '">'.get_string('evaluateplan', 'idp').'</a>';
         }
-        //Disabled Temporarily
-        //$nextactions .= '<a href="'.$CFG->wwwroot.'/idp/revision.php?id=' . $revision->idp . '&amp;print=1">'.get_string('printableview', 'idp').'</a> - ';
-        //$nextactions .= '<a href="'.$CFG->wwwroot.'/idp/revision_pdf.php?id=' . $revision->idp . '">' . get_string('exporttopdf', 'idp') . '</a>';
+        else{
+            $nextactions .= 'Manager evaluation';
+        }
+        /*$nextactions .= '<a href="'.$CFG->wwwroot.'/idp/revision.php?id=' . $revision->idp . '&amp;print=1">'.get_string('printableview', 'idp').'</a> - ';
+        $nextactions .= '<a href="'.$CFG->wwwroot.'/idp/revision_pdf.php?id=' . $revision->idp . '">' . get_string('exporttopdf', 'idp') . '</a>';*/
     }
     elseif ('withdrawn' == $revision->status) {
         if ($can_submit) {
@@ -344,7 +368,7 @@ function print_revision_details($revision, $can_submit, $can_approve=false, $pdf
         }
     }
     elseif ('completed' == $revision->status) {
-        $nextactions .= '<a href="'.$CFG->wwwroot.'/idp/revision.php?id=' . $revision->idp . '&amp;print=1">'.get_string('printableview', 'idp').'</a>';
+        //$nextactions .= '<a href="'.$CFG->wwwroot.'/idp/revision.php?id=' . $revision->idp . '&amp;print=1">'.get_string('printableview', 'idp').'</a>';
     }
 
     if (empty($pdf)) {
@@ -885,32 +909,6 @@ function delete_list_item($revisionid, $itemid) {
 }
 
 /**
- * Delete an assigned course from an idp revision
- *
- * @param int $revisionid
- * @param int $courseid
- * @param int $planid (optional) used for logging
- * @return boolean success/failure
- */
-function delete_course_from_revision($revisionid, $courseid, $planid=0) {
-    $plan = get_plan_for_revision($planid);
-    // Delete the course and update the modification time for the parent revision
-    begin_sql();
-    $dbresult = (boolean) delete_records('idp_revision_course', 'revision', $revisionid, 'course', $courseid);
-    $dbresult = $dbresult && update_modification_time($revisionid);
-    if ($dbresult) {
-        commit_sql();
-    } else {
-        rollback_sql();
-        return false;
-    }
-
-    add_to_log(SITEID, 'idp', 'deleted IDP course', "revision.php?id={$planid}", $courseid);
-
-    return true;
-}
-
-/**
  * Add a comment to a plan
  *
  * @global object $USER
@@ -1018,20 +1016,56 @@ function submit_revision($revisionid) {
 }
 
 /**
+ * Create a new plan given a revision of a previous plan.
+ */
+function clone_plan($revisionid){
+
+    $origionalplan = get_plan_for_revision($revisionid);
+
+    $newplan = new stdclass();
+    $newplan->name = $origionalplan->name;
+    $newplan->startdate = $origionalplan->startdate;
+    $newplan->enddate = $origionalplan->enddate;
+    $newplan->userid = $origionalplan->userid;
+    $newplan->current = 0;
+
+    begin_sql();
+    if (!$newplanid = insert_record('idp', $newplan)){
+        rollback_sql();
+        return false;
+    }
+    if (!$newrev = clone_revision($revisionid, $newplanid)){
+        rollback_sql();
+        return false;
+    }
+
+    commit_sql();
+    return $newplanid;
+}
+
+/**
  * Create a new revision and copy all of the data from the given plan
  * revision.
+ * Optional paramter of a plan to add the new revision to, if specified
+ * the cloned revision will appear as 'Not yet submitted'
  */
-function clone_revision($revisionid) {
+function clone_revision($revisionid, $newplanid) {
 
     $ctime = time();
     $originalrev = get_revision(0, $revisionid);
 
     // Create the initial revision
     $newrev = new stdclass();
-    $newrev->idp = $originalrev->idp;
+    if($newplanid){
+        $newrev->idp = $newplanid;
+        $newrev->visible = 0;
+    }
+    else {
+        $newrev->idp = $originalrev->idp;
+        $newrev->visible = 1;
+    }
     $newrev->ctime = $ctime;
     $newrev->mtime = $ctime;
-    $newrev->visible = 1;
 
     begin_sql();
     if (!$newid = insert_record('idp_revision', $newrev)) {
@@ -1324,7 +1358,7 @@ function print_pending_plans($trainees, $orderby, $showapproved) {
                                             FROM {$CFG->prefix}idp_approval";
         }
 
-        $plans = get_records_sql("SELECT r.id AS revid, p.id AS id,
+        $plans = get_records_sql("SELECT r.id AS revid, p.id AS id, p.current,
                                          u.lastname AS lastname, u.firstname AS firstname,
                                          r.submittedtime AS submissiontime, r.mtime AS mtime,
                                          a.ctime AS approvaltime
@@ -1334,7 +1368,7 @@ function print_pending_plans($trainees, $orderby, $showapproved) {
                                          ($revisionapprovedsubquery) a
                                    WHERE r.idp = p.id AND u.id = p.userid AND u.deleted <> 1 AND
                                          p.userid IN ($userids) AND a.revision = r.id
-                                ORDER BY $orderby, mtime DESC");
+                                         ORDER BY p.current, $orderby, mtime DESC");
     }
 
     if ($plans and count($plans) > 0) {
@@ -1439,11 +1473,12 @@ function print_user_learning_plans($userid, $canviewplans, $page, $perpage, $ord
 
     $userid = intval($userid);  // just in case, as we don't know where it's been :)
 
+    $usercontext = get_context_instance(CONTEXT_USER, $userid);
     // Check if user is viewing his/her own page
     $ownpage = ($USER->id == $userid);
 
     // Fetch all plans, and add revision and approval info at same time.
-    $plans = get_records_sql("SELECT r.id AS revid, p.id, p.name AS planname, p.enddate,
+    $plans = get_records_sql("SELECT r.id AS revid, p.id, p.name AS planname, p.enddate, p.current,
                                      r.mtime, r.visible, a.revision AS approval,
                                      r.submittedtime, r.withdrawntime, r.evaluatedtime
                                 FROM {$CFG->prefix}idp p
@@ -1452,7 +1487,8 @@ function print_user_learning_plans($userid, $canviewplans, $page, $perpage, $ord
                                WHERE p.userid = $userid AND
                                      r.ctime = (SELECT MAX(ctime)
                                                   FROM {$CFG->prefix}idp_revision
-                                                 WHERE idp = p.id)");
+                                                  WHERE idp = p.id)
+                                                  ORDER BY p.current DESC, r.mtime DESC");
     // Set the status on each revision
     if (!is_array($plans)) {
         $plans = array();
@@ -1463,9 +1499,9 @@ function print_user_learning_plans($userid, $canviewplans, $page, $perpage, $ord
     }
 
     // Sort the plans
-    if ($plans) {
+    /*if ($plans) {
         uasort($plans, "{$orderby}_cmp_plan");
-    }
+    }*/
 
     // Make list of trainee user IDs
     print "<div id=\"planlist\">\n";
@@ -1479,8 +1515,6 @@ function print_user_learning_plans($userid, $canviewplans, $page, $perpage, $ord
         if ($canviewplans) {
             $table .= '<th class="lastchanged">'.get_string('lastchanged', 'idp').'</th>';
             $table .= '<th class="status">'.get_string('status', 'idp').'</th>';
-        }
-        if ($ownpage) {
             $table .= '<th class="options">'.get_string('options', 'idp').'</th>';
         }
         $table .= '</tr>';
@@ -1488,6 +1522,7 @@ function print_user_learning_plans($userid, $canviewplans, $page, $perpage, $ord
         // Load the button strings now, rather than doing it each time in the loop.
         $renameplanstr = get_string('renameplanbutton', 'idp');
         $deleteplanstr = get_string('deleteplanbutton', 'idp');
+        $cloneplanstr = get_string('cloneplanbutton', 'idp');
         if ($plans) {
             $rowcount = 0;
             foreach($plans as $plan) {
@@ -1499,7 +1534,7 @@ function print_user_learning_plans($userid, $canviewplans, $page, $perpage, $ord
                 if ($canviewplans) {
                     // Get the full status of the plan
                     $formattedstatus = format_revision_status($plan, false, false, false);
-                    if ($ownpage and ('approved' == $plan->status or 'overdue' == $plan->status)) {
+                    if ($ownpage and ('approved' == $plan->status or 'overdue' == $plan->status) and get_config(NULL, 'idp_enableeval')==2) {
                         $evaluationdeadline = idp_get_evaluation_deadline($plan);
                         $formattedstatus .= ' (<a href="evaluation.php?id='.$plan->id.'">'.
                             get_string('selfevaluationdueby', 'idp',
@@ -1507,21 +1542,27 @@ function print_user_learning_plans($userid, $canviewplans, $page, $perpage, $ord
                     }
 
                     // Begin table row
-                    $table .= "<tr class=\"r{$rowcount}\"><td><a href=\"revision.php?id={$plan->id}\">{$plan->planname}</a></td>";
+                    $table .= "<tr class=\"r{$rowcount}\"><td><a href=\"revision.php?id={$plan->id}\">{$plan->planname}</a>";
+                        if($plan->current==1){
+                            $table .= "(".get_string('currentplan','idp').")";
+                        }
+                        $table .= "</td>";
                     $table .= '<td>'.userdate($plan->mtime, '%e %b %y').'</td>';
                     $table .= "<td>{$formattedstatus}</td>";
 
                     // Add editing buttons if appropriate
+                    $table .= '<td class="options">';
                     if ($ownpage) {
                         if ('notsubmitted' == $plan->status) {
-                            $table .= '<td class="options">'.user_learning_plan_editbutton($plan->id, $renameplanstr)
-                                .' '. user_learning_plan_deletebutton($plan->id, $deleteplanstr).'</td>';
-                        }
-                        else {
-                            $table .= '<td></td>';
+                            $table .= user_learning_plan_editbutton($plan->id, $renameplanstr)
+                                .' '. user_learning_plan_deletebutton($plan->id, $deleteplanstr);
                         }
                     }
-                    $table .= '</tr>';
+                    if(has_capability('moodle/local:idpsetcurrent', $usercontext) && $plan->current!=1){
+                        $table .= user_learning_plan_currentsetbutton($plan->id, get_string('currentset', 'idp'), $userid);
+                    }
+                    $table .= ' '.user_learning_plan_clonebutton($plan->id, $cloneplanstr);
+                    $table .= '</td></tr>';
                 }
                 else {
                     $table .= "<tr><td><a href=\"revision.php?id={$plan->id}\">{$plan->planname}</a><td></tr>";
@@ -1561,6 +1602,28 @@ function user_learning_plan_deletebutton($planid, $deleteplanstr) {
         . "<img id=\"deleteplan{$planid}\" "
         . "style=\"cursor: pointer\" alt=\"$deleteplanstr\" "
         . "title=\"$deleteplanstr\" src=\"{$CFG->pixpath}/t/delete.gif\" "
+        . "/></a>";
+    return $link;
+}
+
+function user_learning_plan_currentsetbutton($planid, $makecurrentstr, $userid) {
+    global $CFG;
+    $link = "<a href=\"index.php?userid={$userid}"
+        . "&amp;planid={$planid}&amp;current=1\">"
+        . "<img id=\"current{$planid}\" "
+        . "style=\"cursor: pointer\" alt\"$makecurrentstr\" "
+        . "title=\"$makecurrentstr\" src=\"{$CFG->pixpath}/t/current.gif\" "
+        . "/></a>";
+    return $link;
+}
+
+function user_learning_plan_clonebutton($planid, $clonestr) {
+    global $CFG;
+    $link = "<a href=\"plan.php?planid={$planid}"
+        . "&amp;action=clone \">"
+        . "<img id=\"cloneplan{$planid}\" "
+        . "style=\"cursor: pointer\" alt\"$clonestr\" "
+        . "title=\"$clonestr\" src=\"{$CFG->pixpath}/t/copy.gif\" "
         . "/></a>";
     return $link;
 }
@@ -1914,9 +1977,6 @@ function print_revision_manager($revision, $plan, $formstartstr, $options=array(
     $competencies = idp_get_user_competencies($plan->userid, $revision->id);
     print_idp_competencies_view($revision, $competencies, $options['can_edit'], $haspositions);
 
-    $competencytemplates = idp_get_user_competencytemplates($plan->userid, $revision->id);
-    print_idp_competency_templates_view($revision, $competencytemplates, $options['can_edit'], $haspositions);
-
     $courses = idp_get_user_courses($plan->userid, $revision->id);
     print_idp_courses_view($revision, $courses, $options['can_edit']);
 
@@ -1960,9 +2020,6 @@ function print_revision_trainee($revision, $plan, $formstartstr, $options=array(
 
     $competencies = idp_get_user_competencies($plan->userid, $revision->id);
     print_idp_competencies_view($revision, $competencies, $options['can_edit'], $haspositions);
-
-    $competencytemplates = idp_get_user_competencytemplates($plan->userid, $revision->id);
-    print_idp_competency_templates_view($revision, $competencytemplates, $options['can_edit'], $haspositions);
 
     $courses = idp_get_user_courses($plan->userid, $revision->id);
     print_idp_courses_view($revision, $courses, $options['can_edit']);
@@ -2069,12 +2126,12 @@ function print_revision_pdf($revision, $plan, $options=array()) {
        print '<p><i>'.get_string('emptyplancompetencies', 'idp')."</i></p>\n";
     }
 
-    $competencytemplates = idp_get_user_competencytemplates($plan->userid, $revision->id);
+    /*$competencytemplates = idp_get_user_competencytemplates($plan->userid, $revision->id);
     if ($competencytemplates) {
         print_idp_competency_templates_view($revision, $competencytemplates, $options['can_edit']);
     } else {
         print '<p><i>'.get_string('emptyplancompetencytemplates','idp')."</i></p>\n";
-    }
+    }*/
 
     $courses = idp_get_user_courses($plan->userid, $revision->id);
     if ( $courses ) {
@@ -2117,7 +2174,11 @@ function idp_get_user_competencies($userid, $currevisionid) {
             f.id AS fid,
             f.fullname AS framework,
             d.fullname AS depth,
-            r.duedate as duedate
+            r.duedate as duedate,
+            sv.name as status,
+            ce.id as ceid,
+            ce.proficiency,
+            cs.proficient as proficientlevel
         FROM
             {$CFG->prefix}idp_revision_competency r
         INNER JOIN
@@ -2129,6 +2190,15 @@ function idp_get_user_competencies($userid, $currevisionid) {
         INNER JOIN
             {$CFG->prefix}comp_depth d
          ON d.id = c.depthid
+        LEFT JOIN
+            {$CFG->prefix}comp_evidence ce
+         ON ce.competencyid = r.competency
+        LEFT JOIN
+            {$CFG->prefix}comp_scale_values sv
+         ON sv.id = ce.proficiency
+        LEFT JOIN
+            {$CFG->prefix}comp_scale cs
+         ON cs.id = sv.scaleid
         WHERE r.revision = {$currevisionid}
         ";
     return get_records_sql($sql);
@@ -2190,6 +2260,7 @@ function idp_get_user_competencytemplates($userid, $currevisionid) {
  * @param array $grades         Array of grades as submitted by the grades form
  * @param string $extracomment  Optional comment added to the evaluation
  */
+
 function idp_get_user_courses($userid, $currevisionid) {
     global $CFG;
 
@@ -2200,16 +2271,22 @@ function idp_get_user_courses($userid, $currevisionid) {
             cc.id as ccid,
             cc.name as category,
             r.duedate as duedate,
-            NULL as status
+            ccomp.timestarted,
+            ccomp.timeenrolled,
+            ccomp.timecompleted,
+            ccomp.rpl
         FROM {$CFG->prefix}idp_revision_course r
         INNER JOIN {$CFG->prefix}course c
           ON c.id=r.course
         INNER JOIN {$CFG->prefix}course_categories cc
           ON c.category=cc.id
+        LEFT JOIN {$CFG->prefix}course_completions ccomp
+          ON c.id=ccomp.course AND ccomp.userid = {$userid}
         WHERE r.revision = {$currevisionid}
         ";
     return get_records_sql($sql);
 }
+
 
 /**
  * Mark the given revision as "evaluated" and give a grade to each
@@ -2220,7 +2297,8 @@ function idp_get_user_courses($userid, $currevisionid) {
  * @param string $extracomment  Optional comment added to the evaluation
  */
 function idp_submit_evaluation($revision, $compevals, $extracomment) {
-    global $USER;
+    global $USER, $CFG;
+    require_once($CFG->dirroot.'/hierarchy/type/competency/evidence/evidence.php');
 
     $record = new stdclass();
     $record->id = $revision->id;
@@ -2266,6 +2344,12 @@ function idp_submit_evaluation($revision, $compevals, $extracomment) {
             rollback_sql();
             return false;
         }
+
+        //Updating and creating competency evidence items when evaluating IDP
+        $compevidence = new competency_evidence(array('userid'=>$revision->userid, 'competencyid'=>$competency->id));
+        $compevidence->reaggregate = time();
+        $compevidence->update_proficiency($compevals[$competency->id]);
+
     }
 
     if (!update_record('idp_revision', $record)) {
@@ -2318,6 +2402,9 @@ function framework_evaluations($revisionid, $framework) {
         $table->tablealign = 'left';
         $table->summary = 'List of Competencies and a way to grade them';
 
+        $userobj = get_record_sql("SELECT i.userid FROM {$CFG->prefix}idp_revision ir LEFT JOIN {$CFG->prefix}idp i ON ir.idp=i.id WHERE ir.id={$revisionid}");
+        $userid = intval($userobj->userid);
+
         $lasttheme = '';
         foreach ($framework->competencies as $competency) {
 //            if ($lasttheme != $competency->themename) {
@@ -2333,9 +2420,19 @@ function framework_evaluations($revisionid, $framework) {
 
             // Form elements
             //$idfield = '<input type="hidden" name="compid[]" value="'.$competency->id .'" />';
+            $sql = "SELECT proficiency FROM {$CFG->prefix}comp_evidence WHERE competencyid = {$competency->id} AND userid = {$userid}";
+            $temp = get_record_sql($sql);
+            $competency->currentproficiency = intval($temp->proficiency);
+
             $grades = array();
             foreach( $framework->scale->valuelist as $scalevalue ){
-                $gradestr = '<input type="radio" name="compeval['.$competency->id.']" value="'.$scalevalue->id.'" ';
+                if($scalevalue->id == $competency->currentproficiency){
+                    $gradestr = '<input type="radio" name="compeval['.$competency->id.']" value="'.$scalevalue->id.'" checked="1" ';
+                }
+                else {
+                    $gradestr = '<input type="radio" name="compeval['.$competency->id.']" value="'.$scalevalue->id.'" ';
+                }
+
                 // TODO: handle partially completed forms
 //                if ($competency->grade !== null and $competency->grade == $i) {
 //                    $grades[$i] .= 'checked="checked" ';
@@ -2682,7 +2779,7 @@ function format_user_link($userid, $youstring='Yourself') {
  */
 function convert_userdate($datestring) {
     // Check for DD/MM/YYYY
-    if ($datearray = strptime($datestring, '%d/%m/%Y')) {
+    if ($datearray = strptime($datestring, DATE_FORMAT)) {
         return mktime($datearray['tm_hour'], $datearray['tm_min'], $datearray['tm_sec'],
                       1 + $datearray['tm_mon'], $datearray['tm_mday'], 1900 + $datearray['tm_year']);
     }
@@ -2847,7 +2944,6 @@ function get_all_competency_frameworks($fullcompetencylist){
 
         $frameworklist[$frameworkid] = $framework;
     }
-    
     return $frameworklist;
 }
 
@@ -2924,4 +3020,39 @@ SQL;
     }
     return $eval;
 }
+
+
+function idp_get_assigned_to_comptemplate($id, $userid) {
+    global $CFG;
+
+    $sql = "SELECT DISTINCT
+            c.id AS id,
+            d.fullname AS depth,
+            c.fullname AS competency,
+            sv.name as status
+        FROM
+            {$CFG->prefix}comp_template_assignment a
+        LEFT JOIN
+            {$CFG->prefix}comp_template t
+         ON t.id = a.templateid
+        LEFT JOIN
+            {$CFG->prefix}comp c
+         ON a.instanceid = c.id
+        LEFT JOIN
+            {$CFG->prefix}comp_depth d
+         ON c.depthid = d.id
+        LEFT JOIN
+            {$CFG->prefix}comp_evidence ce
+            ON ce.competencyid = c.id
+            AND ce.userid = {$userid}
+        LEFT JOIN
+            {$CFG->prefix}comp_scale_values sv
+         ON sv.id = ce.proficiency
+        WHERE
+            t.id = {$id}
+            ";
+    echo "<br>";
+    return get_records_sql($sql);
+}
+
 ?>

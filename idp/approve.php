@@ -46,7 +46,7 @@ $pagetitle = get_string('approving', 'idp').' '.format_string($plan->name);
 
 if ($confirm) {
     if (approve_revision($revision, $onbehalfof)) {
-        redirect($CFG->wwwroot.'/idp/index.php');
+        redirect($CFG->wwwroot.'/idp/index.php?userid='.$plan->userid);
     }
     else {
         error(get_string('approvalerror', 'idp'));
