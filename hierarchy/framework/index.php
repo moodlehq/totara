@@ -106,7 +106,7 @@ if ($frameworks) {
         $cssclass = !$framework->visible ? 'class="dimmed"' : '';
 
         $row[] = "<a $cssclass href=\"{$CFG->wwwroot}/hierarchy/framework/view.php?type={$type}&frameworkid={$framework->id}\">{$framework->fullname}</a>";
-        $row[] = $framework->item_count;
+        $row[] = "<a $cssclass href=\"{$CFG->wwwroot}/hierarchy/index.php?type={$type}&frameworkid={$framework->id}\">{$framework->item_count}</a>";
         $row[] = $framework->depth_count;
         $row[] = $framework->custom_field_count;
 
