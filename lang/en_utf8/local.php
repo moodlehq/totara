@@ -132,6 +132,7 @@ $string['enrolled'] = 'Enrolled';
 $string['started'] = 'Started';
 
 // Hierarchy
+$string['hierarchies'] = 'Hierarchies';
 $string['framework'] = 'Framework';
 $string['template'] = 'Template';
 $string['type'] = 'Type';

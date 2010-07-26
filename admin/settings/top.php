@@ -19,9 +19,7 @@ $ADMIN->add('root', new admin_externalpage('adminnotifications', get_string('not
 $ADMIN->add('root', new admin_externalpage('upgradesettings', get_string('upgradesettings', 'admin'), "$CFG->wwwroot/$CFG->admin/upgradesettings.php", 'moodle/site:config', true));
 
 $ADMIN->add('root', new admin_category('users', get_string('users','admin')));
-$ADMIN->add('root', new admin_category('positions', get_string('positions','position')));
-$ADMIN->add('root', new admin_category('organisations', get_string('organisations', 'organisation')));
-$ADMIN->add('root', new admin_category('competencies', get_string('competencies', 'competency')));
+$ADMIN->add('root', new admin_category('hierarchies', get_string('hierarchies','local')));
 $ADMIN->add('root', new admin_category('courses', get_string('courses','admin')));
 $ADMIN->add('root', new admin_category('grades', get_string('grades')));
 $ADMIN->add('root', new admin_category('location', get_string('location','admin')));
