@@ -208,7 +208,7 @@ class rb_source_feedback_questions extends rb_base_source {
                                 $columnoptions[] = new rb_column_option(
                                     'q' . $qid,
                                     $oid . '_sum',
-                                    $qname . ': # ' . $option->name,
+                                    'Q' . $qid . ': # option ' . $oid,
                                     'base.q' . $qid . '_' . $oid,
                                     array('grouping' => 'sum')
                                 );
@@ -216,7 +216,7 @@ class rb_source_feedback_questions extends rb_base_source {
                                 $columnoptions[] = new rb_column_option(
                                     'q' . $qid,
                                     $oid . '_perc',
-                                    $qname . ': % ' . $option->name,
+                                    'Q' . $qid . ': % option ' . $oid,
                                     'base.q' . $qid . '_' . $oid,
                                     array('grouping' => 'percent')
                                 );
@@ -225,7 +225,7 @@ class rb_source_feedback_questions extends rb_base_source {
                             $columnoptions[] = new rb_column_option(
                                 'q' . $qid,
                                 'total',
-                                $qname . ' # Responses',
+                                'Q' . $qid . ' # Responses',
                                 'base.q' . $qid . '_value',
                                 array('grouping' => 'count')
                             );
@@ -233,7 +233,7 @@ class rb_source_feedback_questions extends rb_base_source {
                             $columnoptions[] = new rb_column_option(
                                 'q' . $qid,
                                 'average',
-                                $qname . ' Average',
+                                'Q' . $qid . ' Average',
                                 'base.q' . $qid . '_value',
                                 array(
                                     'displayfunc' => 'round2',
@@ -248,7 +248,7 @@ class rb_source_feedback_questions extends rb_base_source {
                         $columnoptions[] = new rb_column_option(
                             'q' . $qid,
                             'count',
-                            $qname . ': # answers',
+                            'Q' . $qid . ': # answers',
                             'base.q' . $qid . '_answer',
                             array('grouping' => 'count')
                         );
@@ -256,7 +256,7 @@ class rb_source_feedback_questions extends rb_base_source {
                         $columnoptions[] = new rb_column_option(
                             'q' . $qid,
                             'list',
-                            $qname . ': All answers',
+                            'Q' . $qid . ': All answers',
                             'base.q' . $qid . '_answer',
                             array(
                                 'grouping' => 'list_dash',
@@ -270,7 +270,7 @@ class rb_source_feedback_questions extends rb_base_source {
                         $columnoptions[] = new rb_column_option(
                             'q' . $qid,
                             'count',
-                            $qname . ': # answers',
+                            'Q' . $qid . ': # answers',
                             'base.q' . $qid . '_answer',
                             array('grouping' => 'count')
                         );
@@ -278,7 +278,7 @@ class rb_source_feedback_questions extends rb_base_source {
                         $columnoptions[] = new rb_column_option(
                             'q' . $qid,
                             'sum',
-                            $qname . ': Sum',
+                            'Q' . $qid . ': Sum',
                             'base.q' . $qid . '_answer',
                             array('grouping' => 'sum')
                         );
@@ -286,7 +286,7 @@ class rb_source_feedback_questions extends rb_base_source {
                         $columnoptions[] = new rb_column_option(
                             'q' . $qid,
                             'average',
-                            $qname . ': Average',
+                            'Q' . $qid . ': Average',
                             'base.q' . $qid . '_answer',
                             array(
                                 'displayfunc' => 'round2',
@@ -297,7 +297,7 @@ class rb_source_feedback_questions extends rb_base_source {
                         $columnoptions[] = new rb_column_option(
                             'q' . $qid,
                             'min',
-                            $qname . ': Min',
+                            'Q' . $qid . ': Min',
                             'base.q' . $qid . '_answer',
                             array('grouping' => 'min')
                         );
@@ -305,7 +305,7 @@ class rb_source_feedback_questions extends rb_base_source {
                         $columnoptions[] = new rb_column_option(
                             'q' . $qid,
                             'max',
-                            $qname . ': Max',
+                            'Q' . $qid . ': Max',
                             'base.q' . $qid . '_answer',
                             array('grouping' => 'max')
                         );
@@ -313,7 +313,7 @@ class rb_source_feedback_questions extends rb_base_source {
                         $columnoptions[] = new rb_column_option(
                             'q' . $qid,
                             'stddev',
-                            $qname . ': Standard Deviation',
+                            'Q' . $qid . ': Standard Deviation',
                             'base.q' . $qid . '_answer',
                             array(
                                 'displayfunc' => 'round2',
@@ -340,6 +340,7 @@ class rb_source_feedback_questions extends rb_base_source {
 
         return $columnoptions;
     }
+
 
     function define_filteroptions() {
         $filteroptions = array(
