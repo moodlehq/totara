@@ -651,7 +651,7 @@ global $HTTPSPAGEREQUIRED;
     }
 
     if (!isset($CFG->theme)) {
-        $CFG->theme = 'totara';
+        $CFG->theme = 'totara_install';
     }
 
 /// now do a session test to prevent random user switching - observed on some PHP/Apache combinations,
