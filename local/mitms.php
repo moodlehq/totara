@@ -51,20 +51,11 @@ function mitms_reset_frontpage_blocks() {
     // build new block array
     $blocks = array(
         (object)array(
-            'blockid'  =>  get_field('block', 'id', 'name', 'mitms_my_learning_nav'),
-            'pageid'   => SITEID,
-            'pagetype' => 'course-view',
-            'position' => 'l',
-            'weight'   => 1,
-            'visible'  => 1,
-            'configdata' => '',
-        ),
-        (object)array(
             'blockid'  =>  get_field('block', 'id', 'name', 'admin_tree'),
             'pageid'   => SITEID,
             'pagetype' => 'course-view',
             'position' => 'l',
-            'weight'   => 3,
+            'weight'   => 1,
             'visible'  => 1,
             'configdata' => '',
         ),
