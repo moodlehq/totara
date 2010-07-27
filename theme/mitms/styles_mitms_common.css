@@ -94,6 +94,14 @@ table.feedback-table th, table.feedback-table td {
     padding: 4px;
 }
 
+hr.feedback-separator {
+    margin: 50px;
+    border-top: 1px solid black;
+    border-bottom: none;
+    border-left: none;
+    border-right: none;
+}
+
 th.feedback-option-number {
     width: 30px;
     text-align: center;
@@ -113,6 +121,7 @@ td.feedback-option-count {
 }
 
 table.feedback-bar-chart {
+    width: 100%;
     height: 20px;
 }
 

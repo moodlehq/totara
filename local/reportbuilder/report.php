@@ -56,7 +56,11 @@ $navigation = build_navigation($navlinks);
 print_header_simple($pagetitle, '', $navigation, '', null, true, $report->edit_button());
 
 // display heading including filtering stats
-print_heading("$fullname: ".get_string('showing','local')." $countfiltered / $countall");
+if($graph) {
+    print_heading($fullname);
+} else {
+    print_heading("$fullname: ".get_string('showing','local')." $countfiltered / $countall");
+}
 
 if($debug) {
     $report->debug($debug);
@@ -84,7 +88,9 @@ if($countfiltered>0) {
     // export button
     $report->export_select();
 } else {
+    print_box_start();
     print get_string('noresultsfound','local');
+    print_box_end();
 }
 
 
