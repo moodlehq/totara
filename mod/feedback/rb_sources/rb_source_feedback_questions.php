@@ -467,6 +467,11 @@ class rb_source_feedback_questions extends rb_base_source {
     function define_defaultcolumns() {
         $defaultcolumns = array(
             array(
+                'type' => 'course',
+                'value' => 'courselink',
+                'heading' => 'Course Name',
+            ),
+            array(
                 'type' => 'feedback',
                 'value' => 'name',
             ),
@@ -488,16 +493,11 @@ class rb_source_feedback_questions extends rb_base_source {
                     case 'dropdown':
                     case 'dropdownrated':
                     case 'check':
-                        if($options = get_records($this->grouptables . 'opt', 'qid', $qid, 'sortorder')) {
-                            foreach($options as $option) {
-                                $oid = $option->sortorder;
-                                // number that selected this option
-                                $defaultcolumns[] = array(
-                                    'type' => 'q' . $qid,
-                                    'value' => $oid . '_sum',
-                                );
-                            }
-                        }
+                        // average answer
+                        $defaultcolumns[] = array(
+                            'type' => 'q' . $qid,
+                            'value' => 'average',
+                        );
                     break;
                     case 'textarea':
                     case 'textfield':
@@ -520,8 +520,8 @@ class rb_source_feedback_questions extends rb_base_source {
 
         $defaultfilters = array(
             array(
-                'type' => 'feedback',
-                'value' => 'name',
+                'type' => 'course',
+                'value' => 'fullname',
             ),
         );
         // by default add each tag filter as an advanced option
