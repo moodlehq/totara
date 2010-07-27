@@ -21,15 +21,15 @@ class reportbuilderlib_test extends prefix_changing_test_case {
     );
 
     var $reportbuilder_columns_data = array(
-        array('id', 'reportid', 'type', 'value', 'heading', 'sortorder'),
-        array(1, 1, 'user', 'namelink', 'Participant', 1),
-        array(2, 1, 'competency', 'competencylink', 'Competency', 2),
-        array(3, 1, 'user', 'organisation', 'Office', 3),
-        array(4, 1, 'competency_evidence', 'organisation', 'Completion Office', 4),
-        array(5, 1, 'user', 'position', 'Position', 5),
-        array(6, 1, 'competency_evidence', 'position', 'Completion Position', 6),
-        array(7, 1, 'competency_evidence', 'proficiency', 'Proficiency', 7),
-        array(8, 1, 'competency_evidence', 'completeddate', 'Completion Date', 8),
+        array('id', 'reportid', 'type', 'value', 'heading', 'sortorder', 'hidden'),
+        array(1, 1, 'user', 'namelink', 'Participant', 1, 0),
+        array(2, 1, 'competency', 'competencylink', 'Competency', 2, 0),
+        array(3, 1, 'user', 'organisation', 'Office', 3, 0),
+        array(4, 1, 'competency_evidence', 'organisation', 'Completion Office', 4, 0),
+        array(5, 1, 'user', 'position', 'Position', 5, 0),
+        array(6, 1, 'competency_evidence', 'position', 'Completion Position', 6, 0),
+        array(7, 1, 'competency_evidence', 'proficiency', 'Proficiency', 7, 0),
+        array(8, 1, 'competency_evidence', 'completeddate', 'Completion Date', 8, 0),
     );
 
     var $reportbuilder_filters_data = array(
