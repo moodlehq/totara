@@ -2100,6 +2100,57 @@ class reportbuilder {
     }
 
 
+    /*
+     * Return HTML to display the results of a feedback activity
+     */
+    function print_feedback_results() {
+        $out = '';
+        $groupid = $this->src->groupid;
+        $out .= print_box_start('generalbox', '', true);
+
+        if(!$groupid) {
+            $out .= 'Bad grouping';
+        }
+        $questionstable = "report_builder_fbq_{$groupid}_q";
+        $optionstable = "report_builder_fbq_{$groupid}_opt";
+        $answerstable = "report_builder_fbq_{$groupid}_a";
+
+        $questions = get_records($questionstable, '', '', 'sortorder');
+        $options = get_records($optionstable, '', '', 'qid,sortorder');
+        $grouped_options = array();
+        foreach($options as $option) {
+            $grouped_options[$option->qid][] = $option;
+        }
+        $sql = $this->build_query(false, true);
+        $data = get_records_sql($sql);
+        if($data) {
+
+            foreach($data as $item) {
+                $out .= '<h2>' . current($item) . '</h2>';
+                $out .= '<p>Average results from ' . $item->responses_number . ' responses.</p>';
+                foreach($questions as $question) {
+                    $qnum = $question->sortorder;;
+                    $qname = stripslashes($question->name);
+                    $qid = $question->id;
+                    $out .= '<h3>Q' . $qnum . ': ' . $qname . '</h3>';
+                    if(!array_key_exists($qid, $grouped_options)) {
+                        continue;
+                    }
+                    foreach($grouped_options[$qid] as $option) {
+                        $onum = $option->sortorder;
+                        $out .= stripslashes($option->name) . '<br />';
+                        $itemnum = 'q'.$qnum.'_'.$onum.'_sum';
+                        $out .= '[' . $item->$itemnum . ']<br />';
+                    }
+                }
+            }
+        }
+
+        $out .= print_box_end(true);
+
+        return $out;
+    }
+
 } // End of reportbuilder class
 
 class ReportBuilderException extends Exception { }

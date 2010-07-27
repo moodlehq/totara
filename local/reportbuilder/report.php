@@ -4,21 +4,11 @@ require_once('../../config.php');
 require_once($CFG->dirroot.'/local/reportbuilder/lib.php');
 require_once($CFG->dirroot.'/local/js/lib/setup.php');
 
-// Setup custom javascript
-local_js(array(
-    MBE_JS_DIALOG,
-));
-
-require_js(
-    array(
-        $CFG->wwwroot.'/local/reportbuilder/showhide.js.php'
-    )
-);
-
 $format    = optional_param('format', '', PARAM_TEXT);
 $id = required_param('id',PARAM_INT);
 $sid = optional_param('sid', '0', PARAM_INT);
 $debug = optional_param('debug', 0, PARAM_INT);
+$pretty = optional_param('pretty', 0, PARAM_INT);
 
 // new report object
 $report = new reportbuilder($id, null, false, $sid);
@@ -35,6 +25,21 @@ if($format!='') {
     $report->export_data($format);
     die;
 }
+
+
+if(!$pretty) {
+    // Setup custom javascript
+    local_js(array(
+        MBE_JS_DIALOG,
+    ));
+
+    require_js(
+        array(
+            $CFG->wwwroot.'/local/reportbuilder/showhide.js.php'
+        )
+    );
+}
+
 $countfiltered = $report->get_filtered_count();
 // save a query if no filters set
 $countall = ($report->get_sql_filter() == '') ? $countfiltered : $report->get_full_count();
@@ -68,8 +73,12 @@ print "<br /><br />";
 
 // show results
 if($countfiltered>0) {
-    print $report->showhide_button();
-    $report->display_table();
+    if($pretty) {
+        print $report->print_feedback_results();
+    } else {
+        print $report->showhide_button();
+        $report->display_table();
+    }
     // export button
     $report->export_select();
 } else {
