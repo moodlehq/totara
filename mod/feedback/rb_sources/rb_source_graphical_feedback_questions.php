@@ -295,6 +295,17 @@ class rb_source_graphical_feedback_questions extends rb_base_source {
                             'base.q' . $qid . '_answer',
                             array('grouping' => 'count')
                         );
+                        // display all answers
+                        $requiredcolumns[] = new rb_column(
+                            'q' . $qid,
+                            'list',
+                            'Q' . $qid . ': All answers',
+                            'base.q' . $qid . '_answer',
+                            array(
+                                'grouping' => 'list_dash',
+                                'style' => array('min-width' => '200px'),
+                            )
+                        );
                         // sum of all answers provided
                         $requiredcolumns[] = new rb_column(
                             'q' . $qid,
