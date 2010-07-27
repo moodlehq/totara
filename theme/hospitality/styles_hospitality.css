@@ -323,23 +323,48 @@ h6 {
  * Tabs
  **/
 .tabtree {
-  margin-top: 15px;
+	margin-top: 15px;
 }
-
+.tabrow0 .empty {
+	height: 0;	
+}
 .tabrow0 a {
-  color: #ac0f0f;
-  font-size: 105%;
-  font-weight: bold;
-  line-height: 1.13em;
+	color: #AC0F0F;
+	font-size: 105%;
+	font-weight: bold;
+	line-height 1.13em;
 }
-
 .tabrow0 a {
-  background: transparent url(images/tab/left.gif) no-repeat left top;
+	background: transparent url(images/tab/left.gif) no-repeat left top;
 }
-
 .tabrow0 a span {
-  background: transparent url(images/tab/right.gif) no-repeat right top;
+	background: transparent url(images/tab/right.gif) no-repeat right top;
+}
+.tabrow0 li.selected a span,
+.tabrow0 li.selected a:hover span,
+.tabrow0 li.active a span,
+.tabrow0 li.active a:hover span {
+	background:url(images/tab/right-selected.gif) no-repeat scroll right top transparent;
+}
+.tabrow0 li.selected a,
+.tabrow0 li.selected a:hover,
+.tabrow0 li.active a,
+.tabrow0 li.active a:hover{
+	background:url(images/tab/left-selected.gif) no-repeat scroll left top transparent;
+}
+.tabrow0 div, .tabrow0 ul.tabrow1 {
+	background:url(images/tab/tab-nav-row.gif) repeat scroll 0 0 transparent;
+	border-color:#CCCCCC;
+	margin-top:1px;
+}
 
+ul.tabrow1 li.here a,
+ul.tabrow1 li a:link,
+ul.tabrow1 li a:visited{
+	background: none;	
+}
+body#course-user .section {
+	margin-top: 20px;	
 }
 
 /* Hover Styles */
@@ -347,51 +372,52 @@ h6 {
 .tabrow0 a:visited:hover,
 .tabrow0 .last a:hover,
 .tabrow0 a:hover {
-  background-image: url(images/tab/left_hover.gif);
-  color: #FFFFFF;
-  text-decoration: none;
+ background-image: url(images/tab/left_hover.gif);
+ color: #FFFFFF;
+ text-decoration: none;
 }
 .tabrow0 a:link:hover span,
 .tabrow0 a:visited:hover span,
 .tabrow0 .last a:hover span,
 .tabrow0 a:hover span {
-  background-image: url(images/tab/right_hover.gif);
+	background-image: url(images/tab/right_hover.gif);
 }
-
 .tabrow0 .here a:hover {
-  background-image: url(images/tab/left.gif);
+	background-image: url(images/tab/left.gif);
 }
-
 .tabrow0 .here a:hover span {
-  background-image: url(images/tab/right.gif);
+	background-image: url(images/tab/right.gif);
 }
-
 .tabrow0 .here a,
 .tabrow0 .here a:hover {
-  color: #444;
-  text-decoration: none;
+	color: #444;
+	text-decoration: none;
 }
 
 ul.tabrow1 li a,
 ul.tabrow1 li a:link,
-ul.tabrow1 li a:visited,
+ul.tabrow1 li a:visited {
+	color: #AC0F0F;
+}
+ul.tabrow1 li a:hover {
+	color: #002C3F;
+	text-decoration: underline;
+}
 .tabrow0 ul li a:hover span,
 .tabrow0 ul a {
-  color: #003466;
-  text-decoration: none;
+	color: #002C3F;
+	text-decoration: none;
 }
-
 .tabrow0 ul li.here a:hover span {
-  color: #444;
+	color: #444;
+}
+.tabrow0 div,
+.tabrow0 ul {
+	border-color: #cccccc;
+	padding-top: .55em;
+	background: url(images/navbar_bg.jpg) repeat-x top center;
 }
 
-.tabrow0 div, .tabrow0 ul {
-  border-color: #cccccc;
-  padding-top: .55em;
-  background: url(images/navbar_bg.jpg) repeat-x top center;
-  margin-top: 1px;
-  *margin-top: 3px;
-}
 
 /* Header tabs */
 .header-tabs .tabtree {

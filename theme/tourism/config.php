@@ -29,7 +29,7 @@ $THEME->standardsheets = array('styles_layout','styles_fonts','styles_color');
 
 
 
-$THEME->parent = 'mitms';
+$THEME->parent = 'mitms'; 
 
 /// This variable can be set to the name of a parent theme
 /// which you want to have included before the current theme.

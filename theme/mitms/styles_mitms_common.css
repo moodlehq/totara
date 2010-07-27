@@ -54,49 +54,9 @@ div.mycourses td.status span.completion-completeviarpl {
 
 .block_admin li.r1 {
 	background: transparent;
-}
+}	
 
-/*****************************************************************************/
-/** TABS **/
-/*****************************************************************************/
-.tabtree {
-	height: 50px;	
-}
 
-.tabrow0 li.selected a span,
-.tabrow0 li.selected a:hover span,
-.tabrow0 li.active a span  {
-	background:url("images/tab/right-selected.gif") no-repeat scroll right top transparent;
-}
-.tabrow0 li.selected a,
-.tabrow0 li.selected a:hover,
-.tabrow0 li.active a {
-	background:url("images/tab/left-selected.gif") no-repeat scroll left top transparent;
-}
-
-.tabrow0 div, .tabrow0 ul {
-	background:url("images/tab/tab-nav-row.gif") repeat scroll 0 0 transparent;
-	border-color:#CCCCCC;
-	margin-top:1px;
-	padding:6px 0;
-}
-
-ul.tabrow1 li.here.selected a,
-ul.tabrow1 li.active a{
-	background: none;	
-}
-ul.tabrow1 li a,
-ul.tabrow1 li a:link,
-ul.tabrow1 li a:visited,
-.tabrow0 ul li a:hover span,
-.tabrow0 ul a {
-	text-decoration:none;
-	background: none;
-}
-
-ul.tabrow1 li a:hover {
-	text-decoration: underline;	
-}
 
 /*****************************************************************************/
 /** Report Builder **/
@@ -1059,7 +1019,7 @@ body#help div#page div.navbar,
 body#help div#page #header-logo-container,
 body#help div#page div#footer,
 body#help div#page div.login-container {
-	width: auto;
+	width: auto;	
 }
 
 body#message-index div#page div.tertiary,
@@ -1068,7 +1028,7 @@ body#message-index div#page div.navbar,
 body#message-index div#page #header-logo-container,
 body#message-index div#footer,
 body#message-index div#page div.login-container {
-	width: auto;
+	width: auto;	
 }
 
 body#help .headermenu,
@@ -1079,7 +1039,7 @@ body#message-index .headermenu {
 }
 body#help #header-logo-container,
 body#message-index #header-logo-container {
-	height: 90px;
+	height: 90px;	
 }
 
 body#help #header-logo-container div.logo img,

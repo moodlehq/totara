@@ -1,0 +1,86 @@
+/*
+ * These styles are ONLY included for IE 7 (via meta.php)
+ */
+
+
+.tabtree {
+	height: 55px;	
+}
+.tabrow0 li {
+  margin-left: 0;
+}
+
+.tabrow0 li.first {
+  margin-right: -4px;
+}
+
+.tabrow0 li.onerow {
+  margin-right: 0;
+}
+
+.tabrow0 a {
+  display: inline-block;
+  padding: 8px 0 0.35em 13px;
+  line-height: 1.5em !important;
+}
+
+.tabrow0 a span {
+  padding: 10px 1em 10px 0;
+}
+
+.tabrow0 div,
+ {
+  top: 2.6em;
+  padding: 0.2em 0;
+}
+
+.tabrow0 ul {
+	top: 3.9em
+}
+
+.tabrow0 div.empty {
+  margin-right: 0;
+  margin-top:13px !important;
+}
+
+.sideblock {
+  overflow: hidden;
+}
+
+.sideblock .content {
+  word-wrap: break-word;
+}
+
+body#course-user .section {
+	margin-top: 20px;	
+}
+
+
+/*fix for misalignment of text fields in ie */
+form.mform input[type=text],
+form.mform input[type=file],
+form.mform input[type=password] {
+ margin-left: -10px;
+}
+
+form.mform textarea {
+ margin-left: -10px;
+}
+
+form.mform .fcheckbox input {
+  margin-left: -3px;
+}
+
+/* Fix for MITMS dialogs */
+div.mitms-dialog div.ui-dialog-titlebar a.ui-dialog-titlebar-close span {
+    left: -45px;
+}
+
+.login-container {
+	text-align: right;
+}
+
+.headermenu {
+	text-align: left;	
+}
+
