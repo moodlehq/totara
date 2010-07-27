@@ -272,6 +272,12 @@ class rb_source_competency_evidence extends rb_base_source {
                 null                                // joins
             ),
             new rb_content_option(
+                'current_pos',                      // class name
+                "The user's current position",      // title
+                'base.userid',                      // field
+                null                                // joins
+            ),
+            new rb_content_option(
                 'completed_org',
                 "The organisation when completed",
                 'base.organisationid'

@@ -245,6 +245,12 @@ class rb_source_facetoface_sessions extends rb_base_source {
                 'signup'                            // joins
             ),
             new rb_content_option(
+                'current_pos',                      // class name
+                "The user's current position",      // title
+                'signup.userid',                    // field
+                'signup'                            // joins
+            ),
+            new rb_content_option(
                 'user',
                 'The user',
                 'signup.userid',

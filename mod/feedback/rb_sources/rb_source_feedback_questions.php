@@ -429,8 +429,12 @@ class rb_source_feedback_questions extends rb_base_source {
             new rb_content_option(
                 'current_org',                      // class name
                 "The user's current organisation",  // title
-                'signup.userid',                    // field
-                'signup'                            // joins
+                'base.userid'                      // field
+            ),
+            new rb_content_option(
+                'current_pos',
+                "The user's current position",
+                'base.userid'
             ),
             /*
             new rb_content_option(
@@ -445,7 +449,6 @@ class rb_source_feedback_questions extends rb_base_source {
 
     function define_paramoptions() {
         $paramoptions = array(
-            /*
             new rb_param_option(
                 'userid',         // parameter name
                 'base.userid'     // field
@@ -455,7 +458,6 @@ class rb_source_feedback_questions extends rb_base_source {
                 'f.course',
                 'feedback'
             ),
-             */
         );
 
         return $paramoptions;

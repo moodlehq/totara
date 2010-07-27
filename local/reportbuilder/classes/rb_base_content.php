@@ -27,6 +27,122 @@ abstract class rb_base_content {
 
 ///////////////////////////////////////////////////////////////////////////
 
+
+/*
+ * Restrict content by a position ID
+ * Pass in an integer that represents the position ID
+ */
+class rb_current_pos_content extends rb_base_content {
+    function sql_restriction($field, $reportid) {
+        global $CFG, $USER;
+        require_once($CFG->dirroot.'/hierarchy/lib.php');
+        require_once($CFG->dirroot.'/hierarchy/type/position/lib.php');
+
+        // remove rb_ from start of classname
+        $type = substr(get_class($this), 3);
+        $settings = reportbuilder::get_all_settings($reportid, $type);
+
+        $userid = $USER->id;
+        // get the user's positionid (for primary position)
+        $posid = get_field('pos_assignment', 'positionid', 'userid', $userid,
+            'type', 1);
+        // no results if they don't have one
+        if(empty($posid)) {
+            return 'FALSE';
+        }
+
+        if($settings['recursive']) {
+            // get list of positions to find users for
+            $hierarchy = new position();
+            $children = $hierarchy->get_item_descendants($posid);
+            $plist = array();
+            foreach($children as $child) {
+                $plist[] = "'{$child->id}'";
+            }
+        } else {
+            $plist = array($posid);
+        }
+
+        // return users who are in a position in that list
+        $users = get_records_select('pos_assignment',
+            "positionid IN (" . implode(',', $plist) . ")", '', 'userid');
+        $ulist = array();
+        foreach ($users as $user) {
+            $ulist[] = $user->userid;
+        }
+        return $field.' IN ('. implode(',',$ulist). ')';
+    }
+
+    function text_restriction($title, $reportid) {
+        global $USER;
+        $userid = $USER->id;
+
+        // remove rb_ from start of classname
+        $type = substr(get_class($this), 3);
+        $settings = reportbuilder::get_all_settings($reportid, $type);
+
+        $posid = get_field('pos_assignment', 'positionid',
+            'userid', $userid, 'type', 1);
+        $posname = get_field('pos','fullname','id', $posid);
+        $children = $settings['recursive'] ?
+            ' ' . get_string('orsubpos','local') : '';
+        return $title . ' ' . get_string('is','local') .' "' . $posname . '"' .
+            $children;
+    }
+
+    function form_template(&$mform, $reportid) {
+        // get current settings
+        // remove rb_ from start of classname
+        $type = substr(get_class($this), 3);
+        $enable = reportbuilder::get_setting($reportid, $type, 'enable');
+        $recursive = reportbuilder::get_setting($reportid, $type, 'recursive');
+
+        $mform->addElement('header', 'current_pos_header',
+            get_string('showbycurrentpos','local'));
+        $mform->addElement('checkbox', 'current_pos_enable', '',
+            get_string('currentposenable','local'));
+        $mform->setDefault('current_pos_enable', $enable);
+        $mform->disabledIf('current_pos_enable','contentenabled', 'eq', 0);
+        $radiogroup = array();
+        $radiogroup[] =& $mform->createElement('radio', 'current_pos_recursive',
+            '', get_string('yes'), 1);
+        $radiogroup[] =& $mform->createElement('radio', 'current_pos_recursive',
+            '', get_string('no'), 0);
+        $mform->addGroup($radiogroup, 'current_pos_recursive_group',
+            get_string('includechildpos','local'), '<br />', false);
+        $mform->setDefault('current_pos_recursive', $recursive);
+        $mform->disabledIf('current_pos_recursive_group', 'contentenabled',
+            'eq', 0);
+        $mform->disabledIf('current_pos_recursive_group', 'current_pos_enable',
+            'notchecked');
+        $mform->setHelpButton('current_pos_header',
+            array('reportbuildercurrentpos',
+            get_string('showbycurrentpos', 'local'), 'moodle'));
+    }
+
+    function form_process($reportid, $fromform) {
+        $status = true;
+        // remove rb_ from start of classname
+        $type = substr(get_class($this), 3);
+
+        // enable checkbox option
+        $enable = (isset($fromform->current_pos_enable) &&
+            $fromform->current_pos_enable) ? 1 : 0;
+        $status = $status && reportbuilder::update_setting($reportid, $type,
+            'enable', $enable);
+
+        // recursive radio option
+        $recursive = isset($fromform->current_pos_recursive) ?
+            $fromform->current_pos_recursive : 0;
+        $status = $status && reportbuilder::update_setting($reportid, $type,
+            'recursive', $recursive);
+
+        return $status;
+    }
+}
+
+
+
 /*
  * Restrict content by an organisation ID
  * Pass in an integer that represents the organisation ID
