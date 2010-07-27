@@ -12,12 +12,15 @@ $(function() {
     (function() {
         $('#show-showhide-dialog').css('display','block');
         var url = '<?php echo $CFG->wwwroot ?>/local/reportbuilder/';
-        mitmsDialog(
-            'showhide',
-            'show-showhide-dialog',
+
+        var handler = new mitmsDialog_handler_treeview();
+        var name = 'showhide';
+
+        mitmsDialogs[name] = new mitmsDialog(
+            name,
+            'show-'+name+'-dialog',
             {},
-            url+'showhide.php?id='+id,
-            null
+            url+'showhide.php?id='+id
         );
     })();
 
