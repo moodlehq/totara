@@ -1,0 +1,13 @@
+/*
+ * These styles are ONLY included for IE 8 (via meta.php)
+ */
+
+.tabrow0 a{
+	line-height: 2em !important;
+}
+.tabrow0  ul.tabrow1 {
+	margin-top: 2px;
+}
+body#course-user .section {
+	margin-top: 10px;	
+}
