@@ -14,17 +14,12 @@ function reportbuilder_cron() {
         return false;
     }
 
-    $sources = rb_get_active_sources();
-    foreach($sources as $source) {
-        $src = reportbuilder::get_source_object($source);
-        // see if source requires pre-processing
-        if(!property_exists($src, 'preproc') || $src->preproc === null) {
-            continue;
-        }
+    $groups = get_records('report_builder_group', '', '' ,'id');
 
-        // if preprocessing is needed it should have a groupid
-        $preproc = $src->preproc;
-        $groupid = $src->groupid;
+    foreach($groups as $group) {
+
+        $preproc = $group->preproc;
+        $groupid = $group->id;
 
         // create instance of preprocessor
         if(!$pp = reportbuilder::get_preproc_object($preproc, $groupid)) {
@@ -38,8 +33,8 @@ function reportbuilder_cron() {
         // get a list of items that need processing
         $items = $pp->get_group_items();
 
-        mtrace("Running '$preproc' pre-processor from source '$source'" .
-            ' on ' . count($items) . ' items.');
+        mtrace("Running '$preproc' pre-processor on group '{$group->name}' (" .
+              count($items) . ' items).');
 
         foreach($items as $item) {
 
