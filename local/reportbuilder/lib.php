@@ -2109,7 +2109,7 @@ class reportbuilder {
         $out .= print_box_start('generalbox', '', true);
 
         if(!$groupid) {
-            $out .= 'Bad grouping';
+            $out .= 'The activity group could not be found';
         }
         $questionstable = "report_builder_fbq_{$groupid}_q";
         $optionstable = "report_builder_fbq_{$groupid}_opt";
@@ -2127,20 +2127,36 @@ class reportbuilder {
 
             foreach($data as $item) {
                 $out .= '<h2>' . current($item) . '</h2>';
-                $out .= '<p>Average results from ' . $item->responses_number . ' responses.</p>';
+                $out .= '<p>Results from <strong>' . $item->responses_number . '</strong> responses.</p>';
                 foreach($questions as $question) {
                     $qnum = $question->sortorder;;
                     $qname = stripslashes($question->name);
                     $qid = $question->id;
                     $out .= '<h3>Q' . $qnum . ': ' . $qname . '</h3>';
-                    if(!array_key_exists($qid, $grouped_options)) {
-                        continue;
+
+                    switch($question->typ) {
+                    case 'dropdown':
+                    case 'rateddropdown':
+                    case 'check':
+                    case 'radio':
+                    case 'ratedradio':
+
+                        if(!array_key_exists($qid, $grouped_options)) {
+                            continue;
+                        }
+                        $out .= $this->get_feedback_option_answer($qid, $grouped_options[$qid], $item);
+                        break;
+                    case 'textarea':
+                    case 'textfield':
+                    case 'numeric':
+                        $out .= $this->get_feedback_standard_answer($qid, $item);
+                        break;
+                    default:
                     }
+
                     foreach($grouped_options[$qid] as $option) {
                         $onum = $option->sortorder;
-                        $out .= stripslashes($option->name) . '<br />';
                         $itemnum = 'q'.$qnum.'_'.$onum.'_sum';
-                        $out .= '[' . $item->$itemnum . ']<br />';
                     }
                 }
             }
@@ -2151,6 +2167,62 @@ class reportbuilder {
         return $out;
     }
 
+    function get_feedback_standard_answer($qid, $item) {
+        $out = '';
+        $count = 'q' . $qid . '_count';
+        $answer = 'q' . $qid . '_list';
+        if(isset($item->$count)) {
+            $out .= $item->$count . ' response(s).';
+        }
+        if(isset($item->$answer) && $item->$answer != '') {
+            $responses = str_replace(array('<br />'),array("\n"), stripslashes($item->$answer));
+            $out .= '<br /><textarea rows="5" cols="100">' . $responses . '</textarea>';
+        }
+        return $out;
+    }
+
+    function get_feedback_option_answer($qid, $options, $item) {
+        $count = array();
+        $perc = array();
+        foreach($options as $option) {
+            $oid = $option->sortorder;
+            $countname = 'q' . $qid . '_' . $oid . '_sum';
+            $percname = 'q' . $qid . '_' . $oid . '_perc';
+            if(isset($item->$countname)) {
+                $count[$oid] = $item->$countname;
+            } else {
+                $count[$oid] = null;
+            }
+            if(isset($item->$percname)) {
+                $perc[$oid] = $item->$percname;
+            } else {
+                $perc[$oid] = null;
+            }
+        }
+        $maxcount = max($count);
+        $maxbarwidth = 300; // px
+        $out = '<table class="feedback-table">';
+        foreach($options as $option) {
+            $oid = $option->sortorder;
+            $out .= '<tr>';
+            $out .= '<th class="feedback-option-number">' . $oid . '</th>';
+            $out .= '<td class="feedback-option-name">' . stripslashes($option->name) . "</td>\n";
+            $barwidth = $count[$oid]/$maxcount * $maxbarwidth;
+            $spacewidth = ($maxcount - $count[$oid])/$maxcount * $maxbarwidth;
+            $out .= '<td class="feedback-option-chart"><table class="feedback-bar-chart"><tr>';
+            $out .= '<td class="feedback-bar-color" width="'.$barwidth.'"></td>' . "\n";
+            $out .= '<td class="feedback-bar-blank" width="'.$spacewidth.'"></td>'. "\n";
+            $out .= '</td></tr></table>';
+            $out .= '<td class="feedback-option-count"> ' . $count[$oid];
+            if(isset($perc[$oid])) {
+                $out .= ' (' . $perc[$oid] . '%)';
+            }
+            $out .= ' </td>' . "\n";
+            $out .= '</tr>';
+        }
+        $out .= '</table>';
+        return $out;
+    }
 } // End of reportbuilder class
 
 class ReportBuilderException extends Exception { }
