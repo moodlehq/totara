@@ -21,7 +21,8 @@ body {
   color: #322f2c;
   padding: 0;
   margin:0;
-  background: #e4e4e4 url('images/bg_grn.jpg') repeat-x top center;
+  background: #E4E4E4 url("images/bg_grn_ftr.jpg") bottom left repeat-x scroll;
+  background-attachment: fixed;
 }
 
 p, li {
@@ -43,17 +44,30 @@ input, select, button {
  * Layout Styles
  **/
 #wrapper {
-  background: transparent url('images/bg_grn_ftr.jpg') repeat-x bottom center;
+  background: transparent url('images/bg_shadow.png') repeat-y top left;
   min-height: 100%;
+  margin: 0 auto;
+  width: 980px;
+}
+
+#top-bg {
+	background: #e4e4e4 url('images/bg_grn.jpg') repeat-x top center;
+	top:0;
+	right: 0;
+	height:114px;
+	position:absolute;
+	width:100%;
+	z-index: -99;
+	overflow:auto
 }
 #container {
-  width: 960px;
   padding-left: 10px;
   padding-right: 10px;
   padding-bottom: 30px;
   margin: 0 auto;
-  background: transparent url('images/bg_shadow.png') repeat-y top left;
   overflow:auto;
+  display: auto;
+  word-wrap: break-word;
 }
 #page {
   background: #FFFFFF; 
@@ -261,7 +275,7 @@ div#header .logo {
 	margin:0;
 	list-style:none;
 	float:left;
-	width:600px;		
+	width:auto;		
 }
 #totara_menu ul li {
 	font-family: 'Trebuchet ms', verdana, helvetica, sans-serif;
@@ -494,6 +508,12 @@ body.calendar #totara_menu ul #menu6 ul {
 #footer .footerlinks li div a {
   font-family: 'Trebuchet ms', verdana, helvetica, sans-serif;
   color: #FFFFFF;
+}
+
+#footer .validators ul li a:link,
+#footer .validators ul li a:visited,
+#footer .validators ul li a:hover {
+	color: #FFFFFF;
 }
 
 /**
@@ -1410,4 +1430,9 @@ div.yuimenu .yuichildtree .yuimenuitem {
 }
 .grade-report-grader table#user-grades {
   font-size: 11px;
+}
+
+#notice.generalbox {
+	text-align: center;
+	padding: 3px 0 10px;
 }
