@@ -83,25 +83,25 @@ print_heading($strguidesavailable);
 
 if ($guides) {
     print '<table class="generalbox guides boxaligncenter">';
-    print '<tr class="header"><th class="name">'.get_string('guide', 'blocks/guides').'</th><th class="description">'.get_string('description').'</th><th class="status">'.get_string('status','blocks/guides').'</th><th class="options">'.get_string('options', 'blocks/guides').'</th></tr>';
+    print '<tr class="header"><th class="header name">'.get_string('guide', 'blocks/guides').'</th><th class="header description">'.get_string('description').'</th><th class="header status">'.get_string('status','blocks/guides').'</th><th class="header options">'.get_string('options', 'blocks/guides').'</th></tr>';
     $rowcount = 0;
     foreach ($guides as $guide) {
         if (isset($guideinstances[$guide->id]))
             print '<tr class="r'.$rowcount.'">' . "\n" . '<td><span class="guideindextitle"><a href="' . $CFG->wwwroot . '/guides/view.php?gi=' . $guideinstances[$guide->id]->giid .'">'.$guide->name . '</a></span>';
         else
             print '<tr class="r'.$rowcount.'">' . "\n" . '<td><span class="guideindextitle">' . $guide->name . '</a></span>';
-        print '<td><span class="guideindexdescription">' . $guide->description . '</span>';
-        print '<td><span class="guideindexlink">';
+        print '<td class="cell"><span class="guideindexdescription">' . $guide->description . '</span>';
+        print '<td class="cell"><span class="guideindexlink">';
         if (isset($guideinstances[$guide->id])) {
             print ' <a href="' . $CFG->wwwroot . '/guides/view.php?gi=' . $guideinstances[$guide->id]->giid . '">';
             if ($guideinstances[$guide->id]->progress == 100) {
                 print $strviewguide;
-                print '</td><td><a href="/guides/delete.php?gi=' . $guideinstances[$guide->id]->giid . '">';
+                print '</td><td class="cell"><a href="/guides/delete.php?gi=' . $guideinstances[$guide->id]->giid . '">';
                 print '<img src="' . $CFG->wwwroot . '/theme/' . $CFG->theme . '/pix/t/delete.gif" class="iconsmall" alt="delete guide progress" />';
             } else {
                 print '</a><img src="' . $CFG->wwwroot . '/guides/percentImage.png" alt="' . $guideinstances[$guide->id]->progress . '%" style="background: white url(/guides/percentImage_back.png) top left no-repeat;padding: 0;margin: 5px 0 0 0;background-position: ' . $pixeloffset . 'px 0pt;" /> ';
                 print ' ' . $guideinstances[$guide->id]->progress. ' %<br/>';
-                print '<td><a href="/guides/delete.php?gi=' . $guideinstances[$guide->id]->giid . '">';
+                print '<td class="cell options"><a href="/guides/delete.php?gi=' . $guideinstances[$guide->id]->giid . '">';
                 print '<img src="' . $CFG->wwwroot . '/theme/' . $CFG->theme . '/pix/t/delete.gif" class="iconsmall" alt="delete guide progress" />';
             }
         } else {
