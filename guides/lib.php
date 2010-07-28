@@ -60,6 +60,7 @@ function delete_gi($gi) {
 function measure_gi_progress ($gi, $steps, &$efforttotal, &$effortdone){
     if(empty($steps)) {
         $stepnames = explode(',', $gi->steps);
+        $stepnames = array_map(trim, $stepnames);
         load_steps($steps,$stepnames);
     }
     $efforttotal = 0;
