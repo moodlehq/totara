@@ -2,6 +2,10 @@
  * Global CSS file
  **/
 
+html, body {
+  height: 100%;
+}
+
 p, li, td {
   font-family: verdana, helvetica, sans-serif;
   color: #322f2c;  
@@ -17,7 +21,8 @@ body {
   color: #322f2c;
   padding: 0;
   margin:0;
-  background: #e4e4e4 url('images/bg_grn.jpg') repeat-x top center;
+  background: #E4E4E4 url("images/bg_grn_ftr.jpg") bottom left repeat-x scroll;
+  background-attachment: fixed;
 }
 
 p, li {
@@ -39,13 +44,29 @@ input, select, button {
  * Layout Styles
  **/
 #wrapper {
-  background: transparent url('images/bg_grn_ftr.jpg') repeat-x bottom center;  
+  background: transparent url('images/bg_shadow.png') repeat-y top left;
+  min-height: 100%;
+  margin: 0 auto;
+  width: 980px;
+  position: relative;
+}
+
+#top-bg {
+	background: #e4e4e4 url('images/bg_grn.jpg') repeat-x top center;
+	top:0;
+	right: 0;
+	height:114px;
+	position:absolute;
+	width:100%;
+	z-index: -99;
+	overflow:auto
 }
 #container {
-  width: 960px;
-  padding: 0 10px;
+  padding-left: 10px;
+  padding-right: 10px;
   margin: 0 auto;
-  background: transparent url('images/bg_shadow.png') repeat-y top left;
+  display: auto;
+  word-wrap: break-word;
 }
 #page {
   background: #FFFFFF; 
@@ -55,6 +76,7 @@ input, select, button {
   clear:both;
   padding: 10px 23px;
   background: #FFFFFF;
+  margin-bottom: 100px; /* Stops footer overlapping content*/
 }
 #layout-table {
   margin-top:-5px;
@@ -252,7 +274,7 @@ div#header .logo {
 	margin:0;
 	list-style:none;
 	float:left;
-	width:600px;		
+	width:auto;
 }
 #totara_menu ul li {
 	font-family: 'Trebuchet ms', verdana, helvetica, sans-serif;
@@ -289,7 +311,6 @@ div#header .logo {
 	background:transparent;
 	height:22px;
 	width:900px;
-	display:none;
 	top:47px;
 	left:-27px;
 	z-index: 1000;
@@ -338,11 +359,11 @@ body.idp #totara_menu ul #menu2,
 body#my-bookings #totara_menu ul #menu2,
 body#my-records #totara_menu ul #menu2,
 body#my-team #totara_menu ul #menu3,
-body.local-reportbuilder #totara_menu ul #menu4,
+body#my-reports #totara_menu ul #menu4,
 body#course-index #totara_menu ul #menu5,
 body#course-view #totara_menu ul #menu5,
 body#course-category #totara_menu ul #menu5,
-body.calendar #totara_menu ul #menu6 {
+body#blocks-facetoface-calendar #totara_menu ul #menu6 {
 	color:#FFFFFF;
 	margin-left:-2px;
 	background: transparent url('images/nav_main_bg_lft.jpg') no-repeat bottom left;
@@ -356,11 +377,11 @@ body.idp #totara_menu ul #menu2 a,
 body#my-bookings #totara_menu ul #menu2 a,
 body#my-records #totara_menu ul #menu2 a,
 body#my-team #totara_menu ul #menu3 a,
-body.local-reportbuilder #totara_menu ul #menu4 a,
+body#my-reports #totara_menu ul #menu4 a,
 body#course-index #totara_menu ul #menu5 a,
 body#course-view #totara_menu ul #menu5 a,
 body#course-category #totara_menu ul #menu5 a,
-body.calendar #totara_menu ul #menu6 a {
+body#blocks-facetoface-calendar #totara_menu ul #menu6 a {
 	color:#FFFFFF;
 	background: transparent url('images/nav_main_bg_rgt.jpg') no-repeat bottom right;
 }
@@ -412,7 +433,7 @@ body#my-index #totara_menu ul #menu2 ul,
 body.idp #totara_menu ul #menu2 ul,
 body#my-bookings #totara_menu ul #menu2 ul,
 body#my-records #totara_menu ul #menu2 ul {
-    left:-117px;
+    left:-105px;
 }
 body#my-team #totara_menu ul #menu3 ul {
     left:-244px;
@@ -423,7 +444,7 @@ body.local-reportbuilder #totara_menu ul #menu4 ul {
 body#course-index #totara_menu ul #menu5 ul,
 body#course-view #totara_menu ul #menu5 ul,
 body#course-category #totara_menu ul #menu5 ul {
-    left:-479px;
+    left:-430px;
 }
 body.calendar #totara_menu ul #menu6 ul {
     left:-580px;
@@ -434,10 +455,19 @@ body.calendar #totara_menu ul #menu6 ul {
  **/
 
 #footer {
+	position: absolute;
+	bottom: 0;
+	background: #FFFFFF url('images/bg_grn.jpg') repeat-x top center;
+	width: 930px;
+	padding:7px 15px;
+}
+
+/* - Revert to Original -
+#footer {
   margin:0;
   padding:7px 15px;
   background: #FFFFFF url('images/bg_grn.jpg') repeat-x top center;
-} 
+} */
 
 #footer .sitelink,
 #footer .helplink,
@@ -474,6 +504,12 @@ body.calendar #totara_menu ul #menu6 ul {
 #footer .footerlinks li div a {
   font-family: 'Trebuchet ms', verdana, helvetica, sans-serif;
   color: #FFFFFF;
+}
+
+#footer .validators ul li a:link,
+#footer .validators ul li a:visited,
+#footer .validators ul li a:hover {
+	color:#CBCF81;
 }
 
 /**
@@ -537,7 +573,7 @@ h2.headingblock,
   font-size:2em;
   text-align:left;
   border:none;
-  padding:0;
+  padding:0 0 5px;
   margin-top:0;
   border:none;
 }
@@ -578,6 +614,27 @@ h6 {
   font-size: 1.3em;
   color: #322f2c;  
 }
+.tabrow0 li.selected a:hover span,
+.tabrow0 li.selected span,
+.tabrow0 li.active a:hover span,
+.tabrow0 li.active span {
+	background: url("images/tab/right_active.gif") top right;
+}
+.tabrow0 li.selected a:hover,
+.tabrow0 li.selected a,
+.tabrow0 li.active a:hover,
+.tabrow0 li.active a {
+	background: url("images/tab/left_active.gif") top left no-repeat;
+}
+
+.tabrow0 li.active ul.tabrow1 li a {
+	background: none;
+	text-decoration: none;
+}
+.tabrow0 li.active ul.tabrow1 li a:hover {
+	text-decoration: underline;
+}
+
 
 /* Hover Styles */
 .tabrow0 a:link:hover,
@@ -593,6 +650,7 @@ h6 {
 .tabrow0 .last a:hover span,
 .tabrow0 a:hover span {
   background-image: url(images/tab/right_hover.gif);
+  color: #333333;
 }
 
 .tabrow0 .here a:hover {
@@ -975,7 +1033,7 @@ ul.tabrow1 li a:hover {
   list-style-type: none;
 }
 .sideblock div.header .title input {
-  margin: 11px 3px 0 0;
+  margin: 7px 3px 0 0;
   background: #00b7b8;
 }
 .sideblock .hide-show a {
@@ -1203,17 +1261,35 @@ table.minicalendar .today a {
    margin:0;
 }  
  
-.block_calendar_month .calendar-controls a span {
+.block_calendar_month .calendar-controls a span{
   text-indent: 1000px;
   width: 13px;
   overflow:hidden;
   display:block;
 }
-.block_calendar_month .calendar-controls a.previous {
+
+.block_calendar_month .calendar-controls a.previous{
   background: transparent url('images/cal_bg_previous.gif') no-repeat left center;
+}
+div#calendarcontainer div.monthlycalendar div.calendar-controls a.previous{
+  background: transparent url('images/cal_bg_previous.gif') no-repeat left center;
+  padding-left: 10px;
+}
+
+div#calendarcontainer div.monthlycalendar div.calendar-controls a.previous span,
+div#calendarcontainer div.monthlycalendar div.calendar-controls a.next span{
+	display:block;
+	height:1px;
+	overflow-x:hidden;
+	overflow-y:hidden;
+	width:10px;
 }
 .block_calendar_month .calendar-controls a.next {
   background: transparent url('images/cal_bg_next.gif') no-repeat right center;
+}
+div#calendarcontainer div.monthlycalendar div.calendar-controls a.next{
+  background: transparent url('images/cal_bg_next.gif') no-repeat right center;
+  padding-right: 10px;
 }
 .block_calendar_month .calendar-controls .current a {
   color:#322f2c ;
@@ -1235,6 +1311,37 @@ table.minicalendar .today a {
   background-color: transparent;
   border:none !important;
 }
+
+body#blocks-facetoface-calendar table.calendarmonth {
+	font-size: 0.8em;
+}
+
+body#blocks-facetoface-calendar .calendar-controls {
+	font-size: 0.8em;
+}
+
+body#blocks-facetoface-calendar .calendar-controls span.current {
+
+}
+
+body#blocks-facetoface-calendar table.calendarmonth .weekdays {
+	background: #9F187C;
+	color: #FFFFFF;
+	font-size: 1.2em;
+}
+body#blocks-facetoface-calendar table.calendarmonth .weekdays th {
+	text-align: center;
+	border-right: 1px solid #CA1E9E;
+}
+
+div#calendarcontainer div.monthlycalendar table.calendarmonth td {
+	border: 1px solid #DDDDDD;
+}
+
+div#calendarcontainer div.monthlycalendar div.calendar-controls span.current {
+	font-size: 1.6em;
+}
+
 
 /**
  * YUI Drop-down menu

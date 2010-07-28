@@ -21,10 +21,7 @@ body {
   color: #322f2c;
   padding: 0;
   margin:0;
-  background: #E4E4E4 url("images/bg_grn_ftr.jpg") bottom left repeat-x scroll;
-  background-attachment: fixed;
-  
-
+  background: #e4e4e4 url('images/bg_grn.jpg') repeat-x top center;
 }
 
 p, li {
@@ -46,29 +43,17 @@ input, select, button {
  * Layout Styles
  **/
 #wrapper {
-  background: transparent url('images/bg_shadow.png') repeat-y top left;
+  background: transparent url('images/bg_grn_ftr.jpg') repeat-x bottom center;
   min-height: 100%;
-  margin: 0 auto;
-  width: 980px;
-}
-
-#top-bg {
-	background: #e4e4e4 url('images/bg_grn.jpg') repeat-x top center;
-	top:0;
-	right: 0;
-	height:114px;
-	position:absolute;
-	width:100%;
-	z-index: -99;
-	overflow:auto
 }
 #container {
+  width: 960px;
   padding-left: 10px;
   padding-right: 10px;
   padding-bottom: 30px;
   margin: 0 auto;
+  background: transparent url('images/bg_shadow.png') repeat-y top left;
   overflow:auto;
-  display: auto;
 }
 #page {
   background: #FFFFFF; 
@@ -1425,9 +1410,4 @@ div.yuimenu .yuichildtree .yuimenuitem {
 }
 .grade-report-grader table#user-grades {
   font-size: 11px;
-}
-
-#notice.generalbox {
-	text-align: center;
-	padding: 3px 0 10px;
 }
