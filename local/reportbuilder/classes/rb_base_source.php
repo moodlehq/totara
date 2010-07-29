@@ -308,7 +308,7 @@ abstract class rb_base_source {
         require_once($CFG->dirroot.'/hierarchy/type/position/lib.php');
 
         $hierarchy = new position();
-        $hierarchy->make_hierarchy_list($positions, null, false, false);
+        $hierarchy->make_hierarchy_list($positions, null, true, false);
 
         return $positions;
 
