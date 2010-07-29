@@ -197,7 +197,7 @@ class rb_source_course_completion extends rb_base_source {
             new rb_content_option(
                 'date',
                 "The completion date",
-                'base.timemodified'
+                'base.timecompleted'
             ),
         );
         return $contentoptions;
