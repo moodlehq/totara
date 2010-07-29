@@ -492,20 +492,50 @@ class rb_date_content extends rb_base_content {
         $type = substr(get_class($this), 3);
         $settings = reportbuilder::get_all_settings($reportid, $type);
 
+        // option to include empty date fields
+        $includenulls = (isset($settings['incnulls']) &&
+                         $settings['incnulls']) ? " OR $field IS NULL " : '';
+
         switch ($settings['when']) {
         case 'past':
-            return $field.' < '. $now;
+            return '(' . $field.' < '. $now . $includenulls . ')';
         case 'future':
-            return $field.' > '. $now;
+            return '(' . $field.' > '. $now . $includenulls . ')';
         case 'last30days':
-            return '(' . $field . ' < ' . $now . ' AND ' . $field . ' > ' .
-                ($now - 60*60*24*30) . ')';
+            return '( (' . $field . ' < ' . $now . ' AND ' . $field . ' > ' .
+                ($now - 60*60*24*30) . ')' . $includenulls . ')';
         case 'next30days':
-            return '(' . $field . ' > ' . $now . ' AND ' . $field . ' < ' .
-                ($now + 60*60*24*30) . ')';
+            return '( (' . $field . ' > ' . $now . ' AND ' . $field . ' < ' .
+                ($now + 60*60*24*30) . ')' . $includenulls . ')';
+        case 'currentfinancial':
+            $required_year = date('Y', $now);
+            $year_before = $required_year - 1;
+            $year_after = $required_year + 1;
+            if(date('z', $now) >= 181) { // date is on or after 1st July
+                $start = mktime(0, 0, 0, 7, 1, $required_year);
+                $end = mktime(0, 0, 0, 7, 1, $year_after);
+            } else {
+                $start = mktime(0, 0, 0, 7, 1, $year_before);
+                $end = mktime(0, 0, 0, 7, 1, $required_year);
+            }
+            return '( (' . $field . ' >= ' . $start . ' AND ' . $field . ' < ' .
+                $end . ')' . $includenulls . ')';
+        case 'lastfinancial':
+            $required_year = date('Y', $now) - 1;
+            $year_before = $required_year - 1;
+            $year_after = $required_year + 1;
+            if(date('z', $now) >= 181) { // date is on or after 1st July
+                $start = mktime(0, 0, 0, 7, 1, $required_year);
+                $end = mktime(0, 0, 0, 7, 1, $year_after);
+            } else {
+                $start = mktime(0, 0, 0, 7, 1, $year_before);
+                $end = mktime(0, 0, 0, 7, 1, $required_year);
+            }
+            return '( (' . $field . ' >= ' . $start . ' AND ' . $field . ' < ' .
+                $end . ')' . $includenulls . ')';
         default:
             // no match
-            return 'FALSE';
+            return '(FALSE' . $includenulls . ')';
         }
 
     }
@@ -516,23 +546,34 @@ class rb_date_content extends rb_base_content {
         $type = substr(get_class($this), 3);
         $settings = reportbuilder::get_all_settings($reportid, $type);
 
+        // option to include empty date fields
+        $includenulls = (isset($settings['incnulls']) &&
+                         $settings['incnulls']) ? " (or $title is empty)" : '';
+
         switch ($settings['when']) {
         case 'past':
             return $title . ' ' . get_string('occurredbefore', 'local') . ' ' .
-                userdate(time(), '%c');
+                userdate(time(), '%c'). $includenulls;
         case 'future':
             return $title . ' ' . get_string('occurredafter', 'local') . ' ' .
-                userdate(time(), '%c');
+                userdate(time(), '%c'). $includenulls;
         case 'last30days':
             return $title . ' ' . get_string('occurredafter','local') . ' ' .
                 userdate(time() - 60*60*24*30, '%c') . get_string('and','local') .
-                get_string('occurredbefore','local') . userdate(time(),'%c');
+                get_string('occurredbefore','local') . userdate(time(),'%c') .
+                $includenulls;
 
         case 'next30days':
             return $title . ' ' . get_string('occurredafter','local') . ' ' .
                 userdate(time(), '%c') . get_string('and', 'local') .
                 get_string('occurredbefore', 'local') .
-                userdate(time() + 60*60*24*30,'%c');
+                userdate(time() + 60*60*24*30,'%c') . $includenulls;
+        case 'currentfinancial':
+            return $title . ' ' . get_string('occurredthisfinancialyear','local') .
+                $includenulls;
+        case 'lastfinancial':
+            return $title . ' ' . get_string('occurredprevfinancialyear','local') .
+                $includenulls;
         default:
             return 'Error with date content restriction';
         }
@@ -544,6 +585,7 @@ class rb_date_content extends rb_base_content {
         $type = substr(get_class($this), 3);
         $enable = reportbuilder::get_setting($reportid, $type, 'enable');
         $when = reportbuilder::get_setting($reportid, $type, 'when');
+        $incnulls = reportbuilder::get_setting($reportid, $type, 'incnulls');
 
         $mform->addElement('header', 'date_header', get_string('showbydate',
             'local'));
@@ -560,6 +602,10 @@ class rb_date_content extends rb_base_content {
             get_string('last30days', 'local'), 'last30days');
         $radiogroup[] =& $mform->createElement('radio', 'date_when', '',
             get_string('next30days', 'local'), 'next30days');
+        $radiogroup[] =& $mform->createElement('radio', 'date_when', '',
+            get_string('currentfinancial', 'local'), 'currentfinancial');
+        $radiogroup[] =& $mform->createElement('radio', 'date_when', '',
+            get_string('lastfinancial', 'local'), 'lastfinancial');
         $mform->addGroup($radiogroup, 'date_when_group',
             get_string('includerecordsfrom', 'local'), '<br />', false);
         $mform->setDefault('date_when', $when);
@@ -568,6 +614,12 @@ class rb_date_content extends rb_base_content {
         $mform->setHelpButton('date_header',
             array('reportbuilderdate',
             get_string('showbydate', 'local'), 'moodle'));
+
+        $mform->addElement('checkbox', 'date_incnulls',
+            get_string('includeemptydates', 'local'));
+        $mform->setDefault('date_incnulls', $incnulls);
+        $mform->disabledIf('date_incnulls', 'date_enable', 'notchecked');
+        $mform->disabledIf('date_incnulls', 'contentenabled', 'eq', 0);
     }
 
     function form_process($reportid, $fromform) {
@@ -586,6 +638,12 @@ class rb_date_content extends rb_base_content {
             $fromform->date_when : 0;
         $status = $status && reportbuilder::update_setting($reportid, $type,
             'when', $when);
+
+        // include nulls checkbox option
+        $incnulls = (isset($fromform->date_incnulls) &&
+            $fromform->date_incnulls) ? 1 : 0;
+        $status = $status && reportbuilder::update_setting($reportid, $type,
+            'incnulls', $incnulls);
 
         return $status;
     }
