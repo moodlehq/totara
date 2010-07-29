@@ -956,7 +956,7 @@ class reportbuilder {
             $name = $option->classname;
             $classname = 'rb_' . $name . '_content';
             if(class_exists($classname)) {
-                if(reportbuilder::get_setting($reportid, $classname, 'enable')) {
+                if(reportbuilder::get_setting($reportid, $name . '_content', 'enable')) {
                     // this content option is enabled
                     // get required joins
                     $contentjoins = array_merge($contentjoins,
