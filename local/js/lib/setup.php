@@ -199,11 +199,11 @@ function build_category_treeview($list, $parents, $load_string) {
 
             // If an actual category
             if ($category !== null) {
-                if (!isset($parents[$i])) {
+                if (!isset($parents[$id])) {
                     $this_parent = array();
                 } else {
-                    $this_parents = array_reverse($parents[$i]);
-                    $this_parent = $parents[$i];
+                    $this_parents = array_reverse($parents[$id]);
+                    $this_parent = $parents[$id];
                 }
             // If placeholder category at end
             } else {
@@ -212,7 +212,7 @@ function build_category_treeview($list, $parents, $load_string) {
 
             if ($this_parent == $parent) {
                 if ($i > 1) {
-                    $html .= '<li class="last loading"><div></div><span>'.$load_string.'</span></li></ul></li>';
+                    $html .= '<li class="last loading"><div></div><span>'.$load_string.'</span></li></ul></li>'.PHP_EOL;
                 }
             } else {
                 // If there are less parents now
@@ -220,7 +220,7 @@ function build_category_treeview($list, $parents, $load_string) {
 
                 if ($diff) {
                     $html .= str_repeat(
-                        '<li class="last loading"><div></div><span>'.$load_string.'</span></li></ul>',
+                        '<li class="last loading"><div></div><span>'.$load_string.'</span></li></ul>'.PHP_EOL,
                          $diff + 1
                     );
                 }
