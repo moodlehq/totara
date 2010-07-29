@@ -304,9 +304,12 @@ class rb_preproc_feedback_questions extends rb_base_preproc {
         $qid = $question->id;
         $type = $question->typ;
         switch($type) {
+        // The trainer question actually saves the facetoface session
+        // ID, rather than the trainer ID, as this allows trainers to
+        // be added after the feedback has been recorded
         case 'trainer':
-            if($value != '') {  //TODO or zero? What is saved when no trainer?
-                $todb->trainerid = addslashes($value);
+            if($value != '') {
+                $todb->sessionid = addslashes($value);
             }
         case 'textfield':
         case 'textarea':
@@ -865,7 +868,7 @@ class rb_preproc_feedback_questions extends rb_base_preproc {
                 XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
             $table->addFieldInfo('responseid', XMLDB_TYPE_INTEGER, '10',
                 XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
-            $table->addFieldInfo('trainerid', XMLDB_TYPE_INTEGER, '10',
+            $table->addFieldInfo('sessionid', XMLDB_TYPE_INTEGER, '10',
                 XMLDB_UNSIGNED, null, null, null, null, null);
             $table->addFieldInfo('completedtime', XMLDB_TYPE_INTEGER, '10',
                 XMLDB_UNSIGNED, null, null, null, null, null);

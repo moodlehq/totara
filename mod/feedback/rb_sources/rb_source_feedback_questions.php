@@ -45,6 +45,12 @@ class rb_source_feedback_questions extends rb_base_source {
     function define_joinlist() {
         global $CFG;
 
+        // get the trainer role's id (or set a dummy value)
+        $trainerroleid = get_field('role', 'id', 'shortname', 'trainer');
+        if(!$trainerroleid) {
+            $trainerroleid = 0;
+        }
+
         // joinlist for this source
         $joinlist = array(
             'user' => "LEFT JOIN {$CFG->prefix}user u ON base.userid = u.id",
@@ -63,8 +69,10 @@ class rb_source_feedback_questions extends rb_base_source {
                     LEFT JOIN {$CFG->prefix}tag t
                         ON ti.tagid=t.id AND t.tagtype='official'
                     GROUP BY crs.id) tags ON tags.cid = c.id",
-            'trainer' => "LEFT JOIN {$CFG->prefix}user trainer ON trainer.id = base.trainerid",
-            'trainer_position_assignment' => "LEFT JOIN {$CFG->prefix}pos_assignment trainer_pa ON base.trainerid = trainer_pa.userid",
+            'sessiontrainer' => "LEFT JOIN {$CFG->prefix}facetoface_session_roles f2fsr
+                    ON f2fsr.sessionid = base.sessionid AND f2fsr.roleid = $trainerroleid",
+            'trainer' => "LEFT JOIN {$CFG->prefix}user trainer ON trainer.id = f2fsr.userid",
+            'trainer_position_assignment' => "LEFT JOIN {$CFG->prefix}pos_assignment trainer_pa ON f2fsr.userid = trainer_pa.userid",
             'trainer_position' => "LEFT JOIN {$CFG->prefix}pos trainer_position ON trainer_position.id = trainer_pa.positionid",
             'trainer_organisation' => "LEFT JOIN {$CFG->prefix}org trainer_organisation ON trainer_organisation.id = trainer_pa.organisationid",
         );
@@ -130,17 +138,24 @@ class rb_source_feedback_questions extends rb_base_source {
                 )
             ),
             new rb_column_option(
+                'session',
+                'id',
+                'Face-to-face Session ID',
+                'base.sessionid'
+            ),
+            new rb_column_option(
                 'trainer',
                 'id',
                 'Trainer ID',
-                'base.trainerid'
+                'f2fsr.userid',
+                array('joins' => 'sessiontrainer')
             ),
             new rb_column_option(
                 'trainer',
                 'fullname',
                 'Trainer Fullname',
                 sql_fullname('trainer.firstname', 'trainer.lastname'),
-                array('joins' => 'trainer')
+                array('joins' => array('sessiontrainer', 'trainer'))
             ),
             new rb_column_option(
                 'trainer',
@@ -148,7 +163,7 @@ class rb_source_feedback_questions extends rb_base_source {
                 'Trainer Organisation ID',
                 'trainer_pa.organisationid',
                 array(
-                    'joins' => array('trainer',
+                    'joins' => array('sessiontrainer', 'trainer',
                                      'trainer_position_assignment'),
                 )
             ),
@@ -158,7 +173,7 @@ class rb_source_feedback_questions extends rb_base_source {
                 'Trainer Organisation',
                 'trainer_organisation.fullname',
                 array(
-                    'joins' => array('trainer',
+                    'joins' => array('sessiontrainer', 'trainer',
                                      'trainer_position_assignment',
                                      'trainer_organisation'),
                 )
@@ -169,7 +184,7 @@ class rb_source_feedback_questions extends rb_base_source {
                 'Trainer Position ID',
                 'trainer_pa.positionid',
                 array(
-                    'joins' => array('trainer',
+                    'joins' => array('sessiontrainer', 'trainer',
                                      'trainer_position_assignment'),
                 )
             ),
@@ -179,7 +194,7 @@ class rb_source_feedback_questions extends rb_base_source {
                 'Trainer Position',
                 'trainer_position.fullname',
                 array(
-                    'joins' => array('trainer',
+                    'joins' => array('sessiontrainer', 'trainer',
                                      'trainer_position_assignment',
                                      'trainer_position'),
                 )
@@ -472,7 +487,8 @@ class rb_source_feedback_questions extends rb_base_source {
             new rb_content_option(
                 'trainer',
                 'The trainer',
-                'base.trainerid'
+                'f2fsr.userid',
+                'sessiontrainer'
             ),
             // END IRD SPECIFIC
             new rb_content_option(
@@ -497,7 +513,8 @@ class rb_source_feedback_questions extends rb_base_source {
             ),
             new rb_param_option(
                 'trainerid',
-                'base.trainerid'
+                'f2fsr.userid',
+                'sessiontrainer'
             ),
         );
 
