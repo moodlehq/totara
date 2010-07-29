@@ -72,6 +72,7 @@ class filter_select extends filter_type {
         if(isset($defaults[0]['value'])) {
             $mform->setDefault($this->_name, $defaults[0]['value']);
         }
+                // check for null case if 
 
     }
 
@@ -120,7 +121,12 @@ class filter_select extends filter_type {
         $items = explode(',',$value);
         $res = array();
         foreach($items as $item) {
-            $res[] = $query.$token."'$item'";
+            if($operator == 2) {
+                // check for null case for is not operator
+                $res[] = '('.$query.$token."'$item' OR ".$query.' IS NULL)';
+            } else {
+                $res[] = $query.$token."'$item'";
+            }
         }
         return '('.implode($glue,$res).')';
     }
