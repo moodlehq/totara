@@ -157,6 +157,27 @@ class rb_source_graphical_feedback_questions extends rb_base_source {
                                      'trainer_organisation'),
                 )
             ),
+            new rb_column_option(
+                'trainer',
+                'positionid',
+                'Trainer Position ID',
+                'trainer_pa.positionid',
+                array(
+                    'joins' => array('trainer',
+                                     'trainer_position_assignment'),
+                )
+            ),
+            new rb_column_option(
+                'trainer',
+                'position',
+                'Trainer Position',
+                'trainer_position.fullname',
+                array(
+                    'joins' => array('trainer',
+                                     'trainer_position_assignment',
+                                     'trainer_position'),
+                )
+            ),
         );
 
         // create a on/off field for every official tag
@@ -396,6 +417,16 @@ class rb_source_graphical_feedback_questions extends rb_base_source {
                 'select',
                 array(
                     'selectfunc' => 'organisations_list',
+                    'selectoptions' => rb_filter_option::select_width_limiter(),
+                )
+            ),
+            new rb_filter_option(
+                'trainer',
+                'positionid',
+                'Trainer Position',
+                'select',
+                array(
+                    'selectfunc' => 'positions_list',
                     'selectoptions' => rb_filter_option::select_width_limiter(),
                 )
             ),
