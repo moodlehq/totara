@@ -127,8 +127,9 @@ class MoodleQuickForm_date_selector extends MoodleQuickForm_group
                 if (!is_array($value)) {
                     $currentdate = usergetdate($value);
                     $value = array(
-                        'day' => $currentdate['mday'],
-                        'month' => $currentdate['mon'],
+                         // convert to int to strip leading zero
+                        'day' => (int) $currentdate['mday'],
+                        'month' => (int) $currentdate['mon'],
                         'year' => $currentdate['year']);
                     // If optional, default to off, unless a date was provided
                      if($this->_options['optional']) {
