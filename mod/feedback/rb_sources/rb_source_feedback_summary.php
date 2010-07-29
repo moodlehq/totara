@@ -39,6 +39,12 @@ class rb_source_feedback_summary extends rb_base_source {
     function define_joinlist() {
         global $CFG;
 
+        // get the trainer role's id (or set a dummy value)
+        $trainerroleid = get_field('role', 'id', 'shortname', 'trainer');
+        if(!$trainerroleid) {
+            $trainerroleid = 0;
+        }
+
         // joinlist for this source
         $joinlist = array(
             'user' => "LEFT JOIN {$CFG->prefix}user u ON base.userid = u.id",
@@ -57,12 +63,16 @@ class rb_source_feedback_summary extends rb_base_source {
                     LEFT JOIN {$CFG->prefix}tag t
                         ON ti.tagid=t.id AND t.tagtype='official'
                     GROUP BY crs.id) tags ON tags.cid = c.id",
-                    /*
-            'trainer' => "LEFT JOIN {$CFG->prefix}user trainer ON trainer.id = base.trainerid",
-            'trainer_position_assignment' => "LEFT JOIN {$CFG->prefix}pos_assignment trainer_pa ON base.trainerid = trainer_pa.userid",
+            'session_value' => "LEFT JOIN (
+                SELECT i.feedback, v.value FROM {$CFG->prefix}feedback_item i
+                JOIN {$CFG->prefix}feedback_value v ON v.item=i.id AND i.typ='trainer'
+            ) sv ON sv.feedback = base.feedback",
+            'sessiontrainer' => "LEFT JOIN {$CFG->prefix}facetoface_session_roles f2fsr
+                ON f2fsr.userid = CAST(sv.value AS INTEGER) AND f2fsr.roleid = $trainerroleid",
+            'trainer' => "LEFT JOIN {$CFG->prefix}user trainer ON trainer.id = f2fsr.userid",
+            'trainer_position_assignment' => "LEFT JOIN {$CFG->prefix}pos_assignment trainer_pa ON f2fsr.userid = trainer_pa.userid",
             'trainer_position' => "LEFT JOIN {$CFG->prefix}pos trainer_position ON trainer_position.id = trainer_pa.positionid",
             'trainer_organisation' => "LEFT JOIN {$CFG->prefix}org trainer_organisation ON trainer_organisation.id = trainer_pa.organisationid",
-                     */
         );
 
         // create a join for each official tag
@@ -118,19 +128,24 @@ class rb_source_feedback_summary extends rb_base_source {
                     'joins' => array('feedback', 'course', 'tags'),
                 )
             ),
-            /*
             new rb_column_option(
                 'trainer',
                 'id',
                 'Trainer ID',
-                'base.trainerid'
+                'f2fsr.userid',
+                array(
+                    'joins' => array('session_value', 'sessiontrainer'),
+                )
             ),
             new rb_column_option(
                 'trainer',
                 'fullname',
                 'Trainer Fullname',
                 sql_fullname('trainer.firstname', 'trainer.lastname'),
-                array('joins' => 'trainer')
+                array(
+                    'joins' => array(
+                                     'session_value', 'sessiontrainer', 'trainer'),
+                )
             ),
             new rb_column_option(
                 'trainer',
@@ -138,7 +153,8 @@ class rb_source_feedback_summary extends rb_base_source {
                 'Trainer Organisation ID',
                 'trainer_pa.organisationid',
                 array(
-                    'joins' => array('trainer',
+                    'joins' => array(
+                                     'session_value', 'sessiontrainer', 'trainer',
                                      'trainer_position_assignment'),
                 )
             ),
@@ -148,12 +164,35 @@ class rb_source_feedback_summary extends rb_base_source {
                 'Trainer Organisation',
                 'trainer_organisation.fullname',
                 array(
-                    'joins' => array('trainer',
+                    'joins' => array(
+                                     'session_value', 'sessiontrainer', 'trainer',
                                      'trainer_position_assignment',
                                      'trainer_organisation'),
                 )
             ),
-             */
+            new rb_column_option(
+                'trainer',
+                'positionid',
+                'Trainer Position ID',
+                'trainer_pa.positionid',
+                array(
+                    'joins' => array(
+                                     'session_value', 'sessiontrainer', 'trainer',
+                                     'trainer_position_assignment'),
+                )
+            ),
+            new rb_column_option(
+                'trainer',
+                'position',
+                'Trainer Position',
+                'trainer_position.fullname',
+                array(
+                    'joins' => array(
+                                     'session_value', 'sessiontrainer', 'trainer',
+                                     'trainer_position_assignment',
+                                     'trainer_position'),
+                )
+            ),
         );
 
         // create a on/off field for every official tag
@@ -205,6 +244,32 @@ class rb_source_feedback_summary extends rb_base_source {
                 'timecompleted',
                 'Time completed',
                 'date'
+            ),
+            new rb_filter_option(
+                'trainer',
+                'fullname',
+                'Trainer Fullname',
+                'text'
+            ),
+            new rb_filter_option(
+                'trainer',
+                'organisationid',
+                'Trainer Organisation',
+                'select',
+                array(
+                    'selectfunc' => 'organisations_list',
+                    'selectoptions' => rb_filter_option::select_width_limiter(),
+                )
+            ),
+            new rb_filter_option(
+                'trainer',
+                'positionid',
+                'Trainer Position',
+                'select',
+                array(
+                    'selectfunc' => 'positions_list',
+                    'selectoptions' => rb_filter_option::select_width_limiter(),
+                )
             ),
         );
 
