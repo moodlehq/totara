@@ -381,6 +381,7 @@ $string['noreportscount'] = 'No reports using this group';
 $string['lastchecked'] = 'Last process date';
 $string['disabled'] = 'Disabled?';
 $string['notyetchecked'] = 'Not yet processed';
+$string['refreshdataforthisgroup'] = 'Refresh data for this group';
 
 // Report Headings
 $string['reportheading'] = 'Report Heading Block';

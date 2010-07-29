@@ -171,6 +171,7 @@
             $row = array();
             $strsettings = get_string('settings','local');
             $strdelete = get_string('delete','local');
+            $strcron = get_string('refreshdataforthisgroup','local');
             $settings = '<a href="' . $CFG->wwwroot .
                 '/local/reportbuilder/groupsettings.php?id=' . $group->id .
                 '" title="' . $strsettings . '">' .
@@ -181,6 +182,14 @@
                 '" title="' . $strdelete . '">' .
                 '<img src="' . $CFG->pixpath . '/t/delete.gif" alt="' .
                 $strdelete . '"></a>';
+            $cron = link_to_popup_window(
+                $CFG->wwwroot . '/local/reportbuilder/runcron.php?group=' .
+                $group->id . '&amp;sesskey=' . $USER->sesskey,
+                null,
+                '<img src="' . $CFG->pixpath . '/t/reload.gif" alt="' .
+                $strcron . '">',
+                500, 750, $strcron, null, true);
+
             $row[] = '<a href="' . $CFG->wwwroot .
                 '/local/reportbuilder/groupsettings.php?id=' . $group->id .
                 '">' . $group->name . '</a>';
@@ -191,7 +200,7 @@
                 $group->cmid . '">' . $group->feedbackname . '</a>';
             $row[] = ($group->numitems === null) ? 0 : $group->numitems;
             $row[] = ($group->numreports === null) ? 0 : $group->numreports;
-            $row[] = "$settings &nbsp; $delete";
+            $row[] = "$settings &nbsp; $delete &nbsp; $cron";
             $data[] = $row;
         }
 

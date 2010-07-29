@@ -7,14 +7,25 @@ define('REPORT_BUILDER_CRON_WAIT_NUM', 10);
 // how often to print errors (1 for every time, 2 every other time, etc)
 define('REPORT_BUILDER_CRON_ERROR_FREQ', 10);
 
-function reportbuilder_cron() {
+function reportbuilder_cron($grp=null) {
     if(!rb_lock_cron()) {
         // don't run if already in progress
         mtrace('Report Builder cron locked. Skipping this time.');
         return false;
     }
 
-    $groups = get_records('report_builder_group', '', '' ,'id');
+    // if no ID provided, run on all groups
+    if(!$grp) {
+        $groups = get_records('report_builder_group', '', '' ,'id');
+    } else {
+        // otherwise run on the group provided
+        $data = get_record('report_builder_group', 'id', $grp);
+        if($data) {
+            $groups = array($data);
+        } else {
+            $groups = array();
+        }
+    }
 
     foreach($groups as $group) {
 
