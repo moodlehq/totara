@@ -3,7 +3,9 @@
 require_once $CFG->libdir.'/gradelib.php';
 require_once $CFG->dirroot.'/grade/lib.php';
 require_once $CFG->dirroot.'/lib/adminlib.php';
-require_once $CFG->libdir.'/completionlib.php';
+if (file_exists($CFG->libdir.'/completionlib.php')) {
+    require_once $CFG->libdir.'/completionlib.php';
+}
 
 /**
  * Definitions for setting notification types
