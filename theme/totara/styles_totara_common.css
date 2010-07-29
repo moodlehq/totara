@@ -4,7 +4,7 @@
 /*****************************************************************************/
 /** General **/
 /*****************************************************************************/
-
+.
 /**
  * Fix for filter
  */
@@ -797,7 +797,8 @@ table.allmyteam td a {
 }
 
 
-tr.r1 .cell {
+tr.r1 .cell,
+{
     background: #f5f5f5;
 }
 td.c0 {
@@ -808,6 +809,7 @@ th.header {
     background: #EDEDED url(images/gradient.png) top left repeat-x;
     border: 1px solid #e2e2e2;
     padding:3px;
+	font-size: 0.9em;
 }
 
 table.customfields th.lastcol {
@@ -845,8 +847,27 @@ body#hierarchy-index table#competency tr.r1 td.customfield {
     background: #f2f2f2;
 }
 
-body#hierarchy-index table#competency tr.r1 td
 
+/*****************************************************************************/
+/** Guides Tables **/
+/*****************************************************************************/
+
+#guides-index .r1{
+	background: #F5F5F5;	
+}
+#guides-index th.header,
+#guides-index td {
+	border: 1px solid #DDDDDD;
+	padding: 5px;
+}
+#guides-index td.options {
+	text-align: center;
+	vertical-align: top;
+}
+
+#guides-index td span.guideindexlink {
+	white-space:nowrap;
+}
 /*****************************************************************************/
 /** Form **/
 /*****************************************************************************/
@@ -872,51 +893,123 @@ form#newfieldform {
     float: left;
     width: 34%;
 }
+
+/*****************************************************************************/
+/** Guide Steps **/
+/*****************************************************************************/
+
 .guidesteps {
     clear: left;
     height: 100%;
+	padding-top: 10px;
+}
+.guidestep {
+	border: 1px solid #EEEEEE;
+	word-wrap: break-word;
 }
 .guidestepcontainer {
     float: left;
     width: 25%;
     height: 100%;
 }
-
 .guidesteptitle {
-    border-bottom-width: 1px;
-    border-bottom-style: solid;
+	border-bottom: none;
+	padding: 5px;
 }
-h2.guidesteptitle.pending {
-    background-color: #eaeaea;
+h2.guidesteptitle {
+	margin: 0;
 }
-h2.guidesteptitle.active {
-    background-color: #eff8ef;
-}
-h2.guidesteptitle.complete {
-    background-color: #eaeaea;
-}
+
 .guidestep {
     border-width: 1px;
     border-style: solid;
     border-color: black;
-    margin: 4px;
+    margin: 4px 8px 4px 0;
     height: 100%;
 }
+.guidesteptext {
+	padding: 5px;	
+}
+
+/* Complete */
+
+h2.guidesteptitle.complete {
+	background: #D0E4EF;
+	color: #2970A6;
+}
+.guidestep.complete .stepstatus {
+	background: #D0E4EF;
+	color:#2970A6;
+	margin:2px;
+	padding:5px;
+	text-align:center;
+	text-transform:uppercase;
+	font-weight: bold;
+}
+
+.guidestep.inactive.complete {
+	border-color: #d0e4ef;
+}
+
+/* Incomplete */
+
+h2.guidesteptitle.pending {
+    background-color: #FAFAFA;
+	color: #999999;
+}
+
+.guidestep.incomplete .stepstatus {
+	background:none repeat scroll 0 0 #FAFAFA;
+	color:#999999;
+	margin:2px;
+	padding:5px;
+	text-align:center;
+	text-transform:uppercase;
+}
+
+/* Active */
+.guidestep.active .stepstatus {
+	background:none repeat scroll 0 0 #EFFAF3;
+	color:#3E8F56;
+	margin:2px;
+	padding:5px;
+	text-align:center;
+	text-transform:uppercase;
+}
+.guidestep.active {
+	border: 1px solid #D9F3E1;	
+}
+.guidestep.active .stepstatusimg input {
+		border: 1px solid #EFF8EF;
+		background: #D9F3E1;
+}
+h2.guidesteptitle.active {
+	background: #D9F3E1;	
+	color: #3E8F56;
+}
+/* Inactive */
+.guidestep.inactive {
+	border: 1px solid #EEEEEE;
+	word-wrap: break-word;
+}
+
+.guidestep.inactive.incomplete div.guidesteptext p{
+	color: #999999;
+}
+
+/*****/
+
 img.percentImage {
  background: white url(/guides/percentImage_back.png) top left no-repeat;
  padding: 0;
  margin: 5px 0 0 0;
  background-position: 1px 0;
 }
-.guidestep.active {
-    background-color: white;
+
+.guideindexdetail {
+	padding: 5px;	
 }
-.guidestep.pending {
-    background-color: white;
-}
-.guidestep.complete {
-    background-color: white;
-}
+
 
 .guideindexbody {
     margin-left: auto;

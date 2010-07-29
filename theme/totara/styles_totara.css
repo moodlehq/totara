@@ -76,7 +76,7 @@ input, select, button {
   clear:both;
   padding: 10px 23px;
   background: #FFFFFF;
-  margin-bottom: 100px; /* Stops footer overlapping content*/
+  margin-bottom: 100px; /* Stopfs footer overlapping content*/
 }
 #layout-table {
   margin-top:-5px;
@@ -115,7 +115,9 @@ div.course-content #middle-column {
 .loginbox {
   margin:15px auto 25px auto;
 }
-
+body#user-positions #container {
+	margin-bottom: -28px;
+}
 /**
  * Header Styles
  **/
@@ -182,7 +184,7 @@ div#header .logo {
 .navbar {
   font-family: 'Trebuchet ms', verdana, helvetica, sans-serif;
   clear:both;
-  padding:5px 5px 4px 23px;
+  padding:5px 5px 4px 16px;
   margin: 0;
   border:none;
   background: #FFFFFF;
@@ -274,7 +276,7 @@ div#header .logo {
 	margin:0;
 	list-style:none;
 	float:left;
-	width:auto;
+	width:auto;		
 }
 #totara_menu ul li {
 	font-family: 'Trebuchet ms', verdana, helvetica, sans-serif;
@@ -453,7 +455,7 @@ body.calendar #totara_menu ul #menu6 ul {
 /**
  * Footer Styles
  **/
-
+ 
 #footer {
 	position: absolute;
 	bottom: 0;
@@ -555,7 +557,6 @@ h6, h6.main {
 }
 
 h1, h1.main {
-  font-size: 2.4em;
   font-weight:normal;  
   margin-top:0;
   margin-bottom: 10px;
@@ -609,6 +610,11 @@ h6 {
 .tabrow0 ul {
   top: 2.4em; 
 }
+
+.tabrow0{
+	line-height: 2.3em;
+		
+}
 .tabrow0 li a {
   font-family: 'Trebuchet ms', Verdana, Helvetica, sans-serif;
   font-size: 1.3em;
@@ -618,23 +624,25 @@ h6 {
 .tabrow0 li.selected span,
 .tabrow0 li.active a:hover span,
 .tabrow0 li.active span {
-	background: url("images/tab/right_active.gif") top right;
+	background: url("images/tab/right_active.gif") top right;	
 }
 .tabrow0 li.selected a:hover,
 .tabrow0 li.selected a,
 .tabrow0 li.active a:hover,
 .tabrow0 li.active a {
-	background: url("images/tab/left_active.gif") top left no-repeat;
+	background: url("images/tab/left_active.gif") top left no-repeat;	
 }
 
 .tabrow0 li.active ul.tabrow1 li a {
-	background: none;
+	background: none !important;
 	text-decoration: none;
 }
 .tabrow0 li.active ul.tabrow1 li a:hover {
 	text-decoration: underline;
 }
-
+ul.tabrow1 {
+	background: url("images/tab/tabrow1.gif") top left repeat-x !important;	
+}
 
 /* Hover Styles */
 .tabrow0 a:link:hover,
@@ -666,6 +674,15 @@ h6 {
   font-weight:bold;
   text-decoration: none;
 }
+
+ul.tabrow0 li ul.tabrow1 a{
+	background: none;
+	text-decoration: none;
+}
+
+ul.tabrow0 li ul.tabrow1 a:hover {
+	text-decoration: underline;
+}
 .tabrow1 div, 
 .tabrow1 ul {
   border-color:#aaaaaa;
@@ -695,7 +712,8 @@ ul.tabrow1 li a:hover {
 .tabrow0 div, .tabrow0 ul {
   border-color: #cccccc;
   padding-top: .55em;
-  background: #f0f0f0;
+  background: #FFFFFF;
+  border-bottom: 1px solid #cccccc;
 }
 
 /* Header tabs */
@@ -1061,21 +1079,25 @@ div.block_calendar_month div.header {
 div.block_mitms_report_manager {
   background: transparent url('images/icon_reportmanager.gif') no-repeat right bottom;
 }
-div.block_mitms_report_manager div.header {
+div.block_mitms_report_manager div.header,
+div.block_completionstatus div.header{
   background: #ed7906
 }
-div.block_mitms_report_manager div.header .title input   {
+div.block_mitms_report_manager div.header .title input,
+div.block_completionstatus div.header .title input{
   background: #fcac00;
 }
 div.block_mitms_report_manager .content {
   padding-bottom: 80px;
 }
 div.block_mitms_my_team_nav div.header,
-div.block_admin_tree div.header  {
+div.block_admin_tree div.header,
+div.block_admin div.header{
   background: #34b9e4;
 }
 div.block_mitms_my_team_nav  div.header .title input,
-div.block_admin_tree div.header .title input   {
+div.block_admin_tree div.header .title input,
+div.block_admin div.header .title input{
   background: #39caf9;
 }
 div.block_calendar_month div.header .title input   {
@@ -1271,26 +1293,11 @@ table.minicalendar .today a {
 .block_calendar_month .calendar-controls a.previous{
   background: transparent url('images/cal_bg_previous.gif') no-repeat left center;
 }
-div#calendarcontainer div.monthlycalendar div.calendar-controls a.previous{
-  background: transparent url('images/cal_bg_previous.gif') no-repeat left center;
-  padding-left: 10px;
-}
 
-div#calendarcontainer div.monthlycalendar div.calendar-controls a.previous span,
-div#calendarcontainer div.monthlycalendar div.calendar-controls a.next span{
-	display:block;
-	height:1px;
-	overflow-x:hidden;
-	overflow-y:hidden;
-	width:10px;
-}
 .block_calendar_month .calendar-controls a.next {
   background: transparent url('images/cal_bg_next.gif') no-repeat right center;
 }
-div#calendarcontainer div.monthlycalendar div.calendar-controls a.next{
-  background: transparent url('images/cal_bg_next.gif') no-repeat right center;
-  padding-right: 10px;
-}
+
 .block_calendar_month .calendar-controls .current a {
   color:#322f2c ;
 }
@@ -1313,15 +1320,20 @@ div#calendarcontainer div.monthlycalendar div.calendar-controls a.next{
 }
 
 body#blocks-facetoface-calendar table.calendarmonth {
-	font-size: 0.8em;
+	font-size: 0.8em;	
 }
 
 body#blocks-facetoface-calendar .calendar-controls {
 	font-size: 0.8em;
 }
 
-body#blocks-facetoface-calendar .calendar-controls span.current {
+body#blocks-facetoface-calendar div.calendar-controls {
+	width: 100%;
+}
 
+body#blocks-facetoface-calendar div.calendar-controls td{
+	padding: 0 12px 0 0;
+	width: 30%;
 }
 
 body#blocks-facetoface-calendar table.calendarmonth .weekdays {
@@ -1330,7 +1342,7 @@ body#blocks-facetoface-calendar table.calendarmonth .weekdays {
 	font-size: 1.2em;
 }
 body#blocks-facetoface-calendar table.calendarmonth .weekdays th {
-	text-align: center;
+	text-align: center;	
 	border-right: 1px solid #CA1E9E;
 }
 
@@ -1341,6 +1353,63 @@ div#calendarcontainer div.monthlycalendar table.calendarmonth td {
 div#calendarcontainer div.monthlycalendar div.calendar-controls span.current {
 	font-size: 1.6em;
 }
+
+div#calendarcontainer div.monthlycalendar div.calendar-controls a.previous{
+  background: transparent url('images/cal_bg_previous.gif') no-repeat left center;
+  padding-left: 10px;
+  color: #CA1E9E;
+}
+
+div#calendarcontainer div.monthlycalendar div.calendar-controls a.next{
+  background: transparent url('images/cal_bg_next.gif') no-repeat right center;
+  padding-right: 10px;
+  color: #CA1E9E;
+}
+
+div#calendarcontainer div.monthlycalendar div.calendar-controls a span{
+	display: none;
+}
+
+body#blocks-facetoface-calendar table.calendarmonth td.today  {
+	background-color:#FFFFFF;
+	border: 2px solid #CA1E9E !important;
+	
+}
+
+
+body#blocks-facetoface-calendar .yui-tt .bd {
+	border: 1px solid #CA1E9E;
+	background: #f8f2f6;
+	font-size: 0.9em;
+	padding: 10px;
+}
+
+/**
+ * Guide Step
+ **/
+
+/* Complete */
+
+h2.guidesteptitle.complete,
+.guidestep.complete .stepstatus {
+	background: #34B9E4 !important;
+	color: #FFFFFF !important;
+}
+.guidestep.inactive.complete {
+	border-color: #34B9E4 !important;
+}
+
+/* Active */
+
+h2.guidesteptitle.active,
+.guidestep.active .stepstatus {
+	background:#A2B001 !important;
+	color:#FFFFFF !important;
+}
+.guidestep.active {
+	border: 1px solid #A2B001 !important;	
+}
+
 
 
 /**
