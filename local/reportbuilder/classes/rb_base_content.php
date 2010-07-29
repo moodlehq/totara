@@ -668,6 +668,10 @@ class rb_course_tag_content extends rb_base_content {
             explode('|', $settings['included']) : array();
         $etags = ($settings['excluded']) ?
             explode('|', $settings['excluded']) : array();
+        $include_logic = (isset($settings['include_logic']) &&
+            $settings['include_logic'] == 0) ? ' AND ' : ' OR ';
+        $exclude_logic = (isset($settings['exclude_logic']) &&
+            $settings['exclude_logic'] == 0) ? ' OR ' : ' AND ';
 
         // loop through current official tags
         $tags = get_records('tag', 'tagtype', 'official', 'name');
@@ -692,8 +696,8 @@ class rb_course_tag_content extends rb_base_content {
         }
 
         // merge the include and exclude strings separately
-        $includestr = implode(' AND ', $include_sql);
-        $excludestr = implode(' AND ', $exclude_sql);
+        $includestr = implode($include_logic, $include_sql);
+        $excludestr = implode($exclude_logic, $exclude_sql);
 
         // now merge together
         if($includestr && $excludestr) {
@@ -719,6 +723,10 @@ class rb_course_tag_content extends rb_base_content {
             explode('|', $settings['included']) : array();
         $etags = ($settings['excluded']) ?
             explode('|', $settings['excluded']) : array();
+        $include_logic = (isset($settings['include_logic']) &&
+            $settings['include_logic'] == 0) ? 'and' : 'or';
+        $exclude_logic = (isset($settings['exclude_logic']) &&
+            $settings['exclude_logic'] == 0) ? 'and' : 'or';
 
         $tags = get_records('tag', 'tagtype', 'official', 'name');
         if($tags) {
@@ -734,13 +742,13 @@ class rb_course_tag_content extends rb_base_content {
 
         if(count($include_text) > 0) {
             $includestr = $title . ' ' . get_string('istaggedwith', 'local') .
-                ' ' . implode(get_string('and', 'local'), $include_text);
+                ' ' . implode(get_string($include_logic, 'local'), $include_text);
         } else {
             $includestr = '';
         }
         if(count($exclude_text) > 0) {
             $excludestr = $title . ' ' . get_string('isnttaggedwith', 'local') .
-                ' ' . implode(get_string('or', 'local'), $exclude_text);
+                ' ' . implode(get_string($exclude_logic, 'local'), $exclude_text);
         } else {
             $excludestr = '';
         }
@@ -762,6 +770,8 @@ class rb_course_tag_content extends rb_base_content {
         // remove rb_ from start of classname
         $type = substr(get_class($this), 3);
         $enable = reportbuilder::get_setting($reportid, $type, 'enable');
+        $include_logic = reportbuilder::get_setting($reportid, $type, 'include_logic');
+        $exclude_logic = reportbuilder::get_setting($reportid, $type, 'exclude_logic');
         $activeincludes = explode('|',
             reportbuilder::get_setting($reportid, $type, 'included'));
         $activeexcludes = explode('|',
@@ -778,10 +788,17 @@ class rb_course_tag_content extends rb_base_content {
         $mform->setDefault('course_tag_enable', $enable);
         $mform->disabledIf('course_tag_enable','contentenabled', 'eq', 0);
 
+        $mform->addElement('html', '<br />');
+
         // include the following tags
         $checkgroup = array();
         $tags = get_records('tag', 'tagtype', 'official','name');
         if($tags) {
+            $opts = array(1 => get_string('anyofthefollowing','local'),
+                          0 => get_string('allofthefollowing','local'));
+            $mform->addElement('select','course_tag_include_logic', get_string('includecoursetags','local'), $opts);
+            $mform->setDefault('course_tag_include_logic', $include_logic);
+            $mform->disabledIf('course_tag_enable','contentenabled', 'eq', 0);
             foreach($tags as $tag) {
                 $checkgroup[] =& $mform->createElement('checkbox',
                     'course_tag_include_option_' . $tag->id, '', $tag->name, 1);
@@ -793,14 +810,21 @@ class rb_course_tag_content extends rb_base_content {
             }
         }
         $mform->addGroup($checkgroup, 'course_tag_include_group',
-            get_string('includecoursetags','local'), '<br />', false);
+            '', '<br />', false);
         $mform->disabledIf('course_tag_include_group', 'contentenabled', 'eq', 0);
         $mform->disabledIf('course_tag_include_group', 'course_tag_enable',
             'notchecked');
 
+        $mform->addElement('html', '<br /><br />');
+
         // exclude the following tags
         $checkgroup = array();
         if($tags) {
+            $opts = array(1 => get_string('anyofthefollowing','local'),
+                          0 => get_string('allofthefollowing','local'));
+            $mform->addElement('select','course_tag_exclude_logic', get_string('excludecoursetags','local'), $opts);
+            $mform->setDefault('course_tag_exclude_logic', $exclude_logic);
+            $mform->disabledIf('course_tag_enable','contentenabled', 'eq', 0);
             foreach($tags as $tag) {
                 $checkgroup[] =& $mform->createElement('checkbox',
                     'course_tag_exclude_option_' . $tag->id, '', $tag->name, 1);
@@ -812,7 +836,7 @@ class rb_course_tag_content extends rb_base_content {
             }
         }
         $mform->addGroup($checkgroup, 'course_tag_exclude_group',
-            get_string('excludecoursetags','local'), '<br />', false);
+            '', '<br />', false);
         $mform->disabledIf('course_tag_exclude_group','contentenabled', 'eq', 0);
         $mform->disabledIf('course_tag_exclude_group','course_tag_enable',
             'notchecked');
@@ -830,8 +854,20 @@ class rb_course_tag_content extends rb_base_content {
         $status = $status && reportbuilder::update_setting($reportid, $type,
             'enable', $enable);
 
-        $tags = get_records('tag', 'tagtype', 'official');
+        // include with any or all
+        $includelogic = (isset($fromform->course_tag_include_logic) &&
+            $fromform->course_tag_include_logic) ? 1 : 0;
+        $status = $status && reportbuilder::update_setting($reportid, $type,
+            'include_logic', $includelogic);
 
+        // exclude with any or all
+        $excludelogic = (isset($fromform->course_tag_exclude_logic) &&
+            $fromform->course_tag_exclude_logic) ? 1 : 0;
+        $status = $status && reportbuilder::update_setting($reportid, $type,
+            'exclude_logic', $excludelogic);
+
+        // tag settings
+        $tags = get_records('tag', 'tagtype', 'official');
         if($tags) {
             $activeincludes = array();
             $activeexcludes = array();
