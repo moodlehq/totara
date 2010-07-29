@@ -105,7 +105,7 @@ if ($guides) {
                 print '<img src="' . $CFG->wwwroot . '/theme/' . $CFG->theme . '/pix/t/delete.gif" class="iconsmall" alt="delete guide progress" />';
             }
         } else {
-            print 'Not yet started' . '</td><td>';
+            print 'Not yet started' . '</td><td class="cell options">';
             print ' <a href="' . $CFG->wwwroot . '/guides/view.php?startguide=' . $guide->id . '">';
             print '<img src="' . $CFG->wwwroot . '/theme/' . $CFG->theme . '/pix/t/add.gif" class="iconsmall" alt="delete guide progress" />';
 
