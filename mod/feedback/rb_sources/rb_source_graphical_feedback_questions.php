@@ -443,10 +443,9 @@ class rb_source_graphical_feedback_questions extends rb_base_source {
                 'base.userid'
             ),
             new rb_content_option(
-                'course_tag',
-                'The course',
-                'tags.idlist',
-                array('feedback', 'course', 'tags')
+                'current_pos',
+                "The user's current position",
+                'base.userid'
             ),
             new rb_content_option(
                 'current_org',                      // class name
@@ -454,9 +453,10 @@ class rb_source_graphical_feedback_questions extends rb_base_source {
                 'base.userid'                      // field
             ),
             new rb_content_option(
-                'current_pos',
-                "The user's current position",
-                'base.userid'
+                'course_tag',
+                'The course',
+                'tags.idlist',
+                array('feedback', 'course', 'tags')
             ),
             // START IRD SPECIFIC
             new rb_content_option(
@@ -465,13 +465,11 @@ class rb_source_graphical_feedback_questions extends rb_base_source {
                 'base.trainerid'
             ),
             // END IRD SPECIFIC
-            /*
             new rb_content_option(
                 'date',
                 "The response time",
                 'base.completedtime'
             ),
-             */
         );
         return $contentoptions;
     }
