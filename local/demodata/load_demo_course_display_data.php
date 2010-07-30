@@ -458,6 +458,10 @@ array('id' => '453','course' => '77','userid' => '1705','display' => '0',),
 array('id' => '454','course' => '2','userid' => '2386','display' => '0',),
 array('id' => '455','course' => '92','userid' => '2','display' => '0',),
 array('id' => '456','course' => '87','userid' => '2','display' => '0',),
+array('id' => '457','course' => '121','userid' => '1292','display' => '0',),
+array('id' => '458','course' => '75','userid' => '1292','display' => '0',),
+array('id' => '459','course' => '39','userid' => '1292','display' => '0',),
+array('id' => '460','course' => '5','userid' => '1292','display' => '0',),
 );
 print "\n";print "Inserting ".count($items)." records<br />\n";
 $i=1;

@@ -5986,6 +5986,10 @@ array('id' => '14615','contextlevel' => '80','instanceid' => '2444','path' => '/
 array('id' => '14616','contextlevel' => '80','instanceid' => '2445','path' => '/1/2/14616','depth' => '3',),
 array('id' => '14617','contextlevel' => '80','instanceid' => '2446','path' => '/1/2/14617','depth' => '3',),
 array('id' => '14618','contextlevel' => '80','instanceid' => '2447','path' => '/1/2/14618','depth' => '3',),
+array('id' => '14619','contextlevel' => '80','instanceid' => '2448','path' => '/1/2/14619','depth' => '3',),
+array('id' => '14620','contextlevel' => '80','instanceid' => '2449','path' => '/1/14620','depth' => '2',),
+array('id' => '14621','contextlevel' => '80','instanceid' => '2450','path' => '/1/14621','depth' => '2',),
+array('id' => '14622','contextlevel' => '80','instanceid' => '2451','path' => '/1/2/14622','depth' => '3',),
 );
 print "\n";print "Inserting ".count($items)." records<br />\n";
 $i=1;
