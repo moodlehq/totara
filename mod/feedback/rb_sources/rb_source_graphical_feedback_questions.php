@@ -458,6 +458,13 @@ class rb_source_graphical_feedback_questions extends rb_base_source {
                 "The user's current position",
                 'base.userid'
             ),
+            // START IRD SPECIFIC
+            new rb_content_option(
+                'trainer',
+                'The trainer',
+                'base.trainerid'
+            ),
+            // END IRD SPECIFIC
             /*
             new rb_content_option(
                 'date',
@@ -479,6 +486,10 @@ class rb_source_graphical_feedback_questions extends rb_base_source {
                 'courseid',
                 'f.course',
                 'feedback'
+            ),
+            new rb_param_option(
+                'trainerid',
+                'base.trainerid'
             ),
         );
 
