@@ -86,6 +86,48 @@ div.reportheadingform div.fitemtitle,
     display: none;
 }
 
+table.feedback-table {
+}
+
+table.feedback-table th, table.feedback-table td {
+    border: 1px solid black;
+    padding: 4px;
+}
+
+th.feedback-option-number {
+    width: 30px;
+    text-align: center;
+}
+
+td.feedback-option-name {
+    width: 350px;
+}
+
+td.feedback-option-chart {
+    width: 250px;
+}
+
+td.feedback-option-count {
+    width: 100px;
+    text-align: center;
+}
+
+table.feedback-bar-chart {
+    height: 20px;
+}
+
+table.feedback-bar-chart td {
+    border: none;
+    padding: 0px;
+}
+
+td.feedback-bar-color {
+    background-color: #04A2D5;
+}
+
+td.feedback-bar-blank {
+    background-color: none;
+}
 
 /*****************************************************************************/
 /** Hierarchies **/
