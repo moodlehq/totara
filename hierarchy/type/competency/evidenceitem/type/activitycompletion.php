@@ -192,6 +192,7 @@ class competency_evidence_type_activitycompletion extends competency_evidence_ty
                     mtrace('.', '');
                 }
 
+                require_once($CFG->dirroot . '/hierarchy/type/competency/evidenceitem/type/evidence.php');
                 $evidence = new competency_evidence_item_evidence((array)$record, false);
 
                 if (in_array($record['completionstate'], array(COMPLETION_COMPLETE, COMPLETION_COMPLETE_PASS))) {
