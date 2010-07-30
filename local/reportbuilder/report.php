@@ -8,7 +8,6 @@ $format    = optional_param('format', '', PARAM_TEXT);
 $id = required_param('id',PARAM_INT);
 $sid = optional_param('sid', '0', PARAM_INT);
 $debug = optional_param('debug', 0, PARAM_INT);
-$pretty = optional_param('pretty', 0, PARAM_INT);
 
 // new report object
 $report = new reportbuilder($id, null, false, $sid);
@@ -26,8 +25,11 @@ if($format!='') {
     die;
 }
 
+// display results as graph if report uses the graphical_feedback_questions source
+$graph = (substr($report->source, 0, strlen('graphical_feedback_questions')) ==
+    'graphical_feedback_questions');
 
-if(!$pretty) {
+if(!$graph) {
     // Setup custom javascript
     local_js(array(
         MBE_JS_DIALOG,
@@ -73,7 +75,7 @@ print "<br /><br />";
 
 // show results
 if($countfiltered>0) {
-    if($pretty) {
+    if($graph) {
         print $report->print_feedback_results();
     } else {
         print $report->showhide_button();

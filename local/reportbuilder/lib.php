@@ -2121,13 +2121,42 @@ class reportbuilder {
         foreach($options as $option) {
             $grouped_options[$option->qid][] = $option;
         }
+        $columns = $this->columns;
+        $primary_field = current($columns);
+        if($primary_field->required == true) {
+            $primary_field = null;
+        }
+        $additional_fields = array();
+        while($col = next($columns)) {
+            if($col->required == false) {
+                $additional_fields[] = $col;
+            }
+        }
+
         $sql = $this->build_query(false, true);
         $data = get_records_sql($sql);
+        $first = true;
         if($data) {
 
             foreach($data as $item) {
-                $out .= '<h2>' . current($item) . '</h2>';
-                $out .= '<p>Results from <strong>' . $item->responses_number . '</strong> responses.</p>';
+                if($first) {
+                    $first = false;
+                } else {
+                    $out .= '<br /><br /><hr />';
+                }
+                $primaryname = $primary_field->type . '_' . $primary_field->value;
+                $primaryheading = $primary_field->heading;
+                if(isset($item->$primaryname)) {
+                    $out .= '<h2>' . $primaryheading . ': '.$item->$primaryname . '</h2>';
+                }
+                foreach($additional_fields as $additional_field) {
+                    $addname = $additional_field->type . '_' . $additional_field->value;
+                    $addheading = $additional_field->heading;
+                    if(isset($item->$addname)) {
+                        $out .= '<strong>' . $addheading . ': '. $item->$addname . '</strong><br />';
+                    }
+                }
+                $out .= '<p>Results from <strong>' . $item->responses_number . '</strong> completed feedback(s).</p>';
                 foreach($questions as $question) {
                     $qnum = $question->sortorder;;
                     $qname = stripslashes($question->name);
@@ -2154,10 +2183,6 @@ class reportbuilder {
                     default:
                     }
 
-                    foreach($grouped_options[$qid] as $option) {
-                        $onum = $option->sortorder;
-                        $itemnum = 'q'.$qnum.'_'.$onum.'_sum';
-                    }
                 }
             }
         }
@@ -2172,18 +2197,20 @@ class reportbuilder {
         $count = 'q' . $qid . '_count';
         $answer = 'q' . $qid . '_list';
         if(isset($item->$count)) {
-            $out .= $item->$count . ' response(s).';
+            $out .= '<p>' . $item->$count . ' response(s).</p>';
         }
         if(isset($item->$answer) && $item->$answer != '') {
             $responses = str_replace(array('<br />'),array("\n"), stripslashes($item->$answer));
-            $out .= '<br /><textarea rows="5" cols="100">' . $responses . '</textarea>';
+            $out .= '<textarea rows="6" cols="100">' . $responses . '</textarea>';
         }
         return $out;
     }
 
     function get_feedback_option_answer($qid, $options, $item) {
+        $out = '';
         $count = array();
         $perc = array();
+        // group answer counts and percentages
         foreach($options as $option) {
             $oid = $option->sortorder;
             $countname = 'q' . $qid . '_' . $oid . '_sum';
@@ -2200,15 +2227,26 @@ class reportbuilder {
             }
         }
         $maxcount = max($count);
-        $maxbarwidth = 300; // px
-        $out = '<table class="feedback-table">';
+        $maxbarwidth = 300; // percent
+
+        $numresp = 'q' . $qid . '_total';
+        if(isset($item->$numresp)) {
+            $out .= '<p>' . $item->$numresp . ' response(s).</p>';
+        }
+
+        $out .= '<table class="feedback-table">';
         foreach($options as $option) {
             $oid = $option->sortorder;
             $out .= '<tr>';
             $out .= '<th class="feedback-option-number">' . $oid . '</th>';
             $out .= '<td class="feedback-option-name">' . stripslashes($option->name) . "</td>\n";
+            if($maxcount != 0) {
             $barwidth = $count[$oid]/$maxcount * $maxbarwidth;
             $spacewidth = ($maxcount - $count[$oid])/$maxcount * $maxbarwidth;
+            } else {
+                $barwidth = 0;
+                $spacewidth = $maxbarwidth;
+            }
             $out .= '<td class="feedback-option-chart"><table class="feedback-bar-chart"><tr>';
             $out .= '<td class="feedback-bar-color" width="'.$barwidth.'"></td>' . "\n";
             $out .= '<td class="feedback-bar-blank" width="'.$spacewidth.'"></td>'. "\n";
