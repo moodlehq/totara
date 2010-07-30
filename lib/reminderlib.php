@@ -498,7 +498,7 @@ function reminder_cron() {
                     );
 
                     // Calculate days from now
-                    $message->deadline = $escalationtime - $reminder->period;
+                    $message->deadline = $escalationtime - $message->period;
 
                     // Message sent counts
                     $msent = 0;
