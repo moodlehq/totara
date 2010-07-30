@@ -375,14 +375,14 @@ class reportbuilderlib_test extends prefix_changing_test_case {
         insert_record('report_builder_settings', $todb);
         $rb = new reportbuilder(1);
         // should return the appropriate SQL snippet to OR the restrictions if content mode = 1
-        $this->assertPattern('/(base\.userid = 2 OR base\.timemodified > \d+)/',$rb->get_content_restrictions());
+        $this->assertPattern('/\(base\.userid = 2 OR \(base\.timemodified > \d+\)\)/',$rb->get_content_restrictions());
         $todb = new object();
         $todb->id = 1;
         $todb->contentmode = 2;
         update_record('report_builder', $todb);
         $rb = new reportbuilder(1);
         // should return the appropriate SQL snippet to AND the restrictions if content mode = 2
-        $this->assertPattern('/(base\.userid = 2 AND base\.timemodified > \d+)/',$rb->get_content_restrictions());
+        $this->assertPattern('/\(base\.userid = 2 AND \(base\.timemodified > \d+\)\)/',$rb->get_content_restrictions());
 
     }
 
