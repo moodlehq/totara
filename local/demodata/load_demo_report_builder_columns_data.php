@@ -85,14 +85,6 @@ array('id' => '80','reportid' => '14','type' => 'course','value' => 'courselink'
 array('id' => '81','reportid' => '14','type' => 'log','value' => 'ip','heading' => 'IP Address','sortorder' => '6',),
 array('id' => '82','reportid' => '14','type' => 'log','value' => 'actionlink','heading' => 'Action','sortorder' => '7',),
 array('id' => '83','reportid' => '14','type' => 'log','value' => 'info','heading' => 'Info','sortorder' => '8',),
-array('id' => '84','reportid' => '15','type' => 'log','value' => 'time','heading' => 'Time','sortorder' => '1',),
-array('id' => '85','reportid' => '15','type' => 'user','value' => 'namelink','heading' => 'User','sortorder' => '2',),
-array('id' => '86','reportid' => '15','type' => 'user','value' => 'position','heading' => 'Position','sortorder' => '3',),
-array('id' => '87','reportid' => '15','type' => 'user','value' => 'organisation','heading' => 'Organisation','sortorder' => '4',),
-array('id' => '88','reportid' => '15','type' => 'course','value' => 'courselink','heading' => 'Course','sortorder' => '5',),
-array('id' => '89','reportid' => '15','type' => 'log','value' => 'ip','heading' => 'IP Address','sortorder' => '6',),
-array('id' => '90','reportid' => '15','type' => 'log','value' => 'actionlink','heading' => 'Action','sortorder' => '7',),
-array('id' => '91','reportid' => '15','type' => 'log','value' => 'info','heading' => 'Info','sortorder' => '8',),
 array('id' => '92','reportid' => '13','type' => 'user','value' => 'namelink','heading' => 'Participant','sortorder' => '1',),
 array('id' => '93','reportid' => '13','type' => 'course','value' => 'courselink','heading' => 'Course','sortorder' => '2',),
 array('id' => '94','reportid' => '13','type' => 'user','value' => 'organisation','heading' => 'Office','sortorder' => '3',),
@@ -126,6 +118,11 @@ array('id' => '121','reportid' => '19','type' => 'competency_evidence','value' =
 array('id' => '122','reportid' => '19','type' => 'competency_evidence','value' => 'completeddate','heading' => 'Date','sortorder' => '6',),
 array('id' => '123','reportid' => '19','type' => 'competency_evidence','value' => 'assessor','heading' => 'Assessor','sortorder' => '7',),
 array('id' => '124','reportid' => '19','type' => 'competency_evidence','value' => 'assessorname','heading' => 'Assessor Organisation','sortorder' => '8',),
+array('id' => '125','reportid' => '20','type' => 'course','value' => 'courselink','heading' => 'Course','sortorder' => '1',),
+array('id' => '126','reportid' => '20','type' => 'course_completion','value' => 'status','heading' => 'Status','sortorder' => '2',),
+array('id' => '127','reportid' => '20','type' => 'course_completion','value' => 'completeddate','heading' => 'Date Completed','sortorder' => '3',),
+array('id' => '128','reportid' => '20','type' => 'course_completion','value' => 'organisation','heading' => 'Completed At','sortorder' => '4',),
+array('id' => '129','reportid' => '20','type' => 'course_completion','value' => 'position','heading' => 'Completed As','sortorder' => '5',),
 );
 print "\n";print "Inserting ".count($items)." records<br />\n";
 $i=1;

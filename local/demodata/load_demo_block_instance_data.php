@@ -588,9 +588,13 @@ array('id' => '2441','blockid' => '30','pageid' => '217','pagetype' => 'course-v
 array('id' => '2442','blockid' => '21','pageid' => '1','pagetype' => 'course-view','position' => 'l','weight' => '1','visible' => '1','configdata' => '',),
 array('id' => '2443','blockid' => '22','pageid' => '1','pagetype' => 'course-view','position' => 'l','weight' => '2','visible' => '1','configdata' => '',),
 array('id' => '2444','blockid' => '4','pageid' => '1','pagetype' => 'course-view','position' => 'l','weight' => '3','visible' => '1','configdata' => '',),
-array('id' => '2445','blockid' => '20','pageid' => '1','pagetype' => 'course-view','position' => 'r','weight' => '1','visible' => '1','configdata' => '',),
-array('id' => '2446','blockid' => '7','pageid' => '1','pagetype' => 'course-view','position' => 'r','weight' => '2','visible' => '1','configdata' => '',),
-array('id' => '2447','blockid' => '43','pageid' => '1','pagetype' => 'course-view','position' => 'r','weight' => '3','visible' => '1','configdata' => '',),
+array('id' => '2445','blockid' => '20','pageid' => '1','pagetype' => 'course-view','position' => 'r','weight' => '5','visible' => '1','configdata' => '',),
+array('id' => '2446','blockid' => '7','pageid' => '1','pagetype' => 'course-view','position' => 'r','weight' => '1','visible' => '1','configdata' => '',),
+array('id' => '2447','blockid' => '43','pageid' => '1','pagetype' => 'course-view','position' => 'r','weight' => '2','visible' => '1','configdata' => '',),
+array('id' => '2448','blockid' => '45','pageid' => '1','pagetype' => 'course-view','position' => 'r','weight' => '3','visible' => '1','configdata' => '',),
+array('id' => '2449','blockid' => '5','pageid' => '1292','pagetype' => 'blog-view','position' => 'r','weight' => '0','visible' => '1',),
+array('id' => '2450','blockid' => '6','pageid' => '1292','pagetype' => 'blog-view','position' => 'r','weight' => '1','visible' => '1',),
+array('id' => '2451','blockid' => '23','pageid' => '1','pagetype' => 'course-view','position' => 'r','weight' => '4','visible' => '1','configdata' => '',),
 );
 print "\n";print "Inserting ".count($items)." records<br />\n";
 $i=1;

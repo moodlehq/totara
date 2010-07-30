@@ -25,6 +25,7 @@ array('id' => '18','name' => 'login','version' => '2007101509','cron' => '0','la
 array('id' => '19','name' => 'mentees','version' => '2007101509','cron' => '0','lastcron' => '0','visible' => '1','multiple' => '1',),
 array('id' => '20','name' => 'messages','version' => '2007101509','cron' => '0','lastcron' => '0','visible' => '1','multiple' => '0',),
 array('id' => '21','name' => 'mitms_my_learning_nav','version' => '2009120100','cron' => '0','lastcron' => '0','visible' => '1','multiple' => '0',),
+array('id' => '22','name' => 'mitms_my_performance_nav','version' => '2009120100','cron' => '0','lastcron' => '0','visible' => '1','multiple' => '0',),
 array('id' => '23','name' => 'mitms_my_team_nav','version' => '2009120100','cron' => '0','lastcron' => '0','visible' => '1','multiple' => '0',),
 array('id' => '24','name' => 'mitms_my_tools_nav','version' => '2009120100','cron' => '0','lastcron' => '0','visible' => '1','multiple' => '0',),
 array('id' => '25','name' => 'mnet_hosts','version' => '2007101509','cron' => '0','lastcron' => '0','visible' => '1','multiple' => '0',),
@@ -33,7 +34,7 @@ array('id' => '27','name' => 'online_users','version' => '2007101510','cron' => 
 array('id' => '28','name' => 'participants','version' => '2007101509','cron' => '0','lastcron' => '0','visible' => '1','multiple' => '0',),
 array('id' => '29','name' => 'quiz_results','version' => '2007101509','cron' => '0','lastcron' => '0','visible' => '1','multiple' => '1',),
 array('id' => '30','name' => 'recent_activity','version' => '2007101509','cron' => '0','lastcron' => '0','visible' => '1','multiple' => '0',),
-array('id' => '31','name' => 'rss_client','version' => '2007101511','cron' => '300','lastcron' => '1268083022','visible' => '1','multiple' => '1',),
+array('id' => '31','name' => 'rss_client','version' => '2007101511','cron' => '300','lastcron' => '1280467617','visible' => '1','multiple' => '1',),
 array('id' => '32','name' => 'search','version' => '2008031500','cron' => '1','lastcron' => '0','visible' => '1','multiple' => '0',),
 array('id' => '33','name' => 'search_forums','version' => '2007101509','cron' => '0','lastcron' => '0','visible' => '1','multiple' => '0',),
 array('id' => '34','name' => 'section_links','version' => '2007101511','cron' => '0','lastcron' => '0','visible' => '1','multiple' => '0',),
@@ -47,6 +48,7 @@ array('id' => '41','name' => 'tag_youtube','version' => '2007101509','cron' => '
 array('id' => '42','name' => 'tags','version' => '2007101509','cron' => '0','lastcron' => '0','visible' => '1','multiple' => '1',),
 array('id' => '43','name' => 'mitms_report_manager','version' => '2010012800','cron' => '0','lastcron' => '0','visible' => '1','multiple' => '0',),
 array('id' => '44','name' => 'mitms_my_current_courses','version' => '2010021900','cron' => '0','lastcron' => '0','visible' => '0','multiple' => '0',),
+array('id' => '45','name' => 'guides','version' => '2010070400','cron' => '0','lastcron' => '0','visible' => '1','multiple' => '0',),
 );
 print "\n";print "Inserting ".count($items)." records<br />\n";
 $i=1;
@@ -83,4 +85,4 @@ print "<br>";
 set_config("guestloginbutton", 0);
 set_config("langmenu", 0);
 set_config("forcelogin", 1);
-
+        

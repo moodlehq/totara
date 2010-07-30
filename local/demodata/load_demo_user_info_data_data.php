@@ -11684,6 +11684,11 @@ array('id' => '34199','userid' => '2149','fieldid' => '12','data' => '6192386',)
 array('id' => '34203','userid' => '202','fieldid' => '12','data' => '4081360',),
 array('id' => '34207','userid' => '1485','fieldid' => '12','data' => '6709189',),
 array('id' => '34211','userid' => '15','fieldid' => '12','data' => '7523879',),
+array('id' => '34212','userid' => '1292','fieldid' => '12','data' => '',),
+array('id' => '34213','userid' => '1920','fieldid' => '12','data' => '',),
+array('id' => '34214','userid' => '1893','fieldid' => '12','data' => '',),
+array('id' => '34215','userid' => '1077','fieldid' => '12','data' => '',),
+array('id' => '34216','userid' => '3332','fieldid' => '12','data' => '',),
 );
 print "\n";print "Inserting ".count($items)." records<br />\n";
 $i=1;
