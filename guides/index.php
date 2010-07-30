@@ -58,9 +58,8 @@ if ($guideinstances) {
         measure_gi_progress($guideinstance, array(), $efforttotal, $effortdone);
         $percentvalue = $effortdone / $efforttotal * 100;
         $pixelvalue = $effortdone / $efforttotal * 121;
-        $pixeloffset = round($pixelvalue - 120);
-        $percent = round($percentvalue);
-        $guideinstances[$guideid]->progress = $percent;
+        $guideinstances[$guideid]->pixeloffset = round($pixelvalue - 120);
+        $guideinstances[$guideid]->progress = round($percentvalue);
     }
 }
 
@@ -84,7 +83,7 @@ if ($guides) {
                 print '</td><td class="cell"><a href="/guides/delete.php?gi=' . $guideinstances[$guide->id]->giid . '">';
                 print '<img src="' . $CFG->wwwroot . '/theme/' . $CFG->theme . '/pix/t/delete.gif" class="iconsmall" alt="delete guide progress" />';
             } else {
-                print '</a><img src="' . $CFG->wwwroot . '/guides/percentImage.png" alt="' . $guideinstances[$guide->id]->progress . '%" style="background: white url(/guides/percentImage_back.png) top left no-repeat;padding: 0;margin: 5px 0 0 0;background-position: ' . $pixeloffset . 'px 0pt;" /> ';
+                print '</a><img src="' . $CFG->wwwroot . '/guides/percentImage.png" alt="' . $guideinstances[$guide->id]->progress . '%" style="background: white url(/guides/percentImage_back.png) top left no-repeat;padding: 0;margin: 5px 0 0 0;background-position: ' . $guideinstances[$guide->id]->pixeloffset . 'px 0pt;" /> ';
                 print ' ' . $guideinstances[$guide->id]->progress. ' %<br/>';
                 print '<td class="cell options"><a href="/guides/delete.php?gi=' . $guideinstances[$guide->id]->giid . '">';
                 print '<img src="' . $CFG->wwwroot . '/theme/' . $CFG->theme . '/pix/t/delete.gif" class="iconsmall" alt="delete guide progress" />';
