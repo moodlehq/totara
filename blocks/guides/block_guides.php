@@ -24,6 +24,11 @@ class block_guides extends block_list {
         $this->content->icons = array();
         $this->content->footer = '';
 
+        $context = get_context_instance(CONTEXT_SYSTEM);
+        if(!has_capability('block/guides:viewownguide', $context)) {
+            return $this->content;
+        }
+
         $icon  = "<img src=\"$CFG->pixpath/i/course.gif\"".
                  " class=\"icon\" alt=\"".get_string("coursecategory")."\" />";
         $inprogresscontent = '';
