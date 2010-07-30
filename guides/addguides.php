@@ -29,23 +29,20 @@
                 continue;
             }
             $matches = array();
-            if (!preg_match('/([A-Za-z_-][A-Za-z0-9_\ -]*)\.php/', $file, $matches)) { 
+            if (!preg_match('/[0-9]*_([A-Za-z0-9_\ -]*)\.php/', $file, $matches)) {
                 continue;
             }
             $basename = $matches[1];
             $found = false;
             foreach ($guides as $guide) {
-                if ($guide->name == $basename) {
-                    $found = true;
+                if ($guide->identifier == $basename) {
+                    # We already know about that guide
+                    continue;
                 }
-            }
-            if ($found) {
-                # We already know about that guide
-                continue;
             }
             unset($guide);
             require_once($dir . $file);
-            $guide->name = $basename;
+            $guide->identifier = $basename;
             print "New guide found - adding $basename <br />\n";
             insert_record("block_guides_guide",addslashes_object($guide));
         }
