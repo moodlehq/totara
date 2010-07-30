@@ -505,14 +505,12 @@ class rb_source_graphical_feedback_questions extends rb_base_source {
                 'tags.idlist',
                 array('feedback', 'course', 'tags')
             ),
-            // START IRD SPECIFIC
             new rb_content_option(
                 'trainer',
                 'The trainer',
                 'f2fsr.userid',
                 'sessiontrainer'
             ),
-            // END IRD SPECIFIC
             new rb_content_option(
                 'date',
                 "The response time",

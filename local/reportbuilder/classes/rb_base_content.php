@@ -903,6 +903,5 @@ class rb_course_tag_content extends rb_base_content {
     }
 }
 
-// IRD SPECIFIC
 // Include trainer content restriction
 include_once($CFG->dirroot . '/local/reportbuilder/classes/rb_trainer_content.php');

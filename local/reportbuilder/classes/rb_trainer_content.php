@@ -1,8 +1,6 @@
 <?php
 
 /*
- * IRD SPECIFIC CONTENT RESTRICTION
- *
  * Restrict content by a particular trainer or group of trainers
  * Pass in an integer that represents a trainer's moodle id
  */
