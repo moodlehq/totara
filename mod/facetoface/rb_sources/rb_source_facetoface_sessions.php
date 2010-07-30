@@ -33,7 +33,7 @@ class rb_source_facetoface_sessions extends rb_base_source {
             'course' => "LEFT JOIN {$CFG->prefix}course course ON course.id = facetoface.course",
             'date' => "LEFT JOIN {$CFG->prefix}facetoface_sessions_dates date ON base.id = date.sessionid",
             'role' => "LEFT JOIN {$CFG->prefix}facetoface_session_roles role ON base.id = role.sessionid",
-            'signup' => "LEFT JOIN {$CFG->prefix}facetoface_signups signup ON base.id = signup.sessionid",
+            'signup' => "JOIN {$CFG->prefix}facetoface_signups signup ON base.id = signup.sessionid",
             'position_assignment' => "LEFT JOIN {$CFG->prefix}pos_assignment pa ON signup.userid = pa.userid",
             'position' => "LEFT JOIN {$CFG->prefix}pos position ON position.id = pa.positionid",
             'organisation' => "LEFT JOIN {$CFG->prefix}org organisation ON organisation.id = pa.organisationid",
