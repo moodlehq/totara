@@ -68,7 +68,7 @@ $navlinks[] = array('name' => $gi->name, 'link' => null, 'type' => 'misc');
 $navigation = build_navigation($navlinks);
 
 $stepnames = explode(',', $gi->steps);
-$stepnames = array_map(trim, $stepnames);
+$stepnames = array_map('trim', $stepnames);
 
 # If a step has been specified, we should 'focus' on that step
 # otherwise we should focus on the guide's current step
