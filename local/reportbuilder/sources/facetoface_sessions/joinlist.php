@@ -16,7 +16,7 @@ $joinlist = array(
     'course' => "LEFT JOIN {$CFG->prefix}course course ON course.id = facetoface.course",
     'date' => "LEFT JOIN {$CFG->prefix}facetoface_sessions_dates date ON base.id = date.sessionid",
     'role' => "LEFT JOIN {$CFG->prefix}facetoface_session_roles role ON base.id = role.sessionid",
-    'signup' => "LEFT JOIN {$CFG->prefix}facetoface_signups signup ON base.id = signup.sessionid",
+    'signup' => "JOIN {$CFG->prefix}facetoface_signups signup ON base.id = signup.sessionid",
     'position_assignment' => "LEFT JOIN {$CFG->prefix}pos_assignment pa ON signup.userid = pa.userid",
     'manager_role_assignment' => "LEFT JOIN {$CFG->prefix}role_assignments mra ON ( pa.reportstoid = mra.id AND mra.roleid = $managerroleid)",
     'manager' => "LEFT JOIN {$CFG->prefix}user manager ON manager.id = mra.userid",
