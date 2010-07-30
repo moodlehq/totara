@@ -50,10 +50,8 @@ if (empty($guides)) {
 }
 
 print_header($strguidesinprogress. ': ', $strguidesinprogress . ': ', $navigation, "", "", true);
-//print_heading($strguidesinprogress);
 
 if ($guideinstances) {
-    //print '<div class="guideinstancewrapper">';
     foreach ($guideinstances as $guideid => $guideinstance) {
         $efforttotal = 0;
         $effortdone = 0;
@@ -63,19 +61,6 @@ if ($guideinstances) {
         $pixeloffset = round($pixelvalue - 120);
         $percent = round($percentvalue);
         $guideinstances[$guideid]->progress = $percent;
-        /*print '<div class="guideindexbody">';
-        print '<form action="' . $CFG->wwwroot . '/guides/delete.php?gi=' . $guideinstance->giid . '" method="post">';
-        print '<span class="guideindexindication">';
-        print '</span>';
-        print '<span class="guideindexnamecontrol">';
-        print '<a href="' . $CFG->wwwroot . '/guides/view.php?gi=' . $guideinstance->giid .'">';
-        print $guideinstance->name;
-        print '</a>';
-        print ' <input type="hidden" name="gi" value="' . $guideinstance->giid . '" />';
-        print '<input type="image" src="' . $CFG->wwwroot . '/theme/' . $CFG->theme . '/pix/t/delete.gif" class="iconsmall" alt="delete guide progress" />';
-        print '</span>';
-        print '</form>';
-        print '</div>';*/
     }
 }
 
