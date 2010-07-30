@@ -1850,7 +1850,7 @@ function xmldb_local_upgrade($oldversion) {
                 continue;
             }
             $matches = array();
-            if (!preg_match('/[0-9]*_([A-Za-z_-][A-Za-z0-9_\ -]*)\.php/', $file, $matches)) {
+            if (!preg_match('/[0-9]*_([A-Za-z0-9_\ -]*)\.php/', $file, $matches)) {
                 continue;
             }
             $basename = $matches[1];
@@ -1866,6 +1866,7 @@ function xmldb_local_upgrade($oldversion) {
             }
             unset($guide);
             require_once($dir . $file);
+            $guide->identifier = $basename;
             print "New guide found - adding $guide->name <br />\n";
             if(!insert_record("block_guides_guide",addslashes_object($guide)))
                 $success = false;

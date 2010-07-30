@@ -38,6 +38,21 @@ function xmldb_block_guides_upgrade($oldversion=0) {
         $key->setAttributes(XMLDB_KEY_UNIQUE, array('name'));
         $result = $result && add_key($table, $key);
     }
+    if ($result && $oldversion < 2010073000) {
+        // Add a new 'identifier' field, and move the unique constraint from name to identifier
+        $table = new XMLDBTable('block_guides_guide');
+        $field = new XMLDBField('identifier');
+        $field->setAttributes(XMLDB_TYPE_CHAR, '50', null, null, null, null, null);
+        $result = $result && add_field($table, $field);
+
+        $guideindexname = $CFG->prefix . 'blocguidguid_nam_uix';
+        if ($table->getIndex($guideindexname)) {
+            $result = $result && $table->deleteIndex($guideindexname);
+        }
+        $key = new XMLDBKey('identifier');
+        $key->setAttributes(XMLDB_KEY_UNIQUE, array('identifier'));
+        $result = $result && add_key($table, $key);
+    }
 
     return $result;
 }

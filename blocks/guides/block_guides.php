@@ -5,7 +5,7 @@ require_once($CFG->dirroot . '/blocks/moodleblock.class.php');
 class block_guides extends block_list {
     function init() {
         $this->title = get_string('guides','block/guides');
-        $this->version = 2010070400;
+        $this->version = 2010073000;
     }
 
     function has_config() {
