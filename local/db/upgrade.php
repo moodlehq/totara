@@ -1830,15 +1830,6 @@ function xmldb_local_upgrade($oldversion) {
             $guides = array();
         }
 
-        $navlinks = array();
-        $strguides = get_string('guides','block/guides');
-        $navlinks[] = array('name' => $strguides, 'link' => "index.php", 'type' => 'misc');
-        $navlinks[] = array('name' => 'addguides', 'link' => null, 'type' => 'misc');
-        $navigation = build_navigation($navlinks);
-        print_header('Add Guides: ', 'Add Guides: ', $navigation, "", "", true);
-
-        # TODO: opendir, readdir, if !exists, require
-
         $dir = $CFG->dirroot . '/guides/guidedata/';
         $files = scandir($dir);
         foreach ($files as $file){
