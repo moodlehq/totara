@@ -37,8 +37,12 @@
             foreach ($guides as $guide) {
                 if ($guide->identifier == $basename) {
                     # We already know about that guide
-                    continue;
+                    $found = true;
+                    break;
                 }
+            }
+            if ($found) {
+                continue;
             }
             unset($guide);
             require_once($dir . $file);
