@@ -24,6 +24,9 @@ class report_builder_new_group_form extends moodleform {
             LEFT JOIN {$CFG->prefix}course c ON c.id=f.course
             ORDER BY c.fullname, f.name";
         $activities = get_records_sql($sql);
+        if(!$activities) {
+            $activities = array();
+        }
 
         // group activities by course
         $grouped_activities = array();
