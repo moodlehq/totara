@@ -620,20 +620,6 @@ abstract class rb_base_source {
         );
         $columnoptions[] = new rb_column_option(
             'course',
-            'shortname',
-            'Course Shortname',
-            'c.shortname',
-            array('joins' => array_merge($extrajoins, array('course')))
-        );
-        $columnoptions[] = new rb_column_option(
-            'course',
-            'idnumber',
-            'ID Number',
-            'c.idnumber',
-            array('joins' => array_merge($extrajoins, array('course')))
-        );
-        $columnoptions[] = new rb_column_option(
-            'course',
             'courselink',
             'Course Name (linked to course page)',
             'c.fullname',
@@ -643,6 +629,20 @@ abstract class rb_base_source {
                 'defaultheading' => 'Course Name',
                 'extrafields' => array('course_id' => 'c.id')
             )
+        );
+        $columnoptions[] = new rb_column_option(
+            'course',
+            'shortname',
+            'Course Shortname',
+            'c.shortname',
+            array('joins' => array_merge($extrajoins, array('course')))
+        );
+        $columnoptions[] = new rb_column_option(
+            'course',
+            'idnumber',
+            'Course ID Number',
+            'c.idnumber',
+            array('joins' => array_merge($extrajoins, array('course')))
         );
         $columnoptions[] = new rb_column_option(
             'course',

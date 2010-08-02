@@ -30,7 +30,8 @@ class rb_source_facetoface_sessions extends rb_base_source {
         // joinlist for this source
         $joinlist = array(
             'facetoface' => "LEFT JOIN {$CFG->prefix}facetoface facetoface ON base.facetoface = facetoface.id",
-            'course' => "LEFT JOIN {$CFG->prefix}course course ON course.id = facetoface.course",
+            'course' => "LEFT JOIN {$CFG->prefix}course c ON c.id = facetoface.course",
+            'course_category' => "LEFT JOIN {$CFG->prefix}course_categories cat ON cat.id = c.category",
             'date' => "LEFT JOIN {$CFG->prefix}facetoface_sessions_dates date ON base.id = date.sessionid",
             'role' => "LEFT JOIN {$CFG->prefix}facetoface_session_roles role ON base.id = role.sessionid",
             'signup' => "JOIN {$CFG->prefix}facetoface_signups signup ON base.id = signup.sessionid",
@@ -83,6 +84,12 @@ class rb_source_facetoface_sessions extends rb_base_source {
                 array('joins' => 'attendees')
             ),
             new rb_column_option(
+                'session',
+                'details',
+                'Session Details',
+                'base.details'
+            ),
+            new rb_column_option(
                 'status',
                 'statuscode',
                 'Status',
@@ -109,25 +116,6 @@ class rb_source_facetoface_sessions extends rb_base_source {
                     'displayfunc' => 'link_f2f',
                     'defaultheading' => 'Face to Face Name',
                     'extrafields' => array('activity_id' => 'facetoface.id'),
-                )
-            ),
-            new rb_column_option(
-                'course',
-                'fullname',
-                'Course Name',
-                'course.fullname',
-                array('joins' => array('facetoface','course'))
-            ),
-            new rb_column_option(
-                'course',
-                'courselink',
-                'Course Name (linked to course page)',
-                'course.fullname',
-                array(
-                    'joins' => array('facetoface','course'),
-                    'displayfunc' => 'link_course',
-                    'defaultheading' => 'Course Name',
-                    'extrafields' => array('course_id' => 'course.id'),
                 )
             ),
             new rb_column_option(
@@ -173,20 +161,18 @@ class rb_source_facetoface_sessions extends rb_base_source {
         // add position and organisation columns
         $this->add_position_info_to_columns($columnoptions, (array) 'signup');
 
+        // add course columns
+        $this->add_course_info_to_columns($columnoptions, array('facetoface'));
+        $this->add_course_category_info_to_columns($columnoptions, array('facetoface'));
+
         $this->add_facetoface_session_custom_fields_to_columns(&$columnoptions);
+        $this->add_facetoface_session_roles_to_columns(&$columnoptions);
 
         return $columnoptions;
     }
 
     function define_filteroptions() {
         $filteroptions = array(
-            new rb_filter_option(
-                'course',               // type
-                'fullname',             // value
-                'Course Name',          // label
-                'text',                 // filtertype
-                array()                 // options
-            ),
             new rb_filter_option(
                 'facetoface',
                 'name',
@@ -215,6 +201,12 @@ class rb_source_facetoface_sessions extends rb_base_source {
                 'Session Capacity',
                 'number'
             ),
+            new rb_filter_option(
+                'session',
+                'details',
+                'Session Details',
+                'text'
+            ),
         );
 
         // add some generic text filters
@@ -225,6 +217,10 @@ class rb_source_facetoface_sessions extends rb_base_source {
 
         // add user position filters
         $this->add_position_fields_to_filters($filteroptions);
+
+        // add course filters
+        $this->add_course_fields_to_filters($filteroptions);
+        $this->add_course_category_fields_to_filters($filteroptions);
 
         // add session role fields to filters
         $this->add_session_role_fields_to_filters($filteroptions);
@@ -275,7 +271,7 @@ class rb_source_facetoface_sessions extends rb_base_source {
             ),
             new rb_param_option(
                 'courseid',
-                'course.id',
+                'c.id',
                 array('facetoface', 'course')
             ),
         );
@@ -314,6 +310,7 @@ class rb_source_facetoface_sessions extends rb_base_source {
                 'value' => 'sessiondate',
             ),
         );
+
         return $defaultcolumns;
     }
 
@@ -389,7 +386,16 @@ class rb_source_facetoface_sessions extends rb_base_source {
         global $CFG;
         // add joins for the following roles as "session_role_X" and
         // "session_role_user_X"
-        $sessionroles = array('facilitator','auditor','assessor','assistant');
+        $allowedroles = get_config(null, 'facetoface_sessionroles');
+        if(!isset($allowedroles) || $allowedroles == '') {
+            return false;
+        }
+
+        $sessionroles = get_records_sql_menu("SELECT id,shortname FROM {$CFG->prefix}role WHERE id IN ($allowedroles)");
+        if(!$sessionroles) {
+            return false;
+        }
+
         if($roles = get_records('role','','','','id,shortname')) {
             foreach ($roles as $role) {
                 if (in_array($role->shortname, $sessionroles)) {
@@ -397,22 +403,12 @@ class rb_source_facetoface_sessions extends rb_base_source {
                     $id = $role->id;
                     $key = "session_role_$field";
                     $userkey = "session_role_user_$field";
-                    // join to session roles to get userid of role
-                    // we have a problem here because there can be more than one
-                    // assigned user per session per role
-                    // two ways to handle, the first includes one row per user
-                    // (increasing the total number of results):
-                    $joinlist[$key] = "LEFT JOIN {$CFG->prefix}facetoface_session_roles $key ON (base.id = $key.sessionid AND $key.roleid = $id )";
-                    // the second method only shows one record, in this case the
-                    // first user found by id, but requires MIN() which is
-                    // postgres only
-                    // TODO this should be fixed by aggregation
-                    // TODO come up with a better approach? would be nice to
-                    // merge results
-                    //$joinlist[$key] = "LEFT JOIN ( SELECT sessionid,roleid,min(userid) as userid FROM {$CFG->prefix}facetoface_session_roles GROUP BY sessionid,roleid) AS $key ON (base.id = $key.sessionid AND $key.roleid = $id )";
+                    $joinlist[$key] = "LEFT JOIN {$CFG->prefix}facetoface_session_roles $key
+                        ON (base.id = $key.sessionid AND $key.roleid = $id )";
 
                     // join again to user table to get role's info
-                    $joinlist[$userkey] = "LEFT JOIN {$CFG->prefix}user $userkey ON $key.userid = $userkey.id";
+                    $joinlist[$userkey] = "LEFT JOIN {$CFG->prefix}user $userkey
+                        ON $key.userid = $userkey.id";
                 }
             }
             return true;
@@ -453,9 +449,53 @@ class rb_source_facetoface_sessions extends rb_base_source {
         return false;
     }
 
+
+    /*
+     * Adds any session role fields to the $columnoptions array
+     *
+     * @param array &$columnoptions Array of current column options
+     *                              Passed by reference and updated if
+     *                              any session roles exist
+     * @return boolean True if session roles exist
+     */
+    function add_facetoface_session_roles_to_columns(&$columnoptions) {
+        global $CFG;
+        $allowedroles = get_config(null, 'facetoface_sessionroles');
+        if(!isset($allowedroles) || $allowedroles == '') {
+            return false;
+        }
+
+        $sessionroles = get_records_sql("SELECT id,name,shortname
+            FROM {$CFG->prefix}role
+            WHERE id IN ($allowedroles)");
+        if(!$sessionroles) {
+            return false;
+        }
+
+        foreach($sessionroles as $sessionrole) {
+            $field = $sessionrole->shortname;
+            $name = $sessionrole->name;
+            $key = "session_role_$field";
+            $userkey = "session_role_user_$field";
+            $columnoptions[] = new rb_column_option(
+                'role',
+                $field . '_name',
+                'Session '.$name . ' Name',
+                sql_fullname($userkey.'.firstname', $userkey.'.lastname'),
+                array(
+                    'joins' => array($key, $userkey),
+                    'grouping' => 'comma_list',
+                )
+            );
+        }
+        return true;
+    }
+
+
     //
     // Filter data
     //
+
 
     /*
      * Adds some common user field to the $filteroptions array
@@ -467,27 +507,32 @@ class rb_source_facetoface_sessions extends rb_base_source {
      */
     protected function add_session_role_fields_to_filters(&$filteroptions) {
         // auto-generate filters for session roles fields
-
-        // leaving out assistant for now as it generates too many duplicates
-        $sessionroles = array('facilitator', 'auditor', 'assessor');
-        if($roles = get_records('role','','','','id,shortname')) {
-            foreach($roles as $role) {
-                if (in_array($role->shortname,$sessionroles)) {
-                    $field = $role->shortname;
-                    $name = 'Session '.ucfirst($role->shortname);
-                    $key = "session_role_$field";
-                    $userkey = "session_role_user_$field";
-                    $filteroptions[] = new rb_filter_option(
-                        'role',
-                        $field,
-                        $name,
-                        'text'
-                    );
-                }
-            }
-            return true;
+        global $CFG;
+        $allowedroles = get_config(null, 'facetoface_sessionroles');
+        if(!isset($allowedroles) || $allowedroles == '') {
+            return false;
         }
-        return false;
+
+        $sessionroles = get_records_sql("SELECT id,name,shortname
+            FROM {$CFG->prefix}role
+            WHERE id IN ($allowedroles)");
+        if(!$sessionroles) {
+            return false;
+        }
+
+        foreach($sessionroles as $sessionrole) {
+            $field = $sessionrole->shortname;
+            $name = $sessionrole->name;
+            $key = "session_role_$field";
+            $userkey = "session_role_user_$field";
+            $filteroptions[] = new rb_filter_option(
+                'role',
+                $field . '_name',
+                'Session ' . $name,
+                'text'
+            );
+        }
+        return true;
     }
 
 
