@@ -66,6 +66,9 @@ if($debug) {
     $report->debug($debug);
 }
 
+// print report description if set
+print $report->print_description();
+
 // print filters
 $report->display_search();
 

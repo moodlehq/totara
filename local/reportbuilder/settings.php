@@ -93,8 +93,9 @@ if ($fromform = $mform->get_data()) {
 
     $todb = new object();
     $todb->id = $id;
-    $todb->fullname = $fromform->fullname;
+    $todb->fullname = addslashes($fromform->fullname);
     $todb->hidden = $fromform->hidden;
+    $todb->description = addslashes($fromform->description);
     if(update_record('report_builder',$todb)) {
         redirect($returnurl);
     } else {

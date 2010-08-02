@@ -105,6 +105,8 @@ $countall = $report->get_full_count();
 // display heading including filtering stats
 print_heading("$strheading: $countall results found");
 
+print $report->print_description();
+
 $report->display_search();
 
 print "<br />";

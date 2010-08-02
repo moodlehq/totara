@@ -52,6 +52,11 @@ class report_builder_edit_form extends moodleform {
         $mform->addRule('fullname',null,'required');
         $mform->setHelpButton('fullname', array('reportbuilderfullname',get_string('reporttitle','local'),'moodle'));
 
+        $mform->addElement('htmleditor', 'description', get_string('description'));
+        $mform->setDefault('description', $report->description);
+        $mform->setType('description', PARAM_CLEAN);
+        $mform->setHelpButton('description', array('reportbuilderdescription', get_string('reportdescription', 'local') ,'moodle'));
+
         $mform->addElement('static', 'reportsource', get_string('source','local'), $report->source);
         $mform->setHelpButton('reportsource', array('reportbuildersource',get_string('source','local'),'moodle'));
 

@@ -19,7 +19,7 @@ define('SOURCE_DIR_NAME', 'rb_sources');
 
 class reportbuilder {
     public $fullname, $shortname, $source, $hidden, $filters, $filteroptions, $columns, $requiredcolumns;
-    public $columnoptions, $_filtering, $contentoptions, $contentmode, $embeddedurl;
+    public $columnoptions, $_filtering, $contentoptions, $contentmode, $embeddedurl, $description;
     private $_joinlist, $_base, $_params, $_sid;
     public $_id;
     private $_paramoptions, $_embeddedparams, $_fullcount, $_filteredcount;
@@ -55,9 +55,10 @@ class reportbuilder {
             $this->_id = $report->id;
             $this->source = $report->source;
             $this->src = self::get_source_object($this->source);
-            $this->shortname = $report->shortname;
-            $this->fullname = $report->fullname;
+            $this->shortname = stripslashes($report->shortname);
+            $this->fullname = stripslashes($report->fullname);
             $this->hidden = $report->hidden;
+            $this->description = stripslashes($report->description);
             $this->contentmode = $report->contentmode;
             $this->embeddedurl = $report->embeddedurl;
             $this->_sid = $sid;
@@ -1579,6 +1580,18 @@ class reportbuilder {
             get_string('showhidecolumns', 'local') .
             '" style="display:none; float: right;"></form>';
 
+    }
+
+
+    function print_description() {
+        $out = '';
+        if(isset($this->description) &&
+            trim(strip_tags($this->description)) != '') {
+            $out .= print_box_start('generalbox', '', true);
+            $out .= $this->description;
+            $out .= print_box_end(true);
+        }
+        return $out;
     }
 
     /* Download current table in ODS format

@@ -1948,5 +1948,13 @@ function xmldb_local_upgrade($oldversion) {
 
     }
 
+    /// add description field to report_builder table
+    if ($result && $oldversion < 2010080200) {
+        $table = new XMLDBTable('report_builder');
+        $field = new XMLDBField('description');
+        $field->setAttributes(XMLDB_TYPE_TEXT, 'medium', XMLDB_UNSIGNED, null, null, null);
+        $result = $result && add_field($table, $field);
+    }
+
     return $result;
 }

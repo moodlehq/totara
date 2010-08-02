@@ -150,6 +150,8 @@
     // display heading including filtering stats
     print_heading("$countall results found.");
 
+    print $report->print_description();
+
     $report->display_search();
 
     if($countfiltered>0) {
