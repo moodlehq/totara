@@ -34,10 +34,13 @@ class mod_facetoface_session_form extends moodleform {
             $mform->setHelpButton('custom_room',array('room',get_string('room','facetoface'),'facetoface'));
         }
 
-        $mform->addElement('selectyesno', 'datetimeknown', get_string('sessiondatetimeknown', 'facetoface'));
-        $mform->addRule('datetimeknown', null, 'required', null, 'client');
+        $formarray  = array();
+        $formarray[] = $mform->createElement('selectyesno', 'datetimeknown', get_string('sessiondatetimeknown', 'facetoface'));
+	$formarray[] = $mform->createElement('static', 'datetimeknownhint', '','<span class="hint-text">'.get_string('datetimeknownhinttext','facetoface').'</span>');
+	$mform->addGroup($formarray,'datetimeknown_group', get_string('sessiondatetimeknown','facetoface'), array(' '),false);
+        $mform->addGroupRule('datetimeknown_group', null, 'required', null, 'client');
         $mform->setDefault('datetimeknown', false);
-        $mform->setHelpButton('datetimeknown', array('sessiondatetimeknown', get_string('sessiondatetimeknown', 'facetoface'), 'facetoface'));
+        $mform->setHelpButton('datetimeknown_group', array('sessiondatetimeknown', get_string('sessiondatetimeknown', 'facetoface'), 'facetoface'));
 
         $repeatarray = array();
         $repeatarray[] = &$mform->createElement('hidden', 'sessiondateid', 0);
@@ -73,14 +76,20 @@ class mod_facetoface_session_form extends moodleform {
         $mform->setHelpButton('duration', array('duration', get_string('duration', 'facetoface'), 'facetoface'));
 
         if (!get_config(NULL, 'facetoface_hidecost')) {
-            $mform->addElement('text', 'normalcost', get_string('normalcost', 'facetoface'), 'size="5"');
+            $formarray  = array();
+            $formarray[] = $mform->createElement('text', 'normalcost', get_string('normalcost', 'facetoface'), 'size="5"');
+	    $formarray[] = $mform->createElement('static', 'normalcosthint', '','<span class="hint-text">'.get_string('normalcosthinttext','facetoface').'</span>');
+	    $mform->addGroup($formarray,'normalcost_group', get_string('normalcost','facetoface'), array(' '),false);
             $mform->setType('normalcost', PARAM_TEXT);
-            $mform->setHelpButton('normalcost', array('normalcost', get_string('normalcost', 'facetoface'), 'facetoface'));
+            $mform->setHelpButton('normalcost_group', array('normalcost', get_string('normalcost', 'facetoface'), 'facetoface'));
 
             if (!get_config(NULL, 'facetoface_hidediscount')) {
-                $mform->addElement('text', 'discountcost', get_string('discountcost', 'facetoface'), 'size="5"');
+                $formarray  = array();
+                $formarray[] = $mform->createElement('text', 'discountcost', get_string('discountcost', 'facetoface'), 'size="5"');
+	        $formarray[] = $mform->createElement('static', 'discountcosthint', '','<span class="hint-text">'.get_string('discountcosthinttext','facetoface').'</span>');
+	        $mform->addGroup($formarray,'discountcost_group', get_string('discountcost','facetoface'), array(' '),false);
                 $mform->setType('discountcost', PARAM_TEXT);
-                $mform->setHelpButton('discountcost', array('discountcost', get_string('discountcost', 'facetoface'), 'facetoface'));
+                $mform->setHelpButton('discountcost_group', array('discountcost', get_string('discountcost', 'facetoface'), 'facetoface'));
             }
         }
 
