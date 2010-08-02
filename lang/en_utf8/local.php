@@ -390,6 +390,9 @@ $string['lastchecked'] = 'Last process date';
 $string['disabled'] = 'Disabled?';
 $string['notyetchecked'] = 'Not yet processed';
 $string['refreshdataforthisgroup'] = 'Refresh data for this group';
+$string['context'] = 'Context';
+$string['systemcontext'] = 'Users must have role in the system context';
+$string['anycontext'] = 'Users may have role in any context';
 
 // Report Headings
 $string['reportheading'] = 'Report Heading Block';
