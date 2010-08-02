@@ -116,7 +116,7 @@ class report_builder_edit_filters_form extends moodleform {
                     $fid = $index;
 
                     $mform->addElement('html','<tr><td>');
-                    $mform->addElement('select',"filter{$fid}",'',$filtersselect);
+                    $mform->addElement('selectgroups',"filter{$fid}",'',$filtersselect);
                     $mform->setDefault("filter{$fid}", $field);
                     $mform->addElement('html','</td><td>');
                     $mform->addElement('checkbox',"advanced{$fid}",'');
@@ -228,7 +228,7 @@ class report_builder_edit_columns_form extends moodleform {
                         $heading = $column->heading;
                         $cid = $index;
                         $mform->addElement('html','<tr><td>');
-                        $mform->addElement('select',"column{$cid}",'',$columnsselect, $onchange);
+                        $mform->addElement('selectgroups',"column{$cid}",'',$columnsselect, $onchange);
                         $mform->setDefault("column{$cid}", $field);
                         $mform->addElement('html','</td><td>');
                         $mform->addElement('text',"heading{$cid}",'');

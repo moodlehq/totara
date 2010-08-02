@@ -1822,8 +1822,9 @@ class reportbuilder {
             return $ret;
         }
         foreach($filters as $filter) {
+            $section = ucwords(str_replace(array('_','-'),array(' ',' '), $filter->type));
             $key = $filter->type . '-' . $filter->value;
-            $ret[$key] = $filter->label;
+            $ret[$section][$key] = $filter->label;
         }
         return $ret;
     }
@@ -1841,8 +1842,9 @@ class reportbuilder {
             return $ret;
         }
         foreach($columns as $column) {
+            $section = ucwords(str_replace(array('_','-'),array(' ',' '), $column->type));
             $key = $column->type . '-' . $column->value;
-            $ret[$key] = $column->name;
+            $ret[$section][$key] = $column->name;
         }
         return $ret;
     }
