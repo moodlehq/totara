@@ -48,8 +48,8 @@
                 REPORT_BUILDER_GROUPS_FAILED_DELETE);
         }
     } else if($d) {
-        $reports = get_records('report_builder', 'source',
-            'feedback_questions_grp_'.$id);
+        $reports = get_records_select('report_builder',
+            "source ILIKE '%grp_$id'");
         if($reports) {
             // can't delete group when reports are using it
             redirect($returnurl.'?notice=' .
@@ -133,7 +133,7 @@
     $feedbackmoduleid = get_field('modules', 'id', 'name', 'feedback');
     if($feedbackmoduleid) {
         $sql = "
-            SELECT g.*, assign.numitems, reports.numreports,
+            SELECT reports.groupid,g.*, assign.numitems, reports.numreports,
             f.name AS feedbackname, f.id AS feedbackid,
             c.fullname AS coursename, c.id AS courseid,
             cm.id AS cmid, tag.name as tagname
@@ -154,12 +154,13 @@
                 WHERE tagtype = 'official'
             ) tag ON g.assigntype = 'tag' AND g.assignvalue = tag.id
             LEFT JOIN (
-                SELECT source,count(id) as numreports
+                SELECT " . sql_substr() . "(source, " .
+                sql_position("'grp_'", "source"). " + 4) as groupid,
+                count(id) as numreports
                 FROM {$CFG->prefix}report_builder
-                WHERE source ILIKE 'feedback_questions_grp_%'
-                GROUP BY source
-            ) reports ON reports.source = " .
-            sql_concat("'feedback_questions_grp_'",'g.id');
+                WHERE source ILIKE '%_grp_%'
+                GROUP BY groupid
+            ) reports ON CAST(reports.groupid AS INTEGER) = g.id";
         $groups = get_records_sql($sql);
     } else {
         $groups = false;
