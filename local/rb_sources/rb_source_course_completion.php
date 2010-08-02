@@ -28,6 +28,8 @@ class rb_source_course_completion extends rb_base_source {
     function define_joinlist() {
         global $CFG;
 
+        require_once($CFG->libdir . '/completion/completion_criteria.php');
+
         // joinlist for this source
         $joinlist = array(
             'course' => "LEFT JOIN {$CFG->prefix}course c ON base.course = c.id",
@@ -38,6 +40,10 @@ class rb_source_course_completion extends rb_base_source {
             'position' => "LEFT JOIN {$CFG->prefix}pos position ON position.id = pa.positionid",
             'completion_organisation' => "LEFT JOIN {$CFG->prefix}org completion_organisation ON base.organisationid = completion_organisation.id",
             'completion_position' => "LEFT JOIN {$CFG->prefix}pos completion_position ON base.positionid = completion_position.id",
+            'criteria' => "LEFT JOIN {$CFG->prefix}course_completion_criteria criteria
+                ON (base.course = criteria.course AND criteria.criteriatype = " . COMPLETION_CRITERIA_TYPE_GRADE . ")",
+            'critcompl' => "LEFT JOIN {$CFG->prefix}course_completion_crit_compl critcompl
+                ON (base.userid = critcompl.userid AND critcompl.criteriaid = criteria.id)",
         );
 
         // only include these joins if the manager role is defined
@@ -112,6 +118,38 @@ class rb_source_course_completion extends rb_base_source {
                 'completion_position.fullname',
                 array('joins' => 'completion_position')
             ),
+            new rb_column_option(
+                'course_completion',
+                'grade',
+                'Grade',
+                'critcompl.gradefinal',
+                array(
+                    'joins' => array('criteria', 'critcompl'),
+                    'displayfunc' => 'percent',
+                )
+            ),
+            new rb_column_option(
+                'course_completion',
+                'passgrade',
+                'Pass Grade',
+                'criteria.gradepass',
+                array(
+                    'joins' => 'criteria',
+                    'displayfunc'=>'percent',
+                )
+            ),
+            new rb_column_option(
+                'course_completion',
+                'gradestring',
+                'Grade and required grade',
+                'critcompl.gradefinal',
+                array(
+                    'joins' => array('criteria', 'critcompl'),
+                    'displayfunc' => 'grade_string',
+                    'extrafields' => array('gradepass' => 'criteria.gradepass'),
+                    'defaultheading' => 'Grade',
+                )
+            ),
         );
 
         // include some standard columns
@@ -183,6 +221,18 @@ class rb_source_course_completion extends rb_base_source {
                     'selectfunc' => 'positions_list',
                     'selectoptions' => rb_filter_option::select_width_limiter()
                 )
+            ),
+            new rb_filter_option(
+                'course_completion',
+                'grade',
+                'Grade',
+                'number'
+            ),
+            new rb_filter_option(
+                'course_completion',
+                'passgrade',
+                'Required Grade',
+                'number'
             ),
         );
 
@@ -357,14 +407,18 @@ class rb_source_course_completion extends rb_base_source {
     //
     //
 
-    // add methods here with [name] matching column option displayfunc
-    //function rb_display_[name]($item, $row) {
-        // variable $item refers to the current item
-        // $row is an object containing the whole row
-        // which will include any extrafields
-        //
-        // should return a string containing what should be displayed
-    //}
+    // display grade along with passing grade if it is known
+    function rb_display_grade_string($item, $row) {
+        $passgrade = isset($row->gradepass) ? $row->gradepass : null;
+
+        if($item === null) {
+            return '';
+        } else if ($passgrade === null) {
+            return sprintf('%d%%', $item);
+        } else {
+            return sprintf('%d%% (%d%% to complete)', $item, $passgrade);
+        }
+    }
 
     //
     //
