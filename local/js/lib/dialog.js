@@ -60,7 +60,6 @@ function mitmsDialog(title, buttonid, config, default_url, handler) {
             height: 350,
             width: 705,
             modal: true,
-            position: [205, 'center'],
             resizable: false,
             zIndex: 1500,
             dialogClass: 'mitms-dialog'
