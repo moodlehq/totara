@@ -74,6 +74,20 @@ class rb_source_course_completion extends rb_base_source {
             ),
             new rb_column_option(
                 'course_completion',
+                'starteddate',
+                'Date Started',
+                'base.timestarted',
+                array('displayfunc' => 'nice_date')
+            ),
+            new rb_column_option(
+                'course_completion',
+                'enrolleddate',
+                'Date Enrolled',
+                'base.timeenrolled',
+                array('displayfunc' => 'nice_date')
+            ),
+            new rb_column_option(
+                'course_completion',
                 'organisationid',
                 'Completion Organisation ID',
                 'base.organisationid'
@@ -125,7 +139,19 @@ class rb_source_course_completion extends rb_base_source {
             new rb_filter_option(
                 'course_completion',
                 'completeddate',
-                'Completed Date',
+                'Date Completed',
+                'date'
+            ),
+            new rb_filter_option(
+                'course_completion',
+                'completeddate',
+                'Date Started',
+                'date'
+            ),
+            new rb_filter_option(
+                'course_completion',
+                'completeddate',
+                'Date Enrolled',
                 'date'
             ),
             new rb_filter_option(
