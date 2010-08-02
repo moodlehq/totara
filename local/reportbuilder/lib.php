@@ -2124,16 +2124,18 @@ class reportbuilder {
 
         // get first column and use as heading
         $columns = $this->columns;
-        $primary_field = current($columns);
-        if($primary_field->required == true) {
-            $primary_field = null;
-        }
+        if(count($columns) > 0) {
+            $primary_field = current($columns);
+            if($primary_field->required == true) {
+                $primary_field = null;
+            }
 
-        // get any extra (none required) columns
-        $additional_fields = array();
-        while($col = next($columns)) {
-            if($col->required == false) {
-                $additional_fields[] = $col;
+            // get any extra (none required) columns
+            $additional_fields = array();
+            while($col = next($columns)) {
+                if($col->required == false) {
+                    $additional_fields[] = $col;
+                }
             }
         }
 
@@ -2151,18 +2153,22 @@ class reportbuilder {
                     $out .= '<hr class="feedback-separator"/>';
                 }
 
-                // print primary heading
-                $primaryname = $primary_field->type . '_' . $primary_field->value;
-                $primaryheading = $primary_field->heading;
-                $primaryvalue = (isset($item->$primaryname)) ? $item->$primaryname : 'Unknown';
-                $out .= '<h2>' . $primaryheading . ': '.$primaryvalue . '</h2>';
+                if(isset($primary_field)) {
+                    // print primary heading
+                    $primaryname = $primary_field->type . '_' . $primary_field->value;
+                    $primaryheading = $primary_field->heading;
+                    $primaryvalue = (isset($item->$primaryname)) ? $item->$primaryname : 'Unknown';
+                    $out .= '<h2>' . $primaryheading . ': '.$primaryvalue . '</h2>';
+                }
 
-                // print secondary details
-                foreach($additional_fields as $additional_field) {
-                    $addname = $additional_field->type . '_' . $additional_field->value;
-                    $addheading = $additional_field->heading;
-                    $addvalue = (isset($item->$addname)) ? $item->$addname : 'Unknown';
-                    $out .= '<strong>' . $addheading . ': '. $addvalue . '</strong><br />';
+                if(isset($additional_fields)) {
+                    // print secondary details
+                    foreach($additional_fields as $additional_field) {
+                        $addname = $additional_field->type . '_' . $additional_field->value;
+                        $addheading = $additional_field->heading;
+                        $addvalue = (isset($item->$addname)) ? $item->$addname : 'Unknown';
+                        $out .= '<strong>' . $addheading . ': '. $addvalue . '</strong><br />';
+                    }
                 }
 
                 // print count of number of results
