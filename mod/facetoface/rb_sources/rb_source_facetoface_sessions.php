@@ -294,18 +294,6 @@ class rb_source_facetoface_sessions extends rb_base_source {
                 'value' => 'location',
             ),
             array(
-                'type' => 'session',
-                'value' => 'audit',
-            ),
-            array(
-                'type' => 'session',
-                'value' => 'pilot',
-            ),
-            array(
-                'type' => 'session',
-                'value' => 'coursedelivery',
-            ),
-            array(
                 'type' => 'date',
                 'value' => 'sessiondate',
             ),
