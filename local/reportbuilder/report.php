@@ -48,7 +48,7 @@ $countall = ($report->get_sql_filter() == '') ? $countfiltered : $report->get_fu
 
 $fullname = $report->fullname;
 $pagetitle = format_string(get_string('report','local').': '.$fullname);
-$navlinks[] = array('name' => get_string('report','local'), 'link'=> '', 'type'=>'title');
+$navlinks[] = array('name' => get_string('myreports','local'), 'link'=> $CFG->wwwroot . '/my/reports.php', 'type'=>'title');
 $navlinks[] = array('name' => $fullname, 'link'=> '', 'type'=>'title');
 
 $navigation = build_navigation($navlinks);
