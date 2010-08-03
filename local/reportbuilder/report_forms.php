@@ -143,8 +143,12 @@ class report_builder_edit_filters_form extends moodleform {
 
 
             $mform->addElement('html','<tr><td>');
-            $newfilterselect = array_merge(array(0=>get_string('addanotherfilter','local')),$filtersselect);
-            $mform->addElement('select','newfilter','',$newfilterselect);
+            $newfilterselect = array_merge(
+                array(
+                    get_string('new') => array(0 => get_string('addanotherfilter','local'))
+                ),
+                $filtersselect);
+            $mform->addElement('selectgroups','newfilter','',$newfilterselect);
             $mform->addElement('html','</td><td>');
             $mform->addElement('checkbox','newadvanced','');
             $mform->disabledIf('newadvanced','newfilter', 'eq', 0);
@@ -266,8 +270,12 @@ class report_builder_edit_columns_form extends moodleform {
             }
 
             $mform->addElement('html','<tr><td>');
-            $newcolumnsselect = array_merge(array(0=>get_string('addanothercolumn','local')),$columnsselect);
-            $mform->addElement('select','newcolumns','',$newcolumnsselect, $newonchange);
+            $newcolumnsselect = array_merge(
+                array(
+                    get_string('new') => array(0 => get_string('addanothercolumn','local'))
+                ),
+                $columnsselect);
+            $mform->addElement('selectgroups','newcolumns','',$newcolumnsselect, $newonchange);
             $mform->addElement('html','</td><td>');
             $mform->addElement('text','newheading','');
             $mform->setType('newheading', PARAM_TEXT);
