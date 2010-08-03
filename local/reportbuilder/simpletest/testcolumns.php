@@ -16,8 +16,13 @@ require_once($CFG->libdir . '/simpletestlib.php');
 class columns_test extends prefix_changing_test_case {
     // test data for database
     var $reportbuilder_data = array(
-        array('id', 'fullname', 'shortname', 'source', 'hidden', 'accessmode', 'contentmode','embeddedurl'),
-        array(1, 'Test Report', 'test_report', 'competency_evidence', 0, 0, 0, null),
+        array('id', 'fullname', 'shortname', 'source', 'hidden', 'accessmode', 'contentmode','embeddedurl','description'),
+        array(1, 'Test Report', 'test_report', 'competency_evidence', 0, 0, 0, null,''),
+    );
+
+    var $config_data = array(
+        array('id','name','value'),
+        array(1, 'facetoface_sessionroles', '1'),
     );
 
     var $reportbuilder_columns_data = array(
@@ -111,6 +116,16 @@ class columns_test extends prefix_changing_test_case {
         array(1, 1, 1, 1, 1, 0, 0, 1140606000, 1140606000, 1140606000, 0, ''),
     );
 
+    var $course_completion_criteria_data = array(
+        array('id', 'course', 'criteriatype', 'gradepass'),
+        array(1, 2, 6, 50),
+    );
+
+    var $course_completion_crit_compl_data = array(
+        array('id', 'userid', 'course', 'criteriaid', 'gradefinal'),
+        array(1, 2, 2, 1, 80),
+    );
+
     var $log_data = array(
         array('id','time','userid','ip','course','module','cmid','action','url','info'),
         array(1, 1140606000, 2, '192.168.2.133', 1, 'user', 0, 'update', 'view.php', 1),
@@ -134,8 +149,8 @@ class columns_test extends prefix_changing_test_case {
     );
 
     var $feedback_completed_data = array(
-        array('id', 'feedback', 'userid'),
-        array(1, 1, 2),
+        array('id', 'feedback', 'userid', 'timemodified'),
+        array(1, 1, 2, 1140606000),
     );
 
     var $feedback_value_data = array(
@@ -217,14 +232,14 @@ class columns_test extends prefix_changing_test_case {
 
     // partial f2f table
     var $f2f_data = array(
-        array('id', 'course', 'name', 'shortname'),
-        array(1, 1, 'F2F name', 'f2f'),
+        array('id', 'course', 'name', 'shortname','details'),
+        array(1, 1, 'F2F name', 'f2f','details'),
     );
 
     // partial f2f table
     var $f2f_session_data = array(
-        array('id', 'facetoface', 'capacity'),
-        array(1, 1, 10),
+        array('id', 'facetoface', 'capacity','details'),
+        array(1, 1, 10,'details'),
     );
 
     // partial f2f table
@@ -288,6 +303,8 @@ class columns_test extends prefix_changing_test_case {
         load_test_table($CFG->prefix . 'pos_assignment', $this->pos_assignment_data, $db);
         load_test_table($CFG->prefix . 'facetoface_session_field', $this->f2f_session_field_data, $db);
         load_test_table($CFG->prefix . 'facetoface_session_data', $this->f2f_session_data_data, $db);
+        load_test_table($CFG->prefix . 'course_completion_crit_compl', $this->course_completion_crit_compl_data, $db);
+        load_test_table($CFG->prefix . 'course_completion_criteria', $this->course_completion_criteria_data, $db);
         load_test_table($CFG->prefix . 'course_completions', $this->course_completions_data, $db);
         load_test_table($CFG->prefix . 'log', $this->log_data, $db);
         load_test_table($CFG->prefix . 'course', $this->course_data, $db);
@@ -324,6 +341,7 @@ class columns_test extends prefix_changing_test_case {
         load_test_table($CFG->prefix . 'tag', $this->tag_data, $db);
         load_test_table($CFG->prefix . 'tag_instance', $this->tag_instance_data, $db);
         load_test_table($CFG->prefix . 'report_builder_group', $this->reportbuilder_group_data, $db);
+        load_test_table($CFG->prefix . 'config', $this->config_data, $db);
 
         // get rid of dummy records
         delete_records('report_builder_group');
@@ -334,6 +352,7 @@ class columns_test extends prefix_changing_test_case {
 
     function tearDown() {
         global $db,$CFG;
+        remove_test_table('mdl_unittest_config', $db);
         remove_test_table('mdl_unittest_report_builder_group', $db);
         remove_test_table('mdl_unittest_tag_instance', $db);
         remove_test_table('mdl_unittest_tag', $db);
@@ -369,6 +388,8 @@ class columns_test extends prefix_changing_test_case {
         remove_test_table('mdl_unittest_course_categories', $db);
         remove_test_table('mdl_unittest_course', $db);
         remove_test_table('mdl_unittest_log', $db);
+        remove_test_table('mdl_unittest_course_completion_crit_compl', $db);
+        remove_test_table('mdl_unittest_course_completion_criteria', $db);
         remove_test_table('mdl_unittest_course_completions', $db);
         remove_test_table('mdl_unittest_facetoface_session_data', $db);
         remove_test_table('mdl_unittest_facetoface_session_field', $db);

@@ -16,8 +16,13 @@ require_once($CFG->libdir . '/simpletestlib.php');
 class reportbuilderlib_test extends prefix_changing_test_case {
     // test data for database
     var $reportbuilder_data = array(
-        array('id', 'fullname', 'shortname', 'source', 'hidden', 'accessmode', 'contentmode','embeddedurl'),
-        array(1, 'Test Report', 'test_report', 'competency_evidence', 0, 0, 0, null),
+        array('id', 'fullname', 'shortname', 'source', 'hidden', 'accessmode', 'contentmode','embeddedurl','description'),
+        array(1, 'Test Report', 'test_report', 'competency_evidence', 0, 0, 0, null, ''),
+    );
+
+    var $config_data = array(
+        array('id','name','value'),
+        array(1, 'facetoface_sessionroles', '1'),
     );
 
     var $reportbuilder_columns_data = array(
@@ -121,6 +126,7 @@ class reportbuilderlib_test extends prefix_changing_test_case {
         load_test_table($CFG->prefix . 'context', $this->context_data, $db);
         load_test_table($CFG->prefix . 'user', $this->user_data, $db);
         load_test_table($CFG->prefix . 'pos_assignment', $this->pos_assignment_data, $db);
+        load_test_table($CFG->prefix . 'config', $this->config_data, $db);
 
         $this->embed = new object();
         $this->embed->source = 'competency_evidence';
@@ -183,6 +189,7 @@ class reportbuilderlib_test extends prefix_changing_test_case {
 
     function tearDown() {
         global $db,$CFG;
+        remove_test_table('mdl_unittest_config', $db);
         remove_test_table('mdl_unittest_pos_assignment', $db);
         remove_test_table('mdl_unittest_user', $db);
         remove_test_table('mdl_unittest_context', $db);
@@ -628,7 +635,7 @@ class reportbuilderlib_test extends prefix_changing_test_case {
         // should return an array
         $this->assertTrue(is_array($options));
         // the strings should have the correct format
-        $this->assertEqual($options['user-fullname'], "User's Full name");
+        $this->assertEqual($options['User']['user-fullname'], "User's Full name");
     }
 
     function test_reportbuilder_get_columns_select() {
@@ -637,7 +644,7 @@ class reportbuilderlib_test extends prefix_changing_test_case {
         // should return an array
         $this->assertTrue(is_array($options));
         // the strings should have the correct format
-        $this->assertEqual($options['user-fullname'], 'User Fullname');
+        $this->assertEqual($options['User']['user-fullname'], 'User Fullname');
     }
 
     function test_reportbuilder_delete_column() {
