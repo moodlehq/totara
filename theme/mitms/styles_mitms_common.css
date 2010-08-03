@@ -138,6 +138,10 @@ td.feedback-bar-blank {
     background-color: none;
 }
 
+/* prevent right floated buttons from disturbing the data table */
+div.paging, table.reportbuilder-table {
+    clear: both;
+}
 /*****************************************************************************/
 /** Hierarchies **/
 /*****************************************************************************/
