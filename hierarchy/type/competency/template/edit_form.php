@@ -36,7 +36,7 @@ class competencytemplate_edit_form extends moodleform {
 
         $mform->addElement('htmleditor', 'description', get_string('description'));
         $mform->setHelpButton('description', array('text', get_string('helptext')), true);
-        $mform->setType('description', PARAM_RAW);
+        $mform->setType('description', PARAM_CLEAN);
 
         $this->add_action_buttons();
     }

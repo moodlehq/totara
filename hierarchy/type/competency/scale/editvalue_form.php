@@ -33,15 +33,15 @@ class competencyscalevalue_edit_form extends moodleform {
 
         $mform->addElement('text', 'idnumber', get_string('scalevalueidnumber', 'competency'), 'maxlength="100"  size="10"');
         $mform->setHelpButton('idnumber', array('competencyscalevalueidnumber', get_string('scalevalueidnumber', 'competency')), true);
-        $mform->setType('idnumber', PARAM_RAW);
+        $mform->setType('idnumber', PARAM_CLEAN);
 
         $mform->addElement('text', 'numericscore', get_string('scalevaluenumericalvalue', 'competency'), 'maxlength="100"  size="10"');
         $mform->setHelpButton('numericscore', array('competencyscalevaluenumeric', get_string('scalevaluenumericalvalue', 'competency')), true);
-        $mform->setType('numericscore', PARAM_RAW);
+        $mform->setType('numericscore', PARAM_CLEAN);
 
         $mform->addElement('htmleditor', 'description', get_string('description'));
         $mform->setHelpButton('description', array('text', get_string('helptext')), true);
-        $mform->setType('description', PARAM_RAW);
+        $mform->setType('description', PARAM_CLEAN);
 
         $this->add_action_buttons();
     }

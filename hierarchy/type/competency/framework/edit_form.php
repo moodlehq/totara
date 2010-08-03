@@ -54,11 +54,11 @@ class framework_edit_form extends moodleform {
 
         $mform->addElement('text', 'idnumber', get_string('idnumberframework', 'competency'), 'maxlength="100"  size="10"');
         $mform->setHelpButton('idnumber', array('competencyframeworkidnumber', get_string('idnumberframework', 'competency')), true);
-        $mform->setType('idnumber', PARAM_RAW);
+        $mform->setType('idnumber', PARAM_CLEAN);
 
         $mform->addElement('htmleditor', 'description', get_string('description'));
         $mform->setHelpButton('description', array('text', get_string('helptext')), true);
-        $mform->setType('description', PARAM_RAW);
+        $mform->setType('description', PARAM_CLEAN);
 
         $mform->addElement('select', 'scale', get_string('scale'), $scales);
         $mform->setHelpButton('scale', array('competencyframeworkscale', get_string('scale')), true);

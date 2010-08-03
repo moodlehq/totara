@@ -117,13 +117,13 @@ class item_edit_form extends moodleform {
 
         $mform->addElement('text', 'idnumber', get_string('idnumber', $type), 'maxlength="100"  size="10"');
         $mform->setHelpButton('idnumber', array($type.'idnumber', get_string('idnumber', $type)), true);
-        $mform->setType('idnumber', PARAM_RAW);
+        $mform->setType('idnumber', PARAM_CLEAN);
 
         // If we are in a dialog, hide the htmleditor. It messes with the jquery code
         if (!$dialog) {
             $mform->addElement('htmleditor', 'description', get_string('description'));
             $mform->setHelpButton('description', array('text', get_string('helptext')), true);
-            $mform->setType('description', PARAM_RAW);
+            $mform->setType('description', PARAM_CLEAN);
         }
 
         /// Next show the custom fields if we're editing an existing items (otherwise we don't know the depthid)
