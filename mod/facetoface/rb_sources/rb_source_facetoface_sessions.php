@@ -90,6 +90,12 @@ class rb_source_facetoface_sessions extends rb_base_source {
                 'base.details'
             ),
             new rb_column_option(
+                'session',
+                'duration',
+                'Session Duration',
+                'base.duration'
+            ),
+            new rb_column_option(
                 'status',
                 'statuscode',
                 'Status',
@@ -206,6 +212,12 @@ class rb_source_facetoface_sessions extends rb_base_source {
                 'details',
                 'Session Details',
                 'text'
+            ),
+            new rb_filter_option(
+                'session',
+                'duration',
+                'Session Duration',
+                'number'
             ),
         );
 
