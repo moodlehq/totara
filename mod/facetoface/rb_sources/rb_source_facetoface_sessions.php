@@ -93,7 +93,10 @@ class rb_source_facetoface_sessions extends rb_base_source {
                 'session',
                 'duration',
                 'Session Duration',
-                'base.duration'
+                'base.duration',
+                array(
+                    'displayfunc' => 'hours_minutes',
+                )
             ),
             new rb_column_option(
                 'status',
@@ -216,7 +219,7 @@ class rb_source_facetoface_sessions extends rb_base_source {
             new rb_filter_option(
                 'session',
                 'duration',
-                'Session Duration',
+                'Session Duration (minutes)',
                 'number'
             ),
         );
@@ -643,6 +646,7 @@ class rb_source_facetoface_sessions extends rb_base_source {
         $sessionid = $row->session_id;
         return "<a href=\"{$CFG->wwwroot}/mod/facetoface/attendees.php?s={$sessionid}\">".userdate($date,'%d %B %Y')."</a>";
     }
+
 
     //
     //

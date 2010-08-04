@@ -227,6 +227,21 @@ abstract class rb_base_source {
             return get_string('no');
         }
     }
+
+    // convert an integer number of minutes into a
+    // formatted duration (e.g. 90 mins => 1h 30m)
+    function rb_display_hours_minutes($mins, $row) {
+        if($mins === null) {
+            return '';
+        } else {
+            $minutes = abs((int) $mins);
+            $hours = floor($minutes / 60);
+            $decimalMinutes = $minutes - floor($minutes/60) * 60;
+            return sprintf("%dh %02.0fm", $hours, $decimalMinutes);
+        }
+    }
+
+
     //
     //
     // Generic select filter methods
