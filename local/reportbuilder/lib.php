@@ -992,6 +992,11 @@ class reportbuilder {
     function get_param_joins() {
         $paramjoins = array();
         foreach($this->_params as $param) {
+            $value = $param->value;
+            // don't include join if param not set
+            if(!isset($value) || $value=='') {
+                continue;
+            }
             $paramjoins = array_merge($paramjoins,
                 $this->get_joins($param, 'param'));
         }
