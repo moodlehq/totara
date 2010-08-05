@@ -30,7 +30,7 @@
  * @copyright Catalyst IT Limited
  * @author Jonathan Newman
  * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @package MITMS
+ * @package Totara
  */
 require_once($CFG->dirroot.'/hierarchy/lib.php');
 require_once($CFG->dirroot.'/hierarchy/type/competency/evidenceitem/type/abstract.php');

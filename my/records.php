@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package    moodle
- * @subpackage mitms
+ * @subpackage Totara
  * @author     Jonathan Newman <jonathan.newman@catalyst.net.nz>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL
  * @copyright  (C) 1999 onwards Martin Dougiamas  http://dougiamas.com
@@ -51,7 +51,7 @@
     $context = get_context_instance(CONTEXT_SYSTEM);
     // users can only view their own and their staff's pages
     // or if they are an admin
-    if ($USER->id != $id && !mitms_is_manager($id) && !has_capability('moodle/site:doanything',$context)) {
+    if ($USER->id != $id && !totara_is_manager($id) && !has_capability('moodle/site:doanything',$context)) {
         error('You cannot view this page');
     }
     if ($USER->id != $id) {

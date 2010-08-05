@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL
  * @copyright  (C) 1999 onwards Martin Dougiamas  http://dougiamas.com
  *
- * local db upgrades for MITMS
+ * local db upgrades for Totara
  */
 function xmldb_local_upgrade($oldversion) {
     global $CFG, $db;
@@ -1101,7 +1101,7 @@ function xmldb_local_upgrade($oldversion) {
     }
 
     if ($result && $oldversion < 2010030600) {
-        mitms_reset_stickyblocks(true);
+        totara_reset_stickyblocks(true);
     }
 
     if ($result && $oldversion < 2010031000) {
@@ -1496,7 +1496,7 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && add_index($table, $index);
 
         // lots of changes to report builder db structure
-        mitms_migrate_old_report_builder_reports($result);
+        totara_migrate_old_report_builder_reports($result);
 
     }
 

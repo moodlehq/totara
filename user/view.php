@@ -5,7 +5,7 @@
     require_once("../config.php");
     require_once($CFG->dirroot.'/user/profile/lib.php');
     require_once($CFG->dirroot.'/tag/lib.php');
-    require_once($CFG->dirroot.'/local/mitms.php');
+    require_once($CFG->dirroot.'/local/totara.php');
 
     $id      = optional_param('id',     0,      PARAM_INT);   // user id
     $course  = optional_param('course', SITEID, PARAM_INT);   // course id (defaults to Site)
@@ -332,7 +332,7 @@
     profile_display_fields($user->id);
 
     // only display link on own profile page
-    if($currentuser || mitms_is_manager($user->id) || has_capability('moodle/site:doanything', $systemcontext)) {
+    if($currentuser || totara_is_manager($user->id) || has_capability('moodle/site:doanything', $systemcontext)) {
         print_row(get_string('recordoflearning','local').':', '<a href="'.$CFG->wwwroot.'/my/records.php?id='.$user->id.'">'.get_string('recordoflearning','local').'</a>');
     }
 

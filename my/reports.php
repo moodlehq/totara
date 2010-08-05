@@ -19,7 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @package    moodle
- * @subpackage mitms
+ * @subpackage Totara
  * @author     Simon Coggins <simonc@catalyst.net.nz>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL
  * @copyright  (C) 1999 onwards Martin Dougiamas  http://dougiamas.com
@@ -41,7 +41,7 @@ define('SHOW_ALL_PAGE_SIZE', 5000);
 global $SESSION,$USER;
 $strheading = get_string('myreports', 'local');
 
-$PAGE = page_create_object('MITMS', $USER->id);
+$PAGE = page_create_object('Totara', $USER->id);
 $pageblocks = blocks_setup($PAGE,BLOCKS_PINNED_BOTH);
 $blocks_preferred_width = bounded_number(180, blocks_preferred_width($pageblocks[BLOCK_POS_LEFT]), 210);
 
@@ -78,7 +78,7 @@ foreach ($lt as $column) {
         echo '<td valign="top" id="middle-column">';
         echo '<h1>'.$strheading.'</h1>';
 
-        mitms_print_report_manager();
+        totara_print_report_manager();
 
 	echo '</td>';
 

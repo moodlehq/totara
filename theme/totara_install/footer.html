@@ -19,10 +19,6 @@ if($heading) {
     echo $loggedinas;
     echo $homelink;
     
-    echo '<div class="footerlinks">';
-    include('totara_menu.php');
-    echo '</div>';
-    
     if (!empty($performanceinfo) and has_capability('moodle/site:config', get_context_instance(CONTEXT_SYSTEM))) { 
         echo $performanceinfo;
     }

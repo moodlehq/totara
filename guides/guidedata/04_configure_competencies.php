@@ -2,5 +2,5 @@
 # Raw (not database escaped) strings go here.
 $guide->name = 'Configure Competencies';
 $guide->description = 'Competencies allows you to set up your oranisations competencies.';
-$guide->steps = 'mitms_create_proficiency_scale, mitms_create_framework, mitms_create_depth_levels, mitms_create_custom_field_categories, mitms_create_custom_fields, mitms_add_competencies, mitms_add_competency_templates, mitms_assign_competency_evidence_items';
+$guide->steps = 'totara_create_proficiency_scale, totara_create_framework, totara_create_depth_levels, totara_create_custom_field_categories, totara_create_custom_fields, totara_add_competencies, totara_add_competency_templates, totara_assign_competency_evidence_items';
 ?>

@@ -36,7 +36,7 @@ if($s != sesskey()) {
 $sitecontext = get_context_instance(CONTEXT_SYSTEM);
 require_capability('moodle/local:updatecompetency', $sitecontext);
 
-$mform =& new mitms_competency_evidence_form(null, compact('id','competencyid','positionid',
+$mform =& new totara_competency_evidence_form(null, compact('id','competencyid','positionid',
     'organisationid','userid','user','returnurl','s','nojs'));
 if ($mform->is_cancelled()) {
     redirect($returnurl);

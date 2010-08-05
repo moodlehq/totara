@@ -18,14 +18,14 @@ class rb_trainer_content extends rb_base_content {
             return $field . ' = ' . $USER->id;
         } else if ($who == 'reports') {
             // show staff records
-            if($staff = mitms_get_staff()) {
+            if($staff = totara_get_staff()) {
                 return $field . ' IN (' . implode(',', $staff) .')';
             } else {
                 return 'FALSE';
             }
         } else if ($who == 'ownandreports') {
             // show own and staff records
-            if($staff = mitms_get_staff()) {
+            if($staff = totara_get_staff()) {
                 return $field . ' IN (' . $USER->id . ',' .
                     implode(',', $staff) . ')';
             } else {

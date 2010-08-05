@@ -42,10 +42,10 @@ class rb_filter_option {
      */
     static function select_width_limiter() {
         return array(
-            'class' => 'mitms-limited-width',
-            'onMouseDown'=>"if(document.all) this.className='mitms-expanded-width';",
-            'onBlur'=>"if(document.all) this.className='mitms-limited-width';",
-            'onChange'=>"if(document.all) this.className='mitms-limited-width';"
+            'class' => 'totara-limited-width',
+            'onMouseDown'=>"if(document.all) this.className='totara-expanded-width';",
+            'onBlur'=>"if(document.all) this.className='totara-limited-width';",
+            'onChange'=>"if(document.all) this.className='totara-limited-width';"
         );
     }
 

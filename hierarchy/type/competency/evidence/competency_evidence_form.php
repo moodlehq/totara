@@ -2,7 +2,7 @@
 
 require_once "$CFG->dirroot/lib/formslib.php";
 
-class mitms_competency_evidence_form extends moodleform {
+class totara_competency_evidence_form extends moodleform {
 
     function definition()
     {

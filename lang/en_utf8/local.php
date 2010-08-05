@@ -149,7 +149,7 @@ $string['local:editcourseclassification'] = 'Edit Classification of a Course';
 $string['local:searchclassifications'] = 'Search Classifications';
 
 // Login string
-$string['howdoiaccessilearn'] = 'How do I access MITMS?';
+$string['howdoiaccessilearn'] = 'How do I access Totara?';
 
 $string['reportstartdate'] = 'Start date';
 $string['reportenddate'] = 'End date';

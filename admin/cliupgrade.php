@@ -1357,7 +1357,7 @@ if ( file_exists(dirname(dirname(__FILE__)) . '/config.php')) {
     }
 
     // Not testing demo data at the moment
-    set_config('mitms_demo_setup', '1');
+    set_config('totara_demo_setup', '1');
 
     if ( $verbose > CLI_NO ) {
         print_newline();

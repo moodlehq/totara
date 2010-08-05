@@ -600,8 +600,8 @@
     }
 
 /// prompt to install demo data
-    if(empty($CFG->mitms_demo_setup)) {
-        redirect($CFG->wwwroot.'/local/mitms_demo_setup.php');
+    if(empty($CFG->totara_demo_setup)) {
+        redirect($CFG->wwwroot.'/local/totara_demo_setup.php');
         exit;
     }
 

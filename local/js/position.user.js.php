@@ -12,7 +12,7 @@ $(function() {
     (function() {
         var url = '<?php echo $CFG->wwwroot ?>/hierarchy/type/position/assign/';
 
-        mitmsSingleSelectDialog(
+        totaraSingleSelectDialog(
             'position',
             url+'find.php?user='+user_id,
             'positionid',
@@ -27,7 +27,7 @@ $(function() {
     (function() {
         var url = '<?php echo $CFG->wwwroot ?>/hierarchy/type/organisation/assign/';
 
-        mitmsSingleSelectDialog(
+        totaraSingleSelectDialog(
             'organisation',
             url+'find.php?user='+user_id,
             'organisationid',
@@ -42,7 +42,7 @@ $(function() {
     (function() {
         var url = '<?php echo $CFG->wwwroot ?>/hierarchy/type/position/assign/';
 
-        mitmsSingleSelectDialog(
+        totaraSingleSelectDialog(
             'manager',
             url+'manager.php?user='+user_id,
             'managerid',
@@ -57,7 +57,7 @@ $(function() {
     (function() {
         var url = '<?php echo $CFG->wwwroot ?>/hierarchy/type/competency/assign/';
 
-        mitmsSingleSelectDialog(
+        totaraSingleSelectDialog(
             'competency',
             url+'find.php?user='+user_id,
             'competencyid',

@@ -68,7 +68,7 @@ if ($USER->id == $plan->userid) {
 
 $stridps = get_string('idps', 'idp');
 
-$PAGE = page_create_object('MITMS', $USER->id);
+$PAGE = page_create_object('Totara', $USER->id);
 $pageblocks = blocks_setup($PAGE,BLOCKS_PINNED_BOTH);
 $blocks_preferred_width = bounded_number(180, blocks_preferred_width($pageblocks[BLOCK_POS_LEFT]), 210);
 

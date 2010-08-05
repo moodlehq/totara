@@ -27,7 +27,7 @@
  * @copyright Catalyst IT Limited
  * @author Aaron Barnes
  * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @package MITMS
+ * @package Totara
  */
 
 require_once $CFG->dirroot.'/hierarchy/type/competency/evidenceitem/type/evidence.php';

@@ -17,7 +17,7 @@ if (! $user = get_record('user', 'id', $id)) {
 }
 
 // users can only view their own and their staff's pages
-if ($USER->id != $id && !mitms_is_manager($id)) {
+if ($USER->id != $id && !totara_is_manager($id)) {
     error('You cannot view this page');
 }
 if ($USER->id != $id) {

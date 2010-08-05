@@ -12,7 +12,7 @@ $(function() {
     (function() {
         var url = '<?php echo $CFG->wwwroot ?>/hierarchy/type/competency/idp/';
 
-        mitmsMultiSelectDialog(
+        totaraMultiSelectDialog(
             'idpcompetency',
             url+'find.php?id='+idp_revision_id,
             url+'save.php?id='+idp_revision_id+'&rowcount='+idp_competency_row_count+'&deleteexisting=1&add='
@@ -27,7 +27,7 @@ $(function() {
     (function() {
         var url = '<?php echo $CFG->wwwroot ?>/hierarchy/type/competency/idp/';
 
-        mitmsMultiSelectDialog(
+        totaraMultiSelectDialog(
             'idpcompetencytemplate',
             url+'find-template.php?id='+idp_revision_id,
             url+'save-template.php?id='+idp_revision_id+'&rowcount='+idp_competencytemplate_row_count+'&deleteexisting=1&add='
@@ -42,7 +42,7 @@ $(function() {
     (function() {
         var url = '<?php echo $CFG->wwwroot ?>/hierarchy/type/competency/idp/';
 
-        mitmsMultiSelectDialog(
+        totaraMultiSelectDialog(
             'idppositioncompetency',
             url+'find-position.php?id='+idp_revision_id,
             url+'save.php?id='+idp_revision_id+'&rowcount='+idp_competency_row_count+'&deleteexisting=1&add='
@@ -57,7 +57,7 @@ $(function() {
     (function() {
         var url = '<?php echo $CFG->wwwroot ?>/hierarchy/type/competency/idp/';
 
-        mitmsMultiSelectDialog(
+        totaraMultiSelectDialog(
             'idppositioncompetencytemplate',
             url+'find-position-template.php?id='+idp_revision_id,
             url+'save-template.php?id='+idp_revision_id+'&rowcount='+idp_competencytemplate_row_count+'&deleteexisting=1&add='
@@ -72,12 +72,12 @@ $(function() {
     (function() {
         var url = '<?php echo $CFG->wwwroot ?>/hierarchy/type/course/idp/';
 
-        var handler = new mitmsDialog_handler_idpCourse();
+        var handler = new totaraDialog_handler_idpCourse();
         handler.baseurl = url;
 
         save_url = url+'save.php?id='+idp_revision_id+'&rowcount='+idp_competencytemplate_row_count+'&deleteexisting=1&add=',
     
-        mitmsDialogs['idpcourse'] = new mitmsDialog(
+        totaraDialogs['idpcourse'] = new totaraDialog(
             'idpcourse',
             'show-idpcourse-dialog',
             {
@@ -97,13 +97,13 @@ $(function() {
 });
 
 // Create handler for the course dialog
-mitmsDialog_handler_idpCourse = function() {
+totaraDialog_handler_idpCourse = function() {
     // Base url
     var baseurl = '';
 };
-mitmsDialog_handler_idpCourse.prototype = new mitmsDialog_handler_skeletalTreeview();
+totaraDialog_handler_idpCourse.prototype = new totaraDialog_handler_skeletalTreeview();
 
-mitmsDialog_handler_idpCourse.prototype._handle_hierarchy_expand = function(id) {
+totaraDialog_handler_idpCourse.prototype._handle_hierarchy_expand = function(id) {
 
     var url = this.baseurl+'category.php?id='+id+'&rev='+idp_revision_id;
     this._dialog._request(url, this, '_update_hierarchy', id);

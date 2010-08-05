@@ -7,10 +7,10 @@ $(function() {
 
 
 // Setup
-var mitmsDialogs = {};
+var totaraDialogs = {};
 
 // Dialog object
-function mitmsDialog(title, buttonid, config, default_url, handler) {
+function totaraDialog(title, buttonid, config, default_url, handler) {
 
     /**
      * ID of dialog
@@ -62,11 +62,11 @@ function mitmsDialog(title, buttonid, config, default_url, handler) {
             modal: true,
             resizable: false,
             zIndex: 1500,
-            dialogClass: 'mitms-dialog'
+            dialogClass: 'totara-dialog'
         };
 
         // Instantiate the Dialog
-        $('<div class="mitms-dialog" style="display: none;"><div id="'+this.title+'"></div></div>').appendTo($('body'));
+        $('<div class="totara-dialog" style="display: none;"><div id="'+this.title+'"></div></div>').appendTo($('body'));
 
         this.dialog = $('#'+this.title).dialog(
             $.extend(default_config, this.config)
@@ -281,9 +281,9 @@ function mitmsDialog(title, buttonid, config, default_url, handler) {
 
 
 /*****************************************************************************/
-/** mitmsDialog_handler **/
+/** totaraDialog_handler **/
 
-function mitmsDialog_handler() {
+function totaraDialog_handler() {
 
     // Reference to the yuiDialog object
     var _dialog;
@@ -305,7 +305,7 @@ function mitmsDialog_handler() {
  * @param yuiDialog dialog object
  * @return void
  */
-mitmsDialog_handler.prototype._setup = function(dialog) {
+totaraDialog_handler.prototype._setup = function(dialog) {
     this._dialog = dialog;
     this._title = dialog.title;
 }
@@ -317,7 +317,7 @@ mitmsDialog_handler.prototype._setup = function(dialog) {
  * @param yuiDialog dialog object
  * @return void
  */
-mitmsDialog_handler.prototype._load = function(dialog) {
+totaraDialog_handler.prototype._load = function(dialog) {
 
     // First page load
     if (!this._loaded) {
@@ -348,7 +348,7 @@ mitmsDialog_handler.prototype._load = function(dialog) {
  * @param string    HTML response
  * @return void
  */
-mitmsDialog_handler.prototype._update = function(response) {
+totaraDialog_handler.prototype._update = function(response) {
 
     // Hide dialog
     this._dialog.hide();
@@ -390,7 +390,7 @@ mitmsDialog_handler.prototype._update = function(response) {
  * @param string ID prefix string
  * @return array
  */
-mitmsDialog_handler.prototype._get_ids = function(elements, prefix) {
+totaraDialog_handler.prototype._get_ids = function(elements, prefix) {
 
     var ids = [];
 
@@ -417,7 +417,7 @@ mitmsDialog_handler.prototype._get_ids = function(elements, prefix) {
  * @param string URL to send dropped items to
  * @return void
  */
-mitmsDialog_handler.prototype._save = function(url) {
+totaraDialog_handler.prototype._save = function(url) {
 
     // Serialize data
     var elements = $('.selected span', this._container);
@@ -435,7 +435,7 @@ mitmsDialog_handler.prototype._save = function(url) {
  *
  * @return void
  */
-mitmsDialog_handler.prototype._cancel = function() {
+totaraDialog_handler.prototype._cancel = function() {
     this._dialog.hide();
     return;
 }
@@ -446,7 +446,7 @@ mitmsDialog_handler.prototype._cancel = function() {
  *
  * @return void
  */
-mitmsDialog_handler.prototype._set_framework = function() {
+totaraDialog_handler.prototype._set_framework = function() {
 
     // Get currently selected option
     var selected = $('.simpleframeworkpicker option:selected', this._container).val();
@@ -481,17 +481,17 @@ mitmsDialog_handler.prototype._set_framework = function() {
 
 
 /*****************************************************************************/
-/** mitmsDialog_handler_treeview **/
+/** totaraDialog_handler_treeview **/
 
-mitmsDialog_handler_treeview = function() {};
-mitmsDialog_handler_treeview.prototype = new mitmsDialog_handler();
+totaraDialog_handler_treeview = function() {};
+totaraDialog_handler_treeview.prototype = new totaraDialog_handler();
 
 /**
  * Setup a treeview infrastructure
  *
  * @return void
  */
-mitmsDialog_handler_treeview.prototype.every_load = function() {
+totaraDialog_handler_treeview.prototype.every_load = function() {
 
     // Setup treeview
     $('.treeview', this._container).treeview({
@@ -514,7 +514,7 @@ mitmsDialog_handler_treeview.prototype.every_load = function() {
  *
  * @return void
  */
-mitmsDialog_handler_treeview.prototype._make_hierarchy = function(parent_element) {
+totaraDialog_handler_treeview.prototype._make_hierarchy = function(parent_element) {
     var handler = this;
 
     // Load children on parent click
@@ -543,7 +543,7 @@ mitmsDialog_handler_treeview.prototype._make_hierarchy = function(parent_element
  * @param int       Parent id
  * @return void
  */
-mitmsDialog_handler_treeview.prototype._update_hierarchy = function(response, parent_id) {
+totaraDialog_handler_treeview.prototype._update_hierarchy = function(response, parent_id) {
 
     var items = response;
     var list = $('.treeview li#item_list_'+parent_id+' ul:first', this._container);
@@ -568,7 +568,7 @@ mitmsDialog_handler_treeview.prototype._update_hierarchy = function(response, pa
  * @parent element
  * @return void
  */
-mitmsDialog_handler_treeview.prototype._make_deletable = function(parent_element) {
+totaraDialog_handler_treeview.prototype._make_deletable = function(parent_element) {
     var deletables = $('.deletebutton', parent_element).closest('td');
     var del_span_elements = deletables.closest('span');
     var handler = this;
@@ -614,7 +614,7 @@ mitmsDialog_handler_treeview.prototype._make_deletable = function(parent_element
  * @param object element the element to append
  * @return void
  */
-mitmsDialog_handler_treeview.prototype._append_to_selected = function(element) {
+totaraDialog_handler_treeview.prototype._append_to_selected = function(element) {
     var clone = element.closest('span').clone();  // Make a clone of the list item
     var selected_area = $('.selected', this._container)
 
@@ -648,20 +648,20 @@ mitmsDialog_handler_treeview.prototype._append_to_selected = function(element) {
 
 
 /*****************************************************************************/
-/** mitmsDialog_handler_treeview_multiselect **/
+/** totaraDialog_handler_treeview_multiselect **/
 
-mitmsDialog_handler_treeview_multiselect = function() {};
-mitmsDialog_handler_treeview_multiselect.prototype = new mitmsDialog_handler_treeview();
+totaraDialog_handler_treeview_multiselect = function() {};
+totaraDialog_handler_treeview_multiselect.prototype = new totaraDialog_handler_treeview();
 
 /**
  * Setup treeview and drag/drop infrastructure
  *
  * @return void
  */
-mitmsDialog_handler_treeview_multiselect.prototype.every_load = function() {
+totaraDialog_handler_treeview_multiselect.prototype.every_load = function() {
 
     // Setup treeview
-    mitmsDialog_handler_treeview.prototype.every_load.call(this);
+    totaraDialog_handler_treeview.prototype.every_load.call(this);
 
     // Make decending spans assignable
     this._make_selectable($('.treeview', this._container));
@@ -676,7 +676,7 @@ mitmsDialog_handler_treeview_multiselect.prototype.every_load = function() {
  * @parent element
  * @return void
  */
-mitmsDialog_handler_treeview_multiselect.prototype._make_selectable = function(parent_element) {
+totaraDialog_handler_treeview_multiselect.prototype._make_selectable = function(parent_element) {
     // Get assignable/clickable elements
     var selectable_items = $('span:not(.unclickable)', parent_element);
     var handler = this;
@@ -715,15 +715,15 @@ mitmsDialog_handler_treeview_multiselect.prototype._make_selectable = function(p
  * @param element
  * @return void
  */
-mitmsDialog_handler_treeview_multiselect.prototype._handle_update_hierarchy = function(parent_element) {
+totaraDialog_handler_treeview_multiselect.prototype._handle_update_hierarchy = function(parent_element) {
     this._make_selectable(parent_element);
 }
 
 
 /*****************************************************************************/
-/** mitmsDialog_handler_treeview_singleselect **/
+/** totaraDialog_handler_treeview_singleselect **/
 
-mitmsDialog_handler_treeview_singleselect = function(value_element_name, text_element_id, dualpane) {
+totaraDialog_handler_treeview_singleselect = function(value_element_name, text_element_id, dualpane) {
 
     // Can hold an externally assigned function
     var external_function;
@@ -739,7 +739,7 @@ mitmsDialog_handler_treeview_singleselect = function(value_element_name, text_el
     }
 };
 
-mitmsDialog_handler_treeview_singleselect.prototype = new mitmsDialog_handler_treeview();
+totaraDialog_handler_treeview_singleselect.prototype = new totaraDialog_handler_treeview();
 
 /**
  * Hierarchy update handler
@@ -747,7 +747,7 @@ mitmsDialog_handler_treeview_singleselect.prototype = new mitmsDialog_handler_tr
  * @param element
  * @return void
  */
-mitmsDialog_handler_treeview_singleselect.prototype._handle_update_hierarchy = function(parent_element) {
+totaraDialog_handler_treeview_singleselect.prototype._handle_update_hierarchy = function(parent_element) {
     this._make_selectable(parent_element);
 }
 
@@ -756,7 +756,7 @@ mitmsDialog_handler_treeview_singleselect.prototype._handle_update_hierarchy = f
  *
  * @return void
  */
-mitmsDialog_handler_treeview_singleselect.prototype.first_load = function() {
+totaraDialog_handler_treeview_singleselect.prototype.first_load = function() {
     this._set_current_selected();
 }
 
@@ -765,16 +765,16 @@ mitmsDialog_handler_treeview_singleselect.prototype.first_load = function() {
  *
  * @return void
  */
-mitmsDialog_handler_treeview_singleselect.prototype.every_load = function() {
+totaraDialog_handler_treeview_singleselect.prototype.every_load = function() {
 
     // Setup treeview
-    mitmsDialog_handler_treeview.prototype.every_load.call(this);
+    totaraDialog_handler_treeview.prototype.every_load.call(this);
 
     this._make_selectable($('.treeview', this._container));
     //this._set_current_selected();
 }
 
-mitmsDialog_handler_treeview_singleselect.prototype._set_current_selected = function() {
+totaraDialog_handler_treeview_singleselect.prototype._set_current_selected = function() {
     var current_val = $('input[name='+this.value_element_name+']').val();
     var current_text = $('#'+this.text_element_id).text();
     if (!(current_val && current_text)) {
@@ -798,7 +798,7 @@ mitmsDialog_handler_treeview_singleselect.prototype._set_current_selected = func
  * @param string element id to update text (optional)
  * @return void
  */
-mitmsDialog_handler_treeview_singleselect.prototype._save = function() {
+totaraDialog_handler_treeview_singleselect.prototype._save = function() {
 
     // Get selected id
     var selected_val = $('#treeview_selected_val', this._container).val();
@@ -830,7 +830,7 @@ mitmsDialog_handler_treeview_singleselect.prototype._save = function() {
  * @parent element
  * @return void
  */
-mitmsDialog_handler_treeview_singleselect.prototype._make_selectable = function(parent_element) {
+totaraDialog_handler_treeview_singleselect.prototype._make_selectable = function(parent_element) {
 
     // Get selectable/clickable elements
     var selectables = $('span:not(.empty)', parent_element);
@@ -873,17 +873,17 @@ mitmsDialog_handler_treeview_singleselect.prototype._make_selectable = function(
 }
 
 /*****************************************************************************/
-/** mitmsDialog_handler_skeletalTreeview **/
+/** totaraDialog_handler_skeletalTreeview **/
 
-mitmsDialog_handler_skeletalTreeview = function() {};
-mitmsDialog_handler_skeletalTreeview.prototype = new mitmsDialog_handler_treeview();
+totaraDialog_handler_skeletalTreeview = function() {};
+totaraDialog_handler_skeletalTreeview.prototype = new totaraDialog_handler_treeview();
 
 /**
  * Setup a treeview infrastructure
  *
  * @return void
  */
-mitmsDialog_handler_skeletalTreeview.prototype.every_load = function() {
+totaraDialog_handler_skeletalTreeview.prototype.every_load = function() {
 
     // Setup treeview
     $('.treeview', this._container).treeview({
@@ -910,7 +910,7 @@ mitmsDialog_handler_skeletalTreeview.prototype.every_load = function() {
  *
  * @return void
  */
-mitmsDialog_handler_skeletalTreeview.prototype._make_hierarchy = function(parent_element) {
+totaraDialog_handler_skeletalTreeview.prototype._make_hierarchy = function(parent_element) {
     var handler = this;
 
     // Load courses on parent click
@@ -944,7 +944,7 @@ mitmsDialog_handler_skeletalTreeview.prototype._make_hierarchy = function(parent
  * @param int       Parent id
  * @return void
  */
-mitmsDialog_handler_skeletalTreeview.prototype._update_hierarchy = function(response, parent_id) {
+totaraDialog_handler_skeletalTreeview.prototype._update_hierarchy = function(response, parent_id) {
 
     var items = response;
     var list = $('.treeview li#item_list_'+parent_id+' ul:first', this._container);
@@ -964,7 +964,7 @@ mitmsDialog_handler_skeletalTreeview.prototype._update_hierarchy = function(resp
 * @param object element to make selectable
 * @return void
 */
-mitmsDialog_handler_skeletalTreeview.prototype._make_selectable = function(elements, addclickable) {
+totaraDialog_handler_skeletalTreeview.prototype._make_selectable = function(elements, addclickable) {
     var handler = this;
 
     if (addclickable) {
@@ -1014,12 +1014,12 @@ mitmsDialog_handler_skeletalTreeview.prototype._make_selectable = function(eleme
  * @param function handler_extra extra code to be executed with handler
  * @return void
  */
-mitmsSingleSelectDialog = function(name, find_url, value_element, text_element, handler_extra) {
+totaraSingleSelectDialog = function(name, find_url, value_element, text_element, handler_extra) {
 
-    var handler = new mitmsDialog_handler_treeview_singleselect(value_element, text_element);
+    var handler = new totaraDialog_handler_treeview_singleselect(value_element, text_element);
     handler.external_function = handler_extra;
 
-    mitmsDialogs[name] = new mitmsDialog(
+    totaraDialogs[name] = new totaraDialog(
         name,
         'show-'+name+'-dialog',
         {
@@ -1042,11 +1042,11 @@ mitmsSingleSelectDialog = function(name, find_url, value_element, text_element, 
  * @param string save page url
  * @return void
  */
-mitmsMultiSelectDialog = function(name, find_url, save_url) {
+totaraMultiSelectDialog = function(name, find_url, save_url) {
 
-    var handler = new mitmsDialog_handler_treeview_multiselect();
+    var handler = new totaraDialog_handler_treeview_multiselect();
 
-    mitmsDialogs[name] = new mitmsDialog(
+    totaraDialogs[name] = new totaraDialog(
         name,
         'show-'+name+'-dialog',
         {
