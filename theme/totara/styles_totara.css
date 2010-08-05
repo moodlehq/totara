@@ -1567,3 +1567,20 @@ div.yuimenu .yuichildtree .yuimenuitem {
 .grade-report-grader table#user-grades {
   font-size: 11px;
 }
+
+/*****************************************************************************/
+/** Pop-up Page Size Fix **/
+/*****************************************************************************/
+
+body#message-index div#wrapper,
+body#help div#wrapper {
+	background-image: none;
+	background-color: #FFFFFF;
+	width: auto ;
+	margin: 0 20px;
+	padding-top: 30px;
+	border-left: 1px solid #666;
+	border-right: 1px solid #666;
+
+}
+
