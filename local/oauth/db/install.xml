@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="local/oauth/db" VERSION="20100519" COMMENT="XMLDB file for Moodle local/oauth"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
+>
+  <TABLES>
+    <TABLE NAME="oauth_site_directory" COMMENT="Sites registered as OAuth providers">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="name"/>
+        <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="site name" PREVIOUS="id" NEXT="request_token_url"/>
+        <FIELD NAME="request_token_url" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" COMMENT="site request token url" PREVIOUS="name" NEXT="authorize_token_url"/>
+        <FIELD NAME="authorize_token_url" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" COMMENT="site authorize token url" PREVIOUS="request_token_url" NEXT="access_token_url"/>
+        <FIELD NAME="access_token_url" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" COMMENT="site access token url" PREVIOUS="authorize_token_url" NEXT="consumer_key"/>
+        <FIELD NAME="consumer_key" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" COMMENT="the consumer key for this site" PREVIOUS="access_token_url" NEXT="consumer_secret"/>
+        <FIELD NAME="consumer_secret" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" COMMENT="the consumer secret for this site" PREVIOUS="consumer_key" NEXT="enabled"/>
+        <FIELD NAME="enabled" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" COMMENT="if the site is enabled" PREVIOUS="consumer_secret"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+  </TABLES>
+</XMLDB>

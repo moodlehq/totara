@@ -254,6 +254,7 @@ $string['noreports'] = 'No reports have been created';
 $string['export'] = 'Export';
 $string['exportoptions'] = 'Report Export options';
 $string['exportcsv'] = 'Export in text format';
+$string['exportfusion'] = 'Export to Google Fusion';
 $string['exportods'] = 'Export in ODS format';
 $string['exportxls'] = 'Export in Excel format';
 $string['exportproblem'] = 'There was a problem downloading the file';

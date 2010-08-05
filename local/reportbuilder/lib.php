@@ -1761,6 +1761,8 @@ var comptree = [' . implode(', ', $comptrees) . '];
                 $this->download_xls($headings, $sql.$order, $count, $restrictions);
             case 'csv':
                 $this->download_csv($headings, $sql.$order, $count);
+            case 'fusion':
+                $this->download_fusion($headings, $sql.$order, $count, $restrictions);
         }
         die;
     }
@@ -2320,6 +2322,39 @@ var comptree = [' . implode(', ', $comptrees) . '];
         }
         die;
 
+    }
+
+    /* Download current table to Google Fusion
+     * @param array $fields Array of column headings
+     * @param string $query SQL query to run to get results
+     * @param integer $count Number of filtered records in query
+     * @param array $restrictions Array of strings containing info
+     *                            about the content of the report
+     * @return Returns never
+     */
+    function download_fusion($fields, $query, $count, $restriction) {
+        global $CFG;
+        /*
+        global $SESSION;
+        if (!isset($SESSION->reportbuilder_report)) {
+            $SESSION->reportbuilder_report = array();
+        }
+        $SESSION->reportbuilder_report[$this->shortname] = array(
+                                                            'shortname' => serialize($this->shortname),
+                                                            'fields' => serialize($fields),
+                                                            'query' => serialize($query),
+                                                            'count' => serialize($count),
+                                                            'restrictions' => serialize($restrictions),
+                                                            );
+        var_dump($fields);
+        var_dump($query);
+        var_dump($count);
+        var_dump($SESSION->reportbuilder_report);
+        */
+
+        $jump = new moodle_url($CFG->wwwroot."/local/reportbuilder/fusionexporter.php", array('id' => $this->_id, 'sid' => $this->_sid));
+        redirect($jump->out());
+        die;
     }
 
     /**

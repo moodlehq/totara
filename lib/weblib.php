@@ -294,7 +294,7 @@ function qualified_me() {
     return $url_prefix . me();
 }
 
-
+if (!defined('MOODLE_URL_2')) {
 /**
  * Class for creating and manipulating urls.
  *
@@ -445,7 +445,7 @@ class moodle_url {
         return $this->out(false, $overrideparams);
     }
 }
-
+}
 /**
  * Determine if there is data waiting to be processed from a form
  *
@@ -7126,5 +7126,502 @@ function print_password_policy() {
     return $message;
 }
 
+//// XXX THE MOODLE 2 VERSION OF MOODULE_URL
+/**
+ * Class for creating and manipulating urls.
+ *
+ * See short write up here http://docs.moodle.org/en/Development:lib/weblib.php_moodle_url
+ */
+if (defined('MOODLE_URL_2')) {
+/**
+ * Class for creating and manipulating urls.
+ *
+ * It can be used in moodle pages where config.php has been included without any further includes.
+ *
+ * It is useful for manipulating urls with long lists of params.
+ * One situation where it will be useful is a page which links to itself to perform various actions
+ * and / or to process form data. A moodle_url object :
+ * can be created for a page to refer to itself with all the proper get params being passed from page call to
+ * page call and methods can be used to output a url including all the params, optionally adding and overriding
+ * params and can also be used to
+ *     - output the url without any get params
+ *     - and output the params as hidden fields to be output within a form
+ *
+ * @link http://docs.moodle.org/en/Development:lib/weblib.php_moodle_url See short write up here
+ * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package moodlecore
+ */
+class moodle_url {
+    /**
+     * Scheme, ex.: http, https
+     * @var string
+     */
+    protected $scheme = '';
+    /**
+     * hostname
+     * @var string
+     */
+    protected $host = '';
+    /**
+     * Port number, empty means default 80 or 443 in case of http
+     * @var unknown_type
+     */
+    protected $port = '';
+    /**
+     * Username for http auth
+     * @var string
+     */
+    protected $user = '';
+    /**
+     * Password for http auth
+     * @var string
+     */
+    protected $pass = '';
+    /**
+     * Script path
+     * @var string
+     */
+    protected $path = '';
+    /**
+     * Optional slash argument value
+     * @var string
+     */
+    protected $slashargument = '';
+    /**
+     * Anchor, may be also empty, null means none
+     * @var string
+     */
+    protected $anchor = null;
+    /**
+     * Url parameters as associative array
+     * @var array
+     */
+    protected $params = array(); // Associative array of query string params
+
+    /**
+     * Create new instance of moodle_url.
+     *
+     * @param moodle_url|string $url - moodle_url means make a copy of another
+     *      moodle_url and change parameters, string means full url or shortened
+     *      form (ex.: '/course/view.php'). It is strongly encouraged to not include
+     *      query string because it may result in double encoded values
+     * @param array $params these params override current params or add new
+     */
+    public function __construct($url, array $params = null) {
+        global $CFG;
+
+        if ($url instanceof moodle_url) {
+            $this->scheme = $url->scheme;
+            $this->host = $url->host;
+            $this->port = $url->port;
+            $this->user = $url->user;
+            $this->pass = $url->pass;
+            $this->path = $url->path;
+            $this->slashargument = $url->slashargument;
+            $this->params = $url->params;
+            $this->anchor = $url->anchor;
+
+        } else {
+            // detect if anchor used
+            $apos = strpos($url, '#');
+            if ($apos !== false) {
+                $anchor = substr($url, $apos);
+                $anchor = ltrim($anchor, '#');
+                $this->set_anchor($anchor);
+                $url = substr($url, 0, $apos);
+            }
+
+            // normalise shortened form of our url ex.: '/course/view.php'
+            if (strpos($url, '/') === 0) {
+                // we must not use httpswwwroot here, because it might be url of other page,
+                // devs have to use httpswwwroot explicitly when creating new moodle_url
+                $url = $CFG->wwwroot.$url;
+            }
+
+            // now fix the admin links if needed, no need to mess with httpswwwroot
+            if ($CFG->admin !== 'admin') {
+                if (strpos($url, "$CFG->wwwroot/admin/") === 0) {
+                    $url = str_replace("$CFG->wwwroot/admin/", "$CFG->wwwroot/$CFG->admin/", $url);
+                }
+            }
+
+            // parse the $url
+            $parts = parse_url($url);
+            if ($parts === false) {
+                throw new moodle_exception('invalidurl');
+            }
+            if (isset($parts['query'])) {
+                // note: the values may not be correctly decoded,
+                //       url parameters should be always passed as array
+                parse_str(str_replace('&amp;', '&', $parts['query']), $this->params);
+            }
+            unset($parts['query']);
+            foreach ($parts as $key => $value) {
+                $this->$key = $value;
+            }
+
+            // detect slashargument value from path - we do not support directory names ending with .php
+            $pos = strpos($this->path, '.php/');
+            if ($pos !== false) {
+                $this->slashargument = substr($this->path, $pos + 4);
+                $this->path = substr($this->path, 0, $pos + 4);
+            }
+        }
+
+        $this->params($params);
+    }
+
+    /**
+     * Add an array of params to the params for this url.
+     *
+     * The added params override existing ones if they have the same name.
+     *
+     * @param array $params Defaults to null. If null then returns all params.
+     * @return array Array of Params for url.
+     */
+    public function params(array $params = null) {
+        $params = (array)$params;
+
+        foreach ($params as $key=>$value) {
+            if (is_int($key)) {
+                throw new coding_exception('Url parameters can not have numeric keys!');
+            }
+            if (is_array($value)) {
+                throw new coding_exception('Url parameters values can not be arrays!');
+            }
+            if (is_object($value) and !method_exists($value, '__toString')) {
+                throw new coding_exception('Url parameters values can not be objects, unless __toString() is defined!');
+            }
+            $this->params[$key] = (string)$value;
+        }
+        return $this->params;
+    }
+
+    /**
+     * Remove all params if no arguments passed.
+     * Remove selected params if arguments are passed.
+     *
+     * Can be called as either remove_params('param1', 'param2')
+     * or remove_params(array('param1', 'param2')).
+     *
+     * @param mixed $params either an array of param names, or a string param name,
+     * @param string $params,... any number of additional param names.
+     * @return array url parameters
+     */
+    public function remove_params($params = null) {
+        if (!is_array($params)) {
+            $params = func_get_args();
+        }
+        foreach ($params as $param) {
+            unset($this->params[$param]);
+        }
+        return $this->params;
+    }
+
+    /**
+     * Remove all url parameters
+     * @param $params
+     * @return void
+     */
+    public function remove_all_params($params = null) {
+        $this->params = array();
+        $this->slashargument = '';
+    }
+
+    /**
+     * Add a param to the params for this url.
+     *
+     * The added param overrides existing one if they have the same name.
+     *
+     * @param string $paramname name
+     * @param string $newvalue Param value. If new value specified current value is overriden or parameter is added
+     * @return mixed string parameter value, null if parameter does not exist
+     */
+    public function param($paramname, $newvalue = '') {
+        if (func_num_args() > 1) {
+            // set new value
+            $this->params(array($paramname=>$newvalue));
+        }
+        if (isset($this->params[$paramname])) {
+            return $this->params[$paramname];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Merges parameters and validates them
+     * @param array $overrideparams
+     * @return array merged parameters
+     */
+    protected function merge_overrideparams(array $overrideparams = null) {
+        $overrideparams = (array)$overrideparams;
+        $params = $this->params;
+        foreach ($overrideparams as $key=>$value) {
+            if (is_int($key)) {
+                throw new coding_exception('Overridden parameters can not have numeric keys!');
+            }
+            if (is_array($value)) {
+                throw new coding_exception('Overridden parameters values can not be arrays!');
+            }
+            if (is_object($value) and !method_exists($value, '__toString')) {
+                throw new coding_exception('Overridden parameters values can not be objects, unless __toString() is defined!');
+            }
+            $params[$key] = (string)$value;
+        }
+        return $params;
+    }
+
+    /**
+     * Get the params as as a query string.
+     * This method should not be used outside of this method.
+     *
+     * @param boolean $escaped Use &amp; as params separator instead of plain &
+     * @param array $overrideparams params to add to the output params, these
+     *      override existing ones with the same name.
+     * @return string query string that can be added to a url.
+     */
+    public function get_query_string($escaped = true, array $overrideparams = null) {
+        $arr = array();
+        $params = $this->merge_overrideparams($overrideparams);
+        foreach ($params as $key => $val) {
+           $arr[] = rawurlencode($key)."=".rawurlencode($val);
+        }
+        if ($escaped) {
+            return implode('&amp;', $arr);
+        } else {
+            return implode('&', $arr);
+        }
+    }
+
+    /**
+     * Shortcut for printing of encoded URL.
+     * @return string
+     */
+    public function __toString() {
+        return $this->out(true);
+    }
+
+    /**
+     * Output url
+     *
+     * If you use the returned URL in HTML code, you want the escaped ampersands. If you use
+     * the returned URL in HTTP headers, you want $escaped=false.
+     *
+     * @param boolean $escaped Use &amp; as params separator instead of plain &
+     * @param array $overrideparams params to add to the output url, these override existing ones with the same name.
+     * @return string Resulting URL
+     */
+    public function out($escaped = true, array $overrideparams = null) {
+        if (!is_bool($escaped)) {
+            debugging('Escape parameter must be of type boolean, '.gettype($escaped).' given instead.');
+        }
+
+        $uri = $this->out_omit_querystring().$this->slashargument;
+
+        $querystring = $this->get_query_string($escaped, $overrideparams);
+        if ($querystring !== '') {
+            $uri .= '?' . $querystring;
+        }
+        if (!is_null($this->anchor)) {
+            $uri .= '#'.$this->anchor;
+        }
+
+        return $uri;
+    }
+
+    /**
+     * Returns url without parameters, everything before '?'.
+     * @return string
+     */
+    public function out_omit_querystring() {
+        $uri = $this->scheme ? $this->scheme.':'.((strtolower($this->scheme) == 'mailto') ? '':'//'): '';
+        $uri .= $this->user ? $this->user.($this->pass? ':'.$this->pass:'').'@':'';
+        $uri .= $this->host ? $this->host : '';
+        $uri .= $this->port ? ':'.$this->port : '';
+        $uri .= $this->path ? $this->path : '';
+        return $uri;
+    }
+
+    /**
+     * Compares this moodle_url with another
+     * See documentation of constants for an explanation of the comparison flags.
+     * @param moodle_url $url The moodle_url object to compare
+     * @param int $matchtype The type of comparison (URL_MATCH_BASE, URL_MATCH_PARAMS, URL_MATCH_EXACT)
+     * @return boolean
+     */
+    public function compare(moodle_url $url, $matchtype = URL_MATCH_EXACT) {
+
+        $baseself = $this->out_omit_querystring();
+        $baseother = $url->out_omit_querystring();
+
+        // Append index.php if there is no specific file
+        if (substr($baseself,-1)=='/') {
+            $baseself .= 'index.php';
+        }
+        if (substr($baseother,-1)=='/') {
+            $baseother .= 'index.php';
+        }
+
+        // Compare the two base URLs
+        if ($baseself != $baseother) {
+            return false;
+        }
+
+        if ($matchtype == URL_MATCH_BASE) {
+            return true;
+        }
+
+        $urlparams = $url->params();
+        foreach ($this->params() as $param => $value) {
+            if ($param == 'sesskey') {
+                continue;
+            }
+            if (!array_key_exists($param, $urlparams) || $urlparams[$param] != $value) {
+                return false;
+            }
+        }
+
+        if ($matchtype == URL_MATCH_PARAMS) {
+            return true;
+        }
+
+        foreach ($urlparams as $param => $value) {
+            if ($param == 'sesskey') {
+                continue;
+            }
+            if (!array_key_exists($param, $this->params()) || $this->param($param) != $value) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Sets the anchor for the URI (the bit after the hash)
+     * @param string $anchor null means remove previous
+     */
+    public function set_anchor($anchor) {
+        if (is_null($anchor)) {
+            // remove
+            $this->anchor = null;
+        } else if ($anchor === '') {
+            // special case, used as empty link
+            $this->anchor = '';
+        } else if (preg_match('|[a-zA-Z\_\:][a-zA-Z0-9\_\-\.\:]*|', $anchor)) {
+            // Match the anchor against the NMTOKEN spec
+            $this->anchor = $anchor;
+        } else {
+            // bad luck, no valid anchor found
+            $this->anchor = null;
+        }
+    }
+
+    /**
+     * Sets the url slashargument value
+     * @param string $path usually file path
+     * @param string $parameter name of page parameter if slasharguments not supported
+     * @param bool $supported usually null, then it depends on $CFG->slasharguments, use true or false for other servers
+     * @return void
+     */
+    public function set_slashargument($path, $parameter = 'file', $supported = NULL) {
+        global $CFG;
+        if (is_null($supported)) {
+            $supported = $CFG->slasharguments;
+        }
+
+        if ($supported) {
+            $parts = explode('/', $path);
+            $parts = array_map('rawurlencode', $parts);
+            $path  = implode('/', $parts);
+            $this->slashargument = $path;
+            unset($this->params[$parameter]);
+
+        } else {
+            $this->slashargument = '';
+            $this->params[$parameter] = $path;
+        }
+    }
+
+    // == static factory methods ==
+
+    /**
+     * General moodle file url.
+     * @param string $urlbase the script serving the file
+     * @param string $path
+     * @param bool $forcedownload
+     * @return moodle_url
+     */
+    public static function make_file_url($urlbase, $path, $forcedownload = false) {
+        global $CFG;
+
+        $params = array();
+        if ($forcedownload) {
+            $params['forcedownload'] = 1;
+        }
+
+        $url = new moodle_url($urlbase, $params);
+        $url->set_slashargument($path);
+
+        return $url;
+    }
+
+    /**
+     * Factory method for creation of url pointing to plugin file.
+     * Please note this method can be used only from the plugins to
+     * create urls of own files, it must not be used outside of plugins!
+     * @param int $contextid
+     * @param string $component
+     * @param string $area
+     * @param int $itemid
+     * @param string $pathname
+     * @param string $filename
+     * @param bool $forcedownload
+     * @return moodle_url
+     */
+    public static function make_pluginfile_url($contextid, $component, $area, $itemid, $pathname, $filename, $forcedownload = false) {
+        global $CFG;
+        $urlbase = "$CFG->httpswwwroot/pluginfile.php";
+        if ($itemid === NULL) {
+            return self::make_file_url($urlbase, "/$contextid/$component/$area".$pathname.$filename, $forcedownload);
+        } else {
+            return self::make_file_url($urlbase, "/$contextid/$component/$area/$itemid".$pathname.$filename, $forcedownload);
+        }
+    }
+
+    /**
+     * Factory method for creation of url pointing to draft
+     * file of current user.
+     * @param int $draftid draft item id
+     * @param string $pathname
+     * @param string $filename
+     * @param bool $forcedownload
+     * @return moodle_url
+     */
+    public static function make_draftfile_url($draftid, $pathname, $filename, $forcedownload = false) {
+        global $CFG, $USER;
+        $urlbase = "$CFG->httpswwwroot/draftfile.php";
+        $context = get_context_instance(CONTEXT_USER, $USER->id);
+
+        return self::make_file_url($urlbase, "/$context->id/user/draft/$draftid".$pathname.$filename, $forcedownload);
+    }
+
+    /**
+     * Factory method for creating of links to legacy
+     * course files.
+     * @param int $courseid
+     * @param string $filepath
+     * @param bool $forcedownload
+     * @return moodle_url
+     */
+    public static function make_legacyfile_url($courseid, $filepath, $forcedownload = false) {
+        global $CFG;
+
+        $urlbase = "$CFG->wwwroot/file.php";
+        return self::make_file_url($urlbase, '/'.$courseid.'/'.$filepath, $forcedownload);
+    }
+}
+}
  // vim:autoindent:expandtab:shiftwidth=4:tabstop=4:tw=140:
 ?>
