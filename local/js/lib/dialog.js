@@ -694,7 +694,7 @@ mitmsDialog_handler_treeview_multiselect.prototype._make_selectable = function(p
         return false;
     });
 
-    var assignable_buttons = $('.list-item-action', parent_element);
+    var assignable_buttons = $('.list-item-action', selectable_items);
 
     assignable_buttons.unbind('click');
 
