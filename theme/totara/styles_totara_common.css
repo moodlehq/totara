@@ -346,8 +346,10 @@ div.mitms-dialog div.ui-dialog-buttonpane {
 }
 
 div.mitms-dialog div.ui-dialog-buttonpane button {
-    margin: 0;
+    margin-left: 10px;
     float: left;
+    min-width: 100px;
+    margin-right: 0;
 }
 
 div.mitms-dialog div.ui-dialog-content {
@@ -383,7 +385,7 @@ div.mitms-dialog div.ui-dialog-content .dialog-static-content {
     overflow: auto;
 }
 
-div.mitms-dialog ul.treeview {
+div.mitms-dialog ul.treeview, div.mitms-dialog div#column-checkboxes {
     margin-top: 10px;
     height: 295px;
     overflow: auto;
@@ -493,6 +495,10 @@ div.mitms-dialog div.yui-isloading {
 
 div.mitms-dialog div.yui-isloading .bd {
     padding-bottom: 22px;
+}
+
+div.mitms-dialog #framework-picker {
+    float: right;
 }
 
 div.mitms-dialog .selected {
