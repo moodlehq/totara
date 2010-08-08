@@ -80,6 +80,11 @@ div.reportheadingform div.fitemtitle,
     display: none;
 }
 
+/* prevent right floated buttons from disturbing the data table */
+div.paging, table.reportbuilder-table {
+    clear: both;
+    margin-top: 5px;
+}
 
 /*****************************************************************************/
 /** Hierarchies **/
