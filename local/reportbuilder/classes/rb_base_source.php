@@ -94,7 +94,7 @@ abstract class rb_base_source {
                     if(!in_array($dep, $joins_used)) {
                         throw new ReportBuilderException("Join name '" .
                             $item->name . "' contains dependency '" .
-                            $dep . ' that does not exist in joinlist.');
+                            $dep . "' that does not exist in joinlist.");
                     }
                 }
             } else if (isset($item->dependencies) &&
@@ -104,7 +104,7 @@ abstract class rb_base_source {
                     throw new ReportBuilderException("Join name '" .
                         $item->name . "' contains dependency '" .
                         $item->dependencies .
-                        ' that does not exist in joinlist.');
+                        "' that does not exist in joinlist.");
                 }
             }
         }
