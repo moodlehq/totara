@@ -7,7 +7,7 @@ class rb_source_facetoface_sessions extends rb_base_source {
 
     function __construct() {
         global $CFG;
-        $this->base = $CFG->prefix . 'facetoface_sessions';
+        $this->base = $CFG->prefix . 'facetoface_signups';
         $this->joinlist = $this->define_joinlist();
         $this->columnoptions = $this->define_columnoptions();
         $this->filteroptions = $this->define_filteroptions();
@@ -30,36 +30,33 @@ class rb_source_facetoface_sessions extends rb_base_source {
         // joinlist for this source
         $joinlist = array(
             new rb_join(
+                'sessions',
+                'LEFT',
+                $CFG->prefix . 'facetoface_sessions',
+                'sessions.id = base.sessionid',
+                REPORT_BUILDER_RELATION_ONE_TO_ONE
+            ),
+            new rb_join(
                 'facetoface',
                 'LEFT',
                 $CFG->prefix . 'facetoface',
-                'facetoface.id = base.facetoface',
-                REPORT_BUILDER_RELATION_ONE_TO_ONE
+                'facetoface.id = sessions.facetoface',
+                REPORT_BUILDER_RELATION_ONE_TO_ONE,
+                'sessions'
             ),
             new rb_join(
                 'sessiondate',
                 'LEFT',
                 $CFG->prefix . 'facetoface_sessions_dates',
-                'sessiondate.sessionid = base.id',
-                REPORT_BUILDER_RELATION_ONE_TO_MANY
-            ),
-/*
-            'role' => "LEFT JOIN {$CFG->prefix}facetoface_session_roles role ON base.id = role.sessionid",
-*/
-            new rb_join(
-                'signup',
-                'INNER',
-                $CFG->prefix . 'facetoface_signups',
-                'signup.sessionid = base.id',
+                'sessiondate.sessionid = base.sessionid',
                 REPORT_BUILDER_RELATION_ONE_TO_MANY
             ),
             new rb_join(
                 'status',
                 'LEFT',
                 $CFG->prefix . 'facetoface_signups_status',
-                '(status.signupid = signup.id AND status.superceded = 0)',
-                REPORT_BUILDER_RELATION_ONE_TO_ONE,
-                'signup'
+                '(status.signupid = base.id AND status.superceded = 0)',
+                REPORT_BUILDER_RELATION_ONE_TO_ONE
             ),
             new rb_join(
                 'attendees',
@@ -71,20 +68,20 @@ class rb_source_facetoface_sessions extends rb_base_source {
                         ON su.id = ss.signupid
                     WHERE ss.superceded=0 AND ss.statuscode >= 50
                     GROUP BY su.sessionid)",
-                'attendees.sessionid = base.id',
+                'attendees.sessionid = base.sessionid',
                 REPORT_BUILDER_RELATION_ONE_TO_ONE
             ),
         );
 
 
         // include some standard joins
-        $this->add_user_table_to_joinlist($joinlist, 'signup', 'userid');
-        $this->add_user_custom_fields_to_joinlist($joinlist, 'signup', 'userid');
+        $this->add_user_table_to_joinlist($joinlist, 'base', 'userid');
+        $this->add_user_custom_fields_to_joinlist($joinlist, 'base', 'userid');
         $this->add_course_table_to_joinlist($joinlist, 'facetoface', 'course');
         // requires the course join
         $this->add_course_category_table_to_joinlist($joinlist,
             'course', 'category');
-        $this->add_position_tables_to_joinlist($joinlist, 'signup', 'userid');
+        $this->add_position_tables_to_joinlist($joinlist, 'base', 'userid');
         // requires the position_assignment join
         $this->add_manager_tables_to_joinlist($joinlist,
             'position_assignment', 'reportstoid');
@@ -103,8 +100,8 @@ class rb_source_facetoface_sessions extends rb_base_source {
                 'session',              // type
                 'capacity',             // value
                 'Session Capacity',     // name
-                'base.capacity',        // field
-                array()                 // options array
+                'sessions.capacity',        // field
+                array('joins' => 'sessions')                 // options array
             ),
             new rb_column_option(
                 'session',
@@ -117,14 +114,16 @@ class rb_source_facetoface_sessions extends rb_base_source {
                 'session',
                 'details',
                 'Session Details',
-                'base.details'
+                'sessions.details',
+                array('joins' => 'sessions')
             ),
             new rb_column_option(
                 'session',
                 'duration',
                 'Session Duration',
-                'base.duration',
+                'sessions.duration',
                 array(
+                    'joins' => 'sessions',
                     'displayfunc' => 'hours_minutes',
                 )
             ),
@@ -151,10 +150,10 @@ class rb_source_facetoface_sessions extends rb_base_source {
                 'Face to Face Name (linked to activity)',
                 "facetoface.name",
                 array(
-                    'joins' => 'facetoface',
+                    'joins' => array('facetoface','sessions'),
                     'displayfunc' => 'link_f2f',
                     'defaultheading' => 'Face to Face Name',
-                    'extrafields' => array('activity_id' => 'base.facetoface'),
+                    'extrafields' => array('activity_id' => 'sessions.facetoface'),
                 )
             ),
             new rb_column_option(
@@ -173,7 +172,7 @@ class rb_source_facetoface_sessions extends rb_base_source {
                     'joins' => 'sessiondate',
                     'displayfunc' => 'link_f2f_session',
                     'defaultheading' => 'Session Date',
-                    'extrafields' => array('session_id' => 'base.id')
+                    'extrafields' => array('session_id' => 'base.sessionid')
                 )
             ),
             new rb_column_option(
@@ -274,20 +273,17 @@ class rb_source_facetoface_sessions extends rb_base_source {
             new rb_content_option(
                 'current_org',                      // class name
                 "The user's current organisation",  // title
-                'signup.userid',                    // field
-                'signup'                            // joins
+                'base.userid'                       // field
             ),
             new rb_content_option(
                 'current_pos',                      // class name
                 "The user's current position",      // title
-                'signup.userid',                    // field
-                'signup'                            // joins
+                'base.userid'                       // field
             ),
             new rb_content_option(
                 'user',
                 'The user',
-                'signup.userid',
-                'signup'
+                'base.userid'
             ),
             new rb_content_option(
                 'date',
@@ -303,8 +299,7 @@ class rb_source_facetoface_sessions extends rb_base_source {
         $paramoptions = array(
             new rb_param_option(
                 'userid',         // parameter name
-                'signup.userid',  // field
-                'signup'          // joins
+                'base.userid'     // field
             ),
             new rb_param_option(
                 'courseid',
@@ -396,7 +391,7 @@ class rb_source_facetoface_sessions extends rb_base_source {
                     $key,
                     'LEFT',
                     $CFG->prefix . 'facetoface_session_data',
-                    "($key.sessionid = base.id AND $key.fieldid = $id)",
+                    "($key.sessionid = base.sessionid AND $key.fieldid = $id)",
                     REPORT_BUILDER_RELATION_ONE_TO_ONE
                 );
             }
@@ -438,7 +433,7 @@ class rb_source_facetoface_sessions extends rb_base_source {
                         $key,
                         'LEFT',
                         $CFG->prefix . 'facetoface_session_roles',
-                        "($key.sessionid = base.id AND $key.roleid = $id)",
+                        "($key.sessionid = base.sessionid AND $key.roleid = $id)",
                         REPORT_BUILDER_RELATION_ONE_TO_MANY
                     );
                     $joinlist[] = new rb_join(
