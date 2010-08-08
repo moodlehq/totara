@@ -32,26 +32,21 @@ class rb_source_scorm extends rb_base_source {
         global $CFG;
 
         $joinlist = array(
-            'user' => "LEFT JOIN {$CFG->prefix}user u ON u.id=base.userid",
-            'scorm' => "LEFT JOIN {$CFG->prefix}scorm scorm ON scorm.id=base.scormid",
-            'sco' => "LEFT JOIN {$CFG->prefix}scorm_scoes sco ON sco.id=base.scoid",
-            'course' => "LEFT JOIN {$CFG->prefix}course c ON c.id=scorm.course",
-            'course_category' => "LEFT JOIN {$CFG->prefix}course_categories cat ON cat.id=c.category",
-            'position_assignment' => "LEFT JOIN {$CFG->prefix}pos_assignment pa ON base.userid = pa.userid",
-            'organisation' => "LEFT JOIN {$CFG->prefix}org organisation ON organisation.id = pa.organisationid",
-            'position' => "LEFT JOIN {$CFG->prefix}pos position ON position.id = pa.positionid",
+            new rb_join(
+                'scorm',
+                'LEFT',
+                $CFG->prefix . 'scorm',
+                'scorm.id = base.scormid',
+                REPORT_BUILDER_RELATION_ONE_TO_ONE
+            ),
+            new rb_join(
+                'sco',
+                'LEFT',
+                $CFG->prefix . 'scorm_scoes',
+                'sco.id = base.scoid',
+                REPORT_BUILDER_RELATION_ONE_TO_ONE
+            ),
         );
-
-        // only include these joins if the manager role is defined
-        if($managerroleid = get_field('role','id','shortname','manager')) {
-            $joinlist['manager_role_assignment'] =
-                "LEFT JOIN {$CFG->prefix}role_assignments mra
-                    ON ( pa.reportstoid = mra.id
-                    AND mra.roleid = $managerroleid)";
-            $joinlist['manager'] =
-                "LEFT JOIN {$CFG->prefix}user manager ON manager.id =
-                mra.userid";
-        }
 
         // because of SCORMs crazy db design we have to self-join the table every
         // time we want a field - horribly inefficient, but should be okay until
@@ -66,11 +61,29 @@ class rb_source_scorm extends rb_base_source {
         );
         foreach ($elements as $name => $element) {
             $key = "sco_$name";
-            $joinlist[$key] = "LEFT JOIN {$CFG->prefix}scorm_scoes_track $name ON $name.userid = base.userid AND $name.scormid = base.scormid AND $name.scoid = base.scoid AND $name.attempt = base.attempt AND $name.element = '$element'";
+            $joinlist[] = new rb_join(
+                $key,
+                'LEFT',
+                $CFG->prefix . 'scorm_scoes_track',
+                "($key.userid = base.userid AND $key.scormid = base.scormid" .
+                " AND $key.scoid = base.scoid AND $key.attempt = " .
+                " base.attempt AND $key.element = '$element')",
+                REPORT_BUILDER_RELATION_ONE_TO_ONE
+            );
         }
 
         // include some standard joins
-        $this->add_user_custom_fields_to_joinlist($joinlist);
+        $this->add_user_table_to_joinlist($joinlist, 'base', 'userid');
+        $this->add_user_custom_fields_to_joinlist($joinlist, 'base', 'userid');
+        $this->add_course_table_to_joinlist($joinlist, 'scorm', 'course');
+        // requires the course join
+        $this->add_course_category_table_to_joinlist($joinlist,
+            'course', 'category');
+        $this->add_position_tables_to_joinlist($joinlist, 'base', 'userid');
+        // requires the position_assignment join
+        $this->add_manager_tables_to_joinlist($joinlist,
+            'position_assignment', 'reportstoid');
+        $this->add_course_tags_tables_to_joinlist($joinlist, 'scorm', 'course');
 
         return $joinlist;
     }
@@ -105,7 +118,7 @@ class rb_source_scorm extends rb_base_source {
                 'sco',
                 'starttime',
                 'SCO Start Time',
-                'CAST(starttime.value AS int)',
+                'CAST(sco_starttime.value AS int)',
                 array(
                     'joins' => 'sco_starttime',
                     'displayfunc' => 'nice_datetime',
@@ -115,7 +128,7 @@ class rb_source_scorm extends rb_base_source {
                 'sco',
                 'status',
                 'SCO Status',
-                'status.value',
+                'sco_status.value',
                 array(
                     'joins' => 'sco_status',
                     'displayfunc' => 'ucfirst',
@@ -125,28 +138,28 @@ class rb_source_scorm extends rb_base_source {
                 'sco',
                 'totaltime',
                 'SCO Total Time',
-                'totaltime.value',
+                'sco_totaltime.value',
                 array('joins' => 'sco_totaltime')
             ),
             new rb_column_option(
                 'sco',
                 'scoreraw',
                 'SCO Score',
-                'scoreraw.value',
+                'sco_scoreraw.value',
                 array('joins' => 'sco_scoreraw')
             ),
             new rb_column_option(
                 'sco',
                 'scoremin',
                 'SCO Min Score',
-                'scoremin.value',
+                'sco_scoremin.value',
                 array('joins' => 'sco_scoremin')
             ),
             new rb_column_option(
                 'sco',
                 'scoremax',
                 'SCO Max Score',
-                'scoremax.value',
+                'sco_scoremax.value',
                 array('joins' => 'sco_scoremax')
             ),
             new rb_column_option(
@@ -160,9 +173,11 @@ class rb_source_scorm extends rb_base_source {
         // include some standard columns
         $this->add_user_fields_to_columns($columnoptions);
         $this->add_user_custom_fields_to_columns($columnoptions);
-        $this->add_position_info_to_columns($columnoptions);
-        $this->add_course_info_to_columns($columnoptions, array('scorm'));
-        $this->add_course_category_info_to_columns($columnoptions, array('scorm'));
+        $this->add_course_fields_to_columns($columnoptions);
+        $this->add_course_category_fields_to_columns($columnoptions);
+        $this->add_position_fields_to_columns($columnoptions);
+        $this->add_manager_fields_to_columns($columnoptions);
+        $this->add_course_tag_fields_to_columns($columnoptions);
 
         return $columnoptions;
     }
@@ -234,9 +249,11 @@ class rb_source_scorm extends rb_base_source {
         // include some standard filters
         $this->add_user_fields_to_filters($filteroptions);
         $this->add_user_custom_fields_to_filters($filteroptions);
-        $this->add_position_fields_to_filters($filteroptions);
         $this->add_course_fields_to_filters($filteroptions);
         $this->add_course_category_fields_to_filters($filteroptions);
+        $this->add_position_fields_to_filters($filteroptions);
+        $this->add_manager_fields_to_filters($filteroptions);
+        $this->add_course_tag_fields_to_filters($filteroptions);
 
         return $filteroptions;
     }
@@ -273,7 +290,8 @@ class rb_source_scorm extends rb_base_source {
             ),
             new rb_param_option(
                 'courseid',
-                'base.course'
+                'scorm.course',
+                'scorm'
             ),
         );
         return $paramoptions;

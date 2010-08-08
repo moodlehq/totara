@@ -45,60 +45,93 @@ class rb_source_feedback_summary extends rb_base_source {
             $trainerroleid = 0;
         }
 
+        // to get access to position type constants
+        require_once($CFG->dirroot . '/hierarchy/type/position/lib.php');
+
         // joinlist for this source
         $joinlist = array(
-            'user' => "LEFT JOIN {$CFG->prefix}user u ON base.userid = u.id",
-            'feedback' => "LEFT JOIN {$CFG->prefix}feedback f ON base.feedback = f.id",
-            'position_assignment' => "LEFT JOIN {$CFG->prefix}pos_assignment pa ON base.userid = pa.userid",
-            'position' => "LEFT JOIN {$CFG->prefix}pos position ON position.id = pa.positionid",
-            'organisation' => "LEFT JOIN {$CFG->prefix}org organisation ON organisation.id = pa.organisationid",
-            'course' => "LEFT JOIN {$CFG->prefix}course c ON c.id = f.course",
-            'course_category' => "LEFT JOIN {$CFG->prefix}course_categories cat ON cat.id = c.category",
-            'tags' => "LEFT JOIN (
-                    SELECT crs.id AS cid, " . sql_group_concat('CAST(t.id AS varchar)','|') .
-                    " AS idlist
-                    FROM {$CFG->prefix}course crs
-                    LEFT JOIN {$CFG->prefix}tag_instance ti
-                        ON crs.id=ti.itemid AND ti.itemtype='course'
-                    LEFT JOIN {$CFG->prefix}tag t
-                        ON ti.tagid=t.id AND t.tagtype='official'
-                    GROUP BY crs.id) tags ON tags.cid = c.id",
-            'session_value' => "LEFT JOIN (
-                SELECT i.feedback, v.value FROM {$CFG->prefix}feedback_item i
-                JOIN {$CFG->prefix}feedback_value v ON v.item=i.id AND i.typ='trainer'
-            ) sv ON sv.feedback = base.feedback",
-            'sessiontrainer' => "LEFT JOIN {$CFG->prefix}facetoface_session_roles f2fsr
-                ON f2fsr.userid = CAST(sv.value AS INTEGER) AND f2fsr.roleid = $trainerroleid",
-            'trainer' => "LEFT JOIN {$CFG->prefix}user trainer ON trainer.id = f2fsr.userid",
-            'trainer_position_assignment' => "LEFT JOIN {$CFG->prefix}pos_assignment trainer_pa ON f2fsr.userid = trainer_pa.userid",
-            'trainer_position' => "LEFT JOIN {$CFG->prefix}pos trainer_position ON trainer_position.id = trainer_pa.positionid",
-            'trainer_organisation' => "LEFT JOIN {$CFG->prefix}org trainer_organisation ON trainer_organisation.id = trainer_pa.organisationid",
+            new rb_join(
+                'feedback',
+                'LEFT',
+                $CFG->prefix . 'feedback',
+                'feedback.id = base.feedback',
+                REPORT_BUILDER_RELATION_ONE_TO_ONE
+            ),
+            new rb_join(
+                'session_value',
+                'LEFT',
+                // subquery as table
+                "(SELECT i.feedback, v.value
+                    FROM {$CFG->prefix}feedback_item i
+                    JOIN {$CFG->prefix}feedback_value v
+                        ON v.item=i.id AND i.typ='trainer')",
+                'session_value.feedback = base.feedback',
+                // potentially could be multiple trainer questions
+                // in a feedback instance
+                REPORT_BUILDER_RELATION_ONE_TO_MANY
+            ),
+            new rb_join(
+                'sessiontrainer',
+                'LEFT',
+                $CFG->prefix . 'facetoface_session_roles',
+                '(sessiontrainer.userid = ' .
+                    'CAST(session_value.value AS INTEGER) AND ' .
+                    "sessiontrainer.roleid = $trainerroleid)",
+                // potentially multiple trainers in a session
+                REPORT_BUILDER_RELATION_ONE_TO_MANY,
+                'session_value'
+            ),
+            new rb_join(
+                'trainer',
+                'LEFT',
+                $CFG->prefix . 'user',
+                'trainer.id = sessiontrainer.userid',
+                REPORT_BUILDER_RELATION_ONE_TO_ONE,
+                'sessiontrainer'
+            ),
+            new rb_join(
+                'trainer_position_assignment',
+                'LEFT',
+                $CFG->prefix . 'pos_assignment',
+                '(trainer_position_assignment.userid = ' .
+                    'sessiontrainer.userid AND
+                    trainer_position_assignment.type = ' .
+                    POSITION_TYPE_PRIMARY . ')',
+                REPORT_BUILDER_RELATION_ONE_TO_ONE,
+                'sessiontrainer'
+            ),
+            new rb_join(
+                'trainer_position',
+                'LEFT',
+                $CFG->prefix . 'pos',
+                'trainer_position.id = ' .
+                    'trainer_position_assignment.positionid',
+                REPORT_BUILDER_RELATION_ONE_TO_ONE,
+                'trainer_position_assignment'
+            ),
+            new rb_join(
+                'trainer_organisation',
+                'LEFT',
+                $CFG->prefix . 'org',
+                'trainer_organisation.id = ' .
+                    'trainer_position_assignment.organisationid',
+                REPORT_BUILDER_RELATION_ONE_TO_ONE,
+                'trainer_position_assignment'
+            ),
         );
 
-        // create a join for each official tag
-        if($tags = get_records('tag', 'tagtype', 'official')) {
-            foreach($tags as $tag) {
-                $name = $tag->name;
-                $tagid = $tag->id;
-                $key = "course_tag_$tagid";
-                $joinlist[$key] = "LEFT JOIN {$CFG->prefix}tag_instance $key ON f.course=$key.itemid AND $key.itemtype='course' AND $key.tagid=$tagid";
-            }
-        }
-
-        // add joins for user custom fields
-        $this->add_user_custom_fields_to_joinlist($joinlist);
-
-        // only include these joins if the manager role is defined
-        if($managerroleid = get_field('role','id','shortname','manager')) {
-            $joinlist['manager_role_assignment'] =
-                "LEFT JOIN {$CFG->prefix}role_assignments mra
-                    ON ( pa.reportstoid = mra.id
-                    AND mra.roleid = $managerroleid)";
-            $joinlist['manager'] =
-                "LEFT JOIN {$CFG->prefix}user manager ON manager.id =
-                mra.userid";
-        }
-
+        // include some standard joins
+        $this->add_user_table_to_joinlist($joinlist, 'base', 'userid');
+        $this->add_user_custom_fields_to_joinlist($joinlist, 'base', 'userid');
+        $this->add_course_table_to_joinlist($joinlist, 'feedback', 'course');
+        // requires the course join
+        $this->add_course_category_table_to_joinlist($joinlist,
+            'course', 'category');
+        $this->add_position_tables_to_joinlist($joinlist, 'base', 'userid');
+        // requires the position_assignment join
+        $this->add_manager_tables_to_joinlist($joinlist,
+            'position_assignment', 'reportstoid');
+        $this->add_course_tags_tables_to_joinlist($joinlist, 'feedback', 'course');
         return $joinlist;
     }
 
@@ -115,117 +148,60 @@ class rb_source_feedback_summary extends rb_base_source {
                 'feedback',
                 'name',
                 'Feedback Activity',
-                'f.name',
+                'feedback.name',
                 array('joins' => 'feedback')
-            ),
-            // used by tag content restriction
-            new rb_column_option(
-                'course',
-                'tagids',
-                'Course Tag IDs',
-                "tags.idlist",
-                array(
-                    'joins' => array('feedback', 'course', 'tags'),
-                )
             ),
             new rb_column_option(
                 'trainer',
                 'id',
                 'Trainer ID',
-                'f2fsr.userid',
-                array(
-                    'joins' => array('session_value', 'sessiontrainer'),
-                )
+                'sessiontrainer.userid',
+                array('joins' => 'sessiontrainer')
             ),
             new rb_column_option(
                 'trainer',
                 'fullname',
                 'Trainer Fullname',
                 sql_fullname('trainer.firstname', 'trainer.lastname'),
-                array(
-                    'joins' => array(
-                                     'session_value', 'sessiontrainer', 'trainer'),
-                )
+                array('joins' => 'trainer')
             ),
             new rb_column_option(
                 'trainer',
                 'organisationid',
                 'Trainer Organisation ID',
-                'trainer_pa.organisationid',
-                array(
-                    'joins' => array(
-                                     'session_value', 'sessiontrainer', 'trainer',
-                                     'trainer_position_assignment'),
-                )
+                'trainer_position_assignment.organisationid',
+                array('joins' => 'trainer_position_assignment')
             ),
             new rb_column_option(
                 'trainer',
                 'organisation',
                 'Trainer Organisation',
                 'trainer_organisation.fullname',
-                array(
-                    'joins' => array(
-                                     'session_value', 'sessiontrainer', 'trainer',
-                                     'trainer_position_assignment',
-                                     'trainer_organisation'),
-                )
+                array('joins' => 'trainer_organisation')
             ),
             new rb_column_option(
                 'trainer',
                 'positionid',
                 'Trainer Position ID',
-                'trainer_pa.positionid',
-                array(
-                    'joins' => array(
-                                     'session_value', 'sessiontrainer', 'trainer',
-                                     'trainer_position_assignment'),
-                )
+                'trainer_position_assignment.positionid',
+                array('joins' => 'trainer_position_assignment')
             ),
             new rb_column_option(
                 'trainer',
                 'position',
                 'Trainer Position',
                 'trainer_position.fullname',
-                array(
-                    'joins' => array(
-                                     'session_value', 'sessiontrainer', 'trainer',
-                                     'trainer_position_assignment',
-                                     'trainer_position'),
-                )
+                array('joins' => 'trainer_position')
             ),
         );
-
-        // create a on/off field for every official tag
-        if($tags = get_records('tag', 'tagtype', 'official')) {
-            foreach($tags as $tag) {
-                $tagid = $tag->id;
-                $name = $tag->name;
-                $join = "course_tag_$tagid";
-                $columnoptions[] = new rb_column_option(
-                    'tags',
-                    $join,
-                    "Tagged '$name'",
-                    "CASE WHEN $join.id IS NOT NULL THEN 1 ELSE 0 END",
-                    array(
-                        'joins' => array('feedback', $join),
-                        'displayfunc' => 'yes_no',
-                    )
-                );
-
-            }
-        }
-
-        // add all user profile fields to columns
-        // requires 'user' and 'user_profile' in join list
+        // include some standard columns
         $this->add_user_fields_to_columns($columnoptions);
         $this->add_user_custom_fields_to_columns($columnoptions);
-
-        // add position and organisation columns
-        $this->add_position_info_to_columns($columnoptions);
-
-        // add course columns
-        $this->add_course_info_to_columns($columnoptions, array('feedback'));
-        $this->add_course_category_info_to_columns($columnoptions, array('feedback'));
+        $this->add_course_fields_to_columns($columnoptions);
+        $this->add_course_category_fields_to_columns($columnoptions);
+        $this->add_position_fields_to_columns($columnoptions);
+        $this->add_manager_fields_to_columns($columnoptions);
+        $this->add_course_tag_fields_to_columns($columnoptions);
 
         return $columnoptions;
     }
@@ -273,35 +249,14 @@ class rb_source_feedback_summary extends rb_base_source {
             ),
         );
 
-        // add some generic text filters
-        // add all user profile field to filters
+        // include some standard filters
         $this->add_user_fields_to_filters($filteroptions);
         $this->add_user_custom_fields_to_filters($filteroptions);
-
-        // add user position filters
-        $this->add_position_fields_to_filters($filteroptions);
-
-        // add course filters
         $this->add_course_fields_to_filters($filteroptions);
         $this->add_course_category_fields_to_filters($filteroptions);
-
-        // create a filter for every official tag
-        if($tags = get_records('tag', 'tagtype', 'official')) {
-            foreach($tags as $tag) {
-                $tagid = $tag->id;
-                $name = $tag->name;
-                $join = "course_tag_$tagid";
-                $filteroptions[] = new rb_filter_option(
-                    'tags',
-                    $join,
-                    "Tagged '$name'",
-                    'simpleselect',
-                    array('selectchoices' => array(
-                        1 => get_string('yes'), 0 => get_string('no'))
-                    )
-                );
-            }
-        }
+        $this->add_position_fields_to_filters($filteroptions);
+        $this->add_manager_fields_to_filters($filteroptions);
+        $this->add_course_tag_fields_to_filters($filteroptions);
 
         return $filteroptions;
     }
@@ -327,8 +282,8 @@ class rb_source_feedback_summary extends rb_base_source {
             new rb_content_option(
                 'course_tag',
                 'The course',
-                'tags.idlist',
-                array('feedback', 'course', 'tags')
+                'tagids.idlist',
+                'tagids'
             ),
             new rb_content_option(
                 'date',
@@ -347,7 +302,7 @@ class rb_source_feedback_summary extends rb_base_source {
             ),
             new rb_param_option(
                 'courseid',
-                'f.course',
+                'feedback.course',
                 'feedback'
             ),
         );

@@ -46,7 +46,71 @@ abstract class rb_base_source {
                 $this->$property = $default;
             }
         }
+
+        // basic sanity checking of joinlist
+        $this->validate_joinlist();
     }
+
+
+    /*
+     * Check the joinlist for invalid dependencies and duplicate names
+     *
+     * @return True or throws exception if problem found
+     */
+    private function validate_joinlist() {
+        $joinlist = $this->joinlist;
+        $joins_used = array();
+
+        // don't let source define join with same name as an SQL
+        // reserved word
+        $reserved_words = explode(', ', 'access, accessible, add, all, alter, analyse, analyze, and, any, array, as, asc, asensitive, asymmetric, audit, authorization, autoincrement, avg, backup, before, begin, between, bigint, binary, blob, both, break, browse, bulk, by, call, cascade, case, cast, change, char, character, check, checkpoint, close, cluster, clustered, coalesce, collate, column, comment, commit, committed, compress, compute, condition, confirm, connect, connection, constraint, contains, containstable, continue, controlrow, convert, count, create, cross, current, current_date, current_role, current_time, current_timestamp, current_user, cursor, database, databases, date, day_hour, day_microsecond, day_minute, day_second, dbcc, deallocate, dec, decimal, declare, default, deferrable, delayed, delete, deny, desc, describe, deterministic, disk, distinct, distinctrow, distributed, div, do, double, drop, dual, dummy, dump, each, else, elseif, enclosed, end, errlvl, errorexit, escape, escaped, except, exclusive, exec, execute, exists, exit, explain, external, false, fetch, file, fillfactor, float, float4, float8, floppy, for, force, foreign, freetext, freetexttable, freeze, from, full, fulltext, function, goto, grant, group, having, high_priority, holdlock, hour_microsecond, hour_minute, hour_second, identified, identity, identity_insert, identitycol, if, ignore, ilike, immediate, in, increment, index, infile, initial, initially, inner, inout, insensitive, insert, int, int1, int2, int3, int4, int8, integer, intersect, interval, into, is, isnull, isolation, iterate, join, key, keys, kill, leading, leave, left, level, like, limit, linear, lineno, lines, load, localtime, localtimestamp, lock, long, longblob, longtext, loop, low_priority, master_heartbeat_period, master_ssl_verify_server_cert, match, max, maxextents, mediumblob, mediumint, mediumtext, middleint, min, minus, minute_microsecond, minute_second, mirrorexit, mlslabel, mod, mode, modifies, modify, national, natural, new,' .
+            ' no_write_to_binlog, noaudit, nocheck, nocompress, nonclustered, not, notnull, nowait, null, nullif, number, numeric, of, off, offline, offset, offsets, old, on, once, online, only, open, opendatasource, openquery, openrowset, openxml, optimize, option, optionally, or, order, out, outer, outfile, over, overlaps, overwrite, pctfree, percent, perm, permanent, pipe, pivot, placing, plan, precision, prepare, primary, print, prior, privileges, proc, procedure, processexit, public, purge, raid0, raiserror, range, raw, read, read_only, read_write, reads, readtext, real, reconfigure, references, regexp, release, rename, repeat, repeatable, replace, replication, require, resource, restore, restrict, return, returning, revoke, right, rlike, rollback, row, rowcount, rowguidcol, rowid, rownum, rows, rule, save, schema, schemas, second_microsecond, select, sensitive, separator, serializable, session, session_user, set, setuser, share, show, shutdown, similar, size, smallint, some, soname, spatial, specific, sql, sql_big_result, sql_calc_found_rows, sql_small_result, sqlexception, sqlstate, sqlwarning, ssl, start, starting, statistics, straight_join, successful, sum, symmetric, synonym, sysdate, system_user, table, tape, temp, temporary, terminated, textsize, then, tinyblob, tinyint, tinytext, to, top, trailing, tran, transaction, trigger, true, truncate, tsequal, uid, uncommitted, undo, union, unique, unlock, unsigned, update, updatetext, upgrade, usage, use, user, using, utc_date, utc_time, utc_timestamp, validate, values, varbinary, varchar, varchar2, varcharacter, varying, verbose, view, waitfor, when, whenever, where, while, with, work, write, writetext, x509, xor, year_month, zerofill');
+
+        foreach($joinlist as $item) {
+            // check join list for duplicate names
+            if(in_array($item->name, $joins_used)) {
+                throw new ReportBuilderException("Join name '" .
+                    $item->name . "' used more than once in source");
+            } else {
+                $joins_used[] = $item->name;
+            }
+
+            if(in_array($item->name, $reserved_words)) {
+                throw new ReportBuilderException("Join name '" .
+                    $item->name . "' is an SQL reserved word. " .
+                    ' Please rename the join');
+            }
+        }
+
+        foreach($joinlist as $item) {
+            // check that dependencies exist
+            if(isset($item->dependencies) &&
+                is_array($item->dependencies)) {
+
+                foreach($item->dependencies as $dep) {
+                    if($dep == 'base') {
+                        continue;
+                    }
+                    if(!in_array($dep, $joins_used)) {
+                        throw new ReportBuilderException("Join name '" .
+                            $item->name . "' contains dependency '" .
+                            $dep . ' that does not exist in joinlist.');
+                    }
+                }
+            } else if (isset($item->dependencies) &&
+                $item->dependencies != 'base') {
+
+                if(!in_array($item->dependencies, $joins_used)) {
+                    throw new ReportBuilderException("Join name '" .
+                        $item->name . "' contains dependency '" .
+                        $item->dependencies .
+                        ' that does not exist in joinlist.');
+                }
+            }
+        }
+        return true;
+    }
+
 
     //
     //
@@ -412,93 +476,33 @@ abstract class rb_base_source {
     // Wrapper functions to add columns/fields/joins in one go
     //
     //
-    //
 
-    // depends on join user to user table with alias u
-    protected function add_user_field_options(&$src, $extrajoins=array()) {
-        if(array_key_exists('user', $src->joinlist)) {
-            $this->add_user_fields_to_columns($src->columnoptions, $extrajoins);
-            $this->add_user_fields_to_filters($src->filteroptions);
-        } else {
-            throw new ReportBuilderException('Cannot add user options because the
-                user join has not yet been defined');
-        }
-    }
-
-    // depends on join user to user table with alias u
-    protected function add_user_custom_field_options(&$src, $extrajoins=array()) {
-        if(array_key_exists('user', $src->joinlist)) {
-            $this->add_user_custom_fields_to_joinlist($src->joinlist);
-            $this->add_user_custom_fields_to_columns($src->columnoptions, $extrajoins);
-            $this->add_user_custom_fields_to_filters($src->filteroptions);
-        } else {
-            throw new ReportBuilderException('Cannot add user custom field options
-                because the user join has not yet been defined');
-        }
-    }
-
-    protected function add_position_field_options(&$src) {
-        $this->add_position_info_to_columns($src->columnoptions);
-        $this->add_position_fields_to_filters($src->filteroptions);
-    }
-
-    // depends on join course to course table with alias c
-    protected function add_course_field_options(&$src) {
-        if(array_key_exists('course', $src->joinlist)) {
-            $this->add_course_info_to_columns($src->columnoptions);
-            $this->add_course_fields_to_filters($src->filteroptions);
-        } else {
-            throw new ReportBuilderException('Cannot add course field options
-                because the course join has not yet been defined');
-        }
-    }
-
-    // depends on join course to course table with alias c
-    protected function add_course_category_field_options(&$src) {
-        if(array_key_exists('course', $src->joinlist)) {
-            $this->add_course_category_to_joinlist($src->joinlist);
-            $this->add_course_category_info_to_columns($src->columnoptions);
-            $this->add_course_category_fields_to_filters($src->filteroptions);
-        } else {
-            throw new ReportBuilderException('Cannot add course category field
-                options because the course join has not yet been defined');
-        }
-    }
-
-    //
-    // Column data
-    //
 
     /*
-     * Adds any user profile fields to the $columnoptions array
+     * Adds the user table to the $joinlist array
      *
-     * @param array &$columnoptions Array of current column options
-     *                              Passed by reference and updated if
-     *                              any user custom fields exist
-     * @param array $extrajoins Any additional joins needed to access the user table
-     * @return boolean True if user custom fields exist
+     * @param array &$joinlist Array of current join options
+     *                         Passed by reference and updated to
+     *                         include new table joins
+     * @param string $join Name of the join that provides the
+     *                     'user id' field
+     * @param string $field Name of user id field to join on
+     * @return boolean True
      */
-    protected function add_user_custom_fields_to_columns(&$columnoptions, $extrajoins=array()) {
-        // auto-generate columns for each user custom field
-        if($custom_fields =
-            get_records('user_info_field')) {
-            foreach($custom_fields as $custom_field) {
-                $field = $custom_field->shortname;
-                $name = $custom_field->name;
-                $key = "user_$field";
-                $joins = array_merge($extrajoins, array('user', $key));
-                $columnoptions[] = new rb_column_option(
-                    'user_profile',
-                    $field,
-                    $name,
-                    "$key.data",
-                    array('joins' => $joins)
-                );
-            }
-            return true;
-        }
-        return false;
+    protected function add_user_table_to_joinlist(&$joinlist, $join, $field) {
+        global $CFG;
+
+        // join uses 'auser' as name because 'user' is a reserved keyword
+        $joinlist[] = new rb_join(
+            'auser',
+            'LEFT',
+            $CFG->prefix . 'user',
+            "auser.id = $join.$field",
+            REPORT_BUILDER_RELATION_ONE_TO_ONE,
+            $join
+        );
     }
+
 
      /*
      * Adds some common user field to the $columnoptions array
@@ -506,27 +510,30 @@ abstract class rb_base_source {
      * @param array &$columnoptions Array of current column options
      *                              Passed by reference and updated by
      *                              this method
-     * @param array $extrajoins Any additional joins needed to access the user table
+     * @param string $join Name of the join that provides the 'user' table
+     *
      * @return True
      */
-    protected function add_user_fields_to_columns(&$columnoptions, $extrajoins=array()) {
+    protected function add_user_fields_to_columns(&$columnoptions,
+        $join='auser') {
+
         $columnoptions[] = new rb_column_option(
             'user',
             'fullname',
             'User Fullname',
-            sql_fullname('u.firstname', 'u.lastname'),
-            array('joins' => array_merge($extrajoins, (array) 'user'))
+            sql_fullname("$join.firstname", "$join.lastname"),
+            array('joins' => $join)
         );
         $columnoptions[] = new rb_column_option(
             'user',
             'namelink',
             'User Fullname (linked to profile)',
-            sql_fullname('u.firstname', 'u.lastname'),
+            sql_fullname("$join.firstname", "$join.lastname"),
             array(
-                'joins' => array_merge($extrajoins, (array) 'user'),
+                'joins' => $join,
                 'displayfunc' => 'link_user',
                 'defaultheading' => 'User Fullname',
-                'extrafields' => array('user_id' => 'u.id'),
+                'extrafields' => array('user_id' => "$join.id"),
             )
         );
         // auto-generate columns for user fields
@@ -542,248 +549,11 @@ abstract class rb_base_source {
                 'user',
                 $field,
                 $name,
-                "u.$field",
-                array('joins' => array_merge($extrajoins, (array) 'user'))
+                "$join.$field",
+                array('joins' => $join)
             );
         }
         return true;
-    }
-
-    /*
-     * Adds some common user position info to the $columnoptions array
-     *
-     * @param array &$columnoptions Array of current column options
-     *                              Passed by reference and updated by
-     *                              this method
-     * @param array $extrajoins Any additional joins needed to access the user table
-     * @return True
-     */
-    protected function add_position_info_to_columns(&$columnoptions, $extrajoins=array()) {
-        $columnoptions[] = new rb_column_option(
-            'user',
-            'managername',
-            "User's Manager Name",
-            sql_fullname('manager.firstname','manager.lastname'),
-            array(
-                'joins' => array_merge($extrajoins, array('user','position_assignment','manager_role_assignment','manager')),
-            )
-        );
-        $columnoptions[] = new rb_column_option(
-            'user',
-            'organisationid',
-            "User's Organisation ID",
-            'pa.organisationid',
-            array(
-                'joins' => array_merge($extrajoins, array('user','position_assignment')),
-            )
-        );
-        $columnoptions[] = new rb_column_option(
-            'user',
-            'organisation',
-            "User's Organisation Name",
-            'organisation.fullname',
-            array(
-                'joins' => array_merge($extrajoins, array('user','position_assignment','organisation')),
-            )
-        );
-        $columnoptions[] = new rb_column_option(
-            'user',
-            'positionid',
-            "User's Position ID",
-            'pa.positionid',
-            array(
-                'joins' => array_merge($extrajoins, array('user','position_assignment')),
-            )
-        );
-        $columnoptions[] = new rb_column_option(
-            'user',
-            'position',
-            "User's Position",
-            'position.fullname',
-            array(
-                'joins' => array_merge($extrajoins, array('user','position_assignment','position')),
-            )
-        );
-        $columnoptions[] = new rb_column_option(
-            'user',
-            'title',
-            "User's Job Title",
-            'pa.fullname',
-            array(
-                'joins' => array_merge($extrajoins, array('user','position_assignment')),
-            )
-        );
-        return true;
-    }
-
-    /*
-     * Adds some common course info to the $columnoptions array
-     *
-     * @param array &$columnoptions Array of current column options
-     *                              Passed by reference and updated by
-     *                              this method
-     * @param array $extrajoins Any additional joins needed to access the user table
-     * @return True
-     */
-    protected function add_course_info_to_columns(&$columnoptions, $extrajoins=array()) {
-        $columnoptions[] = new rb_column_option(
-            'course',
-            'fullname',
-            'Course Name',
-            'c.fullname',
-            array('joins' => array_merge($extrajoins, array('course')))
-        );
-        $columnoptions[] = new rb_column_option(
-            'course',
-            'courselink',
-            'Course Name (linked to course page)',
-            'c.fullname',
-            array(
-                'joins' => array_merge($extrajoins, array('course')),
-                'displayfunc' => 'link_course',
-                'defaultheading' => 'Course Name',
-                'extrafields' => array('course_id' => 'c.id')
-            )
-        );
-        $columnoptions[] = new rb_column_option(
-            'course',
-            'shortname',
-            'Course Shortname',
-            'c.shortname',
-            array('joins' => array_merge($extrajoins, array('course')))
-        );
-        $columnoptions[] = new rb_column_option(
-            'course',
-            'idnumber',
-            'Course ID Number',
-            'c.idnumber',
-            array('joins' => array_merge($extrajoins, array('course')))
-        );
-        $columnoptions[] = new rb_column_option(
-            'course',
-            'id',
-            'Course ID',
-            'c.id',
-            array('joins' => array_merge($extrajoins, array('course')))
-        );
-        $columnoptions[] = new rb_column_option(
-            'course',
-            'startdate',
-            'Course Start Date',
-            'c.startdate',
-            array(
-                'joins' => array_merge($extrajoins, array('course')),
-                'displayfunc' => 'nice_date',
-            )
-        );
-        return true;
-    }
-
-    /*
-     * Adds some common course category info to the $columnoptions array
-     *
-     * @param array &$columnoptions Array of current column options
-     *                              Passed by reference and updated by
-     *                              this method
-     * @param array $extrajoins Any additional joins needed to access the user table
-     * @return True
-     */
-    protected function add_course_category_info_to_columns(&$columnoptions, $extrajoins=array()) {
-        $columnoptions[] = new rb_column_option(
-                'course_category',
-                'name',
-                'Course Category',
-                'cat.name',
-                array(
-                    'joins' => array_merge($extrajoins, array('course','course_category')),
-                )
-        );
-        $columnoptions[] = new rb_column_option(
-                'course_category',
-                'id',
-                'Course Category ID',
-                'c.category',
-                array(
-                    'joins' => array_merge($extrajoins, array('course','course_category')),
-                )
-        );
-        return true;
-    }
-
-    //
-    // Join list data
-    //
-
-    /*
-     * Adds any user profile fields to the $joinlist array
-     *
-     * @param array &$joinlist Array of current join options
-     *                         Passed by reference and updated if
-     *                         any user custom fields exist
-     * @return boolean True if user custom fields exist
-     */
-    protected function add_user_custom_fields_to_joinlist(&$joinlist) {
-        global $CFG;
-
-        // add all user custom fields to join list
-        if($custom_fields = get_records('user_info_field')) {
-            foreach($custom_fields as $custom_field) {
-                $field = $custom_field->shortname;
-                $id = $custom_field->id;
-                $key = "user_$field";
-                $joinlist[$key] = "LEFT JOIN {$CFG->prefix}user_info_data $key ON (u.id = $key.userid AND $key.fieldid = $id )";
-            }
-            return true;
-        }
-        return false;
-    }
-
-
-    /*
-     * Adds the course_category table to the $joinlist array
-     *
-     * @param array &$joinlist Array of current join options
-     *                         Passed by reference and updated to
-     *                         include course_category
-     * @return boolean True
-     */
-    protected function add_course_category_to_joinlist(&$joinlist) {
-        global $CFG;
-
-        $joinlist['course_category'] = "LEFT JOIN {$CFG->prefix}course_categories cat
-            ON cat.id = c.category";
-
-        return true;
-    }
-
-    //
-    // Filter data
-    //
-
-    /*
-     * Adds any user profile fields to the $filteroptions array as text filters
-     *
-     * @param array &$filteroptions Array of current filter options
-     *                              Passed by reference and updated if
-     *                              any user custom fields exist
-     * @return boolean True if user custom fields exist
-     */
-    protected function add_user_custom_fields_to_filters(&$filteroptions) {
-        if($custom_fields = get_records('user_info_field','','','','id,shortname,name')) {
-            foreach($custom_fields as $custom_field) {
-                $field = $custom_field->shortname;
-                $name = $custom_field->name;
-                $key = "user_$field";
-                $filteroptions[] = new rb_filter_option(
-                    'user_profile',
-                    $field,
-                    $name,
-                    'text'
-                );
-            }
-            return true;
-        }
-        return false;
     }
 
 
@@ -815,49 +585,187 @@ abstract class rb_base_source {
         return true;
     }
 
+
     /*
-     * Adds some common user position filters to the $filteroptions array
+     * Adds any user profile fields to the $joinlist array
      *
-     * @param array &$columnoptions Array of current filter options
+     * @param array &$joinlist Array of current join options
+     *                         Passed by reference and updated if
+     *                         any user custom fields exist
+     * @param string $join Name of join containing user id to join on
+     * @param string $joinfield Name of user id field to join on
+     * @return boolean True if user custom fields exist
+     */
+    protected function add_user_custom_fields_to_joinlist(&$joinlist,
+        $join, $joinfield) {
+        global $CFG;
+
+        // add all user custom fields to join list
+        if($custom_fields = get_records('user_info_field')) {
+            foreach($custom_fields as $custom_field) {
+                $field = $custom_field->shortname;
+                $id = $custom_field->id;
+                $key = "user_$field";
+                $joinlist[] = new rb_join(
+                    $key,
+                    'LEFT',
+                    $CFG->prefix . 'user_info_data',
+                    "$key.userid = $join.$joinfield AND $key.fieldid = $id",
+                    REPORT_BUILDER_RELATION_ONE_TO_ONE,
+                    $join
+                );
+            }
+            return true;
+        }
+        return false;
+    }
+
+
+    /*
+     * Adds any user profile fields to the $columnoptions array
+     *
+     * @param array &$columnoptions Array of current column options
+     *                              Passed by reference and updated if
+     *                              any user custom fields exist
+     * @return boolean True if user custom fields exist
+     */
+    protected function add_user_custom_fields_to_columns(&$columnoptions) {
+        // auto-generate columns for each user custom field
+        if($custom_fields =
+            get_records('user_info_field')) {
+            foreach($custom_fields as $custom_field) {
+                $field = $custom_field->shortname;
+                $name = $custom_field->name;
+                $key = "user_$field";
+                $columnoptions[] = new rb_column_option(
+                    'user_profile',
+                    $field,
+                    $name,
+                    "$key.data",
+                    array('joins' => $key)
+                );
+            }
+            return true;
+        }
+        return false;
+    }
+
+
+    /*
+     * Adds any user profile fields to the $filteroptions array as text filters
+     *
+     * @param array &$filteroptions Array of current filter options
+     *                              Passed by reference and updated if
+     *                              any user custom fields exist
+     * @return boolean True if user custom fields exist
+     */
+    protected function add_user_custom_fields_to_filters(&$filteroptions) {
+        if($custom_fields = get_records('user_info_field','','','','id,shortname,name')) {
+            foreach($custom_fields as $custom_field) {
+                $field = $custom_field->shortname;
+                $name = $custom_field->name;
+                $key = "user_$field";
+                $filteroptions[] = new rb_filter_option(
+                    'user_profile',
+                    $field,
+                    $name,
+                    'text'
+                );
+            }
+            return true;
+        }
+        return false;
+    }
+
+    /*
+     * Adds the course table to the $joinlist array
+     *
+     * @param array &$joinlist Array of current join options
+     *                         Passed by reference and updated to
+     *                         include new table joins
+     * @param string $join Name of the join that provides the
+     *                     'course id' field
+     * @param string $field Name of course id field to join on
+     * @return boolean True
+     */
+    protected function add_course_table_to_joinlist(&$joinlist, $join, $field) {
+        global $CFG;
+
+        $joinlist[] = new rb_join(
+            'course',
+            'LEFT',
+            $CFG->prefix . 'course',
+            "course.id = $join.$field",
+            REPORT_BUILDER_RELATION_ONE_TO_ONE,
+            $join
+        );
+    }
+
+
+    /*
+     * Adds some common course info to the $columnoptions array
+     *
+     * @param array &$columnoptions Array of current column options
      *                              Passed by reference and updated by
      *                              this method
+     * @param string $join Name of the join that provides the 'course' table
+     *
      * @return True
      */
-    protected function add_position_fields_to_filters(&$filteroptions) {
-        $filteroptions[] = new rb_filter_option(
-            'user',
-            'managername',
-            "Manager's Name",
-            'text'
+    protected function add_course_fields_to_columns(&$columnoptions, $join='course') {
+        $columnoptions[] = new rb_column_option(
+            'course',
+            'fullname',
+            'Course Name',
+            "$join.fullname",
+            array('joins' => $join)
         );
-        $filteroptions[] = new rb_filter_option(
-            'user',
-            'title',
-            "User's Job Title",
-            'text'
-        );
-        $filteroptions[] = new rb_filter_option(
-            'user',
-            'organisationid',
-            "Participant's Current Office",
-            'select',
+        $columnoptions[] = new rb_column_option(
+            'course',
+            'courselink',
+            'Course Name (linked to course page)',
+            "$join.fullname",
             array(
-                'selectfunc' => 'organisations_list',
-                'selectoptions' => rb_filter_option::select_width_limiter(),
+                'joins' => $join,
+                'displayfunc' => 'link_course',
+                'defaultheading' => 'Course Name',
+                'extrafields' => array('course_id' => "$join.id")
             )
         );
-        $filteroptions[] = new rb_filter_option(
-            'user',
-            'positionid',
-            "Participant's Current Position",
-            'select',
+        $columnoptions[] = new rb_column_option(
+            'course',
+            'shortname',
+            'Course Shortname',
+            "$join.shortname",
+            array('joins' => $join)
+        );
+        $columnoptions[] = new rb_column_option(
+            'course',
+            'idnumber',
+            'Course ID Number',
+            "$join.idnumber",
+            array('joins' => $join)
+        );
+        $columnoptions[] = new rb_column_option(
+            'course',
+            'id',
+            'Course ID',
+            "$join.id",
+            array('joins' => $join)
+        );
+        $columnoptions[] = new rb_column_option(
+            'course',
+            'startdate',
+            'Course Start Date',
+            "$join.startdate",
             array(
-                'selectfunc' => 'positions_list',
-                'selectoptions' => rb_filter_option::select_width_limiter(),
+                'joins' => $join,
+                'displayfunc' => 'nice_date',
             )
         );
         return true;
     }
+
 
     /*
      * Adds some common course filters to the $filteroptions array
@@ -896,6 +804,67 @@ abstract class rb_base_source {
         return true;
     }
 
+
+    /*
+     * Adds the course_category table to the $joinlist array
+     *
+     * @param array &$joinlist Array of current join options
+     *                         Passed by reference and updated to
+     *                         include course_category
+     * @param string $join Name of the join that provides the 'course' table
+     * @param string $field Name of category id field to join on
+     * @return boolean True
+     */
+    protected function add_course_category_table_to_joinlist(&$joinlist,
+        $join, $field) {
+
+        global $CFG;
+
+        $joinlist[] = new rb_join(
+            'course_category',
+            'LEFT',
+            $CFG->prefix . 'course_categories',
+            "course_category.id = $join.$field",
+            REPORT_BUILDER_RELATION_ONE_TO_ONE,
+            $join
+        );
+
+        return true;
+    }
+
+
+    /*
+     * Adds some common course category info to the $columnoptions array
+     *
+     * @param array &$columnoptions Array of current column options
+     *                              Passed by reference and updated by
+     *                              this method
+     * @param string $catjoin Name of the join that provides the
+     *                        'course_categories' table
+     * @param string $coursejoin Name of the join that provides the
+     *                           'course' table
+     * @return True
+     */
+    protected function add_course_category_fields_to_columns(&$columnoptions,
+        $catjoin='course_category', $coursejoin='course') {
+        $columnoptions[] = new rb_column_option(
+                'course_category',
+                'name',
+                'Course Category',
+                "$catjoin.name",
+                array('joins' => $catjoin)
+        );
+        $columnoptions[] = new rb_column_option(
+                'course_category',
+                'id',
+                'Course Category ID',
+                "$coursejoin.category",
+                array('joins' => $coursejoin)
+        );
+        return true;
+    }
+
+
     /*
      * Adds some common course category filters to the $filteroptions array
      *
@@ -915,6 +884,376 @@ abstract class rb_base_source {
                 'selectoptions' => rb_filter_option::select_width_limiter(),
             )
         );
+        return true;
+    }
+
+
+    /*
+     * Adds the pos_assignment, pos and org tables to the $joinlist array
+     *
+     * @param array &$joinlist Array of current join options
+     *                         Passed by reference and updated to
+     *                         include new table joins
+     * @param string $join Name of the join that provides the 'user' table
+     * @param string $field Name of user id field to join on
+     * @return boolean True
+     */
+    protected function add_position_tables_to_joinlist(&$joinlist,
+        $join, $field) {
+
+        global $CFG;
+
+        // to get access to position type constants
+        require_once($CFG->dirroot . '/hierarchy/type/position/lib.php');
+
+        $joinlist[] =new rb_join(
+            'position_assignment',
+            'LEFT',
+            $CFG->prefix . 'pos_assignment',
+            "(position_assignment.userid = $join.$field AND " .
+            'position_assignment.type = ' . POSITION_TYPE_PRIMARY . ')',
+            REPORT_BUILDER_RELATION_ONE_TO_ONE,
+            $join
+        );
+
+        $joinlist[] = new rb_join(
+            'organisation',
+            'LEFT',
+            $CFG->prefix . 'org',
+            'organisation.id = position_assignment.organisationid',
+            REPORT_BUILDER_RELATION_ONE_TO_ONE,
+            'position_assignment'
+        );
+
+        $joinlist[] = new rb_join(
+            'position',
+            'LEFT',
+            $CFG->prefix . 'pos',
+            'position.id = position_assignment.positionid',
+            REPORT_BUILDER_RELATION_ONE_TO_ONE,
+            'position_assignment'
+        );
+
+        return true;
+    }
+
+
+    /*
+     * Adds some common user position info to the $columnoptions array
+     *
+     * @param array &$columnoptions Array of current column options
+     *                              Passed by reference and updated by
+     *                              this method
+     * @param string $posassign Name of the join that provides the
+     *                          'pos_assignment' table.
+     * @param string $org Name of the join that provides the 'org' table.
+     * @param string $pos Name of the join that provides the 'pos' table.
+     *
+     * @return True
+     */
+    protected function add_position_fields_to_columns(&$columnoptions,
+        $posassign='position_assignment',
+        $org='organisation', $pos='position') {
+            /*
+        $columnoptions[] = new rb_column_option(
+            'user',
+            'managername',
+            "User's Manager Name",
+            sql_fullname("$manager.firstname","$manager.lastname"),
+            array('joins' => $manager)
+        );
+             */
+        $columnoptions[] = new rb_column_option(
+            'user',
+            'organisationid',
+            "User's Organisation ID",
+            "$posassign.organisationid",
+            array('joins' => $posassign)
+        );
+        $columnoptions[] = new rb_column_option(
+            'user',
+            'organisation',
+            "User's Organisation Name",
+            "$org.fullname",
+            array('joins' => $org)
+        );
+        $columnoptions[] = new rb_column_option(
+            'user',
+            'positionid',
+            "User's Position ID",
+            "$posassign.positionid",
+            array('joins' => $posassign)
+        );
+        $columnoptions[] = new rb_column_option(
+            'user',
+            'position',
+            "User's Position",
+            "$pos.fullname",
+            array('joins' => $pos)
+        );
+        $columnoptions[] = new rb_column_option(
+            'user',
+            'title',
+            "User's Job Title",
+            "$posassign.fullname",
+            array('joins' => $posassign)
+        );
+        return true;
+    }
+
+
+    /*
+     * Adds some common user position filters to the $filteroptions array
+     *
+     * @param array &$columnoptions Array of current filter options
+     *                              Passed by reference and updated by
+     *                              this method
+     * @return True
+     */
+    protected function add_position_fields_to_filters(&$filteroptions) {
+        $filteroptions[] = new rb_filter_option(
+            'user',
+            'title',
+            "User's Job Title",
+            'text'
+        );
+        $filteroptions[] = new rb_filter_option(
+            'user',
+            'organisationid',
+            "Participant's Current Office",
+            'select',
+            array(
+                'selectfunc' => 'organisations_list',
+                'selectoptions' => rb_filter_option::select_width_limiter(),
+            )
+        );
+        $filteroptions[] = new rb_filter_option(
+            'user',
+            'positionid',
+            "Participant's Current Position",
+            'select',
+            array(
+                'selectfunc' => 'positions_list',
+                'selectoptions' => rb_filter_option::select_width_limiter(),
+            )
+        );
+        return true;
+    }
+
+
+    /*
+     * Adds the manager_role_assignment and manager tables to the $joinlist
+     * array
+     *
+     * @param array &$joinlist Array of current join options
+     *                         Passed by reference and updated to
+     *                         include new table joins
+     * @param string $join Name of the join that provides the
+     *                     'position_assignment' table
+     * @param string $field Name of reportstoid field to join on
+     * @return boolean True
+     */
+    protected function add_manager_tables_to_joinlist(&$joinlist,
+        $join, $field) {
+
+        global $CFG;
+
+        // only include these joins if the manager role is defined
+        if($managerroleid = get_field('role','id','shortname','manager')) {
+            $joinlist[] = new rb_join(
+                'manager_role_assignment',
+                'LEFT',
+                $CFG->prefix . 'role_assignments',
+                "(manager_role_assignment.id = $join.$field" .
+                    ' AND manager_role_assignment.roleid = ' .
+                    $managerroleid . ')',
+                REPORT_BUILDER_RELATION_ONE_TO_ONE,
+                'position_assignment'
+            );
+            $joinlist[] = new rb_join(
+                'manager',
+                'LEFT',
+                $CFG->prefix . 'user',
+                'manager.id = manager_role_assignment.userid',
+                REPORT_BUILDER_RELATION_ONE_TO_ONE,
+                'manager_role_assignment'
+            );
+        }
+
+        return true;
+    }
+
+
+    /*
+     * Adds some common user manager info to the $columnoptions array
+     *
+     * @param array &$columnoptions Array of current column options
+     *                              Passed by reference and updated by
+     *                              this method
+     * @param string $manager Name of the join that provides the
+     *                          'manager' table.
+     * @param string $org Name of the join that provides the 'org' table.
+     * @param string $pos Name of the join that provides the 'pos' table.
+     *
+     * @return True
+     */
+    protected function add_manager_fields_to_columns(&$columnoptions,
+        $manager='manager') {
+
+        $columnoptions[] = new rb_column_option(
+            'user',
+            'managername',
+            "User's Manager Name",
+            sql_fullname("$manager.firstname","$manager.lastname"),
+            array('joins' => $manager)
+        );
+        return true;
+    }
+
+
+    /*
+     * Adds some common manager filters to the $filteroptions array
+     *
+     * @param array &$columnoptions Array of current filter options
+     *                              Passed by reference and updated by
+     *                              this method
+     * @return True
+     */
+    protected function add_manager_fields_to_filters(&$filteroptions) {
+        $filteroptions[] = new rb_filter_option(
+            'user',
+            'managername',
+            "Manager's Name",
+            'text'
+        );
+        return true;
+    }
+
+
+    /*
+     * Adds the tags tables to the $joinlist array
+     *
+     * @param array &$joinlist Array of current join options
+     *                         Passed by reference and updated to
+     *                         include new table joins
+     * @param string $join Name of the join that provides the
+     *                     'course' table
+     * @param string $field Name of course id field to join on
+     * @return boolean True
+     */
+    protected function add_course_tags_tables_to_joinlist(&$joinlist,
+        $join, $field) {
+
+        global $CFG;
+
+        $joinlist[] = new rb_join(
+            'tagids',
+            'LEFT',
+            // subquery as table name
+            "(SELECT crs.id AS cid, " .
+                sql_group_concat('CAST(t.id AS varchar)','|') .
+                " AS idlist FROM {$CFG->prefix}course crs
+                LEFT JOIN {$CFG->prefix}tag_instance ti
+                    ON crs.id=ti.itemid AND ti.itemtype='course'
+                LEFT JOIN {$CFG->prefix}tag t
+                    ON ti.tagid=t.id AND t.tagtype='official'
+                GROUP BY crs.id)",
+            "tagids.cid = $join.$field",
+            REPORT_BUILDER_RELATION_ONE_TO_ONE,
+            $join
+        );
+
+        // create a join for each official tag
+        if($tags = get_records('tag', 'tagtype', 'official')) {
+            foreach($tags as $tag) {
+                $tagid = $tag->id;
+                $name = "course_tag_$tagid";
+                $joinlist[] = new rb_join(
+                    $name,
+                    'LEFT',
+                    $CFG->prefix . 'tag_instance',
+                    "($name.itemid = $join.$field AND $name.tagid = $tagid " .
+                        "AND $name.itemtype='course')",
+                    REPORT_BUILDER_RELATION_ONE_TO_ONE,
+                    $join
+                );
+            }
+        }
+
+        return true;
+    }
+
+    /*
+     * Adds some common course tag info to the $columnoptions array
+     *
+     * @param array &$columnoptions Array of current column options
+     *                              Passed by reference and updated by
+     *                              this method
+     * @param string $manager Name of the join that provides the
+     *                          'tagids' table.
+     *
+     * @return True
+     */
+    protected function add_course_tag_fields_to_columns(&$columnoptions,
+        $tagids='tagids') {
+
+        $columnoptions[] = new rb_column_option(
+            'course',
+            'tagids',
+            "Course Tag IDs",
+            "$tagids.idlist",
+            array('joins' => $tagids)
+        );
+
+        // create a on/off field for every official tag
+        if($tags = get_records('tag', 'tagtype', 'official')) {
+            foreach($tags as $tag) {
+                $tagid = $tag->id;
+                $name = $tag->name;
+                $join = "course_tag_$tagid";
+                $columnoptions[] = new rb_column_option(
+                    'tags',
+                    $join,
+                    "Tagged '$name'",
+                    "CASE WHEN $join.id IS NOT NULL THEN 1 ELSE 0 END",
+                    array(
+                        'joins' => $join,
+                        'displayfunc' => 'yes_no',
+                    )
+                );
+            }
+        }
+        return true;
+    }
+
+
+    /*
+     * Adds some common course tag filters to the $filteroptions array
+     *
+     * @param array &$columnoptions Array of current filter options
+     *                              Passed by reference and updated by
+     *                              this method
+     * @return True
+     */
+    protected function add_course_tag_fields_to_filters(&$filteroptions) {
+
+        // create a filter for every official tag
+        if($tags = get_records('tag', 'tagtype', 'official')) {
+            foreach($tags as $tag) {
+                $tagid = $tag->id;
+                $name = $tag->name;
+                $join = "course_tag_$tagid";
+                $filteroptions[] = new rb_filter_option(
+                    'tags',
+                    $join,
+                    "Tagged '$name'",
+                    'simpleselect',
+                    array('selectchoices' => array(
+                        1 => get_string('yes'), 0 => get_string('no'))
+                    )
+                );
+            }
+        }
         return true;
     }
 

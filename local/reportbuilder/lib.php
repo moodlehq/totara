@@ -6,6 +6,7 @@ require_once($CFG->dirroot.'/local/reportbuilder/classes/rb_base_source.php');
 require_once($CFG->dirroot.'/local/reportbuilder/classes/rb_base_content.php');
 require_once($CFG->dirroot.'/local/reportbuilder/classes/rb_base_access.php');
 require_once($CFG->dirroot.'/local/reportbuilder/classes/rb_base_preproc.php');
+require_once($CFG->dirroot.'/local/reportbuilder/classes/rb_join.php');
 require_once($CFG->dirroot.'/local/reportbuilder/classes/rb_column.php');
 require_once($CFG->dirroot.'/local/reportbuilder/classes/rb_column_option.php');
 require_once($CFG->dirroot.'/local/reportbuilder/classes/rb_filter.php');
@@ -329,6 +330,7 @@ class reportbuilder {
         return self::reduce_items($items, $cond, false);
     }
 
+
     /*
      * Check the joins provided are in the joinlist
      *
@@ -343,20 +345,28 @@ class reportbuilder {
             return true;
         }
 
+        // get array of available names from join list provided
+        $joinnames = array();
+        foreach($joinlist as $item) {
+            $joinnames[] = $item->name;
+        }
+
         // return false if any listed joins don't exist
         if(is_array($joins)) {
             foreach($joins as $join) {
-                if(!array_key_exists($join, $joinlist)) {
+                if(!in_array($join, $joinnames)) {
                     return false;
                 }
             }
         } else {
-            if(!array_key_exists($joins, $joinlist)) {
+            if(!in_array($joins, $joinnames)) {
                 return false;
             }
         }
         return true;
     }
+
+
     /*
      * Looks up the saved search ID specified and attempts to restore
      * the SESSION variable if access is permitted
@@ -898,41 +908,84 @@ class reportbuilder {
 
 
     /*
-     * Given an item, returns an array of SQL snippets needed by this item
+     * Returns the names of all the joins in the joinlist
+     *
+     * @return array Array of join names from the joinlist
+     */
+    function get_joinlist_names() {
+        $joinlist = $this->_joinlist;
+        $joinnames = array();
+        foreach($joinlist as $item) {
+            $joinnames[] = $item->name;
+        }
+        return $joinnames;
+    }
+
+
+    /*
+     * Return a join from the joinlist by name
+     *
+     * @param string $name Join name to get from the join list
+     *
+     * @return object rb_join object for the matching join, or false
+     */
+    function get_joinlist_item($name) {
+        $joinlist = $this->_joinlist;
+        foreach($joinlist as $item) {
+            if($item->name == $name) {
+                return $item;
+            }
+        }
+        return false;
+    }
+
+
+    /*
+     * Given an item, returns an array of rb_join objects needed by this item
      *
      * @param object $item An object containing a 'joins' property
      * @param string $usage The function is called to obtain joins for various
      *                     different elements of the query. The usage is displayed
      *                     in the error message to help with debugging
-     * @return array An array of SQL snippets used to build the join part of the query
+     * @return array An array of rb_join objects used to build the join part of the query
      */
     function get_joins($item, $usage) {
         $output = array();
-        $joinlist = $this->_joinlist;
+
+        // extract the list of joins into an array format
         if(isset($item->joins) && is_array($item->joins)) {
-            foreach($item->joins as $join) {
-                $output[$join] = $this->get_single_join($join, $usage);
-            }
+            $joins = $item->joins;
         } else if (isset($item->joins)) {
-            $join = $item->joins;
-            $output[$join] = $this->get_single_join($join, $usage);
+            $joins = array($item->joins);
+        } else {
+            $joins = array();
         }
+
+        foreach($joins as $join) {
+            $joinobj = $this->get_single_join($join, $usage);
+            $output[] = $joinobj;
+
+            $this->get_dependency_joins($output, $joinobj);
+
+        }
+
         return $output;
     }
 
     /*
-     * Given a join name, look for it in the joinlist and return the SQL snippet
+     * Given a join name, look for it in the joinlist and return the join object
      *
-     * @param string $join A single join name (should match joinlist key)
+     * @param string $join A single join name (should match joinlist item name)
      * @param string $usage The function is called to obtain joins for various
      *                      different elements of the query. The usage is
      *                      displayed in the error message to help with debugging
-     * @return string An SQL snippet for the specified join, or error
+     * @return string An rb_join object for the specified join, or error
      */
     function get_single_join($join, $usage) {
-        $joinlist = $this->_joinlist;
-        if(isset($joinlist[$join])) {
-            return $joinlist[$join];
+
+        if($match = $this->get_joinlist_item($join)) {
+            // return the join object for the item
+            return $match;
         } else {
             error("'{$join}' not in join list for {$usage}");
             return false;
@@ -940,10 +993,56 @@ class reportbuilder {
     }
 
     /*
-     * Return an array of SQL snippets containing the joins required by
+     * Recursively build an array of join objects that includes all
+     * dependencies
+     */
+    function get_dependency_joins(&$joins, $joinobj) {
+
+        // get array of dependencies, excluding references to the
+        // base table
+        if(isset($joinobj->dependencies)
+            && is_array($joinobj->dependencies)) {
+
+            $dependencies = array();
+            foreach($joinobj->dependencies as $item) {
+                // ignore references to base as a dependency
+                if($item == 'base') {
+                    continue;
+                }
+                $dependencies[] = $item;
+            }
+        } else if (isset($joinobj->dependencies)
+                && $joinobj->dependencies != 'base') {
+
+            $dependencies = array($joinobj->dependencies);
+        } else {
+            $dependencies = array();
+        }
+
+        // loop through dependencies, adding any that aren't already
+        // included
+        foreach($dependencies as $dependency) {
+            $joinobj = $this->get_single_join($dependency, 'dependencies');
+            if(in_array($joinobj, $joins)) {
+                // prevents infinite loop if dependencies include
+                // circular references
+                continue;
+            }
+            // add to list of current joins
+            $joins[] = $joinobj;
+
+            // recursively get dependencies of this dependency
+            $this->get_dependency_joins($joins, $joinobj);
+        }
+
+    }
+
+
+    /*
+     * Return an array of rb_join objects containing the joins required by
      * the current enabled content restrictions
      *
-     * @return array An array of SQL snippets containing join information
+     * @return array An array of rb_join objects containing join information
      */
     function get_content_joins() {
         $reportid = $this->_id;
@@ -970,30 +1069,31 @@ class reportbuilder {
 
 
     /*
-     * Return an array of SQL snippets containing the joins required by
+     * Return an array of rb_join objects containing the joins required by
      * the current column list
      *
-     * @return array An array of SQL snippets containing join information
+     * @return array An array of rb_join objects containing join information
      */
     function get_column_joins() {
         $coljoins = array();
         foreach($this->columns as $column) {
-            $coljoins = array_merge($coljoins, $this->get_joins($column, 'column'));
+            $coljoins = array_merge($coljoins,
+                $this->get_joins($column, 'column'));
         }
         return $coljoins;
     }
 
     /*
-     * Return an array of SQL snippets containing the joins required by
+     * Return an array of rb_join objects containing the joins required by
      * the current param list
      *
-     * @return array An array of SQL snippets containing join information
+     * @return array An array of rb_join objects containing join information
      */
     function get_param_joins() {
         $paramjoins = array();
         foreach($this->_params as $param) {
             $value = $param->value;
-            // don't include join if param not set
+            // don't include joins if param not set
             if(!isset($value) || $value=='') {
                 continue;
             }
@@ -1036,41 +1136,271 @@ class reportbuilder {
     }
 
 
-    /*
-     * Function used as callback for uksort() to sort join arrays
-     * Order of sort should be the same as the order of the joinlist array
-     *
-     * @param mixed The first element to compare
-     * @param mixed The second element to compare
-     * @return integer -1, 1 or 0 depending on order of elements
-     */
-    function sort_join($el1, $el2) {
-        $joinlist = $this->_joinlist;
-        // order of this array determines order of joins
-        // earlier elements joined first
-        $order = array_keys($joinlist);
+    function get_join_sql($joins) {
+        $out = array();
 
-        $el1key = array_search($el1, $order);
-        $el2key = array_search($el2, $order);
+        foreach($joins as $join) {
+            $name = $join->name;
+            $type = $join->type;
+            $table = $join->table;
+            $conditions = $join->conditions;
 
-        // determine sort order
-        // if key is missing, put at the end
-        if($el1key !== false && $el2key === false) {
-            trigger_error("Missing array key in sort_join(). Add '$el2' to order array.",E_USER_WARNING);
-            return -1;
-        } else if ($el2key !== false && $el1key === false) {
-            trigger_error("Missing array key in sort_join(). Add '$el1' to order array.",E_USER_WARNING);
-            return 1;
-        } else if ($el1key === false && $el2key === false) {
-            trigger_error("Missing array keys in sort_join(). Add '$el1' and '$el2' to order array.",E_USER_WARNING);
-            return 0;
-        } else if($el1key < $el2key) {
-            return -1;
-        } else if($el1key > $el2key) {
-            return 1;
-        } else {
-            return 0;
+            if(array_key_exists($name, $out)) {
+                // we've already added this join
+                continue;
+            }
+            // store in associative array so we can tell which
+            // joins we've already added
+            $out[$name] = "$type JOIN $table $name\n        ON $conditions";
         }
+        return implode("\n    ", $out) . " \n";
+    }
+
+
+    /*
+     * Sort an array of rb_join objects
+     *
+     * Given an array of rb_join objects, sorts them such that:
+     * - any duplicate joins are removed
+     * - any joins with dependencies appear after those dependencies
+     *
+     * This is achieved by repeatedly looping through the list of
+     * joins, moving joins to the sorted list only when all their
+     * dependencies are already in the sorted list.
+     *
+     * On the first pass any joins that have no dependencies are
+     * saved to the sorted list and removed from the current list.
+     *
+     * References to the moved items are then removed from the
+     * dependencies lists of all the remaining items and the loop
+     * is repeated.
+     *
+     * The loop continues until there is an iteration where no
+     * more items are removed. At this point either:
+     * - The current list is empty
+     * - There are references to joins that don't exist
+     * - There are circular references
+     *
+     * In the later two cases we throw an error, otherwise return
+     * the sorted list.
+     *
+     * @param array Array of rb_join objects to be sorted
+     *
+     * @return array Sorted array of rb_join objects
+     */
+    function sort_joins($unsortedjoins) {
+
+        // get structured list of dependencies for each join
+        $items = $this->get_dependencies_array($unsortedjoins);
+
+        // make an index of the join objects with name as key
+        $joinsbyname = array();
+        foreach($unsortedjoins as $join) {
+            $joinsbyname[$join->name] = $join;
+        }
+
+        // loop through items, storing any that don't have
+        // dependencies in the output list
+
+        // safety net to avoid infinite loop if something
+        // unexpected happens
+        $maxdepth = 50;
+        $i = 0;
+        $output = array();
+        while($i < $maxdepth) {
+
+            // items with empty dependencies array
+            $nodeps = $this->get_independent_items($items);
+
+            foreach($nodeps as $nodep) {
+                $output[] = $joinsbyname[$nodep];
+                unset($items[$nodep]);
+                // remove references to this item from all
+                // the other dependency lists
+                $this->remove_from_dep_list($items, $nodep);
+            }
+
+            // stop when no more items can be removed
+            // if all goes well, this will be after all items
+            // have been removed
+            if(count($nodeps) == 0) {
+                break;
+            }
+
+            $i++;
+        }
+
+        // we shouldn't have any items left once we've left the loop
+        if(count($items) != 0) {
+            error('Could not sort join list. Source either contains ' .
+                'circular dependencies or references a none-existent join');
+        }
+
+        return $output;
+    }
+
+
+    /*
+     * Remove joins that have no impact on the results count
+     *
+     * Given an array of rb_join objects we want to return a similar list,
+     * but with any joins that have no effect on the count removed. This is
+     * done for performance reasons when calculating the count.
+     *
+     * The only joins that can be safely removed match the following criteria:
+     * 1- Only LEFT joins are safe to remove
+     * 2- Even LEFT joins are unsafe, unless the relationship is either
+     *   One-to-one or many-to-one
+     * 3- The join can't have any dependencies that don't also match the
+     *   criteria above: e.g.:
+     *
+     *   base LEFT JOIN table_a JOIN table_b
+     *
+     *   Table_b can't be removed because it fails criteria 1. Table_a
+     *   can't be removed, even though it passes criteria 1 and 2, because
+     *   table_b is dependent on it.
+     *
+     * To achieve this result, we use a similar strategy to sort_joins().
+     * As a side effect, duplicate joins are removed but note that this
+     * method doesn't change the sort order of the joins provided.
+     *
+     * @param array $unprunedjoins Array of rb_join objects to be pruned
+     *
+     * @return array Array of rb_join objects, minus any joins
+     *               that don't affect the total record count
+     */
+    function prune_joins($unprunedjoins) {
+        // get structured list of dependencies for each join
+        $items = $this->get_dependencies_array($unprunedjoins);
+
+        // make an index of the join objects with name as key
+        $joinsbyname = array();
+        foreach($unprunedjoins as $join) {
+            $joinsbyname[$join->name] = $join;
+        }
+
+        // safety net to avoid infinite loop if something
+        // unexpected happens
+        $maxdepth = 100;
+        $i = 0;
+        $output = array();
+        while($i < $maxdepth) {
+            $prunecount = 0;
+            // items with empty dependencies array
+            $nodeps = $this->get_independent_items($items);
+            foreach($nodeps as $nodep) {
+                if($joinsbyname[$nodep]->pruneable()) {
+                    unset($items[$nodep]);
+                    $this->remove_from_dep_list($items, $nodep);
+                    unset($joinsbyname[$nodep]);
+                    $prunecount++;
+                }
+            }
+
+            // stop when no more items can be removed
+            if($prunecount == 0) {
+                break;
+            }
+
+            $i++;
+        }
+
+        return array_values($joinsbyname);
+    }
+
+
+    /*
+     * Reformats an array of rb_join objects to a structure helpful for managing dependencies
+     *
+     * Saves the dependency info in the following format:
+     *
+     * array(
+     *    'name1' => array('dep1', 'dep2'),
+     *    'name2' => array('dep3'),
+     *    'name3' => array(),
+     *    'name4' => array(),
+     * );
+     *
+     * This has the effect of:
+     * - Removing any duplicate joins (joins with the same name)
+     * - Removing any references to 'base' in the dependencies list
+     * - Converting null dependencies to array()
+     * - Converting string dependencies to array('string')
+     *
+     * @param array $joins Array of rb_join objects
+     *
+     * @return array Array of join dependencies
+     */
+    private function get_dependencies_array($joins){
+        $items = array();
+        foreach($joins as $join) {
+
+            // group joins in a more consistent way and remove all
+            // references to 'base'
+            if(is_array($join->dependencies)) {
+                $deps = array();
+                foreach($join->dependencies as $dep) {
+                    if($dep == 'base') {
+                        continue;
+                    }
+                    $deps[] = $dep;
+                }
+                $items[$join->name] = $deps;
+            } else if (isset($join->dependencies)
+                && $join->dependencies != 'base') {
+                $items[$join->name] = array($join->dependencies);
+            } else {
+                $items[$join->name] = array();
+            }
+        }
+        return $items;
+    }
+
+
+    /*
+     * Remove references to a particular join from the
+     * join dependencies list
+     *
+     * Given a list of join dependencies (as generated by
+     * get_dependencies_array() ) remove all references to
+     * the join named $joinname
+     *
+     * @param array &$items Array of dependencies. Passed by ref
+     * @param string $joinname Name of join to remove from list
+     *
+     * @return true;
+     */
+    private function remove_from_dep_list(&$items, $joinname) {
+        foreach($items as $join => $deps) {
+            foreach($deps as $key => $dep) {
+                if($dep == $joinname) {
+                    unset($items[$join][$key]);
+                }
+            }
+        }
+        return true;
+    }
+
+
+    /*
+     * Return a list of items with no dependencies
+     *
+     * Given a list of join dependencies (as generated by
+     * get_dependencies_array() ) return the names (keys)
+     * of elements with no dependencies.
+     *
+     * @param array $items Array of dependencies
+     *
+     * @return array Array of names of independent items
+     */
+    private function get_independent_items($items) {
+        $nodeps = array();
+        foreach($items as $join => $deps) {
+            if(count($deps) == 0) {
+                $nodeps[] = $join;
+            }
+        }
+        return $nodeps;
     }
 
 
@@ -1095,28 +1425,35 @@ class reportbuilder {
 
         // get the joins needed to display requested columns and do filtering and restrictions
         $columnjoins = $this->get_column_joins();
+
+        // if we are only counting, don't need all the column joins. Remove
+        // any that don't affect the count
+        if($countonly && !$this->grouped) {
+            $columnjoins = $this->prune_joins($columnjoins);
+        }
+
         $filterjoins = ($filtered === true) ? $this->get_filter_joins() : array();
         $paramjoins = $this->get_param_joins();
         $contentjoins = $this->get_content_joins();
         $joins = array_merge($columnjoins, $filterjoins, $paramjoins, $contentjoins);
 
+        // sort the joins to remove duplicates and resolve any dependencies
+        $joins = $this->sort_joins($joins);
+
+        $joins_sql = $this->get_join_sql($joins);
+
         // now build the query from the snippets
 
         // need a unique field for get_records() so include id as first column
-        if($countonly) {
+        if($countonly && !$this->grouped) {
             $select = "SELECT COUNT(*) ";
         } else {
             $baseid = ($this->grouped) ? "min(base.id),\n    " : "base.id,\n    ";
             $select = "SELECT $baseid ".implode($fields,",\n     ")." \n";
         }
 
-        // sort joins in order determined by sort_join function
-        // this ensures joins are processed in the correct order
-        // sort_join callback is method within this class
-        uksort($joins, array($this,'sort_join'));
-
         // build query starting from base table then adding required joins
-        $from = "FROM $base\n    ".implode("    \n", $joins)." \n";
+        $from = "FROM $base\n    " . $joins_sql;
 
 
         // restrictions

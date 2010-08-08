@@ -29,40 +29,50 @@ class rb_source_competency_evidence extends rb_base_source {
         global $CFG;
 
         $joinlist = array(
-            'competency' => "LEFT JOIN {$CFG->prefix}comp competency
-                ON base.competencyid = competency.id",
-            'scale_values' => "LEFT JOIN {$CFG->prefix}comp_scale_values
-                scale_values ON scale_values.id = base.proficiency",
-            'user' => "LEFT JOIN {$CFG->prefix}user u ON base.userid = u.id",
-            'position_assignment' => "LEFT JOIN {$CFG->prefix}pos_assignment pa
-                ON base.userid = pa.userid",
-            'organisation' => "LEFT JOIN {$CFG->prefix}org organisation
-                ON organisation.id = pa.organisationid",
-            'position' => "LEFT JOIN {$CFG->prefix}pos position
-                ON position.id = pa.positionid",
-            'completion_organisation' => "LEFT JOIN
-                {$CFG->prefix}org completion_organisation
-                ON base.organisationid = completion_organisation.id",
-            'completion_position' => "LEFT JOIN {$CFG->prefix}pos
-                completion_position ON base.positionid =
-                completion_position.id",
-            'assessor' => "LEFT JOIN {$CFG->prefix}user assessor
-                ON assessor.id = base.assessorid",
+            new rb_join(
+                'competency',
+                'LEFT',
+                $CFG->prefix . 'comp',
+                'competency.id = base.competencyid',
+                REPORT_BUILDER_RELATION_ONE_TO_ONE
+            ),
+            new rb_join(
+                'scale_values',
+                'LEFT',
+                $CFG->prefix . 'comp_scale_values',
+                'scale_values.id = base.proficiency',
+                REPORT_BUILDER_RELATION_ONE_TO_ONE
+            ),
+            new rb_join(
+                'assessor',
+                'LEFT',
+                $CFG->prefix . 'user',
+                'assessor.id = base.assessorid',
+                REPORT_BUILDER_RELATION_ONE_TO_ONE
+            ),
+            new rb_join(
+                'completion_organisation',
+                'LEFT',
+                $CFG->prefix . 'org',
+                'completion_organisation.id = base.organisationid',
+                REPORT_BUILDER_RELATION_ONE_TO_ONE
+            ),
+            new rb_join(
+                'completion_position',
+                'LEFT',
+                $CFG->prefix . 'pos',
+                'completion_position.id = base.positionid',
+                REPORT_BUILDER_RELATION_ONE_TO_ONE
+            ),
         );
 
-        // only include these joins if the manager role is defined
-        if($managerroleid = get_field('role','id','shortname','manager')) {
-            $joinlist['manager_role_assignment'] =
-                "LEFT JOIN {$CFG->prefix}role_assignments mra
-                    ON ( pa.reportstoid = mra.id
-                    AND mra.roleid = $managerroleid)";
-            $joinlist['manager'] =
-                "LEFT JOIN {$CFG->prefix}user manager ON manager.id =
-                mra.userid";
-        }
-
-        // add joins for user custom fields
-        $this->add_user_custom_fields_to_joinlist($joinlist);
+        // include some standard joins
+        $this->add_user_table_to_joinlist($joinlist, 'base', 'userid');
+        $this->add_user_custom_fields_to_joinlist($joinlist, 'base', 'userid');
+        $this->add_position_tables_to_joinlist($joinlist, 'base', 'userid');
+        // requires the position_assignment join
+        $this->add_manager_tables_to_joinlist($joinlist,
+            'position_assignment', 'reportstoid');
 
         return $joinlist;
     }
@@ -165,18 +175,15 @@ class rb_source_competency_evidence extends rb_base_source {
                 'competency',
                 'id',
                 'Competency ID',
-                'competency.id',
-                array('joins' => 'competency')
+                'base.competencyid'
             ),
         );
 
-        // add all user profile fields to columns
-        // requires 'user' and 'user_profile' in join list
+        // include some standard columns
         $this->add_user_fields_to_columns($columnoptions);
         $this->add_user_custom_fields_to_columns($columnoptions);
-
-        // add position and organisation columns
-        $this->add_position_info_to_columns($columnoptions);
+        $this->add_position_fields_to_columns($columnoptions);
+        $this->add_manager_fields_to_columns($columnoptions);
 
         return $columnoptions;
     }
@@ -252,13 +259,11 @@ class rb_source_competency_evidence extends rb_base_source {
             ),
 
         );
-
-        // add all user profile field to filters
+        // include some standard filters
         $this->add_user_fields_to_filters($filteroptions);
         $this->add_user_custom_fields_to_filters($filteroptions);
-
-        // add user position filters
         $this->add_position_fields_to_filters($filteroptions);
+        $this->add_manager_fields_to_filters($filteroptions);
 
         return $filteroptions;
     }
@@ -305,8 +310,7 @@ class rb_source_competency_evidence extends rb_base_source {
             ),
             new rb_param_option(
                 'compid',
-                'competency.id',
-                'competency'
+                'base.competencyid'
             ),
         );
 

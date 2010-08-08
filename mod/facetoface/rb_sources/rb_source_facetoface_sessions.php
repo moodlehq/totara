@@ -29,39 +29,69 @@ class rb_source_facetoface_sessions extends rb_base_source {
 
         // joinlist for this source
         $joinlist = array(
-            'facetoface' => "LEFT JOIN {$CFG->prefix}facetoface facetoface ON base.facetoface = facetoface.id",
-            'course' => "LEFT JOIN {$CFG->prefix}course c ON c.id = facetoface.course",
-            'course_category' => "LEFT JOIN {$CFG->prefix}course_categories cat ON cat.id = c.category",
-            'date' => "LEFT JOIN {$CFG->prefix}facetoface_sessions_dates date ON base.id = date.sessionid",
+            new rb_join(
+                'facetoface',
+                'LEFT',
+                $CFG->prefix . 'facetoface',
+                'facetoface.id = base.facetoface',
+                REPORT_BUILDER_RELATION_ONE_TO_ONE
+            ),
+            new rb_join(
+                'sessiondate',
+                'LEFT',
+                $CFG->prefix . 'facetoface_sessions_dates',
+                'sessiondate.sessionid = base.id',
+                REPORT_BUILDER_RELATION_ONE_TO_MANY
+            ),
+/*
             'role' => "LEFT JOIN {$CFG->prefix}facetoface_session_roles role ON base.id = role.sessionid",
-            'signup' => "JOIN {$CFG->prefix}facetoface_signups signup ON base.id = signup.sessionid",
-            'position_assignment' => "LEFT JOIN {$CFG->prefix}pos_assignment pa ON signup.userid = pa.userid",
-            'position' => "LEFT JOIN {$CFG->prefix}pos position ON position.id = pa.positionid",
-            'organisation' => "LEFT JOIN {$CFG->prefix}org organisation ON organisation.id = pa.organisationid",
-            'status' => "LEFT JOIN {$CFG->prefix}facetoface_signups_status status ON ( signup.id = status.signupid AND status.superceded = 0 )",
-            'user' => "LEFT JOIN {$CFG->prefix}user u ON u.id = signup.userid",
-            'attendees' => "LEFT JOIN (SELECT su.sessionid,count(ss.id) AS number
-            FROM {$CFG->prefix}facetoface_signups su
-            JOIN {$CFG->prefix}facetoface_signups_status ss ON su.id = ss.signupid
-            WHERE ss.superceded=0 AND ss.statuscode >= 50 GROUP BY su.sessionid) AS attendees ON attendees.sessionid = base.id",
+*/
+            new rb_join(
+                'signup',
+                'INNER',
+                $CFG->prefix . 'facetoface_signups',
+                'signup.sessionid = base.id',
+                REPORT_BUILDER_RELATION_ONE_TO_MANY
+            ),
+            new rb_join(
+                'status',
+                'LEFT',
+                $CFG->prefix . 'facetoface_signups_status',
+                '(status.signupid = signup.id AND status.superceded = 0)',
+                REPORT_BUILDER_RELATION_ONE_TO_ONE,
+                'signup'
+            ),
+            new rb_join(
+                'attendees',
+                'LEFT',
+                // subquery as table
+                "(SELECT su.sessionid, count(ss.id) AS number
+                    FROM {$CFG->prefix}facetoface_signups su
+                    JOIN {$CFG->prefix}facetoface_signups_status ss
+                        ON su.id = ss.signupid
+                    WHERE ss.superceded=0 AND ss.statuscode >= 50
+                    GROUP BY su.sessionid)",
+                'attendees.sessionid = base.id',
+                REPORT_BUILDER_RELATION_ONE_TO_ONE
+            ),
         );
 
-        // only include these joins if the manager role is defined
-        if($managerroleid = get_field('role','id','shortname','manager')) {
-            $joinlist['manager_role_assignment'] =
-                "LEFT JOIN {$CFG->prefix}role_assignments mra
-                    ON ( pa.reportstoid = mra.id
-                    AND mra.roleid = $managerroleid)";
-            $joinlist['manager'] =
-                "LEFT JOIN {$CFG->prefix}user manager ON manager.id =
-                mra.userid";
-        }
 
-        // add joins for user custom fields
-        $this->add_user_custom_fields_to_joinlist($joinlist);
+        // include some standard joins
+        $this->add_user_table_to_joinlist($joinlist, 'signup', 'userid');
+        $this->add_user_custom_fields_to_joinlist($joinlist, 'signup', 'userid');
+        $this->add_course_table_to_joinlist($joinlist, 'facetoface', 'course');
+        // requires the course join
+        $this->add_course_category_table_to_joinlist($joinlist,
+            'course', 'category');
+        $this->add_position_tables_to_joinlist($joinlist, 'signup', 'userid');
+        // requires the position_assignment join
+        $this->add_manager_tables_to_joinlist($joinlist,
+            'position_assignment', 'reportstoid');
+        $this->add_course_tags_tables_to_joinlist($joinlist, 'facetoface', 'course');
 
-        // add joins for session custom fields and session roles
         $this->add_facetoface_session_custom_fields_to_joinlist($joinlist);
+        // add joins for session custom fields and session roles
         $this->add_facetoface_session_roles_to_joinlist($joinlist);
 
         return $joinlist;
@@ -104,7 +134,7 @@ class rb_source_facetoface_sessions extends rb_base_source {
                 'Status',
                 'status.statuscode',
                 array(
-                    'joins' => array('signup','status'),
+                    'joins' => 'status',
                     'displayfunc' => 'facetoface_status',
                 )
             ),
@@ -124,23 +154,23 @@ class rb_source_facetoface_sessions extends rb_base_source {
                     'joins' => 'facetoface',
                     'displayfunc' => 'link_f2f',
                     'defaultheading' => 'Face to Face Name',
-                    'extrafields' => array('activity_id' => 'facetoface.id'),
+                    'extrafields' => array('activity_id' => 'base.facetoface'),
                 )
             ),
             new rb_column_option(
                 'date',
                 'sessiondate',
                 'Session Date',
-                'date.timestart',
-                array('joins' =>'date', 'displayfunc' => 'nice_date')
+                'sessiondate.timestart',
+                array('joins' =>'sessiondate', 'displayfunc' => 'nice_date')
             ),
             new rb_column_option(
                 'date',
                 'sessiondate_link',
                 'Session Date (linked to session page)',
-                'date.timestart',
+                'sessiondate.timestart',
                 array(
-                    'joins' => 'date',
+                    'joins' => 'sessiondate',
                     'displayfunc' => 'link_f2f_session',
                     'defaultheading' => 'Session Date',
                     'extrafields' => array('session_id' => 'base.id')
@@ -150,29 +180,26 @@ class rb_source_facetoface_sessions extends rb_base_source {
                 'date',
                 'timestart',
                 'Session Start Time',
-                'date.timestart',
-                array('joins' => 'date', 'displayfunc' => 'nice_time')
+                'sessiondate.timestart',
+                array('joins' => 'sessiondate', 'displayfunc' => 'nice_time')
             ),
             new rb_column_option(
                 'date',
                 'timefinish',
                 'Session Finish Time',
-                'date.timefinish',
-                array('joins' => 'date', 'displayfunc' => 'nice_time')
+                'sessiondate.timefinish',
+                array('joins' => 'sessiondate', 'displayfunc' => 'nice_time')
             ),
         );
 
-        // add all user profile fields to columns
-        // requires 'user' and 'user_profile' in join list
-        $this->add_user_fields_to_columns($columnoptions, (array) 'signup');
-        $this->add_user_custom_fields_to_columns($columnoptions, (array) 'signup');
-
-        // add position and organisation columns
-        $this->add_position_info_to_columns($columnoptions, (array) 'signup');
-
-        // add course columns
-        $this->add_course_info_to_columns($columnoptions, array('facetoface'));
-        $this->add_course_category_info_to_columns($columnoptions, array('facetoface'));
+        // include some standard columns
+        $this->add_user_fields_to_columns($columnoptions);
+        $this->add_user_custom_fields_to_columns($columnoptions);
+        $this->add_course_fields_to_columns($columnoptions);
+        $this->add_course_category_fields_to_columns($columnoptions);
+        $this->add_position_fields_to_columns($columnoptions);
+        $this->add_manager_fields_to_columns($columnoptions);
+        $this->add_course_tag_fields_to_columns($columnoptions);
 
         $this->add_facetoface_session_custom_fields_to_columns(&$columnoptions);
         $this->add_facetoface_session_roles_to_columns(&$columnoptions);
@@ -224,24 +251,19 @@ class rb_source_facetoface_sessions extends rb_base_source {
             ),
         );
 
-        // add some generic text filters
-
-        // add all user profile field to filters
+        // include some standard filters
         $this->add_user_fields_to_filters($filteroptions);
         $this->add_user_custom_fields_to_filters($filteroptions);
-
-        // add user position filters
-        $this->add_position_fields_to_filters($filteroptions);
-
-        // add course filters
         $this->add_course_fields_to_filters($filteroptions);
         $this->add_course_category_fields_to_filters($filteroptions);
-
-        // add session role fields to filters
-        $this->add_session_role_fields_to_filters($filteroptions);
+        $this->add_position_fields_to_filters($filteroptions);
+        $this->add_manager_fields_to_filters($filteroptions);
+        $this->add_course_tag_fields_to_filters($filteroptions);
 
         // add session custom fields to filters
-        $this->add_session_custom_fields_to_filters($filteroptions);
+        $this->add_facetoface_session_custom_fields_to_filters($filteroptions);
+        // add session role fields to filters
+        $this->add_facetoface_session_role_fields_to_filters($filteroptions);
 
         return $filteroptions;
     }
@@ -270,8 +292,8 @@ class rb_source_facetoface_sessions extends rb_base_source {
             new rb_content_option(
                 'date',
                 "The session date",
-                'date.timestart',
-                'date'
+                'sessiondate.timestart',
+                'sessiondate'
             ),
         );
         return $contentoptions;
@@ -286,8 +308,8 @@ class rb_source_facetoface_sessions extends rb_base_source {
             ),
             new rb_param_option(
                 'courseid',
-                'c.id',
-                array('facetoface', 'course')
+                'course.id',
+                'course'
             ),
         );
 
@@ -370,7 +392,13 @@ class rb_source_facetoface_sessions extends rb_base_source {
                 $field = $session_field->shortname;
                 $id = $session_field->id;
                 $key = "session_$field";
-                $joinlist[$key] = "LEFT JOIN {$CFG->prefix}facetoface_session_data $key ON (base.id = $key.sessionid AND $key.fieldid = $id )";
+                $joinlist[] = new rb_join(
+                    $key,
+                    'LEFT',
+                    $CFG->prefix . 'facetoface_session_data',
+                    "($key.sessionid = base.id AND $key.fieldid = $id)",
+                    REPORT_BUILDER_RELATION_ONE_TO_ONE
+                );
             }
             return true;
         }
@@ -406,12 +434,22 @@ class rb_source_facetoface_sessions extends rb_base_source {
                     $id = $role->id;
                     $key = "session_role_$field";
                     $userkey = "session_role_user_$field";
-                    $joinlist[$key] = "LEFT JOIN {$CFG->prefix}facetoface_session_roles $key
-                        ON (base.id = $key.sessionid AND $key.roleid = $id )";
+                    $joinlist[] = new rb_join(
+                        $key,
+                        'LEFT',
+                        $CFG->prefix . 'facetoface_session_roles',
+                        "($key.sessionid = base.id AND $key.roleid = $id)",
+                        REPORT_BUILDER_RELATION_ONE_TO_MANY
+                    );
+                    $joinlist[] = new rb_join(
+                        $userkey,
+                        'LEFT',
+                        $CFG->prefix . 'user',
+                        "$userkey.id = $key.userid",
+                        REPORT_BUILDER_RELATION_ONE_TO_ONE,
+                        $key
+                    );
 
-                    // join again to user table to get role's info
-                    $joinlist[$userkey] = "LEFT JOIN {$CFG->prefix}user $userkey
-                        ON $key.userid = $userkey.id";
                 }
             }
             return true;
@@ -486,7 +524,7 @@ class rb_source_facetoface_sessions extends rb_base_source {
                 'Session '.$name . ' Name',
                 sql_fullname($userkey.'.firstname', $userkey.'.lastname'),
                 array(
-                    'joins' => array($key, $userkey),
+                    'joins' => $userkey,
                     'grouping' => 'comma_list',
                 )
             );
@@ -508,7 +546,7 @@ class rb_source_facetoface_sessions extends rb_base_source {
      *                              this method
      * @return True
      */
-    protected function add_session_role_fields_to_filters(&$filteroptions) {
+    protected function add_facetoface_session_role_fields_to_filters(&$filteroptions) {
         // auto-generate filters for session roles fields
         global $CFG;
         $allowedroles = get_config(null, 'facetoface_sessionroles');
@@ -547,7 +585,7 @@ class rb_source_facetoface_sessions extends rb_base_source {
      *                              this method
      * @return True if there are any session custom fields
      */
-    protected function add_session_custom_fields_to_filters(&$filteroptions) {
+    protected function add_facetoface_session_custom_fields_to_filters(&$filteroptions) {
         // because session fields can be added/removed by the user
         // check that the custom field exists before making an option
         // available

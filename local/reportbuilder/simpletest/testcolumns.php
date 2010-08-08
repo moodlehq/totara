@@ -122,8 +122,8 @@ class columns_test extends prefix_changing_test_case {
     );
 
     var $course_completion_crit_compl_data = array(
-        array('id', 'userid', 'course', 'criteriaid', 'gradefinal'),
-        array(1, 2, 2, 1, 80),
+        array('id', 'userid', 'course', 'criteriaid', 'gradefinal', 'deleted'),
+        array(1, 2, 2, 1, 80, 0),
     );
 
     var $log_data = array(
@@ -238,8 +238,8 @@ class columns_test extends prefix_changing_test_case {
 
     // partial f2f table
     var $f2f_session_data = array(
-        array('id', 'facetoface', 'capacity','details'),
-        array(1, 1, 10,'details'),
+        array('id', 'facetoface', 'capacity', 'details', 'duration'),
+        array(1, 1, 10, 'details', 60),
     );
 
     // partial f2f table

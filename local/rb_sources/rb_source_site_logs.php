@@ -29,28 +29,21 @@ class rb_source_site_logs extends rb_base_source {
         global $CFG;
 
         $joinlist = array(
-            'course' => "LEFT JOIN {$CFG->prefix}course c ON c.id=base.course",
-            'course_category' => "LEFT JOIN {$CFG->prefix}course_categories cat ON cat.id=c.category",
-            'user' => "LEFT JOIN {$CFG->prefix}user u ON u.id=base.userid",
-            'position_assignment' => "LEFT JOIN {$CFG->prefix}pos_assignment pa ON base.userid = pa.userid",
-            'organisation' => "LEFT JOIN {$CFG->prefix}org organisation ON organisation.id = pa.organisationid",
-            'position' => "LEFT JOIN {$CFG->prefix}pos position ON position.id = pa.positionid",
+            // no none standard joins
         );
 
-        // only include these joins if the manager role is defined
-        if($managerroleid = get_field('role','id','shortname','manager')) {
-            $joinlist['manager_role_assignment'] =
-                "LEFT JOIN {$CFG->prefix}role_assignments mra
-                    ON ( pa.reportstoid = mra.id
-                    AND mra.roleid = $managerroleid)";
-            $joinlist['manager'] =
-                "LEFT JOIN {$CFG->prefix}user manager ON manager.id =
-                mra.userid";
-        }
-
         // include some standard joins
-        $this->add_user_custom_fields_to_joinlist($joinlist);
-
+        $this->add_user_table_to_joinlist($joinlist, 'base', 'userid');
+        $this->add_user_custom_fields_to_joinlist($joinlist, 'base', 'userid');
+        $this->add_course_table_to_joinlist($joinlist, 'base', 'course');
+        // requires the course join
+        $this->add_course_category_table_to_joinlist($joinlist,
+            'course', 'category');
+        $this->add_position_tables_to_joinlist($joinlist, 'base', 'userid');
+        // requires the position_assignment join
+        $this->add_manager_tables_to_joinlist($joinlist,
+            'position_assignment', 'reportstoid');
+        $this->add_course_tags_tables_to_joinlist($joinlist, 'base', 'course');
         return $joinlist;
     }
 
@@ -116,9 +109,11 @@ class rb_source_site_logs extends rb_base_source {
         // include some standard columns
         $this->add_user_fields_to_columns($columnoptions);
         $this->add_user_custom_fields_to_columns($columnoptions);
-        $this->add_position_info_to_columns($columnoptions);
-        $this->add_course_info_to_columns($columnoptions);
-        $this->add_course_category_info_to_columns($columnoptions);
+        $this->add_course_fields_to_columns($columnoptions);
+        $this->add_course_category_fields_to_columns($columnoptions);
+        $this->add_position_fields_to_columns($columnoptions);
+        $this->add_manager_fields_to_columns($columnoptions);
+        $this->add_course_tag_fields_to_columns($columnoptions);
 
         return $columnoptions;
     }
@@ -137,9 +132,11 @@ class rb_source_site_logs extends rb_base_source {
         // include some standard filters
         $this->add_user_fields_to_filters($filteroptions);
         $this->add_user_custom_fields_to_filters($filteroptions);
-        $this->add_position_fields_to_filters($filteroptions);
         $this->add_course_fields_to_filters($filteroptions);
         $this->add_course_category_fields_to_filters($filteroptions);
+        $this->add_position_fields_to_filters($filteroptions);
+        $this->add_manager_fields_to_filters($filteroptions);
+        $this->add_course_tag_fields_to_filters($filteroptions);
 
         return $filteroptions;
     }

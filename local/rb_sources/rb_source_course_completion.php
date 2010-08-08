@@ -28,36 +28,57 @@ class rb_source_course_completion extends rb_base_source {
     function define_joinlist() {
         global $CFG;
 
+        // to get access to constants
         require_once($CFG->libdir . '/completion/completion_criteria.php');
 
-        // joinlist for this source
         $joinlist = array(
-            'course' => "LEFT JOIN {$CFG->prefix}course c ON base.course = c.id",
-            'course_category' => "LEFT JOIN {$CFG->prefix}course_categories cat ON cat.id = c.category",
-            'user' => "LEFT JOIN {$CFG->prefix}user u ON base.userid = u.id",
-            'position_assignment' => "LEFT JOIN {$CFG->prefix}pos_assignment pa ON base.userid = pa.userid",
-            'organisation' => "LEFT JOIN {$CFG->prefix}org organisation ON organisation.id = pa.organisationid",
-            'position' => "LEFT JOIN {$CFG->prefix}pos position ON position.id = pa.positionid",
-            'completion_organisation' => "LEFT JOIN {$CFG->prefix}org completion_organisation ON base.organisationid = completion_organisation.id",
-            'completion_position' => "LEFT JOIN {$CFG->prefix}pos completion_position ON base.positionid = completion_position.id",
-            'criteria' => "LEFT JOIN {$CFG->prefix}course_completion_criteria criteria
-                ON (base.course = criteria.course AND criteria.criteriatype = " . COMPLETION_CRITERIA_TYPE_GRADE . ")",
-            'critcompl' => "LEFT JOIN {$CFG->prefix}course_completion_crit_compl critcompl
-                ON (base.userid = critcompl.userid AND critcompl.criteriaid = criteria.id)",
+            new rb_join(
+                'completion_organisation',
+                'LEFT',
+                $CFG->prefix . 'org',
+                'completion_organisation.id = base.organisationid',
+                REPORT_BUILDER_RELATION_ONE_TO_ONE
+            ),
+            new rb_join(
+                'completion_position',
+                'LEFT',
+                $CFG->prefix . 'pos',
+                'completion_position.id = base.positionid',
+                REPORT_BUILDER_RELATION_ONE_TO_ONE
+            ),
+            new rb_join(
+                'criteria',
+                'LEFT',
+                $CFG->prefix . 'course_completion_criteria',
+                '(criteria.course = base.course AND ' .
+                    'criteria.criteriatype = ' .
+                    COMPLETION_CRITERIA_TYPE_GRADE . ')',
+                REPORT_BUILDER_RELATION_ONE_TO_ONE
+            ),
+            new rb_join(
+                'critcompl',
+                'LEFT',
+                $CFG->prefix . 'course_completion_crit_compl',
+                '(critcompl.userid = base.userid AND ' .
+                    'critcompl.criteriaid = criteria.id AND ' .
+                    '(critcompl.deleted IS NULL OR critcompl.deleted = 0))',
+                REPORT_BUILDER_RELATION_ONE_TO_ONE,
+                'criteria'
+            ),
         );
 
-        // only include these joins if the manager role is defined
-        if($managerroleid = get_field('role','id','shortname','manager')) {
-            $joinlist['manager_role_assignment'] =
-                "LEFT JOIN {$CFG->prefix}role_assignments mra
-                    ON ( pa.reportstoid = mra.id
-                    AND mra.roleid = $managerroleid)";
-            $joinlist['manager'] =
-                "LEFT JOIN {$CFG->prefix}user manager ON manager.id = mra.userid";
-        }
-
         // include some standard joins
-        $this->add_user_custom_fields_to_joinlist($joinlist);
+        $this->add_user_table_to_joinlist($joinlist, 'base', 'userid');
+        $this->add_user_custom_fields_to_joinlist($joinlist, 'base', 'userid');
+        $this->add_course_table_to_joinlist($joinlist, 'base', 'course');
+        // requires the course join
+        $this->add_course_category_table_to_joinlist($joinlist,
+            'course', 'category');
+        $this->add_position_tables_to_joinlist($joinlist, 'base', 'userid');
+        // requires the position_assignment join
+        $this->add_manager_tables_to_joinlist($joinlist,
+            'position_assignment', 'reportstoid');
+        $this->add_course_tags_tables_to_joinlist($joinlist, 'base', 'course');
 
         return $joinlist;
     }
@@ -155,9 +176,11 @@ class rb_source_course_completion extends rb_base_source {
         // include some standard columns
         $this->add_user_fields_to_columns($columnoptions);
         $this->add_user_custom_fields_to_columns($columnoptions);
-        $this->add_position_info_to_columns($columnoptions);
-        $this->add_course_info_to_columns($columnoptions);
-        $this->add_course_category_info_to_columns($columnoptions);
+        $this->add_course_fields_to_columns($columnoptions);
+        $this->add_course_category_fields_to_columns($columnoptions);
+        $this->add_position_fields_to_columns($columnoptions);
+        $this->add_manager_fields_to_columns($columnoptions);
+        $this->add_course_tag_fields_to_columns($columnoptions);
 
         return $columnoptions;
     }
@@ -239,9 +262,11 @@ class rb_source_course_completion extends rb_base_source {
         // include some standard filters
         $this->add_user_fields_to_filters($filteroptions);
         $this->add_user_custom_fields_to_filters($filteroptions);
-        $this->add_position_fields_to_filters($filteroptions);
         $this->add_course_fields_to_filters($filteroptions);
         $this->add_course_category_fields_to_filters($filteroptions);
+        $this->add_position_fields_to_filters($filteroptions);
+        $this->add_manager_fields_to_filters($filteroptions);
+        $this->add_course_tag_fields_to_filters($filteroptions);
 
         return $filteroptions;
     }
@@ -288,8 +313,7 @@ class rb_source_course_completion extends rb_base_source {
             ),
             new rb_param_option(
                 'courseid',
-                'c.id',
-                'course'
+                'base.course'
             ),
         );
 

@@ -248,7 +248,7 @@ class reportbuilderlib_test extends prefix_changing_test_case {
         $this->assertEqual(current($filters)->value, 'fullname');
         $this->assertEqual(current($filters)->advanced, '0');
         $this->assertEqual(current($filters)->label, 'User\'s Full name');
-        $this->assertEqual(current($filters)->joins, array('user'));
+        $this->assertEqual(current($filters)->joins, 'auser');
         $this->assertEqual(current($filters)->selectfunc, null);
     }
 
@@ -445,13 +445,13 @@ class reportbuilderlib_test extends prefix_changing_test_case {
         // the array should contain the correct number of columns
         $this->assertEqual(count($columns), 11);
         // the strings should have the correct format
-        $this->assertEqual(current($columns), "''||u.firstname||' '||u.lastname AS user_namelink");
+        $this->assertEqual(current($columns), "''||auser.firstname||' '||auser.lastname AS user_namelink");
     }
 
     function test_reportbuilder_get_joins() {
         $rb = $this->rb;
         $obj1 = new stdClass();
-        $obj1->joins = array('user','competency');
+        $obj1->joins = array('auser','competency');
         $obj2 = new stdClass();
         $obj2->joins = 'position';
         $columns = $rb->get_joins($obj1, 'test');
@@ -459,21 +459,37 @@ class reportbuilderlib_test extends prefix_changing_test_case {
         $this->assertTrue(is_array($columns));
         // the array should contain the correct number of columns
         $this->assertEqual(count($columns), 2);
+        $userjoin = new rb_join(
+            'auser',
+            'LEFT',
+            'mdl_unittest_user',
+            'auser.id = base.userid',
+            1,
+            'base'
+        );
         // the strings should have the correct format
-        $this->assertEqual($columns['user'], 'LEFT JOIN mdl_unittest_user u ON base.userid = u.id');
+        $this->assertEqual(current($columns), $userjoin);
         // should also work with string instead of array
         $columns2 = $rb->get_joins($obj2, 'test');
         $this->assertTrue(is_array($columns2));
         // the array should contain the correct number of columns
-        $this->assertEqual(count($columns2), 1);
+        $this->assertEqual(count($columns2), 2);
+        $posjoin = new rb_join(
+            'position',
+            'LEFT',
+            'mdl_unittest_pos',
+            'position.id = position_assignment.positionid',
+            1,
+            'position_assignment'
+        );
         // the strings should have the correct format
-        $this->assertEqual($columns2['position'], 'LEFT JOIN mdl_unittest_pos position
-                ON position.id = pa.positionid');
+        $this->assertEqual(current($columns2), $posjoin);
 
     }
 
     function test_reportbuilder_get_content_joins() {
         $rb = $this->rb;
+        var_dump($rb->get_content_joins());
         // should return an empty array if content mode = 0
         $this->assertEqual($rb->get_content_joins(),array());
         // TODO test other options
@@ -486,9 +502,17 @@ class reportbuilderlib_test extends prefix_changing_test_case {
         // should return an array
         $this->assertTrue(is_array($columns));
         // the array should contain the correct number of columns
-        $this->assertEqual(count($columns), 8);
+        $this->assertEqual(count($columns), 9);
+        $userjoin = new rb_join(
+            'auser',
+            'LEFT',
+            'mdl_unittest_user',
+            'auser.id = base.userid',
+            1,
+            'base'
+        );
         // the strings should have the correct format
-        $this->assertEqual(current($columns), 'LEFT JOIN mdl_unittest_user u ON base.userid = u.id');
+        $this->assertEqual(current($columns), $userjoin);
     }
 
     function test_reportbuilder_get_filter_joins() {
@@ -502,11 +526,21 @@ class reportbuilderlib_test extends prefix_changing_test_case {
         $this->assertTrue(is_array($columns));
         // the array should contain the correct number of columns
         $this->assertEqual(count($columns), 2);
+
+        $userjoin = new rb_join(
+            'auser',
+            'LEFT',
+            'mdl_unittest_user',
+            'auser.id = base.userid',
+            1,
+            'base'
+        );
         // the strings should have the correct format
-        $this->assertEqual($columns['user'], 'LEFT JOIN mdl_unittest_user u ON base.userid = u.id');
+        $this->assertEqual(current($columns), $userjoin);
         unset($SESSION->$filtername);
     }
 
+    /*
     function test_reportbuilder_sort_join() {
         $rb = $this->rb;
         // should return the correct values for valid joins
@@ -521,6 +555,7 @@ class reportbuilderlib_test extends prefix_changing_test_case {
         $this->expectError('Missing array keys in sort_join(). Add \'junk\' and \'junk2\' to order array.');
         $this->assertEqual($rb->sort_join('junk', 'junk2'), 0);
     }
+     */
 
     function test_reportbuilder_build_query() {
         global $SESSION;
