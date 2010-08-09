@@ -14,7 +14,7 @@ $(function() {
 
         mitmsSingleSelectDialog(
             'position',
-            url+'find.php?user='+user_id,
+            url+'find.php?',
             'positionid',
             'positiontitle'
         );
@@ -29,7 +29,7 @@ $(function() {
 
         mitmsSingleSelectDialog(
             'organisation',
-            url+'find.php?user='+user_id,
+            url+'find.php?',
             'organisationid',
             'organisationtitle'
         );
@@ -44,7 +44,7 @@ $(function() {
 
         mitmsSingleSelectDialog(
             'manager',
-            url+'manager.php?user='+user_id,
+            url+'manager.php?',
             'managerid',
             'managertitle'
         );
@@ -59,7 +59,7 @@ $(function() {
 
         mitmsSingleSelectDialog(
             'competency',
-            url+'find.php?user='+user_id,
+            url+'find.php?',
             'competencyid',
             'competencytitle',
             function() {

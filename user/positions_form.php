@@ -11,7 +11,6 @@ class user_position_assignment_form extends moodleform {
 
         $mform =& $this->_form;
         $type = $this->_customdata['type'];
-        $user = $this->_customdata['user'];
         $pa = $this->_customdata['position_assignment'];
         $can_edit = $this->_customdata['can_edit'];
         $nojs = $this->_customdata['nojs'];
@@ -91,9 +90,7 @@ class user_position_assignment_form extends moodleform {
             $mform->setHelpButton('positionid', array('userpositionposition', get_string('chooseposition', 'position')), true);
         } else {
             $mform->addElement('static', 'positionselector', get_string('position', 'position'),
-                '
-                    <script type ="text/javascript"> var user_id = '.$user->id.'; </script>
-                    <span id="positiontitle">'.htmlentities($position_title).'</span>
+                '<span id="positiontitle">'.htmlentities($position_title).'</span>
                 '.
                 ($can_edit ? '<input type="button" value="'.get_string('chooseposition', 'position').'" id="show-position-dialog" />' : '')
             );

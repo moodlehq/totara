@@ -91,7 +91,6 @@ class mitms_competency_evidence_form extends moodleform {
                 // competency selector
                 $mform->addElement('static', 'competencyselector', get_string('competency', 'competency'),
                     '
-                    <script type ="text/javascript"> var user_id = '.$userid.'; </script>
                     <span id="competencytitle">'.htmlentities($competency_title).'</span>
                     <input type="button" value="'.get_string('selectcompetency', 'local').'" id="show-competency-dialog" />
                     or
@@ -170,7 +169,6 @@ class mitms_competency_evidence_form extends moodleform {
             // position selector
             $mform->addElement('static', 'positionselector', get_string('positionatcompletion', 'local'),
                 '
-                <script type ="text/javascript"> var user_id = '.$userid.'; </script>
                 <span id="positiontitle">'.htmlentities($position_title).'</span>
                 <input type="button" value="'.get_string('chooseposition', 'position').'" id="show-position-dialog" />
                 ');

@@ -10,9 +10,6 @@ require_once($CFG->dirroot.'/local/js/lib/setup.php');
 /// Setup / loading data
 ///
 
-// Competency id
-$userid = required_param('user', PARAM_INT);
-
 // Parent id
 $parentid = optional_param('parentid', 0, PARAM_INT);
 
@@ -24,24 +21,6 @@ $treeonly = optional_param('treeonly', false, PARAM_BOOL);
 
 // Setup page
 require_login();
-
-// Check permissions
-$personalcontext = get_context_instance(CONTEXT_USER, $userid);
-$can_edit = false;
-if (has_capability('moodle/local:assignuserposition', get_context_instance(CONTEXT_SYSTEM))) {
-    $can_edit = true;
-}
-elseif (has_capability('moodle/local:assignuserposition', $personalcontext)) {
-    $can_edit = true;
-}
-elseif ($USER->id == $user->id &&
-    has_capability('moodle/local:assignselfposition', get_context_instance(CONTEXT_SYSTEM))) {
-    $can_edit = true;
-}
-
-if (!$can_edit) {
-    error('You do not have the permissions to assign this user a position');
-}
 
 // Setup hierarchy object
 $hierarchy = new position();
@@ -100,3 +79,4 @@ echo build_treeview(
 if (!$parentid) {
     echo '</ul></div>';
 }
+

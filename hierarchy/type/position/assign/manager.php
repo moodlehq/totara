@@ -10,31 +10,8 @@ require_once($CFG->dirroot.'/local/js/lib/setup.php');
 /// Setup / loading data
 ///
 
-// Competency id
-$userid = required_param('user', PARAM_INT);
-
 // Setup page
 require_login();
-
-// Check permissions
-$personalcontext = get_context_instance(CONTEXT_USER, $userid);
-$systemcontext = get_context_instance(CONTEXT_SYSTEM);
-
-$can_edit = false;
-if (has_capability('moodle/local:assignuserposition', $systemcontext)) {
-    $can_edit = true;
-}
-elseif (has_capability('moodle/local:assignuserposition', $personalcontext)) {
-    $can_edit = true;
-}
-elseif ($USER->id == $user->id &&
-    has_capability('moodle/local:assignselfposition', $systemcontext)) {
-    $can_edit = true;
-}
-
-if (!$can_edit) {
-    error('You do not have the permissions to assign this user a position');
-}
 
 // Load potential managers for this user
 $managers = get_records_sql(
@@ -69,7 +46,7 @@ $managers = get_records_sql(
 <div class="selectmanager">
 
 <h2>
-<?php 
+<?php
     echo get_string('choosemanager', 'position');
     echo dialog_display_currently_selected(get_string('selected', 'hierarchy'));
 ?>
