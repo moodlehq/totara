@@ -77,7 +77,7 @@ if($m && isset($cid)) {
         redirect($returnurl . '&amp;notice=' .
             REPORT_BUILDER_COLUMNS_CONFIRM_MOVE);
     } else {
-        redirect($returnurl, '&amp;notice=' .
+        redirect($returnurl . '&amp;notice=' .
             REPORT_BUILDER_COLUMNS_FAILED_MOVE);
     }
 }
