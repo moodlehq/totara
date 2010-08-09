@@ -177,7 +177,7 @@ body.hierarchy-item h2.main {
 }
 
 #hierarchy-item-view table tr td {
-       border: 1px solid #DDDDDD;
+    border: 1px solid #DDDDDD;
 }
 
 table.viewhierarchyitem {
@@ -481,10 +481,12 @@ div.mitms-dialog ul.treeview li span.clickable:hover {
     color: #f00;
 }
 
-div.mitms-dialog ul.treeview li span.unclickable {
+div.mitms-dialog ul.treeview li span.unclickable td {
     color: #777;
 }
-
+div.mitms-dialog ul.treeview li span table tr td {
+    border: none !important;
+}
 div.mitms-dialog ul.treeview li span.ui-draggable {
     cursor: pointer;
 }
