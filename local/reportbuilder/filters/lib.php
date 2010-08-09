@@ -104,88 +104,33 @@ class filtering {
         if(isset($filter->filtertype)) {
             $filtertype = $filter->filtertype;
             $filtername = "filter_{$filtertype}";
-            $filtergrouping = $filter->grouping;
 
-            // pick type of filter to show
-            // need to consider 'normal' type (from rb_filter->filtertype)
-            // and any grouping functions that have been applied as, for example:
-            // count(text) => number
             switch($filtertype) {
             case 'text':
             case 'textarea':
-                // use number if aggregation would result in number
-                switch($filtergrouping) {
-                case 'sum':
-                case 'count':
-                case 'unique_count':
-                case 'average':
-                    return new filter_number($filter, $sessionname);
-                // otherwise use type indicated
-                case 'none':
-                case 'min':
-                case 'max':
-                default:
-                    return new $filtername($filter, $sessionname);
-                }
-
+                return new $filtername($filter, $sessionname);
             case 'number':
                 return new $filtername($filter, $sessionname);
             case 'date':
-                switch($filtergrouping) {
-                case 'count':
-                case 'unique_count':
-                    return new filter_number($filter, $sessionname);
-                // otherwise use type indicated
-                case 'average':
-                case 'none':
-                case 'min':
-                case 'max':
-                case 'sum': // sum doesn't make much sense in this context
-                default:
-                    return new $filtername($filter, $sessionname);
-                }
+                return new $filtername($filter, $sessionname);
             case 'simpleselect':
-                switch($filtergrouping) {
-                case 'count':
-                case 'unique_count':
-                case 'average':
-                case 'sum':
-                    return new filter_number($filter, $sessionname);
-                case 'none':
-                case 'min':
-                case 'max':
-                default:
-                    $choices = $filter->selectchoices;
-                    $options = $filter->selectoptions;
-                    return new $filtername($filter, $sessionname, $choices, $options);
-                }
+                $choices = $filter->selectchoices;
+                $options = $filter->selectoptions;
+                return new $filtername($filter, $sessionname, $choices, $options);
             case 'select':
-                switch($filtergrouping) {
-                case 'count':
-                case 'unique_count':
-                case 'average':
-                case 'sum':
-                    return new filter_number($filter, $sessionname);
-                // case 'join':
-                //    return new filter_text($filter, $sessionname);
-                case 'none':
-                case 'min':
-                case 'max':
-                default:
-                    $selectfunc = 'rb_filter_'.$filter->selectfunc;
-                    $options = $filter->selectoptions;
-                    if(method_exists($this->_report->src, $selectfunc)) {
-                        $selectfield = $this->_report->src->$selectfunc(
-                            $this->_report->contentmode,
-                            $this->_report->contentoptions,
-                            $this->_report->_id
-                        );
-                    } else {
-                        trigger_error("Filter function '{$selectfunc}' not found", E_USER_WARNING);
-                        $selectfield = array();
-                    }
-                    return new $filtername($filter, $sessionname, $selectfield, null, $options);
+                $selectfunc = 'rb_filter_'.$filter->selectfunc;
+                $options = $filter->selectoptions;
+                if(method_exists($this->_report->src, $selectfunc)) {
+                    $selectfield = $this->_report->src->$selectfunc(
+                        $this->_report->contentmode,
+                        $this->_report->contentoptions,
+                        $this->_report->_id
+                    );
+                } else {
+                    trigger_error("Filter function '{$selectfunc}' not found", E_USER_WARNING);
+                    $selectfield = array();
                 }
+                return new $filtername($filter, $sessionname, $selectfield, null, $options);
             default:
                 trigger_error("No filter found for filter type '$filtertype'.",E_USER_WARNING);
                 return null;
