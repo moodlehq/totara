@@ -409,7 +409,7 @@ generate_update_branch_email()
 
 		echo ""
 		echo $LOGBEGIN
-		show_new_revisions
+		show_new_revisions | head -10
 
 		# XXX: Need a way of detecting whether git rev-list actually
 		# outputted anything, so that we can issue a "no new
