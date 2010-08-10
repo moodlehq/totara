@@ -36,7 +36,7 @@ $('#column-checkboxes input').click(function() {
     $(sel).toggle();
 
     $.ajax({
-        url: 'showhide_save.php',
+        url: '<?php print $CFG->wwwroot; ?>showhide_save.php',
         data: {'shortname' : shortname,
                'column' : $(this).attr('name'),
                'value' : value

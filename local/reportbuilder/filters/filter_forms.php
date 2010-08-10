@@ -44,6 +44,20 @@ class add_filter_form extends moodleform {
             $mform->setShowAdvanced(false);
         }
     }
+
+    function definition_after_data() {
+        $mform       =& $this->_form;
+        $fields      = $this->_customdata['fields'];
+
+        if($fields && is_array($fields) && count($fields) > 0) {
+
+            foreach($fields as $ft) {
+                if(method_exists($ft, 'definition_after_data')) {
+                    $ft->definition_after_data($mform);
+                }
+            }
+        }
+    }
 }
 
 /*

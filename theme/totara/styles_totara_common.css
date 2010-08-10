@@ -616,6 +616,10 @@ div.mitms-dialog .selected img.deletebutton {
     height: 13px;
 }
 
+span.dialog-result-title {
+    padding: 5px;
+}
+
 /* hide lightbox activation buttons */
 /* (displayed using JS if enabled) */
 input#show-idppositioncompetency-dialog,

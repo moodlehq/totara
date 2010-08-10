@@ -1956,5 +1956,28 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && add_field($table, $field);
     }
 
+    // update existing reports to use new versions of
+    // position and organisation filters (with dialogs)
+    if ($result && $oldversion < 2010081000) {
+        if($filters = get_records_select('report_builder_filters',
+            "(type = 'user' AND
+             (value = 'organisationid' OR value = 'positionid') ) OR
+             (type = 'course_completion' AND
+             (value = 'organisationid' OR value = 'positionid') ) OR
+             (type = 'competency_evidence' AND
+             (value = 'organisationid' OR value = 'positionid') )")) {
+
+            foreach($filters as $filter) {
+                $todb = new object();
+                $todb->id = $filter->id;
+                $todb->value = str_replace(
+                    array('positionid','organisationid'),
+                    array('positionpath','organisationpath'),
+                    $filter->value);
+                $result = $result &&
+                    update_record('report_builder_filters', $todb);
+            }
+        }
+    }
     return $result;
 }

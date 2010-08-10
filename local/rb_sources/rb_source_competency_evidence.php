@@ -107,6 +107,13 @@ class rb_source_competency_evidence extends rb_base_source {
             ),
             new rb_column_option(
                 'competency_evidence',
+                'organisationpath',
+                'Completion Organisation Path',
+                'completion_organisation.path',
+                array('joins' => 'completion_organisation')
+            ),
+            new rb_column_option(
+                'competency_evidence',
                 'organisation',
                 'Completion Organisation Name',
                 'completion_organisation.fullname',
@@ -117,6 +124,13 @@ class rb_source_competency_evidence extends rb_base_source {
                 'positionid',
                 'Completion Position ID',
                 'base.positionid'
+            ),
+            new rb_column_option(
+                'competency_evidence',
+                'positionpath',
+                'Completion Position Path',
+                'completion_position.path',
+                array('joins' => 'completion_position')
             ),
             new rb_column_option(
                 'competency_evidence',
@@ -177,6 +191,13 @@ class rb_source_competency_evidence extends rb_base_source {
                 'Competency ID',
                 'base.competencyid'
             ),
+            new rb_column_option(
+                'competency',
+                'path',
+                'Competency Path',
+                'competency.path',
+                array('joins' => 'competency')
+            ),
         );
 
         // include some standard columns
@@ -210,7 +231,7 @@ class rb_source_competency_evidence extends rb_base_source {
             new rb_filter_option(
                 'competency_evidence',
                 'organisationid',
-                'Office when completed',
+                'Office when completed (basic)',
                 'select',
                 array(
                     'selectfunc' => 'organisations_list',
@@ -219,13 +240,25 @@ class rb_source_competency_evidence extends rb_base_source {
             ),
             new rb_filter_option(
                 'competency_evidence',
+                'organisationpath',
+                'Organisation when completed',
+                'org'
+            ),
+            new rb_filter_option(
+                'competency_evidence',
                 'positionid',
-                'Position when completed',
+                'Position when completed (basic)',
                 'select',
                 array(
                     'selectfunc' => 'positions_list',
                     'selectoptions' => rb_filter_option::select_width_limiter(),
                 )
+            ),
+            new rb_filter_option(
+                'competency_evidence',
+                'positionpath',
+                'Position when completed',
+                'pos'
             ),
             new rb_filter_option(
                 'competency_evidence',
@@ -238,6 +271,12 @@ class rb_source_competency_evidence extends rb_base_source {
                 'assessorname',
                 'Assessor Organisation',
                 'text'
+            ),
+            new rb_filter_option(
+                'competency',
+                'path',
+                'Competency',
+                'comp'
             ),
             new rb_filter_option(
                 'competency',
@@ -364,22 +403,22 @@ class rb_source_competency_evidence extends rb_base_source {
             ),
             array(
                 'type' => 'user',
-                'value' => 'organisationid',
+                'value' => 'organisationpath',
                 'advanced' => 1,
             ),
             array(
                 'type' => 'competency_evidence',
-                'value' => 'organisationid',
+                'value' => 'organisationpath',
                 'advanced' => 1,
             ),
             array(
                 'type' => 'user',
-                'value' => 'positionid',
+                'value' => 'positionpath',
                 'advanced' => 1,
             ),
             array(
                 'type' => 'competency_evidence',
-                'value' => 'positionid',
+                'value' => 'positionpath',
                 'advanced' => 1,
             ),
             array(

@@ -344,12 +344,12 @@ class rb_source_scorm extends rb_base_source {
             ),
             array(
                 'type' => 'user',
-                'value' => 'positionid',
+                'value' => 'positionpath',
                 'advanced' => 1,
             ),
             array(
                 'type' => 'user',
-                'value' => 'organisationid',
+                'value' => 'organisationpath',
                 'advanced' => 1,
             ),
             array(

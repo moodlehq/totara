@@ -92,6 +92,13 @@ class rb_source_course_completion_by_org extends rb_base_source {
             ),
             new rb_column_option(
                 'course_completion',
+                'organisationpath',
+                'Completion Organisation Path',
+                'completion_organisation.path',
+                array('joins' => 'completion_organisation')
+            ),
+            new rb_column_option(
+                'course_completion',
                 'organisation',
                 'Completion Organisation Name',
                 'completion_organisation.fullname',
@@ -330,7 +337,7 @@ class rb_source_course_completion_by_org extends rb_base_source {
         $defaultfilters = array(
             array(
                 'type' => 'course_completion',
-                'value' => 'organisationid',
+                'value' => 'organisationpath',
                 'advanced' => 1,
             ),
             /*

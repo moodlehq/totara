@@ -1,0 +1,88 @@
+<?php
+
+    require_once '../../config.php';
+
+?>
+// See local/reportbuilder/lib.php method include_js()
+// for *tree variable definitions
+
+
+// Bind functionality to page on load
+$(function() {
+
+    for(i in postree) {
+
+        ///
+        /// Position dialog
+        ///
+        (function() {
+            var url = '<?php echo $CFG->wwwroot ?>/hierarchy/type/position/assign/';
+
+            mitmsSingleSelectDialog(
+                postree[i],
+                url+'find.php?',
+                postree[i],
+                postree[i]+'title'
+            );
+
+            // disable popup buttons if first pulldown is set to
+            // 'any value'
+            if($('select[name='+postree[i]+'_op]').val() == 0) {
+                $('input[name='+postree[i]+'_rec]').attr('disabled',true);
+                $('#show-'+postree[i]+'-dialog').attr('disabled',true);
+            }
+        })();
+
+    }
+
+    for(i in orgtree) {
+
+        ///
+        /// Organisation dialog
+        ///
+        (function() {
+            var url = '<?php echo $CFG->wwwroot ?>/hierarchy/type/organisation/assign/';
+
+            mitmsSingleSelectDialog(
+                orgtree[i],
+                url+'find.php?',
+                orgtree[i],
+                orgtree[i] + 'title'
+            );
+
+            // disable popup buttons if first pulldown is set to
+            // 'any value'
+            if($('select[name='+orgtree[i]+'_op]').val() == 0) {
+                $('input[name='+orgtree[i]+'_rec]').attr('disabled',true);
+                $('#show-'+orgtree[i]+'-dialog').attr('disabled',true);
+            }
+        })();
+
+    }
+
+    for(i in comptree) {
+
+        ///
+        /// Competency dialog
+        ///
+        (function() {
+            var url = '<?php echo $CFG->wwwroot ?>/hierarchy/type/competency/assign/';
+
+            mitmsSingleSelectDialog(
+                comptree[i],
+                url+'find.php?',
+                comptree[i],
+                comptree[i]+'title'
+            );
+
+            // disable popup buttons if first pulldown is set to
+            // 'any value'
+            if($('select[name='+comptree[i]+'_op]').val() == 0) {
+                $('input[name='+comptree[i]+'_rec]').attr('disabled',true);
+                $('#show-'+comptree[i]+'-dialog').attr('disabled',true);
+            }
+        })();
+
+    }
+
+});

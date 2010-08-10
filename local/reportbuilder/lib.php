@@ -95,6 +95,76 @@ class reportbuilder {
 
 
     /*
+     * Include javascript code needed by report builder
+     */
+    function include_js() {
+        global $CFG;
+        require_once($CFG->dirroot.'/local/js/lib/setup.php');
+
+        $this->get_filtering();
+
+        $dialog = false;
+        $treeview = false;
+
+        // only include show/hide code for tabular reports
+        $js = array();
+        $graph = (substr($this->source, 0,
+            strlen('graphical_feedback_questions')) ==
+            'graphical_feedback_questions');
+        if(!$graph) {
+            $js['showhide'] = $CFG->wwwroot.'/local/reportbuilder/showhide.js.php';
+            $dialog = true;
+        }
+
+        // include JS for dialogs if required for filters
+        $orgtrees = array();
+        $postrees = array();
+        $comptrees = array();
+        foreach($this->filters as $filter) {
+            switch($filter->filtertype) {
+            case 'org':
+                $orgtrees[] = "'{$filter->type}-{$filter->value}'";
+                $js['dialog'] = $CFG->wwwroot . '/local/reportbuilder/tree_dialogs.js.php';
+                $dialog = $treeview = true;
+                break;
+            case 'pos':
+                $postrees[] = "'{$filter->type}-{$filter->value}'";
+                $js['dialog'] = $CFG->wwwroot . '/local/reportbuilder/tree_dialogs.js.php';
+                $dialog = $treeview = true;
+                break;
+            case 'comp':
+                $comptrees[] = "'{$filter->type}-{$filter->value}'";
+                $js['dialog'] = $CFG->wwwroot . '/local/reportbuilder/tree_dialogs.js.php';
+                $dialog = $treeview = true;
+                break;
+            default:
+            }
+        }
+
+
+        $code = array();
+        if($dialog) {
+            $code[] = MBE_JS_DIALOG;
+        }
+        if($treeview) {
+            $code[] = MBE_JS_TREEVIEW;
+        }
+
+
+        local_js($code);
+        require_js(array_values($js));
+
+        if($dialog) {
+            print '
+<script type="text/javascript">
+var orgtree = [' . implode(', ', $orgtrees) . '];
+var postree = [' . implode(', ', $postrees) . '];
+var comptree = [' . implode(', ', $comptrees) . '];
+</script>';
+        }
+    }
+
+    /*
      * Generate a filtering object for this report
      *
      * This does quite a few small SQL queries so load it lazily only when required.

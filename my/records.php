@@ -119,6 +119,8 @@
         die;
     }
 
+    $report->include_js();
+
     ///
     /// Display the page
     ///
@@ -148,13 +150,18 @@
     $countall = $report->get_full_count();
 
     // display heading including filtering stats
-    print_heading("$countall results found.");
+    if($countfiltered == $countall) {
+        print_heading("$countall records.");
+    } else {
+        print_heading("$countfiltered/$countall records shown.");
+    }
 
     print $report->print_description();
 
     $report->display_search();
 
     if($countfiltered>0) {
+        print $report->showhide_button();
         $report->display_table();
         print $report->edit_button();
         // export button

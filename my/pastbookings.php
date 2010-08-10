@@ -79,6 +79,7 @@ if($format!='') {
     $report->export_data($format);
     die;
 }
+$report->include_js();
 
 $fullname = $report->fullname;
 $pagetitle = format_string(get_string('report','local').': '.$fullname);
@@ -95,7 +96,11 @@ $countfiltered = $report->get_filtered_count();
 $countall = $report->get_full_count();
 
 // display heading including filtering stats
-print_heading("$strheading: $countall results found");
+if($countfiltered == $countall) {
+    print_heading("$strheading: $countall results shown");
+} else {
+    print_heading("$strheading: $countfiltered/$countall results shown");
+}
 
 print $report->print_description();
 
@@ -104,6 +109,7 @@ $report->display_search();
 print '<br />';
 
 if($countfiltered>0) {
+    print $report->showhide_button();
     $report->display_table();
     print $report->edit_button();
     // export button

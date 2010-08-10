@@ -393,6 +393,9 @@ $string['refreshdataforthisgroup'] = 'Refresh data for this group';
 $string['context'] = 'Context';
 $string['systemcontext'] = 'Users must have role in the system context';
 $string['anycontext'] = 'Users may have role in any context';
+$string['choosepos'] = 'Choose Position...';
+$string['chooseorg'] = 'Choose Organisation...';
+$string['choosecomp'] = 'Choose Competency...';
 
 // Report Headings
 $string['reportheading'] = 'Report Heading Block';

@@ -24,23 +24,12 @@ if($format!='') {
     $report->export_data($format);
     die;
 }
+$report->include_js();
 
 // display results as graph if report uses the graphical_feedback_questions source
 $graph = (substr($report->source, 0, strlen('graphical_feedback_questions')) ==
     'graphical_feedback_questions');
 
-if(!$graph) {
-    // Setup custom javascript
-    local_js(array(
-        MBE_JS_DIALOG,
-    ));
-
-    require_js(
-        array(
-            $CFG->wwwroot.'/local/reportbuilder/showhide.js.php'
-        )
-    );
-}
 
 $countfiltered = $report->get_filtered_count();
 // save a query if no filters set

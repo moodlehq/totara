@@ -954,21 +954,20 @@ abstract class rb_base_source {
     protected function add_position_fields_to_columns(&$columnoptions,
         $posassign='position_assignment',
         $org='organisation', $pos='position') {
-            /*
-        $columnoptions[] = new rb_column_option(
-            'user',
-            'managername',
-            "User's Manager Name",
-            sql_fullname("$manager.firstname","$manager.lastname"),
-            array('joins' => $manager)
-        );
-             */
+
         $columnoptions[] = new rb_column_option(
             'user',
             'organisationid',
             "User's Organisation ID",
             "$posassign.organisationid",
             array('joins' => $posassign)
+        );
+        $columnoptions[] = new rb_column_option(
+            'user',
+            'organisationpath',
+            "User's Organisation Path IDs",
+            "$org.path",
+            array('joins' => $org)
         );
         $columnoptions[] = new rb_column_option(
             'user',
@@ -983,6 +982,13 @@ abstract class rb_base_source {
             "User's Position ID",
             "$posassign.positionid",
             array('joins' => $posassign)
+        );
+        $columnoptions[] = new rb_column_option(
+            'user',
+            'positionpath',
+            "User's Position Path IDs",
+            "$pos.path",
+            array('joins' => $pos)
         );
         $columnoptions[] = new rb_column_option(
             'user',
@@ -1020,7 +1026,7 @@ abstract class rb_base_source {
         $filteroptions[] = new rb_filter_option(
             'user',
             'organisationid',
-            "Participant's Current Office",
+            "Participant's Current Office (basic)",
             'select',
             array(
                 'selectfunc' => 'organisations_list',
@@ -1029,13 +1035,25 @@ abstract class rb_base_source {
         );
         $filteroptions[] = new rb_filter_option(
             'user',
+            'organisationpath',
+            "Participant's Current Organisation",
+            'org'
+        );
+        $filteroptions[] = new rb_filter_option(
+            'user',
             'positionid',
-            "Participant's Current Position",
+            "Participant's Current Position (basic)",
             'select',
             array(
                 'selectfunc' => 'positions_list',
                 'selectoptions' => rb_filter_option::select_width_limiter(),
             )
+        );
+        $filteroptions[] = new rb_filter_option(
+            'user',
+            'positionpath',
+            "Participant's Current Position",
+            'pos'
         );
         return true;
     }

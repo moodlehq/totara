@@ -489,7 +489,6 @@ class reportbuilderlib_test extends prefix_changing_test_case {
 
     function test_reportbuilder_get_content_joins() {
         $rb = $this->rb;
-        var_dump($rb->get_content_joins());
         // should return an empty array if content mode = 0
         $this->assertEqual($rb->get_content_joins(),array());
         // TODO test other options
