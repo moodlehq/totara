@@ -642,10 +642,9 @@ show_new_revisions()
 	do
 		# eval $(printf "$custom_showrev" onerev: $onerev)
 		(( msg_count+=1 ))
-		if [ $msg_count == 5 ]
+		if [ $msg_count == 1 ]
 		then
-			emailsubject="$onerev"
-			echo "$emailsubject" > "$emailsubject_tmp_file" 
+			git diff-tree --format=%s $onerev > "$emailsubject_tmp_file"
 		fi
 		git diff-tree --pretty --stat -p $onerev
 	done
