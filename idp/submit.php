@@ -32,6 +32,11 @@ if ( !$confirm && !$submitbutton ){
     update_idp_component_duedate('compduedate', 'idp_revision_competency','competency', $rev);
     update_idp_component_duedate('comptempduedate', 'idp_revision_competencytmpl', 'competencytemplate', $rev);
     update_idp_component_duedate('courseduedate', 'idp_revision_course', 'course', $rev);
+    //Update priorities
+    update_idp_component_priority('comppriority', 'idp_revision_competency','competency', $rev);
+    update_idp_component_priority('comptemppriority', 'idp_revision_competencytmpl', 'competencytemplate', $rev);
+    update_idp_component_priority('coursepriority', 'idp_revision_course', 'course', $rev);
+
     add_to_log(SITEID, 'idp', 'save/update plan', "revision.php?id={$plan->id}", $plan->id);
 
     redirect($CFG->wwwroot.'/idp/index.php');
@@ -185,5 +190,38 @@ function update_idp_component_duedate($duedateformelement, $tablename, $componen
         }
     }
 }
+
+
+/**
+ * Updates the priorities for a particular IDP component (abstracting this to a
+ * function since it's the exact same behavior for competencies, competency
+ * templates, and courses)
+ *
+ * @param string $priorityformelement
+ * @param string $tablename
+ * @param string $componentcolumn
+ * @param string $rev
+ */
+function update_idp_component_priority($priorityformelement, $tablename, $componentcolumn,$rev){
+    $formelementlist = optional_param($priorityformelement,array(),PARAM_INT);
+    foreach( $formelementlist as $rawid=>$rawpriority ){
+        $componentid = clean_param($rawid, PARAM_INT);
+        $priority = $rawpriority;
+
+        $component = get_record($tablename, 'revision', $rev, $componentcolumn, $componentid);
+        if ( $priority && ( !isset($component->priority) || $priority <> $component->priority) ){
+
+            begin_sql();
+            $result = set_field($tablename,'priority',$priority,'revision',$rev,$componentcolumn,$componentid);
+            $result = $result && update_modification_time($rev);
+            if ( $result ) {
+                commit_sql();
+            } else {
+                rollback_sql();
+            }
+        }
+    }
+}
+
 
 ?>

@@ -1095,3 +1095,24 @@ img.percentImage {
 .guideindexdetail {
     width: auto;
 }
+
+
+/*****************************************************************************/
+/** IDP **/
+/*****************************************************************************/
+
+table.idp-comptable, .idp-comptemplate, .idp-course{
+    width:98%;
+}
+
+table.idp-comptable .competency {
+    width:50%;
+}
+
+table.idp-comptable .options {
+    text-align: center;
+}
+
+table.idp-comptemplate .options {
+    text-align: center;
+}

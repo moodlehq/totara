@@ -23,11 +23,19 @@ if (has_capability('moodle/grade:manage', $systemcontext)){
                   IDP_OPT => get_string('setting:duedateopt', 'idp'),
                   IDP_REQ => get_string('setting:duedatereq', 'idp'))));
 
+        $temp->add(new admin_setting_configcheckbox('idp_priorities', get_string('setting:priorities', 'idp'), null, 0, PARAM_INT));
+
         $temp->add(new admin_setting_configcheckbox('idp_enableeval', get_string('setting:enableeval', 'idp'), get_string('setting:configenableeval', 'idp'), 2, PARAM_INT));
         $temp->add(new admin_setting_configcheckbox('idp_showlearnrec', get_string('setting:showlearnrec', 'idp'), get_string('setting:configshowlearnrec', 'idp'), 2, PARAM_INT));
 
     }
+
     $ADMIN->add('idp', $temp);
+
+    $ADMIN->add('idp', new admin_externalpage('idptemplate', get_string('managetemplates','idp'), $CFG->wwwroot.'/idp/settings/index.php?id=1'));
+
+    $ADMIN->add('idp', new admin_externalpage('idppriorities', get_string('priorityscales', 'idp'), $CFG->wwwroot.'/idp/priority/index.php'));
+
 }
 
 ?>

@@ -13,8 +13,8 @@ require_once($CFG->dirroot.'/idp/lib.php');
 // Revision id
 $revisionid = required_param('id', PARAM_INT);
 
-// Courses to add
-$rowcount = required_param('rowcount', PARAM_SEQUENCE);
+// Framework id
+$frameworkid = optional_param('frameworkid', 0, PARAM_INT);
 
 // Competency templates to add
 $add = required_param('add', PARAM_SEQUENCE);
@@ -53,7 +53,7 @@ $time = time();
 ///
 if ($deleteexisting) {
     // Currently assigned templates
-    if (!$currentlyassigned = idp_get_user_competencytemplates($plan->userid, $revisionid)) {
+    if (!$currentlyassigned = idp_get_user_competencytemplates($plan->userid, $revisionid, $frameworkid)) {
         $currentlyassigned = array();
     }
 
@@ -91,7 +91,7 @@ foreach ($add as $addition) {
         continue;
     }
 
-    // Load competency
+    // Load competency template
     $template = $hierarchy->get_template($addition);
 
     // Load framework
@@ -124,28 +124,32 @@ foreach ($add as $addition) {
         } else {
 
             // Return html
-            echo '<tr class=r'.$rowcount.'>';
-            echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/framework/index.php?type={$hierarchy->prefix}&id={$framework->id}\">{$framework->fullname}</a></td>";
+            echo '<tr>';
             echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/type/competency/template/view.php?id={$template->id}\">{$template->fullname}</a></td>";
-            echo '<td></td>';
-            echo '<td width="25%"><input size="10" maxlength="10" type="text" name="comptempduedate['.$template->id.']" id="comptempduedate'.$template->id.'"/></td>';
 
-        //    if ($editingon) {
+            if(get_config(NULL, 'idp_priorities')==2) {
+                $priorities = idp_get_priorities_menu($plan->id);
+                $prioritycell = '<select class="idppriority" name="comppriority['.$template->id.']" id="comppriority'.$template->id.'">';
+                foreach($priorities as $priority){
+                    $prioritycell .= '<option value="'.$priority->id.'">'.$priority->name.'</option>';
+                }
+                $prioritycell .= '</select>';
+                echo "<td>{$prioritycell}</td>";
+            }
 
-                echo "<td style=\"text-align: center;\">";
 
-                echo "<a href=\"{$CFG->wwwroot}/hierarchy/type/competency/template/idp/remove.php?id={$template->id}&revision={$revisionid}\" title=\"$str_remove\">".
-                     "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_remove\" /></a>";
+            echo "<td style=\"text-align: center;\">";
 
-                echo "</td>";
+            echo "<a href=\"{$CFG->wwwroot}/hierarchy/type/competency/template/idp/remove.php?id={$template->id}&revision={$revisionid}\" title=\"$str_remove\">".
+                 "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_remove\" /></a>";
 
-        //    }
+            echo "</td>";
+
 
             echo '</tr>';
             echo '<script type="text/javascript"> $(function() { $(\'[id^=comptempduedate]\').datepicker( ';
             echo '{ dateFormat: \'dd/mm/yy\', showOn: \'button\', buttonImage: \'../local/js/images/calendar.gif\',';
             echo 'buttonImageOnly: true } ); }); </script>'.PHP_EOL;
-            $rowcount = ($rowcount + 1) % 2;
         }
     }
 }

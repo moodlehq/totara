@@ -14,8 +14,8 @@ $(function() {
 
         mitmsMultiSelectDialog(
             'assignedcompetencies',
-            url+'find.php?assignto='+organisation_id+'&add=',
-            url+'assign.php?assignto='+organisation_id+'&deleteexisting=1&add='
+            url+'find.php?assignto='+organisation_id+'&frameworkid='+organisation_frameworkid+'&add=',
+            url+'assign.php?assignto='+organisation_id+'&frameworkid='+organisation_frameworkid+'&deleteexisting=1&add='
         );
     })();
 
@@ -27,8 +27,8 @@ $(function() {
 
         mitmsMultiSelectDialog(
             'assignedcompetencytemplates',
-            url+'find.php?assignto='+organisation_id+'&add=',
-            url+'assign.php?assignto='+organisation_id+'&deleteexisting=1&add='
+            url+'find.php?assignto='+organisation_id+'&frameworkid='+organisation_frameworkid+'&add=',
+            url+'assign.php?assignto='+organisation_id+'&frameworkid='+organisation_frameworkid+'&deleteexisting=1&add='
         );
     })();
 

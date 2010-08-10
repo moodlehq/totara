@@ -20,6 +20,9 @@ $frameworkid = optional_param('frameworkid', 0, PARAM_INT);
 // Only return generated tree html
 $treeonly = optional_param('treeonly', false, PARAM_BOOL);
 
+// Only return generated tree html
+$treeonly = optional_param('treeonly', false, PARAM_BOOL);
+
 // No javascript parameters
 $nojs = optional_param('nojs', false, PARAM_BOOL);
 $returnurl = optional_param('returnurl', '', PARAM_TEXT);
@@ -50,7 +53,7 @@ if (!$framework = $hierarchy->get_framework($frameworkid, true)) {
 
     // Load competency templates to display
     $templates = $hierarchy->get_templates();
-    if (!$currentlyassigned = idp_get_user_competencytemplates($plan->userid, $revisionid)) {
+    if (!$currentlyassigned = idp_get_user_competencytemplates($plan->userid, $revisionid, $frameworkid)) {
         $currentlyassigned = array();
     }
 }
@@ -90,7 +93,11 @@ if(!$nojs) {
 <p>
     <?php echo get_string('locatecompetency', $hierarchy->prefix) ?>:
     <br>
-    <?php $hierarchy->display_framework_selector('', true); ?>
+    <?php
+    if (empty($frameworkid)) {
+        $hierarchy->display_framework_selector('', true); 
+    }
+    ?>
 </p>
 
 <ul class="treeview filetree">

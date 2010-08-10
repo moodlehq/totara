@@ -241,8 +241,8 @@ function competency_restore_competencies($oldfwid, $newfwid, $fwinfo, $options, 
         if($userid) {
             $competency->usermodified = $userid->new_id;
         }
-        // make sure sortorder is unique
-        $competency->sortorder = get_sortorder('comp',$competency->sortorder);
+        // make sure sortorder is unique, doesnt need to be unique
+        //$competency->sortorder = get_sortorder('comp',$competency->sortorder);
         // TODO
         // rewrite scaleid
         // rewrite proficiencyexpected

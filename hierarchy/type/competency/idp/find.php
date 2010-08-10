@@ -19,6 +19,9 @@ $parentid = optional_param('parentid', 0, PARAM_INT);
 // Framework id
 $frameworkid = optional_param('frameworkid', 0, PARAM_INT);
 
+// Only return generated tree html
+$treeonly = optional_param('treeonly', false, PARAM_BOOL);
+
 // No javascript parameters
 $nojs = optional_param('nojs', false, PARAM_BOOL);
 $returnurl = optional_param('returnurl', '', PARAM_TEXT);
@@ -45,10 +48,9 @@ if (!$framework = $hierarchy->get_framework($frameworkid, true)) {
     $competencies = array();
     $assignedcomps = array();
 } else {
-
     // Load competencies to display
     $competencies = $hierarchy->get_items_by_parent($parentid, $revisionid);
-    $assignedcomps = get_records('idp_revision_competency', 'revision', $revisionid, '', 'competency');
+    $assignedcomps = idp_get_user_competencies($USER->id, $revisionid, $frameworkid);
     if( !is_array($assignedcomps) ){
         $assignedcomps = array();
     };
@@ -60,17 +62,28 @@ if (!$framework = $hierarchy->get_framework($frameworkid, true)) {
 
 if(!$nojs) {
     // build Javascript Treeview
+    if ($treeonly) {
+        echo build_treeview(
+            $competencies,
+            get_string(($framework?'nocompetenciesinframework':'nocompetency'), 'competency'),
+            $hierarchy,
+            $assignedcomps
+        );
+        exit;
+    }
 
     // If parent id is not supplied, we must be displaying the main page
     if (!$parentid) {
-
         echo '<div class="selectcompetencies">'.PHP_EOL;
-        $hierarchy->display_framework_selector('', true);
         echo '<h2>' . get_string('addcompetenciestoplan', 'idp') . '</h2>'.PHP_EOL;
         echo '<div class="selected">';
-        echo '<p>' . get_string('dragheretoassign', $hierarchy->prefix).'</p>'.PHP_EOL;
+        echo get_string('selectedcompetencies', $hierarchy->prefix);
+        echo populate_selected_items_pane($assignedcomps);
         echo '</div>'.PHP_EOL;
         echo '<p>' . get_string('locatecompetency', $hierarchy->prefix).':'.'</p>'.PHP_EOL;
+        if (empty($frameworkid)) {
+            $hierarchy->display_framework_selector('', true);
+        }
         echo '<ul class="treeview filetree">'.PHP_EOL;
     }
 

@@ -158,7 +158,135 @@ $(function() {
 // -->
 </script>
     <?php
-
         }
 }
+
+function print_idp_competency_templates_view_flex( $revision, $competencytemplates, $editingon = false, $haspositions = false, $page, $perpage, $total){
+    global $CFG, $SESSION, $USER;
+    $ssort = optional_param('ssort');
+
+    // Check permissions
+    if ($editingon) {
+        $addcomp = has_capability('moodle/local:idpaddcompetencytemplate', get_context_instance(CONTEXT_SYSTEM));
+        $update = has_capability('moodle/local:updatecompetencytemplate', get_context_instance(CONTEXT_SYSTEM));
+    }
+    if ($editingon && $haspositions) {
+        $addpos = has_capability('moodle/local:idpaddcompetencytemplatefrompos', get_context_instance(CONTEXT_SYSTEM));
+    }
+
+    $str_remove = get_string('remove');
+    $shortname = 'comptemplate';
+    $columns = array();
+    $headers = array();
+
+    $columns[] = 'competency';
+    $headers[] = get_string('template', 'competency');
+
+    if(get_config(NULL, 'idp_duedates')!=0){
+        $columns[] = 'duedate';
+        $headers[] = get_string('duedate', 'idp');
+    }
+    if(get_config(NULL, 'idp_priorities')==2){
+        $columns[] = 'priority';
+        $headers[] = get_string('priority', 'idp');
+    }
+    if($editingon){
+        $columns[] = 'options';
+        $headers[] = get_string('options', 'competency');
+    }
+
+    $table = new flexible_table($shortname);
+    $table->define_columns($columns);
+    $table->define_headers($headers);
+    $table->set_attribute('id', 'list-idpcompetencytemplate');
+    $table->set_attribute('class', 'generalbox idp-comptemplate');
+    $table->column_class('options', 'options');
+    $table->column_class('competency', 'competency');
+    $table->column_class('status', 'status');
+
+    $table->setup();
+    $table->pagesize($perpage, count($competencytemplates));
+    $table->add_data(NULL);
+
+    $priorities = get_idp_priority_scale($revision);
+
+    if ($competencytemplates) {
+        foreach ($competencytemplates as $comptemp) {
+            $tablerow = array();
+            $tablerow[] = "<a href=\"{$CFG->wwwroot}/hierarchy/type/competency/template/view.php?id={$comptemp->id}\">{$comptemp->fullname}</a>";
+
+            if(get_config(NULL, 'idp_duedates')!=0){
+                $duedatestr = $comptemp->duedate == NULL ? '' : date('d/m/Y', $comptemp->duedate );
+                if ($editingon && $update){
+                    $duedatecell = '<input size="10" maxlength="10" type="text" class="idpdate" value="'.$duedatestr.'" name="comptempduedate['.$comptemp->id.']" id="comptempduedate'.$comptemp->id.'"/>';
+                } else {
+                    $duedatecell = $duedatestr;
+                }
+                $tablerow[] = $duedatecell;
+            }
+
+            if(get_config(NULL, 'idp_priorities')==2) {
+                if ($editingon && $update) {
+                    $prioritycell = '<select class="idppriority" name="comppriority['.$comptemp->id.']" id="comppriority'.$comptemp->id.'"/>';
+                    foreach($priorities as $priority){
+                        if($priority->id == $comptemp->priority)
+                            $prioritycell .= '<option value="'.$priority->id.'" selected="selected">'.$priority->name.'</option>';
+                        else
+                            $prioritycell .= '<option value="'.$priority->id.'">'.$priority->name.'</option>';
+                    }
+                    $prioritycell .= '</select>';
+                    $tablerow[] = $prioritycell;
+                }
+                else {
+                    $priority = get_field('idp_tmpl_priority_scal_val', 'name', 'id', $comptemp->priority);
+                    if($priority)
+                        $tablerow[] = $priority;
+                    else
+                        $tablerow[] = 'No priority';
+                }
+            }
+
+            if ($editingon) {
+                $tablerow[] = "<a href=\"{$CFG->wwwroot}/hierarchy/type/competency/template/idp/remove.php?id={$comptemp->id}&revision={$revision->id}\" title=\"$str_remove\">".
+                    "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_remove\" /></a>";
+            }
+            $table->add_data($tablerow);
+        }
+        $table->print_html();
+    }
+    else {
+        echo '<p><i>'.get_string('emptyplancompetencytemplatesframework', 'idp').'</i></p>';
+    }
+
+    if ($editingon) {
+        if ($addcomp) {
+            echo '<input type="submit" id="show-idpcompetencytemplate-dialog" value="'. get_string('addfromframeworks', 'idp') . '" />';
+            echo '<noscript><a href="'.$CFG->wwwroot.'/hierarchy/type/competency/idp/find-template.php?id='.$revision->id .
+                '&amp;nojs=1&amp;returnurl='.urlencode(qualified_me()).'&amp;s='.sesskey().'" class="noscript-button">'.get_string('addfromframeworks','idp').'</a></noscript>';
+
+            // Only display add from position button if the user has positions assigned
+            if ($haspositions && $addpos) {
+                echo '<input type="submit" id="show-idppositioncompetencytemplate-dialog" value="'.get_string('addfrompositions', 'idp').'" />';
+                echo '<noscript><a href="'.$CFG->wwwroot.'/hierarchy/type/competency/idp/find-position-template.php?id='.$revision->id .
+                    '&amp;nojs=1&amp;returnurl='.urlencode(qualified_me()).'&amp;s='.sesskey().'" class="noscript-button">'.get_string('addfrompositions','idp').'</a></noscript>';
+            }
+
+            print helpbutton('idpaddcompetencytemplates', get_string('addcompetencytemplatestoplan', 'idp'));
+        }
+    }
+
+    echo "<script type=\"text/javascript\">
+        $(function() {
+            $('[id^=comptempduedate]').datepicker(
+                {
+                dateFormat: 'dd/mm/yy',
+                showOn: 'button',
+                buttonImage: '../local/js/images/calendar.gif',
+                buttonImageOnly: true
+                }
+            );
+        });
+    </script>";
+}
+
 ?>

@@ -6,14 +6,16 @@
 require_once('../config.php');
 require_once('lib.php');
 require_once($CFG->dirroot.'/local/js/lib/setup.php');
+require_once('idp_forms.php');
 
 require_login();
 
 $action = required_param('action', PARAM_ACTION); // One of: clone, create, delete, rename
-$name = optional_param('name', '', PARAM_NOTAGS); // Plan name
+$name = optional_param('planname', '', PARAM_NOTAGS); // Plan name
 $startdate = optional_param('startdate', '', PARAM_NOTAGS); // Start of the training period
 $enddate = optional_param('enddate', '', PARAM_NOTAGS); // End of the training period
 $planid = optional_param('planid', 0, PARAM_INT); // IDP ID (idp.id)
+$templateid = optional_param('templateid', 0, PARAM_INT);
 
 $sitecontext = get_context_instance(CONTEXT_SYSTEM);
 $contextuser = get_context_instance(CONTEXT_USER, $USER->id);
@@ -48,7 +50,7 @@ if (('create' == $action or 'rename' == $action or 'clone' == $action) && !empty
 
     // Perform the action
     if ('create' == $action) {
-        if (!$id = create_new_plan($name, $starttime, $endtime)) {
+        if (!$id = create_new_plan($name, $starttime, $endtime, $templateid)) {
             error(get_string('error:cannotcreateplan', 'idp'), $errorurl);
         }
         redirect($CFG->wwwroot.'/idp/revision.php?id='.$id);
@@ -130,41 +132,28 @@ elseif ('create' == $action or 'rename' == $action or 'clone' == $action) {
             if ('create' != $action) {
                 // Get the current values from the DB
                 $plan = get_record('idp', 'id', $planid);
-                $defaultname = $plan->name;
-                $defaultstartdate = $plan->startdate;
-                $defaultenddate = $plan->enddate;
+                $idp = new object();
+                $idp->planname = $plan->name;
+                $idp->startdate = strftime('%d/%m/%Y', $plan->startdate);
+                $idp->enddate = strftime('%d/%m/%Y', $plan->enddate);
+            }
+            else{
+                $idp = new object();
             }
 
-            print '<form method="get" action="plan.php">';
+            //Get current template id TODO add checking to this
+            $templateid = get_field('idp_template', 'id', 'current', 1);
 
-            // Ask for a name
-            print '<p>'.get_string('plannameexplanation1', 'idp')."</p>\n";
-            print '<blockquote><p>';
-            print '<input type="hidden" name="planid" value="'.$planid.'" />';
-            print '<input type="hidden" name="action" value="'.$action.'" />';
-            print '<input id="planname" type="text" name="name" value="'.$defaultname.'" size="30" maxlength="255" />';
-            //print '<br />'.get_string('plannameexplanation2', 'idp');
-            print '</p></blockquote>';
-
-            // Start/end dates
+            $form = new create_new_idp_form('plan.php', compact('action', 'planid', 'templateid'));
+            $form->set_data($idp);
             print '<p>'.get_string('trainingperiodexplanation', 'idp').'</p>';
-            print '<blockquote><p>';
-            print helpbutton('idpstartdate', get_string('startdate', 'idp'));
-            print '<input type="text" id="startdate" name="startdate" value="'.strftime('%d/%m/%Y', $defaultstartdate).'" size="15" maxlength="30" />';
-            print ' '.get_string('to', 'idp').' ';
-            print helpbutton('idpenddate', get_string('enddate', 'idp'));
-            print '<input type="text" name="enddate" id="enddate" value="'.strftime('%d/%m/%Y', $defaultenddate).'" size="15" maxlength="30" />';
-            print '</p></blockquote>';
-
-            // Submit button
-            print '<p><input type="submit" value="'.get_string("{$action}plan", 'idp').'" /></p>';
-            print '</form>';
+            $form->display();
 
             print <<<HEREDOC
 <script type="text/javascript">
 
     $(function() {
-        $('#startdate, #enddate').datepicker(
+        $('#id_startdate, #id_enddate').datepicker(
             {
                 dateFormat: 'dd/mm/yy',
                 showOn: 'button',

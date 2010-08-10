@@ -13,10 +13,10 @@ require_once($CFG->dirroot.'/idp/lib.php');
 $revisionid = required_param('id', PARAM_INT);
 
 // Courses to add
-$rowcount = required_param('rowcount', PARAM_SEQUENCE);
-
-// Courses to add
 $add = required_param('add', PARAM_SEQUENCE);
+
+// Indicates whether current related items, not in $add list, should be deleted
+$deleteexisting = optional_param('deleteexisting', 0, PARAM_BOOL);
 
 // No javascript parameters
 $nojs = optional_param('nojs', false, PARAM_BOOL);
@@ -38,13 +38,33 @@ if ( $plan->userid != $USER->id ){
 
 $str_remove = get_string('remove');
 
+// Parse input
+$add = $add ? explode(',', $add) : array();
+$time = time();
+
+$currentlyassigned = idp_get_user_courses($plan->userid, $revisionid);
+if (!is_array($currentlyassigned)) {
+    $currentlyassigned = array();
+}
+
+///
+/// Delete removed assignments (if specified)
+///
+
+if ($deleteexisting) {
+    $removeditems = array_diff(array_keys($currentlyassigned), $add);
+
+    foreach ($removeditems as $rid) {
+        delete_records('idp_revision_course', 'revision', $revisionid, 'course', $rid);
+        add_to_log(SITEID, 'idpcourse', 'deleteassignment', "revision.php?id={$plan->id}", "IDP (ID {$plan->id})");
+
+        echo " ~~~RELOAD PAGE~~~ ";  // Indicate (to js) that a page reload is required
+    }
+}
+
 ///
 /// Add competencies
 ///
-
-// Parse input
-$add = explode(',', $add);
-$time = time();
 
 foreach ($add as $addition) {
     // Check id
@@ -85,11 +105,19 @@ foreach ($add as $addition) {
 
         if(!$nojs) {
             // Return html
-            echo '<tr class=r'.$rowcount.'>';
-            echo "<td><a href=\"{$CFG->wwwroot}/course/category.php?id={$course->category}\">".format_string($category->name)."</a></td>";
+            echo '<tr>';
             echo "<td><a href=\"{$CFG->wwwroot}/course/view.php?id={$course->id}\">".format_string($course->fullname)."</a></td>";
             echo '<td></td>';
-            echo '<td width="25%"><input size="10" maxlength="10" type="text" class="idpdate" name="courseduedate['.$course->id.']" id="courseduedate'.$course->id.'"/></td>';
+
+            if(get_config(NULL, 'idp_priorities')==2) {
+                $priorities = idp_get_priorities_menu($plan->id);
+                $prioritycell = '<select class="idppriority" name="comppriority['.$course->id.']" id="comppriority'.$course->id.'">';
+                foreach($priorities as $priority){
+                    $prioritycell .= '<option value="'.$priority->id.'">'.$priority->name.'</option>';
+                }
+                $prioritycell .= '</select>';
+                echo "<td>{$prioritycell}</td>";
+            }
 
             echo "<td class=\"options\">";
 
@@ -99,10 +127,6 @@ foreach ($add as $addition) {
             echo "</td>";
 
             echo '</tr>';
-            echo '<script type="text/javascript"> $(function() { $(\'[id^=courseduedate]\').datepicker( ';
-            echo '{ dateFormat: \'dd/mm/yy\', showOn: \'button\', buttonImage: \'../local/js/images/calendar.gif\',';
-            echo 'buttonImageOnly: true } ); }); </script>'.PHP_EOL;
-            $rowcount = ($rowcount + 1) % 2;
         }
     }
 }

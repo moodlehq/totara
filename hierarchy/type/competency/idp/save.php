@@ -13,11 +13,14 @@ require_once($CFG->dirroot.'/idp/lib.php');
 // Revision id
 $revisionid = required_param('id', PARAM_INT);
 
-// Courses to add
-$rowcount = required_param('rowcount', PARAM_SEQUENCE);
+// Framework id
+$frameworkid = optional_param('frameworkid', 0, PARAM_INT);
 
 // Competencies to add
 $add = required_param('add', PARAM_SEQUENCE);
+
+// Indicates whether current related items, not in $add list, should be deleted
+$deleteexisting = optional_param('deleteexisting', 0, PARAM_BOOL);
 
 // No javascript parameters
 $nojs = optional_param('nojs', false, PARAM_BOOL);
@@ -44,13 +47,35 @@ if ( $plan->userid != $USER->id ){
 $hierarchy = new competency();
 $str_remove = get_string('remove');
 
+
+// Currently assigned competencies
+if (!$currentlyassigned = idp_get_user_competencies($USER->id, $revisionid, $frameworkid)) {
+    $currentlyassigned = array();
+}
+
+// Parse input
+$add = $add ? explode(',', $add) : array();
+$time = time();
+
+///
+/// Delete removed assignments (if specified)
+///
+
+if ($deleteexisting) {
+    $removeditems = array_diff(array_keys($currentlyassigned), $add);
+
+    foreach ($removeditems as $rid) {
+        delete_records('idp_revision_competency', 'revision', $revisionid, 'competency', $rid);
+        add_to_log(SITEID, 'idp', 'deleteassignment', "revision.php?id={$plan->id}", "IDP (ID {$plan->id})");
+
+        echo " ~~~RELOAD PAGE~~~ ";  // Indicate (to js) that a page reload is required
+    }
+}
+
+
 ///
 /// Add competencies
 ///
-
-// Parse input
-$add = explode(',', $add);
-$time = time();
 
 foreach ($add as $addition) {
     // Check id
@@ -93,26 +118,41 @@ foreach ($add as $addition) {
         } else {
 
             // Return html
-            echo '<tr class=r'.$rowcount.'>';
-            echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/framework/index.php?type={$hierarchy->prefix}&id={$framework->id}\">{$framework->fullname}</a></td>";
+            echo '<tr>';
             echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/item/view.php?type={$hierarchy->prefix}&id={$competency->id}\">{$competency->fullname}</a></td>";
-            echo "<td></td>";
-            echo '<td width="25%"><input size="10" maxlength="10" type="text" class="idpdate" name="compduedate['.$competency->id.']" id="compduedate'.$competency->id.'"/></td>';
+            $statuscell = '<font color="grey">Not assessed</font>';
+            echo "<td>{$statuscell}</td>";
 
-        //    if ($editingon) {
-                echo "<td style=\"text-align: center;\">";
+           if(get_config(NULL, 'idp_priorities')==2) {
+                $sql = "SELECT val.id, val.name FROM {$CFG->prefix}idp_tmpl_priority_scal_val val
+                JOIN {$CFG->prefix}idp_tmpl_priority_scale ps ON val.priorityscaleid=ps.id
+                JOIN {$CFG->prefix}idp_tmpl_priority_assign pa ON ps.id=pa.priorityscaleid
+                JOIN {$CFG->prefix}idp_template temp ON pa.templateid=temp.id
+                JOIN {$CFG->prefix}idp i ON temp.id=i.templateid WHERE i.id={$plan->id}";
+                $priorities = get_records_sql($sql);
+                $prioritycell = '<select class="idppriority" name="comppriority['.$competency->id.']" id="comppriority'.$competency->id.'">';
+                foreach($priorities as $priority){
+                    $prioritycell .= '<option value="'.$priority->id.'">'.$priority->name.'</option>';
+                }
+                $prioritycell .= '</select>';
+                echo "<td>{$prioritycell}</td>";
+            }
 
-                echo "<a href=\"{$CFG->wwwroot}/hierarchy/type/competency/idp/remove.php?id={$competency->id}&revision={$revisionid}\" title=\"$str_remove\">".
-                     "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_remove\" /></a>";
+            if(get_config(NULL, 'idp_duedates')) {
+                echo '<td width="25%"><input size="10" maxlength="10" type="text" class="idpdate" name="compduedate['.$competency->id.']" id="compduedate'.$competency->id.'"/></td>';
+            }
 
-                echo "</td>";
-        //    }
+            echo "<td style=\"text-align: center;\">";
+
+            echo "<a href=\"{$CFG->wwwroot}/hierarchy/type/competency/idp/remove.php?id={$competency->id}&revision={$revisionid}\" title=\"$str_remove\">".
+                "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_remove\" /></a>";
+
+            echo "</td>";
 
             echo '</tr>';
             echo '<script type="text/javascript"> $(function() { $(\'[id^=compduedate]\').datepicker( ';
             echo '{ dateFormat: \'dd/mm/yy\', showOn: \'button\', buttonImage: \'../local/js/images/calendar.gif\',';
             echo 'buttonImageOnly: true } ); }); </script>'.PHP_EOL;
-            $rowcount = ($rowcount + 1) % 2;
         }
         add_to_log(SITEID, 'idp', 'add IDP competencies', "revision.php?id={$plan->id}", $plan->id);
     }

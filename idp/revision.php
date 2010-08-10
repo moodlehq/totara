@@ -181,14 +181,6 @@ foreach ($lt as $column) {
                         print '</div>';
                         print "</td></tr></table></center>\n";
                     }
-                    /*elseif (('approved' == $currevision->status or 'overdue' == $currevision->status) && (get_config(NULL, 'idp_enableeval')==2)) {
-                        // Evaluate button
-                        print '<form method="get" action="evaluation.php"><p style="text-align: center">';
-                        print '<input type="hidden" name="id" value="'.$plan->id.'" />';
-                        print '<input type="hidden" name="rev" value="'.$currevision->id.'" />';
-                        print '<input type="submit" value="'.get_string('evaluateplan', 'idp').'" />';
-                        print "</p></form>\n";
-                    }*/
                 } 
                 if(('approved' == $currevision->status or 'overdue' == $currevision->status) && ($can_evaluate || ((get_config(NULL, 'idp_enableeval')==2) && $can_submit))){
                         // Evaluate button
@@ -219,9 +211,8 @@ echo '</tr></table>';
 
 <script type="text/javascript">
 <!-- //
-    var idp_revision_id = <?php echo $currevision->id ?>
-
-    //var valid=true;
+    var idp_revision_id = <?php echo $currevision->id ?>;
+    var idp_revision_frameworkid = <?php echo optional_param('framework', 1, PARAM_INT); ?>;
 
     function checkDateSet(){
         console.log($('input[@type=text].idpdate'));

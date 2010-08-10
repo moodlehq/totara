@@ -83,6 +83,11 @@ Please contact a site administrator if you had not requested this approval.
 $string['generalsettings'] = 'General Settings';
 $string['adminsettings'] = 'Admin Settings';
 
+$string['managetemplates'] = 'Manage Templates';
+
+$string['addedittemplates'] = 'Add / edit development plan templates';
+
+
 $string['setting:startdate'] = 'Start date for all users';
 $string['setting:configstartdate'] = '';
 
@@ -113,7 +118,7 @@ $string['setting:duedateno'] = 'No';
 $string['setting:duedateopt'] = 'Optional';
 $string['setting:duedatereq'] = 'Required';
 
-$string['setting:priorities'] = 'Priorities for items';
+$string['setting:priorities'] = 'Show priorities for items';
 $string['setting:configpriorities'] = '';
 
 $string['setting:objectives'] = 'Objectives';
@@ -128,10 +133,12 @@ $string['setting:configshowgap'] = '';
 $string['setting:showlearnrec'] = 'Show record of learning';
 $string['setting:configshowlearnrec'] = '';
 
+
+
 # Errors
 $string['error:badstartdate'] = 'Invalid format for the starting date of the training period.  Enter the date in the DD/MM/YYYY format.';
 $string['error:badenddate'] = 'Invalid format for the end date of the training period.  Enter the date in the DD/MM/YYYY format.';
-$string['error:cannotcreateplan'] = 'Unknown error while attempting to create a new plan.';
+$string['error:cannotcreateplan'] = 'Error while attempting to create a new plan. Please contact the system administrator to ensure the system is correctly set up.';
 $string['error:cannotevaluateplan'] = 'You cannot evaluate someone else\'s IDP.';
 $string['error:cannotrenameplan'] = 'You can only rename plans which have not been submitted or have been withdrawn.';
 $string['error:cannotcloneplan'] = 'Unknown error while attempting to clone plan.';
@@ -152,6 +159,8 @@ $string['error:plannotyours'] = 'You do not have access to this plan because it 
 $string['error:revisionnotvisible'] = 'This revision is not visible to you.';
 $string['error:revisioncantbecommented'] = 'This revision can\'t be commented on, because it hasn\'t been submitted yet.';
 $string['error:removalfailed'] = 'Removal failed.';
+$string['error:createpriorityassign'] = 'Failed to assign priority.';
+$string['error:updatepriorityassign'] = 'Failed to update priority.';
 
 # Other strings
 $string['addbutton'] = 'Add competency to plan';
@@ -235,7 +244,9 @@ $string['emailsubjectsubmitted'] = 'New IDP submitted';
 $string['emailsubjectapproved'] = 'Your IDP has been approved';
 $string['emailsubjectapprovedonbehalf'] = 'A IDP was approved on your behalf';
 $string['emptyplancompetencies'] = 'This IDP does not have any competencies yet.';
+$string['emptyplancompetenciesframework'] = 'This IDP does not have any competencies in this framework yet.';
 $string['emptyplancompetencytemplates'] = 'This IDP does not have any competency templates yet.';
+$string['emptyplancompetencytemplatesframework'] = 'This IDP does not have any competency templates in this framework yet.';
 $string['emptyplancourses'] = 'This IDP does not have any courses yet.';
 $string['enablefavourites'] = 'Enable favourites';
 $string['enablesearch'] = 'Enable search';
@@ -299,6 +310,7 @@ $string['plangrade1'] = 'Needs Considerable Attention';
 $string['plangrade2'] = 'Needs Attention';
 $string['plangrade3'] = 'Satisfactory';
 $string['plangrade4'] = 'Excellent';
+$string['planname'] = 'IDP name';
 $string['plannameexplanation1'] = 'Please enter a name for your IDP:';
 $string['plannameexplanation2'] = '(This name will be shown in your list of IDPs.)';
 $string['previewtitle'] = 'Review IDP \"$a\"';
@@ -361,4 +373,64 @@ $string['yourlearningplans'] = 'Your IDPs:';
 $string['yourtrainees'] = 'Your trainees';
 
 $string['notapprovedyet'] = 'This plan hasn\'t been approved yet and can\'t be exported to PDF';
+
+# IDP Strings
+$string['competencyareas'] = 'Competency Areas';
+$string['courseareas'] = 'Course Areas';
+
+$string['developmentplan'] = 'Development Plan \'$a\'';
+$string['addcompetencyarea'] = 'Add competency area';
+$string['emptyplancompetencyareas'] = 'This IDP does not have any competency areas yet.';
+$string['addcoursearea'] = 'Add course area';
+$string['emptyplancourseareas'] = 'This IDP does not have any course areas yet.';
+$string['population'] = 'Population';
+$string['completedby'] = 'Completed by';
+$string['commentsby'] = 'Comments by';
+$string['duedates'] = 'Due dates';
+$string['priorities'] = 'Priorities';
+$string['compareasettings'] = 'Competency area settings';
+$string['compareafull'] = 'Competency area full name';
+$string['compareashort'] = 'Competency area short name';
+$string['populationsettings'] = 'Population settings';
+$string['populationmanual'] = 'Allow manual population by';
+$string['populationauto'] = 'Automatically populate with competencies mapped to the Learner\'s';
+$string['primarypos'] = 'Primary position';
+$string['organisation'] = 'Organisation';
+$string['commentsettings'] = 'Comment Settings';
+$string['completedsettings'] = 'Completed Settings';
+$string['itemduedates'] = 'Due dates for items';
+$string['priorityscales'] = 'Priority Scales';
+$string['priorityscale'] = 'Priority scale';
+$string['noprioritiesdefined'] = 'No priorities defined';
+$string['prioritiescustomcreate'] = 'Add a new priority scale';
+$string['priorityvalues'] = 'Priority values';
+$string['priority'] = 'Priority';
+$string['addnewpriorityvalue'] = 'Add new priority scale value';
+$string['error:nodeletepriorityinuse'] = 'You cannot delete a priority that is in use';
+$string['deletecheckpriority'] = 'Are you absolutely sure you want to completely delete this priority scale?';
+$string['deletecheckpriorityvalue'] = 'Are you absolutely sure you want to delete this priority scale value?';
+$string['deletedpriorityscale'] = 'The priority scale $a has been completely deleted.';
+$string['deletedpriorityscalevalue'] = 'The priority scale value $a has been deleted.';
+$string['error:noreorderpriorityinuse'] = 'You cannot reorder a priority scale that is in use. To reorder this priority scale, it must not be assigned to any IDP\'s.';
+$string['error:nodeletepriorityvalueinuse'] = 'You cannot delete a priority scale value from a scale that is in use. To delete this priority scale value, the priority scale must not be assigned to any IDP.';
+$string['changeto'] = 'Change to';
+$string['set'] = 'Set';
+$string['defaultvalue'] = 'Default value';
+$string['scales'] = 'Priority Scales';
+$string['nopriorityscalevalues'] = 'There are no priority scale values defined for this priority scale.';
+$string['editpriorityvalue'] = 'Edit priority value';
+$string['priorityscalevaluenumericalvalue'] = 'Priority scale value numerical value';
+$string['priorityscalevalueidnumber'] = 'Scale value ID number';
+$string['priorityscalevaluename'] = 'Scale value name';
+$string['invalidnumeric'] = 'Numerical value must be numerical (or not set)';
+$string['usepriority'] = 'Use priority';
+$string['error:noprioritiesfound'] = 'No priorities found, please create a priority scale first.';
+$string['error:couldnotcreatetemplate'] = 'Could not create new IDP template';
+$string['error:couldnotupdatetemplate'] = 'Could not update IDP template';
+$string['error:couldnotcreatecompetencyarea'] = 'Could not create new competency area';
+$string['error:couldnotupdatecompentenyarea'] = 'Could not update competency area';
+$string['contents'] = 'Contents';
+$string['deletecheckcomparea'] = 'Are you absolutely sure you want to completely delete this competency area?';
+$string['deletedcomparea'] = 'The competency area $a has been completely deleted.';
+$string['linktopriorityvalues'] = '<a href=\\"view.php?id=$a\\">Click here</a> to view/edit the scale values for this priority scale.';
 ?>

@@ -96,6 +96,10 @@ $string['local:idpviewowncomment'] = 'View own comments';
 $string['local:idpviewownlist'] = 'View own IDP list';
 $string['local:idpviewownplan'] = 'View own IDPs';
 $string['local:idpviewplan'] = 'View a user\'s IDPs';
+$string['local:idpuserevaluate'] = 'User can evaluate their own IDP';
+$string['local:idpsetcurrent'] = 'Set current IDP';
+$string['local:manageidptemplates'] = 'Manage IDP templates';
+$string['local:manageidppriorities'] = 'Manage IDP priority scales';
 
 // Local Report capability strings
 $string['local:admin'] = 'Perform administrative tasks on report builder reports';

@@ -14,8 +14,8 @@ $(function() {
 
         mitmsMultiSelectDialog(
             'idpcompetency',
-            url+'find.php?id='+idp_revision_id,
-            url+'save.php?id='+idp_revision_id+'&rowcount='+idp_competency_row_count+'&deleteexisting=1&add='
+            url+'find.php?id='+idp_revision_id+'&frameworkid='+idp_revision_frameworkid,
+            url+'save.php?id='+idp_revision_id+'&frameworkid='+idp_revision_frameworkid+'&deleteexisting=1&add='
         );
         // display the button on page load
         $('#show-idpcompetency-dialog').css('display','inline');
@@ -29,8 +29,8 @@ $(function() {
 
         mitmsMultiSelectDialog(
             'idpcompetencytemplate',
-            url+'find-template.php?id='+idp_revision_id,
-            url+'save-template.php?id='+idp_revision_id+'&rowcount='+idp_competencytemplate_row_count+'&deleteexisting=1&add='
+            url+'find-template.php?id='+idp_revision_id+'&frameworkid='+idp_revision_frameworkid,
+            url+'save-template.php?id='+idp_revision_id+'&frameworkid='+idp_revision_frameworkid+'&deleteexisting=1&add='
         );
         // display the button on page load
         $('#show-idpcompetencytemplate-dialog').css('display','inline');
@@ -44,8 +44,8 @@ $(function() {
 
         mitmsMultiSelectDialog(
             'idppositioncompetency',
-            url+'find-position.php?id='+idp_revision_id,
-            url+'save.php?id='+idp_revision_id+'&rowcount='+idp_competency_row_count+'&deleteexisting=1&add='
+            url+'find-position.php?id='+idp_revision_id+'&frameworkid='+idp_revision_frameworkid,
+            url+'save.php?id='+idp_revision_id+'&frameworkid='+idp_revision_frameworkid+'&deleteexisting=1&add='
         );
         // display the button on page load
         $('#show-idppositioncompetency-dialog').css('display','inline');
@@ -59,8 +59,8 @@ $(function() {
 
         mitmsMultiSelectDialog(
             'idppositioncompetencytemplate',
-            url+'find-position-template.php?id='+idp_revision_id,
-            url+'save-template.php?id='+idp_revision_id+'&rowcount='+idp_competencytemplate_row_count+'&deleteexisting=1&add='
+            url+'find-position-template.php?id='+idp_revision_id+'&frameworkid='+idp_revision_frameworkid,
+            url+'save-template.php?id='+idp_revision_id+'&frameworkid='+idp_revision_frameworkid+'&deleteexisting=1&add='
         );
         // display the button on page load
         $('#show-idppositioncompetencytemplate-dialog').css('display','inline');
@@ -75,7 +75,7 @@ $(function() {
         var handler = new mitmsDialog_handler_idpCourse();
         handler.baseurl = url;
 
-        save_url = url+'save.php?id='+idp_revision_id+'&rowcount='+idp_competencytemplate_row_count+'&deleteexisting=1&add=',
+        save_url = url+'save.php?id='+idp_revision_id+'&deleteexisting=1&add=',
     
         mitmsDialogs['idpcourse'] = new mitmsDialog(
             'idpcourse',

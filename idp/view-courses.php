@@ -1,5 +1,7 @@
 <?php
 
+require_once('lib.php');
+
 /**
  * Display the courses box for an IDP
  * todo: move this into idp/lib.php
@@ -155,5 +157,144 @@ $(function() {
     <?php
 
         }
+}
+
+
+function print_idp_courses_view_flex( $revision, $courses, $editingon=false, $page, $perpage, $total){
+    global $CFG, $SESSION, $USER;
+    $sort     = optional_param('sort');
+
+    $addcourse = true;
+
+    $str_remove = get_string('remove');
+    $shortname = 'comptable';
+    $columns = array();
+    $headers = array();
+
+    $columns[] = 'name';
+    $headers[] = get_string('course');
+    $columns[] = 'status';
+    $headers[] = get_string('status', 'idp');
+
+    if(get_config(NULL, 'idp_duedates')!=0){
+        $columns[] = 'duedate';
+        $headers[] = get_string('duedate', 'idp');
+    }
+    if(get_config(NULL, 'idp_priorities')==2){
+        $columns[] = 'priority';
+        $headers[] = get_string('priority', 'idp');
+    }
+    if($editingon){
+        $columns[] = 'options';
+        $headers[] = get_string('options', 'competency');
+    }
+
+    $table = new flexible_table($shortname);
+    $table->set_attribute('id', 'list-idpcourse');
+    $table->set_attribute('class', 'generalbox idp-course');
+    $table->define_columns($columns);
+    $table->define_headers($headers);
+
+    $table->setup();
+    $table->pagesize($perpage, $total);
+    $table->add_data(NULL);
+
+
+    /*$sql = "SELECT val.id, val.name FROM {$CFG->prefix}idp_tmpl_priority_scal_val val
+        JOIN {$CFG->prefix}idp_tmpl_priority_scale ps ON val.priorityscaleid=ps.id
+        JOIN {$CFG->prefix}idp_tmpl_priority_assign pa ON ps.id=pa.priorityscaleid
+        JOIN {$CFG->prefix}idp_template temp ON pa.templateid=temp.id
+        JOIN {$CFG->prefix}idp i ON temp.id=i.templateid WHERE i.id={$revision->idp}";*/
+    $priorities = get_idp_priority_scale($revision);
+
+    if ($courses) {
+        foreach ($courses as $course) {
+            $tablerow = array();
+
+            if(!isset($course->timestarted))
+                $course->timestarted = 0;
+            if(!isset($course->timeenrolled))
+                $course->timeenrolled = 0;
+            if(!isset($course->timecompleted))
+                $course->timecompleted = 0;
+            $statusstring = completion_completion::get_status($course);
+            if(!$statusstring)
+                $statusstring = 'notyetstarted';
+            $status = get_string($statusstring, 'completion');
+
+            $tablerow[] = "<a href=\"{$CFG->wwwroot}/course/view.php?id={$course->id}\">{$course->fullname}</a>";
+            $tablerow[] = "<span class=\"completion-$statusstring\" title=\"$status\">$status</span>";
+            if(get_config(NULL, 'idp_duedates')!=0){
+                $duedatestr = $course->duedate == NULL ? '' : date('d/m/Y', $course->duedate );
+                if ($editingon) {
+                    $duedatecell = '<input size="10" maxlength="10" type="text" class="idpdate" value="'.$duedatestr.'"name="courseduedate['.$course->id.']" id="courseduedate'.$course->id.'"/>';
+                } else {
+                    if ((($course->duedate <= strtotime("+1 week")) && ($course->duedate >= strtotime("now"))) && !$course->timecompleted){
+                        $duedatecell = '<font color="red">'.$duedatestr.'</font>';
+                    }
+                    else if ($course->duedate <= strtotime("+1 week") && !$course->timecompleted){
+                        $duedatecell = '<font color="red"><b>'.$duedatestr.'</b></font>';
+                    }
+                    else {
+                        $duedatecell = $duedatestr;
+                    }
+                }
+                $tablerow[] = $duedatecell;
+            }
+
+            if(get_config(NULL, 'idp_priorities')==2) {
+                if ($editingon) {
+                    $prioritycell = '<select class="idppriority" name="comppriority['.$course->id.']" id="comppriority'.$course->id.'"/>';
+                    foreach($priorities as $priority){
+                        if($priority->id == $course->priority)
+                            $prioritycell .= '<option value="'.$priority->id.'" selected="selected">'.$priority->name.'</option>';
+                        else
+                            $prioritycell .= '<option value="'.$priority->id.'">'.$priority->name.'</option>';
+                    }
+                    $prioritycell .= '</select>';
+                    $tablerow[] = $prioritycell;
+                }
+                else {
+                    $priority = get_field('idp_tmpl_priority_scal_val', 'name', 'id', $course->priority);
+                    if($priority)
+                        $tablerow[] = $priority;
+                    else
+                        $tablerow[] = 'No priority';
+                }
+            }
+
+            if ($editingon) {
+                $tablerow[] = "<a href=\"{$CFG->wwwroot}/hierarchy/type/course/idp/remove.php?id={$course->id}&revision={$revision->id}\" title=\"$str_remove\">".
+                    "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_remove\" /></a>";
+            }
+
+            $table->add_data($tablerow);
+        }
+        $table->print_html();
+    }
+    else {
+        echo '<i>'.get_string('emptyplancourses', 'idp').'</i>';
+    }
+
+    if($addcourse){
+        echo '<br><input type="submit" id="show-idpcourse-dialog" value="' . get_string('addfromcategories', 'idp') . '" />';
+        echo '<noscript><a href="'.$CFG->wwwroot.'/hierarchy/type/course/idp/add.php?id='.$revision->id .
+            '&amp;nojs=1&amp;returnurl='.urlencode(qualified_me()).'&amp;s='.sesskey().'" class="noscript-button">'.get_string('addfromcategories','idp').'</a></noscript>';
+
+        print helpbutton('idpaddcourses', get_string('addfromcategories', 'idp'));
+    }
+
+    echo "<script type=\"text/javascript\">
+        $(function() {
+            $('[id^=courseduedate]').datepicker(
+                {
+                dateFormat: 'dd/mm/yy',
+                showOn: 'button',
+                buttonImage: '../local/js/images/calendar.gif',
+                buttonImageOnly: true
+                }
+            );
+        });
+        </script>";
 }
 ?>

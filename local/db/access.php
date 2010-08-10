@@ -603,4 +603,22 @@ $local_capabilities = array(
             'user' => CAP_ALLOW
         )
     ),
+
+    // Manage IDP priority scales
+    'moodle/local:manageidppriorities' => array(
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'legacy' => array(
+            'admin' => CAP_ALLOW
+        )
+    ),
+
+    // Manage IDP templates
+    'moodle/local:manageidptemplates' => array(
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'legacy' => array(
+            'admin' => CAP_ALLOW
+        )
+    ),
 );

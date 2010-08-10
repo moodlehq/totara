@@ -213,7 +213,7 @@ foreach ($lt as $column) {
             }
 
             if ( $hasplans || ($ownpage && has_capability('moodle/local:idpeditownplan', $contextsite)) ){
-                print '<table width="738px"><tr>';
+                print '<table><tr>';
             }
             if ($ownpage && has_capability('moodle/local:idpeditownplan', $contextsite)) {
                 // Create new plan button
@@ -223,7 +223,7 @@ foreach ($lt as $column) {
                 print "</div></form></td>\n";
             }
 
-            if ($hasplans) {
+            if ($hasplans && (get_config(NULL, 'idp_showlearnrec')==2)){
                 // Evaluation Summary button
                 print '<td align="right"><form method="get" action="index.php"><div>';
                 print '<input type="hidden" name="userid" value="'.$userid.'" />';

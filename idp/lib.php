@@ -1,5 +1,4 @@
 <?php
-
 require_once($CFG->dirroot.'/hierarchy/type/competency/lib.php');
 require_once($CFG->dirroot.'/idp/view-competencies.php');
 require_once($CFG->dirroot.'/idp/view-competencytemplates.php');
@@ -26,8 +25,8 @@ $CFG->idpenablefavourites = false;
 /**
  * Create a new Learning Plan along with an initial revision
  */
-function create_new_plan($name='', $startdate=0, $enddate=0) {
-    global $USER;
+function create_new_plan($name='', $startdate=0, $enddate=0, $templateid=0) {
+    global $USER, $CFG;
 
     // Default values
     $ctime = time();
@@ -50,6 +49,7 @@ function create_new_plan($name='', $startdate=0, $enddate=0) {
     $idp->userid = $USER->id;
     $idp->startdate = $startdate;
     $idp->enddate = $enddate;
+    $idp->templateid = $templateid;
     if (!$id = insert_record('idp', $idp)) {
         rollback_sql();
         return false;
@@ -61,11 +61,46 @@ function create_new_plan($name='', $startdate=0, $enddate=0) {
     $revision->ctime = $ctime;
     $revision->mtime = $ctime;
     $revision->visible = 0;
-    if (!insert_record('idp_revision', $revision)) {
+    if (!$revisionid = insert_record('idp_revision', $revision)) {
         rollback_sql();
         return false;
     }
 
+    // Get all cometency areas then loop through all frameworks
+    // and add each cometency in that framework to the idp
+    $now = time();
+    $defaultsql = "SELECT s.defaultid AS id
+        FROM {$CFG->prefix}idp_tmpl_priority_scale s
+        JOIN {$CFG->prefix}idp_tmpl_priority_assign a
+        ON s.id=a.priorityscaleid
+        WHERE a.templateid={$templateid}";
+    if($defaultpriority = get_record_sql($defaultsql)){
+        $plancometencies = array();
+
+        $sql = "SELECT c.id, c.name FROM mdl_comp c
+            JOIN mdl_idp_comp_area_fw fw
+            ON fw.frameworkid=c.frameworkid
+            JOIN mdl_idp_comp_area ca
+            ON fw.areaid=ca.id
+            WHERE ca.templateid={$templateid}";
+        if($competencies = get_records_sql($sql)){
+            foreach($competencies as $competency){
+                $idpcomp = new stdclass();
+                $idpcomp->ctime = $now;
+                $idpcomp->revision = $revisionid;
+                $idpcomp->competency = $competency->id;
+                $idpcomp->priority = $defaultpriority->id;
+                $plancompetencies[] = $idpcomp;
+            }
+
+            foreach($plancompetencies as $record){
+                if(!insert_record('idp_revision_competency', $record)){
+                    rollback_sql();
+                    return false;
+                }
+            }
+        }
+    }
     commit_sql();
     return $id;
 }
@@ -312,6 +347,7 @@ function print_revision_details($revision, $can_submit, $can_approve=false, $pdf
 
     // Personal information
     if(!$pdf && $showactions){
+        $printoptions = '';
         $printoptions .= '<a href="'.$CFG->wwwroot.'/idp/revision.php?id=' . $revision->idp . '&amp;print=1">'.get_string('printableview', 'idp').'</a> - ';
         $printoptions .= '<a href="'.$CFG->wwwroot.'/idp/revision_pdf.php?id=' . $revision->idp . '">' . get_string('exporttopdf', 'idp') . '</a>';
 
@@ -1946,6 +1982,13 @@ function print_freeform_list($revisionid, $listtype, $can_edit = false, $return 
 
 function print_revision_manager($revision, $plan, $formstartstr, $options=array()) {
     global $USER, $CFG;
+    $defaultframeworkid = get_field('comp_framework', 'MIN(id)');
+
+    $type = optional_param('type', 'competencies', PARAM_ALPHA);
+    $frameworkid = optional_param('framework', $defaultframeworkid, PARAM_INT);
+    $page = optional_param('page', 0, PARAM_INT);
+    $perpage = optional_param('perpage', 20, PARAM_INT);
+    $start = $page*$perpage;
 
     // merge in options array, in case of unset options, defaults are provided.
     $options = array_merge(array(
@@ -1973,28 +2016,53 @@ function print_revision_manager($revision, $plan, $formstartstr, $options=array(
     $haspositions = (bool) $position->get_user_positions($user);
 
     echo "{$formstartstr}\n";
+    $currenttab = $type.$frameworkid;
+    require('tabs.php');
 
-    $competencies = idp_get_user_competencies($plan->userid, $revision->id);
-    print_idp_competencies_view($revision, $competencies, $options['can_edit'], $haspositions);
+    if($type == 'competencies'){
+        $compcount = get_record_sql("SELECT COUNT(*) FROM {$CFG->prefix}idp_revision_competency rc JOIN {$CFG->prefix}comp c ON rc.competency=c.id WHERE revision={$revision->id} AND frameworkid={$frameworkid}");
 
-    $courses = idp_get_user_courses($plan->userid, $revision->id);
-    print_idp_courses_view($revision, $courses, $options['can_edit']);
+        $competencies = idp_get_user_competencies($plan->userid, $revision->id, $frameworkid, $start, $perpage, 'fullname');
+        print_idp_competencies_view_flex($revision, $competencies, $options['can_edit'], $haspositions, $page, $perpage, $compcount->count);
+    }
 
-    // Free-form lists
-//    $objhtml = print_freeform_list($revision->id, 0, false, true);
-//    $objhtml .= print_freeform_list($revision->id, 1, false, true);
+    if($type == 'comptemplates'){
+        $templatecount = get_record_sql("SELECT COUNT(rct.id)
+                                            FROM {$CFG->prefix}idp_revision_competencytmpl rct
+                                            INNER JOIN {$CFG->prefix}comp_template ct
+                                                ON rct.competencytemplate = ct.id
+                                            WHERE revision={$revision->id} AND frameworkid={$frameworkid}");
+
+        $competencytemplates = idp_get_user_competencytemplates($plan->userid, $revision->id, $frameworkid, $page, $perpage, 'fullname');
+        print_idp_competency_templates_view_flex($revision, $competencytemplates, $options['can_edit'], $haspositions, $page, $perpage, $templatecount->count);
+    }
+
+    if($type == 'courses'){
+        $coursecount = get_record_sql("SELECT COUNT(*) FROM {$CFG->prefix}idp_revision_course WHERE revision={$revision->id}");
+
+        $courses = idp_get_user_courses($plan->userid, $revision->id, $start, $perpage, null);
+        print_idp_courses_view_flex($revision, $courses, $options['can_edit'], $page, $perpage, $coursecount->count);
+    }
 
     print_revision_extracomment($revision);
 }
 
 function print_revision_trainee($revision, $plan, $formstartstr, $options=array()) {
     global $USER, $CFG;
+    $defaultframeworkid = get_field('comp_framework', 'MIN(id)');
+
+    $type = optional_param('type', 'competencies', PARAM_ALPHA);
+    $frameworkid = optional_param('framework', $defaultframeworkid, PARAM_INT);
+    $page = optional_param('page', 0, PARAM_INT);
+    $perpage = optional_param('perpage', 20, PARAM_INT);
+
+    $start = $page*$perpage;
+
     // merge in options array, in case of unset options, defaults are provided.
     $options = array_merge(array(
         'can_edit'      =>  false,
         'can_submit'    =>  false,
     ), $options);
-
 
     // Personal details
     print  '<h2>'.get_string('personaldetailsheading', 'idp').'</h2>';
@@ -2012,29 +2080,46 @@ function print_revision_trainee($revision, $plan, $formstartstr, $options=array(
 
     // Get user's positions
     $user = (object) array('id' => $plan->userid);
-
     $position = new position();
     $haspositions = (bool) $position->get_user_positions($user);
 
     echo "{$formstartstr}\n";
+    $currenttab = $type.$frameworkid;
+    require('tabs.php');
 
-    $competencies = idp_get_user_competencies($plan->userid, $revision->id);
-    print_idp_competencies_view($revision, $competencies, $options['can_edit'], $haspositions);
+    if($type == 'competencies'){
+        $compcount = get_record_sql("SELECT COUNT(*) FROM {$CFG->prefix}idp_revision_competency rc JOIN {$CFG->prefix}comp c ON rc.competency=c.id WHERE revision={$revision->id} AND frameworkid={$frameworkid}");
 
-    $courses = idp_get_user_courses($plan->userid, $revision->id);
-    print_idp_courses_view($revision, $courses, $options['can_edit']);
+        $competencies = idp_get_user_competencies($plan->userid, $revision->id, $frameworkid, $start, $perpage, 'fullname');
+        print_idp_competencies_view_flex($revision, $competencies, $options['can_edit'], $haspositions, $page, $perpage, $compcount->count);
+    }
 
-    // Free-form lists
-//    $objhtml = print_freeform_list($revision->id, 0, $options['can_edit'], true);
-//    $objhtml .= print_freeform_list($revision->id, 1, $options['can_edit'], true);
+    if($type == 'comptemplates'){
+        $templatecount = get_record_sql("SELECT COUNT(rct.id)
+                                            FROM {$CFG->prefix}idp_revision_competencytmpl rct
+                                            INNER JOIN {$CFG->prefix}comp_template ct
+                                                ON rct.competencytemplate = ct.id
+                                            WHERE revision={$revision->id} AND frameworkid={$frameworkid}");
+
+        $competencytemplates = idp_get_user_competencytemplates($plan->userid, $revision->id, $frameworkid, $page, $perpage, 'fullname');
+        print_idp_competency_templates_view_flex($revision, $competencytemplates, $options['can_edit'], $haspositions, $page, $perpage, $templatecount->count);
+    }
+
+    if($type == 'courses'){
+        $coursecount = get_record_sql("SELECT COUNT(*) FROM {$CFG->prefix}idp_revision_course WHERE revision={$revision->id}");
+
+        $courses = idp_get_user_courses($plan->userid, $revision->id, $start, $perpage, null);
+        print_idp_courses_view_flex($revision, $courses, $options['can_edit'], $page, $perpage, $coursecount->count);
+    }
+
 
     // Check for empty plans
     if (empty($objhtml) && empty($listshtml)) {
-//        print '<p><i>'.get_string('emptyplan', 'idp')."</i></p>\n";
+    // print '<p><i>'.get_string('emptyplan', 'idp')."</i></p>\n";
     } else {
         print $listshtml;
         print $objhtml;
-//        print_revision_extracomment($revision);
+        //print_revision_extracomment($revision);
     }
 }
 
@@ -2126,12 +2211,12 @@ function print_revision_pdf($revision, $plan, $options=array()) {
        print '<p><i>'.get_string('emptyplancompetencies', 'idp')."</i></p>\n";
     }
 
-    /*$competencytemplates = idp_get_user_competencytemplates($plan->userid, $revision->id);
+    $competencytemplates = idp_get_user_competencytemplates($plan->userid, $revision->id);
     if ($competencytemplates) {
         print_idp_competency_templates_view($revision, $competencytemplates, $options['can_edit']);
     } else {
         print '<p><i>'.get_string('emptyplancompetencytemplates','idp')."</i></p>\n";
-    }*/
+    }
 
     $courses = idp_get_user_courses($plan->userid, $revision->id);
     if ( $courses ) {
@@ -2164,7 +2249,7 @@ function print_button() { //Currently disabled
  * @param array $grades         Array of grades as submitted by the grades form
  * @param string $extracomment  Optional comment added to the evaluation
  */
-function idp_get_user_competencies($userid, $currevisionid) {
+function idp_get_user_competencies($userid, $currevisionid, $frameworkid=null, $start=null, $size=null, $sort=null) {
     global $CFG;
 
     $sql = "
@@ -2175,6 +2260,7 @@ function idp_get_user_competencies($userid, $currevisionid) {
             f.fullname AS framework,
             d.fullname AS depth,
             r.duedate as duedate,
+            r.priority as priority,
             sv.name as status,
             ce.id as ceid,
             ce.proficiency,
@@ -2201,8 +2287,21 @@ function idp_get_user_competencies($userid, $currevisionid) {
          ON cs.id = sv.scaleid
         WHERE r.revision = {$currevisionid}
         ";
-    return get_records_sql($sql);
+
+    if(isset($frameworkid)){
+        $sql .= " AND f.id={$frameworkid}";
+    }
+    if(isset($sort)){
+        $sql .= " ORDER BY {$sort}";
+    }
+    if(isset($start) && isset($size)){
+        return get_records_sql($sql, $start, $size);
+    }
+    else{
+        return get_records_sql($sql);
+    }
 }
+
 
 /**
  * @param int $userid ID of user
@@ -2230,16 +2329,17 @@ function idp_get_user_positions($userid) {
  * @param class $revision       Revision object as returned by get_revision()
  * @param array $grades         Array of grades as submitted by the grades form
  */
-function idp_get_user_competencytemplates($userid, $currevisionid) {
+function idp_get_user_competencytemplates($userid, $currevisionid, $frameworkid=null, $start=null, $size=null, $sort=null) {
     global $CFG;
 
     $sql = "
         SELECT DISTINCT
             c.id AS id,
-            c.fullname,
+            c.fullname AS fullname,
             f.id AS fid,
             f.fullname AS framework,
-            r.duedate as duedate
+            r.duedate as duedate,
+            r.priority as priority
         FROM
             {$CFG->prefix}idp_revision_competencytmpl r
         INNER JOIN
@@ -2250,7 +2350,19 @@ function idp_get_user_competencytemplates($userid, $currevisionid) {
          ON f.id = c.frameworkid
         WHERE r.revision = {$currevisionid}
         ";
-    return get_records_sql($sql);
+
+    if (!empty($frameworkid)) {
+        $sql .= " AND f.id = {$frameworkid} ";
+    }
+    if(isset($sort)){
+        $sql .= " ORDER BY {$sort}";
+    }
+    if(isset($start) && isset($size)){
+        return get_records_sql($sql, $start, $size);
+    }
+    else{
+        return get_records_sql($sql);
+    }
 }
 
 /**
@@ -2261,16 +2373,17 @@ function idp_get_user_competencytemplates($userid, $currevisionid) {
  * @param string $extracomment  Optional comment added to the evaluation
  */
 
-function idp_get_user_courses($userid, $currevisionid) {
+function idp_get_user_courses($userid, $currevisionid, $start=null, $size=null, $sort=null) {
     global $CFG;
 
     $sql = "
         SELECT DISTINCT
             c.id,
-            c.fullname,
+            c.fullname as fullname,
             cc.id as ccid,
             cc.name as category,
             r.duedate as duedate,
+            r.priority,
             ccomp.timestarted,
             ccomp.timeenrolled,
             ccomp.timecompleted,
@@ -2284,7 +2397,16 @@ function idp_get_user_courses($userid, $currevisionid) {
           ON c.id=ccomp.course AND ccomp.userid = {$userid}
         WHERE r.revision = {$currevisionid}
         ";
-    return get_records_sql($sql);
+
+    if(isset($sort)){
+        $sql .= " ORDER BY {$sort}";
+    }
+    if(isset($start) && isset($size)){
+        return get_records_sql($sql, $start, $size);
+    }
+    else{
+        return get_records_sql($sql);
+    }
 }
 
 
@@ -3000,7 +3122,6 @@ SQL;
     return $eval;
 }
 
-
 function idp_get_assigned_to_comptemplate($id, $userid) {
     global $CFG;
 
@@ -3034,4 +3155,22 @@ function idp_get_assigned_to_comptemplate($id, $userid) {
     return get_records_sql($sql);
 }
 
+
+function get_priorities() {
+    return get_records('idp_tmpl_priority_scale', '', '', 'name');
+}
+
+function get_competency_areas() {
+    return get_records('idp_comp_area', '', '', 'sortorder');
+}
+
+function get_idp_priority_scale($idprevision) {
+    global $CFG;
+    $sql = "SELECT val.id, val.name FROM {$CFG->prefix}idp_tmpl_priority_scal_val val
+        JOIN {$CFG->prefix}idp_tmpl_priority_scale ps ON val.priorityscaleid=ps.id
+        JOIN {$CFG->prefix}idp_tmpl_priority_assign pa ON ps.id=pa.priorityscaleid
+        JOIN {$CFG->prefix}idp_template temp ON pa.templateid=temp.id
+        JOIN {$CFG->prefix}idp i ON temp.id=i.templateid WHERE i.id={$idprevision->idp}";
+    return get_records_sql($sql);
+}
 ?>

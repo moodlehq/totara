@@ -143,24 +143,25 @@ function mitms_print_my_learning_nav($return=false) {
         ';
     }
     $returnstr .= '
-            <tr>
-                <td align="left">
-                    <a href="'.$CFG->wwwroot.'/blocks/facetoface/mysignups.php" title=""><img src="'.$CFG->wwwroot.'/pix/i/bookings.png" width="32" height="32" /></a>
-                </td>
-                <td align="left" valign="center">
-                    <span style="font-size: small"><a href="'.$CFG->wwwroot.'/my/bookings.php?id='.$USER->id.'">'.get_string('bookings','local').'</a></span>
-                </td>
-            </tr>
-            <tr>
-                <td align="left">
-                    <a href="'.$CFG->wwwroot.'/my/records.php?id='.$USER->id.'" title=""><img src="' . $CFG->wwwroot . '/pix/i/rol.png" width="32" height="32" /></a>
-                </td>
-                <td align="left" valign="center">
-                    <span style="font-size: small"><a href="'.$CFG->wwwroot.'/my/records.php?id='.$USER->id.'">'.get_string('recordoflearning','local').'</a></span>
-                </td>
-            </tr>
-        </table>
-    ';
+        <tr>
+            <td align="left">
+                <a href="'.$CFG->wwwroot.'/blocks/facetoface/mysignups.php" title=""><img src="'.$CFG->wwwroot.'/pix/i/bookings.png" width="32" height="32" /></a>
+            </td>
+            <td align="left" valign="center">
+                <span style="font-size: small"><a href="'.$CFG->wwwroot.'/my/bookings.php?id='.$USER->id.'">'.get_string('bookings','local').'</a></span>
+            </td>
+        </tr>';
+    if(get_config(NULL, 'idp_showlearnrec')==2){
+        $returnstr .= '<tr>
+            <td align="left">
+                <a href="'.$CFG->wwwroot.'/my/records.php?id='.$USER->id.'" title=""><img src="' . $CFG->wwwroot . '/pix/i/rol.png" width="32" height="32" /></a>
+            </td>
+            <td align="left" valign="center">
+                <span style="font-size: small"><a href="'.$CFG->wwwroot.'/my/records.php?id='.$USER->id.'">'.get_string('recordoflearning','local').'</a></span>
+            </td>
+        </tr>';
+    }
+    $returnstr .= '</table>';
 
     if ($return) {
         return $returnstr;
