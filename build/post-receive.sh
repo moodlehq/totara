@@ -249,7 +249,7 @@ generate_create_branch_email()
 	echo ""
 
 	echo $LOGBEGIN
-	show_new_revisions
+	show_new_revisions | head -10
 	echo $LOGEND
 }
 
@@ -647,7 +647,7 @@ show_new_revisions()
 			emailsubject="$onerev"
 			echo "$emailsubject" > "$emailsubject_tmp_file" 
 		fi
-		git diff-tree --pretty --summary -p $onerev
+		git diff-tree --pretty --stat -p $onerev
 	done
 }
 
