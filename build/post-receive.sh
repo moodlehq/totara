@@ -644,7 +644,7 @@ show_new_revisions()
 		(( msg_count+=1 ))
 		if [ $msg_count == 1 ]
 		then
-			git diff-tree --format=%s $onerev > "$emailsubject_tmp_file"
+			git diff-tree --format=%s $onerev | head -1 > "$emailsubject_tmp_file"
 		fi
 		git diff-tree --pretty --stat -p $onerev
 	done
