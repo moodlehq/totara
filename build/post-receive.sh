@@ -637,7 +637,7 @@ show_new_revisions()
 	git rev-parse --not $other_branches |
 	
 	msg_count=0;
-	git rev-list --pretty --stdin $revspec |
+	git log -p --stdin $revspec |
 	while read onerev
 	do
 		# eval $(printf "$custom_showrev" onerev: $onerev)
