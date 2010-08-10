@@ -634,10 +634,10 @@ show_new_revisions()
 
 	other_branches=$(git for-each-ref --format='%(refname)' refs/heads/ |
 	    grep -F -v $refname)
-	git rev-parse --not $other_branches |
+	git rev-list --not $other_branches |
 	
 	msg_count=0;
-	git log -p --stdin $revspec |
+	git rev-list --stdin $revspec |
 	while read onerev
 	do
 		# eval $(printf "$custom_showrev" onerev: $onerev)
@@ -647,7 +647,7 @@ show_new_revisions()
 			emailsubject="$onerev"
 			echo "$emailsubject" > "$emailsubject_tmp_file" 
 		fi
-		echo "$onerev"
+		git diff-tree --pretty --summary -p $onerev
 	done
 }
 
