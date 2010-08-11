@@ -157,6 +157,10 @@ function position_backup_position($bf, $fwid, $options) {
                 position_backup_custom_data($bf, $position->id, $options);
             }
 
+            if(isset($options->inc_comp) && $options->inc_comp) {
+                position_backup_assigned_competencies($bf, $position->id, $options);
+            }
+
             fwrite($bf, end_tag('POSITION', 6, true));
         }
         fwrite($bf, end_tag('POSITIONS', 5, true));
@@ -182,6 +186,26 @@ function position_backup_custom_data($bf, $posid, $options) {
     }
 }
 
+function position_backup_assigned_competencies($bf, $posid, $options){
+    if(is_numeric($posid)){
+        $values = get_records('pos_competencies','positionid',$posid);
+    }
+    if($values){
+        fwrite($bf, start_tag('ASSIGNED_COMPETENCIES', 7, true));
+        foreach($values as $value){
+            fwrite($bf, start_tag('COMPETENCY', 8, true));
+            fwrite($bf, full_tag('ID', 9, false, $value->id));
+            fwrite($bf, full_tag('POSITIONID', 9, false, $value->positionid));
+            fwrite($bf, full_tag('COMPETENCYID', 9, false, $value->competencyid));
+            fwrite($bf, full_tag('TEMPLATEID', 9, false, $value->templateid));
+            fwrite($bf, full_tag('TIMECREATED', 9, false, $value->timecreated));
+            fwrite($bf, full_tag('USERMODIFIED', 9, false, $value->usermodified));
+            fwrite($bf, end_tag('COMPETENCY', 8, true));
+        }
+        fwrite($bf, end_tag('ASSIGNED_COMPETENCIES', 7, true));
+    }
+}
+
 function position_options() {
     $options = array();
 
@@ -192,6 +216,14 @@ function position_options() {
                                   'format' => PARAM_BOOL,
                                   'tag' => 'DEPTH_CATEGORIES'
                               );
+
+    $options['competencies'] = array('name' => 'inc_comp',
+                                        'type' => 'selectyesno',
+                                        'label' => 'Include Assigned competencies',
+                                        'default' => 1,
+                                        'format' => PARAM_BOOL,
+                                        'tag' => 'ASSIGNED_COMPETENCIES'
+                                    );
 
     return $options;
 

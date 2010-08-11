@@ -250,6 +250,12 @@ function position_restore_positions($oldfwid, $newfwid, $fwinfo, $options, $back
                 position_restore_custom_data($oldid, $newid, $position_info, $options, $backup_unique_code);
             }
 
+            // restore assigned competencies if specified by options
+            if(isset($options['inc_comp']) && $options['inc_comp']) {
+                //restore assigned competencies
+                position_restore_assigned_competencies($oldid, $newid, $position_info, $options, $backup_unique_code);
+            }
+
         } else {
             $status = false;
         }
@@ -282,6 +288,53 @@ function position_restore_custom_data($oldposid, $newposid, $posinfo, $options, 
         $newid = insert_record('pos_depth_info_data',$value);
         if($newid) {
             backup_putid($backup_unique_code, 'pos_depth_info_data', $oldid, $newid);
+        } else {
+            $status = false;
+        }
+    }
+
+}
+
+function position_restore_assigned_competencies($oldposid, $newposid, $posinfo, $options, $backup_unique_code) {
+    if(isset($posinfo['#']['ASSIGNED_COMPETENCIES']['0']['#']['COMPETENCY'])) {
+        $values = $posinfo['#']['ASSIGNED_COMPETENCIES']['0']['#']['COMPETENCY'];
+    } else {
+        $values = array();
+    }
+
+    print "Restoring ".count($values)." assigned competencies<br>";
+
+    for($i=0; $i < sizeof($values); $i++) {
+        $value_info = $values[$i];
+
+        $oldid = backup_todb($value_info['#']['ID']['0']['#']);
+        $value = new object();
+        $value->positionid = $value_info['#']['POSITIONID']['0']['#'];
+        $value->competencyid = backup_todb($value_info['#']['COMPETENCYID']['0']['#']);
+        $value->templateid = backup_todb($value_info['#']['TEMPLATEID']['0']['#']);
+        $value->timecreated = $value_info['#']['TIMECREATED']['0']['#'];
+        $value->usermodified = $value_info['#']['USERMODIFIED']['0']['#'];
+
+        // rewrite positionid
+        $positionid = backup_getid($backup_unique_code, 'pos', $value->positionid);
+        if($positionid) {
+            $value->positionid = $positionid->new_id;
+        }
+
+        // rewrite competencyid
+        $competencyid = backup_getid($backup_unique_code, 'comp', $value->competencyid);
+        if($competencyid) {
+            $value->competencyid = $competencyid->new_id;
+        }
+
+        //rewrite templateid
+        $templateid = backup_getid($backup_unique_code, 'comp_template', $value->templateid);
+        if($templateid) {
+            $value->templateid = $templateid->new_id;
+        }
+        $newid = insert_record('pos_competencies', $value);
+        if($newid) {
+            backup_putid($backup_unique_code, 'pos_competencies', $oldid, $newid);
         } else {
             $status = false;
         }
