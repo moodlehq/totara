@@ -200,6 +200,7 @@ function completion_cron_completions() {
         AND c.enablecompletion = 1
         AND crc.timecompleted IS NULL
         AND crc.reaggregate > 0
+        AND crc.reaggregate < {$timestarted}
         ORDER BY
             course,
             userid
