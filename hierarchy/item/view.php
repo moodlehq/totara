@@ -107,7 +107,7 @@ print_heading($heading);
                 $icon = mimeinfo("icon", $cf->data);
                 $data[] = array(
                     'title' => $cf->fullname,
-                    'value' => "<a href=\"http://mitms/file.php/1/{$cf->data}\"/><img src=\"{$CFG->pixpath}/f/{$icon}\" class=\"icon\" alt=\"{$strfile}\" />{$cf->data}</a>"
+                    'value' => "<a href=\"{$CFG->wwwroot}/file.php/1/{$cf->data}\"/><img src=\"{$CFG->pixpath}/f/{$icon}\" class=\"icon\" alt=\"{$strfile}\" />{$cf->data}</a>"
                 );
             }
             else{
