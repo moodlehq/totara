@@ -58,7 +58,7 @@
         $todb->source = ($fromform->source != '0') ? $fromform->source : null;
         $todb->hidden = $fromform->hidden;
         $todb->contentmode = 0;
-        $todb->accessmode = 0;
+        $todb->accessmode = 1; // default to limited access
         $todb->embeddedurl = null;
         //TODO set default content and access settings here?
 
@@ -66,6 +66,28 @@
         if(!$newid = insert_record('report_builder',$todb)) {
             rollback_sql();
             redirect($returnurl, get_string('error:couldnotcreatenewreport','local'));
+        }
+
+        // if admin role exists, restrict access to new report to administrators only
+        // (if role doesn't exist report will not be visible to anyone)
+        if($adminroleid = get_field('role', 'id', 'shortname', 'administrator')) {
+            $todb = new object();
+            $todb->reportid = $newid;
+            $todb->type = 'role_access';
+            $todb->name = 'enable';
+            $todb->value = 1;
+
+            $todb2 = new object();
+            $todb2->reportid = $newid;
+            $todb2->type = 'role_access';
+            $todb2->name = 'activeroles';
+            $todb2->value = '1';
+
+            if(!insert_record('report_builder_settings', $todb) ||
+                !insert_record('report_builder_settings', $todb2)) {
+                rollback_sql();
+                redirect($returnurl, get_string('error:couldnotcreatenewreport','local'));
+            }
         }
 
         // create columns for new report based on default columns
@@ -130,7 +152,7 @@
         }
 
         commit_sql();
-        redirect($CFG->wwwroot.'/local/reportbuilder/access.php?id='.$newid);
+        redirect($CFG->wwwroot.'/local/reportbuilder/settings.php?id='.$newid);
     }
 
     admin_externalpage_print_header();
