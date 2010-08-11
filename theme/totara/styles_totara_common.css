@@ -448,10 +448,6 @@ div.mitms-dialog ul.treeview, div.mitms-dialog div#column-checkboxes {
     overflow: auto;
 }
 
-div.mitms-dialog ul.picker {
-    height: 322px;
-}
-
 div.mitms-dialog ul.treeview li {
     font-size: 0.8em;
 }
