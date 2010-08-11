@@ -29,6 +29,9 @@ function local_js($options = array()) {
         require_js(array(
             $CFG->wwwroot.'/local/js/lib/jquery-ui-1.7.2.custom.min.js',
             $CFG->wwwroot.'/local/js/lib/dialog.js',
+            // fix for IE6 select z-index problem
+            // TODO only include for IE6 - conditional comments?
+            $CFG->wwwroot.'/local/js/lib/jquery.bgiframe.min.js',
         ));
     }
 

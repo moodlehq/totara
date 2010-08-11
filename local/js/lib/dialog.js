@@ -89,6 +89,11 @@ function mitmsDialog(title, buttonid, config, default_url, handler) {
             // Open default url
             obj.open();
         });
+
+        // fix for IE6 select z-index bug
+        if($.browser.msie && parseInt($.browser.version) == 6) {
+            $('.ui-dialog').bgiframe();
+        }
     }
 
 
