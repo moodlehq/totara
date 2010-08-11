@@ -181,6 +181,20 @@ class hierarchy {
         return get_record($this->shortprefix.'_depth_info_category', 'id', $id);
     }
 
+    function get_custom_fields($competencyid) {
+        global $CFG;
+
+        $sql = "SELECT d.*, f.*
+                FROM {$CFG->prefix}{$this->shortprefix}_depth_info_data AS d
+                INNER JOIN {$CFG->prefix}{$this->shortprefix}_depth_info_field AS f ON d.fieldid = f.id
+                WHERE d.competencyid = {$competencyid}
+                ORDER BY f.sortorder";
+
+        $customfields = get_records_sql($sql);
+
+        return is_array($customfields) ? $customfields : array();
+    }
+
     /**
      * Get the hierarchy item
      * @var int $id the id to move

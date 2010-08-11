@@ -13,6 +13,9 @@ require_once($CFG->dirroot.'/hierarchy/type/organisation/lib.php');
 // Competency id
 $assignto = required_param('assignto', PARAM_INT);
 
+// Framework id
+$frameworkid = required_param('frameworkid', PARAM_INT);
+
 // Competencies to add
 $add = required_param('add', PARAM_SEQUENCE);
 
@@ -41,7 +44,7 @@ if (!$organisation = $organisations->get_item($assignto)) {
 }
 
 // Currently assigned competencies
-if (!$currentlyassigned = $organisations->get_assigned_competency_templates($assignto)) {
+if (!$currentlyassigned = $organisations->get_assigned_competency_templates($assignto, $frameworkid)) {
     $currentlyassigned = array();
 }
 

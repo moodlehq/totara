@@ -55,7 +55,7 @@ if (!$framework = $hierarchy->get_framework($frameworkid)) {
 
 // Load competencies to display
 $competencies = $hierarchy->get_items_by_parent($parentid);
-$currentlyassigned = $organisation->get_assigned_competencies($assignto);
+$currentlyassigned = $organisation->get_assigned_competencies($assignto, $frameworkid);
 if (!is_array($currentlyassigned)) {
     $currentlyassigned = array();
 }
@@ -84,7 +84,9 @@ if (!$nojs) {
         echo populate_selected_items_pane($currentlyassigned);
         echo '</p></div>';
         echo '<p>'.get_string('locatecompetency', $hierarchy->prefix).':</p>';
-        $hierarchy->display_framework_selector('', true);
+        if (empty($frameworkid)) {
+            $hierarchy->display_framework_selector('', true);
+        }
         echo '<ul class="treeview filetree">';
     }
 

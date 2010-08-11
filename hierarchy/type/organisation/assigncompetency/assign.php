@@ -13,6 +13,9 @@ require_once($CFG->dirroot.'/hierarchy/type/organisation/lib.php');
 // Competency id
 $assignto = required_param('assignto', PARAM_INT);
 
+// Framework id
+$frameworkid = required_param('frameworkid', PARAM_INT);
+
 // Competencies to add
 $add = required_param('add', PARAM_SEQUENCE);
 
@@ -41,7 +44,7 @@ if (!$organisation = $organisations->get_item($assignto)) {
 }
 
 // Currently assigned competencies
-if (!$currentlyassigned = $organisations->get_assigned_competencies($assignto)) {
+if (!$currentlyassigned = $organisations->get_assigned_competencies($assignto, $frameworkid)) {
     $currentlyassigned = array();
 }
 
@@ -91,6 +94,9 @@ foreach ($add as $addition) {
     // Load depths
     $depths = $competencies->get_depths();
 
+    // Get custom fields
+    $customfields = $competencies->get_custom_fields($addition);
+
     // Add relationship
     $relationship = new Object();
     $relationship->organisationid = $organisation->id;
@@ -108,19 +114,20 @@ foreach ($add as $addition) {
         // Return html
         echo '<tr class="r1">';
 
-        echo '<td class="cell c0">';
-        echo "<a href=\"{$CFG->wwwroot}/hierarchy/index.php?type=competency&frameworkid={$framework->id}\">{$framework->fullname}</a>";
-        echo '</td>';
-
-        echo '<td class="cell c1">';
-        echo format_string($depths[$related->depthid]->fullname);
-        echo '</td>';
-
         echo '<td class="cell c2">';
         echo "<a href=\"{$CFG->wwwroot}/hierarchy/item/view.php?type=competency&id={$related->id}\">{$related->fullname}</a>";
         echo '</td>';
 
-        echo '<td class="cell c3">';
+        // Print the custom fields
+        $colcount = 1;
+        foreach ($customfields as $cf) {
+            echo "<td class=\"cell c{$colcount}\">";
+            echo format_string($cf->data);
+            echo '</td>';
+            $colcount++;
+        }
+
+        echo "<td class=\"cell c{$colcount}\">";
         echo "<a href=\"{$CFG->wwwroot}/hierarchy/type/organisation/assigncompetency/remove.php?id={$relationship->id}&organisation={$organisation->id}\" title=\"$str_remove\">".
              "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_remove\" /></a>";
         echo '</td>';

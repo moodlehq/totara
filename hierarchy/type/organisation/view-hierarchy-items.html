@@ -1,5 +1,6 @@
 <?php
-
+$framework = optional_param('framework', 1, PARAM_INT);
+$depth = get_record('comp_depth', 'frameworkid', $framework);
 require_once $CFG->libdir.'/tablelib.php';
 
 ?>
@@ -7,28 +8,44 @@ require_once $CFG->libdir.'/tablelib.php';
 <script type="text/javascript">
     <!-- //
     <?php echo 'var '.$this->prefix.'_id = \''.$item->id.'\';' ?>
+    <?php echo 'var '.$this->prefix.'_frameworkid = \''.$framework.'\';' ?>
     // -->
 </script>
 
 <?php
 
-print_heading(get_string($displaytitle, $displaytype));
-
-if ($displaydepth) {
-
-    $columns = array('framework', 'depthlevel', 'name');
-    $headers = array(
-        get_string('framework', $displaytype),
-        get_string('depthlevel', $displaytype),
-        get_string('name', $displaytype)
-    );
+if(count($depth)>1) {
+    $displaydepth=true;
+} else {
+    $displaydepth=false;
 }
-else {
+$customfieldnames = get_records('comp_depth_info_field', 'depthid', $depth->id, 'sortorder');
 
-    $columns = array('framework', 'name');
+if ($displaytitle == 'assignedcompetencies') {
+    if ($displaydepth) {
+        $columns = array('depthlevel', 'name');
+        $headers = array(
+            get_string('depthlevel', $displaytype),
+            get_string('name', $displaytype)
+        );
+        foreach($customfieldnames as $name){
+            $columns[] = $name->shortname;
+            $headers[] = $name->fullname;
+        }
+    } else {
+        $columns = array('name');
+        $headers = array(
+            get_string('name', $displaytype),
+        );
+        foreach($customfieldnames as $name){
+            $columns[] = $name->shortname;
+            $headers[] = $name->fullname;
+        }
+    }
+} elseif ($displaytitle == 'assignedcompetencytemplates') {
+    $columns = array('name');
     $headers = array(
-        get_string('framework', $displaytype),
-        get_string('name', $displaytype)
+        get_string('name', $displaytype),
     );
 }
 
@@ -48,30 +65,34 @@ $table->setup();
 // Add one blank line
 $table->add_data(NULL);
 
+
+//$framework = $this->frameworkid;
+
 if (is_array($items) && count($items)) {
 
     foreach ($items as $ritem) {
 
+        $customfield = get_records('comp_depth_info_data', 'competencyid', $ritem->id);
+
         $content = array();
-        $content[] = "<a href=\"{$CFG->wwwroot}/hierarchy/index.php?type={$displaytype}&frameworkid={$ritem->fid}\">{$ritem->framework}</a>";
 
-        if ($displaydepth) {
-            $content[] = $ritem->depth;
-        }
+            if ($displaydepth) {
+                $content[] = $ritem->depth;
+            }
 
-        // Hack to show template links
-        if ($displaytitle == 'assignedcompetencytemplates') {
-            $content[] = "<a href=\"{$CFG->wwwroot}/hierarchy/type/competency/template/view.php?id={$ritem->id}\">{$ritem->fullname}</a>";
-        }
-        else {
-            $content[] = "<a href=\"{$CFG->wwwroot}/hierarchy/item/view.php?type={$displaytype}&id={$ritem->id}\">{$ritem->fullname}</a>";
-        }
+            if ($displaytitle == 'assignedcompetencies') {
+                $content[] = "<a href=\"{$CFG->wwwroot}/hierarchy/item/view.php?type={$displaytype}&id={$ritem->id}\">{$ritem->fullname}</a>";
+                foreach($customfield as $field) {
+                    $content[] = $field->data;
+                }
+            } elseif ($displaytitle == 'assignedcompetencytemplates') {
+                $content[] = "<a href=\"{$CFG->wwwroot}/hierarchy/type/competency/template/view.php?id={$ritem->id}\">{$ritem->fullname}</a>";
+            }
 
-        if ($editingon) {
-            $content[] = "<a href=\"{$CFG->wwwroot}/hierarchy/type/organisation/assigncompetency/remove.php?id={$ritem->aid}&organisation={$item->id}\" title=\"$str_remove\">".
-                "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_remove\" /></a>";
-        }
-
+            if ($editingon) {
+                $content[] = "<a href=\"{$CFG->wwwroot}/hierarchy/type/organisation/assigncompetency/remove.php?id={$ritem->aid}&organisation={$item->id}\" title=\"$str_remove\">".
+                    "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_remove\" /></a>";
+            }
         $table->add_data($content);
     }
 

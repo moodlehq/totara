@@ -99,29 +99,36 @@ class position extends hierarchy {
     function display_extra_view_info($item) {
         global $CFG, $can_edit, $editingon;
 
+        $defaultframeworkid = get_field('comp_framework', 'MIN(id)');
+        $comptype = optional_param('comptype', 'competencies', PARAM_TEXT);
+        $fid = optional_param('framework', $defaultframeworkid, PARAM_INT);
+
         if ($editingon) {
             $str_edit = get_string('edit');
             $str_remove = get_string('remove');
         }
 
-        // Display assigned competencies
-        $items = $this->get_assigned_competencies($item);
-        $addurl = $CFG->wwwroot.'/hierarchy/type/position/assigncompetency/find.php?assignto='.$item->id;
-        $displaytitle = 'assignedcompetencies';
-        $displaytype = 'competency';
-        $displaydepth = true;
-        require $CFG->dirroot.'/hierarchy/type/position/view-hierarchy-items.html';
+        $currenttab = $comptype.$fid;
 
-        // Display assigned competencies
-        $items = $this->get_assigned_competency_templates($item);
-        $addurl = $CFG->wwwroot.'/hierarchy/type/position/assigncompetencytemplate/find.php?assignto='.$item->id;
-        $displaytitle = 'assignedcompetencytemplates';
+        include($CFG->dirroot.'/hierarchy/type/position/tabs.php');
+
+        if($comptype=='competencies') {
+            // Display assigned competencies
+            $items = $this->get_assigned_competencies($item, $fid);
+            $addurl = $CFG->wwwroot.'/hierarchy/type/position/assigncompetency/find.php?assignto='.$item->id;
+            $displaytitle = 'assignedcompetencies';
+            $displaytype = 'competency';
+        } elseif($comptype == 'comptemplates') {
+            // Display assigned competencies
+            $items = $this->get_assigned_competency_templates($item, $fid);
+            $addurl = $CFG->wwwroot.'/hierarchy/type/position/assigncompetencytemplate/find.php?assignto='.$item->id;
+            $displaytitle = 'assignedcompetencytemplates';
+        }
         $displaytype = 'competency';
-        $displaydepth = false;
         require $CFG->dirroot.'/hierarchy/type/position/view-hierarchy-items.html';
     }
 
-    function get_assigned_competencies($item) {
+    function get_assigned_competencies($item, $frameworkid=0) {
         global $CFG;
 
         if (is_object($item)) {
@@ -132,9 +139,7 @@ class position extends hierarchy {
             $itemid = 0;
         }
 
-        return get_records_sql(
-            "
-                SELECT
+        $sql = "SELECT
                     c.*,
                     cf.id AS fid,
                     cf.fullname AS framework,
@@ -153,12 +158,16 @@ class position extends hierarchy {
                  ON c.depthid = cd.id
                 WHERE
                     pc.templateid IS NULL
-                AND pc.positionid = {$itemid}
-            "
-        );
+                AND pc.positionid = {$itemid}";
+
+        if (!empty($frameworkid)) {
+            $sql .= " AND c.frameworkid = {$frameworkid}";
+        }
+
+        return get_records_sql($sql);
     }
 
-    function get_assigned_competency_templates($item) {
+    function get_assigned_competency_templates($item, $frameworkid=0) {
         global $CFG;
 
         if (is_object($item)) {
@@ -167,9 +176,7 @@ class position extends hierarchy {
             $itemid = $item;
         }
 
-        return get_records_sql(
-            "
-                SELECT
+        $sql = "SELECT
                     c.*,
                     cf.id AS fid,
                     cf.fullname AS framework,
@@ -184,9 +191,13 @@ class position extends hierarchy {
                  ON c.frameworkid = cf.id
                 WHERE
                     pc.competencyid IS NULL
-                AND pc.positionid = {$itemid}
-            "
-        );
+                AND pc.positionid = {$itemid}";
+
+        if (!empty($frameworkid)) {
+            $sql .= " AND c.frameworkid = {$frameworkid}";
+        }
+
+        return get_records_sql($sql);
     }
 
     /**

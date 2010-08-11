@@ -13,6 +13,9 @@ require_once($CFG->dirroot.'/hierarchy/type/position/lib.php');
 // Competency id
 $assignto = required_param('assignto', PARAM_INT);
 
+// Framework id
+$frameworkid = required_param('frameworkid', PARAM_INT);
+
 // Competencies to add
 $add = required_param('add', PARAM_SEQUENCE);
 
@@ -41,7 +44,7 @@ if (!$position = $positions->get_item($assignto)) {
 }
 
 // Currently assigned competencies
-if (!$currentlyassigned = $positions->get_assigned_competency_templates($assignto)) {
+if (!$currentlyassigned = $positions->get_assigned_competency_templates($assignto, $frameworkid)) {
     $currentlyassigned = array();
 }
 
@@ -103,10 +106,6 @@ foreach ($add as $addition) {
 
         // Return html
         echo '<tr class="r1">';
-
-        echo '<td class="cell c0">';
-        echo "<a href=\"{$CFG->wwwroot}/hierarchy/index.php?type=competency&frameworkid={$framework->id}\">{$framework->fullname}</a>";
-        echo '</td>';
 
         echo '<td class="cell c1">';
         echo "<a href=\"{$CFG->wwwroot}/hierarchy/type/competency/template/view.php?id={$related->id}\">{$related->fullname}</a>";
