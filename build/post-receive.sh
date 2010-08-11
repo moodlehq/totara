@@ -4,8 +4,6 @@
 # Commit 62ff91b0a66b0f7e665d (fetched August 10th, 2010)
 #
 #
-# Script as follows (only alterations are removing smtp details at the end of the file):
-#
 # Changed by Zhiqiang Ma
 # Copyright (c) 2007 Andy Parkins
 #
@@ -704,7 +702,7 @@ else
 	do
 		generate_email $oldrev $newrev $refname > $email_tmp_file
 		emailsubject=`cat $emailsubject_tmp_file`
-		emailsubject="[TOTARA GIT] $emailsubject"
+		emailsubject="[T-GIT] $emailsubject"
 		cat $email_tmp_file | mailx -s "$emailsubject" $recipients 
 		rm -f $emailsubject_tmp_file $email_tmp_file
 	done
