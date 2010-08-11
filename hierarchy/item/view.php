@@ -3,6 +3,7 @@
 require_once('../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->dirroot.'/hierarchy/lib.php');
+require($CFG->libdir.'/filelib.php');
 
 // Get data
 $type        = required_param('type', PARAM_SAFEDIR);
@@ -94,17 +95,27 @@ print_heading($heading);
     $data = $hierarchy->get_item_data($item);
 
     // Custom fields
-    $sql = "SELECT cdif.fullname, cdid.data
+    $sql = "SELECT cdif.fullname, cdid.data, cdif.datatype
             FROM {$CFG->prefix}{$shortprefix}_depth_info_data cdid
             JOIN {$CFG->prefix}{$shortprefix}_depth_info_field cdif ON cdid.fieldid=cdif.id
             WHERE cdid.{$type}id={$item->id}";
 
     if ($cfdata = get_records_sql($sql)) {
+        $strfile = get_string('file');
         foreach ($cfdata as $cf) {
-            $data[] = array(
-                'title' => $cf->fullname,
-                'value' => $cf->data
-            );
+            if($cf->datatype == 'file' && !empty($cf->data)){
+                $icon = mimeinfo("icon", $cf->data);
+                $data[] = array(
+                    'title' => $cf->fullname,
+                    'value' => "<a href=\"http://mitms/file.php/1/{$cf->data}\"/><img src=\"{$CFG->pixpath}/f/{$icon}\" class=\"icon\" alt=\"{$strfile}\" />{$cf->data}</a>"
+                );
+            }
+            else{
+                $data[] = array(
+                    'title' => $cf->fullname,
+                    'value' => $cf->data
+                );
+            }
         }
     }
 

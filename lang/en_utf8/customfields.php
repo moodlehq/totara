@@ -14,6 +14,7 @@ $string['customfieldtypecheckbox'] = 'Checkbox';
 $string['customfieldtypemenu'] = 'Menu of choices';
 $string['customfieldtypetext'] = 'Text input';
 $string['customfieldtypetextarea'] = 'Text area';
+$string['customfieldtypefile'] = 'File';
 $string['customfield'] = 'Custom field';
 $string['customfields'] = 'Custom fields';
 $string['defaultdata'] = 'Default value';
