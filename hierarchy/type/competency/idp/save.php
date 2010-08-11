@@ -101,6 +101,10 @@ foreach ($add as $addition) {
     $idpcompetency->competency = $competency->id;
     $idpcompetency->ctime = time();
 
+    $default_priority = idp_get_default_scale_value($plan->id);
+    $default_priority = isset($default_priority->id) ? $default_priority->id : 0;
+    $idpcompetency->priority = $default_priority;
+
     // Insert the competency and update the modification time for the parent revision
     begin_sql();
     $dbresult = insert_record('idp_revision_competency', $idpcompetency, false);
@@ -127,7 +131,8 @@ foreach ($add as $addition) {
                 $priorities = idp_get_priority_scale_values_menu($plan->id);
                 $prioritycell = '<select class="idppriority" name="comppriority['.$competency->id.']" id="comppriority'.$competency->id.'">';
                 foreach($priorities as $priority){
-                    $prioritycell .= '<option value="'.$priority->id.'">'.$priority->name.'</option>';
+                    $selected = $priority->id == $default_priority ? 'selected="selected"' : '';
+                    $prioritycell .= '<option value="'.$priority->id.'" '.$selected.'>'.$priority->name.'</option>';
                 }
                 $prioritycell .= '</select>';
                 echo "<td>{$prioritycell}</td>";

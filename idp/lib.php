@@ -3177,6 +3177,18 @@ function idp_get_priority_scale_values_menu($idpid=0) {
     return is_array($priorities) ? $priorities : array();
 }
 
+function idp_get_default_scale_value($idpid) {
+    global $CFG;
+
+    $sql = "SELECT val.* FROM {$CFG->prefix}idp_tmpl_priority_scal_val val
+            JOIN {$CFG->prefix}idp_tmpl_priority_scale ps ON val.id=ps.defaultid
+            JOIN {$CFG->prefix}idp_tmpl_priority_assign pa ON ps.id=pa.priorityscaleid
+            JOIN {$CFG->prefix}idp_template temp ON pa.templateid=temp.id
+            JOIN {$CFG->prefix}idp i ON temp.id=i.templateid
+            WHERE i.id = {$idpid}";
+
+     return get_record_sql($sql);
+}
 
 function get_competency_areas() {
     return get_records('idp_comp_area', '', '', 'sortorder');
