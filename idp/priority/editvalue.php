@@ -28,7 +28,7 @@ if ($id == 0) {
     // Creating new scale value
     require_capability('moodle/local:manageidppriorities', $sitecontext);
 
-    $value = new object();
+    $value = new stdClass();
     $value->id = 0;
     $value->priorityscaleid = $priorityscaleid;
     $value->sortorder = get_field('idp_tmpl_priority_scal_val', 'MAX(sortorder) + 1', 'priorityscaleid', $value->priorityscaleid);
@@ -49,8 +49,7 @@ if (!$scale = get_record('idp_tmpl_priority_scale', 'id', $value->priorityscalei
 }
 
 // Save priority scale name for display in the form
-$priority = object();
-$value->priorityname = $priority->name;
+$value->scalename = format_string($scale->name);
 
 
 ///
