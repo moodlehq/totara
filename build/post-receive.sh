@@ -217,9 +217,6 @@ generate_content_header()
 	# --- Email (all stdout will be the email)
 	# Generate content header
 	cat <<-EOF
-
-	The project "$projectdesc":
-
 	The $refname_type, $short_refname has been ${change_type}d
 	EOF
 }
@@ -399,7 +396,18 @@ generate_update_branch_email()
 		fi
 	fi
 
+	# The diffstat is shown from the old revision to the new revision.
+	# This is to show the truth of what happened in this change.
+	# There's no point showing the stat from the base to the new
+	# revision because the base is effectively a random revision at this
+	# point - the user will be interested in what this revision changed
+	# - including the undoing of previous revisions in the case of
+	# non-fast forward updates.
 	echo ""
+	echo "Summary of changes:"
+	git diff-tree --stat --summary --find-copies-harder $oldrev..$newrev
+
+    echo ""
 	if [ -z "$rewind_only" ]; then
 		# echo "Those revisions listed above that are new to this repository have"
 		# echo "not appeared on any other notification email; so we list those"
@@ -417,17 +425,6 @@ generate_update_branch_email()
 	else
 		echo "No new revisions were added by this update."
 	fi
-
-	# The diffstat is shown from the old revision to the new revision.
-	# This is to show the truth of what happened in this change.
-	# There's no point showing the stat from the base to the new
-	# revision because the base is effectively a random revision at this
-	# point - the user will be interested in what this revision changed
-	# - including the undoing of previous revisions in the case of
-	# non-fast forward updates.
-	echo ""
-	echo "Summary of changes:"
-	git diff-tree --stat --summary --find-copies-harder $oldrev..$newrev
 }
 
 #
@@ -642,7 +639,11 @@ show_new_revisions()
 		(( msg_count+=1 ))
 		if [ $msg_count == 1 ]
 		then
-			git diff-tree --format=%s $onerev | head -1 > "$emailsubject_tmp_file"
+            if [ "$refname_type" = "branch" ]; then
+                echo $short_refname > "$emailsubject_tmp_file"
+            fi
+
+            git diff-tree --format=%s $onerev | head -1 >> "$emailsubject_tmp_file"
 		fi
 		git diff-tree --pretty --stat -p $onerev
 	done
@@ -662,8 +663,8 @@ do
 done
 
 # --- Constants
-LOGBEGIN="- Log -----------------------------------------------------------------"
-LOGEND="-----------------------------------------------------------------------"
+LOGBEGIN=""
+LOGEND=""
 
 # --- Config
 # Set GIT_DIR either from the working directory, or from the environment
@@ -683,10 +684,10 @@ then
 fi
 
 recipients=$(git config hooks.mailinglist)
-senderemail=$(git config hooks.senderemail || echo 'zma@ust.hk')
+senderemail=$(git config hooks.senderemail)
 announcerecipients=$(git config hooks.announcelist)
 envelopesender=$(git config hooks.envelopesender)
-emailprefix=$(git config hooks.emailprefix || echo '[GIT] ')
+emailprefix='[T-GIT]'
 custom_showrev=$(git config hooks.showrev)
 
 # --- Main loop
@@ -702,7 +703,7 @@ else
 	do
 		generate_email $oldrev $newrev $refname > $email_tmp_file
 		emailsubject=`cat $emailsubject_tmp_file`
-		emailsubject="[T-GIT] $emailsubject"
+		emailsubject="$emailprefix $emailsubject"
 		cat $email_tmp_file | mailx -s "$emailsubject" $recipients 
 		rm -f $emailsubject_tmp_file $email_tmp_file
 	done
