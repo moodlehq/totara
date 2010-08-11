@@ -199,13 +199,7 @@ function print_idp_courses_view_flex( $revision, $courses, $editingon=false, $pa
     $table->pagesize($perpage, $total);
     $table->add_data(NULL);
 
-
-    /*$sql = "SELECT val.id, val.name FROM {$CFG->prefix}idp_tmpl_priority_scal_val val
-        JOIN {$CFG->prefix}idp_tmpl_priority_scale ps ON val.priorityscaleid=ps.id
-        JOIN {$CFG->prefix}idp_tmpl_priority_assign pa ON ps.id=pa.priorityscaleid
-        JOIN {$CFG->prefix}idp_template temp ON pa.templateid=temp.id
-        JOIN {$CFG->prefix}idp i ON temp.id=i.templateid WHERE i.id={$revision->idp}";*/
-    $priorities = get_idp_priority_scale($revision);
+    $priorities = idp_get_priority_scale_values_menu($revision->idp);
 
     if ($courses) {
         foreach ($courses as $course) {

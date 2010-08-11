@@ -124,12 +124,7 @@ foreach ($add as $addition) {
             echo "<td>{$statuscell}</td>";
 
            if(get_config(NULL, 'idp_priorities')==2) {
-                $sql = "SELECT val.id, val.name FROM {$CFG->prefix}idp_tmpl_priority_scal_val val
-                JOIN {$CFG->prefix}idp_tmpl_priority_scale ps ON val.priorityscaleid=ps.id
-                JOIN {$CFG->prefix}idp_tmpl_priority_assign pa ON ps.id=pa.priorityscaleid
-                JOIN {$CFG->prefix}idp_template temp ON pa.templateid=temp.id
-                JOIN {$CFG->prefix}idp i ON temp.id=i.templateid WHERE i.id={$plan->id}";
-                $priorities = get_records_sql($sql);
+                $priorities = idp_get_priority_scale_values_menu($plan->id);
                 $prioritycell = '<select class="idppriority" name="comppriority['.$competency->id.']" id="comppriority'.$competency->id.'">';
                 foreach($priorities as $priority){
                     $prioritycell .= '<option value="'.$priority->id.'">'.$priority->name.'</option>';

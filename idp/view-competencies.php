@@ -123,7 +123,7 @@ function print_idp_competencies_view($revision, $competencies, $editingon = fals
             }
             if(get_config(NULL, 'idp_priorities')==2) {
                 echo '<td width="25%" class="c4">';
-                $priorities = idp_get_priorities_menu($revision->idp);
+                $priorities = idp_get_priority_scale_values_menu($revision->idp);
                 if ($editingon) {
                     echo '<select class="idppriority" name="comppriority['.$competency->id.']" id="comppriority'.$competency->id.'">';
                     foreach($priorities as $priority){
@@ -265,7 +265,7 @@ function print_idp_competencies_view_flex($revision, $competencies, $editingon =
     $table->setup();
     $table->pagesize($perpage, $total);
 
-    $priorities = get_idp_priority_scale($revision);
+    $priorities = idp_get_priority_scale_values_menu($revision->idp);
 
     if ($competencies) {
         foreach ($competencies as $competency) {

@@ -3160,17 +3160,26 @@ function get_priorities() {
     return get_records('idp_tmpl_priority_scale', '', '', 'name');
 }
 
+function idp_get_priority_scale_values_menu($idpid=0) {
+    global $CFG;
+
+    $sql = "SELECT val.id, val.name FROM {$CFG->prefix}idp_tmpl_priority_scal_val val
+            JOIN {$CFG->prefix}idp_tmpl_priority_scale ps ON val.priorityscaleid=ps.id
+            JOIN {$CFG->prefix}idp_tmpl_priority_assign pa ON ps.id=pa.priorityscaleid
+            JOIN {$CFG->prefix}idp_template temp ON pa.templateid=temp.id
+            JOIN {$CFG->prefix}idp i ON temp.id=i.templateid ";
+    if (!empty($idpid)) {
+        $sql .= " WHERE i.id={$idpid}";
+    }
+
+    $priorities = get_records_sql($sql);
+
+    return is_array($priorities) ? $priorities : array();
+}
+
+
 function get_competency_areas() {
     return get_records('idp_comp_area', '', '', 'sortorder');
 }
 
-function get_idp_priority_scale($idprevision) {
-    global $CFG;
-    $sql = "SELECT val.id, val.name FROM {$CFG->prefix}idp_tmpl_priority_scal_val val
-        JOIN {$CFG->prefix}idp_tmpl_priority_scale ps ON val.priorityscaleid=ps.id
-        JOIN {$CFG->prefix}idp_tmpl_priority_assign pa ON ps.id=pa.priorityscaleid
-        JOIN {$CFG->prefix}idp_template temp ON pa.templateid=temp.id
-        JOIN {$CFG->prefix}idp i ON temp.id=i.templateid WHERE i.id={$idprevision->idp}";
-    return get_records_sql($sql);
-}
 ?>

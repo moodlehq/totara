@@ -110,7 +110,7 @@ foreach ($add as $addition) {
             echo '<td></td>';
 
             if(get_config(NULL, 'idp_priorities')==2) {
-                $priorities = idp_get_priorities_menu($plan->id);
+                $priorities = idp_get_priority_scale_values_menu($plan->id);
                 $prioritycell = '<select class="idppriority" name="comppriority['.$course->id.']" id="comppriority'.$course->id.'">';
                 foreach($priorities as $priority){
                     $prioritycell .= '<option value="'.$priority->id.'">'.$priority->name.'</option>';

@@ -208,7 +208,7 @@ function print_idp_competency_templates_view_flex( $revision, $competencytemplat
     $table->pagesize($perpage, count($competencytemplates));
     $table->add_data(NULL);
 
-    $priorities = get_idp_priority_scale($revision);
+    $priorities = idp_get_priority_scale_values_menu($revision->idp);
 
     if ($competencytemplates) {
         foreach ($competencytemplates as $comptemp) {
