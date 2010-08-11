@@ -703,7 +703,6 @@ else
 	do
 		generate_email $oldrev $newrev $refname > $email_tmp_file
 		emailsubject=`cat $emailsubject_tmp_file`
-		emailsubject="$emailprefix $emailsubject"
 		cat $email_tmp_file | mailx -s "$emailsubject" $recipients 
 		rm -f $emailsubject_tmp_file $email_tmp_file
 	done
