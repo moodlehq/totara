@@ -640,12 +640,12 @@ show_new_revisions()
 		if [ $msg_count == 1 ]
 		then
             if [ "$refname_type" = "branch" ]; then
-                echo $short_refname > "$emailsubject_tmp_file"
+                echo "$short_refname: " > "$emailsubject_tmp_file"
             fi
 
             git diff-tree --format=%s $onerev | head -1 >> "$emailsubject_tmp_file"
 		fi
-		git diff-tree --pretty --stat -p $onerev
+		git diff-tree --pretty -p $onerev
 	done
 }
 
