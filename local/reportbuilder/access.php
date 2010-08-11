@@ -7,7 +7,8 @@ require_once($CFG->dirroot.'/local/reportbuilder/report_forms.php');
 global $USER;
 $id = required_param('id',PARAM_INT); // report builder id
 
-admin_externalpage_setup('reportbuilder');
+admin_externalpage_setup('managereports');
+
 $returnurl = $CFG->wwwroot."/local/reportbuilder/access.php?id=$id";
 
 $report = new reportbuilder($id);

@@ -9,7 +9,7 @@
     $em = optional_param('em', false, PARAM_BOOL); // embedded report?
     $confirm = optional_param('confirm', false, PARAM_BOOL); // confirm delete
 
-    admin_externalpage_setup('reportbuilder');
+    admin_externalpage_setup('managereports');
 
     global $USER;
 

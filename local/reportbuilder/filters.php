@@ -11,7 +11,8 @@ $m = optional_param('m', null, PARAM_TEXT); // move
 $fid = optional_param('fid',null,PARAM_INT); //filter id
 $confirm = optional_param('confirm', 0, PARAM_INT); // confirm delete
 
-admin_externalpage_setup('reportbuilder');
+admin_externalpage_setup('managereports');
+
 $returnurl = $CFG->wwwroot."/local/reportbuilder/filters.php?id=$id";
 
 $report = new reportbuilder($id);

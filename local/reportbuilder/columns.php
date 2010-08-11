@@ -24,7 +24,8 @@ $cid = optional_param('cid',null,PARAM_INT); //column id
 $confirm = optional_param('confirm', 0, PARAM_INT); // confirm delete
 $notice = optional_param('notice', 0, PARAM_INT); // notice flag
 
-admin_externalpage_setup('reportbuilder');
+admin_externalpage_setup('managereports');
+
 $returnurl = $CFG->wwwroot."/local/reportbuilder/columns.php?id=$id";
 
 $report = new reportbuilder($id);
