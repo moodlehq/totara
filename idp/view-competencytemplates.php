@@ -176,6 +176,7 @@ function print_idp_competency_templates_view_flex( $revision, $competencytemplat
 
     $str_remove = get_string('remove');
     $shortname = 'comptemplate';
+    $priorities = idp_get_priority_scale_values_menu($revision->idp);
     $columns = array();
     $headers = array();
 
@@ -186,7 +187,7 @@ function print_idp_competency_templates_view_flex( $revision, $competencytemplat
         $columns[] = 'duedate';
         $headers[] = get_string('duedate', 'idp');
     }
-    if(get_config(NULL, 'idp_priorities')==2){
+    if(get_config(NULL, 'idp_priorities')==2 && (!empty($priorities))){
         $columns[] = 'priority';
         $headers[] = get_string('priority', 'idp');
     }
@@ -208,8 +209,6 @@ function print_idp_competency_templates_view_flex( $revision, $competencytemplat
     $table->pagesize($perpage, count($competencytemplates));
     $table->add_data(NULL);
 
-    $priorities = idp_get_priority_scale_values_menu($revision->idp);
-
     if ($competencytemplates) {
         foreach ($competencytemplates as $comptemp) {
             $tablerow = array();
@@ -225,7 +224,7 @@ function print_idp_competency_templates_view_flex( $revision, $competencytemplat
                 $tablerow[] = $duedatecell;
             }
 
-            if(get_config(NULL, 'idp_priorities')==2) {
+            if(get_config(NULL, 'idp_priorities')==2 && (!empty($priorities))){
                 if ($editingon && $update) {
                     $prioritycell = '<select class="idppriority" name="comppriority['.$comptemp->id.']" id="comppriority'.$comptemp->id.'"/>';
                     foreach($priorities as $priority){

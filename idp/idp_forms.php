@@ -136,7 +136,10 @@ class idp_edit_priority_form extends moodleform {
             foreach($priorities as $priority){
                 $list[$priority->id] = $priority->name;
             }
-            $mform->addElement('select', 'prioritytype', get_string('usepriority', 'idp'), $list, null);
+            $pick = array(0 => get_string('selectpriorityscale','idp'));
+            $select = array_merge($pick, $list);
+
+            $mform->addElement('select', 'prioritytype', get_string('usepriority', 'idp'), $select, null);
             $mform->setHelpButton('prioritytype', array('idppriorityselect',get_string('priorityselect','idp'),'moodle'));
         } else {
             $mform->addElement('html', '<p>'.get_string('error:noprioritiesfound','idp').'</p>');

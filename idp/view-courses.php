@@ -180,7 +180,7 @@ function print_idp_courses_view_flex( $revision, $courses, $editingon=false, $pa
         $columns[] = 'duedate';
         $headers[] = get_string('duedate', 'idp');
     }
-    if(get_config(NULL, 'idp_priorities')==2){
+    if(get_config(NULL, 'idp_priorities')==2 && (!empty($priorities))){
         $columns[] = 'priority';
         $headers[] = get_string('priority', 'idp');
     }
@@ -236,7 +236,7 @@ function print_idp_courses_view_flex( $revision, $courses, $editingon=false, $pa
                 $tablerow[] = $duedatecell;
             }
 
-            if(get_config(NULL, 'idp_priorities')==2) {
+            if(get_config(NULL, 'idp_priorities')==2 && (!empty($priorities))){
                 if ($editingon) {
                     $prioritycell = '<select class="idppriority" name="comppriority['.$course->id.']" id="comppriority'.$course->id.'"/>';
                     foreach($priorities as $priority){

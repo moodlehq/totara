@@ -233,6 +233,7 @@ function print_idp_competencies_view_flex($revision, $competencies, $editingon =
 
     $str_remove = get_string('remove');
     $shortname = 'comptable';
+    $priorities = idp_get_priority_scale_values_menu($revision->idp);
     $columns = array();
     $headers = array();
 
@@ -245,7 +246,7 @@ function print_idp_competencies_view_flex($revision, $competencies, $editingon =
         $columns[] = 'duedate';
         $headers[] = get_string('duedate', 'idp');
     }
-    if(get_config(NULL, 'idp_priorities')==2){
+    if(get_config(NULL, 'idp_priorities')==2 && (!empty($priorities))){
         $columns[] = 'priority';
         $headers[] = get_string('priority', 'idp');
     }
@@ -264,8 +265,6 @@ function print_idp_competencies_view_flex($revision, $competencies, $editingon =
 
     $table->setup();
     $table->pagesize($perpage, $total);
-
-    $priorities = idp_get_priority_scale_values_menu($revision->idp);
 
     if ($competencies) {
         foreach ($competencies as $competency) {
@@ -314,9 +313,10 @@ function print_idp_competencies_view_flex($revision, $competencies, $editingon =
                 }
                 $tablerow[] = $duedatecell;
             }
-            if(get_config(NULL, 'idp_priorities')==2) {
+            if(get_config(NULL, 'idp_priorities')==2 && (!empty($priorities))){
                 if ($editingon && $update) {
                     $prioritycell = '<select class="idppriority" name="comppriority['.$competency->id.']" id="comppriority'.$competency->id.'"/>';
+                    $prioritycell .= '<option value=0>'. get_string('notspecifiedpriority', 'idp') . '</option>';
                     foreach($priorities as $priority){
                         if($priority->id == $competency->priority)
                             $prioritycell .= '<option value="'.$priority->id.'" selected="selected">'.$priority->name.'</option>';

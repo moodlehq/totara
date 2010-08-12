@@ -3167,9 +3167,9 @@ function idp_get_priority_scale_values_menu($idpid=0) {
             JOIN {$CFG->prefix}idp_tmpl_priority_scale ps ON val.priorityscaleid=ps.id
             JOIN {$CFG->prefix}idp_tmpl_priority_assign pa ON ps.id=pa.priorityscaleid
             JOIN {$CFG->prefix}idp_template temp ON pa.templateid=temp.id
-            JOIN {$CFG->prefix}idp i ON temp.id=i.templateid ORDER BY val.sortorder ASC";
+            JOIN {$CFG->prefix}idp i ON temp.id=i.templateid ";
     if (!empty($idpid)) {
-        $sql .= " WHERE i.id={$idpid}";
+        $sql .= " WHERE i.id={$idpid} ORDER BY val.sortorder ASC";
     }
 
     $priorities = get_records_sql($sql);
@@ -3179,7 +3179,6 @@ function idp_get_priority_scale_values_menu($idpid=0) {
 
 function idp_get_default_scale_value($idpid) {
     global $CFG;
-
     $sql = "SELECT val.* FROM {$CFG->prefix}idp_tmpl_priority_scal_val val
             JOIN {$CFG->prefix}idp_tmpl_priority_scale ps ON val.id=ps.defaultid
             JOIN {$CFG->prefix}idp_tmpl_priority_assign pa ON ps.id=pa.priorityscaleid

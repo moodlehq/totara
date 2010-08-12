@@ -122,10 +122,10 @@ elseif ('create' == $action or 'rename' == $action or 'clone' == $action) {
             print '</h1>';
 
             $defaultname = get_string('defaultplanname', 'idp');
-            if(!$defaultstartdate = convert_userdate(get_config(NULL, idp_start_date))){
+            if(!$defaultstartdate = convert_userdate(get_config(NULL, 'idp_start_date'))){
                 $defaultstartdate = '';
             }
-            if(!$defaultenddate = convert_userdate(get_config(NULL, idp_end_date))){
+            if(!$defaultenddate = convert_userdate(get_config(NULL, 'idp_end_date'))){
                 $defaultenddate = '';
             }
 
