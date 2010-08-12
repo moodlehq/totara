@@ -165,6 +165,9 @@ function print_idp_competency_templates_view_flex( $revision, $competencytemplat
     global $CFG, $SESSION, $USER;
     $ssort = optional_param('ssort');
 
+    $addcomp = false;
+    $update = false;
+    $addpos = false;
     // Check permissions
     if ($editingon) {
         $addcomp = has_capability('moodle/local:idpaddcompetencytemplate', get_context_instance(CONTEXT_SYSTEM));

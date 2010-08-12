@@ -76,7 +76,7 @@ $navlinks[] = array('name' => $stridps, 'link' => "index.php", 'type' => 'home')
 $navlinks[] = array('name' => $pagetitle, 'link' => '', 'type' => 'home');
 
 // Hack to add print stylesheet
-$meta = '<link rel="stylesheet" type="text/css" media="print" href="'.$CFG->themewww.'/MITMS_print/user_styles.css" />'."\n";
+$meta = '<link rel="stylesheet" type="text/css" media="print" href="'.$CFG->themewww.'/'. $CFG->theme .'_print/user_styles.css" />'."\n";
 
 $PAGE->print_header($stridps, $navlinks);
 

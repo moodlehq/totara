@@ -348,15 +348,16 @@ function print_revision_details($revision, $can_submit, $can_approve=false, $pdf
     // Personal information
     if(!$pdf && $showactions){
         $printoptions = '';
-        $printoptions .= '<a href="'.$CFG->wwwroot.'/idp/revision.php?id=' . $revision->idp . '&amp;print=1">'.get_string('printableview', 'idp').'</a> - ';
-        $printoptions .= '<a href="'.$CFG->wwwroot.'/idp/revision_pdf.php?id=' . $revision->idp . '">' . get_string('exporttopdf', 'idp') . '</a>';
+        $printoptions .= '<a href="'.$CFG->wwwroot.'/idp/revision.php?id=' . $revision->idp . '&amp;print=1">'.get_string('printableview', 'idp').'</a>';
+        if ('approved' == $revision->status or 'overdue' == $revision->status) {
+            $printoptions .= ' - <a href="'.$CFG->wwwroot.'/idp/revision_pdf.php?id=' . $revision->idp . '">' . get_string('exporttopdf', 'idp') . '</a>';
+        }
 
         $table->data[] = array ($prefix . 'Display options' . $suffix, "<b>" . $printoptions . "</b>");
     }
     else {
         $table->data[] = array($prefix . get_string('trainingperiod', 'idp') . $suffix, $revision->period);
     }
-
     // Creation and modification time
     $mtime = userdate($revision->mtime);
     if (!$pdf) {

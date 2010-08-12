@@ -221,6 +221,9 @@ function print_idp_competencies_view_flex($revision, $competencies, $editingon =
     global $CFG, $SESSION, $USER;
     $sort = optional_param('sort');
 
+    $addcomp = false;
+    $haspos = false;
+    $update = false;
     //Check permissions
     if ($editingon) {
         $addcomp = has_capability('moodle/local:idpaddcompetency', get_context_instance(CONTEXT_SYSTEM));
