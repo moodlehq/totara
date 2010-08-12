@@ -2100,5 +2100,11 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && add_field($table, $field);
     }
 
+    // set global export options to include all current
+    // formats (excel, csv and ods)
+    if ($result && $oldversion < 20100810200) {
+        set_config('exportoptions', 7, 'reportbuilder');
+    }
+
     return $result;
 }

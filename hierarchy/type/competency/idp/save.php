@@ -124,12 +124,19 @@ foreach ($add as $addition) {
             // Return html
             echo '<tr>';
             echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/item/view.php?type={$hierarchy->prefix}&id={$competency->id}\">{$competency->fullname}</a></td>";
-            $statuscell = '<font color="grey">Not assessed</font>';
+            $statuscell = '<font color="grey">
+                            Not assessed
+                            <a href="'.$CFG->wwwroot.'/hierarchy/type/competency/evidence/add.php?userid='.$USER->id.
+                            '&competencyid='.$competency->id.'&s='.$USER->sesskey.'&returnurl='.$CFG->wwwroot.'%2Fidp%2Frevision.php%3Fid%3D'.$revisionid.'">
+                                <img alt="Add" class="iconsmall" src="'.$CFG->pixpath.'/t/add.gif">
+                            </a>
+                           </font>';
             echo "<td>{$statuscell}</td>";
 
            if(get_config(NULL, 'idp_priorities')==2) {
                 $priorities = idp_get_priority_scale_values_menu($plan->id);
                 $prioritycell = '<select class="idppriority" name="comppriority['.$competency->id.']" id="comppriority'.$competency->id.'">';
+                $prioritycell .= '<option value="0">'.get_string('notspecifiedpriority', 'idp').'</option>';
                 foreach($priorities as $priority){
                     $selected = $priority->id == $default_priority ? 'selected="selected"' : '';
                     $prioritycell .= '<option value="'.$priority->id.'" '.$selected.'>'.$priority->name.'</option>';

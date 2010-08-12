@@ -52,6 +52,23 @@ define('REPORT_BUILDER_CONTENT_FAILED_UPDATE', 22);
 define('REPORT_BUILDER_ACCESS_CONFIRM_UPDATE', 23);
 define('REPORT_BUILDER_ACCESS_FAILED_UPDATE', 24);
 
+define('REPORT_BUILDER_GLOBAL_CONFIRM_UPDATE', 25);
+define('REPORT_BUILDER_GLOBAL_FAILED_UPDATE', 26);
+
+/**
+ * Export option codes
+ */
+define('REPORT_BUILDER_EXPORT_EXCEL', 1);
+define('REPORT_BUILDER_EXPORT_CSV', 2);
+define('REPORT_BUILDER_EXPORT_ODS', 4);
+
+global $REPORT_BUILDER_EXPORT_OPTIONS;
+$REPORT_BUILDER_EXPORT_OPTIONS = array(
+    'xls' => REPORT_BUILDER_EXPORT_EXCEL,
+    'csv' => REPORT_BUILDER_EXPORT_CSV,
+    'ods' => REPORT_BUILDER_EXPORT_ODS,
+);
+
 class reportbuilder {
     public $fullname, $shortname, $source, $hidden, $filters, $filteroptions, $columns, $requiredcolumns;
     public $columnoptions, $_filtering, $contentoptions, $contentmode, $embeddedurl, $description;
@@ -1930,7 +1947,12 @@ var comptree = [' . implode(', ', $comptrees) . '];
     }
 
 
-    /* Prints select box and submit button to export current report
+    /* Prints select box and Export button to export current report.
+     *
+     * A select is shown if the global settings allow exporting in
+     * multiple formats. If only one format specified, prints a button.
+     * If no formats are set in global settings, no export options are shown
+     *
      * for this to work page must contain:
      * if($format!=''){$report->export_data($format);die;}
      * before header printed
@@ -1942,10 +1964,10 @@ var comptree = [' . implode(', ', $comptrees) . '];
         require_once($CFG->dirroot.'/local/reportbuilder/export_form.php');
         $export = new report_builder_export_form(qualified_me());
         $export->display();
-
     }
 
-    /* Prints three buttons to export current report
+    /* Prints separate buttons to export current report in the allowed
+     * formats
      * for this to work page must contain:
      * if($format!=''){$report->export_data($format);die;}
      * before header printed
@@ -1953,14 +1975,20 @@ var comptree = [' . implode(', ', $comptrees) . '];
      * @return string Returns the code for the export buttons
      */
     function export_buttons() {
-        $out = "<center><table><tr><td>";
-        $out .= print_single_button(qualified_me(),array('format'=>'xls'),get_string('exportxls','local'),'post','_self', true);
-        $out .= "</td><td>";
-        $out .= print_single_button(qualified_me(),array('format'=>'csv'),get_string('exportcsv','local'),'post','_self', true);
-        $out .= "</td><td>";
-        $out .= print_single_button(qualified_me(),array('format'=>'ods'),get_string('exportods','local'),'post','_self', true);
-	$out .= "</td><tr></table></center>";
-	return $out;
+        global $REPORT_BUILDER_EXPORT_OPTIONS;
+        $exportoptions = get_config('reportbuilder', 'exportoptions');
+
+        $out = "<center><table><tr>";
+        foreach($REPORT_BUILDER_EXPORT_OPTIONS as $option => $code) {
+            // bitwise operator to see if option bit is set
+            if(($exportoptions & $code) == $code) {
+                $out .= '<td>';
+                $out .= print_single_button(qualified_me(),array('format'=>$option),get_string('export'.$option,'local'),'post','_self', true);
+                $out .= '</td>';
+            }
+        }
+	    $out .= "<tr></table></center>";
+	    return $out;
     }
 
     /*

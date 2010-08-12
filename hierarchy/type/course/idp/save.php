@@ -111,11 +111,12 @@ foreach ($add as $addition) {
             // Return html
             echo '<tr>';
             echo "<td><a href=\"{$CFG->wwwroot}/course/view.php?id={$course->id}\">".format_string($course->fullname)."</a></td>";
-            echo '<td></td>';
+            echo '<td>'.get_string('notyetstarted', 'completion').'</td>';
 
             if(get_config(NULL, 'idp_priorities')==2) {
                 $priorities = idp_get_priority_scale_values_menu($plan->id);
                 $prioritycell = '<select class="idppriority" name="comppriority['.$course->id.']" id="comppriority'.$course->id.'">';
+                $prioritycell .= '<option value="0">'.get_string('notspecifiedpriority', 'idp').'</option>';
                 foreach($priorities as $priority){
                     $selected = $priority->id == $default_priority ? 'selected="selected"' : '';
                     $prioritycell .= '<option value="'.$priority->id.'" '.$selected.'>'.$priority->name.'</option>';
