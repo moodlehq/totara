@@ -22,11 +22,6 @@ if ($id == 0) {
 
     $priority = new object();
     $priority->id = 0;
-    $priority->sortorder = get_field('idp_tmpl_priority_scale', 'MAX(sortorder) + 1', '', '');
-    if (!$priority->sortorder) {
-        $priority->sortorder = 1;
-    }
-
 } else {
     // editing existing competency priority
     require_capability('moodle/local:updatecompetency', $sitecontext);
