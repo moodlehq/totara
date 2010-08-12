@@ -170,9 +170,9 @@ $string['report:learningrecords'] = 'Learning records';
 $string['report:nodata'] = 'There is no available data for that combination of criteria, start date and end date';
 $string['report:organisation'] = 'Office';
 $string['report:startdate'] = 'Start date';
-$string['reportbuilder'] = 'Report Builder';
-$string['managereports'] = 'Manage Reports';
-$string['manageactivitygroups'] = 'Manage Activity Groups';
+$string['reportbuilder'] = 'Report builder';
+$string['managereports'] = 'Manage reports';
+$string['manageactivitygroups'] = 'Manage activity groups';
 $string['report'] = 'Report';
 $string['course_completion'] = 'Course Completion';
 $string['competency_evidence'] = 'Competency Evidence';
@@ -252,6 +252,7 @@ $string['reportconfirmdelete'] = 'Are you sure you want to delete this report?';
 $string['reportconfirmreload'] = 'This is an embedded report so you cannot delete it (that must be done by your site developer). You can choose to reset the report settings to their original values. Do you want to continue?';
 $string['noreports'] = 'No reports have been created';
 $string['export'] = 'Export';
+$string['exportoptions'] = 'Report Export options';
 $string['exportcsv'] = 'Export in text format';
 $string['exportods'] = 'Export in ODS format';
 $string['exportxls'] = 'Export in Excel format';
@@ -408,6 +409,11 @@ $string['anycontext'] = 'Users may have role in any context';
 $string['choosepos'] = 'Choose Position...';
 $string['chooseorg'] = 'Choose Organisation...';
 $string['choosecomp'] = 'Choose Competency...';
+$string['reportbuilderglobalsettings'] = 'Report Builder Global Settings';
+$string['globalsettings'] = 'Global settings';
+$string['globalsettingsupdated'] = 'Global settings updated';
+$string['error:couldnotupdateglobalsettings'] = 'There was an error while updating the global settings';
+
 
 // Report Headings
 $string['reportheading'] = 'Report Heading Block';

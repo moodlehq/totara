@@ -79,6 +79,39 @@ class report_builder_edit_form extends moodleform {
 
 }
 
+
+class report_builder_global_settings_form extends moodleform {
+    function definition() {
+        global $CFG, $REPORT_BUILDER_EXPORT_OPTIONS;
+        $mform =& $this->_form;
+
+        $mform->addElement('header', 'settings', get_string('globalsettings', 'local'));
+
+        $exportoptions = get_config('reportbuilder', 'exportoptions');
+
+        $group = array();
+        foreach($REPORT_BUILDER_EXPORT_OPTIONS as $option => $code) {
+            $group[] =& $mform->createElement('checkbox', 'export'.$option, '', get_string('export'.$option,'local'));
+            if($exportoptions) {
+                // bitwise operation to see if bit for this export
+                // option is set
+                if(($exportoptions & $code) == $code) {
+                    $mform->setDefault('export'.$option, 1);
+                } else {
+                    $mform->setDefault('export'.$option, 0);
+                }
+            }
+        }
+        $mform->addGroup($group, 'exportoptions', get_string('exportoptions','local'), '<br />', false);
+        $mform->setHelpButton('exportoptions', array('reportbuilderexportoptions',get_string('exportoptions','local'),'moodle'));
+
+        $this->add_action_buttons();
+    }
+
+}
+
+
+
 class report_builder_edit_filters_form extends moodleform {
     function definition() {
         global $CFG;
