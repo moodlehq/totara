@@ -18,6 +18,40 @@ require_once($CFG->dirroot.'/local/reportbuilder/classes/rb_content_option.php')
 // name of directories containing report builder source files
 define('SOURCE_DIR_NAME', 'rb_sources');
 
+/**
+ * Confirmation codes for displaying notices after specific page actions
+ */
+define('REPORT_BUILDER_UNKNOWN_BUTTON_CLICKED', 1);
+define('REPORT_BUILDER_FAILED_DELETE_SESSKEY', 2);
+
+define('REPORT_BUILDER_REPORT_CONFIRM_DELETE', 3);
+define('REPORT_BUILDER_REPORT_FAILED_DELETE', 4);
+
+define('REPORT_BUILDER_GENERAL_CONFIRM_UPDATE', 5);
+define('REPORT_BUILDER_GENERAL_FAILED_UPDATE', 6);
+
+define('REPORT_BUILDER_COLUMNS_CONFIRM_SHOWHIDE', 7);
+define('REPORT_BUILDER_COLUMNS_FAILED_SHOWHIDE', 8);
+define('REPORT_BUILDER_COLUMNS_CONFIRM_DELETE', 9);
+define('REPORT_BUILDER_COLUMNS_FAILED_DELETE', 10);
+define('REPORT_BUILDER_COLUMNS_CONFIRM_MOVE', 11);
+define('REPORT_BUILDER_COLUMNS_FAILED_MOVE', 12);
+define('REPORT_BUILDER_COLUMNS_CONFIRM_UPDATE', 13);
+define('REPORT_BUILDER_COLUMNS_FAILED_UPDATE', 14);
+
+define('REPORT_BUILDER_FILTERS_CONFIRM_DELETE', 15);
+define('REPORT_BUILDER_FILTERS_FAILED_DELETE', 16);
+define('REPORT_BUILDER_FILTERS_CONFIRM_MOVE', 17);
+define('REPORT_BUILDER_FILTERS_FAILED_MOVE', 18);
+define('REPORT_BUILDER_FILTERS_CONFIRM_UPDATE', 19);
+define('REPORT_BUILDER_FILTERS_FAILED_UPDATE', 20);
+
+define('REPORT_BUILDER_CONTENT_CONFIRM_UPDATE', 21);
+define('REPORT_BUILDER_CONTENT_FAILED_UPDATE', 22);
+
+define('REPORT_BUILDER_ACCESS_CONFIRM_UPDATE', 23);
+define('REPORT_BUILDER_ACCESS_FAILED_UPDATE', 24);
+
 class reportbuilder {
     public $fullname, $shortname, $source, $hidden, $filters, $filteroptions, $columns, $requiredcolumns;
     public $columnoptions, $_filtering, $contentoptions, $contentmode, $embeddedurl, $description;

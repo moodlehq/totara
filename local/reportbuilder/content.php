@@ -6,6 +6,7 @@ require_once($CFG->dirroot.'/local/reportbuilder/report_forms.php');
 
 global $USER;
 $id = required_param('id',PARAM_INT); // report builder id
+$notice = optional_param('notice', 0, PARAM_INT); // notice flag
 
 admin_externalpage_setup('managereports');
 
@@ -18,18 +19,21 @@ $mform =& new report_builder_edit_content_form(null, compact('id','report'));
 
 // form results check
 if ($mform->is_cancelled()) {
-    redirect($CFG->wwwroot.'/local/reportbuilder/index.php');
+    redirect($returnurl);
 }
 if ($fromform = $mform->get_data()) {
 
     if(empty($fromform->submitbutton)) {
-        print_error('error:unknownbuttonclicked', 'local', $returnurl);
+        redirect($returnurl . '&amp;notice=' .
+            REPORT_BUILDER_UNKNOWN_BUTTON_CLICKED);
     }
 
     if(update_content($id, $report, $fromform)) {
-        redirect($returnurl);
+        redirect($returnurl . '&amp;notice=' .
+            REPORT_BUILDER_CONTENT_CONFIRM_UPDATE);
     } else {
-        redirect($returnurl, get_string('error:couldnotupdatereport','local'));
+        redirect($returnurl . '&amp;notice=' .
+            REPORT_BUILDER_CONTENT_FAILED_UPDATE);
     }
 
 }
@@ -46,6 +50,17 @@ print_heading(get_string('editreport','local',$report->fullname));
 
 $currenttab = 'content';
 include_once('tabs.php');
+
+if($notice) {
+    switch($notice) {
+    case REPORT_BUILDER_CONTENT_CONFIRM_UPDATE:
+        notify(get_string('reportupdated','local'),'notifysuccess');
+        break;
+    case REPORT_BUILDER_CONTENT_FAILED_UPDATE:
+        get_string('error:couldnotupdatereport','local');
+        break;
+    }
+}
 
 // display the form
 $mform->display();

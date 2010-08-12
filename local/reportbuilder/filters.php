@@ -1,5 +1,5 @@
 <?php // $Id$
-require_once('../../config.php');
+require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->dirroot.'/local/reportbuilder/lib.php');
 require_once($CFG->dirroot.'/local/reportbuilder/report_forms.php');
@@ -10,6 +10,7 @@ $d = optional_param('d', null, PARAM_TEXT); // delete
 $m = optional_param('m', null, PARAM_TEXT); // move
 $fid = optional_param('fid',null,PARAM_INT); //filter id
 $confirm = optional_param('confirm', 0, PARAM_INT); // confirm delete
+$notice = optional_param('notice', 0, PARAM_INT); // notice flag
 
 admin_externalpage_setup('managereports');
 
@@ -20,14 +21,18 @@ $report = new reportbuilder($id);
 // delete fields or columns
 if ($d and $confirm ) {
     if(!confirm_sesskey()) {
-        print_error('confirmsesskeybad','error');
+        redirect($returnurl . '&amp;notice=' .
+            REPORT_BUILDER_FAILED_DELETE_SESSKEY);
     }
 
     if(isset($fid)) {
         if($report->delete_filter($fid)) {
-            redirect($returnurl);
+            redirect($returnurl . '&amp;notice=' .
+                REPORT_BUILDER_FILTERS_CONFIRM_DELETE);
         } else {
-            redirect($returnurl, 'Field could not be deleted');
+            redirect($returnurl . '&amp;notice=' .
+                REPORT_BUILDER_FILTERS_FAILED_DELETE);
+            //'Field could not be deleted');
         }
     }
 }
@@ -50,9 +55,12 @@ if ($d) {
 // move filter
 if($m && isset($fid)) {
     if($report->move_filter($fid, $m)) {
-        redirect($returnurl);
+        redirect($returnurl . '&amp;notice=' .
+            REPORT_BUILDER_FILTERS_CONFIRM_MOVE);
     } else {
-        redirect($returnurl, 'Filter could not be moved');
+        redirect($returnurl . '&amp;notice=' .
+            REPORT_BUILDER_FILTERS_FAILED_MOVE);
+        //, 'Filter could not be moved');
     }
 }
 
@@ -71,9 +79,12 @@ if ($fromform = $mform->get_data()) {
     }
 
     if(build_filters($id, $fromform)) {
-        redirect($returnurl);
+        redirect($returnurl . '&amp;notice=' .
+            REPORT_BUILDER_FILTERS_CONFIRM_UPDATE);
     } else {
-        redirect($returnurl, get_string('error:couldnotupdatereport','local'));
+        redirect($returnurl . '&amp;notice=' .
+            REPORT_BUILDER_FILTERS_FAILED_UPDATE);
+        //, get_string('error:couldnotupdatereport','local'));
     }
 
 }
@@ -90,6 +101,32 @@ print_heading(get_string('editreport','local',$report->fullname));
 
 $currenttab = 'filters';
 include_once('tabs.php');
+
+if($notice) {
+    switch($notice) {
+    case REPORT_BUILDER_FILTERS_CONFIRM_DELETE:
+        notify(get_string('filter_deleted','local'),'notifysuccess');
+        break;
+    case REPORT_BUILDER_FAILED_DELETE_SESSKEY:
+        notify(get_string('error:bad_sesskey','local'));
+        break;
+    case REPORT_BUILDER_FILTERS_FAILED_DELETE:
+        notify(get_string('error:filter_not_deleted','local'));
+        break;
+    case REPORT_BUILDER_FILTERS_CONFIRM_MOVE:
+        notify(get_string('filter_moved','local'),'notifysuccess');
+        break;
+    case REPORT_BUILDER_FILTERS_FAILED_MOVE:
+        notify(get_string('error:filter_not_moved','local'));
+        break;
+    case REPORT_BUILDER_FILTERS_CONFIRM_UPDATE:
+        notify(get_string('filters_updated','local'),'notifysuccess');
+        break;
+    case REPORT_BUILDER_FILTERS_FAILED_UPDATE:
+        get_string('error:filters_not_updated','local');
+        break;
+    }
+}
 
 // display the form
 $mform->display();
