@@ -170,6 +170,7 @@ function print_idp_courses_view_flex( $revision, $courses, $editingon=false, $pa
     $shortname = 'comptable';
     $columns = array();
     $headers = array();
+    $priorities = idp_get_priority_scale_values_menu($revision->idp);
 
     $columns[] = 'name';
     $headers[] = get_string('course');
@@ -198,8 +199,6 @@ function print_idp_courses_view_flex( $revision, $courses, $editingon=false, $pa
     $table->setup();
     $table->pagesize($perpage, $total);
     $table->add_data(NULL);
-
-    $priorities = idp_get_priority_scale_values_menu($revision->idp);
 
     if ($courses) {
         foreach ($courses as $course) {
@@ -239,6 +238,7 @@ function print_idp_courses_view_flex( $revision, $courses, $editingon=false, $pa
             if(get_config(NULL, 'idp_priorities')==2 && (!empty($priorities))){
                 if ($editingon) {
                     $prioritycell = '<select class="idppriority" name="comppriority['.$course->id.']" id="comppriority'.$course->id.'"/>';
+                    $prioritycell .= '<option value=0>'. get_string('notspecifiedpriority', 'idp') . '</option>';
                     foreach($priorities as $priority){
                         if($priority->id == $course->priority)
                             $prioritycell .= '<option value="'.$priority->id.'" selected="selected">'.$priority->name.'</option>';

@@ -227,6 +227,7 @@ function print_idp_competency_templates_view_flex( $revision, $competencytemplat
             if(get_config(NULL, 'idp_priorities')==2 && (!empty($priorities))){
                 if ($editingon && $update) {
                     $prioritycell = '<select class="idppriority" name="comppriority['.$comptemp->id.']" id="comppriority'.$comptemp->id.'"/>';
+                    $prioritycell .= '<option value=0>'. get_string('notspecifiedpriority', 'idp') . '</option>';
                     foreach($priorities as $priority){
                         if($priority->id == $comptemp->priority)
                             $prioritycell .= '<option value="'.$priority->id.'" selected="selected">'.$priority->name.'</option>';
