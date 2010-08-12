@@ -5,16 +5,6 @@ require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->dirroot.'/local/reportbuilder/lib.php');
 require_once($CFG->dirroot.'/local/reportbuilder/report_forms.php');
 
-define('REPORT_BUILDER_COLUMNS_CONFIRM_SHOWHIDE', 1);
-define('REPORT_BUILDER_COLUMNS_FAILED_SHOWHIDE', 2);
-define('REPORT_BUILDER_COLUMNS_CONFIRM_DELETE', 3);
-define('REPORT_BUILDER_COLUMNS_FAILED_DELETE_SESSKEY', 4);
-define('REPORT_BUILDER_COLUMNS_FAILED_DELETE', 5);
-define('REPORT_BUILDER_COLUMNS_CONFIRM_MOVE', 6);
-define('REPORT_BUILDER_COLUMNS_FAILED_MOVE', 7);
-define('REPORT_BUILDER_COLUMNS_CONFIRM_UPDATE', 8);
-define('REPORT_BUILDER_COLUMNS_FAILED_UPDATE', 9);
-
 global $USER;
 $id = required_param('id',PARAM_INT); // report builder id
 $d = optional_param('d', null, PARAM_TEXT); // delete
@@ -24,7 +14,8 @@ $cid = optional_param('cid',null,PARAM_INT); //column id
 $confirm = optional_param('confirm', 0, PARAM_INT); // confirm delete
 $notice = optional_param('notice', 0, PARAM_INT); // notice flag
 
-admin_externalpage_setup('reportbuilder');
+admin_externalpage_setup('managereports');
+
 $returnurl = $CFG->wwwroot."/local/reportbuilder/columns.php?id=$id";
 
 $report = new reportbuilder($id);
@@ -44,7 +35,7 @@ if ($h !== null && isset($cid)) {
 if ($d and $confirm ) {
     if(!confirm_sesskey()) {
         redirect($returnurl . '&amp;notice=' .
-            REPORT_BUILDER_COLUMNS_FAILED_DELETE_SESSKEY);
+            REPORT_BUILDER_FAILED_DELETE_SESSKEY);
     }
 
     if(isset($cid)) {
@@ -87,12 +78,13 @@ $mform =& new report_builder_edit_columns_form(null, compact('id','report'));
 
 // form results check
 if ($mform->is_cancelled()) {
-    redirect($CFG->wwwroot.'/local/reportbuilder/index.php');
+    redirect($returnurl);
 }
 if ($fromform = $mform->get_data()) {
 
     if(empty($fromform->submitbutton)) {
-        print_error('error:unknownbuttonclicked', 'local', $returnurl);
+        redirect($returnurl . '&amp;notice=' .
+            REPORT_BUILDER_UNKNOWN_BUTTON_CLICKED);
     }
 
     if(build_columns($id, $fromform)) {
@@ -129,8 +121,8 @@ if($notice) {
     case REPORT_BUILDER_COLUMNS_CONFIRM_DELETE:
         notify(get_string('column_deleted','local'),'notifysuccess');
         break;
-    case REPORT_BUILDER_COLUMNS_FAILED_DELETE_SESSKEY:
-        notify(get_string('error:column_not_deleted_sesskey','local'));
+    case REPORT_BUILDER_FAILED_DELETE_SESSKEY:
+        notify(get_string('error:bad_sesskey','local'));
         break;
     case REPORT_BUILDER_COLUMNS_FAILED_DELETE:
         notify(get_string('error:column_not_deleted','local'));

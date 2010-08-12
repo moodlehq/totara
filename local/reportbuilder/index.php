@@ -1,5 +1,6 @@
 <?php // $Id$
-    require_once('../../config.php');
+
+    require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
     require_once($CFG->libdir.'/adminlib.php');
     require_once($CFG->dirroot.'/local/reportbuilder/lib.php');
     require_once('report_forms.php');
@@ -8,26 +9,29 @@
     $d = optional_param('d',false, PARAM_BOOL); // delete record?
     $em = optional_param('em', false, PARAM_BOOL); // embedded report?
     $confirm = optional_param('confirm', false, PARAM_BOOL); // confirm delete
+    $notice = optional_param('notice', 0, PARAM_INT); // notice flag
 
-    admin_externalpage_setup('reportbuilder');
+    admin_externalpage_setup('managereports');
 
     global $USER;
 
     $returnurl = $CFG->wwwroot.'/local/reportbuilder/index.php';
+    $type = $em ? 'reload' : 'delete';
 
     // delete an existing report
     if($d && $confirm) {
-        $type = $em ? 'reload' : 'delete';
         if(!confirm_sesskey()) {
-            print_error('confirmsesskeybad','error');
+            redirect($returnurl . '?notice=' .
+                REPORT_BUILDER_FAILED_DELETE_SESSKEY);
         }
         if(delete_report($id)) {
-            redirect($returnurl, get_string($type.'report', 'local'));
+            redirect($returnurl . '?notice=' .
+                REPORT_BUILDER_REPORT_CONFIRM_DELETE);
         } else {
-            redirect($returnurl, get_string('no'.$type.'report', 'local'));
+            redirect($returnurl . '?notice=' .
+                REPORT_BUILDER_REPORT_FAILED_DELETE);
         }
     } else if($d) {
-        $type = $em ? 'reload' : 'delete';
         admin_externalpage_print_header();
         print_heading(get_string('reportbuilder','local'));
         if($em) {
@@ -49,7 +53,8 @@
     if ($fromform = $mform->get_data()) {
 
         if(empty($fromform->submitbutton)) {
-            print_error('error:unknownbuttonclicked', 'local', $returnurl);
+            redirect($returnurl . '?notice=' .
+                REPORT_BUILDER_UNKNOWN_BUTTON_CLICKED);
         }
         // create new record here
         $todb = new object();
@@ -58,7 +63,7 @@
         $todb->source = ($fromform->source != '0') ? $fromform->source : null;
         $todb->hidden = $fromform->hidden;
         $todb->contentmode = 0;
-        $todb->accessmode = 0;
+        $todb->accessmode = 1; // default to limited access
         $todb->embeddedurl = null;
         //TODO set default content and access settings here?
 
@@ -66,6 +71,28 @@
         if(!$newid = insert_record('report_builder',$todb)) {
             rollback_sql();
             redirect($returnurl, get_string('error:couldnotcreatenewreport','local'));
+        }
+
+        // if admin role exists, restrict access to new report to administrators only
+        // (if role doesn't exist report will not be visible to anyone)
+        if($adminroleid = get_field('role', 'id', 'shortname', 'administrator')) {
+            $todb = new object();
+            $todb->reportid = $newid;
+            $todb->type = 'role_access';
+            $todb->name = 'enable';
+            $todb->value = 1;
+
+            $todb2 = new object();
+            $todb2->reportid = $newid;
+            $todb2->type = 'role_access';
+            $todb2->name = 'activeroles';
+            $todb2->value = '1';
+
+            if(!insert_record('report_builder_settings', $todb) ||
+                !insert_record('report_builder_settings', $todb2)) {
+                rollback_sql();
+                redirect($returnurl, get_string('error:couldnotcreatenewreport','local'));
+            }
         }
 
         // create columns for new report based on default columns
@@ -130,10 +157,24 @@
         }
 
         commit_sql();
-        redirect($CFG->wwwroot.'/local/reportbuilder/access.php?id='.$newid);
+        redirect($CFG->wwwroot.'/local/reportbuilder/settings.php?id='.$newid);
     }
 
     admin_externalpage_print_header();
+
+    if($notice) {
+        switch($notice) {
+        case REPORT_BUILDER_FAILED_DELETE_SESSKEY:
+            notify(get_string('error:bad_sesskey','local'));
+            break;
+        case REPORT_BUILDER_REPORT_FAILED_DELETE:
+            notify(get_string('no' . $type . 'report','local'));
+            break;
+        case REPORT_BUILDER_REPORT_CONFIRM_DELETE:
+            notify(get_string($type . 'report','local'), 'notifysuccess');
+            break;
+        }
+    }
 
     print_heading(get_string('usergeneratedreports','local'));
 
