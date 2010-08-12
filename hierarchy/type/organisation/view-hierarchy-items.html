@@ -1,5 +1,6 @@
 <?php
-$framework = optional_param('framework', 1, PARAM_INT);
+$defaultframeworkid = get_field_sql("SELECT id FROM {$CFG->prefix}comp_framework ORDER BY sortorder ASC");
+$framework = optional_param('framework', $defaultframeworkid, PARAM_INT);
 $depth = get_record('comp_depth', 'frameworkid', $framework);
 require_once $CFG->libdir.'/tablelib.php';
 
