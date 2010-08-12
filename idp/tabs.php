@@ -4,7 +4,7 @@ $id = required_param('id', PARAM_INT);
 $type = optional_param('type', 'competencies', PARAM_ALPHA);
 $edit = optional_param('edit', 'off', PARAM_TEXT);
 
-$defaultframeworkid = get_field('comp_framework', 'MIN(id)');
+$defaultframeworkid = get_field_sql("SELECT id FROM {$CFG->prefix}comp_framework ORDER BY sortorder ASC");
 $frameworkid = optional_param('framework', $defaultframeworkid, PARAM_INT);
 
 if (!isset($currenttab)) {

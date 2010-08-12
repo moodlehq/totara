@@ -1982,7 +1982,7 @@ function print_freeform_list($revisionid, $listtype, $can_edit = false, $return 
 
 function print_revision_manager($revision, $plan, $formstartstr, $options=array()) {
     global $USER, $CFG;
-    $defaultframeworkid = get_field('comp_framework', 'MIN(id)');
+    $defaultframeworkid = get_field_sql("SELECT id FROM {$CFG->prefix}comp_framework ORDER BY sortorder ASC");
 
     $type = optional_param('type', 'competencies', PARAM_ALPHA);
     $frameworkid = optional_param('framework', $defaultframeworkid, PARAM_INT);
@@ -2049,7 +2049,7 @@ function print_revision_manager($revision, $plan, $formstartstr, $options=array(
 
 function print_revision_trainee($revision, $plan, $formstartstr, $options=array()) {
     global $USER, $CFG;
-    $defaultframeworkid = get_field('comp_framework', 'MIN(id)');
+    $defaultframeworkid = get_field_sql("SELECT id FROM {$CFG->prefix}comp_framework ORDER BY sortorder ASC");
 
     $type = optional_param('type', 'competencies', PARAM_ALPHA);
     $frameworkid = optional_param('framework', $defaultframeworkid, PARAM_INT);
@@ -3167,7 +3167,7 @@ function idp_get_priority_scale_values_menu($idpid=0) {
             JOIN {$CFG->prefix}idp_tmpl_priority_scale ps ON val.priorityscaleid=ps.id
             JOIN {$CFG->prefix}idp_tmpl_priority_assign pa ON ps.id=pa.priorityscaleid
             JOIN {$CFG->prefix}idp_template temp ON pa.templateid=temp.id
-            JOIN {$CFG->prefix}idp i ON temp.id=i.templateid ";
+            JOIN {$CFG->prefix}idp i ON temp.id=i.templateid ORDER BY val.sortorder ASC";
     if (!empty($idpid)) {
         $sql .= " WHERE i.id={$idpid}";
     }
