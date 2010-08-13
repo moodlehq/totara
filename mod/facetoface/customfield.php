@@ -63,7 +63,7 @@ if (!empty($d)) {
     }
 }
 
-$mform =& new mod_facetoface_customfield_form(null, compact('id'));
+$mform = new mod_facetoface_customfield_form(null, compact('id'));
 if ($mform->is_cancelled()){
     redirect($returnurl);
 }

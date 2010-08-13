@@ -58,7 +58,7 @@ if (get_config(NULL, 'facetoface_addchangemanageremail')) {
 
 $showdiscountcode = ($session->discountcost > 0);
 
-$mform =& new mod_facetoface_signup_form(null, compact('s', 'backtoallsessions', 'manageremail', 'showdiscountcode'));
+$mform = new mod_facetoface_signup_form(null, compact('s', 'backtoallsessions', 'manageremail', 'showdiscountcode'));
 if ($mform->is_cancelled()){
     redirect($returnurl);
 }

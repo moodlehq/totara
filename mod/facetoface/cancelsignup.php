@@ -30,7 +30,7 @@ if ($backtoallsessions) {
     $returnurl = "$CFG->wwwroot/mod/facetoface/view.php?f=$backtoallsessions";
 }
 
-$mform =& new mod_facetoface_cancelsignup_form(null, compact('s', 'backtoallsessions'));
+$mform = new mod_facetoface_cancelsignup_form(null, compact('s', 'backtoallsessions'));
 if ($mform->is_cancelled()){
     redirect($returnurl);
 }
