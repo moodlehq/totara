@@ -83,7 +83,7 @@ foreach ($add as $addition) {
         error('Supplied bad data - non numeric id');
     }
 
-    // If the competency is already present in this plan, don't add it a second
+    // If the competency is already present in this plan, don't add a second
     // time
     if ( count_records('idp_revision_competency', 'revision', $revisionid, 'competency', $addition) ){
         continue;

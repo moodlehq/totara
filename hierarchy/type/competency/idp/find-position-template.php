@@ -18,6 +18,9 @@ $revisionid = required_param('id', PARAM_INT);
 // Position id (a bit hackey, we are using the framework picker unmodified)
 $positionid = optional_param('frameworkid', 0, PARAM_INT);
 
+// Framework id
+$frameworkid = optional_param('realframeworkid', 0, PARAM_INT);
+
 // Only return generated tree html
 $treeonly = optional_param('treeonly', false, PARAM_BOOL);
 
@@ -72,8 +75,8 @@ if (!isset($cur_position)) {
 }
 
 // Load competency templates to display
-$templates = $position->get_assigned_competency_templates($cur_position);
-if (!$currentlyassigned = idp_get_user_competencytemplates($plan->userid, $revisionid)) {
+$templates = $position->get_assigned_competency_templates($cur_position, $frameworkid);
+if (!$currentlyassigned = idp_get_user_competencytemplates($plan->userid, $revisionid, $frameworkid)) {
     $currentlyassigned = array();
 }
 

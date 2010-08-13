@@ -44,7 +44,7 @@ $(function() {
 
         mitmsMultiSelectDialog(
             'idppositioncompetency',
-            url+'find-position.php?id='+idp_revision_id+'&frameworkid='+idp_revision_frameworkid,
+            url+'find-position.php?id='+idp_revision_id+'&realframeworkid='+idp_revision_frameworkid,
             url+'save.php?id='+idp_revision_id+'&frameworkid='+idp_revision_frameworkid+'&deleteexisting=1&add='
         );
         // display the button on page load
@@ -59,7 +59,7 @@ $(function() {
 
         mitmsMultiSelectDialog(
             'idppositioncompetencytemplate',
-            url+'find-position-template.php?id='+idp_revision_id+'&frameworkid='+idp_revision_frameworkid,
+            url+'find-position-template.php?id='+idp_revision_id+'&realframeworkid='+idp_revision_frameworkid,
             url+'save-template.php?id='+idp_revision_id+'&frameworkid='+idp_revision_frameworkid+'&deleteexisting=1&add='
         );
         // display the button on page load
