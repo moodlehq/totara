@@ -426,8 +426,6 @@ $string['usepriority'] = 'Use priority';
 $string['error:noprioritiesfound'] = 'No priorities found, please create a priority scale first.';
 $string['error:couldnotcreatetemplate'] = 'Could not create new IDP template';
 $string['error:couldnotupdatetemplate'] = 'Could not update IDP template';
-$string['error:couldnotcreatecompetencyarea'] = 'Could not create new competency area';
-$string['error:couldnotupdatecompentenyarea'] = 'Could not update competency area';
 $string['contents'] = 'Contents';
 $string['deletecheckcomparea'] = 'Are you absolutely sure you want to completely delete this competency area?';
 $string['deletedcomparea'] = 'The competency area $a has been completely deleted.';
@@ -435,4 +433,10 @@ $string['linktopriorityvalues'] = '<a href=\\"view.php?id=$a\\">Click here</a> t
 $string['notspecifiedpriority'] = 'Not specified';
 $string['selectpriorityscale'] = 'Select a scale...';
 $string['frameworks'] = 'Frameworks';
+
+$string['update_comparea_success'] = 'Sucessfully updated Competency Area';
+$string['error:update_comparea_fail'] = 'An error occured when updating Competency Area';
+
+$string['create_comparea_success'] = 'Successfully created Competency Area';
+$string['error:create_comparea_fail'] = 'An error occured when creating Competency Area';
 ?>

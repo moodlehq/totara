@@ -1,5 +1,4 @@
 <?php
-
 require_once('../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once('../idp_forms.php');
@@ -7,8 +6,15 @@ require_once('../lib.php');
 
 require_login();
 
+define('UPDATE_COMP_AREA_SUCCESS', 1);
+define('UPDATE_COMP_AREA_FAIL', 2);
+define('CREATE_COMP_AREA_SUCCESS', 3);
+define('CREATE_COMP_AREA_FAIL', 4);
+define('IDP_UNKNOWN_BUTTON_CLICKED', 5);
+
 $id = optional_param('id', 0, PARAM_INT);
 $templateid = optional_param('templateid', 0, PARAM_INT);
+$notice = optional_param('notice', 0, PARAM_INT);
 
 admin_externalpage_setup('idptemplate');
 
@@ -39,14 +45,12 @@ else {
 }
 
 $pagetitle = 'Create competency area';
-$returnurl = $CFG->wwwroot . '/idp/comparea/edit.php';
+$returnurl = $CFG->wwwroot . '/idp/comparea/edit.php?id=';
 $cancelurl = $CFG->wwwroot . '/idp/settings/index.php';
 
 $navlinks = array();
-$navlinks[] = array('name' => $idptemplates, 'link' => "index.php", 'type' => 'home');
+$navlinks[] = array('name' => $idptemplates, 'link' => "{$CFG->wwwroot}/idp/settings/index.php", 'type' => 'home');
 $navlinks[] = array('name' => $pagetitle, 'link' => '', 'type' => 'home');
-
-admin_externalpage_print_header($stridps, $navlinks);
 
 $frameworkcount = 1;
 $frameworklist = get_records_sql("SELECT id, shortname, fullname FROM {$CFG->prefix}comp_framework");
@@ -62,7 +66,7 @@ if ($mform->is_cancelled()) {
 if ($fromform = $mform->get_data()) {
 
     if(empty($fromform->submitbutton)) {
-        print_error('error:unknownbuttonclicked', 'local', $returnurl);
+        redirect($returnurl.$competencyarea->id.'&amp;notice='. IDP_UNKNOWN_BUTTON_CLICKED);
     }
 
     $frameworks = $fromform->framework;
@@ -88,8 +92,9 @@ if ($fromform = $mform->get_data()) {
                     delete_records('idp_comp_area_fw', 'id', $record->id);
                 }
             }
+            redirect($returnurl.$competencyarea->id.'&amp;notice='. UPDATE_COMP_AREA_SUCCESS);
         } else {
-            redirect($returnurl.'?id='.$id, get_string('error:couldnotupdatecompetencyarea','idp'));
+            redirect($returnurl.$competencyarea->id.'&amp;notice='. UPDATE_COMP_AREA_FAIL);
         }
     }
     else{
@@ -102,10 +107,32 @@ if ($fromform = $mform->get_data()) {
                     $framework = insert_record('idp_comp_area_fw', $fw);
                 }
             }
-            redirect($returnurl.'?id='.$newcompareaid);
+            redirect($returnurl.$newcompareaid.'&amp;notice='. CREATE_COMP_AREA_SUCCESS);
         } else{
-            redirect($returnurl, get_string('error:couldnotcreatecompetencyarea','idp'));
+            redirect($returnurl.'&amp;notice='. CREATE_COMP_AREA_FAIL);
         }
+    }
+}
+
+admin_externalpage_print_header($stridps, $navlinks);
+
+if($notice) {
+    switch($notice) {
+    case UPDATE_COMP_AREA_SUCCESS:
+        notify(get_string('update_comparea_success','idp'), 'notifysuccess');
+        break;
+    case UPDATE_COMP_AREA_FAIL:
+        notify(get_string('error:update_comparea_fail', 'idp'));
+        break;
+    case CREATE_COMP_AREA_SUCCESS:
+        notify(get_string('create_comparea_success', 'idp'), 'notifysuccess');
+        break;
+    case CREATE_COMP_AREA_FAIL:
+        notify(get_string('error:create_comparea_fail', 'idp'));
+        break;
+    case IDP_UNKNOWN_BUTTON_CLICKED:
+        notify(get_string('error:unknownbuttonclicked', 'local'));
+        break;
     }
 }
 
