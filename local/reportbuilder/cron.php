@@ -17,6 +17,9 @@ function reportbuilder_cron($grp=null) {
     // if no ID provided, run on all groups
     if(!$grp) {
         $groups = get_records('report_builder_group', '', '' ,'id');
+        if(!$groups) {
+            $groups = array();
+        }
     } else {
         // otherwise run on the group provided
         $data = get_record('report_builder_group', 'id', $grp);

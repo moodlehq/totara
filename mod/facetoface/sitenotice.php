@@ -68,7 +68,7 @@ if (!empty($d)) {
 
 $customfields = facetoface_get_session_customfields();
 
-$mform =& new mod_facetoface_sitenotice_form(null, compact('id', 'customfields'));
+$mform = new mod_facetoface_sitenotice_form(null, compact('id', 'customfields'));
 if ($mform->is_cancelled()){
     redirect($returnurl);
 }

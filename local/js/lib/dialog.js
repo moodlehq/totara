@@ -460,7 +460,7 @@ mitmsDialog_handler.prototype._set_framework = function() {
     var url = this._dialog.url;
 
     // See if framework specific
-    if (url.indexOf('frameworkid=') == -1) {
+    if (url.indexOf('&frameworkid=') == -1 || url.indexOf('?frameworkid=') == -1) {
         // Only return tree html
         url = url + '&frameworkid=' + selected + '&treeonly=1';
     } else {

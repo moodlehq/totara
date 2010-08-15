@@ -7,6 +7,8 @@ require_once($CFG->dirroot.'/hierarchy/type/position/lib.php');
 require_once($CFG->dirroot.'/local/js/lib/setup.php');
 require_once($CFG->dirroot.'/idp/lib.php');
 
+// Page title
+$pagetitle = 'assigncompetencies';
 
 ///
 /// Setup / loading data
@@ -20,6 +22,12 @@ $parentid = optional_param('parentid', 0, PARAM_INT);
 
 // Position id (a bit hackey, we are using the framework picker unmodified)
 $positionid = optional_param('frameworkid', 0, PARAM_INT);
+
+// Framework id
+$frameworkid = optional_param('realframeworkid', 0, PARAM_INT);
+
+// Only return generated tree html
+$treeonly = optional_param('treeonly', false, PARAM_BOOL);
 
 // No javascript parameters
 $nojs = optional_param('nojs', false, PARAM_BOOL);
@@ -40,7 +48,7 @@ $sitecontext = get_context_instance(CONTEXT_SYSTEM);
 require_capability('moodle/local:idpaddcompetencyfrompos', $sitecontext);
 
 // Setup hierarchy objects
-$competency = new competency();
+$hierarchy = new competency();
 $position = new position();
 
 // Load plan this revision relates to
@@ -73,8 +81,12 @@ if (!isset($cur_position)) {
 }
 
 // Load competencies to display
-$competencies = $position->get_assigned_competencies($cur_position);
-$assignedcomps = get_records('idp_revision_competency', 'revision', $revisionid, '', 'competency');
+$competencies = $position->get_assigned_competencies($cur_position, $frameworkid);
+$assignedsql = "SELECT c.id, c.fullname
+                FROM {$CFG->prefix}idp_revision_competency rc
+                INNER JOIN {$CFG->prefix}comp c ON rc.competency = c.id
+                WHERE rc.revision = {$revisionid} AND c.frameworkid = {$frameworkid}";
+$assignedcomps = get_records_sql($assignedsql);
 if( !is_array($assignedcomps) ){
     $assignedcomps = array();
 };
@@ -85,40 +97,39 @@ if( !is_array($assignedcomps) ){
 
 
 if(!$nojs) {
-    // build Javascript Treeview
-?>
+    if ($treeonly) {
+        echo build_treeview(
+            $competencies,
+            get_string('nocompetenciesassignedtoposition', 'position'),
+            $hierarchy,
+            $assignedcomps
+        );
+        exit;
+    }
 
-<div class="selectcompetencies">
+    // If parent id is not supplied, we must be displaying the main page
+    if (!$parentid) {
+        echo '<div class="selectcompetencies">'.PHP_EOL;
+        echo '<h2>'.get_string($pagetitle, $hierarchy->prefix).'</h2>';
+        echo '<div class="selected"><p>';
+        echo get_string('selectedcompetencies', $hierarchy->prefix);
+        echo populate_selected_items_pane($assignedcomps);
+        echo '</p></div>';
+        echo '<p>'.get_string('locatecompetency', $hierarchy->prefix).':</p>';
+        echo $position->user_positions_picker($owner, $cur_position->id);
+        if (empty($frameworkid)) {
+            $hierarchy->display_framework_selector('', true);
+        }
+        echo '<ul class="treeview filetree">';
+    }
 
-<?php echo $position->user_positions_picker($owner, $cur_position->id); ?>
+    echo build_treeview(
+        $competencies,
+        get_string('nocompetenciesassignedtoposition', 'position'),
+        null,
+        $assignedcomps
+    );
 
-<h2><?php echo get_string('addcompetenciestoplan', 'idp') ?></h2>
-
-<div class="selected">
-    <p>
-        <?php echo get_string('dragheretoassign', 'competency') ?>
-    </p>
-</div>
-
-<p>
-    <?php echo get_string('locatecompetency', 'competency') ?>:
-</p>
-
-<ul class="treeview filetree">
-
-<?php
-
-echo build_treeview(
-    $competencies,
-    get_string('nocompetenciesassignedtoposition', 'position'),
-    null,
-    $assignedcomps
-);
-
-?>
-</ul></div>
-
-<?php
 } else {
     // none JS version of page
     admin_externalpage_print_header();
@@ -137,7 +148,7 @@ echo build_treeview(
             )
         );
     } else {
-        echo  '<p>'.get_string('clicktoassign', $competency->prefix).'</p>';
+        echo  '<p>'.get_string('clicktoassign', $hierarchy->prefix).'</p>';
         echo '</div><div class="nojsselect">';
         echo build_nojs_treeview(
             $competencies,
