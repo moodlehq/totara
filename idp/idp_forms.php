@@ -1,6 +1,7 @@
 <?php
 
 require_once "$CFG->dirroot/lib/formslib.php";
+require_once "$CFG->dirroot/hierarchy/lib.php";
 
 class idp_new_competency_area_form extends moodleform {
     function definition() {
@@ -22,6 +23,15 @@ class idp_new_competency_area_form extends moodleform {
         $mform->setType('shortname', PARAM_TEXT);
         $mform->addRule('shortname',null,'required');
         $mform->setHelpButton('shortname', array('compareashortname',get_string('shortname','idp'),'moodle'));
+
+        $frameworks = $this->_customdata['frameworklist'];
+
+        $frameworkgroup = array();
+        foreach($frameworks as $fw){
+            $frameworkgroup[] =& $mform->createElement('advcheckbox', 'framework['.$fw->id.']', null, $fw->fullname, array('group' => 1), array(0,1));
+        }
+        $mform->addGroup($frameworkgroup, 'areaframeworks', get_string('frameworks','idp'), '<br />', false);
+        $this->add_checkbox_controller(1, get_string("checkallornone"), array('style' => 'font-weight: bold;'), 1);
 
         $this->add_action_buttons();
     }

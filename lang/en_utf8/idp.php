@@ -435,4 +435,5 @@ $string['deletedcomparea'] = 'The competency area $a has been completely deleted
 $string['linktopriorityvalues'] = '<a href=\\"view.php?id=$a\\">Click here</a> to view/edit the scale values for this priority scale.';
 $string['notspecifiedpriority'] = 'Not specified';
 $string['selectpriorityscale'] = 'Select a scale...';
+$string['frameworks'] = 'Frameworks';
 ?>

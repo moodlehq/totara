@@ -27,6 +27,15 @@ else {
     if (!$competencyarea = get_record('idp_comp_area', 'id', $id)) {
         error('Competency area ID was incorrect');
     }
+    else{
+        if($frameworks = get_records('idp_comp_area_fw', 'areaid', $competencyarea->id)){
+            $list = array();
+            foreach($frameworks as $fw){
+                $list[$fw->frameworkid] = '1';
+            }
+            $competencyarea->framework = $list;
+        }
+    }
 }
 
 $pagetitle = 'Create competency area';
@@ -39,8 +48,11 @@ $navlinks[] = array('name' => $pagetitle, 'link' => '', 'type' => 'home');
 
 admin_externalpage_print_header($stridps, $navlinks);
 
+$frameworkcount = 1;
+$frameworklist = get_records_sql("SELECT id, shortname, fullname FROM {$CFG->prefix}comp_framework");
+
 // form definition
-$mform =& new idp_new_competency_area_form(null, compact('templateid'));
+$mform =& new idp_new_competency_area_form(null, compact('templateid','frameworklist'));
 
 $mform->set_data($competencyarea);
 
@@ -53,6 +65,8 @@ if ($fromform = $mform->get_data()) {
         print_error('error:unknownbuttonclicked', 'local', $returnurl);
     }
 
+    $frameworks = $fromform->framework;
+
     $todb = new object();
     $todb->id = $competencyarea->id;
     $todb->templateid = $fromform->templateid;
@@ -63,13 +77,31 @@ if ($fromform = $mform->get_data()) {
     $todb->prioritiesenabled = '0';
     if($id!=0){
         if(update_record('idp_comp_area',$todb)) {
-            redirect($returnurl.'?id='.$id);
+            foreach($frameworks as $key => $val){
+                if($val == 1 && (!$record = get_record('idp_comp_area_fw', 'areaid', $competencyarea->id, 'frameworkid', $key))){
+                    $fw = new object();
+                    $fw->frameworkid = $key;
+                    $fw->areaid = $competencyarea->id;
+                    $framework = insert_record('idp_comp_area_fw', $fw);
+                }
+                else if($val == 0 && ($record = get_record('idp_comp_area_fw', 'areaid', $competencyarea->id, 'frameworkid', $key))){
+                    delete_records('idp_comp_area_fw', 'id', $record->id);
+                }
+            }
         } else {
             redirect($returnurl.'?id='.$id, get_string('error:couldnotupdatecompetencyarea','idp'));
         }
     }
     else{
         if($newcompareaid = insert_record('idp_comp_area', $todb)){
+            foreach($frameworks as $key => $val){
+                if($val == 1){
+                    $fw = new object();
+                    $fw->frameworkid = $key;
+                    $fw->areaid = $newcompareaid;
+                    $framework = insert_record('idp_comp_area_fw', $fw);
+                }
+            }
             redirect($returnurl.'?id='.$newcompareaid);
         } else{
             redirect($returnurl, get_string('error:couldnotcreatecompetencyarea','idp'));
