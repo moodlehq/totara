@@ -1,8 +1,6 @@
 <?php // $Id$
 
-/*
- * local/reportbuilder/classes/rb_base_preproc.php
- *
+/**
  * Abstract base preprocessor class to be extended to create report builder
  * pre-processors
  *
@@ -12,13 +10,14 @@
  * @copyright Catalyst IT Limited
  * @author Simon Coggins
  * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @package Totara
+ * @package totara
+ * @subpackage reportbuilder
  */
 abstract class rb_base_preproc {
 
     public $groupid;
 
-/*
+/**
  * Class constructor
  *
  * Call from the constructor of all child classes with:
@@ -56,7 +55,7 @@ abstract class rb_base_preproc {
     abstract function drop_group_tables();
 
 
-    /*
+    /**
      * Given a group ID, return an array of items in that group
      *
      * @return array Array of items (usually IDs) in that group
@@ -80,7 +79,7 @@ abstract class rb_base_preproc {
     }
 
 
-    /*
+    /**
      * Disable a particular item
      *
      * @param string $item Reference (usually an ID) to the item to disable
@@ -107,7 +106,7 @@ abstract class rb_base_preproc {
     }
 
 
-    /*
+    /**
      * Return associative array of items and when they were last processed
      *
      * Used to determine if an item needs to be preprocessed again
@@ -125,7 +124,7 @@ abstract class rb_base_preproc {
     }
 
 
-    /*
+    /**
      * Update or create tracking info for the item given
      * by setting the lastchecked to the current time.
      *

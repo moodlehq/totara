@@ -1,4 +1,15 @@
 <?php // $Id$
+
+/**
+ * Page containing general report settings
+ *
+ * @copyright Catalyst IT Limited
+ * @author Simon Coggins
+ * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
+ * @package totara
+ * @subpackage reportbuilder
+ */
+
 require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->dirroot.'/local/reportbuilder/lib.php');

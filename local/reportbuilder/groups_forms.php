@@ -1,19 +1,22 @@
 <?php // $Id$
 
-/*
- * local/reportbuilder/group_forms.php
- *
+/**
  * Formslib template for creating activity groups
+ *
  * @copyright Catalyst IT Limited
  * @author Simon Coggins
  * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @package Totara
+ * @package totara
+ * @subpackage reportbuilder
  */
 
 require_once($CFG->libdir . '/formslib.php');
 
 class report_builder_new_group_form extends moodleform {
 
+    /**
+     * Definition for the new group form
+     */
     function definition() {
         global $CFG;
         $mform =& $this->_form;

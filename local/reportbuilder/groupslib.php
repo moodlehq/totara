@@ -1,16 +1,16 @@
 <?php // $Id$
-/*
- * local/reportbuilder/groupslib.php
- *
+/**
  * Library for functions related to activity groups
+ *
  * @copyright Catalyst IT Limited
  * @author Simon Coggins
  * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @package Totara
+ * @package totara
+ * @subpackage reportbuilder
  */
 
 
-/*
+/**
  * Given a tag-based group, update the group assignments so it contains the
  * correct activities
  *

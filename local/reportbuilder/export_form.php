@@ -1,9 +1,22 @@
 <?php
 
+/**
+ * Formslib template for generating an export report form
+ *
+ * @copyright Catalyst IT Limited
+ * @author Simon Coggins
+ * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
+ * @package totara
+ * @subpackage reportbuilder
+ */
+
 require_once "$CFG->dirroot/lib/formslib.php";
 
 class report_builder_export_form extends moodleform {
 
+    /**
+     * Definition of the export report form
+     */
     function definition() {
         global $REPORT_BUILDER_EXPORT_OPTIONS;
         $mform =& $this->_form;
@@ -30,7 +43,6 @@ class report_builder_export_form extends moodleform {
             $group[] =& $mform->createElement('submit', 'export', get_string('export','local'));
             $mform->addGroup($group, 'exportgroup', '', array(' '), false);
         }
-
 
     }
 

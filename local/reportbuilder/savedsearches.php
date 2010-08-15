@@ -1,5 +1,16 @@
 <?php
-require_once('../../config.php');
+
+/**
+ * Page containing list of saved searches for this report
+ *
+ * @copyright Catalyst IT Limited
+ * @author Simon Coggins
+ * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
+ * @package totara
+ * @subpackage reportbuilder
+ */
+
+require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
 require_once($CFG->dirroot.'/local/reportbuilder/lib.php');
 require_once('report_forms.php');
 

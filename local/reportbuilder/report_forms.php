@@ -1,8 +1,21 @@
 <?php
 
+/**
+ * Moodle Formslib templates for report builder settings forms
+ *
+ * @copyright Catalyst IT Limited
+ * @author Simon Coggins
+ * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
+ * @package totara
+ * @subpackage reportbuilder
+ */
+
 require_once "$CFG->dirroot/lib/formslib.php";
 include_once($CFG->dirroot.'/local/reportbuilder/classes/rb_base_content.php');
 
+/**
+ * Formslib template for the new report form
+ */
 class report_builder_new_form extends moodleform {
 
     function definition() {
@@ -37,6 +50,9 @@ class report_builder_new_form extends moodleform {
 }
 
 
+/**
+ * Formslib tempalte for the edit report form
+ */
 class report_builder_edit_form extends moodleform {
     function definition() {
         global $CFG;
@@ -80,6 +96,9 @@ class report_builder_edit_form extends moodleform {
 }
 
 
+/**
+ * Formslib template for the global settings form
+ */
 class report_builder_global_settings_form extends moodleform {
     function definition() {
         global $CFG, $REPORT_BUILDER_EXPORT_OPTIONS;
@@ -111,7 +130,9 @@ class report_builder_global_settings_form extends moodleform {
 }
 
 
-
+/**
+ * Formslib template for edit filters form
+ */
 class report_builder_edit_filters_form extends moodleform {
     function definition() {
         global $CFG;
@@ -201,6 +222,9 @@ class report_builder_edit_filters_form extends moodleform {
 }
 
 
+/**
+ * Formslib template for edit columns form
+ */
 class report_builder_edit_columns_form extends moodleform {
     function definition() {
         global $CFG;
@@ -340,7 +364,9 @@ class report_builder_edit_columns_form extends moodleform {
 }
 
 
-
+/**
+ * Formslib template for content restrictions form
+ */
 class report_builder_edit_content_form extends moodleform {
     function definition() {
         global $CFG;
@@ -384,7 +410,9 @@ class report_builder_edit_content_form extends moodleform {
     }
 }
 
-
+/**
+ * Formslib template for access restrictions form
+ */
 class report_builder_edit_access_form extends moodleform {
     function definition() {
         global $CFG;
@@ -423,7 +451,13 @@ class report_builder_edit_access_form extends moodleform {
 }
 
 
-// check shortname is unique in db
+/**
+ * Method to check a shortname is unique in database
+ *
+ * @param array $data Array of data from the form
+ *
+ * @return array Array of errors to display on failure
+ */
 function validate_shortname($data) {
     $errors = array();
 
@@ -439,8 +473,15 @@ function validate_shortname($data) {
 
 }
 
-// check each column is only included once
-// (breaks flexible table otherwise)
+/**
+ * Method to check each column is only included once
+ *
+ * Flexible table breaks if not used as headers must be distinct
+ *
+ * @param array $data Array of data from the form
+ *
+ * @return array Array of errors to display on failure
+ */
 function validate_unique_columns($data) {
     $errors = array();
 
@@ -468,6 +509,10 @@ function validate_unique_columns($data) {
     return $errors;
 }
 
+
+/**
+ * Formslib template for saved searches form
+ */
 class report_builder_save_form extends moodleform {
     function definition() {
         global $CFG,$USER,$SESSION;
@@ -497,29 +542,4 @@ class report_builder_save_form extends moodleform {
     }
 }
 
-///////////////////////////////////////////////////////////////////////////////////////
-
-// returns an associative array to be used as an options list
-// of the directories within a reportbuilder subdirectory
-function reportbuilder_get_options_from_dir($source) {
-    global $CFG;
-
-    $ret = array();
-    $dir = "{$CFG->dirroot}/local/reportbuilder/$source/";
-    if (is_dir($dir)) {
-        if ($dh = opendir($dir)) {
-            while (($file = readdir($dh)) !== false) {
-                if(filetype($dir.$file)!='dir' || // exclude non-directories
-                    $file=='.' || $file=='..' || // exclude current and parent
-                    $file=='shared') { // exclude shared as this may be used in future for shared code
-                    continue;
-                }
-                $desc = ucwords(str_replace(array('-','_'),' ',$file));
-                $ret[$file] = $desc;
-            }
-            closedir($dh);
-        }
-    }
-    return $ret;
-}
 

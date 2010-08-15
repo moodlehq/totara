@@ -1,5 +1,15 @@
 <?php // $Id$
 
+/**
+ * Page containing list of available reports and new report form
+ *
+ * @copyright Catalyst IT Limited
+ * @author Simon Coggins
+ * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
+ * @package totara
+ * @subpackage reportbuilder
+ */
+
     require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
     require_once($CFG->libdir.'/adminlib.php');
     require_once($CFG->dirroot.'/local/reportbuilder/lib.php');
@@ -252,10 +262,12 @@
 
 // page specific functions
 
-/*
+/**
  * Deletes a report and any associated data
  *
  * @param integer $id ID of the report to delete
+ *
+ * @return boolean True if report was successfully deleted
  */
 function delete_report($id) {
 
@@ -296,15 +308,3 @@ function delete_report($id) {
 
 }
 
-/*
- * Sort two objects by isdefault property (used for usort callback)
- *
- * @param object $a First item
- * @param object $b Second item
- * @return Sort status (-1, 0, 1)
- */
-function rb_sort_by_default($a, $b) {
-    return $a->isdefault == $b->isdefault ? 0 : ($a->isdefault > $b->isdefault) ? 1 : -1;
-}
-
-?>

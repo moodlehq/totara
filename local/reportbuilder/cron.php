@@ -7,6 +7,13 @@ define('REPORT_BUILDER_CRON_WAIT_NUM', 10);
 // how often to print errors (1 for every time, 2 every other time, etc)
 define('REPORT_BUILDER_CRON_ERROR_FREQ', 10);
 
+/**
+ * Run the cron functions required by report builder
+ *
+ * @param integer $grp ID of a group to run on. Runs on all groups if not set
+ *
+ * @return boolean True if completes successfully, false otherwise
+ */
 function reportbuilder_cron($grp=null) {
     if(!rb_lock_cron()) {
         // don't run if already in progress
@@ -82,7 +89,7 @@ function reportbuilder_cron($grp=null) {
 }
 
 
-/*
+/**
  * Get an array of all the sources used by reports on this site
  *
  * @return Array Array of sources that have active reports
@@ -99,7 +106,7 @@ function rb_get_active_sources() {
     return $out;
 }
 
-/*
+/**
  * Attempt to lock the report builder cron.
  *
  * If it is already locked, track how long for and start printing
@@ -133,7 +140,7 @@ function rb_lock_cron() {
     return false;
 }
 
-/*
+/**
  * Unlock the report builder cron.
  *
  * @return True

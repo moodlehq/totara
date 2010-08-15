@@ -1,6 +1,16 @@
 <?php
 
-    require_once '../../config.php';
+/**
+ * Javascript file containing JQuery bindings for show/hide popup dialog box
+ *
+ * @copyright Catalyst IT Limited
+ * @author Simon Coggins
+ * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
+ * @package totara
+ * @subpackage reportbuilder
+ */
+
+require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
 
 ?>
 // bind functionality to page on load

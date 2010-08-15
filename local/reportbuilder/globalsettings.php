@@ -61,6 +61,13 @@ $mform->display();
 
 admin_externalpage_print_footer();
 
+/**
+ * Update global report builder settings
+ *
+ * @param object $fromform Moodle form object containing global setting changes to apply
+ *
+ * @return boolean True if settings could be successfully updated
+ */
 function update_global_settings($fromform) {
     global $REPORT_BUILDER_EXPORT_OPTIONS;
 

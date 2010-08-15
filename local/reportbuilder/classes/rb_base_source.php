@@ -1,11 +1,17 @@
 <?php
-/*
+
+/**
  * Abstract base class to be extended to create report builder sources
  *
+ * @copyright Catalyst IT Limited
+ * @author Simon Coggins
+ * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
+ * @package totara
+ * @subpackage reportbuilder
  */
 abstract class rb_base_source {
 
-/*
+/**
  * Class constructor
  *
  * Call from the constructor of all child classes with:
@@ -52,7 +58,7 @@ abstract class rb_base_source {
     }
 
 
-    /*
+    /**
      * Check the joinlist for invalid dependencies and duplicate names
      *
      * @return True or throws exception if problem found
@@ -118,7 +124,7 @@ abstract class rb_base_source {
     //
     //
 
-    /*
+    /**
      * Returns a new rb_column object based on a column option from this source
      *
      * If $heading is given use it for the heading property, otherwise use
@@ -171,6 +177,19 @@ abstract class rb_base_source {
         }
     }
 
+
+    /**
+     * Returns a new rb_filter object based on a filter option from this source
+     *
+     * If $advanced is given use it for the advanced property, otherwise use
+     * the default advanced property from the filter option
+     *
+     * @param string $type The type of the filter option to use
+     * @param string $value The value of the filter option to use
+     * @param string $advanced If the filter should be an advanced option
+     * @return object A new rb_filter object with details copied from this
+     *                rb_filter_option
+     */
     function new_filter_from_option($type, $value, $advanced=null) {
         $filteroptions = $this->filteroptions;
         $columnoptions = $this->columnoptions;
@@ -224,7 +243,14 @@ abstract class rb_base_source {
     //
     //
 
-    // reformat a timestamp, showing nothing if invalid or null
+    /**
+     * Reformat a timestamp into a date, showing nothing if invalid or null
+     *
+     * @param integer $date Unix timestamp
+     * @param object $row Object containing all other fields for this row
+     *
+     * @return string Date in a nice format
+     */
     function rb_display_nice_date($date, $row) {
         if($date && $date > 0) {
             return userdate($date, '%d %b %Y');
@@ -233,7 +259,14 @@ abstract class rb_base_source {
         }
     }
 
-    // reformat a timestamp into a time, showing nothing if invalid or null
+    /**
+     * Reformat a timestamp into a time, showing nothing if invalid or null
+     *
+     * @param integer $date Unix timestamp
+     * @param object $row Object containing all other fields for this row
+     *
+     * @return string Time in a nice format
+     */
     function rb_display_nice_time($date, $row) {
         if($date && $date > 0) {
             return userdate($date, '%H:%M');
@@ -242,7 +275,15 @@ abstract class rb_base_source {
         }
     }
 
-    // reformat a timestamp into a date+time, showing nothing if invalid or null
+
+    /**
+     * Reformat a timestamp into a date and time, showing nothing if invalid or null
+     *
+     * @param integer $date Unix timestamp
+     * @param object $row Object containing all other fields for this row
+     *
+     * @return string Date and time in a nice format
+     */
     function rb_display_nice_datetime($date, $row) {
         if($date && $date > 0) {
             return userdate($date, '%d %b %Y at %H:%M');
@@ -251,7 +292,14 @@ abstract class rb_base_source {
         }
     }
 
-    // convert first letters of each word to uppercase
+    /**
+     * Convert first letters of each word to uppercase
+     *
+     * @param string $item A string to convert
+     * @param object $row Object containing all other fields for this row
+     *
+     * @return string The string with words capitialized
+     */
     function rb_display_ucfirst($item, $row) {
         return ucfirst($item);
     }
@@ -478,7 +526,7 @@ abstract class rb_base_source {
     //
 
 
-    /*
+    /**
      * Adds the user table to the $joinlist array
      *
      * @param array &$joinlist Array of current join options
@@ -504,7 +552,7 @@ abstract class rb_base_source {
     }
 
 
-     /*
+     /**
      * Adds some common user field to the $columnoptions array
      *
      * @param array &$columnoptions Array of current column options
@@ -557,7 +605,7 @@ abstract class rb_base_source {
     }
 
 
-    /*
+    /**
      * Adds some common user field to the $filteroptions array
      *
      * @param array &$filteroptions Array of current filter options
@@ -586,7 +634,7 @@ abstract class rb_base_source {
     }
 
 
-    /*
+    /**
      * Adds any user profile fields to the $joinlist array
      *
      * @param array &$joinlist Array of current join options
@@ -621,7 +669,7 @@ abstract class rb_base_source {
     }
 
 
-    /*
+    /**
      * Adds any user profile fields to the $columnoptions array
      *
      * @param array &$columnoptions Array of current column options
@@ -651,7 +699,7 @@ abstract class rb_base_source {
     }
 
 
-    /*
+    /**
      * Adds any user profile fields to the $filteroptions array as text filters
      *
      * @param array &$filteroptions Array of current filter options
@@ -677,7 +725,7 @@ abstract class rb_base_source {
         return false;
     }
 
-    /*
+    /**
      * Adds the course table to the $joinlist array
      *
      * @param array &$joinlist Array of current join options
@@ -702,7 +750,7 @@ abstract class rb_base_source {
     }
 
 
-    /*
+    /**
      * Adds some common course info to the $columnoptions array
      *
      * @param array &$columnoptions Array of current column options
@@ -767,7 +815,7 @@ abstract class rb_base_source {
     }
 
 
-    /*
+    /**
      * Adds some common course filters to the $filteroptions array
      *
      * @param array &$columnoptions Array of current filter options
@@ -805,7 +853,7 @@ abstract class rb_base_source {
     }
 
 
-    /*
+    /**
      * Adds the course_category table to the $joinlist array
      *
      * @param array &$joinlist Array of current join options
@@ -833,7 +881,7 @@ abstract class rb_base_source {
     }
 
 
-    /*
+    /**
      * Adds some common course category info to the $columnoptions array
      *
      * @param array &$columnoptions Array of current column options
@@ -865,7 +913,7 @@ abstract class rb_base_source {
     }
 
 
-    /*
+    /**
      * Adds some common course category filters to the $filteroptions array
      *
      * @param array &$columnoptions Array of current filter options
@@ -888,7 +936,7 @@ abstract class rb_base_source {
     }
 
 
-    /*
+    /**
      * Adds the pos_assignment, pos and org tables to the $joinlist array
      *
      * @param array &$joinlist Array of current join options
@@ -938,7 +986,7 @@ abstract class rb_base_source {
     }
 
 
-    /*
+    /**
      * Adds some common user position info to the $columnoptions array
      *
      * @param array &$columnoptions Array of current column options
@@ -1008,7 +1056,7 @@ abstract class rb_base_source {
     }
 
 
-    /*
+    /**
      * Adds some common user position filters to the $filteroptions array
      *
      * @param array &$columnoptions Array of current filter options
@@ -1059,7 +1107,7 @@ abstract class rb_base_source {
     }
 
 
-    /*
+    /**
      * Adds the manager_role_assignment and manager tables to the $joinlist
      * array
      *
@@ -1102,7 +1150,7 @@ abstract class rb_base_source {
     }
 
 
-    /*
+    /**
      * Adds some common user manager info to the $columnoptions array
      *
      * @param array &$columnoptions Array of current column options
@@ -1129,7 +1177,7 @@ abstract class rb_base_source {
     }
 
 
-    /*
+    /**
      * Adds some common manager filters to the $filteroptions array
      *
      * @param array &$columnoptions Array of current filter options
@@ -1148,7 +1196,7 @@ abstract class rb_base_source {
     }
 
 
-    /*
+    /**
      * Adds the tags tables to the $joinlist array
      *
      * @param array &$joinlist Array of current join options
@@ -1201,7 +1249,7 @@ abstract class rb_base_source {
         return true;
     }
 
-    /*
+    /**
      * Adds some common course tag info to the $columnoptions array
      *
      * @param array &$columnoptions Array of current column options
@@ -1245,7 +1293,7 @@ abstract class rb_base_source {
     }
 
 
-    /*
+    /**
      * Adds some common course tag filters to the $filteroptions array
      *
      * @param array &$columnoptions Array of current filter options

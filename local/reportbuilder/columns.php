@@ -155,7 +155,14 @@ EOF;
 admin_externalpage_print_footer();
 
 
-
+/**
+ * Update the report columns table with data from the submitted form
+ *
+ * @param integer $id Report ID to update
+ * @param object $fromform Moodle form object containing the new column data
+ *
+ * @return boolean True if the columns could be updated successfully
+ */
 function build_columns($id, $fromform) {
     begin_sql();
 

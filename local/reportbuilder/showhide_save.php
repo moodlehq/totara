@@ -1,12 +1,18 @@
 <?php
 
-/*
+/**
  * Set a SESSION var to store the visibility of a report builder column
  *
  * Called via AJAX from local/reportbuilder/showhide.php
+ *
+ * @copyright Catalyst IT Limited
+ * @author Simon Coggins
+ * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
+ * @package totara
+ * @subpackage reportbuilder
  */
 
-require_once('../../config.php');
+require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
 
 $shortname = required_param('shortname', PARAM_TEXT);
 $column = required_param('column', PARAM_TEXT);

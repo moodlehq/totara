@@ -1,10 +1,20 @@
 <?php
 
-    require_once '../../config.php';
+/**
+ * Javascript file containing JQuery bindings for hierarchy dialog filters
+ *
+ * @copyright Catalyst IT Limited
+ * @author Simon Coggins
+ * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
+ * @package totara
+ * @subpackage reportbuilder
+ */
+
+require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
 
 ?>
 // See local/reportbuilder/lib.php method include_js()
-// for *tree variable definitions
+// for postree/orgtree/comptree variable definitions
 
 
 // Bind functionality to page on load

@@ -133,6 +133,14 @@ $mform->display();
 
 admin_externalpage_print_footer();
 
+/**
+ * Update the report filters table with data from the submitted form
+ *
+ * @param integer $id Report ID to update
+ * @param object $fromform Moodle form object containing the new filter data
+ *
+ * @return boolean True if the filters could be updated successfully
+ */
 function build_filters($id, $fromform) {
     begin_sql();
 

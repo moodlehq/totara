@@ -1,8 +1,6 @@
 <?php // $Id$
 
 /*
- * local/reportbuilder/classes/rb_base_content.php
- *
  * Abstract base content class to be extended to create report builder
  * content restrictions. This file also contains some core content restrictions
  * that can be used by any report builder source
@@ -12,7 +10,8 @@
  * @copyright Catalyst IT Limited
  * @author Simon Coggins
  * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @package Totara
+ * @package totara
+ * @subpackage reportbuilder
  */
 abstract class rb_base_content {
     /*
@@ -28,11 +27,20 @@ abstract class rb_base_content {
 ///////////////////////////////////////////////////////////////////////////
 
 
-/*
+/**
  * Restrict content by a position ID
+ *
  * Pass in an integer that represents the position ID
  */
 class rb_current_pos_content extends rb_base_content {
+    /**
+     * Generate the SQL to apply this content restriction
+     *
+     * @param string $field SQL field to apply the restriction against
+     * @param integer $reportid ID of the report
+     *
+     * @return string SQL snippet to be used in a WHERE clause
+     */
     function sql_restriction($field, $reportid) {
         global $CFG, $USER;
         require_once($CFG->dirroot.'/hierarchy/lib.php');
@@ -73,6 +81,14 @@ class rb_current_pos_content extends rb_base_content {
         return $field.' IN ('. implode(',',$ulist). ')';
     }
 
+    /**
+     * Generate a human-readable text string describing the restriction
+     *
+     * @param string $title Name of the field being restricted
+     * @param integer $reportid ID of the report
+     *
+     * @return string Human readable description of the restriction
+     */
     function text_restriction($title, $reportid) {
         global $USER;
         $userid = $USER->id;
@@ -90,6 +106,12 @@ class rb_current_pos_content extends rb_base_content {
             $children;
     }
 
+    /**
+     * Adds form elements required for this content restriction's settings page
+     *
+     * @param object &$mform Moodle form object to modify (passed by reference)
+     * @param integer $reportid ID of the report being adjusted
+     */
     function form_template(&$mform, $reportid) {
         // get current settings
         // remove rb_ from start of classname
@@ -120,6 +142,14 @@ class rb_current_pos_content extends rb_base_content {
             get_string('showbycurrentpos', 'local'), 'moodle'));
     }
 
+    /**
+     * Processes the form elements created by {@link form_template()}
+     *
+     * @param integer $reportid ID of the report to process
+     * @param object $fromform Moodle form data received via form submission
+     *
+     * @return boolean True if form was successfully processed
+     */
     function form_process($reportid, $fromform) {
         $status = true;
         // remove rb_ from start of classname
@@ -143,11 +173,20 @@ class rb_current_pos_content extends rb_base_content {
 
 
 
-/*
+/**
  * Restrict content by an organisation ID
+ *
  * Pass in an integer that represents the organisation ID
  */
 class rb_current_org_content extends rb_base_content {
+    /**
+     * Generate the SQL to apply this content restriction
+     *
+     * @param string $field SQL field to apply the restriction against
+     * @param integer $reportid ID of the report
+     *
+     * @return string SQL snippet to be used in a WHERE clause
+     */
     function sql_restriction($field, $reportid) {
         global $CFG, $USER;
         require_once($CFG->dirroot.'/hierarchy/lib.php');
@@ -188,6 +227,14 @@ class rb_current_org_content extends rb_base_content {
         return $field.' IN ('. implode(',',$ulist). ')';
     }
 
+    /**
+     * Generate a human-readable text string describing the restriction
+     *
+     * @param string $title Name of the field being restricted
+     * @param integer $reportid ID of the report
+     *
+     * @return string Human readable description of the restriction
+     */
     function text_restriction($title, $reportid) {
         global $USER;
         $userid = $USER->id;
@@ -205,6 +252,13 @@ class rb_current_org_content extends rb_base_content {
             $children;
     }
 
+
+    /**
+     * Adds form elements required for this content restriction's settings page
+     *
+     * @param object &$mform Moodle form object to modify (passed by reference)
+     * @param integer $reportid ID of the report being adjusted
+     */
     function form_template(&$mform, $reportid) {
         // get current settings
         // remove rb_ from start of classname
@@ -235,6 +289,15 @@ class rb_current_org_content extends rb_base_content {
             get_string('showbycurrentorg', 'local'), 'moodle'));
     }
 
+
+    /**
+     * Processes the form elements created by {@link form_template()}
+     *
+     * @param integer $reportid ID of the report to process
+     * @param object $fromform Moodle form data received via form submission
+     *
+     * @return boolean True if form was successfully processed
+     */
     function form_process($reportid, $fromform) {
         $status = true;
         // remove rb_ from start of classname
@@ -259,9 +322,18 @@ class rb_current_org_content extends rb_base_content {
 
 /*
  * Restrict content by an organisation at time of completion
+ *
  * Pass in an integer that represents an organisation ID
  */
 class rb_completed_org_content extends rb_base_content {
+    /**
+     * Generate the SQL to apply this content restriction
+     *
+     * @param string $field SQL field to apply the restriction against
+     * @param integer $reportid ID of the report
+     *
+     * @return string SQL snippet to be used in a WHERE clause
+     */
     function sql_restriction($field, $reportid) {
         global $CFG,$USER;
         require_once($CFG->dirroot.'/hierarchy/lib.php');
@@ -294,6 +366,14 @@ class rb_completed_org_content extends rb_base_content {
         }
     }
 
+    /**
+     * Generate a human-readable text string describing the restriction
+     *
+     * @param string $title Name of the field being restricted
+     * @param integer $reportid ID of the report
+     *
+     * @return string Human readable description of the restriction
+     */
     function text_restriction($title, $reportid) {
         global $USER;
         $userid = $USER->id;
@@ -314,6 +394,13 @@ class rb_completed_org_content extends rb_base_content {
             $children;
     }
 
+
+    /**
+     * Adds form elements required for this content restriction's settings page
+     *
+     * @param object &$mform Moodle form object to modify (passed by reference)
+     * @param integer $reportid ID of the report being adjusted
+     */
     function form_template(&$mform, $reportid) {
         // get current settings
         // remove rb_ from start of classname
@@ -344,6 +431,15 @@ class rb_completed_org_content extends rb_base_content {
             get_string('showbycompletedorg', 'local'), 'moodle'));
     }
 
+
+    /**
+     * Processes the form elements created by {@link form_template()}
+     *
+     * @param integer $reportid ID of the report to process
+     * @param object $fromform Moodle form data received via form submission
+     *
+     * @return boolean True if form was successfully processed
+     */
     function form_process($reportid, $fromform) {
         $status = true;
         // remove rb_ from start of classname
@@ -368,9 +464,18 @@ class rb_completed_org_content extends rb_base_content {
 
 /*
  * Restrict content by a particular user or group of users
+ *
  * Pass in an integer that represents a user's moodle id
  */
 class rb_user_content extends rb_base_content {
+    /**
+     * Generate the SQL to apply this content restriction
+     *
+     * @param string $field SQL field to apply the restriction against
+     * @param integer $reportid ID of the report
+     *
+     * @return string SQL snippet to be used in a WHERE clause
+     */
     function sql_restriction($field, $reportid) {
         global $USER;
 
@@ -403,6 +508,14 @@ class rb_user_content extends rb_base_content {
         }
     }
 
+    /**
+     * Generate a human-readable text string describing the restriction
+     *
+     * @param string $title Name of the field being restricted
+     * @param integer $reportid ID of the report
+     *
+     * @return string Human readable description of the restriction
+     */
     function text_restriction($title, $reportid) {
         global $USER;
 
@@ -427,6 +540,13 @@ class rb_user_content extends rb_base_content {
         }
     }
 
+
+    /**
+     * Adds form elements required for this content restriction's settings page
+     *
+     * @param object &$mform Moodle form object to modify (passed by reference)
+     * @param integer $reportid ID of the report being adjusted
+     */
     function form_template(&$mform, $reportid) {
 
         // get current settings
@@ -457,6 +577,15 @@ class rb_user_content extends rb_base_content {
             get_string('showbyuser', 'local'), 'moodle'));
     }
 
+
+    /**
+     * Processes the form elements created by {@link form_template()}
+     *
+     * @param integer $reportid ID of the report to process
+     * @param object $fromform Moodle form data received via form submission
+     *
+     * @return boolean True if form was successfully processed
+     */
     function form_process($reportid, $fromform) {
         $status = true;
         // remove rb_ from start of classname
@@ -481,10 +610,18 @@ class rb_user_content extends rb_base_content {
 
 /*
  * Restrict content by a particular date
+ *
  * Pass in an integer that contains a unix timestamp
  */
 class rb_date_content extends rb_base_content {
-
+    /**
+     * Generate the SQL to apply this content restriction
+     *
+     * @param string $field SQL field to apply the restriction against
+     * @param integer $reportid ID of the report
+     *
+     * @return string SQL snippet to be used in a WHERE clause
+     */
     function sql_restriction($field, $reportid) {
         $now = time();
 
@@ -540,6 +677,14 @@ class rb_date_content extends rb_base_content {
 
     }
 
+    /**
+     * Generate a human-readable text string describing the restriction
+     *
+     * @param string $title Name of the field being restricted
+     * @param integer $reportid ID of the report
+     *
+     * @return string Human readable description of the restriction
+     */
     function text_restriction($title, $reportid) {
 
         // remove rb_ from start of classname
@@ -579,6 +724,13 @@ class rb_date_content extends rb_base_content {
         }
     }
 
+
+    /**
+     * Adds form elements required for this content restriction's settings page
+     *
+     * @param object &$mform Moodle form object to modify (passed by reference)
+     * @param integer $reportid ID of the report being adjusted
+     */
     function form_template(&$mform, $reportid) {
         // get current settings
         // remove rb_ from start of classname
@@ -622,6 +774,15 @@ class rb_date_content extends rb_base_content {
         $mform->disabledIf('date_incnulls', 'contentenabled', 'eq', 0);
     }
 
+
+    /**
+     * Processes the form elements created by {@link form_template()}
+     *
+     * @param integer $reportid ID of the report to process
+     * @param object $fromform Moodle form data received via form submission
+     *
+     * @return boolean True if form was successfully processed
+     */
     function form_process($reportid, $fromform) {
         $status = true;
         // remove rb_ from start of classname
@@ -652,9 +813,18 @@ class rb_date_content extends rb_base_content {
 
 /*
  * Restrict content by offical tags
+ *
  * Pass in a column that contains a pipe '|' separated list of official tag ids
  */
 class rb_course_tag_content extends rb_base_content {
+    /**
+     * Generate the SQL to apply this content restriction
+     *
+     * @param string $field SQL field to apply the restriction against
+     * @param integer $reportid ID of the report
+     *
+     * @return string SQL snippet to be used in a WHERE clause
+     */
     function sql_restriction($field, $reportid) {
         // remove rb_ from start of classname
         $type = substr(get_class($this), 3);
@@ -711,6 +881,14 @@ class rb_course_tag_content extends rb_base_content {
         }
     }
 
+    /**
+     * Generate a human-readable text string describing the restriction
+     *
+     * @param string $title Name of the field being restricted
+     * @param integer $reportid ID of the report
+     *
+     * @return string Human readable description of the restriction
+     */
     function text_restriction($title, $reportid) {
         // remove rb_ from start of classname
         $type = substr(get_class($this), 3);
@@ -765,6 +943,13 @@ class rb_course_tag_content extends rb_base_content {
 
     }
 
+
+    /**
+     * Adds form elements required for this content restriction's settings page
+     *
+     * @param object &$mform Moodle form object to modify (passed by reference)
+     * @param integer $reportid ID of the report being adjusted
+     */
     function form_template(&$mform, $reportid) {
 
         // remove rb_ from start of classname
@@ -843,6 +1028,15 @@ class rb_course_tag_content extends rb_base_content {
 
     }
 
+
+    /**
+     * Processes the form elements created by {@link form_template()}
+     *
+     * @param integer $reportid ID of the report to process
+     * @param object $fromform Moodle form data received via form submission
+     *
+     * @return boolean True if form was successfully processed
+     */
     function form_process($reportid, $fromform) {
         $status = true;
         // remove the rb_ from class

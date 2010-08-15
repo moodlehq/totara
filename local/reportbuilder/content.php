@@ -67,6 +67,16 @@ $mform->display();
 
 admin_externalpage_print_footer();
 
+
+/**
+ * Update the report content settings with data from the submitted form
+ *
+ * @param integer $id Report ID to update
+ * @param object $report Report builder object that is being updated
+ * @param object $fromform Moodle form object containing the new content data
+ *
+ * @return boolean True if the content settings could be updated successfully
+ */
 function update_content($id, $report, $fromform) {
     begin_sql();
 

@@ -1,7 +1,19 @@
 <?php
 
-// assumes the report id variable has been set in the page
+/**
+ * Display tabs on report settings pages
+ *
+ * Included in each settings page
+ *
+ * @copyright Catalyst IT Limited
+ * @author Simon Coggins
+ * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
+ * @package totara
+ * @subpackage reportbuilder
+ */
 
+
+// assumes the report id variable has been set in the page
 if (!isset($currenttab)) {
     $currenttab = 'general';
 }

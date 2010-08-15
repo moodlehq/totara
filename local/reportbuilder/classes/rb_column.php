@@ -2,6 +2,22 @@
 
 /*
  * Class defining a report builder column
+ *
+ * This class contains properties and methods needed by a column
+ * Instances of this class differ from rb_column_option instances
+ * in that they refer to an actual column in a report instance, as
+ * opposed to an available column option.
+ *
+ * As well as inheritting a number of properties from the column
+ * option on which it is based, a column defines extra information
+ * about the column such as the heading the user wishes to use to
+ * describe it
+ *
+ * @copyright Catalyst IT Limited
+ * @author Simon Coggins
+ * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
+ * @package totara
+ * @subpackage reportbuilder
  */
 class rb_column {
     public $type, $value, $heading, $field, $joins;

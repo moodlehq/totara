@@ -1,12 +1,12 @@
 <?php // $Id$
 /*
- * local/reportbuilder/groupsettings.php
- *
  * Page for viewing and editing details about a particular activity groups
+ *
  * @copyright Catalyst IT Limited
  * @author Simon Coggins
  * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @package Totara
+ * @package totara
+ * @subpackage reportbuilder
  */
 
     require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');

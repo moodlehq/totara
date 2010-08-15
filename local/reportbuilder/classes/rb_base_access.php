@@ -1,5 +1,18 @@
 <?php
-
+/**
+ * Abstract base access class to be extended to create report builder access restrictions.
+ *
+ * Defines the properties and methods required by access restrictions
+ *
+ * This file also contains some core access restrictions
+ * that can be used by any report builder source
+ *
+ * @copyright Catalyst IT Limited
+ * @author Simon Coggins
+ * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
+ * @package totara
+ * @subpackage reportbuilder
+ */
 abstract class rb_base_access {
     /*
      * All sub classes must define the following functions
@@ -12,6 +25,13 @@ abstract class rb_base_access {
 
 class rb_role_access extends rb_base_access {
 
+    /**
+     * Check if the user has rights for a particular access restriction
+     *
+     * @param integer $reportid ID of the report to check access for
+     *
+     * @return boolean True if user has access rights
+     */
     function access_restriction($reportid) {
         global $CFG, $USER;
         // return true if user has rights to access by role
@@ -50,6 +70,13 @@ class rb_role_access extends rb_base_access {
         return false;
     }
 
+
+    /**
+     * Adds form elements required for this access restriction's settings page
+     *
+     * @param object &$mform Moodle form object to modify (passed by reference)
+     * @param integer $reportid ID of the report being adjusted
+     */
     function form_template(&$mform, $reportid) {
         // remove the rb_ from class
         $type = substr(get_class($this), 3);
@@ -89,6 +116,14 @@ class rb_role_access extends rb_base_access {
 
     }
 
+    /**
+     * Processes the form elements created by {@link form_template()}
+     *
+     * @param integer $reportid ID of the report to process
+     * @param object $fromform Moodle form data received via form submission
+     *
+     * @return boolean True if form was successfully processed
+     */
     function form_process($reportid, $fromform) {
         // save the results of submitting the access form to
         // report_builder_settings

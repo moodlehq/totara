@@ -68,6 +68,14 @@ $mform->display();
 admin_externalpage_print_footer();
 
 
+/**
+ * Update the report settings table with new access settings
+ *
+ * @param integer $reportid ID of the report to update
+ * @param object $fromform Moodle form object containing new access settings
+ *
+ * @return boolean True if the settings could be successfully updated
+ */
 function update_access($reportid, $fromform) {
 
     begin_sql();

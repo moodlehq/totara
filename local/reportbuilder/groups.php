@@ -1,13 +1,13 @@
 <?php // $Id$
 
 /*
- * local/reportbuilder/groups.php
- *
  * Page for viewing, creating and deleting activity groups
+ *
  * @copyright Catalyst IT Limited
  * @author Simon Coggins
  * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @package Totara
+ * @package totara
+ * @subpackage reportbuilder
  */
 
     require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
@@ -220,7 +220,7 @@
 
 // page specific functions
 
-/*
+/**
  * Deletes a group
  *
  * @param integer $id ID of the group to delete
@@ -270,7 +270,7 @@ function delete_group($id) {
     return true;
 }
 
-/*
+/**
  * Creates a group
  *
  * @param object $fromform Formslib data object to base group on
