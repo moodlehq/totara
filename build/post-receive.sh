@@ -649,7 +649,7 @@ show_new_revisions()
 
 		if [ $msg_count == 1 ]
 		then
-            if [ "$onerc" != "" ];
+            if [ "$onerev" != "" ];
             then
                 # use branch name as prefix
                 if [ "$refname_type" = "branch" ]; then
