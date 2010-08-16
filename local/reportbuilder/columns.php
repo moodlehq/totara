@@ -139,6 +139,9 @@ if($notice) {
     case REPORT_BUILDER_COLUMNS_FAILED_UPDATE:
         get_string('error:columns_not_updated','local');
         break;
+    case REPORT_BUILDER_UNKNOWN_BUTTON_CLICKED:
+        get_string('error:unknownbuttonclicked','local');
+        break;
     }
 }
 
