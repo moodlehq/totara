@@ -7,7 +7,7 @@
  * @copyright Catalyst IT Limited
  * @author Alastair Munro
  * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @package Totara
+ * @package totara
  */
 
 /**
