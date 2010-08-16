@@ -1098,7 +1098,7 @@ var comptree = [' . implode(', ', $comptrees) . '];
      *
      * @param string $name Join name to get from the join list
      *
-     * @return object rb_join object for the matching join, or false
+     * @return object {@link rb_join} object for the matching join, or false
      */
     function get_joinlist_item($name) {
         $joinlist = $this->_joinlist;
@@ -1112,13 +1112,13 @@ var comptree = [' . implode(', ', $comptrees) . '];
 
 
     /**
-     * Given an item, returns an array of rb_join objects needed by this item
+     * Given an item, returns an array of {@link rb_join} objects needed by this item
      *
      * @param object $item An object containing a 'joins' property
      * @param string $usage The function is called to obtain joins for various
      *                     different elements of the query. The usage is displayed
      *                     in the error message to help with debugging
-     * @return array An array of rb_join objects used to build the join part of the query
+     * @return array An array of {@link rb_join} objects used to build the join part of the query
      */
     function get_joins($item, $usage) {
         $output = array();
@@ -1164,7 +1164,7 @@ var comptree = [' . implode(', ', $comptrees) . '];
     }
 
     /**
-     * Recursively build an array of join objects that includes all
+     * Recursively build an array of {@link rb_join} objects that includes all
      * dependencies
      */
     function get_dependency_joins(&$joins, $joinobj) {
@@ -1210,10 +1210,10 @@ var comptree = [' . implode(', ', $comptrees) . '];
 
 
     /**
-     * Return an array of rb_join objects containing the joins required by
+     * Return an array of {@link rb_join} objects containing the joins required by
      * the current enabled content restrictions
      *
-     * @return array An array of rb_join objects containing join information
+     * @return array An array of {@link rb_join} objects containing join information
      */
     function get_content_joins() {
         $reportid = $this->_id;
@@ -1240,10 +1240,10 @@ var comptree = [' . implode(', ', $comptrees) . '];
 
 
     /**
-     * Return an array of rb_join objects containing the joins required by
+     * Return an array of {@link rb_join} objects containing the joins required by
      * the current column list
      *
-     * @return array An array of rb_join objects containing join information
+     * @return array An array of {@link rb_join} objects containing join information
      */
     function get_column_joins() {
         $coljoins = array();
@@ -1255,10 +1255,10 @@ var comptree = [' . implode(', ', $comptrees) . '];
     }
 
     /**
-     * Return an array of rb_join objects containing the joins required by
+     * Return an array of {@link rb_join} objects containing the joins required by
      * the current param list
      *
-     * @return array An array of rb_join objects containing join information
+     * @return array An array of {@link rb_join} objects containing join information
      */
     function get_param_joins() {
         $paramjoins = array();
@@ -1276,7 +1276,7 @@ var comptree = [' . implode(', ', $comptrees) . '];
 
     /**
      * Check the current session for active filters, and if found
-     * collect together join data into a format suitable for get_joins()
+     * collect together join data into a format suitable for {@link get_joins()}
      *
      * @return array An array of arrays containing filter join information
      */
@@ -1309,9 +1309,9 @@ var comptree = [' . implode(', ', $comptrees) . '];
 
 
     /**
-     * Given an array of rb_join objects, convert them into an SQL snippet
+     * Given an array of {@link rb_join} objects, convert them into an SQL snippet
      *
-     * @param array $joins Array of rb_join objects
+     * @param array $joins Array of {@link rb_join} objects
      *
      * @return string SQL snippet that includes all the joins in the order provided
      */
@@ -1337,9 +1337,9 @@ var comptree = [' . implode(', ', $comptrees) . '];
 
 
     /**
-     * Sort an array of rb_join objects
+     * Sort an array of {@link rb_join} objects
      *
-     * Given an array of rb_join objects, sorts them such that:
+     * Given an array of {@link rb_join} objects, sorts them such that:
      * - any duplicate joins are removed
      * - any joins with dependencies appear after those dependencies
      *
@@ -1363,9 +1363,9 @@ var comptree = [' . implode(', ', $comptrees) . '];
      * In the later two cases we throw an error, otherwise return
      * the sorted list.
      *
-     * @param array Array of rb_join objects to be sorted
+     * @param array Array of {@link rb_join} objects to be sorted
      *
-     * @return array Sorted array of rb_join objects
+     * @return array Sorted array of {@link rb_join} objects
      */
     function sort_joins($unsortedjoins) {
 
@@ -1422,7 +1422,7 @@ var comptree = [' . implode(', ', $comptrees) . '];
     /**
      * Remove joins that have no impact on the results count
      *
-     * Given an array of rb_join objects we want to return a similar list,
+     * Given an array of {@link rb_join} objects we want to return a similar list,
      * but with any joins that have no effect on the count removed. This is
      * done for performance reasons when calculating the count.
      *
@@ -1445,7 +1445,7 @@ var comptree = [' . implode(', ', $comptrees) . '];
      *
      * @param array $unprunedjoins Array of rb_join objects to be pruned
      *
-     * @return array Array of rb_join objects, minus any joins
+     * @return array Array of {@link rb_join} objects, minus any joins
      *               that don't affect the total record count
      */
     function prune_joins($unprunedjoins) {
@@ -1489,7 +1489,7 @@ var comptree = [' . implode(', ', $comptrees) . '];
 
 
     /**
-     * Reformats an array of rb_join objects to a structure helpful for managing dependencies
+     * Reformats an array of {@link rb_join} objects to a structure helpful for managing dependencies
      *
      * Saves the dependency info in the following format:
      *
@@ -1506,7 +1506,7 @@ var comptree = [' . implode(', ', $comptrees) . '];
      * - Converting null dependencies to array()
      * - Converting string dependencies to array('string')
      *
-     * @param array $joins Array of rb_join objects
+     * @param array $joins Array of {@link rb_join} objects
      *
      * @return array Array of join dependencies
      */

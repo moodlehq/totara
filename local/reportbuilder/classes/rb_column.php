@@ -1,6 +1,6 @@
 <?php
 
-/*
+/**
  * Class defining a report builder column
  *
  * This class contains properties and methods needed by a column
@@ -8,23 +8,216 @@
  * in that they refer to an actual column in a report instance, as
  * opposed to an available column option.
  *
- * As well as inheritting a number of properties from the column
+ * As well as inheriting a number of properties from the column
  * option on which it is based, a column defines extra information
  * about the column such as the heading the user wishes to use to
- * describe it
+ * describe it.
  *
- * @copyright Catalyst IT Limited
+ * @copyright Totara Learning Solutions Limited
  * @author Simon Coggins
  * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
  * @package totara
  * @subpackage reportbuilder
  */
 class rb_column {
-    public $type, $value, $heading, $field, $joins;
-    public $displayfunc, $extrafields, $required;
-    public $capability, $noexport, $grouping, $style;
+    /**
+     * Used with value to define a column. These properties are used
+     * to specify a column - for example {@link rb_filter} provides
+     * a type and value to define which column the filter is searching
+     * against.
+     *
+     * Columns are grouped by type in the 'add a column' pulldown to
+     * let you find similar columns easily
+     *
+     * @access public
+     * @var string
+     */
+    public $type;
+
+    /**
+     * Used with type to define a column. These properties are used
+     * to specify a column - for example {@link rb_filter} provides
+     * a type and value to define which column the filter is searching
+     * against.
+     *
+     * @access public
+     * @var string
+     */
+    public $value;
+
+    /**
+     * Column heading is a text string that appears in the column heading
+     * when a user views a report.
+     *
+     * When default columns are included, the {@link rb_column_option::$defaultheading}
+     * property is used for the heading until changed by the user.
+     *
+     * @access public
+     * @var string
+     */
+    public $heading;
+
+    /**
+     * Database field to use to display or search by this column
+     *
+     * Typically of the form 'join_name.column_name' but can use any
+     * valid sql that refers to a column, for example:
+     *
+     * <code>"CASE WHEN join.column = 1 THEN 'Yes' ELSE 'No' END"</code>
+     *
+     * or even:
+     *
+     * <code>sql_fullname('join.first', 'join.last')</code>
+     *
+     * @access public
+     * @var string
+     */
+    public $field;
+
+    /**
+     * Name of any {@link rb_join} objects needed to access this column
+     *
+     * Can be a string or an array of strings if multiple tables required.
+     * Normally you only need to provide a single join name as any join's
+     * dependencies will automatically be included in the right order.
+     *
+     * @access public
+     * @var mixed
+     */
+    public $joins;
+
+    /**
+     * Function to pass the result through before displaying
+     *
+     * If displayfunc is set to 'name', a method of the source called
+     * 'rb_display_name()' will be called if found, with the field passed as
+     * the first argument and an object containing the whole row passed as the
+     * second argument. Instead of displaying the field value, the return value
+     * from the function is displayed instead.
+     *
+     * This can be useful for improving the formatting of a field, for example
+     * converting a unix timestamp into a nice date. Some common display functions
+     * are provided by {@link rb_base_source}, and more can be created by the
+     * source that needs them
+     *
+     * @access public
+     * @var string
+     */
+    public $displayfunc;
+
+    /**
+     * Array of additional database fields to get from the database when this
+     * column is included in a report. Some columns that use display functions
+     * need more than one field (for example, the 'Course name linked to course
+     * page' column requires the course name and the course ID (in order to build
+     * the link).
+     *
+     * $extrafields is an associative array, with the key being a string to
+     * reference the field and the value being a string formatted the same as
+     * {@link rb_column::$field}.
+     *
+     * Typically a specific display function will expect an extra field and access
+     * it from the $row object using the key.
+     *
+     * @access public
+     * @var array
+     */
+    public $extrafields;
+
+    /**
+     * True if the column is required by this source.
+     *
+     * If true, the column will always be included in the report, and the column
+     * will no longer appear in the column options list for an administrator.
+     *
+     * Typically this is used to add an 'Options' to a report
+     * @access public
+     * @var boolean
+     */
+    public $required;
+
+    /**
+     * Capability required in order to view this column
+     *
+     * If set, only users with the specified capability at the site context will
+     * see this column. For other users it will not be displayed.
+     * @access public
+     * @var string
+     */
+    public $capability;
+
+    /**
+     * True if this column should not be included when the report is exported
+     *
+     * Typically used for administrative columns that don't belong in an exported report
+     * @access public
+     * @var boolean
+     */
+    public $noexport;
+
+    /**
+     * If grouping is set to anything but 'none', a method of the source called
+     * 'rb_group_name()' will be called if found, passing in the field as an
+     * argument. The value returned from this method will be used instead of the
+     * field, and the SQL will be executed as a GROUP BY query, grouped by all
+     * fields without grouping enabled.
+     *
+     * For example, if grouping is set to 'max' on a column with $field set to
+     * 'join.col', then the method source->rb_group_max() will be called. It will
+     * return 'MAX(join.col)' when passed 'join.col' as a parameter, and that
+     * output will be used in place of 'join.col' in any SQL queries.
+     *
+     * Some common group functions are provided by {@link rb_base_source}, and more
+     * can be created by the source that needs them.
+     *
+     * @access public
+     * @var string
+     */
+    public $grouping;
+
+    /**
+     * Inline style information to be applied to this column
+     *
+     * Array of CSS properties like this:
+     *
+     * <code>array('color' => 'red', 'font-weight' => 'bold')</code>
+     *
+     * The CSS properties are added to the column via inline styles
+     *
+     * @access public
+     * @var array
+     */
+    public $style;
+
+    /**
+     * Default visibility status for this column
+     *
+     * If set to true, users will not see this column by default, but they
+     * will have the option to show the column using the show/hide button.
+     *
+     * It is important to realise that users do have access to hidden
+     * columns, just not by default.
+     *
+     * @access public
+     * @var boolean
+     */
     public $hidden;
 
+    /**
+     * Generate a new column instance
+     *
+     * Options provided by an associative array, e.g.:
+     *
+     * <code>array('joins' => 'courses', 'displayfunc' => 'nicedate')</code>
+     *
+     * Will provide default values for any optional parameters that aren't set
+     *
+     * @param string $type Type of the column
+     * @param string $value Value of the column
+     * @param string $heading Heading for the column
+     * @param string $field Database field to use for this column
+     * @param array $options Associative array of optional settings for the column
+     */
     function __construct($type, $value, $heading, $field, $options=array()) {
 
         // use defaults if options not set
@@ -53,7 +246,7 @@ class rb_column {
 
     }
 
-    /*
+    /**
      * Obtain an array of SQL snippets describing field information for this column
      *
      * @param object $src Source object containing grouping methods
@@ -92,7 +285,7 @@ class rb_column {
         return $fields;
     }
 
-    /*
+    /**
      * Examine a column to determine if it should be displayed in the current context
      *
      * @param boolean $isexport If true, data is being exported

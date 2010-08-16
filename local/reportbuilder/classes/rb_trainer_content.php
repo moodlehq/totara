@@ -1,10 +1,10 @@
 <?php
 
-/*
+/**
  * Restrict content by a particular trainer or group of trainers
  * Pass in an integer that represents a trainer's moodle id
  *
- * @copyright Catalyst IT Limited
+ * @copyright Totara Learning Solutions Limited
  * @author Simon Coggins
  * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
  * @package totara

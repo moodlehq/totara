@@ -1,13 +1,13 @@
 <?php // $Id$
 
-/*
+/**
  * Abstract base content class to be extended to create report builder
  * content restrictions. This file also contains some core content restrictions
  * that can be used by any report builder source
  *
  * Defines the properties and methods required by content restrictions
  *
- * @copyright Catalyst IT Limited
+ * @copyright Totara Learning Solutions Limited
  * @author Simon Coggins
  * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
  * @package totara

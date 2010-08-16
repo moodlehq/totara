@@ -248,7 +248,6 @@ class reportbuilderlib_test extends prefix_changing_test_case {
         $this->assertEqual(current($filters)->value, 'fullname');
         $this->assertEqual(current($filters)->advanced, '0');
         $this->assertEqual(current($filters)->label, 'User\'s Full name');
-        $this->assertEqual(current($filters)->joins, 'auser');
         $this->assertEqual(current($filters)->selectfunc, null);
     }
 

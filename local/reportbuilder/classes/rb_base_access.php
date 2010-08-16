@@ -7,7 +7,7 @@
  * This file also contains some core access restrictions
  * that can be used by any report builder source
  *
- * @copyright Catalyst IT Limited
+ * @copyright Totara Learning Solutions Limited
  * @author Simon Coggins
  * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
  * @package totara

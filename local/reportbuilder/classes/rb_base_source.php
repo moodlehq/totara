@@ -3,7 +3,7 @@
 /**
  * Abstract base class to be extended to create report builder sources
  *
- * @copyright Catalyst IT Limited
+ * @copyright Totara Learning Solutions Limited
  * @author Simon Coggins
  * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
  * @package totara
@@ -226,7 +226,6 @@ abstract class rb_base_source {
             $filteroption->filtertype,
             $columnoption->field,
             array(
-                'joins' => $columnoption->joins,
                 'selectfunc' => $filteroption->selectfunc,
                 'selectchoices' => $filteroption->selectchoices,
                 'selectoptions' => $filteroption->selectoptions,

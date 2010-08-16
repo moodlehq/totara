@@ -7,7 +7,7 @@
  * Defines the properties and methods required by pre-processors and
  * implements some core methods used by all child classes
  *
- * @copyright Catalyst IT Limited
+ * @copyright Totara Learning Solutions Limited
  * @author Simon Coggins
  * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
  * @package totara
@@ -22,7 +22,7 @@ abstract class rb_base_preproc {
  *
  * Call from the constructor of all child classes with:
  *
- *  parent::__construct($groupid)
+ * <code>parent::__construct($groupid)</code>
  *
  * to ensure child class has implemented everything necessary to work.
  *
