@@ -214,6 +214,9 @@ generate_email_header()
 
 generate_content_header()
 {
+    # Create default subject
+    echo "[$short_refname] $refname_type ${change_type}d" > "$emailsubject_tmp_file"
+
 	# --- Email (all stdout will be the email)
 	# Generate content header
 	cat <<-EOF
@@ -639,11 +642,19 @@ show_new_revisions()
 		(( msg_count+=1 ))
 		if [ $msg_count == 1 ]
 		then
-            if [ "$refname_type" = "branch" ]; then
-                echo "[$short_refname]" > "$emailsubject_tmp_file"
-            fi
+            # if we can actually find the commit subject
+            message=$(git diff-tree --format=%s $onerec | head -1)
 
-            git diff-tree --format=%s $onerev | head -1 >> "$emailsubject_tmp_file"
+            if [ "$message" != "" ];
+            then
+                # use branch name as prefix
+                if [ "$refname_type" = "branch" ]; then
+                    echo "[$short_refname]" > "$emailsubject_tmp_file"
+                fi
+
+                # append first commit message
+                echo "$message" >> "$emailsubject_tmp_file"
+            fi
 		fi
 		git diff-tree --pretty -p $onerev
 	done
