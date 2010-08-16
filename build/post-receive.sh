@@ -640,12 +640,16 @@ show_new_revisions()
 	do
 		# eval $(printf "$custom_showrev" onerev: $onerev)
 		(( msg_count+=1 ))
+
+        # break out of loop after 25 commits
+        if [ $msg_count -gt 25 ]
+        then
+            break
+        fi
+
 		if [ $msg_count == 1 ]
 		then
-            # if we can actually find the commit subject
-            message=$(git diff-tree --format=%s $onerec | head -1)
-
-            if [ "$message" != "" ];
+            if [ "$onerc" != "" ];
             then
                 # use branch name as prefix
                 if [ "$refname_type" = "branch" ]; then
