@@ -657,7 +657,7 @@ show_new_revisions()
                 fi
 
                 # append first commit message
-                echo "$message" >> "$emailsubject_tmp_file"
+                git diff-tree --format=%s $onerev | head -1 >> "$emailsubject_tmp_file"
             fi
 		fi
 		git diff-tree --pretty -p $onerev
