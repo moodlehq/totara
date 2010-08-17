@@ -186,6 +186,28 @@ class local_oauth {
         return;
     }
 
+
+    /**
+     * Wipe out the stored session data for this oauth session
+     * @param array $name name of this site
+     * @return nothing
+     */
+    public function wipe_auth($name) {
+        global $CFG, $USER, $SESSION;
+
+        // search for things in the SESSION first
+        if (isset($SESSION->local_oauth)) {
+            if (isset($SESSION->local_oauth[$name])) {
+                $this->site = NULL;
+                $this->request_token = NULL;
+                $this->access_token = NULL;
+                $this->consumer = NULL;
+                $this->preserve = NULL;
+                unset($SESSION->local_oauth[$name]);
+            }
+        }
+    }
+
     /**
      * serialise and store the details of the local_oauth object in the SESSION
      * @param array $oauth_params parameters to pass with token request
@@ -283,14 +305,15 @@ class local_oauth {
     }
 
 
-	public function getRequest($url, $parameters = array()) {
+    public function getRequest($url, $parameters = array()) {
 
         return $this->consumer->getRequest($url, $this->access_token, $parameters);
-	}
 
-	public function getCSV($url, $accessToken, $parameters = array()) {
+    }
 
-	    $response = $this->getRequest($url, $accessToken, $parameters);
+    public function getCSV($url, $accessToken, $parameters = array()) {
+
+        $response = $this->getRequest($url, $accessToken, $parameters);
         if ($response->status != 200) {
             throw new local_oauth_exception($response->message." : ".$response->body);
         }
@@ -303,12 +326,13 @@ class local_oauth {
                 $lines[]=  str_getcsv($row, ',', '');
             }
         }
-		return $lines;
-	}
 
-	public function getCSVTable($url, $accessToken, $parameters = array()) {
+        return $lines;
+    }
 
-	    $data = $this->getCSV($url, $accessToken, $parameters);
+    public function getCSVTable($url, $accessToken, $parameters = array()) {
+
+        $data = $this->getCSV($url, $accessToken, $parameters);
         if (empty($data)) {
             return null;
         }
@@ -317,13 +341,13 @@ class local_oauth {
         foreach ($data as $row) {
             $table[]= array_combine($header, $row);
         }
-		return $table;
-	}
+        return $table;
+    }
 
 
-	public function postRequest($url, $parameters = array()) {
+    public function postRequest($url, $parameters = array()) {
 
         return $this->consumer->postRequest($url, $this->access_token, $parameters);
-	}
+    }
 
 }

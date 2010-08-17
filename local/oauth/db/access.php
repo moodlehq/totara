@@ -37,9 +37,12 @@
 
 
 $capabilities = array(
-        'moodle/oauth:negotiate' => array(
+        'local/oauth:negotiate' => array(
                 'captype' => 'read',
                 'contextlevel' => CONTEXT_SYSTEM,
         ),
 
 );
+
+// add this to make it 1.9 compatible
+$local_oauth_capabilities = $capabilities;

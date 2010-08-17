@@ -32,6 +32,7 @@ $string['consumer_secret_help'] = 'Enter the OAuth consumer secret shared with t
 $string['deleteconfirmation'] = 'Are you sure you want to delete the {$a} site ?';
 $string['edit'] = 'Edit';
 $string['enabled'] = 'Enabled';
+$string['fusiontables'] = 'Fusion Tables';
 $string['manageregistrations'] = 'Manage Registrations';
 $string['nosite'] = 'No sites have been registered yet or match the search.';
 $string['error_noname'] = 'Please enter a name';
@@ -66,5 +67,6 @@ $string['siteaddfailed'] = 'Site {$a} could not be added';
 $string['siteaddduplicate'] = 'Site {$a} could not be added - duplicate name';
 $string['siteupdated'] = 'Site {$a} updated';
 $string['tablename'] = 'Table name';
+$string['oauth:negotiate'] = 'Use OAuth based authentication';
 
 

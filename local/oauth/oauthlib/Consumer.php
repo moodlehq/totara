@@ -30,75 +30,79 @@ class local_oauth_HTTPResponse {
         if ($this->status > 299 && empty($this->message)) {
             $this->message = $this->body;
         }
-	}
+    }
 }
 
 
 class local_oauth_Consumer {
 
-	private $consumer;
-	private $signer;
+    private $consumer;
+    private $signer;
 
-	public function __construct($key, $secret) {
-		$this->consumer = new OAuthConsumer($key, $secret, NULL);
-		$this->signer = new OAuthSignatureMethod_HMAC_SHA1();
-	}
+    public function __construct($key, $secret) {
+        $this->consumer = new OAuthConsumer($key, $secret, NULL);
+        $this->signer = new OAuthSignatureMethod_HMAC_SHA1();
+    }
 
-	// Used only to load the libextinc library early.
-	public static function dummy() {}
+    // Used only to load the libextinc library early.
+    public static function dummy() {}
 
-	public function getRequestToken($url, $parameters=NULL) {
-		$req_req = OAuthRequest::from_consumer_and_token($this->consumer, NULL, "GET", $url, $parameters);
-		$req_req->sign_request($this->signer, $this->consumer, NULL);
+    public function getRequestToken($url, $parameters=NULL) {
+        $req_req = OAuthRequest::from_consumer_and_token($this->consumer, NULL, "GET", $url, $parameters);
+        $req_req->sign_request($this->signer, $this->consumer, NULL);
 
-		$response_req = $this->send_request('GET', $req_req->to_url(), FALSE, FALSE);
-		if ($response_req === FALSE) {
-			throw new local_oauth_exception('Error contacting request_token endpoint on the OAuth Provider');
-		}
+        $response_req = $this->send_request('GET', $req_req->to_url(), FALSE, FALSE);
+        if ($response_req === FALSE) {
+            throw new local_oauth_exception('Error contacting request_token endpoint on the OAuth Provider');
+        }
 
-		parse_str($response_req->body, $responseParsed);
+        parse_str($response_req->body, $responseParsed);
 
-		if(array_key_exists('error', $responseParsed))
-			throw new local_oauth_exception('Error getting request token: ' . $responseParsed['error']);
+        if(array_key_exists('error', $responseParsed))
+            throw new local_oauth_exception('Error getting request token: ' . $responseParsed['error']);
 
-		$requestToken = $responseParsed['oauth_token'];
-		$requestTokenSecret = $responseParsed['oauth_token_secret'];
+        $requestToken = $responseParsed['oauth_token'];
+        $requestTokenSecret = $responseParsed['oauth_token_secret'];
 
-		return new OAuthToken($requestToken, $requestTokenSecret);
-	}
+        return new OAuthToken($requestToken, $requestTokenSecret);
+    }
 
-	public function getAuthorizeRequest($url, $requestToken, $redirect = TRUE, $callback = NULL) {
-		$authorizeURL = $url . '?oauth_token=' . $requestToken->key;
-		if ($callback) {
-			$authorizeURL .= '&oauth_callback=' . urlencode($callback);
-		}
-		if ($redirect) {
-			SimpleSAML_Utilities::redirect($authorizeURL);
-			exit;
-		}
-		return $authorizeURL;
-	}
+    public function getAuthorizeRequest($url, $requestToken, $redirect = TRUE, $callback = NULL) {
+        $authorizeURL = $url . '?oauth_token=' . $requestToken->key;
+        if ($callback) {
+            $authorizeURL .= '&oauth_callback=' . urlencode($callback);
+        }
+        if ($redirect) {
+            SimpleSAML_Utilities::redirect($authorizeURL);
+            exit;
+        }
+        return $authorizeURL;
+    }
 
-	public function getAccessToken($url, $requestToken) {
+    public function getAccessToken($url, $requestToken) {
 
-		$acc_req = OAuthRequest::from_consumer_and_token($this->consumer, $requestToken, "GET", $url, NULL);
-		$acc_req->sign_request($this->signer, $this->consumer, $requestToken);
+        $acc_req = OAuthRequest::from_consumer_and_token($this->consumer, $requestToken, "GET", $url, NULL);
+        $acc_req->sign_request($this->signer, $this->consumer, $requestToken);
 
-		$response_acc = $this->send_request('GET', $acc_req->to_url(), FALSE, FALSE);
-		if ($response_acc === FALSE) {
-			throw new local_oauth_exception('Error contacting request_token endpoint on the OAuth Provider');
-		}
+        $response_acc = $this->send_request('GET', $acc_req->to_url(), FALSE, FALSE);
+        if ($response_acc === FALSE) {
+            throw new local_oauth_exception('Error contacting request_token endpoint on the OAuth Provider');
+        }
 
-		parse_str($response_acc->body, $accessResponseParsed);
+        parse_str($response_acc->body, $accessResponseParsed);
 
-		if(array_key_exists('error', $accessResponseParsed))
-			throw new local_oauth_exception('Error getting request token: ' . $accessResponseParsed['error']);
+        if(array_key_exists('error', $accessResponseParsed)) {
+            throw new local_oauth_exception('Error getting request token: ' . $accessResponseParsed['error']);
+        }
 
-		$accessToken = $accessResponseParsed['oauth_token'];
-		$accessTokenSecret = $accessResponseParsed['oauth_token_secret'];
+        if (!isset($accessResponseParsed['oauth_token']) || !isset($accessResponseParsed['oauth_token_secret'])) {
+            throw new local_oauth_exception('Error getting request token no token or secret: ' . var_export($accessResponseParsed, true));
+        }
+        $accessToken = $accessResponseParsed['oauth_token'];
+        $accessTokenSecret = $accessResponseParsed['oauth_token_secret'];
 
-		return new OAuthToken($accessToken, $accessTokenSecret);
-	}
+        return new OAuthToken($accessToken, $accessTokenSecret);
+    }
 
 
     public function send_request($http_method, $url, $auth_header=null, $postData=null, $timeout=100) {
@@ -148,24 +152,24 @@ class local_oauth_Consumer {
     }
 
 
-	public function postRequest($url, $accessToken, $parameters) {
-		$data_req = OAuthRequest::from_consumer_and_token($this->consumer, $accessToken, "POST", $url, $parameters);
-		$data_req->sign_request($this->signer, $this->consumer, $accessToken);
-		$postdata = $data_req->to_postdata();
+    public function postRequest($url, $accessToken, $parameters) {
+        $data_req = OAuthRequest::from_consumer_and_token($this->consumer, $accessToken, "POST", $url, $parameters);
+        $data_req->sign_request($this->signer, $this->consumer, $accessToken);
+        $postdata = $data_req->to_postdata();
 
-		$response = $this->send_request('POST', $url, FALSE, $postdata);
-		return $response;
-	}
+        $response = $this->send_request('POST', $url, FALSE, $postdata);
+        return $response;
+    }
 
 
-	public function getRequest($url, $accessToken, $parameters) {
+    public function getRequest($url, $accessToken, $parameters) {
 
-		$data_req = OAuthRequest::from_consumer_and_token($this->consumer, $accessToken, "GET", $url, $parameters);
-		$data_req->sign_request($this->signer, $this->consumer, $accessToken);
+        $data_req = OAuthRequest::from_consumer_and_token($this->consumer, $accessToken, "GET", $url, $parameters);
+        $data_req->sign_request($this->signer, $this->consumer, $accessToken);
 
-		$response = $this->send_request('GET', $data_req->to_url(), FALSE, FALSE);
-		return $response;
-	}
+        $response = $this->send_request('GET', $data_req->to_url(), FALSE, FALSE);
+        return $response;
+    }
 
 }
 

@@ -46,7 +46,7 @@ $preserve = array(
                    'sid' => $sid,
             );
 if (!$oauth->authenticate($preserve)) {
-    print_errror(get_string('authfailed', 'local_oauth'));
+    print_error(get_string('authfailed', 'local_oauth'));
 }
 
 $columns = $rep->columns;
@@ -79,11 +79,28 @@ foreach($columns as $column) {
     }
 }
 $tablename = preg_replace('/\s/', '_', clean_filename(trim($shortname)));
+try {
 $tables = $oauth->show_tables();
+}
+catch (local_oauth_exception $e) {
+    // clean it down
+    $oauth->wipe_auth();
+
+    // try again
+    $oauth = new local_oauth_fusion();
+    if (!$oauth->authenticate($preserve)) {
+        print_error(get_string('authfailed', 'local_oauth'));
+    }
+
+   // print_error(get_string('authfailed', 'local_oauth').$e->getMessage());
+}
 if (!$oauth->table_exists($tablename)) {
     $result = $oauth->create_table($tablename, $fields);
 }
 $tables = $oauth->show_tables();
+
+// switch off the timeout as this could easily be long running
+@set_time_limit(0);
 
 // process the output
 $blocksize = 500;

@@ -31,7 +31,7 @@
 require_once(dirname(dirname(dirname(__FILE__))).'/config.php');
 require_once(dirname(__FILE__).'/lib.php');
 
-global $PAGE, $OUTPUT, $SESSION;
+global $PAGE, $OUTPUT, $SESSION, $COURSE;
 
 
 add_to_log(SITEID, 'local_oauth', 'trigger oauth authentication', "", '');
@@ -85,6 +85,13 @@ if (empty($SESSION->local_oauth[$site->name])) {
 //    echo $OUTPUT->heading(get_string('authentication', 'local_oauth'), 2);
     print_heading(get_string('authentication', 'local_oauth'));
     print_error(get_string('norequest', 'local_oauth'));
+    print_footer();
+}
+
+$context = get_context_instance(CONTEXT_COURSE, SITEID);
+if (!has_capability('local/oauth:negotiate', $context)) {
+    print_heading(get_string('authentication', 'local_oauth'));
+    print_error(get_string('notallowed', 'local_oauth'));
     print_footer();
 }
 

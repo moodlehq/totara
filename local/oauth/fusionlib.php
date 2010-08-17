@@ -37,6 +37,14 @@ class local_oauth_fusion extends local_oauth {
     }
 
     /**
+     * clean down the auth storage
+     * @return nothing
+     */
+    public function wipe_auth() {
+        parent::wipe_auth($this->site_name);
+    }
+
+    /**
      * Add a site into the site directory
      * @param array $oauth_params parameters to pass with token request
      * @return bool success/fail
