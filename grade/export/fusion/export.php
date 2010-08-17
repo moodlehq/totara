@@ -60,9 +60,21 @@ $preserve = array(
                    'decimalpoints' => $decimalpoints,
                    'tablename' => $tablename,
             );
-if (!$oauth->authenticate($preserve)) {
-    print_grade_page_head($COURSE->id, 'export', 'fusion', get_string('exportto', 'grades') . ' ' . get_string('modulename', 'gradeexport_fusion'));
-    print_errror(get_string('authfailed', 'local_oauth'));
+try {
+    if (!$oauth->authenticate($preserve)) {
+        print_grade_page_head($COURSE->id, 'export', 'fusion', get_string('exportto', 'grades') . ' ' . get_string('modulename', 'gradeexport_fusion'));
+        print_errror(get_string('authfailed', 'local_oauth'));
+    }
+}
+catch (local_oauth_exception $e) {
+    // clean it down
+    $oauth->wipe_auth();
+
+    // try again
+    $oauth = new local_oauth_fusion();
+    if (!$oauth->authenticate($preserve)) {
+        print_error(get_string('authfailed', 'local_oauth'));
+    }
 }
 
 
