@@ -17,17 +17,17 @@ admin_externalpage_setup('idppriorities');
 $sitecontext = get_context_instance(CONTEXT_SYSTEM);
 
 if ($id == 0) {
-    // creating new competency priority
+    // creating new idp priority
     require_capability('moodle/local:manageidppriorities', $sitecontext);
 
     $priority = new object();
     $priority->id = 0;
 } else {
-    // editing existing competency priority
-    require_capability('moodle/local:updatecompetency', $sitecontext);
+    // editing existing idp priority
+    require_capability('moodle/local:manageidppriorities', $sitecontext);
 
-    if (!$priority = get_record('comp_priority', 'id', $id)) {
-        error('Competency priority ID was incorrect');
+    if (!$priority = get_record('idp_tmpl_priority_scale', 'id', $id)) {
+        error('Priority scale ID was incorrect');
     }
 }
 
@@ -126,7 +126,7 @@ if ($id == 0) { // Add
     $navlinks[] = array('name'=>get_string('prioritiescustomcreate', 'idp'), 'link'=>'', 'type'=>'misc');
     $heading = get_string('prioritiescustomcreate', 'idp');
 } else {    //Edit
-    $navlinks[] = array('name'=>get_string('editpriority', 'grades', format_string($priority->name)), 'link'=>'', 'type'=>'misc');
+    $navlinks[] = array('name'=>get_string('editpriority', 'idp', format_string($priority->name)), 'link'=>'', 'type'=>'misc');
     $heading = get_string('editpriority', 'idp');
 }
 

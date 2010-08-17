@@ -26,7 +26,7 @@ class idp_priority_scale_value_edit_form extends moodleform {
 
         $mform->addElement('text', 'name', get_string('priorityscalevaluename', 'idp'), 'maxlength="100" size="20"');
         $mform->setHelpButton('name', array('priorityscalevaluename', get_string('priorityscalevaluename', 'idp')), true);
-        $mform->addRule('name', get_string('missingpriorityscalevaluename', 'competency'), 'required', null, 'client');
+        $mform->addRule('name', get_string('missingpriorityscalevaluename', 'idp'), 'required', null, 'client');
         $mform->setType('name', PARAM_MULTILANG);
 
         $mform->addElement('text', 'idnumber', get_string('priorityscalevalueidnumber', 'idp'), 'maxlength="100"  size="10"');

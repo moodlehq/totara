@@ -222,7 +222,7 @@ function print_idp_competencies_view_flex($revision, $competencies, $editingon =
     $sort = optional_param('sort');
 
     $addcomp = false;
-    $haspos = false;
+    $addpos = false;
     $update = false;
     //Check permissions
     if ($editingon) {
