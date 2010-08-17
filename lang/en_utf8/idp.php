@@ -434,6 +434,9 @@ $string['notspecifiedpriority'] = 'Not specified';
 $string['selectpriorityscale'] = 'Select a scale...';
 $string['frameworks'] = 'Frameworks';
 
+$string['updatetemplatesuccess'] = 'Successfully update IDP Template';
+$string['error:updatetemplatefail'] = 'An error occured when updating IDP Template';
+
 $string['update_comparea_success'] = 'Sucessfully updated Competency Area';
 $string['error:update_comparea_fail'] = 'An error occured when updating Competency Area';
 

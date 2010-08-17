@@ -4,14 +4,17 @@ require_once($CFG->libdir.'/adminlib.php');
 require_once('../idp_forms.php');
 require_once('../comparea/lib.php');
 
+define('UPDATE_TEMPLATE_SUCCESS', 1);
+define('UPDATE_TEMPLATE_FAIL', 2);
+define('UPDATE_TEMPLATE_UNKNOWN_BUTTON', 3);
+
 $id = optional_param('id', 1, PARAM_INT); // Temp while there is only 1 template allowed
 $action = optional_param('action', false, PARAM_BOOL); // action
 $moveup = optional_param('moveup', 0, PARAM_INT);
 $movedown = optional_param('movedown', 0, PARAM_INT);
+$notice = optional_param('notice', 0, PARAM_INT);
 
 admin_externalpage_setup('idptemplate');
-admin_externalpage_print_header();
-
 
 if(!$plantemplate = get_record('idp_template', 'id', $id)){
     echo 'DEAD';
@@ -66,7 +69,7 @@ if ((!empty($moveup) or !empty($movedown))) {
 }
 
 $templateid = $plantemplate->id;
-$returnurl = "{$CFG->wwwroot}/idp/index.php?id={$templateid}";
+$returnurl = "{$CFG->wwwroot}/idp/settings/index.php?id={$templateid}";
 
 $prioritytype = new object();
 $prioritytype->prioritytype = get_field('idp_tmpl_priority_assign', 'priorityscaleid', 'templateid', $templateid);
@@ -75,18 +78,16 @@ if(!$prioritytype->prioritytype)
 
 $planname = $plantemplate->fullname;
 $templateid = $plantemplate->id;
-print '<h1>'.get_string('developmentplan', 'idp', $planname).'</h1>';
 
 $mform =& new idp_edit_priority_form(null, compact('id','prioritytype', 'templateid'));
-
 $mform->set_data($prioritytype);
 
 if ($mform->is_cancelled()) {
-    redirect($CFG->wwwroot.'/idp/index.php');
+    redirect($CFG->wwwroot.'/idp/settings/index.php');
 }
 if ($fromform = $mform->get_data()) {
     if(empty($fromform->submitbutton)) {
-        print_error('error:unknownbuttonclicked', 'local', $returnurl);
+        redirect($returnurl.'&amp;notice='.UPDATE_TEMPLATE_UNKNOWN_BUTTON);
     }
     $now = time();
     $todb = new object();
@@ -98,14 +99,35 @@ if ($fromform = $mform->get_data()) {
     if($assign = get_record('idp_tmpl_priority_assign', 'templateid', $fromform->templateid)){
         $todb->id = $assign->id;
         if(!update_record('idp_tmpl_priority_assign', $todb))
-            print_error('error:updatepriorityassign', 'idp', $returnurl);
+            redirect($returnurl.'&amp;notice='.UPDATE_TEMPLATE_FAIL);
+        else
+            redirect($returnurl.'&amp;notice='.UPDATE_TEMPLATE_SUCCESS);
     }
     else{
         if(!insert_record('idp_tmpl_priority_assign', $todb))
-            print_error('error:createpriorityassign', 'idp', $returnurl);
+            redirect($returnurl.'&amp;notice='.UPDATE_TEMPLATE_FAIL);
+        else
+            redirect($returnurl.'&amp;notice='.UPDATE_TEMPLATE_SUCCESS);
     }
 }
 
+admin_externalpage_print_header();
+
+if($notice){
+    switch($notice){
+    case UPDATE_TEMPLATE_SUCCESS:
+        notify(get_string('updatetemplatesuccess', 'idp'), 'notifysuccess');
+        break;
+    case UPDATE_TEMPLATE_FAIL:
+        notify(get_string('error:updatetemplatefail', 'idp'));
+        break;
+    case UPDATE_TEMPLATE_UNKNOWN_BUTTON:
+        notify(get_string('error:unknownbuttonclicked', 'local'));
+        break;
+    }
+}
+
+print '<h1>'.get_string('developmentplan', 'idp', $planname).'</h1>';
 echo '<div align:left>';
 $mform->display();
 echo '</div>';
