@@ -2102,8 +2102,17 @@ function xmldb_local_upgrade($oldversion) {
 
     // set global export options to include all current
     // formats (excel, csv and ods)
-    if ($result && $oldversion < 20100810200) {
+    if ($result && $oldversion < 2010081200) {
         set_config('exportoptions', 7, 'reportbuilder');
+    }
+
+    if($result && $oldversion < 2010081800) {
+        $table = new XMLDBTable('idp_comp_area');
+        $field = new XMLDBField('timemodified');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0');
+        if (!field_exists($table, $field)) {
+            $result = $result && add_field($table, $field);
+        }
     }
 
     return $result;

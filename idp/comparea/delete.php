@@ -29,7 +29,7 @@ $deleteurl = "{$CFG->wwwroot}/idp/comparea/delete.php?id={$competencyarea->id}&a
 if (!$delete) {
     $strdelete = get_string('deletecheckcomparea', 'idp');
     notice_yesno(
-        "{$strdelete}<br /><br />".format_string($scale->name),
+        "{$strdelete}<br /><br />".format_string($competencyarea->fullname),
         $deleteurl,
         $returnurl
     );

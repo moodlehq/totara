@@ -20,6 +20,7 @@ admin_externalpage_setup('idptemplate');
 
 $stridps = get_string('idps', 'idp');
 $idptemplates = get_string('managetemplates', 'idp');
+$now = time();
 
 if($id == 0){
     $competencyarea = new object();
@@ -77,6 +78,7 @@ if ($fromform = $mform->get_data()) {
     $todb->fullname = $fromform->fullname;
     $todb->shortname = $fromform->shortname;
     $todb->sortorder = $competencyarea->sortorder;
+    $todb->timemodified = $now;
     $todb->visible = '1';
     $todb->prioritiesenabled = '0';
     if($id!=0){
