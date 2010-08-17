@@ -78,6 +78,8 @@ if ($form->is_cancelled()){
 
         $completion->delete_course_completion_data();
 
+        add_to_log($course->id, 'course', 'completion unlocked', 'completion.php?id='.$course->id);
+
         // Return to form (now unlocked)
         redirect($CFG->wwwroot."/course/completion.php?id=$course->id");
     }
