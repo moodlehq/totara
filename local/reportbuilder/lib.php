@@ -69,11 +69,13 @@ define('REPORT_BUILDER_GLOBAL_FAILED_UPDATE', 26);
 
 /**
  * Export option codes
+ *
+ * Bitwise flags, so new ones should be double highest value
  */
 define('REPORT_BUILDER_EXPORT_EXCEL', 1);
 define('REPORT_BUILDER_EXPORT_CSV', 2);
 define('REPORT_BUILDER_EXPORT_ODS', 4);
-define('REPORT_BUILDER_EXPORT_FUSION', 5);
+define('REPORT_BUILDER_EXPORT_FUSION', 8);
 
 global $REPORT_BUILDER_EXPORT_OPTIONS;
 $REPORT_BUILDER_EXPORT_OPTIONS = array(
