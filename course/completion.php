@@ -142,6 +142,8 @@ if ($form->is_cancelled()){
         $grade_item->update('course/completion.php');
     }
 
+    add_to_log($course->id, 'course', 'completion updated', 'completion.php?id='.$course->id);
+
     redirect($CFG->wwwroot."/course/view.php?id=$course->id");
 }
 
