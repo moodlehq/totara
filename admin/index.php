@@ -484,6 +484,9 @@
 /// Check all admin report plugins and upgrade if necessary
     upgrade_plugins('report', $CFG->admin.'/report', "$CFG->wwwroot/$CFG->admin/index.php");
 
+/// Upgrade/install local modules
+    upgrade_plugins('local', 'local', "$CFG->wwwroot/$CFG->admin/index.php");  // Return here afterwards
+
 
 /// just make sure upgrade logging is properly terminated
     upgrade_log_finish();
