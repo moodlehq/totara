@@ -41,12 +41,12 @@ if ($fromform = $mform->get_data()) {
 admin_externalpage_print_header();
 
 print "<table id=\"reportbuilder-navbuttons\"><tr><td>";
-print_single_button($CFG->wwwroot.'/local/reportbuilder/index.php', null, get_string('allreports','local'));
+print_single_button($CFG->wwwroot.'/local/reportbuilder/index.php', null, get_string('allreports','local_reportbuilder'));
 print "</td><td>";
 print $report->view_button();
 print "</td></tr></table>";
 
-print_heading(get_string('editreport','local',$report->fullname));
+print_heading(get_string('editreport','local_reportbuilder',$report->fullname));
 
 $currenttab = 'access';
 include_once('tabs.php');
@@ -54,10 +54,10 @@ include_once('tabs.php');
 if($notice) {
     switch($notice) {
     case REPORT_BUILDER_ACCESS_CONFIRM_UPDATE:
-        notify(get_string('reportupdated','local'),'notifysuccess');
+        notify(get_string('reportupdated','local_reportbuilder'),'notifysuccess');
         break;
     case REPORT_BUILDER_ACCESS_FAILED_UPDATE:
-        get_string('error:couldnotupdatereport','local');
+        get_string('error:couldnotupdatereport','local_reportbuilder');
         break;
     }
 }

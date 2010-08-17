@@ -58,8 +58,8 @@
         } else {
             // prompt to delete
             admin_externalpage_print_header();
-            print_heading(get_string('activitygroups','local'));
-            notice_yesno(get_string('groupconfirmdelete','local'),
+            print_heading(get_string('activitygroups','local_reportbuilder'));
+            notice_yesno(get_string('groupconfirmdelete','local_reportbuilder'),
                 "groups.php?id={$id}&amp;d=1&amp;confirm=1&amp;" .
                 "sesskey={$USER->sesskey}", $returnurl);
 
@@ -78,7 +78,7 @@
     if ($fromform = $mform->get_data()) {
 
         if(empty($fromform->submitbutton)) {
-            print_error('error:unknownbuttonclicked', 'local', $returnurl);
+            print_error('error:unknownbuttonclicked', 'local_reportbuilder', $returnurl);
         }
 
         $errorcode = REPORT_BUILDER_GROUPS_FAILED_CREATE_GROUP;
@@ -95,40 +95,40 @@
 
     admin_externalpage_print_header();
 
-    print_heading(get_string('activitygroups','local'));
+    print_heading(get_string('activitygroups','local_reportbuilder'));
 
     if($notice) {
         switch($notice) {
         case REPORT_BUILDER_GROUPS_CONFIRM_DELETE:
-            notify(get_string('groupdeleted','local'),'notifysuccess');
+            notify(get_string('groupdeleted','local_reportbuilder'),'notifysuccess');
             break;
         case REPORT_BUILDER_GROUPS_FAILED_DELETE:
-            notify(get_string('error:groupnotdeleted','local'));
+            notify(get_string('error:groupnotdeleted','local_reportbuilder'));
             break;
         case REPORT_BUILDER_GROUPS_FAILED_CREATE_GROUP:
-            notify(get_string('error:groupnotcreated','local'));
+            notify(get_string('error:groupnotcreated','local_reportbuilder'));
             break;
         case REPORT_BUILDER_GROUPS_NO_PREPROCESSOR:
-            notify(get_string('error:groupnotcreatedpreproc','local'));
+            notify(get_string('error:groupnotcreatedpreproc','local_reportbuilder'));
             break;
         case REPORT_BUILDER_GROUPS_FAILED_INIT_TABLES:
-            notify(get_string('error:groupnotcreatedinitfail','local'));
+            notify(get_string('error:groupnotcreatedinitfail','local_reportbuilder'));
             break;
         case REPORT_BUILDER_GROUPS_REPORTS_EXIST:
-            notify(get_string('error:grouphasreports','local'));
+            notify(get_string('error:grouphasreports','local_reportbuilder'));
             break;
         }
     }
 
-    print '<p>' . get_string('activitygroupdesc','local') . '</p>';
+    print '<p>' . get_string('activitygroupdesc','local_reportbuilder') . '</p>';
 
-    $tableheader = array(get_string('name','local'),
-                         //get_string('type','local'),
+    $tableheader = array(get_string('name','local_reportbuilder'),
+                         //get_string('type','local_reportbuilder'),
                          get_string('tag'),
-                         get_string('baseitem','local'),
-                         get_string('activities','local'),
-                         get_string('reports','local'),
-                         get_string('options','local'));
+                         get_string('baseitem','local_reportbuilder'),
+                         get_string('activities','local_reportbuilder'),
+                         get_string('reports','local_reportbuilder'),
+                         get_string('options','local_reportbuilder'));
 
     $feedbackmoduleid = get_field('modules', 'id', 'name', 'feedback');
     if($feedbackmoduleid) {
@@ -170,9 +170,9 @@
         $data = array();
         foreach($groups as $group) {
             $row = array();
-            $strsettings = get_string('settings','local');
-            $strdelete = get_string('delete','local');
-            $strcron = get_string('refreshdataforthisgroup','local');
+            $strsettings = get_string('settings','local_reportbuilder');
+            $strdelete = get_string('delete','local_reportbuilder');
+            $strcron = get_string('refreshdataforthisgroup','local_reportbuilder');
             $settings = '<a href="' . $CFG->wwwroot .
                 '/local/reportbuilder/groupsettings.php?id=' . $group->id .
                 '" title="' . $strsettings . '">' .
@@ -211,7 +211,7 @@
         $table->data = $data;
         print_table($table);
     } else {
-        print '<p>' . get_string('nogroups','local') . '</p>';
+        print '<p>' . get_string('nogroups','local_reportbuilder') . '</p>';
     }
     $mform->display();
     admin_externalpage_print_footer();

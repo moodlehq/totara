@@ -37,21 +37,21 @@ if ($fromform = $mform->get_data()) {
 admin_externalpage_print_header();
 
 print "<table id=\"reportbuilder-navbuttons\"><tr><td>";
-print_single_button($CFG->wwwroot.'/local/reportbuilder/index.php', null, get_string('allreports','local'));
+print_single_button($CFG->wwwroot.'/local/reportbuilder/index.php', null, get_string('allreports','local_reportbuilder'));
 print "</td></tr></table>";
 
-print_heading(get_string('reportbuilderglobalsettings','local'));
+print_heading(get_string('reportbuilderglobalsettings','local_reportbuilder'));
 
 if($notice) {
     switch($notice) {
     case REPORT_BUILDER_UNKNOWN_BUTTON_CLICKED:
-        notify(get_string('error:unknownbuttonclicked','local'));
+        notify(get_string('error:unknownbuttonclicked','local_reportbuilder'));
         break;
     case REPORT_BUILDER_GLOBAL_CONFIRM_UPDATE:
-        notify(get_string('globalsettingsupdated', 'local'), 'notifysuccess');
+        notify(get_string('globalsettingsupdated', 'local_reportbuilder'), 'notifysuccess');
         break;
     case REPORT_BUILDER_GLOBAL_FAILED_UPDATE:
-        notify(get_string('error:couldnotupdateglobalsettings','local'));
+        notify(get_string('error:couldnotupdateglobalsettings','local_reportbuilder'));
         break;
     }
 }

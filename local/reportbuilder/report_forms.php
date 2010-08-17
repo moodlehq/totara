@@ -22,28 +22,28 @@ class report_builder_new_form extends moodleform {
 
         $mform =& $this->_form;
 
-        $mform->addElement('header', 'general', get_string('newreport', 'local'));
+        $mform->addElement('header', 'general', get_string('newreport', 'local_reportbuilder'));
         $sources = reportbuilder::get_source_list();
         if(count($sources)>0) {
 
-            $mform->addElement('text', 'fullname', get_string('reportname', 'local'), 'maxlength="255"');
+            $mform->addElement('text', 'fullname', get_string('reportname', 'local_reportbuilder'), 'maxlength="255"');
             $mform->setType('fullname', PARAM_TEXT);
             $mform->addRule('fullname',null,'required');
-            $mform->setHelpButton('fullname', array('reportbuilderfullname',get_string('reportname','local'),'moodle'));
+            $mform->setHelpButton('fullname', array('reportbuilderfullname',get_string('reportname','local_reportbuilder'),'local_reportbuilder'));
 
-            $pick = array(0 => get_string('selectsource','local'));
+            $pick = array(0 => get_string('selectsource','local_reportbuilder'));
             $select = array_merge($pick, $sources);
-            $mform->addElement('select','source', get_string('source','local'), $select);
+            $mform->addElement('select','source', get_string('source','local_reportbuilder'), $select);
             // invalid if not set
-            $mform->addRule('source', get_string('error:mustselectsource','local'), 'regex','/[^0]+/');
-            $mform->setHelpButton('source', array('reportbuildersource',get_string('source','local'),'moodle'));
+            $mform->addRule('source', get_string('error:mustselectsource','local_reportbuilder'), 'regex','/[^0]+/');
+            $mform->setHelpButton('source', array('reportbuildersource',get_string('source','local_reportbuilder'),'local_reportbuilder'));
 
-            $mform->addElement('advcheckbox','hidden', get_string('hidden','local'), '', null, array(0,1));
-            $mform->setHelpButton('hidden', array('reportbuilderhidden',get_string('hidden','local'),'moodle'));
+            $mform->addElement('advcheckbox','hidden', get_string('hidden','local_reportbuilder'), '', null, array(0,1));
+            $mform->setHelpButton('hidden', array('reportbuilderhidden',get_string('hidden','local_reportbuilder'),'local_reportbuilder'));
             $this->add_action_buttons();
 
         } else {
-            $mform->addElement('html', get_string('error:nosources','local'));
+            $mform->addElement('html', get_string('error:nosources','local_reportbuilder'));
         }
     }
 
@@ -60,31 +60,31 @@ class report_builder_edit_form extends moodleform {
         $report = $this->_customdata['report'];
         $id = $this->_customdata['id'];
 
-        $mform->addElement('header', 'general', get_string('reportsettings', 'local'));
+        $mform->addElement('header', 'general', get_string('reportsettings', 'local_reportbuilder'));
 
-        $mform->addElement('text', 'fullname', get_string('reporttitle','local'), array('size'=>'30'));
+        $mform->addElement('text', 'fullname', get_string('reporttitle','local_reportbuilder'), array('size'=>'30'));
         $mform->setDefault('fullname', $report->fullname);
         $mform->setType('fullname', PARAM_TEXT);
         $mform->addRule('fullname',null,'required');
-        $mform->setHelpButton('fullname', array('reportbuilderfullname',get_string('reporttitle','local'),'moodle'));
+        $mform->setHelpButton('fullname', array('reportbuilderfullname',get_string('reporttitle','local_reportbuilder'),'local_reportbuilder'));
 
         $mform->addElement('htmleditor', 'description', get_string('description'));
         $mform->setDefault('description', $report->description);
         $mform->setType('description', PARAM_CLEAN);
-        $mform->setHelpButton('description', array('reportbuilderdescription', get_string('description'),'moodle'));
+        $mform->setHelpButton('description', array('reportbuilderdescription', get_string('description'),'local_reportbuilder'));
 
-        $mform->addElement('static', 'reportsource', get_string('source','local'), $report->source);
-        $mform->setHelpButton('reportsource', array('reportbuildersource',get_string('source','local'),'moodle'));
+        $mform->addElement('static', 'reportsource', get_string('source','local_reportbuilder'), $report->source);
+        $mform->setHelpButton('reportsource', array('reportbuildersource',get_string('source','local_reportbuilder'),'local_reportbuilder'));
 
-        $mform->addElement('advcheckbox', 'hidden', get_string('hidden','local'), '', null, array(0,1));
+        $mform->addElement('advcheckbox', 'hidden', get_string('hidden','local_reportbuilder'), '', null, array(0,1));
         $mform->setType('hidden', PARAM_INT);
         $mform->setDefault('hidden', $report->hidden);
-        $mform->setHelpButton('hidden', array('reportbuilderhidden',get_string('hidden','local'),'moodle'));
+        $mform->setHelpButton('hidden', array('reportbuilderhidden',get_string('hidden','local_reportbuilder'),'local_reportbuilder'));
 
-        $reporttype = ($report->embeddedurl === null) ? get_string('usergenerated','local') :
-            get_string('embedded', 'local');
+        $reporttype = ($report->embeddedurl === null) ? get_string('usergenerated','local_reportbuilder') :
+            get_string('embedded', 'local_reportbuilder');
 
-        $mform->addElement('static', 'reporttype', get_string('reporttype', 'local'), $reporttype);
+        $mform->addElement('static', 'reporttype', get_string('reporttype', 'local_reportbuilder'), $reporttype);
 
         $mform->addElement('hidden','id',$id);
         $mform->setType('id', PARAM_INT);
@@ -104,13 +104,13 @@ class report_builder_global_settings_form extends moodleform {
         global $CFG, $REPORT_BUILDER_EXPORT_OPTIONS;
         $mform =& $this->_form;
 
-        $mform->addElement('header', 'settings', get_string('globalsettings', 'local'));
+        $mform->addElement('header', 'settings', get_string('globalsettings', 'local_reportbuilder'));
 
         $exportoptions = get_config('reportbuilder', 'exportoptions');
 
         $group = array();
         foreach($REPORT_BUILDER_EXPORT_OPTIONS as $option => $code) {
-            $group[] =& $mform->createElement('checkbox', 'export'.$option, '', get_string('export'.$option,'local'));
+            $group[] =& $mform->createElement('checkbox', 'export'.$option, '', get_string('export'.$option,'local_reportbuilder'));
             if($exportoptions) {
                 // bitwise operation to see if bit for this export
                 // option is set
@@ -121,8 +121,8 @@ class report_builder_global_settings_form extends moodleform {
                 }
             }
         }
-        $mform->addGroup($group, 'exportoptions', get_string('exportoptions','local'), '<br />', false);
-        $mform->setHelpButton('exportoptions', array('reportbuilderexportoptions',get_string('exportoptions','local'),'moodle'));
+        $mform->addGroup($group, 'exportoptions', get_string('exportoptions','local_reportbuilder'), '<br />', false);
+        $mform->setHelpButton('exportoptions', array('reportbuilderexportoptions',get_string('exportoptions','local_reportbuilder'),'local_reportbuilder'));
 
         $this->add_action_buttons();
     }
@@ -140,20 +140,20 @@ class report_builder_edit_filters_form extends moodleform {
         $report = $this->_customdata['report'];
         $id = $this->_customdata['id'];
 
-        $mform->addElement('header', 'searchoptions', get_string('searchoptions', 'local'));
+        $mform->addElement('header', 'searchoptions', get_string('searchoptions', 'local_reportbuilder'));
 
-        $mform->setHelpButton('searchoptions', array('reportbuilderfilters',get_string('filters','local'),'moodle'));
+        $mform->setHelpButton('searchoptions', array('reportbuilderfilters',get_string('filters','local_reportbuilder'),'local_reportbuilder'));
 
-        $strmovedown = get_string('movedown','local');
-        $strmoveup = get_string('moveup','local');
-        $strdelete = get_string('delete','local');
+        $strmovedown = get_string('movedown','local_reportbuilder');
+        $strmoveup = get_string('moveup','local_reportbuilder');
+        $strdelete = get_string('delete','local_reportbuilder');
         $spacer = '<img src="'.$CFG->wwwroot.'/pix/spacer.gif" class="iconsmall" alt="" />';
 
         if(isset($report->filteroptions) && is_array($report->filteroptions) && count($report->filteroptions)>0) {
-            $mform->addElement('html','<div>'.get_string('help:searchdesc','local').'</div><br />');
+            $mform->addElement('html','<div>'.get_string('help:searchdesc','local_reportbuilder').'</div><br />');
 
-            $mform->addElement('html', '<div class="reportbuilderform"><table><tr><th>'.get_string('searchfield','local').
-                '</th><th>'.get_string('advanced','local').'</th><th>'.get_string('options','local').'</th><tr>');
+            $mform->addElement('html', '<div class="reportbuilderform"><table><tr><th>'.get_string('searchfield','local_reportbuilder').
+                '</th><th>'.get_string('advanced','local_reportbuilder').'</th><th>'.get_string('options','local_reportbuilder').'</th><tr>');
 
             $filtersselect = $report->get_filters_select();
 
@@ -192,14 +192,14 @@ class report_builder_edit_filters_form extends moodleform {
                     $i++;
                 }
             } else {
-                $mform->addElement('html','<p>'. get_string('nofiltersyet','local').'</p>');
+                $mform->addElement('html','<p>'. get_string('nofiltersyet','local_reportbuilder').'</p>');
             }
 
 
             $mform->addElement('html','<tr><td>');
             $newfilterselect = array_merge(
                 array(
-                    get_string('new') => array(0 => get_string('addanotherfilter','local'))
+                    get_string('new') => array(0 => get_string('addanotherfilter','local_reportbuilder'))
                 ),
                 $filtersselect);
             $mform->addElement('selectgroups','newfilter','',$newfilterselect);
@@ -232,9 +232,9 @@ class report_builder_edit_columns_form extends moodleform {
         $report = $this->_customdata['report'];
         $id = $this->_customdata['id'];
 
-        $strmovedown = get_string('movedown','local');
-        $strmoveup = get_string('moveup','local');
-        $strdelete = get_string('delete','local');
+        $strmovedown = get_string('movedown','local_reportbuilder');
+        $strmoveup = get_string('moveup','local_reportbuilder');
+        $strdelete = get_string('delete','local_reportbuilder');
         $strhide = get_string('hide');
         $strshow = get_string('show');
         $spacer = '<img src="'.$CFG->wwwroot.'/pix/spacer.gif" class="iconsmall" alt="" />';
@@ -261,18 +261,18 @@ class report_builder_edit_columns_form extends moodleform {
             ",
         );
 
-        $mform->addElement('header', 'reportcolumns', get_string('reportcolumns', 'local'));
+        $mform->addElement('header', 'reportcolumns', get_string('reportcolumns', 'local_reportbuilder'));
 
-        $mform->setHelpButton('reportcolumns', array('reportbuildercolumns',get_string('columns','local'),'moodle'));
+        $mform->setHelpButton('reportcolumns', array('reportbuildercolumns',get_string('columns','local_reportbuilder'),'local_reportbuilder'));
 
         if(isset($report->columnoptions) && is_array($report->columnoptions) && count($report->columnoptions)>0) {
 
 
-            $mform->addElement('html','<div>'.get_string('help:columnsdesc','local').'</div><br />');
+            $mform->addElement('html','<div>'.get_string('help:columnsdesc','local_reportbuilder').'</div><br />');
 
 
-            $mform->addElement('html', '<div class="reportbuilderform"><table><tr><th>'.get_string('column','local').
-                '</th><th>'.get_string('heading','local').'</th><th>'.get_string('options','local').'</th><tr>');
+            $mform->addElement('html', '<div class="reportbuilderform"><table><tr><th>'.get_string('column','local_reportbuilder').
+                '</th><th>'.get_string('heading','local_reportbuilder').'</th><th>'.get_string('options','local_reportbuilder').'</th><tr>');
 
             $columnsselect = $report->get_columns_select();
 
@@ -323,13 +323,13 @@ class report_builder_edit_columns_form extends moodleform {
                     }
                 }
             } else {
-                $mform->addElement('html','<p>'.get_string('nocolumnsyet','local').'</p>');
+                $mform->addElement('html','<p>'.get_string('nocolumnsyet','local_reportbuilder').'</p>');
             }
 
             $mform->addElement('html','<tr><td>');
             $newcolumnsselect = array_merge(
                 array(
-                    get_string('new') => array(0 => get_string('addanothercolumn','local'))
+                    get_string('new') => array(0 => get_string('addanothercolumn','local_reportbuilder'))
                 ),
                 $columnsselect);
             $mform->addElement('selectgroups','newcolumns','',$newcolumnsselect, $newonchange);
@@ -374,18 +374,18 @@ class report_builder_edit_content_form extends moodleform {
         $report = $this->_customdata['report'];
         $id = $this->_customdata['id'];
 
-        $mform->addElement('header', 'contentheader', get_string('contentcontrols', 'local'));
+        $mform->addElement('header', 'contentheader', get_string('contentcontrols', 'local_reportbuilder'));
 
         if($report->embeddedurl !== null) {
-            $mform->addElement('html','<p>'.get_string('embeddedcontentnotes','local').'</p>');
+            $mform->addElement('html','<p>'.get_string('embeddedcontentnotes','local_reportbuilder').'</p>');
         }
 
         $radiogroup = array();
-        $radiogroup[] =& $mform->createElement('radio', 'contentenabled', '', get_string('nocontentrestriction','local'), 0);
-        $radiogroup[] =& $mform->createElement('radio', 'contentenabled', '', get_string('withcontentrestrictionany','local'), 1);
-        $radiogroup[] =& $mform->createElement('radio', 'contentenabled', '', get_string('withcontentrestrictionall','local'), 2);
-        $mform->addGroup($radiogroup, 'radiogroup', get_string('restrictcontent','local'), '<br />', false);
-        $mform->setHelpButton('radiogroup', array('reportbuildercontentmode',get_string('reportcontent','local'),'moodle'));
+        $radiogroup[] =& $mform->createElement('radio', 'contentenabled', '', get_string('nocontentrestriction','local_reportbuilder'), 0);
+        $radiogroup[] =& $mform->createElement('radio', 'contentenabled', '', get_string('withcontentrestrictionany','local_reportbuilder'), 1);
+        $radiogroup[] =& $mform->createElement('radio', 'contentenabled', '', get_string('withcontentrestrictionall','local_reportbuilder'), 2);
+        $mform->addGroup($radiogroup, 'radiogroup', get_string('restrictcontent','local_reportbuilder'), '<br />', false);
+        $mform->setHelpButton('radiogroup', array('reportbuildercontentmode',get_string('reportcontent','local_reportbuilder'),'local_reportbuilder'));
         $mform->setDefault('contentenabled', get_field('report_builder', 'contentmode', 'id', $id));
 
         // get array of content options
@@ -420,17 +420,17 @@ class report_builder_edit_access_form extends moodleform {
         $report = $this->_customdata['report'];
         $id = $this->_customdata['id'];
 
-        $mform->addElement('header', 'access', get_string('accesscontrols', 'local'));
+        $mform->addElement('header', 'access', get_string('accesscontrols', 'local_reportbuilder'));
 
         if($report->embeddedurl !== null) {
-            $mform->addElement('html','<p>'. get_string('embeddedaccessnotes','local').'</p>');
+            $mform->addElement('html','<p>'. get_string('embeddedaccessnotes','local_reportbuilder').'</p>');
         }
         $radiogroup = array();
-        $radiogroup[] =& $mform->createElement('radio', 'accessenabled', '', get_string('norestriction','local'), 0);
-        $radiogroup[] =& $mform->createElement('radio', 'accessenabled', '', get_string('withrestriction','local'), 1);
-        $mform->addGroup($radiogroup, 'radiogroup', get_string('restrictaccess','local'), '<br />', false);
+        $radiogroup[] =& $mform->createElement('radio', 'accessenabled', '', get_string('norestriction','local_reportbuilder'), 0);
+        $radiogroup[] =& $mform->createElement('radio', 'accessenabled', '', get_string('withrestriction','local_reportbuilder'), 1);
+        $mform->addGroup($radiogroup, 'radiogroup', get_string('restrictaccess','local_reportbuilder'), '<br />', false);
         $mform->setDefault('accessenabled', get_field('report_builder', 'accessmode', 'id', $id));
-        $mform->setHelpButton('radiogroup', array('reportbuilderaccessmode',get_string('restrictaccess','local'),'moodle'));
+        $mform->setHelpButton('radiogroup', array('reportbuilderaccessmode',get_string('restrictaccess','local_reportbuilder'),'local_reportbuilder'));
 
         // loop round classes, only considering classes that extend rb_base_access
         foreach(get_declared_classes() as $class) {
@@ -466,7 +466,7 @@ function validate_shortname($data) {
             unset($foundreports[$data['id']]);
         }
         if(!empty($foundreports)) {
-            $errors['shortname'] = get_string('shortnametaken','local');
+            $errors['shortname'] = get_string('shortnametaken','local_reportbuilder');
         }
     }
     return $errors;
@@ -492,7 +492,7 @@ function validate_unique_columns($data) {
             $field = "column{$col->id}";
             if(isset($data[$field])) {
                 if(array_key_exists($data[$field], $used_cols)) {
-                    $errors[$field] = get_string('norepeatcols','local');
+                    $errors[$field] = get_string('norepeatcols','local_reportbuilder');
                 } else {
                     $used_cols[$data[$field]] = 1;
                 }
@@ -503,7 +503,7 @@ function validate_unique_columns($data) {
     // also check new column if set
     if(isset($data['newcolumns'])) {
         if(array_key_exists($data['newcolumns'], $used_cols)) {
-            $errors['newcolumns'] = get_string('norepeatcols','local');
+            $errors['newcolumns'] = get_string('norepeatcols','local_reportbuilder');
         }
     }
     return $errors;
@@ -525,12 +525,12 @@ class report_builder_save_form extends moodleform {
         $searchsettings = serialize($SESSION->$filtername);
         $params = implode('<br />',$filterparams);
 
-        $mform->addElement('header', 'savesearch', get_string('createasavedsearch', 'local'));
-        $mform->addElement('static', 'description', '', get_string('savedsearchdesc','local'));
-        $mform->addElement('static', 'params', get_string('currentsearchparams','local'), $params);
-        $mform->addElement('text','name', get_string('searchname','local'));
+        $mform->addElement('header', 'savesearch', get_string('createasavedsearch', 'local_reportbuilder'));
+        $mform->addElement('static', 'description', '', get_string('savedsearchdesc','local_reportbuilder'));
+        $mform->addElement('static', 'params', get_string('currentsearchparams','local_reportbuilder'), $params);
+        $mform->addElement('text','name', get_string('searchname','local_reportbuilder'));
         $mform->setType('name', PARAM_TEXT);
-        $mform->addElement('advcheckbox', 'public', get_string('publicallyavailable','local'), '', null, array(0,1));
+        $mform->addElement('advcheckbox', 'public', get_string('publicallyavailable','local_reportbuilder'), '', null, array(0,1));
         $mform->addElement('hidden','id',$id);
         $mform->setType('id', PARAM_INT);
         $mform->addElement('hidden', 'search', $searchsettings);

@@ -69,15 +69,15 @@ class rb_trainer_content extends rb_base_content {
         $user = get_record('user','id',$USER->id);
         switch ($settings['who']) {
         case 'own':
-            return $title . ' ' . get_string('is','local') . ' "' .
+            return $title . ' ' . get_string('is','local_reportbuilder') . ' "' .
                 fullname($user) . '"';
         case 'reports':
-            return $title . ' ' . get_string('reportsto','local') . ' "' .
+            return $title . ' ' . get_string('reportsto','local_reportbuilder') . ' "' .
                 fullname($user) . '"';
         case 'ownandreports':
-            return $title . ' ' . get_string('is','local') . ' "' .
-                fullname($user) . '"' . get_string('or','local') .
-                get_string('reportsto','local') . ' "' . fullname($user) . '"';
+            return $title . ' ' . get_string('is','local_reportbuilder') . ' "' .
+                fullname($user) . '"' . get_string('or','local_reportbuilder') .
+                get_string('reportsto','local_reportbuilder') . ' "' . fullname($user) . '"';
         default:
             return $title . ' is NOT FOUND';
         }
@@ -98,25 +98,25 @@ class rb_trainer_content extends rb_base_content {
         $who = reportbuilder::get_setting($reportid, $type, 'who');
 
         $mform->addElement('header', 'trainer_header', get_string('showbytrainer',
-            'local'));
+            'local_reportbuilder'));
         $mform->addElement('checkbox', 'trainer_enable', '',
-            get_string('bytrainerenable', 'local'));
+            get_string('bytrainerenable', 'local_reportbuilder'));
         $mform->disabledIf('trainer_enable', 'contentenabled', 'eq', 0);
         $mform->setDefault('trainer_enable', $enable);
         $radiogroup = array();
         $radiogroup[] =& $mform->createElement('radio', 'trainer_who', '',
-            get_string('trainerownrecords', 'local'), 'own');
+            get_string('trainerownrecords', 'local_reportbuilder'), 'own');
         $radiogroup[] =& $mform->createElement('radio', 'trainer_who', '',
-            get_string('trainerstaffrecords', 'local'), 'reports');
+            get_string('trainerstaffrecords', 'local_reportbuilder'), 'reports');
         $radiogroup[] =& $mform->createElement('radio', 'trainer_who', '',
-            get_string('both', 'local'), 'ownandreports');
+            get_string('both', 'local_reportbuilder'), 'ownandreports');
         $mform->addGroup($radiogroup, 'trainer_who_group',
-            get_string('includetrainerrecords', 'local'), '<br />', false);
+            get_string('includetrainerrecords', 'local_reportbuilder'), '<br />', false);
         $mform->setDefault('trainer_who', $who);
         $mform->disabledIf('trainer_who_group','contentenabled', 'eq', 0);
         $mform->disabledIf('trainer_who_group','trainer_enable', 'notchecked');
         $mform->setHelpButton('trainer_header', array('reportbuildertrainer',
-            get_string('showbytrainer', 'local'), 'moodle'));
+            get_string('showbytrainer', 'local_reportbuilder'), 'local_reportbuilder'));
     }
 
     /**

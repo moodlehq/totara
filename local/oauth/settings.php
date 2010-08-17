@@ -30,7 +30,7 @@ $ADMIN->add('local_oauth', new admin_externalpage('oauthsettings', get_string('s
 $ADMIN->add('local_oauth', new admin_externalpage('oauthregistrations', get_string('registrations', 'local_oauth'),
         $CFG->wwwroot."/local/oauth/admin/registrations.php",
         'moodle/site:config'));
-$ADMIN->add('local_oauth', new admin_externalpage('oauthregistrations', get_string('fusiontables', 'local_oauth'),
+$ADMIN->add('local_oauth', new admin_externalpage('oauthfusiontables', get_string('fusiontables', 'local_oauth'),
         "http://tables.googlelabs.com",
         'moodle/site:config'));
 

@@ -2113,6 +2113,55 @@ function xmldb_local_upgrade($oldversion) {
         if (!field_exists($table, $field)) {
             $result = $result && add_field($table, $field);
         }
+
+    if ($result && $oldversion < 2010081900) {
+        // apply some database changes to get db in sync with install.xml version
+
+        // remove not null from heading
+        $table = new XMLDBTable('report_builder_columns');
+        $field = new XMLDBField('heading');
+        $field->setAttributes(XMLDB_TYPE_CHAR, '255', null, null, null, null, null);
+        $result = $result && change_field_type($table, $field);
+
+        // add default 0 to advanced
+        $table = new XMLDBTable('report_builder_filters');
+        $field = new XMLDBField('advanced');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '4', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0');
+        $result = $result && change_field_type($table, $field);
+
+        // add default 0 to public
+        $table = new XMLDBTable('report_builder_saved');
+        $field = new XMLDBField('public');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '4', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0');
+        $result = $result && change_field_type($table, $field);
+
+        // rename public to ispublic (keyword)
+        if(field_exists($table, $field)) {
+            $result = $result && rename_field($table, $field, 'ispublic');
+        }
+
+        // add default 0 to disabled
+        $table = new XMLDBTable('report_builder_preproc_track');
+        $field = new XMLDBField('disabled');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '4', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0');
+        $result = $result && change_field_type($table, $field);
+
+        // remove unused capabilities
+        $result = $result && delete_records_select('role_capabilities',
+            "capability = 'moodle/local:viewownreports' OR
+             capability = 'moodle/local:viewallreports' OR
+             capability = 'moodle/local:viewstaffreports' OR
+             capability = 'moodle/local:viewlocalreports'");
+
+        $result = $result && delete_records_select('capabilities',
+            "name = 'moodle/local:viewownreports' OR
+             name = 'moodle/local:viewallreports' OR
+             name = 'moodle/local:viewstaffreports' OR
+             name = 'moodle/local:viewlocalreports'");
+
+        // pretend that the reportbuilder local module has been installed
+        // to skip the installation process for existing installation
+        set_config('local_reportbuilder_version', '2010081900');
     }
 
     return $result;

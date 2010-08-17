@@ -133,6 +133,54 @@
     get_mailer('close');
     mtrace("Finished activity modules");
 
+    mtrace("Starting local modules");
+    // look for cron file for each directory in local
+    $cronfiles = glob($CFG->dirroot . '/local/*/cron.php');
+    foreach($cronfiles as $cronfile) {
+        // find name of local module
+        preg_match('|' . preg_quote($CFG->dirroot,'|') .'/local/([^/]+)/cron.php|', $cronfile, $matches);
+        $modulename = $matches[1];
+        // if found look for cron and lastcron vars in config
+        $cron = get_config(null, 'local_'.$modulename.'_cron');
+        $lastcron = get_config(null, 'local_'.$modulename.'_lastcron');
+        // do same as above for each local cron
+        if($cron === false) {
+            // no cron period set
+            // currently you need to set
+            // local_<mod>_cron via upgrade.php
+            // as there is no local_modules table
+            continue;
+        }
+        if($lastcron && ($timenow - $lastcron <= $cron)) {
+            // not enough time has elapsed to rerun cron
+            continue;
+        }
+        include_once($cronfile);
+        $cron_function = $modulename."_cron";
+        if (function_exists($cron_function)) {
+            mtrace("Processing local module function $cron_function ...", '');
+            $pre_dbqueries = null;
+            if (!empty($PERF->dbqueries)) {
+                $pre_dbqueries = $PERF->dbqueries;
+                $pre_time      = microtime(1);
+            }
+            if ($cron_function()) {
+                if (! set_config('local_' . $modulename . '_lastcron', $timenow)) {
+                    mtrace("Error: could not update timestamp for $modulename");
+                }
+            }
+            if (isset($pre_dbqueries)) {
+                mtrace("... used " . ($PERF->dbqueries - $pre_dbqueries) . " dbqueries");
+                mtrace("... used " . (microtime(1) - $pre_time) . " seconds");
+            }
+
+            /// Reset possible changes by modules to time_limit. MDL-11597
+            @set_time_limit(0);
+            mtrace("done.");
+        }
+    }
+    mtrace("Finished local modules");
+
     mtrace("Starting blocks");
     if ($blocks = get_records_select("block", "cron > 0 AND (($timenow - lastcron) > cron) AND visible = 1")) {
         // we will need the base class.

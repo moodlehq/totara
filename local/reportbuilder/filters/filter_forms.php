@@ -13,7 +13,7 @@ class add_filter_form extends moodleform {
         $filtername = 'filtering_'.$shortname;
 
         if($fields && is_array($fields) && count($fields) > 0) {
-            $mform->addElement('header', 'newfilter', get_string('searchby','local'));
+            $mform->addElement('header', 'newfilter', get_string('searchby','local_reportbuilder'));
 
             foreach($fields as $ft) {
                 $ft->setupForm($mform);
@@ -31,12 +31,12 @@ class add_filter_form extends moodleform {
             $mform->addElement('html','<table align="center"><tr><td align="left">');
 
             // Add button
-            $mform->addElement('submit', 'addfilter', get_string('search','local'));
+            $mform->addElement('submit', 'addfilter', get_string('search','local_reportbuilder'));
 
             $mform->addElement('html','</td><td align="right">');
 
             // clear form button
-            $mform->addElement('submit', 'clearfilter', get_string('clearform','local'));
+            $mform->addElement('submit', 'clearfilter', get_string('clearform','local_reportbuilder'));
 
             $mform->addElement('html','</td></tr></table>');
 

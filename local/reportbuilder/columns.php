@@ -100,12 +100,12 @@ if ($fromform = $mform->get_data()) {
 admin_externalpage_print_header();
 
 print "<table id=\"reportbuilder-navbuttons\"><tr><td>";
-print_single_button($CFG->wwwroot.'/local/reportbuilder/index.php', null, get_string('allreports','local'));
+print_single_button($CFG->wwwroot.'/local/reportbuilder/index.php', null, get_string('allreports','local_reportbuilder'));
 print "</td><td>";
 print $report->view_button();
 print "</td></tr></table>";
 
-print_heading(get_string('editreport','local',$report->fullname));
+print_heading(get_string('editreport','local_reportbuilder',$report->fullname));
 
 $currenttab = 'columns';
 include_once('tabs.php');
@@ -113,34 +113,34 @@ include_once('tabs.php');
 if($notice) {
     switch($notice) {
     case REPORT_BUILDER_COLUMNS_CONFIRM_SHOWHIDE:
-        notify(get_string('column_vis_updated','local'),'notifysuccess');
+        notify(get_string('column_vis_updated','local_reportbuilder'),'notifysuccess');
         break;
     case REPORT_BUILDER_COLUMNS_FAILED_SHOWHIDE:
-        notify(get_string('error:column_vis_not_updated','local'));
+        notify(get_string('error:column_vis_not_updated','local_reportbuilder'));
         break;
     case REPORT_BUILDER_COLUMNS_CONFIRM_DELETE:
-        notify(get_string('column_deleted','local'),'notifysuccess');
+        notify(get_string('column_deleted','local_reportbuilder'),'notifysuccess');
         break;
     case REPORT_BUILDER_FAILED_DELETE_SESSKEY:
-        notify(get_string('error:bad_sesskey','local'));
+        notify(get_string('error:bad_sesskey','local_reportbuilder'));
         break;
     case REPORT_BUILDER_COLUMNS_FAILED_DELETE:
-        notify(get_string('error:column_not_deleted','local'));
+        notify(get_string('error:column_not_deleted','local_reportbuilder'));
         break;
     case REPORT_BUILDER_COLUMNS_CONFIRM_MOVE:
-        notify(get_string('column_moved','local'),'notifysuccess');
+        notify(get_string('column_moved','local_reportbuilder'),'notifysuccess');
         break;
     case REPORT_BUILDER_COLUMNS_FAILED_MOVE:
-        notify(get_string('error:column_not_moved','local'));
+        notify(get_string('error:column_not_moved','local_reportbuilder'));
         break;
     case REPORT_BUILDER_COLUMNS_CONFIRM_UPDATE:
-        notify(get_string('columns_updated','local'),'notifysuccess');
+        notify(get_string('columns_updated','local_reportbuilder'),'notifysuccess');
         break;
     case REPORT_BUILDER_COLUMNS_FAILED_UPDATE:
-        get_string('error:columns_not_updated','local');
+        get_string('error:columns_not_updated','local_reportbuilder');
         break;
     case REPORT_BUILDER_UNKNOWN_BUTTON_CLICKED:
-        get_string('error:unknownbuttonclicked','local');
+        get_string('error:unknownbuttonclicked','local_reportbuilder');
         break;
     }
 }

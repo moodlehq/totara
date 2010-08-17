@@ -773,6 +773,13 @@ function get_db_directories() {
         }
     }
 
+/// Now, local modules (local/xxx/db)
+    if ($plugins = get_list_of_plugins('local')) {
+        foreach ($plugins as $plugin) {
+            $dbdirs[] = $CFG->dirroot.'/local/'.$plugin.'/db';
+        }
+    }
+
 /// Now, assignment submodules (mod/assignment/type/xxx/db)
     if ($plugins = get_list_of_plugins('mod/assignment/type')) {
         foreach ($plugins as $plugin) {

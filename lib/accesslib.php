@@ -3894,6 +3894,10 @@ function get_capability_string($capabilityname) {
             }
         break;
 
+        case 'local':
+            $string = get_string($stringname, 'local_'.$componentname);
+        break;
+
         case 'enrol':
             $string = get_string($stringname, 'enrol_'.$componentname);
         break;

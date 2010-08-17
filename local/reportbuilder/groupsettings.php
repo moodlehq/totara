@@ -66,22 +66,22 @@
     admin_externalpage_print_header();
 
     print_single_button($CFG->wwwroot . '/local/reportbuilder/groups.php', null,
-        get_string('backtoallgroups','local'));
+        get_string('backtoallgroups','local_reportbuilder'));
 
-    print_heading(get_string('activitygroupingx','local',$group->name));
+    print_heading(get_string('activitygroupingx','local_reportbuilder',$group->name));
 
-    print '<h3>' . get_string('assignedactivities','local') . '</h3>';
+    print '<h3>' . get_string('assignedactivities','local_reportbuilder') . '</h3>';
 
     $info = new object();
     $info->count = count($activities);
     $info->tag = $tag->name;
-    print '<p>' . get_string('groupcontents', 'local', $info) . '</p>';
+    print '<p>' . get_string('groupcontents', 'local_reportbuilder', $info) . '</p>';
 
     if(count($activities)) {
         $tableheader = array(get_string('course'),
                          get_string('feedback'),
-                         get_string('lastchecked','local'),
-                         get_string('disabled','local'));
+                         get_string('lastchecked','local_reportbuilder'),
+                         get_string('disabled','local_reportbuilder'));
 
         $data = array();
         foreach($activities as $activity) {
@@ -91,7 +91,7 @@
                 $row[] = '<a href="' . $CFG->wwwroot . '/course/view.php?id=' .
                    $activity->courseid . '">' . $activity->course . '</a>';
             } else {
-                $row[] = get_string('notset','local');
+                $row[] = get_string('notset','local_reportbuilder');
             }
 
             // print feedback name
@@ -102,7 +102,7 @@
             if($activity->lastchecked !== null) {
                 $row[] = userdate($activity->lastchecked);
             } else {
-                $row[] = get_string('notyetchecked','local');
+                $row[] = get_string('notyetchecked','local_reportbuilder');
             }
 
             // print if disabled or not
@@ -120,20 +120,20 @@
         print_table($table);
     }
 
-    print '<h3>' . get_string('baseactivity','local') . '</h3>';
+    print '<h3>' . get_string('baseactivity','local_reportbuilder') . '</h3>';
 
     $info = new object();
     $info->url = $CFG->wwwroot . '/mod/feedback/view.php?id=' . $baseitem->cmid;
     $info->activity = $baseitem->feedback;
-    print '<p>' . get_string('baseitemdesc', 'local', $info) . '</p>';
+    print '<p>' . get_string('baseitemdesc', 'local_reportbuilder', $info) . '</p>';
 
-    print '<h3>' . get_string('reports', 'local') . '</h3>';
+    print '<h3>' . get_string('reports', 'local_reportbuilder') . '</h3>';
 
     if($reports) {
-        print '<p>' . get_string('reportcount', 'local', count($reports)) . '</p>';
+        print '<p>' . get_string('reportcount', 'local_reportbuilder', count($reports)) . '</p>';
 
         $tableheader = array(get_string('name'),
-                         get_string('options','local'));
+                         get_string('options','local_reportbuilder'));
         $data = array();
         foreach($reports as $report) {
             $row = array();
@@ -145,11 +145,11 @@
             }
             $row[] = '<a href="' . $reporturl . '">' . $report->fullname . '</a>';
 
-            $strsettings = get_string('settings','local');
-            $strdelete = get_string('delete','local');
+            $strsettings = get_string('settings','local_reportbuilder');
+            $strdelete = get_string('delete','local_reportbuilder');
 
             $settings = '<a href="'.$CFG->wwwroot .
-                '/local/reportbuilder/settings.php?id=' . $report->id .
+                '/local/reportbuilder/general.php?id=' . $report->id .
                 '" title="' . $strsettings . '">' .
                 '<img src="' . $CFG->pixpath . '/t/edit.gif" alt="' .
                 $strsettings . '"></a>';
@@ -167,7 +167,7 @@
         $table->data = $data;
         print_table($table);
     } else {
-        print '<p>' . get_string('noreportscount', 'local') . '</p>';
+        print '<p>' . get_string('noreportscount', 'local_reportbuilder') . '</p>';
     }
 
     admin_externalpage_print_footer();

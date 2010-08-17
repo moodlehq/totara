@@ -101,8 +101,8 @@ class rb_current_pos_content extends rb_base_content {
             'userid', $userid, 'type', 1);
         $posname = get_field('pos','fullname','id', $posid);
         $children = $settings['recursive'] ?
-            ' ' . get_string('orsubpos','local') : '';
-        return $title . ' ' . get_string('is','local') .' "' . $posname . '"' .
+            ' ' . get_string('orsubpos','local_reportbuilder') : '';
+        return $title . ' ' . get_string('is','local_reportbuilder') .' "' . $posname . '"' .
             $children;
     }
 
@@ -120,9 +120,9 @@ class rb_current_pos_content extends rb_base_content {
         $recursive = reportbuilder::get_setting($reportid, $type, 'recursive');
 
         $mform->addElement('header', 'current_pos_header',
-            get_string('showbycurrentpos','local'));
+            get_string('showbycurrentpos','local_reportbuilder'));
         $mform->addElement('checkbox', 'current_pos_enable', '',
-            get_string('currentposenable','local'));
+            get_string('currentposenable','local_reportbuilder'));
         $mform->setDefault('current_pos_enable', $enable);
         $mform->disabledIf('current_pos_enable','contentenabled', 'eq', 0);
         $radiogroup = array();
@@ -131,7 +131,7 @@ class rb_current_pos_content extends rb_base_content {
         $radiogroup[] =& $mform->createElement('radio', 'current_pos_recursive',
             '', get_string('no'), 0);
         $mform->addGroup($radiogroup, 'current_pos_recursive_group',
-            get_string('includechildpos','local'), '<br />', false);
+            get_string('includechildpos','local_reportbuilder'), '<br />', false);
         $mform->setDefault('current_pos_recursive', $recursive);
         $mform->disabledIf('current_pos_recursive_group', 'contentenabled',
             'eq', 0);
@@ -139,7 +139,7 @@ class rb_current_pos_content extends rb_base_content {
             'notchecked');
         $mform->setHelpButton('current_pos_header',
             array('reportbuildercurrentpos',
-            get_string('showbycurrentpos', 'local'), 'moodle'));
+            get_string('showbycurrentpos', 'local_reportbuilder'), 'local_reportbuilder'));
     }
 
     /**
@@ -247,8 +247,8 @@ class rb_current_org_content extends rb_base_content {
             'userid', $userid, 'type', 1);
         $orgname = get_field('org','fullname','id', $orgid);
         $children = $settings['recursive'] ?
-            ' ' . get_string('orsuborg','local') : '';
-        return $title . ' ' . get_string('is','local') .' "' . $orgname . '"' .
+            ' ' . get_string('orsuborg','local_reportbuilder') : '';
+        return $title . ' ' . get_string('is','local_reportbuilder') .' "' . $orgname . '"' .
             $children;
     }
 
@@ -267,9 +267,9 @@ class rb_current_org_content extends rb_base_content {
         $recursive = reportbuilder::get_setting($reportid, $type, 'recursive');
 
         $mform->addElement('header', 'current_org_header',
-            get_string('showbycurrentorg','local'));
+            get_string('showbycurrentorg','local_reportbuilder'));
         $mform->addElement('checkbox', 'current_org_enable', '',
-            get_string('currentorgenable','local'));
+            get_string('currentorgenable','local_reportbuilder'));
         $mform->setDefault('current_org_enable', $enable);
         $mform->disabledIf('current_org_enable','contentenabled', 'eq', 0);
         $radiogroup = array();
@@ -278,7 +278,7 @@ class rb_current_org_content extends rb_base_content {
         $radiogroup[] =& $mform->createElement('radio', 'current_org_recursive',
             '', get_string('no'), 0);
         $mform->addGroup($radiogroup, 'current_org_recursive_group',
-            get_string('includechildorgs','local'), '<br />', false);
+            get_string('includechildorgs','local_reportbuilder'), '<br />', false);
         $mform->setDefault('current_org_recursive', $recursive);
         $mform->disabledIf('current_org_recursive_group', 'contentenabled',
             'eq', 0);
@@ -286,7 +286,7 @@ class rb_current_org_content extends rb_base_content {
             'notchecked');
         $mform->setHelpButton('current_org_header',
             array('reportbuildercurrentorg',
-            get_string('showbycurrentorg', 'local'), 'moodle'));
+            get_string('showbycurrentorg', 'local_reportbuilder'), 'local_reportbuilder'));
     }
 
 
@@ -385,12 +385,12 @@ class rb_completed_org_content extends rb_base_content {
         $orgid = get_field('pos_assignment', 'organisationid',
             'userid', $userid, 'type', 1);
         if(empty($orgid)) {
-            return $title . ' ' . get_string('is','local') . ' "UNASSIGNED"';
+            return $title . ' ' . get_string('is','local_reportbuilder') . ' "UNASSIGNED"';
         }
         $orgname = get_field('org','fullname','id', $orgid);
         $children = $settings['recursive']
-            ? ' ' . get_string('orsuborg','local') : '';
-        return $title . ' ' . get_string('is','local') . ' "' . $orgname . '"' .
+            ? ' ' . get_string('orsuborg','local_reportbuilder') : '';
+        return $title . ' ' . get_string('is','local_reportbuilder') . ' "' . $orgname . '"' .
             $children;
     }
 
@@ -409,9 +409,9 @@ class rb_completed_org_content extends rb_base_content {
         $recursive = reportbuilder::get_setting($reportid, $type, 'recursive');
 
         $mform->addElement('header', 'completed_org_header',
-            get_string('showbycompletedorg', 'local'));
+            get_string('showbycompletedorg', 'local_reportbuilder'));
         $mform->addElement('checkbox', 'completed_org_enable', '',
-            get_string('completedorgenable', 'local'));
+            get_string('completedorgenable', 'local_reportbuilder'));
         $mform->setDefault('completed_org_enable', $enable);
         $mform->disabledIf('completed_org_enable','contentenabled', 'eq', 0);
         $radiogroup = array();
@@ -420,7 +420,7 @@ class rb_completed_org_content extends rb_base_content {
         $radiogroup[] =& $mform->createElement('radio', 'completed_org_recursive',
             '', get_string('no'), 0);
         $mform->addGroup($radiogroup, 'completed_org_recursive_group',
-            get_string('includechildorgs','local'), '<br />', false);
+            get_string('includechildorgs','local_reportbuilder'), '<br />', false);
         $mform->setDefault('completed_org_recursive', $recursive);
         $mform->disabledIf('completed_org_recursive_group','contentenabled',
             'eq', 0);
@@ -428,7 +428,7 @@ class rb_completed_org_content extends rb_base_content {
             'completed_org_enable', 'notchecked');
         $mform->setHelpButton('completed_org_header',
             array('reportbuildercompletedorg',
-            get_string('showbycompletedorg', 'local'), 'moodle'));
+            get_string('showbycompletedorg', 'local_reportbuilder'), 'local_reportbuilder'));
     }
 
 
@@ -526,15 +526,15 @@ class rb_user_content extends rb_base_content {
         $user = get_record('user','id',$USER->id);
         switch ($settings['who']) {
         case 'own':
-            return $title . ' ' . get_string('is','local') . ' "' .
+            return $title . ' ' . get_string('is','local_reportbuilder') . ' "' .
                 fullname($user) . '"';
         case 'reports':
-            return $title . ' ' . get_string('reportsto','local') . ' "' .
+            return $title . ' ' . get_string('reportsto','local_reportbuilder') . ' "' .
                 fullname($user) . '"';
         case 'ownandreports':
-            return $title . ' ' . get_string('is','local') . ' "' .
-                fullname($user) . '"' . get_string('or','local') .
-                get_string('reportsto','local') . ' "' . fullname($user) . '"';
+            return $title . ' ' . get_string('is','local_reportbuilder') . ' "' .
+                fullname($user) . '"' . get_string('or','local_reportbuilder') .
+                get_string('reportsto','local_reportbuilder') . ' "' . fullname($user) . '"';
         default:
             return $title . ' is NOT FOUND';
         }
@@ -556,25 +556,25 @@ class rb_user_content extends rb_base_content {
         $who = reportbuilder::get_setting($reportid, $type, 'who');
 
         $mform->addElement('header', 'user_header', get_string('showbyuser',
-            'local'));
+            'local_reportbuilder'));
         $mform->addElement('checkbox', 'user_enable', '',
-            get_string('byuserenable', 'local'));
+            get_string('byuserenable', 'local_reportbuilder'));
         $mform->disabledIf('user_enable', 'contentenabled', 'eq', 0);
         $mform->setDefault('user_enable', $enable);
         $radiogroup = array();
         $radiogroup[] =& $mform->createElement('radio', 'user_who', '',
-            get_string('userownrecords', 'local'), 'own');
+            get_string('userownrecords', 'local_reportbuilder'), 'own');
         $radiogroup[] =& $mform->createElement('radio', 'user_who', '',
-            get_string('userstaffrecords', 'local'), 'reports');
+            get_string('userstaffrecords', 'local_reportbuilder'), 'reports');
         $radiogroup[] =& $mform->createElement('radio', 'user_who', '',
-            get_string('both', 'local'), 'ownandreports');
+            get_string('both', 'local_reportbuilder'), 'ownandreports');
         $mform->addGroup($radiogroup, 'user_who_group',
-            get_string('includeuserrecords', 'local'), '<br />', false);
+            get_string('includeuserrecords', 'local_reportbuilder'), '<br />', false);
         $mform->setDefault('user_who', $who);
         $mform->disabledIf('user_who_group','contentenabled', 'eq', 0);
         $mform->disabledIf('user_who_group','user_enable', 'notchecked');
         $mform->setHelpButton('user_header', array('reportbuilderuser',
-            get_string('showbyuser', 'local'), 'moodle'));
+            get_string('showbyuser', 'local_reportbuilder'), 'local_reportbuilder'));
     }
 
 
@@ -697,27 +697,27 @@ class rb_date_content extends rb_base_content {
 
         switch ($settings['when']) {
         case 'past':
-            return $title . ' ' . get_string('occurredbefore', 'local') . ' ' .
+            return $title . ' ' . get_string('occurredbefore', 'local_reportbuilder') . ' ' .
                 userdate(time(), '%c'). $includenulls;
         case 'future':
-            return $title . ' ' . get_string('occurredafter', 'local') . ' ' .
+            return $title . ' ' . get_string('occurredafter', 'local_reportbuilder') . ' ' .
                 userdate(time(), '%c'). $includenulls;
         case 'last30days':
-            return $title . ' ' . get_string('occurredafter','local') . ' ' .
-                userdate(time() - 60*60*24*30, '%c') . get_string('and','local') .
-                get_string('occurredbefore','local') . userdate(time(),'%c') .
+            return $title . ' ' . get_string('occurredafter','local_reportbuilder') . ' ' .
+                userdate(time() - 60*60*24*30, '%c') . get_string('and','local_reportbuilder') .
+                get_string('occurredbefore','local_reportbuilder') . userdate(time(),'%c') .
                 $includenulls;
 
         case 'next30days':
-            return $title . ' ' . get_string('occurredafter','local') . ' ' .
-                userdate(time(), '%c') . get_string('and', 'local') .
-                get_string('occurredbefore', 'local') .
+            return $title . ' ' . get_string('occurredafter','local_reportbuilder') . ' ' .
+                userdate(time(), '%c') . get_string('and', 'local_reportbuilder') .
+                get_string('occurredbefore', 'local_reportbuilder') .
                 userdate(time() + 60*60*24*30,'%c') . $includenulls;
         case 'currentfinancial':
-            return $title . ' ' . get_string('occurredthisfinancialyear','local') .
+            return $title . ' ' . get_string('occurredthisfinancialyear','local_reportbuilder') .
                 $includenulls;
         case 'lastfinancial':
-            return $title . ' ' . get_string('occurredprevfinancialyear','local') .
+            return $title . ' ' . get_string('occurredprevfinancialyear','local_reportbuilder') .
                 $includenulls;
         default:
             return 'Error with date content restriction';
@@ -740,35 +740,35 @@ class rb_date_content extends rb_base_content {
         $incnulls = reportbuilder::get_setting($reportid, $type, 'incnulls');
 
         $mform->addElement('header', 'date_header', get_string('showbydate',
-            'local'));
+            'local_reportbuilder'));
         $mform->addElement('checkbox', 'date_enable', '',
-            get_string('bydateenable', 'local'));
+            get_string('bydateenable', 'local_reportbuilder'));
         $mform->setDefault('date_enable', $enable);
         $mform->disabledIf('date_enable', 'contentenabled', 'eq', 0);
         $radiogroup = array();
         $radiogroup[] =& $mform->createElement('radio', 'date_when', '',
-            get_string('thepast', 'local'), 'past');
+            get_string('thepast', 'local_reportbuilder'), 'past');
         $radiogroup[] =& $mform->createElement('radio', 'date_when', '',
-            get_string('thefuture', 'local'), 'future');
+            get_string('thefuture', 'local_reportbuilder'), 'future');
         $radiogroup[] =& $mform->createElement('radio', 'date_when', '',
-            get_string('last30days', 'local'), 'last30days');
+            get_string('last30days', 'local_reportbuilder'), 'last30days');
         $radiogroup[] =& $mform->createElement('radio', 'date_when', '',
-            get_string('next30days', 'local'), 'next30days');
+            get_string('next30days', 'local_reportbuilder'), 'next30days');
         $radiogroup[] =& $mform->createElement('radio', 'date_when', '',
-            get_string('currentfinancial', 'local'), 'currentfinancial');
+            get_string('currentfinancial', 'local_reportbuilder'), 'currentfinancial');
         $radiogroup[] =& $mform->createElement('radio', 'date_when', '',
-            get_string('lastfinancial', 'local'), 'lastfinancial');
+            get_string('lastfinancial', 'local_reportbuilder'), 'lastfinancial');
         $mform->addGroup($radiogroup, 'date_when_group',
-            get_string('includerecordsfrom', 'local'), '<br />', false);
+            get_string('includerecordsfrom', 'local_reportbuilder'), '<br />', false);
         $mform->setDefault('date_when', $when);
         $mform->disabledIf('date_when_group', 'contentenabled', 'eq', 0);
         $mform->disabledIf('date_when_group', 'date_enable', 'notchecked');
         $mform->setHelpButton('date_header',
             array('reportbuilderdate',
-            get_string('showbydate', 'local'), 'moodle'));
+            get_string('showbydate', 'local_reportbuilder'), 'local_reportbuilder'));
 
         $mform->addElement('checkbox', 'date_incnulls',
-            get_string('includeemptydates', 'local'));
+            get_string('includeemptydates', 'local_reportbuilder'));
         $mform->setDefault('date_incnulls', $incnulls);
         $mform->disabledIf('date_incnulls', 'date_enable', 'notchecked');
         $mform->disabledIf('date_incnulls', 'contentenabled', 'eq', 0);
@@ -919,20 +919,20 @@ class rb_course_tag_content extends rb_base_content {
         }
 
         if(count($include_text) > 0) {
-            $includestr = $title . ' ' . get_string('istaggedwith', 'local') .
-                ' ' . implode(get_string($include_logic, 'local'), $include_text);
+            $includestr = $title . ' ' . get_string('istaggedwith', 'local_reportbuilder') .
+                ' ' . implode(get_string($include_logic, 'local_reportbuilder'), $include_text);
         } else {
             $includestr = '';
         }
         if(count($exclude_text) > 0) {
-            $excludestr = $title . ' ' . get_string('isnttaggedwith', 'local') .
-                ' ' . implode(get_string($exclude_logic, 'local'), $exclude_text);
+            $excludestr = $title . ' ' . get_string('isnttaggedwith', 'local_reportbuilder') .
+                ' ' . implode(get_string($exclude_logic, 'local_reportbuilder'), $exclude_text);
         } else {
             $excludestr = '';
         }
 
         if($includestr && $excludestr) {
-            return $includestr . get_string('and','local') . $excludestr;
+            return $includestr . get_string('and','local_reportbuilder') . $excludestr;
         } else if ($includestr) {
             return $includestr;
         } else if ($excludestr) {
@@ -963,13 +963,13 @@ class rb_course_tag_content extends rb_base_content {
             reportbuilder::get_setting($reportid, $type, 'excluded'));
 
         $mform->addElement('header', 'course_tag_header',
-            get_string('showbycoursetag','local'));
+            get_string('showbycoursetag','local_reportbuilder'));
         $mform->setHelpButton('course_tag_header',
             array('reportbuildercoursetag',
-            get_string('showbycoursetag', 'local'), 'moodle'));
+            get_string('showbycoursetag', 'local_reportbuilder'), 'local_reportbuilder'));
 
         $mform->addElement('checkbox', 'course_tag_enable', '',
-            get_string('coursetagenable','local'));
+            get_string('coursetagenable','local_reportbuilder'));
         $mform->setDefault('course_tag_enable', $enable);
         $mform->disabledIf('course_tag_enable','contentenabled', 'eq', 0);
 
@@ -979,9 +979,9 @@ class rb_course_tag_content extends rb_base_content {
         $checkgroup = array();
         $tags = get_records('tag', 'tagtype', 'official','name');
         if($tags) {
-            $opts = array(1 => get_string('anyofthefollowing','local'),
-                          0 => get_string('allofthefollowing','local'));
-            $mform->addElement('select','course_tag_include_logic', get_string('includecoursetags','local'), $opts);
+            $opts = array(1 => get_string('anyofthefollowing','local_reportbuilder'),
+                          0 => get_string('allofthefollowing','local_reportbuilder'));
+            $mform->addElement('select','course_tag_include_logic', get_string('includecoursetags','local_reportbuilder'), $opts);
             $mform->setDefault('course_tag_include_logic', $include_logic);
             $mform->disabledIf('course_tag_enable','contentenabled', 'eq', 0);
             foreach($tags as $tag) {
@@ -1005,9 +1005,9 @@ class rb_course_tag_content extends rb_base_content {
         // exclude the following tags
         $checkgroup = array();
         if($tags) {
-            $opts = array(1 => get_string('anyofthefollowing','local'),
-                          0 => get_string('allofthefollowing','local'));
-            $mform->addElement('select','course_tag_exclude_logic', get_string('excludecoursetags','local'), $opts);
+            $opts = array(1 => get_string('anyofthefollowing','local_reportbuilder'),
+                          0 => get_string('allofthefollowing','local_reportbuilder'));
+            $mform->addElement('select','course_tag_exclude_logic', get_string('excludecoursetags','local_reportbuilder'), $opts);
             $mform->setDefault('course_tag_exclude_logic', $exclude_logic);
             $mform->disabledIf('course_tag_enable','contentenabled', 'eq', 0);
             foreach($tags as $tag) {

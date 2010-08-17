@@ -26,7 +26,7 @@ class report_builder_export_form extends moodleform {
         foreach($REPORT_BUILDER_EXPORT_OPTIONS as $option => $code) {
             // bitwise operator to see if option bit is set
             if(($exportoptions & $code) == $code) {
-                $select[$option] = get_string('export'.$option,'local');
+                $select[$option] = get_string('export'.$option,'local_reportbuilder');
             }
         }
         if(count($select) == 0) {
@@ -40,7 +40,7 @@ class report_builder_export_form extends moodleform {
             // show pulldown menu
             $group=array();
             $group[] =& $mform->createElement('select','format', null, $select);
-            $group[] =& $mform->createElement('submit', 'export', get_string('export','local'));
+            $group[] =& $mform->createElement('submit', 'export', get_string('export','local_reportbuilder'));
             $mform->addGroup($group, 'exportgroup', '', array(' '), false);
         }
 

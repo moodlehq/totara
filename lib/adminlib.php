@@ -4545,7 +4545,7 @@ function &admin_get_root($reload=false, $requirefulltree=true) {
         }
 
         // Add in the local/plugins settings
-        $local_plugins =  get_list_of_plugins('local', 'reportbuilder');
+        $local_plugins =  get_list_of_plugins('local');
         foreach ($local_plugins as $plugin) {
             $file = $CFG->dirroot.'/local/'.$plugin.'/settings.php';
             if (file_exists($file)) {

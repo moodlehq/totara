@@ -35,32 +35,32 @@ class report_builder_new_group_form extends moodleform {
         $grouped_activities = array();
         foreach($activities as $activity) {
             $course = ($activity->fullname === null) ?
-                get_string('notset', 'local') : $activity->fullname;
+                get_string('notset', 'local_reportbuilder') : $activity->fullname;
             $grouped_activities[$course][$activity->id] = $activity->name;
         }
 
-        $mform->addElement('header', 'general', get_string('newgroup', 'local'));
+        $mform->addElement('header', 'general', get_string('newgroup', 'local_reportbuilder'));
 
         // get all official tags
         $tags = get_records_menu('tag', 'tagtype', 'official', 'id', 'id,name');
         if(!$tags) {
-            $mform->addElement('html', '<p>' . get_string('notags', 'local') .
+            $mform->addElement('html', '<p>' . get_string('notags', 'local_reportbuilder') .
                 '</p>');
             return;
         }
 
-        $mform->addElement('text', 'name', get_string('groupname', 'local'),
+        $mform->addElement('text', 'name', get_string('groupname', 'local_reportbuilder'),
             'maxlength="255"');
         $mform->setType('name', PARAM_TEXT);
         $mform->addRule('name', null, 'required');
         $mform->setHelpButton('name', array('reportbuildergroupname',
-            get_string('groupname', 'local'), 'moodle'));
+            get_string('groupname', 'local_reportbuilder'), 'local_reportbuilder'));
 
         $mform->addElement('select', 'assignvalue', get_string('grouptag',
-            'local'), $tags);
+            'local_reportbuilder'), $tags);
         // invalid if not set
         $mform->setHelpButton('assignvalue', array('reportbuildergrouptag',
-            get_string('tag', 'local'), 'moodle'));
+            get_string('grouptag', 'local_reportbuilder'), 'local_reportbuilder'));
 
         // code to limit width of pulldown but expand when viewed
         // required for IE compatibility
@@ -73,9 +73,9 @@ class report_builder_new_group_form extends moodleform {
         );
         // create a pulldown with activities grouped by course
         $baseselect =& $mform->addElement('selectgroups', 'baseitem',
-            get_string('basedon', 'local'), $grouped_activities, $attributes);
+            get_string('basedon', 'local_reportbuilder'), $grouped_activities, $attributes);
         $mform->setHelpButton('baseitem', array('reportbuilderbaseitem',
-            get_string('baseitem', 'local'), 'moodle'));
+            get_string('baseitem', 'local_reportbuilder'), 'local_reportbuilder'));
 
         // other assignment types (like manual) may be added later
         $mform->addElement('hidden', 'assigntype', 'tag');

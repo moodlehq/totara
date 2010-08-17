@@ -27,7 +27,7 @@ $returnurl = $CFG->wwwroot.'/local/reportbuilder/savedsearches.php?id='.$id;
 
 $report = new reportbuilder($id);
 if(!$report->is_capable($id)) {
-    error(get_string('nopermission','local'));
+    error(get_string('nopermission','local_reportbuilder'));
 }
 
 if($d && $confirm) {
@@ -44,17 +44,17 @@ if($d && $confirm) {
     }
 } else if($d) {
     $fullname = $report->fullname;
-    $pagetitle = format_string(get_string('savesearch','local').': '.$fullname);
-    $navlinks[] = array('name' => get_string('report','local'), 'link'=> '', 'type'=>'title');
+    $pagetitle = format_string(get_string('savesearch','local_reportbuilder').': '.$fullname);
+    $navlinks[] = array('name' => get_string('report','local_reportbuilder'), 'link'=> '', 'type'=>'title');
     $navlinks[] = array('name' => $fullname, 'link'=> '', 'type'=>'title');
-    $navlinks[] = array('name' => get_string('savedsearches','local'), 'link'=> '', 'type'=>'title');
+    $navlinks[] = array('name' => get_string('savedsearches','local_reportbuilder'), 'link'=> '', 'type'=>'title');
 
     $navigation = build_navigation($navlinks);
     print_header_simple($pagetitle, '', $navigation, '', null, true, $report->edit_button());
 
-    print_heading(get_string('savedsearches','local'));
+    print_heading(get_string('savedsearches','local_reportbuilder'));
     // prompt to delete
-    notice_yesno(get_string('savedsearchconfirmdelete','local'),
+    notice_yesno(get_string('savedsearchconfirmdelete','local_reportbuilder'),
         "savedsearches.php?id={$id}&amp;sid={$sid}&amp;d=1&amp;confirm=1&amp;" .
         "sesskey={$USER->sesskey}", $returnurl);
 
@@ -65,36 +65,36 @@ if($d && $confirm) {
 
 
 $fullname = $report->fullname;
-$pagetitle = format_string(get_string('savesearch','local').': '.$fullname);
-$navlinks[] = array('name' => get_string('report','local'), 'link'=> '', 'type'=>'title');
+$pagetitle = format_string(get_string('savesearch','local_reportbuilder').': '.$fullname);
+$navlinks[] = array('name' => get_string('report','local_reportbuilder'), 'link'=> '', 'type'=>'title');
 $navlinks[] = array('name' => $fullname, 'link'=> '', 'type'=>'title');
-$navlinks[] = array('name' => get_string('savedsearches','local'), 'link'=> '', 'type'=>'title');
+$navlinks[] = array('name' => get_string('savedsearches','local_reportbuilder'), 'link'=> '', 'type'=>'title');
 
 $navigation = build_navigation($navlinks);
 print_header_simple($pagetitle, '', $navigation, '', null, true, $report->edit_button());
 
 print $report->view_button();
-print_heading(get_string('savedsearches','local'));
+print_heading(get_string('savedsearches','local_reportbuilder'));
 
 if($notice) {
     switch($notice) {
     case REPORT_BUILDER_SAVED_SEARCHES_CONFIRM_DELETE:
-        notify(get_string('savedsearchdeleted','local'),'notifysuccess');
+        notify(get_string('savedsearchdeleted','local_reportbuilder'),'notifysuccess');
         break;
     case REPORT_BUILDER_SAVED_SEARCHES_FAILED_DELETE:
-        notify(get_string('error:savedsearchnotdeleted','local'));
+        notify(get_string('error:savedsearchnotdeleted','local_reportbuilder'));
         break;
     }
 }
 
 if($searches = get_records_select('report_builder_saved', 'userid='.$USER->id.' AND reportid='.$id, 'name')) {
-    $tableheader = array(get_string('name','local'),
-                         get_string('options','local'));
+    $tableheader = array(get_string('name','local_reportbuilder'),
+                         get_string('options','local_reportbuilder'));
     $data = array();
 
     foreach($searches as $search) {
         $row = array();
-        $strdelete = get_string('delete','local');
+        $strdelete = get_string('delete','local_reportbuilder');
 
         $row[] = '<a href="' . $CFG->wwwroot . '/local/reportbuilder/report.php?id=' . $id .
             '&amp;sid='.$search->id.'">' . $search->name . '</a>';
@@ -114,7 +114,7 @@ if($searches = get_records_select('report_builder_saved', 'userid='.$USER->id.' 
     print_table($table);
 
 } else {
-    print_error('error:nosavedsearches','local');
+    print_error('error:nosavedsearches','local_reportbuilder');
 }
 
 print_footer();

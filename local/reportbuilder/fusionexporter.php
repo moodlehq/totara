@@ -30,12 +30,12 @@ if($id != null) {
     $report = get_record('report_builder', 'shortname', $shortname);
 } else {
     // either id or shortname is required
-    error(get_string('noshortnameorid','local'));
+    error(get_string('noshortnameorid','local_reportbuilder'));
 }
 $rep =  new reportbuilder($id, null, false, $sid) ;
 
 if(!$rep->is_capable($id)) {
-    error(get_string('nopermission','local'));
+    error(get_string('nopermission','local_reportbuilder'));
 }
 
 // check OAuth

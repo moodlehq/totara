@@ -120,7 +120,7 @@ class reportbuilder {
             $report = get_record('report_builder', 'shortname', $shortname);
         } else {
             // either id or shortname is required
-            error(get_string('noshortnameorid','local'));
+            error(get_string('noshortnameorid','local_reportbuilder'));
         }
 
         // handle if report not found in db
@@ -1039,7 +1039,7 @@ var comptree = [' . implode(', ', $comptrees) . '];
                 $content_restrictions = $res;
             } else {
                 // 'or' show as a single line
-                $content_restrictions[] = implode(get_string('or','local'), $res);
+                $content_restrictions[] = implode(get_string('or','local_reportbuilder'), $res);
             }
         }
 
@@ -1790,7 +1790,7 @@ var comptree = [' . implode(', ', $comptrees) . '];
         $countfiltered = $this->get_filtered_count();
 
         if(count($columns) == 0) {
-            print '<p>' . get_string('error:nocolumnsdefined','local') . '</p>';
+            print '<p>' . get_string('error:nocolumnsdefined','local_reportbuilder') . '</p>';
             return false;
         }
 
@@ -2024,7 +2024,7 @@ var comptree = [' . implode(', ', $comptrees) . '];
             // bitwise operator to see if option bit is set
             if(($exportoptions & $code) == $code) {
                 $out .= '<td>';
-                $out .= print_single_button(qualified_me(),array('format'=>$option),get_string('export'.$option,'local'),'post','_self', true);
+                $out .= print_single_button(qualified_me(),array('format'=>$option),get_string('export'.$option,'local_reportbuilder'),'post','_self', true);
                 $out .= '</td>';
             }
         }
@@ -2042,7 +2042,7 @@ var comptree = [' . implode(', ', $comptrees) . '];
         global $CFG;
         $viewurl = $this->report_url();
         $url = new moodle_url($this->report_url());
-        return print_single_button($url->out(true), $url->params, get_string('viewreport','local'), 'get', '_self', true);
+        return print_single_button($url->out(true), $url->params, get_string('viewreport','local_reportbuilder'), 'get', '_self', true);
     }
 
     /**
@@ -2056,7 +2056,7 @@ var comptree = [' . implode(', ', $comptrees) . '];
         $search = optional_param('addfilter', null, PARAM_TEXT);
         if($search) {
             $params = array('id' => $this->_id);
-            return print_single_button($CFG->wwwroot.'/local/reportbuilder/save.php', $params, get_string('savesearch','local'), 'get', '_self', true);
+            return print_single_button($CFG->wwwroot.'/local/reportbuilder/save.php', $params, get_string('savesearch','local_reportbuilder'), 'get', '_self', true);
         } else {
             return '';
         }
@@ -2078,7 +2078,7 @@ var comptree = [' . implode(', ', $comptrees) . '];
             foreach($saved as $item) {
                 $options[$item->id] = $item->name;
             }
-            return popup_form($common, $options, 'viewsavedsearch', $sid, get_string('viewsavedsearch','local'),'','',true);
+            return popup_form($common, $options, 'viewsavedsearch', $sid, get_string('viewsavedsearch','local_reportbuilder'),'','',true);
         } else {
             return '';
         }
@@ -2095,8 +2095,8 @@ var comptree = [' . implode(', ', $comptrees) . '];
         global $CFG;
         $context = get_context_instance(CONTEXT_SYSTEM);
         // TODO what capability should be required here?
-        if(has_capability('moodle/local:admin',$context)) {
-            return print_single_button($CFG->wwwroot.'/local/reportbuilder/settings.php', array('id'=>$this->_id), get_string('editthisreport','local'), 'get', '_self', true);
+        if(has_capability('local/reportbuilder:managereports',$context)) {
+            return print_single_button($CFG->wwwroot.'/local/reportbuilder/general.php', array('id'=>$this->_id), get_string('editthisreport','local_reportbuilder'), 'get', '_self', true);
         } else {
             return '';
         }
@@ -2118,7 +2118,7 @@ var comptree = [' . implode(', ', $comptrees) . '];
             "var shortname = '{$this->shortname}';" .
             '</script><form><input type="button" name="rb_showhide_columns" ' .
             'id="show-showhide-dialog" value="' .
-            get_string('showhidecolumns', 'local') .
+            get_string('showhidecolumns', 'local_reportbuilder') .
             '" style="display:none; float: right;"></form>';
 
     }
@@ -2167,7 +2167,7 @@ var comptree = [' . implode(', ', $comptrees) . '];
         $col = 0;
 
         if(is_array($restrictions) && count($restrictions)>0) {
-            $worksheet[0]->write($row, 0, get_string('reportcontents','local'));
+            $worksheet[0]->write($row, 0, get_string('reportcontents','local_reportbuilder'));
             $row++;
             foreach($restrictions as $restriction) {
                 $worksheet[0]->write($row, 0, $restriction);
@@ -2239,7 +2239,7 @@ var comptree = [' . implode(', ', $comptrees) . '];
         $col = 0;
 
         if(is_array($restrictions) && count($restrictions)>0) {
-            $worksheet[0]->write($row, 0, get_string('reportcontents','local'));
+            $worksheet[0]->write($row, 0, get_string('reportcontents','local_reportbuilder'));
             $row++;
             foreach($restrictions as $restriction) {
                 $worksheet[0]->write($row, 0, $restriction);

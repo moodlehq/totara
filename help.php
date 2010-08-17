@@ -66,7 +66,7 @@ if (!empty($file)) {
         $rules = places_to_search_for_lang_strings();
         $exceptions = $rules['__exceptions'];
         unset($rules['__exceptions']);
-        
+
         if (!in_array($module, $exceptions)) {
             $dividerpos = strpos($module, '_');
             if ($dividerpos === false) {
@@ -75,6 +75,9 @@ if (!empty($file)) {
             } else {
                 $type = substr($module, 0, $dividerpos + 1);
                 $plugin = substr($module, $dividerpos + 1);
+            }
+            if ($type == 'local_') {
+                $locations[$CFG->dirroot . "/local/$plugin/lang/"] = "$file";
             }
             if (!empty($rules[$type])) {
                 foreach ($rules[$type] as $location) {

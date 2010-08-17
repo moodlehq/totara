@@ -63,12 +63,12 @@ class filter_hierarchy extends filter_type {
         $objs[] =& $mform->createElement('static', 'selectorbutton',
             '',
             '<input type="button" value="' .
-            get_string('choose'.$this->_type, 'local') .
+            get_string('choose'.$this->_type, 'local_reportbuilder') .
             '" id="show-' . $this->_name . '-dialog" />');
         $objs[] =& $mform->createElement('checkbox', $this->_name . '_rec', '', 'Include children?');
 
         $grp =& $mform->addElement('group', $this->_name.'_grp', $label, $objs, '', false);
-        $grp->setHelpButton(array('reportbuilderdialogfilter', $label, 'moodle'));
+        $grp->setHelpButton(array('reportbuilderdialogfilter', $label, 'local_reportbuilder'));
         if ($advanced) {
             $mform->setAdvanced($this->_name.'_grp');
         }

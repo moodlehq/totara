@@ -86,19 +86,19 @@ class rb_role_access extends rb_base_access {
         $context = reportbuilder::get_setting($reportid, $type, 'context');
 
         // generate the check boxes for the access form
-        $mform->addElement('header', 'accessbyroles', get_string('accessbyrole', 'local'));
+        $mform->addElement('header', 'accessbyroles', get_string('accessbyrole', 'local_reportbuilder'));
 
         //TODO replace with checkbox once there is more than one option
         $mform->addElement('hidden', 'role_enable', 1);
 
         if ($roles = get_records('role','','','sortorder')) {
-            $contextoptions = array('site' => get_string('systemcontext','local'), 'any' => get_string('anycontext','local'));
+            $contextoptions = array('site' => get_string('systemcontext','local_reportbuilder'), 'any' => get_string('anycontext','local_reportbuilder'));
 
             // set context for role-based access
-            $mform->addElement('select','role_context', get_string('context', 'local'), $contextoptions);
+            $mform->addElement('select','role_context', get_string('context', 'local_reportbuilder'), $contextoptions);
             $mform->setDefault('role_context', $context);
             $mform->disabledIf('role_context', 'accessenabled', 'eq', 0);
-            $mform->setHelpButton('role_context', array('reportbuildercontext',get_string('context','local'),'moodle'));
+            $mform->setHelpButton('role_context', array('reportbuildercontext',get_string('context','local_reportbuilder'),'local_reportbuilder'));
 
             $rolesgroup = array();
             foreach($roles as $role) {
@@ -107,11 +107,11 @@ class rb_role_access extends rb_base_access {
                     $mform->setDefault("role_activeroles[{$role->id}]", 1);
                 }
             }
-            $mform->addGroup($rolesgroup, 'roles', get_string('roleswithaccess','local'), '<br />', false);
+            $mform->addGroup($rolesgroup, 'roles', get_string('roleswithaccess','local_reportbuilder'), '<br />', false);
             $mform->disabledIf('roles', 'accessenabled', 'eq', 0);
-            $mform->setHelpButton('roles', array('reportbuilderrolesaccess',get_string('roleswithaccess','local'),'moodle'));
+            $mform->setHelpButton('roles', array('reportbuilderrolesaccess',get_string('roleswithaccess','local_reportbuilder'),'local_reportbuilder'));
         } else {
-            $mform->addElement('html', '<p>'.get_string('error:norolesfound','local').'</p>');
+            $mform->addElement('html', '<p>'.get_string('error:norolesfound','local_reportbuilder').'</p>');
         }
 
     }

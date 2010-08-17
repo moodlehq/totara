@@ -43,11 +43,11 @@
         }
     } else if($d) {
         admin_externalpage_print_header();
-        print_heading(get_string('reportbuilder','local'));
+        print_heading(get_string('reportbuilder','local_reportbuilder'));
         if($em) {
-            notice_yesno(get_string('reportconfirm'.$type,'local'),"index.php?id={$id}&amp;d=1&amp;em={$em}&amp;confirm=1&amp;sesskey={$USER->sesskey}", $returnurl);
+            notice_yesno(get_string('reportconfirm'.$type,'local_reportbuilder'),"index.php?id={$id}&amp;d=1&amp;em={$em}&amp;confirm=1&amp;sesskey={$USER->sesskey}", $returnurl);
         } else {
-            notice_yesno(get_string('reportconfirm'.$type,'local'),"index.php?id={$id}&amp;d=1&amp;em={$em}&amp;confirm=1&amp;sesskey={$USER->sesskey}", $returnurl);
+            notice_yesno(get_string('reportconfirm'.$type,'local_reportbuilder'),"index.php?id={$id}&amp;d=1&amp;em={$em}&amp;confirm=1&amp;sesskey={$USER->sesskey}", $returnurl);
         }
         print_footer();
         die;
@@ -80,7 +80,7 @@
         begin_sql();
         if(!$newid = insert_record('report_builder',$todb)) {
             rollback_sql();
-            redirect($returnurl, get_string('error:couldnotcreatenewreport','local'));
+            redirect($returnurl, get_string('error:couldnotcreatenewreport','local_reportbuilder'));
         }
 
         // if admin role exists, restrict access to new report to administrators only
@@ -101,7 +101,7 @@
             if(!insert_record('report_builder_settings', $todb) ||
                 !insert_record('report_builder_settings', $todb2)) {
                 rollback_sql();
-                redirect($returnurl, get_string('error:couldnotcreatenewreport','local'));
+                redirect($returnurl, get_string('error:couldnotcreatenewreport','local_reportbuilder'));
             }
         }
 
@@ -126,7 +126,7 @@
                     $todb->sortorder = $so;
                     if(!insert_record('report_builder_columns', $todb)) {
                         rollback_sql();
-                        redirect($returnurl, get_string('error:couldnotcreatenewreport','local'));
+                        redirect($returnurl, get_string('error:couldnotcreatenewreport','local_reportbuilder'));
                     }
                     $so++;
                 }
@@ -156,7 +156,7 @@
                     $todb->sortorder = $so;
                     if(!insert_record('report_builder_filters', $todb)) {
                         rollback_sql();
-                        redirect($returnurl, get_string('error:couldnotcreatenewreport','local'));
+                        redirect($returnurl, get_string('error:couldnotcreatenewreport','local_reportbuilder'));
                     }
                     $so++;
                 }
@@ -167,7 +167,7 @@
         }
 
         commit_sql();
-        redirect($CFG->wwwroot.'/local/reportbuilder/settings.php?id='.$newid);
+        redirect($CFG->wwwroot.'/local/reportbuilder/general.php?id='.$newid);
     }
 
     admin_externalpage_print_header();
@@ -175,38 +175,38 @@
     if($notice) {
         switch($notice) {
         case REPORT_BUILDER_FAILED_DELETE_SESSKEY:
-            notify(get_string('error:bad_sesskey','local'));
+            notify(get_string('error:bad_sesskey','local_reportbuilder'));
             break;
         case REPORT_BUILDER_REPORT_FAILED_DELETE:
-            notify(get_string('no' . $type . 'report','local'));
+            notify(get_string('no' . $type . 'report','local_reportbuilder'));
             break;
         case REPORT_BUILDER_REPORT_CONFIRM_DELETE:
-            notify(get_string($type . 'report','local'), 'notifysuccess');
+            notify(get_string($type . 'report','local_reportbuilder'), 'notifysuccess');
             break;
         }
     }
 
-    print_heading(get_string('usergeneratedreports','local'));
+    print_heading(get_string('usergeneratedreports','local_reportbuilder'));
 
-    $tableheader = array(get_string('name','local'),
-                         get_string('source','local'),
-                         get_string('options','local'));
+    $tableheader = array(get_string('name','local_reportbuilder'),
+                         get_string('source','local_reportbuilder'),
+                         get_string('options','local_reportbuilder'));
 
     $reports = get_records_select('report_builder','embeddedurl IS NULL','fullname');
     if($reports) {
         $data = array();
         foreach($reports as $report) {
             $row = array();
-            $strsettings = get_string('settings','local');
-            $strdelete = get_string('delete','local');
+            $strsettings = get_string('settings','local_reportbuilder');
+            $strdelete = get_string('delete','local_reportbuilder');
             $viewurl = ($report->embeddedurl === null) ? $CFG->wwwroot .
                 '/local/reportbuilder/report.php?id='.$report->id :
                 $report->embeddedurl;
-            $settings = '<a href="'.$CFG->wwwroot.'/local/reportbuilder/settings.php?id='.$report->id.'" title="'.$strsettings.'">' .
+            $settings = '<a href="'.$CFG->wwwroot.'/local/reportbuilder/general.php?id='.$report->id.'" title="'.$strsettings.'">' .
                 '<img src="'.$CFG->pixpath.'/t/edit.gif" alt="'.$strsettings.'"></a>';
             $delete = '<a href="'.$CFG->wwwroot.'/local/reportbuilder/index.php?d=1&amp;id='.$report->id.'" title="'.$strdelete.'">' .
                 '<img src="'.$CFG->pixpath.'/t/delete.gif" alt="'.$strdelete.'"></a>';
-            $row[] = '<a href="'.$CFG->wwwroot.'/local/reportbuilder/settings.php?id='.$report->id.'">'.$report->fullname.'</a>' .
+            $row[] = '<a href="'.$CFG->wwwroot.'/local/reportbuilder/general.php?id='.$report->id.'">'.$report->fullname.'</a>' .
                 ' (<a href="'.$viewurl.'">'.get_string('view').'</a>)';
             $row[] = $report->source;
             $row[] = "$settings &nbsp; $delete";
@@ -219,27 +219,27 @@
         $reportstable->data = $data;
         print_table($reportstable);
     } else {
-        print get_string('noreports','local');
+        print get_string('noreports','local_reportbuilder');
     }
 
     print '<br />';
-    print_heading(get_string('embeddedreports','local'));
+    print_heading(get_string('embeddedreports','local_reportbuilder'));
 
     $embeddedreports = get_records_select('report_builder','embeddedurl IS NOT NULL','fullname');
     if($embeddedreports) {
         $data = array();
         foreach($embeddedreports as $report) {
             $row = array();
-            $strsettings = get_string('settings','local');
-            $strdelete = get_string('delete','local');
+            $strsettings = get_string('settings','local_reportbuilder');
+            $strdelete = get_string('delete','local_reportbuilder');
             $viewurl = ($report->embeddedurl === null) ? $CFG->wwwroot .
                 '/local/reportbuilder/report.php?id='.$report->id :
                 $report->embeddedurl;
-            $settings = '<a href="'.$CFG->wwwroot.'/local/reportbuilder/settings.php?id='.$report->id.'" title="'.$strsettings.'">' .
+            $settings = '<a href="'.$CFG->wwwroot.'/local/reportbuilder/general.php?id='.$report->id.'" title="'.$strsettings.'">' .
                 '<img src="'.$CFG->pixpath.'/t/edit.gif" alt="'.$strsettings.'"></a>';
             $delete = '<a href="'.$CFG->wwwroot.'/local/reportbuilder/index.php?em=1&amp;d=1&amp;id='.$report->id.'" title="'.$strdelete.'">' .
                 '<img src="'.$CFG->pixpath.'/t/delete.gif" alt="'.$strdelete.'"></a>';
-            $row[] = '<a href="'.$CFG->wwwroot.'/local/reportbuilder/settings.php?id='.$report->id.'">'.$report->fullname.'</a>' .
+            $row[] = '<a href="'.$CFG->wwwroot.'/local/reportbuilder/general.php?id='.$report->id.'">'.$report->fullname.'</a>' .
                 ' (<a href="'.$viewurl.'">'.get_string('view').'</a>)';
             $row[] = $report->source;
             $row[] = "$settings &nbsp; $delete";
@@ -251,7 +251,7 @@
         $embeddedreportstable->data = $data;
         print_table($embeddedreportstable);
     } else {
-        print get_string('noembeddedreports','local');
+        print get_string('noembeddedreports','local_reportbuilder');
     }
     print '<br /><br />';
     // display mform

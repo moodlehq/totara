@@ -19,7 +19,7 @@ $returnurl = $CFG->wwwroot.'/local/reportbuilder/report.php?id='.$id;
 
 $report = new reportbuilder($id);
 if(!$report->is_capable($id)) {
-    error(get_string('nopermission','local'));
+    error(get_string('nopermission','local_reportbuilder'));
 }
 
 $mform =& new report_builder_save_form(null, compact('id','report'));
@@ -30,7 +30,7 @@ if ($mform->is_cancelled()) {
 }
 if ($fromform = $mform->get_data()) {
     if(empty($fromform->submitbutton)) {
-        print_error('error:unknownbuttonclicked', 'local', $returnurl);
+        print_error('error:unknownbuttonclicked', 'local_reportbuilder', $returnurl);
     }
     // handle form submission
     $todb = new object();
@@ -42,15 +42,15 @@ if ($fromform = $mform->get_data()) {
     if(insert_record('report_builder_saved', $todb)) {
         redirect($CFG->wwwroot.'/local/reportbuilder/savedsearches.php?id='.$id);
     } else {
-        redirect($returnurl, get_string('error:couldnotsavesearch','local'));
+        redirect($returnurl, get_string('error:couldnotsavesearch','local_reportbuilder'));
     }
 }
 
 $fullname = $report->fullname;
-$pagetitle = format_string(get_string('savesearch','local').': '.$fullname);
-$navlinks[] = array('name' => get_string('report','local'), 'link'=> '', 'type'=>'title');
+$pagetitle = format_string(get_string('savesearch','local_reportbuilder').': '.$fullname);
+$navlinks[] = array('name' => get_string('report','local_reportbuilder'), 'link'=> '', 'type'=>'title');
 $navlinks[] = array('name' => $fullname, 'link'=> '', 'type'=>'title');
-$navlinks[] = array('name' => get_string('savesearch','local'), 'link'=> '', 'type'=>'title');
+$navlinks[] = array('name' => get_string('savesearch','local_reportbuilder'), 'link'=> '', 'type'=>'title');
 
 $navigation = build_navigation($navlinks);
 print_header_simple($pagetitle, '', $navigation, '', null, true);
