@@ -62,6 +62,8 @@ if ($delete) {
     $reminder->deleted = 1;
     $reminder->update();
 
+    add_to_log($course->id, 'course', 'reminder deleted', 'reminders.php?courseid='.$course->id, $reminder->title);
+
     print_header(get_string('editcoursereminder', 'reminders'), $course->fullname);
     print_heading(get_string('deletedreminder', 'reminders', format_string($reminder->title)));
     print_continue("{$CFG->wwwroot}/course/reminders.php?courseid={$course->id}");
@@ -120,12 +122,17 @@ if ($reminderform->is_cancelled()){
             rollback_sql();
             error('Could not insert reminder record');
         }
+
+        add_to_log($course->id, 'course', 'reminder added',
+                  'reminders.php?courseid='.$course->id.'&id='.$reminder->id, $reminder->title);
     }
     else {
         if (!$reminder->update()) {
             rollback_sql();
             error('Could not update reminder record');
         }
+        add_to_log($course->id, 'course', 'reminder updated',
+                  'reminders.php?courseid='.$course->id.'&id='.$reminder->id, $reminder->title);
     }
 
     // Create the messages
