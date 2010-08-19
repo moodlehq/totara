@@ -83,9 +83,10 @@
             redirect($returnurl, get_string('error:couldnotcreatenewreport','local_reportbuilder'));
         }
 
-        // if admin role exists, restrict access to new report to administrators only
+        // if administrator or admin role exists, restrict access to new report to administrators only
         // (if role doesn't exist report will not be visible to anyone)
-        if($adminroleid = get_field('role', 'id', 'shortname', 'administrator')) {
+        if($adminroleid = get_field('role', 'id', 'shortname', 'administrator') ||
+           $adminroleid = get_field('role', 'id', 'shortname', 'admin')) {
             $todb = new object();
             $todb->reportid = $newid;
             $todb->type = 'role_access';
