@@ -23,7 +23,7 @@
 
 
 /// Add oauth administration pages to the Moodle administration menu
-$ADMIN->add('root', new admin_category('local_oauth', get_string('oauth', 'local_oauth')));
+$ADMIN->add('authsettings', new admin_category('local_oauth', get_string('oauth', 'local_oauth')));
 $ADMIN->add('local_oauth', new admin_externalpage('oauthsettings', get_string('settings', 'local_oauth'),
         $CFG->wwwroot."/local/oauth/admin/settings.php",
         'moodle/site:config'));
