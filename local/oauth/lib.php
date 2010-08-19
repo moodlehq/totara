@@ -174,7 +174,7 @@ class local_oauth {
         }
 
         if (!$site = local_oauth_registration::get_site_by_name($name)) {
-            throw new local_oauth_exception('notconfigured', 'local_oauth', null, $name);
+            throw new local_oauth_exception(get_string('notconfigured', 'local_oauth', $name));
         }
         $this->site = $site;
 
