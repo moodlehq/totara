@@ -2113,6 +2113,7 @@ function xmldb_local_upgrade($oldversion) {
         if (!field_exists($table, $field)) {
             $result = $result && add_field($table, $field);
         }
+    }
 
     if ($result && $oldversion < 2010081900) {
         // apply some database changes to get db in sync with install.xml version
