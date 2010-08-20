@@ -46,7 +46,7 @@ if (!$depth = get_record('comp_depth', 'id', $competency->depthid)) {
     error('Competency depth could not be found');
 }
 
-$mform =& new mitms_competency_evidence_form(null, compact('id','competencyid','positionid',
+$mform =& new totara_competency_evidence_form(null, compact('id','competencyid','positionid',
     'organisationid','competencyevidence','returnurl','s','nojs'));
 if ($mform->is_cancelled()) {
     redirect($returnurl);

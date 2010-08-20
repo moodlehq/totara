@@ -24,7 +24,7 @@
  * @copyright  (C) 1999 onwards Martin Dougiamas  http://dougiamas.com
  *
  * this file should be used for all the custom event definitions and handers.
- * event names should all start with mitms_.
+ * event names should all start with totara_.
  */
 
 if (!defined('MOODLE_INTERNAL')) {

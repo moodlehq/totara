@@ -28,10 +28,10 @@ $(function() {
         $('#show-showhide-dialog').css('display','block');
         var url = '<?php echo $CFG->wwwroot ?>/local/reportbuilder/';
 
-        var handler = new mitmsDialog_handler();
+        var handler = new totaraDialog_handler();
         var name = 'showhide';
 
-        mitmsDialogs[name] = new mitmsDialog(
+        totaraDialogs[name] = new totaraDialog(
             name,
             'show-'+name+'-dialog',
             {

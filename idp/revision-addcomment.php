@@ -7,7 +7,7 @@
  * @copyright Catalyst IT Limited
  * @author Aaron Wells
  * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @package MITMS
+ * @package totara
  */
 require_once('../config.php');
 require_once('lib.php');

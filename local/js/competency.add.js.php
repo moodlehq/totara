@@ -7,9 +7,9 @@
 // Bind functionality to page on load
 $(function() {
 
-    var handler = new mitmsDialog_handler_addcompetency();
+    var handler = new totaraDialog_handler_addcompetency();
 
-    mitmsDialogs['addcompetency'] = new mitmsDialog(
+    totaraDialogs['addcompetency'] = new totaraDialog(
         'addcompetency',
         'show-add-dialog',
         {},
@@ -20,15 +20,15 @@ $(function() {
 
 
 // Create handler for the addcompetency dialog
-mitmsDialog_handler_addcompetency = function() {};
-mitmsDialog_handler_addcompetency.prototype = new mitmsDialog_handler();
+totaraDialog_handler_addcompetency = function() {};
+totaraDialog_handler_addcompetency.prototype = new totaraDialog_handler();
 
 /**
  * Do handler specific binding
  *
  * @return void
  */
-mitmsDialog_handler_addcompetency.prototype.every_load = function() {
+totaraDialog_handler_addcompetency.prototype.every_load = function() {
 
     var handler = this;
 
@@ -57,7 +57,7 @@ mitmsDialog_handler_addcompetency.prototype.every_load = function() {
  * @param   post request response
  * @return  boolean
  */
-mitmsDialog_handler_addcompetency.prototype.submission = function(response) {
+totaraDialog_handler_addcompetency.prototype.submission = function(response) {
 
     if (response.substr(0,8) == 'newcomp:') {
         // competency created, grab info and close popup

@@ -13,10 +13,10 @@ $(function() {
     (function() {
         var url = '<?php echo $CFG->wwwroot ?>/hierarchy/type/competency/course/';
 
-        var handler = new mitmsDialog_handler_assignCourseEvidence();
+        var handler = new totaraDialog_handler_assignCourseEvidence();
         handler.baseurl = url;
 
-        mitmsDialogs['coursecompetency'] = new mitmsDialog(
+        totaraDialogs['coursecompetency'] = new totaraDialog(
             'coursecompetency',
             'show-coursecompetency-dialog',
             {
@@ -32,14 +32,14 @@ $(function() {
 });
 
 // Create handler for the assign evidence dialog
-mitmsDialog_handler_assignCourseEvidence = function() {
+totaraDialog_handler_assignCourseEvidence = function() {
     // Base url
     var baseurl = '';
 }
 
-mitmsDialog_handler_assignCourseEvidence.prototype = new mitmsDialog_handler_treeview_singleselect(null, null, dualpane=true);
+totaraDialog_handler_assignCourseEvidence.prototype = new totaraDialog_handler_treeview_singleselect(null, null, dualpane=true);
 
-mitmsDialog_handler_assignCourseEvidence.prototype.handle_click = function(clicked) {
+totaraDialog_handler_assignCourseEvidence.prototype.handle_click = function(clicked) {
 
     // Get id, format item_XX
     var id = clicked.attr('id');
@@ -48,7 +48,7 @@ mitmsDialog_handler_assignCourseEvidence.prototype.handle_click = function(click
     this._dialog._request(url, this, 'display_evidence');
 }
 
-mitmsDialog_handler_assignCourseEvidence.prototype.display_evidence = function(response) {
+totaraDialog_handler_assignCourseEvidence.prototype.display_evidence = function(response) {
 
     var handler = this;
 

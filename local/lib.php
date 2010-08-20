@@ -33,7 +33,7 @@ if (!defined('MOODLE_INTERNAL')) {
     die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
 }
 
-require_once($CFG->dirroot.'/local/mitms.php');
+require_once($CFG->dirroot.'/local/totara.php');
 
 function local_postinst() {
 
@@ -69,8 +69,8 @@ function local_postinst() {
         include($include);
     }
 
-    mitms_reset_frontpage_blocks();
-    mitms_add_guide_block_to_adminpages();
+    totara_reset_frontpage_blocks();
+    totara_add_guide_block_to_adminpages();
 
     // set up frontpage
     set_config('frontpage', '');
@@ -92,10 +92,10 @@ function local_get_sticky_pagetypes() {
     return array(
     // not using a constant here because we're doing funky overrides to PAGE_COURSE_VIEW in the learning path format
     // and it clobbers the page mapping having them both defined at the same time
-        'MITMS' => array(
-            'id' => 'MITMS',
+        'Totara' => array(
+            'id' => 'Totara',
             'lib' => '/local/lib.php',
-            'name' => 'MITMS'
+            'name' => 'Totara'
         ),
     );
 }

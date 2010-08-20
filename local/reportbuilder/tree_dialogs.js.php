@@ -28,7 +28,7 @@ $(function() {
         (function() {
             var url = '<?php echo $CFG->wwwroot ?>/hierarchy/type/position/assign/';
 
-            mitmsSingleSelectDialog(
+            totaraSingleSelectDialog(
                 postree[i],
                 url+'find.php?',
                 postree[i],
@@ -53,7 +53,7 @@ $(function() {
         (function() {
             var url = '<?php echo $CFG->wwwroot ?>/hierarchy/type/organisation/assign/';
 
-            mitmsSingleSelectDialog(
+            totaraSingleSelectDialog(
                 orgtree[i],
                 url+'find.php?',
                 orgtree[i],
@@ -78,7 +78,7 @@ $(function() {
         (function() {
             var url = '<?php echo $CFG->wwwroot ?>/hierarchy/type/competency/assign/';
 
-            mitmsSingleSelectDialog(
+            totaraSingleSelectDialog(
                 comptree[i],
                 url+'find.php?',
                 comptree[i],

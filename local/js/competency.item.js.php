@@ -13,7 +13,7 @@ $(function() {
     (function() {
         var url = '<?php echo $CFG->wwwroot ?>/hierarchy/type/competency/related/';
 
-        mitmsMultiSelectDialog(
+        totaraMultiSelectDialog(
             'related',
             url+'find.php?id='+competency_id,
             url+'save.php?id='+competency_id+'&deleteexisting=1&add='
@@ -25,10 +25,10 @@ $(function() {
     (function() {
         var url = '<?php echo $CFG->wwwroot ?>/hierarchy/type/competency/evidenceitem/';
 
-        var handler = new mitmsDialog_handler_assignEvidence();
+        var handler = new totaraDialog_handler_assignEvidence();
         handler.baseurl = url;
 
-        mitmsDialogs['evidence'] = new mitmsDialog(
+        totaraDialogs['evidence'] = new totaraDialog(
             'evidence',
             'show-evidence-dialog',
             {
@@ -44,20 +44,20 @@ $(function() {
 });
 
 // Create handler for the assign evidence dialog
-mitmsDialog_handler_assignEvidence = function() {
+totaraDialog_handler_assignEvidence = function() {
     // Base url
     var baseurl = '';
 }
 
-mitmsDialog_handler_assignEvidence.prototype = new mitmsDialog_handler_skeletalTreeview();
+totaraDialog_handler_assignEvidence.prototype = new totaraDialog_handler_skeletalTreeview();
 
-mitmsDialog_handler_assignEvidence.prototype._handle_hierarchy_expand = function(id) {
+totaraDialog_handler_assignEvidence.prototype._handle_hierarchy_expand = function(id) {
     var url = this.baseurl+'category.php?id='+id;
     this._dialog._request(url, this, '_update_hierarchy', id);
 }
 
 
-mitmsDialog_handler_assignEvidence.prototype._handle_course_click = function(id) {
+totaraDialog_handler_assignEvidence.prototype._handle_course_click = function(id) {
     // Load course details
     var url = this.baseurl+'course.php?id='+id+'&competency='+competency_id;
     this._dialog._request(url, this, '_display_evidence');
@@ -68,7 +68,7 @@ mitmsDialog_handler_assignEvidence.prototype._handle_course_click = function(id)
  *
  * @param string    HTML response
  */
-mitmsDialog_handler_assignEvidence.prototype._display_evidence = function(response) {
+totaraDialog_handler_assignEvidence.prototype._display_evidence = function(response) {
 
     $('.selected', this._dialog.dialog).html(response);
 

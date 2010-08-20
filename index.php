@@ -188,9 +188,9 @@
     }
 
     if (isloggedin() and !isguest() and isset($CFG->courseprogress) and $CFG->courseprogress) {
-        if (file_exists($CFG->dirroot.'/local/mitms.php')) {
-            require_once($CFG->dirroot.'/local/mitms.php');
-            mitms_print_my_courses();
+        if (file_exists($CFG->dirroot.'/local/totara.php')) {
+            require_once($CFG->dirroot.'/local/totara.php');
+            totara_print_my_courses();
         }
     }
 

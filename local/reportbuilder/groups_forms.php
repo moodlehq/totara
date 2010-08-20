@@ -65,11 +65,11 @@ class report_builder_new_group_form extends moodleform {
         // code to limit width of pulldown but expand when viewed
         // required for IE compatibility
         $attributes = array(
-            'class' => 'mitms-limited-width',
+            'class' => 'totara-limited-width',
             'onMouseDown' =>
-                "if(document.all) this.className='mitms-expanded-width';",
-            'onBlur'=>"if(document.all) this.className='mitms-limited-width';",
-            'onChange'=>"if(document.all) this.className='mitms-limited-width';"
+                "if(document.all) this.className='totara-expanded-width';",
+            'onBlur'=>"if(document.all) this.className='totara-limited-width';",
+            'onChange'=>"if(document.all) this.className='totara-limited-width';"
         );
         // create a pulldown with activities grouped by course
         $baseselect =& $mform->addElement('selectgroups', 'baseitem',

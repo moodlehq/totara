@@ -83,7 +83,7 @@ function print_idp_competencies_view($revision, $competencies, $editingon = fals
             $editstr = trim(get_string('edit'));
             $deletestr = trim(get_string('delete'));
             $addstr = trim(get_string('add'));
-            if (($USER->id == $revision->userid && has_capability('moodle/local:updatecompetency',$context)) || mitms_is_manager($revision->userid) || has_capability('moodle/site:doanything',$context)){
+            if (($USER->id == $revision->userid && has_capability('moodle/local:updatecompetency',$context)) || totara_is_manager($revision->userid) || has_capability('moodle/site:doanything',$context)){
                 if (isset($competency->ceid)){
                     $editlink = '<a href="'.$CFG->wwwroot.'/hierarchy/type/competency/evidence/edit.php?id='.$competency->ceid.'&amp;s='.sesskey().
                         '&amp;returnurl='.urlencode(qualified_me()).'" title="'.$editstr.
@@ -278,7 +278,7 @@ function print_idp_competencies_view_flex($revision, $competencies, $editingon =
             $editstr = trim(get_string('edit'));
             $deletestr = trim(get_string('delete'));
             $addstr = trim(get_string('add'));
-            if (($USER->id == $revision->userid && $update) || mitms_is_manager($revision->userid) || has_capability('moodle/site:doanything',$context)){
+            if (($USER->id == $revision->userid && $update) || totara_is_manager($revision->userid) || has_capability('moodle/site:doanything',$context)){
                 if (isset($competency->ceid)){
                     $editlink = '<a href="'.$CFG->wwwroot.'/hierarchy/type/competency/evidence/edit.php?id='.$competency->ceid.'&amp;s='.sesskey().
                         '&amp;returnurl='.urlencode(qualified_me()).'" title="'.$editstr.

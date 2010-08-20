@@ -588,6 +588,10 @@ div.mitms-dialog .selected span table tr{
     height: 1.6em;
 }
 
+div.mitms-dialog .selected span table tr td {
+    border: none !important;
+}
+
 div.mitms-dialog .selected span table tr td.list-item-name {
     width: 90%;
 }

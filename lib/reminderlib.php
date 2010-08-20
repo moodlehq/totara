@@ -19,7 +19,7 @@
 /**
  * Reminder functionality
  *
- * @package   Totara
+ * @package   totara
  * @copyright 2010 Catalyst IT Ltd
  * @author    Aaron Barnes <aaronb@catalyst.net.nz>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later

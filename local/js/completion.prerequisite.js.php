@@ -12,10 +12,10 @@ $(function() {
     (function() {
         var url = '<?php echo $CFG->wwwroot ?>/course/';
 
-        var handler = new mitmsDialog_handler_preRequisite();
+        var handler = new totaraDialog_handler_preRequisite();
         handler.baseurl = url;
 
-        mitmsDialogs['evidence'] = new mitmsDialog(
+        totaraDialogs['evidence'] = new totaraDialog(
             'courseprerequisite',
             'id_add_criteria_course',
             {
@@ -32,21 +32,21 @@ $(function() {
 });
 
 // Create handler for the dialog
-mitmsDialog_handler_preRequisite = function() {
+totaraDialog_handler_preRequisite = function() {
     // Base url
     var baseurl = '';
 }
 
-mitmsDialog_handler_preRequisite.prototype = new mitmsDialog_handler_skeletalTreeview();
+totaraDialog_handler_preRequisite.prototype = new totaraDialog_handler_skeletalTreeview();
 
-mitmsDialog_handler_preRequisite.prototype._handle_hierarchy_expand = function(id) {
+totaraDialog_handler_preRequisite.prototype._handle_hierarchy_expand = function(id) {
 
     var url = this.baseurl+'completion_prerequisite.php?id='+course_id+'&category='+id;
     this._dialog._request(url, this, '_update_hierarchy', id);
 }
 
 
-mitmsDialog_handler_preRequisite.prototype._handle_course_click = function(id) {
+totaraDialog_handler_preRequisite.prototype._handle_course_click = function(id) {
 
     var course = $('#course_'+id+' > span').text();
 
@@ -56,7 +56,7 @@ mitmsDialog_handler_preRequisite.prototype._handle_course_click = function(id) {
 }
 
 
-mitmsDialog_handler_preRequisite.prototype._save = function() {
+totaraDialog_handler_preRequisite.prototype._save = function() {
     var id = $('#treeview_selected_val').val();
     var course = $('#treeview_selected_text').text();
 

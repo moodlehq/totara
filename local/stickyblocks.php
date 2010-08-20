@@ -15,7 +15,7 @@ function get_custom_stickyblocks() {
 
     $pinnedblock = new_stickyblock_def();
     $id = get_field('block', 'id', 'name', 'admin');
-    $pinnedblock->pagetype ='MITMS';
+    $pinnedblock->pagetype ='Totara';
     $pinnedblock->position = 'l';
     $pinnedblock->weight = '0';
     $pinnedblock->blockid = $id;
@@ -23,7 +23,7 @@ function get_custom_stickyblocks() {
 
     $pinnedblock = new_stickyblock_def();
     $id = get_field('block', 'id', 'name', 'calendar_month');
-    $pinnedblock->pagetype ='MITMS';
+    $pinnedblock->pagetype ='Totara';
     $pinnedblock->position = 'r';
     $pinnedblock->weight = '0';
     $pinnedblock->blockid = $id;

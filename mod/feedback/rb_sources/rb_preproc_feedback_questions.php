@@ -18,7 +18,7 @@
  * @copyright Catalyst IT Limited
  * @author Simon Coggins
  * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @package Totara
+ * @package totara
  */
 class rb_preproc_feedback_questions extends rb_base_preproc {
 
