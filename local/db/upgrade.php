@@ -2165,5 +2165,12 @@ function xmldb_local_upgrade($oldversion) {
         set_config('local_reportbuilder_version', '2010081900');
     }
 
+    // copy across demo_setup config if set
+    if ($result && $oldversion < 2010082000) {
+        if($demo = get_config(null, 'mitms_demo_setup')) {
+            $result = $result && set_config('totara_demo_setup', $demo);
+        }
+    }
+
     return $result;
 }
