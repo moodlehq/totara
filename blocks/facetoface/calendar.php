@@ -136,7 +136,7 @@ print_footer();
 
 function get_display_info($d, $m, $y)
 {
-    $display = &New stdClass;
+    $display = new stdClass;
     $display->minwday = get_user_preferences('calendar_startwday', CALENDAR_STARTING_WEEKDAY);
     $display->maxwday = $display->minwday + 6;
 
