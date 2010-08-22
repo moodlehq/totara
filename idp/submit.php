@@ -43,7 +43,7 @@ if ( !$confirm && !$submitbutton ){
 }
 
 if ($print) {
-    $CFG->theme = 'MITMS_print'; // for this page only
+    $CFG->theme = 'totara_print'; // for this page only
 }
 
 if (!$revision = get_revision(0, $rev)) {

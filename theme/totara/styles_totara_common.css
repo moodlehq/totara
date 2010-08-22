@@ -1,5 +1,5 @@
 
-/* Stylesheet for MITMS specific CSS */
+/* Stylesheet for totara specific CSS */
 
 /*****************************************************************************/
 /** General **/
@@ -33,7 +33,7 @@ fieldset legend span.helplink {
 }
 
 /**
- * MITMS my courses
+ * totara my courses
  */
 div.mycourses td.status span {
     text-indent: -1000px;
@@ -57,13 +57,13 @@ div.mycourses td.status span.completion-completeviarpl {
 /*****************************************************************************/
 
 /* shrink select boxes to fit in filter */
-select.mitms-limited-width {
+select.totara-limited-width {
     width: 200px;
     position: static;
 }
 
 /* expand while selecting option (IE only) */
-select.mitms-expanded-width {
+select.totara-expanded-width {
     width: auto;
     position: absolute;
 }
@@ -343,25 +343,25 @@ body#idp-plan img.ui-datepicker-trigger {
 /** Dialogs **/
 /*****************************************************************************/
 
-div.mitms-dialog {
+div.totara-dialog {
     border: 5px solid #666;
     background: none;
     background-color: #fff;
     padding: 10px 10px 5px;
 }
 
-div.mitms-dialog div.ui-widget-content,
-div.mitms-dialog div.ui-widget-header {
+div.totara-dialog div.ui-widget-content,
+div.totara-dialog div.ui-widget-header {
     background: none;
     background-color: #fff;
 }
 
-div.mitms-dialog div.ui-widget-header .ui-state-hover {
+div.totara-dialog div.ui-widget-header .ui-state-hover {
     border-color: transparent;
     background: none;
 }
 
-div.mitms-dialog div.ui-widget-header {
+div.totara-dialog div.ui-widget-header {
     position: relative;
     float: right;
     top: 322px;
@@ -370,14 +370,14 @@ div.mitms-dialog div.ui-widget-header {
     border: none;
 }
 
-div.mitms-dialog div.ui-dialog-titlebar a.ui-dialog-titlebar-close {
+div.totara-dialog div.ui-dialog-titlebar a.ui-dialog-titlebar-close {
     border: 0;
     margin: 0;
     padding: 0;
     background: transparent;
 }
 
-div.mitms-dialog div.ui-dialog-titlebar a.ui-dialog-titlebar-close span {
+div.totara-dialog div.ui-dialog-titlebar a.ui-dialog-titlebar-close span {
     position: relative;
     float: right;
     width: 66px;
@@ -392,7 +392,7 @@ div.mitms-dialog div.ui-dialog-titlebar a.ui-dialog-titlebar-close span {
     z-index: 1;
 }
 
-div.mitms-dialog div.ui-dialog-buttonpane {
+div.totara-dialog div.ui-dialog-buttonpane {
     position: relative;
     float: right;
     background: none;
@@ -402,14 +402,14 @@ div.mitms-dialog div.ui-dialog-buttonpane {
     top: -28px;
 }
 
-div.mitms-dialog div.ui-dialog-buttonpane button {
+div.totara-dialog div.ui-dialog-buttonpane button {
     margin-left: 10px;
     float: left;
     min-width: 100px;
     margin-right: 0;
 }
 
-div.mitms-dialog div.ui-dialog-content {
+div.totara-dialog div.ui-dialog-content {
     padding: 0 0 10px;
     border-bottom: 1px solid #ccc;
     margin-bottom: 5px;
@@ -420,7 +420,7 @@ div.mitms-dialog div.ui-dialog-content {
     top: -25px;
 }
 
-div.mitms-dialog div.ui-dialog-content h2 {
+div.totara-dialog div.ui-dialog-content h2 {
     border-bottom: 1px solid #CACACA;
     font-size: 17px;
     margin: 0 0 10px;
@@ -432,131 +432,131 @@ div.mitms-dialog div.ui-dialog-content h2 {
     color: #002C3F;
 }
 
-div.mitms-dialog div.ui-dialog-content p {
+div.totara-dialog div.ui-dialog-content p {
     margin: 0;
     padding: 0;
 }
 
-div.mitms-dialog div.ui-dialog-content .dialog-static-content {
+div.totara-dialog div.ui-dialog-content .dialog-static-content {
     height: 275px;
     overflow: auto;
 }
 
-div.mitms-dialog ul.treeview, div.mitms-dialog div#column-checkboxes {
+div.totara-dialog ul.treeview, div.totara-dialog div#column-checkboxes {
     margin-top: 10px;
     height: 295px;
     overflow: auto;
 }
 
-div.mitms-dialog ul.treeview li {
+div.totara-dialog ul.treeview li {
     font-size: 0.8em;
 }
 
-div.mitms-dialog ul.treeview span:hover {
+div.totara-dialog ul.treeview span:hover {
     background-color: #EEEEEE;
 }
 
-div.mitms-dialog ul.treeview li li {
+div.totara-dialog ul.treeview li li {
     font-size: 1em;
 }
 
-div.mitms-dialog ul.treeview li span {
+div.totara-dialog ul.treeview li span {
     padding-left: 0.25em;
     display: block;
 }
 
-div.mitms-dialog ul.treeview li span.folder {
+div.totara-dialog ul.treeview li span.folder {
     padding-left: 1.75em;
 }
 
-div.mitms-dialog ul.treeview li span.clickable {
+div.totara-dialog ul.treeview li span.clickable {
     cursor: pointer;
 }
 
-div.mitms-dialog ul.treeview li span.clickable:hover {
+div.totara-dialog ul.treeview li span.clickable:hover {
     color: #f00;
 }
 
-div.mitms-dialog ul.treeview li span.unclickable td {
+div.totara-dialog ul.treeview li span.unclickable td {
     color: #777;
 }
-div.mitms-dialog ul.treeview li span table tr td {
+div.totara-dialog ul.treeview li span table tr td {
     border: none !important;
 }
-div.mitms-dialog ul.treeview li span.ui-draggable {
+div.totara-dialog ul.treeview li span.ui-draggable {
     cursor: pointer;
 }
 
-div.mitms-dialog ul.treeview li span.ui-draggable:hover {
+div.totara-dialog ul.treeview li span.ui-draggable:hover {
     color: #f00;
 }
 
-div.mitms-dialog ul.treeview li span.ui-undraggable {
+div.totara-dialog ul.treeview li span.ui-undraggable {
     color: #777;
 }
 
-div.mitms-dialog ul.treeview span table {
+div.totara-dialog ul.treeview span table {
     width: 100%;
     border: 0;
 }
 
-div.mitms-dialog ul.treeview span table tr {
+div.totara-dialog ul.treeview span table tr {
     height: 1.8em;
 }
 
-div.mitms-dialog ul.treeview span table tr {
+div.totara-dialog ul.treeview span table tr {
     padding: 2px 0;
 }
 
-div.mitms-dialog ul.treeview span table tr td.list-item-name {
+div.totara-dialog ul.treeview span table tr td.list-item-name {
     width: 90%;
     border: 0;
 }
 
-div.mitms-dialog ul.treeview span table tr td.list-item-action {
+div.totara-dialog ul.treeview span table tr td.list-item-action {
     cursor: pointer;
     width: 10%;
     text-align: center;
     border: 0;
 }
 
-div.mitms-dialog ul.treeview img.addbutton {
+div.totara-dialog ul.treeview img.addbutton {
     display: none;
     vertical-align: middle;
     width: 17px;
     height: 15px;
 }
 
-div.mitms-dialog ul.treeview img.deletebutton {
+div.totara-dialog ul.treeview img.deletebutton {
     display: none;
     vertical-align: middle;
     width: 13px;
     height: 13px;
 }
 
-div.mitms-dialog ul.treeview li ul {
+div.totara-dialog ul.treeview li ul {
     margin-top: 0;
 }
 
-div.mitms-dialog .unclickable {
+div.totara-dialog .unclickable {
     color: #777;
 }
 
-div.mitms-dialog div.yui-isloading {
+div.totara-dialog div.yui-isloading {
     background-image: url(loading_small.gif);
     background-position: 690px 32px;
     background-repeat: no-repeat;
 }
 
-div.mitms-dialog div.yui-isloading .bd {
+div.totara-dialog div.yui-isloading .bd {
     padding-bottom: 22px;
 }
 
-div.mitms-dialog #framework-picker {
+div.totara-dialog #framework-picker {
     float: right;
 }
 
-div.mitms-dialog .selected {
+div.totara-dialog .selected {
     float: right;
     width: 250px;
     border-left: 1px solid #ccc;
@@ -566,50 +566,50 @@ div.mitms-dialog .selected {
     margin-left: 10px;
 }
 
-div.mitms-dialog .selected p {
+div.totara-dialog .selected p {
     margin-top: 0;
 }
 
-div.mitms-dialog .selected span {
+div.totara-dialog .selected span {
     display: block;
     font-size: 0.8em;
     padding: 0.4em 0;
 }
 
-div.mitms-dialog .selected span:hover {
+div.totara-dialog .selected span:hover {
     background-color: #EEEEEE;
 }
 
-div.mitms-dialog .selected span table {
+div.totara-dialog .selected span table {
     width: 100%;
 }
 
-div.mitms-dialog .selected span table tr{
+div.totara-dialog .selected span table tr{
     height: 1.6em;
 }
 
-div.mitms-dialog .selected span table tr td {
+div.totara-dialog .selected span table tr td {
     border: none !important;
 }
 
-div.mitms-dialog .selected span table tr td.list-item-name {
+div.totara-dialog .selected span table tr td.list-item-name {
     width: 90%;
 }
 
-div.mitms-dialog .selected span table tr td.list-item-action {
+div.totara-dialog .selected span table tr td.list-item-action {
     cursor: pointer;
     width: 10%;
     text-align: center;
 }
 
-div.mitms-dialog .selected img.addbutton {
+div.totara-dialog .selected img.addbutton {
     display: none;
     vertical-align: middle;
     width: 16px;
     height: 14px;
 }
 
-div.mitms-dialog .selected img.deletebutton {
+div.totara-dialog .selected img.deletebutton {
     display: none;
     vertical-align: middle;
     width: 15px;

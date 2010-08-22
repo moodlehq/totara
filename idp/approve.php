@@ -14,7 +14,7 @@ $onbehalfof = optional_param('onbehalfof', false, PARAM_INT); // User ID
 $print = optional_param('print', 0, PARAM_INT); // Print-friendly view
 
 if ($print) {
-    $CFG->theme = 'MITMS_print'; // for this page only
+    $CFG->theme = 'totara_print'; // for this page only
 }
 
 if (!$revision = get_revision(0, $rev)) {
@@ -54,7 +54,7 @@ if ($confirm) {
 }
 else {
     // Hack to add print stylesheet
-    $meta = '<link rel="stylesheet" type="text/css" media="print" href="'.$CFG->themewww.'/MITMS_print/user_styles.css" />'."\n";
+    $meta = '<link rel="stylesheet" type="text/css" media="print" href="'.$CFG->themewww.'/totara_print/user_styles.css" />'."\n";
 
     // Preview page
     print_header_simple($pagetitle, '', $navigation, '', $meta, true);

@@ -99,7 +99,7 @@ function show_rpl($type, $user, $rpl, $describe, $fulldescribe) {
     } else {
         // Show RPL status icon
         $rplicon = strlen($rpl) ? 'completion-rpl-y' : 'completion-rpl-n';
-        print '<a href="index.php?course='.$course->id.'&sort='.$sort.'&start='.$start.'&edituser='.$user->id.'#user-'.$user->id.'" class="rpledit"><img src="'.$CFG->wwwroot.'/theme/mitms/pix/i/'.$rplicon.'.gif'.
+        print '<a href="index.php?course='.$course->id.'&sort='.$sort.'&start='.$start.'&edituser='.$user->id.'#user-'.$user->id.'" class="rpledit"><img src="'.$CFG->wwwroot.'/theme/totara/pix/i/'.$rplicon.'.gif'.
             '" alt="'.$describe.'" class="icon" title="'.$fulldescribe.'" /></a>';
 
         // Show status text

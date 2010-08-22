@@ -2690,7 +2690,7 @@ SQL;
             $row[$scalecollabel . $competency->scalevalueid] =
                     '<img src="'
                     . $CFG->wwwroot
-                    . '/theme/mitms/pix/t/clear.gif" alt="'
+                    . '/theme/totara/pix/t/clear.gif" alt="'
                     . htmlspecialchars($scalevalues[$competency->scalevalueid]->name)
                     . '" />';
             $row[$evalcollabel] = userdate($competency->evaltime, '%e %b %y');

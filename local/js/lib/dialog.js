@@ -62,7 +62,7 @@ function totaraDialog(title, buttonid, config, default_url, handler) {
             modal: true,
             resizable: false,
             zIndex: 1500,
-            dialogClass: 'mitms-dialog'
+            dialogClass: 'totara-dialog'
         };
 
         // Instantiate the Dialog

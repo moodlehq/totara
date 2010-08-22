@@ -242,7 +242,7 @@ a:hover {
 .sideblock li a,
 .sideblock li a:active,
 .sideblock li a:link,
-.block_mitms_my_learning_nav a{
+.block_totara_my_learning_nav a{
   color: #333333;
 }
 
@@ -253,7 +253,7 @@ a:hover {
 
 .sideblock li a:hover,
 .block_admin_tree a:hover,
-.block_mitms_my_learning_nav a:hover,
+.block_totara_my_learning_nav a:hover,
 .block_admin_tree.sideblock .link.current{
 	color: #AC0F0F;
 	text-decoration: none;

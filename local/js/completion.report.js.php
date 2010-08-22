@@ -101,7 +101,7 @@ YAHOO.util.Event.onDOMReady(function () {
             var inputvalue = input.val();
             if (inputvalue) {
                 // Change icon
-                $('a.rpledit img', cell).attr('src', '<?php echo $CFG->wwwroot ?>/theme/mitms/pix/i/completion-rpl-y.gif');
+                $('a.rpledit img', cell).attr('src', '<?php echo $CFG->wwwroot ?>/theme/totara/pix/i/completion-rpl-y.gif');
 
                 // Save value
                 value.text(inputvalue);
@@ -134,7 +134,7 @@ YAHOO.util.Event.onDOMReady(function () {
                 dots.remove();
 
                 // Change icon
-                $('a.rpledit img', cell).attr('src', '<?php echo $CFG->wwwroot ?>/theme/mitms/pix/i/completion-rpl-n.gif');
+                $('a.rpledit img', cell).attr('src', '<?php echo $CFG->wwwroot ?>/theme/totara/pix/i/completion-rpl-n.gif');
             }
 
             // Toggle expander
@@ -173,7 +173,7 @@ YAHOO.util.Event.onDOMReady(function () {
             });
 
             // Create delete button
-            var cancel = $('<a href="#" class="icon rpldelete" title="Delete this RPL"><img src="<?php echo $CFG->wwwroot ?>/theme/mitms/pix/i/cross_red_big.gif" alt="Delete" /></a>');
+            var cancel = $('<a href="#" class="icon rpldelete" title="Delete this RPL"><img src="<?php echo $CFG->wwwroot ?>/theme/totara/pix/i/cross_red_big.gif" alt="Delete" /></a>');
             cancel.click(function(event) {
 
                 event.preventDefault();
@@ -221,7 +221,7 @@ YAHOO.util.Event.onDOMReady(function () {
         var type = fnc_rpltype(cell).substr(4);
 
         // Show loading icon
-        cell.append($('<img class="rplloading" src="<?php echo $CFG->wwwroot ?>/theme/mitms/pix/i/loading_small.gif" />'));
+        cell.append($('<img class="rplloading" src="<?php echo $CFG->wwwroot ?>/theme/totara/pix/i/loading_small.gif" />'));
 
         // Save callback
         var fnc_savecallback = function(response) {

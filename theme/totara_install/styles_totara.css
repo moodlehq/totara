@@ -1033,49 +1033,49 @@ ul.tabrow1 li a:hover {
  * Block Specific
  **/
 
-div.block_mitms_my_learning_nav .content td img {
+div.block_totara_my_learning_nav .content td img {
  width:38px;
  height:31px;
 }
 div.block_calendar_month div.header {
   background: #9f187c;
 }
-div.block_mitms_report_manager {
+div.block_totara_report_manager {
   background: transparent url('images/icon_reportmanager.gif') no-repeat right bottom;
 }
-div.block_mitms_report_manager div.header {
+div.block_totara_report_manager div.header {
   background: #ed7906
 }
-div.block_mitms_report_manager div.header .title input   {
+div.block_totara_report_manager div.header .title input   {
   background: #fcac00;
 }
-div.block_mitms_report_manager .content {
+div.block_totara_report_manager .content {
   padding-bottom: 80px;
 }
-div.block_mitms_my_team_nav div.header,
+div.block_totara_my_team_nav div.header,
 div.block_admin_tree div.header  {
   background: #34b9e4;
 }
-div.block_mitms_my_team_nav  div.header .title input,
+div.block_totara_my_team_nav  div.header .title input,
 div.block_admin_tree div.header .title input   {
   background: #39caf9;
 }
 div.block_calendar_month div.header .title input   {
   background: #ca1e9e;
 }
-div.block_mitms_my_team_nav .content td img {
+div.block_totara_my_team_nav .content td img {
  display:none;
 }
-div.block_mitms_my_team_nav .content a {
+div.block_totara_my_team_nav .content a {
   font-family: Verdana, Arial, Helvetica, sans-serif;
   color:#34b9e4;
 }
-div.block_mitms_report_manager .content td {
+div.block_totara_report_manager .content td {
   vertical-align:top;
   padding-bottom:4px;
   padding-right:3px;
 }
-div.block_mitms_report_manager .content img {
+div.block_totara_report_manager .content img {
   width:12px;
   height:14px;
 }

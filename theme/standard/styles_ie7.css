@@ -57,7 +57,7 @@ form.mform .fcheckbox input {
   margin-left: -3px;
 }
 
-/* Fix for MITMS dialogs */
-div.mitms-dialog div.ui-dialog-titlebar a.ui-dialog-titlebar-close span {
+/* Fix for totara dialogs */
+div.totara-dialog div.ui-dialog-titlebar a.ui-dialog-titlebar-close span {
     left: -45px;
 }

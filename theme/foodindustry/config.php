@@ -6,7 +6,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-$THEME->sheets = array('styles_menu','styles_page','styles_buttons','styles_food','styles_mitms_common');
+$THEME->sheets = array('styles_menu','styles_page','styles_buttons','styles_food','styles_totara_common');
 
 /// This variable is an array containing the names of all the 
 /// stylesheet files you want included in this theme, and in what order
@@ -28,7 +28,7 @@ $THEME->standardsheets = array('styles_layout','styles_fonts','styles_color');
 ////////////////////////////////////////////////////////////////////////////////
 
 
-$THEME->parent = 'mitms'; 
+$THEME->parent = 'totara'; 
 
 /// This variable can be set to the name of a parent theme
 /// which you want to have included before the current theme.
@@ -39,7 +39,7 @@ $THEME->parent = 'mitms';
 ////////////////////////////////////////////////////////////////////////////////
 
 
-$THEME->parentsheets = array('styles_mitms_common'); 
+$THEME->parentsheets = array('styles_totara_common'); 
 
 /// This variable can be set to an array containing
 /// filenames from a chosen *PARENT* theme.  If the 
