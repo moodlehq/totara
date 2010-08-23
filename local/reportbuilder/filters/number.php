@@ -112,7 +112,7 @@ class filter_number extends filter_type {
         }
         // this will cope with empty values but not anything that can't be cast to a float
         // make sure the source column only contains numbers!
-        return 'CASE WHEN CAST('.$query.' AS varchar) = \'\' THEN 0 ELSE CAST('.$query.' AS float) END '.$res;
+        return 'CASE WHEN '.$query.' IS NULL THEN 0 ELSE CAST('.$query.' AS float) END '.$res;
     }
 
     /**
