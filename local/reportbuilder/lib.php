@@ -235,7 +235,9 @@ class reportbuilder {
 
 
         local_js($code);
-        require_js(array_values($js));
+        if(count($js)) {
+            require_js(array_values($js));
+        }
 
         if($dialog) {
             print '
