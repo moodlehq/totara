@@ -164,11 +164,17 @@ if (!defined('BACKUP_SILENTLY')) {
     echo "<li>".get_string("zippingbackup").'</li>';
 }
 
+// create directory if it doesn't exist
+$backupdir = $CFG->dataroot . '/hierarchies';
+if(!is_dir($backupdir)) {
+    mkdir($backupdir);
+}
+
 $zipprefs = new object();
 $zipprefs->backup_unique_code = $backup_unique_code;
 $zipprefs->backup_name = $backupfilename;
 // save to hierarchies directory at same level as courses
-$zipprefs->backup_destination = "$CFG->dataroot/hierarchies";
+$zipprefs->backup_destination = $backupdir;
 $status = $status && backup_zip($zipprefs);
 
 if(!$status) {
