@@ -157,6 +157,7 @@ function restore_facetoface_signups_status($info, $restore) {
         $signup->advice             = backup_todb($signupinfo['#']['ADVICE']['0']['#']);
         $signup->createdby          = backup_todb($signupinfo['#']['CREATEDBY']['0']['#']);
         $signup->timecreated        = backup_todb($signupinfo['#']['TIMECREATED']['0']['#']);
+        $signup->mailed = 0;
 
         // Fix the signupid
         $signupid = backup_getid($restore->backup_unique_code, 'facetoface_signups', $signup->signupid);
