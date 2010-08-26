@@ -323,7 +323,7 @@ class local_oauth {
         $lines = array();
         foreach (explode("\n", $response->body) as $row) {
             if ($row) {
-                $lines[]=  str_getcsv($row, ',', '');
+                $lines[]=  explode(',', $row);
             }
         }
 
