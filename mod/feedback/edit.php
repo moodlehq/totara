@@ -121,16 +121,13 @@
     //$create_template_form = new feedback_edit_create_template_form('use_templ.php');
 
     /// Print the page header
-    $navigation = '';
-    if ($course->category) {
-        $navigation = '<a href="'.htmlspecialchars('../../course/view.php?id='.$course->id).'">'.$course->shortname.'</a> ->';
-    }
+    $navlinks = array();
+    $navigation = build_navigation($navlinks, $cm);
 
     $strfeedbacks = get_string("modulenameplural", "feedback");
     $strfeedback  = get_string("modulename", "feedback");
 
-    print_header($course->shortname.': '.$feedback->name, $course->fullname,
-                     $navigation.' <a href="'.htmlspecialchars('index.php?id='.$course->id).'">'.$strfeedbacks.'</a> -> '.$feedback->name, 
+    print_header($course->shortname.': '.$feedback->name, $course->fullname, $navigation,
                      '', '', true, update_module_button($cm->id, $course->id, $strfeedback), 
                      navmenu($course, $cm));
 

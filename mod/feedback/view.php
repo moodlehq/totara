@@ -55,24 +55,23 @@
     $strfeedback  = get_string("modulename", "feedback");
 
     $feedbackindex = "<a href=\"index.php?id=$course->id\">$strfeedbacks</a> ->";
-    $navigation = '';
     if ($course->category) {
-        $navigation = "<a href=\"../../course/view.php?id=$course->id\">$course->shortname</a> ->";
     }else if ($courseid > 0 AND $courseid != SITEID) {
         //is the course maped in the sitecourse_map?
         if(feedback_is_course_in_sitecourse_map($feedback->id, $courseid) OR !feedback_is_feedback_in_sitecourse_map($feedback->id)) {
             $usercourse = get_record('course', 'id', $courseid);
-            $navigation = "<a href=\"../../course/view.php?id=$usercourse->id\">$usercourse->shortname</a> ->";
-            $feedbackindex = '';
         }else {
             error('failed courseid');
         }
     }
 
-    print_header("$course->shortname: $feedback->name", "$course->fullname",
-                     "$navigation $feedbackindex $feedback->name", 
+    $navlinks = array();
+    $navigation = build_navigation($navlinks, $cm);
+
+    print_header("$course->shortname: $feedback->name", "$course->fullname", $navigation,
                      "", "", true, update_module_button($cm->id, $course->id, $strfeedback), 
                      navmenu($course, $cm));
+
 
     //ishidden check.
     if ((empty($cm->visible) and !$capabilities->viewhiddenactivities) AND $course->id != SITEID) {

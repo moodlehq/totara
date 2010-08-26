@@ -51,13 +51,13 @@
         redirect(htmlspecialchars('delete_template.php?id=' . $id));
     }
 
-
     $strfeedbacks = get_string("modulenameplural", "feedback");
     $strfeedback  = get_string("modulename", "feedback");
-	
-	$navigation=isset($navigation)?$navigation:'';
-    print_header($course->shortname.': '.$feedback->name, $course->fullname,
-                      $navigation.' <a href="'.htmlspecialchars('index.php?id='.$course->id).'">'.$strfeedbacks.'</a> -> '.$feedback->name, 
+
+    $navlinks = array();
+    $navigation = build_navigation($navlinks, $cm);
+
+    print_header($course->shortname.': '.$feedback->name, $course->fullname, $navigation,
                         '', '', true, update_module_button($cm->id, $course->id, $strfeedback), 
                         navmenu($course, $cm));
 

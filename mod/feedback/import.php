@@ -69,14 +69,10 @@
     $strfeedbacks = get_string("modulenameplural", "feedback");
     $strfeedback  = get_string("modulename", "feedback");
 	
-    $feedbackindex = "<a href=\"index.php?id=$course->id\">$strfeedbacks</a> ->";
-    $navigation = '';
-    if ($course->category) {
-        $navigation = "<a href=\"../../course/view.php?id=$course->id\">$course->shortname</a> ->";
-    }
+    $navlinks = array();
+    $navigation = build_navigation($navlinks, $cm);
 
-    print_header("$course->shortname: $feedback->name", "$course->fullname",
-                     "$navigation $feedbackindex $feedback->name", 
+    print_header("$course->shortname: $feedback->name", "$course->fullname", $navigation,
                      "", "", true, update_module_button($cm->id, $course->id, $strfeedback), 
                      navmenu($course, $cm));
 
