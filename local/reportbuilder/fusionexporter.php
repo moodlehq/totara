@@ -121,22 +121,12 @@ for($k=0;$k<=floor($count/$blocksize);$k++) {
                 $row[] = '';
             }
         }
-
-        /* for tracking size of export
-        $data_len = 0;
-        array_map(function ($i) {
-            global $data_len;
-            $data_len += strlen($i);
-            }, $row);
-         */
         $rows[]= $row;
         $i++;
     }
-    // echo "data size now: $data_len\n";
     $result = $oauth->insert_rows($tablename, $rows);
 
 }
-$result = $oauth->insert_rows($tablename, $rows);
 
 // all done - go and have a look at the table
 $table = $oauth->table_by_name($tablename, true);
