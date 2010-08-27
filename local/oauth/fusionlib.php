@@ -112,7 +112,7 @@ class local_oauth_fusion extends local_oauth {
         foreach ($fields as $name => $type) {
             $columns[]= "$name: $type";
         }
-        $table_def = "CREATE TABLE ".$tablename." (".implode(", ", $columns).")";
+        $table_def = "CREATE TABLE '".$tablename."' (".implode(", ", $columns).")";
         $response = $this->postRequest($this->scope, array('sql' => $table_def));
         if ($response->status != 200) {
             throw new local_oauth_exception($response->message . ' - ' . $table_def);

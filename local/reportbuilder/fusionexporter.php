@@ -78,9 +78,9 @@ foreach($columns as $column) {
         $fields[clean_column_name(strip_tags($column->heading))] = $type;
     }
 }
-$tablename = preg_replace('/\s/', '_', clean_filename(trim($shortname)));
+$tablename = preg_replace('/\s/', '_', clean_filename(trim($shortname))).' '.date("Y-m-d H:i:s",strtotime('+0 days'));
 try {
-$tables = $oauth->show_tables();
+    $tables = $oauth->show_tables();
 }
 catch (local_oauth_exception $e) {
     // clean it down
