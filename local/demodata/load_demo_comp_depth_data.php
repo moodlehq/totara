@@ -8,6 +8,8 @@ array('id' => '3','fullname' => 'Course based competencies','shortname' => 'Cour
 array('id' => '4','fullname' => 'Competency Area','shortname' => 'CA','description' => '','depthlevel' => '1','frameworkid' => '4','timecreated' => '1267736622','timemodified' => '1267736622','usermodified' => '2',),
 array('id' => '5','fullname' => 'Competency Heading','shortname' => 'CH','description' => '','depthlevel' => '2','frameworkid' => '4','timecreated' => '1267736644','timemodified' => '1267736644','usermodified' => '2',),
 array('id' => '6','fullname' => 'Competencies','shortname' => 'Competencies','description' => '','depthlevel' => '3','frameworkid' => '4','timecreated' => '1267736677','timemodified' => '1267736677','usermodified' => '2',),
+array('id' => '7','fullname' => 'Dimension 1','shortname' => 'd1','description' => '','depthlevel' => '1','frameworkid' => '5','timecreated' => '1282795712','timemodified' => '1282795712','usermodified' => '2',),
+array('id' => '8','fullname' => 'Dimension 2','shortname' => 'd2','description' => '','depthlevel' => '2','frameworkid' => '5','timecreated' => '1282795759','timemodified' => '1282795759','usermodified' => '2',),
 );
 print "\n";print "Inserting ".count($items)." records<br />\n";
 $i=1;

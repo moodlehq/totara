@@ -2,14 +2,14 @@
 @raise_memory_limit('392M');
 @ini_set('max_execution_time','3000');
 print "Loading data for table 'idp'<br>";
-$items = array(array('id' => '2','name' => 'My IDP','startdate' => '1263466800','enddate' => '1271246400','userid' => '2',),
-array('id' => '3','name' => 'My IDP','startdate' => '1263466800','enddate' => '1271246400','userid' => '2',),
-array('id' => '4','name' => 'My IDP','startdate' => '1263726000','enddate' => '1271505600','userid' => '2',),
-array('id' => '6','name' => 'Alex\\\'s Development Plan 2009 - 2010','startdate' => '1246363200','enddate' => '1277812800','userid' => '72',),
-array('id' => '7','name' => 'Alex\\\'s Development Plan 2010 - 2011','startdate' => '1263726000','enddate' => '1271505600','userid' => '72',),
-array('id' => '10','name' => 'My IDP','startdate' => '1267786800','enddate' => '1275739200','userid' => '2',),
-array('id' => '11','name' => 'My IDP','startdate' => '1267959600','enddate' => '1275912000','userid' => '2',),
-array('id' => '13','name' => 'My IDP','startdate' => '1280404800','enddate' => '1288350000','userid' => '1292',),
+$items = array(array('id' => '2','name' => 'My IDP','startdate' => '1263466800','enddate' => '1271246400','userid' => '2','current' => '0','templateid' => '0',),
+array('id' => '3','name' => 'My IDP','startdate' => '1263466800','enddate' => '1271246400','userid' => '2','current' => '0','templateid' => '0',),
+array('id' => '4','name' => 'My IDP','startdate' => '1263726000','enddate' => '1271505600','userid' => '2','current' => '0','templateid' => '0',),
+array('id' => '6','name' => 'Alex\\\'s Development Plan 2009 - 2010','startdate' => '1246363200','enddate' => '1277812800','userid' => '72','current' => '0','templateid' => '0',),
+array('id' => '7','name' => 'Alex\\\'s Development Plan 2010 - 2011','startdate' => '1263726000','enddate' => '1271505600','userid' => '72','current' => '0','templateid' => '0',),
+array('id' => '10','name' => 'My IDP','startdate' => '1267786800','enddate' => '1275739200','userid' => '2','current' => '0','templateid' => '0',),
+array('id' => '11','name' => 'My IDP','startdate' => '1267959600','enddate' => '1275912000','userid' => '2','current' => '0','templateid' => '0',),
+array('id' => '13','name' => 'My IDP','startdate' => '1280404800','enddate' => '1288350000','userid' => '1292','current' => '0','templateid' => '0',),
 );
 print "\n";print "Inserting ".count($items)." records<br />\n";
 $i=1;

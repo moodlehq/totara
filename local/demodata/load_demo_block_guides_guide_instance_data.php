@@ -5,6 +5,8 @@ print "Loading data for table 'block_guides_guide_instance'<br>";
 $items = array(array('id' => '1','guide' => '1','userid' => '2','currentstep' => '2','deleted' => '0',),
 array('id' => '2','guide' => '2','userid' => '2','currentstep' => '1','deleted' => '0',),
 array('id' => '3','guide' => '1','userid' => '1292','currentstep' => '1','deleted' => '1',),
+array('id' => '4','guide' => '8','userid' => '2','currentstep' => '2','deleted' => '0',),
+array('id' => '5','guide' => '7','userid' => '2','currentstep' => '2','deleted' => '0',),
 );
 print "\n";print "Inserting ".count($items)." records<br />\n";
 $i=1;

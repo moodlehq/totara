@@ -6,6 +6,7 @@ $items = array(array('id' => '1','fullname' => 'Unit Standards','shortname' => '
 array('id' => '2','fullname' => 'Qualifications','shortname' => 'Quals','idnumber' => '','description' => '','sortorder' => '3','visible' => '1','hidecustomfields' => '0','showitemfullname' => '1','showdepthfullname' => '1','timecreated' => '1263433929','timemodified' => '1263433929','usermodified' => '2',),
 array('id' => '3','fullname' => 'Course based competencies','shortname' => 'Course based','sortorder' => '1','visible' => '1','hidecustomfields' => '0','showitemfullname' => '1','showdepthfullname' => '1','timecreated' => '1265963591','timemodified' => '1265963591','usermodified' => '0',),
 array('id' => '4','fullname' => 'Sample framework','shortname' => 'Sample framework','idnumber' => '','description' => '','sortorder' => '4','visible' => '1','hidecustomfields' => '0','showitemfullname' => '1','showdepthfullname' => '1','timecreated' => '1267736603','timemodified' => '1267736603','usermodified' => '2',),
+array('id' => '5','fullname' => 'European e-Competence Framework','shortname' => 'e-Competence','idnumber' => '','description' => '<p>European e-Competence Framework version 1.0</p>','sortorder' => '5','visible' => '1','hidecustomfields' => '0','showitemfullname' => '1','showdepthfullname' => '1','timecreated' => '1282795685','timemodified' => '1282795685','usermodified' => '2',),
 );
 print "\n";print "Inserting ".count($items)." records<br />\n";
 $i=1;

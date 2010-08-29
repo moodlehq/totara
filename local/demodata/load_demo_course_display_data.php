@@ -462,6 +462,13 @@ array('id' => '457','course' => '121','userid' => '1292','display' => '0',),
 array('id' => '458','course' => '75','userid' => '1292','display' => '0',),
 array('id' => '459','course' => '39','userid' => '1292','display' => '0',),
 array('id' => '460','course' => '5','userid' => '1292','display' => '0',),
+array('id' => '461','course' => '52','userid' => '2','display' => '0',),
+array('id' => '462','course' => '100','userid' => '2','display' => '0',),
+array('id' => '463','course' => '41','userid' => '2','display' => '0',),
+array('id' => '464','course' => '99','userid' => '2','display' => '0',),
+array('id' => '465','course' => '84','userid' => '2','display' => '0',),
+array('id' => '466','course' => '79','userid' => '2','display' => '0',),
+array('id' => '467','course' => '39','userid' => '2','display' => '0',),
 );
 print "\n";print "Inserting ".count($items)." records<br />\n";
 $i=1;

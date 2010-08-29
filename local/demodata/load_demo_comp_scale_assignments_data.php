@@ -6,6 +6,7 @@ $items = array(array('id' => '1','scaleid' => '1','frameworkid' => '1','timemodi
 array('id' => '2','scaleid' => '1','frameworkid' => '2','timemodified' => '0','usermodified' => '2',),
 array('id' => '3','scaleid' => '1','frameworkid' => '3','timemodified' => '0','usermodified' => '2',),
 array('id' => '4','scaleid' => '1','frameworkid' => '4','timemodified' => '0','usermodified' => '2',),
+array('id' => '5','scaleid' => '1','frameworkid' => '5','timemodified' => '1282795685','usermodified' => '2',),
 );
 print "\n";print "Inserting ".count($items)." records<br />\n";
 $i=1;
