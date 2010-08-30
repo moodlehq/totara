@@ -2,7 +2,7 @@
 @raise_memory_limit('392M');
 @ini_set('max_execution_time','3000');
 print "Loading data for table 'idp_template'<br>";
-$items = array(array('id' => '1','fullname' => 'Generic Template','shortname' => 'generic','startdate' => '1283126855','enddate' => '1283126855','current' => '1','sortorder' => '1','visible' => '1',),
+$items = array(array('id' => '1','fullname' => 'Generic Template','shortname' => 'generic','startdate' => '1282790494','enddate' => '1282790494','current' => '1','sortorder' => '1','visible' => '1',),
 );
 print "\n";print "Inserting ".count($items)." records<br />\n";
 $i=1;
