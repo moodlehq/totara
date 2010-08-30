@@ -2,7 +2,8 @@
 @raise_memory_limit('392M');
 @ini_set('max_execution_time','3000');
 print "Loading data for table 'course_categories'<br>";
-$items = array(array('id' => '2','name' => 'Technical','parent' => '4','sortorder' => '2','coursecount' => '105','visible' => '1','timemodified' => '0','depth' => '2','path' => '/4/2',),
+$items = array(array('id' => '1','name' => 'Miscellaneous','parent' => '0','sortorder' => '0','coursecount' => '0','visible' => '1','timemodified' => '0','depth' => '1','path' => '',),
+array('id' => '2','name' => 'Technical','parent' => '4','sortorder' => '2','coursecount' => '105','visible' => '1','timemodified' => '0','depth' => '2','path' => '/4/2',),
 array('id' => '3','name' => 'Induction','parent' => '4','sortorder' => '1','coursecount' => '1','visible' => '1','timemodified' => '0','depth' => '2','path' => '/4/3','theme' => '',),
 array('id' => '4','name' => 'Learning Programmes','parent' => '0','sortorder' => '1','coursecount' => '0','visible' => '1','timemodified' => '0','depth' => '1','path' => '/4','theme' => '',),
 array('id' => '5','name' => 'Leadership','parent' => '0','sortorder' => '2','coursecount' => '0','visible' => '1','timemodified' => '0','depth' => '1','path' => '/5','theme' => '',),

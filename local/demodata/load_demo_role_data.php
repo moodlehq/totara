@@ -4,17 +4,16 @@
 print "Emptytable flag set, deleting all data from role.<br>";
 delete_records('role');
 print "Loading data for table 'role'<br>";
-$items = array(array('id' => '1','name' => 'Administrator','shortname' => 'administrator','description' => 'Administrators can do anything on the site','sortorder' => '0',),
-array('id' => '3','name' => 'Editing Trainer','shortname' => 'trainer','description' => '<p>Responsible for delivering training of learners, and can alter activities</p>','sortorder' => '3',),
-array('id' => '5','name' => 'Learner','shortname' => 'student','description' => '<p>User acquiring knowledge, comprehension, or mastery through learning</p>','sortorder' => '8',),
-array('id' => '6','name' => 'Guest','shortname' => 'guest','description' => 'Guests have minimal privileges and usually can not enter text anywhere','sortorder' => '10',),
-array('id' => '7','name' => 'Athenticated User','shortname' => 'user','description' => '<p>All logged in users.</p>','sortorder' => '9',),
-array('id' => '8','name' => 'Manager','shortname' => 'manager','description' => '<p>User tasked with managing the performance of a learner or team</p>','sortorder' => '7',),
-array('id' => '10','name' => 'Assessor','shortname' => 'assessor','description' => 'User who is responsible for assessing staff','sortorder' => '5',),
-array('id' => '11','name' => 'Functional Administrator','shortname' => 'functional','description' => 'User who has a greater level of access to staff records, but not to the site administration functions','sortorder' => '2',),
-array('id' => '12','name' => 'Regional Manager','shortname' => 'regionalmanager','description' => 'User who is responsible for the performance of a region and has access to regional reports','sortorder' => '1',),
-array('id' => '15','name' => 'Trainer','shortname' => 'noneditingtrainer','description' => '<p>Responsible for delivering training of learners, but may not alter activities</p>','sortorder' => '4',),
-array('id' => '16','name' => 'Auditor ','shortname' => 'auditor','description' => 'User who can view and update training records','sortorder' => '6',),
+$items = array(array('id' => '1','name' => 'Administrator','shortname' => 'admin','description' => 'Administrators can usually do anything on the site, in all courses.','sortorder' => '0',),
+array('id' => '2','name' => 'Course creator','shortname' => 'coursecreator','description' => 'Course creators can create new courses.','sortorder' => '1',),
+array('id' => '3','name' => 'Editing Trainer','shortname' => 'editingteacher','description' => 'Responsible for delivering training of learners, and can alter activities','sortorder' => '3',),
+array('id' => '4','name' => 'Trainer','shortname' => 'teacher','description' => 'Responsible for delivering training of learners, but may not alter activities.','sortorder' => '4',),
+array('id' => '5','name' => 'Learner','shortname' => 'student','description' => 'User acquiring knowledge, comprehension, or mastery through learning','sortorder' => '7',),
+array('id' => '6','name' => 'Guest','shortname' => 'guest','description' => 'Guests have minimal privileges and usually can not enter text anywhere.','sortorder' => '9',),
+array('id' => '7','name' => 'Authenticated User','shortname' => 'user','description' => 'All logged in users.','sortorder' => '8',),
+array('id' => '8','name' => 'Manager','shortname' => 'manager','description' => 'User tasked with managing the performance of a learner or team','sortorder' => '6',),
+array('id' => '9','name' => 'Regional Manager','shortname' => 'regionalmananger','description' => 'User who is responsible for the performance of a region and has access to regional reports','sortorder' => '5',),
+array('id' => '10','name' => 'Regional Trainer','shortname' => 'regionaltrainer','description' => 'User who oversees the delivery of training within a region','sortorder' => '2',),
 );
 print "\n";print "Inserting ".count($items)." records<br />\n";
 $i=1;
