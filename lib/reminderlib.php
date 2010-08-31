@@ -511,7 +511,7 @@ function reminder_cron() {
                         else {
                             static $managers;
                             if (!isset($managers[$managerid])) {
-                                $managers[$managerid] = get_record('user', 'id', $managerid);
+                                $managers[$managerid] = get_record('user', 'idnumber', $managerid);
                             }
 
                             $manager = $managers[$managerid];
