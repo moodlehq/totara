@@ -1273,26 +1273,26 @@ function facetoface_write_activity_attendance(&$worksheet, $startingrow, $faceto
         JOIN
             {$CFG->prefix}facetoface_signups_status ss
          ON su.id = ss.signupid
-	JOIN
-	    (
-		SELECT
-		    ss.signupid,
-		    MAX(ss.timecreated) AS timecreated
-		FROM
-            {$CFG->prefix}facetoface_signups_status ss
-		INNER JOIN
-		    {$CFG->prefix}facetoface_signups s
-		 ON s.id = ss.signupid
-		INNER JOIN
-		    {$CFG->prefix}facetoface_sessions se
-		 ON s.sessionid = se.id
-		AND se.facetoface = $facetofaceid
-		WHERE
-		    ss.statuscode = ".MDL_F2F_STATUS_BOOKED."
-		GROUP BY
-		    ss.signupid
-	    ) sign
-	 ON su.id = sign.signupid
+        LEFT JOIN
+            (
+            SELECT
+                ss.signupid,
+                MAX(ss.timecreated) AS timecreated
+            FROM
+                {$CFG->prefix}facetoface_signups_status ss
+            INNER JOIN
+                {$CFG->prefix}facetoface_signups s
+             ON s.id = ss.signupid
+            INNER JOIN
+                {$CFG->prefix}facetoface_sessions se
+             ON s.sessionid = se.id
+            AND se.facetoface = $facetofaceid
+            WHERE
+                ss.statuscode IN (".MDL_F2F_STATUS_BOOKED.",".MDL_F2F_STATUS_WAITLISTED.")
+            GROUP BY
+                ss.signupid
+            ) sign
+         ON su.id = sign.signupid
         JOIN
             {$CFG->prefix}user u
          ON u.id = su.userid
