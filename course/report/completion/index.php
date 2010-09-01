@@ -254,6 +254,7 @@ if ($csv) {
             'yui_dom',
             'yui_element',
             'yui_event',
+            'yui_connection',
             $CFG->wwwroot.'/course/report/completion/textrotate.js',
             $CFG->wwwroot.'/local/js/lib/jquery-1.3.2.min.js',
             $CFG->wwwroot.'/local/js/completion.report.js.php',

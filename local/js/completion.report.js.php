@@ -235,7 +235,7 @@ YAHOO.util.Event.onDOMReady(function () {
         // Load courses
         YAHOO.util.Connect.asyncRequest(
             'GET',
-            'save_rpl.php?type='+type+'&course='+course+'&user='+user+'&rpl='+rpl,
+            '<?php echo $CFG->wwwroot . '/course/report/completion/'?>save_rpl.php?type='+type+'&course='+course+'&user='+user+'&rpl='+rpl,
             {
                 success:    fnc_savecallback,
                 failure:    function(o) {},
