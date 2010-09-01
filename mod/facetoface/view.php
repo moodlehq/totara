@@ -198,7 +198,11 @@ function print_session_list($courseid, $facetofaceid, $location)
 
             // Status
             $status  = get_string('bookingopen', 'facetoface');
-            if ($session->datetimeknown && facetoface_has_session_started($session, $timenow)) {
+            if ($session->datetimeknown && facetoface_has_session_started($session, $timenow) && facetoface_is_session_in_progress($session, $timenow)) {
+                $status = get_string('sessioninprogress', 'facetoface');
+                $sessionstarted = true;
+            }
+            elseif ($session->datetimeknown && facetoface_has_session_started($session, $timenow)) {
                 $status = get_string('sessionover', 'facetoface');
                 $sessionstarted = true;
             }

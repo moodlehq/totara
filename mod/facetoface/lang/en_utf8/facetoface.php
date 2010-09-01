@@ -260,6 +260,7 @@ $string['sessiondatetime'] = 'Session date/time';
 $string['sessiondatetimeknown'] = 'Session date/time known';
 $string['sessionsdetailstablesummary'] = 'Full description of the current session.';
 $string['sessionfinishtime'] = 'Session finish time';
+$string['sessioninprogress'] = 'session in progress';
 $string['sessionisfull'] = 'This session is now full. You will need to pick another time or talk to the instructor.';
 $string['sessionover'] = 'session over';
 $string['sessions'] = 'Sessions';

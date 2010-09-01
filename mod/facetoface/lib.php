@@ -914,6 +914,24 @@ function facetoface_has_session_started($session, $timenow) {
 }
 
 /**
+ * Returns true if the session has started and has not yet finished.
+ *
+ * @param class $session record from the facetoface_sessions table
+ * @param integer $timenow current time
+ */
+function facetoface_is_session_in_progress($session, $timenow) {
+    if (!$session->datetimeknown) {
+        return false;
+    }
+    foreach ($session->sessiondates as $date) {
+        if ($date->timefinish > $timenow && $date->timestart < $timenow) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/**
  * Get all of the dates for a given session
  */
 function facetoface_get_session_dates($sessionid) {
