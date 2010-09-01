@@ -657,6 +657,7 @@ var comptree = [' . implode(', ', $comptrees) . '];
      * @return boolean ID of new database record, or false on failure
      */
     function create_embedded_record($shortname, $embed, &$error) {
+        global $CFG;
         $error = null;
 
         // check input
@@ -690,7 +691,8 @@ var comptree = [' . implode(', ', $comptrees) . '];
         $todb->hidden = 1; // hide embedded reports by default
         $todb->accessmode = $embed->accessmode;
         $todb->contentmode = $embed->contentmode;
-        $todb->embeddedurl = qualified_me();
+        // store URL after wwwroot
+        $todb->embeddedurl = substr(qualified_me(), strlen($CFG->wwwroot));
 
         begin_sql();
         if (!$newid = insert_record('report_builder', $todb)) {
@@ -805,7 +807,7 @@ var comptree = [' . implode(', ', $comptrees) . '];
         if($this->embeddedurl === null) {
             return $CFG->wwwroot.'/local/reportbuilder/report.php?id='.$this->_id;
         } else {
-            return $this->embeddedurl;
+            return $CFG->wwwroot . $this->embeddedurl;
         }
     }
 

@@ -30,5 +30,32 @@ function xmldb_local_reportbuilder_upgrade($oldversion=0) {
         set_config('local_reportbuilder_cron', 60);
     }
 
+    if ($result && $oldversion < 2010090200) {
+        if($reports = get_records_select('report_builder', 'embeddedurl IS NOT NULL')) {
+            foreach($reports as $report) {
+                $url = $report->embeddedurl;
+                // remove the wwwroot from the url
+                if($CFG->wwwroot == substr($url, 0, strlen($CFG->wwwroot))) {
+                    $url = substr($url, strlen($CFG->wwwroot));
+                }
+                // check to fix embedded urls with wrong host
+                // this should fix all historical cases as up to now all embedded reports
+                // have been in the /my/ directory
+                // this does nothing if '/my/' not in url or
+                // url already without wwwroot
+                $url = substr($url, strpos($url, '/my/'));
+
+                // do the update if needed
+                if($report->embeddedurl != $url) {
+                    $todb = new object();
+                    $todb->id = $report->id;
+                    $todb->embeddedurl = addslashes($url);
+                    $result = $result && update_record('report_builder', $todb);
+                }
+            }
+        }
+    }
+
+
     return $result;
 }
