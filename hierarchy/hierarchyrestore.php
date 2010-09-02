@@ -13,6 +13,13 @@ require_once ("$CFG->dirroot/hierarchy/backuplib.php");
 require_once ("$CFG->dirroot/hierarchy/restorelib.php");
 require_once ("hierarchyrestore_forms.php");
 
+admin_externalpage_setup('hierarchybackup');
+
+require_login();
+if (!has_capability('moodle/site:backup', get_context_instance(CONTEXT_SYSTEM))) {
+    error("You need the moodle/site:backup capability to use this page.", "$CFG->wwwroot/login/index.php");
+}
+
 global $restore;
 
 $file = optional_param('file');
@@ -24,24 +31,15 @@ $backup_unique_code = optional_param('backup_unique_code', null);
 $inc_users = optional_param('inc_users', null);
 $tobackup = optional_param('tobackup', null);
 
-require_login();
-if (!has_capability('moodle/site:backup', get_context_instance(CONTEXT_SYSTEM))) {
-    error("You need to be an admin user to use this page.", "$CFG->wwwroot/login/index.php");
-}
 
 //TODO does restore process use any of the session vars defined in backup/restore.php L41-56
 // if so we may need to unset them here?
-
-//Check site
-if (!$site = get_site()) {
-    error("Site not found!");
-}
 
 //Check necessary functions exists. Thanks to gregb@crowncollege.edu
 backup_required_functions();
 
 //Check backup_version
-$linkto = "$CFG->wwwroot/$CFG->admin/hierarchyrestore.php";
+$linkto = $CFG->wwwroot . '/hierarchy/hierarchyrestore.php';
 upgrade_backup_db($linkto);
 
 // define strings
@@ -53,19 +51,14 @@ $stradministration = get_string('administration');
 raise_memory_limit("192M");
 
 // if an error occurs go back to the first page
-$returnurl = "$CFG->wwwroot/admin/hierarchyrestore.php";
+$returnurl = $CFG->wwwroot . '/hierarchy/hierarchyrestore.php';
 
 // redirect to first page if cancel button pressed
 if(isset($cancel)) {
     redirect($returnurl);
 }
 
-//Print header
-$navlinks[] = array('name' => $stradministration, 'link' => "$CFG->wwwroot/$CFG->admin/index.php", 'type' => 'misc');
-$navlinks[] = array('name' => $strhierarchyrestore, 'link' => null, 'type' => 'misc');
-$navigation = build_navigation($navlinks);
-
-print_header("$site->shortname: $strhierarchyrestore", $site->fullname, $navigation);
+admin_externalpage_print_header();
 
 //Print form
 print_heading(format_string("$strhierarchyrestore"));
@@ -147,14 +140,14 @@ if($action == 'selectoptions') {
         }
 
         if(isset($info['MOODLE_BACKUP']['#']['HIERARCHIES']['0']['#']['HIERARCHY']['0']['#']['FRAMEWORKS']['0']['#']['FRAMEWORK'])) {
-            $frameworks = $info['MOODLE_BACKUP']['#']['HIERARCHIES']['0']['#']['HIERARCHY']['0']['#']['FRAMEWORKS']['0']['#']['FRAMEWORK']; 
+            $frameworks = $info['MOODLE_BACKUP']['#']['HIERARCHIES']['0']['#']['HIERARCHY']['0']['#']['FRAMEWORKS']['0']['#']['FRAMEWORK'];
         }
 
         $tempitems = 'hbackup_temp_items';
         $status = create_temp_items_table($tempitems);
         // delete records with same unique code to avoid duplicates
         delete_records($tempitems, 'backup_unique_code', $backup_unique_code);
-        
+
         foreach ($frameworks AS $framework) {
             if(isset($framework['#']['ID']['0']['#'])) {
                 $fwid = $framework['#']['ID']['0']['#'];
@@ -168,7 +161,7 @@ if($action == 'selectoptions') {
             }
         }
     }
-    print_single_button($CFG->wwwroot.'/admin/hierarchyrestore.php', array('action'=> 'execute', 'tobackup'=>serialize($hierarchy), 'options'=>serialize($options), 'backup_unique_code'=>$backup_unique_code, 'inc_users'=>$inc_users), 'Restore hierarchies', 'post');
+    print_single_button($CFG->wwwroot.'/hierarchy/hierarchyrestore.php', array('action'=> 'execute', 'tobackup'=>serialize($hierarchy), 'options'=>serialize($options), 'backup_unique_code'=>$backup_unique_code, 'inc_users'=>$inc_users), 'Restore hierarchies', 'post');
     print_footer();
     exit;
 

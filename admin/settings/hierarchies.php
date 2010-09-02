@@ -28,9 +28,9 @@
             array('moodle/local:updatecompetency')));
 
     // Backup
-    $ADMIN->add('hierarchies', new admin_externalpage('backup', get_string('backup'), "$CFG->wwwroot/$CFG->admin/hierarchybackup.php"));
+    $ADMIN->add('hierarchies', new admin_externalpage('hierarchybackup', get_string('backup'), $CFG->wwwroot . '/hierarchy/hierarchybackup.php'));
 
     // Restore
-    $ADMIN->add('hierarchies', new admin_externalpage('restore', get_string('restore'), "$CFG->wwwroot/$CFG->admin/hierarchyrestore.php"));
+    $ADMIN->add('hierarchies', new admin_externalpage('hierarchyrestore', get_string('restore'), $CFG->wwwroot . '/hierarchy/hierarchyrestore.php'));
 
 ?>

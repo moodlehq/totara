@@ -150,13 +150,9 @@ function hierarchyrestore_precheck($file, $backup_unique_code, &$errorstr) {
     //End the progress ul
     echo "</ul>\n";
 
-    //End the main table
-    echo "</td></tr>";
-    echo "</table>";
-
     /*
     // debugging xml array
-    traverse_xmlize($info); 
+    traverse_xmlize($info);
     print_object($GLOBALS['traverse_array']);
     $GLOBALS['traverse_array'] ='';
      */

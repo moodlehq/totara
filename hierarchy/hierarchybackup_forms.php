@@ -28,7 +28,6 @@ class hierarchybackup_select_form extends moodleform {
                 }
 
                 $mform->addElement('header',$hname.'backup', get_string($hname, $hname).' Backup');
-                //TODO add checkbox controller
                 $first = true;
                 $mform->addElement('static','message','Select which frameworks to backup','');
                 $this->add_checkbox_controller($i,'',array(),1);
@@ -49,7 +48,7 @@ class hierarchybackup_select_form extends moodleform {
                         $mform->setType($option['name'], PARAM_RAW);
                         $mform->setDefault($option['name'], $option['default']);
                     }
-                }                
+                }
             }
         }
         $this->add_action_buttons();

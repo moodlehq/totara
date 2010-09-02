@@ -3,29 +3,26 @@
 
 //Define some globals for all the script
 
-require_once ("../config.php");
-require_once ("$CFG->dirroot/backup/lib.php");
-require_once ("$CFG->dirroot/backup/backuplib.php");
-require_once ("$CFG->libdir/adminlib.php");
-require_once ("$CFG->dirroot/hierarchy/lib.php");
-require_once ("$CFG->dirroot/hierarchy/backuplib.php");
-require_once ("hierarchybackup_forms.php");
+require_once ('../config.php');
+require_once ($CFG->dirroot . '/backup/lib.php');
+require_once ($CFG->dirroot . '/backup/backuplib.php');
+require_once ($CFG->dirroot . '/hierarchy/lib.php');
+require_once ($CFG->dirroot . '/hierarchy/backuplib.php');
+require_once ($CFG->libdir . '/adminlib.php');
+require_once ('hierarchybackup_forms.php');
+
+admin_externalpage_setup('hierarchybackup');
 
 require_login();
 if (!has_capability('moodle/site:backup', get_context_instance(CONTEXT_SYSTEM))) {
-    error("You need to be an admin user to use this page.", "$CFG->wwwroot/login/index.php");
-}
-
-//Check site
-if (!$site = get_site()) {
-    error("Site not found!");
+    error("You need the moodle/site:backup capability to use this page.", "$CFG->wwwroot/login/index.php");
 }
 
 //Check necessary functions exists. Thanks to gregb@crowncollege.edu
 backup_required_functions();
 
 //Check backup_version
-$linkto = "$CFG->wwwroot/$CFG->admin/hierarchybackup.php";
+$linkto = $CFG->wwwroot . '/hierarchy/hierarchybackup.php';
 upgrade_backup_db($linkto);
 
 // define strings
@@ -95,7 +92,6 @@ foreach ($hlist AS $index => $hname) {
 
 }
 
-// TODO form logic here
 $selectform = new hierarchybackup_select_form('hierarchybackup_execute.php',
     compact('hlist','frameworks','items'));
 if($selectform->is_cancelled()) {
@@ -107,22 +103,17 @@ else if ($fromform = $selectform->get_data()) {
     print "validation error";
 } else {
     // first visit to page
-} 
+}
 
-//Print header
-$navlinks[] = array('name' => $stradministration, 'link' => "$CFG->wwwroot/$CFG->admin/index.php", 'type' => 'misc');
-$navlinks[] = array('name' => $strhierarchybackup, 'link' => null, 'type' => 'misc');
-$navigation = build_navigation($navlinks);
-
-print_header("$site->shortname: $strhierarchybackup", $site->fullname, $navigation);
+admin_externalpage_print_header();
 
 //Print form
 print_heading(format_string("$strhierarchybackup"));
 
-// TODO Display the form
 if (!$fromform) {
-    $selectform->display(); 
+    $selectform->display();
 }
+
 //Print footer
 print_footer();
 
