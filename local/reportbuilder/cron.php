@@ -1,6 +1,7 @@
 <?php
 
 require_once($CFG->dirroot . '/local/reportbuilder/lib.php');
+require_once($CFG->dirroot . '/local/reportbuilder/groupslib.php');
 
 // how many locked crons to ignore before starting to print errors
 define('REPORT_BUILDER_CRON_WAIT_NUM', 10);
@@ -47,6 +48,9 @@ function reportbuilder_cron($grp=null) {
             mtrace('Warning: preprocessor "'.$preproc.'" not found.');
             continue;
         }
+
+        // check for items where tags have been added or removed
+        update_tag_grouping($groupid);
 
         // get list of items and when they were last processed
         $trackinfo = $pp->get_track_info();
