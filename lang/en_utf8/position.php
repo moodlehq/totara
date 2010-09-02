@@ -89,3 +89,4 @@ $string['clickfornonjsform'] = 'Click here for a non-javascript version of this 
 $string['name'] = 'Name';
 $string['editgeneric'] = 'Edit $a';
 $string['currentlyselected'] = 'Currently selected';
+$string['entervaliddate'] = 'Enter a valid date';

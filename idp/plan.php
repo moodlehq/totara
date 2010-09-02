@@ -31,48 +31,7 @@ if ( $action != 'create' ){
     unset($plan);
 }
 
-if (('create' == $action or 'rename' == $action or 'clone' == $action) && !empty($name) && !empty($startdate) && !empty($enddate)) {
-
-    $errorurl = "plan.php?action={$action}" . (($action=='create')?'':"&planid={$planid}");
-
-    // Parse dates from the user
-    if (!$starttime = convert_userdate($startdate)) {
-        error(get_string('error:badstartdate', 'idp'), $errorurl);
-    }
-    if (!$endtime = convert_userdate($enddate)) {
-        error(get_string('error:badenddate', 'idp'), $errorurl);
-    }
-
-    // Simple validation check
-    if ($endtime < $starttime) {
-        error(get_string('error:endbeforestart', 'idp'), $errorurl);
-    }
-
-    // Perform the action
-    if ('create' == $action) {
-        if (!$id = create_new_plan($name, $starttime, $endtime, $templateid)) {
-            error(get_string('error:cannotcreateplan', 'idp'), $errorurl);
-        }
-        redirect($CFG->wwwroot.'/idp/revision.php?id='.$id);
-    }
-    else if ('clone' == $action){
-        $currevision = get_revision($planid);
-        if (!$newplanid = clone_plan($currevision->id)){
-            error(get_string('error:cannotcloneplan','idp'), $errorurl);
-        }
-        if(!rename_plan($newplanid, $name, $starttime, $endtime)){
-            error(get_string('error:cannotupdateclonedplan', 'idp'), $errorurl);
-        }
-        redirect($CFG->wwwroot . '/idp/revision.php?id=' . $newplanid);
-    }
-    else {
-        if (!rename_plan($planid, $name, $starttime, $endtime)) {
-            error(get_string('error:cannotrenameplan', 'idp'), $errorurl);
-        }
-        redirect($CFG->wwwroot.'/idp/index.php');
-    }
-}
-elseif ('create' == $action or 'rename' == $action or 'clone' == $action) {
+if ('create' == $action or 'rename' == $action or 'clone' == $action) {
     $stridps = get_string('idps', 'idp');
     $pagetitle = get_string("{$action}planbreadcrumb", 'idp');
 
@@ -90,6 +49,49 @@ elseif ('create' == $action or 'rename' == $action or 'clone' == $action) {
     $navlinks = array();
     $navlinks[] = array('name' => $stridps, 'link' => $CFG->wwwroot."/idp/index.php", 'type' => 'home');
     $navlinks[] = array('name' => $pagetitle, 'link' => '', 'type' => 'home');
+
+    $form = new create_new_idp_form('plan.php', compact('action', 'planid', 'templateid'));
+
+
+    if ($form->is_cancelled()){
+        redirect($CFG->wwwroot. '/idp/index.php'); // redirect to the idp page
+    }
+
+    if ($fromform = $form->get_data()) {
+
+        if(empty($fromform->submitbutton)) {
+        }
+        else{
+            $name = $fromform->planname;
+            $starttime = convert_userdate($fromform->startdate);
+            $endtime = convert_userdate($fromform->enddate);
+            $templateid = $fromform->templateid;
+
+            // Perform the action
+            if ('create' == $action) {
+                if (!$id = create_new_plan($name, $starttime, $endtime, $templateid)) {
+                    error(get_string('error:cannotcreateplan', 'idp'), $errorurl);
+                }
+                redirect($CFG->wwwroot.'/idp/revision.php?id='.$id);
+            }
+            else if ('clone' == $action){
+                $currevision = get_revision($planid);
+                if (!$newplanid = clone_plan($currevision->id)){
+                    error(get_string('error:cannotcloneplan','idp'), $errorurl);
+                }
+                if(!rename_plan($newplanid, $name, $starttime, $endtime)){
+                    error(get_string('error:cannotupdateclonedplan', 'idp'), $errorurl);
+                }
+                redirect($CFG->wwwroot . '/idp/revision.php?id=' . $newplanid);
+            }
+            else {
+                if (!rename_plan($planid, $name, $starttime, $endtime)) {
+                    error(get_string('error:cannotrenameplan', 'idp'), $errorurl);
+                }
+                redirect($CFG->wwwroot.'/idp/index.php');
+            }
+        }
+    }
 
     $PAGE->print_header($stridps, $navlinks);
 
@@ -113,6 +115,7 @@ elseif ('create' == $action or 'rename' == $action or 'clone' == $action) {
 
         break;
         case 'middle':
+
 
             echo '<td valign="top" id="middle-column">';
             // Add YUI javascript and CSS.
@@ -144,7 +147,6 @@ elseif ('create' == $action or 'rename' == $action or 'clone' == $action) {
             //Get current template id TODO add checking to this
             $templateid = get_field('idp_template', 'id', 'current', 1);
 
-            $form = new create_new_idp_form('plan.php', compact('action', 'planid', 'templateid'));
             $form->set_data($idp);
             print '<p>'.get_string('trainingperiodexplanation', 'idp').'</p>';
             $form->display();

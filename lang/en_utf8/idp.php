@@ -444,4 +444,6 @@ $string['error:update_comparea_fail'] = 'An error occured when updating Competen
 
 $string['create_comparea_success'] = 'Successfully created Competency Area';
 $string['error:create_comparea_fail'] = 'An error occured when creating Competency Area';
+$string['error:startafterfinish'] = 'Specified start date is after the end date';
+$string['error:entervaliddate'] = 'Enter a valid date';
 ?>

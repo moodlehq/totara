@@ -180,18 +180,17 @@ class create_new_idp_form extends moodleform {
         $mform->addElement('text', 'startdate', get_string('startdate', 'idp'));
         $mform->addElement('text', 'enddate', get_string('enddate', 'idp'));
 
+        $mform->addRule('startdate',get_string('entervaliddate','idp'),'regex', '/^(0[1-9]|[12][0-9]|3[01])[- \/.](0[1-9]|1[012])[- \/.](19|20)\d\d$/');
+        $mform->addRule('enddate',get_string('entervaliddate','idp'),'regex', '/^(0[1-9]|[12][0-9]|3[01])[- \/.](0[1-9]|1[012])[- \/.](19|20)\d\d$/');
+
         $mform->setType('startdate', PARAM_TEXT);
         $mform->setType('enddate', PARAM_TEXT);
 
-        $mform->setDefault('startdate','dd/mm/yy');
+        $mform->setDefault('startdate','dd/mm/yyyy');
         $mform->setHelpButton('startdate', array('userpositionstartdate', get_string('startdate', 'position')), true);
 
-        $mform->setDefault('enddate','dd/mm/yy');
+        $mform->setDefault('enddate','dd/mm/yyyy');
         $mform->setHelpButton('enddate', array('userpositionstartdate', get_string('startdate', 'position')), true);
-
-        $renderer =& $mform->defaultRenderer();
-        $template = '<label class="test" style="vertical-align:top">{label}</label> {element}';
-        $renderer->setGroupElementTemplate($template, 'datesgroup');
 
         $this->add_action_buttons(true, get_string($action.'plan', 'idp'));
     }
@@ -238,10 +237,10 @@ class create_new_idp_form extends moodleform {
         $enddate = convert_userdate( $enddatestr );
 
         // Enforce valid dates
-        if ( false === $startdate && $startdatestr !== 'dd/mm/yy' && $startdatestr !== '' ){
+        if ( false === $startdate && $startdatestr !== 'dd/mm/yyyy' && $startdatestr !== '' ){
             $result['startdate'] = get_string('error:dateformat','idp');
         }
-        if ( false === $enddate && $enddatestr !== 'dd/mm/yy' && $enddatestr !== '' ){
+        if ( false === $enddate && $enddatestr !== 'dd/mm/yyyy' && $enddatestr !== '' ){
             $result['enddate'] = get_string('error:dateformat','idp');
         }
 
@@ -252,6 +251,7 @@ class create_new_idp_form extends moodleform {
             $result['enddate'] = $errstr;
             unset($errstr);
         }
+        return $result;
     }
 }
 ?>

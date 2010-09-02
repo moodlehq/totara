@@ -179,6 +179,11 @@ class user_position_assignment_form extends moodleform {
             $mform->setDefault('timevalidto','dd/mm/yy');
             $mform->setHelpButton('managerselector', array('userpositionmanager', get_string('choosemanager', 'position')), true);
             $mform->setHelpButton('timevalidto_group', array('userpositionfinishdate', get_string('finishdate', 'position')), true);
+
+            $rule1['timevalidfrom'][] = array('Enter a valid date','regex' ,'/^(0[1-9]|[12][0-9]|3[01])[- \/.](0[1-9]|1[012])[- \/.](19|20)\d\d$/');
+            $mform->addGroupRule('timevalidfrom_group', $rule1);
+            $rule2['timevalidto'][] = array('Enter a valid date','regex' ,'/^(0[1-9]|[12][0-9]|3[01])[- \/.](0[1-9]|1[012])[- \/.](19|20)\d\d$/');
+            $mform->addGroupRule('timevalidto_group', $rule2);
         }
 
         $this->add_action_buttons(true, get_string('updateposition', 'position'));
