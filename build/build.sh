@@ -19,7 +19,7 @@ echo "Run simpletests";
 python build/simpletests.py
 
 echo "Convert to Junit XML";
-nice xsltproc build/simpletest_to_junit.xsl build/logs/simpletest-results.xml > build/logs/TEST-suite.xml
+nice xsltproc build/simpletest_to_junit.xsl build/logs/simpletest-results.xml > build/logs/xml/TEST-suite.xml
 
 echo "Count lines of code";
 nice sloccount --wide --details . > build/logs/sloccount.sc
