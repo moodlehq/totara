@@ -19,20 +19,17 @@ echo "Run simpletests";
 python build/simpletests.py
 
 echo "Convert to Junit XML";
-nice xsltproc build/simpletest_to_junit.xsl build/logs/simpletest-results.xml > build/logs/xml/TEST-suite.xml
+xsltproc build/simpletest_to_junit.xsl build/logs/simpletest-results.xml > build/logs/xml/TEST-suite.xml
 
 echo "Count lines of code";
-nice sloccount --wide --details . > build/logs/sloccount.sc
+sloccount --wide --details . > build/logs/sloccount.sc
 
 echo "Run cucumber tests";
-nice cucumber --format junit --out build/logs/xml/
+cucumber --format junit --out build/logs/xml/
 
 # echo "Run pDepend";
 # TOO CPU/MEMORY INTENSIVE
 # pdepend --jdepend-xml=build/logs/jdepend.xml .
-
-#echo "Run phpDoc";
-#nice phpdoc -t build/docs/ --directory local/ -ti 'Test Job Docs' --parseprivate on --undocumentedelements on --output HTML:Smarty:PHP
 
 # echo "Run phpcpd";
 # nice phpcpd --log-pmd=build/logs/pmd.xml .
