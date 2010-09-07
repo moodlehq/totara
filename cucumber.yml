@@ -1,0 +1,12 @@
+<%
+std_opts = "build/cucumber/features --strict --tags ~@wip"
+%>
+#default: <%= std_opts %> -r build/cucumber/dbs/pgsql.rb -r build/cucumber/features --format progress
+full: <%= std_opts %> -r build/cucumber/dbs/pgsql.rb -r build/cucumber/features
+mysql: <%= std_opts %> -r build/cucumber/dbs/mysql.rb -r build/cucumber/features --format progress
+mysql_full: <%= std_opts %> -r build/cucumber/dbs/mysql.rb -r build/cucumber/features --format progress
+junit: <%= std_opts %> -r build/cucumber/dbs/pgsql.rb -r build/cucumber/features --format junit --out build/logs/xml/
+
+default: --strict --tags ~@wip -r build/cucumber/dbs/pgsql.rb -r build/cucumber/features/support/env.rb -r build/cucumber/features/support/plain.rb -r build/cucumber/features/step_definitions build/cucumber/features/standard --format progress
+selenium: -r build/cucumber/dbs/pgsql.rb -r build/cucumber/features/support/env.rb -r build/cucumber/features/support/selenium.rb -r build/cucumber/features/step_definitions/selenium build/cucumber/features/selenium
+

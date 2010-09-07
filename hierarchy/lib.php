@@ -444,7 +444,7 @@ class hierarchy {
         // Generate the button HTML.
         $options['edit'] = $edit;
         $options['type'] = $this->prefix;
-        return print_single_button($_SERVER['PHP_SELF'], $options, $label, 'get', '', true);
+        return print_single_button(qualified_me(), $options, $label, 'get', '', true);
     }
 
     /**

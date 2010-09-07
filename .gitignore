@@ -3,4 +3,5 @@
 /build/logs/
 /build/docs/
 tags
+webrat*
 
