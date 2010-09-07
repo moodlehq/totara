@@ -11,11 +11,8 @@ require_once('idp_forms.php');
 require_login();
 
 $action = required_param('action', PARAM_ACTION); // One of: clone, create, delete, rename
-$name = optional_param('planname', '', PARAM_NOTAGS); // Plan name
-$startdate = optional_param('startdate', '', PARAM_NOTAGS); // Start of the training period
-$enddate = optional_param('enddate', '', PARAM_NOTAGS); // End of the training period
 $planid = optional_param('planid', 0, PARAM_INT); // IDP ID (idp.id)
-$templateid = optional_param('templateid', 0, PARAM_INT);
+$confirm = optional_param('confirm', 0, PARAM_INT);
 
 $sitecontext = get_context_instance(CONTEXT_SYSTEM);
 $contextuser = get_context_instance(CONTEXT_USER, $USER->id);
@@ -31,31 +28,47 @@ if ( $action != 'create' ){
     unset($plan);
 }
 
+if ($confirm && $action=='delete') {
+    if (confirm_sesskey()){
+        if(delete_plan($planid)) {
+            redirect($CFG->wwwroot.'/idp/index.php');
+        }
+        else {
+            error(get_string('error:cannotdeletesubmit', 'idp'), "index.php");
+        }
+    }
+}
+
+$PAGE = page_create_object('Totara', $USER->id);
+$templateid = get_field('idp_template', 'id', 'current', 1);  //Get current template id TODO add checking to this
+$form = new create_new_idp_form('plan.php', compact('action', 'planid', 'templateid'));
+
+if ($form->is_cancelled()){
+    redirect($CFG->wwwroot. '/idp/index.php'); // redirect to the idp page
+}
+
+// Stylesheet and javascript
+local_js(array(
+    MBE_JS_DIALOG,
+    MBE_JS_TREEVIEW,
+    MBE_JS_DATEPICKER
+));
+
+$stridps = get_string('idps', 'idp');
+$pagetitle = get_string("{$action}planbreadcrumb", 'idp');
+
+$navlinks = array();
+$navlinks[] = array('name' => $stridps, 'link' => $CFG->wwwroot."/idp/index.php", 'type' => 'home');
+$navlinks[] = array('name' => $pagetitle, 'link' => '', 'type' => 'home');
+
+
 if ('create' == $action or 'rename' == $action or 'clone' == $action) {
     $stridps = get_string('idps', 'idp');
     $pagetitle = get_string("{$action}planbreadcrumb", 'idp');
 
-    // Stylesheet and javascript
-    local_js(array(
-        MBE_JS_DIALOG,
-        MBE_JS_TREEVIEW,
-        MBE_JS_DATEPICKER
-    ));
-
     $PAGE = page_create_object('Totara', $USER->id);
     $pageblocks = blocks_setup($PAGE,BLOCKS_PINNED_BOTH);
     $blocks_preferred_width = bounded_number(180, blocks_preferred_width($pageblocks[BLOCK_POS_LEFT]), 210);
-
-    $navlinks = array();
-    $navlinks[] = array('name' => $stridps, 'link' => $CFG->wwwroot."/idp/index.php", 'type' => 'home');
-    $navlinks[] = array('name' => $pagetitle, 'link' => '', 'type' => 'home');
-
-    $form = new create_new_idp_form('plan.php', compact('action', 'planid', 'templateid'));
-
-
-    if ($form->is_cancelled()){
-        redirect($CFG->wwwroot. '/idp/index.php'); // redirect to the idp page
-    }
 
     if ($fromform = $form->get_data()) {
 
@@ -113,7 +126,7 @@ if ('create' == $action or 'rename' == $action or 'clone' == $action) {
                 echo '<td id="left-column"></td>';
             }
 
-        break;
+            break;
         case 'middle':
 
 
@@ -144,9 +157,6 @@ if ('create' == $action or 'rename' == $action or 'clone' == $action) {
                 $idp = new object();
             }
 
-            //Get current template id TODO add checking to this
-            $templateid = get_field('idp_template', 'id', 'current', 1);
-
             $form->set_data($idp);
             print '<p>'.get_string('trainingperiodexplanation', 'idp').'</p>';
             $form->display();
@@ -163,23 +173,22 @@ if ('create' == $action or 'rename' == $action or 'clone' == $action) {
                 buttonImageOnly: true
             }
         );
-	});
+    });
 </script>
 HEREDOC;
 
             echo '</td>';
 
-    break;
-    case 'right':
-        echo '<td style="vertical-align: top; width: '.$blocks_preferred_width.'px;" id="right-column">';
-        print_container_start();
-        blocks_print_group($PAGE, $pageblocks, BLOCK_POS_RIGHT);
-        print_container_end();
-        echo '</td>';
-    break;
+            break;
+        case 'right':
+            echo '<td style="vertical-align: top; width: '.$blocks_preferred_width.'px;" id="right-column">';
+            print_container_start();
+            blocks_print_group($PAGE, $pageblocks, BLOCK_POS_RIGHT);
+            print_container_end();
+            echo '</td>';
+            break;
+        }
     }
-}
-
 
     /// Finish the page
     print '</tr></table>';
@@ -187,16 +196,18 @@ HEREDOC;
     print_footer();
 }
 elseif ('delete' == $action) {
+    $PAGE->print_header($stridps, $navlinks);
+
     if (0 == $planid) {
         error(get_string('error:invalidplanid', 'idp'));
     }
     else {
-        if (delete_plan($planid)) {
-            redirect($CFG->wwwroot.'/idp/index.php');
-        }
-        else {
-            error(get_string('error:plannotempty', 'idp'), "index.php");
-        }
+        $planname = get_field('idp', 'name', 'id', $planid);
+        notice_yesno(
+            "Are you sure you want to delete this Plan and all its data?<br /><br />".format_string($planname),
+            $CFG->wwwroot.'/idp/plan.php?planid='.$planid.'&action=delete&confirm=1&sesskey='.$USER->sesskey,
+            $CFG->wwwroot.'/idp/index.php'
+        );
     }
 }
 else {

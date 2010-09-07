@@ -774,35 +774,45 @@ function get_modification_time($revisionid) {
  * Delete the given plan if it only contains one empty revision.
  */
 function delete_plan($planid) {
-
+    global $CFG;
     // Make sure there is only one revision
     if (count_records('idp_revision', 'idp', $planid) > 1) {
         return false;
     }
-    $revision = get_revision($planid);
 
-    // Make sure the revision is empty
-    if ('notsubmitted' != $revision->status) {
-        return false; // Status must be unsubmitted
-    }
-    if (count_records('idp_revision_competency', 'revision', $revision->id) > 0) {
-        return false; // There are competencies in this revision
-    }
-    if (count_records('idp_revision_course', 'revision', $revision->id) > 0) {
-        return false; // There are courses in this revision
-    }
-    if (count_records('idp_revision_comment', 'revision', $revision->id) > 0) {
-        return false; // There are comments on this revision
-    }
-    if (count_records('idp_list_item', 'revision', $revision->id) > 0) {
-        return false; // There are list items on this revision
-    }
+    $revisions = get_records_sql("SELECT * FROM {$CFG->prefix}idp_revision WHERE idp={$planid}");
+    foreach($revisions as $revision){
+        if(get_revision($planid) == $revision){
+            // Make sure the current revision has not been submitted
+            if ('notsubmitted' != $revision->status) {
+                return false; // Status must be unsubmitted
+            }
+        }
+        // Actual deletion
+        begin_sql();
+        if (!delete_records('idp_revision_competency', 'id', $revision->id)) {
+            rollback_sql();
+            return false;
+        }
+        if (!delete_records('idp_revision_course', 'id', $revision->id)) {
+            rollback_sql();
+            return false;
+        }
 
-    // Actual deletion
-    begin_sql();
-    if (!delete_records('idp_revision', 'id', $revision->id)) {
-        rollback_sql();
-        return false;
+        if (!delete_records('idp_revision_comment', 'id', $revision->id)) {
+            rollback_sql();
+            return false;
+        }
+
+        if (!delete_records('idp_list_item', 'id', $revision->id)) {
+            rollback_sql();
+            return false;
+        }
+
+        if (!delete_records('idp_revision', 'id', $revision->id)) {
+            rollback_sql();
+            return false;
+        }
     }
     if (!delete_records('idp', 'id', $planid)) {
         rollback_sql();

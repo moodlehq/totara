@@ -180,8 +180,8 @@ class create_new_idp_form extends moodleform {
         $mform->addElement('text', 'startdate', get_string('startdate', 'idp'));
         $mform->addElement('text', 'enddate', get_string('enddate', 'idp'));
 
-        $mform->addRule('startdate',get_string('entervaliddate','idp'),'regex', '/^(0[1-9]|[12][0-9]|3[01])[- \/.](0[1-9]|1[012])[- \/.](19|20)\d\d$/');
-        $mform->addRule('enddate',get_string('entervaliddate','idp'),'regex', '/^(0[1-9]|[12][0-9]|3[01])[- \/.](0[1-9]|1[012])[- \/.](19|20)\d\d$/');
+        $mform->addRule('startdate',get_string('error:entervaliddate','idp'),'regex', '/^(0[1-9]|[12][0-9]|3[01])[- \/.](0[1-9]|1[012])[- \/.](19|20)\d\d$/');
+        $mform->addRule('enddate',get_string('error:entervaliddate','idp'),'regex', '/^(0[1-9]|[12][0-9]|3[01])[- \/.](0[1-9]|1[012])[- \/.](19|20)\d\d$/');
 
         $mform->setType('startdate', PARAM_TEXT);
         $mform->setType('enddate', PARAM_TEXT);
