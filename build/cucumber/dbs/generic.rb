@@ -22,7 +22,7 @@ def get_record_object table_name, number=nil
     send meth, number.to_i
   rescue
     raise "Could not find method #{meth.to_s}. " +
-      "You need to create a method in cucumber/record_templates.rb."
+      "You need to create a method in cucumber/features/support/record_templates.rb."
   end
 end
 
