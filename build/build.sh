@@ -21,11 +21,12 @@ python build/simpletests.py
 echo "Convert to Junit XML";
 xsltproc build/simpletest_to_junit.xsl build/logs/simpletest-results.xml > build/logs/xml/TEST-suite.xml
 
-echo "Count lines of code";
-sloccount --wide --details . > build/logs/sloccount.sc
-
 echo "Run cucumber tests";
 cucumber --format junit --out build/logs/xml/
+
+# too slow
+#echo "Count lines of code";
+#sloccount --wide --details . > build/logs/sloccount.sc
 
 # echo "Run pDepend";
 # TOO CPU/MEMORY INTENSIVE
