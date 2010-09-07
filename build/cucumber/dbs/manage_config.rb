@@ -33,6 +33,17 @@ def parse_config
     end
   end
 
+  # if dbhost matches postgres socket format, then extract info from
+  # dbhost instead
+  if out['location'].include?('user=') then
+    dbstring = /user=\\'([^']+)\\' password=\\'([^']+)\\' dbname=\\'([^']+)\\/;
+    if(res = dbstring.match(out['location']))
+      out['username'] = res[1]
+      out['password'] = res[2]
+      out['name'] = res[3]
+      out['location'] = 'localhost'
+    end
+  end
   out
 end
 
