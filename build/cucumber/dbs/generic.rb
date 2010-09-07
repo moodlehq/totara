@@ -14,7 +14,7 @@ def get_record_object table_name, number=nil
 
   # use timestamp if not specified
   if number.nil? then
-    number = Time.now.to_i
+    number = get_next_sequence(table_name, 'id')
   end
   # strip mdl_ prefix from table_name
   meth = ('get_' + table_name[$prefix.length..-1] + '_record').to_sym
