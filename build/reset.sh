@@ -9,11 +9,11 @@
 echo "Delete config.php";
 rm config.php
 
-echo "Drop old database mdl19-hudsontesting";
-dropdb mdl19-hudsontesting
+echo "Drop old database t1-hudsontesting";
+dropdb t1-hudsontesting
 
-echo "Create new database mdl19-hudsontesting";
-createdb -O hudson mdl19-hudsontesting
+echo "Create new database t1-hudsontesting";
+createdb -O hudson t1-hudsontesting
 
 echo "Delete old moodledata";
 rm -Rf ../moodledata/
@@ -30,11 +30,11 @@ chmod 777 ../moodle_error.log
 echo "Initialize installation";
 /usr/bin/php admin/cliupgrade.php \
       --lang=en_utf8 \
-      --webaddr="http://hudson.spastk.wgtn.cat-it.co.nz" \
+      --webaddr="http://brumbies.wgtn.cat-it.co.nz/totara-hudson/" \
       --moodledir="/var/lib/hudson/jobs/Totara/workspace" \
       --datadir="/var/lib/hudson/jobs/Totara/moodledata/" \
       --dbtype="postgres7" \
-      --dbname="mdl19-hudsontesting" \
+      --dbname="t1-hudsontesting" \
       --dbhost="localhost" \
       --dbuser="hudson" \
       --dbpass="password" \
@@ -46,11 +46,12 @@ echo "Initialize installation";
       --sitenewsitems=0 \
       --adminfirstname=Admin \
       --adminlastname=User \
-      --adminemail=aaronb@catalyst.net.nz \
+      --adminemail=simonc@catalyst.net.nz \
       --adminusername=admin \
       --adminpassword="passworD1!" \
       --interactivelevel=0
 
 
 echo "Hit notifications page to complete installation";
-wget -O - http://hudson.spastk.wgtn.cat-it.co.nz/admin/index.php
+wget -O - http://brumbies.wgtn.cat-it.co.nz/totara-hudson/admin/index.php
+

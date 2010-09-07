@@ -3,7 +3,7 @@
 import mechanize
 
 print 'Open login page'
-rooturl = 'http://hudson.spastk.wgtn.cat-it.co.nz/'
+rooturl = 'http://brumbies.wgtn.cat-it.co.nz/totara-hudson/'
 mech = mechanize.Browser()
 mech.open(rooturl+'login/index.php')
 

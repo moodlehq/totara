@@ -4,11 +4,14 @@ $ROOT = '/var/lib/hudson/jobs/Totara';
 
 $CFG            = new stdClass();
 $CFG->dbtype    = 'postgres7';
-$CFG->dbhost    = 'user=\'hudson\' password=\'password\' dbname=\'mdl19-hudsontesting\'';
+$CFG->dbhost    = 'localhost';
+$CFG->dbuser    = 'hudson';
+$CFG->dbpass    = 'password'
+$CFG->dbname    = 't1-hudsontesting';
 $CFG->dbpersist =  false;
 $CFG->prefix    = 'mdl_';
 
-$CFG->wwwroot   = 'http://'.$_SERVER['SERVER_NAME'];
+$CFG->wwwroot   = 'http://brumbies.wgtn.cat-it.co.nz/totara-hudson/';
 $CFG->dirroot   = $ROOT.'/workspace';
 $CFG->dataroot  = $ROOT.'/moodledata/';
 $CFG->admin     = 'admin';
