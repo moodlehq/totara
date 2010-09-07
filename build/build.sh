@@ -24,6 +24,9 @@ nice xsltproc build/simpletest_to_junit.xsl build/logs/simpletest-results.xml > 
 echo "Count lines of code";
 nice sloccount --wide --details . > build/logs/sloccount.sc
 
+echo "Run cucumber tests";
+nice cucumber --format junit --out build/logs/xml/
+
 # echo "Run pDepend";
 # TOO CPU/MEMORY INTENSIVE
 # pdepend --jdepend-xml=build/logs/jdepend.xml .
