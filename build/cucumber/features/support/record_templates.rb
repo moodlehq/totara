@@ -34,7 +34,7 @@ def get_comp_scale_values_record number
     'idnumber' => 'ID' + number.to_s,
     'description' => 'Description for Competency Scale Value ' + number.to_s,
     'scaleid' => get_next_sequence('mdl_comp_scale','id').to_i - 1,
-    'numericscore' => number,
+    'numericscore' => get_next_sequence('mdl_comp_scale_values', 'sortorder'),
     'sortorder' => get_next_sequence('mdl_comp_scale_values', 'sortorder'),
     'timemodified' => Time.now.to_i,
     'usermodified' => 0,
