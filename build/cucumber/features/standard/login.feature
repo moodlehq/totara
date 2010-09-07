@@ -22,12 +22,12 @@ Feature: Login
   Scenario: Logout
     Given I am logged in as admin
     When I click "Logout"
-    Then I should see "Login here using your username and password"
+    Then I should see "You are not logged in"
 
   Scenario: Not logged in
     Given I am not logged in
     And I am on the home page
-    Then I should see "Login here using your username and password"
+    Then I should see "You are not logged in"
 
   Scenario: Login as learner
     Given I am logged in as a learner
