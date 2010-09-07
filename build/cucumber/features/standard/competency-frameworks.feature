@@ -49,16 +49,18 @@ Feature: Manage Competency Frameworks
 
 # TODO figure out how to check zero frameworks as table doesn't exist at all
 
-# TODO There must be a scale for this to work
-#  @store_comp_framework
-#  Scenario: Add a new competency framework
-#    Given I am logged in as admin
-#      And I am on the add competency framework page
-#      And I fill in "fullname" with "My competency fullname"
-#      And I fill in "shortname" with "My shortname"
-#      And I press "Save changes"
-#    Then I should be on manage competency frameworks page
-#      And I should see "My competency fullname"
+  @store_comp_framework
+  @store_comp_scale
+  @store_comp_scale_values
+  Scenario: Add a new competency framework
+    Given I am logged in as admin
+      And there is a competency scale
+      And I am on the add competency framework page
+      And I fill in "fullname" with "My competency fullname"
+      And I fill in "shortname" with "My shortname"
+      And I press "Save changes"
+    Then I should be on manage competency frameworks page
+      And I should see "My competency fullname"
 
 # example of a multi-line step using tables
 # see: http://wiki.github.com/aslakhellesoy/cucumber/multiline-step-arguments
@@ -80,14 +82,16 @@ Feature: Manage Competency Frameworks
 # Requires webrat patch (use one from 2nd comment):
 # https://webrat.lighthouseapp.com/projects/10503/tickets/384-webrat-does-not-pass-empty-form-fields-correctly-to-mechanize
 
-# TODO There must be a scale for this to work
-#  @store_comp_framework
-#  Scenario: Fail to create a framework without required fields
-#    Given there are no competency framework records
-#      And I am logged in as admin
-#      And I am on the add competency framework page
-#      And I press "Save changes"
-#    Then I should see "Missing framework full name"
-#      And I should see "Missing framework short name"
-#      And there should be 0 competency framework records
+  @store_comp_framework
+  @store_comp_scale
+  @store_comp_scale_values
+  Scenario: Fail to create a framework without required fields
+    Given there are no competency framework records
+      And there is a competency scale
+      And I am logged in as admin
+      And I am on the add competency framework page
+      And I press "Save changes"
+    Then I should see "Missing framework full name"
+      And I should see "Missing framework short name"
+      And there should be 0 competency framework records
 

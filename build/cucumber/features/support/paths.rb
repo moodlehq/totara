@@ -4,6 +4,8 @@ module NavigationHelpers
     {
       'competency framework' => 'comp_framework',
       'competency' => 'comp',
+      'competency scale' => 'comp_scale',
+      'competency scale value' => 'comp_scale_values',
     }
   end
 
