@@ -51,6 +51,8 @@ echo "Initialize installation";
       --adminpassword="passworD1!" \
       --interactivelevel=0
 
+echo "Generate some test users"
+php -f build/generate-users.php
 
 echo "Hit notifications page to complete installation";
 wget -O - http://brumbies.wgtn.cat-it.co.nz/totara-hudson/admin/index.php
