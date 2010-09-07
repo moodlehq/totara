@@ -40,3 +40,13 @@ def empty_table table_name
   delete_all_records table_name
 end
 
+# return a user's ID given their username
+def get_username_id(username)
+  get_field 'mdl_user', 'id', 'username', username
+end
+
+def get_scale_id(scalename)
+  get_field 'mdl_comp_scale', 'id', 'fullname', scalename
+end
+
+

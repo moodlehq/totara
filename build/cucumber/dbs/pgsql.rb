@@ -28,10 +28,10 @@ def count_records table_name
   result.getvalue(0,0)
 end
 
-# return a user's ID given their username
-def get_username_id(username)
-  learner = run_query("SELECT id FROM mdl_user WHERE username='#{username}'")
-  learner.getvalue(0,0)
+# return a single field from a table
+def get_field table_name, field_name, element, value
+  result = run_query("SELECT #{field_name} FROM #{table_name} WHERE #{element}='#{value}'")
+  result.getvalue(0,0)
 end
 
 # return next available number from column
