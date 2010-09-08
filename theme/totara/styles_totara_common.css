@@ -251,7 +251,7 @@ table.planlist th.name {
     width: 245px;
 }
 table.planlist th.options {
-    width: 45px;
+    width: 60px;
     text-align: center;
 }
 table.planlist td.options {
@@ -337,6 +337,11 @@ table#list-assignedcompetencytemplates td[colspan] {
 
 body#idp-plan img.ui-datepicker-trigger {
     margin-right: 5px;
+}
+
+div.nocompetencies {
+    padding-top: 10px;
+    padding-bottom: 5px;
 }
 
 /*****************************************************************************/

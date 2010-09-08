@@ -280,11 +280,11 @@ function print_idp_competencies_view_flex($revision, $competencies, $editingon =
             $addstr = trim(get_string('add'));
             if (($USER->id == $revision->userid && $update) || totara_is_manager($revision->userid) || has_capability('moodle/site:doanything',$context)){
                 if (isset($competency->ceid)){
-                    $editlink = '<a href="'.$CFG->wwwroot.'/hierarchy/type/competency/evidence/edit.php?id='.$competency->ceid.'&amp;s='.sesskey().
+                    $editlink = ' <a href="'.$CFG->wwwroot.'/hierarchy/type/competency/evidence/edit.php?id='.$competency->ceid.'&amp;s='.sesskey().
                         '&amp;returnurl='.urlencode(qualified_me()).'" title="'.$editstr.
                         '"><img src="'.$CFG->pixpath.'/t/edit.gif" class="iconsmall" alt="'.$editstr.'" /></a>';
                     $statuscell .= $editlink;
-                    $deletelink = '<a href="'.$CFG->wwwroot.'/hierarchy/type/competency/evidence/delete.php?id='.$competency->ceid.'&amp;s='.sesskey().
+                    $deletelink = ' <a href="'.$CFG->wwwroot.'/hierarchy/type/competency/evidence/delete.php?id='.$competency->ceid.'&amp;s='.sesskey().
                         '&amp;returnurl='.urlencode(qualified_me()).'" title="'.$deletestr.
                         '"><img src="'.$CFG->pixpath.'/t/delete.gif" class="iconsmall" alt="'.$deletestr.'" /></a>';
                     $statuscell .= $deletelink;
@@ -339,7 +339,7 @@ function print_idp_competencies_view_flex($revision, $competencies, $editingon =
             }
 
             if ($editingon) {
-                $tablerow[] = "<a href=\"{$CFG->wwwroot}/hierarchy/type/competency/idp/remove.php?id={$competency->id}&revision={$revision->id}\" title=\"$str_remove\">".
+                $tablerow[] = "<a href=\"{$CFG->wwwroot}/hierarchy/type/competency/idp/remove.php?id={$competency->id}&revision={$revision->id}&framework={$competency->fid}\" title=\"$str_remove\">".
                     "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_remove\" /></a>";
             }
             $table->add_data($tablerow);
@@ -347,7 +347,7 @@ function print_idp_competencies_view_flex($revision, $competencies, $editingon =
         $table->print_html();
     }
     else {
-        echo '<i>'.get_string('emptyplancompetenciesframework', 'idp').'</i>';
+        echo '<div class=\'nocompetencies\'><i>'.get_string('emptyplancompetenciesframework', 'idp').'</i></div>';
     }
 
     if ($editingon) {

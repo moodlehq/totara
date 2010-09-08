@@ -1606,7 +1606,7 @@ function print_user_learning_plans($userid, $canviewplans, $page, $perpage, $ord
                         }
                     }
                     if(has_capability('moodle/local:idpsetcurrent', $usercontext) && $plan->current!=1){
-                        $table .= user_learning_plan_currentsetbutton($plan->id, get_string('currentset', 'idp'), $userid);
+                        $table .= ' '. user_learning_plan_currentsetbutton($plan->id, get_string('currentset', 'idp'), $userid);
                     }
                     $table .= ' '.user_learning_plan_clonebutton($plan->id, $cloneplanstr);
                     $table .= '</td></tr>';
@@ -1659,7 +1659,7 @@ function user_learning_plan_currentsetbutton($planid, $makecurrentstr, $userid) 
         . "&amp;planid={$planid}&amp;current=1\">"
         . "<img id=\"current{$planid}\" "
         . "style=\"cursor: pointer\" alt\"$makecurrentstr\" "
-        . "title=\"$makecurrentstr\" src=\"{$CFG->pixpath}/t/current.gif\" "
+        . "title=\"$makecurrentstr\" src=\"{$CFG->pixpath}/t/current.gif\" class=\"iconsmall\""
         . "/></a>";
     return $link;
 }
@@ -1670,7 +1670,7 @@ function user_learning_plan_clonebutton($planid, $clonestr) {
         . "&amp;action=clone \">"
         . "<img id=\"cloneplan{$planid}\" "
         . "style=\"cursor: pointer\" alt\"$clonestr\" "
-        . "title=\"$clonestr\" src=\"{$CFG->pixpath}/t/copy.gif\" "
+        . "title=\"$clonestr\" src=\"{$CFG->pixpath}/t/copy.gif\" class=\"iconsmall\""
         . "/></a>";
     return $link;
 }

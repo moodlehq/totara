@@ -212,7 +212,7 @@ echo '</tr></table>';
 <script type="text/javascript">
 <!-- //
     var idp_revision_id = <?php echo $currevision->id ?>;
-    var idp_revision_frameworkid = <?php echo optional_param('framework', 1, PARAM_INT); ?>;
+    var idp_revision_frameworkid = <?php echo optional_param('framework', get_field_sql("SELECT id FROM {$CFG->prefix}comp_framework ORDER BY sortorder ASC"), PARAM_INT); ?>;
 
     function checkDateSet(){
         console.log($('input[@type=text].idpdate'));

@@ -638,7 +638,7 @@ h6 {
 	text-decoration: none;
 }
 .tabrow0 li.active ul.tabrow1 li a:hover {
-	text-decoration: underline;
+	text-decoration: none;
 }
 ul.tabrow1 {
 	background: url("images/tab/tabrow1.gif") top left repeat-x !important;	
@@ -671,8 +671,12 @@ ul.tabrow1 {
 
 .tabrow0 .here a,
 .tabrow0 .here a:hover {
-  font-weight:bold;
   text-decoration: none;
+}
+
+.tabrow0 .here .active a,
+.tabrow0 .here .active a:hover {
+  font-weight:bold;
 }
 
 ul.tabrow0 li ul.tabrow1 a{

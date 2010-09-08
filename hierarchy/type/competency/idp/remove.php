@@ -12,6 +12,7 @@ require_once($CFG->dirroot.'/idp/lib.php');
 $competencyid = required_param('id', PARAM_INT);
 // Revision id
 $revisionid = required_param('revision', PARAM_INT);
+$frameworkid = required_param('framework', PARAM_INT);
 
 $plan = get_plan_for_revision($revisionid);
 if ( !$plan ){
@@ -30,7 +31,7 @@ $dbresult = (boolean) delete_records('idp_revision_competency', 'revision', $rev
 $dbresult = $dbresult && update_modification_time($revisionid);
 if ($dbresult ){
     commit_sql();
-    redirect($CFG->wwwroot.'/idp/revision.php?id='.$plan->id);
+    redirect($CFG->wwwroot.'/idp/revision.php?id='.$plan->id.'&type=competencies&framework='.$frameworkid);
 } else {
     rollback_sql();
     print_error('error:removalfailed','idp');
