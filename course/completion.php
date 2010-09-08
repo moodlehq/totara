@@ -157,8 +157,8 @@ if ($js_enabled) {
     require_once($CFG->dirroot.'/local/js/lib/setup.php');
 
     local_js(array(
-        MBE_JS_DIALOG,
-        MBE_JS_TREEVIEW
+        TOTARA_JS_DIALOG,
+        TOTARA_JS_TREEVIEW
     ));
 
     require_js(array(

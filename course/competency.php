@@ -60,8 +60,8 @@ $can_edit = has_capability('moodle/local:updatecompetency', $context);
 
 
 local_js(array(
-    MBE_JS_DIALOG,
-    MBE_JS_TREEVIEW
+    TOTARA_JS_DIALOG,
+    TOTARA_JS_TREEVIEW
 ));
 
 require_js(array(

@@ -227,10 +227,10 @@ class reportbuilder {
 
         $code = array();
         if($dialog) {
-            $code[] = MBE_JS_DIALOG;
+            $code[] = TOTARA_JS_DIALOG;
         }
         if($treeview) {
-            $code[] = MBE_JS_TREEVIEW;
+            $code[] = TOTARA_JS_TREEVIEW;
         }
 
 

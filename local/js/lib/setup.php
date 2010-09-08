@@ -4,9 +4,9 @@ require_once($CFG->dirroot.'/hierarchy/type/position/lib.php');
 /**
  * Constants for defining JS to load
  */
-define('MBE_JS_DIALOG',         1);
-define('MBE_JS_TREEVIEW',       2);
-define('MBE_JS_DATEPICKER',     3);
+define('TOTARA_JS_DIALOG',         1);
+define('TOTARA_JS_TREEVIEW',       2);
+define('TOTARA_JS_DATEPICKER',     3);
 
 /**
  * Load appropriate JS and CSS files for lightbox
@@ -24,7 +24,7 @@ function local_js($options = array()) {
     $CFG->stylesheets[] = $CFG->wwwroot.'/local/js/lib/ui-lightness/jquery-ui-1.7.2.custom.css';
 
     // If dialog
-    if (in_array(MBE_JS_DIALOG, $options)) {
+    if (in_array(TOTARA_JS_DIALOG, $options)) {
 
         require_js(array(
             $CFG->wwwroot.'/local/js/lib/jquery-ui-1.7.2.custom.min.js',
@@ -36,7 +36,7 @@ function local_js($options = array()) {
     }
 
     // If treeview enabled
-    if (in_array(MBE_JS_TREEVIEW, $options)) {
+    if (in_array(TOTARA_JS_TREEVIEW, $options)) {
 
         require_js(array(
             $CFG->wwwroot.'/local/js/lib/jquery.treeview.min.js',

@@ -49,9 +49,9 @@ if ($form->is_cancelled()){
 
 // Stylesheet and javascript
 local_js(array(
-    MBE_JS_DIALOG,
-    MBE_JS_TREEVIEW,
-    MBE_JS_DATEPICKER
+    TOTARA_JS_DIALOG,
+    TOTARA_JS_TREEVIEW,
+    TOTARA_JS_DATEPICKER
 ));
 
 $stridps = get_string('idps', 'idp');
