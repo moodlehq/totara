@@ -29,14 +29,14 @@ module NavigationHelpers
       'a learners my records' => '/my/records.php?id=' + get_username_id('learner'),
       'an administrators my records' => '/my/records.php?id=' + get_username_id('admin'),
       'manage competency frameworks' => '/hierarchy/framework/index.php?type=competency',
-      'manage organisation frameworks' => 'hierarchy/framework/index.php?type=organisation',
-      'manage position frameworks' => 'hierarchy/framework/index.php?type=position',
+      'manage organisation frameworks' => '/hierarchy/framework/index.php?type=organisation',
+      'manage position frameworks' => '/hierarchy/framework/index.php?type=position',
       'add competency framework' => '/hierarchy/framework/edit.php?type=competency',
       'add position framework' => '/hierarchy/framework/edit.php?type=position',
       'add organisation framework' => '/hierarchy/framework/edit.php?type=organisation',
-      'manage competencies' => 'hierarchy/index.php?type=competency',
-      'manage positions' => 'hierarchy/index.php?type=position',
-      'manage organisations' => 'hierarchy/index.php?type=organisation',
+      'manage competencies' => '/hierarchy/index.php?type=competency',
+      'manage positions' => '/hierarchy/index.php?type=position',
+      'manage organisations' => '/hierarchy/index.php?type=organisation',
     }
   end
 
