@@ -5,14 +5,14 @@ class guide_totara_guide_competencies_step extends guide_default_step {
     function content_step_active () {
         global $CFG;
         $returnstring = '<p>The first step to configuring Totara is to set up competencies.</p>
-           <p>When you are ready to start open the guide ';
+           <p>When you are ready to start, open ';
         $guide = get_record('block_guides_guide', 'name', 'Configure Competencies');
         if ($guide) {
-            $returnstring .= 'by clicking <a href="' . $CFG->wwwroot . '/guides/view.php?startguide=' . $guide->id . '">Configure Competencies</a>.';
+            $returnstring .= '<a href="' . $CFG->wwwroot . '/guides/view.php?startguide=' . $guide->id . '">Configure Competencies</a>.';
         } else {
-            $returnstring .= 'Configure Competencies guide.';
+            $returnstring .= 'the Configure Competencies guide.';
         }
-        $returnstring .= ' This will open a step by step guide that will help you with this process.</p>';
+        $returnstring .= ' This step by step guide will help you with this process.</p>';
         return $returnstring;
     }
 

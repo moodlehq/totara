@@ -5,7 +5,7 @@ class guide_totara_create_organisation_custom_fields_step extends guide_default_
     function content_step_active () {
         return '<p>Setting up custom fields for each depth level is optional. Click <b>Finish step</b> if you wish to move on.</p>
             <p>When you are ready to start open the Custom field category you created and click the <b>Create custom field</b> button.</p>
-            <p>Refer to the <Setting up Custom Categories and Custom Fields help file> for further instructions.</p>
+            <p>Refer to the <a href="">Setting up Custom Categories and Custom Fields help file</a> for further instructions.</p>
             <p>On completing your custom fields set up, return to this guide and click <b>Finish step</b> to see the instructions for the next step.</p>';
     }
 

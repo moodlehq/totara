@@ -55,7 +55,7 @@
     print_header($gi->name. ": ", $gi->name . ": ", $navigation, "", "", true);
     delete_gi($gi);
     print_heading( get_string("deletedguide", "block/guides", $gi->name));
-    print_continue($CFG->wwwroot);
+    print_continue($CFG->wwwroot.'/guides/');
 
     print_footer();
 

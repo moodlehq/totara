@@ -4,7 +4,7 @@ class guide_totara_create_position_custom_field_categories_step extends guide_de
     ## Return the content the step should display when it is the active step in a guide:
     function content_step_active () {
     return '<p>Setting up custom field categories for each depth level is optional. Click <b>Finish step</b> if you wish to move on.</p>
-            <p>When you are ready to start, open up the depth you created and click the <b>Add new depth level</b> button.</p>
+            <p>When you are ready to start, open up the depth you created and click the <b>Create custom field category</b> button.</p>
             <p>Refer to the <a href="">Setting up Custom Categories and Custom Fields help file</a> for further instructions.</p>
             <p>On completing your custom categories, set up return to this guide and click <b>Finish step</b> to see the instructions for the next step.</p>';
     }

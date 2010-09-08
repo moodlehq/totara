@@ -5,14 +5,14 @@ class guide_totara_guide_positions_step extends guide_default_step {
     function content_step_active () {
         global $CFG;
         $returnstring = '<p>This step requires you to set up the positions structure.</p>
-           <p>When you are ready to start open the ';
+           <p>When you are ready to start, open ';
         $guide = get_record('block_guides_guide','name','Configure Positions');
         if ($guide) {
-            $returnstring .= 'by clicking <a href="' . $CFG->wwwroot . '/guides/view.php?startguide=' . $guide->id . '">Configure Positions</a>';
+            $returnstring .= '<a href="' . $CFG->wwwroot . '/guides/view.php?startguide=' . $guide->id . '">Configure Positions</a>.';
         } else {
-            $returnstring .= 'Configure Positions guide.';
+            $returnstring .= 'the Configure Positions guide.';
         }
-        $returnstring .= ' this will open a step by step guide that will help you with this process.</p>';
+        $returnstring .= ' This step by step guide will help you with this process.</p>';
         return $returnstring;
     }
 

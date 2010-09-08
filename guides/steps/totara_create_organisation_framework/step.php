@@ -3,6 +3,7 @@ require_once ($CFG->dirroot . '/guides/steps/default.php');
 class guide_totara_create_organisation_framework_step extends guide_default_step {
     ## Return the content the step should display when it is the active step in a guide:
     function content_step_active () {
+        global $CFG;
         return '<p>The first step is to set up an organisational framework.</p>
             <p>Setting up an organisation framework is like setting up a folder in which you create the organisational structure.  You can set up multiple organisation frameworks.</p>
             <p>When you are ready to start click <a href="' . $CFG->wwwroot . '/hierarchy/framework/edit.php?type=organisation">Organisation frameworks</a>.</p>

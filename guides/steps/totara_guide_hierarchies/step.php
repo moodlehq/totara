@@ -5,14 +5,14 @@ class guide_totara_guide_hierarchies_step extends guide_default_step {
     function content_step_active () {
         global $CFG;
         $returnstring = '<p>This is the final step to configuring Totara for your organisation.</p>
-           <p>When you are ready to start open the ';
+           <p>When you are ready to start open ';
         $guide = get_record('block_guides_guide','name','Configure Hierarchies');
         if ($guide) {
-            $returnstring .= 'by clicking <a href="' . $CFG->wwwroot . '/guides/view.php?startguide=' . $guide->id . '">Configure Hierarchies</a>';
+            $returnstring .= '<a href="' . $CFG->wwwroot . '/guides/view.php?startguide=' . $guide->id . '">Configure Hierarchies</a>.';
         } else {
-            $returnstring .= 'Configure Hierarchies guide.';
+            $returnstring .= 'the Configure Hierarchies guide.';
         }
-        $returnstring .= ' this will open a step by step guide that will help you with this process.</p>';
+        $returnstring .= ' This step by step guide will help you with this process.</p>';
         return $returnstring;
     }
 

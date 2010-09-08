@@ -80,7 +80,7 @@ if ($guides) {
             print ' <a href="' . $CFG->wwwroot . '/guides/view.php?gi=' . $guideinstances[$guide->id]->giid . '">';
             if ($guideinstances[$guide->id]->progress == 100) {
                 print $strviewguide;
-                print '</td><td class="cell"><a href="/guides/delete.php?gi=' . $guideinstances[$guide->id]->giid . '">';
+                print '</td><td class="cell options"><a href="/guides/delete.php?gi=' . $guideinstances[$guide->id]->giid . '">';
                 print '<img src="' . $CFG->wwwroot . '/theme/' . $CFG->theme . '/pix/t/delete.gif" class="iconsmall" alt="delete guide progress" />';
             } else {
                 print '</a><img src="' . $CFG->wwwroot . '/guides/percentImage.png" alt="' . $guideinstances[$guide->id]->progress . '%" style="background: white url(/guides/percentImage_back.png) top left no-repeat;padding: 0;margin: 5px 0 0 0;background-position: ' . $guideinstances[$guide->id]->pixeloffset . 'px 0pt;" /> ';
