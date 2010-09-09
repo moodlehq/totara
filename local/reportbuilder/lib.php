@@ -2703,6 +2703,14 @@ var comptree = [' . implode(', ', $comptrees) . '];
      * Return HTML to display the results of a feedback activity
      */
     function print_feedback_results() {
+        global $CFG;
+        // get paging parameters
+        define('DEFAULT_PAGE_SIZE', $this->recordsperpage);
+        define('SHOW_ALL_PAGE_SIZE', 5000);
+        $spage     = optional_param('spage', 0, PARAM_INT);                    // which page to show
+        $perpage   = optional_param('perpage', DEFAULT_PAGE_SIZE, PARAM_INT);
+        $countfiltered = $this->get_filtered_count();
+
         $out = '';
         $groupid = $this->src->groupid;
         $out .= print_box_start('generalbox', '', true);
@@ -2740,13 +2748,40 @@ var comptree = [' . implode(', ', $comptrees) . '];
 
         // get data
         $sql = $this->build_query(false, true);
-        $data = get_records_sql($sql);
+
+        // use default sort data if set
+        if(isset($this->defaultsortcolumn)) {
+            if(isset($this->defaultsortorder) &&
+                $this->defaultsortorder == SORT_DESC) {
+                $order = 'DESC';
+            } else {
+                $order = 'ASC';
+            }
+
+            // see if sort element is in columns array
+            $set = false;
+            foreach($this->columns as $col) {
+                if($col->type.'_'.$col->value == $this->defaultsortcolumn) {
+                    $set = true;
+                }
+            }
+            if($set) {
+                $sort = " ORDER BY {$this->defaultsortcolumn} {$order}";
+            } else {
+                $sort = '';
+            }
+        } else {
+            $sort = '';
+        }
+        $data = get_records_sql($sql . $sort, $spage * $perpage, $perpage);
         $first = true;
         if($data) {
 
             foreach($data as $item) {
                 // dividers between feedback results
                 if($first) {
+                    $out .= print_paging_bar($countfiltered, $spage, $perpage,
+                        $this->report_url(). '&amp;', 'spage', false, true);
                     $first = false;
                 } else {
                     $out .= '<hr class="feedback-separator"/>';
@@ -2756,7 +2791,19 @@ var comptree = [' . implode(', ', $comptrees) . '];
                     // print primary heading
                     $primaryname = $primary_field->type . '_' . $primary_field->value;
                     $primaryheading = $primary_field->heading;
-                    $primaryvalue = (isset($item->$primaryname)) ? $item->$primaryname : 'Unknown';
+
+                    // treat fields different if display function exists
+                    if (isset($primary_field->displayfunc)) {
+                        $func = 'rb_display_'.$primary_field->displayfunc;
+                        if(method_exists($this->src, $func)) {
+                            $primaryvalue = $this->src->$func($item->$primaryname, $item);
+                        } else {
+                            $primaryvalue = (isset($item->$primaryname)) ? $item->$primaryname : 'Unknown';
+                        }
+                    } else {
+                        $primaryvalue = (isset($item->$primaryname)) ? $item->$primaryname : 'Unknown';
+                    }
+
                     $out .= '<h2>' . $primaryheading . ': '.$primaryvalue . '</h2>';
                 }
 
@@ -2766,6 +2813,18 @@ var comptree = [' . implode(', ', $comptrees) . '];
                         $addname = $additional_field->type . '_' . $additional_field->value;
                         $addheading = $additional_field->heading;
                         $addvalue = (isset($item->$addname)) ? $item->$addname : 'Unknown';
+                        // treat fields different if display function exists
+                        if (isset($additional_field->displayfunc)) {
+                            $func = 'rb_display_'.$additional_field->displayfunc;
+                            if(method_exists($this->src, $func)) {
+                                $addvalue = $this->src->$func($item->$addname, $item);
+                            } else {
+                                $addvalue = (isset($item->$addname)) ? $item->$addname : 'Unknown';
+                            }
+                        } else {
+                            $addvalue = (isset($item->$addname)) ? $item->$addname : 'Unknown';
+                        }
+
                         $out .= '<strong>' . $addheading . ': '. $addvalue . '</strong><br />';
                     }
                 }
@@ -2804,6 +2863,9 @@ var comptree = [' . implode(', ', $comptrees) . '];
                 }
             }
         }
+
+        $out .= print_paging_bar($countfiltered, $spage, $perpage,
+            $this->report_url(). '&amp;', 'spage', false, true);
 
         $out .= print_box_end(true);
 
