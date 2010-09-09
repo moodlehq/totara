@@ -47,7 +47,7 @@ div.mycourses td.status span.completion-inprogress {
     background-position: 0px -12px;
 }
 
-div.mycourses td.status span.completion-complete
+div.mycourses td.status span.completion-complete,
 div.mycourses td.status span.completion-completeviarpl {
     background-position: 0px -24px;
 }
