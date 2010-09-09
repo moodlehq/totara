@@ -91,8 +91,8 @@ $REPORT_BUILDER_EXPORT_OPTIONS = array(
 class reportbuilder {
     public $fullname, $shortname, $source, $hidden, $filters, $filteroptions, $columns, $requiredcolumns;
     public $columnoptions, $_filtering, $contentoptions, $contentmode, $embeddedurl, $description;
+    public $_id, $recordsperpage, $defaultsortcolumn, $defaultsortorder;
     private $_joinlist, $_base, $_params, $_sid;
-    public $_id;
     private $_paramoptions, $_embeddedparams, $_fullcount, $_filteredcount;
     public $src, $grouped;
 
@@ -145,6 +145,9 @@ class reportbuilder {
             $this->description = stripslashes($report->description);
             $this->contentmode = $report->contentmode;
             $this->embeddedurl = $report->embeddedurl;
+            $this->recordsperpage = $report->recordsperpage;
+            $this->defaultsortcolumn = $report->defaultsortcolumn;
+            $this->defaultsortorder = $report->defaultsortorder;
             $this->_sid = $sid;
             // assume no grouping initially
             $this->grouped = false;
@@ -1786,9 +1789,8 @@ var comptree = [' . implode(', ', $comptrees) . '];
      */
     function display_table() {
         global $CFG, $SESSION;
-        define('DEFAULT_PAGE_SIZE', 40);
+        define('DEFAULT_PAGE_SIZE', $this->recordsperpage);
         define('SHOW_ALL_PAGE_SIZE', 5000);
-
         $spage     = optional_param('spage', 0, PARAM_INT);                    // which page to show
         $perpage   = optional_param('perpage', DEFAULT_PAGE_SIZE, PARAM_INT);
         $ssort     = optional_param('ssort');
@@ -1846,7 +1848,7 @@ var comptree = [' . implode(', ', $comptrees) . '];
             TABLE_VAR_ILAST   => 'silast',
             TABLE_VAR_PAGE    => 'spage'
         ));
-        $table->sortable(true,'user_fullname'); // sort by name by default
+        $table->sortable(true, $this->defaultsortcolumn, $this->defaultsortorder); // sort by name by default
         $table->setup();
         $table->initialbars(true);
         $table->pagesize($perpage, $countfiltered);

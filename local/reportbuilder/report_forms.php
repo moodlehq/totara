@@ -81,6 +81,12 @@ class report_builder_edit_form extends moodleform {
         $mform->setDefault('hidden', $report->hidden);
         $mform->setHelpButton('hidden', array('reportbuilderhidden',get_string('hidden','local_reportbuilder'),'local_reportbuilder'));
 
+        $mform->addElement('text', 'recordsperpage', get_string('recordsperpage','local_reportbuilder'), array('size'=>'6'));
+        $mform->setDefault('recordsperpage', $report->recordsperpage);
+        $mform->setType('recordsperpage', PARAM_INT);
+        $mform->addRule('recordsperpage',null,'numeric');
+        $mform->setHelpButton('recordsperpage', array('reportbuilderrecordsperpage',get_string('recordsperpage','local_reportbuilder'),'local_reportbuilder'));
+
         $reporttype = ($report->embeddedurl === null) ? get_string('usergenerated','local_reportbuilder') :
             get_string('embedded', 'local_reportbuilder');
 
@@ -281,6 +287,7 @@ class report_builder_edit_columns_form extends moodleform {
                 $colcount = count($columns);
                 $i = 1;
                 foreach($columns as $index => $column) {
+                    $columnoptions["{$column->type}_{$column->value}"] = $column->heading;
                     if(!isset($column->required) || !$column->required) {
                         $row = array();
                         $type = $column->type;
@@ -341,6 +348,21 @@ class report_builder_edit_columns_form extends moodleform {
             $mform->addElement('html','</td><td>');
             $mform->addElement('html','</td><td>&nbsp;</td></tr>');
             $mform->addElement('html','</table></div>');
+
+            $mform->addElement('header','sorting',get_string('sorting','local_reportbuilder'));
+            $mform->setHelpButton('sorting', array('reportbuildersorting',get_string('sorting','local_reportbuilder'),'local_reportbuilder'));
+
+            $pick = array('' => get_string('noneselected','local_reportbuilder'));
+            $select = array_merge($pick, $columnoptions);
+            $mform->addElement('select','defaultsortcolumn', get_string('defaultsortcolumn','local_reportbuilder'), $select);
+            $mform->setDefault('defaultsortcolumn', $report->defaultsortcolumn);
+
+
+            $radiogroup = array();
+            $radiogroup[] =& $mform->createElement('radio', 'defaultsortorder', '', get_string('ascending','local_reportbuilder'), SORT_ASC);
+            $radiogroup[] =& $mform->createElement('radio', 'defaultsortorder', '', get_string('descending','local_reportbuilder'), SORT_DESC);
+            $mform->addGroup($radiogroup, 'radiogroup', get_string('defaultsortorder','local_reportbuilder'), '<br />', false);
+            $mform->setDefault('defaultsortorder', $report->defaultsortorder);
         } else {
 
                 $mform->addElement('html',"No columns found. Ask your developer to add column options to the '{$report->source}' source");

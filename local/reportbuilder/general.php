@@ -44,6 +44,14 @@ if ($fromform = $mform->get_data()) {
     $todb->fullname = addslashes($fromform->fullname);
     $todb->hidden = $fromform->hidden;
     $todb->description = addslashes($fromform->description);
+    if((int)$fromform->recordsperpage > 5000) {
+        $rpp = 5000;
+    } else if ((int)$fromform->recordsperpage < 1) {
+        $rpp = 1;
+    } else {
+        $rpp = (int)$fromform->recordsperpage;
+    }
+    $todb->recordsperpage = $rpp;
     if(update_record('report_builder',$todb)) {
         redirect($returnurl . '&amp;notice=' .
             REPORT_BUILDER_GENERAL_CONFIRM_UPDATE);

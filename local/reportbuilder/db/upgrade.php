@@ -56,6 +56,27 @@ function xmldb_local_reportbuilder_upgrade($oldversion=0) {
         }
     }
 
+    // add various table settings to report_builder table
+    if ($result && $oldversion < 2010090900) {
+        /// Define field recordsperpage to be added to report_builder
+        $table = new XMLDBTable('report_builder');
+        $field = new XMLDBField('recordsperpage');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '40', 'description');
+        /// Launch add field recordsperpage
+        $result = $result && add_field($table, $field);
+
+        /// Define field defaultsortcolumn to be added to report_builder
+        $field = new XMLDBField('defaultsortcolumn');
+        $field->setAttributes(XMLDB_TYPE_CHAR, '255', null, null, null, null, null, null, 'recordsperpage');
+        /// Launch add field defaultsortcolumn
+        $result = $result && add_field($table, $field);
+
+        $field = new XMLDBField('defaultsortorder');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null, null, 4, 'defaultsortcolumn');
+        /// Launch add field defaultsortorder
+        $result = $result && add_field($table, $field);
+
+    }
 
     return $result;
 }

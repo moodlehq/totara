@@ -72,6 +72,7 @@
         $todb->shortname = reportbuilder::create_shortname($fromform->fullname);
         $todb->source = ($fromform->source != '0') ? $fromform->source : null;
         $todb->hidden = $fromform->hidden;
+        $todb->recordsperpage = 40;
         $todb->contentmode = 0;
         $todb->accessmode = 1; // default to limited access
         $todb->embeddedurl = null;

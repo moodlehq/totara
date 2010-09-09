@@ -211,6 +211,18 @@ function build_columns($id, $fromform) {
         }
     }
 
+    // update default column settings
+    if(isset($fromform->defaultsortcolumn)) {
+        $todb = new object();
+        $todb->id = $id;
+        $todb->defaultsortcolumn = $fromform->defaultsortcolumn;
+        $todb->defaultsortorder = $fromform->defaultsortorder;
+        if(!update_record('report_builder', $todb)) {
+            rollback_sql();
+            return false;
+        }
+    }
+
     commit_sql();
     return true;
 }
