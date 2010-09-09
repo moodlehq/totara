@@ -534,7 +534,8 @@ class moodleform_mod extends moodleform {
             $mform->disabledIf('completionexpected','completion','eq',COMPLETION_TRACKING_NONE);    
         }
 
-        if (!empty($CFG->usetags)) {
+        if (!empty($CFG->usetags) && count_records('tag', 'tagtype', 'official')) {
+            $mform->addElement('header', 'tagshdr', get_string('tags', 'tag'));
             $mform->createElement('select', 'otags', get_string('otags','tag'));
 
             $js_escape = array(

@@ -438,7 +438,7 @@ class course_edit_form extends moodleform {
             }
         }
 
-        if (!empty($CFG->usetags)) {
+        if (!empty($CFG->usetags) && count_records('tag', 'tagtype', 'official')) {
             $mform->addElement('header', 'tagshdr', get_string('tags', 'tag'));
             $mform->createElement('select', 'otags', get_string('otags','tag'));
 
