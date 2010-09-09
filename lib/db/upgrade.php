@@ -957,21 +957,12 @@ function xmldb_main_upgrade($oldversion=0) {
         // Create the table
         $result = $result && create_table($table);
 
-        // Insert initial applications (moodle and mahara)
+        // Insert initial applications (moodle)
         $application = new stdClass();
         $application->name                = 'moodle';
         $application->display_name        = 'Moodle';
         $application->xmlrpc_server_url   = '/mnet/xmlrpc/server.php';
         $application->sso_land_url        = '/auth/mnet/land.php';
-        if ($result) {
-            $newid  = insert_record('mnet_application', $application, false);
-        }
-
-        $application = new stdClass();
-        $application->name                = 'mahara';
-        $application->display_name        = 'Mahara';
-        $application->xmlrpc_server_url   = '/api/xmlrpc/server.php';
-        $application->sso_land_url        = '/auth/xmlrpc/land.php';
         $result = $result && insert_record('mnet_application', $application, false);
 
         // New mnet_host->applicationid field
