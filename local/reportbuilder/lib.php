@@ -555,7 +555,7 @@ var comptree = [' . implode(', ', $comptrees) . '];
         $this->get_filtering();
         $filtername = 'filtering_'.$this->shortname;
         if($saved = get_record('report_builder_saved','id',$this->_sid)) {
-            if($saved->public != 0 || $saved->userid == $USER->id) {
+            if($saved->ispublic != 0 || $saved->userid == $USER->id) {
                 $SESSION->$filtername = unserialize($saved->search);
             } else {
                 error('Saved search not found or search is not public');
