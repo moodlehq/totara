@@ -2126,7 +2126,6 @@ function print_revision_trainee($revision, $plan, $formstartstr, $options=array(
 
     // Check for empty plans
     if (empty($objhtml) && empty($listshtml)) {
-    // print '<p><i>'.get_string('emptyplan', 'idp')."</i></p>\n";
     } else {
         print $listshtml;
         print $objhtml;
@@ -2177,21 +2176,6 @@ function print_revision_preview($revision, $plan, $printable=true) {
     } else {
         print '<p><i>'.get_string('emptyplancourses','idp')."</i></p>\n";
     }
-
-/*
-    // Free-form lists
-    $objhtml = print_freeform_list($revision->id, 0, false, true);
-    $objhtml .= print_freeform_list($revision->id, 1, false, true);
-
-    // Check for empty plans
-    if (empty($objhtml) && empty($listshtml)) {
-        print '<p><i>'.get_string('emptyplan', 'idp')."</i></p>\n";
-    } else {
-        print $listshtml;
-        print $objhtml;
-        print_revision_extracomment($revision);
-    }
-*/
 }
 
 function print_revision_pdf($revision, $plan, $options=array()) {
@@ -2235,10 +2219,6 @@ function print_revision_pdf($revision, $plan, $options=array()) {
     } else {
         print '<p><i>'.get_string('emptyplancourses','idp')."</i></p>\n";
     }
-
-    // Free-form lists
-//    $objhtml = print_freeform_list($revision->id, 0, false, true);
-//    $objhtml .= print_freeform_list($revision->id, 1, false, true);
 
     print_revision_extracomment($revision);
 
@@ -2506,10 +2486,6 @@ function idp_get_evaluation_deadline($plan) {
 }
 
 /**
- * Return a table of themes and objectives along with the
- * self-evaluation "grade" for a given curriculum
- */
-/**
  * Return a table of competencies for a particular framework, along with the
  * self-evaluation "grade" for a given competency
  * 
@@ -2540,16 +2516,6 @@ function framework_evaluations($revisionid, $framework) {
 
         $lasttheme = '';
         foreach ($framework->competencies as $competency) {
-//            if ($lasttheme != $competency->themename) {
-//                // Theme sub heading
-//                $table->rowclass[] = 'themename';
-//                $table->data[] = array(get_string('themeprefix', 'local') .
-//                                       s($competency->themename),
-//                                       '&nbsp;', '&nbsp;', '&nbsp;', '&nbsp;', '&nbsp;',
-//                                       online_curriculum_link($competency->baseurl,
-//                                                              $competency->themeurlsuffix));
-//                $lasttheme = $competency->themename;
-//            }
 
             // Form elements
             //$idfield = '<input type="hidden" name="compid[]" value="'.$competency->id .'" />';
@@ -2566,11 +2532,6 @@ function framework_evaluations($revisionid, $framework) {
                     $gradestr = '<input type="radio" name="compeval['.$competency->id.']" value="'.$scalevalue->id.'" ';
                 }
 
-                // TODO: handle partially completed forms
-//                if ($competency->grade !== null and $competency->grade == $i) {
-//                    $grades[$i] .= 'checked="checked" ';
-//                }
-
                 // TODO: apparently this is an ajax function to store the thing 
                 // as soon as you click it!
                 //$gradestr .= "onclick=\"grade_objective($competency->id, $i)\" ";
@@ -2578,28 +2539,10 @@ function framework_evaluations($revisionid, $framework) {
                 $grades[] = $gradestr;
             }
 
-//            $deletebutton = '';
-//            if ($competency->postapproval) {
-//                $id = $competency->objectiveid;
-//                $deletebutton = '&nbsp;';
-//                $deletebutton .= "<img id=\"delobj$competency->objectiveid\"";
-//                $deletebutton .= " onclick=\"toggle_objective($revisionid, $competency->objectiveid, '$curriculumcode', true, 'deleteobj', this)\"";
-//                $deletebutton .= ' style="cursor: pointer"';
-//                $deletebutton .= ' alt="'.get_string('deletebutton', 'local').'"';
-//                $deletebutton .= ' title="'.get_string('deletebutton', 'local').'"';
-//                $deletebutton .= " src=\"{$CFG->pixpath}/delete.gif\" />";
-//
-//                $table->rowclass[] = 'postapproval';
-//            }
-//            else {
-//                $table->rowclass[] = '';
-//            }
-
             $row = array( s($competency->fullname) );
             foreach ( $grades as $grade ){
                 $row[] = $grade;
             }
-//            $row[] = online_curriculum_link($competency->baseurl, $competency->objectiveurlsuffix).$deletebutton;
             $table->data[] = $row;
 
         }
