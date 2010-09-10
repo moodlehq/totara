@@ -24,6 +24,9 @@ xsltproc build/simpletest_to_junit.xsl build/logs/simpletest-results.xml > build
 echo "Run cucumber tests";
 cucumber --format junit --out build/logs/xml/
 
+echo "Run language string tests";
+checklang.php ../ local idp hierarchy guides customfield
+
 # too slow
 #echo "Count lines of code";
 #sloccount --wide --details . > build/logs/sloccount.sc
