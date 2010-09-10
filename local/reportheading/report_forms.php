@@ -48,7 +48,7 @@ class report_heading_columns_form extends moodleform {
         $mform->addElement('html', '<div class="reportheadingform"><table>');
         $mform->addElement('html','<tr><td colspan="4"><p>'.get_string('headingcolumnsdescription','local').'</p></td></tr>');
         if(count($items) <= 0) {
-            $mform->addElement('html','<tr><td colspan="4"><p>'.get_string('noheadingcolumnsdefined','local').'</p></td></tr>');
+            $mform->addElement('html','<tr><td colspan="4"><p>'.get_string('noheadingcolumnsdefined','local_reportbuilder').'</p></td></tr>');
         }
         $mform->addElement('html','<tr><th>'.get_string('column','local').
             '</th><th>'.get_string('heading','local').'</th><th>'.get_string('headingmissingvalue','local').

@@ -16,7 +16,7 @@ $submit = optional_param('submit', false, PARAM_BOOL); // Set to true when the f
 $extracomment = optional_param('extracomment', '', PARAM_TEXT);
 
 if (0 == $id) {
-    error(get_string('error:idcannotbezero', 'local'));
+    error(get_string('error:idcannotbezero', 'idp'));
 }
 
 if (!$plan = get_record('idp', 'id', $id)) {

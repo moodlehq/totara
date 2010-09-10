@@ -34,7 +34,7 @@ class idp_priority_scale_value_edit_form extends moodleform {
         $mform->setType('idnumber', PARAM_RAW);
 
         $mform->addElement('text', 'numericscore', get_string('priorityscalevaluenumericalvalue', 'idp'), 'maxlength="100"  size="10"');
-        $mform->setHelpButton('numericscore', array('priorityscalevaluenumeric', get_string('scalevaluenumericalvalue', 'idp')), true);
+        $mform->setHelpButton('numericscore', array('priorityscalevaluenumeric', get_string('priorityscalevaluenumericalvalue', 'idp')), true);
         $mform->setType('numericscore', PARAM_RAW);
 
         $mform->addElement('htmleditor', 'description', get_string('description'));

@@ -17,12 +17,12 @@ class idp_new_competency_area_form extends moodleform {
         $mform->addElement('text', 'fullname', get_string('compareafull', 'idp'), 'maxlength="255"');
         $mform->setType('fullname', PARAM_TEXT);
         $mform->addRule('fullname',null,'required');
-        $mform->setHelpButton('fullname', array('compareafullname',get_string('fullname','idp'),'moodle'));
+        $mform->setHelpButton('fullname', array('compareafullname',get_string('fullname'),'moodle'));
 
         $mform->addElement('text', 'shortname', get_string('compareashort', 'idp'), 'maxlength="255"');
         $mform->setType('shortname', PARAM_TEXT);
         $mform->addRule('shortname',null,'required');
-        $mform->setHelpButton('shortname', array('compareashortname',get_string('shortname','idp'),'moodle'));
+        $mform->setHelpButton('shortname', array('compareashortname',get_string('shortname'),'moodle'));
 
         $frameworks = $this->_customdata['frameworklist'];
 
@@ -31,7 +31,7 @@ class idp_new_competency_area_form extends moodleform {
             $frameworkgroup[] =& $mform->createElement('advcheckbox', 'framework['.$fw->id.']', null, $fw->fullname, array('group' => 1), array(0,1));
         }
         $mform->addGroup($frameworkgroup, 'areaframeworks', get_string('frameworks','idp'), '<br />', false);
-        $this->add_checkbox_controller(1, get_string("checkallornone"), array('style' => 'font-weight: bold;'), 1);
+        $this->add_checkbox_controller(1, '', array('style' => 'font-weight: bold;'), 1);
 
         $this->add_action_buttons();
     }
@@ -59,7 +59,7 @@ class idp_edit_population_form extends moodleform {
                 }
             }
             $mform->addGroup($rolesgroup, 'roles', get_string('populationmanual','idp'), '<br />', false);
-            $mform->setHelpButton('roles', array('reportbuilderrolesaccess',get_string('roleswithaccess','local'),'moodle'));
+            $mform->setHelpButton('roles', array('reportbuilderrolesaccess',get_string('roleswithaccess','idp'),'moodle'));
         } else {
             $mform->addElement('html', '<p>'.get_string('error:norolesfound','local').'</p>');
         }
@@ -92,7 +92,7 @@ class idp_edit_role_checkboxes_form extends moodleform {
                 }
             }
             $mform->addGroup($rolesgroup, 'roles', get_string('populationmanual','idp'), '<br />', false);
-            $mform->setHelpButton('roles', array('reportbuilderrolesaccess',get_string('roleswithaccess','local'),'moodle'));
+            $mform->setHelpButton('roles', array('reportbuilderrolesaccess',get_string('roleswithaccess','idp'),'moodle'));
         } else {
             $mform->addElement('html', '<p>'.get_string('error:norolesfound','local').'</p>');
         }
@@ -180,8 +180,8 @@ class create_new_idp_form extends moodleform {
         $mform->addElement('text', 'startdate', get_string('startdate', 'idp'));
         $mform->addElement('text', 'enddate', get_string('enddate', 'idp'));
 
-        $mform->addRule('startdate',get_string('error:entervaliddate','idp'),'regex', '/^(0[1-9]|[12][0-9]|3[01])[- \/.](0[1-9]|1[012])[- \/.](19|20)\d\d$/');
-        $mform->addRule('enddate',get_string('error:entervaliddate','idp'),'regex', '/^(0[1-9]|[12][0-9]|3[01])[- \/.](0[1-9]|1[012])[- \/.](19|20)\d\d$/');
+        $mform->addRule('startdate',get_string('error:dateformat','idp'),'regex', '/^(0[1-9]|[12][0-9]|3[01])[- \/.](0[1-9]|1[012])[- \/.](19|20)\d\d$/');
+        $mform->addRule('enddate',get_string('error:dateformat','idp'),'regex', '/^(0[1-9]|[12][0-9]|3[01])[- \/.](0[1-9]|1[012])[- \/.](19|20)\d\d$/');
 
         $mform->setType('startdate', PARAM_TEXT);
         $mform->setType('enddate', PARAM_TEXT);

@@ -15,7 +15,7 @@ $rev = optional_param('rev', 0, PARAM_INT); // Revision ID
 // Check parameters 
 
 if (0 == $id) {
-    error(get_string('error:idcannotbezero', 'local'));
+    error(get_string('error:idcannotbezero', 'idp'));
 }
 
 if (!$plan = get_record('idp', 'id', $id)) {

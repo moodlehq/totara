@@ -63,7 +63,7 @@ $preserve = array(
 try {
     if (!$oauth->authenticate($preserve)) {
         print_grade_page_head($COURSE->id, 'export', 'fusion', get_string('exportto', 'grades') . ' ' . get_string('modulename', 'gradeexport_fusion'));
-        print_errror(get_string('authfailed', 'local_oauth'));
+        print_errror(get_string('oauthfailed', 'local_oauth'));
     }
 }
 catch (local_oauth_exception $e) {
@@ -73,7 +73,7 @@ catch (local_oauth_exception $e) {
     // try again
     $oauth = new local_oauth_fusion();
     if (!$oauth->authenticate($preserve)) {
-        print_error(get_string('authfailed', 'local_oauth'));
+        print_error(get_string('oauthfailed', 'local_oauth'));
     }
 }
 

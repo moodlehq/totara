@@ -148,9 +148,7 @@ $string['local:editclassifications'] = 'Edit Course Classifications';
 $string['local:editcourseclassification'] = 'Edit Classification of a Course';
 $string['local:searchclassifications'] = 'Search Classifications';
 
-// Login string
-$string['howdoiaccessilearn'] = 'How do I access Totara?';
-
+//Report
 $string['reportstartdate'] = 'Start date';
 $string['reportenddate'] = 'End date';
 $string['reportcompetency'] = 'Competency';
@@ -215,7 +213,7 @@ $string['local:markcomplete'] = 'Mark user\'s complete in course completion';
 // Course competencies
 $string['returntocourse'] = 'Return to the course';
 
-
+// Face-to-face
 $string['noteammembers'] = '<i>You do not currently have any team members.</i>';
 $string['alllearningrecords'] = 'All Learning Records';
 $string['allf2fbookings'] = 'All Face to Face Bookings';
@@ -236,13 +234,17 @@ $string['inprogress'] = 'In Progress';
 $string['startdate'] = 'Start Date';
 $string['completeddate'] = 'Completed Date';
 
+// Table strings
 $string['options'] = 'Options';
 $string['report'] = 'Report';
-$string['error:unknownbuttonclicked'] = 'Unknown button clicked';
-$string['error:norolesfound'] = 'No roles found';
 $string['moveup'] = 'Move Up';
 $string['movedown'] = 'Move Down';
 $string['delete'] = 'Delete';
 $string['column'] = 'Column';
 $string['heading'] = 'Heading';
 $string['settings'] = 'Settings';
+
+//Errors
+$string['error:norolesfound'] = 'No roles found';
+$string['error:unknownbuttonclicked'] = 'Unknown button clicked';
+$string['save'] = 'Save';

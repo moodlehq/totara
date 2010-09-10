@@ -35,7 +35,7 @@ $stridps = get_string('idps', 'idp');
 $navlinks = array();
 $navlinks[] = array('name' => $stridps, 'link' => $CFG->wwwroot."/idp/index.php", 'type' => 'home');
 $navlinks[] = array('name' => format_string($plan->name), 'link' => "revision.php?id={$revision->idp}&amp;rev=$revision->id", 'type' => 'home');
-$navlinks[] = array('name' => get_string('rejectplan', ''), 'link' => 'idp', 'type' => 'home');
+$navlinks[] = array('name' => get_string('rejectplan', 'idp'), 'link' => 'idp', 'type' => 'home');
 
 $navigation = build_navigation($navlinks);
 

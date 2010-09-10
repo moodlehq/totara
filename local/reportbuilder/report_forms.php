@@ -407,7 +407,7 @@ class report_builder_edit_content_form extends moodleform {
         $radiogroup[] =& $mform->createElement('radio', 'contentenabled', '', get_string('withcontentrestrictionany','local_reportbuilder'), 1);
         $radiogroup[] =& $mform->createElement('radio', 'contentenabled', '', get_string('withcontentrestrictionall','local_reportbuilder'), 2);
         $mform->addGroup($radiogroup, 'radiogroup', get_string('restrictcontent','local_reportbuilder'), '<br />', false);
-        $mform->setHelpButton('radiogroup', array('reportbuildercontentmode',get_string('reportcontent','local_reportbuilder'),'local_reportbuilder'));
+        $mform->setHelpButton('radiogroup', array('reportbuildercontentmode',get_string('restrictcontent','local_reportbuilder'),'local_reportbuilder'));
         $mform->setDefault('contentenabled', get_field('report_builder', 'contentmode', 'id', $id));
 
         // get array of content options

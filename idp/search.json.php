@@ -17,7 +17,7 @@ $errormsg = '';
 // Check session key
 if (!confirm_sesskey($sessionkey)) {
     $error = 1;
-    $errormsg = get_string('error:badsessionkey', 'local');
+    $errormsg = get_string('invalidsesskey', 'error');
 }
 
 $data = '';

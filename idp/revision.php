@@ -19,7 +19,7 @@ if ($print){
 }
 
 if (0 == $planid) {
-    error(get_string('error:idcannotbezero', 'local'));
+    error(get_string('error:idcannotbezero', 'idp'));
 }
 
 if (!$plan = get_record('idp', 'id', $planid)) {

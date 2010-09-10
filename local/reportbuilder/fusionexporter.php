@@ -46,7 +46,7 @@ $preserve = array(
                    'sid' => $sid,
             );
 if (!$oauth->authenticate($preserve)) {
-    print_error(get_string('authfailed', 'local_oauth'));
+    print_error(get_string('oauthfailed', 'local_oauth'));
 }
 
 $columns = $rep->columns;
@@ -89,10 +89,10 @@ catch (local_oauth_exception $e) {
     // try again
     $oauth = new local_oauth_fusion();
     if (!$oauth->authenticate($preserve)) {
-        print_error(get_string('authfailed', 'local_oauth'));
+        print_error(get_string('oauthfailed', 'local_oauth'));
     }
 
-   // print_error(get_string('authfailed', 'local_oauth').$e->getMessage());
+   // print_error(get_string('oauthfailed', 'local_oauth').$e->getMessage());
 }
 if (!$oauth->table_exists($tablename)) {
     $result = $oauth->create_table($tablename, $fields);

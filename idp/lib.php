@@ -598,8 +598,8 @@ function list_item_edit_controls($revid, $listtype, $item) {
     $html .= "<img id=\"edit$listtype{$item->id}\"";
     $html .= " onclick=\"listitem_action($revid, '$listtype', {$item->id}, 'edit')\"";
     $html .= ' style="cursor: pointer"';
-    $html .= ' alt="'.get_string('editbutton', 'local').'"';
-    $html .= ' title="'.get_string('editbutton', 'local').'"';
+    $html .= ' alt="'.get_string('edit').'"';
+    $html .= ' title="'.get_string('edit').'"';
     $html .= " src=\"{$CFG->pixpath}/edit.gif\" class=\"iconsmall\" alt=\"Edit\" />";
 
     // Delete button
@@ -607,8 +607,8 @@ function list_item_edit_controls($revid, $listtype, $item) {
     $html .= "<img id=\"del$listtype{$item->id}\"";
     $html .= " onclick=\"listitem_action($revid, '$listtype', {$item->id}, 'del')\"";
     $html .= ' style="cursor: pointer"';
-    $html .= ' alt="'.get_string('deletebutton', 'local').'"';
-    $html .= ' title="'.get_string('deletebutton', 'local').'"';
+    $html .= ' alt="'.get_string('delete').'"';
+    $html .= ' title="'.get_string('delete').'"';
     $html .= " src=\"{$CFG->pixpath}/delete.gif\" class=\"iconsmall\" alt=\"Remove\" />";
 
     return $html;
@@ -651,13 +651,13 @@ function get_list_items($revid, $listtype, $can_edit) {
                 $editcontrols .= "<br /><input type=\"button\" id=\"save$listtype{$item->id}\"";
                 $editcontrols .= " style=\"display: none\"";
                 $editcontrols .= " onclick=\"listitem_action($revid, '$listtype', {$item->id}, 'save')\"";
-                $editcontrols .= ' value="'.get_string('savebutton', 'local').'" />';
+                $editcontrols .= ' value="'.get_string('save', 'local').'" />';
 
                 // Cancel button
                 $editcontrols .= " <input type=\"button\" id=\"cancel$listtype{$item->id}\"";
                 $editcontrols .= " style=\"display: none\"";
                 $editcontrols .= " onclick=\"listitem_action($revid, '$listtype', {$item->id}, 'cancel')\"";
-                $editcontrols .= ' value="'.get_string('cancelbutton', 'local').'" />';
+                $editcontrols .= ' value="'.get_string('cancel').'" />';
 
                 $itemhtml = "<span id=\"item{$listtype}{$item->id}\">"
                     . s($item->contents) . '</span>' . $editcontrols;

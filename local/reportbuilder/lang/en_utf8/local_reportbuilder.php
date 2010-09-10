@@ -244,3 +244,4 @@ $string['help:columnsdesc'] = 'The choices below determine which columns appear 
 $string['help:restrictionoptions'] = 'The checkboxes below determine who has access to this report, and which records they are able to view. If no options are checked no results are visible. Click the help icon for more information';
 $string['reportbuilder:managereports'] = 'Create, edit and delete report builder reports';
 $string['myreports'] = 'My Reports';
+$string['noheadingcolumnsdefined'] = 'No heading columns defined';
