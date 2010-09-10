@@ -16,8 +16,8 @@ require_once($CFG->libdir . '/simpletestlib.php');
 class reportbuilderlib_test extends prefix_changing_test_case {
     // test data for database
     var $reportbuilder_data = array(
-        array('id', 'fullname', 'shortname', 'source', 'hidden', 'accessmode', 'contentmode','embeddedurl','description'),
-        array(1, 'Test Report', 'test_report', 'competency_evidence', 0, 0, 0, null, ''),
+        array('id', 'fullname', 'shortname', 'source', 'hidden', 'accessmode', 'contentmode','embeddedurl','description', 'recordsperpage', 'defaultsortcolumn', 'defaultsortorder'),
+        array(1, 'Test Report', 'test_report', 'competency_evidence', 0, 0, 0, null, '', 40, 'user_fullname', 4),
     );
 
     var $config_data = array(
