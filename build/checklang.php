@@ -7,6 +7,8 @@ $exclude = array(
     'idp' => array('delfavouritebutton','additionalobjectives'),
     'local/libs' => '*',
     'local/reportbuilder/groups.php' => 'type',
+    'local/reportheading/report_forms.php' => 'noheadingcolumnsdefined',
+    'local/reportbuilder' => 'oauthfailed',
 );
 
 
