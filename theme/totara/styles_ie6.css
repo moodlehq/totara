@@ -37,3 +37,6 @@ body#course-user .section {
 	margin-top: 20px;
 }
 
+div#footer {
+    position: relative;
+}
