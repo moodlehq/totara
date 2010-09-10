@@ -25,7 +25,7 @@ echo "Run cucumber tests";
 cucumber --format junit --out build/logs/xml/
 
 echo "Run language string tests";
-checklang.php ../ local idp hierarchy guides customfield
+php -f build/checklang.php . local idp hierarchy guides customfield
 
 # too slow
 #echo "Count lines of code";
