@@ -19,14 +19,14 @@ if (file_exists($CFG->dirroot.'/hierarchy/type/'.$type.'/lib.php')) {
     error('Hierarchy type '.$type.' does not exist');
 }
 
-
-
 ///
 /// Setup / loading data
 ///
 
 $hierarchy = new $type();
-$item      = $hierarchy->get_item($id);
+if(!$item = $hierarchy->get_item($id)){
+    error('This ' . $type . ' item does not exist');
+}
 $depth     = $hierarchy->get_depth_by_id($item->depthid);
 $framework = $hierarchy->get_framework($item->frameworkid);
 
