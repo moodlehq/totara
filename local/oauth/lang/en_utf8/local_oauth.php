@@ -68,5 +68,13 @@ $string['siteaddduplicate'] = 'Site {$a} could not be added - duplicate name';
 $string['siteupdated'] = 'Site {$a} updated';
 $string['tablename'] = 'Table name';
 $string['oauth:negotiate'] = 'Use OAuth based authentication';
-
+$string['noreturnto'] = 'No wantsurl set for return path';
+$string['oauthinvalidid'] = 'Invalid OAuth site ID';
+$string['sitedisabled'] = 'OAuth site disabled';
+$string['norequest'] = 'No OAuth authentication request';
+$string['notallowed'] = 'User has no OAuth negotiation capabilities';
+$string['authenticationfailed'] = 'OAuth authentication failed';
+$string['sitelist'] = 'Site list';
+$string['consumerkey'] = 'Consumer key';
+$string['consumersecret'] = 'Consumer secret';
 
