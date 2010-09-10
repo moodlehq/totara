@@ -56,7 +56,7 @@ class reportbuilderlib_test extends prefix_changing_test_case {
     );
 
     var $reportbuilder_saved_data = array(
-        array('id', 'reportid', 'userid', 'name', 'search', 'public'),
+        array('id', 'reportid', 'userid', 'name', 'search', 'ispublic'),
         array(1, 1, 2, 'Saved Search', 'a:1:{s:13:"user-fullname";a:1:{i:0;a:2:{s:8:"operator";i:0;s:5:"value";s:1:"a";}}}', 0),
     );
 
