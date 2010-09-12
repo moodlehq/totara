@@ -18,16 +18,16 @@
 echo "STEP 1: Run simpletests";
 python build/simpletests.py
 
-echo "STEP 2: Convert to Junit XML";
+echo "Convert to Junit XML";
 xsltproc build/simpletest_to_junit.xsl build/logs/simpletest-results.xml > build/logs/xml/TEST-suite.xml
 
-echo "STEP 3: Run cucumber tests";
+echo "STEP 2: Run cucumber tests";
 cucumber --format junit --out build/logs/xml/
 
-echo "STEP 4: Run language string tests";
+echo "STEP 3: Run language string tests";
 php -f build/checklang.php . local idp hierarchy guides customfield
 
-echo "STEP 5: Run help button tests";
+echo "STEP 4: Run help button tests";
 php -f build/checkhelp.php . local idp hierarchy guides customfield
 
 # too slow
