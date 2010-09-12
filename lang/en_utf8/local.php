@@ -186,6 +186,7 @@ $string['usernotfound'] = 'User not found';
 $string['addforthisuser'] = 'Add new competency evidence for this user';
 $string['selectaproficiency'] = 'Select a proficiency...';
 $string['recordnotcreated'] = 'Record could not be created';
+$string['recordnotupdated'] = 'Record could not be updated';
 $string['selectanassessor'] = 'Select an assessor...';
 $string['noassessors'] = 'No assessors found';
 $string['firstselectcompetency'] = 'First select a competency';

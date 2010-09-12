@@ -99,7 +99,7 @@ class totara_competency_evidence_form extends moodleform {
                 $mform->addElement('hidden', 'competencyid');
                 $mform->setType('competencyid', PARAM_INT);
                 $mform->setDefault('competencyid', $competencyid);
-                $mform->setHelpButton('competencyselector',array('competencyevidencecompetency',get_string('help:competencyevidencecompetency','local'),'moodle'));
+                $mform->setHelpButton('competencyselector',array('competencyevidencecompetency',get_string('assigncompetency','competency'),'moodle'));
             }
 
         }
