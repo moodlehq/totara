@@ -687,6 +687,11 @@ ul.tabrow0 li ul.tabrow1 a{
 ul.tabrow0 li ul.tabrow1 a:hover {
 	text-decoration: underline;
 }
+
+ul.tabrow0 li ul.tabrow1 .active a:hover {
+	text-decoration: none;
+}
+
 .tabrow1 div, 
 .tabrow1 ul {
   border-color:#aaaaaa;
