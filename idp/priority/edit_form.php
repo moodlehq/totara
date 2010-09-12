@@ -27,14 +27,14 @@ class edit_priority_form extends moodleform {
         $mform->addElement('header', 'general', get_string('priority', 'idp'));
 
         $mform->addElement('text', 'name', get_string('name'), 'size="40"');
-        $mform->setHelpButton('name', array('idp/priority/priorityname', get_string('name')));
+        $mform->setHelpButton('name', array('idppriorityname', get_string('name')));
         $mform->addRule('name', get_string('required'), 'required', null, 'client');
         $mform->setType('name', PARAM_TEXT);
 
         // If it's a new priority, give them the option to define priority values.
         if ( $this->_customdata['priorityid'] == 0 ){
             $mform->addElement('textarea', 'priorityvalues', get_string('priorityvalues', 'idp'));
-            $mform->setHelpButton('priorityvalues', array('idp/priority/priorityvalues', get_string('priority', 'idp')));
+            $mform->setHelpButton('priorityvalues', array('idppriorityvalues', get_string('priority', 'idp')));
             $mform->setType('priorityvalues', PARAM_TEXT);
         } else {
             //TODO: make this work for priority
