@@ -136,7 +136,7 @@ function scan_file($filepath, $langs){
             else{
                 $loc = '';
             }
-			
+
 			// Bale if PHP variables, brackets, or concatenation used.
 			// too hard!
 			if ( preg_match( '/[$().]/', $str ) || preg_match ( '/\\$/', $loc ) || in_array($str,$excludevalues)) {
@@ -156,7 +156,12 @@ function scan_file($filepath, $langs){
 					$langfiles[] = "./lang/{$lang}/admin.php";
 					$langfiles[] = "./lang/{$lang}/install.php";
 				}
-				
+                // look for strings referencing block lang files
+                if ( preg_match('|^blocks?/(.*)|', $loc, $match)) {
+                    $block = trim($match[1]);
+                    $langfiles[] = "./lang/{$lang}/block_{$block}.php";
+                }
+
 				foreach( $langfiles as $langfile ){
 					// Look for reference to string in lang file
                     if ( file_exists($langfile) ){
