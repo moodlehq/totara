@@ -90,8 +90,9 @@ function scorm_get_hidetoc_array(){
  */
 function scorm_get_updatefreq_array(){
     return array(0 => get_string('never'),
-                 1 => get_string('everyday','scorm'),
-                 2 => get_string('everytime','scorm'));
+                 //1 => get_string('onchanges','scorm'),
+                 2 => get_string('everyday','scorm'),
+                 3 => get_string('everytime','scorm'));
 }
 
 /**
@@ -297,6 +298,7 @@ function scorm_get_scoes($id,$organisation=false) {
 }
 
 function scorm_insert_track($userid,$scormid,$scoid,$attempt,$element,$value) {
+    global $CFG;
     $id = null;
     if ($track = get_record_select('scorm_scoes_track',"userid='$userid' AND scormid='$scormid' AND scoid='$scoid' AND attempt='$attempt' AND element='$element'")) {
         if ($element != 'x.start.time' ) { //don't update x.start.time - keep the original value.
@@ -318,8 +320,7 @@ function scorm_insert_track($userid,$scormid,$scoid,$attempt,$element,$value) {
     if (strstr($element, '.score.raw') ||
         (($element == 'cmi.core.lesson_status' || $element == 'cmi.completion_status') && ($track->value == 'completed' || $track->value == 'passed'))) {
         $scorm = get_record('scorm', 'id', $scormid);
-        $grademethod = $scorm->grademethod % 10;
-        include_once('lib.php');
+        include_once($CFG->dirroot.'/mod/scorm/lib.php');
         scorm_update_grades($scorm, $userid);
     }
 
@@ -361,7 +362,7 @@ function scorm_get_tracks($scoid,$userid,$attempt='') {
                 break;
                 case 'cmi.core.score.raw':
                 case 'cmi.score.raw':
-                    $usertrack->score_raw = sprintf('%0d', $track->value);
+                    $usertrack->score_raw = (float) sprintf('%2.2f', $track->value);
                     break;
                 case 'cmi.core.session_time':
                 case 'cmi.session_time':
@@ -439,17 +440,12 @@ function scorm_grade_user_attempt($scorm, $userid, $attempt=1, $time=false) {
         return NULL;
     }
 
-    // this treatment is necessary as the whatgrade field was not in the DB
-    // and so whatgrade and grademethod are combined in grademethod 10s are whatgrade
-    // and 1s are grademethod
-    $grademethod = $scorm->grademethod % 10;
-
     foreach ($scoes as $sco) {
         if ($userdata = scorm_get_tracks($sco->id, $userid, $attempt)) {
             if (($userdata->status == 'completed') || ($userdata->status == 'passed')) {
                 $attemptscore->scoes++;
             }
-            if (isset($userdata->score_raw)) {
+            if (!empty($userdata->score_raw) || ($scorm->type=='sco' && isset($userdata->score_raw))) {
                 $attemptscore->values++;
                 $attemptscore->sum += $userdata->score_raw;
                 $attemptscore->max = ($userdata->score_raw > $attemptscore->max)?$userdata->score_raw:$attemptscore->max;
@@ -461,9 +457,9 @@ function scorm_grade_user_attempt($scorm, $userid, $attempt=1, $time=false) {
             }
         }
     }
-    switch ($grademethod) {
+    switch ($scorm->grademethod) {
         case GRADEHIGHEST:
-            $score = $attemptscore->max;
+            $score = (float) $attemptscore->max;
         break;
         case GRADEAVERAGE:
             if ($attemptscore->values > 0) {
@@ -494,10 +490,6 @@ function scorm_grade_user_attempt($scorm, $userid, $attempt=1, $time=false) {
 }
 
 function scorm_grade_user($scorm, $userid, $time=false) {
-    // this treatment is necessary as the whatgrade field was not in the DB
-    // and so whatgrade and grademethod are combined in grademethod 10s are whatgrade
-    // and 1s are grademethod
-    $whatgrade = intval($scorm->grademethod / 10);
 
     // insure we dont grade user beyond $scorm->maxattempt settings
     $lastattempt = scorm_get_last_attempt($scorm->id, $userid);
@@ -505,7 +497,7 @@ function scorm_grade_user($scorm, $userid, $time=false) {
         $lastattempt = $scorm->maxattempt;
     }
 
-    switch ($whatgrade) {
+    switch ($scorm->whatgrade) {
         case FIRSTATTEMPT:
             return scorm_grade_user_attempt($scorm, $userid, 1, $time);
         break;
@@ -734,14 +726,17 @@ function scorm_view_display ($user, $scorm, $action, $cm, $boxwidth='') {
           </div>
 <?php
 }
-function scorm_simple_play($scorm,$user) {
+function scorm_simple_play($scorm,$user, $context) {
     $result = false;
 
     if ($scorm->updatefreq == UPDATE_EVERYTIME) {
         scorm_parse($scorm);
     }
+    if (has_capability('mod/scorm:viewreport', $context)) { //if this user can view reports, don't skipview so they can see links to reports. 
+        return $result;
+    }
 
-    $scoes = get_records_select('scorm_scoes','scorm='.$scorm->id.' AND launch<>\''.sql_empty().'\'');
+    $scoes = get_records_select('scorm_scoes','scorm='.$scorm->id.' AND launch<>\''.sql_empty().'\'', 'id', 'id');
 
     if ($scoes) {
         if ($scorm->skipview >= 1) {
@@ -757,26 +752,7 @@ function scorm_simple_play($scorm,$user) {
     }
     return $result;
 }
-/*
-function scorm_simple_play($scorm,$user) {
-    $result = false;
-    if ($scoes = get_records_select('scorm_scoes','scorm='.$scorm->id.' AND launch<>""')) {
-        if (count($scoes) == 1) {
-            if ($scorm->skipview >= 1) {
-                $sco = current($scoes);
-                if (scorm_get_tracks($sco->id,$user->id) === false) {
-                    header('Location: player.php?a='.$scorm->id.'&scoid='.$sco->id);
-                    $result = true;
-                } else if ($scorm->skipview == 2) {
-                    header('Location: player.php?a='.$scorm->id.'&scoid='.$sco->id);
-                    $result = true;
-                }
-            }
-        }
-    }
-    return $result;
-}
-*/
+
 function scorm_parse($scorm) {
     global $CFG;
 

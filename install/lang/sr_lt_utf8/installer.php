@@ -39,7 +39,7 @@ $string['continue'] = 'Nastavak';
 $string['ctyperecommended'] = 'Instaliranje opcione PHP ekstenzije ctype se strogo preporučuje da bi se unapredilo funkcionisanje sajta, pogotovo ako Vaš sajt podržava ne-latinične jezike.';
 $string['ctyperequired'] = 'PHP ekstenzije ctype je sada obavezna za Moodle, da bi se unapredilo funkcionisanje sajta i da bi se nudila višejezična kompatibilnost.';
 $string['curlrecommended'] = 'Instaliranje opcione Curl biblioteke je vrlo preporučljivo, jer je ona neophodna za uspešno korišćenje funkcija za umrežavanje.';
-$string['curlrequired'] = 'PHP ekstenziju cURL sada je obavezna za Moodle da bi se komuniciralo sa Moodle repozitorijumima';
+$string['curlrequired'] = 'PHP ekstenziju cURL sada je obavezna za Moodle da bi se komuniciralo sa Moodle repozitorijumima'; // ORPHANED
 $string['customcheck'] = 'Druge provere';
 $string['database'] = 'Baza podataka';
 $string['databasecreationsettingshead'] = 'Sada je potrebno konfigurisati podešavanja baze podataka u kojoj će se čuvati najveći deo Moodle podataka. Ta baza podataka će biti kreirana automatski prilikom instalacije, sa podešavanjima specificiranim ispod.';
@@ -226,12 +226,14 @@ $string['password'] = 'Lozinka';
 $string['pgsqlextensionisnotpresentinphp'] = 'PHP nije bio propisno konfigurisan sa  PGSQL ekstenzijom tako da može komunicirati sa PostgreSQLom. Molimo Vas da proverite svoju php.ini datoteku ili opet kompajlirate PHP.';
 $string['php50restricted'] = 'PHP 5.0.x ima više poznatih problema, molimo unapredite PHP na verzije 5.1.x ili instalirajte verziju 4.3.x odnosno 4.4.x';
 $string['phpversion'] = 'PHP verzija';
-$string['phpversionerror'] = 'PHP verzija mora biti bar 4.3.0 ili 5.1.0 (5.0.x funkcioniše uz brojne uočene probleme)'; // ORPHANED
+$string['phpversionerror'] = 'PHP verzija mora biti bar 4.3.0 ili 5.1.0 (5.0.x funkcioniše uz brojne uočene probleme)';
 $string['phpversionhelp'] = '<p>Moodle zahteva najmanje PHP verziju 4.3.0 ili 5.1.0 (5.0.x funkcioniše uz brojne uočene probleme).</p>
 <p>Trenutno imate verziju $a</p>
 <p>Morate nadograditi PHP ili premestiti Moodle instalaciju na web server sa novijom verzijom PHP-a!</br>
 (U slučaju verzije 5.0.x bilo bi dobro da je snizite na 4.4.x verziju)</p>';
 $string['postgres7'] = 'PostgreSQL (postgres7)';
+$string['postgresqlwarning'] = '<strong>Napomena:</strong>Ako naiđete na neke probleme sa konekcijom, možete pokušati da postavite polje Host Server kao host=\'postgresql_host\' port=\'5432\' dbname=\'postgresql_database_name\' user=\'postgresql_user\' password=\'postgresql_user_password\'
+i da ostavite prazna polja Baza podataka, Korisnik i Lozinka. Više informacija na <a href=\"http://docs.moodle.org/en/Installing_Postgres_for_PHP\">Moodle Docs</a>';
 $string['previous'] = 'Prethodni';
 $string['qtyperqpwillberemoved'] = 'Tokom nadogradnje, RQP tipovi pitanja biće uklonjeni. Nećete koristiti ovaj tip pitanja, tako da ne očekujte probleme u vezi s tim.';
 $string['qtyperqpwillberemovedanyway'] = 'Tokom nadogradnje biće uklonjen RQP tip pitanja. Kako imate neka RQP pitanja u svojoj bazi, preporučuje se da ponovo instalirate dodatak sa http://moodle.org/mod/data/view.php?d=13&amp;rid=797 pre nastavka nadogradnje da bi ona mogla i dalje nesmetano da se koriste.';
@@ -272,6 +274,6 @@ $string['wrongsourcebase'] = 'Pogrešan izvorni URL baze.';
 $string['wrongzipfilename'] = 'Pogrešan naziv arhive.';
 $string['wwwroot'] = 'Web adresa';
 $string['wwwrooterror'] = 'Navedena \'Web adresa\' se čini nevalidnom - ova Moodle instalacija izgleda nije na njoj. Vrednost navedena ispod je resetovana.';
-$string['xmlrpcrecommended'] = 'Instaliranje opcionog xmlrpc proširenja je korisno za funkcionalnost Moodle umrežavanje.';
+$string['xmlrpcrecommended'] = 'Instaliranje opcionog xmlrpc proširenja je korisno za funkcionalnost Moodle umrežavanje.'; // ORPHANED
 $string['ziprequired'] = 'PHP ekstenzija Zip sada je obavezna za Moodle, binarne info-ZIP datoteke i biblioteka PclZip više se ne koriste.';
 ?>

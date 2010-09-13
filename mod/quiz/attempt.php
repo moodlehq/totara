@@ -116,9 +116,7 @@
             // User entered the wrong password, or has not entered one yet.
             $url = $CFG->wwwroot . '/mod/quiz/attempt.php?q=' . $quiz->id;
 
-            if (empty($popup)) {
-                print_header('', '', '', 'quizpassword');
-            }
+            print_header('', '', '', 'quizpassword');
 
             if (trim(strip_tags($quiz->intro))) {
                 $formatoptions->noclean = true;
@@ -140,9 +138,7 @@
 </form>
 <?php
             print_box_end();
-            if (empty($popup)) {
-                print_footer();
-            }
+            print_footer('empty');
             exit;
         }
     }
@@ -155,9 +151,14 @@
             $numattempts = 0;
         }
         $timenow = time();
-        $lastattempt_obj = get_record_select('quiz_attempts', "quiz = $quiz->id AND attempt = $numattempts AND userid = $USER->id", 'timefinish');
+        $lastattempt_obj = get_record_select('quiz_attempts',
+                "quiz = $quiz->id AND attempt = $numattempts AND userid = $USER->id",
+                'timefinish, timestart');
         if ($lastattempt_obj) {
             $lastattempt = $lastattempt_obj->timefinish;
+            if ($quiz->timelimit > 0) {
+                $lastattempt = min($lastattempt, $lastattempt_obj->timestart + $quiz->timelimit*60);
+            }
         }
         if ($numattempts == 1 && !empty($quiz->delay1)) {
             if ($timenow - $quiz->delay1 < $lastattempt) {
@@ -469,8 +470,11 @@
     $quiz->thispageurl = $CFG->wwwroot . '/mod/quiz/attempt.php?q=' . s($quiz->id) . '&amp;page=' . s($page);
     $quiz->cmid = $cm->id;
     echo '<form id="responseform" method="post" action="', $quiz->thispageurl . '" enctype="multipart/form-data"' .
-            ' onclick="this.autocomplete=\'off\'" onkeypress="return check_enter(event);" accept-charset="utf-8">', "\n";
-    if($quiz->timelimit > 0) {
+            ' onkeypress="return check_enter(event);" accept-charset="utf-8">', "\n";
+    echo '<script type="text/javascript">', "\n",
+            'document.getElementById("responseform").setAttribute("autocomplete", "off")', "\n",
+            "</script>\n";
+    if ($quiz->timelimit > 0) {
         // Make sure javascript is enabled for time limited quizzes
         ?>
         <script type="text/javascript">

@@ -3,7 +3,7 @@
 /// This page prints a particular instance of aicc/scorm package
 
     require_once('../../config.php');
-    require_once('locallib.php');
+    require_once($CFG->dirroot.'/mod/scorm/locallib.php');
 
     //
     // Checkin' script parameters
@@ -329,8 +329,9 @@
                     </noscript>
 <?php            
             //Added incase javascript popups are blocked
-            $link = '<a href="'.$CFG->wwwroot.'/mod/scorm/loadSCO.php?id='.$cm->id.$scoidstr.$modestr.'" target="new">'.get_string('popupblockedlinkname','scorm').'</a>';
-            print_simple_box(get_string('popupblocked','scorm',$link),'center');         
+            print_simple_box(get_string('popupblockmessage','scorm'),'center','','',5,'generalbox','altpopuplink');
+            $linkcourse = '<a href="'.$CFG->wwwroot.'/course/view.php?id='.$scorm->course.'">' . get_string('finishscormlinkname','scorm') . '</a>';
+            print_simple_box(get_string('finishscorm','scorm',$linkcourse),'center','','',5,'generalbox','altfinishlink');
         }
     } else {
         print_simple_box(get_string('noprerequisites','scorm'),'center');

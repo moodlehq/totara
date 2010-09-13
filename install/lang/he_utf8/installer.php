@@ -29,19 +29,19 @@ $string['chooselanguagehead'] = 'בחר שפה';
 $string['chooselanguagesub'] = 'אנא בחר שפה עבור ההתקנה בלבד. תוכל לבחור בשפה שונה לאתר ולמשתמש באחד מהמסכים הבאים.';
 $string['closewindow'] = 'סגור את החלון הזה';
 $string['compatibilitysettingshead'] = 'בדיקת הגדרות ה-PHP שלך...';
-$string['compatibilitysettingssub'] = 'השרת שלך צריך לעבור את כל בדיקות אלו כדי להפעיל את Moodle כהלכה.';
+$string['compatibilitysettingssub'] = 'השרת שלך צריך לעבור סדרת בדיקות זו כדי להפעיל את Moodle כהלכה.';
 $string['componentisuptodate'] = 'הרכיב מעודכן.';
-$string['configfilenotwritten'] = 'תסריט (script) ההתקנה לא הצליח ליצור באופן אוטומטי את קובץ config.php המכיל את בחירת ההגדרות שלך, ייתכן שהדבר קרה בגלל שספריית ה-Moodle שלך איננה ניתנת לכתיבה. תוכל באופן ידני להעתיק את הקוד הבא לתוך קובץ config.php בספריית האם של Moodle.';
+$string['configfilenotwritten'] = 'תסריט (script) ההתקנה לא הצליח ליצור באופן אוטומטי את קובץ config.php המכיל את ההגדרות שבחרת, ייתכן שהדבר קרה בגלל שספריית ה-Moodle שלך איננה ניתנת לכתיבה. תוכל להעתיק באופן ידני את הקוד הבא לתוך קובץ config.php בספריית האם של Moodle.';
 $string['configfilewritten'] = 'קובץ config.php נוצר בהצלחה';
 $string['configurationcompletehead'] = 'הגדרות התצורה הושלמו';
 $string['configurationcompletesub'] = 'Moodle ניסה לשמור את הגדרות התצורה שלך בקובץ בספריית ה-root של התקנת ה-Moodle.';
 $string['continue'] = 'המשך';
 $string['ctyperecommended'] = 'התקנת ההרחבה האופציונלית ctype PHP ממולצת ביותר בכדי לשפר את ביצועי האתר, במיוחד אם האתר תומך בשפות לא-לטניות.';
 $string['ctyperequired'] = 'הרחבת ה-ctype PHP כעת נדרשת ע\"י Moodle, כדי לשפר את ביצועי האתר ולהציע תאימות רב-לשונית.';
-$string['curlrecommended'] = 'התקנת ספריית Curl, האופציונלית, מומלצת ביותר בכדי לאפשר ל-Moodle את פונקציונליות התקשורת';
+$string['curlrecommended'] = 'התקנת ספריית Curl, האופציונלית, מומלצת ביותר בכדי לאפשר ל-Moodle את פונקציונליות Moodle Networking';
 $string['customcheck'] = 'בדיקות אחרות';
 $string['database'] = 'מסד נתונים';
-$string['databasecreationsettingshead'] = 'כעת נותר לך לעצב את הגדרות מסד הנתונים שלך היכן שרוב נתוני Moodle יאוחסנו. מסד נתונים זה ייווצר באופן אוטומטי ע\"י ההתקנה
+$string['databasecreationsettingshead'] = 'כעת יש לעצב את הגדרות מסד הנתונים שלך, בו יאוחסנו רוב נתוני Moodle. מסד נתונים זה ייווצר באופן אוטומטי בזמן ההתקנה
 עם ההגדרות המצויינות להלן.';
 $string['databasecreationsettingssub'] = '<b>סוג:</b> תוקן ל\"mysql\" ע\"י קובץ ההתקנה<br />
 <b>מחשב מארח:</b> תוקן ל\"localhost\" ע\"י קובץ ההתקנה<br />
@@ -49,7 +49,7 @@ $string['databasecreationsettingssub'] = '<b>סוג:</b> תוקן ל\"mysql\" ע
 <b>שם משתמש מסד הנתונים:</b> תוקן ל\"root\" ע\"י קובץ ההתקנה<br />
 <b>סיסמה:</b> סיסמת מסד הנתונים שלך<br />
 <b>תחילית הטבלאות:</b> תחילית רשות לכל שמות הטבלאות';
-$string['databasesettingshead'] = 'כעת נותר לך לעצב את הגדרות מסד הנתונים שלך היכן שרוב נתוני Moodle יאוחסנו. מסד נתונים זה חייב כבר להיות קיים בנוסף שם משתמש וסיסמה לשם גישה אליו.';
+$string['databasesettingshead'] = 'כעת יש לעצב את הגדרות מסד הנתונים שלך, בו יאוחסנו רוב נתוני Moodle. מסד נתונים זה חייב כבר להיות קיים בנוסף שם משתמש וסיסמה לשם גישה אליו.';
 $string['databasesettingssub'] = '<b>סוג:</b> mysql או postgres7<br />
 <b>מחשב מארח:</b> לדוגמה localhost או db.isp.com<br />
 <b>שם:</b> database שם מסד הנתונים למשל-moodle<br />
@@ -97,9 +97,9 @@ $string['databasesettingssub_postgres7'] = '<b>סוג:</b> PostgreSQL<br />
 <b>שם משתמש:</b> שם משתמש מסד הנתונים שלך<br />
 <b>סיסמה:</b> סיסמת מסד הנתונים שלך<br />
 <b>תחילית הטבלאות:</b> תחילית רשות לכל שמות הטבלאות (אפשרי)';
-$string['databasesettingswillbecreated'] = '<b>הערה: </b> ההתקנה תנסה ליצור את מסד הנתונים אוטומטית אם הוא לא קיים.';
-$string['dataroot'] = 'ספריית הנתנים';
-$string['datarooterror'] = 'ספריית \"נתוני Moodle\" שציינת לא נמצאה או יכלה להיווצר. אנא תקן את נתיב זה או צור את ספרייה זו באופן ידני.';
+$string['databasesettingswillbecreated'] = '<b>הערה: </b> ההתקנה תנסה ליצור את מסד הנתונים באופן אוטומטי אם אינו קיים.';
+$string['dataroot'] = 'ספריית הנתונים';
+$string['datarooterror'] = 'ספריית \"נתוני Moodle\" שציינת לא נמצאה או לא יכלה להיווצר. אנא תקן נתיב זה או צור ספרייה זו באופן ידני.';
 $string['datarootpublicerror'] = 'ספריית ה-\'Data Directory\' שציינת ניתנת לגישה ישירות מהרשת. אתה מוכרח להשתמש בספרייה אחרת.';
 $string['dbconnectionerror'] = 'לא הצלחנו להתחבר למסד הנתונים שציינת. אנא בדוק את הגדרות מסד הנתונים שלך.';
 $string['dbcreationerror'] = 'חלה שגיאה ביצירת מסד הנתונים. המערכת לא הצליחה ליצור את שם מסד הנתונים שציינת עם ההגדרות שסופקו.';
@@ -181,7 +181,7 @@ $string['installation'] = 'התקנה';
 $string['invalidmd5'] = 'md5 לא חוקי';
 $string['langdownloaderror'] = 'לצערינו השפה \"$a\" לא הותקנה. תהליך ההתקנה ימשיך באנגלית.';
 $string['langdownloadok'] = 'השפה \"$a\" הותקנה בהצלחה. תהליך ההתקנה ימשיך בשפה זו.';
-$string['language'] = 'חבילת שפה';
+$string['language'] = 'שפה';
 $string['magicquotesruntime'] = 'Magic Quotes Run Time';
 $string['magicquotesruntimeerror'] = 'חייב לנטרל זאת';
 $string['magicquotesruntimehelp'] = '<p>רצוי שמשתנה Magic quotes runtime  יהיה כבוי עבור Moodle בכדי שיעבור כהלכה.
@@ -197,7 +197,7 @@ $string['memorylimithelp'] = '<p>
 גבול הזיכרון של ה-PHP לשרת שלך כרגע מכוון ל-$a
 </p>
 <p>
-דבר זה עלול לגרום בעיות זיכרון בהמשך, במיוחד אם יש לך מודולים רבים פעילים אוו הרבה משתמשים. </p>
+דבר זה עלול לגרום בעיות זיכרון בהמשך, במיוחד אם יש לך רכיבים רבים פעילים אוו הרבה משתמשים. </p>
 <p> אנו ממליצים שתעצב את הגדרת ה-PHP עם ערך גבוה להגבלת הזיכרון, כמו 40M.
 ישנן דרכים רבות לכך:
 <ol>
@@ -308,4 +308,6 @@ $string['wrongsourcebase'] = 'מקור בסיס URL שגוי';
 $string['wrongzipfilename'] = 'שם קובץ ZIP שגוי.';
 $string['wwwroot'] = 'כתובת האתר';
 $string['wwwrooterror'] = 'כתובת האתר כנראה איננה תקנית - התקנת Moodle זו כנראה איננה שם. הערך כאן אותחל.';
+$string['xmlrpcrecommended'] = 'התקנת הרחבת ה-xmlrpc  נדרשת לצורך פונקציונליות Moodle Networking.';
+$string['ziprequired'] = 'הרחבת The Zip PHP נדרשת ע\"י Moodle, ספריות PclZip  או info-ZIP binaries לא בשימוש יותר.';
 ?>

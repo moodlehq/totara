@@ -257,6 +257,7 @@ function xmldb_local_upgrade($oldversion) {
         $table->addFieldInfo('timenotified', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null);
         $table->addFieldInfo('timeenroled', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0');
         $table->addFieldInfo('timecompleted', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null);
+        $table->addFieldInfo('rpl', XMLDB_TYPE_CHAR, '255', null, null, null, null);
 
     /// Adding keys to table course_completions
         $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));

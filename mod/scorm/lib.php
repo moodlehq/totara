@@ -13,7 +13,7 @@
 function scorm_add_instance($scorm) {
     global $CFG;
 
-    require_once('locallib.php');
+    require_once($CFG->dirroot.'/mod/scorm/locallib.php');
 
     if (($packagedata = scorm_check_package($scorm)) != null) {
         $scorm->pkgtype = $packagedata->pkgtype;
@@ -40,7 +40,6 @@ function scorm_add_instance($scorm) {
         if (!isset($scorm->whatgrade)) {
             $scorm->whatgrade = 0;
         }
-        $scorm->grademethod = ($scorm->whatgrade * 10) + $scorm->grademethod;
 
         $id = insert_record('scorm', $scorm);
 
@@ -80,7 +79,7 @@ function scorm_add_instance($scorm) {
 function scorm_update_instance($scorm) {
     global $CFG;
 
-    require_once('locallib.php');
+    require_once($CFG->dirroot.'/mod/scorm/locallib.php');
 
     $scorm->parse = 0;
     if (($packagedata = scorm_check_package($scorm)) != null) {
@@ -108,7 +107,6 @@ function scorm_update_instance($scorm) {
     if (!isset($scorm->whatgrade)) {
         $scorm->whatgrade = 0;
     }
-    $scorm->grademethod = ($scorm->whatgrade * 10) + $scorm->grademethod;
 
     // Check if scorm manifest needs to be reparsed
     if ($scorm->parse == 1) {
@@ -156,7 +154,7 @@ function scorm_delete_instance($id) {
     $scorm->dir = $CFG->dataroot.'/'.$scorm->course.'/moddata/scorm';
     if (is_dir($scorm->dir.'/'.$scorm->id)) {
         // Delete any dependent files
-        require_once('locallib.php');
+        require_once($CFG->dirroot.'/mod/scorm/locallib.php');
         scorm_delete_files($scorm->dir.'/'.$scorm->id);
     }
 
@@ -218,7 +216,7 @@ function scorm_delete_instance($id) {
 */
 function scorm_user_outline($course, $user, $mod, $scorm) { 
     global $CFG;
-    require_once('locallib.php');
+    require_once($CFG->dirroot.'/mod/scorm/locallib.php');
     require_once("$CFG->libdir/gradelib.php");
     $grades = grade_get_grades($course->id, 'mod', 'scorm', $scorm->id, $user->id);
     if (!empty($grades->items[0]->grades)) {
@@ -244,7 +242,7 @@ function scorm_user_outline($course, $user, $mod, $scorm) {
 function scorm_user_complete($course, $user, $mod, $scorm) {
     global $CFG;
     require_once("$CFG->libdir/gradelib.php");
-    require_once("locallib.php");
+    require_once($CFG->dirroot.'/mod/scorm/locallib.php');
 
     $liststyle = 'structlist';
     $scormpixdir = $CFG->modpixpath.'/scorm/pix';
@@ -391,7 +389,7 @@ function scorm_cron () {
 
     global $CFG;
 
-    require_once('locallib.php');
+    require_once($CFG->dirroot.'/mod/scorm/locallib.php');
 
     $sitetimezone = $CFG->timezone;
     /// Now see if there are any digest mails waiting to be sent, and if we should send them
@@ -400,7 +398,7 @@ function scorm_cron () {
     }
 
     $timenow = time();
-    $updatetime = usergetmidnight($timenow, $sitetimezone) + ($CFG->scorm_updatetimelast * 3600);
+    $updatetime = usergetmidnight($timenow, $sitetimezone);
 
     if ($CFG->scorm_updatetimelast < $updatetime and $timenow > $updatetime) {
 
@@ -429,7 +427,7 @@ function scorm_cron () {
  */
 function scorm_get_user_grades($scorm, $userid=0) {
     global $CFG;
-    require_once('locallib.php');
+    require_once($CFG->dirroot.'/mod/scorm/locallib.php');
 
     $grades = array();
     if (empty($userid)) {
