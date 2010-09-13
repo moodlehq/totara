@@ -37,6 +37,7 @@ $string['idnumberframework'] = 'ID Number';
 $string['idnumberview'] = '$a idnumber';
 $string['invalidnumeric'] = 'Numerical value must be numerical (or not set)';
 $string['manageorganisations'] = 'Manage organisations';
+$string['manageorganisation'] = 'Manage organisations'; // used for breadcrumbs
 $string['missingfullname'] = 'Missing organisation full name';
 $string['missingfullnamedepth'] = 'Missing depth level full name';
 $string['missingfullnameframework'] = 'Missing framework full name';

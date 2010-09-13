@@ -85,6 +85,9 @@
         $navbaritem = '';
     }
 
+    $navlinks = array();    // Breadcrumbs
+    $navlinks[] = array('name'=>get_string("manage{$type}", $type), 'link'=>'', 'type'=>'misc');
+
     // Setup page and check permissions
     admin_externalpage_setup($type.'manage', $navbaritem, array('type'=>$type));
 
@@ -109,7 +112,7 @@
     if (!$depths) {
 
         // Display page
-        admin_externalpage_print_header();
+        admin_externalpage_print_header('', $navlinks);
 
         $hierarchy->display_framework_selector();
 
@@ -471,8 +474,7 @@
     ///
     /// Generate / display page
     ///
-
-    admin_externalpage_print_header();
+    admin_externalpage_print_header('', $navlinks);
 
     $hierarchy->display_framework_selector();
 

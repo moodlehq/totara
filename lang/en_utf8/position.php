@@ -46,6 +46,7 @@ $string['idnumberview'] = 'ID number';
 $string['invalidnumeric'] = 'Numerical value must be numerical (or not set)';
 $string['manager'] = 'Manager';
 $string['managepositions'] = 'Manage positions';
+$string['manageposition'] = 'Manage positions'; // used for breadcrumbs
 $string['missingfullname'] = 'Missing position full name';
 $string['missingfullnamedepth'] = 'Missing depth level full name';
 $string['missingfullnameframework'] = 'Missing framework full name';

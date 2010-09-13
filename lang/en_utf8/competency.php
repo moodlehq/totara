@@ -107,6 +107,7 @@ $string['linktoscalevalues'] = '<a href=\\"view.php?id=$a&amp;type=competency\\"
 $string['locatecompetency'] = 'Locate competency';
 $string['locatecompetencytemplate'] = 'Locate competency template';
 $string['managecompetencies'] = 'Manage competencies';
+$string['managecompetency'] = 'Manage competencies';
 $string['missingscale'] = 'Missing scale';
 $string['missingfullname'] = 'Missing competency full name';
 $string['missingfullnamedepth'] = 'Missing depth level full name';

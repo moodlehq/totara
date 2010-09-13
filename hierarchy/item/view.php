@@ -64,9 +64,8 @@ if ($editingon) {
 
 // Display page header
 $pagetitle = format_string($depth->fullname.' - '.$item->fullname);
-$navlinks[] = array('name' => get_string($type,$type), 'link'=> '', 'type'=>'title');
-$navlinks[] = array('name' => $depth->fullname, 'link'=> '', 'type'=>'title');
-$navlinks[] = array('name' => $item->fullname, 'link'=> '', 'type'=>'title');
+$navlinks[] = array('name' => get_string('manage'.$type,$type), 'link'=> $CFG->wwwroot.'/hierarchy/index.php?type='.$type.'&frameworkid='.$framework->id, 'type'=>'title');
+$navlinks[] = array('name' => $item->shortname, 'link'=> '', 'type'=>'title');
 
 $navigation = build_navigation($navlinks);
 
