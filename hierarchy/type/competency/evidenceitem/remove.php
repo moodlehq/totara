@@ -49,9 +49,16 @@ if (!$course) {
 }
 
 
+$compname = get_field('comp', 'fullname', 'id', $item->competencyid);
 if (!$delete) {
-    $message = get_string('evidenceitemremovecheck', $hierarchy->prefix).'<br /><br />';
-    $message .= format_string($item->get_name());
+    if(!$course){
+        $message = get_string('evidenceitemremovecheck', $hierarchy->prefix, $compname).'<br /><br />';
+        $message .= format_string($item->get_name() .' ('. $item->get_type().')');
+    }
+    else {
+        $message = get_string('evidenceitemremovecheck', $hierarchy->prefix, format_string($item->get_name())).'<br /><br />';
+        $message .= format_string($compname .' ('. $item->get_type().')');
+    }
 
     $action = "{$CFG->wwwroot}/hierarchy/type/{$hierarchy->prefix}/evidenceitem/remove.php?id={$item->id}&amp;delete=".md5($item->timemodified)."&amp;sesskey={$USER->sesskey}";
 
@@ -83,7 +90,7 @@ $item->delete($competency);
 
 add_to_log(SITEID, $hierarchy->prefix.'evidence', 'delete', "view.php?id=$item->id", $item->get_name()." (ID $item->id)");
 
-$message = get_string('removed'.$hierarchy->prefix.'evidenceitem', $hierarchy->prefix, format_string($item->get_name()));
+$message = get_string('removed'.$hierarchy->prefix.'evidenceitem', $hierarchy->prefix, format_string($compname .' ('. $item->get_type().')'));
 
 print_heading($message);
 print_continue($return);
