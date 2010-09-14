@@ -11,6 +11,9 @@ if ($hassiteconfig
     $ADMIN->add('courses', new admin_externalpage('coursemgmt', get_string('coursemgmt', 'admin'), $CFG->wwwroot . '/course/index.php?categoryedit=on',
             array('moodle/category:manage', 'moodle/course:create')));
 
+    $ADMIN->add('courses', new admin_externalpage('coursecustomfields', get_string('customfields', 'customfields'), $CFG->wwwroot . '/customfield/custom_field_categories.php?type=course',
+            array('moodle/local:createcoursecustomfield', 'moodle/local:updatecoursecustomfield', 'moodle/local:deletecoursecustomfield')));
+
     $ADMIN->add('courses', new admin_enrolment_page());
 
 /// Course Default Settings Page

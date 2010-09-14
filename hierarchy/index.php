@@ -313,7 +313,7 @@
                 $header .= " <a href=\"{$CFG->wwwroot}/hierarchy/depth/edit.php?type={$type}&amp;id={$head->value->id}\"
                     title=\"$str_edit\">".
                     "<img src=\"{$CFG->pixpath}/t/edit.gif\" class=\"iconsmall\" alt=\"$str_edit\" /></a> ".
-                    "<a href=\"{$CFG->wwwroot}/customfield/index.php?type={$type}&amp;subtype=depth&amp;depthid={$head->value->id}\"
+                    "<a href=\"{$CFG->wwwroot}/customfield/custom_field_categories.php?type={$type}&amp;subtype=depth&amp;depthid={$head->value->id}&amp;frameworkid={$framework->id}\"
                     title=\"$str_customfields\">".
                     "<img src=\"{$CFG->pixpath}/t/customfields.gif\" class=\"iconsmall\" alt=\"$str_customfields\" /></a> ";
             }

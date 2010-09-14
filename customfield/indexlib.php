@@ -40,7 +40,7 @@
  * @param   object   the depthid of the object if used
  * @return  string   the icon string
  */
-function customfield_edit_icons($field, $fieldcount, $depthid=0, $type, $subtype, $frameworkid=0, $categoryid=0) {
+function customfield_edit_icons($field, $fieldcount, $depthid=0, $type, $subtype=0, $frameworkid=0, $categoryid=0) {
     global $CFG;
 
     if (empty($str)) {
@@ -50,25 +50,50 @@ function customfield_edit_icons($field, $fieldcount, $depthid=0, $type, $subtype
         $stredit     = get_string('edit');
     }
 
+    $typestr = 'type=' . $type;
+    $subtypestr = ($subtype) ? '&amp;subtype=' . $subtype : '';
+    $depthidstr = ($depthid) ? '&amp;depthid=' . $depthid : '';
+    $frameworkidstr = ($frameworkid) ? '&amp;frameworkid=' . $frameworkid : '';
+    $categoryidstr = ($categoryid) ? '&amp;categoryid=' . $categoryid : '';
+
     /// Edit
-    $editstr = '<a title="'.$stredit.'" href="index.php?type='.$type.'&subtype='.$subtype.'&id='.$field->id.'&amp;frameworkid='.$frameworkid.'&amp;categoryid='.$categoryid.'&amp;depthid='.$depthid.'&amp;action=editfield"><img src="'.$CFG->pixpath.'/t/edit.gif" alt="'.$stredit.'" class="iconsmall" /></a> ';
+    $editstr = '<a title="' . $stredit . '" href="index.php?' .
+        $typestr . $subtypestr . '&id=' . $field->id . $frameworkidstr .
+        $categoryidstr . $depthidstr . '&amp;action=editfield"><img src="' .
+        $CFG->pixpath . '/t/edit.gif" alt="' . $stredit .
+        '" class="iconsmall" /></a> ';
 
     /// Delete
-    $editstr .= '<a title="'.$strdelete.'" href="index.php?type='.$type.'&subtype='.$subtype.'&id='.$field->id.'&amp;frameworkid='.$frameworkid.'&amp;categoryid='.$categoryid.'&amp;depthid='.$depthid.'&amp;action=deletefield';
-    $editstr .= '"><img src="'.$CFG->pixpath.'/t/delete.gif" alt="'.$strdelete.'" class="iconsmall" /></a> ';
+    $editstr .= '<a title="' . $strdelete . '" href="index.php?' .
+        $typestr . $subtypestr . '&id=' . $field->id . $frameworkidstr .
+        $categoryidstr . $depthidstr . '&amp;action=deletefield';
+    $editstr .= '"><img src="' . $CFG->pixpath.'/t/delete.gif" alt="' .
+        $strdelete.'" class="iconsmall" /></a> ';
 
     /// Move up
     if ($field->sortorder > 1) {
-        $editstr .= '<a title="'.$strmoveup.'" href="index.php?type='.$type.'&subtype='.$subtype.'&id='.$field->id.'&amp;frameworkid='.$frameworkid.'&amp;categoryid='.$categoryid.'&amp;depthid='.$depthid.'&amp;action=movefield&amp;dir=up&amp;sesskey='.sesskey().'"><img src="'.$CFG->pixpath.'/t/up.gif" alt="'.$strmoveup.'" class="iconsmall" /></a> ';
+        $editstr .= '<a title="' . $strmoveup . '" href="index.php?' .
+            $typestr . $subtypestr . '&id='.$field->id . $frameworkidstr .
+            $categoryidstr . $depthidstr .
+            '&amp;action=movefield&amp;dir=up&amp;sesskey=' . sesskey() .
+            '"><img src="' . $CFG->pixpath . '/t/up.gif" alt="' . $strmoveup .
+            '" class="iconsmall" /></a> ';
      } else {
-        $editstr .= '<img src="'.$CFG->pixpath.'/spacer.gif" alt="" class="iconsmall" /> ';
+         $editstr .= '<img src="' . $CFG->pixpath .
+             '/spacer.gif" alt="" class="iconsmall" /> ';
     }
 
     /// Move down
     if ($field->sortorder < $fieldcount) {
-        $editstr .= '<a title="'.$strmovedown.'" href="index.php?type='.$type.'&subtype='.$subtype.'&id='.$field->id.'&amp;frameworkid='.$frameworkid.'&amp;categoryid='.$categoryid.'&amp;depthid='.$depthid.'&amp;action=movefield&amp;dir=down&amp;sesskey='.sesskey().'"><img src="'.$CFG->pixpath.'/t/down.gif" alt="'.$strmovedown.'" class="iconsmall" /></a> ';
+        $editstr .= '<a title="' . $strmovedown . '" href="index.php?' .
+            $typestr . $subtypestr . '&id=' . $field->id . $frameworkidstr .
+            $categoryidstr . $depthidstr .
+            '&amp;action=movefield&amp;dir=down&amp;sesskey=' . sesskey() .
+            '"><img src="' . $CFG->pixpath . '/t/down.gif" alt="' .
+            $strmovedown . '" class="iconsmall" /></a> ';
     } else {
-        $editstr .= '<img src="'.$CFG->pixpath.'/spacer.gif" alt="" class="iconsmall" /> ';
+        $editstr .= '<img src="' . $CFG->pixpath .
+            '/spacer.gif" alt="" class="iconsmall" /> ';
     }
 
     return $editstr;
@@ -132,10 +157,18 @@ function customfield_delete_category($id, $depthid=0, $tableprefix) {
         error('Incorrect category id');
     }
 
-    // get other categories at same depth level
-    // get sortorder as first field so array keys will be sortorder
-    if (!$categories = get_records($tableprefix.'_info_category', 'depthid', $category->depthid, 'sortorder ASC','sortorder,id')) {
-        error('Error no categories!?!?');
+    if($depthid) {
+        // get other categories at same depth level
+        // get sortorder as first field so array keys will be sortorder
+        if (!$categories = get_records($tableprefix.'_info_category', 'depthid', $category->depthid, 'sortorder ASC','sortorder,id')) {
+            error('Error no categories!?!?');
+        }
+    } else {
+        // get all other categories
+        // get sortorder as first field so array keys will be sortorder
+        if (!$categories = get_records($tableprefix.'_info_category', 1, 1, 'sortorder ASC','sortorder,id')) {
+            error('Error no categories!?!?');
+        }
     }
 
     $fieldcount = count_records($tableprefix.'_info_field', 'categoryid', $id);
@@ -350,8 +383,8 @@ function customfield_edit_category($id, $depthid=0, $redirect, $tableprefix, $ty
     } else {
         if ($data = $categoryform->get_data()) {
 
-            if (empty($data->id)) {
-                unset($data->id);
+            // new record
+            if ($data->categoryid == 0) {
 
                 $depthstr = '';
                 if ($data->depthid) {
@@ -366,6 +399,7 @@ function customfield_edit_category($id, $depthid=0, $redirect, $tableprefix, $ty
                     error('There was a problem adding the record to the database');
                 }
             } else {
+                $data->id = $data->categoryid;
                 if (!update_record($tableprefix.'_info_category', $data)) {
                     error('There was a problem updating the record in the database');
                 }

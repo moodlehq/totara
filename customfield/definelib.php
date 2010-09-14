@@ -6,9 +6,9 @@ class customfield_define_base {
      * Prints out the form snippet for creating or editing a custom field
      * @param   object   instance of the moodleform class
      */
-    function define_form(&$form, $depthid=0, $tableprefix) {
+    function define_form(&$form, $depthid=0, $tableprefix, $categoryid=0) {
         $form->addElement('header', '_commonsettings', get_string('commonsettings', 'customfields'));
-        $this->define_form_common($form, $depthid, $tableprefix);
+        $this->define_form_common($form, $depthid, $tableprefix, $categoryid);
 
         $form->addElement('header', '_specificsettings', get_string('specificsettings', 'customfields'));
         $this->define_form_specific($form);
@@ -19,7 +19,7 @@ class customfield_define_base {
      * editing a custom field common to all data types
      * @param   object   instance of the moodleform class
      */
-    function define_form_common(&$form, $depthid=0, $tableprefix) {
+    function define_form_common(&$form, $depthid=0, $tableprefix, $categoryid) {
 
         $strrequired = get_string('required');
 
@@ -51,6 +51,9 @@ class customfield_define_base {
         $choices = customfield_list_categories($depthid, $tableprefix);
         $form->addElement('select', 'categoryid', get_string('category', 'customfields'), $choices);
         $form->setHelpButton('categoryid', array('customfieldcategory', get_string('category','customfields')), true);
+        if($categoryid) {
+            $form->setDefault('categoryid', $categoryid);
+        }
     }
 
     /**
@@ -97,7 +100,11 @@ class customfield_define_base {
 
         } else {
         /// Fetch field-record from DB
-            $field = get_record($tableprefix.'_info_field', 'shortname', $data->shortname, 'depthid', $depthid);
+            if($depthid) {
+                $field = get_record($tableprefix.'_info_field', 'shortname', $data->shortname, 'depthid', $depthid);
+            } else {
+                $field = get_record($tableprefix.'_info_field', 'shortname', $data->shortname);
+            }
         /// Check the shortname is unique
             if ($field and $field->id <> $data->id) {
                 $err['shortname'] = get_string('shortnamenotunique', 'customfields');

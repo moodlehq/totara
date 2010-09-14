@@ -6,6 +6,7 @@
     require_once($CFG->libdir.'/blocklib.php');
     require_once('lib.php');
     require_once('edit_form.php');
+    require_once($CFG->dirroot.'/customfield/fieldlib.php');
     require_once($CFG->dirroot.'/tag/lib.php');
 
     $id         = optional_param('id', 0, PARAM_INT);       // course id
@@ -30,6 +31,8 @@
         require_login($course->id);
         $category = get_record('course_categories', 'id', $course->category);
         require_capability('moodle/course:update', get_context_instance(CONTEXT_COURSE, $course->id));
+
+        customfield_load_data($course, 'course', 'course');
 
     } else if ($categoryid) { // creating new course in this category
         $course = null;
@@ -105,6 +108,9 @@
             }
             add_tags_info($course->id);
 
+            $data->id = $course->id;
+            customfield_save_data($data, 'course', 'course');
+
             $context = get_context_instance(CONTEXT_COURSE, $course->id);
 
             // assign default role to creator if not already having permission to manage course assignments
@@ -129,6 +135,7 @@
                 print_error('coursenotupdated');
             }
             add_tags_info($course->id);
+            customfield_save_data($data, 'course', 'course');
             redirect($CFG->wwwroot."/course/view.php?id=$course->id");
         }
     }

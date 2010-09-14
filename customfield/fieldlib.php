@@ -116,11 +116,26 @@ class customfield_base {
         $errors = array();
         /// Check for uniqueness of data if required
         if ($this->is_unique()) {
-            if ($itemid = get_field($tableprefix.'_info_data', $type.'id', 'fieldid', $this->field->id, 'data', $itemnew->{$this->inputname})) {
-                if ($itemid != $itemnew->id) {
+            if($type == 'course') {
+                // anywhere across the site
+                $data = $itemnew->{$this->inputname};
+                if(record_exists_select($tableprefix.'_info_data',
+                    "fieldid = {$this->field->id} AND " .
+                    "data = '{$data}' AND " .
+                    "id != {$itemnew->id}")) {
+
+
                     $errors["{$this->inputname}"] = get_string('valuealreadyused');
                 }
+            } else {
+                // within same depth level
+                if ($itemid = get_field($tableprefix.'_info_data', $type.'id', 'fieldid', $this->field->id, 'data', $itemnew->{$this->inputname})) {
+                    if ($itemid != $itemnew->id) {
+                        $errors["{$this->inputname}"] = get_string('valuealreadyused');
+                    }
+                }
             }
+
         }
         return $errors;
     }
@@ -130,7 +145,7 @@ class customfield_base {
      * @param   object   instance of the moodleform class
      */
     function edit_field_set_default(&$mform) {
-        if (!empty($default)) {
+        if (!empty($this->field->defaultdata)) {
             $mform->setDefault($this->inputname, $this->field->defaultdata);
         }
     }
@@ -285,7 +300,7 @@ class customfield_base {
 function customfield_load_data(&$item, $type, $tableprefix) {
     global $CFG;
     $depthstr = '';
-    if ($item->depthid) {
+    if (isset($item->depthid)) {
         $depthstr = "depthid='$item->depthid'";
     }
     if ($fields = get_records_select($tableprefix.'_info_field', $depthstr)) {
@@ -379,7 +394,7 @@ function customfield_save_data($itemnew, $type, $tableprefix) {
     global $CFG;
 
     $depthstr = '';
-    if ($itemnew->depthid) {
+    if (isset($itemnew->depthid)) {
         $depthstr = 'depthid='.$itemnew->depthid;
     }
 

@@ -3599,4 +3599,60 @@ function update_course($data) {
     return false;
 }
 
+
+function get_course_custom_field_categories() {
+    global $CFG;
+
+    $sql = "SELECT c.*,
+            (SELECT COUNT(*) FROM {$CFG->prefix}course_info_field f
+                WHERE f.categoryid = c.id) AS custom_field_count
+            FROM {$CFG->prefix}course_info_category c
+            ORDER BY c.name";
+
+    return get_records_sql($sql);
+}
+
+function get_course_custom_field_category_by_id($id) {
+    return get_record('course_info_category', 'id', $id);
+}
+
+function get_course_custom_fields($courseid) {
+    global $CFG;
+
+    $sql = "SELECT d.*, f.*
+            FROM {$CFG->prefix}course_info_data AS d
+            INNER JOIN {$CFG->prefix}course_info_field AS f ON d.fieldid = f.id
+            WHERE d.courseid = {$courseid}
+            ORDER BY f.sortorder";
+
+    $customfields = get_records_sql($sql);
+
+    return is_array($customfields) ? $customfields : array();
+}
+
+    /**
+    * Get editing button
+    * @param signed int edit - is editing on or off?
+    * @return button or ''
+    */
+    function get_course_editing_button($edit=-1, $options=array()){
+        global $USER;
+        if ($edit !== -1) {
+            $USER->courseediting = $edit;
+        }
+        // Work out the appropriate action.
+        if (empty($USER->courseediting)) {
+            $label = get_string('turneditingon');
+            $edit = 'on';
+        } else {
+            $label = get_string('turneditingoff');
+            $edit = 'off';
+        }
+
+        // Generate the button HTML.
+        $options['edit'] = $edit;
+        $options['type'] = 'course';
+        return print_single_button(qualified_me(), $options, $label, 'get', '', true);
+    }
+
 ?>

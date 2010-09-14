@@ -438,6 +438,7 @@ class course_edit_form extends moodleform {
             }
         }
 
+//--------------------------------------------------------------------------------
         if (!empty($CFG->usetags) && count_records('tag', 'tagtype', 'official')) {
             $mform->addElement('header', 'tagshdr', get_string('tags', 'tag'));
             $mform->createElement('select', 'otags', get_string('otags','tag'));
@@ -455,6 +456,12 @@ class course_edit_form extends moodleform {
             $otagsselEl->setMultiple(true);
             $this->otags_select_setup();
         }
+
+//--------------------------------------------------------------------------------
+        $courseid = empty($course) ? 0 : $course->id;
+        customfield_definition($mform, $courseid, 'course', 0, 'course');
+
+//--------------------------------------------------------------------------------
 
 //--------------------------------------------------------------------------------
         $this->add_action_buttons();
@@ -488,7 +495,11 @@ class course_edit_form extends moodleform {
             }
             $gr_el =& $mform->getElement('defaultgroupingid');
             $gr_el->load($options);
+
         }
+
+        $courseid = $mform->getElementValue('id') ? $mform->getElementValue('id') : 0;
+        customfield_definition_after_data($mform, $courseid, 'course', 0,  'course');
     }
 
 
@@ -526,6 +537,12 @@ class course_edit_form extends moodleform {
                 }
             }
         }
+
+        if (!empty($data['id'])) {
+            /// Check custom fields
+            $errors += customfield_validation((object)$data, 'course', 'course');
+        }
+
 
         return $errors;
     }

@@ -17,6 +17,7 @@ class field_form extends moodleform {
         $subtype     = $datasent['subtype'];
         $depthid     = $datasent['depthid'];
         $tableprefix = $datasent['tableprefix'];
+        $categoryid  = $datasent['categoryid'];
 
         require_once($CFG->dirroot.'/customfield/field/'.$datasent['datatype'].'/define.class.php');
         $newfield = 'customfield_define_'.$datasent['datatype'];
@@ -34,7 +35,7 @@ class field_form extends moodleform {
         $mform->addElement('hidden', 'depthid', $datasent['depthid']);
         $mform->addElement('hidden', 'tableprefix', $datasent['tableprefix']);
 
-        $this->field->define_form($mform, $depthid, $tableprefix);
+        $this->field->define_form($mform, $depthid, $tableprefix, $categoryid);
 
         $this->add_action_buttons(true);
     }

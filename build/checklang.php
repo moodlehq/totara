@@ -3,6 +3,8 @@
 // PHP version of Simon's missing lang string ruby script
 
 //Array of what to exclude from the search
+//key: directory or filename containing exception
+//value: string or array of strings to exclude. If set to '*' exclude all strings
 $exclude = array(
     'idp' => array('delfavouritebutton','additionalobjectives'),
     'local/libs' => '*',

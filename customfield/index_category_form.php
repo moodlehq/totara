@@ -14,7 +14,6 @@ class category_form extends moodleform {
         $strrequired = get_string('required');
 
         /// Add some extra hidden fields
-        $mform->addElement('hidden', 'id');
         $mform->addElement('hidden', 'action', 'editcategory');
         $mform->addElement('hidden', 'type', $datasent['type']);
         $mform->addElement('hidden', 'subtype', $datasent['subtype']);
@@ -38,8 +37,13 @@ class category_form extends moodleform {
 
         $data  = (object)$data;
 
+        $depthstr = ($data->depthid) ? "AND depthid = {$data->depthid}" : '';
+        $idstr = ($data->categoryid) ? "AND id != {$data->categoryid}" : '';
+        $exists = record_exists_select($data->tableprefix.'_info_category',
+            "name = '{$data->name}' $depthstr $idstr");
+
         /// Check the name is unique to the depth level
-        if (record_exists($data->tableprefix.'_info_category', 'name', $data->name, 'depthid' , $data->depthid)) {
+        if ($exists) {
             $errors['name'] = get_string('categorynamenotunique', 'customfields');
         }
 

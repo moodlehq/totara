@@ -72,6 +72,9 @@ $string['local:deleteorganisationframeworks'] = 'Delete an organisational framew
 $string['local:createorganisationcustomfield'] = 'Create an organisation custom field';
 $string['local:updateorganisationcustomfield'] = 'Update an organisation custom field';
 $string['local:deleteorganisationcustomfield'] = 'Delete an organisation custom field';
+$string['local:createcoursecustomfield'] = 'Create a course custom field';
+$string['local:updatecoursecustomfield'] = 'Update a course custom field';
+$string['local:deletecoursecustomfield'] = 'Delete a course custom field';
 $string['viewchildren'] = 'View Children';
 
 // Local IDP capability strings
