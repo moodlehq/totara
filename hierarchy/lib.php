@@ -222,7 +222,7 @@ class hierarchy {
             // Parentid supplied, do not specify frameworkid as
             // sometimes it is not set correctly. And a parentid
             // is enough to get the right results
-            return get_records_select($this->shortprefix, "parentid = {$parentid}", 'frameworkid, sortorder, fullname');
+            return get_records_select($this->shortprefix, "parentid = {$parentid} AND visible = 1", 'frameworkid, sortorder, fullname');
         }
         else {
             // If no parentid, grab the root node of this framework
@@ -243,11 +243,11 @@ class hierarchy {
     function get_all_root_items($all=false) {
         if(empty($this->frameworkid) || $all) {
             // all root level items across frameworks
-            return get_records($this->shortprefix, 'parentid', 0, 'frameworkid, sortorder, fullname');
+            return get_records_select($this->shortprefix, "parentid = 0 AND visible = 1", 'frameworkid, sortorder, fullname');
         } else {
             // root level items for current framework only
             $fwid = $this->frameworkid;
-            return get_records_select($this->shortprefix, "parentid = 0 AND frameworkid = $fwid", 'sortorder, fullname');
+            return get_records_select($this->shortprefix, "parentid = 0 AND frameworkid = $fwid AND visible = 1", 'sortorder, fullname');
         }
     }
 
@@ -347,7 +347,7 @@ class hierarchy {
         if(empty($records)) {
             // must be first time through function, get the records, and pass to
             // future uses to save db calls
-            $records = get_records($this->shortprefix,'','','path','id,fullname,shortname,parentid,sortorder,path');
+            $records = get_records($this->shortprefix,'visible','1','path','id,fullname,shortname,parentid,sortorder,path');
         }
 
         if($id == 0) {

@@ -541,6 +541,7 @@ SQL;
                     ) as disabled
                 from {$CFG->prefix}{$this->shortprefix} c
                 where c.parentid = {$parentid}
+                    and c.visible=1
                 order by frameworkid, sortorder, fullname
 SQL;
             return get_records_sql($sql);
@@ -589,6 +590,7 @@ SQL;
                 where 
                     c.parentid = 0
                     and c.frameworkid = {$this->frameworkid}
+                    and c.visible = 1
                 order by sortorder, fullname
 SQL;
             return get_records_sql($sql);
