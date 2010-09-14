@@ -2177,10 +2177,9 @@ function xmldb_local_upgrade($oldversion) {
         }
     }
 
-
     if ($result && $oldversion < 2010091300) {
 
-    /// Create table course_info_category
+        /// Create table course_info_category
         $table = new XMLDBTable('course_info_category');
         $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
         $table->addFieldInfo('name', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
@@ -2188,7 +2187,7 @@ function xmldb_local_upgrade($oldversion) {
         $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
         $result = $result && create_table($table);
 
-    /// Create table course_info_field
+        /// Create table course_info_field
         $table = new XMLDBTable('course_info_field');
         $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
         $table->addFieldInfo('fullname', XMLDB_TYPE_TEXT, 'medium', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
@@ -2210,7 +2209,7 @@ function xmldb_local_upgrade($oldversion) {
         $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
         $result = $result && create_table($table);
 
-    /// Create table course_info_data
+        /// Create table course_info_data
         $table = new XMLDBTable('course_info_data');
         $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
         $table->addFieldInfo('fieldid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
@@ -2218,9 +2217,30 @@ function xmldb_local_upgrade($oldversion) {
         $table->addFieldInfo('data', XMLDB_TYPE_TEXT, 'big', XMLDB_UNSIGNED, null, null, null);
         $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
         $result = $result && create_table($table);
-
     }
 
+    if ($result && $oldversion < 2010091500) {
+
+        /// Define field icon to be added to course
+        $table = new XMLDBTable('course');
+        $field = new XMLDBField('icon');
+        $field->setAttributes(XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null, null, null, 'defaultrole');
+
+        /// Launch add field icon
+        $result = $result && add_field($table, $field);
+    }
+
+    if ($result && $oldversion < 2010091501) {
+
+        /// Define field icon to be added to course
+        $table = new XMLDBTable('course_categories');
+        $field = new XMLDBField('icon');
+        $field->setAttributes(XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null, null, null, 'theme');
+
+        /// Launch add field icon
+        $result = $result && add_field($table, $field);
+    }
 
     return $result;
 }
+?>

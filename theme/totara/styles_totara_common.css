@@ -1121,3 +1121,13 @@ table.idp-comptable .options {
 table.idp-comptemplate .options {
     text-align: center;
 }
+
+
+/*****************************************************************************/
+/** Course and Category Icons **/
+/*****************************************************************************/
+
+.course_icon{
+    padding-right: 5px;
+    vertical-align: middle;
+}

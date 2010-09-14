@@ -122,6 +122,8 @@
             // this means trigger a reload of accessinfo...
             mark_context_dirty($context->path);
 
+            local_update_course_icon($course, $data, $editform);
+
             if ($data->metacourse and has_capability('moodle/course:managemetacourse', $context)) {
                 // Redirect users with metacourse capability to student import
                 redirect($CFG->wwwroot."/course/importstudents.php?id=$course->id");
@@ -135,7 +137,10 @@
                 print_error('coursenotupdated');
             }
             add_tags_info($course->id);
+
             customfield_save_data($data, 'course', 'course');
+            local_update_course_icon($course, $data, $editform);
+
             redirect($CFG->wwwroot."/course/view.php?id=$course->id");
         }
     }

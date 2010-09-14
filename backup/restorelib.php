@@ -1187,6 +1187,7 @@ define('RESTORE_GROUPS_GROUPINGS', 3);
             }
             $course->enrolperiod = addslashes($course_header->course_enrolperiod);
             $course->enablecompletion = isset($course_header->course_enablecompletion) ? $course_header->course_enablecompletion : 0;
+            $course->icon = addslashes($course_header->course_icon);
             //Calculate sortorder field
             $sortmax = get_record_sql('SELECT MAX(sortorder) AS max
                                        FROM ' . $CFG->prefix . 'course
@@ -6160,8 +6161,13 @@ define('RESTORE_GROUPS_GROUPINGS', 3);
                         case "ENROLPERIOD":
                             $this->info->course_enrolperiod = $this->getContents();
                             break;
+<<<<<<< HEAD
                         case "ENABLECOMPLETION":
                             $this->info->course_enablecompletion = $this->getContents();
+=======
+                        case "ICON":
+                            $this->info->course_icon = $this->getContents(); // NZ MOODLE
+>>>>>>> 6ea92e9... course/edit: course icon - added to backup/restore
                             break;
                     }
                 }

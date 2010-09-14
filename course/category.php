@@ -255,7 +255,7 @@
                 }
                 $catlinkcss = $subcategory->visible ? '' : 'class="dimmed" ';
                 echo '<a '.$catlinkcss.' href="category.php?id='.$subcategory->id.'">'.
-                     format_string($subcategory->name).'</a><br />';
+                     local_coursecategory_icon_tag($subcategory, 'small') .format_string($subcategory->name).'</a><br />';
             }
         }
         if (!$firstentry) {
@@ -346,7 +346,7 @@
 
             $linkcss = $acourse->visible ? '' : ' class="dimmed" ';
             echo '<tr>';
-            echo '<td><a '.$linkcss.' href="view.php?id='.$acourse->id.'">'. format_string($acourse->fullname) .'</a></td>';
+            echo '<td>'. local_course_icon_tag($acourse, 'small'). '<a '.$linkcss.' href="view.php?id='.$acourse->id.'">'. format_string($acourse->fullname) .'</a></td>';
             if ($editingon) {
                 echo '<td>';
                 if (has_capability('moodle/course:update', $coursecontext)) {

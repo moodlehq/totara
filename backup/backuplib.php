@@ -749,6 +749,7 @@
             fwrite ($bf,full_tag("ENROLENDDATE",3,false,$course->enrolenddate));
             fwrite ($bf,full_tag("ENROLPERIOD",3,false,$course->enrolperiod));
             fwrite ($bf,full_tag("ENABLECOMPLETION",3,false,$course->enablecompletion));
+            fwrite ($bf,full_tag("ICON",3,false,$course->icon));
 
             /// write local course overrides here?
             write_role_overrides_xml($bf, $context, 3);

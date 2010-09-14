@@ -2023,7 +2023,7 @@ function print_category_info($category, $depth, $showcourses = false) {
 
     echo "\n\n".'<table class="categorylist">';
 
-    $courses = get_courses($category->id, 'c.sortorder ASC', 'c.id,c.sortorder,c.visible,c.fullname,c.shortname,c.password,c.summary,c.guest,c.cost,c.currency');
+    $courses = get_courses($category->id, 'c.sortorder ASC', 'c.id,c.sortorder,c.visible,c.fullname,c.shortname,c.password,c.summary,c.guest,c.cost,c.currency,c.icon');
     if ($showcourses and $coursecount) {
 
         echo '<tr>';
@@ -2036,8 +2036,8 @@ function print_category_info($category, $depth, $showcourses = false) {
             echo '</td>';
         }
 
-        echo '<td valign="top" class="category image">'.$catimage.'</td>';
-        echo '<td valign="top" class="category name">';
+        echo '<td valign="top" class="category image">'.local_coursecategory_icon_tag($category, 'small').'</td>';
+        echo '<td class="category name">';
         echo '<a '.$catlinkcss.' href="'.$CFG->wwwroot.'/course/category.php?id='.$category->id.'">'. format_string($category->name).'</a>';
         echo '</td>';
         echo '<td class="category info">&nbsp;</td>';
@@ -2053,7 +2053,8 @@ function print_category_info($category, $depth, $showcourses = false) {
                 $linkcss = $course->visible ? '' : ' class="dimmed" ';
                 echo '<tr><td valign="top">&nbsp;';
                 echo '</td><td valign="top" class="course name">';
-                echo '<a '.$linkcss.' href="'.$CFG->wwwroot.'/course/view.php?id='.$course->id.'">'. format_string($course->fullname).'</a>';
+                echo local_course_icon_tag($course, 'small');
+                echo ' <a '.$linkcss.' href="'.$CFG->wwwroot.'/course/view.php?id='.$course->id.'">'. format_string($course->fullname).'</a>';
                 echo '</td><td align="right" valign="top" class="course info">';
                 if ($course->guest ) {
                     echo '<a title="'.$strallowguests.'" href="'.$CFG->wwwroot.'/course/view.php?id='.$course->id.'">';
@@ -2225,7 +2226,7 @@ function print_course($course, $highlightterms = '') {
 
     echo '<div class="coursebox clearfix">';
     echo '<div class="info">';
-    echo '<div class="name"><a title="'.get_string('entercourse').'"'.
+    echo '<div class="name"> '. local_course_icon_tag($course, 'small'). '<a title="'.get_string('entercourse').'"'.
          $linkcss.' href="'.$CFG->wwwroot.'/course/view.php?id='.$course->id.'">'.
          highlight($highlightterms, format_string($course->fullname)).'</a></div>';
 

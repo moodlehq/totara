@@ -79,6 +79,9 @@ if ($mform->is_cancelled()) {
         mark_context_dirty($newcategory->context->path);
         fix_course_sortorder(); // Required to build course_categories.depth and .path.
     }
+
+    local_update_coursecategory_icon($newcategory, $data, $mform);
+
     redirect('category.php?id='.$newcategory->id.'&categoryedit=on');
 }
 

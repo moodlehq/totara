@@ -34,6 +34,10 @@ class editcategory_form extends moodleform {
         }
         $mform->setHelpButton('description', array('writing', 'richtext'), false, 'editorhelpbutton');
 
+        $this->set_upload_manager(new upload_manager('uploadicon', true, false, null, false, 0, true, true, false));
+        $mform->addElement('static', 'currenticon', get_string('currenticon', 'local'), local_coursecategory_icon_tag($category));
+        $mform->addElement('select', 'icon', get_string('icon', 'local'), local_get_stock_icons('coursecategory'));
+
         $mform->addElement('hidden', 'id', 0);
         $mform->setType('id', PARAM_INT);
         $mform->setDefault('id', $category->id);

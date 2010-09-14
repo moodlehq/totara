@@ -248,6 +248,13 @@ $string['column'] = 'Column';
 $string['heading'] = 'Heading';
 $string['settings'] = 'Settings';
 
+//Course and Category icons
+$string['icon'] = 'Icon';
+$string['uploadicon'] = 'Upload icon';
+$string['none'] = 'None';
+$string['currenticon'] = 'Current icon';
+$string['courseicon'] = 'Course icon';
+
 //Errors
 $string['error:norolesfound'] = 'No roles found';
 $string['error:unknownbuttonclicked'] = 'Unknown button clicked';

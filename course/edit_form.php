@@ -184,6 +184,12 @@ class course_edit_form extends moodleform {
             $mform->setHelpButton('nometacourse', array('metacourse', get_string('metacourse')), true);
         }
 
+// Course Icons
+        $mform->addElement('header', 'iconheader', get_string('courseicon', 'local'));
+        $mform->addElement('static', 'currenticon', get_string('currenticon', 'local'), local_course_icon_tag());
+        $mform->addElement('select', 'icon', get_string('icon', 'local'), local_get_stock_icons('course'));
+// END Course Icons
+
 //--------------------------------------------------------------------------------
         $mform->addElement('header','enrolhdr', get_string('enrolments'));
 
