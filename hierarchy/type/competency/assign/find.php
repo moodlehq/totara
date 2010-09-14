@@ -13,7 +13,8 @@ require_once($CFG->dirroot.'/local/js/lib/setup.php');
 $parentid = optional_param('parentid', 0, PARAM_INT);
 
 // Framework id
-$frameworkid = optional_param('frameworkid', 0, PARAM_INT);
+$defaultframeworkid = get_field_sql("SELECT id FROM {$CFG->prefix}comp_framework ORDER BY sortorder ASC");
+$frameworkid = optional_param('frameworkid', $defaultframeworkid, PARAM_INT);
 
 // competency evidence id - may be 0 for new competency evidence
 $id = optional_param('id', 0, PARAM_INT);

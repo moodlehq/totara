@@ -14,7 +14,8 @@ require_once($CFG->dirroot.'/idp/lib.php');
 $revisionid = required_param('id', PARAM_INT);
 
 // Framework id
-$frameworkid = optional_param('frameworkid', 0, PARAM_INT);
+$defaultframeworkid = get_field_sql("SELECT id FROM {$CFG->prefix}comp_framework ORDER BY sortorder ASC");
+$frameworkid = optional_param('frameworkid', $defaultframeworkid, PARAM_INT);
 
 // Competencies to add
 $add = required_param('add', PARAM_SEQUENCE);

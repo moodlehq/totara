@@ -2100,7 +2100,6 @@ function print_revision_trainee($revision, $plan, $formstartstr, $options=array(
 
     if($type == 'competencies'){
         $compcount = get_record_sql("SELECT COUNT(*) FROM {$CFG->prefix}idp_revision_competency rc JOIN {$CFG->prefix}comp c ON rc.competency=c.id WHERE revision={$revision->id} AND frameworkid={$frameworkid}");
-
         $competencies = idp_get_user_competencies($plan->userid, $revision->id, $frameworkid, $start, $perpage, 'fullname');
         print_idp_competencies_view_flex($revision, $competencies, $options['can_edit'], $haspositions, $page, $perpage, $compcount->count);
     }
@@ -2269,14 +2268,14 @@ function idp_get_user_competencies($userid, $currevisionid, $frameworkid=null, $
          ON d.id = c.depthid
         LEFT JOIN
             {$CFG->prefix}comp_evidence ce
-         ON ce.competencyid = r.competency
+         ON ce.competencyid = r.competency AND ce.userid = $userid
         LEFT JOIN
             {$CFG->prefix}comp_scale_values sv
          ON sv.id = ce.proficiency
         LEFT JOIN
             {$CFG->prefix}comp_scale cs
          ON cs.id = sv.scaleid
-        WHERE r.revision = {$currevisionid}
+         WHERE r.revision = {$currevisionid}
         ";
 
     if(isset($frameworkid)){
