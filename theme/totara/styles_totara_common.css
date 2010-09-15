@@ -176,8 +176,8 @@ body.hierarchy-item h2.main {
     margin-right: auto;
 }
 
-#hierarchy-item-view table tr td {
-    border: 1px solid #DDDDDD;
+#hierarchy-item-view div#content table tr td {
+    border: 1px solid #ddd;
 }
 
 table.viewhierarchyitem {
@@ -485,9 +485,7 @@ div.totara-dialog ul.treeview li span.clickable:hover {
 div.totara-dialog ul.treeview li span.unclickable td {
     color: #777;
 }
-div.totara-dialog ul.treeview li span table tr td {
-    border: none !important;
-}
+
 div.totara-dialog ul.treeview li span.ui-draggable {
     cursor: pointer;
 }
