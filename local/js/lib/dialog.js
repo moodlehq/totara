@@ -709,6 +709,10 @@ totaraDialog_handler_treeview_multiselect.prototype._make_selectable = function(
         var clicked = $(this);
         handler._append_to_selected(clicked);
 
+        // Make selected element unselectable; remove addbutton
+        $(this).parents('span:first').attr('class', 'unclickable');
+        $(this).html('');
+
         return false;
     });
 
@@ -1001,6 +1005,10 @@ totaraDialog_handler_skeletalTreeview.prototype._make_selectable = function(elem
         $('span.clickable', elements).find('.list-item-action').click(function() {
             // Assign id attribute to
             handler._append_to_selected($(this));
+
+            // Make selected element unselectable; remove addbutton
+            $(this).parents('span:first').attr('class', 'unclickable');
+            $(this).html('');
         });
     }
 
