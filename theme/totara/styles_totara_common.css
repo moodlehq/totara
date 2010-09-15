@@ -1099,6 +1099,14 @@ img.percentImage {
     width: auto;
 }
 
+/* Guide Block */
+.block_guides .content ul.list  li {
+    line-height: 1.1em;
+    padding-bottom: 0px;
+}
+
+/***********/
+
 
 /*****************************************************************************/
 /** IDP **/

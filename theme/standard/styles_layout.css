@@ -456,7 +456,7 @@ img.icon {
   border:0px;
 }
 
-img.iconsmall {
+img.iconsmall, input.iconsmall{
   vertical-align:middle;
   margin-right:1px;
   width:11px;
