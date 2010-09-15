@@ -3855,6 +3855,17 @@ function remove_course_contents($courseid, $showfeedback=true) {
     remove_course_grades($courseid, $showfeedback);
     remove_grade_letters($context, $showfeedback);
 
+/// Remove all competency evidence
+    if(!delete_records_select("comp_evidence_items_evidence", "itemid IN (SELECT id FROM {$CFG->prefix}comp_evidence_items WHERE itemtype LIKE 'course%' AND iteminstance=53)")) {
+        return false;
+    } else {
+        if(!delete_records_select("comp_evidence_items", "(itemtype = 'coursecompletion' OR itemtype='coursegrade') AND iteminstance={$courseid}")) {
+            return false;
+        } else {
+            notify($strdeleted . ' - Competency Evidence Items');
+        }
+    }
+
     return $result;
 }
 
