@@ -2,6 +2,9 @@
 
 // Display user position information
 
+define('POSITIONS_SAVE_SUCCESS', 1);
+define('POSITIONS_NO_POSITION_SET', 2);
+
 require_once('../config.php');
 require_once($CFG->dirroot.'/local/js/lib/setup.php');
 require_once($CFG->dirroot.'/hierarchy/type/position/lib.php');
@@ -12,6 +15,7 @@ require_once('positions_form.php');
 $user       = required_param('user', PARAM_INT);               // user id
 $type       = optional_param('type', '', PARAM_ALPHA);      // position type
 $courseid   = required_param('courseid', PARAM_INT);           // course id
+$notice = optional_param('notice', 0, PARAM_INT); // notice flag
 
 $nojs = optional_param('nojs', 0, PARAM_INT);
 
@@ -114,7 +118,13 @@ local_js(array(
     TOTARA_JS_DATEPICKER
 ));
 
-print_header("{$course->fullname}: {$fullname}: {$positiontype}", $course->fullname, $navigation);
+require_js(
+    array(
+        $CFG->wwwroot.'/local/js/position.user.js.php'
+    )
+);
+
+//print_header("{$course->fullname}: {$fullname}: {$positiontype}", $course->fullname, $navigation);
 
 /// Print tabs at top
 /// This same call is made in:
@@ -123,7 +133,6 @@ print_header("{$course->fullname}: {$fullname}: {$positiontype}", $course->fulln
 ///     /course/user.php
 $currenttab = 'position'.$type;
 $showroles = 1;
-include($CFG->dirroot.'/user/tabs.php');
 if($nojs) {
     $currenturl = "{$CFG->wwwroot}/user/positions.php?user={$user->id}&courseid={$course->id}&type={$type}&nojs=1";
 } else {
@@ -133,24 +142,20 @@ if($nojs) {
 $form = new user_position_assignment_form($currenturl, compact('type', 'user', 'position_assignment', 'can_edit', 'nojs'));
 $form->set_data($position_assignment);
 
-require_js(
-    array(
-        $CFG->wwwroot.'/local/js/position.user.js.php'
-    )
-);
 
 // Don't show the page if there are no positions
 if ( !count_records('pos') ){
 
+    print_header("{$course->fullname}: {$fullname}: {$positiontype}", $course->fullname, $navigation);
+    include($CFG->dirroot.'/user/tabs.php');
     print_heading(get_string('noposition','position'));
 
 } else {
 
     if ($form->is_cancelled()){
-    // Do nothing
+        // Do nothing
     }
     elseif ($data = $form->get_data()) {
-
         // Fix dates
         if (isset($data->timevalidfrom) && $data->timevalidfrom) {
             $data->timevalidfrom = convert_userdate($data->timevalidfrom);
@@ -177,7 +182,7 @@ if ( !count_records('pos') ){
         assign_user_position($position_assignment, $managerid);
 
         commit_sql();
-        redirect($currenturl, get_string('positionsaved','position'));
+        redirect($currenturl . '&notice='. POSITIONS_SAVE_SUCCESS);
     }
 
     if (!$can_edit) {
@@ -186,12 +191,23 @@ if ( !count_records('pos') ){
 
     if ($form->is_submitted()) {
         // Print error message if no position chosen
-        if (!optional_param('positionid', 0, PARAM_INT)) {
-            print_box_start('errorbox errorboxcontent boxaligncenter boxwidthnormal');
-            print get_string('nopositionset', 'position');
-            print_box_end();
+
+        redirect($currenturl . '&notice='. POSITIONS_NO_POSITION_SET);
+    }
+
+    print_header("{$course->fullname}: {$fullname}: {$positiontype}", $course->fullname, $navigation);
+    include($CFG->dirroot.'/user/tabs.php');
+    if($notice) {
+        switch($notice) {
+        case POSITIONS_SAVE_SUCCESS:
+            notify(get_string('positionsaved','position'),'notifysuccess');
+            break;
+        case POSITIONS_NO_POSITION_SET:
+            notify(get_string('nopositionset', 'position'));
+            break;
         }
     }
+    $form->display();
 
     // Setup calendar
     ?>
@@ -209,8 +225,5 @@ if ( !count_records('pos') ){
             });
     </script>
     <?php
-
-    $form->display();
 }
-
 print_footer($course);
