@@ -526,7 +526,7 @@ var comptree = [' . implode(', ', $comptrees) . '];
         }
 
         // get array of available names from join list provided
-        $joinnames = array();
+        $joinnames = array('base');
         foreach($joinlist as $item) {
             $joinnames[] = $item->name;
         }
@@ -1148,6 +1148,9 @@ var comptree = [' . implode(', ', $comptrees) . '];
         }
 
         foreach($joins as $join) {
+            if($join == 'base') {
+                continue;
+            }
             $joinobj = $this->get_single_join($join, $usage);
             $output[] = $joinobj;
 
