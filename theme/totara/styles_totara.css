@@ -508,10 +508,23 @@ body.calendar #totara_menu ul #menu6 ul {
   color: #FFFFFF;
 }
 
+#footer .validators {
+    margin-top: 15px;
+}
+
 #footer .validators ul li a:link,
 #footer .validators ul li a:visited,
 #footer .validators ul li a:hover {
 	color:#CBCF81;
+}
+
+#footer .performanceinfo {
+    text-align: center;
+}
+
+#footer .performanceinfo span {
+    padding: 5px;
+    display: inline;
 }
 
 /**
