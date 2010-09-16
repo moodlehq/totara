@@ -119,10 +119,14 @@ class customfield_base {
             if($type == 'course') {
                 // anywhere across the site
                 $data = $itemnew->{$this->inputname};
+                // check value, not key for menu items
+                if($this->field->datatype == 'menu') {
+                    $data = addslashes($this->options[$data]);
+                }
                 if(record_exists_select($tableprefix.'_info_data',
                     "fieldid = {$this->field->id} AND " .
                     "data = '{$data}' AND " .
-                    "id != {$itemnew->id}")) {
+                    "courseid != {$itemnew->id}")) {
 
 
                     $errors["{$this->inputname}"] = get_string('valuealreadyused');
