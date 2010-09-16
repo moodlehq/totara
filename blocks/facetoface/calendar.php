@@ -12,7 +12,7 @@ define('MAX_WAITLISTED_SESSIONS', 7);
 
 $timenow = time();
 
-$currenttab = optional_param('tab', 'd', PARAM_ALPHA);
+$currenttab = optional_param('tab', 'm', PARAM_ALPHA);
 $day        = optional_param('cal_d', strftime('%d', $timenow), PARAM_INT);
 $month      = optional_param('cal_m', strftime('%m', $timenow), PARAM_INT);
 $year       = optional_param('cal_y', strftime('%Y', $timenow), PARAM_INT);
@@ -22,6 +22,7 @@ require_login();
 $baseparams = "cal_d=$day&amp;cal_m=$month&amp;cal_y=$year";
 
 $sessionids = array(); // will get the list of sessions to display in the bottom box
+$events = array();
 
 // Grab filter parameters
 $activefilters = array();
@@ -94,28 +95,21 @@ if ($notice = get_notice($activefilters)) {
     print_box_end();
 }
 
-// Calendar box
-echo '<div id="calendarcontainer">';
-print_box_start('generalbox monthlycalendar');
+// Display settings
 $courses = true; // display all courses
 $groups = false; // don't show group events
 $users = $USER->id; // show current user events
 $courseid = SITEID;
 $displayinfo = get_display_info($day, $month, $year);
-show_month_detailed($baseparams, $displayinfo, $month, $year, $courses, $groups, $users, $courseid, $activefilters);
-print_box_end();
-echo '</div>';
 
-// Advertising side-bar
-print_box_start('generalbox calendarsidebar');
+get_sessions($displayinfo, $groups, $users, $courses, $activefilters, &$events, &$sessionids);
 $waitlistedsessions = get_matching_waitlisted_sessions($activefilters);
-print_waitlisted_content($waitlistedsessions);
-print_box_end();
 
 // List of all available sessions
 print_box_start('generalbox clearfix');
-$row[] = new tabobject('d', "calendar.php?tab=d&amp;$baseparams#sessionlist", get_string('tab:bydate','block_facetoface'));
+$row[] = new tabobject('m', "calendar.php?tab=m&amp;$baseparams#sessionlist", get_string('tab:calendar','block_facetoface'));
 $row[] = new tabobject('c', "calendar.php?tab=c&amp;$baseparams#sessionlist", get_string('tab:bycourse','block_facetoface'));
+$row[] = new tabobject('d', "calendar.php?tab=d&amp;$baseparams#sessionlist", get_string('tab:bydate','block_facetoface'));
 $tabs[] = $row;
 print '<a name="sessionlist"></a><div>';
 print_tabs($tabs, $currenttab);
@@ -124,8 +118,11 @@ if ('c' == $currenttab) {
     $sessionsbycourse = get_sessions_by_course($sessionids, $displayinfo, $waitlistedsessions);
     print_sessions($sessionsbycourse, $currenttab);
 }
-else {
+elseif ('d' == $currenttab) {
     print_sessions($sessionsbydate, $currenttab);
+}
+else {
+    show_month_detailed($baseparams, $displayinfo, $month, $year, $courses, $groups, $users, $courseid, $activefilters, $waitlistedsessions, $events);
 }
 print '</div>';
 print_box_end();
@@ -184,10 +181,9 @@ function get_display_info($d, $m, $y)
     return $display;
 }
 
-function show_month_detailed($baseparams, $display, $m, $y, $courses, $groups, $users, $courseid, $activefilters)
-{
-    global $USER, $SESSION, $CALENDARDAYS;
-    global $currenttab, $timenow, $sessionids;
+
+function get_sessions($display, $groups, $users, $courses, $activefilters, &$events, &$sessionids) {
+    global $timenow;
 
     // Get events from database
     $events = calendar_get_events(usertime($display->tstart), usertime($display->tend), $users, $groups, $courses);
@@ -225,10 +221,18 @@ function show_month_detailed($baseparams, $display, $m, $y, $courses, $groups, $
             }
         }
     }
+}
+
+
+function show_month_detailed($baseparams, $display, $m, $y, $courses, $groups, $users, $courseid, $activefilters, $waitlistedsessions, $events) {
+    global $USER, $SESSION, $CALENDARDAYS;
+    global $timenow;
 
     // Extract information: events vs. time
     calendar_events_by_day($events, $m, $y, $eventsbyday, $durationbyday, $typesbyday, $courses);
 
+    echo '<div id="calendarcontainer">';
+    print_box_start('generalbox monthlycalendar');
     $text = '';
     echo '<div class="header">'.$text.'</div>';
 
@@ -355,6 +359,14 @@ function show_month_detailed($baseparams, $display, $m, $y, $courses, $groups, $
     echo "</tr>\n"; // Last row ends
 
     echo "</table>\n"; // Tabular display of days ends
+
+    print_box_end();
+    echo '</div>';
+
+    // Advertising side-bar
+    print_box_start('generalbox calendarsidebar');
+    print_waitlisted_content($waitlistedsessions);
+    print_box_end();
 }
 
 function top_controls($month, $year)
