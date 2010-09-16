@@ -853,6 +853,99 @@ abstract class rb_base_source {
 
 
     /**
+     * Adds any course custom fields to the $joinlist array
+     *
+     * @param array &$joinlist Array of current join options
+     *                         Passed by reference and updated if
+     *                         any course custom fields exist
+     * @param string $join Name of join containing course id to join on
+     * @param string $joinfield Name of course id field to join on
+     * @return boolean True if course custom fields exist
+     */
+    protected function add_course_custom_fields_to_joinlist(&$joinlist,
+        $join, $joinfield) {
+        global $CFG;
+
+        // add all course custom fields to join list
+        if($custom_fields = get_records('course_info_field')) {
+            foreach($custom_fields as $custom_field) {
+                $field = strtolower($custom_field->shortname);
+                $id = $custom_field->id;
+                $key = "course_$field";
+                $joinlist[] = new rb_join(
+                    $key,
+                    'LEFT',
+                    $CFG->prefix . 'course_info_data',
+                    "$key.courseid = $join.$joinfield AND $key.fieldid = $id",
+                    REPORT_BUILDER_RELATION_ONE_TO_ONE,
+                    $join
+                );
+            }
+            return true;
+        }
+        return false;
+    }
+
+
+    /**
+     * Adds any course custom fields to the $columnoptions array
+     *
+     * @param array &$columnoptions Array of current column options
+     *                              Passed by reference and updated if
+     *                              any course custom fields exist
+     * @return boolean True if course custom fields exist
+     */
+    protected function add_course_custom_fields_to_columns(&$columnoptions) {
+        // auto-generate columns for each course custom field
+        if($custom_fields =
+            get_records('course_info_field')) {
+            foreach($custom_fields as $custom_field) {
+                $field = strtolower($custom_field->shortname);
+                $name = $custom_field->fullname;
+                $key = "course_$field";
+                $columnoptions[] = new rb_column_option(
+                    'course_custom_fields',
+                    $field,
+                    $name,
+                    "$key.data",
+                    array('joins' => $key)
+                );
+            }
+            return true;
+        }
+        return false;
+    }
+
+
+    /**
+     * Adds any course custom fields to the $filteroptions array as text filters
+     *
+     * @param array &$filteroptions Array of current filter options
+     *                              Passed by reference and updated if
+     *                              any course custom fields exist
+     * @return boolean True if course custom fields exist
+     */
+    protected function add_course_custom_fields_to_filters(&$filteroptions) {
+        if($custom_fields = get_records('course_info_field','','','','id,shortname,fullname')) {
+            foreach($custom_fields as $custom_field) {
+                $field = strtolower($custom_field->shortname);
+                $name = $custom_field->fullname;
+                $key = "course_$field";
+                $filteroptions[] = new rb_filter_option(
+                    'course_custom_fields',
+                    $field,
+                    $name,
+                    'text'
+                );
+            }
+            return true;
+        }
+        return false;
+    }
+
+
+
+    /**
      * Adds the course_category table to the $joinlist array
      *
      * @param array &$joinlist Array of current join options
