@@ -27,6 +27,8 @@ if ($hassiteconfig
                                             get_string('forgottenpassword', 'auth'), ''));
     $temp->add(new admin_setting_confightmltextarea('auth_instructions', get_string('instructions', 'auth'),
                                                 get_string('authinstructions', 'auth'), ''));
+    $temp->add(new admin_setting_confightmltextarea('auth_forcedchangeinstructions', get_string('forcedchangeinstructions', 'auth'),
+                                                get_string('authforcedchangeinstructions', 'auth'), ''));
     $temp->add(new admin_setting_configtext('allowemailaddresses', get_string('allowemailaddresses', 'admin'), get_string('configallowemailaddresses', 'admin'), '', PARAM_NOTAGS));
     $temp->add(new admin_setting_configtext('denyemailaddresses', get_string('denyemailaddresses', 'admin'), get_string('configdenyemailaddresses', 'admin'), '', PARAM_NOTAGS));
     $temp->add(new admin_setting_configcheckbox('verifychangedemail', get_string('verifychangedemail', 'admin'), get_string('configverifychangedemail', 'admin'), 1));

@@ -200,6 +200,44 @@
 </tr>
 
 <tr valign="top" class="required">
+    <td align="right"><label for="expiration"><?php print_string("auth_passexpiration", "auth") ?></label></td>
+    <td>
+        <?php choose_from_menu($yesno, 'expiration', $config->expiration, ''); ?>
+    </td>
+    <td><?php print_string("auth_passexpirationhelp", "auth") ?></td>
+</tr>
+
+<tr valign="top" class="required">
+    <td align="right"><label for="expiration_warning"><?php print_string("auth_passexpirationwarning", "auth") ?></label></td>
+    <td>
+        <input id="expiration_warning" name="expiration_warning" type="text" size="10" value="<?php echo $config->expiration_warning?>" />
+        <?php
+
+        if (isset($err["expiration_warning"])) {
+            formerr($err["expiration_warning"]);
+        }
+
+        ?>
+    </td>
+    <td><?php print_string("auth_passexpirationwarninghelp", "auth") ?></td>
+</tr>
+
+<tr valign="top" class="required">
+    <td align="right"><label for="passwordchangedays"><?php print_string("auth_passchangedays", "auth") ?></label></td>
+    <td>
+        <input id="passwordchangedays" name="passwordchangedays" type="text" size="10" value="<?php echo $config->passwordchangedays?>" />
+        <?php
+
+        if (isset($err["passwordchangedays"])) {
+            formerr($err["passwordchangedays"]);
+        }
+
+        ?>
+    </td>
+    <td><?php print_string("auth_passchangedays", "auth") ?></td>
+</tr>
+
+<tr valign="top" class="required">
     <td align="right"><label for="extencoding"><?php print_string("auth_dbextencoding", "auth") ?></label></td>
     <td>
         <input id="extencoding" name="extencoding" type="text" value="<?php echo $config->extencoding ?>" />

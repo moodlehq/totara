@@ -202,7 +202,13 @@ class auth_plugin_db extends auth_plugin_base {
 
         global $CFG;
         if ($this->config->passtype === 'internal') {
-            return update_internal_user_password($user, $newpassword);
+            $updateresult = update_internal_user_password($user, $newpassword);
+            if ($updateresult) {
+                $updateuser->passwordchanged = $user->passwordchanged = time();
+                $updateuser->id = $user->id;
+                update_record('user', $updateuser);
+            }
+            return $updateresult;
         } else {
             // we should have never been called!
             return false;
@@ -708,6 +714,23 @@ class auth_plugin_db extends auth_plugin_base {
             $text = str_replace("'", "''", $text);
         }
         return $text;
+    }
+
+   /**
+     * Calculate the number of days until users password expires
+     *
+     * 0 or negative numbers indicate that password has expired.
+     * Parameter $username - not used
+     * Return: Mixed, false for does not expire, or a number indicating days until (or since) expiry)
+     */
+    function password_expire($username) {
+        global $USER;
+        if (empty($this->config->passwordchangedays)) {
+            return false;
+        }
+        $secondssincechange = time() - $USER->passwordchanged;
+        $daysuntildue = (($this->config->passwordchangedays * DAYSECS) - $secondssincechange) / DAYSECS;
+        return $daysuntildue;
     }
 }
 

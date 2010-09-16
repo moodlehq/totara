@@ -67,6 +67,11 @@ class login_change_password_form extends moodleform {
             return $errors;
         }
 
+        if ($this->old_password_reused($data['newpassword1'])) {
+            $errors['newpassword1'] = get_string('passwordreused');
+            $errors['newpassword2'] = get_string('passwordreused');
+        }
+
         if ($data['password'] == $data['newpassword1']){
             $errors['newpassword1'] = get_string('mustchangepassword');
             $errors['newpassword2'] = get_string('mustchangepassword');
@@ -82,5 +87,51 @@ class login_change_password_form extends moodleform {
 
         return $errors;
     }
+
+    // Check if a specified password has been previously used by this user;
+    function old_password_reused($password) {
+        global $CFG, $USER;
+        $limit = empty($CFG->passwordreuselimit) ? 0: $CFG->passwordreuselimit;
+        if (empty($limit)) {
+            //Checking against zero old passwords - non-match by definition
+            return false;
+        }
+        $oldpasswordssql = 'SELECT * FROM ' . $CFG->prefix . 'oldpassword ' .
+                'WHERE uid = ' . $USER->id . ' ' .
+                'ORDER BY id desc ' .
+                'LIMIT ' . $limit;
+        $oldpasswords = get_records_sql($oldpasswordssql);
+        if (!$oldpasswords) {
+            $oldpasswords = array();
+        }
+        foreach ($oldpasswords as $oldpassword) {
+            if (md5($password . $CFG->passwordsaltmain) == $oldpassword->hash) {
+                // User tried to use a password they had previously set with the current salt
+                return true;
+            }
+            if (md5($password) == $oldpassword->hash) {
+                // User tried to use a password they had previously set when there was no salt
+                return true;
+            }
+            $altcount = 0;
+            while(1) {
+                //Check at least 20 alt password salts
+                $altcount++;
+                $varname = 'passwordsaltalt' . $altcount;
+                if ($altcount > 20 && empty($CFG->{$varname})) {
+                    break;
+                }
+                if (empty($CFG->{$varname})) {
+                    continue;
+                }
+                if (md5($password . $CFG->{$varname}) == $oldpassword->hash) {
+                    // User tried to use a password they had used on a previous salt;
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
 }
 ?>

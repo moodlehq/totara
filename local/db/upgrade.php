@@ -2241,6 +2241,16 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && add_field($table, $field);
     }
 
+    if ($result && $oldversion < 2010091600) {
+        $table = new XMLDBTable('oldpassword');
+        $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->addFieldInfo('uid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
+        $table->addFieldInfo('hash', XMLDB_TYPE_CHAR, '100', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
+        $table->addIndexInfo('uid', XMLDB_INDEX_NOTUNIQUE, array('uid'));
+        if (!table_exists($table)) {
+            create_table($table);
+        }
+    }
     return $result;
 }
 ?>

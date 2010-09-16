@@ -1189,6 +1189,7 @@ $string['passwordforgotten'] = 'Forgotten password';
 $string['passwordforgotteninstructions'] = 'Your details must first be found in the user database. Please enter <strong>either</strong> your username or your registered email address in the appropriate box. There is no need to enter both.';
 $string['passwordnohelp'] = 'No help is available to find your lost password. Please contact your Moodle administrator.';
 $string['passwordrecovery'] = 'Yes, help me log in';
+$string['passwordreused'] = 'This password has been used before, and is not permitted to be reused';
 $string['passwordsdiffer'] = 'These passwords do not match';
 $string['passwordsent'] = 'Password has been sent';
 $string['passwordsenttext'] = '<p>An email has been sent to your address at $a->email.</p>

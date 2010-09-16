@@ -423,4 +423,15 @@ $string['informminpasswordlower'] = 'at least $a lower case letter(s)';
 $string['informminpasswordnonalphanum'] = 'at least $a non-alphanumeric character(s)';
 $string['informminpasswordupper'] = 'at least $a upper case letter(s)';
 $string['informpasswordpolicy'] = 'The password must have $a';
+
+// Password rotation
+$string['auth_passchangedays'] = 'Password expiration period (days)';
+$string['auth_passchangedayshelp'] = 'The maximum number of days user is permitted to keep the same password';
+$string['auth_passexpiration'] = 'Password Expiration';
+$string['auth_passexpirationhelp'] = 'Specify if password changes should be forced after a specified password expiration period';
+$string['auth_passexpirationwarning'] = 'Password change warning (days)';
+$string['auth_passexpirationwarninghelp'] = 'The number of days before forced password change in which user is warned of the pending forced change.';
+$string['authforcedchangeinstructions'] = 'Instructions to tell your users what to do when their password has expired, and they are being forced to choose a new one.';
+$string['errorminpasswordthreeoffour'] = 'Your password must meet three of the following four criteria:';
+$string['forcedchangeinstructions'] = 'Forced change instructions';
 ?>

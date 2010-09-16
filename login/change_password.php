@@ -64,12 +64,17 @@
         redirect($CFG->wwwroot.'/user/view.php?id='.$USER->id.'&amp;course='.$course->id);
     } else if ($data = $mform->get_data()) {
 
+        $userrecord = get_record('user','id',$USER->id);
+        $oldpasswordhash = $userrecord->password;
         if (!$userauth->user_update_password(addslashes_recursive($USER), $data->newpassword1)) {
             print_error('errorpasswordupdate', 'auth');
         }
 
         // register success changing password
         unset_user_preference('auth_forcepasswordchange', $USER->id);
+        $oldpassword->uid = $USER->id;
+        $oldpassword->hash = addslashes($oldpasswordhash);
+        insert_record('oldpassword',$oldpassword);
 
         $strpasswordchanged = get_string('passwordchanged');
 

@@ -1,4 +1,3 @@
 <?php
-$string['errorminpasswordthreeoffour'] = 'Your password must meet three of the following four criteria:';
-
+$string['auth_passwordisexpired'] = 'Your password is expired. You need to specify a new password';
 ?>

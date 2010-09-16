@@ -210,16 +210,25 @@ httpsrequired();
                     $passwordchangeurl = $CFG->httpswwwroot.'/login/change_password.php';
                 }
                 $days2expire = $userauth->password_expire($USER->username);
-                if (intval($days2expire) > 0 && intval($days2expire) < intval($userauth->config->expiration_warning)) {
-                    print_header("$site->fullname: $loginsite", "$site->fullname", $navigation, '', '', true, "<div class=\"langmenu\">$langmenu</div>");
-                    notice_yesno(get_string('auth_passwordwillexpire', 'auth', $days2expire), $passwordchangeurl, $urltogo);
-                    print_footer();
-                    exit;
-                } elseif (intval($days2expire) < 0 ) {
-                    print_header("$site->fullname: $loginsite", "$site->fullname", $navigation, '', '', true, "<div class=\"langmenu\">$langmenu</div>");
-                    notice_yesno(get_string('auth_passwordisexpired', 'auth'), $passwordchangeurl, $urltogo);
-                    print_footer();
-                    exit;
+
+                if ($days2expire !== false) {
+                    if (intval($days2expire) > 0 && intval($days2expire) < intval($userauth->config->expiration_warning)) {
+                        print_header("$site->fullname: $loginsite", "$site->fullname", $navigation, '', '', true, "<div class=\"langmenu\">$langmenu</div>");
+                        notice_yesno(get_string('auth_passwordwillexpire', 'auth', intval($days2expire)), $passwordchangeurl, $urltogo);
+                        print_footer();
+                        exit;
+                    } elseif (intval($days2expire) <= 0 ) {
+                        //Force password change:
+                        set_user_preference('auth_forcepasswordchange', true, $user->id);
+                        $SESSION->wantsurl = $urltogo;
+                        if (!empty($CFG->auth_forcedchangeinstructions)) {
+                            $advicestring = $CFG->auth_forcedchangeinstructions;
+                        } else {
+                            $advicestring = get_string('auth_passwordisexpired', 'auth');
+                        }
+                        notice($advicestring, $passwordchangeurl);
+                        exit;
+                    }
                 }
             }
 
