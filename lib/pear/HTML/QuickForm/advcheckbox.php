@@ -84,24 +84,7 @@ class HTML_QuickForm_advcheckbox extends HTML_QuickForm_checkbox
     } //end constructor
     
     // }}}
-    // {{{ getPrivateName()
 
-    /**
-     * Gets the private name for the element
-     *
-     * @param   string  $elementName The element name to make private
-     *
-     * @access public
-     * @return string
-     *
-     * @deprecated          Deprecated since 3.2.6, both generated elements have the same name
-     */
-    function getPrivateName($elementName)
-    {
-        return '__'.$elementName;
-    }
-
-    // }}}
     // {{{ getOnclickJs()
 
     /**
