@@ -1591,7 +1591,7 @@ function print_user_learning_plans($userid, $canviewplans, $page, $perpage, $ord
                     // Begin table row
                     $table .= "<tr class=\"r{$rowcount}\"><td><a href=\"revision.php?id={$plan->id}\">{$plan->planname}</a>";
                         if($plan->current==1){
-                            $table .= "(".get_string('currentplan','idp').")";
+                            $table .= " (".get_string('currentplan','idp').")";
                         }
                         $table .= "</td>";
                     $table .= '<td>'.userdate($plan->mtime, '%e %b %y').'</td>';
@@ -1604,9 +1604,16 @@ function print_user_learning_plans($userid, $canviewplans, $page, $perpage, $ord
                             $table .= user_learning_plan_editbutton($plan->id, $renameplanstr)
                                 .' '. user_learning_plan_deletebutton($plan->id, $deleteplanstr);
                         }
+                        else {
+                            $table .= '<img src="' . $CFG->pixpath . '/spacer.gif" class="iconsmall" />'
+                                . ' ' . '<img src="' . $CFG->pixpath . '/spacer.gif" class="iconsmall" />';
+                        }
                     }
                     if(has_capability('moodle/local:idpsetcurrent', $usercontext) && $plan->current!=1){
                         $table .= ' '. user_learning_plan_currentsetbutton($plan->id, get_string('currentset', 'idp'), $userid);
+                    }
+                    else{
+                        $table .= '<img src="' . $CFG->pixpath . '/spacer.gif" class="iconsmall" />';
                     }
                     $table .= ' '.user_learning_plan_clonebutton($plan->id, $cloneplanstr);
                     $table .= '</td></tr>';
