@@ -17,7 +17,7 @@ class customfield_define_menu extends customfield_define_base {
     function define_validate_specific($data, $files) {
         $err = array();
 
-        $data->param1 = str_replace("\r", '', $data->param1);
+        $data->param1 = trim(str_replace("\r", '', $data->param1));
 
         /// Check that we have at least 2 options
         if (($options = explode("\n", $data->param1)) === false) {
@@ -33,7 +33,7 @@ class customfield_define_menu extends customfield_define_base {
     }
 
     function define_save_preprocess($data) {
-        $data->param1 = str_replace("\r", '', $data->param1);
+        $data->param1 = trim(str_replace("\r", '', $data->param1));
 
         return $data;
     }
