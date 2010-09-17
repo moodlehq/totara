@@ -13,6 +13,7 @@ require_once $CFG->libdir.'/tablelib.php';
     // -->
 </script>
 
+
 <?php
 
 if(count($depth)>1) {
@@ -38,9 +39,11 @@ if ($displaytitle == 'assignedcompetencies') {
         $headers = array(
             get_string('name', $displaytype),
         );
-        foreach($customfieldnames as $name){
-            $columns[] = $name->shortname;
-            $headers[] = $name->fullname;
+        if($customfieldnames) {
+            foreach($customfieldnames as $name){
+                $columns[] = $name->shortname;
+                $headers[] = $name->fullname;
+            }
         }
     }
 } elseif ($displaytitle == 'assignedcompetencytemplates') {

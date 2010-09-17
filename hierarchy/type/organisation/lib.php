@@ -142,6 +142,7 @@ class organisation extends hierarchy {
      * @return void
      */
     function display_extra_view_info($item) {
+        global $CFG;
         $defaultframeworkid = get_field_sql("SELECT id FROM {$CFG->prefix}comp_framework ORDER BY sortorder ASC");
         $comptype = optional_param('comptype', 'competencies', PARAM_TEXT);
         $fid = optional_param('framework', $defaultframeworkid, PARAM_INT);
