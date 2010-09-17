@@ -2251,6 +2251,14 @@ function xmldb_local_upgrade($oldversion) {
             create_table($table);
         }
     }
+
+    if ($result && $oldversion < 2010091700) {
+        $table = new XMLDBTable('comp_template_competencies');
+        if (table_exists($table)){
+            $result = $result && drop_table($table);
+        }
+    }
+
     return $result;
 }
 ?>

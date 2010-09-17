@@ -320,7 +320,6 @@ class columns_test extends prefix_changing_test_case {
         load_test_table($CFG->prefix . 'comp_evidence', $this->dummy_data, $db);
         load_test_table($CFG->prefix . 'comp_evidence_items', $this->dummy_data, $db);
         load_test_table($CFG->prefix . 'comp_evidence_items_evidence', $this->dummy_data, $db);
-        load_test_table($CFG->prefix . 'comp_template_competencies', $this->dummy_data, $db);
         load_test_table($CFG->prefix . 'comp_template', $this->dummy_data, $db);
         load_test_table($CFG->prefix . 'comp_template_assignment', $this->dummy_data, $db);
         load_test_table($CFG->prefix . 'pos_competencies', $this->dummy_data, $db);
@@ -373,7 +372,6 @@ class columns_test extends prefix_changing_test_case {
         remove_test_table('mdl_unittest_pos_competencies', $db);
         remove_test_table('mdl_unittest_comp_template_assignment', $db);
         remove_test_table('mdl_unittest_comp_template', $db);
-        remove_test_table('mdl_unittest_comp_template_competencies', $db);
         remove_test_table('mdl_unittest_comp_evidence_items_evidence', $db);
         remove_test_table('mdl_unittest_comp_evidence_items', $db);
         remove_test_table('mdl_unittest_comp_evidence', $db);
