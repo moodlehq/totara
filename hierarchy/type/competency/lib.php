@@ -186,7 +186,6 @@ SQL;
             $result = $result && delete_records($this->shortprefix.'_evidence','competencyid',$id);
             $result = $result && delete_records($this->shortprefix.'_evidence_items','competencyid',$id);
             $result = $result && delete_records($this->shortprefix.'_evidence_items_evidence','competencyid',$id);
-            $result = $result && delete_records($this->shortprefix.'_template_competencies','competencyid',$id);
 
             // Update competencycount of templates this competency belongs to
             $sql = <<<SQL
@@ -241,7 +240,6 @@ SQL;
         // from some IDP tables, regarding competencies that were added to a plan
         // because of this template.
         delete_records($this->shortprefix.'_template_assignment','templateid',$id);
-        delete_records($this->shortprefix.'_template_competencies','templateid',$id);
         delete_records('idp_revision_competencytmpl','competencytemplate',$id);
         delete_records(hierarchy::get_short_prefix('position').'_competencies','templateid',$id);
 
