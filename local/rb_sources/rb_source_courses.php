@@ -110,6 +110,10 @@ class rb_source_courses extends rb_base_source {
                 'courseid',
                 'base.id'
             ),
+            new rb_param_option(
+                'visible',
+                'base.visible'
+            ),
         );
 
         return $paramoptions;
