@@ -104,7 +104,7 @@ $navlinks[] = array('name'=>get_string("{$type}frameworks", $type),
 if ($framework->id == 0) {
     $navlinks[] = array('name'=>get_string('addnewframework', $type), 'link'=>'', 'type'=>'misc');
 } else {
-    $navlinks[] = array('name'=>get_string('editgeneric ', $type, $framework->fullname), 'link'=>'', 'type'=>'misc');
+    $navlinks[] = array('name'=>get_string('editgeneric', $type, $framework->fullname), 'link'=>'', 'type'=>'misc');
 }
 
 admin_externalpage_print_header('', $navlinks);
