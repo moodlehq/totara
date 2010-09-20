@@ -1,7 +1,7 @@
 <?php
 $defaultframeworkid = get_field_sql("SELECT id FROM {$CFG->prefix}comp_framework ORDER BY sortorder ASC");
 $framework = optional_param('framework', $defaultframeworkid, PARAM_INT);
-$depth = get_record('comp_depth', 'frameworkid', $framework);
+$depth = get_records('comp_depth', 'frameworkid', $framework);
 require_once $CFG->libdir.'/tablelib.php';
 
 ?>
@@ -21,7 +21,12 @@ if(count($depth)>1) {
 } else {
     $displaydepth=false;
 }
-$customfieldnames = get_records('comp_depth_info_field', 'depthid', $depth->id, 'sortorder');
+
+if($depth){
+    foreach($depth as $d){
+    $customfieldnames = get_records('comp_depth_info_field', 'depthid', $d->id, 'sortorder');
+    }
+}
 
 if ($displaytitle == 'assignedcompetencies') {
     if ($displaydepth) {
@@ -30,9 +35,11 @@ if ($displaytitle == 'assignedcompetencies') {
             get_string('depthlevel', $displaytype),
             get_string('name', $displaytype)
         );
-        foreach($customfieldnames as $name){
-            $columns[] = $name->shortname;
-            $headers[] = $name->fullname;
+        if($customfieldnames){
+            foreach($customfieldnames as $name){
+                $columns[] = $name->shortname;
+                $headers[] = $name->fullname;
+            }
         }
     } else {
         $columns = array('name');
@@ -86,8 +93,10 @@ if (is_array($items) && count($items)) {
 
             if ($displaytitle == 'assignedcompetencies') {
                 $content[] = "<a href=\"{$CFG->wwwroot}/hierarchy/item/view.php?type={$displaytype}&id={$ritem->id}\">{$ritem->fullname}</a>";
-                foreach($customfield as $field) {
-                    $content[] = $field->data;
+                if($customfield){
+                    foreach($customfield as $field) {
+                        $content[] = $field->data;
+                    }
                 }
             } elseif ($displaytitle == 'assignedcompetencytemplates') {
                 $content[] = "<a href=\"{$CFG->wwwroot}/hierarchy/type/competency/template/view.php?id={$ritem->id}\">{$ritem->fullname}</a>";
