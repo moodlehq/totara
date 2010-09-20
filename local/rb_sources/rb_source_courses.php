@@ -64,7 +64,7 @@ class rb_source_courses extends rb_base_source {
         $this->add_course_fields_to_columns($columnoptions, 'base');
         $this->add_course_custom_fields_to_columns($columnoptions, 'base', 'id');
         $this->add_course_category_fields_to_columns($columnoptions, 'course_category', 'base');
-        $this->add_course_tag_fields_to_columns($columnoptions, 'base', 'id');
+        $this->add_course_tag_fields_to_columns($columnoptions);
 
         return $columnoptions;
     }
@@ -87,7 +87,7 @@ class rb_source_courses extends rb_base_source {
         $this->add_course_fields_to_filters($filteroptions, 'base', 'id');
         $this->add_course_custom_fields_to_filters($filteroptions, 'base', 'id');
         $this->add_course_category_fields_to_filters($filteroptions, 'base', 'category');
-        $this->add_course_tag_fields_to_filters($filteroptions, 'base', 'id');
+        $this->add_course_tag_fields_to_filters($filteroptions);
 
         return $filteroptions;
     }

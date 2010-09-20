@@ -89,9 +89,8 @@ class columns_test extends prefix_changing_test_case {
 
     // reduced version of user table
     var $user_data = array(
-        array('id', 'username', 'firstname', 'lastname', 'idnumber'),
-        array(1, 'guest', 'Guest', 'User', 'ID1'),
-        array(2, 'admin', 'Admin', 'User', 'ID2'),
+        array('id', 'username', 'firstname', 'lastname', 'idnumber', 'picture', 'imagealt'),
+        array(2, 'admin', 'Admin', 'User', 'ID2', 0, 'alt'),
     );
 
     var $pos_assignment_data = array(
@@ -284,6 +283,35 @@ class columns_test extends prefix_changing_test_case {
         array(1, 2, 1, 1, 1, 'cmi.core.score.max', '90', 1205445539),
     );
 
+    var $course_info_category_data = array(
+        array('id', 'name', 'sortorder'),
+        array(1, 'Miscellaneous', 1),
+    );
+
+    var $course_info_field_data = array(
+        array('id', 'fullname', 'shortname', 'datatype', 'description',
+            'sortorder', 'categoryid', 'hidden', 'locked', 'required',
+            'forceunique', 'defaultdata', 'param1', 'param2', 'param3',
+            'param4', 'param5'),
+        array(1, 'Field Name', 'Field', 'text', 'Description', 1, 1, 0, 0,
+            0, 0, 'default', 'text', 'text', 'text', 'text', 'text'),
+    );
+
+    var $course_info_data_data = array(
+        array('id', 'fieldid', 'courseid', 'data'),
+        array(1, 1, 1, 'test'),
+    );
+
+    var $course_modules_data = array(
+        array('id', 'course', 'module'),
+        array(1, 1, 1),
+    );
+
+    var $modules_data = array(
+        array('id', 'name'),
+        array(1, 'facetoface'),
+    );
+
     function setUp() {
         global $db,$CFG;
         parent::setup();
@@ -341,6 +369,11 @@ class columns_test extends prefix_changing_test_case {
         load_test_table($CFG->prefix . 'tag_instance', $this->tag_instance_data, $db);
         load_test_table($CFG->prefix . 'report_builder_group', $this->reportbuilder_group_data, $db);
         load_test_table($CFG->prefix . 'config', $this->config_data, $db);
+        load_test_table($CFG->prefix . 'course_info_category', $this->course_info_category_data, $db);
+        load_test_table($CFG->prefix . 'course_info_field', $this->course_info_field_data, $db);
+        load_test_table($CFG->prefix . 'course_info_data', $this->course_info_data_data, $db);
+        load_test_table($CFG->prefix . 'course_modules', $this->course_modules_data, $db);
+        load_test_table($CFG->prefix . 'modules', $this->modules_data, $db);
 
         // get rid of dummy records
         delete_records('report_builder_group');
@@ -351,6 +384,11 @@ class columns_test extends prefix_changing_test_case {
 
     function tearDown() {
         global $db,$CFG;
+        remove_test_table('mdl_unittest_modules', $db);
+        remove_test_table('mdl_unittest_course_modules', $db);
+        remove_test_table('mdl_unittest_course_info_data', $db);
+        remove_test_table('mdl_unittest_course_info_field', $db);
+        remove_test_table('mdl_unittest_course_info_category', $db);
         remove_test_table('mdl_unittest_config', $db);
         remove_test_table('mdl_unittest_report_builder_group', $db);
         remove_test_table('mdl_unittest_tag_instance', $db);
