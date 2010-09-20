@@ -742,56 +742,6 @@ table.allmyteam td a {
   padding-right: 17px;
   background: url('images/arw_blu.gif') no-repeat right 3px;
 }
-#my-team h1 {
-  margin:0;
-  color:#FFFFFF;
-  font-size: 1.5em;
-  padding: 5px 10px 4px 10px;
-  background:#34b9e4;
-  border: 1px solid #d2d2d2;
-}
-#my-team #middle-column table.flexible {
-  width:100%;
-  margin-bottom:0;
-}
-#my-team #middle-column table.flexible td {
-  font-size:0.9em;
-  padding: 6px 2px 6px 2px;
-  background: #FFFFFF;
-}
-#my-team #middle-column table.flexible th {
-  font-family: Verdana, Arial, Helvetica, sans-serif;
-  color: #34b9e4;
-  padding:6px 3px;
-  background: #f5f5f5;
-}
-#my-team #middle-column table.flexible th.c0,
-#my-team #middle-column table.flexible td.c0 {
-  display:none;
-}
-#my-team #middle-column table.flexible th.c1,
-#my-team #middle-column table.flexible td.c1 {
-  vertical-align: top;
-  width: 140px;
-  padding-left: 10px;
-  border-left:1px solid #d2d2d2;
-}
-#my-team #middle-column table.flexible th.c2 {
-  vertical-align: top;
-  width: 110px;
-}
-#my-team #middle-column table.flexible th.c3 {
-  vertical-align: top;
-  width: 110px;
-}
-#my-team #middle-column table.flexible th.c4 {
-  vertical-align: top;
-  width: 115px;
-}
-#my-team #middle-column table.flexible th.c4,
-#my-team #middle-column table.flexible td.c4 {
-  border-right:1px solid #d2d2d2;
-}
 
 /*****************************************************************************/
 /** Tables **/
