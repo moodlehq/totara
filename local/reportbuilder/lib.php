@@ -740,8 +740,8 @@ var comptree = [' . implode(', ', $comptrees) . '];
 
         // add content restrictions
         foreach($embed->contentsettings as $option => $settings) {
-            $classname = 'rb_' . $option . '_content';
-            if(class_exists($classname)) {
+            $classname = $option . '_content';
+            if (class_exists('rb_' . $classname)) {
                 foreach($settings as $name => $value) {
                     if(!reportbuilder::update_setting($newid, $classname, $name,
                         $value)) {
