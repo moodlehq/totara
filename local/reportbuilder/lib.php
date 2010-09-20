@@ -2132,7 +2132,7 @@ var comptree = [' . implode(', ', $comptrees) . '];
             '</script><form><input type="button" name="rb_showhide_columns" ' .
             'id="show-showhide-dialog" value="' .
             get_string('showhidecolumns', 'local_reportbuilder') .
-            '" style="display:none; float: right;"></form>';
+            '" style="display:none; float: right;" /></form>';
 
     }
 
