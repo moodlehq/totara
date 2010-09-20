@@ -1670,7 +1670,7 @@ function facetoface_user_signup($session, $facetoface, $course, $discountcode,
         $usersignup->userid = $userid;
     }
 
-    $usersignup->mailedreminder = 1;
+    $usersignup->mailedreminder = 0;
     $usersignup->notificationtype = $notificationtype;
 
     $usersignup->discountcode = trim(strtoupper($discountcode));
@@ -1753,8 +1753,6 @@ function facetoface_user_signup($session, $facetoface, $course, $discountcode,
             error($error);
             return false;
         }
-
-        $usersignup->mailedreminder = $timenow;
 
         if (!update_record('facetoface_signups', $usersignup)) {
             rollback_sql();
