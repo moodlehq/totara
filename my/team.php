@@ -141,7 +141,6 @@ foreach ($lt as $column) {
         echo '</tr></table>';
 
         $report->display_table();
-}
 
         echo '</td>';
 
