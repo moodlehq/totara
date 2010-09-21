@@ -1341,6 +1341,10 @@ table.minicalendar .today a {
   border:none !important;
 }
 
+table.calendarmonth tr ul li.event_user {
+    background-color:#DBDBDB;
+}
+
 body#blocks-facetoface-calendar table.calendarmonth {
 	font-size: 0.8em;	
 }

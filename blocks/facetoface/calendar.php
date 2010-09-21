@@ -223,14 +223,15 @@ function get_sessions($display, $groups, $users, $courses, $activefilters, &$eve
     }
 }
 
-
+/*
+ * Prints calendar view with all session that match current filters and all session that you have created with a grey background
+ */
 function show_month_detailed($baseparams, $display, $m, $y, $courses, $groups, $users, $courseid, $activefilters, $waitlistedsessions, $events) {
     global $USER, $SESSION, $CALENDARDAYS;
     global $timenow;
 
     // Extract information: events vs. time
     calendar_events_by_day($events, $m, $y, $eventsbyday, $durationbyday, $typesbyday, $courses);
-
     echo '<div id="calendarcontainer">';
     print_box_start('generalbox monthlycalendar');
     $text = '';
