@@ -22,6 +22,7 @@ class filter_textarea extends filter_type {
     function getOperators() {
         return array(0 => get_string('contains', 'filters'),
                      1 => get_string('doesnotcontain','filters'),
+        );
     }
 
     /**
