@@ -41,6 +41,7 @@ $string['missingtitle'] = 'Missing title';
 $string['new'] = 'Add New';
 $string['nextday'] = 'Next day';
 $string['noactivitieswithcompletionenabled'] = 'Course reminders are unavailable as no activities in this course have completion enabled';
+$string['nofeedbackactivities'] = 'Course reminders are unavailable as there are no Feedback activities in this course';
 $string['nomanagermessage'] = '(no manager set)';
 $string['period'] = 'Period';
 $string['placeholder:coursename'] = '[coursename]';
