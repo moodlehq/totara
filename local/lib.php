@@ -396,7 +396,9 @@ function local_course_icon_tag($course=null, $size='large') {
         $course = $COURSE;
     }
     else {
-        $course->icon = get_field('course', 'icon', 'id', $course->id);
+        if (!isset($course->icon)) {
+            $course->icon = get_field('course', 'icon', 'id', $course->id);
+        }
     }
     return '<img src="'.$CFG->wwwroot.'/local/icon.php?id='.$course->id.'&amp;icon='.$course->icon.'&amp;size='.$size.'&type=course" alt="'.$course->shortname.'" class="course_icon" />';
 }
@@ -412,6 +414,9 @@ function local_course_icon_tag($course=null, $size='large') {
  */
 function local_coursecategory_icon_tag($coursecat, $size='large') {
     global $CFG;
+    if (!isset($coursecat)) {
+        $coursecat->icon = get_field('course_categories', 'icon', 'id', $coursecat);
+    }
     return '<img src="'.$CFG->wwwroot.'/local/icon.php?icon='.$coursecat->icon.'&amp;size='.$size.'&type=coursecategory" class="course_icon" />';
 }
 
