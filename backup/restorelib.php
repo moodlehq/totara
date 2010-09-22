@@ -6161,13 +6161,10 @@ define('RESTORE_GROUPS_GROUPINGS', 3);
                         case "ENROLPERIOD":
                             $this->info->course_enrolperiod = $this->getContents();
                             break;
-<<<<<<< HEAD
                         case "ENABLECOMPLETION":
                             $this->info->course_enablecompletion = $this->getContents();
-=======
                         case "ICON":
-                            $this->info->course_icon = $this->getContents(); // NZ MOODLE
->>>>>>> 6ea92e9... course/edit: course icon - added to backup/restore
+                            $this->info->course_icon = $this->getContents(); // Course and Category icons
                             break;
                     }
                 }
