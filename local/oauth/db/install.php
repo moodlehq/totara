@@ -23,6 +23,6 @@ function xmldb_quiz_install() {
     $DB->insert_record('oauth_site_directory', $record);
 
     // default the config to disabled
-    set_config('oauthenabled', 0, 'local_oauth')
+    set_config('oauthenabled', 0, 'local_oauth');
 
 }
