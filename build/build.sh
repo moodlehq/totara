@@ -30,6 +30,9 @@ php -f build/checklang.php . local idp hierarchy guides customfield
 echo "STEP 4: Run help button tests";
 php -f build/checkhelp.php . local idp hierarchy guides customfield
 
+echo "STEP 5: Run php syntax check";
+php build/lint.php
+
 # too slow
 #echo "Count lines of code";
 #sloccount --wide --details . > build/logs/sloccount.sc
