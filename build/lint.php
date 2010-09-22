@@ -102,7 +102,9 @@ function check_file($path) {
 	if ($return_var) {
 		++$errors;
         echo "[SYNTAX ERROR] {$path}\n";
-        echo "{$output[1]}\n\n";
+        if(isset($output[1])) {
+            echo "{$output[1]}\n\n";
+        }
 	}
 
 	++$count;
