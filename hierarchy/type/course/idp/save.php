@@ -24,14 +24,14 @@ $returnurl = optional_param('returnurl', '', PARAM_TEXT);
 $s = optional_param('s', '', PARAM_TEXT);
 
 // Check permissions
-$sitecontext = get_context_instance(CONTEXT_SYSTEM);
+$systemcontext = get_context_instance(CONTEXT_SYSTEM);
 $plan = get_plan_for_revision($revisionid);
 if ( !$plan ){
     error('Plan ID is incorrect');
 }
 
 // Users can only edit their own IDP
-require_capability('moodle/local:idpeditownplan', $sitecontext);
+require_capability('moodle/local:idpeditownplan', $systemcontext);
 if ( $plan->userid != $USER->id ){
     error(get_string('error:revisionnotvisible', 'idp'));
 }

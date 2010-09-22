@@ -559,6 +559,15 @@ $local_capabilities = array(
         )
     ),
 
+    //Add a course to an IDP
+    'moodle/local:idpaddcourse' => array(
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'legacy' => array(
+            'user' => CAP_ALLOW
+        )
+    ),
+
     // Manage IDP priority scales
     'moodle/local:manageidppriorities' => array(
         'captype' => 'write',

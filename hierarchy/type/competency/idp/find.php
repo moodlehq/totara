@@ -4,6 +4,7 @@ require_once('../../../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->dirroot.'/hierarchy/type/competency/lib.php');
 require_once($CFG->dirroot.'/local/js/lib/setup.php');
+require_once($CFG->dirroot.'/idp/lib.php');
 
 
 ///
@@ -30,15 +31,25 @@ $s = optional_param('s', '', PARAM_TEXT);
 // string of params needed in non-js url strings
 $urlparams = 'id='.$revisionid.'&amp;frameworkid='.$frameworkid.'&amp;nojs='.$nojs.'&amp;returnurl='.urlencode($returnurl).'&amp;s='.$s;
 
+
+// Load plan this revision relates to
+if (!$plan = get_plan_for_revision($revisionid)) {
+    error('Revision plan could not be found');
+}
+
+// Load user this plan relates to
+$owner = get_record('user', 'id', $plan->userid);
+
 ///
 /// Permissions checks
 ///
+require_login();
+$usercontext = get_context_instance(CONTEXT_USER, $owner->id);
+$systemcontext = get_context_instance(CONTEXT_SYSTEM);
+if(!has_capability('moodle/local:idpaddcompetency', $usercontext) && !(has_capability('moodle/local:idpaddcompetency', $systemcontext && $owner->id == $USER->id))){
+    error(get_string('error:permissionsaddcomptoidp', 'idp'));
+}
 
-admin_externalpage_setup('competencymanage');
-
-// Check permissions
-$sitecontext = get_context_instance(CONTEXT_SYSTEM);
-require_capability('moodle/local:idpaddcompetency', $sitecontext);
 
 // Setup hierarchy object
 $hierarchy = new competency();

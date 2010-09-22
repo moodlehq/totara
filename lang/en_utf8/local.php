@@ -87,6 +87,7 @@ $string['local:idpaddcompetency'] = 'Add competencies to an IDP';
 $string['local:idpaddcompetencyfrompos'] = 'Add competencies to an IDP from a position';
 $string['local:idpaddcompetencytemplate'] = 'Add competency templates to an IDP';
 $string['local:idpaddcompetencytemplatefrompos'] = 'Add competency templates to an IDP from a position';
+$string['local:idpaddcourse'] = 'Add courses an IDP';
 $string['local:receivenotification'] = 'Receive notification emails';
 $string['local:idpsubmitownplan'] = 'Submit own IDPs';
 $string['local:idpmanageroverview'] = 'View a manager\'s overview page';

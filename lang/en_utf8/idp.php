@@ -451,4 +451,10 @@ $string['error:idcannotbezero'] = 'Error ID cannot be Zero';
 
 $string['roleswithaccess'] = 'Roles with permission to view this report';
 $string['priorityselect'] = 'Select Priority';
+
+$string['error:permissionsaddcomptoidp'] = 'Error, you do not have permissions to add a competency to this IDP';
+$string['error:permissionsaddcomptoidpfrompos'] = 'Error, you do not have permissions to add a competency to this IDP from positions';
+$string['error:permissionsaddcomptemplate'] = 'Error, you do not have permissions to add a competency template to this IDP';
+$string['error:permissionsaddcomptemplatefrompos'] = 'Error, you do not have permissions to add a competency template to this IDP from positions';
+$string['error:permissionsaddcourse'] = 'Error, you do not have permissions to add a course to this IDP';
 ?>
