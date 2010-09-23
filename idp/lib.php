@@ -1545,11 +1545,6 @@ function print_user_learning_plans($userid, $canviewplans, $page, $perpage, $ord
         $plan->status = get_revision_status($plan);
     }
 
-    // Sort the plans
-    /*if ($plans) {
-        uasort($plans, "{$orderby}_cmp_plan");
-    }*/
-
     // Make list of trainee user IDs
     print "<div id=\"planlist\">\n";
 
