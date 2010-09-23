@@ -136,20 +136,7 @@ function print_idp_evaluation($revisionid) {
         //unction framework_evaluations($revisionid, $framework, $scale, $competencylist) {
         print framework_evaluations($revisionid, $framework);
         print '</div>';
-
-// TODO: Let people add stuff to the plan while submitting their evaluation?
-//        $divid = "additionalobj$frameworkid";
-//    //    print '<h2>'.get_string('additionalobjectives').'</h2>';
-//        print collapsing_tree_node("caption_$divid", $divid, get_string('additionalobjectives', 'idp'),
-//                                   0, '', false, 'curriculum');
-
-//        print '<div id="'.$divid.'" style="display: none">';
-//        print can_edit_curriculum_browser($curriculumcode, $revisionid, false, 50);
-//        print '</div>';
-
         print '</blockquote>';
     }
-
 }
-
 ?>
