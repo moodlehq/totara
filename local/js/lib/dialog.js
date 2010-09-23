@@ -148,8 +148,14 @@ function totaraDialog(title, buttonid, config, default_url, handler) {
         // Hide loading animation
         dialog.hideLoading();
 
-        var message = 'An error has occured';
-        dialog.dialog.html('<div class="box errorbox errorboxcontent">'+message+'</div>');
+        var html_message = '';
+        if (response) {
+            html_message = response;
+        } else {
+            // Print a generic error message
+            html_message = '<div class="box errorbox errorboxcontent">An error has occured</div>';
+        }
+        dialog.dialog.html(html_message);
     }
 
 
@@ -274,7 +280,7 @@ function totaraDialog(title, buttonid, config, default_url, handler) {
                 }
             },
             error: function(o) {
-                dialog.error(dialog, o, url);
+                dialog.error(dialog, o.responseText, url);
             }
         });
     }

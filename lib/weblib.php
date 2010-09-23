@@ -5706,7 +5706,7 @@ function print_scale_menu_helpbutton($courseid, $scale, $return=false) {
 function print_error($errorcode, $module='error', $link='', $a=NULL, $extralocations=NULL) {
     global $CFG, $SESSION, $THEME;
 
-    $isajax = strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest' ? 1 : 0;
+    $isajax = (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest');
 
     if (empty($module) || $module === 'moodle' || $module === 'core') {
         $module = 'error';
@@ -5757,14 +5757,15 @@ function print_error($errorcode, $module='error', $link='', $a=NULL, $extralocat
                '<a href="'.$errordocroot.'/en/error/'.$modulelink.'/'.$errorcode.'">'.
                  get_string('moreinformation').'</a></p>');
 
-    if (!$isajax) {     // Only print header if not an ajax request
-        if (! defined('HEADER_PRINTED')) {
-            //header not yet printed
-            @header('HTTP/1.0 404 Not Found');
+    if (! defined('HEADER_PRINTED')) {
+        //header not yet printed
+        @header('HTTP/1.0 404 Not Found');
+
+        if (!$isajax) {     // Only print header if not an ajax request
             print_header(get_string('error'));
-        } else {
-            print_container_end_all(false, $THEME->open_header_containers);
         }
+    } else {
+        print_container_end_all(false, $THEME->open_header_containers);
     }
 
     echo '<br />';
