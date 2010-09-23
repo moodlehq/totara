@@ -36,7 +36,7 @@ $path = $_SERVER['PWD']; // Current working directory
 // Scan files
 scan_directory($path);
 
-echo "\n$count files checked, $errors errors.";
+echo "\n{$count} files checked, {$errors} errors.";
 
 
 /**
@@ -93,6 +93,9 @@ function check_file($path) {
     }
 
     // Check file
+    $output = array();
+    $return_var = null;
+
     $error = exec(
         'php -l "'.$path.'"',
         $output,
@@ -102,8 +105,13 @@ function check_file($path) {
 	if ($return_var) {
 		++$errors;
         echo "[SYNTAX ERROR] {$path}\n";
-        if(isset($output[1])) {
-            echo "{$output[1]}\n\n";
+
+        foreach ($output as $line) {
+            if (trim($line) == '') {
+                continue;
+            }
+
+            echo "{$line}\n";
         }
 	}
 
