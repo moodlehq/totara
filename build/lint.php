@@ -36,7 +36,7 @@ $path = $_SERVER['PWD']; // Current working directory
 // Scan files
 scan_directory($path);
 
-echo "\n{$count} files checked, {$errors} errors.";
+echo "\n{$count} files checked, {$errors} errors.\n";
 
 
 /**
