@@ -76,9 +76,9 @@ if(!$nojs) {
         echo '<div class="selectcompetencies">';
         echo '<h2>' . get_string('assignrelatedcompetencies', $hierarchy->prefix) . '</h2>';
         echo '<div class="selected">';
-        echo '<p>' . get_string('selectedcompetencies', $hierarchy->prefix);
+        echo '<p>' . get_string('selectedcompetencies', $hierarchy->prefix) . '</p>';
         echo populate_selected_items_pane($alreadyselected);
-        echo '</p></div>';
+        echo '</div>';
         echo '<p>' . get_string('locatecompetency', $hierarchy->prefix).':'.'</p>';
         $hierarchy->display_framework_selector('', true);
         echo '<ul class="treeview filetree">';
