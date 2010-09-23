@@ -17,17 +17,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @package    moodle
- * @subpackage local
+ * @copyright  Totara Learning Solutions Limited
  * @author     Jonathan Newman <jonathan.newman@catalyst.net.nz>
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL
- * @copyright  Catalyst IT Limited
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
+ * @package    totara
+ * @subpackage local
  *
- * this file should be used for all totara-specific methods
- * and will be included automatically in local/lib.php along
- * with other core libraries.
- *
- * functions should all start with the totara_ prefix.
+ * Functions should all start with the totara_ prefix.
  */
 
 if (!defined('MOODLE_INTERNAL')) {

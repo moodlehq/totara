@@ -17,15 +17,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @package    moodle
- * @subpackage local
+ * @copyright  Totara Learning Solutions Limited
  * @author     Jonathan Newman <jonathan.newman@catalyst.net.nz>
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL
- * @copyright  Catalyst IT Limited
- *
- * this file should be used for all tao-specific methods
- * and will be included automatically in setup.php along
- * with other core libraries.
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
+ * @package    totara
+ * @subpackage local
  *
  */
 
