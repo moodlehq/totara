@@ -415,6 +415,7 @@ $string['error:noreorderpriorityinuse'] = 'You cannot reorder a priority scale t
 $string['error:nodeletepriorityvalueinuse'] = 'You cannot delete a priority scale value from a scale that is in use. To delete this priority scale value, the priority scale must not be assigned to any IDP.';
 $string['changeto'] = 'Change to';
 $string['set'] = 'Set';
+$string['save'] = 'Save';
 $string['defaultvalue'] = 'Default value';
 $string['scales'] = 'Priority Scales';
 $string['missingpriorityscalevaluename'] = 'Missing priority scale value name';

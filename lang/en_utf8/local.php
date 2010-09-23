@@ -75,7 +75,6 @@ $string['local:deleteorganisationcustomfield'] = 'Delete an organisation custom 
 $string['local:createcoursecustomfield'] = 'Create a course custom field';
 $string['local:updatecoursecustomfield'] = 'Update a course custom field';
 $string['local:deletecoursecustomfield'] = 'Delete a course custom field';
-$string['viewchildren'] = 'View Children';
 
 // Local IDP capability strings
 $string['local:idpaddcomment'] = 'Comment on a user\'s IDP';
@@ -112,22 +111,14 @@ $string['local:admin'] = 'Perform administrative tasks on report builder reports
 $string['assessments'] = 'Assessments';
 $string['bookings'] = 'Bookings';
 $string['browsecategories'] = 'Browse Categories';
-$string['coursetitle'] = 'Course Title';
 $string['developmentplan'] = 'Development Planner';
-$string['evaluations'] = 'Evaluations';
 $string['findcourses'] = 'Find Courses';
-$string['goals'] = 'Goals';
-$string['history'] = 'History';
-$string['induction'] = 'Induction';
-$string['leadership'] = 'Leadership';
 $string['mydevelopmentplans'] = 'My development plans';
 $string['mylearning'] = 'My Learning';
 $string['myprofile'] = 'My Profile';
 $string['myrecordoflearning'] = 'My Record of Learning';
 $string['recordoflearningfor'] = 'Record of Learning for ';
-$string['myidp'] = 'My IDP';
 $string['idps'] = 'IDPs';
-$string['viewidps'] = 'View IDPs';
 $string['notapplicable'] = 'Not applicable';
 $string['notavailable'] = 'Not available';
 $string['recordoflearning'] = 'Record of Learning';
@@ -152,17 +143,9 @@ $string['local:editclassifications'] = 'Edit Course Classifications';
 $string['local:editcourseclassification'] = 'Edit Classification of a Course';
 $string['local:searchclassifications'] = 'Search Classifications';
 
-//Report
-$string['reportstartdate'] = 'Start date';
-$string['reportenddate'] = 'End date';
-$string['reportcompetency'] = 'Competency';
-$string['reportorganisation'] = 'Office';
-$string['reportposition'] = 'Position';
-
 // Report Headings
 $string['reportheading'] = 'Report Heading Block';
 $string['headingcolumnsdescription'] = 'The fields below define which data appear in the Report Heading Block. This block contains information about a specific user, and can appear in many locations throughout the site.';
-$string['nocolumnsdefined'] = 'No columns have yet been defined. Add them by selecting from the \'Add another column...\' menu.';
 $string['editheading'] = 'Edit the Report Heading Block';
 $string['headingmissingvalue'] = 'Value to display if no data found';
 $string['reportedat'] = 'Reported at';
@@ -186,7 +169,7 @@ $string['organisationatcompletion'] = 'Organisation at completion';
 $string['timecompleted'] = 'Time completed';
 $string['editcompetencyevidence'] = 'Edit Competency Evidence Record';
 $string['addcompetencyevidence'] = 'Add Competency Evidence Record';
-$string['usernotfound'] = 'User not found';
+$string['error:usernotfound'] = 'User not found';
 $string['addforthisuser'] = 'Add new competency evidence for this user';
 $string['selectaproficiency'] = 'Select a proficiency...';
 $string['recordnotcreated'] = 'Record could not be created';
@@ -219,7 +202,6 @@ $string['local:markcomplete'] = 'Mark user\'s complete in course completion';
 $string['returntocourse'] = 'Return to the course';
 
 // Face-to-face
-$string['noteammembers'] = '<i>You do not currently have any team members.</i>';
 $string['alllearningrecords'] = 'All Learning Records';
 $string['allf2fbookings'] = 'All Face to Face Bookings';
 $string['learningrecords'] = 'Learning Records';
@@ -237,7 +219,6 @@ $string['allmycourses'] = 'All My Courses';
 $string['completed'] = 'Completed';
 $string['inprogress'] = 'In Progress';
 $string['startdate'] = 'Start Date';
-$string['completeddate'] = 'Completed Date';
 
 // Table strings
 $string['options'] = 'Options';
@@ -251,7 +232,6 @@ $string['settings'] = 'Settings';
 
 //Course and Category icons
 $string['icon'] = 'Icon';
-$string['uploadicon'] = 'Upload icon';
 $string['none'] = 'None';
 $string['currenticon'] = 'Current icon';
 $string['courseicon'] = 'Course icon';
@@ -259,4 +239,3 @@ $string['courseicon'] = 'Course icon';
 //Errors
 $string['error:norolesfound'] = 'No roles found';
 $string['error:unknownbuttonclicked'] = 'Unknown button clicked';
-$string['save'] = 'Save';

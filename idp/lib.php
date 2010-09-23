@@ -651,7 +651,7 @@ function get_list_items($revid, $listtype, $can_edit) {
                 $editcontrols .= "<br /><input type=\"button\" id=\"save$listtype{$item->id}\"";
                 $editcontrols .= " style=\"display: none\"";
                 $editcontrols .= " onclick=\"listitem_action($revid, '$listtype', {$item->id}, 'save')\"";
-                $editcontrols .= ' value="'.get_string('save', 'local').'" />';
+                $editcontrols .= ' value="'.get_string('save', 'idp').'" />';
 
                 // Cancel button
                 $editcontrols .= " <input type=\"button\" id=\"cancel$listtype{$item->id}\"";
