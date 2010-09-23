@@ -273,6 +273,7 @@ class course_completion_form extends moodleform {
         if ($completion->is_course_locked()) {
             $except = array('settingsunlock');
             $mform->hardFreezeAllVisibleExcept($except);
+            $mform->disabledif('add_criteria_course', 1);
             $mform->addElement('cancel');
         }
     }
