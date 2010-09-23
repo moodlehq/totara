@@ -584,8 +584,8 @@ totaraDialog_handler_treeview.prototype._make_deletable = function(parent_elemen
         $(this).find(".deletebutton").css('display', 'inline');
 
         return false;
-
     });
+
     del_span_elements.mouseleave(function() {
         $(this).find(".deletebutton").css('display', 'none');
 

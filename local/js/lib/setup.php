@@ -156,13 +156,11 @@ function populate_selected_items_pane($elements, $prefix='item') {
     $deletebutton = '<img id="deletebutton_ex" src="'.$CFG->pixpath.'/t/delete.gif" class="deletebutton" width="13px" height="13px" />'; 
 
     foreach ($elements as $element) {
-        $html .= '<span id="'.$prefix.'_'.$element->id.'" class="">';
-        // format_string() really slow here...
+        $html .= '<span id="'.$prefix.'_'.$element->id.'">';
         $html .= '<table><tr>';
         $html .= '<td class="list-item-name">'.htmlentities($element->fullname).'</td>';
         $html .= '<td class="list-item-action">'.$deletebutton.'</td>';
         $html .= '</tr></table>';
-
         $html .= '</span>';
     }
 
