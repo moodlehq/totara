@@ -102,7 +102,7 @@ $users = $USER->id; // show current user events
 $courseid = SITEID;
 $displayinfo = get_display_info($day, $month, $year);
 
-get_sessions($displayinfo, $groups, $users, $courses, $activefilters, &$events, &$sessionids);
+get_sessions($displayinfo, $groups, $users, $courses, $activefilters, $events, $sessionids);
 $waitlistedsessions = get_matching_waitlisted_sessions($activefilters);
 
 // List of all available sessions

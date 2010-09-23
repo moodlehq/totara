@@ -363,7 +363,7 @@ function print_facetoface_filters($startdate, $enddate, $currentcoursename, $cur
 
     add_location_info($results);
 
-    foreach ($results as $result) {
+    if (!empty($results)) foreach ($results as $result) {
 
         // create unique list of coursenames
         if (!array_key_exists($result->fullname, $coursenames)) {
