@@ -5706,6 +5706,8 @@ function print_scale_menu_helpbutton($courseid, $scale, $return=false) {
 function print_error($errorcode, $module='error', $link='', $a=NULL, $extralocations=NULL) {
     global $CFG, $SESSION, $THEME;
 
+    $isajax = strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest' ? 1 : 0;
+
     if (empty($module) || $module === 'moodle' || $module === 'core') {
         $module = 'error';
     }
@@ -5755,12 +5757,14 @@ function print_error($errorcode, $module='error', $link='', $a=NULL, $extralocat
                '<a href="'.$errordocroot.'/en/error/'.$modulelink.'/'.$errorcode.'">'.
                  get_string('moreinformation').'</a></p>');
 
-    if (! defined('HEADER_PRINTED')) {
-        //header not yet printed
-        @header('HTTP/1.0 404 Not Found');
-        print_header(get_string('error'));
-    } else {
-        print_container_end_all(false, $THEME->open_header_containers);
+    if (!$isajax) {     // Only print header if not an ajax request
+        if (! defined('HEADER_PRINTED')) {
+            //header not yet printed
+            @header('HTTP/1.0 404 Not Found');
+            print_header(get_string('error'));
+        } else {
+            print_container_end_all(false, $THEME->open_header_containers);
+        }
     }
 
     echo '<br />';
@@ -5774,11 +5778,13 @@ function print_error($errorcode, $module='error', $link='', $a=NULL, $extralocat
         upgrade_log_finish();
     }
 
-    if (!empty($link)) {
-        print_continue($link);
-    }
+    if (!$isajax) {     // Only print footer and continue button not an ajax request
+        if (!empty($link)) {
+            print_continue($link);
+        }
 
-    print_footer();
+        print_footer();
+    }
 
     for ($i=0;$i<512;$i++) {  // Padding to help IE work with 404
         echo ' ';
