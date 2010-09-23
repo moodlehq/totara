@@ -363,32 +363,33 @@ function print_facetoface_filters($startdate, $enddate, $currentcoursename, $cur
 
     add_location_info($results);
 
-    if (!empty($results)) foreach ($results as $result) {
-
-        // create unique list of coursenames
-        if (!array_key_exists($result->fullname, $coursenames)) {
-            $coursenames[$result->fullname] = $result->fullname;
-        }
-
-        // created unique list of locations
-        if (isset($result->location)) {
-            if (!array_key_exists($result->location, $locations)) {
-                $locations[$result->location] = $result->location;
+    if (!empty($results)) {
+        foreach ($results as $result) {
+            // create unique list of coursenames
+            if (!array_key_exists($result->fullname, $coursenames)) {
+                $coursenames[$result->fullname] = $result->fullname;
             }
-        }
 
-        // create unique list of courseids
-        if (!array_key_exists($result->idnumber, $courseids) and $result->idnumber) {
-            $courseids[$result->idnumber] = $result->idnumber;
-        }
+            // created unique list of locations
+            if (isset($result->location)) {
+                if (!array_key_exists($result->location, $locations)) {
+                    $locations[$result->location] = $result->location;
+                }
+            }
 
-        // create unique list of trainers
-        // check if $trainers hasn't already been populated by the cached list
-        if (empty($trainers)) {
-            if (isset($result->trainers)) {
-                foreach ($result->trainers as $trainer) {
-                    if (!array_key_exists($trainer,$trainers)) {
-                        $trainers[$trainer] = $trainer;
+            // create unique list of courseids
+            if (!array_key_exists($result->idnumber, $courseids) and $result->idnumber) {
+                $courseids[$result->idnumber] = $result->idnumber;
+            }
+
+            // create unique list of trainers
+            // check if $trainers hasn't already been populated by the cached list
+            if (empty($trainers)) {
+                if (isset($result->trainers)) {
+                    foreach ($result->trainers as $trainer) {
+                        if (!array_key_exists($trainer,$trainers)) {
+                            $trainers[$trainer] = $trainer;
+                        }
                     }
                 }
             }
