@@ -17,13 +17,23 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @package    moodle
- * @subpackage local
+ * @copyright  Totara Learning Solutions Limited
  * @author     Jonathan Newman <jonathan.newman@catalyst.net.nz>
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL
- * @copyright  (C) 1999 onwards Martin Dougiamas  http://dougiamas.com
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
+ * @package    totara
+ * @subpackage local
  *
- * local db upgrades for Totara
+ * Local db upgrades for Totara
+ */
+
+require_once($CFG->dirroot.'/local/db/utils.php');
+
+
+/**
+ * Local database upgrade script
+ *
+ * @param   integer $oldversion Current (pre-upgrade) local db version timestamp
+ * @return  boolean $result
  */
 function xmldb_local_upgrade($oldversion) {
     global $CFG, $db;
