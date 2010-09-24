@@ -61,7 +61,7 @@ class reminder_edit_form extends moodleform {
 //--------------------------------------------------------------------------------
         $mform->addElement('header', 'invitation', get_string('invitation', 'reminders'));
 
-        $options = range(3, 30);
+        $options = range(2, 30);
         array_unshift($options, get_string('nextday', 'reminders'));
         array_unshift($options, get_string('sameday', 'reminders'));
         $mform->addElement('select', 'invitationperiod', get_string('period', 'reminders'), $options);
