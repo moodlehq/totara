@@ -30,6 +30,55 @@ if (!defined('MOODLE_INTERNAL')) {
     die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
 }
 
+
+/**
+ * Save a notification message for displaying on the subsequent page view
+ *
+ * Optionally supply a url for redirecting to before displaying the message.
+ *
+ * @param   string  $message    Message to display
+ * @param   string  $redirect   Url to redirect to (optional)
+ * @return  void
+ */
+function totara_set_notification($message, $redirect = null) {
+    global $SESSION;
+
+    if (!is_array($SESSION->totara_notifications)) {
+        $SESSION->totara_notifications = array();
+    }
+
+    $SESSION->totara_notifications[] = $message;
+
+    if ($redirect !== null) {
+        redirect($redirect);
+        exit();
+    }
+}
+
+
+/*
+ * Return an array containing any notifications in $SESSION
+ *
+ * Should be called in the theme's header
+ *
+ * @return  array
+ */
+function totara_get_notifications() {
+    global $SESSION;
+
+    // Check if any notifications have yet to be displayed
+    if (empty($SESSION->totara_notifications)) {
+        return array();
+    }
+
+    // Get notifications and reset session
+    $notifications = $SESSION->totara_notifications;
+    $SESSION->totara_notifications = array();
+
+    return $notifications;
+}
+
+
 /**
  * resets the customised front page blocks.  designed to be called from local_postinst
  *

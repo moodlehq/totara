@@ -42,4 +42,13 @@
     </div>
     <!-- END OF HEADER -->
     <?php print_container_start(true, '', 'content'); ?>
+
+    <?php
+        // Display notifications set with totara_set_notification()
+        foreach (totara_get_notifications() as $notice) {
+            notify($notice);
+        }
+
+        unset($notices, $notice);
+    ?>
 <?php } ?>

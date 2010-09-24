@@ -1,10 +1,6 @@
 <?php
 
 // Display user position information
-
-define('POSITIONS_SAVE_SUCCESS', 1);
-define('POSITIONS_NO_POSITION_SET', 2);
-
 require_once('../config.php');
 require_once($CFG->dirroot.'/local/js/lib/setup.php');
 require_once($CFG->dirroot.'/hierarchy/type/position/lib.php');
@@ -15,7 +11,6 @@ require_once('positions_form.php');
 $user       = required_param('user', PARAM_INT);               // user id
 $type       = optional_param('type', '', PARAM_ALPHA);      // position type
 $courseid   = required_param('courseid', PARAM_INT);           // course id
-$notice = optional_param('notice', 0, PARAM_INT); // notice flag
 
 $nojs = optional_param('nojs', 0, PARAM_INT);
 
@@ -182,7 +177,9 @@ if ( !count_records('pos') ){
         assign_user_position($position_assignment, $managerid);
 
         commit_sql();
-        redirect($currenturl . '&notice='. POSITIONS_SAVE_SUCCESS);
+
+        // Display success message
+        totara_set_notification(get_string('positionsaved','position'), $currenturl);
     }
 
     if (!$can_edit) {
@@ -191,22 +188,12 @@ if ( !count_records('pos') ){
 
     if ($form->is_submitted()) {
         // Print error message if no position chosen
-
-        redirect($currenturl . '&notice='. POSITIONS_NO_POSITION_SET);
+        totara_set_notification(get_string('nopositionset', 'position'), $currenturl);
     }
 
     print_header("{$course->fullname}: {$fullname}: {$positiontype}", $course->fullname, $navigation);
     include($CFG->dirroot.'/user/tabs.php');
-    if($notice) {
-        switch($notice) {
-        case POSITIONS_SAVE_SUCCESS:
-            notify(get_string('positionsaved','position'),'notifysuccess');
-            break;
-        case POSITIONS_NO_POSITION_SET:
-            notify(get_string('nopositionset', 'position'));
-            break;
-        }
-    }
+
     $form->display();
 
     // Setup calendar
