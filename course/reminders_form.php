@@ -45,16 +45,16 @@ class reminder_edit_form extends moodleform {
         $mform->addElement('header', 'general', get_string('reminder', 'reminders'));
 
         $mform->addElement('text', 'title', get_string('title', 'reminders'));
-        $mform->setHelpButton('title', array('coursefullname', get_string('fullname')), true);
+        $mform->setHelpButton('title', array('remindertitle', get_string('title', 'reminders')), true);
         $mform->addRule('title', get_string('missingtitle', 'reminders'), 'required', null, 'client');
 
         $mform->addElement('select', 'tracking', get_string('completiontotrack', 'reminders'), $choices);
-        $mform->setHelpButton('tracking', array('coursefullname', get_string('fullname')), true);
+        $mform->setHelpButton('tracking', array('remindercompltotrack', get_string('completiontotrack', 'reminders')), true);
         $mform->addRule('tracking', get_string('missingfullname'), 'required', null, 'client');
         $mform->setType('tracking', PARAM_INT);
 
         $mform->addElement('select', 'requirement', get_string('requirement', 'reminders'), $rchoices);
-        $mform->setHelpButton('requirement', array('coursefullname', get_string('fullname')), true);
+        $mform->setHelpButton('requirement', array('reminderrequirement', get_string('requirement', 'reminders')), true);
         $mform->addRule('requirement', get_string('missingfullname'), 'required', null, 'client');
         $mform->setType('requirement', PARAM_INT);
 
@@ -65,16 +65,16 @@ class reminder_edit_form extends moodleform {
         array_unshift($options, get_string('nextday', 'reminders'));
         array_unshift($options, get_string('sameday', 'reminders'));
         $mform->addElement('select', 'invitationperiod', get_string('period', 'reminders'), $options);
-        $mform->setHelpButton('invitationperiod', array('refresherperioduntilrefresher', get_string('refreshperiod', 'refresher')), true);
+        $mform->setHelpButton('invitationperiod', array('reminderperioduntilreminder', get_string('period', 'reminders')), true);
         $mform->setDefault('invitationperiod', 0);
 
         $mform->addElement('text', 'invitationsubject', get_string('subject', 'reminders'), 'maxlength="254" size="80"');
-        $mform->setHelpButton('invitationsubject', array('refresherremindersubject', get_string('subject', 'refresher')), true);
+        $mform->setHelpButton('invitationsubject', array('remindersubject', get_string('subject', 'reminders')), true);
         $mform->setDefault('invitationsubject', get_string('invitationsubjectdefault', 'reminders'));
         $mform->setType('invitationsubject', PARAM_MULTILANG);
 
         $mform->addElement('textarea', 'invitationmessage', get_string('message', 'reminders'), 'rows="15" cols="70"');
-        $mform->setHelpButton('invitationmessage', array('refresherremindermessage', get_string('message', 'refresher')), true) ;
+        $mform->setHelpButton('invitationmessage', array('remindermessage', get_string('message', 'reminders')), true) ;
         $mform->setDefault('invitationmessage', get_string('invitationmessagedefault', 'reminders'));
         $mform->setType('invitationmessage', PARAM_MULTILANG);
 
@@ -82,16 +82,16 @@ class reminder_edit_form extends moodleform {
         $mform->addElement('header', 'reminder', get_string('reminder', 'reminders'));
 
         $mform->addElement('select', 'reminderperiod', get_string('period', 'reminders'), $options);
-        $mform->setHelpButton('reminderperiod', array('refresherperioduntilrefresher', get_string('refreshperiod', 'refresher')), true);
+        $mform->setHelpButton('reminderperiod', array('reminderperioduntilreminder', get_string('period', 'reminders')), true);
         $mform->setDefault('reminderperiod', 1);
 
         $mform->addElement('text', 'remindersubject', get_string('subject', 'reminders'), 'maxlength="254" size="80"');
-        $mform->setHelpButton('remindersubject', array('refresherremindersubject', get_string('subject', 'refresher')), true);
+        $mform->setHelpButton('remindersubject', array('remindersubject', get_string('subject', 'reminders')), true);
         $mform->setDefault('remindersubject', get_string('remindersubjectdefault', 'reminders'));
         $mform->setType('remindersubject', PARAM_MULTILANG);
 
         $mform->addElement('textarea', 'remindermessage', get_string('message', 'reminders'), 'rows="15" cols="70"');
-        $mform->setHelpButton('remindermessage', array('refresherremindermessage', get_string('message', 'refresher')), true) ;
+        $mform->setHelpButton('remindermessage', array('remindermessage', get_string('message', 'reminders')), true) ;
         $mform->setDefault('remindermessage', get_string('remindermessagedefault', 'reminders'));
         $mform->setType('remindermessage', PARAM_MULTILANG);
 
@@ -106,18 +106,18 @@ class reminder_edit_form extends moodleform {
         $mform->disabledIf('escalationskipmanager', 'escalationdontsend', 'checked');
 
         $mform->addElement('select', 'escalationperiod', get_string('period', 'reminders'), $options);
-        $mform->setHelpButton('escalationperiod', array('refresherperioduntilrefresher', get_string('refreshperiod', 'refresher')), true);
+        $mform->setHelpButton('escalationperiod', array('reminderperioduntilreminder', get_string('period', 'reminders')), true);
         $mform->setDefault('escalationperiod', 1);
         $mform->disabledIf('escalationperiod', 'escalationdontsend', 'checked');
 
         $mform->addElement('text', 'escalationsubject', get_string('subject', 'reminders'), 'maxlength="254" size="80"');
-        $mform->setHelpButton('escalationsubject', array('refresherremindersubject', get_string('subject', 'refresher')), true);
+        $mform->setHelpButton('escalationsubject', array('remindersubject', get_string('subject', 'reminders')), true);
         $mform->setDefault('escalationsubject', get_string('escalationsubjectdefault', 'reminders'));
         $mform->setType('escalationsubject', PARAM_MULTILANG);
         $mform->disabledIf('escalationsubject', 'escalationdontsend', 'checked');
 
         $mform->addElement('textarea', 'escalationmessage', get_string('message', 'reminders'), 'rows="15" cols="70"');
-        $mform->setHelpButton('escalationmessage', array('refresherremindermessage', get_string('message', 'refresher')), true) ;
+        $mform->setHelpButton('escalationmessage', array('remindermessage', get_string('message', 'reminders')), true) ;
         $mform->setDefault('escalationmessage', get_string('escalationmessagedefault', 'reminders'));
         $mform->setType('escalationmessage', PARAM_MULTILANG);
         $mform->disabledIf('escalationmessage', 'escalationdontsend', 'checked');
