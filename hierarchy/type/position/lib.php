@@ -381,7 +381,6 @@ class position_assignment extends data_object {
         // Get time (expensive on vservers)
         $time = time();
 
-        $this->timecreated = $time;
         $this->timemodified = $time;
         $this->usermodified = $USER->id;
 
@@ -418,6 +417,7 @@ class position_assignment extends data_object {
             $this->update();
         }
         else {
+            $this->timecreated = $time;
             $this->insert();
         }
 
