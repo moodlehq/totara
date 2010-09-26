@@ -2,6 +2,8 @@
 
     require_once '../../config.php';
 
+    $courseid = optional_param('id', 0, PARAM_INT);
+
 ?>
 
 // Bind functionality to page on load
@@ -24,7 +26,7 @@ $(function() {
                     'Cancel': function() { handler._cancel() }
                 }
             },
-            url+'add.php?id='+course_id,
+            url+'add.php?id=<?php echo $courseid;?>',
             handler
         );
     })();
@@ -43,7 +45,7 @@ totaraDialog_handler_assignCourseEvidence.prototype.handle_click = function(clic
 
     // Get id, format item_XX
     var id = clicked.attr('id');
-    var url = this.baseurl+'evidence.php?id='+course_id+'&add='+id;
+    var url = this.baseurl+'evidence.php?id=<?php echo $courseid;?>&add='+id;
 
     this._dialog._request(url, this, 'display_evidence');
 }
@@ -69,7 +71,7 @@ totaraDialog_handler_assignCourseEvidence.prototype.display_evidence = function(
         var competency_id=$('#evitem_competency_id').val();
         var type = $(this).closest('span').attr('type');
         var instance = $(this).closest('span').attr('id');
-        var url = handler.baseurl+'save.php?competency='+competency_id+'&course='+course_id+'&type='+type+'&instance='+instance;
+        var url = handler.baseurl+'save.php?competency='+competency_id+'&course=<?php echo $courseid;?>&type='+type+'&instance='+instance;
         handler._dialog._request(url, handler, '_update');
     });
 

@@ -257,17 +257,9 @@ if ($csv) {
             'yui_connection',
             $CFG->wwwroot.'/course/report/completion/textrotate.js',
             $CFG->wwwroot.'/local/js/lib/jquery-1.3.2.min.js',
-            $CFG->wwwroot.'/local/js/completion.report.js.php',
+            $CFG->wwwroot.'/local/js/completion.report.js.php?id='.$course->id,
         )
     );
-
-    ?>
-
-    <script type="text/javascript">
-        var course = '<?php echo $course->id ?>';
-    </script>
-
-    <?php
 
     // Handle groups (if enabled)
     groups_print_course_menu($course, $CFG->wwwroot.'/course/report/completion/?course='.$course->id);

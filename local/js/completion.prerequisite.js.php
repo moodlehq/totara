@@ -2,6 +2,8 @@
 
     require_once '../../config.php';
 
+    $courseid = optional_param('id', 0, PARAM_INT);
+
 ?>
 
 // Bind functionality to page on load
@@ -24,7 +26,7 @@ $(function() {
                 'Cancel': function() { handler._cancel() }
                  }
             },
-            url+'completion_prerequisite.php?id='+course_id,
+            url+'completion_prerequisite.php?id=<?php echo $courseid;?>',
             handler
         );
     })();
@@ -41,7 +43,7 @@ totaraDialog_handler_preRequisite.prototype = new totaraDialog_handler_skeletalT
 
 totaraDialog_handler_preRequisite.prototype._handle_hierarchy_expand = function(id) {
 
-    var url = this.baseurl+'completion_prerequisite.php?id='+course_id+'&category='+id;
+    var url = this.baseurl+'completion_prerequisite.php?id=<?php echo $courseid;?>&category='+id;
     this._dialog._request(url, this, '_update_hierarchy', id);
 }
 

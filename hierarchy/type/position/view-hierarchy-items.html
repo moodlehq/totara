@@ -4,17 +4,6 @@ $framework = optional_param('framework', $defaultframeworkid, PARAM_INT);
 $depth = get_records('comp_depth', 'frameworkid', $framework);
 require_once $CFG->libdir.'/tablelib.php';
 
-?>
-
-<script type="text/javascript">
-    <!-- //
-    <?php echo 'var '.$this->prefix.'_id = \''.$item->id.'\';' ?>
-    <?php echo 'var '.$this->prefix.'_frameworkid = \''.$framework.'\';' ?>
-    // -->
-</script>
-
-<?php
-
 if(count($depth)>1) {
     $displaydepth=true;
 } else {

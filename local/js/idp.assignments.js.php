@@ -2,6 +2,9 @@
 
     require_once '../../config.php';
 
+    $id = optional_param('id', 0, PARAM_INT);
+    $frameworkid = optional_param('frameworkid', 0, PARAM_INT);
+
 ?>
 // Bind functionality to page on load
 $(function() {
@@ -14,8 +17,8 @@ $(function() {
 
         totaraMultiSelectDialog(
             'idpcompetency',
-            url+'find.php?id='+idp_revision_id+'&frameworkid='+idp_revision_frameworkid,
-            url+'save.php?id='+idp_revision_id+'&frameworkid='+idp_revision_frameworkid+'&deleteexisting=1&add='
+            url+'find.php?id=<?php echo $id;?>&frameworkid=<?php echo $frameworkid;?>',
+            url+'save.php?id=<?php echo $id;?>&frameworkid=<?php echo $frameworkid;?>&deleteexisting=1&add='
         );
         // display the button on page load
         $('#show-idpcompetency-dialog').css('display','inline');
@@ -29,8 +32,8 @@ $(function() {
 
         totaraMultiSelectDialog(
             'idpcompetencytemplate',
-            url+'find-template.php?id='+idp_revision_id+'&frameworkid='+idp_revision_frameworkid,
-            url+'save-template.php?id='+idp_revision_id+'&frameworkid='+idp_revision_frameworkid+'&deleteexisting=1&add='
+            url+'find-template.php?id=<?php echo $id;?>&frameworkid=<?php echo $frameworkid;?>',
+            url+'save-template.php?id=<?php echo $id;?>&frameworkid=<?php echo $frameworkid;?>&deleteexisting=1&add='
         );
         // display the button on page load
         $('#show-idpcompetencytemplate-dialog').css('display','inline');
@@ -44,8 +47,8 @@ $(function() {
 
         totaraMultiSelectDialog(
             'idppositioncompetency',
-            url+'find-position.php?id='+idp_revision_id+'&realframeworkid='+idp_revision_frameworkid,
-            url+'save.php?id='+idp_revision_id+'&frameworkid='+idp_revision_frameworkid+'&deleteexisting=1&add='
+            url+'find-position.php?id=<?php echo $id;?>&realframeworkid=<?php echo $frameworkid;?>',
+            url+'save.php?id=<?php echo $id;?>&frameworkid=<?php echo $frameworkid;?>&deleteexisting=1&add='
         );
         // display the button on page load
         $('#show-idppositioncompetency-dialog').css('display','inline');
@@ -59,8 +62,8 @@ $(function() {
 
         totaraMultiSelectDialog(
             'idppositioncompetencytemplate',
-            url+'find-position-template.php?id='+idp_revision_id+'&realframeworkid='+idp_revision_frameworkid,
-            url+'save-template.php?id='+idp_revision_id+'&frameworkid='+idp_revision_frameworkid+'&deleteexisting=1&add='
+            url+'find-position-template.php?id=<?php echo $id;?>&realframeworkid=<?php echo $frameworkid;?>',
+            url+'save-template.php?id=<?php echo $id;?>&frameworkid=<?php echo $frameworkid;?>&deleteexisting=1&add='
         );
         // display the button on page load
         $('#show-idppositioncompetencytemplate-dialog').css('display','inline');
@@ -75,7 +78,7 @@ $(function() {
         var handler = new totaraDialog_handler_idpCourse();
         handler.baseurl = url;
 
-        save_url = url+'save.php?id='+idp_revision_id+'&deleteexisting=1&add=',
+        save_url = url+'save.php?id=<?php echo $id;?>&deleteexisting=1&add=',
     
         totaraDialogs['idpcourse'] = new totaraDialog(
             'idpcourse',
@@ -87,7 +90,7 @@ $(function() {
             }
     
             },
-            url+'add.php?id='+idp_revision_id,
+            url+'add.php?id=<?php echo $id;?>',
             handler
         );
         // display the button on page load
@@ -105,6 +108,6 @@ totaraDialog_handler_idpCourse.prototype = new totaraDialog_handler_skeletalTree
 
 totaraDialog_handler_idpCourse.prototype._handle_hierarchy_expand = function(id) {
 
-    var url = this.baseurl+'category.php?id='+id+'&rev='+idp_revision_id;
+    var url = this.baseurl+'category.php?id='+id+'&rev=<?php echo $id;?>';
     this._dialog._request(url, this, '_update_hierarchy', id);
 }

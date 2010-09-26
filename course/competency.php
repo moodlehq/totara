@@ -65,7 +65,7 @@ local_js(array(
 ));
 
 require_js(array(
-    $CFG->wwwroot.'/local/js/course.competency.js.php',
+    $CFG->wwwroot.'/local/js/course.competency.js.php?id='.$course->id,
 ));
 
 $strcompetenciesusedincourse = get_string("competenciesusedincourse", 'competency');
@@ -82,9 +82,6 @@ print_header($title, $fullname, $navigation);
 print_heading($strcompetenciesusedincourse);
 
 ?>
-<script type="text/javascript">
-    var course_id = '<?php echo $course->id ?>';
-</script>
 
 <table width="95%" cellpadding="5" cellspacing="1" id="list-coursecompetency" class="generalbox editcompetency boxaligncenter">
 <tr>

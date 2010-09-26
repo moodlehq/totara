@@ -58,7 +58,7 @@ if ($js_enabled) {
     ));
 
     require_js(array(
-        $CFG->wwwroot.'/local/js/idp.assignments.js.php',
+        $CFG->wwwroot.'/local/js/idp.assignments.js.php?id='.$currevision->id.'&frameworkid='.optional_param('framework', get_field_sql("SELECT id FROM {$CFG->prefix}comp_framework ORDER BY sortorder ASC"), PARAM_INT),
 #        $CFG->wwwroot.'/local/js/idp.course.js',
     ));
 }
@@ -211,9 +211,6 @@ echo '</tr></table>';
 
 <script type="text/javascript">
 <!-- //
-    var idp_revision_id = <?php echo $currevision->id ?>;
-    var idp_revision_frameworkid = <?php echo optional_param('framework', get_field_sql("SELECT id FROM {$CFG->prefix}comp_framework ORDER BY sortorder ASC"), PARAM_INT); ?>;
-
     function checkDateSet(){
         console.log($('input[@type=text].idpdate'));
         valid=true;

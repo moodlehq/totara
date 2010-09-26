@@ -2,6 +2,9 @@
 
     require_once '../../config.php';
 
+
+    $id = optional_param('id', 0, PARAM_INT);
+
 ?>
 
 // Bind functionality to page on load
@@ -15,8 +18,8 @@ $(function() {
 
         totaraMultiSelectDialog(
             'related',
-            url+'find.php?id='+competency_id,
-            url+'save.php?id='+competency_id+'&deleteexisting=1&add='
+            url+'find.php?id=<?php echo $id;?>',
+            url+'save.php?id=<?php echo $id;?>&deleteexisting=1&add='
         );
     })();
 
@@ -36,7 +39,7 @@ $(function() {
                     'Cancel': function() { handler._cancel() }
                 }
             },
-            url+'edit.php?id='+competency_id,
+            url+'edit.php?id=<?php echo $id;?>',
             handler
         );
     })();
@@ -59,7 +62,7 @@ totaraDialog_handler_assignEvidence.prototype._handle_hierarchy_expand = functio
 
 totaraDialog_handler_assignEvidence.prototype._handle_course_click = function(id) {
     // Load course details
-    var url = this.baseurl+'course.php?id='+id+'&competency='+competency_id;
+    var url = this.baseurl+'course.php?id='+id+'&competency=<?php echo $id;?>';
     this._dialog._request(url, this, '_display_evidence');
 }
 
@@ -85,7 +88,7 @@ totaraDialog_handler_assignEvidence.prototype._display_evidence = function(respo
         e.preventDefault();
         var type = $(this).closest('span').attr('type');
         var instance = $(this).closest('span').attr('id');
-        var url = handler.baseurl+'add.php?competency='+competency_id+'&type='+type+'&instance='+instance;
+        var url = handler.baseurl+'add.php?competency=<?php echo $id;?>&type='+type+'&instance='+instance;
         handler._dialog._request(url, handler, '_update');
     });
 

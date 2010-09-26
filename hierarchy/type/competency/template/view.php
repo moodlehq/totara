@@ -43,7 +43,7 @@ require_capability('moodle/local:view'.$hierarchy->prefix, $sitecontext);
 ///
 
 // Run any hierarchy type specific code
-$hierarchy->hierarchy_page_setup('template/view');
+$hierarchy->hierarchy_page_setup('template/view', $item);
 
 /// Display page header
 $navlinks = array();    // Breadcrumbs

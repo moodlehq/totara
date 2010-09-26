@@ -2,6 +2,8 @@
 
     require_once '../../config.php';
 
+    $templateid = optional_param('id', 0, PARAM_INT);
+
 ?>
 
 // Bind functionality to page on load
@@ -15,8 +17,8 @@ $(function() {
 
         totaraMultiSelectDialog(
             'assignment',
-            url+'find_competency.php?templateid='+competency_template_id,
-            url+'save_competency.php?templateid='+competency_template_id+'&deleteexisting=1&add='
+            url+'find_competency.php?templateid=<?php echo $templateid; ?>',
+            url+'save_competency.php?templateid=<?php echo $templateid; ?>&deleteexisting=1&add='
         );
     })();
 

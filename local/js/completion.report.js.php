@@ -1,4 +1,8 @@
-<?php require_once('../../config.php') ?>
+<?php
+require_once('../../config.php');
+
+$courseid = optional_param('id', 0, PARAM_INT);
+?>
 // Bind functionality to page on load
 YAHOO.util.Event.onDOMReady(function () {
 
@@ -235,7 +239,7 @@ YAHOO.util.Event.onDOMReady(function () {
         // Load courses
         YAHOO.util.Connect.asyncRequest(
             'GET',
-            '<?php echo $CFG->wwwroot . '/course/report/completion/'?>save_rpl.php?type='+type+'&course='+course+'&user='+user+'&rpl='+rpl,
+            '<?php echo $CFG->wwwroot . '/course/report/completion/'?>save_rpl.php?type='+type+'&course=<?php echo $courseid;?>&user='+user+'&rpl='+rpl,
             {
                 success:    fnc_savecallback,
                 failure:    function(o) {},

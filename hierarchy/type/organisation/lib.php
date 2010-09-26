@@ -52,7 +52,7 @@ class organisation extends hierarchy {
      * @param $page string Unique identifier for page
      * @return void
      */
-    function hierarchy_page_setup($page = '') {
+    function hierarchy_page_setup($page = '', $item) {
         global $CFG;
 
         if ($page !== 'item/view') {
@@ -70,7 +70,7 @@ class organisation extends hierarchy {
         ));
 
         require_js(array(
-            $CFG->wwwroot.'/local/js/organisation.item.js.php',
+            $CFG->wwwroot.'/local/js/organisation.item.js.php?id='.$item->id.'&frameworkid='.$item->frameworkid,
         ));
     }
 

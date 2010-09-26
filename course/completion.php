@@ -162,7 +162,7 @@ if ($js_enabled) {
     ));
 
     require_js(array(
-        $CFG->wwwroot.'/local/js/completion.prerequisite.js.php',
+        $CFG->wwwroot.'/local/js/completion.prerequisite.js.php?id='.$course->id,
     ));
 }
 
@@ -178,15 +178,6 @@ $fullname = $course->fullname;
 $navigation = build_navigation($navlinks);
 print_header($title, $fullname, $navigation, $form->focus());
 print_heading($streditcompletionsettings);
-
-// If js enabled, we need the current course id available to it
-if ($js_enabled) {
-?>
-    <script type="text/javascript">
-        var course_id = '<?php echo $course->id ?>';
-    </script>
-<?php
-}
 
 $form->display();
 

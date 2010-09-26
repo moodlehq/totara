@@ -385,7 +385,7 @@ SQL;
      * @param $page string Unique identifier for page
      * @return void
      */
-    function hierarchy_page_setup($page = '') {
+    function hierarchy_page_setup($page = '', $item=null) {
         global $CFG;
 
         if (!in_array($page, array('template/view', 'item/view', 'item/add'))) {
@@ -404,13 +404,15 @@ SQL;
 
         switch ($page) {
             case 'item/view':
+                $itemid = !(empty($item->id)) ? "?id={$item->id}" : '';
                 require_js(array(
-                    $CFG->wwwroot.'/local/js/competency.item.js.php',
+                    $CFG->wwwroot.'/local/js/competency.item.js.php'.$itemid,
                 ));
                 break;
             case 'template/view':
+                $itemid = !(empty($item->id)) ? "?id={$item->id}" : '';
                 require_js(array(
-                    $CFG->wwwroot.'/local/js/competency.template.js.php',
+                    $CFG->wwwroot.'/local/js/competency.template.js.php'.$itemid,
                 ));
                 break;
             case 'item/add':

@@ -69,7 +69,7 @@ class position extends hierarchy {
      * @param $page string Unique identifier for page
      * @return void
      */
-    function hierarchy_page_setup($page = '') {
+    function hierarchy_page_setup($page = '', $item) {
         global $CFG;
 
         if ($page !== 'item/view') {
@@ -87,7 +87,7 @@ class position extends hierarchy {
         ));
 
         require_js(array(
-            $CFG->wwwroot.'/local/js/position.item.js.php',
+            $CFG->wwwroot.'/local/js/position.item.js.php?id='.$item->id.'&frameworkid='.$item->frameworkid,
         ));
     }
 
