@@ -239,20 +239,27 @@ div#header .logo {
 }
 #header-search #coursesearch {
   margin-top: 11px;
+  overflow: hidden;
 }
 #header-search #coursesearchbox {
-  width:150px;
-  border:none;
-  padding:5px;
+  float: left;
+  width: 150px;
+  border: none;
+  padding: 5px;
   background: url('images/search_bg_field.gif') no-repeat top left;
 }
 #header-search #coursesubmit {
-  width:28px;
-  border:none;
-  padding:3px;
-  text-indent: 1000px;
-  overflow:hidden;
+  width: 28px;
+  height: 21px;
+  border: none;
+  margin: 0;
+  margin-left: 5px;
+  padding: 0;
+  text-indent: -10000px;
+  overflow: hidden;
   background: url('images/search_bg_submit.gif') no-repeat top left;
+  font-size: 0;
+  line-height: 0;
 }
 
 
