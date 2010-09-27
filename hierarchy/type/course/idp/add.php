@@ -18,12 +18,11 @@ $id = required_param('id', PARAM_INT);
 $nojs = optional_param('nojs', false, PARAM_BOOL);
 $returnurl = optional_param('returnurl', '', PARAM_TEXT);
 $s = optional_param('s', '', PARAM_TEXT);
-$revisionid = optional_param('revisionid', PARAM_INT);
 
 $category = optional_param('category', 0, PARAM_INT);
 
 // Load plan this revision relates to
-if (!$plan = get_plan_for_revision($revisionid)) {
+if (!$plan = get_plan_for_revision($id)) {
     error('Revision plan could not be found');
 }
 
@@ -40,8 +39,6 @@ if(!has_capability('moodle/local:idpaddcourse', $usercontext) && !(has_capabilit
     error(get_string('error:permissionsaddcourse','idp'));
 }
 
-
-$plan = get_plan_for_revision($id);
 $currentlyassigned = idp_get_user_courses($plan->userid, $id);
 if (!is_array($currentlyassigned)) {
     $currentlyassigned = array();
