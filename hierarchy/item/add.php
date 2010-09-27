@@ -39,7 +39,6 @@ if(!$frameworkid) {
         ON f.id = d.frameworkid";
     // let the user pick the framework from a list
     if($frameworks = get_records_sql($sql)) {
-        print "<h2>Select a $type framework</h2>";
         foreach ($frameworks as $framework) {
             print '<p><a href="'.qualified_me().'&amp;frameworkid='.$framework->id.'">'.$framework->fullname.'</a></p>';
         }

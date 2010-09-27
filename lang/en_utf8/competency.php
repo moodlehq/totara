@@ -71,6 +71,7 @@ $string['depths'] = 'Depths';
 $string['deletedepth'] = 'Delete $a';
 $string['descriptionview'] = '$a description';
 $string['selectedcompetencies'] = 'Selected competencies:';
+$string['selectacompetencyframework'] = 'Select a competency framework';
 $string['clicktoassign'] = 'Click the assign button to select a competency.';
 $string['clicktoassigntemplate'] = 'Click the assign button to select a competency template.';
 $string['clicktoviewchildren'] = 'Click competency name to view child competencies (if present).';

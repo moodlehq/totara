@@ -71,7 +71,6 @@ if($nojs) {
     print_footer();
 } else {
     // JS version
-    echo '<h2>' . get_string('assignnewevidenceitem', 'competency') . '</h2>';
     echo '<div id="available-evidence" class="selected">';
     echo '</div>';
     echo '<p>Locate course:</p>';

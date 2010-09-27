@@ -1,6 +1,7 @@
 <?php
 
     require_once '../../config.php';
+    require_once($CFG->dirroot.'/local/js/lib/setup.php');
 
 ?>
 // Bind functionality to page on load
@@ -14,6 +15,10 @@ $(function() {
 
         totaraSingleSelectDialog(
             'position',
+            '<?php
+                echo get_string('chooseposition', 'position');
+                echo dialog_display_currently_selected(get_string('selected', 'hierarchy'));
+            ?>',
             url+'find.php?',
             'positionid',
             'positiontitle'
@@ -29,6 +34,10 @@ $(function() {
 
         totaraSingleSelectDialog(
             'organisation',
+            '<?php
+                echo get_string('chooseorganisation', 'organisation');
+                echo dialog_display_currently_selected(get_string('currentlyselected', 'organisation'));
+            ?>',
             url+'find.php?',
             'organisationid',
             'organisationtitle'
@@ -44,41 +53,13 @@ $(function() {
 
         totaraSingleSelectDialog(
             'manager',
+            '<?php
+                echo get_string('choosemanager', 'position');
+                echo dialog_display_currently_selected(get_string('selected', 'hierarchy'));
+            ?>',
             url+'manager.php?',
             'managerid',
             'managertitle'
-        );
-    })();
-
-
-    ///
-    /// Competency dialog
-    ///
-    (function() {
-        var url = '<?php echo $CFG->wwwroot ?>/hierarchy/type/competency/assign/';
-
-        totaraSingleSelectDialog(
-            'competency',
-            url+'find.php?',
-            'competencyid',
-            'competencytitle',
-            function() {
-                var jsonurl = '<?php echo $CFG->wwwroot ?>/hierarchy/type/competency/evidence/competency_scale.json.php';
-                compid = $('input[name=competencyid]').val();
-
-                var profinput = $('body.hierarchy-type-competency-evidence select#id_proficiency');
-                // only do JSON request if a proficiency select found to fill
-                if(profinput) {
-                    // used by add competency evidence page to populate proficiency pulldown based on competency chosen
-                    $.getJSON(jsonurl, {competencyid:compid}, function(scales) {
-                        var i, htmlstr = '';
-                        for (i in scales) {
-                            htmlstr += '<option value="'+scales[i].name+'">'+scales[i].value+'</option>';
-                        }
-                        profinput.removeAttr('disabled').html(htmlstr);
-                    });
-                }
-            }
         );
     })();
 

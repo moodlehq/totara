@@ -98,10 +98,6 @@ if(!$nojs) {
 ?>
 
 <div class="selectcompetencytemplates">
-
-
-<h2><?php echo get_string('addcompetencytemplatestoplan', 'idp') ?></h2>
-
 <div class="selected">
     <p>
         <?php 

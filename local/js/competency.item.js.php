@@ -18,6 +18,7 @@ $(function() {
 
         totaraMultiSelectDialog(
             'related',
+            '<?php echo get_string('assignrelatedcompetencies', 'competency'); ?>',
             url+'find.php?id=<?php echo $id;?>',
             url+'save.php?id=<?php echo $id;?>&deleteexisting=1&add='
         );
@@ -37,7 +38,8 @@ $(function() {
             {
                 buttons: {
                     'Cancel': function() { handler._cancel() }
-                }
+                },
+                title: '<?php echo '<h2>'.get_string('assignnewevidenceitem', 'competency').'</h2>'; ?>'
             },
             url+'edit.php?id=<?php echo $id;?>',
             handler

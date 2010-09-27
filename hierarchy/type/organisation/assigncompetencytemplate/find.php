@@ -77,7 +77,6 @@ if(!$nojs) {
     }
 
     echo '<div class="selectcompetencies">';
-    echo '<h2>'.get_string($pagetitle, $hierarchy->prefix).'</h2>';
     echo '<div class="selected">';
     echo '<p>'.get_string('selecteditems', 'hierarchy').'</p>';
     echo populate_selected_items_pane($currentlyassigned);

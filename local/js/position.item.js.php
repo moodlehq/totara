@@ -18,6 +18,7 @@ $(function() {
 
         totaraMultiSelectDialog(
             'assignedcompetencies',
+            '<?php echo get_string('assigncompetency', 'competency') ?>',
             url+'find.php?assignto=<?php echo $id;?>&frameworkid=<?php echo $frameworkid;?>&add=',
             url+'assign.php?assignto=<?php echo $id;?>&frameworkid=<?php echo $frameworkid;?>&deleteexisting=1&add='
         );
@@ -31,6 +32,7 @@ $(function() {
 
         totaraMultiSelectDialog(
             'assignedcompetencytemplates',
+            '<?php echo get_string('assigncompetencytemplate', 'competency') ?>',
             url+'find.php?assignto=<?php echo $id;?>&frameworkid=<?php echo $frameworkid;?>&add=',
             url+'assign.php?assignto=<?php echo $id;?>&frameworkid=<?php echo $frameworkid;?>&deleteexisting=1&add='
         );

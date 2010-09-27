@@ -90,7 +90,6 @@ if($nojs) {
 
     // JS version
     echo '<div class="selectcourses">';
-    echo '<h2>' . get_string('addcoursestoplan', 'idp') . '</h2>';
     echo '<p>' . get_string('locatecourse', 'idp') . '</p>';
     echo '<ul class="filetree treeview picker">';
     echo build_category_treeview($categories, $parents, 'Loading courses...');

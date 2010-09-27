@@ -45,13 +45,6 @@ $managers = get_records_sql(
 
 <div class="selectmanager">
 
-<h2>
-<?php
-    echo get_string('choosemanager', 'position');
-    echo dialog_display_currently_selected(get_string('selected', 'hierarchy'));
-?>
-</h2>
-
 <ul class="treeview filetree picker">
 <?php
 

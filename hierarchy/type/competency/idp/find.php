@@ -86,7 +86,6 @@ if(!$nojs) {
     // If parent id is not supplied, we must be displaying the main page
     if (!$parentid) {
         echo '<div class="selectcompetencies">'.PHP_EOL;
-        echo '<h2>' . get_string('addcompetenciestoplan', 'idp') . '</h2>'.PHP_EOL;
         echo '<div class="selected">';
         echo get_string('selectedcompetencies', $hierarchy->prefix);
         echo populate_selected_items_pane($assignedcomps);

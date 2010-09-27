@@ -17,6 +17,7 @@ $(function() {
 
         totaraMultiSelectDialog(
             'idpcompetency',
+            '<?php echo get_string('addcompetenciestoplan', 'idp') ?> ',
             url+'find.php?id=<?php echo $id;?>&frameworkid=<?php echo $frameworkid;?>',
             url+'save.php?id=<?php echo $id;?>&frameworkid=<?php echo $frameworkid;?>&deleteexisting=1&add='
         );
@@ -32,6 +33,7 @@ $(function() {
 
         totaraMultiSelectDialog(
             'idpcompetencytemplate',
+            '<?php echo get_string('addcompetencytemplatestoplan', 'idp') ?>',
             url+'find-template.php?id=<?php echo $id;?>&frameworkid=<?php echo $frameworkid;?>',
             url+'save-template.php?id=<?php echo $id;?>&frameworkid=<?php echo $frameworkid;?>&deleteexisting=1&add='
         );
@@ -47,6 +49,7 @@ $(function() {
 
         totaraMultiSelectDialog(
             'idppositioncompetency',
+            '<?php echo get_string('assigncompetencies', 'competency') ?>',
             url+'find-position.php?id=<?php echo $id;?>&realframeworkid=<?php echo $frameworkid;?>',
             url+'save.php?id=<?php echo $id;?>&frameworkid=<?php echo $frameworkid;?>&deleteexisting=1&add='
         );
@@ -62,6 +65,7 @@ $(function() {
 
         totaraMultiSelectDialog(
             'idppositioncompetencytemplate',
+            '<?php echo get_string('addcompetencytemplatestoplan', 'idp') ?>',
             url+'find-position-template.php?id=<?php echo $id;?>&realframeworkid=<?php echo $frameworkid;?>',
             url+'save-template.php?id=<?php echo $id;?>&frameworkid=<?php echo $frameworkid;?>&deleteexisting=1&add='
         );
@@ -85,9 +89,10 @@ $(function() {
             'show-idpcourse-dialog',
             {
                  buttons: {
-                'Ok': function() { handler._save(save_url) },
-                'Cancel': function() { handler._cancel() }
-            }
+                    'Cancel': function() { handler._cancel() },
+                    'Ok': function() { handler._save(save_url) }
+                },
+                title: '<?php echo '<h2>' . get_string('addcoursestoplan', 'idp') . '</h2>' ?>'
     
             },
             url+'add.php?id=<?php echo $id;?>',

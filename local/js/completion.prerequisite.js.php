@@ -1,6 +1,7 @@
 <?php
 
     require_once '../../config.php';
+    require_once $CFG->dirroot.'/local/js/lib/setup.php';
 
     $courseid = optional_param('id', 0, PARAM_INT);
 
@@ -22,9 +23,15 @@ $(function() {
             'id_add_criteria_course',
             {
                  buttons: {
-                'Ok': function() { handler._save() },
-                'Cancel': function() { handler._cancel() }
-                 }
+                    'Ok': function() { handler._save() },
+                    'Cancel': function() { handler._cancel() }
+                 },
+                title: '<?php
+                    echo '<h2>';
+                    echo get_string('addcourseprerequisite', 'completion');
+                    echo dialog_display_currently_selected(get_string('selected', 'hierarchy'));
+                    echo '</h2>';
+                ?>'
             },
             url+'completion_prerequisite.php?id=<?php echo $courseid;?>',
             handler

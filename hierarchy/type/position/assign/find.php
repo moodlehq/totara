@@ -53,13 +53,6 @@ if (!$parentid) {
 
 <div class="selectposition">
 
-
-<h2>
-<?php
-    echo get_string('chooseposition', $hierarchy->prefix);
-    echo dialog_display_currently_selected(get_string('selected', 'hierarchy'));
-?>
-</h2>
 <?php
     $hierarchy->display_framework_selector('', true);
 }

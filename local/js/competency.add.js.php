@@ -7,15 +7,49 @@
 // Bind functionality to page on load
 $(function() {
 
-    var handler = new totaraDialog_handler_addcompetency();
+    (function() {
+        var handler = new totaraDialog_handler_addcompetency();
 
-    totaraDialogs['addcompetency'] = new totaraDialog(
-        'addcompetency',
-        'show-add-dialog',
-        {},
-        '<?php echo $CFG->wwwroot ?>/hierarchy/item/add.php?type=competency',
-        handler
-    );
+        totaraDialogs['addcompetency'] = new totaraDialog(
+            'addcompetency',
+            'show-add-dialog',
+            {title: '<?php echo '<h2>'.get_string('selectacompetencyframework', 'competency').'</h2>'; ?>'},
+            '<?php echo $CFG->wwwroot ?>/hierarchy/item/add.php?type=competency',
+            handler
+        );
+    })();
+
+    ///
+    /// Competency dialog
+    ///
+    (function() {
+        var url = '<?php echo $CFG->wwwroot ?>/hierarchy/type/competency/assign/';
+
+        totaraSingleSelectDialog(
+            'competency',
+            '<?php echo get_string('selectcompetency', 'local') ?>',
+            url+'find.php?',
+            'competencyid',
+            'competencytitle',
+            function() {
+                var jsonurl = '<?php echo $CFG->wwwroot ?>/hierarchy/type/competency/evidence/competency_scale.json.php';
+                compid = $('input[name=competencyid]').val();
+
+                var profinput = $('body.hierarchy-type-competency-evidence select#id_proficiency');
+                // only do JSON request if a proficiency select found to fill
+                if(profinput) {
+                    // used by add competency evidence page to populate proficiency pulldown based on competency chosen
+                    $.getJSON(jsonurl, {competencyid:compid}, function(scales) {
+                        var i, htmlstr = '';
+                        for (i in scales) {
+                            htmlstr += '<option value="'+scales[i].name+'">'+scales[i].value+'</option>';
+                        }
+                        profinput.removeAttr('disabled').html(htmlstr);
+                    });
+                }
+            }
+        );
+    })();
 });
 
 

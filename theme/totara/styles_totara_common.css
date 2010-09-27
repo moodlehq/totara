@@ -4,12 +4,16 @@
 /*****************************************************************************/
 /** General **/
 /*****************************************************************************/
-.
+
 /**
  * Fix for filter
  */
 fieldset#newfilter input[type="text"] {
     margin-left: 5px;
+}
+
+span.dialog-result-title {
+    padding: 5px;
 }
 
 /**
@@ -355,24 +359,26 @@ div.totara-dialog {
     padding: 10px 10px 5px;
 }
 
-div.totara-dialog div.ui-widget-content,
-div.totara-dialog div.ui-widget-header {
-    background: none;
+div.totara-dialog div.ui-dialog-titlebar {
+    margin: 0 0 10px;
+    padding: 0 0 5px;
+    background-image: none;
     background-color: #fff;
+    border-width: 0;
+    border-bottom: 1px solid #CACACA;
+    -moz-border-radius: 0;
+    border-radius: 0;
 }
 
-div.totara-dialog div.ui-widget-header .ui-state-hover {
-    border-color: transparent;
-    background: none;
-}
-
-div.totara-dialog div.ui-widget-header {
-    position: relative;
-    float: right;
-    top: 322px;
+div.totara-dialog div.ui-dialog-titlebar span.ui-dialog-title {
     margin: 0;
-    padding: 0;
-    border: none;
+}
+
+div.totara-dialog div.ui-dialog-titlebar span.ui-dialog-title h2 {
+    font-size: 18px;
+    font-weight: bold;
+    color: #002C3F;
+    margin: 0;
 }
 
 div.totara-dialog div.ui-dialog-titlebar a.ui-dialog-titlebar-close {
@@ -380,61 +386,46 @@ div.totara-dialog div.ui-dialog-titlebar a.ui-dialog-titlebar-close {
     margin: 0;
     padding: 0;
     background: transparent;
-}
-
-div.totara-dialog div.ui-dialog-titlebar a.ui-dialog-titlebar-close span {
     position: relative;
     float: right;
     width: 66px;
     height: 22px;
+    top: 0;
+    right: 0;
+}
+
+div.totara-dialog div.ui-dialog-titlebar a.ui-dialog-titlebar-close span {
     background-image: url(closelabel.gif);
     background-position: 0 0;
     border: none;
-    bottom: 335px;
     margin: 0;
     padding: 0;
-    display: block;
-    z-index: 1;
+    width: 66px;
+    height: 22px;
 }
 
 div.totara-dialog div.ui-dialog-buttonpane {
-    position: relative;
-    float: right;
-    background: none;
+    margin: 10px 0 0;
+    padding: 5px 0 0;
+    background-image: none;
+    background-color: #fff;
     border: none;
-    margin: 0;
-    padding: 0;
-    top: -28px;
+    border-width: 0;
+    border-top: 1px solid #CACACA;
+    -moz-border-radius: 0;
 }
 
 div.totara-dialog div.ui-dialog-buttonpane button {
     margin-left: 10px;
-    float: left;
     min-width: 100px;
     margin-right: 0;
+    padding-bottom: 0.4em;
 }
+
 
 div.totara-dialog div.ui-dialog-content {
-    padding: 0 0 10px;
-    border-bottom: 1px solid #ccc;
-    margin-bottom: 5px;
-    overflow: hidden;
+    padding: 0;
     font-size: 0.9em;
-    position: relative;
-    height: 300px;
-    top: -25px;
-}
-
-div.totara-dialog div.ui-dialog-content h2 {
-    border-bottom: 1px solid #CACACA;
-    font-size: 17px;
-    margin: 0 0 10px;
-    padding-top: 2px;
-    padding-bottom: 5px;
-    text-align: left;
-    font-weight: bold;
-    font-family: Verdana, Arial, Helvetica, sans-serif;
-    color: #002C3F;
 }
 
 div.totara-dialog div.ui-dialog-content p {
@@ -442,14 +433,10 @@ div.totara-dialog div.ui-dialog-content p {
     padding: 0;
 }
 
-div.totara-dialog div.ui-dialog-content .dialog-static-content {
-    height: 275px;
-    overflow: auto;
-}
-
-div.totara-dialog ul.treeview, div.totara-dialog div#column-checkboxes {
+div.totara-dialog ul.treeview,
+div.totara-dialog div#column-checkboxes {
     margin-top: 10px;
-    height: 295px;
+    height: 260px;
     overflow: auto;
 }
 
@@ -457,8 +444,8 @@ div.totara-dialog ul.treeview li {
     font-size: 0.8em;
 }
 
-div.totara-dialog ul.treeview span:hover {
-    background-color: #EEEEEE;
+div.totara-dialog ul.treeview span:hover table {
+    background-color: #eee;
 }
 
 div.totara-dialog ul.treeview li li {
@@ -547,23 +534,15 @@ div.totara-dialog .unclickable {
 
 div.totara-dialog div.yui-isloading {
     background-image: url(loading_small.gif);
-    background-position: 690px 32px;
+    background-position: right top;
     background-repeat: no-repeat;
-}
-
-div.totara-dialog div.yui-isloading .bd {
-    padding-bottom: 22px;
-}
-
-div.totara-dialog #framework-picker {
-    float: right;
 }
 
 div.totara-dialog .selected {
     float: right;
     width: 250px;
     border-left: 1px solid #ccc;
-    height: 322px;
+    height: 300px;
     overflow: auto;
     padding: 0 10px;
     margin-left: 10px;
@@ -573,22 +552,23 @@ div.totara-dialog .selected p {
     margin-top: 0;
 }
 
+div.totara-dialog .selected h3 {
+    margin: 0 0 0.5em;
+}
+
 div.totara-dialog .selected span {
     display: block;
     font-size: 0.8em;
-    padding: 0.4em 0;
+    padding: 4px;
 }
 
 div.totara-dialog .selected span:hover {
-    background-color: #EEEEEE;
+    background-color: #eee;
 }
 
 div.totara-dialog .selected span table {
     width: 100%;
-}
-
-div.totara-dialog .selected span table tr{
-    height: 1.6em;
+    height: 20px;
 }
 
 div.totara-dialog .selected span table tr td {
@@ -597,12 +577,13 @@ div.totara-dialog .selected span table tr td {
 
 div.totara-dialog .selected span table tr td.list-item-name {
     width: 90%;
+    vertical-align: middle;
 }
 
 div.totara-dialog .selected span table tr td.list-item-action {
     cursor: pointer;
     width: 10%;
-    text-align: center;
+    text-align: right;
 }
 
 div.totara-dialog .selected img.addbutton {
@@ -617,10 +598,6 @@ div.totara-dialog .selected img.deletebutton {
     vertical-align: middle;
     width: 15px;
     height: 13px;
-}
-
-span.dialog-result-title {
-    padding: 5px;
 }
 
 /* hide lightbox activation buttons */
@@ -645,37 +622,10 @@ a.noscript-button {
     text-align: center;
 }
 
-/* fix for add competency display width */
-#hierarchy-type-competency-evidence-add #mform1 {
-    width: 95%;
-}
-
 /** Competencies lightbox styling **/
-#evidence #available-evidence {
-    float: right;
-    width: 40%;
-    border-left: 1px solid #ccc;
-    height: 322px;
-    overflow: auto;
-    padding: 0 10px;
-}
-
-#evidence #available-evidence h3 {
+div.totara-dialog div#evidence #available-evidence h3 {
     margin: 0 0 0.5em;
 }
-
-#evidence #available-evidence ul {
-    font-size: 0.8em;
-    margin: 0.25em 0 1em;
-    list-style: none;
-    padding: 0;
-}
-
-#evidence #available-evidence ul li {
-    font-size: 1em;
-    padding-bottom: 0.25em;
-}
-
 
 /*****************************************************************************/
 /** Dashboards **/

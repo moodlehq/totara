@@ -74,13 +74,6 @@ if (!$categoryid) {
 ?>
 <div class="selectposition">
 
-<h2>
-<?php 
-    echo get_string('addcourseprerequisite', 'completion');
-    echo dialog_display_currently_selected(get_string('selected', 'hierarchy'));
-?>
-</h2>
-
 <p>
     Locate course:
 </p>

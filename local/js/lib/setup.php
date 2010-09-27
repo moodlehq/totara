@@ -61,8 +61,8 @@ function build_treeview($elements, $error_string, $hierarchy = null, $disabledli
     global $CFG;
 
     $html = '';
-    
-    $buttons = array('addbutton' => 'add.gif', 
+
+    $buttons = array('addbutton' => 'add.gif',
                      'deletebutton' => 'delete.gif');
 
     if (is_array($elements) && !empty($elements)) {
@@ -91,11 +91,11 @@ function build_treeview($elements, $error_string, $hierarchy = null, $disabledli
                 $li_class .= ' last';
             }
 
-            // Elemefint has children
+            // If element has children
             if (array_key_exists($element->id, $parents)) {
-                $li_class = 'expandable closed';
-                $div_class = 'hitarea closed-hitarea expandable-hitarea';
-                $span_class = 'folder';
+                $li_class .= ' expandable closed';
+                $div_class .= ' hitarea closed-hitarea expandable-hitarea';
+                $span_class .= ' folder';
 
                 if ($count == $total) {
                     $li_class .= ' lastExpandable';
@@ -107,13 +107,13 @@ function build_treeview($elements, $error_string, $hierarchy = null, $disabledli
 
             // Make disabled elements non-draggable and greyed out
             if (array_key_exists($element->id, $disabledlist)){
-                $span_class = trim($span_class . ' unclickable');
+                $span_class .= ' unclickable';
                 $addbutton_html = '';
             }
 
-            $html .= '<li class="'.$li_class.'" id="item_list_'.$element->id.'">';
-            $html .= '<div class="'.$div_class.'"></div>';
-            $html .= '<span id="item_'.$element->id.'" class="'.$span_class.'">';
+            $html .= '<li class="'.trim($li_class).'" id="item_list_'.$element->id.'">';
+            $html .= '<div class="'.trim($div_class).'"></div>';
+            $html .= '<span id="item_'.$element->id.'" class="'.trim($span_class).'">';
             // format_string() really slow here...
             $html .= '<table><tr>';
             $html .= '<td class="list-item-name">'.htmlentities($element->fullname).'</td>';
@@ -180,7 +180,7 @@ function build_category_treeview($list, $parents, $load_string) {
 
     global $CFG;
 
-    $buttons = array('addbutton' => 'add.gif', 
+    $buttons = array('addbutton' => 'add.gif',
                      'deletebutton' => 'delete.gif');
 
     $html = '';
@@ -196,7 +196,7 @@ function build_category_treeview($list, $parents, $load_string) {
         $list[] = null;
 
         foreach ($list as $id => $category) {
-            $i++;
+            ++$i;
 
             // If an actual category
             if ($category !== null) {

@@ -57,7 +57,7 @@ function totaraDialog(title, buttonid, config, default_url, handler) {
             autoOpen: false,
             closeOnEscape: true,
             draggable: false,
-            height: 350,
+            height: 400,
             width: 705,
             modal: true,
             resizable: false,
@@ -108,10 +108,6 @@ function totaraDialog(title, buttonid, config, default_url, handler) {
 
         this.dialog.html('');
         this.dialog.dialog('open');
-
-        // Override some auto defined styling
-        this.dialog.parent().css({ height: '400px' });
-        this.dialog.css({ height: '360px', width: '705px' });
 
         this.load(url, method);
     }
@@ -1027,13 +1023,14 @@ totaraDialog_handler_skeletalTreeview.prototype._make_selectable = function(elem
  * Setup single-select treeview dialog that calls a handler on click
  *
  * @param string dialog name
+ * @param string dialog title
  * @param string find page url
  * @param string value_element bound to this dialog (value will be updated after dialog selection)
  * @param string text_element bound to this dialog (text will be updated after dialog selection)
  * @param function handler_extra extra code to be executed with handler
  * @return void
  */
-totaraSingleSelectDialog = function(name, find_url, value_element, text_element, handler_extra) {
+totaraSingleSelectDialog = function(name, title, find_url, value_element, text_element, handler_extra) {
 
     var handler = new totaraDialog_handler_treeview_singleselect(value_element, text_element);
     handler.external_function = handler_extra;
@@ -1043,9 +1040,10 @@ totaraSingleSelectDialog = function(name, find_url, value_element, text_element,
         'show-'+name+'-dialog',
         {
             buttons: {
-                'Ok': function() { handler._save(); },
-                'Cancel': function() { handler._cancel() }
-            }
+                'Cancel': function() { handler._cancel() },
+                'Ok': function() { handler._save(); }
+            },
+            title: '<h2>'+title+'</h2>'
         },
         find_url,
         handler
@@ -1057,11 +1055,12 @@ totaraSingleSelectDialog = function(name, find_url, value_element, text_element,
  * prints the html response to an underlying table
  *
  * @param string dialog name
+ * @param string dialog title
  * @param string find page url
  * @param string save page url
  * @return void
  */
-totaraMultiSelectDialog = function(name, find_url, save_url) {
+totaraMultiSelectDialog = function(name, title, find_url, save_url) {
 
     var handler = new totaraDialog_handler_treeview_multiselect();
 
@@ -1070,9 +1069,10 @@ totaraMultiSelectDialog = function(name, find_url, save_url) {
         'show-'+name+'-dialog',
         {
             buttons: {
-                'Ok': function() { handler._save(save_url) },
-                'Cancel': function() { handler._cancel() }
-            }
+                'Cancel': function() { handler._cancel() },
+                'Ok': function() { handler._save(save_url) }
+            },
+            title: '<h2>'+title+'</h2>'
         },
         find_url,
         handler
