@@ -416,5 +416,15 @@ function local_coursecategory_icon_tag($coursecat, $size='large') {
     return '<img src="'.$CFG->wwwroot.'/local/icon.php?icon='.$coursecat->icon.'&amp;size='.$size.'&type=coursecategory" class="course_icon" />';
 }
 
+/**
+ * Determine if the current request is an ajax request
+ *
+ * @param array $server A $_SERVER array
+ * @return boolean
+ */
+function is_ajax_request($server) {
+    return (isset($server['HTTP_X_REQUESTED_WITH']) && strtolower($server['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest');
+}
+
 
 ?>

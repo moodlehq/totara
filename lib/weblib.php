@@ -5706,7 +5706,7 @@ function print_scale_menu_helpbutton($courseid, $scale, $return=false) {
 function print_error($errorcode, $module='error', $link='', $a=NULL, $extralocations=NULL) {
     global $CFG, $SESSION, $THEME;
 
-    $isajax = (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest');
+    $isajax = is_ajax_request($_SERVER);
 
     if (empty($module) || $module === 'moodle' || $module === 'core') {
         $module = 'error';
@@ -6139,6 +6139,11 @@ function redirect($url, $message='', $delay=-1) {
             }
         }
 
+        if (is_ajax_request($_SERVER) && strstr($url, 'login/index.php')) {
+            // Prevent redirecting to login page if this is an ajax request
+            print_error('sessionerroruser');
+            exit;
+        }
         $delay = 0;
         //try header redirection first
         @header($_SERVER['SERVER_PROTOCOL'] . ' 303 See Other'); //302 might not work for POST requests, 303 is ignored by obsolete clients
