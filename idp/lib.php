@@ -2086,7 +2086,8 @@ function print_revision_trainee($revision, $plan, $formstartstr, $options=array(
     print_revision_details($revision, $options['can_submit'], false, false, true);
     print_revision_list($plan->id, $revision->id);
 
-    if ($options['can_edit']) {
+    $status = get_revision_status($revision);
+    if($status == 'inrevision'){
         print_comment_textbox($revision->id);
     }
     print_comment_list($revision);
