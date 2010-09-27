@@ -17,7 +17,7 @@ $(function() {
             'position',
             '<?php
                 echo get_string('chooseposition', 'position');
-                echo dialog_display_currently_selected(get_string('selected', 'hierarchy'));
+                echo dialog_display_currently_selected(get_string('selected', 'hierarchy'), 'position');
             ?>',
             url+'find.php?',
             'positionid',
@@ -36,7 +36,7 @@ $(function() {
             'organisation',
             '<?php
                 echo get_string('chooseorganisation', 'organisation');
-                echo dialog_display_currently_selected(get_string('currentlyselected', 'organisation'));
+                echo dialog_display_currently_selected(get_string('currentlyselected', 'organisation'), 'organisation');
             ?>',
             url+'find.php?',
             'organisationid',
@@ -55,7 +55,7 @@ $(function() {
             'manager',
             '<?php
                 echo get_string('choosemanager', 'position');
-                echo dialog_display_currently_selected(get_string('selected', 'hierarchy'));
+                echo dialog_display_currently_selected(get_string('selected', 'hierarchy'), 'manager');
             ?>',
             url+'manager.php?',
             'managerid',

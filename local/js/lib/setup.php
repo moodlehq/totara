@@ -453,17 +453,18 @@ function display_dialog_selector($options, $selected, $class) {
 /**
  * Return markup for 'Currently selected' info in a dialog
  * @param $label the label
+ * @param $title the unique title of the dialog
  * @return  $html
  */
-function dialog_display_currently_selected($label) {
+function dialog_display_currently_selected($label, $title='') {
 
-    $html = ' <span id="treeview_currently_selected_span" style="display: none;">';
-    $html .= '(<label for="treeview_selected_text">'.$label.'</label>:&nbsp;';
-    $html .= '<em><span id="treeview_selected_text"></span></em>'; 
+    $html = ' <span id="treeview_currently_selected_span_'.$title.'" style="display: none;">';
+    $html .= '(<label for="treeview_selected_text_'.$title.'">'.$label.'</label>:&nbsp;';
+    $html .= '<em><span id="treeview_selected_text_'.$title.'"></span></em>'; 
     $html .= ')</span>';
 
     // Also add a hidden field that can hold the currently selected value
-    $html .= '<input type="hidden" id="treeview_selected_val" name="treeview_selected_val" value="" />';
+    $html .= '<input type="hidden" id="treeview_selected_val_'.$title.'" name="treeview_selected_val_'.$title.'" value="" />';
 
     return $html;
 }

@@ -793,11 +793,11 @@ totaraDialog_handler_treeview_singleselect.prototype._set_current_selected = fun
         current_text = 'None';
     }
 
-    $('#treeview_selected_text').text(current_text);
-    $('#treeview_selected_val').val(current_val);
+    $('#treeview_selected_text_'+this._title).text(current_text);
+    $('#treeview_selected_val_'+this._title).val(current_val);
 
     if (current_val != 0) {
-        $('#treeview_currently_selected_span').css('display', 'inline');
+        $('#treeview_currently_selected_span_'+this._title).css('display', 'inline');
     }
 }
 
@@ -812,9 +812,9 @@ totaraDialog_handler_treeview_singleselect.prototype._set_current_selected = fun
 totaraDialog_handler_treeview_singleselect.prototype._save = function() {
 
     // Get selected id
-    var selected_val = $('#treeview_selected_val', this._container).val();
+    var selected_val = $('#treeview_selected_val_'+this._title).val();
     // Get selected text
-    var selected_text = $('#treeview_selected_text').text();
+    var selected_text = $('#treeview_selected_text_'+this._title).text();
 
     // Update value element
     if (this.value_element_name) {
@@ -873,12 +873,12 @@ totaraDialog_handler_treeview_singleselect.prototype._make_selectable = function
         var item = $(this);
         var clone = item.clone();
 
-        $('#treeview_selected_text').html(clone.find('.list-item-name').html());
+        $('#treeview_selected_text_'+dialog._title).html(clone.find('.list-item-name').html());
         var selected_id = clone.attr('id').split('_')[1];
-        $('#treeview_selected_val').val(selected_id);
+        $('#treeview_selected_val_'+dialog._title).val(selected_id);
 
         // Make sure the info is displayed
-        $('#treeview_currently_selected_span').css('display', 'inline');
+        $('#treeview_currently_selected_span_'+dialog._title).css('display', 'inline');
     });
 
 }

@@ -29,7 +29,7 @@ $(function() {
                 title: '<?php
                     echo '<h2>';
                     echo get_string('addcourseprerequisite', 'completion');
-                    echo dialog_display_currently_selected(get_string('selected', 'hierarchy'));
+                    echo dialog_display_currently_selected(get_string('selected', 'hierarchy'), 'courseprerequisite');
                     echo '</h2>';
                 ?>'
             },
