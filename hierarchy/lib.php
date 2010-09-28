@@ -78,7 +78,7 @@ class hierarchy {
                         return false;
                     }
                     else {
-                        error('No '.$this->prefix.' frameworks exist');
+                        print_error('noframeworks', $this->prefix);
                     }
                 }
 
@@ -87,7 +87,7 @@ class hierarchy {
 
         } else {
             if (!$framework = get_record($this->shortprefix.'_framework', 'id', $id)) {
-                error('The '.$this->prefix.' framework does not exist');
+                print_error('frameworkdoesntexist', 'hierarchy', '', $this->prefix);
             }
         }
         $this->frameworkid = $framework->id; // specify the framework id
@@ -266,7 +266,7 @@ class hierarchy {
                     WHERE path LIKE '{$path}%' ORDER BY path";
             return get_records_sql($sql);
         } else {
-            error('No path found for '.$this->prefix.' id '.$id);
+            print_error('nopathfoundforid', 'hierarchy', '', (object)array('prefix'=>$this->prefix, 'id'=>$id));
         }
     }
 
@@ -418,7 +418,7 @@ class hierarchy {
                     WHERE o.id IN (".implode(",", $paths).")";
             return get_records_sql($sql);
         } else {
-            error('No path found for '.$this->prefix.' id '.$id);
+            print_error('nopathfoundforid', 'hierarchy', '', (object)array('prefix'=>$this->prefix, 'id'=>$id));
         }
     }
 
