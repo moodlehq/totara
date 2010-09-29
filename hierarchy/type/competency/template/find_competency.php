@@ -59,7 +59,6 @@ if(!$nojs) {
     if (!$parentid) {
 
         echo '<div class="selectcompetencies">';
-        echo '<h2>' . get_string('assignnewcompetency', $hierarchy->prefix) . '</h2>';
         echo '<div class="selected"><p>';
         echo get_string('selectedcompetencies', $hierarchy->prefix);
         echo populate_selected_items_pane($competenciesintemplate);
