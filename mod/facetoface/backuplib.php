@@ -4,21 +4,25 @@
   //
   //          facetoface                  facetoface_sessions
   //         (CL, pk->id)-------------(CL, pk->id, fk->facetoface)
-  //              |                          |     |  |
-  //              |                          |     |  |
-  //              |                          |     |  |
-  //              |            +-------------+     |  |
-  //              |            |                   |  |
-  //          facetoface_submissions               |  |
-  //  (UL, pk->id, fk->facetoface, fk->sessionid)  |  |
-  //                                               |  |
-  //                                               |  |
-  //     facetoface_session_field                  |  |
-  //          (SL, pk->id)  |                      |  |
-  //                        |                      |  |
-  //             facetoface_session_data-----------+  |
-  //    (CL, pk->id, fk->sessionid, fk->fieldid)      |
-  //                                                  |
+  //                                          |  |  |  |
+  //                                          |  |  |  |
+  //            facetoface_signups------------+  |  |  |
+  //        (UL, pk->id, fk->sessionid)          |  |  |
+  //                     |                       |  |  |
+  //         facetoface_signups_status           |  |  |
+  //         (UL, pk->id, fk->signupid)          |  |  |
+  //                                             |  |  |
+  //                                             |  |  |
+  //         facetoface_session_roles------------+  |  |
+  //        (UL, pk->id, fk->sessionid)             |  |
+  //                                                |  |
+  //                                                |  |
+  //     facetoface_session_field                   |  |
+  //          (SL, pk->id)  |                       |  |
+  //                        |                       |  |
+  //             facetoface_session_data------------+  |
+  //    (CL, pk->id, fk->sessionid, fk->fieldid)       |
+  //                                                   |
   //                                    facetoface_sessions_dates
   //                                    (CL, pk->id, fk->session)
   //
