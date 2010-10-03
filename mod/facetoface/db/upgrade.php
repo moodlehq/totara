@@ -326,7 +326,6 @@ function xmldb_facetoface_upgrade($oldversion=0) {
         $table->addFieldInfo('grade', XMLDB_TYPE_NUMBER, '10, 5', null, null, null, '0');
         $table->addFieldInfo('note', XMLDB_TYPE_TEXT, 'small', null, null, null, null);
         $table->addFieldInfo('timecreated', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $table->addFieldInfo('mailed', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
         $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
         $table->addKeyInfo('signupid', XMLDB_KEY_FOREIGN, array('signupid'), 'facetoface_signups', array('id'));
         $result = $result && create_table($table);
@@ -424,7 +423,7 @@ function xmldb_facetoface_upgrade($oldversion=0) {
         // New field necessary for overbooking
         $table = new XMLDBTable('facetoface_sessions');
         $field1 = new XMLDBField('allowoverbook');
-        $field1->setAttributes(XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null, 0, 'capacity');
+        $field1->setAttributes(XMLDB_TYPE_INTEGER, 'small', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null, 0, 'capacity');
         $result = $result && add_field($table, $field1);
     }
 
@@ -448,15 +447,15 @@ function xmldb_facetoface_upgrade($oldversion=0) {
         // New fields for storing request emails
         $table = new XMLDBTable('facetoface');
         $field = new XMLDBField('requestsubject');
-        $field->setAttributes(XMLDB_TYPE_TEXT, 'small', null, null, null, null, null, '', 'reminderperiod');
+        $field->setAttributes(XMLDB_TYPE_TEXT, 'small', null, null, null, null, null, null, 'reminderperiod');
         $result = $result && add_field($table, $field);
 
         $field = new XMLDBField('requestinstrmngr');
-        $field->setAttributes(XMLDB_TYPE_TEXT, 'medium', null, null, null, null, null, '', 'requestsubject');
+        $field->setAttributes(XMLDB_TYPE_TEXT, 'medium', null, null, null, null, null, null, 'requestsubject');
         $result = $result && add_field($table, $field);
 
         $field = new XMLDBField('requestmessage');
-        $field->setAttributes(XMLDB_TYPE_TEXT, 'medium', null, null, null, null, null, '', 'requestinstrmngr');
+        $field->setAttributes(XMLDB_TYPE_TEXT, 'medium', null, null, null, null, null, null, 'requestinstrmngr');
         $result = $result && add_field($table, $field);
     }
 
@@ -505,6 +504,13 @@ function xmldb_facetoface_upgrade($oldversion=0) {
         $table2->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
         $table2->addIndexInfo('facetoface_notice_date_fieldid', XMLDB_INDEX_NOTUNIQUE, array('fieldid'));
         $result = $result && create_table($table2);
+    }
+
+    if ($result && $oldversion < 2010100400) {
+        // Remove unused mailed field
+        $table = new XMLDBTable('facetoface_signups_status');
+        $field = new XMLDBField('mailed');
+        $result = $result && drop_field($table, $field, false, true);
     }
 
     return $result;
