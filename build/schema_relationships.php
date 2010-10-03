@@ -29,6 +29,9 @@ $relations = array(
     'facetoface_signups_status#signupid' => 'facetoface_signups#id',
     'facetoface_session_data#sessionid' => 'facetoface_sessions#id',
     'facetoface_session_data#fieldid' => 'facetoface_session_field#id',
+    'facetoface_session_roles#sessionid' => 'facetoface_sessions#id',
+    'facetoface_session_roles#userid' => 'user#id',
+    'facetoface_session_roles#roleid' => 'role#id',
     // report builder
     'report_builder_columns#reportid' => 'report_builder#id',
     'report_builder_filters#reportid' => 'report_builder#id',
