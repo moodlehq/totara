@@ -68,17 +68,14 @@ class mod_facetoface_mod_form extends moodleform_mod {
         $mform->addElement('text', 'requestsubject', get_string('email:subject', 'facetoface'), array('size'=>'55'));
         $mform->setType('requestsubject', PARAM_TEXT);
         $mform->setDefault('requestsubject', get_string('setting:defaultrequestsubjectdefault', 'facetoface'));
-        $mform->setHelpButton('requestsubject', array('requestmessage', get_string('email:subject', 'facetoface'), 'facetoface'));
         $mform->disabledIf('requestsubject', 'approvalreqd');
 
         $mform->addElement('textarea', 'requestmessage', get_string('email:message', 'facetoface'), 'wrap="virtual" rows="15" cols="70"');
         $mform->setDefault('requestmessage', get_string('setting:defaultrequestmessagedefault', 'facetoface'));
-        $mform->setHelpButton('requestmessage', array('requestmessage', get_string('email:message', 'facetoface'), 'facetoface'));
         $mform->disabledIf('requestmessage', 'approvalreqd');
 
         $mform->addElement('textarea', 'requestinstrmngr', get_string('email:instrmngr', 'facetoface'), 'wrap="virtual" rows="10" cols="70"');
         $mform->setDefault('requestinstrmngr', get_string('setting:defaultrequestinstrmngrdefault', 'facetoface'));
-        $mform->setHelpButton('requestinstrmngr', array('requestmessage', get_string('email:instrmngr', 'facetoface'), 'facetoface'));
         $mform->disabledIf('requestinstrmngr', 'approvalreqd');
 
         // CONFIRMATION MESSAGE
