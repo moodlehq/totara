@@ -17,7 +17,7 @@ $activated = array();
 $inactive = array();
 
 $frameworks = get_records('comp_framework', '', '', 'sortorder');
-$toprow[] = new tabobject('competencies', $CFG->wwwroot.'/hierarchy/item/view.php?id=1&edit=.'.$edit.'&type=position&comptype=competencies', get_string('competencies', 'competency'));
+$toprow[] = new tabobject('competencies', $CFG->wwwroot.'/hierarchy/item/view.php?id=1&edit='.$edit.'&type=position&comptype=competencies', get_string('competencies', 'competency'));
 
 if(substr($currenttab, 0, 12) == 'competencies'){
     foreach($frameworks as $framework){
