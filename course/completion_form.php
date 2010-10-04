@@ -241,7 +241,7 @@ class course_completion_form extends moodleform {
 
         // Completion on unenrolment
         $mform->addElement('header', 'unenrolment', get_string('unenrolment', 'completion'));
-        $mform->setHelpButton('unenrolment', array('completionunenrolment', get_string('completion')), true);
+        $mform->setHelpButton('unenrolment', array('completionunenrolment', get_string('completion', 'completion')), true);
         $criteria = new completion_criteria_unenrol($params);
         $criteria->config_form_display($mform);
 
