@@ -18,29 +18,31 @@ $frameworks = get_records('comp_framework', '', '', 'sortorder');
 $toprow[] = new tabobject('competencies', $CFG->wwwroot.'/hierarchy/item/view.php?id=1&edit='.$edit.'&type=organisation&comptype=competencies', get_string('competencies', 'competency'));
 
 if(substr($currenttab, 0, 12) == 'competencies'){
-    foreach($frameworks as $framework){
-        $secondrow[] = new tabobject('competencies'.$framework->id, $CFG->wwwroot.'/hierarchy/item/view.php?id='.$id.'&edit='.$edit.'&type='.$type.'&framework='.$framework->id.'&comptype='.$comptype, $framework->fullname);
-    }
+    if($frameworks){
+        foreach($frameworks as $framework){
+            $secondrow[] = new tabobject('competencies'.$framework->id, $CFG->wwwroot.'/hierarchy/item/view.php?id='.$id.'&edit='.$edit.'&type='.$type.'&framework='.$framework->id.'&comptype='.$comptype, $framework->fullname);
+        }
 
-    if(substr($currenttab, 0, 12) == 'competencies'){
-        $comptab = substr($currenttab, 12);
-        $activated[] = 'competencies'.$comptab;
+        if(substr($currenttab, 0, 12) == 'competencies'){
+            $comptab = substr($currenttab, 12);
+            $activated[] = 'competencies'.$comptab;
+        }
     }
-
     $currenttab = 'competencies';
 }
 
 $toprow[] = new tabobject('comptemplates', $CFG->wwwroot.'/hierarchy/item/view.php?id=1&edit='.$edit.'&type=organisation&comptype=comptemplates', get_string('competencytemplates', 'competency'));
 if(substr($currenttab, 0, 13) == 'comptemplates'){
-    foreach($frameworks as $framework){
-        $secondrow[] = new tabobject('comptemplates'.$framework->id, $CFG->wwwroot.'/hierarchy/item/view.php?id='.$id.'&edit='.$edit.'&type='.$type.'&framework='.$framework->id.'&comptype='.$comptype, $framework->fullname);
-    }
+    if($frameworks){
+        foreach($frameworks as $framework){
+            $secondrow[] = new tabobject('comptemplates'.$framework->id, $CFG->wwwroot.'/hierarchy/item/view.php?id='.$id.'&edit='.$edit.'&type='.$type.'&framework='.$framework->id.'&comptype='.$comptype, $framework->fullname);
+        }
 
-    if(substr($currenttab, 0, 13) == 'comptemplates'){
-        $templatetab = substr($currenttab, 13);
-        $activated[] = 'comptemplates'.$templatetab;
+        if(substr($currenttab, 0, 13) == 'comptemplates'){
+            $templatetab = substr($currenttab, 13);
+            $activated[] = 'comptemplates'.$templatetab;
+        }
     }
-
     $currenttab = 'comptemplates';
 }
 

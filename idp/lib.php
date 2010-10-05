@@ -1998,7 +1998,9 @@ function print_revision_manager($revision, $plan, $formstartstr, $options=array(
     $defaultframeworkid = get_field_sql("SELECT id FROM {$CFG->prefix}comp_framework ORDER BY sortorder ASC");
 
     $type = optional_param('type', 'competencies', PARAM_ALPHA);
-    $frameworkid = optional_param('framework', $defaultframeworkid, PARAM_INT);
+    if(!$frameworkid = optional_param('framework', $defaultframeworkid, PARAM_INT)){
+        $frameworkid=0;
+    }
     $page = optional_param('page', 0, PARAM_INT);
     $perpage = optional_param('perpage', 20, PARAM_INT);
     $start = $page*$perpage;
@@ -2032,24 +2034,28 @@ function print_revision_manager($revision, $plan, $formstartstr, $options=array(
     $currenttab = $type.$frameworkid;
     require('tabs.php');
 
-    if($type == 'competencies'){
-        $compcount = get_record_sql("SELECT COUNT(*) FROM {$CFG->prefix}idp_revision_competency rc JOIN {$CFG->prefix}comp c ON rc.competency=c.id WHERE revision={$revision->id} AND frameworkid={$frameworkid}");
+    if($frameworkid!=0){
+        if($type == 'competencies'){
+            $compcount = get_record_sql("SELECT COUNT(*) FROM {$CFG->prefix}idp_revision_competency rc JOIN {$CFG->prefix}comp c ON rc.competency=c.id WHERE revision={$revision->id} AND frameworkid={$frameworkid}");
 
-        $competencies = idp_get_user_competencies($plan->userid, $revision->id, $frameworkid, $start, $perpage, 'fullname');
-        print_idp_competencies_view_flex($revision, $competencies, $options['can_edit'], $haspositions, $page, $perpage, $compcount->count);
+            $competencies = idp_get_user_competencies($plan->userid, $revision->id, $frameworkid, $start, $perpage, 'fullname');
+            print_idp_competencies_view_flex($revision, $competencies, $options['can_edit'], $haspositions, $page, $perpage, $compcount->count);
+        }
+
+        if($type == 'comptemplates'){
+            $templatecount = get_record_sql("SELECT COUNT(rct.id)
+                FROM {$CFG->prefix}idp_revision_competencytmpl rct
+                INNER JOIN {$CFG->prefix}comp_template ct
+                ON rct.competencytemplate = ct.id
+                WHERE revision={$revision->id} AND frameworkid={$frameworkid}");
+
+            $competencytemplates = idp_get_user_competencytemplates($plan->userid, $revision->id, $frameworkid, $page, $perpage, 'fullname');
+            print_idp_competency_templates_view_flex($revision, $competencytemplates, $options['can_edit'], $haspositions, $page, $perpage, $templatecount->count);
+        }
     }
-
-    if($type == 'comptemplates'){
-        $templatecount = get_record_sql("SELECT COUNT(rct.id)
-                                            FROM {$CFG->prefix}idp_revision_competencytmpl rct
-                                            INNER JOIN {$CFG->prefix}comp_template ct
-                                                ON rct.competencytemplate = ct.id
-                                            WHERE revision={$revision->id} AND frameworkid={$frameworkid}");
-
-        $competencytemplates = idp_get_user_competencytemplates($plan->userid, $revision->id, $frameworkid, $page, $perpage, 'fullname');
-        print_idp_competency_templates_view_flex($revision, $competencytemplates, $options['can_edit'], $haspositions, $page, $perpage, $templatecount->count);
+    else if($type == 'competencies' || $type == 'comptemplates') {
+        echo get_string('noframeworks', 'competency');
     }
-
     if($type == 'courses'){
         $coursecount = get_record_sql("SELECT COUNT(*) FROM {$CFG->prefix}idp_revision_course WHERE revision={$revision->id}");
 
@@ -2065,7 +2071,9 @@ function print_revision_trainee($revision, $plan, $formstartstr, $options=array(
     $defaultframeworkid = get_field_sql("SELECT id FROM {$CFG->prefix}comp_framework ORDER BY sortorder ASC");
 
     $type = optional_param('type', 'competencies', PARAM_ALPHA);
-    $frameworkid = optional_param('framework', $defaultframeworkid, PARAM_INT);
+    if(!$frameworkid = optional_param('framework', $defaultframeworkid, PARAM_INT)){
+        $frameworkid=0;
+    }
     $page = optional_param('page', 0, PARAM_INT);
     $perpage = optional_param('perpage', 20, PARAM_INT);
 
@@ -2101,21 +2109,26 @@ function print_revision_trainee($revision, $plan, $formstartstr, $options=array(
     $currenttab = $type.$frameworkid;
     require('tabs.php');
 
-    if($type == 'competencies'){
-        $compcount = get_record_sql("SELECT COUNT(*) FROM {$CFG->prefix}idp_revision_competency rc JOIN {$CFG->prefix}comp c ON rc.competency=c.id WHERE revision={$revision->id} AND frameworkid={$frameworkid}");
-        $competencies = idp_get_user_competencies($plan->userid, $revision->id, $frameworkid, $start, $perpage, 'fullname');
-        print_idp_competencies_view_flex($revision, $competencies, $options['can_edit'], $haspositions, $page, $perpage, $compcount->count);
+    if($frameworkid!=0){
+        if($type == 'competencies'){
+            $compcount = get_record_sql("SELECT COUNT(*) FROM {$CFG->prefix}idp_revision_competency rc JOIN {$CFG->prefix}comp c ON rc.competency=c.id WHERE revision={$revision->id} AND frameworkid={$frameworkid}");
+            $competencies = idp_get_user_competencies($plan->userid, $revision->id, $frameworkid, $start, $perpage, 'fullname');
+            print_idp_competencies_view_flex($revision, $competencies, $options['can_edit'], $haspositions, $page, $perpage, $compcount->count);
+        }
+
+        if($type == 'comptemplates'){
+            $templatecount = get_record_sql("SELECT COUNT(rct.id)
+                FROM {$CFG->prefix}idp_revision_competencytmpl rct
+                INNER JOIN {$CFG->prefix}comp_template ct
+                ON rct.competencytemplate = ct.id
+                WHERE revision={$revision->id} AND frameworkid={$frameworkid}");
+
+            $competencytemplates = idp_get_user_competencytemplates($plan->userid, $revision->id, $frameworkid, $page, $perpage, 'fullname');
+            print_idp_competency_templates_view_flex($revision, $competencytemplates, $options['can_edit'], $haspositions, $page, $perpage, $templatecount->count);
+        }
     }
-
-    if($type == 'comptemplates'){
-        $templatecount = get_record_sql("SELECT COUNT(rct.id)
-                                            FROM {$CFG->prefix}idp_revision_competencytmpl rct
-                                            INNER JOIN {$CFG->prefix}comp_template ct
-                                                ON rct.competencytemplate = ct.id
-                                            WHERE revision={$revision->id} AND frameworkid={$frameworkid}");
-
-        $competencytemplates = idp_get_user_competencytemplates($plan->userid, $revision->id, $frameworkid, $page, $perpage, 'fullname');
-        print_idp_competency_templates_view_flex($revision, $competencytemplates, $options['can_edit'], $haspositions, $page, $perpage, $templatecount->count);
+    else if($type == 'competencies' || $type == 'comptemplates') {
+        echo get_string('noframeworks', 'competency');
     }
 
     if($type == 'courses'){
