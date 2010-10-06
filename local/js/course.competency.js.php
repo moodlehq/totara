@@ -24,7 +24,8 @@ $(function() {
             {
                 buttons: {
                     'Cancel': function() { handler._cancel() }
-                }
+                },
+                title: '<?php echo '<h2>' . get_string('addcourseevidencetocompetency', 'competency') . '</h2>' ?>'
             },
             url+'add.php?id=<?php echo $courseid;?>',
             handler

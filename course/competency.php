@@ -162,7 +162,7 @@ if ($competencies) {
 
 } else {
 
-    $cols = 4;
+    $cols = 5;
     echo '<tr class="noitems-coursecompetency"><td colspan="'.$cols.'"><i>'.get_string('nocoursecompetencies', 'competency').'</i></td></tr>';
 }
 
