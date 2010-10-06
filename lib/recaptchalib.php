@@ -2,13 +2,13 @@
 /*
  * This is a PHP library that handles calling reCAPTCHA.
  *    - Documentation and latest version
- *          http://code.google.com/apis/recaptcha/docs/php.html
+ *          {@link http://code.google.com/apis/recaptcha/docs/php.html}
  *    - Get a reCAPTCHA API Key
- *          https://www.google.com/recaptcha/admin/create
+ *          {@link https://www.google.com/recaptcha/admin/create}
  *    - Discussion group
  *          http://groups.google.com/group/recaptcha
  *
- * Copyright (c) 2007 reCAPTCHA -- http://www.google.com/recaptcha
+ * Copyright (c) 2007 reCAPTCHA -- {@link http://www.google.com/recaptcha}
  * AUTHORS:
  *   Mike Crawford
  *   Ben Maurer
@@ -30,6 +30,9 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
+ *
+ * @package moodlecore
+ * @copyright (c) 2007 reCAPTCHA -- {@link http://www.google.com/recaptcha}
  */
 
 /**
@@ -107,15 +110,15 @@ function recaptcha_get_html ($pubkey, $error = null, $use_ssl = false) {
 
     $recaptchatype = optional_param('recaptcha', 'image', PARAM_TEXT);
 
-	if ($pubkey == null || $pubkey == '') {
+    if ($pubkey == null || $pubkey == '') {
 		die ("To use reCAPTCHA you must get an API key from <a href='https://www.google.com/recaptcha/admin/create'>https://www.google.com/recaptcha/admin/create</a>");
-	}
-	
-	if ($use_ssl) {
-                $server = RECAPTCHA_API_SECURE_SERVER;
-        } else {
-                $server = RECAPTCHA_API_SERVER;
-        }
+    }
+
+    if ($use_ssl) {
+        $server = RECAPTCHA_API_SECURE_SERVER;
+    } else {
+        $server = RECAPTCHA_API_SERVER;
+    }
 
         $errorpart = "";
         if ($error) {
@@ -175,6 +178,9 @@ function recaptcha_get_html ($pubkey, $error = null, $use_ssl = false) {
 
 /**
  * A ReCaptchaResponse is returned from recaptcha_check_answer()
+ *
+ * @package moodlecore
+ * @copyright (c) 2007 reCAPTCHA -- {@link http://www.google.com/recaptcha}
  */
 class ReCaptchaResponse {
         var $is_valid;
@@ -192,9 +198,9 @@ class ReCaptchaResponse {
   */
 function recaptcha_check_answer ($privkey, $remoteip, $challenge, $response, $https=false)
 {
-	if ($privkey == null || $privkey == '') {
+    if ($privkey == null || $privkey == '') {
 		die ("To use reCAPTCHA you must get an API key from <a href='https://www.google.com/recaptcha/admin/create'>https://www.google.com/recaptcha/admin/create</a>");
-	}
+    }
 
 	if ($remoteip == null || $remoteip == '') {
 		die ("For security reasons, you must pass the remote ip to reCAPTCHA");
@@ -210,12 +216,12 @@ function recaptcha_check_answer ($privkey, $remoteip, $challenge, $response, $ht
                 return $recaptcha_response;
         }
 
-        $response = _recaptcha_http_post (RECAPTCHA_VERIFY_SERVER, "/recaptcha/api/verify",
-                                          array (
-                                                 'privatekey' => $privkey,
-                                                 'remoteip' => $remoteip,
-                                                 'challenge' => $challenge,
-                                                 'response' => $response
+        $response = _recaptcha_http_post(RECAPTCHA_VERIFY_SERVER, "/recaptcha/api/verify",
+                                         array (
+                                                'privatekey' => $privkey,
+                                                'remoteip' => $remoteip,
+                                                'challenge' => $challenge,
+                                                'response' => $response
                                                 ),
                                          $https        
                                           );
@@ -270,15 +276,15 @@ function _recaptcha_mailhide_urlbase64 ($x) {
 
 /* gets the reCAPTCHA Mailhide url for a given email, public key and private key */
 function recaptcha_mailhide_url($pubkey, $privkey, $email) {
-	if ($pubkey == '' || $pubkey == null || $privkey == "" || $privkey == null) {
-		die ("To use reCAPTCHA Mailhide, you have to sign up for a public and private key, " .
+    if ($pubkey == '' || $pubkey == null || $privkey == "" || $privkey == null) {
+        die ("To use reCAPTCHA Mailhide, you have to sign up for a public and private key, " .
 		     "you can do so at <a href='http://www.google.com/recaptcha/mailhide/apikey'>http://www.google.com/recaptcha/mailhide/apikey</a>");
-	}
-	
+    }
 
-	$ky = pack('H*', $privkey);
-	$cryptmail = _recaptcha_aes_encrypt ($email, $ky);
-	
+
+    $ky = pack('H*', $privkey);
+    $cryptmail = _recaptcha_aes_encrypt ($email, $ky);
+
 	return "http://www.google.com/recaptcha/mailhide/d?k=" . $pubkey . "&c=" . _recaptcha_mailhide_urlbase64 ($cryptmail);
 }
 
