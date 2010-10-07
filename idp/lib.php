@@ -2433,7 +2433,7 @@ function idp_submit_evaluation($revision, $compevals, $extracomment) {
     $record = new stdclass();
     $record->id = $revision->id;
     $record->evaluatedtime = time();
-    $record->evaluationcomment = $extracomment;
+    $record->evaluationcomment = addslashes($extracomment);
 
     $allcompetencies = get_all_revision_competencies($revision->id);
     if ( !$allcompetencies ){

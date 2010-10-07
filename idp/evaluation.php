@@ -13,7 +13,7 @@ require_login();
 $id = required_param('id', PARAM_INT); // Plan ID
 $rev = optional_param('rev', 0, PARAM_INT); // Revision ID
 $submit = optional_param('submit', false, PARAM_BOOL); // Set to true when the form is submitted
-$extracomment = optional_param('extracomment', '', PARAM_TEXT);
+$extracomment = optional_param('extracomment', '', PARAM_CLEANHTML);
 
 if (0 == $id) {
     error(get_string('error:idcannotbezero', 'idp'));
