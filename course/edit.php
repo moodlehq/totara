@@ -46,6 +46,11 @@
         error('Either course id or category must be specified');
     }
 
+    require_js(array(
+        "{$CFG->wwwroot}/local/js/lib/jquery-1.3.2.min.js",
+        "{$CFG->wwwroot}/course/course.edit.js",
+        ));
+
 /// prepare course
     if (!empty($course)) {
         $allowedmods = array();
