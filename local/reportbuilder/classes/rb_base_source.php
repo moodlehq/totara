@@ -335,7 +335,7 @@ abstract class rb_base_source {
         global $CFG;
         $courseid = $row->course_id;
         $courseicon = $row->course_icon;
-        return "<a href=\"{$CFG->wwwroot}/course/view.php?id={$courseid}\"><img class=\"course_icon\" src=\"{$CFG->wwwroot}/local/icon.php?icon=$courseicon&amp;id=$courseid&amp;size=small&amp;type=course\" alt=\"$course\">&nbsp;{$course}</a>";
+        return "<a href=\"{$CFG->wwwroot}/course/view.php?id={$courseid}\"><img class=\"course_icon\" src=\"{$CFG->wwwroot}/local/icon.php?icon=$courseicon&amp;id=$courseid&amp;size=small&amp;type=course\" alt=\"$course\">{$course}</a>";
     }
 
     // display an icon based on the course icon field
@@ -365,7 +365,7 @@ abstract class rb_base_source {
         if($catid == 0 || !$catid) {
             return '';
         }
-        return "<a href=\"{$CFG->wwwroot}/course/category.php?id={$catid}\"><img class=\"course_icon\" src=\"{$CFG->wwwroot}/local/icon.php?icon=$caticon&amp;id=$catid&amp;size=small&amp;type=coursecategory\" alt=\"$category\">&nbsp;{$category}</a>";
+        return "<a href=\"{$CFG->wwwroot}/course/category.php?id={$catid}\"><img class=\"course_icon\" src=\"{$CFG->wwwroot}/local/icon.php?icon=$caticon&amp;id=$catid&amp;size=small&amp;type=coursecategory\" alt=\"$category\">{$category}</a>";
     }
 
     function rb_display_yes_no($item, $row) {
