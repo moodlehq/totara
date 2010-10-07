@@ -329,6 +329,23 @@ abstract class rb_base_source {
         return "<a href=\"{$CFG->wwwroot}/course/view.php?id={$courseid}\">{$course}</a>";
     }
 
+    // convert a course name into a link to that course and shows
+    // the course icon next to it
+    function rb_display_link_course_icon($course, $row) {
+        global $CFG;
+        $courseid = $row->course_id;
+        $courseicon = $row->course_icon;
+        return "<a href=\"{$CFG->wwwroot}/course/view.php?id={$courseid}\"><img class=\"course_icon\" src=\"{$CFG->wwwroot}/local/icon.php?icon=$courseicon&amp;id=$courseid&amp;size=small&amp;type=course\" alt=\"$course\">&nbsp;{$course}</a>";
+    }
+
+    // display an icon based on the course icon field
+    function rb_display_course_icon($icon, $row) {
+        global $CFG;
+        $courseid = $row->course_id;
+        $coursename = $row->course_name;
+        return "<img class=\"course_icon\" src=\"{$CFG->wwwroot}/local/icon.php?icon=$icon&amp;id=$courseid&amp;size=small&amp;type=course\" alt=\"$coursename\">";
+    }
+
     function rb_display_yes_no($item, $row) {
         if ($item === null) {
             return '';
@@ -777,6 +794,36 @@ abstract class rb_base_source {
                 'displayfunc' => 'link_course',
                 'defaultheading' => 'Course Name',
                 'extrafields' => array('course_id' => "$join.id")
+            )
+        );
+        $columnoptions[] = new rb_column_option(
+            'course',
+            'courselinkicon',
+            'Course Name (linked to course page with icon)',
+            "$join.fullname",
+            array(
+                'joins' => $join,
+                'displayfunc' => 'link_course_icon',
+                'defaultheading' => 'Course Name',
+                'extrafields' => array(
+                    'course_id' => "$join.id",
+                    'course_icon' => "$join.icon"
+                )
+            )
+        );
+        $columnoptions[] = new rb_column_option(
+            'course',
+            'icon',
+            'Course Icon',
+            "$join.icon",
+            array(
+                'joins' => $join,
+                'displayfunc' => 'course_icon',
+                'defaultheading' => 'Icon',
+                'extrafields' => array(
+                    'course_name' => "$join.fullname",
+                    'course_id' => "$join.id",
+                )
             )
         );
         $columnoptions[] = new rb_column_option(
