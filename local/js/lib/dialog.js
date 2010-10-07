@@ -856,6 +856,9 @@ totaraDialog_handler_treeview_singleselect.prototype._make_selectable = function
 
             var clicked = $(this);
 
+            $('.treeview span').removeClass('unclickable');
+            clicked.addClass('unclickable');
+
             var clicked_id = clicked.attr('id').split('_');
             clicked_id = clicked_id[clicked_id.length-1];  // The last item is the actual id
             clicked.attr('id', clicked_id);
