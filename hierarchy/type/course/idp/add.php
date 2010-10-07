@@ -83,10 +83,10 @@ if($nojs) {
     print_footer();
 } else {
     echo '<div class="selectcompetencies">';
-    echo '<div class="selected"><br><br>';
-    echo '<p>' . get_string('selecteditems', 'hierarchy') . '</p>';
+    echo '<div class="selected">';
+    echo '<p>' . get_string('selecteditems', 'hierarchy');
     echo populate_selected_items_pane($currentlyassigned, 'course');
-    echo '</div>';
+    echo '</p></div>';
 
     // JS version
     echo '<div class="selectcourses">';
