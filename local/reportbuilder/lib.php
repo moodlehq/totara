@@ -934,6 +934,18 @@ var comptree = [' . implode(', ', $comptrees) . '];
     }
 
     /**
+     * Returns an array of reportbuilder objects that the user can view
+     *
+     * @param boolean $showhidden If true, reports which are hidden
+     *                            will also be included
+     * @return array Array of results from the mdl_report_builder table
+     */
+    public static function get_permitted_reports($showhidden=false) {
+
+    }
+
+
+    /**
      * Returns an SQL snippet that, when applied to the WHERE clause of the query,
      * reduces the results to only include those matched by any specified URL parameters
      *
