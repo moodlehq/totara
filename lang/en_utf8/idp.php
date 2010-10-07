@@ -447,7 +447,7 @@ $string['error:update_comparea_fail'] = 'An error occured when updating Competen
 $string['create_comparea_success'] = 'Successfully created Competency Area';
 $string['error:create_comparea_fail'] = 'An error occured when creating Competency Area';
 $string['error:startafterfinish'] = 'Specified start date is after the end date';
-$string['error:dateformat'] = 'Please enter a date in the format dd/mm/yy.';
+$string['error:dateformat'] = 'Please enter a date in the format dd/mm/yyyy.';
 $string['error:idcannotbezero'] = 'Error ID cannot be Zero';
 
 $string['roleswithaccess'] = 'Roles with permission to view this report';
