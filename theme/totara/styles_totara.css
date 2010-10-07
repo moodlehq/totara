@@ -370,6 +370,7 @@ body#my-records #totara_menu ul #menu2,
 body#my-team #totara_menu ul #menu3,
 body#my-reports #totara_menu ul #menu4,
 body#course-index #totara_menu ul #menu5,
+body#course-find #totara_menu ul #menu5,
 body#course-view #totara_menu ul #menu5,
 body#course-category #totara_menu ul #menu5,
 body#blocks-facetoface-calendar #totara_menu ul #menu6 {
@@ -388,6 +389,7 @@ body#my-records #totara_menu ul #menu2 a,
 body#my-team #totara_menu ul #menu3 a,
 body#my-reports #totara_menu ul #menu4 a,
 body#course-index #totara_menu ul #menu5 a,
+body#course-find #totara_menu ul #menu5 a,
 body#course-view #totara_menu ul #menu5 a,
 body#course-category #totara_menu ul #menu5 a,
 body#blocks-facetoface-calendar #totara_menu ul #menu6 a {
@@ -405,6 +407,7 @@ body#my-records #totara_menu ul #menu2 ul,
 body#my-team #totara_menu ul #menu3 ul,
 body.local-reportbuilder #totara_menu ul #menu4 ul,
 body#course-index #totara_menu ul #menu5 ul,
+body#course-find #totara_menu ul #menu5 ul,
 body#course-view #totara_menu ul #menu5 ul,
 body#course-category #totara_menu ul #menu5 ul,
 body.calendar #totara_menu ul #menu6 ul  {
@@ -421,6 +424,7 @@ body#my-records #totara_menu ul #menu2 ul li a,
 body#my-team #totara_menu ul #menu3 ul li a,
 body.local-reportbuilder #totara_menu ul #menu4 ul li a,
 body#course-index #totara_menu ul #menu5 ul li a,
+body#course-find #totara_menu ul #menu5 ul li a,
 body#course-view #totara_menu ul #menu5 ul li a,
 body#course-category #totara_menu ul #menu5 ul li a,
 body.calendar #totara_menu ul #menu6 ul li a  {
@@ -451,6 +455,7 @@ body.local-reportbuilder #totara_menu ul #menu4 ul {
      left:-357px; 
 }
 body#course-index #totara_menu ul #menu5 ul,
+body#course-find #totara_menu ul #menu5 ul,
 body#course-view #totara_menu ul #menu5 ul,
 body#course-category #totara_menu ul #menu5 ul {
     left:-430px;

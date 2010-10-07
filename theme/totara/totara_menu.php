@@ -67,13 +67,13 @@
 ?>
            </ul></div>
         </li>
-        <li id="menu5"><div><a href="<?php echo $CFG->wwwroot.'/course/index.php' ?>"><?php echo get_string('findcourses', 'local') ?></a>
+        <li id="menu5"><div><a href="<?php echo $CFG->wwwroot.'/course/find.php' ?>"><?php echo get_string('findcourses', 'local') ?></a>
 					
         <ul>
         <?php
 
- $text ='<li><a href="">'.get_string('searchcourses', 'local').'</a></li>';
- $text .='<li class="first"><a href="/course/index.php">'.get_string('browsecategories', 'local').'</a></li>';
+ $text ='<li class="first"><a href="'.$CFG->wwwroot.'/course/find.php">'.get_string('searchcourses', 'local').'</a></li>';
+ $text .='<li class="last"><a href="'.$CFG->wwwroot.'/course/index.php">'.get_string('browsecategories', 'local').'</a></li>';
  
  echo $text;
 ?> 			
