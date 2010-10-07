@@ -346,6 +346,28 @@ abstract class rb_base_source {
         return "<img class=\"course_icon\" src=\"{$CFG->wwwroot}/local/icon.php?icon=$icon&amp;id=$courseid&amp;size=small&amp;type=course\" alt=\"$coursename\">";
     }
 
+    // convert a course category name into a link to that category's page
+    function rb_display_link_course_category($category, $row) {
+        global $CFG;
+        $catid = $row->cat_id;
+        if($catid == 0 || !$catid) {
+            return '';
+        }
+        return "<a href=\"{$CFG->wwwroot}/course/category.php?id={$catid}\">{$category}</a>";
+    }
+
+    // convert a course name into a link to that course and shows
+    // the course icon next to it
+    function rb_display_link_course_category_icon($category, $row) {
+        global $CFG;
+        $catid = $row->cat_id;
+        $caticon = $row->cat_icon;
+        if($catid == 0 || !$catid) {
+            return '';
+        }
+        return "<a href=\"{$CFG->wwwroot}/course/category.php?id={$catid}\"><img class=\"course_icon\" src=\"{$CFG->wwwroot}/local/icon.php?icon=$caticon&amp;id=$catid&amp;size=small&amp;type=coursecategory\" alt=\"$category\">&nbsp;{$category}</a>";
+    }
+
     function rb_display_yes_no($item, $row) {
         if ($item === null) {
             return '';
@@ -1040,6 +1062,33 @@ abstract class rb_base_source {
                 'Course Category',
                 "$catjoin.name",
                 array('joins' => $catjoin)
+        );
+        $columnoptions[] = new rb_column_option(
+                'course_category',
+                'namelink',
+                'Course Category (linked to category)',
+                "$catjoin.name",
+                array(
+                    'joins' => $catjoin,
+                    'displayfunc' => 'link_course_category',
+                    'defaultheading' => 'Category',
+                    'extrafields' => array('cat_id' => "$catjoin.id")
+                )
+        );
+        $columnoptions[] = new rb_column_option(
+                'course_category',
+                'namelinkicon',
+                'Course Category (linked to category with icon)',
+                "$catjoin.name",
+                array(
+                    'joins' => $catjoin,
+                    'displayfunc' => 'link_course_category_icon',
+                    'defaultheading' => 'Category',
+                    'extrafields' => array(
+                        'cat_id' => "$catjoin.id",
+                        'cat_icon' => "$catjoin.icon",
+                    )
+                )
         );
         $columnoptions[] = new rb_column_option(
                 'course_category',
