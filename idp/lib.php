@@ -348,7 +348,6 @@ function print_revision_details($revision, $can_submit, $can_approve=false, $pdf
     // Personal information
     if(!$pdf && $showactions){
         $printoptions = '';
-        $printoptions .= '<a href="'.$CFG->wwwroot.'/idp/revision.php?id=' . $revision->idp . '&amp;print=1">'.get_string('printableview', 'idp').'</a>';
         if ('approved' == $revision->status or 'overdue' == $revision->status) {
             $printoptions .= ' - <a href="'.$CFG->wwwroot.'/idp/revision_pdf.php?id=' . $revision->idp . '">' . get_string('exporttopdf', 'idp') . '</a>';
         }
@@ -375,8 +374,6 @@ function print_revision_details($revision, $can_submit, $can_approve=false, $pdf
         else{
             $nextactions .= 'Manager evaluation';
         }
-        /*$nextactions .= '<a href="'.$CFG->wwwroot.'/idp/revision.php?id=' . $revision->idp . '&amp;print=1">'.get_string('printableview', 'idp').'</a> - ';
-        $nextactions .= '<a href="'.$CFG->wwwroot.'/idp/revision_pdf.php?id=' . $revision->idp . '">' . get_string('exporttopdf', 'idp') . '</a>';*/
     }
     elseif ('withdrawn' == $revision->status) {
         if ($can_submit) {
@@ -403,9 +400,6 @@ function print_revision_details($revision, $can_submit, $can_approve=false, $pdf
         if ($can_submit) {
             $nextactions .= '<a href="'.$CFG->wwwroot.'/idp/submit.php?submitbutton=1&rev='.$revision->id.'">'.get_string('submitplan', 'idp').'</a>';
         }
-    }
-    elseif ('completed' == $revision->status) {
-        //$nextactions .= '<a href="'.$CFG->wwwroot.'/idp/revision.php?id=' . $revision->idp . '&amp;print=1">'.get_string('printableview', 'idp').'</a>';
     }
 
     if (empty($pdf)) {
