@@ -40,7 +40,7 @@ $embed->contentmode = 0; // no restrictions
 
 // hide hidden courses using embedded params
 $embed->embeddedparams = array(
-    'hidden' => 0,
+    'visible' => 1,
 );
 
 $report = new reportbuilder(null, $shortname, $embed);
