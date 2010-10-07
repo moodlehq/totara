@@ -12,7 +12,23 @@ $shortname = 'findcourses';
 $embed = new object();
 $embed->source = 'courses';
 $embed->fullname = $strheading;
-$embed->filters = array();
+$embed->filters = array(
+    array(
+        'type' => 'course',
+        'value' => 'fullname',
+        'advanced' => 0,
+    ),
+    array(
+        'type' => 'course_category',
+        'value' => 'id',
+        'advanced' => 1,
+    ),
+    array(
+        'type' => 'course',
+        'value' => 'startdate',
+        'advanced' => 1,
+    ),
+);
 $embed->columns = array(
     array(
         'type' => 'course',
