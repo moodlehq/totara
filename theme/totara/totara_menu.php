@@ -22,7 +22,7 @@
 
            </ul></div>
         </li>
-        <li id="menu2"><div><a href="<?php echo $CFG->wwwroot.'/my/' ?>"><?php echo get_string('mylearning', 'local') ?></a>
+        <li id="menu2"><div><a href="<?php echo $CFG->wwwroot.'/idp/index.php' ?>"><?php echo get_string('mylearning', 'local') ?></a>
 					
         <ul>
         <?php
@@ -72,8 +72,8 @@
         <ul>
         <?php
 
- $text ='<li class="first"><a href="/course/index.php">'.get_string('browsecategories', 'local').'</a></li>';
- $text .='<li><a href="">'.get_string('searchcourses', 'local').'</a></li>';
+ $text ='<li><a href="">'.get_string('searchcourses', 'local').'</a></li>';
+ $text .='<li class="first"><a href="/course/index.php">'.get_string('browsecategories', 'local').'</a></li>';
  
  echo $text;
 ?> 			
