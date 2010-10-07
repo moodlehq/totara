@@ -973,7 +973,7 @@ function add_comment($revisionid, $comment) {
 
     $record = new stdclass();
     $record->revision = $revisionid;
-    $record->contents = $comment;
+    $record->contents = addslashes($comment);
     $record->author = $USER->id;
     $record->ctime = time();
 
@@ -1070,7 +1070,7 @@ function clone_plan($revisionid){
     $origionalplan = get_plan_for_revision($revisionid);
 
     $newplan = new stdclass();
-    $newplan->name = $origionalplan->name;
+    $newplan->name = addslashes($origionalplan->name);
     $newplan->startdate = $origionalplan->startdate;
     $newplan->enddate = $origionalplan->enddate;
     $newplan->userid = $origionalplan->userid;
