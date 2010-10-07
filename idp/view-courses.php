@@ -74,6 +74,8 @@ $rowcount=0;
             if(!isset($course->timecompleted))
                 $course->timecompleted = 0;
             $statusstring = completion_completion::get_status($course);
+            if(!$statusstring)
+                $statusstring = 'notyetstarted';
             $status = get_string($statusstring, 'completion');
 
             echo '<tr class=r'.$rowcount.'>';
