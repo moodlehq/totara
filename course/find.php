@@ -89,7 +89,13 @@ print $report->print_description();
 
 $report->display_search();
 
-print "<br />";
+// print saved search buttons if appropriate
+print '<table align="right" border="0"><tr><td>';
+print $report->save_button();
+print '</td><td>';
+print $report->view_saved_menu();
+print '</td></tr></table>';
+print "<br /><br />";
 
 if($countfiltered>0) {
     print $report->showhide_button();
