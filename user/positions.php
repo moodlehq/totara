@@ -137,15 +137,18 @@ if($nojs) {
 $form = new user_position_assignment_form($currenturl, compact('type', 'user', 'position_assignment', 'can_edit', 'nojs'));
 $form->set_data($position_assignment);
 
-
 // Don't show the page if there are no positions
 if ( !count_records('pos') ){
-
     print_header("{$course->fullname}: {$fullname}: {$positiontype}", $course->fullname, $navigation);
     include($CFG->dirroot.'/user/tabs.php');
     print_heading(get_string('noposition','position'));
-
-} else {
+}
+else if(!$position_assignment->id) {
+    print_header("{$course->fullname}: {$fullname}: {$positiontype}", $course->fullname, $navigation);
+    include($CFG->dirroot.'/user/tabs.php');
+    print_heading(get_string('nopositionsassigned', 'position'));
+}
+else {
 
     if ($form->is_cancelled()){
         // Do nothing
