@@ -65,6 +65,10 @@ totaraDialog_handler_assignEvidence.prototype._handle_hierarchy_expand = functio
 totaraDialog_handler_assignEvidence.prototype._handle_course_click = function(id) {
     // Load course details
     var url = this.baseurl+'course.php?id='+id+'&competency=<?php echo $id;?>';
+
+    // Indicate loading...
+    this._dialog.showLoading();
+
     this._dialog._request(url, this, '_display_evidence');
 }
 
@@ -74,6 +78,7 @@ totaraDialog_handler_assignEvidence.prototype._handle_course_click = function(id
  * @param string    HTML response
  */
 totaraDialog_handler_assignEvidence.prototype._display_evidence = function(response) {
+    this._dialog.hideLoading();
 
     $('.selected', this._dialog.dialog).html(response);
 

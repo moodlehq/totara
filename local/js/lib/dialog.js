@@ -57,7 +57,7 @@ function totaraDialog(title, buttonid, config, default_url, handler) {
             autoOpen: false,
             closeOnEscape: true,
             draggable: false,
-            height: 400,
+            height: 405,
             width: 705,
             modal: true,
             resizable: false,
@@ -798,6 +798,8 @@ totaraDialog_handler_treeview_singleselect.prototype._set_current_selected = fun
 
     if (current_val != 0) {
         $('#treeview_currently_selected_span_'+this._title).css('display', 'inline');
+
+        $('#item_'+current_val).addClass('unclickable');
     }
 }
 
@@ -872,6 +874,9 @@ totaraDialog_handler_treeview_singleselect.prototype._make_selectable = function
 
         var item = $(this);
         var clone = item.clone();
+
+        $('.treeview span').removeClass('unclickable');
+        item.addClass('unclickable');
 
         $('#treeview_selected_text_'+dialog._title).html(clone.find('.list-item-name').html());
         var selected_id = clone.attr('id').split('_')[1];

@@ -1,6 +1,7 @@
 <?php
 
-    require_once '../../config.php';
+    require_once('../../config.php');
+    require_once('lib/setup.php');
 
 ?>
 
@@ -27,7 +28,7 @@ $(function() {
 
         totaraSingleSelectDialog(
             'competency',
-            '<?php echo get_string('selectcompetency', 'local') ?>',
+            '<?php echo get_string('selectcompetency', 'local').dialog_display_currently_selected(get_string('currentlyselected', 'competency'), 'competency'); ?>',
             url+'find.php?',
             'competencyid',
             'competencytitle',

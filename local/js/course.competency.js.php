@@ -48,6 +48,9 @@ totaraDialog_handler_assignCourseEvidence.prototype.handle_click = function(clic
     var id = clicked.attr('id');
     var url = this.baseurl+'evidence.php?id=<?php echo $courseid;?>&add='+id;
 
+    // Indicate loading...
+    this._dialog.showLoading();
+
     this._dialog._request(url, this, 'display_evidence');
 }
 
