@@ -179,7 +179,8 @@ function totara_print_my_learning_nav($return=false) {
             <tr>
                 <td align="left">
                     <a href="'.$CFG->wwwroot.'/idp/index.php" title="'.get_string('developmentplan','local').'">
-                    <img src="'. $CFG->wwwroot.'/pix/i/idp.png" width="32" height="32" /></a>
+                    <center><img src="'. $CFG->wwwroot.'/pix/i/idp.png" /></center></a>
+
                 </td>
                 <td align="left" valign="center">
                     <span style="font-size: small"><a href="'.$CFG->wwwroot.'/idp/index.php">' . get_string('developmentplan', 'local') . '</a></span>
@@ -190,7 +191,7 @@ function totara_print_my_learning_nav($return=false) {
     $returnstr .= '
         <tr>
             <td align="left">
-                <a href="'.$CFG->wwwroot.'/blocks/facetoface/mysignups.php" title=""><img src="'.$CFG->wwwroot.'/pix/i/bookings.png" width="32" height="32" /></a>
+                <a href="'.$CFG->wwwroot.'/blocks/facetoface/mysignups.php" title=""><center><img src="'.$CFG->wwwroot.'/pix/i/bookings.png" /></center></a>
             </td>
             <td align="left" valign="center">
                 <span style="font-size: small"><a href="'.$CFG->wwwroot.'/my/bookings.php?id='.$USER->id.'">'.get_string('bookings','local').'</a></span>
@@ -199,7 +200,7 @@ function totara_print_my_learning_nav($return=false) {
     if(get_config(NULL, 'idp_showlearnrec')==2){
         $returnstr .= '<tr>
             <td align="left">
-                <a href="'.$CFG->wwwroot.'/my/records.php?id='.$USER->id.'" title=""><img src="' . $CFG->wwwroot . '/pix/i/rol.png" width="32" height="32" /></a>
+                <a href="'.$CFG->wwwroot.'/my/records.php?id='.$USER->id.'" title=""><center><img src="' . $CFG->wwwroot . '/pix/i/rol.png" /></center></a>
             </td>
             <td align="left" valign="center">
                 <span style="font-size: small"><a href="'.$CFG->wwwroot.'/my/records.php?id='.$USER->id.'">'.get_string('recordoflearning','local').'</a></span>

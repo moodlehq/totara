@@ -1098,10 +1098,6 @@ ul.tabrow1 li a:hover {
  * Block Specific
  **/
 
-div.block_totara_my_learning_nav .content td img {
- width:38px;
- height:31px;
-}
 div.block_calendar_month div.header {
   background: #9f187c;
 }
