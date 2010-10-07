@@ -350,9 +350,8 @@ function print_revision_details($revision, $can_submit, $can_approve=false, $pdf
         $printoptions = '';
         if ('approved' == $revision->status or 'overdue' == $revision->status) {
             $printoptions .= ' - <a href="'.$CFG->wwwroot.'/idp/revision_pdf.php?id=' . $revision->idp . '">' . get_string('exporttopdf', 'idp') . '</a>';
+            $table->data[] = array ($prefix . 'Display options' . $suffix, "<b>" . $printoptions . "</b>");
         }
-
-        $table->data[] = array ($prefix . 'Display options' . $suffix, "<b>" . $printoptions . "</b>");
     }
     else {
         $table->data[] = array($prefix . get_string('trainingperiod', 'idp') . $suffix, $revision->period);
