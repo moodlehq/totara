@@ -82,7 +82,7 @@ if ($currevision) {
 
     //Revision History
     ob_start();
-    print_revision_list($plan->id, $currevision->id);
+    print_revision_list($plan->id, $currevision->id, true);
     $details = ob_get_contents();
     ob_end_clean();
     $pdf->WriteHTML($details);

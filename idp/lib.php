@@ -428,7 +428,7 @@ function print_revision_details($revision, $can_submit, $can_approve=false, $pdf
 /**
  * Print a list of all revisions for the given plan
  */
-function print_revision_list($planid, $currevisionid) {
+function print_revision_list($planid, $currevisionid, $pdf=null) {
     global $CFG;
 
     $revisions = get_records('idp_revision', 'idp', $planid, 'ctime DESC');
@@ -448,11 +448,13 @@ function print_revision_list($planid, $currevisionid) {
         print "    </ul>\n";
         print "  </li>\n";
         print "</ul>\n";
-        print "<script type=\"text/javascript\">\n";
-        print "  $(\"#revisionlist\").treeview({\n";
-        print "    collapsed: true\n";
-        print "  });\n";
-        print "</script>\n";
+        if(!$pdf){
+            print "<script type=\"text/javascript\">\n";
+            print "  $(\"#revisionlist\").treeview({\n";
+            print "    collapsed: true\n";
+            print "  });\n";
+            print "</script>\n";
+        }
     }
 }
 
