@@ -58,10 +58,11 @@ $embed->columns = array(
 );
 
 $embed->contentmode = 0; // no restrictions
-
-// hide hidden courses using embedded params
 $embed->embeddedparams = array(
+    // don't show hidden courses
     'visible' => 1,
+    // don't show the site course
+    'category' => '!0',
 );
 
 $report = new reportbuilder(null, $shortname, $embed);

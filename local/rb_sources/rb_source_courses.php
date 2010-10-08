@@ -113,6 +113,10 @@ class rb_source_courses extends rb_base_source {
                 'visible',
                 'base.visible'
             ),
+            new rb_param_option(
+                'category',
+                'base.category'
+            ),
         );
 
         return $paramoptions;
@@ -160,6 +164,7 @@ class rb_source_courses extends rb_base_source {
         );
         return $requiredcolumns;
     }
+
 
     //
     //

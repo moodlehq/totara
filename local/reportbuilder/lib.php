@@ -962,7 +962,14 @@ var comptree = [' . implode(', ', $comptrees) . '];
                 if(!isset($value) || $value=='') {
                     continue;
                 }
-                $out[] = "$field = $value";
+                // if value starts with '!', do a not equals match
+                // to the rest of the string
+                if(substr($value, 0, 1) == '!') {
+                    $out[] = "$field != " . substr($value, 1);
+                } else {
+                    // normal match
+                    $out[] = "$field = $value";
+                }
             }
         }
         if(count($out)==0) {
