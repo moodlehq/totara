@@ -1,5 +1,6 @@
 <?php //$Id$
 require_once($CFG->dirroot.'/local/reportbuilder/filters/text.php');
+require_once($CFG->dirroot.'/local/reportbuilder/filters/textarea.php');
 require_once($CFG->dirroot.'/local/reportbuilder/filters/number.php');
 require_once($CFG->dirroot.'/local/reportbuilder/filters/simpleselect.php');
 require_once($CFG->dirroot.'/local/reportbuilder/filters/select.php');

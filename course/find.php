@@ -15,7 +15,7 @@ $embed->fullname = $strheading;
 $embed->filters = array(
     array(
         'type' => 'course',
-        'value' => 'fullname',
+        'value' => 'name_and_summary',
         'advanced' => 0,
     ),
     array(

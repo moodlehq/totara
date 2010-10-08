@@ -898,6 +898,19 @@ abstract class rb_base_source {
                 'displayfunc' => 'nice_date',
             )
         );
+        $columnoptions[] = new rb_column_option(
+            'course',
+            'name_and_summary',
+            'Course Name and Summary',
+            // case used to merge even if one value is null
+            "CASE WHEN $join.fullname IS NULL THEN $join.summary
+                WHEN $join.summary IS NULL THEN $join.fullname
+                ELSE " . sql_concat("$join.fullname", "'<br />'",
+                    "$join.summary") . ' END',
+            array(
+                'joins' => $join,
+            )
+        );
         return true;
     }
 
@@ -935,7 +948,12 @@ abstract class rb_base_source {
             'Course Start Date',
             'date'
         );
-
+        $filteroptions[] = new rb_filter_option(
+            'course',
+            'name_and_summary',
+            'Course Name/Summary',
+            'textarea'
+        );
         return true;
     }
 
