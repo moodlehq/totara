@@ -71,16 +71,15 @@ class rb_source_courses extends rb_base_source {
 
     function define_filteroptions() {
         $filteroptions = array(
-            /*
-            // array of rb_filter_option objects, e.g:
             new rb_filter_option(
-                '',       // type
-                '',       // value
-                '',       // label
-                '',       // filtertype
-                array()   // options
+                'course',         // type
+                'mods',           // value
+                'Course Content', // label
+                'multicheck',     // filtertype
+                array(            // options
+                    'selectfunc' => 'modules_list',
+                )
             )
-            */
         );
 
         // include some standard filters

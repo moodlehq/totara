@@ -19,6 +19,11 @@ $embed->filters = array(
         'advanced' => 0,
     ),
     array(
+        'type' => 'course',
+        'value' => 'mods',
+        'advanced' => 1,
+    ),
+    array(
         'type' => 'course_category',
         'value' => 'id',
         'advanced' => 1,

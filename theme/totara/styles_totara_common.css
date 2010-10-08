@@ -72,6 +72,20 @@ select.totara-expanded-width {
     position: absolute;
 }
 
+
+/* rearrange the location of checkboxes within a checkbox filter */
+div.multicheck-items fieldset.felement span {
+    display: block;
+    float: left;
+    width: 150px;
+}
+
+/* hide 2nd advanced option asterisk */
+div.multicheck-items img.adv {
+    display:none;
+}
+
+
 /* override float left on pulldown menus inside table */
 div.reportbuilderform div.fitem div.felement,
 div.reportheadingform div.fitem div.felement {

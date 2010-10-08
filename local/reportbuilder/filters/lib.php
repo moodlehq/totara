@@ -5,6 +5,7 @@ require_once($CFG->dirroot.'/local/reportbuilder/filters/simpleselect.php');
 require_once($CFG->dirroot.'/local/reportbuilder/filters/select.php');
 require_once($CFG->dirroot.'/local/reportbuilder/filters/date.php');
 require_once($CFG->dirroot.'/local/reportbuilder/filters/hierarchy.php');
+require_once($CFG->dirroot.'/local/reportbuilder/filters/multicheck.php');
 require_once($CFG->dirroot.'/local/reportbuilder/filters/filter_forms.php');
 
 /**
@@ -118,9 +119,11 @@ class filtering {
                 return new filter_hierarchy($filter, $sessionname, $filtertype);
             case 'simpleselect':
                 $choices = $filter->selectchoices;
-                $options = $filter->selectoptions;
+                $options = isset($filter->selectoptions) ?
+                    $filter->selectoptions : null;
                 return new $filtername($filter, $sessionname, $choices, $options);
             case 'select':
+            case 'multicheck':
                 $selectfunc = 'rb_filter_'.$filter->selectfunc;
                 $options = $filter->selectoptions;
                 if(method_exists($this->_report->src, $selectfunc)) {

@@ -405,6 +405,25 @@ abstract class rb_base_source {
         return $yn;
     }
 
+    function rb_filter_modules_list() {
+        global $CFG;
+        $out = array();
+        if($mods = get_records('modules', 'visible', 1, 'id', 'id,name')) {
+            foreach($mods as $mod) {
+                $icon = '/mod/' . $mod->name . '/icon.gif';
+                if(file_exists($CFG->dirroot . $icon)) {
+                    $out[$mod->name] = '<img src="'. $CFG->wwwroot .
+                        '/mod/' . $mod->name . '/icon.gif" alt="'.
+                        ucfirst($mod->name) . '" />&nbsp;' .
+                        ucfirst($mod->name);
+                } else {
+                    $out[$mod->name] = ucfirst($mod->name);
+                }
+            }
+        }
+        return $out;
+    }
+
     function rb_filter_organisations_list($contentmode, $contentoptions, $reportid) {
         global $CFG,$USER;
         require_once($CFG->dirroot.'/hierarchy/lib.php');
