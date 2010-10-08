@@ -320,8 +320,28 @@ class reportheading {
         if(!$managerid) {
             return '';
         }
-        // use get_user_field() to get manager info
-        return $this->get_user_field($field, $managerid);
+
+        $table = new XMLDBTable('user');
+        $tablefield = new XMLDBField($field);
+        // fullname is a special case, handled below
+        if(!field_exists($table,$tablefield) && $field != 'fullname') {
+            return '';
+        }
+        // if no user specified, defaults to current user
+        if(!isset($userid)) {
+            $userid = $this->userid;
+        }
+
+        // treat some fields as special
+        switch($field) {
+            case 'fullname':
+                $manager = get_record('user', 'id', $managerid);
+                $fullname = fullname($manager);
+                return $fullname;
+            default:
+                $value = get_field('user',$field,'id',$managerid);
+                return $value;
+        }
     }
 
     /*
