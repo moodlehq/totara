@@ -124,12 +124,14 @@ class filter_multicheck extends filter_type {
         // split by comma and look for any items
         // within list
         $res = array();
-        foreach($items as $id => $selected) {
-            if($selected) {
-                $res[] = "( $query LIKE '$id' OR " .
-                    "$query LIKE '%|$id' OR " .
-                    "$query LIKE '$id|%' OR " .
-                    "$query LIKE '%|$id|%' )\n";
+        if(is_array($items)) {
+            foreach($items as $id => $selected) {
+                if($selected) {
+                    $res[] = "( $query LIKE '$id' OR " .
+                        "$query LIKE '%|$id' OR " .
+                        "$query LIKE '$id|%' OR " .
+                        "$query LIKE '%|$id|%' )\n";
+                }
             }
         }
         // none selected

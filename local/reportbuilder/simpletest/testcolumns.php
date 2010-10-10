@@ -132,8 +132,8 @@ class columns_test extends prefix_changing_test_case {
 
     // reduced version of course table
     var $course_data = array(
-        array('id','fullname','shortname','category','idnumber','startdate'),
-        array(1, 'Test Course 1', 'TC1', 1, 'ID1', 1140606000),
+        array('id','fullname','shortname','category','idnumber','startdate','icon','visible','summary'),
+        array(1, 'Test Course 1', 'TC1', 1, 'ID1', 1140606000,'icon.gif',1,'Course summary'),
     );
 
     // reduced version of feedback table
@@ -169,8 +169,8 @@ class columns_test extends prefix_changing_test_case {
 
     // reduced version of course cats table
     var $course_categories_data = array(
-        array('id', 'name', 'parent','sortorder'),
-        array(1, 'Misc', 0, 1),
+        array('id', 'name', 'parent','sortorder','icon'),
+        array(1, 'Misc', 0, 1,'icon.gif'),
     );
 
     // competency test data
@@ -308,8 +308,8 @@ class columns_test extends prefix_changing_test_case {
     );
 
     var $modules_data = array(
-        array('id', 'name'),
-        array(1, 'facetoface'),
+        array('id', 'name', 'visible'),
+        array(1, 'facetoface', 1),
     );
 
     function setUp() {
