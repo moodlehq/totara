@@ -4,7 +4,7 @@
 
     require_once('../../config.php');
     require_once($CFG->dirroot.'/mod/scorm/locallib.php');
-    require_once($CFG->libdir.'/completionlib/php');
+    require_once($CFG->libdir.'/completionlib.php');
 
     //
     // Checkin' script parameters
