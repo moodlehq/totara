@@ -89,6 +89,7 @@ $string['manualselfcompletion']='Manual self completion';
 $string['markcomplete']='Mark complete';
 $string['markedcompleteby']='Marked complete by $a';
 $string['markingyourselfcomplete']='Marking yourself complete';
+$string['moredetails']='More details';
 $string['notcompleted']='Not completed';
 $string['notenroled']='You are not enroled as a student in this course';
 $string['notyetstarted']='Not yet started';

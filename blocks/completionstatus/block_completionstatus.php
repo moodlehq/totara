@@ -209,7 +209,7 @@ class block_completionstatus extends block_base {
         $this->content->text .= $shtml.'</tbody></table>';
 
         // Display link to detailed view
-        $this->content->footer = '<br><a href="'.$CFG->wwwroot.'/blocks/completionstatus/details.php?course='.$COURSE->id.'">More details</a>';
+        $this->content->footer = '<br><a href="'.$CFG->wwwroot.'/blocks/completionstatus/details.php?course='.$COURSE->id.'">'.get_string('moredetails', 'completion').'</a>';
 
         return $this->content;
     }
