@@ -366,6 +366,11 @@ function reminder_cron() {
         )
     );
 
+    // Check if any reminders found
+    if (empty($reminders)) {
+        return;
+    }
+
     // Loop through reminders
     foreach ($reminders as $reminder) {
 
