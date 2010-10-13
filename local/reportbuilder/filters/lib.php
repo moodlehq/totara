@@ -286,3 +286,66 @@ class filter_type {
         error('Abstract method get_label() called - must be implemented');
     }
 }
+
+
+/**
+ * Parse a query into individual keywords, treating quoted phrases one item
+ *
+ * Pairs of matching double or single quotes are treated as a single keyword.
+ *
+ * @param string $query Text from user search field
+ *
+ * @return array Array of individual keywords parsed from input string
+ */
+function search_parse_keywords($query) {
+    // query arrives with quotes escaped, but quotes have special meaning
+    // within a query. Strip out slashes, then re-add any that are left
+    // after parsing done (to protect against SQL injection)
+    $query = stripslashes($query);
+
+    $out = array();
+    // break query down into quoted and unquoted sections
+    $split_quoted = preg_split('/(\'[^\']+\')|("[^"]+")/', $query, 0,
+        PREG_SPLIT_DELIM_CAPTURE);
+    foreach($split_quoted as $item) {
+        // strip quotes from quoted strings but leave spaces
+        if(preg_match('/^(["\'])(.*)\\1$/', trim($item), $matches)) {
+            $out[] = addslashes($matches[2]);
+        } else {
+            // split unquoted text on whitespace
+            $keyword = addslashes_recursive(preg_split('/\s/', $item, 0,
+                PREG_SPLIT_NO_EMPTY));
+            $out = array_merge($out, $keyword);
+        }
+    }
+    return $out;
+}
+
+
+/**
+ * Return an SQL snippet to search for the given keywords
+ *
+ * @param array $keywords Array of strings to search for
+ *
+ * @return string SQL WHERE clause to match the keywords provided
+ */
+function search_get_keyword_where_clause($field, $keywords, $negate=false) {
+    if($negate) {
+        $not = ' NOT ';
+        $token = ' OR ';
+    } else {
+        $not = '';
+        $token = ' AND ';
+    }
+
+    // fields to search
+    $fields = array('fullname', 'shortname', 'idnumber', 'description');
+
+    $queries = array();
+    foreach($keywords as $keyword) {
+        $queries[] = $field . ' ' . $not . sql_ilike() . " '%" . $keyword . "%'";
+    }
+    // all keywords must be found in at least one field
+    return '(' . implode($token, $queries) . ')';
+}
+

@@ -96,13 +96,14 @@ class filter_textarea extends filter_type {
 
         switch($operator) {
             case 0: // contains
-                $res = "$ilike '%$value%'"; break;
+                $keywords = search_parse_keywords($value);
+                return search_get_keyword_where_clause($query, $keywords);
             case 1: // does not contain
-                $res = "NOT $ilike '%$value%'"; break;
+                $keywords = search_parse_keywords($value);
+                return search_get_keyword_where_clause($query, $keywords, true);
             default:
                 return '';
         }
-        return $query.' '.$res;
     }
 
     /**

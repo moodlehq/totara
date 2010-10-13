@@ -100,9 +100,11 @@ class filter_text extends filter_type {
 
         switch($operator) {
             case 0: // contains
-                $res = "$ilike '%$value%'"; break;
+                $keywords = search_parse_keywords($value);
+                return search_get_keyword_where_clause($query, $keywords);
             case 1: // does not contain
-                $res = "NOT $ilike '%$value%'"; break;
+                $keywords = search_parse_keywords($value);
+                return search_get_keyword_where_clause($query, $keywords, true);
             case 2: // equal to
                 $res = "$ilike '$value'"; break;
             case 3: // starts with
@@ -110,12 +112,7 @@ class filter_text extends filter_type {
             case 4: // ends with
                 $res = "$ilike '%$value'"; break;
             case 5: // empty - may also be null
-                // hack required to get query to use
-                // correct operator precendence
-                // result should be:
-                // ( query = '' OR (query) IS NULL )
-                $res = "='' OR ($query) IS NULL )";
-                $query = "($query"; break;
+                return "($query = '' OR ($query) IS NULL )";
             default:
                 return '';
         }
