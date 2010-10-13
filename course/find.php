@@ -59,11 +59,15 @@ $embed->columns = array(
 
 $embed->contentmode = 0; // no restrictions
 $embed->embeddedparams = array(
-    // don't show hidden courses
-    'visible' => 1,
     // don't show the site course
     'category' => '!0',
 );
+
+$context = get_context_instance(CONTEXT_SYSTEM);
+if(!has_capability('moodle/site:doanything', $context)) {
+    // don't show hidden courses to none-admins
+    $embed->embeddedparams['visible'] = 1;
+}
 
 $report = new reportbuilder(null, $shortname, $embed);
 
