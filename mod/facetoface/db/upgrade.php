@@ -19,7 +19,8 @@
 
 function xmldb_facetoface_upgrade($oldversion=0) {
 
-    global $CFG, $db;
+    global $CFG, $USER, $db;
+
 
     $result = true;
 
@@ -289,7 +290,7 @@ function xmldb_facetoface_upgrade($oldversion=0) {
         commit_sql();
     }
 
-    if ($result && $oldversion < 2009121701) {
+    if ($result && $oldversion < 2009122901) {
 
     /// Create table facetoface_session_roles
         $table = new XMLDBTable('facetoface_session_roles');
@@ -300,9 +301,6 @@ function xmldb_facetoface_upgrade($oldversion=0) {
         $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
         $table->addKeyInfo('sessionid', XMLDB_KEY_FOREIGN, array('sessionid'), 'facetoface_sessions', array('id'));
         $result = $result && create_table($table);
-    }
-
-    if ($result && $oldversion < 2009121702) {
 
     /// Create table facetoface_signups
         $table = new XMLDBTable('facetoface_signups');
@@ -329,101 +327,98 @@ function xmldb_facetoface_upgrade($oldversion=0) {
         $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
         $table->addKeyInfo('signupid', XMLDB_KEY_FOREIGN, array('signupid'), 'facetoface_signups', array('id'));
         $result = $result && create_table($table);
-    }
-
-    if ($result && $oldversion < 2009121703) {
-        global $USER, $CFG;
 
     /// Migrate submissions to signups
-        require_once $CFG->dirroot.'/mod/facetoface/lib.php';
+        $table = new XMLDBTable('facetoface_submissions');
+        if (table_exists($table)) {
+            require_once $CFG->dirroot.'/mod/facetoface/lib.php';
 
-        begin_sql();
+            begin_sql();
 
-        // Get all submissions and loop through
-        $rs = get_recordset('facetoface_submissions');
+            // Get all submissions and loop through
+            $rs = get_recordset('facetoface_submissions');
 
-        while ($submission = rs_fetch_next_record($rs)) {
+            while ($submission = rs_fetch_next_record($rs)) {
 
-            // Insert signup
-            $signup = new stdClass();
-            $signup->sessionid = $submission->sessionid;
-            $signup->userid = $submission->userid;
-            $signup->mailedreminder = $submission->mailedreminder;
-            $signup->discountcode = $submission->discountcode;
-            $signup->notificationtype = $submission->notificationtype;
+                // Insert signup
+                $signup = new stdClass();
+                $signup->sessionid = $submission->sessionid;
+                $signup->userid = $submission->userid;
+                $signup->mailedreminder = $submission->mailedreminder;
+                $signup->discountcode = $submission->discountcode;
+                $signup->notificationtype = $submission->notificationtype;
 
-            if (!$id = insert_record('facetoface_signups', $signup)) {
-                rollback_sql();
-                error('Could not insert facetoface signup');
-            }
-
-            $signup->id = $id;
-
-            // Check facetoface still exists (some of them are missing)
-            // Also, we need the course id so we can load the grade
-            $facetoface = get_record('facetoface', 'id', $submission->facetoface);
-            if (!$facetoface) {
-                // If facetoface delete, ignore as it's of no use to us now
-                mtrace('Could not find facetoface instance '.$submission->facetoface);
-                continue;
-            }
-
-            // Get grade
-            $grade = facetoface_get_grade($submission->userid, $facetoface->course, $facetoface->id);
-
-            // Create initial "booked" signup status
-            $status = new stdClass();
-            $status->signupid = $signup->id;
-            $status->statuscode = MDL_F2F_STATUS_BOOKED;
-            $status->superceded = ($grade->grade > 0 || $submission->timecancelled) ? 1 : 0;
-            $status->createdby = $USER->id;
-            $status->timecreated = $submission->timecreated;
-            $status->mailed = 0;
-
-            if (!insert_record('facetoface_signups_status', $status)) {
-                rollback_sql();
-                error('Could not insert facetoface booked status');
-            }
-
-            // Create attended signup status
-            if ($grade->grade > 0) {
-                $status->statuscode = MDL_F2F_STATUS_FULLY_ATTENDED;
-                $status->grade = $grade->grade;
-                $status->timecreated = $grade->dategraded;
-                $status->superceded = $submission->timecancelled ? 1 : 0;
-
-                if (!insert_record('facetoface_signups_status', $status)) {
+                if (!$id = insert_record('facetoface_signups', $signup)) {
                     rollback_sql();
-                    error('Could not insert facetoface attended status');
+                    error('Could not insert facetoface signup');
                 }
-            }
 
-            // If cancelled, create status
-            if ($submission->timecancelled) {
-                $status->statuscode = MDL_F2F_STATUS_USER_CANCELLED;
-                $status->timecreated = $submission->timecancelled;
-                $status->superceded = 0;
+                $signup->id = $id;
+
+                // Check facetoface still exists (some of them are missing)
+                // Also, we need the course id so we can load the grade
+                $facetoface = get_record('facetoface', 'id', $submission->facetoface);
+                if (!$facetoface) {
+                    // If facetoface delete, ignore as it's of no use to us now
+                    mtrace('Could not find facetoface instance '.$submission->facetoface);
+                    continue;
+                }
+
+                // Get grade
+                $grade = facetoface_get_grade($submission->userid, $facetoface->course, $facetoface->id);
+
+                // Create initial "booked" signup status
+                $status = new stdClass();
+                $status->signupid = $signup->id;
+                $status->statuscode = MDL_F2F_STATUS_BOOKED;
+                $status->superceded = ($grade->grade > 0 || $submission->timecancelled) ? 1 : 0;
+                $status->createdby = $USER->id;
+                $status->timecreated = $submission->timecreated;
+                $status->mailed = 0;
 
                 if (!insert_record('facetoface_signups_status', $status)) {
                     rollback_sql();
                     error('Could not insert facetoface booked status');
                 }
+
+                // Create attended signup status
+                if ($grade->grade > 0) {
+                    $status->statuscode = MDL_F2F_STATUS_FULLY_ATTENDED;
+                    $status->grade = $grade->grade;
+                    $status->timecreated = $grade->dategraded;
+                    $status->superceded = $submission->timecancelled ? 1 : 0;
+
+                    if (!insert_record('facetoface_signups_status', $status)) {
+                        rollback_sql();
+                        error('Could not insert facetoface attended status');
+                    }
+                }
+
+                // If cancelled, create status
+                if ($submission->timecancelled) {
+                    $status->statuscode = MDL_F2F_STATUS_USER_CANCELLED;
+                    $status->timecreated = $submission->timecancelled;
+                    $status->superceded = 0;
+
+                    if (!insert_record('facetoface_signups_status', $status)) {
+                        rollback_sql();
+                        error('Could not insert facetoface booked status');
+                    }
+                }
             }
+
+            rs_close($rs);
+            commit_sql();
+
+        /// Drop table facetoface_submissions
+            $table = new XMLDBTable('facetoface_submissions');
+            $result = $result && drop_table($table);
         }
 
-        rs_close($rs);
-        commit_sql();
-
-    /// Drop table facetoface_submissions
-        $table = new XMLDBTable('facetoface_submissions');
-        $result = $result && drop_table($table);
-    }
-
-    if ($result && $oldversion < 2009121704) {
-        // New field necessary for overbooking
+    // New field necessary for overbooking
         $table = new XMLDBTable('facetoface_sessions');
         $field1 = new XMLDBField('allowoverbook');
-        $field1->setAttributes(XMLDB_TYPE_INTEGER, 'small', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null, 0, 'capacity');
+        $field1->setAttributes(XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, 0, 'capacity');
         $result = $result && add_field($table, $field1);
     }
 
