@@ -35,7 +35,6 @@ require_once($CFG->libdir.'/completion/completion_criteria_completion.php');
  */
 define('COMPLETION_CRITERIA_TYPE_SELF',         1);
 define('COMPLETION_CRITERIA_TYPE_DATE',         2);
-define('COMPLETION_CRITERIA_TYPE_UNENROL',      3);
 define('COMPLETION_CRITERIA_TYPE_ACTIVITY',     4);
 define('COMPLETION_CRITERIA_TYPE_DURATION',     5);
 define('COMPLETION_CRITERIA_TYPE_GRADE',        6);
@@ -49,7 +48,6 @@ global $COMPLETION_CRITERIA_TYPES;
 $COMPLETION_CRITERIA_TYPES = array(
     COMPLETION_CRITERIA_TYPE_SELF       => 'self',
     COMPLETION_CRITERIA_TYPE_DATE       => 'date',
-    COMPLETION_CRITERIA_TYPE_UNENROL    => 'unenrol',
     COMPLETION_CRITERIA_TYPE_ACTIVITY   => 'activity',
     COMPLETION_CRITERIA_TYPE_DURATION   => 'duration',
     COMPLETION_CRITERIA_TYPE_GRADE      => 'grade',

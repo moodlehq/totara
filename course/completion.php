@@ -30,7 +30,6 @@ require_once('lib.php');
 require_once($CFG->libdir.'/completionlib.php');
 require_once($CFG->libdir.'/completion/completion_criteria_self.php');
 require_once($CFG->libdir.'/completion/completion_criteria_date.php');
-require_once($CFG->libdir.'/completion/completion_criteria_unenrol.php');
 require_once($CFG->libdir.'/completion/completion_criteria_activity.php');
 require_once($CFG->libdir.'/completion/completion_criteria_duration.php');
 require_once($CFG->libdir.'/completion/completion_criteria_grade.php');

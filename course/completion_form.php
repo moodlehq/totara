@@ -239,12 +239,6 @@ class course_completion_form extends moodleform {
         $criteria = new completion_criteria_grade($params);
         $criteria->config_form_display($mform, $course_grade);
 
-        // Completion on unenrolment
-        $mform->addElement('header', 'unenrolment', get_string('unenrolment', 'completion'));
-        $mform->setHelpButton('unenrolment', array('completionunenrolment', get_string('completion', 'completion')), true);
-        $criteria = new completion_criteria_unenrol($params);
-        $criteria->config_form_display($mform);
-
         // Do some cheeky stuff here to handle dynamically generated checkboxes
         // (they need to appear in the form definition for the data to come through)
         if ($js_enabled && !empty($_POST['criteria_course']) && is_array($_POST['criteria_course'])) {
