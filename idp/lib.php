@@ -1848,7 +1848,7 @@ function idp_email_notification($type, $revision, $subsargs) {
         break;
         case 'managercommented':
             // just send it to the trainee
-            $users[] = get_user_light($revision->userid);
+            $users[] = get_record('user', 'id', $revision->userid);
             $validkeys = array('managername', 'planname', 'link');
             $extras = $subsargs->comment; // take this out before doing the string substitution
             unset($subsargs->comment);
@@ -1861,7 +1861,7 @@ function idp_email_notification($type, $revision, $subsargs) {
         break;
         case 'approved':
             // mail the trainee
-            $users[] = get_user_light($revision->userid);
+            $users[] = get_record('user', $revision->userid);
             $validkeys = array('managername', 'onbehalfof', 'duedate', 'link');
         break;
         case 'approvedonbehalf':
@@ -1890,7 +1890,7 @@ function idp_email_notification($type, $revision, $subsargs) {
     $body .= "\n\n" . $extras;
     foreach ($users as $user) {
         if (is_numeric($user)) {
-            $user = get_user_light($user);
+            $user = get_record('user', 'id', $user);
         }
         $fullname = fullname($user);
         $bodycopy = preg_replace('/' . preg_quote('{{recipientname}}') . '/', fullname($user), $body);
