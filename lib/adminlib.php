@@ -4427,7 +4427,7 @@ function admin_externalpage_print_header($focus='', $navlinks='') {
             }
         }
     } else {
-        print_header();
+        print_header('', 'setup');
     }
 }
 

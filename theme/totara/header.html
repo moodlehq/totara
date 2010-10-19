@@ -25,15 +25,14 @@
         <div class="tagline"><img alt="changing the way we learn" src="<?php echo $CFG->wwwroot.'/theme/'.current_theme() ?>/images/tagline.gif" /></div>
         <div class="logo"><img alt="totara logo" src="<?php echo $CFG->wwwroot.'/theme/'.current_theme() ?>/images/logo_main.gif" /></div>
         </div>
-    <?php print_container_end(); ?>
-    <div id="totara_menu">
-    <?php
-
-        {
-        include('totara_menu.php'); 
-        }   
-?>		
-</div>
+    <?php print_container_end();
+    if (!empty($SITE->fullname)) { // only show the menu if the site has been set up ?>
+        <div id="totara_menu">
+        <?php
+            include('totara_menu.php');
+        ?>
+        </div>
+    <?php } ?>
     <div class="clear"></div></div>
     <div class="navbar clearfix">
         <div class="login-container"><?php echo $menu ?></div>
