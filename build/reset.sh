@@ -6,6 +6,12 @@
 # the hook runs the previous version. So it takes an extra build
 # to run the new reset file
 
+echo "Update hudson directory permissions"
+# when hudson updates it resets to 750 which, makes the webroot
+# inaccessible. Resetting every build is overkill but does the
+# job
+chmod 755 /var/lib/hudson
+
 echo "Delete config.php";
 rm config.php
 
