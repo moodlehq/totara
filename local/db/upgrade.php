@@ -2269,6 +2269,21 @@ function xmldb_local_upgrade($oldversion) {
         }
     }
 
+    if ($result && $oldversion < 2010102000) {
+        $table = new XMLDBTable('user_info_data');
+        $key = new XMLDBKey('fieldid');
+        $key->setAttributes(XMLDB_KEY_FOREIGN, array('fieldid'), 'user_info_field', array('id'));
+
+        /// Launch add key fieldid
+        $result = $result && add_key($table, $key);
+
+        $key = new XMLDBKey('userid');
+        $key->setAttributes(XMLDB_KEY_FOREIGN, array('userid'), 'user', array('id'));
+
+        /// Launch add key userid
+        $result = $result && add_key($table, $key);
+    }
+
     return $result;
 }
 ?>
