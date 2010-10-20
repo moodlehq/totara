@@ -1293,7 +1293,7 @@ function feedback_get_group_values($item, $groupid = false, $courseid = false, $
              $values = get_records_select('feedback_value', "item = '$item->id' and course_id = '$courseid'");
         } else {
             if ($facetofacesessionid) {
-                $query = 'SELECT fv.* FROM mdl_feedback_value fv, mdl_feedback_completed fc, mdl_facetoface_submissions fsu WHERE fv.item='.$item->id.' AND fv.completed=fc.id AND fc.userid=fsu.userid AND fsu.sessionid= '.$facetofacesessionid.' AND fsu.timecancelled = 0';
+                $query = 'SELECT fv.* FROM ' . $CFG->prefix . 'feedback_value fv, ' . $CFG->prefix . 'feedback_completed fc, ' . $CFG->prefix . 'facetoface_submissions fsu WHERE fv.item='.$item->id.' AND fv.completed=fc.id AND fc.userid=fsu.userid AND fsu.sessionid= '.$facetofacesessionid.' AND fsu.timecancelled = 0';
                 $values = get_records_sql($query);
             } else {
                 $values = get_records('feedback_value', 'item', $item->id);

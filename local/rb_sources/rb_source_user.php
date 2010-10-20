@@ -127,7 +127,7 @@ class rb_source_user extends rb_base_source {
      * "My Learning" icons for each user row
      *
      * @global object $CFG
-     * @param integer $itemid mdl_user.id
+     * @param integer $itemid ID of the user
      * @param object $row The rest of the data for the row
      * @return string
      */
@@ -157,7 +157,7 @@ class rb_source_user extends rb_base_source {
     /**
      * A rb_column_options->displayfunc helper function for showing a user's
      * profile picture
-     * @param integer $itemid mdl_user.id
+     * @param integer $itemid ID of the user
      * @param object $row The rest of the data for the row
      * @return string
      */

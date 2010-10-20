@@ -191,16 +191,16 @@ class competencylib_test extends prefix_changing_test_case {
 
     function tearDown() {
         global $db,$CFG;
-        remove_test_table('mdl_unittest_pos_competencies', $db);
-        remove_test_table('mdl_unittest_comp_template_assignment', $db);
-        remove_test_table('mdl_unittest_idp_revision_competencytmpl', $db);
-        remove_test_table('mdl_unittest_comp_template', $db);
-        remove_test_table('mdl_unittest_comp_depth_info_data', $db);
-        remove_test_table('mdl_unittest_comp_depth_info_field', $db);
-        remove_test_table('mdl_unittest_comp_depth_info_category', $db);
-        remove_test_table('mdl_unittest_comp', $db);
-        remove_test_table('mdl_unittest_comp_depth', $db);
-        remove_test_table('mdl_unittest_comp_framework', $db);
+        remove_test_table($CFG->prefix . 'pos_competencies', $db);
+        remove_test_table($CFG->prefix . 'comp_template_assignment', $db);
+        remove_test_table($CFG->prefix . 'idp_revision_competencytmpl', $db);
+        remove_test_table($CFG->prefix . 'comp_template', $db);
+        remove_test_table($CFG->prefix . 'comp_depth_info_data', $db);
+        remove_test_table($CFG->prefix . 'comp_depth_info_field', $db);
+        remove_test_table($CFG->prefix . 'comp_depth_info_category', $db);
+        remove_test_table($CFG->prefix . 'comp', $db);
+        remove_test_table($CFG->prefix . 'comp_depth', $db);
+        remove_test_table($CFG->prefix . 'comp_framework', $db);
         parent::tearDown();
     }
 

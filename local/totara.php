@@ -354,9 +354,10 @@ function totara_print_my_courses() {
 * @return string the field value
 */
 function totara_print_user_profile_field($userid=null, $fieldshortname=null) {
+    global $CFG;
     $sql = "SELECT uid.data
-            FROM mdl_user_info_data uid
-            JOIN mdl_user_info_field uif
+            FROM {$CFG->prefix}user_info_data uid
+            JOIN {$CFG->prefix}user_info_field uif
               ON uif.id=uid.fieldid
             WHERE uif.shortname='{$fieldshortname}'
             AND uid.userid='{$userid}'

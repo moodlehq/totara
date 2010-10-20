@@ -2976,12 +2976,12 @@ function facetoface_get_user_submissions($facetofaceid, $userid, $includecancell
             su.notificationtype,
             ss.statuscode
         FROM
-            mdl_facetoface_sessions s
+            {$CFG->prefix}facetoface_sessions s
         JOIN
-            mdl_facetoface_signups su
+            {$CFG->prefix}facetoface_signups su
          ON su.sessionid = s.id
         JOIN
-            mdl_facetoface_signups_status ss
+            {$CFG->prefix}facetoface_signups_status ss
          ON su.id = ss.signupid
         WHERE
             $whereclause

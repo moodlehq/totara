@@ -69,7 +69,7 @@ function xmldb_facetoface_upgrade($oldversion=0) {
         }
         $db->debug = true;
 
-        // Remove the grade and timegraded fields from mdl_facetoface_submissions
+        // Remove the grade and timegraded fields from facetoface_submissions
         if ($result) {
             $table = new XMLDBTable('facetoface_submissions');
             $field1 = new XMLDBField('grade');

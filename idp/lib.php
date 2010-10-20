@@ -77,10 +77,10 @@ function create_new_plan($name='', $startdate=0, $enddate=0, $templateid=0) {
     if($defaultpriority = get_record_sql($defaultsql)){
         $plancometencies = array();
 
-        $sql = "SELECT c.id, c.name FROM mdl_comp c
-            JOIN mdl_idp_comp_area_fw fw
+        $sql = "SELECT c.id, c.name FROM {$CFG->prefix}comp c
+            JOIN {$CFG->prefix}idp_comp_area_fw fw
             ON fw.frameworkid=c.frameworkid
-            JOIN mdl_idp_comp_area ca
+            JOIN {$CFG->prefix}idp_comp_area ca
             ON fw.areaid=ca.id
             WHERE ca.templateid={$templateid}";
         if($competencies = get_records_sql($sql)){

@@ -105,18 +105,18 @@ class reportheadinglib_test extends prefix_changing_test_case {
 
     function tearDown() {
         global $db,$CFG;
-        remove_test_table('mdl_unittest_role', $db);
-        remove_test_table('mdl_unittest_context', $db);
-        remove_test_table('mdl_unittest_role_assignments', $db);
-        remove_test_table('mdl_unittest_pos_assignment', $db);
-        remove_test_table('mdl_unittest_org_depth', $db);
-        remove_test_table('mdl_unittest_pos_depth', $db);
-        remove_test_table('mdl_unittest_org', $db);
-        remove_test_table('mdl_unittest_pos', $db);
-        remove_test_table('mdl_unittest_user_info_data', $db);
-        remove_test_table('mdl_unittest_user_info_field', $db);
-        remove_test_table('mdl_unittest_user', $db);
-        remove_test_table('mdl_unittest_report_heading_items', $db);
+        remove_test_table($CFG->prefix . 'role', $db);
+        remove_test_table($CFG->prefix . 'context', $db);
+        remove_test_table($CFG->prefix . 'role_assignments', $db);
+        remove_test_table($CFG->prefix . 'pos_assignment', $db);
+        remove_test_table($CFG->prefix . 'org_depth', $db);
+        remove_test_table($CFG->prefix . 'pos_depth', $db);
+        remove_test_table($CFG->prefix . 'org', $db);
+        remove_test_table($CFG->prefix . 'pos', $db);
+        remove_test_table($CFG->prefix . 'user_info_data', $db);
+        remove_test_table($CFG->prefix . 'user_info_field', $db);
+        remove_test_table($CFG->prefix . 'user', $db);
+        remove_test_table($CFG->prefix . 'report_heading_items', $db);
         parent::tearDown();
     }
 

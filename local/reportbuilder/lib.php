@@ -938,7 +938,7 @@ var comptree = [' . implode(', ', $comptrees) . '];
      *
      * @param boolean $showhidden If true, reports which are hidden
      *                            will also be included
-     * @return array Array of results from the mdl_report_builder table
+     * @return array Array of results from the report_builder table
      */
     public static function get_permitted_reports($showhidden=false) {
 

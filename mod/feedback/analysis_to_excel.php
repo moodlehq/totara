@@ -163,7 +163,7 @@
              $worksheet1->write_string($rowOffset1, 0, $fstring->questions.': '. strval(sizeof($items)));
          }
      } else {
-         if ($facetofacesessions = get_records_sql("SELECT fs.id, fs.venue, fsd.timestart, fsd.timefinish FROM mdl_facetoface_sessions_dates fsd, mdl_facetoface_sessions fs WHERE fsd.sessionid=fs.id AND fs.facetoface='$facetofacecm->id' AND datetimeknown='1'")) {
+         if ($facetofacesessions = get_records_sql("SELECT fs.id, fs.venue, fsd.timestart, fsd.timefinish FROM {$CFG->prefix}facetoface_sessions_dates fsd, {$CFG->prefix}facetoface_sessions fs WHERE fsd.sessionid=fs.id AND fs.facetoface='$facetofacecm->id' AND datetimeknown='1'")) {
              foreach($facetofacesessions as $facetofacesession) {
                  $rowOffset1 += 2;
                  $colOffset = 0;
@@ -283,7 +283,7 @@
     }
     
     function feedback_excelprint_detailed_items(&$worksheet, $completed, $items, $rowOffset, $facetofacecmid=false) {
-        global $fstring, $feedback;
+        global $fstring, $feedback, $CFG;
         
         if(!$items) return;
         $colOffset = 0;
@@ -316,7 +316,7 @@
             
             if($facetofacecmid)
             {
-                if ($facetofacesessions = get_records_sql("SELECT fse.venue, fsd.timestart, fsd.timefinish FROM mdl_facetoface_sessions_dates fsd, mdl_facetoface_sessions fse, mdl_facetoface_submissions fsu WHERE fsd.sessionid=fse.id AND fse.facetoface='$facetofacecmid' AND fse.datetimeknown='0' AND fsu.sessionid=fse.id AND fsu.userid = '$completed->userid' AND fsu.timecancelled = 0"))
+                if ($facetofacesessions = get_records_sql("SELECT fse.venue, fsd.timestart, fsd.timefinish FROM {$CFG->prefix}facetoface_sessions_dates fsd, {$CFG->prefix}facetoface_sessions fse, {$CFG->prefix}facetoface_submissions fsu WHERE fsd.sessionid=fse.id AND fse.facetoface='$facetofacecmid' AND fse.datetimeknown='0' AND fsu.sessionid=fse.id AND fsu.userid = '$completed->userid' AND fsu.timecancelled = 0"))
                 {
                     foreach($facetofacesessions as $facetofacesession)
                     {

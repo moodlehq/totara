@@ -189,21 +189,21 @@ class reportbuilderlib_test extends prefix_changing_test_case {
 
     function tearDown() {
         global $db,$CFG;
-        remove_test_table('mdl_unittest_config', $db);
-        remove_test_table('mdl_unittest_pos_assignment', $db);
-        remove_test_table('mdl_unittest_user', $db);
-        remove_test_table('mdl_unittest_context', $db);
-        remove_test_table('mdl_unittest_role_assignments', $db);
-        remove_test_table('mdl_unittest_comp_scale_values', $db);
-        remove_test_table('mdl_unittest_org', $db);
-        remove_test_table('mdl_unittest_pos', $db);
-        remove_test_table('mdl_unittest_user_info_field', $db);
-        remove_test_table('mdl_unittest_role', $db);
-        remove_test_table('mdl_unittest_report_builder_saved', $db);
-        remove_test_table('mdl_unittest_report_builder_settings', $db);
-        remove_test_table('mdl_unittest_report_builder_filters', $db);
-        remove_test_table('mdl_unittest_report_builder_columns', $db);
-        remove_test_table('mdl_unittest_report_builder', $db);
+        remove_test_table($CFG->prefix . 'config', $db);
+        remove_test_table($CFG->prefix . 'pos_assignment', $db);
+        remove_test_table($CFG->prefix . 'user', $db);
+        remove_test_table($CFG->prefix . 'context', $db);
+        remove_test_table($CFG->prefix . 'role_assignments', $db);
+        remove_test_table($CFG->prefix . 'comp_scale_values', $db);
+        remove_test_table($CFG->prefix . 'org', $db);
+        remove_test_table($CFG->prefix . 'pos', $db);
+        remove_test_table($CFG->prefix . 'user_info_field', $db);
+        remove_test_table($CFG->prefix . 'role', $db);
+        remove_test_table($CFG->prefix . 'report_builder_saved', $db);
+        remove_test_table($CFG->prefix . 'report_builder_settings', $db);
+        remove_test_table($CFG->prefix . 'report_builder_filters', $db);
+        remove_test_table($CFG->prefix . 'report_builder_columns', $db);
+        remove_test_table($CFG->prefix . 'report_builder', $db);
         parent::tearDown();
     }
 
@@ -448,6 +448,7 @@ class reportbuilderlib_test extends prefix_changing_test_case {
     }
 
     function test_reportbuilder_get_joins() {
+        global $CFG;
         $rb = $this->rb;
         $obj1 = new stdClass();
         $obj1->joins = array('auser','competency');
@@ -461,7 +462,7 @@ class reportbuilderlib_test extends prefix_changing_test_case {
         $userjoin = new rb_join(
             'auser',
             'LEFT',
-            'mdl_unittest_user',
+            $CFG->prefix . 'user',
             'auser.id = base.userid',
             1,
             'base'
@@ -476,7 +477,7 @@ class reportbuilderlib_test extends prefix_changing_test_case {
         $posjoin = new rb_join(
             'position',
             'LEFT',
-            'mdl_unittest_pos',
+            $CFG->prefix . 'pos',
             'position.id = position_assignment.positionid',
             1,
             'position_assignment'
@@ -495,6 +496,7 @@ class reportbuilderlib_test extends prefix_changing_test_case {
     }
 
     function test_reportbuilder_get_column_joins() {
+        global $CFG;
         $rb = $this->rb;
         $columns = $rb->get_column_joins();
         // should return an array
@@ -504,7 +506,7 @@ class reportbuilderlib_test extends prefix_changing_test_case {
         $userjoin = new rb_join(
             'auser',
             'LEFT',
-            'mdl_unittest_user',
+            $CFG->prefix . 'user',
             'auser.id = base.userid',
             1,
             'base'
@@ -514,7 +516,7 @@ class reportbuilderlib_test extends prefix_changing_test_case {
     }
 
     function test_reportbuilder_get_filter_joins() {
-        global $SESSION;
+        global $CFG,$SESSION;
         $rb = $this->rb;
         // set a filter session var
         $filtername = 'filtering_'.$rb->shortname;
@@ -528,7 +530,7 @@ class reportbuilderlib_test extends prefix_changing_test_case {
         $userjoin = new rb_join(
             'auser',
             'LEFT',
-            'mdl_unittest_user',
+            $CFG->prefix . 'user',
             'auser.id = base.userid',
             1,
             'base'

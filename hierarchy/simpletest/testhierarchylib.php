@@ -172,22 +172,22 @@ class hierarchylib_test extends prefix_changing_test_case {
 
     function tearDown() {
         global $db,$CFG;
-        remove_test_table('mdl_unittest_comp_relations', $db);
-        remove_test_table('mdl_unittest_pos_competencies', $db);
-        remove_test_table('mdl_unittest_comp_template_assignment', $db);
-        remove_test_table('mdl_unittest_comp_template', $db);
-        remove_test_table('mdl_unittest_comp_evidence_items_evidence', $db);
-        remove_test_table('mdl_unittest_comp_evidence_items', $db);
-        remove_test_table('mdl_unittest_comp_evidence', $db);
-        remove_test_table('mdl_unittest_idp_competency_eval', $db);
-        remove_test_table('mdl_unittest_idp_revision_competency', $db);
-        remove_test_table('mdl_unittest_comp_depth_info_data', $db);
-        remove_test_table('mdl_unittest_comp_depth_info_field', $db);
-        remove_test_table('mdl_unittest_comp_depth_info_category', $db);
-        remove_test_table('mdl_unittest_comp', $db);
-        remove_test_table('mdl_unittest_comp_depth', $db);
-        remove_test_table('mdl_unittest_comp_framework', $db);
-        remove_test_table('mdl_unittest_comp_scale_assignments', $db);
+        remove_test_table($CFG->prefix . 'comp_relations', $db);
+        remove_test_table($CFG->prefix . 'pos_competencies', $db);
+        remove_test_table($CFG->prefix . 'comp_template_assignment', $db);
+        remove_test_table($CFG->prefix . 'comp_template', $db);
+        remove_test_table($CFG->prefix . 'comp_evidence_items_evidence', $db);
+        remove_test_table($CFG->prefix . 'comp_evidence_items', $db);
+        remove_test_table($CFG->prefix . 'comp_evidence', $db);
+        remove_test_table($CFG->prefix . 'idp_competency_eval', $db);
+        remove_test_table($CFG->prefix . 'idp_revision_competency', $db);
+        remove_test_table($CFG->prefix . 'comp_depth_info_data', $db);
+        remove_test_table($CFG->prefix . 'comp_depth_info_field', $db);
+        remove_test_table($CFG->prefix . 'comp_depth_info_category', $db);
+        remove_test_table($CFG->prefix . 'comp', $db);
+        remove_test_table($CFG->prefix . 'comp_depth', $db);
+        remove_test_table($CFG->prefix . 'comp_framework', $db);
+        remove_test_table($CFG->prefix . 'comp_scale_assignments', $db);
         parent::tearDown();
     }
 

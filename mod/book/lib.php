@@ -308,9 +308,9 @@ function book_relink($id, $bookid, $courseid) {
         $coursebase = $CFG->wwwroot.'/file.php?file=/'.$courseid;
     }
     $sql = 'SELECT b.id, b.bookid, b.pagenum, b.title, b.content, b.importsrc, cm.id AS cmid ' .
-           'FROM mdl_book_chapters b ' .
-            'INNER JOIN mdl_course_modules cm ON cm.instance = b.bookid ' .
-            'INNER JOIN mdl_modules m ON cm.module = m.id AND m.name = \'book\'' .
+           'FROM ' . $CFG->prefix . 'book_chapters b ' .
+            'INNER JOIN ' . $CFG->prefix . 'course_modules cm ON cm.instance = b.bookid ' .
+            'INNER JOIN ' . $CFG->prefix . 'modules m ON cm.module = m.id AND m.name = \'book\'' .
            "WHERE cm.course = $courseid ".
            'ORDER BY b.bookid, b.pagenum';
            

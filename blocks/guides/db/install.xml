@@ -18,7 +18,7 @@
         <KEY NAME="identifier" TYPE="unique" FIELDS="name" PREVIOUS="primary" />
       </KEYS>
       <INDEXES>
-        <INDEX NAME="mdl_guides_deleted" UNIQUE="false" FIELDS="deleted"/>
+        <INDEX NAME="guides_deleted" UNIQUE="false" FIELDS="deleted"/>
       </INDEXES>
     </TABLE>
     <TABLE NAME="block_guides_guide_instance" COMMENT="table to store guide records" PREVIOUS="block_guides_guide">
@@ -33,7 +33,7 @@
         <KEY NAME="primary" TYPE="primary" FIELDS="id" />
       </KEYS>
       <INDEXES>
-        <INDEX NAME="mdl_guides_deleted" UNIQUE="false" FIELDS="deleted"/>
+        <INDEX NAME="guides_deleted" UNIQUE="false" FIELDS="deleted"/>
       </INDEXES>
     </TABLE>
   </TABLES>
