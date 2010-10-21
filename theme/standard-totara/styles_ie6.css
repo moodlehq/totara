@@ -2,18 +2,9 @@
  * These styles are ONLY included for IE6 (via meta.php)
  */
 
-#wrapper {
-
-}
 #totara_menu ul li {
 	display: inline-block;
 	width: 30px;
-}
-
-div#header {
-	background: #7D8312 url("images/hdr_bg_green.jpg") top right repeat-x;
-	height: 1%
-
 }
 
 div#content {
@@ -21,21 +12,24 @@ div#content {
 	padding: 10px;
 }
 
-
 ul.tabrow1 {
 	margin-top: 6px !important;
 	padding: 5px 0;
 }
+
 .tabrow0 div.empty {
   margin-right: 0;
   margin-top:5px !important;
 }
+
 li.active {
 	border: none;
 }
+
 body#course-user .section {
 	margin-top: 20px;
 }
+
 
 div#footer {
     position: relative;

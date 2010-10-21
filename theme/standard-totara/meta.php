@@ -1,6 +1,3 @@
-<!--[if gte IE 7]>
-    <link rel="stylesheet" type="text/css" href="<?php echo $CFG->httpsthemewww ?>/standard-totara/styles_ie8.css" />
-<![endif]-->
 <!--[if IE 7]>
     <link rel="stylesheet" type="text/css" href="<?php echo $CFG->httpsthemewww ?>/standard-totara/styles_ie7.css" />
 <![endif]-->
