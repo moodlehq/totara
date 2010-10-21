@@ -6,20 +6,18 @@
 <![endif]-->
 </div>
 </div>
-</div>
 <?php
 if($heading) {
-    print_container_end(); // content container
-    print_container_start(false, '', 'footer');
+    print '<div id="footer">';
 
     echo '<p class="helplink">';
     echo page_doc_link(get_string('moodledocslink'));
     echo '</p>';
-    
+
     echo $loggedinas;
     echo $homelink;
-    
-    if (!empty($performanceinfo) and has_capability('moodle/site:config', get_context_instance(CONTEXT_SYSTEM))) { 
+
+    if (!empty($performanceinfo) and has_capability('moodle/site:config', get_context_instance(CONTEXT_SYSTEM))) {
         echo $performanceinfo;
     }
 
@@ -31,8 +29,9 @@ if($heading) {
           <li><a href="http://www.contentquality.com/mynewtester/cynthia.exe?rptmode=-1&amp;url1=<?php echo urlencode(qualified_me()) ?>">Section 508 Check</a></li>
           <li><a href="http://www.contentquality.com/mynewtester/cynthia.exe?rptmode=0&amp;warnp2n3e=1&amp;url1=<?php echo urlencode(qualified_me()) ?>">WCAG 1 (2,3) Check</a></li>
         </ul></div>
-<?php } 
-    print_container_end();
+<?php }
+
+    print '</div></div>';
 }
 ?>
 </body>

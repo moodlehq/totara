@@ -467,12 +467,12 @@ body.calendar #totara_menu ul #menu6 ul {
   position: relative;
   /*padding:7px 15px;*/
   background: #FFFFFF url('images/bg_grn.jpg') repeat-x top center;
-  margin-top: -30px; /* negative value of footer height */
   margin-left: auto;
   margin-right: auto;
   height: 30px;
   width: 960px;
   clear:both;
+  margin-top: 0 !important;
 }
 
 #footer .sitelink,
