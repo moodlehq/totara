@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html<?php echo $direction ?>>
+<head>
+    <?php echo $meta ?>
+    <meta name="keywords" content="moodle, <?php echo $title ?> " />
+    <title><?php echo $title ?></title>
+    <link rel="shortcut icon" href="<?php echo $CFG->themewww .'/'. current_theme() ?>/favicon.ico" />
+    <?php include("$CFG->javascript"); ?>
+</head>
+
+<body<?php
+    echo " $bodytags";
+    if ($focus) {
+        echo " onload=\"setfocus()\"";
+    }
+    ?>>
+<div id="page">
+    <?php //Accessibility: 'headermain' is now H1, see theme/standard/styles_layout.css: .headermain
+          if ($home) {  // This is what gets printed on the home page only
+    ?>
+        <?php print_container_start(true, '', 'header-home'); ?>
+            <h1 class="headermain"><?php echo $heading ?></h1>
+            <div class="headermenu"><?php echo $menu ?></div>
+        <?php print_container_end(); ?>
+    <?php } else if ($heading) {  // This is what gets printed on any other page with a heading
+    ?>
+        <?php print_container_start(true, '', 'header'); ?>
+            <h1 class="headermain"><?php echo $heading ?></h1>
+            <div class="headermenu"><?php echo $menu ?></div>
+        <?php print_container_end(); ?>
+    <?php } ?>
+
+    <div id="totara_menu">
+    <?php
+        include('totara_menu.php'); 
+    ?>	
+    </div>    
+    <div class="navbar clearfix">
+        <div class="login-container"><?php echo $menu ?></div>
+        <div class="breadcrumb"><?php print_navigation($navigation); ?></div>
+        <div class="navbutton"><?php echo $button; ?></div>
+    </div>
+    <!-- END OF HEADER -->
+    <?php print_container_start(true, '', 'content'); ?>
+
+    <?php
+        // Display notifications set with totara_set_notification()
+        foreach (totara_get_notifications() as $notice) {
+            notify($notice);
+        }
+
+        unset($notices, $notice);
+    ?>

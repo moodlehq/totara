@@ -1,0 +1,2014 @@
+/**
+ * Global CSS file
+ **/
+
+html, body {
+      height: 100%;
+}
+  
+.clearfix {
+  clear:both;
+  margin:0;
+  padding:0;
+}
+
+/**
+ * Layout Styles
+ **/
+#top-bg {
+	width:100%;
+	z-index: -99;
+	overflow:auto
+}
+
+#page {
+  background: #FFFFFF; 
+}
+
+#content {
+  clear:both;
+  padding: 10px 23px;
+  margin-bottom: 100px; /* Stopfs footer overlapping content*/
+}
+
+#layout-table {
+  margin-top:-5px;
+  border-collapse:collapse;
+}
+
+div.course-content  #layout-table {
+  margin-top:-5px;
+}
+
+#layout-table #left-column {
+  width: 180px !important;
+  padding-right: 12px;
+}
+
+#layout-table #right-column {
+  width: 180px !important;
+  padding-top: 0;
+}
+
+#layout-table #middle-column {
+  padding-top: 0;
+  padding-left: 0;
+  padding-right: 12px;
+}
+
+#site-index  #left-column {
+  padding-right:0;
+}
+
+#course-view #middle-column {
+  padding-top:0;
+}
+
+#course-view .section td.content {
+  padding-top:15px;
+  padding-bottom:15px;  
+}
+
+div.course-content #middle-column {
+  margin-left: 180px;
+  margin-right: 180px;
+}
+
+.loginbox {
+  margin:15px auto 25px auto;
+}
+
+body#user-positions #container {
+	margin-bottom: -28px;
+}
+
+/**
+ * Header Styles
+ **/
+
+div#header-home {
+  height: auto;
+  padding:0;
+  margin:0;  
+}
+
+div#header {
+  height: auto;
+  padding:0;
+  margin:0;
+}
+div#header .logo {
+   padding: 0 0 0 21px;
+}
+#header-logo-container {
+}
+#header-logo-container .logo {
+   width:235px;
+   padding: 20px 0 10px 10px;
+}
+#header-logo-container .headersearch {
+	float:right;
+	margin-top:13px;
+	padding:20px 12px 20px 10px;
+	text-align:center;
+	width:350px;
+
+}
+#header-logo-container .headersearch input {
+   font-size:1em !important;
+}
+
+#header-logo-container .headersearch .input-text {
+	width: 270px;
+}
+
+#header  .tagline {
+   float:right;
+   line-height:0;
+   padding: 55px 24px 0 0;
+}
+
+#heading-hr {
+  display: none;
+}
+
+.headermenu {
+  width:auto;
+  height: 22px;
+  float:none;
+  margin-bottom:2px;
+  padding:3px 10px 4px 10px;
+}
+
+.navbar {
+  clear:both;
+  padding:5px 5px 4px 16px;
+  margin: 0;
+  border:medium none;
+}
+
+.navbar .navbutton, .navbar .menu {
+  margin-right: 19px;
+}
+
+.navbar .navbutton .popupform {
+	padding-top: 0px !important;
+}
+
+.login-container {
+  font-family: verdana, helvetica, sans-serif;
+  float:right;
+  font-size: 1em;
+  letter-spacing: -0.05em;
+  padding: 5px 20px 0 0;
+}
+
+.navigation {
+  display:none;
+}
+
+#header-search {
+  float:right;
+  margin-right: 23px;
+  padding-left:23px;
+  padding-bottom:2px;
+}
+
+#header-search #coursesearch {
+  margin-top: 11px;
+  overflow: hidden;
+}
+
+#header-search #coursesearchbox {
+  float: left;
+  width: 150px;
+  border: 1px;
+  padding: 5px;
+}
+
+#header-search #coursesubmit {
+  width: 28px;
+  height: 21px;
+  border: none;
+  margin: 0;
+  margin-left: 5px;
+  padding: 0;
+  text-indent: -10000px;
+  overflow: hidden;
+  font-size: 0;
+  line-height: 0;
+}
+
+
+/***
+ ***	Core: Totara Menu
+ ***/
+
+#totara_menu {
+	height:72px;
+	clear:both;
+	margin-right:0px;
+	margin-left:0px;
+	position:relative !important;	
+}	
+
+#totara_menu ul {
+	padding:0 0 0 25px;
+	margin:0;
+	list-style:none;
+	float:left;
+	width:auto;		
+}
+
+#totara_menu ul li {
+	font-family: 'Trebuchet ms', verdana, helvetica, sans-serif;
+	list-style:none;
+	float:left;
+	height:47px;
+	white-space:nowrap;
+	z-index: 9999;
+}
+
+#totara_menu li.last {
+	background:transparent;
+}
+
+#totara_menu ul li div{
+	position:relative;
+	zoom:1;
+}
+
+#totara_menu ul li a {
+	display:block;
+	font-size: 1.1em;
+	letter-spacing: -0.02em;
+	height:30px;
+	margin-left:0px;
+	padding: 14px 20px 3px 20px;
+	background:none;
+}
+
+#totara_menu ul ul {
+	padding:0;
+	margin:0;
+	list-style:none;
+	position:absolute;
+	background:transparent;
+	height:22px;
+	width:900px;
+	top:47px;
+	left:-27px;
+	z-index: 1000;
+}
+
+#totara_menu ul li ul{
+	display: none;
+}
+
+#totara_menu li ul li {
+	list-style:none;
+	float:left;
+	height: auto;
+	font-size:0.9em;
+}
+
+#totara_menu li ul li a {
+	margin:0;
+	display:block;
+	height: auto;
+	padding-top: 0;
+	background:transparent;
+	text-shadow:none; !important
+}
+
+#totara_menu li ul li a:hover {
+	background:transparent;
+	text-shadow:none; !important
+}
+
+#totara_menu h4 {
+	margin:0 0 0px 10px;
+}
+
+body#site-index #totara_menu ul #menu1,
+body#login-index #totara_menu ul #menu1,
+body.mod-forum #totara_menu ul #menu1,
+body.admin #totara_menu ul #menu1,
+body#my-index #totara_menu ul #menu2,
+body.idp #totara_menu ul #menu2,
+body#my-bookings #totara_menu ul #menu2,
+body#my-records #totara_menu ul #menu2,
+body#my-team #totara_menu ul #menu3,
+body#my-reports #totara_menu ul #menu4,
+body#course-index #totara_menu ul #menu5,
+body#course-view #totara_menu ul #menu5,
+body#course-category #totara_menu ul #menu5,
+body#blocks-facetoface-calendar #totara_menu ul #menu6 {
+	margin-left:-2px;
+}
+
+body#site-index #totara_menu ul #menu1 ul,
+body#login-index #totara_menu ul #menu1 ul,
+body.mod-forum #totara_menu ul #menu1 ul,
+body.admin #totara_menu ul #menu1 ul,
+body#my-index #totara_menu ul #menu2 ul,
+body.idp #totara_menu ul #menu2 ul,
+body#my-bookings #totara_menu ul #menu2 ul,
+body#my-records #totara_menu ul #menu2 ul,
+body#my-team #totara_menu ul #menu3 ul,
+body.local-reportbuilder #totara_menu ul #menu4 ul,
+body#course-index #totara_menu ul #menu5 ul,
+body#course-view #totara_menu ul #menu5 ul,
+body#course-category #totara_menu ul #menu5 ul,
+body.calendar #totara_menu ul #menu6 ul  {
+	display: block;
+}
+
+body#site-index #totara_menu #menu1 ul li a,
+body#login-index #totara_menu #menu1 ul li a,
+body.mod-forum #totara_menu #menu1 ul li a,
+body.admin #totara_menu #menu1 ul li a,
+body#my-index #totara_menu ul #menu2 ul li a,
+body.idp #totara_menu ul #menu2 ul li a,
+body#my-bookings #totara_menu ul #menu2 ul li a,
+body#my-records #totara_menu ul #menu2 ul li a,
+body#my-team #totara_menu ul #menu3 ul li a,
+body.local-reportbuilder #totara_menu ul #menu4 ul li a,
+body#course-index #totara_menu ul #menu5 ul li a,
+body#course-view #totara_menu ul #menu5 ul li a,
+body#course-category #totara_menu ul #menu5 ul li a,
+body.calendar #totara_menu ul #menu6 ul li a  {
+	margin:0;
+	display:block;
+	height: auto;
+	padding-top: 0;
+	background:transparent;
+}
+body#site-index #totara_menu #menu1 ul,
+body#login-index #totara_menu #menu1 ul,
+body.mod-forum #totara_menu #menu1 ul,
+body.admin#totara_menu #menu1 ul {
+    left:-27px;
+}
+body#my-index #totara_menu ul #menu2 ul,
+body.idp #totara_menu ul #menu2 ul,
+body#my-bookings #totara_menu ul #menu2 ul,
+body#my-records #totara_menu ul #menu2 ul {
+    left:-105px;
+}
+body#my-team #totara_menu ul #menu3 ul {
+    left:-244px;
+}
+body.local-reportbuilder #totara_menu ul #menu4 ul {
+     left:-357px; 
+}
+body#course-index #totara_menu ul #menu5 ul,
+body#course-view #totara_menu ul #menu5 ul,
+body#course-category #totara_menu ul #menu5 ul {
+    left:-430px;
+}
+body.calendar #totara_menu ul #menu6 ul {
+    left:-580px;
+}
+
+/**
+ * Footer Styles
+ **/
+ 
+#footer {
+	padding:7px 15px;
+}
+
+#footer .logininfo {
+  display:none;
+  text-align: center;
+  width: 100%;
+  padding-bottom: 5px;
+  font-size: 0.8em;
+}
+
+#footer .footerlinks ul {
+  margin:0;
+  padding:0;
+}
+
+#footer .footerlinks ul li {
+  display:inline;
+  list-style-type: none;
+}
+
+#footer .footerlinks li div {
+  display:inline;
+  padding: 0 13px;
+}
+
+#footer .validators {
+    margin-top: 15px;
+}
+
+#footer .performanceinfo {
+    text-align: center;
+}
+
+#footer .performanceinfo span {
+    padding: 5px;
+    display: inline;
+}
+
+.block_admin_tree .adminsearchform {
+  text-align:center
+}
+
+.block_admin_tree #query {
+  width:90px;
+}
+
+/**
+ *  Heading colors 
+ **/
+
+h2.headingblock,
+.headingblock,
+#middle-column h2 {
+  text-align:left;
+  border:none;
+  padding:0 0 5px;
+  margin-top:0;
+  border:none;
+}
+
+.navbar {
+  position: relative;
+  z-index: 0;
+}
+
+
+/**
+ * Format Page
+ **/
+
+.format-page {
+  margin-left: 0;
+}
+
+
+/*****************************************************************************/
+/** Frontpage **/
+/*****************************************************************************/
+
+.frontpage {
+  width:720px;
+}
+
+#content p.smalltext {
+  font-size: 0.9em;
+}
+
+#front-blocks-spot {
+  width:684px;
+  margin-top:5px;
+}
+
+#front-blocks-spot .header {
+  height: 83px;
+  overflow:hidden;
+}
+
+#front-blocks-spot h2 {
+  width: 150px;
+  padding: 6px 0 0 14px;
+}
+
+#front-blocks-spot td.col-blank {
+  padding:4px;
+}
+
+#front-blocks-spot td.col-one,
+#front-blocks-spot td.col-two{
+  width:335px;
+  padding-bottom: 11px;
+}
+
+#front-blocks-spot td .footer {
+  width:336px;
+  text-align:right;
+  padding: 6px 8px;
+}
+
+#front-blocks-spot .footer .more a {
+  padding-right:18px;
+}
+
+#front-blocks-lists {
+  margin-top:0px;
+}
+
+#front-blocks-lists td {
+   font-family: 'Trebuchet ms',Verdana, Arial, Helvetica, sans-serif;
+   width:352px;
+} 
+
+#front-blocks-lists td.col-one {
+   padding-right: 14px;
+}   
+
+#front-blocks-lists h2 {
+  font-size: 1.5em;
+  font-weight:normal;
+  padding: 3px 10px;
+  margin:0;
+  border:1px solid #D2D2D2;
+  border-bottom:none;  
+}
+
+#front-blocks-lists .content {
+   padding:7px 10px;
+   border-left: 1px solid #d2d2d2;
+   border-right: 1px solid #d2d2d2;   
+}
+
+#front-blocks-lists .content ul {
+  margin:0;
+  padding:0;
+}
+
+#front-blocks-lists .content ul li {
+  list-style-type: none;
+  padding: 3px 0 3px 20px;
+}
+
+#front-blocks-lists td .footer {
+  text-align:right;
+  padding: 6px 8px;
+}
+
+#front-blocks-lists .footer .more a {
+  padding-right:17px;
+}
+
+
+/******************************************
+ * Page menu
+ *****************************************/
+
+.mod-pagemenu .menutree {
+  padding-left: 0;
+}
+
+.mod-pagemenu .menutree,
+.mod-pagemenu .menutree .childtree {
+  list-style-type: none;
+}
+
+.mod-pagemenu .menutree .menuitem a {
+  text-transform: uppercase;
+}
+
+.mod-pagemenu .menutree .childtree .menuitem a {
+  text-transform: none;
+}
+
+.mod-pagemenu .menutree .menuitem a:hover {
+  text-decoration: none;
+}
+
+.mod-pagemenu .menutree .menuitem {
+  padding-left: 5px;
+  border-bottom: 1px solid #ACC2CD;
+}
+
+
+.mod-pagemenu .menutree .childtree {
+  margin-left: -5px;
+}
+
+.mod-pagemenu .menutree .childtree .menuitem {
+  border-bottom: none;
+}
+
+.mod-pagemenu .menutree .menuitem a.current,
+.mod-pagemenu .menutree .menuitem a.current:hover {
+  font-weight: bold;
+}
+
+.mod-pagemenu .menutree li.current .childtree {
+  margin-bottom: -3px;
+}
+
+
+/******************************************
+ * Blocks Specific
+ *****************************************/
+
+div.block_totara_my_learning_nav .content td img {
+ width:38px;
+ height:31px;
+}
+
+div.block_totara_report_manager .content {
+  padding-bottom: 80px;
+}
+
+div.block_totara_my_team_nav .content td img {
+ display:none;
+}
+
+div.block_totara_report_manager .content td {
+  vertical-align:top;
+  padding-bottom:4px;
+  padding-right:3px;
+}
+
+div.block_totara_report_manager .content img {
+  width:12px;
+  height:14px;
+}
+
+div.block_html .header,
+div.block_html .header .title {
+  margin:0;
+  padding:0;
+  border:none;
+}
+
+div.block_html .header .title h2 {
+  padding:0;
+  background: transparent;
+}
+
+div.block_html div.header .title input {
+  margin: 5px 10px;
+}
+
+div.block_html .content {
+  border:none;
+  padding:0;
+  margin:0;
+  background: transparent;
+}
+
+.tempblockhandler {
+  display:none;
+}
+
+
+/******************************************
+ * List blocks
+ *****************************************/
+
+.sideblock .content ul.list li .icon {
+  display:none;
+}
+
+.sideblock .content ul li {
+  padding-top: 0;
+  padding-bottom: 2px;
+}
+
+.block_page_module .content,
+.block_page_module .header,
+.block_page_module h2.header {
+  border: none;
+}
+
+.block_page_module .content {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.block_news_items .newlink,
+.activitydate, .activityhead,
+.sideblock .content div.info,
+.sideblock .content .message,
+.sideblock .content .footer,
+.block_search_forums .searchform {
+  padding: 3px 0;
+}
+
+.sideblock .content .footer {
+	padding: 3px 0 0;
+	margin-bottom: 0;
+}
+
+.sideblock .content .message {
+	padding-bottom: 0;
+	margin-bottom: 0;
+}
+
+.sideblock .content h3.eventskey {
+  font-size:1.1em;
+}
+
+.block_course_html .content,
+.block_course_summary .content {
+  background:transparent !important;
+  border-top: 1px solid #CACACA;
+  border-bottom: 1px solid #CACACA;
+}
+
+.block_site_main_menu .footer select {
+  width:140px;
+}
+
+.block_login .loginform .fld input {
+  width: 75px;
+  padding:2px;
+}
+
+.mod-forum.sideblock th.header {
+  border-style: none;
+}
+
+.block_calendar_month .content {
+  padding: 3px 5px 10px 5px !important;
+}
+
+.block_calendar_month .calendar-controls {
+  width:93%;
+  margin:0 auto;
+}
+
+#calendar {
+  border-spacing: 0;
+}
+
+table.minicalendar,
+table.minicalendar td {
+  border:none;
+  margin: 0;
+  padding:3px;
+  background: transparent;
+}
+
+table.minicalendar th {
+  font-family: Verdana, Helvetica, sans-serif;
+  font-weight: normal;
+  font-size: 0.9em;
+  padding: 0;
+}
+
+table.minicalendar .day {
+  border:none;
+}
+
+table.minicalendar .today {
+  border: none;
+  margin: 0; 
+  border:none;
+}
+
+#calendar td.maincalendar {
+  width:79%;
+}
+
+#calendar td.sidecalendar {
+  padding-left:15px;
+}
+
+#calendar td.sidecalendar .sideblock {
+  width: 181px;
+  text-align:left;
+  padding: 0;
+  margin: 0 0 13px 0;
+  border:none; 
+}
+
+#calendar td.sidecalendar .sideblock .header {
+  padding: 4px 10px;
+  border:1px solid #d2d2d2;
+  border-bottom:none;
+}
+
+#calendar td.sidecalendar .sideblock .header h2 {
+   margin:0;
+}  
+ 
+.block_calendar_month .calendar-controls a span{
+  text-indent: 1000px;
+  width: 13px;
+  overflow:hidden;
+  display:block;
+}
+
+.block_calendar_month .minicalendar td {
+  padding:3px;
+}
+
+#calendar .duration_global, .minicalendar .duration_global {
+  background-color: transparent;
+  border:none !important;
+}
+
+#calendar .event_global, .minicalendar .event_global, .block_calendar_month .event_global {
+  background-color: transparent;
+  border:none !important;
+}
+
+#calendar .event_global, #calendar .event_course, #calendar .event_group, #calendar .event_user, .minicalendar .event_global, .minicalendar .event_course, .minicalendar .event_group, .minicalendar .event_user {
+  background-color: transparent;
+  border:none !important;
+}
+
+body#blocks-facetoface-calendar div.calendar-controls {
+	width: 100%;
+}
+
+body#blocks-facetoface-calendar div.calendar-controls td{
+	padding: 0 12px 0 0;
+	width: 30%;
+}
+
+body#blocks-facetoface-calendar table.calendarmonth .weekdays th {
+	text-align: center;	
+	border-right: 1px solid #CA1E9E;
+}
+
+div#calendarcontainer div.monthlycalendar table.calendarmonth td {
+	border: 1px solid #DDDDDD;
+}
+
+div#calendarcontainer div.monthlycalendar div.calendar-controls a.previous{
+  padding-left: 10px;
+}
+
+div#calendarcontainer div.monthlycalendar div.calendar-controls a.next{
+  padding-right: 10px;
+}
+
+div#calendarcontainer div.monthlycalendar div.calendar-controls a span{
+	display: none;
+}
+
+body#blocks-facetoface-calendar table.calendarmonth td.today  {
+	border: 2px solid #CA1E9E !important;
+}
+
+body#blocks-facetoface-calendar .yui-tt .bd {
+	border: 1px solid #CA1E9E;
+	padding: 10px;
+}
+
+
+
+
+/******************************************
+ * YUI Drop-down menu
+ *****************************************/
+
+div.yuimenu {
+  border-top: 1px solid #C9CBCD;
+  border-left: 1px solid #C9CBCD;
+  border-right: 1px solid #000000;
+  border-bottom: 1px solid #000000;
+  padding: 0;
+}
+
+div.yuimenu ul {
+  padding: 0;
+}
+
+/* Rollovers */
+div.yuimenu li.selected a.selected {
+  text-decoration: none;
+}
+
+div.yuimenu .yuimenuitem a.yuicurrent,
+div.yuimenu .yuimenuitem a.yuicurrent:hover {
+  text-decoration: none;
+  font-weight: bold;
+}
+
+div.yuimenu li.yuimenuitem {
+  border-bottom: 1px solid #D5E0E6;
+  display: block;
+  padding-left: 10px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  font-size: 90%;
+}
+
+div.yuimenu li.yuilastmenuitem {
+  border-bottom: none;
+}
+
+div.yuimenu .yuichildtree .yuimenuitem {
+  font-size: 100%;
+}
+
+.yuimenuitemlabel {
+    padding: 2px 24px 2px 3px;
+    outline:none;
+}
+
+.categoryboxcontent, .coursebox {
+   border:none;
+   margin-bottom: 10px; 
+}
+
+.categoryboxcontent, .coursebox, 
+#adminsettings fieldset {
+  border:none;
+}
+
+/** Course completion report **/
+.completionreport th {
+    white-space: nowrap;
+    vertical-align: top;
+}
+
+.completionreport th.rowheader {
+    text-align: right;
+    font-style: italic;
+    font-weight: normal;
+    font-size: 90%;
+}
+
+.completionreport th.criteriagroup,
+.completionreport th.aggheader {
+    text-align: center;
+}
+
+.completionreport th.aggheader {
+    font-weight: normal;
+    font-style: italic;
+}
+
+.completionreport span.completion-rplheader {
+    display: block;
+}
+
+.completionreport th a.rplexpand {
+    display: none;
+}
+
+.completionreport td.completion-progresscell {
+    text-align: left;
+    white-space: nowrap;
+}
+
+.completionreport td.completion-progresscell a.rplshow {
+    display: none;
+}
+
+.completionreport form {
+    display: inline;
+}
+
+#idp-index #middle-column table,
+#idp-index #middle-column #planlist,
+#idp-index #middle-column form#idp_search {
+  margin-bottom:20px;
+}
+#idp-index #middle-column h2 {
+  font-size: 1.6em;
+}
+.logtable th {
+  font-size:1.1em;
+  padding: 5px 10px;  
+}
+.logtable td {
+  font-size:0.9em;
+  padding: 5px 10px;
+}
+.grade-report-grader table#user-grades {
+  font-size: 11px;
+}
+
+/*****************************************************************************/
+/** Pop-up Page Size Fix **/
+/*****************************************************************************/
+
+body#message-index div#wrapper,
+body#help div#wrapper {
+	background-image: none;
+	width: auto ;
+	margin: 0 20px;
+	padding-top: 30px;
+	border-left: 1px solid #666;
+	border-right: 1px solid #666;
+
+}
+
+
+/*****************************************************************************/
+/** OLD TOTARA_STYLES_COMMON  - General **/
+/*****************************************************************************/
+
+/**
+ * Fix for filter
+ */
+fieldset#newfilter input[type="text"] {
+    margin-left: 5px;
+}
+
+span.dialog-result-title {
+    padding: 5px;
+}
+
+/**
+ * Course completion report
+ */
+body#course-report-completion-index div.firstinitial,
+body#course-report-progress-index div.firstinitial {
+    margin-top: 10px;
+}
+
+body#course-report-completion-index div.lastinitial,
+body#course-report-progress-index div.lastinitial {
+    margin-bottom: 10px;
+}
+
+/**
+ * Improve help icon in form legend display
+ */
+fieldset legend span.helplink {
+    margin-left: 5px;
+}
+
+/**
+ * totara my courses
+ */
+div.mycourses td.status span {
+    text-indent: -1000px;
+    display: block;
+    width: 39px;
+    height: 12px;
+    background: transparent url(images/progress-icons.png) no-repeat;
+}
+
+div.mycourses td.status span.completion-inprogress {
+    background-position: 0px -12px;
+}
+
+div.mycourses td.status span.completion-complete,
+div.mycourses td.status span.completion-completeviarpl {
+    background-position: 0px -24px;
+}
+
+/*****************************************************************************/
+/** Report Builder **/
+/*****************************************************************************/
+
+/* shrink select boxes to fit in filter */
+select.totara-limited-width {
+    width: 200px;
+    position: static;
+}
+
+/* expand while selecting option (IE only) */
+select.totara-expanded-width {
+    width: auto;
+    position: absolute;
+}
+
+/* rearrange the location of checkboxes within a checkbox filter */
+div.multicheck-items fieldset.felement span {
+    display: block;
+    float: left;
+    width: 150px;
+}
+
+/* hide 2nd advanced option asterisk */
+div.multicheck-items img.adv {
+    display:none;
+}
+
+/* override float left on pulldown menus inside table */
+div.reportbuilderform div.fitem div.felement,
+div.reportheadingform div.fitem div.felement {
+    float: none;
+}
+
+/* hide the label entirely so form fits in table */
+div.reportheadingform div.fitemtitle,
+#local-reportheading-index div.fdescription.required {
+    display: none;
+}
+
+table.feedback-table {
+}
+
+table.feedback-table th, table.feedback-table td {
+    border: 1px solid black;
+    padding: 4px;
+}
+
+hr.feedback-separator {
+    margin: 50px;
+    border-top: 1px solid black;
+    border-bottom: none;
+    border-left: none;
+    border-right: none;
+}
+
+th.feedback-option-number {
+    width: 30px;
+    text-align: center;
+}
+
+td.feedback-option-name {
+    width: 350px;
+}
+
+td.feedback-option-chart {
+    width: 250px;
+}
+
+td.feedback-option-count {
+    width: 100px;
+    text-align: center;
+}
+
+table.feedback-bar-chart {
+    width: 100%;
+    height: 20px;
+}
+
+table.feedback-bar-chart td {
+    border: none;
+    padding: 0px;
+}
+
+td.feedback-bar-color {
+    background-color: #CCC;
+}
+
+td.feedback-bar-blank {
+    background-color: none;
+}
+
+/* prevent right floated buttons from disturbing the data table */
+div.paging, table.reportbuilder-table {
+    clear: both;
+    margin-top: 5px;
+}
+
+/*****************************************************************************/
+/** Hierarchies **/
+/*****************************************************************************/
+body.hierarchy .buttons .singlebutton,
+body.hierarchy-framework .buttons .singlebutton,
+body.hierarchy-type-competency-template .buttons .singlebutton,
+body.hierarchy-type-competency-scale .buttons .singlebutton,
+body.customfield .buttons .singlebutton
+{
+  display: inline;
+}
+
+body.hierarchy .buttons,
+body.hierarchy-framework .buttons,
+body.hierarchy-type-competency-template .buttons,
+body.hierarchy-type-competency-scale .buttons,
+body.customfield .buttons
+{
+  margin-top: 20px;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+body.hierarchy-item form.mform,
+body.hierarchy-framework form.mform,
+body.hierarchy-type-competency-template form.mform,
+body.hierarchy-type-competency-scale form.mform
+{
+    width: 95%;
+}
+
+body.hierarchy-item h2.main {
+    text-align: left;
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#hierarchy-item-view div#content table tr td {
+    border: 1px solid #ddd;
+}
+
+table.viewhierarchyitem {
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+    border: 1px solid #DDDDDD;
+}
+
+table.viewhierarchyitem td,
+table.viewhierarchyitem th {
+    padding: 5px 10px;
+    border: 1px solid #DDDDDD;
+}
+
+table.viewhierarchyitem th.header {
+    white-space: nowrap;
+    width: 10%;
+    background: none;
+}
+
+div.nohierarchyitems {
+    padding-bottom: 20px;
+    font-weight: bold;
+    font-style: italic;
+}
+
+table.editcompetency th {
+    text-align: center;
+    vertical-align: top;
+    white-space: nowrap;
+    padding: 5px;
+}
+
+table.editcompetency td {
+    vertical-align: top;
+    padding: 5px;
+    border: 1px solid #dddddd;
+}
+
+table.reportbuilder-table td {
+    border: 1px solid #DDDDDD;
+}
+
+/*****************************************************************************/
+/** IDP **/
+/*****************************************************************************/
+
+table.planlist {
+    border: 0px;
+    margin: 8px 0px 5px 0px;
+    width: 548px;
+}
+table.planlist th {
+    padding: 0px 0px 0px 2px;
+    text-align: left;
+}
+table.planlist tr.r0 {
+    background-color: #F0F0F0;
+    height: 20px;
+}
+table.planlist th.name {
+    width: 245px;
+}
+table.planlist th.options {
+    width: 60px;
+    text-align: center;
+}
+table.planlist td.options {
+    text-align: center;
+}
+table.planitems {
+    margin: 8px 0px 0px 8px;
+    width: 532px;
+}
+table.planitems tr {
+    height: 25px;
+}
+table.planitems tr.r0 {
+    background-color: #F0F0F0;
+}
+table.planitems th {
+    text-align: left;
+    vertical-align: top;
+    white-space: nowrap;
+    padding: 2px 5px;
+}
+
+table.planitems th.framework {
+    width: 120px;
+}
+table.planitems th.name {
+    width: 227px;
+}
+table.planitems th.status {
+    width: 70px;
+}
+table.planitems th.duedate {
+    width: 70px;
+}
+table.planitems th.options {
+    width: 45px;
+    text-align: center;
+}
+table.planitems td {
+    text-align: left;
+    vertical-align: top;
+    padding: 3px;
+}
+
+table.planitems td.options {
+    text-align: center;
+}
+
+table.planbuttons {
+    margin-left: 0px;
+    width: 532px;
+    margin-bottom: 0px;
+}
+
+table.planbuttons td {
+    text-align: left;
+    vertical-align: top;
+    padding: 0px 0px 5px 0px;
+}
+
+table#list-assignedcompetencies th.c0,
+table#list-assignedcompetencies th.c1,
+table#list-assignedcompetencies th.c3,
+table#list-assignedcompetencytemplates th.c0,
+table#list-assignedcompetencytemplates th.c2 {
+    width: 15%;
+    white-space: nowrap;
+}
+
+table#list-assignedcompetencies .c3,
+table#list-assignedcompetencytemplates .c2 {
+    text-align: center;
+}
+
+table.editcompetency div.tabledivider {
+    border: 0;
+}
+
+table#list-assignedcompetencies td[colspan],
+table#list-assignedcompetencytemplates td[colspan] {
+    padding: 0;
+}
+
+body#idp-plan img.ui-datepicker-trigger {
+    margin-right: 5px;
+}
+
+div.nocompetencies {
+    padding-top: 10px;
+    padding-bottom: 5px;
+}
+
+table.idp-comptable, .idp-comptemplate, .idp-course{
+    width:98%;
+}
+
+table.idp-comptable .competency {
+    width:50%;
+}
+
+table.idp-comptable .options {
+    text-align: center;
+}
+
+table.idp-comptemplate .options {
+    text-align: center;
+}
+
+
+/*****************************************************************************/
+/** Dialogs **/
+/*****************************************************************************/
+div.totara-dialog {
+    border: 5px solid #666;
+    background: none;
+    background-color: #fff;
+    padding: 10px 10px 5px;
+}
+
+div.totara-dialog div.ui-dialog-titlebar {
+    margin: 0 0 10px;
+    padding: 0 0 5px;
+    background-image: none;
+    border-width: 0;
+    border-bottom: 1px solid #CACACA;
+    -moz-border-radius: 0;
+    border-radius: 0;
+}
+
+div.totara-dialog div.ui-dialog-titlebar span.ui-dialog-title {
+    margin: 0;
+}
+
+div.totara-dialog div.ui-dialog-titlebar span.ui-dialog-title h2 {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0;
+}
+
+div.totara-dialog div.ui-dialog-titlebar a.ui-dialog-titlebar-close {
+    border: 0;
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    position: relative;
+    float: right;
+    width: 66px;
+    height: 22px;
+    top: 0;
+    right: 0;
+}
+
+div.totara-dialog div.ui-dialog-titlebar a.ui-dialog-titlebar-close span {
+    background-image: url(closelabel.gif);
+    background-position: 0 0;
+    border: none;
+    margin: 0;
+    padding: 0;
+    width: 66px;
+    height: 22px;
+}
+
+div.totara-dialog div.ui-dialog-buttonpane {
+    margin: 10px 0 0;
+    padding: 5px 0 0;
+    background-image: none;
+    border: none;
+    border-width: 0;
+    border-top: 1px solid #CACACA;
+    -moz-border-radius: 0;
+}
+
+div.totara-dialog div.ui-dialog-buttonpane button {
+    margin-left: 10px;
+    min-width: 100px;
+    margin-right: 0;
+    padding-bottom: 0.4em;
+}
+
+
+div.totara-dialog div.ui-dialog-content {
+    padding: 0;
+    font-size: 0.9em;
+}
+
+div.totara-dialog div.ui-dialog-content p {
+    margin: 0;
+    padding: 0;
+}
+
+div.totara-dialog ul.treeview,
+div.totara-dialog div#column-checkboxes {
+    margin-top: 10px;
+    height: 260px;
+    overflow: auto;
+}
+
+div.totara-dialog ul.treeview li {
+    font-size: 0.8em;
+}
+
+div.totara-dialog ul.treeview span:hover table {
+    background-color: #eee;
+}
+
+div.totara-dialog ul.treeview li li {
+    font-size: 1em;
+}
+
+div.totara-dialog ul.treeview li span {
+    padding-left: 0.25em;
+    display: block;
+}
+
+div.totara-dialog ul.treeview li span.folder {
+    padding-left: 1.75em;
+}
+
+div.totara-dialog ul.treeview li span.clickable {
+    cursor: pointer;
+}
+
+div.totara-dialog ul.treeview li span.ui-draggable {
+    cursor: pointer;
+}
+
+div.totara-dialog ul.treeview span table {
+    width: 100%;
+    border: 0;
+}
+
+div.totara-dialog ul.treeview span table tr {
+    height: 1.8em;
+}
+
+div.totara-dialog ul.treeview span table tr {
+    padding: 2px 0;
+}
+
+div.totara-dialog ul.treeview span table tr td.list-item-name {
+    width: 90%;
+    border: 0;
+}
+
+div.totara-dialog ul.treeview span table tr td.list-item-action {
+    cursor: pointer;
+    width: 10%;
+    text-align: center;
+    border: 0;
+}
+
+div.totara-dialog ul.treeview img.addbutton {
+    display: none;
+    vertical-align: middle;
+    width: 17px;
+    height: 15px;
+}
+
+div.totara-dialog ul.treeview img.deletebutton {
+    display: none;
+    vertical-align: middle;
+    width: 13px;
+    height: 13px;
+}
+
+div.totara-dialog ul.treeview li ul {
+    margin-top: 0;
+}
+
+div.totara-dialog div.yui-isloading {
+    background-image: url(loading_small.gif);
+    background-position: right top;
+    background-repeat: no-repeat;
+}
+
+div.totara-dialog .selected {
+    float: right;
+    width: 250px;
+    border-left: 1px solid #ccc;
+    height: 300px;
+    overflow: auto;
+    padding: 0 10px;
+    margin-left: 10px;
+}
+
+div.totara-dialog .selected p {
+    margin-top: 0;
+}
+
+div.totara-dialog .selected h3 {
+    margin: 0 0 0.5em;
+}
+
+div.totara-dialog .selected span {
+    display: block;
+    font-size: 0.8em;
+    padding: 4px;
+}
+
+div.totara-dialog .selected span table {
+    width: 100%;
+    height: 20px;
+}
+
+div.totara-dialog .selected span table tr td {
+    border: none !important;
+}
+
+div.totara-dialog .selected span table tr td.list-item-name {
+    width: 90%;
+    vertical-align: middle;
+}
+
+div.totara-dialog .selected span table tr td.list-item-action {
+    cursor: pointer;
+    width: 10%;
+    text-align: right;
+}
+
+div.totara-dialog .selected img.addbutton {
+    display: none;
+    vertical-align: middle;
+    width: 16px;
+    height: 14px;
+}
+
+div.totara-dialog .selected img.deletebutton {
+    display: none;
+    vertical-align: middle;
+    width: 15px;
+    height: 13px;
+}
+
+/* hide lightbox activation buttons */
+/* (displayed using JS if enabled) */
+input#show-idppositioncompetency-dialog,
+input#show-idpcourse-dialog,
+input#show-idpcompetency-dialog,
+input#show-idpcompetencytemplate-dialog,
+input#show-idppositioncompetencytemplate-dialog {
+    display: none;
+}
+
+/* Make none JS links look more like buttons */
+a.noscript-button {
+    padding: 5px;
+    margin: 5px;
+    border: 1px solid #999;
+    display: block;
+    width: 150px;
+    float: left;
+    text-align: center;
+}
+
+/** Competencies lightbox styling **/
+div.totara-dialog div#evidence #available-evidence h3 {
+    margin: 0 0 0.5em;
+}
+
+/*****************************************************************************/
+/** Dashboards **/
+/*****************************************************************************/
+table.centerblock td, th {
+  text-align: left;
+  padding: 2px;
+}
+
+table.centerblock th.course, table.centerblock td.course {
+  width: 322px;
+}
+
+table.centerblock th.status, table.centerblock td.status {
+  width: 40px;
+}
+
+table.centerblock th.enroldate, table.centerblock td.enroldate,
+table.centerblock th.startdate, table.centerblock td.startdate,
+table.centerblock th.completeddate, table.centerblock td.completeddate {
+  width: 50px;
+  text-align: center;
+}
+
+table.centerblock th.status, table.centerblock td.status {
+  text-align: left;
+}
+
+#site-index #middle-column div.mycourses div.allmycourses {
+  margin-top: 5px;
+  margin-left: 2px;
+  margin-bottom: 0px;
+  font-weight: bold;
+}
+
+#site-index #middle-column div.mycourses {
+  margin-top: 0px;
+  margin-left: 12px;
+  border-style:solid;
+  border-width:1px;
+  background: none;
+}
+
+#site-index #middle-column div.mycourses div.header h2 {
+  font-size:1.5em;
+  margin:0;
+  padding-left: 7px;
+  padding-top: 7px;
+  padding-bottom: 6px;
+  font-weight: normal;
+  border:none;
+}
+
+#site-index #middle-column div.mycourses div.header {
+  border:1px solid #d2d2d2;
+  border-bottom: none;
+}
+
+#site-index #middle-column div.mycourses .content {
+  padding: 0 1px;
+}
+
+#site-index #middle-column div.mycourses .content th {
+  padding:6px 7px;
+  font-size: 1.1em;
+}
+
+#site-index #middle-column div.mycourses .content td {
+  padding:6px 7px;
+  font-size: 0.9em;
+
+}
+
+#site-index #middle-column div.mycourses .content .allmycourses {
+   font-family: 'Trebuchet ms', Verdana, Arial, Helvetica, sans-serif;
+   text-align:right;
+   font-size: 1em;  
+   font-weight:normal; 
+   padding: 5px 7px 5px 7px;
+}
+
+#site-index #middle-column div.mycourses .content .allmycourses a {
+   padding-right: 17px;
+}
+
+/*****************************************************************************/
+/** My Team **/
+/*****************************************************************************/
+
+table.allmyteam {
+  margin:0;
+  width:100%;
+}
+
+table.allmyteam td {
+  text-align:right;
+  padding-right: 10px;
+  vertical-align: center;
+}
+
+table.allmyteam td.c2 {
+  padding:5px;
+}
+
+table.allmyteam td.c2 img {
+  display:none;
+}
+
+table.allmyteam td.c3 {
+  padding:15px 7px 5px 7px;
+}
+
+table.allmyteam td a {
+  padding-right: 17px;
+}
+
+#my-team h1 {
+  margin:0;
+  padding: 5px 10px 4px 10px;
+  border: 1px solid #d2d2d2;
+}
+
+#my-team #middle-column table.flexible {
+  width:100%;
+  margin-bottom:0;
+}
+
+#my-team #middle-column table.flexible td {
+  font-size:0.9em;
+}
+
+#my-team #middle-column table.flexible th {
+  padding:6px 3px;
+}
+
+#my-team #middle-column table.flexible th.c1,
+#my-team #middle-column table.flexible td.c1 {
+  vertical-align: top;
+  width: 140px;
+  padding-left: 10px;
+  border-left:1px solid #d2d2d2;
+}
+
+#my-team #middle-column table.flexible th.c2 {
+  vertical-align: top;
+  width: 110px;
+}
+
+#my-team #middle-column table.flexible th.c3 {
+  vertical-align: top;
+  width: 110px;
+}
+
+#my-team #middle-column table.flexible th.c4 {
+  vertical-align: top;
+  width: 115px;
+}
+
+#my-team #middle-column table.flexible th.c4,
+#my-team #middle-column table.flexible td.c4 {
+  border-right:1px solid #d2d2d2;
+}
+
+/*****************************************************************************/
+/** Tables **/
+/*****************************************************************************/
+
+.cell {
+    padding: 3px;
+}
+
+td.c0 {
+    text-align: left;
+}
+
+th.header {
+    border: 1px solid #e2e2e2;
+    padding:3px;
+}
+
+table.customfields th.lastcol {
+    width: 100px;
+    text-align:center;
+}
+
+table.customfields th.lastcol,
+table.customfields td.lastcol{
+    text-align: center !important;
+}
+
+table.borderless td {
+    vertical-align: top;
+}
+
+table#list-idpcompetency,
+table#list-idpcompetencytemplate,
+table#list-idpcourse{
+    margin:5px 0 0;
+    width:100%;
+}
+
+.logtable td, .logtable th {
+    padding-left:5px;
+    padding-right:5px;
+}
+
+
+/*****************************************************************************/
+/** Guides Tables **/
+/*****************************************************************************/
+
+#guides-index th.header,
+#guides-index td {
+	border: 1px solid #DDDDDD;
+	padding: 5px;
+}
+
+#guides-index td.options {
+	text-align: center;
+	vertical-align: top;
+}
+
+#guides-index td span.guideindexlink {
+	white-space:nowrap;
+}
+
+
+/*****************************************************************************/
+/** Form **/
+/*****************************************************************************/
+
+form#newfieldform {
+    padding:10px 0 0;
+    display: table;
+}
+
+.mform {
+    width: 100%
+}
+
+.mform fieldset .advancedbutton  {
+    width: 99%
+}
+
+
+/*****************************************************************************/
+/** Guides  **/
+/*****************************************************************************/
+.guideheadings {
+    float: left;
+    width: 66%;
+}
+.guidenavigation {
+    float: left;
+    width: 34%;
+}
+
+/* Complete */
+
+h2.guidesteptitle.complete,
+.guidestep.complete .stepstatus {
+	background: #34B9E4 !important;
+	color: #FFFFFF !important;
+}
+.guidestep.inactive.complete {
+	border-color: #34B9E4 !important;
+}
+
+/* Active */
+
+h2.guidesteptitle.active,
+.guidestep.active .stepstatus {
+	background:#A2B001 !important;
+	color:#FFFFFF !important;
+}
+.guidestep.active {
+	border: 1px solid #A2B001 !important;	
+}
+
+/*****************************************************************************/
+/** Guide Steps **/
+/*****************************************************************************/
+
+.guidesteps {
+    clear: left;
+    height: 100%;
+	padding-top: 10px;
+}
+.guidestep {
+	border: 1px solid #EEEEEE;
+	word-wrap: break-word;
+}
+.guidestepcontainer {
+    float: left;
+    width: 25%;
+    height: 100%;
+}
+.guidesteptitle {
+	border-bottom: none;
+	padding: 5px;
+}
+h2.guidesteptitle {
+	margin: 0;
+}
+
+.guidestep {
+    border-width: 1px;
+    border-style: solid;
+    border-color: black;
+    margin: 4px 8px 4px 0;
+    height: 100%;
+}
+
+.guidesteptext {
+	padding: 5px;	
+}
+
+/* Complete */
+.guidestep.complete .stepstatus {
+	margin:2px;
+	padding:5px;
+	text-align:center;
+	text-transform:uppercase;
+	font-weight: bold;
+}
+
+/* Incomplete */
+.guidestep.incomplete .stepstatus {
+	margin:2px;
+	padding:5px;
+}
+
+/* Active */
+.guidestep.active .stepstatus {
+	margin:2px;
+	padding:5px;
+}
+
+.guidestep.active {
+	border: 1px solid #D9F3E1;	
+}
+
+.guidestep.active .stepstatusimg input {
+		border: 1px solid #EFF8EF;
+		background: #D9F3E1;
+}
+
+h2.guidesteptitle.active {
+	background: #D9F3E1;	
+	color: #3E8F56;
+}
+
+/* Inactive */
+.guidestep.inactive {
+	border: 1px solid #EEEEEE;
+	word-wrap: break-word;
+}
+
+.guidestep.inactive.incomplete div.guidesteptext p{
+	color: #999999;
+}
+
+/*****/
+.guideindexdetail {
+	padding: 5px;	
+}
+
+
+.guideindexbody {
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
+}
+.guideindextitle {
+    font-weight:bold;
+}
+.guideindexlink {
+}
+
+.guideindexindication {
+    width: 260px;
+    padding: 0px;
+    margin: 0px;
+}
+.guideindexdetail {
+    width: auto;
+}
+
+/* Guide Block */
+.block_guides .content ul.list  li {
+    line-height: 1.1em;
+    padding-bottom: 0px;
+}
+
+/***********/
+
+
+/*****************************************************************************/
+/** Course and Category Icons **/
+/*****************************************************************************/
+
+.course_icon{
+    padding-right: 5px;
+    vertical-align: middle;
+}

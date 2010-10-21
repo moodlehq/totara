@@ -2,13 +2,9 @@
  * Global CSS file
  **/
 
-html, body {
-  height: 100%;
-}
-
 p, li, td {
   font-family: verdana, helvetica, sans-serif;
-  color: #322f2c;  
+  color: #322f2c;
 }
 
 th {
@@ -19,8 +15,6 @@ body {
   font-family: 'Trebuchet ms', verdana, helvetica, sans-serif;
   font-size: 85%;
   color: #322f2c;
-  padding: 0;
-  margin:0;
   background: #E4E4E4 url("images/bg_grn_ftr.jpg") bottom left repeat-x scroll;
   background-attachment: fixed;
 }
@@ -31,13 +25,11 @@ p, li {
 
 .clearfix {
   clear:both;
-  margin:0;
-  padding:0;
 }
 
 input, select, button {
   font-size: 11px !important;
-  padding:2px;  
+  padding:2px;
 }
 
 /**
@@ -57,9 +49,6 @@ input, select, button {
 	right: 0;
 	height:114px;
 	position:absolute;
-	width:100%;
-	z-index: -99;
-	overflow:auto
 }
 #container {
   padding-left: 10px;
@@ -68,9 +57,7 @@ input, select, button {
   display: auto;
   word-wrap: break-word;
 }
-#page {
-  background: #FFFFFF; 
-}
+
 #content {
   font-size: 0.9em;
   clear:both;
@@ -78,46 +65,8 @@ input, select, button {
   background: #FFFFFF;
   margin-bottom: 100px; /* Stopfs footer overlapping content*/
 }
-#layout-table {
-  margin-top:-5px;
-  border-collapse:collapse;
-}
-div.course-content  #layout-table {
-  margin-top:-5px;
-}
-#layout-table #left-column {
-  width: 180px !important;
-  padding-right: 12px;
-}
-#layout-table #right-column {
-  width: 180px !important;
-  padding-top: 0;
-}
-#layout-table #middle-column {
-  padding-top: 0;
-  padding-left: 0;
-  padding-right: 12px;
-}
-#site-index  #left-column {
-  padding-right:0;
-}
-#course-view #middle-column {
-  padding-top:0;
-}
-#course-view .section td.content {
-  padding-top:15px;
-  padding-bottom:15px;  
-}
-div.course-content #middle-column {
-  margin-left: 180px;
-  margin-right: 180px;
-}
-.loginbox {
-  margin:15px auto 25px auto;
-}
-body#user-positions #container {
-	margin-bottom: -28px;
-}
+
+
 /**
  * Header Styles
  **/
@@ -126,42 +75,20 @@ body#user-positions #container {
   display: none;
 }
 
-div#header-home {
-  height: auto;
-  padding:0;
-  margin:0;  
-}
 div#header {
-  height: auto;
-  padding:0;
-  margin:0;
   background: #7d8312 url('images/hdr_bg_green.jpg') repeat-x top center;
 }
-div#header .logo {
-   padding: 0 0 0 21px;
-}
+
 #header-logo-container {
    background: transparent url('images/hdr_bg_circles.jpg') no-repeat bottom right;
 }
-#header-logo-container .logo {
-   width:235px;
-   padding: 20px 0 10px 10px;
-}
+
 #header-logo-container .headersearch {
 	background:transparent url(images/search-bg.gif) no-repeat scroll right top;
-	float:right;
-	margin-top:13px;
-	padding:20px 12px 20px 10px;
-	text-align:center;
-	width:350px;
-
 }
+
 #header-logo-container .headersearch input {
    font-size:1em !important;
-}
-
-#header-logo-container .headersearch .input-text {
-	width: 270px;
 }
 
 #header  .tagline {
@@ -169,37 +96,34 @@ div#header .logo {
    line-height:0;
    padding: 55px 24px 0 0;
 }
+
 #heading-hr {
   display: none;
 }
+
 .headermenu {
-  width:auto;
-  height: 22px;
-  float:none;
   color: #FFFFFF;
-  margin-bottom:2px;
-  padding:3px 10px 4px 10px;
   background: #143d4f url(images/headermenu_bg.jpg) repeat-x center;
 }
+
 .navbar {
-  font-family: 'Trebuchet ms', verdana, helvetica, sans-serif;
-  clear:both;
-  padding:5px 5px 4px 16px;
-  margin: 0;
-  border:none;
-  background: #FFFFFF;
+    font-family: 'Trebuchet ms', verdana, helvetica, sans-serif;
+    background: #FFFFFF;
 }
+
 .navbar .breadcrumb {
   width:600px;
 }
+
 .navbar .breadcrumb span.first {
   float:left;
   color:#08A3D5;
   font-weight:normal;
   padding-right:12px;
   margin-right: 3px;
-  background: url('images/sep.gif') no-repeat right 4px;  
+  background: url('images/sep.gif') no-repeat right 4px;
 }
+
 .navbar .breadcrumb ul li,
 .navbar .breadcrumb ul li a {
   font-family: 'Trebuchet ms', verdana, helvetica, sans-serif;
@@ -207,6 +131,7 @@ div#header .logo {
   color: #08a3d5;
   float:left;
 }
+
 .navbar .breadcrumb .sep {
   text-indent: 1000px;
   width: 15px;
@@ -215,12 +140,15 @@ div#header .logo {
   float:left;
   background: url('images/sep.gif') no-repeat center bottom;
 }
+
 .navbar .navbutton, .navbar .menu {
   margin-right: 19px;
 }
+
 .navbar .navbutton .popupform {
 	padding-top: 0px !important;
 }
+
 .login-container {
   font-family: verdana, helvetica, sans-serif;
   float:right;
@@ -229,36 +157,27 @@ div#header .logo {
   padding: 5px 20px 0 0;
   color: #08a3d5;
 }
+
 .navigation {
   display:none;
 }
+
 #header-search {
-  float:right;
-  margin-right: 23px;
-  padding-left:23px;
-  padding-bottom:2px;
-  background: url('images/nav_main_spacer.gif') no-repeat left 8px;  
+  background: url('images/nav_main_spacer.gif') no-repeat left 8px;
 }
+
 #header-search #coursesearch {
   margin-top: 11px;
   overflow: hidden;
 }
+
 #header-search #coursesearchbox {
   float: left;
-  width: 150px;
   border: none;
-  padding: 5px;
   background: url('images/search_bg_field.gif') no-repeat top left;
 }
+
 #header-search #coursesubmit {
-  width: 28px;
-  height: 21px;
-  border: none;
-  margin: 0;
-  margin-left: 5px;
-  padding: 0;
-  text-indent: -10000px;
-  overflow: hidden;
   background: url('images/search_bg_submit.gif') no-repeat top left;
   font-size: 0;
   line-height: 0;
@@ -270,44 +189,26 @@ div#header .logo {
  ***/
 
 #totara_menu {
-	height:72px;
-	clear:both;
-	margin-right:0px;
-	margin-left:0px;
-	position:relative !important;	
-	background:#FFFFFF url('images/nav_main_bg.jpg') repeat-x top center;	
-}	
+	background:#FFFFFF url('images/nav_main_bg.jpg') repeat-x top center;
+}
 
 #totara_menu ul {
-	padding:0 0 0 25px;
-	margin:0;
 	list-style:none;
-	float:left;
-	width:auto;		
 }
+
 #totara_menu ul li {
 	font-family: 'Trebuchet ms', verdana, helvetica, sans-serif;
 	background:transparent url('images/nav_main_spacer.gif') no-repeat right 8px;
 	list-style:none;
-	float:left;
-	height:47px;
-	white-space:nowrap;
-	z-index: 9999;
 }
+
 #totara_menu li.last {
 	background:transparent;
 }
-#totara_menu ul li div{
-	position:relative;
-	zoom:1;
-}
+
 #totara_menu ul li a {
-	display:block;
 	font-size: 1.1em;
 	letter-spacing: -0.02em;
-	height:30px;
-	margin-left:0px;
-	padding: 14px 20px 3px 20px;
 	color: #4c4c4c;
 	background:none;
 }
@@ -317,12 +218,6 @@ div#header .logo {
 	margin:0;
 	list-style:none;
 	position:absolute;
-	background:transparent;
-	height:22px;
-	width:900px;
-	top:47px;
-	left:-27px;
-	z-index: 1000;
 }
 
 #totara_menu ul li ul{
@@ -357,8 +252,8 @@ div#header .logo {
 	color:#505050;
 	font-size:1em;
 	font-weight:bold;
-	margin:0 0 0px 10px;
 }
+
 body#site-index #totara_menu ul #menu1,
 body#login-index #totara_menu ul #menu1,
 body.mod-forum #totara_menu ul #menu1,
@@ -432,10 +327,10 @@ body.calendar #totara_menu ul #menu6 ul li a  {
 	display:block;
 	height: auto;
 	color:#FFFFFF;
-	padding-top: 0;
 	background:transparent;
 	text-shadow:none; !important
 }
+
 body#site-index #totara_menu #menu1 ul,
 body#login-index #totara_menu #menu1 ul,
 body.mod-forum #totara_menu #menu1 ul,
@@ -452,7 +347,7 @@ body#my-team #totara_menu ul #menu3 ul {
     left:-244px;
 }
 body.local-reportbuilder #totara_menu ul #menu4 ul {
-     left:-357px; 
+     left:-357px;
 }
 body#course-index #totara_menu ul #menu5 ul,
 body#course-find #totara_menu ul #menu5 ul,
@@ -485,7 +380,7 @@ body.calendar #totara_menu ul #menu6 div.noteam ul {
 /**
  * Footer Styles
  **/
- 
+
 #footer {
 	position: absolute;
 	bottom: 0;
@@ -493,13 +388,6 @@ body.calendar #totara_menu ul #menu6 div.noteam ul {
 	width: 930px;
 	padding:7px 15px;
 }
-
-/* - Revert to Original -
-#footer {
-  margin:0;
-  padding:7px 15px;
-  background: #FFFFFF url('images/bg_grn.jpg') repeat-x top center;
-} */
 
 #footer .sitelink,
 #footer .helplink,
@@ -510,29 +398,19 @@ body.calendar #totara_menu ul #menu6 div.noteam ul {
 }
 
 #footer .logininfo {
-  display:none;
-  text-align: center;
-  width: 100%;
-  padding-bottom: 5px;
   font-size: 0.8em;
 }
 
-#footer .footerlinks ul {
-  margin:0;
-  padding:0;
-}
 #footer .footerlinks ul li {
   display:inline;
   list-style-type: none;
   background: url('images/nav_ftr_spacer.gif') no-repeat right center;
 }
+
 #footer .footerlinks ul li.last {
   background:none;
 }
-#footer .footerlinks li div {
-  display:inline;
-  padding: 0 13px;
-}
+
 #footer .footerlinks li div a {
   font-family: 'Trebuchet ms', verdana, helvetica, sans-serif;
   color: #FFFFFF;
@@ -552,10 +430,6 @@ body.calendar #totara_menu ul #menu6 div.noteam ul {
     text-align: center;
 }
 
-#footer .performanceinfo span {
-    padding: 5px;
-    display: inline;
-}
 
 /**
  * Link colors
@@ -584,6 +458,7 @@ a:hover {
 .block_admin_tree #query {
   width:90px;
 }
+
 /**
  * Heading colors
  **/
@@ -594,13 +469,13 @@ h4, h4.main,
 h5, h5.main,
 h6, h6.main {
   font-family: 'Trebuchet ms', verdana, helvetica, sans-serif;
-  letter-spacing: -0.03em;  
+  letter-spacing: -0.03em;
   color: #322f2c;
   margin: 10px 0 2px 0;
 }
 
 h1, h1.main {
-  font-weight:normal;  
+  font-weight:normal;
   margin-top:0;
   margin-bottom: 10px;
 }
@@ -615,11 +490,6 @@ h2.headingblock,
   font-family: 'Trebuchet ms', verdana, helvetica, sans-serif;
   font-weight:normal;
   font-size:2em;
-  text-align:left;
-  border:none;
-  padding:0 0 5px;
-  margin-top:0;
-  border:none;
 }
 
 h3 {
@@ -643,37 +513,37 @@ h6 {
   color: #333333;
 }
 
-/**
+/***************************************
  * Tabs
- **/
+ ***************************************/
+
 .tabtree {
   margin-top: 15px;
 }
-.tabrow0 div, 
+.tabrow0 div,
 .tabrow0 ul {
-  top: 2.4em; 
+  top: 2.4em;
 }
 
 .tabrow0{
 	line-height: 2.3em;
-		
 }
 .tabrow0 li a {
   font-family: 'Trebuchet ms', Verdana, Helvetica, sans-serif;
   font-size: 1.3em;
-  color: #322f2c;  
+  color: #322f2c;
 }
 .tabrow0 li.selected a:hover span,
 .tabrow0 li.selected span,
 .tabrow0 li.active a:hover span,
 .tabrow0 li.active span {
-	background: url("images/tab/right_active.gif") top right;	
+	background: url("images/tab/right_active.gif") top right;
 }
 .tabrow0 li.selected a:hover,
 .tabrow0 li.selected a,
 .tabrow0 li.active a:hover,
 .tabrow0 li.active a {
-	background: url("images/tab/left_active.gif") top left no-repeat;	
+	background: url("images/tab/left_active.gif") top left no-repeat;
 }
 
 .tabrow0 li.active ul.tabrow1 li a {
@@ -684,7 +554,7 @@ h6 {
 	text-decoration: none;
 }
 ul.tabrow1 {
-	background: url("images/tab/tabrow1.gif") top left repeat-x !important;	
+	background: url("images/tab/tabrow1.gif") top left repeat-x !important;
 }
 
 /* Hover Styles */
@@ -735,10 +605,10 @@ ul.tabrow0 li ul.tabrow1 .active a:hover {
 	text-decoration: none;
 }
 
-.tabrow1 div, 
+.tabrow1 div,
 .tabrow1 ul {
   border-color:#aaaaaa;
-}  
+}
 ul.tabrow1 li a,
 ul.tabrow1 li a:link,
 ul.tabrow1 li a:visited {
@@ -805,195 +675,166 @@ ul.tabrow1 li a:hover {
   border-bottom: 1px solid #DDDDDD;
 }
 
-/**
- * Format Page
- **/
 
-.format-page {
-  margin-left: 0;
-}
-
-
-/**
+/******************************************
  * Frontpage
- **/
+ *****************************************/
 
-.frontpage {
-  width:720px;
-}
-#content p.smalltext {
-  font-size: 0.9em;
-}
-/*#front-blocks {
-  width:720px;
-  margin-top:10px;
-}
-#front-blocks td.col-one {
-  padding-right:14px;
-  padding-bottom: 11px;
-}
-*/
-
-#front-blocks-spot {
-  width:684px;
-  margin-top:5px;
-}
-#front-blocks-spot .header {
-  height: 83px;
-  overflow:hidden;
-}
 #front-blocks-spot h2 {
   color: #FFFFFF;
-  width: 150px;
   font-size:1.7em;
   line-height: 1.25em;
   letter-spacing: -0.03em;
-  padding: 6px 0 0 14px;
 }
+
 #front-blocks-spot td.col-blank {
   padding:4px;
 }
+
 #front-blocks-spot td.col-one,
 #front-blocks-spot td.col-two{
   width:335px;
   padding-bottom: 11px;
 }
+
 #front-blocks-spot td.front-spot-one {
-  background: transparent url('images/spot_one.jpg') no-repeat top center;  
+  background: transparent url('images/spot_one.jpg') no-repeat top center;
 }
+
 #front-blocks-spot td.front-spot-two {
-  background: transparent url('images/spot_two.jpg') no-repeat top center;  
+  background: transparent url('images/spot_two.jpg') no-repeat top center;
 }
+
 #front-blocks-spot td.front-spot-three {
-  background: transparent url('images/spot_three.jpg') no-repeat top center;  
+  background: transparent url('images/spot_three.jpg') no-repeat top center;
 }
+
 #front-blocks-spot td.front-spot-four {
-  background: transparent url('images/spot_four.jpg') no-repeat top center;  
+  background: transparent url('images/spot_four.jpg') no-repeat top center;
 }
+
 #front-blocks-spot td .footer {
-  width:336px;
-  text-align:right;
-  padding: 6px 8px;
-  background: transparent url('images/fp_bg_ftr.gif') no-repeat bottom left;  
+  background: transparent url('images/fp_bg_ftr.gif') no-repeat bottom left;
 }
+
 #front-blocks-spot td.front-spot-one .footer {
-  background-color: #f26921;  
+  background-color: #f26921;
 }
+
 #front-blocks-spot td.front-spot-two .footer {
-  background-color: #34B9E4;  
+  background-color: #34B9E4;
 }
+
 #front-blocks-spot td.front-spot-three .footer {
-  background-color: #a2b001;  
+  background-color: #a2b001;
 }
+
 #front-blocks-spot td.front-spot-four .footer {
-  background-color: #9f187c;  
+  background-color: #9f187c;
 }
+
 #front-blocks-spot .footer .more a {
   font-family: 'Trebuchet ms', Arial, Helvetica, sans-serif;
   font-size:1.1em;
   color:#FFFFFF;
-  padding-right:18px;
   letter-spacing: -0.03em;
 }
+
 #front-blocks-spot .footer .more a:hover {
   color: #FFFFFF !important;
   text-decoration: underline;
 }
+
 #front-blocks-spot td.front-spot-one .footer .more a  {
-  background: url('images/arw_btm_org.gif') no-repeat right 3px; 
-}
-#front-blocks-spot td.front-spot-two .footer .more a  {
-  background: url('images/arw_btm_blu.gif') no-repeat right 3px;  
-}
-#front-blocks-spot td.front-spot-three .footer .more a  {
-  background: url('images/arw_btm_grn.gif') no-repeat right 3px; 
-}
-#front-blocks-spot td.front-spot-four .footer .more a  {
-  background: url('images/arw_btm_pur.gif') no-repeat right 3px; 
+  background: url('images/arw_btm_org.gif') no-repeat right 3px;
 }
 
-#front-blocks-lists {
-  margin-top:0px;
+#front-blocks-spot td.front-spot-two .footer .more a  {
+  background: url('images/arw_btm_blu.gif') no-repeat right 3px;
 }
+
+#front-blocks-spot td.front-spot-three .footer .more a  {
+  background: url('images/arw_btm_grn.gif') no-repeat right 3px;
+}
+
+#front-blocks-spot td.front-spot-four .footer .more a  {
+  background: url('images/arw_btm_pur.gif') no-repeat right 3px;
+}
+
 #front-blocks-lists td {
    font-family: 'Trebuchet ms',Verdana, Arial, Helvetica, sans-serif;
    width:352px;
-} 
+}
+
 #front-blocks-lists td.col-one {
    padding-right: 14px;
-}   
+}
+
 #front-blocks-lists h2 {
   font-size: 1.5em;
   font-weight:normal;
   padding: 3px 10px;
   margin:0;
   border:1px solid #D2D2D2;
-  border-bottom:none;  
+  border-bottom:none;
 }
+
 #front-blocks-lists .front-recommended-courses h2 {
    color: #34b9e4;
 }
+
 #front-blocks-lists .front-latest-news h2 {
    color: #009697;
 }
+
 #front-blocks-lists .content {
    padding:7px 10px;
    border-left: 1px solid #d2d2d2;
-   border-right: 1px solid #d2d2d2;   
+   border-right: 1px solid #d2d2d2;
 }
+
 #front-blocks-lists .content a {
    color: #322F2C;
 }
-#front-blocks-lists .content ul {
-  margin:0;
-  padding:0;
-}
-#front-blocks-lists .content ul li {
-  list-style-type: none;
-  padding: 3px 0 3px 20px;
-}
+
 #front-blocks-lists .front-recommended-courses ul li {
   background: url('images/arw_blu.gif') no-repeat left 4px;
 }
+
 #front-blocks-lists .front-latest-news ul li {
   background: url('images/arw_teal.gif') no-repeat left 4px;
 }
+
 #front-blocks-lists td .footer {
-  text-align:right;
-  padding: 6px 8px;
-  background: transparent url('images/fp_bg_ftr.gif') no-repeat bottom left;  
+  background: transparent url('images/fp_bg_ftr.gif') no-repeat bottom left;
 }
+
 #front-blocks-lists .front-recommended-courses .footer {
   background-color: #34b9e4;
 }
+
 #front-blocks-lists .front-latest-news .footer {
   background-color: #009697;
 }
+
 #front-blocks-lists .footer .more a {
   font-size:1.1em;
   letter-spacing:-0.03em;
   color:#FFFFFF;
-  padding-right:17px;
 }
+
 #front-blocks-lists .front-recommended-courses .footer .more a {
   background: url('images/arw_btm_blu.gif') no-repeat right 4px;
 }
+
 #front-blocks-lists .front-latest-news .footer .more a {
   background: url('images/arw_btm_teal.gif') no-repeat right 4px;
 }
 
-/**
+
+/******************************************
  * Page menu
- **/
-
-.mod-pagemenu .menutree {
-  padding-left: 0;
-}
-
-.mod-pagemenu .menutree,
-.mod-pagemenu .menutree .childtree {
-  list-style-type: none;
-}
+ *****************************************/
 
 .mod-pagemenu .menutree .menuitem a {
   color: #2970A6;
@@ -1007,12 +848,6 @@ ul.tabrow1 li a:hover {
 .mod-pagemenu .menutree .menuitem a:hover {
   text-decoration: none;
 }
-
-.mod-pagemenu .menutree .menuitem {
-  padding-left: 5px;
-  border-bottom: 1px solid #ACC2CD;
-}
-
 
 .mod-pagemenu .menutree .childtree {
   margin-left: -5px;
@@ -1032,22 +867,20 @@ ul.tabrow1 li a:hover {
   background-color: #DDE6EB;
 }
 
-.mod-pagemenu .menutree li.current .childtree {
-  margin-bottom: -3px;
-}
-
 .mod-pagemenu .menutree li.current .childtree,
 .mod-pagemenu .menutree li.current .childtree .menuitem {
   background-color: #FFFFFF;
 }
 
-/**
- * Blocks
- **/
+
+/******************************************
+ * Side block
+ *****************************************/
+
 .sideblock {
   width: 181px;
   margin-bottom:13px;
-  border:none !important;  
+  border:none !important;
 }
 .sideblock div.header .title h2,
 .sideblock div.header .title h2 a {
@@ -1082,12 +915,12 @@ ul.tabrow1 li a:hover {
   height: 11px;
   width: 11px;
 }
-.sideblock .content {  
+.sideblock .content {
   text-align:left;
   padding: 7px 7px 7px 7px;
   margin:0;
-  border:none; 
-  background:transparent url('images/sb_bg_ftr.gif') no-repeat bottom left;  
+  border:none;
+  background:transparent url('images/sb_bg_ftr.gif') no-repeat bottom left;
 }
 .sideblock .content td a {
   font-family: 'Trebuchet ms', verdana, helvetica, sans-serif;
@@ -1117,100 +950,69 @@ ul.tabrow1 li a:hover {
 }
 
 
-/**
+/******************************************
  * Block Specific
- **/
+ *****************************************/
 
 div.block_calendar_month div.header {
   background: #9f187c;
 }
+
 div.block_totara_report_manager {
   background: transparent url('images/icon_reportmanager.gif') no-repeat right bottom;
 }
+
 div.block_totara_report_manager div.header,
 div.block_completionstatus div.header{
   background: #ed7906
 }
+
 div.block_totara_report_manager div.header .title input,
 div.block_completionstatus div.header .title input{
   background: #fcac00;
 }
-div.block_totara_report_manager .content {
-  padding-bottom: 80px;
-}
+
 div.block_totara_my_team_nav div.header,
 div.block_admin_tree div.header,
 div.block_admin div.header{
   background: #34b9e4;
 }
+
 div.block_totara_my_team_nav  div.header .title input,
 div.block_admin_tree div.header .title input,
 div.block_admin div.header .title input{
   background: #39caf9;
 }
+
 div.block_calendar_month div.header .title input   {
   background: #ca1e9e;
 }
+
 div.block_totara_my_team_nav .content td img {
  display:none;
 }
+
 div.block_totara_my_team_nav .content a {
   font-family: Verdana, Arial, Helvetica, sans-serif;
   color:#34b9e4;
 }
+
 div.block_totara_report_manager .content td {
   vertical-align:top;
   padding-bottom:4px;
   padding-right:3px;
 }
-div.block_totara_report_manager .content img {
-  width:12px;
-  height:14px;
-}
-div.block_html .header,
-div.block_html .header .title {
-  margin:0;
-  padding:0;
-  border:none;
-}
+
 div.block_html .header .title h2 {
   color: #322F2C;
   padding:0;
   background: transparent;
 }
-div.block_html div.header .title input {
-  margin: 5px 10px;
-}
-div.block_html .content {
-  border:none;
-  padding:0;
-  margin:0;
-  background: transparent;
-}
-.tempblockhandler {
-  display:none;
-}
 
-/* List blocks */
 
-.sideblock .content ul.list li .icon {
-  display:none;
-}
-.sideblock .content ul li {
-  padding-top: 0;
-  padding-bottom: 2px;
-}
-
-.block_page_module .content,
-.block_page_module .header,
-.block_page_module h2.header {
-  border: none;
-}
-
-.block_page_module .content {
-  padding-left: 0;
-  padding-right: 0;
-}
+/******************************************
+ * List blocks
+ *****************************************/
 
 .block_news_items .newlink,
 .activitydate, .activityhead,
@@ -1220,17 +1022,6 @@ div.block_html .content {
 .block_search_forums .searchform {
   text-align:left;
   font-size:1em;
-  padding: 3px 0;
-}
-
-.sideblock .content .footer {
-	padding: 3px 0 0;
-	margin-bottom: 0;
-}
-
-.sideblock .content .message {
-	padding-bottom: 0;
-	margin-bottom: 0;
 }
 
 .sideblock .content h3.eventskey {
@@ -1244,98 +1035,77 @@ div.block_html .content {
   border-bottom: 1px solid #CACACA;
 }
 
-.block_site_main_menu .footer select {
-  width:140px;
-}
-.block_login .loginform .fld input {
-  width: 75px;
-  padding:2px;
-}
 .mod-forum.sideblock th.header {
   border-style: none;
 }
+
 .block_calendar_month .content {
   padding: 3px 5px 10px 5px !important;
 }
+
 .block_calendar_month .calendar-controls {
   width:93%;
   margin:0 auto;
 }
+
 #calendar {
   border-spacing: 0;
 }
+
 table.minicalendar,
 table.minicalendar td {
   font-size: 0.9em;
-  border:none;
-  margin: 0;
-  padding:3px;
-  background: transparent;
 }
+
 table.minicalendar th {
   font-family: Verdana, Helvetica, sans-serif;
   font-weight: normal;
   font-size: 0.9em;
   padding: 0;
 }
+
 #calendar .weekend,
 .minicalendar .weekend {
   color: #322f2c;
-  font-size: 0.9em; 
+  font-size: 0.9em;
 }
+
 table.minicalendar .day a {
   font-size:10px;
   font-family: Verdana, Arial, Helvetica, sans-serif;
 }
+
 table.minicalendar .day {
   border:none;
   background: transparent url('images/cal_bg_weekday.gif') no-repeat center center;
 }
+
 table.minicalendar .dayblank {
   background: transparent url('images/cal_bg_blank.gif') no-repeat center center;
 }
+
 table.minicalendar .today {
-  border: none;
   font-weight: normal;
-  margin: 0; 
-  border:none;
   color: #FFFFFF;
   background: transparent url('images/cal_bg_today.gif') no-repeat center center;
 }
+
 table.minicalendar .today a {
   color: #FFFFFF;
 }
-#calendar td.maincalendar {
-  width:79%;
-}
-#calendar td.sidecalendar {
-  padding-left:15px;
-}
+
 #calendar td.sidecalendar .sideblock {
-  width: 181px;
-  text-align:left;
-  padding: 0;
-  margin: 0 0 13px 0;
-  border:none; 
-  background:transparent url('images/sb_bg_ftr.gif') no-repeat bottom left;   
+  background:transparent url('images/sb_bg_ftr.gif') no-repeat bottom left;
 }
+
 #calendar td.sidecalendar .sideblock .header {
   background:#9F187C;
-  padding: 4px 10px;
-  border:1px solid #d2d2d2;
-  border-bottom:none;
 }
+
 #calendar td.sidecalendar .sideblock .header h2 {
    color: #FFFFFF;
    font-size: 1.5em;
    margin:0;
-}  
- 
-.block_calendar_month .calendar-controls a span{
-  text-indent: 1000px;
-  width: 13px;
-  overflow:hidden;
-  display:block;
 }
 
 .block_calendar_month .calendar-controls a.previous{
@@ -1348,13 +1118,6 @@ table.minicalendar .today a {
 
 .block_calendar_month .calendar-controls .current a {
   color:#322f2c ;
-}
-.block_calendar_month .minicalendar td {
-  padding:3px;
-}
-#calendar .duration_global, .minicalendar .duration_global {
-  background-color: transparent;
-  border:none !important;
 }
 
 #calendar .event_global, .minicalendar .event_global, .block_calendar_month .event_global {
@@ -1372,20 +1135,11 @@ table.calendarmonth tr ul li.event_user {
 }
 
 body#blocks-facetoface-calendar table.calendarmonth {
-	font-size: 0.8em;	
+	font-size: 0.8em;
 }
 
 body#blocks-facetoface-calendar .calendar-controls {
 	font-size: 0.8em;
-}
-
-body#blocks-facetoface-calendar div.calendar-controls {
-	width: 100%;
-}
-
-body#blocks-facetoface-calendar div.calendar-controls td{
-	padding: 0 12px 0 0;
-	width: 30%;
 }
 
 body#blocks-facetoface-calendar table.calendarmonth .weekdays {
@@ -1394,7 +1148,7 @@ body#blocks-facetoface-calendar table.calendarmonth .weekdays {
 	font-size: 1.2em;
 }
 body#blocks-facetoface-calendar table.calendarmonth .weekdays th {
-	text-align: center;	
+	text-align: center;
 	border-right: 1px solid #CA1E9E;
 }
 
@@ -1408,13 +1162,11 @@ div#calendarcontainer div.monthlycalendar div.calendar-controls span.current {
 
 div#calendarcontainer div.monthlycalendar div.calendar-controls a.previous{
   background: transparent url('images/cal_bg_previous.gif') no-repeat left center;
-  padding-left: 10px;
   color: #CA1E9E;
 }
 
 div#calendarcontainer div.monthlycalendar div.calendar-controls a.next{
   background: transparent url('images/cal_bg_next.gif') no-repeat right center;
-  padding-right: 10px;
   color: #CA1E9E;
 }
 
@@ -1425,9 +1177,7 @@ div#calendarcontainer div.monthlycalendar div.calendar-controls a span{
 body#blocks-facetoface-calendar table.calendarmonth td.today  {
 	background-color:#FFFFFF;
 	border: 2px solid #CA1E9E !important;
-	
 }
-
 
 body#blocks-facetoface-calendar .yui-tt .bd {
 	border: 1px solid #CA1E9E;
@@ -1436,9 +1186,10 @@ body#blocks-facetoface-calendar .yui-tt .bd {
 	padding: 10px;
 }
 
-/**
- * Guide Step
- **/
+
+/******************************************
+ * Guide Steps
+ *****************************************/
 
 /* Complete */
 
@@ -1459,14 +1210,13 @@ h2.guidesteptitle.active,
 	color:#FFFFFF !important;
 }
 .guidestep.active {
-	border: 1px solid #A2B001 !important;	
+	border: 1px solid #A2B001 !important;
 }
 
 
-
-/**
+/******************************************
  * YUI Drop-down menu
- **/
+ *****************************************/
 
 div.yuimenu {
   border-top: 1px solid #C9CBCD;
@@ -1536,12 +1286,12 @@ div.yuimenu .yuichildtree .yuimenuitem {
 }
 .categoryboxcontent, .coursebox {
    border:none;
-   margin-bottom: 10px; 
+   margin-bottom: 10px;
 }
 .coursebox h2.main {
   font-size: 1.6em !important;
 }
-.categoryboxcontent, .coursebox, 
+.categoryboxcontent, .coursebox,
 #adminsettings fieldset {
   border:none;
   color: #322f2c;
@@ -1587,10 +1337,6 @@ div.yuimenu .yuichildtree .yuimenuitem {
     white-space: nowrap;
 }
 
-.completionreport td.completion-progresscell span.rplvalue {
-/*    display: none;*/
-}
-
 .completionreport td.completion-progresscell a.rplshow {
     color: #238E23;
     display: none;
@@ -1610,7 +1356,7 @@ div.yuimenu .yuichildtree .yuimenuitem {
 }
 .logtable th {
   font-size:1.1em;
-  padding: 5px 10px;  
+  padding: 5px 10px;
 }
 .logtable td {
   font-size:0.9em;
@@ -1636,3 +1382,375 @@ body#help div#wrapper {
 
 }
 
+
+/*****************************************************************************/
+/** Report Builder  **/
+/*****************************************************************************/
+
+td.feedback-bar-color {
+    background-color: #04A2D5;
+}
+
+
+/*****************************************************************************/
+/** Hierarchies **/
+/*****************************************************************************/
+
+
+table.reportbuilder-table .r0 {
+    background: #FFFFFF;
+}
+
+table.reportbuilder-table .r1 {
+    background: #F5F5F5;
+}
+
+table.reportbuilder-table td {
+    border: 1px solid #DDDDDD;
+}
+
+/*****************************************************************************/
+/** IDP **/
+/*****************************************************************************/
+
+table.planlist tr.r0 {
+    background-color: #F0F0F0;
+    height: 20px;
+}
+
+table.planlist td.options {
+    text-align: center;
+}
+
+table.planitems {
+    margin: 8px 0px 0px 8px;
+    width: 532px;
+}
+
+table.planitems tr {
+    height: 25px;
+}
+
+table.planitems tr.r0 {
+    background-color: #F0F0F0;
+}
+
+
+/*****************************************************************************/
+/** Dashboards **/
+/*****************************************************************************/
+table.centerblock td, th {
+  text-align: left;
+  padding: 2px;
+}
+
+table.centerblock th.course, table.centerblock td.course {
+  width: 322px;
+}
+
+table.centerblock th.status, table.centerblock td.status {
+  width: 40px;
+}
+
+table.centerblock th.enroldate, table.centerblock td.enroldate,
+table.centerblock th.startdate, table.centerblock td.startdate,
+table.centerblock th.completeddate, table.centerblock td.completeddate {
+  width: 50px;
+  text-align: center;
+}
+
+table.centerblock th.status, table.centerblock td.status {
+  text-align: left;
+}
+
+#site-index #middle-column div.mycourses div.allmycourses {
+  margin-top: 5px;
+  margin-left: 2px;
+  margin-bottom: 0px;
+  font-weight: bold;
+}
+
+#site-index #middle-column div.mycourses {
+  width: 527px;
+  margin-top: 0px;
+  margin-left: 12px;
+  border:none;
+  background: none;
+}
+
+#site-index #middle-column div.mycourses div.header h2 {
+  color:#FFFFFF;
+  font-size:1.5em;
+  margin:0;
+  padding-left: 7px;
+  padding-top: 7px;
+  padding-bottom: 6px;
+  font-weight: normal;
+  border:none;
+}
+
+#site-index #middle-column div.mycourses div.header {
+  border:1px solid #d2d2d2;
+  border-bottom:none;
+  background: #a2b001;
+}
+
+#site-index #middle-column div.mycourses .content {
+  padding: 0 1px;
+  background: transparent url('images/course_bg_ftr.gif') no-repeat bottom left;
+}
+#site-index #middle-column div.mycourses .content th {
+  padding:6px 7px;
+  font-size: 1.1em;
+  color: #a2b001;
+  background: #f5f5f5;
+}
+#site-index #middle-column div.mycourses .content td {
+  padding:6px 7px;
+  font-size: 0.9em;
+
+}
+#site-index #middle-column div.mycourses .content a {
+   color:#322f2c;
+}
+#site-index #middle-column div.mycourses .content .allmycourses {
+   font-family: 'Trebuchet ms', Verdana, Arial, Helvetica, sans-serif;
+   text-align:right;
+   font-size: 1em;
+   font-weight:normal;
+   padding: 5px 7px 5px 7px;
+}
+#site-index #middle-column div.mycourses .content .allmycourses a {
+   padding-right: 17px;
+   background: url('images/arw_grn.gif') no-repeat right center;
+}
+
+/*****************************************************************************/
+/** My Team **/
+/*****************************************************************************/
+
+table.allmyteam td {
+  text-align:right;
+  padding-right: 10px;
+  vertical-align: center;
+}
+
+table.allmyteam td.c2 {
+  padding:5px;
+  background: url('images/course_bg_ftr.gif') no-repeat left bottom;
+}
+
+table.allmyteam td.c2 img {
+  display:none;
+}
+
+table.allmyteam td.c3 {
+  background: url('images/course_bg_ftr.gif') no-repeat right bottom;
+}
+
+table.allmyteam td a {
+  font-family: 'Trebuchet ms', verdana, helvetica, sans-serif;
+  font-weight: normal;
+  font-size: 1em;
+  background: url('images/arw_blu.gif') no-repeat right 3px;
+}
+
+#my-team h1 {
+  color:#FFFFFF;
+  font-size: 1.5em;
+  background:#34b9e4;
+}
+
+#my-team #middle-column table.flexible td {
+  font-size:0.9em;
+}
+
+#my-team #middle-column table.flexible th {
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  color: #34b9e4;
+}
+
+
+/*****************************************************************************/
+/** Tables **/
+/*****************************************************************************/
+
+.generaltable {
+    width: 100%;
+}
+
+.generaltable .cell {
+    background-color: none !important;
+}
+
+.cell {
+    padding: 3px;
+}
+
+
+tr.r1 .cell,
+{
+    background: #f5f5f5;
+}
+td.c0 {
+    text-align: left;
+}
+
+th.header {
+    background: #EDEDED url(images/gradient.png) top left repeat-x;
+	font-size: 0.9em;
+}
+
+table.customfields th.lastcol,
+table.customfields td.lastcol{
+    text-align: center !important;
+}
+
+table.borderless td {
+    border-color: #ffffff;
+    vertical-align: top;
+}
+
+body#hierarchy-index table#competency tr.r0 td.customfield {
+    background: #fdfdfd;
+}
+
+body#hierarchy-index table#competency tr.r1 td.customfield {
+    background: #f2f2f2;
+}
+
+
+/*****************************************************************************/
+/** Guides Tables **/
+/*****************************************************************************/
+
+#guides-index .r1{
+	background: #F5F5F5;
+}
+
+/*****************************************************************************/
+/** Form **/
+/*****************************************************************************/
+
+form#newfieldform {
+    padding:10px 0 0;
+    display: table;
+}
+
+/*****************************************************************************/
+/** Guide Steps **/
+/*****************************************************************************/
+
+.guidesteps {
+    clear: left;
+    height: 100%;
+	padding-top: 10px;
+}
+
+.guidestep {
+	border: 1px solid #EEEEEE;
+	word-wrap: break-word;
+}
+
+.guidestepcontainer {
+    float: left;
+    width: 25%;
+    height: 100%;
+}
+
+.guidesteptitle {
+	border-bottom: none;
+	padding: 5px;
+}
+
+/* Complete */
+
+h2.guidesteptitle.complete {
+	background: #D0E4EF;
+	color: #2970A6;
+}
+.guidestep.complete .stepstatus {
+	background: #D0E4EF;
+	color:#2970A6;
+	text-align:center;
+	text-transform:uppercase;
+	font-weight: bold;
+}
+
+.guidestep.inactive.complete {
+	border-color: #d0e4ef;
+}
+
+/* Incomplete */
+
+h2.guidesteptitle.pending {
+    background-color: #FAFAFA;
+	color: #999999;
+}
+
+.guidestep.incomplete .stepstatus {
+	background:none repeat scroll 0 0 #FAFAFA;
+	color:#999999;
+	text-align:center;
+	text-transform:uppercase;
+}
+
+/* Active */
+.guidestep.active .stepstatus {
+	background:none repeat scroll 0 0 #EFFAF3;
+	color:#3E8F56;
+	text-align:center;
+	text-transform:uppercase;
+}
+
+.guidestep.active {
+	border: 1px solid #D9F3E1;
+}
+
+.guidestep.active .stepstatusimg input {
+    border: 1px solid #EFF8EF;
+    background: #D9F3E1;
+}
+
+h2.guidesteptitle.active {
+	background: #D9F3E1;
+	color: #3E8F56;
+}
+
+/* Inactive */
+.guidestep.inactive.incomplete div.guidesteptext p{
+	color: #999999;
+}
+
+/*****/
+
+img.percentImage {
+ background: white url(/guides/percentImage_back.png) top left no-repeat;
+ padding: 0;
+ margin: 5px 0 0 0;
+ background-position: 1px 0;
+}
+
+.guideindextitle {
+    font-weight:bold;
+}
+
+/* Guide Block */
+.block_guides .content ul.list  li {
+    line-height: 1.1em;
+    padding-bottom: 0px;
+}
+
+/***********/
+
+
+
+
+/*****************************************************************************/
+/** Course and Category Icons **/
+/*****************************************************************************/
+
+.course_icon{
+    padding-right: 5px;
+    vertical-align: middle;
+}

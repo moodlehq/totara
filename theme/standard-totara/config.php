@@ -28,7 +28,7 @@ $THEME->standardsheets = array('styles_layout','styles_fonts','styles_color');
 ////////////////////////////////////////////////////////////////////////////////
 
 
-$THEME->parent = 'standard-totara';  
+$THEME->parent = '';  
 
 /// This variable can be set to the name of a parent theme
 /// which you want to have included before the current theme.
@@ -39,7 +39,7 @@ $THEME->parent = 'standard-totara';
 ////////////////////////////////////////////////////////////////////////////////
 
 
-$THEME->parentsheets = array('styles_totara');  
+$THEME->parentsheets = false;  
 
 /// This variable can be set to an array containing
 /// filenames from a chosen *PARENT* theme.  If the 
