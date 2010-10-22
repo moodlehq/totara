@@ -243,7 +243,7 @@ class reportbuilder {
         }
 
         if($dialog) {
-            print '
+            $this->_body_javascript = '
 <script type="text/javascript">
 var orgtree = [' . implode(', ', $orgtrees) . '];
 var postree = [' . implode(', ', $postrees) . '];
@@ -874,6 +874,7 @@ var comptree = [' . implode(', ', $comptrees) . '];
      * @return Nothing returned but prints the search box
      */
     function display_search() {
+        echo isset($this->_body_javascript) ? $this->_body_javascript : '';
         $this->get_filtering();
         $this->_filtering->display_add();
     }
