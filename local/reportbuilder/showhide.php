@@ -16,7 +16,6 @@ require_once($CFG->dirroot.'/local/reportbuilder/lib.php');
 $id = required_param('id', PARAM_INT);
 
 $report = new reportbuilder($id);
-print '<h2>' . get_string('showhidecolumns', 'local_reportbuilder') . '</h2>';
 print '<div id="column-checkboxes">';
 $count = 0;
 foreach($report->columns as $column) {

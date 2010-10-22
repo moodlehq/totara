@@ -37,7 +37,8 @@ $(function() {
             {
                 buttons: {
                     'Ok': function() { handler._cancel() }
-                }
+                },
+                title: '<h2><?php echo get_string('showhidecolumns', 'local_reportbuilder') ?></h2>'
             },
             url+'showhide.php?id='+id.toString(),
             handler
