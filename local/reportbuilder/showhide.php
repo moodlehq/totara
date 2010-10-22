@@ -50,7 +50,7 @@ $('#column-checkboxes input').click(function() {
         data: {'shortname' : shortname,
                'column' : $(this).attr('name'),
                'value' : value
-        },
+        }
     });
 
 });
