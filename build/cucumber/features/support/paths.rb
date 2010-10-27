@@ -69,6 +69,11 @@ module NavigationHelpers
     raise "Can't find mapping from \"#{name}\" to a path.\n" +
       "Now, go and add a mapping in #{__FILE__}"
   end
+
+
+  def get_site_url
+    @@site_url
+  end
 end
 
 World(NavigationHelpers)

@@ -1,5 +1,5 @@
 # RSpec
-require 'spec/expectations'
+require 'rspec/expectations'
 
 # Webrat
 require 'webrat'
@@ -7,6 +7,9 @@ require 'webrat'
 # Tableish for manipulating HTML tables
 # # Requires cucumber-rails gem
 require 'cucumber/web/tableish'
+
+# Lengthen timeout
+require 'net/http'
 
 # config.php management
 require File.dirname(__FILE__) + '/../../dbs/manage_config.rb'
@@ -29,6 +32,18 @@ def run(command, verbose = false, message = nil)
   else
     `#{command}`
   end
+end
+
+# Lengthen timeout in Net::HTTP
+module Net
+    class HTTP
+        alias old_initialize initialize
+
+        def initialize(*args)
+            old_initialize(*args)
+            @read_timeout = 3*60     # 3 minutes
+        end
+    end
 end
 
 params = parse_config

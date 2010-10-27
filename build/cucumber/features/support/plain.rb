@@ -1,4 +1,4 @@
-require 'spec/expectations'
+require 'rspec/expectations'
 
 Webrat.configure do |config|
   config.mode = :mechanize

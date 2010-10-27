@@ -1,3 +1,4 @@
+@standard
 Feature: Login
   In order to view my record of learning
   As an administrator

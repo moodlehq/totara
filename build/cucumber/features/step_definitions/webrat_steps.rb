@@ -173,3 +173,224 @@ Then /^show me the page$/ do
   save_and_open_page
 end
 
+Then /^check links for errors starting on(?: the)? (.+) page/ do |page_name|
+  Given "the list of visited links is empty"
+  url = get_path(page_name)
+  # get links from the first page
+  parse_page(url)
+
+  while(@@links_todo.length > 0) do
+
+    link = @@links_todo.shift
+
+    parse_page link['url']
+
+    check_page(link)
+
+  end
+
+  puts 'Finished visiting ' + @@links_visited.length.to_s + ' pages'
+end
+
+Given /^the list of visited links is empty$/ do
+  @@links_todo = []
+  @@links_visited = {}
+end
+
+
+def in_todo url
+  @@links_todo.each do |link|
+    return true if generalize(link['url']) == generalize(url)
+  end
+  return false
+end
+
+
+# Analyses a page that has previously been parsed by parse_page
+#
+# Gets information about the page from the argument (a link hash)
+# and information about the page that contained it from @@links_visited
+#
+# Looks for problems with the page:
+# - 404 or other http errors
+# - missing language strings (by looking for [[string]] in html)
+# - moodle error boxes (by searching for the .errorbox class
+#
+# Doesn't search for PHP warnings or notices or moodle debug messages
+# as these should appear in the error log
+#
+def check_page(link)
+  url = link['url']
+  referrer = link['referrer']
+
+  if @@links_visited.key?(generalize(url)) then
+    html = @@links_visited[generalize(url)]['html']
+    parsed = @@links_visited[generalize(url)]['parsed']
+    code = @@links_visited[generalize(url)]['code']
+  else
+    html = parsed = code = nil
+  end
+
+  # did the page return a 404 or other http error code?
+  if code == 'bad' then
+    puts 'ERROR 404: '
+    puts '     FROM: ' + referrer
+    puts '       TO: ' + url
+    puts
+  end
+
+  # find missing language strings
+  html.scan(/\[\[([^\]]+)\]\]/) do |match|
+    puts 'MISSING LANG STRING: "' + match[0] + '"'
+    puts '    IN PAGE: ' + url
+  end
+
+  html.scan(/call to debugging()/) do |match|
+    puts 'SQL ERROR'
+    puts '    IN PAGE: ' + url
+  end
+
+  # find error boxes
+  errors = parsed.css('.errorbox').map do |error|
+    if error.css('.errormessage').text != '' then
+      errstr = error.css('.errormessage').text
+    else
+      errstr = error.text
+    end
+    puts 'ERROR BOX: ' + errstr
+    puts '     FROM: ' + referrer
+    puts '       TO: ' + url
+    puts
+  end
+end
+
+# Parse a URL, extracting the page contents and any links
+#
+# Page details are saved to @@links_visited (hash using the url as a key)
+# Saves the raw html, a parsed object, and the response code
+#
+# Any URLs that are found and added to the end of @@links_todo, as long
+# as they aren't:
+#  - already on the todo
+#  - previously visited
+#  - anchor links
+#  - external to site
+#  - in the ignore list
+# The URL and the page that linked to it (referrer) are stored
+#
+# This method also deletes this item from the todo list
+def parse_page url
+  require 'uri'
+  @@site_url = get_site_url
+  # ignore URLs starting with:
+  @@ignore = [
+    '/login/logout.php',
+    '/calendar/view.php',
+    '/blocks/facetoface/calendar.php',
+    # problem pages:
+    # won't work for local lookup
+    '/iplookup/index.php',
+  ]
+
+
+  # visit the page
+  begin
+    visit url
+    code = 'ok'
+  rescue Mechanize::ResponseCodeError => ex
+    error_response_body = ex.page.parser.inner_html
+    code = 'bad'
+  html = response_body || error_response_body
+  end
+
+  # parse the page
+  html = (code == 'ok') ? response_body : error_response_body
+  doc = Nokogiri::HTML.parse(html)
+
+  # save page info
+  @@links_visited[generalize(url)] = {
+    'html' => html,
+    'parsed' => doc,
+    'code' => code,
+  }
+
+  # record that this page has been analysed
+  @@links_todo.delete(url) if @@links_todo.include?(url)
+
+  # find all links within the page
+  links = doc.css('a').map { |link| link['href'] }
+  links.each do |link|
+    next if link.nil?
+    link.strip!
+    # add root to relative paths
+    if link =~ /^[\/.]/ then
+      urlobj = URI.parse url
+      link = (urlobj + link).to_s
+    end
+
+    if link =~ /192\.168\.[0-9]+\.[0-9]+/ then
+      # print error url link
+      puts 'Error local URL found:'
+      puts link
+      next
+    end
+    # skip anchor links
+    next if link =~ /^#/
+    # skip external links
+    next if link[0..@@site_url.length - 1] != @@site_url
+    # skip already visited links
+    next if @@links_visited.include?(generalize(link))
+    # skip if already in todo
+    next if in_todo link
+    # skip urls the match start of ignore list
+    matchbad = false
+    @@ignore.each do |badlink|
+      badlink = @@site_url + badlink
+      matchbad = true if link[0..badlink.length - 1] == badlink
+    end
+    next if matchbad
+
+    @@links_todo << {
+      'url' => link,
+      'referrer' => url,
+    }
+
+  end
+end
+
+def generalize(url)
+  require 'uri'
+  require 'cgi'
+
+  return '' if url.nil?
+  url.gsub!(/ /, '%20')
+  parsed = URI.parse(url)
+  return url if parsed.query.nil?
+  params = CGI.parse(parsed.query)
+
+  query = ''
+  params.sort.each do |key, values|
+    # can be multiple values for same key if element used more than once
+    values.each do |value|
+      value.gsub!(/ /, '%20')
+      if(key == 'ssort')
+        value = 'X'
+      end
+
+      # don't add & the first time
+      query << '&' unless query == ''
+      value = 'X' if is_int? value
+      query << key + '=' + value
+    end
+  end
+  parsed.query = query
+
+  parsed.to_s
+end
+
+# true if str is an integer
+def is_int? str
+  result = /^[0-9]+$/.match(str)
+  return !result.nil?
+end
+

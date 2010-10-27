@@ -11,10 +11,19 @@ When /I am not logged in/ do
   And "I should not see \"You are logged in as\""
 end
 
-When /I am logged in as admin/ do
+When /I am logged in as (?:an )?admin/ do
   Then "I am logged in as \"admin\" with password \"passworD1!\""
 end
 
-When /I am logged in as (?:a )learner/ do
+When /I am logged in as (?:a )?learner/ do
   Then "I am logged in as \"learner\" with password \"passworD1!\""
 end
+
+When /I am logged in as (?:a )?trainer/ do
+  Then "I am logged in as \"trainer\" with password \"passworD1!\""
+end
+
+When /I am logged in as (?:a )?manager/ do
+  Then "I am logged in as \"manager\" with password \"passworD1!\""
+end
+

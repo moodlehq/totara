@@ -20,3 +20,9 @@ tables.each do |desc, table|
 
 end
 
+# Set timeout on Link checker to 1 hour
+#Around('@link-checker') do |scenario, block|
+#  Timeout.timeout(3600) do
+#    block.call
+#  end
+#end
