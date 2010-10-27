@@ -1,4 +1,3 @@
-@standard
 Feature: IDP
   In order to view the idp
   As a Learner

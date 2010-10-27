@@ -1,4 +1,3 @@
-@standard
 Feature: Manage Competency Frameworks
   In order to maintain the site competencies
   As an administrator

@@ -1,4 +1,3 @@
-@standard
 Feature: Login
   In order to use Totara
   As an administrator
