@@ -101,7 +101,9 @@ $ALLOWED_TAGS =
  */
 $ALLOWED_PROTOCOLS = array('http', 'https', 'ftp', 'news', 'mailto', 'rtsp', 'teamspeak', 'gopher', 'mms',
                            'color', 'callto', 'cursor', 'text-align', 'font-size', 'font-weight', 'font-style', 'font-family',
-                           'border', 'margin', 'padding', 'background', 'background-color', 'text-decoration');   // CSS as well to get through kses
+                           'border', 'border-bottom', 'border-left', 'border-top', 'border-right', 'margin', 'margin-bottom', 'margin-left', 'margin-top', 'margin-right',
+                           'padding', 'padding-bottom', 'padding-left', 'padding-top', 'padding-right', 'vertical-align',
+                           'background', 'background-color', 'text-decoration');   // CSS as well to get through kses
 
 
 /// Functions
@@ -340,7 +342,7 @@ class moodle_url {
     }
 
     /**
-     * Add an array of params to the params for this page. 
+     * Add an array of params to the params for this page.
      *
      * The added params override existing ones if they have the same name.
      *
@@ -1233,7 +1235,7 @@ $targetwindow='self', $selectlabel='', $optionsextra=NULL, $gobutton=NULL) {
           '.location=document.getElementById(\''.$formid.
           '\').jump.options[document.getElementById(\''.
           $formid.'\').jump.selectedIndex].value;"';
-    }    
+    }
 
     $output .= '<div>'.$selectlabel.$button.'<select id="'.$formid.'_jump" name="jump"'.$javascript.'>'."\n";
 
@@ -2013,7 +2015,6 @@ function clean_text($text, $format=FORMAT_MOODLE) {
 
     switch ($format) {
         case FORMAT_PLAIN:
-        case FORMAT_MARKDOWN:
             return $text;
 
         default:
@@ -2025,6 +2026,7 @@ function clean_text($text, $format=FORMAT_MOODLE) {
             /// Fix non standard entity notations
                 $text = preg_replace('/&#0*([0-9]+);?/', "&#\\1;", $text);
                 $text = preg_replace('/&#x0*([0-9a-fA-F]+);?/', "&#x\\1;", $text);
+                $text = preg_replace('[\x00-\x08\x0b-\x0c\x0e-\x1f]', '', $text);
 
             /// Remove tags that are not allowed
                 $text = strip_tags($text, $ALLOWED_TAGS);
@@ -2056,23 +2058,51 @@ function purify_html($text) {
 
     // this can not be done only once because we sometimes need to reset the cache
     $cachedir = $CFG->dataroot.'/cache/htmlpurifier';
-    $status = check_dir_exists($cachedir, true, true);
+    check_dir_exists($cachedir);
 
     static $purifier = false;
-    static $config;
     if ($purifier === false) {
         require_once $CFG->libdir.'/htmlpurifier/HTMLPurifier.safe-includes.php';
         $config = HTMLPurifier_Config::createDefault();
-        $config->set('Output.Newline', "\n");
+
+        $config->set('HTML.DefinitionID', 'moodlehtml');
+        $config->set('HTML.DefinitionRev', 1);
+        $config->set('Cache.SerializerPath', $cachedir);
+        //$config->set('Cache.SerializerPermission', $CFG->directorypermissions); // it would be nice to get this upstream
+        $config->set('Core.NormalizeNewlines', false);
         $config->set('Core.ConvertDocumentToFragment', true);
         $config->set('Core.Encoding', 'UTF-8');
         $config->set('HTML.Doctype', 'XHTML 1.0 Transitional');
-        $config->set('Cache.SerializerPath', $cachedir);
-        $config->set('URI.AllowedSchemes', array('http'=>1, 'https'=>1, 'ftp'=>1, 'irc'=>1, 'nntp'=>1, 'news'=>1, 'rtsp'=>1, 'teamspeak'=>1, 'gopher'=>1, 'mms'=>1));
+        $config->set('URI.AllowedSchemes', array('http'=>true, 'https'=>true, 'ftp'=>true, 'irc'=>true, 'nntp'=>true, 'news'=>true, 'rtsp'=>true, 'teamspeak'=>true, 'gopher'=>true, 'mms'=>true));
         $config->set('Attr.AllowedFrameTargets', array('_blank'));
+
+        if (!empty($CFG->allowobjectembed)) {
+            $config->set('HTML.SafeObject', true);
+            $config->set('Output.FlashCompat', true);
+            $config->set('HTML.SafeEmbed', true);
+        }
+
+        $def = $config->getHTMLDefinition(true);
+        $def->addElement('nolink', 'Block', 'Flow', array());                       // skip our filters inside
+        $def->addElement('tex', 'Inline', 'Inline', array());                       // tex syntax, equivalent to $$xx$$
+        $def->addElement('algebra', 'Inline', 'Inline', array());                   // algebra syntax, equivalent to @@xx@@
+        $def->addElement('lang', 'Block', 'Flow', array(), array('lang'=>'CDATA')); // old anf future style multilang - only our hacked lang attribute
+        $def->addAttribute('span', 'xxxlang', 'CDATA');                             // current problematic multilang
+
         $purifier = new HTMLPurifier($config);
     }
-    return $purifier->purify($text);
+
+    $multilang = (strpos($text, 'class="multilang"') !== false);
+
+    if ($multilang) {
+        $text = preg_replace('/<span(\s+lang="([a-zA-Z0-9_-]+)"|\s+class="multilang"){2}\s*>/', '<span xxxlang="${2}">', $text);
+    }
+    $text = $purifier->purify($text);
+    if ($multilang) {
+        $text = preg_replace('/<span xxxlang="([a-zA-Z0-9_-]+)">/', '<span lang="${1}" class="multilang">', $text);
+    }
+
+    return $text;
 }
 
 /**
@@ -2536,7 +2566,7 @@ function print_header ($title='', $heading='', $navigation='', $focus='',
         $meta .= '<script type="text/javascript"  src="'.$CFG->httpswwwroot.'/lib/yui/event/event-min.js"></script>';
         $meta .= '<script type="text/javascript"  src="'.$CFG->httpswwwroot.'/lib/yui/connection/connection-min.js"></script>';
         $meta .= '<script type="text/javascript"  src="'.$CFG->httpswwwroot.'/lib/swfobject/swfobject.js"></script>';
-        $meta .= 
+        $meta .=
            "<script type=\"text/javascript\">\n".
            "//<![CDATA[\n".
            "  var flashversion = swfobject.getFlashPlayerVersion();\n".
@@ -4560,7 +4590,7 @@ function print_user_picture($user, $courseid, $picture=NULL, $size=0, $return=fa
         }
     }
 
-    $output .= "<img class=\"$class\" src=\"$src\" height=\"$size\" width=\"$size\" alt=\"".s($imagealt).'"  />';
+    $output .= "<img class=\"$class\" src=\"$src\" height=\"$size\" width=\"$size\" title=\"".s($imagealt)."\" alt=\"".s($imagealt).'"  />';
     if ($link) {
         $output .= '</a>';
     }
@@ -4752,7 +4782,7 @@ function print_group_picture($group, $courseid, $large=false, $return=false, $li
     } else {
         $file = 'f2';
     }
-    
+
     // Print custom group picture
     require_once($CFG->libdir.'/filelib.php');
     $grouppictureurl = get_file_url($group->id.'/'.$file.'.jpg', null, 'usergroup');
@@ -4888,7 +4918,7 @@ function print_table($table, $return=false) {
     $output .= " cellpadding=\"$table->cellpadding\" cellspacing=\"$table->cellspacing\" class=\"$table->class boxalign$table->tablealign\" $tableid>\n";
 
     $countcols = 0;
-    
+
     if (!empty($table->head)) {
         $countcols = count($table->head);
         $output .= '<tr>';
@@ -6174,7 +6204,7 @@ function redirect($url, $message='', $delay=-1) {
 <script type="text/javascript">
 //<![CDATA[
 
-  function redirect() { 
+  function redirect() {
       document.location.replace('<?php echo addslashes_js($url) ?>');
   }
   setTimeout("redirect()", <?php echo ($delay * 1000) ?>);
@@ -6437,8 +6467,8 @@ function print_side_block($heading='', $content='', $list=NULL, $icons=NULL, $fo
         if ($list) {
             $row = 0;
             //Accessibility: replaced unnecessary table with list, see themes/standard/styles_layout.css
-            echo "\n<ul class='list'>\n";            
-            foreach ($list as $key => $string) {                
+            echo "\n<ul class='list'>\n";
+            foreach ($list as $key => $string) {
                 echo '<li class="r'. $row .'">';
                 if ($icons) {
                    echo '<div class="icon column c0">'. $icons[$key] .'</div>';
@@ -6478,7 +6508,7 @@ function print_side_block_start($heading='', $attributes = array()) {
         $attributes['class'] = 'sideblock';
 
     } else if(!strpos($attributes['class'], 'sideblock')) {
-        $attributes['class'] .= ' sideblock';        
+        $attributes['class'] .= ' sideblock';
     }
 
     // OK, the class is surely there and in addition to anything

@@ -51,7 +51,11 @@
     if (!empty($CFG->forceloginforprofiles)) {
         require_login();
         if (isguest()) {
-            redirect("$CFG->wwwroot/login/index.php");
+        	$loginurl ="$CFG->wwwroot/login/index.php";
+            if (!empty($CFG->loginhttps)) {
+	            $loginurl = str_replace("http://", "https://", $loginurl);
+	        }
+            redirect($loginurl);
         }
     }
 
