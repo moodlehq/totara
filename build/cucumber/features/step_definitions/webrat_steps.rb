@@ -328,7 +328,7 @@ def parse_page url
       link = (urlobj + link).to_s
     end
 
-    if link =~ /192\.168\.[0-9]+\.[0-9]+/ then
+    if link =~ /[^=]192\.168\.[0-9]+\.[0-9]+/ then
       # print error url link
       puts 'Error local URL found:'
       puts link
