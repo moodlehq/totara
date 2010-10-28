@@ -209,13 +209,18 @@ class assignment_base {
         global $USER, $CFG;
         require_once($CFG->libdir.'/gradelib.php');
 
-        if (!has_capability('mod/assignment:submit', $this->context, $USER->id, false)) {
-            // can not submit assignments -> no feedback
-            return;
+        if (!$submission) { /// Get submission for this assignment
+            $submission = $this->get_submission($USER->id, false);
         }
 
-        if (!$submission) { /// Get submission for this assignment
-            $submission = $this->get_submission($USER->id);
+        // Check the user can submit
+        $cansubmit = has_capability('mod/assignment:submit', $this->context, $USER->id, false);
+        // If not then check if ther user still has the view cap and has a previous submission
+        $cansubmit = $cansubmit || (!empty($submission) && has_capability('mod/assignment:view', $this->context, $USER->id, false));
+
+        if (!$cansubmit) {
+            // can not submit assignments -> no feedback
+            return;
         }
 
         $grading_info = grade_get_grades($this->course->id, 'mod', 'assignment', $this->assignment->id, $USER->id);
@@ -660,6 +665,9 @@ class assignment_base {
         $output .= '<script type="text/javascript">'."\n<!--\n";
         if (empty($SESSION->flextable['mod-assignment-submissions']->collapse['submissioncomment'])) {
             if ($quickgrade){
+                //remove carriage return
+                $submission->submissioncomment = str_replace(array("\r\n", "\n"), '', $submission->submissioncomment);
+
                 $output.= 'opener.document.getElementById("submissioncomment'.$submission->userid.'").value="'
                 .trim($submission->submissioncomment).'";'."\n";
              } else {
@@ -809,14 +817,19 @@ class assignment_base {
         /// Get all ppl that can submit assignments
 
         $currentgroup = groups_get_activity_group($cm);
-        if ($users = get_users_by_capability($context, 'mod/assignment:submit', 'u.id', '', '', '', $currentgroup, '', false)) {
-            $users = array_keys($users);
+        if (!empty($CFG->gradebookroles)) {
+            $gradebookroles = explode(",", $CFG->gradebookroles);
+        } else {
+            $gradebookroles = '';
         }
-
-        // if groupmembersonly used, remove users who are not in any group
-        if ($users and !empty($CFG->enablegroupings) and $cm->groupmembersonly) {
-            if ($groupingusers = groups_get_grouping_members($cm->groupingid, 'u.id', 'u.id')) {
-                $users = array_intersect($users, array_keys($groupingusers));
+        $users = get_role_users($gradebookroles, $context, true, '', 'u.lastname ASC', true, $currentgroup);
+        if ($users) {
+            $users = array_keys($users);
+            // if groupmembersonly used, remove users who are not in any group
+            if (!empty($CFG->enablegroupings) and $cm->groupmembersonly) {
+                if ($groupingusers = groups_get_grouping_members($cm->groupingid, 'u.id', 'u.id')) {
+                    $users = array_intersect($users, array_keys($groupingusers));
+                }
             }
         }
 
@@ -1066,16 +1079,19 @@ class assignment_base {
         $groupmode = groups_get_activity_groupmode($cm);
         $currentgroup = groups_get_activity_group($cm, true);
         groups_print_activity_menu($cm, $CFG->wwwroot . '/mod/assignment/submissions.php?id=' . $this->cm->id);
-
-        /// Get all ppl that are allowed to submit assignments
-        if ($users = get_users_by_capability($context, 'mod/assignment:submit', 'u.id', '', '', '', $currentgroup, '', false)) {
-            $users = array_keys($users);
+        if (!empty($CFG->gradebookroles)) {
+            $gradebookroles = explode(",", $CFG->gradebookroles);
+        } else {
+            $gradebookroles = '';
         }
-
-        // if groupmembersonly used, remove users who are not in any group
-        if ($users and !empty($CFG->enablegroupings) and $cm->groupmembersonly) {
-            if ($groupingusers = groups_get_grouping_members($cm->groupingid, 'u.id', 'u.id')) {
-                $users = array_intersect($users, array_keys($groupingusers));
+        $users = get_role_users($gradebookroles, $context, true, '', 'u.lastname ASC', true, $currentgroup);
+        if ($users) {
+            $users = array_keys($users);
+            if (!empty($CFG->enablegroupings) and $cm->groupmembersonly) {
+                $groupingusers = groups_get_grouping_members($cm->groupingid, 'u.id', 'u.id');
+                if ($groupingusers) {
+                    $users = array_intersect($users, array_keys($groupingusers));
+                }
             }
         }
 
@@ -2776,15 +2792,20 @@ function assignment_count_real_submissions($cm, $groupid=0) {
 
     $context = get_context_instance(CONTEXT_MODULE, $cm->id);
 
-    // this is all the users with this capability set, in this context or higher
-    if ($users = get_users_by_capability($context, 'mod/assignment:submit', 'u.id', '', '', '', $groupid, '', false)) {
-        $users = array_keys($users);
+    if (!empty($CFG->gradebookroles)) {
+        $gradebookroles = explode(",", $CFG->gradebookroles);
+    } else {
+        $gradebookroles = '';
     }
-
-    // if groupmembersonly used, remove users who are not in any group
-    if ($users and !empty($CFG->enablegroupings) and $cm->groupmembersonly) {
-        if ($groupingusers = groups_get_grouping_members($cm->groupingid, 'u.id', 'u.id')) {
-            $users = array_intersect($users, array_keys($groupingusers));
+    $users = get_role_users($gradebookroles, $context, true, '', 'u.lastname ASC', true, $groupid);
+    if ($users) {
+        $users = array_keys($users);
+        // if groupmembersonly used, remove users who are not in any group
+        if (!empty($CFG->enablegroupings) and $cm->groupmembersonly) {
+            $groupingusers = groups_get_grouping_members($cm->groupingid, 'u.id', 'u.id');
+            if ($groupingusers) {
+                $users = array_intersect($users, array_keys($groupingusers));
+            }
         }
     }
 
@@ -2901,9 +2922,9 @@ function assignment_types() {
         $types[$name] = get_string('type'.$name, 'assignment');
 
         // ugly hack to support pluggable assignment type titles..
-        if ($types[$name] == '[[type'.$name.']]') { 
+        if ($types[$name] == '[[type'.$name.']]') {
             $types[$name] = get_string('type'.$name, 'assignment_'.$name);
-        } 
+        }
     }
     asort($types);
     return $types;
@@ -2967,11 +2988,11 @@ function assignment_print_overview($courses, &$htmlarray) {
     $strreviewed = get_string('reviewed','assignment');
 
 
-    // NOTE: we do all possible database work here *outside* of the loop to ensure this scales 
-    
+    // NOTE: we do all possible database work here *outside* of the loop to ensure this scales
+
     // build up and array of unmarked submissions indexed by assigment id/ userid
     // for use where the user has grading rights on assigment
-    $rs = get_recordset_sql("SELECT id, assignment, userid 
+    $rs = get_recordset_sql("SELECT id, assignment, userid
                             FROM {$CFG->prefix}assignment_submissions
                             WHERE teacher = 0 AND timemarked = 0
                             AND assignment IN (". implode(',', $assignmentids).")");
@@ -2985,8 +3006,8 @@ function assignment_print_overview($courses, &$htmlarray) {
 
     // get all user submissions, indexed by assigment id
     $mysubmissions = get_records_sql("SELECT assignment, timemarked, teacher, grade
-                                      FROM {$CFG->prefix}assignment_submissions 
-                                      WHERE userid = {$USER->id} AND 
+                                      FROM {$CFG->prefix}assignment_submissions
+                                      WHERE userid = {$USER->id} AND
                                       assignment IN (".implode(',', $assignmentids).")");
 
     foreach ($assignments as $assignment) {
@@ -3005,7 +3026,13 @@ function assignment_print_overview($courses, &$htmlarray) {
 
             // count how many people can submit
             $submissions = 0; // init
-            if ($students = get_users_by_capability($context, 'mod/assignment:submit', 'u.id', '', '', '', 0, '', false)) {
+            if (!empty($CFG->gradebookroles)) {
+                $gradebookroles = explode(",", $CFG->gradebookroles);
+            } else {
+                $gradebookroles = '';
+            }
+            $students = get_role_users($gradebookroles, $context, true);
+            if ($students) {
                 foreach($students as $student){
                     if(isset($unmarkedsubmissions[$assignment->id][$student->id])){
                         $submissions++;

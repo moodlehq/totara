@@ -370,6 +370,13 @@ if ( !is_object($PHPCAS_CLIENT) ) {
      * @return mixed array with no magic quotes or false on error
      */
     function get_userinfo($username) {
+        // No LDAP servers configured, so user info has to be provided
+        // via other methods (CSV file, manually, etc.). Return empty
+        // array so existing user info is not lost.
+        if (empty($this->config->host_url)) {
+            return array();
+        }
+
         $textlib = textlib_get_instance();
         $extusername = $textlib->convert(stripslashes($username), 'utf-8', $this->config->ldapencoding);
         $ldapconnection = $this->ldap_connect();
@@ -480,6 +487,9 @@ if ( !is_object($PHPCAS_CLIENT) ) {
             //ldap_connect returns ALWAYS true
             if (!empty($this->config->version)) {
                 ldap_set_option($connresult, LDAP_OPT_PROTOCOL_VERSION, $this->config->version);
+            }
+            if ($this->config->user_type == 'ad') {
+                 ldap_set_option($connresult, LDAP_OPT_REFERRALS, 0);
             }
             if (!empty($binddn)) {
                 //bind with search-user
@@ -624,6 +634,12 @@ if ( !is_object($PHPCAS_CLIENT) ) {
      */
     function sync_users ($bulk_insert_records = 1000, $do_updates = true) {
         global $CFG;
+
+        if(empty($this->config->host_url)) {
+            echo "No LDAP server configured for CAS! Syncing disabled.\n";
+            return;
+        }
+
         $textlib = textlib_get_instance();
         $droptablesql = array(); /// sql commands to drop the table (because session scope could be a problem for
                                  /// some persistent drivers like ODBTP (mssql) or if this function is invoked
@@ -972,7 +988,7 @@ if ( !is_object($PHPCAS_CLIENT) ) {
      * @return boolean result
      */
     function iscreator($username) {
-        if ((empty($this->config->attrcreators) && empty($this->config->groupecreators)) or empty($this->config->memberattribute)) {
+        if (empty($this->config->host_url) or (empty($this->config->attrcreators) && empty($this->config->groupecreators)) or empty($this->config->memberattribute)) {
             return null;
         }
         $textlib = textlib_get_instance();

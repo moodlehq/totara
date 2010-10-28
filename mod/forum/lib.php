@@ -531,12 +531,14 @@ function forum_cron() {
                            'List-Id: "'.$cleanforumname.'" <moodleforum'.$forum->id.'@'.$hostname.'>',
                            'List-Help: '.$CFG->wwwroot.'/mod/forum/view.php?f='.$forum->id,
                            'Message-ID: <moodlepost'.$post->id.'@'.$hostname.'>',
-                           'In-Reply-To: <moodlepost'.$post->parent.'@'.$hostname.'>',
-                           'References: <moodlepost'.$post->parent.'@'.$hostname.'>',
                            'X-Course-Id: '.$course->id,
                            'X-Course-Name: '.format_string($course->fullname, true)
                 );
 
+                if ($post->parent) {  // This post is a reply, so add headers for threading (see MDL-22551)
+                    $userfrom->customheaders[] = 'In-Reply-To: <moodlepost'.$post->parent.'@'.$hostname.'>';
+                    $userfrom->customheaders[] = 'References: <moodlepost'.$post->parent.'@'.$hostname.'>';
+                }
 
                 $postsubject = "$course->shortname: ".format_string($post->subject,true);
                 $posttext = forum_make_mail_text($course, $forum, $discussion, $post, $userfrom, $userto);
@@ -1748,6 +1750,8 @@ function forum_get_readable_forums($userid, $courseid=0) {
             }
             $context = get_context_instance(CONTEXT_MODULE, $cm->id);
             $forum = $courseforums[$forumid];
+            $forum->context = $context;
+            $forum->cm = $cm;
 
             if (!has_capability('mod/forum:viewdiscussion', $context)) {
                 continue;
@@ -1838,8 +1842,8 @@ function forum_search_posts($searchterms, $courseid=0, $limitfrom=0, $limitnum=5
             $select[] = "(d.userid = {$USER->id} OR (d.timestart < $now AND (d.timeend = 0 OR d.timeend > $now)))";
         }
 
-        $cm = get_coursemodule_from_instance('forum', $forumid);
-        $context = get_context_instance(CONTEXT_MODULE, $cm->id);
+        $cm = $forum->cm;
+        $context = $forum->context;
 
         if ($forum->type == 'qanda'
             && !has_capability('mod/forum:viewqandawithoutposting', $context)) {

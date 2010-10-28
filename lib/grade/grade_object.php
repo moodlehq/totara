@@ -74,7 +74,7 @@ abstract class grade_object extends data_object {
             $data->oldid        = $this->id;
             $data->source       = $source;
             $data->timemodified = time();
-            $data->userlogged   = $USER->id;
+            $data->loggeduser   = $USER->id;
             insert_record($this->table.'_history', addslashes_recursive($data));
         }
 
@@ -105,7 +105,7 @@ abstract class grade_object extends data_object {
                 $data->oldid        = $this->id;
                 $data->source       = $source;
                 $data->timemodified = time();
-                $data->userlogged   = $USER->id;
+                $data->loggeduser   = $USER->id;
                 insert_record($this->table.'_history', addslashes_recursive($data));
             }
             $this->notify_changed(true);
@@ -149,7 +149,7 @@ abstract class grade_object extends data_object {
             $data->oldid        = $this->id;
             $data->source       = $source;
             $data->timemodified = time();
-            $data->userlogged   = $USER->id;
+            $data->loggeduser   = $USER->id;
             insert_record($this->table.'_history', addslashes_recursive($data));
         }
 

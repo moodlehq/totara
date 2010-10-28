@@ -138,7 +138,7 @@
             error("Incorrect cm");
         }
 
-        // call course_setup to use forced language, MDL-6926 
+        // call course_setup to use forced language, MDL-6926
         course_setup($course->id);
 
         $coursecontext = get_context_instance(CONTEXT_COURSE, $course->id);
@@ -267,6 +267,12 @@
         $replycount = forum_count_replies($post);
 
         if (!empty($confirm) && confirm_sesskey()) {    // User has confirmed the delete
+            //check user capability to delete post.
+            $timepassed = time() - $post->created;
+            if (($timepassed > $CFG->maxeditingtime) && !has_capability('mod/forum:deleteanypost', $modcontext)) {
+                print_error("cannotdeletepost", "forum",
+                          forum_go_back_to("discuss.php?d=$post->discussion"));
+            }
 
             if ($post->totalscore) {
                 notice(get_string("couldnotdeleteratings", "forum"),
@@ -757,7 +763,7 @@
 
     } else if (forum_user_has_posted($forum->id, 0, $USER->id)) {
         $subscribe = false;
-        
+
     } else {
         // user not posted yet - use subscription default specified in profile
         $subscribe = !empty($USER->autosubscribe);
