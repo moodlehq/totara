@@ -17,11 +17,11 @@ rm config.php
 
 echo "Drop old database t1-hudsontesting";
 DROPDB="DROP database \`t1-hudsontesting\`;"
-mysql -e "$DROPDB"
+mysql -u hudson -e "$DROPDB"
 
 echo "Create new database t1-hudsontesting";
 CREATEDB="CREATE database \`t1-hudsontesting\`;"
-mysql -e "$CREATEDB"
+mysql -u hudson -e "$CREATEDB"
 
 echo "Delete old moodledata";
 rm -Rf ../moodledata/
