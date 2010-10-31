@@ -38,9 +38,9 @@ chmod 777 ../moodle_error.log
 echo "Initialize installation";
 /usr/bin/php admin/cliupgrade.php \
       --lang=en_utf8 \
-      --webaddr="http://brumbies.wgtn.cat-it.co.nz/totara-hudson" \
-      --moodledir="/var/lib/hudson/jobs/Totara/workspace" \
-      --datadir="/var/lib/hudson/jobs/Totara/moodledata" \
+      --webaddr="http://brumbies.wgtn.cat-it.co.nz/totara-mysql-hudson" \
+      --moodledir="/var/lib/hudson/jobs/Totara-MySQL/workspace" \
+      --datadir="/var/lib/hudson/jobs/Totara-MySQL/moodledata" \
       --dbtype="mysql" \
       --dbname="t1-hudsontesting" \
       --dbhost="localhost" \
