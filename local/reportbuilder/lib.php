@@ -2226,7 +2226,7 @@ var comptree = [' . implode(', ', $comptrees) . '];
             foreach ($data as $datarow) {
                 for($col=0; $col<$numfields;$col++) {
                     if(isset($data[$filerow][$col])) {
-                        $worksheet[0]->write($row+$start, $col, htmlspecialchars_decode($data[$filerow][$col]));
+                        $worksheet[0]->write($row, $col, htmlspecialchars_decode($data[$filerow][$col]));
                     }
                 }
                 $filerow++;
@@ -2298,7 +2298,7 @@ var comptree = [' . implode(', ', $comptrees) . '];
             foreach ($data as $datarow) {
                 for($col=0; $col<$numfields; $col++) {
                     if(isset($data[$filerow][$col])) {
-                        $worksheet[0]->write($row+$start, $col, htmlspecialchars_decode($data[$filerow][$col]));
+                        $worksheet[0]->write($row, $col, htmlspecialchars_decode($data[$filerow][$col]));
                     }
                 }
                 $row++;
