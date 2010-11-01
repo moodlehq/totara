@@ -123,7 +123,7 @@ if ($frameworkform->is_cancelled()) {
     $frameworknew = get_record($shortprefix.'_framework', 'id', $frameworknew->id);
 
     // Log
-    add_to_log(SITEID, $type.'frameworks', 'update', "view.php?id=$frameworknew->id", '');
+    add_to_log(SITEID, 'hierarchy', $type.' framework update', "hierarchy/framework/view.php?type={$type}&amp;frameworkid=$frameworknew->id", "$framework->fullname (ID $framework->id)");
 
     redirect("$CFG->wwwroot/hierarchy/framework/index.php?type=$type");
     //never reached
@@ -132,8 +132,8 @@ if ($frameworkform->is_cancelled()) {
 
 /// Display page header
 $navlinks = array();    // Breadcrumbs
-$navlinks[] = array('name'=>get_string("{$type}frameworks", $type), 
-                    'link'=>"{$CFG->wwwroot}/hierarchy/framework/index.php?type={$type}", 
+$navlinks[] = array('name'=>get_string("{$type}frameworks", $type),
+                    'link'=>"{$CFG->wwwroot}/hierarchy/framework/index.php?type={$type}",
                     'type'=>'misc');
 if ($id == 0) {
     $navlinks[] = array('name'=>get_string('addnewframework', $type), 'link'=>'', 'type'=>'misc');

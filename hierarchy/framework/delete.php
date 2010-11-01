@@ -23,7 +23,7 @@ if (file_exists($CFG->dirroot.'/hierarchy/type/'.$type.'/lib.php')) {
     $hierarchy = new $type();
 } else {
     error('error:hierarchytypenotfound', 'hierarchy', $type);
-}   
+}
 
 // Setup page and check permissions
 admin_externalpage_setup($type.'frameworkmanage','',array('type'=>$type));
@@ -36,8 +36,8 @@ $framework = $hierarchy->get_framework($id);
 /// Display page
 ///
 $navlinks = array();    // Breadcrumbs
-$navlinks[] = array('name'=>get_string("{$type}frameworks", $type), 
-                    'link'=>"{$CFG->wwwroot}/hierarchy/framework/index.php?type={$type}", 
+$navlinks[] = array('name'=>get_string("{$type}frameworks", $type),
+                    'link'=>"{$CFG->wwwroot}/hierarchy/framework/index.php?type={$type}",
                     'type'=>'misc');
 $navlinks[] = array('name'=>get_string('deleteframework', $type, format_string($framework->fullname)), 'link'=>'', 'type'=>'misc');
 
@@ -70,11 +70,8 @@ if (!confirm_sesskey()) {
     print_error('confirmsesskeybad', 'error');
 }
 
-if ($type == 'organisation') {
-    add_to_log(SITEID, 'orgframework', 'delete', "view.php?type={$type}&frameworkid=$framework->id", "$framework->fullname (ID $framework->id)");
-} else {
-    add_to_log(SITEID, $type.'framework', 'delete', "view.php?type={$type}&frameworkid=$framework->id", "$framework->fullname (ID $framework->id)");
-}
+// Log
+add_to_log(SITEID, 'hierarchy', $type . ' framework delete', "hierarchy/framework/index.php?type={$type}", "$framework->fullname (ID $framework->id)");
 
 $hierarchy->delete_framework();
 
