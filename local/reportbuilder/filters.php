@@ -66,7 +66,7 @@ if($m && isset($fid)) {
 
 
 // form definition
-$mform =& new report_builder_edit_filters_form(null, compact('id','report'));
+$mform = new report_builder_edit_filters_form(null, compact('id','report'));
 
 // form results check
 if ($mform->is_cancelled()) {

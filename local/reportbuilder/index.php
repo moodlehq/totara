@@ -54,7 +54,7 @@
     }
 
     // form definition
-    $mform =& new report_builder_new_form();
+    $mform = new report_builder_new_form();
 
     // form results check
     if ($mform->is_cancelled()) {

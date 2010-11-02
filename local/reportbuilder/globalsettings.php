@@ -12,7 +12,7 @@ admin_externalpage_setup('globalreportsettings');
 $returnurl = $CFG->wwwroot."/local/reportbuilder/globalsettings.php";
 
 // form definition
-$mform =& new report_builder_global_settings_form();
+$mform = new report_builder_global_settings_form();
 
 // form results check
 if ($mform->is_cancelled()) {
