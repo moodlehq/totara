@@ -703,7 +703,7 @@ foreach ($progress as $user) {
         } else {
 
             if ($allow_marking_criteria === $criterion->id) {
-                $describe = get_string('completion-alt-auto-'.$criteria_completion->is_complete().'completion');
+                $describe = get_string('completion-alt-auto-'.$completiontype,'completion');
 
                 print '<td class="completion-progresscell">'.
                     '<a href="'.$CFG->wwwroot.'/course/togglecompletion.php?user='.$user->id.'&course='.$course->id.'&rolec='.$allow_marking_criteria.'">'.
