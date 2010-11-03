@@ -1371,6 +1371,7 @@ div.totara-dialog {
 div.totara-dialog div.ui-dialog-titlebar {
     margin: 0 0 10px;
     padding: 0 0 5px;
+    background-color: #FFFFFF;
     background-image: none;
     border-width: 0;
     border-bottom: 1px solid #CACACA;
