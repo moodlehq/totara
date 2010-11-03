@@ -1,5 +1,5 @@
-When /^I delete the (\d+)(?:st|nd|rd|th) framework$/ do |number|
-  within("table.editcompetency tr:nth-child(#{number.to_i+1})") do
+When /^I delete the (\d+)(?:st|nd|rd|th) (\w+) framework$/ do |number, frameworktype|
+  within("table.edit#{frameworktype} tr:nth-child(#{number.to_i+1})") do
     click_link "Delete"
   end
   click_button "Yes"

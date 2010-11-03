@@ -73,7 +73,7 @@ Feature: Manage Competency Frameworks
 | New Framework 3 | Test 3  | ID3 |
       And I am logged in as admin
       And I am on the manage competency frameworks page with editing on
-      And I delete the 2nd framework
+      And I delete the 2nd competency framework
     Then the edit competency frameworks table should match:
 |Name|
 | New Framework 1 |
