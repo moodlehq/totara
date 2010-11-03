@@ -6,6 +6,7 @@ module NavigationHelpers
       'competency' => 'comp',
       'competency scale' => 'comp_scale',
       'competency scale value' => 'comp_scale_values',
+      'organisation framework' => 'org_framework',
     }
   end
 
