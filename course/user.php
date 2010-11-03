@@ -377,6 +377,13 @@
                     $status = 'complete';
                 }
 
+                // If the user's status in the course hasn't been aggregated yet,
+                // it probably means the user has been enrolled in the course
+                // but the cron job hasn't run yet.
+                if ($status == ''){
+                    $status = 'notyetstarted';
+                }
+
                 $c = (object) array('id' => $course_completion->course);
                 $courses[$status][] = new completion_info($c);
             }
