@@ -7,12 +7,12 @@ load_config('postgres7')
 
 # store a table's contents to a temp file
 def save_table(table_name)
-  run "pg_dump -Fc -O -t #{table_name} #{@@test_database_name} > /tmp/#{table_name}.pgdump"
+  run "pg_dump -Fc -O -t #{table_name} -U #{@@test_database_username} #{@@test_database_name} > /tmp/#{table_name}.pgdump"
 end
 
 # load a table's contents from a temp file
 def load_table(table_name)
-  run "pg_restore -O -c -d #{@@test_database_name} /tmp/#{table_name}.pgdump"
+  run "pg_restore -O -c -d #{@@test_database_name} -U #{@@test_database_username} /tmp/#{table_name}.pgdump"
 end
 
 # run a query on the database
