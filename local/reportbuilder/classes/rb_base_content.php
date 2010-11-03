@@ -14,6 +14,18 @@
  * @subpackage reportbuilder
  */
 abstract class rb_base_content {
+
+    public $reportfor;
+
+    /*
+     * @param integer $reportfor User ID to determine who the report is for
+     *                           Typically this will be $USER->id, except
+     *                           in the case of scheduled reports run by cron
+     */
+    function __construct($reportfor=null) {
+        $this->reportfor = $reportfor;
+    }
+
     /*
      * All sub classes must define the following functions
      */
@@ -33,6 +45,7 @@ abstract class rb_base_content {
  * Pass in an integer that represents the position ID
  */
 class rb_current_pos_content extends rb_base_content {
+
     /**
      * Generate the SQL to apply this content restriction
      *
@@ -42,15 +55,15 @@ class rb_current_pos_content extends rb_base_content {
      * @return string SQL snippet to be used in a WHERE clause
      */
     function sql_restriction($field, $reportid) {
-        global $CFG, $USER;
+        global $CFG;
         require_once($CFG->dirroot.'/hierarchy/lib.php');
         require_once($CFG->dirroot.'/hierarchy/type/position/lib.php');
 
         // remove rb_ from start of classname
         $type = substr(get_class($this), 3);
         $settings = reportbuilder::get_all_settings($reportid, $type);
+        $userid = $this->reportfor;
 
-        $userid = $USER->id;
         // get the user's positionid (for primary position)
         $posid = get_field('pos_assignment', 'positionid', 'userid', $userid,
             'type', 1);
@@ -90,8 +103,7 @@ class rb_current_pos_content extends rb_base_content {
      * @return string Human readable description of the restriction
      */
     function text_restriction($title, $reportid) {
-        global $USER;
-        $userid = $USER->id;
+        $userid = $this->reportfor;
 
         // remove rb_ from start of classname
         $type = substr(get_class($this), 3);
@@ -179,6 +191,7 @@ class rb_current_pos_content extends rb_base_content {
  * Pass in an integer that represents the organisation ID
  */
 class rb_current_org_content extends rb_base_content {
+
     /**
      * Generate the SQL to apply this content restriction
      *
@@ -188,15 +201,15 @@ class rb_current_org_content extends rb_base_content {
      * @return string SQL snippet to be used in a WHERE clause
      */
     function sql_restriction($field, $reportid) {
-        global $CFG, $USER;
+        global $CFG;
         require_once($CFG->dirroot.'/hierarchy/lib.php');
         require_once($CFG->dirroot.'/hierarchy/type/organisation/lib.php');
 
         // remove rb_ from start of classname
         $type = substr(get_class($this), 3);
         $settings = reportbuilder::get_all_settings($reportid, $type);
+        $userid = $this->reportfor;
 
-        $userid = $USER->id;
         // get the user's organisationid (for primary position)
         $orgid = get_field('pos_assignment', 'organisationid', 'userid', $userid,
             'type', 1);
@@ -236,8 +249,7 @@ class rb_current_org_content extends rb_base_content {
      * @return string Human readable description of the restriction
      */
     function text_restriction($title, $reportid) {
-        global $USER;
-        $userid = $USER->id;
+        $userid = $this->reportfor;
 
         // remove rb_ from start of classname
         $type = substr(get_class($this), 3);
@@ -335,7 +347,7 @@ class rb_completed_org_content extends rb_base_content {
      * @return string SQL snippet to be used in a WHERE clause
      */
     function sql_restriction($field, $reportid) {
-        global $CFG,$USER;
+        global $CFG;
         require_once($CFG->dirroot.'/hierarchy/lib.php');
         require_once($CFG->dirroot.'/hierarchy/type/organisation/lib.php');
 
@@ -343,7 +355,7 @@ class rb_completed_org_content extends rb_base_content {
         $type = substr(get_class($this), 3);
         $settings = reportbuilder::get_all_settings($reportid, $type);
 
-        $userid = $USER->id;
+        $userid = $this->reportfor;
         // get the user's organisationid (for primary position)
         $orgid = get_field('pos_assignment','organisationid','userid',$userid,
             'type', 1);
@@ -375,8 +387,7 @@ class rb_completed_org_content extends rb_base_content {
      * @return string Human readable description of the restriction
      */
     function text_restriction($title, $reportid) {
-        global $USER;
-        $userid = $USER->id;
+        $userid = $this->reportfor;
 
         // remove rb_ from start of classname
         $type = substr(get_class($this), 3);
@@ -477,7 +488,7 @@ class rb_user_content extends rb_base_content {
      * @return string SQL snippet to be used in a WHERE clause
      */
     function sql_restriction($field, $reportid) {
-        global $USER;
+        $userid = $this->reportfor;
 
         // remove rb_ from start of classname
         $type = substr(get_class($this), 3);
@@ -486,7 +497,7 @@ class rb_user_content extends rb_base_content {
         $who = isset($settings['who']) ? $settings['who'] : null;
         if($who == 'own') {
             // show own records
-            return $field . ' = ' . $USER->id;
+            return $field . ' = ' . $userid;
         } else if ($who == 'reports') {
             // show staff records
             if($staff = totara_get_staff()) {
@@ -497,10 +508,10 @@ class rb_user_content extends rb_base_content {
         } else if ($who == 'ownandreports') {
             // show own and staff records
             if($staff = totara_get_staff()) {
-                return $field . ' IN (' . $USER->id . ',' .
+                return $field . ' IN (' . $userid . ',' .
                     implode(',', $staff) . ')';
             } else {
-                return $field . ' = ' . $USER->id;
+                return $field . ' = ' . $userid;
             }
         } else {
             // anything unexpected
@@ -517,13 +528,13 @@ class rb_user_content extends rb_base_content {
      * @return string Human readable description of the restriction
      */
     function text_restriction($title, $reportid) {
-        global $USER;
 
         // remove rb_ from start of classname
         $type = substr(get_class($this), 3);
         $settings = reportbuilder::get_all_settings($reportid, $type);
+        $userid = $this->reportfor;
 
-        $user = get_record('user','id',$USER->id);
+        $user = get_record('user','id',$userid);
         switch ($settings['who']) {
         case 'own':
             return $title . ' ' . get_string('is','local_reportbuilder') . ' "' .

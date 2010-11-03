@@ -67,6 +67,12 @@ define('REPORT_BUILDER_ACCESS_FAILED_UPDATE', 24);
 define('REPORT_BUILDER_GLOBAL_CONFIRM_UPDATE', 25);
 define('REPORT_BUILDER_GLOBAL_FAILED_UPDATE', 26);
 
+define('REPORT_BUILDER_SCHEDULE_CONFIRM_ADD', 27);
+define('REPORT_BUILDER_SCHEDULE_FAILED_ADD', 28);
+
+define('REPORT_BUILDER_SCHEDULE_CONFIRM_UPDATE', 29);
+define('REPORT_BUILDER_SCHEDULE_FAILED_UPDATE', 30);
+
 /**
  * Export option codes
  *
@@ -85,6 +91,22 @@ $REPORT_BUILDER_EXPORT_OPTIONS = array(
     'fusion' => REPORT_BUILDER_EXPORT_FUSION,
 );
 
+
+/**
+ *  Export schedule constants
+ *
+ */
+define('REPORT_BUILDER_SCHEDULE_DAILY', 1);
+define('REPORT_BUILDER_SCHEDULE_WEEKLY', 2);
+define('REPORT_BUILDER_SCHEDULE_MONTHLY', 3);
+
+global $REPORT_BUILDER_SCHEDULE_OPTIONS;
+$REPORT_BUILDER_SCHEDULE_OPTIONS = array(
+    'daily' => REPORT_BUILDER_SCHEDULE_DAILY,
+    'weekly' => REPORT_BUILDER_SCHEDULE_WEEKLY,
+    'monthly' => REPORT_BUILDER_SCHEDULE_MONTHLY,
+);
+
 /**
  * Main report builder object class definition
  */
@@ -94,7 +116,7 @@ class reportbuilder {
     public $_id, $recordsperpage, $defaultsortcolumn, $defaultsortorder;
     private $_joinlist, $_base, $_params, $_sid;
     private $_paramoptions, $_embeddedparams, $_fullcount, $_filteredcount;
-    public $src, $grouped;
+    public $src, $grouped, $reportfor;
 
     /**
      * Constructor for reportbuilder object
@@ -107,10 +129,12 @@ class reportbuilder {
      * @param string $shortname Shortname of the report to generate
      * @param object $embed Object containing settings for an embedded report
      * @param integer $sid Saved search ID if displaying a saved search
+     * @param integer $reportfor User ID of user who is viewing the report
+     *                           (or null to use the current user)
      *
      */
-    function reportbuilder($id=null, $shortname=null, $embed=false, $sid=null) {
-        global $CFG;
+    function reportbuilder($id=null, $shortname=null, $embed=false, $sid=null, $reportfor=null) {
+        global $CFG, $USER;
 
         if($id != null) {
             // look for existing report by id
@@ -176,6 +200,13 @@ class reportbuilder {
             $this->restore_saved_search();
         }
 
+        // determine who is viewing or receiving the report
+        // used for access and content restriction checks
+        if(isset($reportfor)) {
+            $this->reportfor = $reportfor;
+        } else {
+            $this->reportfor = $USER->id;
+        }
 
     }
 
@@ -896,15 +927,20 @@ var comptree = [' . implode(', ', $comptrees) . '];
     /** Returns true if the current user has permission to view this report
      *
      * @param integer $id ID of the report to be viewed
+     * @param integer $userid ID of user to check permissions for
      * @return boolean True if they have any of the required capabilities
      */
-    public static function is_capable($id) {
+    public static function is_capable($id, $userid=null) {
+        global $USER;
 
         // if the 'accessmode' flag is set to 0 let anyone view it
         $accessmode = get_field('report_builder', 'accessmode', 'id', $id);
         if($accessmode == 0) {
             return true;
         }
+
+        // check access for specified user, or the current user if none set
+        $foruser = isset($userid) ? $userid : $USER->id;
 
         $any = false;
         $all = true;
@@ -913,7 +949,7 @@ var comptree = [' . implode(', ', $comptrees) . '];
             if(is_subclass_of($class, 'rb_base_access')) {
                 // remove rb_ prefix
                 $settingname = substr($class, 3);
-                $obj = new $class();
+                $obj = new $class($foruser);
                 // is this option enabled?
                 if(reportbuilder::get_setting($id, $settingname, 'enable')) {
                     // does user have permission for this access option?
@@ -1011,7 +1047,7 @@ var comptree = [' . implode(', ', $comptrees) . '];
                 $settingname = $name . '_content';
                 $field = $option->field;
                 if(class_exists($classname)) {
-                    $class = new $classname();
+                    $class = new $classname($this->reportfor);
                     if(reportbuilder::get_setting($reportid, $settingname,
                         'enable')) {
                         // this content option is enabled
@@ -1054,7 +1090,7 @@ var comptree = [' . implode(', ', $comptrees) . '];
                 $settingname = $name . '_content';
                 $title = $option->title;
                 if(class_exists($classname)) {
-                    $class = new $classname();
+                    $class = new $classname($this->reportfor);
                     if(reportbuilder::get_setting($reportid, $settingname,
                         'enable')) {
                         // this content option is enabled
@@ -2176,22 +2212,28 @@ var comptree = [' . implode(', ', $comptrees) . '];
      *                            about the content of the report
      * @return Returns the ODS file
      */
-    function download_ods($fields, $query, $count, $restrictions=array()) {
+    function download_ods($fields, $query, $count, $restrictions=array(), $file=null) {
         global $CFG;
         require_once("$CFG->libdir/odslib.class.php");
         $shortname = $this->shortname;
         $filename = clean_filename($shortname.'_report.ods');
         $blocksize = 1000;
 
-        header("Content-Type: application/download\n");
-        header("Content-Disposition: attachment; filename=$filename");
-        header("Expires: 0");
-        header("Cache-Control: must-revalidate,post-check=0,pre-check=0");
-        header("Pragma: public");
-
-
-        $workbook = new MoodleODSWorkbook('-');
-        $workbook->send($filename);
+        if(!$file){
+            header("Content-Type: application/download\n");
+            header("Content-Disposition: attachment; filename=$filename");
+            header("Expires: 0");
+            header("Cache-Control: must-revalidate,post-check=0,pre-check=0");
+            header("Pragma: public");
+        }
+        
+        if($file){
+            $workbook = new MoodleODSWorkbook($file, true);
+        }
+        else{
+            $workbook = new MoodleODSWorkbook('-');
+            $workbook->send($filename);
+        }
 
         $worksheet = array();
 
@@ -2235,7 +2277,9 @@ var comptree = [' . implode(', ', $comptrees) . '];
         }
 
         $workbook->close();
-        die;
+        if(!$file){
+            die;
+        }
     }
 
     /** Download current table in XLS format
@@ -2246,7 +2290,7 @@ var comptree = [' . implode(', ', $comptrees) . '];
      *                            about the content of the report
      * @return Returns the Excel file
      */
-    function download_xls($fields, $query, $count, $restrictions=array()) {
+    function download_xls($fields, $query, $count, $restrictions=array(), $file=null) {
         global $CFG;
 
         require_once("$CFG->libdir/excellib.class.php");
@@ -2255,15 +2299,19 @@ var comptree = [' . implode(', ', $comptrees) . '];
         $filename = clean_filename($shortname.'_report.xls');
         $blocksize = 1000;
 
-        header("Content-Type: application/download\n");
-        header("Content-Disposition: attachment; filename=$filename");
-        header("Expires: 0");
-        header("Cache-Control: must-revalidate,post-check=0,pre-check=0");
-        header("Pragma: public");
+        if(!$file){
+            header("Content-Type: application/download\n");
+            header("Content-Disposition: attachment; filename=$filename");
+            header("Expires: 0");
+            header("Cache-Control: must-revalidate,post-check=0,pre-check=0");
+            header("Pragma: public");
 
-
-        $workbook = new MoodleExcelWorkbook('-');
-        $workbook->send($filename);
+            $workbook = new MoodleExcelWorkbook('-');
+            $workbook->send($filename);
+        }
+        else {
+            $workbook = new MoodleExcelWorkbook($file);
+        }
 
         $worksheet = array();
 
@@ -2307,7 +2355,9 @@ var comptree = [' . implode(', ', $comptrees) . '];
         }
 
         $workbook->close();
-        die;
+        if(!$file){
+            die;
+        }
     }
 
      /** Download current table in CSV format
@@ -2316,17 +2366,20 @@ var comptree = [' . implode(', ', $comptrees) . '];
      * @param integer $count Number of filtered records in query
      * @return Returns the CSV file
      */
-    function download_csv($fields, $query, $count) {
+    function download_csv($fields, $query, $count, $file=null) {
         global $CFG;
         $shortname = $this->shortname;
         $filename = clean_filename($shortname.'_report.csv');
         $blocksize = 1000;
-
-        header("Content-Type: application/download\n");
-        header("Content-Disposition: attachment; filename=$filename");
-        header("Expires: 0");
-        header("Cache-Control: must-revalidate,post-check=0,pre-check=0");
-        header("Pragma: public");
+        $csv = '';
+        
+        if(!$file){
+            header("Content-Type: application/download\n");
+            header("Content-Disposition: attachment; filename=$filename");
+            header("Expires: 0");
+            header("Cache-Control: must-revalidate,post-check=0,pre-check=0");
+            header("Pragma: public");
+        }
 
         $delimiter = get_string('listsep');
         $encdelim  = '&#'.ord($delimiter).';';
@@ -2335,7 +2388,7 @@ var comptree = [' . implode(', ', $comptrees) . '];
             $row[] = str_replace($delimiter, $encdelim, $fieldname);
         }
 
-        echo implode($delimiter, $row)."\n";
+        $csv .= implode($delimiter, $row)."\n";
 
         $numfields = count($fields);
         // break the data into blocks as single array gets too big
@@ -2352,13 +2405,20 @@ var comptree = [' . implode(', ', $comptrees) . '];
                         $row[] = '';
                     }
                 }
-                echo implode($delimiter, $row)."\n";
+                $csv .= implode($delimiter, $row)."\n";
                 $i++;
             }
 
         }
-        die;
 
+        if($file) {
+            $fp = fopen ($file, "w");
+            fwrite($fp, $csv);
+            fclose($fp);
+        } else {
+            echo $csv;
+            die;
+        }
     }
 
     /* Download current table to Google Fusion
@@ -2991,3 +3051,231 @@ function sql_group_concat($field, $delimiter=', ', $unique=false) {
     return $sql;
 }
 
+/**
+ * Returns reports that the current user can view
+ *
+ * @param boolean showhidden If true include hidden reports
+ *
+ * @return array Array of report objects
+ */
+function get_reports($showhidden=false) {
+    global $CFG;
+    require_once($CFG->dirroot.'/local/reportbuilder/lib.php');
+    $reports = get_records('report_builder','','','fullname');
+    if (!is_array($reports)){
+        $reports = array();
+    }
+    $context = get_context_instance(CONTEXT_SYSTEM);
+
+    $return = array();
+    foreach ($reports as $report) {
+        // show reports user has permission to view, that are not hidden
+        if(reportbuilder::is_capable($report->id)) {
+            if($showhidden || !$report->hidden) {
+                $return[] = $report;
+            }
+        }
+    }
+
+    return $return;
+}
+
+
+
+/**
+ *  Send Scheduled report to a user
+ *
+ *  @param object $sched Object containing data from schedule table
+ *
+ *  @return boolean True if email was successfully sent
+ */
+function send_scheduled_report($sched){
+    global $CFG, $REPORT_BUILDER_EXPORT_OPTIONS;
+    $export_codes = array_flip($REPORT_BUILDER_EXPORT_OPTIONS);
+
+    if(!$user = get_record('user', 'id', $sched->userid)) {
+        error_log(get_string('error:invaliduserid', 'local_reportbuilder'));
+        return false;
+    }
+
+    if(!$report = get_record('report_builder', 'id', $sched->reportid)) {
+        error_log(get_string('error:invalidreportid', 'local_reportbuilder'));
+        return false;
+    }
+
+    // don't send the report if the user doesn't have permission
+    // to view it
+    if(!reportbuilder::is_capable($sched->reportid, $sched->userid)) {
+        error_log(get_string('error:nopermissionsforscheduledreport','local_reportbuilder', $sched));
+        return false;
+    }
+
+    if($sched->savedreportid!=0) {
+        $attachment = create_attachment($sched->reportid, $sched->format, $user->id, $sched->savedsearchid);
+    } else {
+        $attachment = create_attachment($sched->reportid, $sched->format, $user->id);
+    }
+
+    switch($sched->format) {
+        case REPORT_BUILDER_EXPORT_EXCEL:
+            $attachmentfilename = 'report.xls';
+            break;
+        case REPORT_BUILDER_EXPORT_CSV:
+            $attachmentfilename = 'report.csv';
+            break;
+        case REPORT_BUILDER_EXPORT_ODS:
+            $attachmentfilename = 'report.ods';
+            break;
+    }
+
+    $reporturl = $CFG->wwwroot;
+    if(isset($report->embeddedurl)){
+        $reporturl .= $report->embeddedurl;
+    } else {
+        $reporturl .= '/local/reportbuilder/report.php?id=' . $sched->reportid;
+    }
+    if($sched->savedsearchid!=0) {
+        $reporturl .= '&sid=' . $sched->savedsearchid;
+    }
+
+    $messagedetails = new object();
+    $messagedetails->reportname = $report->fullname;
+    $messagedetails->exporttype = get_string($export_codes[$sched->format] . 'format', 'local_reportbuilder');
+    $messagedetails->reporturl = $reporturl;
+    $messagedetails->scheduledreportsindex = $CFG->wwwroot . '/my/reports.php#scheduled';
+
+    switch($sched->frequency) {
+        case REPORT_BUILDER_SCHEDULE_DAILY:
+            $schedule .= get_string('daily', 'local_reportbuilder') . ' ' .  get_string('at', 'local_reportbuilder');
+            $schedule .= strftime('%l:%M%P' ,mktime($sched->schedule,0,0));
+            break;
+        case REPORT_BUILDER_SCHEDULE_WEEKLY:
+            $schedule .= get_string('weekly', 'local_reportbuilder') . ' ' . get_string('on', 'local_reportbuilder');
+            $schedule .= get_string($CALENDARDAYS[$sched->schedule], 'calendar');
+            break;
+        case REPORT_BUILDER_SCHEDULE_MONTHLY:
+            $schedule .= get_string('monthly', 'local_reportbuilder') . ' ' . get_string('onthe', 'local_reportbuilder');
+            $schedule .= date('jS' ,mktime(0,0,0,0,$sched->schedule));
+            break;
+    }
+    $messagedetails->schedule = $schedule;
+
+    $subject = $report->fullname . ' ' . get_string('report', 'local_reportbuilder');
+
+    if($sched->savedsearchid!=0) {
+        if(!$savename = get_field('report_builder_saved', 'name', 'id', $sched->savedsearchid)) {
+            mtrace(get_string('error:invalidsavedsearchid', 'local_reportbuilder'));
+        } else {
+            $messagedetails->savedtext = get_string('savedsearchmessage', 'local_reportbuilder', $savename);
+        }
+    } else {
+        $messagedetails->savedtext = '';
+    }
+
+    $message = get_string('scheduledreportmessage', 'local_reportbuilder', $messagedetails);
+
+    $fromaddress = $CFG->noreplyaddress;
+
+    $emailed = email_to_user($user, $fromaddress, $subject, $message, '', $attachment, $attachmentfilename);
+
+    if(!unlink($CFG->dataroot . '/' . $attachment)) {
+        mtrace(get_string('error:failedtoremovetempfile', 'local_reportbuilder'));
+    }
+
+    return $emailed;
+}
+
+/**
+ *  Creates an export of a report in specified format (xls, csv or ods)
+ *  for adding to email as attachment
+ *
+ *  @param integer reportid ID of the report to generate attachement for
+ *  @param integer format Type of attachment to create
+ *  @param integer userid ID of the user the report is for
+ *  @param integer sid Saved search ID to use
+ *
+ *  @return string Filename of the created attachment
+ */
+function create_attachment($reportid, $format, $userid, $sid=null){
+    global $CFG;
+
+    $report = new reportbuilder($reportid, null, false, $sid, $userid);
+    $columns = $report->columns;
+    $shortname = $report->shortname;
+    $count = $report->get_filtered_count();
+    $sql = $report->build_query(false, true);
+
+    // array of filters that have been applied
+    // for including in report where possible
+    $restrictions = $report->get_restriction_descriptions();
+
+    $headings = array();
+    foreach($columns as $column) {
+        // check that column should be included
+        if($column->display_column(true)) {
+            $headings[] = strip_tags($column->heading);
+        }
+    }
+    $tempfilename = md5(time());
+    $tempfilepathname = $CFG->dataroot . '/' . $tempfilename;
+
+    switch($format) {
+        case REPORT_BUILDER_EXPORT_ODS:
+            $filename = $report->download_ods($headings, $sql, $count, $restrictions, $tempfilepathname);
+            break;
+        case REPORT_BUILDER_EXPORT_EXCEL:
+            $filename = $report->download_xls($headings, $sql, $count, $restrictions, $tempfilepathname);
+            break;
+        case REPORT_BUILDER_EXPORT_CSV:
+            $filename = $report->download_csv($headings, $sql, $count, $tempfilepathname);
+            break;
+    }
+
+    return $tempfilename;
+}
+
+
+/**
+ *  Calculates the next specified day of a month
+ *  eg. the 3rd of next month
+ *
+ * @param integer $time The timestamp to do the calcuation from
+ * @param integer $day The date of the month to calculate
+ *
+ * @return integer Calculated date at midnight
+ */
+function get_next_monthly($time, $day){
+    $currentday = date('j', $time);
+    $currentmonth = date('n', $time);
+    $currentyear = date('Y', $time);
+
+    // if the day we want hasn't already passed, the next day will
+    // be in the current month. Otherwise it will be in the following
+    // month - offset it accordingly
+    if($currentday >= $day){
+        $offset=1;
+    } else {
+        $offset=0;
+    }
+    $newmonth = $currentmonth+$offset;
+
+    if($newmonth == 13) { //The end of the year
+        $newyear = $currentyear+1;
+        $newmonth = 1;
+    } else {
+        $newyear = $currentyear;
+    }
+
+    $daysinmonth = cal_days_in_month(CAL_GREGORIAN, $newmonth, $newyear);
+    // If the new day is greater than the days in the month
+    // then set it to be the last day of the month
+    if($day > $daysinmonth){
+        $newday = $daysinmonth;
+    } else {
+        $newday = $day;
+    }
+
+    $nexttime = mktime(0,0,0,$newmonth,$newday,$newyear);
+
+    return $nexttime;
+}

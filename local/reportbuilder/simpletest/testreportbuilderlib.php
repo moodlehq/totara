@@ -81,6 +81,22 @@ class reportbuilderlib_test extends prefix_changing_test_case {
         array(1, 'datejoined', 'Date Joined', 'text', '', 1, 1, 0, 0, 1, 0, 0, '', 30, 2048, 0, '', ''),
     );
 
+    var $comp_data = array(
+        array('id', 'fullname', 'shortname', 'description', 'idnumber', 'frameworkid', 'path', 'depthid', 'parentid',
+            'sortorder', 'visible', 'aggregationmethod', 'scaleid', 'proficencyexpected', 'evidencecount', 'timecreated',
+            'timemodified', 'usermodified'),
+        array(1, 'Competency 1', 'Comp 1', 'Competency Description 1', 'C1', 1, '/1', 1, 0, 1, 1, 1, -1, 1, 0,
+            1265963591, 1265963591, 2),
+        array(2, 'Competency 2', 'Comp 2', 'Competency Description 2', 'C2', 1, '/1/2', 2, 1, 2, 1, 1, -1, 1, 0,
+            1265963591, 1265963591, 2),
+        array(3, 'F2 Competency 1', 'F2 Comp 1', 'F2 Competency Description 1', 'F2 C1', 2, '/3', 3, 0, 1, 1, 1, -1, 1, 0,
+            1265963591, 1265963591, 2),
+        array(4, 'Competency 3', 'Comp 3', 'Competency Description 3', 'C3', 1, '/1/4', 2, 1, 3, 1, 1, -1, 1, 0,
+            1265963591, 1265963591, 2),
+        array(5, 'Competency 4', 'Comp 4', 'Competency Description 4', 'C4', 1, '/5', 1, 0, 4, 1, 1, -1, 1, 0,
+            1265963591, 1265963591, 2),
+    );
+
     var $org_data = array(
         array('id', 'fullname', 'shortname', 'description', 'idnumber', 'frameworkid', 'path', 'depthid', 'parentid', 'sortorder', 'visible', 'timecreated', 'timemodified', 'usermodified'),
         array(1, 'District Office', 'DO', '', '', 1, '/1', 1, 0, 1, 1, 0, 0, 2),
@@ -94,6 +110,13 @@ class reportbuilderlib_test extends prefix_changing_test_case {
     var $comp_scale_values_data = array(
         array('id', 'name', 'idnumber', 'description', 'scaleid', 'numeric', 'sortorder', 'timemodified', 'usermodified'),
         array(1, 'Competent', '', '', 1, '', 1, 0, 2),
+        array(2, 'Partially Competent', '', '', 1, '', 2, 0, 2),
+        array(3, 'Not Competent', '', '', 1, '', 3, 0, 2),
+    );
+
+    var $comp_evidence_data = array(
+        array('id','userid','competencyid','positionid','organisationid','assessorid','assessorname','assessmenttype','proficiency','timecreated','timemodified','reaggregate', 'manual'),
+        array(1,2,1,1,1,1,'Assessor','', 1, 1100775600, 1100775600, 0, 1),
     );
 
     // reduced version of user table
@@ -106,7 +129,7 @@ class reportbuilderlib_test extends prefix_changing_test_case {
     // reduced version of pos_assignment table
     var $pos_assignment_data = array(
         array('id', 'fullname','shortname','organisationid','positionid','userid','type'),
-        array(1, 'Title', 'Title', null, null, 2, 1),
+        array(1, 'Title', 'Title', 1, 1, 2, 1),
     );
 
     function setUp() {
@@ -119,9 +142,11 @@ class reportbuilderlib_test extends prefix_changing_test_case {
         load_test_table($CFG->prefix . 'report_builder_saved', $this->reportbuilder_saved_data, $db);
         load_test_table($CFG->prefix . 'role', $this->role_data, $db);
         load_test_table($CFG->prefix . 'user_info_field', $this->user_info_field_data, $db);
+        load_test_table($CFG->prefix . 'comp', $this->comp_data, $db);
         load_test_table($CFG->prefix . 'org', $this->org_data, $db);
         load_test_table($CFG->prefix . 'pos', $this->pos_data, $db);
         load_test_table($CFG->prefix . 'comp_scale_values', $this->comp_scale_values_data, $db);
+        load_test_table($CFG->prefix . 'comp_evidence', $this->comp_evidence_data, $db);
         load_test_table($CFG->prefix . 'role_assignments', $this->role_assignments_data, $db);
         load_test_table($CFG->prefix . 'context', $this->context_data, $db);
         load_test_table($CFG->prefix . 'user', $this->user_data, $db);
@@ -563,24 +588,35 @@ class reportbuilderlib_test extends prefix_changing_test_case {
         // create a complex set of filtering criteria
         $SESSION->$filtername = array(
             'user-fullname' => array(
-                'operator' => 0,
-                'value' => 'John',
+                array(
+                    'operator' => 0,
+                    'value' => 'John',
+                )
             ),
-            'user-organisationid' => array(
-                'operator' => 1,
-                'value' => '21,1,106,111,112,113,2,211,212,213,3,311,312,313,4,411,412,413,812,6,611,612,613,7,711,712,713,714,9,813,911,912,913,914',
+            'user-organisationpath' => array(
+                array(
+                    'operator' => 1,
+                    'value' => '21',
+                    'recursive' => 1,
+                )
             ),
             'competency-fullname' => array(
-                'operator' => 0,
-                'value' => 'fire',
+                array(
+                    'operator' => 0,
+                    'value' => 'fire',
+                )
             ),
             'competency_evidence-completeddate' => array(
-                'after' => 0,
-                'before' => 1271764800,
+                array(
+                    'after' => 0,
+                    'before' => 1271764800,
+                )
             ),
             'competency_evidence-proficiencyid' => array(
-                'operator' => 1,
-                'value' => '3',
+                array(
+                    'operator' => 1,
+                    'value' => '3',
+                )
             ),
         );
         $rb = $this->rb;
@@ -599,6 +635,9 @@ class reportbuilderlib_test extends prefix_changing_test_case {
         $this->assertPattern('/where \(\s+true\s+\)\s*/i', $sql_count_unfiltered);
         $this->assertPattern('/where \(\s+true\s+\)\s*/i', $sql_query_unfiltered);
         // hard to do further testing as no actual data or tables exist
+
+        // delete complex query from session
+        unset($SESSION->$filtername);
     }
 
     // can't test the following functions as data and tables don't exist
@@ -770,5 +809,31 @@ class reportbuilderlib_test extends prefix_changing_test_case {
         $this->assertEqual($thirdbefore, $thirdafter);
     }
 
+    function test_reportbuilder_get_next_monthly() {
+        $firstresult = get_next_monthly(1287313200, 20);
+        $this->assertEqual($firstresult, 1287486000);
+
+        $secondresult = get_next_monthly(1287509000 , 20);
+        $this->assertEqual($secondresult, 1290164400);
+
+        $thirdresult = get_next_monthly(1287658800 , 20);
+        $this->assertEqual($thirdresult, 1290164400);
+    }
+
+    function test_create_attachment() {
+        global $CFG;
+
+        $filename = create_attachment(1, 1, 2, 0);
+        $this->assertTrue(file_exists($CFG->dataroot . '/' . $filename));
+        unlink($CFG->dataroot . '/' . $filename);
+
+        $filename = create_attachment(1, 2, 2, 0);
+        $this->assertTrue(file_exists($CFG->dataroot . '/' . $filename));
+        unlink($CFG->dataroot . '/' . $filename);
+
+        $filename = create_attachment(1, 4, 2, 0);
+        $this->assertTrue(file_exists($CFG->dataroot . '/' . $filename));
+        unlink($CFG->dataroot . '/' . $filename);
+    }
 }
 

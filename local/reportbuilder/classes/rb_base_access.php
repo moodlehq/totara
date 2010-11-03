@@ -14,6 +14,18 @@
  * @subpackage reportbuilder
  */
 abstract class rb_base_access {
+
+    public $foruser;
+
+    /*
+     * @param integer $foruser User ID to determine access for
+     *                         Typically this will be $USER->id, except
+     *                         in the case of scheduled reports run by cron
+     */
+    function __construct($foruser=null) {
+        $this->foruser = $foruser;
+    }
+
     /*
      * All sub classes must define the following functions
      */
@@ -33,19 +45,20 @@ class rb_role_access extends rb_base_access {
      * @return boolean True if user has access rights
      */
     function access_restriction($reportid) {
-        global $CFG, $USER;
+        global $CFG;
         // return true if user has rights to access by role
 
         // remove the rb_ from class
         $type = substr(get_class($this), 3);
         $allowedroles = reportbuilder::get_setting($reportid, $type, 'activeroles');
         $contextsetting = reportbuilder::get_setting($reportid, $type, 'context');
+        $userid = $this->foruser;
 
         if($contextsetting == 'any') {
             // find roles the user has in any context
             $userroles = get_records_sql_menu("SELECT DISTINCT roleid, 1
                 FROM {$CFG->prefix}role_assignments
-                WHERE userid = $USER->id");
+                WHERE userid = $userid");
             if(!$userroles) {
                 $userroles = array();
             }
@@ -54,7 +67,7 @@ class rb_role_access extends rb_base_access {
             // default to this if not set
             $context = get_context_instance(CONTEXT_SYSTEM);
             $userroles = array();
-            if($data = get_user_roles($context, 0, false)) {
+            if($data = get_user_roles($context, $userid, false)) {
                 foreach($data as $item) {
                     $userroles[$item->roleid] = 1;
                 }

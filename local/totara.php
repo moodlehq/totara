@@ -275,7 +275,7 @@ function totara_print_report_manager($return=false) {
 
             // if admin with edit mode on show settings button too
             if(has_capability('moodle/local:admin',$context) && isset($USER->editing) && $USER->editing) {
-                $row .= '<a href="'.$CFG->wwwroot.'/local/reportbuilder/settings.php?id='.$report->id.'">'.
+                $row .= '<a href="'.$CFG->wwwroot.'/local/reportbuilder/general.php?id='.$report->id.'">'.
                     '<img src="'.$CFG->pixpath.'/t/edit.gif" alt="'.get_string('settings','local').'"></a>';
             }
             $row .= '</span>
@@ -298,6 +298,107 @@ function totara_print_report_manager($return=false) {
         return $returnstr;
     }
     echo $returnstr;
+}
+
+
+function totara_print_scheduled_reports($return=false) {
+    global $CFG, $USER, $REPORT_BUILDER_EXPORT_OPTIONS, $REPORT_BUILDER_SCHEDULE_OPTIONS, $CALENDARDAYS;
+    $REPORT_BUILDER_SCHEDULE_CODES = array_flip($REPORT_BUILDER_SCHEDULE_OPTIONS);
+
+    require_once($CFG->dirroot.'/local/reportbuilder/lib.php');
+    require_once($CFG->dirroot.'/calendar/lib.php');
+    require_once($CFG->dirroot.'/local/reportbuilder/scheduled_forms.php');
+
+
+    $sql = 'SELECT rbs.*, rb.fullname
+            FROM mdl_report_builder_schedule rbs
+            JOIN mdl_report_builder rb
+            ON rbs.reportid=rb.id
+            WHERE rbs.userid='.$USER->id;
+
+    if($scheduledreports = get_records_sql($sql)){
+        $columns[] = 'reportname';
+        $headers[] = get_string('reportname', 'local_reportbuilder');
+        $columns[] = 'data';
+        $headers[] = get_string('savedsearch', 'local_reportbuilder');
+        $columns[] = 'format';
+        $headers[] = get_string('format', 'local_reportbuilder');
+        $columns[] = 'schedule';
+        $headers[] = get_string('schedule', 'local_reportbuilder');
+
+        $columns[] = 'options';
+        $headers[] = get_string('options', 'local');
+
+        $shortname = 'scheduled_reports';
+        $table = new flexible_table($shortname);
+        $table->define_columns($columns);
+        $table->define_headers($headers);
+        $table->set_attribute('class', 'scheduled-reports generalbox');
+        $table->column_class('options', 'options');
+
+        $table->setup();
+
+        foreach($scheduledreports as $sched) {
+            if(isset($sched->frequency) && isset($sched->schedule)){
+                $schedule = '';
+
+                switch($REPORT_BUILDER_SCHEDULE_CODES[$sched->frequency]){
+                case 'daily':
+                    $schedule .= get_string('daily', 'local_reportbuilder') . ' ' .  get_string('at', 'local_reportbuilder') . ' ';
+                    $schedule .= strftime('%l:%M%P' ,mktime($sched->schedule,0,0));
+                    break;
+                case 'weekly':
+                    $schedule .= get_string('weekly', 'local_reportbuilder') . ' ' . get_string('on', 'local_reportbuilder') . ' ';
+                    $schedule .= get_string($CALENDARDAYS[$sched->schedule], 'calendar');
+                    break;
+                case 'monthly':
+                    $schedule .= get_string('monthly', 'local_reportbuilder') . ' ' . get_string('onthe', 'local_reportbuilder') . ' ';
+                    $schedule .= date('jS' ,mktime(0,0,0,0,$sched->schedule));
+                    break;
+                }
+            }
+            else {
+                $schedule = get_string('schedulenotset', 'local_reportbuilder');
+            }
+
+            foreach($REPORT_BUILDER_EXPORT_OPTIONS as $option => $code) {
+                // bitwise operator to see if option bit is set
+                if($sched->format == $code) {
+                    $format = get_string($option . 'format','local_reportbuilder');
+                }
+            }
+
+            $data = '';
+            if($sched->savedsearchid!=0){
+                $data .= get_field('report_builder_saved', 'name', 'id', $sched->savedsearchid);
+            }
+            else {
+                $data .= get_string('alldata', 'local_reportbuilder');
+            }
+
+            $tablerow = array();
+            $tablerow[] = $sched->fullname;
+            $tablerow[] = $data;
+            $tablerow[] = $format;
+            $tablerow[] = $schedule;
+
+            $tablerow[] = '<a href="'.$CFG->wwwroot.'/local/reportbuilder/scheduled.php?id='.$sched->id .'" title="'.get_string('edit').
+                '"><img src="'.$CFG->pixpath.'/t/edit.gif" class="iconsmall" alt="'.get_string('edit').'" /></a>'. ' ' .
+                '<a href="'.$CFG->wwwroot.'/local/reportbuilder/deletescheduled.php?id='.$sched->id.'" title="'.get_string('delete').
+                '"><img src="'.$CFG->pixpath.'/t/delete.gif" class="iconsmall" alt="'.get_string('delete').'" /></a>';
+
+            $table->add_data($tablerow);
+        }
+
+        $table->print_html();
+    }
+    else {
+        echo get_string('noscheduledreports', 'local_reportbuilder') . '<br /><br />';
+    }
+
+    $mform = new scheduled_reports_add_form($CFG->wwwroot . '/local/reportbuilder/scheduled.php', array());
+    $mform->display();
+
 }
 
 function totara_print_my_courses() {

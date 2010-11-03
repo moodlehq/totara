@@ -199,6 +199,7 @@ $string['savedsearchdeleted'] = 'Saved search deleted';
 $string['savedsearchconfirmdelete'] = 'Are you sure you want to delete this saved search?';
 $string['showhidecolumns'] = 'Show/Hide Columns';
 $string['activitygroups'] = 'Activity Groups';
+$string['scheduledreports'] = 'Scheduled Reports';
 $string['groupconfirmdelete'] = 'Are you sure you want to delete this group?';
 $string['groupdeleted'] = 'Group deleted.';
 $string['error:groupnotdeleted'] = 'Group could not be deleted';
@@ -245,3 +246,53 @@ $string['help:restrictionoptions'] = 'The checkboxes below determine who has acc
 $string['reportbuilder:managereports'] = 'Create, edit and delete report builder reports';
 $string['myreports'] = 'My Reports';
 $string['noheadingcolumnsdefined'] = 'No heading columns defined';
+
+$string['addscheduledreport'] = 'Add Scheduled Report';
+$string['editscheduledreport'] = 'Edit Scheduled Report';
+$string['scheduledreportsettings'] = 'Scheduled report settings';
+$string['schedule'] = 'Schedule';
+$string['scheduledaily'] = 'Daily';
+$string['scheduleweekly'] = 'Weekly';
+$string['schedulemonthly'] = 'Monthly';
+$string['format'] = 'Format';
+$string['daily'] = 'Daily';
+$string['weekly'] = 'Weekly';
+$string['monthly'] = 'Monthly';
+$string['addedscheduledreport'] = 'Added new scheduled report';
+$string['deletecheckschedulereport'] = 'Are you sure you would like to delete this scheduled report?';
+$string['deletedscheduledreport'] = 'Successfully deleted Scheduled Report \'$a\'';
+$string['scheduledreportmessage'] = 'Attached is a copy of the \'$a->reportname\' report in $a->exporttype. $a->savedtext
+
+You can also view this report online at:
+
+$a->reporturl
+
+You are scheduled to receive this report $a->schedule.
+To delete or update your scheduled report settings, visit:
+
+$a->scheduledreportsindex';
+
+$string['savedsearchmessage'] = 'Only the data matching the \'$a\' search is included.';
+$string['allscheduledreports'] = 'All Scheduled Reports';
+$string['schedulenotset'] = 'Schedule not set';
+$string['noscheduledreports'] = 'There are no scheduled reports';
+$string['alldata'] = 'All data';
+$string['savedsearch'] = 'Saved Search';
+
+$string['at'] = 'at';
+$string['on'] = 'on';
+$string['onthe'] = 'on the';
+
+$string['odsformat'] = 'ODS format';
+$string['xlsformat'] = 'Excel format';
+$string['csvformat'] = 'text format';
+
+$string['updatescheduledreport'] = 'Successfully updated Scheduled Report';
+$string['error:updatescheduledreport'] = 'Error updating Scheduled Report';
+$string['error:addscheduledreport'] = 'Error adding new Scheduled Report';
+$string['error:invaliduserid'] = 'Invalid user ID';
+$string['error:invalidreportid'] = 'Invalid report ID';
+$string['error:nopermissionsforscheduledreport'] = 'Scheduled Report Error: User $a->userid is not capable of viewing report $a->reportid.';
+$string['error:failedtoremovetempfile'] = 'Failed to remove temporary report export file';
+$string['error:invalidreportscheduleid'] = 'Invalid scheduled report ID';
+

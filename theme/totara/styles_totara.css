@@ -1744,8 +1744,6 @@ img.percentImage {
 /***********/
 
 
-
-
 /*****************************************************************************/
 /** Course and Category Icons **/
 /*****************************************************************************/
@@ -1753,4 +1751,25 @@ img.percentImage {
 .course_icon{
     padding-right: 5px;
     vertical-align: middle;
+}
+
+
+/*****************************************************************************/
+/** Scheduled Reports **/
+/*****************************************************************************/
+table.scheduled-reports {
+    width: 100%;
+}
+
+table.scheduled-reports .options {
+    text-align: center;
+    width: 30px;
+}
+
+.scheduled-reports tr td {
+    padding: 5px 10px;
+}
+
+.scheduled-reports tr th {
+    padding: 5px 10px;
 }

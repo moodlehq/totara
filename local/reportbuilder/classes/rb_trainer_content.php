@@ -20,16 +20,16 @@ class rb_trainer_content extends rb_base_content {
      * @return string SQL snippet to be used in a WHERE clause
      */
     function sql_restriction($field, $reportid) {
-        global $USER;
 
         // remove rb_ from start of classname
         $type = substr(get_class($this), 3);
         $settings = reportbuilder::get_all_settings($reportid, $type);
+        $userid = $this->reportfor;
 
         $who = isset($settings['who']) ? $settings['who'] : null;
         if($who == 'own') {
             // show own records
-            return $field . ' = ' . $USER->id;
+            return $field . ' = ' . $userid;
         } else if ($who == 'reports') {
             // show staff records
             if($staff = totara_get_staff()) {
@@ -40,10 +40,10 @@ class rb_trainer_content extends rb_base_content {
         } else if ($who == 'ownandreports') {
             // show own and staff records
             if($staff = totara_get_staff()) {
-                return $field . ' IN (' . $USER->id . ',' .
+                return $field . ' IN (' . $userid . ',' .
                     implode(',', $staff) . ')';
             } else {
-                return $field . ' = ' . $USER->id;
+                return $field . ' = ' . $userid;
             }
         } else {
             // anything unexpected
@@ -60,13 +60,13 @@ class rb_trainer_content extends rb_base_content {
      * @return string Human readable description of the restriction
      */
     function text_restriction($title, $reportid) {
-        global $USER;
 
         // remove rb_ from start of classname
         $type = substr(get_class($this), 3);
         $settings = reportbuilder::get_all_settings($reportid, $type);
+        $userid = $this->reportfor;
 
-        $user = get_record('user','id',$USER->id);
+        $user = get_record('user','id',$userid);
         switch ($settings['who']) {
         case 'own':
             return $title . ' ' . get_string('is','local_reportbuilder') . ' "' .
