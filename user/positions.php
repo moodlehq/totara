@@ -138,12 +138,12 @@ $form = new user_position_assignment_form($currenturl, compact('type', 'user', '
 $form->set_data($position_assignment);
 
 // Don't show the page if there are no positions
-if ( !count_records('pos') ){
+if (!count_records('pos')) {
     print_header("{$course->fullname}: {$fullname}: {$positiontype}", $course->fullname, $navigation);
     include($CFG->dirroot.'/user/tabs.php');
     print_heading(get_string('noposition','position'));
 }
-else if(!$position_assignment->id) {
+else if (!$position_assignment->id) {
     print_header("{$course->fullname}: {$fullname}: {$positiontype}", $course->fullname, $navigation);
     include($CFG->dirroot.'/user/tabs.php');
     print_heading(get_string('nopositionsassigned', 'position'));
