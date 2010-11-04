@@ -194,7 +194,7 @@ function local_get_stock_icons($type) {
 
     if ($path = local_get_stock_icon_dir($type)) {
         $d = dir($path.'/large');
-        while(($icon = $d->read()) !== false) {
+        foreach(scandir($path.'/large') as $icon) {
             if (is_file($path.'/large/'.$icon)) {
 
                 $icons[$icon] = ucwords(strtr($icon, array('_' => ' ', '-' => ' ', '.png' => '')));
