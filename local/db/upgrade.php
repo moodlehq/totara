@@ -2256,6 +2256,7 @@ function xmldb_local_upgrade($oldversion) {
         $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
         $table->addFieldInfo('uid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
         $table->addFieldInfo('hash', XMLDB_TYPE_CHAR, '100', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
+        $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
         $table->addIndexInfo('uid', XMLDB_INDEX_NOTUNIQUE, array('uid'));
         if (!table_exists($table)) {
             create_table($table);
