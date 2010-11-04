@@ -1416,6 +1416,7 @@ div.totara-dialog div.ui-dialog-buttonpane {
     margin: 10px 0 0;
     padding: 5px 0 0;
     background-image: none;
+    background-color: #fff;
     border: none;
     border-width: 0;
     border-top: 1px solid #CACACA;
