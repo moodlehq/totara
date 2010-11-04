@@ -68,7 +68,6 @@ elseif ($USER->id == $user->id &&
     $can_edit = true;
 }
 
-
 // Check a valid position type was supplied
 if ($type === '') {
     $type = reset($POSITION_TYPES);
@@ -143,7 +142,7 @@ if (!count_records('pos')) {
     include($CFG->dirroot.'/user/tabs.php');
     print_heading(get_string('noposition','position'));
 }
-else if (!$position_assignment->id) {
+else if (!$can_edit && !$position_assignment->id) {
     print_header("{$course->fullname}: {$fullname}: {$positiontype}", $course->fullname, $navigation);
     include($CFG->dirroot.'/user/tabs.php');
     print_heading(get_string('nopositionsassigned', 'position'));
