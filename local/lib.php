@@ -193,14 +193,12 @@ function local_get_stock_icons($type) {
     $icons = array('none' => get_string('none', 'local'));
 
     if ($path = local_get_stock_icon_dir($type)) {
-        $d = dir($path.'/large');
         foreach(scandir($path.'/large') as $icon) {
             if (is_file($path.'/large/'.$icon)) {
 
                 $icons[$icon] = ucwords(strtr($icon, array('_' => ' ', '-' => ' ', '.png' => '')));
             }
         }
-        $d->close();
     }
     return($icons);
 }
