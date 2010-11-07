@@ -45,7 +45,7 @@
     <?php
         // Display notifications set with totara_set_notification()
         foreach (totara_get_notifications() as $notice) {
-            notify($notice);
+            notify($notice[0], $notice[1]);
         }
 
         unset($notices, $notice);

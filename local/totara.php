@@ -38,16 +38,17 @@ if (!defined('MOODLE_INTERNAL')) {
  *
  * @param   string  $message    Message to display
  * @param   string  $redirect   Url to redirect to (optional)
+ * @param   string  $style      Type of notice to display
  * @return  void
  */
-function totara_set_notification($message, $redirect = null) {
+function totara_set_notification($message, $redirect = null, $style = 'notifyproblem') {
     global $SESSION;
 
     if (!is_array($SESSION->totara_notifications)) {
         $SESSION->totara_notifications = array();
     }
 
-    $SESSION->totara_notifications[] = $message;
+    $SESSION->totara_notifications[] = array($message, $style);
 
     if ($redirect !== null) {
         redirect($redirect);
