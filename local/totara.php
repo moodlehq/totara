@@ -34,22 +34,31 @@ if (!defined('MOODLE_INTERNAL')) {
 /**
  * Save a notification message for displaying on the subsequent page view
  *
- * Optionally supply a url for redirecting to before displaying the message.
+ * Optionally supply a url for redirecting to before displaying the message
+ * and/or an options array.
+ *
+ * Currently the options array only supports a 'style' entry for passing as
+ * the second parameter to notify()
  *
  * @param   string  $message    Message to display
  * @param   string  $redirect   Url to redirect to (optional)
- * @param   string  $style      Type of notice to display
+ * @param   array   $options    Options array (optional)
  * @return  void
  */
-function totara_set_notification($message, $redirect = null, $style = 'notifyproblem') {
-    global $SESSION;
+function totara_set_notification($message, $redirect = null, $options = array()) {
 
-    if (!is_array($SESSION->totara_notifications)) {
-        $SESSION->totara_notifications = array();
+    // Check options is an array
+    if (!is_array($options)) {
+        print_error('error:notificationsparamtypewrong', 'local');
     }
 
-    $SESSION->totara_notifications[] = array($message, $style);
+    // Add message to options array
+    $options['message'] = $message;
 
+    // Add to notifications queue
+    totara_queue_append('notifications', $options);
+
+    // Redirect if requested
     if ($redirect !== null) {
         redirect($redirect);
         exit();
@@ -57,7 +66,7 @@ function totara_set_notification($message, $redirect = null, $style = 'notifypro
 }
 
 
-/*
+/**
  * Return an array containing any notifications in $SESSION
  *
  * Should be called in the theme's header
@@ -65,18 +74,59 @@ function totara_set_notification($message, $redirect = null, $style = 'notifypro
  * @return  array
  */
 function totara_get_notifications() {
+    return totara_queue_shift('notifications', true);
+}
+
+
+/**
+ * Add an item to a totara session queue
+ *
+ * @param   string  $key    Queue key
+ * @param   mixed   $data   Data to add to queue
+ * @return  void
+ */
+function totara_queue_append($key, $data) {
     global $SESSION;
 
-    // Check if any notifications have yet to be displayed
-    if (empty($SESSION->totara_notifications)) {
-        return array();
+    if (!isset($SESSION->totara_queue)) {
+        $SESSION->totara_queue = array();
     }
 
-    // Get notifications and reset session
-    $notifications = $SESSION->totara_notifications;
-    $SESSION->totara_notifications = array();
+    if (!isset($SESSION->totara_queue[$key])) {
+        $SESSION->totara_queue[$key] = array();
+    }
 
-    return $notifications;
+    $SESSION->totara_queue[$key][] = $data;
+}
+
+
+/**
+ * Return part or all of a totara session queue
+ *
+ * @param   string  $key    Queue key
+ * @param   boolean $all    Flag to return entire session queue (optional)
+ * @return  mixed
+ */
+function totara_queue_shift($key, $all = false) {
+    global $SESSION;
+
+    // Value to return if no items in queue
+    $return = $all ? array() : null;
+
+    // Check if an items in queue
+    if (empty($SESSION->totara_queue) || empty($SESSION->totara_queue[$key])) {
+        return $return;
+    }
+
+    // If returning all, grab all and reset queue
+    if ($all) {
+        $return = $SESSION->totara_queue[$key];
+        $SESSION->totara_queue[$key] = array();
+        return $return;
+    }
+
+    // Otherwise pop oldest item from queue
+    return array_shift($SESSION->totara_queue[$key]);
 }
 
 

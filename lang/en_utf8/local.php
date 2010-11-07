@@ -238,4 +238,5 @@ $string['courseicon'] = 'Course icon';
 
 //Errors
 $string['error:norolesfound'] = 'No roles found';
+$string['error:notificationsparamtypewrong'] = 'Incorrect param type sent to Totara notifications';
 $string['error:unknownbuttonclicked'] = 'Unknown button clicked';
