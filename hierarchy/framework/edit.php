@@ -73,18 +73,21 @@ if ($frameworkform->is_cancelled()) {
             error('Error creating '.$type.' framework record');
         }
 
+        // Log
+        add_to_log(SITEID, 'hierarchy', $type.' framework create', "hierarchy/framework/view.php?type={$type}&amp;frameworkid=$frameworknew->id", "$frameworknew->fullname (ID $frameworknew->id)");
+
     // Existing framework
     } else {
         if (!update_record($shortprefix.'_framework', $frameworknew)) {
             error('Error updating '.$type.' framework record');
         }
+
+        // Log
+        add_to_log(SITEID, 'hierarchy', $type.' framework update', "hierarchy/framework/view.php?type={$type}&amp;frameworkid=$frameworknew->id", "$framework->fullname (ID $framework->id)");
     }
 
     // Reload from db
     $frameworknew = get_record($shortprefix.'_framework', 'id', $frameworknew->id);
-
-    // Log
-    add_to_log(SITEID, 'hierarchy', $type.' framework update', "hierarchy/framework/view.php?type={$type}&amp;frameworkid=$frameworknew->id", "$framework->fullname (ID $framework->id)");
 
     redirect("$CFG->wwwroot/hierarchy/framework/index.php?type=$type");
     //never reached
