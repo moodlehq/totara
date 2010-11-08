@@ -16,11 +16,11 @@
 #
 
 echo "STEP 1: Run Cucumber Link checker tests";
-cucumber --tags @nightly --format junit --out build/logs/xml/
+cucumber --format junit --out build/logs/xml/
 
 # too slow
-echo "STEP 2: Count lines of code";
-sloccount --wide --details . > build/logs/sloccount.sc
+#echo "STEP 2: Count lines of code";
+#sloccount --wide --details . > build/logs/sloccount.sc
 
 # echo "Run pDepend";
 # TOO CPU/MEMORY INTENSIVE
