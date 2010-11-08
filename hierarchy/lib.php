@@ -130,7 +130,7 @@ class hierarchy {
                         WHERE ic.frameworkid=f.id) AS item_count ";
         }
         $sql .= "FROM {$CFG->prefix}{$this->shortprefix}_framework f 
-                 ORDER BY f.fullname";
+                 ORDER BY f.sortorder, f.fullname";
 
         return get_records_sql($sql);
 
