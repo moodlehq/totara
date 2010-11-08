@@ -45,9 +45,13 @@
     <?php
         // Display notifications set with totara_set_notification()
         foreach (totara_get_notifications() as $notice) {
-            notify($notice);
+            if (isset($notice['style'])) {
+                notify($notice['message'], $notice['style']);
+            } else {
+                notify($notice['message']);
+            }
         }
 
-        unset($notices, $notice);
+        unset($notice);
     ?>
 <?php } ?>

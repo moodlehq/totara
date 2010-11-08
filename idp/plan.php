@@ -157,6 +157,12 @@ if ('create' == $action or 'rename' == $action or 'clone' == $action) {
                 $idp = new object();
             }
 
+            if ('create' == $action) {
+                $idp = new object();
+                $idp->startdate = strftime('%d/%m/%Y', $defaultstartdate);
+                $idp->enddate = strftime('%d/%m/%Y', $defaultenddate);
+            }
+
             $form->set_data($idp);
             print '<p>'.get_string('trainingperiodexplanation', 'idp').'</p>';
             $form->display();

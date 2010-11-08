@@ -972,4 +972,36 @@ class hierarchy {
         $instance = new $typename();
         return $instance->shortprefix;
     }
+
+
+    /**
+     * Helper function for loading a hierarchy library and
+     * return an instance
+     *
+     * @access  public
+     * @param   $type   string  Hierarchy type
+     * @return  $object Instance of the hierarchy type object
+     */
+    static function load_hierarchy($type) {
+        global $CFG;
+
+        // $type could be user input so sanitize
+        $type = clean_param($type, PARAM_ALPHA);
+
+        // Check file exists
+        $libpath = $CFG->dirroot.'/hierarchy/type/'.$type.'/lib.php';
+        if (!file_exists($libpath)) {
+            error('error:hierarchytypenotfound', 'hierarchy', $type);
+        }
+
+        // Load library
+        require_once $libpath;
+
+        // Check class exists
+        if (!class_exists($type)) {
+            error('error:hierarchytypenotfound', 'hierarchy', $type);
+        }
+
+        return new $type();
+    }
 }

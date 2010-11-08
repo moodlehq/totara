@@ -123,7 +123,12 @@ if ($frameworkform->is_cancelled()) {
     $frameworknew = get_record($shortprefix.'_framework', 'id', $frameworknew->id);
 
     // Log
-    add_to_log(SITEID, 'hierarchy', $type.' framework update', "hierarchy/framework/view.php?type={$type}&amp;frameworkid=$frameworknew->id", "$framework->fullname (ID $framework->id)");
+    // New framework
+    if ($framework->id == 0) {
+        add_to_log(SITEID, 'hierarchy', $type.' framework create', "hierarchy/framework/view.php?type={$type}&amp;frameworkid=$frameworknew->id", "$frameworknew->fullname (ID $frameworknew->id)");
+    } else {
+        add_to_log(SITEID, 'hierarchy', $type.' framework update', "hierarchy/framework/view.php?type={$type}&amp;frameworkid=$frameworknew->id", "$framework->fullname (ID $framework->id)");
+    }
 
     redirect("$CFG->wwwroot/hierarchy/framework/index.php?type=$type");
     //never reached

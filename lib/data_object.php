@@ -150,7 +150,7 @@ abstract class data_object {
             if (is_null($value)) {
                 $wheresql[] = " $var IS NULL ";
             } else {
-                $wheresql[] = " $var = '{$value}'";
+                $wheresql[] = " $var = '{$value}' ";
             }
         }
 
