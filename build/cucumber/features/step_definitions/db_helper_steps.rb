@@ -2,6 +2,20 @@ Given /^there are no (.+) records$/ do |name|
   delete_all_records get_table(name)
 end
 
+Given /^there (?:is|are) (\d+) (.+) records? with (\d+) (.+) each$/ do |number, name, numberchild, namechild|
+  Given "there are no #{name} records"
+  Given "there are no #{namechild} records"
+  1.upto(number.to_i) do |count|
+    And "there is a #{name} record numbered #{count}"
+    1.upto(numberchild.to_i) do |countchild|
+      And "there is a #{namechild} record numbered #{countchild}"
+    end
+  end
+  Then "there should be #{number} #{name} records"
+  total = numberchild.to_i * number.to_i
+  Then "there should be #{total} #{namechild} records"
+end
+
 Given /^there (?:is|are) (\d+) (.+) records?$/ do |number, name|
   Given "there are no #{name} records"
   1.upto(number.to_i) do |count|

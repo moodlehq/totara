@@ -394,3 +394,28 @@ def is_int? str
   return !result.nil?
 end
 
+
+# ?: makes parenthesis group without saving the result (don't create a backreference)
+When /^I follow|click(?: the)* "([^\"]*)"(?: link)* and save the page$/ do |link|
+  click_link(link)
+  filename = "/tmp/webrat-#{Time.now.to_i}.html"
+
+  File.open(filename, "w") do |f|
+    f.write response_body
+  end
+end
+
+When /^I press "([^\"]*)" and save the page$/ do |button|
+  begin
+    click_button(button)
+  rescue Mechanize::ResponseCodeError => ex
+    error_response_body = ex.page.parser.inner_html
+
+  end
+  filename = "/tmp/webrat-#{Time.now.to_i}.html"
+
+  File.open(filename, "w") do |f|
+    f.write response_body
+  end
+
+end

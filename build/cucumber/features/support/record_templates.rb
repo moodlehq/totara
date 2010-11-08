@@ -57,3 +57,34 @@ def get_org_framework_record number
     'usermodified' => 0,
   }
 end
+
+def get_org_framework_record number
+  {
+    'fullname' => 'Test Organisation Framework '+number.to_s,
+    'shortname' => 'Test Org Framework '+number.to_s,
+    'idnumber' => 'ID'+number.to_s,
+    'description' => 'Description for Test Organisation Framework '+number.to_s,
+    'sortorder' => get_next_sequence('mdl_org_framework', 'sortorder'),
+    'visible' => 1,
+    'hidecustomfields' => 1,
+    'showitemfullname' => 1,
+    'showdepthfullname' => 1,
+    'timecreated' => Time.now.to_i,
+    'timemodified' => Time.now.to_i,
+    'usermodified' => 0,
+  }
+end
+
+def get_org_depth_record number
+  {
+    'fullname' => 'Test Organisation Depth '+number.to_s,
+    'shortname' => 'Test Org Depth '+number.to_s,
+    'description' => 'Description for Test Organisation Depth '+number.to_s,
+    'depthlevel' => 1,
+    'frameworkid' => get_current_sequence('mdl_org_framework', 'id'),
+    'timecreated' => Time.now.to_i,
+    'timemodified' => Time.now.to_i,
+    'usermodified' => 0,
+  }
+end
+

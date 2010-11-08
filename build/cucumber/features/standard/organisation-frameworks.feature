@@ -1,5 +1,5 @@
 Feature: Manage Organisation Frameworks
-  In order to maintain the site organisations
+  In order to maintain the site organisation frameworks
   As an administrator
   I want to be able to add, edit and delete organisation frameworks
 
@@ -87,3 +87,106 @@ Feature: Manage Organisation Frameworks
     Then I should see "Missing framework full name"
       And I should see "Missing framework short name"
       And there should be 0 organisation framework records
+
+  @store_org_framework
+  Scenario: Edit a organisation framework
+    Given there are 1 organisation framework records
+      And I am logged in as admin
+      And I am on the manage organisation frameworks page with editing on
+      And I edit the 1st edit organisation frameworks table entry
+      And I fill in "fullname" with "My organisation changed"
+      And I fill in "shortname" with "My shortname"
+      And I press "Save changes"
+    Then I should be on manage organisation frameworks page
+      And I should see "My organisation changed"
+
+  @store_org_framework
+  Scenario: Hide a organisation framework
+    Given there are 1 organisation framework records
+      And I am logged in as admin
+      And I am on the manage organisation frameworks page with editing on
+      And I hide the 1st edit organisation frameworks table entry
+    Then I should see "show.gif" within the edit organisation frameworks table
+
+  @store_org_framework
+  Scenario: Reordering by moving up a organisation framework
+    Given the organisation framework table contains:
+|fullname|shortname|idnumber|
+| New Framework 1 | Test 1  | ID1 |
+| New Framework 2 | Test 2  | ID2 |
+| New Framework 3 | Test 3  | ID3 |
+      And I am logged in as admin
+      And I am on the manage organisation frameworks page with editing on
+      And I Move up the 2nd edit organisation frameworks table entry
+    Then the edit organisation frameworks table should match:
+|Name|
+| New Framework 2 |
+| New Framework 1 |
+| New Framework 3 |
+
+
+  @store_org_framework
+  Scenario: Reordering by moving down a organisation framework
+    Given the organisation framework table contains:
+|fullname|shortname|idnumber|
+| New Framework 1 | Test 1  | ID1 |
+| New Framework 2 | Test 2  | ID2 |
+| New Framework 3 | Test 3  | ID3 |
+      And I am logged in as admin
+      And I am on the manage organisation frameworks page with editing on
+      And I Move down the 2nd edit organisation frameworks table entry
+    Then the edit organisation frameworks table should match:
+|Name|
+| New Framework 1 |
+| New Framework 3 |
+| New Framework 2 |
+
+  @store_org_framework
+  @store_org_depth
+  Scenario: No organisation depth
+    Given there is 1 organisation framework record
+      And I am logged in as admin
+      And I am on the manage organisations page
+    Then I should see "No depth levels in this framework"
+      And I should not see "Test Organisation Depth"
+
+  @store_org_framework
+  @store_org_depth
+  Scenario: One organisation with 2 organisation depth
+    Given there is 1 organisation framework record with 2 organisation depth each
+      And I am logged in as admin
+      And I am on the manage organisations page
+    Then I should see "Test Organisation Depth" 2 times
+      And I should not see "No depth levels in this framework"
+
+# Requires to patch webrat, query params on get method are written incorrectly.
+# this similar to fix below, convert array of hashmap to just hashmaps
+# https://webrat.lighthouseapp.com/projects/10503/tickets/380-fix-for-query-string-building-when-using-mechanize-adapter
+  @store_org_framework
+  @store_org_depth
+  Scenario: Add a organisation depth
+    Given there is 1 organisation framework record
+      And I am logged in as admin
+      And I am on the manage organisation frameworks page
+      And I click the "Test Organisation Framework 1" link
+      And I press "Add a new depth level"
+      And I fill in "fullname" with "My organisation depth fullname"
+      And I fill in "shortname" with "My org depth shortname"
+      And I press "Save changes" 
+  Then I should see "My organisation depth fullname"
+
+
+  @store_org_framework
+  @store_org_depth
+  Scenario: Add a organisation depth with incomplete data, gives validation message
+    Given there is 1 organisation framework record
+      And there are no organisation depth records 
+      And I am logged in as admin
+      And I am on the manage organisation frameworks page
+      And I click the "Test Organisation Framework 1" link 
+      And I press "Add a new depth level"
+      And I press "Save changes" 
+  Then I should see "Missing depth level full name"
+      And I should see "Missing depth level short name"
+      And there should be 0 organisation depth records
+

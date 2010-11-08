@@ -7,6 +7,7 @@ module NavigationHelpers
       'competency scale' => 'comp_scale',
       'competency scale value' => 'comp_scale_values',
       'organisation framework' => 'org_framework',
+      'organisation depth' => 'org_depth',
     }
   end
 
@@ -16,6 +17,7 @@ module NavigationHelpers
       'edit competency frameworks table'       => 'table.editcompetency',
       'edit position frameworks table'         => 'table.editposition',
       'edit organisation frameworks table'     => 'table.editorganisation',
+      'edit organisation table'                => 'table.editorganisation',
     }
   end
 

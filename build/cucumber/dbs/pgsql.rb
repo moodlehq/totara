@@ -46,3 +46,13 @@ def get_next_sequence table_name, field_name
   end
 end
 
+# get current sequence, can't use currval as sessions are terminated
+# using max also like get_next_sequence
+def get_current_sequence table_name, field_name
+  result = run_query("SELECT MAX(#{field_name}) AS count FROM #{table_name}")
+  if result.getvalue(0,0).nil? then
+    1
+  else
+    result.getvalue(0,0)
+  end
+end
