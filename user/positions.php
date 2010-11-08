@@ -181,7 +181,7 @@ else {
         commit_sql();
 
         // Display success message
-        totara_set_notification(get_string('positionsaved','position'), $currenturl);
+        totara_set_notification(get_string('positionsaved','position'), $currenturl, array('style' => 'notifysuccess'));
     }
 
     if (!$can_edit) {
