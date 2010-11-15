@@ -39,10 +39,6 @@ class competency_edit_form extends item_edit_form {
 
         $mform->addElement('static', 'scalename', get_string('scale'), ($scaledesc)?$scaledesc:get_string('none'));
 
-        // TODO: Remove this dirty hack. Not currently using the not null
-        // scaleid column, but we want to retain it for (hopefully soon) future use
-        $mform->addElement('hidden', 'scaleid', -1);
-        $mform->setType('scaleid', PARAM_INT);
         $mform->setHelpButton('scalename', array('competencyscale', get_string('scale')), true);
     }
 }

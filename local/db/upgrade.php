@@ -2285,6 +2285,14 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && add_key($table, $key);
     }
 
+    if ($result && $oldversion < 2010111600) {
+        // Drop unused scaleid field from comp table
+        $table = new XMLDBTable('comp');
+        $field = new XMLDBField('scaleid');
+        $result = $result && drop_field($table, $field);
+    }
+
+
     return $result;
 }
 ?>

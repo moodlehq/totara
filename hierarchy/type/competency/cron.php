@@ -214,8 +214,11 @@ function competency_cron_aggregate_evidence($timestarted, $depth) {
             {$CFG->prefix}comp_evidence ce
          ON ce.competencyid = c.id
         INNER JOIN
+            {$CFG->prefix}comp_scale_assignments csa
+         ON c.frameworkid = csa.frameworkid
+        INNER JOIN
             {$CFG->prefix}comp_scale cs
-         ON c.scaleid = cs.id
+         ON csa.scaleid = cs.id
         LEFT JOIN
             {$CFG->prefix}comp_evidence_items_evidence ceie
          ON cei.evidenceid = ceie.itemid
