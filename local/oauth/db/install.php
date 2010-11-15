@@ -5,7 +5,7 @@
 //   * lib.php/modulename_install() post installation hook
 //   * partially defaults.php
 
-function xmldb_quiz_install() {
+function xmldb_local_oauth_install() {
     global $DB;
 
 /// Install logging support
@@ -25,4 +25,5 @@ function xmldb_quiz_install() {
     // default the config to disabled
     set_config('oauthenabled', 0, 'local_oauth');
 
+    return true;
 }
