@@ -1272,10 +1272,36 @@
                fwrite ($bf,full_tag("COMPLETIONGRADEITEMNUMBER",6,false,$course_module->completiongradeitemnumber));
                fwrite ($bf,full_tag("COMPLETIONVIEW",6,false,$course_module->completionview));
                fwrite ($bf,full_tag("COMPLETIONEXPECTED",6,false,$course_module->completionexpected));
+               fwrite ($bf,full_tag("AVAILABLEFROM",6,false,$course_module->availablefrom));
+               fwrite ($bf,full_tag("AVAILABLEUNTIL",6,false,$course_module->availableuntil));
+               fwrite ($bf,full_tag("SHOWAVAILABILITY",6,false,$course_module->showavailability));
                // get all the role_capabilities overrides in this mod
                write_role_overrides_xml($bf, $context, 6);
                /// write role_assign code here
                write_role_assignments_xml($bf, $preferences, $context, 6);
+
+               // write availability data if enabled
+               if (!empty($CFG->enableavailability)) {
+                    // Get all availability data for this module
+                    $data = get_records('course_modules_availability', 'coursemoduleid', $course_module->id);
+
+                    // If data found
+                    if ($data) {
+                        fwrite ($bf,start_tag("AVAILABILITYDATA",6,true));
+
+                        foreach($data as $condition) {
+                            // Write condition record
+                            fwrite ($bf,start_tag("CONDITION",7,true));
+                            fwrite ($bf,full_tag("SOURCECMID",8,false,$condition->sourcecmid));
+                            fwrite ($bf,full_tag("REQUIREDCOMPLETION",8,false,$condition->requiredcompletion));
+                            fwrite ($bf,full_tag("GRADEITEMID",8,false,$condition->gradeitemid));
+                            fwrite ($bf,full_tag("GRADEMIN",8,false,$condition->grademin));
+                            fwrite ($bf,full_tag("GRADEMAX",8,false,$condition->grademax));
+                            fwrite ($bf,end_tag("CONDITION",7,true));
+                        }
+                        fwrite ($bf,end_tag("AVAILABILITYDATA",6,true));
+                    }
+               }
                // write completion data if enabled and user data enabled
                require_once($CFG->libdir.'/completionlib.php');
                $completion=new completion_info($course);

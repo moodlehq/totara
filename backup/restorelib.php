@@ -1581,6 +1581,9 @@ define('RESTORE_GROUPS_GROUPINGS', 3);
                                         $course_module->completiongradeitemnumber=backup_todb($mod->completiongradeitemnumber);
                                         $course_module->completionview=$mod->completionview;
                                         $course_module->completionexpected=$mod->completionexpected;
+                                        $course_module->availablefrom=$mod->availablefrom;
+                                        $course_module->availableuntil=$mod->availableuntil;
+                                        $course_module->showavailability=$mod->showavailability;
 
                                         $newidmod = insert_record("course_modules", addslashes_recursive($course_module));
                                         if ($newidmod) {
@@ -1791,6 +1794,90 @@ define('RESTORE_GROUPS_GROUPINGS', 3);
             }
 
         }
+        return $status;
+    }
+
+    //This function restores all the conditional availability data from xml
+    function restore_create_conditionalavailabilitydata($restore, $xml_file) {
+
+        global $CFG,$db;
+
+        $status = true;
+
+        // Check it exists
+        if (!file_exists($xml_file)) {
+            return false;
+        }
+
+        // Get info from xml
+        $sections = restore_read_xml_sections($xml_file);
+
+        // Check if any availability data exists
+        if (empty($sections->availabilitydata)) {
+            return true;
+        }
+
+        // Loop through mods in each section
+        foreach ($sections->availabilitydata as $moddata) {
+
+            $condition = new object();
+            $condition->coursemoduleid = backup_todb($moddata->coursemoduleid);
+            $condition->sourcecmid = backup_todb($moddata->sourcecmid);
+            $condition->requiredcompletion = backup_todb($moddata->requiredcompletion);
+            $condition->gradeitemid = backup_todb($moddata->gradeitemid);
+            $condition->grademin = backup_todb($moddata->grademin);
+            $condition->grademax = backup_todb($moddata->grademax);
+
+            // Get new cmid
+            $cmid = backup_getid($restore->backup_unique_code, 'course_modules', $condition->coursemoduleid);
+            if ($cmid && !empty($cmid->new_id)) {
+                $condition->coursemoduleid = $cmid->new_id;
+            }
+            else {
+                if (!defined('RESTORE_SILENTLY')) {
+                    echo '<ul><li>Could not find course module id</li></ul>';
+                }
+                return false;
+            }
+
+            // Get source cmid
+            if ($condition->sourcecmid) {
+                $scmid = backup_getid($restore->backup_unique_code, 'course_modules', $condition->sourcecmid);
+                if ($scmid && !empty($scmid->new_id)) {
+                    $condition->sourcecmid = $scmid->new_id;
+                }
+                else {
+                    if (!defined('RESTORE_SILENTLY')) {
+                        echo '<ul><li>Could not find source course module id</li></ul>';
+                    }
+                    return false;
+                }
+            }
+
+            // Get grade item id
+            if ($condition->gradeitemid) {
+                $gradeitem = backup_getid($restore->backup_unique_code, 'grade_items', $condition->gradeitemid);
+
+                if ($gradeitem && !empty($gradeitem->new_id)) {
+                    $condition->gradeitemid = $gradeitem->new_id;
+                }
+                else {
+                    if (!defined('RESTORE_SILENTLY')) {
+                        echo '<ul><li>Could not find grade item</li></ul>';
+                    }
+                    return false;
+                }
+            }
+
+            //Save it to db
+            if (!insert_record('course_modules_availability', $condition)) {
+                if (!defined('RESTORE_SILENTLY')) {
+                    echo '<ul><li>Could not insert availability record</li></ul>';
+                }
+                return false;
+            }
+        }
+
         return $status;
     }
 
@@ -6555,6 +6642,12 @@ define('RESTORE_GROUPS_GROUPINGS', 3);
                                 isset($this->info->tempmod->completionview) ? $this->info->tempmod->completionview : 0;
                             $this->info->tempsection->mods[$this->info->tempmod->id]->completionexpected =
                                 isset($this->info->tempmod->completionexpected) ? $this->info->tempmod->completionexpected : 0;
+                            $this->info->tempsection->mods[$this->info->tempmod->id]->availablefrom =
+                                isset($this->info->tempmod->availablefrom) ? $this->info->tempmod->availablefrom : 0;
+                            $this->info->tempsection->mods[$this->info->tempmod->id]->availableuntil =
+                                isset($this->info->tempmod->availableuntil) ? $this->info->tempmod->availableuntil : 0;
+                            $this->info->tempsection->mods[$this->info->tempmod->id]->showavailability =
+                                isset($this->info->tempmod->showavailability) ? $this->info->tempmod->showavailability : 0;
 
                             unset($this->info->tempmod);
                     }
@@ -6605,6 +6698,15 @@ define('RESTORE_GROUPS_GROUPINGS', 3);
                             break;
                         case "COMPLETIONEXPECTED":
                             $this->info->tempmod->completionexpected = $this->getContents();
+                            break;
+                        case "AVAILABLEFROM":
+                            $this->info->tempmod->availablefrom = $this->getContents();
+                            break;
+                        case "AVAILABLEUNTIL":
+                            $this->info->tempmod->availableuntil = $this->getContents();
+                            break;
+                        case "SHOWAVAILABILITY":
+                            $this->info->tempmod->showavailability = $this->getContents();
                             break;
                         default:
                             break;
@@ -6700,6 +6802,40 @@ define('RESTORE_GROUPS_GROUPINGS', 3);
                         }
                     }
                 } /// ends role_overrides
+
+                if (isset($this->tree[7]) && $this->tree[7] == "AVAILABILITYDATA") {
+                    if($this->level == 8) {
+                        switch($tagName) {
+                            case 'CONDITION':
+                                // Got all data to make condition entry...
+                                $this->info->tempcondition->coursemoduleid=$this->info->tempmod->id;
+                                $this->info->availabilitydata[]=$this->info->tempcondition;
+                                unset($this->info->tempcondition);
+                                $this->info->tempcondition=new stdClass;
+                                break;
+                        }
+                    }
+
+                    if($this->level == 9) {
+                        switch($tagName) {
+                            case 'SOURCECMID' :
+                                $this->info->tempcondition->sourcecmid=$this->getContents();
+                                break;
+                            case 'REQUIREDCOMPLETION' :
+                                $this->info->tempcondition->requiredcompletion=$this->getContents();
+                                break;
+                            case 'GRADEITEMID' :
+                                $this->info->tempcondition->gradeitemid=$this->getContents();
+                                break;
+                            case 'GRADEMIN' :
+                                $this->info->tempcondition->grademin=$this->getContents();
+                                break;
+                            case 'GRADEMAX' :
+                                $this->info->tempcondition->grademax=$this->getContents();
+                                break;
+                        }
+                    }
+                }
 
                 if (isset($this->tree[7]) && $this->tree[7] == "COMPLETIONDATA") {
                     if($this->level == 8) {
@@ -9406,6 +9542,27 @@ define('RESTORE_GROUPS_GROUPINGS', 3);
         /// force full refresh of grading data after all items are created
             grade_force_full_regrading($restore->course_id);
             grade_grab_course_grades($restore->course_id);
+        }
+
+        //Now create conditional availability data
+        if ($status) {
+            //Only to new courses!
+            if ($restore->restoreto == RESTORETO_NEW_COURSE) {
+                if (!defined('RESTORE_SILENTLY')) {
+                    echo "<li>".get_string("creatingconditionalavailabilitydata");
+                }
+                if (!$status = restore_create_conditionalavailabilitydata($restore,$xml_file)) {
+                    if (!defined('RESTORE_SILENTLY')) {
+                        notify("Error creating conditional availability data in the course.");
+                    } else {
+                        $errorstr = "Error creating conditional availability data in the course.";
+                        return false;
+                    }
+                }
+                if (!defined('RESTORE_SILENTLY')) {
+                    echo '</li>';
+                }
+            }
         }
 
         /*******************************************************************************
