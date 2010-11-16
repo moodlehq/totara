@@ -1811,6 +1811,12 @@ define('RESTORE_GROUPS_GROUPINGS', 3);
         }
 
         if ($status && $info) {
+
+            // If no data to restore
+            if (empty($info->data)) {
+                return $status;
+            }
+
             $newids = array();
 
             //For each table
