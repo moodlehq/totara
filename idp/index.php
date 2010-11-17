@@ -53,12 +53,12 @@ if ($planid && $userid && ($current==1)){
 
     $sql = "UPDATE {$CFG->prefix}idp "
         . "SET current=0 "
-        . "WHERE userid={$userid};";
+        . "WHERE userid={$userid}";
     execute_sql($sql, false);
 
     $sql2 = "UPDATE {$CFG->prefix}idp "
         . "SET current=1 "
-        . "WHERE id={$planid};";
+        . "WHERE id={$planid}";
     execute_sql($sql2, false);
 }
 
