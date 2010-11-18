@@ -58,7 +58,7 @@ class block_guides extends block_list {
                         $guideinstance->name . '</a>';
                 $inprogresscontent .= ' <input type="hidden" name="gi" value="' . $guideinstance->giid . '" />';
                 $inprogresscontent .= '<input type="image" class="iconsmall" src="' . $CFG->wwwroot . '/theme/' . $CFG->theme . '/pix/t/delete.gif" alt="delete guide progress" />';
-                $inprogresscontent .= '<img src="' . $CFG->wwwroot . '/guides/percentImage.png" alt="' . $percent . '%" style="background: white url(/guides/percentImage_back.png) top left no-repeat;padding: 0;margin: 5px 0 0 0;background-position: ' . $pixeloffset . 'px 0pt;" /> ';
+                $inprogresscontent .= '<img src="' . $CFG->wwwroot . '/guides/percentImage.png" alt="' . $percent . '%" style="background: white url(' . $CFG->wwwroot . '/guides/percentImage_back.png) top left no-repeat;padding: 0;margin: 5px 0 0 0;background-position: ' . $pixeloffset . 'px 0pt;" /> ';
                 $inprogresscontent .= " $percent %";
                 $inprogresscontent .= '</form>';
                 $this->content->items[] = $inprogresscontent;

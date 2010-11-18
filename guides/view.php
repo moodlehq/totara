@@ -141,7 +141,7 @@ $percent = round($percentvalue);
 
 print "</div>";
 print "<div class=guidenavigation>";
-print '<img src="' . $CFG->wwwroot . '/guides/percentImage.png" alt="' . $percent . '%" style="background: white url(/guides/percentImage_back.png) top left no-repeat;padding: 0;margin: 5px 0 0 0;background-position: ' . $pixeloffset . 'px 0pt;" />';
+print '<img src="' . $CFG->wwwroot . '/guides/percentImage.png" alt="' . $percent . '%" style="background: white url(' . $CFG->wwwroot . '/guides/percentImage_back.png) top left no-repeat;padding: 0;margin: 5px 0 0 0;background-position: ' . $pixeloffset . 'px 0pt;" />';
 print " $percent % complete<br />\n";
 print '<form action="' . $CFG->wwwroot . '/guides/delete.php?gi=' . $gi->id . '" method="post">';
 print '<input type="hidden" name="gi" value="' . $gi->id . '" />';
