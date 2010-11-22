@@ -40,5 +40,7 @@ $string['activedashlets'] = 'Active Dashlets';
 $string['options'] = 'Options';
 $string['addtocol'] = 'Add to column';
 $string['nodashboardsfound'] = 'No dashboards found...';
+$string['mylearning'] = 'My Learning';
+$string['myteam'] = 'My Team';
 
 ?>

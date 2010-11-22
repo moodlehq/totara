@@ -483,4 +483,60 @@ function local_dashboard_get_dashboards() {
     return get_records_sql($sql);
 }
 
+/**
+ * Inserts a default set of dashboards into the database
+ */
+function local_dashboard_initial_installation() {
+
+    $status = true;
+
+    // create my learning dashboard
+    if($learnerrole = get_field('role', 'id', 'shortname', 'student')) {
+        begin_sql();
+        // create dashboard
+        $todb = new object();
+        $todb->roleid = $learnerrole;
+        $todb->shortname = 'mylearning';
+        $todb->title = get_string('mylearning', 'local_dashboard');
+        $dbid = insert_record('dashb', $todb);
+        if(!$dbid) {
+            $status = false;
+        }
+
+        // create default instance
+        $todb = new object();
+        $todb->dashb_id = $dbid;
+        $todb->userid = 0;
+        $todb->cols = 3;
+        $todb->colwidth = 210;
+        $dbiid = insert_record('dashb_instance', $todb);
+        if(!$dbiid) {
+            $status = false;
+        }
+
+        $dash = new Dashboard('mylearning', 0);
+
+        // add quicklinks block to default instance
+        $ql = get_field('block', 'id', 'name', 'quicklinks');
+        $qlid = $dash->add_block_instance($ql);
+        $todb = new object();
+        $todb->dashb_instance_id = $dbiid;
+        $todb->block_instance_id = $qlid;
+        $todb->col = 1;
+        $todb->pos = 0;
+        $todb->visible = 1;
+        if(!insert_record('dashb_instance_dashlet', $todb)) {
+            $status = false;
+        }
+
+        // if all okay, commit
+        if($status) {
+            commit_sql();
+        } else {
+            rollback_sql();
+        }
+    }
+
+    return $status;
+}
 ?>
