@@ -65,7 +65,7 @@ if (!empty($dashaction) && !empty($dletid) && confirm_sesskey() && !$dashb->is_u
 $strheading = $dashb->data->title;
 
 $pagetitle = format_string($strheading);
-$navlinks[] = array('name' => get_string('dashboard', 'local_dashboard'), 'link' => null, 'type' => 'misc');
+$navlinks[] = array('name' => $strheading . ' ' . get_string('dashboard', 'local_dashboard'), 'link' => null, 'type' => 'misc');
 $navigation = build_navigation($navlinks);
 $navbaritem = !empty($canedit) ? $dashb->get_editing_button($edit) : '';
 

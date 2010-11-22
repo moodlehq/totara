@@ -114,6 +114,7 @@ $string['browsecategories'] = 'Browse Categories';
 $string['developmentplan'] = 'Development Planner';
 $string['findcourses'] = 'Find Courses';
 $string['mydevelopmentplans'] = 'My development plans';
+$string['learningplans'] = 'Learning Plans';
 $string['mylearning'] = 'My Learning';
 $string['myprofile'] = 'My Profile';
 $string['myrecordoflearning'] = 'My Record of Learning';
@@ -195,6 +196,7 @@ $string['myreports'] = 'My Reports';
 $string['addanothercolumn'] = 'Add another column...';
 $string['error:couldnotupdatereport'] = 'Could not update report';
 $string['myteam'] = 'My Team';
+$string['teammembers'] = 'Team Members';
 
 $string['local:markcomplete'] = 'Mark user\'s complete in course completion';
 

@@ -1863,50 +1863,50 @@ table.allmyteam td a {
   padding-right: 17px;
 }
 
-#my-team h1 {
+#my-teammembers h1 {
   margin:0;
   padding: 5px 10px 4px 10px;
   border: 1px solid #d2d2d2;
 }
 
-#my-team #middle-column table.flexible {
+#my-teammembers #middle-column table.flexible {
   width:100%;
   margin-bottom:0;
 }
 
-#my-team #middle-column table.flexible td {
+#my-teammembers #middle-column table.flexible td {
   font-size:0.9em;
 }
 
-#my-team #middle-column table.flexible th {
+#my-teammembers #middle-column table.flexible th {
   padding:6px 3px;
 }
 
-#my-team #middle-column table.flexible th.c1,
-#my-team #middle-column table.flexible td.c1 {
+#my-teammembers #middle-column table.flexible th.c1,
+#my-teammembers #middle-column table.flexible td.c1 {
   vertical-align: top;
   width: 140px;
   padding-left: 10px;
   border-left:1px solid #d2d2d2;
 }
 
-#my-team #middle-column table.flexible th.c2 {
+#my-teammembers #middle-column table.flexible th.c2 {
   vertical-align: top;
   width: 110px;
 }
 
-#my-team #middle-column table.flexible th.c3 {
+#my-teammembers #middle-column table.flexible th.c3 {
   vertical-align: top;
   width: 110px;
 }
 
-#my-team #middle-column table.flexible th.c4 {
+#my-teammembers #middle-column table.flexible th.c4 {
   vertical-align: top;
   width: 115px;
 }
 
-#my-team #middle-column table.flexible th.c4,
-#my-team #middle-column table.flexible td.c4 {
+#my-teammembers #middle-column table.flexible th.c4,
+#my-teammembers #middle-column table.flexible td.c4 {
   border-right:1px solid #d2d2d2;
 }
 

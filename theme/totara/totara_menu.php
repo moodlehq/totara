@@ -12,7 +12,7 @@
         <div><a href="<?php echo $CFG->wwwroot.'/index.php' ?>">Home</a>
 	        <ul>
                 <?php
-                $text ='<li class="first"><a href="'.$CFG->wwwroot . '/user/view.php?id=' . $USER->id . '">' . get_string('myprofile', 'local') . '</a></li>';
+                $text ='<li class="last"><a href="'.$CFG->wwwroot . '/user/view.php?id=' . $USER->id . '">' . get_string('myprofile', 'local') . '</a></li>';
                 echo $text;
                 ?>
             </ul>
@@ -21,11 +21,11 @@
 
 
     <li id="menu2">
-        <div><a href="<?php echo $CFG->wwwroot.'/idp/index.php' ?>"><?php echo get_string('mylearning', 'local') ?></a>
+        <div><a href="<?php echo $CFG->wwwroot.'/my/learning.php' ?>"><?php echo get_string('mylearning', 'local') ?></a>
             <ul>
             <?php
-                 $text ='<li><a href="'.$CFG->wwwroot.'/idp/dashboard.php">'.get_string('dashboard', 'local_dashboard').'</a></li>';
-                 $text .='<li><a href="'.$CFG->wwwroot.'/idp/index.php">'.get_string('mydevelopmentplans', 'local').'</a></li>';
+                 $text ='<li><a href="'.$CFG->wwwroot.'/my/learning.php">'.get_string('dashboard', 'local_dashboard').'</a></li>';
+                 $text .='<li><a href="'.$CFG->wwwroot.'/local/plan/index.php">'.get_string('learningplans', 'local').'</a></li>';
                  $text .='<li><a href="'.$CFG->wwwroot.'/my/bookings.php">'.get_string('mybookings', 'local').'</a></li>';
                  $text .='<li class="last"><a href="'.$CFG->wwwroot.'/my/records.php">'.get_string('myrecordoflearning', 'local').'</a></li>';
                  echo $text;
@@ -40,6 +40,11 @@
         <div>
             <a href="<?php echo $CFG->wwwroot.'/my/team.php' ?>"><?php echo get_string('myteam', 'local') ?></a>
 			<ul>
+            <?php
+                 $text ='<li><a href="'.$CFG->wwwroot.'/my/team.php">'.get_string('dashboard', 'local_dashboard').'</a></li>';
+                 $text .='<li class="last"><a href="'.$CFG->wwwroot.'/my/teammembers.php">'.get_string('teammembers', 'local').'</a></li>';
+                 echo $text;
+            ?>
 	        </ul>
         </div>
     </li>

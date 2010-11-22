@@ -260,9 +260,13 @@ body.mod-forum #totara_menu ul #menu1,
 body.admin #totara_menu ul #menu1,
 body#my-index #totara_menu ul #menu2,
 body.idp #totara_menu ul #menu2,
+body#my-learning #totara_menu ul #menu2,
 body#my-bookings #totara_menu ul #menu2,
+body#my-pastbookings #totara_menu ul #menu2,
 body#my-records #totara_menu ul #menu2,
+body#my-coursecompletions #totara_menu ul #menu2,
 body#my-team #totara_menu ul #menu3,
+body#my-teammembers #totara_menu ul #menu3,
 body#my-reports #totara_menu ul #menu4,
 body#course-index #totara_menu ul #menu5,
 body#course-find #totara_menu ul #menu5,
@@ -279,9 +283,13 @@ body.mod-forum #totara_menu ul #menu1 a,
 body.admin #totara_menu ul #menu1 a,
 body#my-index #totara_menu ul #menu2 a,
 body.idp #totara_menu ul #menu2 a,
+body#my-learning #totara_menu ul #menu2 a,
 body#my-bookings #totara_menu ul #menu2 a,
+body#my-pastbookings #totara_menu ul #menu2 a,
 body#my-records #totara_menu ul #menu2 a,
+body#my-coursecompletions #totara_menu ul #menu2 a,
 body#my-team #totara_menu ul #menu3 a,
+body#my-teammembers #totara_menu ul #menu3 a,
 body#my-reports #totara_menu ul #menu4 a,
 body#course-index #totara_menu ul #menu5 a,
 body#course-find #totara_menu ul #menu5 a,
@@ -297,9 +305,13 @@ body.mod-forum #totara_menu ul #menu1 ul,
 body.admin #totara_menu ul #menu1 ul,
 body#my-index #totara_menu ul #menu2 ul,
 body.idp #totara_menu ul #menu2 ul,
+body#my-learning #totara_menu ul #menu2 ul,
 body#my-bookings #totara_menu ul #menu2 ul,
+body#my-pastbookings #totara_menu ul #menu2 ul,
 body#my-records #totara_menu ul #menu2 ul,
+body#my-coursecompletions #totara_menu ul #menu2 ul,
 body#my-team #totara_menu ul #menu3 ul,
+body#my-teammembers #totara_menu ul #menu3 ul,
 body.local-reportbuilder #totara_menu ul #menu4 ul,
 body#course-index #totara_menu ul #menu5 ul,
 body#course-find #totara_menu ul #menu5 ul,
@@ -314,9 +326,13 @@ body.mod-forum #totara_menu #menu1 ul li a,
 body.admin #totara_menu #menu1 ul li a,
 body#my-index #totara_menu ul #menu2 ul li a,
 body.idp #totara_menu ul #menu2 ul li a,
+body#my-learning #totara_menu ul #menu2 ul li a,
 body#my-bookings #totara_menu ul #menu2 ul li a,
+body#my-pastbookings #totara_menu ul #menu2 ul li a,
 body#my-records #totara_menu ul #menu2 ul li a,
+body#my-coursecompletions #totara_menu ul #menu2 ul li a,
 body#my-team #totara_menu ul #menu3 ul li a,
+body#my-teammembers #totara_menu ul #menu3 ul li a,
 body.local-reportbuilder #totara_menu ul #menu4 ul li a,
 body#course-index #totara_menu ul #menu5 ul li a,
 body#course-find #totara_menu ul #menu5 ul li a,
@@ -339,12 +355,16 @@ body.admin#totara_menu #menu1 ul {
 }
 body#my-index #totara_menu ul #menu2 ul,
 body.idp #totara_menu ul #menu2 ul,
+body#my-learning #totara_menu ul #menu2 ul,
 body#my-bookings #totara_menu ul #menu2 ul,
+body#my-pastbookings #totara_menu ul #menu2 ul,
+body#my-coursecompletions #totara_menu ul #menu2 ul,
 body#my-records #totara_menu ul #menu2 ul {
     left:-105px;
 }
-body#my-team #totara_menu ul #menu3 ul {
-    left:-244px;
+body#my-team #totara_menu ul #menu3 ul,
+body#my-teammembers #totara_menu ul #menu3 ul {
+    left:-224px;
 }
 body.local-reportbuilder #totara_menu ul #menu4 ul {
      left:-357px;
@@ -1637,17 +1657,17 @@ table.allmyteam td a {
   background: url('images/arw_blu.gif') no-repeat right 3px;
 }
 
-#my-team h1 {
+#my-teammembers h1 {
   color:#FFFFFF;
   font-size: 1.5em;
   background:#34b9e4;
 }
 
-#my-team #middle-column table.flexible td {
+#my-teammembers #middle-column table.flexible td {
   font-size:0.9em;
 }
 
-#my-team #middle-column table.flexible th {
+#my-teammembers #middle-column table.flexible th {
   font-family: Verdana, Arial, Helvetica, sans-serif;
   color: #34b9e4;
 }
