@@ -1071,7 +1071,7 @@ abstract class rb_base_source {
             'LEFT',
             $CFG->prefix . 'course_categories',
             "course_category.id = $join.$field",
-            REPORT_BUILDER_RELATION_ONE_TO_ONE,
+            REPORT_BUILDER_RELATION_MANY_TO_ONE,
             $join
         );
 
