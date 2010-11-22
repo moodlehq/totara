@@ -118,7 +118,7 @@ class block_totara_reminders extends block_base {
     * @return int roleid
     **/
     function current_roleid() {
-
+        global $CFG;
         if ($this->instance_is_dashlet()) {
             // what dashlet role is this
             $sql = "SELECT d.roleid

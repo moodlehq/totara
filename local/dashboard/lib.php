@@ -516,17 +516,37 @@ function local_dashboard_install() {
 
         $dash = new Dashboard('mylearning', 0);
 
-        // add quicklinks block to default instance
-        $ql = get_field('block', 'id', 'name', 'quicklinks');
-        $qlid = $dash->add_block_instance($ql);
-        $todb = new object();
-        $todb->dashb_instance_id = $dbiid;
-        $todb->block_instance_id = $qlid;
-        $todb->col = 1;
-        $todb->pos = 0;
-        $todb->visible = 1;
-        if(!insert_record('dashb_instance_dashlet', $todb)) {
-            $status = false;
+        // define the default blocks
+        $blocks = array(
+            array(
+                'name' => 'quicklinks',
+                'col' => 1,
+                'pos' => 0,
+            ),
+            array(
+                'name' => 'totara_notify',
+                'col' => 2,
+                'pos' => 0,
+            ),
+            array(
+                'name' => 'totara_reminders',
+                'col' => 3,
+                'pos' => 0,
+            ),
+        );
+        // create an instance of each and add to dashboard
+        foreach($blocks as $block) {
+            $blockid = get_field('block', 'id', 'name', $block['name']);
+            $block_instance_id = $dash->add_block_instance($blockid);
+            $todb = new object();
+            $todb->dashb_instance_id = $dbiid;
+            $todb->block_instance_id = $block_instance_id;
+            $todb->col = $block['col'];
+            $todb->pos = $block['pos'];
+            $todb->visible = 1;
+            if(!insert_record('dashb_instance_dashlet', $todb)) {
+                $status = false;
+            }
         }
 
         // if all okay, commit
@@ -563,17 +583,37 @@ function local_dashboard_install() {
 
         $dash = new Dashboard('myteam', 0);
 
-        // add quicklinks block to default instance
-        $ql = get_field('block', 'id', 'name', 'quicklinks');
-        $qlid = $dash->add_block_instance($ql);
-        $todb = new object();
-        $todb->dashb_instance_id = $dbiid;
-        $todb->block_instance_id = $qlid;
-        $todb->col = 1;
-        $todb->pos = 0;
-        $todb->visible = 1;
-        if(!insert_record('dashb_instance_dashlet', $todb)) {
-            $status = false;
+        // define the default blocks
+        $blocks = array(
+            array(
+                'name' => 'quicklinks',
+                'col' => 1,
+                'pos' => 0,
+            ),
+            array(
+                'name' => 'totara_notify',
+                'col' => 2,
+                'pos' => 0,
+            ),
+            array(
+                'name' => 'totara_reminders',
+                'col' => 3,
+                'pos' => 0,
+            ),
+        );
+        // create an instance of each and add to dashboard
+        foreach($blocks as $block) {
+            $blockid = get_field('block', 'id', 'name', $block['name']);
+            $block_instance_id = $dash->add_block_instance($blockid);
+            $todb = new object();
+            $todb->dashb_instance_id = $dbiid;
+            $todb->block_instance_id = $block_instance_id;
+            $todb->col = $block['col'];
+            $todb->pos = $block['pos'];
+            $todb->visible = 1;
+            if(!insert_record('dashb_instance_dashlet', $todb)) {
+                $status = false;
+            }
         }
 
         // if all okay, commit
