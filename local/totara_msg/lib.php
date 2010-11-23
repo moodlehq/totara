@@ -331,7 +331,7 @@ function totara_msg_accept_reject_action($id) {
 }
 
 
-function totara_msg_install() {
+function local_totara_msg_install() {
     global $CFG;
 
 /// Install logging support
@@ -341,5 +341,10 @@ function totara_msg_install() {
 /// This is temporary until Totara goes to 2.x - then migrate local/totara_msg/message20 to message
     upgrade_plugins('local','local/totara_msg/message20/output',"$CFG->wwwroot/$CFG->admin/index.php");
 
+    // hack to get cron working via admin/cron.php
+    // at some point we should create a local_modules table
+    // based on data in version.php
+    set_config('local_totara_msg_cron', 60);
+        
     return true;
 }

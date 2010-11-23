@@ -34,7 +34,7 @@
 /**
  * Register the processor.
  */
-function totara_reminder_install(){
+function local_totara_reminder_install(){
     //global $DB;
 
     $result = true;
