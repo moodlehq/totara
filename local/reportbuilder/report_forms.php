@@ -281,6 +281,7 @@ class report_builder_edit_columns_form extends moodleform {
                 '</th><th>'.get_string('heading','local_reportbuilder').'</th><th>'.get_string('options','local_reportbuilder').'</th><tr>');
 
             $columnsselect = $report->get_columns_select();
+            $columnoptions = array();
 
             if(isset($report->columns) && is_array($report->columns) && count($report->columns)>0) {
                 $columns = $report->columns;
