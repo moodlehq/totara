@@ -1,0 +1,99 @@
+<?php
+
+global $USER;
+
+//create a page object for url_get_full()
+//$page = page_create_object($this->instance->pagetype, $this->instance->pageid);
+
+$context = get_context_instance(CONTEXT_BLOCK, $this->instance->id);
+if ($this->instance_is_dashlet()) {
+    if (!has_capability('block/quicklinks:manageownlinks', $context) && !has_capability('block/quicklinks:managealllinks', $context)) {
+        print_error('accessdenied', 'block_quicklinks');
+    }
+} else {
+    require_capability('block/quicklinks:managealllinks', $context);
+}
+?>
+<table cellpadding="9" cellspacing="0" class="blockconfigtable">
+<tr valign="top">
+    <td class="label">
+        <?php print_string('maintitle', 'block_quicklinks') ?>
+    </td>
+    <td class="value">
+        <input type="text" name="title" size="30" value="<?php echo isset($this->config->title)?p($this->config->title):''; ?>" /> (<?php print_string('leaveblanktohide', 'block_quicklinks'); ?>)
+    </td>
+</tr>
+</table>
+
+<table cellpadding="9" class="blocklinksconfigtable">
+<tr valign="top">
+    <td class="label">
+        <?php print_string('links', 'block_quicklinks') ?>
+    </td>
+</tr>
+
+<tr valign="top">
+    <td class="value">
+    <?php
+    $quicklinks = get_records('block_quicklinks', 'block_instance_id', $this->instance->id, 'displaypos');
+    $quicklinks = empty($quicklinks) ? array() : $quicklinks;
+
+    // Set up a quicklinks table
+    require_once("{$CFG->libdir}/tablelib.php");
+
+    $qltable = new flexible_table(get_string('links', 'block_quicklinks'));
+    $qltable->define_columns(array('title', 'url', 'actions'));
+    $qltable->column_style('actions', 'width', '80px');
+    $qltable->define_headers(array(
+        get_string('linktitle', 'block_quicklinks'),
+        get_string('url', 'block_quicklinks'),
+        get_string('actions', 'block_quicklinks')));
+    $qltable->set_attribute('id', 'block-quicklinks-list-table');
+    $qltable->set_attribute('width', '95%');
+    $qltable->set_attribute('class', 'generalbox edit boxaligncenter');
+    $qltable->setup();
+
+
+    foreach ($quicklinks as $ql) {
+        $content = array();
+        $content[] = $ql->title;
+        $content[] = $ql->url;
+        $baseactionurl = "{$CFG->wwwroot}/blocks/quicklinks/block_quicklinks_action.php?id={$ql->id}&blockinstance={$this->instance->id}&sesskey={$USER->sesskey}";
+        $actions = "<a class=\"icon delete\" href=\"{$baseactionurl}&blockaction=deletelink\">
+                        <img src=\"{$CFG->pixpath}/t/delete.gif\" alt=\"".get_string('delete')."\" title=\"".get_string('delete')."\"/></a>";
+        if ($ql->displaypos != 0) {
+            $actions .= "<a class=\"icon up\" href=\"{$baseactionurl}&blockaction=movelinkup\">
+                            <img src=\"{$CFG->pixpath}/t/up.gif\" alt=\"".get_string('delete')."\" title=\"".get_string('delete')."\"/></a>";
+        }
+        if (get_field('block_quicklinks', 'MAX(displaypos)', 'block_instance_id', $this->instance->id) != $ql->displaypos) {
+            $actions .= "<a class=\"icon down\" href=\"{$baseactionurl}&blockaction=movelinkdown\">
+                              <img src=\"{$CFG->pixpath}/t/down.gif\" alt=\"".get_string('delete')."\" title=\"".get_string('delete')."\"/></a>";
+        }
+        $content[] = $actions;
+        unset($actions);
+
+        $qltable->add_data($content);
+    }
+    // Add link form
+    $content = array();
+    $content[] = "
+                    <input type=\"text\" id=\"linktitle\" name=\"linktitle\" />";
+    $content[] = "<input type=\"text\" id=\"url\" name=\"url\" />";
+    $content[] = "<input type=\"submit\" id=\"btnAddLink\" name=\"btnAddLink\" value=\"".get_string('add')."\" />
+                  ";
+    $qltable->add_data($content);
+    $qltable->print_html();
+
+    // Finally, clean everything up, so no interference is caused with other page units
+    unset($content, $qltable, $quicklinks);
+    ?>
+    </td>
+</tr>
+
+<tr>
+    <td align="center">
+    <input type="submit" value="<?php print_string('savechanges') ?>" />
+    <input id="btnCancel" name="btnCancel" type="submit" value="<?php print_string('cancel') ?>" />
+    </td>
+</tr>
+</table>

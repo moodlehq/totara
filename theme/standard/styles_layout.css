@@ -1242,6 +1242,108 @@ a.skip:focus, a.skip:active {
   height: 1px;
 }
 
+.blockconfigtable {
+  margin-top: 0;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.blockconfigtable td.label {
+  text-align: right;
+  width: 50%;
+}
+
+.blockconfigtable td.value {
+  text-align: left;
+  width: 50%;
+}
+
+.blockconfigtable td.submit {
+  text-align: center;
+}
+
+.blockconfiginstancecontent .tabs {
+  margin-bottom: 0px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.block_adminblock {
+  width: 180px;
+}
+
+.block_messages .content {
+  text-align:left;
+  font-size:0.75em;
+  padding-top:5px;
+}
+
+.block_recent_activitysideblock .h3 {
+  padding-top:5px;
+}
+
+.block_online_users .listentry div.user,
+.block_messages .listentry div.user {
+  float:left;
+}
+
+.block_online_users .listentry div.message,
+.block_messages .listentry div.message {
+  float:right;
+}
+
+.block_course_list .footer {
+  margin-top: 5px;
+}
+
+#rssfeeds {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#block_rss {
+  text-align: center;
+}
+
+.block_search_forums .invisiblefieldset {
+  display: block;
+}
+
+.block_tag_youtube .youtube-thumb {
+  padding: 3px;
+  padding-bottom: 0.5em;
+  display: block;
+  float: left;
+}
+.block_tag_youtube .yt-video-entry li {
+  clear: left;
+}
+
+.block_tag_flickr .flickr-photos {
+ padding:3px;
+}
+
+.tempblockhandler, .tempblockhandler .content{
+    height: 3px;
+    margin-bottom: -3px;
+    visibility: hidden;
+}
+
+#left-column .hidden .header,
+#right-column .hidden .header
+{
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+}
+
+#left-column .hidden .content,
+#right-column .hidden .content
+{
+  display: none;
+}
+
+
+/*** Side Blocks ***/
 .sideblock {
   margin-bottom:1em;
   width: 100%;
@@ -1276,19 +1378,6 @@ a.skip:focus, a.skip:active {
 
 .sideblock .header .commands a {
   margin: 0px 2px;
-}
-
-#left-column .hidden .header,
-#right-column .hidden .header
-{
-  border-bottom-width: 1px;
-  border-bottom-style: solid;
-}
-
-#left-column .hidden .content,
-#right-column .hidden .content
-{
-  display: none;
 }
 
 .sideblock .header .icon.hide,
@@ -1380,91 +1469,136 @@ a.skip:focus, a.skip:active {
   margin-right:4px;
 }
 
-.blockconfigtable {
-  margin-top: 0;
-  margin-right: auto;
-  margin-left: auto;
+/*** Dashlets ***/
+.dashlet {
+  margin-bottom:1em;
+  width: 100%;
 }
 
-.blockconfigtable td.label {
-  text-align: right;
-  width: 50%;
-}
-
-.blockconfigtable td.value {
+.dashlet .header, .dashlet h2.header {
   text-align: left;
-  width: 50%;
+  margin:0;
+  padding:4px;
+  padding-top:0;
+  /*border-width: 1px;
+  border-style: solid;*/
+  border-bottom: none;
 }
 
-.blockconfigtable td.submit {
-  text-align: center;
+.dashlet h2 {
+  margin:0;
+  padding:0;
 }
 
-.blockconfiginstancecontent .tabs {
-  margin-bottom: 0px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.block_adminblock {
-  width: 180px;
-}
-
-.block_messages .content {
-  text-align:left;
-  font-size:0.75em;
-  padding-top:5px;
-}
-
-.block_recent_activitysideblock .h3 {
-  padding-top:5px;
-}
-
-.block_online_users .listentry div.user,
-.block_messages .listentry div.user {
-  float:left;
-}
-
-.block_online_users .listentry div.message,
-.block_messages .listentry div.message {
+.dashlet .header .hide-show-image {
   float:right;
+  height:11px;
+  width:11px;
+  margin-top:0.25em;
 }
 
-.block_course_list .footer {
-  margin-top: 5px;
+.dashlet .header .commands {
+  margin-top: 0.3em;
+  clear: both;
+  height: 16px;
 }
 
-#rssfeeds {
-  margin-left: auto;
-  margin-right: auto;
+.dashlet .header .commands a {
+  margin: 0px 2px;
 }
 
-#block_rss {
-  text-align: center;
+.dashlet .header .icon.hide,
+.dashlet .header .icon.edit {
+  margin-right: 6px;
 }
 
-.block_search_forums .invisiblefieldset {
-  display: block;
+.dashlet .content {
+  padding: 4px;
+  border-style: none;
 }
 
-.block_tag_youtube .youtube-thumb {
-  padding: 3px;
-  padding-bottom: 0.5em;
-  display: block;
+.dashlet .content h3,
+.dashlet .content h2 {
+  text-align: left;
+}
+
+.dashlet .content h2 {
+  margin:1.5em 0 0;
+  padding:0;
+}
+
+.dashlet .content .head {
+  margin-top: 10px;
+}
+
+.dashlet .content hr {
+  height:1px;
+  margin-top:4px;
+  margin-bottom:4px;
+  border:none;
+  border-top:1px solid;
+}
+
+.dashlet div.column {
+  margin:0px;
+  margin-right:4px;
+  padding:0px;
+}
+
+.dashlet div.column.c0 {
   float: left;
 }
-.block_tag_youtube .yt-video-entry li {
+
+.dashlet div.column.c1 {
+  display: inline;
+}
+
+.dashlet .content .c0 img.icon {
+  margin:0px;
+}
+
+.dashlet .content .list, .unlist, .inline-list {
+  list-style:none;
+  padding:0;
+  margin:0;
+}
+
+.dashlet .content .list {
+  width: 100%;
+}
+
+.dashlet .content .list li {
   clear: left;
 }
 
-.block_tag_flickr .flickr-photos {
- padding:3px;
+.dashlet .content .inline-list li, .inline-list li {
+  display: inline;
 }
 
-.tempblockhandler, .tempblockhandler .content{
-    height: 3px;
-    margin-bottom: -3px;
-    visibility: hidden;
+.dashlet .content ul.list li.listentry {
+  clear:both;
+}
+
+.dashlet .content div.info {
+  text-align:center;
+}
+
+.dashlet .footer {
+  margin-bottom: 4px;
+  text-align:center;
+  clear:both;
+}
+
+.dashlet .content .footer .commands img {
+    width: 11px;
+    height: 11px;
+    margin: 0px 2px;
+}
+
+.dashlet img.userpicture {
+  width:16px;
+  height:16px;
+  margin-right:4px;
 }
 
 /***
@@ -1498,7 +1632,8 @@ a.skip:focus, a.skip:active {
 {
   text-align: center;
 }
-#calendar .sideblock h2 {
+#calendar .sideblock h2,
+#calendar .dashlet h2 {
   text-align: left;
 }
 
@@ -1565,7 +1700,8 @@ table.minicalendar td {
   padding: 5px;
 }
 
-#calendar .sideblock div.header
+#calendar .sideblock div.header,
+#calendar .dashlet div.header
 {
   border:none;
 }
@@ -1576,7 +1712,8 @@ table.minicalendar td {
 
 #calendar .maincalendar .filters table,
 #calendar .sidecalendar .filters table,
-.sideblock.block_calendar_month .filters table
+.sideblock.block_calendar_month .filters table,
+.dashlet.block_calendar_month .filters table
 {
   border-collapse:separate;
   border-spacing: 2px;
@@ -1767,7 +1904,8 @@ table.minicalendar th {
 border-width:0px;
 }
 
-#calendar td.sidecalendar .sideblock {
+#calendar td.sidecalendar .sideblock,
+#calendar td.sidecalendar .dashlet {
   border: 1px solid;
   margin-bottom:10px;
 }
@@ -1776,7 +1914,8 @@ border-width:0px;
   padding-top:10px;
 }
 
-.sideblock .content h3.eventskey {
+.sideblock .content h3.eventskey,
+.dashlet .content h3.eventskey {
   margin-top:0.5em;
   margin-bottom:0;
   margin-left:0.5em;
@@ -1944,7 +2083,8 @@ body#course-view .unread {
   margin-left: 3em;
 }
 
-body#course-view .sideblock.drag .header {
+body#course-view .sideblock.drag .header,
+body#course-view .dashlet.drag .header {
   cursor: move;
 }
 

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="local/dashboard/db" VERSION="20101102" COMMENT="XMLDB file for Dashboard local module"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
+>
+  <TABLES>
+    <TABLE NAME="dashb" COMMENT="Defines a dashboard" NEXT="dashb_instance">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" NEXT="roleid"/>
+        <FIELD NAME="roleid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="References the role this dashboard belongs to" PREVIOUS="id" NEXT="shortname"/>
+        <FIELD NAME="shortname" TYPE="char" LENGTH="100" NOTNULL="true" SEQUENCE="false" ENUM="false" COMMENT="Unique shorname to identify dashboard" PREVIOUS="roleid" NEXT="title"/>
+        <FIELD NAME="title" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" ENUM="false" COMMENT="Title of dashboard" PREVIOUS="shortname"/>
+      </FIELDS>
+
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="shortname" UNIQUE="true" FIELDS="shortname"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="dashb_instance" COMMENT="Holds instances of a specific dashboard" PREVIOUS="dashb" NEXT="dashb_instance_dashlet">
+      <FIELDS>
+
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" NEXT="dashb_id"/>
+        <FIELD NAME="dashb_id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" COMMENT="Reference to the dashboard definition in dashb" PREVIOUS="id" NEXT="userid"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="A reference to the user" PREVIOUS="dashb_id" NEXT="cols"/>
+        <FIELD NAME="cols" TYPE="int" LENGTH="3" NOTNULL="true" UNSIGNED="true" DEFAULT="1" SEQUENCE="false" ENUM="false" COMMENT="Specifies dashboard columns" PREVIOUS="userid" NEXT="colwidth"/>
+        <FIELD NAME="colwidth" TYPE="int" LENGTH="5" NOTNULL="true" UNSIGNED="false" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="Specifies dashboard instance column width" PREVIOUS="cols"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+
+      <INDEXES>
+        <INDEX NAME="dashb_id" UNIQUE="false" FIELDS="dashb_id"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="dashb_instance_dashlet" COMMENT="Contains all data relating to dashlets of a specific dashboard instance" PREVIOUS="dashb_instance">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" NEXT="dashb_instance_id"/>
+        <FIELD NAME="dashb_instance_id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" COMMENT="Reference to a dashboard instance (dashb_instance)" PREVIOUS="id" NEXT="block_instance_id"/>
+        <FIELD NAME="block_instance_id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" COMMENT="Reference to a block instance" PREVIOUS="dashb_instance_id" NEXT="col"/>
+
+        <FIELD NAME="col" TYPE="int" LENGTH="2" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The column the dashlet is situated in" PREVIOUS="block_instance_id" NEXT="pos"/>
+        <FIELD NAME="pos" TYPE="int" LENGTH="2" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The position of the dashlet" PREVIOUS="col" NEXT="configdata"/>
+        <FIELD NAME="configdata" TYPE="text" LENGTH="medium" NOTNULL="false" SEQUENCE="false" ENUM="false" COMMENT="Any dashlet instance-specific settings (serialized)" PREVIOUS="pos" NEXT="visible"/>
+        <FIELD NAME="visible" TYPE="int" LENGTH="1" NOTNULL="false" UNSIGNED="true" DEFAULT="1" SEQUENCE="false" ENUM="false" COMMENT="Indicates current visibility" PREVIOUS="configdata"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+
+        <INDEX NAME="dashb_instance_id" UNIQUE="false" FIELDS="dashb_instance_id" NEXT="block_instance_id"/>
+        <INDEX NAME="block_instance_id" UNIQUE="false" FIELDS="block_instance_id" PREVIOUS="dashb_instance_id"/>
+      </INDEXES>
+    </TABLE>
+  </TABLES>
+</XMLDB>

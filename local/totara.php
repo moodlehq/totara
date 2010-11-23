@@ -642,6 +642,73 @@ class totara_page_class_hack extends page_base {
 }
 page_map_class('Totara', 'totara_page_class_hack');
 
+
+/**
+* dashboard page lib
+*/
+class totara_dashboard_page_class extends page_base {
+    private $dashb_instance;
+
+    function init_full() {
+        global $CFG;
+
+        if ($this->full_init_done) {
+            return;
+        }
+
+        // Get the dashboard details
+        $sql = "SELECT di.*, d.shortname, d.title
+                FROM {$CFG->prefix}dashb d
+                INNER JOIN {$CFG->prefix}dashb_instance di ON d.id = di.dashb_id
+                WHERE di.id = {$this->id}";
+        if (!$this->dashb_instance = get_record_sql($sql)) {
+            error('Cannot fully initialize page - could not retrieve dashboard details');
+        }
+        $this->full_init_done = true;
+    }
+
+    function get_type() {
+        return 'totara-dashboard';
+    }
+
+    function blocks_get_positions() {
+        return array(BLOCK_POS_LEFT, BLOCK_POS_RIGHT, BLOCK_POS_CENTER);
+    }
+
+    function blocks_default_position() {
+        return BLOCK_POS_LEFT; // avoid getting the admin block
+    }
+
+    function url_get_parameters() {
+        $this->init_full();
+
+        return array('item'=>$this->dashb_instance->shortname);
+    }
+
+    function url_get_path() {
+        return strip_querystring(me());
+    }
+
+    function user_allowed_editing() {
+        return true;
+    }
+
+    function user_is_editing() {
+        global $USER;
+
+        $this->init_full();
+        return !empty($USER->{$this->dashb_instance->shortname.'dashbediting'});
+    }
+
+    function print_header($title, $morenavlinks=NULL) {
+        $nav = build_navigation($morenavlinks);
+        print_header($title, $title, $nav);
+    }
+
+}
+page_map_class('totara-dashboard', 'totara_dashboard_page_class');
+
+
 /**
 * local footer hook. nothing yet but this could print right blocks
 */

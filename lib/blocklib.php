@@ -10,6 +10,7 @@ define('BLOCK_CONFIGURE',   0x10);
 
 define('BLOCK_POS_LEFT',  'l');
 define('BLOCK_POS_RIGHT', 'r');
+define('BLOCK_POS_CENTER', 'c');
 
 define('BLOCKS_PINNED_TRUE',0);
 define('BLOCKS_PINNED_FALSE',1);

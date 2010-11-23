@@ -38,11 +38,13 @@
  * This toggles block visibility
  **/
 
-.sideblock.hidden .content {
+.sideblock.hidden .content,
+.dashlet.hidden .content {
     display: none;
 }
 
-.sideblock.hidden .header {
+.sideblock.hidden .header,
+.dashlet.hidden .header {
   border-bottom-width: 1px;
   border-bottom-style: solid;
 }

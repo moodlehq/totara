@@ -951,6 +951,80 @@ ul.tabrow1 li a:hover {
 
 
 /******************************************
+ * Dashlets
+ *****************************************/
+.dashlet {
+  width: 80%;
+  margin-bottom:13px;
+  border:none !important;
+}
+.dashlet div.header .title h2,
+.dashlet div.header .title h2 a {
+  font-family: 'Trebuchet ms', verdana, helvetica, sans-serif;
+  letter-spacing: -0.03em;
+  font-weight:normal;
+  font-size:1.5em !important;
+  /*color: #FFFFFF;*/
+  margin:0 0 0 0;
+  padding: 5px 4px 0 4px;
+}
+.dashlet div.header {
+  /*border:1px solid #d2d2d2;
+  border-bottom:none;*/
+  padding-bottom: 3px;
+  /*background: #009697;*/
+}
+.dashlet div.header .title h2,
+.dashlet div.header .title h2 a {
+  padding-bottom: 0px !important;
+}
+.dashlet div.header .title .commands {
+  position:relative;
+/*  margin: 7px -4px -7px -4px;
+  padding: 5px 4px 0;*/
+  background: #FFFFFF;
+}
+.dashlet .header .icon.hide, .daslet .header .icon.edit {
+	margin-right: 2px !important;
+}
+.dashlet div.header .title .commands img {
+  height: 11px;
+  width: 11px;
+}
+.dashlet .content {
+  text-align:left;
+  padding: 7px 7px 7px 7px;
+  margin:0;
+  border:none;
+}
+.dashlet .content td a {
+  font-family: 'Trebuchet ms', verdana, helvetica, sans-serif;
+  color: #322f2c;
+}
+.dashlet .content ul {
+  margin:0 0 5px 0;
+  padding:0;
+}
+.dashlet .content li {
+  font-size: 1em;
+  line-height: 1.4em;
+  list-style-type: none;
+}
+.dashlet div.header .title input {
+  margin: 7px 3px 0 0;
+  background: #00b7b8;
+}
+.dashlet .hide-show a {
+  border: none;
+}
+.dashlet .footer {
+  text-align: left;
+}
+.dashlet .date {
+  width: 165px;
+}
+
+/******************************************
  * Block Specific
  *****************************************/
 
@@ -1019,12 +1093,16 @@ div.block_html .header .title h2 {
 .sideblock .content div.info,
 .sideblock .content .message,
 .sideblock .content .footer,
+.dashlet .content div.info,
+.dashlet .content .message,
+.dashlet .content .footer,
 .block_search_forums .searchform {
   text-align:left;
   font-size:1em;
 }
 
-.sideblock .content h3.eventskey {
+.sideblock .content h3.eventskey,
+.dashlet .content h3.eventskey {
   font-size:1.1em;
 }
 
@@ -1035,7 +1113,8 @@ div.block_html .header .title h2 {
   border-bottom: 1px solid #CACACA;
 }
 
-.mod-forum.sideblock th.header {
+.mod-forum.sideblock th.header,
+.mod-forum.dashlet th.header {
   border-style: none;
 }
 
@@ -1094,15 +1173,18 @@ table.minicalendar .today a {
   color: #FFFFFF;
 }
 
-#calendar td.sidecalendar .sideblock {
+#calendar td.sidecalendar .sideblock,
+#calendar td.sidecalendar .dashlet {
   background:transparent url('images/sb_bg_ftr.gif') no-repeat bottom left;
 }
 
-#calendar td.sidecalendar .sideblock .header {
+#calendar td.sidecalendar .sideblock .header,
+#calendar td.sidecalendar .dashlet .header {
   background:#9F187C;
 }
 
-#calendar td.sidecalendar .sideblock .header h2 {
+#calendar td.sidecalendar .sideblock .header h2,
+#calendar td.sidecalendar .dashlet .header h2 {
    color: #FFFFFF;
    font-size: 1.5em;
    margin:0;

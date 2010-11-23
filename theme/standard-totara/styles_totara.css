@@ -656,11 +656,13 @@ div.block_html .content {
  * List blocks
  *****************************************/
 
-.sideblock .content ul.list li .icon {
+.sideblock .content ul.list li .icon,
+.dashlet .content ul.list li .icon {
   display:none;
 }
 
-.sideblock .content ul li {
+.sideblock .content ul li,
+.dashlet .content ul li {
   padding-top: 0;
   padding-bottom: 2px;
 }
@@ -679,23 +681,29 @@ div.block_html .content {
 .block_news_items .newlink,
 .activitydate, .activityhead,
 .sideblock .content div.info,
+.dashlet .content div.info,
 .sideblock .content .message,
+.dashlet .content .message,
 .sideblock .content .footer,
+.dashlet .content .footer,
 .block_search_forums .searchform {
   padding: 3px 0;
 }
 
-.sideblock .content .footer {
+.sideblock .content .footer,
+.dashlet .content .footer {
 	padding: 3px 0 0;
 	margin-bottom: 0;
 }
 
-.sideblock .content .message {
+.sideblock .content .message,
+.dashlet .content .message {
 	padding-bottom: 0;
 	margin-bottom: 0;
 }
 
-.sideblock .content h3.eventskey {
+.sideblock .content h3.eventskey,
+.dashlet .content h3.eventskey {
   font-size:1.1em;
 }
 
@@ -715,7 +723,8 @@ div.block_html .content {
   padding:2px;
 }
 
-.mod-forum.sideblock th.header {
+.mod-forum.sideblock th.header,
+.mod-forum.dashlet th.header {
   border-style: none;
 }
 
@@ -765,7 +774,8 @@ table.minicalendar .today {
   padding-left:15px;
 }
 
-#calendar td.sidecalendar .sideblock {
+#calendar td.sidecalendar .sideblock,
+#calendar td.sidecalendar .dashlet {
   width: 181px;
   text-align:left;
   padding: 0;
@@ -773,13 +783,15 @@ table.minicalendar .today {
   border:none; 
 }
 
-#calendar td.sidecalendar .sideblock .header {
+#calendar td.sidecalendar .sideblock .header,
+#calendar td.sidecalendar .dashlet .header {
   padding: 4px 10px;
   border:1px solid #d2d2d2;
   border-bottom:none;
 }
 
-#calendar td.sidecalendar .sideblock .header h2 {
+#calendar td.sidecalendar .sideblock .header h2,
+#calendar td.sidecalendar .dashlet .header h2 {
    margin:0;
 }  
  
@@ -849,7 +861,15 @@ body#blocks-facetoface-calendar .yui-tt .bd {
 }
 
 
+/* Dashboard */
+.dashboard {
+    width: 100%;
+}
 
+.dashboardcol {
+    float: left;
+    margin: 10px;
+}
 
 /******************************************
  * YUI Drop-down menu

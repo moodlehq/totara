@@ -24,7 +24,8 @@
         <div><a href="<?php echo $CFG->wwwroot.'/idp/index.php' ?>"><?php echo get_string('mylearning', 'local') ?></a>
             <ul>
             <?php
-                 $text ='<li><a href="'.$CFG->wwwroot.'/idp/index.php">'.get_string('mydevelopmentplans', 'local').'</a></li>';
+                 $text ='<li><a href="'.$CFG->wwwroot.'/idp/dashboard.php">'.get_string('dashboard', 'local_dashboard').'</a></li>';
+                 $text .='<li><a href="'.$CFG->wwwroot.'/idp/index.php">'.get_string('mydevelopmentplans', 'local').'</a></li>';
                  $text .='<li><a href="'.$CFG->wwwroot.'/my/bookings.php">'.get_string('mybookings', 'local').'</a></li>';
                  $text .='<li class="last"><a href="'.$CFG->wwwroot.'/my/records.php">'.get_string('myrecordoflearning', 'local').'</a></li>';
                  echo $text;
