@@ -182,6 +182,12 @@ $string['priority'] = 'Priority';
 $string['changeworkflowconfirm'] = 'Are you sure you wish to change the workflow for this template. This will override all settings and permission to use the default settings for the $a.';
 $string['nochanges'] = 'There are no changes';
 $string['na'] = 'N/A';
+$string['role'] = 'Role';
+
+$string['duedatemode'] = 'Due dates';
+$string['prioritymode'] = 'Priorities';
+//$string['opt= 
+
 
 // General errors
 $string['error:incorrectparameters'] = 'Incorrect parameters';

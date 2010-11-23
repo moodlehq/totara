@@ -228,14 +228,14 @@ function dp_print_workflow_diff($diff_array) {
         DP_PERMISSION_APPROVE => get_string('approve', 'local_plan')
     );
 
-    $duedate_options = array(DP_DUEDATES_NONE => get_string('duedatesnone', 'local_plan'),
-        DP_DUEDATES_OPTIONAL => get_string('duedatesopt', 'local_plan'),
-        DP_DUEDATES_REQUIRED => get_string('duedatesreq', 'local_plan')
+    $duedate_options = array(DP_DUEDATES_NONE => get_string('none'),
+        DP_DUEDATES_OPTIONAL => get_string('optional', 'local_plan'),
+        DP_DUEDATES_REQUIRED => get_string('required', 'local_plan')
     );
 
-    $priority_options = array(DP_PRIORITY_NONE => get_string('prioritynone', 'local_plan'),
-        DP_PRIORITY_OPTIONAL => get_string('priorityopt', 'local_plan'),
-        DP_PRIORITY_REQUIRED => get_string('priorityreq', 'local_plan')
+    $priority_options = array(DP_PRIORITY_NONE => get_string('none'),
+        DP_PRIORITY_OPTIONAL => get_string('optional', 'local_plan'),
+        DP_PRIORITY_REQUIRED => get_string('required', 'local_plan')
     );
 
     foreach($diff_array as $item => $values) {
@@ -243,13 +243,25 @@ function dp_print_workflow_diff($diff_array) {
         $tablerow = array();
 
         if($parts[0] == 'perm'){
-            $tablerow[] = get_string($parts[1], 'local_plan');
+            if($parts[1] != 'plan'){
+                $configsetting = get_config(null, 'dp_'.$parts[1]);
+                $compname = $configsetting ? $configsetting : get_string($parts[1].'_defaultname', 'local_plan');
+                $tablerow[] = $compname;
+            } else {
+                $tablerow[] = get_string($parts[1], 'local_plan');
+            }
             $tablerow[] = get_string($parts[2], 'local_plan');
             $tablerow[] = get_string($parts[3], 'local_plan');
             $tablerow[] = $permission_options[$values['before']];
             $tablerow[] = $permission_options[$values['after']];
         } else {
-            $tablerow[] = get_string($parts[1], 'local_plan');
+            if($parts[1] != 'plan'){
+                $configsetting = get_config(null, 'dp_'.$parts[1]);
+                $compname = $configsetting ? $configsetting : get_string($parts[1].'_defaultname', 'local_plan');
+                $tablerow[] = $compname;
+            } else {
+                $tablerow[] = get_string($parts[1], 'local_plan');
+            }
             $tablerow[] = get_string($parts[2], 'local_plan');
             $tablerow[] = get_string('na', 'local_plan');
             switch($parts[2]) {
@@ -264,13 +276,13 @@ function dp_print_workflow_diff($diff_array) {
                     break;
 
                 case 'autoassignpos':
-                    $tablerow[] = $values['before'];
-                    $tablerow[] = $values['after'];
+                    $tablerow[] = $values['before'] == 0 ? get_string('no') : get_string('yes');
+                    $tablerow[] = $values['after'] == 0 ? get_string('no') : get_string('yes');
                     break;
 
                 case 'autoassignorg':
-                    $tablerow[] = $values['before'];
-                    $tablerow[] = $values['after'];
+                    $tablerow[] = $values['before'] == 0 ? get_string('no') : get_string('yes');
+                    $tablerow[] = $values['after'] == 0 ? get_string('no') : get_string('yes');
                     break;
             }
         }
