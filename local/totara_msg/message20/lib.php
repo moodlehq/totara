@@ -249,10 +249,6 @@ function tm_message_mark_message_read($message, $timeread, $messageworkingempty=
     $message->id = insert_record('message_read20', $message);
     delete_records('message20', 'id', $messageid);
 
-    // repoint the metadata record to the message_read id
-    $metadata = get_record('message_metadata', 'messageid', $messageid);
-    if ($metadata) {
-        $metadata->messageid = $message->id;
-        update_record('message_metadata', $metadata);
-    }
+    // delete the metadata record belonging to the message id
+    delete_records('message_metadata', 'messageid', $messageid);
 }
