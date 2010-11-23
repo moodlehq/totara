@@ -87,12 +87,10 @@ $string['before'] = 'Before';
 $string['after'] = 'After';
 
 //Course Strings
-$string['addcourse'] = 'Add';
-$string['removecourse'] = 'Remove';
+$string['updatecourse'] = 'Update';
 
 //Competency Strings
-$string['addcompetency'] = 'Add';
-$string['removecompetency'] = 'Remove';
+$string['updatecompetency'] = 'Update';
 $string['setproficiency'] = 'Set Proficiency';
 $string['proficiency'] = 'Proficiency';
 

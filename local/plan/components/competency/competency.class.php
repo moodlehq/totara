@@ -1,8 +1,7 @@
 <?php
 class dp_competency_component extends dp_base_component {
     public static $permissions = array(
-        'addcompetency' => true,
-        'removecompetency' => true,
+        'updatecompetency' => true,
         'commenton' => false,
         'setpriority' => false,
         'setduedate' => false,
@@ -61,10 +60,11 @@ class dp_competency_component extends dp_base_component {
         $mform->setDefault('prioritymode', $defaultprioritymode);
 
         // priority scale selector
-        $priorities = dp_get_priorities();
         $prioritymenu = array();
-        foreach($priorities as $priority) {
-            $prioritymenu[$priority->id] = $priority->name;
+        if($priorities = dp_get_priorities()) {
+            foreach($priorities as $priority) {
+                $prioritymenu[$priority->id] = $priority->name;
+            }
         }
 
         $mform->addElement('select', 'priorityscale', get_string('priorityscale', 'local_plan'), $prioritymenu);
@@ -192,9 +192,9 @@ class dp_competency_component extends dp_base_component {
         $priorityscaleid = ($this->get_setting('priorityscale')) ? $this->get_setting('priorityscale') : -1;
         $plancompleted = $this->plan->status == DP_PLAN_STATUS_COMPLETE;
         $canapprovecomps = !$plancompleted &&
-            $this->get_setting('addcompetency') == DP_PERMISSION_APPROVE;
+            $this->get_setting('updatecompetency') == DP_PERMISSION_APPROVE;
         $canremovecomps = !$plancompleted &&
-            $this->get_setting('removecompetency') == DP_PERMISSION_ALLOW;
+            $this->get_setting('updatecompetency') == DP_PERMISSION_ALLOW;
 
         $count = 'SELECT COUNT(*) ';
         $select = 'SELECT ca.*, c.fullname, csv.name ' . sql_as() .
@@ -582,7 +582,7 @@ class dp_competency_component extends dp_base_component {
         // if duedatemode is required
         $cansetduedates = ($this->get_setting('setduedate') == DP_PERMISSION_ALLOW);
         $cansetpriorities = ($this->get_setting('setpriority') == DP_PERMISSION_ALLOW);
-        $canapprovecomps = ($this->get_setting('addcompetency') == DP_PERMISSION_APPROVE);
+        $canapprovecomps = ($this->get_setting('updatecompetency') == DP_PERMISSION_APPROVE);
         $duedates = optional_param('duedate', array(), PARAM_TEXT);
         $priorities = optional_param('priorities', array(), PARAM_INT);
         $approvals = optional_param('approve', array(), PARAM_INT);
@@ -717,7 +717,7 @@ class dp_competency_component extends dp_base_component {
 
 
     function remove_competency_assignment($caid) {
-        $canremovecompetency = ($this->get_setting('removecompetency') == DP_PERMISSION_ALLOW);
+        $canremovecompetency = ($this->get_setting('updatecompetency') == DP_PERMISSION_ALLOW);
         // need permission to remove this competency
         if(!$canremovecompetency) {
             return false;

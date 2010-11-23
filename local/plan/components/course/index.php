@@ -16,7 +16,7 @@ $currenturl = $CFG->wwwroot . '/local/plan/components/course/index.php?id='.$id;
 $plancompleted = $plan->status == DP_PLAN_STATUS_COMPLETE;
 $cansetduedate = ($component->get_setting('setduedate') == DP_PERMISSION_ALLOW);
 $cansetpriority = ($component->get_setting('setpriority') == DP_PERMISSION_ALLOW);
-$canapprovecourses = ($component->get_setting('addcourse') == DP_PERMISSION_APPROVE);
+$canapprovecourses = ($component->get_setting('updatecourse') == DP_PERMISSION_APPROVE);
 
 if($submitted && confirm_sesskey()) {
     $component->process_course_settings_update();

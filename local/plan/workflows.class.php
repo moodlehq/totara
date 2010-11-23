@@ -33,10 +33,8 @@ abstract class dp_base_workflow {
             'perm_plan_signoff_manager',
 
             //course permission settings
-            'perm_course_addcourse_learner',
-            'perm_course_addcourse_manager',
-            'perm_course_removecourse_learner',
-            'perm_course_removecourse_manager',
+            'perm_course_updatecourse_learner',
+            'perm_course_updatecourse_manager',
             'perm_course_commenton_learner',
             'perm_course_commenton_manager',
             'perm_course_setpriority_learner',
@@ -47,10 +45,8 @@ abstract class dp_base_workflow {
             'perm_course_setcompletionstatus_manager',
 
             //competency permission settings
-            'perm_competency_addcompetency_learner',
-            'perm_competency_addcompetency_manager',
-            'perm_competency_removecompetency_learner',
-            'perm_competency_removecompetency_manager',
+            'perm_competency_updatecompetency_learner',
+            'perm_competency_updatecompetency_manager',
             'perm_competency_commenton_learner',
             'perm_competency_commenton_manager',
             'perm_competency_setpriority_learner',

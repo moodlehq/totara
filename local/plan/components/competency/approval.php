@@ -13,7 +13,7 @@ $componentname = 'competency';
 $component = $plan->get_component($componentname);
 $currenturl = $CFG->wwwroot . '/local/plan/components/competency/approval.php?id='.$id.'&amp;itemid='.$caid.'&amp;action='.$action;
 $returnurl = $CFG->wwwroot . '/local/plan/components/competency/index.php?id='.$id;
-$canapprovecompetency = $component->get_setting('addcompetency') == DP_PERMISSION_APPROVE;
+$canapprovecompetency = $component->get_setting('updatecompetency') == DP_PERMISSION_APPROVE;
 
 if($confirm) {
     if(!confirm_sesskey()) {

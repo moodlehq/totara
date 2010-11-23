@@ -2,8 +2,7 @@
 
 class dp_course_component extends dp_base_component {
     public static $permissions = array(
-        'addcourse' => true,
-        'removecourse' => true,
+        'updatecourse' => true,
         'commenton' => false,
         'setpriority' => false,
         'setduedate' => false,
@@ -26,9 +25,9 @@ class dp_course_component extends dp_base_component {
 
         $plancompleted = $this->plan->status == DP_PLAN_STATUS_COMPLETE;
         $canapprovecourses = !$plancompleted &&
-            $this->get_setting('addcourse') == DP_PERMISSION_APPROVE;
+            $this->get_setting('updatecourse') == DP_PERMISSION_APPROVE;
         $canremovecourses = !$plancompleted &&
-            $this->get_setting('removecourse') == DP_PERMISSION_ALLOW;
+            $this->get_setting('updatecourse') == DP_PERMISSION_ALLOW;
 
         // @todo fix sorting of status column to account for course
         // completion - may need status column in course completions table
@@ -378,7 +377,7 @@ class dp_course_component extends dp_base_component {
         }
         $cansetduedates = ($this->get_setting('setduedate') == DP_PERMISSION_ALLOW);
         $cansetpriorities = ($this->get_setting('setpriority') == DP_PERMISSION_ALLOW);
-        $canapprovecourses = ($this->get_setting('addcourse') == DP_PERMISSION_APPROVE);
+        $canapprovecourses = ($this->get_setting('updatecourse') == DP_PERMISSION_APPROVE);
         $duedates = optional_param('duedate', array(), PARAM_TEXT);
         $priorities = optional_param('priorities', array(), PARAM_TEXT);
         $approvals = optional_param('approve', array(), PARAM_INT);
@@ -548,10 +547,11 @@ class dp_course_component extends dp_base_component {
         $mform->setDefault('prioritymode', $defaultprioritymode);
 
         // priority scale selector
-        $priorities = dp_get_priorities();
         $prioritymenu = array();
-        foreach($priorities as $priority) {
-            $prioritymenu[$priority->id] = $priority->name;
+        if($priorities = dp_get_priorities()) {
+            foreach($priorities as $priority) {
+                $prioritymenu[$priority->id] = $priority->name;
+            }
         }
 
         $mform->addElement('select', 'priorityscale', get_string('priorityscale', 'local_plan'), $prioritymenu);
@@ -656,7 +656,7 @@ class dp_course_component extends dp_base_component {
     }
 
     function remove_course_assignment($caid) {
-        $canremovecourse = ($this->get_setting('removecourse') == DP_PERMISSION_ALLOW);
+        $canremovecourse = ($this->get_setting('updatecourse') == DP_PERMISSION_ALLOW);
         // need permission to remove this course
         if(!$canremovecourse) {
             return false;

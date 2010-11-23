@@ -567,9 +567,9 @@ class development_plan {
 
     function has_pending_items($pendinglist=null, $onlyapprovable=false) {
 
-        $canapprovecourses = ($this->get_component('course')->get_setting('addcourse')
+        $canapprovecourses = ($this->get_component('course')->get_setting('updatecourse')
             == DP_PERMISSION_APPROVE);
-        $canapprovecompetencies = ($this->get_component('competency')->get_setting('addcompetency')
+        $canapprovecompetencies = ($this->get_component('competency')->get_setting('updatecompetency')
             == DP_PERMISSION_APPROVE);
 
         // get the pending items, if it hasn't been passed to the method
@@ -703,9 +703,9 @@ class development_plan {
     function display_pending_items($pendinglist=null) {
         global $CFG;
 
-        $canapprovecourses = ($this->get_component('course')->get_setting('addcourse')
+        $canapprovecourses = ($this->get_component('course')->get_setting('updatecourse')
             == DP_PERMISSION_APPROVE);
-        $canapprovecompetencies = ($this->get_component('competency')->get_setting('addcompetency')
+        $canapprovecompetencies = ($this->get_component('competency')->get_setting('updatecompetency')
             == DP_PERMISSION_APPROVE);
         $coursesenabled = $this->get_component('course')->get_setting('enabled');
         $competenciesenabled = $this->get_component('competency')->get_setting('enabled');

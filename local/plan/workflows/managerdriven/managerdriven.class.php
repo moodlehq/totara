@@ -36,10 +36,8 @@ class dp_managerdriven_workflow extends dp_base_workflow {
         $this->perm_plan_signoff_manager = DP_PERMISSION_ALLOW;
 
         // course permission settings
-        $this->perm_course_addcourse_learner = DP_PERMISSION_DENY;
-        $this->perm_course_addcourse_manager = DP_PERMISSION_ALLOW;
-        $this->perm_course_removecourse_learner = DP_PERMISSION_ALLOW;
-        $this->perm_course_removecourse_manager = DP_PERMISSION_ALLOW;
+        $this->perm_course_updatecourse_learner = DP_PERMISSION_DENY;
+        $this->perm_course_updatecourse_manager = DP_PERMISSION_ALLOW;
         $this->perm_course_commenton_learner = DP_PERMISSION_ALLOW;
         $this->perm_course_commenton_manager = DP_PERMISSION_ALLOW;
         $this->perm_course_setpriority_learner = DP_PERMISSION_ALLOW;
@@ -50,10 +48,8 @@ class dp_managerdriven_workflow extends dp_base_workflow {
         $this->perm_course_setcompletionstatus_manager = DP_PERMISSION_REQUEST;
 
         //competency permission settings
-        $this->perm_competency_addcompetency_learner = DP_PERMISSION_ALLOW;
-        $this->perm_competency_addcompetency_manager = DP_PERMISSION_ALLOW;
-        $this->perm_competency_removecompetency_learner = DP_PERMISSION_ALLOW;;
-        $this->perm_competency_removecompetency_manager = DP_PERMISSION_ALLOW;;
+        $this->perm_competency_updatecompetency_learner = DP_PERMISSION_ALLOW;
+        $this->perm_competency_updatecompetency_manager = DP_PERMISSION_ALLOW;
         $this->perm_competency_commenton_learner = DP_PERMISSION_ALLOW;
         $this->perm_competency_commenton_manager = DP_PERMISSION_ALLOW;
         $this->perm_competency_setpriority_learner = DP_PERMISSION_ALLOW;
