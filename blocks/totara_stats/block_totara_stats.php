@@ -13,6 +13,13 @@ class block_totara_stats extends block_base {
         $this->title = get_string('blockname', 'block_totara_stats');
         $this->version = 2010111701;
         $this->cron = 20; //TODO: should schedule cron rather than using this var.
+        //set defaults - setting here to make it easy.
+        $this->config->statlearnerhours = 1;
+        $this->config->statlearnerhours_hours = 12;
+        $this->config->statcoursesstarted = 1;
+        $this->config->statcoursescompleted = 1;
+        $this->config->statcompachieved = 1;
+        $this->config->statobjachieved = 1;
     }
 
     function instance_allow_config() {
@@ -41,29 +48,12 @@ class block_totara_stats extends block_base {
 
         if ($this->instance_is_dashlet()) {
             require_once($CFG->dirroot.'/blocks/totara_stats/locallib.php');
-
             // get Role of user in this page.
-            $sql = "SELECT r.shortname
-                FROM {$CFG->prefix}dashb d
-                INNER JOIN {$CFG->prefix}dashb_instance di ON d.id = di.dashb_id
-                INNER JOIN {$CFG->prefix}role r on d.roleid = r.id
-                WHERE di.id = {$this->instance->pageid}";       // The pageid is the dashb instance id
-            $role = get_field_sql($sql);
-
-            switch ($role) {
-                case 'admin' :
-                case 'administrator' :
-                    $this->content->text   .= totara_stats_output(totara_stats_admin_stats($USER));
-                    break;
-                case 'manager' :
-                    $this->content->text   .= totara_stats_output(totara_stats_manager_stats($USER));
-                    break;
-                case 'teacher' :
-                case 'trainer' :
-                case 'student' :
-                default:
-                    $this->content->text   .= totara_stats_output(totara_stats_user_stats($USER));
-                    break;
+            $role = totara_stats_get_dashrole($this->instance->pageid);
+            //now get sql required to return stats
+            $stats = totara_stats_build_sql($role, $USER, $this->config);
+            if (!empty($stats)) {
+                $this->content->text   .= totara_stats_output(totara_stats_sql_helper($stats));
             }
         }
 
@@ -74,11 +64,6 @@ class block_totara_stats extends block_base {
 
     function instance_allow_multiple() {
         return false;
-    }
-
-
-    function instance_config_save($data) {
-
     }
 
 
