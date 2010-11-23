@@ -51,14 +51,14 @@ if ($data = $form->get_data()) {
         if ($plan->get_component('competency')->get_setting('enabled')) {
             // Auto-assign competencies
             $competencycomponent = $plan->get_component('competency');
-            if ($competencycomponent->get_setting('auto_assign_org')) {
+            if ($competencycomponent->get_setting('autoassignorg')) {
                 // From organisation
                 if (!$competencycomponent->assign_from_org()) {
                     rollback_sql();
                     totara_set_notification(get_string('plancreatefail', 'local_plan'), $currenturl);
                 }
             }
-            if ($competencycomponent->get_setting('auto_assign_pos')) {
+            if ($competencycomponent->get_setting('autoassignpos')) {
                 // From position
                 if (!$competencycomponent->assign_from_pos()) {
                     rollback_sql();

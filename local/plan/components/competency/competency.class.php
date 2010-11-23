@@ -21,8 +21,8 @@ class dp_competency_component extends dp_base_component {
             $settings[$this->component.'_duedatemode'] = $competencysettings->duedatemode;
             $settings[$this->component.'_prioritymode'] = $competencysettings->prioritymode;
             $settings[$this->component.'_priorityscale'] = $competencysettings->priorityscale;
-            $settings[$this->component.'_auto_assign_org'] = $competencysettings->auto_assign_org;
-            $settings[$this->component.'_auto_assign_pos'] = $competencysettings->auto_assign_pos;
+            $settings[$this->component.'_autoassignorg'] = $competencysettings->autoassignorg;
+            $settings[$this->component.'_autoassignpos'] = $competencysettings->autoassignpos;
         }
     }
 
