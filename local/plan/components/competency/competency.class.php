@@ -728,7 +728,14 @@ class dp_competency_component extends dp_base_component {
 
     function assign_competencies($competencies) {
         begin_sql();
+        // Get all currently-assigned competencies
+        $assigned = get_records('dp_plan_competency_assign', 'planid', $this->plan->id, '', 'competencyid');
+        $assigned = !empty($assigned) ? array_keys($assigned) : array();
         foreach ($competencies as $c) {
+            if (in_array($c->id, $assigned)) {
+                // Don't assign duplicate competencies
+                continue;
+            }
             $todb = new stdClass;
             $todb->planid = $this->plan->id;
             $todb->competencyid = $c->id;

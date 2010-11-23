@@ -361,6 +361,7 @@ function dp_display_plans($userid, $statuses=array(DP_PLAN_STATUS_APPROVED), $co
     $table->define_headers($tableheaders);
     $table->define_columns($tablecols);
     $table->set_attribute('class', 'logtable generalbox');
+    $table->set_attribute('width', '97%');
     $table->sortable(true);
     $table->setup();
     $table->pagesize(5, $count);
