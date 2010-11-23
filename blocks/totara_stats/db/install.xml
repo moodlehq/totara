@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="blocks/totara_stats/db" VERSION="2010111700" COMMENT="XMLDB file for Totara stats block"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
+>
+  <TABLES>
+    <TABLE NAME="block_totara_stats" COMMENT="Holds stats information">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" NEXT="userid"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="id" NEXT="timestamp"/>
+        <FIELD NAME="timestamp" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="userid" NEXT="eventtype"/>
+        <FIELD NAME="eventtype" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" ENUM="false" PREVIOUS="timestamp" NEXT="data"/>
+        <FIELD NAME="data" TYPE="text" LENGTH="small" NOTNULL="true" SEQUENCE="false" ENUM="false" PREVIOUS="eventtype" NEXT="data2"/>
+        <FIELD NAME="data2" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" ENUM="false" PREVIOUS="data"/>
+      </FIELDS>
+
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="user-time-type" UNIQUE="false" FIELDS="userid,timestamp,eventtype" NEXT="time"/>
+        <INDEX NAME="time" UNIQUE="false" FIELDS="timestamp" PREVIOUS="user-time-type" NEXT="time-type"/>
+        <INDEX NAME="time-type" UNIQUE="false" FIELDS="timestamp,eventtype" PREVIOUS="time"/>
+      </INDEXES>
+    </TABLE>
+  </TABLES>
+</XMLDB>
