@@ -38,11 +38,6 @@ class block_totara_stats extends block_base {
         if ($this->instance_is_dashlet()) {
             require_once($CFG->dirroot.'/blocks/totara_stats/locallib.php');
 
-            //debugging for user stats
-            $logs = totara_stats_timespent(time()-100000, time());
-            print_object($logs);
-
-
             // get Role of user in this page.
             $sql = "SELECT r.shortname
                 FROM {$CFG->prefix}dashb d
