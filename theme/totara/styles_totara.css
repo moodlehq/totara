@@ -255,10 +255,11 @@ div#header {
 }
 
 body#site-index #totara_menu ul #menu1,
+body#user-view #totara_menu ul #menu1,
 body#login-index #totara_menu ul #menu1,
 body.mod-forum #totara_menu ul #menu1,
 body.admin #totara_menu ul #menu1,
-body#my-index #totara_menu ul #menu2,
+body.local-plan #totara_menu ul #menu2,
 body.idp #totara_menu ul #menu2,
 body#my-learning #totara_menu ul #menu2,
 body#my-bookings #totara_menu ul #menu2,
@@ -278,10 +279,11 @@ body#blocks-facetoface-calendar #totara_menu ul #menu6 {
 	background: transparent url('images/nav_main_bg_lft.jpg') no-repeat bottom left;
 }
 body#site-index #totara_menu ul #menu1 a,
+body#user-view #totara_menu ul #menu1 a,
 body#login-index #totara_menu ul #menu1 a,
 body.mod-forum #totara_menu ul #menu1 a,
 body.admin #totara_menu ul #menu1 a,
-body#my-index #totara_menu ul #menu2 a,
+body.local-plan #totara_menu ul #menu2 a,
 body.idp #totara_menu ul #menu2 a,
 body#my-learning #totara_menu ul #menu2 a,
 body#my-bookings #totara_menu ul #menu2 a,
@@ -300,10 +302,11 @@ body#blocks-facetoface-calendar #totara_menu ul #menu6 a {
 	background: transparent url('images/nav_main_bg_rgt.jpg') no-repeat bottom right;
 }
 body#site-index #totara_menu ul #menu1 ul,
+body#user-view #totara_menu ul #menu1 ul,
 body#login-index #totara_menu ul #menu1 ul,
 body.mod-forum #totara_menu ul #menu1 ul,
 body.admin #totara_menu ul #menu1 ul,
-body#my-index #totara_menu ul #menu2 ul,
+body.local-plan #totara_menu ul #menu2 ul,
 body.idp #totara_menu ul #menu2 ul,
 body#my-learning #totara_menu ul #menu2 ul,
 body#my-bookings #totara_menu ul #menu2 ul,
@@ -321,10 +324,11 @@ body.calendar #totara_menu ul #menu6 ul  {
 	display: block;
 }
 body#site-index #totara_menu #menu1 ul li a,
+body#user-view #totara_menu #menu1 ul li a,
 body#login-index #totara_menu #menu1 ul li a,
 body.mod-forum #totara_menu #menu1 ul li a,
 body.admin #totara_menu #menu1 ul li a,
-body#my-index #totara_menu ul #menu2 ul li a,
+body.local-plan #totara_menu ul #menu2 ul li a,
 body.idp #totara_menu ul #menu2 ul li a,
 body#my-learning #totara_menu ul #menu2 ul li a,
 body#my-bookings #totara_menu ul #menu2 ul li a,
@@ -348,12 +352,13 @@ body.calendar #totara_menu ul #menu6 ul li a  {
 }
 
 body#site-index #totara_menu #menu1 ul,
+body#user-view #totara_menu #menu1 ul,
 body#login-index #totara_menu #menu1 ul,
 body.mod-forum #totara_menu #menu1 ul,
 body.admin#totara_menu #menu1 ul {
     left:-27px;
 }
-body#my-index #totara_menu ul #menu2 ul,
+body.local-plan #totara_menu ul #menu2 ul,
 body.idp #totara_menu ul #menu2 ul,
 body#my-learning #totara_menu ul #menu2 ul,
 body#my-bookings #totara_menu ul #menu2 ul,
