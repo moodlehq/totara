@@ -742,7 +742,7 @@ var comptree = [' . implode(', ', $comptrees) . '];
             $todb->reportid = $newid;
             $todb->type = $column['type'];
             $todb->value = $column['value'];
-            $todb->heading = $column['heading'];
+            $todb->heading = addslashes($column['heading']);
             $todb->sortorder = $so;
             if(!insert_record('report_builder_columns', $todb)) {
                 rollback_sql();
@@ -1893,6 +1893,11 @@ var comptree = [' . implode(', ', $comptrees) . '];
                 // hide any columns where hidden flag is set
                 if($column->hidden != 0) {
                     $table->column_style($ident, 'display', 'none');
+                }
+
+                // disable sorting on column where indicated
+                if ($column->nosort) {
+                    $table->no_sorting($ident);
                 }
             }
         }

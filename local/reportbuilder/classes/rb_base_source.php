@@ -167,6 +167,7 @@ abstract class rb_base_source {
                     'capability' => $coloption->capability,
                     'noexport' => $coloption->noexport,
                     'grouping' => $coloption->grouping,
+                    'nosort' => $coloption->nosort,
                     'style' => $coloption->style,
                     'hidden' => $hidden,
                 )

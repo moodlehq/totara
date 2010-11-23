@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="local/totara_msg/db" VERSION="20101101" COMMENT="XMLDB file for Moodle local/totara_msg"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
+>
+  <TABLES>
+    <TABLE NAME="message20" COMMENT="Stores all unread messages" NEXT="message_read20">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="useridfrom"/>
+        <FIELD NAME="useridfrom" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="false" DEFAULT="0" SEQUENCE="false" PREVIOUS="id" NEXT="useridto"/>
+        <FIELD NAME="useridto" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="false" DEFAULT="0" SEQUENCE="false" PREVIOUS="useridfrom" NEXT="subject"/>
+        <FIELD NAME="subject" TYPE="text" LENGTH="small" NOTNULL="false" SEQUENCE="false" COMMENT="The message subject" PREVIOUS="useridto" NEXT="fullmessage"/>
+        <FIELD NAME="fullmessage" TYPE="text" LENGTH="small" NOTNULL="false" SEQUENCE="false" PREVIOUS="subject" NEXT="fullmessageformat"/>
+        <FIELD NAME="fullmessageformat" TYPE="int" LENGTH="4" NOTNULL="false" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" COMMENT="The format of the full message" PREVIOUS="fullmessage" NEXT="fullmessagehtml"/>
+        <FIELD NAME="fullmessagehtml" TYPE="text" LENGTH="medium" NOTNULL="false" SEQUENCE="false" COMMENT="html format of message" PREVIOUS="fullmessageformat" NEXT="smallmessage"/>
+        <FIELD NAME="smallmessage" TYPE="text" LENGTH="small" NOTNULL="false" SEQUENCE="false" COMMENT="Smal version of message (eg sms)" PREVIOUS="fullmessagehtml" NEXT="notification"/>
+        <FIELD NAME="notification" TYPE="int" LENGTH="1" NOTNULL="false" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="smallmessage" NEXT="contexturl"/>
+        <FIELD NAME="contexturl" TYPE="text" LENGTH="small" NOTNULL="false" SEQUENCE="false" COMMENT="If this message is a notification of an event contexturl should contain a link to view this event. For example if its a notification of a forum post contexturl should contain a link to the forum post." PREVIOUS="notification" NEXT="contexturlname"/>
+        <FIELD NAME="contexturlname" TYPE="text" LENGTH="small" NOTNULL="false" SEQUENCE="false" COMMENT="Display text for the contexturl" PREVIOUS="contexturl" NEXT="timecreated"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="false" DEFAULT="0" SEQUENCE="false" PREVIOUS="contexturlname"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="useridfrom" UNIQUE="false" FIELDS="useridfrom" NEXT="useridto"/>
+        <INDEX NAME="useridto" UNIQUE="false" FIELDS="useridto" PREVIOUS="useridfrom"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="message_read20" COMMENT="Stores all messages that have been read" PREVIOUS="message20" NEXT="message_providers20">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="useridfrom"/>
+        <FIELD NAME="useridfrom" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="false" DEFAULT="0" SEQUENCE="false" PREVIOUS="id" NEXT="useridto"/>
+        <FIELD NAME="useridto" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="false" DEFAULT="0" SEQUENCE="false" PREVIOUS="useridfrom" NEXT="subject"/>
+        <FIELD NAME="subject" TYPE="text" LENGTH="small" NOTNULL="false" SEQUENCE="false" COMMENT="The message subject" PREVIOUS="useridto" NEXT="fullmessage"/>
+        <FIELD NAME="fullmessage" TYPE="text" LENGTH="small" NOTNULL="false" SEQUENCE="false" PREVIOUS="subject" NEXT="fullmessageformat"/>
+        <FIELD NAME="fullmessageformat" TYPE="int" LENGTH="4" NOTNULL="false" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" COMMENT="The format of the full message" PREVIOUS="fullmessage" NEXT="fullmessagehtml"/>
+        <FIELD NAME="fullmessagehtml" TYPE="text" LENGTH="medium" NOTNULL="false" SEQUENCE="false" COMMENT="html format of message" PREVIOUS="fullmessageformat" NEXT="smallmessage"/>
+        <FIELD NAME="smallmessage" TYPE="text" LENGTH="small" NOTNULL="false" SEQUENCE="false" COMMENT="Smal version of message (eg sms)" PREVIOUS="fullmessagehtml" NEXT="notification"/>
+        <FIELD NAME="notification" TYPE="int" LENGTH="1" NOTNULL="false" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="smallmessage" NEXT="contexturl"/>
+        <FIELD NAME="contexturl" TYPE="text" LENGTH="small" NOTNULL="false" SEQUENCE="false" COMMENT="If this message is a notification of an event contexturl should contain a link to view this event. For example if its a notification of a forum post contexturl should contain a link to the forum post." PREVIOUS="notification" NEXT="contexturlname"/>
+        <FIELD NAME="contexturlname" TYPE="text" LENGTH="small" NOTNULL="false" SEQUENCE="false" COMMENT="Display text for the contexturl" PREVIOUS="contexturl" NEXT="timecreated"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="false" DEFAULT="0" SEQUENCE="false" PREVIOUS="contexturlname" NEXT="timeread"/>
+        <FIELD NAME="timeread" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="false" DEFAULT="0" SEQUENCE="false" PREVIOUS="timecreated"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="useridfrom" UNIQUE="false" FIELDS="useridfrom" NEXT="useridto"/>
+        <INDEX NAME="useridto" UNIQUE="false" FIELDS="useridto" PREVIOUS="useridfrom"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="message_providers20" COMMENT="This table stores the message providers (modules and core systems)" PREVIOUS="message_read20" NEXT="message_processors20">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="false" SEQUENCE="true" COMMENT="id of the table, please edit me" NEXT="name"/>
+        <FIELD NAME="name" TYPE="char" LENGTH="100" NOTNULL="true" SEQUENCE="false" COMMENT="The full name of the message provider in standard form" PREVIOUS="id" NEXT="component"/>
+        <FIELD NAME="component" TYPE="char" LENGTH="200" NOTNULL="true" SEQUENCE="false" COMMENT="The name of the component that produces these messages" PREVIOUS="name" NEXT="capability"/>
+        <FIELD NAME="capability" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" COMMENT="Optional: permission that is required on the user's setting screen to see this message provider." PREVIOUS="component"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="primary key of the table, please edit me"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="componentname" UNIQUE="true" FIELDS="component, name" COMMENT="Unique index"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="message_processors20" COMMENT="List of message output plugins" PREVIOUS="message_providers20" NEXT="message_working20">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="false" SEQUENCE="true" COMMENT="id of the table, please edit me" NEXT="name"/>
+        <FIELD NAME="name" TYPE="char" LENGTH="166" NOTNULL="true" SEQUENCE="false" COMMENT="Default comment for the field, please edit me" PREVIOUS="id"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="primary key of the table, please edit me"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="message_working20" COMMENT="Lists all the messages and processors that need to be processed" PREVIOUS="message_processors20" NEXT="message_metadata">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="false" SEQUENCE="true" COMMENT="id of the table, please edit me" NEXT="unreadmessageid"/>
+        <FIELD NAME="unreadmessageid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" COMMENT="message that still needs some processing (on message table)" PREVIOUS="id" NEXT="processorid"/>
+        <FIELD NAME="processorid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" COMMENT="The processor with processes the message" PREVIOUS="unreadmessageid"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="primary key of the table, please edit me"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="processorid" UNIQUE="false" FIELDS="processorid"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="message_metadata" COMMENT="type, status, and workflow additions to messages" PREVIOUS="message_working20">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="false" SEQUENCE="true" COMMENT="id of the table, please edit me" NEXT="messageid"/>
+        <FIELD NAME="messageid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" COMMENT="message that still needs some processing (on message table)" PREVIOUS="id" NEXT="msgtype"/>
+        <FIELD NAME="msgtype" TYPE="int" LENGTH="4" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" COMMENT="The message type" PREVIOUS="messageid" NEXT="msgstatus"/>
+        <FIELD NAME="msgstatus" TYPE="int" LENGTH="4" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" COMMENT="The message status" PREVIOUS="msgtype" NEXT="processorid"/>
+        <FIELD NAME="processorid" TYPE="int" LENGTH="4" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" COMMENT="The message processor id" PREVIOUS="msgstatus" NEXT="urgency"/>
+        <FIELD NAME="urgency" TYPE="int" LENGTH="4" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" COMMENT="The message urgency" PREVIOUS="processorid" NEXT="roleid"/>
+        <FIELD NAME="roleid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" COMMENT="The role id associated with the message" PREVIOUS="urgency" NEXT="onaccept"/>
+        <FIELD NAME="onaccept" TYPE="text" LENGTH="small" NOTNULL="false" SEQUENCE="false" COMMENT="serialised action on message acceptance" PREVIOUS="roleid" NEXT="onreject"/>
+        <FIELD NAME="onreject" TYPE="text" LENGTH="small" NOTNULL="false" SEQUENCE="false" COMMENT="serialised action on message rejection" PREVIOUS="onaccept"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="primary key of the table"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="message" UNIQUE="true" FIELDS="messageid" NEXT="role" COMMENT="enforce unique messageids"/>
+        <INDEX NAME="role" UNIQUE="true" FIELDS="roleid, messageid" PREVIOUS="message" COMMENT="speed up hunting for messages"/>
+      </INDEXES>
+    </TABLE>
+  </TABLES>
+</XMLDB>

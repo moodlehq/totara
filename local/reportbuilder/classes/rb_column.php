@@ -229,6 +229,7 @@ class rb_column {
             'capability' => null,
             'noexport' => false,
             'grouping' => 'none',
+            'nosort' => false,
             'style' => null,
             'hidden' => 0,
         );

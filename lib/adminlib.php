@@ -168,6 +168,15 @@ function upgrade_plugins($type, $dir, $return) {
                         }
                     }
 
+                /// Update message providers - copied back from 2.0
+                    if (function_exists('tm_message_update_providers')) {
+                        $table = new XMLDBTable('message_providers20');
+                        if (table_exists($table)) {
+                            $component = $dir.'/'.$plugin->name;
+                            tm_message_update_providers($component);
+                        }
+                    }
+
                     notify(get_string('modulesuccess', '', $plugin->name), 'notifysuccess');
                 } else {
                     notify('Installing '. $plugin->name .' FAILED!');
@@ -211,6 +220,16 @@ function upgrade_plugins($type, $dir, $return) {
                         error('Could not update '.$plugin->name.' capabilities!');
                     }
                     events_update_definition($type.'/'.$plug);
+
+                    /// Update message providers - copied back from 2.0
+                    if (function_exists('tm_message_update_providers')) {
+                        $table = new XMLDBTable('message_providers20');
+                        if (table_exists($table)) {
+                            $component = $dir.'/'.$plugin->name;
+                            tm_message_update_providers($component);
+                        }
+                    }
+
                     notify(get_string('modulesuccess', '', $plugin->name), 'notifysuccess');
                 } else {
                     notify('Upgrading '. $plugin->name .' from '. $CFG->$pluginversion .' to '. $plugin->version .' FAILED!');

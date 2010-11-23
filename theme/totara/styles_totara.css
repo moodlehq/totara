@@ -1103,6 +1103,140 @@ div.block_html .header .title h2 {
   background: transparent;
 }
 
+div.block_totara_notify .header .title h2 a {
+  font-size: 0.6em;
+  white-space: nowrap;
+}
+
+div.block_totara_notify .content a {
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  color:#34b9e4;
+}
+
+div.block_totara_notify .content tr.shade {
+  background: #E4E4E4;
+}
+
+div.block_totara_notify .content tr.noshade {
+  background: #ffffff;
+}
+
+div.block_totara_notify .content td.status {
+  padding-right: 4px;
+}
+
+div.block_totara_notify .content td.statement {
+  width: 100%;
+  border-left: 1px solid;
+  padding-left: 4px;
+}
+
+div.block_totara_notify div.content div.footer div.viewall {
+  text-align: right;
+}
+
+#totara-msgs-action table {
+	border: 0px;
+	padding: 3px;
+}
+
+td.totara-msgs-action-left {
+    padding-right: 25px;
+    padding-bottom: 3px;
+}
+
+td.totara-msgs-action-right {
+    padding-left: 5px;
+    padding-bottom: 3px;
+}
+
+
+div.block_totara_reminders .header .title h2 a {
+  font-size: 0.6em;
+  white-space: nowrap;
+}
+
+div.block_totara_reminders .content a {
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  color:#34b9e4;
+}
+
+div.block_totara_reminders .content tr.shade {
+  background: #E4E4E4;
+}
+
+div.block_totara_reminders .content tr.noshade {
+  background: #ffffff;
+}
+
+div.block_totara_reminders .content td.status {
+  padding-right: 4px;
+}
+
+div.block_totara_reminders .content td.statement {
+  width: 100%;
+  border-left: 1px solid;
+  padding-left: 4px;
+}
+
+div.block_totara_reminders div.content div.footer div.viewall {
+  text-align: right;
+}
+
+div.totara_reminders_actions {
+  white-space: nowrap;
+}
+
+div.totara_reminders_actions .selectbox {
+  vertical-align: top;
+  float: right;
+  padding-top: 0px;
+  margin-top: 0px;
+}
+
+div.totara_reminders_actions .action {
+  vertical-align: top;
+}
+
+table.totara_messages_actions {
+  vertical-align: top;
+  border: 0px !important;
+  padding: 0px;
+}
+
+table.totara_messages_actions td {
+  text-align: left;
+  vertical-align: top;
+  border: 0px !important;
+  padding: 0px;
+}
+
+
+div.totara_notifications_actions {
+  white-space: nowrap;
+}
+
+
+div.totara_notifications_actions form {
+  text-align: left;
+  vertical-align: top;
+}
+
+div.totara_notifications_actions .selectbox {
+  vertical-align: top;
+  float: right;
+  padding-top: 0px;
+  margin-top: 0px;
+}
+
+div.totara_notifications_actions .action {
+  vertical-align: top;
+}
+
+.message_values_reminder_links {
+  white-space: nowrap;
+}
+
 
 /******************************************
  * List blocks

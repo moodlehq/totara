@@ -172,6 +172,14 @@ class rb_column_option {
     public $grouping;
 
     /**
+     * Determine whether the sorting capability is added to a column
+     *
+     * @access public
+     * @var bool
+     */
+    public $nosort;
+
+    /**
      * Inline style information to be applied to this column
      *
      * Array of CSS properties like this:
@@ -226,6 +234,7 @@ class rb_column_option {
             'noexport' => false,
             'grouping' => 'none',
             'style' => null,
+            'nosort' => false,
             'hidden' => 0,
         );
         $options = array_merge($defaults, $options);

@@ -1792,7 +1792,10 @@ function format_text_email($text, $format) {
             // there should not be any of these any more!
         /// This expression turns links into something nice in a text format. (Russell Jungwirth)
         /// From: http://php.net/manual/en/function.eregi-replace.php and simplified
-            $text = eregi_replace('(<a [^<]*href=["|\']?([^ "\']*)["|\']?[^>]*>([^<]*)</a>)','\\3 [ \\2 ]', $text);
+
+//          P.X.Harding - replaced because of deprecation errors as per 2.0
+//            $text = eregi_replace('(<a [^<]*href=["|\']?([^ "\']*)["|\']?[^>]*>([^<]*)</a>)','\\3 [ \\2 ]', $text);
+            $text = wikify_links($text);
             return strtr(strip_tags($text), array_flip(get_html_translation_table(HTML_ENTITIES)));
             break;
 
@@ -1803,10 +1806,23 @@ function format_text_email($text, $format) {
         case FORMAT_MOODLE:
         case FORMAT_MARKDOWN:
         default:
-            $text = eregi_replace('(<a [^<]*href=["|\']?([^ "\']*)["|\']?[^>]*>([^<]*)</a>)','\\3 [ \\2 ]', $text);
+
+//          P.X.Harding - replaced because of deprecation errors as per 2.0
+//            $text = eregi_replace('(<a [^<]*href=["|\']?([^ "\']*)["|\']?[^>]*>([^<]*)</a>)','\\3 [ \\2 ]', $text);
+            $text = wikify_links($text);
             return strtr(strip_tags($text), array_flip(get_html_translation_table(HTML_ENTITIES)));
             break;
     }
+}
+
+/**
+ * This expression turns links into something nice in a text format. (Russell Jungwirth)
+ *
+ * @param string $string
+ * @return string
+ */
+function wikify_links($string) {
+    return preg_replace('~(<a [^<]*href=["|\']?([^ "\']*)["|\']?[^>]*>([^<]*)</a>)~i','$3 [ $2 ]', $string);
 }
 
 /**
@@ -2040,8 +2056,12 @@ function clean_text($text, $format=FORMAT_MOODLE) {
             }
 
         /// Remove potential script events - some extra protection for undiscovered bugs in our code
-            $text = eregi_replace("([^a-z])language([[:space:]]*)=", "\\1Xlanguage=", $text);
-            $text = eregi_replace("([^a-z])on([a-z]+)([[:space:]]*)=", "\\1Xon\\2=", $text);
+//            $text = eregi_replace("([^a-z])language([[:space:]]*)=", "\\1Xlanguage=", $text);
+//            $text = eregi_replace("([^a-z])on([a-z]+)([[:space:]]*)=", "\\1Xon\\2=", $text);
+
+            // P.X.Harding - replaced because of deprecation errors as per 2.0
+            $text = preg_replace("~([^a-z])language([[:space:]]*)=~i", "$1Xlanguage=", $text);
+            $text = preg_replace("~([^a-z])on([a-z]+)([[:space:]]*)=~i", "$1Xon$2=", $text);
 
             return $text;
     }
@@ -2273,12 +2293,20 @@ function text_to_html($text, $smiley=true, $para=true, $newlines=true) {
 
     global $CFG;
 
+///// Remove any whitespace that may be between HTML tags
+//    $text = eregi_replace(">([[:space:]]+)<", "><", $text);
+//
+///// Remove any returns that precede or follow HTML tags
+//    $text = eregi_replace("([\n\r])<", " <", $text);
+//    $text = eregi_replace(">([\n\r])", "> ", $text);
+
+//  P.X.Harding - replaced because of deprecation errors as per 2.0
 /// Remove any whitespace that may be between HTML tags
-    $text = eregi_replace(">([[:space:]]+)<", "><", $text);
+    $text = preg_replace("~>([[:space:]]+)<~i", "><", $text);
 
 /// Remove any returns that precede or follow HTML tags
-    $text = eregi_replace("([\n\r])<", " <", $text);
-    $text = eregi_replace(">([\n\r])", "> ", $text);
+    $text = preg_replace("~([\n\r])<~i", " <", $text);
+    $text = preg_replace("~>([\n\r])~i", "> ", $text);
 
     convert_urls_into_links($text);
 
