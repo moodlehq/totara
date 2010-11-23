@@ -12,7 +12,6 @@ if(!isset($planuser)) {
 require_login();
 
 // @todo: capabilities
-// @todo: add functionality
 
 print_header(get_string('plans', 'local_plan'), get_string('plans', 'local_plans'));
 
@@ -36,7 +35,7 @@ print_container_end();
 print_heading(get_string('activeplans', 'local_plan'), 'left');
 echo "<br>";
 
-echo dp_display_plans($planuser, array(DP_PLAN_STATUS_APPROVED, DP_PLAN_STATUS_UNAPPROVED), array('duedate', 'progress'));
+echo dp_display_plans($planuser, array(DP_PLAN_STATUS_APPROVED, DP_PLAN_STATUS_UNAPPROVED, DP_PLAN_STATUS_DECLINED), array('duedate', 'progress'));
 
 print_heading(get_string('completedplans', 'local_plan'), 'left');
 echo "<br>";

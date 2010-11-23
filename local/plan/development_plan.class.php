@@ -259,7 +259,8 @@ class development_plan {
             foreach ($components as $c) {
                 $compname = $this->get_component($c->component)->get_setting('name');
                 $class = ($count == $total) ? "dp-summary-widget-component-name-last" : "dp-summary-widget-component-name";
-                $assignments = count($this->get_component($c->component)->get_assigned_items());
+                $assignments = $this->get_component($c->component)->get_assigned_items();
+                $assignments = !empty($assignments) ? count($assignments) : 0;
                 $assignments = empty($assignments) ? '' : " ({$assignments})";
 
                 $out .= "<span class=\"{$class}\">
@@ -345,6 +346,10 @@ class development_plan {
         if ($this->status == DP_PLAN_STATUS_UNAPPROVED) {
             return get_string('awaitingapproval', 'local_plan');
         }
+        if ($this->status == DP_PLAN_STATUS_DECLINED) {
+            return get_string('declined', 'local_plan');
+        }
+
         $completionsum = 0;
         $completedcount = 0;
         $inprogresscount = 0;
