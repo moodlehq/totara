@@ -147,7 +147,7 @@ class user_position_assignment_form extends moodleform {
                         array(0 => get_string('choosemanager','position')) + $allmanagers);
                     $mform->setDefault('managerid', $manager_id);
                 } else {
-                    $mform->addElement('static','managerid',get_string('choosemanager','position'), get_string('nomanagersavailable','position'));
+                    $mform->addElement('static','managerid',get_string('choosemanager','position'), get_string('error:dialognotreeitems', 'manager'));
                 }
                 $mform->setHelpButton('managerid', array('userpositionmanager', get_string('choosemanager', 'position')), true);
             } else {

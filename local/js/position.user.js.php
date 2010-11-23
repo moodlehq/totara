@@ -19,7 +19,7 @@ $(function() {
                 echo get_string('chooseposition', 'position');
                 echo dialog_display_currently_selected(get_string('selected', 'hierarchy'), 'position');
             ?>',
-            url+'find.php?',
+            url+'position.php?',
             'positionid',
             'positiontitle'
         );

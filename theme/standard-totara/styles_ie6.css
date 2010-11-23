@@ -45,6 +45,7 @@ div.totara-dialog div.ui-dialog-buttonpane button {
     padding-bottom: 0.1em;
 }
 
+/*
 div.totara-dialog ul.treeview,
 div.totara-dialog div#column-checkboxes {
     height: 222px;
@@ -52,4 +53,4 @@ div.totara-dialog div#column-checkboxes {
 
 div.totara-dialog .selected {
     height: 255px;
-}
+}*/

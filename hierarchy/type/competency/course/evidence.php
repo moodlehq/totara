@@ -45,7 +45,7 @@ if($nojs) {
 
 <div class="selectcompetencies">
 
-<h3>Choose an evidence type</h3>
+<p>Choose an evidence type</p>
 
 <h3><?php echo $course->fullname ?></h3>
 

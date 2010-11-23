@@ -23,7 +23,7 @@ $treeonly = optional_param('treeonly', false, PARAM_BOOL);
 ///
 
 // Load dialog content generator
-$dialog = new totara_dialog_content_hierarchy('organisation', $frameworkid);
+$dialog = new totara_dialog_content_hierarchy('position', $frameworkid);
 
 // Toggle treeview only display
 $dialog->show_treeview_only = $treeonly;

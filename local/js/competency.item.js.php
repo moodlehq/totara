@@ -54,13 +54,25 @@ totaraDialog_handler_assignEvidence = function() {
     var baseurl = '';
 }
 
-totaraDialog_handler_assignEvidence.prototype = new totaraDialog_handler_skeletalTreeview();
+totaraDialog_handler_assignEvidence.prototype = new totaraDialog_handler_treeview();
 
-totaraDialog_handler_assignEvidence.prototype._handle_hierarchy_expand = function(id) {
-    var url = this.baseurl+'category.php?id='+id;
-    this._dialog._request(url, this, '_update_hierarchy', id);
+
+totaraDialog_handler_assignEvidence.prototype._handle_update_hierarchy = function(list) {
+    var handler = this;
+    $('span', list).click(function() {
+        var par = $(this).parent();
+
+        // Get the id in format item_list_XX
+        var id = par.attr('id').substr(10);
+
+        // Check it's not a category
+        if (id.substr(0, 3) == 'cat') {
+            return;
+        }
+
+        handler._handle_course_click(id);
+    });
 }
-
 
 totaraDialog_handler_assignEvidence.prototype._handle_course_click = function(id) {
     // Load course details
@@ -84,17 +96,11 @@ totaraDialog_handler_assignEvidence.prototype._display_evidence = function(respo
 
     var handler = this;
 
-    // Bind hover event
-    $('#available-evidence span', this._dialog.dialog).mouseenter(function() {
-        $('.addbutton').css('display', 'none');
-        $('.addbutton', $(this)).css('display', 'inline');
-    });
-
     // Bind click event
     $('#available-evidence', this._dialog.dialog).find('.addbutton').click(function(e) {
         e.preventDefault();
-        var type = $(this).closest('span').attr('type');
-        var instance = $(this).closest('span').attr('id');
+        var type = $(this).parent().attr('type');
+        var instance = $(this).parent().attr('id');
         var url = handler.baseurl+'add.php?competency=<?php echo $id;?>&type='+type+'&instance='+instance;
         handler._dialog._request(url, handler, '_update');
     });

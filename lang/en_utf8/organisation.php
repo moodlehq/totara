@@ -67,3 +67,4 @@ $string['nounassignedcompetencies'] = 'No unassigned competencies';
 $string['nounassignedcompetencytemplates'] = 'No unassigned competency templates';
 $string['competencyassigndeletecheck'] = 'Are you sure you would like to remove this competency assignment?';
 $string['deletedassignedcompetency'] = 'Competency successfully unassigned from this organisation';
+$string['error:dialognotreeitems'] = 'No organisations in this framework';

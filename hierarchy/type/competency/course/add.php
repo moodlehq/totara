@@ -2,6 +2,7 @@
 
 require_once('../../../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
+require_once($CFG->dirroot.'/local/dialogs/dialog_content_hierarchy.class.php');
 require_once($CFG->dirroot.'/hierarchy/type/competency/lib.php');
 require_once($CFG->dirroot.'/local/js/lib/setup.php');
 
@@ -34,32 +35,12 @@ $urlparams = 'id='.$id.'&amp;frameworkid='.$frameworkid.'&amp;nojs='.$nojs.'&amp
 // Setup page
 admin_externalpage_setup('competencymanage', '', array(), '', $CFG->wwwroot.'/competency/course/add.php');
 
-// Check permissions
-$sitecontext = get_context_instance(CONTEXT_SYSTEM);
-require_capability('moodle/local:updatecompetency', $sitecontext);
-
-// Setup hierarchy object
-$hierarchy = new competency();
-
-// If parentid, load correct framework
-if ($parentid) {
-    $parent = $hierarchy->get_item($parentid);
-    $frameworkid = $parent->frameworkid;
-}
-
-// Load framework
-if (!$framework = $hierarchy->get_framework($frameworkid)) {
-    error('Competency framework could not be found');
-}
-
-// Load competencies to display
-$competencies = $hierarchy->get_items_by_parent($parentid);
-
 ///
 /// Display page
 ///
 
 if(!$nojs) {
+    /*
     // build Javascript Treeview
     if ($treeonly) {
         echo build_treeview($competencies, get_string('nochildcompetencies', 'competency'), $hierarchy);
@@ -82,8 +63,46 @@ if(!$nojs) {
     if (!$parentid) {
         echo '</ul></div>';
     }
+     */
+
+    // Load dialog content generator
+    $dialog = new totara_dialog_content_hierarchy_multi('competency', $frameworkid);
+
+    // Toggle treeview only display
+    $dialog->show_treeview_only = $treeonly;
+
+    // Load items to display
+    $dialog->load_items($parentid);
+
+    // Set selected id
+    $dialog->selected_id = 'available-evidence';
+
+    // Display
+    echo $dialog->generate_markup();
+
 
 } else {
+    // Check permissions
+    $sitecontext = get_context_instance(CONTEXT_SYSTEM);
+    require_capability('moodle/local:updatecompetency', $sitecontext);
+
+    // Setup hierarchy object
+    $hierarchy = new competency();
+
+    // If parentid, load correct framework
+    if ($parentid) {
+        $parent = $hierarchy->get_item($parentid);
+        $frameworkid = $parent->frameworkid;
+    }
+
+    // Load framework
+    if (!$framework = $hierarchy->get_framework($frameworkid)) {
+        error('Competency framework could not be found');
+    }
+
+    // Load competencies to display
+    $competencies = $hierarchy->get_items_by_parent($parentid);
+
     // none JS version of page
     admin_externalpage_print_header();
     echo '<h2>'.get_string('assigncompetency', $hierarchy->prefix).'</h2>';

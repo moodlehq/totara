@@ -2,6 +2,8 @@
 
 require_once('../../../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
+require_once($CFG->dirroot.'/local/dialogs/dialog_content_courses.class.php');
+
 require_once($CFG->dirroot.'/course/lib.php');
 require_once($CFG->dirroot.'/local/js/lib/setup.php');
 
@@ -36,14 +38,14 @@ if (!$competency = get_record('comp', 'id', $id)) {
 ///
 
 
-// Load categories by parent id
-$categories = array();
-$parents = array();
-make_categories_list($categories, $parents);
-
-
 if($nojs) {
     // None JS version
+
+    // Load categories by parent id
+    $categories = array();
+    $parents = array();
+    make_categories_list($categories, $parents);
+
     admin_externalpage_print_header();
     echo '<h2>' . get_string('assignnewevidenceitem', 'competency') . '</h2>';
     echo '<p><a href="'.$returnurl.'">'.get_string('cancelwithoutassigning','hierarchy').'</a></p>';
@@ -70,13 +72,25 @@ if($nojs) {
     }
     print_footer();
 } else {
-    // JS version
-    echo '<div id="available-evidence" class="selected">';
-    echo '</div>';
-    echo '<p>Locate course:</p>';
-    echo '<ul class="filetree treeview">';
-    echo build_category_treeview($categories, $parents, 'Loading courses...');
 
-    echo '</ul>';
+    // Use parentid instead of category
+    $parentid = optional_param('parentid', 'cat0', PARAM_ALPHANUM);
+
+    // Strip cat from begining of parentid
+    $parentid = (int) substr($parentid, 3);
+
+    // Load dialog content generator
+    $dialog = new totara_dialog_content_courses($parentid);
+
+    // Turn on multi-select
+    $dialog->type = totara_dialog_content::TYPE_CHOICE_MULTI;
+
+    // Setup search
+    $dialog->search_code = '/hierarchy/type/competency/evidenceitem/search.php';
+
+    // Set selected pane's id
+    $dialog->selected_id = 'available-evidence';
+
+    // Display page
+    echo $dialog->generate_markup();
 }
-

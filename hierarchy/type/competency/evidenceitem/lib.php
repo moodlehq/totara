@@ -57,7 +57,6 @@ function comp_evitem_print_course_evitems($course, $competency_id, $addurl ){
 
     $alreadystr = get_string('alreadyselected','local');
     $existingevidencelookup = comp_evitem_get_lookup($competency_id);
-    $addbutton = '<img src="'.$CFG->pixpath.'/t/add.gif" class="addbutton" width="15px" height="15px" />';
 
     // Evidence type available
     $available = false;
@@ -70,19 +69,18 @@ function comp_evitem_print_course_evitems($course, $competency_id, $addurl ){
         if ($evidence) {
             $available = true;
             foreach ($evidence as $activity) {
+                echo '<div>';
                 if ( array_key_exists("activitycompletion-{$activity->id}", $existingevidencelookup) ){
                     echo "<span class=\"unclickable\">Activity completion - {$activity-> name} {$alreadystr} </span>";
                 } else {
                     echo '<span type="activitycompletion" id="'.$activity->id.'">';
 
-                    echo '<table><tr>';
-                    echo '<td class="list-item-name">Activity completion - '.format_string($activity->name).'</td>';
-                    echo '<td class="list-item-action">'.$addbutton.'</td>';
-                    echo '</tr></table>';
-
+                    echo '<a href="#">Activity completion - '.format_string($activity->name).'</a>';
+                    echo '<span class="addbutton">add</span>';
                     echo '</span>';
 
                 }
+                echo '</div>';
             }
         }
     }
@@ -92,18 +90,16 @@ function comp_evitem_print_course_evitems($course, $competency_id, $addurl ){
         $completion_info->has_criteria()) {
 
         $available = true;
+        echo '<div>';
         if ( array_key_exists("coursecompletion-{$course->id}", $existingevidencelookup ) ){
             echo "<span class=\"unclickable\">Course completion {$alreadystr}</span>";
         } else {
             echo '<span type="coursecompletion" id="'.$course->id.'">';
-
-            echo '<table><tr>';
-            echo '<td class="list-item-name">Course completion</td>';
-            echo '<td class="list-item-action">'.$addbutton.'</td>';
-            echo '</tr></table>';
-
+            echo '<a href="#">Course completion</a>';
+            echo '<span class="addbutton">add</span>';
             echo '</span>';
         }
+        echo '</div>';
     }
 
     // Course grade
@@ -111,18 +107,16 @@ function comp_evitem_print_course_evitems($course, $competency_id, $addurl ){
 
     if ($course_grade) {
         $available = true;
+        echo '<div>';
         if ( array_key_exists("coursegrade-{$course->id}", $existingevidencelookup ) ){
             echo "<span class=\"unclickable\">Course grade {$alreadystr}</span>";
         } else {
             echo '<span type="coursegrade" id="'.$course->id.'">';
-
-            echo '<table><tr>';
-            echo '<td class="list-item-name">Course grade</td>';
-            echo '<td class="list-item-action">'.$addbutton.'</td>';
-            echo '</tr></table>';
-
+            echo '<a href="#">Course grade</a>';
+            echo '<span class="addbutton">add</span>';
             echo '</span>';
         }
+        echo '</div>';
     }
 
     // Keep a hidden competency id val for use by javascripts

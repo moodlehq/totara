@@ -45,3 +45,6 @@ $string['switchframework'] = 'Switch framework: ';
 $string['selecteditems'] = 'Selected items';
 $string['selected'] = 'Selected';
 $string['nopathfoundforid'] = 'No path found for {$a->prefix} id {$a->id}';
+$string['noresultsfor'] = 'No results found for \"{$a->query}\".';
+$string['noresultsforinframework'] = 'No results found for \"{$a->query}\" in framework \"{$a->framework}\".';
+$string['queryerror'] = 'Query error. No results found.';

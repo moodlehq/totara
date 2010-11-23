@@ -26,8 +26,7 @@
 require_once('../config.php');
 require_once($CFG->dirroot.'/course/lib.php');
 require_once($CFG->libdir.'/completionlib.php');
-require_once($CFG->dirroot.'/local/js/lib/setup.php');
-require_once('HTML/AJAX/JSON.php');
+require_once($CFG->dirroot.'/local/dialogs/dialog_content_courses.class.php');
 
 
 ///
@@ -38,7 +37,10 @@ require_once('HTML/AJAX/JSON.php');
 $id = required_param('id', PARAM_INT);
 
 // Category id
-$categoryid = optional_param('category', 0, PARAM_INT);
+$categoryid = optional_param('parentid', 'cat0', PARAM_ALPHANUM);
+
+// Strip cat from begining of categoryid
+$categoryid = (int) substr($categoryid, 3);
 
 // Basic access control checks
 if ($id) { // editing course
@@ -62,44 +64,8 @@ if ($id) { // editing course
 
 
 ///
-/// Load category list
+/// Load data
 ///
-if (!$categoryid) {
-
-    // Load all categories
-    $categories = array();
-    $parents = array();
-    make_categories_list($categories, $parents);
-
-?>
-<div class="selectposition">
-
-<p>
-    Locate course:
-</p>
-
-<ul class="filetree treeview">
-<?php
-
-    echo build_category_treeview($categories, $parents, 'Loading courses...');
-
-?>
-</ul>
-</div>
-<?php
-
-    die();
-}
-
-
-///
-/// Return courses in category
-///
-
-// Load category
-if (!$category = get_record('course_categories', 'id', $categoryid)) {
-    error('Category ID was incorrect');
-}
 
 // Load courses in category
 $sql = "
@@ -118,7 +84,7 @@ $sql = "
     WHERE
         c.enablecompletion = ".COMPLETION_ENABLED."
     AND c.id <> {$id}
-    AND c.category = {$category->id}
+    AND c.category = {$categoryid}
     AND cc.id IS NULL
     ORDER BY
         c.sortorder ASC
@@ -126,22 +92,22 @@ $sql = "
 
 $courses = get_records_sql($sql);
 
-if ($courses) {
-    $len = count($courses);
-    $i = 0;
-    foreach ($courses as $course) {
-        $i++;
-
-        echo '<li id="course_'.$course->id.'"';
-
-        if ($i == $len) {
-            echo ' class="last"';
-        }
-
-        echo '>';
-        echo '<span class="clickable">'.format_string($course->fullname).'</span></li>';
-    }
+if (!$courses) {
+    $courses = array();
 }
-else {
-    echo '<li class="last">'.get_string('nocourses').'</li>';
-}
+
+///
+/// Setup dialog
+///
+
+// Load dialog content generator
+$dialog = new totara_dialog_content_courses($categoryid);
+
+// Setup search
+$dialog->search_code = '/course/completion_prerequisite_search.php';
+
+// Add data
+$dialog->courses = $courses;
+
+// Display page
+echo $dialog->generate_markup();

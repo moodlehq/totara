@@ -63,18 +63,12 @@ totaraDialog_handler_assignCourseEvidence.prototype.display_evidence = function(
 
     $('.selected', this._dialog.dialog).html(response);
 
-    // Bind hover event
-    $('#available-evidence span', this._dialog.dialog).mouseenter(function() {
-        $('.addbutton').css('display', 'none');
-        $('.addbutton', $(this)).css('display', 'inline');
-    });
-
     // Bind click event
     $('#available-evidence', this._dialog.dialog).find('.addbutton').click(function(e) {
         e.preventDefault();
         var competency_id=$('#evitem_competency_id').val();
-        var type = $(this).closest('span').attr('type');
-        var instance = $(this).closest('span').attr('id');
+        var type = $(this).parent().attr('type');
+        var instance = $(this).parent().attr('id');
         var url = handler.baseurl+'save.php?competency='+competency_id+'&course=<?php echo $courseid;?>&type='+type+'&instance='+instance;
         handler._dialog._request(url, handler, '_update');
     });

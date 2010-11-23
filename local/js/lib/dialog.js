@@ -53,12 +53,14 @@ function totaraDialog(title, buttonid, config, default_url, handler) {
      */
     this.setup = function() {
 
+        var height = $(window).height() * 0.8;
+
         var default_config = {
             autoOpen: false,
             closeOnEscape: true,
             draggable: false,
-            height: 405,
-            width: 705,
+            height: height,
+            width: '80%',
             modal: true,
             resizable: false,
             zIndex: 1500,
@@ -108,6 +110,13 @@ function totaraDialog(title, buttonid, config, default_url, handler) {
 
         this.dialog.html('');
         this.dialog.dialog('open');
+
+        // Get dialog parent
+        var par = this.dialog.parent();
+
+        // Set dialog body height (the 20px is the margins above and below the content)
+        var height = par.height() - $('div.ui-dialog-titlebar', par).height() - $('div.ui-dialog-buttonpane', par).height() - 36;
+        this.dialog.height(height);
 
         this.load(url, method);
     }
@@ -174,6 +183,7 @@ function totaraDialog(title, buttonid, config, default_url, handler) {
         }
 
         this.bindLinks();
+        this.bindForms();
 
         // Run new style setup function
         if (this.handler != undefined) {
@@ -193,13 +203,71 @@ function totaraDialog(title, buttonid, config, default_url, handler) {
         // Bind dialog.load to any links in the dialog
         $('a', this.dialog).each(function() {
 
+            // don't bind links if any parent has dialog-nobind class
+            if ($(this).parents('.dialog-nobind').length != 0) {
+                return;
+            }
             // Check this is not a help popup link
             if ($(this).parent().is('span.helplink')) {
                 return;
             }
 
-            $(this).one('click', function(e) {
-                dialog.load($(this).attr('href'), 'GET');
+            $(this).bind('click', function(e) {
+                var url = $(this).attr('href');
+                // if the link is inside an element with the
+                // dialog-load-within class set, load the results in
+                // that element instead of reloading the whole dialog
+                //
+                // if there is more than one parent with the class set,
+                // loads in the most specific one
+                var target = $(this).parents('.dialog-load-within').slice(0,1);
+                if(target.length != 0) {
+                    dialog.showLoading();
+                    dialog._request(url, null, null, null, target);
+                } else {
+                    // otherwise, load in the whole dialog
+                    dialog.load(url, 'GET');
+                }
+
+                // Stop any default event occuring
+                e.preventDefault();
+
+                return false;
+            });
+        });
+    }
+
+
+    /**
+     * Bind this.navigate to any form submissions in the dialog
+     * @return void
+     */
+    this.bindForms = function() {
+
+        var dialog = this;
+
+        // Bind dialog.load to any links in the dialog
+        $('form', this.dialog).each(function() {
+
+            $(this).bind('submit', function(e) {
+                var action = $(this).attr('action');
+                var sep = (action.indexOf('?') == -1 ) ? '?' : '&';
+                var url = action + sep + $(this).serialize();
+
+                // if the form is inside an element with the
+                // 'dialog-load-within' class set, load the results in
+                // that element instead of reloading the whole dialog
+                //
+                // if there is more than one parent with the class set,
+                // loads in the most specific one
+                var target = $(this).parents('.dialog-load-within').slice(0,1);
+                if(target.length != 0) {
+                    dialog.showLoading();
+                    dialog._request(url, null, null, null, target);
+                } else {
+                    // if no target set, reload whole dialog
+                    dialog.load(url, $(this).attr('method'));
+                }
 
                 // Stop any default event occuring
                 e.preventDefault();
@@ -255,7 +323,6 @@ function totaraDialog(title, buttonid, config, default_url, handler) {
      * @param object outputelement (optional) element in which request output should be generated
      */
     this._request = function(url, s_object, s_method, data, outputelement) {
-
         var dialog = this;
 
         $.ajax({
@@ -427,7 +494,7 @@ totaraDialog_handler.prototype._get_ids = function(elements, prefix) {
 totaraDialog_handler.prototype._save = function(url) {
 
     // Serialize data
-    var elements = $('.selected span', this._container);
+    var elements = $('.selected > div > span', this._container);
     var selected_str = this._get_ids(elements).join(',');
 
     // Add to url
@@ -483,7 +550,7 @@ totaraDialog_handler.prototype._set_framework = function() {
 
     this._dialog.showLoading();  // Show loading icon and then perform request
 
-    this._dialog._request(url, this, '_load', undefined, $('.treeview', this._container));
+    this._dialog._request(url, this, '_load', undefined, $('#browse-tab .treeview', this._container));
 }
 
 
@@ -491,7 +558,31 @@ totaraDialog_handler.prototype._set_framework = function() {
 /** totaraDialog_handler_treeview **/
 
 totaraDialog_handler_treeview = function() {};
+
 totaraDialog_handler_treeview.prototype = new totaraDialog_handler();
+
+
+/**
+ * Set heights of treeviews
+ *
+ * @return void
+ */
+totaraDialog_handler_treeview.prototype.set_heights = function() {
+
+    // Resize treeview containers if we haven't already
+    // Get container
+    var selcontainer = $('td.select', this._container);
+
+    // Get container height minus height of header, height of tab bar
+    var containerheight = selcontainer.outerHeight() - $('div.header', selcontainer).outerHeight() - $('div#dialog-tabs', selcontainer).outerHeight();
+
+    // Resize browse treeview, minus padding
+    $('div#browse-tab ul.treeview', this._container).height(containerheight - $('select.simpleframeworkpicker', this._container).outerHeight() - 3);
+
+    // Resize search container
+    $('div#search-tab ul.treeview', this._container).height(containerheight - $('#search-tab #mform1', selcontainer).outerHeight() - $('div.search-paging', this._container).outerHeight() - 18);
+}
+
 
 /**
  * Setup a treeview infrastructure
@@ -500,12 +591,24 @@ totaraDialog_handler_treeview.prototype = new totaraDialog_handler();
  */
 totaraDialog_handler_treeview.prototype.every_load = function() {
 
+    var handler = this;
+
     // Setup treeview
     $('.treeview', this._container).treeview({
         prerendered: true
     });
 
-    var handler = this;
+    // Setup tabs
+    $('#dialog-tabs').tabs(
+        {
+            selected: 0,
+            show: handler.set_heights
+        }
+    );
+
+    // Set heights of treeviews
+    this.set_heights();
+
     // Setup framework picker
     $('.simpleframeworkpicker', this._container).unbind('change');  // Unbind any previous events
     $('.simpleframeworkpicker', this._container).change(function() {
@@ -543,6 +646,16 @@ totaraDialog_handler_treeview.prototype._make_hierarchy = function(parent_elemen
 
         return false;
     });
+
+    // Make currently selected items unclickable
+    $('.selected > div > span', this._container).each(
+
+        function (intIndex) {
+            // If item in hierarchy, make unclickable
+            var id = $(this).attr('id');
+            handler._toggle_items(id, false);
+        }
+    );
 }
 
 /**
@@ -553,7 +666,7 @@ totaraDialog_handler_treeview.prototype._make_hierarchy = function(parent_elemen
 totaraDialog_handler_treeview.prototype._update_hierarchy = function(response, parent_id) {
 
     var items = response;
-    var list = $('.treeview li#item_list_'+parent_id+' ul:first', this._container);
+    var list = $('#browse-tab .treeview li#item_list_'+parent_id+' ul:first', this._container);
 
     // Remove all existing children
     $('li', list).remove();
@@ -570,45 +683,52 @@ totaraDialog_handler_treeview.prototype._update_hierarchy = function(response, p
 }
 
 /**
- * Bind click event to elements, i.o to make them deletable
+ * Toggle selectability of treeview items
+ *
+ * @param id
+ * @param bool  True for clickable, false for unclickable
+ * @return void
+ */
+totaraDialog_handler_treeview.prototype._toggle_items = function(elid, type) {
+
+    var handler = this;
+
+    // Get elements from treeviews
+    var selectable_spans = $('.treeview', this._container).find('span#'+elid);
+
+    if (type) {
+        selectable_spans.removeClass('unclickable');
+        selectable_spans.addClass('clickable');
+        if (handler._make_selectable != undefined) {
+            selectable_spans.each(function(i, element) {
+                handler._make_selectable($('.treeview', handler._dialog), element);
+            });
+        }
+    }
+    else {
+        selectable_spans.removeClass('clickable');
+        selectable_spans.addClass('unclickable');
+    }
+}
+
+/**
+ * Bind click event to elements, i.e to make them deletable
  *
  * @parent element
  * @return void
  */
 totaraDialog_handler_treeview.prototype._make_deletable = function(parent_element) {
-    var deletables = $('.deletebutton', parent_element).closest('td');
-    var del_span_elements = deletables.closest('span');
+    var deletables = $('.deletebutton', parent_element);
     var handler = this;
-
-    // Bind hover handlers to button parent
-    del_span_elements.mouseenter(function() {
-        $(".deletebutton", this._container).css("display", "none");
-        $(this).find(".deletebutton").css('display', 'inline');
-
-        return false;
-    });
-
-    del_span_elements.mouseleave(function() {
-        $(this).find(".deletebutton").css('display', 'none');
-
-        return false;
-    });
 
     // Bind event to delete button
     deletables.unbind('click');
     deletables.click(function() {
         // Get the span element, containing the clicked button
-        var span_element = $(this).closest('span');
+        var span_element = $(this).parent();
 
         // Make sure removed element is now selectable in treeview
-        var selectable_span = $('.treeview').find('span#'+span_element.attr('id'));
-        var addbutton = $('#addbutton_ex:first', '.treeview').clone();
-        addbutton.removeAttr('id');
-        selectable_span.removeClass('unclickable');
-        selectable_span.find('.list-item-action').html(addbutton);
-        if (handler._make_selectable != undefined) {
-            handler._make_selectable($('.treeview', this._dialog), selectable_span);
-        }
+        handler._toggle_items(span_element.attr('id'), true);
 
         // Finally, remove the span element from the selected pane
         span_element.remove();
@@ -627,25 +747,15 @@ totaraDialog_handler_treeview.prototype._append_to_selected = function(element) 
 
     // Check if an element with the same ID already exists
     if ($('#'+clone.attr('id'), selected_area).size() < 1) {
-        // First, remove addbutton from clone and add delete button
-        clone.find('.addbutton').remove();
-        deletebutton = $('#deletebutton_ex:first').clone();
-        clone.find('.list-item-action').append(deletebutton);
 
-        deletebutton.unbind('click');
-
-        // Bind hover handlers to clone
-        clone.mouseenter(function() {
-            $(".deletebutton", this._container).css("display", "none");
-            $(this).find(".deletebutton").css('display', 'inline');
-
-        });
-        clone.mouseleave(function() {
-            $(this).find(".deletebutton").css('display', 'none');
-        });
+        // Wrap item in a div
+        var wrapped = $('<div></div>').append(clone);
 
         // Append item clone to selected items
-        selected_area.append(clone);
+        selected_area.append(wrapped);
+
+        // scroll to show newly added item
+        selected_area.scrollTop(selected_area.children().slice(-1).position().top);
 
         // Make all selected items deletable
         this._make_deletable(selected_area);
@@ -678,42 +788,29 @@ totaraDialog_handler_treeview_multiselect.prototype.every_load = function() {
 }
 
 /**
- * Bind hover/click event to elements, i.o to make them selectable
+ * Bind hover/click event to elements, to make them selectable
  *
  * @parent element
  * @return void
  */
 totaraDialog_handler_treeview_multiselect.prototype._make_selectable = function(parent_element) {
+
     // Get assignable/clickable elements
-    var selectable_items = $('span:not(.unclickable)', parent_element);
+    var selectable_items = $('span.clickable', parent_element);
     var handler = this;
 
-    // Bind hover handlers
-    selectable_items.mouseenter(function() {
-        $(".addbutton", this._container).css("display", "none");
-        $(this).find(".addbutton").css('display', 'inline');
+    // Unbind anchors
+    var anchors = $('span.clickable a', parent_element).unbind();
 
-        return false;
-    });
-    selectable_items.mouseleave(function() {
-        $(this).find(".addbutton").css('display', 'none');
-
-        return false;
-    });
-
-    var assignable_buttons = $('.list-item-action', selectable_items);
-
-    assignable_buttons.unbind('click');
-
-    // Bind click handler to add icons
-    assignable_buttons.click(function() {
+    // Bind click handler to selectable items
+    selectable_items.unbind('click');
+    selectable_items.one('click', function() {
 
         var clicked = $(this);
         handler._append_to_selected(clicked);
 
-        // Make selected element unselectable; remove addbutton
-        $(this).parents('span:first').attr('class', 'unclickable');
-        $(this).html('');
+        // Make selected element unselectable
+        handler._toggle_items(clicked.attr('id'), false);
 
         return false;
     });
@@ -798,8 +895,7 @@ totaraDialog_handler_treeview_singleselect.prototype._set_current_selected = fun
 
     if (current_val != 0) {
         $('#treeview_currently_selected_span_'+this._title).css('display', 'inline');
-
-        $('#item_'+current_val).addClass('unclickable');
+        this._toggle_items('item_'+current_val, false);
     }
 }
 
@@ -846,18 +942,23 @@ totaraDialog_handler_treeview_singleselect.prototype._save = function() {
 totaraDialog_handler_treeview_singleselect.prototype._make_selectable = function(parent_element) {
 
     // Get selectable/clickable elements
-    var selectables = $('span:not(.empty)', parent_element);
+    var selectables = $('span.clickable', parent_element);
     var dialog = this;
 
-    selectables.addClass('clickable');
+    // Unbind anchors
+    var anchors = $('span.clickable a', parent_element).unbind();
+
+    // Stop parents expanding when clicking the title
+    selectables.unbind('click');
 
     if (this.dualpane) {
         selectables.click(function() {
 
             var clicked = $(this);
 
-            $('.treeview span').removeClass('unclickable');
-            clicked.addClass('unclickable');
+            $('.treeview span.unclickable', dialog._container).addClass('clickable');
+            $('.treeview span.unclickable', dialog._container).removeClass('unclickable');
+            dialog._toggle_items($(this).attr('id'), false);
 
             var clicked_id = clicked.attr('id').split('_');
             clicked_id = clicked_id[clicked_id.length-1];  // The last item is the actual id
@@ -867,6 +968,8 @@ totaraDialog_handler_treeview_singleselect.prototype._make_selectable = function
             if (dialog.handle_click != undefined) {
                 dialog.handle_click($(this));
             }
+
+            return false;
         });
 
         return;
@@ -878,17 +981,22 @@ totaraDialog_handler_treeview_singleselect.prototype._make_selectable = function
         var item = $(this);
         var clone = item.clone();
 
-        $('.treeview span').removeClass('unclickable');
-        item.addClass('unclickable');
+        $('.treeview span.unclickable', dialog._container).addClass('clickable');
+        $('.treeview span.unclickable', dialog._container).removeClass('unclickable');
+        dialog._toggle_items($(this).attr('id'), false);
 
-        $('#treeview_selected_text_'+dialog._title).html(clone.find('.list-item-name').html());
+        $('#treeview_selected_text_'+dialog._title).html($('a', clone).html());
         var selected_id = clone.attr('id').split('_')[1];
         $('#treeview_selected_val_'+dialog._title).val(selected_id);
 
         // Make sure the info is displayed
         $('#treeview_currently_selected_span_'+dialog._title).css('display', 'inline');
+
+        return false;
     });
 
+    // Make currently selected item unclickable
+    dialog._toggle_items('item_' + $('#treeview_selected_val_'+dialog._title).val(), false);
 }
 
 /*****************************************************************************/

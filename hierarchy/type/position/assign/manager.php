@@ -1,9 +1,7 @@
 <?php
 
 require_once('../../../../config.php');
-require_once($CFG->libdir.'/adminlib.php');
-require_once($CFG->dirroot.'/hierarchy/type/position/lib.php');
-require_once($CFG->dirroot.'/local/js/lib/setup.php');
+require_once($CFG->dirroot.'/local/dialogs/dialog_content_hierarchy.class.php');
 
 
 ///
@@ -41,16 +39,9 @@ $managers = get_records_sql(
 /// Display page
 ///
 
-?>
+$dialog = new totara_dialog_content();
+$dialog->search_code = '/hierarchy/type/position/assign/manager_search.php';
+$dialog->items = $managers;
+$dialog->lang_file = 'manager';
 
-<div class="selectmanager">
-
-<ul class="treeview filetree picker">
-<?php
-
-echo build_treeview(
-    $managers,
-    get_string('nomanagersavailable', 'position')
-);
-
-echo '</ul></div>';
+echo $dialog->generate_markup();

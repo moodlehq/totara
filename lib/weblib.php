@@ -6338,10 +6338,10 @@ function obfuscate_mailto($email, $label='', $dimmed=false) {
  * @param string $pagevar This is the variable name that you use for the page number in your code (ie. 'tablepage', 'blogpage', etc)
  * @param bool $nocurr do not display the current page as a link
  * @param bool $return whether to return an output string or echo now
+ * @param integer $maxdisplay Maximum number of page links to display (excluding first/last and next/previous)
  * @return bool or string
  */
-function print_paging_bar($totalcount, $page, $perpage, $baseurl, $pagevar='page',$nocurr=false, $return=false) {
-    $maxdisplay = 18;
+function print_paging_bar($totalcount, $page, $perpage, $baseurl, $pagevar='page',$nocurr=false, $return=false, $maxdisplay=18) {
     $output = '';
 
     if ($totalcount > $perpage) {
@@ -6360,8 +6360,8 @@ function print_paging_bar($totalcount, $page, $perpage, $baseurl, $pagevar='page
         } else {
             $lastpage = 1;
         }
-        if ($page > 15) {
-            $startpage = $page - 10;
+        if ($page > $maxdisplay - 3 ) {
+            $startpage = $page - floor($maxdisplay / 2);
             if (!is_a($baseurl, 'moodle_url')){
                 $output .= '&nbsp;<a href="'. $baseurl . $pagevar .'=0">1</a>&nbsp;...';
             } else {

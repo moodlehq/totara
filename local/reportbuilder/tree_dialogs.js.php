@@ -35,7 +35,7 @@ $(function() {
                     echo get_string('chooseposition', 'position');
                     echo dialog_display_currently_selected(get_string('selected', 'hierarchy'), '\'+postree[i]+\'');
                 ?>',
-                url+'find.php?',
+                url+'position.php?',
                 postree[i],
                 postree[i]+'title'
             );

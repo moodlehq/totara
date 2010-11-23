@@ -2,6 +2,8 @@
 
 require_once('../../../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
+require_once($CFG->dirroot.'/local/dialogs/dialog_content_hierarchy.class.php');
+
 require_once($CFG->dirroot.'/hierarchy/type/competency/lib.php');
 require_once($CFG->dirroot.'/hierarchy/type/position/lib.php');
 require_once($CFG->dirroot.'/local/js/lib/setup.php');
@@ -40,21 +42,9 @@ $urlparams = 'assignto='.$assignto.'&amp;frameworkid='.$frameworkid.'&amp;nojs='
 // Setup page
 admin_externalpage_setup('positionmanage');
 
-// Check permissions
-$sitecontext = get_context_instance(CONTEXT_SYSTEM);
-require_capability('moodle/local:updateposition', $sitecontext);
 
-// Setup hierarchy objects
-$hierarchy = new competency();
+// Load currently assigned competencies
 $position = new position();     // Used to determine the currently-assigned competencies
-
-// Load framework
-if (!$framework = $hierarchy->get_framework($frameworkid)) {
-    error('Competency framework could not be found');
-}
-
-// Load competencies to display
-$competencies = $hierarchy->get_items_by_parent($parentid);
 $currentlyassigned = $position->get_assigned_competencies($assignto, $frameworkid);
 if (!is_array($currentlyassigned)) {
     $currentlyassigned = array();
@@ -65,44 +55,44 @@ if (!is_array($currentlyassigned)) {
 ///
 
 if (!$nojs) {
-    if ($treeonly) {
-        echo build_treeview(
-            $competencies,
-            get_string('nounassignedcompetencies', 'position'),
-            $hierarchy,
-            $currentlyassigned
-        );
-        exit;
-    }
+    // Load dialog content generator
+    $dialog = new totara_dialog_content_hierarchy_multi('competency', $frameworkid);
 
-    // If parent id is not supplied, we must be displaying the main page
-    if (!$parentid) {
-        echo '<div class="selectcompetencies">'.PHP_EOL;
-        echo '<div class="selected"><p>';
-        echo get_string('selectedcompetencies', $hierarchy->prefix);
-        echo populate_selected_items_pane($currentlyassigned);
-        echo '</p></div>';
-        echo '<p>'.get_string('locatecompetency', $hierarchy->prefix).':</p>';
-        if (empty($frameworkid)) {
-            $hierarchy->display_framework_selector('', true);
-        }
-        echo '<ul class="treeview filetree">';
-    }
+    // Toggle treeview only display
+    $dialog->show_treeview_only = $treeonly;
 
-    echo build_treeview(
-        $competencies,
-        get_string('nounassignedcompetencies', 'position'),
-        $hierarchy,
-        $currentlyassigned
-    );
+    // Load items to display
+    $dialog->load_items($parentid);
 
-    // If no parent id, close div
-    if (!$parentid) {
-        echo '</ul></div>';
-    }
+    // Set disabled items
+    $dialog->disabled_items = $currentlyassigned;
+
+    // Set title
+    $dialog->selected_title = 'selectedcompetencies';
+
+    // Disable framework picker
+    $dialog->disable_picker = true;
+
+    // Display
+    echo $dialog->generate_markup();
 
 } else {
-    // none JS version of page
+    // non JS version of page
+    // Check permissions
+    $sitecontext = get_context_instance(CONTEXT_SYSTEM);
+    require_capability('moodle/local:updateposition', $sitecontext);
+
+    // Setup hierarchy objects
+    $hierarchy = new competency();
+
+    // Load framework
+    if (!$framework = $hierarchy->get_framework($frameworkid)) {
+        error('Competency framework could not be found');
+    }
+
+    // Load competencies to display
+    $competencies = $hierarchy->get_items_by_parent($parentid);
+
     admin_externalpage_print_header();
     echo '<h2>'.get_string('assigncompetency', 'competency').'</h2>';
 

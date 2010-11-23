@@ -451,9 +451,10 @@ class hierarchy {
      * Display pulldown menu of frameworks
      * @param string $page Page to redirect to
      * @param boolean $simple optional Display simple selector
+     * @param boolean $return optional Return instead of print
      * @return boolean success
      */
-    function display_framework_selector($page = 'index.php', $simple = false) {
+    function display_framework_selector($page = 'index.php', $simple = false, $return = false) {
         global $CFG;
 
         $frameworks = $this->get_frameworks();
@@ -484,7 +485,12 @@ class hierarchy {
                 $options[$fw->id] = $fw->fullname;
             }
 
-            echo display_dialog_selector($options, $this->frameworkid, 'simpleframeworkpicker');
+            $markup = display_dialog_selector($options, $this->frameworkid, 'simpleframeworkpicker');
+            if ($return) {
+                return $markup;
+            }
+
+            echo $markup;
         }
     }
 

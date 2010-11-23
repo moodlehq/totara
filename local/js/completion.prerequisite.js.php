@@ -23,8 +23,8 @@ $(function() {
             'id_add_criteria_course',
             {
                  buttons: {
-                    'Ok': function() { handler._save() },
-                    'Cancel': function() { handler._cancel() }
+                    'Cancel': function() { handler._cancel() },
+                    'Ok': function() { handler._save() }
                  },
                 title: '<?php
                     echo '<h2>';
@@ -46,28 +46,12 @@ totaraDialog_handler_preRequisite = function() {
     var baseurl = '';
 }
 
-totaraDialog_handler_preRequisite.prototype = new totaraDialog_handler_skeletalTreeview();
-
-totaraDialog_handler_preRequisite.prototype._handle_hierarchy_expand = function(id) {
-
-    var url = this.baseurl+'completion_prerequisite.php?id=<?php echo $courseid;?>&category='+id;
-    this._dialog._request(url, this, '_update_hierarchy', id);
-}
-
-
-totaraDialog_handler_preRequisite.prototype._handle_course_click = function(id) {
-
-    var course = $('#course_'+id+' > span').text();
-
-    $('#treeview_currently_selected_span').css('display', 'inline');
-    $('#treeview_selected_text').text(course);
-    $('#treeview_selected_val').val(id);
-}
-
+totaraDialog_handler_preRequisite.prototype = new totaraDialog_handler_treeview_singleselect();
 
 totaraDialog_handler_preRequisite.prototype._save = function() {
-    var id = $('#treeview_selected_val').val();
-    var course = $('#treeview_selected_text').text();
+
+    var id = $('#treeview_selected_val_courseprerequisite').val();
+    var course = $('#treeview_selected_text_courseprerequisite').text();
 
     // Get button fitem
     var button_fitem = $('#id_add_criteria_course').parent().parent();

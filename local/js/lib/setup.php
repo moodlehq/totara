@@ -1,5 +1,6 @@
 <?php
 require_once($CFG->dirroot.'/hierarchy/type/position/lib.php');
+require_once($CFG->dirroot.'/local/dialogs/dialog_content.class.php');
 
 /**
  * Constants for defining JS to load
@@ -46,6 +47,18 @@ function local_js($options = array()) {
     }
 }
 
+
+function build_search_interface($type, $frameworkid=0, $select=true,
+    $disabledlist=array()) {
+
+    global $CFG;
+
+    include_once($CFG->dirroot .
+        "/hierarchy/item/search.php");
+
+}
+
+
 /**
  * Return markup for a branch of a hierarchy based treeview
  *
@@ -59,6 +72,9 @@ function local_js($options = array()) {
 function build_treeview($elements, $error_string, $hierarchy = null, $disabledlist = array()) {
 
     global $CFG;
+    // maximum number of items to load (at any one level)
+    // before giving up and suggesting search instead.
+    $maxitems = 100;
 
     $html = '';
 
@@ -66,6 +82,13 @@ function build_treeview($elements, $error_string, $hierarchy = null, $disabledli
                      'deletebutton' => 'delete.gif');
 
     if (is_array($elements) && !empty($elements)) {
+
+        if(count($elements) > $maxitems) {
+            $html .= '<li class="last"><span class="empty dialog-nobind">';
+            $html .= 'There are more than ' . $maxitems . ' items at this level. Try <a href="#search-tab" onclick="$(\'#tabs\').tabs(\'select\', 1);return false;">searching</a> instead.';
+            $html .= '</span></li>'.PHP_EOL;
+            return $html;
+        }
 
         // Get parents array
         if ($hierarchy) {
@@ -137,31 +160,6 @@ function build_treeview($elements, $error_string, $hierarchy = null, $disabledli
     foreach ($buttons as $classname => $pic) {
         $html .= '<img id="'.$classname.'_ex" src="'.$CFG->pixpath.'/t/'.$pic.'"
             class="'.$classname.'" style="display: none;" />';
-    }
-
-    return $html;
-}
-
-/**
- * Returns markup to be used in the 'Selected Items' pane of a multi-select dialog
- *
- * @param   $elements    array elements to be created in the pane
- * @return  $html
- */
-function populate_selected_items_pane($elements, $prefix='item') {
-
-    global $CFG;
-
-    $html = '';
-    $deletebutton = '<img id="deletebutton_ex" src="'.$CFG->pixpath.'/t/delete.gif" class="deletebutton" width="13px" height="13px" />'; 
-
-    foreach ($elements as $element) {
-        $html .= '<span id="'.$prefix.'_'.$element->id.'">';
-        $html .= '<table><tr>';
-        $html .= '<td class="list-item-name">'.htmlentities($element->fullname).'</td>';
-        $html .= '<td class="list-item-action">'.$deletebutton.'</td>';
-        $html .= '</tr></table>';
-        $html .= '</span>';
     }
 
     return $html;
@@ -420,33 +418,6 @@ function build_nojs_positionpicker($url, $urlparams) {
     } else {
         error('nopositions','position');
     }
-    return $html;
-}
-
-/**
- * Return markup for a simple picker in a dialog
- *
- * @param   $options    array   options/values
- * @param   $selected   mixed   $options key for currently selected element
- * @param   $class      string  select element's class
- * @return  $html
- */
-function display_dialog_selector($options, $selected, $class) {
-
-    $html = '<select class="'.$class.'">';
-
-    foreach ($options as $key => $value) {
-        $html .= '<option value="'.$key.'"';
-
-        if ($key == $selected) {
-            $html .= ' selected="selected"';
-        }
-
-        $html .= '>'.htmlentities($value).'</option>';
-    }
-
-    $html .= '</select>';
-
     return $html;
 }
 

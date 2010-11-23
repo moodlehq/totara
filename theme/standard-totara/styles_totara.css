@@ -1055,6 +1055,12 @@ select.totara-limited-width {
     position: static;
 }
 
+/* alternate size */
+select.totara-limited-width-150 {
+    width: 150px;
+    position: static;
+}
+
 /* expand while selecting option (IE only) */
 select.totara-expanded-width {
     width: auto;
@@ -1436,152 +1442,269 @@ div.totara-dialog div.ui-dialog-content {
     font-size: 0.9em;
 }
 
-div.totara-dialog div.ui-dialog-content p {
-    margin: 0;
-    padding: 0;
-}
-
-div.totara-dialog ul.treeview,
-div.totara-dialog div#column-checkboxes {
-    margin-top: 10px;
-    height: 260px;
-    overflow: auto;
-}
-
-div.totara-dialog ul.treeview li {
-    font-size: 0.8em;
-}
-
-div.totara-dialog ul.treeview span:hover table {
-    background-color: #eee;
-}
-
-div.totara-dialog ul.treeview li li {
-    font-size: 1em;
-}
-
-div.totara-dialog ul.treeview li span {
-    padding-left: 0.25em;
-    display: block;
-}
-
-div.totara-dialog ul.treeview li span.folder {
-    padding-left: 1.75em;
-}
-
-div.totara-dialog ul.treeview li span.clickable {
-    cursor: pointer;
-}
-
-div.totara-dialog ul.treeview li span.ui-draggable {
-    cursor: pointer;
-}
-
-div.totara-dialog ul.treeview span table {
-    width: 100%;
-    border: 0;
-}
-
-div.totara-dialog ul.treeview span table tr {
-    height: 1.8em;
-}
-
-div.totara-dialog ul.treeview span table tr {
-    padding: 2px 0;
-}
-
-div.totara-dialog ul.treeview span table tr td.list-item-name {
-    width: 90%;
-    border: 0;
-}
-
-div.totara-dialog ul.treeview span table tr td.list-item-action {
-    cursor: pointer;
-    width: 10%;
-    text-align: center;
-    border: 0;
-}
-
-div.totara-dialog ul.treeview img.addbutton {
-    display: none;
-    vertical-align: middle;
-    width: 17px;
-    height: 15px;
-}
-
-div.totara-dialog ul.treeview img.deletebutton {
-    display: none;
-    vertical-align: middle;
-    width: 13px;
-    height: 13px;
-}
-
-div.totara-dialog ul.treeview li ul {
-    margin-top: 0;
-}
-
 div.totara-dialog div.yui-isloading {
     background-image: url(loading_small.gif);
     background-position: right top;
     background-repeat: no-repeat;
 }
 
-div.totara-dialog .selected {
-    float: right;
-    width: 250px;
-    border-left: 1px solid #ccc;
-    height: 300px;
+div.totara-dialog div.ui-dialog-content table.dialog-content {
+    width: 100%;
+    height: 100%;
+}
+
+div.totara-dialog table.dialog-content td.select {
+    width: 70%;
+    vertical-align: top;
+    padding-right: 10px;
+}
+
+div.totara-dialog td.select div.dialog-content-select {
+    height: 100%;
+    width: 100%;
+}
+
+div.totara-dialog td.select div.header p {
+    margin: 0;
+    padding-bottom: 10px;
+    font-weight: bold;
+}
+
+div.totara-dialog td.select div#dialog-tabs {
+    height: 37px;
+    width: 100%;
+    border: none;
+    background: none;
+}
+
+div.totara-dialog td.select div#dialog-tabs ul.ui-tabs-nav {
+    height: 27px;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    background: none;
+    padding: 0px;
+    margin: 0 0 10px 0;
+}
+
+div.totara-dialog td.select div#dialog-tabs ul.ui-corner-all {
+    -moz-border-radius: 0px;
+}
+
+div.totara-dialog td.select div#dialog-tabs div.ui-corner-bottom {
+    -moz-border-radius: 0px;
+}
+
+div.totara-dialog td.select div#dialog-tabs ul.ui-tabs-nav li a {
+    padding: 5px 15px;
+    font-weight: normal;
+    font-size: 0.8em;
+}
+
+div.totara-dialog td.select div#dialog-tabs li.ui-tabs-selected a {
+    color: #333;
+    font-weight: bold;
+}
+
+div.totara-dialog td.select div#dialog-tabs .ui-tabs-panel {
+    padding: 10px 0px 0px 0px;
+}
+
+div.totara-dialog td.select div.dialog-content-select div.header select {
+    margin-bottom: 10px;
+}
+
+div.totara-dialog td.select #search-tab,
+div.totara-dialog td.select #browse-tab {
+    border: none;
+    background: none;
+    font-size: 12px;
+    margin-top: 10px;
+    padding-top: 0 !important;
+}
+
+div.totara-dialog td.select #search-tab fieldset {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+div.totara-dialog td.select #search-tab form#mform1,
+div.totara-dialog td.select #search-tab table#dialog-search-table {
+    width: 100%;
+}
+
+div.totara-dialog td.select #search-tab table#dialog-search-table td.querybox {
+    width: 100%;
+}
+
+div.totara-dialog td.select #search-tab table#dialog-search-table td.querybox input {
+    width: 95%;
+    padding: 3px 0 !important;
+}
+
+div.totara-dialog td.select #search-tab fieldset input,
+div.totara-dialog td.select #search-tab fieldset select,
+div.totara-dialog td.select #search-tab fieldset button {
+    font-size: 12px !important;
+}
+
+div.totara-dialog td.select div#search-tab .fitemtitle {
+    display: none;
+}
+
+div.totara-dialog td.select div#search-tab .search-paging {
+    clear: none;
+    margin: 10px 0px 10px;
+}
+
+div.totara-dialog td.select div#search-tab .search-paging a {
+    color: #1C94C4;
+    text-decoration: underline;
+}
+
+div.totara-dialog td.select div#search-tab .search-paging a:hover {
+    color: #f00;
+    text-decoration: none;
+}
+
+div.totara-dialog td.select div#search-tab .ui-widget-content a {
+    color: #04a2d5
+}
+
+div.totara-dialog td.select div#search-tab #search-tab .message {
+    padding: 10px;
+    font-size: 0.8em;
+}
+
+div.totara-dialog td.select div#search-tab .searchview {
+    margin: 2px 0px;
     overflow: auto;
-    padding: 0 10px;
-    margin-left: 10px;
+}
+
+div.totara-dialog td.select div#search-tab ul.searchview {
+    list-style: none;
+    padding: 2px;
+}
+
+div.totara-dialog ul.treeview,
+div.totara-dialog div#column-checkboxes {
+    overflow: auto;
+    margin-top: 5px;
+}
+
+div.totara-dialog ul.treeview li {
+    font-size: 12px;
+}
+
+div.totara-dialog ul.treeview li span {
+    padding-left: 5px;
+}
+
+div.totara-dialog ul.treeview li span.folder {
+    padding-left: 20px;
+}
+
+div.totara-dialog ul.treeview li span.clickable {
+    cursor: pointer;
+}
+
+div.totara-dialog ul.treeview span.deletebutton {
+    display: none;
+}
+
+div.totara-dialog ul.treeview li span.clickable a {
+    color: inherit;
+}
+
+div.totara-dialog ul.treeview li span.clickable a:hover {
+    color: #f00;
+    text-decoration: none;
+}
+
+div.totara-dialog ul.treeview li span.unclickable,
+div.totara-dialog ul.treeview li span.unclickable a {
+    color: #999;
+    text-decoration: none;
+    cursor: text;
+}
+
+div.totara-dialog ul.treeview li {
+    padding-bottom: 2px;
+}
+
+div.totara-dialog ul.treeview li li.last {
+    padding-bottom: 4px;
+}
+
+div.totara-dialog ul.treeview li.last span.empty a {
+    color: #1C94C4;
+    text-decoration: underline;
+}
+
+div.totara-dialog ul.treeview li.last span.empty a:hover {
+    color: #f00;
+    text-decoration: none;
+}
+
+div.totara-dialog table.dialog-content td.selected {
+    width: 30%;
+    border-left: 1px solid #ccc;
+    vertical-align: top;
+    padding-left: 10px;
 }
 
 div.totara-dialog .selected p {
     margin-top: 0;
-}
-
-div.totara-dialog .selected h3 {
-    margin: 0 0 0.5em;
+    padding-bottom: 8px;
+    font-weight: bold;
 }
 
 div.totara-dialog .selected span {
-    display: block;
-    font-size: 0.8em;
-    padding: 4px;
-}
-
-div.totara-dialog .selected span table {
     width: 100%;
-    height: 20px;
+    display: table;
+    font-size: 12px;
+    margin-bottom: 4px;
 }
 
-div.totara-dialog .selected span table tr td {
-    border: none !important;
+div.totara-dialog .selected span a {
+    display: table-cell;
+    text-decoration: none;
+    padding: 2px 4px 2px 4px;
+    cursor: text;
 }
 
-div.totara-dialog .selected span table tr td.list-item-name {
-    width: 90%;
-    vertical-align: middle;
+div.totara-dialog .selected span.unclickable {
+    color: #999;
+    margin: 2px 4px 6px 4px;
+    width: auto;
 }
 
-div.totara-dialog .selected span table tr td.list-item-action {
-    cursor: pointer;
-    width: 10%;
-    text-align: right;
-}
-
-div.totara-dialog .selected img.addbutton {
-    display: none;
-    vertical-align: middle;
+div.totara-dialog .selected span span.addbutton,
+div.totara-dialog .selected span span.deletebutton {
+    display: table-cell;
     width: 16px;
-    height: 14px;
+    cursor: pointer;
+    background: none;
+    text-indent: -999px;
+    overflow: hidden;
+    margin: 0;
 }
 
-div.totara-dialog .selected img.deletebutton {
-    display: none;
-    vertical-align: middle;
-    width: 15px;
-    height: 13px;
+div.totara-dialog .selected span:hover span.deletebutton {
+    background-image: url("../../theme/totara/pix/t/delete.gif");
+    background-repeat: no-repeat;
+    background-position: right center;
+}
+
+div.totara-dialog .selected span:hover span.addbutton {
+    background-image: url("../../theme/totara/pix/t/add.gif");
+    background-repeat: no-repeat;
+    background-position: right center;
+}
+
+/** Competencies lightbox styling **/
+div.totara-dialog div#evidence #available-evidence h3 {
+    margin: 0 0 0.5em;
 }
 
 /* hide lightbox activation buttons */
@@ -1603,11 +1726,6 @@ a.noscript-button {
     width: 150px;
     float: left;
     text-align: center;
-}
-
-/** Competencies lightbox styling **/
-div.totara-dialog div#evidence #available-evidence h3 {
-    margin: 0 0 0.5em;
 }
 
 /*****************************************************************************/

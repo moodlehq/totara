@@ -157,6 +157,7 @@ $string['scalevaluename'] = 'Scale value name';
 $string['scalevaluenumericalvalue'] = 'Scale value numerical value';
 //$string['scalevalues'] = 'Scale values';
 $string['selectcategoryandcourse'] = 'Select a course category then choose a course to pick evidence items from:';
+$string['selectedcompetencytemplates'] = 'Selected competency templates:';
 $string['set'] = 'Set';
 $string['shortname'] = 'Competency short name';
 $string['shortnamedepth'] = 'Depth level short name';
@@ -169,5 +170,4 @@ $string['type'] = 'Type';
 $string['unknownbuttonclicked'] = 'Unknown button clicked';
 $string['weight'] = 'Weight';
 $string['currentlyselected'] = 'Currently selected';
-
-?>
+$string['error:dialognotreeitems'] = 'No competencies in this framework';
