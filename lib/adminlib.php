@@ -161,6 +161,13 @@ function upgrade_plugins($type, $dir, $return) {
                     if (is_readable($fullplug .'/lib.php')) {
                         include_once($fullplug .'/lib.php');
                         $installfunction = $plugin->name.'_install';
+
+                        // Special case for local module install functions,
+                        // to prevent function naming conflicts
+                        if ($type == 'local') {
+                            $installfunction = $type.'_'.$installfunction;
+                        }
+
                         if (function_exists($installfunction)) {
                             if (! $installfunction() ) {
                                 notify('Encountered a problem running install function for '.$plugin->name.'!');

@@ -486,7 +486,7 @@ function local_dashboard_get_dashboards() {
 /**
  * Inserts a default set of dashboards into the database
  */
-function local_dashboard_initial_installation() {
+function local_dashboard_install() {
 
     $status = true;
 

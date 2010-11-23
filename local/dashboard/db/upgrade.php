@@ -25,7 +25,7 @@ function xmldb_local_dashboard_upgrade($oldversion=0) {
 
     if ($result && $oldversion < 2010112200) {
         require_once($CFG->dirroot . '/local/dashboard/lib.php');
-        $result = $result && local_dashboard_initial_installation();
+        $result = $result && local_dashboard_install();
     }
 
     return $result;
