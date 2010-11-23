@@ -242,9 +242,6 @@ function tm_message_mark_message_read($message, $timeread, $messageworkingempty=
     $messageid = $message->id;
     unset($message->id);//unset because it will get a new id on insert into message_read
 
-    // start of transaction
-//    begin_sql();
-
     //If any processors have pending actions abort them
     if (!$messageworkingempty) {
         delete_records('message_working20', 'unreadmessageid', $messageid);
@@ -258,5 +255,4 @@ function tm_message_mark_message_read($message, $timeread, $messageworkingempty=
         $metadata->messageid = $message->id;
         update_record('message_metadata', $metadata);
     }
-//    commit_sql();
 }

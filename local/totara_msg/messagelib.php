@@ -346,7 +346,10 @@ function tm_message_dismiss($id) {
 
     $message = get_record('message20', 'id', $id);
     if ($message) {
-        return tm_message_mark_message_read($message, time());
+        begin_sql();
+        $result = tm_message_mark_message_read($message, time());
+        commit_sql();
+        return $result;
     }
     else {
         return false;
@@ -380,8 +383,11 @@ function tm_message_reminder_accept($id) {
             $result = $plugin->onaccept($eventdata->data, $message);
         }
 
+        begin_sql();
         // finally - dismiss this message as it has now been processed
-        return tm_message_mark_message_read($message, time());
+        $result = tm_message_mark_message_read($message, time());
+        commit_sql();
+        return $result;
     }
     else {
         return false;
@@ -415,8 +421,11 @@ function tm_message_reminder_reject($id) {
             $result = $plugin->onreject($eventdata->data, $message);
         }
 
+        begin_sql();
         // finally - dismiss this message as it has now been processed
-        return tm_message_mark_message_read($message, time());
+        $result = tm_message_mark_message_read($message, time());
+        commit_sql();
+        return $result;
     }
     else {
         return false;
