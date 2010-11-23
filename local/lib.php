@@ -424,5 +424,55 @@ function is_ajax_request($server) {
     return (isset($server['HTTP_X_REQUESTED_WITH']) && strtolower($server['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest');
 }
 
+/**
+ * Displays relevant progress bar
+ * @param $percent int a percentage value (0-100)
+ * @param $size string large, medium...
+ * @param $showlabel boolean show completion text label
+ * @param $tooltip string required tooltip text
+ * @return $out html string
+ */
+function local_display_progressbar($percent, $size='medium', $showlabel=false, $tooltip='DEFAULTTOOLTIP') {
+    global $CFG;
+
+    $percent = round($percent);
+
+    if ($percent < 0 || $percent > 100) {
+        return 'progress bar error- invalid value...';
+    }
+
+    // Add more sizes if as neccessary :)!
+    switch ($size) {
+        case 'large' :
+            $bar = "{$CFG->pixpath}/t/progressbar-large.png";
+            $bar_background = "{$CFG->pixpath}/t/progressbar_back-large.png";
+            $pixelvalue = ($percent / 100) * 121;
+            $pixeloffset = round($pixelvalue - 120);
+            break;
+        case 'medium' :
+        default :
+            $bar = "{$CFG->pixpath}/t/progressbar-medium.png";
+            $bar_background = "{$CFG->pixpath}/t/progressbar_back-medium.png";
+            $pixelvalue = ($percent / 100) * 61;
+            $pixeloffset = round($pixelvalue - 60);
+            break;
+    }
+
+    if ($tooltip == 'DEFAULTTOOLTIP') {
+        $tooltip = "{$percent}%";
+    }
+
+    $out = '';
+
+    $out .= '<img src="'.$bar.'" alt="' . $percent . '%"
+        style="background: white url('.$bar_background.') top left no-repeat;padding: 0;margin: 5px 0 0 0;background-position: ' . $pixeloffset . 'px 0pt;"
+        title="'.$tooltip.'" />';
+    if ($showlabel) {
+        $out .= " $percent % complete<br />\n";
+    }
+
+    return $out;
+}
+
 
 ?>

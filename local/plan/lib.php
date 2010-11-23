@@ -1,0 +1,460 @@
+<?php
+
+require_once($CFG->dirroot . '/local/plan/development_plan.class.php');
+require_once($CFG->dirroot . '/local/plan/roles.class.php');
+require_once($CFG->dirroot . '/local/plan/components.class.php');
+require_once($CFG->dirroot . '/local/plan/workflows.class.php');
+require_once($CFG->libdir . '/tablelib.php');
+
+// plan status values
+define('DP_PLAN_STATUS_UNAPPROVED', 10);
+define('DP_PLAN_STATUS_DECLINED', 30);
+define('DP_PLAN_STATUS_APPROVED', 50);
+define('DP_PLAN_STATUS_COMPLETE', 100);
+
+// permission values
+define('DP_PERMISSION_DENY', 10);
+define('DP_PERMISSION_REQUEST', 30);
+define('DP_PERMISSION_ALLOW', 50);
+define('DP_PERMISSION_APPROVE', 70);
+
+// due date modes
+define('DP_DUEDATES_NONE', 0);
+define('DP_DUEDATES_OPTIONAL', 1);
+define('DP_DUEDATES_REQUIRED', 2);
+
+// priority modes
+define('DP_PRIORITY_NONE', 0);
+define('DP_PRIORITY_OPTIONAL', 1);
+define('DP_PRIORITY_REQUIRED', 2);
+
+// maximum number of priority options
+define('DP_MAX_PRIORITY_OPTIONS', 5);
+
+// approval
+define('DP_APPROVAL_UNAPPROVED', 0);
+define('DP_APPROVAL_APPROVED', 1);
+define('DP_APPROVAL_DECLINED', -1);
+
+//Plan notices
+define('DEVELOPMENT_PLAN_UNKNOWN_BUTTON_CLICKED', 1);
+define('DEVELOPMENT_PLAN_GENERAL_CONFIRM_UPDATE', 2);
+define('DEVELOPMENT_PLAN_GENERAL_FAILED_UPDATE', 3);
+/*define('', 4);
+define('', 5);
+define('', 6);
+define('', 7);
+define('', 8);
+define('', 9);
+define('', 10);*/
+
+
+// roles available to development plans
+// each must have a class definition in
+// local/plan/roles/[ROLE]/[ROLE].class.php
+global $DP_AVAILABLE_ROLES;
+$DP_AVAILABLE_ROLES = array(
+    'learner',
+    'manager',
+);
+
+global $DP_AVAILABLE_COMPONENTS;
+$DP_AVAILABLE_COMPONENTS = array(
+    'course',
+    'competency',
+);
+
+// note that new templates will default to the first workflow in this list
+global $DP_AVAILABLE_WORKFLOWS;
+$DP_AVAILABLE_WORKFLOWS = array(
+    'userdriven',
+    'managerdriven',
+);
+
+function dp_get_plans($userid, $statuses=array(DP_PLAN_STATUS_APPROVED)) {
+    if (is_array($statuses)) {
+        $statuses = implode(',', $statuses);
+    }
+    return get_records_select('dp_plan', "userid = {$userid} AND status IN ({$statuses})");
+}
+
+//Used to create a timestamp from a string
+//TODO: remove _2 from method once old IDP is removed
+function convert_userdate_2($datestring) {
+    // Check for DD/MM/YYYY
+    if (preg_match('|(\d{1,2})/(\d{1,2})/(\d{4})|', $datestring, $matches)) {
+        return mktime(0,0,0,$matches[2], $matches[1], $matches[3]);
+    }
+    return strtotime($datestring);
+}
+
+
+// Priority Scale methods
+function dp_get_priorities() {
+    return get_records('dp_priority_scale', '', '', 'name');
+}
+
+function dp_get_priority_scale_values_menu($idpid=0) {
+    global $CFG;
+
+    $sql = "SELECT val.id, val.name FROM {$CFG->prefix}idp_tmpl_priority_scal_val val
+            JOIN {$CFG->prefix}idp_tmpl_priority_scale ps ON val.priorityscaleid=ps.id
+            JOIN {$CFG->prefix}idp_tmpl_priority_assign pa ON ps.id=pa.priorityscaleid
+            JOIN {$CFG->prefix}idp_template temp ON pa.templateid=temp.id
+            JOIN {$CFG->prefix}idp i ON temp.id=i.templateid ";
+    if (!empty($idpid)) {
+        $sql .= " WHERE i.id={$idpid} ORDER BY val.sortorder ASC";
+    }
+
+    $priorities = get_records_sql($sql);
+
+    return is_array($priorities) ? $priorities : array();
+}
+
+function dp_get_priority_default_scale_value($idpid) {
+    global $CFG;
+    $sql = "SELECT val.* FROM {$CFG->prefix}dp_priority_scale_value val
+            JOIN {$CFG->prefix}dp_priority_scale ps ON val.id=ps.defaultid
+            JOIN {$CFG->prefix}dp_priority_assign pa ON ps.id=pa.priorityscaleid
+            JOIN {$CFG->prefix}idp_template temp ON pa.templateid=temp.id
+            JOIN {$CFG->prefix}idp i ON temp.id=i.templateid
+            WHERE i.id = {$idpid}";
+
+     return get_record_sql($sql);
+}
+
+// Objective Scale methods
+function dp_get_objectives() {
+    return get_records('dp_objective_scale', '', '', 'name');
+}
+
+function dp_get_objective_scale_values_menu($idpid=0) {
+    global $CFG;
+
+    $sql = "SELECT val.id, val.name FROM {$CFG->prefix}idp_tmpl_priority_scal_val val
+            JOIN {$CFG->prefix}idp_tmpl_priority_scale ps ON val.priorityscaleid=ps.id
+            JOIN {$CFG->prefix}idp_tmpl_priority_assign pa ON ps.id=pa.priorityscaleid
+            JOIN {$CFG->prefix}idp_template temp ON pa.templateid=temp.id
+            JOIN {$CFG->prefix}idp i ON temp.id=i.templateid ";
+    if (!empty($idpid)) {
+        $sql .= " WHERE i.id={$idpid} ORDER BY val.sortorder ASC";
+    }
+
+    $priorities = get_records_sql($sql);
+
+    return is_array($priorities) ? $priorities : array();
+}
+
+function dp_get_objective_default_scale_value($idpid) {
+    global $CFG;
+    $sql = "SELECT val.* FROM {$CFG->prefix}dp_priority_scale_value val
+            JOIN {$CFG->prefix}dp_priority_scale ps ON val.id=ps.defaultid
+            JOIN {$CFG->prefix}dp_priority_assign pa ON ps.id=pa.priorityscaleid
+            JOIN {$CFG->prefix}idp_template temp ON pa.templateid=temp.id
+            JOIN {$CFG->prefix}idp i ON temp.id=i.templateid
+            WHERE i.id = {$idpid}";
+
+     return get_record_sql($sql);
+}
+
+
+/**
+ * Return a list of user IDs of users who can receive notification emails
+//TODO: remove _2 from method once old IDP is removed
+ */
+function dp_get_notification_receivers_2($contextuser, $type) {
+    global $USER;
+
+    $receivers = array();
+
+    $users = get_users_by_capability($contextuser, "local/plan:receive{$type}notifications");
+    if ($users and count($users) > 0) {
+        foreach ($users as $key => $user) {
+            if ($user->id != $USER->id) {
+                $receivers[] = $user->id;
+            }
+        }
+    }
+
+    return $receivers;
+}
+
+function dp_add_permissions_select(&$form, $name, $requestable){
+    $select_options = array();
+
+    $select_options[DP_PERMISSION_ALLOW] = get_string('allow', 'local_plan');
+    $select_options[DP_PERMISSION_DENY] = get_string('deny', 'local_plan');
+
+    if($requestable) {
+        $select_options[DP_PERMISSION_REQUEST] = get_string('request', 'local_plan');
+        $select_options[DP_PERMISSION_APPROVE] = get_string('approve', 'local_plan');
+    }
+
+    $form->addElement('select', $name, null, $select_options);
+}
+
+function dp_add_permissions_table_row(&$form, $name, $label, $requestable){
+    $form->addElement('html', '<tr><td id="action">'.$label);
+    $form->addElement('html', '</td><td id="learner">');
+    dp_add_permissions_select($form, $name.'learner', $requestable);
+    $form->addElement('html', '</td><td id="manager">');
+    dp_add_permissions_select($form, $name.'manager', $requestable);
+    $form->addElement('html', '</td></tr>');
+}
+
+
+function dp_print_workflow_diff($diff_array) {
+    $columns[] = 'component';
+    $headers[] = get_string('component', 'local_plan');
+    $columns[] = 'setting';
+    $headers[] = get_string('setting', 'local_plan');
+    $columns[] = 'role';
+    $headers[] = get_string('role', 'local_plan');
+    $columns[] = 'before';
+    $headers[] = get_string('before', 'local_plan');
+    $columns[] = 'after';
+    $headers[] = get_string('after', 'local_plan');
+
+    $table = new flexible_table('Templates');
+    $table->define_columns($columns);
+    $table->define_headers($headers);
+    $return = '<p><h3>Changes</h3><table><tr><th>Setting</th><th>Before</th><th>After</th>';
+
+    $table->setup();
+
+    $permission_options = array(DP_PERMISSION_ALLOW => get_string('allow', 'local_plan'),
+        DP_PERMISSION_DENY => get_string('deny', 'local_plan'),
+        DP_PERMISSION_REQUEST => get_string('request', 'local_plan'),
+        DP_PERMISSION_APPROVE => get_string('approve', 'local_plan')
+    );
+
+    $duedate_options = array(DP_DUEDATES_NONE => get_string('duedatesnone', 'local_plan'),
+        DP_DUEDATES_OPTIONAL => get_string('duedatesopt', 'local_plan'),
+        DP_DUEDATES_REQUIRED => get_string('duedatesreq', 'local_plan')
+    );
+
+    $priority_options = array(DP_PRIORITY_NONE => get_string('prioritynone', 'local_plan'),
+        DP_PRIORITY_OPTIONAL => get_string('priorityopt', 'local_plan'),
+        DP_PRIORITY_REQUIRED => get_string('priorityreq', 'local_plan')
+    );
+
+    foreach($diff_array as $item => $values) {
+        $parts = explode('_', $item);
+        $tablerow = array();
+
+        if($parts[0] == 'perm'){
+            $tablerow[] = get_string($parts[1], 'local_plan');
+            $tablerow[] = get_string($parts[2], 'local_plan');
+            $tablerow[] = get_string($parts[3], 'local_plan');
+            $tablerow[] = $permission_options[$values['before']];
+            $tablerow[] = $permission_options[$values['after']];
+        } else {
+            $tablerow[] = get_string($parts[1], 'local_plan');
+            $tablerow[] = get_string($parts[2], 'local_plan');
+            $tablerow[] = get_string('na', 'local_plan');
+            switch($parts[2]) {
+                case 'duedatemode':
+                    $tablerow[] = $duedate_options[$values['before']];
+                    $tablerow[] = $duedate_options[$values['after']];
+                    break;
+
+                case 'prioritymode':
+                    $tablerow[] = $priority_options[$values['before']];
+                    $tablerow[] = $priority_options[$values['after']];
+                    break;
+
+                case 'autoassignpos':
+                    $tablerow[] = $values['before'];
+                    $tablerow[] = $values['after'];
+                    break;
+
+                case 'autoassignorg':
+                    $tablerow[] = $values['before'];
+                    $tablerow[] = $values['after'];
+                    break;
+            }
+        }
+
+        $table->add_data($tablerow);
+    }
+
+    ob_start();
+    $table->print_html();
+    echo '<br />';
+    $return = ob_get_contents();
+    ob_end_clean();
+
+    return $return;
+}
+
+
+/**
+ * Returns an plan approval picker using the specified name and selected option
+ *
+ * @param string $name The value to enter in the form element's name attribute
+ * @param string $selected Value of the option that should be selected
+ * @param bool $choose If true, picker contains a 'Choose' option
+ *
+ * @return string HTML to generate the picker
+ */
+function dp_display_approval_options($name, $selected=DP_APPROVAL_UNAPPROVED, $choose=true) {
+    if($choose) {
+        $choosestr = 'choose';
+        $chooseval = DP_APPROVAL_UNAPPROVED;
+    } else {
+        $choosestr = null;
+        $chooseval = null;
+    }
+    $options = array(
+        DP_APPROVAL_APPROVED => get_string('approve', 'local_plan'),
+        DP_APPROVAL_DECLINED => get_string('decline', 'local_plan'),
+    );
+    return choose_from_menu($options, $name, $selected, $choosestr, '', $chooseval, true);
+}
+
+function dp_display_plans($userid, $statuses=array(DP_PLAN_STATUS_APPROVED), $cols=array('duedate', 'progress', 'completed')) {
+    global $CFG;
+
+    $statuses = is_array($statuses) ? implode(',', $statuses) : $statuses;
+    $cols = is_array($cols) ? $cols : array($cols);
+
+    // Construct sql query
+    $count = 'SELECT COUNT(*) ';
+    $select = "SELECT p.*,
+        (SELECT timemodified FROM {$CFG->prefix}dp_plan_history ph WHERE ph.planid = p.id ORDER BY id DESC LIMIT 1)
+        AS timemodified ";
+    $from = "FROM {$CFG->prefix}dp_plan p ";
+    $where = "WHERE userid = {$userid} AND status IN ({$statuses}) ";
+    $count = count_records_sql($count.$from.$where);
+
+    // Set up table
+    $tablename = str_replace(',', '-', $statuses);
+    $tablename = 'plans-list-'.$tablename;
+    $tableheaders = array(get_string('plan', 'local_plan'));
+    $tablecols = array('p,name');
+    if (in_array('duedate', $cols)) {
+        $tableheaders[] = get_string('duedate', 'local_plan');
+        $tablecols[] = 'p.enddate';
+    }
+    if (in_array('progress', $cols)) {
+        $tableheaders[] = get_string('progress', 'local_plan');
+        $tablecols[] = 'p.status';
+    }
+    if (in_array('completed', $cols)) {
+        $tableheaders[] = get_string('completed', 'local_plan');
+        $tablecols[] = 'p.timemodified';
+    }
+
+    $table = new flexible_table($tablename);
+    $table->define_headers($tableheaders);
+    $table->define_columns($tablecols);
+    $table->set_attribute('class', 'logtable generalbox');
+    $table->sortable(true);
+    $table->setup();
+    $table->pagesize(5, $count);
+    $sort = $table->get_sql_sort();
+    $sort = empty($sort) ? '' : ' ORDER BY '.$sort;
+
+    // Add table data
+    $plans = get_records_sql($select.$from.$where.$sort, $table->get_page_start(), $table->get_page_size());
+    if (!$plans) {
+        return get_string('noplans', 'local_plan');
+    }
+    foreach ($plans as $p) {
+        $plan = new development_plan($p->id);
+        $row = array();
+        $row[] = $plan->display_summary_widget();
+        if (in_array('duedate', $cols)) {
+            $row[] = $plan->display_enddate();
+        }
+        if (in_array('progress', $cols)) {
+            $row[] = $plan->display_progress();
+        }
+        if (in_array('completed', $cols)) {
+            $row[] = $plan->display_completeddate();
+        }
+
+        $table->add_data($row);
+    }
+
+    ob_start();
+    $table->print_html();
+    $out = ob_get_contents();
+    ob_end_clean();
+
+    return $out;
+}
+
+function dp_display_plans_menu($userid, $selectedid=0) {
+    global $CFG;
+
+    $out = '<div id="dp-plans-menu">';
+    // Display active plans
+    if ($plans = dp_get_plans($userid, array(DP_PLAN_STATUS_APPROVED, DP_PLAN_STATUS_UNAPPROVED))) {
+        $out .= print_heading(get_string('activeplans', 'local_plan'), 'left', 3, 'main', true);
+        $out .= "<ul>";
+        foreach ($plans as $p) {
+            $class = $p->id == $selectedid ? 'class="dp-menu-selected"' : '';
+            $out .= "<li {$class}><a href=\"{$CFG->wwwroot}/local/plan/view.php?id={$p->id}\">{$p->name}</a></li>";
+        }
+        $out .= "</ul>";
+    }
+
+    if ($plans = dp_get_plans($userid, DP_PLAN_STATUS_COMPLETE)) {
+        $out .= print_heading(get_string('completedplans', 'local_plan'), 'left', 3, 'main', true);
+        $out .= "<ul>";
+        foreach ($plans as $p) {
+            $class = $p->id == $selectedid ? 'class="dp-menu-selected"' : '';
+            $out .= "<li {$class}><a href=\"{$CFG->wwwroot}/local/plan/view.php?id={$p->id}\">{$p->name}</a></li>";
+        }
+        $out .= "</ul>";
+    }
+
+    $out .= '</div>';
+
+    return $out;
+}
+
+
+function dp_display_add_plan_icon($userid) {
+    global $CFG;
+
+    $out = '';
+    $href = "{$CFG->wwwroot}/local/plan/add.php?userid={$userid}";
+    $title = get_string('addplan', 'local_plan');
+    $out .= '<span class="dp-add-plan-link">';
+    $out .= "<a href=\"{$href}\">
+        <img src=\"{$CFG->themewww}/totara/pix/t/add.gif\" title=\"{$title}\"
+        alt=\"{$title}\" width=\"13px\" height=\"13px\"/></a><br>";
+    $out .= "<a href=\"{$href}\" title=\"{$title}\">{$title}</a>";
+    $out .= '</span>';
+
+    return $out;
+}
+
+
+function dp_display_user_message_box($planuser) {
+    global $CFG;
+    $user = get_record('user', 'id', $planuser);
+    if(!$user) {
+        return false;
+    }
+
+    $out = '<div class="plan_box plan_box_plain">';
+    $out .= '<table border="0" width="100%"><tr><td width="50">';
+    $out .= print_user_picture($user, 1, null, 0, true);
+    $out .= '</td><td>';
+    $a = new object();
+    $a->name = fullname($user);
+    $a->userid = $planuser;
+    $a->site = $CFG->wwwroot;
+    $out .= get_string('youareviewingxsplans', 'local_plan', $a);
+    $out .= '</td></tr></table></div>';
+    return $out;
+}
+
+function dp_plan_delete($planid) {
+    $plan = new development_plan($planid);
+
+    return $plan->delete();
+}
