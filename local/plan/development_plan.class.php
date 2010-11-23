@@ -260,11 +260,10 @@ class development_plan {
                 $compname = $this->get_component($c->component)->get_setting('name');
                 $class = ($count == $total) ? "dp-summary-widget-component-name-last" : "dp-summary-widget-component-name";
                 $assignments = $this->get_component($c->component)->get_assigned_items();
-                $assignments = !empty($assignments) ? count($assignments) : 0;
-                $assignments = empty($assignments) ? '' : " ({$assignments})";
+                $assignments = !empty($assignments) ? '('.count($assignments).')' : '';
 
                 $out .= "<span class=\"{$class}\">
-                    <a href=\"{$CFG->wwwroot}/local/plan/components/{$c->component}/index.php?id={$this->id}\">{$compname}{$assignments}
+                    <a href=\"{$CFG->wwwroot}/local/plan/components/{$c->component}/index.php?id={$this->id}\">{$compname} {$assignments}
                     </a></span>";
                 $count++;
             }

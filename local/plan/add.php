@@ -19,7 +19,11 @@ if ($userid != $USER->id) {
     $role = 'learner';
 }
 
-if (dp_get_template_permission('plan', 'create', $role, null) != DP_PERMISSION_ALLOW) {
+if (!$template = dp_get_first_template()) {
+    print_error('notemplatesetup', 'local_plan');
+}
+
+if (dp_get_template_permission($template->id, 'plan', 'create', $role) != DP_PERMISSION_ALLOW) {
     print_error('error:nopermissions', 'local_plan');
 }
 // END HACK

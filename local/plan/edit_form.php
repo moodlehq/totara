@@ -15,7 +15,9 @@ class plan_edit_form extends moodleform {
         }
         $mform->addElement('hidden', 'userid', $USER->id);
         $mform->setType('userid', PARAM_INT);
-        $mform->addElement('hidden', 'templateid', 1);  //@todo: HACK! the templateid will always be one for now
+        $templateid = dp_get_first_template();
+        $templateid = $templateid->id;
+        $mform->addElement('hidden', 'templateid', $templateid);  //@todo: HACK! we will always use the first template for now
         $mform->setType('templateid', PARAM_INT);
         $mform->addElement('hidden', 'status', 0);
         $mform->setType('status', PARAM_INT);
