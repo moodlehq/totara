@@ -78,7 +78,7 @@ function totara_stats_timespent($from, $to) {
  * @param object $user - Full $USER record (usually from $USER)
  * @return array
  */
-function totara_stats_admin_stats($user) {
+function totara_stats_admin_stats($user, $structureonly=false) {
     global $CFG;
     //TODO - create a way of setting timeframes
     $to = time();
@@ -108,6 +108,9 @@ function totara_stats_admin_stats($user) {
                         "WHERE eventtype = ". STATS_EVENT_OBJ_ACHIEVED. " AND timestamp > ".$from. " AND timestamp < ".$to;
     $statssql[5]->string = 'statobjachieved';
 
+    if ($structureonly) {
+        return $statssql;
+    }
 
     $results = totara_stats_sql_helper($statssql);
 
@@ -120,7 +123,7 @@ function totara_stats_admin_stats($user) {
  * @param object $user - Full $USER record (usually from $USER)
  * @return array
  */
-function totara_stats_manager_stats($user) {
+function totara_stats_manager_stats($user, $structureonly=false) {
     global $CFG;
     //TODO - create a way of setting timeframes
     $to = time();
@@ -167,6 +170,9 @@ function totara_stats_manager_stats($user) {
                         "WHERE eventtype = ". STATS_EVENT_OBJ_ACHIEVED. " AND timestamp > ".$from. " AND timestamp < ".$to.$usersql.
     $statssql[5]->string = 'statobjachieved';
 
+    if ($structureonly) {
+        return $statssql;
+    }
 
     $results = totara_stats_sql_helper($statssql);
 

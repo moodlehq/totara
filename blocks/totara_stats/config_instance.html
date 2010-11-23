@@ -1,0 +1,56 @@
+<?php
+
+require_once($CFG->dirroot.'/blocks/totara_stats/locallib.php');
+
+global $USER;
+// get Role of user in this page.
+$sql = "SELECT r.shortname
+    FROM {$CFG->prefix}dashb d
+    INNER JOIN {$CFG->prefix}dashb_instance di ON d.id = di.dashb_id
+    INNER JOIN {$CFG->prefix}role r on d.roleid = r.id
+    WHERE di.id = {$this->instance->pageid}";       // The pageid is the dashb instance id
+$role = get_field_sql($sql);
+
+switch ($role) {
+    case 'admin' :
+    case 'administrator' :
+        $stats = totara_stats_admin_stats($USER, true);
+        break;
+    case 'manager' :
+        $stats = totara_stats_manager_stats($USER, true);
+        break;
+    case 'teacher' :
+    case 'trainer' :
+    case 'student' :
+    default:
+        $stats = totara_stats_user_stats($USER);
+        $stats = totara_stats_admin_stats($USER, true); //debug
+        break;
+    }
+?>
+
+<table cellpadding="9" cellspacing="0" class="blockconfigtable">
+<?php
+foreach ($stats as $stat) {
+?>
+    <tr valign="top">
+    <td align="right"><?php print_string($stat->string.'_config', 'block_totara_stats'); ?>:</td>
+    <td><input type="checkbox" name="<?php echo $stat->string; ?>" value="<?php echo isset($this->config->$stat->string)?p($this->config->$stat->string):''; ?>" />
+    <?php if ($stat->string == 'statlearnerhours') {
+        print_string('statlearnerhours_confighours', 'block_totara_stats');
+    ?>
+              <input type="text" maxlength="2"  size="2" name="statlearnerhours_hours" value="<?php echo isset($this->config->statlearnerhours_hours)?p($this->config->statlearnerhours_hours):''; ?>"/>
+    <?php
+          }
+    ?>
+    </td>
+</tr>
+<?php
+}
+?>
+<tr>
+    <td colspan="3" align="center">
+    <input type="submit" value="<?php print_string('savechanges') ?>" /></td>
+</tr>
+</table>
+

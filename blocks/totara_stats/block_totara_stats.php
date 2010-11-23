@@ -15,6 +15,10 @@ class block_totara_stats extends block_base {
         $this->cron = 20; //TODO: should schedule cron rather than using this var.
     }
 
+    function instance_allow_config() {
+        return true;
+    }
+
     function preferred_width() {
         return 210;
     }
