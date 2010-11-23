@@ -1,7 +1,7 @@
 <?php
 
 $string['blockname'] = 'Statistics';
-$string['statlearnerhours'] ='$a->count learners have spent a total of $a->hours hours online';
+$string['statlearnerhours'] ='$a->count learners have spent more than $a->hours hours online';
 $string['statlearnerhours_config'] = 'Show count of users who have spent a certain number of hours online';
 $string['statlearnerhours_confighours'] = 'Number of hours to display';
 $string['statcoursesstarted'] ='$a->count new courses have been started';
