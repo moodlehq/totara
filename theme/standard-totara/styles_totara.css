@@ -1069,6 +1069,34 @@ span.coursecompletionstatus span.completion-completeviarpl {
     background-position: 0px -24px;
 }
 
+/*
+ * Recent Learning block
+ */
+
+div.block_recentlearning table {
+    width:100%;
+}
+
+div.block_recentlearning td.status span,
+span.coursecompletionstatus span {
+    text-indent: -1000px;
+    display: block;
+    width: 39px;
+    height: 12px;
+    background: transparent url(images/progress-icons.png) no-repeat;
+}
+
+div.block_recentlearning td.status span.completion-inprogress,
+span.coursecompletionstatus span.completion-inprogress {
+    background-position: 0px -12px;
+}
+
+div.block_recentlearning td.status span.completion-complete,
+div.block_recentlearning td.status span.completion-completeviarpl,
+span.coursecompletionstatus span.completion-complete,
+span.coursecompletionstatus span.completion-completeviarpl {
+    background-position: 0px -24px;
+}
 
 /*****************************************************************************/
 /** Report Builder **/
