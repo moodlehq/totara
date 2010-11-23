@@ -107,6 +107,9 @@ class totara_dialog_content_courses extends totara_dialog_content {
 
         // Also fill parents array
         $this->parent_items = $this->categories;
+
+        // Make categories unselectable
+        $this->disabled_items = $this->parent_items;
     }
 
 
@@ -117,7 +120,7 @@ class totara_dialog_content_courses extends totara_dialog_content {
      */
     public function load_courses() {
         if ($this->categoryid) {
-            $this->courses = get_courses($this->categoryid, "fullname ASC", 'c.id,c.fullname,c.sortorder');
+            $this->courses = get_courses($this->categoryid, "fullname ASC", 'c.id, c.fullname, c.sortorder');
         }
     }
 
