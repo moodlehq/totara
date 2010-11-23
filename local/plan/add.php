@@ -7,7 +7,22 @@ $userid = required_param('userid', PARAM_INT); // user id
 
 require_login();
 
-// TODO: CHECK IF USER CAN ADD PLAN
+// START PERMISSION HACK
+if ($userid != $USER->id) {
+    // Make sure user is manager
+    if (totara_is_manager($USER->id) || isadmin()) {
+        $role = 'manager';
+    } else {
+        print_error('error:nopermissions', 'local_plan');
+    }
+} else {
+    $role = 'learner';
+}
+
+if (dp_get_template_permission('plan', 'create', $role, null) != DP_PERMISSION_ALLOW) {
+    print_error('error:nopermissions', 'local_plan');
+}
+// END HACK
 
 $currenturl = qualified_me();
 $allplansurl = "{$CFG->wwwroot}/local/plan/index.php?userid={$userid}";

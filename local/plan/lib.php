@@ -470,3 +470,18 @@ function dp_plan_delete($planid) {
 
     return $plan->delete();
 }
+
+function dp_get_template_permission($component, $action, $role, $templateid=null) {
+    if (empty($templateid)) {
+        // Get the first dp template for now
+        $template = get_records('dp_template', '','', 'id', '*', '', 1);
+        $template = reset($template);
+        $templateid = $template->id;
+    }
+
+    if ($permission = get_record_select('dp_permissions', "templateid={$templateid} AND role='{$role}' AND component='{$component}' AND action='{$action}'", 'value')) {
+        return $permission->value;
+    } else {
+        return false;
+    }
+}

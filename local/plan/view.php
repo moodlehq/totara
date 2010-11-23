@@ -22,24 +22,24 @@ if ($form->is_cancelled()) {
 }
 
 if ($plan->get_setting('view') < DP_PERMISSION_ALLOW) {
-    print_error('nopermissions');
+    print_error('error:nopermissions');
 }
 
 // Handle form submits
 if ($data = $form->get_data()) {
     if (isset($data->edit)) {
         if ($plan->get_setting('update') < DP_PERMISSION_ALLOW) {
-            print_error('nopermissions');
+            print_error('error:nopermissions');
         }
         redirect($editurl);
     } elseif (isset($data->delete)) {
         if ($plan->get_setting('delete') < DP_PERMISSION_ALLOW) {
-            print_error('nopermissions');
+            print_error('error:nopermissions');
         }
         redirect(strip_querystring(qualified_me())."?id={$id}&action=delete");
     } elseif (isset($data->deleteyes)) {
         if ($plan->get_setting('delete') < DP_PERMISSION_ALLOW) {
-            print_error('nopermissions');
+            print_error('error:nopermissions');
         }
         if ($plan->delete()) {
             totara_set_notification(get_string('plandeletesuccess', 'local_plan'), "{$CFG->wwwroot}/local/plan/index.php?userid={$plan->userid}", array('style' => 'notifysuccess'));
@@ -50,7 +50,7 @@ if ($data = $form->get_data()) {
         redirect($viewurl);
     } elseif (isset($data->submitbutton)) {
         if ($plan->get_setting('update') < DP_PERMISSION_ALLOW) {
-            print_error('nopermissions');
+            print_error('error:nopermissions');
         }
         // Save plan data
         if (!update_record('dp_plan', $data)) {
