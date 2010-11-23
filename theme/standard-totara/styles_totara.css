@@ -1077,6 +1077,10 @@ div.block_recentlearning table {
     width:100%;
 }
 
+div.block_recentlearning table td.course {
+    width:80%;
+}
+
 div.block_recentlearning td.status span,
 span.coursecompletionstatus span {
     text-indent: -1000px;

@@ -37,7 +37,7 @@ class block_recentlearning extends block_list {
     }
 
     public function get_content() {
-        global $CFG, $USER, $COURSE;
+        global $CFG, $USER;
 
         if($this->content !== NULL) {
             return $this->content;
@@ -45,9 +45,14 @@ class block_recentlearning extends block_list {
 
         $this->content = new stdClass;
         $this->content->items = array();
+        $this->content->icons = array();
         $this->content->footer = '';
 
         $courses = completion_info::get_all_courses($USER->id, 10);
+
+        if(!$courses) {
+            return $this->content;
+        }
 
         if ($courses) {
             foreach($courses as $course) {
@@ -68,13 +73,13 @@ class block_recentlearning extends block_list {
 
                 $test = "<table>";
                 $test .= "<tr><td class=\"course\"><a href=\"{$CFG->wwwroot}/course/view.php?id={$id}\" title=\"$name\">$name</a></td>";
-                $test .= "<td class=\"status\"><span class=\"completion-$statusstring\" title=\"$status\"></span></td><tr>";
+                $test .= "<td class=\"status\"><span class=\"completion-$statusstring\" title=\"$status\"></span></td></tr>";
                 $test .= "</table>";
 
                 $this->content->items[] = $test;
+                $this->content->footer = '<a href="'.$CFG->wwwroot.'/my/coursecompletions.php?id='.$USER->id.'">'.get_string('allmycourses','local').'</a>';
             }
         }
-        $this->content->footer = '<a href="' . $CFG->wwwroot . '/guides/index.php">Show all courses</a>';
 
         return $this->content;
     }
