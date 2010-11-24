@@ -32,9 +32,10 @@ define('DP_PRIORITY_REQUIRED', 2);
 define('DP_MAX_PRIORITY_OPTIONS', 5);
 
 // approval
-define('DP_APPROVAL_UNAPPROVED', 0);
-define('DP_APPROVAL_APPROVED', 1);
-define('DP_APPROVAL_DECLINED', -1);
+define('DP_APPROVAL_DECLINED',          10);
+define('DP_APPROVAL_UNAPPROVED',        20);
+define('DP_APPROVAL_APPROVED',          50);
+define('DP_APPROVAL_REQUEST_REMOVAL',   60);
 
 //Plan notices
 define('DEVELOPMENT_PLAN_UNKNOWN_BUTTON_CLICKED', 1);
@@ -486,4 +487,17 @@ function dp_get_template_permission($templateid, $component, $action, $role) {
     } else {
         return false;
     }
+}
+
+
+/**
+ * Checks to see if an approval value is
+ * approved or greater
+ *
+ * @access  public
+ * @param   $value  integer  Approval constant e.g. DP_APPROVAL_*
+ * @return  boolean
+ */
+function dp_is_approved($value) {
+    return $value >= DP_APPROVAL_APPROVED;
 }

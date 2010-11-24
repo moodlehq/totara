@@ -282,7 +282,7 @@ class dp_competency_component extends dp_base_component {
 
             while($ca = rs_fetch_next_record($records)) {
                 $proficient = $this->is_proficient($ca, $proficiencies);
-                $approved = $ca->approved == DP_APPROVAL_APPROVED;
+                $approved = dp_is_approved($ca->approved);
 
                 $row = array();
                 $row[] = $this->display_competency_name($ca);
@@ -477,7 +477,7 @@ class dp_competency_component extends dp_base_component {
 
     function display_competency_name($ca) {
         global $CFG;
-        $approved = ($ca->approved == DP_APPROVAL_APPROVED);
+        $approved = dp_is_approved($ca->approved);
 
         $class = ($approved) ? '' : ' class="dimmed"';
         return '<a' . $class . ' href="'.$CFG->wwwroot.'/local/plan/components/' .

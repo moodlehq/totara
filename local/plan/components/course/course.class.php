@@ -199,7 +199,7 @@ class dp_course_component extends dp_base_component {
             while($ca = rs_fetch_next_record($records)) {
                 $completionstatus = $this->get_completion_status($ca, $completions);
                 $completed = (substr($completionstatus, 0, 8) == 'complete');
-                $approved = $ca->approved == DP_APPROVAL_APPROVED;
+                $approved = dp_is_approved($ca->approved);
 
                 $row = array();
                 $row[] = $this->display_course_name($ca);
@@ -351,7 +351,7 @@ class dp_course_component extends dp_base_component {
 
     function display_course_name($ca) {
         global $CFG;
-        $approved = ($ca->approved == DP_APPROVAL_APPROVED);
+        $approved = dp_is_approved($ca->approved);
 
         if($approved) {
             $class = '';
