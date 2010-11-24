@@ -13,3 +13,5 @@ $string['statcompachieved_config'] ='Show count of competencies that have been a
 $string['statobjachieved'] ='$a->count objectives have been achieved';
 $string['statobjachieved_config'] ='Show count of objectives that have been achieved';
 $string['statdesc'] = 'In the last 30 days....';
+$string['minutesbetweensession'] = 'minutes between sessions';
+$string['minutesbetweensessiondesc'] = 'Used by stats generation to define when a new session should be calculated - a change to this will only affect stats generated in future.';

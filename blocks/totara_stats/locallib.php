@@ -49,7 +49,11 @@ function totara_stats_add_event($time, $userid, $eventtype, $data=null, $data2=n
  * @return array
  */
 function totara_stats_timespent($from, $to) {
+    global $CFG;
     $minutesbetweensession = 30; //used to define new session
+    if (!empty($CFG->block_totara_stats_minutesbetweensession)) {
+        $minutesbetweensession = $CFG->block_totara_stats_minutesbetweensession;
+    }
     //calculate timespent by each user
     $logs = totara_stats_get_logs($from, $to);
     $totalTime = array();

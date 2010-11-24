@@ -34,6 +34,10 @@ class block_totara_stats extends block_base {
 
     }
 
+    function has_config() {
+        return true;
+    }
+
     function get_content() {
         global $CFG, $USER;
 
