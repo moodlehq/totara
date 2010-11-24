@@ -2,6 +2,7 @@
 
 require_once(dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/config.php');
 require_once($CFG->dirroot . '/local/plan/lib.php');
+require_once($CFG->dirroot . '/local/js/lib/setup.php');
 
 $id = required_param('id', PARAM_INT); // plan id
 $submitted = optional_param('submitbutton', null, PARAM_TEXT); // form submitted
@@ -51,6 +52,26 @@ if($delete) {
     die();
 }
 
+/**
+ * Javascript stuff
+ */
+
+// Setup lightbox
+local_js(array(
+    TOTARA_JS_DIALOG,
+    TOTARA_JS_TREEVIEW,
+    TOTARA_JS_DATEPICKER
+));
+
+require_js(array(
+    $CFG->wwwroot.'/local/plan/components/course/find.js.php'
+));
+
+
+/**
+ * End js stuff
+ */
+
 print_header_simple($pagetitle, '', $navigation, '', null, true, '');
 
 print $plan->display_plan_message_box();
@@ -58,6 +79,8 @@ print $plan->display_plan_message_box();
 print_heading($fullname);
 
 print $plan->display_tabs($componentname);
+
+print $component->display_course_picker();
 
 print '<form action="' . $currenturl . '" method="POST">';
 print '<input type="hidden" id="sesskey" name="sesskey" value="'.sesskey().'" />';

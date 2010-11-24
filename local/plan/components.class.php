@@ -320,4 +320,55 @@ abstract class dp_base_component {
         return get_records_sql($sql);
     }
 
+
+    /**
+     * Update assigned items
+     *
+     * @access  public
+     * @param   $items  array   Array of item ids
+     * @return  void
+     */
+    public function update_assigned_items($items) {
+
+        // Get currently assigned items
+        $assigned = $this->get_assigned_items2();
+
+        if ($items) {
+            foreach ($items as $itemid) {
+
+                // Validate id
+                if (!is_numeric($itemid)) {
+                    error('Supplied bad data - non numeric id');
+                }
+
+                // Check if not already assigned
+                if (!isset($assigned[$itemid])) {
+                    $this->assign_new_item($itemid);
+                }
+
+                // Remove from list to prevent deletion
+                unset($assigned[$itemid]);
+            }
+        }
+
+        // Remaining items to be deleted
+        foreach ($assigned as $item) {
+            $this->unassign_item($item);
+        }
+    }
+
+
+    /**
+     * Unassign an item from a plan
+     *
+     * @access  public
+     * @return  mixed   An ADODB RecordSet object with the results from the SQL call or false.
+     */
+    public function unassign_item($item) {
+        return delete_records(
+            'dp_plan_'.$this->component.'_assign',
+            'id', $item->itemid,
+            'planid', $this->plan->id
+        );
+    }
 }

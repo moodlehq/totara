@@ -13,6 +13,97 @@ class dp_course_component extends dp_base_component {
         parent::__construct($plan);
     }
 
+
+    /**
+     * Return markup for javascript course picker
+     *
+     * @access  public
+     * @return  string
+     */
+    public function display_course_picker() {
+
+        $html  = '<div class="buttons">';
+        $html .= '<div class="singlebutton">';
+        /*
+        <form action="<?php echo $CFG->wwwroot ?>/hierarchy/type/<?php echo $this->prefix ?>/related/find.php?id=<?php echo $item->id ?>&amp;frameworkid=<?php echo $item->frameworkid ?>" method="get">
+         */
+        $html .= '<div>';
+        $html .= '<script type="text/javascript">var plan_id = '.$this->plan->id.';</script>';
+        $html .= '<input type="submit" id="show-course-dialog" value="'.get_string('addcourse', 'local_plan').'" />';
+        /*
+    <input type="hidden" name="id" value="<?php echo $item->id ?>">
+    <input type="hidden" name="nojs" value="1">
+    <input type="hidden" name="returnurl" value="<?php echo qualified_me(); ?>">
+    <input type="hidden" name="s" value="<?php echo sesskey(); ?>">
+    <input type="hidden" name="frameworkid" value="<?php echo $item->frameworkid ?>">
+</div>
+</form>
+         */
+        $html .= '</div>';
+        $html .= '</div>';
+        $html .= '</div>';
+
+        return $html;
+    }
+
+
+    /**
+     * Get list of items assigned to plan
+     *
+     * @access  public
+     * @return  array
+     */
+    public function get_assigned_items2() {
+        global $CFG;
+
+        $assigned = get_records_sql(
+            "
+            SELECT
+                c.id,
+                a.planid,
+                a.courseid,
+                a.id AS itemid,
+                c.fullname
+            FROM
+                {$CFG->prefix}dp_plan_course_assign a
+            INNER JOIN
+                {$CFG->prefix}course c
+             ON c.id = a.courseid
+            WHERE
+                a.planid = {$this->plan->id}
+            "
+        );
+
+        if (!$assigned) {
+            $assigned = array();
+        }
+
+        return $assigned;
+    }
+
+
+    /**
+     * Assign a new item to this plan
+     *
+     * @access  public
+     * @param   $itemid     integer
+     * @return  void
+     */
+    public function assign_new_item($itemid) {
+
+        $item = new object();
+        $item->planid = $this->plan->id;
+        $item->courseid = $itemid;
+        $this->priority = 0;
+        $this->duedate = 0;
+        $this->approved = 0;
+        $this->completionstatus = null;
+        $this->grade = null;
+
+        insert_record('dp_plan_course_assign', $item);
+    }
+
+
     function display_course_list() {
         global $CFG;
 
@@ -48,7 +139,7 @@ class dp_course_component extends dp_base_component {
 
         $count = count_records_sql($count.$from.$where);
         if (!$count) {
-            return get_string('nocourses', 'local_plan');
+            return '<span class="noitems-assigncourses">'.get_string('nocourses', 'local_plan').'</span>';
         }
 
         $tableheaders = array(
