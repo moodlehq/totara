@@ -147,7 +147,7 @@ class rb_source_user extends rb_base_source {
         // Individual Development Plans icon
         $usercontext = get_context_instance(CONTEXT_USER, $itemid);
         if (has_capability('moodle/local:idpviewlist', $usercontext)) {
-            $disp .= '<a href="' . $CFG->wwwroot . '/idp/index.php?userid=' . $itemid . '"><img src="' . $CFG->wwwroot . '/pix/i/idp.png" title="' . get_string('idp', 'idp') . '" /></a>';
+            $disp .= '<a href="' . $CFG->wwwroot . '/local/plan/index.php?userid=' . $itemid . '"><img src="' . $CFG->wwwroot . '/pix/i/idp.png" title="' . get_string('idp', 'idp') . '" /></a>';
         }
 
         $disp .= '</span>';
