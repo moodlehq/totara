@@ -371,4 +371,18 @@ abstract class dp_base_component {
             'planid', $this->plan->id
         );
     }
+
+    public function get_default_priority() {
+        if (!$comp = $this->plan->get_component($this->component)) {
+            return 0;
+        }
+        if ($comp->get_setting('prioritymode') != DP_PRIORITY_REQUIRED) {
+            // Don't bother if priorities aren't required
+            return 0;
+        }
+
+        $scale = get_record('dp_priority_scale', 'id', $comp->get_setting('priorityscale'));
+
+        return $scale ? $scale->defaultid : 0;
+    }
 }

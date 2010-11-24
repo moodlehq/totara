@@ -726,6 +726,26 @@ class dp_competency_component extends dp_base_component {
         return delete_records('dp_plan_competency_assign', 'id', $caid);
     }
 
+    /**
+     * Assign a new item to this component of the plan
+     *
+     * @access  public
+     * @param   $itemid     integer
+     * @return  void
+     */
+    public function assign_new_item($itemid) {
+
+        $item = new object();
+        $item->planid = $this->plan->id;
+        $item->competencyid = $itemid;
+        $item->priority = $this->get_default_priority();
+        $item->duedate = $this->plan->enddate;
+
+        return insert_record('dp_plan_competency_assign', $item);
+    }
+
+
+
     function assign_competencies($competencies) {
         begin_sql();
         // Get all currently-assigned competencies
@@ -736,15 +756,15 @@ class dp_competency_component extends dp_base_component {
                 // Don't assign duplicate competencies
                 continue;
             }
-            $todb = new stdClass;
-            $todb->planid = $this->plan->id;
-            $todb->competencyid = $c->id;
-            if (!insert_record('dp_plan_competency_assign', $todb)) {
+
+            // Assign competency item
+            if (!$this->assign_new_item($c->id)) {
                 rollback_sql();
                 return false;
             }
         }
         commit_sql();
+
         return true;
     }
 
