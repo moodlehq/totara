@@ -217,11 +217,7 @@ class totara_dialog_content {
             }
 
             // Populate pane
-            if ($this->selected_items === null) {
-                $this->selected_items = $this->disabled_items;
-            }
-
-            $markup .= populate_selected_items_pane($this->selected_items);
+            $markup .= $this->populate_selected_items_pane($this->selected_items);
 
             $markup .= '</td>';
         }
@@ -289,11 +285,11 @@ class totara_dialog_content {
                 }
 
                 // Make disabled elements non-draggable and greyed out
-#                if (array_key_exists($element->id, $this->disabled_items)){
-#                    $span_class .= ' unclickable';
-#                } else {
+                if (array_key_exists($element->id, $this->disabled_items)){
+                    $span_class .= ' unclickable';
+                } else {
                     $span_class .= ' clickable';
-#                }
+                }
 
                 $html .= '<li class="'.trim($li_class).'" id="item_list_'.$element->id.'">';
                 $html .= '<div class="'.trim($div_class).'"></div>';
@@ -349,6 +345,31 @@ class totara_dialog_content {
         require_once $CFG->dirroot.$this->search_code;
         return ob_get_clean();
     }
+
+    /**
+    * Returns markup to be used in the selected pane of a multi-select dialog
+    *
+    * @param   $elements    array elements to be created in the pane
+    * @return  $html
+    */
+    public function populate_selected_items_pane($elements) {
+
+        if (empty($elements)) {
+            return '';
+        }
+
+        $html = '';
+        foreach ($elements as $element) {
+            $html .= '<div><span id="item_'.$element->id.'">';
+            $html .= '<a href="#">';
+            $html .= htmlentities($element->fullname);
+            $html .= '</a>';
+            $html .= '<span class="deletebutton">delete</span>';
+            $html .= '</span></div>';
+        }
+
+        return $html;
+    }
 }
 
 
@@ -380,26 +401,3 @@ function display_dialog_selector($options, $selected, $class) {
 }
 
 
-/**
- * Returns markup to be used in the 'Selected Items' pane of a multi-select dialog
- *
- * @param   $elements    array elements to be created in the pane
- * @return  $html
- */
-function populate_selected_items_pane($elements, $prefix='item') {
-
-    global $CFG;
-
-    $html = '';
-
-    foreach ($elements as $element) {
-        $html .= '<div><span id="'.$prefix.'_'.$element->id.'">';
-        $html .= '<a href="#">';
-        $html .= htmlentities($element->fullname);
-        $html .= '</a>';
-        $html .= '<span class="deletebutton">delete</span>';
-        $html .= '</span></div>';
-    }
-
-    return $html;
-}
