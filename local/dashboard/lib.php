@@ -236,7 +236,8 @@ class Dashboard {
         if (!empty($dashlets)) {
             $stradd    = get_string('addtocol', 'local_dashboard');
             foreach ($dashlets as $key=>$dlet) {
-                $menu[$key] = $dlet;
+                $blockobject = block_instance($dlet);
+                $menu[$key] = $blockobject->get_title();
             }
             asort($menu);
 
@@ -533,6 +534,11 @@ function local_dashboard_install() {
                 'col' => 3,
                 'pos' => 0,
             ),
+            array(
+                'name' => 'recentlearning',
+                'col' => 1,
+                'pos' => 1,
+            ),
         );
         // create an instance of each and add to dashboard
         foreach($blocks as $block) {
@@ -599,6 +605,11 @@ function local_dashboard_install() {
                 'name' => 'totara_reminders',
                 'col' => 3,
                 'pos' => 0,
+            ),
+            array(
+                'name' => 'recentlearning',
+                'col' => 1,
+                'pos' => 1,
             ),
         );
         // create an instance of each and add to dashboard
