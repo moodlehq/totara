@@ -190,13 +190,26 @@ div#header {
 
 #totara_menu {
 	background:#FFFFFF url('images/nav_main_bg.jpg') repeat-x top center;
+	height:72px;
+	clear:both;
+	margin-right:0px;
+	margin-left:0px;
+	position:relative !important;
 }
 
 #totara_menu ul {
+	padding:0 0 0 25px;
+	margin:0;
 	list-style:none;
+	float:left;
+	width:auto;
 }
 
 #totara_menu ul li {
+	float:left;
+	height:47px;
+	white-space:nowrap;
+	z-index: 9999;
 	font-family: 'Trebuchet ms', verdana, helvetica, sans-serif;
 	background:transparent url('images/nav_main_spacer.gif') no-repeat right 8px;
 	list-style:none;
@@ -206,11 +219,20 @@ div#header {
 	background:transparent;
 }
 
+#totara_menu ul li div{
+	position:relative;
+	zoom:1;
+}
+
 #totara_menu ul li a {
 	font-size: 1.1em;
 	letter-spacing: -0.02em;
 	color: #4c4c4c;
 	background:none;
+	display:block;
+	height:30px;
+	margin-left:0px;
+	padding: 14px 20px 3px 20px;
 }
 
 #totara_menu ul ul {
@@ -218,6 +240,12 @@ div#header {
 	margin:0;
 	list-style:none;
 	position:absolute;
+	background:transparent;
+	height:22px;
+	width:900px;
+	top:47px;
+	left:-27px;
+	z-index: 1000;
 }
 
 #totara_menu ul li ul{
@@ -252,6 +280,7 @@ div#header {
 	color:#505050;
 	font-size:1em;
 	font-weight:bold;
+	margin:0 0 0px 10px;
 }
 
 body#site-index #totara_menu ul #menu1,
@@ -271,8 +300,6 @@ body#my-teammembers #totara_menu ul #menu3,
 body#my-reports #totara_menu ul #menu4,
 body#course-index #totara_menu ul #menu5,
 body#course-find #totara_menu ul #menu5,
-body#course-view #totara_menu ul #menu5,
-body#course-category #totara_menu ul #menu5,
 body#blocks-facetoface-calendar #totara_menu ul #menu6 {
 	color:#FFFFFF;
 	margin-left:-2px;
@@ -295,8 +322,6 @@ body#my-teammembers #totara_menu ul #menu3 a,
 body#my-reports #totara_menu ul #menu4 a,
 body#course-index #totara_menu ul #menu5 a,
 body#course-find #totara_menu ul #menu5 a,
-body#course-view #totara_menu ul #menu5 a,
-body#course-category #totara_menu ul #menu5 a,
 body#blocks-facetoface-calendar #totara_menu ul #menu6 a {
 	color:#FFFFFF;
 	background: transparent url('images/nav_main_bg_rgt.jpg') no-repeat bottom right;
@@ -318,8 +343,6 @@ body#my-teammembers #totara_menu ul #menu3 ul,
 body.local-reportbuilder #totara_menu ul #menu4 ul,
 body#course-index #totara_menu ul #menu5 ul,
 body#course-find #totara_menu ul #menu5 ul,
-body#course-view #totara_menu ul #menu5 ul,
-body#course-category #totara_menu ul #menu5 ul,
 body.calendar #totara_menu ul #menu6 ul  {
 	display: block;
 }
@@ -340,10 +363,9 @@ body#my-teammembers #totara_menu ul #menu3 ul li a,
 body.local-reportbuilder #totara_menu ul #menu4 ul li a,
 body#course-index #totara_menu ul #menu5 ul li a,
 body#course-find #totara_menu ul #menu5 ul li a,
-body#course-view #totara_menu ul #menu5 ul li a,
-body#course-category #totara_menu ul #menu5 ul li a,
 body.calendar #totara_menu ul #menu6 ul li a  {
 	margin:0;
+	padding-top: 0;
 	display:block;
 	height: auto;
 	color:#FFFFFF;
@@ -375,15 +397,12 @@ body.local-reportbuilder #totara_menu ul #menu4 ul {
      left:-357px;
 }
 body#course-index #totara_menu ul #menu5 ul,
-body#course-find #totara_menu ul #menu5 ul,
-body#course-view #totara_menu ul #menu5 ul,
-body#course-category #totara_menu ul #menu5 ul {
+body#course-find #totara_menu ul #menu5 ul {
     left:-430px;
 }
 body.calendar #totara_menu ul #menu6 ul {
     left:-580px;
 }
-
 
 /* Conditional (if the my team option doesnt exist) */
 body.local-reportbuilder #totara_menu ul #menu4 div.noteam ul {
@@ -391,9 +410,7 @@ body.local-reportbuilder #totara_menu ul #menu4 div.noteam ul {
 }
 
 body#course-index #totara_menu ul #menu5 div.noteam ul,
-body#course-find #totara_menu ul #menu5 div.noteam ul,
-body#course-view #totara_menu ul #menu5 div.noteam ul,
-body#course-category #totara_menu ul #menu5 div.noteam ul {
+body#course-find #totara_menu ul #menu5 div.noteam ul {
      left:-330px;
 }
 
