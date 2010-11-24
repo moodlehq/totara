@@ -53,6 +53,7 @@ function totara_stats_timespent($from, $to) {
     //calculate timespent by each user
     $logs = totara_stats_get_logs($from, $to);
     $totalTime = array();
+    $lasttime = array();
         if (!empty($logs)){
             foreach($logs as $aLog){
                 if (empty($lasttime[$aLog->userid])) {
@@ -303,6 +304,7 @@ function totara_stats_build_sql($role, $user, $config=null) {
     case 'student' :
     default:
         $stats = totara_stats_user_stats($user, $config);
+        $stats = totara_stats_admin_stats($user, $config); //debug
         break;
     }
     return $stats;

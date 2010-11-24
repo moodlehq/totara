@@ -12,3 +12,4 @@ $string['statcompachieved'] ='$a->count competencies have been achieved';
 $string['statcompachieved_config'] ='Show count of competencies that have been achieved';
 $string['statobjachieved'] ='$a->count objectives have been achieved';
 $string['statobjachieved_config'] ='Show count of objectives that have been achieved';
+$string['statdesc'] = 'In the last 30 days....';

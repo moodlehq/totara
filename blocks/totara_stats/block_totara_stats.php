@@ -53,7 +53,7 @@ class block_totara_stats extends block_base {
             //now get sql required to return stats
             $stats = totara_stats_build_sql($role, $USER, $this->config);
             if (!empty($stats)) {
-                $this->content->text   .= totara_stats_output(totara_stats_sql_helper($stats));
+                $this->content->text   .= get_string('statdesc', 'block_totara_stats')."<br/>".totara_stats_output(totara_stats_sql_helper($stats));
             }
         }
 
