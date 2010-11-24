@@ -67,6 +67,7 @@ $query = urldecode(trim($query));
 
 // Search form
 // Data
+$disabledarray = $disabledlist;
 $disabledlist = serialize($disabledlist);
 $hidden = compact('type', 'select', 'templates', 'disabledlist');
 
@@ -130,6 +131,7 @@ if (strlen($query)) {
             $dialog = new totara_dialog_content_hierarchy($type, $frameworkid);
             $dialog->items = array();
             $dialog->parent_items = array();
+            $dialog->disabled_items = $disabledarray;
 
             foreach($results as $result) {
                 $title = hierarchy_search_get_path($hierarchy, $result->id);

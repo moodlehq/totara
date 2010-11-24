@@ -137,6 +137,12 @@ class totara_dialog_content_hierarchy extends totara_dialog_content {
     }
 
 
+    /**
+     * Generate search interface for hierarchy search
+     *
+     * @access  public
+     * @return  string
+     */
     public function generate_search_interface() {
         global $CFG;
 
@@ -144,10 +150,10 @@ class totara_dialog_content_hierarchy extends totara_dialog_content {
         $type = $this->hierarchy->prefix;
         $frameworkid = $this->framework->id;
         $select = !$this->disable_picker; # Only show select if picker isn't disabled
-        $disabledlist = array();
+        $disabledlist = array_flip(array_keys($this->disabled_items)); # Return an array without values
         $templates = $this->templates_only;
 
-
+        // Grab search page markup
         ob_start();
         require_once $CFG->dirroot.'/hierarchy/item/search.php';
         return ob_get_clean();
