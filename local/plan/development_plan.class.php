@@ -497,6 +497,7 @@ class development_plan {
         // process plan settings here
         begin_sql();
 
+        $currenturl = qualified_me();
         $currentworkflow = get_field('dp_template', 'workflow', 'id', $id);
         if($currentworkflow != 'custom') {
             $template_update = new object();
