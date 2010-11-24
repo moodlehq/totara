@@ -331,7 +331,7 @@ abstract class dp_base_component {
     public function update_assigned_items($items) {
 
         // Get currently assigned items
-        $assigned = $this->get_assigned_items2();
+        $assigned = $this->get_assigned_items();
 
         if ($items) {
             foreach ($items as $itemid) {

@@ -53,7 +53,7 @@ class dp_course_component extends dp_base_component {
      * @access  public
      * @return  array
      */
-    public function get_assigned_items2() {
+    public function get_assigned_items() {
         global $CFG;
 
         $assigned = get_records_sql(
@@ -593,10 +593,6 @@ class dp_course_component extends dp_base_component {
             default:
                 break;
         }
-    }
-
-    function get_assigned_items() {
-        return get_records('dp_plan_course_assign', 'planid', $this->plan->id);
     }
 
     function initialize_settings(&$settings) {

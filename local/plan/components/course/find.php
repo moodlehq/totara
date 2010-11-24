@@ -70,8 +70,7 @@ if ($id) { // plan being edited
 $plan = new development_plan($id);
 $componentname = 'course';
 $component = $plan->get_component($componentname);
-
-$selected = $component->get_assigned_items2();
+$selected = $component->get_assigned_items();
 
 
 ///
