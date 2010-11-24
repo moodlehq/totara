@@ -14,6 +14,20 @@ class dp_course_component extends dp_base_component {
     }
 
 
+    public function can_use_course_picker() {
+        // Get permissions
+        $plancompleted = $this->plan->status == DP_PLAN_STATUS_COMPLETE;
+        $updatecourse = $this->get_setting('updatecourse');
+
+        // If plan complete, or user cannot edit/request items, no point showing picker
+        if ($plancompleted || !in_array($updatecourse, array(DP_PERMISSION_ALLOW, DP_PERMISSION_REQUEST))) {
+            return false;
+        }
+
+        return $updatecourse;
+    }
+
+
     /**
      * Return markup for javascript course picker
      *
@@ -22,6 +36,17 @@ class dp_course_component extends dp_base_component {
      */
     public function display_course_picker() {
 
+        if (!$permission = $this->can_use_course_picker()) {
+            return '';
+        }
+
+        // Decide on button text
+        if ($permission == DP_PERMISSION_ALLOW) {
+            $btntext = get_string('updatecourses', 'local_plan');
+        } else {
+            $btntext = get_string('requestcourses', 'local_plan');
+        }
+
         $html  = '<div class="buttons">';
         $html .= '<div class="singlebutton">';
         /*
@@ -29,7 +54,7 @@ class dp_course_component extends dp_base_component {
          */
         $html .= '<div>';
         $html .= '<script type="text/javascript">var plan_id = '.$this->plan->id.';</script>';
-        $html .= '<input type="submit" id="show-course-dialog" value="'.get_string('addcourse', 'local_plan').'" />';
+        $html .= '<input type="submit" id="show-course-dialog" value="'.$btntext.'" />';
         /*
     <input type="hidden" name="id" value="<?php echo $item->id ?>">
     <input type="hidden" name="nojs" value="1">

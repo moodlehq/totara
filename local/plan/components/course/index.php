@@ -52,25 +52,27 @@ if($delete) {
     die();
 }
 
+
 /**
  * Javascript stuff
  */
+// If we are showing dialog
+if ($component->can_use_course_picker()) {
+    // Setup lightbox
+    local_js(array(
+        TOTARA_JS_DIALOG,
+        TOTARA_JS_TREEVIEW
+    ));
 
-// Setup lightbox
-local_js(array(
-    TOTARA_JS_DIALOG,
-    TOTARA_JS_TREEVIEW,
-    TOTARA_JS_DATEPICKER
-));
+    // Get course picker
+    require_js(array(
+        $CFG->wwwroot.'/local/plan/components/course/find.js.php'
+    ));
+}
 
-require_js(array(
-    $CFG->wwwroot.'/local/plan/components/course/find.js.php'
-));
+// Load datepicker JS
+local_js(array(TOTARA_JS_DATEPICKER));
 
-
-/**
- * End js stuff
- */
 
 print_header_simple($pagetitle, '', $navigation, '', null, true, '');
 
