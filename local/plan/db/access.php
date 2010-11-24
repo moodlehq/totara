@@ -38,9 +38,19 @@
 
 $capabilities = array(
 
-// Ability to create, edit and delete report builder reports view
-// the report builder administrative pages
-'local/plan:configureplans' => array(
+    // Access the plan front end
+    'local/plan:accessplan' => array(
+        'riskbitmask'   => RISK_PERSONAL | RISK_DATALOSS,
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'legacy' => array(
+            'admin' => CAP_ALLOW,
+            'user' => CAP_ALLOW,
+        )
+    ),
+
+    // Ability to create, edit and delete plan templates
+    'local/plan:configureplans' => array(
         'riskbitmask'   => RISK_PERSONAL | RISK_DATALOSS | RISK_CONFIG,
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM,
