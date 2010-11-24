@@ -107,9 +107,9 @@ class dp_template_new_form extends moodleform {
         $result = array();
 
         $startdatestr = isset($data['startdate'])?$data['startdate']:'';
-        $startdate = convert_userdate( $startdatestr );
+        $startdate = convert_userdate_2( $startdatestr );
         $enddatestr = isset($data['enddate'])?$data['enddate']:'';
-        $enddate = convert_userdate( $enddatestr );
+        $enddate = convert_userdate_2( $enddatestr );
 
         // Enforce valid dates
         if ( false === $startdate && $startdatestr !== 'dd/mm/yyyy' && $startdatestr !== '' ){
