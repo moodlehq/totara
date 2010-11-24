@@ -82,22 +82,30 @@ class block_totara_stats extends block_base {
     function cron() {
         global $CFG;
         //check if time to run cron
-        //check last time this cron was run
-        $lastrun = (int)get_config('block_totara_stats', 'cronlastrun');
-        if (empty($lastrun)) {
-            //set $lastrun to one month ago: (only process one month of historical stats)
-            $lastrun = time() -(60*60*24*30);
-        }
-        $nextrun = time() + (24*60*60);
-        if (time() < $nextrun or (empty($lastrun))) { //if 24 hours since last run
-            require_once($CFG->dirroot.'/blocks/totara_stats/locallib.php');
-
-            $stats = totara_stats_timespent($lastrun, $nextrun);
-            foreach ($stats as $userid => $timespent) {
-                //insert daily stat for each user returned above into new stats table for reading.
-                totara_stats_add_event($nextrun, $userid, STATS_EVENT_TIME_SPENT, '', $timespent);
+        //first check if cron is within 2 hours of the scheduled time
+                //Calculate distance
+        $midnight = usergetmidnight(time());
+        $dist = ($CFG->block_totara_stats_sche_hour*3600) +      //Hours distance
+                ($CFG->block_totara_stats_sche_minute*60);       //Minutes distance
+        $result = $midnight + $dist;
+        //if between 2 hours of $result.
+        if ($result > 0 && $result < time() && $result+(60*120) > time()) {
+            //check last time this cron was run
+            $lastrun = (int)get_config('block_totara_stats', 'cronlastrun');
+            if (empty($lastrun)) {
+                //set $lastrun to one month ago: (only process one month of historical stats)
+                $lastrun = time() -(60*60*24*30);
             }
-            set_config('cronlastrun', $nextrun, 'block_totara_stats');
+            if (time() > ($lastrun + (24*60*60))) { //if at least 24 hours since last run
+                require_once($CFG->dirroot.'/blocks/totara_stats/locallib.php');
+                $nextrun = time();
+                $stats = totara_stats_timespent($lastrun, $nextrun);
+                foreach ($stats as $userid => $timespent) {
+                    //insert daily stat for each user returned above into new stats table for reading.
+                    totara_stats_add_event($nextrun, $userid, STATS_EVENT_TIME_SPENT, '', $timespent);
+                }
+                set_config('cronlastrun', $nextrun, 'block_totara_stats');
+            }
         }
     }
 }
