@@ -71,6 +71,11 @@ $embed->columns = array(
     ),
     array(
         'type' => 'user',
+        'value' => 'lastlogin',
+        'heading' => 'Last Login'
+    ),
+    array(
+        'type' => 'user',
         'value' => 'userlearningicons',
         'heading' => 'Links',
     )

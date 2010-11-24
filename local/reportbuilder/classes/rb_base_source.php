@@ -642,6 +642,16 @@ abstract class rb_base_source {
                 'extrafields' => array('user_id' => "$join.id"),
             )
         );
+        $columnoptions[] = new rb_column_option(
+            'user',
+            'lastlogin',
+            'User Last Login',
+            sql_fullname("$join.lastlogin"),
+            array(
+                'joins' => $join,
+                'displayfunc' => 'nice_date',
+            )
+        );
         // auto-generate columns for user fields
         $fields = array(
             'firstname' => 'User First Name',
