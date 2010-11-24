@@ -24,7 +24,7 @@
  * @copyright  Totara Learning Solutions Limited
  *
  * dashboard specific language strings.
- * these should be called like get_string('key', 'dashboard');
+ * these should be called like get_string('key', 'local_dashboard');
  */
 
 $string['dashboard:admin'] = 'Manage dashboards';
@@ -43,4 +43,9 @@ $string['nodashboardsfound'] = 'No dashboards found...';
 $string['mylearning'] = 'My Learning';
 $string['myteam'] = 'My Team';
 
+$string['error:dashboardnotfound'] = 'Error: Dashboard not found';
+$string['error:couldnotgetinstance'] = 'Error: Could not get dashboard insatance';
+$string['error:createpersonalinstance_nodefault'] = 'Could not create personal dashboard instance - No default instance defined';
+$string['error:createpersonalinstance_noinsert'] = 'Could not create personal dashboard instance - could not insert instance';
+$string['error:insertdashlets'] = 'Could not insert dashlets';
 ?>

@@ -34,11 +34,11 @@ class Dashboard {
 
     function __construct($shortname, $userid, $type='user') {
         if (!$this->data = get_record('dashb', 'shortname', $shortname)) {
-            print_error('Dashboard not found...');
+            print_error('error:dashboardnotfound', 'local_dashboard');
         }
         $this->userid = $userid;
         if (!$this->instance = $this->get_instance()) {
-            print_error('Could not get dashboard instance...');
+            print_error(get_string('error:couldnotgetinstance', 'local_dashboard');
         }
 
         $this->set_type($type);
@@ -74,7 +74,7 @@ class Dashboard {
 
         // Get default instance and instance dashlets for role
         if (!$instanceclone=$this->get_default_instance()) {
-            print_error('Could not create personal dashboard instance - No default instance defined');
+            print_error(get_string('error:createpersonalinstance_nodefault', 'local_dashboard'));
         }
         $instancedashletsclone = get_records('dashb_instance_dashlet', 'dashb_instance_id', $instanceclone->id);
 
@@ -84,7 +84,7 @@ class Dashboard {
         unset($instanceclone->id);
         $instanceclone->userid = $this->userid;
         if (!$instanceclone->id = insert_record('dashb_instance', $instanceclone)) {
-            print_error('Could not create personal dashboard instance - could not insert instance');
+            print_error(get_string('error:createpersonalinstance_noinsert', 'local_dashboard'));
         }
 
         // Set the new dashboard instance
@@ -103,7 +103,7 @@ class Dashboard {
 
                     // Finally insert dashlet
                     if (!insert_record('dashb_instance_dashlet', $dc)) {
-                        print_error('Could not insert dashlets...');
+                        print_error(get_string('error:insertdashlets', 'local_dashboard'));
                     }
                 }
             }
@@ -607,7 +607,7 @@ function local_dashboard_install() {
                 'pos' => 0,
             ),
             array(
-                'name' => 'recentlearning',
+                'name' => 'totara_stats',
                 'col' => 1,
                 'pos' => 1,
             ),
