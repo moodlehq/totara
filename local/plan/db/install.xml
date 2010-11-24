@@ -56,8 +56,7 @@
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
       </KEYS>
       <INDEXES>
-        <INDEX NAME="templateid" UNIQUE="false" FIELDS="templateid" NEXT="templateid-component-action-role"/>
-        <INDEX NAME="templateid-component-action-role" UNIQUE="true" FIELDS="templateid, component, action, role" COMMENT="To prevent a setting from being assigned twice within the same template" PREVIOUS="templateid"/>
+        <INDEX NAME="templateid" UNIQUE="false" FIELDS="templateid"/>
       </INDEXES>
     </TABLE>
     <TABLE NAME="dp_component_settings" COMMENT="Stores the names and component-independent settings for each installed component." PREVIOUS="dp_permissions" NEXT="dp_course_settings">

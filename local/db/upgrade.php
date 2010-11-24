@@ -1647,7 +1647,9 @@ function xmldb_local_upgrade($oldversion) {
         $table->addFieldInfo('name', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
         $table->addFieldInfo('value', XMLDB_TYPE_CHAR, '255', null, null, null, null);
         $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
-        $table->addIndexInfo('reportid-type-name', XMLDB_INDEX_UNIQUE, array('reportid', 'type', 'name'));
+        if (!$CFG->dbtype=='mysql') { //see Catalyst Bugzilla: 6004 - temporary hack to allow mysql install.
+            $table->addIndexInfo('reportid-type-name', XMLDB_INDEX_UNIQUE, array('reportid', 'type', 'name'));
+        }
         $result = $result && create_table($table);
 
         // migrate content settings from report_builder table
