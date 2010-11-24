@@ -365,7 +365,7 @@ class block_base {
 
 
     function _print_dashlet() {
-        global $COURSE, $PAGE;
+        global $COURSE;
 
         print_container_start(false, 'dashlet_container');
 
@@ -1025,6 +1025,35 @@ class block_list extends block_base {
         }
     }
 
+    function _print_dashlet() {
+        global $COURSE;
+
+        print_container_start(false, 'dashlet_container');
+
+        // is_empty() includes a call to get_content()
+        if ($this->is_empty() && empty($COURSE->javascriptportal)) {
+            // Check for dashlet config
+            if (empty($this->dashlet_edit_controls)) {
+                print_container_end();
+                return;
+            } else {
+                $this->_print_dashlet_shadow();
+            }
+        } else {
+            $html_attributes = $this->html_attributes();
+            $html_attributes['class'] .= ' dashlet';
+            if ($this->hide_header() && empty($this->edit_controls)) {
+                // Header wants to hide, no edit controls to show, so no header it is
+                print_side_block(NULL, '', $this->content->items, NULL, $this->content->footer.$this->dashlet_edit_controls, $html_attributes);
+            } else {
+                // The full treatment, please. Include the title text.
+                print_side_block($this->_dashlet_title_html(), '', $this->content->items, NULL, $this->content->footer.$this->dashlet_edit_controls, $html_attributes, $this->title);
+            }
+        }
+
+
+        print_container_end();
+    }
 }
 
 ?>
