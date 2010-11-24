@@ -68,7 +68,7 @@ $capabilities = array(
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM,
         'legacy' => array(
-            'admin' => CAP_ALLOW
+            'admin' => CAP_ALLOW,
             'student' => CAP_ALLOW,
         )
     ),
