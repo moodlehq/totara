@@ -1,0 +1,14 @@
+<?php
+
+global $COURSE;
+
+$courseid = optional_param('id', $COURSE->id, PARAM_INT);
+$instanceid = optional_param('instanceid', 0, PARAM_INT);
+$sesskey = optional_param('sesskey', '', PARAM_TEXT);
+$blockaction = optional_param('blockaction', '', PARAM_TEXT);
+
+$url = $CFG->wwwroot.'/blocks/flash_video/video_manager.php?id='.$courseid.'&amp;instanceid='.$instanceid.'&amp;sesskey='.$sesskey.'&amp;blockaction='.$blockaction;
+
+redirect($url);
+
+?>

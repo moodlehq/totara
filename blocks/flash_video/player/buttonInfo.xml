@@ -1,0 +1,14 @@
+<flvplayer>
+	<buttonImages>
+	<playNormal>images/playButtonNormal.png</playNormal>
+	<playOver>images/playButtonOver.png</playOver>
+	<playDown>images/playButtonDown.png</playDown>
+	<playDisabled>images/playButtonDisabled.png</playDisabled>
+	
+	<stopNormal>images/stopButtonNormal.png</stopNormal>
+	<stopOver>images/stopButtonOver.png</stopOver>
+	<stopDown>images/stopButtonDown.png</stopDown>
+	<stopDisabled>images/stopButtonDisabled.png</stopDisabled>
+	</buttonImages>
+	<seekHex>0xFF0000</seekHex>
+</flvplayer>
