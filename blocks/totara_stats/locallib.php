@@ -304,7 +304,6 @@ function totara_stats_build_sql($role, $user, $config=null) {
     case 'student' :
     default:
         $stats = totara_stats_user_stats($user, $config);
-        $stats = totara_stats_admin_stats($user, $config); //debug
         break;
     }
     return $stats;
