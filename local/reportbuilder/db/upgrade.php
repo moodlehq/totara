@@ -91,6 +91,9 @@ function xmldb_local_reportbuilder_upgrade($oldversion=0) {
             $table->addFieldInfo('schedule', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
             $table->addFieldInfo('nextreport', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null, null, null);
 
+            /// Adding keys to table report_builder_group
+            $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
+
             create_table($table);
         }
     }
