@@ -38,7 +38,7 @@ class Dashboard {
         }
         $this->userid = $userid;
         if (!$this->instance = $this->get_instance()) {
-            print_error(get_string('error:couldnotgetinstance', 'local_dashboard');
+            print_error(get_string('error:couldnotgetinstance', 'local_dashboard'));
         }
 
         $this->set_type($type);
