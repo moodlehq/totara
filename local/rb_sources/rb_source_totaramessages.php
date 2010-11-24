@@ -70,21 +70,37 @@ class rb_source_totaramessages extends rb_base_source {
                 'msg.fullmessage',        // field
                 array('joins' => 'msg')   // options
             ),
+//            new rb_column_option(
+//                'message_values',
+//                'msgstatus',
+//                'Message status',
+//                'mdata.msgstatus',
+//                array('joins' => 'mdata',
+//                      'displayfunc' => 'msgstatus_link')
+//                ),
+//            new rb_column_option(
+//                'message_values',
+//                'msgstatus_text',
+//                'Message status',
+//                'mdata.msgstatus',
+//                array('joins' => 'mdata',
+//                      'displayfunc' => 'msgstatus_text')
+//                ),
             new rb_column_option(
                 'message_values',
-                'msgstatus',
-                'Message status',
-                'mdata.msgstatus',
+                'urgency',
+                'Message urgency',
+                'mdata.urgency',
                 array('joins' => 'mdata',
-                      'displayfunc' => 'msgstatus_link')
+                      'displayfunc' => 'urgency_link')
                 ),
             new rb_column_option(
                 'message_values',
-                'msgstatus_text',
-                'Message status',
-                'mdata.msgstatus',
+                'urgency_text',
+                'Message urgency',
+                'mdata.urgency',
                 array('joins' => 'mdata',
-                      'displayfunc' => 'msgstatus_text')
+                      'displayfunc' => 'urgency_text')
                 ),
             new rb_column_option(
                 'message_values',
@@ -157,13 +173,23 @@ class rb_source_totaramessages extends rb_base_source {
                 'Details',
                 'text'
             ),
+//            new rb_filter_option(
+//                'message_values',
+//                'msgstatus',
+//                'Message Status',
+//                'select',
+//                array(
+//                    'selectfunc' => 'message_status_list',
+//                    'selectoptions' => rb_filter_option::select_width_limiter(),
+//                )
+//            ),
             new rb_filter_option(
                 'message_values',
-                'msgstatus',
-                'Message Status',
+                'urgency',
+                'Message Urgency',
                 'select',
                 array(
-                    'selectfunc' => 'message_status_list',
+                    'selectfunc' => 'message_urgency_list',
                     'selectoptions' => rb_filter_option::select_width_limiter(),
                 )
             ),
@@ -278,11 +304,25 @@ class rb_source_totaramessages extends rb_base_source {
         return $display['text'];
     }
 
+    // generate urgency icon link
+    function rb_display_urgency_link($comp, $row) {
+        global $CFG;
+        $display = totara_msg_urgency_text($row->message_values_urgency);
+        return "<img class=\"iconsmall\" src=\"{$display['icon']}\" title=\"{$display['text']}\" alt=\"{$display['text']}\" />";
+    }
+
+    // generate urgency text
+    function rb_display_urgency_text($comp, $row) {
+        global $CFG;
+        $display = totara_msg_urgency_text($row->message_values_urgency);
+        return $display['text'];
+    }
+
     // generate type icon link
     function rb_display_msgtype_link($comp, $row) {
         global $CFG;
         $display = totara_msg_msgtype_text($row->message_values_msgtype);
-        return "<img class=\"iconsmall\" src=\"{$display['icon']}\" alt=\"{$display['text']}\" />";
+        return "<img class=\"iconsmall\" src=\"{$display['icon']}\" title=\"{$display['text']}\" alt=\"{$display['text']}\" />";
     }
 
     // generate status type text
@@ -351,6 +391,13 @@ class rb_source_totaramessages extends rb_base_source {
         $statusselect[TOTARA_MSG_STATUS_NOTOK] = 'Status not OK';
         $statusselect[TOTARA_MSG_STATUS_UNDECIDED] = 'Status undecided';
         return $statusselect;
+    }
+
+    function rb_filter_message_urgency_list() {
+        $urgencyselect = array();
+        $urgencyselect[TOTARA_MSG_URGENCY_NORMAL] = 'Normal';
+        $urgencyselect[TOTARA_MSG_URGENCY_URGENT] = 'Urgent';
+        return $urgencyselect;
     }
 
     function rb_filter_message_type_list() {

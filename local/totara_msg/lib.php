@@ -54,6 +54,26 @@ function totara_msg_msgstatus_text($msgstatus) {
     return array('text' => $text, 'icon' =>  $CFG->wwwroot . '/theme/' . $CFG->theme . '/pix/t/'.$status.'.gif');
 }
 
+/**
+ * Get the language string  and icon for the message urgency
+ *
+ * @param $urgency int message urgency
+ * @return array('text' => , 'icon' => '')
+ */
+function totara_msg_urgency_text($urgency) {
+    global $CFG;
+
+    if ($urgency == TOTARA_MSG_URGENCY_URGENT) {
+        $level = 'stop';
+        $text = get_string('urgent', 'block_totara_notify');
+    }
+    else {
+        $level = 'grey_undecided';
+        $text = get_string('normal', 'block_totara_notify');
+    }
+    return array('text' => $text, 'icon' =>  $CFG->wwwroot . '/theme/' . $CFG->theme . '/pix/t/'.$level.'.gif');
+}
+
 
 /**
  * Get the language string  and icon for the message type

@@ -35,11 +35,22 @@ define('TOTARA_MSG_STATUS_NOTOK', 2);
 
 // message type constants
 define('TOTARA_MSG_TYPE_UNKNOWN', 0);
+define('TOTARA_MSG_TYPE_COURSE', 1);
+define('TOTARA_MSG_TYPE_FORUM', 2);
+define('TOTARA_MSG_TYPE_GRADING', 3);
+define('TOTARA_MSG_TYPE_CHAT', 4);
+define('TOTARA_MSG_TYPE_LESSON', 5);
+define('TOTARA_MSG_TYPE_QUIZ', 6);
+define('TOTARA_MSG_TYPE_FACE2FACE', 7);
+define('TOTARA_MSG_TYPE_SURVEY', 8);
+define('TOTARA_MSG_TYPE_SCORM', 9);
+
 
 // message urgency constants
-define('TOTARA_MSG_URGENCY_LOW', 0);
-define('TOTARA_MSG_URGENCY_MEDIUM', 1);
-define('TOTARA_MSG_URGENCY_HIGH', 2);
+define('TOTARA_MSG_URGENCY_NORMAL', 0);
+define('TOTARA_MSG_URGENCY_URGENT', 4);
+
+
 
 /**
  * Called when a message provider wants to send a message.
@@ -85,9 +96,13 @@ function tm_message_send($eventdata) {
         $eventdata->userfrom = get_record('user', 'id', $message->userfrom);
     }
 
-    // must have msgtype and msgstatus
+    // must have msgtype, urgency and msgstatus
     if (!isset($eventdata->msgstatus) || !is_int($eventdata->msgstatus)) {
         debugging('tm_message_send() msgstatus not set');
+        return false;
+    }
+    if (!isset($eventdata->urgency) || !is_int($eventdata->urgency)) {
+        debugging('tm_message_send() urgency not set');
         return false;
     }
     if (!isset($eventdata->msgtype) || !is_int($eventdata->msgtype)) {
@@ -247,7 +262,7 @@ function tm_notification_send($eventdata) {
     }
     (!isset($eventdata->msgtype)) && $eventdata->msgtype = TOTARA_MSG_TYPE_UNKNOWN;
     (!isset($eventdata->msgstatus)) && $eventdata->msgstatus = TOTARA_MSG_STATUS_UNDECIDED;
-    (!isset($eventdata->urgency)) && $eventdata->urgency = TOTARA_MSG_URGENCY_LOW;
+    (!isset($eventdata->urgency)) && $eventdata->urgency = TOTARA_MSG_URGENCY_NORMAL;
 
     $eventdata->component         = 'local/totara_msg';
     $eventdata->name              = 'ntfy';
@@ -300,7 +315,7 @@ function tm_reminder_send($eventdata) {
     }
     (!isset($eventdata->msgtype)) && $eventdata->msgtype = TOTARA_MSG_TYPE_UNKNOWN;
     (!isset($eventdata->msgstatus)) && $eventdata->msgstatus = TOTARA_MSG_STATUS_UNDECIDED;
-    (!isset($eventdata->urgency)) && $eventdata->urgency = TOTARA_MSG_URGENCY_LOW;
+    (!isset($eventdata->urgency)) && $eventdata->urgency = TOTARA_MSG_URGENCY_NORMAL;
     (!isset($eventdata->onaccept)) && $eventdata->onaccept = null;
     (!isset($eventdata->onreject)) && $eventdata->onreject = null;
 

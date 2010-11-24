@@ -55,6 +55,7 @@ class totara_msg_workflow_pingpong extends totara_msg_workflow_plugin_base {
         $cnt                        = isset($eventdata['cnt']) ? $eventdata['cnt'] : 0;
         $newevent->fullmessage      = 'You stopped playing :-( after '.$cnt.' goes';
         $newevent->subject          = $newevent->fullmessage;
+        $newevent->urgency          = TOTARA_MSG_URGENCY_NORMAL;
 
         return tm_notification_send($newevent);
     }

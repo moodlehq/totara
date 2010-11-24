@@ -88,6 +88,16 @@ function xmldb_local_totara_msg_upgrade($oldversion) {
         $result = $result && add_index($table, $index);
     }
 
+    // totaramessage report source - delete all
+    if ($result && $oldversion < 2010110107) {
+        $reports = get_records('report_builder', 'source', 'totaramessages');
+        if ($reports) {
+            foreach ($reports as $report) {
+                totara_msg_delete_report($report->id);
+            }
+        }
+    }
+
     /// Check all message20 output plugins and upgrade if necessary
 /// This is temporary until Totara goes to 2.x - then migrate local/totara_msg/message20 to message
     upgrade_plugins('local','local/totara_msg/message20/output',"$CFG->wwwroot/$CFG->admin/index.php");

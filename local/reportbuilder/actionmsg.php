@@ -69,7 +69,8 @@ print '<input type="hidden" name="'.$action.'" value="'.$action.'" />';
 
 // process the action
 print '<div id="totara-msgs-action"><table>';
-print '<tr><th>'.get_string('status', 'block_totara_notify').'</th><th>'.
+//print '<tr><th>'.get_string('status', 'block_totara_notify').'</th><th>'.
+print '<tr><th>'.get_string('urgency', 'block_totara_notify').'</th><th>'.
                 get_string('type', 'block_totara_notify').'</th><th>'.
                 get_string('from', 'block_totara_notify').'</th><th>'.
                 get_string('statement', 'block_totara_notify').'</th></tr>';
@@ -87,16 +88,20 @@ foreach ($ids as $msgid => $msg) {
         continue;
     }
 
-    $display = isset($metadata->msgstatus) ? totara_msg_msgstatus_text($metadata->msgstatus) : array('icon' => '', 'text' => '');
-    $status = $display['icon'];
-    $status_alt = $display['text'];
+//    $display = isset($metadata->msgstatus) ? totara_msg_msgstatus_text($metadata->msgstatus) : array('icon' => '', 'text' => '');
+//    $status = $display['icon'];
+//    $status_alt = $display['text'];
+    $display = isset($metadata->urgency) ? totara_msg_urgency_text($metadata->urgency) : array('icon' => '', 'text' => '');
+    $urgency = $display['icon'];
+    $urgency_alt = $display['text'];
     $display = isset($metadata->msgtype) ? totara_msg_msgtype_text($metadata->msgtype) : array('icon' => '', 'text' => '');
     $type = $display['icon'];
     $type_alt = $display['text'];
     $from = get_record('user', 'id', $msg->useridfrom);
     $fromname = fullname($from);
     print '<tr>';
-    print "<td class=\"totara-msgs-action-right\"><div id='dismiss-status'><img class=\"iconsmall\" src=\"{$status}\" alt=\"{$status_alt}\" /></div></td>";
+//    print "<td class=\"totara-msgs-action-right\"><div id='dismiss-status'><img class=\"iconsmall\" src=\"{$status}\" alt=\"{$status_alt}\" /></div></td>";
+    print "<td class=\"totara-msgs-action-right\"><div id='dismiss-status'><img class=\"iconsmall\" src=\"{$urgency}\" title=\"{$urgency_alt}\" alt=\"{$urgency_alt}\" /></div></td>";
     print "<td class=\"totara-msgs-action-right\"><div id='dismiss-type'><img class=\"iconsmall\" src=\"{$type}\" alt=\"{$type_alt}\" /></div></td>";
     print "<td class=\"totara-msgs-action-right\"><div id='dismiss-from'>{$fromname}</div></td>";
     print "<td class=\"totara-msgs-action-right\"><div id='dismiss-statement'>{$msg->fullmessage}</div></td>";

@@ -67,9 +67,14 @@
                 'value' => 'msgtype',
                 'advanced' => 0,
             ),
+//        array(
+//                'type' => 'message_values',
+//                'value' => 'msgstatus',
+//                'advanced' => 1,
+//            ),
         array(
                 'type' => 'message_values',
-                'value' => 'msgstatus',
+                'value' => 'urgency',
                 'advanced' => 1,
             ),
         array(
@@ -84,10 +89,15 @@
             ),
     );
     $embed->columns = array(
+//        array(
+//            'type' => 'message_values',
+//            'value' => 'msgstatus',
+//            'heading' => 'Status',
+//        ),
         array(
             'type' => 'message_values',
-            'value' => 'msgstatus',
-            'heading' => 'Status',
+            'value' => 'urgency',
+            'heading' => 'Urgency',
         ),
         array(
             'type' => 'message_values',

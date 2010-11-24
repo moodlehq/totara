@@ -26,37 +26,7 @@ global $CFG;
 
 require_once($CFG->libdir.'/eventslib.php');
 
-
 define ('MESSAGE_SHORTLENGTH', 300);
-define ('MESSAGE_WINDOW', true);          // We are in a message window (so don't pop up a new one!)
-
-define ('MESSAGE_DISCUSSION_WIDTH',600);
-define ('MESSAGE_DISCUSSION_HEIGHT',500);
-
-define ('MESSAGE_SHORTVIEW_LIMIT', 8);//the maximum number of messages to show on the short message history
-
-define ('CONTACT_ID','id');
-
-define('MESSAGE_HISTORY_SHORT',0);
-define('MESSAGE_HISTORY_ALL',1);
-
-//some constants used as function arguments. Just to make function calls a bit more understandable
-define('IS_CONTACT',true);
-define('IS_NOT_CONTACT',false);
-
-define('IS_BLOCKED',true);
-define('IS_NOT_BLOCKED',false);
-
-define('VIEW_UNREAD_MESSAGES','unread');
-define('VIEW_CONTACTS','contacts');
-define('VIEW_BLOCKED','blockedusers');
-define('VIEW_COURSE','course_');
-
-define('SHOW_ACTION_LINKS_IN_CONTACT_LIST', true);
-
-define('MESSAGE_SEARCH_MAX_RESULTS', 200);
-
-define('MESSAGE_CONTACTS_PER_PAGE',10);
 
 if (!isset($CFG->message_contacts_refresh)) {  // Refresh the contacts list every 60 seconds
     $CFG->message_contacts_refresh = 60;

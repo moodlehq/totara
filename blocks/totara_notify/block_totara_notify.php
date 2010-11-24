@@ -96,8 +96,10 @@ class block_totara_notify extends block_base {
                 $bkgd = ($cnt % 2) ? 'shade' : 'noshade';
                 $content  = "<tr class=\"".$bkgd."\">";
                 $dismiss = totara_msg_dismiss_action($msg->id);
-                $status = totara_msg_msgstatus_text($msg->msgstatus);
-                $content .= "<td class=\"status\"><img class=\"iconsmall\" src=\"{$status['icon']}\" title=\"{$status['text']}\" alt=\"{$status['text']}\" /></td>";
+//                $status = totara_msg_msgstatus_text($msg->msgstatus);
+//                $content .= "<td class=\"status\"><img class=\"iconsmall\" src=\"{$status['icon']}\" title=\"{$status['text']}\" alt=\"{$status['text']}\" /></td>";
+                $urgency = totara_msg_urgency_text($msg->urgency);
+                $content .= "<td class=\"status\"><img class=\"iconsmall\" src=\"{$urgency['icon']}\" title=\"{$urgency['text']}\" alt=\"{$urgency['text']}\" /></td>";
                 $msgtext = $msg->subject ? $msg->subject : $msg->fullmessage;
                 $content .= "<td class=\"statement\">{$msgtext}</td>";
                 $content .= "<td class=\"action\">{$dismiss}</td>";

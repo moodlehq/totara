@@ -31,9 +31,12 @@ if (!$msg || $msg->useridto != $USER->id) {
 }
 $metadata = get_record('message_metadata', 'messageid', $id);
 
-$display = totara_msg_msgstatus_text($metadata->msgstatus);
-$status = $display['icon'];
-$status_alt = $display['text'];
+//$display = totara_msg_msgstatus_text($metadata->msgstatus);
+$display = totara_msg_urgency_text($metadata->urgency);
+//$status = $display['icon'];
+//$status_alt = $display['text'];
+$urgency = $display['icon'];
+$urgency_alt = $display['text'];
 $display = totara_msg_msgtype_text($metadata->msgtype);
 $type = $display['icon'];
 $type_alt = $display['text'];
@@ -41,8 +44,10 @@ $type_alt = $display['text'];
 $from = get_record('user', 'id', $msg->useridfrom);
 $fromname = fullname($from);
 print '<div id="totara-msgs-dismiss"><table>';
-print '<tr><td class="totara-msgs-action-left"><label for="dismiss-status">' . get_string('status', 'block_totara_notify').'</label></td>';
-print "<td class=\"totara-msgs-action-right\"><div id='dismiss-status'><img class=\"iconsmall\" src=\"{$status}\" alt=\"{$status_alt}\" /></div></td></tr>";
+//print '<tr><td class="totara-msgs-action-left"><label for="dismiss-status">' . get_string('status', 'block_totara_notify').'</label></td>';
+//print "<td class=\"totara-msgs-action-right\"><div id='dismiss-status'><img class=\"iconsmall\" src=\"{$status}\" alt=\"{$status_alt}\" /></div></td></tr>";
+print '<tr><td class="totara-msgs-action-left"><label for="dismiss-status">' . get_string('urgency', 'block_totara_notify').'</label></td>';
+print "<td class=\"totara-msgs-action-right\"><div id='dismiss-status'><img class=\"iconsmall\" src=\"{$urgency}\" title=\"{$urgency_alt}\" alt=\"{$urgency_alt}\" /></div></td></tr>";
 print '<tr><td class="totara-msgs-action-left"><label for="dismiss-type">' . get_string('type', 'block_totara_notify').'</label></td>';
 print "<td class=\"totara-msgs-action-right\"><div id='dismiss-type'><img class=\"iconsmall\" src=\"{$type}\" alt=\"{$type_alt}\" /></div></td></tr>";
 print '<tr><td class="totara-msgs-action-left"><label for="dismiss-from">' . get_string('from', 'block_totara_notify').'</label></td>';
