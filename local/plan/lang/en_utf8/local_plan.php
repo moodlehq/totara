@@ -316,3 +316,6 @@ $string['requestapprove'] = 'Request approved.';
 $string['requestnotapprove'] = 'There was a problem while trying to approve that request';
 $string['nopermission'] = 'You don\'t have permission to perform that action';
 $string['notemplatesetup'] = 'No plan templates set up';
+$string['planapproved'] = 'The plan has been approved';
+$string['plandeclined'] = 'The plan has been declined';
+$string['approvalrequestsent'] = 'Approval request sent';

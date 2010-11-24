@@ -747,7 +747,6 @@ class dp_competency_component extends dp_base_component {
 
 
     function assign_competencies($competencies) {
-        begin_sql();
         // Get all currently-assigned competencies
         $assigned = get_records('dp_plan_competency_assign', 'planid', $this->plan->id, '', 'competencyid');
         $assigned = !empty($assigned) ? array_keys($assigned) : array();
@@ -759,11 +758,9 @@ class dp_competency_component extends dp_base_component {
 
             // Assign competency item
             if (!$this->assign_new_item($c->id)) {
-                rollback_sql();
                 return false;
             }
         }
-        commit_sql();
 
         return true;
     }

@@ -1,4 +1,13 @@
 <?php
+/**
+ * Plan view page
+ *
+ * @copyright Catalyst IT Limited
+ * @author Eugene Venter
+ * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
+ * @package totara
+ * @subpackage plan
+ */
 
 require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
 require_once($CFG->dirroot . '/local/plan/lib.php');
@@ -21,25 +30,25 @@ if ($form->is_cancelled()) {
     totara_set_notification(get_string('planupdatecancelled', 'local_plan'), $viewurl);
 }
 
-if ($plan->get_setting('view') < DP_PERMISSION_ALLOW) {
-    print_error('error:nopermissions');
+if ($plan->get_setting('view') != DP_PERMISSION_ALLOW) {
+    print_error('error:nopermissions', 'local_plan');
 }
 
 // Handle form submits
 if ($data = $form->get_data()) {
     if (isset($data->edit)) {
         if ($plan->get_setting('update') < DP_PERMISSION_ALLOW) {
-            print_error('error:nopermissions');
+            print_error('error:nopermissions', 'local_plan');
         }
         redirect($editurl);
     } elseif (isset($data->delete)) {
         if ($plan->get_setting('delete') < DP_PERMISSION_ALLOW) {
-            print_error('error:nopermissions');
+            print_error('error:nopermissions', 'local_plan');
         }
         redirect(strip_querystring(qualified_me())."?id={$id}&action=delete");
     } elseif (isset($data->deleteyes)) {
         if ($plan->get_setting('delete') < DP_PERMISSION_ALLOW) {
-            print_error('error:nopermissions');
+            print_error('error:nopermissions', 'local_plan');
         }
         if ($plan->delete()) {
             totara_set_notification(get_string('plandeletesuccess', 'local_plan'), "{$CFG->wwwroot}/local/plan/index.php?userid={$plan->userid}", array('style' => 'notifysuccess'));
@@ -50,7 +59,7 @@ if ($data = $form->get_data()) {
         redirect($viewurl);
     } elseif (isset($data->submitbutton)) {
         if ($plan->get_setting('update') < DP_PERMISSION_ALLOW) {
-            print_error('error:nopermissions');
+            print_error('error:nopermissions', 'local_plan');
         }
         // Save plan data
         if (!update_record('dp_plan', $data)) {

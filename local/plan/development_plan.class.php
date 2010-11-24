@@ -34,8 +34,10 @@ class development_plan {
 
         // default to viewing as the current user
         // if $viewas not set
-        if(!isset($viewas)) {
+        if(empty($viewas)) {
             $this->viewas = $USER->id;
+        } else {
+            $this->viewas  = $viewas;
         }
 
         // store role and component objects for easy access
@@ -620,7 +622,7 @@ class development_plan {
         $canapprovepending = $this->has_pending_items($pending, true);
 
         // @todo check permission name
-        $canapproveplan = ($this->get_setting('confirm') == DP_PERMISSION_APPROVE);
+        $canapproveplan = (in_array($this->get_setting('confirm'), array(DP_PERMISSION_APPROVE, DP_PERMISSION_ALLOW)));
 
         $message = '';
         if($viewingasmanager) {
@@ -677,7 +679,7 @@ class development_plan {
     function display_unapproved_plan_message() {
         global $CFG;
 
-        $canapproveplan = ($this->get_setting('confirm') == DP_PERMISSION_APPROVE);
+        $canapproveplan = (in_array($this->get_setting('confirm'),  array(DP_PERMISSION_APPROVE, DP_PERMISSION_ALLOW)));
         $canrequestapproval = ($this->get_setting('confirm') == DP_PERMISSION_REQUEST);
         $out = '';
 
@@ -861,8 +863,6 @@ class development_plan {
     function set_status($status) {
         global $USER;
 
-        begin_sql();
-
         $todb = new stdClass;
         $todb->id = $this->id;
         $todb->status = $status;
@@ -876,15 +876,11 @@ class development_plan {
             $todb->usermodified = $USER->id;
 
             if (!insert_record('dp_plan_history', $todb)) {
-                rollback_sql();
                 return false;
             }
         } else {
-            rollback_sql();
             return false;
         }
-
-        commit_sql();
 
         return true;
     }

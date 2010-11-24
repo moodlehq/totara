@@ -1,4 +1,13 @@
 <?php
+/**
+ * Page for adding a plan
+ *
+ * @copyright Catalyst IT Limited
+ * @author Eugene Venter
+ * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
+ * @package totara
+ * @subpackage plan
+ */
 
 require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
 require_once($CFG->dirroot . '/local/plan/lib.php');
@@ -41,15 +50,16 @@ if ($form->is_cancelled()) {
 // Handle form submit
 if ($data = $form->get_data()) {
     if (isset($data->submitbutton)) {
-        // Set up the plan
         begin_sql();
+
+        // Set up the plan
         if (!$newid = insert_record('dp_plan', $data)) {
             rollback_sql();
             totara_set_notification(get_string('plancreatefail', 'local_plan'), $currenturl);
         }
         $plan = new development_plan($newid);
 
-        // Update plan status adn plan history
+        // Update plan status and plan history
         $plan->set_status(DP_PLAN_STATUS_UNAPPROVED);
 
         if ($plan->get_component('competency')->get_setting('enabled')) {
@@ -72,7 +82,6 @@ if ($data = $form->get_data()) {
             unset($competencycomponent);
         }
 
-        //rollback_sql();
         commit_sql();
 
         $viewurl = "{$CFG->wwwroot}/local/plan/view.php?id={$newid}";

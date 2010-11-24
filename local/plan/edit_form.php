@@ -1,4 +1,14 @@
 <?php
+/**
+ * Plan related form definitions
+ *
+ * @copyright Catalyst IT Limited
+ * @author Eugene Venter
+ * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
+ * @package totara
+ * @subpackage plan
+ */
+
 require_once("{$CFG->libdir}/formslib.php");
 
 class plan_edit_form extends moodleform {
