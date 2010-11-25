@@ -58,7 +58,9 @@ class rb_filter_option {
      * Name of a function that will provide the options for a select pulldown
      *
      * Given a $selectfunc of 'name', a method of the source called rb_filter_name()
-     * will be called and the return value used to populate the options list.
+     * will be called and the return value used to populate the options list. It will
+     * be passed three arguments: 1) The report's contentmode. 2) The report's
+     * list of contentoptions. 3) The report's id.
      *
      * Some common filter functions are provided by {@link rb_base_source}, and more
      * can be created by the source that needs them.
