@@ -160,7 +160,7 @@
             "{$ustatus} " . get_config('','dp_course')
     );
     $row[] = new tabobject(
-            'components',
+            'competencies',
             $CFG->wwwroot . '/local/plan/record/competencies.php?status=' . $planstatus,
             "{$ustatus} ".get_config('', 'dp_competency')
     );
@@ -178,7 +178,6 @@
     echo "</ul>\n";
 
     echo print_tabs($tabs, 1, $inactive, $activated, true);
-    $currenttab = "competency_evidence";
 
 
     // display table here
