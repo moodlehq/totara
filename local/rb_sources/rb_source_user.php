@@ -54,21 +54,21 @@ class rb_source_user extends rb_base_source {
                 'totara_stats_comp_achieved',
                 'LEFT',
                 $CFG->prefix . 'block_totara_stats',
-                'base.id = totara_stats_comp_achieved.userid AND totara_stats_comp_achieved.eventtype = \'4\'',
+                'base.id = totara_stats_comp_achieved.userid AND totara_stats_comp_achieved.eventtype = 4',
                 REPORT_BUILDER_RELATION_ONE_TO_ONE
             ),
             new rb_join(
                 'totara_stats_courses_started',
                 'LEFT',
                 $CFG->prefix . 'block_totara_stats',
-                'base.id = totara_stats_courses_started.userid AND totara_stats_courses_started.eventtype = \'2\'',
+                'base.id = totara_stats_courses_started.userid AND totara_stats_courses_started.eventtype = 2',
                 REPORT_BUILDER_RELATION_ONE_TO_ONE
             ),
             new rb_join(
                 'totara_stats_courses_completed',
                 'LEFT',
                 $CFG->prefix . 'block_totara_stats',
-                'base.id = totara_stats_courses_completed.userid AND totara_stats_courses_completed.eventtype = \'3\'',
+                'base.id = totara_stats_courses_completed.userid AND totara_stats_courses_completed.eventtype = 3',
                 REPORT_BUILDER_RELATION_ONE_TO_ONE
             )
         );
@@ -127,31 +127,35 @@ class rb_source_user extends rb_base_source {
                         'competenciesachieved',
                         'User\'s Achieved Competency Count',
                         'totara_stats_comp_achieved.data2',
-
                         array(
-                            'joins' => 'totara_stats_comp_achieved'
+                            'joins' => 'totara_stats_comp_achieved',
+                            'grouping' => 'count',
                         )
         );
 
+        // A column to display the number of started courses for a user
         $columnoptions[] = new rb_column_option(
                         'statistics',
                         'coursesstarted',
                         'User\'s Courses Started Count',
                         'totara_stats_courses_started.data2',
                         array(
-                            'joins' => 'totara_stats_courses_started'
+                            'joins' => 'totara_stats_courses_started',
+                            'grouping' => 'count',
                         )
-                    );
+        );
 
+        // A column to display the number of completed courses for a user
         $columnoptions[] = new rb_column_option(
                         'statistics',
                         'coursescompleted',
                         'User\'s Courses Completed Count',
                         'totara_stats_courses_completed.data2',
                         array(
-                            'joins' => 'totara_stats_courses_completed'
+                            'joins' => 'totara_stats_courses_completed',
+                            'grouping' => 'count',
                         )
-                    );
+        );
 
         return $columnoptions;
     }

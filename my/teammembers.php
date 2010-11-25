@@ -61,18 +61,23 @@ $embed->columns = array(
     ),
     array(
         'type' => 'user',
-        'value' => 'position',
-        'heading' => 'Position'
-    ),
-    array(
-        'type' => 'user',
-        'value' => 'organisation',
-        'heading' => 'Organisation'
-    ),
-    array(
-        'type' => 'user',
         'value' => 'lastlogin',
         'heading' => 'Last Login'
+    ),
+    array(
+        'type' => 'statistics',
+        'value' => 'coursesstarted',
+        'heading' => 'Courses Started'
+    ),
+    array(
+        'type' => 'statistics',
+        'value' => 'coursescompleted',
+        'heading' => 'Courses Completed'
+    ),
+    array(
+        'type' => 'statistics',
+        'value' => 'competenciesachieved',
+        'heading' => 'Competencies Achieved'
     ),
     array(
         'type' => 'user',
