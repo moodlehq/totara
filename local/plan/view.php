@@ -65,6 +65,11 @@ if ($data = $form->get_data()) {
         if (!update_record('dp_plan', $data)) {
             totara_set_notification(get_string('planupdatefail', 'local_plan'), $editurl);
         }
+        if ($plan->status == DP_PLAN_STATUS_DECLINED) {
+            // Set plan status back unapproved
+            $plan->set_status(DP_PLAN_STATUS_UNAPPROVED);
+        }
+
         totara_set_notification(get_string('planupdatesuccess', 'local_plan'), $viewurl, array('style' => 'notifysuccess'));
     }
 

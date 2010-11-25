@@ -43,7 +43,7 @@ if (!empty($approve)) {
     if (in_array($plan->get_setting('confirm'), array(DP_PERMISSION_ALLOW, DP_PERMISSION_APPROVE))) {
        $plan->set_status(DP_PLAN_STATUS_APPROVED);
     }
-    if (!empty($ajax)) {
+    if (empty($ajax)) {
         totara_set_notification(get_string('planapproved', 'local_plan', $plan->name), $referer, array('style' => 'notifysuccess'));
     }
 
