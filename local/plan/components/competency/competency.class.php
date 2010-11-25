@@ -363,7 +363,7 @@ class dp_competency_component extends dp_base_component {
         $table->define_columns($tablecolumns);
         $table->define_headers($tableheaders);
 
-        $table->set_attribute('class', 'logtable generalbox');
+        $table->set_attribute('class', 'logtable generalbox dp-plan-component-items');
         $table->sortable(true);
         $table->no_sorting('status');
         $table->no_sorting('actions');
