@@ -25,9 +25,8 @@ class plan_edit_form extends moodleform {
         }
         $mform->addElement('hidden', 'userid', $USER->id);
         $mform->setType('userid', PARAM_INT);
-        $templateid = dp_get_first_template();
-        $templateid = $templateid->id;
-        $mform->addElement('hidden', 'templateid', $templateid);  //@todo: HACK! we will always use the first template for now
+        $template = dp_get_first_template();
+        $mform->addElement('hidden', 'templateid', $template->id);  //@todo: HACK! we will always use the first template for now
         $mform->setType('templateid', PARAM_INT);
         $mform->addElement('hidden', 'status', 0);
         $mform->setType('status', PARAM_INT);
@@ -56,6 +55,7 @@ class plan_edit_form extends moodleform {
         $mform->setType('description', PARAM_TEXT);
         $mform->addRule('description', get_string('err_required', 'form'), 'required', '', 'client', false, false);
         $mform->addElement('date_selector', 'enddate', get_string('duedate', 'local_plan'));
+        $mform->setDefault('enddate', $template->enddate);
         $mform->addRule('enddate', get_string('err_required', 'form'), 'required', '', 'client', false, false);
 
         if ($this->_customdata['action'] == 'view') {
