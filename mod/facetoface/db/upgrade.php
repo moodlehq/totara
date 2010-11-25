@@ -505,7 +505,9 @@ function xmldb_facetoface_upgrade($oldversion=0) {
         // Remove unused mailed field
         $table = new XMLDBTable('facetoface_signups_status');
         $field = new XMLDBField('mailed');
-        $result = $result && drop_field($table, $field, false, true);
+        if(field_exists($table, $field)) {
+            $result = $result && drop_field($table, $field, false, true);
+        }
     }
 
     return $result;
