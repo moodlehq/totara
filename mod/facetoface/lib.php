@@ -1777,7 +1777,151 @@ function facetoface_user_signup($session, $facetoface, $course, $discountcode,
     }
 
     commit_sql();
+
+    // Send notification again - this time using Totara not/rem
+    if ($notifyuser) {
+        // If booked/waitlisted/approval
+        $error = facetoface_send_notrem($facetoface, $session, $userid, $new_status);
+    }
+
     return true;
+}
+
+
+/**
+ * Send Totara notificaiton/reminder
+ *
+ * @param   object  $facetoface Facetoface instance
+ * @param   object  $session    Session instance
+ * @param   int     $userid     ID of user requesting booking
+ * @param   int     $nottype    notification type
+ * @return  string  Error string, empty on success
+ */
+function facetoface_send_notrem($facetoface, $session, $userid, $nottype) {
+    global $CFG, $USER;
+
+    require_once($CFG->dirroot.'/local/totara_msg/messagelib.php');
+
+    $newevent = new stdClass();
+    $newevent->userfrom         = NULL;
+    $user = get_record('user', 'id', $userid);
+    $userfrom_link = $CFG->wwwroot.'/user/view.php?id='.$userid;
+    $fromname = fullname($user);
+    $usermsg = "<a href=\"{$userfrom_link}\" title=\"$fromname\">$fromname</a> ";
+    $newevent->userto           = $user;
+    $newevent->userfrom         = $USER;
+    $url = $CFG->wwwroot.'/mod/facetoface/view.php?f='.$facetoface->id;
+    switch ($nottype) {
+        case MDL_F2F_STATUS_BOOKED:
+            $newevent->fullmessage      = facetoface_email_substitutions(
+                                                        $facetoface->confirmationmessage,
+                                                        $facetoface->name,
+                                                        $facetoface->reminderperiod,
+                                                        $user,
+                                                        $session,
+                                                        $session->id
+                                                );
+            $newevent->subject          = 'Booked for session <a href="'.$url.'">'.$facetoface->name.'</a>';
+            $newevent->urgency          = TOTARA_MSG_URGENCY_NORMAL;
+            tm_notification_send($newevent);
+            break;
+
+        case MDL_F2F_STATUS_WAITLISTED:
+            $newevent->fullmessage      = facetoface_email_substitutions(
+                                                        $facetoface->waitlistedmessage,
+                                                        $facetoface->name,
+                                                        $facetoface->reminderperiod,
+                                                        $user,
+                                                        $session,
+                                                        $session->id
+                                                );
+            $newevent->subject          = 'Waitlisted for session <a href="'.$url.'">'.$facetoface->name.'</a>';
+            $newevent->urgency          = TOTARA_MSG_URGENCY_NORMAL;
+            tm_notification_send($newevent);
+            break;
+
+        case MDL_F2F_STATUS_USER_CANCELLED:
+            $newevent->subject          = 'Cancelled for session <a href="'.$url.'">'.$facetoface->name.'</a>';
+            $newevent->fullmessage      = $newevent->subject;
+            $newevent->urgency          = TOTARA_MSG_URGENCY_NORMAL;
+            tm_notification_send($newevent);
+            $managerid = facetoface_get_manager($userid);
+            if ($managerid !== false) {
+                $user = get_record('user', 'id', $managerid);
+                $newevent->userto           = $user;
+                $newevent->subject          = 'Cancelled for '.$usermsg.' session <a href="'.$url.'">'.$facetoface->name.'</a>';
+                $newevent->fullmessage      = $newevent->subject;
+                tm_notification_send($newevent);
+            }
+            break;
+
+        case MDL_F2F_STATUS_REQUESTED:
+            $managerid = facetoface_get_manager($userid);
+            if ($managerid !== false) {
+                $user = get_record('user', 'id', $managerid);
+                $newevent->userto           = $user;
+                $newevent->fullmessage      = facetoface_email_substitutions(
+                                                        $facetoface->requestinstrmngr,
+                                                        $facetoface->name,
+                                                        $facetoface->reminderperiod,
+                                                        $user,
+                                                        $session,
+                                                        $session->id
+                                                );
+                $newevent->subject          = 'Request for '.$usermsg.'to attend session <a href="'.$CFG->wwwroot.'/mod/facetoface/attendees.php?s='.$session->id.'">'.$facetoface->name.'</a>';
+                // do the facetoface workflow event
+                $onaccept = new stdClass();
+                $onaccept->action = 'facetoface';
+                $onaccept->text = 'To approve session registration, press accept';
+                $onaccept->data = array('userid' => $userid, 'session' => $session, 'facetoface' => $facetoface);
+                $newevent->onaccept = $onaccept;
+                $onreject = new stdClass();
+                $onreject->action = 'facetoface';
+                $onreject->text = 'To reject session registration press reject';
+                $onreject->data = array('userid' => $userid, 'session' => $session, 'facetoface' => $facetoface);
+                $newevent->onreject = $onreject;
+                tm_reminder_send($newevent);
+                $newevent = new stdClass();
+                $newevent->userfrom         = NULL;
+                $user = get_record('user', 'id', $userid);
+                $newevent->userto           = $user;
+                $newevent->subject          = 'Request to attend session <a href="'.$CFG->wwwroot.'/mod/facetoface/view.php?f='.$facetoface->id.'">'.$facetoface->name.'</a> sent to manager';
+                $newevent->fullmessage      = $newevent->subject;
+                $newevent->urgency          = TOTARA_MSG_URGENCY_NORMAL;
+                tm_notification_send($newevent);
+            }
+            break;
+    }
+
+    return true;
+}
+
+
+/**
+ * Return the id of the user's manager if it is
+ * defined. Otherwise return false.
+ *
+ * @param integer $userid User ID of the staff member
+ */
+function facetoface_get_manager($userid) {
+    global $CFG;
+    $roleid = get_field('role','id','shortname',MDL_MANAGER_ROLEID);
+
+    if ($roleid) {
+        $sql = "SELECT ra.userid AS managerid
+            FROM {$CFG->prefix}pos_assignment pa
+            LEFT JOIN {$CFG->prefix}role_assignments ra ON pa.reportstoid=ra.id
+            WHERE pa.userid=$userid AND ra.roleid=$roleid AND pa.type=1"; // just use primary position for now
+        $res = get_record_sql($sql);
+        if($res && isset($res->managerid)) {
+            return $res->managerid;
+        } else {
+            return false; // No manager set
+        }
+    }
+    else {
+        return false; // No manager role, can't do it
+    }
 }
 
 /**
@@ -3005,7 +3149,22 @@ function facetoface_user_cancel_submission($sessionid, $userid, $cancelreason=''
         return true; // not signed up, nothing to do
     }
 
-    return facetoface_update_signup_status($signup->id, MDL_F2F_STATUS_USER_CANCELLED, $userid, $cancelreason);
+    $result = facetoface_update_signup_status($signup->id, MDL_F2F_STATUS_USER_CANCELLED, $userid, $cancelreason);
+
+    if ($result) {
+        // notify cancelled
+        if (!$session = facetoface_get_session($sessionid)) {
+            error_log('F2F: Could not load facetoface session');
+            return false;
+        }
+        if (!$facetoface = get_record('facetoface', 'id', $session->facetoface)) {
+            error_log('F2F: Could not load facetoface instance');
+            return false;
+        }
+        $error = facetoface_send_notrem($facetoface, $session, $userid, MDL_F2F_STATUS_USER_CANCELLED);
+    }
+
+    return $result;
 }
 
 /**

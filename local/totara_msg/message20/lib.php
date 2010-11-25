@@ -216,6 +216,9 @@ function tm_message_mark_message_read($message, $timeread, $messageworkingempty=
     if (!$messageworkingempty) {
         delete_records('message_working20', 'unreadmessageid', $messageid);
     }
+    $message->subject           = addslashes($message->subject);
+    $message->fullmessage       = addslashes($message->fullmessage);
+    $message->fullmessagehtml   = addslashes($message->fullmessagehtml);
     $message->id = insert_record('message_read20', $message);
     delete_records('message20', 'id', $messageid);
 

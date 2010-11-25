@@ -149,8 +149,8 @@ function totara_msg_dismiss_action($id) {
                         'Dismiss': function() { handler._confirm('{$CFG->wwwroot}/local/totara_msg/dismiss.php?id={$id}', '{$FULLME}') }
                     },
                     title: '<h2>{$str}</h2>',
-                    width: 400,
-                    height: 200
+                    width: 600,
+                    height: 400
                 },
                 url+'dismissmsg.php?id=".$id."',
                 handler
@@ -225,8 +225,8 @@ function totara_msg_action_button($action) {
                         '{$str}': function() { handler._confirm('{$CFG->wwwroot}/local/totara_msg/action.php?{$action}={$action}', '{$FULLME}') }
                     },
                     title: '<h2>{$str}</h2>',
-                    width: 500,
-                    height: 350
+                    width: 600,
+                    height: 400
                 },
                 url+'actionmsg.php?{$action}={$action}',
                 handler
@@ -295,8 +295,8 @@ function totara_msg_accept_reject_action($id) {
                         'Accept': function() { handler_accept._confirm('{$CFG->wwwroot}/local/totara_msg/accept.php?id={$id}', '{$FULLME}') }
                     },
                     title: '<h2>{$onaccept_str}</h2>',
-                    width: 500,
-                    height: 300
+                    width: 600,
+                    height: 400
                 },
                 url+'acceptrejectmsg.php?id=".$id."&event=onaccept',
                 handler_accept
@@ -310,8 +310,8 @@ function totara_msg_accept_reject_action($id) {
                         'Reject': function() { handler_reject._confirm('{$CFG->wwwroot}/local/totara_msg/reject.php?id={$id}', '{$FULLME}') }
                     },
                     title: '<h2>{$onreject_str}</h2>',
-                    width: 500,
-                    height: 300
+                    width: 600,
+                    height: 400
                 },
                 url+'acceptrejectmsg.php?id=".$id."&event=onreject',
                 handler_reject

@@ -128,10 +128,10 @@ function tm_message_send($eventdata) {
     $savemessage = new stdClass();
     $savemessage->useridfrom        = $eventdata->userfrom->id;
     $savemessage->useridto          = $eventdata->userto->id;
-    $savemessage->subject           = $eventdata->subject;
-    $savemessage->fullmessage       = $eventdata->fullmessage;
+    $savemessage->subject           = addslashes($eventdata->subject);
+    $savemessage->fullmessage       = addslashes($eventdata->fullmessage);
     $savemessage->fullmessageformat = $eventdata->fullmessageformat;
-    $savemessage->fullmessagehtml   = $eventdata->fullmessagehtml;
+    $savemessage->fullmessagehtml   = addslashes($eventdata->fullmessagehtml);
 //    $savemessage->smallmessage      = $eventdata->smallmessage;
 
     if (!empty($eventdata->notification)) {
@@ -210,8 +210,8 @@ function tm_message_send($eventdata) {
 
             // add the metadata record
             !isset($eventdata->urgency) && $eventdata->urgency = TOTARA_MSG_URGENCY_LOW;
-            $eventdata->onaccept = isset($eventdata->onaccept) ? serialize($eventdata->onaccept) : null;
-            $eventdata->onreject = isset($eventdata->onreject) ? serialize($eventdata->onreject) : null;
+            $eventdata->onaccept = isset($eventdata->onaccept) ? addslashes(serialize($eventdata->onaccept)) : null;
+            $eventdata->onreject = isset($eventdata->onreject) ? addslashes(serialize($eventdata->onreject)) : null;
 
             // set the default role to student / Learner
             if (!isset($eventdata->roleid)) {
