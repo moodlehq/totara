@@ -11,7 +11,7 @@ class block_totara_stats extends block_base {
 
     function init() {
         $this->title = get_string('blockname', 'block_totara_stats');
-        $this->version = 2010111701;
+        $this->version = 2010112500;
         $this->cron = 20; //TODO: should schedule cron rather than using this var.
         //set defaults - setting here to make it easy.
         $this->config->statlearnerhours = 1;
