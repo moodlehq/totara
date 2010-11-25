@@ -17,7 +17,31 @@ class rb_source_dp_course extends rb_base_source {
      */
     public function __construct() {
         global $CFG;
-        $this->base = $CFG->prefix . 'course_completions';
+        $this->base = "( select distinct ".
+                sql_concat_join(
+                        "','",
+                        array(
+                            sql_cast_int2char('ra.userid'),
+                            sql_cast_int2char('cx.instanceid')
+                        )
+                ) . " as id, ".
+                "ra.userid as userid, cx.instanceid as courseid ".
+                "from {$CFG->prefix}role_assignments ra ".
+                "inner join {$CFG->prefix}context cx ".
+                "on ra.contextid = cx.id and cx.contextlevel = " . CONTEXT_COURSE .
+                " UNION ".
+                "select distinct ".
+                sql_concat_join(
+                        "','",
+                        array(
+                            sql_cast_int2char('p1.userid'),
+                            sql_cast_int2char('pca1.courseid')
+                        )
+                )." as id, ".
+                "p1.userid as userid, pca1.courseid as courseid ".
+                "from {$CFG->prefix}dp_plan_course_assign pca1 ".
+                "inner join {$CFG->prefix}dp_plan p1 ".
+                "on pca1.planid=p1.id )";
         $this->joinlist = $this->define_joinlist();
         $this->columnoptions = $this->define_columnoptions();
         $this->filteroptions = $this->define_filteroptions();
@@ -52,36 +76,51 @@ class rb_source_dp_course extends rb_base_source {
                 'course',
                 'LEFT',
                 $CFG->prefix . 'course',
-                'base.course = course.id',
+                'base.courseid = course.id',
                 REPORT_BUILDER_RELATION_MANY_TO_ONE,
-                array()
+                array('base')
         );
 
+        /**
+         * dp_plan has userid, dp_plan_course_assign has courseid. In order to
+         * avoid multiplicity we need to join them together before we join
+         * against the rest of the query
+         */
         $joinlist[] = new rb_join(
                 'dp_course',
                 'LEFT',
-                $CFG->prefix . 'dp_plan_course_assign',
-                'base.course = dp_course.courseid',
+                "(select
+  p.id as planid,
+  p.templateid as templateid,
+  p.userid as userid,
+  p.name as planname,
+  p.description as plandescription,
+  p.startdate as planstartdate,
+  p.enddate as planenddate,
+  p.status as planstatus,
+  pc.id as id,
+  pc.courseid as courseid,
+  pc.priority as priority,
+  pc.duedate as duedate,
+  pc.approved as approved,
+  pc.completionstatus as completionstatus,
+  pc.grade as grade
+from
+  {$CFG->prefix}dp_plan p
+  inner join {$CFG->prefix}dp_plan_course_assign pc
+  on p.id = pc.planid)",
+                'dp_course.userid = base.userid and dp_course.courseid = base.courseid',
                 REPORT_BUILDER_RELATION_ONE_TO_MANY,
-                array()
-        );
-
-        $joinlist[] = new rb_join(
-                'dp_plan',
-                'LEFT',
-                $CFG->prefix . 'dp_plan',
-                'dp_plan.id = dp_course.planid',
-                REPORT_BUILDER_RELATION_MANY_TO_ONE,
-                array('dp_course')
+                array('base')
         );
 
         $joinlist[] = new rb_join(
                 'dp_template',
                 'LEFT',
                 $CFG->prefix . 'dp_template',
-                'dp_plan.templateid = dp_template.id',
+                'dp_course.templateid = dp_template.id',
                 REPORT_BUILDER_RELATION_MANY_TO_ONE,
-                array('dp_plan')
+                array('dp_course','base')
         );
 
         $joinlist[] = new rb_join(
@@ -90,7 +129,7 @@ class rb_source_dp_course extends rb_base_source {
                 $CFG->prefix . 'dp_priority_scale_value',
                 'dp_course.priority = priority.id',
                 REPORT_BUILDER_RELATION_MANY_TO_ONE,
-                array()
+                array('dp_course','base')
         );
 
         $this->add_user_table_to_joinlist($joinlist, 'base','userid');
@@ -108,22 +147,80 @@ class rb_source_dp_course extends rb_base_source {
         $columnoptions = array();
 
         $columnoptions[] = new rb_column_option(
+                'course',
+                'fullname',
+                'Course fullname',
+                'course.fullname',
+                array(
+                    'defaultheading' => 'Course title',
+                    'joins'=>'course'
+                )
+        );
+        $columnoptions[] = new rb_column_option(
+                'course',
+                'shortname',
+                'Course shortname',
+                'course.shortname',
+                array(
+                    'defaultheading' => 'Course title',
+                    'joins'=>'course'
+                )
+        );
+
+        $columnoptions[] = new rb_column_option(
+                'course',
+                'duedate',
+                'Course due date',
+                'dp_course.duedate',
+                array(
+                    'joins' => 'dp_course',
+                    'displayfunc' => 'nice_date'
+                )
+        );
+
+        $columnoptions[] = new rb_column_option(
+                'course',
+                'icon',
+                'Course icon',
+                'course.icon',
+                array(
+                    'joins'=>'course',
+                    'displayfunc'=>'course_icon',
+                    'noexport'=>true,
+                    'extrafields'=>array(
+                        'courseidforicon' => 'course.id',
+                        'courseshortnameforicon' => 'course.shortname'
+                    )
+                )
+        );
+
+        $columnoptions[] = new rb_column_option(
+                'course',
+                'priority',
+                'Priority',
+                'priority.name',
+                array(
+                    'joins' => 'priority'
+                )
+        );
+
+        $columnoptions[] = new rb_column_option(
                 'plan',
                 'name',
                 'Plan name',
-                'dp_plan.name',
+                'dp_course.planname',
                 array(
                     'defaultheading' => 'Plan',
-                    'joins' => 'dp_plan'
+                    'joins' => 'dp_course'
                 )
         );
         $columnoptions[] = new rb_column_option(
                 'plan',
                 'startdate',
                 'Plan start date',
-                'dp_plan.startdate',
+                'dp_course.planstartdate',
                 array(
-                    'joins' => 'dp_plan',
+                    'joins' => 'dp_course',
                     'displayfunc' => 'nice_date'
                 )
         );
@@ -131,9 +228,9 @@ class rb_source_dp_course extends rb_base_source {
                 'plan',
                 'enddate',
                 'Plan end date',
-                'dp_plan.enddate',
+                'dp_course.planenddate',
                 array(
-                    'joins' => 'dp_plan',
+                    'joins' => 'dp_course',
                     'displayfunc' => 'nice_date'
                 )
         );
@@ -141,9 +238,9 @@ class rb_source_dp_course extends rb_base_source {
                 'plan',
                 'status',
                 'Plan status',
-                'dp_plan.status',
+                'dp_course.planstatus',
                 array(
-                    'joins' => 'dp_plan',
+                    'joins' => 'dp_course',
                     'displayfunc' => 'plan_status'
                 )
         );
@@ -179,89 +276,6 @@ class rb_source_dp_course extends rb_base_source {
                 )
         );
 
-        $columnoptions[] = new rb_column_option(
-                'course',
-                'shortname',
-                'Course title',
-                'course.shortname',
-                array('joins'=>'course')
-        );
-
-        $columnoptions[] = new rb_column_option(
-                'course',
-                'duedate',
-                'Course due date',
-                'dp_course.duedate',
-                array(
-                    'joins' => 'dp_course',
-                    'displayfunc' => 'nice_date'
-                )
-        );
-
-        $columnoptions[] = new rb_column_option(
-                'course',
-                'id',
-                'Course id',
-                'base.course',
-                array()
-        );
-
-        $columnoptions[] = new rb_column_option(
-                'course',
-                'idforicon',
-                'Course icon',
-                'course.id',
-                array('joins'=>'course', 'displayfunc'=>'course_icon')
-        );
-
-        $columnoptions[] = new rb_column_option(
-                'course',
-                'icon',
-                'Course icon (raw)',
-                'course.icon',
-                array('joins'=>'course')
-        );
-
-
-        $columnoptions[] = new rb_column_option(
-                'course',
-                'priority',
-                'Priority',
-                'priority.name',
-                array(
-                    'joins' => 'priority'
-                )
-        );
-
-        $columnoptions[] = new rb_column_option(
-                'completion',
-                'timestarted',
-                'Completion start date',
-                'base.timestarted',
-                array(
-                    'displayfunc' => 'nice_date'
-                )
-        );
-
-        $columnoptions[] = new rb_column_option(
-                'completion',
-                'timecompleted',
-                'Completion date',
-                'base.timecompleted',
-                array(
-                    'displayfunc' => 'nice_date'
-                )
-        );
-
-        $columnoptions[] = new rb_column_option(
-                'completion',
-                'status',
-                'Completion status',
-                'base.timecompleted',
-                array(
-                    'displayfunc' => 'completion_status'
-                )
-        );
 
         $this->add_user_fields_to_columns($columnoptions);
 
@@ -326,16 +340,13 @@ class rb_source_dp_course extends rb_base_source {
      * @param object $row
      * @return string
      */
-    public function rb_display_course_icon($courseid, $row){
+    public function rb_display_course_icon($icon, $row){
         global $CFG;
         $course = new stdClass();
-        $course->id = $courseid;
-        if ( isset($row->course_shortname) ){
-            $course->shortname = $row->course_shortname;
-        }
-        if ( isset($row->course_icon) ){
-            $course->icon = $row->course_icon;
-        }
+        $course->icon = $icon;
+        $course->id = $row->courseidforicon;
+        $course->shortname = $row->courseshortnameforicon;
+
         require_once($CFG->dirroot.'/local/lib.php');
         return local_course_icon_tag($course);
     }
