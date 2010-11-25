@@ -15,7 +15,6 @@ require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->dirroot.'/local/plan/lib.php');
 require_once($CFG->dirroot.'/local/js/lib/setup.php');
 require_once('template_forms.php');
-//require_once($CFG->dirroot .'/local/libs/outputlib.php');       // Functions for generating output
 
 $notice = optional_param('notice', 0, PARAM_INT); // notice flag
 $hide = optional_param('hide', 0, PARAM_INT);
@@ -35,7 +34,7 @@ local_js(array(
 
 if($show) {
     if(!$template = get_record('dp_template', 'id', $show)){
-
+        totara_set_notification(get_string('error:templateid', 'local_plan'), $CFG->wwwroot.'/local/plan/template/index.php');
     } else {
         $visible = 1;
         if (!set_field('dp_template', 'visible', $visible, 'id', $template->id)) {
@@ -46,7 +45,7 @@ if($show) {
 
 if($hide) {
     if(!$template = get_record('dp_template', 'id', $hide)){
-
+        totara_set_notification(get_string('error:templateid', 'local_plan'), $CFG->wwwroot.'/local/plan/template/index.php');
     } else {
         $visible = 0;
         if (!set_field('dp_template', 'visible', $visible, 'id', $template->id)) {
@@ -98,7 +97,7 @@ if ((!empty($moveup) or !empty($movedown))) {
         if (!(set_field('dp_template', 'sortorder', $move->sortorder, 'id', $swap->id)
             && set_field('dp_template', 'sortorder', $swap->sortorder, 'id', $move->id)
         )) {
-            error('Could not update plan template ordering!');
+            error(get_string('error:updatetemplateordering', 'local_plan'));
         }
         commit_sql();
     }
@@ -132,7 +131,7 @@ if($delete && $confirm) {
     }
 } else if($delete) {
     if(!$template = get_record('dp_template', 'id', $delete)){
-        error('Invalid template id');
+        error(get_string('error:templateid', 'local_plan'));
     }
 
     if(count_records('dp_plan', 'templateid', $template->id) > 0){
