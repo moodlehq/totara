@@ -15,6 +15,7 @@ require_once($CFG->dirroot . '/local/plan/lib.php');
 $planuser = optional_param('userid', $USER->id, PARAM_INT); // show plans for this user
 
 require_login();
+require_capability('local/plan:accessplan', get_system_context());
 
 // START PERMISSION HACK
 if ($planuser != $USER->id) {

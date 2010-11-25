@@ -14,6 +14,7 @@ require_once('../../config.php');
 require_once('lib.php');
 
 require_login();
+require_capability('local/plan:accessplan', get_system_context());
 
 $id = required_param('id', PARAM_INT);      // the plan id
 // Action params
