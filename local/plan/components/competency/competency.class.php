@@ -25,6 +25,109 @@ class dp_competency_component extends dp_base_component {
         }
     }
 
+    /**
+     * Can the logged in user update items in this plan
+     *
+     * Returns false if they cannot, or a constant detailing their
+     * exact permissions if they can
+     *
+     * @access  public
+     * @return  false|int
+     */
+    public function can_update_items() {
+        // Get permissions
+        $plancompleted = $this->plan->status == DP_PLAN_STATUS_COMPLETE;
+        $updateitem = (int) $this->get_setting('updatecompetency');
+
+        // If plan complete, or user cannot edit/request items, no point showing picker
+        if ($plancompleted || !in_array($updateitem, array(DP_PERMISSION_ALLOW, DP_PERMISSION_REQUEST))) {
+            return false;
+        }
+
+        return $updateitem;
+    }
+
+
+    /**
+     * Return markup for javascript course picker
+     *
+     * @access  public
+     * @return  string
+     */
+    public function display_picker() {
+
+        if (!$permission = $this->can_update_items()) {
+            return '';
+        }
+
+        // Decide on button text
+        if ($permission == DP_PERMISSION_ALLOW) {
+            $btntext = get_string('updatecompetencies', 'local_plan');
+        } else {
+            $btntext = get_string('updaterequestedcompetencies', 'local_plan');
+        }
+
+        $html  = '<div class="buttons">';
+        $html .= '<div class="singlebutton dp-plan-assign-button">';
+        /*
+        <form action="<?php echo $CFG->wwwroot ?>/hierarchy/type/<?php echo $this->prefix ?>/related/find.php?id=<?php echo $item->id ?>&amp;frameworkid=<?php echo $item->frameworkid ?>" method="get">
+         */
+        $html .= '<div>';
+        $html .= '<script type="text/javascript">var plan_id = '.$this->plan->id.';</script>';
+        $html .= '<input type="submit" id="show-competency-dialog" value="'.$btntext.'" />';
+        /*
+    <input type="hidden" name="id" value="<?php echo $item->id ?>">
+    <input type="hidden" name="nojs" value="1">
+    <input type="hidden" name="returnurl" value="<?php echo qualified_me(); ?>">
+    <input type="hidden" name="s" value="<?php echo sesskey(); ?>">
+    <input type="hidden" name="frameworkid" value="<?php echo $item->frameworkid ?>">
+</div>
+</form>
+         */
+        $html .= '</div>';
+        $html .= '</div>';
+        $html .= '</div>';
+
+        return $html;
+    }
+
+
+    /**
+     * Get list of items assigned to plan
+     *
+     * @access  public
+     * @return  array
+     */
+    public function get_assigned_items() {
+        global $CFG;
+
+        $assigned = get_records_sql(
+            "
+            SELECT
+                c.id,
+                a.planid,
+                a.competencyid,
+                a.id AS itemid,
+                c.fullname,
+                a.approved
+            FROM
+                {$CFG->prefix}dp_plan_competency_assign a
+            INNER JOIN
+                {$CFG->prefix}comp c
+             ON c.id = a.competencyid
+            WHERE
+                a.planid = {$this->plan->id}
+            "
+        );
+
+        if (!$assigned) {
+            $assigned = array();
+        }
+
+        return $assigned;
+    }
+
+
     static public function add_settings_form(&$mform, $id) {
         global $CFG, $DP_AVAILABLE_ROLES;
 
@@ -224,7 +327,7 @@ class dp_competency_component extends dp_base_component {
 
         $count = count_records_sql($count.$from.$where);
         if (!$count) {
-            return get_string('nocompetencies', 'local_plan');
+            return '<span class="noitems-assigncompetencies">'.get_string('nocompetencies', 'local_plan').'</span>';
         }
 
         $tableheaders = array(
@@ -397,7 +500,7 @@ class dp_competency_component extends dp_base_component {
         $table->define_columns($tablecolumns);
         $table->define_headers($tableheaders);
 
-        $table->set_attribute('class', 'logtable generalbox');
+        $table->set_attribute('class', 'logtable generalbox dp-plan-component-items');
         $table->setup();
 
         // get all proficiency values for this plan's user
@@ -485,10 +588,6 @@ class dp_competency_component extends dp_base_component {
             '&amp;itemid=' . $ca->id . '">' . $ca->fullname . '</a>';
     }
 
-
-    function get_assigned_items() {
-        return get_records('dp_plan_competency_assign', 'planid', $this->plan->id);
-    }
 
     /**
      * Display details for a single competency
@@ -735,11 +834,35 @@ class dp_competency_component extends dp_base_component {
      */
     public function assign_new_item($itemid) {
 
+        // Get approval value for new item
+        if (!$permission = $this->can_update_items()) {
+            print_error('error:cannotupdatecompetencies', 'local_plan');
+        }
+
         $item = new object();
         $item->planid = $this->plan->id;
         $item->competencyid = $itemid;
-        $item->priority = $this->get_default_priority();
-        $item->duedate = $this->plan->enddate;
+        $item->priority = null;
+        $item->duedate = null;
+        $item->completionstatus = null;
+        $item->grade = null;
+
+        // Check required values for priority/due data
+        if ($this->get_setting('prioritymode') == DP_PRIORITY_REQUIRED) {
+            $item->priority = $this->get_default_priority();
+        }
+
+        if ($this->get_setting('duedatemode') == DP_DUEDATES_REQUIRED) {
+            $item->duedate = $this->plan->enddate;
+        }
+
+        // Set approved status
+        if ($permission == DP_PERMISSION_ALLOW) {
+            $item->approved = DP_APPROVAL_APPROVED;
+        }
+        else { # $permission == DP_PERMISSION_REQUEST
+            $item->approved = DP_APPROVAL_UNAPPROVED;
+        }
 
         return insert_record('dp_plan_competency_assign', $item);
     }

@@ -90,13 +90,15 @@ $string['error:settingdoesnotexist'] = 'Setting {$a->action} does not exist in t
 
 // Course Strings
 $string['error:cannotupdatecourses'] = 'Cannot update courses';
-$string['updaterequestedcourses'] = 'Updated requested courses';
 $string['updatecourse'] = 'Update';
+$string['updaterequestedcourses'] = 'Updated requested courses';
 $string['updatecourses'] = 'Update courses';
 $string['updaterequestedcourses'] = 'Updated requested courses';
 
 
 //Competency Strings
+$string['updatecompetencies'] = 'Update competencies';
+$string['updaterequestedcompetencies'] = 'Update requested competencies';
 $string['updatecompetency'] = 'Update';
 $string['setproficiency'] = 'Set Proficiency';
 $string['proficiency'] = 'Proficiency';
