@@ -49,14 +49,14 @@ abstract class dp_base_component {
     function display_duedate_as_form($duedate, $name) {
         // @todo add date picker?
         global $CFG;
-        $duedatestr = isset($duedate) ?
+        $duedatestr = !empty($duedate) ?
             userdate($duedate, '%d/%m/%y', $CFG->timezone, false) : '';
         return '<input type="text" name="'.$name.'" value="'. $duedatestr . '" size="8" maxlength="20"/>';
     }
 
     function display_duedate_as_text($duedate) {
         global $CFG;
-        if(isset($duedate)) {
+        if (!empty($duedate)) {
             return userdate($duedate, '%e %h %Y', $CFG->timezone, false);
         } else {
             return '';
@@ -66,7 +66,7 @@ abstract class dp_base_component {
     function display_duedate_highlight_info($duedate) {
         $out = '';
         $now = time();
-        if(isset($duedate)) {
+        if (!empty($duedate)) {
             if(($duedate < $now) && ($now - $duedate < 60*60*24)) {
                 $out .= '<span class="plan_highlight">' . get_string('duetoday', 'local_plan') . '</span>';
             } else if($duedate < $now) {
@@ -88,13 +88,12 @@ abstract class dp_base_component {
         $priorityrequired = ($this->get_setting('prioritymode') == DP_PRIORITY_REQUIRED);
         $out = '';
 
-        if($cansetpriority) {
+        if ($cansetpriority) {
             // show a pulldown menu of priority options
             $out .= $this->display_priority_picker("priorities[{$ca->id}]", $ca->priority, $priorityvalues, $priorityrequired);
         } else {
             // just display priority if no permissions to set it
             $out .= $this->display_priority_as_text($ca->priority, $ca->priorityname, $priorityvalues);
-
         }
 
         return $out;
@@ -102,7 +101,7 @@ abstract class dp_base_component {
 
     function display_priority_picker($name, $priorityid, $priorityvalues, $priorityrequired=false) {
 
-        if(!$priorityvalues) {
+        if (!$priorityvalues) {
             return '';
         }
 
