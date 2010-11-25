@@ -28,6 +28,8 @@ $string['course_instructions_manager'] = 'All the courses that form your team me
 $string['plan_instructions_manager'] = 'Below is a short summary of your team member\'s learning plan. You can click the \"Edit details\" button to amend the learning plan title, short description or completeion date. You can delete this learning plan by clicking the \"Edit details\" button and then clicking the \"Delete plan\" button.';
 $string['competency_instructions_manager'] = 'All the competencies that will be addressed by your team member\'s learning plan area shown below. You can view more details about any competency by clicking its title. You can add additional competencies by clicking the \"Add competencies\" button to the right of the screen.';
 
+$string['plan_instructions_learner'] = 'Below is a short summary of your learning plan. You can click the \"Edit details\" button to ammend the learning plan title, short description or complete date.';:w
+$string['plan_delete_learner'] = 'You can delete this learning plan by clicking the \"Edit details\" button and then clicking \"Deleting plan\" button.';
 
 // Manage Templates
 $string['instances'] = 'Instances';
