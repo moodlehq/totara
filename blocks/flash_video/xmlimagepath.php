@@ -2,12 +2,12 @@
 
 	require_once('../../config.php');
 
-	$id = optional_param('id', 0, PARAM_INT);
+	//$id = optional_param('id', 0, PARAM_INT);
 	
 	// create a SimpleXMLElement object to generate the XML
 	$sxe = new SimpleXMLElement('<?xml version="1.0" encoding="utf-8" ?><flvplayer></flvplayer>');
 
-	if(!$id) {
+	/*if(!$id) {
 		header('Content-Type: text/xml'); 
 		echo $sxe->asXML();
 		exit;
@@ -17,7 +17,7 @@
 		header('Content-Type: text/xml'); 
 		echo $sxe->asXML();
 		exit;
-	}
+    }*/
 		
 	$buttons = $sxe->addChild('buttonImages');
 

@@ -246,7 +246,7 @@ class flash_video {
 			}
 		}
 		return $success;
-	}
+    }
 
 	function get_tags(){
 		if(isset($this->video_data['tags']['value'])){

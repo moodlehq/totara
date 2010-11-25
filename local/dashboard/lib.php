@@ -611,6 +611,11 @@ function local_dashboard_install() {
                 'col' => 1,
                 'pos' => 1,
             ),
+            array(
+                'name' => 'flash_video',
+                'col' => 2,
+                'pos' => 2,
+            ),
         );
         // create an instance of each and add to dashboard
         foreach($blocks as $block) {
