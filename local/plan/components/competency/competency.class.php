@@ -911,6 +911,8 @@ class dp_competency_component extends dp_base_component {
         if ($competencies = $position->get_assigned_competencies($position_assignment->positionid)) {
             return $this->assign_competencies($competencies);
         }
+
+        return true;
     }
 
     function assign_from_org() {
@@ -934,5 +936,7 @@ class dp_competency_component extends dp_base_component {
         if ($competencies = $org->get_assigned_competencies($position_assignment->positionid)) {
             return $this->assign_competencies($competencies);
         }
+
+        return true;
     }
 }
