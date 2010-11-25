@@ -131,12 +131,12 @@ class dp_course_component extends dp_base_component {
             print_error('error:cannotupdatecourses');
         }
 
+
         $item = new object();
         $item->planid = $this->plan->id;
         $item->courseid = $itemid;
         $item->priority = null;
         $item->duedate = null;
-        $item->approved = $permission;
         $item->completionstatus = null;
         $item->grade = null;
 
@@ -148,6 +148,15 @@ class dp_course_component extends dp_base_component {
         if ($this->get_setting('duedatemode') == DP_DUEDATES_REQUIRED) {
             $item->duedate = $this->plan->enddate;
         }
+
+        // Set approved status
+        if ($permission == DP_PERMISSION_ALLOW) {
+            $item->approved = DP_APPROVAL_APPROVED;
+        }
+        else { # $permission == DP_PERMISSION_REQUEST
+            $item->approved = DP_APPROVAL_UNAPPROVED;
+        }
+
 
         return insert_record('dp_plan_course_assign', $item);
     }
