@@ -479,7 +479,7 @@ function dp_plan_delete($planid) {
 }
 
 function dp_get_first_template() {
-    if (!$template = get_records('dp_template', '','', 'id', '*', '', 1)) {;
+    if (!$template = get_records('dp_template', '','', 'sortorder', '*', '', 1)) {;
         return false;
     }
 
