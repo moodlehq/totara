@@ -53,11 +53,23 @@ class rb_param_option {
      */
     public $joins;
 
-    function __construct($name, $field, $joins=null) {
+    /**
+     * The type of value expected for this parameter. Can be:
+     *
+     * int - will be cleaned as with PARAM_INT and have no quotes in query
+     * string - will be cleaned with PARAM_TEXT and surrounded in quotes
+     *
+     * @access public
+     * @var string
+     */
+    public $type;
+
+    function __construct($name, $field, $joins=null, $type='int') {
 
         $this->name = $name;
         $this->field = $field;
         $this->joins = $joins;
+        $this->type = $type;
     }
 
 } // end of rb_param_option class

@@ -880,7 +880,11 @@ var comptree = [' . implode(', ', $comptrees) . '];
         }
         foreach ($this->_paramoptions as $param) {
             $name = $param->name;
-            $var = optional_param($name, null, PARAM_TEXT);
+            if ( $param->type == 'string' ){
+                $var = optional_param($name, null, PARAM_TEXT);
+            } else {
+                $var = optional_param($name, null, PARAM_INT);
+            }
 
             if(isset($this->_embeddedparams[$name])) {
                 // embedded params take priority over url params
@@ -995,18 +999,30 @@ var comptree = [' . implode(', ', $comptrees) . '];
             foreach($params as $param) {
                 $field = $param->field;
                 $value = $param->value;
+                $type = $param->type;
                 // don't include if param not set to anything
                 if(!isset($value) || $value=='') {
                     continue;
                 }
+
+                $wherestr = $field;
+
                 // if value starts with '!', do a not equals match
                 // to the rest of the string
                 if(substr($value, 0, 1) == '!') {
-                    $out[] = "$field != " . substr($value, 1);
+                    $wherestr .= ' != ';
                 } else {
                     // normal match
-                    $out[] = "$field = $value";
+                    $wherestr .= ' = ';
                 }
+
+                // A string should be surrounded in quotes, an int should not
+                if($type == 'string'){
+                    $wherestr .= "'{$value}'";
+                } else {
+                    $wherestr .= $value;
+                }
+                $out[] = $wherestr;
             }
         }
         if(count($out)==0) {

@@ -62,6 +62,14 @@ class rb_param {
     public $value;
 
     /**
+     * Type of the parameter (int or string)
+     *
+     * @access public
+     * @var string
+     */
+    public $type;
+
+    /**
      * Generate a rb_param instance
      *
      * @param string $name Name of the parameter
@@ -77,6 +85,7 @@ class rb_param {
             if($paramoption->name == $name) {
                 $this->field = $paramoption->field;
                 $this->joins = $paramoption->joins;
+                $this->type  = $paramoption->type;
                 break;
             }
         }
