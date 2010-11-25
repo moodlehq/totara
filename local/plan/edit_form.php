@@ -78,7 +78,7 @@ class plan_edit_form extends moodleform {
             if ($this->_customdata['plan']->get_setting('delete') == DP_PERMISSION_ALLOW) {
                 $buttonarray[] = $mform->createElement('submit', 'delete', get_string('deleteplan', 'local_plan'));
             }
-            if ($this->_customdata['plan']->get_setting('signoff') == DP_PERMISSION_ALLOW && $this->_customdata['plan']->status != DP_PLAN_STATUS_COMPLETE) {
+            if ($this->_customdata['plan']->get_setting('signoff') == DP_PERMISSION_ALLOW && $this->_customdata['plan']->status == DP_PLAN_STATUS_APPROVED) {
                 $buttonarray[] = $mform->createElement('submit', 'signoff', get_string('plancomplete', 'local_plan'));
             }
 

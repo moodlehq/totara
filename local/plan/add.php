@@ -14,6 +14,9 @@ require_once($CFG->dirroot . '/local/plan/lib.php');
 
 $userid = required_param('userid', PARAM_INT); // user id
 
+///
+/// Permission checks
+///
 require_login();
 require_capability('local/plan:accessplan', get_system_context());
 
@@ -38,6 +41,10 @@ if (dp_get_template_permission($template->id, 'plan', 'create', $role) != DP_PER
 }
 // END HACK
 
+
+///
+/// Data and actions
+///
 $currenturl = qualified_me();
 $allplansurl = "{$CFG->wwwroot}/local/plan/index.php?userid={$userid}";
 
@@ -90,6 +97,10 @@ if ($data = $form->get_data()) {
     }
 }
 
+
+///
+/// Display
+///
 $heading = get_string('addplan', 'local_plan');
 $pagetitle = format_string(get_string('developmentplan','local_plan').': '.$heading);
 $navlinks = array();
@@ -99,6 +110,9 @@ $navlinks[] = array('name' => $heading, 'link'=> '', 'type'=>'title');
 $navigation = build_navigation($navlinks);
 
 print_header_simple($pagetitle, '', $navigation, '', null, true, '');
+if ($USER->id != $userid) {
+    echo dp_display_user_message_box($userid);
+}
 
 print_heading($heading);
 
