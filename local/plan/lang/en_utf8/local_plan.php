@@ -85,7 +85,7 @@ $string['signoff'] = 'Sign-off';
 $string['setting'] = 'Setting';
 $string['before'] = 'Before';
 $string['after'] = 'After';
-$string['error:settingdoesnotexist'] = 'Setting \"$b"\ does not exist in the component \"$a\"';
+$string['error:settingdoesnotexist'] = 'Setting {$a->action} does not exist in the component {$a->component}';
 
 
 // Course Strings

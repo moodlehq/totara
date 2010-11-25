@@ -155,7 +155,7 @@ class development_plan {
         }
 
         // return null if nothing set
-        print_error('error:settingdoesnotexist', 'local_plan', array($component, $action));
+        print_error('error:settingdoesnotexist', 'local_plan', '', (object)array('component'=>$component, 'action'=>$action));
     }
 
     function get_setting($action) {
@@ -910,6 +910,10 @@ class development_plan {
         $todb = new stdClass;
         $todb->id = $this->id;
         $todb->status = $status;
+        if ($status == DP_PLAN_STATUS_APPROVED) {
+            // Set the plan startdate to the approval time
+            $todb->startdate = time();
+        }
 
         if (update_record('dp_plan', $todb)) {
             // Update plan history
