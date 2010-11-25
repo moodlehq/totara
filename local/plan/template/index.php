@@ -168,8 +168,8 @@ if ($fromform = $mform->get_data()) {
 
         $todb = new object();
         $todb->fullname = $fromform->templatename;
-        $todb->startdate = convert_userdate_2($fromform->startdate);
-        $todb->enddate = convert_userdate_2($fromform->enddate);
+        $todb->startdate = dp_convert_userdate($fromform->startdate);
+        $todb->enddate = dp_convert_userdate($fromform->enddate);
         $sortorder = count_records('dp_template') + 1;
         $todb->sortorder = $sortorder;
         $todb->visible = 1;

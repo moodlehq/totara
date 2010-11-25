@@ -48,9 +48,9 @@ class dp_template_general_settings_form extends moodleform {
         $result = array();
 
         $startdatestr = isset($data['startdate'])?$data['startdate']:'';
-        $startdate = convert_userdate( $startdatestr );
+        $startdate = dp_convert_userdate( $startdatestr );
         $enddatestr = isset($data['enddate'])?$data['enddate']:'';
-        $enddate = convert_userdate( $enddatestr );
+        $enddate = dp_convert_userdate( $enddatestr );
 
         // Enforce valid dates
         if ( false === $startdate && $startdatestr !== 'dd/mm/yyyy' && $startdatestr !== '' ){
@@ -108,9 +108,9 @@ class dp_template_new_form extends moodleform {
         $result = array();
 
         $startdatestr = isset($data['startdate'])?$data['startdate']:'';
-        $startdate = convert_userdate_2( $startdatestr );
+        $startdate = dp_convert_userdate( $startdatestr );
         $enddatestr = isset($data['enddate'])?$data['enddate']:'';
-        $enddate = convert_userdate_2( $enddatestr );
+        $enddate = dp_convert_userdate( $enddatestr );
 
         // Enforce valid dates
         if ( false === $startdate && $startdatestr !== 'dd/mm/yyyy' && $startdatestr !== '' ){

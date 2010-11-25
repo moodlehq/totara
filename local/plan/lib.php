@@ -80,8 +80,7 @@ function dp_get_plans($userid, $statuses=array(DP_PLAN_STATUS_APPROVED)) {
 }
 
 //Used to create a timestamp from a string
-//TODO: remove _2 from method once old IDP is removed
-function convert_userdate_2($datestring) {
+function dp_convert_userdate($datestring) {
     // Check for DD/MM/YYYY
     if (preg_match('|(\d{1,2})/(\d{1,2})/(\d{4})|', $datestring, $matches)) {
         return mktime(0,0,0,$matches[2], $matches[1], $matches[3]);
