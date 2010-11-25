@@ -173,6 +173,23 @@ abstract class dp_base_component {
                     '<img src="'.$CFG->themewww.'/'.$CFG->theme.'/pix/i/marker.gif" title="'.get_string('sendapprovalreminder', 'local_plan').'" alt="'.get_string('sendapprovalreminder', 'local_plan').'" /></a> ';
             }
             break;
+        case DP_APPROVAL_REQUEST_REMOVAL:
+            // @todo create new icon instead of reusing XSS one
+            $out .= '<img src="'.$CFG->pixpath.'/i/risk_xss.gif" />';
+            $out .= '<span class="plan_highlight">' . get_string('pendingremoval', 'local_plan') . '</span><br />';
+            if($canapprove) {
+                $out .= 'show delete button';
+            } else {
+                // @todo write reminder code
+                /*
+                $murl->param('assignmentid', $obj->id);
+                $murl->param('type', $this->component);
+                $murl->param('action', 'removalremind');
+                $out .= '<a href="'.$murl->out_action().'">'.
+                    '<img src="'.$CFG->themewww.'/'.$CFG->theme.'/pix/i/marker.gif" title="'.get_string('sendapprovalreminder', 'local_plan').'" alt="'.get_string('sendapprovalreminder', 'local_plan').'" /></a> ';
+                 */
+            }
+            break;
         case DP_APPROVAL_APPROVED:
         default:
             // display nothing
@@ -364,11 +381,27 @@ abstract class dp_base_component {
      * @return  mixed   An ADODB RecordSet object with the results from the SQL call or false.
      */
     public function unassign_item($item) {
-        return delete_records(
-            'dp_plan_'.$this->component.'_assign',
-            'id', $item->itemid,
-            'planid', $this->plan->id
-        );
+
+        // Get approval value for new item
+        if (!$permission = $this->can_update_items()) {
+            print_error('error:cannotupdateitems', 'local_plan');
+        }
+
+        // If allowed, or assignment not yet approved, remove assignment
+        if ($permission == DP_PERMISSION_ALLOW || $item->approved == DP_APPROVAL_UNAPPROVED) {
+            return delete_records(
+                'dp_plan_'.$this->component.'_assign',
+                'id', $item->itemid,
+                'planid', $this->plan->id
+            );
+        }
+        // Otherwise request removal
+        else {
+            $update = new object();
+            $update->id = $item->itemid;
+            $update->approved = DP_APPROVAL_REQUEST_REMOVAL;
+            return update_record('dp_plan_'.$this->component.'_assign', $update);
+        }
     }
 
 

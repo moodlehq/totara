@@ -53,7 +53,7 @@ class dp_course_component extends dp_base_component {
         if ($permission == DP_PERMISSION_ALLOW) {
             $btntext = get_string('updatecourses', 'local_plan');
         } else {
-            $btntext = get_string('requestcourses', 'local_plan');
+            $btntext = get_string('updaterequestedcourses', 'local_plan');
         }
 
         $html  = '<div class="buttons">';
@@ -128,9 +128,8 @@ class dp_course_component extends dp_base_component {
 
         // Get approval value for new item
         if (!$permission = $this->can_update_items()) {
-            print_error('error:cannotupdatecourses');
+            print_error('error:cannotupdatecourses', 'local_plan');
         }
-
 
         $item = new object();
         $item->planid = $this->plan->id;
@@ -173,6 +172,8 @@ class dp_course_component extends dp_base_component {
         $priorityscaleid = ($this->get_setting('priorityscale')) ? $this->get_setting('priorityscale') : -1;
 
         $plancompleted = $this->plan->status == DP_PLAN_STATUS_COMPLETE;
+        $canrequestcourses = !$plancompleted &&
+            $this->get_setting('updatecourse') == DP_PERMISSION_REQUEST;
         $canapprovecourses = !$plancompleted &&
             $this->get_setting('updatecourse') == DP_PERMISSION_APPROVE;
         $canremovecourses = !$plancompleted &&
@@ -224,10 +225,8 @@ class dp_course_component extends dp_base_component {
             $tablecolumns[] = 'status';
         }
 
-        if($canremovecourses) {
-            $tableheaders[] = get_string('actions', 'local_plan');
-            $tablecolumns[] = 'actions';
-        }
+        $tableheaders[] = get_string('actions', 'local_plan');
+        $tablecolumns[] = 'actions';
 
         $table = new flexible_table('courselist');
         $table->define_columns($tablecolumns);
@@ -284,12 +283,15 @@ class dp_course_component extends dp_base_component {
                     $row[] = $status;
                 }
 
-                if($canremovecourses) {
+                if ($canremovecourses || ($canrequestcourses && $ca->approved == DP_APPROVAL_UNAPPROVED)) {
                     $currenturl = $CFG->wwwroot .
                         '/local/plan/components/course/index.php?id=' .
                         $this->plan->id;
                     $strdelete = get_string('delete', 'local_plan');
                     $row[] = '<a href="'.$currenturl.'&amp;d='.$ca->id.'" title="'.$strdelete.'"><img src="'.$CFG->pixpath.'/t/delete.gif" class="iconsmall" alt="'.$strdelete.'" /></a>';
+                }
+                else {
+                    $row[] = '';
                 }
 
                 $table->add_data($row);
