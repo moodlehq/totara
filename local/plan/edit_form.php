@@ -35,10 +35,21 @@ class plan_edit_form extends moodleform {
 
         if ($this->_customdata['action'] == 'delete') {
             // Only show delete confirmation
-            $mform->addElement('html', get_string('checkplandelete', 'local_plan'));
+            $mform->addElement('html', get_string('checkplandelete', 'local_plan', $this->_customdata['plan']->name));
             $buttonarray = array();
             $buttonarray[] = $mform->createElement('submit', 'deleteyes', get_string('yes'));
             $buttonarray[] = $mform->createElement('submit', 'deleteno', get_string('no'));
+            $mform->addGroup($buttonarray, 'buttonar', '', array(' '), false);
+            $mform->closeHeaderBefore('buttonar');
+
+            return;
+        }
+        if ($this->_customdata['action'] == 'signoff') {
+            // Only show complete plan confirmation
+            $mform->addElement('html', get_string('checkplancomplete', 'local_plan', $this->_customdata['plan']->name));
+            $buttonarray = array();
+            $buttonarray[] = $mform->createElement('submit', 'signoffyes', get_string('yes'));
+            $buttonarray[] = $mform->createElement('submit', 'signoffno', get_string('no'));
             $mform->addGroup($buttonarray, 'buttonar', '', array(' '), false);
             $mform->closeHeaderBefore('buttonar');
 
@@ -61,11 +72,14 @@ class plan_edit_form extends moodleform {
         if ($this->_customdata['action'] == 'view') {
             $mform->hardFreeze(array('name', 'description', 'enddate'));
             $buttonarray = array();
-            if ($this->_customdata['plan']->get_setting('update') == DP_PERMISSION_ALLOW) {;
+            if ($this->_customdata['plan']->get_setting('update') == DP_PERMISSION_ALLOW && $this->_customdata['plan']->status != DP_PLAN_STATUS_COMPLETE) {;
                 $buttonarray[] = $mform->createElement('submit', 'edit', get_string('editdetails', 'local_plan'));
             }
             if ($this->_customdata['plan']->get_setting('delete') == DP_PERMISSION_ALLOW) {
                 $buttonarray[] = $mform->createElement('submit', 'delete', get_string('deleteplan', 'local_plan'));
+            }
+            if ($this->_customdata['plan']->get_setting('signoff') == DP_PERMISSION_ALLOW && $this->_customdata['plan']->status != DP_PLAN_STATUS_COMPLETE) {
+                $buttonarray[] = $mform->createElement('submit', 'signoff', get_string('plancomplete', 'local_plan'));
             }
 
             $mform->addGroup($buttonarray, 'buttonar', '', array(' '), false);

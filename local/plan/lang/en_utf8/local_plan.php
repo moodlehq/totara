@@ -328,4 +328,7 @@ $string['notemplatesetup'] = 'No plan templates set up';
 $string['planapproved'] = 'Plan $a has been approved';
 $string['plandeclined'] = 'Plan $a has been declined';
 $string['approvalrequestsent'] = 'Approval request sent for plan $a';
-
+$string['plancomplete'] = 'Complete plan';
+$string['checkplancomplete'] = 'Are you sure you want to complete plan $a';
+$string['plancompletesuccess'] = 'Successfully completed plan $a';
+$string['plancompletefail'] = 'Completing plan $a failed';

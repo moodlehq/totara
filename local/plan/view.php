@@ -57,6 +57,22 @@ if ($data = $form->get_data()) {
         }
     } elseif (isset($data->deleteno)) {
         redirect($viewurl);
+    } elseif (isset($data->signoff)) {
+        if ($plan->get_setting('signoff') < DP_PERMISSION_ALLOW) {
+            print_error('error:nopermissions', 'local_plan');
+        }
+        redirect(strip_querystring(qualified_me())."?id={$id}&action=signoff");
+    } elseif (isset($data->signoffyes)) {
+        if ($plan->get_setting('signoff') < DP_PERMISSION_ALLOW) {
+            print_error('error:nopermissions', 'local_plan');
+        }
+        if ($plan->set_status(DP_PLAN_STATUS_COMPLETE)) {
+            totara_set_notification(get_string('plancompletesuccess', 'local_plan', $plan->name), $viewurl, array('style' => 'notifysuccess'));
+        } else {
+            totara_set_notification(get_string('plancompletefail', 'local_plan', $plan->name), $viewurl);
+        }
+    } elseif (isset($data->signoffno)) {
+        redirect($viewurl);
     } elseif (isset($data->submitbutton)) {
         if ($plan->get_setting('update') < DP_PERMISSION_ALLOW) {
             print_error('error:nopermissions', 'local_plan');

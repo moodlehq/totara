@@ -412,7 +412,7 @@ class development_plan {
     function display_actions() {
         global $CFG;
 
-        // @todo: make icons pretty
+        // @todo: USE NICE ICONS
 
         ob_start();
 
@@ -425,6 +425,7 @@ class development_plan {
                     </a>';
             }
 
+            // Approve/Decline
             if (in_array($this->get_setting('confirm'), array(DP_PERMISSION_ALLOW, DP_PERMISSION_APPROVE))) {
                 echo '<a href="'.$CFG->wwwroot.'/local/plan/action.php?id='.$this->id.'&approve=1&sesskey='.sesskey().'" title="'.get_string('approve', 'local_plan').'">
                     <img src="'.$CFG->pixpath.'/t/go.gif" alt="'.get_string('approve', 'local_plan').'" />
@@ -433,6 +434,13 @@ class development_plan {
                     <img src="'.$CFG->pixpath.'/t/stop.gif" alt="'.get_string('decline', 'local_plan').'" />
                     </a>';
             }
+        }
+
+        // Complete
+        if ($this->status == DP_PLAN_STATUS_APPROVED && $this->get_setting('signoff') == DP_PERMISSION_ALLOW) {
+            echo '<a href="'.$CFG->wwwroot.'/local/plan/action.php?id='.$this->id.'&signoff=1&sesskey='.sesskey().'" title="'.get_string('plancomplete', 'local_plan').'">
+                <img src="'.$CFG->pixpath.'/t/favourite_on.gif" alt="'.get_string('completeplan', 'local_plan').'" />
+                </a>';
         }
 
         // Delete
