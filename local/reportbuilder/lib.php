@@ -3073,6 +3073,38 @@ function sql_group_concat($field, $delimiter=', ', $unique=false) {
 }
 
 /**
+ * Returns the SQL to be used in order to CAST one INTEGER column to CHAR
+ *
+ * @param string fieldname the name of the field to be casted
+ * @return string the piece of SQL code to be used in your statement.
+ */
+function sql_cast_int2char($fieldname, $text=false) {
+
+    global $CFG;
+
+    $sql = '';
+
+    switch ($CFG->dbfamily) {
+        case 'mysql':
+        case 'postgres':
+            $sql = ' CAST(' . $fieldname . ' AS CHAR) ';
+            break;
+        case 'mssql':
+            if (!$text) {
+                $sql = ' CAST(' . $fieldname . ' AS VARCHAR(20)) ';
+            }
+            break;
+        case 'oracle':
+            $sql = ' TO_CHAR(' . $fieldname . ') ';
+            break;
+        default:
+            $sql = ' ' . $fieldname . ' ';
+    }
+
+    return $sql;
+}
+
+/**
  * Returns reports that the current user can view
  *
  * @param boolean showhidden If true include hidden reports
