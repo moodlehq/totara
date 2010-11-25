@@ -295,13 +295,15 @@ if($templates){
         $buttons[] = "<a href=\"{$CFG->wwwroot}/local/plan/template/index.php?delete={$template->id}\" title=\"$str_remove\">".
             "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_remove\" /></a>";
 
-        if ($template->visible) {
+
+        // Re-add this once multiple templates can be selected
+        /*if ($template->visible) {
             $buttons[] = "<a href=\"{$CFG->wwwroot}/local/plan/template/index.php?hide={$template->id}\" title=\"$str_hide\">".
                 "<img src=\"{$CFG->pixpath}/t/hide.gif\" class=\"iconsmall\" alt=\"$str_hide\" /></a>";
         } else {
             $buttons[] = "<a href=\"{$CFG->wwwroot}/local/plan/template/index.php?show={$template->id}\" title=\"$str_show\">".
                 "<img src=\"{$CFG->pixpath}/t/show.gif\" class=\"iconsmall\" alt=\"$str_show\" /></a>";
-        }
+        }*/
 
         if ($count > 1) {
             $buttons[] = "<a href=\"{$CFG->wwwroot}/local/plan/template/index.php?moveup={$template->id}\" title=\"$str_moveup\">".
