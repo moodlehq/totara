@@ -155,7 +155,7 @@ class development_plan {
         }
 
         // return null if nothing set
-        return null;
+        trigger_error('error:settingdoesnotexist', 'local_plan', array($component, $action));
     }
 
     function get_setting($action) {
