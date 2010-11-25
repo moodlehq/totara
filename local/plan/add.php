@@ -102,6 +102,8 @@ print_header_simple($pagetitle, '', $navigation, '', null, true, '');
 
 print_heading($heading);
 
+print(get_string('createplan_instructions', 'local_plan'));
+
 $form->set_data((object)array('userid'=>$userid));
 $form->display();
 

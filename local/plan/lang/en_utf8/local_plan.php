@@ -7,7 +7,7 @@ $string['plan:add'] = 'Add plans';
 // Plan
 $string['plan'] = 'Plan';
 $string['plans'] = 'Learning Plans';
-$string['plansinstructions'] = 'An overview of all your relevant learning plans. New plans can be added and existing plans accessed from here.';
+//$string['plansinstructions'] = 'An overview of all your relevant learning plans. New plans can be added and existing plans accessed from here.';
 $string['developmentplan'] = 'Development Plan';
 $string['developmentplans'] = 'Development Plans';
 $string['xsdevelopmentplans'] = '$a\'s Development Plans';
@@ -22,6 +22,8 @@ $string['completedplans'] = 'Completed Plans';
 $string['noplans'] = 'No plans...';
 $string['addplan'] = 'Add plan';
 $string['completed'] = 'Completed';
+$string['plansinstructions'] = 'Your current and completed learning plans are shown below. You can create a new learning plan by clicking \"Create a new learning plan\" to the right of the screen.';
+$string['createplan_instructions'] = 'To create a new plan please add the plan title, a short description of the plan and a date by which the plan should be completed. You can click \"Create plan\" once you have entered this information.';
 
 // Manage Templates
 $string['instances'] = 'Instances';

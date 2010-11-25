@@ -136,20 +136,9 @@ foreach ($lt as $column) {
         echo '<td valign="top" id="middle-column">';
         echo '<h1>'.$strheading.'</h1>';
 
+        echo '<p>' . get_string('teammembers_text', 'local') . '</p>';
+
         $report->include_js();
-//        print $report->showhide_button();
-
-        echo '<table class="allmyteam"><tr>';
-        if($staff_records) {
-            echo '<tr><td class="c0"><img src="'.$CFG->wwwroot.'/pix/i/teammembers.png" width="32" height="32" alt="'.get_string('allteammembers','local').'"></td>';
-            echo '<td class="c1"><strong><a href="'.$CFG->wwwroot.'/local/reportbuilder/report.php?id='.$staff_records.'">'.get_string('alllearningrecords','local').'</a></strong></td>';
-        }
-        if($staff_f2f) {
-            echo '<td class="c2"><img src="'.$CFG->wwwroot.'/pix/i/teammembers.png" width="32" height="32" alt="'.get_string('allteammembers','local').'"></td>';
-            echo '<td class="c3"><strong><a href="'.$CFG->wwwroot.'/local/reportbuilder/report.php?id='.$staff_f2f.'">'.get_string('allf2fbookings','local').'</a></strong></td></tr>';
-        }
-        echo '</tr></table>';
-
         $report->display_table();
 
         echo '</td>';

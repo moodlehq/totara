@@ -242,3 +242,6 @@ $string['courseicon'] = 'Course icon';
 $string['error:norolesfound'] = 'No roles found';
 $string['error:notificationsparamtypewrong'] = 'Incorrect param type sent to Totara notifications';
 $string['error:unknownbuttonclicked'] = 'Unknown button clicked';
+
+//My Team strings
+$string['teammembers_text'] = 'All members of your teams are show below. Clicking the learner\'s name will allow you to view their learning plans.';
