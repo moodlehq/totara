@@ -186,21 +186,11 @@ class rb_source_dp_competency extends rb_base_source {
 
         $columnoptions[] = new rb_column_option(
                 'competency',
-                'name',
-                'Competency name',
-                'competency.shortname',
-                array(
-                    'defaultheading' => 'Competency',
-                    'joins' => 'competency'
-                )
-        );
-        $columnoptions[] = new rb_column_option(
-                'competency',
                 'fullname',
-                'Competency full name',
+                'Competency name',
                 'competency.fullname',
                 array(
-                    'defaultheading' => 'Competency full name',
+                    'defaultheading' => 'Competency name',
                     'joins' => 'competency'
                 )
         );
@@ -258,28 +248,8 @@ class rb_source_dp_competency extends rb_base_source {
         $filteroptions = array();
 
         $filteroptions[] = new rb_filter_option(
-                'user',
-                'id',
-                'User ID',
-                'number',
-                array(
-                    'defaultadvanced'=>true
-                )
-        );
-
-        $filteroptions[] = new rb_filter_option(
                 'competency',
-                'status',
-                'Status',
-                'simpleselect',
-                array(
-                    'selectchoices'=>self::$statusstrings
-                )
-        );
-
-        $filteroptions[] = new rb_filter_option(
-                'competency',
-                'name',
+                'fullname',
                 'Competency name',
                 'text'
         );
@@ -287,11 +257,22 @@ class rb_source_dp_competency extends rb_base_source {
         $filteroptions[] = new rb_filter_option(
                 'competency',
                 'priority',
-                'Priority',
-                'select',
-                array(
-                    'selectfunc'=>'list_priorities'
-                )
+                'Competency priority',
+                'text'
+        );
+
+        $filteroptions[] = new rb_filter_option(
+                'competency',
+                'duedate',
+                'Competency due date',
+                'date'
+        );
+
+        $filteroptions[] = new rb_filter_option(
+                'plan',
+                'name',
+                'Plan name',
+                'text'
         );
         return $filteroptions;
     }
@@ -315,16 +296,20 @@ class rb_source_dp_competency extends rb_base_source {
 
         $paramoptions[] = new rb_param_option(
                 'userid',
-                'base.userid'
+                'dp.userid',
+                'dp'
         );
         $paramoptions[] = new rb_param_option(
                 'planstatus',
                 '(case '.
                     'when dp.status='. DP_PLAN_STATUS_COMPLETE . ' then \'completed\' '.
                     'when dp.status in ('. DP_PLAN_STATUS_APPROVED .','. DP_PLAN_STATUS_UNAPPROVED.') then \'active\' '.
-                    'default \'inactive\')',
-                'dp'
+                    'else \'disapproved\' '.
+                'end)',
+                'dp',
+                'string'
         );
+        return $paramoptions;
     }
 
     /**
@@ -344,10 +329,6 @@ class rb_source_dp_competency extends rb_base_source {
 
     }
 
-    public function rb_filter_list_priorities(){
-        $a = func_get_args();
-        return array();
-    }
 }
 
 ?>
