@@ -24,7 +24,7 @@
     case 'student' :
         $flvfile = $CFG->wwwroot.'/blocks/flash_video/videos/student.flv';
         $videotitle = 'Student';
-        $videodescription = 'Mobility Scooter Race!!!';
+        $videodescription = 'Student Video';
         break;
     default:
         $flvfile = $CFG->wwwroot.'/blocks/flash_video/videos/scooter.flv';
