@@ -358,11 +358,16 @@ function dp_display_plans($userid, $statuses=array(DP_PLAN_STATUS_APPROVED), $co
         $tablecols[] = 'p.timemodified';
     }
 
+    // Actions
+    $tableheaders[] = '';
+    $tablecols[] = 'actioncontrols';
+
     $table = new flexible_table($tablename);
     $table->define_headers($tableheaders);
     $table->define_columns($tablecols);
     $table->set_attribute('class', 'logtable generalbox');
     $table->set_attribute('width', '97%');
+    //$table->column_style('actioncontrols', 'width', '70px');
     $table->sortable(true);
     $table->setup();
     $table->pagesize(5, $count);
@@ -387,6 +392,7 @@ function dp_display_plans($userid, $statuses=array(DP_PLAN_STATUS_APPROVED), $co
         if (in_array('completed', $cols)) {
             $row[] = $plan->display_completeddate();
         }
+        $row[] = $plan->display_actions();
 
         $table->add_data($row);
     }

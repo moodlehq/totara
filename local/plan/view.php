@@ -51,9 +51,9 @@ if ($data = $form->get_data()) {
             print_error('error:nopermissions', 'local_plan');
         }
         if ($plan->delete()) {
-            totara_set_notification(get_string('plandeletesuccess', 'local_plan'), "{$CFG->wwwroot}/local/plan/index.php?userid={$plan->userid}", array('style' => 'notifysuccess'));
+            totara_set_notification(get_string('plandeletesuccess', 'local_plan', $plan->name), "{$CFG->wwwroot}/local/plan/index.php?userid={$plan->userid}", array('style' => 'notifysuccess'));
         } else {
-            totara_set_notification(get_string('plandeletefail', 'local_plan'), $viewurl);
+            totara_set_notification(get_string('plandeletefail', 'local_plan', $plan->name), $viewurl);
         }
     } elseif (isset($data->deleteno)) {
         redirect($viewurl);

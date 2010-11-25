@@ -408,6 +408,48 @@ class development_plan {
         return ($latestmodification->status != DP_PLAN_STATUS_COMPLETE) ? get_string('notcompleted', 'local_plan') : userdate($latestmodification->timemodified, '%d/%m/%y', $CFG->timezone, false);
     }
 
+    // Displays icons of current actions the user can perform on the plan
+    function display_actions() {
+        global $CFG;
+
+        // @todo: make icons pretty
+
+        ob_start();
+
+        // Approval
+        if ($this->status == DP_PLAN_STATUS_UNAPPROVED) {
+            // Approval request
+            if ($this->get_setting('confirm') == DP_PERMISSION_REQUEST) {
+                echo '<a href="'.$CFG->wwwroot.'/local/plan/action.php?id='.$this->id.'&approvalrequest=1&sesskey='.sesskey().'" title="'.get_string('sendapprovalrequest', 'local_plan').'">
+                    <img src="'.$CFG->pixpath.'/t/feedback_add.gif" alt="'.get_string('sendapprovalrequest', 'local_plan').'" />
+                    </a>';
+            }
+
+            if (in_array($this->get_setting('confirm'), array(DP_PERMISSION_ALLOW, DP_PERMISSION_APPROVE))) {
+                echo '<a href="'.$CFG->wwwroot.'/local/plan/action.php?id='.$this->id.'&approve=1&sesskey='.sesskey().'" title="'.get_string('approve', 'local_plan').'">
+                    <img src="'.$CFG->pixpath.'/t/go.gif" alt="'.get_string('approve', 'local_plan').'" />
+                    </a>';
+                echo '<a href="'.$CFG->wwwroot.'/local/plan/action.php?id='.$this->id.'&decline=1&sesskey='.sesskey().'" title="'.get_string('decline', 'local_plan').'">
+                    <img src="'.$CFG->pixpath.'/t/stop.gif" alt="'.get_string('decline', 'local_plan').'" />
+                    </a>';
+            }
+        }
+
+        // Delete
+        if ($this->get_setting('delete') == DP_PERMISSION_ALLOW) {
+            echo '<a href="'.$CFG->wwwroot.'/local/plan/action.php?id='.$this->id.'&delete=1&sesskey='.sesskey().'" title="'.get_string('delete').'">
+                <img src="'.$CFG->pixpath.'/t/delete.gif" alt="'.get_string('delete').'" />
+                </a>';
+        }
+
+        $out = ob_get_contents();
+
+        ob_end_clean();
+
+
+        return $out;
+    }
+
     function get_history($orderby='timemodified') {
         return get_records('dp_plan_history', 'planid', $this->id, $orderby);
     }

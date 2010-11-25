@@ -88,7 +88,8 @@ class dp_course_component extends dp_base_component {
                 a.planid,
                 a.courseid,
                 a.id AS itemid,
-                c.fullname
+                c.fullname,
+                a.approved
             FROM
                 {$CFG->prefix}dp_plan_course_assign a
             INNER JOIN
