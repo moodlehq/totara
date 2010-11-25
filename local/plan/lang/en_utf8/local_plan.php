@@ -158,8 +158,8 @@ $string['error:templateid'] = 'Invalid plan template ID';
 $string['cannotdeletetemplate_inuse'] = 'Cannot detele template when it is in use';
 
 $string['couldnotinsertnewrecord'] = 'Could not insert new record';
-$string['unabletoassigncomps'] = 'Unable to assign competencies';
-$string['unabletoassignpos'] = 'Unable to assign positions';
+$string['unabletoassigncompsfromorg'] = 'Unable to assign competencies from position organisation';
+$string['unabletoassigncompsfrompos'] = 'Unable to assign competencies from position';
 
 // Workflows
 $string['workflowsettings'] = 'Workflow settings';
