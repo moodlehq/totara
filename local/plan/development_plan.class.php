@@ -888,11 +888,13 @@ class development_plan {
                     }
                 }
             }
-            // Delete component relations
-            foreach ($itemids as $id=>$value) {
-                if (!delete_records('dp_plan_component_relation', 'itemid1', $id) || !delete_records('dp_plan_component_relation', 'itemid2', $id)) {
-                    rollback_sql();
-                    return false;
+            if (!empty($itemids)) {
+                // Delete component relations
+                foreach ($itemids as $id=>$value) {
+                    if (!delete_records('dp_plan_component_relation', 'itemid1', $id) || !delete_records('dp_plan_component_relation', 'itemid2', $id)) {
+                        rollback_sql();
+                        return false;
+                    }
                 }
             }
         }

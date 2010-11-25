@@ -15,12 +15,6 @@ require_once('lib.php');
 
 require_login();
 
-$referer = get_referer(false);
-
-if (!confirm_sesskey()) {
-    redirect($referer);
-}
-
 $id = required_param('id', PARAM_INT);      // the plan id
 // Action params
 $approve = optional_param('approve', 0, PARAM_BOOL);
@@ -28,8 +22,20 @@ $decline = optional_param('decline', 0, PARAM_BOOL);
 $approvalrequest = optional_param('approvalrequest', 0, PARAM_BOOL);
 $delete = optional_param('delete', 0, PARAM_BOOL);
 
-// Should a redirect happen after the actions has been performed
-$redirect = optional_param('redirect', 1, PARAM_BOOL);
+// Is this an ajax call?
+$ajax = optional_param('ajax', 0, PARAM_BOOL);
+
+
+$referer = optional_param('referer', get_referer(false), PARAM_URL);
+
+if (!confirm_sesskey()) {
+    if (empty($ajax)) {
+        redirect($referer);
+    } else {
+        return;
+    }
+}
+
 
 $plan = new development_plan($id);
 
@@ -37,7 +43,7 @@ if (!empty($approve)) {
     if (in_array($plan->get_setting('confirm'), array(DP_PERMISSION_ALLOW, DP_PERMISSION_APPROVE))) {
        $plan->set_status(DP_PLAN_STATUS_APPROVED);
     }
-    if (!empty($redirect)) {
+    if (!empty($ajax)) {
         totara_set_notification(get_string('planapproved', 'local_plan', $plan->name), $referer, array('style' => 'notifysuccess'));
     }
 
@@ -46,7 +52,7 @@ if (!empty($approve)) {
         $plan->set_status(DP_PLAN_STATUS_DECLINED);
     }
 
-   if (!empty($redirect)) {
+   if (empty($ajax)) {
         totara_set_notification(get_string('plandeclined', 'local_plan', $plan->name), $referer, array('style' => 'notifysuccess'));
     }
 } elseif (!empty($approvalrequest)) {
@@ -61,16 +67,35 @@ if (!empty($approve)) {
         */
         // @todo: send approval request email to relevant parties
     }
-    if (!empty($redirect)) {
+    if (empty($ajax)) {
         totara_set_notification(get_string('approvalrequestsent', 'local_plan', $plan->name), $referer, array('style' => 'notifysuccess'));
     }
 
 } elseif (!empty($delete)) {
     if ($plan->get_setting('delete') == DP_PERMISSION_ALLOW) {
-        // Delete the plan
-        $plan->delete();
+        $confirm = optional_param('confirm', 0, PARAM_BOOL);
+
+        if (!$confirm && empty($ajax)) {
+            // Show confirmation message
+            print_header_simple();
+            $confirmurl = new moodle_url(qualified_me());
+            $confirmurl->param('confirm', 'true');
+            $confirmurl->param('referer', $referer);
+            $strdelete = get_string('checkplandelete', 'local_plan');
+            notice_yesno(
+                "{$strdelete}<br /><br />".format_string($plan->name),
+                $confirmurl->out(),
+                $referer
+            );
+
+            print_footer();
+            exit;
+        } else {
+            // Delete the plan
+            $plan->delete();
+        }
     }
-    if (!empty($redirect)) {
-        totara_set_notification(get_string('deletedplan', 'local_plan', $plan->name), $referer, array('style' => 'notifysuccess'));
+    if (empty($ajax)) {
+        totara_set_notification(get_string('plandeletesuccess', 'local_plan', $plan->name), $referer, array('style' => 'notifysuccess'));
     }
 }
