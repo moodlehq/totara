@@ -385,7 +385,8 @@ class Dashboard {
         foreach ($blocks as $block) {
             $dfilepath = "{$CFG->dirroot}/blocks/{$block->name}/dashlet_roles.txt";
             if (file_exists($dfilepath) && $roles = array_map('rtrim',file($dfilepath))) {
-                if (in_array($this->data->roleid, $roles)) {
+                $roleshortname = get_field('role', 'shortname', 'id', $this->data->roleid);
+                if (in_array($roleshortname, $roles)) {
                     $dashlets[$block->id] = $block->name;
                 }
             }
