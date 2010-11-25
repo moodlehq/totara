@@ -3080,7 +3080,7 @@ function sql_group_concat($field, $delimiter=', ', $unique=false) {
  * @param string fieldname the name of the field to be casted
  * @return string the piece of SQL code to be used in your statement.
  */
-function sql_cast_int2char($fieldname, $text=false) {
+function sql_cast_int2char($fieldname) {
 
     global $CFG;
 
@@ -3092,9 +3092,7 @@ function sql_cast_int2char($fieldname, $text=false) {
             $sql = ' CAST(' . $fieldname . ' AS CHAR) ';
             break;
         case 'mssql':
-            if (!$text) {
-                $sql = ' CAST(' . $fieldname . ' AS VARCHAR(20)) ';
-            }
+            $sql = ' CAST(' . $fieldname . ' AS VARCHAR(20)) ';
             break;
         case 'oracle':
             $sql = ' TO_CHAR(' . $fieldname . ') ';
