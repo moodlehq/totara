@@ -49,7 +49,30 @@ class rb_source_user extends rb_base_source {
     private function define_joinlist() {
         global $CFG;
 
-        $joinlist = array();
+        $joinlist = array(
+            new rb_join(
+                'totara_stats_comp_achieved',
+                'LEFT',
+                $CFG->prefix . 'block_totara_stats',
+                'base.id = totara_stats_comp_achieved.userid AND totara_stats_comp_achieved.eventtype = \'4\'',
+                REPORT_BUILDER_RELATION_ONE_TO_ONE
+            ),
+            new rb_join(
+                'totara_stats_courses_started',
+                'LEFT',
+                $CFG->prefix . 'block_totara_stats',
+                'base.id = totara_stats_courses_started.userid AND totara_stats_courses_started.eventtype = \'2\'',
+                REPORT_BUILDER_RELATION_ONE_TO_ONE
+            ),
+            new rb_join(
+                'totara_stats_courses_completed',
+                'LEFT',
+                $CFG->prefix . 'block_totara_stats',
+                'base.id = totara_stats_courses_completed.userid AND totara_stats_courses_completed.eventtype = \'3\'',
+                REPORT_BUILDER_RELATION_ONE_TO_ONE
+            )
+        );
+
         $this->add_position_tables_to_joinlist($joinlist, 'base', 'id');
 
         return $joinlist;
@@ -97,6 +120,38 @@ class rb_source_user extends rb_base_source {
                             'defaultheading' => ' '
                         )
         );
+
+        // A column to display the number of achieved competencies for a user
+        $columnoptions[] = new rb_column_option(
+                        'statistics',
+                        'competenciesachieved',
+                        'User\'s Achieved Competency Count',
+                        'totara_stats_comp_achieved.data2',
+
+                        array(
+                            'joins' => 'totara_stats_comp_achieved'
+                        )
+        );
+
+        $columnoptions[] = new rb_column_option(
+                        'statistics',
+                        'coursesstarted',
+                        'User\'s Courses Started Count',
+                        'totara_stats_courses_started.data2',
+                        array(
+                            'joins' => 'totara_stats_courses_started'
+                        )
+                    );
+
+        $columnoptions[] = new rb_column_option(
+                        'statistics',
+                        'coursescompleted',
+                        'User\'s Courses Completed Count',
+                        'totara_stats_courses_completed.data2',
+                        array(
+                            'joins' => 'totara_stats_courses_completed'
+                        )
+                    );
 
         return $columnoptions;
     }
