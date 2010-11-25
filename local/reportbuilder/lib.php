@@ -1011,6 +1011,8 @@ var comptree = [' . implode(', ', $comptrees) . '];
                 // to the rest of the string
                 if(substr($value, 0, 1) == '!') {
                     $wherestr .= ' != ';
+                    // Strip off the leading '!'
+                    $value = substr($value,1);
                 } else {
                     // normal match
                     $wherestr .= ' = ';
