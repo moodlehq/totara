@@ -42,6 +42,7 @@ if($delete && $confirm) {
         totara_set_notification(get_string('confirmsesskeybad', 'error'), $currenturl);
     }
     if($component->remove_competency_assignment($delete)) {
+        $plan->set_status_unapproved_if_declined();
         totara_set_notification(get_string('canremoveitem','local_plan'), $currenturl, array('style' => 'notifysuccess'));
     } else {
         totara_set_notification(get_string('cannotremoveitem', 'local_plan'), $currenturl);

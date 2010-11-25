@@ -940,6 +940,12 @@ class development_plan {
 
         return true;
     }
+
+    function set_status_unapproved_if_declined() {
+        if ($this->status == DP_PLAN_STATUS_DECLINED) {
+            $this->set_status(DP_PLAN_STATUS_UNAPPROVED);
+        }
+    }
 }
 
 

@@ -754,6 +754,7 @@ class dp_competency_component extends dp_base_component {
             }
             if($status) {
                 commit_sql();
+                $this->plan->set_status_unapproved_if_declined();
                 totara_set_notification(get_string('competenciesupdated','local_plan'), $currenturl, array('style'=>'notifysuccess'));
             } else {
                 rollback_sql();
@@ -804,6 +805,8 @@ class dp_competency_component extends dp_base_component {
                         // @todo send email
                         //email_to_user($manager, $from, $subject, $bodycopy);
                     }
+
+                    $this->plan->set_status_unapproved_if_declined();
                     totara_set_notification(get_string('approvalremindersent','local_plan'), $redirecturl->out(), array('style' => 'notifysuccess'));
 
                     //@todo set event/notification?
@@ -812,6 +815,7 @@ class dp_competency_component extends dp_base_component {
             default:
                 break;
         }
+
     }
 
 
