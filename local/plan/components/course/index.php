@@ -1,15 +1,29 @@
 <?php
 
-require_once(dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/config.php');
+require_once('../../../../config.php');
 require_once($CFG->dirroot . '/local/plan/lib.php');
 require_once($CFG->dirroot . '/local/js/lib/setup.php');
 
+
+///
+/// Load parameters
+///
 $id = required_param('id', PARAM_INT); // plan id
 $submitted = optional_param('submitbutton', null, PARAM_TEXT); // form submitted
 $action = optional_param('action', null, PARAM_ALPHANUM); // other actions
 $delete = optional_param('d', 0, PARAM_INT); // course assignment id to delete
 $confirm = optional_param('confirm', 0, PARAM_INT); // confirm delete
 
+
+///
+/// Permissions check
+///
+require_capability('local/plan:accessplan', get_system_context());
+
+
+///
+/// Load data
+///
 $plan = new development_plan($id);
 $componentname = 'course';
 $component = $plan->get_component($componentname);
@@ -53,11 +67,12 @@ if($delete) {
 }
 
 
-/**
- * Javascript stuff
- */
+///
+/// Javascript stuff
+///
+
 // If we are showing dialog
-if ($component->can_use_course_picker()) {
+if ($component->can_update_items()) {
     // Setup lightbox
     local_js(array(
         TOTARA_JS_DIALOG,
@@ -74,17 +89,19 @@ if ($component->can_use_course_picker()) {
 local_js(array(TOTARA_JS_DATEPICKER));
 
 
+///
+/// Display page
+///
 print_header_simple($pagetitle, '', $navigation, '', null, true, '');
 
 print $plan->display_plan_message_box();
 
 print_heading($fullname);
-
 print $plan->display_tabs($componentname);
 
-print $component->display_course_picker();
+print $component->display_picker();
 
-print '<form action="' . $currenturl . '" method="POST">';
+print '<form id="dp-component-update" action="' . $currenturl . '" method="POST">';
 print '<input type="hidden" id="sesskey" name="sesskey" value="'.sesskey().'" />';
 print $component->display_course_list();
 
@@ -93,7 +110,4 @@ if(!$plancompleted && ($cansetduedate || $cansetpriority || $canapprovecourses))
 }
 
 print '</form>';
-
 print_footer();
-
-?>

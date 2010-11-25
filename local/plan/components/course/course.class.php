@@ -14,10 +14,19 @@ class dp_course_component extends dp_base_component {
     }
 
 
-    public function can_use_course_picker() {
+    /**
+     * Can the logged in user update courses in this plan
+     *
+     * Returns false if they cannot, or a constant detailing their
+     * exact permissions if they can
+     *
+     * @access  public
+     * @return  false|int
+     */
+    public function can_update_items() {
         // Get permissions
         $plancompleted = $this->plan->status == DP_PLAN_STATUS_COMPLETE;
-        $updatecourse = $this->get_setting('updatecourse');
+        $updatecourse = (int) $this->get_setting('updatecourse');
 
         // If plan complete, or user cannot edit/request items, no point showing picker
         if ($plancompleted || !in_array($updatecourse, array(DP_PERMISSION_ALLOW, DP_PERMISSION_REQUEST))) {
@@ -34,9 +43,9 @@ class dp_course_component extends dp_base_component {
      * @access  public
      * @return  string
      */
-    public function display_course_picker() {
+    public function display_picker() {
 
-        if (!$permission = $this->can_use_course_picker()) {
+        if (!$permission = $this->can_update_items()) {
             return '';
         }
 
@@ -48,7 +57,7 @@ class dp_course_component extends dp_base_component {
         }
 
         $html  = '<div class="buttons">';
-        $html .= '<div class="singlebutton">';
+        $html .= '<div class="singlebutton dp-plan-assign-button">';
         /*
         <form action="<?php echo $CFG->wwwroot ?>/hierarchy/type/<?php echo $this->prefix ?>/related/find.php?id=<?php echo $item->id ?>&amp;frameworkid=<?php echo $item->frameworkid ?>" method="get">
          */
@@ -117,16 +126,30 @@ class dp_course_component extends dp_base_component {
      */
     public function assign_new_item($itemid) {
 
+        // Get approval value for new item
+        if (!$permission = $this->can_update_items()) {
+            print_error('error:cannotupdatecourses');
+        }
+
         $item = new object();
         $item->planid = $this->plan->id;
         $item->courseid = $itemid;
-        $this->priority = 0;
-        $this->duedate = 0;
-        $this->approved = 0;
-        $this->completionstatus = null;
-        $this->grade = null;
+        $item->priority = null;
+        $item->duedate = null;
+        $item->approved = $permission;
+        $item->completionstatus = null;
+        $item->grade = null;
 
-        insert_record('dp_plan_course_assign', $item);
+        // Check required values for priority/due data
+        if ($this->get_setting('prioritymode') == DP_PRIORITY_REQUIRED) {
+            $item->priority = $this->get_default_priority();
+        }
+
+        if ($this->get_setting('duedatemode') == DP_DUEDATES_REQUIRED) {
+            $item->duedate = $this->plan->enddate;
+        }
+
+        return insert_record('dp_plan_course_assign', $item);
     }
 
 
@@ -201,7 +224,7 @@ class dp_course_component extends dp_base_component {
         $table->define_columns($tablecolumns);
         $table->define_headers($tableheaders);
 
-        $table->set_attribute('class', 'logtable generalbox');
+        $table->set_attribute('class', 'logtable generalbox dp-plan-component-items');
         $table->sortable(true);
         $table->no_sorting('progress');
         $table->no_sorting('status');

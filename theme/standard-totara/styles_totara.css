@@ -1399,6 +1399,13 @@ span.dp-summary-widget-component-name-last {
     width: 85%;
 }
 
+div.dp-plan-assign-button {
+    margin-bottom: 15px;
+}
+
+table.dp-plan-component-items {
+    width: 100%;
+}
 
 
 /*****************************************************************************/

@@ -26,7 +26,7 @@ $(function() {
                  },
                 title: '<?php
                     echo '<h2>';
-                    echo get_string('updateassignedcourses', 'local_plan');
+                    echo get_string('updatecourses', 'local_plan');
                     echo '</h2>';
                 ?>'
             },
@@ -61,7 +61,7 @@ totaraDialog_handler_preRequisite.prototype._update = function(response) {
     $('.noitems-'+this._title).remove();
 
     // Grab table
-    var table = $('div#content form table.logtable');
+    var table = $('div#content form#dp-component-update table.dp-plan-component-items');
 
     // If no table found by ID
     if (table.size()) {
@@ -69,5 +69,5 @@ totaraDialog_handler_preRequisite.prototype._update = function(response) {
     }
 
     // Add new table
-    $('div#content form input[type=submit]').before(response);
+    $('div#content form#dp-component-update input[name=submitbutton]').before(response);
 }

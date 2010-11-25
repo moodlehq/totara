@@ -85,9 +85,15 @@ $string['signoff'] = 'Sign-off';
 $string['setting'] = 'Setting';
 $string['before'] = 'Before';
 $string['after'] = 'After';
+$string['error:settingdoesnotexist'] = 'Setting \"$b"\ does not exist in the component \"$a\"';
 
-//Course Strings
+
+// Course Strings
+$string['error:cannotupdatecourses'] = 'Cannot update courses';
+$string['requestcourses'] = 'Request courses';
 $string['updatecourse'] = 'Update';
+$string['updatecourses'] = 'Update courses';
+
 
 //Competency Strings
 $string['updatecompetency'] = 'Update';
