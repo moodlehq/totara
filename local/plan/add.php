@@ -63,7 +63,7 @@ if ($data = $form->get_data()) {
         // Set up the plan
         if (!$newid = insert_record('dp_plan', $data)) {
             rollback_sql();
-            totara_set_notification(get_string('plancreatefail', 'local_plan'), $currenturl);
+            totara_set_notification(get_string('plancreatefail', 'local_plan', get_string('couldnotinsertnewrecord', 'local_plan')), $currenturl);
         }
         $plan = new development_plan($newid);
 
@@ -77,14 +77,14 @@ if ($data = $form->get_data()) {
                 // From organisation
                 if (!$competencycomponent->assign_from_org()) {
                     rollback_sql();
-                    totara_set_notification(get_string('plancreatefail', 'local_plan'), $currenturl);
+                    totara_set_notification(get_string('plancreatefail', 'local_plan', get_string('unabletoassigncomps', 'local_plan')), $currenturl);
                 }
             }
             if ($competencycomponent->get_setting('autoassignpos')) {
                 // From position
                 if (!$competencycomponent->assign_from_pos()) {
                     rollback_sql();
-                    totara_set_notification(get_string('plancreatefail', 'local_plan'), $currenturl);
+                    totara_set_notification(get_string('plancreatefail', 'local_plan', get_string('unabletoassignpos', 'local_plan')), $currenturl);
                 }
             }
             unset($competencycomponent);

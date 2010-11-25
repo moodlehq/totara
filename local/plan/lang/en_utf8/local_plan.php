@@ -157,6 +157,10 @@ $string['error:templateid'] = 'Invalid plan template ID';
 
 $string['cannotdeletetemplate_inuse'] = 'Cannot detele template when it is in use';
 
+$string['couldnotinsertnewrecord'] = 'Could not insert new record';
+$string['unabletoassigncomps'] = 'Unable to assign competencies';
+$string['unabletoassignpos'] = 'Unable to assign positions';
+
 // Workflows
 $string['workflowsettings'] = 'Workflow settings';
 $string['advancedworkflow'] = 'Advanced workflow settings';
@@ -309,7 +313,7 @@ $string['planname'] = 'Plan name';
 $string['plandescription'] = 'Plan description';
 $string['datestarted'] = 'Date started';
 $string['plancreatesuccess'] = 'Plan creation successful';
-$string['plancreatefail'] = 'Plan creation failed';
+$string['plancreatefail'] = 'Plan creation failed - $a';
 $string['planupdatesuccess'] = 'Plan update successful';
 $string['planupdatefail'] = 'Plan update failed';
 $string['planupdatecancelled'] = 'Plan update cancelled';
