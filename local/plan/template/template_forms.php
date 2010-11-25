@@ -1,6 +1,7 @@
 <?php
 
 require_once "$CFG->dirroot/lib/formslib.php";
+require_once("$CFG->libdir/tablelib.php");
 
 class dp_template_general_settings_form extends moodleform {
     function definition(){
@@ -209,6 +210,7 @@ class dp_template_advanced_workflow_form extends moodleform {
 class dp_components_form extends moodleform {
     function definition() {
         global $CFG;
+
         $mform =& $this->_form;
         $templateid = $this->_customdata['id'];
 
