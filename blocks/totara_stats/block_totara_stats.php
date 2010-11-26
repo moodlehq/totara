@@ -50,10 +50,10 @@ class block_totara_stats extends block_base {
         $this->content->text   = '';
         $this->content->footer = '';
 
-        if ($this->instance_is_dashlet()) {
+        if (instance_is_dashlet($this)) {
             require_once($CFG->dirroot.'/blocks/totara_stats/locallib.php');
             // get Role of user in this page.
-            $role = totara_stats_get_dashrole($this->instance->pageid);
+            $role = get_dashlet_role($this->instance->pageid);
             //now get sql required to return stats
             $stats = totara_stats_build_sql($role, $USER, $this->config);
             if (!empty($stats)) {
@@ -68,15 +68,6 @@ class block_totara_stats extends block_base {
 
     function instance_allow_multiple() {
         return false;
-    }
-
-
-    /**
-    * Determines whether the block instance is a dashlet, on a dashboard page
-    * @return boolean
-    **/
-    function instance_is_dashlet() {
-        return ($this->instance->pagetype == 'totara-dashboard' && $this->instance->position == 'c');
     }
 
     function cron() {

@@ -74,7 +74,7 @@ class block_quicklinks extends block_base {
     function instance_allow_config() {
         $context = get_context_instance(CONTEXT_BLOCK, $this->instance->id);
 
-        if ($this->instance_is_dashlet()) {
+        if (instance_is_dashlet($this)) {
             return (has_capability('block/quicklinks:manageownlinks', $context) || has_capability('block/quicklinks:managealllinks', $context));
         } else {
             return has_capability('block/quicklinks:managealllinks', $context);
@@ -97,7 +97,7 @@ class block_quicklinks extends block_base {
             }
            // Save the block link
            $link = new stdClass;
-           $link->userid = $this->instance_is_dashlet() ? $USER->id : 0;
+           $link->userid = instance_is_dashlet($this) ? $USER->id : 0;
            $link->block_instance_id = $this->instance->id;
            $link->title = empty($data->linktitle) ? $data->url : $data->linktitle;
            $link->url = $data->url;
@@ -123,14 +123,9 @@ class block_quicklinks extends block_base {
 
         // Add some default quicklinks
         $links = array();
-        if ($this->instance_is_dashlet()) {
+        if (instance_is_dashlet($this)) {
             // Insert default links, according to role
-            $sql = "SELECT r.shortname
-                FROM {$CFG->prefix}dashb d
-                INNER JOIN {$CFG->prefix}dashb_instance di ON d.id = di.dashb_id
-                INNER JOIN {$CFG->prefix}role r on d.roleid = r.id
-                WHERE di.id = {$this->instance->pageid}";       // The pageid is the dashb instance id
-            $role = get_field_sql($sql);
+            $role = get_dashlet_role($this->instance->pageid);
 
             switch ($role) {
                 case 'admin' :
@@ -163,7 +158,7 @@ class block_quicklinks extends block_base {
             $link->title = $title;
             $link->url = $url;
             $link->displaypos = $poscount;
-            $link->userid = $this->instance_is_dashlet() ? $USER->id : 0;
+            $link->userid = instance_is_dashlet($this) ? $USER->id : 0;
             insert_record('block_quicklinks', $link);
             $poscount++;
         }
@@ -190,14 +185,6 @@ class block_quicklinks extends block_base {
         } else {
             return s($textlib->substr($title,0,$max-3).'...');
         }
-    }
-
-    /**
-    * Determines whether the block instance is a dashlet, on a dashboard page
-    * @return boolean
-    **/
-    function instance_is_dashlet() {
-        return ($this->instance->pagetype == 'totara-dashboard' && $this->instance->position == 'c');
     }
 }
 

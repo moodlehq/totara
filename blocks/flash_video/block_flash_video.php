@@ -18,14 +18,9 @@ class block_flash_video extends block_base {
 		}
 
 
-        if ($this->instance_is_dashlet()) {
+        if (instance_is_dashlet($this)) {
             // Insert default links, according to role
-            $sql = "SELECT r.shortname
-                FROM {$CFG->prefix}dashb d
-                INNER JOIN {$CFG->prefix}dashb_instance di ON d.id = di.dashb_id
-                INNER JOIN {$CFG->prefix}role r on d.roleid = r.id
-                WHERE di.id = {$this->instance->pageid}";       // The pageid is the dashb instance id
-            $role = get_field_sql($sql);
+            $role = get_dashlet_role($this->instance->pageid);
 
             // Create content
             $this->content = new object();
@@ -77,12 +72,5 @@ class block_flash_video extends block_base {
 		return 210;
     }
 
-    /**
-    * Determines whether the block instance is a dashlet, on a dashboard page
-    * @return boolean
-    **/
-    function instance_is_dashlet() {
-        return ($this->instance->pagetype == 'totara-dashboard' && $this->instance->position == 'c');
-    }
 }
 ?>

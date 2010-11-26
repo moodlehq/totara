@@ -765,3 +765,31 @@ function totara_reset_stickyblocks($remove=false, $path='local') {
     return true;
 
 }
+
+
+/**
+ * Determines whether the block instance is a dashlet, on a dashboard page
+ * @return boolean
+ **/
+function instance_is_dashlet($dashlet) {
+    return ($dashlet->instance->pagetype == 'totara-dashboard' && $dashlet->instance->position == 'c');
+}
+
+
+/**
+ * returns role of user in dashlet page
+ *
+ * @param int $pageid
+ * @return string rolename
+ */
+function get_dashlet_role($pageid) {
+    global $CFG;
+    // get Role of user in this page.
+    $sql = "SELECT r.shortname
+            FROM {$CFG->prefix}dashb d
+            INNER JOIN {$CFG->prefix}dashb_instance di ON d.id = di.dashb_id
+            INNER JOIN {$CFG->prefix}role r on d.roleid = r.id
+            WHERE di.id = {$pageid}";       // The pageid is the dashb instance id
+    $role = get_field_sql($sql);
+    return $role;
+}

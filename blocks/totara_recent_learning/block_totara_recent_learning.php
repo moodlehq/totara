@@ -29,7 +29,7 @@
  *
  * Displays recent completed courses
  */
-class block_recentlearning extends block_list {
+class block_totara_recent_learning extends block_list {
 
     public function init() {
         $this->title   = get_string('recentlearning', 'block_recentlearning');

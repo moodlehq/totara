@@ -903,15 +903,15 @@ span.coursecompletionstatus span.completion-completeviarpl {
  * Recent Learning block
  */
 
-div.block_recentlearning table {
+div.block_totara_recent_learning table {
     width:100%;
 }
 
-div.block_recentlearning table td.course {
+div.block_totara_recent_learning table td.course {
     width:80%;
 }
 
-div.block_recentlearning td.status span,
+div.block_totara_recent_learning td.status span,
 span.coursecompletionstatus span {
     text-indent: -1000px;
     display: block;
@@ -920,13 +920,13 @@ span.coursecompletionstatus span {
     background: transparent url(images/progress-icons.png) no-repeat;
 }
 
-div.block_recentlearning td.status span.completion-inprogress,
+div.block_totara_recent_learning td.status span.completion-inprogress,
 span.coursecompletionstatus span.completion-inprogress {
     background-position: 0px -12px;
 }
 
-div.block_recentlearning td.status span.completion-complete,
-div.block_recentlearning td.status span.completion-completeviarpl,
+div.block_totara_recent_learning td.status span.completion-complete,
+div.block_totara_recent_learning td.status span.completion-completeviarpl,
 span.coursecompletionstatus span.completion-complete,
 span.coursecompletionstatus span.completion-completeviarpl {
     background-position: 0px -24px;

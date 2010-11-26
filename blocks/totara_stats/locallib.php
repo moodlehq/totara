@@ -282,7 +282,7 @@ function totara_stats_get_logs($from, $to, $courseid=null) {
  * @param int $pageid
  * @return string rolename
  */
-function totara_stats_get_dashrole($pageid) {
+/*function totara_stats_get_dashrole($pageid) {
     global $CFG;
     // get Role of user in this page.
     $sql = "SELECT r.shortname
@@ -292,7 +292,7 @@ function totara_stats_get_dashrole($pageid) {
             WHERE di.id = {$pageid}";       // The pageid is the dashb instance id
     $role = get_field_sql($sql);
     return $role;
-}
+}*/
 
 function totara_stats_build_sql($role, $user, $config=null) {
     switch ($role) {

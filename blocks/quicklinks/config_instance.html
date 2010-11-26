@@ -6,7 +6,7 @@ global $USER;
 //$page = page_create_object($this->instance->pagetype, $this->instance->pageid);
 
 $context = get_context_instance(CONTEXT_BLOCK, $this->instance->id);
-if ($this->instance_is_dashlet()) {
+if (instance_is_dashlet($this)) {
     if (!has_capability('block/quicklinks:manageownlinks', $context) && !has_capability('block/quicklinks:managealllinks', $context)) {
         print_error('accessdenied', 'block_quicklinks');
     }

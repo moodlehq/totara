@@ -536,7 +536,7 @@ function local_dashboard_install() {
                 'pos' => 0,
             ),
             array(
-                'name' => 'recentlearning',
+                'name' => 'totara_recent_learning',
                 'col' => 1,
                 'pos' => 1,
             ),

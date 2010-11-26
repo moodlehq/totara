@@ -121,26 +121,15 @@ class block_totara_reminders extends block_base {
     **/
     function current_roleid() {
         global $CFG;
-        if ($this->instance_is_dashlet()) {
+        if (instance_is_dashlet($this)) {
             // what dashlet role is this
-            $sql = "SELECT d.roleid
-                FROM {$CFG->prefix}dashb d
-                INNER JOIN {$CFG->prefix}dashb_instance di ON d.id = di.dashb_id
-                WHERE di.id = {$this->instance->pageid}";       // The pageid is the dashb instance id
-            $roleid = get_field_sql($sql);
+            $role = get_dashlet_role($this->instance->pageid);
+            $roleid = get_field('role', 'id', 'shortname', $role);
             return $roleid;
         }
         else {
             return false;
         }
-    }
-
-    /**
-    * Determines whether the block instance is a dashlet, on a dashboard page
-    * @return boolean
-    **/
-    function instance_is_dashlet() {
-        return ($this->instance->pagetype == 'totara-dashboard' && $this->instance->position == 'c');
     }
 }
 
