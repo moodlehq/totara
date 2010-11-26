@@ -166,7 +166,7 @@ class Dashboard {
 
                     $instance = get_record('block_instance', 'id', $dlet->block_instance_id);
                     if (!$block = block_instance($dlet->blockname, $instance)) {
-                        report_error('Dashlet class not found...');
+                        print_error('Dashlet class not found...');
                     }
 
                     $controls = array();

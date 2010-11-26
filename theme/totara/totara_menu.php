@@ -27,7 +27,7 @@
                  $text ='<li><a href="'.$CFG->wwwroot.'/my/learning.php">'.get_string('dashboard', 'local_dashboard').'</a></li>';
                  $text .='<li><a href="'.$CFG->wwwroot.'/local/plan/index.php">'.get_string('learningplans', 'local').'</a></li>';
                  $text .='<li><a href="'.$CFG->wwwroot.'/my/bookings.php">'.get_string('mybookings', 'local').'</a></li>';
-                 $text .='<li class="last"><a href="'.$CFG->wwwroot.'/my/records.php">'.get_string('myrecordoflearning', 'local').'</a></li>';
+                 $text .='<li class="last"><a href="'.$CFG->wwwroot.'/local/plan/record/courses.php">'.get_string('recordoflearning', 'local').'</a></li>';
                  echo $text;
             ?>
             </ul>
