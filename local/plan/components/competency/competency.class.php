@@ -601,6 +601,9 @@ class dp_competency_component extends dp_base_component {
 
         $priorityscaleid = ($this->get_setting('priorityscale')) ? $this->get_setting('priorityscale') : -1;
 
+        $priorityenabled = $this->get_setting('prioritymode') != DP_PRIORITY_NONE;
+        $duedateenabled = $this->get_setting('duedatemode') != DP_DUEDATES_NONE;
+
         // get competency assignment and competency details
         $sql = 'SELECT ca.*, comp.*, psv.name ' . sql_as() . ' priorityname ' .
             "FROM {$CFG->prefix}dp_plan_competency_assign ca
@@ -624,19 +627,23 @@ class dp_competency_component extends dp_base_component {
         // @todo add competency icon
         $out .= '<h3>' . $item->fullname . '</h3>';
         $out .= '<table border="0">';
-        $out .= '<tr><th>';
-        $out .= get_string('priority', 'local_plan') . ':';
-        $out .= '</td><th>';
-        $out .= $this->display_priority_as_text($item->priority,
-            $item->priorityname, $priorityvalues);
-        $out .= '</td></tr>';
-        $out .= '<tr><th>';
-        $out .= get_string('duedate', 'local_plan') . ':';
-        $out .= '</th><td>';
-        $out .= $this->display_duedate_as_text($item->duedate);
-        $out .= '<br />';
-        $out .= $this->display_duedate_highlight_info($item->duedate);
-        $out .= '</td></tr>';
+        if($priorityenabled) {
+            $out .= '<tr><th>';
+            $out .= get_string('priority', 'local_plan') . ':';
+            $out .= '</td><th>';
+            $out .= $this->display_priority_as_text($item->priority,
+                $item->priorityname, $priorityvalues);
+            $out .= '</td></tr>';
+        }
+        if($duedateenabled) {
+            $out .= '<tr><th>';
+            $out .= get_string('duedate', 'local_plan') . ':';
+            $out .= '</th><td>';
+            $out .= $this->display_duedate_as_text($item->duedate);
+            $out .= '<br />';
+            $out .= $this->display_duedate_highlight_info($item->duedate);
+            $out .= '</td></tr>';
+        }
         $out .= '</table>';
         $out .= '<p>' . $item->description . '</p>';
 

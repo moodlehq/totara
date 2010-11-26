@@ -431,6 +431,8 @@ class dp_course_component extends dp_base_component {
         global $CFG;
 
         $priorityscaleid = ($this->get_setting('priorityscale')) ? $this->get_setting('priorityscale') : -1;
+        $priorityenabled = $this->get_setting('prioritymode') != DP_PRIORITY_NONE;
+        $duedateenabled = $this->get_setting('duedatemode') != DP_DUEDATES_NONE;
 
         $sql = 'SELECT ca.*, course.*, psv.name ' . sql_as() . ' priorityname ' .
             "FROM {$CFG->prefix}dp_plan_course_assign ca
@@ -455,19 +457,23 @@ class dp_course_component extends dp_base_component {
         $icon = "<img class=\"course_icon\" src=\"{$CFG->wwwroot}/local/icon.php?icon={$item->icon}&amp;id={$item->courseid}&amp;size=small&amp;type=course\" alt=\"{$item->fullname}\">";
         $out .= '<h3>' . $icon . $item->fullname . '</h3>';
         $out .= '<table border="0">';
-        $out .= '<tr><th>';
-        $out .= get_string('priority', 'local_plan') . ':';
-        $out .= '</td><th>';
-        $out .= $this->display_priority_as_text($item->priority,
-            $item->priorityname, $priorityvalues);
-        $out .= '</td></tr>';
-        $out .= '<tr><th>';
-        $out .= get_string('duedate', 'local_plan') . ':';
-        $out .= '</th><td>';
-        $out .= $this->display_duedate_as_text($item->duedate);
-        $out .= '<br />';
-        $out .= $this->display_duedate_highlight_info($item->duedate);
-        $out .= '</td></tr>';
+        if($priorityenabled) {
+            $out .= '<tr><th>';
+            $out .= get_string('priority', 'local_plan') . ':';
+            $out .= '</td><th>';
+            $out .= $this->display_priority_as_text($item->priority,
+                $item->priorityname, $priorityvalues);
+            $out .= '</td></tr>';
+        }
+        if($duedateenabled) {
+            $out .= '<tr><th>';
+            $out .= get_string('duedate', 'local_plan') . ':';
+            $out .= '</th><td>';
+            $out .= $this->display_duedate_as_text($item->duedate);
+            $out .= '<br />';
+            $out .= $this->display_duedate_highlight_info($item->duedate);
+            $out .= '</td></tr>';
+        }
         $out .= '</table>';
         $out .= '<p>' . $item->summary . '</p>';
         $out .= '<p><a href="' . $CFG->wwwroot . '/course/view.php?id=' . $item->courseid . '">' . get_string('launchcourse', 'local_plan') . '</a></p>';

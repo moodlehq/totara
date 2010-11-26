@@ -85,8 +85,13 @@ abstract class dp_base_component {
         // Change to use default priority instead
         $plancompleted = ($this->plan->status == DP_PLAN_STATUS_COMPLETE);
         $cansetpriority = !$plancompleted && ($this->get_setting('setpriority') == DP_PERMISSION_ALLOW);
+        $priorityenabled = $this->get_setting('prioritymode') != DP_PRIORITY_NONE;
         $priorityrequired = ($this->get_setting('prioritymode') == DP_PRIORITY_REQUIRED);
         $out = '';
+
+        if(!$priorityenabled) {
+            return $out;
+        }
 
         if ($cansetpriority) {
             // show a pulldown menu of priority options
@@ -119,6 +124,7 @@ abstract class dp_base_component {
     }
 
     function display_priority_as_text($priorityid, $priorityname, $priorityvalues) {
+
         // class (for styling priorities) is of the format:
         // priorityXofY
         // theme only defines styles up to DP_MAX_PRIORITY_OPTIONS so limit
