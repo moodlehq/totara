@@ -25,7 +25,7 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 require_once $CFG->libdir.'/completionlib.php';
-
+require_once $CFG->dirroot.'/blocks/totara_stats/locallib.php';
 
 /**
  * Update user's course completion statuses
@@ -293,6 +293,9 @@ function completion_cron_completions() {
 
                 $ccompletion = new completion_completion(array('course' => $params->course, 'userid' => $params->userid));
                 $ccompletion->mark_complete($timecompleted);
+
+                echo '###################################--------------------------------->';
+                totara_stats_add_event(time(), $params->userid, STATS_EVENT_COURSE_COMPLETE, '', $params->course);
             }
         }
 
@@ -320,9 +323,6 @@ function completion_cron_completions() {
     ";
 
     execute_sql($sql, false);
-
-    totara_stats_add_event(time(), $current_user, STATS_EVENT_COURSE_STARTED, '', $currentcourse);
-
 }
 
 /**
