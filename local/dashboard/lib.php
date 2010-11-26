@@ -510,7 +510,7 @@ function local_dashboard_install() {
         $todb->dashb_id = $dbid;
         $todb->userid = 0;
         $todb->cols = 3;
-        $todb->colwidth = 210;
+        $todb->colwidth = 290;
         $dbiid = insert_record('dashb_instance', $todb);
         if(!$dbiid) {
             $status = false;
