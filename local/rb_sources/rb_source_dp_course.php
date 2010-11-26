@@ -46,7 +46,7 @@ class rb_source_dp_course extends rb_base_source {
         $this->columnoptions = $this->define_columnoptions();
         $this->filteroptions = $this->define_filteroptions();
         $this->contentoptions = $this->define_contentoptions();
-        $this->paramoptions = array();
+        $this->paramoptions = $this->define_paramoptions();
         $this->defaultcolumns = array();
         $this->defaultfilters = array();
         $this->requiredcolumns = array();
@@ -283,23 +283,36 @@ from
         return $contentoptions;
     }
 
+    private function define_paramoptions() {
+        global $CFG;
+        require_once($CFG->dirroot.'/local/plan/lib.php');
+        $paramoptions = array();
+
+        $paramoptions[] = new rb_param_option(
+                'userid',
+                'base.userid',
+                'base'
+        );
+        $paramoptions[] = new rb_param_option(
+                'planstatus',
+                '(case '.
+                    'when dp_course.planstatus='. DP_PLAN_STATUS_COMPLETE . ' then \'completed\' '.
+                    'when dp_course.planstatus in ('. DP_PLAN_STATUS_APPROVED .','. DP_PLAN_STATUS_UNAPPROVED.') then \'active\' '.
+                    'else \'disapproved\' '.
+                'end)',
+                'dp_course',
+                'string'
+        );
+        return $paramoptions;
+    }
+
     /**
-     * Display a string representing the completion status (for use as a
-     * column displayfunc)
-     *
-     * @param int $timecompleted
+     * Generate the plan title with a link to the plan
+     * @global object $CFG
+     * @param string $planname
      * @param object $row
      * @return string
      */
-    public function rb_display_completion_status($timecompleted, $row){
-
-        if ( empty($timecompleted) ){
-            return "In progress";
-        } else {
-            return "Completed " . $this->rb_display_nice_date($timecompleted, $row);
-        }
-    }
-
     public function rb_display_planlink($planname, $row){
         global $CFG;
 
