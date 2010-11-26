@@ -70,6 +70,7 @@ if ($data = $form->get_data()) {
             print_error('error:nopermissions', 'local_plan');
         }
         if ($plan->set_status(DP_PLAN_STATUS_COMPLETE)) {
+            $plan->send_completion_notification();
             totara_set_notification(get_string('plancompletesuccess', 'local_plan', $plan->name), $viewurl, array('style' => 'notifysuccess'));
         } else {
             totara_set_notification(get_string('plancompletefail', 'local_plan', $plan->name), $viewurl);
