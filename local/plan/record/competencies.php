@@ -155,22 +155,24 @@
     // tab bar
     $tabs = array();
     $row = array();
-    $activated = array();
-    $inactive = array();
+
+    $coursename = get_config(null, 'dp_course');
+    $coursename = $coursename ? $coursename : get_string('course_defaultname', 'local_plan');
+    $competencyname = get_config(null, 'dp_competency');
+    $competencyname = $competencyname ? $competencyname : get_string('competency_defaultname', 'local_plan');
 
     // overview tab
     $row[] = new tabobject(
             'courses',
             $CFG->wwwroot . '/local/plan/record/courses.php?status=' . $planstatus,
-            "{$ustatus} " . get_config('','dp_course')
+            "{$ustatus} " . $coursename
     );
     $row[] = new tabobject(
             'competencies',
             $CFG->wwwroot . '/local/plan/record/competencies.php?status=' . $planstatus,
-            "{$ustatus} ".get_config('', 'dp_competency')
+            "{$ustatus} " . $competencyname
     );
     $tabs[] = $row;
-//    $activated[] = $currenttab;
 
     echo "\n<ul>\n";
     foreach( array('all','active','completed') as $s ){
@@ -182,7 +184,7 @@
     }
     echo "</ul>\n";
 
-    echo print_tabs($tabs, 1, $inactive, $activated, true);
+    echo print_tabs($tabs, 'competencies', null, null, true);
 
 
     // display table here
