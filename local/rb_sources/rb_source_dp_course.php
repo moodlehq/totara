@@ -72,15 +72,6 @@ class rb_source_dp_course extends rb_base_source {
         // to get access to position type constants
         require_once($CFG->dirroot . '/local/reportbuilder/classes/rb_join.php');
 
-        $joinlist[] = new rb_join(
-                'course',
-                'LEFT',
-                $CFG->prefix . 'course',
-                'base.courseid = course.id',
-                REPORT_BUILDER_RELATION_MANY_TO_ONE,
-                array('base')
-        );
-
         /**
          * dp_plan has userid, dp_plan_course_assign has courseid. In order to
          * avoid multiplicity we need to join them together before we join
@@ -132,6 +123,7 @@ from
                 array('dp_course','base')
         );
 
+        $this->add_course_table_to_joinlist($joinlist, 'base', 'courseid');
         $this->add_user_table_to_joinlist($joinlist, 'base','userid');
 
         return $joinlist;
@@ -146,63 +138,7 @@ from
     private function define_columnoptions() {
         $columnoptions = array();
 
-        $columnoptions[] = new rb_column_option(
-                'course',
-                'fullname',
-                'Course fullname',
-                'course.fullname',
-                array(
-                    'defaultheading' => 'Course title',
-                    'joins'=>'course'
-                )
-        );
-        $columnoptions[] = new rb_column_option(
-                'course',
-                'shortname',
-                'Course shortname',
-                'course.shortname',
-                array(
-                    'defaultheading' => 'Course title',
-                    'joins'=>'course'
-                )
-        );
-
-        $columnoptions[] = new rb_column_option(
-                'course',
-                'duedate',
-                'Course due date',
-                'dp_course.duedate',
-                array(
-                    'joins' => 'dp_course',
-                    'displayfunc' => 'nice_date'
-                )
-        );
-
-        $columnoptions[] = new rb_column_option(
-                'course',
-                'icon',
-                'Course icon',
-                'course.icon',
-                array(
-                    'joins'=>'course',
-                    'displayfunc'=>'course_icon',
-                    'noexport'=>true,
-                    'extrafields'=>array(
-                        'courseidforicon' => 'course.id',
-                        'courseshortnameforicon' => 'course.shortname'
-                    )
-                )
-        );
-
-        $columnoptions[] = new rb_column_option(
-                'course',
-                'priority',
-                'Priority',
-                'priority.name',
-                array(
-                    'joins' => 'priority'
-                )
-        );
+        $this->add_course_fields_to_columns($columnoptions);
 
         $columnoptions[] = new rb_column_option(
                 'plan',
@@ -212,6 +148,18 @@ from
                 array(
                     'defaultheading' => 'Plan',
                     'joins' => 'dp_course'
+                )
+        );
+        $columnoptions[] = new rb_column_option(
+                'plan',
+                'planlink',
+                'Plan name (linked to plan page)',
+                'dp_course.planname',
+                array(
+                    'defaultheading' => 'Plan',
+                    'joins' => 'dp_course',
+                    'displayfunc' => 'planlink',
+                    'extrafields' => array( 'plan_id'=>'dp_course.planid' )
                 )
         );
         $columnoptions[] = new rb_column_option(
@@ -246,6 +194,29 @@ from
         );
 
         $columnoptions[] = new rb_column_option(
+                'plan',
+                'courseduedate',
+                'Course due date',
+                'dp_course.duedate',
+                array(
+                    'joins' => 'dp_course',
+                    'displayfunc' => 'nice_date'
+                )
+        );
+
+        $columnoptions[] = new rb_column_option(
+                'plan',
+                'coursepriority',
+                'Course Priority',
+                'priority.name',
+                array(
+                    'joins' => 'priority'
+                )
+        );
+
+        $this->add_user_fields_to_columns($columnoptions);
+
+        $columnoptions[] = new rb_column_option(
                 'template',
                 'name',
                 'Plan template name',
@@ -275,9 +246,6 @@ from
                     'displayfunc'=>'nice_date'
                 )
         );
-
-
-        $this->add_user_fields_to_columns($columnoptions);
 
         return $columnoptions;
     }
@@ -332,24 +300,12 @@ from
         }
     }
 
-    /**
-     * Display the course icon (for use a a column displayfunc)
-     *
-     * @global object $CFG
-     * @param int $courseid
-     * @param object $row
-     * @return string
-     */
-    public function rb_display_course_icon($icon, $row){
+    public function rb_display_planlink($planname, $row){
         global $CFG;
-        $course = new stdClass();
-        $course->icon = $icon;
-        $course->id = $row->courseidforicon;
-        $course->shortname = $row->courseshortnameforicon;
 
-        require_once($CFG->dirroot.'/local/lib.php');
-        return local_course_icon_tag($course);
+        return "<a href=\"{$CFG->wwwroot}/local/plan/view.php?id={$row->plan_id}\">$planname</a>";
     }
+
 
     /**
      * Display the plan's status (for use as a column displayfunc)
