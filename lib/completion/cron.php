@@ -320,6 +320,9 @@ function completion_cron_completions() {
     ";
 
     execute_sql($sql, false);
+
+    totara_stats_add_event(time(), $current_user, STATS_EVENT_COURSE_STARTED, '', $currentcourse);
+
 }
 
 /**

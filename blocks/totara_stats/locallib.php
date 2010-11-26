@@ -170,22 +170,22 @@ function totara_stats_manager_stats($user, $config=null) {
     }
     if (empty($config) || !empty($config->statcoursesstarted)) {
         $statssql[2]->sql = "SELECT count(*) FROM {$CFG->prefix}block_totara_stats ".
-                            "WHERE eventtype = ". STATS_EVENT_COURSE_STARTED. " AND timestamp > ".$from. " AND timestamp < ".$to.$usersql.
+                            "WHERE eventtype = ". STATS_EVENT_COURSE_STARTED. " AND timestamp > ".$from. " AND timestamp < ".$to.$usersql;
         $statssql[2]->string = 'statcoursesstarted';
     }
     if (empty($config) || !empty($config->statcoursescompleted)) {
         $statssql[3]->sql = "SELECT count(*) FROM {$CFG->prefix}block_totara_stats ".
-                            "WHERE eventtype = ". STATS_EVENT_COURSE_COMPLETE. " AND timestamp > ".$from. " AND timestamp < ".$to.$usersql.
+                            "WHERE eventtype = ". STATS_EVENT_COURSE_COMPLETE. " AND timestamp > ".$from. " AND timestamp < ".$to.$usersql;
         $statssql[3]->string = 'statcoursescompleted';
     }
     if (empty($config) || !empty($config->statcompachieved)) {
         $statssql[4]->sql = "SELECT count(*) FROM {$CFG->prefix}block_totara_stats ".
-                            "WHERE eventtype = ". STATS_EVENT_COMP_ACHIEVED. " AND timestamp > ".$from. " AND timestamp < ".$to.$usersql.
+                            "WHERE eventtype = ". STATS_EVENT_COMP_ACHIEVED. " AND timestamp > ".$from. " AND timestamp < ".$to.$usersql;
         $statssql[4]->string = 'statcompachieved';
     }
     if (empty($config) || !empty($config->statobjachieved)) {
         $statssql[5]->sql = "SELECT count(*) FROM {$CFG->prefix}block_totara_stats ".
-                            "WHERE eventtype = ". STATS_EVENT_OBJ_ACHIEVED. " AND timestamp > ".$from. " AND timestamp < ".$to.$usersql.
+                            "WHERE eventtype = ". STATS_EVENT_OBJ_ACHIEVED. " AND timestamp > ".$from. " AND timestamp < ".$to.$usersql;
         $statssql[5]->string = 'statobjachieved';
     }
     return $statssql;
