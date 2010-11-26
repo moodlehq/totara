@@ -345,3 +345,5 @@ $string['checkplancomplete'] = 'Are you sure you want to complete plan $a';
 $string['plancompletesuccess'] = 'Successfully completed plan $a';
 $string['plancompletefail'] = 'Completing plan $a failed';
 $string['cannotdelete_inuse'] = 'You cannot delete this template because there are plans using it.';
+$string['planapprovalrequested'] = 'Plan approval requested for <a href=\"{$CFG->wwwroot}/local/plan/view.php?id={$a->planid}&userid={$a->userid}\">{$a->planname}</a>';
+

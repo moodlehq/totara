@@ -12,6 +12,7 @@
 
 require_once('../../config.php');
 require_once('lib.php');
+require_once($CFG->dirroot.'/local/totara_msg/messagelib.php');
 
 require_login();
 require_capability('local/plan:accessplan', get_system_context());
@@ -26,8 +27,6 @@ $signoff = optional_param('signoff', 0, PARAM_BOOL);
 
 // Is this an ajax call?
 $ajax = optional_param('ajax', 0, PARAM_BOOL);
-
-
 $referer = optional_param('referer', get_referer(false), PARAM_URL);
 
 if (!confirm_sesskey()) {
@@ -41,36 +40,37 @@ if (!confirm_sesskey()) {
 
 $plan = new development_plan($id);
 
+// @todo: handle action failure notifications
 if (!empty($approve)) {
     if (in_array($plan->get_setting('confirm'), array(DP_PERMISSION_ALLOW, DP_PERMISSION_APPROVE))) {
        $plan->set_status(DP_PLAN_STATUS_APPROVED);
-    }
-    if (empty($ajax)) {
-        totara_set_notification(get_string('planapproved', 'local_plan', $plan->name), $referer, array('style' => 'notifysuccess'));
+       $plan->send_approved_notification();
+       totara_set_notification(get_string('planapproved', 'local_plan', $plan->name), $referer, array('style' => 'notifysuccess'));
+    } else {
+        if (empty($ajax)) {
+            totara_set_notification(get_string('nopermission', 'local_plan'), $referer, array('style' => 'notifysuccess'));
+        }
     }
 
 } elseif (!empty($decline)) {
     if (in_array($plan->get_setting('confirm'), array(DP_PERMISSION_ALLOW, DP_PERMISSION_APPROVE))) {
         $plan->set_status(DP_PLAN_STATUS_DECLINED);
-    }
-
-   if (empty($ajax)) {
+        $plan->send_declined_notification();
         totara_set_notification(get_string('plandeclined', 'local_plan', $plan->name), $referer, array('style' => 'notifysuccess'));
+    } else {
+        if (empty($ajax)) {
+            totara_set_notification(get_string('nopermission', 'local_plan'), $referer);
+        }
     }
 } elseif (!empty($approvalrequest)) {
     if ($plan->get_setting('confirm') == DP_PERMISSION_REQUEST) {
-        /*
-        require_once($CFG->dirroot.'/local/totara_msg/messagelib.php');
-        $event = new stdClass;
-        $user = get_record('user', 'id', 2);
-        $event->userto = $user;
-        $event->fullmessage = "Approve my plan!!";
-        tm_reminder_send($event);
-        */
-        // @todo: send approval request email to relevant parties
-    }
-    if (empty($ajax)) {
+        $plan->send_approval_request_reminder();
         totara_set_notification(get_string('approvalrequestsent', 'local_plan', $plan->name), $referer, array('style' => 'notifysuccess'));
+        // @todo: send approval request email to relevant user(s)
+    } else {
+        if (empty($ajax)) {
+            totara_set_notification(get_string('nopermission', 'local_plan'), $referer);
+        }
     }
 
 } elseif (!empty($delete)) {
@@ -95,10 +95,12 @@ if (!empty($approve)) {
         } else {
             // Delete the plan
             $plan->delete();
+            totara_set_notification(get_string('plandeletesuccess', 'local_plan', $plan->name), $referer, array('style' => 'notifysuccess'));
         }
-    }
-    if (empty($ajax)) {
-        totara_set_notification(get_string('plandeletesuccess', 'local_plan', $plan->name), $referer, array('style' => 'notifysuccess'));
+    } else {
+        if (empty($ajax)) {
+            totara_set_notification(get_string('nopermission', 'local_plan'), $referer);
+        }
     }
 } elseif (!empty($signoff)) {
     if ($plan->get_setting('signoff') == DP_PERMISSION_ALLOW) {
@@ -122,9 +124,12 @@ if (!empty($approve)) {
         } else {
             // Set plan status to complete
             $plan->set_status(DP_PLAN_STATUS_COMPLETE);
+            $plan->send_completion_notification();
+            totara_set_notification(get_string('plancompletesuccess', 'local_plan', $plan->name), $referer, array('style' => 'notifysuccess'));
         }
-    }
-    if (empty($ajax)) {
-        totara_set_notification(get_string('plancompletesuccess', 'local_plan', $plan->name), $referer, array('style' => 'notifysuccess'));
+    } else {
+        if (empty($ajax)) {
+            totara_set_notification(get_string('nopermission', 'local_plan'), $referer);
+        }
     }
 }

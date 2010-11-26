@@ -946,6 +946,93 @@ class development_plan {
             $this->set_status(DP_PLAN_STATUS_UNAPPROVED);
         }
     }
+
+    function send_approval_request_reminder() {
+        global $USER, $CFG;
+        require_once($CFG->dirroot.'/local/totara_msg/messagelib.php');
+
+        if ($managerid = dp_get_manager($this->userid)) {
+            $userto = get_record('user', 'id', $managerid);
+            $userfrom = get_record('user', 'id', $this->userid);
+
+            $event = new stdClass;
+            $event->userfrom = $userfrom;
+            $event->userto = $userto;
+            $event->urgency = TOTARA_MSG_URGENCY_URGENT;
+            $a = new stdClass;
+            $a->planid = $this->id;
+            $a->userid = $this->userid;
+            $a->planname = $this->name;
+            $event->fullmessage = get_string('planapprovalrequested', 'local_plan', $a);
+            $event->fullmessageformat = FORMAT_HTML;
+            tm_reminder_send($event);
+        }
+
+        $this->send_approval_request_notification();
+    }
+
+    function send_approval_request_notification() {
+        // Send notification to user
+        $userto = get_record('user', 'id', $this->userid);
+        $event = new stdClass;
+        $event->userto = $userto;
+        $a = new stdClass;
+        $a->planid = $this->id;
+        $a->userid = $this->userid;
+        $a->planname = $this->name;
+        $event->fullmessage = format_text(get_string('planapprovalrequested', 'local_plan', $a));
+        $event->fullmessageformat = FORMAT_HTML;
+        tm_notification_send($event);
+    }
+
+    function send_approved_notification() {
+        global $USER, $CFG;
+        require_once($CFG->dirroot.'/local/totara_msg/messagelib.php');
+
+        $userto = get_record('user', 'id', $this->userid);
+        $userfrom = get_record('user', 'id', $USER->id);
+
+        $event = new stdClass;
+        $event->userfrom = $userfrom;
+        $event->userto = $userto;
+        $event->fullmessage = get_string('planapproved', 'local_plan', $this->name);
+        tm_notification_send($event);
+    }
+
+    function send_declined_notification() {
+        global $USER, $CFG;
+        require_once($CFG->dirroot.'/local/totara_msg/messagelib.php');
+
+        $userto = get_record('user', 'id', $this->userid);
+        $userfrom = get_record('user', 'id', $USER->id);
+
+        $event = new stdClass;
+        $event->userfrom = $userfrom;
+        $event->userto = $userto;
+        $event->fullmessage = format_string(get_string('plandeclined', 'local_plan', $this->name));
+        tm_notification_send($event);
+    }
+
+    function send_completion_notification() {
+        global $USER, $CFG;
+        require_once($CFG->dirroot.'/local/totara_msg/messagelib.php');
+
+        // Send notification to manager
+        if ($managerid = dp_get_manager($this->userid)) {
+            $userto = get_record('user', 'id', $managerid);
+            $event = new stdClass;
+            $event->userto = $userto;
+            $event->fullmessage = format_text(get_string('plancompletesuccess', 'local_plan', $this->name));
+            tm_notification_send($event);
+        }
+
+        // Send notification to user
+        $userto = get_record('user', 'id', $this->userid);
+        $event = new stdClass;
+        $event->userto = $userto;
+        $event->fullmessage = format_text(get_string('plancompletesuccess', 'local_plan', $this->name));
+        tm_notification_send($event);
+    }
 }
 
 
