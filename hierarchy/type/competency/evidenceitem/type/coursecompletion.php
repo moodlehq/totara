@@ -110,10 +110,13 @@ class competency_evidence_type_coursecompletion extends competency_evidence_type
              ON cei.iteminstance = c.id
             INNER JOIN
                 {$CFG->prefix}course_completions cc
-             ON cc.course = c.id
+            ON cc.course = c.id
+            INNER JOIN
+                {$CFG->prefix}comp_scale_assignments csa
+            ON co.frameworkid = csa.frameworkid
             INNER JOIN
                 {$CFG->prefix}comp_scale cs
-             ON co.scaleid = cs.id
+                ON csa.scaleid = cs.id
             LEFT JOIN
                 {$CFG->prefix}comp_evidence_items_evidence ceie
              ON ceie.itemid = cei.id

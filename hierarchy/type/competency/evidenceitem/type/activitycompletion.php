@@ -164,8 +164,11 @@ class competency_evidence_type_activitycompletion extends competency_evidence_ty
                 {$CFG->prefix}course_modules_completion cmc
              ON cei.iteminstance = cmc.coursemoduleid
             INNER JOIN
+                {$CFG->prefix}comp_scale_assignments csa
+            ON co.frameworkid = csa.frameworkid
+            INNER JOIN
                 {$CFG->prefix}comp_scale cs
-             ON co.scaleid = cs.id
+             ON csa.scaleid = cs.id
             LEFT JOIN
                 {$CFG->prefix}comp_evidence_items_evidence ceie
              ON ceie.itemid = cei.id
