@@ -959,6 +959,8 @@ class development_plan {
             $event->userfrom = $userfrom;
             $event->userto = $userto;
             $event->urgency = TOTARA_MSG_URGENCY_URGENT;
+            // send to My Team dashboard
+            $event->roleid = get_field('role','id', 'shortname', 'manager');
             $a = new stdClass;
             $a->planid = $this->id;
             $a->userid = $this->userid;
@@ -1023,6 +1025,7 @@ class development_plan {
             $event = new stdClass;
             $event->userto = $userto;
             $event->fullmessage = format_text(get_string('plancompletesuccess', 'local_plan', $this->name));
+            $event->roleid = get_field('role','id', 'shortname', 'manager');
             tm_notification_send($event);
         }
 
