@@ -125,6 +125,18 @@ class rb_source_dp_competency extends rb_base_source {
         );
         $columnoptions[] = new rb_column_option(
                 'plan',
+                'planlink',
+                'Plan name (linked to plan page)',
+                'dp.name',
+                array(
+                    'defaultheading' => 'Plan',
+                    'joins' => 'dp',
+                    'displayfunc' => 'planlink',
+                    'extrafields' => array( 'plan_id'=>'dp.id' )
+                )
+        );
+        $columnoptions[] = new rb_column_option(
+                'plan',
                 'startdate',
                 'Plan start date',
                 'dp.startdate',
@@ -149,7 +161,8 @@ class rb_source_dp_competency extends rb_base_source {
                 'Plan status',
                 'dp.status',
                 array(
-                    'joins' => 'dp'
+                    'joins' => 'dp',
+                    'displayfunc' => 'plan_status'
                 )
         );
 
@@ -326,7 +339,47 @@ class rb_source_dp_competency extends rb_base_source {
         } else {
             return '';
         }
+    }
 
+    /**
+     * Generate the plan title with a link to the plan
+     * @global object $CFG
+     * @param string $planname
+     * @param object $row
+     * @return string
+     */
+    public function rb_display_planlink($planname, $row){
+        global $CFG;
+
+        return "<a href=\"{$CFG->wwwroot}/local/plan/view.php?id={$row->plan_id}\">$planname</a>";
+    }
+
+    /**
+     * Display the plan's status (for use as a column displayfunc)
+     *
+     * @global object $CFG
+     * @param int $status
+     * @param object $row
+     * @return string
+     */
+    public function rb_display_plan_status($status, $row){
+        global $CFG;
+        require_once($CFG->dirroot.'/local/plan/lib.php');
+
+        switch ($status){
+            case DP_PLAN_STATUS_UNAPPROVED:
+                return 'Unapproved';
+                break;
+            case DP_PLAN_STATUS_DECLINED:
+                return 'Declined';
+                break;
+            case DP_PLAN_STATUS_APPROVED:
+                return 'Approved';
+                break;
+            case DP_PLAN_STATUS_COMPLETE:
+                return 'Complete';
+                break;
+        }
     }
 
 }

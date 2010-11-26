@@ -97,8 +97,13 @@
     $embed->columns = array(
         array(
             'type' => 'plan',
-            'value' => 'name',
+            'value' => 'planlink',
             'heading' => 'Plan',
+        ),
+        array(
+            'type' => 'plan',
+            'value' => 'status',
+            'heading' => 'Plan status'
         ),
         array(
             'type' => 'competency',
