@@ -223,7 +223,10 @@ class completion_completion extends data_object {
             }
 
             $this->timeenrolled = $timeenrolled;
+
         }
+
+        totara_stats_add_event(time(), $this->userid, STATS_EVENT_COURSE_STARTED, '', $this->course);
 
         $this->_save();
     }
@@ -252,6 +255,7 @@ class completion_completion extends data_object {
             }
 
             $this->timestarted = $timestarted;
+
         }
 
         $this->_save();
@@ -280,6 +284,9 @@ class completion_completion extends data_object {
             // Set time complete
             $this->timecompleted = $timecomplete;
         }
+
+        //
+        totara_stats_add_event(time(), $this->userid, STATS_EVENT_COURSE_COMPLETE, '', $this->course);
 
         // Save record
         $this->_save();

@@ -293,9 +293,6 @@ function completion_cron_completions() {
 
                 $ccompletion = new completion_completion(array('course' => $params->course, 'userid' => $params->userid));
                 $ccompletion->mark_complete($timecompleted);
-
-                echo '###################################--------------------------------->';
-                totara_stats_add_event(time(), $params->userid, STATS_EVENT_COURSE_COMPLETE, '', $params->course);
             }
         }
 
