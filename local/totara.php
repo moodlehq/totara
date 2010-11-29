@@ -492,7 +492,7 @@ function totara_print_my_courses() {
         $content = get_string('notenrolled','local');
     }
     echo '<div class="mycourses">';
-    echo '<div class="header"><div class="title"><h2>'.get_string('mycourses','local').'</h2></div></div><div class="content">';
+    echo '<div class="header"><div class="title"><h2>'.get_string('mycoursecompletions','local').'</h2></div></div><div class="content">';
     echo $content;
     echo '</div></div>';
 }

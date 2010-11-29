@@ -126,8 +126,8 @@ $string['recordoflearning'] = 'Record of Learning';
 $string['searchcourses'] = 'Search Courses';
 $string['viewmyteam'] = 'View My Team';
 
-// My Current Courses block
-$string['mycourses'] = 'My Courses';
+// My Course Completions block
+$string['mycoursecompletions'] = 'My Course Completions';
 $string['notenrolled'] = '<i>You are not currently enrolled in any courses.</i>';
 $string['completed'] = 'Completed';
 $string['enrolled'] = 'Enrolled';
