@@ -373,7 +373,9 @@ class dp_competency_component extends dp_base_component {
         $sort = ($sort=='') ? '' : ' ORDER BY ' . $sort;
 
         // get all proficiency values for this plan's user
-        $proficiencies = $this->get_proficiencies($this->plan->userid);
+        if(!$proficiencies = $this->get_proficiencies($this->plan->userid)) {
+            $proficiencies = array();
+        }
 
         // get the scale values used for competencies in this plan
         $priorityvalues = get_records('dp_priority_scale_value',
