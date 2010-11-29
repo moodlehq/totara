@@ -9,13 +9,8 @@ require_once($CFG->dirroot.'/course/reminders_form.php');
 
 // Reminder we are currently editing
 $id = optional_param('id', 0, PARAM_INT);
-
-// Course id
-$courseid = required_param('courseid', PARAM_INT);
-
-// Actions
-$delete = optional_param('delete', 0, PARAM_INT);
-
+$courseid = required_param('courseid', PARAM_INT); // Course id
+$delete = optional_param('delete', 0, PARAM_INT); // Detete
 
 // Basic access control checks
 if ($courseid) { // editing course
@@ -95,7 +90,7 @@ $reminderform = new reminder_edit_form('reminders.php', compact('course', 'remin
 $reminderform->set_data($formdata);
 
 
-    // Process current action
+// Process current action
 if ($reminderform->is_cancelled()){
     redirect($CFG->wwwroot.'/course/view.php?id='.$course->id);
 
@@ -124,7 +119,7 @@ if ($reminderform->is_cancelled()){
         }
 
         add_to_log($course->id, 'course', 'reminder added',
-                  'reminders.php?courseid='.$course->id.'&id='.$reminder->id, $reminder->title);
+            'reminders.php?courseid='.$course->id.'&id='.$reminder->id, $reminder->title);
     }
     else {
         if (!$reminder->update()) {
@@ -132,7 +127,7 @@ if ($reminderform->is_cancelled()){
             error('Could not update reminder record');
         }
         add_to_log($course->id, 'course', 'reminder updated',
-                  'reminders.php?courseid='.$course->id.'&id='.$reminder->id, $reminder->title);
+            'reminders.php?courseid='.$course->id.'&id='.$reminder->id, $reminder->title);
     }
 
     // Create the messages
@@ -221,15 +216,14 @@ if ($reminder->id > 0) {
 $streditcoursereminders = get_string('editcoursereminders', 'reminders');
 $navlinks = array();
 $navlinks[] = array('name' => $streditcoursereminders,
-                    'link' => null,
-                    'type' => 'misc');
+    'link' => null,
+    'type' => 'misc');
 $title = $streditcoursereminders;
 $fullname = $course->fullname;
 
 $navigation = build_navigation($navlinks);
 print_header($title, $fullname, $navigation, $reminderform->focus(), null, true, $buttonhtml);
 print_heading($streditcoursereminders);
-
 
 // Check if there are any activites we can use
 $completion = new completion_info($course);
@@ -249,16 +243,19 @@ if ($reminder->id < 1) {
 
 // If no current reminders or creating a new reminder, and no activites - do not show form
 if (!$completion->is_enabled()) {
-
     print_box(get_string('noactivitieswithcompletionenabled', 'reminders'), 'generalbox adminerror boxwidthwide boxaligncenter');
     print_continue($CFG->wwwroot.'/course/view.php?id='.$course->id);
 
+} elseif (!get_coursemodules_in_course('feedback', $course->id)) {
+    print_error('nofeedbackactivities', 'reminders', $CFG->wwwroot.'/course/view.php?id='.$course->id);
+    print_continue($CFG->wwwroot.'/course/view.php?id='.$course->id);
 } else {
 
     if (count($tabs)) {
         print_tabs(array($tabs), $reminder->id);
     }
 
+    echo 'WTF';
     // Show form
     $reminderform->display();
 }

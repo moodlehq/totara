@@ -36,8 +36,6 @@ class reminder_edit_form extends moodleform {
             foreach ($mods as $mod) {
                 $rchoices[$mod->id] = $mod->name;
             }
-        } else {
-            print_error('nofeedbackactivities', 'reminders', $CFG->wwwroot.'/course/view.php?id='.$course->id);
         }
 
 /// form definition
