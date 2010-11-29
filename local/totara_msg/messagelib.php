@@ -232,6 +232,7 @@ function tm_message_send($eventdata) {
             $metadata->onreject         = $eventdata->onreject;
             $metadata->roleid           = $eventdata->roleid;
             insert_record('message_metadata', $metadata);
+            return $eventdata->savedmessageid;
         }
     }
 

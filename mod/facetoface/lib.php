@@ -1810,6 +1810,7 @@ function facetoface_send_notrem($facetoface, $session, $userid, $nottype) {
     $usermsg = "<a href=\"{$userfrom_link}\" title=\"$fromname\">$fromname</a> ";
     $newevent->userto           = $user;
     $newevent->userfrom         = $USER;
+    $newevent->roleid           = get_field('role', 'id', 'shortname', 'student');
     $url = $CFG->wwwroot.'/mod/facetoface/view.php?f='.$facetoface->id;
     switch ($nottype) {
         case MDL_F2F_STATUS_BOOKED:
@@ -1848,6 +1849,7 @@ function facetoface_send_notrem($facetoface, $session, $userid, $nottype) {
             $managerid = facetoface_get_manager($userid);
             if ($managerid !== false) {
                 $user = get_record('user', 'id', $managerid);
+                $newevent->roleid           = get_field('role', 'id', 'shortname', 'manager');
                 $newevent->userto           = $user;
                 $newevent->subject          = 'Cancelled for '.$usermsg.' session <a href="'.$url.'">'.$facetoface->name.'</a>';
                 $newevent->fullmessage      = $newevent->subject;
@@ -1859,6 +1861,7 @@ function facetoface_send_notrem($facetoface, $session, $userid, $nottype) {
             $managerid = facetoface_get_manager($userid);
             if ($managerid !== false) {
                 $user = get_record('user', 'id', $managerid);
+                $newevent->roleid           = get_field('role', 'id', 'shortname', 'manager');
                 $newevent->userto           = $user;
                 $newevent->fullmessage      = facetoface_email_substitutions(
                                                         $facetoface->requestinstrmngr,
@@ -1885,6 +1888,7 @@ function facetoface_send_notrem($facetoface, $session, $userid, $nottype) {
                 $newevent->userfrom         = NULL;
                 $user = get_record('user', 'id', $userid);
                 $newevent->userto           = $user;
+                $newevent->roleid           = get_field('role', 'id', 'shortname', 'student');
                 $newevent->subject          = 'Request to attend session <a href="'.$CFG->wwwroot.'/mod/facetoface/view.php?f='.$facetoface->id.'">'.$facetoface->name.'</a> sent to manager';
                 $newevent->fullmessage      = $newevent->subject;
                 $newevent->urgency          = TOTARA_MSG_URGENCY_NORMAL;
