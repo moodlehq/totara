@@ -26,7 +26,7 @@ if ($courseid) { // editing course
     }
 
     if (!$course = get_record('course', 'id', $courseid)) {
-        error('Course ID was incorrect');
+        error(get_string('error:courseidincorrect', 'reminders'));
     }
 
     require_login($course->id);
@@ -34,7 +34,7 @@ if ($courseid) { // editing course
 
 } else {
     require_login();
-    error('Either course id or category must be specified');
+    error(get_string('error:courseidorcategory', 'reminders'));
 }
 
 
@@ -160,7 +160,7 @@ if ($reminderform->is_cancelled()){
 
                     if (!$message->update()) {
                         rollback_sql();
-                        error('Could not delete reminder message record');
+                        error(get_string('error:deletereminder', 'reminders'));
                     }
                 }
 
@@ -178,13 +178,13 @@ if ($reminderform->is_cancelled()){
         if (empty($message->id)) {
             if (!$message->insert()) {
                 rollback_sql();
-                error('Could not insert reminder message record');
+                error(get_string('errro:createreminder', 'reminders'));
             }
         }
         else {
             if (!$message->update()) {
                 rollback_sql();
-                error('Could not update reminder message record');
+                error(get_string('error:updatereminder', 'reminders'));
             }
         }
     }

@@ -70,3 +70,9 @@ $string['sameday'] = 'Same day';
 $string['skipmanager'] = 'Don\'t send to Team Leader / Manager';
 $string['subject'] = 'Subject';
 $string['title'] = 'Title';
+
+$string['error:courseidincorrect'] = 'Course ID was incorrect';
+$string['error:courseidorcategory'] = 'Either course id or category must be specified';
+$string['error:deletereminder'] = 'Could not delete reminder message';
+$string['error:createreminder'] = 'Could not create reminder message';
+$string['error:updatereminder'] = 'Could not update reminder message';
