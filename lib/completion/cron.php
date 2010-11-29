@@ -62,6 +62,10 @@ function completion_cron_mark_started() {
         $roles = 'AND ra.roleid IN ('.$CFG->progresstrackedroles.')';
     }
 
+    // Save calls to time()
+    $time = time();
+
+    // Generate SQL
     $sql = "
         SELECT DISTINCT
             c.id AS course,
@@ -85,7 +89,7 @@ function completion_cron_mark_started() {
         AND c.enablecompletion = 1
         AND c.completionstartonenrol = 1
         AND crc.timeenrolled IS NULL
-        AND (ra.timeend = 0 OR ra.timeend > ".time().")
+        AND (ra.timeend = 0 OR ra.timeend > {$time})
         {$roles}
         GROUP BY
             c.id,
@@ -112,6 +116,10 @@ function completion_cron_mark_started() {
             $completion->id = $record->completionid;
         }
 
+        // Completion start on enrollment needs timestarted set
+        $completion->timestarted = $completion->timeenrolled;
+
+        // Update record
         $completion->mark_enrolled();
 
         if (debugging()) {
