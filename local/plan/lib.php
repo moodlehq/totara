@@ -440,7 +440,7 @@ function dp_display_add_plan_icon($userid) {
 
     $out = '';
     $href = "{$CFG->wwwroot}/local/plan/add.php?userid={$userid}";
-    $title = get_string('addplan', 'local_plan');
+    $title = get_string('createplan', 'local_plan');
     $out .= '<span class="dp-add-plan-link">';
     $out .= "<a href=\"{$href}\">
         <img src=\"{$CFG->themewww}/totara/pix/t/add.gif\" title=\"{$title}\"

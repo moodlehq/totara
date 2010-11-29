@@ -21,6 +21,7 @@ $string['activeplans'] = 'Active Plans';
 $string['completedplans'] = 'Completed Plans';
 $string['noplans'] = 'No plans...';
 $string['addplan'] = 'Add plan';
+$string['createplan'] = 'Create new learning plan';
 $string['completed'] = 'Completed';
 $string['plansinstructions'] = 'Your current and completed learning plans are shown below. You can create a new learning plan by clicking \"Create a new learning plan\" to the right of the screen.';
 $string['createplan_instructions'] = 'To create a new plan please add the plan title, a short description of the plan and a date by which the plan should be completed. You can click \"Create plan\" once you have entered this information.';

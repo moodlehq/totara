@@ -54,7 +54,7 @@ if($planuser != $USER->id) {
 print_heading(get_string('plans', 'local_plan'));
 
 print_container_start(false, '', 'dp-plans-description');
-echo get_string('plansinstructions', 'local_plan');
+echo '<div class="planinstructions">' . get_string('plansinstructions', 'local_plan') . '</div>';
 if ($canaddplan) {
     echo dp_display_add_plan_icon($planuser);
 }
