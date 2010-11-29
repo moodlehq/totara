@@ -127,6 +127,35 @@ class dp_competency_component extends dp_base_component {
         return $assigned;
     }
 
+    /**
+     * Get count items items assigned to plan
+     *
+     * @access  public
+     * @return  array
+     */
+    public function get_assigned_items_count() {
+        global $CFG;
+
+        $count = count_records_sql(
+            "
+            SELECT *
+            FROM
+                {$CFG->prefix}dp_plan_competency_assign a
+            INNER JOIN
+                {$CFG->prefix}comp c
+             ON c.id = a.competencyid
+            WHERE
+                a.planid = {$this->plan->id}
+            "
+        );
+
+        if (!$count) {
+            $count = 0;
+        }
+
+        return $count;
+    }
+
 
     static public function add_settings_form(&$mform, $id) {
         global $CFG, $DP_AVAILABLE_ROLES;

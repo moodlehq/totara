@@ -31,6 +31,8 @@ $string['competency_instructions_manager'] = 'All the competencies that will be 
 $string['plan_instructions_learner'] = 'Below is a short summary of your learning plan. You can click the \"Edit details\" button to ammend the learning plan title, short description or complete date.';
 $string['plan_delete_learner'] = 'You can delete this learning plan by clicking the \"Edit details\" button and then clicking \"Deleting plan\" button.';
 
+$string['plan_competencies'] = 'All the competencies that will be addressed by your learning plan are shown below. You can view more details about any competency by clicking its title.';
+
 // Manage Templates
 $string['instances'] = 'Instances';
 $string['addtemplate'] = 'Add new Template';

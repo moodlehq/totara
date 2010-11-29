@@ -98,13 +98,15 @@ print $plan->display_plan_message_box();
 print_heading($fullname);
 print $plan->display_tabs($componentname);
 
-print $component->display_picker();
+print '<div>' . get_string('plan_competencies', 'local_plan') . '</div>' ;
 
 print '<form id="dp-component-update" action="' . $currenturl . '" method="POST">';
 print '<input type="hidden" id="sesskey" name="sesskey" value="'.sesskey().'" />';
+
 print $component->display_competency_list();
 
-if(!$plancompleted && ($cansetduedate || $cansetpriority)) {
+print $component->display_picker();
+if((!$plancompleted && ($cansetduedate || $cansetpriority)) && $component->get_assigned_items_count()>0) {
     print '<input type="submit" name="submitbutton" value="'.get_string('updatesettings', 'local_plan').'" />';
 }
 
