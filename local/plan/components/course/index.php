@@ -5,6 +5,8 @@ require_once($CFG->dirroot . '/local/plan/lib.php');
 require_once($CFG->dirroot . '/local/js/lib/setup.php');
 
 
+global $USER;
+
 ///
 /// Load parameters
 ///
@@ -100,15 +102,29 @@ print $plan->display_plan_message_box();
 print_heading($fullname);
 print $plan->display_tabs($componentname);
 
-print '<div>';
-get_string('plan_competencies', 'local_plan') ;
+print '<div class="plan_instructions">';
+
+$course_instructions = '';
+if($plan->role == 'manager') {
+    $course_instructions .= get_string('course_instructions_learner', 'local_plan');
+} else {
+    $course_instructions .= get_string('course_instructions_learner', 'local_plan');
+}
+
+$course_instructions .= get_string('course_instructions_detail', 'local_plan');
+
+$course_instructions .= get_string('course_instructions_add', 'local_plan');
+
+print $course_instructions;
+
 print '</div>' ;
+print $component->display_picker();
 
 print '<form id="dp-component-update" action="' . $currenturl . '" method="POST">';
 print '<input type="hidden" id="sesskey" name="sesskey" value="'.sesskey().'" />';
 print $component->display_course_list();
 
-print $component->display_picker();
+
 if(!$plancompleted && ($cansetduedate || $cansetpriority || $canapprovecourses) && ($component->get_assigned_items_count()>0)) {
     print '<br /><input type="submit" name="submitbutton" value="'.get_string('updatesettings', 'local_plan').'" />';
 }
