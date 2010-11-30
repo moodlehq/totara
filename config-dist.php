@@ -56,6 +56,7 @@ $CFG->dbpass    = 'password';    // your database password
 $CFG->prefix    = 'mdl_';        // Prefix to use for all table names
 
 $CFG->dbpersist = false;         // Should database connections be reused?
+$CFG->passwordsaltmain = 'a_long_random_string_of_bgcharacters#@6&*1';
                  // "false" is the most stable setting
                  // "true" can improve performance sometimes
 
