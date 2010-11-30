@@ -3,6 +3,7 @@
 // Capabilities
 $string['plan:configureplans'] = 'Configure plan templates';
 $string['plan:add'] = 'Add plans';
+$string['plan:accessplan'] = 'Access plan';
 
 // Plan
 $string['plan'] = 'Plan';
