@@ -93,5 +93,23 @@ function xmldb_local_plan_upgrade($oldversion=0) {
         $result = $result && create_table($table);
     }
 
+    if ($result && $oldversion < 2010113003){
+        // Create objective settings for existing templates so they don't break
+        $templates = get_records('dp_template', '', '', 'id', 'id');
+        if ( is_array($templates) ){
+            foreach( $templates as $t ){
+                begin_sql();
+                $settings = new stdClass();
+                $settings->templateid=$t->id;
+                $settings->component='objective';
+                // Hide objectives in existing templates
+                $settings->enabled=0;
+                $settings->sortorder= 1 + count_records('dp_component_settings');
+                insert_record('dp_component_settings', $settings);
+                commit_sql();
+            }
+        }
+    }
+
     return $result;
 }
