@@ -1,7 +1,7 @@
 <?php
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->dirroot.'local/totara_msg/lib.php');
+require_once($CFG->dirroot.'/local/totara_msg/lib.php');
 
 class rb_source_totaramessages extends rb_base_source {
     public $base, $joinlist, $columnoptions, $filteroptions;
