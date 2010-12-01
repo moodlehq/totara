@@ -61,7 +61,7 @@ if ($mform->is_cancelled()) {
 
         try {
             if (!$objectivenew->id = insert_record('dp_objective_scale', $objectivenew)) {
-                throw new Exception(get_string('error:createobjectivescale' ,'local_plan'));
+                throw new Exception(get_string('error:createnewobjectivescale' ,'local_plan'));
             }
 
             $objectivevalues = explode("\n", trim($objectivenew->objectivevalues));

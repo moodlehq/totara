@@ -646,7 +646,7 @@ class dp_competency_component extends dp_base_component {
         $item = get_record_sql($sql);
 
         if(!$item) {
-            return get_string('competencynotfound','local_plan');
+            return get_string('error:competencynotfound','local_plan');
         }
 
         $out = '';
@@ -796,7 +796,7 @@ class dp_competency_component extends dp_base_component {
                 totara_set_notification(get_string('competenciesupdated','local_plan'), $currenturl, array('style'=>'notifysuccess'));
             } else {
                 rollback_sql();
-                totara_set_notification(get_string('competenciesnotupdated','local_plan'), $currenturl);
+                totara_set_notification(get_string('error:competenciesupdated','local_plan'), $currenturl);
             }
         }
 

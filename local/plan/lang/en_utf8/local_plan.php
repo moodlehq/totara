@@ -25,6 +25,7 @@ $string['createplan'] = 'Create new learning plan';
 $string['completed'] = 'Completed';
 $string['baddata'] = 'Supplied bad data - non numeric id';
 $string['planidnotfound'] = 'Plan ID of \'$a\' not found';
+$string['pendingremoval'] = 'Pending removal';
 
 $string['noclassfileforrole'] = 'Class file \'$a->classfile\' could not be found for role of \'$->role\'';
 $string['noclassforrole'] = 'Class \'$a->class\' does not exist for role \'$a->role\'.';
@@ -120,14 +121,19 @@ $string['updatecourse'] = 'Update';
 $string['updaterequestedcourses'] = 'Updated requested courses';
 $string['updatecourses'] = 'Update courses';
 $string['updaterequestedcourses'] = 'Updated requested courses';
+$string['assessitem'] = 'Assess item';
+$string['coursenotfound'] = 'Course not found';
 
 
 //Competency Strings
+$string['competencies'] = 'Competencies';
 $string['updatecompetencies'] = 'Update competencies';
 $string['updaterequestedcompetencies'] = 'Update requested competencies';
 $string['updatecompetency'] = 'Update';
 $string['setproficiency'] = 'Set Proficiency';
 $string['proficiency'] = 'Proficiency';
+$string['error:competencynotfound'] = 'Competency not found';
+$string['error:error:competenciesupdated'] = 'Competencies not update';
 
 
 //Plan Settings strings
@@ -229,9 +235,11 @@ $string['error:propertymustbeset'] = 'Property \'$a->property\' must be set in c
 // General errors
 $string['error:incorrectparameters'] = 'Incorrect parameters';
 $string['error:invalidtemplateid'] = 'Invalid template id';
-$string['missingcompetencysettings'] = 'Missing Competency settings';
-$string['missingcoursesettings'] = 'Missing Course settings';
-$string['missingpermissionsetting'] = 'Missing permission setting';
+$string['error:missingcompetencysettings'] = 'Missing Competency settings';
+$string['error:missingcoursesettings'] = 'Missing Course settings';
+$string['error:missingpermissionsetting'] = 'Missing permission setting';
+$string['error:objectivescaledidincorrect'] = 'Incorrect Objective Scale ID';
+
 
 // Priority Scales
 $string['priorityscales'] = 'Priority Scales';
@@ -246,6 +254,8 @@ $string['deletecheckpriority'] = 'Are you absolutely sure you want to completely
 $string['deletecheckpriorityvalue'] = 'Are you absolutely sure you want to delete this priority scale value?';
 $string['deletedpriorityscale'] = 'The priority scale $a has been completely deleted.';
 $string['deletedpriorityscalevalue'] = 'The priority scale value $a has been deleted.';
+$string['error:deletedpriorityscalevalue'] = 'Could not delete priority scale value.';
+$string['error:updatepriorityscalevalue'] = 'Could not update priority scale value.';
 $string['error:noreorderpriorityinuse'] = 'You cannot reorder a priority scale that is in use. To reorder this priority scale, it must not be assigned to any IDP\'s.';
 $string['error:nodeletepriorityvalueinuse'] = 'You cannot delete a priority scale value from a scale that is in use. To delete this priority scale value, the priority scale must not be assigned to any IDP.';
 $string['linktoobjectivevalues'] = '<a href=\\"view.php?id=$a\\">Click here</a> to view/edit the scale values for this priority scale.';
@@ -287,10 +297,11 @@ $string['editobjective'] = 'Edit objective $a';
 $string['editobjectivevalue'] = 'Edit objective value';
 $string['linktoobjectivevalues'] = '<a href=\\"view.php?id=$a\\">Click here</a> to view/edit the scale values for this objective scale.';
 $string['explainobjscalevals'] = 'One value per line (highest to lowest)';
-
+$string['missingobjectivescalevaluename'] = 'Objective Scale Value name is Required';
 $string['error:objectivescaleidincorrect'] = 'Objective Scale ID was incorrect';
 $string['error:objectivescalevalueidincorrect'] = 'Objective Scale value ID was incorrect';
 $string['error:createnewobjectivescale'] = 'An error occured while creating new objective scale';
+$string['error:createobjectivescale'] = 'An error occured while creating an objective scale';
 $string['error:updateobjectivescale'] = 'An error occured while updating objective scale';
 $string['error:createobjectivevalue'] = 'Error creating objective scale value record';
 $string['error:updateobjectivevalue'] = 'Error updating objective scale value record';
