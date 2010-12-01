@@ -19,7 +19,7 @@ class development_plan {
         // get plan db record
         $plan = get_record('dp_plan', 'id', $id);
         if(!$plan) {
-            throw new PlanException("Plan ID of '$id' not found");
+            throw new PlanException(get_string('planidnotfound','local_plan', $id));
         }
 
         // get details about this plan
@@ -69,14 +69,20 @@ class development_plan {
             $classfile = $CFG->dirroot .
                 "/local/plan/roles/{$role}/{$role}.class.php";
             if(!is_readable($classfile)) {
-                throw new PlanException("Class file '$classfile' could not be found for role of '$role'.");
+                $string_params = new object();
+                $string_params->classfile = $classfile;
+                $string_params->role = $role;
+                throw new PlanException(get_string('noclassfileforrole', 'local_plan', $string_params));
             }
             include_once($classfile);
 
             // check class exists
             $class = "dp_{$role}_role";
             if(!class_exists($class)) {
-                throw new PlanException("Class '$class' does not exist for role '$role'.");
+                $string_params = new object();
+                $string_params->class = $class;
+                $string_params->role = $role;
+                throw new PlanException(get_string('noclassforrole', 'local_plan', $string_params));
             }
 
             $rolename = "role_$role";
@@ -108,14 +114,20 @@ class development_plan {
             $classfile = $CFG->dirroot .
                 "/local/plan/components/{$component}/{$component}.class.php";
             if(!is_readable($classfile)) {
-                throw new PlanException("Class file '$classfile' could not be found for component '$component'.");
+                $string_params = new object();
+                $string_params->classfile = $classfile;
+                $string_params->component = $component;
+                throw new PlanException(get_string('noclassfileforcomponent', 'local_plan', $string_params));
             }
             include_once($classfile);
 
             // check class exists
             $class = "dp_{$component}_component";
             if(!class_exists($class)) {
-                throw new PlanException("Class '$class' does not exist for component '$component'.");
+                $string_params = new object();
+                $string_params->class = $class;
+                $string_params->component = $component;
+                throw new PlanException(get_string('noclassforcomponent', 'local_plan', $string_params));
             }
 
             $componentname = "component_$component";

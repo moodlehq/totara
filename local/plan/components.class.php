@@ -360,7 +360,7 @@ abstract class dp_base_component {
 
                 // Validate id
                 if (!is_numeric($itemid)) {
-                    error('Supplied bad data - non numeric id');
+                    error(get_string('baddata','local_plan'));
                 }
 
                 // Check if not already assigned

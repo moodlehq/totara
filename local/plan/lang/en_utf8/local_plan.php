@@ -23,6 +23,14 @@ $string['noplans'] = 'No plans...';
 $string['addplan'] = 'Add plan';
 $string['createplan'] = 'Create new learning plan';
 $string['completed'] = 'Completed';
+$string['baddata'] = 'Supplied bad data - non numeric id';
+$string['planidnotfound'] = 'Plan ID of \'$a\' not found';
+
+$string['noclassfileforrole'] = 'Class file \'$a->classfile\' could not be found for role of \'$->role\'';
+$string['noclassforrole'] = 'Class \'$a->class\' does not exist for role \'$a->role\'.';
+
+$string['noclassfileforcomponent'] = 'Class file \'$a->classfile\' could not be found for component \'$->component\'';
+$string['noclassforcomponent'] = 'Class \'$a->class\' does not exist for component \'$a->component\'.';
 
 //Instruction text
 $string['plansinstructions'] = 'Your current and completed learning plans are shown below. You can create a new learning plan by clicking \"Create a new learning plan\" to the right of the screen.';
@@ -215,9 +223,15 @@ $string['role'] = 'Role';
 
 $string['duedatemode'] = 'Due dates';
 $string['prioritymode'] = 'Priorities';
+$string['error:cantcreatecustomworkflow'] = 'You cannot create a workflow called \'custom\' as this is used by the system.';
+$string['error:propertymustbeset'] = 'Property \'$a->property\' must be set in class $a->class';
 
 // General errors
 $string['error:incorrectparameters'] = 'Incorrect parameters';
+$string['error:invalidtemplateid'] = 'Invalid template id';
+$string['missingcompetencysettings'] = 'Missing Competency settings';
+$string['missingcoursesettings'] = 'Missing Course settings';
+$string['missingpermissionsetting'] = 'Missing permission setting';
 
 // Priority Scales
 $string['priorityscales'] = 'Priority Scales';

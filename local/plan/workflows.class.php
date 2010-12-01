@@ -59,13 +59,15 @@ abstract class dp_base_workflow {
         );
         foreach($properties as $property) {
             if(!property_exists($this, $property)) {
-                throw new Exception("Property '$property' must be set in class " .
-                    get_class($this));
+                $msg = new object();
+                $msg->class = get_class($this);
+                $msg->property = $property;
+                throw new Exception(get_string('error:propertymustbeset', $msg));
             }
         }
         // reserve the name 'custom' for use by the system
         if($this->classname == 'custom') {
-            throw new Exception("You cannot create a workflow called 'custom' as this is used by the system.");
+            throw new Exception(get_string('error:cantcreatecustomworkflow', 'local_plan'));
         }
 
         // get name and description lang string based on name
