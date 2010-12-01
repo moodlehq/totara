@@ -36,18 +36,23 @@ $string['noclassforcomponent'] = 'Class \'$a->class\' does not exist for compone
 //Instruction text
 $string['plansinstructions'] = 'Your current and completed learning plans are shown below. You can create a new learning plan by clicking \"Create a new learning plan\" to the right of the screen.';
 $string['createplan_instructions'] = 'To create a new plan please add the plan title, a short description of the plan and a date by which the plan should be completed. You can click \"Create plan\" once you have entered this information.';
-$string['plan_instructions_manager'] = 'Below is a short summary of your team member\'s learning plan. You can click the \"Edit details\" button to amend the learning plan title, short description or completeion date. You can delete this learning plan by clicking the \"Edit details\" button and then clicking the \"Delete plan\" button.';
 $string['competency_instructions_manager'] = 'All the competencies that will be addressed by your team member\'s learning plan area shown below. You can view more details about any competency by clicking its title. You can add additional competencies by clicking the \"Add competencies\" button to the right of the screen.';
 
-$string['plan_instructions_learner'] = 'Below is a short summary of your learning plan. You can click the \"Edit details\" button to ammend the learning plan title, short description or complete date.';
-$string['plan_delete_learner'] = 'You can delete this learning plan by clicking the \"Edit details\" button and then clicking \"Deleting plan\" button.';
+$string['plan_instructions_manager'] = 'Below is a short summary of your team member\'s learning plan. ';
+$string['plan_instructions_learner'] = 'Below is a short summary of your learning plan. ';
+$string['plan_instructions_edit'] = 'You can click the \"Edit details\" button to ammend the learning plan title, short description or completion date. ';
+$string['plan_instructions_delete'] = 'You can delete this learning plan by clicking the \"Deleting plan\" button. ';
 
-$string['plan_competencies'] = 'All the competencies that will be addressed by your learning plan are shown below. You can view more details about any competency by clicking its title.';
+$string['competency_instructions_learner'] = 'All the competencies that will be addressed by your learning plan are shown below. ';
+$string['competency_instructions_manager'] = 'All the competencies that will be addressed by your team member\'s learning plan area shown below. ';
+$string['competency_instructions_detail'] = 'You can view more details about any competency by clicking its title. ';
+$string['competency_instructions_add'] = 'You can add additional competencies by clicking the \"Add competencies\" button to the right of the screen. ';
 
-$string['course_instructions_manager'] = 'All the courses that form your team member\s learning plan are show below. ';
+$string['course_instructions_manager'] = 'All the courses that form your team member\'s learning plan are show below. ';
 $string['course_instructions_learner'] = 'All the courses that form your learning plan are shown below. ';
 $string['course_instructions_detail'] = 'You can view any course by clicking the course title. ';
 $string['course_instructions_add'] = 'Clicking \"Add New Courses\" will allow you to add new courses to this learning plan.';
+
 
 
 // Manage Templates

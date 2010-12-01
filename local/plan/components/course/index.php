@@ -102,22 +102,23 @@ print $plan->display_plan_message_box();
 print_heading($fullname);
 print $plan->display_tabs($componentname);
 
-print '<div class="plan_instructions">';
-
-$course_instructions = '';
+$course_instructions = '<div class="plan_instructions">';
 if($plan->role == 'manager') {
-    $course_instructions .= get_string('course_instructions_learner', 'local_plan');
+    $course_instructions .= get_string('course_instructions_manager', 'local_plan');
 } else {
     $course_instructions .= get_string('course_instructions_learner', 'local_plan');
 }
 
 $course_instructions .= get_string('course_instructions_detail', 'local_plan');
 
-$course_instructions .= get_string('course_instructions_add', 'local_plan');
+if ($plan->get_setting('updatecourse') >= DP_PERMISSION_REQUEST) {
+    $course_instructions .= get_string('course_instructions_add', 'local_plan');
+}
+
+$course_instructions .= '</div>';
 
 print $course_instructions;
 
-print '</div>' ;
 print $component->display_picker();
 
 print '<form id="dp-component-update" action="' . $currenturl . '" method="POST">';

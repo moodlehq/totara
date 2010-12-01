@@ -98,7 +98,23 @@ print $plan->display_plan_message_box();
 print_heading($fullname);
 print $plan->display_tabs($componentname);
 
-print '<div>' . get_string('plan_competencies', 'local_plan') . '</div>' ;
+$competency_instructions = '<div class=\"competency_instructions\">';
+
+if($plan->role == 'manager') {
+    $competency_instructions .= get_string('competency_instructions_manager', 'local_plan');
+} else {
+    $competency_instructions .= get_string('competency_instructions_learner', 'local_plan');
+}
+
+$competency_instructions .= get_string('competency_instructions_detail', 'local_plan');
+
+if ($plan->get_setting('updatecompetency') >= DP_PERMISSION_REQUEST) {
+    $competency_instructions .= get_string('competency_instructions_add', 'local_plan');
+}
+
+$competency_instructions .= '</div>';
+
+print $competency_instructions;
 
 print '<form id="dp-component-update" action="' . $currenturl . '" method="POST">';
 print '<input type="hidden" id="sesskey" name="sesskey" value="'.sesskey().'" />';

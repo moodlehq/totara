@@ -111,6 +111,25 @@ print_heading($fullname);
 
 echo $plan->display_tabs($componentname);
 
+$plan_instructions = '<div class=\"plan_instructions\">';
+if($plan->role == 'manager') {
+    $plan_instructions .= get_string('plan_instructions_manager', 'local_plan');
+} else {
+    $plan_instructions .= get_string('plan_instructions_learner', 'local_plan');
+}
+
+if ($plan->get_setting('update') >= DP_PERMISSION_REQUEST) {
+    $plan_instructions .= get_string('plan_instructions_edit', 'local_plan');
+}
+
+if ($plan->get_setting('delete') >= DP_PERMISSION_REQUEST) {
+    $plan_instructions .= get_string('plan_instructions_delete', 'local_plan');
+}
+
+$plan_instructions .= '</div>';
+
+print $plan_instructions;
+
 // Plan details
 $form->set_data($plan);
 $form->display();
