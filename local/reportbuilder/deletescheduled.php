@@ -7,12 +7,8 @@ require_once('../lib.php');
 $sitecontext = get_context_instance(CONTEXT_SYSTEM);
 
 // Get params
-$id = required_param('id', PARAM_INT);
-// Delete confirmation hash
-$confirm = optional_param('confirm', '', PARAM_INT);
-
-// Setup page and check permissions
-admin_externalpage_setup('managereports');
+$id = required_param('id', PARAM_INT); //ID
+$confirm = optional_param('confirm', '', PARAM_INT); // Delete confirmation hash
 
 if (!$report = get_record('report_builder_schedule', 'id', $id)) {
     error(get_string('error:invalidreportscheduleid','local_reportbuilder'));
@@ -21,7 +17,7 @@ if (!$report = get_record('report_builder_schedule', 'id', $id)) {
 $reportname = get_field('report_builder', 'fullname', 'id', $report->reportid);
 
 /// Display page
-admin_externalpage_print_header();
+print_header(' ', ' ', null);
 
 $returnurl = "{$CFG->wwwroot}/my/reports.php";
 $deleteurl = "{$CFG->wwwroot}/local/reportbuilder/deletescheduled.php?id={$report->id}&amp;confirm=1&amp;sesskey={$USER->sesskey}";
