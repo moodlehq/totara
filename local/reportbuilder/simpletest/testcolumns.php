@@ -475,7 +475,7 @@ class columns_test extends prefix_changing_test_case {
                 $rb = new reportbuilder($reportid);
                 $sql = $rb->build_query();
                 $data = $rb->fetch_data($sql, 1, 40);
-                $this->assertEqual($rb->get_full_count(),1);
+                $this->assertEqual($rb->get_full_count(),0);
                 // remove afterwards
                 delete_records('report_builder', 'id', $reportid);
             }

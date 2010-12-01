@@ -333,6 +333,7 @@ class reportbuilderlib_test extends prefix_changing_test_case {
         $paramoption->name = 'userid';
         $paramoption->field = 'base.userid';
         $paramoption->joins = null;
+        $paramoption->type = 'int';
         $param = new rb_param('userid',array($paramoption));
         $param->value = 2;
         // should return the expected embedded param
