@@ -38,7 +38,7 @@ class dp_objective_scale_value_edit_form extends moodleform {
         $mform->setType('numericscore', PARAM_RAW);
 
         $mform->addElement('advcheckbox', 'achieved', get_string('achieved', 'local_plan'));
-        $mform->setHelpButton('achieved', array('objectivescalevalueachieved', get_string('objectivescalevalueachieved', 'local_plan'), 'local_plan'), true);
+        $mform->setHelpButton('achieved', array('objectivescalevalueachieved', get_string('achieved', 'local_plan'), 'local_plan'), true);
 
         $mform->addElement('htmleditor', 'description', get_string('description'));
         $mform->setHelpButton('description', array('text', get_string('helptext')), true);

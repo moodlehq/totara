@@ -295,4 +295,3 @@ $string['error:invalidreportid'] = 'Invalid report ID';
 $string['error:nopermissionsforscheduledreport'] = 'Scheduled Report Error: User $a->userid is not capable of viewing report $a->reportid.';
 $string['error:failedtoremovetempfile'] = 'Failed to remove temporary report export file';
 $string['error:invalidreportscheduleid'] = 'Invalid scheduled report ID';
-

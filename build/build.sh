@@ -25,10 +25,10 @@ echo "STEP 2: Run cucumber tests";
 cucumber --tags ~@nightly --format junit --out build/logs/xml/
 
 echo "STEP 3: Run language string tests";
-php -f build/checklang.php . local idp hierarchy guides customfield
+php -f build/checklang.php . local hierarchy guides customfield
 
 echo "STEP 4: Run help button tests";
-php -f build/checkhelp.php . local idp hierarchy guides customfield
+php -f build/checkhelp.php . local hierarchy guides customfield
 
 echo "STEP 5: Run php syntax check";
 php build/lint.php

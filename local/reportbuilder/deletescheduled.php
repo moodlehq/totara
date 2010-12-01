@@ -15,7 +15,7 @@ $confirm = optional_param('confirm', '', PARAM_INT);
 admin_externalpage_setup('managereports');
 
 if (!$report = get_record('report_builder_schedule', 'id', $id)) {
-    error(get_string('error:incorrectscheduleid','local_reportbuilder'));
+    error(get_string('error:invalidreportscheduleid','local_reportbuilder'));
 }
 
 $reportname = get_field('report_builder', 'fullname', 'id', $report->reportid);

@@ -11,6 +11,14 @@ $exclude = array(
     'local/reportbuilder/groups.php' => 'type',
     'local/reportheading/report_forms.php' => 'noheadingcolumnsdefined',
     'local/reportbuilder' => 'oauthfailed',
+    'local/reportbuilder/acceptrejectmsg.php' => '*',
+    'idp/dashboard.php' => 'dashboard',
+    'local/dashboard/lang/en_utf8/local_dashboard.php' => 'key',
+    'local/reportbuilder/actionmsg.php' => '*',
+    'local/totara.php' => '*',
+    'local/reportbuilder/dismissmsg.php' => 'statement',
+
+
 );
 
 
@@ -122,8 +130,8 @@ function scan_file($filepath, $langs){
 	while ( !feof($file) ){
 		$line = fgets($file);
 		$matches = array();
-		preg_match_all( 
-			'/(get|print)_string\\s*\\(\\s*([^,\\)]+)(\\s*,\\s*([^,\\)]*))?(\\s*,\\s*([^,\\)]*))?\\s*\\)/m', 
+		preg_match_all(
+			'/(get|print)_string\\s*\\(\\s*([^,\\)]+)(\\s*,\\s*([^,\\)]*))?(\\s*,\\s*([^,\\)]*))?\\s*\\)/m',
 			$line,
 			$matches,
 			PREG_SET_ORDER
