@@ -59,6 +59,26 @@ $capabilities = array(
         )
     ),
 
+    // Ability to manage Priority scales
+    'local/plan:managepriorityscales' => array(
+        'riskbitmask' => RISK_CONFIG,
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'legacy' => array(
+            'admin' => CAP_ALLOW
+        )
+    ),
+
+    // Ability to manage Objective scales
+    'local/plan:manageobjectivescales' => array(
+        'riskbitmask' => RISK_CONFIG,
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'legacy' => array(
+            'admin' => CAP_ALLOW
+        )
+    ),
+
 );
 
 // add this to make it 1.9 compatible

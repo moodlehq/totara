@@ -35,8 +35,8 @@ function dp_objective_display_table($objectives, $editingon=0) {
     $sitecontext = get_context_instance(CONTEXT_SYSTEM);
 
     // Cache permissions
-    $can_edit = has_capability('moodle/local:manageidppriorities', $sitecontext);
-    $can_delete = has_capability('moodle/local:manageidppriorities', $sitecontext);
+    $can_edit = has_capability('moodle/plan:manageobjectivescales', $sitecontext);
+    $can_delete = has_capability('moodle/plan:manageobjectivescales', $sitecontext);
 
     // Make sure user has capability to edit
     if (!(($can_edit || $can_delete) && $editingon)) {

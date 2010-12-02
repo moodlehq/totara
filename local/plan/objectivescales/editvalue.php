@@ -24,7 +24,7 @@ $sitecontext = get_context_instance(CONTEXT_SYSTEM);
 
 if ($id == 0) {
     // Creating new scale value
-    require_capability('moodle/local:manageidppriorities', $sitecontext);
+    require_capability('moodle/plan:manageobjectivescales', $sitecontext);
 
     $value = new stdClass();
     $value->id = 0;
@@ -36,7 +36,7 @@ if ($id == 0) {
 
 } else {
     // Editing scale value
-    require_capability('moodle/local:manageidppriorities', $sitecontext);
+    require_capability('moodle/plan:manageobjectivescales', $sitecontext);
 
     if (!$value = get_record('dp_objective_scale_value', 'id', $id)) {
         error(get_string('error:objectivescalevalueidincorrect', 'local_plan'));
