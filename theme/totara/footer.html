@@ -1,4 +1,6 @@
 <?php
+global $SITE;
+
 if($heading) {
     print_container_end(); // content container
     print_container_start(false, '', 'footer');
@@ -13,6 +15,7 @@ if($heading) {
     if (!empty($SITE->fullname)) {
         // Show footer menu items, only if site has been set up
         echo '<div class="footerlinks">';
+
         include('totara_menu.php');
         echo '</div>';
     }
