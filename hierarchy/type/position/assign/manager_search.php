@@ -55,13 +55,12 @@ if (strlen($query)) {
     $keywords = user_search_parse_keywords($query);
 
     $fields = "
-        SELECT
+        SELECT DISTINCT
             u.id,
-            ".sql_fullname('u.firstname', 'u.lastname')." AS fullname,
-            ra.id AS ra
+            ".sql_fullname('u.firstname', 'u.lastname')." AS fullname
     ";
 
-    $count = 'SELECT COUNT(u.id)';
+    $count = 'SELECT COUNT(DISTINCT u.id)';
 
     $from = "
         FROM
@@ -74,7 +73,7 @@ if (strlen($query)) {
          ON ra.roleid = r.id
     ";
 
-    $order = ' ORDER BY u.firstname, u.lastname';
+    $order = ' ORDER BY fullname';
 
     // Match search terms
     $where = user_search_get_keyword_where_clause($keywords);
@@ -82,6 +81,7 @@ if (strlen($query)) {
     // Only show managers
     $where .= " AND r.shortname = 'manager'";
 
+    //var_dump($count . $from . $where);
     $total = count_records_sql($count . $from . $where);
     $start = $page * HIERARCHY_SEARCH_NUM_PER_PAGE;
 
