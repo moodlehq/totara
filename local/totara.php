@@ -225,7 +225,7 @@ function totara_print_my_learning_nav($return=false) {
     $returnstr = '
         <table>
     ';
-    if (has_capability('moodle/local:idpviewownlist', $usercontext)) {
+    if (has_capability('moodle/plan:accessplan', $usercontext)) {
         $returnstr .= '
             <tr>
                 <td align="left">
