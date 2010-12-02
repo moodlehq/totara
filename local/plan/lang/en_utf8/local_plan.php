@@ -287,6 +287,7 @@ $string['error:createnewpriorityscale'] = 'An error occured while creating new p
 $string['error:updatingpriorityscale'] = 'An error occured while updating priority scale';
 $string['error:createpriorityvalue'] = 'Error creating priority scale value record';
 $string['error:updatepriorityvalue'] = 'Error updating priority scale value record';
+$string['nopriorityscales'] = 'To use priorities setup a priority scale';
 
 // Objective Scales
 $string['objectivescales'] = 'Objective Scales';
@@ -316,11 +317,13 @@ $string['error:deletedobjectivescalevalue'] = 'An error occured when deleting ob
 $string['objectivescalevaluename'] = 'Scale value name';
 $string['objectivescalevalueidnumber'] = 'Scale value ID number';
 $string['objectivescalevaluenumericalvalue'] = 'Objective scale numerical value';
-
 $string['deletecheckobjective'] = 'Are you absolutely sure you want to completely delete this objective scale?';
 $string['deletecheckobjectivevalue'] = 'Are you absolutely sure you want to delete this objective scale value?';
 $string['deletedobjectivescale'] = 'The objective scale $a has been completely deleted.';
 $string['deletedobjectivescalevalue'] = 'The objective scale value $a has been deleted.';
+$string['noobjectivescales'] = 'To use objectives setup an objective scale';
+
+
 $string['competenciesupdated'] = 'Competencies updated';
 $string['launchcourse'] = 'Launch course';
 $string['backtoallx'] = '&laquo; Back to all $a';

@@ -736,7 +736,13 @@ class dp_course_component extends dp_base_component {
             foreach($priorities as $priority) {
                 $prioritymenu[$priority->id] = $priority->name;
             }
+        } else {
+            $mform->addElement('static', 'nopriorityscales', null, get_string('nopriorityscales', 'local_plan'));
+            $mform->addElement('hidden', 'disabled', 'yes');
+
         }
+        $mform->disabledIf('prioritygroup', 'disabled', 'eq', 'yes');
+        $mform->disabledIf('priorityscale', 'disabled', 'eq', 'yes');
 
         $mform->addElement('select', 'priorityscale', get_string('priorityscale', 'local_plan'), $prioritymenu);
         $mform->disabledIf('priorityscale', 'prioritymode', 'eq', DP_PRIORITY_NONE);
@@ -761,7 +767,6 @@ class dp_course_component extends dp_base_component {
                 $mform->setDefault($action.$role, $defaultvalue);
             }
         }
-
 
         $mform->addElement('html', '</table></div>');
     }
