@@ -91,8 +91,8 @@ function update_general_settings($id, $fromform){
     $todb = new object();
     $todb->id = $id;
     $todb->fullname = $fromform->templatename;
-    $todb->startdate = convert_userdate_2($fromform->startdate);
-    $todb->enddate = convert_userdate_2($fromform->enddate);
+    $todb->startdate = dp_convert_userdate($fromform->startdate);
+    $todb->enddate = dp_convert_userdate($fromform->enddate);
 
     begin_sql();
     if(!update_record('dp_template', $todb)){
