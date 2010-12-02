@@ -14,8 +14,10 @@ abstract class dp_base_component {
         );
         foreach($properties as $property) {
             if(!property_exists($this, $property)) {
-                throw new Exception("Property '$property' must be set in class " .
-                    get_class($this));
+                $string_properties = new object();
+                $string_properties->property = $property;
+                $string_properties->class = get_class($this);
+                throw new Exception(get_string('error:properymustbeset', 'local_plan', $string_properties));
             }
         }
     }
