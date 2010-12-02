@@ -793,3 +793,13 @@ function get_dashlet_role($pageid) {
     $role = get_field_sql($sql);
     return $role;
 }
+
+
+//Used to create a timestamp from a string
+function totara_convert_userdate($datestring) {
+    // Check for DD/MM/YYYY
+    if (preg_match('|(\d{1,2})/(\d{1,2})/(\d{4})|', $datestring, $matches)) {
+        return mktime(0,0,0,$matches[2], $matches[1], $matches[3]);
+    }
+    return strtotime($datestring);
+}

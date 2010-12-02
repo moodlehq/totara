@@ -155,11 +155,11 @@ else {
     elseif ($data = $form->get_data()) {
         // Fix dates
         if (isset($data->timevalidfrom) && $data->timevalidfrom) {
-            $data->timevalidfrom = convert_userdate($data->timevalidfrom);
+            $data->timevalidfrom = totara_convert_userdate($data->timevalidfrom);
         }
 
         if (isset($data->timevalidto) && $data->timevalidto) {
-            $data->timevalidto = convert_userdate($data->timevalidto);
+            $data->timevalidto = totara_convert_userdate($data->timevalidto);
         }
 
         // Setup data
