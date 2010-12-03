@@ -32,7 +32,7 @@ class dp_global_settings_form extends moodleform {
 
         $mform->addElement('header', 'componentrenaming', get_string('componentrenaming', 'local_plan'));
 
-        $components = array('course' ,'competency');
+        $components = array('course' ,'competency', 'objective');
 
         if($components) {
             $columns[] = 'component';
