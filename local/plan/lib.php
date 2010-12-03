@@ -63,6 +63,7 @@ global $DP_AVAILABLE_COMPONENTS;
 $DP_AVAILABLE_COMPONENTS = array(
     'course',
     'competency',
+    'objective',
 );
 
 // note that new templates will default to the first workflow in this list

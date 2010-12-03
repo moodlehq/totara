@@ -111,5 +111,37 @@ function xmldb_local_plan_upgrade($oldversion=0) {
         }
     }
 
+    // Fill in permissions and settings for objectives in existing templates
+    if ($result && $oldversion < 2010120301){
+        $templates = get_records_sql(
+                "select p.templateid from {$CFG->prefix}dp_permissions p group by p.templateid having sum(case when p.component='objective' then 1 else 0 end)=0"
+        );
+        if ( is_array($templates) ){
+            $roles = array('learner','manager');
+            $actions=array('updateobjective','commenton','setpriority','setduedate');
+
+            foreach( $templates as $t ){
+                begin_sql();
+                $perm = new stdClass();
+                $perm->templateid = $t->templateid;
+                foreach( $roles as $r ){
+                    foreach( $actions as $a ){
+                        $perm->role = $r;
+                        $perm->action = $a;
+                        $perm->value=50;
+                        insert_record('dp_permissions', $perm);
+                    }
+                }
+
+                $objset = new stdClass();
+                $objset->templateid = $t->templateid;
+                $objset->duedatemode=0;
+                $objset->prioritymode=0;
+                insert_record('dp_objective_settings', $objset);
+                commit_sql();
+            }
+        }
+    }
+
     return $result;
 }
