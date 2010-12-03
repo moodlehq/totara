@@ -623,17 +623,8 @@ class development_plan {
                 $this->id . ' AND approved=0');
             $out['competency'] = $competencies;
         }
-        if($this->get_component('objective')->get_setting('enabled')) {
-            global $CFG;
-            $objectives = get_records_sql(
-                    "select o.id from {$CFG->prefix}dp_plan_objective o inner join "
-                    ."{$CFG->prefix}dp_plan_objective_assign oa on o.id=oa.objectiveid "
-                    ."where o.planid={$this->id} and oa.approved=0"
-            );
-            $out['objective'] = $objectives;
-        }
 
-        // @todo add evidence when tables exist
+        // @todo add objectives and evidence when tables exist
 
         return $out;
     }
@@ -644,8 +635,6 @@ class development_plan {
         $canapprovecourses = ($this->get_component('course')->get_setting('updatecourse')
             == DP_PERMISSION_APPROVE);
         $canapprovecompetencies = ($this->get_component('competency')->get_setting('updatecompetency')
-            == DP_PERMISSION_APPROVE);
-        $canapproveobjectives = ($this->get_component('objective')->get_setting('updateobjective')
             == DP_PERMISSION_APPROVE);
 
         // get the pending items, if it hasn't been passed to the method
@@ -677,19 +666,6 @@ class development_plan {
                 // don't need to know if user can approve
                 return true;
             } else if ($canapprovecompetencies) {
-                // only count it if the user can approve
-                return true;
-            }
-        }
-
-        // check if there are pending competencies
-        if(array_key_exists('objective', $pendinglist) &&
-            $pendinglist['objective']) {
-
-            if(!$onlyapprovable) {
-                // don't need to know if user can approve
-                return true;
-            } else if ($canapproveobjectives) {
                 // only count it if the user can approve
                 return true;
             }
@@ -796,11 +772,8 @@ class development_plan {
             == DP_PERMISSION_APPROVE);
         $canapprovecompetencies = ($this->get_component('competency')->get_setting('updatecompetency')
             == DP_PERMISSION_APPROVE);
-        $canapproveobjectives = ($this->get_component('objective')->get_setting('updateobjective')
-            == DP_PERMISSION_APPROVE);
         $coursesenabled = $this->get_component('course')->get_setting('enabled');
         $competenciesenabled = $this->get_component('competency')->get_setting('enabled');
-        $objectivesenabled = $this->get_component('objective')->get_setting('enabled');
 
         // get the pending items, if it hasn't been passed to the method
         if(!isset($pendinglist)) {
@@ -832,20 +805,9 @@ class development_plan {
             $list .= '<li>' . get_string('xitemspending', 'local_plan', $a) . '</li>';
             $listcount++;
         }
+        // @todo add objectives and evidence when tables exist
 
-        if($objectivesenabled && $pendinglist['objective']) {
-            $a = new object();
-            $a->planid = $this->id;
-            $a->number = count($pendinglist['objective']);
-            $a->name = $this->get_component('objective')->get_setting('name');
-            $a->component = 'objective';
-            $a->site = $CFG->wwwroot;
-            $list .= '<li>' . get_string('xitemspending', 'local_plan', $a) . '</li>';
-            $listcount++;
-        }
-        // @todo add evidence when tables exist
-
-        $descriptor = ($canapprovecourses || $canapprovecompetencies || $canapproveobjectives) ?
+        $descriptor = ($canapprovecourses || $canapprovecompetencies) ?
         'thefollowingitemsrequireyourapproval' : 'thefollowingitemsarepending';
         // only print if there are pending items
         $out = '';

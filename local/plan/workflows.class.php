@@ -18,10 +18,6 @@ abstract class dp_base_workflow {
             'cfg_competency_duedatemode',
             'cfg_competency_prioritymode',
 
-            //objective config options
-            'cfg_objective_duedatemode',
-            'cfg_objective_prioritymode',
-
             //plan permission settings
             'perm_plan_view_learner',
             'perm_plan_view_manager',
@@ -60,16 +56,6 @@ abstract class dp_base_workflow {
             'perm_competency_setproficiency_learner',
             'perm_competency_setproficiency_manager',
 
-            //objective permission settings
-            'perm_objective_updateobjective_learner',
-            'perm_objective_updateobjective_manager',
-            'perm_objective_commenton_learner',
-            'perm_objective_commenton_manager',
-            'perm_objective_setpriority_learner',
-            'perm_objective_setpriority_manager',
-            'perm_objective_setduedate_learner',
-            'perm_objective_setduedate_manager',
-            
         );
         foreach($properties as $property) {
             if(!property_exists($this, $property)) {
@@ -107,10 +93,6 @@ abstract class dp_base_workflow {
             error(get_string('error:missingcompetencysettings', 'local_plan'));
         }
 
-        if(!$objective_settings = get_record('dp_objective_settings', 'templateid', $templateid)) {
-            error(get_string('error:missingobjectivesettings', 'local_plan'));
-        }
-
         foreach(get_object_vars($this) as $property => $value) {
             $parts = explode('_', $property);
             if($parts[0] == 'cfg') {
@@ -125,12 +107,6 @@ abstract class dp_base_workflow {
                     $attribute = $parts[2];
                     if($value != $competency_settings->$attribute) {
                         $diff[$property] = array('before' => $competency_settings->$attribute, 'after' => $value);
-                    }
-                    break;
-                case 'objective':
-                    $attribute = $parts[2];
-                    if($value != $objective_settings->$attribute) {
-                        $diff[$property] = array('before' => $objective_settings->$attribute, 'after' => $value);
                     }
                     break;
                 }
@@ -168,11 +144,6 @@ abstract class dp_base_workflow {
             $competency_todb->id = $competency_settings->id;
         }
 
-        $objective_todb = new object();
-        if($objective_settings = get_record('dp_objective_settings', 'templateid', $templateid)){
-            $objective_todb->id = $objective_settings->id;
-        }
-
         foreach(get_object_vars($this) as $property => $value) {
             $parts = explode('_', $property);
             if($parts[0] == 'cfg') {
@@ -182,9 +153,6 @@ abstract class dp_base_workflow {
                     break;
                 case 'competency':
                     $competency_todb->$parts[2] = $value;
-                    break;
-                case 'objective':
-                    $objective_todb->$parts[2] = $value;
                     break;
                 }
 
@@ -245,21 +213,6 @@ abstract class dp_base_workflow {
             if(!insert_record('dp_competency_settings', $competency_todb)){
                 rollback_sql();
                 var_dump($competency_todb); die();
-                return false;
-            }
-        }
-
-        if($objective_settings) {
-            if(!update_record('dp_objective_settings', $objective_todb)) {
-                rollback_sql();
-                echo 'update competency settings error'; die();
-                return false;
-            }
-        } else {
-            $objective_todb->templateid = $templateid;
-            if(!insert_record('dp_objective_settings', $objective_todb)){
-                rollback_sql();
-                var_dump($objective_todb); die();
                 return false;
             }
         }

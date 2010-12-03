@@ -81,7 +81,6 @@ $string['autoassignorg'] = 'Automatically assign by organisation';
 // Default Component Names
 $string['course_defaultname'] = 'Courses';
 $string['competency_defaultname'] = 'Competencies';
-$string['objective_defaultname'] = 'Objectives';
 
 // Generic Strings
 $string['name'] = 'Name';

@@ -121,11 +121,6 @@ if($delete && $confirm) {
             totara_set_notification(get_string('error:deletedp', 'local_plan'), $CFG->wwwroot.'/local/plan/template/index.php');
         }
 
-        if(!delete_records('dp_objective_settings', 'templateid', $delete)){
-            rollback_sql();
-            totara_set_notification(get_string('error:deletedp', 'local_plan'), $CFG->wwwroot.'/local/plan/template/index.php');
-        }
-
         if(!delete_records('dp_permissions', 'templateid', $delete)){
             rollback_sql();
             totara_set_notification(get_string('error:deletedp', 'local_plan'), $CFG->wwwroot.'/local/plan/template/index.php');
