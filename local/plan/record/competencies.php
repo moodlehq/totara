@@ -20,7 +20,7 @@
  *
  * @package    moodle
  * @subpackage totara
- * @author     Jonathan Newman <jonathan.newman@catalyst.net.nz>
+ * @author     Aaron Wells <aaronw@catalyst.net.nz>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL
  * @copyright  (C) 1999 onwards Martin Dougiamas  http://dougiamas.com
  *
