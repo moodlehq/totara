@@ -89,8 +89,8 @@ class columns_test extends prefix_changing_test_case {
 
     // reduced version of user table
     var $user_data = array(
-        array('id', 'username', 'firstname', 'lastname', 'idnumber', 'picture', 'imagealt'),
-        array(2, 'admin', 'Admin', 'User', 'ID2', 0, 'alt'),
+        array('id', 'username', 'firstname', 'lastname', 'idnumber', 'picture', 'imagealt', 'lastlogin'),
+        array(2, 'admin', 'Admin', 'User', 'ID2', 0, 'alt', 0),
     );
 
     var $pos_assignment_data = array(
@@ -312,6 +312,52 @@ class columns_test extends prefix_changing_test_case {
         array(1, 'facetoface', 1),
     );
 
+    var $block_totara_stats_data = array(
+        array('id', 'userid', 'timestamp', 'eventtype', 'data', 'data2'),
+        array(1, 1, 0, 1, 1, 1),
+    );
+
+    var $message_working20_data = array(
+        array('id', 'unreadmessageid', 'processorid'),
+        array(1,1,1),
+    );
+
+    var $message20_data = array(
+        array('id', 'useridfrom', 'useridto', 'subject', 'fullmessage', 'fullmessageformat', 'fullmessagehtml', 'smallmessage',
+        'notification', 'contexturl', 'contexturlname', 'timecreated'),
+        array(1,1,1,'subject', 'message', 1, 'message', 'msg', 1, '', '', 0),
+    );
+
+    var $message_metadata_data = array(
+        array('id', 'messageid', 'msgtype', 'msgstatus', 'processorid', 'urgency', 'roleid', 'onaccept', 'onreject'),
+        array(1,1,1,1,1,1,1,'',''),
+    );
+
+    var $dp_template_data = array(
+        array('id', 'fullname', 'shortname', 'startdate', 'enddate', 'sortorder', 'visible', 'workflow'),
+        array(1,'plan','plan',0,0,1,1,'user'),
+    );
+
+    var $dp_plan_data = array(
+        array('id', 'templateid', 'userid', 'name', 'description', 'startdate', 'enddate', 'status'),
+        array(1,1,1,'DP','',0,0,1),
+    );
+
+    var $dp_plan_competency_assign_data = array(
+        array('id', 'planid', 'competencyid', 'priority', 'duedate', 'approved', 'scalevalueid'),
+        array(1,1,1,1,1,1,1),
+    );
+
+    var $dp_plan_course_assign_data = array(
+        array('id', 'planid', 'courseid', 'priority', 'duedate', 'approved', 'completionstatus', 'grade'),
+        array(1,1,1,1,1,1,1,100),
+    );
+
+    var $dp_priority_scale_value_data = array(
+        array('id', 'name', 'idnumber', 'description', 'priorityscaleid', 'numericscore', 'sortorder'),
+        array(1,'scale',1,'',1,1,1),
+    );
+
     function setUp() {
         global $db,$CFG;
         parent::setup();
@@ -374,6 +420,15 @@ class columns_test extends prefix_changing_test_case {
         load_test_table($CFG->prefix . 'course_info_data', $this->course_info_data_data, $db);
         load_test_table($CFG->prefix . 'course_modules', $this->course_modules_data, $db);
         load_test_table($CFG->prefix . 'modules', $this->modules_data, $db);
+        load_test_table($CFG->prefix . 'block_totara_stats', $this->block_totara_stats_data, $db);
+        load_test_table($CFG->prefix . 'message20', $this->message20_data, $db);
+        load_test_table($CFG->prefix . 'message_working20', $this->message_working20_data, $db);
+        load_test_table($CFG->prefix . 'message_metadata', $this->message_metadata_data, $db);
+        load_test_table($CFG->prefix . 'dp_template', $this->dp_template_data, $db);
+        load_test_table($CFG->prefix . 'dp_plan', $this->dp_plan_data, $db);
+        load_test_table($CFG->prefix . 'dp_plan_competency_assign', $this->dp_plan_competency_assign_data, $db);
+        load_test_table($CFG->prefix . 'dp_plan_course_assign', $this->dp_plan_course_assign_data, $db);
+        load_test_table($CFG->prefix . 'dp_priority_scale_value', $this->dp_priority_scale_value_data, $db);
 
         // get rid of dummy records
         delete_records('report_builder_group');
@@ -443,6 +498,15 @@ class columns_test extends prefix_changing_test_case {
         remove_test_table($CFG->prefix . 'report_builder_filters', $db);
         remove_test_table($CFG->prefix . 'report_builder_columns', $db);
         remove_test_table($CFG->prefix . 'report_builder', $db);
+        remove_test_table($CFG->prefix . 'block_totara_stats', $db);
+        remove_test_table($CFG->prefix . 'message20', $db);
+        remove_test_table($CFG->prefix . 'message_working20', $db);
+        remove_test_table($CFG->prefix . 'dp_plan_competency_assign', $db);
+        remove_test_table($CFG->prefix . 'dp_plan', $db);
+        remove_test_table($CFG->prefix . 'dp_plan_course_assign', $db);
+        remove_test_table($CFG->prefix . 'dp_priority_scale_value', $db);
+        remove_test_table($CFG->prefix . 'message_metadata', $db);
+        remove_test_table($CFG->prefix . 'dp_template', $db);
         parent::tearDown();
     }
 
