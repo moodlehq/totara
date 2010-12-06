@@ -1028,7 +1028,7 @@ class facetofacelib_test extends prefix_changing_test_case {
         $this->assertEqual(facetoface_minutes_to_hours('-7:19'), '-7:19');
 
         //test for invalid characters value
-        $this->assertEqual(facetoface_minutes_to_hours('invalid_string'), '');
+        $this->assertEqual(facetoface_minutes_to_hours('invalid_string'), '0');
     }
 
     function test_facetoface_hours_to_minutes() {

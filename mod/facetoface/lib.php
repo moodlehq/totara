@@ -211,6 +211,10 @@ function format_duration($duration) {
  */
 function facetoface_minutes_to_hours($minutes) {
 
+    if (!intval($minutes)) {
+        return 0;
+    }
+
     if ($minutes > 0) {
         $hours = floor($minutes / 60.0);
         $mins = $minutes - ($hours * 60.0);
