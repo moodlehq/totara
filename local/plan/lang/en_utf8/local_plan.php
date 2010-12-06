@@ -45,7 +45,6 @@ $string['noclassforworkflow'] = 'Class \'$a->class\' does not exist for workflow
 //Instruction text
 $string['plansinstructions'] = 'Your current and completed learning plans are shown below. You can create a new learning plan by clicking \"Create a new learning plan\" to the right of the screen.';
 $string['createplan_instructions'] = 'To create a new plan please add the plan title, a short description of the plan and a date by which the plan should be completed. You can click \"Create plan\" once you have entered this information.';
-$string['competency_instructions_manager'] = 'All the competencies that will be addressed by your team member\'s learning plan area shown below. You can view more details about any competency by clicking its title. You can add additional competencies by clicking the \"Add competencies\" button to the right of the screen.';
 
 $string['plan_instructions_manager'] = 'Below is a short summary of your team member\'s learning plan. ';
 $string['plan_instructions_learner'] = 'Below is a short summary of your learning plan. ';
@@ -61,6 +60,11 @@ $string['course_instructions_manager'] = 'All the courses that form your team me
 $string['course_instructions_learner'] = 'All the courses that form your learning plan are shown below. ';
 $string['course_instructions_detail'] = 'You can view any course by clicking the course title. ';
 $string['course_instructions_add'] = 'Clicking \"Add New Courses\" will allow you to add new courses to this learning plan.';
+
+$string['objective_instructions_manager'] = 'All the objectives that form your team member\'s learning plan are show below. ';
+$string['objective_instructions_learner'] = 'All the objectives that form your learning plan are shown below. ';
+$string['objective_instructions_detail'] = 'You can view any objective by clicking the objective title. ';
+$string['objective_instructions_add'] = 'Clicking \"Add New Courses\" will allow you to add new objectives to this learning plan.';
 
 
 
@@ -150,6 +154,14 @@ $string['proficiency'] = 'Proficiency';
 $string['error:competencynotfound'] = 'Competency not found';
 $string['error:error:competenciesupdated'] = 'Competencies not update';
 
+//Objective Strings
+$string['objectives'] = 'Objectives';
+$string['updateobjectives'] = 'Update objectives';
+$string['updaterequestedobjectives'] = 'Update requested objectives';
+$string['updateobjective'] = 'Update';
+$string['error:objectivenotfound'] = 'Objective not found';
+$string['error:error:objectivesupdated'] = 'Objectives not update';
+
 
 //Plan Settings strings
 $string['autocompleteplan'] = 'Automatic plan completion';
@@ -174,6 +186,9 @@ $string['error:update_competency_settings'] = 'An error occured while updating t
 
 $string['update_course_settings'] = 'Course settings successfully updated';
 $string['error:update_course_settings'] = 'An error occured while updating the Course settings';
+
+$string['update_objective_settings'] = 'Objective settings successfully updated';
+$string['error:update_objective_settings'] = 'An error occured while updating the Objective settings';
 
 $string['update_plan_settings'] = 'Plan settings successfully updated';
 $string['error:update_plan_settings'] = 'An error occured while updating the Plan settings';
@@ -222,6 +237,8 @@ $string['coursesettings'] = 'Course settings';
 $string['coursepermissions'] = 'Course permissions';
 $string['competencysettings'] = 'Competency settings';
 $string['competencypermissions'] = 'Competency permissions';
+$string['objectivesettings'] = 'Objective settings';
+$string['objectivepermissions'] = 'Objective permissions';
 $string['duedates'] = 'Due dates';
 $string['duedate'] = 'Due date';
 $string['priorities'] = 'Priorities';
@@ -251,6 +268,7 @@ $string['error:propertymustbeset'] = 'Property \'$a->property\' must be set in c
 $string['error:incorrectparameters'] = 'Incorrect parameters';
 $string['error:invalidtemplateid'] = 'Invalid template id';
 $string['error:missingcompetencysettings'] = 'Missing Competency settings';
+$string['error:missingobjectivesettings'] = 'Missing Objective settings';
 $string['error:missingcoursesettings'] = 'Missing Course settings';
 $string['error:missingpermissionsetting'] = 'Missing permission setting';
 $string['error:objectivescaledidincorrect'] = 'Incorrect Objective Scale ID';
@@ -362,6 +380,9 @@ $string['linkedx'] = 'Linked $a';
 $string['nocompetencies'] = 'No competencies.';
 $string['nolinkedcompetencies'] = 'No linked competencies.';
 $string['linkedcompetencies'] = 'Linked competencies';
+$string['noobjectives'] = 'No objectives.';
+$string['nolinkedobjectives'] = 'No linked objectives.';
+$string['linkedobjectives'] = 'Linked objectives';
 $string['nocourses'] = 'No courses.';
 $string['nolinkedcourses'] = 'No linked courses.';
 $string['linkedcourses'] = 'Linked courses';
