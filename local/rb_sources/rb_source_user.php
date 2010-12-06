@@ -196,18 +196,15 @@ class rb_source_user extends rb_base_source {
         $disp = '<span style="white-space:nowrap;">';
 
         // Learning Records icon
-        $disp = '<a href="' . $CFG->wwwroot . '/my/records.php?id=' . $itemid . '"><img src="' . $CFG->wwwroot . '/pix/i/rol.png" title="' . get_string('learningrecords', 'local') . '" /></a>';
+        $disp = '<a href="' . $CFG->wwwroot . '/my/records.php?id=' . $itemid . '"><img src="' . $CFG->pixpath . '/i/rol.png" title="' . get_string('learningrecords', 'local') . '" /></a>';
 
         // Face To Face Bookings icon
         if ($this->staff_f2f) {
-            $disp .= '<a href="' . $CFG->wwwroot . '/my/bookings.php?id=' . $itemid . '"><img src="' . $CFG->wwwroot . '/pix/i/bookings.png" title="' . get_string('f2fbookings', 'local') . '" /></a>';
+            $disp .= '<a href="' . $CFG->wwwroot . '/my/bookings.php?id=' . $itemid . '"><img src="' . $CFG->pixpath . '/i/bookings.png" title="' . get_string('f2fbookings', 'local') . '" /></a>';
         }
 
         // Individual Development Plans icon
-        $usercontext = get_context_instance(CONTEXT_USER, $itemid);
-        if (has_capability('moodle/local:idpviewlist', $usercontext)) {
-            $disp .= '<a href="' . $CFG->wwwroot . '/local/plan/index.php?userid=' . $itemid . '"><img src="' . $CFG->wwwroot . '/pix/i/idp.png" title="' . get_string('idp', 'idp') . '" /></a>';
-        }
+        $disp .= '<a href="' . $CFG->wwwroot . '/local/plan/index.php?userid=' . $itemid . '"><img src="' . $CFG->pixpath . '/i/idp.png" title="' . get_string('idp', 'idp') . '" /></a>';
 
         $disp .= '</span>';
         return $disp;
