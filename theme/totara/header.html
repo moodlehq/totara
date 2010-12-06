@@ -16,6 +16,9 @@
     ?>>
 <div id="top-bg"></div>
 <div id="wrapper">
+<?php if (isset($menu)): ?>
+    <div class="login-container"><?php echo $menu ?></div>
+<?php endif; ?>
 <div id="container">
 <div id="page"><strong></strong>
 
@@ -35,7 +38,6 @@
     <?php } ?>
     <div class="clear"></div></div>
     <div class="navbar clearfix">
-        <div class="login-container"><?php echo $menu ?></div>
         <div class="breadcrumb"><?php print_navigation($navigation); ?></div>
         <div class="navbutton"><?php echo $button; ?></div>
     </div>
