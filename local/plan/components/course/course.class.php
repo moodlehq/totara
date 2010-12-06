@@ -51,7 +51,7 @@ class dp_course_component extends dp_base_component {
 
         // Decide on button text
         if ($permission == DP_PERMISSION_ALLOW) {
-            $btntext = get_string('updatecourses', 'local_plan');
+            $btntext = get_string('addremovecourses', 'local_plan');
         } else {
             $btntext = get_string('updaterequestedcourses', 'local_plan');
         }

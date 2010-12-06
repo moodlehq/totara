@@ -60,7 +60,7 @@ class dp_objective_component extends dp_base_component {
 
         // Decide on button text
         if ($permission == DP_PERMISSION_ALLOW) {
-            $btntext = get_string('updateobjectives', 'local_plan');
+            $btntext = get_string('addremoveobjectives', 'local_plan');
         } else {
             $btntext = get_string('updaterequestedobjectives', 'local_plan');
         }

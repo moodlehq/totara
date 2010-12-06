@@ -62,7 +62,7 @@ class dp_competency_component extends dp_base_component {
 
         // Decide on button text
         if ($permission == DP_PERMISSION_ALLOW) {
-            $btntext = get_string('updatecompetencies', 'local_plan');
+            $btntext = get_string('addremovecompetencies', 'local_plan');
         } else {
             $btntext = get_string('updaterequestedcompetencies', 'local_plan');
         }
