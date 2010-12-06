@@ -967,36 +967,46 @@ class facetofacelib_test extends prefix_changing_test_case {
 
         //test for positive single hour value
         $this->assertEqual(format_duration('1:00'), '1 hour ');
+        $this->assertEqual(format_duration('1.00'), '1 hour ');
 
         //test for positive multiple hours value
         $this->assertEqual(format_duration('3:00'), '3 hours ');
+        $this->assertEqual(format_duration('3.00'), '3 hours ');
 
         //test for positive single minute value
         $this->assertEqual(format_duration('0:01'), '1 minute');
+        $this->assertEqual(format_duration('0.1'), '6 minutes');
 
-        // test for positive minutes value
+        //test for positive minutes value
         $this->assertEqual(format_duration('0:30'), '30 minutes');
+        $this->assertEqual(format_duration('0.50'), '30 minutes');
 
-        //test for positive hours & minutes value
-        $this->assertEqual(format_duration('9:70'), '10 hours 10 minutes');
+        //test for out of range minutes value
+        $this->assertEqual(format_duration('9:70'), '');
 
         //test for zero value
         $this->assertEqual(format_duration('0:00'), '');
+        $this->assertEqual(format_duration('0.00'), '');
 
         //test for negative hour value
         $this->assertEqual(format_duration('-1:00'), '');
+        $this->assertEqual(format_duration('-1.00'), '');
 
         //test for negative multiple hours value
         $this->assertEqual(format_duration('-7:00'), '');
+        $this->assertEqual(format_duration('-7.00'), '');
 
         //test for negative single minute value
         $this->assertEqual(format_duration('-0:01'), '');
+        $this->assertEqual(format_duration('-0.01'), '');
 
         //test for negative multiple minutes value
         $this->assertEqual(format_duration('-0:33'), '');
+        $this->assertEqual(format_duration('-0.33'), '');
 
         //test for negative hours & minutes value
         $this->assertEqual(format_duration('-5:42'), '');
+        $this->assertEqual(format_duration('-5.42'), '');
 
         //test for invalid characters value
         $this->assertEqual(format_duration('invalid_string'), '');
