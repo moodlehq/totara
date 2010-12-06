@@ -1641,7 +1641,7 @@ function facetoface_get_unmailed_reminders()
  * @param string $discountcode code entered by the user
  * @param integer $notificationtype type of notifications to send to user
  * @see {{MDL_F2F_INVITE}}
- * @oaran integer $statuscode Status code to set
+ * @param integer $statuscode Status code to set
  * @param integer $userid user to signup
  * @param bool $notifyuser whether or not to send an email confirmation
  * @param bool $displayerrors whether or not to return an error page on errors
@@ -3764,12 +3764,12 @@ function facetoface_get_trainer_roles() {
     global $CFG;
 
     // Check that roles have been selected
-    if (empty($CFG->facetoface_sessionroles)) {
+    if (empty($CFG->facetoface_session_roles)) {
         return false;
     }
 
     // Parse roles
-    $cleanroles = clean_param($CFG->facetoface_sessionroles, PARAM_SEQUENCE);
+    $cleanroles = clean_param($CFG->facetoface_session_roles, PARAM_SEQUENCE);
 
     // Load role names
     $rolenames = get_records_sql("
