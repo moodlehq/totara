@@ -310,12 +310,12 @@ class dp_objective_component extends dp_base_component {
         $tableheaders = array(
             get_string('name','local_plan'),
             'Courses',
-            'Evidence',
+//            'Evidence',
         );
         $tablecolumns = array(
             'objname',
             'numcourses',
-            'numevidence',
+//            'numevidence',
         );
 
         if($showpriorities) {
@@ -363,14 +363,67 @@ class dp_objective_component extends dp_base_component {
             $table->get_page_size())) {
 
             while($objective = rs_fetch_next_record($records)) {
-                // todo: hook into course completion
-                $completionstatus = $this->get_completion_status($objective, $completions);
-                $approved = $objective->numapproved == $objective->numcourses; // + $objective->numevidence;
+                
+                // Calculate completion status
+                // Check if everything is approved
+                if ( $objective->numcourses == 0 ){
+                    $status = 'Not yet started';
+                } else if ( $objective->numapproved <= $objective->numcourses ){
+                    $status = 'Not yet approved';
+                } else {
+
+                    $objectivecourses = get_records_select(
+                            'dp_plan_objective_assign',
+                            "objectiveid={$objective->id} and itemtype='plan'",
+                            'itemid',
+                            'itemid, approved'
+                    );
+                    if ($objectivecourses) {
+                        $numcompleted = 0;
+                        $coursestatuses = array();
+                        foreach( $objectivecourses as $course ){
+                            if ( !$course->approved ){
+                                $coursestatuses[] = 10;
+                            } else {
+                                switch( completion_completion::get_status($completions[$course->itemid]) ){
+                                    case 'complete':
+                                    case 'completeviarpl':
+                                        $coursestatuses[] = 40;
+                                        break;
+                                    case 'inprogress':
+                                        $coursestatuses[] = 30;
+                                        break;
+                                    case 'notyetstarted':
+                                    default:
+                                        $coursestatuses[] = 20;
+                                        break;
+                                }
+                            }
+                        }
+                        switch( min($coursestatuses) ){
+                            case 10:
+                                $status = 'Not approved';
+                                break;
+                            case 30:
+                                $status = get_string('inprogress', 'completion');
+                                break;
+                            case 40:
+                                $status = get_string('complete', 'completion');
+                                break;
+                            case 20:
+                            default:
+                                $status = get_string('notyetstarted', 'completion');
+                                break;
+                        }
+                    } else {
+                        $status = get_string('notyetstarted', 'completion');
+                    }
+                }
 
                 $row = array();
                 $row[] = $this->display_objective_name($objective);
                 $row[] = $objective->numcourses;
-                $row[] = $objective->numevidence;
+//                $row[] = $objective->numevidence;
 
                 if($showpriorities) {
                     $row[] = $this->display_priority($objective, $priorityvalues);
@@ -381,14 +434,6 @@ class dp_objective_component extends dp_base_component {
                 }
 
                 if(!$plancompleted) {
-                    $status = '';
-                    if($approved) {
-                        if(!$completed) {
-                            $status = $this->display_duedate_highlight_info($ca->duedate);
-                        }
-                    } else {
-                            $status = $this->display_approval($ca, $canapprovecourses);
-                    }
                     $row[] = $status;
                 }
 
@@ -528,20 +573,6 @@ class dp_objective_component extends dp_base_component {
 
     }
 
-    function get_completion_status($ca, $completions) {
-        // use value stored in dp_plan_course_assign if plan is already complete
-        if($this->plan->status == DP_PLAN_STATUS_COMPLETE) {
-            return $ca->completionstatus;
-        }
-        // otherwise look up 'live' value from course completions table
-        if(array_key_exists($ca->courseid, $completions)) {
-            return completion_completion::get_status($completions[$ca->courseid]);
-        } else {
-            // no completion record
-            return false;
-        }
-    }
-
     function display_objective_name($objective) {
         global $CFG;
 
@@ -567,13 +598,12 @@ class dp_objective_component extends dp_base_component {
         $duedateenabled = $this->get_setting('duedatemode') != DP_DUEDATES_NONE;
 
         // get objective assignment and objective details
-        $sql = 'SELECT ca.*, comp.*, psv.name ' . sql_as() . ' priorityname ' .
-            "FROM {$CFG->prefix}dp_plan_objective_assign ca
+        $sql = 'SELECT o.*, psv.name ' . sql_as() . ' priorityname ' .
+            "FROM {$CFG->prefix}dp_plan_objective o
                 LEFT JOIN {$CFG->prefix}dp_priority_scale_value psv
-                    ON (ca.priority = psv.id
+                    ON (o.priority = psv.id
                     AND psv.priorityscaleid = {$priorityscaleid})
-                LEFT JOIN {$CFG->prefix}comp comp ON comp.id = ca.objectiveid
-                WHERE ca.id = $caid";
+                WHERE o.id = $caid";
         $item = get_record_sql($sql);
 
         if(!$item) {
