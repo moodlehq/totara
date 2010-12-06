@@ -55,6 +55,7 @@ define('MDL_F2F_STATUS_FULLY_ATTENDED',     100);
 
 // This array must match the status codes above, and the values
 // must equal the end of the constant name but in lower case
+global $MDL_F2F_STATUS;
 $MDL_F2F_STATUS = array(
     MDL_F2F_STATUS_USER_CANCELLED       => 'user_cancelled',
     MDL_F2F_STATUS_SESSION_CANCELLED    => 'session_cancelled',
