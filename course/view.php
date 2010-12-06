@@ -48,7 +48,7 @@
     if ($switchrole == 0 && confirm_sesskey()) {
         role_switch($switchrole, $context);
     }
-
+    $coursenotices = array();
     require_login($course);
 
     // Switchrole - sanity check in cost-order...
@@ -196,8 +196,14 @@
 
     $CFG->blocksdrag = $useajax;   // this will add a new class to the header so we can style differently
 
-
+    if (!empty($USER->access['tempra'][$context->path])) {
+        $enrolurl = $CFG->wwwroot . '/course/enrol.php?id=' . $course->id;
+        // TODO: get_string
+        $noticemsg = 'You are currently viewing this course as a guest. <a href="' . $enrolurl . '">Enrol to gain full access</a>.';
+        array_push($coursenotices, $noticemsg);
+    }
     $PAGE->print_header(get_string('course').': %fullname%', NULL, '', $bodytags);
+    $PAGE->print_notices($coursenotices);
     $completion=new completion_info($course);
     if($completion->is_enabled() && ajaxenabled()) {
         require_js(array('yui_yahoo','yui_event','yui_connection','yui_dom'));

@@ -1726,6 +1726,8 @@ function load_temp_role($context, $roleid, $accessdata) {
         array_push($accessdata['ra'][$context->path], $roleid);
     } else {
         $accessdata['ra'][$context->path] = array($roleid);
+        //Need to be able to see where temp roles have been assigned:
+        $accessdata['tempra'][$context->path] = 1;
     }
 
     return $accessdata;

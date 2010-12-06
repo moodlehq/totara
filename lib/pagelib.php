@@ -441,6 +441,24 @@ class page_course extends page_base {
                      '', $meta, true, $buttons, user_login_string($this->courserecord, $USER), false, $bodytags);
     }
 
+    // Print a list of notices relating to the course
+    function print_notices($notices = null) {
+        if (empty($notices)) {
+            return true;
+        }
+        $count=0;
+        foreach ($notices as $notice) {
+            print '<div class="notice';
+            if(++$count % 2) {
+                print ' even">';
+            } else {
+                print ' odd">';
+            }
+            print $notice;
+            print '</div>';
+        }
+    }
+
     // SELF-REPORTING SECTION
 
     // This is hardwired here so the factory function page_create_object() can be sure there was no mistake.
