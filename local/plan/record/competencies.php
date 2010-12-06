@@ -196,7 +196,7 @@
     if($countfiltered == $countall) {
         print_heading("$countall " . get_string('records', 'local_plan') . ".");
     } else {
-        print_heading("$countfiltered/$countall " . get_string('recordsshown', 'local_plan') records shown . ".");
+        print_heading("$countfiltered/$countall " . get_string('recordsshown', 'local_plan') . ".");
     }
 
     print $report->print_description();
