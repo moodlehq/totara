@@ -31,14 +31,20 @@ if($confirm) {
     $classfile = $CFG->dirroot .
         "/local/plan/workflows/{$workflow}/{$workflow}.class.php";
     if(!is_readable($classfile)) {
-        throw new PlanException("Class file '$classfile' could not be found for workflow '$workflow'.");
+        $string_parameters = new object();
+        $string_parameters->classfile = $classfile;
+        $string_parameters->workflow = $workflow;
+        throw new PlanException(get_string('noclassfileforworkflow', 'local_plan', $string_parameters));
     }
     include_once($classfile);
 
     // check class exists
     $class = "dp_{$workflow}_workflow";
     if(!class_exists($class)) {
-        throw new PlanException("Class '$class' does not exist for workflow '$workflow'.");
+        $string_parameters = new object();
+        $string_parameters->class = $class;
+        $string_parameters->workflow = $workflow;
+        throw new PlanException(get_string('noclassforworkflow', 'local_plan', $string_parameters));
     }
 
     // create an instance and save as a property for easy access
@@ -83,14 +89,20 @@ if ($fromform = $mform->get_data()) {
             $classfile = $CFG->dirroot .
                 "/local/plan/workflows/{$workflow}/{$workflow}.class.php";
             if(!is_readable($classfile)) {
-                throw new PlanException("Class file '$classfile' could not be found for workflow '$workflow'.");
+                $string_parameters = new object();
+                $string_parameters->classfile = $classfile;
+                $string_parameters->workflow = $workflow;
+                throw new PlanException(get_string('noclassfileforworkflow', 'local_plan', $string_parameters));
             }
             include_once($classfile);
 
             // check class exists
             $class = "dp_{$workflow}_workflow";
             if(!class_exists($class)) {
-                throw new PlanException("Class '$class' does not exist for workflow '$workflow'.");
+                $string_parameters = new object();
+                $string_parameters->class = $class;
+                $string_parameters->workflow = $workflow;
+                throw new PlanException(get_string('noclassforworkflow', 'local_plan', $string_parameters));
             }
 
             // create an instance and save as a property for easy access

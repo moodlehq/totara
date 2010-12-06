@@ -177,9 +177,9 @@
     echo "\n<ul>\n";
     foreach( array('all','active','completed') as $s ){
         if ( $planstatus == $s ){
-            echo "  <li>" . ucfirst($s) ." Learning</li>\n";
+            echo "  <li>" . ucfirst($s) ." " . get_string('learning', 'local_plan') . "</li>\n";
         } else {
-            echo "  <li><a href=\"{$CFG->wwwroot}/local/plan/record/competencies.php?status={$s}\">" . ucfirst($s) . " Learning</a></li>";
+            echo "  <li><a href=\"{$CFG->wwwroot}/local/plan/record/competencies.php?status={$s}\">" . ucfirst($s) . get_string('learning', 'local_plan') . "</a></li>";
         }
     }
     echo "</ul>\n";
@@ -194,9 +194,9 @@
 
     // display heading including filtering stats
     if($countfiltered == $countall) {
-        print_heading("$countall records.");
+        print_heading("$countall " . get_string('records', 'local_plan') . ".");
     } else {
-        print_heading("$countfiltered/$countall records shown.");
+        print_heading("$countfiltered/$countall " . get_string('recordsshown', 'local_plan') records shown . ".");
     }
 
     print $report->print_description();

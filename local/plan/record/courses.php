@@ -51,14 +51,14 @@
     }
 
     if (! $user = get_record('user', 'id', $userid)) {
-        error('User not found');
+        error(get_string('error:usernotfound', 'local_plan'));
     }
 
     $context = get_context_instance(CONTEXT_SYSTEM);
     // users can only view their own and their staff's pages
     // or if they are an admin
     if ($USER->id != $userid && !totara_is_manager($userid) && !has_capability('moodle/site:doanything',$context)) {
-        error('You cannot view this page');
+        error(get_string('error:cannotviewpage', 'local_plan'));
     }
 
     // todo: Set the page's heading
@@ -71,7 +71,7 @@
 
     $embed = new object();
     $embed->source = 'dp_course';
-    $embed->fullname = 'Record of Learning: Courses';
+    $embed->fullname = get_string('recordoflearningcourses', 'local_plan');
 //    $embed->filters = array(
 //        array(
 //            'type' => 'competency',
@@ -172,9 +172,9 @@
     echo "\n<ul>\n";
     foreach( array('all','active','completed') as $s ){
         if ( $planstatus == $s ){
-            echo "  <li>" . ucfirst($s) ." Learning</li>\n";
+            echo "  <li>" . ucfirst($s) . get_string('learning', 'local_plan') . "</li>\n";
         } else {
-            echo "  <li><a href=\"{$CFG->wwwroot}/local/plan/record/courses.php?status={$s}\">" . ucfirst($s) . " Learning</a></li>";
+            echo "  <li><a href=\"{$CFG->wwwroot}/local/plan/record/courses.php?status={$s}\">" . ucfirst($s) . get_string('learning', 'local_plan') . "</a></li>";
         }
     }
     echo "</ul>\n";
@@ -189,9 +189,9 @@
 
     // display heading including filtering stats
     if($countfiltered == $countall) {
-        print_heading("$countall records.");
+        print_heading("$countall " . get_string('records', 'local_plan') . ".");
     } else {
-        print_heading("$countfiltered/$countall records shown.");
+        print_heading("$countfiltered/$countall " . get_record('recordsshown', 'local_plan') . ".");
     }
 
     print $report->print_description();

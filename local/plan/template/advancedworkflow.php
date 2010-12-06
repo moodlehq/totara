@@ -43,14 +43,20 @@ if ($fromform = $mform->get_data()) {
         $classfile = $CFG->dirroot .
             "/local/plan/components/{$component}/{$component}.class.php";
         if(!is_readable($classfile)) {
-            throw new PlanException("Class file '$classfile' could not be found for component '$component'.");
+            $string_properties = new object();
+            $string_properties->classfile = $classfile;
+            $string_properties->component = $component;
+            throw new PlanException(get_string('noclassfileforcomponent', 'local_plan', $string_properties));
         }
         include_once($classfile);
 
         // check class exists
         $class = "dp_{$component}_component";
         if(!class_exists($class)) {
-            throw new PlanException("Class '$class' does not exist for component '$component'.");
+            $string_properties = new object();
+            $string_properties->class = $class;
+            $string_properties->component = $component;
+            throw new PlanException(get_string('noclassforcomponent', 'local_plan', $string_properties));
         }
     }
     $class::process_settings_form($fromform, $id);

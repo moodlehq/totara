@@ -26,12 +26,21 @@ $string['completed'] = 'Completed';
 $string['baddata'] = 'Supplied bad data - non numeric id';
 $string['planidnotfound'] = 'Plan ID of \'$a\' not found';
 $string['pendingremoval'] = 'Pending removal';
+$string['learning'] = 'Learning';
+$string['records'] = 'records';
+$string['recordsshown'] = 'records shown';
+$string['error:usernotfound'] = 'User not found';
+$string['error:cannotviewpage'] = 'You cannot view this page';
+$string['recordoflearningcourses'] = 'Record of Learning: Courses';
 
 $string['noclassfileforrole'] = 'Class file \'$a->classfile\' could not be found for role of \'$->role\'';
 $string['noclassforrole'] = 'Class \'$a->class\' does not exist for role \'$a->role\'.';
 
 $string['noclassfileforcomponent'] = 'Class file \'$a->classfile\' could not be found for component \'$->component\'';
 $string['noclassforcomponent'] = 'Class \'$a->class\' does not exist for component \'$a->component\'.';
+
+$string['noclassfileforworkflow'] = 'Class file \'$a->classfile\' could not be found for workflow \'$a->workflow\'';
+$string['noclassforworkflow'] = 'Class \'$a->class\' does not exist for workflow \'$a->workflow\'';
 
 //Instruction text
 $string['plansinstructions'] = 'Your current and completed learning plans are shown below. You can create a new learning plan by clicking \"Create a new learning plan\" to the right of the screen.';

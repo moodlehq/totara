@@ -38,7 +38,6 @@ class dp_template_general_settings_form extends moodleform {
         $mform->setDefault('enddate', $enddate);
         $mform->setHelpButton('enddate', array('userpositionstartdate', get_string('startdate', 'position')), true);
 
-        //$this->add_action_buttons(true, get_string($action.'plan', 'idp'));
         $this->add_action_buttons();
     }
 
@@ -98,7 +97,6 @@ class dp_template_new_form extends moodleform {
         $mform->setDefault('enddate','dd/mm/yyyy');
         $mform->setHelpButton('enddate', array('userpositionstartdate', get_string('startdate', 'position')), true);
 
-        //$this->add_action_buttons(true, get_string($action.'plan', 'idp'));
         $this->add_action_buttons();
     }
 
@@ -147,13 +145,19 @@ class dp_template_workflow_form extends moodleform {
         foreach($DP_AVAILABLE_WORKFLOWS as $workflow) {
             $classfile = $CFG->dirroot . "/local/plan/workflows/$workflow/$workflow.class.php";
             if(!is_readable($classfile)) {
-                throw new PlanException("Class file '$classfile' could not be found for workflow of '$workflow'.");
+                $string_parameters = new object();
+                $string_parameters->classfile = $classfile;
+                $string_parameters->workflow = $workflow;
+                throw new PlanException(get_string('noclassfileforworkflow', 'local_plan', $string_parameters));
             }
             include_once($classfile);
 
             $classname = "dp_{$workflow}_workflow";
             if(!class_exists($classname)) {
-                throw new PlanException("Class '$class' does not exist for workflow '$workflow'.");
+                $string_parameters = new object();
+                $string_parameters->class = $classfile;
+                $string_parameters->workflow = $workflow;
+                throw new PlanException(get_string('noclassforworkflow', 'local_plan', $string_parameters));
             }
             $wf = new $classname();
             $radiogroup[] =& $mform->createElement('radio', 'workflow', '', $wf->name . '<br />' . $wf->description, $wf->classname);
@@ -188,14 +192,20 @@ class dp_template_advanced_workflow_form extends moodleform {
             $classfile = $CFG->dirroot .
                 "/local/plan/components/{$component}/{$component}.class.php";
             if(!is_readable($classfile)) {
-                throw new PlanException("Class file '$classfile' could not be found for component '$component'.");
+                $string_parameters = new object();
+                $string_parameters->classfile = $classfile;
+                $string_parameters->component = $component;
+                throw new PlanException(get_string('noclassfileforcomponent', 'local_plan', $string_parameters));
             }
             include_once($classfile);
 
             // check class exists
             $class = "dp_{$component}_component";
             if(!class_exists($class)) {
-                throw new PlanException("Class '$class' does not exist for component '$component'.");
+                $string_parameters = new object();
+                $string_parameters->class = $class;
+                $string_parameters->component = $component;
+                throw new PlanException(get_string('noclassforcomponent', 'local_plan', $string_parameters));
             }
         }
         $class::add_settings_form($mform, $id);
@@ -203,7 +213,6 @@ class dp_template_advanced_workflow_form extends moodleform {
         $mform->addElement('hidden', 'component', $component);
         $this->add_action_buttons();
     }
-
 }
 
 
