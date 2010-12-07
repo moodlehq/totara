@@ -44,10 +44,10 @@ input, select, button {
 }
 
 #top-bg {
-	background: #e4e4e4 url('images/bg_grn.jpg') repeat-x top center;
+	background: url("images/bg_grn.jpg") repeat-x scroll center bottom #738344;
 	top:0;
 	right: 0;
-	height:114px;
+	height:140px;
 	position:absolute;
 }
 #container {
