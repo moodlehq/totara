@@ -61,11 +61,25 @@ input, select, button {
 #content {
   font-size: 0.9em;
   clear:both;
-  padding: 10px 23px;
+  padding: 10px 6px;
   background: url("images/content_bg_blue.jpg") no-repeat scroll center top #FFFFFF;
   margin-bottom: 100px; /* Stopfs footer overlapping content*/
 }
 
+/* Site index left hand column */
+#site-index #left-column {
+    background: url("images/left_menu_bg.gif") repeat-y scroll right top transparent;
+}
+#site-index #left-column .sideblock div.header {
+    background: url("images/left_menu_header_bg.gif") no-repeat scroll right top transparent;
+    border: 0 none;
+}
+#site-index #left-column .sideblock div.content {
+    background: none repeat scroll 0 0 transparent;
+}
+#site-index #left-column .sideblock .hide-show-image {
+    display: none;
+}
 
 /**
  * Header Styles
@@ -128,7 +142,7 @@ div#header {
 .navbar .breadcrumb ul li a {
   font-family: 'Trebuchet ms', verdana, helvetica, sans-serif;
   font-weight:normal;
-  color: #08a3d5;
+  color: #FFFFFF;
   float:left;
 }
 
@@ -138,7 +152,7 @@ div#header {
   overflow:hidden;
   display:block;
   float:left;
-  background: url('images/sep.gif') no-repeat center bottom;
+  background: url('images/sep_blue.gif') no-repeat center bottom;
 }
 
 .navbar .navbutton, .navbar .menu {
@@ -241,6 +255,7 @@ div#header {
 	height:30px;
 	margin-left:0px;
 	padding: 14px 20px 3px 20px;
+	text-decoration: none;
 }
 
 #totara_menu ul ul {
@@ -493,13 +508,14 @@ a:link,
 a:visited,
 a:hover {
   color: #04a2d5;
+  text-decoration: underline;
 }
 
 .navbar .breadcrumb a,
 .navbar .breadcrumb a:link,
 .navbar .breadcrumb a:active,
 .navbar .breadcrumb a:hover {
-  color: #04a2d5;
+  color: #FFFFFF;
 }
 
 .block_admin_tree a:link,

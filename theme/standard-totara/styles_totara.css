@@ -58,6 +58,31 @@ div.course-content  #layout-table {
 
 #site-index  #left-column {
   padding-right:0;
+  width:241px !important;
+}
+
+#site-index  #right-column {
+    width:auto !important;
+}
+
+#site-index #left-column .sideblock div.header {
+    margin-top: 20px;
+    padding: 7px 20px;
+}
+
+#site-index #left-column .sideblock {
+    width: auto;
+}
+#site-index #left-column .sideblock div.header .title h2 {
+    font-size: 1.4em;
+    font-weight: bold;
+    margin: 0;
+    padding: 0;
+}
+#site-index #left-column .sideblock div.content {
+    border: 0 none;
+    padding-left: 30px;
+    padding-right: 20px;
 }
 
 #course-view #middle-column {
