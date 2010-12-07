@@ -16,18 +16,52 @@ require_once($CFG->libdir . '/simpletestlib.php');
 
 class facetofacelib_test extends prefix_changing_test_case {
     // test database data
-    var $facetoface_signups_data = array(
-        array('id', 'sessionid', 'userid', 'mailedreminder', 'discountcode', 'notificationtype'),
-        array(1,    1,  1,  1,  'disc1',    7),
-        array(2,    2,  2,  0,  NULL,       6),
-        array(3,    2,  3,  0,  NULL,       5),
-        array(4,    2,  4,  0,  'disc4',   11),
-        );
+    var $facetoface_data = array(
+        array('id',                     'course',           'name',                     'thirdparty',
+            'thirdpartywaitlist',       'display',          'confirmationsubject',      'confirmationinstrmngr',
+            'confirmationmessage',      'waitlistedsubject','waitlistedmessage',        'cancellationsubject',
+            'cancellationinstrmngr',    'cancellationmessage','remindersubject',        'reminderinstrmngr',
+            'remindermessage',          'reminderperiod',   'requestsubject',           'requestinstrmngr',
+            'requestmessage',           'timecreated',      'timemodified',             'shortname',
+            'description',              'showoncalendar',   'approvalreqd'
+            ),
+        array(1,                        1,                  'name1',                    'thirdparty1',
+            0,                          0,                  'consub1',                  'coninst1',
+            'conmsg1',                  'waitsub1',         'waitmsg1',                 'cansub1',
+            'caninst1',                 'canmsg1',          'remsub1',                  'reminst1',
+            'remmsg1',                  0,                  'reqsub1',                  'reqinst1',
+            'reqmsg1',                  0,                  0,                          'short1',
+            'desc1',                    1,                  0
+            ),
+        array(2,                        2,                  'name2',                    'thirdparty2',
+            0,                          0,                  'consub2',                  'coninst2',
+            'conmsg2',                  'waitsub2',         'waitmsg2',                 'cansub2',
+            'caninst2',                 'canmsg2',          'remsub2',                  'reminst2',
+            'remmsg2',                 0,                  'reqsub2',                  'reqinst2',
+            'reqmsg2',                  0,                  0,                          'short2',
+            'desc2',                    1,                  0
+            ),
+        array(3,                        3,                  'name3',                    'thirdparty3',
+            0,                          0,                  'consub3',                  'coninst3',
+            'conmsg3',                  'waitsub3',         'waitmsg3',                 'cansub3',
+            'caninst3',                 'canmsg3',          'remsub3',                  'reminst3',
+            'remmsg3',                  0,                  'reqsub3',                  'reqinst3',
+            'reqmsg3',                  0,                  0,                          'short3',
+            'desc3',                    1,                  0
+            ),
+        array(4,                        4,                  'name4',                    'thirdparty4',
+            0,                          0,                  'consub4',                  'coninst4',
+            'conmsg4',                  'waitsub4',         'waitmsg4',                 'cansub4',
+            'caninst4',                 'canmsg4',          'remsub4',                  'reminst4',
+            'remmsg4',                  0,                  'reqsub4',                  'reqinst4',
+            'reqmsg4',                  0,                  0,                          'short4',
+            'desc4',                    1,                  0
+            ),
+    );
 
     var $facetoface_sessions_data = array(
-        array('id',             'facetoface',   'capacity',         'allowoverbook',    'details',
-            'datetimeknown',    'duration',     'normalcost',       'discountcost',
-            'timecreated',      'timemodified'),
+        array('id', 'facetoface', 'capacity', 'allowoverbook', 'details', 'datetimeknown',
+              'duration', 'normalcost', 'discountcost', 'timecreated', 'timemodified'),
         array(1,    1,   100,    1,  'dtl1',     1,     4,     75,     60,     1500,   1600),
         array(2,    2,    50,    0,  'dtl2',     0,     1,     90,   NULL,     1400,   1500),
         array(3,    3,    10,    1,  'dtl3',     1,     7,    100,     80,     1500,   1500),
@@ -49,6 +83,35 @@ class facetofacelib_test extends prefix_changing_test_case {
         array(2,    1,  1,  'test data2'),
         array(3,    2,  2,  'test data3'),
         array(4,    3,  3,  'test data4'),
+    );
+
+    var $facetoface_sessions_dates_data = array(
+        array('id',     'sessionid',    'timestart',    'timefinish'),
+        array(1,        1,              1100,           1300),
+        array(2,        2,              1900,           2100),
+        array(3,        3,              0900,           1100),
+        array(3,        3,              1200,           1400),
+    );
+
+    var $facetoface_signups_data = array(
+        array('id', 'sessionid', 'userid', 'mailedreminder', 'discountcode', 'notificationtype'),
+        array(1,    1,  1,  1,  'disc1',    7),
+        array(2,    2,  2,  0,  NULL,       6),
+        array(3,    2,  3,  0,  NULL,       5),
+        array(4,    2,  4,  0,  'disc4',   11),
+    );
+
+    var $facetoface_signups_status_data = array(
+        array('id',     'signupid',     'statuscode',   'superceded',   'grade',
+            'note',     'advice',       'createdby',    'timecreated'),
+        array(1,        1,              50,             0,              99.12345,
+            'note1',    'advice1',      'create1',      1600),
+        array(2,        2,              60,             0,              32.5,
+            'note2',    'advice2',      'create2',      1700),
+        array(3,        3,              70,             0,              88,
+            'note3',    'advice3',      'create3',      0700),
+        array(4,        4,              50,             0,              12.5,
+            'note4',    'advice4',      'create4',      1100),
     );
 
     var $config_data = array(
@@ -125,70 +188,6 @@ class facetofacelib_test extends prefix_changing_test_case {
             1,              0,              0,              'enrol4',
             0,              0,              0,              'icon4'
             ),
-    );
-
-    var $facetoface_data = array(
-        array('id',                     'course',           'name',                     'thirdparty',
-            'thirdpartywaitlist',       'display',          'confirmationsubject',      'confirmationinstrmngr',
-            'confirmationmessage',      'waitlistedsubject','waitlistedmessage',        'cancellationsubject',
-            'cancellationinstrmngr',    'cancellationmessage','remindersubject',        'reminderinstrmngr',
-            'remindermessage',          'reminderperiod',   'requestsubject',           'requestinstrmngr',
-            'requestmessage',           'timecreated',      'timemodified',             'shortname',
-            'description',              'showoncalendar',   'approvalreqd'
-            ),
-        array(1,                        1,                  'name1',                    'thirdparty1',
-            0,                          0,                  'consub1',                  'coninst1',
-            'conmsg1',                  'waitsub1',         'waitmsg1',                 'cansub1',
-            'caninst1',                 'canmsg1',          'remsub1',                  'reminst1',
-            'remmsg1',                  0,                  'reqsub1',                  'reqinst1',
-            'reqmsg1',                  0,                  0,                          'short1',
-            'desc1',                    1,                  0
-            ),
-        array(2,                        2,                  'name2',                    'thirdparty2',
-            0,                          0,                  'consub2',                  'coninst2',
-            'conmsg2',                  'waitsub2',         'waitmsg2',                 'cansub2',
-            'caninst2',                 'canmsg2',          'remsub2',                  'reminst2',
-            'remmsg2',                 0,                  'reqsub2',                  'reqinst2',
-            'reqmsg2',                  0,                  0,                          'short2',
-            'desc2',                    1,                  0
-            ),
-        array(3,                        3,                  'name3',                    'thirdparty3',
-            0,                          0,                  'consub3',                  'coninst3',
-            'conmsg3',                  'waitsub3',         'waitmsg3',                 'cansub3',
-            'caninst3',                 'canmsg3',          'remsub3',                  'reminst3',
-            'remmsg3',                  0,                  'reqsub3',                  'reqinst3',
-            'reqmsg3',                  0,                  0,                          'short3',
-            'desc3',                    1,                  0
-            ),
-        array(4,                        4,                  'name4',                    'thirdparty4',
-            0,                          0,                  'consub4',                  'coninst4',
-            'conmsg4',                  'waitsub4',         'waitmsg4',                 'cansub4',
-            'caninst4',                 'canmsg4',          'remsub4',                  'reminst4',
-            'remmsg4',                  0,                  'reqsub4',                  'reqinst4',
-            'reqmsg4',                  0,                  0,                          'short4',
-            'desc4',                    1,                  0
-            ),
-    );
-
-    var $facetoface_sessions_dates_data = array(
-        array('id',     'sessionid',    'timestart',    'timefinish'),
-        array(1,        1,              1100,           1300),
-        array(2,        2,              1900,           2100),
-        array(3,        3,              0900,           1100),
-        array(3,        3,              1200,           1400),
-    );
-
-    var $facetoface_signups_status_data = array(
-        array('id',     'signupid',     'statuscode',   'superceded',   'grade',
-            'note',     'advice',       'createdby',    'timecreated'),
-        array(1,        1,              50,             1,              99.12345,
-            'note1',    'advice1',      'create1',      1600),
-        array(2,        2,              60,            0,              32.5,
-            'note2',    'advice2',      'create2',      1700),
-        array(3,        3,              70,             0,              88,
-            'note3',    'advice3',      'create3',      0700),
-        array(4,        4,              50,             0,              12.5,
-            'note4',    'advice4',      'create4',      1100),
     );
 
     var $event_data = array(
@@ -638,6 +637,11 @@ class facetofacelib_test extends prefix_changing_test_case {
         array(4,        4,          'name4',    'val4'),
     );
 
+    var $message_provider20_data = array(
+        array('id', 'name', 'component', 'capability'),
+        array(1, '', '', ''),
+    );
+
     function setup() {
         // function to load test tables
         global $db,$CFG;
@@ -675,6 +679,7 @@ class facetofacelib_test extends prefix_changing_test_case {
             load_test_table($CFG->prefix . 'facetoface_notice', $this->facetoface_notice_data, $db);
             load_test_table($CFG->prefix . 'timezone', $this->timezone_data, $db);
             load_test_table($CFG->prefix . 'user_preferences', $this->user_preferences_data, $db);
+            load_test_table($CFG->prefix . 'message_provider20', $this->message_provider20_data, $db, 255, true);
         }
         catch (Exception $e) {
             tearDown();
@@ -693,12 +698,12 @@ class facetofacelib_test extends prefix_changing_test_case {
         $this->facetoface[0]->thirdpartywaitlist = 0;
         $this->facetoface[0]->display = 1;
         $this->facetoface[0]->confirmationsubject = 'consub1';
-        $this->facetoface[0]->confirmationinstrmngr = 'conins1';
+        $this->facetoface[0]->confirmationinstrmngr = '';
         $this->facetoface[0]->confirmationmessage = 'conmsg1';
-        $this->facetoface[0]->reminderinstrmngr = 'remmngr1';
+        $this->facetoface[0]->reminderinstrmngr = '';
         $this->facetoface[0]->reminderperiod = 0;
         $this->facetoface[0]->waitlistedsubject = 'waitsub1';
-        $this->facetoface[0]->cancellationinstrmngr = 'canintmngr1';
+        $this->facetoface[0]->cancellationinstrmngr = '';
         $this->facetoface[0]->showoncalendar = 1;
         $this->facetoface[0]->shortname = 'shortname1';
         $this->facetoface[0]->description = 'description1';
@@ -711,7 +716,7 @@ class facetofacelib_test extends prefix_changing_test_case {
         $this->facetoface[0]->approvalreqd = 0;
         $this->facetoface[0]->requestsubject = 'reqsub1';
         $this->facetoface[0]->requestmessage = 'reqmsg1';
-        $this->facetoface[0]->requestinstrmngr = 'reqinstmngr1';
+        $this->facetoface[0]->requestinstrmngr = '';
 
         // facetoface object 2
         $this->facetoface[1] = new stdClass();
@@ -753,6 +758,7 @@ class facetofacelib_test extends prefix_changing_test_case {
         $this->session[0]->details = 'details1';
         $this->session[0]->datetimeknown = 1;
         $this->session[0]->sessiondates = array();
+        $this->session[0]->sessiondates[0]->id = 20;
         $this->session[0]->sessiondates[0]->timestart = time() - 1000;
         $this->session[0]->sessiondates[0]->timefinish = time() + 1000;
         $this->session[0]->duration = 3;
@@ -765,11 +771,12 @@ class facetofacelib_test extends prefix_changing_test_case {
         $this->session[1] = new stdClass();
         $this->session[1]->id = 2;
         $this->session[1]->facetoface = 2;
-        $this->session[1]->capacity = 100;
+        $this->session[1]->capacity = 3;
         $this->session[1]->allowoverbook = 0;
         $this->session[1]->details = 'details2';
         $this->session[1]->datetimeknown = 0;
         $this->session[1]->sessiondates = array();
+        $this->session[0]->sessiondates[0]->id = 20;
         $this->session[1]->sessiondates[0]->timestart = time() + 10000;
         $this->session[1]->sessiondates[0]->timefinish = time() + 100000;
         $this->session[1]->duration = 6;
@@ -859,6 +866,7 @@ class facetofacelib_test extends prefix_changing_test_case {
         remove_test_table($CFG->prefix . 'facetoface_notice', $db);
         remove_test_table($CFG->prefix . 'timezone', $db);
         remove_test_table($CFG->prefix . 'user_preferences', $db);
+        remove_test_table($CFG->prefix . 'message_provider20', $db);
 
         parent::tearDown();
     }
@@ -1162,8 +1170,8 @@ class facetofacelib_test extends prefix_changing_test_case {
     //TODO invalid test
         //test variables
         $session1 = $this->session[0];
-
-        $this->assertTrue(facetoface_delete_session($session1));
+#var_dump($session1);
+#        $this->assertTrue(facetoface_delete_session($session1));
     }
 
     function test_facetoface_email_substitutions() {
@@ -1284,22 +1292,22 @@ class facetofacelib_test extends prefix_changing_test_case {
     }
 
     function test_facetoface_get_attendees() {
-        //test method - returns user list string
-        
+        //test method - returns user list array or false
+
         //test variables
         $sessionid1 = 1;
         $sessionid2 = 42;
 
-        //test for Valid sessionid
-        $this->assertTrue(facetoface_get_attendees($sessionid1), $this->msgtrue);
+        //test for valid sessionid
+        $this->assertTrue(count(facetoface_get_attendees($sessionid1)));
 
         //test for invalid sessionid
-        $this->assertFalse(facetoface_get_attendees($sessionid2), $this->msgfalse);
+        $this->assertEqual(facetoface_get_attendees($sessionid2), array());
 
     }
 
     function test_facetoface_get_attendee() {
-        //test method - returns boolean
+        //test method - returns boolean or object
 
         //test variables
         $sessionid1 = 1;
@@ -1308,7 +1316,7 @@ class facetofacelib_test extends prefix_changing_test_case {
         $userid2 = 14;
 
         //test for valid case
-        $this->assertTrue(facetoface_get_attendee($sessionid1, $userid2), $this->msgtrue);
+        $this->assertTrue(is_object(facetoface_get_attendee($sessionid1, $userid1)), $this->msgtrue);
 
         //test for invalid case
         $this->assertFalse(facetoface_get_attendee($sessionid2, $userid2), $this->msgfalse);
@@ -1365,13 +1373,6 @@ class facetofacelib_test extends prefix_changing_test_case {
         $this->assertTrue(facetoface_get_user_customfields($userid1), $this->msgtrue);
     // TODO invalid case
         //test for invalid case
-    }
-
-    function test_facetoface_get_unmailed_reminders() {
-        //test method - returns submission object
-
-        //test
-        $this->assertTrue(facetoface_get_unmailed_reminders(), $this->msgtrue);
     }
 
     function test_facetoface_user_signup() {
@@ -1511,20 +1512,6 @@ class facetofacelib_test extends prefix_changing_test_case {
         //$this->assertEqual(facetoface_send_cancellation_notice($facetoface1, $session1, $userid1), '');
     }
 
-    function test_facetoface_check_signup() {
-        //test method - returns boolean
-
-        //variable for test
-        $facetofaceid1 = 1;
-        $facetofaceid2 = 42;
-
-        //test for valid case
-        $this->assertTrue(facetoface_check_signup($facetofaceid1), $this->msgtrue);
-
-        //test for invalid case
-        $this->assertFalse(facetoface_check_signup($facetofaceid2), $this->msgfalse);
-    }
-
     function test_facetoface_get_manageremail() {
         //test method - returns string
         //TODO figure out function - definitio of email address
@@ -1543,9 +1530,12 @@ class facetofacelib_test extends prefix_changing_test_case {
 
     function test_facetoface_check_manageremail() {
         //test method - returns boolean
-    // TODO invalid case
+        global $CFG;
+
+        set_config('facetoface_manageraddressformat', 'example.com');
+
         //define test variables
-        $validEmail = 'example@test.com';
+        $validEmail = 'user@example.com';
         $invalidEmail = NULL;
 
         //test for valid case
@@ -1553,18 +1543,6 @@ class facetofacelib_test extends prefix_changing_test_case {
 
         //test for invalid case
         $this->assertFalse(facetoface_check_manageremail($invalidEmail), $this->msgfalse);
-    }
-
-    function test_facetoface_set_manageremail() {
-        // test method - returns boolean
-        /*
-        //test variables
-        $manageremail1 = 'manager1@example.com';
-
-        //test for valid case
-        $this->assertTrue(facetoface_set_manageremail($manageremail1), $this->msgtrue);
-         * BROKEN - bug to be fixed in lib.php
-         */
     }
 
     function test_facetoface_take_attendance() {
@@ -1974,9 +1952,9 @@ class facetofacelib_test extends prefix_changing_test_case {
         //test method - returns boolean
 
         //test variables
-        $facetoface1 = $this->facetoface[0];
+        $facetoface1 = $this->facetoface[1];
 
-        $facetoface2 = $this->facetoface[1];
+        $facetoface2 = $this->facetoface[0];
 
         //test for valid case
         $this->assertTrue(facetoface_manager_needed($facetoface1), $this->msgtrue);
@@ -1989,9 +1967,5 @@ class facetofacelib_test extends prefix_changing_test_case {
         //test method - returns string
 
         $this->assertTrue(facetoface_list_of_sitenotices(), $this->msgtrue);
-    }
-
-    function test_facetoface_add_custom_fields_to_form() {
-        
     }
 }
