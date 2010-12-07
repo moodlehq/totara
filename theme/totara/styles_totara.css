@@ -80,6 +80,10 @@ input, select, button {
 #site-index #left-column .sideblock .hide-show-image {
     display: none;
 }
+#site-index #middle-column {
+    padding-left:0;
+    padding-right:0;
+}
 
 /**
  * Header Styles
