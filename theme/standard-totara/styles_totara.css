@@ -1394,11 +1394,11 @@ div.dp-summary-widget-components {
 span.dp-summary-widget-component-name {
     background:transparent url('images/nav_main_spacer.gif') no-repeat right 5px;
     padding: 3px 4px 0px 0px;
+    margin-right: 4px;
 }
 
 span.dp-summary-widget-component-name-last {
     background: transparent none repeat scroll 0 0;
-    padding: 3px 5px 0px 5px;
 }
 
 #dp-plans-menu {

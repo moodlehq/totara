@@ -105,6 +105,12 @@ $navigation = build_navigation($navlinks);
 
 print_header_simple($pagetitle, '', $navigation, '', null, true, '');
 
+// Plan menu
+echo dp_display_plans_menu($plan->userid);
+
+// Plan page content
+print_container_start(false, '', 'dp-plan-content');
+
 echo $plan->display_plan_message_box();
 
 print_heading($fullname);
@@ -133,6 +139,8 @@ print $plan_instructions;
 // Plan details
 $form->set_data($plan);
 $form->display();
+
+print_container_end();
 
 // Comments
 // @todo!!
