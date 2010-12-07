@@ -729,6 +729,9 @@ function tm_message_set_default_message_preferences($user) {
     //$providers = $DB->get_records('message_providers');
     $providers = get_records('message_providers20');
     $preferences = array();
+    if (!$providers) {
+        $providers = array();
+    }
 
     foreach ($providers as $providerid => $provider) {
 
