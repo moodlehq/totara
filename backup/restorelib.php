@@ -1938,6 +1938,15 @@ define('RESTORE_GROUPS_GROUPINGS', 3);
                             if ($row['courseinstance'] && !backup_is_same_site($restore)) {
                                 continue;
                             }
+
+                            // If activity criteria, get the new activity id
+                            if ($row['moduleinstance']) {
+                                // Get activity id
+                                $new = backup_getid($restore->backup_unique_code, 'course_modules', $row['moduleinstance']);
+
+                                // Update
+                                $row['moduleinstance'] = $new->new_id;
+                            }
                             break;
                     }
 
@@ -9345,21 +9354,27 @@ define('RESTORE_GROUPS_GROUPINGS', 3);
             }
         }
 
-        //Now create competency evidence items as needed
-        if ($status && isset($info->backup_competency_evidence_items) && $info->backup_competency_evidence_items == "true") {
-            if (!defined('RESTORE_SILENTLY')) {
-                echo "<li>".get_string("createcompetencyevidencedata");
-            }
-            if (!$status = restore_create_competency_evidence_items($restore, $xml_file)) {
+        //Now create course completion data
+        if ($status) {
+            //If we are deleting and bringing into a course or making a new course, same situation
+            if ($restore->restoreto == RESTORETO_CURRENT_DELETING ||
+                $restore->restoreto == RESTORETO_EXISTING_DELETING ||
+                $restore->restoreto == RESTORETO_NEW_COURSE) {
                 if (!defined('RESTORE_SILENTLY')) {
-                    notify("Could not restore competency evidence!");
-                } else {
-                    $errorstr = "Could not restore competency evidence!";
-                    return false;
+                    echo '<li>'.get_string('courseformatdata');
                 }
-            }
-            if (!defined('RESTORE_SILENTLY')) {
-                echo '</li>';
+                if (!$status = restore_set_format_data($restore, $xml_file)) {
+                        $error = "Error while setting the course format data";
+                    if (!defined('RESTORE_SILENTLY')) {
+                        notify($error);
+                    } else {
+                        $errorstr=$error;
+                        return false;
+                    }
+                }
+                if (!defined('RESTORE_SILENTLY')) {
+                    echo '</li>';
+                }
             }
         }
 
@@ -9384,26 +9399,21 @@ define('RESTORE_GROUPS_GROUPINGS', 3);
             }
         }
 
-        if ($status) {
-            //If we are deleting and bringing into a course or making a new course, same situation
-            if ($restore->restoreto == RESTORETO_CURRENT_DELETING ||
-                $restore->restoreto == RESTORETO_EXISTING_DELETING ||
-                $restore->restoreto == RESTORETO_NEW_COURSE) {
+        //Now create competency evidence items as needed
+        if ($status && isset($info->backup_competency_evidence_items) && $info->backup_competency_evidence_items == "true") {
+            if (!defined('RESTORE_SILENTLY')) {
+                echo "<li>".get_string("createcompetencyevidencedata");
+            }
+            if (!$status = restore_create_competency_evidence_items($restore, $xml_file)) {
                 if (!defined('RESTORE_SILENTLY')) {
-                    echo '<li>'.get_string('courseformatdata');
+                    notify("Could not restore competency evidence!");
+                } else {
+                    $errorstr = "Could not restore competency evidence!";
+                    return false;
                 }
-                if (!$status = restore_set_format_data($restore, $xml_file)) {
-                        $error = "Error while setting the course format data";
-                    if (!defined('RESTORE_SILENTLY')) {
-                        notify($error);
-                    } else {
-                        $errorstr=$error;
-                        return false;
-                    }
-                }
-                if (!defined('RESTORE_SILENTLY')) {
-                    echo '</li>';
-                }
+            }
+            if (!defined('RESTORE_SILENTLY')) {
+                echo '</li>';
             }
         }
 

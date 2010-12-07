@@ -1719,7 +1719,7 @@
 
             fwrite ($bf,start_tag("COMPLETION_CRITERIA_COMPLETIONS",3,true));
             foreach ($completions as $completion) {
-            /// Grades are only sent to backup if the user is one target user
+            /// Data is only sent to backup if the user is one target user
                 if (backup_getid($preferences->backup_unique_code, 'user', $completion->userid)) {
                     fwrite ($bf,start_tag("COMPLETION_CRIT_COMPL",4,true));
                     fwrite ($bf,full_tag("ID",5,false,$completion->id));
@@ -1748,7 +1748,7 @@
 
             fwrite ($bf,start_tag("COMPLETION_COMPLETIONS",3,true));
             foreach ($completions as $completion) {
-            /// Grades are only sent to backup if the user is one target user
+            /// Data is only sent to backup if the user is one target user
                 if (backup_getid($preferences->backup_unique_code, 'user', $completion->userid)) {
                     fwrite ($bf,start_tag("COMPLETIONS",4,true));
                     fwrite ($bf,full_tag("ID",5,false,$completion->id));
