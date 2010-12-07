@@ -343,8 +343,20 @@ function dp_display_plans($userid, $statuses=array(DP_PLAN_STATUS_APPROVED), $co
     // Set up table
     $tablename = str_replace(',', '-', $statuses);
     $tablename = 'plans-list-'.$tablename;
-    $tableheaders = array(get_string('plan', 'local_plan'));
+    $tableheaders = array();
     $tablecols = array('p,name');
+
+    // Determine what the first column should be
+    if (in_array('activeplans', $cols)) {
+	$tableheaders[] = get_string('activeplans', 'local_plan');
+    }
+    else if (in_array('completedplans', $cols)) {
+	$tableheaders[] = get_string('completedplans', 'local_plan');
+    }
+    else {
+	$tableheaders[] = get_string('plan', 'local_plan');
+    }
+
     if (in_array('duedate', $cols)) {
         $tableheaders[] = get_string('duedate', 'local_plan');
         $tablecols[] = 'p.enddate';
@@ -377,24 +389,32 @@ function dp_display_plans($userid, $statuses=array(DP_PLAN_STATUS_APPROVED), $co
     // Add table data
     $plans = get_records_sql($select.$from.$where.$sort, $table->get_page_start(), $table->get_page_size());
     if (!$plans) {
-        return get_string('noplans', 'local_plan');
+	$row = array();
+	$row[] = get_string('noplans', 'local_plan');
+	// Add blank cells..
+	for ($i=1; $i<count($tablecols); $i++) {
+	    $row[] = '';
+	}
+	$table->add_data($row);
     }
-    foreach ($plans as $p) {
-        $plan = new development_plan($p->id);
-        $row = array();
-        $row[] = $plan->display_summary_widget();
-        if (in_array('duedate', $cols)) {
-            $row[] = $plan->display_enddate();
-        }
-        if (in_array('progress', $cols)) {
-            $row[] = $plan->display_progress();
-        }
-        if (in_array('completed', $cols)) {
-            $row[] = $plan->display_completeddate();
-        }
-        $row[] = $plan->display_actions();
+    else {
+	foreach ($plans as $p) {
+	    $plan = new development_plan($p->id);
+	    $row = array();
+	    $row[] = $plan->display_summary_widget();
+	    if (in_array('duedate', $cols)) {
+		$row[] = $plan->display_enddate();
+	    }
+	    if (in_array('progress', $cols)) {
+		$row[] = $plan->display_progress();
+	    }
+	    if (in_array('completed', $cols)) {
+		$row[] = $plan->display_completeddate();
+	    }
+	    $row[] = $plan->display_actions();
 
-        $table->add_data($row);
+	    $table->add_data($row);
+	}
     }
 
     ob_start();
@@ -442,11 +462,12 @@ function dp_display_add_plan_icon($userid) {
     $out = '';
     $href = "{$CFG->wwwroot}/local/plan/add.php?userid={$userid}";
     $title = get_string('createplan', 'local_plan');
+    $out = '';
     $out .= '<span class="dp-add-plan-link">';
-    $out .= "<a href=\"{$href}\">
-        <img src=\"{$CFG->themewww}/totara/pix/t/add.gif\" title=\"{$title}\"
-        alt=\"{$title}\" width=\"13px\" height=\"13px\"/></a><br>";
-    $out .= "<a href=\"{$href}\" title=\"{$title}\">{$title}</a>";
+    $out .= '	<form action="'.$href.'" method="GET">';
+    $out .= '		<input type="submit" value="'.$title.'"/>';
+    $out .= '		<input type="hidden" name="userid" value="'.$userid.'"/>';
+    $out .= '	<form>';
     $out .= '</span>';
 
     return $out;
