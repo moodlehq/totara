@@ -68,10 +68,10 @@ input, select, button {
 
 /* Site index left hand column */
 #site-index #left-column {
-    background: url("images/left_menu_bg.gif") repeat-y scroll right top transparent;
+    background: url("images/left_menu_bg.gif") repeat-y scroll left top transparent;
 }
 #site-index #left-column .sideblock div.header {
-    background: url("images/left_menu_header_bg.gif") no-repeat scroll right top transparent;
+    background: url("images/left_menu_header_bg.gif") no-repeat scroll left top transparent;
     border: 0 none;
 }
 #site-index #left-column .sideblock div.content {
