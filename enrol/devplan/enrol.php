@@ -94,5 +94,8 @@ function config_form($frm) {
     include("$CFG->dirroot/enrol/devplan/config.html");
 }
 
+function process_config($config) {
+    return true;
+}
 } // end of class definition
 ?>
