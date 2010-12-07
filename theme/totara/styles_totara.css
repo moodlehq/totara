@@ -62,7 +62,7 @@ input, select, button {
   font-size: 0.9em;
   clear:both;
   padding: 10px 23px;
-  background: #FFFFFF;
+  background: url("images/content_bg_blue.jpg") no-repeat scroll center top #FFFFFF;
   margin-bottom: 100px; /* Stopfs footer overlapping content*/
 }
 
@@ -108,7 +108,7 @@ div#header {
 
 .navbar {
     font-family: 'Trebuchet ms', verdana, helvetica, sans-serif;
-    background: #FFFFFF;
+    background: url("images/breadcrumb_bg_blue.jpg") no-repeat scroll right bottom #5ED6F1;
 }
 
 .navbar .breadcrumb {
@@ -439,7 +439,7 @@ body.calendar #totara_menu ul #menu6 div.noteam ul {
 #footer {
 	position: absolute;
 	bottom: 0;
-	background: #FFFFFF url('images/bg_grn.jpg') repeat-x top center;
+	background: url("images/footer_bg_grn.jpg") repeat-x scroll center top #7D8412;
 	width: 930px;
 	padding:7px 15px;
 }
