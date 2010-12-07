@@ -143,5 +143,88 @@ function xmldb_local_plan_upgrade($oldversion=0) {
         }
     }
 
+    if ($result && $oldversion < 2010120800) {
+
+    /// Define table dp_plan_objective_assign to be dropped
+        $table = new XMLDBTable('dp_plan_objective_assign');
+
+    /// Launch drop table for dp_plan_objective_assign
+        $result = $result && drop_table($table);
+    }
+
+    if ($result && $oldversion < 2010120801) {
+
+    /// Rename field status on table dp_plan_objective to scalevalueid
+        $table = new XMLDBTable('dp_plan_objective');
+        $field = new XMLDBField('status');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '4', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null, 'duedate');
+
+    /// Launch rename field status
+        $result = $result && rename_field($table, $field, 'scalevalueid');
+    }
+
+    if ($result && $oldversion < 2010120802) {
+
+        // If there are no objective scales, we'll need to create one so that this not-null column can be added.
+        $scaleid = get_field_select('dp_objective_scale', 'min(id)', '1=1');
+        if ( !$scaleid ){
+            global $USER;
+
+            $scale = new stdClass();
+            $scale->name='Default objective scale';
+            $scale->description='Default scale of for ranking objective completion.';
+            $scale->timemodified=time();
+            $scale->usermodified=$USER->id;
+            $scaleid = insert_record('dp_objective_scale', $scale);
+            $result = $result && $scaleid;
+
+            $scalevalue = new stdClass();
+            $scalevalue->objscaleid = $scaleid;
+            $scalevalue->name = 'Incomplete';
+            $scalevalue->sortorder = 0;
+            $scalevalue->timemodified = time();
+            $scalevalue->usermodified = $USER->id;
+            $scalevalue->achieved = 0;
+            $defaultid = insert_record('dp_objective_scale_value', $scalevalue);
+            $result = $result && $defaultid;
+
+            $scalevalue->name='Complete';
+            $scalevalue->achieved = 1;
+            $scalevalue->sortorder = 1;
+            $result = $result && insert_record('dp_objective_scale_value', $scalevalue);
+
+            $scale->id = $scaleid;
+            $scale->defaultid = $defaultid;
+            $result = $result && update_record('dp_objective_scale', $scale);
+        }
+
+    /// Define field objectivescale to be added to dp_objective_settings
+        $table = new XMLDBTable('dp_objective_settings');
+        $field = new XMLDBField('objectivescale');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, $scaleid, 'priorityscale');
+
+    /// Launch add field objectivescale
+        $result = $result && add_field($table, $field);
+
+    /// Changing the default of field objectivescale on table dp_objective_settings to drop it
+        $table = new XMLDBTable('dp_objective_settings');
+        $field = new XMLDBField('objectivescale');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null, 'priorityscale');
+
+    /// Launch change of default for field objectivescale
+        $result = $result && change_field_default($table, $field);
+    }
+
+    if ($result && $oldversion < 2010120803) {
+
+    /// Define field approved to be added to dp_plan_objective
+        $table = new XMLDBTable('dp_plan_objective');
+        $field = new XMLDBField('approved');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '4', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0', 'scalevalueid');
+
+    /// Launch add field approved
+        $result = $result && add_field($table, $field);
+    }
+
     return $result;
 }
