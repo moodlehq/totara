@@ -157,6 +157,14 @@ div#header {
   background:url("images/bg_grn.jpg") repeat-x scroll center top #E4E4E4;
   color:#FFFFFF;
 }
+.login-container a,
+.login-container a:link,
+.login-container a:visited,
+.login-container a:hover {
+    color: #FFFFFF;
+    font-weight: bold;
+    text-decoration: underline;
+}
 
 .navigation {
   display:none;
