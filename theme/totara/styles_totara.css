@@ -612,26 +612,42 @@ h6 {
 .tabrow0 ul {
   top: 2.4em;
 }
-
 .tabrow0{
-	line-height: 2.3em;
+  line-height: 2.3em;
+  text-align:left;
 }
 .tabrow0 li a {
   font-family: 'Trebuchet ms', Verdana, Helvetica, sans-serif;
   font-size: 1.3em;
-  color: #322f2c;
+  background: url("images/tab/left_dark.gif") no-repeat scroll left top transparent;
+  padding-top:4px;
+  color:#FFFFFF;
+  padding-bottom:2px;
 }
+.tabrow0 li {
+    font-weight: bold;
+    margin-left: 4px;
+}
+.tabrow0 li a span {
+    background: url("images/tab/right_dark.gif") no-repeat scroll right top transparent;
+    padding-top:4px;
+    padding-bottom:2px;
+}
+
+
 .tabrow0 li.selected a:hover span,
 .tabrow0 li.selected span,
 .tabrow0 li.active a:hover span,
 .tabrow0 li.active span {
-	background: url("images/tab/right_active.gif") top right;
+	background: url("images/tab/right_white.gif") top right;
+	padding-top:8px;
 }
 .tabrow0 li.selected a:hover,
 .tabrow0 li.selected a,
 .tabrow0 li.active a:hover,
 .tabrow0 li.active a {
-	background: url("images/tab/left_active.gif") top left no-repeat;
+	background: url("images/tab/left_white.gif") top left no-repeat;
+	padding-top:8px;
 }
 
 .tabrow0 li.active ul.tabrow1 li a {
@@ -645,12 +661,13 @@ ul.tabrow1 {
 	background: url("images/tab/tabrow1.gif") top left repeat-x !important;
 }
 
+
 /* Hover Styles */
 .tabrow0 a:link:hover,
 .tabrow0 a:visited:hover,
 .tabrow0 .last a:hover,
 .tabrow0 a:hover {
-  background-image: url(images/tab/left_hover.gif);
+  background-image: url(images/tab/left_white.gif);
   color: #999999;
   text-decoration: none;
 }
@@ -658,7 +675,7 @@ ul.tabrow1 {
 .tabrow0 a:visited:hover span,
 .tabrow0 .last a:hover span,
 .tabrow0 a:hover span {
-  background-image: url(images/tab/right_hover.gif);
+  background-image: url(images/tab/right_white.gif);
   color: #333333;
 }
 
@@ -725,6 +742,12 @@ ul.tabrow1 li a:hover {
   background: #FFFFFF;
   border-bottom: 1px solid #cccccc;
 }
+
+.tabrow0 .empty {
+    border-bottom:0 none;
+    border-top:1px solid #AAAAAA;
+}
+
 
 /* Header tabs */
 .header-tabs .tabtree {
