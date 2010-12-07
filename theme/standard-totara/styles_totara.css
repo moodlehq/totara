@@ -157,10 +157,11 @@ div#header .logo {
 
 .login-container {
   font-family: verdana, helvetica, sans-serif;
-  float:right;
+  float:none;
   font-size: 1em;
   letter-spacing: -0.05em;
-  padding: 5px 20px 0 0;
+  padding: 5px 10px 5px 10px;
+  text-align:right;
 }
 
 .navigation {

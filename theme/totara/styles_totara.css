@@ -151,11 +151,11 @@ div#header {
 
 .login-container {
   font-family: verdana, helvetica, sans-serif;
-  float:right;
   font-size: 1em;
   letter-spacing: -0.05em;
-  padding: 5px 20px 0 0;
   color: #08a3d5;
+  background:url("images/bg_grn.jpg") repeat-x scroll center top #E4E4E4;
+  color:#FFFFFF;
 }
 
 .navigation {
