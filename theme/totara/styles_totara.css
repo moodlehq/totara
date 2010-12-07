@@ -1702,6 +1702,20 @@ table.reportbuilder-table td {
 }
 
 /*****************************************************************************/
+/** Learning Plans **/
+/*****************************************************************************/
+#dp-plans-list-active-plans table td.c0 {
+    background: transparent url('images/icon_active_plan.gif') no-repeat 8px 10px;
+}
+#dp-plans-list-completed-plans table td.c0 {
+    background: transparent url('images/icon_completed_plan.gif') no-repeat 8px 10px;
+}
+#dp-plans-list-active-plans table th.header.c0 a,
+#dp-plans-list-completed-plans table th.header.c0 a {
+    color: #A52B86;
+}
+
+/*****************************************************************************/
 /** IDP **/
 /*****************************************************************************/
 
@@ -1889,8 +1903,7 @@ td.c0 {
 }
 
 th.header {
-    background: #EDEDED url(images/gradient.png) top left repeat-x;
-	font-size: 0.9em;
+    font-size: 0.9em;
 }
 
 table.customfields th.lastcol,

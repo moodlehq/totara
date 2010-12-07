@@ -1440,6 +1440,25 @@ table.dp-plan-component-items {
     width: 100%;
 }
 
+/*****************************************************************************/
+/** Learning Plans **/
+/*****************************************************************************/
+#dp-plans-list-active-plans table td.c0,
+#dp-plans-list-completed-plans table td.c0 {
+    padding-left: 40px;
+}
+
+#dp-plans-list-active-plans table th.header.c0 a,
+#dp-plans-list-completed-plans table th.header.c0 a {
+    font-size:17px;
+    text-decoration: none;
+}
+#dp-plans-description div.planinstructions {
+    float:left;
+}
+#dp-plans-description span.dp-add-plan-link{
+
+}
 
 /*****************************************************************************/
 /** Dialogs **/
@@ -2010,6 +2029,22 @@ table#list-idpcourse{
     padding-right:5px;
 }
 
+/* New totara styled tables */
+table.flexible td {
+    border:0 none;
+    border-left:1px solid #E2E2E2;
+}
+table.flexible th.header {
+    border-top:0 none;
+    border-right:0 none;
+    border-bottom:0 none;
+}
+table.flexible td.c0 {
+    border-left:0 none;
+}
+table.flexible th.c0 {
+    border-left:0 none;
+}
 
 /*****************************************************************************/
 /** Guides Tables **/
