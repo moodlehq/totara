@@ -58,6 +58,7 @@ echo '<div class="planinstructions">' . get_string('plansinstructions', 'local_p
 if ($canaddplan) {
     echo dp_display_add_plan_icon($planuser);
 }
+echo '<div style="clear:both;"></div>';
 print_container_end();
 
 //print_heading(get_string('activeplans', 'local_plan'), 'left');
