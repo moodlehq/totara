@@ -54,17 +54,17 @@ $string['plan_instructions_delete'] = 'You can delete this learning plan by clic
 $string['competency_instructions_learner'] = 'All the competencies that will be addressed by your learning plan are shown below. ';
 $string['competency_instructions_manager'] = 'All the competencies that will be addressed by your team member\'s learning plan area shown below. ';
 $string['competency_instructions_detail'] = 'You can view more details about any competency by clicking its title. ';
-$string['competency_instructions_add'] = 'You can add additional competencies by clicking the \"Add competencies\" button to the right of the screen. ';
+$string['competency_instructions_add'] = 'You can add additional competencies by clicking the \"Add/remove competencies\" button to the right of the screen. ';
 
 $string['course_instructions_manager'] = 'All the courses that form your team member\'s learning plan are show below. ';
 $string['course_instructions_learner'] = 'All the courses that form your learning plan are shown below. ';
 $string['course_instructions_detail'] = 'You can view any course by clicking the course title. ';
-$string['course_instructions_add'] = 'Clicking \"Add New Courses\" will allow you to add new courses to this learning plan.';
+$string['course_instructions_add'] = 'Clicking \"Add/remove Courses\" will allow you to add new courses to this learning plan.';
 
 $string['objective_instructions_manager'] = 'All the objectives that form your team member\'s learning plan are show below. ';
 $string['objective_instructions_learner'] = 'All the objectives that form your learning plan are shown below. ';
 $string['objective_instructions_detail'] = 'You can view any objective by clicking the objective title. ';
-$string['objective_instructions_add'] = 'Clicking \"Add New Courses\" will allow you to add new objectives to this learning plan.';
+$string['objective_instructions_add'] = 'Clicking \"Add/remove Objectives\" will allow you to add new objectives to this learning plan.';
 
 
 

@@ -98,6 +98,23 @@ print $plan->display_plan_message_box();
 print_heading($fullname);
 print $plan->display_tabs($componentname);
 
+$objective_instructions = '<div class="objective_instructions">';
+if($plan->role == 'manager') {
+    $objective_instructions .= get_string('objective_instructions_manager', 'local_plan');
+} else {
+    $objective_instructions .= get_string('objective_instructions_learner', 'local_plan');
+}
+
+$objective_instructions .= get_string('objective_instructions_detail', 'local_plan');
+
+if ($component->get_setting('updateobjective') >= DP_PERMISSION_REQUEST) {
+    $objective_instructions .= get_string('objective_instructions_add', 'local_plan');
+}
+
+$objective_instructions .= '</div>';
+
+print $objective_instructions;
+
 print $component->display_picker();
 
 print '<form id="dp-component-update" action="' . $currenturl . '" method="POST">';
