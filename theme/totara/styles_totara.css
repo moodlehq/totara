@@ -32,6 +32,19 @@ input, select, button {
   padding:2px;
 }
 
+input[type="submit"],
+input[type="button"],
+button,
+.ui-state-default,
+.ui-widget-content button.ui-state-default {
+    -moz-border-radius: 4px 4px 4px 4px;
+    background: url("images/button_repeat.jpg") repeat-x scroll left top #0BAAB0;
+    border: 1px solid #0DA7B2;
+    color: #FFFFFF;
+    cursor: pointer;
+    margin-right: 1px;
+}
+
 /**
  * Layout Styles
  **/
@@ -1705,10 +1718,12 @@ table.reportbuilder-table td {
 /** Learning Plans **/
 /*****************************************************************************/
 #dp-plans-list-active-plans table td.c0 {
-    background: transparent url('images/icon_active_plan.gif') no-repeat 8px 10px;
+    background: url('images/icon_active_plan.gif') no-repeat 8px 10px transparent;
+    background-color: none;
 }
 #dp-plans-list-completed-plans table td.c0 {
-    background: transparent url('images/icon_completed_plan.gif') no-repeat 8px 10px;
+    background: url('images/icon_completed_plan.gif') no-repeat 8px 10px transparent;
+    background-color: none;
 }
 #dp-plans-list-active-plans table th.header.c0 a,
 #dp-plans-list-completed-plans table th.header.c0 a {
