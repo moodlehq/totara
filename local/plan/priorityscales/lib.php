@@ -35,8 +35,8 @@ function dp_priority_display_table($priorities, $editingon=0) {
     $sitecontext = get_context_instance(CONTEXT_SYSTEM);
 
     // Cache permissions
-    $can_edit = has_capability('moodle/plan:managepriorityscales', $sitecontext);
-    $can_delete = has_capability('moodle/plan:managepriorityscales', $sitecontext);
+    $can_edit = has_capability('local/plan:managepriorityscales', $sitecontext);
+    $can_delete = has_capability('local/plan:managepriorityscales', $sitecontext);
 
     // Make sure user has capability to edit
     if (!(($can_edit || $can_delete) && $editingon)) {

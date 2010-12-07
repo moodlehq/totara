@@ -20,7 +20,7 @@ $confirm = optional_param('confirm', 0, PARAM_INT); //Confirmation of delete
 admin_externalpage_setup('priorityscales');
 
 $sitecontext = get_context_instance(CONTEXT_SYSTEM);
-require_capability('moodle/plan:managepriorityscales', $sitecontext);
+require_capability('local/plan:managepriorityscales', $sitecontext);
 
 if (!$priority = get_record('dp_priority_scale', 'id', $id)) {
     error(get_string('error:priorityscaleidincorrect', 'local_plan'));

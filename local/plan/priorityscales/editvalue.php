@@ -21,7 +21,7 @@ admin_externalpage_setup('priorityscales');
 
 $sitecontext = get_context_instance(CONTEXT_SYSTEM);
 
-require_capability('moodle/plan:managepriorityscales', $sitecontext);
+require_capability('local/plan:managepriorityscales', $sitecontext);
 if ($id == 0) {
     // Creating new scale value
 

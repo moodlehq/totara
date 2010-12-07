@@ -15,7 +15,7 @@ $id = optional_param('id', 0, PARAM_INT); // Objective id; 0 if creating a new o
 admin_externalpage_setup('objectivescales');
 $sitecontext = get_context_instance(CONTEXT_SYSTEM);
 
-require_capability('moodle/plan:manageobjectivescales', $sitecontext);
+require_capability('local/plan:manageobjectivescales', $sitecontext);
 if ($id == 0) {
     // creating new idp objective
 

@@ -23,7 +23,7 @@ $confirm = optional_param('confirm', 0, PARAM_INT); //Confirmation of delete
 admin_externalpage_setup('objectivescales');
 
 $sitecontext = get_context_instance(CONTEXT_SYSTEM);
-require_capability('moodle/plan:manageobjectivescales', $sitecontext);
+require_capability('local/plan:manageobjectivescales', $sitecontext);
 
 if (!$objective = get_record('dp_objective_scale', 'id', $id)) {
     error(get_string('error:objectivescaleidincorrect', 'local_plan'));
