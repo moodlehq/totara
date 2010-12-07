@@ -1393,7 +1393,7 @@ div.dp-summary-widget-components {
 
 span.dp-summary-widget-component-name {
     background:transparent url('images/nav_main_spacer.gif') no-repeat right 5px;
-    padding: 3px 4px 0px 4px;
+    padding: 3px 4px 0px 0px;
 }
 
 span.dp-summary-widget-component-name-last {
@@ -1401,22 +1401,14 @@ span.dp-summary-widget-component-name-last {
     padding: 3px 5px 0px 5px;
 }
 
-#dp-plans-description {
-    padding: 5px;
-}
-
-#dp-plans-description span.dp-add-plan-link {
-    float: right;
-}
-
 #dp-plans-menu {
     float: left;
-    width: 15%;
+    width: 241px;
 }
 
 #dp-plans-menu ul {
     list-style: none;
-    padding: 2px;
+    padding: 2px 2px 2px 20px;
 }
 
 #dp-plans-menu ul li {
@@ -1428,8 +1420,8 @@ span.dp-summary-widget-component-name-last {
 }
 
 #dp-plan-content {
-    float: left;
-    width: 85%;
+    float: right;
+    width: 650px;
 }
 
 div.dp-plan-assign-button {
@@ -1439,13 +1431,35 @@ div.dp-plan-assign-button {
 table.dp-plan-component-items {
     width: 100%;
 }
+#dp-plans-menu h3 {
+    margin-top: 20px;
+    padding: 7px 20px;
+}
+#dp-plans-menu ul li {
+    padding: 4px 20px 5px;
+}
 
 /*****************************************************************************/
 /** Learning Plans **/
 /*****************************************************************************/
+#dp-plans-list-active-plans,
+#dp-plans-list-completed-plans {
+    margin-top:20px;
+}
+
+#dp-plans-list-active-plans table,
+#dp-plans-list-completed-plans table {
+    width:100%;
+}
+
 #dp-plans-list-active-plans table td.c0,
 #dp-plans-list-completed-plans table td.c0 {
     padding-left: 40px;
+}
+
+#dp-plans-list-active-plans table th.header.c0 ,
+#dp-plans-list-completed-plans table th.header.c0 {
+    padding-left:0px;
 }
 
 #dp-plans-list-active-plans table th.header.c0 a,
@@ -1453,11 +1467,20 @@ table.dp-plan-component-items {
     font-size:17px;
     text-decoration: none;
 }
-#dp-plans-description div.planinstructions {
-    float:left;
-}
-#dp-plans-description span.dp-add-plan-link{
 
+#dp-plans-description div.planinstructions {
+    float: left;
+    width: 70%;
+}
+
+#dp-plans-description span.dp-add-plan-link{
+    float: right;
+    width: 29%;
+    text-align: right;
+}
+
+#dp-plan-content h2.main {
+    text-align:left;
 }
 
 /*****************************************************************************/

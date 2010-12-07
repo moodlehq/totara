@@ -1714,6 +1714,16 @@ table.reportbuilder-table td {
 #dp-plans-list-completed-plans table th.header.c0 a {
     color: #A52B86;
 }
+#dp-plans-menu {
+    background: url("images/left_menu_bg.gif") repeat-y scroll left top transparent;
+}
+#dp-plans-menu h3 {
+    background: url("images/left_menu_header_bg.gif") no-repeat scroll left top transparent;
+    color: #FFFFFF;
+}
+#dp-plans-menu ul li {
+    background: url("images/arw_grn.gif") no-repeat scroll left center transparent;
+}
 
 /*****************************************************************************/
 /** IDP **/
