@@ -1038,8 +1038,8 @@ ul.tabrow1 li a:hover {
   font-family: 'Trebuchet ms', verdana, helvetica, sans-serif;
   letter-spacing: -0.03em;
   font-weight:normal;
-  /*font-size:1.5em !important*/;
-  /*color: #FFFFFF;*/
+  /*font-size:1.5em !important;*/
+  color: #14B1B9;
   margin:0 0 0 0;
   padding: 5px 4px 0 4px;
 }
@@ -1097,6 +1097,10 @@ ul.tabrow1 li a:hover {
 }
 .dashlet .date {
   width: 165px;
+}
+.dashlet .footer div.viewall a {
+    background: url("images/arw_teal.gif") no-repeat scroll right center transparent;
+    padding-right: 17px;
 }
 
 /******************************************
@@ -1169,7 +1173,7 @@ div.block_totara_notify .content a {
 }
 
 div.block_totara_notify .content tr.shade {
-  background: #E4E4E4;
+  background: #F2F2F2;
 }
 
 div.block_totara_notify .content tr.noshade {
@@ -1182,13 +1186,10 @@ div.block_totara_notify .content td.status {
 
 div.block_totara_notify .content td.statement {
   width: 100%;
-  border-left: 1px solid;
+  border-left: 1px solid #E0E0E0;
   padding-left: 4px;
 }
 
-div.block_totara_notify div.content div.footer div.viewall {
-  text-align: right;
-}
 
 #totara-msgs-action table {
 	border: 0px;
@@ -1217,7 +1218,7 @@ div.block_totara_reminders .content a {
 }
 
 div.block_totara_reminders .content tr.shade {
-  background: #E4E4E4;
+  background: #F2F2F2;
 }
 
 div.block_totara_reminders .content tr.noshade {
@@ -1230,12 +1231,12 @@ div.block_totara_reminders .content td.status {
 
 div.block_totara_reminders .content td.statement {
   width: 100%;
-  border-left: 1px solid;
+  border-left: 1px solid #E0E0E0;
   padding-left: 4px;
 }
 
 div.block_totara_reminders div.content div.footer div.viewall {
-  text-align: right;
+  text-align: left;
 }
 
 div.totara_reminders_actions {

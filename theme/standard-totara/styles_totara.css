@@ -507,6 +507,13 @@ div.block_html .content {
   display:none;
 }
 
+/******************************************
+ * Dashlets
+ *****************************************/
+#middle-column .dashlet div.header .title h2 {
+    font-size: 1.5em;
+}
+
 
 /******************************************
  * List blocks
