@@ -96,6 +96,7 @@ $string['legacy:guest'] = 'LEGACY ROLE: Guest';
 $string['legacy:student'] = 'LEGACY ROLE: Student';
 $string['legacy:teacher'] = 'LEGACY ROLE: Teacher (non-editing)';
 $string['legacy:user'] = 'LEGACY ROLE: Authenticated user';
+$string['legacy:manager'] = 'LEGACY ROLE: Manager';
 $string['legacytype'] = 'Legacy role type';
 $string['listallroles'] = 'List all roles';
 $string['localroles'] = 'Locally assigned roles';

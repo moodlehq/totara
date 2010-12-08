@@ -1807,6 +1807,8 @@ function moodle_install_roles() {
                                       addslashes(get_string('guestdescription')), 'moodle/legacy:guest');
     $userrole           = create_role(addslashes(get_string('authenticateduser')), 'user',
                                       addslashes(get_string('authenticateduserdescription')), 'moodle/legacy:user');
+    $managerrole        = create_role(addslashes(get_string('manageruser')), 'manager',
+                                      addslashes(get_string('manageruserdescription')), 'moodle/legacy:manager');
 
 /// Now is the correct moment to install capabilities - after creation of legacy roles, but before assigning of roles
 
@@ -1940,6 +1942,7 @@ function moodle_install_roles() {
     allow_assign($adminrole, $editteacherrole);
     allow_assign($adminrole, $studentrole);
     allow_assign($adminrole, $guestrole);
+    allow_assign($adminrole, $managerrole);
 
     allow_assign($coursecreatorrole, $noneditteacherrole);
     allow_assign($coursecreatorrole, $editteacherrole);
@@ -1987,7 +1990,8 @@ function get_legacy_roles() {
         'teacher'        => 'moodle/legacy:teacher',
         'student'        => 'moodle/legacy:student',
         'guest'          => 'moodle/legacy:guest',
-        'user'           => 'moodle/legacy:user'
+        'user'           => 'moodle/legacy:user',
+        'manager'        => 'moodle/legacy:manager'
     );
 }
 

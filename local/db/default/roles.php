@@ -23,6 +23,7 @@
             'manager' => array(
                 'name'        => 'Manager',
                 'description' => 'User tasked with managing the performance of a learner or team',
+                'legacy'      => 'manager',
                 'sortorder'   => '6',
             ),
             'regionalmananger' => array(
