@@ -46,6 +46,7 @@ $capabilities = array(
         'legacy' => array(
             'admin' => CAP_ALLOW,
             'user' => CAP_ALLOW,
+            'manager' => CAP_ALLOW,
         )
     ),
 

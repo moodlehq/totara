@@ -59,7 +59,8 @@ $capabilities = array(
             'editingteacher' => CAP_ALLOW,
             'coursecreator' => CAP_ALLOW,
             'admin' => CAP_ALLOW,
-            'user' => CAP_ALLOW
+            'user' => CAP_ALLOW,
+            'manager' => CAP_ALLOW,
         )
     ),
 
@@ -71,6 +72,7 @@ $capabilities = array(
         'legacy' => array(
             'admin' => CAP_ALLOW,
             'student' => CAP_ALLOW,
+            'manager' => CAP_ALLOW,
         )
     ),
 
