@@ -42,7 +42,7 @@ function print_entry($course) {
     $devplan = get_record_sql($sql);
     if (!empty($devplan->planstatus) && !empty($devplan->courseapproval)) {
         require_once($CFG->dirroot . '/local/plan/lib.php');
-        if (($devplan->planstatus == DP_PLAN_STATUS_APPROVED) && ($devplan->coursestatus == DP_APPROVAL_APPROVED)) {
+        if (($devplan->planstatus == DP_PLAN_STATUS_APPROVED) && ($devplan->courseapproval == DP_APPROVAL_APPROVED)) {
             enrol_into_course($course, $USER, 'manual');
             load_all_capabilities();
             if (!empty($SESSION->wantsurl)) {
@@ -52,22 +52,22 @@ function print_entry($course) {
                 $destination = "$CFG->wwwroot/course/view.php?id=$course->id";
             }
             $message = get_string('nowenrolled', 'enrol_devplan', $course->fullname);
-            $message .= get_string('redirectedsoon', 'enrol_devplan');
+            $message .= '<br />' . get_string('redirectedsoon', 'enrol_devplan');
             print '<div class="plan_box plan_box_plain">' . $message . '</div>';
             redirect($destination, '', 1);
         }
     } else {
         // this isn't an approved course in their development plan or development plan isn't approved
-        print '<div class="plan_box plan_box_action">You are not currently permitted to enrol in this course.<br />' .
+        $message = 'You are not currently permitted to enrol in this course.<br />' .
                 'To enrol you must have this course listed and fully approved in your ' .
-                '<a href="' . $CFG->wwwroot . '/local/plan/index.php?userid=' . $USER->id . '">development plan</a>.<br /></div>';
+                '<a href="' . $CFG->wwwroot . '/local/plan/index.php?userid=' . $USER->id . '">development plan</a>.<br />';
         if (!empty($course->guest)) {
             $destination = $CFG->wwwroot . '/course/view.php?id=' . $course->id;
-            $message = get_string('guestaccess', 'enrol_devplan', $destination);
-            print $message;
+            $message .= get_string('guestaccess', 'enrol_devplan', $destination);
         } else {
             $destination = $CFG->wwwroot;
         }
+        print '<div class="plan_box plan_box_action">' . $message . '</div>';
         redirect($destination,'',5);
     }
 
