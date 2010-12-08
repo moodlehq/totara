@@ -127,9 +127,12 @@ print '<form id="dp-component-update" action="' . $currenturl . '" method="POST"
 print '<input type="hidden" id="sesskey" name="sesskey" value="'.sesskey().'" />';
 print $component->display_objective_list();
 
-if(!$plancompleted && ($cansetduedate || $cansetpriority)) {
+if(!$plancompleted && ($cansetduedate || $cansetpriority || $canapprovecourses) && ($component->get_assigned_items_count()>0)) {
     print '<input type="submit" name="submitbutton" value="'.get_string('updatesettings', 'local_plan').'" />';
 }
+/*if(!$plancompleted && ($cansetduedate || $cansetpriority || $canapprovecourses) && ($component->get_assigned_items_count()>0)) {
+    print '<br /><input type="submit" name="submitbutton" value="'.get_string('updatesettings', 'local_plan').'" />';
+}*/
 
 print '</form>';
 print_container_end();

@@ -107,6 +107,33 @@ class dp_objective_component extends dp_base_component {
 
 
     /**
+     * Get list of items assigned to plan
+     *
+     * @access  public
+     * @return  array
+     */
+    public function get_assigned_items_count() {
+        global $CFG;
+
+        $count = count_records_sql(
+            "
+            SELECT *
+            FROM
+                {$CFG->prefix}dp_plan_objective a
+            WHERE
+                a.planid = {$this->plan->id}
+            "
+        );
+
+        if (!$count) {
+            $count = 0;
+        }
+
+        return $count;
+    }
+
+
+    /**
      * Add form elements to the advanced workflow template settings form
      * @global object $CFG
      * @global array $DP_AVAILABLE_ROLES
