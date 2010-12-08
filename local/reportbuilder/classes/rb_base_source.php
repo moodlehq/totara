@@ -323,6 +323,41 @@ abstract class rb_base_source {
         return "<a href=\"{$CFG->wwwroot}/user/view.php?id={$userid}\">{$user}</a>";
     }
 
+    function rb_display_link_user_icon($user, $row) {
+        global $CFG;
+        $userid = $row->user_id;
+
+        $picuser = new stdClass();
+        $picuser->id = $userid;
+        $picuser->picture = $row->userpic_picture;
+        $picuser->imagealt = $row->userpic_imagealt;
+        $picuser->firstname = $row->userpic_firstname;
+        $picuser->lastname = $row->userpic_lastname;
+
+        return print_user_picture($picuser, 1, null, null, true) .
+            "&nbsp;<a href=\"{$CFG->wwwroot}/user/view.php?id={$userid}\">{$user}</a>";
+
+    }
+
+    /**
+     * A rb_column_options->displayfunc helper function for showing a user's
+     * profile picture
+     * @param integer $itemid ID of the user
+     * @param object $row The rest of the data for the row
+     * @return string
+     */
+    function rb_display_user_picture($itemid, $row) {
+        $picuser = new stdClass();
+        $picuser->id = $itemid;
+        $picuser->picture = $row->userpic_picture;
+        $picuser->imagealt = $row->userpic_imagealt;
+        $picuser->firstname = $row->userpic_firstname;
+        $picuser->lastname = $row->userpic_lastname;
+
+        return print_user_picture($picuser, 1, null, null, true);
+    }
+
+
     // convert a course name into a link to that course
     function rb_display_link_course($course, $row) {
         global $CFG;
@@ -640,6 +675,25 @@ abstract class rb_base_source {
                 'displayfunc' => 'link_user',
                 'defaultheading' => 'User Fullname',
                 'extrafields' => array('user_id' => "$join.id"),
+            )
+        );
+        $columnoptions[] = new rb_column_option(
+            'user',
+            'namelinkicon',
+            'User Fullname (linked to profile with icon)',
+            sql_fullname("$join.firstname", "$join.lastname"),
+            array(
+                'joins' => $join,
+                'displayfunc' => 'link_user_icon',
+                'defaultheading' => 'User Fullname',
+                'extrafields' => array(
+                    'user_id' => "$join.id",
+                    'userpic_picture' => "$join.picture",
+                    'userpic_firstname' => "$join.firstname",
+                    'userpic_lastname' => "$join.lastname",
+                    'userpic_imagealt' => "$join.imagealt"
+                ),
+                'style' => array('white-space' => 'nowrap'),
             )
         );
         $columnoptions[] = new rb_column_option(

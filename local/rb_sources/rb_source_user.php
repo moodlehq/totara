@@ -217,23 +217,6 @@ class rb_source_user extends rb_base_source {
         return $disp;
     }
 
-    /**
-     * A rb_column_options->displayfunc helper function for showing a user's
-     * profile picture
-     * @param integer $itemid ID of the user
-     * @param object $row The rest of the data for the row
-     * @return string
-     */
-    public function rb_display_user_picture($itemid, $row) {
-        $picuser = new stdClass();
-        $picuser->id = $itemid;
-        $picuser->picture = $row->userpic_picture;
-        $picuser->imagealt = $row->userpic_imagealt;
-        $picuser->firstname = $row->userpic_firstname;
-        $picuser->lastname = $row->userpic_lastname;
-
-        return print_user_picture($picuser, 1, null, null, true);
-    }
 
 }
 

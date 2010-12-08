@@ -51,12 +51,7 @@ $embed->filters = array(); //hide filter block
 $embed->columns = array(
     array(
         'type' => 'user',
-        'value' => 'userpicture',
-        'heading' => 'Pic'
-    ),
-    array(
-        'type' => 'user',
-        'value' => 'namelink',
+        'value' => 'namelinkicon',
         'heading' => 'Name'
     ),
     array(
