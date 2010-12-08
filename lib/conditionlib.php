@@ -291,6 +291,9 @@ WHERE
                 if (!$modinfo) {
                     $modinfo = get_fast_modinfo($course);
                 }
+                if (empty($modinfo->cms[$cmid])) {
+                    continue;
+                }
                 $information .= get_string(
                     'requires_completion_'.$expectedcompletion,
                     'condition', $modinfo->cms[$cmid]->name).' ';
@@ -376,6 +379,16 @@ WHERE
 
             $completion = new completion_info($course);
             foreach ($this->cm->conditionscompletion as $cmid=>$expectedcompletion) {
+                // If this depends on a deleted module, handle that situation
+                // gracefully.
+                if (!$modinfo) {
+                    $modinfo = get_fast_modinfo($course);
+                }
+                if (empty($modinfo->cms[$cmid])) {
+                    // Activity has condition on deleted activity
+                    continue;
+                }
+
                 // The completion system caches its own data
                 $completiondata = $completion->get_data((object)array('id'=>$cmid),
                     $grabthelot, $userid, $modinfo);
@@ -399,9 +412,6 @@ WHERE
                 }
                 if (!$thisisok) {
                     $available = false;
-                    if (!$modinfo) {
-                        $modinfo = get_fast_modinfo($course);
-                    }
                     $information .= get_string(
                         'requires_completion_'.$expectedcompletion,
                         'condition',$modinfo->cms[$cmid]->name).' ';
