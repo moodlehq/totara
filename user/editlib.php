@@ -246,11 +246,14 @@ function useredit_shared_definition(&$mform) {
 
     }
 
-    if( !empty($CFG->usetags)) {
-        $mform->addElement('header', 'moodle_interests', get_string('interests'));
-        $mform->addElement('textarea', 'interests', get_string('interestslist'), 'cols="45" rows="3"');
-        $mform->setHelpButton('interests', array('interestslist', get_string('helpinterestslist'),
-                          false, true, false));
+    // Don't show interests if you dont have permission to create tags
+    if(has_capability('moodle/tag:create', get_context_instance(CONTEXT_SYSTEM))) {
+        if( !empty($CFG->usetags)) {
+            $mform->addElement('header', 'moodle_interests', get_string('interests'));
+            $mform->addElement('textarea', 'interests', get_string('interestslist'), 'cols="45" rows="3"');
+            $mform->setHelpButton('interests', array('interestslist', get_string('helpinterestslist'),
+                false, true, false));
+        }
     }
 
     /// Moodle optional fields
