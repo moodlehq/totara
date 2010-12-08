@@ -569,63 +569,31 @@ class dp_objective_component extends dp_base_component {
 
 
     /**
-     * Display details for a single objective
+     * Print details of a single objective
      *
-     * @param integer $caid ID of the objective assignment (not the objective id)
+     * @param integer $objectiveid ID of the objective assignment (not the objective id)
      *
-     * @return string HTML string to display the objective information
+     * @return void
      */
-    function display_objective_detail($caid) {
+    function print_objective_detail($objectiveid, $action='view') {
         global $CFG;
-
-        $priorityscaleid = ($this->get_setting('priorityscale')) ? $this->get_setting('priorityscale') : -1;
-
-        $priorityenabled = $this->get_setting('prioritymode') != DP_PRIORITY_NONE;
-        $duedateenabled = $this->get_setting('duedatemode') != DP_DUEDATES_NONE;
-
-        // get objective assignment and objective details
-        $sql = 'SELECT o.*, psv.name ' . sql_as() . ' priorityname ' .
-            "FROM {$CFG->prefix}dp_plan_objective o
-                LEFT JOIN {$CFG->prefix}dp_priority_scale_value psv
-                    ON (o.priority = psv.id
-                    AND psv.priorityscaleid = {$priorityscaleid})
-                WHERE o.id = $caid";
-        $item = get_record_sql($sql);
-
-        if(!$item) {
-            return get_string('error:objectivenotfound','local_plan');
+        if (!$objective = get_record('dp_plan_objective', 'id', $objectiveid)){
+            error(get_string('error:objectiveidincorrect', 'local_plan'));
         }
-
-        $out = '';
-
-        // get the priority values used for objectives in this plan
-        $priorityvalues = get_records('dp_priority_scale_value',
-            'priorityscaleid', $priorityscaleid, 'sortorder', 'id,name,sortorder');
-
-        // @todo add objective icon
-        $out .= '<h3>' . $item->fullname . '</h3>';
-        $out .= '<table border="0">';
-        if($priorityenabled) {
-            $out .= '<tr><th>';
-            $out .= get_string('priority', 'local_plan') . ':';
-            $out .= '</td><th>';
-            $out .= $this->display_priority_as_text($item->priority,
-                $item->priorityname, $priorityvalues);
-            $out .= '</td></tr>';
-        }
-        if($duedateenabled) {
-            $out .= '<tr><th>';
-            $out .= get_string('duedate', 'local_plan') . ':';
-            $out .= '</th><td>';
-            $out .= $this->display_duedate_as_text($item->duedate);
-            $out .= '<br />';
-            $out .= $this->display_duedate_highlight_info($item->duedate);
-            $out .= '</td></tr>';
-        }
-        $out .= '</table>';
-        $out .= '<p>' . $item->description . '</p>';
-
-        return $out;
+        $objective->objectiveid = $objective->id;
+        unset($objective->id);
+        global $CFG;
+        $mform = new plan_objective_edit_form(
+                null,
+                array(
+                    'plan'=>$this->plan,
+                    'objective'=>$this,
+                    'objectiveid'=>$objectiveid,
+                    'action'=>$action
+                )
+        );
+        $mform->set_data($objective);
+        $mform->display();
     }
 
     /**

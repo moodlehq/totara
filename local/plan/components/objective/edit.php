@@ -46,43 +46,13 @@ if ( !$component->can_update_items() ) {
     print_error('error:cannotupdateobjectives', 'local_plan');
 }
 
-// Get workflow permissions to decide what should go on the form
-if ($component->get_setting('setduedate') == DP_PERMISSION_ALLOW){
-    $duedatemode = $component->get_setting('duedatemode');
-} else {
-    $duedatemode = DP_DUEDATES_NONE;
-}
-if ($component->get_setting('setpriority') == DP_PERMISSION_ALLOW){
-    $prioritymode = $component->get_setting('prioritymode');
-} else {
-    $prioritymode = DP_PRIORITY_NONE;
-}
-
-//      * planid, objectiveid (optional), duedatemode, prioritymode, prioritylist
-$customdata = array(
-    'planid' => $planid,
-    'duedatemode' => $duedatemode,
-    'prioritymode' => $prioritymode,
-);
-if ($prioritymode > DP_DUEDATES_NONE) {
-    $scaleid = $component->get_setting('priorityscale');
-    if ( $scaleid ){
-        $priorityvalues = get_records('dp_priority_scale_value','priorityscaleid', $scaleid, 'sortorder', 'id,name,sortorder');
-        $select = array();
-        if ( $duedatemode == DP_DUEDATES_OPTIONAL ){
-            $select[] = get_string('none','local_plan');
-        }
-        foreach( $priorityvalues as $pv ){
-            $select[$pv->id] = $pv->name;
-        }
-        $customdata['prioritylist'] = $select;
-    } else {
-        $customdata['prioritylist'] = array( get_string('none', 'local_plan') );
-    }
-}
 $mform = new plan_objective_edit_form(
         null,
-        $customdata
+        array(
+            'plan'=>$plan,
+            'objective'=>$component,
+            'action'=>'edit'
+        )
 );
 $mform->set_data($objective);
 
@@ -102,6 +72,11 @@ if ($mform->is_cancelled()){
                 isset($data->priority)?$data->priority:null,
                 isset($data->duedate)?$data->duedate:null
         );
+        if (!$result){
+            print_error("Was unable to create new objective");
+        } else {
+            redirect("{$CFG->wwwroot}/local/plan/components/objective/view.php?id={$planid}&itemid={$result}");
+        }
     }
 }
 

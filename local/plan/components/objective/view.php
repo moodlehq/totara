@@ -2,6 +2,7 @@
 
 require_once(dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/config.php');
 require_once($CFG->dirroot . '/local/plan/lib.php');
+require_once($CFG->dirroot . '/local/plan/components/objective/edit_form.php');
 
 $id = required_param('id', PARAM_INT); // plan id
 $caid = required_param('itemid', PARAM_INT); // objective assignment id
@@ -22,19 +23,15 @@ $navlinks[] = array('name' => $component->get_setting('name'), 'link' => $CFG->w
 $navlinks[] = array('name' => get_string('viewitem','local_plan'), 'link' => '', 'type' => 'title');
 
 $navigation = build_navigation($navlinks);
-
 print_header_simple($pagetitle, '', $navigation, '', null, true, '');
-
 print $plan->display_plan_message_box();
-
 print_heading($fullname);
-
 print $plan->display_tabs($componentname);
 
 print $component->display_back_to_index_link();
+$component->print_objective_detail($caid, 'view');
 
-print $component->display_objective_detail($caid);
-
+// todo: Move this section to a function under objective.class.php
 if($coursesenabled) {
     print '<h3>' . get_string('linkedx', 'local_plan', $coursename) . '</h3>';
     if($linkedcourses =
@@ -43,6 +40,8 @@ if($coursesenabled) {
     } else {
         print '<p>' . get_string('nolinkedx', 'local_plan', $coursename). '</p>';
     }
+    // todo: Add a permissions check before displaying this button. Maybe also move
+    print '<input type="submit" name="submitbutton" value="'.get_string('updatesettings', 'local_plan').'" />';
 }
 print_footer();
 
