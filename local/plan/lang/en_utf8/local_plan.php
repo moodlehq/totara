@@ -66,7 +66,7 @@ $string['course_instructions_add'] = 'Clicking \"Add/remove Courses\" will allow
 $string['objective_instructions_manager'] = 'All the objectives that form your team member\'s learning plan are show below. ';
 $string['objective_instructions_learner'] = 'All the objectives that form your learning plan are shown below. ';
 $string['objective_instructions_detail'] = 'You can view any objective by clicking the objective title. ';
-$string['objective_instructions_add'] = 'Clicking \"Add/remove Objectives\" will allow you to add new objectives to this learning plan.';
+$string['objective_instructions_add'] = 'Clicking \"Add New Objective\" will allow you to add new objectives to this learning plan.';
 
 
 
@@ -165,9 +165,14 @@ $string['objectives'] = 'Objectives';
 $string['updateobjectives'] = 'Update objectives';
 $string['updaterequestedobjectives'] = 'Update requested objectives';
 $string['updateobjective'] = 'Update';
-$string['addremoveobjectives'] = 'Add/remove objectives';
+$string['addnewobjective'] = 'Add New Objective';
 $string['error:objectivenotfound'] = 'Objective not found';
 $string['error:error:objectivesupdated'] = 'Objectives not update';
+$string['objectivefullname'] = 'Objective Full Name';
+$string['objectiveshortname'] = 'Objective Short Name';
+$string['objectivedescription'] = 'Objective Description';
+$string['objectivepriority'] = 'Objective Priority';
+$string['error:cannotupdateobjectives'] = 'Cannot update objectives';
 
 
 //Plan Settings strings

@@ -20,6 +20,7 @@ class dp_objective_component extends dp_base_component {
             $settings[$this->component.'_duedatemode'] = $objectivesettings->duedatemode;
             $settings[$this->component.'_prioritymode'] = $objectivesettings->prioritymode;
             $settings[$this->component.'_priorityscale'] = $objectivesettings->priorityscale;
+            $settings[$this->component.'_objectivescale'] = $objectivesettings->objectivescale;
         }
     }
 
@@ -49,10 +50,12 @@ class dp_objective_component extends dp_base_component {
     /**
      * Return markup for javascript course picker
      *
-     * @access  public
-     * @return  string
+     * @access public
+     * @global object $CFG
+     * @return string
      */
     public function display_picker() {
+        global $CFG;
 
         if (!$permission = $this->can_update_items()) {
             return '';
@@ -60,30 +63,13 @@ class dp_objective_component extends dp_base_component {
 
         // Decide on button text
         if ($permission == DP_PERMISSION_ALLOW) {
-            $btntext = get_string('addremoveobjectives', 'local_plan');
+            $btntext = get_string('addnewobjective', 'local_plan');
         } else {
             $btntext = get_string('updaterequestedobjectives', 'local_plan');
         }
 
-        $html  = '<div class="buttons">';
-        $html .= '<div class="singlebutton dp-plan-assign-button">';
-        /*
-        <form action="<?php echo $CFG->wwwroot ?>/hierarchy/type/<?php echo $this->prefix ?>/related/find.php?id=<?php echo $item->id ?>&amp;frameworkid=<?php echo $item->frameworkid ?>" method="get">
-         */
-        $html .= '<div>';
-        $html .= '<script type="text/javascript">var plan_id = '.$this->plan->id.';</script>';
-        $html .= '<input type="submit" id="show-objective-dialog" value="'.$btntext.'" />';
-        /*
-    <input type="hidden" name="id" value="<?php echo $item->id ?>">
-    <input type="hidden" name="nojs" value="1">
-    <input type="hidden" name="returnurl" value="<?php echo qualified_me(); ?>">
-    <input type="hidden" name="s" value="<?php echo sesskey(); ?>">
-    <input type="hidden" name="frameworkid" value="<?php echo $item->frameworkid ?>">
-</div>
-</form>
-         */
-        $html .= '</div>';
-        $html .= '</div>';
+        $html = '<div class="buttons">';
+        $html .= print_single_button("{$CFG->wwwroot}/local/plan/components/objective/edit.php", array('planid'=>$this->plan->id), $btntext, 'get', '_SELF', true);
         $html .= '</div>';
 
         return $html;
@@ -328,7 +314,7 @@ class dp_objective_component extends dp_base_component {
  
         $count = count_records_sql($count.$from.$where);
         if (!$count) {
-            return '<span class="noitems-assignobjectives">'.get_string('noobjectives', 'local_plan').'</span>';
+            return '<div class="noitems-assignobjectives">'.get_string('noobjectives', 'local_plan').'</div>';
         }
 
         $tableheaders = array(
@@ -744,7 +730,12 @@ class dp_objective_component extends dp_base_component {
             return false;
         }
 
-        return delete_records('dp_plan_objective_assign', 'id', $caid);
+        begin_sql();
+        $result = delete_records('dp_plan_objective', 'id', $caid);
+        $result = $result && delete_records('dp_plan_objective_assign', 'objectiveid', $caid);
+        commit_sql();
+
+        return $result;
     }
 
     /**
@@ -790,24 +781,29 @@ class dp_objective_component extends dp_base_component {
     }
 
 
-
-    function assign_objectives($objectives) {
-        // Get all currently-assigned objectives
-        $assigned = get_records('dp_plan_objective_assign', 'planid', $this->plan->id, '', 'objectiveid');
-        $assigned = !empty($assigned) ? array_keys($assigned) : array();
-        foreach ($objectives as $c) {
-            if (in_array($c->id, $assigned)) {
-                // Don't assign duplicate objectives
-                continue;
-            }
-
-            // Assign objective item
-            if (!$this->assign_new_item($c->id)) {
-                return false;
-            }
+    /**
+     * Create a new objective. Assumes that compatibility with duedaterequired
+     * and priorityrequired has been taken care of.
+     *
+     * @param <type> $objective
+     * @return <type>
+     */
+    public function create_objective($fullname, $shortname=null, $description=null, $priority=null, $duedate=null) {
+        if ( !$this->can_update_items() ){
+            return false;
         }
 
-        return true;
+        $rec = new stdClass();
+        $rec->planid = $this->plan->id;
+        $rec->fullname = $fullname;
+        $rec->shortname = $shortname;
+        $rec->description = $description;
+        $rec->priority = $priority;
+        $rec->duedate = $duedate;
+        $rec->scalevalueid = get_field('dp_objective_scale', 'defaultid', 'id', $this->get_setting('objectivescale'));
+        $rec->approved = 0;
+
+        return insert_record('dp_plan_objective', $rec);
     }
 
 }
