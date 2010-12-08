@@ -40,22 +40,22 @@ function print_entry($course) {
             'WHERE dppca.courseid = ' . $course->id .
             ' AND dpp.userid = ' . $USER->id;
     $devplan = get_record_sql($sql);
-    if (!empty($devplan->planstatus) && !empty($devplan->courseapproval)) {
-        require_once($CFG->dirroot . '/local/plan/lib.php');
-        if (($devplan->planstatus == DP_PLAN_STATUS_APPROVED) && ($devplan->courseapproval == DP_APPROVAL_APPROVED)) {
-            enrol_into_course($course, $USER, 'manual');
-            load_all_capabilities();
-            if (!empty($SESSION->wantsurl)) {
-                $destination = $SESSION->wantsurl;
-                unset($SESSION->wantsurl);
-            } else {
-                $destination = "$CFG->wwwroot/course/view.php?id=$course->id";
-            }
-            $message = get_string('nowenrolled', 'enrol_devplan', $course->fullname);
-            $message .= '<br />' . get_string('redirectedsoon', 'enrol_devplan');
-            print '<div class="plan_box plan_box_plain">' . $message . '</div>';
-            redirect($destination, '', 1);
+    require_once($CFG->dirroot . '/local/plan/lib.php');
+    $planapproved = !empty($devplan->planstatus) && ($devplan->planstatus == DP_PLAN_STATUS_APPROVED);
+    $courseapproved = !empty($devplan->courseapproval) && ($devplan->courseapproval == DP_APPROVAL_APPROVED);
+    if ($planapproved && $courseapproved) {
+        enrol_into_course($course, $USER, 'manual');
+        load_all_capabilities();
+        if (!empty($SESSION->wantsurl)) {
+            $destination = $SESSION->wantsurl;
+            unset($SESSION->wantsurl);
+        } else {
+            $destination = "$CFG->wwwroot/course/view.php?id=$course->id";
         }
+        $message = get_string('nowenrolled', 'enrol_devplan', $course->fullname);
+        $message .= '<br />' . get_string('redirectedsoon', 'enrol_devplan');
+        print '<div class="plan_box plan_box_plain">' . $message . '</div>';
+        redirect($destination, '', 1);
     } else {
         // this isn't an approved course in their development plan or development plan isn't approved
         $message = 'You are not currently permitted to enrol in this course.<br />' .
