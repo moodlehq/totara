@@ -91,7 +91,7 @@ function dp_convert_userdate($datestring) {
 
 // Priority Scale methods
 function dp_get_priorities() {
-    return get_records('dp_priority_scale', '', '', 'name');
+    return get_records('dp_priority_scale', '', '', 'sortorder');
 }
 
 function dp_get_priority_scale_values_menu($idpid=0) {
@@ -125,7 +125,7 @@ function dp_get_priority_default_scale_value($idpid) {
 
 // Objective Scale methods
 function dp_get_objectives() {
-    return get_records('dp_objective_scale', '', '', 'name');
+    return get_records('dp_objective_scale', '', '', 'sortorder');
 }
 
 function dp_get_objective_scale_values_menu($idpid=0) {

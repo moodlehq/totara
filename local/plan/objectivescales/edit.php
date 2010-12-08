@@ -52,6 +52,7 @@ if ($mform->is_cancelled()) {
 
     $objectivenew->timemodified = time();
     $objectivenew->usermodified = $USER->id;
+    $objectivenew->sortorder = 1 + get_field_sql("select max(sortorder) from {$CFG->prefix}dp_objective_scale");
 
     // New objective
     if (empty($objectivenew->id)) {

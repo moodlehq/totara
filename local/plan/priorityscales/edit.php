@@ -49,6 +49,7 @@ if ($mform->is_cancelled()) {
 
     $prioritynew->timemodified = time();
     $prioritynew->usermodified = $USER->id;
+    $prioritynew->sortorder = 1 + get_field_sql("select max(sortorder) from {$CFG->prefix}dp_priority_scale");
 
     // New priority
     if (empty($prioritynew->id)) {

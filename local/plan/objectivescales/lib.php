@@ -46,6 +46,8 @@ function dp_objective_display_table($objectives, $editingon=0) {
     $stredit = get_string('edit');
     $strdelete = get_string('delete');
     $stroptions = get_string('options','local');
+    $str_moveup = get_string('moveup');
+    $str_movedown = get_string('movedown');
     ///
     /// Build page
     ///
@@ -63,9 +65,19 @@ function dp_objective_display_table($objectives, $editingon=0) {
         }
 
         $table->data = array();
+        $spacer = "<img src=\"{$CFG->wwwroot}/pix/spacer.gif\" class=\"iconsmall\" alt=\"\" />";
+        $count = 0;
+        $numvalues = count($objectives);
         foreach($objectives as $objective) {
+            $count++;
             $line = array();
-            $line[] = "<a href=\"$CFG->wwwroot/local/plan/objectivescales/view.php?id={$objective->id}\">".format_string($objective->name)."</a>";
+
+            $title = "<a href=\"$CFG->wwwroot/local/plan/objectivescales/view.php?id={$objective->id}\">".format_string($objective->name)."</a>";
+            if ($count==1){
+                $title .= ' ('.get_string('default').')';
+            }
+            $line[] = $title;
+
             if ( dp_objective_scale_is_used( $objective->id ) ) {
                 $line[] = get_string('yes');
             } else {
@@ -82,6 +94,22 @@ function dp_objective_display_table($objectives, $editingon=0) {
                 if ($can_delete) {
                     $buttons[] = "<a title=\"$strdelete\" href=\"$CFG->wwwroot/local/plan/objectivescales/index.php?delete=$objective->id\"><img".
                                 " src=\"$CFG->pixpath/t/delete.gif\" class=\"iconsmall\" alt=\"$strdelete\" /></a> ";
+                }
+
+                // If value can be moved up
+                if ($can_edit && $count > 1) {
+                    $buttons[] = "<a href=\"{$CFG->wwwroot}/local/plan/objectivescales/index.php?moveup={$objective->id}\" title=\"$str_moveup\">".
+                        "<img src=\"{$CFG->pixpath}/t/up.gif\" class=\"iconsmall\" alt=\"$str_moveup\" /></a>";
+                } else {
+                    $buttons[] = $spacer;
+                }
+
+                // If value can be moved down
+                if ($can_edit && $count < $numvalues) {
+                    $buttons[] = "<a href=\"{$CFG->wwwroot}/local/plan/objectivescales/index.php?movedown={$objective->id}\" title=\"$str_movedown\">".
+                        "<img src=\"{$CFG->pixpath}/t/down.gif\" class=\"iconsmall\" alt=\"$str_movedown\" /></a>";
+                } else {
+                    $buttons[] = $spacer;
                 }
                 $line[] = implode($buttons, ' ');
             }
@@ -100,5 +128,18 @@ function dp_objective_display_table($objectives, $editingon=0) {
     echo '<div class="buttons">';
     print_single_button("$CFG->wwwroot/local/plan/objectivescales/edit.php", null, get_string('objectivesscalecreate', 'local_plan'));
     echo '</div>';
+}
+
+/**
+ * Gets the id of the default objective scale (the one with the lowest sortorder)
+ *
+ * @return object the objective
+ */
+function dp_objective_default_scale(){
+    if (!$objective = get_records('dp_objective_scale', '','', 'sortorder', '*', '', 1)) {;
+        return false;
+    }
+
+    return reset($objective);
 }
 ?>

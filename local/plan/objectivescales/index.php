@@ -23,12 +23,60 @@ require_once('lib.php');
 
 $delete = optional_param('delete', 0, PARAM_INT);
 $confirm = optional_param('confirm', 0, PARAM_INT);
+$moveup = optional_param('moveup', null, PARAM_INT);
+$movedown = optional_param('movedown', null, PARAM_INT);
 
 /// Setup / loading data
 $sitecontext = get_context_instance(CONTEXT_SYSTEM);
 
 // Setup page and check permissions
 admin_externalpage_setup('objectivescales');
+
+if ((!empty($moveup) or !empty($movedown))) {
+
+    $move = NULL;
+    $swap = NULL;
+
+    // Get value to move, and value to replace
+    if (!empty($moveup)) {
+        $move = get_record('dp_objective_scale', 'id', $moveup);
+        $resultset = get_records_sql("
+            SELECT *
+            FROM {$CFG->prefix}dp_objective_scale
+            WHERE
+            sortorder < {$move->sortorder}
+            ORDER BY sortorder DESC", 0, 1
+        );
+        if ( $resultset && count($resultset) ){
+            $swap = reset($resultset);
+            unset($resultset);
+        }
+    } else {
+        $move = get_record('dp_objective_scale', 'id', $movedown);
+        $resultset = get_records_sql("
+            SELECT *
+            FROM {$CFG->prefix}dp_objective_scale
+            WHERE
+            sortorder > {$move->sortorder}
+            ORDER BY sortorder ASC", 0, 1
+        );
+        if ( $resultset && count($resultset) ){
+            $swap = reset($resultset);
+            unset($resultset);
+        }
+    }
+
+    if ($swap && $move) {
+        // Swap sortorders
+        begin_sql();
+        if (!(set_field('dp_objective_scale', 'sortorder', $move->sortorder, 'id', $swap->id)
+            && set_field('dp_objective_scale', 'sortorder', $swap->sortorder, 'id', $move->id)
+        )) {
+            error(get_string('error:updateobjectivescaleordering', 'local_plan'));
+        }
+        commit_sql();
+    }
+}
 
 if($delete) {
     if(!$scale = get_record('dp_objective_scale', 'id', $delete)) {
@@ -66,8 +114,8 @@ if($delete) {
 admin_externalpage_print_header();
 
 //$idp = new idp();
-$priorities = dp_get_objectives();
-dp_objective_display_table($priorities, $editingon=1);
+$objectives = dp_get_objectives();
+dp_objective_display_table($objectives, $editingon=1);
 
 admin_externalpage_print_footer();
 

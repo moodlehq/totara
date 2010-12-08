@@ -135,6 +135,8 @@ $string['before'] = 'Before';
 $string['after'] = 'After';
 $string['error:settingdoesnotexist'] = 'Setting {$a->action} does not exist in the component {$a->component}';
 $string['error:updatetemplateordering'] = 'Could not update plan template ordering';
+$string['error:updatepriorityscaleordering'] = 'Could not update priority scale ordering';
+$string['error:updateobjectivescaleordering'] = 'Could not update objective scale ordering';
 
 // Course Strings
 $string['error:cannotupdatecourses'] = 'Cannot update courses';
