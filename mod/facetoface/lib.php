@@ -2984,6 +2984,8 @@ function facetoface_update_grades($facetoface=null, $userid=0) {
             rs_close($rs);
         }
     }
+
+    return true;
 }
 
 /**

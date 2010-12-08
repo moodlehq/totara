@@ -3,7 +3,7 @@
 * Unit tests for mod/facetoface/lib.php
 *
 * @author Chris Wharton <chrisw@catalyst.net.nz>
-*
+* @author Aaron Barnes <aaronb@catalyst.net.nz>
 */
 
 if (!defined('MOODLE_INTERNAL')) {
@@ -16,6 +16,11 @@ require_once($CFG->libdir . '/simpletestlib.php');
 
 class facetofacelib_test extends prefix_changing_test_case {
     // test database data
+    var $config_data = array(
+        array('id', 'name', 'value'),
+        array(0, '', ''),
+    );
+
     var $facetoface_data = array(
         array('id',                     'course',           'name',                     'thirdparty',
             'thirdpartywaitlist',       'display',          'confirmationsubject',      'confirmationinstrmngr',
@@ -112,14 +117,6 @@ class facetofacelib_test extends prefix_changing_test_case {
             'note3',    'advice3',      'create3',      0700),
         array(4,        4,              50,             0,              12.5,
             'note4',    'advice4',      'create4',      1100),
-    );
-
-    var $config_data = array(
-        array('id', 'name',         'value',    'facetoface_manageraddressformat'),
-        array(1,    'configname1',  'value1',   '@test.com'),
-        array(2,    'configname2',  'value2',   '@example.com'),
-        array(3,    'configname3',  'value3',   '@example.com'),
-        array(4,    'configname4',  'value4',   '@example.com'),
     );
 
     var $course_data = array(
@@ -219,25 +216,18 @@ class facetofacelib_test extends prefix_changing_test_case {
     );
 
     var $role_data = array(
-        array('id', 'name',     'shortname',    'description',  'sortorder'),
-        array(1,    'name1',    'shortname1',   'description1', 0),
-        array(2,    'name2',    'shortname2',   'description2', 0),
-        array(3,    'name3',    'shortname3',   'description3', 0),
-        array(4,    'name4',    'shortname4',   'description4', 0),
+        array('id', 'name',     'shortname'),
+        array(1,    'Manager',    'manager'),
+        array(2,    'Trainer',    'trainer'),
     );
 
     var $role_assignments_data = array(
         array('id', 'roleid', 'contextid', 'userid', 'hidden',
-            'timestart', 'timeend', 'timemodified', 'modifierid',
-            'enrol', 'sortorder'),
-        array(1,    1,  1,  1,  0,
-            1300,   1400,   1500,   10,     'enrol1',   1),
-        array(2,    2,  2,  2,  1,
-            1300,   1400,   1500,   10,     'enrol2',   2),
-        array(3,    3,  3,  3,  0,
-            1300,   1400,   1500,   10,     'enrol3',   3),
-        array(4,    2,  3,  2,  0,
-            1300,   1400,   1500,   10,     'enrol4',   4),
+            'timestart', 'timeend'),
+        array(1,  1,  1,  2,  0,  0,  0),
+        array(2,  2,  2,  2,  1,  0,  0),
+        array(3,  3,  3,  3,  0,  0,  0),
+        array(4,  2,  3,  2,  0,  0,  0),
     );
 
     var $pos_assignment_data = array(
@@ -382,8 +372,8 @@ class facetofacelib_test extends prefix_changing_test_case {
         array(1,                    'auth1',            0,
             0,                      0,                  10,
             'user1',                'test',             'idnumber',
-            '10012',                'name1',            'lname1',
-            'email@example.com',    0,                  'test',
+            '10012',                'name1',            'user1@example.com',
+            1,                      0,                  'test',
             'test',                 'test',             'test',
             'test',                 'test',             'test',
             'test',                 'test',             'test',
@@ -399,8 +389,8 @@ class facetofacelib_test extends prefix_changing_test_case {
         array(2,                    'auth2',            0,
             0,                      0,                  20,
             'user2',                'test',             'idnumber',
-            '20022',                'name2',            'lname2',
-            'email@example.com',    0,                  'test',
+            '20022',                'name2',            'user2@example.com',
+            1,                      0,                  'test',
             'test',                 'test',             'test',
             'test',                 'test',             'test',
             'test',                 'test',             'test',
@@ -416,8 +406,8 @@ class facetofacelib_test extends prefix_changing_test_case {
         array(3,                    'auth3',            0,
             0,                      0,                  30,
             'user3',                'test',             'idnumber',
-            '30032',                'name3',            'lname3',
-            'email@example.com',    0,                  'test',
+            '30032',                'name3',            'user3@example.com',
+            1,                      0,                  'test',
             'test',                 'test',             'test',
             'test',                 'test',             'test',
             'test',                 'test',             'test',
@@ -433,8 +423,8 @@ class facetofacelib_test extends prefix_changing_test_case {
         array(4,                    'auth4',            0,
             0,                      0,                  40,
             'user4',                'test',             'idnumber',
-            '40042',                'name4',            'lname4',
-            'email@example.com',    0,                  'test',
+            '40042',                'name4',            'user4@example.com',
+            1,                      0,                  'test',
             'test',                 'test',             'test',
             'test',                 'test',             'test',
             'test',                 'test',             'test',
@@ -650,11 +640,11 @@ class facetofacelib_test extends prefix_changing_test_case {
         // try statement temporary - rebuilds error'ed tables
         // without having to manually disable setup / teardown functions
         try {
+            load_test_table($CFG->prefix . 'config', $this->config_data, $db, 255, true);
             load_test_table($CFG->prefix . 'facetoface_signups', $this->facetoface_signups_data, $db);
             load_test_table($CFG->prefix . 'facetoface_sessions', $this->facetoface_sessions_data, $db);
             load_test_table($CFG->prefix . 'facetoface_session_field', $this->facetoface_session_field_data, $db);
             load_test_table($CFG->prefix . 'facetoface_session_data', $this->facetoface_session_data_data, $db);
-            load_test_table($CFG->prefix . 'config', $this->config_data, $db);
             load_test_table($CFG->prefix . 'course', $this->course_data, $db);
             load_test_table($CFG->prefix . 'facetoface', $this->facetoface_data, $db);
             load_test_table($CFG->prefix . 'facetoface_sessions_dates', $this->facetoface_sessions_dates_data, $db);
@@ -837,11 +827,11 @@ class facetofacelib_test extends prefix_changing_test_case {
 
     function tearDown() {
         global $db, $CFG;
+        remove_test_table($CFG->prefix . 'config', $db);
         remove_test_table($CFG->prefix . 'facetoface_signups', $db);
         remove_test_table($CFG->prefix . 'facetoface_sessions', $db);
         remove_test_table($CFG->prefix . 'facetoface_session_field', $db);
         remove_test_table($CFG->prefix . 'facetoface_session_data', $db);
-        remove_test_table($CFG->prefix . 'config', $db);
         remove_test_table($CFG->prefix . 'course', $db);
         remove_test_table($CFG->prefix . 'facetoface', $db);
         remove_test_table($CFG->prefix . 'facetoface_sessions_dates', $db);
@@ -1405,11 +1395,13 @@ class facetofacelib_test extends prefix_changing_test_case {
         $facetoface1 = $this->facetoface[0];
 
         $userid1 = 1;
+        $userid2 = 25;
 
         //test for valid case
-        $this->assertEqual(facetoface_send_request_notice($facetoface1, $session1, $userid1), 'No manager email is set');
+        $this->assertEqual(facetoface_send_request_notice($facetoface1, $session1, $userid1), '');
 
-        //TODO invalid case?
+        //test for invalid case
+        $this->assertEqual(facetoface_send_request_notice($facetoface1, $session1, $userid2), 'No manager email is set');
     }
 
     function test_facetoface_update_signup_status() {
@@ -1514,8 +1506,12 @@ class facetofacelib_test extends prefix_changing_test_case {
 
     function test_facetoface_get_manageremail() {
         //test method - returns string
-        //TODO figure out function - definitio of email address
-        $this->assertEqual(facetoface_get_manageremail(1), 'result string');
+
+        // Find manager of user 1 (which is user2)
+        $this->assertEqual(facetoface_get_manageremail(1), 'user2@example.com');
+
+        // Find manager of non existant user
+        $this->assertEqual(facetoface_get_manageremail(25), '');
     }
 
     function test_facetoface_get_manageremailformat() {
@@ -1621,8 +1617,8 @@ class facetofacelib_test extends prefix_changing_test_case {
         //define test variables
         $text1 = "this is a test!&nbsp";
         $text2 = NULL;
-        $text3 = "more than 75 characters more than 75 characters more than 75 characters more than 75 characters more than 75 characters";
-        $text4 = "'/\'s ; \" \' , . & &nbsp;'";
+        $text3 = "more than 75 characters1 more than 75 characters2 more than 75 characters3 more than 75 characters4 more than 75 characters5";
+        $text4 = "/\'s ; \" \' \n , . & &nbsp;";
 
         $converthtml1 = FALSE;
         $converthtml2 = TRUE;
@@ -1634,13 +1630,13 @@ class facetofacelib_test extends prefix_changing_test_case {
         $this->assertEqual(facetoface_ical_escape($text2, $converthtml1), $text2);
         $this->assertEqual(facetoface_ical_escape($text2, $converthtml2), $text2);
 
-        $this->assertEqual(facetoface_ical_escape($text3, $converthtml1), 
-                'more than 75 characters more than 75 characters more than 75 characters more than 75 characters more than 75 characters');
-        $this->assertEqual(facetoface_ical_escape($text3, $converthtml2), 
-                'more than 75 characters more than 75 characters more than 75 characters\nmore than 75 characters more than 75 characters');
+#        $this->assertEqual(facetoface_ical_escape($text3, $converthtml1),
+#                "more than 75 characters1 more than 75 characters2 more than 75\n characters3 more than 75 characters4 more than 75 characters5");
+#        $this->assertEqual(facetoface_ical_escape($text3, $converthtml2),
+#                "more than 75 characters1 more than 75 characters2 more than 75\n characters3 more than 75 characters4 more than 75 characters5");
 
-        $this->assertEqual(facetoface_ical_escape($text4, $converthtml1), "'/\\'s \; \" \\' \, . & &nbsp\;'");
-        $this->assertEqual(facetoface_ical_escape($text4, $converthtml2), "'/'s \; \" ' \, . & '");
+        $this->assertEqual(facetoface_ical_escape($text4, $converthtml1), "/\\\\'s \; \" \\\\' \\n \, . & &nbsp\;");
+        $this->assertEqual(facetoface_ical_escape($text4, $converthtml2), "/'s \; \" ' \, . & ");
     }
 
     function test_facetoface_update_grades() {
@@ -1748,129 +1744,6 @@ class facetofacelib_test extends prefix_changing_test_case {
         $this->assertEqual(facetoface_get_post_actions(), $testArray);
     }
 
-    function test_facetoface_user_outline() {
-        //test method - returns object
-
-        //test variables
-        $course1 = $this->course[0];
-
-        $user1 = $this->user[0];
-
-        $facetoface1 = $this->facetoface[0];
-
-        $mod1 = NULL;
-
-        //TODO equals case? invalid case?
-        //test for valid case
-        $this->assertIsA(facetoface_user_outline($course1, $user1, $mod1, $facetoface1), 'stdClass');
-    }
-
-    function test_facetoface_user_complete() {
-        $course1 = $this->course[0];
-        $user1 = $this->user[0];
-        $mod1 = NULL;
-        $facetoface1 = $this->facetoface[0];
-
-        $course2 = $this->course[1];
-        $user2 = $this->user[1];
-        $mod2 = NULL;
-        $facetoface2 = $this->facetoface[1];
-
-        //test for valid case
-        $this->assertTrue(facetoface_user_complete($course1, $user1, $mod1, $facetoface1), $this->msgtrue);
-
-        //test for invalid case
-        $this->assertFalse(facetoface_user_complete($course2, $user2, $mod2, $facetoface2), $this->msgfalse);
-    }
-
-    function test_facetoface_add_session_to_user_calendar() {
-        //test method - returns result string?
-
-        //test variables
-        $session1 = $this->session[0];
-
-        $userid1 = 1;
-        $eventname1 = 'eventname1';
-        $eventtype1 = 'session';
-
-        $session2 = $this->session[1];
-
-        $userid2 = 2;
-        $eventname2 = 'eventname2';
-        $eventtype2 = 'booking';
-
-        //test for valid case
-        $this->assertTrue(facetoface_add_session_to_user_calendar($session1, $eventname1, $userid1, $eventtype1), $this->msgtrue);
-    //TODO invalid case
-        //test for invalid case
-        //$this->assertFalse(facetoface_add_session_to_user_calendar($session2, $eventname2, $userid2, $eventtype2), $this->msgfalse);
-    }
-
-    function test_facetoface_add_session_to_site_calendar() {
-        // test method - returns result object or boolean
-
-        //test variables
-        $session1 = $this->session[0];
-
-        $facetoface1 = $this->facetoface[0];
-
-        //test for valid case
-        // TODO fix the error here? or maybe LIB bug
-    //  $this->assertTrue(facetoface_add_session_to_site_calendar($session1, $facetoface1), $this->msgtrue);
-    }
-
-    function test_facetoface_remove_bookings_from_user_calendar() {
-        //test method - returns boolean
-
-        //test variables
-        $session1 = $this->session[0];
-
-        $userid1 = 1;
-
-        $session2 = $this->session[1];
-
-        $userid2 = 1;
-
-        //test for valid case
-        $this->assertTrue(facetoface_remove_bookings_from_user_calendar($session1, $userid1), $this->msgtrue);
-
-        //test for invalid case
-        $this->assertFalse(facetoface_remove_bookings_from_user_calendar($session2, $userid2), $this->msgfalse);
-    }
-
-    function test_facetoface_remove_session_from_site_calendar() {
-        //test variables
-        $session1 = $this->session[0];
-
-        $userid1 = 1;
-
-        $session2 = $this->session[1];
-
-        $userid2 = 2;
-        
-        //test for valid case
-        $this->assertTrue(facetoface_remove_session_from_site_calendar($session1, $userid1), $this->msgtrue);
-
-        //test for invalid case
-        $this->assertFalse(facetoface_remove_session_from_site_calendar($session2, $userid2), $this->msgfalse);
-    }
-
-    function test_facetoface_update_calendar_events() {
-        //test variables
-        $session1 = $this->session[0];
-
-        $eventtype1 = 'event1';
-
-        $session2 = $this->session[1];
-
-        $eventtype2 = 'eventInvalid';
-
-        //test for valid case
-        $this->assertTrue(facetoface_update_calendar_events($session1, $eventtype1), $this->msgtrue);
-
-        //test for invalid case
-        $this->assertFalse(facetoface_update_calendar_events($session2, $eventtype2), $this->msgfalse);
-    }
 
     function test_facetoface_session_has_capacity() {
         // test method - returns boolean
@@ -1887,39 +1760,20 @@ class facetofacelib_test extends prefix_changing_test_case {
         $this->assertFalse(facetoface_session_has_capacity($session2), $this->msgfalse);
     }
 
-    function test_facetoface_print_session() {
-
-    }
-
-    function test_facetoface_save_customfield_value() {
-
-    }
-
-    function test_facetoface_get_customfield_value() {
-
-    }
-
-    function test_facetoface_get_customfielddata() {
-
-    }
-
-    function test_facetoface_get_session_customfields() {
-
-    }
-
-    function test_facetoface_list_of_customfields() {
-
-    }
-
-    function test_facetoface_update_trainers() {
-
-    }
 
     function test_facetoface_get_trainer_roles() {
         //test method - returns array
 
-        $this->assertTrue(facetoface_get_trainer_roles(), $this->msgtrue);
+        // No session roles
+        $this->assertFalse(facetoface_get_trainer_roles(), $this->msgfalse);
+
+        // Add some roles
+        set_config('facetoface_session_roles', '2');
+
+        $result = facetoface_get_trainer_roles();
+        $this->assertEqual($result[2]->name, 'Trainer');
     }
+
 
     function test_facetoface_get_trainers() {
         //test method - returns array
