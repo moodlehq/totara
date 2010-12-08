@@ -120,6 +120,13 @@ class dp_objective_component extends dp_base_component {
     }
 
 
+    /**
+     * Add form elements to the advanced workflow template settings form
+     * @global object $CFG
+     * @global array $DP_AVAILABLE_ROLES
+     * @param object $mform
+     * @param int $id
+     */
     static public function add_settings_form(&$mform, $id) {
         global $CFG, $DP_AVAILABLE_ROLES;
 
@@ -129,10 +136,12 @@ class dp_objective_component extends dp_base_component {
             $defaultduedatesmode = $templatesettings->duedatemode;
             $defaultprioritymode = $templatesettings->prioritymode;
             $defaultpriorityscale = $templatesettings->priorityscale;
+            $defaultobjectivescale = $templatesettings->objectivescale;
         } else {
             $defaultduedatesmode = null;
             $defaultprioritymode = null;
             $defaultpriorityscale = null;
+            $defaultobjectivescale = $templatesettings->objectivescale;
         }
         // due date mode options
         $radiogroup = array();
@@ -157,10 +166,19 @@ class dp_objective_component extends dp_base_component {
                 $prioritymenu[$priority->id] = $priority->name;
             }
         }
-
         $mform->addElement('select', 'priorityscale', get_string('priorityscale', 'local_plan'), $prioritymenu);
         $mform->disabledIf('priorityscale', 'prioritymode', 'eq', DP_PRIORITY_NONE);
         $mform->setDefault('priorityscale', $defaultpriorityscale);
+
+        // objective scale selector
+        $objectivemenu = array();
+        if ($objectives = dp_get_objectives()){
+            foreach ($objectives as $objective){
+                $objectivemenu[$objective->id] = $objective->name;
+            }
+        }
+        $mform->addElement('select', 'objectivescale', get_string('objectivescale', 'local_plan'), $objectivemenu);
+        $mform->setDefault('objectivescale', $defaultobjectivescale);
 
         //Permissions
         $mform->addElement('header', 'objectivepermissions', get_string('objectivepermissions', 'local_plan'));
@@ -184,6 +202,13 @@ class dp_objective_component extends dp_base_component {
         $mform->addElement('html', '</table></div>');
     }
 
+    /**
+     * Process the advanced workflow template settings form
+     * @global object $CFG
+     * @global array $DP_AVAILABLE_ROLES
+     * @param object $fromform
+     * @param int $id
+     */
     static public function process_settings_form($fromform, $id) {
         global $CFG, $DP_AVAILABLE_ROLES;
         $currenturl = $CFG->wwwroot .
@@ -206,6 +231,7 @@ class dp_objective_component extends dp_base_component {
         $todb->templateid = $id;
         $todb->duedatemode = $fromform->duedatemode;
         $todb->prioritymode = $fromform->prioritymode;
+        $todb->objectivescale = $fromform->objectivescale;
         if($fromform->prioritymode != DP_PRIORITY_NONE) {
             $todb->priorityscale = $fromform->priorityscale;
         }
@@ -749,7 +775,7 @@ class dp_objective_component extends dp_base_component {
         if (!empty($stored_records)) {
             begin_sql();
             foreach($stored_records as $itemid => $record) {
-                $status = $status & update_record('dp_plan_objective_assign', $record);
+                $status = $status & update_record('dp_plan_objective', $record);
             }
             if($status) {
                 commit_sql();
@@ -763,60 +789,6 @@ class dp_objective_component extends dp_base_component {
 
         redirect($currenturl);
     }
-
-    function process_action($action) {
-        global $CFG;
-
-        switch ($action) {
-            case 'remind' :
-                $confirm = optional_param('confirm', false, PARAM_BOOL);
-                $assignmentid = required_param('assignmentid', PARAM_INT);
-
-                $redirecturl = new moodle_url(strip_querystring(qualified_me()));
-                $redirecturl->param('id', $this->plan->id);
-
-                // Get objective and assignment details
-                $sql = "SELECT c.*, ca.*
-                        FROM {$CFG->prefix}dp_plan_objective_assign ca
-                        INNER JOIN {$CFG->prefix}comp c ON ca.objectiveid = c.id
-                        WHERE ca.id = {$assignmentid}";
-
-                $comp_details = get_record_sql($sql);
-
-                if (!$confirm) {
-                    // Show confirmation message
-                    print_header_simple();
-                    $remindurl = new moodle_url(qualified_me());
-                    $remindurl->param('confirm', 'true');
-                    $strdelete = get_string('checksendapprovalreminder', 'local_plan');
-                    notice_yesno(
-                        "{$strdelete}<br /><br />".format_string($comp_details->fullname),
-                        $remindurl->out(),
-                        $redirecturl->out()
-                    );
-
-                    print_footer();
-                    exit;
-                } else {
-                    // Get user's manager(s); email reminder
-                    $managers = dp_get_notification_receivers_2(get_context_instance(CONTEXT_USER, $this->plan->userid), 'manager');
-                    foreach ($managers as $manager) {
-                        // @todo send email
-                        //email_to_user($manager, $from, $subject, $bodycopy);
-                    }
-
-                    $this->plan->set_status_unapproved_if_declined();
-                    totara_set_notification(get_string('approvalremindersent','local_plan'), $redirecturl->out(), array('style' => 'notifysuccess'));
-
-                    //@todo set event/notification?
-                }
-                break;
-            default:
-                break;
-        }
-
-    }
-
 
     function remove_objective_assignment($caid) {
         $canremoveobjective = ($this->get_setting('updateobjective') == DP_PERMISSION_ALLOW);

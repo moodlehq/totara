@@ -89,7 +89,6 @@ function dp_convert_userdate($datestring) {
     return strtotime($datestring);
 }
 
-
 // Priority Scale methods
 function dp_get_priorities() {
     return get_records('dp_priority_scale', '', '', 'name');

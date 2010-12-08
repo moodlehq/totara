@@ -11,16 +11,16 @@
  */
 
 /**
- * A function to determine whether a priority is in use or not. (In this context,
- * "in use" means that if we change this priority or its values, it'll cause
+ * A function to determine whether an objective is in use or not. (In this context,
+ * "in use" means that if we change this objective or its values, it'll cause
  * the data in the database to become corrupt)
  *
- * @param <type> $priorityid
+ * @param int $objectiveid
  * @return boolean
  */
 function dp_objective_scale_is_used($scaleid) {
-    // TODO: Figure out if the scale is used
-    return false;
+    // Just check whether it's assigned to any templates.
+    return count_records('dp_objective_settings', 'objectivescale', $scaleid);
 }
 
 
