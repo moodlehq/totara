@@ -1269,18 +1269,6 @@ class facetofacelib_test extends prefix_changing_test_case {
         $this->assertFalse(facetoface_get_sessions($facetofaceid2), $this->msgfalse);
     }
 
-    function test_facetoface_get_grade() {
-        // test method - returns String
-
-        //test variables
-        $userid = 1;
-        $courseid = 1;
-        $facetofaceid = 10;
-
-        $this->assertTrue(facetoface_get_grade($userid, $courseid, $facetofaceid));
-        //TODO correct return type
-    }
-
     function test_facetoface_get_attendees() {
         //test method - returns user list array or false
 
