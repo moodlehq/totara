@@ -309,25 +309,23 @@ class dp_objective_component extends dp_base_component {
         $canremoveobjectives = !$plancompleted &&
             $this->get_setting('updateobjective') == DP_PERMISSION_ALLOW;
 
+        $as = sql_as();
         $count = 'SELECT COUNT(*) ';
-        $select = 'SELECT o.id, o.fullname '.sql_as().' objname, o.status, o.duedate, psv.id as priority, psv.name ' . sql_as() . ' priorityname ';
-        $select .= ', sum(case when oa.itemtype=\'course\' then 1 else 0 end) ' . sql_as() . ' numcourses ';
-// todo: Add evidence support
-//        $select .= ', sum(case when oa.itemtype=\'evidence\' then 1 else 0 end) ' . sql_as() . ' numevidence ';
-        $select .= ', sum(oa.approved) as numapproved ';
+        $select = "SELECT o.id, o.fullname {$as} objname, osv.name {$as} status, o.duedate, psv.id as priority, psv.name {$as} priorityname ";
+        $select .= ", (select count(*) from {$CFG->prefix}dp_plan_component_relation pcr where pcr.component1='course' and pcr.component2='objective' and pcr.itemid2=o.id) {$as} numcourses ";
+        // todo: Add evidence support
+//        $select .= ", (select count(*) from {$CFG->prefix}dp_plan_relation pr where pr.itemtype1='evidence' and pr.itemtype2='objective' and pr.itemid2=o.id) {$as} numevidences ";
 
         // get objectives assigned to this plan
-        $from = "FROM {$CFG->prefix}dp_plan_objective o
-                LEFT JOIN
-                {$CFG->prefix}dp_plan_objective_assign oa ON o.id = oa.objectiveid ";
+        $from = "FROM {$CFG->prefix}dp_plan_objective o ";
+        $from .= "LEFT JOIN {$CFG->prefix}dp_objective_scale_value osv
+                ON o.scalevalueid = osv.id ";
         $from .= "LEFT JOIN {$CFG->prefix}dp_priority_scale_value psv
                 ON (o.priority = psv.id
                 AND psv.priorityscaleid = {$priorityscaleid}) ";
-        // todo: Roll in objective scale?
 
         $where = "WHERE o.planid = {$this->plan->id} ";
-        $groupby = "GROUP BY o.id, o.fullname, o.status, o.duedate, psv.id, psv.name ";
-
+ 
         $count = count_records_sql($count.$from.$where);
         if (!$count) {
             return '<span class="noitems-assignobjectives">'.get_string('noobjectives', 'local_plan').'</span>';
@@ -381,75 +379,24 @@ class dp_objective_component extends dp_base_component {
         $completions = completion_info::get_all_courses($this->plan->userid);
 
         // get the scale values used for objectives in this plan
-        $priorityvalues = get_records('dp_priority_scale_value',
-            'priorityscaleid', $priorityscaleid, 'sortorder', 'id,name,sortorder');
+        if ($showpriorities){
+            $priorityvalues = get_records('dp_priority_scale_value',
+                'priorityscaleid', $priorityscaleid, 'sortorder', 'id,name,sortorder');
+        }
 
-        if($records = get_recordset_sql($select.$from.$where.$groupby.$sort,
-            $table->get_page_start(),
-            $table->get_page_size())) {
+        $records = get_recordset_sql(
+                $select.$from.$where.$sort,
+                $table->get_page_start(),
+                $table->get_page_size()
+        );
+        if ( $records ){
 
             while($objective = rs_fetch_next_record($records)) {
                 
-                // Calculate completion status
-                // Check if everything is approved
-                if ( $objective->numcourses == 0 ){
-                    $status = 'Not yet started';
-                } else if ( $objective->numapproved <= $objective->numcourses ){
-                    $status = 'Not yet approved';
-                } else {
-
-                    $objectivecourses = get_records_select(
-                            'dp_plan_objective_assign',
-                            "objectiveid={$objective->id} and itemtype='plan'",
-                            'itemid',
-                            'itemid, approved'
-                    );
-                    if ($objectivecourses) {
-                        $numcompleted = 0;
-                        $coursestatuses = array();
-                        foreach( $objectivecourses as $course ){
-                            if ( !$course->approved ){
-                                $coursestatuses[] = 10;
-                            } else {
-                                switch( completion_completion::get_status($completions[$course->itemid]) ){
-                                    case 'complete':
-                                    case 'completeviarpl':
-                                        $coursestatuses[] = 40;
-                                        break;
-                                    case 'inprogress':
-                                        $coursestatuses[] = 30;
-                                        break;
-                                    case 'notyetstarted':
-                                    default:
-                                        $coursestatuses[] = 20;
-                                        break;
-                                }
-                            }
-                        }
-                        switch( min($coursestatuses) ){
-                            case 10:
-                                $status = 'Not approved';
-                                break;
-                            case 30:
-                                $status = get_string('inprogress', 'completion');
-                                break;
-                            case 40:
-                                $status = get_string('complete', 'completion');
-                                break;
-                            case 20:
-                            default:
-                                $status = get_string('notyetstarted', 'completion');
-                                break;
-                        }
-                    } else {
-                        $status = get_string('notyetstarted', 'completion');
-                    }
-                }
-
                 $row = array();
                 $row[] = $this->display_objective_name($objective);
                 $row[] = $objective->numcourses;
-//                $row[] = $objective->numevidence;
+//                $row[] = $objective->numevidences;
 
                 if($showpriorities) {
                     $row[] = $this->display_priority($objective, $priorityvalues);
@@ -460,7 +407,7 @@ class dp_objective_component extends dp_base_component {
                 }
 
                 if(!$plancompleted) {
-                    $row[] = $status;
+                    $row[] = format_string($objective->status);
                 }
 
                 if($canremoveobjectives) {

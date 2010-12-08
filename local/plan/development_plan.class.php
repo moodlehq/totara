@@ -625,11 +625,7 @@ class development_plan {
         }
         if($this->get_component('objective')->get_setting('enabled')) {
             global $CFG;
-            $objectives = get_records_sql(
-                    "select o.id from {$CFG->prefix}dp_plan_objective o inner join "
-                    ."{$CFG->prefix}dp_plan_objective_assign oa on o.id=oa.objectiveid "
-                    ."where o.planid={$this->id} and oa.approved=0"
-            );
+            $objectives = get_records_select('dp_plan_objective', 'planid=' . $this->id . ' and approved=0');
             $out['objective'] = $objectives;
         }
 
