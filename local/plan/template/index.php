@@ -168,6 +168,14 @@ if ($fromform = $mform->get_data()) {
             DEVELOPMENT_PLAN_UNKNOWN_BUTTON_CLICKED);
     }
     else {
+        if ( !count_records('dp_priority_scale') ){
+            print_error('error:notemplatewithoutpriorityscale', 'local_plan');
+        }
+
+        if ( !count_records('dp_objective_scale') ){
+            print_error('error:notemplatewithoutobjectivescale', 'local_plan');
+        }
+
         begin_sql();
 
         $todb = new object();

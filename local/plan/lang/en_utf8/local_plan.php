@@ -279,6 +279,8 @@ $string['error:missingobjectivesettings'] = 'Missing Objective settings';
 $string['error:missingcoursesettings'] = 'Missing Course settings';
 $string['error:missingpermissionsetting'] = 'Missing permission setting';
 $string['error:objectivescaledidincorrect'] = 'Incorrect Objective Scale ID';
+$string['error:notemplatewithoutpriorityscale'] = 'You must create at least one priority scale before you can create a template.';
+$string['error:notemplatewithoutobjectivescale'] = 'You must create at least one objective scale before you can create a template.';
 
 
 // Priority Scales
