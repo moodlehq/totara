@@ -130,7 +130,7 @@ function dp_priority_display_table($priorities, $editingon=0) {
 }
 
 /**
- * Gets the id of the default priority scale (the one with the lowest sortorder)
+ * Gets the default priority scale (the one with the lowest sortorder)
  *
  * @return object the priority
  */
@@ -141,4 +141,19 @@ function dp_priority_default_scale(){
 
     return reset($priority);
 }
+
+/**
+ * Gets the id of the default priority scale (the one with the lowest sortorder)
+ *
+ * @return object the priority
+ */
+function dp_priority_default_scale_id(){
+    $priority = dp_priority_default_scale();
+    if ( $priority && isset($priority->id) ){
+        return $priority->id;
+    } else {
+        return false;
+    }
+}
+
 ?>

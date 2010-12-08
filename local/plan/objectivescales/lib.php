@@ -142,4 +142,19 @@ function dp_objective_default_scale(){
 
     return reset($objective);
 }
+
+/**
+ * Gets the id of the default objective scale (the one with the lowest sortorder)
+ *
+ * @return object the objective
+ */
+function dp_objective_default_scale_id(){
+    $objective = dp_objective_default_scale();
+    if ( $objective && isset($objective->id) ){
+        return $objective->id;
+    } else {
+        return false;
+    }
+}
+
 ?>

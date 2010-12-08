@@ -3,23 +3,33 @@
 class dp_managerdriven_workflow extends dp_base_workflow {
 
     function __construct() {
+        global $CFG;
+        require_once($CFG->dirroot.'/local/plan/objectivescales/lib.php');
+        require_once($CFG->dirroot.'/local/plan/priorityscales/lib.php');
+        $defaultpriority = dp_priority_default_scale_id();
+        $defaultobjective = dp_objective_default_scale_id();
+
         $this->classname = 'managerdriven';
 
         // workflow settings
 
         // course specific settings
         $this->cfg_course_duedatemode = DP_DUEDATES_NONE;
-        $this->cfg_course_prioritymode = DP_PRIORITY_NONE;
+        $this->cfg_course_prioritymode = DP_PRIORITY_OPTIONAL;
+        $this->cfg_course_priorityscale = $defaultpriority;
 
         // competency specific settings
         $this->cfg_competency_autoassignpos = 0;
         $this->cfg_competency_autoassignorg = 0;
         $this->cfg_competency_duedatemode = DP_DUEDATES_NONE;
-        $this->cfg_competency_prioritymode = DP_DUEDATES_NONE;
+        $this->cfg_competency_prioritymode = DP_DUEDATES_OPTIONAL;
+        $this->cfg_competency_priorityscale = $defaultpriority;
 
         // objective specific settings
         $this->cfg_objective_duedatemode = DP_DUEDATES_NONE;
-        $this->cfg_objective_prioritymode = DP_DUEDATES_NONE;
+        $this->cfg_objective_prioritymode = DP_DUEDATES_OPTIONAL;
+        $this->cfg_objective_priorityscale = $defaultpriority;
+        $this->cfg_objective_objectivescale = $defaultobjective;
 
 
         // TODO add all workflow settings here
