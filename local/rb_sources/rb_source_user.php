@@ -166,7 +166,14 @@ class rb_source_user extends rb_base_source {
      */
     private function define_filteroptions() {
         // No filter options!
-        return array();
+        return array(
+            new rb_filter_option(
+                'user',
+                'fullname',
+                'User\'s Name',
+                'text'
+            )
+        );
     }
 
     /**

@@ -138,6 +138,7 @@ foreach ($lt as $column) {
 
         echo '<p>' . get_string('teammembers_text', 'local') . '</p>';
 
+        $report->display_search();
         $report->include_js();
         $report->display_table();
 
