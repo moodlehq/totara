@@ -32,6 +32,19 @@ input, select, button {
   padding:2px;
 }
 
+input[type="submit"],
+input[type="button"],
+button,
+.ui-state-default,
+.ui-widget-content button.ui-state-default {
+    -moz-border-radius: 4px 4px 4px 4px;
+    background: url("images/button_repeat.jpg") repeat-x scroll left top #0BAAB0;
+    border: 1px solid #0DA7B2;
+    color: #FFFFFF;
+    cursor: pointer;
+    margin-right: 1px;
+}
+
 /**
  * Layout Styles
  **/
@@ -44,10 +57,10 @@ input, select, button {
 }
 
 #top-bg {
-	background: #e4e4e4 url('images/bg_grn.jpg') repeat-x top center;
+	background: url("images/bg_grn.jpg") repeat-x scroll center bottom #738344;
 	top:0;
 	right: 0;
-	height:114px;
+	height:140px;
 	position:absolute;
 }
 #container {
@@ -61,11 +74,29 @@ input, select, button {
 #content {
   font-size: 0.9em;
   clear:both;
-  padding: 10px 23px;
-  background: #FFFFFF;
+  padding: 10px 6px;
+  background: url("images/content_bg_blue.jpg") no-repeat scroll center top #FFFFFF;
   margin-bottom: 100px; /* Stopfs footer overlapping content*/
 }
 
+/* Site index left hand column */
+#site-index #left-column {
+    background: url("images/left_menu_bg.gif") repeat-y scroll left top transparent;
+}
+#site-index #left-column .sideblock div.header {
+    background: url("images/left_menu_header_bg.gif") no-repeat scroll left top transparent;
+    border: 0 none;
+}
+#site-index #left-column .sideblock div.content {
+    background: none repeat scroll 0 0 transparent;
+}
+#site-index #left-column .sideblock .hide-show-image {
+    display: none;
+}
+#site-index #middle-column {
+    padding-left:0;
+    padding-right:0;
+}
 
 /**
  * Header Styles
@@ -108,7 +139,7 @@ div#header {
 
 .navbar {
     font-family: 'Trebuchet ms', verdana, helvetica, sans-serif;
-    background: #FFFFFF;
+    background: url("images/breadcrumb_bg_blue.jpg") no-repeat scroll right bottom #5ED6F1;
 }
 
 .navbar .breadcrumb {
@@ -128,7 +159,7 @@ div#header {
 .navbar .breadcrumb ul li a {
   font-family: 'Trebuchet ms', verdana, helvetica, sans-serif;
   font-weight:normal;
-  color: #08a3d5;
+  color: #FFFFFF;
   float:left;
 }
 
@@ -138,7 +169,7 @@ div#header {
   overflow:hidden;
   display:block;
   float:left;
-  background: url('images/sep.gif') no-repeat center bottom;
+  background: url('images/sep_blue.gif') no-repeat center bottom;
 }
 
 .navbar .navbutton, .navbar .menu {
@@ -151,11 +182,19 @@ div#header {
 
 .login-container {
   font-family: verdana, helvetica, sans-serif;
-  float:right;
   font-size: 1em;
   letter-spacing: -0.05em;
-  padding: 5px 20px 0 0;
   color: #08a3d5;
+  background:url("images/bg_grn.jpg") repeat-x scroll center top #E4E4E4;
+  color:#FFFFFF;
+}
+.login-container a,
+.login-container a:link,
+.login-container a:visited,
+.login-container a:hover {
+    color: #FFFFFF;
+    font-weight: bold;
+    text-decoration: underline;
 }
 
 .navigation {
@@ -233,6 +272,7 @@ div#header {
 	height:30px;
 	margin-left:0px;
 	padding: 14px 20px 3px 20px;
+	text-decoration: none;
 }
 
 #totara_menu ul ul {
@@ -431,7 +471,7 @@ body.calendar #totara_menu ul #menu6 div.noteam ul {
 #footer {
 	position: absolute;
 	bottom: 0;
-	background: #FFFFFF url('images/bg_grn.jpg') repeat-x top center;
+	background: url("images/footer_bg_grn.jpg") repeat-x scroll center top #7D8412;
 	width: 930px;
 	padding:7px 15px;
 }
@@ -485,13 +525,14 @@ a:link,
 a:visited,
 a:hover {
   color: #04a2d5;
+  text-decoration: underline;
 }
 
 .navbar .breadcrumb a,
 .navbar .breadcrumb a:link,
 .navbar .breadcrumb a:active,
 .navbar .breadcrumb a:hover {
-  color: #04a2d5;
+  color: #FFFFFF;
 }
 
 .block_admin_tree a:link,
@@ -571,26 +612,42 @@ h6 {
 .tabrow0 ul {
   top: 2.4em;
 }
-
 .tabrow0{
-	line-height: 2.3em;
+  line-height: 2.3em;
+  text-align:left;
 }
 .tabrow0 li a {
   font-family: 'Trebuchet ms', Verdana, Helvetica, sans-serif;
   font-size: 1.3em;
-  color: #322f2c;
+  background: url("images/tab/left_dark.gif") no-repeat scroll left top transparent;
+  padding-top:4px;
+  color:#FFFFFF;
+  padding-bottom:2px;
 }
+.tabrow0 li {
+    font-weight: bold;
+    margin-left: 4px;
+}
+.tabrow0 li a span {
+    background: url("images/tab/right_dark.gif") no-repeat scroll right top transparent;
+    padding-top:4px;
+    padding-bottom:2px;
+}
+
+
 .tabrow0 li.selected a:hover span,
 .tabrow0 li.selected span,
 .tabrow0 li.active a:hover span,
 .tabrow0 li.active span {
-	background: url("images/tab/right_active.gif") top right;
+	background: url("images/tab/right_white.gif") top right;
+	padding-top:8px;
 }
 .tabrow0 li.selected a:hover,
 .tabrow0 li.selected a,
 .tabrow0 li.active a:hover,
 .tabrow0 li.active a {
-	background: url("images/tab/left_active.gif") top left no-repeat;
+	background: url("images/tab/left_white.gif") top left no-repeat;
+	padding-top:8px;
 }
 
 .tabrow0 li.active ul.tabrow1 li a {
@@ -604,12 +661,13 @@ ul.tabrow1 {
 	background: url("images/tab/tabrow1.gif") top left repeat-x !important;
 }
 
+
 /* Hover Styles */
 .tabrow0 a:link:hover,
 .tabrow0 a:visited:hover,
 .tabrow0 .last a:hover,
 .tabrow0 a:hover {
-  background-image: url(images/tab/left_hover.gif);
+  background-image: url(images/tab/left_white.gif);
   color: #999999;
   text-decoration: none;
 }
@@ -617,7 +675,7 @@ ul.tabrow1 {
 .tabrow0 a:visited:hover span,
 .tabrow0 .last a:hover span,
 .tabrow0 a:hover span {
-  background-image: url(images/tab/right_hover.gif);
+  background-image: url(images/tab/right_white.gif);
   color: #333333;
 }
 
@@ -684,6 +742,12 @@ ul.tabrow1 li a:hover {
   background: #FFFFFF;
   border-bottom: 1px solid #cccccc;
 }
+
+.tabrow0 .empty {
+    border-bottom:0 none;
+    border-top:1px solid #AAAAAA;
+}
+
 
 /* Header tabs */
 .header-tabs .tabtree {
@@ -1010,8 +1074,8 @@ ul.tabrow1 li a:hover {
   font-family: 'Trebuchet ms', verdana, helvetica, sans-serif;
   letter-spacing: -0.03em;
   font-weight:normal;
-  /*font-size:1.5em !important*/;
-  /*color: #FFFFFF;*/
+  /*font-size:1.5em !important;*/
+  color: #14B1B9;
   margin:0 0 0 0;
   padding: 5px 4px 0 4px;
 }
@@ -1069,6 +1133,10 @@ ul.tabrow1 li a:hover {
 }
 .dashlet .date {
   width: 165px;
+}
+.dashlet .footer div.viewall a {
+    background: url("images/arw_teal.gif") no-repeat scroll right center transparent;
+    padding-right: 17px;
 }
 
 /******************************************
@@ -1141,7 +1209,7 @@ div.block_totara_notify .content a {
 }
 
 div.block_totara_notify .content tr.shade {
-  background: #E4E4E4;
+  background: #F2F2F2;
 }
 
 div.block_totara_notify .content tr.noshade {
@@ -1154,13 +1222,10 @@ div.block_totara_notify .content td.status {
 
 div.block_totara_notify .content td.statement {
   width: 100%;
-  border-left: 1px solid;
+  border-left: 1px solid #E0E0E0;
   padding-left: 4px;
 }
 
-div.block_totara_notify div.content div.footer div.viewall {
-  text-align: right;
-}
 
 #totara-msgs-action table {
 	border: 0px;
@@ -1189,7 +1254,7 @@ div.block_totara_reminders .content a {
 }
 
 div.block_totara_reminders .content tr.shade {
-  background: #E4E4E4;
+  background: #F2F2F2;
 }
 
 div.block_totara_reminders .content tr.noshade {
@@ -1202,12 +1267,12 @@ div.block_totara_reminders .content td.status {
 
 div.block_totara_reminders .content td.statement {
   width: 100%;
-  border-left: 1px solid;
+  border-left: 1px solid #E0E0E0;
   padding-left: 4px;
 }
 
 div.block_totara_reminders div.content div.footer div.viewall {
-  text-align: right;
+  text-align: left;
 }
 
 div.totara_reminders_actions {
@@ -1673,6 +1738,32 @@ table.reportbuilder-table td {
 }
 
 /*****************************************************************************/
+/** Learning Plans **/
+/*****************************************************************************/
+#dp-plans-list-active-plans table td.c0 {
+    background: url('images/icon_active_plan.gif') no-repeat 8px 10px transparent;
+    background-color: none;
+}
+#dp-plans-list-completed-plans table td.c0 {
+    background: url('images/icon_completed_plan.gif') no-repeat 8px 10px transparent;
+    background-color: none;
+}
+#dp-plans-list-active-plans table th.header.c0 a,
+#dp-plans-list-completed-plans table th.header.c0 a {
+    color: #A52B86;
+}
+#dp-plans-menu {
+    background: url("images/left_menu_bg.gif") repeat-y scroll left top transparent;
+}
+#dp-plans-menu h3 {
+    background: url("images/left_menu_header_bg.gif") no-repeat scroll left top transparent;
+    color: #FFFFFF;
+}
+#dp-plans-menu ul li {
+    background: url("images/arw_grn.gif") no-repeat scroll left center transparent;
+}
+
+/*****************************************************************************/
 /** IDP **/
 /*****************************************************************************/
 
@@ -1860,8 +1951,7 @@ td.c0 {
 }
 
 th.header {
-    background: #EDEDED url(images/gradient.png) top left repeat-x;
-	font-size: 0.9em;
+    font-size: 0.9em;
 }
 
 table.customfields th.lastcol,

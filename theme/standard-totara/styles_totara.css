@@ -58,6 +58,31 @@ div.course-content  #layout-table {
 
 #site-index  #left-column {
   padding-right:0;
+  width:241px !important;
+}
+
+#site-index  #right-column {
+    width:auto !important;
+}
+
+#site-index #left-column .sideblock div.header {
+    margin-top: 20px;
+    padding: 7px 20px;
+}
+
+#site-index #left-column .sideblock {
+    width: auto;
+}
+#site-index #left-column .sideblock div.header .title h2 {
+    font-size: 1.4em;
+    font-weight: bold;
+    margin: 0;
+    padding: 0;
+}
+#site-index #left-column .sideblock div.content {
+    border: 0 none;
+    padding-left: 30px;
+    padding-right: 20px;
 }
 
 #course-view #middle-column {
@@ -157,10 +182,11 @@ div#header .logo {
 
 .login-container {
   font-family: verdana, helvetica, sans-serif;
-  float:right;
+  float:none;
   font-size: 1em;
   letter-spacing: -0.05em;
-  padding: 5px 20px 0 0;
+  padding: 5px 10px 5px 10px;
+  text-align:right;
 }
 
 .navigation {
@@ -479,6 +505,13 @@ div.block_html .content {
 
 .tempblockhandler {
   display:none;
+}
+
+/******************************************
+ * Dashlets
+ *****************************************/
+#middle-column .dashlet div.header .title h2 {
+    font-size: 1.5em;
 }
 
 
@@ -1360,30 +1393,22 @@ div.dp-summary-widget-components {
 
 span.dp-summary-widget-component-name {
     background:transparent url('images/nav_main_spacer.gif') no-repeat right 5px;
-    padding: 3px 4px 0px 4px;
+    padding: 3px 4px 0px 0px;
+    margin-right: 4px;
 }
 
 span.dp-summary-widget-component-name-last {
     background: transparent none repeat scroll 0 0;
-    padding: 3px 5px 0px 5px;
-}
-
-#dp-plans-description {
-    padding: 5px;
-}
-
-#dp-plans-description span.dp-add-plan-link {
-    float: right;
 }
 
 #dp-plans-menu {
     float: left;
-    width: 15%;
+    width: 241px;
 }
 
 #dp-plans-menu ul {
     list-style: none;
-    padding: 2px;
+    padding: 2px 2px 2px 20px;
 }
 
 #dp-plans-menu ul li {
@@ -1395,8 +1420,8 @@ span.dp-summary-widget-component-name-last {
 }
 
 #dp-plan-content {
-    float: left;
-    width: 85%;
+    float: right;
+    width: 650px;
 }
 
 div.dp-plan-assign-button {
@@ -1406,7 +1431,57 @@ div.dp-plan-assign-button {
 table.dp-plan-component-items {
     width: 100%;
 }
+#dp-plans-menu h3 {
+    margin-top: 20px;
+    padding: 7px 20px;
+}
+#dp-plans-menu ul li {
+    padding: 4px 20px 5px;
+}
 
+/*****************************************************************************/
+/** Learning Plans **/
+/*****************************************************************************/
+#dp-plans-list-active-plans,
+#dp-plans-list-completed-plans {
+    margin-top:20px;
+}
+
+#dp-plans-list-active-plans table,
+#dp-plans-list-completed-plans table {
+    width:100%;
+}
+
+#dp-plans-list-active-plans table td.c0,
+#dp-plans-list-completed-plans table td.c0 {
+    padding-left: 40px;
+}
+
+#dp-plans-list-active-plans table th.header.c0 ,
+#dp-plans-list-completed-plans table th.header.c0 {
+    padding-left:0px;
+}
+
+#dp-plans-list-active-plans table th.header.c0 a,
+#dp-plans-list-completed-plans table th.header.c0 a {
+    font-size:17px;
+    text-decoration: none;
+}
+
+#dp-plans-description div.planinstructions {
+    float: left;
+    width: 70%;
+}
+
+#dp-plans-description span.dp-add-plan-link{
+    float: right;
+    width: 29%;
+    text-align: right;
+}
+
+#dp-plan-content h2.main {
+    text-align:left;
+}
 
 /*****************************************************************************/
 /** Dialogs **/
@@ -1977,6 +2052,22 @@ table#list-idpcourse{
     padding-right:5px;
 }
 
+/* New totara styled tables */
+table.flexible td {
+    border:0 none;
+    border-left:1px solid #E2E2E2;
+}
+table.flexible th.header {
+    border-top:0 none;
+    border-right:0 none;
+    border-bottom:0 none;
+}
+table.flexible td.c0 {
+    border-left:0 none;
+}
+table.flexible th.c0 {
+    border-left:0 none;
+}
 
 /*****************************************************************************/
 /** Guides Tables **/

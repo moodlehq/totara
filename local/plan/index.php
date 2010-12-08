@@ -58,17 +58,22 @@ echo '<div class="planinstructions">' . get_string('plansinstructions', 'local_p
 if ($canaddplan) {
     echo dp_display_add_plan_icon($planuser);
 }
+echo '<div style="clear:both;"></div>';
 print_container_end();
 
-print_heading(get_string('activeplans', 'local_plan'), 'left');
-echo "<br>";
+//print_heading(get_string('activeplans', 'local_plan'), 'left');
+//echo "<br>";
 
-echo dp_display_plans($planuser, array(DP_PLAN_STATUS_APPROVED, DP_PLAN_STATUS_UNAPPROVED, DP_PLAN_STATUS_DECLINED), array('duedate', 'progress'));
+print_container_start(false, '', 'dp-plans-list-active-plans');
+echo dp_display_plans($planuser, array(DP_PLAN_STATUS_APPROVED, DP_PLAN_STATUS_UNAPPROVED, DP_PLAN_STATUS_DECLINED), array('activeplans', 'duedate', 'progress'));
+print_container_end();
 
-print_heading(get_string('completedplans', 'local_plan'), 'left');
-echo "<br>";
+//print_heading(get_string('completedplans', 'local_plan'), 'left');
+//echo "<br>";
 
-echo dp_display_plans($planuser, DP_PLAN_STATUS_COMPLETE, array('completed'));
+print_container_start(false, '', 'dp-plans-list-completed-plans');
+echo dp_display_plans($planuser, DP_PLAN_STATUS_COMPLETE, array('completedplans','completed'));
+print_container_end();
 
 print_container_end();
 

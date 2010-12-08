@@ -97,6 +97,12 @@ local_js(array(TOTARA_JS_DATEPICKER));
 ///
 print_header_simple($pagetitle, '', $navigation, '', null, true, '');
 
+// Plan menu
+echo dp_display_plans_menu($plan->userid);
+
+// Plan page content
+print_container_start(false, '', 'dp-plan-content');
+
 print $plan->display_plan_message_box();
 
 print_heading($fullname);
@@ -131,4 +137,5 @@ if(!$plancompleted && ($cansetduedate || $cansetpriority || $canapprovecourses) 
 }
 
 print '</form>';
+print_container_end();
 print_footer();
