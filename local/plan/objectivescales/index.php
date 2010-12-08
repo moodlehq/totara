@@ -82,6 +82,9 @@ if($delete) {
     if(!$scale = get_record('dp_objective_scale', 'id', $delete)) {
        print_error('error:invalidobjectivescaleid', 'local_plan');
     }
+    if ( dp_objective_scale_is_used($delete) ){
+        print_error('error:nodeleteobjectivescaleinuse', 'local_plan');
+    }
 
     if($confirm) {
         if (!confirm_sesskey()) {

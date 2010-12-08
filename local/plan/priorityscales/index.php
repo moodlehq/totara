@@ -82,6 +82,9 @@ if($delete) {
     if(!$scale = get_record('dp_priority_scale', 'id', $delete)) {
        print_error('error:invalidpriorityscaleid', 'local_plan');
     }
+    if ( dp_priority_scale_is_used($delete) ){
+        print_error('error:nodeletepriorityscaleinuse', 'local_plan');
+    }
 
     if($confirm) {
         if (!confirm_sesskey()) {

@@ -19,8 +19,15 @@
  * @return boolean
  */
 function dp_priority_scale_is_used($scaleid) {
-    //TODO: Figure out if the scale is used
-    return false;
+    global $CFG;
+    require_once($CFG->dirroot.'/local/plan/lib.php');
+    global $DP_AVAILABLE_COMPONENTS;
+
+    $count = 0;
+    foreach ( $DP_AVAILABLE_COMPONENTS as $c ){
+        $count += count_records("dp_{$c}_settings", 'priorityscale', $scaleid);
+    }
+    return $count;
 }
 
 
