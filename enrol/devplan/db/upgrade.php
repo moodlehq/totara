@@ -37,6 +37,13 @@ function xmldb_enrol_devplan_upgrade($oldversion=0) {
             $result = $result && update_record('config', addslashes_object($enrolconfig));
         }
     }
+    if ($result && $oldversion < 2010120800) {
+        $enrolconfig = get_record('config', 'name', 'enrol');
+        if (!empty($enrolconfig) && $enrolconfig->value != 'devplan') {
+            $enrolconfig->value = 'devplan';
+            $result = $result && update_record('config', addslashes_object($enrolconfig));
+        }
+    }
     return $result;
 }
 
