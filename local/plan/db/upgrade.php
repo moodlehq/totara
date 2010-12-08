@@ -226,5 +226,16 @@ function xmldb_local_plan_upgrade($oldversion=0) {
         $result = $result && add_field($table, $field);
     }
 
+    if ($result && $oldversion < 2010120804) {
+
+    /// Changing nullability of field objectivescale on table dp_objective_settings to null
+        $table = new XMLDBTable('dp_objective_settings');
+        $field = new XMLDBField('objectivescale');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null, null, null, 'priorityscale');
+
+    /// Launch change of nullability for field objectivescale
+        $result = $result && change_field_notnull($table, $field);
+    }
+
     return $result;
 }
