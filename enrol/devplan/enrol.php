@@ -42,7 +42,7 @@ function print_entry($course) {
     $devplan = get_record_sql($sql);
     if (!empty($devplan->planstatus) && !empty($devplan->courseapproval)) {
         require_once($CFG->dirroot . '/local/plan/lib.php');
-        if ($devplan->planstatus == DP_PLAN_STATUS_APPROVED) {
+        if (($devplan->planstatus == DP_PLAN_STATUS_APPROVED) && ($devplan->coursestatus == DP_APPROVAL_APPROVED)) {
             enrol_into_course($course, $USER, 'manual');
             load_all_capabilities();
             if (!empty($SESSION->wantsurl)) {
@@ -53,12 +53,14 @@ function print_entry($course) {
             }
             $message = get_string('nowenrolled', 'enrol_devplan', $course->fullname);
             $message .= get_string('redirectedsoon', 'enrol_devplan');
-            redirect($destination, $message, 1);
+            print '<div class="plan_box plan_box_plain">' . $message . '</div>';
+            redirect($destination, '', 1);
         }
     } else {
         // this isn't an approved course in their development plan or development plan isn't approved
-        print "You are not currently permitted to enrol in this course.<br />" .
-                "To enrol you must have this course listed and fully approved in your development plan.<br />";
+        print '<div class="plan_box plan_box_action">You are not currently permitted to enrol in this course.<br />' .
+                'To enrol you must have this course listed and fully approved in your ' .
+                '<a href="' . $CFG->wwwroot . '/local/plan/index.php?userid=' . $USER->id . '">development plan</a>.<br /></div>';
         if (!empty($course->guest)) {
             $destination = $CFG->wwwroot . '/course/view.php?id=' . $course->id;
             $message = get_string('guestaccess', 'enrol_devplan', $destination);
@@ -66,7 +68,7 @@ function print_entry($course) {
         } else {
             $destination = $CFG->wwwroot;
         }
-        redirect($destination);
+        redirect($destination,'',5);
     }
 
     print_simple_box_end();
