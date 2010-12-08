@@ -347,7 +347,7 @@ class course_edit_form extends moodleform {
         $choices['2'] = get_string('guestskey');
         $mform->addElement('select', 'guest', get_string('opentoguests'), $choices);
         $mform->setHelpButton('guest', array('guestaccess', get_string('opentoguests')), true);
-        $mform->setDefault('guest', 0);
+        $mform->setDefault('guest', 1);
 
         // If we are creating a course, its enrol method isn't yet chosen, BUT the site has a default enrol method which we can use here
         $enrol_object = $CFG;

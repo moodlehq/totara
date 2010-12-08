@@ -3499,6 +3499,10 @@ function create_course($data) {
         $data->restrictmodules = 0;
     }
 
+    if (!isset($data->guest)) {
+        $data->guest = 1;
+    }
+
     $data->timecreated = time();
 
     // place at beginning of category
