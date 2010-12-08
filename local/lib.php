@@ -31,6 +31,12 @@ if (!defined('MOODLE_INTERNAL')) {
 
 require_once($CFG->dirroot.'/local/totara.php');
 
+/**
+ * Post-installation setup steps
+ * @global object $db
+ * @global object $CFG
+ * @return boolean success or failure
+ */
 function local_postinst() {
 
     global $db, $CFG;
