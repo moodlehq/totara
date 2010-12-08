@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-$plugin->version  = 2010120804;   // The (date) version of this module
+$plugin->version  = 2010120806;   // The (date) version of this module
 
 // This won't work yet as there is no local_modules table
 // To activate cron set the config variable local_<mod>_cron with set_config()

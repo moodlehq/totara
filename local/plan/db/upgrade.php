@@ -237,5 +237,67 @@ function xmldb_local_plan_upgrade($oldversion=0) {
         $result = $result && change_field_notnull($table, $field);
     }
 
+    if ($result && $oldversion < 2010120805) {
+
+    /// Define field sortorder to be added to dp_objective_scale
+        $table = new XMLDBTable('dp_objective_scale');
+        $field = new XMLDBField('sortorder');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0', 'defaultid');
+
+    /// Launch add field sortorder
+        $result = $result && add_field($table, $field);
+
+        $priorityscalelist = get_records_select('dp_objective_scale', '1=1', 'id desc', 'id');
+        if ( $priorityscalelist ){
+            $sortorder = 0;
+            foreach ($priorityscalelist as $ps ){
+                $rec = new stdClass();
+                $rec->id = $ps->id;
+                $rec->sortorder = $sortorder;
+                $sortorder++;
+                $result = $result && update_record('dp_objective_scale', $rec);
+            }
+        }
+
+    /// Changing the default of field sortorder on table dp_objective_scale to drop it
+        $table = new XMLDBTable('dp_objective_scale');
+        $field = new XMLDBField('sortorder');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null, 'defaultid');
+
+    /// Launch change of default for field sortorder
+        $result = $result && change_field_default($table, $field);
+    }
+
+    if ($result && $oldversion < 2010120806) {
+
+    /// Define field sortorder to be added to dp_priority_scale
+        $table = new XMLDBTable('dp_priority_scale');
+        $field = new XMLDBField('sortorder');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0', 'defaultid');
+
+    /// Launch add field sortorder
+        $result = $result && add_field($table, $field);
+
+        $priorityscalelist = get_records_select('dp_priority_scale', '1=1', 'id desc', 'id');
+        if ( $priorityscalelist ){
+            $sortorder = 0;
+            foreach ($priorityscalelist as $ps ){
+                $rec = new stdClass();
+                $rec->id = $ps->id;
+                $rec->sortorder = $sortorder;
+                $sortorder++;
+                $result = $result && update_record('dp_priority_scale', $rec);
+            }
+        }
+
+    /// Changing the default of field sortorder on table dp_priority_scale to drop it
+        $table = new XMLDBTable('dp_priority_scale');
+        $field = new XMLDBField('sortorder');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null, 'defaultid');
+
+    /// Launch change of default for field sortorder
+        $result = $result && change_field_default($table, $field);
+    }
+
     return $result;
 }
