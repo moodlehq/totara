@@ -69,6 +69,8 @@ abstract class dp_base_workflow {
             'perm_objective_setpriority_manager',
             'perm_objective_setduedate_learner',
             'perm_objective_setduedate_manager',
+            'perm_objective_setproficiency_learner',
+            'perm_objective_setproficiency_manager',
             
         );
         foreach($properties as $property) {

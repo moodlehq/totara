@@ -5,7 +5,7 @@ class dp_objective_component extends dp_base_component {
         'commenton' => false,
         'setpriority' => false,
         'setduedate' => false,
-        'setproficiency' => true
+        'setproficiency' => false
     );
 
     function __construct($plan) {

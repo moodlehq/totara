@@ -84,6 +84,8 @@ class dp_userdriven_workflow extends dp_base_workflow {
         $this->perm_objective_setpriority_manager = DP_PERMISSION_ALLOW;
         $this->perm_objective_setduedate_learner = DP_PERMISSION_ALLOW;
         $this->perm_objective_setduedate_manager = DP_PERMISSION_ALLOW;
+        $this->perm_objective_setproficiency_learner = DP_PERMISSION_ALLOW;
+        $this->perm_objective_setproficiency_manager = DP_PERMISSION_ALLOW;
 
 
         parent::__construct();
