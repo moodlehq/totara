@@ -47,10 +47,25 @@ button,
 
 
 form.mform fieldset,
-table.userinfobox,
-table.generaltable,
-div.sideblock div.content {
+table.userinfobox {
     background-color: #fff;
+}
+
+div.admintree div a {
+    text-decoration: none;
+}
+
+div.block_admin_tree div.content {
+    padding-left: 20px !important;
+    padding-right: 10px !important;
+}
+
+div.block_admin_tree div.admintree .depth1 {
+    padding-left: 10px;
+}
+
+div.block_admin_tree div.admintree .depth2 {
+    padding-left: 20px;
 }
 
 /**
@@ -548,6 +563,26 @@ a:hover {
 .block_admin_tree a:hover {
   color: #04a2d5;
 }
+
+.block_admin_tree a span.visiblename {
+  text-decoration: underline;
+}
+
+.block_admin_tree a.link:link,
+.block_admin_tree a.link:visited,
+.block_admin_tree a.link:hover {
+  color: #04a2d5;
+  text-decoration: none;
+}
+
+.block_admin_tree a.link span.visiblename {
+    text-decoration: none;
+}
+
+.block_admin_tree a:hover span.visiblename {
+    text-decoration: underline;
+}
+
 .block_admin_tree .adminsearchform {
   text-align:center
 }
@@ -1042,7 +1077,7 @@ ul.tabrow1 li a:hover {
   padding: 7px 7px 7px 7px;
   margin:0;
   border:none;
-  background:transparent url('images/sb_bg_ftr.gif') no-repeat bottom left;
+  background:#fff url('images/sb_bg_ftr.gif') no-repeat bottom left;
 }
 .sideblock .content td a {
   font-family: 'Trebuchet ms', verdana, helvetica, sans-serif;
@@ -1655,6 +1690,7 @@ div.yuimenu .yuichildtree .yuimenuitem {
 }
 .generaltable {
   width:100%;
+  background-color: #fff;
 }
 .coursebox .summary {
   font-size: 1.1em;

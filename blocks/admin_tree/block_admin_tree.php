@@ -39,7 +39,7 @@ class block_admin_tree extends block_base {
 
         $this->tempcontent .= '<div class="depth'.$this->currentdepth.'"><a href="#" onclick="menu_toggle(\''.$this->divcounter.'\');return false">';
         $this->tempcontent .= '<span id="vh_div'.$this->divcounter.'indicator"><img src="'.$CFG->pixpath.'/i/open.gif" alt="'.$strfolderopened.'" /></span> ';
-        $this->tempcontent .= $visiblename.'</a></div><div id="vh_div'.$this->divcounter.'">'."\n";
+        $this->tempcontent .= '<span class="visiblename">'.$visiblename.'<span></a></div><div id="vh_div'.$this->divcounter.'">'."\n";
         $this->currentdepth++;
         $this->divcounter++;
     }
@@ -52,7 +52,7 @@ class block_admin_tree extends block_base {
     function create_item($visiblename,$link,$icon,$class) {
         global $CFG;
         $this->tempcontent .= '<div class="depth'.$this->currentdepth.'"><a class="'.$class.'" href="'.$link.'"><img src="'.$icon.'" alt="" />'.
-                               $visiblename.'</a></div>'."\n";
+                               '<span class="visiblename">'.$visiblename.'</span></a></div>'."\n";
     }
 
     function build_tree (&$content) {
