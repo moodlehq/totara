@@ -1733,6 +1733,7 @@ div.totara-dialog ul.treeview span.deletebutton {
 
 div.totara-dialog ul.treeview li span.clickable a {
     color: inherit;
+    text-decoration: none;
 }
 
 div.totara-dialog ul.treeview li span.clickable a:hover {
