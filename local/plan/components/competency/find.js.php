@@ -63,11 +63,12 @@ totaraDialog_handler_preRequisite.prototype._update = function(response) {
     // Grab table
     var table = $('div#content form#dp-component-update table.dp-plan-component-items');
 
-    // If no table found by ID
+    // If table found
     if (table.size()) {
-        table.remove();
+        table.replaceWith(response);
     }
-
-    // Add new table
-    $('div#content form#dp-component-update input[name=submitbutton]').before(response);
+    else {
+        // Add new table
+        $('div#content form#dp-component-update').prepend(response);
+    }
 }
