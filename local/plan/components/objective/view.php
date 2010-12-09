@@ -10,7 +10,16 @@ $caid = required_param('itemid', PARAM_INT); // objective assignment id
 $plan = new development_plan($id);
 $componentname = 'objective';
 $component = $plan->get_component($componentname);
-$currenturl = $CFG->wwwroot . '/local/plan/components/objective/view.php?id='.$id.'&amp;itemid='.$caid;
+
+$mform = $component->objective_form($caid, 'view');
+if ($data = $mform->get_data()){
+    if (isset($data->edit)){
+        redirect("{$CFG->wwwroot}/local/plan/components/objective/edit.php?id={$id}&itemid={$caid}");
+    } elseif (isset($data->delete)){
+        redirect("{$CFG->wwwroot}/local/plan/components/objective/edit.php?id={$id}&itemid={$caid}&d=1");
+    }
+}
+//$mform = new moodleform();
 
 $fullname = $plan->name;
 $pagetitle = format_string(get_string('developmentplan','local_plan').': '.$fullname);
@@ -27,7 +36,7 @@ print_heading($fullname);
 print $plan->display_tabs($componentname);
 
 print $component->display_back_to_index_link();
-$component->print_objective_detail($caid, 'view');
+$mform->display();
 
 print $component->display_linked_courses($caid);
 print '<input type="submit" name="submitbutton" value="'.get_string('addremovecourses', 'local_plan').'" />';

@@ -19,17 +19,32 @@ require_once($CFG->dirroot . '/local/plan/components/objective/edit_form.php');
 /// Load parameters
 ///
 $planid = required_param('id', PARAM_INT);
-$objectiveid = optional_param('itemid', 0, PARAM_INT); // Objective id; 0 if creating a new objective
+$objectiveid = optional_param('itemid', null, PARAM_INT); // Objective id; 0 if creating a new objective
+$deleteflag = optional_param('d', false, PARAM_BOOL);
+$deleteyes = optional_param('deleteyes', false, PARAM_BOOL);
+$deleteno = optional_param('deleteno', null, PARAM_TEXT);
+if ( $deleteno == null ){
+    $deleteno = false;
+} else {
+    $deleteno = true;
+}
 
 ///
 /// Load data
 ///
+$objallurl = "{$CFG->wwwroot}/local/plan/components/objective/index.php?id={$planid}";
+if ( $objectiveid ){
+    $objviewurl = "{$CFG->wwwroot}/local/plan/components/objective/view.php?id={$planid}&itemid={$objectiveid}";
+} else {
+    $objviewurl = $objallurl;
+}
 $plan = new development_plan($planid);
 $componentname = 'objective';
 $component = $plan->get_component($componentname);
-if ( $objectiveid == 0 ){
+if ( $objectiveid == null ){
     $objective = new stdClass();
     $objective->itemid = 0;
+    $action = 'add';
 } else {
     if (!$objective = get_record('dp_plan_objective', 'id', $objectiveid)){
         error(get_string('error:objectiveidincorrect', 'local_plan'));
@@ -37,6 +52,12 @@ if ( $objectiveid == 0 ){
     $objective->itemid = $objective->id;
     $objective->id = $objective->planid;
     unset($objective->planid);
+
+    if ( $deleteflag ){
+        $action = 'delete';
+    } else {
+        $action = 'edit';
+    }
 }
 
 ///
@@ -47,22 +68,23 @@ if ( !$component->can_update_items() ) {
     print_error('error:cannotupdateobjectives', 'local_plan');
 }
 
-$mform = new plan_objective_edit_form(
-        null,
-        array(
-            'plan'=>$plan,
-            'objective'=>$component,
-            'action'=>'edit'
-        )
-);
+$mform = $component->objective_form( $objectiveid, $action );
 $mform->set_data($objective);
 
-//
-// If cancelled
-//
-if ($mform->is_cancelled()){
-    redirect("{$CFG->wwwroot}/local/plan/components/objective/index.php?id={$planid}");
-} else if ( $data = $mform->get_data()) {
+if ( $deleteyes ){
+    require_sesskey();
+    if ( !$component->delete_objective($objectiveid) ){
+        print_error("Was unable to delete objective.");
+    } else {
+        totara_set_notification('Objective deleted.', $objallurl);
+    }
+} elseif ( $deleteno || $mform->is_cancelled()) {
+    if ( $action == 'add' ){
+        redirect($objallurl);
+    } else {
+        redirect($objviewurl);
+    }
+} if ( $data = $mform->get_data()) {
     // A New objective
     if (empty($data->itemid)){
 
@@ -76,7 +98,22 @@ if ($mform->is_cancelled()){
         if (!$result){
             print_error("Was unable to create new objective");
         } else {
-            redirect("{$CFG->wwwroot}/local/plan/components/objective/view.php?id={$planid}&itemid={$result}");
+            totara_set_notification('New objective created.', $objviewurl);
+        }
+    } else {
+
+        $record = new stdClass();
+        $record->id = $data->itemid;
+        $record->planid = $data->id;
+        $record->fullname = $data->fullname;
+        $record->shortname = $data->shortname;
+        $record->description = $data->description;
+        $record->priority = isset($data->priority)?$data->priority:null;
+        $record->duedate = isset($data->duedate)?$data->duedate:null;
+        if (!update_record('dp_plan_objective', $record)){
+            print_error("Was unable to update objective.");
+        } else {
+            totara_set_notification('Objective updated.', $objviewurl);
         }
     }
 }
@@ -95,18 +132,26 @@ $navigation = build_navigation($navlinks);
 print_header_simple($pagetitle, '', $navigation, '', null, true, '');
 
 // Plan menu
-echo dp_display_plans_menu($plan->userid);
+//echo dp_display_plans_menu($plan->userid);
 
 // Plan page content
 print_container_start(false, '', 'dp-plan-content');
-
 print $plan->display_plan_message_box();
-
 print_heading($fullname);
 print $plan->display_tabs($componentname);
+switch($action){
+    case 'add':
+        print_heading(get_string('addnewobjective','local_plan'));
+        break;
+    case 'delete':
+        print_heading(get_string('deleteobjective', 'local_plan'));
+        break;
+    case 'edit':
+        print_heading(get_string('editobjective', 'local_plan'));
+        break;
+}
 
-print_heading(get_string('addnewobjective','local_plan'));
-
+print $component->display_back_to_index_link();
 $mform->display();
 
 print_container_end();

@@ -30,6 +30,12 @@ class plan_objective_edit_form extends moodleform {
         $plan = $this->_customdata['plan'];
         $objective = $this->_customdata['objective'];
 
+        switch( $action ){
+            case 'delete':
+                $mform->addElement('html', get_string('deleteobjectiveareyousure', 'local_plan'));
+                break;
+        }
+
         // Get workflow permissions to decide what should go on the form
         if ($objective->get_setting('setduedate') == DP_PERMISSION_ALLOW){
             $duedatemode = $objective->get_setting('duedatemode');
@@ -93,20 +99,30 @@ class plan_objective_edit_form extends moodleform {
             }
         }
 
-        if ( $action == 'view' ){
-            $mform->hardFreezeAllVisibleExcept(array());
-            $buttonarray = array();
-            if ($this->_customdata['plan']->get_setting('update') == DP_PERMISSION_ALLOW && $this->_customdata['plan']->status != DP_PLAN_STATUS_COMPLETE) {;
-                $buttonarray[] = $mform->createElement('submit', 'edit', get_string('editdetails', 'local_plan'));
-            }
-            if ($this->_customdata['plan']->get_setting('delete') == DP_PERMISSION_ALLOW) {
-                $buttonarray[] = $mform->createElement('submit', 'delete', get_string('deleteobjective', 'local_plan'));
-            }
+        switch( $action ){
+            case 'view':
+                $mform->hardFreezeAllVisibleExcept(array());
+                $buttonarray = array();
+                if ($this->_customdata['plan']->get_setting('update') == DP_PERMISSION_ALLOW && $this->_customdata['plan']->status != DP_PLAN_STATUS_COMPLETE) {;
+                    $buttonarray[] = $mform->createElement('submit', 'edit', get_string('editdetails', 'local_plan'));
+                }
+                if ($this->_customdata['plan']->get_setting('delete') == DP_PERMISSION_ALLOW) {
+                    $buttonarray[] = $mform->createElement('submit', 'delete', get_string('deleteobjective', 'local_plan'));
+                }
 
-            $mform->addGroup($buttonarray, 'buttonar', '', array(' '), false);
-            $mform->closeHeaderBefore('buttonar');
-        } else {
-            $this->add_action_buttons();
+                $mform->addGroup($buttonarray, 'buttonar', '', array(' '), false);
+                $mform->closeHeaderBefore('buttonar');
+                break;
+            case 'delete':
+                $mform->hardFreezeAllVisibleExcept(array());
+                $buttonarray = array();
+                $buttonarray[] = $mform->createElement('submit', 'deleteyes', get_string('yes'));
+                $buttonarray[] = $mform->createElement('submit', 'deleteno', get_string('no'));
+                $mform->addGroup($buttonarray, 'buttonar', '', array(' '), false);
+                $mform->closeHeaderBefore('buttonarr');
+                break;
+            default:
+                $this->add_action_buttons();
         }
     }
 

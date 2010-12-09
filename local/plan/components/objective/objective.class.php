@@ -424,11 +424,14 @@ class dp_objective_component extends dp_base_component {
                 }
 
                 if($canremoveobjectives) {
-                    $currenturl = $CFG->wwwroot .
-                        '/local/plan/components/objective/index.php?id=' .
-                        $this->plan->id;
+                    $deleteurl = $CFG->wwwroot
+                        . '/local/plan/components/objective/edit.php?id='
+                        . $this->plan->id
+                        . '&itemid='
+                        . $objective->id
+                        . '&d=1';
                     $strdelete = get_string('delete', 'local_plan');
-                    $row[] = '<a href="'.$currenturl.'&amp;d='.$objective->id.'" title="'.$strdelete.'"><img src="'.$CFG->pixpath.'/t/delete.gif" class="iconsmall" alt="'.$strdelete.'" /></a>';
+                    $row[] = '<a href="'.$deleteurl.'" title="'.$strdelete.'"><img src="'.$CFG->pixpath.'/t/delete.gif" class="iconsmall" alt="'.$strdelete.'" /></a>';
                 }
 
                 $table->add_data($row);
@@ -518,26 +521,38 @@ class dp_objective_component extends dp_base_component {
      *
      * @return void
      */
-    function print_objective_detail($objectiveid, $action='view') {
+    function objective_form($objectiveid=null, $action='view') {
         global $CFG;
-        if (!$objective = get_record('dp_plan_objective', 'id', $objectiveid)){
-            error(get_string('error:objectiveidincorrect', 'local_plan'));
-        }
-        $objective->objectiveid = $objective->id;
-        unset($objective->id);
-        global $CFG;
-        $mform = new plan_objective_edit_form(
-                null,
-                array(
-                    'plan'=>$this->plan,
-                    'objective'=>$this,
-                    'objectiveid'=>$objectiveid,
-                    'action'=>$action
-                )
+        $customdata = array(
+            'plan' => $this->plan,
+            'objective' => $this,
+            'action' => $action
         );
-        $mform->set_data($objective);
-        $mform->display();
+        if ( empty($objectiveid) ){
+            return new plan_objective_edit_form( null, $customdata );
+        } else {
+
+            if (!$objective = get_record('dp_plan_objective', 'id', $objectiveid)){
+                error(get_string('error:objectiveidincorrect', 'local_plan'));
+            }
+            $objective->itemid = $objective->id;
+            $objective->id = $objective->planid;
+            unset($objective->planid);
+
+            $mform = new plan_objective_edit_form(
+                    null,
+                    array(
+                        'plan'=>$this->plan,
+                        'objective'=>$this,
+                        'objectiveid'=>$objectiveid,
+                        'action'=>$action
+                    )
+            );
+            $mform->set_data($objective);
+            return $mform;
+        }
     }
+
 
     /**
      * Display approval options for objectives
@@ -661,7 +676,7 @@ class dp_objective_component extends dp_base_component {
         redirect($currenturl);
     }
 
-    function remove_objective_assignment($caid) {
+    function delete_objective($caid) {
         $canremoveobjective = ($this->get_setting('updateobjective') == DP_PERMISSION_ALLOW);
         // need permission to remove this objective
         if(!$canremoveobjective) {
@@ -670,7 +685,8 @@ class dp_objective_component extends dp_base_component {
 
         begin_sql();
         $result = delete_records('dp_plan_objective', 'id', $caid);
-        $result = $result && delete_records('dp_plan_objective_assign', 'objectiveid', $caid);
+        $result = $result && delete_records('dp_plan_component_relation', 'component1', 'objective', 'itemid1', $caid);
+        $result = $result && delete_records('dp_plan_component_relation', 'component2', 'objective', 'itemid2', $caid);
         commit_sql();
 
         return $result;

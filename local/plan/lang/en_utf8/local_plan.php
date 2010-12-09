@@ -174,6 +174,8 @@ $string['objectivedescription'] = 'Objective Description';
 $string['objectivepriority'] = 'Objective Priority';
 $string['error:cannotupdateobjectives'] = 'Cannot update objectives';
 $string['deleteobjective'] = 'Delete objective';
+$string['deleteobjectiveareyousure'] = 'Are you sure you want to delete this objective?';
+$string['editobjective'] = 'Edit objective';
 
 
 //Plan Settings strings
