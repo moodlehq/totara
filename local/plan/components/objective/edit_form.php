@@ -86,7 +86,12 @@ class plan_objective_edit_form extends moodleform {
 
         // Due dates
         if ( $duedatemode == DP_DUEDATES_OPTIONAL || $duedatemode == DP_DUEDATES_REQUIRED ){
-            $mform->addElement('date_selector', 'duedate', get_string('duedate', 'local_plan'));
+
+            if ( $duedatemode == DP_DUEDATES_OPTIONAL && in_array($action,array('edit','add'))){
+                $datemenu = $mform->addElement('date_selector', 'duedate', get_string('duedate', 'local_plan'), array('optional'=>true));
+            } else {
+                $datemenu = $mform->addElement('date_selector', 'duedate', get_string('duedate', 'local_plan'));
+            }
             if ( $duedatemode == DP_DUEDATES_REQUIRED ){
                 $mform->addRule('duedate', get_string('err_required', 'form'), 'required', '', 'client', false, false);
             }
