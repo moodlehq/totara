@@ -2184,12 +2184,16 @@ img.percentImage {
 
 
 /*****************************************************************************/
-/** Course and Category Icons **/
+/** Course and Category **/
 /*****************************************************************************/
 
-.course_icon{
+.course_icon {
     padding-right: 5px;
     vertical-align: middle;
+}
+
+#course-view .section td.content {
+    background-color: #fff;
 }
 
 
