@@ -620,7 +620,7 @@ class dp_course_component extends dp_base_component {
                     // create a new update object
                     $todb = new object();
                     $todb->id = $id;
-                    $todb->approved = $approved;
+                    $todb->approved = $approval;
                     $stored_records[$id] = $todb;
                 }
             }
