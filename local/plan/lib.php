@@ -388,16 +388,9 @@ function dp_display_plans($userid, $statuses=array(DP_PLAN_STATUS_APPROVED), $co
     // Add table data
     $plans = get_records_sql($select.$from.$where.$sort, $table->get_page_start(), $table->get_page_size());
     if (!$plans) {
-	$row = array();
-	$row[] = get_string('noplans', 'local_plan');
-	// Add blank cells..
-	for ($i=1; $i<count($tablecols); $i++) {
-	    $row[] = '';
-	}
-	$table->add_data($row);
+	return;
     }
-    else {
-	foreach ($plans as $p) {
+    foreach ($plans as $p) {
 	    $plan = new development_plan($p->id);
 	    $row = array();
 	    $row[] = $plan->display_summary_widget();
@@ -413,7 +406,6 @@ function dp_display_plans($userid, $statuses=array(DP_PLAN_STATUS_APPROVED), $co
 	    $row[] = $plan->display_actions();
 
 	    $table->add_data($row);
-	}
     }
 
     ob_start();
@@ -424,29 +416,63 @@ function dp_display_plans($userid, $statuses=array(DP_PLAN_STATUS_APPROVED), $co
     return $out;
 }
 
-function dp_display_plans_menu($userid, $selectedid=0) {
+function dp_display_plans_menu($userid, $selectedid=0, $role='learner') {
     global $CFG;
 
     $out = '<div id="dp-plans-menu">';
+
+    if ($role == 'manager') {
+	// Print out the All team members link
+	$out .= print_heading(get_string('teammembers', 'local_plan'), 'left', 3, 'main', true);
+	$class = $userid == 0 ? 'class="dp-menu-selected"' : '';
+	$out .= "<ul><li {$class} ><a href=\"{$CFG->wwwroot}/my/teammembers.php\">";
+	$out .= get_string('allteammembers', 'local_plan');
+	$out .= "</a></li></ul>";
+	if ($userid) {
+	    // Display who we are currently viewing if appropriate
+	    $out .= print_heading(get_string('currentlyviewing', 'local_plan'), 'left', 3, 'main', true);
+	    // TODO: make this more efficient
+	    $user = get_record('user','id',$userid);
+	    $class = $selectedid == 0 ? 'class="dp-menu-selected"' : '';
+	    $out .= "<ul><li {$class} ><a href=\"{$CFG->wwwroot}/local/plan/index.php?userid={$userid}\">{$user->firstname} {$user->lastname}</a></li></ul>";
+	}
+    }
+
     // Display active plans
     if ($plans = dp_get_plans($userid, array(DP_PLAN_STATUS_APPROVED, DP_PLAN_STATUS_UNAPPROVED))) {
-        $out .= print_heading(get_string('activeplans', 'local_plan'), 'left', 3, 'main', true);
+	if ($role == 'manager') {
+	    $out .= '<div class="dp-plans-menu-section"><h4 class="dp-plans-menu-sub-header">' . get_string('activeplans', 'local_plan') . '</h4>';
+	}
+	else {
+	    $out .= print_heading(get_string('activeplans', 'local_plan'), 'left', 3, 'main', true);
+	}
         $out .= "<ul>";
         foreach ($plans as $p) {
             $class = $p->id == $selectedid ? 'class="dp-menu-selected"' : '';
             $out .= "<li {$class}><a href=\"{$CFG->wwwroot}/local/plan/view.php?id={$p->id}\">{$p->name}</a></li>";
         }
         $out .= "</ul>";
+	if ($role == 'manager') {
+	    $out .= "</div>";
+	}
     }
 
     if ($plans = dp_get_plans($userid, DP_PLAN_STATUS_COMPLETE)) {
-        $out .= print_heading(get_string('completedplans', 'local_plan'), 'left', 3, 'main', true);
+	if ($role == 'manager') {
+	    $out .= '<div class="dp-plans-menu-section"><h4 class="dp-plans-menu-sub-header">' . get_string('completedplans', 'local_plan') . '</h4>';
+	}
+	else {
+	    $out .= print_heading(get_string('completedplans', 'local_plan'), 'left', 3, 'main', true);
+	}
         $out .= "<ul>";
         foreach ($plans as $p) {
             $class = $p->id == $selectedid ? 'class="dp-menu-selected"' : '';
             $out .= "<li {$class}><a href=\"{$CFG->wwwroot}/local/plan/view.php?id={$p->id}\">{$p->name}</a></li>";
         }
         $out .= "</ul>";
+	if ($role == 'manager') {
+	    $out .= "</div>";
+	}
     }
 
     $out .= '</div>';

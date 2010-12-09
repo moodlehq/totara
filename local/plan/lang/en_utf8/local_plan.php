@@ -37,6 +37,9 @@ $string['recordsshown'] = 'records shown';
 $string['error:usernotfound'] = 'User not found';
 $string['error:cannotviewpage'] = 'You cannot view this page';
 $string['recordoflearningcourses'] = 'Record of Learning: Courses';
+$string['teammembers'] = 'Team members';
+$string['allteammembers'] = 'All team members';
+$string['currentlyviewing'] = 'Currently viewing';
 $string['filterbystatus'] = 'Filter by status';
 
 $string['noclassfileforrole'] = 'Class file \'$a->classfile\' could not be found for role of \'$->role\'';

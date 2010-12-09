@@ -42,7 +42,7 @@ $canaddplan = (dp_get_template_permission($template->id, 'plan', 'create', $role
 print_header(get_string('plans', 'local_plan'), get_string('plans', 'local_plans'));
 
 // Plan menu
-echo dp_display_plans_menu($planuser);
+echo dp_display_plans_menu($planuser,0,$role);
 
 // Plan page content
 print_container_start(false, '', 'dp-plan-content');

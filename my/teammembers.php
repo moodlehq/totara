@@ -33,6 +33,7 @@ require_once($CFG->libdir.'/blocklib.php');
 require_once($CFG->libdir.'/tablelib.php');
 require_once($CFG->dirroot.'/tag/lib.php');
 require_once($CFG->dirroot.'/local/reportbuilder/lib.php');
+require_once($CFG->dirroot . '/local/plan/lib.php');
 
 require_login();
 
@@ -107,6 +108,27 @@ $staff_f2f = get_field('report_builder','id','shortname','staff_facetoface_sessi
 
 $PAGE->print_header($strheading, $strheading);
 
+/**
+ * MERGE STUFF FROM JAKE - CHECK
+ * TODO
+ *
+<<<<<<< HEAD
+// Plan menu
+echo dp_display_plans_menu(0,0,'manager');
+
+// Plan page content
+print_container_start(false, '', 'dp-plan-content');
+
+echo '<h1>'.$strheading.'</h1>';
+
+echo '<p>' . get_string('teammembers_text', 'local') . '</p>';
+
+$report->include_js();
+$report->display_table();
+
+print_container_end();
+
+**/
 echo '<table id="layout-table">';
 echo '<tr valign="top">';
 

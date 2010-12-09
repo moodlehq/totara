@@ -45,6 +45,7 @@ button,
     margin-right: 1px;
 }
 
+
 /**
  * Layout Styles
  **/
@@ -1065,7 +1066,7 @@ ul.tabrow1 li a:hover {
  * Dashlets
  *****************************************/
 .dashlet {
-  width: 80%;
+  width: 95%;
   margin-bottom:13px;
   border:none !important;
 }
@@ -1218,10 +1219,11 @@ div.block_totara_notify .content tr.noshade {
 
 div.block_totara_notify .content td.status {
   padding-right: 4px;
+  width:30px;
+  text-align:center;
 }
 
 div.block_totara_notify .content td.statement {
-  width: 100%;
   border-left: 1px solid #E0E0E0;
   padding-left: 4px;
 }
@@ -1253,22 +1255,12 @@ div.block_totara_reminders .content a {
   color:#34b9e4;
 }
 
-div.block_totara_reminders .content tr.shade {
+.dashlet .content tr.shade {
   background: #F2F2F2;
 }
 
-div.block_totara_reminders .content tr.noshade {
+.dashlet .content tr.noshade {
   background: #ffffff;
-}
-
-div.block_totara_reminders .content td.status {
-  padding-right: 4px;
-}
-
-div.block_totara_reminders .content td.statement {
-  width: 100%;
-  border-left: 1px solid #E0E0E0;
-  padding-left: 4px;
 }
 
 div.block_totara_reminders div.content div.footer div.viewall {
@@ -1329,6 +1321,51 @@ div.totara_notifications_actions .action {
   white-space: nowrap;
 }
 
+/******************************************
+ * Notifications block widget
+ *****************************************/
+.block_totara_stats .content li.shade {
+     background: none repeat scroll 0 0 #F2F2F2;
+}
+.block_totara_stats .content li.noshade {
+    background: none repeat scroll 0 0 #FFFFFF;
+}
+
+/******************************************
+ * Notifications block widget
+ *****************************************/
+.block_quicklinks .block_quicklinks_link.shade {
+     background: none repeat scroll 0 0 #F2F2F2;
+}
+.block_quicklinks .block_quicklinks_link.noshade {
+    background: none repeat scroll 0 0 #FFFFFF;
+}
+
+/******************************************
+ * Stats block widget
+ *****************************************/
+.block_totara_stats.dashlet .content tr.stat0 td.staticon {
+    background: url("images/icon_people.gif") no-repeat scroll center center transparent;
+}
+.block_totara_stats.dashlet .content tr.stat1 td.staticon {
+    background: url("images/icon_new_course.gif") no-repeat scroll center center transparent;
+}
+.block_totara_stats.dashlet .content tr.stat2 td.staticon {
+    background: url("images/icon_completed_course.gif") no-repeat scroll center center transparent;
+}
+.block_totara_stats.dashlet .content tr.stat3 td.staticon {
+    background: url("images/icon_competency_achieved.gif") no-repeat scroll center center transparent;
+}
+.block_totara_stats.dashlet .content tr.stat4 td.staticon {
+    background: url("images/icon_objective_achieved.gif") no-repeat scroll center center transparent;
+}
+
+/******************************************
+ * Quick links block
+ *****************************************/
+.block_quicklinks.dashlet .content td.linkicon {
+    background: url("images/icon_link.gif") no-repeat scroll center center transparent;
+}
 
 /******************************************
  * List blocks
@@ -1725,17 +1762,6 @@ td.feedback-bar-color {
 /*****************************************************************************/
 
 
-table.reportbuilder-table .r0 {
-    background: #FFFFFF;
-}
-
-table.reportbuilder-table .r1 {
-    background: #F5F5F5;
-}
-
-table.reportbuilder-table td {
-    border: 1px solid #DDDDDD;
-}
 
 /*****************************************************************************/
 /** Learning Plans **/
@@ -1761,6 +1787,27 @@ table.reportbuilder-table td {
 }
 #dp-plans-menu ul li {
     background: url("images/arw_grn.gif") no-repeat scroll left center transparent;
+}
+#dp-plans-menu .dp-plans-menu-section {
+    padding-left:30px;
+    margin-bottom:10px;
+}
+#dp-plans-menu .dp-plans-menu-section ul {
+    padding:0px;
+    margin:0px;
+}
+.dp-plans-menu-sub-header {
+    padding:0px;
+    margin:0px;
+    text-transform: uppercase;
+    color:#777777;
+}
+#dp-plans-menu ul li.dp-menu-selected {
+    background-image:url("images/arw_grey.gif");
+}
+#dp-plans-menu ul li.dp-menu-selected a {
+    color:#434343;
+    text-decoration:none;
 }
 
 /*****************************************************************************/
@@ -1907,12 +1954,6 @@ table.allmyteam td a {
   font-weight: normal;
   font-size: 1em;
   background: url('images/arw_blu.gif') no-repeat right 3px;
-}
-
-#my-teammembers h1 {
-  color:#FFFFFF;
-  font-size: 1.5em;
-  background:#34b9e4;
 }
 
 #my-teammembers #middle-column table.flexible td {
