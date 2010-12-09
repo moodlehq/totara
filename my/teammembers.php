@@ -108,11 +108,6 @@ $staff_f2f = get_field('report_builder','id','shortname','staff_facetoface_sessi
 
 $PAGE->print_header($strheading, $strheading);
 
-/**
- * MERGE STUFF FROM JAKE - CHECK
- * TODO
- *
-<<<<<<< HEAD
 // Plan menu
 echo dp_display_plans_menu(0,0,'manager');
 
@@ -127,54 +122,6 @@ $report->include_js();
 $report->display_table();
 
 print_container_end();
-
-**/
-echo '<table id="layout-table">';
-echo '<tr valign="top">';
-
-$lt = (empty($THEME->layouttable)) ? array('left', 'middle', 'right') : $THEME->layouttable;
-foreach ($lt as $column) {
-    switch ($column) {
-    case 'left':
-
-        if(blocks_have_content($pageblocks, BLOCK_POS_LEFT) || $PAGE->user_is_editing()) {
-            echo '<td style="vertical-align: top; width: '.$blocks_preferred_width.'px;" id="left-column">';
-            print_container_start();
-            blocks_print_group($PAGE, $pageblocks, BLOCK_POS_LEFT);
-            print_container_end();
-            echo '</td>';
-        } else {
-            echo '<td id="left-column"></td>';
-        }
-
-    break;
-    case 'middle':
-
-        echo '<td valign="top" id="middle-column">';
-        echo '<h1>'.$strheading.'</h1>';
-
-        echo '<p>' . get_string('teammembers_text', 'local') . '</p>';
-
-        $report->display_search();
-        $report->include_js();
-        $report->display_table();
-
-        echo '</td>';
-
-    break;
-    case 'right':
-        echo '<td style="vertical-align: top; width: '.$blocks_preferred_width.'px;" id="right-column">';
-        print_container_start();
-        blocks_print_group($PAGE, $pageblocks, BLOCK_POS_RIGHT);
-        print_container_end();
-        echo '</td>';
-    break;
-    }
-}
-
-/// Finish the page
-echo '</tr></table>';
-
 print_footer();
 
 ?>
