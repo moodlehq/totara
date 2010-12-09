@@ -14,7 +14,7 @@
 
 // Set up a default priority scale
 $ps = new stdClass();
-$ps->name = 'High-Medium-Low';
+$ps->name = 'High, Medium, Low';
 $ps->description = 'High priority, medium priority, or low priority.';
 $ps->sortorder = 0;
 $ps->timemodified = time();
@@ -54,7 +54,7 @@ update_record('dp_priority_scale', $ps);
 
 // Create a default objective scale
 $os = new stdClass();
-$os->name = 'Met-NotMet';
+$os->name = 'Met, Not Met';
 $os->timemodified = time();
 $os->usermodified = 0;
 $os->sortorder = 0;
