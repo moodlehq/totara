@@ -1919,8 +1919,7 @@ table.centerblock th.status, table.centerblock td.status {
 
 #site-index #middle-column div.mycourses {
   width: 527px;
-  margin-top: 0px;
-  margin-left: 12px;
+  margin: 0 12px;
   border:none;
   background: none;
 }
