@@ -154,7 +154,7 @@
 
     print_header($strheading, $strheading, build_navigation($strheading));
 
-    echo dp_record_status_picker('competencies', $planstatus);
+    echo dp_record_status_picker('competencies', $planstatus, $userid);
 
     echo '<h1>'.$strheading.'</h1>';
 
@@ -162,16 +162,20 @@
     $tabs = array();
     $row = array();
 
+    $userstr = (isset($userid)) ? 'userid='.$userid.'&amp;' : '';
+
     // overview tab
     $row[] = new tabobject(
             'courses',
-            $CFG->wwwroot . '/local/plan/record/courses.php?status=' . $planstatus,
-            "{$ustatus} " . $coursename
+            $CFG->wwwroot . '/local/plan/record/courses.php?' . $userstr .
+                'status=' . $planstatus,
+                "{$ustatus} " . $coursename
     );
     $row[] = new tabobject(
             'competencies',
-            $CFG->wwwroot . '/local/plan/record/competencies.php?status=' . $planstatus,
-            "{$ustatus} " . $competencyname
+            $CFG->wwwroot . '/local/plan/record/competencies.php?' . $userstr .
+                'status=' . $planstatus,
+                "{$ustatus} " . $competencyname
     );
     $tabs[] = $row;
 

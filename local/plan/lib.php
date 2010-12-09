@@ -588,7 +588,7 @@ function dp_get_manager($userid) {
  *
  * @return string HTML to display the picker
  */
-function dp_record_status_picker($pagename, $status) {
+function dp_record_status_picker($pagename, $status, $userid=null) {
     global $CFG;
     $out = '';
 
@@ -606,9 +606,12 @@ function dp_record_status_picker($pagename, $status) {
     $out .= '<strong>' . get_string('filterbystatus', 'local_plan') .
         ':</strong>&nbsp;';
 
+    // pass the userid if set
+    $userstr = (isset($userid)) ? 'userid='.$userid.'&amp;' : '';
+
     // display status pulldown
     $out .= popup_form(
-        $CFG->wwwroot . '/local/plan/record/' . $pagename . '.php?status=',
+        $CFG->wwwroot . '/local/plan/record/' . $pagename . '.php?' . $userstr . 'status=',
         $options,
         'viewbystatus',
         $selected,
