@@ -186,6 +186,10 @@ div#header {
   float:left;
 }
 
+.navbar .breadcrumb ul li a:hover {
+    text-decoration: none;
+}
+
 .navbar .breadcrumb .sep {
   text-indent: 1000px;
   width: 15px;
