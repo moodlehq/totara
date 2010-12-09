@@ -2298,3 +2298,25 @@ h2.guidesteptitle.active {
 .dimmed {
     color:#AAAAAA;
 }
+
+
+/****************************************************************************/
+/** Totara Copyright **/
+/****************************************************************************/
+
+div.totara-copyright {
+    background-color: #7d8312;
+    margin: 10px 20px;
+    padding-bottom: 10px;
+    overflow: auto;
+}
+
+div.totara-copyright p {
+    text-align: center;
+    margin: 10px;
+}
+
+div.totara-copyright a:link,
+div.totara-copyright a:visited {
+    color: #fff !important;
+}

@@ -715,6 +715,13 @@
     print_box_end();
 
 
+/// Display Totara version information
+    $totarainfo  = '<div class="totara-copyright">';
+    $totarainfo .= '<p><img src="'.$CFG->wwwroot.'/theme/totara/images/logo_main.gif" /></p>';
+    $totarainfo .= '<p><a href="http://www.totaralms.com">'.get_string('version').' '.$TOTARA->release.'</a></p>';
+    $totarainfo .= '</div>';
+    echo $totarainfo;
+
     //////////////////////////////////////////////////////////////////////////////////////////////////
     ////  IT IS ILLEGAL AND A VIOLATION OF THE GPL TO HIDE, REMOVE OR MODIFY THIS COPYRIGHT NOTICE ///
     $copyrighttext = '<a href="http://moodle.org/">Moodle</a> '.

@@ -12,4 +12,14 @@
 
     $release = '1.9.10+ (Build: 20101028)';     // Human-friendly version name
 
-?>
+
+// TOTARA VERSION INFORMATION
+
+// This file defines the current version of the core Totara code being used.
+// This can be used for modules to set a minimum functionality requirement.
+
+    $TOTARA = new object();
+    $TOTARA->version    = 0.7;
+    $TOTARA->build      = 20101209.00;
+    $TOTARA->release    = "{$TOTARA->version} (Build: {$TOTARA->build})";
+
