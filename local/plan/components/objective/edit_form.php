@@ -61,13 +61,13 @@ class plan_objective_edit_form extends moodleform {
 
         // Add some hidden fields
         if (isset($this->_customdata['objectiveid'])) {
-            $mform->addElement('hidden', 'objectiveid', $this->_customdata['objectiveid']);
-            $mform->setType('objectiveid', PARAM_INT);
+            $mform->addElement('hidden', 'itemid', $this->_customdata['objectiveid']);
+            $mform->setType('itemid', PARAM_INT);
         }
         $mform->addElement('hidden', 'userid', $USER->id);
         $mform->setType('userid', PARAM_INT);
-        $mform->addElement('hidden', 'planid', $plan->id);
-        $mform->setType('planid', PARAM_INT);
+        $mform->addElement('hidden', 'id', $plan->id);
+        $mform->setType('id', PARAM_INT);
 
         $mform->addElement('text', 'fullname', get_string('objectivefullname', 'local_plan'));
         $mform->setType('fullname', PARAM_TEXT);
@@ -105,9 +105,9 @@ class plan_objective_edit_form extends moodleform {
 
             $mform->addGroup($buttonarray, 'buttonar', '', array(' '), false);
             $mform->closeHeaderBefore('buttonar');
+        } else {
+            $this->add_action_buttons();
         }
-
-        $this->add_action_buttons();
     }
 
     function validation($data) {

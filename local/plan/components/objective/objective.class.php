@@ -69,7 +69,7 @@ class dp_objective_component extends dp_base_component {
         }
 
         $html = '<div class="buttons">';
-        $html .= print_single_button("{$CFG->wwwroot}/local/plan/components/objective/edit.php", array('planid'=>$this->plan->id), $btntext, 'get', '_SELF', true);
+        $html .= print_single_button("{$CFG->wwwroot}/local/plan/components/objective/edit.php", array('id'=>$this->plan->id), $btntext, 'get', '_SELF', true);
         $html .= '</div>';
 
         return $html;
@@ -447,116 +447,59 @@ class dp_objective_component extends dp_base_component {
     }
 
     /**
-     * Generates a flexibletable of details for all the objectives whose IDs are in $list
+     * Generates a flexibletable of details for all the courses linked to the
+     * objective
      *
      * @global object $CFG
-     * @param array $list an array of objective IDs
+     * @param int $objectiveid
      * @return string
      */
-    function display_linked_objectives($list) {
+    function display_linked_courses($objectiveid) {
         global $CFG;
 
-        if(!is_array($list) || count($list) == 0) {
-            return false;
-        }
-
-        $showduedates = ($this->get_setting('duedatemode') == DP_DUEDATES_OPTIONAL ||
-            $this->get_setting('duedatemode') == DP_DUEDATES_REQUIRED);
-        $showpriorities =
-            ($this->get_setting('prioritymode') == DP_PRIORITY_OPTIONAL ||
-            $this->get_setting('prioritymode') == DP_PRIORITY_REQUIRED);
-        $priorityscaleid = ($this->get_setting('priorityscale')) ? $this->get_setting('priorityscale') : -1;
-
-//        $select = 'SELECT ca.*, c.fullname, csv.name ' . sql_as() .
-//            ' status, csv.sortorder ' . sql_as() . ' profsort, psv.name ' .
-//            sql_as() . ' priorityname ';
-        $select = 'select o.id, o.fullname, o.status, o.duedate, psv.id ' . sql_as() . ' priority, psv.name '. sql_as(). 'priorityname ';
-
-        // get objectives assigned to this plan
-        $from = "FROM {$CFG->prefix}dp_plan_objective_assign ca
-                LEFT JOIN
-                {$CFG->prefix}comp c ON c.id = ca.objectiveid ";
-        if ($this->plan->status == DP_PLAN_STATUS_COMPLETE) {
-            // Use the 'snapshot' status value
-            $from .= "LEFT JOIN {$CFG->prefix}comp_scale_values csv ON ca.scalevalueid = csv.id ";
-        } else {
-            // Use the 'live' status value
-            $from .= "LEFT JOIN {$CFG->prefix}comp_evidence ce
-                    ON ca.objectiveid = ce.objectiveid
-                    AND ce.userid = {$this->plan->userid}
-                LEFT JOIN {$CFG->prefix}comp_scale_values csv
-                    ON ce.proficiency = csv.id ";
-        }
-            $from .= "LEFT JOIN {$CFG->prefix}dp_priority_scale_value psv
-                    ON (ca.priority = psv.id
-                    AND psv.priorityscaleid = {$priorityscaleid}) ";
-
-        $where = "WHERE ca.id IN (" . implode(',', $list) . ")
-            AND ca.approved=1 ";
-
-        $sort = "ORDER BY c.fullname";
-
         $tableheaders = array(
-            get_string('name','local_plan'),
-            get_string('proficiency', 'local_plan'),
+            get_string('linkedx', 'local_plan', get_string('courses')),
         );
         $tablecolumns = array(
             'fullname',
-            'proficiency',
         );
 
-        if($showpriorities) {
-            $tableheaders[] = get_string('priority', 'local_plan');
-            $tablecolumns[] = 'priority';
-        }
-
-        if($showduedates) {
-            $tableheaders[] = get_string('duedate', 'local_plan');
-            $tablecolumns[] = 'duedate';
-        }
-
-        $table = new flexible_table('linkedobjectivelist');
+        $table = new flexible_table('linkedcourselist');
         $table->define_columns($tablecolumns);
         $table->define_headers($tableheaders);
 
         $table->set_attribute('class', 'logtable generalbox dp-plan-component-items');
         $table->setup();
 
-        // get the scale values used for objectives in this plan
-        $priorityvalues = get_records('dp_priority_scale_value',
-            'priorityscaleid', $priorityscaleid, 'sortorder', 'id,name,sortorder');
+        $list = $this->get_linked_components($objectiveid, 'course');
+        if(is_array($list) && count($list) > 0) {
+            $sql = "select * from {$CFG->prefix}course c where c.id in (" . implode(',', $list) . ") order by c.fullname";
+            $records = get_recordset_sql($sql);
+            if ($records){
 
-        if($records = get_recordset_sql($select.$from.$where.$groupby.$sort)) {
+                while($ca = rs_fetch_next_record($records)) {
 
-            while($ca = rs_fetch_next_record($records)) {
-
-                $row = array();
-                $row[] = $this->display_objective_name($ca);
-
-                $row[] = $this->display_status($ca);
-
-                if($showpriorities) {
-                    $row[] = $this->display_priority_as_text($ca->priority, $ca->priorityname, $priorityvalues);
+                    $row = array();
+                    ob_start();
+                    print_course($ca);
+                    $row[] = ob_get_contents();
+                    ob_end_clean();
+                    $table->add_data($row);
                 }
 
-                if($showduedates) {
-                    $row[] = $this->display_duedate_as_text($ca->duedate);
-                }
+                rs_close($records);
 
-                $table->add_data($row);
             }
-
-            rs_close($records);
-
-            // return instead of outputing table contents
-            ob_start();
-            $table->print_html();
-            $out = ob_get_contents();
-            ob_end_clean();
-
-            return $out;
+        } else {
+            $table->add_data(array(get_string('nolinkedx', 'local_plan', get_string('courses'))));
         }
+        // return instead of outputing table contents
+        ob_start();
+        $table->print_html();
+        $out = ob_get_contents();
+        ob_end_clean();
 
+        return $out;
     }
 
     function display_objective_name($objective) {

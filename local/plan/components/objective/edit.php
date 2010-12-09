@@ -18,8 +18,8 @@ require_once($CFG->dirroot . '/local/plan/components/objective/edit_form.php');
 ///
 /// Load parameters
 ///
-$planid = required_param('planid', PARAM_INT);
-$objectiveid = optional_param('objectiveid', 0, PARAM_INT); // Objective id; 0 if creating a new objective
+$planid = required_param('id', PARAM_INT);
+$objectiveid = optional_param('itemid', 0, PARAM_INT); // Objective id; 0 if creating a new objective
 
 ///
 /// Load data
@@ -29,13 +29,14 @@ $componentname = 'objective';
 $component = $plan->get_component($componentname);
 if ( $objectiveid == 0 ){
     $objective = new stdClass();
-    $objective->objectiveid = 0;
+    $objective->itemid = 0;
 } else {
     if (!$objective = get_record('dp_plan_objective', 'id', $objectiveid)){
         error(get_string('error:objectiveidincorrect', 'local_plan'));
     }
-    $objective->objectiveid = $objective->id;
-    unset($objective->id);
+    $objective->itemid = $objective->id;
+    $objective->id = $objective->planid;
+    unset($objective->planid);
 }
 
 ///
@@ -63,7 +64,7 @@ if ($mform->is_cancelled()){
     redirect("{$CFG->wwwroot}/local/plan/components/objective/index.php?id={$planid}");
 } else if ( $data = $mform->get_data()) {
     // A New objective
-    if (empty($data->objectiveid)){
+    if (empty($data->itemid)){
 
         $result = $component->create_objective(
                 $data->fullname,

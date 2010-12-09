@@ -11,8 +11,6 @@ $plan = new development_plan($id);
 $componentname = 'objective';
 $component = $plan->get_component($componentname);
 $currenturl = $CFG->wwwroot . '/local/plan/components/objective/view.php?id='.$id.'&amp;itemid='.$caid;
-$coursesenabled = $plan->get_component('course')->get_setting('enabled');
-$coursename = $plan->get_component('course')->get_setting('name');
 
 $fullname = $plan->name;
 $pagetitle = format_string(get_string('developmentplan','local_plan').': '.$fullname);
@@ -31,18 +29,9 @@ print $plan->display_tabs($componentname);
 print $component->display_back_to_index_link();
 $component->print_objective_detail($caid, 'view');
 
-// todo: Move this section to a function under objective.class.php
-if($coursesenabled) {
-    print '<h3>' . get_string('linkedx', 'local_plan', $coursename) . '</h3>';
-    if($linkedcourses =
-        $component->get_linked_components($caid, 'course')) {
-        print $plan->get_component('course')->display_linked_courses($linkedcourses);
-    } else {
-        print '<p>' . get_string('nolinkedx', 'local_plan', $coursename). '</p>';
-    }
-    // todo: Add a permissions check before displaying this button. Maybe also move
-    print '<input type="submit" name="submitbutton" value="'.get_string('updatesettings', 'local_plan').'" />';
-}
+print $component->display_linked_courses($caid);
+print '<input type="submit" name="submitbutton" value="'.get_string('addremovecourses', 'local_plan').'" />';
+
 print_footer();
 
 
