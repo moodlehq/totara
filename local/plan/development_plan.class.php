@@ -276,9 +276,15 @@ class development_plan {
                 $assignments = $this->get_component($c->component)->get_assigned_items();
                 $assignments = !empty($assignments) ? '('.count($assignments).')' : '';
 
-                $out .= "<span class=\"{$class}\">
-                    <a href=\"{$CFG->wwwroot}/local/plan/components/{$c->component}/index.php?id={$this->id}\">{$compname} {$assignments}
-                    </a></span>";
+                $out .= "<span class=\"{$class}\">";
+                $out .= "<a href=\"{$CFG->wwwroot}/local/plan/components/{$c->component}/index.php?id={$this->id}\">";
+                $out .= $compname;
+
+                if ($assignments) {
+                    $out .= " $assignments";
+                }
+
+                $out .= "</a> </span>";
                 $count++;
             }
         }
