@@ -48,12 +48,13 @@ class plan_objective_edit_form extends moodleform {
             $prioritymode = DP_PRIORITY_NONE;
         }
 
-        if ($prioritymode > DP_DUEDATES_NONE) {
+        if ($prioritymode > DP_PRIORITY_NONE) {
+
             $scaleid = $objective->get_setting('priorityscale');
             if ( $scaleid ){
                 $priorityvalues = get_records('dp_priority_scale_value','priorityscaleid', $scaleid, 'sortorder', 'id,name,sortorder');
                 $select = array();
-                if ( $duedatemode == DP_DUEDATES_OPTIONAL ){
+                if ( $prioritymode == DP_PRIORITY_OPTIONAL ){
                     $select[] = get_string('none','local_plan');
                 }
                 foreach( $priorityvalues as $pv ){
