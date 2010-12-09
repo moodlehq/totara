@@ -184,6 +184,7 @@ class dp_template_advanced_workflow_form extends moodleform {
         $mform =& $this->_form;
         $id = $this->_customdata['id'];
         $component = $this->_customdata['component'];
+        $templateinuse = $this->_customdata['templateinuse'];
 
         if($component == 'plan') {
             $class = 'development_plan';
@@ -211,6 +212,9 @@ class dp_template_advanced_workflow_form extends moodleform {
         $class::add_settings_form($mform, $id);
         $mform->addElement('hidden', 'id', $id);
         $mform->addElement('hidden', 'component', $component);
+        if ($templateinuse) {
+            $mform->disabledIf('priorityscale', 'prioritymode', 'neq', -1942);
+        }
         $this->add_action_buttons();
     }
 }

@@ -27,9 +27,15 @@ if(!$template = get_record('dp_template', 'id', $id)){
 }
 
 $components = get_records('dp_component_settings', 'templateid', $id, 'sortorder');
+$plans = count_records('dp_plan', 'templateid', $id);
+if (!empty($plans)) {
+    $templateinuse = true;
+} else {
+    $templateinuse = false;
+}
 
 $mform = new dp_template_advanced_workflow_form(null,
-    array('id' => $id, 'component' => $component));
+    array('id' => $id, 'component' => $component, 'templateinuse' => $templateinuse));
 
 if ($mform->is_cancelled()){
     // user cancelled form
@@ -58,6 +64,9 @@ if ($fromform = $mform->get_data()) {
             $string_properties->component = $component;
             throw new PlanException(get_string('noclassforcomponent', 'local_plan', $string_properties));
         }
+    }
+    if ($templateinuse) {
+        unset($fromform->priorityscale);
     }
     $class::process_settings_form($fromform, $id);
 

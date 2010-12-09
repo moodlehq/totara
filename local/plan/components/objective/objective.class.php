@@ -245,7 +245,7 @@ class dp_objective_component extends dp_base_component {
         $todb->duedatemode = $fromform->duedatemode;
         $todb->prioritymode = $fromform->prioritymode;
         $todb->objectivescale = $fromform->objectivescale;
-        if($fromform->prioritymode != DP_PRIORITY_NONE) {
+        if (($fromform->prioritymode != DP_PRIORITY_NONE) && isset($fromform->priorityscale)){
             $todb->priorityscale = $fromform->priorityscale;
         }
         // @todo add scale info

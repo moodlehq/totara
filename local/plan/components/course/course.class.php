@@ -793,7 +793,7 @@ class dp_course_component extends dp_base_component {
         $todb->templateid = $id;
         $todb->duedatemode = $fromform->duedatemode;
         $todb->prioritymode = $fromform->prioritymode;
-        if($fromform->prioritymode != DP_PRIORITY_NONE) {
+        if (($fromform->prioritymode != DP_PRIORITY_NONE) && isset($fromform->priorityscale)) {
             $todb->priorityscale = $fromform->priorityscale;
         }
         if($coursesettings = get_record('dp_course_settings', 'templateid', $id)) {
