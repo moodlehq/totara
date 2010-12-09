@@ -1687,6 +1687,7 @@ div.yuimenu .yuichildtree .yuimenuitem {
 .generalbox {
   border:none;
   padding:0;
+  background-color :#fff;
 }
 .generaltable {
   width:100%;
@@ -2194,6 +2195,10 @@ img.percentImage {
 
 #course-view .section td.content {
     background-color: #fff;
+}
+
+#switchrole_jump {
+    margin-right: 5px;
 }
 
 
