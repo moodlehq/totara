@@ -145,6 +145,8 @@
 
     print_header($strheading, $strheading, build_navigation($strheading));
 
+    echo dp_record_status_picker('courses', $planstatus);
+
     echo '<h1>'.$strheading.'</h1>';
 
     // tab bar
@@ -168,16 +170,6 @@
             "{$ustatus} " . $competencyname
     );
     $tabs[] = $row;
-
-    echo "\n<ul>\n";
-    foreach( array('all','active','completed') as $s ){
-        if ( $planstatus == $s ){
-            echo "  <li>" . ucfirst($s) . get_string('learning', 'local_plan') . "</li>\n";
-        } else {
-            echo "  <li><a href=\"{$CFG->wwwroot}/local/plan/record/courses.php?status={$s}\">" . ucfirst($s) . get_string('learning', 'local_plan') . "</a></li>";
-        }
-    }
-    echo "</ul>\n";
 
     echo print_tabs($tabs, 'courses', null, null, true);
 

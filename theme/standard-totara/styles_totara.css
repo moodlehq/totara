@@ -1244,6 +1244,13 @@ span.plan_highlight {
     color: #c00;
 }
 
+/*
+ * Record of Learning pulldown menu
+ */
+
+div#recordoflearning_statuspicker {
+    float: right;
+}
 /*****************************************************************************/
 /** IDP **/
 /*****************************************************************************/

@@ -29,11 +29,15 @@ $string['baddata'] = 'Supplied bad data - non numeric id';
 $string['planidnotfound'] = 'Plan ID of \'$a\' not found';
 $string['pendingremoval'] = 'Pending removal';
 $string['learning'] = 'Learning';
+$string['alllearning'] = 'All Learning';
+$string['completedlearning'] = 'Completed Learning';
+$string['activelearning'] = 'Active Learning';
 $string['records'] = 'records';
 $string['recordsshown'] = 'records shown';
 $string['error:usernotfound'] = 'User not found';
 $string['error:cannotviewpage'] = 'You cannot view this page';
 $string['recordoflearningcourses'] = 'Record of Learning: Courses';
+$string['filterbystatus'] = 'Filter by status';
 
 $string['noclassfileforrole'] = 'Class file \'$a->classfile\' could not be found for role of \'$->role\'';
 $string['noclassforrole'] = 'Class \'$a->class\' does not exist for role \'$a->role\'.';

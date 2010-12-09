@@ -554,4 +554,44 @@ function dp_get_manager($userid) {
         return false; // No manager role, can't do it
     }
 }
+/**
+ * Display a pulldown for filtering record of learning page
+ *
+ * @param string $pagename Name of the current page (filename without .php)
+ * @param string $status The status for the current page
+ *
+ * @return string HTML to display the picker
+ */
+function dp_record_status_picker($pagename, $status) {
+    global $CFG;
+    $out = '';
 
+    // generate options for status pulldown
+    $options = array();
+    $selected = null;
+    foreach( array('all','active','completed') as $s ){
+        if ( $status == $s ){
+            $selected = $s;
+        }
+        $options[$s] = get_string($s . 'learning', 'local_plan');
+    }
+
+    $out .= '<div id="recordoflearning_statuspicker">';
+    $out .= '<strong>' . get_string('filterbystatus', 'local_plan') .
+        ':</strong>&nbsp;';
+
+    // display status pulldown
+    $out .= popup_form(
+        $CFG->wwwroot . '/local/plan/record/' . $pagename . '.php?status=',
+        $options,
+        'viewbystatus',
+        $selected,
+        null,
+        '',
+        '',
+        true
+    );
+    $out .= '</div>';
+
+    return $out;
+}
