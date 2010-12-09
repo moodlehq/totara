@@ -173,6 +173,7 @@ $string['backuptakealook'] = 'Please take a look at your backup logs in:
 $string['backupuserfileshelp'] = 'Choose whether user files (eg profile images) should be included in automated backups';
 $string['backupusershelp'] = 'Select whether you want to include all the users in the server or only the needed users for each course';
 $string['backupversion'] = 'Backup Version';
+$string['badcontext'] = 'Bad Context';
 $string['block'] = 'Block';
 $string['blockconfiga'] = 'Configuring a $a block';
 $string['blockconfigbad'] = 'This block has not been implemented correctly and thus cannot provide a configuration interface.';
