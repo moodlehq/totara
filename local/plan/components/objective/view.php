@@ -36,9 +36,7 @@ print_heading($fullname);
 print $plan->display_tabs($componentname);
 
 print $component->display_back_to_index_link();
-$mform->display();
-
-print $component->display_linked_courses($caid);
+$component->print_objective_detail($caid);
 print '<input type="submit" name="submitbutton" value="'.get_string('addremovecourses', 'local_plan').'" />';
 
 print_footer();

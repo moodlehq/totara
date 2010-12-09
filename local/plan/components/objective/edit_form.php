@@ -15,7 +15,7 @@ class plan_objective_edit_form extends moodleform {
 
     /**
      * Requires the following $_customdata to be passed in to the constructor:
-     * plan, objective, objectiveid (optional), and action (view, add, edit, delete)
+     * plan, objective, objectiveid (optional), and action (view, viewnobuttons, add, edit, delete)
      *
      * @global object $CFG
      * @global object $USER
@@ -100,6 +100,9 @@ class plan_objective_edit_form extends moodleform {
         }
 
         switch( $action ){
+            case 'viewnobuttons':
+                $mform->hardFreezeAllVisibleExcept(array());
+                break;
             case 'view':
                 $mform->hardFreezeAllVisibleExcept(array());
                 $buttonarray = array();

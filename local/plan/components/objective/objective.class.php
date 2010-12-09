@@ -324,7 +324,7 @@ class dp_objective_component extends dp_base_component {
 
         $as = sql_as();
         $count = 'SELECT COUNT(*) ';
-        $select = "SELECT o.id, o.fullname {$as} objname, osv.name {$as} status, o.duedate, psv.id as priority, psv.name {$as} priorityname ";
+        $select = "SELECT o.id, o.planid, o.fullname {$as} objname, osv.name {$as} status, o.duedate, o.approved, psv.id as priority, psv.name {$as} priorityname ";
         $select .= ", (select count(*) from {$CFG->prefix}dp_plan_component_relation pcr where pcr.component1='course' and pcr.component2='objective' and pcr.itemid2=o.id) {$as} numcourses ";
         // todo: Add evidence support
 //        $select .= ", (select count(*) from {$CFG->prefix}dp_plan_relation pr where pr.itemtype1='evidence' and pr.itemtype2='objective' and pr.itemid2=o.id) {$as} numevidences ";
@@ -365,9 +365,12 @@ class dp_objective_component extends dp_base_component {
             $tablecolumns[] = 'o.duedate';
         }
 
+        $tableheaders[] = get_string('proficiency', 'local');
+        $tablecolumns[] = 'o.status';
+
         if(!$plancompleted) {
             $tableheaders[] = get_string('status','local_plan');
-            $tablecolumns[] = 'o.status';
+            $tablecolumns[] = 'o.approved';
         }
 
         if($canremoveobjectives) {
@@ -406,6 +409,8 @@ class dp_objective_component extends dp_base_component {
 
             while($objective = rs_fetch_next_record($records)) {
                 
+                $approved = dp_is_approved($objective->approved);
+
                 $row = array();
                 $row[] = $this->display_objective_name($objective);
                 $row[] = $objective->numcourses;
@@ -419,8 +424,19 @@ class dp_objective_component extends dp_base_component {
                     $row[] = $this->display_duedate($objective->id, $objective->duedate, null);
                 }
 
+                // If this one isn't approved yet, don't show its proficiency status
+                $row[] = $approved ? format_string($objective->status) : '';
+
                 if(!$plancompleted) {
-                    $row[] = format_string($objective->status);
+                    $status = '';
+                    if($approved) {
+                        if(!$objective->status) {
+                            $status = $this->display_duedate_highlight_info($objective->duedate);
+                        }
+                    } else {
+                        $status = $this->display_approval($objective, $canapproveobjectives);
+                    }
+                    $row[] = $status;
                 }
 
                 if($canremoveobjectives) {
@@ -523,6 +539,7 @@ class dp_objective_component extends dp_base_component {
      */
     function objective_form($objectiveid=null, $action='view') {
         global $CFG;
+        require_once($CFG->dirroot.'/local/plan/components/objective/edit_form.php');
         $customdata = array(
             'plan' => $this->plan,
             'objective' => $this,
@@ -755,9 +772,22 @@ class dp_objective_component extends dp_base_component {
         $rec->priority = $priority;
         $rec->duedate = $duedate;
         $rec->scalevalueid = get_field('dp_objective_scale', 'defaultid', 'id', $this->get_setting('objectivescale'));
-        $rec->approved = 0;
+
+        $canapproveobjectives = $this->get_setting('updateobjective') == DP_PERMISSION_APPROVE;
+        $rec->approved = $canapproveobjectives ? DP_APPROVAL_APPROVED : DP_APPROVAL_UNAPPROVED;
 
         return insert_record('dp_plan_objective', $rec);
+    }
+
+    /**
+     * Display an objective
+     *
+     * @param int $objectiveid
+     */
+    public function print_objective_detail($objectiveid){
+        $mform = $this->objective_form($objectiveid, 'viewnobuttons');
+        $mform->display();
+        print $this->display_linked_courses($objectiveid);
     }
 
 }
