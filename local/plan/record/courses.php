@@ -37,13 +37,18 @@
 
     global $SESSION,$USER;
 
-//    $userid     = optional_param('userid', null, PARAM_INT);                       // which user to show
+    $userid     = optional_param('userid', null, PARAM_INT);                       // which user to show
     $format     = optional_param('format','',PARAM_TEXT); //export format
     $planstatus = optional_param('status', 'all', PARAM_ALPHANUM);
     if ( !in_array($planstatus, array('active','completed','all')) ){
         $planstatus = 'all';
     }
     $ustatus = ucfirst($planstatus);
+
+    $coursename = get_config(null, 'dp_course');
+    $coursename = $coursename ? $coursename : get_string('course_defaultname', 'local_plan');
+    $competencyname = get_config(null, 'dp_competency');
+    $competencyname = $competencyname ? $competencyname : get_string('competency_defaultname', 'local_plan');
 
     // default to current user
     if(empty($userid)) {
@@ -61,13 +66,12 @@
         error(get_string('error:cannotviewpage', 'local_plan'));
     }
 
-    // todo: Set the page's heading
     if ($USER->id != $userid) {
         $strheading = get_string('recordoflearningfor','local').fullname($user, true);
     } else {
-        $strheading = get_string('myrecordoflearning', 'local');
+        $strheading = get_string('recordoflearning', 'local');
     }
-    $strheading = "Record of Learning: {$ustatus} Courses";
+    $strheading .= ': ' . get_string($planstatus . 'learning', 'local_plan');
 
     $embed = new object();
     $embed->source = 'dp_course';
@@ -152,11 +156,6 @@
     // tab bar
     $tabs = array();
     $row = array();
-
-    $coursename = get_config(null, 'dp_course');
-    $coursename = $coursename ? $coursename : get_string('course_defaultname', 'local_plan');
-    $competencyname = get_config(null, 'dp_competency');
-    $competencyname = $competencyname ? $competencyname : get_string('competency_defaultname', 'local_plan');
 
     // overview tab
     $row[] = new tabobject(
