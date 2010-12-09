@@ -114,8 +114,13 @@ if($hide) {
     }
 }
 
+$navlinks = array();    // Breadcrumbs
+$navlinks[] = array('name'=>get_string("managetemplates", "local_plan"),
+                    'link'=>"{$CFG->wwwroot}/local/plan/index.php",
+                    'type'=>'misc');
+$navlinks[] = array('name'=>format_string($template->fullname), 'link'=>'', 'type'=>'misc');
 
-admin_externalpage_print_header();
+admin_externalpage_print_header('', $navlinks);
 
 if($template){
     print_heading($template->fullname);
