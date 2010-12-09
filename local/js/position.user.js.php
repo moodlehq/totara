@@ -1,7 +1,9 @@
 <?php
 
-    require_once '../../config.php';
-    require_once($CFG->dirroot.'/local/js/lib/setup.php');
+require_once '../../config.php';
+require_once($CFG->dirroot.'/local/js/lib/setup.php');
+
+$userid = required_param('userid', PARAM_INT);
 
 ?>
 // Bind functionality to page on load
@@ -57,7 +59,7 @@ $(function() {
                 echo get_string('choosemanager', 'position');
                 echo dialog_display_currently_selected(get_string('selected', 'hierarchy'), 'manager');
             ?>',
-            url+'manager.php?',
+                url+'manager.php?userid=<?php echo $userid ?>',
             'managerid',
             'managertitle'
         );

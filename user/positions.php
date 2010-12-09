@@ -114,7 +114,7 @@ local_js(array(
 
 require_js(
     array(
-        $CFG->wwwroot.'/local/js/position.user.js.php'
+        $CFG->wwwroot.'/local/js/position.user.js.php?userid='.$user->id,
     )
 );
 
