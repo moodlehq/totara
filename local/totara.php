@@ -205,8 +205,8 @@ function totara_add_guide_block_to_adminpages() {
             'blockid'  =>  get_field('block', 'id', 'name', 'guides'),
             'pageid'   => 0,
             'pagetype' => 'admin',
-            'position' => 'r',
-            'weight'   => 0,
+            'position' => 'l',
+            'weight'   => 1,
             'visible'  => 1,
             'configdata' => '',
         );
