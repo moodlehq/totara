@@ -46,6 +46,13 @@ button,
 }
 
 
+form.mform fieldset,
+table.userinfobox,
+table.generaltable,
+div.sideblock div.content {
+    background-color: #fff;
+}
+
 /**
  * Layout Styles
  **/
@@ -659,7 +666,10 @@ h6 {
 	text-decoration: none;
 }
 ul.tabrow1 {
-	background: url("images/tab/tabrow1.gif") top left repeat-x !important;
+    background: url("images/tab/tabrow1.gif") top left repeat-x !important;
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    padding-bottom: 0.5em;
 }
 
 
