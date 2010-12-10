@@ -28,6 +28,7 @@ $currenturl = $CFG->wwwroot . '/local/plan/components/objective/index.php?id='.$
 $plancompleted = $plan->status == DP_PLAN_STATUS_COMPLETE;
 $cansetduedate = ($component->get_setting('setduedate') == DP_PERMISSION_ALLOW);
 $cansetpriority = ($component->get_setting('setpriority') == DP_PERMISSION_ALLOW);
+$cansetprof = ($component->get_setting('setproficiency') == DP_PERMISSION_ALLOW);
 
 if($submitted && confirm_sesskey()) {
     $component->process_objective_settings_update();
@@ -101,7 +102,7 @@ print '<form id="dp-component-update" action="' . $currenturl . '" method="POST"
 print '<input type="hidden" id="sesskey" name="sesskey" value="'.sesskey().'" />';
 print $component->display_objective_list();
 
-if(!$plancompleted && ($cansetduedate || $cansetpriority || $canapprovecourses) && ($component->get_assigned_items_count()>0)) {
+if(!$plancompleted && ($cansetduedate || $cansetpriority || $cansetprof) && ($component->get_assigned_items_count()>0)) {
     print '<input type="submit" name="submitbutton" value="'.get_string('updatesettings', 'local_plan').'" />';
 }
 

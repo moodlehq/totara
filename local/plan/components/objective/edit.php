@@ -68,7 +68,7 @@ if ( !$component->can_update_items() ) {
     print_error('error:cannotupdateobjectives', 'local_plan');
 }
 
-$mform = $component->objective_form( $objectiveid, $action );
+$mform = $component->objective_form( $objectiveid );
 $mform->set_data($objective);
 
 if ( $deleteyes ){
@@ -78,12 +78,17 @@ if ( $deleteyes ){
     } else {
         totara_set_notification('Objective deleted.', $objallurl);
     }
-} elseif ( $deleteno || $mform->is_cancelled()) {
+} elseif ( $deleteno ) {
+    redirect($objallurl);
+
+} elseif ( $mform->is_cancelled () ){
+
     if ( $action == 'add' ){
         redirect($objallurl);
     } else {
         redirect($objviewurl);
     }
+
 } if ( $data = $mform->get_data()) {
     // A New objective
     if (empty($data->itemid)){
@@ -110,6 +115,11 @@ if ( $deleteyes ){
         $record->description = $data->description;
         $record->priority = isset($data->priority)?$data->priority:null;
         $record->duedate = isset($data->duedate)?$data->duedate:null;
+
+        if ( $component->get_setting('updateobjective') == DP_PERMISSION_REQUEST ){
+            $record->approved = DP_APPROVAL_UNAPPROVED;
+        }
+
         if (!update_record('dp_plan_objective', $record)){
             print_error("Was unable to update objective.");
         } else {
@@ -142,17 +152,27 @@ print $plan->display_tabs($componentname);
 switch($action){
     case 'add':
         print_heading(get_string('addnewobjective','local_plan'));
+        print $component->display_back_to_index_link();
+        $mform->display();
         break;
     case 'delete':
         print_heading(get_string('deleteobjective', 'local_plan'));
+        print $component->display_back_to_index_link();
+        $component->print_objective_detail($objectiveid);
+        notice_yesno(
+                get_string('deleteobjectiveareyousure', 'local_plan'),
+                $CFG->wwwroot.'/local/plan/components/objective/edit.php',
+                $CFG->wwwroot.'/local/plan/components/objective/edit.php',
+                array('id'=>$planid, 'itemid'=>$objectiveid, 'deleteyes'=>'Yes', 'sesskey'=>sesskey()),
+                array('id'=>$planid, 'itemid'=>$objectiveid, 'deleteno'=>'No')
+        );
         break;
     case 'edit':
         print_heading(get_string('editobjective', 'local_plan'));
+        print $component->display_back_to_index_link();
+        $mform->display();
         break;
 }
-
-print $component->display_back_to_index_link();
-$mform->display();
 
 print_container_end();
 print_footer();

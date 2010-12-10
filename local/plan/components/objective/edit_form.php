@@ -15,7 +15,7 @@ class plan_objective_edit_form extends moodleform {
 
     /**
      * Requires the following $_customdata to be passed in to the constructor:
-     * plan, objective, objectiveid (optional), and action (view, viewnobuttons, add, edit, delete)
+     * plan, objective, objectiveid (optional)
      *
      * @global object $CFG
      * @global object $USER
@@ -26,27 +26,14 @@ class plan_objective_edit_form extends moodleform {
         $mform =& $this->_form;
 
         // Determine permissions from objective
-        $action = $this->_customdata['action'];
         $plan = $this->_customdata['plan'];
         $objective = $this->_customdata['objective'];
 
-        switch( $action ){
-            case 'delete':
-                $mform->addElement('html', get_string('deleteobjectiveareyousure', 'local_plan'));
-                break;
-        }
-
-        // Get workflow permissions to decide what should go on the form
-        if ($objective->get_setting('setduedate') == DP_PERMISSION_ALLOW){
-            $duedatemode = $objective->get_setting('duedatemode');
-        } else {
-            $duedatemode = DP_DUEDATES_NONE;
-        }
-        if ($objective->get_setting('setpriority') == DP_PERMISSION_ALLOW){
-            $prioritymode = $objective->get_setting('prioritymode');
-        } else {
-            $prioritymode = DP_PRIORITY_NONE;
-        }
+        // Figure out permissions & settings
+        $duedatemode = $objective->get_setting('duedatemode');
+        $duedateallow = $objective->get_setting('setduedate') == DP_PERMISSION_ALLOW;
+        $prioritymode = $objective->get_setting('prioritymode');
+        $priorityallow = $objective->get_setting('setpriority') == DP_PERMISSION_ALLOW;
 
         if ($prioritymode > DP_PRIORITY_NONE) {
 
@@ -87,13 +74,15 @@ class plan_objective_edit_form extends moodleform {
         // Due dates
         if ( $duedatemode == DP_DUEDATES_OPTIONAL || $duedatemode == DP_DUEDATES_REQUIRED ){
 
-            if ( $duedatemode == DP_DUEDATES_OPTIONAL && in_array($action,array('edit','add'))){
-                $datemenu = $mform->addElement('date_selector', 'duedate', get_string('duedate', 'local_plan'), array('optional'=>true));
-            } else {
+            // Whether to make the field optional
+            if ( $duedatemode == DP_DUEDATES_REQUIRED){
                 $datemenu = $mform->addElement('date_selector', 'duedate', get_string('duedate', 'local_plan'));
-            }
-            if ( $duedatemode == DP_DUEDATES_REQUIRED ){
                 $mform->addRule('duedate', get_string('err_required', 'form'), 'required', '', 'client', false, false);
+            } else {
+                $datemenu = $mform->addElement('date_selector', 'duedate', get_string('duedate', 'local_plan'), array('optional'=>true));
+            }
+            if ( !$duedateallow ){
+                $mform->freeze(array('duedate'));
             }
         }
 
@@ -103,36 +92,12 @@ class plan_objective_edit_form extends moodleform {
             if ( $prioritymode == DP_PRIORITY_REQUIRED ){
                 $mform->addRule('priority', get_string('err_required', 'form'), 'required', '', 'client', false, false);
             }
+            if ( !$priorityallow ){
+                $mform->freeze(array('priority'));
+            }
         }
 
-        switch( $action ){
-            case 'viewnobuttons':
-                $mform->hardFreezeAllVisibleExcept(array());
-                break;
-            case 'view':
-                $mform->hardFreezeAllVisibleExcept(array());
-                $buttonarray = array();
-                if ($this->_customdata['plan']->get_setting('update') == DP_PERMISSION_ALLOW && $this->_customdata['plan']->status != DP_PLAN_STATUS_COMPLETE) {;
-                    $buttonarray[] = $mform->createElement('submit', 'edit', get_string('editdetails', 'local_plan'));
-                }
-                if ($this->_customdata['plan']->get_setting('delete') == DP_PERMISSION_ALLOW) {
-                    $buttonarray[] = $mform->createElement('submit', 'delete', get_string('deleteobjective', 'local_plan'));
-                }
-
-                $mform->addGroup($buttonarray, 'buttonar', '', array(' '), false);
-                $mform->closeHeaderBefore('buttonar');
-                break;
-            case 'delete':
-                $mform->hardFreezeAllVisibleExcept(array());
-                $buttonarray = array();
-                $buttonarray[] = $mform->createElement('submit', 'deleteyes', get_string('yes'));
-                $buttonarray[] = $mform->createElement('submit', 'deleteno', get_string('no'));
-                $mform->addGroup($buttonarray, 'buttonar', '', array(' '), false);
-                $mform->closeHeaderBefore('buttonarr');
-                break;
-            default:
-                $this->add_action_buttons();
-        }
+        $this->add_action_buttons();
     }
 
     function validation($data) {

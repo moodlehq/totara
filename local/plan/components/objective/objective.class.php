@@ -35,15 +35,12 @@ class dp_objective_component extends dp_base_component {
      */
     public function can_update_items() {
         // Get permissions
-        $plancompleted = $this->plan->status == DP_PLAN_STATUS_COMPLETE;
-        $updateitem = (int) $this->get_setting('updateobjective');
-
-        // If plan complete, or user cannot edit/request items, no point showing picker
-        if ($plancompleted || !in_array($updateitem, array(DP_PERMISSION_ALLOW, DP_PERMISSION_REQUEST))) {
+        $updateitem = $this->get_setting('updateobjective');
+        if ( $updateitem == DP_PERMISSION_DENY ){
             return false;
+        } else {
+            return $updateitem;
         }
-
-        return $updateitem;
     }
 
 
@@ -310,10 +307,11 @@ class dp_objective_component extends dp_base_component {
         $priorityscaleid = ($this->get_setting('priorityscale')) ? $this->get_setting('priorityscale') : -1;
         $plancompleted = $this->plan->status == DP_PLAN_STATUS_COMPLETE;
         $cansetprofs = !$plancompleted && $this->get_setting('setproficiency') == DP_PERMISSION_ALLOW;
-        $canapproveobjectives = !$plancompleted &&
-            $this->get_setting('updateobjective') == DP_PERMISSION_APPROVE;
-        $canremoveobjectives = !$plancompleted &&
-            $this->get_setting('updateobjective') == DP_PERMISSION_ALLOW;
+        $canapproveobjectives = !$plancompleted && $this->get_setting('updateobjective') == DP_PERMISSION_APPROVE;
+        $canremoveobjectives = !$plancompleted && (
+                $this->get_setting('updateobjective') == DP_PERMISSION_ALLOW
+                || $this->get_setting('updateobjective') == DP_PERMISSION_APPROVE
+        );
 
         $as = sql_as();
         $count = 'SELECT COUNT(*) ';
@@ -532,16 +530,14 @@ class dp_objective_component extends dp_base_component {
      * Create a form object for the data in an objective
      * @global object $CFG
      * @param int $objectiveid
-     * @param string $action Indicates how the form will be used: view, viewbuttonsonly, add, edit, delete
      * @return plan_objective_edit_form
      */
-    function objective_form($objectiveid=null, $action='view') {
+    function objective_form($objectiveid=null) {
         global $CFG;
         require_once($CFG->dirroot.'/local/plan/components/objective/edit_form.php');
         $customdata = array(
             'plan' => $this->plan,
-            'objective' => $this,
-            'action' => $action
+            'objective' => $this
         );
         if ( empty($objectiveid) ){
             return new plan_objective_edit_form( null, $customdata );
@@ -559,8 +555,7 @@ class dp_objective_component extends dp_base_component {
                     array(
                         'plan'=>$this->plan,
                         'objective'=>$this,
-                        'objectiveid'=>$objectiveid,
-                        'action'=>$action
+                        'objectiveid'=>$objectiveid
                     )
             );
             $mform->set_data($objective);
@@ -739,9 +734,8 @@ class dp_objective_component extends dp_base_component {
      * @return boolean success or failure
      */
     function delete_objective($caid) {
-        $canremoveobjective = ($this->get_setting('updateobjective') == DP_PERMISSION_ALLOW);
         // need permission to remove this objective
-        if(!$canremoveobjective) {
+        if(!$this->can_update_items()) {
             return false;
         }
 
@@ -777,20 +771,116 @@ class dp_objective_component extends dp_base_component {
         $rec->duedate = $duedate;
         $rec->scalevalueid = get_field('dp_objective_scale', 'defaultid', 'id', $this->get_setting('objectivescale'));
 
-        $canapproveobjectives = $this->get_setting('updateobjective') == DP_PERMISSION_APPROVE;
-        $rec->approved = $canapproveobjectives ? DP_APPROVAL_APPROVED : DP_APPROVAL_UNAPPROVED;
+        // Mark the objective auto-approved, if the user has "allow" or "approve" permissions
+        $perm = $this->get_setting('updateobjective');
+        if ( $perm == DP_PERMISSION_ALLOW || $perm == DP_PERMISSION_APPROVE ){
+            $rec->approved = DP_APPROVAL_APPROVED;
+        } else {
+            $rec->approved = DP_APPROVAL_UNAPPROVED;
+        }
 
         return insert_record('dp_plan_objective', $rec);
     }
 
     /**
-     * Display an objective
+     * Print details about an objective
+     * @global object $CFG
      * @param int $objectiveid
+     * @return void
      */
     public function print_objective_detail($objectiveid){
-        $mform = $this->objective_form($objectiveid, 'viewnobuttons');
-        $mform->display();
-        print $this->display_linked_courses($objectiveid);
+        global $CFG;
+
+        $priorityscaleid = ($this->get_setting('priorityscale')) ? $this->get_setting('priorityscale') : -1;
+        $objectivescaleid = $this->get_setting('objectivescale');
+        $priorityenabled = $this->get_setting('prioritymode') != DP_PRIORITY_NONE;
+        $duedateenabled = $this->get_setting('duedatemode') != DP_DUEDATES_NONE;
+        $requiresapproval = $this->get_setting('updateobjective') == DP_PERMISSION_REQUEST;
+
+        $as = sql_as();
+        $sql = <<<SQL
+            select
+                o.id,
+                o.fullname,
+                o.shortname,
+                o.description,
+                o.approved,
+                o.duedate,
+                o.priority,
+                psv.name {$as} priorityname,
+                osv.name {$as} profname,
+                osv.achieved
+            from
+                {$CFG->prefix}dp_plan_objective o
+                left join {$CFG->prefix}dp_objective_scale_value osv on (o.scalevalueid=osv.id and osv.objscaleid={$objectivescaleid})
+                left join {$CFG->prefix}dp_priority_scale_value psv on (o.priority=psv.id and psv.priorityscaleid={$priorityscaleid})
+            where
+                o.id={$objectiveid}
+SQL;
+        $item = get_record_sql($sql);
+
+        if(!$item) {
+            return get_string('error:objectivenotfound','local_plan');
+        }
+
+        $out = '';
+
+        // get the priority values used for competencies in this plan
+        $priorityvalues = get_records('dp_priority_scale_value',
+            'priorityscaleid', $priorityscaleid, 'sortorder', 'id,name,sortorder');
+
+        // @todo add competency icon
+        $out .= "<h3>" . get_string('fullname') . ": {$item->fullname}</h3>\n";
+        $out .= "<table border=\"0\">\n";
+        $out .= "<tr>\n";
+        $out .= "  <th>" . get_string('shortname') .":</th>\n";
+        $out .= "  <td>{$item->shortname}</td>\n";
+        $out .= "</tr>\n";
+        $out .= "<tr>\n";
+        $out .= "  <th>" . get_string('description') .":</th>\n";
+        $out .= "  <td>{$item->description}</td>\n";
+        $out .= "</tr>\n";
+
+        if($priorityenabled) {
+            $out .= '<tr><th>';
+            $out .= get_string('priority', 'local_plan') . ':';
+            $out .= '</th><td>';
+            $out .= $this->display_priority_as_text($item->priority,
+                $item->priorityname, $priorityvalues);
+            $out .= '</td></tr>';
+        }
+        if($duedateenabled) {
+            $out .= '<tr><th>';
+            $out .= get_string('duedate', 'local_plan') . ':';
+            $out .= '</th><td>';
+            $out .= $this->display_duedate_as_text($item->duedate);
+            if ( !$item->achieved ){
+                $out .= '<br />';
+                $out .= $this->display_duedate_highlight_info($item->duedate);
+            }
+            $out .= '</td></tr>';
+        }
+        $out .= "<tr>\n";
+        $out .= "  <th>Proficiency:</th>\n";
+        $out .= "  <td>$item->profname</td>\n";
+        $out .= "</tr>\n";
+        if ($requiresapproval){
+            $out .= "<tr>\n";
+            $out .= "  <th>" . get_string('status') .":</th>\n";
+            $out .= "  <td>".$this->display_approval($item, false, false)."</td>\n";
+            $out .= "</tr>\n";
+        }
+        $out .= '</table>';
+
+        print $out;
     }
 
+    /**
+     * Return just the "approval" field for an objective
+     * @param int $caid
+     * return int
+     */
+    public function get_approval($caid){
+        return get_field('dp_plan_objective', 'approved', 'id', $caid);
+    }
 }
