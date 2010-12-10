@@ -2185,8 +2185,6 @@ img.percentImage {
     padding-bottom: 0px;
 }
 
-/***********/
-
 
 /*****************************************************************************/
 /** Course and Category **/
@@ -2203,6 +2201,12 @@ img.percentImage {
 
 #switchrole_jump {
     margin-right: 5px;
+}
+
+#course-view .format-demo .section td.format-demo-content {
+    background-color: transparent;
+    border: none;
+    padding: 0;
 }
 
 

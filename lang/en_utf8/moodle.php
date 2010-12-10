@@ -687,6 +687,7 @@ $string['forgotten'] = 'Forgotten your username or password?';
 $string['forgottenduplicate'] = 'The email address is shared by several accounts, please enter username instead';
 $string['forgotteninvalidurl'] = 'Invalid password reset URL';
 $string['format'] = 'Format';
+$string['formatdemo'] = 'Demo format';
 $string['formathtml'] = 'HTML format';
 $string['formatlams'] = 'LAMS course format';
 $string['formatmarkdown'] = 'Markdown format';
