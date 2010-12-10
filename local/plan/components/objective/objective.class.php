@@ -115,15 +115,7 @@ class dp_objective_component extends dp_base_component {
     public function get_assigned_items_count() {
         global $CFG;
 
-        $count = count_records_sql(
-            "
-            SELECT *
-            FROM
-                {$CFG->prefix}dp_plan_objective a
-            WHERE
-                a.planid = {$this->plan->id}
-            "
-        );
+        $count = count_records('dp_plan_objective', 'planid', $this->plan->id);
 
         if (!$count) {
             $count = 0;
@@ -537,11 +529,11 @@ class dp_objective_component extends dp_base_component {
 
 
     /**
-     * Print details of a single objective
-     *
-     * @param integer $objectiveid ID of the objective assignment (not the objective id)
-     *
-     * @return void
+     * Create a form object for the data in an objective
+     * @global object $CFG
+     * @param int $objectiveid
+     * @param string $action Indicates how the form will be used: view, viewbuttonsonly, add, edit, delete
+     * @return plan_objective_edit_form
      */
     function objective_form($objectiveid=null, $action='view') {
         global $CFG;
@@ -629,13 +621,6 @@ class dp_objective_component extends dp_base_component {
             }
             return $out;
         }
-    }
-
-    function display_status($objective) {
-        global $CFG;
-
-        // @todo: add colors and stuff?
-        return format_string($objective->status);
     }
 
     function process_objective_settings_update() {
@@ -747,6 +732,12 @@ class dp_objective_component extends dp_base_component {
         redirect($currenturl);
     }
 
+
+    /**
+     * Completely delete an objective
+     * @param int $caid
+     * @return boolean success or failure
+     */
     function delete_objective($caid) {
         $canremoveobjective = ($this->get_setting('updateobjective') == DP_PERMISSION_ALLOW);
         // need permission to remove this objective
@@ -764,54 +755,13 @@ class dp_objective_component extends dp_base_component {
     }
 
     /**
-     * Assign a new item to this component of the plan
-     *
-     * @access  public
-     * @param   $itemid     integer
-     * @return  void
-     */
-    public function assign_new_item($itemid) {
-
-        // Get approval value for new item
-        if (!$permission = $this->can_update_items()) {
-            print_error('error:cannotupdateobjectives', 'local_plan');
-        }
-
-        $item = new object();
-        $item->planid = $this->plan->id;
-        $item->objectiveid = $itemid;
-        $item->priority = null;
-        $item->duedate = null;
-        $item->completionstatus = null;
-        $item->grade = null;
-
-        // Check required values for priority/due data
-        if ($this->get_setting('prioritymode') == DP_PRIORITY_REQUIRED) {
-            $item->priority = $this->get_default_priority();
-        }
-
-        if ($this->get_setting('duedatemode') == DP_DUEDATES_REQUIRED) {
-            $item->duedate = $this->plan->enddate;
-        }
-
-        // Set approved status
-        if ($permission == DP_PERMISSION_ALLOW) {
-            $item->approved = DP_APPROVAL_APPROVED;
-        }
-        else { # $permission == DP_PERMISSION_REQUEST
-            $item->approved = DP_APPROVAL_UNAPPROVED;
-        }
-
-        return insert_record('dp_plan_objective_assign', $item);
-    }
-
-
-    /**
-     * Create a new objective. Assumes that compatibility with duedaterequired
-     * and priorityrequired has been taken care of.
-     *
-     * @param <type> $objective
-     * @return <type>
+     * Create a new objective. (Does not check for permissions)
+     * @param string $fullname
+     * @param string $shortname
+     * @param string $description
+     * @param int $priority
+     * @param int $duedate
+     * @return boolean
      */
     public function create_objective($fullname, $shortname=null, $description=null, $priority=null, $duedate=null) {
         if ( !$this->can_update_items() ){
@@ -835,7 +785,6 @@ class dp_objective_component extends dp_base_component {
 
     /**
      * Display an objective
-     *
      * @param int $objectiveid
      */
     public function print_objective_detail($objectiveid){
