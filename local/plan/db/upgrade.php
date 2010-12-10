@@ -129,6 +129,7 @@ function xmldb_local_plan_upgrade($oldversion=0) {
                         $perm->role = $r;
                         $perm->action = $a;
                         $perm->value=50;
+                        $perm->component = 'objective';
                         insert_record('dp_permissions', $perm);
                     }
                 }
