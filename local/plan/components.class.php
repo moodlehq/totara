@@ -131,12 +131,16 @@ abstract class dp_base_component {
         // priorityXofY
         // theme only defines styles up to DP_MAX_PRIORITY_OPTIONS so limit
         // the highest values set to this range
-        $class = 'priority' .
-            min($priorityvalues[$priorityid]->sortorder, DP_MAX_PRIORITY_OPTIONS) .
-            'of' .
-            min(count($priorityvalues), DP_MAX_PRIORITY_OPTIONS);
+        if ( $priorityid ){
+            $class = 'priority' .
+                min($priorityvalues[$priorityid]->sortorder, DP_MAX_PRIORITY_OPTIONS) .
+                'of' .
+                min(count($priorityvalues), DP_MAX_PRIORITY_OPTIONS);
 
-        return '<span class="'.$class.'">'.$priorityname.'</span>';
+            return '<span class="'.$class.'">'.$priorityname.'</span>';
+        } else {
+            return ' ';
+        }
     }
 
     function display_back_to_index_link() {
