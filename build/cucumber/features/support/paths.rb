@@ -8,6 +8,8 @@ module NavigationHelpers
       'competency scale value' => 'comp_scale_values',
       'organisation framework' => 'org_framework',
       'organisation depth' => 'org_depth',
+      'position framework' => 'pos_framework',
+      'position depth' => 'pos_depth',
     }
   end
 
@@ -40,6 +42,12 @@ module NavigationHelpers
       'manage competencies' => '/hierarchy/index.php?type=competency',
       'manage positions' => '/hierarchy/index.php?type=position',
       'manage organisations' => '/hierarchy/index.php?type=organisation',
+      
+      # URL on first entry into add a new depth level
+      'manage position depth1' =>  '/hierarchy/framework/view.php?type=position&frameworkid=' + get_position_framework_id('Test Position Framework 1'),
+
+      # URL on save changes returning to the edit page due to validation errors
+      'edit position depth' => '/hierarchy/depth/edit.php',
     }
   end
 

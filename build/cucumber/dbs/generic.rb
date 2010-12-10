@@ -45,6 +45,11 @@ def get_username_id(username)
   get_field 'mdl_user', 'id', 'username', username
 end
 
+# return a framework's ID given their fullname
+def get_position_framework_id(fullname)
+  get_field 'mdl_pos_framework', 'id', 'fullname', fullname
+end
+
 # return a scale's ID given its name
 def get_scale_id(scalename)
   get_field 'mdl_comp_scale', 'id', 'name', scalename
