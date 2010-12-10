@@ -2014,46 +2014,21 @@ table.allmyteam td a {
   margin:0;
 }
 
-#my-teammembers #middle-column table.flexible {
+#my-teammembers table.flexible {
   width:100%;
   margin-bottom:0;
+  background:transparent;
+}
+#my-teammembers table.flexible .user_userlearningicons {
+    white-space:nowrap;
+}
+#my-teammembers table.flexible .user_userlearningicons a {
+    padding-right:5px;
+}
+#my-teammembers table.flexible .user_namelink {
+    white-space:nowrap;
 }
 
-#my-teammembers #middle-column table.flexible td {
-  font-size:0.9em;
-}
-
-#my-teammembers #middle-column table.flexible th {
-  padding:6px 3px;
-}
-
-#my-teammembers #middle-column table.flexible th.c1,
-#my-teammembers #middle-column table.flexible td.c1 {
-  vertical-align: top;
-  width: 140px;
-  padding-left: 10px;
-  border-left:1px solid #d2d2d2;
-}
-
-#my-teammembers #middle-column table.flexible th.c2 {
-  vertical-align: top;
-  width: 110px;
-}
-
-#my-teammembers #middle-column table.flexible th.c3 {
-  vertical-align: top;
-  width: 110px;
-}
-
-#my-teammembers #middle-column table.flexible th.c4 {
-  vertical-align: top;
-  width: 115px;
-}
-
-#my-teammembers #middle-column table.flexible th.c4,
-#my-teammembers #middle-column table.flexible td.c4 {
-  border-right:1px solid #d2d2d2;
-}
 
 /*****************************************************************************/
 /** Tables **/

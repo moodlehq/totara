@@ -203,7 +203,7 @@ class rb_source_user extends rb_base_source {
         $disp = '<span style="white-space:nowrap;">';
 
         // Learning Records icon
-        $disp = '<a href="' . $CFG->wwwroot . '/local/plan/record/courses.php?userid=' . $itemid . '"><img src="' . $CFG->pixpath . '/i/rol.png" title="' . get_string('learningrecords', 'local') . '" /></a>';
+        $disp = '<a href="' . $CFG->wwwroot . '/local/plan/record/courses.php?userid=' . $itemid . '"><img src="' . $CFG->pixpath . '/i/record.gif" title="' . get_string('learningrecords', 'local') . '" /></a>';
 
         // Face To Face Bookings icon
         if ($this->staff_f2f) {
@@ -211,7 +211,7 @@ class rb_source_user extends rb_base_source {
         }
 
         // Individual Development Plans icon
-        $disp .= '<a href="' . $CFG->wwwroot . '/local/plan/index.php?userid=' . $itemid . '"><img src="' . $CFG->pixpath . '/i/idp.png" title="' . get_string('idp', 'idp') . '" /></a>';
+        $disp .= '<a href="' . $CFG->wwwroot . '/local/plan/index.php?userid=' . $itemid . '"><img src="' . $CFG->pixpath . '/i/plan.gif" title="' . get_string('idp', 'idp') . '" /></a>';
 
         $disp .= '</span>';
         return $disp;
