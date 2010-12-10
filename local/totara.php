@@ -306,14 +306,17 @@ function totara_print_report_manager($return=false) {
     $context = get_context_instance(CONTEXT_SYSTEM);
 
     $rows = array();
+    $counter = 0;
     foreach ($reports as $report) {
         // show reports user has permission to view, that are not hidden
         if(reportbuilder::is_capable($report->id) && !$report->hidden) {
             $viewurl = ($report->embeddedurl === null) ? $CFG->wwwroot .
                 '/local/reportbuilder/report.php?id='.$report->id :
                 $report->embeddedurl;
+	    $class = ($counter % 2) ? 'noshade' : 'shade';
+	    $counter++;
             $row = '
-            <tr>
+            <tr class="'.$class.'">
                 <td align="left">
                     <a href="'.$CFG->wwwroot.'/local/reportbuilder/report.php?id='.$report->id.'" title="'.$report->fullname.'">
                     <img src="'.$CFG->pixpath.'/i/reports.png" width="32" height="32" /></a>
