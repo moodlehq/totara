@@ -555,6 +555,10 @@ a:hover {
   text-decoration: underline;
 }
 
+a:hover {
+    text-decoration: none;
+}
+
 .navbar .breadcrumb a,
 .navbar .breadcrumb a:link,
 .navbar .breadcrumb a:active,
