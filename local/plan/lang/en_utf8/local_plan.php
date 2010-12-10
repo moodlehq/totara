@@ -170,9 +170,9 @@ $string['error:error:competenciesupdated'] = 'Competencies not update';
 //Objective Strings
 $string['objectives'] = 'Objectives';
 $string['updateobjectives'] = 'Update objectives';
-$string['updaterequestedobjectives'] = 'Update requested objectives';
+$string['requestednewobjective'] = 'Add a new objective request';
 $string['updateobjective'] = 'Update';
-$string['addnewobjective'] = 'Add New Objective';
+$string['addnewobjective'] = 'Add new objective';
 $string['error:objectivenotfound'] = 'Objective not found';
 $string['error:error:objectivesupdated'] = 'Objectives not update';
 $string['objectivefullname'] = 'Objective Full Name';

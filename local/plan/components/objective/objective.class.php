@@ -65,7 +65,7 @@ class dp_objective_component extends dp_base_component {
         if ($permission == DP_PERMISSION_ALLOW) {
             $btntext = get_string('addnewobjective', 'local_plan');
         } else {
-            $btntext = get_string('updaterequestedobjectives', 'local_plan');
+            $btntext = get_string('requestednewobjective', 'local_plan');
         }
 
         $html = '<div class="buttons">';
@@ -317,6 +317,7 @@ class dp_objective_component extends dp_base_component {
             $this->get_setting('prioritymode') == DP_PRIORITY_REQUIRED);
         $priorityscaleid = ($this->get_setting('priorityscale')) ? $this->get_setting('priorityscale') : -1;
         $plancompleted = $this->plan->status == DP_PLAN_STATUS_COMPLETE;
+        $cansetprofs = !$plancompleted && $this->get_setting('setproficiency') == DP_PERMISSION_ALLOW;
         $canapproveobjectives = !$plancompleted &&
             $this->get_setting('updateobjective') == DP_PERMISSION_APPROVE;
         $canremoveobjectives = !$plancompleted &&
@@ -324,7 +325,9 @@ class dp_objective_component extends dp_base_component {
 
         $as = sql_as();
         $count = 'SELECT COUNT(*) ';
-        $select = "SELECT o.id, o.planid, o.fullname {$as} objname, osv.name {$as} status, o.duedate, o.approved, psv.id as priority, psv.name {$as} priorityname ";
+        $select = "SELECT o.id, o.planid, o.fullname {$as} objname, o.duedate, o.approved, o.scalevalueid ";
+        $select .= ", psv.id as priority, psv.name {$as} priorityname ";
+        $select .= ", osv.achieved ";
         $select .= ", (select count(*) from {$CFG->prefix}dp_plan_component_relation pcr where pcr.component1='course' and pcr.component2='objective' and pcr.itemid2=o.id) {$as} numcourses ";
         // todo: Add evidence support
 //        $select .= ", (select count(*) from {$CFG->prefix}dp_plan_relation pr where pr.itemtype1='evidence' and pr.itemtype2='objective' and pr.itemid2=o.id) {$as} numevidences ";
@@ -366,11 +369,11 @@ class dp_objective_component extends dp_base_component {
         }
 
         $tableheaders[] = get_string('proficiency', 'local');
-        $tablecolumns[] = 'o.status';
+        $tablecolumns[] = 'o.scalevalueid';
 
         if(!$plancompleted) {
             $tableheaders[] = get_string('status','local_plan');
-            $tablecolumns[] = 'o.approved';
+            $tablecolumns[] = 'status';
         }
 
         if($canremoveobjectives) {
@@ -400,6 +403,9 @@ class dp_objective_component extends dp_base_component {
                 'priorityscaleid', $priorityscaleid, 'sortorder', 'id,name,sortorder');
         }
 
+        // Get the proficiency values for this plan
+        $proficiencyvalues = get_records('dp_objective_scale_value', 'objscaleid', $this->get_setting('objectivescale'), 'sortorder','id,name,achieved');
+
         $records = get_recordset_sql(
                 $select.$from.$where.$sort,
                 $table->get_page_start(),
@@ -409,7 +415,7 @@ class dp_objective_component extends dp_base_component {
 
             while($objective = rs_fetch_next_record($records)) {
                 
-                $approved = dp_is_approved($objective->approved);
+                $objapproved = dp_is_approved($objective->approved);
 
                 $row = array();
                 $row[] = $this->display_objective_name($objective);
@@ -424,13 +430,13 @@ class dp_objective_component extends dp_base_component {
                     $row[] = $this->display_duedate($objective->id, $objective->duedate, null);
                 }
 
-                // If this one isn't approved yet, don't show its proficiency status
-                $row[] = $approved ? format_string($objective->status) : '';
+                // Proficiency
+                $row[] = $this->display_proficiency($objective, $proficiencyvalues);
 
                 if(!$plancompleted) {
                     $status = '';
-                    if($approved) {
-                        if(!$objective->status) {
+                    if($objapproved) {
+                        if(!$objective->achieved) {
                             $status = $this->display_duedate_highlight_info($objective->duedate);
                         }
                     } else {
@@ -594,6 +600,37 @@ class dp_objective_component extends dp_base_component {
             $obj->id . '&amp;action=decline">' . get_string('decline','local_plan') . '</a> ';
     }
 
+    /**
+     * Display a proficiency (or the dropdown menu for it)
+     * @param object $ca The current objective
+     * @param array $proficiencyvalues A list of all the proficiencies in the objective scale for this objective
+     * @return string
+     */
+    function display_proficiency($ca, $proficiencyvalues) {
+        $plancompleted = ($this->plan->status == DP_PLAN_STATUS_COMPLETE);
+        $cansetprof = $this->get_setting('setproficiency') == DP_PERMISSION_ALLOW;
+        $out = '';
+
+        $selected = $ca->scalevalueid;
+
+        if ( !$plancompleted && $cansetprof ){
+            // Show the menu
+            $options = array();
+            foreach( $proficiencyvalues as $id => $val){
+                $options[$id] = $val->name;
+            }
+            return choose_from_menu($options, "proficiencies[{$ca->id}]", $selected, null, '', null, true);
+
+        } else {
+            // They can't change the setting, so show it as-is
+            $out = format_string($proficiencyvalues[$selected]->name);
+            if ( $proficiencyvalues[$selected]->achieved ){
+                $out = '<b>'.$out.'</b>';
+            }
+            return $out;
+        }
+    }
+
     function display_status($objective) {
         global $CFG;
 
@@ -609,9 +646,11 @@ class dp_objective_component extends dp_base_component {
         // if duedatemode is required
         $cansetduedates = ($this->get_setting('setduedate') == DP_PERMISSION_ALLOW);
         $cansetpriorities = ($this->get_setting('setpriority') == DP_PERMISSION_ALLOW);
+        $cansetprofs = ($this->get_setting('setproficiency') == DP_PERMISSION_ALLOW);
         $canapprovecomps = ($this->get_setting('updateobjective') == DP_PERMISSION_APPROVE);
         $duedates = optional_param('duedate', array(), PARAM_TEXT);
         $priorities = optional_param('priorities', array(), PARAM_INT);
+        $proficiencies = optional_param('proficiencies', array(), PARAM_INT);
         $approvals = optional_param('approve', array(), PARAM_INT);
         $currenturl = qualified_me();
         $stored_records = array();
@@ -654,6 +693,21 @@ class dp_objective_component extends dp_base_component {
                     $todb = new object();
                     $todb->id = $id;
                     $todb->priority = $priority;
+                    $stored_records[$id] = $todb;
+                }
+            }
+        }
+
+        if (!empty($proficiencies) && $cansetprofs) {
+            foreach( $proficiencies as $id => $proficiency){
+                $proficiency = (int) $proficiency;
+                if ( array_key_exists($id, $stored_records) ){
+                    $stored_records[$id]->scalevalueid = $proficiency;
+                } else {
+                    // Create a new update object
+                    $todb = new stdClass();
+                    $todb->id = $id;
+                    $todb->scalevalueid = $proficiency;
                     $stored_records[$id] = $todb;
                 }
             }
