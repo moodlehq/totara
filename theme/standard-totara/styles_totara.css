@@ -103,6 +103,13 @@ div.course-content #middle-column {
   margin:15px auto 25px auto;
 }
 
+.loginbox {
+    border:0 none;
+}
+.loginbox .guestsub, .loginbox .forgotsub {
+    border-top:0 none;
+}
+
 body#user-positions #container {
 	margin-bottom: -28px;
 }
