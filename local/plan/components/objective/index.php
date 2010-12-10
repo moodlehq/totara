@@ -56,10 +56,6 @@ if ($component->can_update_items()) {
         TOTARA_JS_TREEVIEW
     ));
 
-    // Get course picker
-    require_js(array(
-        $CFG->wwwroot.'/local/plan/components/objective/find.js.php'
-    ));
 }
 
 // Load datepicker JS
