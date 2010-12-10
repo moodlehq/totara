@@ -156,9 +156,10 @@ abstract class dp_base_component {
      *
      * @param $obj stdClass the assignment object
      * @param $canapprove boolean if approve/decline actions are allowed
+     * @param $showblankforapproved boolean if it should return an empty string if the status is "approved"
      * @return $out string an html string
      */
-    function display_approval($obj, $canapprove) {
+    function display_approval($obj, $canapprove, $showblankforapproved=true) {
         global $CFG;
         // @todo lang strings
         $id = $obj->id;
@@ -203,6 +204,9 @@ abstract class dp_base_component {
             }
             break;
         case DP_APPROVAL_APPROVED:
+            if ( !$showblankforapproved ){
+                $out .= get_string('approved', 'local_plan');
+            }
         default:
             // display nothing
             break;
