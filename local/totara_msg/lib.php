@@ -74,6 +74,17 @@ function totara_msg_urgency_text($urgency) {
     return array('text' => $text, 'icon' =>  $CFG->wwwroot . '/theme/' . $CFG->theme . '/pix/t/'.$level.'.gif');
 }
 
+/**
+ * Get the short name of the message type
+ *
+ * @param $urgency int message urgency
+ * @return array('text' => , 'icon' => '')
+ */
+function totara_msg_cssclass($msgtype) {
+    global $TOTARA_MESSAGE_TYPES;
+
+    return $TOTARA_MESSAGE_TYPES[$msgtype];
+}
 
 /**
  * Get the language string  and icon for the message type

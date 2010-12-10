@@ -45,6 +45,20 @@ define('TOTARA_MSG_TYPE_FACE2FACE', 7);
 define('TOTARA_MSG_TYPE_SURVEY', 8);
 define('TOTARA_MSG_TYPE_SCORM', 9);
 
+// message type shortnames
+global $TOTARA_MESSAGE_TYPES;
+$TOTARA_MESSAGE_TYPES = array(
+    TOTARA_MSG_TYPE_UNKNOWN => 'unknown',
+    TOTARA_MSG_TYPE_COURSE => 'course',
+    TOTARA_MSG_TYPE_FORUM => 'forum',
+    TOTARA_MSG_TYPE_GRADING => 'grading',
+    TOTARA_MSG_TYPE_CHAT => 'chat',
+    TOTARA_MSG_TYPE_LESSON => 'lesson',
+    TOTARA_MSG_TYPE_QUIZ => 'quiz',
+    TOTARA_MSG_TYPE_FACE2FACE => 'face2face',
+    TOTARA_MSG_TYPE_SURVEY => 'survey',
+    TOTARA_MSG_TYPE_SCORM => 'scorm',
+);
 
 // message urgency constants
 define('TOTARA_MSG_URGENCY_NORMAL', 0);

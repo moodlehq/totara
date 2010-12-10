@@ -91,7 +91,7 @@ class block_totara_notify extends block_base {
 
                 // message creation time
                 $when = userdate($msg->timecreated, '%e %b %y');
-
+                $cssclass = totara_msg_cssclass($msg->msgtype);
                 // statement - multipart: user + statment + object
                 $bkgd = ($cnt % 2) ? 'shade' : 'noshade';
                 $content  = "<tr class=\"".$bkgd."\">";
