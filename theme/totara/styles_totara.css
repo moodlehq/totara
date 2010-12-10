@@ -1270,12 +1270,6 @@ div.block_totara_notify .content tr.noshade {
   background: #ffffff;
 }
 
-div.block_totara_notify .content td.status {
-  padding-right: 4px;
-  width:30px;
-  text-align:center;
-}
-
 div.block_totara_notify .content td.statement {
   border-left: 1px solid #E0E0E0;
   padding-left: 4px;

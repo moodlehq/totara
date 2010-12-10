@@ -514,6 +514,39 @@ div.block_html .content {
     font-size: 1.5em;
 }
 
+.dashlet .content table {
+    width: 100%;
+}
+
+/******************************************
+ * Totara stats dashlet
+ *****************************************/
+.block_totara_stats.dashlet .content tr td.staticon {
+    width:35px;
+}
+
+/******************************************
+ * Quicklinks dashlet
+ *****************************************/
+.block_quicklinks.dashlet .content tr td.linkicon {
+    width:35px;
+}
+
+/******************************************
+ * Totara reminders dashlet
+ *****************************************/
+.block_totara_reminders.dashlet .content tr td.status {
+    width:35px;
+    text-align:center;
+}
+
+/******************************************
+ * Totara notifications dashlet
+ *****************************************/
+.block_totara_notify.dashlet .content tr td.status {
+  width:35px;
+  text-align:center;
+}
 
 /******************************************
  * List blocks
