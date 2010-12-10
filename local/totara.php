@@ -317,11 +317,11 @@ function totara_print_report_manager($return=false) {
 	    $counter++;
             $row = '
             <tr class="'.$class.'">
-                <td align="left">
+                <td class="icon" align="left">
                     <a href="'.$CFG->wwwroot.'/local/reportbuilder/report.php?id='.$report->id.'" title="'.$report->fullname.'">
                     <img src="'.$CFG->pixpath.'/i/reports.png" width="32" height="32" /></a>
                 </td>
-                <td align="left" valign="center">
+                <td class="text" align="left" valign="center">
                     <span style="font-size: small;"><a href="'.$viewurl.'">'.$report->fullname.'</a>
                 ';
 
@@ -342,7 +342,7 @@ function totara_print_report_manager($return=false) {
     // if there are any rows print them
     $returnstr = '';
     if(count($rows)>0) {
-        $returnstr = '<table>';
+        $returnstr = '<table class="reportmanager">';
         $returnstr .= implode("\n",$rows);
         $returnstr .= '</table>';
     }
