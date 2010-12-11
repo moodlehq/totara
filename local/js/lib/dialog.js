@@ -617,6 +617,12 @@ totaraDialog_handler_treeview.prototype.every_load = function() {
 
     // Setup hierarchy
     this._make_hierarchy($('.treeview', this._container));
+
+    // Disable selected item's anchors
+    $('.selected > div > span a', this._container).unbind('click')
+    .click(function(e) {
+        e.preventDefault();
+    });
 }
 
 /**
@@ -647,15 +653,17 @@ totaraDialog_handler_treeview.prototype._make_hierarchy = function(parent_elemen
         return false;
     });
 
-    // Make currently selected items unclickable
-    $('.selected > div > span', this._container).each(
+    // Make any unclickable items truely unclickable
+    $('span.unclickable', parent_element).each (function() {
+        handler._toggle_items($(this).attr('id'), false);
+    });
 
-        function (intIndex) {
-            // If item in hierarchy, make unclickable
-            var id = $(this).attr('id');
-            handler._toggle_items(id, false);
-        }
-    );
+    // Make currently selected items unclickable
+    $('.selected > div > span', this._container).each(function() {
+        // If item in hierarchy, make unclickable
+        var id = $(this).attr('id');
+        handler._toggle_items(id, false);
+    });
 }
 
 /**
@@ -701,13 +709,19 @@ totaraDialog_handler_treeview.prototype._toggle_items = function(elid, type) {
         selectable_spans.addClass('clickable');
         if (handler._make_selectable != undefined) {
             selectable_spans.each(function(i, element) {
-                handler._make_selectable($('.treeview', handler._dialog), element);
+                handler._make_selectable($('.treeview', handler._container));
             });
         }
     }
     else {
         selectable_spans.removeClass('clickable');
         selectable_spans.addClass('unclickable');
+
+        // Disable the anchor
+        $('a', selectable_spans).unbind('click');
+        $('a', selectable_spans).click(function(e) {
+            e.preventDefault();
+        });
     }
 }
 
@@ -754,7 +768,12 @@ totaraDialog_handler_treeview.prototype._append_to_selected = function(element) 
         // Append item clone to selected items
         selected_area.append(wrapped);
 
-        // scroll to show newly added item
+        // Disable anchor
+        $('a', wrapped).click(function(e) {
+            e.preventDefault();
+        });
+
+        // Scroll to show newly added item
         selected_area.scrollTop(selected_area.children().slice(-1).position().top);
 
         // Make all selected items deletable
