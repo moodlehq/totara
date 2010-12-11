@@ -185,9 +185,12 @@ function totaraDialog(title, buttonid, config, default_url, handler) {
         this.bindLinks();
         this.bindForms();
 
-        // Run new style setup function
-        if (this.handler != undefined) {
-            this.handler._load();
+        // Run setup function
+        this.handler._load();
+
+        // Run partial update function
+        if (outputelement && this.handler._partial_load != undefined) {
+            this.handler._partial_load(outputelement);
         }
     }
 
@@ -592,11 +595,11 @@ totaraDialog_handler_treeview.prototype.setup_tabs = function(e, ui) {
 
 
 /**
- * Setup a treeview infrastructure
+ * Setup tab, treeview infrastructure on first load
  *
  * @return void
  */
-totaraDialog_handler_treeview.prototype.every_load = function() {
+totaraDialog_handler_treeview.prototype.first_load = function() {
 
     var handler = this;
 
@@ -632,6 +635,32 @@ totaraDialog_handler_treeview.prototype.every_load = function() {
     });
 }
 
+
+/**
+ * Setup treeview infrastructure on partial page loads
+ *
+ * @return void
+ */
+totaraDialog_handler_treeview.prototype._partial_load = function(parent_element) {
+
+    // Set heights of treeviews
+    this.setup_tabs();
+
+    // Render treeview
+    $('.treeview', parent_element).treeview({
+        prerendered: true
+    });
+
+    // Setup hierarchy
+    this._make_hierarchy($('.treeview', parent_element));
+
+    // Disable selected item's anchors
+    $('.selected > div > span a', parent_element).unbind('click')
+    .click(function(e) {
+        e.preventDefault();
+    });
+}
+
 /**
  * Setup hierarchy click handlers
  *
@@ -641,7 +670,7 @@ totaraDialog_handler_treeview.prototype._make_hierarchy = function(parent_elemen
     var handler = this;
 
     // Load children on parent click
-    $('span.folder, div.hitarea', parent_element).click(function() {
+    $('span.folder, div.hitarea', parent_element).one('click', function() {
 
         // Get parent
         var par = $(this).parent();
@@ -802,9 +831,6 @@ totaraDialog_handler_treeview_multiselect.prototype = new totaraDialog_handler_t
  * @return void
  */
 totaraDialog_handler_treeview_multiselect.prototype.every_load = function() {
-
-    // Setup treeview
-    totaraDialog_handler_treeview.prototype.every_load.call(this);
 
     // Make decending spans assignable
     this._make_selectable($('.treeview', this._container));
@@ -1093,6 +1119,8 @@ totaraDialog_handler_skeletalTreeview.prototype._make_hierarchy = function(paren
 }
 
 /**
+ * Update the hierarchy
+ *
  * @param string    HTML response
  * @param int       Parent id
  * @return void
