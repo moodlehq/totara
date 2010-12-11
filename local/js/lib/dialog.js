@@ -839,6 +839,22 @@ totaraDialog_handler_treeview_multiselect.prototype.every_load = function() {
     this._make_deletable($('.selected', this._container));
 }
 
+
+/**
+ * Setup treeview infrastructure on partial page loads
+ *
+ * @return void
+ */
+totaraDialog_handler_treeview_multiselect.prototype._partial_load = function(parent_element) {
+
+    // Call parent method
+    totaraDialog_handler_treeview.prototype._partial_load.call(this);
+
+    // Setup selectables and deletables
+    this.every_load();
+}
+
+
 /**
  * Bind hover/click event to elements, to make them selectable
  *
