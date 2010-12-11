@@ -563,11 +563,13 @@ totaraDialog_handler_treeview.prototype = new totaraDialog_handler();
 
 
 /**
- * Set heights of treeviews
+ * Setup tabs
+ *
+ * Sets heights of treeviews, sets focus
  *
  * @return void
  */
-totaraDialog_handler_treeview.prototype.set_heights = function() {
+totaraDialog_handler_treeview.prototype.setup_tabs = function(e, ui) {
 
     // Resize treeview containers if we haven't already
     // Get container
@@ -581,6 +583,11 @@ totaraDialog_handler_treeview.prototype.set_heights = function() {
 
     // Resize search container
     $('div#search-tab ul.treeview', this._container).height(containerheight - $('#search-tab #mform1', selcontainer).outerHeight() - $('div.search-paging', this._container).outerHeight() - 18);
+
+    // If showing search tab, focus search box
+    if (ui && ui.index == 1) {
+        $('div#search-tab #dialog-search-table #id_query', this._container).focus();
+    }
 }
 
 
@@ -602,12 +609,12 @@ totaraDialog_handler_treeview.prototype.every_load = function() {
     $('#dialog-tabs').tabs(
         {
             selected: 0,
-            show: handler.set_heights
+            show: handler.setup_tabs
         }
     );
 
     // Set heights of treeviews
-    this.set_heights();
+    this.setup_tabs();
 
     // Setup framework picker
     $('.simpleframeworkpicker', this._container).unbind('change');  // Unbind any previous events
