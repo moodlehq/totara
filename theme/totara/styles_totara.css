@@ -105,28 +105,40 @@ div.block_admin_tree div.admintree .depth2 {
 #content {
   font-size: 0.9em;
   clear:both;
-  padding: 10px 6px;
+  padding: 10px 23px;
   background: url("images/content_bg_blue.jpg") no-repeat scroll center top #FFFFFF;
-  margin-bottom: 100px; /* Stopfs footer overlapping content*/
+  margin-bottom: 100px; /* Stops footer overlapping content*/
 }
 
-/* Site index left hand column */
-#site-index #left-column {
+#content #layout-table {
+    margin-left: -5px;
+}
+
+/* Admin block */
+#left-column {
     background: url("images/left_menu_bg.gif") repeat-y scroll left top transparent;
 }
-#site-index #left-column .sideblock div.header {
+
+#left-column .block_admin_tree div.header {
     background: url("images/left_menu_header_bg.gif") no-repeat scroll left top transparent;
     border: 0 none;
 }
-#site-index #left-column .sideblock div.content {
+
+#left-column .block_admin_tree div.content {
     background: none repeat scroll 0 0 transparent;
 }
-#site-index #left-column .sideblock .hide-show-image {
+
+#left-column .block_admin_tree .hide-show-image {
     display: none;
 }
+
+
+/* Site index middle column
+ * Removes padding, for front-page themeing for demo?
+ */
 #site-index #middle-column {
-    padding-left:0;
-    padding-right:0;
+    padding-left: 0;
+    padding-right: 0;
 }
 
 /**
@@ -1908,6 +1920,16 @@ table.planitems tr.r0 {
 /*****************************************************************************/
 /** Dashboards **/
 /*****************************************************************************/
+
+
+.dashboard .dashlet_container {
+    background: url("images/left_menu_bg.gif") repeat-y scroll left top transparent;
+}
+
+.dashboard .dashlet .header {
+    background: url("images/left_menu_header_bg.gif") no-repeat scroll left top transparent;
+}
+
 table.centerblock td, th {
   text-align: left;
   padding: 2px;

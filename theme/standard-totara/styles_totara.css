@@ -65,21 +65,23 @@ div.course-content  #layout-table {
     width:auto !important;
 }
 
-#site-index #left-column .sideblock div.header {
-    margin-top: 20px;
+#left-column .block_admin_tree div.header {
+    margin-top: 5px;
     padding: 7px 20px;
 }
 
-#site-index #left-column .sideblock {
+#left-column .block_admin_tree {
     width: auto;
 }
-#site-index #left-column .sideblock div.header .title h2 {
+
+#left-column .block_admin_tree div.header .title h2 {
     font-size: 1.4em;
     font-weight: bold;
     margin: 0;
     padding: 0;
 }
-#site-index #left-column .sideblock div.content {
+
+#left-column .block_admin_tree div.content {
     border: 0 none;
     padding-left: 30px;
     padding-right: 20px;
@@ -764,7 +766,9 @@ body#blocks-facetoface-calendar .yui-tt .bd {
 }
 
 
-/* Dashboard */
+/********************************************/
+/** Dashboard **/
+/********************************************/
 .dashboard {
     width: 100%;
 }
@@ -773,6 +777,45 @@ body#blocks-facetoface-calendar .yui-tt .bd {
     float: left;
     margin: 5px;
 }
+
+.dashboard .dashlet_container {
+    margin-bottom: 10px;
+    overflow: auto;
+}
+
+.dashboard .dashlet {
+    width: auto;
+}
+
+.dashboard .dashlet .header {
+    border: 0 none;
+    margin-top: 5px;
+    padding: 7px 20px;
+}
+
+.dashboard .dashlet .header {
+    font-size: 0.9em;
+}
+
+.dashboard .dashlet .header .title h2 {
+    font-size: 1.4em;
+    font-weight: bold !important;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+    font-family: 'Trebuchet ms',verdana,helvetica,sans-serif;
+}
+
+.dashboard .dashlet .header .title h2 a {
+    display: block;
+}
+
+.dashboard .dashlet .content {
+    padding: 7px 20px;
+    margin: 0;
+}
+
+
 
 /******************************************
  * YUI Drop-down menu
@@ -1479,7 +1522,7 @@ table.dp-plan-component-items {
     width: 100%;
 }
 #dp-plans-menu h3 {
-    margin-top: 20px;
+    margin-top: 5px;
     padding: 7px 20px;
 }
 #dp-plans-menu ul li {
@@ -1504,10 +1547,11 @@ table.dp-plan-component-items {
     padding-left: 40px;
 }
 
-#dp-plans-list-active-plans table th.header.c0 ,
+/*dp-plans-list-active-plans table th.header.c0 ,
 #dp-plans-list-completed-plans table th.header.c0 {
     padding-left:0px;
 }
+*/
 
 #dp-plans-list-active-plans table th.header.c0 a,
 #dp-plans-list-completed-plans table th.header.c0 a {
@@ -2085,19 +2129,14 @@ table#list-idpcourse{
 /* New totara styled tables */
 table.flexible td {
     border:0 none;
-    border-left:1px solid #E2E2E2;
+    border-left: 1px solid #E2E2E2;
+    border-right: 1px solid #E2E2E2;
 }
-table.flexible th.header {
-    border-top:0 none;
-    border-right:0 none;
-    border-bottom:0 none;
+
+table.flexible {
+    border-bottom: 1px solid #E2E2E2;
 }
-table.flexible td.c0 {
-    border-left:0 none;
-}
-table.flexible th.c0 {
-    border-left:0 none;
-}
+
 
 /*****************************************************************************/
 /** Guides Tables **/
