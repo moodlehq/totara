@@ -19,7 +19,7 @@
 // This can be used for modules to set a minimum functionality requirement.
 
     $TOTARA = new object();
-    $TOTARA->version    = 0.7;
-    $TOTARA->build      = 20101209.00;
+    $TOTARA->version    = 0.8;
+    $TOTARA->build      = 20101213.00;
     $TOTARA->release    = "{$TOTARA->version} (Build: {$TOTARA->build})";
 
