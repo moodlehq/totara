@@ -32,17 +32,25 @@ input, select, button {
   padding:2px;
 }
 
-input[type="submit"],
-input[type="button"],
-button,
-.ui-state-default,
-.ui-widget-content button.ui-state-default {
-    -moz-border-radius: 4px 4px 4px 4px;
+.totarabutton {
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
     background: url("images/button_repeat.jpg") repeat-x scroll left top #0BAAB0;
     border: 1px solid #0DA7B2;
     color: #FFFFFF;
     cursor: pointer;
-    margin-right: 1px;
+    margin:0px 1px;
+    padding:3px;
+}
+.totarabutton.hover {
+     background: url("images/button_repeat_hover.jpg") repeat-x scroll left top #56c3ca;
+}
+.totarabutton.disabled {
+    border-color:#ACA899;
+    color:#ACA899;
+    background:#F5F4EA;
+    cursor: auto;
 }
 
 
@@ -1270,12 +1278,6 @@ div.block_totara_notify .content tr.noshade {
   background: #ffffff;
 }
 
-div.block_totara_notify .content td.status {
-  padding-right: 4px;
-  width:30px;
-  text-align:center;
-}
-
 div.block_totara_notify .content td.statement {
   border-left: 1px solid #E0E0E0;
   padding-left: 4px;
@@ -1811,11 +1813,22 @@ td.feedback-bar-color {
     background-color: #04A2D5;
 }
 
+/*****************************************************************************/
+/** My reports  **/
+/*****************************************************************************/
+#my-reports table tr.shade {
+    background-color: #F0F0F0;
+}
+#my-reports table tr.noshade {
+    background-color: #FAFAFA;
+}
 
 /*****************************************************************************/
 /** Hierarchies **/
 /*****************************************************************************/
-
+.generaltable .cell {
+    background: transparent;
+}
 
 
 /*****************************************************************************/

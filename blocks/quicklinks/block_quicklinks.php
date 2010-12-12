@@ -58,9 +58,14 @@ class block_quicklinks extends block_base {
         $links = get_records('block_quicklinks', 'block_instance_id', $this->instance->id, 'displaypos');
         $links = empty ($links) ? array() : $links;
 
+	$html .= '<table><tbody>';
+	$counter = 0;
         foreach ($links as $l) {
-            $html .= '<div class="block_quicklinks_link"><a href="'.format_string($l->url).'">'.$this->format_title($l->title).'</a></div>';
+	    $class = ($counter % 2) ? 'noshade' : 'shade';
+	    $counter++;
+            $html .= '<tr class="'.$class.'"><td class="linkicon"></td><td class="linktext"><p><a href="'.format_string($l->url).'">'.$this->format_title($l->title).'</a></p></td></tr>';
         }
+	$html .= '</tbody></table>';
 
         $this->content->text = $html;
 

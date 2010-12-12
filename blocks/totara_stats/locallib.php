@@ -232,11 +232,15 @@ function totara_stats_sql_helper($statsql) {
 function totara_stats_output($stats) {
     $return = '';
     if (!empty($stats)) {
-        $return = "<ul>";
-        foreach ($stats as $stat) {
-            $return .= "<li>".$stat."</li>";
+        $return = "<table><tbody>";
+	$counter = 0;
+        foreach ($stats as $key => $stat) {
+	    $class = ($counter % 2) ? 'noshade' : 'shade';
+	    $class .= ' stat' . $counter; //hack to uniquely identify the stats
+	    $counter++;
+            $return .= "<tr class=\"$class\"><td class=\"staticon\"></td><td class=\"stattext\"><p>".$stat."</p></td></tr>";
         }
-        $return .= "</ul>";
+        $return .= "</tbody></table>";
     }
     return $return;
 }

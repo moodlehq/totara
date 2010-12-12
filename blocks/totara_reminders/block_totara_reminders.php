@@ -101,7 +101,7 @@ class block_totara_reminders extends block_base {
                 $urgency = totara_msg_urgency_text($msg->urgency);
                 $content .= "<td class=\"status\"><img class=\"iconsmall\" src=\"{$urgency['icon']}\" title=\"{$urgency['text']}\" alt=\"{$urgency['text']}\" /></td>";
                 $msgtext = $msg->subject ? $msg->subject : $msg->fullmessage;
-                $content .= "<td class=\"statement\">{$msgtext}</td>";
+                $content .= "<td class=\"statement\"><p>{$msgtext}</p></td>";
                 $accept_reject = totara_msg_accept_reject_action($msg->id);
                 $content .= $accept_reject;
                 $content .= "<td class=\"action\">{$dismiss}</td>";

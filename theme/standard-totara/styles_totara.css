@@ -103,6 +103,13 @@ div.course-content #middle-column {
   margin:15px auto 25px auto;
 }
 
+.loginbox {
+    border:0 none;
+}
+.loginbox .guestsub, .loginbox .forgotsub {
+    border-top:0 none;
+}
+
 body#user-positions #container {
 	margin-bottom: -28px;
 }
@@ -514,6 +521,39 @@ div.block_html .content {
     font-size: 1.5em;
 }
 
+.dashlet .content table {
+    width: 100%;
+}
+
+/******************************************
+ * Totara stats dashlet
+ *****************************************/
+.block_totara_stats.dashlet .content tr td.staticon {
+    width:35px;
+}
+
+/******************************************
+ * Quicklinks dashlet
+ *****************************************/
+.block_quicklinks.dashlet .content tr td.linkicon {
+    width:35px;
+}
+
+/******************************************
+ * Totara reminders dashlet
+ *****************************************/
+.block_totara_reminders.dashlet .content tr td.status {
+    width:35px;
+    text-align:center;
+}
+
+/******************************************
+ * Totara notifications dashlet
+ *****************************************/
+.block_totara_notify.dashlet .content tr td.status {
+  width:35px;
+  text-align:center;
+}
 
 /******************************************
  * List blocks
@@ -1972,49 +2012,31 @@ table.allmyteam td a {
 
 #my-teammembers h1 {
   margin:0;
-  padding: 5px 10px 4px 10px;
-  border: 1px solid #d2d2d2;
 }
 
-#my-teammembers #middle-column table.flexible {
+#my-teammembers table.flexible {
   width:100%;
   margin-bottom:0;
+  background:transparent;
+}
+#my-teammembers table.flexible .user_userlearningicons {
+    white-space:nowrap;
+}
+#my-teammembers table.flexible .user_userlearningicons a {
+    padding-right:5px;
+}
+#my-teammembers table.flexible .user_namelink {
+    white-space:nowrap;
 }
 
-#my-teammembers #middle-column table.flexible td {
-  font-size:0.9em;
+/*****************************************************************************/
+/** My reports  **/
+/*****************************************************************************/
+#my-reports table.reportmanager {
+    width:100%;
 }
-
-#my-teammembers #middle-column table.flexible th {
-  padding:6px 3px;
-}
-
-#my-teammembers #middle-column table.flexible th.c1,
-#my-teammembers #middle-column table.flexible td.c1 {
-  vertical-align: top;
-  width: 140px;
-  padding-left: 10px;
-  border-left:1px solid #d2d2d2;
-}
-
-#my-teammembers #middle-column table.flexible th.c2 {
-  vertical-align: top;
-  width: 110px;
-}
-
-#my-teammembers #middle-column table.flexible th.c3 {
-  vertical-align: top;
-  width: 110px;
-}
-
-#my-teammembers #middle-column table.flexible th.c4 {
-  vertical-align: top;
-  width: 115px;
-}
-
-#my-teammembers #middle-column table.flexible th.c4,
-#my-teammembers #middle-column table.flexible td.c4 {
-  border-right:1px solid #d2d2d2;
+#my-reports table.reportmanager td.icon {
+    width:40px;
 }
 
 /*****************************************************************************/
