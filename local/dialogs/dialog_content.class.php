@@ -180,7 +180,9 @@ class totara_dialog_content {
 
         $markup .= '<ul class="tabs dialog-nobind">';
         $markup .= '  <li><a href="#browse-tab">'.get_string('browse', 'dialog').'</a></li>';
-        $markup .= '  <li><a href="#search-tab">'.get_string('search', 'dialog').'</a></li>';
+        if (!empty($this->search_code)) {
+            $markup .= '  <li><a href="#search-tab">'.get_string('search', 'dialog').'</a></li>';
+        }
         $markup .= '</ul>';
 
         // Display treeview
@@ -194,11 +196,13 @@ class totara_dialog_content {
         $markup .= $this->generate_treeview();
         $markup .= '</div>';
 
-        // Display searchview
-        $markup .= '<div id="search-tab" class="dialog-load-within">';
-        $markup .= $this->generate_search_interface();
-        $markup .= '<div id="search-results"></div>';
-        $markup .= '</div>';
+        if (!empty($this->search_code)) {
+            // Display searchview
+            $markup .= '<div id="search-tab" class="dialog-load-within">';
+            $markup .= $this->generate_search_interface();
+            $markup .= '<div id="search-results"></div>';
+            $markup .= '</div>';
+        }
 
         // Close select container
         $markup .= '</div></td>';
