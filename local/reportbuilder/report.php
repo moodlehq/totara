@@ -58,7 +58,8 @@ print_header_simple($pagetitle, '', $navigation, '', null, true, $report->edit_b
 if($graph) {
     print_heading($fullname);
 } else {
-    print_heading("$fullname: ".get_string('showing','local_reportbuilder')." $countfiltered / $countall");
+    print_heading("$fullname: ".
+        $report->print_result_count_string($countfiltered, $countall));
 }
 
 if($debug) {

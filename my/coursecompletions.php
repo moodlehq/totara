@@ -95,11 +95,8 @@ $currenttab = "course_completions";
 include('learning_tabs.php');
 
 // display heading including filtering stats
-if($countfiltered == $countall) {
-    print_heading("$strheading: $countall results shown");
-} else {
-    print_heading("$strheading: $countfiltered/$countall results shown");
-}
+$heading = $report->print_result_count_string($countfiltered, $countall);
+print_heading($heading);
 
 print $report->print_description();
 

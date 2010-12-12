@@ -187,12 +187,8 @@
     $countfiltered = $report->get_filtered_count();
     $countall = $report->get_full_count();
 
-    // display heading including filtering stats
-    if($countfiltered == $countall) {
-        print_heading("$countall " . get_string('records', 'local_plan') . ".");
-    } else {
-        print_heading("$countfiltered/$countall " . get_string('recordsshown', 'local_plan') . ".");
-    }
+    $heading = $report->print_result_count_string($countfiltered, $countall);
+    print_heading($heading);
 
     print $report->print_description();
 

@@ -2227,6 +2227,30 @@ var comptree = [' . implode(', ', $comptrees) . '];
         return $out;
     }
 
+
+    /**
+     * Return the appropriate string describing the search matches
+     *
+     * @param integer $countfiltered Number of records that matched the search query
+     * @param integer $countall Number of records in total (with no search)
+     *
+     * @return string Text describing the number of results
+     */
+    function print_result_count_string($countfiltered, $countall) {
+        // get pluralisation right
+        $resultstr = $countall == 1 ? 'record' : 'records';
+
+        if($countfiltered == $countall) {
+            $heading = get_string('x' . $resultstr, 'local_reportbuilder', $countall);
+        } else {
+            $a = new object();
+            $a->filtered = $countfiltered;
+            $a->unfiltered = $countall;
+            $heading = get_string('xofy' . $resultstr, 'local_reportbuilder', $a);
+        }
+        return $heading;
+    }
+
     /** Download current table in ODS format
      * @param array $fields Array of column headings
      * @param string $query SQL query to run to get results
