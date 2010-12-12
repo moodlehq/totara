@@ -17,7 +17,7 @@ abstract class dp_base_component {
                 $string_properties = new object();
                 $string_properties->property = $property;
                 $string_properties->class = get_class($this);
-                throw new Exception(get_string('error:properymustbeset', 'local_plan', $string_properties));
+                throw new Exception(get_string('error:propertymustbeset', 'local_plan', $string_properties));
             }
         }
     }

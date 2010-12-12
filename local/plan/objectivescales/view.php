@@ -134,7 +134,7 @@ if ((!empty($moveup) or !empty($movedown))) {
         if (!(    set_field('dp_objective_scale_value', 'sortorder', $move->sortorder, 'id', $swap->id)
             && set_field('dp_objective_scale_value', 'sortorder', $swap->sortorder, 'id', $move->id)
         )) {
-            error(get_string('error:updateobjectivescalevalue'));
+            error(get_string('error:updateobjectivescalevalue', 'local_plan'));
         }
         commit_sql();
     }

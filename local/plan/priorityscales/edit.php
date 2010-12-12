@@ -23,7 +23,7 @@ if ($id == 0) {
 } else {
     // editing existing idp priority
     if (!$priority = get_record('dp_priority_scale', 'id', $id)) {
-        error(get_string('priorityscaledidincorrect', 'local_plan'));
+        error(get_string('error:priorityscaleidincorrect', 'local_plan'));
     }
 }
 

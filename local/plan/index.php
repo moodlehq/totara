@@ -39,7 +39,7 @@ if (dp_get_template_permission($template->id, 'plan', 'view', $role) != DP_PERMI
 $canaddplan = (dp_get_template_permission($template->id, 'plan', 'create', $role) == DP_PERMISSION_ALLOW);
 // END HACK
 
-print_header(get_string('plans', 'local_plan'), get_string('plans', 'local_plans'));
+print_header(get_string('plans', 'local_plan'), get_string('plans', 'local_plan'));
 
 // Plan menu
 echo dp_display_plans_menu($planuser,0,$role);

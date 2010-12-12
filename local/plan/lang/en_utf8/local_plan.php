@@ -144,6 +144,7 @@ $string['error:settingdoesnotexist'] = 'Setting {$a->action} does not exist in t
 $string['error:updatetemplateordering'] = 'Could not update plan template ordering';
 $string['error:updatepriorityscaleordering'] = 'Could not update priority scale ordering';
 $string['error:updateobjectivescaleordering'] = 'Could not update objective scale ordering';
+$string['error:updateobjectivescalevalue'] = 'Could not update objective scale value';
 
 // Course Strings
 $string['error:cannotupdatecourses'] = 'Cannot update courses';
@@ -165,21 +166,24 @@ $string['addremovecompetencies'] = 'Add/remove competencies';
 $string['setproficiency'] = 'Set Proficiency';
 $string['proficiency'] = 'Proficiency';
 $string['error:competencynotfound'] = 'Competency not found';
-$string['error:error:competenciesupdated'] = 'Competencies not update';
+$string['error:competenciesupdated'] = 'Competencies not updated';
 
 //Objective Strings
 $string['objectives'] = 'Objectives';
 $string['updateobjectives'] = 'Update objectives';
+$string['objectivesupdated'] = 'Objectives updated';
 $string['requestednewobjective'] = 'Add a new objective request';
 $string['updateobjective'] = 'Update';
 $string['addnewobjective'] = 'Add new objective';
 $string['error:objectivenotfound'] = 'Objective not found';
-$string['error:error:objectivesupdated'] = 'Objectives not update';
+$string['error:objectivesupdated'] = 'Objectives not update';
+$string['error:objectiveidincorrect'] = 'Objective ID incorrect';
 $string['objectivefullname'] = 'Objective Full Name';
 $string['objectiveshortname'] = 'Objective Short Name';
 $string['objectivedescription'] = 'Objective Description';
 $string['objectivepriority'] = 'Objective Priority';
 $string['error:cannotupdateobjectives'] = 'Cannot update objectives';
+$string['objectivesnotupdated'] = 'Objectives not updated';
 $string['deleteobjective'] = 'Delete objective';
 $string['deleteobjectiveareyousure'] = 'Are you sure you want to delete this objective?';
 $string['editobjective'] = 'Edit objective';
@@ -296,6 +300,7 @@ $string['error:missingpermissionsetting'] = 'Missing permission setting';
 $string['error:objectivescaledidincorrect'] = 'Incorrect Objective Scale ID';
 $string['error:notemplatewithoutpriorityscale'] = 'You must create at least one priority scale before you can create a template.';
 $string['error:notemplatewithoutobjectivescale'] = 'You must create at least one objective scale before you can create a template.';
+$string['error:unknownbuttonclicked'] = 'Unknown button clicked.';
 
 
 // Priority Scales
