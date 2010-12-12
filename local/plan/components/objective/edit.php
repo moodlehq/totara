@@ -115,6 +115,7 @@ if ( $deleteyes ){
         $record->description = $data->description;
         $record->priority = isset($data->priority)?$data->priority:null;
         $record->duedate = isset($data->duedate)?$data->duedate:null;
+        $record->scalevalueid = $data->scalevalueid;
         $record->approved = $component->approval_status_after_update();
 
         if (!update_record('dp_plan_objective', $record) ){

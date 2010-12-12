@@ -31,10 +31,12 @@ class plan_objective_edit_form extends moodleform {
 
         // Figure out permissions & settings
         $duedatemode = $objective->get_setting('duedatemode');
-        $duedateallow = $objective->get_setting('setduedate') == DP_PERMISSION_ALLOW;
+        $duedateallow = in_array( $objective->get_setting('setduedate'), array(DP_PERMISSION_ALLOW, DP_PERMISSION_APPROVE));
         $prioritymode = $objective->get_setting('prioritymode');
-        $priorityallow = $objective->get_setting('setpriority') == DP_PERMISSION_ALLOW;
+        $priorityallow = in_array( $objective->get_setting('setpriority'), array(DP_PERMISSION_ALLOW, DP_PERMISSION_APPROVE));
+        $profallow = in_array( $objective->get_setting('setproficiency'), array(DP_PERMISSION_ALLOW, DP_PERMISSION_APPROVE));
 
+        // Generate list of priorities
         if ($prioritymode > DP_PRIORITY_NONE) {
 
             $scaleid = $objective->get_setting('priorityscale');
@@ -50,6 +52,16 @@ class plan_objective_edit_form extends moodleform {
                 $prioritylist = $select;
             } else {
                 $prioritylist = array( get_string('none', 'local_plan') );
+            }
+        }
+
+        // Generate list of proficiencies
+        $proflist = array();
+        $objscaleid = $objective->get_setting('objectivescale');
+        if ( $objscaleid ){
+            $vals = get_records('dp_objective_scale_value', 'objscaleid', $objscaleid, 'sortorder', 'id, name, sortorder');
+            foreach ( $vals as $v ){
+                $proflist[$v->id] = $v->name;
             }
         }
 
@@ -95,6 +107,13 @@ class plan_objective_edit_form extends moodleform {
             if ( !$priorityallow ){
                 $mform->freeze(array('priority'));
             }
+        }
+
+        // Proficiency
+        $mform->addElement('select', 'scalevalueid', get_string('proficiency', 'local_plan'), $proflist);
+        $mform->addRule('scalevalueid', get_string('err_required', 'form'), 'required', '', 'client', false, false);
+        if ( !$profallow ){
+            $mform->freeze(array('scalevalueid'));
         }
 
         $this->add_action_buttons();
