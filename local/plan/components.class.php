@@ -304,6 +304,75 @@ abstract class dp_base_component {
             return false;
         }
     }
+    /**
+     * Update instances of $componentupdatetype linked to the specified compoent,
+     * delete links in db which aren't needed, and add links missing from db
+     * which are needed
+     * @param integer $thiscompoentid Identifies the component on one end of the link
+     * @param string $componentupdatetype: the type of components on the other end of the links
+     * @param array $componentids array of component ids that should be on the other end of the links in db
+     *
+     * @return void
+     */
+    function update_linked_components($thiscomponentid, $componentupdatetype, $componentids) {
+        global $CFG;
+        // name of the current component
+        $thiscomponent = $this->component;
+
+        // component relations are stored alphabetically
+        // first component is in component1
+        // Figure out which order to perform query
+        switch (strcmp($thiscomponent, $componentupdatetype)) {
+        case -1:
+            $matchedcomp = 'component1';
+            $matchedid = 'itemid1';
+            $searchedcomp = 'component2';
+            $searchedid = 'itemid2';
+            $thiscomponentfirst = true;
+            break;
+        case 1:
+            $matchedcomp = 'component2';
+            $matchedid = 'itemid2';
+            $searchedcomp = 'component1';
+            $searchedid = 'itemid1';
+            $thiscomponentfirst = false;
+            break;
+        case 0:
+        default:
+            // linking within the same component not supported
+            return false;
+        }
+
+        // find all matching relations in db
+        $sql = "SELECT id, $searchedid " . sql_as() . " itemid
+            FROM {$CFG->prefix}dp_plan_component_relation
+            WHERE $matchedcomp = '$thiscomponent' AND
+                $matchedid = $thiscomponentid AND
+                $searchedcomp = '$componentupdatetype'";
+        if($result = get_records_sql($sql)) {
+            $dbcomponentids = array();
+            foreach($result as $item) {
+                $position = array_search($item->itemid, $componentids);
+                if ($position === false) {
+                    //Item in db isn't in the array of items to keep - delete from db:
+                    delete_records('dp_plan_component_relation', 'id', $item->id);
+                } else {
+                    //Item in array of items to keep is already in db - delete from keep array
+                    unset($componentids[$position]);
+                }
+            }
+        }
+        if (!empty($componentids)) {
+            // There are still required compoent links that are not already in the database:
+            $relation->component1 = $thiscomponentfirst ? $thiscomponent : $componentupdatetype;
+            $relation->component2 = $thiscomponentfirst ? $componentupdatetype : $thiscomponent;
+            foreach ($componentids as $linkedcomponentid) {
+                $relation->itemid1 = $thiscomponentfirst ? $thiscomponentid : $linkedcomponentid;
+                $relation->itemid2 = $thiscomponentfirst ? $linkedcomponentid : $thiscomponentid;
+                insert_record('dp_plan_component_relation', $relation);
+            }
+        }
+    }
 
     /**
      * Count instances of $componentrequired linked to items of this component type

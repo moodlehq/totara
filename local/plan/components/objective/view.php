@@ -3,6 +3,7 @@
 require_once(dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/config.php');
 require_once($CFG->dirroot . '/local/plan/lib.php');
 require_once($CFG->dirroot . '/local/plan/components/objective/edit_form.php');
+require_once($CFG->dirroot . '/local/js/lib/setup.php');
 
 $id = required_param('id', PARAM_INT); // plan id
 $caid = required_param('itemid', PARAM_INT); // objective assignment id
@@ -10,6 +11,31 @@ $caid = required_param('itemid', PARAM_INT); // objective assignment id
 $plan = new development_plan($id);
 $componentname = 'objective';
 $component = $plan->get_component($componentname);
+
+/// Javascript stuff
+// If we are showing dialog
+if ($component->can_update_items()) {
+    // Setup lightbox
+    local_js(array(
+        TOTARA_JS_DIALOG,
+        TOTARA_JS_TREEVIEW
+    ));
+
+    // Get course picker
+    require_js(array(
+        $CFG->wwwroot.'/local/plan/components/objective/find-course.js.php'
+    ));
+}
+
+$mform = $component->objective_form($caid, 'view');
+if ($data = $mform->get_data()){
+    if (isset($data->edit)){
+        redirect("{$CFG->wwwroot}/local/plan/components/objective/edit.php?id={$id}&itemid={$caid}");
+    } elseif (isset($data->delete)){
+        redirect("{$CFG->wwwroot}/local/plan/components/objective/edit.php?id={$id}&itemid={$caid}&d=1");
+    }
+}
+//$mform = new moodleform();
 
 $fullname = $plan->name;
 $pagetitle = format_string(get_string('developmentplan','local_plan').': '.$fullname);
@@ -40,7 +66,8 @@ if ( $canupdate = $component->can_update_items() ){
             $buttonlabel
     );
 }
-print '<br/><input type="submit" name="submitbutton" value="'.get_string('addremovecourses', 'local_plan').'" />';
+print $component->display_linked_courses($caid);
+print $component->display_course_picker($caid);
 
 print_footer();
 

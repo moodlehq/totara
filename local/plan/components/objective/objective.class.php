@@ -883,4 +883,31 @@ SQL;
     public function get_approval($caid){
         return get_field('dp_plan_objective', 'approved', 'id', $caid);
     }
+    /*
+     * Return markup for javascript course picker
+     * objectiveid integer - the id of the objective for which selected& available courses should be displayed
+     * @access  public
+     * @return  string
+     */
+    public function display_course_picker($objectiveid) {
+
+        if (!$permission = $this->can_update_items()) {
+            return '';
+        }
+
+        $btntext = get_string('linkobjectivecourses', 'local_plan');
+
+        $html  = '<div class="buttons">';
+        $html .= '<div class="singlebutton dp-plan-assign-button">';
+        $html .= '<div>';
+        $html .= '<script type="text/javascript">var objective_id = ' . $objectiveid . ';';
+        $html .= 'var plan_id = ' . $this->plan->id . ';</script>';
+        $html .= '<input type="submit" id="show-course-dialog" value="' . $btntext . '" />';
+        $html .= '</div>';
+        $html .= '</div>';
+        $html .= '</div>';
+
+        return $html;
+    }
+
 }
