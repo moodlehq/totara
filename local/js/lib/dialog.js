@@ -933,6 +933,10 @@ totaraDialog_handler_treeview_singleselect.prototype._handle_update_hierarchy = 
  * @return void
  */
 totaraDialog_handler_treeview_singleselect.prototype.first_load = function() {
+
+    // Setup dialog
+    totaraDialog_handler_treeview.prototype.first_load.call(this);
+
     this._set_current_selected();
 }
 
@@ -942,9 +946,6 @@ totaraDialog_handler_treeview_singleselect.prototype.first_load = function() {
  * @return void
  */
 totaraDialog_handler_treeview_singleselect.prototype.every_load = function() {
-
-    // Setup treeview
-    totaraDialog_handler_treeview.prototype.every_load.call(this);
 
     this._make_selectable($('.treeview', this._container));
     //this._set_current_selected();
