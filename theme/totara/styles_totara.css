@@ -1619,6 +1619,10 @@ body#blocks-facetoface-calendar .yui-tt .bd {
 	padding: 10px;
 }
 
+.mod-facetoface #content > div.generalbox {
+    background-color: transparent !important;
+}
+
 
 /******************************************
  * Guide Steps
