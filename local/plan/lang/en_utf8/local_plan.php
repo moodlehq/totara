@@ -322,6 +322,7 @@ $string['error:noreorderpriorityinuse'] = 'You cannot reorder a priority scale t
 $string['error:nodeletepriorityvalueinuse'] = 'You cannot delete a priority scale value from a scale that is in use. To delete this priority scale value, the priority scale must not be assigned to any IDP.';
 $string['linktoobjectivevalues'] = '<a href=\\"view.php?id=$a\\">Click here</a> to view/edit the scale values for this priority scale.';
 $string['linkobjectivecourses'] = 'Update objective course links';
+$string['linkobjectivecourseswithapproval'] = 'Update objective course links (will require approval)';
 $string['explainpriorityscalevals'] = 'One priority per line (highest to lowest)';
 $string['changeto'] = 'Change to';
 $string['set'] = 'Set';
@@ -427,6 +428,7 @@ $string['planupdatesuccess'] = 'Plan update successful';
 $string['planupdatefail'] = 'Plan update failed';
 $string['planupdatecancelled'] = 'Plan update cancelled';
 $string['editdetails'] = 'Edit details';
+$string['editdetailswithapproval'] = 'Edit details (will require approval)';
 $string['deleteplan'] = 'Delete plan';
 $string['plandeletesuccess'] = 'Successfully deleted plan $a';
 $string['plandeletefail'] = 'Could not delete plan $a';

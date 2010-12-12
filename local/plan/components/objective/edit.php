@@ -115,12 +115,9 @@ if ( $deleteyes ){
         $record->description = $data->description;
         $record->priority = isset($data->priority)?$data->priority:null;
         $record->duedate = isset($data->duedate)?$data->duedate:null;
+        $record->approved = $component->approval_status_after_update();
 
-        if ( $component->get_setting('updateobjective') == DP_PERMISSION_REQUEST ){
-            $record->approved = DP_APPROVAL_UNAPPROVED;
-        }
-
-        if (!update_record('dp_plan_objective', $record)){
+        if (!update_record('dp_plan_objective', $record) ){
             print_error("Was unable to update objective.");
         } else {
             totara_set_notification('Objective updated.', $objviewurl);

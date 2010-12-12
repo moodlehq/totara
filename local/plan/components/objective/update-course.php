@@ -44,11 +44,17 @@ else {
 }
 
 require_capability('local/plan:accessplan', get_system_context());
-
 $plan = new development_plan($planid);
 $component = $plan->get_component('objective');
+if ( !$component->can_update_items() ) {
+    print_error('error:cannotupdateobjectives', 'local_plan');
+}
 
 $component->update_linked_components($objectiveid, 'course', $idlist);
+$rec = new stdClass();
+$rec->id = $objectiveid;
+$rec->approved = $component->approval_status_after_update();
+update_record('dp_plan_objective', $rec);
 
 // Update plan to unapproved if current status is declined
 $plan->set_status_unapproved_if_declined();

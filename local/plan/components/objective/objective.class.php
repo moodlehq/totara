@@ -770,14 +770,7 @@ class dp_objective_component extends dp_base_component {
         $rec->priority = $priority;
         $rec->duedate = $duedate;
         $rec->scalevalueid = get_field('dp_objective_scale', 'defaultid', 'id', $this->get_setting('objectivescale'));
-
-        // Mark the objective auto-approved, if the user has "allow" or "approve" permissions
-        $perm = $this->get_setting('updateobjective');
-        if ( $perm == DP_PERMISSION_ALLOW || $perm == DP_PERMISSION_APPROVE ){
-            $rec->approved = DP_APPROVAL_APPROVED;
-        } else {
-            $rec->approved = DP_APPROVAL_UNAPPROVED;
-        }
+        $rec->approved = $this->approval_status_after_update();
 
         return insert_record('dp_plan_objective', $rec);
     }
@@ -883,6 +876,25 @@ SQL;
     public function get_approval($caid){
         return get_field('dp_plan_objective', 'approved', 'id', $caid);
     }
+
+    /**
+     * Indicates what the objective's approval status should be if the approval
+     * is updated.
+     * @return int (or false on failure)
+     */
+    public function approval_status_after_update( ){
+        $perm = $this->can_update_items();
+        if ( $perm == DP_PERMISSION_REQUEST ){
+            return DP_APPROVAL_UNAPPROVED;
+        }
+        if ( in_array( $perm, array( DP_PERMISSION_ALLOW, DP_PERMISSION_APPROVE ) ) ){
+            return DP_APPROVAL_APPROVED;
+        }
+
+        // In case something went wrong, fall back to unapproved status
+        return DP_APPROVAL_UNAPPROVED;
+    }
+
     /*
      * Return markup for javascript course picker
      * objectiveid integer - the id of the objective for which selected& available courses should be displayed
@@ -895,7 +907,11 @@ SQL;
             return '';
         }
 
-        $btntext = get_string('linkobjectivecourses', 'local_plan');
+        if ( $this->will_an_update_revoke_approval( $objectiveid ) ){
+            $btntext = get_string('linkobjectivecourseswithapproval', 'local_plan');
+        } else {
+            $btntext = get_string('linkobjectivecourses', 'local_plan');
+        }
 
         $html  = '<div class="buttons">';
         $html .= '<div class="singlebutton dp-plan-assign-button">';
@@ -910,4 +926,23 @@ SQL;
         return $html;
     }
 
+    /**
+     * Indicates whether an update will revoke the "approved" status of the
+     * component
+     * @param <type> $caid
+     * @return boolean
+     */
+    public function will_an_update_revoke_approval( $caid ){
+        // If the resource is already approved, and the user has only REQUEST
+        // permission, then it will revoke the approved status. Otherwise,
+        // no change.
+        if (
+                $this->can_update_items() == DP_PERMISSION_REQUEST
+                && $this->get_approval($caid) != DP_APPROVAL_UNAPPROVED
+        ){
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
