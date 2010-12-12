@@ -1052,6 +1052,11 @@ span.coursecompletionstatus span.completion-completeviarpl {
 /** Report Builder **/
 /*****************************************************************************/
 
+div.reportbuilder-description {
+    margin-top: 10px;
+    background-color: transparent !important;
+}
+
 /* shrink select boxes to fit in filter */
 select.totara-limited-width {
     width: 200px;

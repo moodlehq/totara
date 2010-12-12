@@ -2220,7 +2220,7 @@ var comptree = [' . implode(', ', $comptrees) . '];
         $out = '';
         if(isset($this->description) &&
             trim(strip_tags($this->description)) != '') {
-            $out .= print_box_start('generalbox', '', true);
+            $out .= print_box_start('generalbox reportbuilder-description', '', true);
             $out .= $this->description;
             $out .= print_box_end(true);
         }
