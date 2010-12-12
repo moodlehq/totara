@@ -785,6 +785,7 @@ body#blocks-facetoface-calendar .yui-tt .bd {
 
 .dashboard .dashlet {
     width: auto;
+    margin-bottom: 5px !important;
 }
 
 .dashboard .dashlet .header {
@@ -806,8 +807,11 @@ body#blocks-facetoface-calendar .yui-tt .bd {
     font-family: 'Trebuchet ms',verdana,helvetica,sans-serif;
 }
 
-.dashboard .dashlet .header .title h2 a {
+.dashboard .dashlet .header .title h2 span {
     display: block;
+    color: #322f2c;
+    font-size: 0.7em;
+    margin-top: 0.8em;
 }
 
 .dashboard .dashlet .content {
@@ -815,6 +819,9 @@ body#blocks-facetoface-calendar .yui-tt .bd {
     margin: 0;
 }
 
+.dashboard .dashlet .footer {
+    margin-top: 10px;
+}
 
 
 /******************************************

@@ -115,8 +115,9 @@ div.block_admin_tree div.admintree .depth2 {
 }
 
 /* Admin block */
-#left-column {
+#left-column .block_admin_tree {
     background: url("images/left_menu_bg.gif") repeat-y scroll left top transparent;
+    overflow: auto;
 }
 
 #left-column .block_admin_tree div.header {

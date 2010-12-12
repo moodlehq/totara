@@ -5,6 +5,7 @@ $string['from'] = 'From';
 $string['normal'] = 'Normal';
 $string['notifications'] = 'Notifications';
 $string['of'] = 'of';
+$string['showingxofx'] = 'Showing {$a[0]} of {$a[1]}';
 $string['statement'] = 'Statement';
 $string['status'] = 'Status';
 $string['statusok'] = 'Status OK';

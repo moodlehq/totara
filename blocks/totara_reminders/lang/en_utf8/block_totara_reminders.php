@@ -6,6 +6,7 @@ $string['reminders'] = 'Reminders';
 $string['of'] = 'of';
 $string['onaccept'] = 'Accept';
 $string['onreject'] = 'Reject';
+$string['showingxofx'] = 'Showing {$a[0]} of {$a[1]}';
 $string['statement'] = 'Statement';
 $string['status'] = 'Status';
 $string['statusok'] = 'Status OK';
