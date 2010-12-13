@@ -42,6 +42,7 @@ input, select, button {
     cursor: pointer;
     margin:0px 1px;
     padding:3px;
+    text-shadow:#005f6b 1px 1px 1px;
 }
 .totarabutton.hover {
      background: url("images/button_repeat_hover.jpg") repeat-x scroll left top #56c3ca;
@@ -106,7 +107,7 @@ div.block_admin_tree div.admintree .depth2 {
   font-size: 0.9em;
   clear:both;
   padding: 10px 23px;
-  background: url("images/content_bg_blue.jpg") no-repeat scroll center top #FFFFFF;
+  background: url("images/content_bg_blue.jpg") no-repeat scroll right top #FFFFFF;
   margin-bottom: 100px; /* Stops footer overlapping content*/
 }
 
