@@ -58,6 +58,15 @@ class totara_dialog_content_hierarchy extends totara_dialog_content {
 
 
     /**
+     * Enable search tab content
+     *
+     * @access  public
+     * @var     bool
+     */
+    public $search_code = true;
+
+
+    /**
      * Load hierarchy specific information and make some
      * capability checks (which can be disabled)
      *
