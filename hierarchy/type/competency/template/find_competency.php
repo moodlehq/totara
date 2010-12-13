@@ -54,7 +54,7 @@ if(!$nojs) {
     $dialog->load_items($parentid);
 
     // Set disabled items
-    $dialog->disabled_items = $competenciesintemplate;
+    $dialog->selected_items = $competenciesintemplate;
 
     // Set title
     $dialog->selected_title = 'selectedcompetencies';
