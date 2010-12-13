@@ -146,6 +146,15 @@ $string['error:updatepriorityscaleordering'] = 'Could not update priority scale 
 $string['error:updateobjectivescaleordering'] = 'Could not update objective scale ordering';
 $string['error:updateobjectivescalevalue'] = 'Could not update objective scale value';
 
+// Strings with placeholder for custom-editable component names
+$string['updatelinkedx'] = 'Update linked $a';
+$string['updatelinkedxwithapproval'] = 'Update linked $a (will require approval)';
+$string['nox'] = 'No $a.';
+$string['nolinkedx'] = 'No linked $a.';
+$string['linkedx'] = 'Linked $a';
+$string['backtoallx'] = '&laquo; Back to all $a';
+
+
 // Course Strings
 $string['error:cannotupdatecourses'] = 'Cannot update courses';
 $string['updatecourse'] = 'Update';
@@ -321,8 +330,8 @@ $string['error:updatepriorityscalevalue'] = 'Could not update priority scale val
 $string['error:noreorderpriorityinuse'] = 'You cannot reorder a priority scale that is in use. To reorder this priority scale, it must not be assigned to any IDP\'s.';
 $string['error:nodeletepriorityvalueinuse'] = 'You cannot delete a priority scale value from a scale that is in use. To delete this priority scale value, the priority scale must not be assigned to any IDP.';
 $string['linktoobjectivevalues'] = '<a href=\\"view.php?id=$a\\">Click here</a> to view/edit the scale values for this priority scale.';
-$string['linkobjectivecourses'] = 'Update objective course links';
-$string['linkobjectivecourseswithapproval'] = 'Update objective course links (will require approval)';
+$string['linkobjectivecourses'] = 'Update objective $a links';
+$string['linkobjectivecourseswithapproval'] = 'Update objective $a links (will require approval)';
 $string['explainpriorityscalevals'] = 'One priority per line (highest to lowest)';
 $string['changeto'] = 'Change to';
 $string['set'] = 'Set';
@@ -386,7 +395,6 @@ $string['noobjectivescales'] = 'To use objectives setup an objective scale';
 
 $string['competenciesupdated'] = 'Competencies updated';
 $string['launchcourse'] = 'Launch course';
-$string['backtoallx'] = '&laquo; Back to all $a';
 $string['overview'] = 'Overview';
 $string['viewitem'] = 'View item';
 $string['itemapproval'] = 'Item approval';
@@ -406,9 +414,6 @@ $string['actions'] = 'Actions';
 $string['confirmitemdelete'] = 'Are you sure you want to remove this item?';
 $string['cannotremoveitem'] = 'There was a problem removing that item';
 $string['canremoveitem'] = 'The item was successfully removed';
-$string['nox'] = 'No $a.';
-$string['nolinkedx'] = 'No linked $a.';
-$string['linkedx'] = 'Linked $a';
 $string['nocompetencies'] = 'No competencies.';
 $string['nolinkedcompetencies'] = 'No linked competencies.';
 $string['linkedcompetencies'] = 'Linked competencies';

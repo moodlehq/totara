@@ -66,8 +66,11 @@ if ( $canupdate = $component->can_update_items() ){
             $buttonlabel
     );
 }
-print $component->display_linked_courses($caid);
-print $component->display_course_picker($caid);
+
+if ( $plan->get_component('course')->get_setting('enabled') ){
+    print $component->display_linked_courses($caid);
+    print $component->display_course_picker($caid);
+}
 
 print_footer();
 

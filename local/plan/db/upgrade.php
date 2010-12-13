@@ -300,5 +300,27 @@ function xmldb_local_plan_upgrade($oldversion=0) {
         $result = $result && change_field_default($table, $field);
     }
 
+    if ($result && $oldversion < 2010121300) {
+        // We were using mdl_course.id as the course id in mdl_dp_plan_component_relation
+        // when linking a course to an objective. We are switching to using
+        // mdl_dp_plan_course_assign.id
+        $reclist = get_records_select('dp_plan_component_relation', "component1='course' and component2='objective'");
+        foreach( $reclist as $rel ){
+            $objective = get_record('dp_plan_objective', 'id', $rel->itemid2);
+            $courseassign = get_record('dp_plan_course_assign', 'id', $rel->itemid1, 'planid', $objective->planid);
+
+            // If we couldn't find a mapping for this course in the same plan as the objective, then delete
+            // the link, because you should only be able to link courses that are in that plan
+            if ( !$courseassign ){
+                $result = $result && delete_records('dp_plan_component_relation', 'id', $rel->id);
+            } else {
+                $newrel = stdClass();
+                $newrel->id = $rel->id;
+                $newrel->itemid1 = $courseassign->id;
+                $result = $result && update_record('dp_plan_component_relation', $newrel);
+            }
+        }
+    }
+
     return $result;
 }

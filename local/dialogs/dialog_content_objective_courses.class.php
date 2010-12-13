@@ -30,7 +30,7 @@ class totara_dialog_objective_content_courses extends totara_dialog_content_cour
      */
     public function load_courses($planid) {
         global $CFG;
-        $sql = 'SELECT c.id as id, c.fullname as fullname, c.sortorder as sortorder ' .
+        $sql = 'SELECT dppca.id as id, c.fullname as fullname, c.sortorder as sortorder ' .
                 'FROM '. $CFG->prefix . 'dp_plan_course_assign dppca' .
                 ' INNER JOIN ' . $CFG->prefix . 'course c ON c.id = dppca.courseid ' .
                 'WHERE dppca.planid = ' . $planid;

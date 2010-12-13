@@ -851,7 +851,16 @@ class dp_course_component extends dp_base_component {
             return false;
         }
 
-        return delete_records('dp_plan_course_assign', 'id', $caid);
+        $result = delete_records('dp_plan_course_assign', 'id', $caid);
+
+        // Delete mappings
+        // todo: Should this change the approval status of an objective that this
+        // course is linked to?
+        if ( $result ){
+            $caid = delete_records('dp_plan_component_relations', 'component1', 'course', 'itemid1', $caid);
+            $caid = delete_records('dp_plan_component_relations', 'component2', 'course', 'itemid2', $caid);
+        }
+        return $result;
     }
 
 }

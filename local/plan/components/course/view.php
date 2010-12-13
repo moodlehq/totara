@@ -12,6 +12,8 @@ $component = $plan->get_component($componentname);
 $currenturl = $CFG->wwwroot . '/local/plan/components/course/view.php?id='.$id.'&amp;itemid='.$caid;
 $competenciesenabled = $plan->get_component('competency')->get_setting('enabled');
 $competencyname = $plan->get_component('competency')->get_setting('name');
+$objectivesenabled = $plan->get_component('objective')->get_setting('enabled');
+$objectivename = $plan->get_component('objective')->get_setting('name');
 
 $fullname = $plan->name;
 $pagetitle = format_string(get_string('developmentplan','local_plan').': '.$fullname);
@@ -44,7 +46,14 @@ if($competenciesenabled) {
     }
 }
 
-
+if ($objectivesenabled){
+    print '<h3>' . get_string('linkedx', 'local_plan', $objectivename) . '</h3>';
+    if ( $linkedobjectives = $component->get_linked_components( $caid, 'objective' )){
+        print $plan->get_component('objective')->display_linked_objectives($linkedobjectives);
+    } else {
+        print '<p>' . get_string('nolinkedx', 'local_plan', $objectivename) . '</p>';
+    }
+}
 
 print_footer();
 

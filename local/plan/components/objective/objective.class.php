@@ -312,13 +312,16 @@ class dp_objective_component extends dp_base_component {
                 $this->get_setting('updateobjective') == DP_PERMISSION_ALLOW
                 || $this->get_setting('updateobjective') == DP_PERMISSION_APPROVE
         );
+        $coursesenabled = $this->plan->get_component('course')->get_setting('enabled');
 
         $as = sql_as();
         $count = 'SELECT COUNT(*) ';
         $select = "SELECT o.id, o.planid, o.fullname {$as} objname, o.duedate, o.approved, o.scalevalueid ";
         $select .= ", psv.id as priority, psv.name {$as} priorityname ";
         $select .= ", osv.achieved ";
-        $select .= ", (select count(*) from {$CFG->prefix}dp_plan_component_relation pcr where pcr.component1='course' and pcr.component2='objective' and pcr.itemid2=o.id) {$as} numcourses ";
+        if ( $coursesenabled ){
+            $select .= ", (select count(*) from {$CFG->prefix}dp_plan_component_relation pcr where pcr.component1='course' and pcr.component2='objective' and pcr.itemid2=o.id) {$as} numcourses ";
+        }
         // todo: Add evidence support
 //        $select .= ", (select count(*) from {$CFG->prefix}dp_plan_relation pr where pr.itemtype1='evidence' and pr.itemtype2='objective' and pr.itemid2=o.id) {$as} numevidences ";
 
@@ -337,16 +340,13 @@ class dp_objective_component extends dp_base_component {
             return '<div class="noitems-assignobjectives">'.get_string('noobjectives', 'local_plan').'</div>';
         }
 
-        $tableheaders = array(
-            get_string('name','local_plan'),
-            'Courses',
-//            'Evidence',
-        );
-        $tablecolumns = array(
-            'objname',
-            'numcourses',
-//            'numevidence',
-        );
+        $tableheaders = array(get_string('name', 'local_plan'));
+        $tablecolumns = array('objname');
+
+        if ( $coursesenabled ){
+            $tableheaders[] = $this->plan->get_component('course')->get_setting('name');
+            $tablecolumns[] = 'numcourses';
+        }
 
         if($showpriorities) {
             $tableheaders[] = get_string('priority', 'local_plan');
@@ -409,7 +409,9 @@ class dp_objective_component extends dp_base_component {
 
                 $row = array();
                 $row[] = $this->display_objective_name($objective);
-                $row[] = $objective->numcourses;
+                if ( $coursesenabled ){
+                    $row[] = $objective->numcourses;
+                }
 //                $row[] = $objective->numevidences;
 
                 if($showpriorities) {
@@ -472,8 +474,9 @@ class dp_objective_component extends dp_base_component {
     function display_linked_courses($objectiveid) {
         global $CFG;
 
+        $coursename = $this->plan->get_component('course')->get_setting('name');
         $tableheaders = array(
-            get_string('linkedx', 'local_plan', get_string('courses')),
+            get_string('linkedx', 'local_plan', $coursename),
         );
         $tablecolumns = array(
             'fullname',
@@ -488,7 +491,15 @@ class dp_objective_component extends dp_base_component {
 
         $list = $this->get_linked_components($objectiveid, 'course');
         if(is_array($list) && count($list) > 0) {
-            $sql = "select * from {$CFG->prefix}course c where c.id in (" . implode(',', $list) . ") order by c.fullname";
+            $sql = "
+                select c.*
+                from
+                    {$CFG->prefix}course c
+                    inner join {$CFG->prefix}dp_plan_course_assign ca
+                    on c.id = ca.courseid
+                where ca.id in (".implode(',', $list).") order by c.fullname
+                ";
+            //$sql = "select * from {$CFG->prefix}course c where c.id in (" . implode(',', $list) . ") order by c.fullname";
             $records = get_recordset_sql($sql);
             if ($records){
 
@@ -506,7 +517,7 @@ class dp_objective_component extends dp_base_component {
 
             }
         } else {
-            $table->add_data(array(get_string('nolinkedx', 'local_plan', get_string('courses'))));
+            $table->add_data(array(get_string('nolinkedx', 'local_plan', $coursename)));
         }
         // return instead of outputing table contents
         ob_start();
@@ -516,6 +527,56 @@ class dp_objective_component extends dp_base_component {
 
         return $out;
     }
+
+    /**
+     * Generates a flexibletable of details for all the courses linked to the
+     * objective
+     *
+     * @global object $CFG
+     * @param int $objectiveid
+     * @return string
+     */
+    function display_linked_objectives($list) {
+        global $CFG;
+
+        $objectivename = $this->get_setting('name');
+        $tableheaders = array(
+            get_string('linkedx', 'local_plan', $objectivename),
+        );
+        $tablecolumns = array(
+            'fullname',
+        );
+
+        $table = new flexible_table('linkedobjectivelist');
+        $table->define_columns($tablecolumns);
+        $table->define_headers($tableheaders);
+
+        $table->set_attribute('class', 'logtable generalbox dp-plan-component-items');
+        $table->setup();
+
+        if ( count($list)>0 ){
+            $records = get_records_select('dp_plan_objective', 'id in ('.  implode(',',$list) .')', 'fullname', 'id, fullname, planid');
+            if ($records){
+
+                foreach ( $records as $ca) {
+
+                    $row = array();
+                    $row[] = "<a href=\"{$CFG->wwwroot}/local/plan/components/objective/view.php?id={$ca->planid}&itemid={$ca->id}\">{$ca->fullname}</a>";
+                    $table->add_data($row);
+                }
+            }
+        } else {
+            $table->add_data(array(get_string('nolinkedx', 'local_plan', $objectivename)));
+        }
+        // return instead of outputing table contents
+        ob_start();
+        $table->print_html();
+        $out = ob_get_contents();
+        ob_end_clean();
+
+        return $out;
+    }
+
 
     function display_objective_name($objective) {
         global $CFG;
@@ -907,10 +968,12 @@ SQL;
             return '';
         }
 
+        $coursename = $this->plan->get_component('course')->get_setting('name');
+
         if ( $this->will_an_update_revoke_approval( $objectiveid ) ){
-            $btntext = get_string('linkobjectivecourseswithapproval', 'local_plan');
+            $btntext = get_string('updatelinkedxwithapproval', 'local_plan', $coursename);
         } else {
-            $btntext = get_string('linkobjectivecourses', 'local_plan');
+            $btntext = get_string('updatelinkedx', 'local_plan', $coursename);
         }
 
         $html  = '<div class="buttons">';
