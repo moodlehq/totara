@@ -25,6 +25,7 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 require_once($CFG->libdir.'/data_object.php');
+require_once($CFG->dirroot.'/blocks/totara_stats/locallib.php');
 
 
 /**
@@ -256,6 +257,10 @@ class completion_completion extends data_object {
 
             $this->timestarted = $timestarted;
 
+        }
+
+        if (!$this->timeenrolled) {
+            totara_stats_add_event(time(), $this->userid, STATS_EVENT_COURSE_STARTED, '', $this->course);
         }
 
         $this->_save();
