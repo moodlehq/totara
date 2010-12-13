@@ -60,7 +60,7 @@ function totaraDialog(title, buttonid, config, default_url, handler) {
             closeOnEscape: true,
             draggable: false,
             height: height,
-            width: '80%',
+            width: '700px',
             modal: true,
             resizable: false,
             zIndex: 1500,
