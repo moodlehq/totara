@@ -57,7 +57,7 @@ class dp_global_settings_form extends moodleform {
 
             ob_start();
 
-            print '<form method="post" action="global.php" class="plancomponents">';
+            print '<form method="post" action="'.$CFG->wwwroot.'/local/plan/global.php" class="plancomponents">';
 
             $table->print_html();
 
