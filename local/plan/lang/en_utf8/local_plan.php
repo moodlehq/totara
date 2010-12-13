@@ -148,7 +148,6 @@ $string['error:updateobjectivescalevalue'] = 'Could not update objective scale v
 
 // Strings with placeholder for custom-editable component names
 $string['updatelinkedx'] = 'Update linked $a';
-$string['updatelinkedxwithapproval'] = 'Update linked $a (will require approval)';
 $string['nox'] = 'No $a.';
 $string['nolinkedx'] = 'No linked $a.';
 $string['linkedx'] = 'Linked $a';
@@ -330,8 +329,6 @@ $string['error:updatepriorityscalevalue'] = 'Could not update priority scale val
 $string['error:noreorderpriorityinuse'] = 'You cannot reorder a priority scale that is in use. To reorder this priority scale, it must not be assigned to any IDP\'s.';
 $string['error:nodeletepriorityvalueinuse'] = 'You cannot delete a priority scale value from a scale that is in use. To delete this priority scale value, the priority scale must not be assigned to any IDP.';
 $string['linktoobjectivevalues'] = '<a href=\\"view.php?id=$a\\">Click here</a> to view/edit the scale values for this priority scale.';
-$string['linkobjectivecourses'] = 'Update objective $a links';
-$string['linkobjectivecourseswithapproval'] = 'Update objective $a links (will require approval)';
 $string['explainpriorityscalevals'] = 'One priority per line (highest to lowest)';
 $string['changeto'] = 'Change to';
 $string['set'] = 'Set';

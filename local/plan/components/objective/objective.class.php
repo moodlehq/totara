@@ -969,12 +969,7 @@ SQL;
         }
 
         $coursename = $this->plan->get_component('course')->get_setting('name');
-
-        if ( $this->will_an_update_revoke_approval( $objectiveid ) ){
-            $btntext = get_string('updatelinkedxwithapproval', 'local_plan', $coursename);
-        } else {
-            $btntext = get_string('updatelinkedx', 'local_plan', $coursename);
-        }
+        $btntext = get_string('updatelinkedx', 'local_plan', $coursename);
 
         $html  = '<div class="buttons">';
         $html .= '<div class="singlebutton dp-plan-assign-button">';
