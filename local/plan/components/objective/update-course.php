@@ -45,9 +45,14 @@ else {
 
 require_capability('local/plan:accessplan', get_system_context());
 $plan = new development_plan($planid);
+$plancompleted = $plan->status == DP_PLAN_STATUS_COMPLETE;
 $component = $plan->get_component('objective');
+
 if ( !$component->can_update_items() ) {
     print_error('error:cannotupdateobjectives', 'local_plan');
+}
+if ( $plancompleted ){
+    print_error('plancompleted', 'local_plan');
 }
 
 $component->update_linked_components($objectiveid, 'course', $idlist);

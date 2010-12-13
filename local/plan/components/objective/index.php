@@ -96,7 +96,9 @@ $objective_instructions .= '</div>';
 
 print $objective_instructions;
 
-print $component->display_picker();
+if ( !$plancompleted ){
+    print $component->display_picker();
+}
 
 print '<form id="dp-component-update" action="' . $currenturl . '" method="POST">';
 print '<input type="hidden" id="sesskey" name="sesskey" value="'.sesskey().'" />';

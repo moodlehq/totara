@@ -9,6 +9,7 @@ $id = required_param('id', PARAM_INT); // plan id
 $caid = required_param('itemid', PARAM_INT); // objective assignment id
 
 $plan = new development_plan($id);
+$plancompleted = $plan->status == DP_PLAN_STATUS_COMPLETE;
 $componentname = 'objective';
 $component = $plan->get_component($componentname);
 
@@ -53,7 +54,7 @@ print $plan->display_tabs($componentname);
 
 print $component->display_back_to_index_link();
 $component->print_objective_detail($caid, true);
-if ( $canupdate = $component->can_update_items() ){
+if ( !$plancompleted && ($canupdate = $component->can_update_items()) ){
 
     if ( $component->will_an_update_revoke_approval( $caid ) ){
         $buttonlabel = get_string('editdetailswithapproval', 'local_plan');
@@ -69,7 +70,9 @@ if ( $canupdate = $component->can_update_items() ){
 
 if ( $plan->get_component('course')->get_setting('enabled') ){
     print $component->display_linked_courses($caid);
-    print $component->display_course_picker($caid);
+    if ( !$plancompleted ){
+        print $component->display_course_picker($caid);
+    }
 }
 
 print_footer();

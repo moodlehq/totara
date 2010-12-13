@@ -39,6 +39,7 @@ if ( $objectiveid ){
     $objviewurl = $objallurl;
 }
 $plan = new development_plan($planid);
+$plancompleted = $plan->status == DP_PLAN_STATUS_COMPLETE;
 $componentname = 'objective';
 $component = $plan->get_component($componentname);
 if ( $objectiveid == null ){
@@ -66,6 +67,9 @@ if ( $objectiveid == null ){
 require_capability('local/plan:accessplan', get_system_context());
 if ( !$component->can_update_items() ) {
     print_error('error:cannotupdateobjectives', 'local_plan');
+}
+if ( $plancompleted ){
+    print_error('plancompleted', 'local_plan');
 }
 
 $mform = $component->objective_form( $objectiveid );
