@@ -68,7 +68,7 @@ if ($fromform = $mform->get_data()) {
     if ($templateinuse) {
         unset($fromform->priorityscale);
     }
-    call_user_func($class.'::process_settings_form('.$fromform.', '.$id.')');
+    call_user_func_array($class.'::process_settings_form', array(&$fromform, $id));
 
     redirect($CFG->wwwroot . '/local/plan/template/advancedworkflow.php?id='.$id.'&amp;component='.$component);
 }

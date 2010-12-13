@@ -209,7 +209,8 @@ class dp_template_advanced_workflow_form extends moodleform {
                 throw new PlanException(get_string('noclassforcomponent', 'local_plan', $string_parameters));
             }
         }
-        call_user_func($class.'::add_settings_form('.$mform.', '.$id.')');
+        call_user_func_array($class.'::add_settings_form', array(&$mform, $id));
+
         $mform->addElement('hidden', 'id', $id);
         $mform->addElement('hidden', 'component', $component);
         if ($templateinuse) {
