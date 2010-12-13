@@ -1729,11 +1729,9 @@ div.yuimenu .yuichildtree .yuimenuitem {
 .generalbox {
   border:none;
   padding:0;
-  background-color :#fff;
 }
 .generaltable {
   width:100%;
-  background-color: #fff;
 }
 .coursebox .summary {
   font-size: 1.1em;
@@ -1836,6 +1834,15 @@ body#help div#wrapper {
 
 }
 
+/*****************************************************************************/
+/** Calendar  **/
+/*****************************************************************************/
+#calendar .maincalendar, #calendar .sidecalendar {
+    border:0 none;
+}
+#calendar .maincalendar .eventlist .event {
+    border:0 none;
+}
 
 /*****************************************************************************/
 /** Report Builder  **/
@@ -1862,6 +1869,34 @@ td.feedback-bar-color {
     background: transparent;
 }
 
+/*****************************************************************************/
+/** Tables **/
+/*****************************************************************************/
+table tr.r0 {
+    background-color: #F0F0F0;
+}
+table tr.r1 {
+    background-color: #FAFAFA;
+}
+th.header {
+    border:0 none;
+}
+/* Remove borders on the general tables */
+.generaltable {
+    border:0 none;
+}
+/* Add some borders back in */
+td.cell, th.header {
+    border:0 none;
+    border-left:1px solid #DBDBDB;
+}
+td.cell.c0, th.header.c0 {
+    border-left:0 none;
+}
+/* Course edit screen */
+table.editcourse th.header {
+    border:0 none;
+}
 
 /*****************************************************************************/
 /** Learning Plans **/

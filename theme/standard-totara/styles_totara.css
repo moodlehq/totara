@@ -815,7 +815,7 @@ body#blocks-facetoface-calendar .yui-tt .bd {
 }
 
 .dashboard .dashlet .content {
-    padding: 0 3px 0 13px;
+    padding: 0 0 0 10px;
     margin: 0;
 }
 
@@ -2150,18 +2150,6 @@ table#list-idpcourse{
     padding-left:5px;
     padding-right:5px;
 }
-
-/* New totara styled tables */
-table.flexible td {
-    border:0 none;
-    border-left: 1px solid #E2E2E2;
-    border-right: 1px solid #E2E2E2;
-}
-
-table.flexible {
-    border-bottom: 1px solid #E2E2E2;
-}
-
 
 /*****************************************************************************/
 /** Guides Tables **/
