@@ -44,9 +44,6 @@ global $SESSION,$USER;
 $strheading = get_string('myreports', 'local');
 
 $PAGE = page_create_object('Totara', $USER->id);
-$pageblocks = blocks_setup($PAGE,BLOCKS_PINNED_BOTH);
-$blocks_preferred_width = bounded_number(180, blocks_preferred_width($pageblocks[BLOCK_POS_LEFT]), 210);
-
 
 // see which reports exist in db and add columns for them to table
 // these reports should have the "userid" url parameter enabled to allow
@@ -56,64 +53,33 @@ $staff_f2f = get_field('report_builder','id','shortname','staff_facetoface_sessi
 
 $PAGE->print_header($strheading, $strheading);
 
-echo '<table id="layout-table">';
-echo '<tr valign="top">';
 
-$lt = (empty($THEME->layouttable)) ? array('left', 'middle', 'right') : $THEME->layouttable;
-foreach ($lt as $column) {
-    switch ($column) {
-    case 'left':
+echo '<h1>'.$strheading.'</h1>';
+print_container_start(false, '', 'myreports_section');
+totara_print_report_manager();
+print_container_end();
 
-        if(blocks_have_content($pageblocks, BLOCK_POS_LEFT) || $PAGE->user_is_editing()) {
-            echo '<td style="vertical-align: top; width: '.$blocks_preferred_width.'px;" id="left-column">';
-            print_container_start();
-            blocks_print_group($PAGE, $pageblocks, BLOCK_POS_LEFT);
-            print_container_end();
-            echo '</td>';
-        } else {
-            echo '<td id="left-column"></td>';
-        }
+if(get_reports()){
+    print_container_start(false, '', 'scheduledreports_section');
+    print_container_start(false, '', 'scheduledreports_section_inner');
+    echo '<br /><a name="scheduled"></a><h1>'.get_string('scheduledreports', 'local_reportbuilder').'</h1>';
 
-    break;
-    case 'middle':
-
-        echo '<td valign="top" id="middle-column">';
-        echo '<h1>'.$strheading.'</h1>';
-
-        totara_print_report_manager();
-
-        if(get_reports()){
-            echo '<br /><a name="scheduled"></a><h1>'.get_string('scheduledreports', 'local_reportbuilder').'</h1>';
-
-            if($notice) {
-                switch($notice) {
-                case REPORT_BUILDER_SCHEDULE_CONFIRM_ADD:
-                    notify(get_string('addedscheduledreport','local_reportbuilder'),'notifysuccess');
-                    break;
-                case REPORT_BUILDER_SCHEDULE_CONFIRM_UPDATE:
-                    notify(get_string('updatescheduledreport','local_reportbuilder'),'notifysuccess');
-                    break;
-                }
-            }
-
-            totara_print_scheduled_reports();
-        }
-	echo '</td>';
-
-    break;
-    case 'right':
-        echo '<td style="vertical-align: top; width: '.$blocks_preferred_width.'px;" id="right-column">';
-        print_container_start();
-        blocks_print_group($PAGE, $pageblocks, BLOCK_POS_RIGHT);
-        print_container_end();
-        echo '</td>';
-    break;
+    if($notice) {
+	switch($notice) {
+	case REPORT_BUILDER_SCHEDULE_CONFIRM_ADD:
+	    notify(get_string('addedscheduledreport','local_reportbuilder'),'notifysuccess');
+	    break;
+	case REPORT_BUILDER_SCHEDULE_CONFIRM_UPDATE:
+	    notify(get_string('updatescheduledreport','local_reportbuilder'),'notifysuccess');
+	    break;
+	}
     }
+
+    totara_print_scheduled_reports();
+    print_container_end();
+    print_container_end();
 }
-
-/// Finish the page
-echo '</tr></table>';
-
+	
 print_footer();
 
 ?>

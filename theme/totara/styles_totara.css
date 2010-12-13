@@ -36,16 +36,16 @@ input, select, button {
     -moz-border-radius: 4px;
     -webkit-border-radius: 4px;
     border-radius: 4px;
-    background: url("images/button_repeat.jpg") repeat-x scroll left top #0BAAB0;
+    background: url("images/button_repeat.jpg") repeat-x scroll left top #2399A5;
     border: 1px solid #0DA7B2;
     color: #FFFFFF;
     cursor: pointer;
     margin:0px 1px;
-    padding:3px;
-    text-shadow:#005f6b 1px 1px 1px;
+    padding:3px 6px;
 }
 .totarabutton.hover {
-     background: url("images/button_repeat_hover.jpg") repeat-x scroll left top #56c3ca;
+     background: url("images/button_repeat_hover.jpg") repeat-x scroll left top #146671;
+     border-color:#1f838d;
 }
 .totarabutton.disabled {
     border-color:#ACA899;
@@ -156,7 +156,7 @@ div#header {
 }
 
 #header-logo-container {
-   background: transparent url('images/hdr_bg_circles.jpg') no-repeat bottom right;
+   background: transparent url('images/hdr_bg_circles.jpg') no-repeat 6px bottom;
 }
 
 #header-logo-container .headersearch {

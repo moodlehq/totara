@@ -2094,6 +2094,19 @@ table.allmyteam td a {
 #my-reports table.reportmanager td.icon {
     width:40px;
 }
+#my-reports #myreports_section {
+    width:49%;
+    float:left;
+    background-color:#F0F0F0;
+}
+#my-reports #scheduledreports_section {
+    width:49%;
+    float:right;
+    background-color:#F0F0F0;
+}
+#my-reports #scheduledreports_section_inner {
+    padding:10px;
+}
 
 /*****************************************************************************/
 /** Tables **/
