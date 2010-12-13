@@ -565,6 +565,20 @@ body.calendar #totara_menu ul #menu6 div.noteam ul {
     text-align: center;
 }
 
+/*****************************************************************************/
+/** Dialogs **/
+/*****************************************************************************/
+div.totara-dialog {
+    border-color:#FFFFFF;
+    background:url("images/content_bg_blue.jpg") no-repeat scroll center top #FFFFFF;
+}
+div.totara-dialog div.ui-dialog-titlebar {
+    background:0 none;
+    border:0 none;
+}
+div.totara-dialog div.ui-dialog-titlebar a.ui-dialog-titlebar-close {
+    display:none;
+}
 
 /**
  * Link colors
