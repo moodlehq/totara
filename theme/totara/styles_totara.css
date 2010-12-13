@@ -36,15 +36,16 @@ input, select, button {
     -moz-border-radius: 4px;
     -webkit-border-radius: 4px;
     border-radius: 4px;
-    background: url("images/button_repeat.jpg") repeat-x scroll left top #0BAAB0;
+    background: url("images/button_repeat.jpg") repeat-x scroll left top #2399A5;
     border: 1px solid #0DA7B2;
     color: #FFFFFF;
     cursor: pointer;
     margin:0px 1px;
-    padding:3px;
+    padding:3px 6px;
 }
 .totarabutton.hover {
-     background: url("images/button_repeat_hover.jpg") repeat-x scroll left top #56c3ca;
+     background: url("images/button_repeat_hover.jpg") repeat-x scroll left top #146671;
+     border-color:#1f838d;
 }
 .totarabutton.disabled {
     border-color:#ACA899;
@@ -106,7 +107,7 @@ div.block_admin_tree div.admintree .depth2 {
   font-size: 0.9em;
   clear:both;
   padding: 10px 23px;
-  background: url("images/content_bg_blue.jpg") no-repeat scroll center top #FFFFFF;
+  background: url("images/content_bg_blue.jpg") no-repeat scroll right top #FFFFFF;
   margin-bottom: 100px; /* Stops footer overlapping content*/
 }
 
@@ -155,7 +156,7 @@ div#header {
 }
 
 #header-logo-container {
-   background: transparent url('images/hdr_bg_circles.jpg') no-repeat bottom right;
+   background: transparent url('images/hdr_bg_circles.jpg') no-repeat 6px bottom;
 }
 
 #header-logo-container .headersearch {
@@ -565,6 +566,20 @@ body.calendar #totara_menu ul #menu6 div.noteam ul {
     text-align: center;
 }
 
+/*****************************************************************************/
+/** Dialogs **/
+/*****************************************************************************/
+div.totara-dialog {
+    border-color:#FFFFFF;
+    background:url("images/content_bg_blue.jpg") no-repeat scroll center top #FFFFFF;
+}
+div.totara-dialog div.ui-dialog-titlebar {
+    background:0 none;
+    border:0 none;
+}
+div.totara-dialog div.ui-dialog-titlebar a.ui-dialog-titlebar-close {
+    display:none;
+}
 
 /**
  * Link colors
@@ -1714,11 +1729,9 @@ div.yuimenu .yuichildtree .yuimenuitem {
 .generalbox {
   border:none;
   padding:0;
-  background-color :#fff;
 }
 .generaltable {
   width:100%;
-  background-color: #fff;
 }
 .coursebox .summary {
   font-size: 1.1em;
@@ -1821,6 +1834,15 @@ body#help div#wrapper {
 
 }
 
+/*****************************************************************************/
+/** Calendar  **/
+/*****************************************************************************/
+#calendar .maincalendar, #calendar .sidecalendar {
+    border:0 none;
+}
+#calendar .maincalendar .eventlist .event {
+    border:0 none;
+}
 
 /*****************************************************************************/
 /** Report Builder  **/
@@ -1847,6 +1869,34 @@ td.feedback-bar-color {
     background: transparent;
 }
 
+/*****************************************************************************/
+/** Tables **/
+/*****************************************************************************/
+table tr.r0 {
+    background-color: #F0F0F0;
+}
+table tr.r1 {
+    background-color: #FAFAFA;
+}
+th.header {
+    border:0 none;
+}
+/* Remove borders on the general tables */
+.generaltable {
+    border:0 none;
+}
+/* Add some borders back in */
+td.cell, th.header {
+    border:0 none;
+    border-left:1px solid #DBDBDB;
+}
+td.cell.c0, th.header.c0 {
+    border-left:0 none;
+}
+/* Course edit screen */
+table.editcourse th.header {
+    border:0 none;
+}
 
 /*****************************************************************************/
 /** Learning Plans **/
