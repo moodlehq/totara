@@ -1,5 +1,5 @@
 <?php
-@raise_memory_limit('392M');
+@raise_memory_limit('496M');
 @ini_set('max_execution_time','3000');
 print "Loading data for table 'report_builder_columns'<br>";
 $items = array(array('id' => '1','reportid' => '7','type' => 'user','value' => 'namelink','heading' => 'Participant','sortorder' => '1','hidden' => '0',),
@@ -128,6 +128,40 @@ array('id' => '132','reportid' => '22','type' => 'course_completion','value' => 
 array('id' => '133','reportid' => '22','type' => 'course_completion','value' => 'completed','heading' => 'Number Completed','sortorder' => '2','hidden' => '0',),
 array('id' => '135','reportid' => '22','type' => 'course_completion','value' => 'earliest_completeddate','heading' => 'Earliest Completion Date','sortorder' => '3','hidden' => '0',),
 array('id' => '136','reportid' => '22','type' => 'course_completion','value' => 'latest_completeddate','heading' => 'Latest Completion Date','sortorder' => '4','hidden' => '0',),
+array('id' => '137','reportid' => '23','type' => 'course','value' => 'courselink','heading' => 'Course Title','sortorder' => '1','hidden' => '0',),
+array('id' => '138','reportid' => '23','type' => 'plan','value' => 'planlink','heading' => 'Plan','sortorder' => '2','hidden' => '0',),
+array('id' => '139','reportid' => '23','type' => 'plan','value' => 'status','heading' => 'Plan status','sortorder' => '3','hidden' => '0',),
+array('id' => '140','reportid' => '23','type' => 'plan','value' => 'courseduedate','heading' => 'Course due date','sortorder' => '4','hidden' => '0',),
+array('id' => '141','reportid' => '23','type' => 'plan','value' => 'coursepriority','heading' => 'Course priority','sortorder' => '5','hidden' => '0',),
+array('id' => '142','reportid' => '24','type' => 'user','value' => 'userpicture','heading' => 'Pic','sortorder' => '1','hidden' => '0',),
+array('id' => '143','reportid' => '24','type' => 'user','value' => 'namelink','heading' => 'Name','sortorder' => '2','hidden' => '0',),
+array('id' => '144','reportid' => '24','type' => 'user','value' => 'lastlogin','heading' => 'Last Login','sortorder' => '3','hidden' => '0',),
+array('id' => '145','reportid' => '24','type' => 'statistics','value' => 'coursesstarted','heading' => 'Courses Started','sortorder' => '4','hidden' => '0',),
+array('id' => '146','reportid' => '24','type' => 'statistics','value' => 'coursescompleted','heading' => 'Courses Completed','sortorder' => '5','hidden' => '0',),
+array('id' => '147','reportid' => '24','type' => 'statistics','value' => 'competenciesachieved','heading' => 'Competencies Achieved','sortorder' => '6','hidden' => '0',),
+array('id' => '148','reportid' => '24','type' => 'user','value' => 'userlearningicons','heading' => 'Links','sortorder' => '7','hidden' => '0',),
+array('id' => '149','reportid' => '25','type' => 'plan','value' => 'planlink','heading' => 'Plan','sortorder' => '1','hidden' => '0',),
+array('id' => '150','reportid' => '25','type' => 'plan','value' => 'status','heading' => 'Plan status','sortorder' => '2','hidden' => '0',),
+array('id' => '151','reportid' => '25','type' => 'competency','value' => 'fullname','heading' => 'Competency','sortorder' => '3','hidden' => '0',),
+array('id' => '152','reportid' => '25','type' => 'competency','value' => 'priority','heading' => 'Priority','sortorder' => '4','hidden' => '0',),
+array('id' => '153','reportid' => '25','type' => 'competency','value' => 'duedate','heading' => 'Due date','sortorder' => '5','hidden' => '0',),
+array('id' => '154','reportid' => '25','type' => 'competency','value' => 'proficiency','heading' => 'Proficiency','sortorder' => '6','hidden' => '0',),
+array('id' => '155','reportid' => '26','type' => 'course','value' => 'courselinkicon','heading' => 'Course Name','sortorder' => '1','hidden' => '0',),
+array('id' => '156','reportid' => '26','type' => 'course_category','value' => 'namelinkicon','heading' => 'Category','sortorder' => '2','hidden' => '0',),
+array('id' => '157','reportid' => '26','type' => 'course','value' => 'startdate','heading' => 'Start date','sortorder' => '3','hidden' => '0',),
+array('id' => '158','reportid' => '26','type' => 'course','value' => 'mods','heading' => 'Content','sortorder' => '4','hidden' => '0',),
+array('id' => '159','reportid' => '27','type' => 'message_values','value' => 'urgency','heading' => 'Urgency','sortorder' => '1','hidden' => '0',),
+array('id' => '160','reportid' => '27','type' => 'message_values','value' => 'msgtype','heading' => 'Type','sortorder' => '2','hidden' => '0',),
+array('id' => '161','reportid' => '27','type' => 'user','value' => 'namelink','heading' => 'Name','sortorder' => '3','hidden' => '0',),
+array('id' => '162','reportid' => '27','type' => 'message_values','value' => 'statement','heading' => 'Details','sortorder' => '4','hidden' => '0',),
+array('id' => '163','reportid' => '27','type' => 'message_values','value' => 'sent','heading' => 'Sent','sortorder' => '5','hidden' => '0',),
+array('id' => '164','reportid' => '27','type' => 'message_values','value' => 'dismiss_link','heading' => '<div id=\\\"totara_msg_selects\\\" style=\\\"display: none;\\\"><a href=\\\"\\\" onclick=\\\"jqCheckAll(\\\'totara_messages\\\', \\\'totara_message\\\', 1); return false;\\\">all</a>/<a href=\\\"\\\" onclick=\\\"jqCheckAll(\\\'totara_messages\\\', \\\'totara_message\\\', 0); return false;\\\">none</a>','sortorder' => '6','hidden' => '0',),
+array('id' => '165','reportid' => '28','type' => 'message_values','value' => 'urgency','heading' => 'Urgency','sortorder' => '1','hidden' => '0',),
+array('id' => '166','reportid' => '28','type' => 'message_values','value' => 'msgtype','heading' => 'Type','sortorder' => '2','hidden' => '0',),
+array('id' => '167','reportid' => '28','type' => 'user','value' => 'namelink','heading' => 'Name','sortorder' => '3','hidden' => '0',),
+array('id' => '168','reportid' => '28','type' => 'message_values','value' => 'statement','heading' => 'Details','sortorder' => '4','hidden' => '0',),
+array('id' => '169','reportid' => '28','type' => 'message_values','value' => 'sent','heading' => 'Sent','sortorder' => '5','hidden' => '0',),
+array('id' => '170','reportid' => '28','type' => 'message_values','value' => 'reminder_links','heading' => '<div id=\\\"totara_msg_selects\\\" style=\\\"display: none;\\\"><a href=\\\"\\\" onclick=\\\"jqCheckAll(\\\'totara_messages\\\', \\\'totara_message\\\', 1); return false;\\\">all</a>/<a href=\\\"\\\" onclick=\\\"jqCheckAll(\\\'totara_messages\\\', \\\'totara_message\\\', 0); return false;\\\">none</a>','sortorder' => '6','hidden' => '0',),
 );
 print "\n";print "Inserting ".count($items)." records<br />\n";
 $i=1;

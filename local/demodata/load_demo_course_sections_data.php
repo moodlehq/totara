@@ -1,8 +1,16 @@
 <?php
-@raise_memory_limit('392M');
+@raise_memory_limit('496M');
 @ini_set('max_execution_time','3000');
 print "Loading data for table 'course_sections'<br>";
-$items = array(array('id' => '1','course' => '1','section' => '1','summary' => '','sequence' => '','visible' => '1',),
+$items = array(array('id' => '1','course' => '1','section' => '1','summary' => '<p><img src=\\\"http://demoprep.totaralms.com/file.php/1/fake_home_page.png\\\" /></p>
+<p> </p>
+<p>
+<style type=\\\"text/css\\\"><!--
+.generalbox {
+    background:none;
+}
+--></style>
+</p>','sequence' => '','visible' => '1',),
 array('id' => '3','course' => '2','section' => '0','summary' => '<h1>Stakeholder Management</h1>','sequence' => '','visible' => '1',),
 array('id' => '4','course' => '2','section' => '1','sequence' => '1','visible' => '1',),
 array('id' => '6','course' => '3','section' => '0','summary' => '<h1>Business Law</h1>','sequence' => '1163','visible' => '1',),
@@ -75,7 +83,7 @@ array('id' => '108','course' => '37','section' => '0','summary' => '<h1>Business
 array('id' => '109','course' => '37','section' => '1','sequence' => '36','visible' => '1',),
 array('id' => '111','course' => '38','section' => '0','summary' => '<h1>Communication Theory and Concepts</h1>','sequence' => '1189','visible' => '1',),
 array('id' => '112','course' => '38','section' => '1','sequence' => '37','visible' => '1',),
-array('id' => '114','course' => '39','section' => '0','summary' => '<h1>Buyer Behaviour</h1>','sequence' => '1190','visible' => '1',),
+array('id' => '114','course' => '39','section' => '0','summary' => '<h1>Buyer Behaviour</h1>','sequence' => '1190,1250','visible' => '1',),
 array('id' => '115','course' => '39','section' => '1','sequence' => '38','visible' => '1',),
 array('id' => '117','course' => '40','section' => '0','summary' => '<h1>Marketing Planning</h1>','sequence' => '1191','visible' => '1',),
 array('id' => '118','course' => '40','section' => '1','sequence' => '39','visible' => '1',),
@@ -222,11 +230,16 @@ array('id' => '331','course' => '111','section' => '1','sequence' => '110','visi
 array('id' => '490','course' => '121','section' => '0','summary' => '<p><span style=\\\"color: #3366ff;\\\"><span style=\\\"font-family: arial,helvetica,sans-serif;\\\"><span style=\\\"font-size: x-large;\\\">Getting Orientated</span></span></span></p>
 <p><span style=\\\"font-family: arial,helvetica,sans-serif;\\\"><span style=\\\"font-size: small;\\\">For all new staff and contractors.</span></span></p>
 <p><span style=\\\"font-size: small;\\\">This course will help you understand more about the organisation, including what we do, where we\\\'ve come from, how we\\\'re structured, and how we operate. </span></p>
-<p> </p>','sequence' => '657','visible' => '1',),
+<p> </p>','sequence' => '657,1251,1252','visible' => '1',),
 array('id' => '491','course' => '121','section' => '1','summary' => '','sequence' => '','visible' => '1',),
 array('id' => '574','course' => '1','section' => '0','summary' => '','sequence' => '835','visible' => '1',),
 array('id' => '768','course' => '217','section' => '0','sequence' => '1153,1158','visible' => '1',),
 array('id' => '769','course' => '217','section' => '1','summary' => '','sequence' => '1154','visible' => '1',),
+array('id' => '770','course' => '218','section' => '0','summary' => '','sequence' => '1262','visible' => '1',),
+array('id' => '771','course' => '218','section' => '1','summary' => '','sequence' => '1256,1261','visible' => '1',),
+array('id' => '772','course' => '219','section' => '0','sequence' => '1259,1258','visible' => '1',),
+array('id' => '773','course' => '219','section' => '1','summary' => '','sequence' => '1260','visible' => '1',),
+array('id' => '774','course' => '218','section' => '2','summary' => '','sequence' => '1257,1254','visible' => '1',),
 );
 print "\n";print "Inserting ".count($items)." records<br />\n";
 $i=1;

@@ -1,5 +1,5 @@
 <?php
-@raise_memory_limit('392M');
+@raise_memory_limit('496M');
 @ini_set('max_execution_time','3000');
 print "Loading data for table 'course_completion_criteria'<br>";
 $items = array(array('id' => '1','course' => '2','criteriatype' => '4','module' => 'facetoface','moduleinstance' => '1',),
@@ -176,6 +176,9 @@ array('id' => '181','course' => '217','criteriatype' => '4','module' => 'facetof
 array('id' => '182','course' => '217','criteriatype' => '6','gradepass' => '80.00000',),
 array('id' => '183','course' => '217','criteriatype' => '7','role' => '3',),
 array('id' => '184','course' => '217','criteriatype' => '8','courseinstance' => '45',),
+array('id' => '188','course' => '218','criteriatype' => '4','module' => 'scorm','moduleinstance' => '1255',),
+array('id' => '189','course' => '218','criteriatype' => '4','module' => 'quiz','moduleinstance' => '1254',),
+array('id' => '190','course' => '218','criteriatype' => '6','gradepass' => '40.00000',),
 );
 print "\n";print "Inserting ".count($items)." records<br />\n";
 $i=1;

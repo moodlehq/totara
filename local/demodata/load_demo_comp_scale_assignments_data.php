@@ -1,5 +1,5 @@
 <?php
-@raise_memory_limit('392M');
+@raise_memory_limit('496M');
 @ini_set('max_execution_time','3000');
 print "Loading data for table 'comp_scale_assignments'<br>";
 $items = array(array('id' => '1','scaleid' => '1','frameworkid' => '1','timemodified' => '0','usermodified' => '2',),
@@ -7,6 +7,7 @@ array('id' => '2','scaleid' => '1','frameworkid' => '2','timemodified' => '0','u
 array('id' => '3','scaleid' => '1','frameworkid' => '3','timemodified' => '0','usermodified' => '2',),
 array('id' => '4','scaleid' => '1','frameworkid' => '4','timemodified' => '0','usermodified' => '2',),
 array('id' => '5','scaleid' => '1','frameworkid' => '5','timemodified' => '1282795685','usermodified' => '2',),
+array('id' => '6','scaleid' => '1','frameworkid' => '6','timemodified' => '1291931221','usermodified' => '6881',),
 );
 print "\n";print "Inserting ".count($items)." records<br />\n";
 $i=1;

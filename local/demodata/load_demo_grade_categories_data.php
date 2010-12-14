@@ -1,5 +1,5 @@
 <?php
-@raise_memory_limit('392M');
+@raise_memory_limit('496M');
 @ini_set('max_execution_time','3000');
 print "Loading data for table 'grade_categories'<br>";
 $items = array(array('id' => '2','courseid' => '2','depth' => '1','path' => '/2/','fullname' => '?','aggregation' => '11','keephigh' => '0','droplow' => '0','aggregateonlygraded' => '1','aggregateoutcomes' => '0','aggregatesubcats' => '0','timecreated' => '1263436179','timemodified' => '1263436179',),
@@ -113,6 +113,8 @@ array('id' => '220','courseid' => '111','depth' => '1','path' => '/220/','fullna
 array('id' => '221','courseid' => '1','depth' => '1','path' => '/221/','fullname' => '?','aggregation' => '11','keephigh' => '0','droplow' => '0','aggregateonlygraded' => '1','aggregateoutcomes' => '0','aggregatesubcats' => '0','timecreated' => '1263500463','timemodified' => '1263500463',),
 array('id' => '231','courseid' => '121','depth' => '1','path' => '/231/','fullname' => '?','aggregation' => '11','keephigh' => '0','droplow' => '0','aggregateonlygraded' => '1','aggregateoutcomes' => '0','aggregatesubcats' => '0','timecreated' => '1263862886','timemodified' => '1263862886',),
 array('id' => '326','courseid' => '217','depth' => '1','path' => '/326/','fullname' => '?','aggregation' => '11','keephigh' => '0','droplow' => '0','aggregateonlygraded' => '1','aggregateoutcomes' => '0','aggregatesubcats' => '0','timecreated' => '1267735576','timemodified' => '1267735577',),
+array('id' => '329','courseid' => '218','depth' => '1','path' => '/329/','fullname' => '?','aggregation' => '11','keephigh' => '0','droplow' => '0','aggregateonlygraded' => '1','aggregateoutcomes' => '0','aggregatesubcats' => '0','timecreated' => '1292195251','timemodified' => '1292195251',),
+array('id' => '330','courseid' => '219','depth' => '1','path' => '/330/','fullname' => '?','aggregation' => '11','keephigh' => '0','droplow' => '0','aggregateonlygraded' => '1','aggregateoutcomes' => '0','aggregatesubcats' => '0','timecreated' => '1292220642','timemodified' => '1292220642',),
 );
 print "\n";print "Inserting ".count($items)." records<br />\n";
 $i=1;

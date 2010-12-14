@@ -1,5 +1,5 @@
 <?php
-@raise_memory_limit('392M');
+@raise_memory_limit('496M');
 @ini_set('max_execution_time','3000');
 print "Loading data for table 'user_info_data'<br>";
 $items = array(array('id' => '5','userid' => '3','fieldid' => '5','data' => '1/10/2007',),
@@ -11689,6 +11689,28 @@ array('id' => '34213','userid' => '1920','fieldid' => '12','data' => '',),
 array('id' => '34214','userid' => '1893','fieldid' => '12','data' => '',),
 array('id' => '34215','userid' => '1077','fieldid' => '12','data' => '',),
 array('id' => '34216','userid' => '3332','fieldid' => '12','data' => '',),
+array('id' => '34217','userid' => '6881','fieldid' => '5','data' => '',),
+array('id' => '34218','userid' => '6881','fieldid' => '7','data' => '',),
+array('id' => '34219','userid' => '6881','fieldid' => '8','data' => '',),
+array('id' => '34220','userid' => '6881','fieldid' => '12','data' => '',),
+array('id' => '34221','userid' => '6882','fieldid' => '5','data' => '',),
+array('id' => '34222','userid' => '6882','fieldid' => '7','data' => '',),
+array('id' => '34223','userid' => '6882','fieldid' => '8','data' => '',),
+array('id' => '34224','userid' => '6882','fieldid' => '12','data' => '',),
+array('id' => '34225','userid' => '6883','fieldid' => '5','data' => '',),
+array('id' => '34226','userid' => '6883','fieldid' => '7','data' => '',),
+array('id' => '34227','userid' => '6883','fieldid' => '8','data' => '',),
+array('id' => '34228','userid' => '6883','fieldid' => '12','data' => '',),
+array('id' => '34229','userid' => '1534','fieldid' => '12','data' => '',),
+array('id' => '34230','userid' => '4595','fieldid' => '5','data' => '',),
+array('id' => '34231','userid' => '4595','fieldid' => '7','data' => '',),
+array('id' => '34232','userid' => '4595','fieldid' => '8','data' => '',),
+array('id' => '34233','userid' => '4128','fieldid' => '12','data' => '',),
+array('id' => '34234','userid' => '3923','fieldid' => '12','data' => '',),
+array('id' => '34235','userid' => '1089','fieldid' => '12','data' => '',),
+array('id' => '34236','userid' => '3103','fieldid' => '12','data' => '',),
+array('id' => '34237','userid' => '1289','fieldid' => '12','data' => '',),
+array('id' => '34238','userid' => '3916','fieldid' => '12','data' => '',),
 );
 print "\n";print "Inserting ".count($items)." records<br />\n";
 $i=1;

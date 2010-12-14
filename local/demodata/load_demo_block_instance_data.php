@@ -1,5 +1,5 @@
 <?php
-@raise_memory_limit('392M');
+@raise_memory_limit('496M');
 @ini_set('max_execution_time','3000');
 print "Emptytable flag set, deleting all data from block_instance.<br>";
 delete_records('block_instance');
@@ -587,14 +587,31 @@ array('id' => '2440','blockid' => '8','pageid' => '217','pagetype' => 'course-vi
 array('id' => '2441','blockid' => '30','pageid' => '217','pagetype' => 'course-view','position' => 'r','weight' => '2','visible' => '1','configdata' => '',),
 array('id' => '2442','blockid' => '21','pageid' => '1','pagetype' => 'course-view','position' => 'l','weight' => '1','visible' => '1','configdata' => '',),
 array('id' => '2443','blockid' => '22','pageid' => '1','pagetype' => 'course-view','position' => 'l','weight' => '2','visible' => '1','configdata' => '',),
-array('id' => '2444','blockid' => '4','pageid' => '1','pagetype' => 'course-view','position' => 'l','weight' => '3','visible' => '1','configdata' => '',),
-array('id' => '2445','blockid' => '20','pageid' => '1','pagetype' => 'course-view','position' => 'r','weight' => '5','visible' => '1','configdata' => '',),
-array('id' => '2446','blockid' => '7','pageid' => '1','pagetype' => 'course-view','position' => 'r','weight' => '1','visible' => '1','configdata' => '',),
-array('id' => '2447','blockid' => '43','pageid' => '1','pagetype' => 'course-view','position' => 'r','weight' => '2','visible' => '1','configdata' => '',),
-array('id' => '2448','blockid' => '45','pageid' => '1','pagetype' => 'course-view','position' => 'r','weight' => '3','visible' => '1','configdata' => '',),
+array('id' => '2444','blockid' => '4','pageid' => '1','pagetype' => 'course-view','position' => 'r','weight' => '1','visible' => '1','configdata' => '',),
+array('id' => '2445','blockid' => '20','pageid' => '1','pagetype' => 'course-view','position' => 'r','weight' => '6','visible' => '1','configdata' => '',),
+array('id' => '2446','blockid' => '7','pageid' => '1','pagetype' => 'course-view','position' => 'r','weight' => '2','visible' => '1','configdata' => '',),
+array('id' => '2447','blockid' => '43','pageid' => '1','pagetype' => 'course-view','position' => 'r','weight' => '3','visible' => '1','configdata' => '',),
 array('id' => '2449','blockid' => '5','pageid' => '1292','pagetype' => 'blog-view','position' => 'r','weight' => '0','visible' => '1',),
 array('id' => '2450','blockid' => '6','pageid' => '1292','pagetype' => 'blog-view','position' => 'r','weight' => '1','visible' => '1',),
 array('id' => '2451','blockid' => '23','pageid' => '1','pagetype' => 'course-view','position' => 'r','weight' => '4','visible' => '1','configdata' => '',),
+array('id' => '2452','blockid' => '50','pageid' => '1','pagetype' => 'totara-dashboard','position' => 'c','weight' => '0','visible' => '1','configdata' => '',),
+array('id' => '2453','blockid' => '51','pageid' => '1','pagetype' => 'totara-dashboard','position' => 'c','weight' => '1','visible' => '1','configdata' => '',),
+array('id' => '2454','blockid' => '53','pageid' => '1','pagetype' => 'totara-dashboard','position' => 'c','weight' => '2','visible' => '1','configdata' => '',),
+array('id' => '2455','blockid' => '52','pageid' => '1','pagetype' => 'totara-dashboard','position' => 'c','weight' => '3','visible' => '1','configdata' => '',),
+array('id' => '2456','blockid' => '50','pageid' => '2','pagetype' => 'totara-dashboard','position' => 'c','weight' => '0','visible' => '1','configdata' => '',),
+array('id' => '2457','blockid' => '51','pageid' => '2','pagetype' => 'totara-dashboard','position' => 'c','weight' => '1','visible' => '1','configdata' => '',),
+array('id' => '2458','blockid' => '53','pageid' => '2','pagetype' => 'totara-dashboard','position' => 'c','weight' => '2','visible' => '1','configdata' => '',),
+array('id' => '2459','blockid' => '54','pageid' => '2','pagetype' => 'totara-dashboard','position' => 'c','weight' => '3','visible' => '1','configdata' => '',),
+array('id' => '2460','blockid' => '49','pageid' => '2','pagetype' => 'totara-dashboard','position' => 'c','weight' => '4','visible' => '1','configdata' => '',),
+array('id' => '2464','blockid' => '2','pageid' => '218','pagetype' => 'course-view','position' => 'r','weight' => '0','visible' => '1','configdata' => '',),
+array('id' => '2470','blockid' => '16','pageid' => '218','pagetype' => 'course-view','position' => 'r','weight' => '1','visible' => '1','configdata' => 'Tzo2OiJvYmplY3QiOjI6e3M6NToidGl0bGUiO3M6MTE6IkRlbW8gTGF5b3V0IjtzOjQ6InRleHQiO3M6ODEzOiI8cD4xLiBUb2dnbGUgVGlueU1DRSBpbnN0YW5jZSB0byBIVE1MIHZpZXc8L3A+DQo8cD4yLiBMaW5rIHRvIGEgY3VzdG9tIHN0eWxlc2hlZXQ6PC9wPg0KPHA+PHN0cm9uZz5RdWljay1lZGl0IENTUyBmaWxlOjwvc3Ryb25nPjwvcD4NCjxwPiZsdDtsaW5rIHR5cGU9InRleHQvY3NzIiByZWw9InN0eWxlc2hlZXQiIG1lZGlhPSJzY3JlZW4iIGhyZWY9Imh0dHA6Ly9jb2RlZmluZ2VyLmNvLm56L19ldGMva2luZW8vZGVtby1sYXlvdXQuY3NzIiAvJmd0OzwvcD4NCjxwPjxzdHJvbmc+UHJvZHVjdGlvbiBDU1MgZmlsZSAoaGVsZCB3aXRoaW4gdGhlc2UgQ291cnNlIGZpbGVzKTo8L3N0cm9uZz48L3A+DQo8cD4mbHQ7bGluayB0eXBlPSJ0ZXh0L2NzcyIgcmVsPSJzdHlsZXNoZWV0IiBtZWRpYT0ic2NyZWVuIiBocmVmPSJodHRwOi8vZGVtb3ByZXAudG90YXJhbG1zLmNvbS9maWxlLnBocC8yMTgvaW1hZ2VzX2NvdXJzZV9wYWdlL2RlbW8tbGF5b3V0LmNzcyIgLyZndDs8L3A+DQo8cD4NCjxsaW5rIGhyZWY9Imh0dHA6Ly9kZW1vcHJlcC50b3RhcmFsbXMuY29tL2ZpbGUucGhwLzIxOC9pbWFnZXNfY291cnNlX3BhZ2UvZGVtby1sYXlvdXQuY3NzIiBtZWRpYT0ic2NyZWVuIiByZWw9InN0eWxlc2hlZXQiIHR5cGU9InRleHQvY3NzIiAvPg0KPC9wPg0KPHA+My4gVG9nZ2xlIFRpbnlNQ0UgaW5zdGFuY2UgdG8gV1lTSVdZRyB2aWV3IChjcnVjaWFsIHN0ZXAgLSBzYXZpbmcgd2l0aG91dCByZS10b2dnbGluZyB3aXBlcyB0aGUgY3VzdG9tIENTUyBsaW5rLCBvciByZS13cml0ZXMgdGhlIFVSTCB0byBiZSBhIFRvdGFyYSBvbmUuKTwvcD4iO30=',),
+array('id' => '2474','blockid' => '2','pageid' => '219','pagetype' => 'course-view','position' => 'l','weight' => '0','visible' => '1','configdata' => '',),
+array('id' => '2480','blockid' => '16','pageid' => '1','pagetype' => 'course-view','position' => 'r','weight' => '5','visible' => '1','configdata' => 'Tzo2OiJvYmplY3QiOjI6e3M6NToidGl0bGUiO3M6MTE6IkZsYXNoIFZpZGVvIjtzOjQ6InRleHQiO3M6Mzg0OiI8cD4NCjxvYmplY3QgZGF0YT0iaHR0cDovL3d3dy55b3V0dWJlLmNvbS92L1l4ZXphYzBGYXR3P2ZzPTEmYW1wO2hsPWVuX0dCIiBoZWlnaHQ9IjEyNSIgdHlwZT0iYXBwbGljYXRpb24veC1zaG9ja3dhdmUtZmxhc2giIHdpZHRoPSIxNzYiPg0KPHBhcmFtIG5hbWU9ImFsbG93RnVsbFNjcmVlbiIgdmFsdWU9InRydWUiIC8+DQo8cGFyYW0gbmFtZT0iYWxsb3dzY3JpcHRhY2Nlc3MiIHZhbHVlPSJhbHdheXMiIC8+DQo8cGFyYW0gbmFtZT0ic3JjIiB2YWx1ZT0iaHR0cDovL3d3dy55b3V0dWJlLmNvbS92L1l4ZXphYzBGYXR3P2ZzPTEmYW1wO2hsPWVuX0dCIiAvPg0KPHBhcmFtIG5hbWU9ImFsbG93ZnVsbHNjcmVlbiIgdmFsdWU9InRydWUiIC8+DQo8L29iamVjdD4NCjwvcD4iO30=',),
+array('id' => '2481','blockid' => '9','pageid' => '218','pagetype' => 'course-view','position' => 'l','weight' => '0','visible' => '1','configdata' => '',),
+array('id' => '2482','blockid' => '50','pageid' => '3','pagetype' => 'totara-dashboard','position' => 'c','weight' => '0','visible' => '1','configdata' => '',),
+array('id' => '2483','blockid' => '51','pageid' => '3','pagetype' => 'totara-dashboard','position' => 'c','weight' => '1','visible' => '1','configdata' => '',),
+array('id' => '2484','blockid' => '53','pageid' => '3','pagetype' => 'totara-dashboard','position' => 'c','weight' => '2','visible' => '1','configdata' => '',),
+array('id' => '2485','blockid' => '54','pageid' => '3','pagetype' => 'totara-dashboard','position' => 'c','weight' => '3','visible' => '1','configdata' => '',),
 );
 print "\n";print "Inserting ".count($items)." records<br />\n";
 $i=1;

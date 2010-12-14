@@ -1,5 +1,5 @@
 <?php
-@raise_memory_limit('392M');
+@raise_memory_limit('496M');
 @ini_set('max_execution_time','3000');
 print "Loading data for table 'facetoface_sessions'<br>";
 $items = array(array('id' => '1','facetoface' => '1','capacity' => '100','allowoverbook' => '0','details' => '','datetimeknown' => '1','duration' => '0','normalcost' => '0','discountcost' => '0','timecreated' => '1263422886','timemodified' => '0',),
@@ -3584,6 +3584,8 @@ array('id' => '3803','facetoface' => '5','capacity' => '100','allowoverbook' => 
 array('id' => '3804','facetoface' => '20','capacity' => '100','allowoverbook' => '0','details' => '','datetimeknown' => '1','duration' => '0','normalcost' => '0','discountcost' => '0','timecreated' => '1268691381','timemodified' => '0',),
 array('id' => '3805','facetoface' => '110','capacity' => '100','allowoverbook' => '0','details' => '','datetimeknown' => '1','duration' => '0','normalcost' => '0','discountcost' => '0','timecreated' => '1268691381','timemodified' => '0',),
 array('id' => '3806','facetoface' => '77','capacity' => '100','allowoverbook' => '0','details' => '','datetimeknown' => '1','duration' => '0','normalcost' => '0','discountcost' => '0','timecreated' => '1268691381','timemodified' => '0',),
+array('id' => '3807','facetoface' => '159','capacity' => '10','allowoverbook' => '1','details' => '<p>An intensive workshop on the application of health &amp; safety practice to your workplace.</p>','datetimeknown' => '1','duration' => '360','normalcost' => '0','discountcost' => '0','timecreated' => '1292220851','timemodified' => '0',),
+array('id' => '3808','facetoface' => '159','capacity' => '10','allowoverbook' => '0','details' => '','datetimeknown' => '1','duration' => '360','normalcost' => '0','discountcost' => '0','timecreated' => '1292220909','timemodified' => '0',),
 );
 print "\n";print "Inserting ".count($items)." records<br />\n";
 $i=1;

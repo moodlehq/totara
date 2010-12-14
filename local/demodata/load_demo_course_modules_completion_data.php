@@ -1,5 +1,5 @@
 <?php
-@raise_memory_limit('392M');
+@raise_memory_limit('496M');
 @ini_set('max_execution_time','3000');
 print "Loading data for table 'course_modules_completion'<br>";
 $items = array(array('id' => '1','coursemoduleid' => '1','userid' => '320','completionstate' => '3','viewed' => '0','timemodified' => '1140433200',),

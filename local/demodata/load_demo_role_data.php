@@ -1,5 +1,5 @@
 <?php
-@raise_memory_limit('392M');
+@raise_memory_limit('496M');
 @ini_set('max_execution_time','3000');
 print "Emptytable flag set, deleting all data from role.<br>";
 delete_records('role');
@@ -12,7 +12,7 @@ array('id' => '7','name' => 'Athenticated User','shortname' => 'user','descripti
 array('id' => '8','name' => 'Manager','shortname' => 'manager','description' => '<p>User tasked with managing the performance of a learner or team</p>','sortorder' => '7',),
 array('id' => '10','name' => 'Assessor','shortname' => 'assessor','description' => 'User who is responsible for assessing staff','sortorder' => '5',),
 array('id' => '11','name' => 'Functional Administrator','shortname' => 'functional','description' => 'User who has a greater level of access to staff records, but not to the site administration functions','sortorder' => '2',),
-array('id' => '12','name' => 'Regional Manager','shortname' => 'regionalmanager','description' => 'User who is responsible for the performance of a region and has access to regional reports','sortorder' => '1',),
+array('id' => '12','name' => 'Regional Manager','shortname' => 'regionalmanager','description' => '<p>User who is responsible for the performance of a region and has access to regional reports</p>','sortorder' => '1',),
 array('id' => '15','name' => 'Trainer','shortname' => 'noneditingtrainer','description' => '<p>Responsible for delivering training of learners, but may not alter activities</p>','sortorder' => '4',),
 array('id' => '16','name' => 'Auditor ','shortname' => 'auditor','description' => 'User who can view and update training records','sortorder' => '6',),
 );

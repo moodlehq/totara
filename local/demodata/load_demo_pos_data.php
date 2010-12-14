@@ -1,5 +1,5 @@
 <?php
-@raise_memory_limit('392M');
+@raise_memory_limit('496M');
 @ini_set('max_execution_time','3000');
 print "Loading data for table 'pos'<br>";
 $items = array(array('id' => '1','fullname' => 'Data Analyst','shortname' => 'Data Analyst','idnumber' => 'DATA1','description' => '','frameworkid' => '1','path' => '/1','depthid' => '1','parentid' => '0','sortorder' => '1','visible' => '1','timevalidfrom' => '0','timevalidto' => '0','timecreated' => '0','timemodified' => '1267682496','usermodified' => '2',),
@@ -17,6 +17,7 @@ array('id' => '12','fullname' => 'Solicitor','shortname' => 'Solicitor','idnumbe
 array('id' => '13','fullname' => 'Analyst','shortname' => 'Analyst','idnumber' => 'ANAL13','description' => '','frameworkid' => '1','path' => '/13','depthid' => '1','parentid' => '0','sortorder' => '13','visible' => '1','timevalidfrom' => '0','timevalidto' => '0','timecreated' => '0','timemodified' => '0','usermodified' => '2',),
 array('id' => '14','fullname' => 'Other','shortname' => 'Other','idnumber' => 'OTHE14','description' => '','frameworkid' => '1','path' => '/14','depthid' => '1','parentid' => '0','sortorder' => '14','visible' => '1','timevalidfrom' => '0','timevalidto' => '0','timecreated' => '0','timemodified' => '0','usermodified' => '2',),
 array('id' => '15','fullname' => 'External','shortname' => 'External','idnumber' => 'EXTE15','description' => '','frameworkid' => '1','path' => '/15','depthid' => '1','parentid' => '0','sortorder' => '15','visible' => '1','timevalidfrom' => '0','timevalidto' => '0','timecreated' => '0','timemodified' => '0','usermodified' => '2',),
+array('id' => '18','fullname' => 'Regional Manager','shortname' => 'RM','idnumber' => '','description' => '','frameworkid' => '2','path' => '/18','depthid' => '3','parentid' => '0','sortorder' => '1','visible' => '1','timecreated' => '1291930894','timemodified' => '1291930894','usermodified' => '6881',),
 );
 print "\n";print "Inserting ".count($items)." records<br />\n";
 $i=1;

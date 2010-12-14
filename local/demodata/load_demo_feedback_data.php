@@ -1,5 +1,5 @@
 <?php
-@raise_memory_limit('392M');
+@raise_memory_limit('496M');
 @ini_set('max_execution_time','3000');
 print "Loading data for table 'feedback'<br>";
 $items = array(array('id' => '2','course' => '45','name' => 'Course Evaluation','summary' => '<p>Course evaluation feedback</p>','anonymous' => '1','email_notification' => '0','multiple_submit' => '0','page_after_submit' => '','publish_stats' => '0','timeopen' => '0','timeclose' => '0','timemodified' => '1282789612',),

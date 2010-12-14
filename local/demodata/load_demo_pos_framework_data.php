@@ -1,8 +1,9 @@
 <?php
-@raise_memory_limit('392M');
+@raise_memory_limit('496M');
 @ini_set('max_execution_time','3000');
 print "Loading data for table 'pos_framework'<br>";
 $items = array(array('id' => '1','fullname' => 'General Positions','shortname' => 'General','idnumber' => '','description' => '','sortorder' => '1','timecreated' => '1263434099','timemodified' => '1267833824','usermodified' => '2','visible' => '1','hidecustomfields' => '0','showitemfullname' => '1','showdepthfullname' => '1',),
+array('id' => '2','fullname' => 'Regional Office','shortname' => 'Reg Office','idnumber' => '','description' => '','sortorder' => '2','timecreated' => '1291930624','timemodified' => '1291930652','usermodified' => '6881','visible' => '1','hidecustomfields' => '0','showitemfullname' => '0','showdepthfullname' => '0',),
 );
 print "\n";print "Inserting ".count($items)." records<br />\n";
 $i=1;

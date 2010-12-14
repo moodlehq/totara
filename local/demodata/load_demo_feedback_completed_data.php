@@ -1,5 +1,5 @@
 <?php
-@raise_memory_limit('392M');
+@raise_memory_limit('496M');
 @ini_set('max_execution_time','3000');
 print "Loading data for table 'feedback_completed'<br>";
 $items = array(array('id' => '1','feedback' => '2','userid' => '1869','timemodified' => '1282789612','random_response' => '0','anonymous_response' => '1',),
@@ -6005,6 +6005,7 @@ array('id' => '6000','feedback' => '95','userid' => '621','timemodified' => '128
 array('id' => '6001','feedback' => '95','userid' => '2413','timemodified' => '1282789612','random_response' => '0','anonymous_response' => '1',),
 array('id' => '6002','feedback' => '95','userid' => '279','timemodified' => '1282789612','random_response' => '0','anonymous_response' => '1',),
 array('id' => '6003','feedback' => '95','userid' => '2407','timemodified' => '1282789612','random_response' => '0','anonymous_response' => '1',),
+array('id' => '6004','feedback' => '2','userid' => '1292','timemodified' => '1291778921','random_response' => '0','anonymous_response' => '1',),
 );
 print "\n";print "Inserting ".count($items)." records<br />\n";
 $i=1;

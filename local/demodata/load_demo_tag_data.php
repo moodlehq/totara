@@ -1,5 +1,5 @@
 <?php
-@raise_memory_limit('392M');
+@raise_memory_limit('496M');
 @ini_set('max_execution_time','3000');
 print "Loading data for table 'tag'<br>";
 $items = array(array('id' => '1','userid' => '6857','name' => 'travel','rawname' => 'Travel','tagtype' => 'default','descriptionformat' => '0','flag' => '0','timemodified' => '1266372797',),

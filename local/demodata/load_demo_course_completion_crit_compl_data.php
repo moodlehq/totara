@@ -1,5 +1,5 @@
 <?php
-@raise_memory_limit('392M');
+@raise_memory_limit('496M');
 @ini_set('max_execution_time','3000');
 print "Loading data for table 'course_completion_crit_compl'<br>";
 $items = array(array('id' => '1','userid' => '2110','course' => '2','criteriaid' => '1','timecompleted' => '1139396400',),
@@ -8489,6 +8489,7 @@ array('id' => '8484','userid' => '1687','course' => '152','criteriaid' => '158',
 array('id' => '8485','userid' => '1687','course' => '152','criteriaid' => '159','timecompleted' => '1266461617',),
 array('id' => '8486','userid' => '6876','course' => '161','criteriaid' => '179','timecompleted' => '1266535116',),
 array('id' => '8487','userid' => '2593','course' => '58','criteriaid' => '68','timecompleted' => '1266874717',),
+array('id' => '8488','userid' => '1292','course' => '218','criteriaid' => '190','gradefinal' => '60.00000','timecompleted' => '1292279924',),
 );
 print "\n";print "Inserting ".count($items)." records<br />\n";
 $i=1;

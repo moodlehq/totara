@@ -1,5 +1,5 @@
 <?php
-@raise_memory_limit('392M');
+@raise_memory_limit('496M');
 @ini_set('max_execution_time','3000');
 print "Loading data for table 'report_builder_settings'<br>";
 $items = array(array('id' => '1','reportid' => '10','type' => 'current_org_content','name' => 'enable','value' => '1',),
@@ -68,6 +68,8 @@ array('id' => '63','reportid' => '21','type' => 'date_content','name' => 'when',
 array('id' => '64','reportid' => '21','type' => 'date_content','name' => 'incnulls','value' => '0',),
 array('id' => '65','reportid' => '22','type' => 'role_access','name' => 'enable','value' => '1',),
 array('id' => '66','reportid' => '22','type' => 'role_access','name' => 'activeroles','value' => '1',),
+array('id' => '67','reportid' => '24','type' => 'user_content','name' => 'enable','value' => '1',),
+array('id' => '68','reportid' => '24','type' => 'user_content','name' => 'who','value' => 'reports',),
 );
 print "\n";print "Inserting ".count($items)." records<br />\n";
 $i=1;

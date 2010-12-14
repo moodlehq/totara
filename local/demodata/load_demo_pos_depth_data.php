@@ -1,8 +1,9 @@
 <?php
-@raise_memory_limit('392M');
+@raise_memory_limit('496M');
 @ini_set('max_execution_time','3000');
 print "Loading data for table 'pos_depth'<br>";
 $items = array(array('id' => '1','fullname' => 'General Positions','shortname' => 'General','description' => '','depthlevel' => '1','frameworkid' => '1','timecreated' => '1263434099','timemodified' => '1267682907','usermodified' => '2',),
+array('id' => '3','fullname' => 'Management Level One','shortname' => 'Mang L1','description' => '','depthlevel' => '1','frameworkid' => '2','timecreated' => '1291930785','timemodified' => '1291930785','usermodified' => '6881',),
 );
 print "\n";print "Inserting ".count($items)." records<br />\n";
 $i=1;

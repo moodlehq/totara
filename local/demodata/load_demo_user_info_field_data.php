@@ -1,5 +1,5 @@
 <?php
-@raise_memory_limit('392M');
+@raise_memory_limit('496M');
 @ini_set('max_execution_time','3000');
 print "Loading data for table 'user_info_field'<br>";
 $items = array(array('id' => '5','shortname' => 'datejoined','name' => 'Date Joined','datatype' => 'text','description' => '','categoryid' => '1','sortorder' => '1','required' => '0','locked' => '0','visible' => '1','forceunique' => '0','signup' => '0','defaultdata' => '','param1' => '30','param2' => '2048','param3' => '0','param4' => '','param5' => '',),

@@ -1,5 +1,5 @@
 <?php
-@raise_memory_limit('392M');
+@raise_memory_limit('496M');
 @ini_set('max_execution_time','3000');
 print "Loading data for table 'facetoface'<br>";
 $items = array(array('id' => '1','course' => '2','name' => 'Stakeholder Management','thirdparty' => '','thirdpartywaitlist' => '0','display' => '3','confirmationsubject' => 'Course booking confirmation: [facetofacename], [starttime]-[finishtime], [sessiondate]','confirmationinstrmngr' => '','confirmationmessage' => 'This is to confirm that you are now booked on the following course:
@@ -6998,6 +6998,112 @@ Location:  [session:location]
 Participant:   [firstname] [lastname]
 
 ***Please note this is not a course booking confirmation***
+',),
+array('id' => '159','course' => '219','name' => 'Health & Safety Workshops','thirdparty' => '','thirdpartywaitlist' => '0','display' => '1','confirmationsubject' => 'Course booking confirmation: [facetofacename], [starttime]-[finishtime], [sessiondate]','confirmationinstrmngr' => '*** Advice only ****
+
+This is to advise that [firstname] [lastname] has been booked for the following course and listed you as their Team Leader / Manager.
+
+If you are not their Team Leader / Manager and believe you have received this email by mistake please reply to this email.  If have concerns about your staff member taking this course please discuss this with them directly.
+
+*** [firstname] [lastname]\\\'s booking confirmation is copied below ****
+','confirmationmessage' => 'This is to confirm that you are now booked on the following course:
+
+Participant:   [firstname] [lastname]
+Course:   [facetofacename]
+Cost:   [cost]
+
+Duration:    [duration]
+Date(s):
+[alldates]
+
+Location:   [session:location]
+Venue:   [session:venue]
+Room:   [session:room]
+
+***Please arrive ten minutes before the course starts***
+
+To re-schedule or cancel your booking
+To re-schedule your booking you need to cancel this booking and then re-book a new session.  To cancel your booking, return to the site, then to the page for this course, and then select \\\'cancel\\\' from the booking information screen.
+
+[details]
+
+You will receive a reminder [reminderperiod] business days before this course.
+','waitlistedsubject' => 'Waitlisting advice for [facetofacename]','waitlistedmessage' => 'This is to advise that you been added to the waitlist for:
+
+Course:   [facetofacename]
+Location:  [session:location]
+Participant:   [firstname] [lastname]
+
+***Please note this is not a course booking confirmation***
+
+By waitlisting you have registered your interest in this course and will be contacted directly when sessions become available.
+
+To remove yourself from this waitlist please return to this course and click Cancel Booking. Please note there is no waitlist removal confirmation email.
+','cancellationsubject' => 'Course booking cancellation','cancellationmessage' => 'This is to advise that your booking on the following course has been cancelled:
+
+***BOOKING CANCELLED***
+
+Participant:   [firstname] [lastname]
+Course:   [facetofacename]
+
+Duration:   [duration]
+Date(s):
+[alldates]
+
+Location:   [session:location]
+Venue:   [session:venue]
+Room:   [session:room]
+','remindersubject' => 'Course booking reminder: [facetofacename], [starttime]-[finishtime], [sessiondate]','remindermessage' => 'This is a reminder that you are booked on the following course:
+
+Participant:   [firstname] [lastname]
+Course:   [facetofacename]
+Cost:   [cost]
+
+Duration:   [duration]
+Date(s):
+[alldates]
+
+Location:   [session:location]
+Venue:   [session:venue]
+Room:   [session:room]
+
+***Please arrive ten minutes before the course starts***
+
+To re-schedule or cancel your booking
+To re-schedule your booking you need to cancel this booking and then re-book a new session.  To cancel your booking, return to the site, then to the page for this course, and then select \\\'cancel\\\' from the booking information screen.
+
+[details]
+','reminderperiod' => '2','timecreated' => '0','timemodified' => '1292220740','shortname' => 'H&S Workshop','description' => '','showoncalendar' => '1','approvalreqd' => '0','requestsubject' => 'Course booking request: [facetofacename], [starttime]-[finishtime]','requestinstrmngr' => 'This is to advise that [firstname] [lastname] has requested to be booked into the following course, and you are listed as their Team Leader / Manager.
+
+Course:   [facetofacename]
+Cost:   [cost]
+
+Duration:   [duration]
+Date(s):
+[alldates]
+
+Location:   [session:location]
+Venue:   [session:venue]
+Room:   [session:room]
+
+Please follow the link below to approve the request:
+[attendeeslink]#unapproved
+
+
+*** [firstname] [lastname]\\\'s booking request is copied below ****
+','requestmessage' => 'Your request to book into the following course has been sent to your manager:
+
+Participant:   [firstname] [lastname]
+Course:   [facetofacename]
+Cost:   [cost]
+
+Duration:   [duration]
+Date(s):
+[alldates]
+
+Location:   [session:location]
+Venue:   [session:venue]
+Room:   [session:room]
 ',),
 );
 print "\n";print "Inserting ".count($items)." records<br />\n";

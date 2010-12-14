@@ -1,5 +1,5 @@
 <?php
-@raise_memory_limit('392M');
+@raise_memory_limit('496M');
 @ini_set('max_execution_time','3000');
 print "Loading data for table 'facetoface_sessions_dates'<br>";
 $items = array(array('id' => '1','sessionid' => '1','timestart' => '1140433200','timefinish' => '1140519599',),
@@ -3585,6 +3585,8 @@ array('id' => '3838','sessionid' => '3803','timestart' => '1302818324','timefini
 array('id' => '3839','sessionid' => '3804','timestart' => '1271885119','timefinish' => '1271888719',),
 array('id' => '3840','sessionid' => '3805','timestart' => '1306601993','timefinish' => '1306605593',),
 array('id' => '3841','sessionid' => '3806','timestart' => '1300448330','timefinish' => '1300451930',),
+array('id' => '3842','sessionid' => '3807','timestart' => '1293010200','timefinish' => '1293033600',),
+array('id' => '3843','sessionid' => '3808','timestart' => '1293096600','timefinish' => '1293120000',),
 );
 print "\n";print "Inserting ".count($items)." records<br />\n";
 $i=1;

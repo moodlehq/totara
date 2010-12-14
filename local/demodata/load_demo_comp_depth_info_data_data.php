@@ -1,5 +1,5 @@
 <?php
-@raise_memory_limit('392M');
+@raise_memory_limit('496M');
 @ini_set('max_execution_time','3000');
 print "Loading data for table 'comp_depth_info_data'<br>";
 $items = array(array('id' => '1','data' => '1','fieldid' => '1','competencyid' => '1',),
@@ -114,6 +114,10 @@ array('id' => '109','data' => '1','fieldid' => '1','competencyid' => '40',),
 array('id' => '110','data' => '1','fieldid' => '2','competencyid' => '40',),
 array('id' => '111','data' => '','fieldid' => '3','competencyid' => '40',),
 array('id' => '112','data' => '','fieldid' => '4','competencyid' => '40',),
+array('id' => '113','data' => '15189 Version2','fieldid' => '7','competencyid' => '4332',),
+array('id' => '114','data' => '15189 Version2','fieldid' => '7','competencyid' => '4333',),
+array('id' => '115','data' => '15189 Version2','fieldid' => '7','competencyid' => '4334',),
+array('id' => '116','data' => '15189 Version2','fieldid' => '7','competencyid' => '4335',),
 );
 print "\n";print "Inserting ".count($items)." records<br />\n";
 $i=1;

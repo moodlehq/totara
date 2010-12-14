@@ -1,5 +1,5 @@
 <?php
-@raise_memory_limit('392M');
+@raise_memory_limit('496M');
 @ini_set('max_execution_time','3000');
 print "Loading data for table 'course_display'<br>";
 $items = array(array('id' => '1','course' => '6','userid' => '2','display' => '0',),
@@ -469,6 +469,31 @@ array('id' => '464','course' => '99','userid' => '2','display' => '0',),
 array('id' => '465','course' => '84','userid' => '2','display' => '0',),
 array('id' => '466','course' => '79','userid' => '2','display' => '0',),
 array('id' => '467','course' => '39','userid' => '2','display' => '0',),
+array('id' => '468','course' => '45','userid' => '1292','display' => '0',),
+array('id' => '469','course' => '121','userid' => '6881','display' => '0',),
+array('id' => '470','course' => '2','userid' => '6881','display' => '0',),
+array('id' => '471','course' => '10','userid' => '1292','display' => '0',),
+array('id' => '472','course' => '63','userid' => '1292','display' => '0',),
+array('id' => '473','course' => '217','userid' => '6881','display' => '0',),
+array('id' => '474','course' => '53','userid' => '6881','display' => '0',),
+array('id' => '475','course' => '22','userid' => '6881','display' => '0',),
+array('id' => '476','course' => '5','userid' => '6881','display' => '0',),
+array('id' => '477','course' => '121','userid' => '6882','display' => '0',),
+array('id' => '478','course' => '121','userid' => '1893','display' => '0',),
+array('id' => '479','course' => '217','userid' => '1893','display' => '0',),
+array('id' => '480','course' => '49','userid' => '1893','display' => '0',),
+array('id' => '481','course' => '39','userid' => '1893','display' => '0',),
+array('id' => '482','course' => '75','userid' => '6881','display' => '0',),
+array('id' => '483','course' => '7','userid' => '6881','display' => '0',),
+array('id' => '484','course' => '45','userid' => '6881','display' => '0',),
+array('id' => '485','course' => '61','userid' => '6881','display' => '0',),
+array('id' => '486','course' => '218','userid' => '6881','display' => '0',),
+array('id' => '487','course' => '21','userid' => '6881','display' => '0',),
+array('id' => '488','course' => '218','userid' => '1893','display' => '0',),
+array('id' => '489','course' => '219','userid' => '6881','display' => '0',),
+array('id' => '490','course' => '22','userid' => '1292','display' => '0',),
+array('id' => '491','course' => '218','userid' => '2','display' => '0',),
+array('id' => '492','course' => '218','userid' => '1292','display' => '0',),
 );
 print "\n";print "Inserting ".count($items)." records<br />\n";
 $i=1;

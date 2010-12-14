@@ -1,5 +1,5 @@
 <?php
-@raise_memory_limit('392M');
+@raise_memory_limit('496M');
 @ini_set('max_execution_time','3000');
 print "Loading data for table 'facetoface_session_field'<br>";
 $items = array(array('id' => '1','name' => 'Location','shortname' => 'location','type' => '0','possiblevalues' => '','required' => '0','defaultvalue' => '','isfilter' => '1','showinsummary' => '1',),

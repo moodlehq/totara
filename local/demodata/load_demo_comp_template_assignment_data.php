@@ -1,10 +1,14 @@
 <?php
-@raise_memory_limit('392M');
+@raise_memory_limit('496M');
 @ini_set('max_execution_time','3000');
 print "Loading data for table 'comp_template_assignment'<br>";
 $items = array(array('id' => '1','templateid' => '2','type' => '1','instanceid' => '3262','timecreated' => '1267736908','usermodified' => '2',),
 array('id' => '2','templateid' => '2','type' => '1','instanceid' => '724','timecreated' => '1267736908','usermodified' => '2',),
 array('id' => '3','templateid' => '2','type' => '1','instanceid' => '1264','timecreated' => '1267736908','usermodified' => '2',),
+array('id' => '4','templateid' => '5','type' => '1','instanceid' => '4332','timecreated' => '1291932920','usermodified' => '6881',),
+array('id' => '5','templateid' => '5','type' => '1','instanceid' => '4333','timecreated' => '1291932920','usermodified' => '6881',),
+array('id' => '6','templateid' => '5','type' => '1','instanceid' => '4334','timecreated' => '1291932920','usermodified' => '6881',),
+array('id' => '7','templateid' => '5','type' => '1','instanceid' => '4335','timecreated' => '1291932920','usermodified' => '6881',),
 );
 print "\n";print "Inserting ".count($items)." records<br />\n";
 $i=1;

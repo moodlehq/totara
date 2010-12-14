@@ -1,5 +1,5 @@
 <?php
-@raise_memory_limit('392M');
+@raise_memory_limit('496M');
 @ini_set('max_execution_time','3000');
 print "Loading data for table 'facetoface_signups_status'<br>";
 $items = array(array('id' => '1','signupid' => '1','statuscode' => '70','superceded' => '0','grade' => '100.00000','note' => '','advice' => '','createdby' => '0','timecreated' => '1263422886',),

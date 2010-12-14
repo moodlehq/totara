@@ -1,5 +1,5 @@
 <?php
-@raise_memory_limit('392M');
+@raise_memory_limit('496M');
 @ini_set('max_execution_time','3000');
 print "Emptytable flag set, deleting all data from role_allow_assign.<br>";
 delete_records('role_allow_assign');

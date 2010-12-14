@@ -1,5 +1,5 @@
 <?php
-@raise_memory_limit('392M');
+@raise_memory_limit('496M');
 @ini_set('max_execution_time','3000');
 print "Loading data for table 'facetoface_session_data'<br>";
 $items = array(array('id' => '1','fieldid' => '1','sessionid' => '1','data' => 'Mahaanui Area Office',),
@@ -22762,6 +22762,18 @@ array('id' => '22757','fieldid' => '6','sessionid' => '3805','data' => 'Internal
 array('id' => '22758','fieldid' => '6','sessionid' => '3806','data' => 'Internal',),
 array('id' => '22759','fieldid' => '2','sessionid' => '2806','data' => 'Training Centre',),
 array('id' => '22760','fieldid' => '3','sessionid' => '2806','data' => 'Room 1',),
+array('id' => '22761','fieldid' => '1','sessionid' => '3807','data' => 'Auckland',),
+array('id' => '22762','fieldid' => '2','sessionid' => '3807','data' => 'Victoria Hotel',),
+array('id' => '22763','fieldid' => '3','sessionid' => '3807','data' => 'B12',),
+array('id' => '22764','fieldid' => '4','sessionid' => '3807','data' => 'No',),
+array('id' => '22765','fieldid' => '5','sessionid' => '3807','data' => 'No',),
+array('id' => '22766','fieldid' => '6','sessionid' => '3807','data' => 'Internal',),
+array('id' => '22767','fieldid' => '1','sessionid' => '3808','data' => 'Wellington',),
+array('id' => '22768','fieldid' => '2','sessionid' => '3808','data' => 'Hilton Hotel',),
+array('id' => '22769','fieldid' => '3','sessionid' => '3808','data' => 'C120',),
+array('id' => '22770','fieldid' => '4','sessionid' => '3808','data' => 'No',),
+array('id' => '22771','fieldid' => '5','sessionid' => '3808','data' => 'No',),
+array('id' => '22772','fieldid' => '6','sessionid' => '3808','data' => 'Internal',),
 );
 print "\n";print "Inserting ".count($items)." records<br />\n";
 $i=1;

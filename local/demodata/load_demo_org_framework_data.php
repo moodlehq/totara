@@ -1,5 +1,5 @@
 <?php
-@raise_memory_limit('392M');
+@raise_memory_limit('496M');
 @ini_set('max_execution_time','3000');
 print "Loading data for table 'org_framework'<br>";
 $items = array(array('id' => '1','fullname' => 'Regional Offices','shortname' => 'Regions','idnumber' => '','description' => '','sortorder' => '1','visible' => '1','hidecustomfields' => '0','showitemfullname' => '1','showdepthfullname' => '1','timecreated' => '1263434099','timemodified' => '1263434099','usermodified' => '2',),

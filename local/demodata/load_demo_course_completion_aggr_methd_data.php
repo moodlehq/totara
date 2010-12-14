@@ -1,5 +1,5 @@
 <?php
-@raise_memory_limit('392M');
+@raise_memory_limit('496M');
 @ini_set('max_execution_time','3000');
 print "Loading data for table 'course_completion_aggr_methd'<br>";
 $items = array(array('id' => '1','course' => '2','method' => '1',),
@@ -494,6 +494,10 @@ array('id' => '501','course' => '217','method' => '1',),
 array('id' => '502','course' => '217','criteriatype' => '4','method' => '1',),
 array('id' => '503','course' => '217','criteriatype' => '8','method' => '1',),
 array('id' => '504','course' => '217','criteriatype' => '7','method' => '1',),
+array('id' => '513','course' => '218','method' => '1',),
+array('id' => '514','course' => '218','criteriatype' => '4','method' => '1',),
+array('id' => '515','course' => '218','criteriatype' => '8','method' => '1',),
+array('id' => '516','course' => '218','criteriatype' => '7','method' => '1',),
 );
 print "\n";print "Inserting ".count($items)." records<br />\n";
 $i=1;

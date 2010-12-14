@@ -1,5 +1,5 @@
 <?php
-@raise_memory_limit('392M');
+@raise_memory_limit('496M');
 @ini_set('max_execution_time','3000');
 print "Loading data for table 'comp_scale_values'<br>";
 $items = array(array('id' => '1','name' => 'Not Competent','idnumber' => '','description' => '','scaleid' => '1','sortorder' => '3','timemodified' => '1267736958','usermodified' => '2',),

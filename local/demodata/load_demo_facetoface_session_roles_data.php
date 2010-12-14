@@ -1,5 +1,5 @@
 <?php
-@raise_memory_limit('392M');
+@raise_memory_limit('496M');
 @ini_set('max_execution_time','3000');
 print "Loading data for table 'facetoface_session_roles'<br>";
 $items = array(array('id' => '1','sessionid' => '1','roleid' => '3','userid' => '2413',),

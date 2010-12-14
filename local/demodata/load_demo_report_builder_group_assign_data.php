@@ -1,5 +1,5 @@
 <?php
-@raise_memory_limit('392M');
+@raise_memory_limit('496M');
 @ini_set('max_execution_time','3000');
 print "Loading data for table 'report_builder_group_assign'<br>";
 $items = array(array('id' => '1','groupid' => '1','itemid' => '2',),

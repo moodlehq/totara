@@ -1,5 +1,5 @@
 <?php
-@raise_memory_limit('392M');
+@raise_memory_limit('496M');
 @ini_set('max_execution_time','3000');
 print "Loading data for table 'feedback_item'<br>";
 $items = array(array('id' => '6','feedback' => '2','template' => '0','name' => 'This course did all it said it would do.','presentation' => 'Strongly no|No|Neutral|Yes|Strongly yes','typ' => 'dropdown','hasvalue' => '1','position' => '1','required' => '1',),

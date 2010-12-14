@@ -1,5 +1,5 @@
 <?php
-@raise_memory_limit('392M');
+@raise_memory_limit('496M');
 @ini_set('max_execution_time','3000');
 print "Loading data for table 'comp_depth'<br>";
 $items = array(array('id' => '1','fullname' => 'Unit Standard','shortname' => 'Unit','description' => '','depthlevel' => '1','frameworkid' => '1','timecreated' => '1263433929','timemodified' => '1263433929','usermodified' => '2',),
@@ -10,6 +10,7 @@ array('id' => '5','fullname' => 'Competency Heading','shortname' => 'CH','descri
 array('id' => '6','fullname' => 'Competencies','shortname' => 'Competencies','description' => '','depthlevel' => '3','frameworkid' => '4','timecreated' => '1267736677','timemodified' => '1267736677','usermodified' => '2',),
 array('id' => '7','fullname' => 'Dimension 1','shortname' => 'd1','description' => '','depthlevel' => '1','frameworkid' => '5','timecreated' => '1282795712','timemodified' => '1282795712','usermodified' => '2',),
 array('id' => '8','fullname' => 'Dimension 2','shortname' => 'd2','description' => '','depthlevel' => '2','frameworkid' => '5','timecreated' => '1282795759','timemodified' => '1282795759','usermodified' => '2',),
+array('id' => '9','fullname' => 'Induction Competencies','shortname' => 'Induction','description' => '','depthlevel' => '1','frameworkid' => '6','timecreated' => '1291931296','timemodified' => '1291931805','usermodified' => '6881',),
 );
 print "\n";print "Inserting ".count($items)." records<br />\n";
 $i=1;

@@ -1,5 +1,5 @@
 <?php
-@raise_memory_limit('392M');
+@raise_memory_limit('496M');
 @ini_set('max_execution_time','3000');
 print "Loading data for table 'comp_depth_info_category'<br>";
 $items = array(array('id' => '1','name' => 'Miscellaneous','sortorder' => '1','depthid' => '4',),
@@ -9,6 +9,7 @@ array('id' => '4','name' => 'primary category','sortorder' => '1','depthid' => '
 array('id' => '5','name' => 'secondary category','sortorder' => '2','depthid' => '1',),
 array('id' => '6','name' => 'Miscellaneous','sortorder' => '1','depthid' => '7',),
 array('id' => '7','name' => 'Miscellaneous','sortorder' => '1','depthid' => '8',),
+array('id' => '8','name' => 'Miscellaneous','sortorder' => '1','depthid' => '9',),
 );
 print "\n";print "Inserting ".count($items)." records<br />\n";
 $i=1;

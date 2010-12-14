@@ -1,5 +1,5 @@
 <?php
-@raise_memory_limit('392M');
+@raise_memory_limit('496M');
 @ini_set('max_execution_time','3000');
 print "Loading data for table 'comp_evidence_items'<br>";
 $items = array(array('id' => '1','competencyid' => '1170','itemtype' => 'activitycompletion','itemmodule' => 'facetoface','iteminstance' => '8','timecreated' => '1265497994','timemodified' => '1265497994','usermodified' => '6857',),
@@ -104,6 +104,11 @@ array('id' => '99','competencyid' => '4289','itemtype' => 'coursecompletion','it
 array('id' => '100','competencyid' => '4290','itemtype' => 'coursecompletion','itemmodule' => '','iteminstance' => '110','timecreated' => '1265963591','timemodified' => '1265963591','usermodified' => '0',),
 array('id' => '101','competencyid' => '4291','itemtype' => 'coursecompletion','itemmodule' => '','iteminstance' => '111','timecreated' => '1265963591','timemodified' => '1265963591','usermodified' => '0',),
 array('id' => '105','competencyid' => '4113','itemtype' => 'coursecompletion','itemmodule' => '','iteminstance' => '217','timecreated' => '1267738067','timemodified' => '1267738067','usermodified' => '2',),
+array('id' => '106','competencyid' => '4195','itemtype' => 'activitycompletion','itemmodule' => 'facetoface','iteminstance' => '158','timecreated' => '1291820572','timemodified' => '1291820572','usermodified' => '6881',),
+array('id' => '107','competencyid' => '4194','itemtype' => 'activitycompletion','itemmodule' => 'facetoface','iteminstance' => '60','timecreated' => '1291821933','timemodified' => '1291821933','usermodified' => '6881',),
+array('id' => '108','competencyid' => '4300','itemtype' => 'coursegrade','itemmodule' => '','iteminstance' => '121','timecreated' => '1291892931','timemodified' => '1291892931','usermodified' => '6881',),
+array('id' => '109','competencyid' => '4334','itemtype' => 'coursecompletion','itemmodule' => '','iteminstance' => '218','timecreated' => '1292221499','timemodified' => '1292221499','usermodified' => '6881',),
+array('id' => '110','competencyid' => '4334','itemtype' => 'coursegrade','itemmodule' => '','iteminstance' => '219','timecreated' => '1292221516','timemodified' => '1292221516','usermodified' => '6881',),
 );
 print "\n";print "Inserting ".count($items)." records<br />\n";
 $i=1;

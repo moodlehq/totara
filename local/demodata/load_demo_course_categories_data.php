@@ -1,13 +1,13 @@
 <?php
-@raise_memory_limit('392M');
+@raise_memory_limit('496M');
 @ini_set('max_execution_time','3000');
 print "Loading data for table 'course_categories'<br>";
-$items = array(array('id' => '2','name' => 'Technical','parent' => '4','sortorder' => '2','coursecount' => '105','visible' => '1','timemodified' => '0','depth' => '2','path' => '/4/2',),
-array('id' => '3','name' => 'Induction','parent' => '4','sortorder' => '1','coursecount' => '1','visible' => '1','timemodified' => '0','depth' => '2','path' => '/4/3','theme' => '',),
-array('id' => '4','name' => 'Learning Programmes','parent' => '0','sortorder' => '1','coursecount' => '0','visible' => '1','timemodified' => '0','depth' => '1','path' => '/4','theme' => '',),
-array('id' => '5','name' => 'Leadership','parent' => '0','sortorder' => '2','coursecount' => '0','visible' => '1','timemodified' => '0','depth' => '1','path' => '/5','theme' => '',),
-array('id' => '19','name' => 'People and Communities','parent' => '4','sortorder' => '9','coursecount' => '0','visible' => '1','timemodified' => '0','depth' => '2','path' => '/4/19',),
-array('id' => '97','name' => 'Computer Skills','parent' => '4','sortorder' => '3','coursecount' => '4','visible' => '1','timemodified' => '0','depth' => '2','path' => '/4/97','theme' => '',),
+$items = array(array('id' => '2','name' => 'Technical','parent' => '4','sortorder' => '2','coursecount' => '105','visible' => '1','timemodified' => '0','depth' => '2','path' => '/4/2','icon' => '',),
+array('id' => '3','name' => 'Induction','parent' => '4','sortorder' => '1','coursecount' => '3','visible' => '1','timemodified' => '0','depth' => '2','path' => '/4/3','theme' => '','icon' => '',),
+array('id' => '4','name' => 'Learning Programmes','parent' => '0','sortorder' => '1','coursecount' => '0','visible' => '1','timemodified' => '0','depth' => '1','path' => '/4','theme' => '','icon' => '',),
+array('id' => '5','name' => 'Leadership','parent' => '0','sortorder' => '2','coursecount' => '0','visible' => '1','timemodified' => '0','depth' => '1','path' => '/5','theme' => '','icon' => '',),
+array('id' => '19','name' => 'People and Communities','parent' => '4','sortorder' => '9','coursecount' => '0','visible' => '1','timemodified' => '0','depth' => '2','path' => '/4/19','icon' => '',),
+array('id' => '97','name' => 'Computer Skills','parent' => '4','sortorder' => '3','coursecount' => '4','visible' => '1','timemodified' => '0','depth' => '2','path' => '/4/97','theme' => '','icon' => '',),
 );
 print "\n";print "Inserting ".count($items)." records<br />\n";
 $i=1;

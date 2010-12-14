@@ -1,11 +1,12 @@
 <?php
-@raise_memory_limit('392M');
+@raise_memory_limit('496M');
 @ini_set('max_execution_time','3000');
 print "Loading data for table 'comp_template'<br>";
 $items = array(array('id' => '1','frameworkid' => '1','fullname' => 'Fire','shortname' => 'Fire','description' => '','visible' => '1','competencycount' => '0','timecreated' => '1263951477','timemodified' => '1263951477','usermodified' => '72',),
 array('id' => '2','frameworkid' => '1','fullname' => 'Management Skills','shortname' => 'Management Skills','description' => '','visible' => '1','competencycount' => '3','timecreated' => '1267736879','timemodified' => '1267736879','usermodified' => '2',),
 array('id' => '3','frameworkid' => '1','fullname' => 'test4','shortname' => 'test4','description' => '','visible' => '1','competencycount' => '0','timecreated' => '1268001692','timemodified' => '1268001692','usermodified' => '2',),
 array('id' => '4','frameworkid' => '1','fullname' => 'test3','shortname' => 'test3','description' => '','visible' => '1','competencycount' => '0','timecreated' => '1268001720','timemodified' => '1268001720','usermodified' => '2',),
+array('id' => '5','frameworkid' => '6','fullname' => 'Health and Safety','shortname' => 'H&S','description' => '','visible' => '1','competencycount' => '4','timecreated' => '1291932870','timemodified' => '1291932870','usermodified' => '6881',),
 );
 print "\n";print "Inserting ".count($items)." records<br />\n";
 $i=1;

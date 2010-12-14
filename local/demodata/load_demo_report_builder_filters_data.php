@@ -1,5 +1,5 @@
 <?php
-@raise_memory_limit('392M');
+@raise_memory_limit('496M');
 @ini_set('max_execution_time','3000');
 print "Loading data for table 'report_builder_filters'<br>";
 $items = array(array('id' => '1','reportid' => '7','type' => 'user','value' => 'fullname','sortorder' => '1','advanced' => '0',),
@@ -83,6 +83,24 @@ array('id' => '84','reportid' => '13','type' => 'course_completion','value' => '
 array('id' => '85','reportid' => '13','type' => 'course_completion','value' => 'status','sortorder' => '9','advanced' => '0',),
 array('id' => '86','reportid' => '21','type' => 'feedback','value' => 'name','sortorder' => '1','advanced' => '0',),
 array('id' => '89','reportid' => '22','type' => 'course_completion','value' => 'organisationpath','sortorder' => '1','advanced' => '0',),
+array('id' => '90','reportid' => '25','type' => 'competency','value' => 'fullname','sortorder' => '1','advanced' => '0',),
+array('id' => '91','reportid' => '25','type' => 'competency','value' => 'priority','sortorder' => '2','advanced' => '1',),
+array('id' => '92','reportid' => '25','type' => 'competency','value' => 'duedate','sortorder' => '3','advanced' => '1',),
+array('id' => '93','reportid' => '25','type' => 'plan','value' => 'name','sortorder' => '4','advanced' => '1',),
+array('id' => '94','reportid' => '26','type' => 'course','value' => 'name_and_summary','sortorder' => '1','advanced' => '0',),
+array('id' => '95','reportid' => '26','type' => 'course','value' => 'mods','sortorder' => '2','advanced' => '0',),
+array('id' => '96','reportid' => '26','type' => 'course_category','value' => 'id','sortorder' => '3','advanced' => '1',),
+array('id' => '97','reportid' => '26','type' => 'course','value' => 'startdate','sortorder' => '4','advanced' => '1',),
+array('id' => '98','reportid' => '27','type' => 'user','value' => 'fullname','sortorder' => '1','advanced' => '1',),
+array('id' => '99','reportid' => '27','type' => 'message_values','value' => 'msgtype','sortorder' => '2','advanced' => '0',),
+array('id' => '100','reportid' => '27','type' => 'message_values','value' => 'urgency','sortorder' => '3','advanced' => '1',),
+array('id' => '101','reportid' => '27','type' => 'message_values','value' => 'statement','sortorder' => '4','advanced' => '1',),
+array('id' => '102','reportid' => '27','type' => 'message_values','value' => 'sent','sortorder' => '5','advanced' => '1',),
+array('id' => '103','reportid' => '28','type' => 'user','value' => 'fullname','sortorder' => '1','advanced' => '1',),
+array('id' => '104','reportid' => '28','type' => 'message_values','value' => 'msgtype','sortorder' => '2','advanced' => '0',),
+array('id' => '105','reportid' => '28','type' => 'message_values','value' => 'urgency','sortorder' => '3','advanced' => '1',),
+array('id' => '106','reportid' => '28','type' => 'message_values','value' => 'statement','sortorder' => '4','advanced' => '1',),
+array('id' => '107','reportid' => '28','type' => 'message_values','value' => 'sent','sortorder' => '5','advanced' => '1',),
 );
 print "\n";print "Inserting ".count($items)." records<br />\n";
 $i=1;

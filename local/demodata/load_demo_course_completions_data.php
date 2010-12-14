@@ -1,5 +1,5 @@
 <?php
-@raise_memory_limit('392M');
+@raise_memory_limit('496M');
 @ini_set('max_execution_time','3000');
 print "Loading data for table 'course_completions'<br>";
 $items = array(array('id' => '1','userid' => '2110','course' => '2','organisationid' => '1114','positionid' => '2','timecompleted' => '1139396400','timestarted' => '1139396400','timeenrolled' => '1139396400','reaggregate' => '0',),
@@ -6890,6 +6890,7 @@ array('id' => '7165','userid' => '1440','course' => '58','organisationid' => '26
 array('id' => '7166','userid' => '6869','course' => '8','organisationid' => '9','positionid' => '1','timestarted' => '1266403899','timeenrolled' => '1266318000','reaggregate' => '0',),
 array('id' => '7167','userid' => '1103','course' => '58','organisationid' => '26','positionid' => '11','timestarted' => '1266447217','timeenrolled' => '1266404400','reaggregate' => '0',),
 array('id' => '7196','userid' => '2593','course' => '58','organisationid' => '9','positionid' => '2','timestarted' => '1266874717','timeenrolled' => '1266836400','reaggregate' => '0',),
+array('id' => '7206','userid' => '1292','course' => '218','timestarted' => '1292279924','timeenrolled' => '1292198400','reaggregate' => '0',),
 );
 print "\n";print "Inserting ".count($items)." records<br />\n";
 $i=1;
