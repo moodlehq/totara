@@ -11,7 +11,6 @@ class dp_template_general_settings_form extends moodleform {
         $id = $this->_customdata['id'];
         $template = get_record('dp_template', 'id', $id);
         $templatename = $template->fullname;
-        $startdate = $template->startdate==0 ? '' : date('d/m/Y', $template->startdate);
         $enddate = $template->enddate==0 ? '' : date('d/m/Y', $template->enddate);
 
         $mform->addElement('hidden', 'id', $id);
@@ -23,20 +22,14 @@ class dp_template_general_settings_form extends moodleform {
         $mform->setDefault('templatename', $templatename);
         $mform->addRule('templatename',null,'required');
 
-        $mform->addElement('text', 'startdate', get_string('startdate', 'local_plan'));
         $mform->addElement('text', 'enddate', get_string('enddate', 'local_plan'));
 
-        $mform->addRule('startdate',get_string('error:dateformat','idp'),'regex', '/^(0[1-9]|[12][0-9]|3[01])[- \/.](0[1-9]|1[012])[- \/.](19|20)\d\d$/');
         $mform->addRule('enddate',get_string('error:dateformat','idp'),'regex', '/^(0[1-9]|[12][0-9]|3[01])[- \/.](0[1-9]|1[012])[- \/.](19|20)\d\d$/');
 
-        $mform->setType('startdate', PARAM_TEXT);
         $mform->setType('enddate', PARAM_TEXT);
 
-        $mform->setDefault('startdate', $startdate);
-        $mform->setHelpButton('startdate', array('userpositionstartdate', get_string('startdate', 'position')), true);
-
         $mform->setDefault('enddate', $enddate);
-        $mform->setHelpButton('enddate', array('userpositionstartdate', get_string('startdate', 'position')), true);
+        $mform->setHelpButton('enddate', array('dptemplateenddate', get_string('enddate', 'local_plan')), true);
 
         $this->add_action_buttons();
     }
@@ -46,26 +39,14 @@ class dp_template_general_settings_form extends moodleform {
         $mform =& $this->_form;
         $result = array();
 
-        $startdatestr = isset($data['startdate'])?$data['startdate']:'';
-        $startdate = dp_convert_userdate( $startdatestr );
         $enddatestr = isset($data['enddate'])?$data['enddate']:'';
         $enddate = dp_convert_userdate( $enddatestr );
 
         // Enforce valid dates
-        if ( false === $startdate && $startdatestr !== 'dd/mm/yyyy' && $startdatestr !== '' ){
-            $result['startdate'] = get_string('error:dateformat','idp');
-        }
         if ( false === $enddate && $enddatestr !== 'dd/mm/yyyy' && $enddatestr !== '' ){
             $result['enddate'] = get_string('error:dateformat','idp');
         }
 
-        // Enforce start date before finish date
-        if ( $startdate > $enddate && $startdate !== false && $enddate !== false ){
-            $errstr = get_string('error:startafterfinish','idp');
-            $result['startdate'] = $errstr;
-            $result['enddate'] = $errstr;
-            unset($errstr);
-        }
         return $result;
     }
 }
@@ -82,20 +63,14 @@ class dp_template_new_form extends moodleform {
         $mform->setType('templatename', PARAM_TEXT);
         $mform->addRule('templatename',null,'required');
 
-        $mform->addElement('text', 'startdate', get_string('startdate', 'local_plan'));
         $mform->addElement('text', 'enddate', get_string('enddate', 'local_plan'));
 
-        $mform->addRule('startdate',get_string('error:dateformat','idp'),'regex', '/^(0[1-9]|[12][0-9]|3[01])[- \/.](0[1-9]|1[012])[- \/.](19|20)\d\d$/');
         $mform->addRule('enddate',get_string('error:dateformat','idp'),'regex', '/^(0[1-9]|[12][0-9]|3[01])[- \/.](0[1-9]|1[012])[- \/.](19|20)\d\d$/');
 
-        $mform->setType('startdate', PARAM_TEXT);
         $mform->setType('enddate', PARAM_TEXT);
 
-        $mform->setDefault('startdate','dd/mm/yyyy');
-        $mform->setHelpButton('startdate', array('userpositionstartdate', get_string('startdate', 'position')), true);
-
         $mform->setDefault('enddate','dd/mm/yyyy');
-        $mform->setHelpButton('enddate', array('userpositionstartdate', get_string('startdate', 'position')), true);
+        $mform->setHelpButton('enddate', array('dptemplateenddate', get_string('enddate', 'local_plan')), true);
 
         $this->add_action_buttons();
     }
@@ -105,26 +80,14 @@ class dp_template_new_form extends moodleform {
         $mform =& $this->_form;
         $result = array();
 
-        $startdatestr = isset($data['startdate'])?$data['startdate']:'';
-        $startdate = dp_convert_userdate( $startdatestr );
         $enddatestr = isset($data['enddate'])?$data['enddate']:'';
         $enddate = dp_convert_userdate( $enddatestr );
 
         // Enforce valid dates
-        if ( false === $startdate && $startdatestr !== 'dd/mm/yyyy' && $startdatestr !== '' ){
-            $result['startdate'] = get_string('error:dateformat','idp');
-        }
         if ( false === $enddate && $enddatestr !== 'dd/mm/yyyy' && $enddatestr !== '' ){
             $result['enddate'] = get_string('error:dateformat','idp');
         }
 
-        // Enforce start date before finish date
-        if ( $startdate > $enddate && $startdate !== false && $enddate !== false ){
-            $errstr = get_string('error:startafterfinish','idp');
-            $result['startdate'] = $errstr;
-            $result['enddate'] = $errstr;
-            unset($errstr);
-        }
         return $result;
     }
 }
