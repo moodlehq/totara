@@ -13,7 +13,7 @@ abstract class dp_base_component {
             'permissions',
         );
         foreach($properties as $property) {
-            if(!property_exists($this, $property)) {
+            if (!property_exists($this, $property) && !property_exists(get_class($this), $property)) {
                 $string_properties = new object();
                 $string_properties->property = $property;
                 $string_properties->class = get_class($this);
