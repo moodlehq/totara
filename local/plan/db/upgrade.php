@@ -314,7 +314,7 @@ function xmldb_local_plan_upgrade($oldversion=0) {
             if ( !$courseassign ){
                 $result = $result && delete_records('dp_plan_component_relation', 'id', $rel->id);
             } else {
-                $newrel = stdClass();
+                $newrel = new stdClass();
                 $newrel->id = $rel->id;
                 $newrel->itemid1 = $courseassign->id;
                 $result = $result && update_record('dp_plan_component_relation', $newrel);
