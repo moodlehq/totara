@@ -82,10 +82,10 @@ if ($fromform = $mform->get_data()) {
     $returnurl = $CFG->wwwroot . '/local/plan/template/workflow.php?id=' . $id;
     $changeurl = $CFG->wwwroot . '/local/plan/template/workflow.php?id=' . $id . '&amp;confirm=' . $workflow;
     if($workflow != 'custom') {
-        admin_externalpage_print_header();
-        print_heading($template->fullname);
         // handle form submission
         if($template->workflow != $workflow) {
+            admin_externalpage_print_header();
+            print_heading($template->fullname);
             $classfile = $CFG->dirroot .
                 "/local/plan/workflows/{$workflow}/{$workflow}.class.php";
             if(!is_readable($classfile)) {
@@ -120,11 +120,13 @@ if ($fromform = $mform->get_data()) {
                 $changeurl,
                 $returnurl
             );
+        } else {
+            //If no change and saving just show notification with no processing
+            totara_set_notification(get_string('update_workflow_settings','local_plan'), $returnurl, array('style' => 'notifysuccess'));
         }
     } else {
         // Add checking to this method
         set_field('dp_template', 'workflow', $workflow, 'id', $id);
-
         totara_set_notification(get_string('update_workflow_settings','local_plan'), $returnurl, array('style' => 'notifysuccess'));
     }
 
