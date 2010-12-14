@@ -244,9 +244,6 @@ abstract class dp_base_component {
         // Override this method in children for more specific actions
     }
 
-    abstract static public function add_settings_form(&$mform, $id);
-    abstract static public function process_settings_form($fromform, $id);
-
     /**
      * Get all instances of $componentrequired linked to the specified item
      *

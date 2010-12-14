@@ -188,17 +188,20 @@ class dp_template_advanced_workflow_form extends moodleform {
 
         if($component == 'plan') {
             $class = 'development_plan';
+            require_once("{$CFG->dirroot}/local/plan/settings_form.php");
         } else {
-            // include each class file
-            $classfile = $CFG->dirroot .
-                "/local/plan/components/{$component}/{$component}.class.php";
-            if(!is_readable($classfile)) {
+            // Include each components form file
+            // Component path
+            $cpath = "{$CFG->dirroot}/local/plan/components/{$component}";
+            $formfile  = "{$cpath}/settings_form.php";
+
+            if(!is_readable($formfile)) {
                 $string_parameters = new object();
                 $string_parameters->classfile = $classfile;
                 $string_parameters->component = $component;
                 throw new PlanException(get_string('noclassfileforcomponent', 'local_plan', $string_parameters));
             }
-            include_once($classfile);
+            include_once($formfile);
 
             // check class exists
             $class = "dp_{$component}_component";
@@ -209,7 +212,9 @@ class dp_template_advanced_workflow_form extends moodleform {
                 throw new PlanException(get_string('noclassforcomponent', 'local_plan', $string_parameters));
             }
         }
-        $class::add_settings_form($mform, $id);
+        $build_form = "{$class}_build_settings_form";
+        $build_form(&$mform, $id);
+
         $mform->addElement('hidden', 'id', $id);
         $mform->addElement('hidden', 'component', $component);
         if ($templateinuse) {

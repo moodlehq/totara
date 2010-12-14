@@ -44,19 +44,22 @@ if ($fromform = $mform->get_data()) {
 
     if($component == 'plan') {
         $class = 'development_plan';
+        require_once("{$CFG->dirroot}/local/plan/settings_form.php");
     } else {
-        // include each class file
-        $classfile = $CFG->dirroot .
-            "/local/plan/components/{$component}/{$component}.class.php";
-        if(!is_readable($classfile)) {
+        // Include each components form file
+        // Component path
+        $cpath = "{$CFG->dirroot}/local/plan/components/{$component}";
+        $formfile  = "{$cpath}/settings_form.php";
+
+        if(!is_readable($formfile)) {
             $string_properties = new object();
             $string_properties->classfile = $classfile;
             $string_properties->component = $component;
             throw new PlanException(get_string('noclassfileforcomponent', 'local_plan', $string_properties));
         }
-        include_once($classfile);
+        require_once($formfile);
 
-        // check class exists
+        // Check class exists
         $class = "dp_{$component}_component";
         if(!class_exists($class)) {
             $string_properties = new object();
@@ -68,7 +71,9 @@ if ($fromform = $mform->get_data()) {
     if ($templateinuse) {
         unset($fromform->priorityscale);
     }
-    $class::process_settings_form($fromform, $id);
+
+    $process_form = "{$class}_process_settings_form";
+    $process_form(&$fromform, $id);
 
     redirect($CFG->wwwroot . '/local/plan/template/advancedworkflow.php?id='.$id.'&amp;component='.$component);
 }
@@ -95,5 +100,3 @@ print_single_button($CFG->wwwroot.'/local/plan/template/workflow.php', array('id
 $mform->display();
 
 admin_externalpage_print_footer();
-
-?>
