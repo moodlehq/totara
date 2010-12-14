@@ -114,8 +114,11 @@ if($plan->role == 'manager') {
 
 $competency_instructions .= get_string('competency_instructions_detail', 'local_plan');
 
-if ($component->get_setting('updatecompetency') >= DP_PERMISSION_REQUEST) {
+if ($component->get_setting('updatecompetency') > DP_PERMISSION_REQUEST) {
     $competency_instructions .= get_string('competency_instructions_add', 'local_plan');
+}
+if ($component->get_setting('updatecompetency') == DP_PERMISSION_REQUEST) {
+    $competency_instructions .= get_string('competency_instructions_request', 'local_plan');
 }
 
 $competency_instructions .= '</div>';

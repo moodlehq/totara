@@ -117,8 +117,11 @@ if($plan->role == 'manager') {
 
 $course_instructions .= get_string('course_instructions_detail', 'local_plan');
 
-if ($component->get_setting('updatecourse') >= DP_PERMISSION_REQUEST) {
+if ($component->get_setting('updatecourse') > DP_PERMISSION_REQUEST) {
     $course_instructions .= get_string('course_instructions_add', 'local_plan');
+}
+if ($component->get_setting('updatecourse') == DP_PERMISSION_REQUEST) {
+    $course_instructions .= get_string('course_instructions_request', 'local_plan');
 }
 
 $course_instructions .= '</div>';

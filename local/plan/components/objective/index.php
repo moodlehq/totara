@@ -88,8 +88,11 @@ if($plan->role == 'manager') {
 
 $objective_instructions .= get_string('objective_instructions_detail', 'local_plan');
 
-if ($component->get_setting('updateobjective') >= DP_PERMISSION_REQUEST) {
+if ($component->get_setting('updateobjective') > DP_PERMISSION_REQUEST) {
     $objective_instructions .= get_string('objective_instructions_add', 'local_plan');
+}
+if ($component->get_setting('updateobjective') == DP_PERMISSION_REQUEST) {
+    $objective_instructions .= get_string('objective_instructions_request', 'local_plan');
 }
 
 $objective_instructions .= '</div>';
