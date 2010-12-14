@@ -21,7 +21,6 @@ $id = optional_param('id',null,PARAM_INT); // id for report
 $sid = optional_param('sid',null,PARAM_INT); // id for saved search
 $d = optional_param('d',false, PARAM_BOOL); // delete saved search?
 $confirm = optional_param('confirm', false, PARAM_BOOL); // confirm delete
-$notice = optional_param('notice', 0, PARAM_INT); // notice flag
 
 $returnurl = $CFG->wwwroot.'/local/reportbuilder/savedsearches.php?id='.$id;
 
@@ -33,14 +32,12 @@ if(!$report->is_capable($id)) {
 if($d && $confirm) {
     // delete an existing saved search
     if(!confirm_sesskey()) {
-        print_error('confirmsesskeybad','error');
+        totara_set_notification(get_string('error:bad_sesskey','local_reportbuilder'), $returnurl);
     }
     if(delete_records('report_builder_saved', 'id', $sid)) {
-        redirect($returnurl . '&amp;notice=' .
-            REPORT_BUILDER_SAVED_SEARCHES_CONFIRM_DELETE);
+        totara_set_notification(get_string('savedsearchdeleted','local_reportbuilder'), $returnurl);
     } else {
-        redirect($returnurl . '&amp;notice=' .
-            REPORT_BUILDER_SAVED_SEARCHES_FAILED_DELETE);
+        totara_set_notification(get_string('error:savedsearchnotdeleted','local_reportbuilder'), $returnurl, array('style' => 'notifysuccess'));
     }
 } else if($d) {
     $fullname = $report->fullname;
@@ -75,17 +72,6 @@ print_header_simple($pagetitle, '', $navigation, '', null, true, $report->edit_b
 
 print $report->view_button();
 print_heading(get_string('savedsearches','local_reportbuilder'));
-
-if($notice) {
-    switch($notice) {
-    case REPORT_BUILDER_SAVED_SEARCHES_CONFIRM_DELETE:
-        notify(get_string('savedsearchdeleted','local_reportbuilder'),'notifysuccess');
-        break;
-    case REPORT_BUILDER_SAVED_SEARCHES_FAILED_DELETE:
-        notify(get_string('error:savedsearchnotdeleted','local_reportbuilder'));
-        break;
-    }
-}
 
 if($searches = get_records_select('report_builder_saved', 'userid='.$USER->id.' AND reportid='.$id, 'name')) {
     $tableheader = array(get_string('name','local_reportbuilder'),

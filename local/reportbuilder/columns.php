@@ -12,7 +12,6 @@ $m = optional_param('m', null, PARAM_TEXT); // move
 $h = optional_param('h', null, PARAM_TEXT); // show/hide
 $cid = optional_param('cid',null,PARAM_INT); //column id
 $confirm = optional_param('confirm', 0, PARAM_INT); // confirm delete
-$notice = optional_param('notice', 0, PARAM_INT); // notice flag
 
 admin_externalpage_setup('managereports');
 
@@ -23,28 +22,23 @@ $report = new reportbuilder($id);
 // toggle show/hide column
 if ($h !== null && isset($cid)) {
     if($report->showhide_column($cid, $h)) {
-        redirect($returnurl . '&amp;notice=' .
-            REPORT_BUILDER_COLUMNS_CONFIRM_SHOWHIDE);
+        totara_set_notification(get_string('column_vis_updated','local_reportbuilder'), $returnurl, array('style' => 'notifysuccess'));
     } else {
-        redirect($returnurl . '&amp;notice=' .
-            REPORT_BUILDER_COLUMNS_FAILED_SHOWHIDE);
+        totara_set_notification(get_string('error:column_vis_not_updated','local_reportbuilder'), $returnurl);
     }
 }
 
 // delete column
 if ($d and $confirm ) {
     if(!confirm_sesskey()) {
-        redirect($returnurl . '&amp;notice=' .
-            REPORT_BUILDER_FAILED_DELETE_SESSKEY);
+        totara_set_notification(get_string('error:bad_sesskey','local_reportbuilder'), $returnurl);
     }
 
     if(isset($cid)) {
         if($report->delete_column($cid)) {
-            redirect($returnurl . '&amp;notice=' .
-            REPORT_BUILDER_COLUMNS_CONFIRM_DELETE);
+            totara_set_notification(get_string('column_deleted','local_reportbuilder'), $returnurl, array('style' => 'notifysuccess'));
         } else {
-            redirect($returnurl . '&amp;notice=' .
-            REPORT_BUILDER_COLUMNS_FAILED_DELETE);
+            totara_set_notification(get_string('error:column_not_deleted','local_reportbuilder'), $returnurl);
         }
     }
 }
@@ -65,11 +59,9 @@ if ($d) {
 // move column
 if($m && isset($cid)) {
     if($report->move_column($cid, $m)) {
-        redirect($returnurl . '&amp;notice=' .
-            REPORT_BUILDER_COLUMNS_CONFIRM_MOVE);
+        totara_set_notification(get_string('column_moved','local_reportbuilder'), $returnurl, array('style' => 'notifysuccess'));
     } else {
-        redirect($returnurl . '&amp;notice=' .
-            REPORT_BUILDER_COLUMNS_FAILED_MOVE);
+        totara_set_notification(get_string('error:column_not_moved','local_reportbuilder'), $returnurl);
     }
 }
 
@@ -83,16 +75,13 @@ if ($mform->is_cancelled()) {
 if ($fromform = $mform->get_data()) {
 
     if(empty($fromform->submitbutton)) {
-        redirect($returnurl . '&amp;notice=' .
-            REPORT_BUILDER_UNKNOWN_BUTTON_CLICKED);
+        totara_set_notification(get_string('error:unknownbuttonclicked','local_reportbuilder'), $returnurl);
     }
 
     if(build_columns($id, $fromform)) {
-        redirect($returnurl . '&amp;notice=' .
-            REPORT_BUILDER_COLUMNS_CONFIRM_UPDATE);
+        totara_set_notification(get_string('columns_updated','local_reportbuilder'), $returnurl, array('style' => 'notifysuccess'));
     } else {
-        redirect($returnurl . '&amp;notice=' .
-            REPORT_BUILDER_COLUMNS_FAILED_UPDATE);
+        totara_set_notification(get_string('error:columns_not_updated','local_reportbuilder'), $returnurl);
     }
 
 }
@@ -109,41 +98,6 @@ print_heading(get_string('editreport','local_reportbuilder',$report->fullname));
 
 $currenttab = 'columns';
 include_once('tabs.php');
-
-if($notice) {
-    switch($notice) {
-    case REPORT_BUILDER_COLUMNS_CONFIRM_SHOWHIDE:
-        notify(get_string('column_vis_updated','local_reportbuilder'),'notifysuccess');
-        break;
-    case REPORT_BUILDER_COLUMNS_FAILED_SHOWHIDE:
-        notify(get_string('error:column_vis_not_updated','local_reportbuilder'));
-        break;
-    case REPORT_BUILDER_COLUMNS_CONFIRM_DELETE:
-        notify(get_string('column_deleted','local_reportbuilder'),'notifysuccess');
-        break;
-    case REPORT_BUILDER_FAILED_DELETE_SESSKEY:
-        notify(get_string('error:bad_sesskey','local_reportbuilder'));
-        break;
-    case REPORT_BUILDER_COLUMNS_FAILED_DELETE:
-        notify(get_string('error:column_not_deleted','local_reportbuilder'));
-        break;
-    case REPORT_BUILDER_COLUMNS_CONFIRM_MOVE:
-        notify(get_string('column_moved','local_reportbuilder'),'notifysuccess');
-        break;
-    case REPORT_BUILDER_COLUMNS_FAILED_MOVE:
-        notify(get_string('error:column_not_moved','local_reportbuilder'));
-        break;
-    case REPORT_BUILDER_COLUMNS_CONFIRM_UPDATE:
-        notify(get_string('columns_updated','local_reportbuilder'),'notifysuccess');
-        break;
-    case REPORT_BUILDER_COLUMNS_FAILED_UPDATE:
-        get_string('error:columns_not_updated','local_reportbuilder');
-        break;
-    case REPORT_BUILDER_UNKNOWN_BUTTON_CLICKED:
-        get_string('error:unknownbuttonclicked','local_reportbuilder');
-        break;
-    }
-}
 
 // display the form
 $mform->display();

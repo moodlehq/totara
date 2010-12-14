@@ -29,7 +29,6 @@
     $id = optional_param('id',null,PARAM_INT); // id for delete group
     $d = optional_param('d',false, PARAM_BOOL); // delete group?
     $confirm = optional_param('confirm', false, PARAM_BOOL); // confirm delete
-    $notice = optional_param('notice', 0, PARAM_INT); // notice flag
 
     $returnurl = $CFG->wwwroot . '/local/reportbuilder/groups.php';
 
@@ -38,22 +37,19 @@
     if($d && $confirm) {
         // delete an existing group
         if(!confirm_sesskey()) {
-            print_error('confirmsesskeybad','error');
+            totara_set_notification(get_string('error:bad_sesskey','local_reportbuilder'), $returnurl);
         }
         if(delete_group($id)) {
-            redirect($returnurl . '?notice=' .
-                REPORT_BUILDER_GROUPS_CONFIRM_DELETE);
+            totara_set_notification(get_string('groupdeleted','local_reportbuilder'), $returnurl, array('style' => 'notifysuccess'));
         } else {
-            redirect($returnurl . '?notice=' .
-                REPORT_BUILDER_GROUPS_FAILED_DELETE);
+            totara_set_notification(get_string('error:groupnotdeleted','local_reportbuilder'), $returnurl);
         }
     } else if($d) {
         $reports = get_records_select('report_builder',
             "source ILIKE '%grp_$id'");
         if($reports) {
             // can't delete group when reports are using it
-            redirect($returnurl.'?notice=' .
-                REPORT_BUILDER_GROUPS_REPORTS_EXIST);
+            totara_set_notification(get_string('error:grouphasreports','local_reportbuilder'), $returnurl);
             die;
         } else {
             // prompt to delete
@@ -78,16 +74,16 @@
     if ($fromform = $mform->get_data()) {
 
         if(empty($fromform->submitbutton)) {
-            print_error('error:unknownbuttonclicked', 'local_reportbuilder', $returnurl);
+            totara_set_notification(get_string('error:unknownbuttonclicked','local_reportbuilder'), $returnurl);
         }
 
-        $errorcode = REPORT_BUILDER_GROUPS_FAILED_CREATE_GROUP;
+        $errorcode = 'error:groupnotcreated';
         if($newid = create_group($fromform, $errorcode)) {
             redirect($CFG->wwwroot.'/local/reportbuilder/groupsettings.php?id=' .
                 $newid);
             die;
         } else {
-            redirect($returnurl . '?notice=' . $errorcode);
+            totara_set_notification(get_string($errorcode,'local_reportbuilder'), $returnurl);
             die;
         }
 
@@ -96,29 +92,6 @@
     admin_externalpage_print_header();
 
     print_heading(get_string('activitygroups','local_reportbuilder'));
-
-    if($notice) {
-        switch($notice) {
-        case REPORT_BUILDER_GROUPS_CONFIRM_DELETE:
-            notify(get_string('groupdeleted','local_reportbuilder'),'notifysuccess');
-            break;
-        case REPORT_BUILDER_GROUPS_FAILED_DELETE:
-            notify(get_string('error:groupnotdeleted','local_reportbuilder'));
-            break;
-        case REPORT_BUILDER_GROUPS_FAILED_CREATE_GROUP:
-            notify(get_string('error:groupnotcreated','local_reportbuilder'));
-            break;
-        case REPORT_BUILDER_GROUPS_NO_PREPROCESSOR:
-            notify(get_string('error:groupnotcreatedpreproc','local_reportbuilder'));
-            break;
-        case REPORT_BUILDER_GROUPS_FAILED_INIT_TABLES:
-            notify(get_string('error:groupnotcreatedinitfail','local_reportbuilder'));
-            break;
-        case REPORT_BUILDER_GROUPS_REPORTS_EXIST:
-            notify(get_string('error:grouphasreports','local_reportbuilder'));
-            break;
-        }
-    }
 
     print '<p>' . get_string('activitygroupdesc','local_reportbuilder') . '</p>';
 
@@ -293,7 +266,7 @@ function create_group($fromform, &$errorcode) {
     $newid = insert_record('report_builder_group', $todb);
 
     if (!$newid) {
-        $errorcode = REPORT_BUILDER_GROUPS_FAILED_CREATE_GROUP;
+        $errorcode = 'error:groupnotcreated';
         return false;
     }
 
@@ -301,7 +274,7 @@ function create_group($fromform, &$errorcode) {
     $pp = reportbuilder::get_preproc_object($fromform->preproc, $newid);
     if(!$pp) {
         rollback_sql();
-        $errorcode = REPORT_BUILDER_GROUPS_NO_PREPROCESSOR;
+        $errorcode = 'error:groupnotcreatedpreproc';
         return false;
     }
 
@@ -309,7 +282,7 @@ function create_group($fromform, &$errorcode) {
     if(!$pp->is_initialized()) {
         $status = $pp->initialize_group($fromform->baseitem);
         if(!$status) {
-            $errorcode = REPORT_BUILDER_GROUPS_FAILED_INIT_TABLES;
+            $errorcode = 'error:groupnotcreatedinitfail';
             rollback_sql();
             return false;
         }

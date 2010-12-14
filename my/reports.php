@@ -33,8 +33,6 @@ require_once($CFG->libdir.'/blocklib.php');
 require_once($CFG->libdir.'/tablelib.php');
 require_once($CFG->dirroot.'/tag/lib.php');
 
-$notice = optional_param('notice', 0, PARAM_INT); // notice flag
-
 require_login();
 
 define('DEFAULT_PAGE_SIZE', 20);
@@ -64,22 +62,11 @@ if(get_reports()){
     print_container_start(false, '', 'scheduledreports_section_inner');
     echo '<br /><a name="scheduled"></a><h1>'.get_string('scheduledreports', 'local_reportbuilder').'</h1>';
 
-    if($notice) {
-	switch($notice) {
-	case REPORT_BUILDER_SCHEDULE_CONFIRM_ADD:
-	    notify(get_string('addedscheduledreport','local_reportbuilder'),'notifysuccess');
-	    break;
-	case REPORT_BUILDER_SCHEDULE_CONFIRM_UPDATE:
-	    notify(get_string('updatescheduledreport','local_reportbuilder'),'notifysuccess');
-	    break;
-	}
-    }
-
     totara_print_scheduled_reports();
     print_container_end();
     print_container_end();
 }
-	
+
 print_footer();
 
 ?>

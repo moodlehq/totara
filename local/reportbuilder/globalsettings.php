@@ -5,7 +5,6 @@ require_once($CFG->dirroot.'/local/reportbuilder/lib.php');
 require_once($CFG->dirroot.'/local/reportbuilder/report_forms.php');
 
 global $USER;
-$notice = optional_param('notice', 0, PARAM_INT); // notice flag
 
 admin_externalpage_setup('globalreportsettings');
 
@@ -21,16 +20,13 @@ if ($mform->is_cancelled()) {
 if ($fromform = $mform->get_data()) {
 
     if(empty($fromform->submitbutton)) {
-        redirect($returnurl . '?notice=' .
-            REPORT_BUILDER_UNKNOWN_BUTTON_CLICKED);
+        totara_set_notification(get_string('error:unknownbuttonclicked','local_reportbuilder'), $returnurl);
     }
 
     if(update_global_settings($fromform)) {
-        redirect($returnurl . '?notice=' .
-            REPORT_BUILDER_GLOBAL_CONFIRM_UPDATE);
+        totara_set_notification(get_string('globalsettingsupdated', 'local_reportbuilder'), $returnurl, array('style' => 'notifysuccess'));
     } else {
-        redirect($returnurl . '?notice=' .
-            REPORT_BUILDER_GLOBAL_FAILED_UPDATE);
+        totara_set_notification(get_string('error:couldnotupdateglobalsettings','local_reportbuilder'), $returnurl);
     }
 }
 
@@ -41,20 +37,6 @@ print_single_button($CFG->wwwroot.'/local/reportbuilder/index.php', null, get_st
 print "</td></tr></table>";
 
 print_heading(get_string('reportbuilderglobalsettings','local_reportbuilder'));
-
-if($notice) {
-    switch($notice) {
-    case REPORT_BUILDER_UNKNOWN_BUTTON_CLICKED:
-        notify(get_string('error:unknownbuttonclicked','local_reportbuilder'));
-        break;
-    case REPORT_BUILDER_GLOBAL_CONFIRM_UPDATE:
-        notify(get_string('globalsettingsupdated', 'local_reportbuilder'), 'notifysuccess');
-        break;
-    case REPORT_BUILDER_GLOBAL_FAILED_UPDATE:
-        notify(get_string('error:couldnotupdateglobalsettings','local_reportbuilder'));
-        break;
-    }
-}
 
 // display the form
 $mform->display();

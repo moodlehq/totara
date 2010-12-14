@@ -17,7 +17,6 @@ require_once($CFG->dirroot.'/local/reportbuilder/scheduled_forms.php');
 
 $reportid = optional_param('reportid', PARAM_INT); //report that a schedule is being added for
 $id = optional_param('id', 0, PARAM_INT); //id if editing schedule
-$notice = optional_param('notice', 0, PARAM_INT); // notice flag
 
 //admin_externalpage_setup('managereports');
 
@@ -57,30 +56,23 @@ if($mform->is_cancelled()){
 }
 if($fromform = $mform->get_data()){
     if(empty($fromform->submitbutton)) {
-        redirect($returnurl . '&amp;notice=' .
-            REPORT_BUILDER_UNKNOWN_BUTTON_CLICKED);
+        totara_set_notification(get_string('error:unknownbuttonclicked','local_reportbuilder'), $returnurl);
     }
-    
+
     if($fromform->id){
         if($newid = add_scheduled_report($fromform)) {
-            redirect($myreportsurl . '?notice=' .
-                REPORT_BUILDER_SCHEDULE_CONFIRM_UPDATE.
-                '#scheduled');
+            totara_set_notification(get_string('updatescheduledreport','local_reportbuilder'), $myreportsurl, array('style' => 'notifysuccess'));
         }
         else {
-            redirect($returnurl . '?id=' .$id. '&amp;notice=' .
-                REPORT_BUILDER_SCHEDULE_FAILED_UPDATE);
+            totara_set_notification(get_string('error:updatescheduledreport','local_reportbuilder'), $returnurl);
         }
     }
     else {
         if($newid = add_scheduled_report($fromform)) {
-            redirect($myreportsurl . '?notice=' .
-                REPORT_BUILDER_SCHEDULE_CONFIRM_ADD .
-                '#scheduled');
+            totara_set_notification(get_string('addedscheduledreport','local_reportbuilder'), $myreportsurl, array('style' => 'notifysuccess'));
         }
         else {
-            redirect($returnurl . '?id=' .$id. '&amp;notice=' .
-                REPORT_BUILDER_SCHEDULE_FAILED_ADD);
+            totara_set_notification(get_string('error:addscheduledreport','local_reportbuilder'), $returnurl);
         }
     }
 }
@@ -102,27 +94,13 @@ print "</td></tr></table>";
 
 print_heading(get_string($pagename, 'local_reportbuilder'));
 
-if($notice) {
-    switch($notice) {
-    case REPORT_BUILDER_SCHEDULE_FAILED_ADD:
-        notify(get_string('error:addscheduledreport','local_reportbuilder'));
-        break;
-    case REPORT_BUILDER_SCHEDULE_FAILED_UPDATE:
-        notify(get_string('error:updatescheduledreport','local_reportbuilder'));
-        break;
-    case REPORT_BUILDER_UNKNOWN_BUTTON_CLICKED:
-        get_string('error:unknownbuttonclicked','local_reportbuilder');
-        break;
-    }
-}
-
 $mform->display();
 
 print_footer();
 
 function add_scheduled_report($fromform){
     global $USER, $REPORT_BUILDER_EXPORT_OPTIONS, $REPORT_BUILDER_SCHEDULE_OPTIONS;
-    
+
     $REPORT_BUILDER_SCHEDULE_CODES = array_flip($REPORT_BUILDER_SCHEDULE_OPTIONS);
     begin_sql();
 

@@ -19,7 +19,6 @@
     $d = optional_param('d',false, PARAM_BOOL); // delete record?
     $em = optional_param('em', false, PARAM_BOOL); // embedded report?
     $confirm = optional_param('confirm', false, PARAM_BOOL); // confirm delete
-    $notice = optional_param('notice', 0, PARAM_INT); // notice flag
 
     admin_externalpage_setup('managereports');
 
@@ -31,15 +30,12 @@
     // delete an existing report
     if($d && $confirm) {
         if(!confirm_sesskey()) {
-            redirect($returnurl . '?notice=' .
-                REPORT_BUILDER_FAILED_DELETE_SESSKEY);
+            totara_set_notification(get_string('error:bad_sesskey','local_reportbuilder'), $returnurl);
         }
         if(delete_report($id)) {
-            redirect($returnurl . '?notice=' .
-                REPORT_BUILDER_REPORT_CONFIRM_DELETE);
+            totara_set_notification(get_string($type . 'report','local_reportbuilder'), $returnurl, array('style' => 'notifysuccess'));
         } else {
-            redirect($returnurl . '?notice=' .
-                REPORT_BUILDER_REPORT_FAILED_DELETE);
+            totara_set_notification(get_string('no' . $type . 'report','local_reportbuilder'), $returnurl);
         }
     } else if($d) {
         admin_externalpage_print_header();
@@ -63,8 +59,7 @@
     if ($fromform = $mform->get_data()) {
 
         if(empty($fromform->submitbutton)) {
-            redirect($returnurl . '?notice=' .
-                REPORT_BUILDER_UNKNOWN_BUTTON_CLICKED);
+            totara_set_notification(get_string('error:unknownbuttonclicked', 'local_reportbuilder'), $returnurl);
         }
         // create new record here
         $todb = new object();
@@ -173,20 +168,6 @@
     }
 
     admin_externalpage_print_header();
-
-    if($notice) {
-        switch($notice) {
-        case REPORT_BUILDER_FAILED_DELETE_SESSKEY:
-            notify(get_string('error:bad_sesskey','local_reportbuilder'));
-            break;
-        case REPORT_BUILDER_REPORT_FAILED_DELETE:
-            notify(get_string('no' . $type . 'report','local_reportbuilder'));
-            break;
-        case REPORT_BUILDER_REPORT_CONFIRM_DELETE:
-            notify(get_string($type . 'report','local_reportbuilder'), 'notifysuccess');
-            break;
-        }
-    }
 
     print_heading(get_string('usergeneratedreports','local_reportbuilder'));
 

@@ -6,7 +6,6 @@ require_once($CFG->dirroot.'/local/reportbuilder/report_forms.php');
 
 global $USER;
 $id = required_param('id',PARAM_INT); // report builder id
-$notice = optional_param('notice', 0, PARAM_INT); // notice flag
 
 admin_externalpage_setup('managereports');
 
@@ -24,16 +23,13 @@ if ($mform->is_cancelled()) {
 if ($fromform = $mform->get_data()) {
 
     if(empty($fromform->submitbutton)) {
-        redirect($returnurl . '&amp;notice=' .
-            REPORT_BUILDER_UNKNOWN_BUTTON_CLICKED);
+        totara_set_notification(get_string('error:unknownbuttonclicked','local_reportbuilder'), $returnurl);
     }
 
     if(update_content($id, $report, $fromform)) {
-        redirect($returnurl . '&amp;notice=' .
-            REPORT_BUILDER_CONTENT_CONFIRM_UPDATE);
+        totara_set_notification(get_string('reportupdated', 'local_reportbuilder'), $returnurl, array('style' => 'notifysuccess'));
     } else {
-        redirect($returnurl . '&amp;notice=' .
-            REPORT_BUILDER_CONTENT_FAILED_UPDATE);
+        totara_set_notification(get_string('error:couldnotupdatereport','local_reportbuilder'), $returnurl);
     }
 
 }
@@ -50,17 +46,6 @@ print_heading(get_string('editreport','local_reportbuilder',$report->fullname));
 
 $currenttab = 'content';
 include_once('tabs.php');
-
-if($notice) {
-    switch($notice) {
-    case REPORT_BUILDER_CONTENT_CONFIRM_UPDATE:
-        notify(get_string('reportupdated','local_reportbuilder'),'notifysuccess');
-        break;
-    case REPORT_BUILDER_CONTENT_FAILED_UPDATE:
-        get_string('error:couldnotupdatereport','local_reportbuilder');
-        break;
-    }
-}
 
 // display the form
 $mform->display();

@@ -10,7 +10,6 @@ $d = optional_param('d', null, PARAM_TEXT); // delete
 $m = optional_param('m', null, PARAM_TEXT); // move
 $fid = optional_param('fid',null,PARAM_INT); //filter id
 $confirm = optional_param('confirm', 0, PARAM_INT); // confirm delete
-$notice = optional_param('notice', 0, PARAM_INT); // notice flag
 
 admin_externalpage_setup('managereports');
 
@@ -21,27 +20,21 @@ $report = new reportbuilder($id);
 // delete fields or columns
 if ($d and $confirm ) {
     if(!confirm_sesskey()) {
-        redirect($returnurl . '&amp;notice=' .
-            REPORT_BUILDER_FAILED_DELETE_SESSKEY);
+        totara_set_notification(get_string('error:bad_sesskey','local_reportbuilder'), $returnurl);
     }
 
     if(isset($fid)) {
         if($report->delete_filter($fid)) {
-            redirect($returnurl . '&amp;notice=' .
-                REPORT_BUILDER_FILTERS_CONFIRM_DELETE);
+            totara_set_notification(get_string('filter_deleted','local_reportbuilder'), $returnurl, array('style' => 'notifysuccess'));
         } else {
-            redirect($returnurl . '&amp;notice=' .
-                REPORT_BUILDER_FILTERS_FAILED_DELETE);
-            //'Field could not be deleted');
+            totara_set_notification(get_string('error:filter_not_deleted','local_reportbuilder'), $returnurl);
         }
     }
 }
 
 
-
 // confirm deletion of field or column
 if ($d) {
-
     admin_externalpage_print_header();
 
     if(isset($fid)) {
@@ -55,12 +48,9 @@ if ($d) {
 // move filter
 if($m && isset($fid)) {
     if($report->move_filter($fid, $m)) {
-        redirect($returnurl . '&amp;notice=' .
-            REPORT_BUILDER_FILTERS_CONFIRM_MOVE);
+        totara_set_notification(get_string('filter_moved','local_reportbuilder'), $returnurl, array('style' => 'notifysuccess'));
     } else {
-        redirect($returnurl . '&amp;notice=' .
-            REPORT_BUILDER_FILTERS_FAILED_MOVE);
-        //, 'Filter could not be moved');
+        totara_set_notification(get_string('error:filter_not_moved','local_reportbuilder'), $returnurl);
     }
 }
 
@@ -79,12 +69,9 @@ if ($fromform = $mform->get_data()) {
     }
 
     if(build_filters($id, $fromform)) {
-        redirect($returnurl . '&amp;notice=' .
-            REPORT_BUILDER_FILTERS_CONFIRM_UPDATE);
+        totara_set_notification(get_string('filters_updated','local_reportbuilder'), $returnurl, array('style' => 'notifysuccess'));
     } else {
-        redirect($returnurl . '&amp;notice=' .
-            REPORT_BUILDER_FILTERS_FAILED_UPDATE);
-        //, get_string('error:couldnotupdatereport','local_reportbuilder'));
+        totara_set_notification(get_string('error:filters_not_updated','local_reportbuilder'), $returnurl);
     }
 
 }
@@ -101,32 +88,6 @@ print_heading(get_string('editreport','local_reportbuilder',$report->fullname));
 
 $currenttab = 'filters';
 include_once('tabs.php');
-
-if($notice) {
-    switch($notice) {
-    case REPORT_BUILDER_FILTERS_CONFIRM_DELETE:
-        notify(get_string('filter_deleted','local_reportbuilder'),'notifysuccess');
-        break;
-    case REPORT_BUILDER_FAILED_DELETE_SESSKEY:
-        notify(get_string('error:bad_sesskey','local_reportbuilder'));
-        break;
-    case REPORT_BUILDER_FILTERS_FAILED_DELETE:
-        notify(get_string('error:filter_not_deleted','local_reportbuilder'));
-        break;
-    case REPORT_BUILDER_FILTERS_CONFIRM_MOVE:
-        notify(get_string('filter_moved','local_reportbuilder'),'notifysuccess');
-        break;
-    case REPORT_BUILDER_FILTERS_FAILED_MOVE:
-        notify(get_string('error:filter_not_moved','local_reportbuilder'));
-        break;
-    case REPORT_BUILDER_FILTERS_CONFIRM_UPDATE:
-        notify(get_string('filters_updated','local_reportbuilder'),'notifysuccess');
-        break;
-    case REPORT_BUILDER_FILTERS_FAILED_UPDATE:
-        get_string('error:filters_not_updated','local_reportbuilder');
-        break;
-    }
-}
 
 // display the form
 $mform->display();
