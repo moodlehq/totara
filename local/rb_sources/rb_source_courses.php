@@ -33,7 +33,7 @@ class rb_source_courses extends rb_base_source {
                 'mods',
                 'LEFT',
                 '(SELECT cm.course,' .
-                sql_group_concat('CAST(m.name AS varchar)','|', true) .
+                sql_group_concat(sql_cast2char('m.name'),'|', true) .
                 " AS list FROM {$CFG->prefix}course_modules cm LEFT JOIN {$CFG->prefix}modules m ON m.id = cm.module GROUP BY cm.course)",
                 'mods.course = base.id',
                 REPORT_BUILDER_RELATION_ONE_TO_ONE

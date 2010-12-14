@@ -21,8 +21,8 @@ class rb_source_dp_course extends rb_base_source {
                 sql_concat_join(
                         "','",
                         array(
-                            sql_cast_int2char('ra.userid'),
-                            sql_cast_int2char('cx.instanceid')
+                            sql_cast2char('ra.userid'),
+                            sql_cast2char('cx.instanceid')
                         )
                 ) . " as id, ".
                 "ra.userid as userid, cx.instanceid as courseid ".
@@ -34,8 +34,8 @@ class rb_source_dp_course extends rb_base_source {
                 sql_concat_join(
                         "','",
                         array(
-                            sql_cast_int2char('p1.userid'),
-                            sql_cast_int2char('pca1.courseid')
+                            sql_cast2char('p1.userid'),
+                            sql_cast2char('pca1.courseid')
                         )
                 )." as id, ".
                 "p1.userid as userid, pca1.courseid as courseid ".

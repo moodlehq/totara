@@ -3085,7 +3085,7 @@ function sql_group_concat($field, $delimiter=', ', $unique=false) {
         case 'mysql':
             // use native function
             $distinct = $unique ? 'DISTINCT' : '';
-            $sql = " GROUP_CONCAT($distinct $field SEPARATOR $delimiter) ";
+            $sql = " GROUP_CONCAT($distinct $field SEPARATOR '$delimiter') ";
             break;
         case 'postgres':
             // use custom aggregate function - must have been defined
@@ -3099,12 +3099,12 @@ function sql_group_concat($field, $delimiter=', ', $unique=false) {
 }
 
 /**
- * Returns the SQL to be used in order to CAST one INTEGER column to CHAR
+ * Returns the SQL to be used in order to CAST one column to CHAR
  *
  * @param string fieldname the name of the field to be casted
  * @return string the piece of SQL code to be used in your statement.
  */
-function sql_cast_int2char($fieldname) {
+function sql_cast2char($fieldname) {
 
     global $CFG;
 
