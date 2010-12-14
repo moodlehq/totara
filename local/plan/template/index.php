@@ -180,7 +180,6 @@ if ($fromform = $mform->get_data()) {
 
         $todb = new object();
         $todb->fullname = $fromform->templatename;
-        $todb->startdate = dp_convert_userdate($fromform->startdate);
         $todb->enddate = dp_convert_userdate($fromform->enddate);
         $sortorder = count_records('dp_template') + 1;
         $todb->sortorder = $sortorder;
@@ -360,7 +359,7 @@ print <<<HEREDOC
 <script type="text/javascript">
 
     $(function() {
-        $('#id_startdate, #id_enddate').datepicker(
+        $('#id_enddate').datepicker(
             {
                 dateFormat: 'dd/mm/yy',
                 showOn: 'button',
@@ -373,35 +372,5 @@ print <<<HEREDOC
 HEREDOC;
 
 print_footer();
-
-function get_template_status($startdate, $enddate) {
-    $now = time();
-    if($startdate){
-        if($startdate < $now) {
-            if($enddate) {
-                if($enddate < $now) {
-                    $status = 'complete';
-                } else {
-                    $status = 'active';
-                }
-            } else {
-                $status = 'active';
-            }
-        } else {
-            $status = 'draft';
-        }
-    } else {
-        if($enddate) {
-            if($enddate < $now) {
-                $status = 'complete';
-            } else {
-                $status = 'active';
-            }
-        } else {
-            $status = 'draft';
-        }
-    }
-    return $status;
-}
 
 ?>
