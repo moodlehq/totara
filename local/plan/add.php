@@ -101,7 +101,7 @@ if ($data = $form->get_data()) {
 ///
 /// Display
 ///
-$heading = get_string('createplan', 'local_plan');
+$heading = get_string('createnewlearningplan', 'local_plan');
 $pagetitle = format_string(get_string('learningplan','local_plan').': '.$heading);
 $navlinks = array();
 dp_get_plan_base_navlinks($navlinks, $userid);

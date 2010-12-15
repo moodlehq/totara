@@ -486,7 +486,7 @@ function dp_display_add_plan_icon($userid) {
 
     $out = '';
     $href = "{$CFG->wwwroot}/local/plan/add.php?userid={$userid}";
-    $title = get_string('createplan', 'local_plan');
+    $title = get_string('createnewlearningplan', 'local_plan');
     $out = '';
     $out .= '<span class="dp-add-plan-link">';
     $out .= '	<form action="'.$href.'" method="GET">';
