@@ -104,7 +104,7 @@ if ($data = $form->get_data()) {
 $heading = get_string('addplan', 'local_plan');
 $pagetitle = format_string(get_string('developmentplan','local_plan').': '.$heading);
 $navlinks = array();
-$navlinks[] = array('name' => get_string('developmentplans', 'local_plan'), 'link'=> "{$CFG->wwwroot}/local/plan/index.php?userid={$userid}", 'type'=>'title');
+dp_get_plan_base_navlinks($navlinks, $userid);
 $navlinks[] = array('name' => $heading, 'link'=> '', 'type'=>'title');
 
 $navigation = build_navigation($navlinks);

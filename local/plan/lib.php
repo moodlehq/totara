@@ -624,3 +624,35 @@ function dp_record_status_picker($pagename, $status, $userid=null) {
 
     return $out;
 }
+
+
+/**
+ * Add lowest levels of breadcrumbs to plan
+ *
+ * Exact links added depends on if the plan belongs to the current
+ * user or not.
+ *
+ * @param array &$navlinks The navlinks array to update (passed by reference)
+ * @param integer $userid ID of the plan's owner
+ *
+ * @return boolean True if it is the user's own plan
+ */
+function dp_get_plan_base_navlinks(&$navlinks, $userid) {
+    global $CFG, $USER;
+    // the user is viewing their own plan
+    if($userid == $USER->id) {
+        $navlinks[] = array('name' => get_string('mylearning', 'local'), 'link' => $CFG->wwwroot . '/my/learning.php', 'type' => 'title');
+        $navlinks[] = array('name' => get_string('learningplans','local_plan'), 'link'=> $CFG->wwwroot . '/local/plan/index.php', 'type'=>'title');
+        return true;
+    }
+
+    // the user is viewing someone else's plan
+    $user = get_record('user', 'id', $userid);
+    if($user) {
+        $navlinks[] = array('name' => get_string('myteam','local'), 'link'=> $CFG->wwwroot . '/my/team.php', 'type'=>'title');
+        $navlinks[] = array('name' => get_string('teammembers','local'), 'link'=> $CFG->wwwroot . '/my/teammembers.php', 'type'=>'title');
+        $navlinks[] = array('name' => get_string('xslearningplans','local_plan', fullname($user)), 'link'=> $CFG->wwwroot . '/local/plan/index.php?userid='.$userid, 'type'=>'title');
+    } else {
+        $navlinks[] = array('name' => get_string('unknownuserslearningplans','local_plan'), 'link'=> $CFG->wwwroot . '/local/plan/index.php?userid='.$userid, 'type'=>'title');
+    }
+}

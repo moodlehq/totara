@@ -804,23 +804,6 @@ class development_plan {
         return $out;
     }
 
-    function get_plan_base_navlinks(&$navlinks) {
-        global $CFG, $USER;
-        // the user is viewing their own plan
-        if($this->userid == $USER->id) {
-            $navlinks[] = array('name' => get_string('developmentplans','local_plan'), 'link'=> $CFG->wwwroot . '/local/plan/index.php', 'type'=>'title');
-            return true;
-        }
-
-        // the user is viewing someone else's plan
-        $user = get_record('user', 'id', $this->userid);
-        if($user) {
-            $navlinks[] = array('name' => get_string('xsdevelopmentplans','local_plan', fullname($user)), 'link'=> $CFG->wwwroot . '/local/plan/index.php?userid='.$this->userid, 'type'=>'title');
-        } else {
-            $navlinks[] = array('name' => get_string('unknownusersdevelopmentplans','local_plan'), 'link'=> $CFG->wwwroot . '/local/plan/index.php?userid='.$this->userid, 'type'=>'title');
-        }
-    }
-
     // Delete the plan and all of its relevant data
     function delete() {
         global $CFG, $DP_AVAILABLE_COMPONENTS;

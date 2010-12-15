@@ -39,7 +39,14 @@ if (dp_get_template_permission($template->id, 'plan', 'view', $role) != DP_PERMI
 $canaddplan = (dp_get_template_permission($template->id, 'plan', 'create', $role) == DP_PERMISSION_ALLOW);
 // END HACK
 
-print_header(get_string('plans', 'local_plan'), get_string('plans', 'local_plan'));
+$heading = get_string('learningplans', 'local_plan');
+$pagetitle = format_string(get_string('learningplans','local_plan'));
+$navlinks = array();
+
+dp_get_plan_base_navlinks($navlinks, $planuser);
+
+$navigation = build_navigation($navlinks);
+print_header($heading, $pagetitle, $navigation);
 
 // Plan menu
 echo dp_display_plans_menu($planuser,0,$role);
@@ -51,7 +58,7 @@ if($planuser != $USER->id) {
     echo dp_display_user_message_box($planuser);
 }
 
-print_heading(get_string('plans', 'local_plan'));
+print_heading($heading);
 
 print_container_start(false, '', 'dp-plans-description');
 echo '<div class="planinstructions">' . get_string('plansinstructions', 'local_plan') . '</div>';
