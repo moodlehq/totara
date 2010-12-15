@@ -2186,16 +2186,14 @@ function print_courses($category) {
     }
 
     if ($courses) {
-        echo '<ul class="unlist">';
         foreach ($courses as $course) {
             if ($course->visible == 1
                 || has_capability('moodle/course:viewhiddencourses',$course->context)) {
-                echo '<li>';
+                echo '<table class="courselist">';
                 print_course($course);
-                echo "</li>\n";
+                echo "</table>\n";
             }
         }
-        echo "</ul>\n";
     } else {
         print_heading(get_string("nocoursesyet"));
         $context = get_context_instance(CONTEXT_SYSTEM);
@@ -2228,8 +2226,8 @@ function print_course($course, $highlightterms = '') {
     $linkcss = $course->visible ? '' : ' class="dimmed" ';
 
     echo '<div class="coursebox clearfix">';
-    echo '<div class="info">';
-    echo '<div class="name"> '. local_course_icon_tag($course, 'small'). '<a title="'.get_string('entercourse').'"'.
+    echo '<tr>';
+    echo '<td class="name"> '. local_course_icon_tag($course, 'small'). '<a title="'.get_string('entercourse').'"'.
          $linkcss.' href="'.$CFG->wwwroot.'/course/view.php?id='.$course->id.'">'.
          highlight($highlightterms, format_string($course->fullname)).'</a></div>';
 
@@ -2312,15 +2310,16 @@ function print_course($course, $highlightterms = '') {
 
     require_once("$CFG->dirroot/enrol/enrol.class.php");
     $enrol = enrolment_factory::factory($course->enrol);
+    echo '</td><td class="info">';
     echo $enrol->get_access_icons($course);
+    echo '</td>';
 
-    echo '</div><div class="summary">';
+    echo '<td class="summary">';
     $options = NULL;
     $options->noclean = true;
     $options->para = false;
     echo highlight($highlightterms, format_text($course->summary, FORMAT_MOODLE, $options,  $course->id));
-    echo '</div>';
-    echo '</div>';
+    echo '</tr>';
 }
 
 function print_my_moodle() {

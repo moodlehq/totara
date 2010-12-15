@@ -2394,3 +2394,12 @@ div.totara-copyright a:link,
 div.totara-copyright a:visited {
     color: #fff !important;
 }
+
+div.accessicons {
+    display:inline;
+}
+
+table.courselist {
+    width:100%;
+}
+
