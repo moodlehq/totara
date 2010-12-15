@@ -23,7 +23,7 @@ require_capability('local/plan:accessplan', get_system_context());
 // START PERMISSION HACK
 if ($userid != $USER->id) {
     // Make sure user is manager
-    if (totara_is_manager($USER->id) || isadmin()) {
+    if (totara_is_manager($userid) || isadmin()) {
         $role = 'manager';
     } else {
         print_error('error:nopermissions', 'local_plan');
