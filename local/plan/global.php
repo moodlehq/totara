@@ -91,7 +91,7 @@ if($save){
 
 admin_externalpage_print_header();
 
-print_heading(get_string('globaldevelopmentplansettings', 'local_plan'));
+print_heading(get_string('globallearningplansettings', 'local_plan'));
 
 $form = new dp_global_settings_form();
 $form->display();

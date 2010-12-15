@@ -1,7 +1,7 @@
 <?php // $Id$
 
 /**
- * Add reportbuilder administration menu settings
+ * Add learning plans administration menu settings
  *
  * @author     Simon Coggins
  * @copyright  Totara Learning Solutions Limited
@@ -12,7 +12,7 @@
 
 $ADMIN->add('root',
     new admin_category('local_plan',
-    get_string('developmentplans','local_plan'))
+    get_string('learningplans','local_plan'))
 );
 // add links to report builder reports
 $ADMIN->add('local_plan',

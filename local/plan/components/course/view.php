@@ -16,7 +16,7 @@ $objectivesenabled = $plan->get_component('objective')->get_setting('enabled');
 $objectivename = $plan->get_component('objective')->get_setting('name');
 
 $fullname = $plan->name;
-$pagetitle = format_string(get_string('developmentplan','local_plan').': '.$fullname);
+$pagetitle = format_string(get_string('learningplan','local_plan').': '.$fullname);
 $navlinks = array();
 dp_get_plan_base_navlinks($navlinks, $plan->userid);
 $navlinks[] = array('name' => $fullname, 'link'=> $CFG->wwwroot . '/local/plan/view.php?id='.$id, 'type'=>'title');

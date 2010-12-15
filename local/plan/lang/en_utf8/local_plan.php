@@ -9,11 +9,10 @@ $string['plan:managepriorityscales'] = 'Manage priority scales';
 
 // Plan
 $string['plan'] = 'Plan';
-$string['plans'] = 'Learning Plans';
-$string['developmentplan'] = 'Development Plan';
-$string['developmentplans'] = 'Development Plans';
-$string['xsdevelopmentplans'] = '$a\'s Development Plans';
-$string['unknownusersdevelopmentplans'] = 'Unknown User\'s Development Plans';
+$string['learningplan'] = 'Learning Plan';
+$string['learningplans'] = 'Learning Plans';
+$string['xslearningplans'] = '$a\'s Learning Plans';
+$string['unknownuserslearningplans'] = 'Unknown User\'s Learning Plans';
 $string['globalsettings'] = 'Global Settings';
 $string['managetemplates'] = 'Manage Templates';
 $string['priorityscales'] = 'Priority Scales';
@@ -92,7 +91,7 @@ $string['workflow'] = 'Workflow';
 $string['generalsettings'] = 'General Settings';
 $string['componentrenaming'] = 'Component Renaming';
 $string['componentsettings'] = 'Component Settings';
-$string['globaldevelopmentplansettings'] = 'Global Development Plan Settings';
+$string['globallearningplansettings'] = 'Global Learning Plan Settings';
 $string['name'] = 'Name';
 $string['startdate'] = 'Start date';
 $string['enddate'] = 'End date';
@@ -237,16 +236,16 @@ $string['error:update_components_sortorder'] = 'An error occured which changing 
 
 $string['error:update_components_enabled'] = 'An error occured while enabling/disabling a Component';
 
-$string['error:newdptemplate'] = 'An error occured while creating a new development plan template';
+$string['error:newdptemplate'] = 'An error occured while creating a new learning plan template';
 $string['error:createcomponents'] = 'An error occured while creating components for a new plan template';
 
-$string['deletedp'] = 'Successfully deleted development plan template';
-$string['error:deletedp'] = 'An error occured while deleting development plan template';
+$string['deletedp'] = 'Successfully deleted learning plan template';
+$string['error:deletedp'] = 'An error occured while deleting learning plan template';
 
 $string['error:invalid_component_id'] = 'Invalid component ID';
 $string['error:nopermissions'] = 'You do not have the necessary permissions to perform this action';
 
-$string['deletecheckdptemplate'] = 'Are you sure you want to delete this development plan template?';
+$string['deletecheckdptemplate'] = 'Are you sure you want to delete this learning plan template?';
 $string['checksendapprovalreminder'] = 'Are you sure you want to send an approval reminder for this?';
 $string['approvalremindersent'] = 'Approval reminder sent';
 
@@ -263,9 +262,9 @@ $string['workflowsettings'] = 'Workflow settings';
 $string['advancedworkflow'] = 'Advanced workflow settings';
 $string['simpleworkflow'] = 'Simple workflow settings';
 $string['userdrivenworkflowname'] = 'User driven workflow';
-$string['userdrivenworkflowdesc'] = 'The user has control over their development plan and can perform most actions themselves. The manager can view the plan but not make changes.';
+$string['userdrivenworkflowdesc'] = 'The user has control over their learning plan and can perform most actions themselves. The manager can view the plan but not make changes.';
 $string['managerdrivenworkflowname'] = 'Manager driven workflow';
-$string['managerdrivenworkflowdesc'] = 'The manager assigns content to their staff\'s development plan. The user can request content be added but manager approval is required.';
+$string['managerdrivenworkflowdesc'] = 'The manager assigns content to their staff\'s learning plan. The user can request content be added but manager approval is required.';
 $string['customworkflowname'] = 'Custom workflow';
 $string['customworkflowdesc'] = 'Fine-grained control over individual permissions via advanced settings.';
 $string['plansettings'] = 'Plan settings';

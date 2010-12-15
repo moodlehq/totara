@@ -101,8 +101,8 @@ if ($data = $form->get_data()) {
 ///
 /// Display
 ///
-$heading = get_string('addplan', 'local_plan');
-$pagetitle = format_string(get_string('developmentplan','local_plan').': '.$heading);
+$heading = get_string('createplan', 'local_plan');
+$pagetitle = format_string(get_string('learningplan','local_plan').': '.$heading);
 $navlinks = array();
 dp_get_plan_base_navlinks($navlinks, $userid);
 $navlinks[] = array('name' => $heading, 'link'=> '', 'type'=>'title');
@@ -116,7 +116,7 @@ if ($USER->id != $userid) {
 
 print_heading($heading);
 
-print(get_string('createplan_instructions', 'local_plan'));
+print '<p>' . get_string('createplan_instructions', 'local_plan') . '</p>';
 
 $form->set_data((object)array('userid'=>$userid));
 $form->display();
