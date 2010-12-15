@@ -108,8 +108,10 @@ class block_totara_reminders extends block_base {
             }
         }
         $this->content->text .= '</table>';
-        $this->content->footer = '<div class="viewall"><a href="'.$CFG->wwwroot.'/local/totara_msg/reminders.php'.$role_assertion.'">'.
-                                 get_string('viewallnot', 'block_totara_reminders').'</a></div>';
+        if (!empty($this->msgs)) {
+            $this->content->footer = '<div class="viewall"><a href="'.$CFG->wwwroot.'/local/totara_msg/reminders.php'.$role_assertion.'">'.
+                                     get_string('viewallnot', 'block_totara_reminders').'</a></div>';
+        }
         return $this->content;
     }
 
