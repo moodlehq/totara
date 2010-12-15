@@ -424,7 +424,7 @@ var comptree = [' . implode(', ', $comptrees) . '];
         $sourcepaths = array();
         foreach($SOURCE_SEARCH_PATH as $path) {
             $sourcepaths = array_merge($sourcepaths,
-                self::glob_r(SOURCE_DIR_NAME, GLOB_ONLYDIR|GLOB_MARK, $CFG->dirroot.$path));
+                (array) self::glob_r(SOURCE_DIR_NAME, GLOB_ONLYDIR|GLOB_MARK, $CFG->dirroot.$path));
         }
 
         return $sourcepaths;
@@ -445,7 +445,7 @@ var comptree = [' . implode(', ', $comptrees) . '];
         $paths = glob($path.'*', GLOB_MARK|GLOB_ONLYDIR|GLOB_NOSORT);
         $files = glob($path.$pattern, $flags);
         foreach ($paths as $path) {
-            $files = array_merge($files, self::glob_r($pattern, $flags, $path));
+            $files = array_merge($files, (array) self::glob_r($pattern, $flags, $path));
         }
         return $files;
     }
