@@ -845,7 +845,7 @@ class development_plan {
             $table = new XMLDBTable("dp_plan_{$c}");
             if (table_exists($table)) {
                 $field = new XMLDBField('planid');
-                if (field_exists($field)) {
+                if (field_exists($table, $field)) {
                     // Get record ids for later use in deletion of assign tables
                     $ids = get_records($table->name, 'planid', $this->id, '', 'id');
                     if (!delete_records($table->name, 'planid', $this->id)) {
