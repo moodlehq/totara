@@ -742,7 +742,7 @@ class dp_competency_component extends dp_base_component {
         }
 
         // Set approved status
-        if ($permission == DP_PERMISSION_ALLOW) {
+        if ($permission == DP_PERMISSION_ALLOW || $permission == DP_PERMISSION_APPROVE ) {
             $item->approved = DP_APPROVAL_APPROVED;
         }
         else { # $permission == DP_PERMISSION_REQUEST
