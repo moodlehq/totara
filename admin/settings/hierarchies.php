@@ -27,10 +27,11 @@
     $ADMIN->add('competencies', new admin_externalpage('competencymanage', get_string('competencymanage', 'competency'), "$CFG->wwwroot/hierarchy/index.php?type=competency",
             array('moodle/local:updatecompetency')));
 
+    // Re-enable once backup/restore is fixed
     // Backup
-    $ADMIN->add('hierarchies', new admin_externalpage('hierarchybackup', get_string('backup'), $CFG->wwwroot . '/hierarchy/hierarchybackup.php'));
+    //$ADMIN->add('hierarchies', new admin_externalpage('hierarchybackup', get_string('backup'), $CFG->wwwroot . '/hierarchy/hierarchybackup.php'));
 
     // Restore
-    $ADMIN->add('hierarchies', new admin_externalpage('hierarchyrestore', get_string('restore'), $CFG->wwwroot . '/hierarchy/hierarchyrestore.php'));
+    //$ADMIN->add('hierarchies', new admin_externalpage('hierarchyrestore', get_string('restore'), $CFG->wwwroot . '/hierarchy/hierarchyrestore.php'));
 
 ?>
