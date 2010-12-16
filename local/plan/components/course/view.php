@@ -27,6 +27,12 @@ $navigation = build_navigation($navlinks);
 
 print_header_simple($pagetitle, '', $navigation, '', null, true, '');
 
+// Plan menu
+echo dp_display_plans_menu($plan->userid, $plan->id, $plan->role);
+
+// Plan page content
+print_container_start(false, '', 'dp-plan-content');
+
 print $plan->display_plan_message_box();
 
 print_heading($fullname);
@@ -54,6 +60,8 @@ if ($objectivesenabled){
         print '<p>' . get_string('nolinkedx', 'local_plan', $objectivename) . '</p>';
     }
 }
+
+print_container_end();
 
 print_footer();
 
