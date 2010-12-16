@@ -110,6 +110,13 @@ $navlinks[] = array('name' => $heading, 'link'=> '', 'type'=>'title');
 $navigation = build_navigation($navlinks);
 
 print_header_simple($pagetitle, '', $navigation, '', null, true, '');
+
+// Plan menu
+echo dp_display_plans_menu($userid);
+
+// Plan page content
+print_container_start(false, '', 'dp-plan-content');
+
 if ($USER->id != $userid) {
     echo dp_display_user_message_box($userid);
 }
@@ -120,5 +127,7 @@ print '<p>' . get_string('createplan_instructions', 'local_plan') . '</p>';
 
 $form->set_data((object)array('userid'=>$userid));
 $form->display();
+
+print_container_end();
 
 print_footer();
