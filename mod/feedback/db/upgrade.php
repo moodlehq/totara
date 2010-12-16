@@ -149,8 +149,21 @@ function xmldb_feedback_upgrade($oldversion=0) {
             }
         }
     }
-/// And upgrade begins here. For each one, you'll need one 
-/// block of code similar to the next one. Please, delete 
+
+    if ($result && $oldversion < 2008073101) {
+        /// Add a link to the facetoface module
+
+        /// Define facetofacecmid to be added to feedback
+        $table = new XMLDBTable('feedback');
+        $field = new XMLDBField('facetofacecmid');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '4', null, XMLDB_NOTNULL, null, null, null, '0', 'facetofacecmid');
+
+        $result = $result && add_field($table, $field);
+
+    }
+
+/// And upgrade begins here. For each one, you'll need one
+/// block of code similar to the next one. Please, delete
 /// this comment lines once this file start handling proper
 /// upgrade code.
 
