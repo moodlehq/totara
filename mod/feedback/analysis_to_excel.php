@@ -247,13 +247,7 @@
             $worksheet->write_string($rowOffset, $colOffset++, $fstring->username);
             $worksheet->write_string($rowOffset, $colOffset++, $fstring->firstname);
             $worksheet->write_string($rowOffset, $colOffset++, $fstring->lastname);
-            $worksheet->write_string($rowOffset, $colOffset++, $fstring->title);
             $worksheet->write_string($rowOffset, $colOffset++, $fstring->department);
-            $worksheet->write_string($rowOffset, $colOffset++, $fstring->costcenter);
-            $worksheet->write_string($rowOffset, $colOffset++, $fstring->costcenterdescription);
-            $worksheet->write_string($rowOffset, $colOffset++, $fstring->managerid);
-            $worksheet->write_string($rowOffset, $colOffset++, $fstring->managername);
-            $worksheet->write_string($rowOffset, $colOffset++, $fstring->managersemail);
             $worksheet->write_string($rowOffset, $colOffset++, $fstring->city);
 
             if ($trackfacetoface)
@@ -305,13 +299,7 @@
             $worksheet->write_string($rowOffset, $colOffset++, $anon ? '-' : $user->username);
             $worksheet->write_string($rowOffset, $colOffset++, $anon ? '-' : $user->firstname);
             $worksheet->write_string($rowOffset, $colOffset++, $anon ? '-' : $user->lastname);
-            $worksheet->write_string($rowOffset, $colOffset++, $anon ? '-' : $user_custom->title);
             $worksheet->write_string($rowOffset, $colOffset++, $anon ? '-' : $user->department);
-            $worksheet->write_string($rowOffset, $colOffset++, $anon ? '-' : $user_custom->costcenterid);
-            $worksheet->write_string($rowOffset, $colOffset++, $anon ? '-' : $user_custom->costcenter);
-            $worksheet->write_string($rowOffset, $colOffset++, $anon ? '-' : $user_custom->managerid);
-            $worksheet->write_string($rowOffset, $colOffset++, $anon ? '-' : $user_custom->managername);
-            $worksheet->write_string($rowOffset, $colOffset++, $anon ? '-' : $user_custom->managersemail);
             $worksheet->write_string($rowOffset, $colOffset++, $anon ? '-' : $user->city);
             
             if($facetofacecmid)
