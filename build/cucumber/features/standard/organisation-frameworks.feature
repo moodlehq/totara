@@ -190,3 +190,26 @@ Feature: Manage Organisation Frameworks
       And I should see "Missing depth level short name"
       And there should be 0 organisation depth records
 
+  @store_org_framework
+  @store_org_depth
+  Scenario: Add 3rd organisation depth
+    Given there is 1 organisation framework record with 2 organisation depth each
+      And I am logged in as admin
+      And I am on the manage organisation frameworks page
+      And I click the "Test Organisation Framework 1" link
+      And I press "Add a new depth level"
+      And I fill in "fullname" with "Test Organisation Depth 3"
+      And I fill in "shortname" with "Test Org Depth 3"
+      And I press "Save changes" 
+  Then I should see "Test Organisation Depth" 3 times
+
+  @store_org_framework
+  @store_org_depth
+  Scenario: Deleting a organisation depth
+    Given there is 1 organisation framework record with 1 organisation depth each
+      And I am logged in as admin
+      And I am on the manage organisation frameworks page with editing on
+      And I click the "Test Organisation Framework 1" link
+      And I delete the 1st edit organisation depth table entry and confirm
+  Then I should not see "Test Organisation Depth"
+

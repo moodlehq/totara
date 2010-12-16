@@ -17,3 +17,10 @@ When /^I ([\w\s]+) the (\d+)(?:st|nd|rd|th) ([\w\s]+) entry$/ do |action, number
 #      end
 end
 
+When /^I ([\w\s]+) the (\d+)(?:st|nd|rd|th) ([\w\s]+) entry and confirm$/ do |action, number, cssname|
+  within("#{get_selector(cssname)} tr:nth-child(#{number.to_i+1})") do
+    click_link "#{action}"
+  end
+  click_button "Yes"
+  click_button "Continue"
+end

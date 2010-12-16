@@ -10,6 +10,7 @@ module NavigationHelpers
       'organisation depth' => 'org_depth',
       'position framework' => 'pos_framework',
       'position depth' => 'pos_depth',
+      'organisation' => 'org',
     }
   end
 
@@ -20,6 +21,8 @@ module NavigationHelpers
       'edit position frameworks table'         => 'table.editposition',
       'edit organisation frameworks table'     => 'table.editorganisation',
       'edit organisation table'                => 'table.editorganisation',
+      'edit organisation depth table'                => 'table.editorganisation',
+      'organisation table'                => '#organisation',
     }
   end
 
