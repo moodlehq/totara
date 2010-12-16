@@ -358,7 +358,7 @@ class block_base {
                 print_side_block(NULL, $this->content->text, NULL, NULL, $this->content->footer, $this->html_attributes());
             } else {
                 // The full treatment, please. Include the title text.
-                print_side_block($this->_title_html(), $this->content->text, NULL, NULL, $this->content->footer, $this->html_attributes(), $this->title);
+                print_side_block($this->_title_html(), $this->content->text, NULL, NULL, (isset($this->content->footer) ? $this->content->footer : ''), $this->html_attributes(), $this->title);
             }
         }
     }
@@ -386,7 +386,7 @@ class block_base {
                 print_side_block(NULL, $this->content->text, NULL, NULL, $this->content->footer.$this->dashlet_edit_controls, $html_attributes);
             } else {
                 // The full treatment, please. Include the title text.
-                print_side_block($this->_dashlet_title_html(), $this->content->text, NULL, NULL, $this->content->footer.$this->dashlet_edit_controls, $html_attributes, $this->title);
+                print_side_block($this->_dashlet_title_html(), $this->content->text, NULL, NULL, (isset($this->content->footer) ? $this->content->footer : '').$this->dashlet_edit_controls, $html_attributes, $this->title);
             }
         }
 

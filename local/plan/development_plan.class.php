@@ -927,6 +927,18 @@ class development_plan {
             $a->planname = $this->name;
             $event->fullmessage = get_string('planapprovalrequested', 'local_plan', $a);
             $event->fullmessageformat = FORMAT_HTML;
+            $event->subject = $event->fullmessage;
+            // do the IDP Plan workflow event
+            $onaccept = new stdClass();
+            $onaccept->action = 'plan';
+            $onaccept->text = get_string('confirmrequestapprove', 'local_plan');
+            $onaccept->data = array('userid' => $this->userid, 'planid' => $this->id);
+            $event->onaccept = $onaccept;
+            $onreject = new stdClass();
+            $onreject->action = 'plan';
+            $onreject->text = get_string('confirmrequestdecline', 'local_plan');
+            $onreject->data = array('userid' => $this->userid, 'planid' => $this->id);
+            $event->onreject = $onreject;
             tm_reminder_send($event);
         }
 
