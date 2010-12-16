@@ -40,7 +40,7 @@ class dp_competency_component extends dp_base_component {
         $updateitem = (int) $this->get_setting('updatecompetency');
 
         // If plan complete, or user cannot edit/request items, no point showing picker
-        if ($plancompleted || !in_array($updateitem, array(DP_PERMISSION_ALLOW, DP_PERMISSION_REQUEST))) {
+        if ($plancompleted || !in_array($updateitem, array(DP_PERMISSION_ALLOW, DP_PERMISSION_REQUEST, DP_PERMISSION_APPROVE))) {
             return false;
         }
 
@@ -49,7 +49,7 @@ class dp_competency_component extends dp_base_component {
 
 
     /**
-     * Return markup for javascript course picker
+     * Return markup for javascript competency picker
      *
      * @access  public
      * @return  string
@@ -61,7 +61,7 @@ class dp_competency_component extends dp_base_component {
         }
 
         // Decide on button text
-        if ($permission == DP_PERMISSION_ALLOW) {
+        if ($permission >= DP_PERMISSION_ALLOW) {
             $btntext = get_string('addremovecompetencies', 'local_plan');
         } else {
             $btntext = get_string('updaterequestedcompetencies', 'local_plan');

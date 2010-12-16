@@ -29,7 +29,7 @@ class dp_course_component extends dp_base_component {
         $updatecourse = (int) $this->get_setting('updatecourse');
 
         // If plan complete, or user cannot edit/request items, no point showing picker
-        if ($plancompleted || !in_array($updatecourse, array(DP_PERMISSION_ALLOW, DP_PERMISSION_REQUEST))) {
+        if ($plancompleted || !in_array($updatecourse, array(DP_PERMISSION_ALLOW, DP_PERMISSION_REQUEST, DP_PERMISSION_APPROVE))) {
             return false;
         }
 
@@ -50,7 +50,7 @@ class dp_course_component extends dp_base_component {
         }
 
         // Decide on button text
-        if ($permission == DP_PERMISSION_ALLOW) {
+        if ($permission >= DP_PERMISSION_ALLOW) {
             $btntext = get_string('addremovecourses', 'local_plan');
         } else {
             $btntext = get_string('updaterequestedcourses', 'local_plan');
