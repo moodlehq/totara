@@ -671,7 +671,10 @@
         print_box(get_string('upgrade197notice', 'admin')."\n".get_string('upgrade197salt', 'admin', $path));
     }
 
-    if (defined('WARN_DISPLAY_ERRORS_ENABLED')) {
+    if (defined('WARN_DISPLAY_ERRORS_SET')) {
+        $a->link = $CFG->wwwroot . '/admin/settings.php?section=debugging';
+        print_box(get_string('displayerrorsset', 'admin', $a), 'generalbox adminerror');
+    } elseif (defined('WARN_DISPLAY_ERRORS_ENABLED')) {
         print_box(get_string('displayerrorswarning', 'admin'), 'generalbox adminwarning');
     }
 

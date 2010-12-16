@@ -319,6 +319,10 @@ global $HTTPSPAGEREQUIRED;
     } else {
         @ini_set('display_errors', '1');
     }
+    /// find out if moodle is cofigured to display warnings
+    if (ini_get_bool('display_errors')) {
+        define('WARN_DISPLAY_ERRORS_SET', true);
+    }
 // Even when users want to see errors in the output,
 // some parts of Moodle cannot display them at all.
 // (Once we are XHTML strict compliant, debugdisplay
