@@ -76,34 +76,6 @@ $string['local:createcoursecustomfield'] = 'Create a course custom field';
 $string['local:updatecoursecustomfield'] = 'Update a course custom field';
 $string['local:deletecoursecustomfield'] = 'Delete a course custom field';
 
-// Local IDP capability strings
-$string['local:idpaddcomment'] = 'Comment on a user\'s IDP';
-$string['local:idpaddowncomment'] = 'Comment on your own IDPs';
-$string['local:idpapproveplan'] = 'Approve or reject a user\'s IDP';
-$string['local:idpapproveplanonbehalf'] = 'Approve or reject a user\'s IDP on behalf of someone else';
-$string['local:idpeditownplan'] = 'Edit own IDPs';
-$string['local:idpaddcompetency'] = 'Add competencies to an IDP';
-$string['local:idpaddcompetencyfrompos'] = 'Add competencies to an IDP from a position';
-$string['local:idpaddcompetencytemplate'] = 'Add competency templates to an IDP';
-$string['local:idpaddcompetencytemplatefrompos'] = 'Add competency templates to an IDP from a position';
-$string['local:idpaddcourse'] = 'Add courses an IDP';
-$string['local:receivenotification'] = 'Receive notification emails';
-$string['local:idpsubmitownplan'] = 'Submit own IDPs';
-$string['local:idpmanageroverview'] = 'View a manager\'s overview page';
-$string['local:idpmanagerownoverview'] = 'View own manager overview page';
-$string['local:idptraineeoverview'] = 'View a trainee\'s overview page';
-$string['local:idptraineeownoverview'] = 'View own trainee overview page';
-$string['local:idpviewcomment'] = 'View a user\'s IDP comments';
-$string['local:idpviewlist'] = 'View a user\'s list of IDPs';
-$string['local:idpviewowncomment'] = 'View own comments';
-$string['local:idpviewownlist'] = 'View own IDP list';
-$string['local:idpviewownplan'] = 'View own IDPs';
-$string['local:idpviewplan'] = 'View a user\'s IDPs';
-$string['local:idpuserevaluate'] = 'User can evaluate their own IDP';
-$string['local:idpsetcurrent'] = 'Set current IDP';
-$string['local:manageidptemplates'] = 'Manage IDP templates';
-$string['local:manageidppriorities'] = 'Manage IDP priority scales';
-
 // Local Report capability strings
 $string['local:admin'] = 'Perform administrative tasks on report builder reports';
 
@@ -119,7 +91,6 @@ $string['mylearning'] = 'My Learning';
 $string['myprofile'] = 'My Profile';
 $string['myrecordoflearning'] = 'My Record of Learning';
 $string['recordoflearningfor'] = 'Record of Learning for ';
-$string['idps'] = 'IDPs';
 $string['notapplicable'] = 'Not applicable';
 $string['notavailable'] = 'Not available';
 $string['recordoflearning'] = 'Record of Learning';
