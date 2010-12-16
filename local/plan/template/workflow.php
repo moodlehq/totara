@@ -133,7 +133,7 @@ if ($fromform = $mform->get_data()) {
 } else {
     $navlinks = array();    // Breadcrumbs
     $navlinks[] = array('name'=>get_string("managetemplates", "local_plan"),
-        'link'=>"{$CFG->wwwroot}/local/plan/index.php",
+        'link'=>"{$CFG->wwwroot}/local/plan/template/index.php",
         'type'=>'misc');
     $navlinks[] = array('name'=>format_string($template->fullname), 'link'=>'', 'type'=>'misc');
 
