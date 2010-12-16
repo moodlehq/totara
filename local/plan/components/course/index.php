@@ -108,7 +108,7 @@ print $plan->display_plan_message_box();
 print_heading($fullname);
 print $plan->display_tabs($componentname);
 
-$course_instructions = '<div class="plan_instructions">';
+$course_instructions = '<div class="instructional_text">';
 if($plan->role == 'manager') {
     $course_instructions .= get_string('course_instructions_manager', 'local_plan');
 } else {

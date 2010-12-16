@@ -79,7 +79,7 @@ print $plan->display_plan_message_box();
 print_heading($fullname);
 print $plan->display_tabs($componentname);
 
-$objective_instructions = '<div class="objective_instructions">';
+$objective_instructions = '<div class="instructional_text">';
 if($plan->role == 'manager') {
     $objective_instructions .= get_string('objective_instructions_manager', 'local_plan');
 } else {

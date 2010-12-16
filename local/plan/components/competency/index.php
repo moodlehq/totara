@@ -104,7 +104,7 @@ print $plan->display_plan_message_box();
 print_heading($fullname);
 print $plan->display_tabs($componentname);
 
-$competency_instructions = '<div class=\"competency_instructions\">';
+$competency_instructions = '<div class="instructional_text">';
 
 if($plan->role == 'manager') {
     $competency_instructions .= get_string('competency_instructions_manager', 'local_plan');

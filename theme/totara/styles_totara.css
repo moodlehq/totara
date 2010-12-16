@@ -717,6 +717,7 @@ h6 {
 .tabrow0{
   line-height: 2.3em;
   text-align:left;
+  padding-bottom: 5px;
 }
 .tabrow0 li a {
   font-family: 'Trebuchet ms', Verdana, Helvetica, sans-serif;

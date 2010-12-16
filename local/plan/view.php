@@ -117,7 +117,7 @@ print_heading($fullname);
 
 echo $plan->display_tabs($componentname);
 
-$plan_instructions = '<div class=\"plan_instructions\">';
+$plan_instructions = '<div class="instructional_text">';
 if($plan->role == 'manager') {
     $plan_instructions .= get_string('plan_instructions_manager', 'local_plan');
 } else {

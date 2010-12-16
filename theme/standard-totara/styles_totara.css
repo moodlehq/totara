@@ -1340,6 +1340,14 @@ span.plan_highlight {
 }
 
 /*
+ * Instructional Text
+ */
+
+.instructional_text {
+    padding: 10px 0px;
+}
+
+/*
  * Record of Learning pulldown menu
  */
 
