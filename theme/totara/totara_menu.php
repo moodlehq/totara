@@ -249,6 +249,7 @@ function totara_get_selected_navs($navstructure, $navmatches) {
 
     // now work out if any primary items should be selected
     $primary_selected = null;
+    $secondary_selected = null;
     foreach($navstructure as $primary => $secondaries) {
         // this is a primary item
         if($selected == $primary) {
