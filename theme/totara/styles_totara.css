@@ -285,6 +285,8 @@ div#header {
 	position:relative !important;
 }
 
+
+/* Unselected primary navigation */
 #totara_menu ul {
 	padding:0 0 0 25px;
 	margin:0;
@@ -300,15 +302,15 @@ div#header {
 	z-index: 9999;
 	font-family: 'Trebuchet ms', verdana, helvetica, sans-serif;
 	background:transparent url('images/nav_main_spacer.gif') no-repeat right 8px;
-	list-style:none;
 }
 
-#totara_menu li.last {
+/* get rid of divider on last element */
+#totara_menu ul li.last {
 	background:transparent;
 }
 
+/* IE compatibility? */
 #totara_menu ul li div{
-	position:relative;
 	zoom:1;
 }
 
@@ -324,24 +326,51 @@ div#header {
 	text-decoration: none;
 }
 
+/* Unselected primary navigation, hover state */
+#totara_menu ul li a:hover {
+    color: #696969;
+}
+
+
+/* Override styles on selected tab
+ * Background images applied to list and anchor to create the tab effect
+ */
+#totara_menu ul li.selected {
+	margin-left:-2px;
+	background: transparent url('images/nav_main_bg_lft.jpg') no-repeat bottom left;
+}
+
+#totara_menu ul li.selected a {
+	color:#FFFFFF;
+	background: transparent url('images/nav_main_bg_rgt.jpg') no-repeat bottom right;
+}
+
+/* Don't change tab color on selected primary tab */
+#totara_menu ul li.selected a:hover {
+    color: #FFFFFF;
+}
+
+
+/* Secondary navigation
+ * We need to override all styles we don't want from the primary tabs,
+ * because the primary tab selectors will match the secondary tabs too.
+ */
+
 #totara_menu ul ul {
 	padding:0;
 	margin:0;
-	list-style:none;
 	position:absolute;
 	background:transparent;
 	height:22px;
 	width:900px;
 	top:47px;
-	left:-27px;
+	left:0px;
 	z-index: 1000;
 }
 
-#totara_menu ul li ul{
-	display: none;
-}
 
-#totara_menu li ul li {
+/* Unselected secondary navigation */
+#totara_menu ul li.selected ul li {
 	list-style:none;
 	float:left;
 	background:transparent url('images/nav_sub_spacer.gif') no-repeat right center;
@@ -349,184 +378,36 @@ div#header {
 	font-size:0.9em;
 }
 
-#totara_menu li ul li a {
-	margin:0;
-	display:block;
-	height: auto;
-	color:#FFFFFF;
-	padding-top: 0;
-	background:transparent;
-	text-shadow:none; !important
+/* get rid of divider on last element */
+#totara_menu ul li.selected ul li.last {
+    background: transparent;
 }
 
-#totara_menu li ul li a:hover {
-	background:transparent;
-	color:#EFEFEF;
-	text-shadow:none; !important
-}
-
-#totara_menu h4 {
-	color:#505050;
-	font-size:1em;
-	font-weight:bold;
-	margin:0 0 0px 10px;
-}
-
-body#site-index #totara_menu ul #menu1,
-body#user-view #totara_menu ul #menu1,
-body#login-index #totara_menu ul #menu1,
-body.mod-forum #totara_menu ul #menu1,
-body.admin #totara_menu ul #menu1,
-body.local-plan #totara_menu ul #menu2,
-body.idp #totara_menu ul #menu2,
-body#my-learning #totara_menu ul #menu2,
-body#my-bookings #totara_menu ul #menu2,
-body#my-pastbookings #totara_menu ul #menu2,
-body#my-records #totara_menu ul #menu2,
-body#my-coursecompletions #totara_menu ul #menu2,
-body.local-plan-components-course #totara_menu ul #menu2,
-body.local-plan-components-competency #totara_menu ul #menu2,
-body.local-plan-components-objective #totara_menu ul #menu2,
-body.local-plan-record #totara_menu ul #menu2,
-body#my-team #totara_menu ul #menu3,
-body#my-teammembers #totara_menu ul #menu3,
-body#my-reports #totara_menu ul #menu4,
-body#course-index #totara_menu ul #menu5,
-body#course-find #totara_menu ul #menu5,
-body#blocks-facetoface-calendar #totara_menu ul #menu6 {
-	color:#FFFFFF;
-	margin-left:-2px;
-	background: transparent url('images/nav_main_bg_lft.jpg') no-repeat bottom left;
-}
-body#site-index #totara_menu ul #menu1 a,
-body#user-view #totara_menu ul #menu1 a,
-body#login-index #totara_menu ul #menu1 a,
-body.mod-forum #totara_menu ul #menu1 a,
-body.admin #totara_menu ul #menu1 a,
-body.local-plan #totara_menu ul #menu2 a,
-body.idp #totara_menu ul #menu2 a,
-body#my-learning #totara_menu ul #menu2 a,
-body#my-bookings #totara_menu ul #menu2 a,
-body#my-pastbookings #totara_menu ul #menu2 a,
-body#my-records #totara_menu ul #menu2 a,
-body#my-coursecompletions #totara_menu ul #menu2 a,
-body.local-plan-components-course #totara_menu ul #menu2 a,
-body.local-plan-components-competency #totara_menu ul #menu2 a,
-body.local-plan-components-objective #totara_menu ul #menu2 a,
-body.local-plan-record #totara_menu ul #menu2 a,
-body#my-team #totara_menu ul #menu3 a,
-body#my-teammembers #totara_menu ul #menu3 a,
-body#my-reports #totara_menu ul #menu4 a,
-body#course-index #totara_menu ul #menu5 a,
-body#course-find #totara_menu ul #menu5 a,
-body#blocks-facetoface-calendar #totara_menu ul #menu6 a {
-	color:#FFFFFF;
-	background: transparent url('images/nav_main_bg_rgt.jpg') no-repeat bottom right;
-}
-body#site-index #totara_menu ul #menu1 ul,
-body#user-view #totara_menu ul #menu1 ul,
-body#login-index #totara_menu ul #menu1 ul,
-body.mod-forum #totara_menu ul #menu1 ul,
-body.admin #totara_menu ul #menu1 ul,
-body.local-plan #totara_menu ul #menu2 ul,
-body.idp #totara_menu ul #menu2 ul,
-body#my-learning #totara_menu ul #menu2 ul,
-body#my-bookings #totara_menu ul #menu2 ul,
-body#my-pastbookings #totara_menu ul #menu2 ul,
-body#my-records #totara_menu ul #menu2 ul,
-body#my-coursecompletions #totara_menu ul #menu2 ul,
-body.local-plan-components-course #totara_menu ul #menu2 ul,
-body.local-plan-components-competency #totara_menu ul #menu2 ul,
-body.local-plan-components-objective #totara_menu ul #menu2 ul,
-body.local-plan-record #totara_menu ul #menu2 ul,
-body#my-team #totara_menu ul #menu3 ul,
-body#my-teammembers #totara_menu ul #menu3 ul,
-body.local-reportbuilder #totara_menu ul #menu4 ul,
-body#course-index #totara_menu ul #menu5 ul,
-body#course-find #totara_menu ul #menu5 ul,
-body.calendar #totara_menu ul #menu6 ul  {
-	display: block;
-}
-body#site-index #totara_menu #menu1 ul li a,
-body#user-view #totara_menu #menu1 ul li a,
-body#login-index #totara_menu #menu1 ul li a,
-body.mod-forum #totara_menu #menu1 ul li a,
-body.admin #totara_menu #menu1 ul li a,
-body.local-plan #totara_menu ul #menu2 ul li a,
-body.idp #totara_menu ul #menu2 ul li a,
-body#my-learning #totara_menu ul #menu2 ul li a,
-body#my-bookings #totara_menu ul #menu2 ul li a,
-body#my-pastbookings #totara_menu ul #menu2 ul li a,
-body#my-records #totara_menu ul #menu2 ul li a,
-body#my-coursecompletions #totara_menu ul #menu2 ul li a,
-body.local-plan-components-course #totara_menu ul #menu2 ul li a,
-body.local-plan-components-competency #totara_menu ul #menu2 ul li a,
-body.local-plan-components-objective #totara_menu ul #menu2 ul li a,
-body.local-plan-record #totara_menu ul #menu2 ul li a,
-body#my-team #totara_menu ul #menu3 ul li a,
-body#my-teammembers #totara_menu ul #menu3 ul li a,
-body.local-reportbuilder #totara_menu ul #menu4 ul li a,
-body#course-index #totara_menu ul #menu5 ul li a,
-body#course-find #totara_menu ul #menu5 ul li a,
-body.calendar #totara_menu ul #menu6 ul li a  {
+#totara_menu ul li.selected ul li a {
 	margin:0;
 	padding-top: 0;
 	display:block;
 	height: auto;
 	color:#FFFFFF;
 	background:transparent;
-	text-shadow:none; !important
 }
 
-body#site-index #totara_menu #menu1 ul,
-body#user-view #totara_menu #menu1 ul,
-body#login-index #totara_menu #menu1 ul,
-body.mod-forum #totara_menu #menu1 ul,
-body.admin#totara_menu #menu1 ul {
-    left:-27px;
-}
-body.local-plan #totara_menu ul #menu2 ul,
-body.idp #totara_menu ul #menu2 ul,
-body#my-learning #totara_menu ul #menu2 ul,
-body#my-bookings #totara_menu ul #menu2 ul,
-body#my-pastbookings #totara_menu ul #menu2 ul,
-body#my-coursecompletions #totara_menu ul #menu2 ul,
-body.local-plan-components-course #totara_menu ul #menu2 ul,
-body.local-plan-components-competency #totara_menu ul #menu2 ul,
-body.local-plan-components-objective #totara_menu ul #menu2 ul,
-body.local-plan-record #totara_menu ul #menu2 ul,
-body#my-records #totara_menu ul #menu2 ul {
-    left:-105px;
-}
-body#my-team #totara_menu ul #menu3 ul,
-body#my-teammembers #totara_menu ul #menu3 ul {
-    left:-224px;
-}
-body.local-reportbuilder #totara_menu ul #menu4 ul {
-     left:-357px;
-}
-body#course-index #totara_menu ul #menu5 ul,
-body#course-find #totara_menu ul #menu5 ul {
-    left:-430px;
-}
-body.calendar #totara_menu ul #menu6 ul {
-    left:-580px;
+
+/* Unselected secondary navigation, hover state */
+#totara_menu ul li.selected ul li a:hover {
+	color:#CFCFCF;
 }
 
-/* Conditional (if the my team option doesnt exist) */
-body.local-reportbuilder #totara_menu ul #menu4 div.noteam ul {
-    left:-257px;
+
+/* Don't indicate link on selected secondary tab */
+#totara_menu ul li.selected ul li.selected a {
+    font-weight: bold;
+    cursor: default;
 }
 
-body#course-index #totara_menu ul #menu5 div.noteam ul,
-body#course-find #totara_menu ul #menu5 div.noteam ul {
-     left:-330px;
+#totara_menu ul li.selected ul li.selected a:hover {
+    color: #EFEFEF;
 }
-
-body.calendar #totara_menu ul #menu6 div.noteam ul {
-     left:-480px;
-}
-
 
 /**
  * Footer Styles
