@@ -24,12 +24,12 @@
 
 $string['accept'] = 'Accept';
 $string['dismiss'] = 'Dismiss';
-$string['notifications'] = 'Notifications';
-$string['reminders'] = 'Reminders';
+$string['notifications'] = 'Alerts';
+$string['reminders'] = 'Tasks';
 $string['noscript'] = 'please enable JavaScript in your browser';
-$string['notification_description'] = 'This is the Notifications report description - needs to be changed';
+$string['notification_description'] = 'This is the Alerts report description - needs to be changed';
 $string['notyours'] = 'This is not your message: $a ';
 $string['reject'] = 'Reject';
-$string['reminder_description'] = 'This is the Reminders report description - needs to be changed';
+$string['reminder_description'] = 'This is the Tasks report description - needs to be changed';
 $string['unknown'] = 'Unknown';
 $string['withselected'] = 'With selected: ';

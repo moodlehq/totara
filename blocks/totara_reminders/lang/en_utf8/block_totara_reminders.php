@@ -2,7 +2,7 @@
 $string['blockname'] = 'Totara Reminders';
 $string['dismiss'] = 'Dismiss message';
 $string['from'] = 'From';
-$string['reminders'] = 'Reminders';
+$string['reminders'] = 'Tasks';
 $string['of'] = 'of';
 $string['onaccept'] = 'Accept';
 $string['onreject'] = 'Reject';
@@ -14,4 +14,4 @@ $string['statusnotok'] = 'Status not OK';
 $string['statusundecided'] = 'Status undecided';
 $string['type'] = 'Type';
 $string['viewall'] = 'View all';
-$string['viewallnot'] = 'View all reminders';
+$string['viewallnot'] = 'View all tasks';
