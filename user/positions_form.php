@@ -149,12 +149,26 @@ class user_position_assignment_form extends moodleform {
                 }
                 $mform->setHelpButton('managerid', array('userpositionmanager', get_string('choosemanager', 'position')), true);
             } else {
-                $mform->addElement('static', 'managerselector', get_string('manager', 'position'),
-                    '
-                        <span id="managertitle">'.htmlentities($manager_title).'</span>
-                    '.
-                    ($can_edit ? '<input type="button" value="'.get_string('choosemanager', 'position').'" id="show-manager-dialog" />' : '')
-                );
+                // Show manager
+                // If we can edit, show button. Else show link to manager's profile
+                if ($can_edit) {
+                    $mform->addElement(
+                        'static',
+                        'managerselector',
+                        get_string('manager', 'position'),
+                        '<span id="managertitle">'.htmlentities($manager_title).'</span>'
+                        .'<input type="button" value="'.get_string('choosemanager', 'position').'" id="show-manager-dialog" />'
+                    );
+                } else {
+                    $mform->addElement(
+                        'static',
+                        'managerselector',
+                        get_string('manager', 'position'),
+                        '<span id="managertitle"><a href="'.$CFG->wwwroot.'/user/view.php?id='.$manager_id.'">'
+                        .htmlentities($manager_title).'</a></span>'
+                    );
+                }
+
                 $mform->addElement('hidden', 'managerid');
                 $mform->setType('managerid', PARAM_INT);
                 $mform->setDefault('managerid', $manager_id);
