@@ -200,6 +200,11 @@ class rb_source_user extends rb_base_source {
     public function rb_display_learning_icons($itemid, $row) {
         global $CFG;
 
+        static $systemcontext;
+        if (!isset($systemcontext)) {
+            $systemcontext = get_system_context();
+        }
+
         $disp = '<span style="white-space:nowrap;">';
 
         // Learning Records icon
@@ -211,7 +216,11 @@ class rb_source_user extends rb_base_source {
         }
 
         // Individual Development Plans icon
-        $disp .= '<a href="' . $CFG->wwwroot . '/local/plan/index.php?userid=' . $itemid . '"><img src="' . $CFG->pixpath . '/i/plan.gif" title="' . get_string('learningplans', 'local_plan') . '" /></a>';
+        if (has_capability('local/plan:accessplan', $systemcontext)) {
+            $disp .= '<a href="'.$CFG->wwwroot.'/local/plan/index.php?userid='.$itemid.'">';
+            $disp .= '<img src="'.$CFG->pixpath.'/i/plan.gif" title="'.get_string('learningplans', 'local_plan').'" />';
+            $disp .= '</a>';
+        }
 
         $disp .= '</span>';
         return $disp;
