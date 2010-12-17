@@ -335,9 +335,18 @@
     /// Print the Custom User Fields
     profile_display_fields($user->id);
 
-    // only display link on own profile page
+    // Only display link on own profile page, if manager or admin
     if($currentuser || totara_is_manager($user->id) || has_capability('moodle/site:doanything', $systemcontext)) {
         print_row(get_string('recordoflearning','local').':', '<a href="'.$CFG->wwwroot.'/my/records.php?id='.$user->id.'">'.get_string('recordoflearning','local').'</a>');
+    }
+
+    // Only display link on own profile page, if manager or admin
+    if (($currentuser || totara_is_manager($user->id)) && has_capability('local/plan:accessplan', $systemcontext)) {
+        $str_plans = get_string('learningplans', 'local_plan');
+        print_row(
+            "{$str_plans}:",
+            "<a href=\"{$CFG->wwwroot}/local/plan/index.php?userid={$user->id}\">{$str_plans}</a>"
+        );
     }
 
     if (!isset($hiddenfields['mycourses'])) {
