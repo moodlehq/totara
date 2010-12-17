@@ -4,23 +4,18 @@ require_once('../config.php');
 
 require_once($CFG->dirroot.'/local/reportbuilder/lib.php');
 
-$id = optional_param('id', null, PARAM_INT); // which user to show
+$userid = optional_param('userid', $USER->id, PARAM_INT); // which user to show
 $format = optional_param('format','', PARAM_TEXT); // export format
 
-// default to current user
-if(empty($id)) {
-    $id = $USER->id;
-}
-
-if (! $user = get_record('user', 'id', $id)) {
+if (! $user = get_record('user', 'id', $userid)) {
     error('User not found');
 }
 
 // users can only view their own and their staff's pages
-if ($USER->id != $id && !totara_is_manager($id)) {
+if ($USER->id != $userid && !totara_is_manager($userid)) {
     error('You cannot view this page');
 }
-if ($USER->id != $id) {
+if ($USER->id != $userid) {
     $strheading = get_string('pastbookingsfor','local').fullname($user, true);
 } else {
     $strheading = get_string('mypastbookings', 'local');
@@ -70,7 +65,7 @@ $embed->contentsettings = array(
 );
 // also limited to single user by embedded params
 $embed->embeddedparams = array(
-    'userid' => $id,
+    'userid' => $userid,
 );
 
 $report = new reportbuilder(null, $shortname, $embed);

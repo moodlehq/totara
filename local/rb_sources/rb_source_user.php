@@ -207,7 +207,7 @@ class rb_source_user extends rb_base_source {
 
         // Face To Face Bookings icon
         if ($this->staff_f2f) {
-            $disp .= '<a href="' . $CFG->wwwroot . '/my/bookings.php?id=' . $itemid . '"><img src="' . $CFG->pixpath . '/i/bookings.png" title="' . get_string('f2fbookings', 'local') . '" /></a>';
+            $disp .= '<a href="' . $CFG->wwwroot . '/my/bookings.php?userid=' . $itemid . '"><img src="' . $CFG->pixpath . '/i/bookings.png" title="' . get_string('f2fbookings', 'local') . '" /></a>';
         }
 
         // Individual Development Plans icon

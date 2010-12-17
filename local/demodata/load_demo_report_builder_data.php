@@ -13,8 +13,8 @@ array('id' => '12','fullname' => 'My Local Course Completions','shortname' => 'l
 array('id' => '13','fullname' => 'My Staff Course Completions','shortname' => 'staff_course_completions','source' => 'course_completion','hidden' => '0','accessmode' => '1','contentmode' => '1','recordsperpage' => '40','defaultsortorder' => '4',),
 array('id' => '14','fullname' => 'All Site Logs','shortname' => 'all_site_logs','source' => 'site_logs','hidden' => '0','accessmode' => '1','contentmode' => '0','recordsperpage' => '40','defaultsortorder' => '4',),
 array('id' => '16','fullname' => 'My Staff Site Logs','shortname' => 'staff_site_logs','source' => 'site_logs','hidden' => '1','accessmode' => '1','contentmode' => '1','recordsperpage' => '40','defaultsortorder' => '4',),
-array('id' => '17','fullname' => 'My Bookings','shortname' => 'bookings','source' => 'facetoface_sessions','hidden' => '1','accessmode' => '0','contentmode' => '2','embeddedurl' => '/my/bookings.php?id=2','recordsperpage' => '40','defaultsortorder' => '4',),
-array('id' => '18','fullname' => 'My Past Bookings','shortname' => 'pastbookings','source' => 'facetoface_sessions','hidden' => '1','accessmode' => '0','contentmode' => '2','embeddedurl' => '/my/pastbookings.php?id=2','recordsperpage' => '40','defaultsortorder' => '4',),
+array('id' => '17','fullname' => 'My Bookings','shortname' => 'bookings','source' => 'facetoface_sessions','hidden' => '1','accessmode' => '0','contentmode' => '2','embeddedurl' => '/my/bookings.php?userid=2','recordsperpage' => '40','defaultsortorder' => '4',),
+array('id' => '18','fullname' => 'My Past Bookings','shortname' => 'pastbookings','source' => 'facetoface_sessions','hidden' => '1','accessmode' => '0','contentmode' => '2','embeddedurl' => '/my/pastbookings.php?userid=2','recordsperpage' => '40','defaultsortorder' => '4',),
 array('id' => '19','fullname' => 'My Record of Learning','shortname' => 'record_of_learning','source' => 'competency_evidence','hidden' => '1','accessmode' => '0','contentmode' => '0','embeddedurl' => '/my/records.php?id=2','recordsperpage' => '40','defaultsortorder' => '4',),
 array('id' => '20','fullname' => 'My Course Completions','shortname' => 'course_completions','source' => 'course_completion','hidden' => '1','accessmode' => '0','contentmode' => '0','embeddedurl' => '/my/coursecompletions.php?id=1292','recordsperpage' => '40','defaultsortorder' => '4',),
 array('id' => '21','fullname' => 'Course Feedback','shortname' => 'report_course_feedback','source' => 'graphical_feedback_questions_grp_1','hidden' => '0','accessmode' => '1','contentmode' => '1','recordsperpage' => '40','defaultsortorder' => '4',),
@@ -61,4 +61,3 @@ print "<br>";
 set_config("guestloginbutton", 0);
 set_config("langmenu", 0);
 set_config("forcelogin", 1);
-        

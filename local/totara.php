@@ -244,7 +244,7 @@ function totara_print_my_learning_nav($return=false) {
                 <a href="'.$CFG->wwwroot.'/blocks/facetoface/mysignups.php" title=""><center><img src="'.$CFG->pixpath.'/i/bookings.png" /></center></a>
             </td>
             <td align="left" valign="center">
-                <span style="font-size: small"><a href="'.$CFG->wwwroot.'/my/bookings.php?id='.$USER->id.'">'.get_string('bookings','local').'</a></span>
+                <span style="font-size: small"><a href="'.$CFG->wwwroot.'/my/bookings.php?userid='.$USER->id.'">'.get_string('bookings','local').'</a></span>
             </td>
         </tr>';
     if(get_config(NULL, 'idp_showlearnrec')==2){

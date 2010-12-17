@@ -1,5 +1,5 @@
 <?php
-if(empty($id)) {
+if(empty($userid)) {
     error('You cannot call this script in that way');
 }
 if (!isset($currenttab)) {
@@ -11,9 +11,9 @@ $row = array();
 $activated = array();
 $inactive = array();
 
-$row[] = new tabobject('futurebookings', "$CFG->wwwroot/my/bookings.php?id=$id",
+$row[] = new tabobject('futurebookings', "$CFG->wwwroot/my/bookings.php?userid=$userid",
                            get_string('tab:futurebookings', 'local'));
-$row[] = new tabobject('pastbookings', "$CFG->wwwroot/my/pastbookings.php?id=$id",
+$row[] = new tabobject('pastbookings', "$CFG->wwwroot/my/pastbookings.php?userid=$userid",
                            get_string('tab:pastbookings', 'local'));
 $tabs[] = $row;
 
