@@ -211,7 +211,7 @@ class rb_source_user extends rb_base_source {
         }
 
         // Individual Development Plans icon
-        $disp .= '<a href="' . $CFG->wwwroot . '/local/plan/index.php?userid=' . $itemid . '"><img src="' . $CFG->pixpath . '/i/plan.gif" title="' . get_string('idp', 'idp') . '" /></a>';
+        $disp .= '<a href="' . $CFG->wwwroot . '/local/plan/index.php?userid=' . $itemid . '"><img src="' . $CFG->pixpath . '/i/plan.gif" title="' . get_string('learningplans', 'local_plan') . '" /></a>';
 
         $disp .= '</span>';
         return $disp;
