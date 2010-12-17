@@ -703,19 +703,23 @@
         print_box(get_string('sitemaintenancewarning', 'admin'), 'generalbox adminwarning');
     }
 
-
-/// Print slightly annoying registration button
-    $options = array();
-    $options['sesskey'] = $USER->sesskey;
-    print_box_start('generalbox adminwarning');
-    if(!isset($CFG->registered)) {
-       print_string('pleaseregister', 'admin');
+    if (empty($CFG->registrationenabled)) {
+        print_box_start('generalbox adminerror');
+        print_string('registrationisdisabled', 'admin', $CFG->wwwroot . '/admin/registration.php');
+        print_box_end();
+    } elseif (empty($CFG->registered)) {
+        print_box_start('generalbox adminerror');
+        print_string('sitehasntregistered', 'admin');
+        print_box_end();
+    } elseif ($CFG->registered < time() - 8*24*60*60) {
+        print_box_start('generalbox adminerror');
+        print_string('registrationoutofdate', 'admin');
+        print_box_end();
+    } else {
+        print_box_start('generalbox adminnotice');
+        print_string('registrationisenabled', 'admin');
+        print_box_end();
     }
-    else { /* if (isset($CFG->registered) && $CFG->registered < (time() - 3600*24*30*6)) { */
-       print_string('pleaserefreshregistration', 'admin', userdate($CFG->registered));
-    }
-    print_single_button('register.php', $options, get_string('registration'));
-    print_box_end();
 
 
 /// Display Totara version information
