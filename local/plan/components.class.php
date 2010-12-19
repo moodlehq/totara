@@ -231,7 +231,7 @@ abstract class dp_base_component {
     }
 
     /**
-    * Get items assigned to this component (if relevant - to be overridden by children classes
+    * Get items assigned to this component (if relevant - to be overridden by children classes)
     *
     * @return array and array of data objects
     */
@@ -460,7 +460,7 @@ abstract class dp_base_component {
      * Unassign an item from a plan
      *
      * @access  public
-     * @return  mixed   An ADODB RecordSet object with the results from the SQL call or false.
+     * @return  boolean
      */
     public function unassign_item($item) {
 

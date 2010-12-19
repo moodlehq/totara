@@ -41,15 +41,23 @@ if($submitted && confirm_sesskey()) {
     $component->process_action($action);
 }
 
-if($delete && $confirm) {
-    if(!confirm_sesskey()) {
+if ($delete && $confirm) {
+    if (!confirm_sesskey()) {
         totara_set_notification(get_string('confirmsesskeybad', 'error'), $currenturl);
     }
-    if($component->remove_course_assignment($delete)) {
-        $plan->set_status_unapproved_if_declined();
+
+    // Load item
+    if (!$deleteitem = $component->get_assigned_item($delete)) {
+        print_error('error:couldnotfindassigneditem', 'local_plan');
+    }
+
+    // Unassign item
+    if ($component->unassign_item($deleteitem)) {
         totara_set_notification(get_string('canremoveitem','local_plan'), $currenturl, array('style' => 'notifysuccess'));
+
+        $plan->set_status_unapproved_if_declined();
     } else {
-        totara_set_notification(get_string('cannotremoveitem', 'local_plan'), $currenturl);
+        print_error('error:couldnotunassignitem', 'local_plan');
     }
 }
 
@@ -62,7 +70,7 @@ $navlinks[] = array('name' => $component->get_setting('name'), 'link' => '', 'ty
 
 $navigation = build_navigation($navlinks);
 
-if($delete) {
+if ($delete) {
     print_header_simple($pagetitle, '', $navigation, '', null, true, '');
     notice_yesno(get_string('confirmitemdelete','local_plan'), $currenturl.'&amp;d='.$delete.'&amp;confirm=1&amp;sesskey='.sesskey(), $currenturl);
     print_footer();

@@ -42,32 +42,23 @@ else {
     $idlist = explode(',', $idlist);
 }
 
-// Basic access control checks
-/*
-if ($id) { // plan being edited
-
-    if($id == SITEID){
-        // don't allow editing of  'site course' using this from
-        print_error('cannoteditsiteform');
-    }
-
-    if (!$course = get_record('course', 'id', $id)) {
-        print_error('invalidcourseid');
-    }
-
-    require_login($course->id);
-    require_capability('moodle/course:update', get_context_instance(CONTEXT_COURSE, $course->id));
-
-} else {
-    require_login();
-    print_error('needcourseid');
-}
- */
-
 $plan = new development_plan($id);
 $componentname = 'course';
 $component = $plan->get_component($componentname);
 
+
+///
+/// Permissions check
+///
+require_capability('local/plan:accessplan', get_system_context());
+
+if (!$component->can_update_items()) {
+    print_error('error:cannotupdateitems', 'local_plan');
+}
+
+///
+/// Update component
+///
 $component->update_assigned_items($idlist);
 
 // Update plan to unapproved if current status is declined

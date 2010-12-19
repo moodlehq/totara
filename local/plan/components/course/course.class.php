@@ -82,6 +82,39 @@ class dp_course_component extends dp_base_component {
 
 
     /**
+     * Get a single assigned item
+     *
+     * @access  public
+     * @return  object|false
+     */
+    public function get_assigned_item($itemid) {
+        global $CFG;
+
+        $assigned = get_record_sql(
+            "
+            SELECT
+                c.id,
+                a.planid,
+                a.courseid,
+                a.id AS itemid,
+                c.fullname,
+                a.approved
+            FROM
+                {$CFG->prefix}dp_plan_course_assign a
+            INNER JOIN
+                {$CFG->prefix}course c
+             ON c.id = a.courseid
+            WHERE
+                a.planid = {$this->plan->id}
+            AND a.id = {$itemid}
+            "
+        );
+
+        return $assigned;
+    }
+
+
+    /**
      * Get list of items assigned to plan
      *
      * @access  public
@@ -700,20 +733,22 @@ class dp_course_component extends dp_base_component {
         }
     }
 
-    function remove_course_assignment($caid) {
-        $canremovecourse = ($this->get_setting('updatecourse') == DP_PERMISSION_ALLOW);
-        // need permission to remove this course
-        if(!$canremovecourse) {
-            return false;
-        }
-
-        $result = delete_records('dp_plan_course_assign', 'id', $caid);
+    /**
+     * Unassign an item from a plan
+     *
+     * @access  public
+     * @return  boolean
+     */
+    public function unassign_item($item) {
+        // Run parent method
+        $result = parent::unassign_item($item);
 
         // Delete mappings
-        if ( $result ){
-            $caid = delete_records('dp_plan_component_relations', 'component1', 'course', 'itemid1', $caid);
-            $caid = delete_records('dp_plan_component_relations', 'component2', 'course', 'itemid2', $caid);
+        if ($result) {
+            $result = delete_records('dp_plan_component_relation', 'component1', 'course', 'itemid1', $item->itemid);
+            $result = $result && delete_records('dp_plan_component_relation', 'component2', 'course', 'itemid2', $item->itemid);
         }
+
         return $result;
     }
 }
