@@ -92,3 +92,4 @@ $string['editgeneric'] = 'Edit $a';
 $string['currentlyselected'] = 'Currently selected';
 $string['entervaliddate'] = 'Enter a valid date';
 $string['error:dialognotreeitems'] = 'No positions in this framework';
+$string['error:userownmanager'] = 'A user cannot be assigned as their own manager';

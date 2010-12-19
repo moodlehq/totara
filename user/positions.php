@@ -169,7 +169,16 @@ else {
         $data->userid = $user->id;
 
         // Get new manager id
-        $managerid = isset($data->managerid) ? $data->managerid : null;
+        //echo 'Manager ID: '. $data->managerid . ' - User ID: '. $data->userid .'<br/>'; die();
+        if(isset($data->managerid)) {
+            if($data->managerid == $data->userid) {
+                error(get_string('error:userownmanager', 'position'));
+            } else {
+                $managerid = $data->managerid;
+            }
+        } else {
+            $managerid = null;
+        }
 
         // If aspiration type, make sure no manager is set
         if ($data->type == POSITION_TYPE_ASPIRATIONAL) {
