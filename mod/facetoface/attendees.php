@@ -50,7 +50,6 @@ else {
 require_course_login($course);
 $context = get_context_instance(CONTEXT_COURSE, $course->id);
 require_capability('mod/facetoface:viewattendees', $context);
-
 // Handle submitted data
 if ($form = data_submitted()) {
     if (!confirm_sesskey()) {

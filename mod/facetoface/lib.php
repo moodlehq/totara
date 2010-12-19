@@ -2511,7 +2511,7 @@ function facetoface_approve_requests($data) {
         // Load user submission
         if (!$attendee = facetoface_get_attendee($sessionid, $key)) {
             error_log('F2F: User '.$key.' not an attendee of this session');
-            continue;;
+            continue;
         }
 
         // Update status
@@ -3048,7 +3048,7 @@ function facetoface_get_num_attendees($session_id) {
     // for the session, pick signups that haven't been superceded, or cancelled
     return (int) count_records_sql("select count(ss.id) from {$CFG->prefix}facetoface_signups su
         JOIN {$CFG->prefix}facetoface_signups_status ss ON su.id = ss.signupid
-        WHERE sessionid=$session_id AND ss.superceded=0 AND ss.statuscode >= ".MDL_F2F_STATUS_APPROVED);
+        WHERE sessionid=$session_id AND ss.superceded=0 AND ss.statuscode >= ".MDL_F2F_STATUS_BOOKED);
 }
 
 /**
