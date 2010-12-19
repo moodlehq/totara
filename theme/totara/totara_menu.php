@@ -75,6 +75,9 @@ if(in_array($secondary_selected, array(
     }
 }
 
+$sitecontext = get_context_instance(CONTEXT_SYSTEM);
+$canviewdashboards  = has_capability('local/dashboard:view', $sitecontext, $USER->id);
+
 // get an array of class string snippets to be applied to each tab element
 $selected = totara_get_nav_select_classes($navstructure, $primary_selected, $secondary_selected);
 ?>
@@ -104,12 +107,17 @@ $selected = totara_get_nav_select_classes($navstructure, $primary_selected, $sec
 
 
     <li id="menu2" class="<?php echo $selected['mylearning']; ?>">
-        <div><a href="<?php echo $CFG->wwwroot.'/my/learning.php' ?>"><?php echo get_string('mylearning', 'local') ?></a>
+        <div><a href="<?php echo ($canviewdashboards ? $CFG->wwwroot.'/my/learning.php' : $CFG->wwwroot.'/local/plan/index.php') ?>"><?php echo get_string('mylearning', 'local') ?></a>
             <?php
             if($selected['mylearning']) {
-                $text ='<ul><li class="first' . $selected['learnerdashboard'] .
-                    '"><a href="' . $CFG->wwwroot . '/my/learning.php">' .
-                    get_string('dashboard', 'local_dashboard').'</a></li>';
+                $text ='<ul>';
+
+                if($canviewdashboards) {
+                    $text .= '<li class="first' . $selected['learnerdashboard'] .
+                        '"><a href="' . $CFG->wwwroot . '/my/learning.php">' .
+                        get_string('dashboard', 'local_dashboard').'</a></li>';
+                }
+
                 $text .='<li class="' . $selected['learningplans'] .
                     '"><a href="' . $CFG->wwwroot . '/local/plan/index.php">' .
                     get_string('learningplans', 'local').'</a></li>';
@@ -131,12 +139,16 @@ $selected = totara_get_nav_select_classes($navstructure, $primary_selected, $sec
     <?php if($staff = totara_get_staff()) { ?>
     <li id="menu3" class="<?php echo $selected['myteam']; ?>">
         <div>
-            <a href="<?php echo $CFG->wwwroot.'/my/team.php' ?>"><?php echo get_string('myteam', 'local') ?></a>
+            <a href="<?php echo ($canviewdashboards ? $CFG->wwwroot.'/my/team.php' : $CFG->wwwroot.'/my/teammembers.php') ?>"><?php echo get_string('myteam', 'local') ?></a>
             <?php
             if($selected['myteam']) {
-                $text ='<ul><li class="first' . $selected['managerdashboard'] .
-                    '"><a href="' . $CFG->wwwroot . '/my/team.php">' .
-                    get_string('dashboard', 'local_dashboard') . '</a></li>';
+                $text ='<ul>';
+                if($canviewdashboards) {
+                    $text .= '<li class="first' . $selected['managerdashboard'] .
+                        '"><a href="' . $CFG->wwwroot . '/my/team.php">' .
+                        get_string('dashboard', 'local_dashboard') . '</a></li>';
+                }
+
                 $text .='<li class="last' . $selected['teammembers'] .
                     '"><a href="' . $CFG->wwwroot . '/my/teammembers.php">' .
                     get_string('teammembers', 'local') . '</a></li></ul>';
