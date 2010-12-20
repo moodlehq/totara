@@ -38,10 +38,10 @@ echo "Initialize installation";
       --moodledir="/var/lib/hudson/jobs/Totara-Oracle/workspace" \
       --datadir="/var/lib/hudson/jobs/Totara-Oracle/moodledata" \
       --dbtype="oci8po" \
-      --dbname="127.0.0.1:1521/moodle" \
+      --dbname="(DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST=brumbies.wgtn.cat-it.co.nz)(PORT=1522))(CONNECT_DATA=(SERVICE_NAME = MOODLE)))" \
       --dbhost="" \
       --dbuser="hudson" \
-      --dbpass="password" \
+      --dbpass="moodle" \
       --prefix="m_" \
       --verbose=3 \
       --sitefullname="Totara" \
