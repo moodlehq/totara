@@ -1783,16 +1783,34 @@ th.header {
     border:0 none;
 }
 /* Add some borders back in */
-td.cell, th.header {
+td.cell,
+th.header,
+.generaltable td.cell,
+.generaltable th.header {
     border:0 none;
     border-left:1px solid #DBDBDB;
 }
-td.cell.c0, th.header.c0 {
+td.cell.c0,
+th.header.c0,
+.generaltable td.cell.c0,
+.generaltable th.header.c0 {
     border-left:0 none;
 }
 /* Course edit screen */
 table.editcourse th.header {
     border:0 none;
+}
+/**
+ * Admin table with list of users needs some custom styling..
+ */
+body#admin-user table.generaltable th.c5,
+body#admin-user table.generaltable th.c6,
+body#admin-user table.generaltable th.c7,
+body#admin-user table.generaltable td.c5,
+body#admin-user table.generaltable td.c6,
+body#admin-user table.generaltable td.c7 {
+    border-left:0 none;
+    border-right:0 none;
 }
 
 /*****************************************************************************/
