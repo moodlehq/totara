@@ -28,7 +28,7 @@ module NavigationHelpers
       'home'         => '/',
       'admin'        => '/admin/index.php',
       'login'        => '/login/index.php',
-      'my records'   => '/my/records.php',
+      'my records'   => '/local/plan/record/courses.php',
       'a learners my records' => '/my/records.php?id=' + get_username_id('learner'),
       'an administrators my records' => '/my/records.php?id=' + get_username_id('admin'),
       'manage competency frameworks' => '/hierarchy/framework/index.php?type=competency',
