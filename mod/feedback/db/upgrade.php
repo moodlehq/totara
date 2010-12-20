@@ -156,7 +156,7 @@ function xmldb_feedback_upgrade($oldversion=0) {
         /// Define facetofacecmid to be added to feedback
         $table = new XMLDBTable('feedback');
         $field = new XMLDBField('facetofacecmid');
-        $field->setAttributes(XMLDB_TYPE_INTEGER, '4', null, XMLDB_NOTNULL, null, null, null, '0', 'facetofacecmid');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '4', null, XMLDB_NOTNULL, null, null, null, '0', null);
 
         $result = $result && add_field($table, $field);
 
