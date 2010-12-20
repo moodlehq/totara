@@ -636,10 +636,6 @@ h6 {
 
 .tabrow0 li.active ul.tabrow1 li a {
 	background: none !important;
-	text-decoration: none;
-}
-.tabrow0 li.active ul.tabrow1 li a:hover {
-	text-decoration: none;
 }
 ul.tabrow1 {
     background: url("images/tab/tabrow1.gif") top left repeat-x !important;
@@ -656,7 +652,6 @@ ul.tabrow1 {
 .tabrow0 a:hover {
   background-image: url(images/tab/left_white.gif);
   color: #999999;
-  text-decoration: none;
 }
 .tabrow0 a:link:hover span,
 .tabrow0 a:visited:hover span,
@@ -674,10 +669,7 @@ ul.tabrow1 {
   background-image: url(images/tab/right.gif);
 }
 
-.tabrow0 .here a,
-.tabrow0 .here a:hover {
-  text-decoration: none;
-}
+
 
 .tabrow0 .here .active a,
 .tabrow0 .here .active a:hover {
@@ -686,16 +678,9 @@ ul.tabrow1 {
 
 ul.tabrow0 li ul.tabrow1 a{
 	background: none;
-	text-decoration: none;
 }
 
-ul.tabrow0 li ul.tabrow1 a:hover {
-	text-decoration: underline;
-}
 
-ul.tabrow0 li ul.tabrow1 .active a:hover {
-	text-decoration: none;
-}
 
 .tabrow1 div,
 .tabrow1 ul {
@@ -705,18 +690,15 @@ ul.tabrow1 li a,
 ul.tabrow1 li a:link,
 ul.tabrow1 li a:visited {
   color: #322f2c !important;
-  text-decoration: underline;
 }
 
 ul.tabrow1 li a:hover {
   color: #322f2c;
-  text-decoration: underline;
 }
 
 .tabrow0 ul li a:hover span,
 .tabrow0 ul a {
   color: #322f2c;
-  text-decoration: none;
 }
 
 .tabrow0 ul li.here a:hover span {
@@ -733,6 +715,12 @@ ul.tabrow1 li a:hover {
 .tabrow0 .empty {
     border-bottom:0 none;
     border-top:1px solid #AAAAAA;
+}
+.tabtree a,
+.tabtree a:link,
+.tabtree a:visited,
+.tabtree a:hover {
+  text-decoration: none;
 }
 
 
