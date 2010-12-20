@@ -235,6 +235,30 @@ div#header .logo {
 }
 
 
+/**
+    Action notifications
+**/
+.notifyproblem {
+  text-align: center;
+  padding: 10px;
+  border:1px solid #D8000C;
+  color:#D8000C;
+  background:#FFBABA;
+  width:50%;
+  margin:0 auto;
+}
+
+.notifysuccess {
+  text-align:center;
+  padding: 10px;
+  border:1px solid #4F8A10;
+  color:#4F8A10;
+  background:#DFF2BF;
+  width:50%;
+  margin:0 auto;
+}
+
+
 
 /**
  * Footer Styles
