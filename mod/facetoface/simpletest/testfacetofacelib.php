@@ -109,13 +109,13 @@ class facetofacelib_test extends prefix_changing_test_case {
     var $facetoface_signups_status_data = array(
         array('id',     'signupid',     'statuscode',   'superceded',   'grade',
             'note',     'advice',       'createdby',    'timecreated'),
-        array(1,        1,              50,             0,              99.12345,
+        array(1,        1,              70,             0,              99.12345,
             'note1',    'advice1',      'create1',      1600),
-        array(2,        2,              60,             0,              32.5,
+        array(2,        2,              70,             0,              32.5,
             'note2',    'advice2',      'create2',      1700),
         array(3,        3,              70,             0,              88,
             'note3',    'advice3',      'create3',      0700),
-        array(4,        4,              50,             0,              12.5,
+        array(4,        4,              70,             0,              12.5,
             'note4',    'advice4',      'create4',      1100),
     );
 
