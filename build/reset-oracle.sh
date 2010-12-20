@@ -31,6 +31,10 @@ rm ../moodle_error.log
 touch ../moodle_error.log
 chmod 777 ../moodle_error.log
 
+echo "Set Oracle env vars";
+ORACLE_HOME=/home/oracle/product/10.2
+LD_LIBRARY_PATH=/home/oracle/product/10.2/instantclient
+
 echo "Initialize installation";
 /usr/bin/php admin/cliupgrade.php \
       --lang=en_utf8 \
