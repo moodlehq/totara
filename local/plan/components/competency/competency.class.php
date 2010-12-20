@@ -2,7 +2,7 @@
 class dp_competency_component extends dp_base_component {
     public static $permissions = array(
         'updatecompetency' => true,
-        'commenton' => false,
+        //'commenton' => false,
         'setpriority' => false,
         'setduedate' => false,
         'setproficiency' => true

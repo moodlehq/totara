@@ -3,7 +3,7 @@
 class dp_course_component extends dp_base_component {
     public static $permissions = array(
         'updatecourse' => true,
-        'commenton' => false,
+        //'commenton' => false,
         'setpriority' => false,
         'setduedate' => false,
         'setcompletionstatus' => true,

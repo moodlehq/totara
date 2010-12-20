@@ -2,7 +2,7 @@
 class dp_objective_component extends dp_base_component {
     public static $permissions = array(
         'updateobjective' => true,
-        'commenton' => false,
+        //'commenton' => false,
         'setpriority' => false,
         'setduedate' => false,
         'setproficiency' => false
