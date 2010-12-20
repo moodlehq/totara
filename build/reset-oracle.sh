@@ -38,8 +38,8 @@ echo "Initialize installation";
       --moodledir="/var/lib/hudson/jobs/Totara-Oracle/workspace" \
       --datadir="/var/lib/hudson/jobs/Totara-Oracle/moodledata" \
       --dbtype="oci8po" \
-      --dbname="127.0.0.1/moodle" \
-      --dbhost="localhost" \
+      --dbname="127.0.0.1:1521/moodle" \
+      --dbhost="" \
       --dbuser="hudson" \
       --dbpass="password" \
       --prefix="m_" \
