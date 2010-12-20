@@ -1,3 +1,4 @@
+@wip
 @nightly
 Feature: Check for broken links, PHP errors and missing language strings
     In order to avoid exposing errors
