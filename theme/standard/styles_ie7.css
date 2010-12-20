@@ -1,37 +1,26 @@
-/*
+/**
  * These styles are ONLY included for IE 7 (via meta.php)
  */
 
-.tabrow0 li {
-  margin-left: 0;
+.tabrow0 li a,
+.tabrow0 li.here a,
+.tabrow0 li.selected a,
+.tabrow0 li.here a {
+  margin-right:1px !important;
+  margin-left:0px !important;
 }
-
-.tabrow0 li.first {
-  margin-right: -4px;
+.tabrow0 li.here a {
+  margin-right:4px !important;
 }
-
-.tabrow0 li.onerow {
-  margin-right: 0;
+.tabrow0 li a {
+  padding-top:0px;
+  padding-bottom:0px;
 }
-
-.tabrow0 a {
-  display: inline-block;
-  padding: 8px 0 0.35em 13px;
-  line-height: 1.5em;
-}
-
-.tabrow0 a span {
-  padding: 10px 1em 10px 0;
-}
-
-.tabrow0 div,
-.tabrow0 ul {
-  top: 2.6em;
-  padding: 0.2em 0;
-}
-
-.tabrow0 div.empty {
-  margin-right: 0;
+.tabrow0 li.active a,
+.tabrow0 li.active a:hover,
+.tabrow0 li.selected a,
+.tabrow0 li.selected a:hover {
+    padding-top:0px;
 }
 
 .sideblock {

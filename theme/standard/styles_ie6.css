@@ -32,13 +32,37 @@
 }
 
 .tabrow0 a span {
-  padding: 12px 1em 4px 0;
+  padding: 12px 1em 6px 0;
 }
 
 .tabrow0 div,
 .tabrow0 ul {
   top: 3.5em;
   padding: 0.2em 0;
+}
+
+.tabrow0 li a,
+.tabrow0 li a:link,
+.tabrow0 li a:visited {
+    color:#FFFFFF;
+}
+
+.tabrow0 li a,
+.tabrow0 li.active a,
+.tabrow0 li.active a:hover,
+.tabrow0 li.selected a,
+.tabrow0 li.selected a:hover {
+  padding-top:0px !important;
+  padding-bottom:0px !important;
+}
+.tabrow0 li {
+  margin-right:4px !important;
+}
+.tabrow0 li a span {
+  padding-bottom:4px !important;
+}
+.tabrow0 li.here a {
+  margin-right:2px !important;
 }
 
 form.mform input {

@@ -598,7 +598,7 @@ h6 {
 .tabrow0{
   line-height: 2.3em;
   text-align:left;
-  padding-bottom: 1.75em;
+  padding-bottom: 2.5em;
 }
 .tabrow0 li a {
   font-family: 'Trebuchet ms', Verdana, Helvetica, sans-serif;
@@ -636,10 +636,6 @@ h6 {
 
 .tabrow0 li.active ul.tabrow1 li a {
 	background: none !important;
-	text-decoration: none;
-}
-.tabrow0 li.active ul.tabrow1 li a:hover {
-	text-decoration: none;
 }
 ul.tabrow1 {
     background: url("images/tab/tabrow1.gif") top left repeat-x !important;
@@ -656,7 +652,6 @@ ul.tabrow1 {
 .tabrow0 a:hover {
   background-image: url(images/tab/left_white.gif);
   color: #999999;
-  text-decoration: none;
 }
 .tabrow0 a:link:hover span,
 .tabrow0 a:visited:hover span,
@@ -674,10 +669,7 @@ ul.tabrow1 {
   background-image: url(images/tab/right.gif);
 }
 
-.tabrow0 .here a,
-.tabrow0 .here a:hover {
-  text-decoration: none;
-}
+
 
 .tabrow0 .here .active a,
 .tabrow0 .here .active a:hover {
@@ -686,16 +678,9 @@ ul.tabrow1 {
 
 ul.tabrow0 li ul.tabrow1 a{
 	background: none;
-	text-decoration: none;
 }
 
-ul.tabrow0 li ul.tabrow1 a:hover {
-	text-decoration: underline;
-}
 
-ul.tabrow0 li ul.tabrow1 .active a:hover {
-	text-decoration: none;
-}
 
 .tabrow1 div,
 .tabrow1 ul {
@@ -705,18 +690,15 @@ ul.tabrow1 li a,
 ul.tabrow1 li a:link,
 ul.tabrow1 li a:visited {
   color: #322f2c !important;
-  text-decoration: underline;
 }
 
 ul.tabrow1 li a:hover {
   color: #322f2c;
-  text-decoration: underline;
 }
 
 .tabrow0 ul li a:hover span,
 .tabrow0 ul a {
   color: #322f2c;
-  text-decoration: none;
 }
 
 .tabrow0 ul li.here a:hover span {
@@ -733,6 +715,12 @@ ul.tabrow1 li a:hover {
 .tabrow0 .empty {
     border-bottom:0 none;
     border-top:1px solid #AAAAAA;
+}
+.tabtree a,
+.tabtree a:link,
+.tabtree a:visited,
+.tabtree a:hover {
+  text-decoration: none;
 }
 
 
@@ -1783,16 +1771,34 @@ th.header {
     border:0 none;
 }
 /* Add some borders back in */
-td.cell, th.header {
+td.cell,
+th.header,
+.generaltable td.cell,
+.generaltable th.header {
     border:0 none;
     border-left:1px solid #DBDBDB;
 }
-td.cell.c0, th.header.c0 {
+td.cell.c0,
+th.header.c0,
+.generaltable td.cell.c0,
+.generaltable th.header.c0 {
     border-left:0 none;
 }
 /* Course edit screen */
 table.editcourse th.header {
     border:0 none;
+}
+/**
+ * Admin table with list of users needs some custom styling..
+ */
+body#admin-user table.generaltable th.c5,
+body#admin-user table.generaltable th.c6,
+body#admin-user table.generaltable th.c7,
+body#admin-user table.generaltable td.c5,
+body#admin-user table.generaltable td.c6,
+body#admin-user table.generaltable td.c7 {
+    border-left:0 none;
+    border-right:0 none;
 }
 
 /*****************************************************************************/
@@ -2023,11 +2029,15 @@ table.allmyteam td a {
     padding: 3px;
 }
 
-
-tr.r1 .cell,
-{
-    background: #f5f5f5;
+tr.r0 .cell,
+tr.r0 td {
+    background: #F0F0F0;
 }
+tr.r1 .cell,
+tr.r1 td {
+    background: #FAFAFA;
+}
+
 td.c0 {
     text-align: left;
 }

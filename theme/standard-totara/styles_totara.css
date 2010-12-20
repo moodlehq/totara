@@ -6,6 +6,10 @@ html, body {
       height: 100%;
 }
 
+p {
+    margin:1em 0;
+}
+
 .clearfix {
   clear:both;
   margin:0;
@@ -232,6 +236,30 @@ div#header .logo {
   overflow: hidden;
   font-size: 0;
   line-height: 0;
+}
+
+
+/**
+    Action notifications
+**/
+.notifyproblem {
+  text-align: center;
+  padding: 10px;
+  border:1px solid #D8000C;
+  color:#D8000C;
+  background:#FFBABA;
+  width:50%;
+  margin:0 auto;
+}
+
+.notifysuccess {
+  text-align:center;
+  padding: 10px;
+  border:1px solid #4F8A10;
+  color:#4F8A10;
+  background:#DFF2BF;
+  width:50%;
+  margin:0 auto;
 }
 
 
@@ -1244,10 +1272,6 @@ table.editcompetency td {
     border: 1px solid #dddddd;
 }
 
-table.reportbuilder-table td {
-    border: 1px solid #DDDDDD;
-}
-
 /*****************************************************************************/
 /** New IDP **/
 /*****************************************************************************/
@@ -1592,6 +1616,10 @@ table.dp-plan-component-items {
 
 #dp-plan-content h2.main {
     text-align:left;
+}
+
+#local-plan-template-advancedworkflow .singlebutton {
+    margin-top:5px;
 }
 
 /*****************************************************************************/
