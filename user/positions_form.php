@@ -177,7 +177,9 @@ class user_position_assignment_form extends moodleform {
 
             $group = array();
             $group[] = $mform->createElement('text', 'timevalidfrom', get_string('startdate', 'position'));
-            $group[] = $mform->createElement('static', 'timevalidfrom_hint', '', get_string('startdatehint', 'position'));
+            if($can_edit) {
+                $group[] = $mform->createElement('static', 'timevalidfrom_hint', '', get_string('startdatehint', 'position'));
+            }
             $mform->addGroup($group, 'timevalidfrom_group', get_string('startdate', 'position'), array(' '), false);
             $mform->setType('timevalidfrom', PARAM_TEXT);
             $mform->setDefault('timevalidfrom','dd/mm/yy');
@@ -185,7 +187,9 @@ class user_position_assignment_form extends moodleform {
 
             $group = array();
             $group[] = $mform->createElement('text', 'timevalidto', get_string('finishdate', 'position'));
-            $group[] = $mform->createElement('static', 'timevalidto_hint', '', get_string('finishdatehint', 'position'));
+            if($can_edit) {
+                $group[] = $mform->createElement('static', 'timevalidto_hint', '', get_string('finishdatehint', 'position'));
+            }
             $mform->addGroup($group, 'timevalidto_group', get_string('finishdate', 'position'), array(' '), false);
             $mform->setType('timevalidto', PARAM_TEXT);
             $mform->setDefault('timevalidto','dd/mm/yy');
