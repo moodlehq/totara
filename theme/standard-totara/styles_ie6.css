@@ -13,22 +13,22 @@ div#content {
 }
 
 ul.tabrow1 {
-	margin-top: 6px !important;
+	margin-top: 8px !important;
 	padding: 5px 0;
 }
 
 .tabrow0 div.empty {
   margin-right: 0;
-  margin-top:5px !important;
+  margin-top:8px !important;
   top:3.9em;
 }
 
 li.active {
-	border: none;
+  border:0 none !important;
 }
 
 body#course-user .section {
-	margin-top: 20px;
+  margin-top: 20px;
 }
 
 
