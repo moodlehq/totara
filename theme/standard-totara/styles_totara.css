@@ -6,6 +6,10 @@ html, body {
       height: 100%;
 }
 
+p {
+    margin:1em 0;
+}
+
 .clearfix {
   clear:both;
   margin:0;
