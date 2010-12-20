@@ -6,7 +6,7 @@ Feature: Login
   Scenario: View the record of learning page
     Given I am logged in as admin
     And I am on the my records page
-    Then I should see "My Record of Learning"
+    Then I should see "Record of Learning"
     And I should see "Admin User"
 
   Scenario: View a learner's record of learning page
