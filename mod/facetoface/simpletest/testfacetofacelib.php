@@ -1668,7 +1668,7 @@ class facetofacelib_test extends prefix_changing_test_case {
         $sessionid2 = 42;
 
         //test for valid case
-        $this->assertEqual(facetoface_get_num_attendees($sessionid1), 1);
+        $this->assertEqual(facetoface_get_num_attendees($sessionid1), 3);
 
         //test for invalid case
         $this->assertEqual(facetoface_get_num_attendees($sessionid2), 0);
@@ -1745,7 +1745,7 @@ class facetofacelib_test extends prefix_changing_test_case {
         $this->assertFalse(facetoface_session_has_capacity($session1), $this->msgfalse);
 
         //test for invalid case
-        $this->assertTrue(facetoface_session_has_capacity($session2), $this->msgtrue);
+        $this->assertFalse(facetoface_session_has_capacity($session2), $this->msgfalse);
     }
 
 
