@@ -2041,11 +2041,15 @@ table.allmyteam td a {
     padding: 3px;
 }
 
-
-tr.r1 .cell,
-{
-    background: #f5f5f5;
+tr.r0 .cell,
+tr.r0 td {
+    background: #F0F0F0;
 }
+tr.r1 .cell,
+tr.r1 td {
+    background: #FAFAFA;
+}
+
 td.c0 {
     text-align: left;
 }
