@@ -84,7 +84,7 @@ if ($fromform = $mform->get_data()) { // Form submitted
         $statuscode = MDL_F2F_STATUS_WAITLISTED;
     }
 
-    if (!facetoface_session_has_capacity($session, $context)) {
+    if (!facetoface_session_has_capacity($session, $context) && (!$session->allowoverbook)) {
         print_error('sessionisfull', 'facetoface', $returnurl);
     }
     elseif (facetoface_get_user_submissions($facetoface->id, $USER->id)) {
@@ -136,7 +136,7 @@ if ($signedup and $signedup != $session->id) {
 print_box_start();
 print_heading($heading, 'center');
 
-if (!$signedup and !facetoface_session_has_capacity($session, $context)) {
+if (!$signedup && !facetoface_session_has_capacity($session, $context) && (!$session->allowoverbook)) {
     print_error('sessionisfull', 'facetoface', $returnurl);
     print_box_end();
     print_footer($course);
