@@ -15,19 +15,11 @@
 # In the Hudson selenium config, you then need to load the browser as so:
 #
 
-echo "STEP 1: Run Cucumber Link checker tests";
+echo "STEP 1: Run simpletests";
+python build/simpletests.py
+
+echo "Convert to Junit XML";
+xsltproc build/simpletest_to_junit.xsl build/logs/simpletest-results.xml > build/logs/xml/TEST-suite.xml
+
+echo "STEP 2: Run cucumber tests (disabled link checker tests)";
 cucumber --format junit --out build/logs/xml/
-
-# too slow
-#echo "STEP 2: Count lines of code";
-#sloccount --wide --details . > build/logs/sloccount.sc
-
-# echo "Run pDepend";
-# TOO CPU/MEMORY INTENSIVE
-# pdepend --jdepend-xml=build/logs/jdepend.xml .
-
-#echo "STEP 3: Run phpcpd";
-#nice phpcpd --log-pmd=build/logs/pmd.xml .
-
-#echo "STEP 4: Run phpcs";
-#nice phpcs --report=checkstyle . > build/logs/checkstyle.xml
