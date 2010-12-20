@@ -1618,6 +1618,10 @@ table.dp-plan-component-items {
     text-align:left;
 }
 
+#local-plan-template-advancedworkflow .singlebutton {
+    margin-top:5px;
+}
+
 /*****************************************************************************/
 /** Dialogs **/
 /*****************************************************************************/
