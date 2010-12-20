@@ -16,8 +16,8 @@ echo "Delete config.php";
 rm config.php
 
 echo "Drop tables from database hudson/moodle";
-DROPDB="DROP database \`t1-hudsontesting\`;"
-mysql -u hudson -e "$DROPDB"
+#DROPDB="DROP database \`t1-hudsontesting\`;"
+#mysql -u hudson -e "$DROPDB"
 
 echo "Delete old moodledata";
 rm -Rf ../moodledata/
