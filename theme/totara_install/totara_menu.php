@@ -33,15 +33,15 @@
  $text ='<li class="first"><a href="'.$CFG->wwwroot.'/my/">My learning summary</a></li>';
  $text .='<li><a href="'.$CFG->wwwroot.'/idp/index.php">My development plan</a></li>';
  $text .='<li><a href="'.$CFG->wwwroot.'/my/bookings.php">My bookings</a></li>';
- $text .='<li class="last"><a href="'.$CFG->wwwroot.'/my/records.php">My learning record</a></li>';
+ $text .='<li class="last"><a href="'.$CFG->wwwroot.'/local/plan/record/courses.php">My learning record</a></li>';
  
  echo $text;
 ?>
 
            </ul></div>
-           
+
         <li id="menu3"><div><a href="<?php echo $CFG->wwwroot.'/my/team.php' ?>">My team</a>
-					
+
         <ul>
         <?php
 
@@ -53,10 +53,10 @@
  
 // echo $text;
 ?>
-	
+
 
            </ul></div>
-        
+
         <li id="menu4"><div><a href="<?php echo $CFG->wwwroot.'/my/reports.php' ?>">My reports</a>
 					
         <ul>

@@ -88,7 +88,7 @@
             }
         } else {   // Normal course
             // check capabilities
-            if (!has_capability('moodle/user:viewdetails', $coursecontext) && 
+            if (!has_capability('moodle/user:viewdetails', $coursecontext) &&
                 !has_capability('moodle/user:viewdetails', $usercontext)) {
                 print_error('cannotviewprofile');
             }
@@ -337,7 +337,7 @@
 
     // Only display link on own profile page, if manager or admin
     if($currentuser || totara_is_manager($user->id) || has_capability('moodle/site:doanything', $systemcontext)) {
-        print_row(get_string('recordoflearning','local').':', '<a href="'.$CFG->wwwroot.'/my/records.php?id='.$user->id.'">'.get_string('recordoflearning','local').'</a>');
+        print_row(get_string('recordoflearning','local').':', '<a href="'.$CFG->wwwroot.'/local/plan/record/courses.php?userid='.$user->id.'">'.get_string('recordoflearning','local').'</a>');
     }
 
     // Only display link on own profile page, if manager or admin
