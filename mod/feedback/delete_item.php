@@ -1,8 +1,8 @@
-<?php // $Id: delete_item.php,v 1.1.4.2 2008/04/04 10:38:00 agrabs Exp $
+<?php // $Id: delete_item.php,v 1.3.2.2 2008/05/15 10:33:07 agrabs Exp $
 /**
 * deletes an item of the feedback
 *
-* @version $Id: delete_item.php,v 1.1.4.2 2008/04/04 10:38:00 agrabs Exp $
+* @version $Id: delete_item.php,v 1.3.2.2 2008/05/15 10:33:07 agrabs Exp $
 * @author Andreas Grabs
 * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
 * @package feedback
@@ -10,14 +10,10 @@
     
     require_once("../../config.php");
     require_once("lib.php");
+    require_once('delete_item_form.php');
 
     $id = required_param('id', PARAM_INT);
-
-    $formdata = data_submitted('nomatch');
-    
-    if(isset($formdata->canceldelete) && $formdata->canceldelete == 1){
-        redirect('edit.php?id='.$id);
-    }
+    $deleteitem = required_param('deleteitem', PARAM_INT);
 
     if ($id) {
         if (! $cm = get_coursemodule_from_id('feedback', $id)) {
@@ -34,26 +30,42 @@
     }
     $capabilities = feedback_load_capabilities($cm->id);
 
-    require_login($course->id);
+    require_login($course->id, true, $cm);
     
     if(!$capabilities->edititems){
         error(get_string('error'));
     }
+                
+    $mform = new mod_feedback_delete_item_form();
+    $newformdata = array('id'=>$id,
+                        'deleteitem'=>$deleteitem,
+                        'confirmdelete'=>'1');
+    $mform->set_data($newformdata);
+    $formdata = $mform->get_data();
     
-    //delete item
-    if(isset($formdata->confirmdelete) && $formdata->confirmdelete == 1){
+    if ($mform->is_cancelled()) {
+        redirect('edit.php?id='.$id);
+    }
+    
+    if(isset($formdata->confirmdelete) AND $formdata->confirmdelete == 1){
         feedback_delete_item($formdata->deleteitem);
         redirect('edit.php?id=' . $id);
     }
 
-     $strfeedbacks = get_string("modulenameplural", "feedback");
-     $strfeedback  = get_string("modulename", "feedback");
-
-	$navigation=empty($navigation)?'':$navigation;
-    print_header("$course->shortname: $feedback->name", "$course->fullname",
-                      "$navigation <a href=\"index.php?id=$course->id\">$strfeedbacks</a> -> $feedback->name", 
-                        "", "", true, update_module_button($cm->id, $course->id, $strfeedback), 
-                        navmenu($course, $cm));
+    
+    /// Print the page header
+    $strfeedbacks = get_string("modulenameplural", "feedback");
+    $strfeedback  = get_string("modulename", "feedback");
+    $buttontext = update_module_button($cm->id, $course->id, $strfeedback);
+    
+    $navlinks = array();
+    $navlinks[] = array('name' => $strfeedbacks, 'link' => "index.php?id=$course->id", 'type' => 'activity');
+    $navlinks[] = array('name' => format_string($feedback->name), 'link' => "", 'type' => 'activityinstance');
+    
+    $navigation = build_navigation($navlinks);
+    
+    print_header_simple(format_string($feedback->name), "",
+                 $navigation, "", "", true, $buttontext, navmenu($course, $cm));
 
     /// Print the main part of the page
     ///////////////////////////////////////////////////////////////////////////
@@ -62,28 +74,9 @@
     print_heading(format_text($feedback->name));
     // print_simple_box_start("center", "60%", "#FFAAAA", 20, "noticebox");
     print_box_start('generalbox errorboxcontent boxaligncenter boxwidthnormal');
-    print_heading(get_string('are_you_sure_to_delete_this_item', 'feedback'));
-    echo '<div align="center">(' . get_string('all_related_values_will_be_deleted','feedback') . ')';
-?>
-    <p>&nbsp;</p>
-    <div>
-        <form style="display:inline;" name="frm" action="<?php echo me();?>" method="post">
-            <input type="hidden" name="sesskey" value="<?php echo $USER->sesskey; ?>" />
-            <input type="hidden" name="id" value="<?php echo $id;?>" />
-            <input type="hidden" name="deleteitem" value="<?php echo $formdata->deleteitem;?>" />
-            <input type="hidden" name="confirmdelete" value="1" />
-            <button type="submit"><?php print_string('delete');?></button>
-        </form>
-        <form style="display:inline;" name="frm" action="<?php echo me();?>" method="post">
-            <input type="hidden" name="sesskey" value="<?php echo $USER->sesskey; ?>" />
-            <input type="hidden" name="id" value="<?php echo $id;?>" />
-            <input type="hidden" name="canceldelete" value="1" />
-            <button type="submit"><?php print_string('cancel');?></button>
-        </form>
-    </div>
-    <div style="clear:both">&nbsp;</div>
-<?php        
-    echo '</div>';
+    print_heading(get_string('confirmdeleteitem', 'feedback'));
+    print_string('relateditemsdeleted','feedback');
+    $mform->display();
     // print_simple_box_end();
     print_box_end();
         

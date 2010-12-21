@@ -1,4 +1,4 @@
-<?php  //$Id: upgrade.php,v 1.1.4.3 2008/01/15 23:53:27 agrabs Exp $
+<?php  //$Id: upgrade.php,v 1.1.6.5 2008/11/14 17:07:08 agrabs Exp $
 
 // This file keeps track of upgrades to 
 // the feedback module
@@ -65,19 +65,19 @@ function xmldb_feedback_upgrade($oldversion=0) {
         $field = new XMLDBField('id');
         $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, true, null, null, null, null);
         $table->addField($field);
-
+        
         $field = new XMLDBField('course_id');
         $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, false, null, null, '0', null);
         $table->addField($field);
-
+        
         $field = new XMLDBField('item');
         $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, false, null, null, '0', null);
         $table->addField($field);
-
+        
         $field = new XMLDBField('completed');
         $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, false, null, null, '0', null);
         $table->addField($field);
-
+        
         $field = new XMLDBField('tmp_completed');
         $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, false, null, null, '0', null);
         $table->addField($field);
@@ -85,11 +85,11 @@ function xmldb_feedback_upgrade($oldversion=0) {
         $field = new XMLDBField('value');
         $field->setAttributes(XMLDB_TYPE_TEXT, null, null, null, false, null, null, '', null);
         $table->addField($field);
-
+        
         $key = new XMLDBKey('PRIMARY');
         $key->setAttributes(XMLDB_KEY_PRIMARY, array('id'));
         $table->addKey($key);
-
+        
         $key = new XMLDBKey('feedback');
         $key->setAttributes(XMLDB_KEY_FOREIGN, array('item'), 'feedback_item', 'id');
         $table->addKey($key);
@@ -141,7 +141,7 @@ function xmldb_feedback_upgrade($oldversion=0) {
         }
     }
 
-    if ($result && $oldversion < 2007102601) { //New version in version.php
+    if ($result && $oldversion < 2008042400) { //New version in version.php
         if($all_nonanonymous_feedbacks = get_records('feedback', 'anonymous', 2)) {
             $update_sql = 'UPDATE '.$CFG->prefix.'feedback_completed SET anonymous_response = 2 WHERE feedback = ';
             foreach ($all_nonanonymous_feedbacks as $fb) {
@@ -150,28 +150,87 @@ function xmldb_feedback_upgrade($oldversion=0) {
         }
     }
 
-    if ($result && $oldversion < 2008073101) {
-        /// Add a link to the facetoface module
-
-        /// Define facetofacecmid to be added to feedback
-        $table = new XMLDBTable('feedback');
-        $field = new XMLDBField('facetofacecmid');
-        $field->setAttributes(XMLDB_TYPE_INTEGER, '4', null, XMLDB_NOTNULL, null, null, null, '0', null);
-
-        $result = $result && add_field($table, $field);
-
+    if ($result && $oldversion < 2008042401) { //New version in version.php
+        if($result) {
+            $concat_radio = sql_concat("'r>>>>>'",'presentation');
+            $concat_check = sql_concat("'c>>>>>'",'presentation');
+            $concat_dropdown = sql_concat("'d>>>>>'",'presentation');
+            
+            $update_sql1 = "UPDATE ".$CFG->prefix."feedback_item SET presentation = ".$concat_radio." WHERE typ IN('radio','radiorated')";
+            $update_sql2 = "UPDATE ".$CFG->prefix."feedback_item SET presentation = ".$concat_dropdown." WHERE typ IN('dropdown','dropdownrated')";
+            $update_sql3 = "UPDATE ".$CFG->prefix."feedback_item SET presentation = ".$concat_check." WHERE typ = 'check'";
+            
+            $result = $result && execute_sql($update_sql1);
+            $result = $result && execute_sql($update_sql2);
+            $result = $result && execute_sql($update_sql3);
+        }
+        if($result) {
+            $update_sql1 = "UPDATE ".$CFG->prefix."feedback_item SET typ = 'multichoice' WHERE typ IN('radio','check','dropdown')";
+            $update_sql2 = "UPDATE ".$CFG->prefix."feedback_item SET typ = 'multichoicerated' WHERE typ IN('radiorated','dropdownrated')";
+            $result = $result && execute_sql($update_sql1);            
+            $result = $result && execute_sql($update_sql2);            
+        }
     }
 
-/// And upgrade begins here. For each one, you'll need one
-/// block of code similar to the next one. Please, delete
-/// this comment lines once this file start handling proper
-/// upgrade code.
+    if ($result && $oldversion < 2008042801) {
+        $new_log_display = new object();
+        $new_log_display->module = 'feedback';
+        $new_log_display->action = 'startcomplete';
+        $new_log_display->mtable = 'feedback';
+        $new_log_display->field = 'name';
+        $result = $result && insert_record('log_display', $new_log_display);
+        
+        $new_log_display = clone($new_log_display);
+        $new_log_display->action = 'submit';
+        $result = $result && insert_record('log_display', $new_log_display);
+        
+        $new_log_display = clone($new_log_display);
+        $new_log_display->action = 'delete';
+        $result = $result && insert_record('log_display', $new_log_display);
+        
+        $new_log_display = clone($new_log_display);
+        $new_log_display->action = 'view';
+        $result = $result && insert_record('log_display', $new_log_display);
+        
+        $new_log_display = clone($new_log_display);
+        $new_log_display->action = 'view all';
+        $new_log_display->mtable = 'course';
+        $new_log_display->field = 'shortname';
+        $result = $result && insert_record('log_display', $new_log_display);
+    }
 
-/// if ($result && $oldversion < YYYYMMDD00) { //New version in version.php
-///     $result = result of "/lib/ddllib.php" function calls
-/// }
+    if ($result && $oldversion < 2008042900) {
+        /// Define field autonumbering to be added to feedback
+        $table = new XMLDBTable('feedback');
+        $field = new XMLDBField('autonumbering');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '1', 'multiple_submit');
+        /// Launch add field2
+        $result = $result && add_field($table, $field);
+    }
 
-   return $result;
+    if ($result && $oldversion < 2008050104) {
+        /// Define field site_after_submit to be added to feedback
+        $table = new XMLDBTable('feedback');
+        $field = new XMLDBField('site_after_submit');
+        $field->setAttributes(XMLDB_TYPE_CHAR, '255', null, null, false, null, null, '', 'autonumbering');
+        /// Launch add field2
+        $result = $result && add_field($table, $field);
+    }
+
+    if ($result && $oldversion < 2008050112) {
+        $update_sql = "UPDATE ".$CFG->prefix."feedback_item SET presentation = '-|-' WHERE presentation = '0|0' AND typ = 'numeric'";
+        $result = $result && execute_sql($update_sql);            
+    }
+
+    if ($result && $oldversion < 2008050129) {
+        $table = new XMLDBTable('feedback');
+        $field = new XMLDBField('facetofacecmid');
+        if (!field_exists($table, $field)) {
+            $result = $result && drop_field($table, $field);
+        }
+    }
+
+    return $result;
 }
 
 ?>

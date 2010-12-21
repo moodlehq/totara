@@ -1,0 +1,129 @@
+<?php // $Id: feedback.php,v 1.1 2007/05/22 04:54:01 moodler Exp $
+
+$string['add_item'] = 'Ajouter une question';
+$string['add_items'] = 'Ajouter des questions';
+$string['all_old_values_will_be_deleted'] = 'Les questions actuelles et toutes les réponses des utilisateurs seront supprimées';
+$string['all_related_values_will_be_deleted'] = 'Toutes les réponses des utilisateurs à cette question seront supprimées';
+$string['analysis'] = 'Analyse';
+$string['anonymous'] = 'Anonyme';
+$string['anonymous_edit'] = 'Traitement du nom des étudiants';
+$string['anonymous_entries'] = 'Réponses anonymes';
+$string['are_you_sure_to_delete_this_entry'] = 'Voulez-vous vraiment supprimer cette valeur ?';
+$string['are_you_sure_to_delete_this_item'] = 'Voulez-vous vraiment supprimer cet élément ?';
+$string['are_you_sure_to_delete_this_template'] = 'Voulez-vous vraiment supprimer ce modèle ?';
+$string['are_you_sure_to_use_this_template'] = 'Voulez-vous vraiment utiliser ce modèle ?';
+$string['average'] = 'Moyenne';
+$string['bold'] = 'Gras';
+$string['cancel_moving'] = 'Annuler le déplacement';
+$string['check_values'] = 'Valeurs des cases à cocher';
+$string['check'] = 'Case à cocher';
+$string['checkbox'] = 'Case à cocher';
+$string['completed'] = 'Terminé';
+$string['complete_the_form'] = 'Remplir le questionnaire...';
+$string['completed_feedbacks'] = 'Questionnaires remplis';
+$string['courseid'] = 'Identifiant du cours';
+$string['creating_templates'] = 'Création des modèles';
+$string['delete_entry'] = 'Supprimer la valeur';
+$string['delete_item'] = 'Supprimer la question';
+$string['delete_template'] = 'Supprimer le modèle';
+$string['delete_templates'] = 'Supprimer des modèles...';
+$string['description'] = 'Description';
+$string['dropdown_values'] = 'Valeurs des menus déroulants';
+$string['dropdown'] = 'Menu déroulant';
+$string['dropdownlist'] = 'Menu déroulant';
+$string['dropdownrated'] = 'Menu déroulant (avec valeurs)';
+$string['edit_item'] = 'Modifier la question';
+$string['edit_items'] = 'Modifier les questions...';
+$string['email_notification'] = 'Notification par courriel';
+$string['emailteachermail'] = '$a->username a rempli et envoyé le questionnaire « $a->feedback ».
+
+Vous pouvez le consulter ici :
+
+$a->url';
+$string['emailteachermailhtml'] = '$a->username a rempli et envoyé le questionnaire <em>$a->feedback</em><br /><br />
+Vous pouvez le consulter sur cette <a href=\"$a->url\">page web</a>.';
+$string['entries_saved'] = 'Données enregistrées';
+$string['every_defines_self'] = 'Chacun chsoit lui-même';
+$string['export_to_excel'] = 'Exporter en format Excel';
+$string['filter_by_course'] = 'Filtrer par cours';
+$string['go_back_to'] = 'Revenir à';
+$string['item_name'] = 'Libellé de la question';
+$string['items_are_required'] = ' Réponses obligatoires';
+$string['label'] = 'Étiquette';
+$string['label_item'] = 'Question étiquette';
+$string['line_labels'] = 'Étiquettes';
+$string['line_values'] = 'Valeurs';
+$string['modulename'] = 'Feedback';
+$string['modulenameplural'] = 'Feedbacks';
+$string['movedown_item'] = 'Déplacer la question vers le bas';
+$string['move_here'] = 'Déplacer ici';
+$string['move_item'] = 'Déplacer la question';
+$string['moveup_item'] = 'Déplacer la question vers le haut';
+$string['multiple_submit'] = 'Remises multiples';
+$string['name'] = 'Nom';
+$string['name_required'] = 'Nom requis';
+$string['no_items_available_yet'] = 'Aucune question disponible';
+$string['no_templates_available_yet'] = 'Aucun modèle disponible';
+$string['non_anonymous'] = 'Pas anonyme';
+$string['not_completed_yet'] = 'Pas encore rempli';
+$string['of'] = 'sur';
+$string['page'] = 'Page';
+$string['picture'] = 'Image';
+$string['please_do_fill_out_all_required_fields'] = 'Vous devez remplir tous les champs marqués d\'un astérisque (*)';
+$string['position'] = 'Position';
+$string['preview'] = 'Prévisualisation';
+$string['public'] = 'Public';
+$string['publish_stats_on_students'] = 'Évaluations visibles pour les étudiants';
+$string['question'] = 'Question';
+$string['questions'] = 'Questions';
+$string['radio_values'] = 'Valeurs des boutons radio';
+$string['radio'] = 'Boutons radios';
+$string['radiobutton'] = 'Boutons radios';
+$string['radiorated'] = 'Boutons radios (avec valeurs)';
+$string['radiobutton_rated'] = 'Boutons radios (avec valeurs)';
+$string['ready_feedbacks'] = 'Questionnaires remplis';
+$string['required'] = 'Obligatoire';
+$string['responses'] = 'Réponses';
+$string['save_as_new_template'] = 'Enregistrer comme nouveau modèle';
+$string['save_entries'] = 'Enregistrer les réponses';
+$string['save_item'] = 'Enregistrer l\'élément';
+$string['saving_failed'] = 'Erreur lors de l\'enregistrement';
+$string['saving_failed_because_missing_items'] = 'L\'enregistrement a échoué, car certains champs requis n\'ont pas été remplis';
+$string['search_course'] = 'Chercher un cours';
+$string['separator_decimal'] = '.';
+$string['separator_thousand'] = ' ';
+$string['show_all'] = 'Tout afficher';
+$string['show_entries'] = 'Afficher les réponses';
+$string['show_entry'] = 'Afficher la réponse';
+$string['sort_by_course'] = 'Trier par cours';
+$string['switch_item_to_not_required'] = 'Basculer vers : réponse facultative';
+$string['switch_item_to_required'] = 'Basculer vers : réponse obligatoire';
+$string['template'] = 'Modèle';
+$string['template_saved'] = 'Modèle enregistré';
+$string['templates'] = 'Modèles';
+$string['textarea'] = 'Zone de texte';
+$string['textarea_height'] = 'Nombre de lignes';
+$string['textarea_width'] = 'Largeur de la zone';
+$string['textfield'] = 'Ligne de texte';
+$string['textfield_maxlength'] = 'Nombre max. de caractères';
+$string['textfield_size'] = 'Largeur du champ';
+$string['this_feedback_is_already_submitted'] = 'Ce questionnaire a déjà été rempli';
+$string['update_item'] = 'Mettre à jour l\'élément';
+$string['use_one_line_for_each_value'] = '<br/><br />Veuillez utiliser une ligne pour chaque valeur !';
+$string['use_this_template'] = 'Utiliser ce modèle';
+$string['using_templates'] = 'Utiliser les modèles';
+
+/* ----------------------------------------------------------------------------------- */
+
+$string['picture_file_list'] = 'Liste des images';
+$string['picture_values'] = 'Choisir une ou plusieurs<br />images dans la liste :';
+$string['picture'] = 'Image';
+$string['max_args_exceeded'] = 'Un max. de 6 paramètres peuvent être envoyés. Il y en a trop pour';
+$string['parameters_missing'] = 'Paramètres manquants pour';
+$string['no_handler'] = 'Aucune action n\'est prévue pour';
+$string['selected_dump'] = 'Des index sélectionnés de la variable \$SESSION sont affichés ci-dessous :';
+$string['handling_error'] = 'Une erreur est survenue lors du traitement des données dans le module feedback';
+
+$string['pagebreak'] = 'Saut de page';
+
+?>

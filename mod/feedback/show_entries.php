@@ -1,8 +1,8 @@
-<?php // $Id: show_entries.php,v 1.1.4.2 2008/04/04 10:38:00 agrabs Exp $
+<?php // $Id: show_entries.php,v 1.6.2.7 2010/04/29 16:29:11 agrabs Exp $
 /**
 * print the single entries
 *
-* @version $Id: show_entries.php,v 1.1.4.2 2008/04/04 10:38:00 agrabs Exp $
+* @version $Id: show_entries.php,v 1.6.2.7 2010/04/29 16:29:11 agrabs Exp $
 * @author Andreas Grabs
 * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
 * @package feedback
@@ -16,18 +16,10 @@
     ////////////////////////////////////////////////////////
     $id = required_param('id', PARAM_INT);
     $userid = optional_param('userid', false, PARAM_INT);
-    $lstgroupid = optional_param('lstgroupid', -2, PARAM_INT); //groupid (choosen from dropdownlist)
     $do_show = required_param('do_show', PARAM_ALPHA);
-    $SESSION->feedback->current_tab = $do_show;
+    // $SESSION->feedback->current_tab = $do_show;
+    $current_tab = $do_show;
 
-    //check, whether a group is selected
-    if($lstgroupid == -1) {
-        $SESSION->feedback->lstgroupid = false;
-    }else {
-        if((!isset($SESSION->feedback->lstgroupid)) || $lstgroupid != -2)
-            $SESSION->feedback->lstgroupid = $lstgroupid;
-    }
-    
     ////////////////////////////////////////////////////////
     //get the objects
     ////////////////////////////////////////////////////////
@@ -50,19 +42,13 @@
         }
     }
     
-    if(!empty($SESSION->feedback->lstgroupid)) {
-        if($tmpgroup = groups_get_group($SESSION->feedback->lstgroupid)) {
-            if($tmpgroup->courseid != $course->id) {
-                $SESSION->feedback->lstgroupid = false;
-            }
-        }else {
-            $SESSION->feedback->lstgroupid = false;
-        }
-    }
     $capabilities = feedback_load_capabilities($cm->id);
 
-    require_login($course->id);
-    $formdata = data_submitted('nomatch');
+    require_login($course->id, true, $cm);
+    
+    if(($formdata = data_submitted('nomatch')) AND !confirm_sesskey()) {
+        error('no sesskey defined');
+    }
     
     if(!$capabilities->viewreports){
         error(get_string('error'));
@@ -76,18 +62,21 @@
         $feedbackitems = get_records('feedback_item', 'feedback', $feedback->id, 'position');
         $feedbackcompleted = get_record_select('feedback_completed','feedback='.$feedback->id.' AND userid='.$formdata->userid.' AND anonymous_response='.FEEDBACK_ANONYMOUS_NO); //arb
     }
-    ////////////////////////////////////////////////////////
+    
     /// Print the page header
-    ////////////////////////////////////////////////////////
-    $navlinks = array();
-    $navigation = build_navigation($navlinks, $cm);
-
     $strfeedbacks = get_string("modulenameplural", "feedback");
     $strfeedback  = get_string("modulename", "feedback");
-
-    print_header($course->shortname.': '.$feedback->name, $course->fullname, $navigation,
-                     '', '', true, update_module_button($cm->id, $course->id, $strfeedback), 
-                     navmenu($course, $cm));
+    $buttontext = update_module_button($cm->id, $course->id, $strfeedback);
+    
+    $navlinks = array();
+    $navlinks[] = array('name' => $strfeedbacks, 'link' => "index.php?id=$course->id", 'type' => 'activity');
+    $navlinks[] = array('name' => format_string($feedback->name), 'link' => "", 'type' => 'activityinstance');
+    
+    $navigation = build_navigation($navlinks);
+    
+    print_header_simple(format_string($feedback->name), "",
+                 $navigation, "", "", true, $buttontext, navmenu($course, $cm));
+                 
     include('tabs.php');
 
     /// Print the main part of the page
@@ -103,31 +92,21 @@
         if($capabilities->viewreports) {
             //get the effective groupmode of this course and module
             $groupmode = groupmode($course, $cm);
+            // $mygroupid = 0;
+            $groupselect = groups_print_activity_menu($cm, $CFG->wwwroot . '/mod/feedback/show_entries.php?id=' . $cm->id.'&do_show=showentries', true);
+            $mygroupid = groups_get_activity_group($cm);
             
             //get students in conjunction with groupmode
             if($groupmode > 0) {
-                if($SESSION->feedback->lstgroupid == -2) {
-                    if(isadmin()) {
-                        $mygroupid = false;
-                        $SESSION->feedback->lstgroupid = false;
-                    }else{
-                        if($mygroupid = mygroupid($course->id)) {
-                            $mygroupid = $mygroupid[0]; //get the first groupid
-                        }
-                    }
-                }else {
-                    $mygroupid = $SESSION->feedback->lstgroupid;
-                }
-                if($mygroupid) {
-                    $students = feedback_get_complete_users($cm->id, $mygroupid);
+
+                if($mygroupid > 0) {
+                    $students = feedback_get_complete_users($cm, $mygroupid);
                 } else {
-                    $students = feedback_get_complete_users($cm->id);
+                    $students = feedback_get_complete_users($cm);
                 }
             }else {
-                $students = feedback_get_complete_users($cm->id);
+                $students = feedback_get_complete_users($cm);
             }
-
-            $mygroupid=isset($mygroupid)?$mygroupid:NULL;
 
             $completedFeedbackCount = feedback_get_completeds_group_count($feedback, $mygroupid);
             if($feedback->course == SITEID){
@@ -146,28 +125,19 @@
         if($capabilities->viewreports) {
             //print the list of students
             // print_simple_box_start('center', '80%');
+            // echo '<div align="center">';
             print_box_start('generalbox boxaligncenter boxwidthwide');
-
-            //available group modes (NOGROUPS, SEPARATEGROUPS or VISIBLEGROUPS)
-            $feedbackgroups = get_groups($course->id);
-            //if(is_array($feedbackgroups) && $groupmode != SEPARATEGROUPS){
-            if(is_array($feedbackgroups) && $groupmode > 0){
-                require_once('choose_group_form.php');
-                //the use_template-form
-                $choose_group_form = new feedback_choose_group_form();
-                $choose_group_form->set_feedbackdata(array('groups'=>$feedbackgroups, 'mygroupid'=>$mygroupid));
-                $choose_group_form->set_form_elements();
-                $choose_group_form->set_data(array('id'=>$id, 'lstgroupid'=>$SESSION->feedback->lstgroupid, 'do_show'=>$do_show));
-                $choose_group_form->display();
-            }
-            echo '<div align="center"><table><tr><td width="400">';
+            echo isset($groupselect) ? $groupselect : '';
+            echo '<div class="clearer"></div>';
+            echo '<table><tr><td width="400">';
             if (!$students) {
                 if($courseid != SITEID){
                     notify(get_string('noexistingstudents'));
                 }
             } else{
                 echo print_string('non_anonymous_entries', 'feedback');
-                echo ' ('.count_records_select('feedback_completed', 'feedback = ' . $feedback->id.' AND anonymous_response='.FEEDBACK_ANONYMOUS_NO).')<hr />';
+                // echo ' ('.count_records_select('feedback_completed', 'feedback = ' . $feedback->id.' AND anonymous_response='.FEEDBACK_ANONYMOUS_NO).')<hr />';
+                echo ' ('.count($students).')<hr />';
 
                 foreach ($students as $student){
                     $completedCount = count_records_select('feedback_completed', 'userid = ' . $student->id . ' AND feedback = ' . $feedback->id.' AND anonymous_response='.FEEDBACK_ANONYMOUS_NO);
@@ -192,7 +162,7 @@
                                 ?>
                                 </td>
                     <?php
-                        if($capabilities->deletecompleteds) {
+                        if($capabilities->deletesubmissions) {
                     ?>
                                 <td align="right">
                                 <?php
@@ -229,7 +199,7 @@
                 </tr>
             </table> 
     <?php
-            echo '</td></tr></table></div>';
+            echo '</td></tr></table>';
             // print_simple_box_end();
             print_box_end();
         }
@@ -259,9 +229,9 @@
                 //get the values
                 $value = get_record_select('feedback_value','completed ='.$feedbackcompleted->id.' AND item='.$feedbackitem->id);
                 echo '<tr>';
-                if($feedbackitem->hasvalue == 1) {
+                if($feedbackitem->hasvalue == 1 AND $feedback->autonumbering) {
                     $itemnr++;
-                    echo '<td valign="top">' . $itemnr . '.)&nbsp;</td>';
+                    echo '<td valign="top">' . $itemnr . '.&nbsp;</td>';
                 } else {
                     echo '<td>&nbsp;</td>';
                 }

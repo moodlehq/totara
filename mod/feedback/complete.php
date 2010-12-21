@@ -1,8 +1,8 @@
-<?php // $Id: complete.php,v 1.1.4.4 2008/04/04 10:38:00 agrabs Exp $
+<?php // $Id: complete.php,v 1.5.2.9 2010/10/31 21:55:49 agrabs Exp $
 /**
 * prints the form so the user can fill out the feedback
 *
-* @version $Id: complete.php,v 1.1.4.4 2008/04/04 10:38:00 agrabs Exp $
+* @version $Id: complete.php,v 1.5.2.9 2010/10/31 21:55:49 agrabs Exp $
 * @author Andreas Grabs
 * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
 * @package feedback
@@ -21,11 +21,11 @@
     $lastitempos = optional_param('lastitempos', 0, PARAM_INT);
     $anonymous_response = optional_param('anonymous_response', 0, PARAM_INT); //arb
 
-    $feedback_is_started_sessionname = 'is_started'.$id;
-
     $highlightrequired = false;
 
-    $formdata = data_submitted('nomatch');
+    if(($formdata = data_submitted('nomatch')) AND !confirm_sesskey()) {
+        error('no sesskey defined');
+    }
 
     //if the use hit enter into a textfield so the form should not submit
     if(isset($formdata->sesskey) AND !isset($formdata->savevalues) AND !isset($formdata->gonextpage) AND !isset($formdata->gopreviouspage)) {
@@ -71,54 +71,82 @@
 
     $capabilities = feedback_load_capabilities($cm->id);
     
-    if($feedback->anonymous == FEEDBACK_ANONYMOUS_YES) {
+    if(isset($CFG->feedback_allowfullanonymous)
+            AND $CFG->feedback_allowfullanonymous
+            AND $course->id == SITEID
+            AND (!$courseid OR $courseid == SITEID)
+            AND $feedback->anonymous == FEEDBACK_ANONYMOUS_YES ) {
         $capabilities->complete = true;
     }
+    
     //check whether the feedback is located and! started from the mainsite
     if($course->id == SITEID AND !$courseid) {
         $courseid = SITEID;
     }
         
-    if($feedback->anonymous != FEEDBACK_ANONYMOUS_YES) {
-        require_login($course->id);
-    } else {
-        require_course_login($course);
+    //check whether the feedback is mapped to the given courseid
+    if($course->id == SITEID) {
+        if(get_records('feedback_sitecourse_map', 'feedbackid', $feedback->id)) {
+            if(!get_record('feedback_sitecourse_map', 'feedbackid', $feedback->id, 'courseid', $courseid)){
+                error("this feedback is not available");
+            }
+        }
     }
     
+    if($feedback->anonymous != FEEDBACK_ANONYMOUS_YES) {
+        if($course->id == SITEID) {
+            require_login($course->id, true);
+        }else {
+            require_login($course->id, true, $cm);
+        }
+    } else {
+        if($course->id == SITEID) {
+            require_course_login($course, true);
+        }else {
+            require_course_login($course, true, $cm);
+        }
+    }
+    
+    //check whether the given courseid exists
     if($courseid AND $courseid != SITEID) {
-        $course2 = get_record('course', 'id', $courseid);
-        require_course_login($course2); //this overwrites the object $course :-(
-        $course = get_record("course", "id", $cm->course); // the workaround
+        if($course2 = get_record('course', 'id', $courseid)){
+            require_course_login($course2); //this overwrites the object $course :-(
+            $course = get_record("course", "id", $cm->course); // the workaround
+        }else {
+            error("courseid is not correct");
+        }
     }
     
     if(!$capabilities->complete) {
         error(get_string('error'));
     }
-
     
     /// Print the page header
     $strfeedbacks = get_string("modulenameplural", "feedback");
     $strfeedback  = get_string("modulename", "feedback");
-    $navigation = '';
-
-    $feedbackindex = "<a href=\"index.php?id=$course->id\">$strfeedbacks</a> ->";
-    if ($course->category) {
-        $navigation = "<a href=\"../../course/view.php?id=$course->id\">$course->shortname</a> ->";
-    }else if ($courseid > 0 AND $courseid != SITEID) {
-        $usercourse = get_record('course', 'id', $courseid);
-        $navigation = "<a href=\"../../course/view.php?id=$usercourse->id\">$usercourse->shortname</a> ->";
-        $feedbackindex = '';
-    }
-
-    print_header("$course->shortname: $feedback->name", "$course->fullname",
-                     "$navigation $feedbackindex $feedback->name", 
-                     "", "", true, update_module_button($cm->id, $course->id, $strfeedback), 
-                     navmenu($course, $cm));
+    $buttontext = update_module_button($cm->id, $course->id, $strfeedback);
+    
+    $navlinks = array();
+    $navlinks[] = array('name' => $strfeedbacks, 'link' => "index.php?id=$course->id", 'type' => 'activity');
+    $navlinks[] = array('name' => format_string($feedback->name), 'link' => "", 'type' => 'activityinstance');
+    
+    $navigation = build_navigation($navlinks);
+    
+    print_header_simple(format_string($feedback->name), "",
+                 $navigation, "", "", true, $buttontext, navmenu($course, $cm));
 
     //ishidden check.
+    //feedback in courses
     if ((empty($cm->visible) and !$capabilities->viewhiddenactivities) AND $course->id != SITEID) {
         notice(get_string("activityiscurrentlyhidden"));
     }
+
+    //ishidden check.
+    //feedback on mainsite
+    if ((empty($cm->visible) and !$capabilities->viewhiddenactivities) AND $courseid == SITEID) {
+        notice(get_string("activityiscurrentlyhidden"));
+    }
+
 
     feedback_print_errors();
   
@@ -145,13 +173,13 @@
     if($feedback_can_submit) {
         //preserving the items
         if($preservevalues == 1){
-            if(!$SESSION->feedback->{$feedback_is_started_sessionname} == true)error('error', $CFG->wwwroot.'/course/view.php?id='.$course->id);
+            if(!$SESSION->feedback->is_started == true)error('error', $CFG->wwwroot.'/course/view.php?id='.$course->id);
             //checken, ob alle required items einen wert haben
             if(feedback_check_values($_POST, $startitempos, $lastitempos)) {
                     $userid = $USER->id; //arb
                 if($completedid = feedback_save_values($_POST, $USER->id, true)){
                     if($userid > 0) {
-                        add_to_log($course->id, "feedback", "startcomplete", "view.php?id=$cm->id", "$feedback->name", $cm->id, $userid);
+                        add_to_log($course->id, 'feedback', 'startcomplete', 'view.php?id='.$cm->id, $feedback->id, $cm->id, $userid);
                     }
                     if(!$gonextpage AND !$gopreviouspage) $preservevalues = false;//es kann gespeichert werden
                     
@@ -194,10 +222,10 @@
             }else if($new_completed_id = feedback_save_tmp_values($feedbackcompletedtmp, $feedbackcompleted, $userid)) {
                 $savereturn = 'saved';
                 if($feedback->anonymous == FEEDBACK_ANONYMOUS_NO) {
-                    add_to_log($course->id, "feedback", "submit", "view.php?id=$cm->id", "$feedback->name", $cm->id, $userid);
-                    feedback_email_teachers($cm, $feedback, $course, $userid);
+                    add_to_log($course->id, 'feedback', 'submit', 'view.php?id='.$cm->id, $feedback->id, $cm->id, $userid);
+                    feedback_send_email($cm, $feedback, $course, $userid);
                 }else {
-                    feedback_email_teachers_anonym($cm, $feedback, $course, $userid);
+                    feedback_send_email_anonym($cm, $feedback, $course, $userid);
                 }
                 //tracking the submit
                 $multiple_count = null;
@@ -206,7 +234,7 @@
                 $multiple_count->completed = $new_completed_id;
                 $multiple_count->count = 1;
                 insert_record('feedback_tracking', $multiple_count);
-                unset($SESSION->feedback->{$feedback_is_started_sessionname});
+                unset($SESSION->feedback->is_started);
                 
             }else {
                 $savereturn = 'failed';
@@ -241,7 +269,7 @@
         $maxitemcount = count_records('feedback_item', 'feedback', $feedback->id);
         
         //get the values of completeds before done. Anonymous user can not get these values.
-        if((!isset($SESSION->feedback->{$feedback_is_started_sessionname})) AND (!isset($savereturn)) AND ($feedback->anonymous == FEEDBACK_ANONYMOUS_NO)) {
+        if((!isset($SESSION->feedback->is_started)) AND (!isset($savereturn)) AND ($feedback->anonymous == FEEDBACK_ANONYMOUS_NO)) {
             if(!$feedbackcompletedtmp = feedback_get_current_completed($feedback->id, true, $courseid)) {
                 if($feedbackcompleted = feedback_get_current_completed($feedback->id, false, $courseid)) {
                     //copy the values to feedback_valuetmp create a completedtmp
@@ -273,13 +301,21 @@
                     echo '</p>';
                 }
             }
-            if($courseid) {
-                print_continue($CFG->wwwroot.'/course/view.php?id='.$courseid);
+            if($feedback->site_after_submit) {
+                print_continue(feedback_encode_target_url($feedback->site_after_submit));
             }else {
-                if($course->id == SITEID) {
-                    print_continue($CFG->wwwroot);
-                } else {
-                    print_continue($CFG->wwwroot.'/course/view.php?id='.$course->id);
+                if($courseid) {
+                    if($courseid == SITEID) {
+                        print_continue($CFG->wwwroot);
+                    }else {
+                        print_continue($CFG->wwwroot.'/course/view.php?id='.$courseid);
+                    }
+                }else {
+                    if($course->id == SITEID) {
+                        print_continue($CFG->wwwroot);
+                    } else {
+                        print_continue($CFG->wwwroot.'/course/view.php?id='.$course->id);
+                    }
                 }
             }
         }else {
@@ -331,9 +367,9 @@
                         }
                     }
                     echo '<tr>';
-                    if($feedbackitem->hasvalue == 1) {
+                    if($feedbackitem->hasvalue == 1 AND $feedback->autonumbering) {
                         $itemnr++;
-                        echo '<td valign="top">' . $itemnr . '.)&nbsp;</td>';
+                        echo '<td valign="top">' . $itemnr . '.&nbsp;</td>';
                     } else {
                         echo '<td>&nbsp;</td>';
                     }
@@ -388,7 +424,7 @@
                 echo '<button type="submit">'.get_string('cancel').'</button>';
                 echo '</form>';
                 echo '</div>';
-                $SESSION->feedback->{$feedback_is_started_sessionname} = true;
+                $SESSION->feedback->is_started = true;
                 // print_simple_box_end();
                 print_box_end();
             }

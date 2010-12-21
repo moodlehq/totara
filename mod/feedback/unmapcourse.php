@@ -1,8 +1,8 @@
-<?php // $Id: unmapcourse.php,v 1.1.4.1 2008/01/15 23:53:25 agrabs Exp $
+<?php // $Id: unmapcourse.php,v 1.3.2.1 2008/05/15 10:33:08 agrabs Exp $
 /**
 * drops records from feedback_sitecourse_map
 *
-* @version $Id: unmapcourse.php,v 1.1.4.1 2008/01/15 23:53:25 agrabs Exp $
+* @version $Id: unmapcourse.php,v 1.3.2.1 2008/05/15 10:33:08 agrabs Exp $
 * @author Andreas Grabs
 * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
 * @package feedback

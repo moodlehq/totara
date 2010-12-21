@@ -1,8 +1,8 @@
-<?php // $Id: show_entries_anonym.php,v 1.1.4.2 2008/04/04 10:38:00 agrabs Exp $
+<?php // $Id: show_entries_anonym.php,v 1.5.2.3 2008/05/15 10:33:08 agrabs Exp $
 /**
 * print the single-values of anonymous completeds
 *
-* @version $Id: show_entries_anonym.php,v 1.1.4.2 2008/04/04 10:38:00 agrabs Exp $
+* @version $Id: show_entries_anonym.php,v 1.5.2.3 2008/05/15 10:33:08 agrabs Exp $
 * @author Andreas Grabs
 * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
 * @package feedback
@@ -11,12 +11,15 @@
     require_once("../../config.php");
     require_once("lib.php");
 
-    $SESSION->feedback->current_tab = 'showoneentry';
+    // $SESSION->feedback->current_tab = 'showoneentry';
+    $current_tab = 'showentries';
 
     $id = required_param('id', PARAM_INT); 
     $userid = optional_param('userid', false, PARAM_INT);
     
-    $formdata = data_submitted('nomatch');
+    if(($formdata = data_submitted('nomatch')) AND !confirm_sesskey()) {
+        error('no sesskey defined');
+    }
 
     if ($id) {
         if (! $cm = get_coursemodule_from_id('feedback', $id)) {
@@ -33,7 +36,7 @@
     }
     $capabilities = feedback_load_capabilities($cm->id);
 
-    require_login($course->id);
+    require_login($course->id, true, $cm);
     
     if(!$capabilities->viewreports){
         error(get_string('error'));
@@ -53,21 +56,21 @@
             $num++;
         }
     }
-    $feedbackcompleteds = get_records_select('feedback_completed','feedback='.$feedback->id.' AND anonymous_response='.FEEDBACK_ANONYMOUS_YES, 'timemodified'); //arb
+    $feedbackcompleteds = get_records_select('feedback_completed','feedback='.$feedback->id.' AND anonymous_response='.FEEDBACK_ANONYMOUS_YES, 'random_response'); //arb
 
     /// Print the page header
-    $navigation = '';
-    if ($course->category) {
-        $navigation = '<a href="'.htmlspecialchars('../../course/view.php?id='.$course->id).'">'.$course->shortname.'</a> ->';
-    }
-
     $strfeedbacks = get_string("modulenameplural", "feedback");
     $strfeedback  = get_string("modulename", "feedback");
-
-    print_header($course->shortname.': '.$feedback->name, $course->fullname,
-                      $navigation.' <a href="'.htmlspecialchars('index.php?id='.$course->id).'">'.$strfeedbacks.'</a> -> '.$feedback->name, 
-                        '', '', true, update_module_button($cm->id, $course->id, $strfeedback), 
-                        navmenu($course, $cm));
+    $buttontext = update_module_button($cm->id, $course->id, $strfeedback);
+    
+    $navlinks = array();
+    $navlinks[] = array('name' => $strfeedbacks, 'link' => "index.php?id=$course->id", 'type' => 'activity');
+    $navlinks[] = array('name' => format_string($feedback->name), 'link' => "", 'type' => 'activityinstance');
+    
+    $navigation = build_navigation($navlinks);
+    
+    print_header_simple(format_string($feedback->name), "",
+                 $navigation, "", "", true, $buttontext, navmenu($course, $cm));
 
     /// Print the main part of the page
     ///////////////////////////////////////////////////////////////////////////
@@ -96,13 +99,13 @@
             <tr>
                 <td>
                     <input type="hidden" name="sesskey" value="<?php echo $USER->sesskey;?>" />
-                    <select name="completedid" size="<?php echo (sizeof($feedbackcompleteds)>10)?10:5;?>" style="width:300;">
+                    <select name="completedid" size="<?php echo (sizeof($feedbackcompleteds)>10)?10:5;?>">
 <?php
                     if(is_array($feedbackcompleteds)) {
                         $num = 1;
                         foreach($feedbackcompleteds as $compl) {
                             $selected = (isset($formdata->completedid) AND $formdata->completedid == $compl->id)?'selected="selected"':'';
-                            echo '<option value="'.$compl->id.'" '. $selected .'>'. UserDate($compl->timemodified). '</option>';//arb
+                            echo '<option value="'.$compl->id.'" '. $selected .'>'.get_string('response_nr', 'feedback').': '. $compl->random_response. '</option>';//arb
                             $num++;
                         }
                     }
@@ -146,9 +149,9 @@
                 //get the values
                 $value = get_record_select('feedback_value','completed ='.$feedbackcompleted->id.' AND item='.$feedbackitem->id);
                 echo '<tr>';
-                if($feedbackitem->hasvalue == 1) {
+                if($feedbackitem->hasvalue == 1 AND $feedback->autonumbering) {
                     $itemnr++;
-                    echo '<td valign="top">' . $itemnr . '.)&nbsp;</td>';
+                    echo '<td valign="top">' . $itemnr . '.&nbsp;</td>';
                 } else {
                     echo '<td>&nbsp;</td>';
                 }

@@ -1,8 +1,8 @@
-<?php // $Id: choose_group_form.php,v 1.2.4.2 2008/01/15 23:53:25 agrabs Exp $
+<?php // $Id: choose_group_form.php,v 1.2.2.1 2008/05/15 10:33:06 agrabs Exp $
 /**
 * prints the form to choose the group you want to analyse
 *
-* @version $Id: choose_group_form.php,v 1.2.4.2 2008/01/15 23:53:25 agrabs Exp $
+* @version $Id: choose_group_form.php,v 1.2.2.1 2008/05/15 10:33:06 agrabs Exp $
 * @author Andreas Grabs
 * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
 * @package feedback

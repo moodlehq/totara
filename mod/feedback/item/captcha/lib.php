@@ -1,5 +1,5 @@
-<?PHP  // $Id: lib.php,v 1.4.4.2 2008/01/20 11:49:01 agrabs Exp $
-defined('MOODLE_INTERNAL') OR die('not allowed');
+<?PHP  // $Id: lib.php,v 1.4.2.4 2010/08/22 10:45:41 agrabs Exp $
+defined('FEEDBACK_INCLUDE_TEST') OR die('not allowed');
 require_once($CFG->dirroot.'/mod/feedback/item/feedback_item_class.php');
 
 class feedback_item_captcha extends feedback_item_base {
@@ -8,36 +8,25 @@ class feedback_item_captcha extends feedback_item_base {
     
     }
     
-    function show_edit($item, $usehtmleditor = false) {
+    function &show_edit($item) {
+        global $CFG;
+        
+        require_once('captcha_form.php');
+        
+        $item_form = new feedback_captcha_form();
 
-        $item->presentation=empty($item->presentation)? 3 : $item->presentation;
+        $item->presentation = empty($item->presentation) ? 3 : $item->presentation;
+        $item->name = empty($item->name) ? '' : stripslashes_safe($item->name);
+        
+        $item->required = isset($item->required) ? $item->required : 1;
+        if($item->required) {
+            $item_form->requiredcheck->setValue(true);
+        }
 
-    ?>
-        <table>
-            <tr>
-                <th colspan="2"><?php print_string('numeric', 'feedback');?>
-                    &nbsp;(<input type="checkbox" name="required" value="1" <?php 
-                $item->required = isset($item->required) ? $item->required : 1;
-                echo ($item->required == 1?'checked="checked"':'');
-                ?> />&nbsp;<?php print_string('required', 'feedback');?>)
-                </th>
-            </tr>
-            <tr>
-                <td><?php print_string('item_name', 'feedback');?></td>
-                <td><input type="text" id="itemname" name="itemname" size="40" maxlength="255" value="<?php echo isset($item->name)?htmlspecialchars(stripslashes_safe($item->name)):'';?>" /></td>
-            </tr>
-            <tr>
-                <td><?php print_string('count_of_nums', 'feedback');?></td>
-                <td>
-                    <select name="count_of_nums">
-                    <?php
-                        feedback_print_numeric_option_list(3, 10, $item->presentation);
-                    ?>
-                    </select>
-                </td>
-            </tr>
-        </table>
-    <?php
+        $item_form->itemname->setValue($item->name);
+        
+        $item_form->select->setValue($item->presentation);
+        return $item_form;
     }
 
     //liefert eine Struktur ->name, ->data = array(mit Antworten)
@@ -49,7 +38,7 @@ class feedback_item_captcha extends feedback_item_base {
         return '';
     }
 
-    function print_analysed($item, $itemnr = 0, $groupid = false, $courseid = false) {
+    function print_analysed($item, $itemnr = '', $groupid = false, $courseid = false) {
         return $itemnr;
     }
 
@@ -95,11 +84,11 @@ class feedback_item_captcha extends feedback_item_base {
         }else {
             $highlight = '';
         }
-        $requiredmark = ($item->required == 1)?'<font color="red">*</font>':'';
+        $requiredmark = ($item->required == 1)?'<span class="feedback_required_mark">*</span>':'';
     ?>
         <td <?php echo $highlight;?> valign="top" align="<?php echo $align;?>">
             <?php echo format_text(stripslashes_safe($item->name) . $requiredmark, true, false, false);?>
-            <img src="<?php echo $CFG->wwwroot.htmlspecialchars('/mod/feedback/item/captcha/print_captcha.php?id='.$cmid);?>" />
+            <img alt="<?php echo $this->type;?>" src="<?php echo $CFG->wwwroot.htmlspecialchars('/mod/feedback/item/captcha/print_captcha.php?id='.$cmid);?>" />
         </td>
         <td valign="top" align="<?php echo $align;?>">
     <?php

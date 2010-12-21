@@ -1,8 +1,8 @@
-<?php // $Id: export.php,v 1.1.4.1 2008/01/15 23:53:24 agrabs Exp $
+<?php // $Id: export.php,v 1.2.2.1 2008/05/15 10:33:07 agrabs Exp $
 /**
 * prints the form to export the items as xml-file
 *
-* @version $Id: export.php,v 1.1.4.1 2008/01/15 23:53:24 agrabs Exp $
+* @version $Id: export.php,v 1.2.2.1 2008/05/15 10:33:07 agrabs Exp $
 * @author Andreas Grabs
 * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
 * @package feedback
@@ -30,7 +30,7 @@
     }
     $capabilities = feedback_load_capabilities($cm->id);
 
-    require_login($course->id);
+    require_login($course->id, true, $cm);
     
     if(!$capabilities->edititems){
         error('this action is not allowed');

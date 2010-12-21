@@ -1,8 +1,8 @@
-<?php // $Id: view.php,v 1.1.4.2 2008/04/04 10:38:01 agrabs Exp $
+<?php // $Id: view.php,v 1.6.2.9 2010/10/31 21:55:49 agrabs Exp $
 /**
 * the first page to view the feedback
 *
-* @version $Id: view.php,v 1.1.4.2 2008/04/04 10:38:01 agrabs Exp $
+* @version $Id: view.php,v 1.6.2.9 2010/10/31 21:55:49 agrabs Exp $
 * @author Andreas Grabs
 * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
 * @package feedback
@@ -13,7 +13,8 @@
     $id = required_param('id', PARAM_INT);
     $courseid = optional_param('courseid', false, PARAM_INT);
     
-    $SESSION->feedback->current_tab = 'view';
+    // $SESSION->feedback->current_tab = 'view';
+    $current_tab = 'view';
 
     if ($id) {
         if (! $cm = get_coursemodule_from_id('feedback', $id)) {
@@ -31,7 +32,11 @@
 
     $capabilities = feedback_load_capabilities($cm->id);
 
-    if($feedback->anonymous == FEEDBACK_ANONYMOUS_YES AND !$capabilities->edititems) {
+    if(isset($CFG->feedback_allowfullanonymous)
+            AND $CFG->feedback_allowfullanonymous
+            AND $course->id == SITEID
+            AND (!$courseid OR $courseid == SITEID)
+            AND $feedback->anonymous == FEEDBACK_ANONYMOUS_YES ) {
         $capabilities->complete = true;
     }
     
@@ -39,42 +44,67 @@
     if($course->id == SITEID AND !$courseid) {
         $courseid = SITEID;
     }
+
+    //check whether the feedback is mapped to the given courseid
+    if($course->id == SITEID AND !$capabilities->edititems) {
+        if(get_records('feedback_sitecourse_map', 'feedbackid', $feedback->id)) {
+            if(!get_record('feedback_sitecourse_map', 'feedbackid', $feedback->id, 'courseid', $courseid)){
+                error("this feedback is not available");
+            }
+        }
+    }
     
     if($feedback->anonymous != FEEDBACK_ANONYMOUS_YES) {
-        require_login($course->id);
+        if($course->id == SITEID) {
+            require_login($course->id, true);
+        }else {
+            require_login($course->id, true, $cm);
+        }
     } else {
-        require_course_login($course);
+        if($course->id == SITEID) {
+            require_course_login($course, true);
+        }else {
+            require_course_login($course, true, $cm);
+        }
+    }
+    
+    //check whether the given courseid exists
+    if($courseid AND $courseid != SITEID) {
+        if($course2 = get_record('course', 'id', $courseid)){
+            require_course_login($course2); //this overwrites the object $course :-(
+            $course = get_record("course", "id", $cm->course); // the workaround
+        }else {
+            error("courseid is not correct");
+        }
     }
 
     if($feedback->anonymous == FEEDBACK_ANONYMOUS_NO) {
-        add_to_log($course->id, "feedback", "view", "view.php?id=$cm->id", "$feedback->name",$cm->id);
+        add_to_log($course->id, 'feedback', 'view', 'view.php?id='.$cm->id, $feedback->id,$cm->id);
     }
 
     /// Print the page header
     $strfeedbacks = get_string("modulenameplural", "feedback");
     $strfeedback  = get_string("modulename", "feedback");
-
-    $feedbackindex = "<a href=\"index.php?id=$course->id\">$strfeedbacks</a> ->";
-    if ($course->category) {
-    }else if ($courseid > 0 AND $courseid != SITEID) {
-        //is the course maped in the sitecourse_map?
-        if(feedback_is_course_in_sitecourse_map($feedback->id, $courseid) OR !feedback_is_feedback_in_sitecourse_map($feedback->id)) {
-            $usercourse = get_record('course', 'id', $courseid);
-        }else {
-            error('failed courseid');
-        }
-    }
-
+    $buttontext = update_module_button($cm->id, $course->id, $strfeedback);
+    
     $navlinks = array();
-    $navigation = build_navigation($navlinks, $cm);
-
-    print_header("$course->shortname: $feedback->name", "$course->fullname", $navigation,
-                     "", "", true, update_module_button($cm->id, $course->id, $strfeedback), 
-                     navmenu($course, $cm));
-
+    $navlinks[] = array('name' => $strfeedbacks, 'link' => "index.php?id=$course->id", 'type' => 'activity');
+    $navlinks[] = array('name' => format_string($feedback->name), 'link' => "", 'type' => 'activityinstance');
+    
+    $navigation = build_navigation($navlinks);
+    
+    print_header_simple(format_string($feedback->name), "",
+                 $navigation, "", "", true, $buttontext, navmenu($course, $cm));
 
     //ishidden check.
+    //feedback in courses
     if ((empty($cm->visible) and !$capabilities->viewhiddenactivities) AND $course->id != SITEID) {
+        notice(get_string("activityiscurrentlyhidden"));
+    }
+
+    //ishidden check.
+    //feedback on mainsite
+    if ((empty($cm->visible) and !$capabilities->viewhiddenactivities) AND $courseid == SITEID) {
         notice(get_string("activityiscurrentlyhidden"));
     }
 
@@ -133,7 +163,7 @@
     //####### mapcourse-end
 
     //####### completed-start
-    if($capabilities->complete AND !$capabilities->edititems) {
+    if($capabilities->complete) {
         // print_simple_box_start('center', '80%');
         print_box_start('generalbox boxaligncenter boxwidthwide');
         //check, whether the feedback is open (timeopen, timeclose)
@@ -187,12 +217,6 @@
     }
     //####### completed-end
     echo "</p>";
-
-    // Mark module as viewed (note, we do this here and not in finish_page,
-    // otherwise the 'not enrolled' error conditions would result in marking
-    // 'viewed', I think it's better if they don't.)
-    $completion=new completion_info($course);
-    $completion->set_module_viewed($cm);
 
     /// Finish the page
     ///////////////////////////////////////////////////////////////////////////

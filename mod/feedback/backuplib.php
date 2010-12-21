@@ -1,4 +1,4 @@
-<?php // $Id: backuplib.php,v 1.1.4.1 2008/01/15 23:53:23 agrabs Exp $
+<?php // $Id: backuplib.php,v 1.2.2.1 2008/05/15 10:33:06 agrabs Exp $
     //This php script contains all the stuff to backup/restore
     //feedback mods
 
@@ -62,6 +62,8 @@
       fwrite ($bf,full_tag("ANONYMOUS",4,false,$feedback->anonymous));
       fwrite ($bf,full_tag("EMAILNOTIFICATION",4,false,$feedback->email_notification));
       fwrite ($bf,full_tag("MULTIPLESUBMIT",4,false,$feedback->multiple_submit));
+      fwrite ($bf,full_tag("AUTONUMBERING",4,false,$feedback->autonumbering));
+      fwrite ($bf,full_tag("SITEAFTERSUB",4,false,$feedback->site_after_submit));
       fwrite ($bf,full_tag("PAGEAFTERSUB",4,false,$feedback->page_after_submit));
       fwrite ($bf,full_tag("PUBLISHSTATS",4,false,$feedback->publish_stats));
       fwrite ($bf,full_tag("TIMEOPEN",4,false,$feedback->timeopen));

@@ -1,0 +1,97 @@
+<?PHP // $Id: feedback.php,v 1.1 2007/05/22 04:53:59 moodler Exp $ 
+      // feedback.php - created with Moodle 1.5.2 + (2005060222)
+
+
+$string['add_item'] = 'Lisää elementti';
+$string['add_items'] = 'Lisää elementti';
+$string['all_old_values_will_be_deleted'] = 'Kaikki vanhat arvot poistetaan';
+$string['all_related_values_will_be_deleted'] = 'Kaikki elementtiin liittyvät tiedot, myös jo mahdollisesti saadut vastaukset, poistetaab';
+$string['analysis'] = 'Analysointi';
+$string['anonymous'] = 'Anonyymi';
+$string['anonymous_edit'] = 'Vastaajan tunnistustapa';
+$string['anonymous_entries'] = 'Anonyymit vastaukset';
+$string['are_you_sure_to_delete_this_item'] = 'Haluatko varmasti poistaa tämän elementin?';
+$string['are_you_sure_to_delete_this_template'] = 'Haluatko varmasti poistaa tämän mallin?';
+$string['are_you_sure_to_use_this_template'] = 'Haluatko varmasti käyttää tätä mallia?';
+$string['bold'] = 'Lihavoitu';
+$string['check_values'] = 'Vaihtoehdot (vastaaja voi valita useita)';
+$string['checkbox'] = 'Valintaruutu';
+$string['complete_the_form'] = 'Täytä lomake...';
+$string['completed_feedbacks'] = 'Täytetyt lomakkeet';
+$string['creating_templates'] = 'Luo malli';
+$string['delete_item'] = 'Poista elementti';
+$string['delete_template'] = 'Poista malli';
+$string['delete_templates'] = 'Poista malleja';
+$string['description'] = 'Kuvaus';
+$string['dropdown_values'] = 'Vaihtoehdot (vastaaja voi valita yhden)';
+$string['dropdownlist'] = 'Valintalista';
+$string['edit_item'] = 'Muokkaa elementtiä';
+$string['edit_items'] = 'Muokkaa elementtejä';
+$string['entries_saved'] = 'Tallenus OK';
+$string['every_defines_self'] = 'Vastaaja voi valita itse';
+$string['export_to_excel'] = 'Vie Exceliin';
+$string['item_name'] = 'Kysymys';
+$string['items_are_required'] = 'Vastaus vaaditaan';
+$string['label'] = 'Selitysteksti';
+$string['label_item'] = 'Tekstielementti';
+$string['modulename'] = 'Palaute';
+$string['modulenameplural'] = 'Palautteet';
+$string['movedown_item'] = 'Siirrä elementtiä alaspäin';
+$string['moveup_item'] = 'Siirrä elementtiä ylöspäin';
+$string['name'] = 'Nimi';
+$string['name_required'] = 'Nimi on pakollinen';
+$string['no_items_available_yet'] = 'Tässä näkymässä ei ole elementtejä';
+$string['no_templates_available_yet'] = 'Malleja ei ole vielä luotu';
+$string['non_anonymous'] = 'Ei-anonyymi';
+$string['not_completed_yet'] = 'Ei vielä valmis';
+$string['of'] = 'of';
+$string['page'] = 'Sivu';
+$string['please_do_fill_out_all_required_fields'] = 'ole hyvä ja täytä kaikki pakolliset kentät';
+$string['preview'] = 'Esikatselu';
+$string['public'] = 'Julkinen';
+$string['question'] = 'Kysymys';
+$string['questions'] = 'Kysymykset';
+$string['radio_values'] = 'Vaihtoehdot (vastaaja voi valita vain yhden)';
+$string['radiobutton'] = 'Valintanappi';
+$string['ready_feedbacks'] = 'Valmiit palautteet';
+$string['required'] = 'Pakollinen';
+$string['responses'] = 'Vastaukset';
+$string['save_as_new_template'] = 'Tallenna uutena mallina';
+$string['save_entries'] = 'Tallenna';
+$string['save_item'] = 'Tallenna elementti';
+$string['saving_failed'] = 'Tallennus epäonnistui';
+$string['saving_failed_because_missing_items'] = 'tallennus epäonnistui puuttuvien tietojen takia';
+$string['separator_decimal'] = '.';
+$string['separator_thousand'] = ',';
+$string['show_entries'] = 'Näytä vastaukset';
+$string['switch_item_to_not_required'] = 'Muuta elementti ei-pakolliseksi';
+$string['switch_item_to_required'] = 'Muuta elementti pakolliseksi';
+$string['template'] = 'Malli';
+$string['template_saved'] = 'Malli tallennettu';
+$string['templates'] = 'Mallit';
+$string['textarea'] = 'Tekstialue';
+$string['textarea_height'] = 'Rivien lukumäärä';
+$string['textarea_width'] = 'Alueen leveys';
+$string['textfield'] = 'Tekstikenttä';
+$string['textfield_maxlength'] = 'Max merkkimäärä';
+$string['textfield_size'] = 'Tekstikentän leveys';
+$string['update_item'] = 'Päivitä elementti';
+$string['use_one_line_for_each_value'] = '<br />Kirjoita yksi vaihtoehto per rivi';
+$string['use_this_template'] = 'Käytä tätä mallia';
+$string['using_templates'] = 'Mallit'; 
+
+$string['item_count_all'] = 'Kysymysten lukumäärä: ';
+$string['page_count_all'] = 'Sivujen lukumäärä: ';
+$string['switch_item_to_pagebreakafter'] = 'Lisää sivunvaihto elementin jälkeen';
+$string['switch_item_to_not_pagebreakafter'] = 'Poista sivunvaihto elementin jälkeen';
+$string['pagebreak'] = '---------------------- SIVUNVAIHTO ----------------------<br /><br />';
+$string['picture_file_list'] = 'Kuvalista';
+$string['picture_values'] = 'Valitse kuvalistasta 2..6 kuvavaihtoehtoa,<br />joista vastaaja voi valita yhden';
+$string['picture'] = 'Kuvavalinta';
+$string['previous_page'] = 'Edellinen';
+$string['next_page'] = 'Seuraava';
+$string['move_left'] = 'Siirrä vasemmalle';
+$string['move_right'] = 'Siirrä oikealle';
+
+
+?>

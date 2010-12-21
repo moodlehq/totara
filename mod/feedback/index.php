@@ -1,8 +1,8 @@
-<?php // $Id: index.php,v 1.1.4.1 2008/01/15 23:53:24 agrabs Exp $
+<?php // $Id: index.php,v 1.4.2.3 2008/05/15 10:33:07 agrabs Exp $
 /**
 * prints the overview of all feedbacks included into the current course
 *
-* @version $Id: index.php,v 1.1.4.1 2008/01/15 23:53:24 agrabs Exp $
+* @version $Id: index.php,v 1.4.2.3 2008/05/15 10:33:07 agrabs Exp $
 * @author Andreas Grabs
 * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
 * @package feedback
@@ -20,26 +20,20 @@
 
     require_login($course->id);
 
-    add_to_log($course->id, "feedback", "view all", htmlspecialchars('index.php?id='.$course->id), "");
+    add_to_log($course->id, 'feedback', 'view all', htmlspecialchars('index.php?id='.$course->id), $course->id);
 
 
-    /// Get all required strings
-
+    /// Print the page header
     $strfeedbacks = get_string("modulenameplural", "feedback");
     $strfeedback  = get_string("modulename", "feedback");
-
-
-    /// Print the header
-
-    $navigation = '';
-    if ($course->category) {
-        $navlinks[] = array('name' => $strfeedback,
-                              'link' => null,
-                              'type' => 'misc');
-        $navigation = build_navigation($navlinks);
-    }
-
-    print_header("$course->shortname: $strfeedbacks", "$course->fullname", $navigation, "", "", true, "", navmenu($course));
+    
+    $navlinks = array();
+    $navlinks[] = array('name' => $strfeedbacks, 'link' => "", 'type' => 'activity');
+    
+    $navigation = build_navigation($navlinks);
+    
+    print_header_simple(get_string('modulename', 'feedback').' '.get_string('activities'), "",
+                 $navigation, "", "", true, null, navmenu($course));
 
     /// Get all the appropriate data
 

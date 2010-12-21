@@ -1,8 +1,8 @@
-<?php // $Id: use_templ.php,v 1.1.4.2 2008/04/04 10:38:00 agrabs Exp $
+<?php // $Id: use_templ.php,v 1.4.2.2 2008/05/15 10:33:08 agrabs Exp $
 /**
 * print the confirm dialog to use template and create new items from template
 *
-* @version $Id: use_templ.php,v 1.1.4.2 2008/04/04 10:38:00 agrabs Exp $
+* @version $Id: use_templ.php,v 1.4.2.2 2008/05/15 10:33:08 agrabs Exp $
 * @author Andreas Grabs
 * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
 * @package feedback
@@ -35,7 +35,7 @@
     }
     $capabilities = feedback_load_capabilities($cm->id);
 
-    require_login($course->id);
+    require_login($course->id, true, $cm);
     
     if(!$capabilities->edititems){
         error(get_string('error'));
@@ -59,15 +59,19 @@
         redirect('edit.php?id=' . $id);
     }
 
-    $navlinks = array();
-    $navigation = build_navigation($navlinks, $cm);
-
+    /// Print the page header
     $strfeedbacks = get_string("modulenameplural", "feedback");
     $strfeedback  = get_string("modulename", "feedback");
-
-    print_header("$course->shortname: $feedback->name", "$course->fullname", $navigation,
-                "", "", true, update_module_button($cm->id, $course->id, $strfeedback), 
-                navmenu($course, $cm));
+    $buttontext = update_module_button($cm->id, $course->id, $strfeedback);
+    
+    $navlinks = array();
+    $navlinks[] = array('name' => $strfeedbacks, 'link' => "index.php?id=$course->id", 'type' => 'activity');
+    $navlinks[] = array('name' => format_string($feedback->name), 'link' => "", 'type' => 'activityinstance');
+    
+    $navigation = build_navigation($navlinks);
+    
+    print_header_simple(format_string($feedback->name), "",
+                 $navigation, "", "", true, $buttontext, navmenu($course, $cm));
 
     /// Print the main part of the page
     ///////////////////////////////////////////////////////////////////////////
@@ -77,7 +81,7 @@
     
     // print_simple_box_start("center", "60%", "#FFAAAA", 20, "noticebox");
     print_box_start('generalbox errorboxcontent boxaligncenter boxwidthnormal');
-    print_heading(get_string('are_you_sure_to_use_this_template', 'feedback'));
+    print_heading(get_string('confirmusetemplate', 'feedback'));
     
     $mform->display();
 
@@ -97,9 +101,9 @@
         echo '<div align="center"><table>';
         foreach($templateitems as $templateitem){
             echo '<tr>';
-            if($templateitem->hasvalue == 1) {
+            if($templateitem->hasvalue == 1 AND $feedback->autonumbering) {
                 $itemnr++;
-                echo '<td valign="top">' . $itemnr . '.)&nbsp;</td>';
+                echo '<td valign="top">' . $itemnr . '.&nbsp;</td>';
             } else {
                 echo '<td>&nbsp;</td>';
             }

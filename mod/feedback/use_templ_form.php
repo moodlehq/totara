@@ -1,8 +1,8 @@
-<?php // $Id: use_templ_form.php,v 1.2.4.2 2008/01/15 23:53:26 agrabs Exp $
+<?php // $Id: use_templ_form.php,v 1.2.2.1 2008/05/15 10:33:09 agrabs Exp $
 /**
 * prints the form to confirm use template
 *
-* @version $Id: use_templ_form.php,v 1.2.4.2 2008/01/15 23:53:26 agrabs Exp $
+* @version $Id: use_templ_form.php,v 1.2.2.1 2008/05/15 10:33:09 agrabs Exp $
 * @author Andreas Grabs
 * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
 * @package feedback

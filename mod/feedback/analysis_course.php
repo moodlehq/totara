@@ -1,8 +1,8 @@
-<?php // $Id: analysis_course.php,v 1.1.4.1 2008/01/15 23:53:23 agrabs Exp $
+<?php // $Id: analysis_course.php,v 1.5.2.3 2008/07/18 14:54:43 agrabs Exp $
 /**
 * shows an analysed view of a feedback on the mainsite
 *
-* @version $Id: analysis_course.php,v 1.1.4.1 2008/01/15 23:53:23 agrabs Exp $
+* @version $Id: analysis_course.php,v 1.5.2.3 2008/07/18 14:54:43 agrabs Exp $
 * @author Andreas Grabs
 * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
 * @package feedback
@@ -11,14 +11,20 @@
     require_once("../../config.php");
     require_once("lib.php");
     
-    $SESSION->feedback->current_tab = 'analysis';
+    // $SESSION->feedback->current_tab = 'analysis';
+    $current_tab = 'analysis';
  
     $id = required_param('id', PARAM_INT);  //the POST dominated the GET
     $coursefilter = optional_param('coursefilter', '0', PARAM_INT);
     $courseitemfilter = optional_param('courseitemfilter', '0', PARAM_INT);
     $courseitemfiltertyp = optional_param('courseitemfiltertyp', '0', PARAM_ALPHANUM);
-    $searchcourse = optional_param('searchcourse', '', PARAM_ALPHAEXT);
+    // $searchcourse = optional_param('searchcourse', '', PARAM_ALPHAEXT);
+    $searchcourse = optional_param('searchcourse', '', PARAM_RAW);
     $courseid = optional_param('courseid', false, PARAM_INT);
+    
+    if(($searchcourse OR $courseitemfilter OR $coursefilter) AND !confirm_sesskey()) {
+        error('no sesskey defined');
+    }
     
     if ($id) {
         if (! $cm = get_coursemodule_from_id('feedback', $id)) {
@@ -35,31 +41,25 @@
     }
     $capabilities = feedback_load_capabilities($cm->id);
 
-    require_login($course->id);
+    require_login($course->id, true, $cm);
     
     if( !( (intval($feedback->publish_stats) == 1) || $capabilities->viewreports)) {
         error(get_string('error'));
     }
     
     /// Print the page header
-
     $strfeedbacks = get_string("modulenameplural", "feedback");
     $strfeedback  = get_string("modulename", "feedback");
-    $navigation = '';
+    $buttontext = update_module_button($cm->id, $course->id, $strfeedback);
     
-    $feedbackindex = "<a href=\"index.php?id=$course->id\">$strfeedbacks</a> ->";
-    if ($course->category) {
-        $navigation = "<a href=\"../../course/view.php?id=$course->id\">$course->shortname</a> ->";
-    }else if ($courseid > 0 AND $courseid != SITEID) {
-        $usercourse = get_record('course', 'id', $courseid);
-        $navigation = "<a href=\"../../course/view.php?id=$usercourse->id\">$usercourse->shortname</a> ->";
-        $feedbackindex = '';
-    }
-
-    print_header("$course->shortname: $feedback->name", "$course->fullname",
-                     "$navigation $feedbackindex $feedback->name", 
-                     "", "", true, update_module_button($cm->id, $course->id, $strfeedback), 
-                     navmenu($course, $cm));
+    $navlinks = array();
+    $navlinks[] = array('name' => $strfeedbacks, 'link' => "index.php?id=$course->id", 'type' => 'activity');
+    $navlinks[] = array('name' => format_string($feedback->name), 'link' => "", 'type' => 'activityinstance');
+    
+    $navigation = build_navigation($navlinks);
+    
+    print_header_simple(format_string($feedback->name), "",
+                 $navigation, "", "", true, $buttontext, navmenu($course, $cm));
 
     /// print the tabs
     include('tabs.php');
@@ -72,7 +72,7 @@
         //button "export to excel"
         echo '<div align="center">';
         $export_button_link = 'analysis_to_excel.php';
-        $export_button_options = array('sesskey'=>$USER->sesskey, 'id'=>$id);
+        $export_button_options = array('sesskey'=>$USER->sesskey, 'id'=>$id, 'coursefilter'=>$coursefilter);
         $export_button_label = get_string('export_to_excel', 'feedback');
         print_single_button($export_button_link, $export_button_options, $export_button_label, 'post');
         echo '</div>';
@@ -97,7 +97,7 @@
         $items=array();
     }
 
-    echo '<form name="report" method="get">';
+    echo '<form name="report" method="post">';
     echo '<div align="center"><table width="80%" cellpadding="10">';
     if ($courseitemfilter > 0) {
         $avgvalue = 'avg(value)';
@@ -127,22 +127,22 @@
         }
     } else {
 
-         echo get_string('search_course', 'feedback') . ': ';
-         echo '<input type="text" name="searchcourse" value="'.$searchcourse.'"/> <input type="submit" value="'.get_string('search').'"/>';
-         echo '<input type="hidden" name="sesskey" value="' . $USER->sesskey . '" />';
-         echo '<input type="hidden" name="id" value="'.$id.'" />';
-         echo '<input type="hidden" name="courseitemfilter" value="'.$courseitemfilter.'" />';
-         echo '<input type="hidden" name="courseitemfiltertyp" value="'.$courseitemfiltertyp.'" />';
-         echo '<input type="hidden" name="courseid" value="'.$courseid.'" />';
-         echo '<script language="javascript" type="text/javascript">
-                 <!--
-                 function setcourseitemfilter(item, item_typ) {
-                      document.report.courseitemfilter.value = item;
-                      document.report.courseitemfiltertyp.value = item_typ;
-                      document.report.submit();
-                 }
-                 -->
-                 </script>';
+        echo get_string('search_course', 'feedback') . ': ';
+        echo '<input type="text" name="searchcourse" value="'.s($searchcourse).'"/> <input type="submit" value="'.get_string('search').'"/>';
+        echo '<input type="hidden" name="sesskey" value="' . $USER->sesskey . '" />';
+        echo '<input type="hidden" name="id" value="'.$id.'" />';
+        echo '<input type="hidden" name="courseitemfilter" value="'.$courseitemfilter.'" />';
+        echo '<input type="hidden" name="courseitemfiltertyp" value="'.$courseitemfiltertyp.'" />';
+        echo '<input type="hidden" name="courseid" value="'.$courseid.'" />';
+        echo '<script language="javascript" type="text/javascript">
+                <!--
+                function setcourseitemfilter(item, item_typ) {
+                    document.report.courseitemfilter.value = item;
+                    document.report.courseitemfiltertyp.value = item_typ;
+                    document.report.submit();
+                }
+                -->
+                </script>';
 
 
         $sql = 'select c.id, c.shortname from '.$CFG->prefix.'course c, '.
@@ -169,7 +169,13 @@
             $itemclass = 'feedback_item_'.$item->typ;
             //get the instance of the item-class
             $itemobj = new $itemclass();
-            $itemnr = $itemobj->print_analysed($item, $itemnr, $mygroupid, $coursefilter);
+            $itemnr++;
+            if($feedback->autonumbering) {
+                $printnr = $itemnr.'.';
+            } else {
+                $printnr = '';
+            }
+            $itemobj->print_analysed($item, $printnr, $mygroupid, $coursefilter);
             if (eregi('rated$', $item->typ)) {
                  echo '<tr><td colspan="2"><a href="#" onclick="setcourseitemfilter('.$item->id.',\''.$item->typ.'\'); return false;">'.
                     get_string('sort_by_course', 'feedback').'</a></td></tr>'; 

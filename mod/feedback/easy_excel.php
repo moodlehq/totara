@@ -1,8 +1,8 @@
-<?php // $Id: easy_excel.php,v 1.1.4.2 2008/01/15 23:53:24 agrabs Exp $
+<?php // $Id: easy_excel.php,v 1.7.2.4 2008/06/27 07:19:15 agrabs Exp $
 /**
 * makes it easier to use the spreadsheet-functions from pear
 *
-* @version $Id: easy_excel.php,v 1.1.4.2 2008/01/15 23:53:24 agrabs Exp $
+* @version $Id: easy_excel.php,v 1.7.2.4 2008/06/27 07:19:15 agrabs Exp $
 * @author Andreas Grabs
 * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
 * @package feedback
@@ -127,7 +127,7 @@ class EasyWorksheet extends Spreadsheet_Excel_Writer_Worksheet {
         //looking for an existing format-signature at the $m_formatbox
         //this prevents the overflow of formats
         $signature = $formatString.'_'.$size.'_'.$textWrap;
-        if((count($this->m_formatbox) > 0) AND isset($this->m_formatbox[$signature])) {
+        if((count($this->m_formatbox) > 0) AND array_key_exists($signature, $this->m_formatbox)) {
             $this->m_format = $this->m_formatbox[$signature];
         }else {
         

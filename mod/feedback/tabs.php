@@ -1,13 +1,13 @@
-<?php // $Id: tabs.php,v 1.4.2.2 2008/01/15 23:53:26 agrabs Exp $
+<?php // $Id: tabs.php,v 1.3.2.2 2008/05/15 10:33:08 agrabs Exp $
 /**
 * prints the tabbed bar
 *
-* @version $Id: tabs.php,v 1.4.2.2 2008/01/15 23:53:26 agrabs Exp $
+* @version $Id: tabs.php,v 1.3.2.2 2008/05/15 10:33:08 agrabs Exp $
 * @author Andreas Grabs
 * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
 * @package feedback
 */
-    defined('MOODLE_INTERNAL') OR die('not allowed');
+    defined('FEEDBACK_INCLUDE_TEST') OR die('not allowed');
 
     $tabs = array();
     $row  = array();
@@ -15,7 +15,10 @@
     $activated = array();
 
     $courseid = optional_param('courseid', false, PARAM_INT);
-    $current_tab = $SESSION->feedback->current_tab;
+    // $current_tab = $SESSION->feedback->current_tab;
+    if (!isset($current_tab)) {
+        $current_tab = '';
+    }
 
     $row[] = new tabobject('view', $CFG->wwwroot.htmlspecialchars('/mod/feedback/view.php?id='.$id.'&do_show=view'), get_string('overview', 'feedback'));
     

@@ -1,8 +1,8 @@
-<?php // $Id: mod_form.php,v 1.3.2.3 2008/05/03 21:23:54 agrabs Exp $
+<?php // $Id: mod_form.php,v 1.2.2.6 2009/05/30 16:46:43 agrabs Exp $
 /**
 * print the form to add or edit a feedback-instance
 *
-* @version $Id: mod_form.php,v 1.3.2.3 2008/05/03 21:23:54 agrabs Exp $
+* @version $Id: mod_form.php,v 1.2.2.6 2009/05/30 16:46:43 agrabs Exp $
 * @author Andreas Grabs
 * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
 * @package feedback
@@ -13,7 +13,7 @@ require_once ($CFG->dirroot.'/course/moodleform_mod.php');
 class mod_feedback_mod_form extends moodleform_mod {
 
     function definition() {
-        global $COURSE, $CFG; 
+        global $CFG;
 
         $mform    =& $this->_form;
 
@@ -21,17 +21,12 @@ class mod_feedback_mod_form extends moodleform_mod {
         $mform->addElement('header', 'general', get_string('general', 'form'));
         
         $mform->addElement('text', 'name', get_string('name', 'feedback'), array('size'=>'64'));
-        if (!empty($CFG->formatstringstriptags)) {
-            $mform->setType('name', PARAM_TEXT);
-        } else {
-            $mform->setType('name', PARAM_CLEAN);
-        }
+        $mform->setType('name', PARAM_TEXT);
         $mform->addRule('name', null, 'required', null, 'client');
 
         $mform->addElement('htmleditor', 'summary', get_string("description", "feedback"), array('rows' => 20));
         $mform->setType('summary', PARAM_RAW);
         $mform->addRule('summary', null, 'required', null, 'client');
-        $mform->setHelpButton('summary', array('writing', 'questions', 'richtext'), false, 'editorhelpbutton');
 
         //-------------------------------------------------------------------------------
         $mform->addElement('header', 'timinghdr', get_string('timing', 'form'));
@@ -63,7 +58,7 @@ class mod_feedback_mod_form extends moodleform_mod {
         $mform->setHelpButton('email_notification', array('emailnotification', get_string('email_notification', 'feedback'), 'feedback'));
         
         // check if there is existing responses to this feedback
-        if (is_numeric($this->_instance) AND $feedback = get_record("feedback", "id", $this->_instance)) {
+        if (is_numeric($this->_instance) AND $this->_instance and $feedback = get_record("feedback", "id", $this->_instance)) {
             $completedFeedbackCount = feedback_get_completeds_group_count($feedback);
         } else {
             $completedFeedbackCount = false;
@@ -73,43 +68,31 @@ class mod_feedback_mod_form extends moodleform_mod {
             $multiple_submit_value = $feedback->multiple_submit ? get_string('yes') : get_string('no');
             $mform->addElement('text', 'multiple_submit_static', get_string('multiple_submit', 'feedback'), array('size'=>'4','disabled'=>'disabled', 'value'=>$multiple_submit_value));
             $mform->addElement('hidden', 'multiple_submit', '');
+            $mform->setHelpButton('multiple_submit_static', array('multiplesubmit', get_string('multiple_submit', 'feedback'), 'feedback'));
         }else {
             $mform->addElement('selectyesno', 'multiple_submit', get_string('multiple_submit', 'feedback'));
+            $mform->setHelpButton('multiple_submit', array('multiplesubmit', get_string('multiple_submit', 'feedback'), 'feedback'));
         }
-        $mform->setHelpButton('multiple_submit', array('multiplesubmit', get_string('multiple_submit', 'feedback'), 'feedback'));
+        $mform->addElement('selectyesno', 'autonumbering', get_string('autonumbering', 'feedback'));
+        $mform->setHelpButton('autonumbering', array('autonumbering', get_string('autonumbering', 'feedback'), 'feedback'));
         
         //-------------------------------------------------------------------------------
         $mform->addElement('header', 'aftersubmithdr', get_string('after_submit', 'feedback'));
-        
+
         $mform->addElement('htmleditor', 'page_after_submit', get_string("page_after_submit", "feedback"), array('rows' => 20));
         $mform->setType('page_after_submit', PARAM_RAW);
-        $mform->setHelpButton('page_after_submit', array('writing', 'questions', 'richtext'), false, 'editorhelpbutton');
-        //-------------------------------------------------------------------------------
-        $mform->addElement('header', 'reportinghdr', get_string('reporting', 'feedback'));
-
-        $modinfo = unserialize($COURSE->modinfo);
-        foreach ($modinfo as $cm_id => $mod) {
-            if ($mod->mod == 'facetoface') {
-                $availablemods[$cm_id] = urldecode($mod->name);
-            }
-        }
-
-        if (empty($availablemods)) {
-            $noneavailable = get_string('noneavailable', 'feedback');
-            $mform->addElement('text', 'facetofacecmid_static', get_string('facetofaceactivity', 'feedback'), array('size'=>'20','disabled'=>'disabled', 'value'=>$noneavailable));
-            $mform->addElement('hidden', 'facetofacecmid', '0');
-            $mform->setHelpButton('facetofacecmid_static', array('facetofaceactivity', get_string('facetofaceactivity', 'feedback'), 'feedback'));
-        } else {
-            $availablemods['0'] = get_string('none');
-            ksort($availablemods);
-            $mform->addElement('select', 'facetofacecmid', get_string('facetofaceactivity', 'feedback'), $availablemods);
-            $mform->setDefault('facetofacecmid', '0');
-            $mform->setType('facetofacecmid', PARAM_TEXT);
-            $mform->setHelpButton('facetofacecmid', array('facetofaceactivity', get_string('facetofaceactivity', 'feedback'), 'feedback'));
-        }
         
+        $mform->addElement('text', 'site_after_submit', get_string('url_for_continue_button', 'feedback'), array('size'=>'64','maxlength'=>'255'));
+        $mform->setType('site_after_submit', PARAM_TEXT);
+        $mform->setHelpButton('site_after_submit', array('url_for_continue', get_string('url_for_continue_button', 'feedback'), 'feedback'));
         //-------------------------------------------------------------------------------
-        $this->standard_coursemodule_elements();
+        $features = new stdClass;
+        $features->groups = true;
+        $features->groupings = true;
+        $features->groupmembersonly = true;
+        $features->gradecat = false;
+        $features->idnumber = false;
+        $this->standard_coursemodule_elements($features);
         //-------------------------------------------------------------------------------
         // buttons
         $this->add_action_buttons();

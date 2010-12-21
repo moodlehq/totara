@@ -1,8 +1,8 @@
-<?php // $Id: analysis.php,v 1.1.4.1 2008/01/15 23:53:23 agrabs Exp $
+<?php // $Id: analysis.php,v 1.5.2.7 2010/04/29 16:29:11 agrabs Exp $
 /**
 * shows an analysed view of feedback
 *
-* @version $Id: analysis.php,v 1.1.4.1 2008/01/15 23:53:23 agrabs Exp $
+* @version $Id: analysis.php,v 1.5.2.7 2010/04/29 16:29:11 agrabs Exp $
 * @author Andreas Grabs
 * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
 * @package feedback
@@ -11,20 +11,11 @@
     require_once("../../config.php");
     require_once("lib.php");
 
-    $SESSION->feedback->current_tab = 'analysis';
+    // $SESSION->feedback->current_tab = 'analysis';
+    $current_tab = 'analysis';
 
     $id = required_param('id', PARAM_INT);  //the POST dominated the GET
     $courseid = optional_param('courseid', false, PARAM_INT);
-    $lstgroupid = optional_param('lstgroupid', -2, PARAM_INT); //groupid (aus der Listbox gewaehlt)
-
-
-    //check, whether a group is selected
-    if($lstgroupid == -1) {
-        $SESSION->feedback->lstgroupid = false;
-    }else {
-        if((!isset($SESSION->feedback->lstgroupid)) || $lstgroupid != -2)
-            $SESSION->feedback->lstgroupid = $lstgroupid;
-    }
 
     if ($id) {
         if (! $cm = get_coursemodule_from_id('feedback', $id)) {
@@ -40,42 +31,41 @@
         }
     }
 
-    if(!empty($SESSION->feedback->lstgroupid)) 
-    {
-        if($tmpgroup = groups_get_group($SESSION->feedback->lstgroupid)) {
-            if($tmpgroup->courseid != $course->id) {
-                $SESSION->feedback->lstgroupid = false;
-            }
-        }else {
-            $SESSION->feedback->lstgroupid = false;
-        }
-    }
     $capabilities = feedback_load_capabilities($cm->id);
 
-    require_login($course->id);
+    if($course->id == SITEID) {
+        require_login($course->id, true);
+    }else{
+        require_login($course->id, true, $cm);
+    }
+    
+    //check whether the given courseid exists
+    if($courseid AND $courseid != SITEID) {
+        if($course2 = get_record('course', 'id', $courseid)){
+            require_course_login($course2); //this overwrites the object $course :-(
+            $course = get_record("course", "id", $cm->course); // the workaround
+        }else {
+            error("courseid is not correct");
+        }
+    }
 
     if( !( (intval($feedback->publish_stats) == 1) || $capabilities->viewreports)) {
         error(get_string('error'));
     }
 
     /// Print the page header
-
-
     $strfeedbacks = get_string("modulenameplural", "feedback");
     $strfeedback  = get_string("modulename", "feedback");
-
-    $feedbackindex = "<a href=\"index.php?id=$course->id\">$strfeedbacks</a> ->";
-    if ($course->category) {
-    }else if ($courseid > 0 AND $courseid != SITEID) {
-        $usercourse = get_record('course', 'id', $courseid);
-    }
-
+    $buttontext = update_module_button($cm->id, $course->id, $strfeedback);
+    
     $navlinks = array();
-    $navigation = build_navigation($navlinks, $cm);
-
-    print_header("$course->shortname: $feedback->name", "$course->fullname", $navigation,
-                     "", "", true, update_module_button($cm->id, $course->id, $strfeedback), 
-                     navmenu($course, $cm));
+    $navlinks[] = array('name' => $strfeedbacks, 'link' => "index.php?id=$course->id", 'type' => 'activity');
+    $navlinks[] = array('name' => format_string($feedback->name), 'link' => "", 'type' => 'activityinstance');
+    
+    $navigation = build_navigation($navlinks);
+    
+    print_header_simple(format_string($feedback->name), "",
+                 $navigation, "", "", true, $buttontext, navmenu($course, $cm));
 
     /// print the tabs
     include('tabs.php');
@@ -86,27 +76,18 @@
     print_box_start('generalbox boxaligncenter boxwidthwide');
 
     //get the groupid
-    //lstgroupid is the choosen id
-    $mygroupid = $SESSION->feedback->lstgroupid;
+    $groupselect = groups_print_activity_menu($cm, $CFG->wwwroot . '/mod/feedback/analysis.php?id=' . $cm->id.'&do_show=analysis', true);
+    $mygroupid = groups_get_activity_group($cm);
 
     if( $capabilities->viewreports ) {
 
-        //available group modes (NOGROUPS, SEPARATEGROUPS or VISIBLEGROUPS)
-        $feedbackgroups = get_groups($course->id);
-        //get the effective groupmode of this course and module
-        $groupmode = groupmode($course, $cm);
-        if(is_array($feedbackgroups) && $groupmode > 0){
-            require_once('choose_group_form.php');
-            //the use_template-form
-            $choose_group_form = new feedback_choose_group_form();
-            $choose_group_form->set_feedbackdata(array('groups'=>$feedbackgroups, 'mygroupid'=>$mygroupid));
-            $choose_group_form->set_form_elements();
-            $choose_group_form->set_data(array('id'=>$id, 'lstgroupid'=>$SESSION->feedback->lstgroupid));
-            $choose_group_form->display();
-        }
+        echo isset($groupselect) ? $groupselect : '';
+        echo '<div class="clearer"></div>';
 
         //button "export to excel"
-        echo '<div align="center">';
+        //echo '<div align="center">';
+        // echo '<div class="feedback_centered_button">';
+        echo '<div class="form-buttons">';
         $export_button_link = 'analysis_to_excel.php';
         $export_button_options = array('sesskey'=>$USER->sesskey, 'id'=>$id);
         $export_button_label = get_string('export_to_excel', 'feedback');
@@ -118,7 +99,7 @@
     $completedscount = feedback_get_completeds_group_count($feedback, $mygroupid);
 
     //show the group, if available
-    if(!empty($mygroupid) && $group = get_record('groups', 'id', $mygroupid)) {
+    if($mygroupid and $group = get_record('groups', 'id', $mygroupid)) {
         echo '<b>'.get_string('group').': '.$group->name. '</b><br />';
     }
     //show the count
@@ -133,12 +114,13 @@
         $items=array();
     }
     $check_anonymously = true;
-    if($mygroupid > 0 AND $feedback->anonymous = FEEDBACK_ANONYMOUS_YES) {
+    if($mygroupid > 0 AND $feedback->anonymous == FEEDBACK_ANONYMOUS_YES) {
         if($completedscount < FEEDBACK_MIN_ANONYMOUS_COUNT_IN_GROUP) {
             $check_anonymously = false;
         }
     }
-    echo '<div align="center"><table width="80%" cellpadding="10"><tr><td>';
+    // echo '<div align="center"><table width="80%" cellpadding="10"><tr><td>';
+    echo '<div><table width="80%" cellpadding="10"><tr><td>';
     if($check_anonymously) {
         $itemnr = 0;
         //print the items in an analysed form
@@ -149,7 +131,14 @@
             $itemclass = 'feedback_item_'.$item->typ;
             //get the instance of the item-class
             $itemobj = new $itemclass();
-            $itemnr = $itemobj->print_analysed($item, $itemnr, $mygroupid);
+            $itemnr++;
+            if($feedback->autonumbering) {
+                $printnr = $itemnr.'.';
+            } else {
+                $printnr = '';
+            }
+            $itemobj->print_analysed($item, $printnr, $mygroupid);
+            // $itemnr = $itemobj->print_analysed($item, $itemnr, $mygroupid);
             echo '</table>';
         }
     }else {

@@ -1,8 +1,8 @@
-<?php // $Id: edit_form.php,v 1.5.2.2 2008/01/15 23:53:25 agrabs Exp $
+<?php // $Id: edit_form.php,v 1.4.2.2 2008/05/15 10:33:07 agrabs Exp $
 /**
 * prints the forms to choose an item-typ to create items and to choose a template to use
 *
-* @version $Id: edit_form.php,v 1.5.2.2 2008/01/15 23:53:25 agrabs Exp $
+* @version $Id: edit_form.php,v 1.4.2.2 2008/05/15 10:33:07 agrabs Exp $
 * @author Andreas Grabs
 * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
 * @package feedback
@@ -65,7 +65,7 @@ class feedback_edit_use_template_form extends moodleform {
         
         $elementgroup = array();
         //headline
-        $mform->addElement('header', 'general', get_string('using_templates', 'feedback'));
+        $mform->addElement('header', '', get_string('using_templates', 'feedback'));
         // hidden elements
         $mform->addElement('hidden', 'id');
         
@@ -76,11 +76,13 @@ class feedback_edit_use_template_form extends moodleform {
             foreach($templates as $template) {
                 $templates_options[$template->id] = $template->name;
             }
+            $attributes = 'onChange="this.form.submit()"';
+            $elementgroup[] =& $mform->createElement('select', 'templateid', '', $templates_options, $attributes);
+            // buttons
+            $elementgroup[] =& $mform->createElement('submit', 'use_template', get_string('use_this_template', 'feedback'));
+        }else {
+            $mform->addElement('static', 'info', get_string('no_templates_available_yet', 'feedback'));
         }
-        $attributes = 'onChange="this.form.submit()"';
-        $elementgroup[] =& $mform->createElement('select', 'templateid', '', $templates_options, $attributes);
-        // buttons
-        $elementgroup[] =& $mform->createElement('submit', 'use_template', get_string('use_this_template', 'feedback'));
         $mform->addGroup($elementgroup, 'elementgroup', '', array(' '), false);
         
     //-------------------------------------------------------------------------------
@@ -115,7 +117,7 @@ class feedback_edit_create_template_form extends moodleform {
         $mform->addElement('hidden', 'savetemplate', 1);
 
         //headline
-        $mform->addElement('header', 'general', get_string('creating_templates', 'feedback'));
+        $mform->addElement('header', '', get_string('creating_templates', 'feedback'));
         
         // visible elements
         $elementgroup = array();
@@ -127,7 +129,7 @@ class feedback_edit_create_template_form extends moodleform {
         }
         
         // buttons
-        $elementgroup[] =& $mform->createElement('submit', 'use_template', get_string('save_as_new_template', 'feedback'));
+        $elementgroup[] =& $mform->createElement('submit', 'create_template', get_string('save_as_new_template', 'feedback'));
         $mform->addGroup($elementgroup, 'elementgroup', get_string('name', 'feedback'), array(' '), false);
         
         $mform->setType('templatename', PARAM_TEXT);

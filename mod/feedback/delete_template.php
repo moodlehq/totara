@@ -1,8 +1,8 @@
-<?php // $Id: delete_template.php,v 1.1.4.1 2008/01/15 23:53:24 agrabs Exp $
+<?php // $Id: delete_template.php,v 1.5.2.1 2008/05/15 10:33:07 agrabs Exp $
 /**
 * deletes a template
 *
-* @version $Id: delete_template.php,v 1.1.4.1 2008/01/15 23:53:24 agrabs Exp $
+* @version $Id: delete_template.php,v 1.5.2.1 2008/05/15 10:33:07 agrabs Exp $
 * @author Andreas Grabs
 * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
 * @package feedback
@@ -10,18 +10,23 @@
 
     require_once("../../config.php");
     require_once("lib.php");
-    $SESSION->feedback->current_tab = 'templates';
+    require_once('delete_template_form.php');
+    
+    // $SESSION->feedback->current_tab = 'templates';
+    $current_tab = 'templates';
 
     $id = required_param('id', PARAM_INT);
-
-    $formdata = data_submitted('nomatch');
+    $canceldelete = optional_param('canceldelete', false, PARAM_INT);
+    $shoulddelete = optional_param('shoulddelete', false, PARAM_INT);
+    $deletetempl = optional_param('deletetempl', false, PARAM_INT);
+    // $formdata = data_submitted('nomatch');
     
-    if(isset($formdata->canceldelete) && $formdata->canceldelete == 1){
-        redirect(htmlspecialchars('edit.php?id='.$id.'&do_show=templates'));
+    if(($formdata = data_submitted('nomatch')) AND !confirm_sesskey()) {
+        error('no sesskey defined');
     }
-
-    if(isset($formdata->cancelconfirm) && $formdata->cancelconfirm == 1){
-        redirect(htmlspecialchars('delete_template.php?id='.$id));
+    
+    if($canceldelete == 1){
+        redirect(htmlspecialchars('edit.php?id='.$id.'&do_show=templates'));
     }
 
     if ($id) {
@@ -39,58 +44,57 @@
     }
     $capabilities = feedback_load_capabilities($cm->id);
 
-    require_login($course->id);
+    require_login($course->id, true, $cm);
     
     if(!$capabilities->deletetemplate){
         error(get_string('error'));
     }
     
-    //delete template
-    if(isset($formdata->confirmdelete) && $formdata->confirmdelete == 1){
+    $mform = new mod_feedback_delete_template_form();
+    $newformdata = array('id'=>$id,
+                        'deletetempl'=>$deletetempl,
+                        'confirmdelete'=>'1');
+    
+    $mform->set_data($newformdata);
+    $formdata = $mform->get_data();
+    
+    if ($mform->is_cancelled()) {
+        redirect(htmlspecialchars('delete_template.php?id='.$id));
+    }
+    
+    if(isset($formdata->confirmdelete) AND $formdata->confirmdelete == 1){
         feedback_delete_template($formdata->deletetempl);
         redirect(htmlspecialchars('delete_template.php?id=' . $id));
     }
 
+    /// Print the page header
     $strfeedbacks = get_string("modulenameplural", "feedback");
     $strfeedback  = get_string("modulename", "feedback");
-
+    $buttontext = update_module_button($cm->id, $course->id, $strfeedback);
+    
     $navlinks = array();
-    $navigation = build_navigation($navlinks, $cm);
+    $navlinks[] = array('name' => $strfeedbacks, 'link' => "index.php?id=$course->id", 'type' => 'activity');
+    $navlinks[] = array('name' => format_string($feedback->name), 'link' => "", 'type' => 'activityinstance');
+    
+    $navigation = build_navigation($navlinks);
+    
+    print_header_simple(format_string($feedback->name), "",
+                 $navigation, "", "", true, $buttontext, navmenu($course, $cm));
 
-    print_header($course->shortname.': '.$feedback->name, $course->fullname, $navigation,
-                        '', '', true, update_module_button($cm->id, $course->id, $strfeedback), 
-                        navmenu($course, $cm));
-
+    /// print the tabs
+    include('tabs.php');
+    
     /// Print the main part of the page
     ///////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////
     print_heading(get_string('delete_template','feedback'));
-    if(isset($formdata->shoulddelete) && $formdata->shoulddelete == 1) {
+    if($shoulddelete == 1) {
     
         // print_simple_box_start("center", "60%", "#FFAAAA", 20, "noticebox");
         print_box_start('generalbox errorboxcontent boxaligncenter boxwidthnormal');
-        print_heading(get_string('are_you_sure_to_delete_this_template', 'feedback'));
-        echo '<div align="center">';
-?>
-        <p>&nbsp;</p>
-        <form style="display:inline;" name="frm" action="<?php echo $ME;?>" method="post">
-            <input type="hidden" name="sesskey" value="<?php echo $USER->sesskey;?>" />
-            <input type="hidden" name="id" value="<?php echo $id;?>" />
-            <input type="hidden" name="deletetempl" value="<?php echo $formdata->deletetempl;?>" />
-            <input type="hidden" name="confirmdelete" value="1" />
-            <button type="submit"><?php print_string('delete');?></button>
-        </form>
-        
-        <form style="display:inline;" name="frm" action="<?php echo $ME;?>" method="post">
-            <input type="hidden" name="sesskey" value="<?php echo $USER->sesskey;?>" />
-            <input type="hidden" name="id" value="<?php echo $id;?>" />
-            <input type="hidden" name="cancelconfirm" value="1" />
-            <button type="submit"><?php print_string('cancel');?></button>
-        </form>
-        <div style="clear:both">&nbsp;</div>
-<?php        
-        echo '</div>';
+        print_heading(get_string('confirmdeletetemplate', 'feedback'));
+        $mform->display();
         // print_simple_box_end();
         print_box_end();
     }else {

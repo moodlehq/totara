@@ -1,4 +1,4 @@
-<?PHP  // $Id: feedback_item_class.php,v 1.3.4.2 2008/01/15 23:53:31 agrabs Exp $
+<?PHP  // $Id: feedback_item_class.php,v 1.3.2.3 2008/06/08 21:15:57 agrabs Exp $
 
 class feedback_item_base {
     var $type;
@@ -24,7 +24,7 @@ class feedback_item_base {
      * @param $item the db-object from feedback_item
      * @param $usehtmleditor defines whether the editor should be shown or not
      */
-    function show_edit($item, $usehtmleditor = false) {
+    function &show_edit($item, $usehtmleditor = false) {
     }
 
     /**
@@ -51,12 +51,12 @@ class feedback_item_base {
 
     /**
      * @param $item the db-object from feedback_item
-     * @param integer $itemnr
+     * @param string $itemnr
      * @param integer $groupid
      * @param integer $courseid
      * @return integer the new itemnr
     */
-    function print_analysed($item, $itemnr = 0, $groupid = false, $courseid = false) {
+    function print_analysed($item, $itemnr = '', $groupid = false, $courseid = false) {
       return 0;
     }
 
@@ -92,10 +92,12 @@ class feedback_item_base {
     }
 }
 
+//a dummy class to realize pagebreaks
 class feedback_item_pagebreak extends feedback_item_base {
     var $type = "pagebreak";
     function init() {
     
     }
 }
+
 ?>

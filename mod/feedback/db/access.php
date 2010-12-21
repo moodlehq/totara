@@ -43,7 +43,6 @@ $mod_feedback_capabilities = array(
             'student' => CAP_ALLOW,
             'teacher' => CAP_ALLOW,
             'editingteacher' => CAP_ALLOW,
-            'coursecreator' => CAP_ALLOW,
             'admin' => CAP_ALLOW
         )
     ),
@@ -58,18 +57,16 @@ $mod_feedback_capabilities = array(
             'user' => CAP_ALLOW,
             'student' => CAP_ALLOW,
             'editingteacher' => CAP_PREVENT,
-            'coursecreator' => CAP_PREVENT,
             'admin' => CAP_PREVENT
         )
     ),
     
-    'mod/feedback:deletecompleteds' => array(
+    'mod/feedback:deletesubmissions' => array(
 
         'captype' => 'write',
         'contextlevel' => CONTEXT_MODULE,
         'legacy' => array(
             'editingteacher' => CAP_ALLOW,
-            'coursecreator' => CAP_ALLOW,
             'admin' => CAP_ALLOW
         )
     ),
@@ -85,13 +82,12 @@ $mod_feedback_capabilities = array(
 
     'mod/feedback:edititems' => array(
 
-        'riskbitmask' => RISK_SPAM,
+        'riskbitmask' => RISK_SPAM | RISK_XSS,
 
         'captype' => 'write',
         'contextlevel' => CONTEXT_MODULE,
         'legacy' => array(
             'editingteacher' => CAP_ALLOW,
-            'coursecreator' => CAP_ALLOW,
             'admin' => CAP_ALLOW
         )
     ),
@@ -104,7 +100,6 @@ $mod_feedback_capabilities = array(
         'contextlevel' => CONTEXT_MODULE,
         'legacy' => array(
             'editingteacher' => CAP_ALLOW,
-            'coursecreator' => CAP_ALLOW,
             'admin' => CAP_ALLOW
         )
     ),
@@ -117,7 +112,6 @@ $mod_feedback_capabilities = array(
         'contextlevel' => CONTEXT_MODULE,
         'legacy' => array(
             'editingteacher' => CAP_ALLOW,
-            'coursecreator' => CAP_ALLOW,
             'admin' => CAP_ALLOW
         )
     ),
@@ -128,20 +122,33 @@ $mod_feedback_capabilities = array(
         'contextlevel' => CONTEXT_MODULE,
         'legacy' => array(
             'editingteacher' => CAP_ALLOW,
-            'coursecreator' => CAP_ALLOW,
             'admin' => CAP_ALLOW
         )
     ),
 
     'mod/feedback:viewreports' => array(
+    
+        'riskbitmask' => RISK_PERSONAL,
 
         'captype' => 'read',
         'contextlevel' => CONTEXT_MODULE,
         'legacy' => array(
             'teacher' => CAP_ALLOW,
             'editingteacher' => CAP_ALLOW,
-            'coursecreator' => CAP_ALLOW,
             'admin' => CAP_ALLOW
+        )
+    ),
+
+    'mod/feedback:receivemail' => array(
+    
+        'riskbitmask' => RISK_PERSONAL,
+
+        'captype' => 'read',
+        'contextlevel' => CONTEXT_MODULE,
+        'legacy' => array(
+            'teacher' => CAP_ALLOW,
+            'editingteacher' => CAP_ALLOW,
+            'admin' => CAP_PREVENT
         )
     ),
 

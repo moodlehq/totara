@@ -3344,6 +3344,11 @@ function xmldb_main_upgrade($oldversion=0) {
         set_config('filter_mediaplugin_enable_ogg', 1);
         upgrade_main_savepoint($result, 2007101590.01);
     }
+
+    if ($result && $oldversion < 2007101591.01) {
+        $result = set_field('modules', 'version', '2007102600', 'name', 'feedback');
+    }
+
     return $result;
 }
 

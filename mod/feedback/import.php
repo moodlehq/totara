@@ -1,8 +1,8 @@
-<?php // $Id: import.php,v 1.1.4.1 2008/01/15 23:53:24 agrabs Exp $
+<?php // $Id: import.php,v 1.6.2.2 2008/06/13 21:43:02 agrabs Exp $
 /**
 * prints the form to import items from xml-file
 *
-* @version $Id: import.php,v 1.1.4.1 2008/01/15 23:53:24 agrabs Exp $
+* @version $Id: import.php,v 1.6.2.2 2008/06/13 21:43:02 agrabs Exp $
 * @author Andreas Grabs
 * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
 * @package feedback
@@ -16,6 +16,10 @@
     $choosefile = optional_param('choosefile', false, PARAM_PATH);
     $action = optional_param('action', false, PARAM_ALPHA);
 
+    if(($formdata = data_submitted('nomatch')) AND !confirm_sesskey()) {
+        error('no sesskey defined');
+    }
+    
     if ($id) {
         if (! $cm = get_coursemodule_from_id('feedback', $id)) {
             error("Course Module ID was incorrect");
@@ -31,12 +35,13 @@
     }
     $capabilities = feedback_load_capabilities($cm->id);
 
-    require_login($course->id);
+    require_login($course->id, true, $cm);
     
     if(!$capabilities->edititems){
         error('this action is not allowed');
     }
     
+    unset($filename);
     if ($action == 'choosefile' AND confirm_sesskey() ) { 
 
         // file checks out ok
@@ -66,15 +71,19 @@
     }
 
 
+    /// Print the page header
     $strfeedbacks = get_string("modulenameplural", "feedback");
     $strfeedback  = get_string("modulename", "feedback");
-	
+    $buttontext = update_module_button($cm->id, $course->id, $strfeedback);
+    
     $navlinks = array();
-    $navigation = build_navigation($navlinks, $cm);
-
-    print_header("$course->shortname: $feedback->name", "$course->fullname", $navigation,
-                     "", "", true, update_module_button($cm->id, $course->id, $strfeedback), 
-                     navmenu($course, $cm));
+    $navlinks[] = array('name' => $strfeedbacks, 'link' => "index.php?id=$course->id", 'type' => 'activity');
+    $navlinks[] = array('name' => format_string($feedback->name), 'link' => "", 'type' => 'activityinstance');
+    
+    $navigation = build_navigation($navlinks);
+    
+    print_header_simple(format_string($feedback->name), "",
+                 $navigation, "", "", true, $buttontext, navmenu($course, $cm));
 
 
     /// Print the main part of the page
@@ -101,8 +110,8 @@
           <input type="hidden" name="id" value="<?php p($id);?>" />
           <input type="hidden" name="do_show" value="templates" />
           <?php print_box_start('generalbox boxaligncenter boxwidthwide'); ?>
-          <input type="radio" name="deleteolditems" value="1" checked="checked" /> <?php echo get_string('delete_old_items', 'feedback').' ('.get_string('all_old_values_will_be_deleted','feedback').')';?><br />
-          <input type="radio" name="deleteolditems" value="0" /> <?php echo get_string('append_new_items', 'feedback').' ('.get_string('all_old_values_will_be_preserved','feedback').')';?><br />
+          <input type="radio" name="deleteolditems" value="1" checked="checked" /> <?php echo get_string('delete_old_items', 'feedback').' ('.get_string('oldvalueswillbedeleted','feedback').')';?><br />
+          <input type="radio" name="deleteolditems" value="0" /> <?php echo get_string('append_new_items', 'feedback').' ('.get_string('oldvaluespreserved','feedback').')';?><br />
           <table cellpadding="5">
                 <tr>
                      <td align="right"><?php print_string('file', 'feedback'); ?>:</td>
@@ -172,6 +181,33 @@
             $position++;
             //check the typ
             $typ = $item['@']['TYPE'];
+            
+            //check oldtypes first
+            switch($typ) {
+                case 'radio':
+                    $typ = 'multichoice';
+                    $oldtyp = 'radio';
+                    break;
+                case 'dropdown':
+                    $typ = 'multichoice';
+                    $oldtyp = 'dropdown';
+                    break;
+                case 'check':
+                    $typ = 'multichoice';
+                    $oldtyp = 'check';
+                    break;
+                case 'radiorated':
+                    $typ = 'multichoicerated';
+                    $oldtyp = 'radiorated';
+                    break;
+                case 'dropdownrated':
+                    $typ = 'multichoicerated';
+                    $oldtyp = 'dropdownrated';
+                    break;
+                default:
+                    $oldtyp = $typ;
+            }
+
             $itemclass = 'feedback_item_'.$typ;
             if($typ != 'pagebreak' AND !class_exists($itemclass)) {
                 $error->stat = false;
@@ -186,6 +222,25 @@
             $newitem->typ = $typ;
             $newitem->name = trim($item['#']['ITEMTEXT'][0]['#']);
             $newitem->presentation = trim($item['#']['PRESENTATION'][0]['#']);
+            //check old types of radio, check, and so on
+            switch($oldtyp) {
+                case 'radio':
+                    $newitem->presentation = 'r>>>>>'.$newitem->presentation;
+                    break;
+                case 'dropdown':
+                    $newitem->presentation = 'd>>>>>'.$newitem->presentation;
+                    break;
+                case 'check':
+                    $newitem->presentation = 'c>>>>>'.$newitem->presentation;
+                    break;
+                case 'radiorated':
+                    $newitem->presentation = 'r>>>>>'.$newitem->presentation;
+                    break;
+                case 'dropdownrated':
+                    $newitem->presentation = 'd>>>>>'.$newitem->presentation;
+                    break;
+            }
+            
             if($typ != 'pagebreak') {
                 $newitem->hasvalue = $itemobj->get_hasvalue();
             }else {

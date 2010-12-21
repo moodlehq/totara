@@ -1,8 +1,8 @@
-<?php // $Id: print.php,v 1.1.4.2 2008/04/04 10:38:00 agrabs Exp $
+<?php // $Id: print.php,v 1.4.2.2 2008/05/15 10:33:08 agrabs Exp $
 /**
 * print a printview of feedback-items
 *
-* @version $Id: print.php,v 1.1.4.2 2008/04/04 10:38:00 agrabs Exp $
+* @version $Id: print.php,v 1.4.2.2 2008/05/15 10:33:08 agrabs Exp $
 * @author Andreas Grabs
 * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
 * @package feedback
@@ -30,16 +30,25 @@
     }
     $capabilities = feedback_load_capabilities($cm->id);
 
-    require_login($course->id);
+    require_login($course->id, true, $cm);
     
     if(!$capabilities->edititems){
         error(get_string('error'));
     }
     
+    /// Print the page header
     $strfeedbacks = get_string("modulenameplural", "feedback");
     $strfeedback  = get_string("modulename", "feedback");
-
-    print_header();
+    $buttontext = update_module_button($cm->id, $course->id, $strfeedback);
+    
+    $navlinks = array();
+    $navlinks[] = array('name' => $strfeedbacks, 'link' => "index.php?id=$course->id", 'type' => 'activity');
+    $navlinks[] = array('name' => format_string($feedback->name), 'link' => "", 'type' => 'activityinstance');
+    
+    $navigation = build_navigation($navlinks);
+    
+    print_header_simple(format_string($feedback->name), "",
+                 $navigation, "", "", true, $buttontext, navmenu($course, $cm));
 
 
     /// Print the main part of the page
@@ -63,9 +72,9 @@
             $itempos++;
             echo '<tr>';
             //Items without value only are labels
-            if($feedbackitem->hasvalue == 1) {
+            if($feedbackitem->hasvalue == 1 AND $feedback->autonumbering) {
                 $itemnr++;
-                echo '<td valign="top">' . $itemnr . '.)&nbsp;</td>';
+                echo '<td valign="top">' . $itemnr . '.&nbsp;</td>';
             } else {
                 echo '<td>&nbsp;</td>';
             }
