@@ -37,7 +37,7 @@ echo "Set Oracle env vars";
 export ORACLE_HOME=/home/oracle/product/10.2
 export LD_LIBRARY_PATH=/home/oracle/product/10.2/instantclient
 
-env
+env &> envvars
 
 echo "Initialize installation";
 /usr/bin/php admin/cliupgrade.php \
