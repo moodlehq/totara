@@ -74,7 +74,7 @@ function SCORMapi1_3() {
     var CMIDecimal = '^-?([0-9]{1,5})(\\.[0-9]{1,18})?$';
     var CMIIdentifier = '^\\S{0,250}[a-zA-Z0-9]$';
     var CMIShortIdentifier = '^[\\w\.]{1,250}$';
-    var CMILongIdentifier = '^\\S{0,4000}[a-zA-Z0-9]$';
+    var CMILongIdentifier = '^\\S{0,4000}$';
     var CMIFeedback = '^.*$'; // This must be redefined
     var CMIIndex = '[._](\\d+).';
     var CMIIndexStore = '.N(\\d+).';
@@ -577,9 +577,6 @@ function SCORMapi1_3() {
                                                                 nodes = value.split(correct_responses[interactiontype].delimiter);
                                                             } else {
                                                                 nodes[0] = value;
-                                                            }
-                                                            if (interactiontype == 'choice' && nodes.length == 1) {
-                                                              alert('not enough choices: ' + element);
                                                             }
                                                             if ((nodes.length > 0) && (nodes.length <= correct_responses[interactiontype].max)) {
                                                                 errorCode = CRcheckValueNodes (element, interactiontype, nodes, value, errorCode);

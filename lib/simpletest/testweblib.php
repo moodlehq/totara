@@ -252,5 +252,9 @@ END;
         $long = "Here is a long string, more than 75 characters long, since by default html_to_text wraps text at 75 chars.";
         $this->assertEqual($long, html_to_text($long, 0));
     }
+
+    public function test_html_to_text_dont_screw_up_utf8() {
+        $this->assertEqual("\n\nAll the WORLD’S a stage.", html_to_text('<p>All the <strong>world’s</strong> a stage.</p>'));
+    }
 }
 ?>

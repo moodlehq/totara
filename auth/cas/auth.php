@@ -114,8 +114,12 @@ class auth_plugin_cas extends auth_plugin_base {
 // Connection to CAS server
 	 $this->connectCAS();
 
+     if($this->config->certificate_check && $this->config->certificate_path){
+         phpCAS::setCasServerCACert($this->config->certificate_path);
+     }else{
          // Don't try to validate the server SSL credentials
          phpCAS::setNoCasServerValidation();
+     }
 
 	  // Gestion de la connection CAS si acc�s direct d'un ent ou autre	
 	 if (phpCAS::checkAuthentication()) {
@@ -202,6 +206,19 @@ if ( !is_object($PHPCAS_CLIENT) ) {
     function config_form($config, $err, $user_fields) {
         include 'config.html';
     }
+
+    /**
+     * A chance to validate form data, and last chance to
+     * do stuff before it is inserted in config_plugin
+     * @param object object with submitted configuration settings (without system magic quotes)
+     * @param array $err array of error messages
+     */
+    function validate_form(&$form, &$err) {
+        $certificate_path = trim($form->certificate_path);
+        if ($form->certificate_check && empty($certificate_path)) {
+            $err['certificate_path'] = get_string('auth_cas_certificate_path_empty', 'auth');
+        }
+    }
     /**
      * Returns the URL for changing the user's pw, or empty if the default can
      * be used.
@@ -248,6 +265,10 @@ if ( !is_object($PHPCAS_CLIENT) ) {
             $config->logoutcas = '';
         if (!isset ($config->multiauth))
             $config->multiauth = '';
+        if (!isset ($config->certificate_check))
+            $config->certificate_check = '';
+        if (!isset ($config->certificate_path))
+            $config->certificate_path = '';
         // LDAP settings
         if (!isset($config->host_url))
             { $config->host_url = ''; }
@@ -290,6 +311,8 @@ if ( !is_object($PHPCAS_CLIENT) ) {
         set_config('proxycas',     $config->proxycas,     'auth/cas');
         set_config('logoutcas',     $config->logoutcas,     'auth/cas');
         set_config('multiauth',     $config->multiauth,     'auth/cas');
+        set_config('certificate_check',     $config->certificate_check,     'auth/cas');
+        set_config('certificate_path',     $config->certificate_path,     'auth/cas');
         // save LDAP settings
         set_config('host_url', $config->host_url, 'auth/cas');
         set_config('ldapencoding', $config->ldapencoding, 'auth/cas');
