@@ -5804,6 +5804,11 @@ function print_error($errorcode, $module='error', $link='', $a=NULL, $extralocat
         die;
     }
 
+    if (defined('UNITTEST_XML')) {
+        trigger_error(htmlspecialchars($message, E_USER_WARNING));
+        die;
+    }
+
     if ($module === 'error') {
         $modulelink = 'moodle';
     } else {
