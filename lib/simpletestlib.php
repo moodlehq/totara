@@ -399,7 +399,15 @@ function _private_execute_sql($sql, $localdb = null) {
         $sql = trim($sql, ';');
     }
     if (!$rs = $localdb->Execute($sql)) {
-        echo '<p>SQL ERROR: ', $localdb->ErrorMsg(), ". STATEMENT: $sql</p>";
+        if (defined('UNITTEST_XML')) {
+            echo 'SQL ERROR: ';
+            echo htmlspecialchars($localdb->ErrorMsg());
+            echo ' STATEMENT: ';
+            echo htmlspecialchars($sql);
+        }
+        else {
+            echo '<p>SQL ERROR: ', $localdb->ErrorMsg(), ". STATEMENT: $sql</p>";
+        }
     }
     return $rs;
 }

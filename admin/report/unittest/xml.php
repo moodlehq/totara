@@ -27,6 +27,7 @@ $thorough = true;
 /* The UNITTEST constant can be checked elsewhere if you need to know
  * when your code is being run as part of a unit test. */
 define('UNITTEST', true);
+define('UNITTEST_XML', true);
 $langfile = 'simpletest';
 
 // Create the group of tests.
