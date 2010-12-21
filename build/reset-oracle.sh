@@ -15,6 +15,8 @@ chmod 755 /var/lib/hudson
 echo "Delete config.php";
 rm config.php
 
+touch iwashere
+
 echo "Drop tables from database hudson/moodle";
 #DROPDB="DROP database \`t1-hudsontesting\`;"
 #mysql -u hudson -e "$DROPDB"
@@ -31,6 +33,12 @@ rm ../moodle_error.log
 touch ../moodle_error.log
 chmod 777 ../moodle_error.log
 
+echo "Set Oracle env vars";
+export ORACLE_HOME=/home/oracle/product/10.2
+export LD_LIBRARY_PATH=/home/oracle/product/10.2/instantclient
+
+env &> envvars
+
 echo "Initialize installation";
 /usr/bin/php admin/cliupgrade.php \
       --lang=en_utf8 \
@@ -38,10 +46,10 @@ echo "Initialize installation";
       --moodledir="/var/lib/hudson/jobs/Totara-Oracle/workspace" \
       --datadir="/var/lib/hudson/jobs/Totara-Oracle/moodledata" \
       --dbtype="oci8po" \
-      --dbname="127.0.0.1:1521/moodle" \
+      --dbname="(DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST=brumbies.wgtn.cat-it.co.nz)(PORT=1522))(CONNECT_DATA=(SERVICE_NAME = MOODLE)))" \
       --dbhost="" \
       --dbuser="hudson" \
-      --dbpass="password" \
+      --dbpass="moodle" \
       --prefix="m_" \
       --verbose=3 \
       --sitefullname="Totara" \
@@ -53,7 +61,7 @@ echo "Initialize installation";
       --adminemail=simonc@catalyst.net.nz \
       --adminusername=admin \
       --adminpassword="passworD1!" \
-      --interactivelevel=0
+      --interactivelevel=0 &> install-log
 
 echo "Generate some test users"
 php -f build/generate-users.php

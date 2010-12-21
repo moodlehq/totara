@@ -29,7 +29,7 @@
 
  $text ='<li><a href="'.$CFG->wwwroot.'/idp/index.php">'.get_string('mydevelopmentplans', 'local').'</a></li>';
  $text .='<li><a href="'.$CFG->wwwroot.'/my/bookings.php">'.get_string('mybookings', 'local').'</a></li>';
- $text .='<li class="last"><a href="'.$CFG->wwwroot.'/my/records.php">'.get_string('myrecordoflearning', 'local').'</a></li>';
+ $text .='<li class="last"><a href="'.$CFG->wwwroot.'/local/plan/record/courses.php">'.get_string('myrecordoflearning', 'local').'</a></li>';
  
  echo $text;
 ?>

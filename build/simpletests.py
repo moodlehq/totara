@@ -1,9 +1,17 @@
-# Run simpletests
+# Run simpletests as an admin
+import mechanize, sys
 
-import mechanize
+# Get base url from arguments
+if len(sys.argv) != 2:
+    print 'Incorrect number of arguments, expects one'
+    sys.exit(2)
+
+rooturl = sys.argv[1]
+
+# Run tests
+print 'Root url: %s' % rooturl
 
 print 'Open login page'
-rooturl = 'http://brumbies.wgtn.cat-it.co.nz/totara-hudson/'
 mech = mechanize.Browser()
 mech.open(rooturl+'login/index.php')
 

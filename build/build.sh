@@ -16,7 +16,7 @@
 #
 
 echo "STEP 1: Run simpletests";
-python build/simpletests.py
+python build/simpletests.py http://brumbies.wgtn.cat-it.co.nz/totara-hudson/
 
 echo "Convert to Junit XML";
 xsltproc build/simpletest_to_junit.xsl build/logs/simpletest-results.xml > build/logs/xml/TEST-suite.xml

@@ -250,10 +250,10 @@ function totara_print_my_learning_nav($return=false) {
     if(get_config(NULL, 'idp_showlearnrec')==2){
         $returnstr .= '<tr>
             <td align="left">
-                <a href="'.$CFG->wwwroot.'/my/records.php?id='.$USER->id.'" title=""><center><img src="' . $CFG->pixpath . '/i/rol.png" /></center></a>
+                <a href="'.$CFG->wwwroot.'/local/plan/record/courses.php?userid='.$USER->id.'" title=""><center><img src="' . $CFG->pixpath . '/i/rol.png" /></center></a>
             </td>
             <td align="left" valign="center">
-                <span style="font-size: small"><a href="'.$CFG->wwwroot.'/my/records.php?id='.$USER->id.'">'.get_string('recordoflearning','local').'</a></span>
+                <span style="font-size: small"><a href="'.$CFG->wwwroot.'/local/plan/record/courses.php?userid='.$USER->id.'">'.get_string('recordoflearning','local').'</a></span>
             </td>
         </tr>';
     }
