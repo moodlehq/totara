@@ -15,6 +15,8 @@ chmod 755 /var/lib/hudson
 echo "Delete config.php";
 rm config.php
 
+touch iwashere
+
 echo "Drop tables from database hudson/moodle";
 #DROPDB="DROP database \`t1-hudsontesting\`;"
 #mysql -u hudson -e "$DROPDB"
@@ -32,8 +34,8 @@ touch ../moodle_error.log
 chmod 777 ../moodle_error.log
 
 echo "Set Oracle env vars";
-ORACLE_HOME=/home/oracle/product/10.2
-LD_LIBRARY_PATH=/home/oracle/product/10.2/instantclient
+export ORACLE_HOME=/home/oracle/product/10.2
+export LD_LIBRARY_PATH=/home/oracle/product/10.2/instantclient
 
 echo "Initialize installation";
 /usr/bin/php admin/cliupgrade.php \
