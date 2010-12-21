@@ -18,6 +18,7 @@ rm config.php
 touch iwashere
 
 echo "Drop tables from database hudson/moodle";
+
 #DROPDB="DROP database \`t1-hudsontesting\`;"
 #mysql -u hudson -e "$DROPDB"
 
@@ -35,7 +36,7 @@ chmod 777 ../moodle_error.log
 
 echo "Set Oracle env vars";
 export ORACLE_HOME=/home/oracle/product/10.2
-export LD_LIBRARY_PATH=/home/oracle/product/10.2/instantclient
+export LD_LIBRARY_PATH=/home/oracle/product/10.2/lib
 
 env &> envvars
 
