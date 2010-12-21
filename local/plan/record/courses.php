@@ -124,6 +124,11 @@
             'value' => 'coursepriority',
             'heading' => 'Course priority',
         ),
+        array(
+            'type' => 'course_completion',
+            'value' => 'status',
+            'heading' => 'Status',
+        ),
     );
     $embed->contentmode = 0;
     $embed->embeddedparams = array(

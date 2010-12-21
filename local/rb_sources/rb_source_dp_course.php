@@ -122,6 +122,14 @@ from
                 REPORT_BUILDER_RELATION_MANY_TO_ONE,
                 array('dp_course','base')
         );
+        $joinlist[] = new rb_join(
+                'course_completion',
+                'LEFT',
+                $CFG->prefix . 'course_completions',
+                '(base.courseid = course_completion.course
+                    AND base.userid = course_completion.userid)',
+                REPORT_BUILDER_RELATION_ONE_TO_ONE
+        );
 
         $this->add_course_table_to_joinlist($joinlist, 'base', 'courseid');
         $this->add_user_table_to_joinlist($joinlist, 'base','userid');
@@ -244,6 +252,16 @@ from
                 array(
                     'joins'=>'dp_template',
                     'displayfunc'=>'nice_date'
+                )
+        );
+        $columnoptions[] = new rb_column_option(
+                'course_completion',
+                'status',
+                'Completion Status',
+                "CASE WHEN course_completion.timecompleted IS NOT NULL THEN 'Completed' " .
+                    "ELSE 'Not Completed' END",
+                array(
+                    'joins' => 'course_completion',
                 )
         );
 
