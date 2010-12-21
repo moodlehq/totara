@@ -187,7 +187,16 @@ class feedback_item_multichoicerated extends feedback_item_base {
         $align = get_string('thisdirection') == 'ltr' ? 'left' : 'right';
         $info = $this->get_info($item);
         
-        $lines = explode (FEEDBACK_MULTICHOICERATED_LINE_SEP, stripslashes_safe($info->presentation));
+        // Remove empty choices
+        $temp = explode (FEEDBACK_MULTICHOICERATED_LINE_SEP, stripslashes_safe($info->presentation));
+        $lines = array();
+        foreach($temp as $item) {
+            if(trim($item) != '0####') {
+                $lines[] = $item;
+            }
+        }
+
+
         $requiredmark =  ($item->required == 1)?'<span class="feedback_required_mark">*</span>':'';
         if($highlightrequire AND $item->required AND intval($value) <= 0) {
             $highlight = 'bgcolor="#FFAAAA" class="missingrequire"';

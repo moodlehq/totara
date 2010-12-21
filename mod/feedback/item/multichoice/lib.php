@@ -179,10 +179,10 @@ class feedback_item_multichoice extends feedback_item_base {
         if(is_array($data)) {
             for($i = 0; $i < sizeof($data); $i++) {
                 $aData = $data[$i];
-                
+
                 $worksheet->setFormat("<l><f><ro2><vo><c:blue>");
                 $worksheet->write_string($rowOffset, $i + 1, trim($aData->answertext));
-                
+
                 $worksheet->setFormat("<l><vo>");
                 $worksheet->write_number($rowOffset + 1, $i + 1, $aData->answercount);
                 $worksheet->setFormat("<l><f><vo><pr>");
@@ -196,10 +196,16 @@ class feedback_item_multichoice extends feedback_item_base {
     function print_item($item, $value = false, $readonly = false, $edit = false, $highlightrequire = false){
         $info = $this->get_info($item);
         $align = get_string('thisdirection') == 'ltr' ? 'left' : 'right';
-        
-        $presentation = explode (FEEDBACK_MULTICHOICE_LINE_SEP, stripslashes_safe($info->presentation));
-        
-        
+
+        // Remove empty choices
+        $temp = explode (FEEDBACK_MULTICHOICE_LINE_SEP, stripslashes_safe($info->presentation));
+        $presentation = array();
+        foreach($temp as $item) {
+            if(trim($item) != '') {
+                $presentation[] = $item;
+            }
+        }
+
         //test if required and no value is set so we have to mark this item
         //we have to differ check and the other subtypes
         if($info->subtype == 'c') {
@@ -214,7 +220,7 @@ class feedback_item_multichoice extends feedback_item_base {
                 $highlight = '';
             }
             $requiredmark =  ($item->required == 1)?'<span class="feedback_required_mark">*</span>':'';
-            
+
             echo '<td '.$highlight.' valign="top" align="'.$align.'">'.format_text(stripslashes_safe($item->name).$requiredmark, true, false, false).'</td>';
             echo '<td valign="top" align="'.$align.'">';
         }else {
