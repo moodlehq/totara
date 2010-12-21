@@ -1250,9 +1250,10 @@ function facetoface_write_worksheet_header(&$worksheet)
     $worksheet->write_string(0, $pos++, get_string('duration', 'facetoface'));
     $worksheet->write_string(0, $pos++, get_string('status', 'facetoface'));
 
-    $trainerroles = facetoface_get_trainer_roles();
-    foreach ($trainerroles as $role) {
+    if($trainerroles = facetoface_get_trainer_roles()) {
+      foreach ($trainerroles as $role) {
         $worksheet->write_string(0, $pos++, get_string('role').': '.$role->name);
+      }
     }
 
     $userfields = facetoface_get_userfields();
@@ -1463,7 +1464,8 @@ function facetoface_write_activity_attendance(&$worksheet, $startingrow, $faceto
                     $worksheet->write_number($i,$j++,(int)$session->duration);
                     $worksheet->write_string($i,$j++,$status);
 
-                    foreach (array_keys($trainerroles) as $roleid) {
+                    if($trainerroles) {
+                      foreach (array_keys($trainerroles) as $roleid) {
                         if (!empty($sessiontrainers[$roleid])) {
                             $trainers = array();
                             foreach ($sessiontrainers[$roleid] as $trainer) {
@@ -1477,6 +1479,7 @@ function facetoface_write_activity_attendance(&$worksheet, $startingrow, $faceto
                         }
 
                         $worksheet->write_string($i, $j++, $trainers);
+                      }
                     }
 
                     foreach ($userfields as $shortname => $fullname) {
