@@ -59,7 +59,7 @@ echo "Initialize installation";
       --adminemail=simonc@catalyst.net.nz \
       --adminusername=admin \
       --adminpassword="passworD1!" \
-      --interactivelevel=0 > install-log
+      --interactivelevel=0 &> install-log
 
 echo "Generate some test users"
 php -f build/generate-users.php
