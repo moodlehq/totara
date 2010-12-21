@@ -482,6 +482,18 @@ div#header {
     text-align: center;
 }
 
+/**
+    Action notifications
+**/
+.notifyproblem {
+  text-align:left !important;
+  background:url("images/cross.gif") no-repeat scroll 10px center #F6BEBF;
+}
+.notifysuccess {
+  text-align:left !important;
+  background:url("images/tick.gif") no-repeat scroll 10px center #CFF1B4;
+}
+
 /*****************************************************************************/
 /** Dialogs **/
 /*****************************************************************************/

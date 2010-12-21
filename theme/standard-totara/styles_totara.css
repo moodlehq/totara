@@ -242,24 +242,24 @@ div#header .logo {
 /**
     Action notifications
 **/
-.notifyproblem {
+.notifyproblem, .notifysuccess {
   text-align: center;
-  padding: 10px;
-  border:1px solid #D8000C;
-  color:#D8000C;
-  background:#FFBABA;
-  width:50%;
-  margin:0 auto;
+  padding:10px 40px;
+  width:40%;
+  margin:5px auto 15px auto;
+  font-weight:bold;
+  text-align:left !important;
+}
+.notifyproblem {
+  border:1px solid #BE0000;
+  color:#BE0000;
+  background:#F6BEBF;
 }
 
 .notifysuccess {
-  text-align:center;
-  padding: 10px;
-  border:1px solid #4F8A10;
-  color:#4F8A10;
-  background:#DFF2BF;
-  width:50%;
-  margin:0 auto;
+  border:1px solid #62AA2C;
+  color:#62AA2C;
+  background:#CFF1B4;
 }
 
 
