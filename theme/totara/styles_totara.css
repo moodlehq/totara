@@ -265,6 +265,10 @@ div#header {
     color: #FFFFFF;
     font-weight: bold;
 }
+.loginpanel {
+    background:url("images/login_box.gif") no-repeat top center;
+    padding-bottom:30px;
+}
 
 .navigation {
   display:none;
