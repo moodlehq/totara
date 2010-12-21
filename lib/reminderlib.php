@@ -135,6 +135,13 @@ class reminder extends data_object {
      */
     public $deleted;
 
+    /**
+     * Reminder period
+     * @access public
+     * @var int
+     */
+    public $period;
+
 
     /**
      * Finds and returns all data_object instances based on params.
