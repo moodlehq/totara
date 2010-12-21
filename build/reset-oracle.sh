@@ -36,7 +36,7 @@ chmod 777 ../moodle_error.log
 
 echo "Set Oracle env vars";
 export ORACLE_HOME=/home/oracle/product/10.2
-export LD_LIBRARY_PATH=/home/oracle/product/10.2/lib
+export LD_LIBRARY_PATH=/home/oracle/product/10.2/lib32
 
 env &> envvars
 
