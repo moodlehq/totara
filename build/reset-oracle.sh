@@ -12,15 +12,29 @@ echo "Update hudson directory permissions"
 # job
 chmod 755 /var/lib/hudson
 
+echo "Set Oracle env vars";
+export ORACLE_SID=moodle
+export ORACLE_HOME=/home/oracle/product/10.2
+export LD_LIBRARY_PATH=/home/oracle/product/10.2/lib32
+
 echo "Delete config.php";
 rm config.php
 
-touch iwashere
-
 echo "Drop tables from database hudson/moodle";
-
-#DROPDB="DROP database \`t1-hudsontesting\`;"
-#mysql -u hudson -e "$DROPDB"
+$ORACLE_HOME/bin/sqlplus hudson/moodle <<EOSSPLUS
+set verify off
+set linesize 150
+set pagesize 200
+set echo off
+set feedback off
+set long 32000
+set termout off
+set showmode off
+SPOOL /tmp/DELETEME.SQL
+select 'drop table '||table_name||' cascade constraints ;' from user_tables;
+SPOOL OFF
+@/tmp/DELETEME.SQL
+EOSSPLUS
 
 echo "Delete old moodledata";
 rm -Rf ../moodledata/
@@ -33,12 +47,6 @@ echo "Reset apache logs";
 rm ../moodle_error.log
 touch ../moodle_error.log
 chmod 777 ../moodle_error.log
-
-echo "Set Oracle env vars";
-export ORACLE_HOME=/home/oracle/product/10.2
-export LD_LIBRARY_PATH=/home/oracle/product/10.2/lib32
-
-env &> envvars
 
 echo "Initialize installation";
 /usr/bin/php admin/cliupgrade.php \
