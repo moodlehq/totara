@@ -7,7 +7,7 @@ require_once "$CFG->dirroot/mod/facetoface/lib.php";
 require_js('yui_dom-event');
 require_js('yui_container');
 
-define('MAX_EVENTS_PER_DAY', 5);
+define('MAX_EVENTS_PER_DAY', 4);
 define('MAX_WAITLISTED_SESSIONS', 7);
 
 $timenow = time();
@@ -331,7 +331,7 @@ function show_month_detailed($baseparams, $display, $m, $y, $courses, $groups, $
             echo '<ul>';
             $i=1;
             foreach($eventsbyday[$day] as $eventindex) {
-                if ($i < MAX_EVENTS_PER_DAY or count($eventsbyday[$day]) == MAX_EVENTS_PER_DAY) {
+                if ($i <= MAX_EVENTS_PER_DAY or count($eventsbyday[$day]) == MAX_EVENTS_PER_DAY) {
                     // If event has a class set then add it to the event <li> tag
                     $eventclass = '';
                     if (!empty($events[$eventindex]->class)) {
@@ -343,7 +343,7 @@ function show_month_detailed($baseparams, $display, $m, $y, $courses, $groups, $
                 }
                 else {
                     echo '<li>';
-                    print_string('xevents', 'block_facetoface', count($eventsbyday[$day]) - MAX_EVENTS_PER_DAY + 1);
+                    print_string('xevents', 'block_facetoface', count($eventsbyday[$day]) - MAX_EVENTS_PER_DAY);
                     echo '</li>';
                     break;
                 }
