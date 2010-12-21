@@ -93,6 +93,7 @@ $string['norestrictionsfound'] = 'No restrictions found. Ask your developer to a
 $string['restrictionswarning'] = '<strong>Warning:</strong> If none of these boxes are checked, all users will be able to view all available records from this source.';
 $string['shortnametaken'] = 'That shortname is already in use';
 $string['norepeatcols'] = 'You cannot include the same column more than once';
+$string['norepeatfilters'] = 'You cannot include the same filter more than once';
 $string['deletereport'] = 'Report Deleted';
 $string['nodeletereport'] = 'Report could not be deleted';
 $string['reloadreport'] = 'Report settings have been reset';

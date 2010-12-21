@@ -225,6 +225,12 @@ class report_builder_edit_filters_form extends moodleform {
         $mform->setType('source', PARAM_TEXT);
         $this->add_action_buttons();
     }
+
+    function validation($data) {
+        $err = array();
+        $err += validate_unique_filters($data);
+        return $err;
+    }
 }
 
 
@@ -527,6 +533,41 @@ function validate_unique_columns($data) {
     if(isset($data['newcolumns'])) {
         if(array_key_exists($data['newcolumns'], $used_cols)) {
             $errors['newcolumns'] = get_string('norepeatcols','local_reportbuilder');
+        }
+    }
+    return $errors;
+}
+
+
+/**
+ * Method to check each filter is only included once
+ *
+ * @param array $data Array of data from the form
+ *
+ * @return array Array of errors to display on failure
+ */
+function validate_unique_filters($data) {
+    $errors = array();
+
+    $id = $data['id'];
+    $used_filters = array();
+    if($currentfilters = get_records('report_builder_filters','reportid', $id)) {
+        foreach($currentfilters as $filt) {
+            $field = "filter{$filt->id}";
+            if(isset($data[$field])) {
+                if(array_key_exists($data[$field], $used_filters)) {
+                    $errors[$field] = get_string('norepeatfilters','local_reportbuilder');
+                } else {
+                    $used_filters[$data[$field]] = 1;
+                }
+            }
+        }
+    }
+
+    // also check new filter if set
+    if(isset($data['newfilter'])) {
+        if(array_key_exists($data['newfilter'], $used_filters)) {
+            $errors['newfilter'] = get_string('norepeatfilters','local_reportbuilder');
         }
     }
     return $errors;
