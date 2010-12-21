@@ -1,0 +1,11 @@
+/*
+ * These styles are ONLY included for IE7 (via meta.php)
+ */
+
+input[type="submit"],
+input[type="button"],
+button,
+.ui-state-default,
+.ui-widget-content button.ui-state-default {
+    border:0px;
+}

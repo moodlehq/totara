@@ -31,7 +31,12 @@ input, select, button {
   font-size: 11px !important;
 }
 
-.totarabutton {
+/* Give buttons a nice blue background and curved corners */
+input[type="submit"],
+input[type="button"],
+button,
+.ui-state-default,
+.ui-widget-content button.ui-state-default {
     -moz-border-radius: 4px;
     -webkit-border-radius: 4px;
     border-radius: 4px;
@@ -42,11 +47,28 @@ input, select, button {
     margin:0px 1px;
     padding:3px 6px;
 }
-.totarabutton.hover {
+
+/* Change the background image of buttons when the mouse hovers over them */
+input[type="submit"]:hover,
+input[type="button"]:hover,
+button:hover,
+.ui-state-default:hover,
+.ui-widget-content button.ui-state-default:hover {
      background: url("images/button_repeat_hover.jpg") repeat-x scroll left top #146671;
      border-color:#1f838d;
 }
-.totarabutton.disabled {
+
+/* Give buttons a grey style when they are disabled */
+input[type="submit"][disabled="disabled"],
+input[type="button"][disabled="disabled"],
+button[disabled="disabled"],
+.ui-state-default[disabled="disabled"],
+.ui-widget-content button.ui-state-default[disabled="disabled"],
+input[type="submit"][disabled],
+input[type="button"][disabled],
+button[disabled],
+.ui-state-default[disabled],
+.ui-widget-content button.ui-state-default[disabled]{
     border-color:#ACA899;
     color:#ACA899;
     background:#F5F4EA;
