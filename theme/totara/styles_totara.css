@@ -234,7 +234,7 @@ div#header {
 }
 
 .navbar .breadcrumb .sep {
-  text-indent: 1000px;
+  text-indent: -1000px;
   width: 15px;
   overflow:hidden;
   display:block;
