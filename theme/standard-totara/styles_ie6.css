@@ -2,6 +2,11 @@
  * These styles are ONLY included for IE6 (via meta.php)
  */
 
+input, select, button {
+  padding-left:3px;
+  padding-right:3px;
+  overflow:visible;
+}
 #totara_menu ul li {
 	display: inline-block;
 	width: 30px;
