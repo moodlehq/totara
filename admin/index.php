@@ -705,13 +705,13 @@
 
     if (empty($CFG->registrationenabled)) {
         print_box_start('generalbox adminerror');
-        print_string('registrationisdisabled', 'admin', $CFG->wwwroot . '/admin/registration.php');
+        print_string('registrationisdisabled', 'admin', $CFG->wwwroot . '/admin/register.php');
         print_box_end();
     } elseif (empty($CFG->registered)) {
         print_box_start('generalbox adminerror');
         print_string('sitehasntregistered', 'admin');
         print_box_end();
-    } elseif ($CFG->registered < time() - 8*24*60*60) {
+    } elseif ($CFG->registered < time() - 60 * 60 * 24 * 31) {
         print_box_start('generalbox adminerror');
         print_string('registrationoutofdate', 'admin');
         print_box_end();

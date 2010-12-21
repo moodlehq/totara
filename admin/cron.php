@@ -456,6 +456,25 @@
         build_context_path();
         mtrace ('Built context paths');
 
+        if ($CFG->registrationenabled) {
+            $registrationdue = $oktotry = false;
+            if ($CFG->registered < (time() - 60 * 60 * 24 * 30)) {
+                // Register up to once a month
+                $registrationdue = true;
+            }
+            if ($CFG->registrationattempted < (time() - 60 * 60 * 24 * 7)) {
+                // Try registering once a week if unsuccessful
+                $oktotry = true;
+            }
+            if ($registrationdue && $oktotry) {
+                mtrace("Performing registration update:");
+                require_once('registerlib.php');
+                $registerdata = get_registration_data();
+                send_registration_data($registerdata);
+                mtrace("Registration update done");
+            }
+        }
+
         mtrace("Finished clean-up tasks...");
 
     } // End of occasional clean-up tasks

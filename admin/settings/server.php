@@ -71,6 +71,9 @@ if (isloggedin()) {
 $temp->add(new admin_setting_configtext('supportname', get_string('supportname', 'admin'), get_string('configsupportname', 'admin'), $primaryadminname, PARAM_NOTAGS));
 $temp->add(new admin_setting_configtext('supportemail', get_string('supportemail', 'admin'), get_string('configsupportemail', 'admin'), $primaryadminemail, PARAM_NOTAGS));
 $temp->add(new admin_setting_configtext('supportpage', get_string('supportpage', 'admin'), get_string('configsupportpage', 'admin'), '', PARAM_URL));
+$temp->add(new admin_setting_configtext('orgname', get_string('orgname', 'admin'), get_string('orgnamehelp', 'admin'), '', PARAM_NOTAGS));
+$temp->add(new admin_setting_configtext('techsupportemail', get_string('techsupportemail', 'admin'), get_string('techsupportemailhelp', 'admin'), '', PARAM_NOTAGS));
+$temp->add(new admin_setting_configtext('techsupportphone', get_string('techsupportphone', 'admin'), get_string('techsupportphonehelp', 'admin'), '', PARAM_NOTAGS));
 $ADMIN->add('server', $temp, 100);
 
 
