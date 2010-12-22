@@ -2258,6 +2258,12 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && drop_field($table, $field);
     }
 
+    if ($result && $oldversion < 2010111601) {
+        if (!isset($CFG->registrationenabled)) {
+            $result = $result && set_config('registrationenabled', '1');
+        }
+    }
+
 
     return $result;
 }
