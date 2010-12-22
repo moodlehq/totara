@@ -98,10 +98,10 @@ class rb_trainer_content extends rb_base_content {
         $enable = reportbuilder::get_setting($reportid, $type, 'enable');
         $who = reportbuilder::get_setting($reportid, $type, 'who');
 
-        $mform->addElement('header', 'trainer_header', get_string('showbytrainer',
-            'local_reportbuilder'));
+        $mform->addElement('header', 'trainer_header', get_string('showbyx',
+            'local_reportbuilder', lcfirst($title)));
         $mform->addElement('checkbox', 'trainer_enable', '',
-            get_string('bytrainerenable', 'local_reportbuilder'));
+            get_string('showbasedonx', 'local_reportbuilder', lcfirst($title)));
         $mform->disabledIf('trainer_enable', 'contentenabled', 'eq', 0);
         $mform->setDefault('trainer_enable', $enable);
         $radiogroup = array();
