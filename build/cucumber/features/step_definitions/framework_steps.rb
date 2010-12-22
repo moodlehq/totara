@@ -17,3 +17,21 @@ Given /^there is a complete competency scale$/ do
     |#{newscaleid}|
 })
 end
+
+Given /^there is a (\w+) framework and (\d+) depth$/ do |framework_type, no_depth|
+
+  Given "there are 1 #{framework_type} framework record with #{no_depth} #{framework_type} depth each"
+
+end
+
+Given /^I add an (\w+)$/ do |framework_type|
+  Given "I add a #{framework_type} with parent \"Top\""
+end
+
+Given /^I add a (\w+) with parent "([^"]*)"$/ do |framework_type, parent_name|
+  Given "I press \"Add new #{framework_type}\""
+  Given "I fill in \"fullname\" with \"My #{framework_type} fullname\""
+  Given "I fill in \"shortname\" with \"My shortname\""
+  Given "I press \"Save changes\""
+  Given "I press \"Return to #{framework_type} framework\""
+end

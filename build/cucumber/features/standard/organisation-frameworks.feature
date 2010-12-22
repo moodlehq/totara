@@ -203,6 +203,7 @@ Feature: Manage Organisation Frameworks
       And I press "Save changes" 
   Then I should see "Test Organisation Depth" 3 times
 
+
   @store_org_framework
   @store_org_depth
   Scenario: Deleting a organisation depth
@@ -212,4 +213,53 @@ Feature: Manage Organisation Frameworks
       And I click the "Test Organisation Framework 1" link
       And I delete the 1st edit organisation depth table entry and confirm
   Then I should not see "Test Organisation Depth"
+
+  @store_org
+  @store_org_framework
+  @store_org_depth
+  @store_org_depth_info_category
+  Scenario: Viewing a custom field category
+    Given there is 1 organisation framework record
+      And I am logged in as admin
+      And I am on the manage organisation frameworks page
+      And I click the "Test Organisation Framework 1" link
+      And I press "Add a new depth level"
+      And I fill in "fullname" with "Test Organisation Depth 1"
+      And I fill in "shortname" with "Test Org Depth 1"
+      And I press "Save changes" 
+    When I click the "Test Organisation Depth 1" link
+    Then I should see "Miscellaneous" within edit organisation table
+
+
+  @store_org
+  @store_org_framework
+  @store_org_depth
+  @store_org_depth_info_category
+  Scenario: Adding a custom field category
+    Given there is a organisation framework and 1 depth
+      And I am logged in as admin
+      And I am on the manage organisation frameworks page
+      And I click the "Test Organisation Framework 1" link
+      And I click the "Test Organisation Depth 1" link
+    When I press "Create custom field category"
+      And I fill in "name" with "Test Custom Category 1"
+      And I press "Save changes" 
+    Then I should see "Test Custom Category 1"
+
+
+  @store_org
+  @store_org_framework
+  @store_org_depth
+  @store_org_depth_info_category
+  Scenario: Deleting a custom field category
+    Given there is a organisation framework and 1 depth
+      And I am logged in as admin
+      And I am on the manage organisation frameworks page with editing on
+      And I click the "Test Organisation Framework 1" link
+      And I click the "Test Organisation Depth 1" link
+      And I press "Create custom field category"
+      And I fill in "name" with "Test Custom Category 1"
+      And I press "Save changes" 
+    When I delete the 1st custom category table entry and confirm
+    Then I should see "No custom field categories defined"
 

@@ -7,10 +7,10 @@ Feature: Manage Organisation
   @store_org_framework
   @store_org_depth
   Scenario: No organisations
-    Given there are no organisation records
+    Given there are no organisation framework records
       And I am logged in as admin
       And I am on the manage organisations page
-    Then I should see "No organisations defined"
+    Then I should see "No organisation frameworks available"
 
   @store_org
   @store_org_framework
@@ -75,4 +75,19 @@ Feature: Manage Organisation
       And I add an organisation
       And I delete the 1st organisation table entry and confirm
     Then I should not see "My organisation fullname"
+
+  @store_org
+  @store_org_framework
+  @store_org_depth
+  Scenario: Filter an organisation
+    Given there is a organisation framework and 1 depth
+      And I am logged in as admin
+      And I am on the manage organisations page with editing on
+      And I add an organisation
+    When I select "contains" from "fullname_op"
+      And I fill in "fullname" with "test filter"
+      And I press "Add filter"
+    Then I should not see "My organisation fullname"
+    When I press "Remove all filters"
+    Then I should see "My organisation fullname"
 

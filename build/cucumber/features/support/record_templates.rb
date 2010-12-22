@@ -41,6 +41,19 @@ def get_comp_scale_values_record number
   }
 end
 
+def get_comp_depth_record number
+  {
+    'fullname' => 'Test Competency Depth '+number.to_s,
+    'shortname' => 'Test Comp Depth '+number.to_s,
+    'description' => 'Description for Test Competency Depth '+number.to_s,
+    'depthlevel' => 1,
+    'frameworkid' => get_current_sequence('mdl_comp_framework', 'id'),
+    'timecreated' => Time.now.to_i,
+    'timemodified' => Time.now.to_i,
+    'usermodified' => 0,
+  }
+end
+
 def get_org_framework_record number
   {
     'fullname' => 'Test Organisation Framework '+number.to_s,

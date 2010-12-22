@@ -22,5 +22,5 @@ When /^I ([\w\s]+) the (\d+)(?:st|nd|rd|th) ([\w\s]+) entry and confirm$/ do |ac
     click_link "#{action}"
   end
   click_button "Yes"
-  click_button "Continue"
+  click_button "Continue" if (response_body =~ /input type="submit" value="Continue"/)
 end
