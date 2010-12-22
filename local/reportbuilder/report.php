@@ -19,6 +19,8 @@ $id = required_param('id',PARAM_INT);
 $sid = optional_param('sid', '0', PARAM_INT);
 $debug = optional_param('debug', 0, PARAM_INT);
 
+require_login();
+
 // new report object
 $report = new reportbuilder($id, null, false, $sid);
 if(!$report->is_capable($id)) {
