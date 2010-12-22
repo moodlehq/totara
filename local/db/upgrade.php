@@ -306,7 +306,7 @@ function xmldb_local_upgrade($oldversion) {
         set_config('defaulthtmleditor', 'tinymce');
 
     /// Create table competency_framework
-        $table = new XMLDBTable('competency_framework');
+        $table = new XMLDBTable('comp_framework');
         $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
         $table->addFieldInfo('fullname', XMLDB_TYPE_TEXT, 'medium', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
         $table->addFieldInfo('shortname', XMLDB_TYPE_CHAR, '100', null, XMLDB_NOTNULL, null, null);
@@ -326,7 +326,7 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && create_table($table);
 
     /// Create table competency_depth
-        $table = new XMLDBTable('competency_depth');
+        $table = new XMLDBTable('comp_depth');
         $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
         $table->addFieldInfo('fullname', XMLDB_TYPE_TEXT, 'medium', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
         $table->addFieldInfo('shortname', XMLDB_TYPE_CHAR, '100', null, XMLDB_NOTNULL, null, null);
@@ -340,7 +340,7 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && create_table($table);
 
     /// Create table competency_depth_info_category
-        $table = new XMLDBTable('competency_depth_info_category');
+        $table = new XMLDBTable('comp_depth_info_category');
         $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
         $table->addFieldInfo('name', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
         $table->addFieldInfo('sortorder', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
@@ -349,7 +349,7 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && create_table($table);
 
     /// Create table competency_depth_info_field
-        $table = new XMLDBTable('competency_depth_info_field');
+        $table = new XMLDBTable('comp_depth_info_field');
         $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
         $table->addFieldInfo('fullname', XMLDB_TYPE_TEXT, 'medium', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
         $table->addFieldInfo('shortname', XMLDB_TYPE_CHAR, '100', null, XMLDB_NOTNULL, null, null);
@@ -372,7 +372,7 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && create_table($table);
 
     /// Create table competency
-        $table = new XMLDBTable('competency');
+        $table = new XMLDBTable('comp');
         $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
         $table->addFieldInfo('fullname', XMLDB_TYPE_TEXT, 'medium', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
         $table->addFieldInfo('shortname', XMLDB_TYPE_CHAR, '100', null, XMLDB_NOTNULL, null, null);
@@ -395,7 +395,7 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && create_table($table);
 
     /// Create table competency_depth_info_data
-        $table = new XMLDBTable('competency_depth_info_data');
+        $table = new XMLDBTable('comp_depth_info_data');
         $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
         $table->addFieldInfo('fieldid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
         $table->addFieldInfo('competencyid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
@@ -404,7 +404,7 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && create_table($table);
 
     /// Create table competency_relations
-        $table = new XMLDBTable('competency_relations');
+        $table = new XMLDBTable('comp_relations');
         $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
         $table->addFieldInfo('description', XMLDB_TYPE_TEXT, 'big', XMLDB_UNSIGNED, null, null, null);
         $table->addFieldInfo('id1', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
@@ -413,7 +413,7 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && create_table($table);
 
     /// Create table competency_evidence_items
-        $table = new XMLDBTable('competency_evidence_items');
+        $table = new XMLDBTable('comp_evidence_items');
         $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
         $table->addFieldInfo('competencyid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
         $table->addFieldInfo('itemtype', XMLDB_TYPE_CHAR, '30', null, XMLDB_NOTNULL, null, null);
@@ -426,7 +426,7 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && create_table($table);
 
     /// Create table competency_scale
-        $table = new XMLDBTable('competency_scale');
+        $table = new XMLDBTable('comp_scale');
         $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null, null);
         $table->addFieldInfo('name', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null, null, null);
         $table->addFieldInfo('description', XMLDB_TYPE_TEXT, 'small', null, XMLDB_NOTNULL, null, null, null, null);
@@ -436,7 +436,7 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && create_table($table);
 
     /// Create table competency_scale_values
-        $table = new XMLDBTable('competency_scale_values');
+        $table = new XMLDBTable('comp_scale_values');
         $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
         $table->addFieldInfo('name', XMLDB_TYPE_TEXT, 'medium', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
         $table->addFieldInfo('idnumber', XMLDB_TYPE_CHAR, '100', null, null, null, null);
@@ -450,7 +450,7 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && create_table($table);
 
     /// Create table competency_scale_assignments
-        $table = new XMLDBTable('competency_scale_assignments');
+        $table = new XMLDBTable('comp_scale_assignments');
         $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null, null);
         $table->addFieldInfo('scaleid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
         $table->addFieldInfo('frameworkid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
@@ -460,7 +460,7 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && create_table($table);
 
     /// Create table competency_template
-        $table = new XMLDBTable('competency_template');
+        $table = new XMLDBTable('comp_template');
         $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
         $table->addFieldInfo('frameworkid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
         $table->addFieldInfo('fullname', XMLDB_TYPE_TEXT, 'medium', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
@@ -475,7 +475,7 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && create_table($table);
 
     /// Create table competency_template_assignment
-        $table = new XMLDBTable('competency_template_assignment');
+        $table = new XMLDBTable('comp_template_assignment');
         $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
         $table->addFieldInfo('templateid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
         $table->addFieldInfo('type', XMLDB_TYPE_INTEGER, '2', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
@@ -486,7 +486,7 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && create_table($table);
 
     /// Create table competency_template_competencies
-        $table = new XMLDBTable('competency_template_competencies');
+        $table = new XMLDBTable('comp_template_competencies');
         $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
         $table->addFieldInfo('templateid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
         $table->addFieldInfo('competencyid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
@@ -499,7 +499,7 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && create_table($table);
 
     /// Create table organisation_framework
-        $table = new XMLDBTable('organisation_framework');
+        $table = new XMLDBTable('org_framework');
         $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
         $table->addFieldInfo('fullname', XMLDB_TYPE_TEXT, 'medium', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
         $table->addFieldInfo('shortname', XMLDB_TYPE_CHAR, '100', null, XMLDB_NOTNULL, null, null);
@@ -519,7 +519,7 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && create_table($table);
 
     /// Create table organisation_depth
-        $table = new XMLDBTable('organisation_depth');
+        $table = new XMLDBTable('org_depth');
         $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
         $table->addFieldInfo('fullname', XMLDB_TYPE_TEXT, 'medium', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
         $table->addFieldInfo('shortname', XMLDB_TYPE_CHAR, '100', null, XMLDB_NOTNULL, null, null);
@@ -533,7 +533,7 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && create_table($table);
 
     /// Create table organisation_depth_info_category
-        $table = new XMLDBTable('organisation_depth_info_category');
+        $table = new XMLDBTable('org_depth_info_category');
         $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
         $table->addFieldInfo('name', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
         $table->addFieldInfo('sortorder', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
@@ -542,7 +542,7 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && create_table($table);
 
     /// Create table organisation_depth_info_field
-        $table = new XMLDBTable('organisation_depth_info_field');
+        $table = new XMLDBTable('org_depth_info_field');
         $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
         $table->addFieldInfo('fullname', XMLDB_TYPE_TEXT, 'medium', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
         $table->addFieldInfo('shortname', XMLDB_TYPE_CHAR, '100', null, XMLDB_NOTNULL, null, null);
@@ -565,7 +565,7 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && create_table($table);
 
     /// Create table organisation
-        $table = new XMLDBTable('organisation');
+        $table = new XMLDBTable('org');
         $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
         $table->addFieldInfo('fullname', XMLDB_TYPE_TEXT, 'medium', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
         $table->addFieldInfo('shortname', XMLDB_TYPE_CHAR, '100', null, XMLDB_NOTNULL, null, null);
@@ -584,7 +584,7 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && create_table($table);
 
     /// Create table organisation_depth_info_data
-        $table = new XMLDBTable('organisation_depth_info_data');
+        $table = new XMLDBTable('org_depth_info_data');
         $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
         $table->addFieldInfo('fieldid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
         $table->addFieldInfo('organisationid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
@@ -593,7 +593,7 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && create_table($table);
 
     /// Create table organisation_relations
-        $table = new XMLDBTable('organisation_relations');
+        $table = new XMLDBTable('org_relations');
         $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
         $table->addFieldInfo('description', XMLDB_TYPE_TEXT, 'big', XMLDB_UNSIGNED, null, null, null);
         $table->addFieldInfo('id1', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
@@ -602,7 +602,7 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && create_table($table);
 
     /// Create table position_framework
-        $table = new XMLDBTable('position_framework');
+        $table = new XMLDBTable('pos_framework');
         $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
         $table->addFieldInfo('fullname', XMLDB_TYPE_TEXT, 'medium', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
         $table->addFieldInfo('shortname', XMLDB_TYPE_CHAR, '100', null, XMLDB_NOTNULL, null, null);
@@ -622,7 +622,7 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && create_table($table);
 
     /// Create table position_depth
-        $table = new XMLDBTable('position_depth');
+        $table = new XMLDBTable('pos_depth');
         $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
         $table->addFieldInfo('fullname', XMLDB_TYPE_TEXT, 'medium', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
         $table->addFieldInfo('shortname', XMLDB_TYPE_CHAR, '100', null, XMLDB_NOTNULL, null, null);
@@ -636,7 +636,7 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && create_table($table);
 
     /// Create table position_depth_info_category
-        $table = new XMLDBTable('position_depth_info_category');
+        $table = new XMLDBTable('pos_depth_info_category');
         $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
         $table->addFieldInfo('name', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
         $table->addFieldInfo('sortorder', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
@@ -645,7 +645,7 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && create_table($table);
 
     /// Create table position_depth_info_field
-        $table = new XMLDBTable('position_depth_info_field');
+        $table = new XMLDBTable('pos_depth_info_field');
         $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
         $table->addFieldInfo('fullname', XMLDB_TYPE_TEXT, 'medium', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
         $table->addFieldInfo('shortname', XMLDB_TYPE_CHAR, '100', null, XMLDB_NOTNULL, null, null);
@@ -668,7 +668,7 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && create_table($table);
 
     /// Create table position
-        $table = new XMLDBTable('position');
+        $table = new XMLDBTable('pos');
         $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
         $table->addFieldInfo('fullname', XMLDB_TYPE_TEXT, 'medium', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
         $table->addFieldInfo('shortname', XMLDB_TYPE_CHAR, '100', null, XMLDB_NOTNULL, null, null);
@@ -689,7 +689,7 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && create_table($table);
 
     /// Create table position_depth_info_data
-        $table = new XMLDBTable('position_depth_info_data');
+        $table = new XMLDBTable('pos_depth_info_data');
         $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
         $table->addFieldInfo('fieldid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
         $table->addFieldInfo('positionid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
@@ -698,7 +698,7 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && create_table($table);
 
     /// Create table position_relations
-        $table = new XMLDBTable('position_relations');
+        $table = new XMLDBTable('pos_relations');
         $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
         $table->addFieldInfo('description', XMLDB_TYPE_TEXT, 'big', XMLDB_UNSIGNED, null, null, null);
         $table->addFieldInfo('id1', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
@@ -707,7 +707,7 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && create_table($table);
 
     /// Create table position_assignment
-        $table = new XMLDBTable('position_assignment');
+        $table = new XMLDBTable('pos_assignment');
         $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
         $table->addFieldInfo('fullname', XMLDB_TYPE_TEXT, 'medium', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
         $table->addFieldInfo('shortname', XMLDB_TYPE_CHAR, '100', null, XMLDB_NOTNULL, null, null);
@@ -726,7 +726,7 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && create_table($table);
 
     /// Create table position_assignment_history
-        $table = new XMLDBTable('position_assignment_history');
+        $table = new XMLDBTable('pos_assignment_history');
         $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
         $table->addFieldInfo('fullname', XMLDB_TYPE_TEXT, 'medium', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
         $table->addFieldInfo('shortname', XMLDB_TYPE_CHAR, '100', null, XMLDB_NOTNULL, null, null);
@@ -744,7 +744,7 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && create_table($table);
 
     /// Create table competency_evidence
-        $table = new XMLDBTable('competency_evidence');
+        $table = new XMLDBTable('comp_evidence');
         $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
         $table->addFieldInfo('userid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
         $table->addFieldInfo('competencyid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
@@ -1424,7 +1424,9 @@ function xmldb_local_upgrade($oldversion) {
                 $newtablename = str_replace($oldtype, $newtype, $newtablename);
             }
             $table = new XMLDBTable($oldtablename);
-            $result = $result && rename_table($table, $newtablename);
+            if(table_exists($table) {
+                $result = $result && rename_table($table, $newtablename);
+            }
         }
 
         // Rename the one IDP table whose name is too long
