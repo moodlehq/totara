@@ -74,6 +74,12 @@ form.mform input {
   margin-left: 0;
 }
 
+/* fix for formslib bug introduced by MDL-9745 */
+/* using same fix as MDL-12901 */
+#newfilter form.mform input {
+  margin-left: 0;
+}
+
 form.mform textarea {
  margin-left: -10px;
 }
