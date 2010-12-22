@@ -3083,8 +3083,10 @@ function sql_cast2char($fieldname) {
 
     switch ($CFG->dbfamily) {
         case 'mysql':
-        case 'postgres':
             $sql = ' CAST(' . $fieldname . ' AS CHAR) ';
+            break;
+        case 'postgres':
+            $sql = ' CAST(' . $fieldname . ' AS VARCHAR) ';
             break;
         case 'mssql':
             $sql = ' CAST(' . $fieldname . ' AS VARCHAR(20)) ';
