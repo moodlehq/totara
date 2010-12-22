@@ -14,16 +14,16 @@ define('FEEDBACK_MULTICHOICERATED_ADJUST_SEP', '<<<<<');
 class feedback_item_multichoicerated extends feedback_item_base {
     var $type = "multichoicerated";
     function init() {
-    
+
     }
-    
+
     function &show_edit($item) {
         global $CFG;
-        
+
         require_once('multichoicerated_form.php');
-        
+
         $item_form = new feedback_multichoicerated_form();
-        
+
         $item->presentation = empty($item->presentation) ? '' : $item->presentation;
         $item->name = empty($item->name) ? '' : stripslashes_safe($item->name);
 
@@ -33,16 +33,16 @@ class feedback_item_multichoicerated extends feedback_item_base {
         if($item->required) {
             $item_form->requiredcheck->setValue(true);
         }
-        
+
         $item_form->itemname->setValue($item->name);
-        
+
         $item_form->selectadjust->setValue($info->horizontal);
-        
+
         $item_form->selecttype->setValue($info->subtype);
 
         $itemvalues = $this->prepare_presentation_values_print($info->presentation, FEEDBACK_MULTICHOICERATED_VALUE_SEP, FEEDBACK_MULTICHOICERATED_VALUE_SEP2);
         $item_form->values->setValue($itemvalues);
-        
+
         return $item_form;
     }
 
@@ -52,7 +52,7 @@ class feedback_item_multichoicerated extends feedback_item_base {
         $analysedItem = array();
         $analysedItem[] = $item->typ;
         $analysedItem[] = $item->name;
-        
+
         //die moeglichen Antworten extrahieren
         $info = $this->get_info($item);
         $lines = null;
@@ -63,7 +63,7 @@ class feedback_item_multichoicerated extends feedback_item_base {
         $values = feedback_get_group_values($item, $groupid, $courseid);
         if(!$values) return null;
         //schleife ueber den Werten und ueber die Antwortmoeglichkeiten
-        
+
         $analysedAnswer = array();
 
         for($i = 1; $i <= sizeof($lines); $i++) {
@@ -91,11 +91,11 @@ class feedback_item_multichoicerated extends feedback_item_base {
 
     function get_printval($item, $value) {
         $printval = '';
-        
+
         if(!isset($value->value)) return $printval;
-        
+
         $info = $this->get_info($item);
-                
+
         $presentation = explode (FEEDBACK_MULTICHOICERATED_LINE_SEP, stripslashes_safe($info->presentation));
         $index = 1;
         foreach($presentation as $pres){
@@ -114,12 +114,12 @@ class feedback_item_multichoicerated extends feedback_item_base {
         if(substr($sep_dec, 0, 2) == '[['){
             $sep_dec = FEEDBACK_DECIMAL;
         }
-        
+
         $sep_thous = get_string('separator_thousand', 'feedback');
         if(substr($sep_thous, 0, 2) == '[['){
             $sep_thous = FEEDBACK_THOUSAND;
         }
-            
+
         $analysedItem = $this->get_analysed($item, $groupid, $courseid);
         if($analysedItem) {
             //echo '<table>';
@@ -137,7 +137,7 @@ class feedback_item_multichoicerated extends feedback_item_base {
                 $pix = "pics/$intvalue.gif";
                 $pixnr++;
                 $pixwidth = intval($val->quotient * FEEDBACK_MAX_PIX_LENGTH);
-                
+
                 $avg += $val->avg;
                 $quotient = number_format(($val->quotient * 100), 2, $sep_dec, $sep_thous);
                 echo '<tr><td align="left" valign="top">-&nbsp;&nbsp;' . trim(strip_tags(format_text($val->answertext))) . ' ('.$val->value.'):</td><td align="left" style="width: '.FEEDBACK_MAX_PIX_LENGTH.'"><img alt="'.$intvalue.'" src="'.$pix.'" height="5" width="'.$pixwidth.'" />' . $val->answercount. (($val->quotient > 0)?'&nbsp;('. $quotient . '&nbsp;%)':'') . '</td></tr>';
@@ -162,10 +162,10 @@ class feedback_item_multichoicerated extends feedback_item_base {
             $avg = 0.0;
             for($i = 0; $i < sizeof($data); $i++) {
                 $aData = $data[$i];
-                
+
                 $worksheet->setFormat("<l><f><ro2><vo><c:blue>");
                 $worksheet->write_string($rowOffset, $i + 1, trim($aData->answertext).' ('.$aData->value.')');
-                
+
                 $worksheet->setFormat("<l><vo>");
                 $worksheet->write_number($rowOffset + 1, $i + 1, $aData->answercount);
                 //$worksheet->setFormat("<l><f><vo>");
@@ -175,7 +175,7 @@ class feedback_item_multichoicerated extends feedback_item_base {
             //mittelwert anzeigen
             $worksheet->setFormat("<l><f><ro2><vo><c:red>");
             $worksheet->write_string($rowOffset, sizeof($data) + 1, get_string('average', 'feedback'));
-            
+
             $worksheet->setFormat("<l><f><vo>");
             $worksheet->write_number($rowOffset + 1, sizeof($data) + 1, $avg);
         }
@@ -186,13 +186,13 @@ class feedback_item_multichoicerated extends feedback_item_base {
     function print_item($item, $value = false, $readonly = false, $edit = false, $highlightrequire = false){
         $align = get_string('thisdirection') == 'ltr' ? 'left' : 'right';
         $info = $this->get_info($item);
-        
+
         // Remove empty choices
         $temp = explode (FEEDBACK_MULTICHOICERATED_LINE_SEP, stripslashes_safe($info->presentation));
         $lines = array();
-        foreach($temp as $item) {
-            if(trim($item) != '0####') {
-                $lines[] = $item;
+        foreach($temp as $k => $v) {
+            if(trim($v) != '0####') {
+                $lines[$k] = $v;
             }
         }
 
@@ -266,17 +266,17 @@ class feedback_item_multichoicerated extends feedback_item_base {
     function get_hasvalue() {
         return 1;
     }
-    
+
     function get_info($item) {
         $presentation = empty($item->presentation) ? '' : $item->presentation;
-        
+
         $info = new object();
         //check the subtype of the multichoice
         //it can be check(c), radio(r) or dropdown(d)
         $info->subtype = '';
         $info->presentation = '';
         $info->horizontal = false;
-        
+
         @list($info->subtype, $info->presentation) = explode(FEEDBACK_MULTICHOICE_TYPE_SEP, $item->presentation);
         if(!isset($info->subtype)) {
             $info->subtype = 'r';
@@ -294,7 +294,7 @@ class feedback_item_multichoicerated extends feedback_item_base {
 
         return $info;
     }
-    
+
     function print_item_radio($item, $value, $info, $align, $edit, $lines) {
         $index = 1;
         $checked = '';
@@ -360,7 +360,7 @@ class feedback_item_multichoicerated extends feedback_item_base {
             echo '</tr></table>';
         }
     }
-    
+
     function print_item_dropdown($item, $value, $info, $align, $edit, $lines) {
         echo '<select name="'. $item->typ . '_' . $item->id . '">';
         echo '<option value="0">&nbsp;</option>';
@@ -381,9 +381,9 @@ class feedback_item_multichoicerated extends feedback_item_base {
             $index++;
         }
         echo '</select>';
-    
+
     }
-    
+
     function prepare_presentation_values_print($valuestring, $valuesep1, $valuesep2) {
         $lines = explode(FEEDBACK_MULTICHOICERATED_LINE_SEP, $valuestring);
         $newlines = array();
@@ -396,28 +396,28 @@ class feedback_item_multichoicerated extends feedback_item_base {
             }else {
                 @list($value, $text) = explode($valuesep1, $line, 2);
             }
-            
+
             $value = intval($value);
             $newlines[] = $value.$valuesep2.$text;
         }
         $newlines = implode("\n", $newlines);
         return $newlines;
     }
-    
+
     function prepare_presentation_values_save($valuestring, $valuesep1, $valuesep2) {
         $lines = explode("\n", $valuestring);
         $newlines = array();
         foreach($lines as $line) {
             $value = '';
             $text = '';
-            
+
             if(strpos($line, $valuesep1) === false) {
                 $value = 0;
                 $text = $line;
             }else {
                 @list($value, $text) = explode($valuesep1, $line, 2);
             }
-            
+
             $value = intval($value);
             $newlines[] = $value.$valuesep2.$text;
         }

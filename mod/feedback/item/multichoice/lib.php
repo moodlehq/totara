@@ -9,16 +9,16 @@ define('FEEDBACK_MULTICHOICE_ADJUST_SEP', '<<<<<');
 class feedback_item_multichoice extends feedback_item_base {
     var $type = "multichoice";
     function init() {
-        
+
     }
-    
+
     function &show_edit($item) {
         global $CFG;
-        
+
         require_once('multichoice_form.php');
-        
+
         $item_form = new feedback_multichoice_form();
-        
+
         $item->presentation = empty($item->presentation) ? '' : $item->presentation;
         $item->name = empty($item->name) ? '' : stripslashes_safe($item->name);
 
@@ -28,11 +28,11 @@ class feedback_item_multichoice extends feedback_item_base {
         if($item->required) {
             $item_form->requiredcheck->setValue(true);
         }
-        
+
         $item_form->itemname->setValue($item->name);
-        
+
         $item_form->selectadjust->setValue($info->horizontal);
-        
+
         $item_form->selecttype->setValue($info->subtype);
 
         $itemvalues = str_replace(FEEDBACK_MULTICHOICE_LINE_SEP, "\n", stripslashes_safe($info->presentation));
@@ -45,7 +45,7 @@ class feedback_item_multichoice extends feedback_item_base {
     //XXX ist ein eindimensionales Array (anzahl der Antworten bei Typ Radio) Jedes Element ist eine Struktur (answertext, answercount)
     function get_analysed($item, $groupid = false, $courseid = false) {
         $info = $this->get_info($item);
-        
+
         $analysedItem = array();
         $analysedItem[] = $item->typ;
         $analysedItem[] = $item->name;
@@ -53,7 +53,7 @@ class feedback_item_multichoice extends feedback_item_base {
         $answers = null;
         // $presentation = '';
         // @list($presentation) = explode(FEEDBACK_RADIO_ADJUST_SEP, $item->presentation); //remove the adjustment-info
-        
+
         $answers = explode (FEEDBACK_MULTICHOICE_LINE_SEP, stripslashes_safe($info->presentation));
         if(!is_array($answers)) return null;
 
@@ -61,7 +61,7 @@ class feedback_item_multichoice extends feedback_item_base {
         $values = feedback_get_group_values($item, $groupid, $courseid);
         if(!$values) return null;
         //schleife ueber den Werten und ueber die Antwortmoeglichkeiten
-        
+
         $analysedAnswer = array();
         if($info->subtype == 'c') {
             for($i = 1; $i <= sizeof($answers); $i++) {
@@ -101,15 +101,15 @@ class feedback_item_multichoice extends feedback_item_base {
 
     function get_printval($item, $value) {
         $info = $this->get_info($item);
-        
+
         $printval = '';
-        
+
         if(!isset($value->value)) return $printval;
-                
+
         // @list($presentation) = explode(FEEDBACK_RADIO_ADJUST_SEP, $item->presentation); //remove the adjustment-info
-        
+
         $presentation = explode (FEEDBACK_MULTICHOICE_LINE_SEP, stripslashes_safe($info->presentation));
-        
+
         if($info->subtype == 'c') {
             $vallist = array_values(explode (FEEDBACK_MULTICHOICE_LINE_SEP, $value->value));
             for($i = 0; $i < sizeof($vallist); $i++) {
@@ -138,12 +138,12 @@ class feedback_item_multichoice extends feedback_item_base {
         if(substr($sep_dec, 0, 2) == '[['){
             $sep_dec = FEEDBACK_DECIMAL;
         }
-        
+
         $sep_thous = get_string('separator_thousand', 'feedback');
         if(substr($sep_thous, 0, 2) == '[['){
             $sep_thous = FEEDBACK_THOUSAND;
         }
-            
+
         $analysedItem = $this->get_analysed($item, $groupid, $courseid);
         if($analysedItem) {
             // $itemnr++;
@@ -200,9 +200,9 @@ class feedback_item_multichoice extends feedback_item_base {
         // Remove empty choices
         $temp = explode (FEEDBACK_MULTICHOICE_LINE_SEP, stripslashes_safe($info->presentation));
         $presentation = array();
-        foreach($temp as $item) {
-            if(trim($item) != '') {
-                $presentation[] = $item;
+        foreach($temp as $k => $v) {
+            if(trim($v) != '') {
+                $presentation[$k] = $v;
             }
         }
 
@@ -285,7 +285,6 @@ class feedback_item_multichoice extends feedback_item_base {
                     echo '<table><tr>';
                 }
             }
-            
             switch($info->subtype) {
                 case 'r':
                     $this->print_item_radio($presentation, $item, $value, $info, $align);
@@ -297,7 +296,7 @@ class feedback_item_multichoice extends feedback_item_base {
                     $this->print_item_dropdown($presentation, $item, $value, $info, $align);
                     break;
             }
-            
+
             if($info->subtype != 'd') {
                 if($info->horizontal) {
                     echo '</tr></table>';
@@ -316,7 +315,7 @@ class feedback_item_multichoice extends feedback_item_base {
 
     function check_value($value, $item) {
         $info = $this->get_info($item);
-        
+
         if($info->subtype == 'c') {
             if((!isset($value) OR !is_array($value) OR $value[0] == '' OR $value[0] == 0) AND $item->required != 1){
                 return true;
@@ -354,17 +353,17 @@ class feedback_item_multichoice extends feedback_item_base {
     function get_hasvalue() {
         return 1;
     }
-    
+
     function get_info($item) {
         $presentation = empty($item->presentation) ? '' : $item->presentation;
-        
+
         $info = new object();
         //check the subtype of the multichoice
         //it can be check(c), radio(r) or dropdown(d)
         $info->subtype = '';
         $info->presentation = '';
         $info->horizontal = false;
-        
+
         @list($info->subtype, $info->presentation) = explode(FEEDBACK_MULTICHOICE_TYPE_SEP, $item->presentation);
         if(!isset($info->subtype)) {
             $info->subtype = 'r';
@@ -380,7 +379,7 @@ class feedback_item_multichoice extends feedback_item_base {
         }
         return $info;
     }
-    
+
     function item_arrayToString($value) {
         if(!is_array($value)) {
             return $value;
@@ -394,7 +393,7 @@ class feedback_item_multichoice extends feedback_item_base {
         }
         return $retval;
     }
-    
+
     function print_item_radio($presentation, $item, $value, $info, $align) {
         $index = 1;
         $checked = '';
@@ -433,13 +432,13 @@ class feedback_item_multichoice extends feedback_item_base {
     }
 
     function print_item_check($presentation, $item, $value, $info, $align) {
-       
+
         if (is_array($value)) {
             $values = $value;
         }else {
             $values = explode(FEEDBACK_MULTICHOICE_LINE_SEP, $value);
         }
-        
+
         $index = 1;
         $checked = '';
         foreach($presentation as $check){
@@ -461,7 +460,7 @@ class feedback_item_multichoice extends feedback_item_base {
                     value="<?php echo $index;?>" <?php echo $checked;?> />
                 </td><td align="<?php echo $align;?>"><label for="<?php echo $inputid;?>"><?php echo format_text($check, true, false, false);?>&nbsp;</label>
                 </td>
-        <?php         
+        <?php
             }else {
         ?>
                 <table><tr>
@@ -476,7 +475,7 @@ class feedback_item_multichoice extends feedback_item_base {
             $index++;
         }
     }
-    
+
     function print_item_dropdown($presentation, $item, $value, $info, $align) {
         ?>
         <select name="<?php echo $item->typ .'_' . $item->id;?>" size="1">
@@ -499,7 +498,7 @@ class feedback_item_multichoice extends feedback_item_base {
         </select>
         <?php
     }
-    
+
 }
-    
+
 ?>
