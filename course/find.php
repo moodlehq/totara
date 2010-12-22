@@ -57,7 +57,7 @@ $embed->columns = array(
     ),
 );
 
-$embed->contentmode = 0; // no restrictions
+$embed->contentmode = REPORT_BUILDER_CONTENT_MODE_NONE; // no restrictions
 $embed->embeddedparams = array(
     // don't show the site course
     'category' => '!0',

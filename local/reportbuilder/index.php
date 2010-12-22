@@ -68,10 +68,9 @@
         $todb->source = ($fromform->source != '0') ? $fromform->source : null;
         $todb->hidden = $fromform->hidden;
         $todb->recordsperpage = 40;
-        $todb->contentmode = 0;
-        $todb->accessmode = 1; // default to limited access
+        $todb->contentmode = REPORT_BUILDER_CONTENT_MODE_NONE;
+        $todb->accessmode = REPORT_BUILDER_ACCESS_MODE_ANY; // default to limited access
         $todb->embeddedurl = null;
-        //TODO set default content and access settings here?
 
         begin_sql();
         if(!$newid = insert_record('report_builder',$todb)) {
@@ -93,7 +92,7 @@
             $todb2->reportid = $newid;
             $todb2->type = 'role_access';
             $todb2->name = 'activeroles';
-            $todb2->value = '1';
+            $todb2->value = $adminroleid;
 
             if(!insert_record('report_builder_settings', $todb) ||
                 !insert_record('report_builder_settings', $todb2)) {

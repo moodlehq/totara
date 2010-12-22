@@ -59,7 +59,7 @@ $embed->columns = array(
 );
 // no restrictions
 // limited to single user by embedded params
-$embed->contentmode = 0;
+$embed->contentmode = REPORT_BUILDER_CONTENT_MODE_NONE;
 
 $embed->embeddedparams = array(
     'userid' => $id,

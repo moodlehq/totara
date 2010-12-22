@@ -130,7 +130,7 @@
             'heading' => 'Proficiency'
         ),
     );
-    $embed->contentmode = 0;
+    $embed->contentmode = REPORT_BUILDER_CONTENT_MODE_NONE;
     $embed->embeddedparams = array(
         // show report for a specific user
         'userid' => $userid,

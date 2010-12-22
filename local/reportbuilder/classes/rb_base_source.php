@@ -466,7 +466,7 @@ abstract class rb_base_source {
         require_once($CFG->dirroot.'/hierarchy/type/organisation/lib.php');
 
         // show all options if no content restrictions set
-        if($contentmode == 0) {
+        if($contentmode == REPORT_BUILDER_CONTENT_MODE_NONE) {
             $hierarchy = new organisation();
             $hierarchy->make_hierarchy_list($orgs, null, true, true);
             return $orgs;
@@ -497,16 +497,14 @@ abstract class rb_base_source {
             }
         }
 
-        // 'any' mode
-        if($contentmode == 1) {
+        if($contentmode == REPORT_BUILDER_CONTENT_MODE_ANY) {
             if($localset && !$nonlocal) {
                 // only restrict the org list if all content restrictions are local ones
                 if($orgid = get_field('pos_assignment','organisationid','userid',$USER->id)) {
                     $baseorg = $orgid;
                 }
             }
-            // 'all' mode
-        } else if ($contentmode == 2) {
+        } else if ($contentmode == REPORT_BUILDER_CONTENT_MODE_ALL) {
             if($localset) {
                 // restrict the org list if any content restrictions are local ones
                 if($orgid = get_field('pos_assignment','organisationid','userid',$USER->id)) {

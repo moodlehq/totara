@@ -81,7 +81,7 @@ $embed->columns = array(
         'heading' => 'Links',
     )
 );
-$embed->contentmode = 2;
+$embed->contentmode = REPORT_BUILDER_CONTENT_MODE_ALL;
 $embed->contentsettings = array(
     'user' => array(
         'enable' => 1,

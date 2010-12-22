@@ -66,7 +66,7 @@ function update_content($id, $report, $fromform) {
     begin_sql();
 
     // first check if there are any content restrictions at all
-    $contentenabled = isset($fromform->contentenabled) ? $fromform->contentenabled : 0;
+    $contentenabled = isset($fromform->contentenabled) ? $fromform->contentenabled : REPORT_BUILDER_CONTENT_MODE_NONE;
 
     // update content enabled setting
     $todb = new object();

@@ -63,7 +63,7 @@ if(get_field('role','id','shortname','facilitator')) {
 }
 
 // only show future bookings
-$embed->contentmode = 2; // all
+$embed->contentmode = REPORT_BUILDER_CONTENT_MODE_ALL;
 $embed->contentsettings = array(
     'date' => array(
         'enable' => 1,

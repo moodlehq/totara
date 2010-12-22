@@ -136,7 +136,7 @@
 //                         '<a href="" onclick="jqCheckAll(\'totara_messages\', \'totara_message\', 0); return false;">none</a>',
 //        ),
     );
-    $embed->contentmode = 0;
+    $embed->contentmode = REPORT_BUILDER_CONTENT_MODE_NONE;
     $embed->embeddedparams = array(
         // show report for a specific user - see hardcoded filters
         'userid' => $id,

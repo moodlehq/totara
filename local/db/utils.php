@@ -177,8 +177,8 @@ function totara_migrate_old_report_builder_reports(&$result) {
                         // skip any other settings and allow all
                         $todb = new object();
                         $todb->id = $report->id;
-                        $todb->accessmode = 1;
-                        $todb->contentmode = 0;
+                        $todb->accessmode = REPORT_BUILDER_ACCESS_MODE_ANY;
+                        $todb->contentmode = REPORT_BUILDER_CONTENT_MODE_NONE;
                         $result = $result && update_record('report_builder', $todb);
                         // make it admin only
                         $todb = new object();
@@ -228,7 +228,7 @@ function totara_migrate_old_report_builder_reports(&$result) {
                 // set access mode to restricted
                 $todb = new object();
                 $todb->id = $report->id;
-                $todb->accessmode = 1;
+                $todb->accessmode = REPORT_BUILDER_ACCESS_MODE_ANY;
                 $result = $result && update_record('report_builder', $todb);
 
                 // assign roles to this report

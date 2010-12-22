@@ -66,7 +66,7 @@ function update_access($reportid, $fromform) {
     begin_sql();
 
     // first check if there are any access restrictions at all
-    $accessenabled = isset($fromform->accessenabled) ? $fromform->accessenabled : 0;
+    $accessenabled = isset($fromform->accessenabled) ? $fromform->accessenabled : REPORT_BUILDER_ACCESS_MODE_NONE;
     // update access enabled setting
     $todb = new object();
     $todb->id = $reportid;

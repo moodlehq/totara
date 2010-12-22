@@ -31,6 +31,20 @@ require_once($CFG->dirroot.'/local/reportbuilder/classes/rb_content_option.php')
 define('SOURCE_DIR_NAME', 'rb_sources');
 
 /**
+ * Content mode options
+ */
+define('REPORT_BUILDER_CONTENT_MODE_NONE', 0);
+define('REPORT_BUILDER_CONTENT_MODE_ANY', 1);
+define('REPORT_BUILDER_CONTENT_MODE_ALL', 2);
+
+/**
+ * Access mode options
+ */
+define('REPORT_BUILDER_ACCESS_MODE_NONE', 0);
+define('REPORT_BUILDER_ACCESS_MODE_ANY', 1);
+define('REPORT_BUILDER_ACCESS_MODE_ALL', 2);
+
+/**
  * Export option codes
  *
  * Bitwise flags, so new ones should be double highest value
@@ -669,8 +683,8 @@ var comptree = [' . implode(', ', $comptrees) . '];
         }
         // hide embedded reports from report manager by default
         $embed->hidden = isset($embed->hidden) ? $embed->hidden : 1;
-        $embed->accessmode = isset($embed->accessmode) ? $embed->accessmode : 0;
-        $embed->contentmode = isset($embed->contentmode) ? $embed->contentmode : 0;
+        $embed->accessmode = isset($embed->accessmode) ? $embed->accessmode : REPORT_BUILDER_ACCESS_MODE_NONE;
+        $embed->contentmode = isset($embed->contentmode) ? $embed->contentmode : REPORT_BUILDER_CONTENT_MODE_NONE;
 
         $embed->accesssettings = isset($embed->accesssettings) ? $embed->accesssettings : array();
         $embed->contentsettings = isset($embed->contentsettings) ? $embed->contentsettings : array();
@@ -896,7 +910,7 @@ var comptree = [' . implode(', ', $comptrees) . '];
 
         // if the 'accessmode' flag is set to 0 let anyone view it
         $accessmode = get_field('report_builder', 'accessmode', 'id', $id);
-        if($accessmode == 0) {
+        if($accessmode == REPORT_BUILDER_ACCESS_MODE_NONE) {
             return true;
         }
 
@@ -921,7 +935,7 @@ var comptree = [' . implode(', ', $comptrees) . '];
             }
         }
 
-        if($accessmode == 1) {
+        if($accessmode == REPORT_BUILDER_ACCESS_MODE_ANY) {
             // any enabled options can be true
             return $any;
         } else {
@@ -1001,9 +1015,9 @@ var comptree = [' . implode(', ', $comptrees) . '];
     function get_content_restrictions() {
         global $CFG;
         // if no content restrictions enabled return a TRUE snippet
-        if($this->contentmode == 0) {
+        if($this->contentmode == REPORT_BUILDER_CONTENT_MODE_NONE) {
             return "( TRUE )";
-        } else if ($this->contentmode == 2) {
+        } else if ($this->contentmode == REPORT_BUILDER_CONTENT_MODE_ALL) {
             // require all to match
             $op = ' AND ';
         } else {
@@ -1058,7 +1072,7 @@ var comptree = [' . implode(', ', $comptrees) . '];
         $content_restrictions = array();
         $reportid = $this->_id;
         $res = array();
-        if($this->contentmode != 0) {
+        if($this->contentmode != REPORT_BUILDER_CONTENT_MODE_NONE) {
             foreach($this->contentoptions as $option) {
                 $name = $option->classname;
                 $classname = 'rb_' . $name . '_content';
@@ -1076,7 +1090,7 @@ var comptree = [' . implode(', ', $comptrees) . '];
                     error("Content class function $classname does not exist");
                 }
             }
-            if($this->contentmode == 2) {
+            if($this->contentmode == REPORT_BUILDER_CONTENT_MODE_ALL) {
                 // 'and' show one per line
                 $content_restrictions = $res;
             } else {
@@ -1267,7 +1281,7 @@ var comptree = [' . implode(', ', $comptrees) . '];
     function get_content_joins() {
         $reportid = $this->_id;
 
-        if($this->contentmode == 0) {
+        if($this->contentmode == REPORT_BUILDER_CONTENT_MODE_NONE) {
             // no limit on content so no joins necessary
             return array();
         }

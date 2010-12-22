@@ -199,8 +199,8 @@ class reportbuilderlib_test extends prefix_changing_test_case {
                 'heading' => 'Assessor Organisation',
             ),
         );
-        $this->embed->contentmode = 0;
-        $this->embed->accessmode = 0;
+        $this->embed->contentmode = REPORT_BUILDER_CONTENT_MODE_NONE;
+        $this->embed->accessmode = REPORT_BUILDER_ACCESS_MODE_NONE;
         $this->embed->embeddedparams = array(
             // show report for a specific user
             'userid' => 2,
@@ -349,7 +349,7 @@ class reportbuilderlib_test extends prefix_changing_test_case {
         $this->assertTrue($rb->is_capable(1));
         $todb = new object();
         $todb->id = 1;
-        $todb->accessmode = 1;
+        $todb->accessmode = REPORT_BUILDER_CONTENT_MODE_ANY;
         update_record('report_builder',$todb);
         // should return true if accessmode is 1 and admin an allowed role
         $this->assertTrue($rb->is_capable(1));
@@ -384,7 +384,7 @@ class reportbuilderlib_test extends prefix_changing_test_case {
         $this->assertEqual($rb->get_content_restrictions(),'( TRUE )');
         $todb = new object();
         $todb->id = 1;
-        $todb->contentmode = 1;
+        $todb->contentmode = REPORT_BUILDER_CONTENT_MODE_ANY;
         update_record('report_builder', $todb);
         $rb = new reportbuilder(1);
         // should return (FALSE) if content mode = 1 but no restrictions set
@@ -410,7 +410,7 @@ class reportbuilderlib_test extends prefix_changing_test_case {
         $this->assertPattern('/\(base\.userid = 2 OR \(base\.timemodified > \d+\)\)/',$rb->get_content_restrictions());
         $todb = new object();
         $todb->id = 1;
-        $todb->contentmode = 2;
+        $todb->contentmode = REPORT_BUILDER_CONTENT_MODE_ALL;
         update_record('report_builder', $todb);
         $rb = new reportbuilder(1);
         // should return the appropriate SQL snippet to AND the restrictions if content mode = 2
@@ -425,7 +425,7 @@ class reportbuilderlib_test extends prefix_changing_test_case {
         $this->assertEqual($rb->get_restriction_descriptions('content'), array());
         $todb = new object();
         $todb->id = 1;
-        $todb->contentmode = 1;
+        $todb->contentmode = REPORT_BUILDER_CONTENT_MODE_ANY;
         update_record('report_builder', $todb);
         $rb = new reportbuilder(1);
         // should return an array with empty string if content mode = 1 but no restrictions set
@@ -451,7 +451,7 @@ class reportbuilderlib_test extends prefix_changing_test_case {
         $this->assertPattern('/The user is "Admin User" or The completion date occurred after .*/', current($rb->get_restriction_descriptions('content')));
         $todb = new object();
         $todb->id = 1;
-        $todb->contentmode = 2;
+        $todb->contentmode = REPORT_BUILDER_CONTENT_MODE_ALL;
         update_record('report_builder', $todb);
         $rb = new reportbuilder(1);
         // should return the appropriate array of text descriptions if content mode = 2
