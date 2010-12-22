@@ -96,7 +96,7 @@ class rb_source_courses extends rb_base_source {
 
             new rb_content_option(
                 'date',
-                "The completion date",
+                "The start date",
                 'base.startdate'
             ),
         );
