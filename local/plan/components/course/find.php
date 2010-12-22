@@ -65,7 +65,7 @@ if (!$permission = $component->can_update_items()) {
 $dialog = new totara_dialog_content_courses($categoryid);
 
 // Set type to multiple
-$dialog->type = $dialog::TYPE_CHOICE_MULTI;
+$dialog->type = totara_dialog_content::TYPE_CHOICE_MULTI;
 $dialog->selected_title = 'currentlyselected';
 
 // Setup search
