@@ -1,4 +1,5 @@
 <?php
+$string['coursecount'] = 'Number of site courses';
 $string['displayerrorsset'] = 'This site is configured to display errors occurances. <br />This setting is not recommended on production sites. <br />Uncheck <em>Display debug messages</em> in the <a href=\"$a->link\">Server/Debugging</a> section of the site admin settings block.';
 $string['displayerrorswarning'] = 'Enabling the PHP setting <em>display_errors</em> is not recommended on production sites. <br />This setting can be changed in your php settings.';
 $string['moodlerelease'] = 'Moodle release identifier';
@@ -30,6 +31,7 @@ This information will allow Totara to better examine and resolve any support iss
 <p>This information will be securely transmitted and held in confidence.</p>';
 $string['totararelease'] = 'Totara release identifier';
 $string['totaraversion'] = 'Totara version number';
+$string['usercount'] = 'Number of site users';
 $string['webserversoftware'] = 'Web server software identifier';
 $string['wwwroot'] = 'Site www root';
 $string['configpasswordreuselimit'] = 'Number of times a user must change their password before they are allowed to reuse a password';
