@@ -399,7 +399,9 @@
 		//Back to Assign Roles button
 		echo "<br/>";
 		echo "<div class='continuebutton'>";
-		print_single_button('assign.php', array('contextid' => $contextid), get_string('assignrolesin', 'role', print_context_name($context)));
+        print_single_button('assign.php',
+            array('contextid' => $contextid, 'userid' => $userid, 'courseid' => $courseid),
+            get_string('assignrolesin', 'role', print_context_name($context)));
 		echo "</div>";
 
     } else {   // Print overview table
