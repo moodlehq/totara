@@ -44,6 +44,25 @@ When /^I follow|click(?: the)* "([^\"]*)"(?: link)*$/ do |link|
   click_link(link)
 end
 
+# debug version of above
+#When /^DEBUG I follow|click(?: the)* "([^\"]*)"(?: link)*$/ do |link|
+#  save_and_open_page
+#  url=find_link(link)
+#  Webrat.Logging.logger("URL : ",url,"\n")
+#  click_link(link)
+#  save_and_open_page
+#end
+
+# ?: makes parenthesis group without saving the result (don't create a backreference)
+#When /^I follow|click(?: the)* "([^\"]*)"(?: link)* and save the page$/ do |link|
+#  click_link(link)
+#  filename = "/tmp/webrat-#{Time.now.to_i}.html"
+#
+#  File.open(filename, "w") do |f|
+#    f.write response_body
+#  end
+#end
+
 When /^I fill in "([^\"]*)" with "([^\"]*)"$/ do |field, value|
   fill_in(field, :with => value)
 end
@@ -143,6 +162,12 @@ end
 
 Then /^I should not see "(.*)"$/ do |text|
   assert !!(response_body !~ /#{Regexp.escape text}/m)
+end
+
+Then /^I should not see "(.*)" within(?: the)? (.+)$/ do |text, cssname|
+  within(get_selector(cssname)) do |content|
+    assert !!(content.dom.inner_html !~ /#{Regexp.escape text}/m), content.dom.inner_html
+  end
 end
 
 Then /^the "(.*)" checkbox should not be checked$/ do |label|
@@ -395,15 +420,6 @@ def is_int? str
 end
 
 
-# ?: makes parenthesis group without saving the result (don't create a backreference)
-When /^I follow|click(?: the)* "([^\"]*)"(?: link)* and save the page$/ do |link|
-  click_link(link)
-  filename = "/tmp/webrat-#{Time.now.to_i}.html"
-
-  File.open(filename, "w") do |f|
-    f.write response_body
-  end
-end
 
 When /^I press "([^\"]*)" and save the page$/ do |button|
   begin
