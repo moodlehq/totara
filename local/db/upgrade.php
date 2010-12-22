@@ -848,7 +848,7 @@ function xmldb_local_upgrade($oldversion) {
 
     if ($result && $oldversion < 2010011001) {
     /// Create table idp_revision_competency
-        $table = new XMLDBTable('idp_revision_competencytemplate');
+        $table = new XMLDBTable('idp_revision_competencytmpl');
         $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
         $table->addFieldInfo('revision', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
         $table->addFieldInfo('competencytemplate', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
@@ -862,13 +862,13 @@ function xmldb_local_upgrade($oldversion) {
 
     if ($result && $oldversion < 2010021102) {
     // Add missing fields
-        $table = new XMLDBTable('position_assignment');
+        $table = new XMLDBTable('pos_assignment');
 
         $field = new XMLDBField('organisationid');
         $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null);
         $result = $result && add_field($table, $field);
 
-        $table = new XMLDBTable('position_assignment_history');
+        $table = new XMLDBTable('pos_assignment_history');
 
         $field = new XMLDBField('organisationid');
         $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null);
@@ -876,7 +876,7 @@ function xmldb_local_upgrade($oldversion) {
 
 
     /// Fix sequences and nullables
-        $table = new XMLDBTable('position_assignment');
+        $table = new XMLDBTable('pos_assignment');
 
         $field = new XMLDBField('userid');
         $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null);
@@ -895,7 +895,7 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && change_field_type($table, $field);
 
 
-        $table = new XMLDBTable('competency_depth_info_data');
+        $table = new XMLDBTable('comp_depth_info_data');
 
         $field = new XMLDBField('fieldid');
         $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
@@ -906,7 +906,7 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && change_field_type($table, $field);
 
 
-        $table = new XMLDBTable('organisation_depth_info_data');
+        $table = new XMLDBTable('org_depth_info_data');
 
         $field = new XMLDBField('fieldid');
         $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
@@ -917,7 +917,7 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && change_field_type($table, $field);
 
 
-        $table = new XMLDBTable('position_assignment_history');
+        $table = new XMLDBTable('pos_assignment_history');
 
         $field = new XMLDBField('userid');
         $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null);
@@ -1042,7 +1042,7 @@ function xmldb_local_upgrade($oldversion) {
 
     if ($result && $oldversion < 2010021700) {
     /// Create table competency_evidence_items_evidence
-        $table = new XMLDBTable('competency_evidence_items_evidence');
+        $table = new XMLDBTable('comp_evidence_items_evidence');
         $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
         $table->addFieldInfo('userid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
         $table->addFieldInfo('competencyid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
@@ -1065,7 +1065,7 @@ function xmldb_local_upgrade($oldversion) {
 
     if ($result && $oldversion < 2010022401) {
     /// Create table competency_evidence_items
-        $table = new XMLDBTable('position_competencies');
+        $table = new XMLDBTable('pos_competencies');
         $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
         $table->addFieldInfo('positionid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
         $table->addFieldInfo('competencyid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null);
@@ -1136,7 +1136,7 @@ function xmldb_local_upgrade($oldversion) {
         $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null);
         $result = $result && add_field($table, $field);
 
-        $table = new XMLDBTable('idp_revision_competencytemplate');
+        $table = new XMLDBTable('idp_revision_competencytmpl');
         $field = new XMLDBField('duedate');
         $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null);
         $result = $result && add_field($table, $field);
@@ -1144,7 +1144,7 @@ function xmldb_local_upgrade($oldversion) {
 
     if ($result && $oldversion < 2010031200) {
     /// Add reaggregate to competency evidence table
-        $table = new XMLDBTable('competency_evidence');
+        $table = new XMLDBTable('comp_evidence');
         $field = new XMLDBField('reaggregate');
         $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0', 'timemodified');
         $result = $result && add_field($table, $field);
@@ -1152,7 +1152,7 @@ function xmldb_local_upgrade($oldversion) {
 
     if ($result && $oldversion < 2010031500) {
     /// Add proficient to competency scale table
-        $table = new XMLDBTable('competency_scale');
+        $table = new XMLDBTable('comp_scale');
         $field = new XMLDBField('proficient');
         $field->setAttributes(XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, null, null, null, null, null, 'description');
         $result = $result && add_field($table, $field);
@@ -1160,7 +1160,7 @@ function xmldb_local_upgrade($oldversion) {
 
     if ($result && $oldversion < 2010031600) {
     /// Add manual flag to competency evidence table
-        $table = new XMLDBTable('competency_evidence');
+        $table = new XMLDBTable('comp_evidence');
         $field = new XMLDBField('manual');
         $field->setAttributes(XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0');
         $result = $result && add_field($table, $field);
@@ -1168,7 +1168,7 @@ function xmldb_local_upgrade($oldversion) {
     /// Make sure all existing evidence are set to manual
         execute_sql("
             UPDATE
-                {$CFG->prefix}competency_evidence
+                {$CFG->prefix}comp_evidence
             SET
                 manual = 1
         ");
@@ -1176,7 +1176,7 @@ function xmldb_local_upgrade($oldversion) {
 
     if ($result && $oldversion < 2010031601) {
     /// Add default to competency scale table
-        $table = new XMLDBTable('competency_scale');
+        $table = new XMLDBTable('comp_scale');
         $field = new XMLDBField('defaultid');
         $field->setAttributes(XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, null, null, null, null, null, 'proficient');
         $result = $result && add_field($table, $field);
@@ -1184,7 +1184,7 @@ function xmldb_local_upgrade($oldversion) {
 
     if ($result && $oldversion < 2010031800) {
     /// Add missing indexes
-        $table = new XMLDBTable('competency');
+        $table = new XMLDBTable('comp');
 
         $index = new XMLDBIndex('parentid');
         $index->setAttributes(XMLDB_INDEX_NOTUNIQUE, array('parentid'));
@@ -1203,7 +1203,7 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && add_index($table, $index);
 
 
-        $table = new XMLDBTable('competency_evidence');
+        $table = new XMLDBTable('comp_evidence');
 
         $index = new XMLDBIndex('competencyid');
         $index->setAttributes(XMLDB_INDEX_NOTUNIQUE, array('competencyid'));
@@ -1222,7 +1222,7 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && add_index($table, $index);
 
 
-        $table = new XMLDBTable('competency_evidence_items');
+        $table = new XMLDBTable('comp_evidence_items');
 
         $index = new XMLDBIndex('competencyid');
         $index->setAttributes(XMLDB_INDEX_NOTUNIQUE, array('competencyid'));
@@ -1237,7 +1237,7 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && add_index($table, $index);
 
 
-        $table = new XMLDBTable('competency_evidence_items_evidence');
+        $table = new XMLDBTable('comp_evidence_items_evidence');
 
         $index = new XMLDBIndex('itemid');
         $index->setAttributes(XMLDB_INDEX_NOTUNIQUE, array('itemid'));
@@ -1256,7 +1256,7 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && add_index($table, $index);
 
 
-        $table = new XMLDBTable('competency_scale');
+        $table = new XMLDBTable('comp_scale');
 
         $index = new XMLDBIndex('proficient');
         $index->setAttributes(XMLDB_INDEX_NOTUNIQUE, array('proficient'));
@@ -1265,7 +1265,7 @@ function xmldb_local_upgrade($oldversion) {
 
     if ($result && $oldversion < 2010031801) {
     /// Remove not null constraints from competency_evidence
-        $table = new XMLDBTable('competency_evidence');
+        $table = new XMLDBTable('comp_evidence');
 
         $field = new XMLDBField('assessorname');
         $field->setAttributes(XMLDB_TYPE_CHAR, '100', null, null, null, null);
@@ -1304,15 +1304,15 @@ function xmldb_local_upgrade($oldversion) {
 
     if ($result && $oldversion < 2010033000) {
     // increase space for restriction data
-        $table = new XMLDBTable('competency_framework');
+        $table = new XMLDBTable('comp_framework');
         $field = new XMLDBField('isdefault');
         $result = $result && drop_field($table, $field);
 
-        $table = new XMLDBTable('organisation_framework');
+        $table = new XMLDBTable('org_framework');
         $field = new XMLDBField('isdefault');
         $result = $result && drop_field($table, $field);
 
-        $table = new XMLDBTable('position_framework');
+        $table = new XMLDBTable('pos_framework');
         $field = new XMLDBField('isdefault');
         $result = $result && drop_field($table, $field);
     }
@@ -1347,7 +1347,7 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && drop_field($table, $field);
 
         // Drop obsolete column idp_revision_competencytemplate.grade
-        $table = new XMLDBTable('idp_revision_competencytemplate');
+        $table = new XMLDBTable('idp_revision_competencytmpl');
         $field = new XMLDBField('grade');
         $result = $result && drop_field($table, $field);
     }
@@ -1424,14 +1424,16 @@ function xmldb_local_upgrade($oldversion) {
                 $newtablename = str_replace($oldtype, $newtype, $newtablename);
             }
             $table = new XMLDBTable($oldtablename);
-            if(table_exists($table) {
+            if(table_exists($table)) {
                 $result = $result && rename_table($table, $newtablename);
             }
         }
 
         // Rename the one IDP table whose name is too long
         $table = new XMLDBTable('idp_revision_competencytemplate');
-        $result = $result && rename_table($table, 'idp_revision_competencytmpl');
+        if(table_exists($table)) {
+            $result = $result && rename_table($table, 'idp_revision_competencytmpl');
+        }
     }
 
     if ($result && $oldversion < 2010042800){
