@@ -27,7 +27,10 @@ $row[] = new tabobject('general',$CFG->wwwroot.'/local/reportbuilder/general.php
 $row[] = new tabobject('columns',$CFG->wwwroot.'/local/reportbuilder/columns.php?id='.$id, get_string('columns','local_reportbuilder'));
 $row[] = new tabobject('filters',$CFG->wwwroot.'/local/reportbuilder/filters.php?id='.$id, get_string('filters','local_reportbuilder'));
 $row[] = new tabobject('content',$CFG->wwwroot.'/local/reportbuilder/content.php?id='.$id, get_string('content','local_reportbuilder'));
-$row[] = new tabobject('access',$CFG->wwwroot.'/local/reportbuilder/access.php?id='.$id, get_string('access','local_reportbuilder'));
+// hide access tab for embedded reports
+if(!$report->embeddedurl) {
+    $row[] = new tabobject('access',$CFG->wwwroot.'/local/reportbuilder/access.php?id='.$id, get_string('access','local_reportbuilder'));
+}
 
 $tabs[] = $row;
 $activated[] = $currenttab;
