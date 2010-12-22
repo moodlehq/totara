@@ -18,7 +18,10 @@ class plan_edit_form extends moodleform {
 
         $mform =& $this->_form;
         $action = $this->_customdata['action'];
-        $plan = $this->_customdata['plan'];
+
+        if (isset($this->_customdata['plan'])) {
+            $plan = $this->_customdata['plan'];
+        }
 
         // Add some hidden fields
         if ($action != 'add') {
@@ -64,6 +67,7 @@ class plan_edit_form extends moodleform {
         $mform->addElement('text', 'name', get_string('planname', 'local_plan'));
         $mform->setType('name', PARAM_TEXT);
         $mform->addRule('name', get_string('err_required', 'form'), 'required', '', 'client', false, false);
+        $mform->setDefault('name', $template->fullname);
         $mform->addElement('textarea', 'description', get_string('plandescription', 'local_plan'), array('rows'=>5, 'cols'=>50));
         $mform->setType('description', PARAM_TEXT);
         $mform->addRule('description', get_string('err_required', 'form'), 'required', '', 'client', false, false);

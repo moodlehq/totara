@@ -11,6 +11,7 @@
 
 require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
 require_once($CFG->dirroot . '/local/plan/lib.php');
+require_once($CFG->dirroot . '/local/plan/edit_form.php');
 
 $userid = required_param('userid', PARAM_INT); // user id
 
@@ -48,7 +49,6 @@ if (dp_get_template_permission($template->id, 'plan', 'create', $role) != DP_PER
 $currenturl = qualified_me();
 $allplansurl = "{$CFG->wwwroot}/local/plan/index.php?userid={$userid}";
 
-require_once('edit_form.php');
 $form = new plan_edit_form($currenturl, array('action'=>'add'));
 
 if ($form->is_cancelled()) {
