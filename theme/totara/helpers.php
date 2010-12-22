@@ -50,18 +50,20 @@ function totara_get_nav_select_classes($navstructure, $primary_selected, $second
  * @return array Array of class strings to add to menu items
  */
 function totara_get_selected_navs($navstructure, $navmatches) {
+    global $CFG;
+    $page_url = substr(qualified_me(), strlen($CFG->wwwroot));
 
     $selected = null;
     foreach ($navmatches as $pagename => $partialurls) {
         if(is_array($partialurls)) {
             foreach($partialurls as $partialurl) {
-                if(strncmp(me(), $partialurl,
+                if(strncmp($page_url, $partialurl,
                     strlen($partialurl)) == 0) {
                         $selected = $pagename;
                     }
             }
         } else {
-            if(strncmp(me(), $partialurls,
+            if(strncmp($page_url, $partialurls,
                 strlen($partialurls)) == 0) {
                     $selected = $pagename;
                 }

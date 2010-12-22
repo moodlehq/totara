@@ -58,7 +58,8 @@ list($primary_selected, $secondary_selected) =
 // add special-case overrides here
 
 // match the homepage if url is empty
-if(me() == '/') {
+$page_url = substr(qualified_me(), strlen($CFG->wwwroot));
+if($page_url == '/') {
     $primary_selected = 'home';
     $secondary_selected = null;
 }
