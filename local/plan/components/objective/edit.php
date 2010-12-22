@@ -107,7 +107,7 @@ if ( $deleteyes ){
         if (!$result){
             print_error("Was unable to create new objective");
         } else {
-            totara_set_notification('New objective created.', $objviewurl);
+            totara_set_notification('New objective created.', $objviewurl, array('style'=>'notifysuccess'));
         }
     } else {
 
