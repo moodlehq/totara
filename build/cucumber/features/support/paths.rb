@@ -26,6 +26,7 @@ module NavigationHelpers
       'organisation table'                     => '#organisation',
       'custom category table'                  => 'table.editorganisation',
       'scale value table'                      => 'table.generaltable',
+      'position table'                         => 'table.editposition',
     }
   end
 
