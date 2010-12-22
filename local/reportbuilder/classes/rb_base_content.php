@@ -642,7 +642,8 @@ class rb_date_content extends rb_base_content {
 
         // option to include empty date fields
         $includenulls = (isset($settings['incnulls']) &&
-                         $settings['incnulls']) ? " OR $field IS NULL " : '';
+            $settings['incnulls']) ?
+            " OR $field IS NULL OR $field = 0 " : " AND $field != 0 ";
 
         switch ($settings['when']) {
         case 'past':
