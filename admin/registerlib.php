@@ -20,6 +20,8 @@ function get_registration_data() {
     $data['totararelease'] = $TOTARA->release;
     $data['phpversion'] = phpversion();
     $data['webserversoftware'] = $_SERVER['SERVER_SOFTWARE'];
+    $data['usercount'] = count_records('user', 'deleted', '0');
+    $data['coursecount'] = count_records('course');
     return $data;
 }
 
