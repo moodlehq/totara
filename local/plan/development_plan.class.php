@@ -367,10 +367,7 @@ class development_plan {
      */
     public function display_progress() {
         if ($this->status == DP_PLAN_STATUS_UNAPPROVED) {
-            return get_string('awaitingapproval', 'local_plan');
-        }
-        if ($this->status == DP_PLAN_STATUS_DECLINED) {
-            return get_string('declined', 'local_plan');
+            return get_string('planstatusunapproved', 'local_plan');
         }
 
         $completionsum = 0;
@@ -631,7 +628,6 @@ class development_plan {
 
     function display_plan_message_box() {
         $unapproved = ($this->status == DP_PLAN_STATUS_UNAPPROVED);
-        $declined = ($this->status == DP_PLAN_STATUS_DECLINED);
         $completed = ($this->status == DP_PLAN_STATUS_COMPLETE);
         $viewingasmanager = $this->role == 'manager';
         $pending = $this->get_pending_items();
@@ -649,9 +645,6 @@ class development_plan {
         if($completed) {
             $message .= $this->display_completed_plan_message();
             $style = 'plan_box_completed';
-        } elseif ($declined) {
-            $message .= $this->display_declined_plan_message();
-            $style = 'plan_box_action';
         } else {
             if($canapprovepending || $canapproveplan) {
                 $style = 'plan_box_action';
@@ -689,10 +682,6 @@ class development_plan {
         return '<p>' . get_string('plancompleted', 'local_plan') . '</p>';
     }
 
-    function display_declined_plan_message() {
-        return '<p>' . get_string('plandeclinedtryagain', 'local_plan') . '</p>';
-    }
-
     function display_unapproved_plan_message() {
         global $CFG;
 
@@ -708,13 +697,14 @@ class development_plan {
         $out .= '<td>' . get_string('plannotapproved', 'local_plan') .
             // @todo add reminder request if available
             '</td>';
+
         if($canapproveplan) {
             $out .= '<td><input type="submit" name="approve" value="' . get_string('approve', 'local_plan') . '" /> &nbsp; ';
-
             $out .= '<input type="submit" name="decline" value="' . get_string('decline', 'local_plan') . '" /></td>';
         } elseif ($canrequestapproval) {
             $out .= '<td><input type="submit" name="approvalrequest" value="' . get_string('sendapprovalrequest', 'local_plan') . '" /> &nbsp; ';
         }
+
         $out .= '</tr></table></form>';
 
         return $out;
@@ -876,7 +866,15 @@ class development_plan {
         return true;
     }
 
-    function set_status($status) {
+
+    /**
+     * Change plan's status
+     *
+     * @access  public
+     * @param   integer $status
+     * @return  bool
+     */
+    public function set_status($status) {
         global $USER;
 
         $todb = new stdClass;
@@ -905,25 +903,13 @@ class development_plan {
         return true;
     }
 
-    /**
-     * Sets the plan's status to true if the plan was in "Declined" status
-     * @return boolean True if the plan's status was changed
-     */
-    function set_status_unapproved_if_declined() {
-        if ($this->status == DP_PLAN_STATUS_DECLINED) {
-            $this->set_status(DP_PLAN_STATUS_UNAPPROVED);
-            return true;
-        } else {
-            return false;
-        }
-    }
 
     /**
-     * Send a task to the manager when a learner requests a new plan
+     * Send a task to the manager when a learner requests a plan approval
      * @global <type> $USER
      * @global object $CFG
      */
-    function send_manager_task_plan_request() {
+    function send_manager_plan_approval_request() {
         global $USER, $CFG;
 
         $manager = totara_get_manager($this->userid);

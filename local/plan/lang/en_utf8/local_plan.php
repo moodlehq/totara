@@ -20,6 +20,7 @@ $string['objectivescales'] = 'Objective Scales';
 $string['progress'] = 'Progress';
 $string['activeplans'] = 'Active Plans';
 $string['completedplans'] = 'Completed Plans';
+$string['unapprovedplans'] = 'Unapproved Plans';
 $string['noplans'] = 'No plans...';
 $string['addplan'] = 'Add plan';
 $string['createnewlearningplan'] = 'Create new learning plan';
@@ -43,6 +44,7 @@ $string['teammembers'] = 'Team members';
 $string['allteammembers'] = 'All team members';
 $string['currentlyviewing'] = 'Currently viewing';
 $string['filterbystatus'] = 'Filter by status';
+$string['planstatusunapproved'] = 'Unapproved';
 
 $string['noclassfileforrole'] = 'Class file \'$a->classfile\' could not be found for role of \'$->role\'';
 $string['noclassforrole'] = 'Class \'$a->class\' does not exist for role \'$a->role\'.';

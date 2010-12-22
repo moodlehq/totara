@@ -61,7 +61,4 @@ if (!$component->can_update_items()) {
 ///
 $component->update_assigned_items($idlist);
 
-// Update plan to unapproved if current status is declined
-$plan->set_status_unapproved_if_declined();
-
 echo $component->display_course_list();

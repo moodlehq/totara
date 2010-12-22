@@ -616,7 +616,6 @@ class dp_objective_component extends dp_base_component {
             }
             if($status) {
                 commit_sql();
-                $this->plan->set_status_unapproved_if_declined();
                 // process update notifications
                 foreach($stored_records as $itemid => $record) {
                     // priority may have been updated

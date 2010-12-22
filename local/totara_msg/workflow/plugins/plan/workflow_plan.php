@@ -39,7 +39,12 @@ class totara_msg_workflow_plan extends totara_msg_workflow_plugin_base {
         if (!in_array($plan->get_setting('confirm'), array(DP_PERMISSION_ALLOW, DP_PERMISSION_APPROVE))) {
             return false;
         }
-        $plan->set_status(DP_PLAN_STATUS_APPROVED);
+
+        // Change status
+        if (!$plan->set_status(DP_PLAN_STATUS_APPROVED)) {
+            return false;
+        }
+
         return $plan->send_approved_notification();
     }
 
@@ -65,7 +70,7 @@ class totara_msg_workflow_plan extends totara_msg_workflow_plugin_base {
         if (!in_array($plan->get_setting('confirm'), array(DP_PERMISSION_ALLOW, DP_PERMISSION_APPROVE))) {
             return false;
         }
-        $plan->set_status(DP_PLAN_STATUS_DECLINED);
+
         return $plan->send_declined_notification();
     }
 }

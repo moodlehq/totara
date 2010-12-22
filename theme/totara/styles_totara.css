@@ -1844,11 +1844,16 @@ body#admin-user table.generaltable td.c7 {
     background: url('images/icon_active_plan.gif') no-repeat 8px 10px transparent;
     background-color: none;
 }
+#dp-plans-list-unapproved-plans table td.c0 {
+    background: url('images/icon_active_plan.gif') no-repeat 8px 10px transparent;
+    background-color: none;
+}
 #dp-plans-list-completed-plans table td.c0 {
     background: url('images/icon_completed_plan.gif') no-repeat 8px 10px transparent;
     background-color: none;
 }
 #dp-plans-list-active-plans table th.header.c0 a,
+#dp-plans-list-unapproved-plans table th.header.c0 a,
 #dp-plans-list-completed-plans table th.header.c0 a {
     color: #A52B86;
 }

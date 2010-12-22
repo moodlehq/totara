@@ -1577,16 +1577,19 @@ table.dp-plan-component-items {
 /** Learning Plans **/
 /*****************************************************************************/
 #dp-plans-list-active-plans,
+#dp-plans-list-unapproved-plans,
 #dp-plans-list-completed-plans {
     margin-top:20px;
 }
 
 #dp-plans-list-active-plans table,
+#dp-plans-list-unapproved-plans table,
 #dp-plans-list-completed-plans table {
     width:100%;
 }
 
 #dp-plans-list-active-plans table td.c0,
+#dp-plans-list-unapproved-plans table td.c0,
 #dp-plans-list-completed-plans table td.c0 {
     padding-left: 40px;
 }
@@ -1598,6 +1601,7 @@ table.dp-plan-component-items {
 */
 
 #dp-plans-list-active-plans table th.header.c0 a,
+#dp-plans-list-unapproved-plans table th.header.c0 a,
 #dp-plans-list-completed-plans table th.header.c0 a {
     font-size:17px;
     text-decoration: none;

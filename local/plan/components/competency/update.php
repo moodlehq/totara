@@ -70,6 +70,4 @@ $component = $plan->get_component($componentname);
 
 $component->update_assigned_items($idlist);
 
-$plan->set_status_unapproved_if_declined();
-
 echo $component->display_competency_list();

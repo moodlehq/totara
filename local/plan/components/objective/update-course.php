@@ -57,7 +57,4 @@ if ( $plancompleted ){
 
 $component->update_linked_components($objectiveid, 'course', $idlist);
 
-// Update plan to unapproved if current status is declined
-$plan->set_status_unapproved_if_declined();
-
 echo $component->display_linked_courses($objectiveid);

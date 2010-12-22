@@ -6,13 +6,12 @@ require_once($CFG->dirroot . '/local/plan/components.class.php');
 require_once($CFG->dirroot . '/local/plan/workflows.class.php');
 require_once($CFG->libdir . '/tablelib.php');
 
-// plan status values
+// Plan status values
 define('DP_PLAN_STATUS_UNAPPROVED', 10);
-define('DP_PLAN_STATUS_DECLINED', 30);
 define('DP_PLAN_STATUS_APPROVED', 50);
 define('DP_PLAN_STATUS_COMPLETE', 100);
 
-// permission values
+// Permission values
 define('DP_PERMISSION_DENY', 10);
 define('DP_PERMISSION_REQUEST', 30);
 define('DP_PERMISSION_ALLOW', 50);
@@ -415,6 +414,9 @@ function dp_display_plans($userid, $statuses=array(DP_PLAN_STATUS_APPROVED), $co
     else if (in_array('completedplans', $cols)) {
         $tableheaders[] = get_string('completedplans', 'local_plan');
     }
+    else if (in_array('unapprovedplans', $cols)) {
+        $tableheaders[] = get_string('unapprovedplans', 'local_plan');
+    }
     else {
         $tableheaders[] = get_string('plan', 'local_plan');
     }
@@ -440,7 +442,7 @@ function dp_display_plans($userid, $statuses=array(DP_PLAN_STATUS_APPROVED), $co
     $table->define_headers($tableheaders);
     $table->define_columns($tablecols);
     $table->set_attribute('class', 'logtable generalbox');
-    $table->set_attribute('width', '97%');
+    $table->set_attribute('width', '100%');
     $table->sortable(true);
     $table->setup();
     $table->pagesize(5, $count);

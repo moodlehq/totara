@@ -54,7 +54,6 @@ if ($delete && $confirm) {
     if ($component->unassign_item($deleteitem)) {
         totara_set_notification(get_string('canremoveitem','local_plan'), $currenturl, array('style' => 'notifysuccess'));
 
-        $plan->set_status_unapproved_if_declined();
     } else {
         print_error('error:couldnotunassignitem', 'local_plan');
     }
