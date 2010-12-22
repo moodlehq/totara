@@ -14,10 +14,14 @@ require_once($CFG->dirroot . '/local/plan/lib.php');
 
 $planuser = optional_param('userid', $USER->id, PARAM_INT); // show plans for this user
 
+
+//
+/// Permission checks
+//
 require_login();
 require_capability('local/plan:accessplan', get_system_context());
 
-// START PERMISSION HACK
+// Check if we are viewing these plans as a manager or a learner
 if ($planuser != $USER->id) {
     // Make sure user is manager
     if (totara_is_manager($planuser) || isadmin()) {
@@ -33,12 +37,17 @@ if (!$template = dp_get_first_template()) {
     print_error('notemplatesetup', 'local_plan');
 }
 
+// Check if we can view these plans
 if (dp_get_template_permission($template->id, 'plan', 'view', $role) != DP_PERMISSION_ALLOW) {
     print_error('error:nopermissions', 'local_plan');
 }
 $canaddplan = (dp_get_template_permission($template->id, 'plan', 'create', $role) == DP_PERMISSION_ALLOW);
-// END HACK
 
+
+
+//
+// Display plan list
+//
 $heading = get_string('learningplans', 'local_plan');
 $pagetitle = format_string(get_string('learningplans','local_plan'));
 $navlinks = array();
@@ -75,15 +84,9 @@ if ($canaddplan) {
 echo '<div style="clear:both;"></div>';
 print_container_end();
 
-//print_heading(get_string('activeplans', 'local_plan'), 'left');
-//echo "<br>";
-
 print_container_start(false, '', 'dp-plans-list-active-plans');
 echo dp_display_plans($planuser, array(DP_PLAN_STATUS_APPROVED, DP_PLAN_STATUS_UNAPPROVED, DP_PLAN_STATUS_DECLINED), array('activeplans', 'duedate', 'progress'));
 print_container_end();
-
-//print_heading(get_string('completedplans', 'local_plan'), 'left');
-//echo "<br>";
 
 print_container_start(false, '', 'dp-plans-list-completed-plans');
 echo dp_display_plans($planuser, DP_PLAN_STATUS_COMPLETE, array('completedplans','completed'));

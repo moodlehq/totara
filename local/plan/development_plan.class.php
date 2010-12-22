@@ -359,9 +359,13 @@ class development_plan {
 
     /**
      * Determines and displays the progress of this plan.
+     *
      * Progress is determined by course completion statuses.
+     *
+     * @access  public
+     * @return  string
      */
-    function display_progress() {
+    public function display_progress() {
         if ($this->status == DP_PLAN_STATUS_UNAPPROVED) {
             return get_string('awaitingapproval', 'local_plan');
         }

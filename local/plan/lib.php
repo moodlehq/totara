@@ -18,36 +18,29 @@ define('DP_PERMISSION_REQUEST', 30);
 define('DP_PERMISSION_ALLOW', 50);
 define('DP_PERMISSION_APPROVE', 70);
 
-// due date modes
+// Due date modes
 define('DP_DUEDATES_NONE', 0);
 define('DP_DUEDATES_OPTIONAL', 1);
 define('DP_DUEDATES_REQUIRED', 2);
 
-// priority modes
+// Priority modes
 define('DP_PRIORITY_NONE', 0);
 define('DP_PRIORITY_OPTIONAL', 1);
 define('DP_PRIORITY_REQUIRED', 2);
 
-// maximum number of priority options
+// Maximum number of priority options
 define('DP_MAX_PRIORITY_OPTIONS', 5);
 
-// approval
+// Approval
 define('DP_APPROVAL_DECLINED',          10);
 define('DP_APPROVAL_UNAPPROVED',        20);
 define('DP_APPROVAL_APPROVED',          50);
 define('DP_APPROVAL_REQUEST_REMOVAL',   60);
 
-//Plan notices
+// Plan notices
 define('DEVELOPMENT_PLAN_UNKNOWN_BUTTON_CLICKED', 1);
 define('DEVELOPMENT_PLAN_GENERAL_CONFIRM_UPDATE', 2);
 define('DEVELOPMENT_PLAN_GENERAL_FAILED_UPDATE', 3);
-/*define('', 4);
-define('', 5);
-define('', 6);
-define('', 7);
-define('', 8);
-define('', 9);
-define('', 10);*/
 
 
 // roles available to development plans
@@ -324,6 +317,18 @@ function dp_display_approval_options($name, $selected=DP_APPROVAL_UNAPPROVED, $c
     return choose_from_menu($options, $name, $selected, $choosestr, '', $chooseval, true);
 }
 
+
+/**
+ * Return markup for displaying a user's plans
+ *
+ * Optionally filter by plan status, and chose columns to display
+ *
+ * @access  public
+ * @param   int     $userid     Plan owner
+ * @param   array   $statuses   Plan status to filter by
+ * @param   array   $cols       Columns to display
+ * @return  string
+ */
 function dp_display_plans($userid, $statuses=array(DP_PLAN_STATUS_APPROVED), $cols=array('duedate', 'progress', 'completed')) {
     global $CFG;
 
@@ -347,13 +352,13 @@ function dp_display_plans($userid, $statuses=array(DP_PLAN_STATUS_APPROVED), $co
 
     // Determine what the first column should be
     if (in_array('activeplans', $cols)) {
-	$tableheaders[] = get_string('activeplans', 'local_plan');
+        $tableheaders[] = get_string('activeplans', 'local_plan');
     }
     else if (in_array('completedplans', $cols)) {
-	$tableheaders[] = get_string('completedplans', 'local_plan');
+        $tableheaders[] = get_string('completedplans', 'local_plan');
     }
     else {
-	$tableheaders[] = get_string('plan', 'local_plan');
+        $tableheaders[] = get_string('plan', 'local_plan');
     }
 
     if (in_array('duedate', $cols)) {
@@ -378,7 +383,6 @@ function dp_display_plans($userid, $statuses=array(DP_PLAN_STATUS_APPROVED), $co
     $table->define_columns($tablecols);
     $table->set_attribute('class', 'logtable generalbox');
     $table->set_attribute('width', '97%');
-    //$table->column_style('actioncontrols', 'width', '70px');
     $table->sortable(true);
     $table->setup();
     $table->pagesize(5, $count);
@@ -388,24 +392,24 @@ function dp_display_plans($userid, $statuses=array(DP_PLAN_STATUS_APPROVED), $co
     // Add table data
     $plans = get_records_sql($select.$from.$where.$sort, $table->get_page_start(), $table->get_page_size());
     if (!$plans) {
-	return;
+        return;
     }
     foreach ($plans as $p) {
-	    $plan = new development_plan($p->id);
-	    $row = array();
-	    $row[] = $plan->display_summary_widget();
-	    if (in_array('duedate', $cols)) {
-		$row[] = $plan->display_enddate();
-	    }
-	    if (in_array('progress', $cols)) {
-		$row[] = $plan->display_progress();
-	    }
-	    if (in_array('completed', $cols)) {
-		$row[] = $plan->display_completeddate();
-	    }
-	    $row[] = $plan->display_actions();
+        $plan = new development_plan($p->id);
+        $row = array();
+        $row[] = $plan->display_summary_widget();
+        if (in_array('duedate', $cols)) {
+            $row[] = $plan->display_enddate();
+        }
+        if (in_array('progress', $cols)) {
+            $row[] = $plan->display_progress();
+        }
+        if (in_array('completed', $cols)) {
+            $row[] = $plan->display_completeddate();
+        }
+        $row[] = $plan->display_actions();
 
-	    $table->add_data($row);
+        $table->add_data($row);
     }
 
     ob_start();
