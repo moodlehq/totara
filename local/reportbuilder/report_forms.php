@@ -427,7 +427,7 @@ class report_builder_edit_content_form extends moodleform {
             $classname = 'rb_' . $option->classname.'_content';
             if(class_exists($classname)) {
                 $obj = new $classname();
-                $obj->form_template($mform, $id);
+                $obj->form_template($mform, $id, $option->title);
             }
         }
 

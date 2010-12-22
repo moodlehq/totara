@@ -88,8 +88,9 @@ class rb_trainer_content extends rb_base_content {
      *
      * @param object &$mform Moodle form object to modify (passed by reference)
      * @param integer $reportid ID of the report being adjusted
+     * @param string $title Name of the field the restriction is acting on
      */
-    function form_template(&$mform, $reportid) {
+    function form_template(&$mform, $reportid, $title) {
 
         // get current settings
         // remove rb_ from start of classname

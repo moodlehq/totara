@@ -31,7 +31,7 @@ abstract class rb_base_content {
      */
     abstract function sql_restriction($field, $reportid);
     abstract function text_restriction($title, $reportid);
-    abstract function form_template(&$mform, $reportid);
+    abstract function form_template(&$mform, $reportid, $title);
     abstract function form_process($reportid, $fromform);
 
 }
@@ -123,8 +123,9 @@ class rb_current_pos_content extends rb_base_content {
      *
      * @param object &$mform Moodle form object to modify (passed by reference)
      * @param integer $reportid ID of the report being adjusted
+     * @param string $title Name of the field the restriction is acting on
      */
-    function form_template(&$mform, $reportid) {
+    function form_template(&$mform, $reportid, $title) {
         // get current settings
         // remove rb_ from start of classname
         $type = substr(get_class($this), 3);
@@ -132,7 +133,7 @@ class rb_current_pos_content extends rb_base_content {
         $recursive = reportbuilder::get_setting($reportid, $type, 'recursive');
 
         $mform->addElement('header', 'current_pos_header',
-            get_string('showbycurrentpos','local_reportbuilder'));
+            get_string('showbyx','local_reportbuilder', lcfirst($title)));
         $mform->addElement('checkbox', 'current_pos_enable', '',
             get_string('currentposenable','local_reportbuilder'));
         $mform->setDefault('current_pos_enable', $enable);
@@ -270,8 +271,9 @@ class rb_current_org_content extends rb_base_content {
      *
      * @param object &$mform Moodle form object to modify (passed by reference)
      * @param integer $reportid ID of the report being adjusted
+     * @param string $title Name of the field the restriction is acting on
      */
-    function form_template(&$mform, $reportid) {
+    function form_template(&$mform, $reportid, $title) {
         // get current settings
         // remove rb_ from start of classname
         $type = substr(get_class($this), 3);
@@ -279,7 +281,7 @@ class rb_current_org_content extends rb_base_content {
         $recursive = reportbuilder::get_setting($reportid, $type, 'recursive');
 
         $mform->addElement('header', 'current_org_header',
-            get_string('showbycurrentorg','local_reportbuilder'));
+            get_string('showbyx','local_reportbuilder', lcfirst($title)));
         $mform->addElement('checkbox', 'current_org_enable', '',
             get_string('currentorgenable','local_reportbuilder'));
         $mform->setDefault('current_org_enable', $enable);
@@ -411,8 +413,9 @@ class rb_completed_org_content extends rb_base_content {
      *
      * @param object &$mform Moodle form object to modify (passed by reference)
      * @param integer $reportid ID of the report being adjusted
+     * @param string $title Name of the field the restriction is acting on
      */
-    function form_template(&$mform, $reportid) {
+    function form_template(&$mform, $reportid, $title) {
         // get current settings
         // remove rb_ from start of classname
         $type = substr(get_class($this), 3);
@@ -420,7 +423,7 @@ class rb_completed_org_content extends rb_base_content {
         $recursive = reportbuilder::get_setting($reportid, $type, 'recursive');
 
         $mform->addElement('header', 'completed_org_header',
-            get_string('showbycompletedorg', 'local_reportbuilder'));
+            get_string('showbyx', 'local_reportbuilder', lcfirst($title)));
         $mform->addElement('checkbox', 'completed_org_enable', '',
             get_string('completedorgenable', 'local_reportbuilder'));
         $mform->setDefault('completed_org_enable', $enable);
@@ -557,8 +560,9 @@ class rb_user_content extends rb_base_content {
      *
      * @param object &$mform Moodle form object to modify (passed by reference)
      * @param integer $reportid ID of the report being adjusted
+     * @param string $title Name of the field the restriction is acting on
      */
-    function form_template(&$mform, $reportid) {
+    function form_template(&$mform, $reportid, $title) {
 
         // get current settings
         // remove rb_ from start of classname
@@ -566,10 +570,10 @@ class rb_user_content extends rb_base_content {
         $enable = reportbuilder::get_setting($reportid, $type, 'enable');
         $who = reportbuilder::get_setting($reportid, $type, 'who');
 
-        $mform->addElement('header', 'user_header', get_string('showbyuser',
-            'local_reportbuilder'));
+        $mform->addElement('header', 'user_header', get_string('showbyx',
+            'local_reportbuilder', lcfirst($title)));
         $mform->addElement('checkbox', 'user_enable', '',
-            get_string('byuserenable', 'local_reportbuilder'));
+            get_string('showbasedonx', 'local_reportbuilder', lcfirst($title)));
         $mform->disabledIf('user_enable', 'contentenabled', 'eq', 0);
         $mform->setDefault('user_enable', $enable);
         $radiogroup = array();
@@ -742,8 +746,9 @@ class rb_date_content extends rb_base_content {
      *
      * @param object &$mform Moodle form object to modify (passed by reference)
      * @param integer $reportid ID of the report being adjusted
+     * @param string $title Name of the field the restriction is acting on
      */
-    function form_template(&$mform, $reportid) {
+    function form_template(&$mform, $reportid, $title) {
         // get current settings
         // remove rb_ from start of classname
         $type = substr(get_class($this), 3);
@@ -751,10 +756,11 @@ class rb_date_content extends rb_base_content {
         $when = reportbuilder::get_setting($reportid, $type, 'when');
         $incnulls = reportbuilder::get_setting($reportid, $type, 'incnulls');
 
-        $mform->addElement('header', 'date_header', get_string('showbydate',
-            'local_reportbuilder'));
+        $mform->addElement('header', 'date_header', get_string('showbyx',
+            'local_reportbuilder', lcfirst($title)));
         $mform->addElement('checkbox', 'date_enable', '',
-            get_string('bydateenable', 'local_reportbuilder'));
+            get_string('showbasedonx', 'local_reportbuilder',
+            lcfirst($title)));
         $mform->setDefault('date_enable', $enable);
         $mform->disabledIf('date_enable', 'contentenabled', 'eq', 0);
         $radiogroup = array();
@@ -961,8 +967,9 @@ class rb_course_tag_content extends rb_base_content {
      *
      * @param object &$mform Moodle form object to modify (passed by reference)
      * @param integer $reportid ID of the report being adjusted
+     * @param string $title Name of the field the restriction is acting on
      */
-    function form_template(&$mform, $reportid) {
+    function form_template(&$mform, $reportid, $title) {
 
         // remove rb_ from start of classname
         $type = substr(get_class($this), 3);
