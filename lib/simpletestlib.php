@@ -414,10 +414,12 @@ function _private_execute_sql($sql, $localdb = null, $ignoreerror = false) {
                 return false;
             }
 
+            echo '<exception>';
             echo 'SQL ERROR: ';
             echo htmlspecialchars($localdb->ErrorMsg());
             echo ' STATEMENT: ';
             echo htmlspecialchars($sql);
+            echo '</exception>';
         }
         else {
             echo '<p>SQL ERROR: ', $localdb->ErrorMsg(), ". STATEMENT: $sql</p>";
