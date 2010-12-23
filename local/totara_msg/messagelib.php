@@ -224,7 +224,6 @@ function tm_message_send($eventdata) {
             }
 
             // add the metadata record
-            $eventdata->urgency  = isset($eventdata->urgency) ? $eventdata->urgency : TOTARA_MSG_URGENCY_LOW;
             $eventdata->onaccept = isset($eventdata->onaccept) ? addslashes(serialize($eventdata->onaccept)) : null;
             $eventdata->onreject = isset($eventdata->onreject) ? addslashes(serialize($eventdata->onreject)) : null;
 
