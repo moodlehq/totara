@@ -2225,8 +2225,8 @@ function print_course($course, $highlightterms = '') {
 
     $linkcss = $course->visible ? '' : ' class="dimmed" ';
 
-    echo '<div class="coursebox clearfix">';
     echo '<tr>';
+    echo '<div class="coursebox clearfix">';
     echo '<td class="name"> '. local_course_icon_tag($course, 'small'). '<a title="'.get_string('entercourse').'"'.
          $linkcss.' href="'.$CFG->wwwroot.'/course/view.php?id='.$course->id.'">'.
          highlight($highlightterms, format_string($course->fullname)).'</a></div>';
@@ -2348,9 +2348,9 @@ function print_my_moodle() {
                 if ($course->id == SITEID) {
                     continue;
                 }
-                echo '<li>';
+                echo '<li><table>';
                 print_course($course);
-                echo "</li>\n";
+                echo "</table></li>\n";
             }
             echo "</ul>\n";
         }
