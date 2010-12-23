@@ -24,7 +24,7 @@ class dp_template_general_settings_form extends moodleform {
 
         $mform->addElement('text', 'enddate', get_string('enddate', 'local_plan'));
 
-        $mform->addRule('enddate',get_string('error:dateformat','idp'),'regex', '/^(0[1-9]|[12][0-9]|3[01])[- \/.](0[1-9]|1[012])[- \/.](19|20)\d\d$/');
+        $mform->addRule('enddate',get_string('error:dateformat','local_plan'),'regex', '/^(0[1-9]|[12][0-9]|3[01])[- \/.](0[1-9]|1[012])[- \/.](19|20)\d\d$/');
 
         $mform->setType('enddate', PARAM_TEXT);
 
@@ -44,7 +44,7 @@ class dp_template_general_settings_form extends moodleform {
 
         // Enforce valid dates
         if ( false === $enddate && $enddatestr !== 'dd/mm/yyyy' && $enddatestr !== '' ){
-            $result['enddate'] = get_string('error:dateformat','idp');
+            $result['enddate'] = get_string('error:dateformat','local_plan');
         }
 
         return $result;
@@ -65,7 +65,7 @@ class dp_template_new_form extends moodleform {
 
         $mform->addElement('text', 'enddate', get_string('enddate', 'local_plan'));
 
-        $mform->addRule('enddate',get_string('error:dateformat','idp'),'regex', '/^(0[1-9]|[12][0-9]|3[01])[- \/.](0[1-9]|1[012])[- \/.](19|20)\d\d$/');
+        $mform->addRule('enddate',get_string('error:dateformat','local_plan'),'regex', '/^(0[1-9]|[12][0-9]|3[01])[- \/.](0[1-9]|1[012])[- \/.](19|20)\d\d$/');
 
         $mform->setType('enddate', PARAM_TEXT);
 
@@ -85,7 +85,7 @@ class dp_template_new_form extends moodleform {
 
         // Enforce valid dates
         if ( false === $enddate && $enddatestr !== 'dd/mm/yyyy' && $enddatestr !== '' ){
-            $result['enddate'] = get_string('error:dateformat','idp');
+            $result['enddate'] = get_string('error:dateformat','local_plan');
         }
 
         return $result;

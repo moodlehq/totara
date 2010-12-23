@@ -104,6 +104,7 @@ $string['notemplates'] = 'No plan templates have been created';
 $string['autoassign'] = 'Automatic assignment';
 $string['autoassignpos'] = 'Automatically assign by position';
 $string['autoassignorg'] = 'Automatically assign by organisation';
+$string['error:dateformat'] = 'Please enter a date in the format dd/mm/yyyy';
 
 // Default Component Names
 $string['course_defaultname'] = 'Courses';
