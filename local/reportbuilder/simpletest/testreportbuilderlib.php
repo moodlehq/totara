@@ -219,6 +219,8 @@ class reportbuilderlib_test extends prefix_changing_test_case {
         remove_test_table($CFG->prefix . 'user', $db);
         remove_test_table($CFG->prefix . 'context', $db);
         remove_test_table($CFG->prefix . 'role_assignments', $db);
+        remove_test_table($CFG->prefix . 'comp', $db);
+        remove_test_table($CFG->prefix . 'comp_evidence', $db);
         remove_test_table($CFG->prefix . 'comp_scale_values', $db);
         remove_test_table($CFG->prefix . 'org', $db);
         remove_test_table($CFG->prefix . 'pos', $db);
@@ -233,7 +235,6 @@ class reportbuilderlib_test extends prefix_changing_test_case {
     }
 
     function test_reportbuilder_initialize_db_instance() {
-
         $rb = $this->rb;
         // should create report builder object with the correct properties
         $this->assertEqual($rb->fullname,'Test Report');
@@ -407,14 +408,14 @@ class reportbuilderlib_test extends prefix_changing_test_case {
         insert_record('report_builder_settings', $todb);
         $rb = new reportbuilder(1);
         // should return the appropriate SQL snippet to OR the restrictions if content mode = 1
-        $this->assertPattern('/\(base\.userid = 2 OR \(base\.timemodified > \d+\)\)/',$rb->get_content_restrictions());
+        $this->assertPattern('/\(base\.userid = 2 OR \(base\.timemodified > \d+ AND base\.timemodified != 0 \)\)/',$rb->get_content_restrictions());
         $todb = new object();
         $todb->id = 1;
         $todb->contentmode = REPORT_BUILDER_CONTENT_MODE_ALL;
         update_record('report_builder', $todb);
         $rb = new reportbuilder(1);
         // should return the appropriate SQL snippet to AND the restrictions if content mode = 2
-        $this->assertPattern('/\(base\.userid = 2 AND \(base\.timemodified > \d+\)\)/',$rb->get_content_restrictions());
+        $this->assertPattern('/\(base\.userid = 2 AND \(base\.timemodified > \d+ AND base\.timemodified != 0 \)\)/',$rb->get_content_restrictions());
 
     }
 
