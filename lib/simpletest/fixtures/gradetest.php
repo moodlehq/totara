@@ -103,11 +103,11 @@ class grade_test extends UnitTestCase {
         $CFG->old_prefix = $CFG->prefix;
         $CFG->prefix .= 'unittest_';
         if (!$this->prepare_test_tables()) {
-            die("Could not create all the test tables!");
+            trigger_error('Could not create all the test tables!', E_USER_WARNING);
         }
 
         if (!$this->prepare_test_history_tables()) {
-            die("Could not create all the test tables!");
+            trigger_error('Could not create all the test tables!', E_USER_WARNING);
         }
 
         foreach ($this->tables as $table) {
