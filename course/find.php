@@ -9,67 +9,8 @@ $format = optional_param('format','', PARAM_TEXT); // export format
 
 $strheading = get_string('findcourses', 'local');
 $shortname = 'findcourses';
-$embed = new object();
-$embed->source = 'courses';
-$embed->fullname = $strheading;
-$embed->filters = array(
-    array(
-        'type' => 'course',
-        'value' => 'name_and_summary',
-        'advanced' => 0,
-    ),
-    array(
-        'type' => 'course',
-        'value' => 'mods',
-        'advanced' => 0,
-    ),
-    array(
-        'type' => 'course_category',
-        'value' => 'id',
-        'advanced' => 1,
-    ),
-    array(
-        'type' => 'course',
-        'value' => 'startdate',
-        'advanced' => 1,
-    ),
-);
-$embed->columns = array(
-    array(
-        'type' => 'course',
-        'value' => 'courselinkicon',
-        'heading' => 'Course Name',
-    ),
-    array(
-        'type' => 'course_category',
-        'value' => 'namelinkicon',
-        'heading' => 'Category',
-    ),
-    array(
-        'type' => 'course',
-        'value' => 'startdate',
-        'heading' => 'Start date',
-    ),
-    array(
-        'type' => 'course',
-        'value' => 'mods',
-        'heading' => 'Content',
-    ),
-);
 
-$embed->contentmode = REPORT_BUILDER_CONTENT_MODE_NONE; // no restrictions
-$embed->embeddedparams = array(
-    // don't show the site course
-    'category' => '!0',
-);
-
-$context = get_context_instance(CONTEXT_SYSTEM);
-if(!has_capability('moodle/site:doanything', $context)) {
-    // don't show hidden courses to none-admins
-    $embed->embeddedparams['visible'] = 1;
-}
-
-$report = new reportbuilder(null, $shortname, $embed);
+$report = reportbuilder_get_embedded_report($shortname);
 
 if($format!='') {
     $report->export_data($format);

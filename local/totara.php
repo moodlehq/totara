@@ -310,11 +310,9 @@ function totara_print_report_manager($return=false) {
     foreach ($reports as $report) {
         // show reports user has permission to view, that are not hidden
         if(reportbuilder::is_capable($report->id) && !$report->hidden) {
-            $viewurl = ($report->embeddedurl === null) ? $CFG->wwwroot .
-                '/local/reportbuilder/report.php?id='.$report->id :
-                $report->embeddedurl;
-	    $class = ($counter % 2) ? 'noshade' : 'shade';
-	    $counter++;
+            $viewurl = reportbuilder_get_report_url($report);
+            $class = ($counter % 2) ? 'noshade' : 'shade';
+            $counter++;
             $row = '
             <tr class="'.$class.'">
                 <td class="icon" align="left">

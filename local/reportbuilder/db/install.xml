@@ -12,9 +12,12 @@
         <FIELD NAME="source" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" ENUM="false" COMMENT="Data source on which the report is based" PREVIOUS="shortname" NEXT="hidden"/>
         <FIELD NAME="hidden" TYPE="int" LENGTH="4" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="If set to 1, report not shown on My Reports page but still accessible at URL" PREVIOUS="source" NEXT="accessmode"/>
         <FIELD NAME="accessmode" TYPE="int" LENGTH="4" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="Controls how access to the report is determined" PREVIOUS="hidden" NEXT="contentmode"/>
-        <FIELD NAME="contentmode" TYPE="int" LENGTH="4" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="Controls how the content of the report is determined" PREVIOUS="accessmode" NEXT="embeddedurl"/>
-        <FIELD NAME="embeddedurl" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" ENUM="false" COMMENT="URL of the report for embedded reports, or null" PREVIOUS="contentmode" NEXT="description"/>
-        <FIELD NAME="description" TYPE="text" LENGTH="medium" NOTNULL="false" SEQUENCE="false" ENUM="false" COMMENT="Description of the report" PREVIOUS="embeddedurl"/>
+        <FIELD NAME="contentmode" TYPE="int" LENGTH="4" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="Controls how the content of the report is determined" PREVIOUS="accessmode" NEXT="description"/>
+        <FIELD NAME="description" TYPE="text" LENGTH="medium" NOTNULL="false" SEQUENCE="false" ENUM="false" COMMENT="Description of the report" PREVIOUS="contentmode" NEXT="recordsperpage"/>
+        <FIELD NAME="recordsperpage" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="40" SEQUENCE="false" ENUM="false" COMMENT="Number of records to show on a single page of results for this report" PREVIOUS="description" NEXT="defaultsortcolumn"/>
+        <FIELD NAME="defaultsortcolumn" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" ENUM="false" COMMENT="Name of the column (type_value) to use to initially sort the report" PREVIOUS="recordsperpage" NEXT="defaultsortorder"/>
+        <FIELD NAME="defaultsortorder" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="4" SEQUENCE="false" ENUM="false" COMMENT="Integer representing the direction that default sorting should be done" PREVIOUS="defaultsortcolumn" NEXT="embedded"/>
+        <FIELD NAME="embedded" TYPE="int" LENGTH="4" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="Indicates whether the report is an embedded report. Set to 1 for embedded, 0 otherwise." PREVIOUS="defaultsortorder"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="Primary key for report builder"/>

@@ -98,5 +98,25 @@ function xmldb_local_reportbuilder_upgrade($oldversion=0) {
         }
     }
 
+    if ($result && $oldversion < 2010122300) {
+
+        /// Define field embedded to be added to report_builder
+        $table = new XMLDBTable('report_builder');
+        $field = new XMLDBField('embedded');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '4', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0', 'description');
+
+        /// Launch add field embedded
+        $result = $result && add_field($table, $field);
+
+        // update for existing records
+        $sql = "UPDATE {$CFG->prefix}report_builder SET embedded=1 WHERE embeddedurl IS NOT NULL";
+        $result = $result && execute_sql($sql);
+
+        // now drop embeddedurl column
+        $field = new XMLDBField('embeddedurl');
+         /// Launch drop field embeddedurl
+        $result = $result && drop_field($table, $field);
+    }
+
     return $result;
 }

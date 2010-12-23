@@ -137,12 +137,7 @@
         $data = array();
         foreach($reports as $report) {
             $row = array();
-            if($report->embeddedurl === null) {
-                $reporturl = $CFG->wwwroot .
-                    '/local/reportbuilder/report.php?id=' . $report->id;
-            } else {
-                $reporturl = $report->embeddedurl;
-            }
+            $reporturl = reportbuilder_get_report_url($report);
             $row[] = '<a href="' . $reporturl . '">' . $report->fullname . '</a>';
 
             $strsettings = get_string('settings','local_reportbuilder');

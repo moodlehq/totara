@@ -73,73 +73,14 @@
     }
     $strheading .= ': ' . get_string($planstatus . 'learning', 'local_plan');
 
-    $embed = new object();
-    $embed->source = 'dp_course';
-    $embed->fullname = get_string('recordoflearningcourses', 'local_plan');
-//    $embed->filters = array(
-//        array(
-//            'type' => 'competency',
-//            'value' => 'fullname',
-//            'advanced' => 0,
-//        ),
-//        array(
-//            'type' => 'competency',
-//            'value' => 'priority',
-//            'advanced' => 1,
-//        ),
-//        array(
-//            'type' => 'competency',
-//            'value' => 'duedate',
-//            'advanced' => 1,
-//        ),
-//        array(
-//            'type' => 'plan',
-//            'value' => 'name',
-//            'advanced' => 1,
-//        ),
-//    ); //hide filter block
-    $embed->columns = array(
-        array(
-            'type' => 'course',
-            'value' => 'courselink',
-            'heading' => 'Course Title',
-        ),
-        array(
-            'type' => 'plan',
-            'value' => 'planlink',
-            'heading' => 'Plan',
-        ),
-        array(
-            'type' => 'plan',
-            'value' => 'status',
-            'heading' => 'Plan status',
-        ),
-        array(
-            'type' => 'plan',
-            'value' => 'courseduedate',
-            'heading' => 'Course due date',
-        ),
-        array(
-            'type' => 'plan',
-            'value' => 'coursepriority',
-            'heading' => 'Course priority',
-        ),
-        array(
-            'type' => 'course_completion',
-            'value' => 'status',
-            'heading' => 'Status',
-        ),
-    );
-    $embed->contentmode = REPORT_BUILDER_CONTENT_MODE_NONE;
-    $embed->embeddedparams = array(
-        // show report for a specific user
+    $shortname = 'plan_courses';
+    $data = array(
         'userid' => $userid,
     );
     if ( $planstatus !== 'all' ){
-        $embed->embeddedparams['planstatus'] = $planstatus;
+        $data['planstatus'] = $planstatus;
     }
-    $shortname = 'plan_courses';
-    $report = new reportbuilder(null, $shortname, $embed);
+    $report = reportbuilder_get_embedded_report($shortname, $data);
 
     if($format!='') {
         $report->export_data($format);

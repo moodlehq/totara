@@ -22,61 +22,10 @@ if ($USER->id != $userid) {
 }
 
 $shortname = 'bookings';
-$embed = new object();
-$embed->source = 'facetoface_sessions';
-$embed->fullname = $strheading;
-$embed->filters = array();
-$embed->columns = array(
-    array(
-        'type' => 'course',
-        'value' => 'courselink',
-        'heading' => 'Course Name',
-    ),
-    array(
-        'type' => 'facetoface',
-        'value' => 'name',
-        'heading' => 'Session Name',
-    ),
-    array(
-        'type' => 'date',
-        'value' => 'sessiondate',
-        'heading' => 'Session Date',
-    ),
-    array(
-        'type' => 'date',
-        'value' => 'timestart',
-        'heading' => 'Start Time',
-    ),
-    array(
-        'type' => 'date',
-        'value' => 'timefinish',
-        'heading' => 'End Time',
-    ),
-);
-// only add facilitator column if role exists
-if(get_field('role','id','shortname','facilitator')) {
-    $embed->columns[] = array(
-        'type' => 'role',
-        'value' => 'facilitator',
-        'heading' => 'Facilitator',
-    );
-}
-
-// only show future bookings
-$embed->contentmode = REPORT_BUILDER_CONTENT_MODE_ALL;
-$embed->contentsettings = array(
-    'date' => array(
-        'enable' => 1,
-        'when' => 'future',
-    ),
-);
-
-// also limited to single user by embedded params
-$embed->embeddedparams = array(
+$data = array(
     'userid' => $userid,
 );
-
-$report = new reportbuilder(null, $shortname, $embed);
+$report = reportbuilder_get_embedded_report($shortname, $data);
 
 if($format!='') {
     $report->export_data($format);

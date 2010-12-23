@@ -16,8 +16,9 @@ if (! $user = get_record('user', 'id', $id)) {
     error('User not found');
 }
 
+$context = get_context_instance(CONTEXT_SYSTEM);
 // users can only view their own and their staff's pages
-if ($USER->id != $id && !totara_is_manager($id)) {
+if ($USER->id != $id && !totara_is_manager($id) && !has_capability('moodle/site:doanything', $context)) {
     error('You cannot view this page');
 }
 if ($USER->id != $id) {
@@ -27,45 +28,11 @@ if ($USER->id != $id) {
 }
 
 $shortname = 'course_completions';
-$embed->source = 'course_completion';
-$embed->fullname = $strheading;
-$embed->filters = array(); // hide filter block
-$embed->columns = array(
-    array(
-        'type' => 'course',
-        'value' => 'courselink',
-        'heading' => 'Course',
-    ),
-    array(
-        'type' => 'course_completion',
-        'value' => 'status',
-        'heading' => 'Status',
-    ),
-    array(
-        'type' => 'course_completion',
-        'value' => 'completeddate',
-        'heading' => 'Date Completed',
-    ),
-    array(
-        'type' => 'course_completion',
-        'value' => 'organisation',
-        'heading' => 'Completed At',
-    ),
-    array(
-        'type' => 'course_completion',
-        'value' => 'position',
-        'heading' => 'Completed As',
-    ),
-);
-// no restrictions
-// limited to single user by embedded params
-$embed->contentmode = REPORT_BUILDER_CONTENT_MODE_NONE;
-
-$embed->embeddedparams = array(
+$data = array(
     'userid' => $id,
 );
 
-$report = new reportbuilder(null, $shortname, $embed);
+$report = reportbuilder_get_embedded_report($shortname, $data);
 
 if($format!='') {
     $report->export_data($format);

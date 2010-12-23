@@ -73,73 +73,14 @@
     }
     $strheading .= ': ' .  get_string($planstatus . 'learning', 'local_plan');
 
-    $embed = new object();
-    $embed->source = 'dp_competency';
-    $embed->fullname = 'Record of Learning: Competencies';
-    $embed->filters = array(
-        array(
-            'type' => 'competency',
-            'value' => 'fullname',
-            'advanced' => 0,
-        ),
-        array(
-            'type' => 'competency',
-            'value' => 'priority',
-            'advanced' => 1,
-        ),
-        array(
-            'type' => 'competency',
-            'value' => 'duedate',
-            'advanced' => 1,
-        ),
-        array(
-            'type' => 'plan',
-            'value' => 'name',
-            'advanced' => 1,
-        ),
-    ); //hide filter block
-    $embed->columns = array(
-        array(
-            'type' => 'plan',
-            'value' => 'planlink',
-            'heading' => 'Plan',
-        ),
-        array(
-            'type' => 'plan',
-            'value' => 'status',
-            'heading' => 'Plan status'
-        ),
-        array(
-            'type' => 'competency',
-            'value' => 'fullname',
-            'heading' => 'Competency',
-        ),
-        array(
-            'type' => 'competency',
-            'value' => 'priority',
-            'heading' => 'Priority',
-        ),
-        array(
-            'type' => 'competency',
-            'value' => 'duedate',
-            'heading' => 'Due date',
-        ),
-        array(
-            'type' => 'competency',
-            'value' => 'proficiency',
-            'heading' => 'Proficiency'
-        ),
-    );
-    $embed->contentmode = REPORT_BUILDER_CONTENT_MODE_NONE;
-    $embed->embeddedparams = array(
-        // show report for a specific user
+    $shortname = 'plan_competencies';
+    $data = array(
         'userid' => $userid,
     );
     if ( $planstatus !== 'all' ){
-        $embed->embeddedparams['planstatus'] = $planstatus;
+        $data['planstatus'] = $planstatus;
     }
-    $shortname = 'plan_competencies';
-    $report = new reportbuilder(null, $shortname, $embed);
+    $report = reportbuilder_get_embedded_report($shortname, $data);
 
     if($format!='') {
         $report->export_data($format);

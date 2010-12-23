@@ -16,6 +16,7 @@ require_once($CFG->dirroot.'/local/reportbuilder/classes/rb_base_source.php');
 require_once($CFG->dirroot.'/local/reportbuilder/classes/rb_base_content.php');
 require_once($CFG->dirroot.'/local/reportbuilder/classes/rb_base_access.php');
 require_once($CFG->dirroot.'/local/reportbuilder/classes/rb_base_preproc.php');
+require_once($CFG->dirroot.'/local/reportbuilder/classes/rb_base_embedded.php');
 require_once($CFG->dirroot.'/local/reportbuilder/classes/rb_join.php');
 require_once($CFG->dirroot.'/local/reportbuilder/classes/rb_column.php');
 require_once($CFG->dirroot.'/local/reportbuilder/classes/rb_column_option.php');
@@ -121,7 +122,7 @@ class reportbuilder {
         // handle if report not found in db
         if(!$report) {
             if($embed) {
-                if(! $id = $this->create_embedded_record($shortname, $embed, $error)) {
+                if(! $id = reportbuilder_create_embedded_record($shortname, $embed, $error)) {
                     error('Error creating embedded record: '.$error);
                 }
                 $report = get_record('report_builder','id', $id);
@@ -139,7 +140,12 @@ class reportbuilder {
             $this->hidden = $report->hidden;
             $this->description = stripslashes($report->description);
             $this->contentmode = $report->contentmode;
-            $this->embeddedurl = $report->embeddedurl;
+            // store the embedded URL for embedded reports only
+            if($report->embedded) {
+                if($embedobj = reportbuilder_get_embedded_report_object($report->shortname)) {
+                    $this->embeddedurl = $embedobj->url;
+                }
+            }
             $this->recordsperpage = $report->recordsperpage;
             $this->defaultsortcolumn = $report->defaultsortcolumn;
             $this->defaultsortorder = $report->defaultsortorder;
@@ -651,128 +657,6 @@ var comptree = [' . implode(', ', $comptrees) . '];
         return $out;
     }
 
-    /**
-     * Creates a database entry for an embedded report when it is first viewed
-     * so the settings can be edited
-     *
-     * @param string $shortname The unique name for this embedded report
-     * @param object $embed An object containing the embedded reports settings
-     * @param string &$error Error string to return on failure
-     *
-     * @return boolean ID of new database record, or false on failure
-     */
-    function create_embedded_record($shortname, $embed, &$error) {
-        global $CFG;
-        $error = null;
-
-        // check input
-        if(!isset($shortname)) {
-            $error = 'Bad shortname';
-            return false;
-        }
-        if(!isset($embed->source)) {
-            $error = 'Bad source';
-            return false;
-        }
-        if(!isset($embed->filters) || !is_array($embed->filters)) {
-            $embed->filters = array();
-        }
-        if(!isset($embed->columns) || !is_array($embed->columns)) {
-            $error = 'Bad columns';
-            return false;
-        }
-        // hide embedded reports from report manager by default
-        $embed->hidden = isset($embed->hidden) ? $embed->hidden : 1;
-        $embed->accessmode = isset($embed->accessmode) ? $embed->accessmode : REPORT_BUILDER_ACCESS_MODE_NONE;
-        $embed->contentmode = isset($embed->contentmode) ? $embed->contentmode : REPORT_BUILDER_CONTENT_MODE_NONE;
-
-        $embed->accesssettings = isset($embed->accesssettings) ? $embed->accesssettings : array();
-        $embed->contentsettings = isset($embed->contentsettings) ? $embed->contentsettings : array();
-
-        $todb = new object();
-        $todb->shortname = $shortname;
-        $todb->fullname = $embed->fullname;
-        $todb->source = $embed->source;
-        $todb->hidden = 1; // hide embedded reports by default
-        $todb->accessmode = $embed->accessmode;
-        $todb->contentmode = $embed->contentmode;
-        // store URL after wwwroot
-        $todb->embeddedurl = substr(qualified_me(), strlen($CFG->wwwroot));
-
-        begin_sql();
-        if (!$newid = insert_record('report_builder', $todb)) {
-            $error = 'DB insert error';
-            rollback_sql();
-            return false;
-        }
-
-        // add columns
-        $so = 1;
-        foreach($embed->columns as $column) {
-            $todb = new object();
-            $todb->reportid = $newid;
-            $todb->type = $column['type'];
-            $todb->value = $column['value'];
-            $todb->heading = addslashes($column['heading']);
-            $todb->sortorder = $so;
-            if(!insert_record('report_builder_columns', $todb)) {
-                rollback_sql();
-                $error = 'Error inserting columns';
-                return false;
-            }
-            $so++;
-        }
-
-        // add filters
-        $so = 1;
-        foreach($embed->filters as $filter) {
-            $todb = new object();
-            $todb->reportid = $newid;
-            $todb->type = $filter['type'];
-            $todb->value = $filter['value'];
-            $todb->advanced = $filter['advanced'];
-            $todb->sortorder = $so;
-            if(!insert_record('report_builder_filters', $todb)) {
-                rollback_sql();
-                $error = 'Error inserting filters';
-                return false;
-            }
-            $so++;
-        }
-
-        // add content restrictions
-        foreach($embed->contentsettings as $option => $settings) {
-            $classname = $option . '_content';
-            if (class_exists('rb_' . $classname)) {
-                foreach($settings as $name => $value) {
-                    if(!reportbuilder::update_setting($newid, $classname, $name,
-                        $value)) {
-                        rollback_sql();
-                        $error = 'Error inserting content restrictions';
-                        return false;
-                    }
-                }
-            }
-        }
-
-        // add access restrictions
-        foreach($embed->accesssettings as $option => $settings) {
-            $classname = $option . '_access';
-            if(class_exists($classname)) {
-                foreach($settings as $name => $value) {
-                    if(!reportbuilder::update_setting($newid, $classname, $name,
-                        $value)) {
-                        rollback_sql();
-                        $error = 'Error inserting access restrictions';
-                        return false;
-                    }
-                }
-            }
-        }
-
-        commit_sql();
-        return $newid;
-    }
 
     /**
      * Given a report fullname, try to generate a sensible shortname that will be unique
@@ -3178,12 +3062,7 @@ function send_scheduled_report($sched){
             break;
     }
 
-    $reporturl = $CFG->wwwroot;
-    if(isset($report->embeddedurl)){
-        $reporturl .= $report->embeddedurl;
-    } else {
-        $reporturl .= '/local/reportbuilder/report.php?id=' . $sched->reportid;
-    }
+    $reporturl = reportbuilder_get_report_url($report);
     if($sched->savedsearchid!=0) {
         $reporturl .= '&sid=' . $sched->savedsearchid;
     }
@@ -3328,4 +3207,277 @@ function get_next_monthly($time, $day){
     $nexttime = mktime(0,0,0,$newmonth,$newday,$newyear);
 
     return $nexttime;
+}
+
+
+/**
+ * Given a report database record, return the URL to the report
+ *
+ * For use when a reportbuilder object is not available. If a reportbuilder
+ * object is being used, call {@link reportbuilder->report_url()} instead
+ *
+ * @param object $report Report builder database object. Must contain id, shortname and embedded parameters
+ *
+ * @return string URL of the report provided or false
+ */
+function reportbuilder_get_report_url($report) {
+    global $CFG;
+    if($report->embedded == 0) {
+        return $CFG->wwwroot.'/local/reportbuilder/report.php?id='.$report->id;
+    } else {
+        // use report shortname to find appropriate embedded report object
+        $embed = reportbuilder_get_embedded_report_object($report->shortname);
+        return $CFG->wwwroot . $embed->url;
+    }
+
+}
+
+/**
+ * Generate object used to describe an embedded report
+ *
+ * This method returns a new instance of an embedded report object
+ * Given an embedded report name, it finds the class, includes it then
+ * calls the class passing in any data provided. The object created
+ * by that call is returned, or false if something went wrong.
+ *
+ * @param string $embedname Shortname of embedded report
+ *                          e.g. X from rb_X_embedded.php
+ * @param array $data Associative array of data needed by source (optional)
+ *
+ * @return object Embedded report object
+ */
+function reportbuilder_get_embedded_report_object($embedname, $data=array()) {
+    global $CFG;
+    $sourcepath = $CFG->dirroot . '/local/reportbuilder/embedded/';
+
+    $classfile = $sourcepath . 'rb_' . $embedname . '_embedded.php';
+    if(is_readable($classfile)) {
+        include_once($classfile);
+        $classname = 'rb_' . $embedname . '_embedded';
+        if(class_exists($classname)) {
+            return new $classname($data);
+        }
+    }
+    // file or class not found
+    return false;
+}
+
+
+/**
+ * Generate actual embedded report
+ *
+ * This method returns a new instance of an embedded report. It does it
+ * by created an embedded report object first then generating the report
+ * based on that.
+ *
+ * @param string $embedname Shortname of embedded report
+ *                          e.g. X from rb_X_embedded.php
+ * @param array $data Associative array of data needed by source (optional)
+ *
+ * @return object Embedded report
+ */
+function reportbuilder_get_embedded_report($embedname, $data=array()) {
+    if($embed = reportbuilder_get_embedded_report_object($embedname, $data)) {
+        return new reportbuilder(null, $embedname, $embed);
+    }
+    // file or class not found
+    return false;
+}
+
+
+/**
+ * Returns an array of all embedded reports found in the filesystem, sorted by name
+ *
+ * Looks in the local/reportbuilder/embedded/ directory and creates a new
+ * object for each embedded report definition found. These are returned
+ * as an array, sorted by the report fullname
+ *
+ * @return array Array of embedded report objects
+ */
+function reportbuilder_get_all_embedded_reports() {
+    global $CFG;
+    $sourcepath = $CFG->dirroot . '/local/reportbuilder/embedded/';
+
+    $embedded = array();
+    if($dh = opendir($sourcepath)) {
+        while(($file = readdir($dh)) !== false) {
+            if(is_dir($file) ||
+                !preg_match('|^rb_(.*)_embedded\.php$|', $file, $matches)) {
+                continue;
+            }
+            $name = $matches[1];
+            $embed = false;
+            if($embed = reportbuilder_get_embedded_report_object($name)) {
+                $embedded[] = $embed;
+            }
+        }
+    }
+    // sort by fullname before returning
+    usort($embedded, 'reportbuilder_sortbyfullname');
+    return $embedded;
+}
+
+/**
+ * Function for sorting by report fullname, used in usort as callback
+ *
+ * @param object $a The first array element
+ * @param object $a The second array element
+ *
+ * @return integer 1, 0, or -1 depending on sort order
+ */
+function reportbuilder_sortbyfullname($a, $b) {
+    return strcmp($a->fullname, $b->fullname);
+}
+
+
+/**
+ * Returns the ID of an embedded report from its shortname, creating if necessary
+ *
+ * To save on db calls, you need to pass an array of the existing embedded
+ * reports to this method, in the format key=id, value=shortname.
+ *
+ * If the shortname doesn't exist in the array provided this method will
+ * create a new embedded report and return the new ID generated or false
+ * on failure
+ *
+ * @param string $shortname The shortname you need the ID of
+ * @param array $embedded_ids Array of embedded report IDs and shortnames
+ *
+ * @return integer ID of the requested embedded report
+ */
+function reportbuilder_get_embedded_id_from_shortname($shortname, $embedded_ids) {
+    // return existing ID if a database record exists already
+    foreach ($embedded_ids as $id => $embed_shortname) {
+        if($shortname == $embed_shortname) {
+            return $id;
+        }
+    }
+    // otherwise, create a new embedded report and return the new ID
+    // returns false if creation fails
+    $embed = reportbuilder_get_embedded_report_object($shortname);
+    $error = null;
+    return reportbuilder_create_embedded_record($shortname, $embed, $error);
+}
+
+
+/**
+ * Creates a database entry for an embedded report when it is first viewed
+ * so the settings can be edited
+ *
+ * @param string $shortname The unique name for this embedded report
+ * @param object $embed An object containing the embedded reports settings
+ * @param string &$error Error string to return on failure
+ *
+ * @return boolean ID of new database record, or false on failure
+ */
+function reportbuilder_create_embedded_record($shortname, $embed, &$error) {
+    global $CFG;
+    $error = null;
+
+    // check input
+    if(!isset($shortname)) {
+        $error = 'Bad shortname';
+        return false;
+    }
+    if(!isset($embed->source)) {
+        $error = 'Bad source';
+        return false;
+    }
+    if(!isset($embed->filters) || !is_array($embed->filters)) {
+        $embed->filters = array();
+    }
+    if(!isset($embed->columns) || !is_array($embed->columns)) {
+        $error = 'Bad columns';
+        return false;
+    }
+    // hide embedded reports from report manager by default
+    $embed->hidden = isset($embed->hidden) ? $embed->hidden : 1;
+    $embed->accessmode = isset($embed->accessmode) ? $embed->accessmode : 0;
+    $embed->contentmode = isset($embed->contentmode) ? $embed->contentmode : 0;
+
+    $embed->accesssettings = isset($embed->accesssettings) ? $embed->accesssettings : array();
+    $embed->contentsettings = isset($embed->contentsettings) ? $embed->contentsettings : array();
+
+    $todb = new object();
+    $todb->shortname = $shortname;
+    $todb->fullname = $embed->fullname;
+    $todb->source = $embed->source;
+    $todb->hidden = 1; // hide embedded reports by default
+    $todb->accessmode = $embed->accessmode;
+    $todb->contentmode = $embed->contentmode;
+    $todb->embedded = 1;
+
+    begin_sql();
+    if (!$newid = insert_record('report_builder', $todb)) {
+        $error = 'DB insert error';
+        rollback_sql();
+        return false;
+    }
+
+    // add columns
+    $so = 1;
+    foreach($embed->columns as $column) {
+        $todb = new object();
+        $todb->reportid = $newid;
+        $todb->type = $column['type'];
+        $todb->value = $column['value'];
+        $todb->heading = addslashes($column['heading']);
+        $todb->sortorder = $so;
+        if(!insert_record('report_builder_columns', $todb)) {
+            rollback_sql();
+            $error = 'Error inserting columns';
+            return false;
+        }
+        $so++;
+    }
+
+    // add filters
+    $so = 1;
+    foreach($embed->filters as $filter) {
+        $todb = new object();
+        $todb->reportid = $newid;
+        $todb->type = $filter['type'];
+        $todb->value = $filter['value'];
+        $todb->advanced = $filter['advanced'];
+        $todb->sortorder = $so;
+        if(!insert_record('report_builder_filters', $todb)) {
+            rollback_sql();
+            $error = 'Error inserting filters';
+            return false;
+        }
+        $so++;
+    }
+
+    // add content restrictions
+    foreach($embed->contentsettings as $option => $settings) {
+        $classname = $option . '_content';
+        if (class_exists('rb_' . $classname)) {
+            foreach($settings as $name => $value) {
+                if(!reportbuilder::update_setting($newid, $classname, $name,
+                    $value)) {
+                        rollback_sql();
+                        $error = 'Error inserting content restrictions';
+                        return false;
+                    }
+            }
+        }
+    }
+
+    // add access restrictions
+    foreach($embed->accesssettings as $option => $settings) {
+        $classname = $option . '_access';
+        if(class_exists($classname)) {
+            foreach($settings as $name => $value) {
+                if(!reportbuilder::update_setting($newid, $classname, $name,
+                    $value)) {
+                        rollback_sql();
+                        $error = 'Error inserting access restrictions';
+                        return false;
+                    }
+            }
+        }
+    }
+
+    commit_sql();
+    return $newid;
 }

@@ -53,101 +53,15 @@
     }
     $strheading = get_string('reminders', 'local_totara_msg');
 
-    $embed = new object();
-    $embed->source = 'totaramessages';
-    $embed->fullname = $strheading;
-    $embed->filters = array(
-        array(
-                'type' => 'user',
-                'value' => 'fullname',
-                'advanced' => 1,
-            ),
-        array(
-                'type' => 'message_values',
-                'value' => 'msgtype',
-                'advanced' => 0,
-            ),
-//        array(
-//                'type' => 'message_values',
-//                'value' => 'msgstatus',
-//                'advanced' => 1,
-//            ),
-        array(
-                'type' => 'message_values',
-                'value' => 'urgency',
-                'advanced' => 1,
-            ),
-        array(
-                'type' => 'message_values',
-                'value' => 'statement',
-                'advanced' => 1,
-            ),
-        array(
-                'type' => 'message_values',
-                'value' => 'sent',
-                'advanced' => 1,
-            ),
-    );
-    $embed->columns = array(
-//        array(
-//            'type' => 'message_values',
-//            'value' => 'msgstatus',
-//            'heading' => 'Status',
-//        ),
-        array(
-            'type' => 'message_values',
-            'value' => 'urgency',
-            'heading' => 'Urgency',
-        ),
-        array(
-            'type' => 'message_values',
-            'value' => 'msgtype',
-            'heading' => 'Type',
-        ),
-        array(
-            'type' => 'user',
-            'value' => 'namelink',
-            'heading' => 'Name',
-        ),
-        array(
-            'type' => 'message_values',
-            'value' => 'statement',
-            'heading' => 'Details',
-        ),
-            array(
-            'type' => 'message_values',
-            'value' => 'sent',
-            'heading' => 'Sent',
-        ),
-            array(
-            'type' => 'message_values',
-            'value' => 'reminder_links',
-//            'heading' => 'Actions &nbsp;',
-            'heading' =>
-                         '<div id="totara_msg_selects" style="display: none;">'.
-                         '<a href="" onclick="jqCheckAll(\'totara_messages\', \'totara_message\', 1); return false;">all</a>/'.
-                         '<a href="" onclick="jqCheckAll(\'totara_messages\', \'totara_message\', 0); return false;">none</a>',
-//                         '</div><noscript>Actions</noscript>',
-        ),
-//            array(
-//            'type' => 'message_values',
-//            'value' => 'checkbox',
-//            'heading' => '<a href="" onclick="jqCheckAll(\'totara_messages\', \'totara_message\', 1); return false;">all</a>/'.
-//                         '<a href="" onclick="jqCheckAll(\'totara_messages\', \'totara_message\', 0); return false;">none</a>',
-//        ),
-    );
-    $embed->contentmode = REPORT_BUILDER_CONTENT_MODE_NONE;
-    $embed->embeddedparams = array(
-        // show report for a specific user - see hardcoded filters
-        'userid' => $id,
-        'name' => '\'totara_reminder\'',
-    );
-    if ($roleid) {
-        $embed->embeddedparams['roleid'] = $roleid;
-    }
-
     $shortname = 'reminders';
-    $report = new reportbuilder(null, $shortname, $embed);
+    $data = array(
+        'userid' => $id,
+    );
+    if(isset($roleid)) {
+        $data['roleid'] = $roleid;
+    }
+    $report = reportbuilder_get_embedded_report($shortname, $data);
+
     $report->defaultsortcolumn = 'message_values_sent';
     $report->defaultsortorder = 3;
 

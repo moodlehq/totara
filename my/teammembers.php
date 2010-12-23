@@ -45,52 +45,9 @@ global $SESSION,$USER;
  */
 $strheading = get_string('teammembers', 'local');
 
-$embed = new object();
-$embed->source = 'user';
-$embed->fullname = $strheading;
-$embed->filters = array(); //hide filter block
-$embed->columns = array(
-    array(
-        'type' => 'user',
-        'value' => 'namelinkicon',
-        'heading' => 'Name'
-    ),
-    array(
-        'type' => 'user',
-        'value' => 'lastlogin',
-        'heading' => 'Last Login'
-    ),
-    array(
-        'type' => 'statistics',
-        'value' => 'coursesstarted',
-        'heading' => 'Courses Started'
-    ),
-    array(
-        'type' => 'statistics',
-        'value' => 'coursescompleted',
-        'heading' => 'Courses Completed'
-    ),
-    array(
-        'type' => 'statistics',
-        'value' => 'competenciesachieved',
-        'heading' => 'Competencies Achieved'
-    ),
-    array(
-        'type' => 'user',
-        'value' => 'userlearningicons',
-        'heading' => 'Links',
-    )
-);
-$embed->contentmode = REPORT_BUILDER_CONTENT_MODE_ALL;
-$embed->contentsettings = array(
-    'user' => array(
-        'enable' => 1,
-        'who' => 'reports'
-    )
-);
-$embed->embeddedparams = array();
 $shortname = 'team_members';
-$report = new reportbuilder(null, $shortname, $embed);
+$report = reportbuilder_get_embedded_report($shortname);
+
 /**
  * End of defining the report
  */

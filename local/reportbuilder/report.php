@@ -29,7 +29,7 @@ if(!$report->is_capable($id)) {
 
 if($report->embeddedurl !== null) {
     // redirect to embedded url
-    redirect($report->embeddedurl);
+    redirect($CFG->wwwroot . $report->embeddedurl);
 }
 
 if($format!='') {

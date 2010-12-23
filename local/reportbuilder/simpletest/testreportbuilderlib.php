@@ -16,8 +16,8 @@ require_once($CFG->libdir . '/simpletestlib.php');
 class reportbuilderlib_test extends prefix_changing_test_case {
     // test data for database
     var $reportbuilder_data = array(
-        array('id', 'fullname', 'shortname', 'source', 'hidden', 'accessmode', 'contentmode','embeddedurl','description', 'recordsperpage', 'defaultsortcolumn', 'defaultsortorder'),
-        array(1, 'Test Report', 'test_report', 'competency_evidence', 0, 0, 0, null, '', 40, 'user_fullname', 4),
+        array('id', 'fullname', 'shortname', 'source', 'hidden', 'accessmode', 'contentmode','description', 'recordsperpage', 'defaultsortcolumn', 'defaultsortorder','embedded'),
+        array(1, 'Test Report', 'test_report', 'competency_evidence', 0, 0, 0, '', 40, 'user_fullname', 4, 0),
     );
 
     var $config_data = array(
@@ -132,6 +132,12 @@ class reportbuilderlib_test extends prefix_changing_test_case {
         array(1, 'Title', 'Title', 1, 1, 2, 1),
     );
 
+    // reduced version of tag table
+    var $tag_data = array(
+        array('id', 'userid', 'name', 'rawname', 'tagtype'),
+        array(1, 2, 'test', 'test', 'official'),
+    );
+
     function setUp() {
         global $db,$CFG;
         parent::setup();
@@ -152,61 +158,14 @@ class reportbuilderlib_test extends prefix_changing_test_case {
         load_test_table($CFG->prefix . 'user', $this->user_data, $db);
         load_test_table($CFG->prefix . 'pos_assignment', $this->pos_assignment_data, $db);
         load_test_table($CFG->prefix . 'config', $this->config_data, $db);
+        load_test_table($CFG->prefix . 'tag', $this->tag_data, $db);
 
-        $this->embed = new object();
-        $this->embed->source = 'competency_evidence';
-        $this->embed->fullname = 'My Record of Learning';
-        $this->embed->filters = array(); //hide filter block
-        $this->embed->columns = array(
-            array(
-                'type' => 'competency',
-                'value' => 'competencylink',
-                'heading' => 'Course/Competency',
-            ),
-            array(
-                'type' => 'competency',
-                'value' => 'idnumber',
-                'heading' => 'Competency ID',
-            ),
-            array(
-                'type' => 'competency_evidence',
-                'value' => 'proficiency',
-                'heading' => 'Proficiency',
-            ),
-            array(
-                'type' => 'competency_evidence',
-                'value' => 'position',
-                'heading' => 'Completed As',
-            ),
-            array(
-                'type' => 'competency_evidence',
-                'value' => 'organisation',
-                'heading' => 'Completed At',
-            ),
-            array(
-                'type' => 'competency_evidence',
-                'value' => 'completeddate',
-                'heading' => 'Date',
-            ),
-            array(
-                'type' => 'competency_evidence',
-                'value' => 'assessor',
-                'heading' => 'Assessor',
-            ),
-            array(
-                'type' => 'competency_evidence',
-                'value' => 'assessorname',
-                'heading' => 'Assessor Organisation',
-            ),
-        );
-        $this->embed->contentmode = REPORT_BUILDER_CONTENT_MODE_NONE;
-        $this->embed->accessmode = REPORT_BUILDER_ACCESS_MODE_NONE;
-        $this->embed->embeddedparams = array(
+        $data = array(
             // show report for a specific user
             'userid' => 2,
         );
-        $this->shortname = 'record_of_learning';
-        $this->embeddedurl = 'test';
+        $this->embed = reportbuilder_get_embedded_report_object('course_completions', $data);
+        $this->shortname = 'course_completions';
 
         // db version of report
         $this->rb = new reportbuilder(1);
@@ -214,6 +173,7 @@ class reportbuilderlib_test extends prefix_changing_test_case {
 
     function tearDown() {
         global $db,$CFG;
+        remove_test_table($CFG->prefix . 'tag', $db);
         remove_test_table($CFG->prefix . 'config', $db);
         remove_test_table($CFG->prefix . 'pos_assignment', $db);
         remove_test_table($CFG->prefix . 'user', $db);
@@ -246,9 +206,9 @@ class reportbuilderlib_test extends prefix_changing_test_case {
     function test_reportbuilder_initialize_embedded_instance() {
         $rb = new reportbuilder(null, $this->shortname, $this->embed);
         // should create embedded report builder object with the correct properties
-        $this->assertEqual($rb->fullname,'My Record of Learning');
-        $this->assertEqual($rb->shortname,'record_of_learning');
-        $this->assertEqual($rb->source, 'competency_evidence');
+        $this->assertEqual($rb->fullname,'My Course Completions');
+        $this->assertEqual($rb->shortname,'course_completions');
+        $this->assertEqual($rb->source, 'course_completion');
         $this->assertEqual($rb->hidden, 1);
     }
 
@@ -320,7 +280,7 @@ class reportbuilderlib_test extends prefix_changing_test_case {
         $this->assertEqual(substr($rb->report_url(),strlen($CFG->wwwroot)),'/local/reportbuilder/report.php?id=1');
         $rb2 = new reportbuilder(null, $this->shortname, $this->embed);
         // an embedded report should return the embedded url (this page)
-        $this->assertEqual($rb2->report_url(),qualified_me());
+        $this->assertEqual($rb2->report_url(), $CFG->wwwroot . '/my/coursecompletions.php');
     }
 
 

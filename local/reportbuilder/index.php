@@ -59,7 +59,9 @@
     if ($fromform = $mform->get_data()) {
 
         if(empty($fromform->submitbutton)) {
-            totara_set_notification(get_string('error:unknownbuttonclicked', 'local_reportbuilder'), $returnurl);
+            totara_set_notification(
+                get_string('error:unknownbuttonclicked', 'local_reportbuilder'),
+                $returnurl);
         }
         // create new record here
         $todb = new object();
@@ -70,7 +72,7 @@
         $todb->recordsperpage = 40;
         $todb->contentmode = REPORT_BUILDER_CONTENT_MODE_NONE;
         $todb->accessmode = REPORT_BUILDER_ACCESS_MODE_ANY; // default to limited access
-        $todb->embeddedurl = null;
+        $todb->embedded = 0;
 
         begin_sql();
         if(!$newid = insert_record('report_builder',$todb)) {
@@ -174,16 +176,15 @@
                          get_string('source','local_reportbuilder'),
                          get_string('options','local_reportbuilder'));
 
-    $reports = get_records_select('report_builder','embeddedurl IS NULL','fullname');
+    // only get none-embedded reports
+    $reports = get_records('report_builder','embedded', 0, 'fullname');
     if($reports) {
         $data = array();
         foreach($reports as $report) {
             $row = array();
             $strsettings = get_string('settings','local_reportbuilder');
             $strdelete = get_string('delete','local_reportbuilder');
-            $viewurl = ($report->embeddedurl === null) ? $CFG->wwwroot .
-                '/local/reportbuilder/report.php?id='.$report->id :
-                $report->embeddedurl;
+            $viewurl = reportbuilder_get_report_url($report);
             $settings = '<a href="'.$CFG->wwwroot.'/local/reportbuilder/general.php?id='.$report->id.'" title="'.$strsettings.'">' .
                 '<img src="'.$CFG->pixpath.'/t/edit.gif" alt="'.$strsettings.'"></a>';
             $delete = '<a href="'.$CFG->wwwroot.'/local/reportbuilder/index.php?d=1&amp;id='.$report->id.'" title="'.$strdelete.'">' .
@@ -207,33 +208,39 @@
     print '<br />';
     print_heading(get_string('embeddedreports','local_reportbuilder'));
 
-    $embeddedreports = get_records_select('report_builder','embeddedurl IS NOT NULL','fullname');
-    if($embeddedreports) {
-        $data = array();
-        foreach($embeddedreports as $report) {
-            $row = array();
-            $strsettings = get_string('settings','local_reportbuilder');
-            $strdelete = get_string('delete','local_reportbuilder');
-            $viewurl = $CFG->wwwroot . (
-                    ($report->embeddedurl === null) ?
-                    '/local/reportbuilder/report.php?id='.$report->id :
-                    $report->embeddedurl
-                );
-            $settings = '<a href="'.$CFG->wwwroot.'/local/reportbuilder/general.php?id='.$report->id.'" title="'.$strsettings.'">' .
-                '<img src="'.$CFG->pixpath.'/t/edit.gif" alt="'.$strsettings.'"></a>';
-            $delete = '<a href="'.$CFG->wwwroot.'/local/reportbuilder/index.php?em=1&amp;d=1&amp;id='.$report->id.'" title="'.$strdelete.'">' .
-                '<img src="'.$CFG->pixpath.'/t/delete.gif" alt="'.$strdelete.'"></a>';
-            $row[] = '<a href="'.$CFG->wwwroot.'/local/reportbuilder/general.php?id='.$report->id.'">'.$report->fullname.'</a>' .
-                ' (<a href="'.$viewurl.'">'.get_string('view').'</a>)';
-            $row[] = $report->source;
-            $row[] = "$settings &nbsp; $delete";
-            $data[] = $row;
-        }
+    $embeds = reportbuilder_get_all_embedded_reports();
+    // get list of existing embedded reports and their IDs
+    // (outside the loop for efficiency)
+    $embedded_ids = get_records_menu('report_builder',
+        'embedded', 1, 'id', 'id, shortname');
+    $data = array();
+    if(is_array($embeds) && count($embeds) > 0) {
+        $strsettings = get_string('settings','local_reportbuilder');
+        $strreload = get_string('restoredefaults','local_reportbuilder');
         $embeddedreportstable = new object();
         $embeddedreportstable->summary = '';
         $embeddedreportstable->head = $tableheader;
         $embeddedreportstable->data = $data;
+
+        foreach($embeds as $embed) {
+            $id = reportbuilder_get_embedded_id_from_shortname($embed->shortname, $embedded_ids);
+            $fullname = $embed->fullname;
+            $shortname = $embed->shortname;
+            $url = $embed->url;
+            $source = $embed->source;
+            $settings = '<a href="'.$CFG->wwwroot.'/local/reportbuilder/general.php?id='.$id.'" title="'.$strsettings.'">' .
+                '<img src="'.$CFG->pixpath.'/t/edit.gif" alt="'.$strsettings.'"></a>';
+            $reload = '<a href="'.$CFG->wwwroot.'/local/reportbuilder/index.php?em=1&amp;d=1&amp;id='.$id.'" title="'.$strreload.'">' .
+                '<img src="'.$CFG->pixpath.'/t/reload.gif" alt="'.$strreload.'"></a>';
+            $row = array();
+            $row[] = '<a href="' . $CFG->wwwroot . '/local/reportbuilder/general.php?id=' . $id . '">' . $fullname . '</a> (<a href="' . $CFG->wwwroot . $url . '">' . get_string('view') . '</a>)';
+            $row[] = $source;
+            $row[] = "$settings &nbsp; $reload";
+            $data[] = $row;
+        }
+        $embeddedreportstable->data = $data;
         print_table($embeddedreportstable);
+
     } else {
         print get_string('noembeddedreports','local_reportbuilder');
     }
