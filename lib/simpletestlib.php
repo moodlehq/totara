@@ -418,7 +418,7 @@ function _private_execute_sql($sql, $localdb = null, $ignoreerror = false) {
             $message .= htmlspecialchars($localdb->ErrorMsg());
             $message .= ' STATEMENT: ';
             $message .= htmlspecialchars($sql);
-            trigger_error($message, E_USER_WARNING);
+            trigger_error($message, E_USER_NOTICE);
         }
         else {
             echo '<p>SQL ERROR: ', $localdb->ErrorMsg(), ". STATEMENT: $sql</p>";
