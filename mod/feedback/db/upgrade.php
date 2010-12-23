@@ -225,7 +225,7 @@ function xmldb_feedback_upgrade($oldversion=0) {
     if ($result && $oldversion < 2008050129) {
         $table = new XMLDBTable('feedback');
         $field = new XMLDBField('facetofacecmid');
-        if (!field_exists($table, $field)) {
+        if (field_exists($table, $field)) {
             $result = $result && drop_field($table, $field);
         }
     }
