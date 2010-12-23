@@ -61,6 +61,7 @@ $TOTARA_MESSAGE_TYPES = array(
 );
 
 // message urgency constants
+define('TOTARA_MSG_URGENCY_LOW', -4);
 define('TOTARA_MSG_URGENCY_NORMAL', 0);
 define('TOTARA_MSG_URGENCY_URGENT', 4);
 
