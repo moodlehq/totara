@@ -22,7 +22,7 @@ echo "Convert to Junit XML";
 xsltproc build/simpletest_to_junit.xsl build/logs/simpletest-results.xml > build/logs/xml/TEST-suite.xml
 
 echo "STEP 2: Run cucumber tests";
-cucumber --tags ~@nightly --format junit --out build/logs/xml/
+cucumber --tags ~@nightly -p psql --format junit --out build/logs/xml/
 
 echo "STEP 3: Run language string tests";
 php -f build/checklang.php . local hierarchy guides customfield
