@@ -207,6 +207,7 @@ function load_test_table($tablename, $data, $db = null, $strlen = 255, $empty = 
         }
         $coldefs[] = "$colname $type";
     }
+
     _private_execute_sql("CREATE TABLE $tablename (" . join(',', $coldefs) . ');', $db);
 
     if ($CFG->dbfamily == 'oracle') {
@@ -412,26 +413,33 @@ function _private_execute_sql($sql, $localdb = null) {
     return $rs;
 }
 
+
+/**
+ * Save original database prefix
+ *
+ * Do it here to prevent it being set incorrectly after a test fails
+ */
+global $CFG;
+$CFG->original_prefix = $CFG->prefix;
+
 /**
  * Base class for testcases that want a different DB prefix.
- * 
+ *
  * That is, when you need to load test data into the database for
  * unit testing, instead of messing with the real mdl_course table,
  * we will temporarily change $CFG->prefix from (say) mdl_ to mdl_unittest_
  * and create a table called mdl_unittest_course to hold the test data.
  */
 class prefix_changing_test_case extends UnitTestCase {
-    var $old_prefix;
-    
+
     function change_prefix() {
         global $CFG;
-        $this->old_prefix = $CFG->prefix;
-        $CFG->prefix = $CFG->prefix . 'unittest_';
+        $CFG->prefix = $CFG->original_prefix . 'unittest_';
     }
 
     function change_prefix_back() {
         global $CFG;
-        $CFG->prefix = $this->old_prefix;
+        $CFG->prefix = $CFG->original_prefix;
     }
 
     function setUp() {
