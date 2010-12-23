@@ -133,7 +133,7 @@ function tm_message_send($eventdata) {
     }
 
     // Work out if the user is logged in or not
-    if ((time() - $timetoshowusers) < $eventdata->userto->lastaccess) {
+    if ((time() - $timetoshowusers) < (isset($eventdata->userto->lastaccess)?$eventdata->userto->lastaccess:0)) {
         $userstate = 'loggedin';
     } else {
         $userstate = 'loggedoff';
@@ -224,7 +224,7 @@ function tm_message_send($eventdata) {
             }
 
             // add the metadata record
-            !isset($eventdata->urgency) && $eventdata->urgency = TOTARA_MSG_URGENCY_LOW;
+            $eventdata->urgency  = isset($eventdata->urgency) ? $eventdata->urgency : TOTARA_MSG_URGENCY_LOW;
             $eventdata->onaccept = isset($eventdata->onaccept) ? addslashes(serialize($eventdata->onaccept)) : null;
             $eventdata->onreject = isset($eventdata->onreject) ? addslashes(serialize($eventdata->onreject)) : null;
 
