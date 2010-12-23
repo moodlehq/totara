@@ -2439,3 +2439,11 @@ table.courselist {
     width:100%;
 }
 
+div.planpermissionsform select,
+div.coursepermissionsform select,
+div.competencypermissionsform select,
+div.objectivepermissionsform select {
+  min-width: 100px;
+  max-width: 100px;
+  width: 100px;
+}
