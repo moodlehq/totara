@@ -582,6 +582,48 @@ function totara_get_staff($userid=null) {
 }
 
 /**
+ * Find out a user's manager.
+ * (todo: Currently this is returning their position-based manager(s) only. Do we want to
+ * add an option to return everyone with the "manager" role in their context? Existing
+ * role/context functionality could do this, but note that the role/context method
+ * is what's being used in totara_is_manager() and totara_get_staff())
+ * @param int $userid Id of users whose manager we want
+ * @param mixed $postype Type of the position we want the manager for (POSITION_TYPE_* constant). Can be an int or an array of ints
+ * @return mixed False if no manager. One database row object from mdl_user if the user has managers.
+ */
+function totara_get_manager($userid, $postype=null){
+    global $CFG;
+    require_once($CFG->dirroot.'/hierarchy/type/position/lib.php');
+    if ( $postype === null ){
+        $postype = POSITION_TYPE_PRIMARY;
+    }
+
+    $userid = (int) $userid;
+    if ( is_array( $postype ) && count( $postype ) ){
+        $postypewhere = "pa.type in (";
+        foreach( $postype as $p ){
+            $postypewhere .= ((int) $p) . ", ";
+        }
+        $postypewhere = substr($postypewhere, 0, strlen($postypewhere-2));
+        $postypewhere .= ")";
+    } else {
+        $postypewhere = "pa.type = " . ((int) $postype);
+    }
+    $postype = (int) $postype;
+    $sql = <<<SQL
+        select distinct u.*
+        from
+            {$CFG->prefix}pos_assignment pa
+            inner join {$CFG->prefix}role_assignments ra on pa.reportstoid = ra.id
+            inner join {$CFG->prefix}user u on ra.userid = u.id
+        where
+            pa.userid = {$userid}
+            and {$postypewhere}
+SQL;
+    return get_record_sql($sql);
+}
+
+/**
 * hacked page lib that gets used on any page that doesn't have one.
 * really just exists to fulfil requirements and allow stickyblocks
 */

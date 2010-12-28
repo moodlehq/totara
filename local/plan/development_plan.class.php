@@ -915,8 +915,8 @@ class development_plan {
         global $USER, $CFG;
         require_once($CFG->dirroot.'/local/totara_msg/messagelib.php');
 
-        if ($managerid = dp_get_manager($this->userid)) {
-            $userto = get_record('user', 'id', $managerid);
+        if ($manager = totara_get_manager($this->userid)) {
+            $userto = $manager;
             $userfrom = get_record('user', 'id', $this->userid);
 
             $event = new stdClass;
@@ -996,8 +996,8 @@ class development_plan {
         require_once($CFG->dirroot.'/local/totara_msg/messagelib.php');
 
         // Send notification to manager
-        if ($managerid = dp_get_manager($this->userid)) {
-            $userto = get_record('user', 'id', $managerid);
+        if ($manager = totara_get_manager($this->userid)) {
+            $userto = $manager;
             $event = new stdClass;
             $event->userto = $userto;
             $event->fullmessage = format_text(get_string('plancompletesuccess', 'local_plan', $this->name));

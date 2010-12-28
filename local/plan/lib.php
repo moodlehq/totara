@@ -559,32 +559,6 @@ function dp_is_approved($value) {
 }
 
 /**
- * Return the id of the user's manager if it is
- * defined. Otherwise return false.
- *
- * @param integer $userid User ID of the staff member
- */
-function dp_get_manager($userid) {
-    global $CFG;
-    $roleid = get_field('role','id','shortname', 'manager');
-
-    if ($roleid) {
-        $sql = "SELECT ra.userid AS managerid
-            FROM {$CFG->prefix}pos_assignment pa
-            LEFT JOIN {$CFG->prefix}role_assignments ra ON pa.reportstoid=ra.id
-            WHERE pa.userid=$userid AND ra.roleid=$roleid AND pa.type=1"; // just use primary position for now
-        $res = get_record_sql($sql);
-        if($res && isset($res->managerid)) {
-            return $res->managerid;
-        } else {
-            return false; // No manager set
-        }
-    }
-    else {
-        return false; // No manager role, can't do it
-    }
-}
-/**
  * Display a pulldown for filtering record of learning page
  *
  * @param string $pagename Name of the current page (filename without .php)
