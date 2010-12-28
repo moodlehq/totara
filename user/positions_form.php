@@ -95,7 +95,12 @@ class user_position_assignment_form extends moodleform {
             $mform->addElement('hidden', 'positionid');
             $mform->setType('positionid', PARAM_INT);
             $mform->setDefault('positionid', 0);
-            $mform->setHelpButton('positionselector', array('userpositionposition', get_string('chooseposition', 'position')), true);
+            if(!$aspirational) {
+                $mform->setHelpButton('positionselector', array('userpositionposition', get_string('chooseposition', 'position')), true);
+            } else {
+                $mform->setHelpButton('positionselector', array('useraspirationalposition', get_string('chooseposition', 'position')), true);
+            }
+
         }
         if (!$aspirational) {
             if($nojs) {
