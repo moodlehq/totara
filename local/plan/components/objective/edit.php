@@ -99,7 +99,7 @@ if ( $deleteyes ){
 
         $result = $component->create_objective(
                 $data->fullname,
-                isset($data->shortname)?$data->description:null,
+                isset($data->shortname)?$data->shortname:null,
                 isset($data->description)?$data->description:null,
                 isset($data->priority)?$data->priority:null,
                 isset($data->duedate)?$data->duedate:null
