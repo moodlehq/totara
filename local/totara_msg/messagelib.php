@@ -233,6 +233,12 @@ function tm_message_send($eventdata) {
                 $eventdata->roleid = $role->id;
             }
 
+            if (isset($eventdata->icon)){
+                $eventdata->icon = clean_param($eventdata->icon, PARAM_FILE);
+            } else {
+                $eventdata->icon = null;
+            }
+
             // pull back the message_working record - we need to know the processorid
             $work = get_record('message_working20', 'unreadmessageid', $eventdata->savedmessageid);
 
@@ -242,6 +248,7 @@ function tm_message_send($eventdata) {
             $metadata->msgstatus        = $eventdata->msgstatus;
             $metadata->urgency          = $eventdata->urgency;
             $metadata->processorid      = $work->processorid;
+            $metadata->icon             = $eventdata->icon;
             $metadata->onaccept         = $eventdata->onaccept;
             $metadata->onreject         = $eventdata->onreject;
             $metadata->roleid           = $eventdata->roleid;

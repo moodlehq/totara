@@ -925,6 +925,7 @@ class development_plan {
             $event->urgency = TOTARA_MSG_URGENCY_URGENT;
             // send to My Team dashboard
             $event->roleid = get_field('role','id', 'shortname', 'manager');
+            $event->icon = 'plan-request.png';
             $a = new stdClass;
             $a->planid = $this->id;
             $a->userid = $this->userid;
