@@ -98,6 +98,17 @@ function xmldb_local_totara_msg_upgrade($oldversion) {
         }
     }
 
+    if ($result && $oldversion < 2010122900) {
+
+    /// Define field icon to be added to message_metadata
+        $table = new XMLDBTable('message_metadata');
+        $field = new XMLDBField('icon');
+        $field->setAttributes(XMLDB_TYPE_CHAR, '255', null, null, null, null, null, null, 'roleid');
+
+    /// Launch add field icon
+        $result = $result && add_field($table, $field);
+    }
+
     /// Check all message20 output plugins and upgrade if necessary
 /// This is temporary until Totara goes to 2.x - then migrate local/totara_msg/message20 to message
     upgrade_plugins('local','local/totara_msg/message20/output',"$CFG->wwwroot/$CFG->admin/index.php");
