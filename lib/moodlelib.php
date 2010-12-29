@@ -2037,11 +2037,11 @@ function require_login($courseorid=0, $autologinguest=true, $cm=null, $setwantsu
         // in for rest of session, no need to do conditional checks
         if(!array_key_exists($cm->id,$SESSION->conditionaccessok)) {
             // Get condition info (does a query for the availability table)
-            require_once($CFG->libdir.'/conditionlib.php');        
+            require_once($CFG->libdir.'/conditionlib.php');
             $ci=new condition_info($cm,CONDITION_MISSING_EXTRATABLE);
             // Check condition for user (this will do a query if the availability
             // information depends on grade or completion information)
-            if($ci->is_available($junk) || 
+            if($ci->is_available($junk) ||
                 has_capability('moodle/course:viewhiddenactivities', $COURSE->context)) {
                 $SESSION->conditionaccessok[$cm->id]=true;
             } else {
@@ -5538,7 +5538,7 @@ function get_string($identifier, $module='', $a=NULL, $extralocations=NULL) {
     }
     if (substr($module, 0, 6) == 'local_') {
         list($local, $plugin) = explode('_', $module, 2);
-        $location[]= $locations[] = $CFG->dirroot . '/local/'.$plugin.'/lang/';
+        $locations[] = $CFG->dirroot . '/local/'.$plugin.'/lang/';
     }
 
 /// First check all the normal locations for the string in the current language
