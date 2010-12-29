@@ -314,14 +314,14 @@ class user_position_assignment_form extends moodleform {
         // Enforce start date before finish date
         if ( $timevalidfrom > $timevalidto && $timevalidfrom !== false && $timevalidto !== false ){
             $errstr = get_string('error:startafterfinish','position');
-            $result['timevalidfrom'] = $errstr;
-            $result['timevalidto'] = $errstr;
+            $result['timevalidfrom_group'] = $errstr;
+            $result['timevalidto_group'] = $errstr;
             unset($errstr);
         }
 
         // Check that a position was set
         if (!$mform->getElement('positionid')->getValue()) {
-            $result['positionid'] = get_string('error:positionnotset', 'position');
+            $result['positionselector'] = get_string('error:positionnotset', 'position');
         }
 
         return $result;

@@ -197,11 +197,6 @@ else {
         $form->freezeForm();
     }
 
-    if ($form->is_submitted()) {
-        // Print error message if no position chosen
-        totara_set_notification(get_string('nopositionset', 'position'), $currenturl);
-    }
-
     print_header("{$course->fullname}: {$fullname}: {$positiontype}", $course->fullname, $navigation);
     include($CFG->dirroot.'/user/tabs.php');
 
