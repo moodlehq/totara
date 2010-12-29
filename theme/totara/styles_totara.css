@@ -2266,3 +2266,8 @@ table.scheduled-reports .options {
 .scheduled-reports tr th {
     padding: 5px 10px;
 }
+
+img.iconhelp {
+    width: 16px;
+    height: 16px;
+}
