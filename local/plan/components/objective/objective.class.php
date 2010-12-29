@@ -124,7 +124,7 @@ class dp_objective_component extends dp_base_component {
 
     /**
      * Generates a flexibletable listing all the objectives in the current plan.
-     * 
+     *
      * @global object $CFG
      * @return string
      */
@@ -166,7 +166,7 @@ class dp_objective_component extends dp_base_component {
                 AND psv.priorityscaleid = {$priorityscaleid}) ";
 
         $where = "WHERE o.planid = {$this->plan->id} ";
- 
+
         $count = count_records_sql($count.$from.$where);
         if (!$count) {
             return '<div class="noitems-assignobjectives">'.get_string('noobjectives', 'local_plan').'</div>';
@@ -236,7 +236,7 @@ class dp_objective_component extends dp_base_component {
         if ( $records ){
 
             while($objective = rs_fetch_next_record($records)) {
-                
+
                 $objapproved = dp_is_approved($objective->approved);
 
                 $row = array();
@@ -632,11 +632,19 @@ class dp_objective_component extends dp_base_component {
             return false;
         }
 
+        // store objective details for notifications
+        $objective = get_record('dp_plan_objective', 'id', $caid);
+
         begin_sql();
         $result = delete_records('dp_plan_objective', 'id', $caid);
         $result = $result && delete_records('dp_plan_component_relation', 'component1', 'objective', 'itemid1', $caid);
         $result = $result && delete_records('dp_plan_component_relation', 'component2', 'objective', 'itemid2', $caid);
         commit_sql();
+
+        // are we OK? then send the notifications
+        if ($result) {
+            $this->send_deletion_notification($objective);
+        }
 
         return $result;
     }
@@ -665,7 +673,111 @@ class dp_objective_component extends dp_base_component {
         $rec->scalevalueid = get_field('dp_objective_scale', 'defaultid', 'id', $this->get_setting('objectivescale'));
         $rec->approved = $this->approval_status_after_update();
 
-        return insert_record('dp_plan_objective', $rec);
+        $result = insert_record('dp_plan_objective', $rec);
+
+        // are we OK? then send the notifications
+        if ($result) {
+            $this->send_creation_notification($result, $shortname);
+        }
+        return $result;
+    }
+
+
+    /**
+     * send objective deletion notification
+     * @param object $objective Objective details
+     * @return nothing
+     */
+    function send_deletion_notification($objective) {
+        global $USER, $CFG;
+        require_once($CFG->dirroot.'/local/totara_msg/messagelib.php');
+
+        $event = new stdClass;
+        $userfrom = get_record('user', 'id', $USER->id);
+        $event->userfrom = $userfrom;
+        $event->contexturl = "{$CFG->wwwroot}/local/plan/view.php?id={$this->plan->id}";
+
+        // did they delete it themselves?
+        if ($USER->id == $this->plan->userid) {
+            // notify their manager
+            if ($manager = totara_get_manager($this->plan->userid)) {
+                $event->userto = $manager;
+                $event->subject = get_string('objectivedeleteshortmanager', 'local_plan',$objective->shortname);
+                $a = new stdClass;
+                $a->objective = $objective->shortname;
+                $a->plan = "<a href=\"{$event->contexturl}\" title=\"{$this->plan->name}\">{$this->plan->name}</a>";
+                $userfrom_link = $CFG->wwwroot.'/user/view.php?id='.$USER->id;
+                $fromname = fullname($USER);
+                $a->learner = "<a href=\"{$userfrom_link}\" title=\"$fromname\">$fromname</a> ";
+                $event->fullmessage = format_text(get_string('objectivedeletelongmanager', 'local_plan', $a));
+                $event->roleid = get_field('role','id', 'shortname', 'manager');
+                tm_notification_send($event);
+            }
+        }
+        // notify user that someone else did it
+        else {
+            $userto = get_record('user', 'id', $this->plan->userid);
+            $event->userto = $userto;
+            $event->subject = get_string('objectivedeleteshortlearner', 'local_plan', $objective->shortname);
+            $a = new stdClass;
+            $a->objective = $objective->shortname;
+            $a->plan = "<a href=\"{$event->contexturl}\" title=\"{$this->plan->name}\">{$this->plan->name}</a>";
+            $userfrom_link = $CFG->wwwroot.'/user/view.php?id='.$USER->id;
+            $fromname = fullname($USER);
+            $a->manager = "<a href=\"{$userfrom_link}\" title=\"$fromname\">$fromname</a> ";
+            $event->fullmessage = format_text(get_string('objectivedeletelonglearner', 'local_plan', $a));
+            tm_notification_send($event);
+        }
+    }
+
+
+    /**
+     * send objective creation notification
+     * @param int $objid Objective Id
+     * @param string $shortname the shortname of the objective
+     * @return nothing
+     */
+    function send_creation_notification($objid, $shortname) {
+        global $USER, $CFG;
+        require_once($CFG->dirroot.'/local/totara_msg/messagelib.php');
+
+        $event = new stdClass;
+        $userfrom = get_record('user', 'id', $USER->id);
+        $event->userfrom = $userfrom;
+        $event->contexturl = "{$CFG->wwwroot}/local/plan/components/objective/view.php?id={$this->plan->id}&itemid={$objid}";
+        $planurl = "{$CFG->wwwroot}/local/plan/view.php?id={$this->plan->id}";
+
+        // did they create it themselves?
+        if ($USER->id == $this->plan->userid) {
+            // notify their manager
+            if ($manager = totara_get_manager($this->plan->userid)) {
+                $event->userto = $manager;
+                $event->subject = get_string('objectivenewshortmanager', 'local_plan',"<a href=\"{$event->contexturl}\" title=\"$shortname\">$shortname</a>");
+                $a = new stdClass;
+                $a->objective = "<a href=\"{$event->contexturl}\" title=\"$shortname\">$shortname</a>";
+                $a->plan = "<a href=\"{$planurl}\" title=\"{$this->plan->name}\">{$this->plan->name}</a>";
+                $userfrom_link = $CFG->wwwroot.'/user/view.php?id='.$USER->id;
+                $fromname = fullname($USER);
+                $a->learner = "<a href=\"{$userfrom_link}\" title=\"$fromname\">$fromname</a> ";
+                $event->fullmessage = format_text(get_string('objectivenewlongmanager', 'local_plan', $a));
+                $event->roleid = get_field('role','id', 'shortname', 'manager');
+                tm_notification_send($event);
+            }
+        }
+        // notify user that someone else did it
+        else {
+            $userto = get_record('user', 'id', $this->plan->userid);
+            $event->userto = $userto;
+            $event->subject = get_string('objectivenewshortlearner', 'local_plan', $shortname);
+            $a = new stdClass;
+            $a->objective = "<a href=\"{$event->contexturl}\" title=\"$shortname\">$shortname</a>";
+            $a->plan = "<a href=\"{$planurl}\" title=\"{$this->plan->name}\">{$this->plan->name}</a>";
+            $userfrom_link = $CFG->wwwroot.'/user/view.php?id='.$USER->id;
+            $fromname = fullname($USER);
+            $a->manager = "<a href=\"{$userfrom_link}\" title=\"$fromname\">$fromname</a> ";
+            $event->fullmessage = format_text(get_string('objectivenewlonglearner', 'local_plan', $a));
+            tm_notification_send($event);
+        }
     }
 
     /**

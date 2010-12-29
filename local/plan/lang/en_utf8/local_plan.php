@@ -202,6 +202,14 @@ $string['objectivesnotupdated'] = 'Objectives not updated';
 $string['deleteobjective'] = 'Delete objective';
 $string['deleteobjectiveareyousure'] = 'Are you sure you want to delete this objective?';
 $string['editobjective'] = 'Edit objective';
+$string['objectivenewshortlearner'] = 'New objective \"$a\" assigned';
+$string['objectivenewlonglearner'] = 'New objective \"$a->objective\" has been assigned to learning plan \"$a->plan\" by $a->manager';
+$string['objectivenewshortmanager'] = 'New objective \"$a\" created';
+$string['objectivenewlongmanager'] = 'New objective \"$a->objective\" has been created in learning plan \"$a->plan\" by $a->larner';
+$string['objectivedeleteshortlearner'] = 'Objective \"$a\" has been deleted';
+$string['objectivedeletelonglearner'] = 'Objective \"$a->objective\" in learning plan \"$a->plan\" has been deleted by $a->manager';
+$string['objectivedeleteshortmanager'] = '$a has deleted an objective';
+$string['objectivedeletelongmanager'] = '$a->learner has deleted the objective \"$a->objective\" in learning plan \"$a->plan\"';
 
 
 //Plan Settings strings
