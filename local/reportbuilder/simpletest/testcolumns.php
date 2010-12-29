@@ -83,7 +83,7 @@ class columns_test extends prefix_changing_test_case {
     );
 
     var $comp_scale_values_data = array(
-        array('id', 'name', 'idnumber', 'description', 'scaleid', 'numeric', 'sortorder', 'timemodified', 'usermodified'),
+        array('id', 'name', 'idnumber', 'description', 'scaleid', 'numericscore', 'sortorder', 'timemodified', 'usermodified'),
         array(1, 'Competent', '', '', 1, '', 1, 0, 2),
     );
 
