@@ -518,27 +518,50 @@ function totara_print_user_profile_field($userid=null, $fieldshortname=null) {
 }
 
 /**
- * @param int $userid ID of user
- * @param int $managerid ID of a potential manager to check
+ * Check if a user is a manager of another user
+ *
+ * @param int $userid       ID of user
+ * @param int $managerid    ID of a potential manager to check
  * @return boolean true if user $userid is managed by user $managerid
  *
  * If managerid is not set, uses the current user
 **/
 function totara_is_manager($userid, $managerid=null) {
     global $USER;
-    if(!isset($managerid)) {
+
+    // User logged in user as default
+    if (!isset($managerid)) {
         $managerid = $USER->id;
     }
-    $context = get_context_instance(CONTEXT_USER,$userid);
-    $managerroleid = get_field('role','id','shortname','manager');
 
-    // if a record exists, they are a manager to the user
-    if(get_record('role_assignments','roleid',$managerroleid,'contextid',$context->id, 'userid', $managerid)) {
-        return true;
-    } else {
-        return false;
+    // Setup caches
+    static $cache;
+    static $managerroleid;
+    if (!isset($cache)) {
+        $cache = array();
+        $managerroleid = get_field('role', 'id', 'shortname', 'manager');
     }
 
+    // Generate cache key
+    $key = $managerid.'|'.$userid;
+
+    // Check if no cache hit
+    if (!isset($cache[$key])) {
+        $context = get_context_instance(CONTEXT_USER, $userid);
+
+        // If a record exists, they are a manager to the user
+        $result = record_exists(
+            'role_assignments',
+            'roleid', $managerroleid,
+            'contextid', $context->id,
+            'userid', $managerid
+        );
+
+        // Cache result
+        $cache[$key] = $result;
+    }
+
+    return $cache[$key];
 }
 
 /**
