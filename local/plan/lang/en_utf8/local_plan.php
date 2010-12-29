@@ -471,3 +471,35 @@ $string['plancompletefail'] = 'Completing plan $a failed';
 $string['cannotdelete_inuse'] = 'You cannot delete this template because there are plans using it.';
 $string['planapprovalrequested'] = 'Plan approval requested for <a href=\"{$CFG->wwwroot}/local/plan/view.php?id={$a->planid}&userid={$a->userid}\">{$a->planname}</a>';
 
+//// Messaging
+// Plan messages
+$string['plan-request-manager-short'] = 'New plan request by $a->learner';
+$string['plan-request-manager-long'] = '$a->learner has requested approval for new learning plan \"$a->plan\"';
+$string['plan-add-learner-short'] = 'New plan \"$a->plan\" assigned';
+$string['plan-add-learner-long'] = 'New learning plan \"$a->plan\" has been assigned by $a->manager';
+$string['plan-approve-learner-short'] = 'New plan \"$a->plan\" approved';
+$string['plan-approve-learner-long'] = 'Approval request for learning plan \"$a->plan\" has been granted';
+$string['plan-decline-learner-short'] = 'New plan approval request declined';
+$string['plan-decline-learner-long'] = 'Approval request for learning plan \"$a->plan\" has been declined';
+$string['plan-duedate-update-learner-short'] = 'Plan due date has been changed';
+$string['plan-duedate-update-learner-long'] = 'Due date for learning plan \"$a->plan\" has been changed';
+$string['plan-duedate-update-manager-short'] = '$a->learner changed a plan due date';
+$string['plan-duedate-update-manager-long'] = 'Due date for $a->learner\'s learning plan \"$a->plan\" has been changed';
+$string['plan-due-learner-short'] = 'Plan \"$a->plan\" is due in $a->numdays days';
+$string['plan-due-learner-long'] = 'Learning plan \"$a->plan\" is due in $a->numdays days';
+$string['plan-due-today-learner-short'] = 'Plan \"$a->plan\" is due today';
+$string['plan-due-today-learner-long'] = 'Learning plan \"$a->plan\" is due today';
+$string['plan-complete-manager-short'] = '$a->learner completed plan';
+$string['plan-complete-manager-long'] = '$a->learner completed learning plan \"$a->plan\"';
+$string['plan-overdue-learner-short'] = 'Plan \"$a->plan\" is overdue';
+$string['plan-overdue-learner-long'] = 'Learning plan \"$a->plan\" is overdue';
+$string['plan-overdue-manager-short'] = '$a->learner\s plan is overdue';
+$string['plan-overdue-manager-long'] = '$a->learner\s learning plan \"$a->plan\" is overdue';
+$string['plan-newcomment-learner-short'] = '$a->manager commented on plan';
+$string['plan-newcomment-learner-long'] = '$a->manager commented on learning plan \"$a->plan\"';
+$string['plan-newcomment-manager-short'] = '$a->learner commented on plan';
+$string['plan-newcomment-manager-long'] = '$a->learner commented on learning plan \"$a->plan\"';
+$string['plan-remove-learner-short'] = 'Plan \"$a->plan\" has been deleted';
+$string['plan-remove-learner-long'] = 'Learning plan \"$a->plan\" has been deleted by $a->manager';
+$string['plan-remove-manager-short'] = '$a->learner has deleted plan';
+$string['plan-remove-manager-long'] = '$a->learner has deleted the learning plan \"$a->plan\"';

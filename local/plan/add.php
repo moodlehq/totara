@@ -92,6 +92,11 @@ if ($data = $form->get_data()) {
 
         commit_sql();
 
+        // Send out a notification?
+        if ( $role == 'manager' ) {
+            $plan->send_learner_alert_plan_assigned();
+        }
+
         $viewurl = "{$CFG->wwwroot}/local/plan/view.php?id={$newid}";
         totara_set_notification(get_string('plancreatesuccess', 'local_plan'), $viewurl, array('style' => 'notifysuccess'));
     }

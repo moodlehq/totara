@@ -905,63 +905,82 @@ class development_plan {
         return true;
     }
 
+    /**
+     * Sets the plan's status to true if the plan was in "Declined" status
+     * @return boolean True if the plan's status was changed
+     */
     function set_status_unapproved_if_declined() {
         if ($this->status == DP_PLAN_STATUS_DECLINED) {
             $this->set_status(DP_PLAN_STATUS_UNAPPROVED);
+            return true;
+        } else {
+            return false;
         }
     }
 
-    function send_approval_request_reminder() {
+    /**
+     * Send a task to the manager when a learner requests a new plan
+     * @global <type> $USER
+     * @global object $CFG
+     */
+    function send_manager_task_plan_request() {
         global $USER, $CFG;
-        require_once($CFG->dirroot.'/local/totara_msg/messagelib.php');
 
-        if ($manager = totara_get_manager($this->userid)) {
-            $userto = $manager;
-            $userfrom = get_record('user', 'id', $this->userid);
+        $manager = totara_get_manager($this->userid);
+        $learner = get_record('user','id',$this->userid);
+        if ($manager && $learner) {
+            require_once( $CFG->dirroot . '/local/totara_msg/eventdata.class.php' );
+            require_once($CFG->dirroot.'/local/totara_msg/messagelib.php');
 
-            $event = new stdClass;
-            $event->userfrom = $userfrom;
-            $event->userto = $userto;
-            $event->urgency = TOTARA_MSG_URGENCY_URGENT;
-            // send to My Team dashboard
-            $event->roleid = get_field('role','id', 'shortname', 'manager');
-            $event->icon = 'plan-request.png';
-            $a = new stdClass;
-            $a->planid = $this->id;
-            $a->userid = $this->userid;
-            $a->planname = $this->name;
-            $event->fullmessage = get_string('planapprovalrequested', 'local_plan', $a);
-            $event->fullmessageformat = FORMAT_HTML;
-            $event->subject = $event->fullmessage;
             // do the IDP Plan workflow event
-            $onaccept = new stdClass();
-            $onaccept->action = 'plan';
-            $onaccept->text = get_string('confirmrequestapprove', 'local_plan');
-            $onaccept->data = array('userid' => $this->userid, 'planid' => $this->id);
-            $event->onaccept = $onaccept;
-            $onreject = new stdClass();
-            $onreject->action = 'plan';
-            $onreject->text = get_string('confirmrequestdecline', 'local_plan');
-            $onreject->data = array('userid' => $this->userid, 'planid' => $this->id);
-            $event->onreject = $onreject;
+            $data = new stdClass();
+            $data->userid = $this->userid;
+            $data->planid = $this->id;
+
+            $event = new tm_task_eventdata($manager, 'plan', $data, $data);
+            $event->userfrom = $learner;
+            $event->contexturl = $this->get_display_url();
+            $event->contexturlname = $this->name;
+            $event->roleid = get_field('role','id', 'shortname', 'manager');
+            $event->icon = 'learningplan-request.png';
+
+            $a = new stdClass;
+            $a->learner = fullname($learner);
+            $a->plan = s($this->name);
+            $event->subject = get_string('plan-request-manager-short', 'local_plan', $a);
+            $event->fullmessage = get_string('plan-request-manager-long', 'local_plan', $a);
+
             tm_reminder_send($event);
         }
-
-        $this->send_approval_request_notification();
     }
 
-    function send_approval_request_notification() {
+    /**
+     * Send an alert to the user when they have a new plan assigned to them
+     */
+    function send_learner_alert_plan_assigned() {
+        global $USER;
+        global $CFG;
         // Send notification to user
-        $userto = get_record('user', 'id', $this->userid);
-        $event = new stdClass;
-        $event->userto = $userto;
-        $a = new stdClass;
-        $a->planid = $this->id;
-        $a->userid = $this->userid;
-        $a->planname = $this->name;
-        $event->fullmessage = format_text(get_string('planapprovalrequested', 'local_plan', $a));
-        $event->fullmessageformat = FORMAT_HTML;
-        tm_notification_send($event);
+        $learner = get_record('user', 'id', $this->userid);
+        if ( $learner ){
+            require_once( $CFG->dirroot . '/local/totara_msg/eventdata.class.php' );
+            require_once( $CFG->dirroot . '/local/totara_msg/messagelib.php' );
+            $manager = $USER;
+            $event = new tm_alert_eventdata($learner);
+            $event->userfrom = $manager;
+            $event->contexturl = $this->get_display_url();
+            $event->contexturlname = $this->name;
+            $event->roleid = get_field('role','id','shortname','student');
+            $event->icon = 'learningplan-update.png';
+
+            $a = new stdClass();
+            $a->plan = $this->name;
+            $a->manager = fullname($manager);
+            $event->subject = get_string('plan-add-learner-short','local_plan',$a);
+            $event->fullmessage = get_string('plan-add-learner-long', 'local_plan', $a);
+
+            tm_notification_send($event);
+        }
     }
 
     function send_approved_notification() {
@@ -1012,6 +1031,16 @@ class development_plan {
         $event->userto = $userto;
         $event->fullmessage = format_text(get_string('plancompletesuccess', 'local_plan', $this->name));
         tm_notification_send($event);
+    }
+
+    /**
+     * Returns the URL for the page to view this plan
+     * @global object $CFG
+     * @return string
+     */
+    public function get_display_url(){
+        global $CFG;
+        return "{$CFG->wwwroot}/local/plan/view.php?id={$this->id}";
     }
 }
 
