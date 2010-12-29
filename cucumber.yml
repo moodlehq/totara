@@ -1,5 +1,5 @@
 <%
-std_opts = "build/cucumber/features --strict --tags ~@wip -r build/cucumber/features/support/env.rb -r build/cucumber/features/support/plain.rb -r build/cucumber/features/step_definitions build/cucumber/features/standard"
+std_opts = "build/cucumber/features --tags ~@wip -r build/cucumber/features/support/env.rb -r build/cucumber/features/support/plain.rb -r build/cucumber/features/step_definitions build/cucumber/features/standard"
 %>
 pgsql: <%= std_opts %> -r build/cucumber/dbs/pgsql.rb
 mysql: <%= std_opts %> -r build/cucumber/dbs/mysql.rb
