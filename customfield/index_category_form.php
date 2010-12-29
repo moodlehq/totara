@@ -22,6 +22,7 @@ class category_form extends moodleform {
         $mform->addElement('hidden', 'categoryid', $datasent['categoryid']);
         $mform->addElement('hidden', 'tableprefix', $datasent['tableprefix']);
 
+        $mform->addElement('header', 'moodle', get_string('general'));
         $mform->addElement('text', 'name', get_string('categorynamemustbeunique', 'customfields'), 'maxlength="255" size="30"');
         $mform->setType('name', PARAM_MULTILANG);
         $mform->addRule('name', $strrequired, 'required', null, 'client');

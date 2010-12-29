@@ -169,6 +169,7 @@ if ($can_add) {
 
     // Print button for creating new framework
     print_single_button($CFG->wwwroot.'/hierarchy/framework/edit.php?type='.$type, array('type'=>$type), get_string('addnewframework', $type), 'get');
+    helpbutton($type.'frameworks', get_string($type.'framework', $type));
 
     echo '</div>';
 }
@@ -178,6 +179,6 @@ if (file_exists($CFG->dirroot.'/hierarchy/type/'.$type.'/scale/lib.php')) {
     include($CFG->dirroot.'/hierarchy/type/'.$type.'/scale/lib.php');
     $scales = $hierarchy->get_scales();
     call_user_func("{$type}_scale_display_table", $scales, $editingon);
-} 
+}
 
 print_footer();

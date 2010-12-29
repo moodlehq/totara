@@ -39,6 +39,7 @@ $string['competencyplural'] = 'Competencies';
 $string['competencyaddnew'] = 'Add a new competency';
 $string['competencycustomfields'] = 'Custom fields';
 $string['competencyframeworkmanage'] = 'Manage frameworks';
+$string['competencyframework'] = 'Competency Framework';
 $string['competencyframeworks'] = 'Competency Frameworks';
 $string['competencyframeworkview'] = 'View framework';
 $string['competencymanage'] = 'Manage competencies';

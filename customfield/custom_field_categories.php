@@ -187,6 +187,7 @@ if ($can_add) {
     print_single_button($CFG->wwwroot.'/customfield/index.php',
         $data,
         get_string('createcustomfieldcategory', 'customfields'), 'get');
+    helpbutton('customfieldcategories', get_string('customfieldcategories', 'customfields'));
 
     echo '</div>';
 }

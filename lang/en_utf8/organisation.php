@@ -11,6 +11,7 @@ $string['organisationaddnew'] = 'Add a new organisation';
 $string['organisationbulkaction'] = 'Bulk actions';
 $string['organisationcustomfields'] = 'Custom fields';
 $string['frameworks'] = 'Organisation frameworks';
+$string['organisationframework'] = 'Organisation Framework';
 $string['organisationframeworks'] = 'Organisation Frameworks';
 $string['organisationframeworkmanage'] = 'Manage frameworks';
 $string['organisationmanage'] = 'Manage organisations';

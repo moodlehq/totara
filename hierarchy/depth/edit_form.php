@@ -26,7 +26,6 @@ class depth_edit_form extends moodleform {
 
         /// Print the required moodle fields first
         $mform->addElement('header', 'moodle', $strgeneral);
-        $mform->setHelpButton('moodle', array('depthlevelgeneral', get_string('depthlevel', $type)), true);
 
         $mform->addElement('text', 'depthlevel', get_string('depthlevel', $type));
         $mform->setHelpButton('depthlevel', array('depthlevel', get_string('depthlevel', $type)), true);

@@ -99,8 +99,8 @@ if ($depths) {
 }
 
 $navlinks = array();    // Breadcrumbs
-$navlinks[] = array('name'=>get_string("{$type}frameworks", $type), 
-                    'link'=>"{$CFG->wwwroot}/hierarchy/framework/index.php?type={$type}", 
+$navlinks[] = array('name'=>get_string("{$type}frameworks", $type),
+                    'link'=>"{$CFG->wwwroot}/hierarchy/framework/index.php?type={$type}",
                     'type'=>'misc');
 $navlinks[] = array('name'=>format_string($framework->fullname), 'link'=>'', 'type'=>'misc');
 
@@ -120,8 +120,9 @@ if ($depths) {
 if ($can_add) {
     echo '<div class="buttons">';
 
-    // Print button for creating new framework
+    // Print button for creating new depth level
     print_single_button($CFG->wwwroot.'/hierarchy/depth/edit.php', array('type'=>$type, 'frameworkid'=>$frameworkid, 'spage'=>0), get_string('adddepthlevel', $type), 'get');
+    helpbutton('depthlevels', get_string('depthlevel', $type));
 
     echo '</div>';
 }
@@ -130,8 +131,8 @@ if ($can_add) {
 if (file_exists($CFG->dirroot.'/hierarchy/type/'.$type.'/template/lib.php')) {
     include($CFG->dirroot.'/hierarchy/type/'.$type.'/template/lib.php');
     $templates = $hierarchy->get_templates();
-    
+
     call_user_func("{$type}_template_display_table", $templates, $frameworkid);
-} 
+}
 
 print_footer();

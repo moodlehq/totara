@@ -12,6 +12,7 @@ $string['positions'] = 'Positions';
 $string['positionaddnew'] = 'Add a new position';
 $string['positionbulkaction'] = 'Bulk actions';
 $string['frameworks'] = 'Frameworks';
+$string['positionframework'] = 'Position framework';
 $string['positionframeworks'] = 'Position frameworks';
 $string['positionframeworkmanage'] = 'Manage frameworks';
 $string['positionmanage'] = 'Manage positions';

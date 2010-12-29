@@ -31,7 +31,6 @@ class framework_edit_form extends moodleform {
 
         /// Print the required moodle fields first
         $mform->addElement('header', 'moodle', $strgeneral);
-        $mform->setHelpButton('moodle', array($type.'frameworkgeneral', $strgeneral), true);
 
         $mform->addElement('text', 'fullname', get_string('fullnameframework', $type), 'maxlength="254" size="50"');
         $mform->setHelpButton('fullname', array($type.'frameworkfullname', get_string('fullnameframework', $type)), true);
