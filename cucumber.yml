@@ -2,6 +2,6 @@
 std_opts = "--tags ~@wip -r build/cucumber/features/support/env.rb -r build/cucumber/features/support/plain.rb -r build/cucumber/features/step_definitions build/cucumber/features/standard"
 %>
 pgsql: <%= std_opts %> -r build/cucumber/dbs/pgsql.rb
-mysql: <%= std_opts %> -r build/cucumber/dbs/mysql.rb
+mysql: <%= std_opts %> -r build/cucumber/dbs/mysql.rb -r build/cucumber/features/support/record_templates.rb
 
 selenium: -r build/cucumber/dbs/pgsql.rb -r build/cucumber/features/support/env.rb -r build/cucumber/features/support/selenium.rb -r build/cucumber/features/step_definitions/selenium build/cucumber/features/selenium
