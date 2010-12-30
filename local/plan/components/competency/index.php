@@ -14,16 +14,16 @@ $action = optional_param('action', null, PARAM_ALPHANUM); // other actions
 $delete = optional_param('d', 0, PARAM_INT); // competency assignment id to delete
 $confirm = optional_param('confirm', 0, PARAM_INT); // confirm delete
 
-///
-/// Permissions check
-///
-require_capability('local/plan:accessplan', get_system_context());
-
 
 ///
 /// Load data
 ///
 $plan = new development_plan($id);
+
+if (!dp_can_view_users_plans($plan->userid)) {
+    print_error('error:nopermissions', 'local_plan');
+}
+
 $componentname = 'competency';
 $component = $plan->get_component($componentname);
 $currenturl = $CFG->wwwroot . '/local/plan/components/competency/index.php?id='.$id;

@@ -40,13 +40,22 @@ $capabilities = array(
 
     // Access the plan front end
     'local/plan:accessplan' => array(
-        'riskbitmask'   => RISK_PERSONAL | RISK_DATALOSS,
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM,
         'legacy' => array(
             'admin' => CAP_ALLOW,
             'user' => CAP_ALLOW,
             'manager' => CAP_ALLOW,
+        )
+    ),
+
+    // Access any user's plan
+    'local/plan:accessanyplan' => array(
+        'riskbitmask' => RISK_PERSONAL,
+        'captype' => 'read',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'legacy' => array(
+            'admin' => CAP_ALLOW
         )
     ),
 

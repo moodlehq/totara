@@ -18,17 +18,13 @@ $planuser = optional_param('userid', $USER->id, PARAM_INT); // show plans for th
 //
 /// Permission checks
 //
-require_login();
-require_capability('local/plan:accessplan', get_system_context());
+if (!dp_can_view_users_plans($planuser)) {
+    print_error('error:nopermissions', 'local_plan');
+}
 
 // Check if we are viewing these plans as a manager or a learner
 if ($planuser != $USER->id) {
-    // Make sure user is manager
-    if (totara_is_manager($planuser) || isadmin()) {
-        $role = 'manager';
-    } else {
-        print_error('error:nopermissions', 'local_plan');
-    }
+    $role = 'manager';
 } else {
     $role = 'learner';
 }

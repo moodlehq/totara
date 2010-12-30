@@ -12,16 +12,16 @@ $id = required_param('id', PARAM_INT); // plan id
 $submitted = optional_param('submitbutton', null, PARAM_TEXT); // form submitted
 $action = optional_param('action', null, PARAM_ALPHANUM); // other actions
 
-///
-/// Permissions check
-///
-require_capability('local/plan:accessplan', get_system_context());
-
 
 ///
 /// Load data
 ///
 $plan = new development_plan($id);
+
+if (!dp_can_view_users_plans($plan->userid)) {
+    print_error('error:nopermissions', 'local_plan');
+}
+
 $componentname = 'objective';
 $component = $plan->get_component($componentname);
 $currenturl = $CFG->wwwroot . '/local/plan/components/objective/index.php?id='.$id;

@@ -26,6 +26,10 @@ $editurl = strip_querystring(qualified_me())."?id={$id}&action=edit";
 
 $plan = new development_plan($id);
 
+if (!dp_can_view_users_plans($plan->userid)) {
+    print_error('error:nopermissions', 'local_plan');
+}
+
 require_once('edit_form.php');
 $form = new plan_edit_form($currenturl, array('plan'=>$plan, 'action'=>$action));
 

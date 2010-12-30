@@ -6,6 +6,7 @@
     require_once($CFG->dirroot.'/user/profile/lib.php');
     require_once($CFG->dirroot.'/tag/lib.php');
     require_once($CFG->dirroot.'/local/totara.php');
+    require_once($CFG->dirroot.'/local/plan/lib.php');
 
     $id      = optional_param('id',     0,      PARAM_INT);   // user id
     $course  = optional_param('course', SITEID, PARAM_INT);   // course id (defaults to Site)
@@ -341,7 +342,7 @@
     }
 
     // Only display link on own profile page, if manager or admin
-    if (($currentuser || totara_is_manager($user->id)) && has_capability('local/plan:accessplan', $systemcontext)) {
+    if (dp_can_view_users_plans($user->id)) {
         $str_plans = get_string('learningplans', 'local_plan');
         print_row(
             "{$str_plans}:",

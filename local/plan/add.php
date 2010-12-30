@@ -18,8 +18,10 @@ $userid = required_param('userid', PARAM_INT); // user id
 ///
 /// Permission checks
 ///
-require_login();
-require_capability('local/plan:accessplan', get_system_context());
+if (!dp_can_view_users_plans($userid)) {
+    print_error('error:nopermissions', 'local_plan');
+}
+
 
 // START PERMISSION HACK
 if ($userid != $USER->id) {

@@ -1,6 +1,7 @@
 <?php
 
 require_once($CFG->dirroot . '/theme/totara/helpers.php');
+require_once($CFG->dirroot . '/local/plan/lib.php');
 
 // multi-dimensional array containing nested list
 // of tab names
@@ -78,6 +79,7 @@ if(in_array($secondary_selected, array(
 
 $sitecontext = get_context_instance(CONTEXT_SYSTEM);
 $canviewdashboards  = has_capability('local/dashboard:view', $sitecontext, $USER->id);
+$canviewlearningplans = dp_can_view_users_plans($USER->id);
 
 // get an array of class string snippets to be applied to each tab element
 $selected = totara_get_nav_select_classes($navstructure, $primary_selected, $secondary_selected);
@@ -108,20 +110,36 @@ $selected = totara_get_nav_select_classes($navstructure, $primary_selected, $sec
 
 
     <li id="menu2" class="<?php echo $selected['mylearning']; ?>">
-        <div><a href="<?php echo ($canviewdashboards ? $CFG->wwwroot.'/my/learning.php' : $CFG->wwwroot.'/local/plan/index.php') ?>"><?php echo get_string('mylearning', 'local') ?></a>
+        <div>
             <?php
-            if($selected['mylearning']) {
+                // Get default mylearning sub tab
+                if ($canviewdashboards) {
+                    $defaultmylearning = $CFG->wwwroot.'/my/learning.php';
+                }
+                else if ($canviewlearningplans) {
+                    $defaultmylearning = $CFG->wwwroot.'/local/plan/index.php';
+                }
+                else {
+                    $defaultmylearning = $CFG->wwwroot.'/my/bookings.php';
+                }
+            ?>
+            <a href="<?php echo $defaultmylearning; ?>"><?php echo get_string('mylearning', 'local') ?></a>
+            <?php
+            if ($selected['mylearning']) {
                 $text ='<ul>';
 
-                if($canviewdashboards) {
+                if ($canviewdashboards) {
                     $text .= '<li class="first' . $selected['learnerdashboard'] .
                         '"><a href="' . $CFG->wwwroot . '/my/learning.php">' .
                         get_string('dashboard', 'local_dashboard').'</a></li>';
                 }
 
-                $text .='<li class="' . $selected['learningplans'] .
-                    '"><a href="' . $CFG->wwwroot . '/local/plan/index.php">' .
-                    get_string('learningplans', 'local').'</a></li>';
+                if ($canviewlearningplans) {
+                    $text .='<li class="' . $selected['learningplans'] .
+                        '"><a href="' . $CFG->wwwroot . '/local/plan/index.php">' .
+                        get_string('learningplans', 'local').'</a></li>';
+                }
+
                 $text .='<li class="' . $selected['mybookings'] .
                     '"><a href="' . $CFG->wwwroot . '/my/bookings.php">' .
                     get_string('mybookings', 'local').'</a></li>';

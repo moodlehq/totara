@@ -66,6 +66,62 @@ $DP_AVAILABLE_WORKFLOWS = array(
     'managerdriven',
 );
 
+
+/**
+ * Can logged in user view user's plans
+ *
+ * @access  public
+ * @param   int     $ownerid   Plan's owner
+ * @return  boolean
+ */
+function dp_can_view_users_plans($ownerid) {
+    global $USER;
+
+    require_login();
+    $systemcontext = get_system_context();
+
+    // Check plan templates exist
+    static $templateexists;
+    if (!isset($templateexists)) {
+        $templateexists = (bool) count_records('dp_template');
+    }
+
+    if (!$templateexists) {
+        return false;
+    }
+
+    // If the user can view any plans
+    if (has_capability('local/plan:accessanyplan', $systemcontext)) {
+        return true;
+    }
+
+    // If the user cannot view any plans
+    if (!has_capability('local/plan:accessplan', $systemcontext)) {
+        return false;
+    }
+
+    // If this is the current user's own plans
+    if ($ownerid == $USER->id) {
+        return true;
+    }
+
+    // If this user is their manager
+    if (totara_is_manager($ownerid)) {
+        return true;
+    }
+
+    return false;
+}
+
+
+/**
+ * Return plans for a user with a specific status
+ *
+ * @access  public
+ * @param   int     $userid     Owner of plans
+ * @param   array   $statuses   Plan statuses
+ * @return  array|false
+ */
 function dp_get_plans($userid, $statuses=array(DP_PLAN_STATUS_APPROVED)) {
     if (is_array($statuses)) {
         $statuses = implode(',', $statuses);
