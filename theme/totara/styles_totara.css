@@ -521,7 +521,6 @@ a:link,
 a:visited,
 a:hover {
   color: #04a2d5;
-  text-decoration: underline;
 }
 
 a:hover {
@@ -542,7 +541,6 @@ a:hover {
 }
 
 .block_admin_tree a span.visiblename {
-  text-decoration: underline;
 }
 
 .block_admin_tree a.link:link,
@@ -565,6 +563,10 @@ a:hover {
 }
 .block_admin_tree #query {
   width:90px;
+}
+
+.logininfo a:link {
+    text-decoration: underline;
 }
 
 /**
