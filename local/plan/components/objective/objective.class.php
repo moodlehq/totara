@@ -527,6 +527,8 @@ class dp_objective_component extends dp_base_component {
         $approvals = optional_param('approve', array(), PARAM_INT);
         $currenturl = qualified_me();
         $stored_records = array();
+        $currentuser = $this->plan->userid;
+        $currentcourse = $this->plan->id;
 
         $status = true;
         if(!empty($duedates) && $cansetduedates) {
@@ -582,6 +584,7 @@ class dp_objective_component extends dp_base_component {
                     $todb->id = $id;
                     $todb->scalevalueid = $proficiency;
                     $stored_records[$id] = $todb;
+                    totara_stats_add_event(time(), $currentuser, STATS_EVENT_OBJ_ACHIEVED, '', $currentcourse);
                 }
             }
         }
