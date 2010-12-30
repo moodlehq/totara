@@ -709,7 +709,7 @@ class dp_course_component extends dp_base_component {
                     exit;
                 } else {
                     // Get user's manager(s); email reminder
-                    $managers = dp_get_notification_receivers_2(get_context_instance(CONTEXT_USER, $this->plan->userid), 'manager');
+                    $managers = dp_get_notification_receivers(get_context_instance(CONTEXT_USER, $this->plan->userid), 'manager');
                     foreach ($managers as $manager) {
                         // @todo send email
                         //email_to_user($manager, $from, $subject, $bodycopy);

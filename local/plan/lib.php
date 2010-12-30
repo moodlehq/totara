@@ -212,9 +212,8 @@ function dp_get_objective_default_scale_value($idpid) {
 
 /**
  * Return a list of user IDs of users who can receive notification emails
-//TODO: remove _2 from method once old IDP is removed
  */
-function dp_get_notification_receivers_2($contextuser, $type) {
+function dp_get_notification_receivers($contextuser, $type) {
     global $USER;
 
     $receivers = array();
