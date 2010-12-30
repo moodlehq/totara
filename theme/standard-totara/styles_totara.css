@@ -1405,6 +1405,7 @@ table.planlist th.options {
 table.planlist td.options {
     text-align: center;
 }
+
 table.planitems {
     margin: 8px 0px 0px 8px;
     width: 532px;
@@ -1556,6 +1557,11 @@ span.dp-summary-widget-component-name-last {
 #dp-plan-content {
     float: right;
     width: 650px;
+}
+
+#dp-plan-content span.problem {
+    color: #f00;
+    font-weight: bold;
 }
 
 div.dp-plan-assign-button {

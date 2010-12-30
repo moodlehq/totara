@@ -346,12 +346,12 @@ class development_plan {
         $now = time();
         if(isset($enddate)) {
             if(($enddate < $now) && ($now - $enddate < 60*60*24)) {
-                $out .= '<br /><span class="notifyproblem">' . get_string('duetoday', 'local_plan') . '</span>';
+                $out .= '<br /><span class="problem">' . get_string('duetoday', 'local_plan') . '</span>';
             } else if($enddate < $now) {
-                $out .= '<br /><span class="notifyproblem">' . get_string('overdue', 'local_plan') . '</span>';
+                $out .= '<br /><span class="problem">' . get_string('overdue', 'local_plan') . '</span>';
             } else if ($enddate - $now < 60*60*24*7) {
                 $days = ceil(($enddate - $now)/(60*60*24));
-                $out .= '<br /><span class="notifyproblem">' . get_string('dueinxdays', 'local_plan', $days) . '</span>';
+                $out .= '<br /><span class="problem">' . get_string('dueinxdays', 'local_plan', $days) . '</span>';
             }
         }
         return $out;
