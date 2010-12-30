@@ -521,6 +521,25 @@ function dp_display_plans_menu($userid, $selectedid=0, $role='learner') {
 	}
     }
 
+    // Display unapproved plans
+    if ($plans = dp_get_plans($userid, array(DP_PLAN_STATUS_UNAPPROVED))) {
+        if ($role == 'manager') {
+            $out .= '<div class="dp-plans-menu-section"><h4 class="dp-plans-menu-sub-header">' . get_string('unapprovedplans', 'local_plan') . '</h4>';
+        }
+        else {
+            $out .= print_heading(get_string('unapprovedplans', 'local_plan'), 'left', 3, 'main', true);
+        }
+        $out .= "<ul>";
+        foreach ($plans as $p) {
+            $class = $p->id == $selectedid ? 'class="dp-menu-selected"' : '';
+            $out .= "<li {$class}><a href=\"{$CFG->wwwroot}/local/plan/view.php?id={$p->id}\">{$p->name}</a></li>";
+        }
+        $out .= "</ul>";
+        if ($role == 'manager') {
+            $out .= "</div>";
+        }
+    }
+
     if ($plans = dp_get_plans($userid, DP_PLAN_STATUS_COMPLETE)) {
 	if ($role == 'manager') {
 	    $out .= '<div class="dp-plans-menu-section"><h4 class="dp-plans-menu-sub-header">' . get_string('completedplans', 'local_plan') . '</h4>';
