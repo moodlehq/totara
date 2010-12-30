@@ -11,7 +11,7 @@ class dp_manager_role extends dp_base_role {
             return 'manager';
 
         // Are they an administrative super-user?
-        } elseif ( has_capability('moodle/site:doanything', get_context_instance(CONTEXT_SYSTEM))){
+        } elseif ( has_capability('moodle/site:doanything', get_context_instance(CONTEXT_SYSTEM), $userid )){
             return 'manager';
         } else {
             return false;
