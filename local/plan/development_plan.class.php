@@ -933,9 +933,9 @@ class development_plan {
             require_once($CFG->dirroot.'/local/totara_msg/messagelib.php');
 
             // do the IDP Plan workflow event
-            $data = new stdClass();
-            $data->userid = $this->userid;
-            $data->planid = $this->id;
+            $data = array();
+            $data['userid'] = $this->userid;
+            $data['planid'] = $this->id;
 
             $event = new tm_task_eventdata($manager, 'plan', $data, $data);
             $event->userfrom = $learner;
