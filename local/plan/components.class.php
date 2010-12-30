@@ -177,13 +177,6 @@ abstract class dp_base_component {
             $out .= '<span class="plan_highlight">' . get_string('pendingapproval', 'local_plan') . '</span><br />';
             if($canapprove) {
                 $out .= $this->display_approval_options($obj, $approvalstatus);
-            } else {
-                // @todo write reminder code
-                $murl->param('assignmentid', $obj->id);
-                $murl->param('type', $this->component);
-                $murl->param('action', 'approvalremind');
-                $out .= '<a href="'.$murl->out_action().'">'.
-                    '<img src="'.$CFG->themewww.'/'.$CFG->theme.'/pix/i/marker.gif" title="'.get_string('sendapprovalreminder', 'local_plan').'" alt="'.get_string('sendapprovalreminder', 'local_plan').'" /></a> ';
             }
             break;
         case DP_APPROVAL_REQUEST_REMOVAL:
