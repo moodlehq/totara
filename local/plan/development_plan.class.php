@@ -1016,21 +1016,30 @@ class development_plan {
     function send_completion_notification() {
         global $USER, $CFG;
         require_once($CFG->dirroot.'/local/totara_msg/messagelib.php');
+        $learner = get_record('user', 'id', $this->userid);
 
         // Send notification to manager
-        if ($manager = totara_get_manager($this->userid)) {
-            $userto = $manager;
-            $event = new stdClass;
-            $event->userto = $userto;
-            $event->fullmessage = format_text(get_string('plancompletesuccess', 'local_plan', $this->name));
+        // But don't send it if they just manually performed
+        // the completion
+        $manager = totara_get_manager($this->userid);
+        if ($manager && $manager->id != $USER->id) {
+            $event = new stdClass();
+            $event->userto = $manager;
+            $event->userfrom = $learner;
+            $event->icon = 'learningplan-complete.png';
+            $a = new stdClass();
+            $a->learner = fullname($learner);
+            $a->plan = $this->name;
+            $event->subject = get_string('plan-complete-manager-short','local_plan',$a);
+            $event->fullmessage = get_string('plan-complete-manager-long','local_plan',$a);
             $event->roleid = get_field('role','id', 'shortname', 'manager');
             tm_notification_send($event);
         }
 
         // Send notification to user
-        $userto = get_record('user', 'id', $this->userid);
-        $event = new stdClass;
-        $event->userto = $userto;
+        $event = new stdClass();
+        $event->userto = $learner;
+        $event->icon = 'learningplan-complete.png';
         $event->fullmessage = format_text(get_string('plancompletesuccess', 'local_plan', $this->name));
         tm_notification_send($event);
     }
