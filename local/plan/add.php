@@ -96,7 +96,7 @@ if ($data = $form->get_data()) {
 
         // Send out a notification?
         if ( $role == 'manager' ) {
-            $plan->send_learner_alert_plan_assigned();
+            $plan->send_alert(true,'learningplan-update.png','plan-add-learner-short','plan-add-learner-long');
         }
 
         $viewurl = "{$CFG->wwwroot}/local/plan/view.php?id={$newid}";

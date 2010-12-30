@@ -955,31 +955,47 @@ class development_plan {
     }
 
     /**
-     * Send an alert to the user when they have a new plan assigned to them
+     * Send an alert relating to this plan
+     *
+     * @param boolean $tolearner To the learner if true, otherwise to the manager
+     * @param string $icon filename of icon (in theme/totara/msgicons/)
+     * @param string $subjectstring lang string in local_plan
+     * @param string $fullmessagestring lang string in local_plan
+     * @return boolean
      */
-    function send_learner_alert_plan_assigned() {
-        global $USER;
+    public function send_alert( $tolearner, $icon, $subjectstring, $fullmessagestring ){
         global $CFG;
-        // Send notification to user
-        $learner = get_record('user', 'id', $this->userid);
-        if ( $learner ){
+        $manager = totara_get_manager($this->userid);
+        $learner = get_record('user','id',$this->userid);
+        if ( $learner && $manager ){
             require_once( $CFG->dirroot . '/local/totara_msg/eventdata.class.php' );
             require_once( $CFG->dirroot . '/local/totara_msg/messagelib.php' );
-            $manager = $USER;
-            $event = new tm_alert_eventdata($learner);
-            $event->userfrom = $manager;
+            if ( $tolearner ){
+                $userto = $learner;
+                $userfrom = $manager;
+                $roleid = get_field('role','id','shortname','student');
+            } else {
+                $userto = $manager;
+                $userfrom = $learner;
+                $roleid = get_field('role','id','shortname','manager');
+            }
+            $event = new tm_alert_eventdata($userto);
+            $event->userfrom = $userfrom;
             $event->contexturl = $this->get_display_url();
             $event->contexturlname = $this->name;
-            $event->roleid = get_field('role','id','shortname','student');
-            $event->icon = 'learningplan-update.png';
+            $event->roleid = $roleid;
+            $event->icon = $icon;
 
             $a = new stdClass();
             $a->plan = $this->name;
             $a->manager = fullname($manager);
-            $event->subject = get_string('plan-add-learner-short','local_plan',$a);
-            $event->fullmessage = get_string('plan-add-learner-long', 'local_plan', $a);
+            $a->learner = fullname($learner);
+            $event->subject = get_string($subjectstring,'local_plan',$a);
+            $event->fullmessage = get_string($fullmessagestring,'local_plan',$a);
 
-            tm_notification_send($event);
+            return tm_notification_send($event);
+        } else {
+            return false;
         }
     }
 
