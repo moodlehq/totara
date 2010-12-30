@@ -503,7 +503,7 @@ function dp_display_plans_menu($userid, $selectedid=0, $role='learner') {
     }
 
     // Display active plans
-    if ($plans = dp_get_plans($userid, array(DP_PLAN_STATUS_APPROVED, DP_PLAN_STATUS_UNAPPROVED))) {
+    if ($plans = dp_get_plans($userid, array(DP_PLAN_STATUS_APPROVED))) {
 	if ($role == 'manager') {
 	    $out .= '<div class="dp-plans-menu-section"><h4 class="dp-plans-menu-sub-header">' . get_string('activeplans', 'local_plan') . '</h4>';
 	}
