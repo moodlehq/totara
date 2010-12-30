@@ -14,10 +14,13 @@ require_once('../../config.php');
 require_once('lib.php');
 require_once($CFG->dirroot.'/local/totara_msg/messagelib.php');
 
-require_login();
-require_capability('local/plan:accessplan', get_system_context());
+///
+/// Params
+///
 
+// Plan param
 $id = required_param('id', PARAM_INT);      // the plan id
+
 // Action params
 $approve = optional_param('approve', 0, PARAM_BOOL);
 $decline = optional_param('decline', 0, PARAM_BOOL);
@@ -39,6 +42,14 @@ if (!confirm_sesskey()) {
 
 
 $plan = new development_plan($id);
+
+///
+/// Permissions check
+///
+if (!dp_can_view_users_plans($plan->userid)) {
+    print_error('error:nopermissions', 'local_plan');
+}
+
 
 // @todo: handle action failure notifications
 if (!empty($approve)) {
