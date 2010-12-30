@@ -77,7 +77,10 @@ $DP_AVAILABLE_WORKFLOWS = array(
 function dp_can_view_users_plans($ownerid) {
     global $USER;
 
-    require_login();
+    if (!isloggedin()) {
+        return false;
+    }
+
     $systemcontext = get_system_context();
 
     // Check plan templates exist
