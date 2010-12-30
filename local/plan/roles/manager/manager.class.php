@@ -9,6 +9,10 @@ class dp_manager_role extends dp_base_role {
         // are they the manager of this plan's owner?
         if(totara_is_manager($this->plan->userid, $userid)) {
             return 'manager';
+
+        // Are they an administrative super-user?
+        } elseif ( has_capability('moodle/site:doanything', get_context_instance(CONTEXT_SYSTEM))){
+            return 'manager';
         } else {
             return false;
         }
