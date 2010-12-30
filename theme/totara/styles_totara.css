@@ -489,11 +489,12 @@ div#header {
 /**
     Action notifications
 **/
-.notifyproblem {
+div#totara-header-notifications .notifyproblem {
   text-align:left !important;
   background:url("images/cross.gif") no-repeat scroll 10px center #F6BEBF;
 }
-.notifysuccess {
+
+div#totara-header-notifications .notifysuccess {
   text-align:left !important;
   background:url("images/tick.gif") no-repeat scroll 10px center #CFF1B4;
 }
