@@ -197,19 +197,44 @@ $string['objectivefullname'] = 'Objective Full Name';
 $string['objectiveshortname'] = 'Objective Short Name';
 $string['objectivedescription'] = 'Objective Description';
 $string['objectivepriority'] = 'Objective Priority';
+$string['objectivescalevalueid'] = 'Objective Proficiency';
+$string['objectivecourse'] = 'Assigned courses';
+$string['objectiveduedate'] = 'Objective Due Date';
+$string['objectiveapproved'] = 'Objective Approval';
 $string['error:cannotupdateobjectives'] = 'Cannot update objectives';
 $string['objectivesnotupdated'] = 'Objectives not updated';
 $string['deleteobjective'] = 'Delete objective';
 $string['deleteobjectiveareyousure'] = 'Are you sure you want to delete this objective?';
 $string['editobjective'] = 'Edit objective';
+
+// new objective
 $string['objectivenewshortlearner'] = 'New objective \"$a\" assigned';
-$string['objectivenewlonglearner'] = 'New objective \"$a->objective\" has been assigned to learning plan \"$a->plan\" by $a->manager';
-$string['objectivenewshortmanager'] = 'New objective \"$a\" created';
-$string['objectivenewlongmanager'] = 'New objective \"$a->objective\" has been created in learning plan \"$a->plan\" by $a->larner';
+$string['objectivenewlonglearner'] = 'has assigned new objective \"$a->objective\" to learning plan \"$a->plan\"';
+$string['objectivenewshortmanager'] = '$a created new objective';
+$string['objectivenewlongmanager'] = 'has created new objective \"$a->objective\" in learning plan \"$a->plan\"';
+
+// delete objective
 $string['objectivedeleteshortlearner'] = 'Objective \"$a\" has been deleted';
-$string['objectivedeletelonglearner'] = 'Objective \"$a->objective\" in learning plan \"$a->plan\" has been deleted by $a->manager';
+$string['objectivedeletelonglearner'] = 'has deleted objective \"$a->objective\" in learning plan \"$a->plan\"';
 $string['objectivedeleteshortmanager'] = '$a has deleted an objective';
-$string['objectivedeletelongmanager'] = '$a->learner has deleted the objective \"$a->objective\" in learning plan \"$a->plan\"';
+$string['objectivedeletelongmanager'] = 'has deleted the objective \"$a->objective\" in learning plan \"$a->plan\"';
+
+// change an objective
+$string['objectiveeditshortlearner'] = 'Objective \"$a\" has been edited';
+$string['objectiveeditlonglearner'] = 'has edited $a->field for objective \"$a->objective\"';
+$string['objectiveeditshortmanager'] = '$a has edited their objectives';
+$string['objectiveeditlongmanager'] = 'has edited $a->field for objective \"$a->objective\" in learning plan \"$a->plan\"';
+
+// objective complete/incomplete
+$string['objectivecompleteshortlearner'] = 'Completed objective \"$a\"';
+$string['objectivecompletelonglearner'] = 'has changed objective \"$a->objective\" to completed';
+$string['objectivecompleteshortmanager'] = '$a has completed an objective';
+$string['objectivecompletelongmanager'] = 'has changed objective \"$a->objective\" to completed in learning plan \"$a->plan\"';
+
+$string['objectiveincompleteshortlearner'] = 'Objective \"$a\" incomplete';
+$string['objectiveincompletelonglearner'] = 'has changed objective \"$a->objective\" to incomplete';
+$string['objectiveincompleteshortmanager'] = '$a has an incomplete objective';
+$string['objectiveincompletelongmanager'] = 'has changed objective \"$a->objective\" to incomplete in learning plan \"$a->plan\"';
 
 
 //Plan Settings strings

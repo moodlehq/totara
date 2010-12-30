@@ -602,6 +602,10 @@ class dp_objective_component extends dp_base_component {
             }
         }
         $status = true;
+
+        // save before snapshot of objectives
+        $orig_objectives = get_records_list('dp_plan_objective', 'id', implode(',', array_keys($stored_records)));
+
         if (!empty($stored_records)) {
             begin_sql();
             foreach($stored_records as $itemid => $record) {
@@ -610,6 +614,18 @@ class dp_objective_component extends dp_base_component {
             if($status) {
                 commit_sql();
                 $this->plan->set_status_unapproved_if_declined();
+                // process update notifications
+                foreach($stored_records as $itemid => $record) {
+                    // priority may have been updated
+                    if (isset($record->priority) && array_key_exists($itemid, $orig_objectives) && $record->priority != $orig_objectives[$itemid]->priority) {
+                        $this->send_edit_notification($orig_objectives[$itemid], 'priority');
+                    }
+                    // proficiency may have been updated
+                    if (isset($record->scalevalueid) && array_key_exists($itemid, $orig_objectives) && $record->scalevalueid != $orig_objectives[$itemid]->scalevalueid) {
+                        $orig_objectives[$itemid]->scalevalueid = $record->scalevalueid;
+                        $this->send_status_notification($orig_objectives[$itemid]);
+                    }
+                }
                 totara_set_notification(get_string('objectivesupdated','local_plan'), $currenturl, array('style'=>'notifysuccess'));
             } else {
                 rollback_sql();
@@ -682,6 +698,17 @@ class dp_objective_component extends dp_base_component {
         return $result;
     }
 
+    /**
+     * Construct the link for the current user
+     * @return string user link
+     */
+    function current_user() {
+        global $USER, $CFG;
+
+        $userfrom_link = $CFG->wwwroot.'/user/view.php?id='.$USER->id;
+        $fromname = fullname($USER);
+        return "<a href=\"{$userfrom_link}\" title=\"$fromname\">$fromname</a> ";
+    }
 
     /**
      * send objective deletion notification
@@ -696,20 +723,18 @@ class dp_objective_component extends dp_base_component {
         $userfrom = get_record('user', 'id', $USER->id);
         $event->userfrom = $userfrom;
         $event->contexturl = "{$CFG->wwwroot}/local/plan/view.php?id={$this->plan->id}";
+        $event->icon = 'objective-remove.png';
+        $a = new stdClass;
+        $a->objective = $objective->shortname;
+        $a->plan = "<a href=\"{$event->contexturl}\" title=\"{$this->plan->name}\">{$this->plan->name}</a>";
 
         // did they delete it themselves?
         if ($USER->id == $this->plan->userid) {
             // notify their manager
             if ($manager = totara_get_manager($this->plan->userid)) {
                 $event->userto = $manager;
-                $event->subject = get_string('objectivedeleteshortmanager', 'local_plan',$objective->shortname);
-                $a = new stdClass;
-                $a->objective = $objective->shortname;
-                $a->plan = "<a href=\"{$event->contexturl}\" title=\"{$this->plan->name}\">{$this->plan->name}</a>";
-                $userfrom_link = $CFG->wwwroot.'/user/view.php?id='.$USER->id;
-                $fromname = fullname($USER);
-                $a->learner = "<a href=\"{$userfrom_link}\" title=\"$fromname\">$fromname</a> ";
-                $event->fullmessage = format_text(get_string('objectivedeletelongmanager', 'local_plan', $a));
+                $event->subject = get_string('objectivedeleteshortmanager', 'local_plan', $this->current_user());
+                $event->fullmessage = get_string('objectivedeletelongmanager', 'local_plan', $a);
                 $event->roleid = get_field('role','id', 'shortname', 'manager');
                 tm_notification_send($event);
             }
@@ -718,18 +743,11 @@ class dp_objective_component extends dp_base_component {
         else {
             $userto = get_record('user', 'id', $this->plan->userid);
             $event->userto = $userto;
-            $event->subject = get_string('objectivedeleteshortlearner', 'local_plan', $objective->shortname);
-            $a = new stdClass;
-            $a->objective = $objective->shortname;
-            $a->plan = "<a href=\"{$event->contexturl}\" title=\"{$this->plan->name}\">{$this->plan->name}</a>";
-            $userfrom_link = $CFG->wwwroot.'/user/view.php?id='.$USER->id;
-            $fromname = fullname($USER);
-            $a->manager = "<a href=\"{$userfrom_link}\" title=\"$fromname\">$fromname</a> ";
-            $event->fullmessage = format_text(get_string('objectivedeletelonglearner', 'local_plan', $a));
+            $event->subject = get_string('objectivedeleteshortlearner', 'local_plan', $a->objective);
+            $event->fullmessage = get_string('objectivedeletelonglearner', 'local_plan', $a);
             tm_notification_send($event);
         }
     }
-
 
     /**
      * send objective creation notification
@@ -745,21 +763,18 @@ class dp_objective_component extends dp_base_component {
         $userfrom = get_record('user', 'id', $USER->id);
         $event->userfrom = $userfrom;
         $event->contexturl = "{$CFG->wwwroot}/local/plan/components/objective/view.php?id={$this->plan->id}&itemid={$objid}";
-        $planurl = "{$CFG->wwwroot}/local/plan/view.php?id={$this->plan->id}";
+        $event->icon = 'objective-add.png';
+        $a = new stdClass;
+        $a->objective = "<a href=\"{$event->contexturl}\" title=\"$shortname\">$shortname</a>";
+        $a->plan = "<a href=\"{$CFG->wwwroot}/local/plan/view.php?id={$this->plan->id}\" title=\"{$this->plan->name}\">{$this->plan->name}</a>";
 
         // did they create it themselves?
         if ($USER->id == $this->plan->userid) {
             // notify their manager
             if ($manager = totara_get_manager($this->plan->userid)) {
                 $event->userto = $manager;
-                $event->subject = get_string('objectivenewshortmanager', 'local_plan',"<a href=\"{$event->contexturl}\" title=\"$shortname\">$shortname</a>");
-                $a = new stdClass;
-                $a->objective = "<a href=\"{$event->contexturl}\" title=\"$shortname\">$shortname</a>";
-                $a->plan = "<a href=\"{$planurl}\" title=\"{$this->plan->name}\">{$this->plan->name}</a>";
-                $userfrom_link = $CFG->wwwroot.'/user/view.php?id='.$USER->id;
-                $fromname = fullname($USER);
-                $a->learner = "<a href=\"{$userfrom_link}\" title=\"$fromname\">$fromname</a> ";
-                $event->fullmessage = format_text(get_string('objectivenewlongmanager', 'local_plan', $a));
+                $event->subject = get_string('objectivenewshortmanager', 'local_plan', $this->current_user());
+                $event->fullmessage = get_string('objectivenewlongmanager', 'local_plan', $a);
                 $event->roleid = get_field('role','id', 'shortname', 'manager');
                 tm_notification_send($event);
             }
@@ -769,15 +784,122 @@ class dp_objective_component extends dp_base_component {
             $userto = get_record('user', 'id', $this->plan->userid);
             $event->userto = $userto;
             $event->subject = get_string('objectivenewshortlearner', 'local_plan', $shortname);
-            $a = new stdClass;
-            $a->objective = "<a href=\"{$event->contexturl}\" title=\"$shortname\">$shortname</a>";
-            $a->plan = "<a href=\"{$planurl}\" title=\"{$this->plan->name}\">{$this->plan->name}</a>";
-            $userfrom_link = $CFG->wwwroot.'/user/view.php?id='.$USER->id;
-            $fromname = fullname($USER);
-            $a->manager = "<a href=\"{$userfrom_link}\" title=\"$fromname\">$fromname</a> ";
-            $event->fullmessage = format_text(get_string('objectivenewlonglearner', 'local_plan', $a));
+            $event->fullmessage = get_string('objectivenewlonglearner', 'local_plan', $a);
             tm_notification_send($event);
         }
+    }
+
+
+    /**
+     * send objective edit notification
+     * @param object $objective Objective record
+     * @param string $field field updated
+     * @return nothing
+     */
+    function send_edit_notification($objective, $field) {
+        global $USER, $CFG;
+        require_once($CFG->dirroot.'/local/totara_msg/messagelib.php');
+
+        $event = new stdClass;
+        $userfrom = get_record('user', 'id', $USER->id);
+        $event->userfrom = $userfrom;
+        $event->contexturl = "{$CFG->wwwroot}/local/plan/components/objective/view.php?id={$this->plan->id}&itemid={$objective->id}";
+        $event->icon = 'objective-update.png';
+        $a = new stdClass;
+        $a->objective = "<a href=\"{$event->contexturl}\" title=\"{$objective->shortname}\">{$objective->shortname}</a>";
+        $a->plan = "<a href=\"{$CFG->wwwroot}/local/plan/view.php?id={$this->plan->id}\" title=\"{$this->plan->name}\">{$this->plan->name}</a>";
+        $a->field = get_string('objective'.$field, 'local_plan');
+
+        // did they edit it themselves?
+        if ($USER->id == $this->plan->userid) {
+            // notify their manager
+            if ($manager = totara_get_manager($this->plan->userid)) {
+                $event->userto = $manager;
+                $event->subject = get_string('objectiveeditshortmanager', 'local_plan', $this->current_user());
+                $event->fullmessage = get_string('objectiveeditlongmanager', 'local_plan', $a);
+                $event->roleid = get_field('role','id', 'shortname', 'manager');
+                tm_notification_send($event);
+            }
+        }
+        // notify user that someone else did it
+        else {
+            $userto = get_record('user', 'id', $this->plan->userid);
+            $event->userto = $userto;
+            $event->subject = get_string('objectiveeditshortlearner', 'local_plan', $a->objective);
+            $event->fullmessage = get_string('objectiveeditlonglearner', 'local_plan', $a);
+            tm_notification_send($event);
+        }
+    }
+
+    /**
+     * send objective status notification
+     *
+     * handles both complete and incomplete
+     *
+     * @param object $objective Objective record
+     * @return nothing
+     */
+    function send_status_notification($objective) {
+        global $USER, $CFG;
+        require_once($CFG->dirroot.'/local/totara_msg/messagelib.php');
+
+        // determined achieved/non-achieved status
+        $achieved = get_field('dp_objective_scale_value', 'achieved', 'id', $objective->scalevalueid);
+        $status = ($achieved ? 'complete' : 'incomplete');
+
+        // build event message
+        $event = new stdClass;
+        $userfrom = get_record('user', 'id', $USER->id);
+        $event->userfrom = $userfrom;
+        $event->contexturl = "{$CFG->wwwroot}/local/plan/components/objective/view.php?id={$this->plan->id}&itemid={$objective->id}";
+        $event->icon = 'objective-'.($status == 'complete' ? 'complete' : 'fail').'.png';
+        $a = new stdClass;
+        $a->objective = "<a href=\"{$event->contexturl}\" title=\"{$objective->shortname}\">{$objective->shortname}</a>";
+        $a->plan = "<a href=\"{$CFG->wwwroot}/local/plan/view.php?id={$this->plan->id}\" title=\"{$this->plan->name}\">{$this->plan->name}</a>";
+
+        // did they complete it themselves?
+        if ($USER->id == $this->plan->userid) {
+            // notify their manager
+            if ($manager = totara_get_manager($this->plan->userid)) {
+                $event->userto = $manager;
+                $event->subject = get_string('objective'.$status.'shortmanager', 'local_plan', $this->current_user());
+                $event->fullmessage = get_string('objective'.$status.'longmanager', 'local_plan', $a);
+                $event->roleid = get_field('role','id', 'shortname', 'manager');
+                tm_notification_send($event);
+            }
+        }
+        // notify user that someone else did it
+        else {
+            $userto = get_record('user', 'id', $this->plan->userid);
+            $event->userto = $userto;
+            $event->subject = get_string('objective'.$status.'shortlearner', 'local_plan', $a->objective);
+            $event->fullmessage = get_string('objective'.$status.'longlearner', 'local_plan', $a);
+            tm_notification_send($event);
+        }
+    }
+
+    /**
+     * Update instances of $componentupdatetype linked to the specified compoent,
+     * delete links in db which aren't needed, and add links missing from db
+     * which are needed
+     *
+     * specialised from super class to allow the hooking of notifications
+     *
+     * @param integer $thiscompoentid Identifies the component on one end of the link
+     * @param string $componentupdatetype: the type of components on the other end of the links
+     * @param array $componentids array of component ids that should be on the other end of the links in db
+     *
+     * @return void
+     */
+    function update_linked_components($thiscomponentid, $componentupdatetype, $componentids) {
+
+        parent::update_linked_components($thiscomponentid, $componentupdatetype, $componentids);
+
+        if ($componentupdatetype == 'course') {
+            $objective = get_record('dp_plan_objective', 'id', $thiscomponentid);
+            $this->send_edit_notification($objective, 'course');
+        }
+
     }
 
     /**
