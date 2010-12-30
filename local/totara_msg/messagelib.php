@@ -288,24 +288,15 @@ function tm_notification_send($eventdata) {
 
     $eventdata->component         = 'local/totara_msg';
     $eventdata->name              = 'ntfy';
-    $msg = '';
-    if (isset($eventdata->userfrom) && $eventdata->userfrom) {
-        $userfrom_link = $CFG->wwwroot.'/user/view.php?id='.$eventdata->userfrom->id;
-        $fromname = fullname($eventdata->userfrom);
-        $msg = "<a href=\"{$userfrom_link}\" title=\"$fromname\">$fromname</a> ";
-    }
-    // default to onto from
-    else {
+    if (!isset($eventdata->userfrom) || !$eventdata->userfrom) {
         $eventdata->userfrom      = $eventdata->userto;
     }
 
     if (!isset($eventdata->subject)) {
         $eventdata->subject       = '';
     }
-    $msg                         .= $eventdata->fullmessage;
-    $eventdata->fullmessage       = $msg;
     $eventdata->fullmessageformat = FORMAT_PLAIN;
-    $eventdata->fullmessagehtml   = $msg;
+    $eventdata->fullmessagehtml   = $eventdata->fullmessage;
     $eventdata->notification      = 1;
 
     if (isset($eventdata->contexturl)) {
@@ -343,24 +334,15 @@ function tm_reminder_send($eventdata) {
 
     $eventdata->component         = 'local/totara_msg';
     $eventdata->name              = 'rmdr';
-    $msg = '';
-    if (isset($eventdata->userfrom) && $eventdata->userfrom) {
-        $userfrom_link = $CFG->wwwroot.'/user/view.php?id='.$eventdata->userfrom->id;
-        $fromname = fullname($eventdata->userfrom);
-        $msg = "<a href=\"{$userfrom_link}\" title=\"$fromname\">$fromname</a> ";
-    }
-    // default to onto from
-    else {
+    if (!isset($eventdata->userfrom) || !$eventdata->userfrom) {
         $eventdata->userfrom      = $eventdata->userto;
     }
 
     if (!isset($eventdata->subject)) {
         $eventdata->subject       = '';
     }
-    $msg                         .= $eventdata->fullmessage;
-    $eventdata->fullmessage       = $msg;
     $eventdata->fullmessageformat = FORMAT_PLAIN;
-    $eventdata->fullmessagehtml   = $msg;
+    $eventdata->fullmessagehtml   = $eventdata->fullmessage;
     $eventdata->notification      = 1;
 
     if (!isset($eventdata->contexturl)) {
