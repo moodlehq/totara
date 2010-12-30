@@ -528,7 +528,6 @@ class dp_objective_component extends dp_base_component {
         $currenturl = qualified_me();
         $stored_records = array();
         $currentuser = $this->plan->userid;
-        $currentcourse = $this->plan->id;
 
         $status = true;
         if(!empty($duedates) && $cansetduedates) {
@@ -584,7 +583,14 @@ class dp_objective_component extends dp_base_component {
                     $todb->id = $id;
                     $todb->scalevalueid = $proficiency;
                     $stored_records[$id] = $todb;
-                    totara_stats_add_event(time(), $currentuser, STATS_EVENT_OBJ_ACHIEVED, '', $currentcourse);
+                    $count = count_records('block_totara_stats', 'userid', $currentuser, 'eventtype', STATS_EVENT_OBJ_ACHIEVED, 'data2', $id);
+                    $scalevalue = get_record('dp_objective_scale_value', 'id', $proficiency);
+
+                    if (empty($scalevalue)) {
+                        return get_string('error:objectivenotfound','local_plan');                        
+                    } else if ($scalevalue->achieved == 1 && $count < 1) {                    
+                        totara_stats_add_event(time(), $currentuser, STATS_EVENT_OBJ_ACHIEVED, '', $id);
+                    }
                 }
             }
         }
