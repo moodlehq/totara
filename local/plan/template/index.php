@@ -1,4 +1,4 @@
-<?php // $Id$
+<?php
 
 /**
  * Page containing list of plan templates
@@ -308,7 +308,12 @@ if($templates){
         }
         $tablerow[] = $title;
 
-        $tablerow[] = count_records('dp_plan', 'templateid', $template->id);
+        $instancecount = count_records('dp_plan', 'templateid', $template->id);
+        if($instancecount) {
+            $tablerow[] = '<a href=templateinstances.php?id='.$template->id.'>' . $instancecount . '</a>';
+        } else {
+            $tablerow[] = $instancecount;
+        }
 
         $buttons = array();
 

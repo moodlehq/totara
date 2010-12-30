@@ -88,7 +88,7 @@ $string['objective_instructions_request'] = 'Clicking \"Update requested objecti
 // Manage Templates
 $string['instances'] = 'Instances';
 $string['addtemplate'] = 'Add new Template';
-
+$string['templateinstances'] = 'Template Instances';
 $string['general'] = 'General';
 $string['component'] = 'Component';
 $string['components'] = 'Components';
