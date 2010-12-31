@@ -299,7 +299,7 @@ function tm_notification_send($eventdata) {
     $eventdata->fullmessagehtml   = $eventdata->fullmessage;
     $eventdata->notification      = 1;
 
-    if (isset($eventdata->contexturl)) {
+    if (!isset($eventdata->contexturl)) {
         $eventdata->contexturl     = $CFG->wwwroot;
         $eventdata->contexturlname = '';
     }

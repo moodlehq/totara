@@ -48,10 +48,16 @@ print '<div id="totara-msgs-dismiss"><table>';
 //print "<td class=\"totara-msgs-action-right\"><div id='dismiss-status'><img class=\"iconsmall\" src=\"{$status}\" alt=\"{$status_alt}\" /></div></td></tr>";
 print '<tr><td class="totara-msgs-action-left"><label for="dismiss-status">' . get_string('urgency', 'block_totara_notify').'</label></td>';
 print "<td class=\"totara-msgs-action-right\"><div id='dismiss-status'><img class=\"iconsmall\" src=\"{$urgency}\" title=\"{$urgency_alt}\" alt=\"{$urgency_alt}\" /></div></td></tr>";
-print '<tr><td class="totara-msgs-action-left"><label for="dismiss-type">' . get_string('type', 'block_totara_notify').'</label></td>';
-print "<td class=\"totara-msgs-action-right\"><div id='dismiss-type'><img class=\"iconsmall\" src=\"{$type}\" alt=\"{$type_alt}\" /></div></td></tr>";
+if ( $metadata->msgtype != TOTARA_MSG_TYPE_UNKNOWN ){
+    print '<tr><td class="totara-msgs-action-left"><label for="dismiss-type">' . get_string('type', 'block_totara_notify').'</label></td>';
+    print "<td class=\"totara-msgs-action-right\"><div id='dismiss-type'><img class=\"iconsmall\" src=\"{$type}\" alt=\"{$type_alt}\" /></div></td></tr>";
+}
 print '<tr><td class="totara-msgs-action-left"><label for="dismiss-from">' . get_string('from', 'block_totara_notify').'</label></td>';
 print "<td class=\"totara-msgs-action-right\"><div id='dismiss-from'>{$fromname}</div></td></tr>";
 print '<tr><td class="totara-msgs-action-left"><label for="dismiss-statement">' . get_string('statement', 'block_totara_notify').'</label>';
 print "<td class=\"totara-msgs-action-right\"><div id='dismiss-statement'>{$msg->fullmessage}</div></td></tr>";
+if ( $msg->contexturl && $msg->contexturlname ){
+    print '<tr><td class="totara-msgs-action-left"><label for="dismiss-context">' . get_string('context', 'block_totara_notify').'</label>';
+    print "<td class=\"totara-msgs-action-right\"><div id=\"dismiss-statement\"><a href=\"{$msg->contexturl}\" >{$msg->contexturlname}</a></div></td></tr>";
+}
 print '</table></div>';
