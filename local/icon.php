@@ -16,6 +16,8 @@ if ($size != 'large') {
 
 if ($type == 'course') {
     local_output_course_icon($id, $icon, $size);
+} elseif ($type == 'msg') {
+    local_output_msg_icon($icon);
 } else {
     local_output_coursecategory_icon($icon, $size);
 }

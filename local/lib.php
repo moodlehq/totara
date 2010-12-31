@@ -223,6 +223,8 @@ function local_get_stock_icon_dir($type) {
         $dir = 'courseicons';
     } elseif ($type == 'coursecategory') {
         $dir = 'coursecategoryicons';
+    } elseif ($type == 'totaramsg') {
+        $dir = 'msgicons';
     } else {
         return(false);
     }
@@ -348,6 +350,16 @@ function local_output_course_icon($courseid, $courseicon, $size='large') {
     send_file($icon, $iconname);
 }
 
+function local_output_msg_icon( $iconfile ){
+    $icondir = local_get_stock_icon_dir('totaramsg');
+    if (is_file($icondir.'/'.$iconfile)){
+        $icon = $icondir .'/'.$iconfile;
+    } else {
+        $icon = $icondir .'/default.png';
+    }
+
+    send_file($icon, $icon);
+}
 
 /**
  * Send course cateogry icon data

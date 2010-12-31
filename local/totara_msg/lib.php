@@ -74,6 +74,11 @@ function totara_msg_urgency_text($urgency) {
     return array('text' => $text, 'icon' =>  $CFG->wwwroot . '/theme/' . $CFG->theme . '/pix/t/'.$level.'.gif');
 }
 
+function totara_msg_icon_url( $icon ){
+    global $CFG;
+    return $CFG->wwwroot . '/local/icon.php?type=msg&icon=' . urlencode($icon);
+}
+
 /**
  * Get the short name of the message type
  *
