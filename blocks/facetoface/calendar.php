@@ -71,7 +71,6 @@ foreach ($customfields as $field) {
 if (!empty($tablecells)) {
     $label = get_string('apply', 'block_facetoface');
     $tablecells[] = '<input type="submit" value="'.$label.'" />';
-
     $table = new object();
     $table->data[] = $tablecells;
     $table->tablealign = 'left';
@@ -122,7 +121,7 @@ elseif ('d' == $currenttab) {
     print_sessions($sessionsbydate, $currenttab);
 }
 else {
-    show_month_detailed($baseparams, $displayinfo, $month, $year, $courses, $groups, $users, $courseid, $activefilters, $waitlistedsessions, $events);
+    show_month_detailed($baseparams, $displayinfo, $month, $year, $courses, $groups, $users, $courseid, $activefilters, $waitlistedsessions, $sessionsbydate);
 }
 print '</div>';
 print_box_end();
@@ -776,8 +775,7 @@ function print_waitlisted_content($waitlistedsessions)
     print $html;
 }
 
-function print_tooltips($sessions)
-{
+function print_tooltips($sessions) {
     print '<script type="text/javascript">'."\n";
     print "//<![CDATA[\n";
     print 'YAHOO.namespace("calendar.container");'."\n";
