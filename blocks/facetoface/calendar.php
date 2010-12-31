@@ -121,7 +121,7 @@ elseif ('d' == $currenttab) {
     print_sessions($sessionsbydate, $currenttab);
 }
 else {
-    show_month_detailed($baseparams, $displayinfo, $month, $year, $courses, $groups, $users, $courseid, $activefilters, $waitlistedsessions, $sessionsbydate);
+    show_month_detailed($baseparams, $displayinfo, $month, $year, $courses, $groups, $users, $courseid, $activefilters, $waitlistedsessions, $events);
 }
 print '</div>';
 print_box_end();
@@ -185,7 +185,7 @@ function get_sessions($display, $groups, $users, $courses, $activefilters, &$eve
     global $timenow;
 
     // Get events from database
-    $events = calendar_get_events(usertime($display->tstart), usertime($display->tend), $users, $groups, $courses);
+    $events = calendar_get_events(usertime($display->tstart), usertime($display->tend), null, $groups, $courses);
     if (!empty($events)) {
         foreach($events as $eventid => $event) {
             if (empty($event->modulename)) {
