@@ -354,9 +354,6 @@ from
             case DP_PLAN_STATUS_UNAPPROVED:
                 return 'Unapproved';
                 break;
-            case DP_PLAN_STATUS_DECLINED:
-                return 'Declined';
-                break;
             case DP_PLAN_STATUS_APPROVED:
                 return 'Approved';
                 break;

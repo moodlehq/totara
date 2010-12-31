@@ -12,6 +12,7 @@
 
 require_once(dirname(dirname(dirname(dirname(__FILE__)))) . '/config.php');
 require_once($CFG->libdir.'/adminlib.php');
+require_once($CFG->dirroot.'/local/plan/lib.php');
 
 $id = required_param('id', PARAM_INT);
 
@@ -60,19 +61,14 @@ if($instances){
         $tablerow[] = date('j M Y', $instance->enddate);
 
         switch($instance->status){
-            case 10:
+            case DP_PLAN_STATUS_UNAPPROVED:
                 $status = get_string('unapproved', 'local_plan');
                 break;
-
-            case 30:
-                $status = get_string('declined', 'local_plan');
-                break;
-
-            case 50:
+            case DP_PLAN_STATUS_APPROVED:
                 $status = get_string('approved', 'local_plan');
                 break;
 
-            case 100:
+            case DP_PLAN_STATUS_COMPLETE:
                 $status = get_string('complete', 'local_plan');
                 break;
         }

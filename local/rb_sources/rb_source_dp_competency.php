@@ -14,7 +14,6 @@ class rb_source_dp_competency extends rb_base_source {
     public static $statusstrings = array(
         DP_APPROVAL_UNAPPROVED => 'Pending approval',
         DP_APPROVAL_APPROVED => 'Approved',
-        DP_APPROVAL_DECLINED => 'Declined'
     );
 
     /**
@@ -369,9 +368,6 @@ class rb_source_dp_competency extends rb_base_source {
         switch ($status){
             case DP_PLAN_STATUS_UNAPPROVED:
                 return 'Unapproved';
-                break;
-            case DP_PLAN_STATUS_DECLINED:
-                return 'Declined';
                 break;
             case DP_PLAN_STATUS_APPROVED:
                 return 'Approved';
