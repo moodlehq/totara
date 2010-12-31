@@ -93,13 +93,18 @@ class block_totara_notify extends block_base {
                 // statement - multipart: user + statment + object
                 $bkgd = ($cnt % 2) ? 'shade' : 'noshade';
                 $content  = "<tr class=\"".$bkgd."\">";
-                $dismiss = totara_msg_dismiss_action($msg->id);
                 $content .= '<td class="status">';
                 $content .= '<img class="msgicon" src="' . totara_msg_icon_url($msg->icon) . '" title="' . $msg->subject . '" alt="' . $msg->subject .'" />';
                 $content .= '</td>';
-                $msgtext = $msg->subject ? $msg->subject : $msg->fullmessage;
-                $content .= "<td class=\"statement\">{$msgtext}</td>";
-                $content .= "<td class=\"action\">{$dismiss}</td>";
+                $detailjs = totara_msg_alert_popup($msg->id);
+                $msgtext = '<a id="detailtask'.$msg->id.'-dialog" href="';
+                if ( $msg->contexturl ){
+                    $msgtext .= $msg->contexturl;
+                } else {
+                    $msgtext .= '#';
+                }
+                $msgtext .= '">'.($msg->subject ? $msg->subject : $msg->fullmessage).'</a>';
+                $content .= "<td class=\"statement\">{$msgtext}{$detailjs}</td>";
                 $content .= "</tr>";
                 $this->content->text .= $content;
             }

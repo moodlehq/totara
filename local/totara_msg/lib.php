@@ -190,6 +190,49 @@ function totara_msg_dismiss_action($id) {
 
 
 /**
+ * construct the dismiss action
+ *
+ * @param int $id message Id
+ * @return string HTML of dismiss button
+ */
+function totara_msg_alert_popup($id) {
+    global $CFG, $FULLME;
+
+    $str = get_string('dismiss', 'block_totara_notify');
+    return
+    '<script type="text/javascript"> '.
+        "var shortname = 'whydoIneedAshortName';" .
+    "// bind functionality to page on load
+    $(function() {
+        // dismiss dialog
+        (function() {
+            $('#detailtask".$id."-dialog');
+            var url = '{$CFG->wwwroot}/local/reportbuilder/';
+            var handler = new totaraDialog_handler_confirm();
+            var name = 'detailtask".$id."';
+            totaraDialogs[name] = new totaraDialog(
+                name,
+                name+'-dialog',
+                {
+                    buttons: {
+                        'Cancel': function() { handler._cancel() },
+                        'Dismiss': function() { handler._confirm('{$CFG->wwwroot}/local/totara_msg/dismiss.php?id={$id}', '{$FULLME}') }
+                    },
+                    title: '<h2>{$str}</h2>',
+                    width: 600,
+                    height: 400
+                },
+                url+'dismissmsg.php?id=".$id."',
+                handler
+            );
+        })();
+    });" .
+    '</script>';
+
+}
+
+
+/**
  * checkbox all/none script
  *
  * @param int $id message Id
