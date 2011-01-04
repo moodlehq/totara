@@ -531,14 +531,9 @@ function local_dashboard_install() {
                 'pos' => 0,
             ),
             array(
-                'name' => 'totara_reminders',
+                'name' => 'totara_recent_learning',
                 'col' => 3,
                 'pos' => 0,
-            ),
-            array(
-                'name' => 'totara_recent_learning',
-                'col' => 1,
-                'pos' => 1,
             ),
         );
         // create an instance of each and add to dashboard
