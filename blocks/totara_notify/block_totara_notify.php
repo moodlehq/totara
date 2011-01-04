@@ -63,8 +63,13 @@ class block_totara_notify extends block_base {
         $total = tm_messages_count('totara_notification', false, $roleid);
         $this->msgs = tm_messages_get('totara_notification', 'timecreated DESC ', false, true, $roleid);
         $count = is_array($this->msgs) ? count($this->msgs) : 0;
-        $this->title = get_string('notifications', 'block_totara_notify').
-            ' <span>'.get_string('showingxofx', 'block_totara_notify', array($count, $total)).'</span>';
+        $this->title = get_string('notifications', 'block_totara_notify');
+        if($count) {
+            $this->title .= ' <span>' .
+                get_string('showingxofx', 'block_totara_notify', array($count, $total)).'</span>';
+        } else {
+            $this->title .= ' <span>' . get_string('nonotifications', 'block_totara_notify') . '</span>';
+        }
 
       // firstly pull in the stylesheet needed for the dismiss dialog
         $this->content->text =

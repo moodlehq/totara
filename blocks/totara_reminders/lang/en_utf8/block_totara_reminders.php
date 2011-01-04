@@ -1,5 +1,5 @@
 <?php
-$string['blockname'] = 'Totara Reminders';
+$string['blockname'] = 'Totara Tasks';
 $string['dismiss'] = 'Dismiss message';
 $string['from'] = 'From';
 $string['reminders'] = 'Tasks';
@@ -7,6 +7,7 @@ $string['of'] = 'of';
 $string['onaccept'] = 'Accept';
 $string['onreject'] = 'Reject';
 $string['showingxofx'] = 'Showing {$a[0]} of {$a[1]}';
+$string['noreminders'] = 'You currently have no tasks';
 $string['statement'] = 'Statement';
 $string['status'] = 'Status';
 $string['statusok'] = 'Status OK';

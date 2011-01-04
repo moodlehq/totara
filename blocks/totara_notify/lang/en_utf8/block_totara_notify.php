@@ -1,11 +1,12 @@
 <?php
-$string['blockname'] = 'Totara Notifications';
+$string['blockname'] = 'Totara Alerts';
 $string['dismiss'] = 'Dismiss message';
 $string['from'] = 'From';
 $string['normal'] = 'Normal';
 $string['notifications'] = 'Alerts';
 $string['of'] = 'of';
 $string['showingxofx'] = 'Showing {$a[0]} of {$a[1]}';
+$string['nonotifications'] = 'You currently have no alerts';
 $string['statement'] = 'Statement';
 $string['status'] = 'Status';
 $string['statusok'] = 'Status OK';

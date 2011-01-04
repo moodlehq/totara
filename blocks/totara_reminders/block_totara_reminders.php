@@ -63,8 +63,13 @@ class block_totara_reminders extends block_base {
         $total = tm_messages_count('totara_reminder', false, $roleid);
         $this->msgs = tm_messages_get('totara_reminder', 'timecreated DESC ', false, true, $roleid);
         $count = is_array($this->msgs) ? count($this->msgs) : 0;
-        $this->title = get_string('reminders', 'block_totara_reminders').
-            ' <span>'.get_string('showingxofx', 'block_totara_reminders', array($count, $total)).'</span>';
+        $this->title = get_string('reminders', 'block_totara_reminders');
+        if($count) {
+            $this->title .= ' <span>' .
+                get_string('showingxofx', 'block_totara_reminders', array($count, $total)).'</span>';
+        } else {
+            $this->title .= ' <span>' . get_string('noreminders', 'block_totara_reminders') . '</span>';
+        }
 
       // firstly pull in the stylesheet needed for the dismiss dialog
         $this->content->text =
