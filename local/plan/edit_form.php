@@ -61,7 +61,7 @@ class plan_edit_form extends moodleform {
             return;
         }
 
-        $mform->addElement('date_selector', 'startdate', get_string('datestarted', 'local_plan'));
+        $mform->addElement('date_selector', 'startdate', get_string('datecreated', 'local_plan'));
         $mform->hardFreeze('startdate');
 
         $mform->addElement('text', 'name', get_string('planname', 'local_plan'));
@@ -71,7 +71,7 @@ class plan_edit_form extends moodleform {
         $mform->addElement('textarea', 'description', get_string('plandescription', 'local_plan'), array('rows'=>5, 'cols'=>50));
         $mform->setType('description', PARAM_TEXT);
         $mform->addRule('description', get_string('err_required', 'form'), 'required', '', 'client', false, false);
-        $mform->addElement('date_selector', 'enddate', get_string('duedate', 'local_plan'));
+        $mform->addElement('date_selector', 'enddate', get_string('completiondate', 'local_plan'));
         $mform->setDefault('enddate', $template->enddate);
         $mform->addRule('enddate', get_string('err_required', 'form'), 'required', '', 'client', false, false);
 
