@@ -142,6 +142,7 @@ $string['add'] = 'Add $a';
 $string['remove'] = 'Remove $a';
 $string['competency'] = 'Competency';
 $string['view'] = 'View';
+$string['addevidence'] = 'Add Evidence';
 $string['create'] = 'Create';
 $string['update'] = 'Update';
 $string['delete'] = 'Delete';

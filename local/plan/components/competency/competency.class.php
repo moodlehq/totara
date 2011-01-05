@@ -305,7 +305,11 @@ class dp_competency_component extends dp_base_component {
                         '/local/plan/components/competency/index.php?id=' .
                         $this->plan->id;
                     $strdelete = get_string('delete', 'local_plan');
-                    $row[] = '<a href="'.$currenturl.'&amp;d='.$ca->id.'" title="'.$strdelete.'"><img src="'.$CFG->pixpath.'/t/delete.gif" class="iconsmall" alt="'.$strdelete.'" /></a>';
+                    $straddevidence = get_string('addevidence', 'local_plan');
+                    $delete = '<a href="'.$currenturl.'&amp;d='.$ca->id.'" title="'.$strdelete.'"><img src="'.$CFG->pixpath.'/t/delete.gif" class="iconsmall" alt="'.$strdelete.'" /></a>';
+                    $proficient = '<a href="'.$CFG->wwwroot.'/hierarchy/type/competency/evidence/add.php?userid='.$this->plan->userid.'&planid='.$this->plan->id.'&competencyid='.$ca->competencyid.'&returnurl='.qualified_me().'">
+                        <img src="'.$CFG->pixpath.'/t/ranges.gif" class="iconsmall" alt="'.$straddevidence.'" /></a>';
+                    $row[] = $delete . $proficient;
                 }
 
                 $table->add_data($row);

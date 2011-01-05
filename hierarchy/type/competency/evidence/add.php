@@ -4,6 +4,7 @@ require_once('../../../../config.php');
 require_once($CFG->dirroot.'/hierarchy/type/position/lib.php');
 require_once($CFG->dirroot.'/hierarchy/type/competency/lib.php');
 require_once($CFG->dirroot.'/local/js/lib/setup.php');
+require_once($CFG->dirroot . '/local/plan/lib.php');
 require_once('competency_evidence_form.php');
 require_once('evidence.php');
 ///
@@ -11,14 +12,20 @@ require_once('evidence.php');
 ///
 
 $userid = required_param('userid', PARAM_INT);
+$planid = required_param('planid', PARAM_INT);
 $returnurl = optional_param('returnurl', $CFG->wwwroot, PARAM_TEXT);
 $proficiency = optional_param('proficiency', null, PARAM_INT);
-$s = optional_param('s', null, PARAM_TEXT);
 $competencyid = optional_param('competencyid', 0, PARAM_INT);
 $positionid = optional_param('positionid', 0, PARAM_INT);
 $organisationid = optional_param('organisationid', 0, PARAM_INT);
 
 $nojs = optional_param('nojs', 0, PARAM_INT);
+
+$plan = new development_plan($planid);
+
+$evidence_record = get_record('comp_evidence', 'userid', $userid, 'competencyid', $competencyid);
+
+$fullname = $plan->name;
 
 if($u = get_record('user','id',$userid)) {
     $toform = new object();
@@ -27,17 +34,18 @@ if($u = get_record('user','id',$userid)) {
     error('error:usernotfound','local');
 }
 
-// only redirect back if we are sure that's where they came from
-if($s != sesskey()) {
-    $returnurl = $CFG->wwwroot;
+// Check permissions
+$componentname = 'competency';
+$component = $plan->get_component($componentname);
+if(!($component->get_setting('setpriority') == DP_PERMISSION_ALLOW)) {
+    error('cannot update proficiency');
 }
 
-// Check perms
-$sitecontext = get_context_instance(CONTEXT_SYSTEM);
-require_capability('moodle/local:updatecompetency', $sitecontext);
-
-$mform = new totara_competency_evidence_form(null, compact('id','competencyid','positionid',
+$mform = new totara_competency_evidence_form(null, compact('id','planid','competencyid','positionid',
     'organisationid','userid','user','returnurl','s','nojs'));
+
+$mform->set_data($evidence_record);
+
 if ($mform->is_cancelled()) {
     redirect($returnurl);
 }
@@ -49,13 +57,10 @@ if($fromform = $mform->get_data()) { // Form submitted
     $todb = new competency_evidence(
         array(
             'competencyid'  => $fromform->competencyid,
-            'userid'        => $fromform->userid
+            'userid'        => $fromform->userid,
+            'planid'        => $fromform->planid
         )
     );
-
-    if ($todb->id) {
-        print_error('error:evidencealreadyexists', 'local', $returnurl);
-    }
 
     $todb->positionid = $fromform->positionid != 0 ? $fromform->positionid : null;
     $todb->organisationid = $fromform->organisationid != 0 ? $fromform->organisationid : null;
@@ -91,15 +96,29 @@ $type = 'competency';
 $hierarchy = new $type();
 $hierarchy->hierarchy_page_setup('item/add');
 
-$pagetitle = format_string(get_string('addcompetencyevidence','local'));
-$navlinks[] = array('name' => get_string('addcompetencyevidence','local'), 'link'=> '', 'type'=>'title');
+$fullname = get_string('addcompetencyevidence', 'local');
+$pagetitle = format_string($fullname);
+$navlinks = array();
+dp_get_plan_base_navlinks($navlinks, $plan->userid);
+$navlinks[] = array('name' => $fullname, 'link'=> $CFG->wwwroot . '/local/plan/view.php?id='.$plan->id, 'type'=>'title');
 $navigation = build_navigation($navlinks);
+
 
 print_header_simple($pagetitle, '', $navigation, '', null, true, null);
 
-print '<h2>'.get_string('addcompetencyevidence', 'local').'</h2>';
+// Plan menu
+echo dp_display_plans_menu($plan->userid,$plan->id,$plan->role);
+
+// Plan page content
+print_container_start(false, '', 'dp-plan-content');
+
+print $plan->display_plan_message_box();
+
+print_heading($fullname);
+print $plan->display_tabs($type);
 
 $mform->display();
 
+print_container_end();
 print_footer();
 

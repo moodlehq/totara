@@ -9,7 +9,6 @@ class totara_competency_evidence_form extends moodleform {
         global $CFG;
 
         $mform =& $this->_form;
-        $s = $this->_customdata['s'];
         $returnurl = $this->_customdata['returnurl'];
         $editing = isset($this->_customdata['competencyevidence']); // if competency evidence passed to form, we are editing
         $ce = $editing ? $this->_customdata['competencyevidence'] : null;
@@ -38,6 +37,7 @@ class totara_competency_evidence_form extends moodleform {
         } else {
             // for new record, userid must also be passed to form
             $userid = $this->_customdata['userid'];
+            $planid = $this->_customdata['planid'];
             $id = null;
             // repopulate if set but validation failed
             $position_title = ($positionid != 0) ?
@@ -50,8 +50,6 @@ class totara_competency_evidence_form extends moodleform {
 
         $mform->addElement('hidden', 'id', $id);
         $mform->setType('id', PARAM_INT);
-        $mform->addElement('hidden', 's', $s);
-        $mform->setType('s', PARAM_TEXT);
         $mform->addElement('hidden', 'returnurl', $returnurl);
         $mform->setType('returnurl', PARAM_TEXT);
 
@@ -72,6 +70,9 @@ class totara_competency_evidence_form extends moodleform {
         $mform->setType('userid', PARAM_INT);
         $mform->addRule('userid', null, 'required');
         $mform->addRule('userid', null, 'numeric');
+        $mform->addElement('hidden', 'planid', $planid);
+        $mform->setType('userid', PARAM_INT);
+
 
         if($editing) {
             $mform->addElement('hidden', 'competencyid', $ce->competencyid);
@@ -89,13 +90,7 @@ class totara_competency_evidence_form extends moodleform {
                 $mform->setDefault('competencyid', $competencyid);
             } else {
                 // competency selector
-                $mform->addElement('static', 'competencyselector', get_string('competency', 'competency'),
-                    '
-                    <span id="competencytitle">'.htmlentities($competency_title).'</span>
-                    <input type="button" value="'.get_string('selectcompetency', 'local').'" id="show-competency-dialog" />
-                    or
-                    <input type="button" value="'.get_string('createnewcompetency', 'competency').'" id="show-add-dialog" />
-                    ');
+                $mform->addElement('static', 'competencyselector', get_string('competency', 'competency'), '<span id="competencytitle">'.htmlentities($competency_title).'</span>');
                 $mform->addElement('hidden', 'competencyid');
                 $mform->setType('competencyid', PARAM_INT);
                 $mform->setDefault('competencyid', $competencyid);
@@ -203,7 +198,7 @@ class totara_competency_evidence_form extends moodleform {
         $this->add_action_buttons();
     }
 
-    function validation($data) {
+/*    function validation($data) {
         $errors = array();
         $editing = isset($this->_customdata['competencyevidence']);
         if(!$editing) {
@@ -212,6 +207,6 @@ class totara_competency_evidence_form extends moodleform {
             }
         }
         return $errors;
-    }
+}*/
 
 }

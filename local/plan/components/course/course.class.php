@@ -362,7 +362,11 @@ class dp_course_component extends dp_base_component {
                         '/local/plan/components/course/index.php?id=' .
                         $this->plan->id;
                     $strdelete = get_string('delete', 'local_plan');
-                    $row[] = '<a href="'.$currenturl.'&amp;d='.$ca->id.'" title="'.$strdelete.'"><img src="'.$CFG->pixpath.'/t/delete.gif" class="iconsmall" alt="'.$strdelete.'" /></a>';
+                    $strrpl = get_string('addrpl', 'local_plan');
+                    $delete = '<a href="'.$currenturl.'&amp;d='.$ca->id.'" title="'.$strdelete.'"><img src="'.$CFG->pixpath.'/t/delete.gif" class="iconsmall" alt="'.$strdelete.'" /></a>';
+                    $proficient = '<a href="'.$CFG->wwwroot.'/">
+                        <img src="'.$CFG->pixpath.'/t/ranges.gif" class="iconsmall" alt="'.$strrpl.'" /></a>';
+                    $row[] = $delete . $proficient;
                 }
                 else {
                     $row[] = '';

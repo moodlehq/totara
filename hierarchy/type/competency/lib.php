@@ -386,7 +386,7 @@ SQL;
      * @return void
      */
     function hierarchy_page_setup($page = '', $item=null) {
-        global $CFG;
+        global $CFG, $USER;
 
         if (!in_array($page, array('template/view', 'item/view', 'item/add'))) {
             return;
@@ -418,7 +418,7 @@ SQL;
             case 'item/add':
                 require_js(array(
                     $CFG->wwwroot.'/local/js/competency.add.js.php',
-                    $CFG->wwwroot.'/local/js/position.user.js.php',
+                    $CFG->wwwroot.'/local/js/position.user.js.php?userid='.$USER->id,
                 ));
                 break;
         }
