@@ -1,5 +1,8 @@
 <?php
 
+require_once ($CFG->dirroot . '/local/totara_msg/eventdata.class.php');
+require_once ($CFG->dirroot.'/local/totara_msg/messagelib.php');
+
 class development_plan {
     public static $permissions = array(
         'view' => false,
@@ -137,9 +140,36 @@ class development_plan {
         }
     }
 
-    function get_component($component) {
+
+    /**
+     * Return a single component
+     *
+     * @access  public
+     * @param   string  $component  Component name
+     * @return  object
+     */
+    public function get_component($component) {
         $componentname = "component_$component";
         return $this->$componentname;
+    }
+
+
+    /**
+     * Return array of component instances
+     *
+     * @access  public
+     * @return  array
+     */
+    public function get_components() {
+        global $DP_AVAILABLE_COMPONENTS;
+
+        $components = array();
+        foreach ($DP_AVAILABLE_COMPONENTS as $component) {
+            $componentname = "component_$component";
+            $components[$component] = $this->$componentname;
+        }
+
+        return $components;
     }
 
 
@@ -538,36 +568,80 @@ class development_plan {
         return false;
     }
 
+
     /**
-     * Returns true if this plan contains any pending items
+     * Returns all assigned items to components
+     *
+     * Optionally, filtered by status
+     *
+     * @access  public
+     * @param   mixed   $approved   (optional)
+     * @return  array
      */
-    function get_pending_items() {
+    public function get_assigned_items($approved = null) {
         $out = array();
 
-        if($this->get_component('course')->get_setting('enabled')) {
-            // any pending courses?
-            $courses = get_records_select('dp_plan_course_assign', 'planid=' .
-                $this->id . ' AND approved=0');
-            $out['course'] = $courses;
-        }
-        if($this->get_component('competency')->get_setting('enabled')) {
-            $competencies = get_records_select('dp_plan_competency_assign', 'planid=' .
-                $this->id . ' AND approved=0');
-            $out['competency'] = $competencies;
-        }
-        if($this->get_component('objective')->get_setting('enabled')) {
-            global $CFG;
-            $objectives = get_records_select('dp_plan_objective', 'planid=' . $this->id . ' and approved=0');
-            $out['objective'] = $objectives;
-        }
+        // Get any pending items for each component
+        foreach ($this->get_components() as $name => $component) {
+            // Ignore if disabled
+            if (!$component->get_setting('enabled')) {
+                continue;
+            }
 
-        // @todo add evidence when tables exist
+            $items = $component->get_assigned_items($approved);
+
+            // Ignore if no items
+            if (empty($items)) {
+                continue;
+            }
+
+            $out[$name] = $items;
+        }
 
         return $out;
     }
 
 
-    function has_pending_items($pendinglist=null, $onlyapprovable=false) {
+    /**
+     * Returns all unapproved items assigned to components
+     *
+     * @access  public
+     * @return  array
+     */
+    public function get_unapproved_items() {
+        return $this->get_assigned_items(
+            array(
+                DP_APPROVAL_DECLINED,
+                DP_APPROVAL_UNAPPROVED
+            )
+        );
+    }
+
+
+    /**
+     * Returns all pending items assigned to components
+     *
+     * @access  public
+     * @return  array
+     */
+    public function get_pending_items() {
+        return $this->get_assigned_items(
+            array(
+                DP_APPROVAL_REQUESTED
+            )
+        );
+    }
+
+
+    /**
+     * Check if the plan has any pending items
+     *
+     * @access  public
+     * @param   mixed
+     * @param   boolean
+     * @return  boolean
+     */
+    public function has_pending_items($pendinglist=null, $onlyapprovable=false) {
 
         $canapprovecourses = ($this->get_component('course')->get_setting('updatecourse')
             == DP_PERMISSION_APPROVE);
@@ -577,7 +651,7 @@ class development_plan {
             == DP_PERMISSION_APPROVE);
 
         // get the pending items, if it hasn't been passed to the method
-        if(!isset($pendinglist)) {
+        if (!isset($pendinglist)) {
             $pendinglist = $this->get_pending_items();
         }
 
@@ -626,45 +700,61 @@ class development_plan {
         return false;
     }
 
-    function display_plan_message_box() {
+
+    /**
+     * Display plan message box
+     *
+     * Generally includes messages about the plan's status as a whole
+     *
+     * @access  public
+     * @return  string
+     */
+    public function display_plan_message_box() {
         $unapproved = ($this->status == DP_PLAN_STATUS_UNAPPROVED);
         $completed = ($this->status == DP_PLAN_STATUS_COMPLETE);
         $viewingasmanager = $this->role == 'manager';
         $pending = $this->get_pending_items();
         $haspendingitems = $this->has_pending_items($pending);
         $canapprovepending = $this->has_pending_items($pending, true);
+        $unapproveditems = $this->get_unapproved_items();
+        $hasunapproveditems = !empty($unapproveditems);
 
         // @todo check permission name
         $canapproveplan = (in_array($this->get_setting('confirm'), array(DP_PERMISSION_APPROVE, DP_PERMISSION_ALLOW)));
 
         $message = '';
-        if($viewingasmanager) {
+        if ($viewingasmanager) {
             $message .= $this->display_viewing_users_plan($this->userid);
         }
 
-        if($completed) {
+        if ($completed) {
             $message .= $this->display_completed_plan_message();
             $style = 'plan_box_completed';
         } else {
-            if($canapprovepending || $canapproveplan) {
+            if ($canapprovepending || $canapproveplan) {
                 $style = 'plan_box_action';
             } else {
                 $style = 'plan_box_plain';
             }
-            if($unapproved) {
-                if($haspendingitems) {
-                    if($canapprovepending) {
+
+            if (!$viewingasmanager && $hasunapproveditems) {
+                $message .= $this->display_unapproved_items($unapproveditems);
+            }
+
+            if ($unapproved) {
+                if ($haspendingitems) {
+                    if ($canapprovepending) {
                         $message .= $this->display_pending_items($pending);
                     } else if ($canapproveplan) {
                         $message .= $this->display_unapproved_plan_message();
                     } else {
                         $message .= $this->display_pending_items($pending);
                     }
-                } else {
-                    $message .= $this->display_unapproved_plan_message();
                 }
+
+                $message .= $this->display_unapproved_plan_message();
             } else {
-                if($haspendingitems) {
+                if ($haspendingitems) {
                     $message .= $this->display_pending_items($pending);
                 } else {
                     // nothing to report (no message)
@@ -672,11 +762,13 @@ class development_plan {
             }
         }
 
-        if($message == '') {
+        if ($message == '') {
             return '';
         }
-        return '<div class="plan_box '. $style . '">' . $message . '</div>';
+        return '<div class="plan_box '.$style.'">'.$message.'</div>';
     }
+
+
 
     function display_completed_plan_message() {
         return '<p>' . get_string('plancompleted', 'local_plan') . '</p>';
@@ -694,9 +786,7 @@ class development_plan {
         $out .= "<input type=\"hidden\" name=\"id\" value=\"{$this->id}\"/>";
         $out .= "<input type=\"hidden\" name=\"sesskey\" value=\"".sesskey()."\"/>";
         $out .= '<table width="100%" border="0"><tr>';
-        $out .= '<td>' . get_string('plannotapproved', 'local_plan') .
-            // @todo add reminder request if available
-            '</td>';
+        $out .= '<td>'.get_string('plannotapproved', 'local_plan').'</td>';
 
         if($canapproveplan) {
             $out .= '<td><input type="submit" name="approve" value="' . get_string('approve', 'local_plan') . '" /> &nbsp; ';
@@ -732,7 +822,7 @@ class development_plan {
         // @todo check permission names are correct
         $list = '';
         $listcount = 0;
-        if($coursesenabled && $pendinglist['course']) {
+        if($coursesenabled && !empty($pendinglist['course'])) {
             $a = new object();
             $a->planid = $this->id;
             $a->number = count($pendinglist['course']);
@@ -743,7 +833,7 @@ class development_plan {
             $listcount++;
         }
 
-        if($competenciesenabled && $pendinglist['competency']) {
+        if($competenciesenabled && !empty($pendinglist['competency'])) {
             $a = new object();
             $a->planid = $this->id;
             $a->number = count($pendinglist['competency']);
@@ -754,7 +844,7 @@ class development_plan {
             $listcount++;
         }
 
-        if($objectivesenabled && $pendinglist['objective']) {
+        if($objectivesenabled && !empty($pendinglist['objective'])) {
             $a = new object();
             $a->planid = $this->id;
             $a->number = count($pendinglist['objective']);
@@ -777,6 +867,45 @@ class development_plan {
 
         return $out;
 
+    }
+
+
+    /**
+     * Display status of unapproved items
+     *
+     * @access  public
+     * @param   array   $unapproved
+     * @return  string
+     */
+    public function display_unapproved_items($unapproved) {
+        global $CFG;
+
+        $out = '';
+        $out .= '<p>'.get_string('planhasunapproveditems', 'local_plan').'</p>';
+        $out .= '<ul>';
+
+        // Show list of items
+        foreach ($unapproved as $component => $items) {
+
+            $a = new object();
+            $a->uri = "{$CFG->wwwroot}/local/plan/components/{$component}/index.php?id={$this->id}";
+            $a->number = count($items);
+            $a->name = $this->get_component($component)->get_setting('name');
+            $out .= '<li>'.get_string('xitemsunapproved', 'local_plan', $a).'</li>';
+        }
+
+        $out .= '</ul>';
+
+        // Show request button if plan is active
+        if ($this->status == DP_PLAN_STATUS_APPROVED) {
+            $out .= "<form action=\"{$CFG->wwwroot}/local/plan/action.php\" method=\"POST\">";
+            $out .= "<input type=\"hidden\" name=\"id\" value=\"{$this->id}\"/>";
+            $out .= "<input type=\"hidden\" name=\"sesskey\" value=\"".sesskey()."\"/>";
+            $out .= '<input type="submit" name="approvalrequest" value="'.get_string('sendapprovalrequest', 'local_plan').'" />';
+            $out .= '</form>';
+        }
+
+        return $out;
     }
 
     static public function display_viewing_users_plan($userid) {
@@ -915,9 +1044,6 @@ class development_plan {
         $manager = totara_get_manager($this->userid);
         $learner = get_record('user','id',$this->userid);
         if ($manager && $learner) {
-            require_once( $CFG->dirroot . '/local/totara_msg/eventdata.class.php' );
-            require_once($CFG->dirroot.'/local/totara_msg/messagelib.php');
-
             // do the IDP Plan workflow event
             $data = array();
             $data['userid'] = $this->userid;
@@ -939,6 +1065,69 @@ class development_plan {
             tm_reminder_send($event);
         }
     }
+
+
+    /**
+     * Send a task to the manager when a learner requests item's approval
+     *
+     * @access  public
+     * @global  object  $USER
+     * @global  object  $CFG
+     * @param   array   $unapproved
+     * @return  void
+     */
+    public function send_manager_item_approval_request($unapproved) {
+        global $USER, $CFG;
+
+        $manager = totara_get_manager($this->userid);
+        $learner = get_record('user','id',$this->userid);
+
+        if (!$manager || !$learner) {
+            print_error('error:couldnotloadusers', 'local_plan');
+            die();
+        }
+
+        // Message data
+        $message_data = array();
+        $total_items = 0;
+
+        // Change items to requested status
+        // Loop through components, generating message
+        foreach ($unapproved as $component => $items) {
+            $c = $this->get_component($component);
+            $items = $c->make_items_requested($items);
+
+            // Generate message
+            if ($items) {
+                $total_items += count($items);
+                $message_data[] = count($items).' '.$this->get_component($component)->get_setting('name');
+            }
+        }
+
+        // do the IDP Plan workflow event
+        $data = array();
+        $data['userid'] = $this->userid;
+        $data['planid'] = $this->id;
+
+        $event = new tm_task_eventdata($manager, 'plan', $data, $data);
+        $event->userfrom = $learner;
+        $event->contexturl = $this->get_display_url();
+        $event->contexturlname = $this->name;
+        $event->roleid = get_field('role','id', 'shortname', 'manager');
+        $event->icon = 'learningplan-request.png';
+
+        if ($total_items > 1) {
+            $a = new stdClass;
+            $a->learner = fullname($learner);
+            $a->plan = s($this->name);
+            $a->data = '<li>'.implode($message_data, '</li><li>').'</li>';
+            $event->subject = get_string('item-request-manager-short', 'local_plan', $a);
+            $event->fullmessage = get_string('item-request-manager-long', 'local_plan', $a);
+        }
+
+        tm_reminder_send($event);
+    }
+
 
     /**
      * Send an alert relating to this plan

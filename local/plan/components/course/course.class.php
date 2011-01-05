@@ -117,11 +117,23 @@ class dp_course_component extends dp_base_component {
     /**
      * Get list of items assigned to plan
      *
+     * Optionally, filtered by status
+     *
      * @access  public
+     * @param   mixed   $approved   (optional)
      * @return  array
      */
-    public function get_assigned_items() {
+    public function get_assigned_items($approved = null) {
         global $CFG;
+
+        // Generate where clause
+        $where = "a.planid = {$this->plan->id}";
+        if ($approved !== null) {
+            if (is_array($approved)) {
+                $approved = implode(', ', $approved);
+            }
+            $where .= " AND a.approved IN ({$approved})";
+        }
 
         $assigned = get_records_sql(
             "
@@ -138,7 +150,7 @@ class dp_course_component extends dp_base_component {
                 {$CFG->prefix}course c
              ON c.id = a.courseid
             WHERE
-                a.planid = {$this->plan->id}
+                $where
             "
         );
 
@@ -730,6 +742,7 @@ class dp_course_component extends dp_base_component {
             $settings[$this->component.'_priorityscale'] = $coursesettings->priorityscale;
         }
     }
+
 
     /**
      * Unassign an item from a plan

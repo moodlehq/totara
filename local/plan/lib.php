@@ -33,6 +33,7 @@ define('DP_MAX_PRIORITY_OPTIONS', 5);
 // Approval
 define('DP_APPROVAL_DECLINED',          10);
 define('DP_APPROVAL_UNAPPROVED',        20);
+define('DP_APPROVAL_REQUESTED',         30);
 define('DP_APPROVAL_APPROVED',          50);
 define('DP_APPROVAL_REQUEST_REMOVAL',   60);
 

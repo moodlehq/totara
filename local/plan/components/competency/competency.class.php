@@ -95,11 +95,23 @@ class dp_competency_component extends dp_base_component {
     /**
      * Get list of items assigned to plan
      *
+     * Optionally, filtered by status
+     *
      * @access  public
+     * @param   mixed   $approved   (optional)
      * @return  array
      */
-    public function get_assigned_items() {
+    public function get_assigned_items($approved = null) {
         global $CFG;
+
+        // Generate where clause
+        $where = "a.planid = {$this->plan->id}";
+        if ($approved !== null) {
+            if (is_array($approved)) {
+                $approved = implode(', ', $approved);
+            }
+            $where .= " AND a.approved IN ({$approved})";
+        }
 
         $assigned = get_records_sql(
             "
@@ -115,8 +127,8 @@ class dp_competency_component extends dp_base_component {
             INNER JOIN
                 {$CFG->prefix}comp c
              ON c.id = a.competencyid
-            WHERE
-                a.planid = {$this->plan->id}
+             WHERE
+                $where
             "
         );
 
@@ -126,6 +138,7 @@ class dp_competency_component extends dp_base_component {
 
         return $assigned;
     }
+
 
     /**
      * Get count items items assigned to plan
@@ -155,6 +168,7 @@ class dp_competency_component extends dp_base_component {
 
         return $count;
     }
+
 
     function display_competency_list() {
         global $CFG;

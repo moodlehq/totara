@@ -76,22 +76,35 @@ class dp_objective_component extends dp_base_component {
     /**
      * Get list of items assigned to plan
      *
+     * Optionally, filtered by status
+     *
      * @access  public
+     * @param   mixed   $approved   (optional)
      * @return  array
      */
-    public function get_assigned_items() {
+    public function get_assigned_items($approved = null) {
         global $CFG;
+
+        // Generate where clause
+        $where = "a.planid = {$this->plan->id}";
+        if ($approved !== null) {
+            if (is_array($approved)) {
+                $approved = implode(', ', $approved);
+            }
+            $where .= " AND a.approved IN ({$approved})";
+        }
 
         $assigned = get_records_sql(
             "
             SELECT
-                obj.id,
-                obj.planid,
-                obj.fullname
+                a.id,
+                a.planid,
+                a.fullname,
+                a.id AS itemid
             FROM
-                {$CFG->prefix}dp_plan_objective obj
+                {$CFG->prefix}dp_plan_objective a
             WHERE
-                obj.planid = {$this->plan->id}
+                $where
             "
         );
 
@@ -1079,5 +1092,38 @@ SQL;
         } else {
             return false;
         }
+    }
+
+
+    /**
+     * Make unassigned items requested
+     *
+     * @access  public
+     * @param   array   $items  Unassigned items to update
+     * @return  array
+     */
+    public function make_items_requested($items) {
+
+        $table = "dp_plan_{$this->component}";
+
+        $updated = array();
+        foreach ($items as $item) {
+            // Attempt to load item
+            $record = get_record($table, 'id', $item->itemid);
+            if (!$record) {
+                continue;
+            }
+
+            // Attempt to update record
+            $record->approved = DP_APPROVAL_REQUESTED;
+            if (!update_record($table, $record)) {
+                continue;
+            }
+
+            // Save in updated list
+            $updated[] = $item;
+        }
+
+        return $updated;
     }
 }

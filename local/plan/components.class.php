@@ -172,8 +172,12 @@ abstract class dp_base_component {
             $out .= '<span class="plan_highlight">' . get_string('declined', 'local_plan') . '</span>';
             break;
         case DP_APPROVAL_UNAPPROVED:
+            $out .= '<img src="'.$CFG->pixpath.'/i/risk_xss.gif" /> ';
+            $out .= get_string('unapproved', 'local_plan');
+            break;
+        case DP_APPROVAL_REQUESTED:
             // @todo create new icon instead of reusing XSS one
-            $out .= '<img src="'.$CFG->pixpath.'/i/risk_xss.gif" />';
+            $out .= '<img src="'.$CFG->pixpath.'/i/risk_xss.gif" /> ';
             $out .= '<span class="plan_highlight">' . get_string('pendingapproval', 'local_plan') . '</span><br />';
             if($canapprove) {
                 $out .= $this->display_approval_options($obj, $approvalstatus);
@@ -181,19 +185,10 @@ abstract class dp_base_component {
             break;
         case DP_APPROVAL_REQUEST_REMOVAL:
             // @todo create new icon instead of reusing XSS one
-            $out .= '<img src="'.$CFG->pixpath.'/i/risk_xss.gif" />';
+            $out .= '<img src="'.$CFG->pixpath.'/i/risk_xss.gif" /> ';
             $out .= '<span class="plan_highlight">' . get_string('pendingremoval', 'local_plan') . '</span><br />';
             if($canapprove) {
                 $out .= 'show delete button';
-            } else {
-                // @todo write reminder code
-                /*
-                $murl->param('assignmentid', $obj->id);
-                $murl->param('type', $this->component);
-                $murl->param('action', 'removalremind');
-                $out .= '<a href="'.$murl->out_action().'">'.
-                    '<img src="'.$CFG->themewww.'/'.$CFG->theme.'/pix/i/marker.gif" title="'.get_string('sendapprovalreminder', 'local_plan').'" alt="'.get_string('sendapprovalreminder', 'local_plan').'" /></a> ';
-                 */
             }
             break;
         case DP_APPROVAL_APPROVED:
@@ -224,13 +219,18 @@ abstract class dp_base_component {
     }
 
     /**
-    * Get items assigned to this component (if relevant - to be overridden by children classes)
-    *
-    * @return array and array of data objects
-    */
-    function get_assigned_items() {
+     * Get items assigned to this component (if relevant - to be overridden by children classes)
+     *
+     * Optionally, filtered by status
+     *
+     * @access  public
+     * @param   mixed   $approved   (optional)
+     * @return  array
+     */
+    function get_assigned_items($approved = null) {
         return array();
     }
+
 
     function process_action($action) {
         // General component actions can come in here
@@ -498,5 +498,38 @@ abstract class dp_base_component {
         $scale = get_record('dp_priority_scale', 'id', $comp->get_setting('priorityscale'));
 
         return $scale ? $scale->defaultid : null;
+    }
+
+
+    /**
+     * Make unassigned items requested
+     *
+     * @access  public
+     * @param   array   $items  Unassigned items to update
+     * @return  array
+     */
+    public function make_items_requested($items) {
+
+        $table = "dp_plan_{$this->component}_assign";
+
+        $updated = array();
+        foreach ($items as $item) {
+            // Attempt to load item
+            $record = get_record($table, 'id', $item->itemid);
+            if (!$record) {
+                continue;
+            }
+
+            // Attempt to update record
+            $record->approved = DP_APPROVAL_REQUESTED;
+            if (!update_record($table, $record)) {
+                continue;
+            }
+
+            // Save in updated list
+            $updated[] = $item;
+        }
+
+        return $updated;
     }
 }

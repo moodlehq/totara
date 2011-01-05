@@ -41,7 +41,12 @@ if (!confirm_sesskey()) {
 }
 
 
+
+///
+/// Load plan
+///
 $plan = new development_plan($id);
+
 
 ///
 /// Permissions check
@@ -52,6 +57,9 @@ if (!dp_can_view_users_plans($plan->userid)) {
 
 
 // @todo: handle action failure notifications
+///
+/// Approve
+///
 if (!empty($approve)) {
     if (in_array($plan->get_setting('confirm'), array(DP_PERMISSION_ALLOW, DP_PERMISSION_APPROVE))) {
        $plan->set_status(DP_PLAN_STATUS_APPROVED);
@@ -62,10 +70,14 @@ if (!empty($approve)) {
             totara_set_notification(get_string('nopermission', 'local_plan'), $referer, array('style' => 'notifysuccess'));
         }
     }
+}
 
-} elseif (!empty($decline)) {
+
+///
+/// Decline
+///
+if (!empty($decline)) {
     if (in_array($plan->get_setting('confirm'), array(DP_PERMISSION_ALLOW, DP_PERMISSION_APPROVE))) {
-        $plan->set_status(DP_PLAN_STATUS_DECLINED);
         $plan->send_declined_notification();
         totara_set_notification(get_string('plandeclined', 'local_plan', $plan->name), $referer, array('style' => 'notifysuccess'));
     } else {
@@ -73,21 +85,57 @@ if (!empty($approve)) {
             totara_set_notification(get_string('nopermission', 'local_plan'), $referer);
         }
     }
-} elseif (!empty($approvalrequest)) {
-    if ($plan->get_setting('confirm') == DP_PERMISSION_REQUEST) {
-        // If a learner is updating their plan and now needs approval, notify manager
-        if ( $USER->id == $plan->userid ){
-            $plan->send_manager_plan_approval_request();
-        }
-        totara_set_notification(get_string('approvalrequestsent', 'local_plan', $plan->name), $referer, array('style' => 'notifysuccess'));
-        // @todo: send approval request email to relevant user(s)
-    } else {
-        if (empty($ajax)) {
-            totara_set_notification(get_string('nopermission', 'local_plan'), $referer);
+}
+
+
+///
+/// Approval request
+///
+if (!empty($approvalrequest)) {
+
+    // If plan is a draft, must be asking for plan approval
+    if ($plan->status == DP_PLAN_STATUS_UNAPPROVED) {
+        if ($plan->get_setting('confirm') == DP_PERMISSION_REQUEST) {
+            // If a learner is updating their plan and now needs approval, notify manager
+            if ($USER->id == $plan->userid) {
+                $plan->send_manager_plan_approval_request();
+            }
+            totara_set_notification(get_string('approvalrequestsent', 'local_plan', $plan->name), $referer, array('style' => 'notifysuccess'));
+            // @todo: send approval request email to relevant user(s)
+        } else {
+            if (empty($ajax)) {
+                totara_set_notification(get_string('nopermission', 'local_plan'), $referer);
+            }
         }
     }
+    // If plan is active, must be asking for item approval
+    else if ($plan->status == DP_PLAN_STATUS_APPROVED) {
 
-} elseif (!empty($delete)) {
+        // Check this is the owner of the plan
+        if ($plan->role !== 'learner') {
+            if (empty($ajax)) {
+                totara_set_notification(get_string('nopermission', 'local_plan'), $referer);
+            }
+        }
+
+        // Get unapproved items
+        $unapproved = $plan->get_unapproved_items();
+        if ($unapproved) {
+            $plan->send_manager_item_approval_request($unapproved);
+
+            if (empty($ajax)) {
+                totara_set_notification(get_string('approvalrequestsent', 'local_plan', $plan->name), $referer, array('style' => 'notifysuccess'));
+            }
+
+        }
+    }
+}
+
+
+///
+/// Delete
+///
+if (!empty($delete)) {
     if ($plan->get_setting('delete') == DP_PERMISSION_ALLOW) {
         $confirm = optional_param('confirm', 0, PARAM_BOOL);
 
@@ -124,7 +172,13 @@ if (!empty($approve)) {
             totara_set_notification(get_string('nopermission', 'local_plan'), $referer);
         }
     }
-} elseif (!empty($signoff)) {
+}
+
+
+///
+/// Signoff
+///
+if (!empty($signoff)) {
     if ($plan->get_setting('signoff') == DP_PERMISSION_ALLOW) {
         $confirm = optional_param('confirm', 0, PARAM_BOOL);
 
@@ -154,4 +208,8 @@ if (!empty($approve)) {
             totara_set_notification(get_string('nopermission', 'local_plan'), $referer);
         }
     }
+}
+
+if (empty($ajax)) {
+    totara_set_notification(get_string('error:incorrectparameters', 'local_plan'), $referer);
 }
