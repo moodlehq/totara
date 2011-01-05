@@ -431,7 +431,10 @@ class reportbuilderlib_test extends prefix_changing_test_case {
         // the array should contain the correct number of columns
         $this->assertEqual(count($columns), 11);
         // the strings should have the correct format
-        $this->assertEqual(current($columns), "''||auser.firstname||' '||auser.lastname AS user_namelink");
+        // can't check exactly because different dbs use different concat format
+        $this->assertPattern('/auser\.firstname/', current($columns));
+        $this->assertPattern('/auser\.lastname/', current($columns));
+        $this->assertPattern('/AS user_namelink/', current($columns));
     }
 
     function test_reportbuilder_get_joins() {
