@@ -30,7 +30,6 @@
 
     require_once('../../../config.php');
     require_once($CFG->dirroot.'/local/reportbuilder/lib.php');
-    require_once($CFG->dirroot.'/local/reportheading/lib.php');
     require_once($CFG->dirroot.'/local/plan/lib.php');
 
     require_login();
@@ -44,11 +43,6 @@
         $planstatus = 'all';
     }
     $ustatus = ucfirst($planstatus);
-
-    $coursename = get_config(null, 'dp_course');
-    $coursename = $coursename ? $coursename : get_string('course_defaultname', 'local_plan');
-    $competencyname = get_config(null, 'dp_competency');
-    $competencyname = $competencyname ? $competencyname : get_string('competency_defaultname', 'local_plan');
 
     // default to current user
     if(empty($userid)) {
@@ -99,29 +93,10 @@
 
     echo '<h1>'.$strheading.'</h1>';
 
-    // tab bar
-    $tabs = array();
-    $row = array();
-
     $userstr = (isset($userid)) ? 'userid='.$userid.'&amp;' : '';
 
-    // overview tab
-    $row[] = new tabobject(
-            'courses',
-            $CFG->wwwroot . '/local/plan/record/courses.php?' . $userstr .
-                'status=' . $planstatus,
-                "{$ustatus} " . $coursename
-    );
-    $row[] = new tabobject(
-            'competencies',
-            $CFG->wwwroot . '/local/plan/record/competencies.php?' . $userstr .
-                'status=' . $planstatus,
-                "{$ustatus} " . $competencyname
-    );
-    $tabs[] = $row;
-
-    echo print_tabs($tabs, 'competencies', null, null, true);
-
+    $currenttab = 'competencies';
+    require_once($CFG->dirroot . '/local/plan/record/tabs.php');
 
     // display table here
     $fullname = $report->fullname;
