@@ -3481,3 +3481,14 @@ function reportbuilder_create_embedded_record($shortname, $embed, &$error) {
     commit_sql();
     return $newid;
 }
+
+/**
+ * Implementation of PHP function lcfirst for PHP 5.2 support
+ *
+ * @param string $string A string to modify
+ *
+ * @return string The string with the first character in lower case
+ */
+function lowerfirst($string) {
+    return strtolower(substr($string, 0, 1)) . substr($string, 1);
+}

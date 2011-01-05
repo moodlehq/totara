@@ -133,7 +133,7 @@ class rb_current_pos_content extends rb_base_content {
         $recursive = reportbuilder::get_setting($reportid, $type, 'recursive');
 
         $mform->addElement('header', 'current_pos_header',
-            get_string('showbyx','local_reportbuilder', lcfirst($title)));
+            get_string('showbyx','local_reportbuilder', lowerfirst($title)));
         $mform->addElement('checkbox', 'current_pos_enable', '',
             get_string('currentposenable','local_reportbuilder'));
         $mform->setDefault('current_pos_enable', $enable);
@@ -281,7 +281,7 @@ class rb_current_org_content extends rb_base_content {
         $recursive = reportbuilder::get_setting($reportid, $type, 'recursive');
 
         $mform->addElement('header', 'current_org_header',
-            get_string('showbyx','local_reportbuilder', lcfirst($title)));
+            get_string('showbyx','local_reportbuilder', lowerfirst($title)));
         $mform->addElement('checkbox', 'current_org_enable', '',
             get_string('currentorgenable','local_reportbuilder'));
         $mform->setDefault('current_org_enable', $enable);
@@ -423,7 +423,7 @@ class rb_completed_org_content extends rb_base_content {
         $recursive = reportbuilder::get_setting($reportid, $type, 'recursive');
 
         $mform->addElement('header', 'completed_org_header',
-            get_string('showbyx', 'local_reportbuilder', lcfirst($title)));
+            get_string('showbyx', 'local_reportbuilder', lowerfirst($title)));
         $mform->addElement('checkbox', 'completed_org_enable', '',
             get_string('completedorgenable', 'local_reportbuilder'));
         $mform->setDefault('completed_org_enable', $enable);
@@ -571,9 +571,9 @@ class rb_user_content extends rb_base_content {
         $who = reportbuilder::get_setting($reportid, $type, 'who');
 
         $mform->addElement('header', 'user_header', get_string('showbyx',
-            'local_reportbuilder', lcfirst($title)));
+            'local_reportbuilder', lowerfirst($title)));
         $mform->addElement('checkbox', 'user_enable', '',
-            get_string('showbasedonx', 'local_reportbuilder', lcfirst($title)));
+            get_string('showbasedonx', 'local_reportbuilder', lowerfirst($title)));
         $mform->disabledIf('user_enable', 'contentenabled', 'eq', 0);
         $mform->setDefault('user_enable', $enable);
         $radiogroup = array();
@@ -757,10 +757,10 @@ class rb_date_content extends rb_base_content {
         $incnulls = reportbuilder::get_setting($reportid, $type, 'incnulls');
 
         $mform->addElement('header', 'date_header', get_string('showbyx',
-            'local_reportbuilder', lcfirst($title)));
+            'local_reportbuilder', lowerfirst($title)));
         $mform->addElement('checkbox', 'date_enable', '',
             get_string('showbasedonx', 'local_reportbuilder',
-            lcfirst($title)));
+            lowerfirst($title)));
         $mform->setDefault('date_enable', $enable);
         $mform->disabledIf('date_enable', 'contentenabled', 'eq', 0);
         $radiogroup = array();
