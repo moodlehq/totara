@@ -50,8 +50,6 @@ function totara_stats_add_event($time, $userid, $eventtype, $data=null, $data2=n
  * @return boolean (result of insert_record)
  */
 function totara_stats_remove_event($userid, $eventtype, $data2) {
-    global $DB;
-
     return delete_records('block_totara_stats', 'userid', $userid, 'eventtype', $eventtype, 'data2', $data2); 
 }    
 /**
