@@ -156,12 +156,12 @@ abstract class dp_base_component {
      *
      * @param $obj stdClass the assignment object
      * @param $canapprove boolean if approve/decline actions are allowed
-     * @param $showblankforapproved boolean if it should return an empty string if the status is "approved"
      * @return $out string an html string
      */
-    function display_approval($obj, $canapprove, $showblankforapproved=true) {
+    function display_approval($obj, $canapprove) {
         global $CFG;
-        // @todo lang strings
+
+        // Get data
         $id = $obj->id;
         $approvalstatus = $obj->approved;
         $murl = new moodle_url(qualified_me());
@@ -174,30 +174,28 @@ abstract class dp_base_component {
         case DP_APPROVAL_UNAPPROVED:
             $out .= '<img src="'.$CFG->pixpath.'/i/risk_xss.gif" /> ';
             $out .= get_string('unapproved', 'local_plan');
+            if ($canapprove) {
+                $out .= ' '.$this->display_approval_options($obj, $approvalstatus);
+            }
             break;
         case DP_APPROVAL_REQUESTED:
             // @todo create new icon instead of reusing XSS one
             $out .= '<img src="'.$CFG->pixpath.'/i/risk_xss.gif" /> ';
             $out .= '<span class="plan_highlight">' . get_string('pendingapproval', 'local_plan') . '</span><br />';
-            if($canapprove) {
-                $out .= $this->display_approval_options($obj, $approvalstatus);
+            if ($canapprove) {
+                $out .= ' '.$this->display_approval_options($obj, $approvalstatus);
             }
             break;
         case DP_APPROVAL_REQUEST_REMOVAL:
             // @todo create new icon instead of reusing XSS one
             $out .= '<img src="'.$CFG->pixpath.'/i/risk_xss.gif" /> ';
             $out .= '<span class="plan_highlight">' . get_string('pendingremoval', 'local_plan') . '</span><br />';
-            if($canapprove) {
+            if ($canapprove) {
                 $out .= 'show delete button';
             }
             break;
         case DP_APPROVAL_APPROVED:
-            if ( !$showblankforapproved ){
-                $out .= get_string('approved', 'local_plan');
-            }
-        default:
-            // display nothing
-            break;
+            $out .= get_string('approved', 'local_plan');
         }
 
         return $out;
