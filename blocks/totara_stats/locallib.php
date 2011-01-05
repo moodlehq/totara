@@ -42,6 +42,19 @@ function totara_stats_add_event($time, $userid, $eventtype, $data=null, $data2=n
 }
 
 /**
+ * removes an event from the totara stats table
+ *
+ * @param int $userid - userid this is related to
+ * @param int $eventtype - see defines above for posssible values 
+ * @param int $data2 - stores int related data for this event - eg time, id of record.
+ * @return boolean (result of insert_record)
+ */
+function totara_stats_remove_event($userid, $eventtype, $data2) {
+    global $DB;
+
+    return delete_records('block_totara_stats', 'userid', $userid, 'eventtype', $eventtype, 'data2', $data2); 
+}    
+/**
  * used by block cron to obtain daily usage stats.
  *
  * @param int $from - timestamp for start of stats generation

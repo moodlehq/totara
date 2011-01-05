@@ -585,11 +585,14 @@ class dp_objective_component extends dp_base_component {
                     $stored_records[$id] = $todb;
                     $count = count_records('block_totara_stats', 'userid', $currentuser, 'eventtype', STATS_EVENT_OBJ_ACHIEVED, 'data2', $id);
                     $scalevalue = get_record('dp_objective_scale_value', 'id', $proficiency);
-
                     if (empty($scalevalue)) {
-                        return get_string('error:objectivenotfound','local_plan');                        
+                        return get_string('error:priorityscaleidincorrect','local_plan');
+                        // checks objective can only be achieved once.
                     } else if ($scalevalue->achieved == 1 && $count < 1) {                    
                         totara_stats_add_event(time(), $currentuser, STATS_EVENT_OBJ_ACHIEVED, '', $id);
+                        // checks objective exists for removal 
+                    } else if ($scalevalue->achieved == 0 && $count > 0) { 
+                        totara_stats_remove_event($currentuser, STATS_EVENT_OBJ_ACHIEVED, $id);
                     }
                 }
             }
