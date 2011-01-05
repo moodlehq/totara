@@ -11,10 +11,6 @@ class rb_source_dp_competency extends rb_base_source {
     public $contentoptions, $paramoptions, $defaultcolumns;
     public $defaultfilters, $requiredcolumns;
 
-    public static $statusstrings = array(
-        DP_APPROVAL_UNAPPROVED => 'Pending approval',
-        DP_APPROVAL_APPROVED => 'Approved',
-    );
 
     /**
      * Constructor
@@ -233,7 +229,7 @@ class rb_source_dp_competency extends rb_base_source {
                 'Competency status',
                 'base.approved',
                 array(
-                    'displayfunc' => 'plan_competency_status'
+                    'displayfunc' => 'plan_item_status'
                 )
         );
 
@@ -322,60 +318,6 @@ class rb_source_dp_competency extends rb_base_source {
                 'string'
         );
         return $paramoptions;
-    }
-
-    /**
-     * Column displayfunc to convert the plan competency status to a human-readable
-     * string
-     *
-     * @param int $status
-     * @return string
-     */
-    public function rb_display_plan_competency_status($status){
-
-        if ( array_key_exists( $status, self::$statusstrings )){
-            return self::$statusstrings[$status];
-        } else {
-            return '';
-        }
-    }
-
-    /**
-     * Generate the plan title with a link to the plan
-     * @global object $CFG
-     * @param string $planname
-     * @param object $row
-     * @return string
-     */
-    public function rb_display_planlink($planname, $row){
-        global $CFG;
-
-        return "<a href=\"{$CFG->wwwroot}/local/plan/view.php?id={$row->plan_id}\">$planname</a>";
-    }
-
-    /**
-     * Display the plan's status (for use as a column displayfunc)
-     *
-     * @global object $CFG
-     * @param int $status
-     * @param object $row
-     * @return string
-     */
-    public function rb_display_plan_status($status, $row){
-        global $CFG;
-        require_once($CFG->dirroot.'/local/plan/lib.php');
-
-        switch ($status){
-            case DP_PLAN_STATUS_UNAPPROVED:
-                return 'Unapproved';
-                break;
-            case DP_PLAN_STATUS_APPROVED:
-                return 'Approved';
-                break;
-            case DP_PLAN_STATUS_COMPLETE:
-                return 'Complete';
-                break;
-        }
     }
 
 }

@@ -404,6 +404,77 @@ abstract class rb_base_source {
         return "<a href=\"{$CFG->wwwroot}/course/category.php?id={$catid}\"><img class=\"course_icon\" src=\"{$CFG->wwwroot}/local/icon.php?icon=$caticon&amp;id=$catid&amp;size=small&amp;type=coursecategory\" alt=\"$category\">{$category}</a>";
     }
 
+
+    /**
+     * Generate the plan title with a link to the plan
+     * @global object $CFG
+     * @param string $planname
+     * @param object $row
+     * @return string
+     */
+    public function rb_display_planlink($planname, $row){
+        global $CFG;
+
+        return "<a href=\"{$CFG->wwwroot}/local/plan/view.php?id={$row->plan_id}\">$planname</a>";
+    }
+
+
+    /**
+     * Display the plan's status (for use as a column displayfunc)
+     *
+     * @global object $CFG
+     * @param int $status
+     * @param object $row
+     * @return string
+     */
+    public function rb_display_plan_status($status, $row){
+        global $CFG;
+        require_once($CFG->dirroot.'/local/plan/lib.php');
+
+        switch ($status){
+            case DP_PLAN_STATUS_UNAPPROVED:
+                return 'Unapproved';
+                break;
+            case DP_PLAN_STATUS_APPROVED:
+                return 'Approved';
+                break;
+            case DP_PLAN_STATUS_COMPLETE:
+                return 'Complete';
+                break;
+        }
+    }
+
+
+    /**
+     * Column displayfunc to convert a plan item's status to a
+     * human-readable string
+     *
+     * @param int $status
+     * @return string
+     */
+    public function rb_display_plan_item_status($status){
+        global $CFG;
+        require_once($CFG->dirroot . '/local/plan/lib.php');
+
+        switch($status) {
+        case DP_APPROVAL_DECLINED:
+            return 'Declined';
+            break;
+        case DP_APPROVAL_UNAPPROVED:
+            return 'Unapproved';
+            break;
+        case DP_APPROVAL_APPROVED:
+            return 'Approved';
+            break;
+        case DP_APPROVAL_REQUEST_REMOVAL:
+            return 'Removal requested';
+            break;
+        default:
+            return '';
+        }
+    }
+
+
     function rb_display_yes_no($item, $row) {
         if ($item === null) {
             return '';
