@@ -40,6 +40,7 @@ $string['error:usernotfound'] = 'User not found';
 $string['error:cannotviewpage'] = 'You cannot view this page';
 $string['recordoflearningcourses'] = 'Record of Learning: Courses';
 $string['recordoflearningcompetencies'] = 'Record of Learning: Competencies';
+$string['recordoflearningobjectives'] = 'Record of Learning: Objectives';
 $string['teammembers'] = 'Team members';
 $string['allteammembers'] = 'All team members';
 $string['currentlyviewing'] = 'Currently viewing';
