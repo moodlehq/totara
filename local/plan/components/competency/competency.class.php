@@ -5,7 +5,7 @@ class dp_competency_component extends dp_base_component {
         //'commenton' => false,
         'setpriority' => false,
         'setduedate' => false,
-        'setproficiency' => true
+        'setproficiency' => false
     );
 
     function __construct($plan) {
@@ -309,7 +309,11 @@ class dp_competency_component extends dp_base_component {
                     $delete = '<a href="'.$currenturl.'&amp;d='.$ca->id.'" title="'.$strdelete.'"><img src="'.$CFG->pixpath.'/t/delete.gif" class="iconsmall" alt="'.$strdelete.'" /></a>';
                     $proficient = '<a href="'.$CFG->wwwroot.'/hierarchy/type/competency/evidence/add.php?userid='.$this->plan->userid.'&planid='.$this->plan->id.'&competencyid='.$ca->competencyid.'&returnurl='.qualified_me().'">
                         <img src="'.$CFG->pixpath.'/t/ranges.gif" class="iconsmall" alt="'.$straddevidence.'" /></a>';
-                    $row[] = $delete . $proficient;
+                    if($this->get_setting('updatecompetency') == DP_PERMISSION_ALLOW) {
+                        $row[] = $delete . $proficient;
+                    } else {
+                        $row[] = $delete;
+                    }
                 }
 
                 $table->add_data($row);
