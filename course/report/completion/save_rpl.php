@@ -11,12 +11,12 @@
     $course_id  = required_param('course', PARAM_INT);
     $user_id    = required_param('user', PARAM_INT);
     $rpl        = optional_param('rpl', '', PARAM_RAW);
+    $planid     = optional_param('id', 0, PARAM_INT);
 
     // Non-js stuff
     $redirect   = optional_param('redirect', false, PARAM_BOOL);
     $sort       = optional_param('sort', '', PARAM_RAW);
     $start      = optional_param('start', '', PARAM_RAW);
-
 
     ///
     /// Load data
@@ -81,4 +81,8 @@
     if ($redirect) {
         header('Location: '.$CFG->wwwroot.'/course/report/completion/index.php?course='.$course_id.'&sort='.$sort.'&start='.$start);
         exit();
+    }
+
+    if ($planid) {
+        totara_set_notification('Updated RPL of Course', $CFG->wwwroot.'/local/plan/components/course/index.php?id='.$planid, array('style'=>'notifysuccess'));
     }
