@@ -323,11 +323,11 @@ class dp_course_component extends dp_base_component {
         $priorityvalues = get_records('dp_priority_scale_value',
             'priorityscaleid', $priorityscaleid, 'sortorder', 'id,name,sortorder');
 
-        if($records = get_recordset_sql($select.$from.$where.$sort,
+        if ($records = get_recordset_sql($select.$from.$where.$sort,
             $table->get_page_start(),
             $table->get_page_size())) {
 
-            while($ca = rs_fetch_next_record($records)) {
+            while ($ca = rs_fetch_next_record($records)) {
                 $completionstatus = $this->get_completion_status($ca, $completions);
                 $completed = (substr($completionstatus, 0, 8) == 'complete');
                 $approved = dp_is_approved($ca->approved);
@@ -337,22 +337,22 @@ class dp_course_component extends dp_base_component {
 
                 $row[] = $approved ? $this->display_status_as_progress_bar($ca, $completionstatus) : '';
 
-                if($showpriorities) {
+                if ($showpriorities) {
                     $row[] = $this->display_priority($ca, $priorityvalues);
                 }
 
-                if($showduedates) {
+                if ($showduedates) {
                     $row[] = $this->display_duedate($ca->id, $ca->duedate);
                 }
 
-                if(!$plancompleted) {
+                if (!$plancompleted) {
                     $status = '';
-                    if($approved) {
-                        if(!$completed) {
+                    if ($approved) {
+                        if (!$completed) {
                             $status = $this->display_duedate_highlight_info($ca->duedate);
                         }
                     } else {
-                            $status = $this->display_approval($ca, $canapprovecourses);
+                        $status = $this->display_approval($ca, $canapprovecourses);
                     }
                     $row[] = $status;
                 }
