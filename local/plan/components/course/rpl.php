@@ -13,7 +13,7 @@ $userid = $plan->userid;
 $componentname = 'course';
 $component = $plan->get_component($componentname);
 
-if($this->get_setting('setproficiency') != DP_PERMISSION_ALLOW) {
+if($component->get_setting('setcompletionstatus') != DP_PERMISSION_ALLOW) {
     error(get_string('error:coursecompletionpermission', 'local_plan'));
 }
 
