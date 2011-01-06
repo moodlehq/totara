@@ -130,18 +130,9 @@ class user_position_assignment_form extends moodleform {
              $allmanagers = get_records_sql_menu("
                     SELECT
                         u.id,
-                        ".sql_fullname('u.firstname', 'u.lastname')." AS fullname,
-                        ra.id AS ra
+                        ".sql_fullname('u.firstname', 'u.lastname')." AS fullname
                     FROM
                         {$CFG->prefix}user u
-                    INNER JOIN
-                        {$CFG->prefix}role_assignments ra
-                     ON u.id = ra.userid
-                    INNER JOIN
-                        {$CFG->prefix}role r
-                     ON ra.roleid = r.id
-                    WHERE
-                        r.shortname = 'manager'
                     ORDER BY
                         u.firstname,
                         u.lastname");
