@@ -589,6 +589,7 @@ class dp_objective_component extends dp_base_component {
             foreach( $proficiencies as $id => $proficiency){
                 $proficiency = (int) $proficiency;
                 if ( array_key_exists($id, $stored_records) ){
+                    // add to the existing update object
                     $stored_records[$id]->scalevalueid = $proficiency;
                 } else {
                     // Create a new update object

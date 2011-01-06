@@ -4,7 +4,7 @@ require_once('../../../../config.php');
 require_once($CFG->dirroot.'/hierarchy/type/position/lib.php');
 require_once($CFG->dirroot.'/hierarchy/type/competency/lib.php');
 require_once($CFG->dirroot.'/local/js/lib/setup.php');
-require_once($CFG->dirroot . '/local/plan/lib.php');
+require_once($CFG->dirroot.'/local/plan/lib.php');
 require_once('competency_evidence_form.php');
 require_once('evidence.php');
 ///
@@ -77,6 +77,22 @@ if($fromform = $mform->get_data()) { // Form submitted
     }
 
     $todb->update_proficiency($proficiency);
+    // update stats block
+    $currentuser = $fromform->userid;
+    $event = STATS_EVENT_COMP_ACHIEVED;
+    $data2 = $fromform->competencyid;
+    $time = $todb->reaggregate;
+    $count = count_records('block_totara_stats', 'userid', $currentuser, 'eventtype', $event, 'data2', $data2);
+    $isproficient = get_record('comp_scale', 'proficient', $proficiency);
+
+    // check the proficiency is set to "proficient" and check for duplicate data
+    if ($isproficient && $count == 0) {
+        totara_stats_add_event($time, $currentuser, $event, '', $data2);
+    }
+    // check record exists for removal and is set to "not proficient"
+    else if (empty($isproficient) && $count > 0) {
+        totara_stats_remove_event($currentuser, $event, $data2);
+    }
 
     if ($todb->id) {
         redirect($returnurl);
