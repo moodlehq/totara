@@ -1595,9 +1595,9 @@ function facetoface_get_user_customfields($userid, $fieldstoinclude=false)
 
     $ret = new object();
 
-    $sql = "SELECT if.shortname, id.data
-              FROM {$CFG->prefix}user_info_field if
-              JOIN {$CFG->prefix}user_info_data id ON id.fieldid = if.id
+    $sql = "SELECT uif.shortname, id.data
+              FROM {$CFG->prefix}user_info_field uif
+              JOIN {$CFG->prefix}user_info_data id ON id.fieldid = uif.id
              WHERE id.userid = $userid";
     if ($customfields = get_records_sql($sql)) {
         foreach ($customfields as $field) {

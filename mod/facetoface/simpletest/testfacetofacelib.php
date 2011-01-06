@@ -330,7 +330,7 @@ class facetofacelib_test extends prefix_changing_test_case {
     var $grade_categories_data = array(
         array('id', 'courseid', 'parent', 'depth', 'path',
             'fullname', 'aggregation', 'keephigh', 'droplow',
-            'aggregateonlygrade', 'aggregateoutcomes', 'aggregatesubcats',
+            'aggregateonlygraded', 'aggregateoutcomes', 'aggregatesubcats',
             'timecreated', 'timemodified'),
         array(1, 1, 1, 1, 'path1',
             'fullname1', 0, 0, 0,
