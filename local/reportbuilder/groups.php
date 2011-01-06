@@ -46,7 +46,7 @@
         }
     } else if($d) {
         $reports = get_records_select('report_builder',
-            "source ILIKE '%grp_$id'");
+            "source " . sql_ilike() . " '%grp_$id'");
         if($reports) {
             // can't delete group when reports are using it
             totara_set_notification(get_string('error:grouphasreports','local_reportbuilder'), $returnurl);
@@ -131,7 +131,7 @@
                 sql_position("'grp_'", "source"). " + 4) as groupid,
                 count(id) as numreports
                 FROM {$CFG->prefix}report_builder
-                WHERE source ILIKE '%_grp_%'
+                WHERE source " . sql_ilike() . " '%_grp_%'
                 GROUP BY groupid
             ) reports ON " . sql_cast_char2int('reports.groupid') . " = g.id";
         $groups = get_records_sql($sql);
