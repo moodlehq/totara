@@ -792,7 +792,6 @@ class development_plan {
         $canrequestapproval = ($this->get_setting('confirm') == DP_PERMISSION_REQUEST);
         $out = '';
 
-        // @todo fill in action and process
         $out .= "<form action=\"{$CFG->wwwroot}/local/plan/action.php\" method=\"POST\">";
         $out .= "<input type=\"hidden\" name=\"id\" value=\"{$this->id}\"/>";
         $out .= "<input type=\"hidden\" name=\"sesskey\" value=\"".sesskey()."\"/>";

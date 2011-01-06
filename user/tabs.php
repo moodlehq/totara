@@ -327,6 +327,26 @@
         }
     }
 
+    // Messages tab
+    if (!empty($user)) {
+
+        // Check permissions
+        $personalcontext = get_context_instance(CONTEXT_USER, $user->id);
+        $coursecontext = get_context_instance(CONTEXT_COURSE, $course->id);
+
+        if ((!empty($USER->id) && ($user->id == $USER->id)) ||
+            has_capability('moodle/user:viewdetails', $coursecontext) ||
+            has_capability('moodle/user:viewdetails', $personalcontext)) {
+
+            $toprow[] = new tabobject('messages', $CFG->wwwroot.'/local/totara_msg/edit.php?id='.$user->id.'&amp;course='.$course->id, get_string('messages', 'local_totara_msg'));
+
+            // Are we currently in the messages tab?
+            if (substr($currenttab, 0, 8) == 'messages') {
+                $currenttab = 'messages';
+            }
+        }
+    }
+
 
 /// Add second row to display if there is one
 

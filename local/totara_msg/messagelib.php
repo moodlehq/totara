@@ -289,11 +289,11 @@ function tm_notification_send($eventdata) {
 
     $eventdata->component         = 'local/totara_msg';
     $eventdata->name              = 'ntfy';
-    if (!isset($eventdata->userfrom) || !$eventdata->userfrom) {
+    if (empty($eventdata->userfrom)) {
         $eventdata->userfrom      = $eventdata->userto;
     }
 
-    if (!isset($eventdata->subject)) {
+    if (empty($eventdata->subject)) {
         $eventdata->subject       = '';
     }
     $eventdata->fullmessageformat = FORMAT_PLAIN;
@@ -304,7 +304,20 @@ function tm_notification_send($eventdata) {
         $eventdata->contexturl     = $CFG->wwwroot;
         $eventdata->contexturlname = '';
     }
-    return tm_message_send($eventdata);
+
+    $result = tm_message_send($eventdata);
+
+    if ($result && get_user_preferences('totara_msg_send_ntfy_emails', 1, $eventdata->userto->id)) {
+        // Send notification email
+        if (empty($eventdata->subject)) {
+            $eventdata->subject = strlen($eventdata->fullmessage) > 40 ? substr($eventdata->fullmessage, 0, 40).'...' : $eventdata->fullmessage;
+        }
+        $result = email_to_user($eventdata->userto, $eventdata->userfrom,
+            format_string($eventdata->subject), format_string($eventdata->fullmessage),
+            format_string($eventdata->fullmessagehtml).'<br><br>'.get_string('viewdetailshere', 'local_totara_msg', $eventdata->contexturl));
+    }
+
+    return $result;
 }
 
 
@@ -350,7 +363,20 @@ function tm_reminder_send($eventdata) {
         $eventdata->contexturl     = $CFG->wwwroot;
         $eventdata->contexturlname = '';
     }
-    return tm_message_send($eventdata);
+
+    $result = tm_message_send($eventdata);
+
+    if ($result && get_user_preferences('totara_msg_send_rmdr_emails', 1, $eventdata->userto->id)) {
+        // Send reminder email
+        if (empty($eventdata->subject)) {
+            $eventdata->subject = strlen($eventdata->fullmessage) > 40 ? substr($eventdata->fullmessage, 0, 40).'...' : $eventdata->fullmessage;
+        }
+        $result = email_to_user($eventdata->userto, $eventdata->userfrom,
+            format_string($eventdata->subject), format_string($eventdata->fullmessage),
+            format_string($eventdata->fullmessagehtml).'<br><br>'.get_string('viewdetailshere', 'local_totara_msg', $eventdata->contexturl));
+    }
+
+    return $result;
 }
 
 

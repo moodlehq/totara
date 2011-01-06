@@ -22,6 +22,7 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+$string['messages'] = 'Messages';
 $string['accept'] = 'Accept';
 $string['dismiss'] = 'Dismiss';
 $string['notifications'] = 'Alerts';
@@ -34,3 +35,8 @@ $string['reject'] = 'Reject';
 $string['reminder_description'] = 'This is the Tasks report description - needs to be changed';
 $string['unknown'] = 'Unknown';
 $string['withselected'] = 'With selected: ';
+$string['sendnotificationemails'] = 'Send notification emails';
+$string['sendreminderemails'] = 'Send reminder emails';
+$string['settingssaved'] = 'Settings saved';
+$string['messagesettings'] = 'Message settings';
+$string['viewdetailshere'] = 'View details <a href=$a>here</a>';
