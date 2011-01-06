@@ -372,7 +372,7 @@ class report_builder_edit_columns_form extends moodleform {
             $mform->setDefault('defaultsortorder', $report->defaultsortorder);
         } else {
 
-                $mform->addElement('html',"No columns found. Ask your developer to add column options to the '{$report->source}' source");
+                $mform->addElement('html', get_string('error:nocolumns', 'local_reportbuilder', $report->source));
             }
 
         $mform->addElement('hidden','id',$id);
@@ -403,39 +403,46 @@ class report_builder_edit_content_form extends moodleform {
         $report = $this->_customdata['report'];
         $id = $this->_customdata['id'];
 
-        $mform->addElement('header', 'contentheader', get_string('contentcontrols', 'local_reportbuilder'));
-
-        if($report->embeddedurl !== null) {
-            $mform->addElement('html','<p>'.get_string('embeddedcontentnotes','local_reportbuilder').'</p>');
-        }
-
-        $radiogroup = array();
-        $radiogroup[] =& $mform->createElement('radio', 'contentenabled', '', get_string('nocontentrestriction','local_reportbuilder'), 0);
-        $radiogroup[] =& $mform->createElement('radio', 'contentenabled', '', get_string('withcontentrestrictionany','local_reportbuilder'), 1);
-        $radiogroup[] =& $mform->createElement('radio', 'contentenabled', '', get_string('withcontentrestrictionall','local_reportbuilder'), 2);
-        $mform->addGroup($radiogroup, 'radiogroup', get_string('restrictcontent','local_reportbuilder'), '<br />', false);
-        $mform->setHelpButton('radiogroup', array('reportbuildercontentmode',get_string('restrictcontent','local_reportbuilder'),'local_reportbuilder'));
-        $mform->setDefault('contentenabled', get_field('report_builder', 'contentmode', 'id', $id));
-
         // get array of content options
         $contentoptions = isset($report->contentoptions) ?
             $report->contentoptions : array();
 
-        // display any content restriction form sections that are enabled for
-        // this source
-        foreach($contentoptions as $option) {
-            $classname = 'rb_' . $option->classname.'_content';
-            if(class_exists($classname)) {
-                $obj = new $classname();
-                $obj->form_template($mform, $id, $option->title);
-            }
-        }
+        $mform->addElement('header', 'contentheader', get_string('contentcontrols', 'local_reportbuilder'));
 
-        $mform->addElement('hidden','id',$id);
-        $mform->setType('id', PARAM_INT);
-        $mform->addElement('hidden','source',$report->source);
-        $mform->setType('source', PARAM_TEXT);
-        $this->add_action_buttons();
+        if(count($contentoptions)) {
+            if($report->embeddedurl !== null) {
+                $mform->addElement('html','<p>'.get_string('embeddedcontentnotes','local_reportbuilder').'</p>');
+            }
+
+            $radiogroup = array();
+            $radiogroup[] =& $mform->createElement('radio', 'contentenabled', '', get_string('nocontentrestriction','local_reportbuilder'), 0);
+            $radiogroup[] =& $mform->createElement('radio', 'contentenabled', '', get_string('withcontentrestrictionany','local_reportbuilder'), 1);
+            $radiogroup[] =& $mform->createElement('radio', 'contentenabled', '', get_string('withcontentrestrictionall','local_reportbuilder'), 2);
+            $mform->addGroup($radiogroup, 'radiogroup', get_string('restrictcontent','local_reportbuilder'), '<br />', false);
+            $mform->setHelpButton('radiogroup', array('reportbuildercontentmode',get_string('restrictcontent','local_reportbuilder'),'local_reportbuilder'));
+            $mform->setDefault('contentenabled', get_field('report_builder', 'contentmode', 'id', $id));
+
+            // display any content restriction form sections that are enabled for
+            // this source
+            foreach($contentoptions as $option) {
+                $classname = 'rb_' . $option->classname.'_content';
+                if(class_exists($classname)) {
+                    $obj = new $classname();
+                    $obj->form_template($mform, $id, $option->title);
+                }
+            }
+
+            $mform->addElement('hidden','id',$id);
+            $mform->setType('id', PARAM_INT);
+            $mform->addElement('hidden','source',$report->source);
+            $mform->setType('source', PARAM_TEXT);
+            $this->add_action_buttons();
+        } else {
+            // there are no content restrictions for this source. Inform the user
+            $mform->addElement('html',
+                get_string('error:nocontentrestrictions',
+                'local_reportbuilder', $report->source));
+        }
     }
 }
 
