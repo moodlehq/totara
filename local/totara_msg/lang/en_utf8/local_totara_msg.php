@@ -26,6 +26,7 @@ $string['accept'] = 'Accept';
 $string['dismiss'] = 'Dismiss';
 $string['notifications'] = 'Alerts';
 $string['reminders'] = 'Tasks';
+$string['nextaction'] = 'Next Action';
 $string['noscript'] = 'please enable JavaScript in your browser';
 $string['notification_description'] = 'This is the Alerts report description - needs to be changed';
 $string['notyours'] = 'This is not your message: $a ';

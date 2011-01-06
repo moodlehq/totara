@@ -8,6 +8,7 @@ $string['plan:manageobjectivescales'] = 'Manage objective scales';
 $string['plan:managepriorityscales'] = 'Manage priority scales';
 
 // Plan
+$string['approveplantext'] = 'Please review and approve the attached plan';
 $string['plan'] = 'Plan';
 $string['learningplan'] = 'Learning Plan';
 $string['learningplans'] = 'Learning Plans';

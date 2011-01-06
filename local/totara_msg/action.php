@@ -75,6 +75,11 @@ foreach ($msgids as $msgid) {
             continue;
         }
 
+        // cannot run accept on message type LINK in bulk action
+        if ($accept && isset($metadata->onaccept) && $metadata->msgtype == TOTARA_MSG_TYPE_LINK) {
+            continue;
+        }
+
         $ids[$msgid] = $message;
     }
 }

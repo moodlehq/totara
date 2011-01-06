@@ -88,6 +88,12 @@ foreach ($ids as $msgid => $msg) {
         continue;
     }
 
+
+    // cannot run accept on message type LINK in bulk action
+    if ($accept && isset($metadata->onaccept) && $metadata->msgtype == TOTARA_MSG_TYPE_LINK) {
+        continue;
+    }
+
 //    $display = isset($metadata->msgstatus) ? totara_msg_msgstatus_text($metadata->msgstatus) : array('icon' => '', 'text' => '');
 //    $status = $display['icon'];
 //    $status_alt = $display['text'];

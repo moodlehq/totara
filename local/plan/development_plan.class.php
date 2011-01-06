@@ -1061,8 +1061,10 @@ class development_plan {
             $a->plan = s($this->name);
             $event->subject = get_string('plan-request-manager-short', 'local_plan', $a);
             $event->fullmessage = get_string('plan-request-manager-long', 'local_plan', $a);
+            $event->acceptbutton = get_string('approve', 'local_plan').' '.get_string('plan', 'local_plan');
+            $event->accepttext = get_string('approveplantext', 'local_plan');
 
-            tm_reminder_send($event);
+            tm_workflow_send($event);
         }
     }
 

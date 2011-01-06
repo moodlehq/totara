@@ -44,6 +44,7 @@ define('TOTARA_MSG_TYPE_QUIZ', 6);
 define('TOTARA_MSG_TYPE_FACE2FACE', 7);
 define('TOTARA_MSG_TYPE_SURVEY', 8);
 define('TOTARA_MSG_TYPE_SCORM', 9);
+define('TOTARA_MSG_TYPE_LINK', 10);
 
 // message type shortnames
 global $TOTARA_MESSAGE_TYPES;
@@ -349,6 +350,69 @@ function tm_reminder_send($eventdata) {
         $eventdata->contexturl     = $CFG->wwwroot;
         $eventdata->contexturlname = '';
     }
+    return tm_message_send($eventdata);
+}
+
+
+/**
+ * send a custom reminder that initiates a workflow based on
+ * the context_url set
+ *
+ * Required parameter $eventdata structure:
+ *  userfrom object the user sending the message - optional
+ *  userto object the message recipient
+ *  subject
+ *  fullmessage
+ * Optional parameter $eventdata structure:
+ *  acceptbutton - affirmative action button label text
+ *  accepttext - text that goes on the affirmative action screen
+ *
+ * @param object $reminder information about the message (userfrom, userto, ...)
+ * @return boolean success
+ */
+function tm_workflow_send($eventdata) {
+    global $CFG;
+
+    if (!isset($eventdata->userto)) {
+        // cant send without a target user
+        debugging('tm_reminder_send() userto is not set');
+        return false;
+    }
+    $eventdata->msgtype = TOTARA_MSG_TYPE_LINK; // tells us how to treat the display
+    (!isset($eventdata->msgstatus)) && $eventdata->msgstatus = TOTARA_MSG_STATUS_UNDECIDED;
+    (!isset($eventdata->urgency)) && $eventdata->urgency = TOTARA_MSG_URGENCY_NORMAL;
+
+    $eventdata->component         = 'local/totara_msg';
+    $eventdata->name              = 'rmdr';
+    if (!isset($eventdata->userfrom) || !$eventdata->userfrom) {
+        $eventdata->userfrom      = $eventdata->userto;
+    }
+
+    if (!isset($eventdata->subject)) {
+        $eventdata->subject       = '';
+    }
+    $eventdata->fullmessageformat = FORMAT_PLAIN;
+    $eventdata->fullmessagehtml   = $eventdata->fullmessage;
+    $eventdata->notification      = 1;
+
+    if (!isset($eventdata->contexturl)) {
+        debugging('tm_message_workflow_send() must have have contexturl');
+        return false;
+    }
+    if (!isset($eventdata->acceptbutton) || empty($eventdata->acceptbutton)) {
+        $eventdata->acceptbutton = get_string('nextaction', 'local_totara_msg');
+    }
+    if (!isset($eventdata->accepttext)) {
+        $eventdata->accepttext = '';
+    }
+    $onaccept = new stdClass();
+    $onaccept->action = 'link';
+    $onaccept->text = $eventdata->accepttext;
+    $onaccept->data = array('redirect' => $eventdata->contexturl);
+    $onaccept->acceptbutton = $eventdata->acceptbutton;
+    $eventdata->onaccept = $onaccept;
+    $eventdata->onreject = null;
+
     return tm_message_send($eventdata);
 }
 
