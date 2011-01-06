@@ -39,20 +39,28 @@ end
 # return count of records in table
 def count_records table_name
   result = run_query("SELECT COUNT(*) AS count FROM #{table_name}")
-  result.fetch_hash['count']
+  if result.nil? then
+    0
+  else
+    result.fetch_hash['count']
+  end
 end
 
 # return a single field from a table
 def get_field table_name, field_name, element, value
   result = run_query("SELECT #{field_name} AS field FROM #{table_name} WHERE #{element}='#{value}'")
-  result.fetch_hash['field']
+  if result.nil? then
+    nil
+  else
+    result.fetch_hash['field']
+  end
 end
 
 # return next available number from column
 # use max so we can use on sequence free columns like sort order
 def get_next_sequence table_name, field_name
   result = run_query("SELECT MAX(#{field_name})+1 AS count FROM #{table_name}")
-  if result.fetch_hash['count'].nil? then
+  if result.nil? then
     1
   else
     result.fetch_hash['count']
@@ -63,7 +71,7 @@ end
 # using max also like get_next_sequence
 def get_current_sequence table_name, field_name
   result = run_query("SELECT MAX(#{field_name}) AS count FROM #{table_name}")
-  if result.getvalue(0,0).nil? then
+  if result.nil? then
     1
   else
     result.getvalue(0,0)
