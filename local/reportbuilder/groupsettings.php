@@ -31,7 +31,8 @@
     $sql = "SELECT f.id as feedbackid, f.name as feedback, c.id as courseid,
                 c.fullname as course, cm.id as cmid, ppt.disabled, ppt.lastchecked
             FROM {$CFG->prefix}report_builder_group_assign ga
-            LEFT JOIN {$CFG->prefix}feedback f ON f.id = CAST(ga.itemid AS INTEGER)
+            LEFT JOIN {$CFG->prefix}feedback f ON f.id = " .
+                sql_cast_char2int('ga.itemid') . "
             LEFT JOIN {$CFG->prefix}course c ON f.course = c.id
             LEFT JOIN {$CFG->prefix}course_modules cm
                 ON c.id = cm.course

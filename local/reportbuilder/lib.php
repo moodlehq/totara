@@ -2985,6 +2985,39 @@ function sql_cast2char($fieldname) {
     return $sql;
 }
 
+
+/**
+ * Returns the SQL to be used in order to CAST one column to FLOAT
+ *
+ * @param string fieldname the name of the field to be casted
+ * @return string the piece of SQL code to be used in your statement.
+ */
+function sql_cast2float($fieldname) {
+
+    global $CFG;
+
+    $sql = '';
+
+    switch ($CFG->dbfamily) {
+        case 'mysql':
+            $sql = ' CAST(' . $fieldname . ' AS DECIMAL) ';
+            break;
+        case 'mssql':
+        case 'postgres':
+            $sql = ' CAST(' . $fieldname . ' AS FLOAT) ';
+            break;
+            $sql = ' CAST(' . $fieldname . ' AS VARCHAR(20)) ';
+            break;
+        case 'oracle':
+            $sql = ' TO_BINARY_FLOAT(' . $fieldname . ') ';
+            break;
+        default:
+            $sql = ' ' . $fieldname . ' ';
+    }
+
+    return $sql;
+}
+
 /**
  * Returns reports that the current user can view
  *

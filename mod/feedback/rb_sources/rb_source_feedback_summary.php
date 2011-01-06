@@ -75,7 +75,7 @@ class rb_source_feedback_summary extends rb_base_source {
                 'LEFT',
                 $CFG->prefix . 'facetoface_session_roles',
                 '(sessiontrainer.userid = ' .
-                    'CAST(session_value.value AS INTEGER) AND ' .
+                    sql_cast_char2int('session_value.value') . ' AND ' .
                     "sessiontrainer.roleid = $trainerroleid)",
                 // potentially multiple trainers in a session
                 REPORT_BUILDER_RELATION_ONE_TO_MANY,

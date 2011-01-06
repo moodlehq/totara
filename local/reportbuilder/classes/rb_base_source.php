@@ -648,7 +648,7 @@ abstract class rb_base_source {
     // can be used to 'fake' a percentage, if matching values return 1 and
     // all other values return 0 or null
     function rb_group_percent($field) {
-        return "CAST(AVG($field)*100.0 AS integer)";
+        return sql_cast_char2int("AVG($field)*100.0");
     }
 
     // return list as single field, separated by commas
@@ -1576,7 +1576,7 @@ abstract class rb_base_source {
             'LEFT',
             // subquery as table name
             "(SELECT crs.id AS cid, " .
-                sql_group_concat('CAST(t.id AS varchar)','|') .
+                sql_group_concat(sql_cast2char('t.id'),'|') .
                 " AS idlist FROM {$CFG->prefix}course crs
                 LEFT JOIN {$CFG->prefix}tag_instance ti
                     ON crs.id=ti.itemid AND ti.itemtype='course'

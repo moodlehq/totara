@@ -434,7 +434,7 @@ class reportbuilderlib_test extends prefix_changing_test_case {
         // can't check exactly because different dbs use different concat format
         $this->assertPattern('/auser\.firstname/', current($columns));
         $this->assertPattern('/auser\.lastname/', current($columns));
-        $this->assertPattern('/AS user_namelink/', current($columns));
+        $this->assertPattern('/user_namelink/', current($columns));
     }
 
     function test_reportbuilder_get_joins() {

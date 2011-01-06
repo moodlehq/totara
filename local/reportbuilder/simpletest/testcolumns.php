@@ -358,6 +358,16 @@ class columns_test extends prefix_changing_test_case {
         array(1,'scale',1,'',1,1,1),
     );
 
+    var $dp_plan_objective_data = array(
+        array('id', 'planid', 'fullname', 'shortname', 'description', 'priority', 'duedate', 'scalevalueid', 'approved'),
+        array(1, 1, 'Objective', 'obj', 'Objective description', 10, 1234567890, 1, 10),
+    );
+
+    var $dp_objective_scale_value_data = array(
+        array('id', 'objscaleid', 'name', 'idnumber', 'description', 'numericscore', 'sortorder', 'timemodified', 'usermodified', 'achieved'),
+        array(1, 1, 'Objective Scale Value', 'ID1', 'Objective scale value description', 1, 1, 1234567890, 2, 1),
+    );
+
     function setUp() {
         global $db,$CFG;
         parent::setup();
@@ -429,6 +439,8 @@ class columns_test extends prefix_changing_test_case {
         load_test_table($CFG->prefix . 'dp_plan_competency_assign', $this->dp_plan_competency_assign_data, $db);
         load_test_table($CFG->prefix . 'dp_plan_course_assign', $this->dp_plan_course_assign_data, $db);
         load_test_table($CFG->prefix . 'dp_priority_scale_value', $this->dp_priority_scale_value_data, $db);
+        load_test_table($CFG->prefix . 'dp_plan_objective', $this->dp_plan_objective_data, $db);
+        load_test_table($CFG->prefix . 'dp_objective_scale_value', $this->dp_objective_scale_value_data, $db);
 
         // get rid of dummy records
         delete_records('report_builder_group');
@@ -505,8 +517,10 @@ class columns_test extends prefix_changing_test_case {
         remove_test_table($CFG->prefix . 'dp_plan', $db);
         remove_test_table($CFG->prefix . 'dp_plan_course_assign', $db);
         remove_test_table($CFG->prefix . 'dp_priority_scale_value', $db);
+        remove_test_table($CFG->prefix . 'dp_plan_objective', $db);
         remove_test_table($CFG->prefix . 'message_metadata', $db);
         remove_test_table($CFG->prefix . 'dp_template', $db);
+        remove_test_table($CFG->prefix . 'dp_objective_scale_value', $db);
         parent::tearDown();
     }
 

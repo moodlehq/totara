@@ -112,7 +112,7 @@
             cm.id AS cmid, tag.name as tagname
             FROM {$CFG->prefix}report_builder_group g
             LEFT JOIN {$CFG->prefix}feedback f
-            ON f.id = CAST(g.baseitem AS INTEGER)
+            ON f.id = " . sql_cast_char2int('g.baseitem') . "
             LEFT JOIN {$CFG->prefix}course c ON f.course = c.id
             LEFT JOIN {$CFG->prefix}course_modules cm ON cm.course = c.id
             AND cm.instance = f.id AND cm.module = $feedbackmoduleid
@@ -133,7 +133,7 @@
                 FROM {$CFG->prefix}report_builder
                 WHERE source ILIKE '%_grp_%'
                 GROUP BY groupid
-            ) reports ON CAST(reports.groupid AS INTEGER) = g.id";
+            ) reports ON " . sql_cast_char2int('reports.groupid') . " = g.id";
         $groups = get_records_sql($sql);
     } else {
         $groups = false;

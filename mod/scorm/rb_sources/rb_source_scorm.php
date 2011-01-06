@@ -118,7 +118,7 @@ class rb_source_scorm extends rb_base_source {
                 'sco',
                 'starttime',
                 'SCO Start Time',
-                'CAST(sco_starttime.value AS int)',
+                sql_cast_char2int('sco_starttime.value'),
                 array(
                     'joins' => 'sco_starttime',
                     'displayfunc' => 'nice_datetime',
@@ -274,7 +274,7 @@ class rb_source_scorm extends rb_base_source {
             new rb_content_option(
                 'date',
                 "The attempt date",
-                'CAST(starttime.value AS int)',
+                sql_cast_char2int('starttime.value'),
                 'sco_starttime'
             ),
         );
