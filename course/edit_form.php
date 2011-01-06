@@ -445,7 +445,7 @@ class course_edit_form extends moodleform {
         }
 
 //--------------------------------------------------------------------------------
-        if (!empty($CFG->usetags) && count_records('tag', 'tagtype', 'official')) {
+        if (!empty($CFG->usetags) && count_records('tag', 'tagtype', 'official') && (get_config('moodlecourse', 'coursetagging') == 1)) {
             $mform->addElement('header', 'tagshdr', get_string('tags', 'tag'));
             $mform->createElement('select', 'otags', get_string('otags','tag'));
 
@@ -459,6 +459,7 @@ class course_edit_form extends moodleform {
             );
 
             $otagsselEl =& $mform->addElement('select', 'otags', get_string('otags', 'tag'), array(), 'size="5"');
+            $mform->setHelpButton('otags', array('officialtags', get_string('otags', 'tag')), true);
             $otagsselEl->setMultiple(true);
             $this->otags_select_setup();
         }

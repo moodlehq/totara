@@ -57,6 +57,8 @@ if ($hassiteconfig
         $temp->add(new admin_setting_configcheckbox('moodlecourse/completionstartonenrol', get_string('completionstartonenrol','completion'), get_string('completionstartonenrolhelp', 'completion'), 1));
     }
 
+    $temp->add(new admin_setting_configcheckbox('moodlecourse/coursetagging', get_string('coursetagging','tag'), get_string('coursetagginghelp','tag'), 0));
+
     $ADMIN->add('courses', $temp);
 
     // "courserequests" settingpage
