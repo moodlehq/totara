@@ -13,6 +13,10 @@ $userid = $plan->userid;
 $componentname = 'course';
 $component = $plan->get_component($componentname);
 
+if($this->get_setting('setproficiency') != DP_PERMISSION_ALLOW) {
+    error(get_string('error:coursecompletionpermission', 'local_plan'));
+}
+
 $rpl = get_record('course_completions', 'userid', $userid, 'course', $courseid);
 
 $mform = new totara_course_rpl_form($CFG->wwwroot.'/course/report/completion/save_rpl.php', compact('id','courseid','userid'));
@@ -44,7 +48,6 @@ print_heading($fullname);
 print $plan->display_tabs($componentname);
 
 $mform->display();
-//echo '<form><input type="text"></form>';
 
 print_container_end();
 print_footer();

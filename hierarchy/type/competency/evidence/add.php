@@ -37,8 +37,8 @@ if($u = get_record('user','id',$userid)) {
 // Check permissions
 $componentname = 'competency';
 $component = $plan->get_component($componentname);
-if(!($component->get_setting('setpriority') == DP_PERMISSION_ALLOW)) {
-    error('cannot update proficiency');
+if($component->get_setting('setpriority') != DP_PERMISSION_ALLOW) {
+    error(get_string('error:competencyobjectivepermission', 'local_plan'));
 }
 
 $mform = new totara_competency_evidence_form(null, compact('id','planid','competencyid','positionid',

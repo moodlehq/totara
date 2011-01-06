@@ -357,7 +357,9 @@ $string['error:notemplatewithoutpriorityscale'] = 'You must create at least one 
 $string['error:notemplatewithoutobjectivescale'] = 'You must create at least one objective scale before you can create a template.';
 $string['error:unknownbuttonclicked'] = 'Unknown button clicked.';
 $string['error:couldnotfindassigneditem'] = 'Could not find assigned item';
-$string['error:couldnotunassigneditem'] = 'Couldnot unassign item';
+$string['error:couldnotunassigneditem'] = 'Could not unassign item';
+$string['error:competencyproficiencypermission'] = 'You do not have permission to update proficiencies';
+$string['error:coursecompletionpermission'] = 'You do not have permission to update completion status';
 
 
 // Priority Scales

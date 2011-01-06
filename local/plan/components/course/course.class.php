@@ -6,7 +6,7 @@ class dp_course_component extends dp_base_component {
         //'commenton' => false,
         'setpriority' => false,
         'setduedate' => false,
-        'setcompletionstatus' => true,
+        'setcompletionstatus' => false,
     );
     function __construct($plan) {
         $this->component = 'course';
@@ -366,7 +366,12 @@ class dp_course_component extends dp_base_component {
                     $delete = '<a href="'.$currenturl.'&amp;d='.$ca->id.'" title="'.$strdelete.'"><img src="'.$CFG->pixpath.'/t/delete.gif" class="iconsmall" alt="'.$strdelete.'" /></a>';
                     $proficient = '<a href="'.$CFG->wwwroot.'/local/plan/components/course/rpl.php?id='.$this->plan->id.'&courseid='.$ca->courseid.'">
                         <img src="'.$CFG->pixpath.'/t/ranges.gif" class="iconsmall" alt="'.$strrpl.'" /></a>';
-                    $row[] = $delete . $proficient;
+
+                    if($this->get_setting('setcompletionstatus') == DP_PERMISSION_ALLOW) {
+                        $row[] = $delete . $proficient;
+                    } else {
+                        $row[] = $delete;
+                    }
                 }
                 else {
                     $row[] = '';
