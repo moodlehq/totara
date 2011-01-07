@@ -18,3 +18,8 @@ input, select, button {
 #login-index .loginbox .loginform .form-input {
     position:relative;
 }
+
+/* Admin block */
+#left-column .block_admin_tree {
+    position:relative;
+}
