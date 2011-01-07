@@ -6,15 +6,14 @@ class totara_course_rpl_form extends moodleform {
 
     function definition() {
         $mform =& $this->_form;
-        $id = $this->_customdata['id'];
+        $planid = $this->_customdata['planid'];
         $course = $this->_customdata['courseid'];
         $user = $this->_customdata['userid'];
 
         //hidden elements
-        $mform->addElement('hidden', 'id', $id);
-        $mform->addElement('hidden', 'course', $course);
-        $mform->addElement('hidden', 'user', $user);
-        $mform->addElement('hidden', 'type', 'course');
+        $mform->addElement('hidden', 'planid', $planid);
+        $mform->addElement('hidden', 'courseid', $course);
+        $mform->addElement('hidden', 'userid', $user);
 
         $mform->addElement('header', 'rpl_general', get_string('general'));
 

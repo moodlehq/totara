@@ -4,10 +4,10 @@ require_once('../../../../config.php');
 require_once($CFG->dirroot . '/local/plan/lib.php');
 require_once($CFG->dirroot . '/local/plan/components/course/rpl_form.php');
 
-$id = required_param('id', PARAM_INT);
+$planid = required_param('planid', PARAM_INT);
 $courseid = required_param('courseid', PARAM_INT);
 
-$plan = new development_plan($id);
+$plan = new development_plan($planid);
 
 $userid = $plan->userid;
 $componentname = 'course';
@@ -19,14 +19,51 @@ if($component->get_setting('setcompletionstatus') != DP_PERMISSION_ALLOW) {
 
 $rpl = get_record('course_completions', 'userid', $userid, 'course', $courseid);
 
-$mform = new totara_course_rpl_form($CFG->wwwroot.'/course/report/completion/save_rpl.php', compact('id','courseid','userid'));
+$mform = new totara_course_rpl_form(null, compact('planid','courseid','userid'));
 $mform->set_data($rpl);
+
+$returnurl = $CFG->wwwroot.'/local/plan/components/course?id='.$planid;
+
+if ($mform->is_cancelled()) {
+    redirect($returnurl);
+}
+if ($fromform = $mform->get_data()) {
+    if(empty($fromform->submitbutton)) {
+        totara_set_notification(get_string('error:unknownbuttonclicked', 'local_plan'), $returnurl);
+    }
+
+    $info = new completion_info($course);
+    $rpl = $fromform->rpl;
+
+    // Get completion object
+    $params = array(
+        'userid'    => $fromform->userid,
+        'course'    => $fromform->courseid
+    );
+
+    // Completion
+    // Load course completion
+    $completion = new completion_completion($params);
+
+    /// Complete user
+    if (strlen($rpl)) {
+        $completion->rpl = addslashes($rpl);
+        $completion->mark_complete();
+
+        // If no RPL, uncomplete user, and let aggregation do its thing
+    } else {
+        $completion->delete();
+    }
+
+    totara_set_notification('Updated RPL of Course', $CFG->wwwroot.'/local/plan/components/course/index.php?id='.$planid, array('style'=>'notifysuccess'));
+}
+
 
 $fullname = $plan->name;
 $pagetitle = format_string(get_string('learningplan','local_plan').': '.$fullname);
 $navlinks = array();
 dp_get_plan_base_navlinks($navlinks, $plan->userid);
-$navlinks[] = array('name' => $fullname, 'link'=> $CFG->wwwroot . '/local/plan/view.php?id='.$id, 'type'=>'title');
+$navlinks[] = array('name' => $fullname, 'link'=> $CFG->wwwroot . '/local/plan/view.php?id='.$planid, 'type'=>'title');
 $navlinks[] = array('name' => $component->get_setting('name'), 'link' => '', 'type' => 'title');
 
 $navigation = build_navigation($navlinks);
