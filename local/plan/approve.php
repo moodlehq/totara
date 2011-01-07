@@ -48,6 +48,9 @@ if (!$requested_items) {
 }
 
 
+// Flag this page as the review page
+$plan->reviewing_pending = true;
+
 
 ///
 /// Process data
@@ -55,11 +58,23 @@ if (!$requested_items) {
 if ($submitted && confirm_sesskey()) {
 
     // Loop through components
+    $errors = 0;
     foreach ($components as $componentname => $component) {
+
         // Update settings
         $method = "process_{$componentname}_settings_update";
-        $component->$method();
+        $result = $component->$method();
+
+        if ($result === false) {
+            $errors += 1;
+        }
     }
+
+    if ($errors) {
+        totara_set_notification(get_string('error:problemupdating', 'local_plan'));
+    }
+
+    redirect($plan->get_display_url());
 }
 
 
@@ -82,9 +97,6 @@ local_js(array(TOTARA_JS_DATEPICKER));
 ///
 /// Display page
 ///
-
-// Flag this page as the review page
-$plan->reviewing_pending = true;
 
 print_header_simple($pagetitle, '', $navigation, '', null, true, '');
 

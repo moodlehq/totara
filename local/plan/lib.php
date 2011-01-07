@@ -363,7 +363,7 @@ function dp_print_workflow_diff($diff_array) {
 function dp_display_approval_options($name, $selected=DP_APPROVAL_UNAPPROVED, $choose=true) {
     if($choose) {
         $choosestr = 'choose';
-        $chooseval = DP_APPROVAL_UNAPPROVED;
+        $chooseval = 0;
     } else {
         $choosestr = null;
         $chooseval = null;

@@ -632,6 +632,9 @@ class dp_competency_component extends dp_base_component {
         if (!empty($approvals) && $canapprovecomps) {
             // Update approvals
             foreach ($approvals as $id => $approval) {
+                if (!$approval) {
+                    continue;
+                }
                 if(array_key_exists($id, $stored_records)) {
                     // add to the existing update object
                     $stored_records[$id]->approved = $approval;
@@ -644,19 +647,35 @@ class dp_competency_component extends dp_base_component {
                 }
             }
         }
+
         $status = true;
         if (!empty($stored_records)) {
             begin_sql();
             foreach($stored_records as $itemid => $record) {
                 $status = $status & update_record('dp_plan_competency_assign', $record);
             }
-            if($status) {
+
+            if ($status) {
                 commit_sql();
-                totara_set_notification(get_string('competenciesupdated','local_plan'), $currenturl, array('style'=>'notifysuccess'));
-            } else {
-                rollback_sql();
-                totara_set_notification(get_string('error:competenciesupdated','local_plan'), $currenturl);
             }
+            else {
+                rollback_sql();
+            }
+
+            if ($this->plan->reviewing_pending) {
+                return $status;
+            }
+            else {
+                if ($status) {
+                    totara_set_notification(get_string('competenciesupdated','local_plan'), $currenturl, array('style'=>'notifysuccess'));
+                } else {
+                    totara_set_notification(get_string('error:competenciesupdated','local_plan'), $currenturl);
+                }
+            }
+        }
+
+        if ($this->plan->reviewing_pending) {
+            return null;
         }
 
         redirect($currenturl);

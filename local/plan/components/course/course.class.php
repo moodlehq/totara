@@ -684,6 +684,9 @@ class dp_course_component extends dp_base_component {
         if (!empty($approvals) && $canapprovecourses) {
             // Update approvals
             foreach ($approvals as $id => $approval) {
+                if (!$approval) {
+                    continue;
+                }
                 $approval = (int) $approval;
                 if(array_key_exists($id, $stored_records)) {
                     // add to the existing update object
@@ -697,18 +700,37 @@ class dp_course_component extends dp_base_component {
                 }
             }
         }
+
         $status = true;
-        begin_sql();
-        foreach($stored_records as $itemid => $record) {
-            $status = $status & update_record('dp_plan_course_assign', $record);
+        if (!empty($stored_records)) {
+            begin_sql();
+            foreach($stored_records as $itemid => $record) {
+                $status = $status & update_record('dp_plan_course_assign', $record);
+            }
+
+            if ($status) {
+                commit_sql();
+            }
+            else {
+                rollback_sql();
+            }
+
+            if ($this->plan->reviewing_pending) {
+                return $status;
+            }
+            else {
+                if ($status) {
+                    totara_set_notification(get_string('coursesupdated','local_plan'), $currenturl, array('style'=>'notifysuccess'));
+                } else {
+                    totara_set_notification(get_string('coursesnotupdated','local_plan'), $currenturl);
+                }
+            }
         }
-        if($status) {
-            commit_sql();
-            totara_set_notification(get_string('coursesupdated','local_plan'), $currenturl, array('style'=>'notifysuccess'));
-        } else {
-            rollback_sql();
-            totara_set_notification(get_string('coursesnotupdated','local_plan'), $currenturl);
+
+        if ($this->plan->reviewing_pending) {
+            return null;
         }
+
         redirect($currenturl);
     }
 

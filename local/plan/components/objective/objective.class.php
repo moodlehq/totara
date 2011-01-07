@@ -603,7 +603,10 @@ class dp_objective_component extends dp_base_component {
         if (!empty($approvals) && $canapprovecomps) {
             // Update approvals
             foreach ($approvals as $id => $approval) {
-                if(array_key_exists($id, $stored_records)) {
+                if (!$approval) {
+                    continue;
+                }
+                if (array_key_exists($id, $stored_records)) {
                     // add to the existing update object
                     $stored_records[$id]->approved = $approval;
                 } else {
@@ -618,14 +621,15 @@ class dp_objective_component extends dp_base_component {
         $status = true;
 
         // save before snapshot of objectives
-        $orig_objectives = get_records_list('dp_plan_objective', 'id', implode(',', array_keys($stored_records)));
 
         if (!empty($stored_records)) {
+            $orig_objectives = get_records_list('dp_plan_objective', 'id', implode(',', array_keys($stored_records)));
             begin_sql();
-            foreach($stored_records as $itemid => $record) {
+
+            foreach ($stored_records as $itemid => $record) {
                 $status = $status & update_record('dp_plan_objective', $record);
             }
-            if($status) {
+            if ($status) {
                 commit_sql();
                 // process update notifications
                 foreach($stored_records as $itemid => $record) {
@@ -639,11 +643,23 @@ class dp_objective_component extends dp_base_component {
                         $this->send_status_notification($orig_objectives[$itemid]);
                     }
                 }
-                totara_set_notification(get_string('objectivesupdated','local_plan'), $currenturl, array('style'=>'notifysuccess'));
             } else {
                 rollback_sql();
-                totara_set_notification(get_string('objectivesnotupdated','local_plan'), $currenturl);
             }
+
+            if ($this->plan->reviewing_pending) {
+                return $status;
+            } else {
+                if ($success) {
+                    totara_set_notification(get_string('objectivesupdated','local_plan'), $currenturl, array('style'=>'notifysuccess'));
+                } else {
+                    totara_set_notification(get_string('objectivesnotupdated','local_plan'), $currenturl);
+                }
+            }
+        }
+
+        if ($this->plan->reviewing_pending) {
+            return null;
         }
 
         redirect($currenturl);
