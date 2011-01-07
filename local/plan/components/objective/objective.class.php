@@ -136,12 +136,15 @@ class dp_objective_component extends dp_base_component {
 
 
     /**
-     * Generates a flexibletable listing all the objectives in the current plan.
+     * Return markup to display course items in a table
      *
-     * @global object $CFG
-     * @return string
+     * Optionally restrict results by approval status
+     *
+     * @access  public
+     * @param   mixed   $restrict   Array or integer (optional)
+     * @return  string
      */
-    function display_objective_list() {
+    public function display_objective_list($restrict = null) {
         global $CFG;
 
         $showduedates = ($this->get_setting('duedatemode') == DP_DUEDATES_OPTIONAL ||
@@ -179,6 +182,14 @@ class dp_objective_component extends dp_base_component {
                 AND psv.priorityscaleid = {$priorityscaleid}) ";
 
         $where = "WHERE o.planid = {$this->plan->id} ";
+
+        // Check if restricting by approval status
+        if (isset($restrict)) {
+            if (is_array($restrict)) {
+                $restrict = implode(', ', $restrict);
+            }
+            $where .= " AND o.approved IN ({$restrict})";
+        }
 
         $count = count_records_sql($count.$from.$where);
         if (!$count) {
@@ -471,29 +482,6 @@ class dp_objective_component extends dp_base_component {
 
 
     /**
-     * Display approval options for objectives
-     *
-     * Overwrite base display_approval_options() method to show links instead of
-     * pulldown menu. This is necessary because each objective must be
-     * individually approved (to set evidence/assessor etc)
-     *
-     * @param stdClass $obj The assignment object
-     * @param integer $approvalstatus The currently selected approval status
-     * @return $out string an html string
-     */
-    function display_approval_options($obj, $approvalstatus) {
-        global $CFG;
-        // @todo link to relevant pages
-        // @todo add icons
-        return '<a href="' . $CFG->wwwroot . '/local/plan/components/' .
-            $this->component . '/approval.php?id=' . $obj->planid . '&amp;itemid=' .
-            $obj->id . '&amp;action=approve">' . get_string('approve','local_plan') . '</a> ' .
-            '<a href="' . $CFG->wwwroot . '/local/plan/components/' .
-            $this->component . '/approval.php?id=' . $obj->planid . '&amp;itemid=' .
-            $obj->id . '&amp;action=decline">' . get_string('decline','local_plan') . '</a> ';
-    }
-
-    /**
      * Display a proficiency (or the dropdown menu for it)
      * @param object $ca The current objective
      * @param array $proficiencyvalues A list of all the proficiencies in the objective scale for this objective
@@ -534,10 +522,10 @@ class dp_objective_component extends dp_base_component {
         $cansetpriorities = ($this->get_setting('setpriority') == DP_PERMISSION_ALLOW);
         $cansetprofs = ($this->get_setting('setproficiency') == DP_PERMISSION_ALLOW);
         $canapprovecomps = ($this->get_setting('updateobjective') == DP_PERMISSION_APPROVE);
-        $duedates = optional_param('duedate', array(), PARAM_TEXT);
-        $priorities = optional_param('priorities', array(), PARAM_INT);
+        $duedates = optional_param('duedate_objective', array(), PARAM_TEXT);
+        $priorities = optional_param('priorities_objective', array(), PARAM_INT);
         $proficiencies = optional_param('proficiencies', array(), PARAM_INT);
-        $approvals = optional_param('approve', array(), PARAM_INT);
+        $approvals = optional_param('approve_objective', array(), PARAM_INT);
         $currenturl = qualified_me();
         $stored_records = array();
         $currentuser = $this->plan->userid;

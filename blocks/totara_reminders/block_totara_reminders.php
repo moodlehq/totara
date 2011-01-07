@@ -98,15 +98,15 @@ class block_totara_reminders extends block_base {
                 // statement - multipart: user + statment + object
                 $bkgd = ($cnt % 2) ? 'shade' : 'noshade';
                 $content  = "<tr class=\"".$bkgd."\">";
-                $dismiss = totara_msg_dismiss_action($msg->id);
                 $content .= '<td class="status">';
                 $content .= '<img class="msgicon" src="' . totara_msg_icon_url($msg->icon) . '" title="' . format_string($msg->subject) . '" alt="' . format_string($msg->subject) .'" />';
                 $content .= '</td>';
                 $msgtext = $msg->subject ? $msg->subject : $msg->fullmessage;
                 $content .= "<td class=\"statement\"><p>{$msgtext}</p></td>";
-                $accept_reject = totara_msg_accept_reject_action($msg->id);
-                $content .= $accept_reject;
-                $content .= "<td class=\"action\">{$dismiss}</td>";
+                $content .= "<td class=\"action\">";
+                $content .= totara_msg_accept_reject_action($msg->id);
+                $content .= totara_msg_dismiss_action($msg->id);
+                $content .= "</td>";
                 $content .= "</tr>";
                 $this->content->text .= $content;
             }

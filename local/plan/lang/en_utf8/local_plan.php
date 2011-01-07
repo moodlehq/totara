@@ -9,6 +9,7 @@ $string['plan:managepriorityscales'] = 'Manage priority scales';
 
 // Plan
 $string['approveplantext'] = 'Please review and approve the attached plan';
+$string['approveitemtext'] = 'Please review and approve the changes to the attached plan';
 $string['plan'] = 'Plan';
 $string['learningplan'] = 'Learning Plan';
 $string['learningplans'] = 'Learning Plans';
@@ -58,6 +59,8 @@ $string['noclassforcomponent'] = 'Class \'$a->class\' does not exist for compone
 
 $string['noclassfileforworkflow'] = 'Class file \'$a->classfile\' could not be found for workflow \'$a->workflow\'';
 $string['noclassforworkflow'] = 'Class \'$a->class\' does not exist for workflow \'$a->workflow\'';
+$string['pendingitems'] = 'Pending approval';
+
 
 //Instruction text
 $string['planinstructions'] = 'Your current and completed learning plans are shown below. ';

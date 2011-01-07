@@ -39,7 +39,7 @@ abstract class dp_base_component {
 
         // only show a form if they have permission to change due dates
         if($cansetduedate) {
-            $out .= $this->display_duedate_as_form($duedate, "duedate[$itemid]");
+            $out .= $this->display_duedate_as_form($duedate, "duedate_{$this->component}[{$itemid}]");
         } else {
             $out .= $this->display_duedate_as_text($duedate);
         }
@@ -97,7 +97,7 @@ abstract class dp_base_component {
 
         if ($cansetpriority) {
             // show a pulldown menu of priority options
-            $out .= $this->display_priority_picker("priorities[{$ca->id}]", $ca->priority, $priorityvalues, $priorityrequired);
+            $out .= $this->display_priority_picker("priorities_{$this->component}[{$ca->id}]", $ca->priority, $priorityvalues, $priorityrequired);
         } else {
             // just display priority if no permissions to set it
             $out .= $this->display_priority_as_text($ca->priority, $ca->priorityname, $priorityvalues);
@@ -167,6 +167,11 @@ abstract class dp_base_component {
         $murl = new moodle_url(qualified_me());
         $out = '';
 
+        // If reviewing pending page, just returning picker
+        if ($this->plan->reviewing_pending) {
+            return $this->display_approval_options($obj, $approvalstatus);
+        }
+
         switch($approvalstatus) {
         case DP_APPROVAL_DECLINED:
             $out .= '<span class="plan_highlight">' . get_string('declined', 'local_plan') . '</span>';
@@ -212,7 +217,7 @@ abstract class dp_base_component {
      * @return string The html for an approval picker
      */
     function display_approval_options($obj, $approvalstatus) {
-        $name = 'approve[' . $obj->id . ']';
+        $name = "approve_{$this->component}[{$obj->id}]";
         return dp_display_approval_options($name, $approvalstatus);
     }
 

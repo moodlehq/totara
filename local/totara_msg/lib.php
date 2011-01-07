@@ -146,7 +146,7 @@ function totara_msg_dismiss_action($id) {
 
     $str = get_string('dismiss', 'block_totara_notify');
     return
-    '<td><script type="text/javascript"> '.
+    '<script type="text/javascript"> '.
         "var shortname = 'whydoIneedAshortName';" .
     "// bind functionality to page on load
     $(function() {
@@ -184,7 +184,7 @@ function totara_msg_dismiss_action($id) {
     <input type="hidden" name="returnto" value="' . $FULLME . '" />
     <input type="image" class="iconsmall" src="' . $CFG->wwwroot . '/theme/' . $CFG->theme . '/pix/t/dismiss.gif" title="'.$str.'" alt="'.$str.'" />
     </form>
-    </noscript></td>';
+    </noscript>';
 
 }
 
@@ -335,7 +335,7 @@ function totara_msg_accept_reject_action($id) {
     $accept = '';
     $reject = '';
     $script =
-    '<td><script type="text/javascript"> '.
+    '<script type="text/javascript"> '.
         "var shortname = 'whydoIneedAshortName';" .
     "// bind functionality to page on load
     $(function() {
@@ -380,10 +380,10 @@ function totara_msg_accept_reject_action($id) {
             );
         })();
     });" .
-    '</script></td>';
+    '</script>';
     if (isset($msgmeta->onaccept) && $msgmeta->onaccept) {
         $accept =
-            '<td><form><input id="acceptmsg'.$id.'-dialog" type="image" name="tm_accept_msg" class="iconsmall action"'.
+            '<form><input id="acceptmsg'.$id.'-dialog" type="image" name="tm_accept_msg" class="iconsmall action"'.
             ' src="' . $CFG->wwwroot . '/theme/' . $CFG->theme . '/pix/t/accept.gif" title="'.$onaccept_str.'"'.
             ' alt="'.$onaccept_str.'" style="display:none;"/>'.
             '</form>'.
@@ -393,11 +393,11 @@ function totara_msg_accept_reject_action($id) {
             <input type="hidden" name="returnto" value="' . $returnto . '" />
             <input type="image" class="iconsmall action" src="' . $CFG->wwwroot . '/theme/' . $CFG->theme . '/pix/t/accept.gif" title="'.$onaccept_str.'" alt="'.$onaccept_str.'" />
             </form>
-            </noscript></td>';
+            </noscript>';
     }
     if (isset($msgmeta->onreject) && $msgmeta->onreject) {
         $reject =
-            '<td><form><input id="rejectmsg'.$id.'-dialog" type="image" name="tm_reject_msg" class="iconsmall action"'.
+            '<form><input id="rejectmsg'.$id.'-dialog" type="image" name="tm_reject_msg" class="iconsmall action"'.
             ' src="' . $CFG->wwwroot . '/theme/' . $CFG->theme . '/pix/t/delete.gif" title="'.$onreject_str.'"'.
             ' alt="'.$onreject_str.'" style="display:none;"/>'.
             '</form>'.
@@ -407,7 +407,7 @@ function totara_msg_accept_reject_action($id) {
             <input type="hidden" name="returnto" value="' . $FULLME . '" />
             <input type="image" class="iconsmall action" src="' . $CFG->wwwroot . '/theme/' . $CFG->theme . '/pix/t/delete.gif" title="'.$onreject_str.'" alt="'.$onreject_str.'" />
             </form>
-            </noscript></td>';
+            </noscript>';
     }
     return $script.$accept.$reject;
 }

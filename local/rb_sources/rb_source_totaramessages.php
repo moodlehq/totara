@@ -335,9 +335,9 @@ class rb_source_totaramessages extends rb_base_source {
     // generate dismiss message link
     function rb_display_dismiss_link($id, $row) {
         return '<div class="totara_notifications_actions">'.
-                '<table class="totara_messages_actions" border="0"><tr>'.
+                '<table class="totara_messages_actions" border="0"><tr><td>'.
                 totara_msg_dismiss_action($id).
-                '<td>'.
+                '</td><td>'.
                 '<script type="text/javascript"> '.
                 "// bind functionality to page on load
                 $(function() {
@@ -356,8 +356,8 @@ class rb_source_totaramessages extends rb_base_source {
     function rb_display_reminder_links($id, $row) {
         return '<div class="totara_reminders_actions">'.
                 '<table class="totara_messages_actions" border="0"><tr>'.
-                totara_msg_accept_reject_action($id).
-                totara_msg_dismiss_action($id).
+                '<td>'.totara_msg_accept_reject_action($id).'</td>'.
+                '<td>'.totara_msg_dismiss_action($id).'</td>'.
                 '<td>'.
                 '<script type="text/javascript"> '.
                 "// bind functionality to page on load

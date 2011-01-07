@@ -16,6 +16,15 @@ class development_plan {
     public $startdate, $enddate, $status, $role, $settings;
     public $viewas;
 
+    /**
+     * Flag the page viewing this plan as the reviewing pending page
+     *
+     * @access  public
+     * @var     boolean
+     */
+    public $reviewing_pending = false;
+
+
     function __construct($id, $viewas=null) {
         global $USER, $CFG;
 
@@ -272,17 +281,17 @@ class development_plan {
         $inactive = array();
 
         // overview tab
-        $row[] = new  tabobject('plan', $CFG->wwwroot .
+        $row[] = new tabobject('plan', $CFG->wwwroot .
                 '/local/plan/view.php?id=' .
                 $this->id, get_string('overview','local_plan'));
 
         // get active components in correct order
         $components = $this->get_setting('components');
 
-        if($components) {
-            foreach($components as $component) {
+        if ($components) {
+            foreach ($components as $component) {
                 // don't show tabs for disabled components
-                if(!$component->enabled) {
+                if (!$component->enabled) {
                     continue;
                 }
                 $componentname =
@@ -294,11 +303,50 @@ class development_plan {
             }
         }
 
+        // requested items tabs
+        if ($pitems = $this->num_pendingitems()) {
+            $row[] = new tabobject(
+                'pendingitems',
+                "{$CFG->wwwroot}/local/plan/approve.php?id={$this->id}",
+                get_string('pendingitems', 'local_plan').' ('.$pitems.')'
+            );
+        }
+
         $tabs[] = $row;
         $activated[] = $currenttab;
 
         return print_tabs($tabs, $currenttab, $inactive, $activated, true);
     }
+
+
+    /**
+     * Find the number of pending items this use can approve, if any
+     *
+     * @access  public
+     * @return  integer
+     */
+    public function num_pendingitems() {
+        // Check if plan is active
+        if ($this->status == DP_PLAN_STATUS_COMPLETE) {
+            return 0;
+        }
+
+        // Get all pending items
+        $items = $this->has_pending_items(null, true, true);
+
+        if (!$items) {
+            return 0;
+        }
+
+        // Count all
+        $count = 0;
+        foreach ($items as $component) {
+            $count += count($component);
+        }
+
+        return $count;
+    }
+
 
     function display_summary_widget() {
         global $CFG;
@@ -648,64 +696,49 @@ class development_plan {
      * Check if the plan has any pending items
      *
      * @access  public
-     * @param   mixed
-     * @param   boolean
-     * @return  boolean
+     * @param   array       $pendinglist    (optional)
+     * @param   boolean     $onlyapprovable Only check approvable items
+     * @param   boolean     $returnapprovable   Return array of approvable items
+     * @return  boolean|array
      */
-    public function has_pending_items($pendinglist=null, $onlyapprovable=false) {
+    public function has_pending_items($pendinglist=null, $onlyapprovable=false, $returnapprovable=false) {
 
-        $canapprovecourses = ($this->get_component('course')->get_setting('updatecourse')
-            == DP_PERMISSION_APPROVE);
-        $canapprovecompetencies = ($this->get_component('competency')->get_setting('updatecompetency')
-            == DP_PERMISSION_APPROVE);
-        $canapproveobjectives = ($this->get_component('objective')->get_setting('updateobjective')
-            == DP_PERMISSION_APPROVE);
+        $components = $this->get_components();
 
-        // get the pending items, if it hasn't been passed to the method
+        // Get the pending items, if it hasn't been passed to the method
         if (!isset($pendinglist)) {
             $pendinglist = $this->get_pending_items();
         }
 
-        // see if any component has any pending items
+        // See if any component has any pending items
+        foreach ($components as $componentname => $component) {
+            // Skip if empty
+            if (empty($pendinglist[$componentname])) {
+                continue;
+            }
 
-        // check if there are pending course
-        if(array_key_exists('course', $pendinglist) &&
-            $pendinglist['course']) {
-            // there are pending courses
+            // Not checking for approvable items?
+            if (!$onlyapprovable) {
+                return true;
+            }
 
-            if(!$onlyapprovable) {
-                // don't need to know if user can approve
+            // Check if approvable
+            $canapprove = $component->get_setting("update{$componentname}") == DP_PERMISSION_APPROVE;
+
+            // Returning boolean?
+            if (!$returnapprovable && $canapprove) {
                 return true;
-            } else if ($canapprovecourses) {
-                // only count it if the user can approve
-                return true;
+            }
+
+            // Returning array but can't approve this component
+            if ($returnapprovable && !$canapprove) {
+                // Remove component from array
+                unset($pendinglist[$componentname]);
             }
         }
 
-        // check if there are pending competencies
-        if(array_key_exists('competency', $pendinglist) &&
-            $pendinglist['competency']) {
-
-            if(!$onlyapprovable) {
-                // don't need to know if user can approve
-                return true;
-            } else if ($canapprovecompetencies) {
-                // only count it if the user can approve
-                return true;
-            }
-        }
-
-        // check if there are pending competencies
-        if(array_key_exists('objective', $pendinglist) &&
-            $pendinglist['objective']) {
-
-            if(!$onlyapprovable) {
-                // don't need to know if user can approve
-                return true;
-            } else if ($canapproveobjectives) {
-                // only count it if the user can approve
-                return true;
-            }
+        if ($returnapprovable && !empty($pendinglist)) {
+            return $pendinglist;
         }
 
         return false;
@@ -812,6 +845,11 @@ class development_plan {
 
     function display_pending_items($pendinglist=null) {
         global $CFG;
+
+        // If this is the pending review page, do not show list of items
+        if ($this->reviewing_pending) {
+            return '';
+        }
 
         $canapprovecourses = ($this->get_component('course')->get_setting('updatecourse')
             == DP_PERMISSION_APPROVE);
@@ -1123,21 +1161,24 @@ class development_plan {
 
         $event = new tm_task_eventdata($manager, 'plan', $data, $data);
         $event->userfrom = $learner;
-        $event->contexturl = $this->get_display_url();
+        $event->contexturl = "{$CFG->wwwroot}/local/plan/approve.php?id={$this->id}";
         $event->contexturlname = $this->name;
         $event->roleid = get_field('role','id', 'shortname', 'manager');
         $event->icon = 'learningplan-request.png';
 
-        if ($total_items > 1) {
+    #    if ($total_items > 1) {
             $a = new stdClass;
             $a->learner = fullname($learner);
             $a->plan = s($this->name);
             $a->data = '<li>'.implode($message_data, '</li><li>').'</li>';
             $event->subject = get_string('item-request-manager-short', 'local_plan', $a);
             $event->fullmessage = get_string('item-request-manager-long', 'local_plan', $a);
-        }
+    #    }
 
-        tm_reminder_send($event);
+        $event->acceptbutton = get_string('approve', 'local_plan').' '.get_string('plan', 'local_plan');
+        $event->accepttext = get_string('approveitemstext', 'local_plan');
+
+        tm_workflow_send($event);
     }
 
 

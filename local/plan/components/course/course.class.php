@@ -235,7 +235,16 @@ class dp_course_component extends dp_base_component {
     }
 
 
-    function display_course_list() {
+    /**
+     * Return markup to display course items in a table
+     *
+     * Optionally restrict results by approval status
+     *
+     * @access  public
+     * @param   mixed   $restrict   Array or integer (optional)
+     * @return  string
+     */
+    public function display_course_list($restrict = null) {
         global $CFG;
 
         $showduedates = ($this->get_setting('duedatemode') == DP_DUEDATES_OPTIONAL ||
@@ -269,6 +278,14 @@ class dp_course_component extends dp_base_component {
                     ON (ca.priority = psv.id
                     AND psv.priorityscaleid = $priorityscaleid) ";
         $where = "WHERE ca.planid = {$this->plan->id}";
+
+        // Check if restricting by approval status
+        if (isset($restrict)) {
+            if (is_array($restrict)) {
+                $restrict = implode(', ', $restrict);
+            }
+            $where .= " AND ca.approved IN ({$restrict})";
+        }
 
         $count = count_records_sql($count.$from.$where);
         if (!$count) {
@@ -618,11 +635,12 @@ class dp_course_component extends dp_base_component {
         $cansetduedates = ($this->get_setting('setduedate') == DP_PERMISSION_ALLOW);
         $cansetpriorities = ($this->get_setting('setpriority') == DP_PERMISSION_ALLOW);
         $canapprovecourses = ($this->get_setting('updatecourse') == DP_PERMISSION_APPROVE);
-        $duedates = optional_param('duedate', array(), PARAM_TEXT);
-        $priorities = optional_param('priorities', array(), PARAM_TEXT);
-        $approvals = optional_param('approve', array(), PARAM_INT);
+        $duedates = optional_param('duedate_course', array(), PARAM_TEXT);
+        $priorities = optional_param('priorities_course', array(), PARAM_TEXT);
+        $approvals = optional_param('approve_course', array(), PARAM_INT);
         $currenturl = qualified_me();
         $stored_records = array();
+
         if(!empty($duedates) && $cansetduedates) {
             foreach($duedates as $id => $duedate) {
                 // allow empty due dates

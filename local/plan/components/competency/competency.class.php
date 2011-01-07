@@ -170,7 +170,16 @@ class dp_competency_component extends dp_base_component {
     }
 
 
-    function display_competency_list() {
+    /**
+     * Return markup to display competency items in a table
+     *
+     * Optionally restrict results by approval status
+     *
+     * @access  public
+     * @param   mixed   $restrict   Array or integer (optional)
+     * @return  string
+     */
+    public function display_competency_list($restrict = null) {
         global $CFG;
 
         $showduedates = ($this->get_setting('duedatemode') == DP_DUEDATES_OPTIONAL ||
@@ -210,6 +219,14 @@ class dp_competency_component extends dp_base_component {
                     AND psv.priorityscaleid = {$priorityscaleid}) ";
 
         $where = "WHERE ca.planid = {$this->plan->id}";
+
+        // Check if restricting by approval status
+        if (isset($restrict)) {
+            if (is_array($restrict)) {
+                $restrict = implode(', ', $restrict);
+            }
+            $where .= " AND ca.approved IN ({$restrict})";
+        }
 
         $count = count_records_sql($count.$from.$where);
         if (!$count) {
@@ -546,28 +563,6 @@ class dp_competency_component extends dp_base_component {
         return $out;
     }
 
-    /**
-     * Display approval options for competencies
-     *
-     * Overwrite base display_approval_options() method to show links instead of
-     * pulldown menu. This is necessary because each competency must be
-     * individually approved (to set evidence/assessor etc)
-     *
-     * @param stdClass $obj The assignment object
-     * @param integer $approvalstatus The currently selected approval status
-     * @return $out string an html string
-     */
-    function display_approval_options($obj, $approvalstatus) {
-        global $CFG;
-        // @todo link to relevant pages
-        // @todo add icons
-        return '<a href="' . $CFG->wwwroot . '/local/plan/components/' .
-            $this->component . '/approval.php?id=' . $obj->planid . '&amp;itemid=' .
-            $obj->id . '&amp;action=approve">' . get_string('approve','local_plan') . '</a> ' .
-            '<a href="' . $CFG->wwwroot . '/local/plan/components/' .
-            $this->component . '/approval.php?id=' . $obj->planid . '&amp;itemid=' .
-            $obj->id . '&amp;action=decline">' . get_string('decline','local_plan') . '</a> ';
-    }
 
     function display_status($ca) {
         global $CFG;
@@ -585,9 +580,9 @@ class dp_competency_component extends dp_base_component {
         $cansetduedates = ($this->get_setting('setduedate') == DP_PERMISSION_ALLOW);
         $cansetpriorities = ($this->get_setting('setpriority') == DP_PERMISSION_ALLOW);
         $canapprovecomps = ($this->get_setting('updatecompetency') == DP_PERMISSION_APPROVE);
-        $duedates = optional_param('duedate', array(), PARAM_TEXT);
-        $priorities = optional_param('priorities', array(), PARAM_INT);
-        $approvals = optional_param('approve', array(), PARAM_INT);
+        $duedates = optional_param('duedate_competency', array(), PARAM_TEXT);
+        $priorities = optional_param('priorities_competency', array(), PARAM_INT);
+        $approvals = optional_param('approve_competency', array(), PARAM_INT);
         $currenturl = qualified_me();
         $stored_records = array();
 
