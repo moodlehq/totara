@@ -784,7 +784,7 @@ function print_tooltips($sessions) {
     $sessionlist = array();
     foreach ($sessions as $session) {
         $timestart = $session->timestart;
-        $day = strftime('%Y%m%d', $timestart);
+        $day = userdate($timestart, '%Y%m%d', 99, false);
 
         if ($currentday < $day) {
             if ($currentday > 0) {
