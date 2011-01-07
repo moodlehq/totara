@@ -382,7 +382,7 @@ function tm_reminder_send($eventdata) {
 
 /**
  * send a custom reminder that initiates a workflow based on
- * the context_url set
+ * the contexturl set
  *
  * Required parameter $eventdata structure:
  *  userfrom object the user sending the message - optional
@@ -392,6 +392,22 @@ function tm_reminder_send($eventdata) {
  * Optional parameter $eventdata structure:
  *  acceptbutton - affirmative action button label text
  *  accepttext - text that goes on the affirmative action screen
+ *
+ *  example from plan approval:
+ *          $event = new stdClass;
+ *          $event->userfrom = $learner;
+ *          $event->contexturl = $this->get_display_url();
+ *          $event->contexturlname = $this->name;
+ *          $event->roleid = get_field('role','id', 'shortname', 'manager');
+ *          $event->icon = 'learningplan-request.png';
+ *          $a = new stdClass;
+ *          $a->learner = fullname($learner);
+ *          $a->plan = s($this->name);
+ *          $event->subject = get_string('plan-request-manager-short', 'local_plan', $a);
+ *          $event->fullmessage = get_string('plan-request-manager-long', 'local_plan', $a);
+ *          $event->acceptbutton = get_string('approve', 'local_plan').' '.get_string('plan', 'local_plan');
+ *          $event->accepttext = get_string('approveplantext', 'local_plan');
+ *
  *
  * @param object $reminder information about the message (userfrom, userto, ...)
  * @return boolean success
