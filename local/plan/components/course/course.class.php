@@ -374,7 +374,8 @@ class dp_course_component extends dp_base_component {
                     $row[] = $status;
                 }
 
-                if ($canremovecourses || ($canrequestcourses && $ca->approved == DP_APPROVAL_UNAPPROVED)) {
+                if ($canremovecourses ||
+                    ($canrequestcourses && (in_array($ca->approved, array(DP_APPROVAL_UNAPPROVED, DP_APPROVAL_DECLINED))))) {
                     $currenturl = $CFG->wwwroot .
                         '/local/plan/components/course/index.php?id=' .
                         $this->plan->id;

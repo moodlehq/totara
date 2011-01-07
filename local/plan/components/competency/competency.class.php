@@ -193,6 +193,8 @@ class dp_competency_component extends dp_base_component {
             $this->get_setting('updatecompetency') == DP_PERMISSION_APPROVE;
         $canremovecomps = !$plancompleted &&
             $this->get_setting('updatecompetency') == DP_PERMISSION_ALLOW;
+        $canrequestcomps = !$plancompleted &&
+            $this->get_setting('updatecompetency') == DP_PERMISSION_REQUEST;
 
         $count = 'SELECT COUNT(*) ';
         $select = 'SELECT ca.*, c.fullname, csv.name ' . sql_as() .
@@ -257,10 +259,8 @@ class dp_competency_component extends dp_base_component {
             $tablecolumns[] = 'status';
         }
 
-        if($canremovecomps) {
-            $tableheaders[] = get_string('actions', 'local_plan');
-            $tablecolumns[] = 'actions';
-        }
+        $tableheaders[] = get_string('actions', 'local_plan');
+        $tablecolumns[] = 'actions';
 
         $table = new flexible_table('competencylist');
         $table->define_columns($tablecolumns);
@@ -317,7 +317,8 @@ class dp_competency_component extends dp_base_component {
                     $row[] = $status;
                 }
 
-                if($canremovecomps) {
+                if ($canremovecomps ||
+                    ($canrequestcomps && (in_array($ca->approved, array(DP_APPROVAL_UNAPPROVED, DP_APPROVAL_DECLINED))))) {
                     $currenturl = $CFG->wwwroot .
                         '/local/plan/components/competency/index.php?id=' .
                         $this->plan->id;
@@ -331,6 +332,9 @@ class dp_competency_component extends dp_base_component {
                     } else {
                         $row[] = $delete;
                     }
+                    }
+                else {
+                    $row[] = '';
                 }
 
                 $table->add_data($row);
@@ -735,13 +739,15 @@ class dp_competency_component extends dp_base_component {
 
 
     function remove_competency_assignment($caid) {
-        $canremovecompetency = ($this->get_setting('updatecompetency') == DP_PERMISSION_ALLOW);
-        // need permission to remove this competency
-        if(!$canremovecompetency) {
+        // Load item
+        $item = get_record('dp_plan_competency_assign', 'id', $caid);
+
+        if (!$item) {
             return false;
         }
 
-        return delete_records('dp_plan_competency_assign', 'id', $caid);
+        $item->itemid = $item->id;
+        return $this->unassign_item($item);
     }
 
     /**

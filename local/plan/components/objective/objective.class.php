@@ -155,6 +155,7 @@ class dp_objective_component extends dp_base_component {
         $priorityscaleid = ($this->get_setting('priorityscale')) ? $this->get_setting('priorityscale') : -1;
         $plancompleted = $this->plan->status == DP_PLAN_STATUS_COMPLETE;
         $cansetprofs = !$plancompleted && $this->get_setting('setproficiency') == DP_PERMISSION_ALLOW;
+        $canrequestobjectives = !$plancompleted && $this->get_setting('updateobjective') == DP_PERMISSION_REQUEST;
         $canapproveobjectives = !$plancompleted && $this->get_setting('updateobjective') == DP_PERMISSION_APPROVE;
         $canremoveobjectives = !$plancompleted && (
                 $this->get_setting('updateobjective') == DP_PERMISSION_ALLOW
@@ -222,10 +223,8 @@ class dp_objective_component extends dp_base_component {
             $tablecolumns[] = 'status';
         }
 
-        if($canremoveobjectives) {
-            $tableheaders[] = get_string('actions', 'local_plan');
-            $tablecolumns[] = 'actions';
-        }
+        $tableheaders[] = get_string('actions', 'local_plan');
+        $tablecolumns[] = 'actions';
 
         $table = new flexible_table('objectivelist');
         $table->define_columns($tablecolumns);
@@ -293,7 +292,8 @@ class dp_objective_component extends dp_base_component {
                     $row[] = $status;
                 }
 
-                if($canremoveobjectives) {
+                if ($canremoveobjectives ||
+                    ($canrequestobjectives && (in_array($objective->approved, array(DP_APPROVAL_UNAPPROVED, DP_APPROVAL_DECLINED))))) {
                     $deleteurl = $CFG->wwwroot
                         . '/local/plan/components/objective/edit.php?id='
                         . $this->plan->id
@@ -302,6 +302,9 @@ class dp_objective_component extends dp_base_component {
                         . '&d=1';
                     $strdelete = get_string('delete', 'local_plan');
                     $row[] = '<a href="'.$deleteurl.'" title="'.$strdelete.'"><img src="'.$CFG->pixpath.'/t/delete.gif" class="iconsmall" alt="'.$strdelete.'" /></a>';
+                }
+                else {
+                    $row[] = '';
                 }
 
                 $table->add_data($row);
@@ -673,7 +676,7 @@ class dp_objective_component extends dp_base_component {
      */
     function delete_objective($caid) {
         // need permission to remove this objective
-        if(!$this->can_update_items()) {
+        if (!$this->can_update_items()) {
             return false;
         }
 
