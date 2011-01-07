@@ -58,3 +58,10 @@ div.totara-dialog div#column-checkboxes {
 div.totara-dialog .selected {
     height: 255px;
 }*/
+
+/* Login page */
+#login-index .loginpanel,
+#login-index .loginbox .loginform .form-label,
+#login-index .loginbox .loginform .form-input {
+    position:relative;
+}
