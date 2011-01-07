@@ -1750,11 +1750,15 @@ body#help div#wrapper {
 	background-image: none;
 	background-color: #FFFFFF;
 	width: auto ;
-	margin: 0 20px;
+	margin: 30px 20px 0px;
 	padding-top: 30px;
 	border-left: 1px solid #666;
 	border-right: 1px solid #666;
 
+}
+body#message-index div#wrapper .login-container,
+body#help div#wrapper .login-container {
+    display:none;
 }
 
 /*****************************************************************************/
