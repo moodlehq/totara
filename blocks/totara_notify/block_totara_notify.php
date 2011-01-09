@@ -99,7 +99,7 @@ class block_totara_notify extends block_base {
                 $bkgd = ($cnt % 2) ? 'shade' : 'noshade';
                 $content  = "<tr class=\"".$bkgd."\">";
                 $content .= '<td class="status">';
-                $content .= '<img class="msgicon" src="' . totara_msg_icon_url($msg->icon) . '" title="' . $msg->subject . '" alt="' . $msg->subject .'" />';
+                $content .= '<img class="msgicon" src="' . totara_msg_icon_url($msg->icon) . '" title="' . format_string($msg->subject) . '" alt="' . format_string($msg->subject) .'" />';
                 $content .= '</td>';
                 $detailjs = totara_msg_alert_popup($msg->id);
                 $msgtext = '<a id="detailtask'.$msg->id.'-dialog" href="';

@@ -56,6 +56,13 @@ class rb_notifications_embedded extends rb_base_embedded {
 //            'heading' => '<a href="" onclick="jqCheckAll(\'totara_messages\', \'totara_message\', 1); return false;">all</a>/'.
 //                         '<a href="" onclick="jqCheckAll(\'totara_messages\', \'totara_message\', 0); return false;">none</a>',
 //        ),
+            array(
+            'type' => 'message_values',
+            'value' => 'msgid',
+            'heading' => '',
+            'hidden' => 1,
+            'noexport' => true,
+            ),
         );
 
         $this->filters = array(

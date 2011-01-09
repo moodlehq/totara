@@ -150,6 +150,17 @@ class rb_source_totaramessages extends rb_base_source {
                 array('displayfunc' => 'message_checkbox',
                       'nosort' => true)
             ),
+            new rb_column_option(
+                'message_values',
+                'msgid',
+                '',
+                'msg.id',
+                array('nosort' => true,
+                      'noexport' => true,
+                      'hidden' => 1,
+                      'joins' => 'msg',
+                    )
+            ),
         );
 
         // include some standard columns
@@ -321,8 +332,11 @@ class rb_source_totaramessages extends rb_base_source {
     // generate type icon link
     function rb_display_msgtype_link($comp, $row) {
         global $CFG;
-        $display = totara_msg_msgtype_text($row->message_values_msgtype);
-        return "<img class=\"iconsmall\" src=\"{$display['icon']}\" title=\"{$display['text']}\" alt=\"{$display['text']}\" />";
+        $msg = get_record('message20', 'id', $row->message_values_msgid);
+        $metadata = get_record('message_metadata', 'messageid', $row->message_values_msgid);
+        //$display = totara_msg_msgtype_text($row->message_values_msgtype);
+        return '<img class="msgicon" src="' . totara_msg_icon_url($metadata->icon) . '" title="' . format_string($msg->subject) . '" alt="' . format_string($msg->subject) .'" />';
+//        return "<img class=\"iconsmall\" src=\"{$display['icon']}\" title=\"{$display['text']}\" alt=\"{$display['text']}\" />";
     }
 
     // generate status type text
