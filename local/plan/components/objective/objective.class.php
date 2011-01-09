@@ -324,23 +324,64 @@ class dp_objective_component extends dp_base_component {
 
 
     /**
-     * Generates a flexibletable of details for all the courses linked to the
-     * objective
+     * Generates a flexibletable of details for all the specified linked objectives
+     * of a component
      *
      * @global object $CFG
-     * @param int $objectiveid
+     * @param array $list of objective ids
      * @return string
      */
     function display_linked_objectives($list) {
         global $CFG;
 
+        if(!is_array($list) || count($list) == 0) {
+            return false;
+        }
+
+        $showduedates = ($this->get_setting('duedatemode') == DP_DUEDATES_OPTIONAL ||
+            $this->get_setting('duedatemode') == DP_DUEDATES_REQUIRED);
+        $showpriorities = ($this->get_setting('prioritymode') == DP_PRIORITY_OPTIONAL ||
+            $this->get_setting('prioritymode') == DP_PRIORITY_REQUIRED);
+        $priorityscaleid = ($this->get_setting('priorityscale')) ? $this->get_setting('priorityscale') : -1;
+
         $objectivename = $this->get_setting('name');
+
+        // Get data
+        $select = 'SELECT po.*, po.fullname '.sql_as().' objname, 
+            osv.name '.sql_as().' proficiency, psv.name '.sql_as().' priorityname ';
+        $from = "FROM {$CFG->prefix}dp_plan_objective po
+            LEFT JOIN {$CFG->prefix}dp_objective_scale_value osv ON po.scalevalueid = osv.id
+            LEFT JOIN {$CFG->prefix}dp_priority_scale_value psv
+                ON po.priority = psv.id AND psv.priorityscaleid = {$priorityscaleid} ";
+        $where = 'WHERE po.id IN ('.implode(',', $list).') ';
+        $sort = "ORDER BY po.fullname ";
+        if (!$records = get_recordset_sql($select.$from.$where.$sort)) {
+            return false;
+        }
+
+        // get the scale values used for competencies in this plan
+        $priorityvalues = get_records('dp_priority_scale_value',
+            'priorityscaleid', $priorityscaleid, 'sortorder', 'id,name,sortorder');
+
+        // Set up table
         $tableheaders = array(
             get_string('name'),
+            get_string('proficiency', 'local_plan'),
         );
         $tablecolumns = array(
             'fullname',
+            'proficiency',
         );
+
+        if($showpriorities) {
+            $tableheaders[] = get_string('priority', 'local_plan');
+            $tablecolumns[] = 'priorityname';
+        }
+
+        if($showduedates) {
+            $tableheaders[] = get_string('duedate', 'local_plan');
+            $tablecolumns[] = 'duedate';
+        }
 
         $table = new flexible_table('linkedobjectivelist');
         $table->define_columns($tablecolumns);
@@ -349,20 +390,20 @@ class dp_objective_component extends dp_base_component {
         $table->set_attribute('class', 'logtable generalbox dp-plan-component-items');
         $table->setup();
 
-        if ( count($list)>0 ){
-            $records = get_records_select('dp_plan_objective', 'id in ('.  implode(',',$list) .')', 'fullname', 'id, fullname, planid');
-            if ($records){
-
-                foreach ( $records as $ca) {
-
-                    $row = array();
-                    $row[] = "<a href=\"{$CFG->wwwroot}/local/plan/components/objective/view.php?id={$ca->planid}&itemid={$ca->id}\">{$ca->fullname}</a>";
-                    $table->add_data($row);
-                }
+        while ($o = rs_fetch_next_record($records)) {
+            $row = array();
+            $row[] = $this->display_objective_name($o);
+            $row[] = $o->proficiency;
+            if($showpriorities) {
+                $row[] = $this->display_priority_as_text($o->priority, $o->priorityname, $priorityvalues);
             }
-        } else {
-            $table->add_data(array(get_string('nolinkedx', 'local_plan', $objectivename)));
+            if($showduedates) {
+                $row[] = $this->display_duedate_as_text($o->duedate);
+            }
+
+            $table->add_data($row);
         }
+
         // return instead of outputing table contents
         ob_start();
         $table->print_html();
