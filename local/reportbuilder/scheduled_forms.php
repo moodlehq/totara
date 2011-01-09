@@ -53,7 +53,7 @@ class scheduled_reports_new_form extends moodleform {
         }
 
         //Report type options
-        $reports = get_reports(true);
+        $reports = reportbuilder_get_reports(true);
         $reportselect = array();
         foreach($reports as $report){
             $reportselect[$report->id] = $report->fullname;
@@ -125,7 +125,7 @@ class scheduled_reports_add_form extends moodleform {
         $mform =& $this->_form;
 
         //Report type options
-        $reports = get_reports(true);
+        $reports = reportbuilder_get_reports(true);
         $reportselect = array();
         foreach($reports as $report){
             $reportselect[$report->id] = $report->fullname;

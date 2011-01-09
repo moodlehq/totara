@@ -57,7 +57,7 @@ print_container_start(false, '', 'myreports_section');
 totara_print_report_manager();
 print_container_end();
 
-if(get_reports()){
+if(reportbuilder_get_reports()){
     print_container_start(false, '', 'scheduledreports_section');
     print_container_start(false, '', 'scheduledreports_section_inner');
     echo '<br /><a name="scheduled"></a><h1>'.get_string('scheduledreports', 'local_reportbuilder').'</h1>';

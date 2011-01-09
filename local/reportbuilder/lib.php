@@ -3025,7 +3025,7 @@ function sql_cast2float($fieldname) {
  *
  * @return array Array of report objects
  */
-function get_reports($showhidden=false) {
+function reportbuilder_get_reports($showhidden=false) {
     global $CFG;
     require_once($CFG->dirroot.'/local/reportbuilder/lib.php');
     $reports = get_records('report_builder','','','fullname');

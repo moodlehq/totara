@@ -179,6 +179,7 @@ $string['noshortnameorid'] = 'Invalid report id or shortname';
 $string['notags'] = 'No official tags exist. You must create one or more official tags to base your groups on.';
 $string['notset'] = 'Course Not Set';
 $string['notyetchecked'] = 'Not yet processed';
+$string['nouserreports'] = 'You do not have any reports. Report access is configured by your site administrator. If you are expecting to see a report, ask them to check the access permissions on the report.';
 $string['occurredafter'] = 'occurred after';
 $string['occurredbefore'] = 'occurred before';
 $string['occurredprevfinancialyear'] = 'occurred in the previous financial year';

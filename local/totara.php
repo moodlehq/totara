@@ -343,6 +343,8 @@ function totara_print_report_manager($return=false) {
         $returnstr = '<table class="reportmanager">';
         $returnstr .= implode("\n",$rows);
         $returnstr .= '</table>';
+    } else {
+        $returnstr = get_string('nouserreports', 'local_reportbuilder');
     }
 
     if ($return) {
