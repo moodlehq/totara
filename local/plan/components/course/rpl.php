@@ -32,6 +32,8 @@ if ($fromform = $mform->get_data()) {
         totara_set_notification(get_string('error:unknownbuttonclicked', 'local_plan'), $returnurl);
     }
 
+    $course = new object();
+    $course->id = $courseid;
     $info = new completion_info($course);
     $rpl = $fromform->rpl;
 
@@ -55,7 +57,8 @@ if ($fromform = $mform->get_data()) {
         $completion->delete();
     }
 
-    totara_set_notification('Updated RPL of Course', $CFG->wwwroot.'/local/plan/components/course/index.php?id='.$planid, array('style'=>'notifysuccess'));
+    totara_set_notification(get_string('rplupdated', 'local_plan'),
+        $CFG->wwwroot.'/local/plan/components/course/index.php?id='.$planid, array('style'=>'notifysuccess'));
 }
 
 

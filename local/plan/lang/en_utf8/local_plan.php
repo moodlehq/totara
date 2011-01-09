@@ -39,6 +39,7 @@ $string['activelearning'] = 'Active Learning';
 $string['records'] = 'records';
 $string['recordsshown'] = 'records shown';
 $string['rpl'] = 'Recognition of Prior Learning';
+$string['rplupdated'] = 'Recognition of Prior Learning updated';
 $string['error:usernotfound'] = 'User not found';
 $string['error:cannotviewpage'] = 'You cannot view this page';
 $string['recordoflearningcourses'] = 'Record of Learning: Courses';
