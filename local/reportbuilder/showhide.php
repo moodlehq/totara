@@ -41,7 +41,7 @@ $('#column-checkboxes input').each(function() {
 });
 // when clicked, toggle visibility of columns
 $('#column-checkboxes input').click(function() {
-    var sel = '#' + shortname + ' .' + $(this).attr('name');
+    var sel = '#' + shortname + ' td.' + $(this).attr('name');
     var value = $(this).attr('checked') ? 1 : 0;
     $(sel).toggle();
 
