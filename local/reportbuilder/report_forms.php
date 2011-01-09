@@ -101,7 +101,6 @@ class report_builder_edit_form extends moodleform {
 
 }
 
-
 /**
  * Formslib template for the global settings form
  */
@@ -386,6 +385,7 @@ class report_builder_edit_columns_form extends moodleform {
     function validation($data) {
         $err = array();
         $err += validate_unique_columns($data);
+        $err += validate_none_empty_heading_columns($data);
         return $err;
     }
 
@@ -542,6 +542,29 @@ function validate_unique_columns($data) {
             $errors['newcolumns'] = get_string('norepeatcols','local_reportbuilder');
         }
     }
+    return $errors;
+}
+
+
+/**
+ * Method to check column headings aren't empty (or just whitespace)
+ *
+ * @param array $data Array of data from the form
+ *
+ * @return array Array of errors to display on failure
+ */
+function validate_none_empty_heading_columns($data) {
+    $errors = array();
+
+    foreach($data as $key => $value) {
+        // only look at the heading fields
+        if(preg_match('/^heading\d+/', $key)) {
+            if(trim($value) == '') {
+                $errors[$key] = get_string('noemptycols', 'local_reportbuilder');
+            }
+        }
+    }
+
     return $errors;
 }
 

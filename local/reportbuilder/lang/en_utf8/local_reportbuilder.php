@@ -166,6 +166,7 @@ $string['noheadingcolumnsdefined'] = 'No heading columns defined';
 $string['noneselected'] = 'None selected';
 $string['nopermission'] = 'You do not have permission to view this page';
 $string['noreloadreport'] = 'Report settings could not be reset';
+$string['noemptycols'] = 'You must include a column heading';
 $string['norepeatcols'] = 'You cannot include the same column more than once';
 $string['norepeatfilters'] = 'You cannot include the same filter more than once';
 $string['noreports'] = 'No reports have been created. You can create a report using the form below.';
