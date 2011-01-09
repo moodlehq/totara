@@ -160,7 +160,7 @@ function totara_stats_manager_stats($user, $config=null) {
     //might need to be careful with length of sql query limit - list of userids could be very large.
 
     // return users with this user as manager
-    $usersql = "AND userid IN (SELECT c.instanceid as userid
+    $usersql = " AND userid IN (SELECT c.instanceid as userid
         FROM {$CFG->prefix}role_assignments ra
         LEFT JOIN {$CFG->prefix}context c
           ON c.id=ra.contextid
