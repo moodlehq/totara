@@ -15,22 +15,25 @@
 # In the Hudson selenium config, you then need to load the browser as so:
 #
 
-echo "STEP 1: Run simpletests";
+echo "STEP 1: Generate some test users"
+php -f build/generate-users.php
+
+echo "STEP 2: Run simpletests";
 python build/simpletests.py http://brumbies.wgtn.cat-it.co.nz/totara-hudson/
 
 echo "Convert to Junit XML";
 xsltproc build/simpletest_to_junit.xsl build/logs/simpletest-results.xml > build/logs/xml/TEST-suite.xml
 
-echo "STEP 2: Run cucumber tests";
+echo "STEP 3: Run cucumber tests";
 cucumber --tags ~@nightly -p pgsql --format junit --out build/logs/xml/
 
-echo "STEP 3: Run language string tests";
+echo "STEP 4: Run language string tests";
 php -f build/checklang.php . local hierarchy guides customfield
 
-echo "STEP 4: Run help button tests";
+echo "STEP 5: Run help button tests";
 php -f build/checkhelp.php . local hierarchy guides customfield
 
-echo "STEP 5: Run php syntax check";
+echo "STEP 6: Run php syntax check";
 php build/lint.php
 
 # too slow
