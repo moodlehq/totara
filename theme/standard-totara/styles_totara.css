@@ -1449,6 +1449,17 @@ table.planitems td.options {
     text-align: center;
 }
 
+table.planiteminfobox {
+    width: 100%;
+}
+
+table.planiteminfobox td {
+    padding: 5px;
+    background-color: #F0F0F0;
+    border: 2px solid white;
+    text-align: center;
+}
+
 table.planbuttons {
     margin-left: 0px;
     width: 532px;

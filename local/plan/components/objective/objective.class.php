@@ -322,70 +322,6 @@ class dp_objective_component extends dp_base_component {
         }
     }
 
-    /**
-     * Generates a flexibletable of details for all the courses linked to the
-     * objective
-     *
-     * @global object $CFG
-     * @param int $objectiveid
-     * @return string
-     */
-    function display_linked_courses($objectiveid) {
-        global $CFG;
-
-        $coursename = $this->plan->get_component('course')->get_setting('name');
-        $tableheaders = array(
-            get_string('linkedx', 'local_plan', $coursename),
-        );
-        $tablecolumns = array(
-            'fullname',
-        );
-
-        $table = new flexible_table('linkedcourselist');
-        $table->define_columns($tablecolumns);
-        $table->define_headers($tableheaders);
-
-        $table->set_attribute('class', 'logtable generalbox dp-plan-component-items');
-        $table->setup();
-
-        $list = $this->get_linked_components($objectiveid, 'course');
-        if(is_array($list) && count($list) > 0) {
-            $sql = "
-                select c.*
-                from
-                    {$CFG->prefix}course c
-                    inner join {$CFG->prefix}dp_plan_course_assign ca
-                    on c.id = ca.courseid
-                where ca.id in (".implode(',', $list).") order by c.fullname
-                ";
-            //$sql = "select * from {$CFG->prefix}course c where c.id in (" . implode(',', $list) . ") order by c.fullname";
-            $records = get_recordset_sql($sql);
-            if ($records){
-
-                while($ca = rs_fetch_next_record($records)) {
-
-                    $row = array();
-                    ob_start();
-                    print_course($ca);
-                    $row[] = ob_get_contents();
-                    ob_end_clean();
-                    $table->add_data($row);
-                }
-
-                rs_close($records);
-
-            }
-        } else {
-            $table->add_data(array(get_string('nolinkedx', 'local_plan', $coursename)));
-        }
-        // return instead of outputing table contents
-        ob_start();
-        $table->print_html();
-        $out = ob_get_contents();
-        ob_end_clean();
-
-        return $out;
-    }
 
     /**
      * Generates a flexibletable of details for all the courses linked to the
@@ -400,7 +336,7 @@ class dp_objective_component extends dp_base_component {
 
         $objectivename = $this->get_setting('name');
         $tableheaders = array(
-            get_string('linkedx', 'local_plan', $objectivename),
+            get_string('name'),
         );
         $tablecolumns = array(
             'fullname',
@@ -981,48 +917,45 @@ SQL;
         $priorityvalues = get_records('dp_priority_scale_value',
             'priorityscaleid', $priorityscaleid, 'sortorder', 'id,name,sortorder');
 
-        // @todo add competency icon
-        $out .= "<h3>" . get_string('fullname') . ": {$item->fullname}</h3>\n";
-        $out .= "<table border=\"0\">\n";
-        $out .= "<tr>\n";
-        $out .= "  <th>" . get_string('shortname') .":</th>\n";
-        $out .= "  <td>{$item->shortname}</td>\n";
-        $out .= "</tr>\n";
-        $out .= "<tr>\n";
-        $out .= "  <th>" . get_string('description') .":</th>\n";
-        $out .= "  <td>{$item->description}</td>\n";
-        $out .= "</tr>\n";
+        // @todo add icon
+        $out .= "<table><tr><td>";
+        $out .= "<h3>{$item->fullname}\n";
+        if (!empty($item->shortname)) {
+            $out .= " ({$item->shortname})\n";
+        }
+        $out .= "</h3>";
+        $out .= "</td></tr></table>";
 
-        if($priorityenabled) {
-            $out .= '<tr><th>';
-            $out .= get_string('priority', 'local_plan') . ':';
-            $out .= '</th><td>';
+        $out .= "<table border=\"0\" class=\"planiteminfobox\">\n";
+        $out .= "<tr>\n";
+        if($priorityenabled && !empty($item->priority)) {
+            $out .= '<td>';
+            $out .= get_string('priority', 'local_plan') . ': ';
             $out .= $this->display_priority_as_text($item->priority,
                 $item->priorityname, $priorityvalues);
-            $out .= '</td></tr>';
+            $out .= '</td>';
         }
-        if($duedateenabled) {
-            $out .= '<tr><th>';
-            $out .= get_string('duedate', 'local_plan') . ':';
-            $out .= '</th><td>';
+        if($duedateenabled && !empty($item->duedate)) {
+            $out .= '<td>';
+            $out .= get_string('duedate', 'local_plan') . ': ';
             $out .= $this->display_duedate_as_text($item->duedate);
             if ( !$item->achieved ){
                 $out .= '<br />';
                 $out .= $this->display_duedate_highlight_info($item->duedate);
             }
-            $out .= '</td></tr>';
+            $out .= '</td>';
         }
-        $out .= "<tr>\n";
-        $out .= "  <th>Proficiency:</th>\n";
-        $out .= "  <td>$item->profname</td>\n";
-        $out .= "</tr>\n";
+        if (!empty($item->profname)) {
+            $out .= "  <td>" . get_string('proficiency', 'local') .": \n";
+            $out .= "  {$item->profname}</td>\n";
+        }
+
         if ($requiresapproval){
-            $out .= "<tr>\n";
-            $out .= "  <th>" . get_string('status') .":</th>\n";
-            $out .= "  <td>".$this->display_approval($item, false, false)."</td>\n";
-            $out .= "</tr>\n";
+            $out .= "  <td>" . get_string('status') .": \n";
+            $out .= $this->display_approval($item, false, false)."</td>\n";
         }
         $out .= '</table>';
+        $out .= "  <p>{$item->description}</p>\n";
 
         print $out;
     }

@@ -12,6 +12,8 @@ $plan = new development_plan($id);
 $plancompleted = $plan->status == DP_PLAN_STATUS_COMPLETE;
 $componentname = 'objective';
 $component = $plan->get_component($componentname);
+$objectivename = $component->get_setting('name');
+$coursename = $plan->get_component('course')->get_setting('name');
 
 /// Javascript stuff
 // If we are showing dialog
@@ -69,7 +71,14 @@ if ( !$plancompleted && ($canupdate = $component->can_update_items()) ){
 }
 
 if ( $plan->get_component('course')->get_setting('enabled') ){
-    print $component->display_linked_courses($caid);
+    print '<h3>' . get_string('linkedx', 'local_plan', $coursename) . '</h3>';
+    if($linkedcourses =
+        $component->get_linked_components($caid, 'course')) {
+        print $plan->get_component('course')->display_linked_courses($linkedcourses);
+    } else {
+        print '<p>' . get_string('nolinkedx', 'local_plan', $coursename). '</p>';
+    }
+
     if ( !$plancompleted ){
         print $component->display_course_picker($caid);
     }

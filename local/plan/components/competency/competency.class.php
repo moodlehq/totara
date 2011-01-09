@@ -543,24 +543,24 @@ class dp_competency_component extends dp_base_component {
 
         // @todo add competency icon
         $out .= '<h3>' . $item->fullname . '</h3>';
-        $out .= '<table border="0">';
-        if($priorityenabled) {
-            $out .= '<tr><th>';
-            $out .= get_string('priority', 'local_plan') . ':';
-            $out .= '</td><th>';
+        $out .= '<table border="0" class="planiteminfobox">';
+        $out .= '<tr>';
+        if($priorityenabled && !empty($item->priority)) {
+            $out .= "<td>";
+            $out .= get_string('priority', 'local_plan') . ': ';
             $out .= $this->display_priority_as_text($item->priority,
                 $item->priorityname, $priorityvalues);
-            $out .= '</td></tr>';
+            $out .= '</td>';
         }
-        if($duedateenabled) {
-            $out .= '<tr><th>';
-            $out .= get_string('duedate', 'local_plan') . ':';
-            $out .= '</th><td>';
+        if($duedateenabled && !empty($item->duedate)) {
+            $out .= '<td>';
+            $out .= get_string('duedate', 'local_plan') . ': ';
             $out .= $this->display_duedate_as_text($item->duedate);
             $out .= '<br />';
             $out .= $this->display_duedate_highlight_info($item->duedate);
-            $out .= '</td></tr>';
+            $out .= '</td>';
         }
+        $out .= "</tr>";
         $out .= '</table>';
         $out .= '<p>' . $item->description . '</p>';
 

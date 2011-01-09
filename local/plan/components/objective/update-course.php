@@ -56,5 +56,10 @@ if ( $plancompleted ){
 }
 
 $component->update_linked_components($objectiveid, 'course', $idlist);
-
-echo $component->display_linked_courses($objectiveid);
+if($linkedcourses =
+    $component->get_linked_components($objectiveid, 'course')) {
+    echo $plan->get_component('course')->display_linked_courses($linkedcourses);
+} else {
+    $coursename = $plan->get_component('course')->get_setting('name');
+    echo '<p>' . get_string('nolinkedx', 'local_plan', $coursename). '</p>';
+}
