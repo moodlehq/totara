@@ -31,10 +31,6 @@ class dp_managerdriven_workflow extends dp_base_workflow {
         $this->cfg_objective_priorityscale = $defaultpriority;
         $this->cfg_objective_objectivescale = $defaultobjective;
 
-
-        // TODO add all workflow settings here
-        // including component-specific settings
-
         // plan permission settings
         $this->perm_plan_view_learner = DP_PERMISSION_ALLOW;
         $this->perm_plan_view_manager = DP_PERMISSION_ALLOW;

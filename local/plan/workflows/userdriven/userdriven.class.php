@@ -35,9 +35,7 @@ class dp_userdriven_workflow extends dp_base_workflow {
         $this->cfg_objective_priorityscale = $defaultpriority;
         $this->cfg_objective_objectivescale = $defaultobjective;
 
-        // TODO add all workflow settings here
-        // including component-specific settings
-
+        // plan permission settings
         $this->perm_plan_view_learner = DP_PERMISSION_ALLOW;
         $this->perm_plan_view_manager = DP_PERMISSION_ALLOW;
         $this->perm_plan_create_learner = DP_PERMISSION_ALLOW;
@@ -86,7 +84,6 @@ class dp_userdriven_workflow extends dp_base_workflow {
         $this->perm_objective_setduedate_manager = DP_PERMISSION_ALLOW;
         $this->perm_objective_setproficiency_learner = DP_PERMISSION_ALLOW;
         $this->perm_objective_setproficiency_manager = DP_PERMISSION_ALLOW;
-
 
         parent::__construct();
     }
