@@ -2477,3 +2477,8 @@ div.objectivepermissionsform select {
     float:left;
     margin-right:4px;
 }
+
+/* Datepicker for the learning plans */
+.jqdatepicker {
+    margin-right:3px;
+}
