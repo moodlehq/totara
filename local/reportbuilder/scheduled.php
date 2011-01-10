@@ -88,9 +88,9 @@ $navlinks[] = array('name' => get_string($pagename, 'local_reportbuilder'), 'lin
 
 $PAGE->print_header(get_string($pagename, 'local_reportbuilder'), $navlinks);
 
-print "<table id=\"reportbuilder-navbuttons\"><tr><td>";
+print_container_start(true, 'reportbuilder-navbuttons');
 print_single_button($CFG->wwwroot.'/my/reports.php#scheduled', null, get_string('allscheduledreports','local_reportbuilder'));
-print "</td></tr></table>";
+print_container_end();
 
 print_heading(get_string($pagename, 'local_reportbuilder'));
 

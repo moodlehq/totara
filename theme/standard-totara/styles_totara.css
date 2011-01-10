@@ -2472,3 +2472,8 @@ div.objectivepermissionsform select {
   max-width: 100px;
   width: 100px;
 }
+
+.reportbuilder-navbuttons .singlebutton {
+    float:left;
+    margin-right:4px;
+}
