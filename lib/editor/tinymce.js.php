@@ -226,6 +226,7 @@ echo <<<EOF
     function mce_saveOnSubmit(id) {
         var prevOnSubmit = document.getElementById(id).form.onsubmit;
         document.getElementById(id).form.onsubmit = function() { 
+            tinyMCE.execCommand('mceToggleEditor',false,id);
             tinyMCE.triggerSave(); 
             var ret = true;
             if (prevOnSubmit != undefined) {
