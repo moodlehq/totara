@@ -68,7 +68,7 @@ function print_entry($course) {
             $destination = $CFG->wwwroot;
         }
         print '<div class="plan_box plan_box_action">' . $message . '</div>';
-        redirect($destination,'',5);
+        print_continue($destination);
     }
 
     print_simple_box_end();
