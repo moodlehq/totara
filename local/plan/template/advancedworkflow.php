@@ -73,7 +73,7 @@ if ($fromform = $mform->get_data()) {
     }
 
     $process_form = "{$class}_process_settings_form";
-    $process_form(&$fromform, $id);
+    $process_form($fromform, $id);
 
     redirect($CFG->wwwroot . '/local/plan/template/advancedworkflow.php?id='.$id.'&amp;component='.$component);
 }
