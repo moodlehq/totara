@@ -45,7 +45,7 @@ class plan_edit_form extends moodleform {
             $buttonarray[] = $mform->createElement('submit', 'deleteyes', get_string('yes'));
             $buttonarray[] = $mform->createElement('submit', 'deleteno', get_string('no'));
             $mform->addGroup($buttonarray, 'buttonar', '', array(' '), false);
-            smform->closeHeaderBefore('buttonar');
+            $mform->closeHeaderBefore('buttonar');
 
             return;
         }
