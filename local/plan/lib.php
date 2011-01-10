@@ -406,7 +406,7 @@ function dp_display_plans($userid, $statuses=array(DP_PLAN_STATUS_APPROVED), $co
     $tablename = str_replace(',', '-', $statuses);
     $tablename = 'plans-list-'.$tablename;
     $tableheaders = array();
-    $tablecols = array('p,name');
+    $tablecols = array('p.name');
 
     // Determine what the first column should be
     if (in_array('activeplans', $cols)) {
