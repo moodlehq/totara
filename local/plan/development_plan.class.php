@@ -429,17 +429,16 @@ class development_plan {
     }
 
     function display_enddate_highlight_info($enddate) {
-        // @todo use a different class that doesn't add padding
         $out = '';
         $now = time();
         if(isset($enddate)) {
             if(($enddate < $now) && ($now - $enddate < 60*60*24)) {
-                $out .= '<br /><span class="problem">' . get_string('duetoday', 'local_plan') . '</span>';
+                $out .= '<br /><span class="plan_highlight">' . get_string('duetoday', 'local_plan') . '</span>';
             } else if($enddate < $now) {
-                $out .= '<br /><span class="problem">' . get_string('overdue', 'local_plan') . '</span>';
+                $out .= '<br /><span class="plan_highlight">' . get_string('overdue', 'local_plan') . '</span>';
             } else if ($enddate - $now < 60*60*24*7) {
                 $days = ceil(($enddate - $now)/(60*60*24));
-                $out .= '<br /><span class="problem">' . get_string('dueinxdays', 'local_plan', $days) . '</span>';
+                $out .= '<br /><span class="plan_highlight">' . get_string('dueinxdays', 'local_plan', $days) . '</span>';
             }
         }
         return $out;
