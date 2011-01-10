@@ -45,7 +45,7 @@ if (!isset($CFG->message_offline_time)) {
 /// $value is the value $field should equal to be counted
 /// if $field is empty then return count of the whole array
 /// if $field is non-existent then return 0;
-function message_count_messages($messagearray, $field='', $value='') {
+function tm_message_count_messages($messagearray, $field='', $value='') {
     if (!is_array($messagearray)) return 0;
     if ($field == '' or empty($messagearray)) return count($messagearray);
 
@@ -64,7 +64,7 @@ function message_count_messages($messagearray, $field='', $value='') {
  * @param object $user2 the second user. If null this function will count all of user 1's unread messages.
  * @return int the count of $user1's unread messages
  */
-function message_count_unread_messages($user1=null, $user2=null) {
+function tm_message_count_unread_messages($user1=null, $user2=null) {
     global $USER, $DB;
 
     if (empty($user1)) {
@@ -82,7 +82,7 @@ function message_count_unread_messages($user1=null, $user2=null) {
 
 
 /// Borrowed with changes from mod/forum/lib.php
-function message_shorten_message($message, $minlength=0) {
+function tm_message_shorten_message($message, $minlength=0) {
 // Given a post object that we already know has a long message
 // this function truncates the message nicely to the first
 // sane place between $CFG->forum_longpost and $CFG->forum_shortpost
@@ -138,7 +138,7 @@ function message_shorten_message($message, $minlength=0) {
  * for the first keyword in the string, and then chops out a
  * small section from the text that shows that word in context.
  */
-function message_get_fragment($message, $keywords) {
+function tm_message_get_fragment($message, $keywords) {
 
     $fullsize = 120;
     $halfsize = (int)($fullsize/2);
@@ -151,7 +151,7 @@ function message_get_fragment($message, $keywords) {
         }
     }
     if (empty($keyword)) {   // None found, so just return start of message
-        return message_shorten_message($message, 30);
+        return tm_message_shorten_message($message, 30);
     }
 
     $leadin = $leadout = '';
