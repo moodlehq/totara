@@ -735,53 +735,8 @@ class dp_course_component extends dp_base_component {
     }
 
     function process_action($action) {
-        global $CFG;
-
-        switch ($action) {
-            case 'approvalremind' :
-                $confirm = optional_param('confirm', false, PARAM_BOOL);
-                $assignmentid = required_param('assignmentid', PARAM_INT);
-
-                $redirecturl = new moodle_url(strip_querystring(qualified_me()));
-                $redirecturl->param('id', $this->plan->id);
-
-                // Get course and assignment details
-                $sql = "SELECT c.*, ca.*
-                        FROM {$CFG->prefix}dp_plan_course_assign ca
-                        INNER JOIN {$CFG->prefix}course c ON ca.courseid = c.id
-                        WHERE ca.id = {$assignmentid}";
-
-                $course_details = get_record_sql($sql);
-
-                if (!$confirm) {
-                    // Show confirmation message
-                    print_header_simple();
-                    $remindurl = new moodle_url(qualified_me());
-                    $remindurl->param('confirm', 'true');
-                    $strdelete = get_string('checksendapprovalreminder', 'local_plan');
-                    notice_yesno(
-                        "{$strdelete}<br /><br />".format_string($course_details->fullname),
-                        $remindurl->out(),
-                        $redirecturl->out()
-                    );
-
-                    print_footer();
-                    exit;
-                } else {
-                    // Get user's manager(s); email reminder
-                    $managers = dp_get_notification_receivers(get_context_instance(CONTEXT_USER, $this->plan->userid), 'manager');
-                    foreach ($managers as $manager) {
-                        // @todo send email
-                        //email_to_user($manager, $from, $subject, $bodycopy);
-                    }
-                    totara_set_notification(get_string('approvalremindersent','local_plan'), $redirecturl->out(), array('style' => 'notifysuccess'));
-
-                    //@todo set event/notification?
-                }
-                break;
-            default:
-                break;
-        }
+        // Put any relevant actions that should be performed
+        // on this component in here
     }
 
     function initialize_settings(&$settings) {

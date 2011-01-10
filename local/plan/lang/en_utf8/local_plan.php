@@ -128,7 +128,6 @@ $string['name'] = 'Name';
 $string['status'] = 'Status';
 $string['options'] = 'Options';
 $string['approval'] = 'Approval';
-$string['sendapprovalreminder'] = 'Send approval request reminder';
 $string['approved'] = 'Approved';
 $string['declined'] = 'Declined';
 $string['approve'] = 'Approve';
@@ -296,8 +295,6 @@ $string['error:invalid_component_id'] = 'Invalid component ID';
 $string['error:nopermissions'] = 'You do not have the necessary permissions to perform this action';
 
 $string['deletecheckdptemplate'] = 'Are you sure you want to delete this learning plan template?';
-$string['checksendapprovalreminder'] = 'Are you sure you want to send an approval reminder for this?';
-$string['approvalremindersent'] = 'Approval reminder sent';
 
 $string['error:templateid'] = 'Invalid plan template ID';
 
