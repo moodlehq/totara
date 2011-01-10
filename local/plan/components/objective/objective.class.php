@@ -697,10 +697,11 @@ class dp_objective_component extends dp_base_component {
 
         $result = insert_record('dp_plan_objective', $rec);
 
-        // are we OK? then send the notifications
-        if ($result) {
+        // are we OK? then send the notifications if plan is not draft
+        if ($result && $this->plan->status != DP_PLAN_STATUS_UNAPPROVED) {
             $this->send_creation_notification($result, $shortname);
         }
+
         return $result;
     }
 
@@ -731,7 +732,7 @@ class dp_objective_component extends dp_base_component {
         $event->contexturl = "{$CFG->wwwroot}/local/plan/view.php?id={$this->plan->id}";
         $event->icon = 'objective-remove.png';
         $a = new stdClass;
-        $a->objective = $objective->shortname;
+        $a->objective = $objective->fullname;
         $a->plan = "<a href=\"{$event->contexturl}\" title=\"{$this->plan->name}\">{$this->plan->name}</a>";
 
         // did they delete it themselves?
@@ -812,7 +813,7 @@ class dp_objective_component extends dp_base_component {
         $event->contexturl = "{$CFG->wwwroot}/local/plan/components/objective/view.php?id={$this->plan->id}&itemid={$objective->id}";
         $event->icon = 'objective-update.png';
         $a = new stdClass;
-        $a->objective = "<a href=\"{$event->contexturl}\" title=\"{$objective->shortname}\">{$objective->shortname}</a>";
+        $a->objective = "<a href=\"{$event->contexturl}\" title=\"{$objective->shortname}\">{$objective->fullname}</a>";
         $a->plan = "<a href=\"{$CFG->wwwroot}/local/plan/view.php?id={$this->plan->id}\" title=\"{$this->plan->name}\">{$this->plan->name}</a>";
         $a->field = get_string('objective'.$field, 'local_plan');
 
@@ -860,7 +861,7 @@ class dp_objective_component extends dp_base_component {
         $event->contexturl = "{$CFG->wwwroot}/local/plan/components/objective/view.php?id={$this->plan->id}&itemid={$objective->id}";
         $event->icon = 'objective-'.($status == 'complete' ? 'complete' : 'fail').'.png';
         $a = new stdClass;
-        $a->objective = "<a href=\"{$event->contexturl}\" title=\"{$objective->shortname}\">{$objective->shortname}</a>";
+        $a->objective = "<a href=\"{$event->contexturl}\" title=\"{$objective->shortname}\">{$objective->fullname}</a>";
         $a->plan = "<a href=\"{$CFG->wwwroot}/local/plan/view.php?id={$this->plan->id}\" title=\"{$this->plan->name}\">{$this->plan->name}</a>";
 
         // did they complete it themselves?
