@@ -148,7 +148,12 @@ function tm_message_send($eventdata) {
     $savemessage->fullmessage       = addslashes($eventdata->fullmessage);
     $savemessage->fullmessageformat = $eventdata->fullmessageformat;
     $savemessage->fullmessagehtml   = addslashes($eventdata->fullmessagehtml);
-//    $savemessage->smallmessage      = $eventdata->smallmessage;
+
+    if (!empty($eventdata->smallmessage)) {
+        $savemessage->smallmessage = addslashes($eventdata->smallmessage);
+    } else {
+        $savemessage->smallmessage = null;
+    }
 
     if (!empty($eventdata->notification)) {
         $savemessage->notification = $eventdata->notification;
@@ -163,7 +168,7 @@ function tm_message_send($eventdata) {
     }
 
     if (!empty($eventdata->contexturlname)) {
-        $savemessage->contexturlname = $eventdata->contexturlname;
+        $savemessage->contexturlname = addslashes($eventdata->contexturlname);
     } else {
         $savemessage->contexturlname = null;
     }
