@@ -82,7 +82,7 @@
                 $navlinks[] = array('name' => $struser, 'link' => null, 'type' => 'misc');
                 $navigation = build_navigation($navlinks);
 
-                print_header("$strpersonalprofile: ", "$strpersonalprofile: ", $navigation, "", "", true, "&nbsp;", navmenu($course));
+                print_header("$strpersonalprofile: ", "$strpersonalprofile: ", $navigation, "", "", true, "&nbsp;");
                 print_heading(get_string('usernotavailable', 'error'));
                 print_footer($course);
                 exit;
@@ -98,12 +98,12 @@
                 if (has_capability('moodle/role:assign', $coursecontext)) {
                     $navlinks[] = array('name' => $fullname, 'link' => null, 'type' => 'misc');
                     $navigation = build_navigation($navlinks);
-                    print_header("$strpersonalprofile: ", "$strpersonalprofile: ", $navigation, "", "", true, "&nbsp;", navmenu($course));
+                    print_header("$strpersonalprofile: ", "$strpersonalprofile: ", $navigation, "", "", true, "&nbsp;");
                     print_heading(get_string('notenrolled', '', $fullname));
                 } else {
                     $navlinks[] = array('name' => $struser, 'link' => null, 'type' => 'misc');
                     $navigation = build_navigation($navlinks);
-                    print_header("$strpersonalprofile: ", "$strpersonalprofile: ", $navigation, "", "", true, "&nbsp;", navmenu($course));
+                    print_header("$strpersonalprofile: ", "$strpersonalprofile: ", $navigation, "", "", true, "&nbsp;");
                     print_heading(get_string('notenrolledprofile'));
                 }
                 print_continue($_SERVER['HTTP_REFERER']);
@@ -121,7 +121,7 @@
             $gtrue = (bool)groups_get_all_groups($course->id, $user->id);
             if (!$gtrue) {
                 $navigation = build_navigation($navlinks);
-                print_header("$strpersonalprofile: ", "$strpersonalprofile: ", $navigation, "", "", true, "&nbsp;", navmenu($course));
+                print_header("$strpersonalprofile: ", "$strpersonalprofile: ", $navigation, "", "", true, "&nbsp;");
                 print_error("groupnotamember", '', "../course/view.php?id=$course->id");
             }
         }
@@ -135,7 +135,7 @@
     $navigation = build_navigation($navlinks);
 
     print_header("$course->fullname: $strpersonalprofile: $fullname", $course->fullname,
-                 $navigation, "", "", true, "&nbsp;", navmenu($course));
+                 $navigation, "", "", true, "&nbsp;");
 
 
     if (($course->id != SITEID) and ! isguest() ) {   // Need to have access to a course to see that info
