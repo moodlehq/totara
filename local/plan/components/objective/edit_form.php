@@ -58,6 +58,8 @@ class plan_objective_edit_form extends moodleform {
         // Generate list of proficiencies
         $proflist = array();
         $objscaleid = $objective->get_setting('objectivescale');
+        $defaultobjscalevalueid = get_field('dp_objective_scale', 'defaultid', 'id', $objscaleid);
+
         if ( $objscaleid ){
             $vals = get_records('dp_objective_scale_value', 'objscaleid', $objscaleid, 'sortorder', 'id, name, sortorder');
             foreach ( $vals as $v ){
@@ -112,6 +114,8 @@ class plan_objective_edit_form extends moodleform {
         // Proficiency
         $mform->addElement('select', 'scalevalueid', get_string('proficiency', 'local_plan'), $proflist);
         $mform->addRule('scalevalueid', get_string('err_required', 'form'), 'required', '', 'client', false, false);
+        $mform->setDefault('scalevalueid', $defaultobjscalevalueid);
+
         if ( !$profallow ){
             $mform->freeze(array('scalevalueid'));
         }
