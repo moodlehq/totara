@@ -394,16 +394,9 @@ class development_plan {
     }
 
     function display_enddate() {
-        $cansetenddate = false; // @todo ($this->get_setting('setenddate') == DP_PERMISSION_ALLOW);
-
         $out = '';
 
-        // only show a form if they have permission to change due dates
-        if($cansetenddate) {
-            $out .= $this->display_enddate_as_form($this->enddate, "enddate[{$this->id}]");
-        } else {
-            $out .= $this->display_enddate_as_text($this->enddate);
-        }
+        $out .= $this->display_enddate_as_text($this->enddate);
 
         // highlight dates that are overdue or due soon
         $out .= $this->display_enddate_highlight_info($this->enddate);
@@ -412,12 +405,6 @@ class development_plan {
 
     }
 
-    function display_enddate_as_form($enddate, $name) {
-        global $CFG;
-        $enddatestr = isset($enddate) ?
-            userdate($enddate, '%d/%m/%y', $CFG->timezone, false) : '';
-        return '<input type="text" name="'.$name.'" value="'. $enddatestr . '" size="8" maxlength="20"/>';
-    }
 
     function display_enddate_as_text($enddate) {
         global $CFG;
