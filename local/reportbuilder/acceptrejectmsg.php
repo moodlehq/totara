@@ -44,11 +44,12 @@ if (!$msg || $msg->useridto != $USER->id) {
 //$display = totara_msg_msgstatus_text($metadata->msgstatus);
 //$status = $display['icon'];
 //$status_alt = $display['text'];
-$display = totara_msg_urgency_text($metadata->urgency);
-$urgency = $display['icon'];
-$urgency_alt = $display['text'];
+//$display = totara_msg_urgency_text($metadata->urgency);
+//$urgency = $display['icon'];
+//$urgency_alt = $display['text'];
 $display = totara_msg_msgtype_text($metadata->msgtype);
 $type = $display['icon'];
+$subject = format_string($msg->subject);
 $type_alt = $display['text'];
 
 $from = get_record('user', 'id', $msg->useridfrom);
@@ -56,6 +57,8 @@ $fromname = fullname($from);
 print '<div id="totara-msgs-action"><table>';
 print '<tr><td colspan="2">' .$msgtext.'</td></tr>';
 print '<tr><td colspan="2">&nbsp;</td></tr>';
+print '<tr><td class="totara-msgs-action-left"><label for="dismiss-type">' . get_string('subject', 'forum').'</label></td>';
+print "<td class=\"totara-msgs-action-right\"><div id='dismiss-type'>{$subject}</div></td></tr>";
 $icon = '<img class="msgicon" src="' . totara_msg_icon_url($metadata->icon) . '" title="' . format_string($msg->subject) . '" alt="' . format_string($msg->subject) .'" />';
 print '<tr><td class="totara-msgs-action-left"><label for="dismiss-type">' . get_string('type', 'block_totara_notify').'</label></td>';
 print "<td class=\"totara-msgs-action-right\"><div id='dismiss-type'>{$icon}</div></td></tr>";
