@@ -260,7 +260,7 @@ class dp_course_component extends dp_base_component {
         $canapprovecourses = !$plancompleted &&
             $this->get_setting('updatecourse') == DP_PERMISSION_APPROVE;
         $canremovecourses = !$plancompleted &&
-            $this->get_setting('updatecourse') == DP_PERMISSION_ALLOW;
+            $this->get_setting('updatecourse') >= DP_PERMISSION_ALLOW;
 
         // @todo fix sorting of status column to account for course
         // completion - may need status column in course completions table

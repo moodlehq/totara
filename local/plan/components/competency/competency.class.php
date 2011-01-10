@@ -192,7 +192,7 @@ class dp_competency_component extends dp_base_component {
         $canapprovecomps = !$plancompleted &&
             $this->get_setting('updatecompetency') == DP_PERMISSION_APPROVE;
         $canremovecomps = !$plancompleted &&
-            $this->get_setting('updatecompetency') == DP_PERMISSION_ALLOW;
+            $this->get_setting('updatecompetency') >= DP_PERMISSION_ALLOW;
         $canrequestcomps = !$plancompleted &&
             $this->get_setting('updatecompetency') == DP_PERMISSION_REQUEST;
 
