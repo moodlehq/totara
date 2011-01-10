@@ -83,6 +83,7 @@ if ($data = $form->get_data()) {
             print_error('error:nopermissions', 'local_plan');
         }
         // Save plan data
+        unset($data->startdate);
         if (!update_record('dp_plan', $data)) {
             totara_set_notification(get_string('planupdatefail', 'local_plan'), $editurl);
         }

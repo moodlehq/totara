@@ -45,7 +45,7 @@ class plan_edit_form extends moodleform {
             $buttonarray[] = $mform->createElement('submit', 'deleteyes', get_string('yes'));
             $buttonarray[] = $mform->createElement('submit', 'deleteno', get_string('no'));
             $mform->addGroup($buttonarray, 'buttonar', '', array(' '), false);
-            $mform->closeHeaderBefore('buttonar');
+            smform->closeHeaderBefore('buttonar');
 
             return;
         }
@@ -107,11 +107,10 @@ class plan_edit_form extends moodleform {
 
     function validation($data) {
         $mform =& $this->_form;
-
         $result = array();
 
-        $startdate = isset($data['startdate'])?$data['startdate']:'';
-        $enddate = isset($data['enddate'])?$data['enddate']:'';
+        $startdate = isset($data['startdate']) ? $data['startdate'] : '';
+        $enddate = isset($data['enddate']) ? $data['enddate'] : '';
 
         // Enforce start date before finish date
         if ( $startdate > $enddate && $startdate !== false && $enddate !== false ){
@@ -120,5 +119,5 @@ class plan_edit_form extends moodleform {
             unset($errstr);
         }
         return $result;
-   }
+    }
 }
