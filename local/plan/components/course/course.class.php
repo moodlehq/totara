@@ -728,6 +728,9 @@ class dp_course_component extends dp_base_component {
             }
             else {
                 if ($status) {
+                    if ($this->plan->status != DP_PLAN_STATUS_UNAPPROVED) {
+                        $this->send_component_update_notification();
+                    }
                     totara_set_notification(get_string('coursesupdated','local_plan'), $currenturl, array('style'=>'notifysuccess'));
                 } else {
                     totara_set_notification(get_string('coursesnotupdated','local_plan'), $currenturl);

@@ -426,6 +426,9 @@ abstract class dp_base_component {
 
         // Get currently assigned items
         $assigned = $this->get_assigned_items();
+        $assigned_ids = array_keys($assigned);
+        $sendnotification = (count(array_diff($items, $assigned_ids)) || count(array_diff($assigned_ids, $items)))
+            && $this->plan->status != DP_PLAN_STATUS_UNAPPROVED;
 
         if ($items) {
             foreach ($items as $itemid) {
@@ -448,6 +451,46 @@ abstract class dp_base_component {
         // Remaining items to be deleted
         foreach ($assigned as $item) {
             $this->unassign_item($item);
+        }
+
+        if ($sendnotification) {
+            $this->send_component_update_notification();
+        }
+    }
+
+    function send_component_update_notification($update_info) {
+        global $USER, $CFG;
+        require_once($CFG->dirroot.'/local/totara_msg/messagelib.php');
+
+        // @todo implement $update_info to provide notifications with more details re component update
+
+        $event = new stdClass;
+        $userfrom = get_record('user', 'id', $USER->id);
+        $event->userfrom = $userfrom;
+        $event->contexturl = "{$CFG->wwwroot}/local/plan/components/{$this->component}/index.php?id={$this->plan->id}";
+        $event->icon = $this->component.'-update.png';
+        $a = new stdClass;
+        $a->plan = "<a href=\"{$CFG->wwwroot}/local/plan/view.php?id={$this->plan->id}\" title=\"{$this->plan->name}\">{$this->plan->name}</a>";
+        $a->component = $this->get_setting('name');
+
+        // did they edit it themselves?
+        if ($USER->id == $this->plan->userid) {
+            // notify their manager
+            if ($manager = totara_get_manager($this->plan->userid)) {
+                $event->userto = $manager;
+                $a->user = $this->current_user_link();
+                $event->subject = get_string('componentupdateshortmanager', 'local_plan', $a);
+                $event->fullmessage = get_string('componentupdatelongmanager', 'local_plan', $a);
+                $event->roleid = get_field('role','id', 'shortname', 'manager');
+                tm_notification_send($event);
+            }
+        } else {
+            // notify user that someone else did it
+            $userto = get_record('user', 'id', $this->plan->userid);
+            $event->userto = $userto;
+            $event->subject = get_string('componentupdateshortlearner', 'local_plan', $a->component);
+            $event->fullmessage = get_string('componentupdatelonglearner', 'local_plan', $a);
+            tm_notification_send($event);
         }
     }
 
@@ -535,4 +578,17 @@ abstract class dp_base_component {
 
         return $updated;
     }
+
+    /**
+     * Construct the link for the current user
+     * @return string user link
+     */
+    function current_user_link() {
+        global $USER, $CFG;
+
+        $userfrom_link = $CFG->wwwroot.'/user/view.php?id='.$USER->id;
+        $fromname = fullname($USER);
+        return "<a href=\"{$userfrom_link}\" title=\"$fromname\">$fromname</a> ";
+    }
+
 }

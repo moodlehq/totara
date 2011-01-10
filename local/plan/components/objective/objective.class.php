@@ -706,18 +706,6 @@ class dp_objective_component extends dp_base_component {
     }
 
     /**
-     * Construct the link for the current user
-     * @return string user link
-     */
-    function current_user() {
-        global $USER, $CFG;
-
-        $userfrom_link = $CFG->wwwroot.'/user/view.php?id='.$USER->id;
-        $fromname = fullname($USER);
-        return "<a href=\"{$userfrom_link}\" title=\"$fromname\">$fromname</a> ";
-    }
-
-    /**
      * send objective deletion notification
      * @param object $objective Objective details
      * @return nothing
@@ -740,7 +728,7 @@ class dp_objective_component extends dp_base_component {
             // notify their manager
             if ($manager = totara_get_manager($this->plan->userid)) {
                 $event->userto = $manager;
-                $event->subject = get_string('objectivedeleteshortmanager', 'local_plan', $this->current_user());
+                $event->subject = get_string('objectivedeleteshortmanager', 'local_plan', $this->current_user_link());
                 $event->fullmessage = get_string('objectivedeletelongmanager', 'local_plan', $a);
                 $event->roleid = get_field('role','id', 'shortname', 'manager');
                 tm_notification_send($event);
@@ -780,7 +768,7 @@ class dp_objective_component extends dp_base_component {
             // notify their manager
             if ($manager = totara_get_manager($this->plan->userid)) {
                 $event->userto = $manager;
-                $event->subject = get_string('objectivenewshortmanager', 'local_plan', $this->current_user());
+                $event->subject = get_string('objectivenewshortmanager', 'local_plan', $this->current_user_link());
                 $event->fullmessage = get_string('objectivenewlongmanager', 'local_plan', $a);
                 $event->roleid = get_field('role','id', 'shortname', 'manager');
                 tm_notification_send($event);
@@ -822,7 +810,7 @@ class dp_objective_component extends dp_base_component {
             // notify their manager
             if ($manager = totara_get_manager($this->plan->userid)) {
                 $event->userto = $manager;
-                $event->subject = get_string('objectiveeditshortmanager', 'local_plan', $this->current_user());
+                $event->subject = get_string('objectiveeditshortmanager', 'local_plan', $this->current_user_link());
                 $event->fullmessage = get_string('objectiveeditlongmanager', 'local_plan', $a);
                 $event->roleid = get_field('role','id', 'shortname', 'manager');
                 tm_notification_send($event);
@@ -869,7 +857,7 @@ class dp_objective_component extends dp_base_component {
             // notify their manager
             if ($manager = totara_get_manager($this->plan->userid)) {
                 $event->userto = $manager;
-                $event->subject = get_string('objective'.$status.'shortmanager', 'local_plan', $this->current_user());
+                $event->subject = get_string('objective'.$status.'shortmanager', 'local_plan', $this->current_user_link());
                 $event->fullmessage = get_string('objective'.$status.'longmanager', 'local_plan', $a);
                 $event->roleid = get_field('role','id', 'shortname', 'manager');
                 tm_notification_send($event);
