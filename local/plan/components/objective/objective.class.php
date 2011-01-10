@@ -59,7 +59,7 @@ class dp_objective_component extends dp_base_component {
         }
 
         // Decide on button text
-        if ($permission == DP_PERMISSION_ALLOW) {
+        if ($permission >= DP_PERMISSION_ALLOW) {
             $btntext = get_string('addnewobjective', 'local_plan');
         } else {
             $btntext = get_string('requestednewobjective', 'local_plan');
@@ -157,10 +157,7 @@ class dp_objective_component extends dp_base_component {
         $cansetprofs = !$plancompleted && $this->get_setting('setproficiency') == DP_PERMISSION_ALLOW;
         $canrequestobjectives = !$plancompleted && $this->get_setting('updateobjective') == DP_PERMISSION_REQUEST;
         $canapproveobjectives = !$plancompleted && $this->get_setting('updateobjective') == DP_PERMISSION_APPROVE;
-        $canremoveobjectives = !$plancompleted && (
-                $this->get_setting('updateobjective') == DP_PERMISSION_ALLOW
-                || $this->get_setting('updateobjective') == DP_PERMISSION_APPROVE
-        );
+        $canremoveobjectives = !$plancompleted &&  $this->get_setting('updateobjective') >= DP_PERMISSION_ALLOW;
         $coursesenabled = $this->plan->get_component('course')->get_setting('enabled');
 
         $as = sql_as();

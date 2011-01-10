@@ -530,7 +530,7 @@ class development_plan {
         }
 
         // Complete
-        if ($this->status == DP_PLAN_STATUS_APPROVED && $this->get_setting('signoff') == DP_PERMISSION_ALLOW) {
+        if ($this->status == DP_PLAN_STATUS_APPROVED && $this->get_setting('signoff') >= DP_PERMISSION_ALLOW) {
             echo '<a href="'.$CFG->wwwroot.'/local/plan/action.php?id='.$this->id.'&signoff=1&sesskey='.sesskey().'" title="'.get_string('plancomplete', 'local_plan').'">
                 <img src="'.$CFG->pixpath.'/t/favourite_on.gif" alt="'.get_string('plancomplete', 'local_plan').'" />
                 </a>';

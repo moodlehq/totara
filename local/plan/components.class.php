@@ -466,7 +466,7 @@ abstract class dp_base_component {
         }
 
         // If allowed, or assignment not yet approved, remove assignment
-        if ($permission == DP_PERMISSION_ALLOW || $item->approved == DP_APPROVAL_UNAPPROVED) {
+        if ($permission >= DP_PERMISSION_ALLOW || $item->approved == DP_APPROVAL_UNAPPROVED) {
             return delete_records(
                 'dp_plan_'.$this->component.'_assign',
                 'id', $item->itemid,

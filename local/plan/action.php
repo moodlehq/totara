@@ -179,7 +179,7 @@ if (!empty($delete)) {
 /// Signoff
 ///
 if (!empty($signoff)) {
-    if ($plan->get_setting('signoff') == DP_PERMISSION_ALLOW) {
+    if ($plan->get_setting('signoff') >= DP_PERMISSION_ALLOW) {
         $confirm = optional_param('confirm', 0, PARAM_BOOL);
 
         if (!$confirm && empty($ajax)) {
