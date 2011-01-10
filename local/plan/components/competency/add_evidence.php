@@ -5,7 +5,7 @@ require_once($CFG->dirroot.'/hierarchy/type/position/lib.php');
 require_once($CFG->dirroot.'/hierarchy/type/competency/lib.php');
 require_once($CFG->dirroot.'/local/js/lib/setup.php');
 require_once($CFG->dirroot.'/local/plan/lib.php');
-require_once('competency_evidence_form.php');
+require_once('add_evidence_form.php');
 require_once('evidence.php');
 ///
 /// Setup / loading data
@@ -13,7 +13,6 @@ require_once('evidence.php');
 
 $userid = required_param('userid', PARAM_INT);
 $planid = required_param('planid', PARAM_INT);
-$returnurl = optional_param('returnurl', $CFG->wwwroot, PARAM_TEXT);
 $proficiency = optional_param('proficiency', null, PARAM_INT);
 $competencyid = optional_param('competencyid', 0, PARAM_INT);
 $positionid = optional_param('positionid', 0, PARAM_INT);
@@ -26,6 +25,8 @@ $plan = new development_plan($planid);
 $evidence_record = get_record('comp_evidence', 'userid', $userid, 'competencyid', $competencyid);
 
 $fullname = $plan->name;
+
+$returnurl = $CFG->wwwroot.'/local/plan/components/competency/index.php?id='.$planid;
 
 if($u = get_record('user','id',$userid)) {
     $toform = new object();
@@ -42,7 +43,7 @@ if($component->get_setting('setpriority') != DP_PERMISSION_ALLOW) {
 }
 
 $mform = new totara_competency_evidence_form(null, compact('id','planid','competencyid','positionid',
-    'organisationid','userid','user','returnurl','s','nojs'));
+    'organisationid','userid','user','s','nojs'));
 
 $mform->set_data($evidence_record);
 

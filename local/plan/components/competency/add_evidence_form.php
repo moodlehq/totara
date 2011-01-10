@@ -9,7 +9,6 @@ class totara_competency_evidence_form extends moodleform {
         global $CFG;
 
         $mform =& $this->_form;
-        $returnurl = $this->_customdata['returnurl'];
         $editing = isset($this->_customdata['competencyevidence']); // if competency evidence passed to form, we are editing
         $ce = $editing ? $this->_customdata['competencyevidence'] : null;
 
@@ -50,8 +49,6 @@ class totara_competency_evidence_form extends moodleform {
 
         $mform->addElement('hidden', 'id', $id);
         $mform->setType('id', PARAM_INT);
-        $mform->addElement('hidden', 'returnurl', $returnurl);
-        $mform->setType('returnurl', PARAM_TEXT);
 
         if(!$nojs && $competencyid == 0) {
             // replace previous return url with a new url
@@ -81,9 +78,6 @@ class totara_competency_evidence_form extends moodleform {
             $mform->setHelpButton('compname',array('competencyevidencecompetency',get_string('competency','competency'),'moodle'));
         } else {
             if($nojs) {
-                $murl = new moodle_url(qualified_me());
-                $murl->remove_params('returnurl');
-                $newreturn = urlencode($murl->out());
                 $mform->addElement('static','assigncompetency',get_string('assigncompetency','competency'),'<div id="competencytitle">'.htmlentities($competency_title).'</div><a href="'.$CFG->wwwroot.'/hierarchy/type/competency/assign/find.php?nojs=1&amp;s='.sesskey().'&amp;returnurl='.$newreturn.'&amp;userid='.$userid.'">'.get_string('assigncompetency','competency').'</a>.');
                 $mform->addElement('hidden', 'competencyid');
                 $mform->setType('competencyid', PARAM_INT);

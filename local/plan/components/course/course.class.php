@@ -385,7 +385,7 @@ class dp_course_component extends dp_base_component {
                     $proficient = '<a href="'.$CFG->wwwroot.'/local/plan/components/course/rpl.php?planid='.$this->plan->id.'&courseid='.$ca->courseid.'">
                         <img src="'.$CFG->pixpath.'/t/ranges.gif" class="iconsmall" alt="'.$strrpl.'" /></a>';
 
-                    if($this->get_setting('setcompletionstatus') == DP_PERMISSION_ALLOW) {
+                    if($this->get_setting('setcompletionstatus') == DP_PERMISSION_ALLOW && $approved) {
                         $row[] = $delete . $proficient;
                     } else {
                         $row[] = $delete;
