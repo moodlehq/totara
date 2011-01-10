@@ -53,7 +53,7 @@ abstract class dp_base_component {
         global $CFG;
         $duedatestr = !empty($duedate) ?
             userdate($duedate, '%d/%m/%y', $CFG->timezone, false) : '';
-        return '<input type="text" name="'.$name.'" value="'. $duedatestr . '" size="8" maxlength="20"/>';
+        return '<input id="'.$name.'" type="text" name="'.$name.'" value="'. $duedatestr . '" size="8" maxlength="20"/>';
     }
 
     function display_duedate_as_text($duedate) {
