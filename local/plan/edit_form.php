@@ -106,8 +106,19 @@ class plan_edit_form extends moodleform {
     }
 
     function validation($data) {
-        $errors = array();
+        $mform =& $this->_form;
 
-        return $errors;
-    }
+        $result = array();
+
+        $startdate = isset($data['startdate'])?$data['startdate']:'';
+        $enddate = isset($data['enddate'])?$data['enddate']:'';
+
+        // Enforce start date before finish date
+        if ( $startdate > $enddate && $startdate !== false && $enddate !== false ){
+            $errstr = get_string('error:creationaftercompletion','local_plan');
+            $result['enddate'] = $errstr;
+            unset($errstr);
+        }
+        return $result;
+   }
 }

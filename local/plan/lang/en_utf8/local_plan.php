@@ -51,6 +51,7 @@ $string['currentlyviewing'] = 'Currently viewing';
 $string['filterbystatus'] = 'Filter by status';
 $string['planstatusunapproved'] = 'Unapproved';
 $string['planhasunapproveditems'] = 'This plan has draft items:';
+$string['error:creationaftercompletion'] = 'Completion Date must not be before Date Created';
 
 $string['noclassfileforrole'] = 'Class file \'$a->classfile\' could not be found for role of \'$->role\'';
 $string['noclassforrole'] = 'Class \'$a->class\' does not exist for role \'$a->role\'.';
