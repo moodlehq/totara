@@ -570,10 +570,10 @@ class dp_objective_component extends dp_base_component {
                     if (empty($scalevalue)) {
                         return get_string('error:priorityscaleidincorrect','local_plan');
                         // checks objective can only be achieved once.
-                    } else if ($scalevalue->achieved == 1 && $count < 1) {                    
+                    } else if ($scalevalue->achieved == 1 && $count < 1) {
                         totara_stats_add_event(time(), $currentuser, STATS_EVENT_OBJ_ACHIEVED, '', $id);
-                        // checks objective exists for removal 
-                    } else if ($scalevalue->achieved == 0 && $count > 0) { 
+                        // checks objective exists for removal
+                    } else if ($scalevalue->achieved == 0 && $count > 0) {
                         totara_stats_remove_event($currentuser, STATS_EVENT_OBJ_ACHIEVED, $id);
                     }
                 }
@@ -630,7 +630,7 @@ class dp_objective_component extends dp_base_component {
             if ($this->plan->reviewing_pending) {
                 return $status;
             } else {
-                if ($success) {
+                if ($status) {
                     totara_set_notification(get_string('objectivesupdated','local_plan'), $currenturl, array('style'=>'notifysuccess'));
                 } else {
                     totara_set_notification(get_string('objectivesnotupdated','local_plan'), $currenturl);
