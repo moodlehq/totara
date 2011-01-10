@@ -80,7 +80,7 @@ if ( $deleteyes ){
     if ( !$component->delete_objective($objectiveid) ){
         print_error("Was unable to delete objective.");
     } else {
-        totara_set_notification('Objective deleted.', $objallurl);
+        totara_set_notification('Objective deleted.', $objallurl, array('style'=>'notifysuccess'));
     }
 } elseif ( $deleteno ) {
     redirect($objallurl);
