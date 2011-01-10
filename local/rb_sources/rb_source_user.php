@@ -93,12 +93,12 @@ class rb_source_user extends rb_base_source {
         $columnoptions[] = new rb_column_option(
                         'user',
                         'userpicture',
-                        'User\'s picture',
+                        get_string('userspicture', 'rb_source_user'),
                         'base.id',
                         array(
                             'displayfunc' => 'user_picture',
                             'noexport' => true,
-                            'defaultheading' => ' ',
+                            'defaultheading' => get_string('picture', 'rb_source_user'),
                             'extrafields' => array(
                                 'userpic_picture' => 'base.picture',
                                 'userpic_firstname' => 'base.firstname',
@@ -112,12 +112,12 @@ class rb_source_user extends rb_base_source {
         $columnoptions[] = new rb_column_option(
                         'user',
                         'userlearningicons',
-                        'User\'s My Learning Icons',
+                        get_string('mylearningicons', 'rb_source_user'),
                         'base.id',
                         array(
                             'displayfunc' => 'learning_icons',
                             'noexport' => true,
-                            'defaultheading' => ' '
+                            'defaultheading' => get_string('options', 'rb_source_user')
                         )
         );
 
@@ -125,7 +125,7 @@ class rb_source_user extends rb_base_source {
         $columnoptions[] = new rb_column_option(
                         'statistics',
                         'competenciesachieved',
-                        'User\'s Achieved Competency Count',
+                        get_string('usersachievedcompcount', 'rb_source_user'),
                         'totara_stats_comp_achieved.data2',
                         array(
                             'joins' => 'totara_stats_comp_achieved',
@@ -137,7 +137,7 @@ class rb_source_user extends rb_base_source {
         $columnoptions[] = new rb_column_option(
                         'statistics',
                         'coursesstarted',
-                        'User\'s Courses Started Count',
+                        get_string('userscoursestartedcount', 'rb_source_user'),
                         'totara_stats_courses_started.data2',
                         array(
                             'joins' => 'totara_stats_courses_started',
@@ -149,7 +149,7 @@ class rb_source_user extends rb_base_source {
         $columnoptions[] = new rb_column_option(
                         'statistics',
                         'coursescompleted',
-                        'User\'s Courses Completed Count',
+                        get_string('userscoursescompletedcount', 'rb_source_user'),
                         'totara_stats_courses_completed.data2',
                         array(
                             'joins' => 'totara_stats_courses_completed',
@@ -170,7 +170,7 @@ class rb_source_user extends rb_base_source {
             new rb_filter_option(
                 'user',
                 'fullname',
-                'User\'s Name',
+                get_string('usersname', 'rb_source_user'),
                 'text'
             )
         );
@@ -184,7 +184,10 @@ class rb_source_user extends rb_base_source {
         $contentoptions = array();
 
         // Include the rb_user_content content options for this report
-        $contentoptions[] = new rb_content_option('user', 'Users', 'base.id');
+        $contentoptions[] = new rb_content_option(
+            'user',
+            get_string('users', 'rb_source_user'),
+            'base.id');
         return $contentoptions;
     }
 
