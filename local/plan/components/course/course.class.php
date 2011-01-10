@@ -574,6 +574,14 @@ class dp_course_component extends dp_base_component {
             $out .= $this->display_duedate_highlight_info($item->duedate);
             $out .= '</td>';
         }
+        $completions = completion_info::get_all_courses($this->plan->userid);
+        $completionstatus = $this->get_completion_status($item, $completions);
+        if ($progressbar = $this->display_status_as_progress_bar($item, $completionstatus)) {
+            unset($completions, $completionstatus);
+            $out .= '<td><table border="0"><tr><td style="border:0px;">';
+            $out .= get_string('progress', 'local_plan').': </td><td style="border:0px;">'.$progressbar;
+            $out .= '</td></tr></table></td>';
+        }
         $out .= "</tr>";
         $out .= '</table>';
         $out .= '<p>' . $item->summary . '</p>';
