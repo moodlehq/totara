@@ -323,12 +323,14 @@ function totara_msg_action_button($action) {
 function totara_msg_accept_reject_action($id) {
     global $CFG, $FULLME;
 
+    $msg = get_record('message20', 'id', $id);
     $msgmeta = get_record('message_metadata', 'messageid', $id);
     $msgacceptdata = totara_msg_eventdata($id, 'onaccept');
 
     $returnto = ($msgmeta->msgtype == TOTARA_MSG_TYPE_LINK) ? $msgacceptdata->data['redirect'] : $FULLME;
 
-    $onaccept_str = isset($msgacceptdata->acceptbutton) ? $msgacceptdata->acceptbutton : get_string('onaccept', 'block_totara_reminders');
+    $subject = format_string($msg->subject);
+    $onaccept_str = format_string(isset($msgacceptdata->acceptbutton) ? $msgacceptdata->acceptbutton : get_string('onaccept', 'block_totara_reminders'));
     $onreject_str = get_string('onreject', 'block_totara_reminders');
 
     // only give the accept/reject actions if they actually exist
@@ -356,7 +358,7 @@ function totara_msg_accept_reject_action($id) {
                         'Cancel': function() { handler_accept._cancel() },
                         '".$onaccept_str."': function() { handler_accept._confirm('{$CFG->wwwroot}/local/totara_msg/accept.php?id={$id}', '{$returnto}') }
                     },
-                    title: '<h2>{$onaccept_str}</h2>',
+                    title: '<h2>{$subject}</h2>',
                     width: 600,
                     height: 400
                 },
