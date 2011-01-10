@@ -82,119 +82,119 @@ class rb_source_competency_evidence extends rb_base_source {
             new rb_column_option(
                 'competency_evidence',  // type
                 'proficiency',          // value
-                'Proficiency',          // name
+                get_string('proficiency', 'rb_source_competency_evidence'), // name
                 'scale_values.name',    // field
                 array('joins' => 'scale_values') // options
             ),
             new rb_column_option(
                 'competency_evidence',
                 'proficiencyid',
-                'Proficiency ID',
+                get_string('proficiencyid', 'rb_source_competency_evidence'),
                 'base.proficiency'
             ),
             new rb_column_option(
                 'competency_evidence',
                 'completeddate',
-                'Completion Date',
+                get_string('completiondate', 'rb_source_competency_evidence'),
                 'base.timemodified',
                 array('displayfunc' => 'nice_date')
             ),
             new rb_column_option(
                 'competency_evidence',
                 'organisationid',
-                'Completion Organisation ID',
+                get_string('completionorgid', 'rb_source_competency_evidence'),
                 'base.organisationid'
             ),
             new rb_column_option(
                 'competency_evidence',
                 'organisationpath',
-                'Completion Organisation Path',
+                get_string('completionorgpath', 'rb_source_competency_evidence'),
                 'completion_organisation.path',
                 array('joins' => 'completion_organisation')
             ),
             new rb_column_option(
                 'competency_evidence',
                 'organisation',
-                'Completion Organisation Name',
+                get_string('completionorgname', 'rb_source_competency_evidence'),
                 'completion_organisation.fullname',
                 array('joins' => 'completion_organisation')
             ),
             new rb_column_option(
                 'competency_evidence',
                 'positionid',
-                'Completion Position ID',
+                get_string('completionposid', 'rb_source_competency_evidence'),
                 'base.positionid'
             ),
             new rb_column_option(
                 'competency_evidence',
                 'positionpath',
-                'Completion Position Path',
+                get_string('completionpospath', 'rb_source_competency_evidence'),
                 'completion_position.path',
                 array('joins' => 'completion_position')
             ),
             new rb_column_option(
                 'competency_evidence',
                 'position',
-                'Completion Position Name',
+                get_string('completionposname', 'rb_source_competency_evidence'),
                 'completion_position.fullname',
                 array('joins' => 'completion_position')
             ),
             new rb_column_option(
                 'competency_evidence',
                 'assessor',
-                'Assessor Name',
+                get_string('assessorname', 'rb_source_competency_evidence'),
                 sql_fullname("assessor.firstname","assessor.lastname"),
                 array('joins' => 'assessor')
             ),
             new rb_column_option(
                 'competency_evidence',
                 'assessorname',
-                'Assessor Organisation',
+                get_string('assessororg', 'rb_source_competency_evidence'),
                 'base.assessorname'
             ),
             new rb_column_option(
                 'competency',
                 'fullname',
-                'Competency Name',
+                get_string('competencyname', 'rb_source_competency_evidence'),
                 'competency.fullname',
                 array('joins' => 'competency')
             ),
             new rb_column_option(
                 'competency',
                 'shortname',
-                'Competency Shortname',
+                get_string('competencyshortname', 'rb_source_competency_evidence'),
                 'competency.shortname',
                 array('joins' => 'competency')
             ),
             new rb_column_option(
                 'competency',
                 'idnumber',
-                'Competency ID Number',
+                get_string('competencyid', 'rb_source_competency_evidence'),
                 'competency.idnumber',
                 array('joins' => 'competency')
             ),
             new rb_column_option(
                 'competency',
                 'competencylink',
-                'Competency Name (linked to competency page)',
+                get_string('competencylinkname', 'rb_source_competency_evidence'),
                 'competency.fullname',
                 array(
                     'joins' => 'competency',
                     'displayfunc' => 'link_competency',
-                    'defaultheading' => 'Competency Name',
+                    'defaultheading' => get_string('competencyname', 'rb_source_competency_evidence'),
                     'extrafields' => array('competency_id' => 'competency.id'),
                 )
             ),
             new rb_column_option(
                 'competency',
                 'id',
-                'Competency ID',
+                get_string('competencyid', 'rb_source_competency_evidence'),
                 'base.competencyid'
             ),
             new rb_column_option(
                 'competency',
                 'path',
-                'Competency Path',
+                get_string('competencypath', 'rb_source_competency_evidence'),
                 'competency.path',
                 array('joins' => 'competency')
             ),
@@ -214,14 +214,14 @@ class rb_source_competency_evidence extends rb_base_source {
             new rb_filter_option(
                 'competency_evidence',  // type
                 'completeddate',        // value
-                'Completed Date',       // label
+                get_string('completeddate', 'rb_source_competency_evidence'),       // label
                 'date',                 // filtertype
                 array()                 // options
             ),
             new rb_filter_option(
                 'competency_evidence',
                 'proficiencyid',
-                'Proficiency',
+                get_string('proficiency', 'rb_source_competency_evidence'),
                 'select',
                 array(
                     'selectfunc' => 'proficiency_list',
@@ -231,7 +231,7 @@ class rb_source_competency_evidence extends rb_base_source {
             new rb_filter_option(
                 'competency_evidence',
                 'organisationid',
-                'Office when completed (basic)',
+                get_string('officewhencompletedbasic', 'rb_source_competency_evidence'),
                 'select',
                 array(
                     'selectfunc' => 'organisations_list',
@@ -241,13 +241,13 @@ class rb_source_competency_evidence extends rb_base_source {
             new rb_filter_option(
                 'competency_evidence',
                 'organisationpath',
-                'Organisation when completed',
+                get_string('organisationwhencompleted', 'rb_source_competency_evidence'),
                 'org'
             ),
             new rb_filter_option(
                 'competency_evidence',
                 'positionid',
-                'Position when completed (basic)',
+                get_string('positionwhencompletedbasic', 'rb_source_competency_evidence'),
                 'select',
                 array(
                     'selectfunc' => 'positions_list',
@@ -257,43 +257,43 @@ class rb_source_competency_evidence extends rb_base_source {
             new rb_filter_option(
                 'competency_evidence',
                 'positionpath',
-                'Position when completed',
+                get_string('positionwhencompleted', 'rb_source_competency_evidence'),
                 'pos'
             ),
             new rb_filter_option(
                 'competency_evidence',
                 'assessor',
-                'Assessor Name',
+                get_string('assessorname', 'rb_source_competency_evidence'),
                 'text'
             ),
             new rb_filter_option(
                 'competency_evidence',
                 'assessorname',
-                'Assessor Organisation',
+                get_string('assessororg', 'rb_source_competency_evidence'),
                 'text'
             ),
             new rb_filter_option(
                 'competency',
                 'path',
-                'Competency',
+                get_string('competency', 'rb_source_competency_evidence'),
                 'comp'
             ),
             new rb_filter_option(
                 'competency',
                 'fullname',
-                'Competency Name',
+                get_string('competencyname', 'rb_source_competency_evidence'),
                 'text'
             ),
             new rb_filter_option(
                 'competency',
                 'shortname',
-                'Competency Short Name',
+                get_string('competencyshortname', 'rb_source_competency_evidence'),
                 'text'
             ),
             new rb_filter_option(
                 'competency',
                 'idnumber',
-                'Competency ID Number',
+                get_string('competencyid', 'rb_source_competency_evidence'),
                 'text'
             ),
 
@@ -311,29 +311,29 @@ class rb_source_competency_evidence extends rb_base_source {
         $contentoptions = array(
             new rb_content_option(
                 'current_org',                      // class name
-                "The user's current organisation",  // title
+                get_string('currentorg', 'rb_source_competency_evidence'),  // title
                 'base.userid',                      // field
                 null                                // joins
             ),
             new rb_content_option(
                 'current_pos',                      // class name
-                "The user's current position",      // title
+                get_string('currentpos', 'rb_source_competency_evidence'),      // title
                 'base.userid',                      // field
                 null                                // joins
             ),
             new rb_content_option(
                 'completed_org',
-                "The organisation when completed",
+                get_string('completedorg', 'rb_source_competency_evidence'),
                 'base.organisationid'
             ),
             new rb_content_option(
                 'user',
-                'The user',
+                get_string('user', 'rb_source_competency_evidence'),
                 'base.userid'
             ),
             new rb_content_option(
                 'date',
-                "The completion date",
+                get_string('completiondate', 'rb_source_competency_evidence'),
                 'base.timemodified'
             ),
         );
@@ -445,7 +445,7 @@ class rb_source_competency_evidence extends rb_base_source {
             new rb_column(
                 'admin',        // type
                 'options',      // value
-                'Options',      // heading
+                get_string('options', 'rb_source_competency_evidence'),      // heading
                 'base.id',      // field
                 array(          // options
                     'displayfunc' => 'ce_admin_options',
