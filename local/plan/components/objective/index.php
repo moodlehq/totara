@@ -113,4 +113,21 @@ if(!$plancompleted && ($cansetduedate || $cansetpriority || $cansetprof) && ($co
 
 print '</form>';
 print_container_end();
+
+print <<<HEREDOC
+<script type="text/javascript">
+
+    $(function() {
+        $('[id^=duedate_objective]').datepicker(
+            {
+                dateFormat: 'dd/mm/yy',
+                showOn: 'button',
+                buttonImage: '../../../../local/js/images/calendar.gif',
+                buttonImageOnly: true
+            }
+        );
+    });
+</script>
+HEREDOC;
+
 print_footer();

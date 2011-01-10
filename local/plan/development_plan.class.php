@@ -413,7 +413,6 @@ class development_plan {
     }
 
     function display_enddate_as_form($enddate, $name) {
-        // @todo add date picker?
         global $CFG;
         $enddatestr = isset($enddate) ?
             userdate($enddate, '%d/%m/%y', $CFG->timezone, false) : '';
