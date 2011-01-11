@@ -486,13 +486,15 @@ abstract class dp_base_component {
         // did they edit it themselves?
         if ($USER->id == $this->plan->userid) {
             // notify their manager
-            if ($manager = totara_get_manager($this->plan->userid)) {
-                $event->userto = $manager;
-                $a->user = $this->current_user_link();
-                $event->subject = get_string('componentupdateshortmanager', 'local_plan', $a);
-                $event->fullmessage = get_string('componentupdatelongmanager', 'local_plan', $a);
-                $event->roleid = get_field('role','id', 'shortname', 'manager');
-                tm_notification_send($event);
+            if ($this->plan->is_active()) {
+                if ($manager = totara_get_manager($this->plan->userid)) {
+                    $event->userto = $manager;
+                    $a->user = $this->current_user_link();
+                    $event->subject = get_string('componentupdateshortmanager', 'local_plan', $a);
+                    $event->fullmessage = get_string('componentupdatelongmanager', 'local_plan', $a);
+                    $event->roleid = get_field('role','id', 'shortname', 'manager');
+                    tm_notification_send($event);
+                }
             }
         } else {
             // notify user that someone else did it

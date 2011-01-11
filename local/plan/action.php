@@ -156,11 +156,15 @@ if (!empty($delete)) {
             exit;
         } else {
             // Delete the plan
+            $is_active = $plan->is_active();
             $plan->delete();
 
             if ( $plan->userid == $USER->id ){
-                // User was deleting their own plan, notify their manager
-                $plan->send_alert(false,'learningplan-remove.png','plan-remove-manager-short','plan-remove-manager-long');
+                // don't bother unless the plan was active
+                if ($is_active) {
+                    // User was deleting their own plan, notify their manager
+                    $plan->send_alert(false,'learningplan-remove.png','plan-remove-manager-short','plan-remove-manager-long');
+                }
             } else {
                 // Someone else was deleting the learner's plan, notify the learner
                 $plan->send_alert(true,'learningplan-remove.png','plan-remove-learner-short','plan-remove-learner-long');

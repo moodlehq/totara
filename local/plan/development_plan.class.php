@@ -71,7 +71,7 @@ class development_plan {
      * @return  boolean
      */
     public function is_active() {
-        return $this->plan->status == DP_PLAN_STATUS_APPROVED;
+        return $this->status == DP_PLAN_STATUS_APPROVED;
     }
 
 

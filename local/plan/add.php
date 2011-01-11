@@ -95,8 +95,10 @@ if ($data = $form->get_data()) {
         commit_sql();
 
         // Send out a notification?
-        if ( $role == 'manager' ) {
-            $plan->send_alert(true,'learningplan-update.png','plan-add-learner-short','plan-add-learner-long');
+        if ($plan->is_active()) {
+            if ( $role == 'manager' ) {
+                $plan->send_alert(true,'learningplan-update.png','plan-add-learner-short','plan-add-learner-long');
+            }
         }
 
         $viewurl = "{$CFG->wwwroot}/local/plan/view.php?id={$newid}";
