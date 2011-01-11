@@ -49,7 +49,6 @@ abstract class dp_base_component {
     }
 
     function display_duedate_as_form($duedate, $name) {
-        // @todo add date picker?
         global $CFG;
         $duedatestr = !empty($duedate) ?
             userdate($duedate, '%d/%m/%y', $CFG->timezone, false) : '';

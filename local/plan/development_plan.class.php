@@ -505,8 +505,6 @@ class development_plan {
     function display_actions() {
         global $CFG;
 
-        // @todo: USE NICE ICONS
-
         ob_start();
 
         // Approval
@@ -546,7 +544,6 @@ class development_plan {
         $out = ob_get_contents();
 
         ob_end_clean();
-
 
         return $out;
     }
@@ -748,7 +745,6 @@ class development_plan {
         $unapproveditems = $this->get_unapproved_items();
         $hasunapproveditems = !empty($unapproveditems);
 
-        // @todo check permission name
         $canapproveplan = (in_array($this->get_setting('confirm'), array(DP_PERMISSION_APPROVE, DP_PERMISSION_ALLOW)));
 
         $message = '';
@@ -852,7 +848,6 @@ class development_plan {
         }
 
         // @todo fix pluralization issues for 1 item
-        // @todo check permission names are correct
         $list = '';
         $listcount = 0;
         if($coursesenabled && !empty($pendinglist['course'])) {
