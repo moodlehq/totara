@@ -653,6 +653,7 @@ class development_plan {
         return $this->get_assigned_items(
             array(
                 DP_APPROVAL_DECLINED,
+                //DP_APPROVAL_APPROVED
                 DP_APPROVAL_UNAPPROVED
             )
         );
@@ -850,10 +851,12 @@ class development_plan {
         // @todo fix pluralization issues for 1 item
         $list = '';
         $listcount = 0;
+        $itemscount = 0;
         if($coursesenabled && !empty($pendinglist['course'])) {
             $a = new object();
             $a->planid = $this->id;
             $a->number = count($pendinglist['course']);
+            $itemscount += $a->number;
             $a->name = get_config(null, 'dp_course');
             $a->component = 'course';
             $a->site = $CFG->wwwroot;
@@ -865,6 +868,7 @@ class development_plan {
             $a = new object();
             $a->planid = $this->id;
             $a->number = count($pendinglist['competency']);
+            $itemscount += $a->number;
             $a->name = get_config(null, 'dp_competency');
             $a->component = 'competency';
             $a->site = $CFG->wwwroot;
@@ -876,6 +880,7 @@ class development_plan {
             $a = new object();
             $a->planid = $this->id;
             $a->number = count($pendinglist['objective']);
+            $itemscount += $a->number;
             $a->name = get_config(null, 'dp_objective');
             $a->component = 'objective';
             $a->site = $CFG->wwwroot;
@@ -889,6 +894,7 @@ class development_plan {
         // only print if there are pending items
         $out = '';
         if($listcount) {
+            $descriptor .= ($itemscount > 1 ? '_p' : '_s');
             $out .= '<p>' . get_string($descriptor, 'local_plan'). '</p>';
             $out .= '<ul>' . $list . '</ul>';
         }
