@@ -39,7 +39,7 @@ class edit_priority_form extends moodleform {
             $mform->setType('priorityvalues', PARAM_TEXT);
         } else {
             //TODO: make this work for priority
-            $mform->addELement('html', '<div class="fitem"><div class="fitemtitle">&nbsp;</div><div class="felement">'.get_string('linktopriorityvalues','idp',clean_param($this->_customdata['priorityid'], PARAM_INT))."</div></div>\n");
+            $mform->addElement('html', '<div class="fitem"><div class="fitemtitle">&nbsp;</div><div class="felement">'.get_string('linktopriorityvalues','local_plan',clean_param($this->_customdata['priorityid'], PARAM_INT))."</div></div>\n");
         }
 
         $mform->addElement('htmleditor', 'description', get_string('description'));

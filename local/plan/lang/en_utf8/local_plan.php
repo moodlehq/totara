@@ -384,7 +384,7 @@ $string['error:deletedpriorityscalevalue'] = 'Could not delete priority scale va
 $string['error:updatepriorityscalevalue'] = 'Could not update priority scale value.';
 $string['error:noreorderpriorityinuse'] = 'You cannot reorder a priority scale that is in use. To reorder this priority scale, it must not be assigned to any IDP\'s.';
 $string['error:nodeletepriorityvalueinuse'] = 'You cannot delete a priority scale value from a scale that is in use. To delete this priority scale value, the priority scale must not be assigned to any IDP.';
-$string['linktoobjectivevalues'] = '<a href=\\"view.php?id=$a\\">Click here</a> to view/edit the scale values for this priority scale.';
+$string['linktopriorityvalues'] = '<a href=\\"view.php?id=$a\\">Click here</a> to view/edit the scale values for this priority scale.';
 $string['explainpriorityscalevals'] = 'One priority per line (highest to lowest)';
 $string['changeto'] = 'Change to';
 $string['set'] = 'Set';
