@@ -319,7 +319,7 @@ function tm_notification_send($eventdata) {
         }
         $result = email_to_user($eventdata->userto, $eventdata->userfrom,
             format_string($eventdata->subject), format_string($eventdata->fullmessage),
-            format_string($eventdata->fullmessagehtml).'<br><br>'.get_string('viewdetailshere', 'local_totara_msg', $eventdata->contexturl));
+            $eventdata->fullmessagehtml.'<br><br>'.get_string('viewdetailshere', 'local_totara_msg', $eventdata->contexturl));
     }
 
     return $result;
@@ -378,7 +378,7 @@ function tm_reminder_send($eventdata) {
         }
         $result = email_to_user($eventdata->userto, $eventdata->userfrom,
             format_string($eventdata->subject), format_string($eventdata->fullmessage),
-            format_string($eventdata->fullmessagehtml).'<br><br>'.get_string('viewdetailshere', 'local_totara_msg', $eventdata->contexturl));
+            $eventdata->fullmessagehtml.'<br><br>'.get_string('viewdetailshere', 'local_totara_msg', $eventdata->contexturl));
     }
 
     return $result;
@@ -469,7 +469,7 @@ function tm_workflow_send($eventdata) {
         }
         $result = email_to_user($eventdata->userto, $eventdata->userfrom,
             format_string($eventdata->subject), format_string($eventdata->fullmessage),
-            format_string($eventdata->fullmessagehtml).'<br><br>'.get_string('viewdetailshere', 'local_totara_msg', $eventdata->contexturl));
+            $eventdata->fullmessagehtml.'<br><br>'.get_string('viewdetailshere', 'local_totara_msg', $eventdata->contexturl));
     }
 
     return $result;

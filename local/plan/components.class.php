@@ -468,7 +468,7 @@ abstract class dp_base_component {
         }
     }
 
-    function send_component_update_notification($update_info) {
+    function send_component_update_notification($update_info='') {
         global $USER, $CFG;
         require_once($CFG->dirroot.'/local/totara_msg/messagelib.php');
 
@@ -482,6 +482,7 @@ abstract class dp_base_component {
         $a = new stdClass;
         $a->plan = "<a href=\"{$CFG->wwwroot}/local/plan/view.php?id={$this->plan->id}\" title=\"{$this->plan->name}\">{$this->plan->name}</a>";
         $a->component = $this->get_setting('name');
+        $a->updates = $update_info;
 
         // did they edit it themselves?
         if ($USER->id == $this->plan->userid) {

@@ -595,7 +595,7 @@ class dp_competency_component extends dp_base_component {
                 if($duedate == '' || $duedate == 'dd/mm/yy') {
                     $duedateout = null;
                 } else {
-                    $datepattern = '/^(0?[1-9]|[12][0-9]|3[01])\/(0?[1-9]|1[0-2])\/(\d{2})$/';
+                    $datepattern = '/^(0?[1-9]|[12][0-9]|3[01])\/(0?[1-9]|1[0-2])\/(\d{4})$/';
                     if (preg_match($datepattern, $duedate, $matches) == 0) {
                         // skip badly formatted date strings
                         continue;
@@ -651,9 +651,39 @@ class dp_competency_component extends dp_base_component {
 
         $status = true;
         if (!empty($stored_records)) {
+            $updates = '';
             begin_sql();
             foreach($stored_records as $itemid => $record) {
+                $oldrecord = get_record('dp_plan_competency_assign', 'id', $itemid);
+
+                // Update the record
                 $status = $status & update_record('dp_plan_competency_assign', $record);
+
+                // Record the updates for later use
+                $competency = get_record('comp', 'id', $oldrecord->competencyid);
+                $compheader = '<p><strong>'.format_string($competency->fullname).": </strong><br>";
+                $compprinted = false;
+                if (!empty($record->priority) && $oldrecord->priority != $record->priority) {
+                    $oldpriority = get_field('dp_priority_scale_value', 'name', 'id', $oldrecord->priority);
+                    $newpriority = get_field('dp_priority_scale_value', 'name', 'id', $record->priority);
+                    $updates .= $compheader;
+                    $compprinted = true;
+                    $updates .= get_string('priority', 'local_plan').' - '.get_string('changedfromxtoy', 'local_plan', (object)array('before'=>$oldpriority, 'after'=>$newpriority))."<br>";
+                }
+                if (!empty($record->duedate) && $oldrecord->duedate != $record->duedate) {
+                    $updates .= $compprinted ? '' : $compheader;
+                    $compprinted = true;
+                    $updates .= get_string('duedate', 'local_plan').' - '.
+                        get_string('changedfromxtoy', 'local_plan', (object)array('before'=>empty($oldrecord->duedate) ? '' : userdate($oldrecord->duedate, '%e %h %Y', $CFG->timezone, false), 'after'=>userdate($record->duedate, '%e %h %Y', $CFG->timezone, false)))."<br>";
+                }
+                if (!empty($record->approved) && $oldrecord->approved != $record->approved) {
+                    $updates .= $compprinted ? '' : $compheader;
+                    $compprinted = true;
+                    $updates .= get_string('approval', 'local_plan').' - '.
+                        get_string('changedfromxtoy', 'local_plan', (object)array('before'=>dp_get_approval_status_from_code($oldrecord->approved), 'after'=>dp_get_approval_status_from_code($record->approved)))."<br>";
+                }
+                // TODO: proficiencies
+                $updates .= $compprinted ? '</p>' : '';
             }
 
             if ($status) {
@@ -669,7 +699,7 @@ class dp_competency_component extends dp_base_component {
             else {
                 if ($status) {
                     if ($this->plan->status != DP_PLAN_STATUS_UNAPPROVED) {
-                        $this->send_component_update_notification();
+                        $this->send_component_update_notification($updates);
                     }
                     totara_set_notification(get_string('competenciesupdated','local_plan'), $currenturl, array('style'=>'notifysuccess'));
                 } else {

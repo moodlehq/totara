@@ -511,6 +511,8 @@ $string['plancompletesuccess'] = 'Successfully completed plan $a';
 $string['plancompletefail'] = 'Completing plan $a failed';
 $string['cannotdelete_inuse'] = 'You cannot delete this template because there are plans using it.';
 $string['planapprovalrequested'] = 'Plan approval requested for <a href=\"{$CFG->wwwroot}/local/plan/view.php?id={$a->planid}&userid={$a->userid}\">{$a->planname}</a>';
+$string['requestremoval'] = 'Request removal';
+
 
 //// Messaging
 // Plan messages
@@ -548,7 +550,8 @@ $string['item-request-manager-short'] = 'Item approval request by $a->learner';
 $string['item-request-manager-long'] = '$a->learner has requested approval for new learning plan items in \"$a->plan\": $a->data';
 
 // Component messages
+$string['changedfromxtoy'] = 'Changed from \"$a->before\" to \"$a->after\"';
 $string['componentupdateshortlearner'] = '$a updated';
-$string['componentupdatelonglearner'] = '$a->component of learning plan \"$a->plan\" updated';
+$string['componentupdatelonglearner'] = '$a->component of learning plan \"$a->plan\" updated <br> $a->updates';
 $string['componentupdateshortmanager'] = '$a->user updated $a->component';
-$string['componentupdatelongmanager'] = '$a->component of learning plan \"$a->plan\" updated';
+$string['componentupdatelongmanager'] = '$a->component of learning plan \"$a->plan\" updated <br> $a->updates';

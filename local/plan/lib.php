@@ -714,3 +714,31 @@ function dp_get_plan_base_navlinks(&$navlinks, $userid) {
         $navlinks[] = array('name' => get_string('unknownuserslearningplans','local_plan'), 'link'=> $CFG->wwwroot . '/local/plan/index.php?userid='.$userid, 'type'=>'title');
     }
 }
+
+/**
+ * Returns the approval status, given the approval code (e.g 50)
+ */
+function dp_get_approval_status_from_code($code) {
+    switch ($code) {
+        case DP_APPROVAL_DECLINED:
+            $status = get_string('declined', 'local_plan');
+            break;
+        case DP_APPROVAL_UNAPPROVED:
+            $status = get_string('unapproved', 'local_plan');
+            break;
+        case DP_APPROVAL_REQUESTED:
+            $status = get_string('pendingapproval', 'local_plan');
+            break;
+        case DP_APPROVAL_APPROVED:
+            $status = get_string('approved', 'local_plan');
+            break;
+        case DP_APPROVAL_REQUEST_REMOVAL:
+            $status = get_string('requestremoval', 'local_plan');
+            break;
+        default:
+            $status = get_string('unknown', 'local_plan');
+            break;
+    }
+
+    return $status;
+}
