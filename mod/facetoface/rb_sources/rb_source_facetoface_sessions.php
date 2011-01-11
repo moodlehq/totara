@@ -99,28 +99,28 @@ class rb_source_facetoface_sessions extends rb_base_source {
             new rb_column_option(
                 'session',              // type
                 'capacity',             // value
-                'Session Capacity',     // name
+                get_string('sesscapacity', 'rb_source_facetoface_sessions'),     // name
                 'sessions.capacity',        // field
                 array('joins' => 'sessions')                 // options array
             ),
             new rb_column_option(
                 'session',
                 'numattendees',
-                'Number of Attendees',
+                get_string('numattendees', 'rb_source_facetoface_sessions'),
                 'attendees.number',
                 array('joins' => 'attendees')
             ),
             new rb_column_option(
                 'session',
                 'details',
-                'Session Details',
+                get_string('sessdetails', 'rb_source_facetoface_sessions'),
                 'sessions.details',
                 array('joins' => 'sessions')
             ),
             new rb_column_option(
                 'session',
                 'duration',
-                'Session Duration',
+                get_string('sessduration', 'rb_source_facetoface_sessions'),
                 'sessions.duration',
                 array(
                     'joins' => 'sessions',
@@ -130,7 +130,7 @@ class rb_source_facetoface_sessions extends rb_base_source {
             new rb_column_option(
                 'status',
                 'statuscode',
-                'Status',
+                get_string('status', 'rb_source_facetoface_sessions'),
                 'status.statuscode',
                 array(
                     'joins' => 'status',
@@ -140,52 +140,52 @@ class rb_source_facetoface_sessions extends rb_base_source {
             new rb_column_option(
                 'facetoface',
                 'name',
-                'Face to Face Name',
+                get_string('ftfname', 'rb_source_facetoface_sessions'),
                 'facetoface.name',
                 array('joins' => 'facetoface')
             ),
             new rb_column_option(
                 'facetoface',
                 'namelink',
-                'Face to Face Name (linked to activity)',
+                get_string('ftfnamelink', 'rb_source_facetoface_sessions'),
                 "facetoface.name",
                 array(
                     'joins' => array('facetoface','sessions'),
                     'displayfunc' => 'link_f2f',
-                    'defaultheading' => 'Face to Face Name',
+                    'defaultheading' => get_string('ftfname', 'rb_source_facetoface_sessions'),
                     'extrafields' => array('activity_id' => 'sessions.facetoface'),
                 )
             ),
             new rb_column_option(
                 'date',
                 'sessiondate',
-                'Session Date',
+                get_string('sessdate', 'rb_source_facetoface_sessions'),
                 'sessiondate.timestart',
                 array('joins' =>'sessiondate', 'displayfunc' => 'nice_date')
             ),
             new rb_column_option(
                 'date',
                 'sessiondate_link',
-                'Session Date (linked to session page)',
+                get_string('sessdatelink', 'rb_source_facetoface_sessions'),
                 'sessiondate.timestart',
                 array(
                     'joins' => 'sessiondate',
                     'displayfunc' => 'link_f2f_session',
-                    'defaultheading' => 'Session Date',
+                    'defaultheading' => get_string('sessdate', 'rb_source_facetoface_sessions'),
                     'extrafields' => array('session_id' => 'base.sessionid')
                 )
             ),
             new rb_column_option(
                 'date',
                 'timestart',
-                'Session Start Time',
+                get_string('sessstart', 'rb_source_facetoface_sessions'),
                 'sessiondate.timestart',
                 array('joins' => 'sessiondate', 'displayfunc' => 'nice_time')
             ),
             new rb_column_option(
                 'date',
                 'timefinish',
-                'Session Finish Time',
+                get_string('sessfinish', 'rb_source_facetoface_sessions'),
                 'sessiondate.timefinish',
                 array('joins' => 'sessiondate', 'displayfunc' => 'nice_time')
             ),
@@ -217,7 +217,7 @@ class rb_source_facetoface_sessions extends rb_base_source {
             new rb_filter_option(
                 'status',
                 'statuscode',
-                'Status',
+                get_string('status', 'rb_source_facetoface_sessions'),
                 'select',
                 array(
                     'selectfunc' => 'session_status_list',
@@ -227,25 +227,25 @@ class rb_source_facetoface_sessions extends rb_base_source {
             new rb_filter_option(
                 'date',
                 'sessiondate',
-                'Session Date',
+                get_string('sessdate', 'rb_source_facetoface_sessions'),
                 'date'
             ),
             new rb_filter_option(
                 'session',
                 'capacity',
-                'Session Capacity',
+                get_string('sesscapacity', 'rb_source_facetoface_sessions'),
                 'number'
             ),
             new rb_filter_option(
                 'session',
                 'details',
-                'Session Details',
+                get_string('sessdetails', 'rb_source_facetoface_sessions'),
                 'text'
             ),
             new rb_filter_option(
                 'session',
                 'duration',
-                'Session Duration (minutes)',
+                get_string('sessduration', 'rb_source_facetoface_sessions'),
                 'number'
             ),
         );
@@ -272,22 +272,22 @@ class rb_source_facetoface_sessions extends rb_base_source {
         $contentoptions = array(
             new rb_content_option(
                 'current_org',                      // class name
-                "The user's current organisation",  // title
+                get_string('currentorg', 'rb_source_facetoface_sessions'),  // title
                 'base.userid'                       // field
             ),
             new rb_content_option(
                 'current_pos',                      // class name
-                "The user's current position",      // title
+                get_string('currentpos', 'rb_source_facetoface_sessions'),      // title
                 'base.userid'                       // field
             ),
             new rb_content_option(
                 'user',
-                'The user',
+                get_string('user', 'rb_source_facetoface_sessions'),
                 'base.userid'
             ),
             new rb_content_option(
                 'date',
-                "The session date",
+                get_string('thedate', 'rb_source_facetoface_sessions'),
                 'sessiondate.timestart',
                 'sessiondate'
             ),
@@ -596,33 +596,33 @@ class rb_source_facetoface_sessions extends rb_base_source {
             new rb_filter_option(
                 'session',
                 'venue',
-                'Session Venue',
+                get_string('sessvenue', 'rb_source_facetoface_sessions'),
                 'text'
             ),
             new rb_filter_option(
                 'session',
                 'room',
-                'Session Room',
+                get_string('sessroom', 'rb_source_facetoface_sessions'),
                 'text'
             ),
             new rb_filter_option(
                 'session',
                 'pilot',
-                'Pilot',
+                get_string('pilot', 'rb_source_facetoface_sessions'),
                 'select',
                 array('selectfunc' => 'yesno_list')
             ),
             new rb_filter_option(
                 'session',
                 'audit',
-                'Audit',
+                get_string('audit', 'rb_source_facetoface_sessions'),
                 'select',
                 array('selectfunc' => 'yesno_list')
             ),
             new rb_filter_option(
                 'session',
                 'coursedelivery',
-                'Course Delivery',
+                get_string('coursedelivery', 'rb_source_facetoface_sessions'),
                 'select',
                 array(
                     'selectfunc' => 'coursedelivery_list',
