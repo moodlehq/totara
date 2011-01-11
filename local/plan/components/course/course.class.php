@@ -705,44 +705,58 @@ class dp_course_component extends dp_base_component {
 
         $status = true;
         if (!empty($stored_records)) {
+            $oldrecords = get_records_list('dp_plan_course_assign', 'id', implode(',', array_keys($stored_records)));
+
             $updates = '';
             begin_sql();
             foreach($stored_records as $itemid => $record) {
-                $oldrecord = get_record('dp_plan_course_assign', 'id', $itemid);
-
                 // Update the record
                 $status = $status & update_record('dp_plan_course_assign', $record);
-
-                // Record the updates for later use
-                $course = get_record('course', 'id', $oldrecord->courseid);
-                $courseheader = '<p><strong>'.format_string($course->fullname).": </strong><br>";
-                $courseprinted = false;
-                if (!empty($record->priority) && $oldrecord->priority != $record->priority) {
-                    $oldpriority = get_field('dp_priority_scale_value', 'name', 'id', $oldrecord->priority);
-                    $newpriority = get_field('dp_priority_scale_value', 'name', 'id', $record->priority);
-                    $updates .= $courseheader;
-                    $courseprinted = true;
-                    $updates .= get_string('priority', 'local_plan').' - '.get_string('changedfromxtoy', 'local_plan', (object)array('before'=>$oldpriority, 'after'=>$newpriority))."<br>";
-                }
-                if (!empty($record->duedate) && $oldrecord->duedate != $record->duedate) {
-                    $updates .= $courseprinted ? '' : $courseheader;
-                    $courseprinted = true;
-                    $updates .= get_string('duedate', 'local_plan').' - '.
-                        get_string('changedfromxtoy', 'local_plan', (object)array('before'=>empty($oldrecord->duedate) ? '' : userdate($oldrecord->duedate, '%e %h %Y', $CFG->timezone, false), 'after'=>userdate($record->duedate, '%e %h %Y', $CFG->timezone, false)))."<br>";
-                }
-                if (!empty($record->approved) && $oldrecord->approved != $record->approved) {
-                    $updates .= $courseprinted ? '' : $courseheader;
-                    $courseprinted = true;
-                    $updates .= get_string('approval', 'local_plan').' - '.
-                        get_string('changedfromxtoy', 'local_plan', (object)array('before'=>dp_get_approval_status_from_code($oldrecord->approved), 'after'=>dp_get_approval_status_from_code($record->approved)))."<br>";
-                }
-                $updates .= $courseprinted ? '</p>' : '';
             }
 
             if ($status) {
                 commit_sql();
-            }
-            else {
+
+                // Process update notifications
+                foreach($stored_records as $itemid => $record) {
+                    // Record the updates for later use
+                    $course = get_record('course', 'id', $oldrecords[$itemid]->courseid);
+                    $courseheader = '<p><strong>'.format_string($course->fullname).": </strong><br>";
+                    $courseprinted = false;
+                    if (!empty($record->priority) && $oldrecords[$itemid]->priority != $record->priority) {
+                        $oldpriority = get_field('dp_priority_scale_value', 'name', 'id', $oldrecords[$itemid]->priority);
+                        $newpriority = get_field('dp_priority_scale_value', 'name', 'id', $record->priority);
+                        $updates .= $courseheader;
+                        $courseprinted = true;
+                        $updates .= get_string('priority', 'local_plan').' - '.
+                            get_string('changedfromxtoy', 'local_plan',
+                                (object)array('before'=>$oldpriority, 'after'=>$newpriority))."<br>";
+                    }
+                    if (!empty($record->duedate) && $oldrecords[$itemid]->duedate != $record->duedate) {
+                        $updates .= $courseprinted ? '' : $courseheader;
+                        $courseprinted = true;
+                        $updates .= get_string('duedate', 'local_plan').' - '.
+                            get_string('changedfromxtoy', 'local_plan',
+                            (object)array('before'=>empty($oldrecords[$itemid]->duedate) ? '' :
+                                userdate($oldrecords[$itemid]->duedate, '%e %h %Y', $CFG->timezone, false),
+                            'after'=>userdate($record->duedate, '%e %h %Y', $CFG->timezone, false)))."<br>";
+                    }
+                    if (!empty($record->approved) && $oldrecords[$itemid]->approved != $record->approved) {
+                        $updates .= $courseprinted ? '' : $courseheader;
+                        $courseprinted = true;
+                        $updates .= get_string('approval', 'local_plan').' - '.
+                            get_string('changedfromxtoy', 'local_plan',
+                            (object)array('before'=>dp_get_approval_status_from_code($oldrecords[$itemid]->approved),
+                                'after'=>dp_get_approval_status_from_code($record->approved)))."<br>";
+                    }
+                    $updates .= $courseprinted ? '</p>' : '';
+                }  // foreach
+
+                // Send update notification
+                if ($this->plan->status != DP_PLAN_STATUS_UNAPPROVED) {
+                    $this->send_component_update_notification($updates);
+                }
+            } else {
                 rollback_sql();
             }
 
@@ -751,9 +765,6 @@ class dp_course_component extends dp_base_component {
             }
             else {
                 if ($status) {
-                    if ($this->plan->status != DP_PLAN_STATUS_UNAPPROVED) {
-                        $this->send_component_update_notification($updates);
-                    }
                     totara_set_notification(get_string('coursesupdated','local_plan'), $currenturl, array('style'=>'notifysuccess'));
                 } else {
                     totara_set_notification(get_string('coursesnotupdated','local_plan'), $currenturl);
