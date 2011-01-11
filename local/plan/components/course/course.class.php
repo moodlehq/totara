@@ -705,6 +705,7 @@ class dp_course_component extends dp_base_component {
 
         $status = true;
         if (!empty($stored_records)) {
+            $updates = '';
             begin_sql();
             foreach($stored_records as $itemid => $record) {
                 $oldrecord = get_record('dp_plan_course_assign', 'id', $itemid);
