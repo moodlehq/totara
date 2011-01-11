@@ -56,7 +56,7 @@ div.course-content  #layout-table {
 
 #layout-table #middle-column {
   padding-top: 0;
-  padding-left: 0;
+  padding-left: 12px;
   padding-right: 12px;
 }
 
@@ -2037,14 +2037,14 @@ table.centerblock th.status, table.centerblock td.status {
 
 #site-index #middle-column div.mycourses div.allmycourses {
   margin-top: 5px;
-  margin-left: 2px;
+  margin-left: 0px;
   margin-bottom: 0px;
   font-weight: bold;
 }
 
 #site-index #middle-column div.mycourses {
   margin-top: 0px;
-  margin-left: 12px;
+  margin-left: 0px;
   border-style:solid;
   border-width:1px;
   background: none;
