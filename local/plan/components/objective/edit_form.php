@@ -50,6 +50,7 @@ class plan_objective_edit_form extends moodleform {
                     $select[$pv->id] = $pv->name;
                 }
                 $prioritylist = $select;
+                $prioritydefaultid = get_field('dp_priority_scale', 'defaultid', 'id', $scaleid);
             } else {
                 $prioritylist = array( get_string('none', 'local_plan') );
             }
@@ -103,6 +104,7 @@ class plan_objective_edit_form extends moodleform {
         // Priorities
         if ( $prioritymode == DP_PRIORITY_OPTIONAL || $prioritymode == DP_PRIORITY_REQUIRED ){
             $mform->addElement('select', 'priority', get_string('priority', 'local_plan'), $prioritylist);
+            $mform->setDefault('priority', $prioritydefaultid);
             if ( $prioritymode == DP_PRIORITY_REQUIRED ){
                 $mform->addRule('priority', get_string('err_required', 'form'), 'required', '', 'client', false, false);
             }
