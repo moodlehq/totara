@@ -17,7 +17,7 @@ class dp_competency_component extends dp_base_component {
      * @param   object  $plan
      * @return  void
      */
-    function __construct($plan) {
+    public function __construct($plan) {
         parent::__construct($plan);
         $this->defaultname = get_string('competencies', 'local_plan');
     }

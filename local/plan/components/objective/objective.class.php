@@ -18,7 +18,7 @@ class dp_objective_component extends dp_base_component {
      * @param   object  $plan
      * @return  void
      */
-    function __construct($plan) {
+    public function __construct($plan) {
         parent::__construct($plan);
         $this->defaultname = get_string('objectives', 'local_plan');
     }
