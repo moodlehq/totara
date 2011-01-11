@@ -280,9 +280,6 @@ class dp_competency_component extends dp_base_component {
             $proficiencies = array();
         }
 
-        // get the scale values used for competencies in this plan
-        $priorityvalues = get_records('dp_priority_scale_value',
-            'priorityscaleid', $priorityscaleid, 'sortorder', 'id,name,sortorder');
 
         if($records = get_recordset_sql($select.$from.$where.$sort,
             $table->get_page_start(),
@@ -298,7 +295,7 @@ class dp_competency_component extends dp_base_component {
                 $row[] = $approved ? $this->display_status($ca) : '';
 
                 if($showpriorities) {
-                    $row[] = $this->display_priority($ca, $priorityvalues);
+                    $row[] = $this->display_priority($ca, $priorityscaleid);
                 }
 
                 if($showduedates) {

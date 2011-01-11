@@ -239,12 +239,6 @@ class dp_objective_component extends dp_base_component {
         // get all course completions for this plan's user
         $completions = completion_info::get_all_courses($this->plan->userid);
 
-        // get the scale values used for objectives in this plan
-        if ($showpriorities){
-            $priorityvalues = get_records('dp_priority_scale_value',
-                'priorityscaleid', $priorityscaleid, 'sortorder', 'id,name,sortorder');
-        }
-
         // Get the proficiency values for this plan
         $proficiencyvalues = get_records('dp_objective_scale_value', 'objscaleid', $this->get_setting('objectivescale'), 'sortorder','id,name,achieved');
 
@@ -267,7 +261,7 @@ class dp_objective_component extends dp_base_component {
 //                $row[] = $objective->numevidences;
 
                 if($showpriorities) {
-                    $row[] = $this->display_priority($objective, $priorityvalues);
+                    $row[] = $this->display_priority($objective, $priorityscaleid);
                 }
 
                 if($showduedates) {

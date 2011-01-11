@@ -336,10 +336,6 @@ class dp_course_component extends dp_base_component {
         // get all course completions for this plan's user
         $completions = completion_info::get_all_courses($this->plan->userid);
 
-        // get the scale values used for courses in this plan
-        $priorityvalues = get_records('dp_priority_scale_value',
-            'priorityscaleid', $priorityscaleid, 'sortorder', 'id,name,sortorder');
-
         if ($records = get_recordset_sql($select.$from.$where.$sort,
             $table->get_page_start(),
             $table->get_page_size())) {
@@ -355,7 +351,7 @@ class dp_course_component extends dp_base_component {
                 $row[] = $approved ? $this->display_status_as_progress_bar($ca, $completionstatus) : '';
 
                 if ($showpriorities) {
-                    $row[] = $this->display_priority($ca, $priorityvalues);
+                    $row[] = $this->display_priority($ca, $priorityscaleid);
                 }
 
                 if ($showduedates) {
@@ -470,10 +466,6 @@ class dp_course_component extends dp_base_component {
         // get all course completions for this plan's user
         $completions = completion_info::get_all_courses($this->plan->userid);
 
-        // get the scale values used for courses in this plan
-        $priorityvalues = get_records('dp_priority_scale_value',
-            'priorityscaleid', $priorityscaleid, 'sortorder', 'id,name,sortorder');
-
         if($records = get_recordset_sql($select.$from.$where.$sort)) {
 
             while($ca = rs_fetch_next_record($records)) {
@@ -486,7 +478,7 @@ class dp_course_component extends dp_base_component {
                 $row[] = $this->display_status_as_progress_bar($ca, $completionstatus);
 
                 if($showpriorities) {
-                    $row[] = $this->display_priority_as_text($ca->priority, $ca->priorityname, $priorityvalues);
+                    $row[] = $this->display_priority_as_text($ca->priority, $ca->priorityname, $priorityscaleid);
                 }
 
                 if($showduedates) {

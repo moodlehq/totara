@@ -80,14 +80,19 @@ abstract class dp_base_component {
         return $out;
     }
 
-    function display_priority($ca, $priorityvalues) {
+    function display_priority($ca, $priorityscaleid) {
         // @todo if $ca->priority is 0, but prioritymode has been
         // changed to required, it currently defaults to the highest value.
         // Change to use default priority instead
+
+        $priorityvalues = get_records('dp_priority_scale_value',
+            'priorityscaleid', $priorityscaleid, 'sortorder', 'id,name,sortorder');
+
         $plancompleted = ($this->plan->status == DP_PLAN_STATUS_COMPLETE);
         $cansetpriority = !$plancompleted && ($this->get_setting('setpriority') == DP_PERMISSION_ALLOW);
         $priorityenabled = $this->get_setting('prioritymode') != DP_PRIORITY_NONE;
         $priorityrequired = ($this->get_setting('prioritymode') == DP_PRIORITY_REQUIRED);
+        $prioritydefaultid = (int)get_field('dp_priority_scale', 'defaultid', 'id', $priorityscaleid);
         $out = '';
 
         if(!$priorityenabled) {
@@ -96,7 +101,7 @@ abstract class dp_base_component {
 
         if ($cansetpriority) {
             // show a pulldown menu of priority options
-            $out .= $this->display_priority_picker("priorities_{$this->component}[{$ca->id}]", $ca->priority, $priorityvalues, $priorityrequired);
+            $out .= $this->display_priority_picker("priorities_{$this->component}[{$ca->id}]", $ca->priority, $priorityvalues, $prioritydefaultid, $priorityrequired);
         } else {
             // just display priority if no permissions to set it
             $out .= $this->display_priority_as_text($ca->priority, $ca->priorityname, $priorityvalues);
@@ -105,20 +110,26 @@ abstract class dp_base_component {
         return $out;
     }
 
-    function display_priority_picker($name, $priorityid, $priorityvalues, $priorityrequired=false) {
+    function display_priority_picker($name, $priorityid, $priorityvalues, $prioritydefaultid, $priorityrequired=false) {
 
         if (!$priorityvalues) {
             return '';
         }
 
-        $choose = ($priorityrequired) ? null : get_string('none','local_plan');
-        $chooseval = ($priorityrequired) ? null : 0;
-
         $options = array();
 
         foreach($priorityvalues as $id => $val) {
             $options[$id] = $val->name;
+
+            if($id == $prioritydefaultid) {
+                $defaultchooseval = $id;
+                $defaultchoose = $val->name;
+            }
         }
+
+        $choose = ($priorityrequired) ? $defaultchoose : get_string('none','local_plan');
+        $chooseval = ($priorityrequired) ? $defaultchooseval : 0;
+
 
         return choose_from_menu($options, $name, $priorityid, $choose, '', $chooseval, true);
 
