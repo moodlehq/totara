@@ -101,7 +101,7 @@ class rb_source_dp_objective extends rb_base_source {
         $columnoptions[] = new rb_column_option(
                 'plan',
                 'name',
-                'Plan name',
+                get_string('planname', 'rb_source_dp_objective'),
                 'dp.name',
                 array(
                     'defaultheading' => 'Plan',
@@ -111,7 +111,7 @@ class rb_source_dp_objective extends rb_base_source {
         $columnoptions[] = new rb_column_option(
                 'plan',
                 'planlink',
-                'Plan name (linked to plan page)',
+                get_string('plannamelink', 'rb_source_dp_objective'),
                 'dp.name',
                 array(
                     'defaultheading' => 'Plan',
@@ -123,7 +123,7 @@ class rb_source_dp_objective extends rb_base_source {
         $columnoptions[] = new rb_column_option(
                 'plan',
                 'startdate',
-                'Plan start date',
+                get_string('planstartdate', 'rb_source_dp_objective'),
                 'dp.startdate',
                 array(
                     'joins' => 'dp',
@@ -133,7 +133,7 @@ class rb_source_dp_objective extends rb_base_source {
         $columnoptions[] = new rb_column_option(
                 'plan',
                 'enddate',
-                'Plan end date',
+                get_string('planenddate', 'rb_source_dp_objective'),
                 'dp.enddate',
                 array(
                     'joins' => 'dp',
@@ -143,7 +143,7 @@ class rb_source_dp_objective extends rb_base_source {
         $columnoptions[] = new rb_column_option(
                 'plan',
                 'status',
-                'Plan status',
+                get_string('planstatus', 'rb_source_dp_objective'),
                 'dp.status',
                 array(
                     'joins' => 'dp',
@@ -154,7 +154,7 @@ class rb_source_dp_objective extends rb_base_source {
         $columnoptions[] = new rb_column_option(
                 'template',
                 'name',
-                'Plan template name',
+                get_string('templatename', 'rb_source_dp_objective'),
                 'template.fullname',
                 array(
                     'defaultheading' => 'Plan template',
@@ -164,7 +164,7 @@ class rb_source_dp_objective extends rb_base_source {
         $columnoptions[] = new rb_column_option(
                 'template',
                 'startdate',
-                'Plan template start date',
+                get_string('templatestartdate', 'rb_source_dp_objective'),
                 'template.startdate',
                 array(
                     'joins'=>'template',
@@ -174,7 +174,7 @@ class rb_source_dp_objective extends rb_base_source {
         $columnoptions[] = new rb_column_option(
                 'template',
                 'enddate',
-                'Plan template end date',
+                get_string('templateenddate', 'rb_source_dp_objective'),
                 'template.enddate',
                 array(
                     'joins'=>'template',
@@ -185,17 +185,17 @@ class rb_source_dp_objective extends rb_base_source {
         $columnoptions[] = new rb_column_option(
                 'objective',
                 'fullname',
-                'Fullname',
+                get_string('fullname', 'rb_source_dp_objective'),
                 'base.fullname'
         );
 
         $columnoptions[] = new rb_column_option(
                 'objective',
                 'fullnamelink',
-                'Fullname (linked to detail page)',
+                get_string('fullnamelink', 'rb_source_dp_objective'),
                 'base.fullname',
                 array(
-                    'defaultheading' => 'Fullname',
+                    'defaultheading' => get_string('fullname', 'rb_source_dp_objective'),
                     'displayfunc' => 'objectivelink',
                     'extrafields' => array(
                         'objective_id' => 'base.id',
@@ -208,21 +208,21 @@ class rb_source_dp_objective extends rb_base_source {
         $columnoptions[] = new rb_column_option(
                 'objective',
                 'shortname',
-                'Shortname',
+                get_string('shortname', 'rb_source_dp_objective'),
                 'base.shortname'
         );
 
         $columnoptions[] = new rb_column_option(
                 'objective',
                 'description',
-                'Description',
+                get_string('description', 'rb_source_dp_objective'),
                 'base.description'
         );
 
         $columnoptions[] = new rb_column_option(
                 'objective',
                 'duedate',
-                'Objective due date',
+                get_string('objduedate', 'rb_source_dp_objective'),
                 'base.duedate',
                 array(
                     'displayfunc' => 'nice_date'
@@ -232,7 +232,7 @@ class rb_source_dp_objective extends rb_base_source {
         $columnoptions[] = new rb_column_option(
                 'objective',
                 'priority',
-                'Objective priority',
+                get_string('objpriority', 'rb_source_dp_objective'),
                 'priority.name',
                 array(
                     'joins' => 'priority'
@@ -242,7 +242,7 @@ class rb_source_dp_objective extends rb_base_source {
         $columnoptions[] = new rb_column_option(
                 'objective',
                 'status',
-                'Objective status',
+                get_string('objstatus', 'rb_source_dp_objective'),
                 'base.approved',
                 array(
                     'displayfunc' => 'plan_item_status'
@@ -252,7 +252,7 @@ class rb_source_dp_objective extends rb_base_source {
         $columnoptions[] = new rb_column_option(
                 'objective',
                 'proficiency',
-                'Objective proficiency',
+                get_string('objproficiency', 'rb_source_dp_objective'),
                 'objective_scale_value.name',
                 array(
                     'joins' => 'objective_scale_value'
@@ -274,42 +274,42 @@ class rb_source_dp_objective extends rb_base_source {
         $filteroptions[] = new rb_filter_option(
                 'objective',
                 'fullname',
-                'Objective fullname',
+                get_string('objfullname', 'rb_source_dp_objective'),
                 'text'
         );
 
         $filteroptions[] = new rb_filter_option(
                 'objective',
                 'shortname',
-                'Objective shortname',
+                get_string('objshortname', 'rb_source_dp_objective'),
                 'text'
         );
 
         $filteroptions[] = new rb_filter_option(
                 'objective',
                 'description',
-                'Objective description',
+                get_string('objdescription', 'rb_source_dp_objective'),
                 'textarea'
         );
 
         $filteroptions[] = new rb_filter_option(
                 'objective',
                 'priority',
-                'Objective priority',
+                get_string('objpriority', 'rb_source_dp_objective'),
                 'text'
         );
 
         $filteroptions[] = new rb_filter_option(
                 'objective',
                 'duedate',
-                'Objective due date',
+                get_string('objduedate', 'rb_source_dp_objective'),
                 'date'
         );
 
         $filteroptions[] = new rb_filter_option(
                 'plan',
                 'name',
-                'Plan name',
+                get_string('planname', 'rb_source_dp_objective'),
                 'text'
         );
 

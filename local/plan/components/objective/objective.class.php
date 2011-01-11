@@ -59,7 +59,7 @@ class dp_objective_component extends dp_base_component {
         }
 
         // Decide on button text
-        if ($permission == DP_PERMISSION_ALLOW) {
+        if ($permission >= DP_PERMISSION_ALLOW) {
             $btntext = get_string('addnewobjective', 'local_plan');
         } else {
             $btntext = get_string('requestednewobjective', 'local_plan');
@@ -157,10 +157,7 @@ class dp_objective_component extends dp_base_component {
         $cansetprofs = !$plancompleted && $this->get_setting('setproficiency') == DP_PERMISSION_ALLOW;
         $canrequestobjectives = !$plancompleted && $this->get_setting('updateobjective') == DP_PERMISSION_REQUEST;
         $canapproveobjectives = !$plancompleted && $this->get_setting('updateobjective') == DP_PERMISSION_APPROVE;
-        $canremoveobjectives = !$plancompleted && (
-                $this->get_setting('updateobjective') == DP_PERMISSION_ALLOW
-                || $this->get_setting('updateobjective') == DP_PERMISSION_APPROVE
-        );
+        $canremoveobjectives = !$plancompleted &&  $this->get_setting('updateobjective') >= DP_PERMISSION_ALLOW;
         $coursesenabled = $this->plan->get_component('course')->get_setting('enabled');
 
         $as = sql_as();
@@ -242,12 +239,6 @@ class dp_objective_component extends dp_base_component {
         // get all course completions for this plan's user
         $completions = completion_info::get_all_courses($this->plan->userid);
 
-        // get the scale values used for objectives in this plan
-        if ($showpriorities){
-            $priorityvalues = get_records('dp_priority_scale_value',
-                'priorityscaleid', $priorityscaleid, 'sortorder', 'id,name,sortorder');
-        }
-
         // Get the proficiency values for this plan
         $proficiencyvalues = get_records('dp_objective_scale_value', 'objscaleid', $this->get_setting('objectivescale'), 'sortorder','id,name,achieved');
 
@@ -270,7 +261,7 @@ class dp_objective_component extends dp_base_component {
 //                $row[] = $objective->numevidences;
 
                 if($showpriorities) {
-                    $row[] = $this->display_priority($objective, $priorityvalues);
+                    $row[] = $this->display_priority($objective, $priorityscaleid);
                 }
 
                 if($showduedates) {
@@ -347,7 +338,7 @@ class dp_objective_component extends dp_base_component {
         $objectivename = $this->get_setting('name');
 
         // Get data
-        $select = 'SELECT po.*, po.fullname '.sql_as().' objname, 
+        $select = 'SELECT po.*, po.fullname '.sql_as().' objname,
             osv.name '.sql_as().' proficiency, psv.name '.sql_as().' priorityname ';
         $from = "FROM {$CFG->prefix}dp_plan_objective po
             LEFT JOIN {$CFG->prefix}dp_objective_scale_value osv ON po.scalevalueid = osv.id
@@ -700,23 +691,9 @@ class dp_objective_component extends dp_base_component {
 
         $result = insert_record('dp_plan_objective', $rec);
 
-        // are we OK? then send the notifications
-        if ($result) {
-            $this->send_creation_notification($result, $shortname);
-        }
+        $this->send_creation_notification($result, $shortname);
+
         return $result;
-    }
-
-    /**
-     * Construct the link for the current user
-     * @return string user link
-     */
-    function current_user() {
-        global $USER, $CFG;
-
-        $userfrom_link = $CFG->wwwroot.'/user/view.php?id='.$USER->id;
-        $fromname = fullname($USER);
-        return "<a href=\"{$userfrom_link}\" title=\"$fromname\">$fromname</a> ";
     }
 
     /**
@@ -734,18 +711,21 @@ class dp_objective_component extends dp_base_component {
         $event->contexturl = "{$CFG->wwwroot}/local/plan/view.php?id={$this->plan->id}";
         $event->icon = 'objective-remove.png';
         $a = new stdClass;
-        $a->objective = $objective->shortname;
+        $a->objective = $objective->fullname;
         $a->plan = "<a href=\"{$event->contexturl}\" title=\"{$this->plan->name}\">{$this->plan->name}</a>";
 
         // did they delete it themselves?
         if ($USER->id == $this->plan->userid) {
-            // notify their manager
-            if ($manager = totara_get_manager($this->plan->userid)) {
-                $event->userto = $manager;
-                $event->subject = get_string('objectivedeleteshortmanager', 'local_plan', $this->current_user());
-                $event->fullmessage = get_string('objectivedeletelongmanager', 'local_plan', $a);
-                $event->roleid = get_field('role','id', 'shortname', 'manager');
-                tm_notification_send($event);
+            // don't bother if the plan is not active
+            if ($this->plan->is_active()) {
+                // notify their manager
+                if ($manager = totara_get_manager($this->plan->userid)) {
+                    $event->userto = $manager;
+                    $event->subject = get_string('objectivedeleteshortmanager', 'local_plan', $this->current_user_link());
+                    $event->fullmessage = get_string('objectivedeletelongmanager', 'local_plan', $a);
+                    $event->roleid = get_field('role','id', 'shortname', 'manager');
+                    tm_notification_send($event);
+                }
             }
         }
         // notify user that someone else did it
@@ -779,13 +759,16 @@ class dp_objective_component extends dp_base_component {
 
         // did they create it themselves?
         if ($USER->id == $this->plan->userid) {
-            // notify their manager
-            if ($manager = totara_get_manager($this->plan->userid)) {
-                $event->userto = $manager;
-                $event->subject = get_string('objectivenewshortmanager', 'local_plan', $this->current_user());
-                $event->fullmessage = get_string('objectivenewlongmanager', 'local_plan', $a);
-                $event->roleid = get_field('role','id', 'shortname', 'manager');
-                tm_notification_send($event);
+            // don't bother if the plan is not active
+            if ($this->plan->is_active()) {
+                // notify their manager
+                if ($manager = totara_get_manager($this->plan->userid)) {
+                    $event->userto = $manager;
+                    $event->subject = get_string('objectivenewshortmanager', 'local_plan', $this->current_user_link());
+                    $event->fullmessage = get_string('objectivenewlongmanager', 'local_plan', $a);
+                    $event->roleid = get_field('role','id', 'shortname', 'manager');
+                    tm_notification_send($event);
+                }
             }
         }
         // notify user that someone else did it
@@ -815,19 +798,22 @@ class dp_objective_component extends dp_base_component {
         $event->contexturl = "{$CFG->wwwroot}/local/plan/components/objective/view.php?id={$this->plan->id}&itemid={$objective->id}";
         $event->icon = 'objective-update.png';
         $a = new stdClass;
-        $a->objective = "<a href=\"{$event->contexturl}\" title=\"{$objective->shortname}\">{$objective->shortname}</a>";
+        $a->objective = "<a href=\"{$event->contexturl}\" title=\"{$objective->shortname}\">{$objective->fullname}</a>";
         $a->plan = "<a href=\"{$CFG->wwwroot}/local/plan/view.php?id={$this->plan->id}\" title=\"{$this->plan->name}\">{$this->plan->name}</a>";
         $a->field = get_string('objective'.$field, 'local_plan');
 
         // did they edit it themselves?
         if ($USER->id == $this->plan->userid) {
-            // notify their manager
-            if ($manager = totara_get_manager($this->plan->userid)) {
-                $event->userto = $manager;
-                $event->subject = get_string('objectiveeditshortmanager', 'local_plan', $this->current_user());
-                $event->fullmessage = get_string('objectiveeditlongmanager', 'local_plan', $a);
-                $event->roleid = get_field('role','id', 'shortname', 'manager');
-                tm_notification_send($event);
+            // don't bother if the plan is not active
+            if ($this->plan->is_active()) {
+                // notify their manager
+                if ($manager = totara_get_manager($this->plan->userid)) {
+                    $event->userto = $manager;
+                    $event->subject = get_string('objectiveeditshortmanager', 'local_plan', $this->current_user_link());
+                    $event->fullmessage = get_string('objectiveeditlongmanager', 'local_plan', $a);
+                    $event->roleid = get_field('role','id', 'shortname', 'manager');
+                    tm_notification_send($event);
+                }
             }
         }
         // notify user that someone else did it
@@ -863,18 +849,21 @@ class dp_objective_component extends dp_base_component {
         $event->contexturl = "{$CFG->wwwroot}/local/plan/components/objective/view.php?id={$this->plan->id}&itemid={$objective->id}";
         $event->icon = 'objective-'.($status == 'complete' ? 'complete' : 'fail').'.png';
         $a = new stdClass;
-        $a->objective = "<a href=\"{$event->contexturl}\" title=\"{$objective->shortname}\">{$objective->shortname}</a>";
+        $a->objective = "<a href=\"{$event->contexturl}\" title=\"{$objective->shortname}\">{$objective->fullname}</a>";
         $a->plan = "<a href=\"{$CFG->wwwroot}/local/plan/view.php?id={$this->plan->id}\" title=\"{$this->plan->name}\">{$this->plan->name}</a>";
 
         // did they complete it themselves?
         if ($USER->id == $this->plan->userid) {
-            // notify their manager
-            if ($manager = totara_get_manager($this->plan->userid)) {
-                $event->userto = $manager;
-                $event->subject = get_string('objective'.$status.'shortmanager', 'local_plan', $this->current_user());
-                $event->fullmessage = get_string('objective'.$status.'longmanager', 'local_plan', $a);
-                $event->roleid = get_field('role','id', 'shortname', 'manager');
-                tm_notification_send($event);
+            // don't bother if the plan is not active
+            if ($this->plan->is_active()) {
+                // notify their manager
+                if ($manager = totara_get_manager($this->plan->userid)) {
+                    $event->userto = $manager;
+                    $event->subject = get_string('objective'.$status.'shortmanager', 'local_plan', $this->current_user_link());
+                    $event->fullmessage = get_string('objective'.$status.'longmanager', 'local_plan', $a);
+                    $event->roleid = get_field('role','id', 'shortname', 'manager');
+                    tm_notification_send($event);
+                }
             }
         }
         // notify user that someone else did it

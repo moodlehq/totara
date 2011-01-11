@@ -71,7 +71,7 @@ class development_plan {
      * @return  boolean
      */
     public function is_active() {
-        return $this->plan->status == DP_PLAN_STATUS_APPROVED;
+        return $this->status == DP_PLAN_STATUS_APPROVED;
     }
 
 
@@ -505,8 +505,6 @@ class development_plan {
     function display_actions() {
         global $CFG;
 
-        // @todo: USE NICE ICONS
-
         ob_start();
 
         // Approval
@@ -530,7 +528,7 @@ class development_plan {
         }
 
         // Complete
-        if ($this->status == DP_PLAN_STATUS_APPROVED && $this->get_setting('signoff') == DP_PERMISSION_ALLOW) {
+        if ($this->status == DP_PLAN_STATUS_APPROVED && $this->get_setting('signoff') >= DP_PERMISSION_ALLOW) {
             echo '<a href="'.$CFG->wwwroot.'/local/plan/action.php?id='.$this->id.'&signoff=1&sesskey='.sesskey().'" title="'.get_string('plancomplete', 'local_plan').'">
                 <img src="'.$CFG->pixpath.'/t/favourite_on.gif" alt="'.get_string('plancomplete', 'local_plan').'" />
                 </a>';
@@ -546,7 +544,6 @@ class development_plan {
         $out = ob_get_contents();
 
         ob_end_clean();
-
 
         return $out;
     }
@@ -748,7 +745,6 @@ class development_plan {
         $unapproveditems = $this->get_unapproved_items();
         $hasunapproveditems = !empty($unapproveditems);
 
-        // @todo check permission name
         $canapproveplan = (in_array($this->get_setting('confirm'), array(DP_PERMISSION_APPROVE, DP_PERMISSION_ALLOW)));
 
         $message = '';
@@ -852,14 +848,13 @@ class development_plan {
         }
 
         // @todo fix pluralization issues for 1 item
-        // @todo check permission names are correct
         $list = '';
         $listcount = 0;
         if($coursesenabled && !empty($pendinglist['course'])) {
             $a = new object();
             $a->planid = $this->id;
             $a->number = count($pendinglist['course']);
-            $a->name = $this->get_component('course')->get_setting('name');
+            $a->name = get_config(null, 'dp_course');
             $a->component = 'course';
             $a->site = $CFG->wwwroot;
             $list .= '<li>' . get_string('xitemspending', 'local_plan', $a) . '</li>';
@@ -870,7 +865,7 @@ class development_plan {
             $a = new object();
             $a->planid = $this->id;
             $a->number = count($pendinglist['competency']);
-            $a->name = $this->get_component('competency')->get_setting('name');
+            $a->name = get_config(null, 'dp_competency');
             $a->component = 'competency';
             $a->site = $CFG->wwwroot;
             $list .= '<li>' . get_string('xitemspending', 'local_plan', $a) . '</li>';
@@ -881,7 +876,7 @@ class development_plan {
             $a = new object();
             $a->planid = $this->id;
             $a->number = count($pendinglist['objective']);
-            $a->name = $this->get_component('objective')->get_setting('name');
+            $a->name = get_config(null, 'dp_objective');
             $a->component = 'objective';
             $a->site = $CFG->wwwroot;
             $list .= '<li>' . get_string('xitemspending', 'local_plan', $a) . '</li>';
@@ -1151,16 +1146,14 @@ class development_plan {
         $event->roleid = get_field('role','id', 'shortname', 'manager');
         $event->icon = 'learningplan-request.png';
 
-    #    if ($total_items > 1) {
-            $a = new stdClass;
-            $a->learner = fullname($learner);
-            $a->plan = s($this->name);
-            $a->data = '<li>'.implode($message_data, '</li><li>').'</li>';
-            $event->subject = get_string('item-request-manager-short', 'local_plan', $a);
-            $event->fullmessage = get_string('item-request-manager-long', 'local_plan', $a);
-    #    }
+        $a = new stdClass;
+        $a->learner = fullname($learner);
+        $a->plan = s($this->name);
+        $a->data = '<li>'.implode($message_data, '</li><li>').'</li>';
+        $event->subject = get_string('item-request-manager-short', 'local_plan', $a);
+        $event->fullmessage = get_string('item-request-manager-long', 'local_plan', $a);
 
-        $event->acceptbutton = get_string('approve', 'local_plan').' '.get_string('plan', 'local_plan');
+        $event->acceptbutton = get_string('review', 'local_plan').' '.get_string('items', 'local_plan');
         $event->accepttext = get_string('approveitemstext', 'local_plan');
 
         tm_workflow_send($event);

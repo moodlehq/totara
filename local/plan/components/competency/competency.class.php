@@ -280,9 +280,6 @@ class dp_competency_component extends dp_base_component {
             $proficiencies = array();
         }
 
-        // get the scale values used for competencies in this plan
-        $priorityvalues = get_records('dp_priority_scale_value',
-            'priorityscaleid', $priorityscaleid, 'sortorder', 'id,name,sortorder');
 
         if($records = get_recordset_sql($select.$from.$where.$sort,
             $table->get_page_start(),
@@ -298,7 +295,7 @@ class dp_competency_component extends dp_base_component {
                 $row[] = $approved ? $this->display_status($ca) : '';
 
                 if($showpriorities) {
-                    $row[] = $this->display_priority($ca, $priorityvalues);
+                    $row[] = $this->display_priority($ca, $priorityscaleid);
                 }
 
                 if($showduedates) {
@@ -671,6 +668,9 @@ class dp_competency_component extends dp_base_component {
             }
             else {
                 if ($status) {
+                    if ($this->plan->status != DP_PLAN_STATUS_UNAPPROVED) {
+                        $this->send_component_update_notification();
+                    }
                     totara_set_notification(get_string('competenciesupdated','local_plan'), $currenturl, array('style'=>'notifysuccess'));
                 } else {
                     totara_set_notification(get_string('error:competenciesupdated','local_plan'), $currenturl);
@@ -735,7 +735,7 @@ class dp_competency_component extends dp_base_component {
         }
 
         // Set approved status
-        if ($permission == DP_PERMISSION_ALLOW || $permission == DP_PERMISSION_APPROVE ) {
+        if ($permission >= DP_PERMISSION_ALLOW ) {
             $item->approved = DP_APPROVAL_APPROVED;
         }
         else { # $permission == DP_PERMISSION_REQUEST

@@ -111,7 +111,7 @@ class rb_source_dp_competency extends rb_base_source {
         $columnoptions[] = new rb_column_option(
                 'plan',
                 'name',
-                'Plan name',
+                get_string('planname', 'rb_source_dp_competency'),
                 'dp.name',
                 array(
                     'defaultheading' => 'Plan',
@@ -121,7 +121,7 @@ class rb_source_dp_competency extends rb_base_source {
         $columnoptions[] = new rb_column_option(
                 'plan',
                 'planlink',
-                'Plan name (linked to plan page)',
+                get_string('plannamelinked', 'rb_source_dp_competency'),
                 'dp.name',
                 array(
                     'defaultheading' => 'Plan',
@@ -133,7 +133,7 @@ class rb_source_dp_competency extends rb_base_source {
         $columnoptions[] = new rb_column_option(
                 'plan',
                 'startdate',
-                'Plan start date',
+                get_string('planstartdate', 'rb_source_dp_competency'),
                 'dp.startdate',
                 array(
                     'joins' => 'dp',
@@ -143,7 +143,7 @@ class rb_source_dp_competency extends rb_base_source {
         $columnoptions[] = new rb_column_option(
                 'plan',
                 'enddate',
-                'Plan end date',
+                get_string('planenddate', 'rb_source_dp_competency'),
                 'dp.enddate',
                 array(
                     'joins' => 'dp',
@@ -153,7 +153,7 @@ class rb_source_dp_competency extends rb_base_source {
         $columnoptions[] = new rb_column_option(
                 'plan',
                 'status',
-                'Plan status',
+                get_string('planstatus', 'rb_source_dp_competency'),
                 'dp.status',
                 array(
                     'joins' => 'dp',
@@ -164,7 +164,7 @@ class rb_source_dp_competency extends rb_base_source {
         $columnoptions[] = new rb_column_option(
                 'template',
                 'name',
-                'Plan template name',
+                get_string('templatename', 'rb_source_dp_competency'),
                 'template.shortname',
                 array(
                     'defaultheading' => 'Plan template',
@@ -174,7 +174,7 @@ class rb_source_dp_competency extends rb_base_source {
         $columnoptions[] = new rb_column_option(
                 'template',
                 'startdate',
-                'Plan template start date',
+                get_string('templatestartdate', 'rb_source_dp_competency'),
                 'template.startdate',
                 array(
                     'joins'=>'template',
@@ -184,7 +184,7 @@ class rb_source_dp_competency extends rb_base_source {
         $columnoptions[] = new rb_column_option(
                 'template',
                 'enddate',
-                'Plan template end date',
+                get_string('templateenddate', 'rb_source_dp_competency'),
                 'template.enddate',
                 array(
                     'joins'=>'template',
@@ -195,10 +195,10 @@ class rb_source_dp_competency extends rb_base_source {
         $columnoptions[] = new rb_column_option(
                 'competency',
                 'fullname',
-                'Competency name',
+                get_string('competencyname', 'rb_source_dp_competency'),
                 'competency.fullname',
                 array(
-                    'defaultheading' => 'Competency name',
+                    'defaultheading' => get_string('competencyname', 'rb_source_dp_competency'),
                     'joins' => 'competency'
                 )
         );
@@ -206,7 +206,7 @@ class rb_source_dp_competency extends rb_base_source {
         $columnoptions[] = new rb_column_option(
                 'competency',
                 'duedate',
-                'Competency due date',
+                get_string('competencyduedate', 'rb_source_dp_competency'),
                 'base.duedate',
                 array(
                     'displayfunc' => 'nice_date'
@@ -216,7 +216,7 @@ class rb_source_dp_competency extends rb_base_source {
         $columnoptions[] = new rb_column_option(
                 'competency',
                 'priority',
-                'Competency priority',
+                get_string('competencypriority', 'rb_source_dp_competency'),
                 'priority.name',
                 array(
                     'joins' => 'priority'
@@ -226,7 +226,7 @@ class rb_source_dp_competency extends rb_base_source {
         $columnoptions[] = new rb_column_option(
                 'competency',
                 'status',
-                'Competency status',
+                get_string('competencystatus', 'rb_source_dp_competency'),
                 'base.approved',
                 array(
                     'displayfunc' => 'plan_item_status'
@@ -236,7 +236,7 @@ class rb_source_dp_competency extends rb_base_source {
         $columnoptions[] = new rb_column_option(
                 'competency',
                 'proficiency',
-                'Competency proficiency',
+                get_string('competencyproficiency', 'rb_source_dp_competency'),
                 'scale_value.name',
                 array(
                     'joins' => 'scale_value'
@@ -258,28 +258,28 @@ class rb_source_dp_competency extends rb_base_source {
         $filteroptions[] = new rb_filter_option(
                 'competency',
                 'fullname',
-                'Competency name',
+                get_string('competencyname', 'rb_source_dp_competency'),
                 'text'
         );
 
         $filteroptions[] = new rb_filter_option(
                 'competency',
                 'priority',
-                'Competency priority',
+                get_string('competencypriority', 'rb_source_dp_competency'),
                 'text'
         );
 
         $filteroptions[] = new rb_filter_option(
                 'competency',
                 'duedate',
-                'Competency due date',
+                get_string('competencyduedate', 'rb_source_dp_competency'),
                 'date'
         );
 
         $filteroptions[] = new rb_filter_option(
                 'plan',
                 'name',
-                'Plan name',
+                get_string('planname', 'rb_source_dp_competency'),
                 'text'
         );
         return $filteroptions;

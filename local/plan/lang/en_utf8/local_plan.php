@@ -9,8 +9,11 @@ $string['plan:managepriorityscales'] = 'Manage priority scales';
 
 // Plan
 $string['approveplantext'] = 'Please review and approve the attached plan';
-$string['approveitemtext'] = 'Please review and approve the changes to the attached plan';
+$string['approveitemstext'] = 'Please review and approve the changes to the attached plan';
+$string['noitemsrequiringapproval'] = 'There are no items requiring approval';
 $string['plan'] = 'Plan';
+$string['review'] = 'Review';
+$string['items'] = 'Items';
 $string['learningplan'] = 'Learning Plan';
 $string['learningplans'] = 'Learning Plans';
 $string['xslearningplans'] = '$a\'s Learning Plans';
@@ -137,7 +140,6 @@ $string['pendingapproval'] = 'Pending approval';
 $string['allow'] = 'Allow';
 $string['deny'] = 'Deny';
 $string['request'] = 'Request';
-$string['approve'] = 'Approve';
 $string['action'] = 'Action';
 $string['learner'] = 'Learner';
 $string['manager'] = 'Manager';
@@ -544,3 +546,9 @@ $string['plan-remove-manager-short'] = '$a->learner has deleted plan';
 $string['plan-remove-manager-long'] = '$a->learner has deleted the learning plan \"$a->plan\"';
 $string['item-request-manager-short'] = 'Item approval request by $a->learner';
 $string['item-request-manager-long'] = '$a->learner has requested approval for new learning plan items in \"$a->plan\": $a->data';
+
+// Component messages
+$string['componentupdateshortlearner'] = '$a updated';
+$string['componentupdatelonglearner'] = '$a->component of learning plan \"$a->plan\" updated';
+$string['componentupdateshortmanager'] = '$a->user updated $a->component';
+$string['componentupdatelongmanager'] = '$a->component of learning plan \"$a->plan\" updated';

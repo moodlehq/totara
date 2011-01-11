@@ -54,7 +54,7 @@ class rb_source_courses extends rb_base_source {
             new rb_column_option(
                 'course',
                 'mods',
-                "Content",
+                get_string('content', 'rb_source_courses'),
                 "mods.list",
                 array('joins' => 'mods', 'displayfunc' => 'modicons')
             ),
@@ -74,7 +74,7 @@ class rb_source_courses extends rb_base_source {
             new rb_filter_option(
                 'course',         // type
                 'mods',           // value
-                'Course Content', // label
+                get_string('coursecontent', 'rb_source_courses'), // label
                 'multicheck',     // filtertype
                 array(            // options
                     'selectfunc' => 'modules_list',
@@ -96,7 +96,7 @@ class rb_source_courses extends rb_base_source {
 
             new rb_content_option(
                 'date',
-                "The start date",
+                get_string('startdate', 'rb_source_courses'),
                 'base.startdate'
             ),
         );

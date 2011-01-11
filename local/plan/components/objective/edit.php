@@ -122,24 +122,27 @@ if ( $deleteyes ){
         $record->scalevalueid = $data->scalevalueid;
         $record->approved = $component->approval_status_after_update();
 
-        if (!update_record('dp_plan_objective', $record) ){
+        if (!update_record('dp_plan_objective', $record)) {
             print_error("Was unable to update objective.");
         } else {
-            // test for actual changes
-            $updated = false;
-            foreach (array('fullname', 'shortname', 'description', 'priority', 'duedate', 'approved') as $attribute) {
-                if ($record->$attribute != $objective->$attribute) {
-                    $updated = $attribute;
-                    break;
+            // Only send notificaitons when plan not draft
+            if ($plan->status != DP_PLAN_STATUS_UNAPPROVED) {
+                // Check for changes and send notifications accordingly
+                $updated = false;
+                foreach (array('fullname', 'shortname', 'description', 'priority', 'duedate', 'approved') as $attribute) {
+                    if ($record->$attribute != $objective->$attribute) {
+                        $updated = $attribute;
+                        break;
+                    }
                 }
-            }
-            // updated?
-            if ($updated) {
-                $component->send_edit_notification($record, $updated);
-            }
-            // status?
-            if ($record->scalevalueid != $objective->scalevalueid) {
-                $component->send_status_notification($record);
+                // updated?
+                if ($updated) {
+                    $component->send_edit_notification($record, $updated);
+                }
+                // status?
+                if ($record->scalevalueid != $objective->scalevalueid) {
+                    $component->send_status_notification($record);
+                }
             }
 
             // now - back to the screen notifications ...

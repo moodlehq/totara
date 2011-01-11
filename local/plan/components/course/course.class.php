@@ -224,7 +224,7 @@ class dp_course_component extends dp_base_component {
         }
 
         // Set approved status
-        if ( $permission == DP_PERMISSION_ALLOW || $permission == DP_PERMISSION_APPROVE ) {
+        if ( $permission >= DP_PERMISSION_ALLOW ) {
             $item->approved = DP_APPROVAL_APPROVED;
         }
         else { # $permission == DP_PERMISSION_REQUEST
@@ -336,10 +336,6 @@ class dp_course_component extends dp_base_component {
         // get all course completions for this plan's user
         $completions = completion_info::get_all_courses($this->plan->userid);
 
-        // get the scale values used for courses in this plan
-        $priorityvalues = get_records('dp_priority_scale_value',
-            'priorityscaleid', $priorityscaleid, 'sortorder', 'id,name,sortorder');
-
         if ($records = get_recordset_sql($select.$from.$where.$sort,
             $table->get_page_start(),
             $table->get_page_size())) {
@@ -355,7 +351,7 @@ class dp_course_component extends dp_base_component {
                 $row[] = $approved ? $this->display_status_as_progress_bar($ca, $completionstatus) : '';
 
                 if ($showpriorities) {
-                    $row[] = $this->display_priority($ca, $priorityvalues);
+                    $row[] = $this->display_priority($ca, $priorityscaleid);
                 }
 
                 if ($showduedates) {
@@ -470,10 +466,6 @@ class dp_course_component extends dp_base_component {
         // get all course completions for this plan's user
         $completions = completion_info::get_all_courses($this->plan->userid);
 
-        // get the scale values used for courses in this plan
-        $priorityvalues = get_records('dp_priority_scale_value',
-            'priorityscaleid', $priorityscaleid, 'sortorder', 'id,name,sortorder');
-
         if($records = get_recordset_sql($select.$from.$where.$sort)) {
 
             while($ca = rs_fetch_next_record($records)) {
@@ -486,7 +478,7 @@ class dp_course_component extends dp_base_component {
                 $row[] = $this->display_status_as_progress_bar($ca, $completionstatus);
 
                 if($showpriorities) {
-                    $row[] = $this->display_priority_as_text($ca->priority, $ca->priorityname, $priorityvalues);
+                    $row[] = $this->display_priority_as_text($ca->priority, $ca->priorityname, $priorityscaleid);
                 }
 
                 if($showduedates) {
@@ -573,6 +565,14 @@ class dp_course_component extends dp_base_component {
             $out .= '<br />';
             $out .= $this->display_duedate_highlight_info($item->duedate);
             $out .= '</td>';
+        }
+        $completions = completion_info::get_all_courses($this->plan->userid);
+        $completionstatus = $this->get_completion_status($item, $completions);
+        if ($progressbar = $this->display_status_as_progress_bar($item, $completionstatus)) {
+            unset($completions, $completionstatus);
+            $out .= '<td><table border="0"><tr><td style="border:0px;">';
+            $out .= get_string('progress', 'local_plan').': </td><td style="border:0px;">'.$progressbar;
+            $out .= '</td></tr></table></td>';
         }
         $out .= "</tr>";
         $out .= '</table>';
@@ -720,6 +720,9 @@ class dp_course_component extends dp_base_component {
             }
             else {
                 if ($status) {
+                    if ($this->plan->status != DP_PLAN_STATUS_UNAPPROVED) {
+                        $this->send_component_update_notification();
+                    }
                     totara_set_notification(get_string('coursesupdated','local_plan'), $currenturl, array('style'=>'notifysuccess'));
                 } else {
                     totara_set_notification(get_string('coursesnotupdated','local_plan'), $currenturl);

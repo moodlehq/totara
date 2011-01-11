@@ -446,14 +446,8 @@ class page_course extends page_base {
         if (empty($notices)) {
             return true;
         }
-        $count=0;
         foreach ($notices as $notice) {
-            print '<div class="notice';
-            if(++$count % 2) {
-                print ' even">';
-            } else {
-                print ' odd">';
-            }
+            print '<div class="plan_box plan_box_action">';
             print $notice;
             print '</div>';
         }

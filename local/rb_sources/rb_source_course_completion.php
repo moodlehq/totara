@@ -88,75 +88,75 @@ class rb_source_course_completion extends rb_base_source {
             new rb_column_option(
                 'course_completion',
                 'status',
-                'Completion Status',
+                get_string('completionstatus', 'rb_source_course_completion'),
                 "CASE WHEN base.timecompleted IS NOT NULL THEN 'Completed' " .
                     "ELSE 'Not Completed' END"
             ),
             new rb_column_option(
                 'course_completion',
                 'completeddate',
-                'Completion Date',
+                get_string('completiondate', 'rb_source_course_completion'),
                 'base.timecompleted',
                 array('displayfunc' => 'nice_date')
             ),
             new rb_column_option(
                 'course_completion',
                 'starteddate',
-                'Date Started',
+                get_string('datestarted', 'rb_source_course_completion'),
                 'base.timestarted',
                 array('displayfunc' => 'nice_date')
             ),
             new rb_column_option(
                 'course_completion',
                 'enrolleddate',
-                'Date Enrolled',
+                get_string('dateenrolled', 'rb_source_course_completion'),
                 'base.timeenrolled',
                 array('displayfunc' => 'nice_date')
             ),
             new rb_column_option(
                 'course_completion',
                 'organisationid',
-                'Completion Organisation ID',
+                get_string('completionorgid', 'rb_source_course_completion'),
                 'base.organisationid'
             ),
             new rb_column_option(
                 'course_completion',
                 'organisationpath',
-                'Completion Organisation Path',
+                get_string('completionorgpath', 'rb_source_course_completion'),
                 'completion_organisation.path',
                 array('joins' => 'completion_organisation')
             ),
             new rb_column_option(
                 'course_completion',
                 'organisation',
-                'Completion Organisation Name',
+                get_string('completionorgname', 'rb_source_course_completion'),
                 'completion_organisation.fullname',
                 array('joins' => 'completion_organisation')
             ),
             new rb_column_option(
                 'course_completion',
                 'positionid',
-                'Completion Position ID',
+                get_string('completionposid', 'rb_source_course_completion'),
                 'base.positionid'
             ),
             new rb_column_option(
                 'course_completion',
                 'positionpath',
-                'Completion Position Path',
+                get_string('completionpospath', 'rb_source_course_completion'),
                 'completion_position.path',
                 array('joins' => 'completion_position')
             ),
             new rb_column_option(
                 'course_completion',
                 'position',
-                'Completion Position Name',
+                get_string('completionposname', 'rb_source_course_completion'),
                 'completion_position.fullname',
                 array('joins' => 'completion_position')
             ),
             new rb_column_option(
                 'course_completion',
                 'grade',
-                'Grade',
+                get_string('grade', 'rb_source_course_completion'),
                 'critcompl.gradefinal',
                 array(
                     'joins' => array('criteria', 'critcompl'),
@@ -166,7 +166,7 @@ class rb_source_course_completion extends rb_base_source {
             new rb_column_option(
                 'course_completion',
                 'passgrade',
-                'Pass Grade',
+                get_string('passgrade', 'rb_source_course_completion'),
                 'criteria.gradepass',
                 array(
                     'joins' => 'criteria',
@@ -176,13 +176,13 @@ class rb_source_course_completion extends rb_base_source {
             new rb_column_option(
                 'course_completion',
                 'gradestring',
-                'Grade and required grade',
+                get_string('requiredgrade', 'rb_source_course_completion'),
                 'critcompl.gradefinal',
                 array(
                     'joins' => array('criteria', 'critcompl'),
                     'displayfunc' => 'grade_string',
                     'extrafields' => array('gradepass' => 'criteria.gradepass'),
-                    'defaultheading' => 'Grade',
+                    'defaultheading' => get_string('grade', 'rb_source_course_completion'),
                 )
             ),
         );
@@ -214,25 +214,25 @@ class rb_source_course_completion extends rb_base_source {
             new rb_filter_option(
                 'course_completion',
                 'completeddate',
-                'Date Completed',
+                get_string('datecompleted', 'rb_source_course_completion'),
                 'date'
             ),
             new rb_filter_option(
                 'course_completion',
                 'completeddate',
-                'Date Started',
+                get_string('datestarted', 'rb_source_course_completion'),
                 'date'
             ),
             new rb_filter_option(
                 'course_completion',
                 'completeddate',
-                'Date Enrolled',
+                get_string('dateenrolled', 'rb_source_course_completion'),
                 'date'
             ),
             new rb_filter_option(
                 'course_completion',
                 'status',
-                'Completion Status',
+                get_string('completionstatus', 'rb_source_course_completion'),
                 'select',
                 array(
                     'selectfunc' => 'completion_status_list',
@@ -242,7 +242,7 @@ class rb_source_course_completion extends rb_base_source {
             new rb_filter_option(
                 'course_completion',
                 'organisationid',
-                'Office when completed (basic)',
+                get_string('officewhencompletedbasic', 'rb_source_course_completion'),
                 'select',
                 array(
                     'selectfunc' => 'organisations_list',
@@ -252,13 +252,13 @@ class rb_source_course_completion extends rb_base_source {
             new rb_filter_option(
                 'course_completion',
                 'organisationpath',
-                'Organisation when completed',
+                get_string('orgwhencompleted', 'rb_source_course_completion'),
                 'org'
             ),
             new rb_filter_option(
                 'course_completion',
                 'positionid',
-                'Position when completed (basic)',
+                get_string('poswhencompletedbasic', 'rb_source_course_completion'),
                 'select',
                 array(
                     'selectfunc' => 'positions_list',
@@ -268,13 +268,13 @@ class rb_source_course_completion extends rb_base_source {
             new rb_filter_option(
                 'course_completion',
                 'positionpath',
-                'Position when completed',
+                get_string('poswhencompleted', 'rb_source_course_completion'),
                 'pos'
             ),
             new rb_filter_option(
                 'course_completion',
                 'grade',
-                'Grade',
+                get_string('grade', 'rb_source_course_completion'),
                 'number'
             ),
             new rb_filter_option(
@@ -301,29 +301,29 @@ class rb_source_course_completion extends rb_base_source {
         $contentoptions = array(
             new rb_content_option(
                 'current_org',                      // class name
-                "The user's current organisation",  // title
+                get_string('currentorg', 'rb_source_course_completion'),  // title
                 'base.userid',                      // field
                 null                                // joins
             ),
             new rb_content_option(
                 'current_pos',                      // class name
-                "The user's current position",      // title
+                get_string('currentpos', 'rb_source_course_completion'),      // title
                 'base.userid',                      // field
                 null                                // joins
             ),
             new rb_content_option(
                 'completed_org',
-                "The organisation when completed",
+                get_string('orgwhencompleted', 'rb_source_course_completion'),
                 'base.organisationid'
             ),
             new rb_content_option(
                 'user',
-                'The user',
+                get_string('user', 'rb_source_course_completion'),
                 'base.userid'
             ),
             new rb_content_option(
                 'date',
-                "The completion date",
+                get_string('completiondate', 'rb_source_course_completion'),
                 'base.timecompleted'
             ),
         );

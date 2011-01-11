@@ -84,7 +84,7 @@ class plan_edit_form extends moodleform {
             if ($plan->get_setting('delete') == DP_PERMISSION_ALLOW) {
                 $buttonarray[] = $mform->createElement('submit', 'delete', get_string('deleteplan', 'local_plan'));
             }
-            if ($plan->get_setting('signoff') == DP_PERMISSION_ALLOW && $plan->status == DP_PLAN_STATUS_APPROVED) {
+            if ($plan->get_setting('signoff') >= DP_PERMISSION_ALLOW && $plan->status == DP_PLAN_STATUS_APPROVED) {
                 $buttonarray[] = $mform->createElement('submit', 'signoff', get_string('plancomplete', 'local_plan'));
             }
 
@@ -107,11 +107,10 @@ class plan_edit_form extends moodleform {
 
     function validation($data) {
         $mform =& $this->_form;
-
         $result = array();
 
-        $startdate = isset($data['startdate'])?$data['startdate']:'';
-        $enddate = isset($data['enddate'])?$data['enddate']:'';
+        $startdate = isset($data['startdate']) ? $data['startdate'] : '';
+        $enddate = isset($data['enddate']) ? $data['enddate'] : '';
 
         // Enforce start date before finish date
         if ( $startdate > $enddate && $startdate !== false && $enddate !== false ){
@@ -120,5 +119,5 @@ class plan_edit_form extends moodleform {
             unset($errstr);
         }
         return $result;
-   }
+    }
 }

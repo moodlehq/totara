@@ -52,56 +52,56 @@ class rb_source_site_logs extends rb_base_source {
             new rb_column_option(
                 'log',
                 'time',
-                'Time',
+                get_string('time', 'rb_source_site_logs'),
                 'base.time',
                 array('displayfunc' => 'nice_datetime')
             ),
             new rb_column_option(
                 'log',
                 'ip',
-                'IP Address',
+                get_string('ip', 'rb_source_site_logs'),
                 'base.ip',
                 array('displayfunc' => 'iplookup')
             ),
             new rb_column_option(
                 'log',
                 'module',
-                'Module',
+                get_string('module', 'rb_source_site_logs'),
                 'base.module'
             ),
             new rb_column_option(
                 'log',
                 'cmid',
-                'CMID',
+                get_string('cmid', 'rb_source_site_logs'),
                 'base.cmid'
             ),
             new rb_column_option(
                 'log',
                 'action',
-                'Action',
+                get_string('action', 'rb_source_site_logs'),
                 sql_fullname('base.module','base.action')
             ),
             new rb_column_option(
                 'log',
                 'actionlink',
-                'Action (linked to URL)',
+                get_string('actionlink', 'rb_source_site_logs'),
                 sql_fullname('base.module','base.action'),
                 array(
                     'displayfunc' => 'link_action',
-                    'defaultheading' => 'Action',
+                    'defaultheading' => get_string('action', 'rb_source_site_logs'),
                     'extrafields' => array('log_module' => 'base.module', 'log_url' => 'base.url')
                 )
             ),
             new rb_column_option(
                 'log',
-                'url',
+                get_string('url', 'rb_source_site_logs'),
                 'URL',
                 'base.url'
             ),
             new rb_column_option(
                 'log',
                 'info',
-                'Info',
+                get_string('info', 'rb_source_site_logs'),
                 'base.info'
             ),
         );
@@ -123,7 +123,7 @@ class rb_source_site_logs extends rb_base_source {
             new rb_filter_option(
                 'log',     // type
                 'action',  // value
-                'Action',  // label
+                get_string('action', 'rb_source_site_logs'),  // label
                 'text',    // filtertype
                 array()    // options
             )
@@ -145,24 +145,24 @@ class rb_source_site_logs extends rb_base_source {
         $contentoptions = array(
             new rb_content_option(
                 'current_org',                      // class name
-                "The user's current organisation",  // title
+                get_string('currentorg', 'rb_source_site_logs'),  // title
                 'base.userid',                      // field
                 null                                // joins
             ),
             new rb_content_option(
                 'current_pos',                      // class name
-                "The user's current position",      // title
+                get_string('currentpos', 'rb_source_site_logs'),      // title
                 'base.userid',                      // field
                 null                                // joins
             ),
             new rb_content_option(
                 'user',
-                'The user',
+                get_string('user', 'rb_source_site_logs'),
                 'base.userid'
             ),
             new rb_content_option(
                 'date',
-                'The date',
+                get_string('date', 'rb_source_site_logs'),
                 'base.timemodified'
             ),
         );

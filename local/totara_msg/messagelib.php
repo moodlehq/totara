@@ -460,7 +460,19 @@ function tm_workflow_send($eventdata) {
     $eventdata->onaccept = $onaccept;
     $eventdata->onreject = null;
 
-    return tm_message_send($eventdata);
+    $result = tm_message_send($eventdata);
+
+    if ($result && get_user_preferences('totara_msg_send_rmdr_emails', 1, $eventdata->userto->id)) {
+        // Send workflow email
+        if (empty($eventdata->subject)) {
+            $eventdata->subject = strlen($eventdata->fullmessage) > 40 ? substr($eventdata->fullmessage, 0, 40).'...' : $eventdata->fullmessage;
+        }
+        $result = email_to_user($eventdata->userto, $eventdata->userfrom,
+            format_string($eventdata->subject), format_string($eventdata->fullmessage),
+            format_string($eventdata->fullmessagehtml).'<br><br>'.get_string('viewdetailshere', 'local_totara_msg', $eventdata->contexturl));
+    }
+
+    return $result;
 }
 
 

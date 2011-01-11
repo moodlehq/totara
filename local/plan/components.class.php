@@ -49,7 +49,6 @@ abstract class dp_base_component {
     }
 
     function display_duedate_as_form($duedate, $name) {
-        // @todo add date picker?
         global $CFG;
         $duedatestr = !empty($duedate) ?
             userdate($duedate, '%d/%m/%y', $CFG->timezone, false) : '';
@@ -81,14 +80,19 @@ abstract class dp_base_component {
         return $out;
     }
 
-    function display_priority($ca, $priorityvalues) {
+    function display_priority($ca, $priorityscaleid) {
         // @todo if $ca->priority is 0, but prioritymode has been
         // changed to required, it currently defaults to the highest value.
         // Change to use default priority instead
+
+        $priorityvalues = get_records('dp_priority_scale_value',
+            'priorityscaleid', $priorityscaleid, 'sortorder', 'id,name,sortorder');
+
         $plancompleted = ($this->plan->status == DP_PLAN_STATUS_COMPLETE);
         $cansetpriority = !$plancompleted && ($this->get_setting('setpriority') == DP_PERMISSION_ALLOW);
         $priorityenabled = $this->get_setting('prioritymode') != DP_PRIORITY_NONE;
         $priorityrequired = ($this->get_setting('prioritymode') == DP_PRIORITY_REQUIRED);
+        $prioritydefaultid = (int)get_field('dp_priority_scale', 'defaultid', 'id', $priorityscaleid);
         $out = '';
 
         if(!$priorityenabled) {
@@ -97,7 +101,7 @@ abstract class dp_base_component {
 
         if ($cansetpriority) {
             // show a pulldown menu of priority options
-            $out .= $this->display_priority_picker("priorities_{$this->component}[{$ca->id}]", $ca->priority, $priorityvalues, $priorityrequired);
+            $out .= $this->display_priority_picker("priorities_{$this->component}[{$ca->id}]", $ca->priority, $priorityvalues, $prioritydefaultid, $priorityrequired);
         } else {
             // just display priority if no permissions to set it
             $out .= $this->display_priority_as_text($ca->priority, $ca->priorityname, $priorityvalues);
@@ -106,20 +110,26 @@ abstract class dp_base_component {
         return $out;
     }
 
-    function display_priority_picker($name, $priorityid, $priorityvalues, $priorityrequired=false) {
+    function display_priority_picker($name, $priorityid, $priorityvalues, $prioritydefaultid, $priorityrequired=false) {
 
         if (!$priorityvalues) {
             return '';
         }
 
-        $choose = ($priorityrequired) ? null : get_string('none','local_plan');
-        $chooseval = ($priorityrequired) ? null : 0;
-
         $options = array();
 
         foreach($priorityvalues as $id => $val) {
             $options[$id] = $val->name;
+
+            if($id == $prioritydefaultid) {
+                $defaultchooseval = $id;
+                $defaultchoose = $val->name;
+            }
         }
+
+        $choose = ($priorityrequired) ? $defaultchoose : get_string('none','local_plan');
+        $chooseval = ($priorityrequired) ? $defaultchooseval : 0;
+
 
         return choose_from_menu($options, $name, $priorityid, $choose, '', $chooseval, true);
 
@@ -426,6 +436,9 @@ abstract class dp_base_component {
 
         // Get currently assigned items
         $assigned = $this->get_assigned_items();
+        $assigned_ids = array_keys($assigned);
+        $sendnotification = (count(array_diff($items, $assigned_ids)) || count(array_diff($assigned_ids, $items)))
+            && $this->plan->status != DP_PLAN_STATUS_UNAPPROVED;
 
         if ($items) {
             foreach ($items as $itemid) {
@@ -449,6 +462,48 @@ abstract class dp_base_component {
         foreach ($assigned as $item) {
             $this->unassign_item($item);
         }
+
+        if ($sendnotification) {
+            $this->send_component_update_notification();
+        }
+    }
+
+    function send_component_update_notification($update_info) {
+        global $USER, $CFG;
+        require_once($CFG->dirroot.'/local/totara_msg/messagelib.php');
+
+        // @todo implement $update_info to provide notifications with more details re component update
+
+        $event = new stdClass;
+        $userfrom = get_record('user', 'id', $USER->id);
+        $event->userfrom = $userfrom;
+        $event->contexturl = "{$CFG->wwwroot}/local/plan/components/{$this->component}/index.php?id={$this->plan->id}";
+        $event->icon = $this->component.'-update.png';
+        $a = new stdClass;
+        $a->plan = "<a href=\"{$CFG->wwwroot}/local/plan/view.php?id={$this->plan->id}\" title=\"{$this->plan->name}\">{$this->plan->name}</a>";
+        $a->component = $this->get_setting('name');
+
+        // did they edit it themselves?
+        if ($USER->id == $this->plan->userid) {
+            // notify their manager
+            if ($this->plan->is_active()) {
+                if ($manager = totara_get_manager($this->plan->userid)) {
+                    $event->userto = $manager;
+                    $a->user = $this->current_user_link();
+                    $event->subject = get_string('componentupdateshortmanager', 'local_plan', $a);
+                    $event->fullmessage = get_string('componentupdatelongmanager', 'local_plan', $a);
+                    $event->roleid = get_field('role','id', 'shortname', 'manager');
+                    tm_notification_send($event);
+                }
+            }
+        } else {
+            // notify user that someone else did it
+            $userto = get_record('user', 'id', $this->plan->userid);
+            $event->userto = $userto;
+            $event->subject = get_string('componentupdateshortlearner', 'local_plan', $a->component);
+            $event->fullmessage = get_string('componentupdatelonglearner', 'local_plan', $a);
+            tm_notification_send($event);
+        }
     }
 
 
@@ -466,7 +521,7 @@ abstract class dp_base_component {
         }
 
         // If allowed, or assignment not yet approved, remove assignment
-        if ($permission == DP_PERMISSION_ALLOW || $item->approved == DP_APPROVAL_UNAPPROVED) {
+        if ($permission >= DP_PERMISSION_ALLOW || $item->approved == DP_APPROVAL_UNAPPROVED) {
             return delete_records(
                 'dp_plan_'.$this->component.'_assign',
                 'id', $item->itemid,
@@ -535,4 +590,17 @@ abstract class dp_base_component {
 
         return $updated;
     }
+
+    /**
+     * Construct the link for the current user
+     * @return string user link
+     */
+    function current_user_link() {
+        global $USER, $CFG;
+
+        $userfrom_link = $CFG->wwwroot.'/user/view.php?id='.$USER->id;
+        $fromname = fullname($USER);
+        return "<a href=\"{$userfrom_link}\" title=\"$fromname\">$fromname</a> ";
+    }
+
 }

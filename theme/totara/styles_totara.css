@@ -1248,6 +1248,7 @@ td.totara-msgs-action-left {
 td.totara-msgs-action-right {
     padding-left: 5px;
     padding-bottom: 3px;
+    vertical-align: top;
 }
 
 
