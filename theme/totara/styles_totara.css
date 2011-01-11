@@ -155,15 +155,6 @@ div.block_admin_tree div.admintree .depth2 {
     display: none;
 }
 
-
-/* Site index middle column
- * Removes padding, for front-page themeing for demo?
- */
-#site-index #middle-column {
-    padding-left: 0;
-    padding-right: 0;
-}
-
 /**
  * Header Styles
  **/
@@ -1969,7 +1960,7 @@ table.centerblock th.status, table.centerblock td.status {
 
 #site-index #middle-column div.mycourses {
   width: 527px;
-  margin: 0 12px;
+  margin: 0px 0px;
   border:none;
   background: none;
 }

@@ -78,11 +78,10 @@ if ($fromform = $mform->get_data()) {
 
 admin_externalpage_print_header();
 
-print "<table id=\"reportbuilder-navbuttons\"><tr><td>";
+print_container_start(true, 'reportbuilder-navbuttons');
 print_single_button($CFG->wwwroot.'/local/reportbuilder/index.php', null, get_string('allreports','local_reportbuilder'));
-print "</td><td>";
 print $report->view_button();
-print "</td></tr></table>";
+print_container_end();
 
 print_heading(get_string('editreport','local_reportbuilder',$report->fullname));
 

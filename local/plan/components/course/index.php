@@ -153,7 +153,7 @@ print <<<HEREDOC
     $(function() {
         $('[id^=duedate_course]').datepicker(
             {
-                dateFormat: 'dd/mm/yy',
+                dateFormat: 'dd/mm/y',
                 showOn: 'button',
                 buttonImage: '../../../../local/js/images/calendar.gif',
                 buttonImageOnly: true

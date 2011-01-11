@@ -45,6 +45,14 @@ function local_js($options = array()) {
 
         $CFG->stylesheets[] = $CFG->wwwroot.'/local/js/lib/jquery.treeview.css';
     }
+
+    // If datepicker enabled
+    if (in_array(TOTARA_JS_DATEPICKER, $options)) {
+
+        require_js(array(
+            $CFG->wwwroot.'/local/js/lib/jquery-ui-1.7.2.custom.min.js',
+	));
+    }
 }
 
 

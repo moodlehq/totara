@@ -12,6 +12,7 @@
 require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
 require_once($CFG->dirroot . '/local/plan/lib.php');
 require_once($CFG->dirroot . '/local/plan/edit_form.php');
+require_once($CFG->dirroot . '/local/js/lib/setup.php');
 
 $userid = required_param('userid', PARAM_INT); // user id
 
@@ -117,6 +118,14 @@ dp_get_plan_base_navlinks($navlinks, $userid);
 $navlinks[] = array('name' => $heading, 'link'=> '', 'type'=>'title');
 
 $navigation = build_navigation($navlinks);
+
+//Javascript include
+local_js(array(
+    TOTARA_JS_DATEPICKER
+));
+require_js(array(
+    $CFG->wwwroot.'/local/js/plan.form.datepick.js'
+));
 
 print_header_simple($pagetitle, '', $navigation, '', null, true, '');
 

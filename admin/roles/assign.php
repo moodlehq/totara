@@ -130,14 +130,14 @@
             $navlinks[] = array('name' => $straction, 'link' => null, 'type' => 'misc');
             $navigation = build_navigation($navlinks);
 
-            print_header("$fullname", "$fullname", $navigation, "", "", true, "&nbsp;", navmenu($course));
+            print_header("$fullname", "$fullname", $navigation, "", "", true, "&nbsp;");
 
         /// site header
         } else {
             $navlinks[] = array('name' => $fullname, 'link' => "$CFG->wwwroot/user/view.php?id=$userid&amp;course=$courseid", 'type' => 'misc');
             $navlinks[] = array('name' => $straction, 'link' => null, 'type' => 'misc');
             $navigation = build_navigation($navlinks);
-            print_header("$course->fullname: $fullname", $course->fullname, $navigation, "", "", true, "&nbsp;", navmenu($course));
+            print_header("$course->fullname: $fullname", $course->fullname, $navigation, "", "", true, "&nbsp;");
         }
 
         $showroles = 1;
