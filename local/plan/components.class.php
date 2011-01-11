@@ -81,10 +81,6 @@ abstract class dp_base_component {
     }
 
     function display_priority($ca, $priorityscaleid) {
-        // @todo if $ca->priority is 0, but prioritymode has been
-        // changed to required, it currently defaults to the highest value.
-        // Change to use default priority instead
-
         $priorityvalues = get_records('dp_priority_scale_value',
             'priorityscaleid', $priorityscaleid, 'sortorder', 'id,name,sortorder');
 
