@@ -1,5 +1,7 @@
 <?php
+
 class dp_objective_component extends dp_base_component {
+
     public static $permissions = array(
         'updateobjective' => true,
         //'commenton' => false,
@@ -8,12 +10,19 @@ class dp_objective_component extends dp_base_component {
         'setproficiency' => false
     );
 
-    function __construct($plan) {
-        $this->component = 'objective';
-        $this->defaultname = get_string('objectives', 'local_plan');
 
+    /**
+     * Constructor, set default name
+     *
+     * @access  public
+     * @param   object  $plan
+     * @return  void
+     */
+    function __construct($plan) {
         parent::__construct($plan);
+        $this->defaultname = get_string('objectives', 'local_plan');
     }
+
 
     function initialize_settings(&$settings) {
         if($objectivesettings = get_record('dp_objective_settings', 'templateid', $this->plan->templateid)) {

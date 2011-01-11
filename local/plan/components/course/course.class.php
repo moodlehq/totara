@@ -8,10 +8,6 @@ class dp_course_component extends dp_base_component {
         'setduedate' => false,
         'setcompletionstatus' => false,
     );
-    function __construct($plan) {
-        $this->component = 'course';
-        parent::__construct($plan);
-    }
 
 
     /**

@@ -1,5 +1,6 @@
 <?php
 class dp_competency_component extends dp_base_component {
+
     public static $permissions = array(
         'updatecompetency' => true,
         //'commenton' => false,
@@ -8,12 +9,19 @@ class dp_competency_component extends dp_base_component {
         'setproficiency' => false
     );
 
-    function __construct($plan) {
-        $this->component = 'competency';
-        $this->defaultname = get_string('competencies', 'local_plan');
 
+    /**
+     * Constructor, set default name
+     *
+     * @access  public
+     * @param   object  $plan
+     * @return  void
+     */
+    function __construct($plan) {
         parent::__construct($plan);
+        $this->defaultname = get_string('competencies', 'local_plan');
     }
+
 
     function initialize_settings(&$settings) {
         if($competencysettings = get_record('dp_competency_settings', 'templateid', $this->plan->templateid)) {

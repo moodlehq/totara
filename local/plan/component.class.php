@@ -2,12 +2,44 @@
 
 
 abstract class dp_base_component {
+
+    /**
+     * Component name
+     *
+     * @access  public
+     * @var     string
+     */
+    public $component;
+
+
+    /**
+     * Reference to the plan object
+     *
+     * @access  public
+     * @var     object
+     */
     protected $plan;
-    // get access to the plan object
-    function __construct($plan) {
+
+
+    /**
+     * Constructor, add reference to plan object and
+     * check required properties are set
+     *
+     * @access  public
+     * @param   object  $plan
+     * @return  void
+     */
+    public function __construct($plan) {
         $this->plan = $plan;
 
-        // check that child classes implement required properties
+        // Calculate component name from class name
+        if (!preg_match('/^dp_([a-z]+)_component$/', get_class($this), $matches)) {
+            throw new Exception('Classname incorrectly formatted');
+        }
+
+        $this->component = $matches[1];
+
+        // Check that child classes implement required properties
         $properties = array(
             'component',
             'permissions',
