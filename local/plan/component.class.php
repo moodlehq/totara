@@ -54,14 +54,31 @@ abstract class dp_base_component {
         }
     }
 
-    function initialize_settings(&$settings) {
+
+    /**
+     * Initialize settings for the component
+     *
+     * @access  public
+     * @param   array   $settings
+     * @return  void
+     */
+    public function initialize_settings(&$settings) {
         // override this method in child classes to add component-specific
         // settings to plan's setting property
     }
 
-    function get_setting($action) {
-        return $this->plan->get_component_setting($this->component, $action);
+
+    /**
+     * Get setting value
+     *
+     * @access  public
+     * @param   string  $key    Setting name
+     * @return  mixed
+     */
+    public function get_setting($key) {
+        return $this->plan->get_component_setting($this->component, $key);
     }
+
 
     function display_duedate($itemid, $duedate) {
         $plancompleted = $this->plan->status == DP_PLAN_STATUS_COMPLETE;

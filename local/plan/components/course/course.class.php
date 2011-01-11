@@ -1,6 +1,7 @@
 <?php
 
 class dp_course_component extends dp_base_component {
+
     public static $permissions = array(
         'updatecourse' => true,
         //'commenton' => false,
@@ -8,6 +9,22 @@ class dp_course_component extends dp_base_component {
         'setduedate' => false,
         'setcompletionstatus' => false,
     );
+
+
+    /**
+     * Initialize settings for the component
+     *
+     * @access  public
+     * @param   array   $settings
+     * @return  void
+     */
+    public function initialize_settings(&$settings) {
+        if ($coursesettings = get_record('dp_course_settings', 'templateid', $this->plan->templateid)) {
+            $settings[$this->component.'_duedatemode'] = $coursesettings->duedatemode;
+            $settings[$this->component.'_prioritymode'] = $coursesettings->prioritymode;
+            $settings[$this->component.'_priorityscale'] = $coursesettings->priorityscale;
+        }
+    }
 
 
     /**
@@ -778,14 +795,6 @@ class dp_course_component extends dp_base_component {
     function process_action($action) {
         // Put any relevant actions that should be performed
         // on this component in here
-    }
-
-    function initialize_settings(&$settings) {
-        if($coursesettings = get_record('dp_course_settings', 'templateid', $this->plan->templateid)) {
-            $settings[$this->component.'_duedatemode'] = $coursesettings->duedatemode;
-            $settings[$this->component.'_prioritymode'] = $coursesettings->prioritymode;
-            $settings[$this->component.'_priorityscale'] = $coursesettings->priorityscale;
-        }
     }
 
 

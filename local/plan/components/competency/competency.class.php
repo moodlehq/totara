@@ -23,8 +23,15 @@ class dp_competency_component extends dp_base_component {
     }
 
 
-    function initialize_settings(&$settings) {
-        if($competencysettings = get_record('dp_competency_settings', 'templateid', $this->plan->templateid)) {
+    /**
+     * Initialize settings for the component
+     *
+     * @access  public
+     * @param   array   $settings
+     * @return  void
+     */
+    public function initialize_settings(&$settings) {
+        if ($competencysettings = get_record('dp_competency_settings', 'templateid', $this->plan->templateid)) {
             $settings[$this->component.'_duedatemode'] = $competencysettings->duedatemode;
             $settings[$this->component.'_prioritymode'] = $competencysettings->prioritymode;
             $settings[$this->component.'_priorityscale'] = $competencysettings->priorityscale;

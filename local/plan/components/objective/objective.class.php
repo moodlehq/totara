@@ -24,8 +24,15 @@ class dp_objective_component extends dp_base_component {
     }
 
 
-    function initialize_settings(&$settings) {
-        if($objectivesettings = get_record('dp_objective_settings', 'templateid', $this->plan->templateid)) {
+    /**
+     * Initialize settings for the component
+     *
+     * @access  public
+     * @param   array   $settings
+     * @return  void
+     */
+    public function initialize_settings(&$settings) {
+        if ($objectivesettings = get_record('dp_objective_settings', 'templateid', $this->plan->templateid)) {
             $settings[$this->component.'_duedatemode'] = $objectivesettings->duedatemode;
             $settings[$this->component.'_prioritymode'] = $objectivesettings->prioritymode;
             $settings[$this->component.'_priorityscale'] = $objectivesettings->priorityscale;
