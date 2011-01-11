@@ -484,6 +484,8 @@ class dp_objective_component extends dp_base_component {
     }
 
     function process_objective_settings_update() {
+        global $CFG;
+
         if (!confirm_sesskey()) {
             return 0;
         }
@@ -602,18 +604,70 @@ class dp_objective_component extends dp_base_component {
             }
             if ($status) {
                 commit_sql();
-                // process update notifications
+
+                // Process update notifications
+                $updates = '';
+                $objheader = '<p><strong>'.format_string($orig_objectives[$itemid]->fullname).": </strong><br>";
+                $objprinted = false;
                 foreach($stored_records as $itemid => $record) {
                     // priority may have been updated
-                    if (isset($record->priority) && array_key_exists($itemid, $orig_objectives) && $record->priority != $orig_objectives[$itemid]->priority) {
-                        $this->send_edit_notification($orig_objectives[$itemid], 'priority');
+                    if (!empty($record->priority) && array_key_exists($itemid, $orig_objectives) &&
+                        $record->priority != $orig_objectives[$itemid]->priority) {
+
+                        $oldpriority = get_field('dp_priority_scale_value', 'name', 'id',
+                            $orig_objectives[$itemid]->priority);
+                        $newpriority = get_field('dp_priority_scale_value', 'name', 'id', $record->priority);
+                        $updates .= $objheader;
+                        $objprinted = true;
+                        $updates .= get_string('priority', 'local_plan').' - '.
+                            get_string('changedfromxtoy', 'local_plan',
+                            (object)array('before'=>$oldpriority, 'after'=>$newpriority))."<br>";
                     }
+
+                    // duedate may have been updated
+                    if (!empty($record->duedate) && array_key_exists($itemid, $orig_objectives) &&
+                        $record->duedate != $orig_objectives[$itemid]->duedate) {
+
+                        $updates .= $objprinted ? '' : $objheader;
+                        $objprinted = true;
+                        $updates .= get_string('duedate', 'local_plan').' - '.
+                            get_string('changedfromxtoy', 'local_plan',
+                            (object)array('before'=>empty($orig_objectives[$itemid]->duedate) ? '' :
+                                userdate($orig_objectives[$itemid]->duedate, '%e %h %Y', $CFG->timezone, false),
+                                'after'=>userdate($record->duedate, '%e %h %Y', $CFG->timezone, false)))."<br>";
+                    }
+
                     // proficiency may have been updated
-                    if (isset($record->scalevalueid) && array_key_exists($itemid, $orig_objectives) && $record->scalevalueid != $orig_objectives[$itemid]->scalevalueid) {
-                        $orig_objectives[$itemid]->scalevalueid = $record->scalevalueid;
-                        $this->send_status_notification($orig_objectives[$itemid]);
+                    if (!empty($record->scalevalueid) && array_key_exists($itemid, $orig_objectives) &&
+                        $record->scalevalueid != $orig_objectives[$itemid]->scalevalueid) {
+
+                        $oldprof = get_field('dp_objective_scale_value', 'name', 'id',
+                            $orig_objectives[$itemid]->scalevalueid);
+                        $newprof = get_field('dp_objective_scale_value', 'name', 'id', $record->scalevalueid);
+                        $updates .= $objprinted ? '' : $objheader;
+                        $objprinted = true;
+                        $updates .= get_string('proficiency', 'local_plan').' - '.
+                            get_string('changedfromxtoy', 'local_plan',
+                            (object)array('before'=>$oldprof, 'after'=>$newprof))."<br>";
                     }
+
+                    // approval status change
+                    if (!empty($record->approved) && array_key_exists($itemid, $orig_objectives) &&
+                        $record->approved != $orig_objectives[$itemid]->approved) {
+
+                        $updates .= $objprinted ? '' : $objheader;
+                        $objprinted = true;
+                        $updates .= get_string('approval', 'local_plan').' - '.
+                            get_string('changedfromxtoy', 'local_plan',
+                            (object)array('before'=>dp_get_approval_status_from_code($orig_objectives[$itemid]->approved),
+                                'after'=>dp_get_approval_status_from_code($record->approved)))."<br>";
+
+                    }
+                }  // foreach
+                if ($this->plan->status != DP_PLAN_STATUS_UNAPPROVED) {
+                    $this->send_component_update_notification($updates);
                 }
+
             } else {
                 rollback_sql();
             }
