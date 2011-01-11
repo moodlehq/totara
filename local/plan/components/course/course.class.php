@@ -753,7 +753,7 @@ class dp_course_component extends dp_base_component {
                 }  // foreach
 
                 // Send update notification
-                if ($this->plan->status != DP_PLAN_STATUS_UNAPPROVED) {
+                if ($this->plan->status != DP_PLAN_STATUS_UNAPPROVED && strlen($updates)) {
                     $this->send_component_update_notification($updates);
                 }
             } else {

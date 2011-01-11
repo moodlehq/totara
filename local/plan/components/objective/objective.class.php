@@ -664,7 +664,9 @@ class dp_objective_component extends dp_base_component {
 
                     }
                 }  // foreach
-                if ($this->plan->status != DP_PLAN_STATUS_UNAPPROVED) {
+
+                // Send update notification
+                if ($this->plan->status != DP_PLAN_STATUS_UNAPPROVED && strlen($updates)) {
                     $this->send_component_update_notification($updates);
                 }
 
