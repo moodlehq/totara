@@ -550,6 +550,8 @@ $string['item-request-manager-short'] = 'Item approval request by $a->learner';
 $string['item-request-manager-long'] = '$a->learner has requested approval for new learning plan items in \"$a->plan\": $a->data';
 
 // Component messages
+$string['addedx'] = 'Added \"$a\"';
+$string['removedx'] = 'Removed \"$a\"';
 $string['changedfromxtoy'] = 'Changed from \"$a->before\" to \"$a->after\"';
 $string['componentupdateshortlearner'] = '$a updated';
 $string['componentupdatelonglearner'] = '$a->component of learning plan \"$a->plan\" updated <br> $a->updates';

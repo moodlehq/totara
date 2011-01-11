@@ -197,7 +197,7 @@ class dp_course_component extends dp_base_component {
      *
      * @access  public
      * @param   $itemid     integer
-     * @return  void
+     * @return  added item's name
      */
     public function assign_new_item($itemid) {
 
@@ -231,7 +231,7 @@ class dp_course_component extends dp_base_component {
             $item->approved = DP_APPROVAL_UNAPPROVED;
         }
 
-        return insert_record('dp_plan_course_assign', $item);
+        return insert_record('dp_plan_course_assign', $item) ? get_field('course', 'fullname',  'id', $itemid) : false;
     }
 
 

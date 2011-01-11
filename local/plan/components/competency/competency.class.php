@@ -748,7 +748,7 @@ class dp_competency_component extends dp_base_component {
      *
      * @access  public
      * @param   $itemid     integer
-     * @return  void
+     * @return  added item's name
      */
     public function assign_new_item($itemid) {
 
@@ -782,7 +782,7 @@ class dp_competency_component extends dp_base_component {
             $item->approved = DP_APPROVAL_UNAPPROVED;
         }
 
-        return insert_record('dp_plan_competency_assign', $item);
+        return insert_record('dp_plan_competency_assign', $item) ? get_field('comp', 'fullname', 'id', $itemid) : false;
     }
 
 
