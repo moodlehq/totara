@@ -6,7 +6,7 @@ require_once($CFG->dirroot.'/hierarchy/type/competency/lib.php');
 require_once($CFG->dirroot.'/local/js/lib/setup.php');
 require_once($CFG->dirroot.'/local/plan/lib.php');
 require_once('add_evidence_form.php');
-require_once('evidence.php');
+require_once($CFG->dirroot.'/hierarchy/type/competency/evidence/evidence.php');
 ///
 /// Setup / loading data
 ///
