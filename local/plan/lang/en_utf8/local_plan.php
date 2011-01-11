@@ -54,6 +54,7 @@ $string['currentlyviewing'] = 'Currently viewing';
 $string['filterbystatus'] = 'Filter by status';
 $string['planstatusunapproved'] = 'Unapproved';
 $string['planhasunapproveditems'] = 'This plan has draft items:';
+$string['planhasunapproveditem'] = 'This plan has a draft item:';
 $string['error:creationaftercompletion'] = 'Completion Date must not be before Date Created';
 
 $string['noclassfileforrole'] = 'Class file \'$a->classfile\' could not be found for role of \'$->role\'';
@@ -448,6 +449,12 @@ $string['noobjectivescales'] = 'To use objectives setup an objective scale';
 
 $string['competenciesupdated'] = 'Competencies updated';
 $string['launchcourse'] = 'Launch course';
+$string['objective'] = 'objective';
+$string['objectiveplural'] = 'objectives';
+$string['competency'] = 'competency';
+$string['competencyplural'] = 'competencies';
+$string['course'] = 'course';
+$string['courseplural'] = 'courses';
 $string['overview'] = 'Overview';
 $string['viewitem'] = 'View item';
 $string['itemapproval'] = 'Item approval';

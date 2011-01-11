@@ -653,7 +653,7 @@ class development_plan {
         return $this->get_assigned_items(
             array(
                 DP_APPROVAL_DECLINED,
-                //DP_APPROVAL_APPROVED
+//                DP_APPROVAL_APPROVED,
                 DP_APPROVAL_UNAPPROVED
             )
         );
@@ -857,8 +857,11 @@ class development_plan {
             $a->planid = $this->id;
             $a->number = count($pendinglist['course']);
             $itemscount += $a->number;
-            $a->name = get_config(null, 'dp_course');
             $a->component = 'course';
+            $a->name = $this->get_component($a->component)->get_setting('name');
+            // determine plurality
+            $langkey = $a->name . ($a->number > 1 ? 'plural' : '');
+            $a->name = (get_string($langkey, 'local_plan') ? get_string($langkey, 'local_plan') : $a->name);
             $a->site = $CFG->wwwroot;
             $list .= '<li>' . get_string('xitemspending', 'local_plan', $a) . '</li>';
             $listcount++;
@@ -869,8 +872,11 @@ class development_plan {
             $a->planid = $this->id;
             $a->number = count($pendinglist['competency']);
             $itemscount += $a->number;
-            $a->name = get_config(null, 'dp_competency');
             $a->component = 'competency';
+            $a->name = $this->get_component($a->component)->get_setting('name');
+            // determine plurality
+            $langkey = $a->name . ($a->number > 1 ? 'plural' : '');
+            $a->name = (get_string($langkey, 'local_plan') ? get_string($langkey, 'local_plan') : $a->name);
             $a->site = $CFG->wwwroot;
             $list .= '<li>' . get_string('xitemspending', 'local_plan', $a) . '</li>';
             $listcount++;
@@ -881,8 +887,11 @@ class development_plan {
             $a->planid = $this->id;
             $a->number = count($pendinglist['objective']);
             $itemscount += $a->number;
-            $a->name = get_config(null, 'dp_objective');
             $a->component = 'objective';
+            $a->name = $this->get_component($a->component)->get_setting('name');
+            // determine plurality
+            $langkey = $a->name . ($a->number > 1 ? 'plural' : '');
+            $a->name = (get_string($langkey, 'local_plan') ? get_string($langkey, 'local_plan') : $a->name);
             $a->site = $CFG->wwwroot;
             $list .= '<li>' . get_string('xitemspending', 'local_plan', $a) . '</li>';
             $listcount++;
@@ -915,19 +924,25 @@ class development_plan {
         global $CFG;
 
         $out = '';
-        $out .= '<p>'.get_string('planhasunapproveditems', 'local_plan').'</p>';
         $out .= '<ul>';
 
         // Show list of items
+        $totalitems = 0;
         foreach ($unapproved as $component => $items) {
 
             $a = new object();
             $a->uri = "{$CFG->wwwroot}/local/plan/components/{$component}/index.php?id={$this->id}";
             $a->number = count($items);
+            $totalitems += $a->number;
             $a->name = $this->get_component($component)->get_setting('name');
+            // determine plurality
+            $langkey = $a->name . ($a->number > 1 ? 'plural' : '');
+            $a->name = (get_string($langkey, 'local_plan') ? get_string($langkey, 'local_plan') : $a->name);
             $out .= '<li>'.get_string('xitemsunapproved', 'local_plan', $a).'</li>';
         }
 
+        // put the heading on now we know how many
+        $out = '<p>'.get_string(($totalitems > 1 ? 'planhasunapproveditems' : 'planhasunapproveditem'), 'local_plan').'</p>'.$out;
         $out .= '</ul>';
 
         // Show request button if plan is active
