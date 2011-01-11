@@ -1094,7 +1094,7 @@ class development_plan {
             $a->plan = s($this->name);
             $event->subject = get_string('plan-request-manager-short', 'local_plan', $a);
             $event->fullmessage = get_string('plan-request-manager-long', 'local_plan', $a);
-            $event->acceptbutton = get_string('review', 'local_plan').' '.get_string('items', 'local_plan');
+            $event->acceptbutton = get_string('approve', 'local_plan').' '.get_string('plan', 'local_plan');
             $event->accepttext = get_string('approveplantext', 'local_plan');
 
             tm_workflow_send($event);
@@ -1151,16 +1151,14 @@ class development_plan {
         $event->roleid = get_field('role','id', 'shortname', 'manager');
         $event->icon = 'learningplan-request.png';
 
-    #    if ($total_items > 1) {
-            $a = new stdClass;
-            $a->learner = fullname($learner);
-            $a->plan = s($this->name);
-            $a->data = '<li>'.implode($message_data, '</li><li>').'</li>';
-            $event->subject = get_string('item-request-manager-short', 'local_plan', $a);
-            $event->fullmessage = get_string('item-request-manager-long', 'local_plan', $a);
-    #    }
+        $a = new stdClass;
+        $a->learner = fullname($learner);
+        $a->plan = s($this->name);
+        $a->data = '<li>'.implode($message_data, '</li><li>').'</li>';
+        $event->subject = get_string('item-request-manager-short', 'local_plan', $a);
+        $event->fullmessage = get_string('item-request-manager-long', 'local_plan', $a);
 
-        $event->acceptbutton = get_string('approve', 'local_plan').' '.get_string('plan', 'local_plan');
+        $event->acceptbutton = get_string('review', 'local_plan').' '.get_string('items', 'local_plan');
         $event->accepttext = get_string('approveitemstext', 'local_plan');
 
         tm_workflow_send($event);
