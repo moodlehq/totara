@@ -868,11 +868,13 @@ class development_plan {
             $a->planid = $this->id;
             $a->number = count($pendinglist['course']);
             $itemscount += $a->number;
+            $componentnamesetting = get_config(null, 'dp_course');
+            $name = $componentnamesetting ? $componentnamesetting : get_string('course_defaultname', 'local_plan');
             $a->component = 'course';
             $a->name = $this->get_component($a->component)->get_setting('name');
             // determine plurality
-            $langkey = $a->name . ($a->number > 1 ? 'plural' : '');
-            $a->name = (get_string($langkey, 'local_plan') ? get_string($langkey, 'local_plan') : $a->name);
+            $langkey = $name . ($a->number > 1 ? 'plural' : '');
+            $a->name = (get_string($langkey, 'local_plan') ? get_string($langkey, 'local_plan') : $name);
             $a->site = $CFG->wwwroot;
             $list .= '<li>' . get_string('xitemspending', 'local_plan', $a) . '</li>';
             $listcount++;
@@ -883,11 +885,13 @@ class development_plan {
             $a->planid = $this->id;
             $a->number = count($pendinglist['competency']);
             $itemscount += $a->number;
+            $componentnamesetting = get_config(null, 'dp_competency');
+            $name = $componentnamesetting ? $componentnamesetting : get_string('competency_defaultname', 'local_plan');
             $a->component = 'competency';
             $a->name = $this->get_component($a->component)->get_setting('name');
             // determine plurality
-            $langkey = $a->name . ($a->number > 1 ? 'plural' : '');
-            $a->name = (get_string($langkey, 'local_plan') ? get_string($langkey, 'local_plan') : $a->name);
+            $langkey = $name . ($a->number > 1 ? 'plural' : '');
+            $a->name = (get_string($langkey, 'local_plan') ? get_string($langkey, 'local_plan') : $name);
             $a->site = $CFG->wwwroot;
             $list .= '<li>' . get_string('xitemspending', 'local_plan', $a) . '</li>';
             $listcount++;
@@ -898,11 +902,13 @@ class development_plan {
             $a->planid = $this->id;
             $a->number = count($pendinglist['objective']);
             $itemscount += $a->number;
+            $componentnamesetting = get_config(null, 'dp_objective');
+            $name = $componentnamesetting ? $componentnamesetting : get_string('objective_defaultname', 'local_plan');
             $a->component = 'objective';
             $a->name = $this->get_component($a->component)->get_setting('name');
             // determine plurality
-            $langkey = $a->name . ($a->number > 1 ? 'plural' : '');
-            $a->name = (get_string($langkey, 'local_plan') ? get_string($langkey, 'local_plan') : $a->name);
+            $langkey = $name . ($a->number > 1 ? 'plural' : '');
+            $a->name = (get_string($langkey, 'local_plan') ? get_string($langkey, 'local_plan') : $name);
             $a->site = $CFG->wwwroot;
             $list .= '<li>' . get_string('xitemspending', 'local_plan', $a) . '</li>';
             $listcount++;
