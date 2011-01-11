@@ -1,9 +1,9 @@
 <?php
 
 require_once($CFG->dirroot . '/local/plan/development_plan.class.php');
-require_once($CFG->dirroot . '/local/plan/roles.class.php');
-require_once($CFG->dirroot . '/local/plan/components.class.php');
-require_once($CFG->dirroot . '/local/plan/workflows.class.php');
+require_once($CFG->dirroot . '/local/plan/role.class.php');
+require_once($CFG->dirroot . '/local/plan/component.class.php');
+require_once($CFG->dirroot . '/local/plan/workflow.class.php');
 require_once($CFG->libdir . '/tablelib.php');
 
 // Plan status values
