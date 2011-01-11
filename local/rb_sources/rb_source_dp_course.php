@@ -151,7 +151,7 @@ from
         $columnoptions[] = new rb_column_option(
                 'plan',
                 'name',
-                'Plan name',
+                get_string('planname', 'rb_source_dp_course'),
                 'dp_course.planname',
                 array(
                     'defaultheading' => 'Plan',
@@ -161,7 +161,7 @@ from
         $columnoptions[] = new rb_column_option(
                 'plan',
                 'planlink',
-                'Plan name (linked to plan page)',
+                get_string('plannamelink', 'rb_source_dp_course'),
                 'dp_course.planname',
                 array(
                     'defaultheading' => 'Plan',
@@ -173,7 +173,7 @@ from
         $columnoptions[] = new rb_column_option(
                 'plan',
                 'startdate',
-                'Plan start date',
+                get_string('planstartdate', 'rb_source_dp_course'),
                 'dp_course.planstartdate',
                 array(
                     'joins' => 'dp_course',
@@ -193,7 +193,7 @@ from
         $columnoptions[] = new rb_column_option(
                 'plan',
                 'status',
-                'Plan status',
+                get_string('planstatus', 'rb_source_dp_course'),
                 'dp_course.planstatus',
                 array(
                     'joins' => 'dp_course',
@@ -204,7 +204,7 @@ from
         $columnoptions[] = new rb_column_option(
                 'plan',
                 'courseduedate',
-                'Course due date',
+                get_string('courseduedate', 'rb_source_dp_course'),
                 'dp_course.duedate',
                 array(
                     'joins' => 'dp_course',
@@ -215,7 +215,7 @@ from
         $columnoptions[] = new rb_column_option(
                 'plan',
                 'coursepriority',
-                'Course Priority',
+                get_string('coursepriority', 'rb_source_dp_course'),
                 'priority.name',
                 array(
                     'joins' => 'priority'
@@ -225,7 +225,7 @@ from
         $columnoptions[] = new rb_column_option(
                 'course',
                 'status',
-                'Course status',
+                get_string('coursestatus', 'rb_source_dp_course'),
                 'dp_course.approved',
                 array(
                     'joins' => 'dp_course',
@@ -238,7 +238,7 @@ from
         $columnoptions[] = new rb_column_option(
                 'template',
                 'name',
-                'Plan template name',
+                get_string('templatename', 'rb_source_dp_course'),
                 'dp_template.shortname',
                 array(
                     'defaultheading' => 'Plan template',
@@ -248,7 +248,7 @@ from
         $columnoptions[] = new rb_column_option(
                 'template',
                 'startdate',
-                'Plan template start date',
+                get_string('templatestartdate', 'rb_source_dp_course'),
                 'dp_template.startdate',
                 array(
                     'joins'=>'dp_template',
@@ -258,7 +258,7 @@ from
         $columnoptions[] = new rb_column_option(
                 'template',
                 'enddate',
-                'Plan template end date',
+                get_string('templateenddate', 'rb_source_dp_course'),
                 'dp_template.enddate',
                 array(
                     'joins'=>'dp_template',
@@ -268,7 +268,7 @@ from
         $columnoptions[] = new rb_column_option(
                 'course_completion',
                 'status',
-                'Completion Status',
+                get_string('completionstatus', 'rb_source_dp_course'),
                 "CASE WHEN course_completion.timecompleted IS NOT NULL THEN 'Completed' " .
                     "ELSE 'Not Completed' END",
                 array(
@@ -290,7 +290,7 @@ from
         $filteroptions[] = new rb_filter_option(
                 'user',
                 'id',
-                'User ID',
+                get_string('userid', 'rb_source_dp_course'),
                 'number',
                 array(
                     'defaultadvanced'=>true
