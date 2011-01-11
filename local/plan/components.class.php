@@ -413,11 +413,14 @@ abstract class dp_base_component {
             WHERE $matchedcomp = '$thiscomponent' AND
                   $searchedcomp = '$componentrequired'
             GROUP BY $matchedid";
-        // @todo return as assocative array instead?
-        // key = itemid
-        // value = count
-        // use get_records_sql_menu()?
-        return get_records_sql($sql);
+
+        $results = get_records_sql($sql);
+        $return = array();
+        foreach($results as $result) {
+            $return[$results->id] = $results->items;
+        }
+
+        return $return;
     }
 
 
