@@ -854,7 +854,7 @@ class development_plan {
             $a = new object();
             $a->planid = $this->id;
             $a->number = count($pendinglist['course']);
-            $a->name = $this->get_component('course')->get_setting('name');
+            $a->name = get_config(null, 'dp_course');
             $a->component = 'course';
             $a->site = $CFG->wwwroot;
             $list .= '<li>' . get_string('xitemspending', 'local_plan', $a) . '</li>';
@@ -865,7 +865,7 @@ class development_plan {
             $a = new object();
             $a->planid = $this->id;
             $a->number = count($pendinglist['competency']);
-            $a->name = $this->get_component('competency')->get_setting('name');
+            $a->name = get_config(null, 'dp_competency');
             $a->component = 'competency';
             $a->site = $CFG->wwwroot;
             $list .= '<li>' . get_string('xitemspending', 'local_plan', $a) . '</li>';
@@ -876,7 +876,7 @@ class development_plan {
             $a = new object();
             $a->planid = $this->id;
             $a->number = count($pendinglist['objective']);
-            $a->name = $this->get_component('objective')->get_setting('name');
+            $a->name = get_config(null, 'dp_objective');
             $a->component = 'objective';
             $a->site = $CFG->wwwroot;
             $list .= '<li>' . get_string('xitemspending', 'local_plan', $a) . '</li>';
