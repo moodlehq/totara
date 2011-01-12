@@ -122,8 +122,7 @@ foreach ($components as $componentname => $component) {
 
     print_heading($component->get_setting('name'));
 
-    $method = "display_{$componentname}_list";
-    print $component->$method(DP_APPROVAL_REQUESTED);
+    print $component->display_list(DP_APPROVAL_REQUESTED);
 }
 
 print '<br /><input type="submit" name="submitbutton" value="'.get_string('updatesettings', 'local_plan').'" />';

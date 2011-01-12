@@ -188,6 +188,18 @@ abstract class dp_base_component {
 
 
     /**
+     * Return markup to display component's assigned items in a table
+     *
+     * Optionally restrict results by approval status
+     *
+     * @access  public
+     * @param   mixed   $restrict   Array or integer (optional)
+     * @return  string
+     */
+    abstract public function display_list($restrict = null);
+
+
+    /**
      * Get all instances of $componentrequired linked to the specified item
      *
      * @todo doesn't current exclude unapproved items

@@ -126,7 +126,7 @@ print '<input type="hidden" id="sesskey" name="sesskey" value="'.sesskey().'" />
 
 print $component->display_picker();
 
-print $component->display_competency_list();
+print $component->display_list();
 
 if((!$plancompleted && ($cansetduedate || $cansetpriority)) && $component->get_assigned_items_count()>0) {
     print '<input type="submit" name="submitbutton" value="'.get_string('updatesettings', 'local_plan').'" />';

@@ -141,7 +141,7 @@ class dp_objective_component extends dp_base_component {
      * @param   mixed   $restrict   Array or integer (optional)
      * @return  string
      */
-    public function display_objective_list($restrict = null) {
+    public function display_list($restrict = null) {
         global $CFG;
 
         $showduedates = ($this->get_setting('duedatemode') == DP_DUEDATES_OPTIONAL ||
