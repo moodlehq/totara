@@ -121,6 +121,77 @@ class dp_competency_component extends dp_base_component {
 
 
     /**
+     * Process an action
+     *
+     * General component actions can come in here
+     *
+     * @access  public
+     * @return  void
+     */
+    public function process_action_hook() {
+        $delete = optional_param('d', 0, PARAM_INT); // competency assignment id to delete
+        $confirm = optional_param('confirm', 0, PARAM_INT); // confirm delete
+
+        $currenturl = $this->get_url();
+
+        if ($delete && $confirm) {
+            if(!confirm_sesskey()) {
+                totara_set_notification(get_string('confirmsesskeybad', 'error'), $currenturl);
+            }
+            if($component->remove_competency_assignment($delete)) {
+                totara_set_notification(get_string('canremoveitem','local_plan'), $currenturl, array('style' => 'notifysuccess'));
+            } else {
+                totara_set_notification(get_string('cannotremoveitem', 'local_plan'), $currenturl);
+            }
+        }
+    }
+
+
+    /**
+     * Code to run before page header is displayed
+     *
+     * @access  public
+     * @return  void
+     */
+    public function pre_header_hook() {
+        global $CFG;
+
+        // If we are showing dialog
+        if ($this->can_update_items()) {
+            // Setup lightbox
+            local_js(array(
+                TOTARA_JS_DIALOG,
+                TOTARA_JS_TREEVIEW
+            ));
+
+            // Get course picker
+            require_js(array(
+                $CFG->wwwroot.'/local/plan/components/competency/find.js.php'
+            ));
+        }
+    }
+
+
+    /**
+     * Code to run after page header is display
+     *
+     * @access  public
+     * @return  void
+     */
+    public function post_header_hook() {
+
+        $delete = optional_param('d', 0, PARAM_INT); // course assignment id to delete
+        $currenturl = $this->get_url();
+
+        if($delete) {
+            notice_yesno(get_string('confirmitemdelete','local_plan'), $currenturl.'&amp;d='.$delete.'&amp;confirm=1&amp;sesskey='.sesskey(), $currenturl);
+            print_footer();
+            die();
+        }
+    }
+
+
+    /**
      * Return markup to display competency items in a table
      *
      * Optionally restrict results by approval status
@@ -680,20 +751,6 @@ class dp_competency_component extends dp_base_component {
         }
 
         redirect($currenturl);
-    }
-
-
-    /**
-     * Process an action
-     *
-     * General component actions can come in here
-     *
-     * @access  public
-     * @return  void
-     */
-    public function process_action_hook() {
-        // Put any relevant actions that should be performed
-        // on this component in here
     }
 
 

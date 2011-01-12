@@ -104,6 +104,40 @@ class dp_objective_component extends dp_base_component {
 
 
     /**
+     * Process an action
+     *
+     * General component actions can come in here
+     *
+     * @access  public
+     * @return  void
+     */
+    public function process_action_hook() {
+        // Put any relevant actions that should be performed
+        // on this component in here
+    }
+
+
+    /**
+     * Code to run before page header is displayed
+     *
+     * @access  public
+     * @return  void
+     */
+    public function pre_header_hook() {
+        global $CFG;
+
+        // If we are showing dialog
+        if ($this->can_update_items()) {
+            // Setup lightbox
+            local_js(array(
+                TOTARA_JS_DIALOG,
+                TOTARA_JS_TREEVIEW
+            ));
+        }
+    }
+
+
+    /**
      * Return markup to display course items in a table
      *
      * Optionally restrict results by approval status
@@ -379,20 +413,6 @@ class dp_objective_component extends dp_base_component {
         return '<a href="'.$CFG->wwwroot.'/local/plan/components/' .
             $this->component . '/view.php?id=' . $this->plan->id .
             '&amp;itemid=' . $objective->id . '">' . $objective->objname . '</a>';
-    }
-
-
-    /**
-     * Process an action
-     *
-     * General component actions can come in here
-     *
-     * @access  public
-     * @return  void
-     */
-    public function process_action_hook() {
-        // Put any relevant actions that should be performed
-        // on this component in here
     }
 
 

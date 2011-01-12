@@ -197,6 +197,27 @@ abstract class dp_base_component {
 
 
     /**
+     * Code to run before after header is displayed
+     *
+     * @access  public
+     * @return  void
+     */
+    public function post_header_hook() {}
+
+
+    /**
+     * Get url for component tab
+     *
+     * @access  public
+     * @return  string
+     */
+    public function get_url() {
+        global $CFG;
+        return "{$CFG->wwwroot}/local/plan/component.php?id={$this->plan->id}&c={$this->component}";
+    }
+
+
+    /**
      * Return markup to display component's assigned items in a table
      *
      * Optionally restrict results by approval status

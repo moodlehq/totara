@@ -7,6 +7,7 @@
  *
  * - $plan              Plan instance
  * - $currenttab        Current tab
+ * - $is_component      Optional
  */
 
 defined('MOODLE_INTERNAL') || die();
@@ -35,6 +36,13 @@ local_js(array(
 
 
 print_header_simple($pagetitle, '', $navigation, '', null, true, '');
+
+
+// Run post header hook (if this is a component)
+if (isset($is_component)) {
+    $component->post_header_hook();
+}
+
 
 // Plan menu
 echo dp_display_plans_menu($plan->userid, $plan->id, $plan->role);
@@ -79,8 +87,7 @@ function lp_display_tabs($plan, $currenttab) {
 
             $row[] = new tabobject(
                 $component->component,
-#                "{$CFG->wwwroot}/local/plan/component.php?id={$plan->id}&c={$component->component}",
-                "{$CFG->wwwroot}/local/plan/components/{$component->component}/index.php?id={$plan->id}",
+                "{$CFG->wwwroot}/local/plan/component.php?id={$plan->id}&c={$component->component}",
                 $componentname
             );
         }
@@ -116,7 +123,7 @@ if ($plan->role == 'manager') {
 }
 
 // If this a component
-if (in_array($currenttab, $DP_AVAILABLE_COMPONENTS)) {
+if (isset($is_component)) {
 
     $instructions .= get_string($currenttab.'_instructions_detail', 'local_plan');
 
