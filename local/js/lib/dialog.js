@@ -585,7 +585,7 @@ totaraDialog_handler_treeview.prototype.setup_tabs = function(e, ui) {
     $('div#browse-tab ul.treeview', this._container).height(containerheight - $('select.simpleframeworkpicker', this._container).outerHeight() - 10);
 
     // Resize search container
-    $('div#search-tab ul.treeview', this._container).height(containerheight - $('#search-tab #mform1', selcontainer).outerHeight() - $('div.search-paging', this._container).outerHeight() - 18);
+    $('div#search-tab ul.treeview', this._container).height(containerheight - $('#search-tab .mform', selcontainer).outerHeight() - $('div.search-paging', this._container).outerHeight() - 18);
 
     // If showing search tab, focus search box
     if (ui && ui.index == 1) {

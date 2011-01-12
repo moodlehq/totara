@@ -1807,7 +1807,7 @@ div.totara-dialog td.select #search-tab fieldset {
     width: 100%;
 }
 
-div.totara-dialog td.select #search-tab form#mform1,
+div.totara-dialog td.select #search-tab form.mform,
 div.totara-dialog td.select #search-tab table#dialog-search-table {
     width: 100%;
 }
