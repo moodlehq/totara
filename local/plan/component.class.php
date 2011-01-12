@@ -567,6 +567,38 @@ abstract class dp_base_component {
      *
      ********************************************************************************************/
 
+    /**
+     * Return markup for javascript assignment picker
+     *
+     * @access  public
+     * @return  string
+     */
+    public function display_picker() {
+
+        if (!$permission = $this->can_update_items()) {
+            return '';
+        }
+
+        // Decide on button text
+        if ($permission >= DP_PERMISSION_ALLOW) {
+            $btntext = get_string('addremove'.$this->component, 'local_plan');
+        } else {
+            $btntext = get_string('updaterequested'.$this->component, 'local_plan');
+        }
+
+        $html  = '<div class="buttons">';
+        $html .= '<div class="singlebutton dp-plan-assign-button">';
+        $html .= '<div>';
+        $html .= '<script type="text/javascript">var plan_id = '.$this->plan->id.';</script>';
+        $html .= '<input type="submit" id="show-'.$this->component.'-dialog" value="'.$btntext.'" />';
+        $html .= '</div>';
+        $html .= '</div>';
+        $html .= '</div>';
+
+        return $html;
+    }
+
+
     function display_duedate($itemid, $duedate) {
         $plancompleted = $this->plan->status == DP_PLAN_STATUS_COMPLETE;
         $cansetduedate = !$plancompleted && ($this->get_setting('setduedate') == DP_PERMISSION_ALLOW);

@@ -178,18 +178,17 @@ $string['backtoallx'] = '&laquo; Back to all $a';
 // Course Strings
 $string['error:cannotupdatecourses'] = 'Cannot update courses';
 $string['updatecourse'] = 'Update';
-$string['updaterequestedcourses'] = 'Updated requested courses';
 $string['updatecourses'] = 'Update courses';
-$string['addremovecourses'] = 'Add/remove courses';
-$string['updaterequestedcourses'] = 'Updated requested courses';
+$string['addremovecourse'] = 'Add/remove courses';
+$string['updaterequestedcourse'] = 'Updated requested courses';
 $string['assessitem'] = 'Assess item';
 $string['coursenotfound'] = 'Course not found';
 
 
 //Competency Strings
 $string['competencies'] = 'Competencies';
-$string['updatecompetencies'] = 'Update competencies';
-$string['updaterequestedcompetencies'] = 'Update requested competencies';
+$string['updatecompetency'] = 'Update competencies';
+$string['updaterequestedcompetency'] = 'Update requested competencies';
 $string['updatecompetency'] = 'Update';
 $string['addremovecompetencies'] = 'Add/remove competencies';
 $string['setproficiency'] = 'Set Proficiency';

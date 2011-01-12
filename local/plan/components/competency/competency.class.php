@@ -1,4 +1,5 @@
 <?php
+
 class dp_competency_component extends dp_base_component {
 
     public static $permissions = array(
@@ -38,50 +39,6 @@ class dp_competency_component extends dp_base_component {
             $settings[$this->component.'_autoassignorg'] = $competencysettings->autoassignorg;
             $settings[$this->component.'_autoassignpos'] = $competencysettings->autoassignpos;
         }
-    }
-
-
-    /**
-     * Return markup for javascript competency picker
-     *
-     * @access  public
-     * @return  string
-     */
-    public function display_picker() {
-
-        if (!$permission = $this->can_update_items()) {
-            return '';
-        }
-
-        // Decide on button text
-        if ($permission >= DP_PERMISSION_ALLOW) {
-            $btntext = get_string('addremovecompetencies', 'local_plan');
-        } else {
-            $btntext = get_string('updaterequestedcompetencies', 'local_plan');
-        }
-
-        $html  = '<div class="buttons">';
-        $html .= '<div class="singlebutton dp-plan-assign-button">';
-        /*
-        <form action="<?php echo $CFG->wwwroot ?>/hierarchy/type/<?php echo $this->prefix ?>/related/find.php?id=<?php echo $item->id ?>&amp;frameworkid=<?php echo $item->frameworkid ?>" method="get">
-         */
-        $html .= '<div>';
-        $html .= '<script type="text/javascript">var plan_id = '.$this->plan->id.';</script>';
-        $html .= '<input type="submit" id="show-competency-dialog" value="'.$btntext.'" />';
-        /*
-    <input type="hidden" name="id" value="<?php echo $item->id ?>">
-    <input type="hidden" name="nojs" value="1">
-    <input type="hidden" name="returnurl" value="<?php echo qualified_me(); ?>">
-    <input type="hidden" name="s" value="<?php echo sesskey(); ?>">
-    <input type="hidden" name="frameworkid" value="<?php echo $item->frameworkid ?>">
-</div>
-</form>
-         */
-        $html .= '</div>';
-        $html .= '</div>';
-        $html .= '</div>';
-
-        return $html;
     }
 
 
