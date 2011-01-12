@@ -179,6 +179,15 @@ abstract class dp_base_component {
 
 
     /**
+     * Process component's settings update
+     *
+     * @access  public
+     * @return  void
+     */
+    abstract public function process_settings_update();
+
+
+    /**
      * Code to run before page header is displayed
      *
      * @access  public

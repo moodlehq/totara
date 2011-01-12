@@ -30,7 +30,7 @@ $cansetpriority = ($component->get_setting('setpriority') == DP_PERMISSION_ALLOW
 $cansetprof = ($component->get_setting('setproficiency') == DP_PERMISSION_ALLOW);
 
 if($submitted && confirm_sesskey()) {
-    $component->process_objective_settings_update();
+    $component->process_settings_update();
 }
 
 $fullname = $plan->name;

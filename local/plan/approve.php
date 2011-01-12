@@ -62,8 +62,7 @@ if ($submitted && confirm_sesskey()) {
     foreach ($components as $componentname => $component) {
 
         // Update settings
-        $method = "process_{$componentname}_settings_update";
-        $result = $component->$method();
+        $result = $component->process_settings_update();
 
         if ($result === false) {
             $errors += 1;

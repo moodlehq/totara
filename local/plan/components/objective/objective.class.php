@@ -494,7 +494,14 @@ class dp_objective_component extends dp_base_component {
         }
     }
 
-    function process_objective_settings_update() {
+
+    /**
+     * Process component's settings update
+     *
+     * @access  public
+     * @return  void
+     */
+    public function process_settings_update() {
         global $CFG;
 
         if (!confirm_sesskey()) {

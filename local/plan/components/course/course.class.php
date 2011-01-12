@@ -614,7 +614,14 @@ class dp_course_component extends dp_base_component {
         }
     }
 
-    function process_course_settings_update() {
+
+    /**
+     * Process component's settings update
+     *
+     * @access  public
+     * @return  void
+     */
+    public function process_settings_update() {
         // @todo validation notices, including preventing empty due dates
         // if duedatemode is required
         // @todo consider handling differently - currently all updates must

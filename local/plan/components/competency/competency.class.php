@@ -565,7 +565,14 @@ class dp_competency_component extends dp_base_component {
         return format_string($ca->status);
     }
 
-    function process_competency_settings_update() {
+
+    /**
+     * Process component's settings update
+     *
+     * @access  public
+     * @return  void
+     */
+    public function process_settings_update() {
         global $CFG;
 
         if (!confirm_sesskey()) {

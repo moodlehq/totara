@@ -34,7 +34,7 @@ $cansetpriority = ($component->get_setting('setpriority') == DP_PERMISSION_ALLOW
 $canapprovecourses = ($component->get_setting('updatecourse') == DP_PERMISSION_APPROVE);
 
 if($submitted && confirm_sesskey()) {
-    $component->process_course_settings_update();
+    $component->process_settings_update();
 }
 
 if ($delete && $confirm) {

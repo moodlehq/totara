@@ -31,7 +31,7 @@ $cansetduedate = ($component->get_setting('setduedate') == DP_PERMISSION_ALLOW);
 $cansetpriority = ($component->get_setting('setpriority') == DP_PERMISSION_ALLOW);
 
 if($submitted && confirm_sesskey()) {
-    $component->process_competency_settings_update();
+    $component->process_settings_update();
 }
 
 if($delete && $confirm) {
