@@ -577,6 +577,7 @@ class dp_objective_component extends dp_base_component {
             begin_sql();
 
             foreach ($stored_records as $itemid => $record) {
+                $record = addslashes_recursive($record);
                 $status = $status & update_record('dp_plan_objective', $record);
             }
             if ($status) {
@@ -1004,6 +1005,7 @@ class dp_objective_component extends dp_base_component {
 
             // Attempt to update record
             $record->approved = DP_APPROVAL_REQUESTED;
+            $record = addslashes_recursive($record);
             if (!update_record($table, $record)) {
                 continue;
             }

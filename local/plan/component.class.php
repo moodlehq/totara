@@ -568,6 +568,7 @@ abstract class dp_base_component {
 
             // Attempt to update record
             $record->approved = DP_APPROVAL_REQUESTED;
+            $record = addslashes_recursive($record);
             if (!update_record($table, $record)) {
                 continue;
             }
