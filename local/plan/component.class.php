@@ -461,8 +461,6 @@ abstract class dp_base_component {
         global $USER, $CFG;
         require_once($CFG->dirroot.'/local/totara_msg/messagelib.php');
 
-        // @todo implement $update_info to provide notifications with more details re component update
-
         $event = new stdClass;
         $userfrom = get_record('user', 'id', $USER->id);
         $event->userfrom = $userfrom;
