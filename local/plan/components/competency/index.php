@@ -126,11 +126,16 @@ print '<input type="hidden" id="sesskey" name="sesskey" value="'.sesskey().'" />
 
 print $component->display_picker();
 
-print $component->display_list();
+print '<div id="dp-component-update-table">'.$component->display_list().'</div>';
 
+// only show update settings if there are any items
 if((!$plancompleted && ($cansetduedate || $cansetpriority)) && $component->get_assigned_items_count()>0) {
-    print '<input type="submit" name="submitbutton" value="'.get_string('updatesettings', 'local_plan').'" />';
+    $show = true;
 }
+else {
+    $show = false;
+}
+print '<div id="dp-component-update-submit" style="display: '.($show ? 'block' : 'none').';"><input type="submit" name="submitbutton" value="'.get_string('updatesettings', 'local_plan').'" /></div>';
 
 print '</form>';
 print_container_end();
