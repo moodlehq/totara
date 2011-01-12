@@ -179,6 +179,15 @@ abstract class dp_base_component {
 
 
     /**
+     * Code to run before page header is displayed
+     *
+     * @access  public
+     * @return  void
+     */
+    public function pre_header_hook() {}
+
+
+    /**
      * Get all instances of $componentrequired linked to the specified item
      *
      * @todo doesn't current exclude unapproved items
