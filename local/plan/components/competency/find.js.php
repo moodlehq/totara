@@ -26,7 +26,7 @@ $(function() {
                  },
                 title: '<?php
                     echo '<h2>';
-                    echo get_string('updatecompetencies', 'local_plan');
+                    echo get_string('addremovecompetency', 'local_plan');
                     echo '</h2>';
                 ?>'
             },
