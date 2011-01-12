@@ -42,35 +42,6 @@ class dp_objective_component extends dp_base_component {
 
 
     /**
-     * Return markup for javascript course picker
-     *
-     * @access public
-     * @global object $CFG
-     * @return string
-     */
-    public function display_picker() {
-        global $CFG;
-
-        if (!$permission = $this->can_update_items()) {
-            return '';
-        }
-
-        // Decide on button text
-        if ($permission >= DP_PERMISSION_ALLOW) {
-            $btntext = get_string('addnewobjective', 'local_plan');
-        } else {
-            $btntext = get_string('requestednewobjective', 'local_plan');
-        }
-
-        $html = '<div class="buttons">';
-        $html .= print_single_button("{$CFG->wwwroot}/local/plan/components/objective/edit.php", array('id'=>$this->plan->id), $btntext, 'get', '_SELF', true);
-        $html .= '</div>';
-
-        return $html;
-    }
-
-
-    /**
      * Get list of items assigned to plan
      *
      * Optionally, filtered by status
@@ -459,38 +430,6 @@ class dp_objective_component extends dp_base_component {
             );
             $mform->set_data($objective);
             return $mform;
-        }
-    }
-
-
-    /**
-     * Display a proficiency (or the dropdown menu for it)
-     * @param object $ca The current objective
-     * @param array $proficiencyvalues A list of all the proficiencies in the objective scale for this objective
-     * @return string
-     */
-    function display_proficiency($ca, $proficiencyvalues) {
-        $plancompleted = ($this->plan->status == DP_PLAN_STATUS_COMPLETE);
-        $cansetprof = $this->get_setting('setproficiency') == DP_PERMISSION_ALLOW;
-        $out = '';
-
-        $selected = $ca->scalevalueid;
-
-        if ( !$plancompleted && $cansetprof ){
-            // Show the menu
-            $options = array();
-            foreach( $proficiencyvalues as $id => $val){
-                $options[$id] = $val->name;
-            }
-            return choose_from_menu($options, "proficiencies[{$ca->id}]", $selected, null, '', null, true);
-
-        } else {
-            // They can't change the setting, so show it as-is
-            $out = format_string($proficiencyvalues[$selected]->name);
-            if ( $proficiencyvalues[$selected]->achieved ){
-                $out = '<b>'.$out.'</b>';
-            }
-            return $out;
         }
     }
 
@@ -974,6 +913,153 @@ class dp_objective_component extends dp_base_component {
 
     }
 
+
+    /**
+     * Return just the "approval" field for an objective
+     * @param int $caid
+     * return int
+     */
+    public function get_approval($caid){
+        return get_field('dp_plan_objective', 'approved', 'id', $caid);
+    }
+
+    /**
+     * Indicates what the objective's approval status should be if the approval
+     * is updated.
+     * @return int (or false on failure)
+     */
+    public function approval_status_after_update( ){
+        $perm = $this->can_update_items();
+        if ( $perm == DP_PERMISSION_REQUEST ){
+            return DP_APPROVAL_UNAPPROVED;
+        }
+        if ( in_array( $perm, array( DP_PERMISSION_ALLOW, DP_PERMISSION_APPROVE ) ) ){
+            return DP_APPROVAL_APPROVED;
+        }
+
+        // In case something went wrong, fall back to unapproved status
+        return DP_APPROVAL_UNAPPROVED;
+    }
+
+
+    /**
+     * Indicates whether an update will revoke the "approved" status of the
+     * component
+     * @param <type> $caid
+     * @return boolean
+     */
+    public function will_an_update_revoke_approval( $caid ){
+        // If the resource is already approved, and the user has only REQUEST
+        // permission, then it will revoke the approved status. Otherwise,
+        // no change.
+        if (
+                $this->can_update_items() == DP_PERMISSION_REQUEST
+                && $this->get_approval($caid) != DP_APPROVAL_UNAPPROVED
+        ){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    /**
+     * Make unassigned items requested
+     *
+     * @access  public
+     * @param   array   $items  Unassigned items to update
+     * @return  array
+     */
+    public function make_items_requested($items) {
+
+        $table = "dp_plan_{$this->component}";
+
+        $updated = array();
+        foreach ($items as $item) {
+            // Attempt to load item
+            $record = get_record($table, 'id', $item->itemid);
+            if (!$record) {
+                continue;
+            }
+
+            // Attempt to update record
+            $record->approved = DP_APPROVAL_REQUESTED;
+            if (!update_record($table, $record)) {
+                continue;
+            }
+
+            // Save in updated list
+            $updated[] = $item;
+        }
+
+        return $updated;
+    }
+
+
+    /*********************************************************************************************
+     *
+     * Display methods
+     *
+     ********************************************************************************************/
+
+    /**
+     * Return markup for javascript course picker
+     *
+     * @access public
+     * @global object $CFG
+     * @return string
+     */
+    public function display_picker() {
+        global $CFG;
+
+        if (!$permission = $this->can_update_items()) {
+            return '';
+        }
+
+        // Decide on button text
+        if ($permission >= DP_PERMISSION_ALLOW) {
+            $btntext = get_string('addnewobjective', 'local_plan');
+        } else {
+            $btntext = get_string('requestednewobjective', 'local_plan');
+        }
+
+        $html = '<div class="buttons">';
+        $html .= print_single_button("{$CFG->wwwroot}/local/plan/components/objective/edit.php", array('id'=>$this->plan->id), $btntext, 'get', '_SELF', true);
+        $html .= '</div>';
+
+        return $html;
+    }
+
+
+    /*
+     * Return markup for javascript course picker
+     * objectiveid integer - the id of the objective for which selected& available courses should be displayed
+     * @access  public
+     * @return  string
+     */
+    public function display_course_picker($objectiveid) {
+
+        if (!$permission = $this->can_update_items()) {
+            return '';
+        }
+
+        $coursename = $this->plan->get_component('course')->get_setting('name');
+        $btntext = get_string('updatelinkedx', 'local_plan', $coursename);
+
+        $html  = '<div class="buttons">';
+        $html .= '<div class="singlebutton dp-plan-assign-button">';
+        $html .= '<div>';
+        $html .= '<script type="text/javascript">var objective_id = ' . $objectiveid . ';';
+        $html .= 'var plan_id = ' . $this->plan->id . ';</script>';
+        $html .= '<input type="submit" id="show-course-dialog" value="' . $btntext . '" />';
+        $html .= '</div>';
+        $html .= '</div>';
+        $html .= '</div>';
+
+        return $html;
+    }
+
+
     /**
      * Print details about an objective
      * @global object $CFG
@@ -1064,111 +1150,35 @@ SQL;
         print $out;
     }
 
-    /**
-     * Return just the "approval" field for an objective
-     * @param int $caid
-     * return int
-     */
-    public function get_approval($caid){
-        return get_field('dp_plan_objective', 'approved', 'id', $caid);
-    }
 
     /**
-     * Indicates what the objective's approval status should be if the approval
-     * is updated.
-     * @return int (or false on failure)
+     * Display a proficiency (or the dropdown menu for it)
+     * @param object $ca The current objective
+     * @param array $proficiencyvalues A list of all the proficiencies in the objective scale for this objective
+     * @return string
      */
-    public function approval_status_after_update( ){
-        $perm = $this->can_update_items();
-        if ( $perm == DP_PERMISSION_REQUEST ){
-            return DP_APPROVAL_UNAPPROVED;
-        }
-        if ( in_array( $perm, array( DP_PERMISSION_ALLOW, DP_PERMISSION_APPROVE ) ) ){
-            return DP_APPROVAL_APPROVED;
-        }
+    function display_proficiency($ca, $proficiencyvalues) {
+        $plancompleted = ($this->plan->status == DP_PLAN_STATUS_COMPLETE);
+        $cansetprof = $this->get_setting('setproficiency') == DP_PERMISSION_ALLOW;
+        $out = '';
 
-        // In case something went wrong, fall back to unapproved status
-        return DP_APPROVAL_UNAPPROVED;
-    }
+        $selected = $ca->scalevalueid;
 
-    /*
-     * Return markup for javascript course picker
-     * objectiveid integer - the id of the objective for which selected& available courses should be displayed
-     * @access  public
-     * @return  string
-     */
-    public function display_course_picker($objectiveid) {
+        if ( !$plancompleted && $cansetprof ){
+            // Show the menu
+            $options = array();
+            foreach( $proficiencyvalues as $id => $val){
+                $options[$id] = $val->name;
+            }
+            return choose_from_menu($options, "proficiencies[{$ca->id}]", $selected, null, '', null, true);
 
-        if (!$permission = $this->can_update_items()) {
-            return '';
-        }
-
-        $coursename = $this->plan->get_component('course')->get_setting('name');
-        $btntext = get_string('updatelinkedx', 'local_plan', $coursename);
-
-        $html  = '<div class="buttons">';
-        $html .= '<div class="singlebutton dp-plan-assign-button">';
-        $html .= '<div>';
-        $html .= '<script type="text/javascript">var objective_id = ' . $objectiveid . ';';
-        $html .= 'var plan_id = ' . $this->plan->id . ';</script>';
-        $html .= '<input type="submit" id="show-course-dialog" value="' . $btntext . '" />';
-        $html .= '</div>';
-        $html .= '</div>';
-        $html .= '</div>';
-
-        return $html;
-    }
-
-    /**
-     * Indicates whether an update will revoke the "approved" status of the
-     * component
-     * @param <type> $caid
-     * @return boolean
-     */
-    public function will_an_update_revoke_approval( $caid ){
-        // If the resource is already approved, and the user has only REQUEST
-        // permission, then it will revoke the approved status. Otherwise,
-        // no change.
-        if (
-                $this->can_update_items() == DP_PERMISSION_REQUEST
-                && $this->get_approval($caid) != DP_APPROVAL_UNAPPROVED
-        ){
-            return true;
         } else {
-            return false;
-        }
-    }
-
-
-    /**
-     * Make unassigned items requested
-     *
-     * @access  public
-     * @param   array   $items  Unassigned items to update
-     * @return  array
-     */
-    public function make_items_requested($items) {
-
-        $table = "dp_plan_{$this->component}";
-
-        $updated = array();
-        foreach ($items as $item) {
-            // Attempt to load item
-            $record = get_record($table, 'id', $item->itemid);
-            if (!$record) {
-                continue;
+            // They can't change the setting, so show it as-is
+            $out = format_string($proficiencyvalues[$selected]->name);
+            if ( $proficiencyvalues[$selected]->achieved ){
+                $out = '<b>'.$out.'</b>';
             }
-
-            // Attempt to update record
-            $record->approved = DP_APPROVAL_REQUESTED;
-            if (!update_record($table, $record)) {
-                continue;
-            }
-
-            // Save in updated list
-            $updated[] = $item;
+            return $out;
         }
-
-        return $updated;
     }
 }
