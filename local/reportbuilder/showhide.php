@@ -41,12 +41,15 @@ $('#column-checkboxes input').each(function() {
 });
 // when clicked, toggle visibility of columns
 $('#column-checkboxes input').click(function() {
+    var selheader = '#' + shortname + ' th.' + $(this).attr('name');
     var sel = '#' + shortname + ' td.' + $(this).attr('name');
     var value = $(this).attr('checked') ? 1 : 0;
+
+    $(selheader).toggle();
     $(sel).toggle();
 
     $.ajax({
-        url: '<?php print $CFG->wwwroot; ?>showhide_save.php',
+        url: '<?php print $CFG->wwwroot; ?>/local/reportbuilder/showhide_save.php',
         data: {'shortname' : shortname,
                'column' : $(this).attr('name'),
                'value' : value
