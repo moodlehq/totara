@@ -1384,6 +1384,10 @@ span.plan_highlight {
     text-align: center;
 }
 
+.plan-launch-course-button {
+    float: right;
+}
+
 /*
  * Record of Learning pulldown menu
  */

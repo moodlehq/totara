@@ -457,9 +457,9 @@ class dp_course_component extends dp_base_component {
 
         if($approved) {
             $class = '';
-            $launch = ' | <a href="' . $CFG->wwwroot .
+            $launch = '<a href="' . $CFG->wwwroot .
                 '/course/view.php?id=' . $ca->courseid . '">' .
-                get_string('launchcourse', 'local_plan') . '</a>';
+                '<div class="plan-launch-course-button"><img src="' . $CFG->pixpath . '/launch-course.png" width="56" height="18" alt="' . get_string('launchcourse', 'local_plan') . '" /></a></div>';
         } else {
             $class = ' class="dimmed"';
             $launch = '';
