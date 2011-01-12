@@ -412,6 +412,20 @@ class dp_objective_component extends dp_base_component {
 
 
     /**
+     * Process an action
+     *
+     * General component actions can come in here
+     *
+     * @access  public
+     * @return  void
+     */
+    public function process_action_hook() {
+        // Put any relevant actions that should be performed
+        // on this component in here
+    }
+
+
+    /**
      * Create a form object for the data in an objective
      * @global object $CFG
      * @param int $objectiveid

@@ -167,10 +167,15 @@ abstract class dp_base_component {
     }
 
 
-    function process_action($action) {
-        // General component actions can come in here
-        // Override this method in children for more specific actions
-    }
+    /**
+     * Process an action
+     *
+     * General component actions can come in here
+     *
+     * @access  public
+     * @return  void
+     */
+    abstract public function process_action_hook();
 
 
     /**

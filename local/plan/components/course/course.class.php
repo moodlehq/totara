@@ -769,7 +769,16 @@ class dp_course_component extends dp_base_component {
         redirect($currenturl);
     }
 
-    function process_action($action) {
+
+    /**
+     * Process an action
+     *
+     * General component actions can come in here
+     *
+     * @access  public
+     * @return  void
+     */
+    public function process_action_hook() {
         // Put any relevant actions that should be performed
         // on this component in here
     }

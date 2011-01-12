@@ -10,7 +10,6 @@ require_once($CFG->dirroot . '/local/js/lib/setup.php');
 ///
 $id = required_param('id', PARAM_INT); // plan id
 $submitted = optional_param('submitbutton', null, PARAM_TEXT); // form submitted
-$action = optional_param('action', null, PARAM_ALPHANUM); // other actions
 
 
 ///
@@ -32,8 +31,6 @@ $cansetprof = ($component->get_setting('setproficiency') == DP_PERMISSION_ALLOW)
 
 if($submitted && confirm_sesskey()) {
     $component->process_objective_settings_update();
-} elseif ($action && confirm_sesskey()) {
-    $component->process_action($action);
 }
 
 $fullname = $plan->name;

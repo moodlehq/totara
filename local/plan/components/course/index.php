@@ -12,7 +12,6 @@ global $USER;
 ///
 $id = required_param('id', PARAM_INT); // plan id
 $submitted = optional_param('submitbutton', null, PARAM_TEXT); // form submitted
-$action = optional_param('action', null, PARAM_ALPHANUM); // other actions
 $delete = optional_param('d', 0, PARAM_INT); // course assignment id to delete
 $confirm = optional_param('confirm', 0, PARAM_INT); // confirm delete
 
@@ -36,8 +35,6 @@ $canapprovecourses = ($component->get_setting('updatecourse') == DP_PERMISSION_A
 
 if($submitted && confirm_sesskey()) {
     $component->process_course_settings_update();
-} elseif ($action && confirm_sesskey()) {
-    $component->process_action($action);
 }
 
 if ($delete && $confirm) {

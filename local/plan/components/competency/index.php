@@ -10,7 +10,6 @@ require_once($CFG->dirroot . '/local/js/lib/setup.php');
 ///
 $id = required_param('id', PARAM_INT); // plan id
 $submitted = optional_param('submitbutton', null, PARAM_TEXT); // form submitted
-$action = optional_param('action', null, PARAM_ALPHANUM); // other actions
 $delete = optional_param('d', 0, PARAM_INT); // competency assignment id to delete
 $confirm = optional_param('confirm', 0, PARAM_INT); // confirm delete
 
@@ -33,8 +32,6 @@ $cansetpriority = ($component->get_setting('setpriority') == DP_PERMISSION_ALLOW
 
 if($submitted && confirm_sesskey()) {
     $component->process_competency_settings_update();
-} elseif ($action && confirm_sesskey()) {
-    $component->process_action($action);
 }
 
 if($delete && $confirm) {
