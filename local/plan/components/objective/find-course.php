@@ -69,7 +69,7 @@ if (!$permission = $component->can_update_items()) {
 $dialog = new totara_dialog_objective_content_courses();
 
 // Set type to multiple
-$dialog->type = $dialog::TYPE_CHOICE_MULTI;
+$dialog->type = totara_dialog_content::TYPE_CHOICE_MULTI;
 $dialog->selected_title = 'currentlyselected';
 
 // Add data
