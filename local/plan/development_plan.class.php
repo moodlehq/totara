@@ -1263,6 +1263,61 @@ class development_plan {
         global $CFG;
         return "{$CFG->wwwroot}/local/plan/view.php?id={$this->id}";
     }
+
+
+    //
+    // Display tabs
+    //
+    public function display_tabs($currenttab) {
+        global $CFG;
+
+        $tabs = array();
+        $row = array();
+        $activated = array();
+        $inactive = array();
+
+        // Overview tab
+        $row[] = new tabobject(
+                'plan',
+                "{$CFG->wwwroot}/local/plan/view.php?id={$this->id}",
+                get_string('overview', 'local_plan')
+        );
+
+        // get active components in correct order
+        $components = $this->get_setting('components');
+
+        if ($components) {
+            foreach ($components as $component) {
+                // don't show tabs for disabled components
+                if (!$component->enabled) {
+                    continue;
+                }
+                $componentname =
+                    $this->get_component($component->component)->get_setting('name');
+
+                $row[] = new tabobject(
+                    $component->component,
+                    $this->get_component($component->component)->get_url(),
+                    $componentname
+                );
+            }
+        }
+
+        // requested items tabs
+        if ($pitems = $this->num_pendingitems()) {
+            $row[] = new tabobject(
+                'pendingitems',
+                "{$CFG->wwwroot}/local/plan/approve.php?id={$this->id}",
+                get_string('pendingitems', 'local_plan').' ('.$pitems.')'
+            );
+        }
+
+        $tabs[] = $row;
+        $activated[] = $currenttab;
+
+        return print_tabs($tabs, $currenttab, $inactive, $activated, true);
+    }
+
 }
 
 

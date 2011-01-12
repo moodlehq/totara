@@ -87,7 +87,7 @@ function lp_display_tabs($plan, $currenttab) {
 
             $row[] = new tabobject(
                 $component->component,
-                "{$CFG->wwwroot}/local/plan/component.php?id={$plan->id}&c={$component->component}",
+                $plan->get_component($component->component)->get_url(),
                 $componentname
             );
         }
