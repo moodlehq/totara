@@ -1,6 +1,12 @@
 <?php
 
 
+/**
+ * Flag for dp_base_component::can_update_settings()
+ */
+define('LP_CHECK_ITEMS_EXIST', true);
+
+
 abstract class dp_base_component {
 
     /**
@@ -104,6 +110,46 @@ abstract class dp_base_component {
         }
 
         return $updateitem;
+    }
+
+
+    /**
+     * Can the logged in user update settings for items in this component
+     *
+     * Returns false if they cannot, or an array detailing their
+     * exact permissions if they can
+     *
+     * Optionally check if there are any items they can update also, and if
+     * there are none return false
+     *
+     * @access  public
+     * @param   boolean     $checkexists (optional)
+     * @return  false|int
+     */
+    public function can_update_settings($checkexists = LP_CHECK_ITEMS_EXIST) {
+        // Check plan is active
+        if ($this->plan->is_complete()) {
+            return false;
+        }
+
+        // Get permissions
+        $can = array();
+        $can['setduedate'] = $this->get_setting('setduedate') == DP_PERMISSION_ALLOW;
+        $can['setpriority'] = $this->get_setting('setpriority') == DP_PERMISSION_ALLOW;
+        $can['approve'.$this->component] = $this->get_setting('update'.$this->component) == DP_PERMISSION_APPROVE;
+
+        // If user has no permissions, return false
+        if (!count($can)) {
+            return false;
+        }
+
+        // If checkexists set, check for items
+        if ($checkexists && !$this->get_assigned_items()) {
+            return false;
+        }
+
+        // Otherwise, return permissions the user does have
+        return $can;
     }
 
 
