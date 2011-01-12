@@ -70,7 +70,7 @@ $pagetitle = format_string(get_string('learningplan','local_plan').': '.$fullnam
 $navlinks = array();
 dp_get_plan_base_navlinks($navlinks, $plan->userid);
 $navlinks[] = array('name' => $fullname, 'link'=> $plan->get_display_url(), 'type'=>'title');
-$navlinks[] = array('name' => $component->get_setting('name'), 'link' => '', 'type' => 'title');
+$navlinks[] = array('name' => get_string($component->component, 'local_plan'), 'link' => '', 'type' => 'title');
 
 $navigation = build_navigation($navlinks);
 

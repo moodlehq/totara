@@ -11,14 +11,14 @@ $componentname = 'competency';
 $component = $plan->get_component($componentname);
 $currenturl = $CFG->wwwroot . '/local/plan/components/competency/view.php?id='.$id.'&amp;itemid='.$caid;
 $coursesenabled = $plan->get_component('course')->get_setting('enabled');
-$coursename = $plan->get_component('course')->get_setting('name');
+$coursename = get_string('course', 'local_plan');
 
 $fullname = $plan->name;
 $pagetitle = format_string(get_string('learningplan','local_plan').': '.$fullname);
 $navlinks = array();
 dp_get_plan_base_navlinks($navlinks, $plan->userid);
 $navlinks[] = array('name' => $fullname, 'link'=> $CFG->wwwroot . '/local/plan/view.php?id='.$id, 'type'=>'title');
-$navlinks[] = array('name' => $component->get_setting('name'), 'link' => $component->get_url(), 'type' => 'title');
+$navlinks[] = array('name' => get_string($component->component, 'local_plan'), 'link' => $component->get_url(), 'type' => 'title');
 $navlinks[] = array('name' => get_string('viewitem','local_plan'), 'link' => '', 'type' => 'title');
 
 $navigation = build_navigation($navlinks);

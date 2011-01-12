@@ -119,7 +119,7 @@ foreach ($components as $componentname => $component) {
         continue;
     }
 
-    print_heading($component->get_setting('name'));
+    print_heading(get_string($component->component, 'local_plan'));
 
     print $component->display_list(DP_APPROVAL_REQUESTED);
 }

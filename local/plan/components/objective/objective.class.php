@@ -200,7 +200,7 @@ class dp_objective_component extends dp_base_component {
         $tablecolumns = array('objname');
 
         if ( $coursesenabled ){
-            $tableheaders[] = $this->plan->get_component('course')->get_setting('name');
+            $tableheaders[] = get_string('course', 'local_plan');
             $tablecolumns[] = 'numcourses';
         }
 
@@ -337,7 +337,7 @@ class dp_objective_component extends dp_base_component {
             $this->get_setting('prioritymode') == DP_PRIORITY_REQUIRED);
         $priorityscaleid = ($this->get_setting('priorityscale')) ? $this->get_setting('priorityscale') : -1;
 
-        $objectivename = $this->get_setting('name');
+        $objectivename = get_string('objective', 'local_plan');
 
         // Get data
         $select = 'SELECT po.*, po.fullname '.sql_as().' objname,
@@ -1065,7 +1065,7 @@ class dp_objective_component extends dp_base_component {
             return '';
         }
 
-        $coursename = $this->plan->get_component('course')->get_setting('name');
+        $coursename = get_string('course', 'local_plan');
         $btntext = get_string('updatelinkedx', 'local_plan', $coursename);
 
         $html  = '<div class="buttons">';

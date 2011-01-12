@@ -82,8 +82,7 @@ function lp_display_tabs($plan, $currenttab) {
             if (!$component->enabled) {
                 continue;
             }
-            $componentname =
-                $plan->get_component($component->component)->get_setting('name');
+            $componentname = get_string($component->component, 'local_plan');
 
             $row[] = new tabobject(
                 $component->component,

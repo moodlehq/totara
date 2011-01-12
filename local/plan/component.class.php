@@ -468,7 +468,7 @@ abstract class dp_base_component {
         $event->icon = $this->component.'-update.png';
         $a = new stdClass;
         $a->plan = "<a href=\"{$CFG->wwwroot}/local/plan/view.php?id={$this->plan->id}\" title=\"{$this->plan->name}\">{$this->plan->name}</a>";
-        $a->component = $this->get_setting('name');
+        $a->component = $this->component;
         $a->updates = $update_info;
 
         // did they edit it themselves?
@@ -734,7 +734,7 @@ abstract class dp_base_component {
         global $CFG;
         return '<p><a href="' . $CFG->wwwroot . '/local/plan/components/' .
             $this->component . '/index.php?id=' . $this->plan->id . '">' .
-            get_string('backtoallx','local_plan', $this->get_setting('name')) .
+            get_string('backtoallx','local_plan', get_string($this->component, 'local_plan')) .
             '</a></p>';
     }
 

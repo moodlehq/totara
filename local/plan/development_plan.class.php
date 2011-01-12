@@ -325,7 +325,7 @@ class development_plan {
             $count = 1;
             foreach ($components as $c) {
                 $component = $this->get_component($c->component);
-                $compname = $component->get_setting('name');
+                $compname = get_string($component->component, 'local_plan');
                 $class = ($count == $total) ? "dp-summary-widget-component-name-last" : "dp-summary-widget-component-name";
                 $assignments = $component->get_assigned_items();
                 $assignments = !empty($assignments) ? '('.count($assignments).')' : '';
@@ -1131,7 +1131,7 @@ class development_plan {
             // Generate message
             if ($items) {
                 $total_items += count($items);
-                $message_data[] = count($items).' '.$this->get_component($component)->get_setting('name');
+                $message_data[] = count($items).' '. get_string($component->component, 'local_plan');
             }
         }
 
@@ -1304,7 +1304,7 @@ class development_plan {
                     continue;
                 }
                 $componentname =
-                    $this->get_component($component->component)->get_setting('name');
+                    get_string($component->component, 'local_plan');
 
                 $row[] = new tabobject(
                     $component->component,

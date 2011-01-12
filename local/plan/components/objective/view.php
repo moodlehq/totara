@@ -12,8 +12,8 @@ $plan = new development_plan($id);
 $plancompleted = $plan->status == DP_PLAN_STATUS_COMPLETE;
 $componentname = 'objective';
 $component = $plan->get_component($componentname);
-$objectivename = $component->get_setting('name');
-$coursename = $plan->get_component('course')->get_setting('name');
+$objectivename = get_string($componentname, 'local_plan');
+$coursename = get_string('course', 'local_plan');
 
 /// Javascript stuff
 // If we are showing dialog
@@ -45,7 +45,7 @@ $pagetitle = format_string(get_string('learningplan','local_plan').': '.$fullnam
 $navlinks = array();
 dp_get_plan_base_navlinks($navlinks, $plan->userid);
 $navlinks[] = array('name' => $fullname, 'link'=> $CFG->wwwroot . '/local/plan/view.php?id='.$id, 'type'=>'title');
-$navlinks[] = array('name' => $component->get_setting('name'), 'link' => $component->get_url(), 'type' => 'title');
+$navlinks[] = array('name' => get_string($component->component, 'local_plan'), 'link' => $component->get_url(), 'type' => 'title');
 $navlinks[] = array('name' => get_string('viewitem','local_plan'), 'link' => '', 'type' => 'title');
 
 $navigation = build_navigation($navlinks);
