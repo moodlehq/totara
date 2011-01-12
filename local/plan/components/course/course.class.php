@@ -287,6 +287,8 @@ class dp_course_component extends dp_base_component {
             $this->get_setting('updatecourse') == DP_PERMISSION_APPROVE;
         $canremovecourses = !$plancompleted &&
             $this->get_setting('updatecourse') >= DP_PERMISSION_ALLOW;
+        $cansetcompletion = !$plancompleted &&
+            $this->get_setting('setcompletionstatus') >= DP_PERMISSION_ALLOW;
 
         // @todo fix sorting of status column to account for course
         // completion - may need status column in course completions table
@@ -396,26 +398,27 @@ class dp_course_component extends dp_base_component {
                     $row[] = $status;
                 }
 
+                $actions = '';
+
                 if ($canremovecourses ||
                     ($canrequestcourses && (in_array($ca->approved, array(DP_APPROVAL_UNAPPROVED, DP_APPROVAL_DECLINED))))) {
                     $currenturl = $CFG->wwwroot .
                         '/local/plan/components/course/index.php?id=' .
                         $this->plan->id;
                     $strdelete = get_string('delete', 'local_plan');
-                    $strrpl = get_string('addrpl', 'local_plan');
                     $delete = '<a href="'.$currenturl.'&amp;d='.$ca->id.'" title="'.$strdelete.'"><img src="'.$CFG->pixpath.'/t/delete.gif" class="iconsmall" alt="'.$strdelete.'" /></a>';
+
+                    $actions .= $delete;
+                }
+
+                if($cansetcompletion && $approved) {
+                    $strrpl = get_string('addrpl', 'local_plan');
                     $proficient = '<a href="'.$CFG->wwwroot.'/local/plan/components/course/rpl.php?planid='.$this->plan->id.'&courseid='.$ca->courseid.'">
                         <img src="'.$CFG->pixpath.'/t/ranges.gif" class="iconsmall" alt="'.$strrpl.'" /></a>';
+                    $actions .= $proficient;
+                }
 
-                    if($this->get_setting('setcompletionstatus') == DP_PERMISSION_ALLOW && $approved) {
-                        $row[] = $delete . $proficient;
-                    } else {
-                        $row[] = $delete;
-                    }
-                }
-                else {
-                    $row[] = '';
-                }
+                $row[] = $actions;
 
                 $table->add_data($row);
             }

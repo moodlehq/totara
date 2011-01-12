@@ -218,6 +218,8 @@ class dp_competency_component extends dp_base_component {
             $this->get_setting('updatecompetency') >= DP_PERMISSION_ALLOW;
         $canrequestcomps = !$plancompleted &&
             $this->get_setting('updatecompetency') == DP_PERMISSION_REQUEST;
+        $cansetproficiency = !$plancompleted &&
+            $this->get_setting('setproficiency') >= DP_PERMISSION_ALLOW;
 
         $count = 'SELECT COUNT(*) ';
         $select = 'SELECT ca.*, c.fullname, csv.name ' . sql_as() .
@@ -337,25 +339,27 @@ class dp_competency_component extends dp_base_component {
                     $row[] = $status;
                 }
 
+                $actions = '';
+
                 if ($canremovecomps ||
                     ($canrequestcomps && (in_array($ca->approved, array(DP_APPROVAL_UNAPPROVED, DP_APPROVAL_DECLINED))))) {
                     $currenturl = $CFG->wwwroot .
                         '/local/plan/components/competency/index.php?id=' .
                         $this->plan->id;
                     $strdelete = get_string('delete', 'local_plan');
-                    $straddevidence = get_string('addevidence', 'local_plan');
                     $delete = '<a href="'.$currenturl.'&amp;d='.$ca->id.'" title="'.$strdelete.'"><img src="'.$CFG->pixpath.'/t/delete.gif" class="iconsmall" alt="'.$strdelete.'" /></a>';
+
+                    $actions .= $delete;
+                }
+
+                if($cansetproficiency && $approved) {
+                    $straddevidence = get_string('addevidence', 'local_plan');
                     $proficient = '<a href="'.$CFG->wwwroot.'/local/plan/components/competency/add_evidence.php?userid='.$this->plan->userid.'&planid='.$this->plan->id.'&competencyid='.$ca->competencyid.'">
                         <img src="'.$CFG->pixpath.'/t/ranges.gif" class="iconsmall" alt="'.$straddevidence.'" /></a>';
-                    if($this->get_setting('setproficiency') == DP_PERMISSION_ALLOW && $approved) {
-                        $row[] = $delete . $proficient;
-                    } else {
-                        $row[] = $delete;
-                    }
-                    }
-                else {
-                    $row[] = '';
+                    $actions .= $proficient;
                 }
+
+                $row[] = $actions;
 
                 $table->add_data($row);
             }
