@@ -103,21 +103,21 @@ class rb_source_scorm extends rb_base_source {
             new rb_column_option(
                 'scorm',
                 'title',
-                'SCORM Title',
+                get_string('scormtitle', 'rb_source_scorm'),
                 'scorm.name',
                 array('joins' => 'scorm')
             ),
             new rb_column_option(
                 'sco',
                 'title',
-                'SCO Title',
+                get_string('title', 'rb_source_scorm'),
                 'sco.title',
                 array('joins' => 'sco')
             ),
             new rb_column_option(
                 'sco',
                 'starttime',
-                'SCO Start Time',
+                get_string('time', 'rb_source_scorm'),
                 sql_cast_char2int('sco_starttime.value'),
                 array(
                     'joins' => 'sco_starttime',
@@ -127,7 +127,7 @@ class rb_source_scorm extends rb_base_source {
             new rb_column_option(
                 'sco',
                 'status',
-                'SCO Status',
+                get_string('status', 'rb_source_scorm'),
                 'sco_status.value',
                 array(
                     'joins' => 'sco_status',
@@ -137,35 +137,35 @@ class rb_source_scorm extends rb_base_source {
             new rb_column_option(
                 'sco',
                 'totaltime',
-                'SCO Total Time',
+                get_string('totaltime', 'rb_source_scorm'),
                 'sco_totaltime.value',
                 array('joins' => 'sco_totaltime')
             ),
             new rb_column_option(
                 'sco',
                 'scoreraw',
-                'SCO Score',
+                get_string('score', 'rb_source_scorm'),
                 'sco_scoreraw.value',
                 array('joins' => 'sco_scoreraw')
             ),
             new rb_column_option(
                 'sco',
                 'scoremin',
-                'SCO Min Score',
+                get_string('minscore', 'rb_source_scorm'),
                 'sco_scoremin.value',
                 array('joins' => 'sco_scoremin')
             ),
             new rb_column_option(
                 'sco',
                 'scoremax',
-                'SCO Max Score',
+                get_string('maxscore', 'rb_source_scorm'),
                 'sco_scoremax.value',
                 array('joins' => 'sco_scoremax')
             ),
             new rb_column_option(
                 'sco',
                 'attempt',
-                'SCO Attempt Number',
+                get_string('attemptnum', 'rb_source_scorm'),
                 'base.attempt'
             ),
         );
@@ -197,51 +197,51 @@ class rb_source_scorm extends rb_base_source {
             new rb_filter_option(
                 'scorm',
                 'title',
-                'SCORM Title',
+                get_string('scormtitle', 'rb_source_scorm'),
                 'text'
             ),
             new rb_filter_option(
                 'sco',
                 'title',
-                'SCO Title',
+                get_string('title', 'rb_source_scorm'),
                 'text'
             ),
             new rb_filter_option(
                 'sco',
                 'starttime',
-                'Attempt Start Time',
+                get_string('attemptstart', 'rb_source_scorm'),
                 'date'
             ),
             new rb_filter_option(
                 'sco',
                 'attempt',
-                'SCO Attempt Number',
+                get_string('attemptnum', 'rb_source_scorm'),
                 'select',
                 array('selectfunc' => 'scorm_attempt_list')
             ),
             new rb_filter_option(
                 'sco',
                 'status',
-                'SCO Status',
+                get_string('status', 'rb_source_scorm'),
                 'select',
                 array('selectfunc' => 'scorm_status_list')
             ),
             new rb_filter_option(
                 'sco',
                 'scoreraw',
-                'Score',
+                get_string('rawscore', 'rb_source_scorm'),
                 'number'
             ),
             new rb_filter_option(
                 'sco',
                 'scoremin',
-                'Minimum Score',
+                get_string('minscore', 'rb_source_scorm'),
                 'number'
             ),
             new rb_filter_option(
                 'sco',
                 'scoremax',
-                'Maximum Score',
+                get_string('maxscore', 'rb_source_scorm'),
                 'number'
             ),
         );
@@ -262,18 +262,18 @@ class rb_source_scorm extends rb_base_source {
         $contentoptions = array(
             new rb_content_option(
                 'current_org',                      // class name
-                "The user's current organisation",  // title
+                get_string('currentorg', 'rb_source_scorm'),  // title
                 'base.userid',                      // field
                 null                                // joins
             ),
             new rb_content_option(
                 'user',
-                'The user',
+                get_string('theuser', 'rb_source_scorm'),
                 'base.userid'
             ),
             new rb_content_option(
                 'date',
-                "The attempt date",
+                get_string('thedate', 'rb_source_scorm'),
                 sql_cast_char2int('starttime.value'),
                 'sco_starttime'
             ),
@@ -442,11 +442,11 @@ class rb_source_scorm extends rb_base_source {
         } else {
             // a default set of options
             $statusselect = array(
-                'passed' => 'Passed',
-                'completed' => 'Completed',
-                'not attempted' => 'Not Attempted',
-                'incomplete' => 'Incomplete',
-                'failed' => 'Failed',
+                'passed' => get_string('passed', 'rb_source_scorm'),
+                'completed' => get_string('completed', 'rb_source_scorm'),
+                'not attempted' => get_string('notattempted', 'rb_source_scorm'),
+                'incomplete' => get_string('incomplete', 'rb_source_scorm'),
+                'failed' => get_string('failed', 'rb_source_scorm'),
             );
         }
         return $statusselect;
