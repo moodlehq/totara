@@ -450,7 +450,7 @@ class dp_course_component extends dp_base_component {
             $this->get_setting('prioritymode') == DP_PRIORITY_REQUIRED);
         $priorityscaleid = ($this->get_setting('priorityscale')) ? $this->get_setting('priorityscale') : -1;
 
-        $select = 'SELECT ca.*, c.fullname, psv.name ' . sql_as() . ' priorityname ';
+        $select = 'SELECT ca.*, c.fullname, c.icon, psv.name ' . sql_as() . ' priorityname ';
 
         // get courses assigned to this plan
         // and related details
