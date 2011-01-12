@@ -501,6 +501,7 @@ $string['plandeletesuccess'] = 'Successfully deleted plan $a';
 $string['plandeletefail'] = 'Could not delete plan $a';
 $string['checkplandelete'] = 'Are you sure you want to delete this plan and all its related items?';
 $string['sendapprovalrequest'] = 'Send approval request';
+$string['requestapproval'] = 'Request approval';
 $string['confirmrequestdecline'] = 'Are you sure you want to decline the following request?';
 $string['confirmrequestapprove'] = 'Are you sure you want to approve the following request?';
 $string['requestdecline'] = 'Request declined.';

@@ -63,6 +63,8 @@ if ($data = $form->get_data()) {
     if (isset($data->submitbutton)) {
         begin_sql();
 
+        $data->enddate = dp_convert_userdate($data->enddate);  // convert to timestamp
+
         // Set up the plan
         if (!$newid = insert_record('dp_plan', $data)) {
             rollback_sql();
@@ -147,5 +149,22 @@ $form->set_data((object)array('userid'=>$userid));
 $form->display();
 
 print_container_end();
+
+print <<<HEREDOC
+<script type="text/javascript">
+
+    $(function() {
+        $('input[name="enddate"]').datepicker(
+            {
+                dateFormat: 'dd/mm/yy',
+                showOn: 'button',
+                buttonImage: '{$CFG->wwwroot}/local/js/images/calendar.gif',
+                buttonImageOnly: true
+            }
+        );
+    });
+</script>
+HEREDOC;
+
 
 print_footer();

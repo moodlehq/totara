@@ -405,8 +405,19 @@ class development_plan {
      * @return  string
      */
     public function display_progress() {
+        global $CFG;
+
         if ($this->status == DP_PLAN_STATUS_UNAPPROVED) {
-            return get_string('planstatusunapproved', 'local_plan');
+            $out = get_string('planstatusunapproved', 'local_plan');
+            // Approval request
+            if ($this->get_setting('confirm') == DP_PERMISSION_REQUEST) {
+                $out .= '<br><a href="'.$CFG->wwwroot.'/local/plan/action.php?id='.$this->id.'&approvalrequest=1&sesskey='.sesskey().'" title="'.get_string('sendapprovalrequest', 'local_plan').'">'.
+                    get_string('requestapproval', 'local_plan').
+                    '</a>';
+            }
+
+
+            return $out;
         }
 
         $completionsum = 0;

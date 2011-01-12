@@ -547,10 +547,10 @@ div.hide {
 .mform .fitemtitle {
   display: block;
   float: left;
-  width: 30%;
+  width: 22%;
   padding: 0;
   margin: 5px 0 0 10px;
-  text-align: right;
+  text-align: left;
 }
 
 .mform .fitemtitle div{

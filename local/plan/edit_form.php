@@ -64,16 +64,16 @@ class plan_edit_form extends moodleform {
         $mform->addElement('date_selector', 'startdate', get_string('datecreated', 'local_plan'));
         $mform->hardFreeze('startdate');
 
-        $mform->addElement('text', 'name', get_string('planname', 'local_plan'));
+        $mform->addElement('text', 'name', get_string('planname', 'local_plan'), array('size'=>50));
         $mform->setType('name', PARAM_TEXT);
         $mform->addRule('name', get_string('err_required', 'form'), 'required', '', 'client', false, false);
         $mform->setDefault('name', $template->fullname);
         $mform->addElement('textarea', 'description', get_string('plandescription', 'local_plan'), array('rows'=>5, 'cols'=>50));
         $mform->setType('description', PARAM_TEXT);
         $mform->addRule('description', get_string('err_required', 'form'), 'required', '', 'client', false, false);
-        $mform->addElement('date_selector', 'enddate', get_string('completiondate', 'local_plan'));
-        $mform->addRule('enddate', get_string('err_required', 'form'), 'required', '', 'server', false, false);
-        $mform->setDefault('enddate', $template->enddate);
+        $mform->addElement('text', 'enddate', get_string('completiondate', 'local_plan'));
+        $mform->addRule('enddate', get_string('err_required', 'form'), 'required', '', 'client', false, false);
+        $mform->setDefault('enddate', userdate($template->enddate, '%d/%m/%Y', $CFG->timezone, false));
 
         if ($action == 'view') {
             $mform->hardFreeze(array('name', 'description', 'enddate'));
@@ -112,12 +112,19 @@ class plan_edit_form extends moodleform {
         $startdate = isset($data['startdate']) ? $data['startdate'] : '';
         $enddate = isset($data['enddate']) ? $data['enddate'] : '';
 
-        // Enforce start date before finish date
-        if ( $startdate > $enddate && $startdate !== false && $enddate !== false ){
+        $datepattern = '/^(0?[1-9]|[12][0-9]|3[01])\/(0?[1-9]|1[0-2])\/(\d{4})$/';
+        if (preg_match($datepattern, $enddate, $matches) == 0) {
+            $errstr = get_string('error:dateformat','local_plan');
+            $result['enddate'] = $errstr;
+            unset($errstr);
+        } elseif ( $startdate > dp_convert_userdate($enddate) && $startdate !== false && $enddate !== false ) {
+            // Enforce start date before finish date
             $errstr = get_string('error:creationaftercompletion','local_plan');
             $result['enddate'] = $errstr;
             unset($errstr);
         }
+
         return $result;
     }
+
 }

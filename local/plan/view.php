@@ -16,6 +16,15 @@ require_once($CFG->dirroot . '/local/plan/lib.php');
 $id = required_param('id', PARAM_INT); // plan id
 $action = optional_param('action', 'view', PARAM_TEXT);
 
+if ($action == 'edit') {
+    require_once($CFG->dirroot . '/local/js/lib/setup.php');
+
+    //Javascript include
+    local_js(array(
+        TOTARA_JS_DATEPICKER
+    ));
+}
+
 $componentname = 'plan';
 
 $currenturl = qualified_me();
@@ -85,6 +94,7 @@ if ($data = $form->get_data()) {
         }
         // Save plan data
         unset($data->startdate);
+        $data->enddate = dp_convert_userdate($data->enddate);  // convert to timestamp
         if (!update_record('dp_plan', $data)) {
             totara_set_notification(get_string('planupdatefail', 'local_plan'), $editurl);
         }
@@ -105,9 +115,28 @@ include($CFG->dirroot.'/local/plan/header.php');
 
 
 // Plan details
+$plan->enddate = userdate($plan->enddate, '%d/%m/%Y', $CFG->timezone, false);
 $form->set_data($plan);
 $form->display();
 
 print_container_end();
+
+if ($action == 'edit') {
+print <<<HEREDOC
+<script type="text/javascript">
+
+    $(function() {
+        $('input[name="enddate"]').datepicker(
+            {
+                dateFormat: 'dd/mm/yy',
+                showOn: 'button',
+                buttonImage: '{$CFG->wwwroot}/local/js/images/calendar.gif',
+                buttonImageOnly: true
+            }
+        );
+    });
+</script>
+HEREDOC;
+}
 
 print_footer();
