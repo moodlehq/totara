@@ -283,6 +283,7 @@ class development_plan {
     }
 
 
+    // @todo remove
     function display_tabs($currenttab) {
         global $CFG;
 

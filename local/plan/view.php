@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Plan view page
  *
@@ -11,7 +12,6 @@
 
 require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
 require_once($CFG->dirroot . '/local/plan/lib.php');
-require_once($CFG->dirroot . '/local/js/lib/setup.php');
 
 $id = required_param('id', PARAM_INT); // plan id
 $action = optional_param('action', 'view', PARAM_TEXT);
@@ -97,62 +97,17 @@ if ($data = $form->get_data()) {
 }
 
 
-$fullname = $plan->name;
-$pagetitle = format_string(get_string('learningplan','local_plan').': '.$fullname);
-$navlinks = array();
-dp_get_plan_base_navlinks($navlinks, $plan->userid);
-$navlinks[] = array('name' => $fullname, 'link'=> '', 'type'=>'title');
+/**
+ * Display header
+ */
+$currenttab = 'plan';
+include($CFG->dirroot.'/local/plan/header.php');
 
-$navigation = build_navigation($navlinks);
-
-//Javascript include
-local_js(array(
-    TOTARA_JS_DATEPICKER
-));
-require_js(array(
-    $CFG->wwwroot.'/local/js/plan.form.datepick.js'
-));
-
-print_header_simple($pagetitle, '', $navigation, '', null, true, '');
-
-// Plan menu
-echo dp_display_plans_menu($plan->userid,$plan->id,$plan->role);
-
-// Plan page content
-print_container_start(false, '', 'dp-plan-content');
-
-echo $plan->display_plan_message_box();
-
-print_heading($fullname);
-
-echo $plan->display_tabs($componentname);
-
-$plan_instructions = '<div class="instructional_text">';
-if($plan->role == 'manager') {
-    $plan_instructions .= get_string('plan_instructions_manager', 'local_plan');
-} else {
-    $plan_instructions .= get_string('plan_instructions_learner', 'local_plan');
-}
-
-if ($plan->get_setting('update') >= DP_PERMISSION_REQUEST) {
-    $plan_instructions .= get_string('plan_instructions_edit', 'local_plan');
-}
-
-if ($plan->get_setting('delete') >= DP_PERMISSION_REQUEST) {
-    $plan_instructions .= get_string('plan_instructions_delete', 'local_plan');
-}
-
-$plan_instructions .= '</div>';
-
-print $plan_instructions;
 
 // Plan details
 $form->set_data($plan);
 $form->display();
 
 print_container_end();
-
-// Comments
-// @todo!!
 
 print_footer();
