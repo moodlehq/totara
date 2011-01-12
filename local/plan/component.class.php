@@ -107,6 +107,385 @@ abstract class dp_base_component {
     }
 
 
+    /**
+     * Get items assigned to this component (if relevant - to be overridden by children classes)
+     *
+     * Optionally, filtered by status
+     *
+     * @access  public
+     * @param   mixed   $approved   (optional)
+     * @return  array
+     */
+    function get_assigned_items($approved = null) {
+        return array();
+    }
+
+
+    function process_action($action) {
+        // General component actions can come in here
+        // Override this method in children for more specific actions
+    }
+
+
+    /**
+     * Get all instances of $componentrequired linked to the specified item
+     *
+     * @todo doesn't current exclude unapproved items
+     * that is currently handled inside display_linked_*() methods
+     * but might be better to do it here?
+     *
+     * @param integer $id Identifies the item to get linked items for
+     * @param string $componentrequired Get linked items of this type
+     *
+     * @return array Array of IDs of all linked items, or false
+     */
+    function get_linked_components($id, $componentrequired) {
+        global $CFG;
+        // name of the current component
+        $thiscomponent = $this->component;
+
+        // component relations are stored alphabetically
+        // first component is in component1
+        // Figure out which order to perform query
+        switch (strcmp($thiscomponent, $componentrequired)) {
+        case -1:
+            $matchedcomp = 'component1';
+            $matchedid = 'itemid1';
+            $searchedcomp = 'component2';
+            $searchedid = 'itemid2';
+            break;
+        case 1:
+            $matchedcomp = 'component2';
+            $matchedid = 'itemid2';
+            $searchedcomp = 'component1';
+            $searchedid = 'itemid1';
+            break;
+        case 0:
+        default:
+            // linking within the same component not supported
+            return false;
+        }
+
+        // find all matching relations
+        $sql = "SELECT id, $searchedid " . sql_as() . " itemid
+            FROM {$CFG->prefix}dp_plan_component_relation
+            WHERE $matchedcomp = '$thiscomponent' AND
+                $matchedid = $id AND
+                $searchedcomp = '$componentrequired'";
+        // return an array of IDs
+        if($result = get_records_sql($sql)) {
+            $out = array();
+            foreach($result as $item) {
+                $out[] = $item->itemid;
+            }
+            return $out;
+        } else {
+            // no matches
+            return false;
+        }
+    }
+
+
+    /**
+     * Update instances of $componentupdatetype linked to the specified compoent,
+     * delete links in db which aren't needed, and add links missing from db
+     * which are needed
+     * @param integer $thiscompoentid Identifies the component on one end of the link
+     * @param string $componentupdatetype: the type of components on the other end of the links
+     * @param array $componentids array of component ids that should be on the other end of the links in db
+     *
+     * @return void
+     */
+    function update_linked_components($thiscomponentid, $componentupdatetype, $componentids) {
+        global $CFG;
+        // name of the current component
+        $thiscomponent = $this->component;
+
+        // component relations are stored alphabetically
+        // first component is in component1
+        // Figure out which order to perform query
+        switch (strcmp($thiscomponent, $componentupdatetype)) {
+        case -1:
+            $matchedcomp = 'component1';
+            $matchedid = 'itemid1';
+            $searchedcomp = 'component2';
+            $searchedid = 'itemid2';
+            $thiscomponentfirst = true;
+            break;
+        case 1:
+            $matchedcomp = 'component2';
+            $matchedid = 'itemid2';
+            $searchedcomp = 'component1';
+            $searchedid = 'itemid1';
+            $thiscomponentfirst = false;
+            break;
+        case 0:
+        default:
+            // linking within the same component not supported
+            return false;
+        }
+
+        // find all matching relations in db
+        $sql = "SELECT id, $searchedid " . sql_as() . " itemid
+            FROM {$CFG->prefix}dp_plan_component_relation
+            WHERE $matchedcomp = '$thiscomponent' AND
+                $matchedid = $thiscomponentid AND
+                $searchedcomp = '$componentupdatetype'";
+        if($result = get_records_sql($sql)) {
+            $dbcomponentids = array();
+            foreach($result as $item) {
+                $position = array_search($item->itemid, $componentids);
+                if ($position === false) {
+                    //Item in db isn't in the array of items to keep - delete from db:
+                    delete_records('dp_plan_component_relation', 'id', $item->id);
+                } else {
+                    //Item in array of items to keep is already in db - delete from keep array
+                    unset($componentids[$position]);
+                }
+            }
+        }
+        if (!empty($componentids)) {
+            // There are still required compoent links that are not already in the database:
+            $relation->component1 = $thiscomponentfirst ? $thiscomponent : $componentupdatetype;
+            $relation->component2 = $thiscomponentfirst ? $componentupdatetype : $thiscomponent;
+            foreach ($componentids as $linkedcomponentid) {
+                $relation->itemid1 = $thiscomponentfirst ? $thiscomponentid : $linkedcomponentid;
+                $relation->itemid2 = $thiscomponentfirst ? $linkedcomponentid : $thiscomponentid;
+                insert_record('dp_plan_component_relation', $relation);
+            }
+        }
+    }
+
+
+    /**
+     * Count instances of $componentrequired linked to items of this component type
+     *
+     * @param string $componentrequired Get linked items of this type
+     * @return array Array of matches
+     */
+    function get_all_linked_components($componentrequired) {
+        global $CFG;
+        // name of the current component
+        $thiscomponent = $this->component;
+
+        // component relations are stored alphabetically
+        // first component is in component1
+        // Figure out which order to perform query
+        switch (strcmp($thiscomponent, $componentrequired)) {
+        case -1:
+            $matchedcomp = 'component1';
+            $matchedid = 'itemid1';
+            $searchedcomp = 'component2';
+            $searchedid = 'itemid2';
+            break;
+        case 1:
+            $matchedcomp = 'component2';
+            $matchedid = 'itemid2';
+            $searchedcomp = 'component1';
+            $searchedid = 'itemid1';
+            break;
+        case 0:
+        default:
+            // linking within the same component not supported
+            return false;
+        }
+
+        // @todo doesn't current exclude unapproved items
+        $sql = "SELECT $matchedid " . sql_as() . " id,
+                COUNT($searchedid) " . sql_as() . " items
+            FROM {$CFG->prefix}dp_plan_component_relation
+            WHERE $matchedcomp = '$thiscomponent' AND
+                  $searchedcomp = '$componentrequired'
+            GROUP BY $matchedid";
+
+        $results = get_records_sql($sql);
+        $return = array();
+        foreach($results as $result) {
+            $return[$results->id] = $results->items;
+        }
+
+        return $return;
+    }
+
+
+    /**
+     * Update assigned items
+     *
+     * @access  public
+     * @param   $items  array   Array of item ids
+     * @return  void
+     */
+    public function update_assigned_items($items) {
+
+        // Get currently assigned items
+        $assigned = $this->get_assigned_items();
+        $assigned_ids = array_keys($assigned);
+        $sendnotification = (count(array_diff($items, $assigned_ids)) || count(array_diff($assigned_ids, $items)))
+            && $this->plan->status != DP_PLAN_STATUS_UNAPPROVED;
+        $updates = '';
+
+        if ($items) {
+            foreach ($items as $itemid) {
+
+                // Validate id
+                if (!is_numeric($itemid)) {
+                    error(get_string('baddata','local_plan'));
+                }
+
+                // Check if not already assigned
+                if (!isset($assigned[$itemid])) {
+                    $newitem = $this->assign_new_item($itemid);
+                    $updates .= get_string('addedx', 'local_plan', $newitem).'<br>';
+                }
+
+                // Remove from list to prevent deletion
+                unset($assigned[$itemid]);
+            }
+        }
+
+        // Remaining items to be deleted
+        foreach ($assigned as $item) {
+            $this->unassign_item($item);
+            $updates .= get_string('removedx', 'local_plan', $assigned[$item->id]->fullname).'<br>';
+        }
+
+        if ($sendnotification) {
+            $this->send_component_update_notification($updates);
+        }
+    }
+
+
+    function send_component_update_notification($update_info='') {
+        global $USER, $CFG;
+        require_once($CFG->dirroot.'/local/totara_msg/messagelib.php');
+
+        // @todo implement $update_info to provide notifications with more details re component update
+
+        $event = new stdClass;
+        $userfrom = get_record('user', 'id', $USER->id);
+        $event->userfrom = $userfrom;
+        $event->contexturl = "{$CFG->wwwroot}/local/plan/components/{$this->component}/index.php?id={$this->plan->id}";
+        $event->icon = $this->component.'-update.png';
+        $a = new stdClass;
+        $a->plan = "<a href=\"{$CFG->wwwroot}/local/plan/view.php?id={$this->plan->id}\" title=\"{$this->plan->name}\">{$this->plan->name}</a>";
+        $a->component = $this->get_setting('name');
+        $a->updates = $update_info;
+
+        // did they edit it themselves?
+        if ($USER->id == $this->plan->userid) {
+            // notify their manager
+            if ($this->plan->is_active()) {
+                if ($manager = totara_get_manager($this->plan->userid)) {
+                    $event->userto = $manager;
+                    $a->user = $this->current_user_link();
+                    $event->subject = get_string('componentupdateshortmanager', 'local_plan', $a);
+                    $event->fullmessage = get_string('componentupdatelongmanager', 'local_plan', $a);
+                    $event->roleid = get_field('role','id', 'shortname', 'manager');
+                    tm_notification_send($event);
+                }
+            }
+        } else {
+            // notify user that someone else did it
+            $userto = get_record('user', 'id', $this->plan->userid);
+            $event->userto = $userto;
+            $event->subject = get_string('componentupdateshortlearner', 'local_plan', $a->component);
+            $event->fullmessage = get_string('componentupdatelonglearner', 'local_plan', $a);
+            tm_notification_send($event);
+        }
+    }
+
+
+    /**
+     * Unassign an item from a plan
+     *
+     * @access  public
+     * @return  boolean
+     */
+    public function unassign_item($item) {
+
+        // Get approval value for new item
+        if (!$permission = $this->can_update_items()) {
+            print_error('error:cannotupdateitems', 'local_plan');
+        }
+
+        // If allowed, or assignment not yet approved, remove assignment
+        if ($permission >= DP_PERMISSION_ALLOW || $item->approved == DP_APPROVAL_UNAPPROVED) {
+            return delete_records(
+                'dp_plan_'.$this->component.'_assign',
+                'id', $item->itemid,
+                'planid', $this->plan->id
+            );
+        }
+        // Otherwise request removal
+        else {
+            $update = new object();
+            $update->id = $item->itemid;
+            $update->approved = DP_APPROVAL_REQUEST_REMOVAL;
+            return update_record('dp_plan_'.$this->component.'_assign', $update);
+        }
+    }
+
+
+    /**
+     * Return default priority for this component, or null if nothing set
+     *
+     * @access  public
+     * @return  int
+     */
+    public function get_default_priority() {
+        if (!$comp = $this->plan->get_component($this->component)) {
+            return null;
+        }
+        if ($comp->get_setting('prioritymode') != DP_PRIORITY_REQUIRED) {
+            // Don't bother if priorities aren't required
+            return null;
+        }
+
+        $scale = get_record('dp_priority_scale', 'id', $comp->get_setting('priorityscale'));
+
+        return $scale ? $scale->defaultid : null;
+    }
+
+
+    /**
+     * Make unassigned items requested
+     *
+     * @access  public
+     * @param   array   $items  Unassigned items to update
+     * @return  array
+     */
+    public function make_items_requested($items) {
+
+        $table = "dp_plan_{$this->component}_assign";
+
+        $updated = array();
+        foreach ($items as $item) {
+            // Attempt to load item
+            $record = get_record($table, 'id', $item->itemid);
+            if (!$record) {
+                continue;
+            }
+
+            // Attempt to update record
+            $record->approved = DP_APPROVAL_REQUESTED;
+            if (!update_record($table, $record)) {
+                continue;
+            }
+
+            // Save in updated list
+            $updated[] = $item;
+        }
+
+        return $updated;
+    }
+
+
+    /*********************************************************************************************
+     *
+     * Display methods
+     *
+     ********************************************************************************************/
+
     function display_duedate($itemid, $duedate) {
         $plancompleted = $this->plan->status == DP_PLAN_STATUS_COMPLETE;
         $cansetduedate = !$plancompleted && ($this->get_setting('setduedate') == DP_PERMISSION_ALLOW);
@@ -301,373 +680,6 @@ abstract class dp_base_component {
     function display_approval_options($obj, $approvalstatus) {
         $name = "approve_{$this->component}[{$obj->id}]";
         return dp_display_approval_options($name, $approvalstatus);
-    }
-
-    /**
-     * Get items assigned to this component (if relevant - to be overridden by children classes)
-     *
-     * Optionally, filtered by status
-     *
-     * @access  public
-     * @param   mixed   $approved   (optional)
-     * @return  array
-     */
-    function get_assigned_items($approved = null) {
-        return array();
-    }
-
-
-    function process_action($action) {
-        // General component actions can come in here
-        // Override this method in children for more specific actions
-    }
-
-    /**
-     * Get all instances of $componentrequired linked to the specified item
-     *
-     * @todo doesn't current exclude unapproved items
-     * that is currently handled inside display_linked_*() methods
-     * but might be better to do it here?
-     *
-     * @param integer $id Identifies the item to get linked items for
-     * @param string $componentrequired Get linked items of this type
-     *
-     * @return array Array of IDs of all linked items, or false
-     */
-    function get_linked_components($id, $componentrequired) {
-        global $CFG;
-        // name of the current component
-        $thiscomponent = $this->component;
-
-        // component relations are stored alphabetically
-        // first component is in component1
-        // Figure out which order to perform query
-        switch (strcmp($thiscomponent, $componentrequired)) {
-        case -1:
-            $matchedcomp = 'component1';
-            $matchedid = 'itemid1';
-            $searchedcomp = 'component2';
-            $searchedid = 'itemid2';
-            break;
-        case 1:
-            $matchedcomp = 'component2';
-            $matchedid = 'itemid2';
-            $searchedcomp = 'component1';
-            $searchedid = 'itemid1';
-            break;
-        case 0:
-        default:
-            // linking within the same component not supported
-            return false;
-        }
-
-        // find all matching relations
-        $sql = "SELECT id, $searchedid " . sql_as() . " itemid
-            FROM {$CFG->prefix}dp_plan_component_relation
-            WHERE $matchedcomp = '$thiscomponent' AND
-                $matchedid = $id AND
-                $searchedcomp = '$componentrequired'";
-        // return an array of IDs
-        if($result = get_records_sql($sql)) {
-            $out = array();
-            foreach($result as $item) {
-                $out[] = $item->itemid;
-            }
-            return $out;
-        } else {
-            // no matches
-            return false;
-        }
-    }
-    /**
-     * Update instances of $componentupdatetype linked to the specified compoent,
-     * delete links in db which aren't needed, and add links missing from db
-     * which are needed
-     * @param integer $thiscompoentid Identifies the component on one end of the link
-     * @param string $componentupdatetype: the type of components on the other end of the links
-     * @param array $componentids array of component ids that should be on the other end of the links in db
-     *
-     * @return void
-     */
-    function update_linked_components($thiscomponentid, $componentupdatetype, $componentids) {
-        global $CFG;
-        // name of the current component
-        $thiscomponent = $this->component;
-
-        // component relations are stored alphabetically
-        // first component is in component1
-        // Figure out which order to perform query
-        switch (strcmp($thiscomponent, $componentupdatetype)) {
-        case -1:
-            $matchedcomp = 'component1';
-            $matchedid = 'itemid1';
-            $searchedcomp = 'component2';
-            $searchedid = 'itemid2';
-            $thiscomponentfirst = true;
-            break;
-        case 1:
-            $matchedcomp = 'component2';
-            $matchedid = 'itemid2';
-            $searchedcomp = 'component1';
-            $searchedid = 'itemid1';
-            $thiscomponentfirst = false;
-            break;
-        case 0:
-        default:
-            // linking within the same component not supported
-            return false;
-        }
-
-        // find all matching relations in db
-        $sql = "SELECT id, $searchedid " . sql_as() . " itemid
-            FROM {$CFG->prefix}dp_plan_component_relation
-            WHERE $matchedcomp = '$thiscomponent' AND
-                $matchedid = $thiscomponentid AND
-                $searchedcomp = '$componentupdatetype'";
-        if($result = get_records_sql($sql)) {
-            $dbcomponentids = array();
-            foreach($result as $item) {
-                $position = array_search($item->itemid, $componentids);
-                if ($position === false) {
-                    //Item in db isn't in the array of items to keep - delete from db:
-                    delete_records('dp_plan_component_relation', 'id', $item->id);
-                } else {
-                    //Item in array of items to keep is already in db - delete from keep array
-                    unset($componentids[$position]);
-                }
-            }
-        }
-        if (!empty($componentids)) {
-            // There are still required compoent links that are not already in the database:
-            $relation->component1 = $thiscomponentfirst ? $thiscomponent : $componentupdatetype;
-            $relation->component2 = $thiscomponentfirst ? $componentupdatetype : $thiscomponent;
-            foreach ($componentids as $linkedcomponentid) {
-                $relation->itemid1 = $thiscomponentfirst ? $thiscomponentid : $linkedcomponentid;
-                $relation->itemid2 = $thiscomponentfirst ? $linkedcomponentid : $thiscomponentid;
-                insert_record('dp_plan_component_relation', $relation);
-            }
-        }
-    }
-
-    /**
-     * Count instances of $componentrequired linked to items of this component type
-     *
-     * @param string $componentrequired Get linked items of this type
-     * @return array Array of matches
-     */
-    function get_all_linked_components($componentrequired) {
-        global $CFG;
-        // name of the current component
-        $thiscomponent = $this->component;
-
-        // component relations are stored alphabetically
-        // first component is in component1
-        // Figure out which order to perform query
-        switch (strcmp($thiscomponent, $componentrequired)) {
-        case -1:
-            $matchedcomp = 'component1';
-            $matchedid = 'itemid1';
-            $searchedcomp = 'component2';
-            $searchedid = 'itemid2';
-            break;
-        case 1:
-            $matchedcomp = 'component2';
-            $matchedid = 'itemid2';
-            $searchedcomp = 'component1';
-            $searchedid = 'itemid1';
-            break;
-        case 0:
-        default:
-            // linking within the same component not supported
-            return false;
-        }
-
-        // @todo doesn't current exclude unapproved items
-        $sql = "SELECT $matchedid " . sql_as() . " id,
-                COUNT($searchedid) " . sql_as() . " items
-            FROM {$CFG->prefix}dp_plan_component_relation
-            WHERE $matchedcomp = '$thiscomponent' AND
-                  $searchedcomp = '$componentrequired'
-            GROUP BY $matchedid";
-
-        $results = get_records_sql($sql);
-        $return = array();
-        foreach($results as $result) {
-            $return[$results->id] = $results->items;
-        }
-
-        return $return;
-    }
-
-
-    /**
-     * Update assigned items
-     *
-     * @access  public
-     * @param   $items  array   Array of item ids
-     * @return  void
-     */
-    public function update_assigned_items($items) {
-
-        // Get currently assigned items
-        $assigned = $this->get_assigned_items();
-        $assigned_ids = array_keys($assigned);
-        $sendnotification = (count(array_diff($items, $assigned_ids)) || count(array_diff($assigned_ids, $items)))
-            && $this->plan->status != DP_PLAN_STATUS_UNAPPROVED;
-        $updates = '';
-
-        if ($items) {
-            foreach ($items as $itemid) {
-
-                // Validate id
-                if (!is_numeric($itemid)) {
-                    error(get_string('baddata','local_plan'));
-                }
-
-                // Check if not already assigned
-                if (!isset($assigned[$itemid])) {
-                    $newitem = $this->assign_new_item($itemid);
-                    $updates .= get_string('addedx', 'local_plan', $newitem).'<br>';
-                }
-
-                // Remove from list to prevent deletion
-                unset($assigned[$itemid]);
-            }
-        }
-
-        // Remaining items to be deleted
-        foreach ($assigned as $item) {
-            $this->unassign_item($item);
-            $updates .= get_string('removedx', 'local_plan', $assigned[$item->id]->fullname).'<br>';
-        }
-
-        if ($sendnotification) {
-            $this->send_component_update_notification($updates);
-        }
-    }
-
-    function send_component_update_notification($update_info='') {
-        global $USER, $CFG;
-        require_once($CFG->dirroot.'/local/totara_msg/messagelib.php');
-
-        // @todo implement $update_info to provide notifications with more details re component update
-
-        $event = new stdClass;
-        $userfrom = get_record('user', 'id', $USER->id);
-        $event->userfrom = $userfrom;
-        $event->contexturl = "{$CFG->wwwroot}/local/plan/components/{$this->component}/index.php?id={$this->plan->id}";
-        $event->icon = $this->component.'-update.png';
-        $a = new stdClass;
-        $a->plan = "<a href=\"{$CFG->wwwroot}/local/plan/view.php?id={$this->plan->id}\" title=\"{$this->plan->name}\">{$this->plan->name}</a>";
-        $a->component = $this->get_setting('name');
-        $a->updates = $update_info;
-
-        // did they edit it themselves?
-        if ($USER->id == $this->plan->userid) {
-            // notify their manager
-            if ($this->plan->is_active()) {
-                if ($manager = totara_get_manager($this->plan->userid)) {
-                    $event->userto = $manager;
-                    $a->user = $this->current_user_link();
-                    $event->subject = get_string('componentupdateshortmanager', 'local_plan', $a);
-                    $event->fullmessage = get_string('componentupdatelongmanager', 'local_plan', $a);
-                    $event->roleid = get_field('role','id', 'shortname', 'manager');
-                    tm_notification_send($event);
-                }
-            }
-        } else {
-            // notify user that someone else did it
-            $userto = get_record('user', 'id', $this->plan->userid);
-            $event->userto = $userto;
-            $event->subject = get_string('componentupdateshortlearner', 'local_plan', $a->component);
-            $event->fullmessage = get_string('componentupdatelonglearner', 'local_plan', $a);
-            tm_notification_send($event);
-        }
-    }
-
-
-    /**
-     * Unassign an item from a plan
-     *
-     * @access  public
-     * @return  boolean
-     */
-    public function unassign_item($item) {
-
-        // Get approval value for new item
-        if (!$permission = $this->can_update_items()) {
-            print_error('error:cannotupdateitems', 'local_plan');
-        }
-
-        // If allowed, or assignment not yet approved, remove assignment
-        if ($permission >= DP_PERMISSION_ALLOW || $item->approved == DP_APPROVAL_UNAPPROVED) {
-            return delete_records(
-                'dp_plan_'.$this->component.'_assign',
-                'id', $item->itemid,
-                'planid', $this->plan->id
-            );
-        }
-        // Otherwise request removal
-        else {
-            $update = new object();
-            $update->id = $item->itemid;
-            $update->approved = DP_APPROVAL_REQUEST_REMOVAL;
-            return update_record('dp_plan_'.$this->component.'_assign', $update);
-        }
-    }
-
-
-    /**
-     * Return default priority for this component, or null if nothing set
-     *
-     * @access  public
-     * @return  int
-     */
-    public function get_default_priority() {
-        if (!$comp = $this->plan->get_component($this->component)) {
-            return null;
-        }
-        if ($comp->get_setting('prioritymode') != DP_PRIORITY_REQUIRED) {
-            // Don't bother if priorities aren't required
-            return null;
-        }
-
-        $scale = get_record('dp_priority_scale', 'id', $comp->get_setting('priorityscale'));
-
-        return $scale ? $scale->defaultid : null;
-    }
-
-
-    /**
-     * Make unassigned items requested
-     *
-     * @access  public
-     * @param   array   $items  Unassigned items to update
-     * @return  array
-     */
-    public function make_items_requested($items) {
-
-        $table = "dp_plan_{$this->component}_assign";
-
-        $updated = array();
-        foreach ($items as $item) {
-            // Attempt to load item
-            $record = get_record($table, 'id', $item->itemid);
-            if (!$record) {
-                continue;
-            }
-
-            // Attempt to update record
-            $record->approved = DP_APPROVAL_REQUESTED;
-            if (!update_record($table, $record)) {
-                continue;
-            }
-
-            // Save in updated list
-            $updated[] = $item;
-        }
-
-        return $updated;
     }
 
     /**
