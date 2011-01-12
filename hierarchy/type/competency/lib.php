@@ -632,4 +632,27 @@ SQL;
                     "view.php?id={$template->id}", "Competency ID $competencyid");
 
     }
+
+
+    /**
+     * Returns an array of all competencies that a user has a comp_evidence
+     * record for, keyed on the competencyid. Also returns the required
+     * proficiency value and isproficient, which is 1 if the user meets the
+     * proficiency and 0 otherwise
+     *
+     * @todo move this method into the competency libraries
+     */
+    static function get_proficiencies($userid) {
+        global $CFG;
+        $sql = "SELECT ce.competencyid, ce.proficiency, cs.proficient,
+                CASE WHEN ce.proficiency=cs.proficient THEN 1
+                ELSE 0 END AS isproficient
+            FROM {$CFG->prefix}comp_evidence ce
+            LEFT JOIN {$CFG->prefix}comp c ON c.id=ce.competencyid
+            LEFT JOIN {$CFG->prefix}comp_scale_assignments csa
+                ON c.frameworkid = csa.frameworkid
+            LEFT JOIN {$CFG->prefix}comp_scale cs ON cs.id=csa.scaleid
+            WHERE ce.userid=$userid";
+        return get_records_sql($sql);
+    }
 }

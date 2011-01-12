@@ -1,5 +1,7 @@
 <?php
 
+require_once($CFG->dirroot.'/hierarchy/type/competency/lib.php');
+
 class dp_competency_component extends dp_base_component {
 
     public static $permissions = array(
@@ -297,7 +299,7 @@ class dp_competency_component extends dp_base_component {
         $sort = ($sort=='') ? '' : ' ORDER BY ' . $sort;
 
         // get all proficiency values for this plan's user
-        if(!$proficiencies = $this->get_proficiencies($this->plan->userid)) {
+        if(!$proficiencies = competency::get_proficiencies($this->plan->userid)) {
             $proficiencies = array();
         }
 
@@ -439,7 +441,7 @@ class dp_competency_component extends dp_base_component {
         $table->setup();
 
         // get all proficiency values for this plan's user
-        $proficiencies = $this->get_proficiencies($this->plan->userid);
+        $proficiencies = competency::get_proficiencies($this->plan->userid);
 
         // get the scale values used for competencies in this plan
         $priorityvalues = get_records('dp_priority_scale_value',
@@ -490,27 +492,6 @@ class dp_competency_component extends dp_base_component {
             return false;
         }
         return $proficiencies[$compid]->isproficient;
-    }
-    /**
-     * Returns an array of all competencies that a user has a comp_evidence
-     * record for, keyed on the competencyid. Also returns the required
-     * proficiency value and isproficient, which is 1 if the user meets the
-     * proficiency and 0 otherwise
-     *
-     * @todo move this method into the competency libraries
-     */
-    function get_proficiencies($userid) {
-        global $CFG;
-        $sql = "SELECT ce.competencyid, ce.proficiency, cs.proficient,
-                CASE WHEN ce.proficiency=cs.proficient THEN 1
-                ELSE 0 END AS isproficient
-            FROM {$CFG->prefix}comp_evidence ce
-            LEFT JOIN {$CFG->prefix}comp c ON c.id=ce.competencyid
-            LEFT JOIN {$CFG->prefix}comp_scale_assignments csa
-                ON c.frameworkid = csa.frameworkid
-            LEFT JOIN {$CFG->prefix}comp_scale cs ON cs.id=csa.scaleid
-            WHERE ce.userid=$userid";
-        return get_records_sql($sql);
     }
 
     function display_competency_name($ca) {
