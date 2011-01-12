@@ -14,14 +14,6 @@ $ADMIN->add('root',
     new admin_category('local_plan',
     get_string('learningplans','local_plan'))
 );
-// add links to report builder reports
-$ADMIN->add('local_plan',
-    new admin_externalpage('manageglobal',
-        get_string('globalsettings','local_plan'),
-        "$CFG->wwwroot/local/plan/global.php",
-        array('local/plan:configureplans')
-    )
-);
 
 $ADMIN->add('local_plan',
     new admin_externalpage('managetemplates',
