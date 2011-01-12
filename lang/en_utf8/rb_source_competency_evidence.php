@@ -18,7 +18,7 @@ $string['competency'] = 'Competency';
 $string['competencyname'] = 'Competency Name';
 $string['competencyshortname'] = 'Competency Short Name';
 $string['competencyid'] = 'Comptency ID Number';
-$string['competencylinkname'] = 'Competency Name (linked to competencytency page)';
+$string['competencylinkname'] = 'Competency Name (linked to competency page)';
 $string['competencyid'] = 'Competency ID';
 $string['competencypath'] = 'Competency Path';
 $string['options'] = 'Options';
@@ -27,8 +27,8 @@ $string['options'] = 'Options';
 $string['completeddate'] = 'Completed Date';
 $string['officewhencompletedbasic'] = 'Office when completed (basic)';
 $string['organisationwhencompleted'] = 'Organisation when completed';
-$string['poswhencompletedbasic'] = 'Position when completed (basic)';
-$string['poswhencompleted'] = 'Position when completed';
+$string['positionwhencompletedbasic'] = 'Position when completed (basic)';
+$string['positionwhencompleted'] = 'Position when completed';
 
 // content options
 $string['currentorg'] = 'The user\'s current organisation';

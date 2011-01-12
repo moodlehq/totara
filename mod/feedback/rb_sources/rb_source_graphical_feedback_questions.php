@@ -240,7 +240,7 @@ class rb_source_graphical_feedback_questions extends rb_base_source {
                                 $requiredcolumns[] = new rb_column(
                                     'q' . $qid,
                                     $oid . '_sum',
-                                    'Q' . $qid . get_string('numoption', 'rb_source_graphical_feedback_questions'), . $oid,
+                                    'Q' . $qid . get_string('numoption', 'rb_source_graphical_feedback_questions') . $oid,
                                     'base.q' . $qid . '_' . $oid,
                                     array('grouping' => 'sum')
                                 );
@@ -248,7 +248,7 @@ class rb_source_graphical_feedback_questions extends rb_base_source {
                                 $requiredcolumns[] = new rb_column(
                                     'q' . $qid,
                                     $oid . '_perc',
-                                    'Q' . $qid . get_string('percentoption', 'rb_source_graphical_feedback_questions'), . $oid,
+                                    'Q' . $qid . get_string('percentoption', 'rb_source_graphical_feedback_questions') . $oid,
                                     'base.q' . $qid . '_' . $oid,
                                     array('grouping' => 'percent')
                                 );

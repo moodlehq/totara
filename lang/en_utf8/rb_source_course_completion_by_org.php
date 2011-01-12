@@ -8,9 +8,11 @@ $string['participants'] = 'Participants';
 $string['numofrecords'] = 'Number of Records';
 $string['numcompleted'] = 'Number Completed';
 $string['percentagecompleted'] = 'Percentage Completed';
-$string['numcompletedrpl'] = 'Number Completed via RPL';
+$string['numcompletedviarpl'] = 'Number Completed via RPL';
 $string['numinprogress'] = 'Number in Progress';
 $string['numnotstarted'] = 'Number not Started';
+$string['earliestcompletiondate'] = 'Earliest Completion Date';
+$string['latestcompletiondate'] = 'Latest Completion Date';
 //filters
 $string['officewhencompletedbasic'] = 'Office when completed (basic)';
 $string['officewhencompleted'] = 'Office when completed';

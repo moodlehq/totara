@@ -9,7 +9,7 @@ $string['sent'] = 'Sent';
 $string['dismissmsg'] = 'Dismiss Message';
 $string['actions'] = 'Actions';
 $string['select'] = 'Select';
-$string['msgid'] = '';
+$string['msgid'] = 'Message ID';
 // filters
 $string['datesent'] = 'Date sent';
 $string['details'] = 'Details';

@@ -2,7 +2,7 @@
 // lang file for local/rb_sources/rb_sources_dp_competency.php
 // columns
 $string['planname'] = 'Plan name';
-$string['plannamelinked'] = 'Plan name (linked to plan page';
+$string['plannamelinked'] = 'Plan name (linked to plan page)';
 $string['planstartdate'] = 'Plan start date';
 $string['planenddate'] = 'Plan end date';
 $string['planstatus'] = 'Plan status';

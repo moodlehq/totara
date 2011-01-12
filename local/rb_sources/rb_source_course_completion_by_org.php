@@ -87,20 +87,20 @@ class rb_source_course_completion_by_org extends rb_base_source {
             new rb_column_option(
                 'course_completion',
                 'organisationid',
-                get_string('completionorgid', 'rb_source_completion_by_org'),
+                get_string('completionorgid', 'rb_source_course_completion_by_org'),
                 'base.organisationid'
             ),
             new rb_column_option(
                 'course_completion',
                 'organisationpath',
-                get_string('completionorgpath', 'rb_source_completion_by_org'),
+                get_string('completionorgpath', 'rb_source_course_completion_by_org'),
                 'completion_organisation.path',
                 array('joins' => 'completion_organisation')
             ),
             new rb_column_option(
                 'course_completion',
                 'organisation',
-                get_string('completionorgname', 'rb_source_completion_by_org'),
+                get_string('completionorgname', 'rb_source_course_completion_by_org'),
                 'completion_organisation.fullname',
                 array('joins' => 'completion_organisation')
             ),
@@ -108,7 +108,7 @@ class rb_source_course_completion_by_org extends rb_base_source {
             new rb_column_option(
                 'user',
                 'fullname',
-                get_string('participants', 'rb_source_completion_by_org'),
+                get_string('participants', 'rb_source_course_completion_by_org'),
                 sql_fullname('auser.firstname','auser.lastname'),
                 array(
                     'joins' => 'auser',
@@ -118,14 +118,14 @@ class rb_source_course_completion_by_org extends rb_base_source {
             new rb_column_option(
                 'course_completion',
                 'total',
-                get_string('numofrecords', 'rb_source_completion_by_org'),
+                get_string('numofrecords', 'rb_source_course_completion_by_org'),
                 'base.id',
                 array('grouping' => 'count')
             ),
             new rb_column_option(
                 'course_completion',
                 'completed',
-                get_string('numcompleted', 'rb_source_completion_by_org'),
+                get_string('numcompleted', 'rb_source_course_completion_by_org'),
                 'CASE WHEN base.timecompleted > 0 AND ' .
                     '(base.rpl IS NULL OR ' .
                     sql_isempty('base', 'rpl', false, false) .
@@ -135,7 +135,7 @@ class rb_source_course_completion_by_org extends rb_base_source {
             new rb_column_option(
                 'course_completion',
                 'perccompleted',
-                get_string('percentagecompleted', 'rb_source_completion_by_org'),
+                get_string('percentagecompleted', 'rb_source_course_completion_by_org'),
                 'CASE WHEN base.timecompleted > 0 AND ' .
                     '(base.rpl IS NULL OR ' .
                     sql_isempty('base', 'rpl', false, false) .
@@ -145,7 +145,7 @@ class rb_source_course_completion_by_org extends rb_base_source {
             new rb_column_option(
                 'course_completion',
                 'completedrpl',
-                get_string('numcompletedrpl', 'rb_source_completion_by_org'),
+                get_string('numcompletedviarpl', 'rb_source_course_completion_by_org'),
                 'CASE WHEN base.timecompleted > 0 AND ' .
                     '(base.rpl IS NOT NULL AND ' .
                     sql_isnotempty('base', 'rpl', false, false) .
@@ -155,7 +155,7 @@ class rb_source_course_completion_by_org extends rb_base_source {
             new rb_column_option(
                 'course_completion',
                 'inprogress',
-                get_string('numinprogress', 'rb_source_completion_by_org'),
+                get_string('numinprogress', 'rb_source_course_completion_by_org'),
                 'CASE WHEN base.timestarted > 0 AND ' .
                     '(base.timecompleted IS NULL OR ' .
                     'base.timecompleted = 0) ' .
@@ -165,7 +165,7 @@ class rb_source_course_completion_by_org extends rb_base_source {
             new rb_column_option(
                 'course_completion',
                 'notstarted',
-                get_string('numnotstarted', 'rb_source_completion_by_org'),
+                get_string('numnotstarted', 'rb_source_course_completion_by_org'),
                 'CASE WHEN base.timeenrolled > 0 AND ' .
                     '(base.timecompleted IS NULL OR ' .
                     'base.timecompleted = 0) AND ' .
@@ -177,7 +177,7 @@ class rb_source_course_completion_by_org extends rb_base_source {
             new rb_column_option(
                 'course_completion',
                 'earliest_completeddate',
-                get_string('earliestcompletiondate', 'rb_source_completion_by_org'),
+                get_string('earliestcompletiondate', 'rb_source_course_completion_by_org'),
                 'base.timecompleted',
                 array(
                     'displayfunc' => 'nice_date',
@@ -187,7 +187,7 @@ class rb_source_course_completion_by_org extends rb_base_source {
             new rb_column_option(
                 'course_completion',
                 'latest_completeddate',
-                get_string('latestcompletiondate', 'rb_source_completion_by_org'),
+                get_string('latestcompletiondate', 'rb_source_course_completion_by_org'),
                 'base.timecompleted',
                 array(
                     'displayfunc' => 'nice_date',
@@ -214,7 +214,7 @@ class rb_source_course_completion_by_org extends rb_base_source {
             new rb_filter_option(
                 'course_completion',
                 'organisationid',
-                get_string('officewhencompletedbasic', 'rb_source_completion_by_org'),
+                get_string('officewhencompletedbasic', 'rb_source_course_completion_by_org'),
                 'select',
                 array(
                     'selectfunc' => 'organisations_list',
@@ -224,44 +224,44 @@ class rb_source_course_completion_by_org extends rb_base_source {
             new rb_filter_option(
                 'course_completion',
                 'organisationpath',
-                get_string('officewhencompleted', 'rb_source_completion_by_org'),
+                get_string('officewhencompleted', 'rb_source_course_completion_by_org'),
                 'org'
             ),
             // aggregated filters
             new rb_filter_option(
                 'course_completion',
                 'total',
-                get_string('totalcompletions', 'rb_source_completion_by_org'),
+                get_string('totalcompletions', 'rb_source_course_completion_by_org'),
                 'number'
             ),
             new rb_filter_option(
                 'course_completion',
                 'completed',
-                get_string('numcompleted', 'rb_source_completion_by_org'),
+                get_string('numcompleted', 'rb_source_course_completion_by_org'),
                 'number'
             ),
             new rb_filter_option(
                 'course_completion',
                 'completedrpl',
-                get_string('numcompletedviarpl', 'rb_source_completion_by_org'),
+                get_string('numcompletedviarpl', 'rb_source_course_completion_by_org'),
                 'number'
             ),
             new rb_filter_option(
                 'course_completion',
                 'inprogress',
-                get_string('numinprogress', 'rb_source_completion_by_org'),
+                get_string('numinprogress', 'rb_source_course_completion_by_org'),
                 'number'
             ),
             new rb_filter_option(
                 'course_completion',
                 'notstarted',
-                get_string('numnotstarted', 'rb_source_completion_by_org'),
+                get_string('numnotstarted', 'rb_source_course_completion_by_org'),
                 'number'
             ),
             new rb_filter_option(
                 'user',
                 'fullname',
-                get_string('participant', 'rb_source_completion_by_org'),
+                get_string('participants', 'rb_source_course_completion_by_org'),
                 'text'
             ),
         );
@@ -273,23 +273,23 @@ class rb_source_course_completion_by_org extends rb_base_source {
         $contentoptions = array(
             new rb_content_option(
                 'current_org',                      // class name
-                get_string('currentorg', 'rb_source_completion_by_org'),  // title
+                get_string('currentorg', 'rb_source_course_completion_by_org'),  // title
                 'base.userid',                      // field
                 null                                // joins
             ),
             new rb_content_option(
                 'completed_org',
-                get_string('orgwhencompleted', 'rb_source_completion_by_org'),
+                get_string('orgwhencompleted', 'rb_source_course_completion_by_org'),
                 'base.organisationid'
             ),
             new rb_content_option(
                 'user',
-                get_string('user', 'rb_source_completion_by_org'),
+                get_string('user', 'rb_source_course_completion_by_org'),
                 'base.userid'
             ),
             new rb_content_option(
                 'date',
-                get_string('completiondate', 'rb_source_completion_by_org'),
+                get_string('completiondate', 'rb_source_course_completion_by_org'),
                 'base.timemodified'
             ),
         );
