@@ -214,11 +214,12 @@ class dp_objective_component extends dp_base_component {
             $tablecolumns[] = 'o.duedate';
         }
 
-        $tableheaders[] = get_string('proficiency', 'local');
+        $tableheaders[] = get_string('status', 'local_plan');
         $tablecolumns[] = 'o.scalevalueid';
 
         if(!$plancompleted) {
-            $tableheaders[] = get_string('status','local_plan');
+            //$tableheaders[] = get_string('status','local_plan');
+            $tableheaders[] = '';  // don't show status heading
             $tablecolumns[] = 'status';
         }
 

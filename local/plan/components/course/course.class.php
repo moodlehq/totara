@@ -340,7 +340,8 @@ class dp_course_component extends dp_base_component {
         }
 
         if(!$plancompleted) {
-            $tableheaders[] = get_string('status','local_plan');
+            //$tableheaders[] = get_string('status','local_plan');
+            $tableheaders[] = '';  // don't show status header
             $tablecolumns[] = 'status';
         }
 
