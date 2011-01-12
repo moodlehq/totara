@@ -212,7 +212,7 @@ class dp_course_component extends dp_base_component {
         // completion - may need status column in course completions table
         // reenable sorting on progress column when working
         $count = 'SELECT COUNT(*) ';
-        $select = 'SELECT ca.*, c.fullname, psv.name ' . sql_as() . ' priorityname ';
+        $select = 'SELECT ca.*, c.fullname, c.icon, psv.name ' . sql_as() . ' priorityname ';
 
         // get courses assigned to this plan
         // and related details
@@ -464,7 +464,11 @@ class dp_course_component extends dp_base_component {
             $class = ' class="dimmed"';
             $launch = '';
         }
-        return '<a' . $class .' href="' . $CFG->wwwroot .
+        return '<img class="course_icon" src="' .
+            $CFG->wwwroot . '/local/icon.php?icon=' . $ca->icon .
+            '&amp;id=' . $ca->courseid .
+            '&amp;size=small&amp;type=course" alt="' . $ca->fullname.
+            '"><a' . $class .' href="' . $CFG->wwwroot .
             '/local/plan/components/' . $this->component.'/view.php?id=' .
             $this->plan->id . '&amp;itemid=' . $ca->id . '">' . $ca->fullname .
             '</a>'. $launch;
