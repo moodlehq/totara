@@ -26,7 +26,7 @@ $(function() {
                  },
                 title: '<?php
                     echo '<h2>';
-                    echo get_string('updatecourses', 'local_plan');
+                    echo get_string('addremovecourse', 'local_plan');
                     echo '</h2>';
                 ?>'
             },
