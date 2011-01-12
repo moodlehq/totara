@@ -579,18 +579,11 @@ abstract class dp_base_component {
             return '';
         }
 
-        // Decide on button text
-        if ($permission >= DP_PERMISSION_ALLOW) {
-            $btntext = get_string('addremove'.$this->component, 'local_plan');
-        } else {
-            $btntext = get_string('updaterequested'.$this->component, 'local_plan');
-        }
-
         $html  = '<div class="buttons">';
         $html .= '<div class="singlebutton dp-plan-assign-button">';
         $html .= '<div>';
         $html .= '<script type="text/javascript">var plan_id = '.$this->plan->id.';</script>';
-        $html .= '<input type="submit" id="show-'.$this->component.'-dialog" value="'.$btntext.'" />';
+        $html .= '<input type="submit" id="show-'.$this->component.'-dialog" value="'.get_string('addremove'.$this->component, 'local_plan').'" />';
         $html .= '</div>';
         $html .= '</div>';
         $html .= '</div>';

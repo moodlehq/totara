@@ -239,7 +239,7 @@ class dp_course_component extends dp_base_component {
         }
 
         $tableheaders = array(
-            get_string('name','local_plan'),
+            get_string('coursename','local_plan'),
             get_string('progress','local_plan'),
         );
         $tablecolumns = array(
