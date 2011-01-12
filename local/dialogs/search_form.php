@@ -17,6 +17,11 @@ class dialog_search_form extends moodleform {
 
         $mform =& $this->_form;
 
+        // Hack to get around form namespacing
+        static $formcounter = 1;
+        $mform->updateAttributes(array('id' => 'mform_dialog_'.$formcounter));
+        $formcounter++;
+
         // Search data
         $query = stripslashes($this->_customdata['query']);
 
