@@ -324,13 +324,14 @@ class development_plan {
         if ($components) {
             $count = 1;
             foreach ($components as $c) {
-                $compname = $this->get_component($c->component)->get_setting('name');
+                $component = $this->get_component($c->component);
+                $compname = $component->get_setting('name');
                 $class = ($count == $total) ? "dp-summary-widget-component-name-last" : "dp-summary-widget-component-name";
-                $assignments = $this->get_component($c->component)->get_assigned_items();
+                $assignments = $component->get_assigned_items();
                 $assignments = !empty($assignments) ? '('.count($assignments).')' : '';
 
                 $out .= "<span class=\"{$class}\">";
-                $out .= "<a href=\"{$CFG->wwwroot}/local/plan/components/{$c->component}/index.php?id={$this->id}\">";
+                $out .= '<a href="'.$component->get_url().'">';
                 $out .= $compname;
 
                 if ($assignments) {
@@ -812,11 +813,11 @@ class development_plan {
             $pendinglist = $this->get_pending_items();
         }
 
-        // @todo fix pluralization issues for 1 item
         $list = '';
         $listcount = 0;
         $itemscount = 0;
-        if($coursesenabled && !empty($pendinglist['course'])) {
+        if ($coursesenabled && !empty($pendinglist['course'])) {
+            $component = $this->get_component('course');
             $a = new object();
             $a->planid = $this->id;
             $a->number = count($pendinglist['course']);
@@ -826,12 +827,13 @@ class development_plan {
             // determine plurality
             $langkey = $name . ($a->number > 1 ? 'plural' : '');
             $a->name = (get_string($langkey, 'local_plan') ? get_string($langkey, 'local_plan') : $name);
-            $a->site = $CFG->wwwroot;
+            $a->link = $component->get_url();
             $list .= '<li>' . get_string('xitemspending', 'local_plan', $a) . '</li>';
             $listcount++;
         }
 
-        if($competenciesenabled && !empty($pendinglist['competency'])) {
+        if ($competenciesenabled && !empty($pendinglist['competency'])) {
+            $component = $this->get_component('competency');
             $a = new object();
             $a->planid = $this->id;
             $a->number = count($pendinglist['competency']);
@@ -841,12 +843,13 @@ class development_plan {
             // determine plurality
             $langkey = $name . ($a->number > 1 ? 'plural' : '');
             $a->name = (get_string($langkey, 'local_plan') ? get_string($langkey, 'local_plan') : $name);
-            $a->site = $CFG->wwwroot;
+            $a->link = $component->get_url();
             $list .= '<li>' . get_string('xitemspending', 'local_plan', $a) . '</li>';
             $listcount++;
         }
 
-        if($objectivesenabled && !empty($pendinglist['objective'])) {
+        if ($objectivesenabled && !empty($pendinglist['objective'])) {
+            $component = $this->get_component('objective');
             $a = new object();
             $a->planid = $this->id;
             $a->number = count($pendinglist['objective']);
@@ -856,7 +859,7 @@ class development_plan {
             // determine plurality
             $langkey = $name . ($a->number > 1 ? 'plural' : '');
             $a->name = (get_string($langkey, 'local_plan') ? get_string($langkey, 'local_plan') : $name);
-            $a->site = $CFG->wwwroot;
+            $a->link = $component->get_url();
             $list .= '<li>' . get_string('xitemspending', 'local_plan', $a) . '</li>';
             $listcount++;
         }
@@ -894,8 +897,10 @@ class development_plan {
         $totalitems = 0;
         foreach ($unapproved as $component => $items) {
 
+            $comp = $this->get_component($component);
+
             $a = new object();
-            $a->uri = "{$CFG->wwwroot}/local/plan/components/{$component}/index.php?id={$this->id}";
+            $a->uri = $comp->get_url();
             $a->number = count($items);
             $totalitems += $a->number;
             $a->name = $component;

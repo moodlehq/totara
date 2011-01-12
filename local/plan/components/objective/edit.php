@@ -32,12 +32,6 @@ if ( $deleteno == null ){
 ///
 /// Load data
 ///
-$objallurl = "{$CFG->wwwroot}/local/plan/components/objective/index.php?id={$planid}";
-if ( $objectiveid ){
-    $objviewurl = "{$CFG->wwwroot}/local/plan/components/objective/view.php?id={$planid}&itemid={$objectiveid}";
-} else {
-    $objviewurl = $objallurl;
-}
 $plan = new development_plan($planid);
 $plancompleted = $plan->status == DP_PLAN_STATUS_COMPLETE;
 $componentname = 'objective';
@@ -60,6 +54,14 @@ if ( $objectiveid == null ){
         $action = 'edit';
     }
 }
+
+$objallurl = $component->get_url();
+if ( $objectiveid ){
+    $objviewurl = "{$CFG->wwwroot}/local/plan/components/objective/view.php?id={$planid}&itemid={$objectiveid}";
+} else {
+    $objviewurl = $objallurl;
+}
+
 
 ///
 /// Permissions check

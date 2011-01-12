@@ -45,7 +45,7 @@ $pagetitle = format_string(get_string('learningplan','local_plan').': '.$fullnam
 $navlinks = array();
 dp_get_plan_base_navlinks($navlinks, $plan->userid);
 $navlinks[] = array('name' => $fullname, 'link'=> $CFG->wwwroot . '/local/plan/view.php?id='.$id, 'type'=>'title');
-$navlinks[] = array('name' => $component->get_setting('name'), 'link' => $CFG->wwwroot . '/local/plan/components/objective/index.php?id='.$id, 'type' => 'title');
+$navlinks[] = array('name' => $component->get_setting('name'), 'link' => $component->get_url(), 'type' => 'title');
 $navlinks[] = array('name' => get_string('viewitem','local_plan'), 'link' => '', 'type' => 'title');
 
 $navigation = build_navigation($navlinks);

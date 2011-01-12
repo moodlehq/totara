@@ -12,7 +12,7 @@ $plan = new development_plan($id);
 $componentname = 'competency';
 $component = $plan->get_component($componentname);
 $currenturl = $CFG->wwwroot . '/local/plan/components/competency/approval.php?id='.$id.'&amp;itemid='.$caid.'&amp;action='.$action;
-$returnurl = $CFG->wwwroot . '/local/plan/components/competency/index.php?id='.$id;
+$returnurl = $component->get_url();
 $canapprovecompetency = $component->get_setting('updatecompetency') == DP_PERMISSION_APPROVE;
 
 if($confirm) {
@@ -49,7 +49,7 @@ $pagetitle = format_string(get_string('learningplan','local_plan').': '.$fullnam
 $navlinks = array();
 dp_get_plan_base_navlinks($navlinks, $plan->userid);
 $navlinks[] = array('name' => $fullname, 'link'=> $CFG->wwwroot . '/local/plan/view.php?id='.$id, 'type'=>'title');
-$navlinks[] = array('name' => $component->get_setting('name'), 'link' => $CFG->wwwroot . '/local/plan/components/competency/index.php?id='.$id, 'type' => 'title');
+$navlinks[] = array('name' => $component->get_setting('name'), 'link' => $component->get_url(), 'type' => 'title');
 $navlinks[] = array('name' => get_string('itemapproval','local_plan'), 'link' => '', 'type' => 'title');
 
 $navigation = build_navigation($navlinks);

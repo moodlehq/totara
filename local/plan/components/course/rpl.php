@@ -22,7 +22,7 @@ $rpl = get_record('course_completions', 'userid', $userid, 'course', $courseid);
 $mform = new totara_course_rpl_form(null, compact('planid','courseid','userid'));
 $mform->set_data($rpl);
 
-$returnurl = $CFG->wwwroot.'/local/plan/components/course?id='.$planid;
+$returnurl = $component->get_url();
 
 if ($mform->is_cancelled()) {
     redirect($returnurl);
@@ -57,8 +57,11 @@ if ($fromform = $mform->get_data()) {
         $completion->delete();
     }
 
-    totara_set_notification(get_string('rplupdated', 'local_plan'),
-        $CFG->wwwroot.'/local/plan/components/course/index.php?id='.$planid, array('style'=>'notifysuccess'));
+    totara_set_notification(
+        get_string('rplupdated', 'local_plan'),
+        $returnurl,
+        array('style'=>'notifysuccess')
+    );
 }
 
 
@@ -66,7 +69,7 @@ $fullname = $plan->name;
 $pagetitle = format_string(get_string('learningplan','local_plan').': '.$fullname);
 $navlinks = array();
 dp_get_plan_base_navlinks($navlinks, $plan->userid);
-$navlinks[] = array('name' => $fullname, 'link'=> $CFG->wwwroot . '/local/plan/view.php?id='.$planid, 'type'=>'title');
+$navlinks[] = array('name' => $fullname, 'link'=> $plan->get_display_url(), 'type'=>'title');
 $navlinks[] = array('name' => $component->get_setting('name'), 'link' => '', 'type' => 'title');
 
 $navigation = build_navigation($navlinks);

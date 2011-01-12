@@ -26,8 +26,6 @@ $evidence_record = get_record('comp_evidence', 'userid', $userid, 'competencyid'
 
 $fullname = $plan->name;
 
-$returnurl = $CFG->wwwroot.'/local/plan/components/competency/index.php?id='.$planid;
-
 if($u = get_record('user','id',$userid)) {
     $toform = new object();
     $toform->user = $u->firstname.' '.$u->lastname;
@@ -41,6 +39,8 @@ $component = $plan->get_component($componentname);
 if($component->get_setting('setpriority') != DP_PERMISSION_ALLOW) {
     error(get_string('error:competencyobjectivepermission', 'local_plan'));
 }
+
+$returnurl = $component->get_url();
 
 $mform = new totara_competency_evidence_form(null, compact('id','planid','competencyid','positionid',
     'organisationid','userid','user','s','nojs'));

@@ -402,9 +402,7 @@ class dp_course_component extends dp_base_component {
 
                 if ($canremovecourses ||
                     ($canrequestcourses && (in_array($ca->approved, array(DP_APPROVAL_UNAPPROVED, DP_APPROVAL_DECLINED))))) {
-                    $currenturl = $CFG->wwwroot .
-                        '/local/plan/components/course/index.php?id=' .
-                        $this->plan->id;
+                    $currenturl = $this->get_url();
                     $strdelete = get_string('delete', 'local_plan');
                     $delete = '<a href="'.$currenturl.'&amp;d='.$ca->id.'" title="'.$strdelete.'"><img src="'.$CFG->pixpath.'/t/delete.gif" class="iconsmall" alt="'.$strdelete.'" /></a>';
 

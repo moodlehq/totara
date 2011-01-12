@@ -456,7 +456,7 @@ $string['courseplural'] = 'courses';
 $string['overview'] = 'Overview';
 $string['viewitem'] = 'View item';
 $string['itemapproval'] = 'Item approval';
-$string['xitemspending'] = '<a href=\"{$a->site}/local/plan/components/{$a->component}/index.php?id={$a->planid}\">{$a->number} {$a->name}</a> pending';
+$string['xitemspending'] = '<a href=\"{$a->link}\">{$a->number} {$a->name}</a> pending';
 $string['thefollowingitemsarepending_s'] = 'This plan contains the following pending item:';
 $string['thefollowingitemsrequireyourapproval_s'] = 'This plan contains a new item that requires your approval:';
 $string['thefollowingitemsarepending_p'] = 'This plan contains the following pending items:';
