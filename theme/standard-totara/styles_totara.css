@@ -1372,6 +1372,19 @@ span.plan_highlight {
 }
 
 /*
+ * Right floating 'add' buttons
+ * Right align contents of the DIV then override text
+ * alignment for the button text
+ */
+.plan-add-item-button-wrapper {
+    text-align: right;
+}
+
+.plan-add-item-button {
+    text-align: center;
+}
+
+/*
  * Record of Learning pulldown menu
  */
 

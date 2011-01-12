@@ -1023,7 +1023,7 @@ class dp_objective_component extends dp_base_component {
             $btntext = get_string('requestednewobjective', 'local_plan');
         }
 
-        $html = '<div class="buttons">';
+        $html = '<div class="buttons plan-add-item-button-wrapper">';
         $html .= print_single_button("{$CFG->wwwroot}/local/plan/components/objective/edit.php", array('id'=>$this->plan->id), $btntext, 'get', '_SELF', true);
         $html .= '</div>';
 

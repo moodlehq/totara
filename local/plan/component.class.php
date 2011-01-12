@@ -579,11 +579,11 @@ abstract class dp_base_component {
             return '';
         }
 
-        $html  = '<div class="buttons">';
+        $html  = '<div class="buttons plan-add-item-button-wrapper">';
         $html .= '<div class="singlebutton dp-plan-assign-button">';
         $html .= '<div>';
         $html .= '<script type="text/javascript">var plan_id = '.$this->plan->id.';</script>';
-        $html .= '<input type="submit" id="show-'.$this->component.'-dialog" value="'.get_string('addremove'.$this->component, 'local_plan').'" />';
+        $html .= '<input type="submit" class="plan-add-item-button" id="show-'.$this->component.'-dialog" value="'.get_string('addremove'.$this->component, 'local_plan').'" />';
         $html .= '</div>';
         $html .= '</div>';
         $html .= '</div>';
