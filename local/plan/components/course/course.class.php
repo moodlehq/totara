@@ -379,7 +379,7 @@ class dp_course_component extends dp_base_component {
                     ON (ca.priority = psv.id
                     AND psv.priorityscaleid = $priorityscaleid) ";
         $where = "WHERE ca.id IN (" . implode(',', $list) . ")
-            AND ca.approved = 1 ";
+            AND ca.approved = ".DP_APPROVAL_APPROVED;
 
         $sort = "ORDER BY c.fullname";
 
@@ -413,6 +413,9 @@ class dp_course_component extends dp_base_component {
         $completions = completion_info::get_all_courses($this->plan->userid);
 
         if($records = get_recordset_sql($select.$from.$where.$sort)) {
+            // get the scale values used for competencies in this plan
+            $priorityvalues = get_records('dp_priority_scale_value',
+                'priorityscaleid', $priorityscaleid, 'sortorder', 'id,name,sortorder');
 
             while($ca = rs_fetch_next_record($records)) {
                 $completionstatus = $this->get_completion_status($ca, $completions);
@@ -424,7 +427,7 @@ class dp_course_component extends dp_base_component {
                 $row[] = $this->display_status_as_progress_bar($ca, $completionstatus);
 
                 if($showpriorities) {
-                    $row[] = $this->display_priority_as_text($ca->priority, $ca->priorityname, $priorityscaleid);
+                    $row[] = $this->display_priority_as_text($ca->priority, $ca->priorityname, $priorityvalues);
                 }
 
                 if($showduedates) {

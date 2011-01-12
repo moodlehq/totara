@@ -23,7 +23,7 @@ class totara_dialog_objective_content_courses extends totara_dialog_content_cour
 
     }
     /**
-     * Load courses to display
+     * Load (approved) courses to display
      *
      * @access  public
      * planid integer - id of development plan for which linked courses should be loaded
@@ -33,7 +33,8 @@ class totara_dialog_objective_content_courses extends totara_dialog_content_cour
         $sql = 'SELECT dppca.id as id, c.fullname as fullname, c.sortorder as sortorder ' .
                 'FROM '. $CFG->prefix . 'dp_plan_course_assign dppca' .
                 ' INNER JOIN ' . $CFG->prefix . 'course c ON c.id = dppca.courseid ' .
-                'WHERE dppca.planid = ' . $planid;
+                'WHERE dppca.planid = '.$planid.
+                ' AND dppca.approved = '.DP_APPROVAL_APPROVED;
         $courses = get_records_sql($sql);
         if (empty($courses)) {
             $this->courses = array();

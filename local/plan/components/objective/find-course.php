@@ -45,8 +45,12 @@ $component = $plan->get_component('objective');
 $linkedcourses = $component->get_linked_components($objectiveid, 'course');
 $selected = array();
 if (!empty($linkedcourses)) {
-    $sqlwhere = 'id in (' . implode(',', $linkedcourses) . ')';
-    $courses = get_records_select('course', $sqlwhere, 'fullname ASC, sortorder ASC', 'id, fullname, sortorder');
+    $sql = "SELECT ca.id, c.fullname, c.sortorder
+            FROM {$CFG->prefix}dp_plan_course_assign ca
+            INNER JOIN {$CFG->prefix}course c ON ca.courseid = c.id
+            WHERE ca.id IN (".implode(',', $linkedcourses).')
+            ORDER BY c.fullname, c.sortorder';
+    $courses = get_records_sql($sql);
     if (!empty($courses)) {
         $selected = $courses;
     }
