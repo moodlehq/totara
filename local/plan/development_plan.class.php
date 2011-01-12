@@ -822,10 +822,10 @@ class development_plan {
             $a->number = count($pendinglist['course']);
             $itemscount += $a->number;
             $a->component = 'course';
-            $a->name = $this->get_component($a->component)->get_setting('name');
+            $name = $a->component;
             // determine plurality
-            $langkey = $a->name . ($a->number > 1 ? 'plural' : '');
-            $a->name = (get_string($langkey, 'local_plan') ? get_string($langkey, 'local_plan') : $a->name);
+            $langkey = $name . ($a->number > 1 ? 'plural' : '');
+            $a->name = (get_string($langkey, 'local_plan') ? get_string($langkey, 'local_plan') : $name);
             $a->site = $CFG->wwwroot;
             $list .= '<li>' . get_string('xitemspending', 'local_plan', $a) . '</li>';
             $listcount++;
@@ -837,10 +837,10 @@ class development_plan {
             $a->number = count($pendinglist['competency']);
             $itemscount += $a->number;
             $a->component = 'competency';
-            $a->name = $this->get_component($a->component)->get_setting('name');
+            $name = $a->component;
             // determine plurality
-            $langkey = $a->name . ($a->number > 1 ? 'plural' : '');
-            $a->name = (get_string($langkey, 'local_plan') ? get_string($langkey, 'local_plan') : $a->name);
+            $langkey = $name . ($a->number > 1 ? 'plural' : '');
+            $a->name = (get_string($langkey, 'local_plan') ? get_string($langkey, 'local_plan') : $name);
             $a->site = $CFG->wwwroot;
             $list .= '<li>' . get_string('xitemspending', 'local_plan', $a) . '</li>';
             $listcount++;
@@ -852,10 +852,10 @@ class development_plan {
             $a->number = count($pendinglist['objective']);
             $itemscount += $a->number;
             $a->component = 'objective';
-            $a->name = $this->get_component($a->component)->get_setting('name');
+            $name = $a->component;
             // determine plurality
-            $langkey = $a->name . ($a->number > 1 ? 'plural' : '');
-            $a->name = (get_string($langkey, 'local_plan') ? get_string($langkey, 'local_plan') : $a->name);
+            $langkey = $name . ($a->number > 1 ? 'plural' : '');
+            $a->name = (get_string($langkey, 'local_plan') ? get_string($langkey, 'local_plan') : $name);
             $a->site = $CFG->wwwroot;
             $list .= '<li>' . get_string('xitemspending', 'local_plan', $a) . '</li>';
             $listcount++;
