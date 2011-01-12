@@ -898,7 +898,7 @@ class development_plan {
             $a->uri = "{$CFG->wwwroot}/local/plan/components/{$component}/index.php?id={$this->id}";
             $a->number = count($items);
             $totalitems += $a->number;
-            $a->name = $this->get_component($component)->get_setting('name');
+            $a->name = $component;
             // determine plurality
             $langkey = $a->name . ($a->number > 1 ? 'plural' : '');
             $a->name = (get_string($langkey, 'local_plan') ? get_string($langkey, 'local_plan') : $a->name);
