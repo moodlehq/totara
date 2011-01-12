@@ -76,6 +76,17 @@ class development_plan {
 
 
     /**
+     * Is this plan complete?
+     *
+     * @access  public
+     * @return  boolean
+     */
+    public function is_complete() {
+        return $this->status == DP_PLAN_STATUS_COMPLETE;
+    }
+
+
+    /**
      * Save an instance of each defined role to a property of this class
      *
      * This method creates a property $this->[role] for each entry in

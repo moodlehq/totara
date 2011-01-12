@@ -80,6 +80,33 @@ abstract class dp_base_component {
     }
 
 
+    /**
+     * Can the logged in user update items in this component
+     *
+     * Returns false if they cannot, or a constant detailing their
+     * exact permissions if they can
+     *
+     * @access  public
+     * @return  false|int
+     */
+    public function can_update_items() {
+        // Check plan is active
+        if ($this->plan->is_complete()) {
+            return false;
+        }
+
+        // Get permission
+        $updateitem = $this->get_setting('update'.$this->component);
+
+        // If user cannot edit/request items, no point showing picker
+        if (!in_array($updateitem, array(DP_PERMISSION_ALLOW, DP_PERMISSION_REQUEST, DP_PERMISSION_APPROVE))) {
+            return false;
+        }
+
+        return $updateitem;
+    }
+
+
     function display_duedate($itemid, $duedate) {
         $plancompleted = $this->plan->status == DP_PLAN_STATUS_COMPLETE;
         $cansetduedate = !$plancompleted && ($this->get_setting('setduedate') == DP_PERMISSION_ALLOW);

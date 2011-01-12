@@ -28,29 +28,6 @@ class dp_course_component extends dp_base_component {
 
 
     /**
-     * Can the logged in user update courses in this plan
-     *
-     * Returns false if they cannot, or a constant detailing their
-     * exact permissions if they can
-     *
-     * @access  public
-     * @return  false|int
-     */
-    public function can_update_items() {
-        // Get permissions
-        $plancompleted = $this->plan->status == DP_PLAN_STATUS_COMPLETE;
-        $updatecourse = (int) $this->get_setting('updatecourse');
-
-        // If plan complete, or user cannot edit/request items, no point showing picker
-        if ($plancompleted || !in_array($updatecourse, array(DP_PERMISSION_ALLOW, DP_PERMISSION_REQUEST, DP_PERMISSION_APPROVE))) {
-            return false;
-        }
-
-        return $updatecourse;
-    }
-
-
-    /**
      * Return markup for javascript course picker
      *
      * @access  public

@@ -40,25 +40,6 @@ class dp_objective_component extends dp_base_component {
         }
     }
 
-    /**
-     * Can the logged in user update items in this plan
-     *
-     * Returns false if they cannot, or a constant detailing their
-     * exact permissions if they can
-     *
-     * @access  public
-     * @return  false|int
-     */
-    public function can_update_items() {
-        // Get permissions
-        $updateitem = $this->get_setting('updateobjective');
-        if ( $updateitem == DP_PERMISSION_DENY ){
-            return false;
-        } else {
-            return $updateitem;
-        }
-    }
-
 
     /**
      * Return markup for javascript course picker

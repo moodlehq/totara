@@ -40,28 +40,6 @@ class dp_competency_component extends dp_base_component {
         }
     }
 
-    /**
-     * Can the logged in user update items in this plan
-     *
-     * Returns false if they cannot, or a constant detailing their
-     * exact permissions if they can
-     *
-     * @access  public
-     * @return  false|int
-     */
-    public function can_update_items() {
-        // Get permissions
-        $plancompleted = $this->plan->status == DP_PLAN_STATUS_COMPLETE;
-        $updateitem = (int) $this->get_setting('updatecompetency');
-
-        // If plan complete, or user cannot edit/request items, no point showing picker
-        if ($plancompleted || !in_array($updateitem, array(DP_PERMISSION_ALLOW, DP_PERMISSION_REQUEST, DP_PERMISSION_APPROVE))) {
-            return false;
-        }
-
-        return $updateitem;
-    }
-
 
     /**
      * Return markup for javascript competency picker
