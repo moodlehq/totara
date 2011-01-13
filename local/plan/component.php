@@ -40,10 +40,10 @@ $component->process_action_hook();
 //
 $component->pre_header_hook();
 
-$currenttab = $componentname;
-$navlink = array('name' => get_string($component->component.'plural', 'local_plan'), 'link' => '', 'type' => 'title');
-$is_component = true;
-include($CFG->dirroot.'/local/plan/header.php');
+$navlinks = array(
+    array('name' => get_string($component->component.'plural', 'local_plan'), 'link' => '', 'type' => 'title')
+);
+$plan->print_header($componentname, $navlinks);
 
 print $component->display_picker();
 

@@ -110,8 +110,7 @@ if ($data = $form->get_data()) {
 /**
  * Display header
  */
-$currenttab = 'plan';
-include($CFG->dirroot.'/local/plan/header.php');
+$plan->print_header('plan');
 
 
 // Plan details

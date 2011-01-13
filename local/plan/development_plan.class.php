@@ -3,6 +3,7 @@
 require_once ($CFG->dirroot . '/local/totara_msg/eventdata.class.php');
 require_once ($CFG->dirroot.'/local/totara_msg/messagelib.php');
 
+
 class development_plan {
     public static $permissions = array(
         'view' => false,
@@ -1282,9 +1283,13 @@ class development_plan {
     }
 
 
-    //
-    // Display tabs
-    //
+    /**
+     * Display plan tabs
+     *
+     * @access  public
+     * @param   string  $currenttab Currently selected tab's key
+     * @return  string
+     */
     public function display_tabs($currenttab) {
         global $CFG;
 
@@ -1301,21 +1306,15 @@ class development_plan {
         );
 
         // get active components in correct order
-        $components = $this->get_setting('components');
+        $components = $this->get_components();
 
         if ($components) {
             foreach ($components as $component) {
-                // don't show tabs for disabled components
-                if (!$component->enabled) {
-                    continue;
-                }
-                $componentname =
-                    get_string("{$component->component}plural", 'local_plan');
 
                 $row[] = new tabobject(
                     $component->component,
-                    $this->get_component($component->component)->get_url(),
-                    $componentname
+                    $component->get_url(),
+                    $componentname = get_string("{$component->component}plural", 'local_plan')
                 );
             }
         }
@@ -1335,6 +1334,19 @@ class development_plan {
         return print_tabs($tabs, $currenttab, $inactive, $activated, true);
     }
 
+
+    /**
+     * Prints plan header
+     *
+     * @access  public
+     * @param   string  $currenttab Current tab key
+     * @param   array   $navlinks   Additional navlinks (optional)
+     * @return  void
+     */
+    public function print_header($currenttab, $navlinks = array()) {
+        global $CFG;
+        require("{$CFG->dirroot}/local/plan/header.php");
+    }
 }
 
 
