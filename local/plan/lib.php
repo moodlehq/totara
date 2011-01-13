@@ -627,18 +627,6 @@ function dp_get_template_permission($templateid, $component, $action, $role) {
 
 
 /**
- * Checks to see if an approval value is
- * approved or greater
- *
- * @access  public
- * @param   $value  integer  Approval constant e.g. DP_APPROVAL_*
- * @return  boolean
- */
-function dp_is_approved($value) {
-    return $value >= DP_APPROVAL_APPROVED;
-}
-
-/**
  * Display a pulldown for filtering record of learning page
  *
  * @param string $pagename Name of the current page (filename without .php)

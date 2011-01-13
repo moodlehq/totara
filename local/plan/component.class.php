@@ -609,6 +609,19 @@ abstract class dp_base_component {
 
 
     /**
+     * Checks to see if an approval value is
+     * approved or greater
+     *
+     * @access  public
+     * @param   integer $value  Approval constant e.g. DP_APPROVAL_*
+     * @return  boolean
+     */
+    public function is_item_approved($value) {
+        return $value >= DP_APPROVAL_APPROVED;
+    }
+
+
+    /**
      * Return the name of the component items table
      *
      * Override in subclass if component uses a different pattern

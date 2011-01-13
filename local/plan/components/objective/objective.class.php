@@ -234,7 +234,7 @@ class dp_objective_component extends dp_base_component {
 
             while($objective = rs_fetch_next_record($records)) {
 
-                $objapproved = dp_is_approved($objective->approved);
+                $objapproved = $this->is_item_approved($objective->approved);
 
                 $row = array();
                 $row[] = $this->display_item_name($objective);
