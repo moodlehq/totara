@@ -811,8 +811,8 @@ class dp_course_component extends dp_base_component {
 
         // Delete mappings
         if ($result) {
-            $result = delete_records('dp_plan_component_relation', 'component1', 'course', 'itemid1', $item->itemid);
-            $result = $result && delete_records('dp_plan_component_relation', 'component2', 'course', 'itemid2', $item->itemid);
+            $result = delete_records('dp_plan_component_relation', 'component1', 'course', 'itemid1', $item->id);
+            $result = $result && delete_records('dp_plan_component_relation', 'component2', 'course', 'itemid2', $item->id);
         }
 
         return $result;
