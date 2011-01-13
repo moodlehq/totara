@@ -45,8 +45,18 @@ $('#column-checkboxes input').click(function() {
     var sel = '#' + shortname + ' td.' + $(this).attr('name');
     var value = $(this).attr('checked') ? 1 : 0;
 
-    $(selheader).toggle();
-    $(sel).toggle();
+    if ($.browser.msie && parseInt($.browser.version) == '8') {
+        $(selheader).each(function(i, elem) {
+            $(elem).toggle($(elem).css('display') == 'none');
+        });
+        $(sel).each(function(i, elem) {
+            $(elem).toggle($(elem).css('display') == 'none');
+        });
+    }
+    else {
+        $(selheader).toggle();
+        $(sel).toggle();
+    }
 
     $.ajax({
         url: '<?php print $CFG->wwwroot; ?>/local/reportbuilder/showhide_save.php',
