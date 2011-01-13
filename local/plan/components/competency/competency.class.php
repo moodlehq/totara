@@ -140,7 +140,7 @@ class dp_competency_component extends dp_base_component {
             if(!confirm_sesskey()) {
                 totara_set_notification(get_string('confirmsesskeybad', 'error'), $currenturl);
             }
-            if($component->remove_competency_assignment($delete)) {
+            if($this->remove_competency_assignment($delete)) {
                 totara_set_notification(get_string('canremoveitem','local_plan'), $currenturl, array('style' => 'notifysuccess'));
             } else {
                 totara_set_notification(get_string('cannotremoveitem', 'local_plan'), $currenturl);
