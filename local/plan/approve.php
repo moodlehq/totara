@@ -121,7 +121,7 @@ foreach ($components as $componentname => $component) {
 
     print_heading(get_string($component->component, 'local_plan'));
 
-    print $component->display_list(DP_APPROVAL_REQUESTED);
+    print $component->display_approval_list($requested_items[$componentname]);
 }
 
 print '<br /><input type="submit" name="submitbutton" value="'.get_string('updatesettings', 'local_plan').'" />';

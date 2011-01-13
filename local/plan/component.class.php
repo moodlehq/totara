@@ -230,6 +230,26 @@ abstract class dp_base_component {
 
 
     /**
+     * Display items from this component that require approval
+     *
+     * Override within component class to add additional information
+     * to approval confirmation
+     */
+    public function display_approval_list($pendingitems) {
+        $table = new object();
+        $table->data = array();
+        foreach($pendingitems as $item) {
+            $row = array();
+            // @todo write abstracted display_item_name() and use here
+            $row[] = $item->fullname;
+            $row[] = $this->display_approval_options($item, $item->approved);
+            $table->data[] = $row;
+        }
+        return print_table($table, true);
+    }
+
+
+    /**
      * Get all instances of $componentrequired linked to the specified item
      *
      * @todo doesn't current exclude unapproved items
