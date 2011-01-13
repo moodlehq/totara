@@ -393,6 +393,8 @@ class dp_course_component extends dp_base_component {
 
             rs_close($records);
 
+            $table->hide_empty_cols();
+
             // return instead of outputing table contents
             ob_start();
             $table->print_html();

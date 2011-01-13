@@ -806,6 +806,80 @@ class flexible_table {
         $this->add_data($row);
     }
 
+
+    /**
+     * Hide (optionally specified) columns if empty
+     * Lazy method, should be called after table has been set up and data added.
+     * @param array cols optional - column names of columns to hide
+     * @return boolean
+     */
+    function hide_empty_cols($cols=array()) {
+        global $SESSION;
+
+        if (empty($this->data)) {
+            // Safeguard to prevent premature method calls
+            return false;
+        }
+        if (!count($cols)) {
+            // Hide all empty cols
+            $cols = array_keys($this->columns);
+        }
+
+        // Prepare arrays
+        foreach ($cols as $c) {
+            $colstohide[$c] = $c;
+        }
+        $colstemp = $colstohide;
+
+        // Determine cols to hide
+        foreach ($this->data as $row) {
+            foreach ($colstemp as $c) {
+                if (!empty($row[$this->columns[$c]])) {
+                    unset($colstohide[$c]);
+                }
+            }
+            $colstemp = $colstohide;
+        }
+
+        if (!count($colstohide)) {
+            // I've got nothin' to hide
+            return false;
+        }
+
+        // Unset data
+        foreach ($this->data as $index=>$row) {
+            foreach ($colstohide as $ch) {
+                unset($this->data[$index][$this->columns[$ch]]);
+            }
+
+            // Re-index the baby
+            $this->data[$index] = array_values($this->data[$index]);
+        }
+
+        // Unset empty headers and columns
+        $newheaders = $this->headers;
+        $newcolumns = $this->columns;
+        foreach ($colstohide as $c) {
+            unset($newheaders[$this->columns[$c]]);
+            unset($newcolumns[$c]);
+        }
+        // Re-index the new arrays
+        $newheaders = array_values($newheaders);
+        $indexcount = 0;
+        foreach ($newcolumns as $key=>$nc) {
+            $newcolumns[$key] = $indexcount++;
+        }
+        unset($indexcount);
+
+        // Re-setup table
+        unset($SESSION->flextable[$this->uniqueid]);
+        $this->setup = 0;
+        $this->define_headers($newheaders);
+        $this->define_columns($newcolumns);
+        $this->setup();
+
+        return true;
+    }
 }
 
 ?>
