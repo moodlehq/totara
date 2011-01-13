@@ -63,12 +63,6 @@ totaraDialog_handler_preRequisite.prototype._update = function(response) {
     // Grab table
     var table = $('div#content form#dp-component-update table.dp-plan-component-items');
 
-    // crudely detect whether items were added
-    if (response.match(/\table /)) {
-        // show the hidden update settings button
-        alert('always new items: '+response);
-    }
-
     // If table found
     if (table.size()) {
         table.replaceWith(response);
