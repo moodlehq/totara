@@ -174,6 +174,48 @@ abstract class dp_base_component {
 
 
     /**
+     * Get count of items assigned to plan
+     *
+     * Optionally, filtered by status
+     *
+     * @access  public
+     * @param   mixed   $approved   (optional)
+     * @return  integer
+     */
+    public function count_assigned_items($approved = null) {
+        global $CFG;
+
+        // Generate where clause
+        $where = "a.planid = {$this->plan->id}";
+        if ($approved !== null) {
+            if (is_array($approved)) {
+                $approved = implode(', ', $approved);
+            }
+            $where .= " AND a.approved IN ({$approved})";
+        }
+
+        $tablename = $this->get_component_table_name();
+
+        $count = count_records_sql(
+            "
+            SELECT
+                COUNT(a.id)
+            FROM
+                {$CFG->prefix}{$tablename} a
+            WHERE
+                $where
+            "
+        );
+
+        if (!$count) {
+            $count = 0;
+        }
+
+        return $count;
+    }
+
+
+    /**
      * Process an action
      *
      * General component actions can come in here
