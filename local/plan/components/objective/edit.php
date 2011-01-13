@@ -80,9 +80,9 @@ $mform->set_data($objective);
 if ( $deleteyes ){
     require_sesskey();
     if ( !$component->delete_objective($objectiveid) ){
-        print_error("Was unable to delete objective.");
+        print_error('error:objectivedeleted', 'local_plan');
     } else {
-        totara_set_notification('Objective deleted.', $objallurl, array('style'=>'notifysuccess'));
+        totara_set_notification(get_string('objectivedeleted', 'local_plan'), $objallurl, array('style'=>'notifysuccess'));
     }
 } elseif ( $deleteno ) {
     redirect($objallurl);
@@ -107,9 +107,9 @@ if ( $deleteyes ){
                 isset($data->duedate)?$data->duedate:null
         );
         if (!$result){
-            print_error("Was unable to create new objective");
+            print_error('error:objectiveupdated', 'local_plan');
         } else {
-            totara_set_notification('New objective created.', $objviewurl, array('style'=>'notifysuccess'));
+            totara_set_notification(get_string('objectivecreated', 'local_plan'), $objviewurl, array('style'=>'notifysuccess'));
         }
     } else {
 
@@ -125,7 +125,7 @@ if ( $deleteyes ){
         $record->approved = $component->approval_status_after_update();
 
         if (!update_record('dp_plan_objective', $record)) {
-            print_error("Was unable to update objective.");
+            print_error('error:objectiveupdated', 'local_plan');
         } else {
             // Only send notificaitons when plan not draft
             if ($plan->status != DP_PLAN_STATUS_UNAPPROVED) {
@@ -148,7 +148,7 @@ if ( $deleteyes ){
             }
 
             // now - back to the screen notifications ...
-            totara_set_notification('Objective updated.', $objviewurl);
+            totara_set_notification(get_string('objectiveupdated', 'local_plan'), $objviewurl, array('style'=>'notifysuccess'));
         }
 
     }

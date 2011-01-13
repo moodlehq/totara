@@ -197,15 +197,21 @@ $string['error:competenciesupdated'] = 'Competencies not updated';
 
 //Objective Strings
 $string['objectives'] = 'Objectives';
+$string['addobjective'] = 'Add objective';
 $string['updateobjectives'] = 'Update objectives';
 $string['objectivesupdated'] = 'Objectives updated';
+$string['objectivedeleted'] = 'Objective deleted';
 $string['requestednewobjective'] = 'Add a new objective request';
-$string['updateobjective'] = 'Update';
+$string['updateobjective'] = 'Update objective';
+$string['objectivecreated'] = 'Objective created';
+$string['objectiveupdated'] = 'Objective updated';
 $string['addnewobjective'] = 'Add new objective';
 $string['error:objectivenotfound'] = 'Objective not found';
-$string['error:objectivesupdated'] = 'Objectives not update';
+$string['error:objectiveupdated'] = 'Objective not updated';
+$string['error:objectivesupdated'] = 'Objectives not updated';
+$string['error:objectivedeleted'] = 'Objective not deleted';
 $string['error:objectiveidincorrect'] = 'Objective ID incorrect';
-$string['objectivefullname'] = 'Objective Full Name';
+$string['objectivetitle'] = 'Objective Title';
 $string['objectiveshortname'] = 'Objective Short Name';
 $string['objectivedescription'] = 'Objective Description';
 $string['objectivepriority'] = 'Objective Priority';

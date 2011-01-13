@@ -196,7 +196,7 @@ class dp_objective_component extends dp_base_component {
             return '<div class="noitems-assignobjectives">'.get_string('noobjectives', 'local_plan').'</div>';
         }
 
-        $tableheaders = array(get_string('name', 'local_plan'));
+        $tableheaders = array(get_string('objective', 'local_plan'));
         $tablecolumns = array('objname');
 
         if ( $coursesenabled ){

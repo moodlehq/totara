@@ -78,11 +78,9 @@ class plan_objective_edit_form extends moodleform {
         $mform->addElement('hidden', 'id', $plan->id);
         $mform->setType('id', PARAM_INT);
 
-        $mform->addElement('text', 'fullname', get_string('objectivefullname', 'local_plan'));
+        $mform->addElement('text', 'fullname', get_string('objectivetitle', 'local_plan'));
         $mform->setType('fullname', PARAM_TEXT);
         $mform->addRule('fullname', get_string('err_required', 'form'), 'required', '', 'client', false, false);
-        $mform->addElement('text', 'shortname', get_string('objectiveshortname', 'local_plan'));
-        $mform->setType('shortname', PARAM_TEXT);
         $mform->addElement('textarea', 'description', get_string('objectivedescription', 'local_plan'), array('rows'=>5, 'cols'=>50));
         $mform->setType('description', PARAM_TEXT);
 
@@ -122,7 +120,8 @@ class plan_objective_edit_form extends moodleform {
             $mform->freeze(array('scalevalueid'));
         }
 
-        $this->add_action_buttons();
+        $this->add_action_buttons(true, empty($this->_customdata['objectiveid']) ?
+            get_string('addobjective', 'local_plan') : get_string('updateobjective', 'local_plan'));
     }
 
     function validation($data) {
