@@ -33,7 +33,7 @@ if(substr($currenttab, 0, 12) == 'competencies'){
     $currenttab = 'competencies';
 }
 
-$toprow[] = new tabobject('comptemplates', $CFG->wwwroot.'/hierarchy/item/view.php?id='.$id.'&edit='.$edit.'&type=position&comptype=comptemplates', get_string('competencytemplates', 'competency'));
+/*$toprow[] = new tabobject('comptemplates', $CFG->wwwroot.'/hierarchy/item/view.php?id='.$id.'&edit='.$edit.'&type=position&comptype=comptemplates', get_string('competencytemplates', 'competency'));
 if(substr($currenttab, 0, 13) == 'comptemplates'){
     if($frameworks){
         foreach($frameworks as $framework){
@@ -46,7 +46,7 @@ if(substr($currenttab, 0, 13) == 'comptemplates'){
         }
     }
     $currenttab = 'comptemplates';
-}
+}*/
 
 $tabs = array($toprow, $secondrow);
 
