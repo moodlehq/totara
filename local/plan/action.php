@@ -98,7 +98,12 @@ if (!empty($approvalrequest)) {
         if ($plan->get_setting('confirm') == DP_PERMISSION_REQUEST) {
             // If a learner is updating their plan and now needs approval, notify manager
             if ($USER->id == $plan->userid) {
-                $plan->send_manager_plan_approval_request();
+                if ($plan->get_manager()) {
+                    $plan->send_manager_plan_approval_request();
+                }
+                else {
+                    totara_set_notification(get_string('nomanager', 'local_plan'), $referer);
+                }
             }
             totara_set_notification(get_string('approvalrequestsent', 'local_plan', $plan->name), $referer, array('style' => 'notifysuccess'));
             // @todo: send approval request email to relevant user(s)
@@ -121,7 +126,12 @@ if (!empty($approvalrequest)) {
         // Get unapproved items
         $unapproved = $plan->get_unapproved_items();
         if ($unapproved) {
-            $plan->send_manager_item_approval_request($unapproved);
+            if ($plan->get_manager()) {
+                $plan->send_manager_item_approval_request($unapproved);
+            }
+            else {
+                totara_set_notification(get_string('nomanager', 'local_plan'), $referer);
+            }
 
             if (empty($ajax)) {
                 totara_set_notification(get_string('approvalrequestsent', 'local_plan', $plan->name), $referer, array('style' => 'notifysuccess'));

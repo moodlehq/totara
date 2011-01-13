@@ -509,6 +509,7 @@ $string['requestnotdecline'] = 'There was a problem while trying to decline that
 $string['requestapprove'] = 'Request approved.';
 $string['requestnotapprove'] = 'There was a problem while trying to approve that request';
 $string['nopermission'] = 'You don\'t have permission to perform that action';
+$string['nomanager'] = 'You don\'t have a manager allocated in your profile positions';
 $string['notemplatesetup'] = 'No plan templates set up';
 $string['planapproved'] = 'Plan $a has been approved';
 $string['plandeclined'] = 'Plan $a has been declined';

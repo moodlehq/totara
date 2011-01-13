@@ -1061,6 +1061,12 @@ class development_plan {
         return true;
     }
 
+    /**
+     * Determine the manager for the user of this Plan
+     */
+    function get_manager() {
+        return totara_get_manager($this->userid);
+    }
 
     /**
      * Send a task to the manager when a learner requests a plan approval
