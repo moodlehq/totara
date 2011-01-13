@@ -52,7 +52,11 @@ require_capability('local/plan:accessplan', get_system_context());
 
 $plan = new development_plan($id);
 $component = $plan->get_component('competency');
-$selected = $component->get_assigned_items();
+$selected = array();
+foreach ($component->get_assigned_items() as $item) {
+    $item->id = $item->competencyid;
+    $selected[$item->competencyid] = $item;
+}
 
 // Access control check
 if (!$permission = $component->can_update_items()) {
