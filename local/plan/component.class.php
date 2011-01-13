@@ -763,9 +763,9 @@ abstract class dp_base_component {
 
     function display_back_to_index_link() {
         global $CFG;
-        return '<p><a href="' . $CFG->wwwroot . '/local/plan/components/' .
-            $this->component . '/index.php?id=' . $this->plan->id . '">' .
-            get_string('backtoallx','local_plan', get_string($this->component, 'local_plan')) .
+        return '<p><a href="' . $CFG->wwwroot . '/local/plan/component.php?id='.$this->plan->id.
+            '&c='.$this->component.'">'.
+            get_string('backtoallx','local_plan', get_string("{$this->component}plural", 'local_plan')).
             '</a></p>';
     }
 

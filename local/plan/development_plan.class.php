@@ -1310,7 +1310,7 @@ class development_plan {
                     continue;
                 }
                 $componentname =
-                    get_string($component->component, 'local_plan');
+                    get_string("{$component->component}plural", 'local_plan');
 
                 $row[] = new tabobject(
                     $component->component,
