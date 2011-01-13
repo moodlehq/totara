@@ -128,11 +128,11 @@ if ($can_add) {
 }
 
 // Display templates
-if (file_exists($CFG->dirroot.'/hierarchy/type/'.$type.'/template/lib.php')) {
+/*if (file_exists($CFG->dirroot.'/hierarchy/type/'.$type.'/template/lib.php')) {
     include($CFG->dirroot.'/hierarchy/type/'.$type.'/template/lib.php');
     $templates = $hierarchy->get_templates();
 
     call_user_func("{$type}_template_display_table", $templates, $frameworkid);
-}
+}*/
 
 print_footer();
