@@ -441,7 +441,10 @@ abstract class dp_base_component {
 
         // Get currently assigned items
         $assigned = $this->get_assigned_items();
-        $assigned_ids = array_keys($assigned);
+        $assigned_ids = array();
+        foreach($assigned as $item) {
+            $assigned_ids[] = $item->id;
+        }
         $sendnotification = (count(array_diff($items, $assigned_ids)) || count(array_diff($assigned_ids, $items)))
             && $this->plan->status != DP_PLAN_STATUS_UNAPPROVED;
         $updates = '';
@@ -532,14 +535,14 @@ abstract class dp_base_component {
         if ($permission >= DP_PERMISSION_ALLOW || $item->approved == DP_APPROVAL_UNAPPROVED) {
             return delete_records(
                 'dp_plan_'.$this->component.'_assign',
-                'id', $item->itemid,
+                'id', $item->id,
                 'planid', $this->plan->id
             );
         }
         // Otherwise request removal
         else {
             $update = new object();
-            $update->id = $item->itemid;
+            $update->id = $item->id;
             $update->approved = DP_APPROVAL_REQUEST_REMOVAL;
             return update_record('dp_plan_'.$this->component.'_assign', $update);
         }
