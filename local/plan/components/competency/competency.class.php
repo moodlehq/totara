@@ -281,18 +281,12 @@ class dp_competency_component extends dp_base_component {
         $sort = $table->get_sql_sort();
         $sort = ($sort=='') ? '' : ' ORDER BY ' . $sort;
 
-        // get all proficiency values for this plan's user
-        if(!$proficiencies = competency::get_proficiencies($this->plan->userid)) {
-            $proficiencies = array();
-        }
-
-
         if($records = get_recordset_sql($select.$from.$where.$sort,
             $table->get_page_start(),
             $table->get_page_size())) {
 
             while($ca = rs_fetch_next_record($records)) {
-                $proficient = $this->is_proficient($ca, $proficiencies);
+                $proficient = $this->is_item_complete($ca);
                 $approved = $this->is_item_approved($ca->approved);
 
                 $row = array();
@@ -426,9 +420,6 @@ class dp_competency_component extends dp_base_component {
         $table->set_attribute('class', 'logtable generalbox dp-plan-component-items');
         $table->setup();
 
-        // get all proficiency values for this plan's user
-        $proficiencies = competency::get_proficiencies($this->plan->userid);
-
         // get the scale values used for competencies in this plan
         $priorityvalues = get_records('dp_priority_scale_value',
             'priorityscaleid', $priorityscaleid, 'sortorder', 'id,name,sortorder');
@@ -436,7 +427,7 @@ class dp_competency_component extends dp_base_component {
         if($records = get_recordset_sql($select.$from.$where.$sort)) {
 
             while($ca = rs_fetch_next_record($records)) {
-                $proficient = $this->is_proficient($ca, $proficiencies);
+                $proficient = $this->is_item_complete($ca);
 
                 $row = array();
                 $row[] = $this->display_item_name($ca);
@@ -467,17 +458,32 @@ class dp_competency_component extends dp_base_component {
 
     }
 
-    function is_proficient($ca, $proficiencies) {
-        $compid = $ca->competencyid;
-        // no record
-        if(!array_key_exists($compid, $proficiencies)) {
+
+    /**
+     * Check if an item is complete
+     *
+     * @access  protected
+     * @param   object  $item
+     * @return  boolean
+     */
+    protected function is_item_complete($item) {
+
+        // Get proficiencies
+        if (!$proficiencies = competency::get_proficiencies($this->plan->userid)) {
+            $proficiencies = array();
+        }
+
+        // If no record
+        if (!array_key_exists($item->competencyid, $proficiencies)) {
             return false;
         }
-        // something wrong with get_proficiencies()
-        if(!isset($proficiencies[$compid]->isproficient)) {
+
+        // Something wrong with get_proficiencies()
+        if (!isset($proficiencies[$item->competencyid]->isproficient)) {
             return false;
         }
-        return $proficiencies[$compid]->isproficient;
+
+        return $proficiencies[$item->competencyid]->isproficient;
     }
 
 
