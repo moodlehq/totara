@@ -556,7 +556,7 @@ abstract class dp_base_component {
      */
     public function make_items_requested($items) {
 
-        $table = "dp_plan_{$this->component}_assign";
+        $table = $this->get_component_table_name();
 
         $updated = array();
         foreach ($items as $item) {
@@ -580,6 +580,17 @@ abstract class dp_base_component {
         return $updated;
     }
 
+
+    /**
+     * Return the name of the component items table
+     *
+     * Override in subclass if component uses a different pattern
+     *
+     * @return string Name of the table containing item assignments
+     */
+    public function get_component_table_name() {
+        return "dp_plan_{$this->component}_assign";
+    }
 
     /*********************************************************************************************
      *

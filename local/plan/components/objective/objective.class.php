@@ -983,36 +983,14 @@ class dp_objective_component extends dp_base_component {
 
 
     /**
-     * Make unassigned items requested
+     * Return the name of the component items table
      *
-     * @access  public
-     * @param   array   $items  Unassigned items to update
-     * @return  array
+     * Overrides base class because objectives named differently
+     *
+     * @return string Name of the table containing item assignments
      */
-    public function make_items_requested($items) {
-
-        $table = "dp_plan_{$this->component}";
-
-        $updated = array();
-        foreach ($items as $item) {
-            // Attempt to load item
-            $record = get_record($table, 'id', $item->itemid);
-            if (!$record) {
-                continue;
-            }
-
-            // Attempt to update record
-            $record->approved = DP_APPROVAL_REQUESTED;
-            $record = addslashes_recursive($record);
-            if (!update_record($table, $record)) {
-                continue;
-            }
-
-            // Save in updated list
-            $updated[] = $item;
-        }
-
-        return $updated;
+    public function get_component_table_name() {
+        return "dp_plan_objective";
     }
 
 
