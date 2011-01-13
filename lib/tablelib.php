@@ -863,17 +863,14 @@ class flexible_table {
             unset($newheaders[$this->columns[$c]]);
             unset($newcolumns[$c]);
         }
-        // Re-index the new arrays
+
+        // Re-organise the new arrays
         $newheaders = array_values($newheaders);
-        $indexcount = 0;
-        foreach ($newcolumns as $key=>$nc) {
-            $newcolumns[$key] = $indexcount++;
-        }
-        unset($indexcount);
+        $newcolumns = array_keys($newcolumns);
 
         // Re-setup table
-        unset($SESSION->flextable[$this->uniqueid]);
-        $this->setup = 0;
+        //unset($SESSION->flextable[$this->uniqueid]);
+        //$this->setup = 0;
         $this->define_headers($newheaders);
         $this->define_columns($newcolumns);
         $this->setup();

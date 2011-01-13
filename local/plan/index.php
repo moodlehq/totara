@@ -81,15 +81,15 @@ echo '<div style="clear:both;"></div>';
 print_container_end();
 
 print_container_start(false, '', 'dp-plans-list-active-plans');
-echo dp_display_plans($planuser, array(DP_PLAN_STATUS_APPROVED), array('activeplans', 'duedate', 'progress'));
+echo dp_display_plans($planuser, array(DP_PLAN_STATUS_APPROVED), array('enddate', 'status'), get_string('activeplans', 'local_plan'));
 print_container_end();
 
 print_container_start(false, '', 'dp-plans-list-unapproved-plans');
-echo dp_display_plans($planuser, array(DP_PLAN_STATUS_UNAPPROVED), array('unapprovedplans', 'progress'));
+echo dp_display_plans($planuser, array(DP_PLAN_STATUS_UNAPPROVED), array('status'), get_string('unapprovedplans', 'local_plan'));
 print_container_end();
 
 print_container_start(false, '', 'dp-plans-list-completed-plans');
-echo dp_display_plans($planuser, DP_PLAN_STATUS_COMPLETE, array('completedplans', 'completed'));
+echo dp_display_plans($planuser, DP_PLAN_STATUS_COMPLETE, array('completed'), get_string('completedplans', 'local_plan'));
 print_container_end();
 
 print_container_end();

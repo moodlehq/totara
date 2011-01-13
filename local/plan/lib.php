@@ -387,52 +387,55 @@ function dp_display_approval_options($name, $selected=DP_APPROVAL_UNAPPROVED, $c
  * @param   array   $cols       Columns to display
  * @return  string
  */
-function dp_display_plans($userid, $statuses=array(DP_PLAN_STATUS_APPROVED), $cols=array('duedate', 'progress', 'completed')) {
+function dp_display_plans($userid, $statuses=array(DP_PLAN_STATUSAPPROVED), $cols=array('enddate', 'status', 'completed'), $firstcolheader='') {
     global $CFG;
 
     $statuses = is_array($statuses) ? implode(',', $statuses) : $statuses;
+    $statuses_undrsc = str_replace(',', '_', $statuses);
     $cols = is_array($cols) ? $cols : array($cols);
 
     // Construct sql query
     $count = 'SELECT COUNT(*) ';
-    $select = "SELECT p.*,
-        (SELECT timemodified FROM {$CFG->prefix}dp_plan_history ph WHERE ph.planid = p.id ORDER BY id DESC LIMIT 1)
-        AS timemodified ";
+    $select = 'SELECT p.id, p.name '.sql_as().' "name_'.$statuses_undrsc.'",';
+    foreach ($cols as $c) {
+        if ($c == 'completed') {
+            continue;
+        }
+        $select .= 'p.'.$c.' '.sql_as().' "'.$c.'_'.$statuses_undrsc.'",';
+    }
+    if (in_array('completed', $cols)) {
+        $select .= "(SELECT timemodified FROM {$CFG->prefix}dp_plan_history ph WHERE ph.planid = p.id ORDER BY id DESC LIMIT 1)
+            AS \"timemodified_{$statuses_undrsc}\" ";
+    } else {
+        $select .= '1=1 ';
+    }
     $from = "FROM {$CFG->prefix}dp_plan p ";
     $where = "WHERE userid = {$userid} AND status IN ({$statuses}) ";
     $count = count_records_sql($count.$from.$where);
 
     // Set up table
-    $tablename = str_replace(',', '-', $statuses);
-    $tablename = 'plans-list-'.$tablename;
+    $tablename = 'plans-list-'.$statuses_undrsc;
     $tableheaders = array();
-    $tablecols = array('p.name');
+    $tablecols = array('name_'.$statuses_undrsc);
 
-    // Determine what the first column should be
-    if (in_array('activeplans', $cols)) {
-        $tableheaders[] = get_string('activeplans', 'local_plan');
-    }
-    else if (in_array('completedplans', $cols)) {
-        $tableheaders[] = get_string('completedplans', 'local_plan');
-    }
-    else if (in_array('unapprovedplans', $cols)) {
-        $tableheaders[] = get_string('unapprovedplans', 'local_plan');
-    }
-    else {
+    // Determine what the first column header should be
+    if (empty($firstcolheader)) {
         $tableheaders[] = get_string('plan', 'local_plan');
+    } else {
+        $tableheaders[] = $firstcolheader;
     }
 
-    if (in_array('duedate', $cols)) {
+    if (in_array('enddate', $cols)) {
         $tableheaders[] = get_string('duedate', 'local_plan');
-        $tablecols[] = 'p.enddate';
+        $tablecols[] = 'enddate_'.$statuses_undrsc;
     }
-    if (in_array('progress', $cols)) {
+    if (in_array('status', $cols)) {
         $tableheaders[] = get_string('progress', 'local_plan');
-        $tablecols[] = 'p.status';
+        $tablecols[] = 'status_'.$statuses_undrsc;
     }
     if (in_array('completed', $cols)) {
         $tableheaders[] = get_string('completed', 'local_plan');
-        $tablecols[] = 'p.timemodified';
+        $tablecols[] = 'timemodified_'.$statuses_undrsc;
     }
 
     // Actions
@@ -459,10 +462,10 @@ function dp_display_plans($userid, $statuses=array(DP_PLAN_STATUS_APPROVED), $co
         $plan = new development_plan($p->id);
         $row = array();
         $row[] = $plan->display_summary_widget();
-        if (in_array('duedate', $cols)) {
+        if (in_array('enddate', $cols)) {
             $row[] = $plan->display_enddate();
         }
-        if (in_array('progress', $cols)) {
+        if (in_array('status', $cols)) {
             $row[] = $plan->display_progress();
         }
         if (in_array('completed', $cols)) {
@@ -472,6 +475,8 @@ function dp_display_plans($userid, $statuses=array(DP_PLAN_STATUS_APPROVED), $co
 
         $table->add_data($row);
     }
+    unset($plans);
+    $table->hide_empty_cols();
 
     ob_start();
     $table->print_html();
