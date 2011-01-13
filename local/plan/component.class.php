@@ -670,6 +670,16 @@ abstract class dp_base_component {
 
 
     /**
+     * Check if item is "complete" or "finished"
+     *
+     * @access  public
+     * @param   object  $item
+     * @return  boolean
+     */
+    abstract protected function is_item_complete($item);
+
+
+    /**
      * Return the name of the component items table
      *
      * Override in subclass if component uses a different pattern

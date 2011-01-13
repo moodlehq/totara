@@ -269,7 +269,7 @@ class dp_objective_component extends dp_base_component {
                 if(!$plancompleted) {
                     $status = '';
                     if($objapproved) {
-                        if(!$objective->achieved) {
+                        if (!$this->is_item_complete($objective)) {
                             $status = $this->display_duedate_highlight_info($objective->duedate);
                         }
                     } else {
@@ -979,6 +979,18 @@ class dp_objective_component extends dp_base_component {
         } else {
             return false;
         }
+    }
+
+
+    /**
+     * Check if an item is complete
+     *
+     * @access  protected
+     * @param   object  $item
+     * @return  boolean
+     */
+    protected function is_item_complete($item) {
+        return (bool) $item->achieved;
     }
 
 
