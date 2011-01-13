@@ -69,6 +69,17 @@ totaraDialog_handler_preRequisite.prototype._update = function(response) {
     }
     else {
         // Add new table
-        $('div#content form#dp-component-update').prepend(response);
+        $('div#content form#dp-component-update div#dp-component-update-table').append(response);
     }
+
+    // show the update settings button
+    var table = $('div#content form#dp-component-update table.dp-plan-component-items');
+    var updatesettings = $('div#content div#dp-component-update-submit');
+    if (table.size()) {
+        updatesettings.show();
+    }
+    else {
+        updatesettings.hide();
+    }
+
 }
