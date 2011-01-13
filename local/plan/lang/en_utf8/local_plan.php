@@ -183,6 +183,7 @@ $string['coursenotfound'] = 'Course not found';
 $string['competency'] = 'Competency';
 $string['competencyplural'] = 'Competencies';
 $string['competencies'] = 'Competencies';
+$string['competenciesplural'] = 'Competencies'; //$langkey pluralisation functionality expects this - T-7302
 $string['updatecompetency'] = 'Update competencies';
 $string['competenciesupdated'] = 'Competencies updated';
 $string['updaterequestedcompetency'] = 'Update requested competencies';

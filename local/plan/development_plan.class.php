@@ -918,7 +918,7 @@ class development_plan {
             $a->name = $component;
             // determine plurality
             $langkey = $a->name . ($a->number > 1 ? 'plural' : '');
-            $a->name = (get_string($langkey, 'local_plan') ? get_string($langkey, 'local_plan') : $a->name);
+            $a->name = get_string($langkey, 'local_plan');
             $out .= '<li>'.get_string('xitemsunapproved', 'local_plan', $a).'</li>';
         }
 
