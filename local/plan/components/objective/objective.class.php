@@ -67,7 +67,8 @@ class dp_objective_component extends dp_base_component {
             SELECT
                 a.id,
                 a.planid,
-                a.fullname
+                a.fullname,
+                a.approved
             FROM
                 {$CFG->prefix}dp_plan_objective a
             WHERE
@@ -549,7 +550,7 @@ class dp_objective_component extends dp_base_component {
                     // create a new update object
                     $todb = new object();
                     $todb->id = $id;
-                    $todb->approved = $approved;
+                    $todb->approved = $approval;
                     $stored_records[$id] = $todb;
                 }
             }
