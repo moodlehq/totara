@@ -438,12 +438,13 @@ abstract class dp_base_component {
      * @return  void
      */
     public function update_assigned_items($items) {
+        $item_id_name = $this->component . 'id';
 
         // Get currently assigned items
         $assigned = $this->get_assigned_items();
         $assigned_ids = array();
         foreach($assigned as $item) {
-            $assigned_ids[] = $item->id;
+            $assigned_ids[$item->$item_id_name] = $item->$item_id_name;
         }
         $sendnotification = (count(array_diff($items, $assigned_ids)) || count(array_diff($assigned_ids, $items)))
             && $this->plan->status != DP_PLAN_STATUS_UNAPPROVED;
@@ -458,18 +459,21 @@ abstract class dp_base_component {
                 }
 
                 // Check if not already assigned
-                if (!isset($assigned[$itemid])) {
+                if (!isset($assigned_ids[$itemid])) {
                     $newitem = $this->assign_new_item($itemid);
                     $updates .= get_string('addedx', 'local_plan', $newitem).'<br>';
                 }
 
                 // Remove from list to prevent deletion
-                unset($assigned[$itemid]);
+                unset($assigned_ids[$itemid]);
             }
         }
 
         // Remaining items to be deleted
         foreach ($assigned as $item) {
+            if(!isset($assigned_ids[$item->$item_id_name])) {
+                continue;
+            }
             $this->unassign_item($item);
             $updates .= get_string('removedx', 'local_plan', $assigned[$item->id]->fullname).'<br>';
         }
