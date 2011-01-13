@@ -285,7 +285,7 @@ class dp_competency_component extends dp_base_component {
                 $approved = dp_is_approved($ca->approved);
 
                 $row = array();
-                $row[] = $this->display_competency_name($ca);
+                $row[] = $this->display_item_name($ca);
 
                 $row[] = $approved ? $this->display_status($ca) : '';
 
@@ -426,7 +426,7 @@ class dp_competency_component extends dp_base_component {
                 $proficient = $this->is_proficient($ca, $proficiencies);
 
                 $row = array();
-                $row[] = $this->display_competency_name($ca);
+                $row[] = $this->display_item_name($ca);
 
                 $row[] = $this->display_status($ca);
 
@@ -467,14 +467,22 @@ class dp_competency_component extends dp_base_component {
         return $proficiencies[$compid]->isproficient;
     }
 
-    function display_competency_name($ca) {
+
+    /**
+     * Display item's name
+     *
+     * @access  public
+     * @param   object  $item
+     * @return  string
+     */
+    public function display_item_name($item) {
         global $CFG;
-        $approved = dp_is_approved($ca->approved);
+        $approved = dp_is_approved($item->approved);
 
         $class = ($approved) ? '' : ' class="dimmed"';
         return '<a' . $class . ' href="'.$CFG->wwwroot.'/local/plan/components/' .
             $this->component . '/view.php?id=' . $this->plan->id .
-            '&amp;itemid=' . $ca->id . '">' . $ca->fullname . '</a>';
+            '&amp;itemid=' . $item->id . '">' . $item->fullname . '</a>';
     }
 
 

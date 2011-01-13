@@ -237,8 +237,8 @@ class dp_objective_component extends dp_base_component {
                 $objapproved = dp_is_approved($objective->approved);
 
                 $row = array();
-                $row[] = $this->display_objective_name($objective);
-                if ( $coursesenabled ){
+                $row[] = $this->display_item_name($objective);
+                if ($coursesenabled) {
                     $row[] = $objective->numcourses;
                 }
 //                $row[] = $objective->numevidences;
@@ -366,7 +366,7 @@ class dp_objective_component extends dp_base_component {
 
         while ($o = rs_fetch_next_record($records)) {
             $row = array();
-            $row[] = $this->display_objective_name($o);
+            $row[] = $this->display_item_name($o);
             $row[] = $o->proficiency;
             if($showpriorities) {
                 $row[] = $this->display_priority_as_text($o->priority, $o->priorityname, $priorityvalues);
@@ -388,12 +388,18 @@ class dp_objective_component extends dp_base_component {
     }
 
 
-    function display_objective_name($objective) {
+    /**
+     * Display item's name
+     *
+     * @access  public
+     * @param   object  $item
+     * @return  string
+     */
+    function display_item_name($item) {
         global $CFG;
-
         return '<a href="'.$CFG->wwwroot.'/local/plan/components/' .
             $this->component . '/view.php?id=' . $this->plan->id .
-            '&amp;itemid=' . $objective->id . '">' . $objective->objname . '</a>';
+            '&amp;itemid=' . $item->id . '">' . $item->objname . '</a>';
     }
 
 

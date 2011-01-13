@@ -622,6 +622,16 @@ abstract class dp_base_component {
      ********************************************************************************************/
 
     /**
+     * Display item's name
+     *
+     * @access  public
+     * @param   object  $item
+     * @return  string
+     */
+    abstract public function display_item_name($item);
+
+
+    /**
      * Return markup for javascript assignment picker
      *
      * @access  public

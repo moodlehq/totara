@@ -344,7 +344,7 @@ class dp_course_component extends dp_base_component {
                 $approved = dp_is_approved($ca->approved);
 
                 $row = array();
-                $row[] = $this->display_course_name($ca);
+                $row[] = $this->display_item_name($ca);
 
                 $row[] = $approved ? $this->display_status_as_progress_bar($ca, $completionstatus) : '';
 
@@ -473,7 +473,7 @@ class dp_course_component extends dp_base_component {
                 $completed = (substr($completionstatus, 0, 8) == 'complete');
 
                 $row = array();
-                $row[] = $this->display_course_name($ca);
+                $row[] = $this->display_item_name($ca);
 
                 $row[] = $this->display_status_as_progress_bar($ca, $completionstatus);
 
@@ -502,28 +502,36 @@ class dp_course_component extends dp_base_component {
     }
 
 
-    function display_course_name($ca) {
+    /**
+     * Display item's name
+     *
+     * @access  public
+     * @param   object  $item
+     * @return  string
+     */
+    public function display_item_name($item) {
         global $CFG;
-        $approved = dp_is_approved($ca->approved);
+        $approved = dp_is_approved($item->approved);
 
         if($approved) {
             $class = '';
             $launch = '<a href="' . $CFG->wwwroot .
-                '/course/view.php?id=' . $ca->courseid . '">' .
+                '/course/view.php?id=' . $item->courseid . '">' .
                 '<div class="plan-launch-course-button"><img src="' . $CFG->pixpath . '/launch-course.png" width="56" height="18" alt="' . get_string('launchcourse', 'local_plan') . '" /></a></div>';
         } else {
             $class = ' class="dimmed"';
             $launch = '';
         }
         return '<img class="course_icon" src="' .
-            $CFG->wwwroot . '/local/icon.php?icon=' . $ca->icon .
-            '&amp;id=' . $ca->courseid .
-            '&amp;size=small&amp;type=course" alt="' . $ca->fullname.
+            $CFG->wwwroot . '/local/icon.php?icon=' . $item->icon .
+            '&amp;id=' . $item->courseid .
+            '&amp;size=small&amp;type=course" alt="' . $item->fullname.
             '"><a' . $class .' href="' . $CFG->wwwroot .
             '/local/plan/components/' . $this->component.'/view.php?id=' .
-            $this->plan->id . '&amp;itemid=' . $ca->id . '">' . $ca->fullname .
+            $this->plan->id . '&amp;itemid=' . $item->id . '">' . $item->fullname .
             '</a>'. $launch;
     }
+
 
     function display_course_detail($caid) {
         global $CFG;
