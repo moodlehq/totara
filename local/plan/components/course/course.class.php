@@ -342,15 +342,12 @@ class dp_course_component extends dp_base_component {
         $sort = $table->get_sql_sort();
         $sort = ($sort=='') ? '' : ' ORDER BY ' . $sort;
 
-        // get all course completions for this plan's user
-        $completions = completion_info::get_all_courses($this->plan->userid);
-
         if ($records = get_recordset_sql($select.$from.$where.$sort,
             $table->get_page_start(),
             $table->get_page_size())) {
 
             while ($ca = rs_fetch_next_record($records)) {
-                $completionstatus = $this->get_completion_status($ca, $completions);
+                $completionstatus = $this->get_item_completion_status($ca);
                 $completed = (substr($completionstatus, 0, 8) == 'complete');
                 $approved = $this->is_item_approved($ca->approved);
 
@@ -473,16 +470,13 @@ class dp_course_component extends dp_base_component {
         $table->set_attribute('class', 'logtable generalbox dp-plan-component-items');
         $table->setup();
 
-        // get all course completions for this plan's user
-        $completions = completion_info::get_all_courses($this->plan->userid);
-
-        if($records = get_recordset_sql($select.$from.$where.$sort)) {
+        if ($records = get_recordset_sql($select.$from.$where.$sort)) {
             // get the scale values used for competencies in this plan
             $priorityvalues = get_records('dp_priority_scale_value',
                 'priorityscaleid', $priorityscaleid, 'sortorder', 'id,name,sortorder');
 
             while($ca = rs_fetch_next_record($records)) {
-                $completionstatus = $this->get_completion_status($ca, $completions);
+                $completionstatus = $this->get_item_completion_status($ca);
                 $completed = (substr($completionstatus, 0, 8) == 'complete');
 
                 $row = array();
@@ -591,10 +585,9 @@ class dp_course_component extends dp_base_component {
             $out .= $this->display_duedate_highlight_info($item->duedate);
             $out .= '</td>';
         }
-        $completions = completion_info::get_all_courses($this->plan->userid);
-        $completionstatus = $this->get_completion_status($item, $completions);
+        $completionstatus = $this->get_item_completion_status($item);
         if ($progressbar = $this->display_status_as_progress_bar($item, $completionstatus)) {
-            unset($completions, $completionstatus);
+            unset($completionstatus);
             $out .= '<td><table border="0"><tr><td style="border:0px;">';
             $out .= get_string('progress', 'local_plan').': </td><td style="border:0px;">'.$progressbar;
             $out .= '</td></tr></table></td>';
@@ -635,16 +628,44 @@ class dp_course_component extends dp_base_component {
         return $out;
     }
 
-    function get_completion_status($ca, $completions) {
-        // use value stored in dp_plan_course_assign if plan is already complete
-        if($this->plan->status == DP_PLAN_STATUS_COMPLETE) {
-            return $ca->completionstatus;
+
+    /**
+     * Check if an item is complete
+     *
+     * @access  protected
+     * @param   object  $item
+     * @return  boolean
+     */
+    protected function is_item_complete($item) {
+        return strstr($this->get_item_completion_status($item), 'complete') !== false;
+    }
+
+
+    /**
+     * Get an items completion status
+     *
+     * @access  private
+     * @param   object  $item
+     * @return  string
+     */
+    private function get_item_completion_status($item) {
+
+        // Use value stored in dp_plan_course_assign if plan is already complete
+        if ($this->plan->is_complete()) {
+            return $item->completionstatus;
         }
-        // otherwise look up 'live' value from course completions table
-        if(array_key_exists($ca->courseid, $completions)) {
-            return completion_completion::get_status($completions[$ca->courseid]);
+
+        // Load user's completions
+        static $completions;
+        if (!isset($completions)) {
+            $completions = completion_info::get_all_courses($this->plan->userid);
+        }
+
+        // Look up 'live' value from course completions table
+        if (array_key_exists($item->courseid, $completions)) {
+            return completion_completion::get_status($completions[$item->courseid]);
         } else {
-            // no completion record
+            // No completion record
             return false;
         }
     }

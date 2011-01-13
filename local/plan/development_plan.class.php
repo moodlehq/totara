@@ -426,9 +426,6 @@ class development_plan {
         $inprogresscount = 0;
         $progress = 0;
 
-        // Get all course completion info for the plan's user
-        $completions = completion_info::get_all_courses($this->userid);
-
         // Get courses assigned to this plan
         if ($courses = $this->get_component('course')->get_assigned_items()) {
             foreach ($courses as $c) {
@@ -436,7 +433,7 @@ class development_plan {
                     continue;
                 }
                 // Determine course completion
-                $completionstatus = $this->get_component('course')->get_completion_status($c, $completions);
+                $completionstatus = $this->get_component('course')->get_item_completion_status($c);
                 if (empty($completionstatus)) {
                     continue;
                 }
