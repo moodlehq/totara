@@ -119,7 +119,7 @@ foreach ($components as $componentname => $component) {
         continue;
     }
 
-    print_heading(get_string($component->component, 'local_plan'));
+    print_heading(get_string($component->component.'plural', 'local_plan'));
 
     print $component->display_approval_list($requested_items[$componentname]);
 }
