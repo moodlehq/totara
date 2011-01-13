@@ -51,7 +51,7 @@ if(substr($currenttab, 0, 13) == 'comptemplates'){
 
 $tabs = array($toprow, $secondrow);
 
-print_heading(get_string('assignedcompetenciesandtemplates', 'competency'));
+print_heading(get_string('assignedcompetencies', 'competency'));
 // print out tabs
 print_tabs($tabs, $currenttab, $inactive, $activated);
 
