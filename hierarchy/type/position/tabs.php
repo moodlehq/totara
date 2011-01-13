@@ -19,10 +19,13 @@ $inactive = array();
 $frameworks = get_records('comp_framework', '', '', 'sortorder');
 $toprow[] = new tabobject('competencies', $CFG->wwwroot.'/hierarchy/item/view.php?id='.$id.'&edit='.$edit.'&type=position&comptype=competencies', get_string('competencies', 'competency'));
 
+$assignedcounts = get_records_sql_menu("SELECT comp.frameworkid, COUNT(*) from {$CFG->prefix}pos_competencies poscomp JOIN {$CFG->prefix}comp comp ON poscomp.competencyid=comp.id where poscomp.positionid={$id} GROUP BY comp.frameworkid");
+
 if(substr($currenttab, 0, 12) == 'competencies'){
     if($frameworks){
         foreach($frameworks as $framework){
-            $secondrow[] = new tabobject('competencies'.$framework->id, $CFG->wwwroot.'/hierarchy/item/view.php?id='.$id.'&edit='.$edit.'&type='.$type.'&framework='.$framework->id.'&comptype='.$comptype, $framework->fullname);
+            $count = isset($assignedcounts[$framework->id]) ? $assignedcounts[$framework->id] : 0;
+            $secondrow[] = new tabobject('competencies'.$framework->id, $CFG->wwwroot.'/hierarchy/item/view.php?id='.$id.'&edit='.$edit.'&type='.$type.'&framework='.$framework->id.'&comptype='.$comptype, $framework->fullname.'('.$count.')');
         }
 
         if(substr($currenttab, 0, 12) == 'competencies'){
