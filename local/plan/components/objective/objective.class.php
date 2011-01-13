@@ -85,25 +85,6 @@ class dp_objective_component extends dp_base_component {
 
 
     /**
-     * Get list of items assigned to plan
-     *
-     * @access  public
-     * @return  array
-     */
-    public function get_assigned_items_count() {
-        global $CFG;
-
-        $count = count_records('dp_plan_objective', 'planid', $this->plan->id);
-
-        if (!$count) {
-            $count = 0;
-        }
-
-        return $count;
-    }
-
-
-    /**
      * Process an action
      *
      * General component actions can come in here

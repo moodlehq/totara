@@ -109,36 +109,6 @@ class dp_course_component extends dp_base_component {
 
 
     /**
-     * Get list of items assigned to plan
-     *
-     * @access  public
-     * @return  array
-     */
-    public function get_assigned_items_count() {
-        global $CFG;
-
-        $count = count_records_sql(
-            "
-            SELECT *
-            FROM
-                {$CFG->prefix}dp_plan_course_assign a
-            INNER JOIN
-                {$CFG->prefix}course c
-             ON c.id = a.courseid
-            WHERE
-                a.planid = {$this->plan->id}
-            "
-        );
-
-        if (!$count) {
-            $count = 0;
-        }
-
-        return $count;
-    }
-
-
-    /**
      * Process an action
      *
      * General component actions can come in here
