@@ -48,9 +48,12 @@ class dp_objective_component extends dp_base_component {
      *
      * @access  public
      * @param   mixed   $approved   (optional)
+     * @param   string  $orderby    (optional)
+     * @param   int     $limitfrom  (optional)
+     * @param   int     $limitnum   (optional)
      * @return  array
      */
-    public function get_assigned_items($approved = null) {
+    public function get_assigned_items($approved = null, $orderby='', $limitfrom='', $limitnum='') {
         global $CFG;
 
         // Generate where clause
@@ -60,6 +63,11 @@ class dp_objective_component extends dp_base_component {
                 $approved = implode(', ', $approved);
             }
             $where .= " AND a.approved IN ({$approved})";
+        }
+
+        // Generate order by clause
+        if ($orderby) {
+            $orderby = "ORDER BY $orderby";
         }
 
         $assigned = get_records_sql(
@@ -73,7 +81,10 @@ class dp_objective_component extends dp_base_component {
                 {$CFG->prefix}dp_plan_objective a
             WHERE
                 $where
-            "
+                $orderby
+            ",
+            $limitfrom,
+            $limitnum
         );
 
         if (!$assigned) {

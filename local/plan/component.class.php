@@ -159,17 +159,18 @@ abstract class dp_base_component {
 
 
     /**
-     * Get items assigned to this component (if relevant - to be overridden by children classes)
+     * Get list of items assigned to plan
      *
      * Optionally, filtered by status
      *
      * @access  public
      * @param   mixed   $approved   (optional)
+     * @param   string  $orderby    (optional)
+     * @param   int     $limitfrom  (optional)
+     * @param   int     $limitnum   (optional)
      * @return  array
      */
-    function get_assigned_items($approved = null) {
-        return array();
-    }
+    abstract public function get_assigned_items($approved = null, $orderby='', $limitfrom='', $limitnum='');
 
 
     /**
