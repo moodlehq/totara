@@ -109,6 +109,11 @@ abstract class dp_base_component {
             return false;
         }
 
+        // If the plan is in a draft state, skip the approval process
+        if (!$this->plan->is_active()) {
+            return DP_PERMISSION_ALLOW;
+        }
+
         return $updateitem;
     }
 
