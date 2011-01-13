@@ -13,7 +13,7 @@ $plancompleted = $plan->status == DP_PLAN_STATUS_COMPLETE;
 $componentname = 'objective';
 $component = $plan->get_component($componentname);
 $objectivename = get_string($componentname, 'local_plan');
-$coursename = get_string('course', 'local_plan');
+$coursename = get_string('courseplural', 'local_plan');
 
 /// Javascript stuff
 // If we are showing dialog
@@ -72,12 +72,14 @@ if ( !$plancompleted && ($canupdate = $component->can_update_items()) ){
 
 if ( $plan->get_component('course')->get_setting('enabled') ){
     print '<h3>' . get_string('linkedx', 'local_plan', $coursename) . '</h3>';
+    print '<div id="dp-objective-courses-container">';
     if($linkedcourses =
         $component->get_linked_components($caid, 'course')) {
         print $plan->get_component('course')->display_linked_courses($linkedcourses);
     } else {
-        print '<p>' . get_string('nolinkedx', 'local_plan', $coursename). '</p>';
+        print '<p class="noitems-assigncourses">' . get_string('nolinkedx', 'local_plan', $coursename). '</p>';
     }
+    print '</div>';
 
     if ( !$plancompleted ){
         print $component->display_course_picker($caid);

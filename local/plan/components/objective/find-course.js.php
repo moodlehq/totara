@@ -69,6 +69,6 @@ totaraDialog_handler_preRequisite.prototype._update = function(response) {
     }
     else {
         // Add new table
-        $('div#content div#dp-objective-courses-marker').prepend(response);
+        $('div#content div#dp-objective-courses-container').prepend(response);
     }
 }

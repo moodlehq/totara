@@ -60,6 +60,6 @@ if($linkedcourses =
     $component->get_linked_components($objectiveid, 'course')) {
     echo $plan->get_component('course')->display_linked_courses($linkedcourses);
 } else {
-    $coursename = get_string('course', 'local_plan');
-    echo '<p>' . get_string('nolinkedx', 'local_plan', $coursename). '</p>';
+    $coursename = get_string('courseplural', 'local_plan');
+    echo '<p class="noitems-assigncourses">' . get_string('nolinkedx', 'local_plan', $coursename). '</p>';
 }
