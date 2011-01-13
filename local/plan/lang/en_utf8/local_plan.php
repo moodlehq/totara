@@ -122,11 +122,6 @@ $string['autoassignpos'] = 'Automatically assign by position';
 $string['autoassignorg'] = 'Automatically assign by organisation';
 $string['error:dateformat'] = 'Please enter a date in the format dd/mm/yyyy';
 
-// Default Component Names
-$string['course_defaultname'] = 'Courses';
-$string['competency_defaultname'] = 'Competencies';
-$string['objective_defaultname'] = 'Objectives';
-
 // Generic Strings
 $string['name'] = 'Name';
 $string['status'] = 'Status';
@@ -185,8 +180,11 @@ $string['coursenotfound'] = 'Course not found';
 
 
 //Competency Strings
+$string['competency'] = 'Competency';
+$string['competencyplural'] = 'Competencies';
 $string['competencies'] = 'Competencies';
 $string['updatecompetency'] = 'Update competencies';
+$string['competenciesupdated'] = 'Competencies updated';
 $string['updaterequestedcompetency'] = 'Update requested competencies';
 $string['updatecompetency'] = 'Update';
 $string['addremovecompetency'] = 'Add/remove competencies';
@@ -194,8 +192,13 @@ $string['setproficiency'] = 'Set Proficiency';
 $string['proficiency'] = 'Proficiency';
 $string['error:competencynotfound'] = 'Competency not found';
 $string['error:competenciesupdated'] = 'Competencies not updated';
+$string['nocompetencies'] = 'No competencies.';
+$string['nolinkedcompetencies'] = 'No linked competencies.';
+$string['linkedcompetencies'] = 'Linked competencies';
 
 //Objective Strings
+$string['objective'] = 'Objective';
+$string['objectiveplural'] = 'Objectives';
 $string['objectives'] = 'Objectives';
 $string['addobjective'] = 'Add objective';
 $string['updateobjectives'] = 'Update objectives';
@@ -450,12 +453,7 @@ $string['deletedobjectivescalevalue'] = 'The objective scale value $a has been d
 $string['noobjectivescales'] = 'To use objectives setup an objective scale';
 
 
-$string['competenciesupdated'] = 'Competencies updated';
 $string['launchcourse'] = 'Launch course';
-$string['objective'] = 'Objective';
-$string['objectiveplural'] = 'Objectives';
-$string['competency'] = 'Competency';
-$string['competencyplural'] = 'Competencies';
 $string['course'] = 'Course';
 $string['courseplural'] = 'Courses';
 $string['overview'] = 'Overview';
@@ -480,9 +478,6 @@ $string['actions'] = 'Actions';
 $string['confirmitemdelete'] = 'Are you sure you want to remove this item?';
 $string['cannotremoveitem'] = 'There was a problem removing that item';
 $string['canremoveitem'] = 'The item was successfully removed';
-$string['nocompetencies'] = 'No competencies.';
-$string['nolinkedcompetencies'] = 'No linked competencies.';
-$string['linkedcompetencies'] = 'Linked competencies';
 $string['noobjectives'] = 'No objectives.';
 $string['nolinkedobjectives'] = 'No linked objectives.';
 $string['linkedobjectives'] = 'Linked objectives';
