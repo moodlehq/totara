@@ -101,7 +101,6 @@ if ( $deleteyes ){
 
         $result = $component->create_objective(
                 $data->fullname,
-                isset($data->shortname)?$data->shortname:null,
                 isset($data->description)?$data->description:null,
                 isset($data->priority)?$data->priority:null,
                 isset($data->duedate)?$data->duedate:null
@@ -117,7 +116,6 @@ if ( $deleteyes ){
         $record->id = $data->itemid;
         $record->planid = $data->id;
         $record->fullname = $data->fullname;
-        $record->shortname = $data->shortname;
         $record->description = $data->description;
         $record->priority = isset($data->priority)?$data->priority:null;
         $record->duedate = isset($data->duedate)?$data->duedate:null;
@@ -131,7 +129,7 @@ if ( $deleteyes ){
             if ($plan->status != DP_PLAN_STATUS_UNAPPROVED) {
                 // Check for changes and send notifications accordingly
                 $updated = false;
-                foreach (array('fullname', 'shortname', 'description', 'priority', 'duedate', 'approved') as $attribute) {
+                foreach (array('fullname', 'description', 'priority', 'duedate', 'approved') as $attribute) {
                     if ($record->$attribute != $objective->$attribute) {
                         $updated = $attribute;
                         break;

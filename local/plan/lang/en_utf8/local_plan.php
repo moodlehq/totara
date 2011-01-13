@@ -212,7 +212,6 @@ $string['error:objectivesupdated'] = 'Objectives not updated';
 $string['error:objectivedeleted'] = 'Objective not deleted';
 $string['error:objectiveidincorrect'] = 'Objective ID incorrect';
 $string['objectivetitle'] = 'Objective Title';
-$string['objectiveshortname'] = 'Objective Short Name';
 $string['objectivedescription'] = 'Objective Description';
 $string['objectivepriority'] = 'Objective Priority';
 $string['objectivescalevalueid'] = 'Objective Proficiency';

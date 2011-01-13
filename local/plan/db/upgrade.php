@@ -324,5 +324,12 @@ function xmldb_local_plan_upgrade($oldversion=0) {
         }
     }
 
+    if ($result && $oldversion < 2011011300) {
+        // drop objective shortname col
+        $table = new XMLDBTable('dp_plan_objective');
+        $field = new XMLDBField('shortname');
+        $result = $result && drop_field($table, $field);
+    }
+
     return $result;
 }

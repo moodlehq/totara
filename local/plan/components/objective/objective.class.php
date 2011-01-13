@@ -702,13 +702,12 @@ class dp_objective_component extends dp_base_component {
     /**
      * Create a new objective. (Does not check for permissions)
      * @param string $fullname
-     * @param string $shortname
      * @param string $description
      * @param int $priority
      * @param int $duedate
      * @return boolean
      */
-    public function create_objective($fullname, $shortname=null, $description=null, $priority=null, $duedate=null) {
+    public function create_objective($fullname, $description=null, $priority=null, $duedate=null) {
         if ( !$this->can_update_items() ){
             return false;
         }
@@ -716,7 +715,6 @@ class dp_objective_component extends dp_base_component {
         $rec = new stdClass();
         $rec->planid = $this->plan->id;
         $rec->fullname = $fullname;
-        $rec->shortname = $shortname;
         $rec->description = $description;
         $rec->priority = $priority;
         $rec->duedate = $duedate;
@@ -725,7 +723,7 @@ class dp_objective_component extends dp_base_component {
 
         $result = insert_record('dp_plan_objective', $rec);
 
-        $this->send_creation_notification($result, $shortname);
+        $this->send_creation_notification($result, $fullname);
 
         return $result;
     }
@@ -775,10 +773,10 @@ class dp_objective_component extends dp_base_component {
     /**
      * send objective creation notification
      * @param int $objid Objective Id
-     * @param string $shortname the shortname of the objective
+     * @param string $fullname the title of the objective
      * @return nothing
      */
-    function send_creation_notification($objid, $shortname) {
+    function send_creation_notification($objid, $fullname) {
         global $USER, $CFG;
         require_once($CFG->dirroot.'/local/totara_msg/messagelib.php');
 
@@ -788,7 +786,7 @@ class dp_objective_component extends dp_base_component {
         $event->contexturl = "{$CFG->wwwroot}/local/plan/components/objective/view.php?id={$this->plan->id}&itemid={$objid}";
         $event->icon = 'objective-add.png';
         $a = new stdClass;
-        $a->objective = "<a href=\"{$event->contexturl}\" title=\"$shortname\">$shortname</a>";
+        $a->objective = "<a href=\"{$event->contexturl}\">$fullname</a>";
         $a->plan = "<a href=\"{$CFG->wwwroot}/local/plan/view.php?id={$this->plan->id}\" title=\"{$this->plan->name}\">{$this->plan->name}</a>";
 
         // did they create it themselves?
@@ -809,7 +807,7 @@ class dp_objective_component extends dp_base_component {
         else {
             $userto = get_record('user', 'id', $this->plan->userid);
             $event->userto = $userto;
-            $event->subject = get_string('objectivenewshortlearner', 'local_plan', $shortname);
+            $event->subject = get_string('objectivenewshortlearner', 'local_plan', $fullname);
             $event->fullmessage = get_string('objectivenewlonglearner', 'local_plan', $a);
             tm_notification_send($event);
         }
@@ -832,7 +830,7 @@ class dp_objective_component extends dp_base_component {
         $event->contexturl = "{$CFG->wwwroot}/local/plan/components/objective/view.php?id={$this->plan->id}&itemid={$objective->id}";
         $event->icon = 'objective-update.png';
         $a = new stdClass;
-        $a->objective = "<a href=\"{$event->contexturl}\" title=\"{$objective->shortname}\">{$objective->fullname}</a>";
+        $a->objective = "<a href=\"{$event->contexturl}\">{$objective->fullname}</a>";
         $a->plan = "<a href=\"{$CFG->wwwroot}/local/plan/view.php?id={$this->plan->id}\" title=\"{$this->plan->name}\">{$this->plan->name}</a>";
         $a->field = get_string('objective'.$field, 'local_plan');
 
@@ -883,7 +881,7 @@ class dp_objective_component extends dp_base_component {
         $event->contexturl = "{$CFG->wwwroot}/local/plan/components/objective/view.php?id={$this->plan->id}&itemid={$objective->id}";
         $event->icon = 'objective-'.($status == 'complete' ? 'complete' : 'fail').'.png';
         $a = new stdClass;
-        $a->objective = "<a href=\"{$event->contexturl}\" title=\"{$objective->shortname}\">{$objective->fullname}</a>";
+        $a->objective = "<a href=\"{$event->contexturl}\">{$objective->fullname}</a>";
         $a->plan = "<a href=\"{$CFG->wwwroot}/local/plan/view.php?id={$this->plan->id}\" title=\"{$this->plan->name}\">{$this->plan->name}</a>";
 
         // did they complete it themselves?
@@ -1102,7 +1100,6 @@ class dp_objective_component extends dp_base_component {
             select
                 o.id,
                 o.fullname,
-                o.shortname,
                 o.description,
                 o.approved,
                 o.duedate,
@@ -1132,9 +1129,6 @@ SQL;
         // @todo add icon
         $out .= "<table><tr><td>";
         $out .= "<h3>{$item->fullname}\n";
-        if (!empty($item->shortname)) {
-            $out .= " ({$item->shortname})\n";
-        }
         $out .= "</h3>";
         $out .= "</td></tr></table>";
 
