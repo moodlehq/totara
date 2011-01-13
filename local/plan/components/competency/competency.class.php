@@ -68,10 +68,9 @@ class dp_competency_component extends dp_base_component {
         $assigned = get_records_sql(
             "
             SELECT
-                c.id,
+                a.id,
                 a.planid,
                 a.competencyid,
-                a.id AS itemid,
                 c.fullname,
                 a.approved
             FROM
@@ -344,6 +343,7 @@ class dp_competency_component extends dp_base_component {
             return $out;
         }
     }
+
 
     function display_linked_competencies($list) {
         global $CFG;

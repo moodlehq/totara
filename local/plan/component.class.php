@@ -561,7 +561,7 @@ abstract class dp_base_component {
         $updated = array();
         foreach ($items as $item) {
             // Attempt to load item
-            $record = get_record($table, 'id', $item->itemid);
+            $record = get_record($table, 'id', $item->id);
             if (!$record) {
                 continue;
             }

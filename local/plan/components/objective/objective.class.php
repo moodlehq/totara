@@ -67,8 +67,7 @@ class dp_objective_component extends dp_base_component {
             SELECT
                 a.id,
                 a.planid,
-                a.fullname,
-                a.id AS itemid
+                a.fullname
             FROM
                 {$CFG->prefix}dp_plan_objective a
             WHERE
