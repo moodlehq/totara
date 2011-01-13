@@ -495,13 +495,31 @@ div#totara-header-notifications .notifysuccess {
 div.totara-dialog {
     border-color:#FFFFFF;
     background:url("images/content_bg_blue.jpg") no-repeat scroll center top #FFFFFF;
+    overflow:visible !important;
 }
 div.totara-dialog div.ui-dialog-titlebar {
     background:0 none;
     border:0 none;
+    overflow:visible;
 }
+.ui-dialog-title {
+    background:transparent url("images/dialog_header_left.gif") no-repeat top left;
+    padding-left:10px;
+    position:relative;
+    left:-20px;
+}
+.ui-dialog-title h2 {
+    padding: 7px 20px 2px 20px;
+    background:transparent url("images/dialog_header_right.gif") no-repeat top right;
+    color:#FFFFFF;
+}
+
 div.totara-dialog div.ui-dialog-titlebar a.ui-dialog-titlebar-close {
     display:none;
+}
+div.ui-dialog.ui-corner-all {
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
 }
 
 /**
