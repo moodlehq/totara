@@ -1131,13 +1131,13 @@ class development_plan {
         // Change items to requested status
         // Loop through components, generating message
         foreach ($unapproved as $component => $items) {
-            $c = $this->get_component($component);
-            $items = $c->make_items_requested($items);
+            $comp = $this->get_component($component);
+            $items = $comp->make_items_requested($items);
 
             // Generate message
             if ($items) {
                 $total_items += count($items);
-                $message_data[] = count($items).' '. get_string($component->component, 'local_plan');
+                $message_data[] = count($items).' '. get_string($comp->component, 'local_plan');
             }
         }
 
