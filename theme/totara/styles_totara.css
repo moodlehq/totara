@@ -417,6 +417,8 @@ div#header {
 #totara_menu ul li.selected ul li.selected a {
     font-weight: bold;
     cursor: default;
+    background:transparent url('images/tab_indent.gif') no-repeat bottom center;
+    padding-bottom:7px;
 }
 
 #totara_menu ul li.selected ul li.selected a:hover {
