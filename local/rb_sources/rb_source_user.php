@@ -53,22 +53,31 @@ class rb_source_user extends rb_base_source {
             new rb_join(
                 'totara_stats_comp_achieved',
                 'LEFT',
-                $CFG->prefix . 'block_totara_stats',
-                'base.id = totara_stats_comp_achieved.userid AND totara_stats_comp_achieved.eventtype = 4',
+                "(SELECT userid, count(data2) ". sql_as() ." number
+                    FROM {$CFG->prefix}block_totara_stats
+                    WHERE eventtype = 4
+                    GROUP BY userid)",
+                'base.id = totara_stats_comp_achieved.userid',
                 REPORT_BUILDER_RELATION_ONE_TO_ONE
             ),
             new rb_join(
                 'totara_stats_courses_started',
                 'LEFT',
-                $CFG->prefix . 'block_totara_stats',
-                'base.id = totara_stats_courses_started.userid AND totara_stats_courses_started.eventtype = 2',
+                "(SELECT userid, count(data2) ". sql_as() ." number
+                    FROM {$CFG->prefix}block_totara_stats
+                    WHERE eventtype = 2
+                    GROUP BY userid)",
+                'base.id = totara_stats_courses_started.userid',
                 REPORT_BUILDER_RELATION_ONE_TO_ONE
             ),
             new rb_join(
                 'totara_stats_courses_completed',
                 'LEFT',
-                $CFG->prefix . 'block_totara_stats',
-                'base.id = totara_stats_courses_completed.userid AND totara_stats_courses_completed.eventtype = 3',
+                "(SELECT userid, count(data2) ". sql_as() ." number
+                    FROM {$CFG->prefix}block_totara_stats
+                    WHERE eventtype = 3
+                    GROUP BY userid)",
+                'base.id = totara_stats_courses_completed.userid',
                 REPORT_BUILDER_RELATION_ONE_TO_ONE
             )
         );
@@ -126,10 +135,10 @@ class rb_source_user extends rb_base_source {
                         'statistics',
                         'competenciesachieved',
                         get_string('usersachievedcompcount', 'rb_source_user'),
-                        'totara_stats_comp_achieved.data2',
+                        'totara_stats_comp_achieved.number',
                         array(
+                            'displayfunc' => 'count',
                             'joins' => 'totara_stats_comp_achieved',
-                            'grouping' => 'count',
                         )
         );
 
@@ -138,10 +147,10 @@ class rb_source_user extends rb_base_source {
                         'statistics',
                         'coursesstarted',
                         get_string('userscoursestartedcount', 'rb_source_user'),
-                        'totara_stats_courses_started.data2',
+                        'totara_stats_courses_started.number',
                         array(
+                            'displayfunc' => 'count',
                             'joins' => 'totara_stats_courses_started',
-                            'grouping' => 'count',
                         )
         );
 
@@ -150,10 +159,10 @@ class rb_source_user extends rb_base_source {
                         'statistics',
                         'coursescompleted',
                         get_string('userscoursescompletedcount', 'rb_source_user'),
-                        'totara_stats_courses_completed.data2',
+                        'totara_stats_courses_completed.number',
                         array(
+                            'displayfunc' => 'count',
                             'joins' => 'totara_stats_courses_completed',
-                            'grouping' => 'count',
                         )
         );
 
@@ -229,6 +238,9 @@ class rb_source_user extends rb_base_source {
         return $disp;
     }
 
+    function rb_display_count($result) {
+        return $result ? $result : 0;
+    }
 
 }
 
