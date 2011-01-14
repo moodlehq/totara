@@ -502,15 +502,21 @@ div.totara-dialog div.ui-dialog-titlebar {
     border:0 none;
     overflow:visible;
 }
-.ui-dialog-title {
+div.totara-dialog div.ui-dialog-titlebar {
     background:transparent url("images/dialog_header_left.gif") no-repeat top left;
     padding-left:10px;
     position:relative;
     left:-20px;
+    padding-bottom:0px;
 }
-.ui-dialog-title h2 {
+div.totara-dialog div.ui-dialog-titlebar span.ui-dialog-title {
     padding: 7px 20px 2px 20px;
     background:transparent url("images/dialog_header_right.gif") no-repeat top right;
+    color:#FFFFFF;
+    font-size:16px;
+}
+div.totara-dialog div.ui-dialog-titlebar span.ui-dialog-title h2 {
+    font-size:16px;
     color:#FFFFFF;
 }
 
@@ -520,6 +526,30 @@ div.totara-dialog div.ui-dialog-titlebar a.ui-dialog-titlebar-close {
 div.ui-dialog.ui-corner-all {
     -moz-border-radius: 10px;
     -webkit-border-radius: 10px;
+}
+.dialog_notification_success, .dialog_notification_problem {
+    font-size:26px;
+    font-weight:bold;
+    text-align:center;
+    padding:10px 0;
+}
+.dialog_notification_success {
+    color:#61AA2C;
+}
+.dialog_notification_success .dialog_notification_icon {
+    background:transparent url("images/tick_large.gif") no-repeat left center;
+}
+.dialog_notification_problem {
+    color:#BE0000;
+}
+.dialog_notification_problem .dialog_notification_icon {
+    background:transparent url("images/cross_large.gif") no-repeat left center;
+}
+.dialog_notification_icon {
+    padding-left:43px;
+}
+.dialog_notification_information {
+    text-align:center;
 }
 
 /**
