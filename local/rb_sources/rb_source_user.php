@@ -166,6 +166,25 @@ class rb_source_user extends rb_base_source {
                         )
         );
 
+        $columnoptions[] = new rb_column_option(
+                        'user',
+                        'namewithlinks',
+                        'User Fullname (with links to learning components)',
+                        sql_fullname("base.firstname", "base.lastname"),
+                        array(
+                            'displayfunc' => 'user_with_links',
+                            'defaultheading' => 'User',
+                            'extrafields' => array(
+                                'user_id' => 'base.id',
+                                'userpic_picture' => 'base.picture',
+                                'userpic_firstname' => 'base.firstname',
+                                'userpic_lastname' => 'base.lastname',
+                                'userpic_imagealt' => 'base.imagealt'
+                            ),
+                        )
+        );
+
+
         return $columnoptions;
     }
 
@@ -236,6 +255,29 @@ class rb_source_user extends rb_base_source {
 
         $disp .= '</span>';
         return $disp;
+    }
+
+    function rb_display_user_with_links($user, $row) {
+        global $CFG;
+        $userid = $row->user_id;
+
+        $picuser = new stdClass();
+        $picuser->id = $userid;
+        $picuser->picture = $row->userpic_picture;
+        $picuser->imagealt = $row->userpic_imagealt;
+        $picuser->firstname = $row->userpic_firstname;
+        $picuser->lastname = $row->userpic_lastname;
+        $user_pic = print_user_picture($picuser, 1, null, null, true);
+
+        $rol_link = "<a href=\"{$CFG->wwwroot}/local/plan/record/courses.php?userid={$userid}\">Records</a>";
+        $plan_link = "<a href=\"{$CFG->wwwroot}/local/plan/index.php?userid={$userid}\">Plans</a>";
+        $profile_link = "<a href=\"{$CFG->wwwroot}/user/view.php?id={$userid}\">Profile</a>";
+        $booking_link = "<a href=\"{$CFG->wwwroot}/my/bookings.php?userid={$userid}\">Bookings</a>";
+
+        return '<div class="picture">'.$user_pic.'</div>' .
+            '<div><span class="username">'.$user.'</span></div>'.
+            '<div class="links">'.$plan_link.' | '.$profile_link.' | '.$booking_link.' | '.$rol_link.'</div>';
+
     }
 
     function rb_display_count($result) {

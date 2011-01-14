@@ -14,7 +14,7 @@ class rb_team_members_embedded extends rb_base_embedded {
         $this->columns = array(
             array(
                 'type' => 'user',
-                'value' => 'namelinkicon',
+                'value' => 'namewithlinks',
                 'heading' => 'Name'
             ),
             array(
@@ -36,11 +36,6 @@ class rb_team_members_embedded extends rb_base_embedded {
                 'type' => 'statistics',
                 'value' => 'competenciesachieved',
                 'heading' => 'Competencies Achieved'
-            ),
-            array(
-                'type' => 'user',
-                'value' => 'userlearningicons',
-                'heading' => 'Links',
             ),
         );
 

@@ -2292,3 +2292,20 @@ img.iconhelp {
     width: 16px;
     height: 16px;
 }
+
+td.user_namewithlinks span.username {
+    font-size: 1.3em;
+}
+
+td.user_namewithlinks div.picture {
+    float:left;
+    padding-right:4px;
+}
+
+td.user_namewithlinks div.links {
+    white-space:nowrap;
+}
+
+td.user_namewithlinks {
+    width:225px;
+}
