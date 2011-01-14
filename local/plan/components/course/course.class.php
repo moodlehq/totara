@@ -92,11 +92,9 @@ class dp_course_component extends dp_base_component {
         $assigned = get_records_sql(
             "
             SELECT
-                a.id,
-                a.planid,
-                a.courseid,
+                a.*,
                 c.fullname,
-                a.approved
+                c.icon
             FROM
                 {$CFG->prefix}dp_plan_course_assign a
             INNER JOIN
@@ -241,179 +239,6 @@ class dp_course_component extends dp_base_component {
     }
 
 
-    /**
-     * Return markup to display course items in a table
-     *
-     * Optionally restrict results by approval status
-     *
-     * @access  public
-     * @param   mixed   $restrict   Array or integer (optional)
-     * @return  string
-     */
-    public function display_list($restrict = null) {
-        global $CFG;
-
-        $showduedates = ($this->get_setting('duedatemode') == DP_DUEDATES_OPTIONAL ||
-            $this->get_setting('duedatemode') == DP_DUEDATES_REQUIRED);
-        $showpriorities =
-            ($this->get_setting('prioritymode') == DP_PRIORITY_OPTIONAL ||
-            $this->get_setting('prioritymode') == DP_PRIORITY_REQUIRED);
-        $priorityscaleid = ($this->get_setting('priorityscale')) ? $this->get_setting('priorityscale') : -1;
-
-        $plancompleted = $this->plan->status == DP_PLAN_STATUS_COMPLETE;
-        $canrequestcourses = !$plancompleted &&
-            $this->get_setting('updatecourse') == DP_PERMISSION_REQUEST;
-        $canapprovecourses = !$plancompleted &&
-            $this->get_setting('updatecourse') == DP_PERMISSION_APPROVE;
-        $canremovecourses = !$plancompleted &&
-            $this->get_setting('updatecourse') >= DP_PERMISSION_ALLOW;
-        $cansetcompletion = !$plancompleted &&
-            $this->get_setting('setcompletionstatus') >= DP_PERMISSION_ALLOW;
-
-        // @todo fix sorting of status column to account for course
-        // completion - may need status column in course completions table
-        // reenable sorting on progress column when working
-        $count = 'SELECT COUNT(*) ';
-        $select = 'SELECT ca.*, c.fullname, c.icon, psv.name ' . sql_as() . ' priorityname ';
-
-        // get courses assigned to this plan
-        // and related details
-        $from = "FROM {$CFG->prefix}dp_plan_course_assign ca
-                LEFT JOIN
-                    {$CFG->prefix}course c ON c.id = ca.courseid
-                LEFT JOIN
-                    {$CFG->prefix}dp_priority_scale_value psv
-                    ON (ca.priority = psv.id
-                    AND psv.priorityscaleid = $priorityscaleid) ";
-        $where = "WHERE ca.planid = {$this->plan->id}";
-
-        // Check if restricting by approval status
-        if (isset($restrict)) {
-            if (is_array($restrict)) {
-                $restrict = implode(', ', $restrict);
-            }
-            $where .= " AND ca.approved IN ({$restrict})";
-        }
-
-        $count = count_records_sql($count.$from.$where);
-        if (!$count) {
-            return '<span class="noitems-assigncourses">'.get_string('nocourses', 'local_plan').'</span>';
-        }
-
-        $tableheaders = array(
-            get_string('coursename','local_plan'),
-            get_string('progress','local_plan'),
-        );
-        $tablecolumns = array(
-            'c.fullname',
-            'progress',
-        );
-
-        if($showpriorities) {
-            $tableheaders[] = get_string('priority', 'local_plan');
-            $tablecolumns[] = 'ca.priority';
-        }
-
-        if($showduedates) {
-            $tableheaders[] = get_string('duedate', 'local_plan');
-            $tablecolumns[] = 'ca.duedate';
-        }
-
-        if(!$plancompleted) {
-            //$tableheaders[] = get_string('status','local_plan');
-            $tableheaders[] = '';  // don't show status header
-            $tablecolumns[] = 'status';
-        }
-
-        $tableheaders[] = get_string('actions', 'local_plan');
-        $tablecolumns[] = 'actions';
-
-        $table = new flexible_table('courselist');
-        $table->define_columns($tablecolumns);
-        $table->define_headers($tableheaders);
-
-        $table->set_attribute('class', 'logtable generalbox dp-plan-component-items');
-        $table->sortable(true);
-        $table->no_sorting('progress');
-        $table->no_sorting('status');
-        $table->no_sorting('actions');
-        $table->setup();
-        $table->pagesize(20, $count);
-        $sort = $table->get_sql_sort();
-        $sort = ($sort=='') ? '' : ' ORDER BY ' . $sort;
-
-        if ($records = get_recordset_sql($select.$from.$where.$sort,
-            $table->get_page_start(),
-            $table->get_page_size())) {
-
-            while ($ca = rs_fetch_next_record($records)) {
-                $completionstatus = $this->get_item_completion_status($ca);
-                $completed = (substr($completionstatus, 0, 8) == 'complete');
-                $approved = $this->is_item_approved($ca->approved);
-
-                $row = array();
-                $row[] = $this->display_item_name($ca);
-
-                $row[] = $approved ? $this->display_status_as_progress_bar($ca, $completionstatus) : '';
-
-                if ($showpriorities) {
-                    $row[] = $this->display_priority($ca, $priorityscaleid);
-                }
-
-                if ($showduedates) {
-                    $row[] = $this->display_duedate($ca->id, $ca->duedate);
-                }
-
-                if (!$plancompleted) {
-                    $status = '';
-                    if ($approved) {
-                        if (!$completed) {
-                            $status = $this->display_duedate_highlight_info($ca->duedate);
-                        }
-                    } else {
-                        $status = $this->display_approval($ca, $canapprovecourses);
-                    }
-                    $row[] = $status;
-                }
-
-                $actions = '';
-
-                if ($canremovecourses ||
-                    ($canrequestcourses && (in_array($ca->approved, array(DP_APPROVAL_UNAPPROVED, DP_APPROVAL_DECLINED))))) {
-                    $currenturl = $this->get_url();
-                    $strdelete = get_string('delete', 'local_plan');
-                    $delete = '<a href="'.$currenturl.'&amp;d='.$ca->id.'" title="'.$strdelete.'"><img src="'.$CFG->pixpath.'/t/delete.gif" class="iconsmall" alt="'.$strdelete.'" /></a>';
-
-                    $actions .= $delete;
-                }
-
-                if($cansetcompletion && $approved) {
-                    $strrpl = get_string('addrpl', 'local_plan');
-                    $proficient = '<a href="'.$CFG->wwwroot.'/local/plan/components/course/rpl.php?planid='.$this->plan->id.'&courseid='.$ca->courseid.'">
-                        <img src="'.$CFG->pixpath.'/t/ranges.gif" class="iconsmall" alt="'.$strrpl.'" /></a>';
-                    $actions .= $proficient;
-                }
-
-                $row[] = $actions;
-
-                $table->add_data($row);
-            }
-
-            rs_close($records);
-
-            $table->hide_empty_cols();
-
-            // return instead of outputing table contents
-            ob_start();
-            $table->print_html();
-            $out = ob_get_contents();
-            ob_end_clean();
-
-            return $out;
-        }
-
-    }
-
     function display_linked_courses($list) {
         global $CFG;
 
@@ -476,13 +301,10 @@ class dp_course_component extends dp_base_component {
                 'priorityscaleid', $priorityscaleid, 'sortorder', 'id,name,sortorder');
 
             while($ca = rs_fetch_next_record($records)) {
-                $completionstatus = $this->get_item_completion_status($ca);
-                $completed = (substr($completionstatus, 0, 8) == 'complete');
-
                 $row = array();
                 $row[] = $this->display_item_name($ca);
 
-                $row[] = $this->display_status_as_progress_bar($ca, $completionstatus);
+                $row[] = $this->display_status_as_progress_bar($ca);
 
                 if($showpriorities) {
                     $row[] = $this->display_priority_as_text($ca->priority, $ca->priorityname, $priorityvalues);
@@ -585,8 +407,7 @@ class dp_course_component extends dp_base_component {
             $out .= $this->display_duedate_highlight_info($item->duedate);
             $out .= '</td>';
         }
-        $completionstatus = $this->get_item_completion_status($item);
-        if ($progressbar = $this->display_status_as_progress_bar($item, $completionstatus)) {
+        if ($progressbar = $this->display_status_as_progress_bar($item)) {
             unset($completionstatus);
             $out .= '<td><table border="0"><tr><td style="border:0px;">';
             $out .= get_string('progress', 'local_plan').': </td><td style="border:0px;">'.$progressbar;
@@ -600,10 +421,13 @@ class dp_course_component extends dp_base_component {
         return $out;
     }
 
-    function display_status_as_progress_bar($ca, $completionstatus) {
+    function display_status_as_progress_bar($ca) {
         global $CFG;
+
+        $completionstatus = $this->get_item_completion_status($ca);
+
         // @todo Move this into the single course page?
-        $plancompleted = $this->plan->status == DP_PLAN_STATUS_COMPLETE;
+        $plancompleted = $this->plan->is_complete();
         $canupdatecoursestatus = $this->get_setting('setcompletionstatus') == DP_PERMISSION_ALLOW;
         $out = '';
 
@@ -851,4 +675,44 @@ class dp_course_component extends dp_base_component {
 
         return $result;
     }
+
+
+    protected function display_list_item_progress($item) {
+        return $this->is_item_approved($item->approved) ? $this->display_status_as_progress_bar($item) : '';
+    }
+
+
+    protected function display_list_item_actions($item) {
+        global $CFG;
+
+        $markup = '';
+
+        // Get permissions
+        $canupdateitems = $this->can_update_items();
+        $canrequestitems = $canupdateitems == DP_PERMISSION_REQUEST;
+        $canapproveitems = $canupdateitems == DP_PERMISSION_APPROVE;
+        $canremoveitems = $canupdateitems == DP_PERMISSION_ALLOW;
+        $cansetcompletion = !$this->plan->is_complete() && $this->get_setting('setcompletionstatus') >= DP_PERMISSION_ALLOW;
+        $approved = $this->is_item_approved($item->approved);
+
+        // Actions
+        if ($canremoveitems ||
+            ($canrequestitems && (in_array($item->approved, array(DP_APPROVAL_UNAPPROVED, DP_APPROVAL_DECLINED))))) {
+            $currenturl = $this->get_url();
+            $strdelete = get_string('delete', 'local_plan');
+            $delete = '<a href="'.$currenturl.'&amp;d='.$item->id.'" title="'.$strdelete.'"><img src="'.$CFG->pixpath.'/t/delete.gif" class="iconsmall" alt="'.$strdelete.'" /></a>';
+
+            $markup .= $delete;
+        }
+
+        if ($cansetcompletion && $approved) {
+            $strrpl = get_string('addrpl', 'local_plan');
+            $proficient = '<a href="'.$CFG->wwwroot.'/local/plan/components/course/rpl.php?planid='.$this->plan->id.'&courseid='.$item->courseid.'">
+                <img src="'.$CFG->pixpath.'/t/ranges.gif" class="iconsmall" alt="'.$strrpl.'" /></a>';
+            $markup .= $proficient;
+        }
+
+        return $markup;
+    }
+
 }

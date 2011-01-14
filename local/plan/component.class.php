@@ -274,7 +274,129 @@ abstract class dp_base_component {
      * @param   mixed   $restrict   Array or integer (optional)
      * @return  string
      */
-    abstract public function display_list($restrict = null);
+    public function display_list($restrict = null) {
+        global $CFG;
+
+        // Plural
+        $plural = strtolower(get_string($this->component.'plural', 'local_plan'));
+
+        // If no items, return message instead of table
+        if (!$count = $this->count_assigned_items($restrict)) {
+            // Generate plural lang key
+            return '<span class="noitems-assign'.$plural.'">'.get_string('no'.$plural, 'local_plan').'</span>';
+        }
+
+        // Get table headers/columns
+        $headers = $this->get_list_headers();
+
+        // Generate table
+        $table = new flexible_table($this->component.'list');
+        $table->define_columns($headers->columns);
+        $table->define_headers($headers->headers);
+
+        $table->set_attribute('class', 'logtable generalbox dp-plan-component-items');
+        $table->sortable(true);
+        $table->no_sorting('progress');
+        $table->no_sorting('status');
+        $table->no_sorting('actions');
+        $table->setup();
+        $table->pagesize(20, $count);
+
+        // Load items for table
+        $page_start = $table->get_page_start();
+        $page_size = $table->get_page_size();
+        $sort = $table->get_sql_sort();
+        $items = $this->get_assigned_items($restrict, $sort, $page_start, $page_size);
+
+        // Loop through items
+        foreach ($items as $item) {
+            $row = $this->display_list_row($headers->columns, $item);
+            $table->add_data($row);
+        }
+
+        // Return instead of outputting table contents
+        ob_start();
+        $table->print_html();
+        $out = ob_get_contents();
+        ob_end_clean();
+
+        return $out;
+    }
+
+
+    /**
+     * Get column headers array
+     *
+     * @access  protected
+     * @return  object
+     */
+    protected function get_list_headers() {
+        // Get plan / component data
+        $plancompleted = $this->plan->is_complete();
+
+        // Get display options
+        $optreq = array(DP_DUEDATES_OPTIONAL, DP_DUEDATES_REQUIRED);
+        $showduedates = in_array($this->get_setting('duedatemode'), $optreq);
+        $showpriorities = in_array($this->get_setting('prioritymode'), $optreq);
+
+        // Generate table headers
+        $tableheaders = array(
+            get_string($this->component.'name', 'local_plan'),
+            get_string('progress', 'local_plan'),
+        );
+
+        $tablecolumns = array(
+            'name',
+            'progress',
+        );
+
+        if ($showpriorities) {
+            $tableheaders[] = get_string('priority', 'local_plan');
+            $tablecolumns[] = 'priority';
+        }
+
+        if ($showduedates) {
+            $tableheaders[] = get_string('duedate', 'local_plan');
+            $tablecolumns[] = 'duedate';
+        }
+
+        if (!$plancompleted) {
+            //$tableheaders[] = get_string('status','local_plan');
+            $tableheaders[] = '';  // don't show status header
+            $tablecolumns[] = 'status';
+        }
+
+        $tableheaders[] = get_string('actions', 'local_plan');
+        $tablecolumns[] = 'actions';
+
+        $return = new object();
+        $return->headers = $tableheaders;
+        $return->columns = $tablecolumns;
+
+        return $return;
+    }
+
+
+    /**
+     * Display row in item list
+     *
+     * @access  protected
+     * @param   $cols   array
+     * @param   $item   object
+     * @return  array   $row
+     */
+    protected function display_list_row($cols, $item) {
+
+        // Generate markup
+        $row = array();
+
+        foreach ($cols as $col) {
+            $method = "display_list_item_{$col}";
+            $row[] = $this->$method($item);
+        }
+
+        return $row;
+    }
 
 
     /**
@@ -690,11 +812,68 @@ abstract class dp_base_component {
         return "dp_plan_{$this->component}_assign";
     }
 
+
+    /**
+     * Get priority values
+     *
+     * @access  public
+     * @return  array
+     */
+    public function get_priority_values() {
+        static $values;
+        if (!isset($values)) {
+            $priorityscaleid = $this->get_setting('priorityscale') ? $this->get_setting('priorityscale') : -1;
+            $values = get_records('dp_priority_scale_value', 'priorityscaleid', $priorityscaleid, 'sortorder', 'id,name,sortorder');
+
+            if (!$values) {
+                $values = array();
+            }
+        }
+
+        return $values;
+    }
+
+
     /*********************************************************************************************
      *
      * Display methods
      *
      ********************************************************************************************/
+
+    protected function display_list_item_name($item) {
+        return $this->display_item_name($item);
+    }
+
+
+    protected function display_list_item_priority($item) {
+        return $this->display_priority($item);
+    }
+
+
+    protected function display_list_item_duedate($item) {
+        return $this->display_duedate($item->id, $item->duedate);
+    }
+
+
+    protected function display_list_item_status($item) {
+        // If item already approved but not completed
+        $item_approved = $this->is_item_approved($item->approved);
+        $completed = $this->is_item_complete($item);
+        $canapproveitems = $this->can_update_items() == DP_PERMISSION_APPROVE;
+
+        if ($item_approved && !$completed) {
+            return $this->display_duedate_highlight_info($item->duedate);
+        } elseif (!$item_approved) {
+            return $this->display_approval($item, $canapproveitems);
+        }
+
+        return '';
+    }
+
+
+#    abstract protected function display_list_item_progress($item);
+#    abstract protected function display_list_item_actions($item);
+
 
     /**
      * Display item's name
@@ -780,15 +959,24 @@ abstract class dp_base_component {
         return $out;
     }
 
-    function display_priority($ca, $priorityscaleid) {
-        $priorityvalues = get_records('dp_priority_scale_value',
-            'priorityscaleid', $priorityscaleid, 'sortorder', 'id,name,sortorder');
+    /**
+     * Display priority as text or picker depending on permissions
+     *
+     * @access  public
+     * @param   object  $item
+     * @return  string
+     */
+    public function display_priority($item) {
+        // Load priority values
+        $priorityvalues = $this->get_priority_values();
 
-        $plancompleted = ($this->plan->status == DP_PLAN_STATUS_COMPLETE);
+        // Load permissions
+        $plancompleted = $this->plan->is_complete();
+
         $cansetpriority = !$plancompleted && ($this->get_setting('setpriority') == DP_PERMISSION_ALLOW);
         $priorityenabled = $this->get_setting('prioritymode') != DP_PRIORITY_NONE;
         $priorityrequired = ($this->get_setting('prioritymode') == DP_PRIORITY_REQUIRED);
-        $prioritydefaultid = (int)get_field('dp_priority_scale', 'defaultid', 'id', $priorityscaleid);
+        $prioritydefaultid = $this->get_default_priority();
         $out = '';
 
         if(!$priorityenabled) {
@@ -797,14 +985,15 @@ abstract class dp_base_component {
 
         if ($cansetpriority) {
             // show a pulldown menu of priority options
-            $out .= $this->display_priority_picker("priorities_{$this->component}[{$ca->id}]", $ca->priority, $priorityvalues, $prioritydefaultid, $priorityrequired);
+            $out .= $this->display_priority_picker("priorities_{$this->component}[{$item->id}]", $item->priority, $priorityvalues, $prioritydefaultid, $priorityrequired);
         } else {
             // just display priority if no permissions to set it
-            $out .= $this->display_priority_as_text($ca->priority, $ca->priorityname, $priorityvalues);
+            $out .= $this->display_priority_as_text($item->priority, $item->priorityname, $priorityvalues);
         }
 
         return $out;
     }
+
 
     function display_priority_picker($name, $priorityid, $priorityvalues, $prioritydefaultid, $priorityrequired=false) {
 
