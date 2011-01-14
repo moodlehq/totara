@@ -468,11 +468,11 @@ class dp_course_component extends dp_base_component {
     /**
      * Get an items completion status
      *
-     * @access  private
+     * @access  public
      * @param   object  $item
      * @return  string
      */
-    private function get_item_completion_status($item) {
+    public function get_item_completion_status($item) {
 
         // Use value stored in dp_plan_course_assign if plan is already complete
         if ($this->plan->is_complete()) {
