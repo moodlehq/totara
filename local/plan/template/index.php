@@ -217,12 +217,9 @@ if ($fromform = $mform->get_data()) {
                 throw new PlanException(get_string('noclassforcomponent', 'local_plan', $string_properties));
             }
 
-            $defaultname = get_string($component.'_defaultname', 'local_plan');
-
             $cn = new object();
             $cn->templateid = $newtemplateid;
             $cn->component = $component;
-            $cn->name = $defaultname;
             $cn->enabled = 1;
             $sortorder = get_field_sql("SELECT max(sortorder) FROM {$CFG->prefix}dp_component_settings");
             $cn->sortorder = $sortorder + 1;

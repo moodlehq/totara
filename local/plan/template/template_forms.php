@@ -227,7 +227,7 @@ class dp_components_form extends moodleform {
                 $tablerow = array();
                 $configsetting = get_config(null, 'dp_'.$component->component);
                 $cssclass = !$component->enabled ? 'class="dimmed"' : '';
-                $compname = $configsetting ? $configsetting : get_string($component->component.'_defaultname', 'local_plan');
+                $compname = $configsetting ? $configsetting : get_string($component->component.'plural', 'local_plan');
                 $tablerow[] = '<span '.$cssclass.'>' . $compname . '</span>';
 
                 $buttons = array();

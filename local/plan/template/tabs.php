@@ -38,7 +38,7 @@ if($currenttab == 'workflowplan') {
                 continue;
             }
             $configsetting = get_config(null, 'dp_'.$component->component);
-            $compname = $configsetting ? $configsetting : get_string($component->component.'_defaultname', 'local_plan');
+            $compname = $configsetting ? $configsetting : get_string($component->component.'plural', 'local_plan');
             $secondrow[] = new tabobject('workflow'.$component->component, $CFG->wwwroot.'/local/plan/template/advancedworkflow.php?component='.$component->component.'&amp;id='.$id, $compname);
         }
     }
