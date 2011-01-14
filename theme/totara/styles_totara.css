@@ -97,6 +97,9 @@ div.block_admin_tree div.admintree .depth1 {
 div.block_admin_tree div.admintree .depth2 {
     padding-left: 20px;
 }
+.userinfobox td.label {
+    text-align: left;
+}
 
 /**
  * Layout Styles
