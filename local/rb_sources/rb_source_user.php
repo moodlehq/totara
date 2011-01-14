@@ -274,9 +274,8 @@ class rb_source_user extends rb_base_source {
         $profile_link = "<a href=\"{$CFG->wwwroot}/user/view.php?id={$userid}\">Profile</a>";
         $booking_link = "<a href=\"{$CFG->wwwroot}/my/bookings.php?userid={$userid}\">Bookings</a>";
 
-        return '<div class="picture">'.$user_pic.'</div>' .
-            '<div><span class="username">'.$user.'</span></div>'.
-            '<div class="links">'.$plan_link.' | '.$profile_link.' | '.$booking_link.' | '.$rol_link.'</div>';
+        return '<div class="picture">'.$user_pic.' <span class="username">'.$user.'</span></div>'.
+            '<div class="links">'.$plan_link.'&nbsp;|&nbsp;'.$profile_link.'&nbsp;|&nbsp;'.$booking_link.'&nbsp;|&nbsp;'.$rol_link.'</div>';
 
     }
 

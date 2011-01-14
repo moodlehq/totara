@@ -2302,10 +2302,6 @@ td.user_namewithlinks div.picture {
     padding-right:4px;
 }
 
-td.user_namewithlinks div.links {
-    white-space:nowrap;
-}
-
-td.user_namewithlinks {
-    width:225px;
+td.user_namewithlinks .userpicture {
+    vertical-align:middle
 }
