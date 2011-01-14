@@ -751,7 +751,8 @@ class dp_competency_component extends dp_base_component {
 
         if ($cansetproficiency && $approved) {
             $straddevidence = get_string('addevidence', 'local_plan');
-            $proficient = '<a href="'.$CFG->wwwroot.'/local/plan/components/competency/add_evidence.php?userid='.$this->plan->userid.'&planid='.$this->plan->id.'&competencyid='.$item->competencyid.'">
+            $proficient = '<a href="'.$CFG->wwwroot.'/local/plan/components/competency/add_evidence.php?userid='.$this->plan->userid.'&planid='.$this->plan->id.'&competencyid='.$item->competencyid.'"
+                title="'.$straddevidence.'">
                 <img src="'.$CFG->pixpath.'/t/ranges.gif" class="iconsmall" alt="'.$straddevidence.'" /></a>';
             $markup .= $proficient;
         }

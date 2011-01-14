@@ -707,7 +707,7 @@ class dp_course_component extends dp_base_component {
 
         if ($cansetcompletion && $approved) {
             $strrpl = get_string('addrpl', 'local_plan');
-            $proficient = '<a href="'.$CFG->wwwroot.'/local/plan/components/course/rpl.php?planid='.$this->plan->id.'&courseid='.$item->courseid.'">
+            $proficient = '<a href="'.$CFG->wwwroot.'/local/plan/components/course/rpl.php?planid='.$this->plan->id.'&courseid='.$item->courseid.'" title="'.$strrpl.'">
                 <img src="'.$CFG->pixpath.'/t/ranges.gif" class="iconsmall" alt="'.$strrpl.'" /></a>';
             $markup .= $proficient;
         }
