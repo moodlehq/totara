@@ -39,7 +39,7 @@ class dp_course_component extends dp_base_component {
         $assigned = get_record_sql(
             "
             SELECT
-                c.id,
+                a.id,
                 a.planid,
                 a.courseid,
                 a.id AS itemid,
