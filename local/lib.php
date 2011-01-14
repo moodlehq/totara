@@ -426,8 +426,8 @@ function local_course_icon_tag($course=null, $size='large') {
  */
 function local_coursecategory_icon_tag($coursecat, $size='large') {
     global $CFG;
-    if (!isset($coursecat)) {
-        $coursecat->icon = get_field('course_categories', 'icon', 'id', $coursecat);
+    if (!isset($coursecat->icon)) {
+        $coursecat->icon = get_field('course_categories', 'icon', 'id', $coursecat->id);
     }
     return '<img src="'.$CFG->wwwroot.'/local/icon.php?icon='.$coursecat->icon.'&amp;size='.$size.'&type=coursecategory" class="course_icon" />';
 }
