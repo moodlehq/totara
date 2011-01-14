@@ -3057,7 +3057,7 @@ function reportbuilder_get_reports($showhidden=false) {
  *  @return boolean True if email was successfully sent
  */
 function send_scheduled_report($sched){
-    global $CFG, $REPORT_BUILDER_EXPORT_OPTIONS;
+    global $CFG, $REPORT_BUILDER_EXPORT_OPTIONS, $CALENDARDAYS;
     $export_codes = array_flip($REPORT_BUILDER_EXPORT_OPTIONS);
 
     if(!$user = get_record('user', 'id', $sched->userid)) {
