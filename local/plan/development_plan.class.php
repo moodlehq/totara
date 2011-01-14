@@ -703,6 +703,94 @@ class development_plan {
 
 
     /**
+     * Given a pair of id/component pairs, returns them in a correctly sorted array
+     *
+     * @param string $component1 Component name of the first item
+     * @param integer $itemid1 Assignment ID of the first item
+     * @param string $component2 Component name of the second item
+     * @param integer $itemid2 Assignment ID of the second item
+     *
+     * @return array or false Array of arrays containing the items sorted by component name in the form:
+     *  array(
+     *    [0] => array ('id' => [firstid], 'component' => [firsttype]),
+     *    [1] => array ('id' => [secondid], 'component' => [secondtype]),
+     *  )
+     *
+     *  The array's elements will be sorted by component name, so [firsttype] will alphabetically
+     *  preceed [secondtype].
+     *
+     *  Returns false if you provide the same component type for both items, as linked items
+     *  must be of different types
+     *
+     */
+    function get_relation_array($component1, $itemid1, $component2, $itemid2) {
+        $unsorted = array(
+            array(
+                'id' => $itemid1,
+                'component' => $component1,
+            ),
+            array(
+                'id' => $itemid2,
+                'component' => $component2,
+            ),
+        );
+
+        switch (strcmp($unsorted[0]['component'], $unsorted[1]['component'])) {
+        case -1:
+            // items in correct order already
+            $sorted = $unsorted;
+            break;
+        case 1:
+            // reverse array order
+            $sorted = array_reverse($unsorted);
+            break;
+        default:
+            // items are the same, not supported
+            return false;
+        }
+        return $sorted;
+    }
+
+
+    /**
+     * Adds a relation between two plan items
+     *
+     * This method checks if the relation is already set and returns the existing relations ID if found
+     *
+     * @param string $component1 Component name of the first item
+     * @param integer $itemid1 Assignment ID of the first item
+     * @param string $component2 Component name of the second item
+     * @param integer $itemid2 Assignment ID of the second item
+     *
+     * @return integer or false ID of the new relation, or the existing relation, or false on failure
+     */
+    function add_component_relation($component1, $itemid1, $component2, $itemid2) {
+        $items = $this->get_relation_array($component1, $itemid1, $component2, $itemid2);
+        // couldn't generate items, probably because item 1 and item 2 have same component type
+        if($items === false) {
+            return false;
+        }
+
+        // see if the relation already exists
+        $existingid = get_field_select('dp_plan_component_relation', 'id',
+            "itemid1={$items[0]['id']} AND component1='{$items[0]['component']}'
+            AND itemid2={$items[1]['id']} AND component2='{$items[1]['component']}'");
+        if($existingid) {
+            // relation already exists, return the relation ID
+            return $existingid;
+        }
+
+        // otherwise create the relation, returning the new ID
+        $todb = new object();
+        $todb->itemid1 = $items[0]['id'];
+        $todb->component1 = $items[0]['component'];
+        $todb->itemid2 = $items[1]['id'];
+        $todb->component2 = $items[1]['component'];
+        return insert_record('dp_plan_component_relation', $todb);
+    }
+
+
+    /**
      * Display plan message box
      *
      * Generally includes messages about the plan's status as a whole

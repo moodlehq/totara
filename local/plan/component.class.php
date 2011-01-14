@@ -428,6 +428,8 @@ abstract class dp_base_component {
      * that is currently handled inside display_linked_*() methods
      * but might be better to do it here?
      *
+     * @todo refactor to reuse {@link get_relation_array()}
+     *
      * @param integer $id Identifies the item to get linked items for
      * @param string $componentrequired Get linked items of this type
      *
@@ -484,6 +486,9 @@ abstract class dp_base_component {
      * Update instances of $componentupdatetype linked to the specified compoent,
      * delete links in db which aren't needed, and add links missing from db
      * which are needed
+     *
+     * @todo refactor to reuse {@link get_relation_array()}
+     *
      * @param integer $thiscompoentid Identifies the component on one end of the link
      * @param string $componentupdatetype: the type of components on the other end of the links
      * @param array $componentids array of component ids that should be on the other end of the links in db
@@ -553,6 +558,8 @@ abstract class dp_base_component {
 
     /**
      * Count instances of $componentrequired linked to items of this component type
+     *
+     * @todo refactor to reuse {@link get_relation_array()}
      *
      * @param string $componentrequired Get linked items of this type
      * @return array Array of matches
@@ -801,6 +808,24 @@ abstract class dp_base_component {
      * @return  boolean
      */
     abstract protected function is_item_complete($item);
+
+
+    /**
+     * Returns true if the item is assigned to the current plan
+     *
+     * Only for use with assigned components (courses, competencies), not objectives. Assumes
+     * a table 'dp_plan_[component]_assign' with a field of '[component]id'
+     *
+     * @param integer $itemid ID of the item being assigned (item id not assignment id)
+     *
+     * @return boolean true if is assigned
+     */
+    public function is_item_assigned($itemid) {
+        $component = $this->component;
+        $table = "dp_plan_{$component}_assign";
+        $itemname = "{$component}id";
+        return record_exists($table, 'planid', $this->plan->id, $itemname, $itemid);
+    }
 
 
     /**

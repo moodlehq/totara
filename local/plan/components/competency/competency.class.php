@@ -189,6 +189,100 @@ class dp_competency_component extends dp_base_component {
     }
 
 
+    /**
+     * Get course evidence items associated with required competencies
+     *
+     * Looks up the evidence items assigned to each competency and
+     * finds any with a type of 'coursecompletion', if found, returns
+     * an array of the course information.
+     *
+     * This is used to determine the default 'linked courses' that
+     * should be added to the plan when this competency is added.
+     *
+     * @param array $competencies Array of competency IDs
+     *
+     * @return array Array of objects, keyed on the competency ids provided. Each element contains an object containing course id and name
+     */
+    function get_course_evidence_items($competencies) {
+        global $CFG;
+        // for access to evidence item type constants
+        require_once($CFG->dirroot.'/hierarchy/type/competency/lib.php');
+
+        // invalid input
+        if(!is_array($competencies)) {
+            return false;
+        }
+
+        // no competencies, return empty array
+        if(count($competencies) == 0) {
+            return array();
+        }
+
+        $sql = 'SELECT cei.id, cei.competencyid, cei.iteminstance ' .
+            sql_as() . " courseid, c.fullname
+            FROM {$CFG->prefix}comp_evidence_items cei
+            LEFT JOIN {$CFG->prefix}course c ON
+                cei.iteminstance = c.id
+            WHERE cei.itemtype = '" .
+                COMPETENCY_EVIDENCE_TYPE_COURSE_COMPLETION ."' AND
+                cei.competencyid IN (" .
+            implode(',', $competencies) . ')';
+        $records = get_records_sql($sql);
+
+        // restructure into 2d array for easy access
+        $out = array();
+        if($records) {
+            foreach($records as $record) {
+                $compid = $record->competencyid;
+
+                if(!array_key_exists($compid, $out)) {
+                    // start an array
+                    $out[$compid] = array($record);
+                } else {
+                    // append to array
+                    $out[$compid][] = $record;
+                }
+            }
+        }
+        return $out;
+    }
+
+    function display_approval_list($pendingitems) {
+        $competencies = array();
+        foreach($pendingitems as $item) {
+            $competencies[] = $item->competencyid;
+        }
+        $evidence = $this->get_course_evidence_items($competencies);
+
+        $table = new object();
+        $table->data = array();
+        foreach($pendingitems as $item) {
+            $row = array();
+            // @todo write abstracted display_item_name() and use here
+            $name = $item->fullname;
+
+            // if there is competency evidence, display it below the
+            // competency with checkboxes and a description
+            if(array_key_exists($item->competencyid, $evidence)) {
+                // @todo lang string
+                $name .= '<br /><strong>Related courses:</strong>';
+                foreach($evidence[$item->competencyid] as $course) {
+                    $name .= '<br />' .
+                        // @todo add code to disable unless
+                        // pulldown set to approve
+                        '<input type="checkbox" checked="checked" name="linkedcourses[' . $item->id . '][' . $course->courseid . ']" value="1"> ' .
+                        $course->fullname;
+                }
+            }
+
+            $row[] = $name;
+                ;
+            $row[] = $this->display_approval_options($item, $item->approved);
+            $table->data[] = $row;
+        }
+        return print_table($table, true);
+    }
+
     function display_linked_competencies($list) {
         global $CFG;
 
@@ -227,7 +321,7 @@ class dp_competency_component extends dp_base_component {
                     AND psv.priorityscaleid = {$priorityscaleid}) ";
 
         $where = "WHERE ca.id IN (" . implode(',', $list) . ")
-            AND ca.approved=1 ";
+            AND ca.approved=" . DP_APPROVAL_APPROVED . ' ';
 
         $sort = "ORDER BY c.fullname";
 
@@ -469,6 +563,7 @@ class dp_competency_component extends dp_base_component {
         $duedates = optional_param('duedate_competency', array(), PARAM_TEXT);
         $priorities = optional_param('priorities_competency', array(), PARAM_INT);
         $approvals = optional_param('approve_competency', array(), PARAM_INT);
+        $linkedcourses = optional_param('linkedcourses', array(), PARAM_INT);
         $currenturl = qualified_me();
         $stored_records = array();
 
@@ -542,6 +637,32 @@ class dp_competency_component extends dp_base_component {
             foreach($stored_records as $itemid => $record) {
                 // Update the record
                 $status = $status & update_record('dp_plan_competency_assign', $record);
+                // if the record was updated check for linked courses
+                if($record->approved == DP_APPROVAL_APPROVED) {
+                    if(isset($linkedcourses[$record->id]) &&
+                        is_array($linkedcourses[$record->id])) {
+                        //   add the linked courses
+                        foreach($linkedcourses[$record->id] as $course => $unused) {
+                            // add course if it's not already in this plan
+                            // @todo what if course is assigned but not approved?
+                            if(!$this->plan->get_component('course')->is_item_assigned($course)) {
+                                $this->plan->get_component('course')->assign_new_item($course);
+                            }
+                            // now we need to grab the assignment ID
+                            $assignmentid = get_field('dp_plan_course_assign',
+                                'id', 'planid', $this->plan->id, 'courseid', $course);
+                            if(!$assignmentid) {
+                                // something went wrong trying to assign the course
+                                // don't attempt to create a relation
+                                $status = false;
+                                continue;
+                            }
+                            // create relation
+                            $this->plan->add_component_relation('competency', $record->id, 'course', $assignmentid);
+
+                        }
+                    }
+                }
             }
 
             if ($status) {
