@@ -49,10 +49,8 @@ $navlinks[] = array('name' => get_string($component->component, 'local_plan'), '
 $navlinks[] = array('name' => get_string('viewitem','local_plan'), 'link' => '', 'type' => 'title');
 
 $navigation = build_navigation($navlinks);
-print_header_simple($pagetitle, '', $navigation, '', null, true, '');
-print $plan->display_plan_message_box();
-print_heading($fullname);
-print $plan->display_tabs($componentname);
+
+$plan->print_header($componentname, $navlinks, false);
 
 print $component->display_back_to_index_link();
 $component->print_objective_detail($caid, true);
@@ -85,6 +83,8 @@ if ( $plan->get_component('course')->get_setting('enabled') ){
         print $component->display_course_picker($caid);
     }
 }
+
+print_container_end();
 
 print_footer();
 

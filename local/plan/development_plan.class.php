@@ -1340,7 +1340,7 @@ class development_plan {
      * @param   array   $navlinks   Additional navlinks (optional)
      * @return  void
      */
-    public function print_header($currenttab, $navlinks = array()) {
+    public function print_header($currenttab, $navlinks = array(), $printinstructions=true) {
         global $CFG;
         require("{$CFG->dirroot}/local/plan/header.php");
     }

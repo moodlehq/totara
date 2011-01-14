@@ -67,28 +67,30 @@ print_heading($fullname);
 
 print $this->display_tabs($currenttab);
 
-//
-// Display instructions
-//
-$instructions = '<div class="instructional_text">';
-if ($this->role == 'manager') {
-    $instructions .= get_string($currenttab.'_instructions_manager', 'local_plan');
-} else {
-    $instructions .= get_string($currenttab.'_instructions_learner', 'local_plan');
-}
-
-// If this a component
-if ($is_component) {
-    $instructions .= get_string($currenttab.'_instructions_detail', 'local_plan');
-
-    if ($component->get_setting('update'.$currenttab) > DP_PERMISSION_REQUEST) {
-        $instructions .= get_string($currenttab.'_instructions_add', 'local_plan');
+if ($printinstructions) {
+    //
+    // Display instructions
+    //
+    $instructions = '<div class="instructional_text">';
+    if ($this->role == 'manager') {
+        $instructions .= get_string($currenttab.'_instructions_manager', 'local_plan');
+    } else {
+        $instructions .= get_string($currenttab.'_instructions_learner', 'local_plan');
     }
-    if ($component->get_setting('update'.$currenttab) == DP_PERMISSION_REQUEST) {
-        $instructions .= get_string($currenttab.'_instructions_request', 'local_plan');
+
+    // If this a component
+    if ($is_component) {
+        $instructions .= get_string($currenttab.'_instructions_detail', 'local_plan');
+
+        if ($component->get_setting('update'.$currenttab) > DP_PERMISSION_REQUEST) {
+            $instructions .= get_string($currenttab.'_instructions_add', 'local_plan');
+        }
+        if ($component->get_setting('update'.$currenttab) == DP_PERMISSION_REQUEST) {
+            $instructions .= get_string($currenttab.'_instructions_request', 'local_plan');
+        }
     }
+
+    $instructions .= '</div>';
+
+    print $instructions;
 }
-
-$instructions .= '</div>';
-
-print $instructions;

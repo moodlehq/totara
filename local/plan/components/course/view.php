@@ -17,6 +17,7 @@ $objectivename = get_string('objective', 'local_plan');
 
 $fullname = $plan->name;
 $pagetitle = format_string(get_string('learningplan','local_plan').': '.$fullname);
+
 $navlinks = array();
 dp_get_plan_base_navlinks($navlinks, $plan->userid);
 $navlinks[] = array('name' => $fullname, 'link'=> $CFG->wwwroot . '/local/plan/view.php?id='.$id, 'type'=>'title');
@@ -25,19 +26,7 @@ $navlinks[] = array('name' => get_string('viewitem','local_plan'), 'link' => '',
 
 $navigation = build_navigation($navlinks);
 
-print_header_simple($pagetitle, '', $navigation, '', null, true, '');
-
-// Plan menu
-echo dp_display_plans_menu($plan->userid, $plan->id, $plan->role);
-
-// Plan page content
-print_container_start(false, '', 'dp-plan-content');
-
-print $plan->display_plan_message_box();
-
-print_heading($fullname);
-
-print $plan->display_tabs($componentname);
+$plan->print_header($componentname, $navlinks, false);
 
 print $component->display_back_to_index_link();
 
