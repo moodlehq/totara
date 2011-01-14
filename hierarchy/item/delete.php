@@ -70,6 +70,4 @@ $hierarchy->delete_framework_item($item->id);
 
 add_to_log(SITEID, $type, 'delete', "view.php?id=$item->id", "$item->fullname (ID $item->id)");
 
-print_heading(get_string('deleted'.$type, $type, format_string($item->fullname)));
-print_continue("{$CFG->wwwroot}/hierarchy/index.php?type={$type}&frameworkid={$item->frameworkid}&spage={$spage}");
-print_footer();
+notice(get_string('deleted'.$type, $type, format_string($item->fullname)), "{$CFG->wwwroot}/hierarchy/index.php?type={$type}&frameworkid={$item->frameworkid}&spage={$spage}");
