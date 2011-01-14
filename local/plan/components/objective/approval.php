@@ -63,7 +63,7 @@ notice_yesno(get_string('confirmrequest'.$action, 'local_plan'),
     $returnurl
 );
 
-$component->print_objective_detail($caid);
+$component->display_objective_detail($caid);
 
 
 print_footer();

@@ -364,9 +364,19 @@ class dp_competency_component extends dp_base_component {
         $approved = $this->is_item_approved($item->approved);
 
         $class = ($approved) ? '' : ' class="dimmed"';
-        return '<a' . $class . ' href="'.$CFG->wwwroot.'/local/plan/components/' .
-            $this->component . '/view.php?id=' . $this->plan->id .
-            '&amp;itemid=' . $item->id . '">' . $item->fullname . '</a>';
+        $icon = $this->determine_item_icon($item);
+        return '<img class="competency_state_icon" src="' .
+            $CFG->wwwroot . '/local/icon.php?icon=' . $icon .
+            '&amp;size=small&amp;type=msg" alt="' . $item->fullname.
+            '"><a' . $class .' href="' . $CFG->wwwroot .
+            '/local/plan/components/' . $this->component.'/view.php?id=' .
+            $this->plan->id . '&amp;itemid=' . $item->id . '">' . $item->fullname .
+            '</a>';
+    }
+
+    function determine_item_icon($item) {
+        // @todo in future the item state will determine the icon
+        return "competency-regular.png";
     }
 
 
@@ -405,8 +415,9 @@ class dp_competency_component extends dp_base_component {
         $priorityvalues = get_records('dp_priority_scale_value',
             'priorityscaleid', $priorityscaleid, 'sortorder', 'id,name,sortorder');
 
-        // @todo add competency icon
-        $out .= '<h3>' . $item->fullname . '</h3>';
+        $icon = $this->determine_item_icon($item);
+        $icon = "<img class=\"competency_state_icon\" src=\"{$CFG->wwwroot}/local/icon.php?icon={$icon}&amp;size=small&amp;type=msg\" alt=\"{$item->fullname}\">";
+        $out .= '<h3>' . $icon . $item->fullname . '</h3>';
         $out .= '<table border="0" class="planiteminfobox">';
         $out .= '<tr>';
         if($priorityenabled && !empty($item->priority)) {

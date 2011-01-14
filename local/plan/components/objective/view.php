@@ -53,7 +53,7 @@ $navigation = build_navigation($navlinks);
 $plan->print_header($componentname, $navlinks, false);
 
 print $component->display_back_to_index_link();
-$component->print_objective_detail($caid, true);
+$component->display_objective_detail($caid, true);
 if ( !$plancompleted && ($canupdate = $component->can_update_items()) ){
 
     if ( $component->will_an_update_revoke_approval( $caid ) ){

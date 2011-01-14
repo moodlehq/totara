@@ -182,7 +182,7 @@ switch($action){
     case 'delete':
         print_heading(get_string('deleteobjective', 'local_plan'));
         print $component->display_back_to_index_link();
-        $component->print_objective_detail($objectiveid);
+        $component->display_objective_detail($objectiveid);
         notice_yesno(
                 get_string('deleteobjectiveareyousure', 'local_plan'),
                 $CFG->wwwroot.'/local/plan/components/objective/edit.php',
