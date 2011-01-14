@@ -823,16 +823,18 @@ abstract class dp_base_component {
      */
     public function get_priority_values() {
         static $values;
-        if (!isset($values)) {
+        if (!isset($values[$this->component])) {
             $priorityscaleid = $this->get_setting('priorityscale') ? $this->get_setting('priorityscale') : -1;
-            $values = get_records('dp_priority_scale_value', 'priorityscaleid', $priorityscaleid, 'sortorder', 'id,name,sortorder');
+            $v = get_records('dp_priority_scale_value', 'priorityscaleid', $priorityscaleid, 'sortorder', 'id,name,sortorder');
 
-            if (!$values) {
-                $values = array();
+            if (!$v) {
+                $v = array();
             }
+
+            $values[$this->component] = $v;
         }
 
-        return $values;
+        return $values[$this->component];
     }
 
 
@@ -981,8 +983,14 @@ abstract class dp_base_component {
         $prioritydefaultid = $this->get_default_priority();
         $out = '';
 
-        if(!$priorityenabled) {
+        if (!$priorityenabled) {
             return $out;
+        }
+
+        if (!empty($item->priority)) {
+            $priorityname = $priorityvalues[$item->priority]->name;
+        } else {
+            $priorityname = '';
         }
 
         if ($cansetpriority) {
@@ -990,7 +998,7 @@ abstract class dp_base_component {
             $out .= $this->display_priority_picker("priorities_{$this->component}[{$item->id}]", $item->priority, $priorityvalues, $prioritydefaultid, $priorityrequired);
         } else {
             // just display priority if no permissions to set it
-            $out .= $this->display_priority_as_text($item->priority, $item->priorityname, $priorityvalues);
+            $out .= $this->display_priority_as_text($item->priority, $priorityname, $priorityvalues);
         }
 
         return $out;
