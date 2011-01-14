@@ -314,6 +314,8 @@ abstract class dp_base_component {
             $table->add_data($row);
         }
 
+        $table->hide_empty_cols();
+
         // Return instead of outputting table contents
         ob_start();
         $table->print_html();

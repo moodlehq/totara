@@ -73,19 +73,35 @@ class dp_competency_component extends dp_base_component {
             $orderby = "ORDER BY $orderby";
         }
 
+        // Generate status code
+        if ($this->plan->is_complete()) {
+            // Use the 'snapshot' status value
+            $status = "LEFT JOIN {$CFG->prefix}comp_scale_values csv ON a.scalevalueid = csv.id ";
+        } else {
+            // Use the 'live' status value
+            $status = "
+                LEFT JOIN
+                    {$CFG->prefix}comp_evidence ce
+                 ON a.competencyid = ce.competencyid
+                AND ce.userid = {$this->plan->userid}
+                LEFT JOIN
+                    {$CFG->prefix}comp_scale_values csv
+                 ON ce.proficiency = csv.id";
+        }
+
         $assigned = get_records_sql(
             "
             SELECT
-                a.id,
-                a.planid,
-                a.competencyid,
+                a.*,
                 c.fullname,
-                a.approved
+                csv.name AS status,
+                csv.sortorder AS profsort
             FROM
                 {$CFG->prefix}dp_plan_competency_assign a
             INNER JOIN
                 {$CFG->prefix}comp c
-             ON c.id = a.competencyid
+                ON c.id = a.competencyid
+            $status
             WHERE
                 $where
                 $orderby
@@ -169,185 +185,6 @@ class dp_competency_component extends dp_base_component {
             notice_yesno(get_string('confirmitemdelete','local_plan'), $currenturl.'&amp;d='.$delete.'&amp;confirm=1&amp;sesskey='.sesskey(), $currenturl);
             print_footer();
             die();
-        }
-    }
-
-
-    /**
-     * Return markup to display competency items in a table
-     *
-     * Optionally restrict results by approval status
-     *
-     * @access  public
-     * @param   mixed   $restrict   Array or integer (optional)
-     * @return  string
-     */
-    public function display_list($restrict = null) {
-        global $CFG;
-
-        $showduedates = ($this->get_setting('duedatemode') == DP_DUEDATES_OPTIONAL ||
-            $this->get_setting('duedatemode') == DP_DUEDATES_REQUIRED);
-        $showpriorities =
-            ($this->get_setting('prioritymode') == DP_PRIORITY_OPTIONAL ||
-            $this->get_setting('prioritymode') == DP_PRIORITY_REQUIRED);
-        $priorityscaleid = ($this->get_setting('priorityscale')) ? $this->get_setting('priorityscale') : -1;
-        $plancompleted = $this->plan->status == DP_PLAN_STATUS_COMPLETE;
-        $canapprovecomps = !$plancompleted &&
-            $this->get_setting('updatecompetency') == DP_PERMISSION_APPROVE;
-        $canremovecomps = !$plancompleted &&
-            $this->get_setting('updatecompetency') >= DP_PERMISSION_ALLOW;
-        $canrequestcomps = !$plancompleted &&
-            $this->get_setting('updatecompetency') == DP_PERMISSION_REQUEST;
-        $cansetproficiency = !$plancompleted &&
-            $this->get_setting('setproficiency') >= DP_PERMISSION_ALLOW;
-
-        $count = 'SELECT COUNT(*) ';
-        $select = 'SELECT ca.*, c.fullname, csv.name ' . sql_as() .
-            ' status, csv.sortorder ' . sql_as() . ' profsort, psv.name ' .
-            sql_as() . ' priorityname ';
-
-        // get competencies assigned to this plan
-        $from = "FROM {$CFG->prefix}dp_plan_competency_assign ca
-                LEFT JOIN
-                {$CFG->prefix}comp c ON c.id = ca.competencyid ";
-        if ($this->plan->status == DP_PLAN_STATUS_COMPLETE) {
-            // Use the 'snapshot' status value
-            $from .= "LEFT JOIN {$CFG->prefix}comp_scale_values csv ON ca.scalevalueid = csv.id ";
-        } else {
-            // Use the 'live' status value
-            $from .= "LEFT JOIN {$CFG->prefix}comp_evidence ce
-                    ON ca.competencyid = ce.competencyid
-                    AND ce.userid = {$this->plan->userid}
-                LEFT JOIN {$CFG->prefix}comp_scale_values csv
-                    ON ce.proficiency = csv.id ";
-        }
-            $from .= "LEFT JOIN {$CFG->prefix}dp_priority_scale_value psv
-                    ON (ca.priority = psv.id
-                    AND psv.priorityscaleid = {$priorityscaleid}) ";
-
-        $where = "WHERE ca.planid = {$this->plan->id}";
-
-        // Check if restricting by approval status
-        if (isset($restrict)) {
-            if (is_array($restrict)) {
-                $restrict = implode(', ', $restrict);
-            }
-            $where .= " AND ca.approved IN ({$restrict})";
-        }
-
-        $count = count_records_sql($count.$from.$where);
-        if (!$count) {
-            return '<span class="noitems-assigncompetencies">'.get_string('nocompetencies', 'local_plan').'</span>';
-        }
-
-        $tableheaders = array(
-            get_string('competency','local_plan'),
-            get_string('status', 'local_plan'),
-        );
-        $tablecolumns = array(
-            'c.fullname',
-            'profsort',
-        );
-
-        if($showpriorities) {
-            $tableheaders[] = get_string('priority', 'local_plan');
-            $tablecolumns[] = 'ca.priority';
-        }
-
-        if($showduedates) {
-            $tableheaders[] = get_string('duedate', 'local_plan');
-            $tablecolumns[] = 'ca.duedate';
-        }
-
-        if(!$plancompleted) {
-            //$tableheaders[] = get_string('status','local_plan');
-            $tableheaders[] = '';  // don't show a status header
-            $tablecolumns[] = 'status';
-        }
-
-        $tableheaders[] = get_string('actions', 'local_plan');
-        $tablecolumns[] = 'actions';
-
-        $table = new flexible_table('competencylist');
-        $table->define_columns($tablecolumns);
-        $table->define_headers($tableheaders);
-
-        $table->set_attribute('class', 'logtable generalbox dp-plan-component-items');
-        $table->sortable(true);
-        $table->no_sorting('status');
-        $table->no_sorting('actions');
-        $table->setup();
-        $table->pagesize(20, $count);
-        $sort = $table->get_sql_sort();
-        $sort = ($sort=='') ? '' : ' ORDER BY ' . $sort;
-
-        if($records = get_recordset_sql($select.$from.$where.$sort,
-            $table->get_page_start(),
-            $table->get_page_size())) {
-
-            while($ca = rs_fetch_next_record($records)) {
-                $proficient = $this->is_item_complete($ca);
-                $approved = $this->is_item_approved($ca->approved);
-
-                $row = array();
-                $row[] = $this->display_item_name($ca);
-
-                $row[] = $approved ? $this->display_status($ca) : '';
-
-                if($showpriorities) {
-                    $row[] = $this->display_priority($ca, $priorityscaleid);
-                }
-
-                if($showduedates) {
-                    $row[] = $this->display_duedate($ca->id, $ca->duedate, null);
-                }
-
-                if(!$plancompleted) {
-                    $status = '';
-                    if($approved) {
-                        if(!$proficient) {
-                            $status = $this->display_duedate_highlight_info($ca->duedate);
-                        }
-                    } else {
-                        $status = $this->display_approval($ca, $canapprovecomps);
-                    }
-                    $row[] = $status;
-                }
-
-                $actions = '';
-
-                if ($canremovecomps ||
-                    ($canrequestcomps && (in_array($ca->approved, array(DP_APPROVAL_UNAPPROVED, DP_APPROVAL_DECLINED))))) {
-                    $currenturl = $this->get_url();
-                    $strdelete = get_string('delete', 'local_plan');
-                    $delete = '<a href="'.$currenturl.'&amp;d='.$ca->id.'" title="'.$strdelete.'"><img src="'.$CFG->pixpath.'/t/delete.gif" class="iconsmall" alt="'.$strdelete.'" /></a>';
-
-                    $actions .= $delete;
-                }
-
-                if($cansetproficiency && $approved) {
-                    $straddevidence = get_string('addevidence', 'local_plan');
-                    $proficient = '<a href="'.$CFG->wwwroot.'/local/plan/components/competency/add_evidence.php?userid='.$this->plan->userid.'&planid='.$this->plan->id.'&competencyid='.$ca->competencyid.'">
-                        <img src="'.$CFG->pixpath.'/t/ranges.gif" class="iconsmall" alt="'.$straddevidence.'" /></a>';
-                    $actions .= $proficient;
-                }
-
-                $row[] = $actions;
-
-                $table->add_data($row);
-            }
-
-            rs_close($records);
-
-            $table->hide_empty_cols();
-
-            // return instead of outputing table contents
-            ob_start();
-            $table->print_html();
-            $out = ob_get_contents();
-            ob_end_clean();
-
-            return $out;
         }
     }
 
@@ -488,6 +325,34 @@ class dp_competency_component extends dp_base_component {
 
 
     /**
+     * Get item's proficiency value
+     *
+     * @access  public
+     * @param   object  $item
+     * @return  string
+     */
+    private function get_item_proficiency($item) {
+
+        // Get proficiencies
+        if (!$proficiencies = competency::get_proficiencies($this->plan->userid)) {
+            $proficiencies = array();
+        }
+
+        // If no record
+        if (!array_key_exists($item->id, $proficiencies)) {
+            return false;
+        }
+
+        // Something wrong with get_proficiencies()
+        if (!isset($proficiencies[$item->id]->isproficient)) {
+            return false;
+        }
+
+        return $proficiencies[$item->id]->proficiency;
+    }
+
+
+    /**
      * Display item's name
      *
      * @access  public
@@ -567,11 +432,9 @@ class dp_competency_component extends dp_base_component {
     }
 
 
-    function display_status($ca) {
-        global $CFG;
-
+    public function display_status($item) {
         // @todo: add colors and stuff?
-        return format_string($ca->status);
+        return format_string($item->status);
     }
 
 
@@ -856,5 +719,43 @@ class dp_competency_component extends dp_base_component {
         }
 
         return true;
+    }
+
+
+    protected function display_list_item_progress($item) {
+        return $this->is_item_approved($item->approved) ? $this->display_status($item) : '';
+    }
+
+
+    protected function display_list_item_actions($item) {
+        global $CFG;
+
+        $markup = '';
+
+        // Get permissions
+        $canupdateitems = $this->can_update_items();
+        $canrequestitems = $canupdateitems == DP_PERMISSION_REQUEST;
+        $canapproveitems = $canupdateitems == DP_PERMISSION_APPROVE;
+        $canremoveitems = $canupdateitems == DP_PERMISSION_ALLOW;
+        $cansetproficiency = !$this->plan->is_complete() && $this->get_setting('setproficiency') >= DP_PERMISSION_ALLOW;
+        $approved = $this->is_item_approved($item->approved);
+
+        if ($canremoveitems ||
+            ($canrequestitems && (in_array($item->approved, array(DP_APPROVAL_UNAPPROVED, DP_APPROVAL_DECLINED))))) {
+            $currenturl = $this->get_url();
+            $strdelete = get_string('delete', 'local_plan');
+            $delete = '<a href="'.$currenturl.'&amp;d='.$item->id.'" title="'.$strdelete.'"><img src="'.$CFG->pixpath.'/t/delete.gif" class="iconsmall" alt="'.$strdelete.'" /></a>';
+
+            $markup .= $delete;
+        }
+
+        if ($cansetproficiency && $approved) {
+            $straddevidence = get_string('addevidence', 'local_plan');
+            $proficient = '<a href="'.$CFG->wwwroot.'/local/plan/components/competency/add_evidence.php?userid='.$this->plan->userid.'&planid='.$this->plan->id.'&competencyid='.$item->competencyid.'">
+                <img src="'.$CFG->pixpath.'/t/ranges.gif" class="iconsmall" alt="'.$straddevidence.'" /></a>';
+            $markup .= $proficient;
+        }
+
+        return $markup;
     }
 }
