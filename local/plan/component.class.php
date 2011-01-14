@@ -875,8 +875,8 @@ abstract class dp_base_component {
     }
 
 
-#    abstract protected function display_list_item_progress($item);
-#    abstract protected function display_list_item_actions($item);
+    abstract protected function display_list_item_progress($item);
+    abstract protected function display_list_item_actions($item);
 
 
     /**

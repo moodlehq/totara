@@ -70,15 +70,17 @@ class dp_objective_component extends dp_base_component {
             $orderby = "ORDER BY $orderby";
         }
 
+        // Generate status code
+        $status = "LEFT JOIN {$CFG->prefix}dp_objective_scale_value osv ON a.scalevalueid = osv.id ";
+
         $assigned = get_records_sql(
             "
             SELECT
-                a.id,
-                a.planid,
-                a.fullname,
-                a.approved
+                a.*,
+                osv.achieved
             FROM
                 {$CFG->prefix}dp_plan_objective a
+            $status
             WHERE
                 $where
                 $orderby
@@ -125,188 +127,6 @@ class dp_objective_component extends dp_base_component {
                 TOTARA_JS_DIALOG,
                 TOTARA_JS_TREEVIEW
             ));
-        }
-    }
-
-
-    /**
-     * Return markup to display course items in a table
-     *
-     * Optionally restrict results by approval status
-     *
-     * @access  public
-     * @param   mixed   $restrict   Array or integer (optional)
-     * @return  string
-     */
-    public function display_list($restrict = null) {
-        global $CFG;
-
-        $showduedates = ($this->get_setting('duedatemode') == DP_DUEDATES_OPTIONAL ||
-            $this->get_setting('duedatemode') == DP_DUEDATES_REQUIRED);
-        $showpriorities =
-            ($this->get_setting('prioritymode') == DP_PRIORITY_OPTIONAL ||
-            $this->get_setting('prioritymode') == DP_PRIORITY_REQUIRED);
-        $priorityscaleid = ($this->get_setting('priorityscale')) ? $this->get_setting('priorityscale') : -1;
-        $plancompleted = $this->plan->status == DP_PLAN_STATUS_COMPLETE;
-        $cansetprofs = !$plancompleted && $this->get_setting('setproficiency') == DP_PERMISSION_ALLOW;
-        $canrequestobjectives = !$plancompleted && $this->get_setting('updateobjective') == DP_PERMISSION_REQUEST;
-        $canapproveobjectives = !$plancompleted && $this->get_setting('updateobjective') == DP_PERMISSION_APPROVE;
-        $canremoveobjectives = !$plancompleted &&  $this->get_setting('updateobjective') >= DP_PERMISSION_ALLOW;
-        $coursesenabled = $this->plan->get_component('course')->get_setting('enabled');
-
-        $as = sql_as();
-        $count = 'SELECT COUNT(*) ';
-        $select = "SELECT o.id, o.planid, o.fullname {$as} objname, o.duedate, o.approved, o.scalevalueid ";
-        $select .= ", psv.id as priority, psv.name {$as} priorityname ";
-        $select .= ", osv.achieved ";
-        if ( $coursesenabled ){
-            $select .= ", (select count(*) from {$CFG->prefix}dp_plan_component_relation pcr where pcr.component1='course' and pcr.component2='objective' and pcr.itemid2=o.id) {$as} numcourses ";
-        }
-        // todo: Add evidence support
-//        $select .= ", (select count(*) from {$CFG->prefix}dp_plan_relation pr where pr.itemtype1='evidence' and pr.itemtype2='objective' and pr.itemid2=o.id) {$as} numevidences ";
-
-        // get objectives assigned to this plan
-        $from = "FROM {$CFG->prefix}dp_plan_objective o ";
-        $from .= "LEFT JOIN {$CFG->prefix}dp_objective_scale_value osv
-                ON o.scalevalueid = osv.id ";
-        $from .= "LEFT JOIN {$CFG->prefix}dp_priority_scale_value psv
-                ON (o.priority = psv.id
-                AND psv.priorityscaleid = {$priorityscaleid}) ";
-
-        $where = "WHERE o.planid = {$this->plan->id} ";
-
-        // Check if restricting by approval status
-        if (isset($restrict)) {
-            if (is_array($restrict)) {
-                $restrict = implode(', ', $restrict);
-            }
-            $where .= " AND o.approved IN ({$restrict})";
-        }
-
-        $count = count_records_sql($count.$from.$where);
-        if (!$count) {
-            return '<div class="noitems-assignobjectives">'.get_string('noobjectives', 'local_plan').'</div>';
-        }
-
-        $tableheaders = array(get_string('objective', 'local_plan'));
-        $tablecolumns = array('objname');
-
-        if ( $coursesenabled ){
-            $tableheaders[] = get_string('course', 'local_plan');
-            $tablecolumns[] = 'numcourses';
-        }
-
-        if($showpriorities) {
-            $tableheaders[] = get_string('priority', 'local_plan');
-            $tablecolumns[] = 'o.priority';
-        }
-
-        if($showduedates) {
-            $tableheaders[] = get_string('duedate', 'local_plan');
-            $tablecolumns[] = 'o.duedate';
-        }
-
-        $tableheaders[] = get_string('status', 'local_plan');
-        $tablecolumns[] = 'o.scalevalueid';
-
-        if(!$plancompleted) {
-            //$tableheaders[] = get_string('status','local_plan');
-            $tableheaders[] = '';  // don't show status heading
-            $tablecolumns[] = 'status';
-        }
-
-        $tableheaders[] = get_string('actions', 'local_plan');
-        $tablecolumns[] = 'actions';
-
-        $table = new flexible_table('objectivelist');
-        $table->define_columns($tablecolumns);
-        $table->define_headers($tableheaders);
-
-        $table->set_attribute('class', 'logtable generalbox dp-plan-component-items');
-        $table->sortable(true);
-        $table->no_sorting('status');
-        $table->no_sorting('actions');
-        $table->setup();
-        $table->pagesize(20, $count);
-        $sort = $table->get_sql_sort();
-        $sort = ($sort=='') ? '' : ' ORDER BY ' . $sort;
-
-        // get all course completions for this plan's user
-        $completions = completion_info::get_all_courses($this->plan->userid);
-
-        // Get the proficiency values for this plan
-        $proficiencyvalues = get_records('dp_objective_scale_value', 'objscaleid', $this->get_setting('objectivescale'), 'sortorder','id,name,achieved');
-
-        $records = get_recordset_sql(
-                $select.$from.$where.$sort,
-                $table->get_page_start(),
-                $table->get_page_size()
-        );
-        if ( $records ){
-
-            while($objective = rs_fetch_next_record($records)) {
-
-                $objapproved = $this->is_item_approved($objective->approved);
-
-                $row = array();
-                $row[] = $this->display_item_name($objective);
-                if ($coursesenabled) {
-                    $row[] = $objective->numcourses;
-                }
-//                $row[] = $objective->numevidences;
-
-                if($showpriorities) {
-                    $row[] = $this->display_priority($objective, $priorityscaleid);
-                }
-
-                if($showduedates) {
-                    $row[] = $this->display_duedate($objective->id, $objective->duedate, null);
-                }
-
-                // Proficiency
-                $row[] = $this->display_proficiency($objective, $proficiencyvalues);
-
-                if(!$plancompleted) {
-                    $status = '';
-                    if($objapproved) {
-                        if (!$this->is_item_complete($objective)) {
-                            $status = $this->display_duedate_highlight_info($objective->duedate);
-                        }
-                    } else {
-                        $status = $this->display_approval($objective, $canapproveobjectives);
-                    }
-                    $row[] = $status;
-                }
-
-                if ($canremoveobjectives ||
-                    ($canrequestobjectives && (in_array($objective->approved, array(DP_APPROVAL_UNAPPROVED, DP_APPROVAL_DECLINED))))) {
-                    $deleteurl = $CFG->wwwroot
-                        . '/local/plan/components/objective/edit.php?id='
-                        . $this->plan->id
-                        . '&itemid='
-                        . $objective->id
-                        . '&d=1';
-                    $strdelete = get_string('delete', 'local_plan');
-                    $row[] = '<a href="'.$deleteurl.'" title="'.$strdelete.'"><img src="'.$CFG->pixpath.'/t/delete.gif" class="iconsmall" alt="'.$strdelete.'" /></a>';
-                }
-                else {
-                    $row[] = '';
-                }
-
-                $table->add_data($row);
-            }
-
-            rs_close($records);
-
-            $table->hide_empty_cols();
-
-            // return instead of outputing table contents
-            ob_start();
-            $table->print_html();
-            $out = ob_get_contents();
-            ob_end_clean();
-
-            return $out;
         }
     }
 
@@ -413,7 +233,7 @@ class dp_objective_component extends dp_base_component {
         global $CFG;
         return '<a href="'.$CFG->wwwroot.'/local/plan/components/' .
             $this->component . '/view.php?id=' . $this->plan->id .
-            '&amp;itemid=' . $item->id . '">' . $item->objname . '</a>';
+            '&amp;itemid=' . $item->id . '">' . $item->fullname . '</a>';
     }
 
 
@@ -1012,6 +832,38 @@ class dp_objective_component extends dp_base_component {
      *
      ********************************************************************************************/
 
+    protected function display_list_item_progress($item) {
+        return $this->display_proficiency($item);
+    }
+
+
+    protected function display_list_item_actions($item) {
+        global $CFG;
+
+        $markup = '';
+
+        // Get permissions
+        $canupdateitems = $this->can_update_items();
+        $canrequestitems = $canupdateitems == DP_PERMISSION_REQUEST;
+        $canapproveitems = $canupdateitems == DP_PERMISSION_APPROVE;
+        $canremoveitems = $canupdateitems == DP_PERMISSION_ALLOW;
+
+        if ($canremoveitems ||
+            ($canrequestitems && (in_array($item->approved, array(DP_APPROVAL_UNAPPROVED, DP_APPROVAL_DECLINED))))) {
+            $deleteurl = $CFG->wwwroot
+                . '/local/plan/components/objective/edit.php?id='
+                . $this->plan->id
+                . '&itemid='
+                . $item->id
+                . '&d=1';
+            $strdelete = get_string('delete', 'local_plan');
+            $markup .= '<a href="'.$deleteurl.'" title="'.$strdelete.'"><img src="'.$CFG->pixpath.'/t/delete.gif" class="iconsmall" alt="'.$strdelete.'" /></a>';
+            }
+
+        return $markup;
+    }
+
+
     /**
      * Return markup for javascript course picker
      *
@@ -1160,10 +1012,15 @@ SQL;
     /**
      * Display a proficiency (or the dropdown menu for it)
      * @param object $ca The current objective
-     * @param array $proficiencyvalues A list of all the proficiencies in the objective scale for this objective
      * @return string
      */
-    function display_proficiency($ca, $proficiencyvalues) {
+    function display_proficiency($ca) {
+        // Get the proficiency values for this plan
+        static $proficiencyvalues;
+        if (!isset($proficiencyvalues)) {
+            $proficiencyvalues = get_records('dp_objective_scale_value', 'objscaleid', $this->get_setting('objectivescale'), 'sortorder','id,name,achieved');
+        }
+
         $plancompleted = ($this->plan->status == DP_PLAN_STATUS_COMPLETE);
         $cansetprof = $this->get_setting('setproficiency') == DP_PERMISSION_ALLOW;
         $out = '';
