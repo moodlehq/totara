@@ -109,19 +109,22 @@ class plan_edit_form extends moodleform {
         $mform =& $this->_form;
         $result = array();
 
-        $startdate = isset($data['startdate']) ? $data['startdate'] : '';
-        $enddate = isset($data['enddate']) ? $data['enddate'] : '';
+        if (in_array($this->_customdata['action'], array('add', 'edit'))) {
+            // Validate edit form
+            $startdate = isset($data['startdate']) ? $data['startdate'] : '';
+            $enddate = isset($data['enddate']) ? $data['enddate'] : '';
 
-        $datepattern = '/^(0?[1-9]|[12][0-9]|3[01])\/(0?[1-9]|1[0-2])\/(\d{4})$/';
-        if (preg_match($datepattern, $enddate, $matches) == 0) {
-            $errstr = get_string('error:dateformat','local_plan');
-            $result['enddate'] = $errstr;
-            unset($errstr);
-        } elseif ( $startdate > dp_convert_userdate($enddate) && $startdate !== false && $enddate !== false ) {
-            // Enforce start date before finish date
-            $errstr = get_string('error:creationaftercompletion','local_plan');
-            $result['enddate'] = $errstr;
-            unset($errstr);
+            $datepattern = '/^(0?[1-9]|[12][0-9]|3[01])\/(0?[1-9]|1[0-2])\/(\d{4})$/';
+            if (preg_match($datepattern, $enddate, $matches) == 0) {
+                $errstr = get_string('error:dateformat','local_plan');
+                $result['enddate'] = $errstr;
+                unset($errstr);
+            } elseif ( $startdate > dp_convert_userdate($enddate) && $startdate !== false && $enddate !== false ) {
+                // Enforce start date before finish date
+                $errstr = get_string('error:creationaftercompletion','local_plan');
+                $result['enddate'] = $errstr;
+                unset($errstr);
+            }
         }
 
         return $result;
