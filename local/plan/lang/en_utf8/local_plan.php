@@ -199,6 +199,7 @@ $string['error:competenciesupdated'] = 'Competencies not updated';
 $string['nocompetencies'] = 'No competencies.';
 $string['nolinkedcompetencies'] = 'No linked competencies.';
 $string['linkedcompetencies'] = 'Linked competencies';
+$string['error:cannotupdatecompetencies'] = 'Cannot update competencies';
 
 //Objective Strings
 $string['objective'] = 'Objective';

@@ -891,4 +891,36 @@ class dp_competency_component extends dp_base_component {
 
         return $markup;
     }
+
+
+    /*
+     * Return markup for javascript course picker
+     * competencyid integer - the id of the competency for which selected& available courses should be displayed
+     * @access  public
+     * @return  string
+     */
+    public function display_course_picker($competencyid) {
+
+        if (!$permission = $this->can_update_items()) {
+            return '';
+        }
+
+        $coursename = get_string('course', 'local_plan');
+        $btntext = get_string('updatelinkedx', 'local_plan', $coursename);
+
+        $html  = '<div class="buttons">';
+        $html .= '<div class="singlebutton dp-plan-assign-button">';
+        $html .= '<div>';
+        $html .= '<script type="text/javascript">var competency_id = ' . $competencyid . ';';
+        $html .= 'var plan_id = ' . $this->plan->id . ';</script>';
+        $html .= '<input type="submit" id="show-course-dialog" value="' . $btntext . '" />';
+        $html .= '</div>';
+        $html .= '</div>';
+        $html .= '</div>';
+
+        return $html;
+    }
+
+
+
 }
