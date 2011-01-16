@@ -492,39 +492,39 @@ function dp_display_plans_menu($userid, $selectedid=0, $role='learner') {
     $out = '<div id="dp-plans-menu">';
 
     if ($role == 'manager') {
-	// Print out the All team members link
-	$out .= print_heading(get_string('teammembers', 'local_plan'), 'left', 3, 'main', true);
-	$class = $userid == 0 ? 'class="dp-menu-selected"' : '';
-	$out .= "<ul><li {$class} ><a href=\"{$CFG->wwwroot}/my/teammembers.php\">";
-	$out .= get_string('allteammembers', 'local_plan');
-	$out .= "</a></li></ul>";
-	if ($userid) {
-	    // Display who we are currently viewing if appropriate
-	    $out .= print_heading(get_string('currentlyviewing', 'local_plan'), 'left', 3, 'main', true);
-	    // TODO: make this more efficient
-	    $user = get_record('user','id',$userid);
-	    $class = $selectedid == 0 ? 'class="dp-menu-selected"' : '';
-	    $out .= "<ul><li {$class} ><a href=\"{$CFG->wwwroot}/local/plan/index.php?userid={$userid}\">{$user->firstname} {$user->lastname}</a></li></ul>";
-	}
+        // Print out the All team members link
+        $out .= print_heading(get_string('teammembers', 'local_plan'), 'left', 3, 'main', true);
+        $class = $userid == 0 ? 'class="dp-menu-selected"' : '';
+        $out .= "<ul><li {$class} ><a href=\"{$CFG->wwwroot}/my/teammembers.php\">";
+        $out .= get_string('allteammembers', 'local_plan');
+        $out .= "</a></li></ul>";
+        if ($userid) {
+            // Display who we are currently viewing if appropriate
+            $out .= print_heading(get_string('currentlyviewing', 'local_plan'), 'left', 3, 'main', true);
+            // TODO: make this more efficient
+            $user = get_record('user','id',$userid);
+            $class = $selectedid == 0 ? 'class="dp-menu-selected"' : '';
+            $out .= "<ul><li {$class} ><a href=\"{$CFG->wwwroot}/local/plan/index.php?userid={$userid}\">{$user->firstname} {$user->lastname}</a></li></ul>";
+        }
     }
 
     // Display active plans
     if ($plans = dp_get_plans($userid, array(DP_PLAN_STATUS_APPROVED))) {
-	if ($role == 'manager') {
-	    $out .= '<div class="dp-plans-menu-section"><h4 class="dp-plans-menu-sub-header">' . get_string('activeplans', 'local_plan') . '</h4>';
-	}
-	else {
-	    $out .= print_heading(get_string('activeplans', 'local_plan'), 'left', 3, 'main', true);
-	}
-        $out .= "<ul>";
-        foreach ($plans as $p) {
-            $class = $p->id == $selectedid ? 'class="dp-menu-selected"' : '';
-            $out .= "<li {$class}><a href=\"{$CFG->wwwroot}/local/plan/view.php?id={$p->id}\">{$p->name}</a></li>";
+        if ($role == 'manager') {
+            $out .= '<div class="dp-plans-menu-section"><h4 class="dp-plans-menu-sub-header">' . get_string('activeplans', 'local_plan') . '</h4>';
         }
-        $out .= "</ul>";
-	if ($role == 'manager') {
-	    $out .= "</div>";
-	}
+        else {
+            $out .= print_heading(get_string('activeplans', 'local_plan'), 'left', 3, 'main', true);
+        }
+            $out .= "<ul>";
+            foreach ($plans as $p) {
+                $class = $p->id == $selectedid ? 'class="dp-menu-selected"' : '';
+                $out .= "<li {$class}><a href=\"{$CFG->wwwroot}/local/plan/view.php?id={$p->id}\">{$p->name}</a></li>";
+            }
+            $out .= "</ul>";
+        if ($role == 'manager') {
+            $out .= "</div>";
+        }
     }
 
     // Display unapproved plans
@@ -546,22 +546,42 @@ function dp_display_plans_menu($userid, $selectedid=0, $role='learner') {
         }
     }
 
+    // Display completed plans
     if ($plans = dp_get_plans($userid, DP_PLAN_STATUS_COMPLETE)) {
-	if ($role == 'manager') {
-	    $out .= '<div class="dp-plans-menu-section"><h4 class="dp-plans-menu-sub-header">' . get_string('completedplans', 'local_plan') . '</h4>';
-	}
-	else {
-	    $out .= print_heading(get_string('completedplans', 'local_plan'), 'left', 3, 'main', true);
-	}
-        $out .= "<ul>";
-        foreach ($plans as $p) {
-            $class = $p->id == $selectedid ? 'class="dp-menu-selected"' : '';
-            $out .= "<li {$class}><a href=\"{$CFG->wwwroot}/local/plan/view.php?id={$p->id}\">{$p->name}</a></li>";
+        if ($role == 'manager') {
+            $out .= '<div class="dp-plans-menu-section"><h4 class="dp-plans-menu-sub-header">' . get_string('completedplans', 'local_plan') . '</h4>';
         }
+        else {
+            $out .= print_heading(get_string('completedplans', 'local_plan'), 'left', 3, 'main', true);
+        }
+            $out .= "<ul>";
+            foreach ($plans as $p) {
+                $class = $p->id == $selectedid ? 'class="dp-menu-selected"' : '';
+                $out .= "<li {$class}><a href=\"{$CFG->wwwroot}/local/plan/view.php?id={$p->id}\">{$p->name}</a></li>";
+            }
+            $out .= "</ul>";
+        if ($role == 'manager') {
+            $out .= "</div>";
+        }
+    }
+
+    // Display record of learning (rol)
+    if ($role == 'manager') {
+        $rolstatus = optional_param('status', 'none', PARAM_TEXT);
+        $out .= '<div class="dp-plans-menu-section"><h4 class="dp-plans-menu-sub-header">' . get_string('recordoflearning', 'local') . '</h4>';
+        $out .= "<ul>";
+        $class = $rolstatus == 'all' ? 'class="dp-menu-selected"' : '';
+        $out .= "<li {$class}><a href=\"{$CFG->wwwroot}/local/plan/record/courses.php?userid={$userid}&status=all\">" . get_string('alllearning', 'local_plan') . "</a></li>";
+        $class = $rolstatus == 'active' ? 'class="dp-menu-selected"' : '';
+        $out .= "<li {$class}><a href=\"{$CFG->wwwroot}/local/plan/record/courses.php?userid={$userid}&status=active\">" . get_string('activelearning', 'local_plan') . "</a></li>";
+        $class = $rolstatus == 'completed' ? 'class="dp-menu-selected"' : '';
+        $out .= "<li {$class}><a href=\"{$CFG->wwwroot}/local/plan/record/courses.php?userid={$userid}&status=completed\">" . get_string('completedlearning', 'local_plan') . "</a></li>";
         $out .= "</ul>";
-	if ($role == 'manager') {
-	    $out .= "</div>";
-	}
+        $out .= "</div>";
+    }
+    else {
+        // Show for learners?
+        //$out .= print_heading(get_string('recordoflearning', 'local_plan'), 'left', 3, 'main', true);
     }
 
     $out .= '</div>';

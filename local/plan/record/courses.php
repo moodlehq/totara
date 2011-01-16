@@ -90,6 +90,15 @@
 
     print_header($strheading, $strheading, build_navigation($strheading));
 
+    $print_plans_menu = $USER->id != $userid && (totara_is_manager($userid) ||
+        has_capability('moodle/site:doanything',$context));
+
+    if ($print_plans_menu) {
+        // Only show plans menu for managers and admins
+        echo dp_display_plans_menu($userid, 0, 'manager');
+        print_container_start(false, '', 'dp-plan-content');
+    }
+
     echo dp_record_status_picker('courses', $planstatus, $userid);
 
     echo '<h1>'.$strheading.'</h1>';
@@ -118,6 +127,11 @@
         // export button
         $report->export_select();
     }
-   print_footer();
+
+    if ($print_plans_menu) {
+        print_container_end();
+    }
+
+    print_footer();
 
 ?>
