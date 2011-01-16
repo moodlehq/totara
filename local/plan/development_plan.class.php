@@ -453,6 +453,7 @@ class development_plan {
 
             // Calculate progress
             $progress = $completionsum / count($courses) * 100;
+            $progress = round($progress, 2);
         }
         $tooltipstr = "{$completedcount}/".count($courses)." ".get_string('coursescomplete', 'local_plan').", {$inprogresscount} ".get_string('inprogress', 'local_plan')." ({$progress}%)";
 
