@@ -860,7 +860,7 @@ class dp_objective_component extends dp_base_component {
         $canupdateitems = $this->can_update_items();
         $canrequestitems = $canupdateitems == DP_PERMISSION_REQUEST;
         $canapproveitems = $canupdateitems == DP_PERMISSION_APPROVE;
-        $canremoveitems = $canupdateitems == DP_PERMISSION_ALLOW;
+        $canremoveitems = $canupdateitems >= DP_PERMISSION_ALLOW;
 
         if ($canremoveitems ||
             ($canrequestitems && (in_array($item->approved, array(DP_APPROVAL_UNAPPROVED, DP_APPROVAL_DECLINED))))) {

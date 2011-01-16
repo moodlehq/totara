@@ -691,7 +691,7 @@ class dp_course_component extends dp_base_component {
         $canupdateitems = $this->can_update_items();
         $canrequestitems = $canupdateitems == DP_PERMISSION_REQUEST;
         $canapproveitems = $canupdateitems == DP_PERMISSION_APPROVE;
-        $canremoveitems = $canupdateitems == DP_PERMISSION_ALLOW;
+        $canremoveitems = $canupdateitems >= DP_PERMISSION_ALLOW;
         $cansetcompletion = !$this->plan->is_complete() && $this->get_setting('setcompletionstatus') >= DP_PERMISSION_ALLOW;
         $approved = $this->is_item_approved($item->approved);
 
