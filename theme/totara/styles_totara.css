@@ -1911,6 +1911,42 @@ body#admin-user table.generaltable td.c7 {
 }
 
 /*****************************************************************************/
+/** Record of Learning **/
+/*****************************************************************************/
+
+#recordoflearning-menu {
+    background: url("images/left_menu_bg.gif") repeat-y scroll left top transparent;
+}
+#recordoflearning-menu h3 {
+    background: url("images/left_menu_header_bg.gif") no-repeat scroll left top transparent;
+    color: #FFFFFF;
+}
+#recordoflearning-menu ul li {
+    background: url("images/arw_grn.gif") no-repeat scroll left center transparent;
+}
+#recordoflearning-menu .recordoflearning-menu-section {
+    padding-left:30px;
+    margin-bottom:10px;
+}
+#recordoflearning-menu .recordoflearning-menu-section ul {
+    padding:0px;
+    margin:0px;
+}
+.recordoflearning-menu-sub-header {
+    padding:0px;
+    margin:0px;
+    text-transform: uppercase;
+    color:#777777;
+}
+#recordoflearning-menu ul li.dp-menu-selected {
+    background-image:url("images/arw_grey.gif");
+}
+#recordoflearning-menu ul li.dp-menu-selected a {
+    color:#434343;
+    text-decoration:none;
+}
+
+/*****************************************************************************/
 /** IDP **/
 /*****************************************************************************/
 

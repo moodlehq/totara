@@ -1395,6 +1395,37 @@ span.plan_highlight {
 div#recordoflearning_statuspicker {
     float: right;
 }
+
+/*
+ * Record of Learning sidebar menu
+ */
+
+#recordoflearning-menu {
+    float: left;
+    width: 241px;
+}
+
+#recordoflearning-menu ul {
+    list-style: none;
+    padding: 2px 2px 2px 20px;
+}
+
+#recordoflearning-menu ul li {
+}
+
+
+#recordoflearning-menu ul li.dp-menu-selected {
+    font-weight: bold;
+}
+
+#recordoflearning-menu h3 {
+    margin-top: 5px;
+    padding: 7px 20px;
+}
+#recordoflearning-menu ul li {
+    padding: 4px 20px 5px;
+}
+
 /*****************************************************************************/
 /** IDP **/
 /*****************************************************************************/
