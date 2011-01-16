@@ -24,7 +24,7 @@
 ///////////////////////////////////////////////////////////////////////////
 
 require_once('../../../../config.php');
-require_once($CFG->dirroot.'/local/dialogs/dialog_content_objective_courses.class.php');
+require_once($CFG->dirroot.'/local/dialogs/dialog_content_linked_courses.class.php');
 require_once($CFG->dirroot.'/local/plan/lib.php');
 
 
@@ -66,7 +66,7 @@ if (!$permission = $component->can_update_items()) {
 ///
 
 // Load dialog content generator
-$dialog = new totara_dialog_objective_content_courses();
+$dialog = new totara_dialog_linked_courses_content_courses();
 
 // Set type to multiple
 $dialog->type = totara_dialog_content::TYPE_CHOICE_MULTI;

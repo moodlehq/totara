@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Devplan objective specific course dialog generator
+ * Devplan linked courses specific course dialog generator
  *
  * @copyright Totara Learning Solutions Limited
  * @author Aaron Barnes <aaronb@catalyst.net.nz>
@@ -14,7 +14,7 @@ require_once($CFG->dirroot.'/course/lib.php');
 require_once($CFG->libdir.'/datalib.php');
 
 
-class totara_dialog_objective_content_courses extends totara_dialog_content_courses {
+class totara_dialog_linked_courses_content_courses extends totara_dialog_content_courses {
     /**
      *
      * @access  public
