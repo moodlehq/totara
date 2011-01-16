@@ -96,8 +96,10 @@
     if ($print_plans_menu) {
         // Only show plans menu for managers and admins
         echo dp_display_plans_menu($userid, 0, 'manager');
-        print_container_start(false, '', 'dp-plan-content');
+    } else {
+        echo dp_record_status_menu('courses', $planstatus, $userid);
     }
+    print_container_start(false, '', 'dp-plan-content');
 
     echo dp_record_status_picker('courses', $planstatus, $userid);
 
@@ -128,9 +130,7 @@
         $report->export_select();
     }
 
-    if ($print_plans_menu) {
-        print_container_end();
-    }
+    print_container_end();
 
     print_footer();
 
