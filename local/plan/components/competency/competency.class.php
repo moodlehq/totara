@@ -905,7 +905,7 @@ class dp_competency_component extends dp_base_component {
             return '';
         }
 
-        $coursename = get_string('course', 'local_plan');
+        $coursename = get_string('courseplural', 'local_plan');
         $btntext = get_string('updatelinkedx', 'local_plan', $coursename);
 
         $html  = '<div class="buttons">';

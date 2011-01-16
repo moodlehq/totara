@@ -13,7 +13,7 @@ $componentname = 'competency';
 $component = $plan->get_component($componentname);
 $currenturl = $CFG->wwwroot . '/local/plan/components/competency/view.php?id='.$id.'&amp;itemid='.$caid;
 $coursesenabled = $plan->get_component('course')->get_setting('enabled');
-$coursename = get_string('course', 'local_plan');
+$coursename = get_string('courseplural', 'local_plan');
 
 $fullname = $plan->name;
 $pagetitle = format_string(get_string('learningplan','local_plan').': '.$fullname);
