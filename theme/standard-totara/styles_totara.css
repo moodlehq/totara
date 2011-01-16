@@ -1606,6 +1606,12 @@ table.dp-plan-component-items {
 #dp-plans-menu ul li {
     padding: 4px 20px 5px;
 }
+#dp-component-update-table td.c3 {
+    white-space: nowrap;
+}
+.ui-datepicker-trigger {
+    margin-left:2px;
+}
 
 /*****************************************************************************/
 /** Learning Plans **/
