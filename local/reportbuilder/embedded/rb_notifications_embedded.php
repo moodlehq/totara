@@ -59,7 +59,7 @@ class rb_notifications_embedded extends rb_base_embedded {
             array(
             'type' => 'message_values',
             'value' => 'msgid',
-            'heading' => '',
+            'heading' => 'Id',
             'hidden' => 1,
             'noexport' => true,
             ),
