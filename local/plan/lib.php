@@ -676,6 +676,40 @@ function dp_record_status_picker($pagename, $status, $userid=null) {
     return $out;
 }
 
+/**
+ * Display a menu for filtering record of learning page
+ *
+ * @param string $pagename Name of the current page (filename without .php)
+ * @param string $status The status for the current page
+ * @param int $userid The current users id
+ *
+ * @return string HTML to display the menu
+ */
+
+function dp_record_status_menu($pagename, $status, $userid=null) {
+    global $CFG;
+
+    // pass the userid if set
+    $userstr = (isset($userid)) ? 'userid='.$userid.'&amp;' : '';
+
+    $out='<div id="recordoflearning-menu">';
+    $out .= print_heading(get_string('recordoflearning', 'local'), 'left', 3, 'main', true);
+
+    // generate options for menu display
+    $filter = array();
+
+    foreach( array('all','active','completed') as $s ){
+        $filter[$s] = get_string($s . 'learning', 'local_plan');
+        $class = $status == $s ? 'class="dp-menu-selected"' : '';
+
+        $out .= "<ul><li {$class} ><a href=\"{$CFG->wwwroot}/local/plan/record/";
+        $out .= $pagename . '.php?' . $userstr . 'status=' . $s;
+        $out .= "\">" . $filter[$s];
+        $out .= "</a></li></ul>";
+    }
+    $out .= '</div>';
+    return $out;
+}
 
 /**
  * Add lowest levels of breadcrumbs to plan
