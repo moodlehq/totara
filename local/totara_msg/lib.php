@@ -147,7 +147,6 @@ function totara_msg_dismiss_action($id) {
     $str = get_string('dismiss', 'block_totara_notify');
     return
     '<script type="text/javascript"> '.
-        "var shortname = 'whydoIneedAshortName';" .
     "// bind functionality to page on load
     $(function() {
         // dismiss dialog
@@ -201,7 +200,6 @@ function totara_msg_alert_popup($id) {
     $str = get_string('dismiss', 'block_totara_notify');
     return
     '<script type="text/javascript"> '.
-        "var shortname = 'whydoIneedAshortName';" .
     "// bind functionality to page on load
     $(function() {
         // dismiss dialog
@@ -265,7 +263,6 @@ function totara_msg_action_button($action) {
     $str = get_string($action, 'local_totara_msg');
     return
     '<script type="text/javascript">
-        var shortname = \'whydoIneedAshortName\';
         '.
     "// bind functionality to page on load
     $(function() {
@@ -338,7 +335,6 @@ function totara_msg_accept_reject_action($id) {
     $reject = '';
     $script =
     '<script type="text/javascript"> '.
-        "var shortname = 'whydoIneedAshortName';" .
     "// bind functionality to page on load
     $(function() {
         // dismiss dialog
