@@ -462,14 +462,14 @@ function local_display_progressbar($percent, $size='medium', $showlabel=false, $
     // Add more sizes if as neccessary :)!
     switch ($size) {
         case 'large' :
-            $bar = "{$CFG->pixpath}/t/progressbar-large.png";
+            $bar = "{$CFG->pixpath}/t/progressbar-large.gif";
             $bar_background = "{$CFG->pixpath}/t/progressbar_back-large.png";
             $pixelvalue = ($percent / 100) * 121;
             $pixeloffset = round($pixelvalue - 120);
             break;
         case 'medium' :
         default :
-            $bar = "{$CFG->pixpath}/t/progressbar-medium.png";
+            $bar = "{$CFG->pixpath}/t/progressbar-medium.gif";
             $bar_background = "{$CFG->pixpath}/t/progressbar_back-medium.png";
             $pixelvalue = ($percent / 100) * 61;
             $pixeloffset = round($pixelvalue - 60);
