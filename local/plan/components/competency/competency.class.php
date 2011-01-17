@@ -644,7 +644,7 @@ class dp_competency_component extends dp_base_component {
                 // Update the record
                 $status = $status & update_record('dp_plan_competency_assign', $record);
                 // if the record was updated check for linked courses
-                if($record->approved == DP_APPROVAL_APPROVED) {
+                if(isset($record->approved) && $record->approved == DP_APPROVAL_APPROVED) {
                     if(isset($linkedcourses[$record->id]) &&
                         is_array($linkedcourses[$record->id])) {
                         //   add the linked courses
