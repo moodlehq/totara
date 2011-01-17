@@ -218,6 +218,20 @@ div#header {
   background: url('images/sep.gif') no-repeat right 4px;
 }
 
+.navbar .breadcrumb ul {
+    float: left;
+}
+
+span.youarehere {
+  display: list-item;
+  float: left;
+  list-style-type: disc;
+  margin: 0px 10px;
+  font-family: 'Trebuchet ms', verdana, helvetica, sans-serif;
+  color: white;
+  font-weight: normal;
+}
+
 .navbar .breadcrumb ul li,
 .navbar .breadcrumb ul li a {
   font-family: 'Trebuchet ms', verdana, helvetica, sans-serif;
@@ -227,7 +241,7 @@ div#header {
 }
 
 .navbar .breadcrumb ul li a:hover {
-    text-decoration: none;
+    text-decoration: underline;
 }
 
 .navbar .breadcrumb .sep {
