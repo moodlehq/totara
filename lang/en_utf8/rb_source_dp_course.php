@@ -12,5 +12,6 @@ $string['templatename'] = 'Plan template name';
 $string['templatestartdate'] = 'Plan template start date';
 $string['templateenddate'] = 'Plan template end date';
 $string['completionstatus'] = 'Completion status';
+$string['coursetypeicon'] = 'Type';
 // filters
 $string['userid'] = 'User ID';

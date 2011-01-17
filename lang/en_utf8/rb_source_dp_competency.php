@@ -14,3 +14,4 @@ $string['competencyduedate'] = 'Competency due date';
 $string['competencypriority'] = 'Competency priority';
 $string['competencystatus'] = 'Competency status';
 $string['competencyproficiency'] = 'Competency proficiency';
+$string['coursetypeicon'] = 'Type';
