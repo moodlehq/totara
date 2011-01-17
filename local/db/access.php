@@ -42,7 +42,7 @@ $local_capabilities = array(
         'contextlevel' => CONTEXT_SYSTEM,
         'legacy' => array(
             'admin' => CAP_ALLOW,
-            'user' => CAP_ALLOW
+            'student' => CAP_ALLOW
         ),
     ),
     'moodle/local:createcompetency' => array(
