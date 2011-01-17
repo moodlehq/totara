@@ -49,6 +49,10 @@ div.totara-dialog div.ui-dialog-buttonpane button {
     padding-bottom: 0.1em;
 }
 
+div.totara-dialog td.select #search-tab table#dialog-search-table td.querybox input {
+    margin-left: 0 !important;
+}
+
 /*
 div.totara-dialog ul.treeview,
 div.totara-dialog div#column-checkboxes {

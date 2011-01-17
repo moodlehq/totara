@@ -23,3 +23,7 @@ input, select, button {
 #left-column .block_admin_tree {
     position:relative;
 }
+
+div.totara-dialog td.select #search-tab table#dialog-search-table td.querybox input {
+    margin-left: 0 !important;
+}

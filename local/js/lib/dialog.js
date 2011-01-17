@@ -582,7 +582,9 @@ totaraDialog_handler_treeview.prototype.setup_tabs = function(e, ui) {
     var containerheight = selcontainer.outerHeight() - $('div.header', selcontainer).outerHeight() - $('div#dialog-tabs', selcontainer).outerHeight();
 
     // Resize browse treeview, minus padding
-    $('div#browse-tab ul.treeview', this._container).height(containerheight - $('select.simpleframeworkpicker', this._container).outerHeight() - 10);
+    if (!($.browser.msie && $.browser.version=="6.0")) {
+	$('div#browse-tab ul.treeview', this._container).height(containerheight - $('select.simpleframeworkpicker', this._container).outerHeight() - 10);
+    }
 
     // Resize search container
     $('div#search-tab ul.treeview', this._container).height(containerheight - $('#search-tab .mform', selcontainer).outerHeight() - $('div.search-paging', this._container).outerHeight() - 18);
