@@ -465,6 +465,7 @@ $string['overview'] = 'Overview';
 $string['viewitem'] = 'View item';
 $string['itemapproval'] = 'Item approval';
 $string['xitemspending'] = '<a href=\"{$a->link}\">{$a->number} {$a->name}</a> pending';
+$string['pendingitemsx'] = '<a href=\"$a->link\" title=\"Plan item(s) requiring approval ($a->count)\"><span class=\"redfont\">Pending ($a->count)</span></a>';
 $string['thefollowingitemsarepending_s'] = 'This plan contains the following pending item:';
 $string['thefollowingitemsrequireyourapproval_s'] = 'This plan contains a new item that requires your approval:';
 $string['thefollowingitemsarepending_p'] = 'This plan contains the following pending items:';

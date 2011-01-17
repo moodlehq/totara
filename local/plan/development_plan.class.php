@@ -317,17 +317,17 @@ class development_plan {
         global $CFG;
 
         $out = '';
-        $out .= "<div class=\"dp-summary-widget-title\"><a href=\"{$CFG->wwwroot}/local/plan/view.php?id={$this->id}\">{$this->name}</a></div>";
-
+        $out .= "<div class=\"dp-summary-widget-title\"><a href=\"{$CFG->wwwroot}/local/plan/view.php?id={$this->id}\">{$this->name} </a></div>";
         $components = get_records_select('dp_component_settings', "templateid={$this->templateid} AND enabled=1", 'sortorder');
         $total = count($components);
+        $pendingitems = $this->num_pendingitems();
         $out .= "<div class=\"dp-summary-widget-components\">";
         if ($components) {
             $count = 1;
             foreach ($components as $c) {
                 $component = $this->get_component($c->component);
-                $compname = get_string($component->component, 'local_plan');
-                $class = ($count == $total) ? "dp-summary-widget-component-name-last" : "dp-summary-widget-component-name";
+                $compname = get_string($component->component.'plural', 'local_plan');
+                $class = ($count == $total && !$pendingitems) ? "dp-summary-widget-component-name-last" : "dp-summary-widget-component-name";
                 $assignments = $component->get_assigned_items();
                 $assignments = !empty($assignments) ? '('.count($assignments).')' : '';
 
@@ -342,6 +342,14 @@ class development_plan {
                 $out .= "</a> </span>";
                 $count++;
             }
+
+            if ($pendingitems) {
+                $out .= '<span class="dp-summary-widget-pendingitems-text">'.get_string('pendingitemsx', 'local_plan',
+                    (object)array('count'=>$pendingitems,
+                    'link'=>"{$CFG->wwwroot}/local/plan/approve.php?id={$this->id}")).'</span>';
+            }
+
+
         }
         $out .= "</div>";
 

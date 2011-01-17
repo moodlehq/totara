@@ -1580,6 +1580,10 @@ div.dp-summary-widget-title {
     font-size: 12px;
 }
 
+span.dp-summary-widget-pendingitems-text {
+    font-weight: bold;
+}
+
 div.dp-summary-widget-components {
     margin-top: 4px;
     margin-bottom: 4px;
