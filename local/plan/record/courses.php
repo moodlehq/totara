@@ -101,8 +101,6 @@
     }
     print_container_start(false, '', 'dp-plan-content');
 
-    echo dp_record_status_picker('courses', $planstatus, $userid);
-
     echo '<h1>'.$strheading.'</h1>';
 
     $userstr = (isset($userid)) ? 'userid='.$userid.'&amp;' : '';
