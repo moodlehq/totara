@@ -689,6 +689,7 @@ h6 {
 .tabrow0 li.active ul.tabrow1 li a {
 	background: none !important;
 }
+
 ul.tabrow1 {
     background: url("images/tab/tabrow1.gif") top left repeat-x !important;
     border-left: 1px solid #ccc;
@@ -744,8 +745,16 @@ ul.tabrow1 li a:visited {
   color: #322f2c !important;
 }
 
-ul.tabrow1 li a:hover {
-  color: #322f2c;
+.tabrow0 .tabrow1 li.active a span {
+    color: #7D8412;
+}
+
+.tabrow0 .tabrow1 li.active a:hover span {
+    color: #7D8412;
+}
+
+.tabrow0 .tabrow1 li a:hover span {
+    color: #7D8412;
 }
 
 .tabrow0 ul li a:hover span,
