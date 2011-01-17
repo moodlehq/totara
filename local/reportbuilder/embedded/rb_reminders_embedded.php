@@ -20,11 +20,11 @@ class rb_reminders_embedded extends rb_base_embedded {
 //            'value' => 'msgstatus',
 //            'heading' => 'Status',
 //        ),
-            array(
-                'type' => 'message_values',
-                'value' => 'urgency',
-                'heading' => 'Urgency',
-            ),
+//            array(
+//                'type' => 'message_values',
+//                'value' => 'urgency',
+//                'heading' => 'Urgency',
+//            ),
             array(
                 'type' => 'message_values',
                 'value' => 'msgtype',
@@ -86,11 +86,11 @@ class rb_reminders_embedded extends rb_base_embedded {
     //                'value' => 'msgstatus',
     //                'advanced' => 1,
     //            ),
-            array(
-                    'type' => 'message_values',
-                    'value' => 'urgency',
-                    'advanced' => 1,
-                ),
+    //        array(
+    //                'type' => 'message_values',
+    //                'value' => 'urgency',
+    //                'advanced' => 1,
+    //            ),
             array(
                     'type' => 'message_values',
                     'value' => 'statement',

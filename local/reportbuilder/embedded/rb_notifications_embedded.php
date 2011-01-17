@@ -15,11 +15,11 @@ class rb_notifications_embedded extends rb_base_embedded {
         $this->shortname = 'notifications';
         $this->fullname = get_string('notifications', 'local_totara_msg');
         $this->columns = array(
-            array(
-                'type' => 'message_values',
-                'value' => 'urgency',
-                'heading' => 'Urgency',
-            ),
+//            array(
+//                'type' => 'message_values',
+//                'value' => 'urgency',
+//                'heading' => 'Urgency',
+//            ),
             array(
                 'type' => 'message_values',
                 'value' => 'msgtype',
@@ -81,11 +81,11 @@ class rb_notifications_embedded extends rb_base_embedded {
     //                'value' => 'msgstatus',
     //                'advanced' => 1,
     //            ),
-            array(
-                    'type' => 'message_values',
-                    'value' => 'urgency',
-                    'advanced' => 1,
-                ),
+//            array(
+//                    'type' => 'message_values',
+//                    'value' => 'urgency',
+//                    'advanced' => 1,
+//                ),
             array(
                     'type' => 'message_values',
                     'value' => 'statement',

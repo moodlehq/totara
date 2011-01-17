@@ -118,5 +118,27 @@ function xmldb_local_reportbuilder_upgrade($oldversion=0) {
         $result = $result && drop_field($table, $field);
     }
 
+    if ($result && $oldversion < 2011011800) {
+
+        /// Remove urgency column from Notifications and Reminders embedded reports
+        $sql = "DELETE FROM {$CFG->prefix}report_builder_columns
+            WHERE value = 'urgency' AND reportid IN (SELECT id FROM {$CFG->prefix}report_builder
+                WHERE shortname IN ('notifications', 'reminders'))";
+        $result = $result && execute_sql($sql);
+
+        /// Remove urgency filter from Notifications and Reminders embedded reports
+        $sql = "DELETE FROM {$CFG->prefix}report_builder_filters
+            WHERE value = 'urgency' AND reportid IN (SELECT id FROM {$CFG->prefix}report_builder
+                WHERE shortname IN ('notifications', 'reminders'))";
+        $result = $result && execute_sql($sql);
+
+        /// Give msgid col heading value (Notifications and Reminders)
+        $sql = "Update {$CFG->prefix}report_builder_columns
+            SET heading = 'Id'
+            WHERE value = 'msgid' AND reportid IN (SELECT id FROM {$CFG->prefix}report_builder
+                WHERE shortname IN ('notifications', 'reminders'))";
+        $result = $result && execute_sql($sql);
+    }
+
     return $result;
 }

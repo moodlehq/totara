@@ -25,7 +25,7 @@ foreach($report->columns as $column) {
     }
     $ident = "{$column->type}_{$column->value}";
     print '<input type="checkbox" id="'. $ident .'" name="' . $ident . '">';
-    print '<label for="' . $ident . '">' . $column->heading.'</label><br />';
+    print '<label for="' . $ident . '">' . format_string($column->heading) . '</label><br />';
     $count++;
 }
 print '</div>';
