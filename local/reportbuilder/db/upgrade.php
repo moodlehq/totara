@@ -140,5 +140,24 @@ function xmldb_local_reportbuilder_upgrade($oldversion=0) {
         $result = $result && execute_sql($sql);
     }
 
+    if ($result && $oldversion < 2011011801) {
+
+        /// Remove 'Plan' and 'Plan Status' cols from 'ROL courses' report
+        $sql = "DELETE FROM {$CFG->prefix}report_builder_columns
+            WHERE (value = 'planlink' OR value='status')
+            AND reportid IN (SELECT id FROM {$CFG->prefix}report_builder
+                WHERE shortname IN ('plan_courses'))";
+        $result = $result && execute_sql($sql);
+
+        /// Add 'Type' col to 'ROL courses' report
+        $todb = new object();
+        $todb->reportid = get_field('report_builder', 'id', 'shortname', 'plan_courses');
+        $todb->type = 'course_info_data';
+        $todb->value = 'coursetypeicon';
+        $todb->heading = 'Type';
+        $todb->sortorder = get_field('report_builder_columns', sql_max('sortorder'), 'reportid', $todb->reportid);
+        $result = $result && insert_record('report_builder_columns', $todb);
+    }
+
     return $result;
 }
