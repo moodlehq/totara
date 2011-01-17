@@ -228,8 +228,8 @@ function totara_print_my_learning_nav($return=false) {
         $returnstr .= '
             <tr>
                 <td align="left">
-                    <a href="'.$CFG->wwwroot.'/local/plan/index.php" title="'.get_string('developmentplan','local').'">
-                    <center><img src="'. $CFG->pixpath.'/i/idp.png" /></center></a>
+                    <center><a href="'.$CFG->wwwroot.'/local/plan/index.php" title="'.get_string('developmentplan','local').'">
+                    <img src="'. $CFG->pixpath.'/i/idp.png" /></a></center>
 
                 </td>
                 <td align="left" valign="center">
@@ -241,7 +241,7 @@ function totara_print_my_learning_nav($return=false) {
     $returnstr .= '
         <tr>
             <td align="left">
-                <a href="'.$CFG->wwwroot.'/blocks/facetoface/mysignups.php" title=""><center><img src="'.$CFG->pixpath.'/i/bookings.png" /></center></a>
+                <center><a href="'.$CFG->wwwroot.'/blocks/facetoface/mysignups.php" title="'.get_string('bookings','local').'"><img src="'.$CFG->pixpath.'/i/bookings.png" /></a></center>
             </td>
             <td align="left" valign="center">
                 <span style="font-size: small"><a href="'.$CFG->wwwroot.'/my/bookings.php?userid='.$USER->id.'">'.get_string('bookings','local').'</a></span>
@@ -250,7 +250,7 @@ function totara_print_my_learning_nav($return=false) {
     if(get_config(NULL, 'idp_showlearnrec')==2){
         $returnstr .= '<tr>
             <td align="left">
-                <a href="'.$CFG->wwwroot.'/local/plan/record/courses.php?userid='.$USER->id.'" title=""><center><img src="' . $CFG->pixpath . '/i/rol.png" /></center></a>
+                <center><a href="'.$CFG->wwwroot.'/local/plan/record/courses.php?userid='.$USER->id.'" title="'.get_string('recordoflearning', 'local').'"><img src="' . $CFG->pixpath . '/i/rol.png" /></a></center>
             </td>
             <td align="left" valign="center">
                 <span style="font-size: small"><a href="'.$CFG->wwwroot.'/local/plan/record/courses.php?userid='.$USER->id.'">'.get_string('recordoflearning','local').'</a></span>
