@@ -378,7 +378,6 @@ div#header {
 	margin:0;
 	position:absolute;
 	background:transparent;
-	height:22px;
 	width:900px;
 	top:47px;
 	left:0px;
@@ -391,8 +390,9 @@ div#header {
 	list-style:none;
 	float:left;
 	background:transparent url('images/nav_sub_spacer.gif') no-repeat right center;
-	height: auto;
+	height: 25px;
 	font-size:0.9em;
+	display:block;
 }
 
 /* get rid of divider on last element */
@@ -402,9 +402,9 @@ div#header {
 
 #totara_menu ul li.selected ul li a {
 	margin:0;
-	padding-top: 0;
+	padding: 0 20px;
 	display:block;
-	height: auto;
+	height: 25px;
 	color:#FFFFFF;
 	background:transparent;
 }
@@ -421,7 +421,6 @@ div#header {
     font-weight: bold;
     cursor: default;
     background:transparent url('images/tab_indent.gif') no-repeat bottom center;
-    padding-bottom:7px;
 }
 
 #totara_menu ul li.selected ul li.selected a:hover {
