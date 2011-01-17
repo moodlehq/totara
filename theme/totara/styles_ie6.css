@@ -2,6 +2,9 @@
  * These styles are ONLY included for IE6 (via meta.php)
  */
 
+#wrapper {
+     background: transparent url('images/bg_no_shadow.png') repeat-y top center;
+}
 div#header {
 	background: #7D8312 url("images/hdr_bg_green.jpg") top right repeat-x;
 	height: 1%
