@@ -682,6 +682,20 @@ class dp_course_component extends dp_base_component {
         return $result;
     }
 
+    function get_list_headers() {
+        $headers = parent::get_list_headers();
+
+        foreach ($headers->headers as $i=>$h) {
+            if ($h == get_string('status', 'local_plan')) {
+                // Replace 'Status' header with 'Progress'
+                $headers->headers[$i] = get_string('progress', 'local_plan');
+                break;
+            }
+        }
+
+        return $headers;
+    }
+
 
     protected function display_list_item_progress($item) {
         return $this->is_item_approved($item->approved) ? $this->display_status_as_progress_bar($item) : '';

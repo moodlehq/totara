@@ -344,7 +344,7 @@ abstract class dp_base_component {
         // Generate table headers
         $tableheaders = array(
             get_string($this->component.'name', 'local_plan'),
-            get_string('progress', 'local_plan'),
+            get_string('status', 'local_plan'),
         );
 
         $tablecolumns = array(

@@ -430,7 +430,7 @@ function dp_display_plans($userid, $statuses=array(DP_PLAN_STATUSAPPROVED), $col
         $tablecols[] = 'enddate_'.$statuses_undrsc;
     }
     if (in_array('status', $cols)) {
-        $tableheaders[] = get_string('progress', 'local_plan');
+        $tableheaders[] = get_string('status', 'local_plan');
         $tablecols[] = 'status_'.$statuses_undrsc;
     }
     if (in_array('completed', $cols)) {
