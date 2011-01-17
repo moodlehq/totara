@@ -525,6 +525,12 @@ div.ui-dialog.ui-corner-all {
     -moz-border-radius: 10px;
     -webkit-border-radius: 10px;
 }
+.ui-tabs .ui-tabs-nav {
+    position: static !important;
+}
+.ui-tabs .ui-tabs-nav li {
+    position: static !important;
+}
 
 /**
  * Link colors
