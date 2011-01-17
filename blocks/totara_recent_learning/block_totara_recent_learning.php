@@ -48,28 +48,36 @@ class block_totara_recent_learning extends block_list {
         $this->content->icons = array();
         $this->content->footer = '';
 
-        $courses = completion_info::get_all_courses($USER->id, 10);
+        $completions = completion_info::get_all_courses($USER->id);
 
+        $sql = "SELECT c.id,c.fullname FROM
+            {$CFG->prefix}role_assignments ra
+            INNER JOIN {$CFG->prefix}context cx
+                ON ra.contextid = cx.id AND cx.contextlevel = " . CONTEXT_COURSE . "
+            LEFT JOIN {$CFG->prefix}course c
+                ON cx.instanceid = c.id
+            WHERE ra.userid = " . $USER->id . "
+            ORDER BY ra.timestart DESC";
+
+        $courses = get_records_sql($sql);
         if(!$courses) {
             return $this->content;
-        }
 
+        }
         if ($courses) {
             foreach($courses as $course) {
-                $id = $course->course;
-                $name = $course->name;
-                $enrolled = $course->timeenrolled;
-                $completed = $course->timecompleted;
+                $id = $course->id;
+                $name = $course->fullname;
 
-                $statusstring = completion_completion::get_status($course);
-                $status = get_string($statusstring, 'completion');
+                if(array_key_exists($id, $completions)) {
+                    $comp = $completions[$id];
+                    $statusstring = completion_completion::get_status($completions[$id]);
+                    $status = get_string($statusstring, 'completion');
+                } else {
+                    $statusstring = 'notyetstarted';
+                    $status = get_string($statusstring, 'completion');
 
-                $starteddate = '';
-                if ($course->timestarted != 0) {
-                    $starteddate = userdate($course->timestarted, '%e %b %y');
                 }
-                $enroldate = isset($enrolled) && $enrolled != 0 ? userdate($enrolled, '%e %b %y') : null;
-                $completeddate = isset($completed) && $completed != 0 ? userdate($completed, '%e %b %y') : null;
 
                 $test = "<table>";
                 $test .= "<tr><td class=\"course\"><a href=\"{$CFG->wwwroot}/course/view.php?id={$id}\" title=\"$name\">$name</a></td>";
