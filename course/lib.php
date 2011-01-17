@@ -28,6 +28,18 @@ if (!defined('MAX_MODINFO_CACHE_SIZE')) {
     define('MAX_MODINFO_CACHE_SIZE', 10);
 }
 
+//Course types
+define('COURSE_TYPE_ELEARNING', 0);
+define('COURSE_TYPE_BLENDED', 1);
+define('COURSE_TYPE_FACETOFACE', 2);
+
+global $COURSE_TYPES;
+$COURSE_TYPES = array(
+    'elearning' => COURSE_TYPE_ELEARNING,
+    'blended' => COURSE_TYPE_BLENDED,
+    'facetoface' => COURSE_TYPE_FACETOFACE,
+);
+
 function make_log_url($module, $url) {
     switch ($module) {
         case 'course':

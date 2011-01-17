@@ -216,3 +216,8 @@ $string['error:unknownbuttonclicked'] = 'Unknown button clicked';
 
 //My Team strings
 $string['teammembers_text'] = 'All members of your teams are show below. Clicking the notepad icon to the right of the learner\'s name will allow you to view their learning plans.';
+
+//Course Types
+$string['elearning'] = 'E-learning';
+$string['blended'] = 'Blended';
+$string['facetoface'] = 'Face-to-face';

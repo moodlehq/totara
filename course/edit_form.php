@@ -9,7 +9,7 @@ require_once($CFG->libdir.'/formslib.php');
 class course_edit_form extends moodleform {
 
     function definition() {
-        global $USER, $CFG;
+        global $USER, $CFG, $COURSE_TYPES;
 
         $courseconfig = get_config('moodlecourse');
         $mform    =& $this->_form;
@@ -183,6 +183,14 @@ class course_edit_form extends moodleform {
                 ((empty($course->metacourse)) ? $meta[0] : $meta[1]) . " - $disable_meta ");
             $mform->setHelpButton('nometacourse', array('metacourse', get_string('metacourse')), true);
         }
+
+        //Course type
+        $coursetypeoptions = array();
+        foreach($COURSE_TYPES as $k => $v) {
+            $coursetypeoptions[$v] = get_string($k, 'local');
+        }
+        $mform->addElement('select', 'coursetype', 'Course Type', $coursetypeoptions);
+
 
 // Course Icons
         $mform->addElement('header', 'iconheader', get_string('courseicon', 'local'));

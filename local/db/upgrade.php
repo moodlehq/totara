@@ -2268,6 +2268,16 @@ function xmldb_local_upgrade($oldversion) {
         }
     }
 
+    if ($result && $oldversion < 2010111602) {
+        $table = new XMLDBTable('course');
+        $field = new XMLDBField('coursetype');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '4', XMLDB_UNSIGNED, null, null, null, null, null);
+        if(!field_exists($table, $field)) {
+            $result = $result && add_field($table, $field);
+        }
+    }
+
+
 
     return $result;
 }
