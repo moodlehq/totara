@@ -524,7 +524,13 @@ class dp_course_component extends dp_base_component {
             foreach($duedates as $id => $duedate) {
                 // allow empty due dates
                 if($duedate == '' || $duedate == 'dd/mm/yy') {
-                    $duedateout = null;
+                    // set all empty due dates to the plan due date
+                    // if they are required
+                    if ($this->get_setting('duedatemode') == DP_DUEDATES_REQUIRED) {
+                        $duedateout = $this->plan->enddate;
+                    } else {
+                        $duedateout = null;
+                    }
                 } else {
                     $datepattern = '/^(0?[1-9]|[12][0-9]|3[01])\/(0?[1-9]|1[0-2])\/(\d{2})$/';
                     if (preg_match($datepattern, $duedate, $matches) == 0) {
