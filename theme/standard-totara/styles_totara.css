@@ -1770,7 +1770,6 @@ div.totara-dialog div.ui-dialog-buttonpane button {
     margin-left: 10px;
     min-width: 100px;
     margin-right: 0;
-    padding-bottom: 0.4em;
 }
 
 
@@ -1815,7 +1814,6 @@ div.totara-dialog td.select div#dialog-tabs {
 }
 
 div.totara-dialog td.select div#dialog-tabs ul.ui-tabs-nav {
-    height: 27px;
     border: none;
     border-bottom: 1px solid #ccc;
     background: none;
