@@ -1687,7 +1687,7 @@ table.dp-plan-component-items {
     width: 70%;
 }
 
-#dp-plans-description span.dp-add-plan-link{
+#dp-plans-description div.dp-add-plan-link{
     float: right;
     width: 29%;
     text-align: right;

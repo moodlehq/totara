@@ -261,7 +261,7 @@ abstract class dp_base_component {
      */
     public function get_url() {
         global $CFG;
-        return "{$CFG->wwwroot}/local/plan/component.php?id={$this->plan->id}&c={$this->component}";
+        return "{$CFG->wwwroot}/local/plan/component.php?id={$this->plan->id}&amp;c={$this->component}";
     }
 
 

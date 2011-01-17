@@ -57,7 +57,7 @@ if ( $objectiveid == null ){
 
 $objallurl = $component->get_url();
 if ( $objectiveid ){
-    $objviewurl = "{$CFG->wwwroot}/local/plan/components/objective/view.php?id={$planid}&itemid={$objectiveid}";
+    $objviewurl = "{$CFG->wwwroot}/local/plan/components/objective/view.php?id={$planid}&amp;itemid={$objectiveid}";
 } else {
     $objviewurl = $objallurl;
 }

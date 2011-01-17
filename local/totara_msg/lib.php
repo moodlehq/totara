@@ -76,7 +76,7 @@ function totara_msg_urgency_text($urgency) {
 
 function totara_msg_icon_url( $icon ){
     global $CFG;
-    return $CFG->wwwroot . '/local/icon.php?type=msg&icon=' . urlencode($icon);
+    return $CFG->wwwroot . '/local/icon.php?type=msg&amp;icon=' . urlencode($icon);
 }
 
 /**
@@ -216,7 +216,7 @@ function totara_msg_alert_popup($id) {
                         'Cancel': function() { handler._cancel() },
                         'Dismiss': function() { handler._confirm('{$CFG->wwwroot}/local/totara_msg/dismiss.php?id={$id}', '{$FULLME}') }
                     },
-                    title: '<h2>{$str}</h2>',
+                    title: '<h2>{$str}<\/h2>',
                     width: 600,
                     height: 400
                 },
