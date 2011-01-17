@@ -39,7 +39,7 @@ class block_admin_tree extends block_base {
 
         $this->tempcontent .= '<div class="depth'.$this->currentdepth.'"><a href="#" onclick="menu_toggle(\''.$this->divcounter.'\');return false">';
         $this->tempcontent .= '<span id="vh_div'.$this->divcounter.'indicator"><img src="'.$CFG->pixpath.'/i/open.gif" alt="'.$strfolderopened.'" /></span> ';
-        $this->tempcontent .= '<span class="visiblename">'.$visiblename.'<span></a></div><div id="vh_div'.$this->divcounter.'">'."\n";
+        $this->tempcontent .= '<span class="visiblename">'.$visiblename.'</span></a></div><div id="vh_div'.$this->divcounter.'">'."\n";
         $this->currentdepth++;
         $this->divcounter++;
     }
