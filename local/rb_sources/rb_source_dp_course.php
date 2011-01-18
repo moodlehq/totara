@@ -132,7 +132,6 @@ from
         );
 
         $this->add_course_table_to_joinlist($joinlist, 'base', 'courseid');
-        $this->add_course_custom_fields_to_joinlist($joinlist, 'course', 'id');
         $this->add_user_table_to_joinlist($joinlist, 'base','userid');
 
         return $joinlist;
@@ -275,20 +274,18 @@ from
                 array(
                     'joins' => 'course_completion',
                 )
-        );
+            );
 
         $columnoptions[] = new rb_column_option(
                 'course_info_data',
                 'coursetypeicon',
                 get_string('coursetypeicon', 'rb_source_dp_course'),
-                'course_coursetype.data',
+                'course.coursetype',
                 array(
                     'displayfunc' => 'course_type_icon',
                     'defaultheading' => 'Type',
-                    'joins' => 'course_coursetype',
                 )
-        );
-        $this->add_course_custom_fields_to_columns($columnoptions);
+            );
 
         return $columnoptions;
     }
@@ -353,18 +350,17 @@ from
         global $CFG;
 
         switch ($type) {
-            case "Blended":
+            case 0:
                 $image = 'blendedcourse';
                 break;
-            case "Face-to-face":
+            case 1:
                 $image = 'facetoface';
                 break;
-            case "E-learning":
+            case 2:
                 $image = 'elearning';
                 $break;
         }
         $icon = "<img alt=\"{$type}\" src=\"{$CFG->wwwroot}/theme/totara/msgicons/{$image}" . '-regular.png' . "\"></img>";
-
         return $icon;
     }
 }
