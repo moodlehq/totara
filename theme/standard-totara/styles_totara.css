@@ -2300,6 +2300,9 @@ form#newfieldform {
 .mform fieldset .advancedbutton  {
     width: 99%
 }
+.mform .fitemtitle {
+    width:30%;
+}
 
 
 /*****************************************************************************/
