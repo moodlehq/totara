@@ -97,20 +97,27 @@ class block_totara_notify extends block_base {
                 $cssclass = totara_msg_cssclass($msg->msgtype);
                 // statement - multipart: user + statment + object
                 $bkgd = ($cnt % 2) ? 'shade' : 'noshade';
+                $msglink = !empty($msg->contexturl) ? $msg->contexturl : '';
                 $content  = "<tr class=\"".$bkgd."\">";
+                // Icon
                 $content .= '<td class="status">';
+                $content .= !empty($msglink) ? '<a href="' . $msglink .'">' : '';
                 $content .= '<img class="msgicon" src="' . totara_msg_icon_url($msg->icon) . '" title="' . format_string($msg->subject) . '" alt="' . format_string($msg->subject) .'" />';
+                $content .= !empty($msglink) ? '</a>' : '';
                 $content .= '</td>';
+                // Details
+                $content .= '<td class="statement">';
+                $content .= !empty($msglink) ? '<a href="' . $msglink . '">' : '';
+                $content .= format_string($msg->subject ? $msg->subject : $msg->fullmessage);
+                $content .= !empty($msglink) ? '</a>' : '';
+                $content .= '</td>';
+                // Info icon/dialog
+                $content .= '<td class="action">';
                 $detailjs = totara_msg_alert_popup($msg->id);
-                $msgtext = '<a id="detailtask'.$msg->id.'-dialog" href="';
-                if ( $msg->contexturl ){
-                    $msgtext .= $msg->contexturl;
-                } else {
-                    $msgtext .= '#';
-                }
-                $msgtext .= '">'.($msg->subject ? $msg->subject : $msg->fullmessage).'</a>';
-                $content .= "<td class=\"statement\">{$msgtext}{$detailjs}</td>";
-                $content .= "</tr>";
+                $content .= '<a id="detailtask'.$msg->id.'-dialog" href="' . $msglink . '"
+                title="' . get_string('clickformoreinfo', 'block_totara_reminders') .'">';
+                $content .= '<img src="' . $CFG->themewww . '/' . $CFG->theme . '/pix/i/info.gif" />' . $detailjs . '</a>';
+                $content .= "</td></tr>";
                 $this->content->text .= $content;
             }
         }

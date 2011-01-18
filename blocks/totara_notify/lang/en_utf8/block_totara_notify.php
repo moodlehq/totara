@@ -18,3 +18,4 @@ $string['urgent'] = 'Urgent';
 $string['viewall'] = 'View all';
 $string['viewallnot'] = 'View all alerts';
 $string['context'] = 'Link';
+$string['clickformoreinfo'] = 'Click for more information';
