@@ -470,7 +470,7 @@ class dp_competency_component extends dp_base_component {
 
     function determine_item_icon($item) {
         // @todo in future the item state will determine the icon
-        return "competency-regular.png";
+        return "competency-regular";
     }
 
 
