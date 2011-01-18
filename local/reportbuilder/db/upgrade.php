@@ -143,14 +143,6 @@ function xmldb_local_reportbuilder_upgrade($oldversion=0) {
                 WHERE shortname IN ('plan_courses'))";
         $result = $result && execute_sql($sql);
 
-        /// Add 'Type' col to 'ROL courses' report
-        $todb = new object();
-        $todb->reportid = get_field('report_builder', 'id', 'shortname', 'plan_courses');
-        $todb->type = 'course_info_data';
-        $todb->value = 'coursetypeicon';
-        $todb->heading = 'Type';
-        $todb->sortorder = get_field('report_builder_columns', sql_max('sortorder'), 'reportid', $todb->reportid);
-        $result = $result && insert_record('report_builder_columns', $todb);
     }
 
     return $result;
