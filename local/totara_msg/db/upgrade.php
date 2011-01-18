@@ -119,6 +119,18 @@ function xmldb_local_totara_msg_upgrade($oldversion) {
         }
     }
 
+    // Remove png extension from icon name in message_metadata
+    if ($result && $oldversion < 2011011900) {
+        $records = get_fieldset_select('message_metadata', 'DISTINCT(icon)', 'icon IS NOT NULL');
+        foreach ($records as $oldicon) {
+            $newicon = str_replace('.png', '', $oldicon);
+            $sql = "UPDATE {$CFG->prefix}message_metadata
+                SET icon = '{$newicon}'
+                WHERE icon = '{$oldicon}'";
+            $result = $result && execute_sql($sql);
+        }
+    }
+
     /// Check all message20 output plugins and upgrade if necessary
 /// This is temporary until Totara goes to 2.x - then migrate local/totara_msg/message20 to message
     upgrade_plugins('local','local/totara_msg/message20/output',"$CFG->wwwroot/$CFG->admin/index.php");

@@ -671,7 +671,7 @@ abstract class dp_base_component {
         $userfrom = get_record('user', 'id', $USER->id);
         $event->userfrom = $userfrom;
         $event->contexturl = $this->get_url();
-        $event->icon = $this->component.'-update.png';
+        $event->icon = $this->component.'-update';
         $a = new stdClass;
         $a->plan = "<a href=\"{$CFG->wwwroot}/local/plan/view.php?id={$this->plan->id}\" title=\"{$this->plan->name}\">{$this->plan->name}</a>";
         $a->component = $this->component;

@@ -1184,7 +1184,7 @@ class development_plan {
             $event->contexturl = $this->get_display_url();
             $event->contexturlname = $this->name;
             $event->roleid = get_field('role','id', 'shortname', 'manager');
-            $event->icon = 'learningplan-request.png';
+            $event->icon = 'learningplan-request';
 
             $a = new stdClass;
             $a->learner = fullname($learner);
@@ -1246,7 +1246,7 @@ class development_plan {
         $event->contexturl = "{$CFG->wwwroot}/local/plan/approve.php?id={$this->id}";
         $event->contexturlname = $this->name;
         $event->roleid = get_field('role','id', 'shortname', 'manager');
-        $event->icon = 'learningplan-request.png';
+        $event->icon = 'learningplan-request';
 
         $a = new stdClass;
         $a->learner = fullname($learner);
@@ -1348,7 +1348,7 @@ class development_plan {
             $event = new stdClass();
             $event->userto = $manager;
             $event->userfrom = $learner;
-            $event->icon = 'learningplan-complete.png';
+            $event->icon = 'learningplan-complete';
             $a = new stdClass();
             $a->learner = fullname($learner);
             $a->plan = $this->name;
@@ -1361,7 +1361,7 @@ class development_plan {
         // Send notification to user
         $event = new stdClass();
         $event->userto = $learner;
-        $event->icon = 'learningplan-complete.png';
+        $event->icon = 'learningplan-complete';
         $event->fullmessage = format_text(get_string('plancompletesuccess', 'local_plan', $this->name));
         tm_notification_send($event);
     }

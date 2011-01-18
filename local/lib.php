@@ -350,12 +350,13 @@ function local_output_course_icon($courseid, $courseicon, $size='large') {
     send_file($icon, $iconname);
 }
 
-function local_output_msg_icon( $iconfile ){
+function local_output_msg_icon( $iconfile ) {
+    $type = '.gif';
     $icondir = local_get_stock_icon_dir('totaramsg');
-    if (is_file($icondir.'/'.$iconfile)){
-        $icon = $icondir .'/'.$iconfile;
+    if (is_file($icondir.'/'.$iconfile.$type)){
+        $icon = $icondir .'/'.$iconfile.$type;
     } else {
-        $icon = $icondir .'/default.png';
+        $icon = $icondir .'/default'.$extension;
     }
 
     send_file($icon, $icon);

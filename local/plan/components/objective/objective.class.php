@@ -247,7 +247,7 @@ class dp_objective_component extends dp_base_component {
 
     function determine_item_icon($item) {
         // @todo in future the item state will determine the icon
-        return "objective-regular.png";
+        return "objective-regular";
     }
 
 
@@ -579,7 +579,7 @@ class dp_objective_component extends dp_base_component {
         $userfrom = get_record('user', 'id', $USER->id);
         $event->userfrom = $userfrom;
         $event->contexturl = "{$CFG->wwwroot}/local/plan/view.php?id={$this->plan->id}";
-        $event->icon = 'objective-remove.png';
+        $event->icon = 'objective-remove';
         $a = new stdClass;
         $a->objective = $objective->fullname;
         $a->plan = "<a href=\"{$event->contexturl}\" title=\"{$this->plan->name}\">{$this->plan->name}</a>";
@@ -622,7 +622,7 @@ class dp_objective_component extends dp_base_component {
         $userfrom = get_record('user', 'id', $USER->id);
         $event->userfrom = $userfrom;
         $event->contexturl = "{$CFG->wwwroot}/local/plan/components/objective/view.php?id={$this->plan->id}&itemid={$objid}";
-        $event->icon = 'objective-add.png';
+        $event->icon = 'objective-add';
         $a = new stdClass;
         $a->objective = "<a href=\"{$event->contexturl}\">$fullname</a>";
         $a->plan = "<a href=\"{$CFG->wwwroot}/local/plan/view.php?id={$this->plan->id}\" title=\"{$this->plan->name}\">{$this->plan->name}</a>";
@@ -666,7 +666,7 @@ class dp_objective_component extends dp_base_component {
         $userfrom = get_record('user', 'id', $USER->id);
         $event->userfrom = $userfrom;
         $event->contexturl = "{$CFG->wwwroot}/local/plan/components/objective/view.php?id={$this->plan->id}&itemid={$objective->id}";
-        $event->icon = 'objective-update.png';
+        $event->icon = 'objective-update';
         $a = new stdClass;
         $a->objective = "<a href=\"{$event->contexturl}\">{$objective->fullname}</a>";
         $a->plan = "<a href=\"{$CFG->wwwroot}/local/plan/view.php?id={$this->plan->id}\" title=\"{$this->plan->name}\">{$this->plan->name}</a>";
@@ -717,7 +717,7 @@ class dp_objective_component extends dp_base_component {
         $userfrom = get_record('user', 'id', $USER->id);
         $event->userfrom = $userfrom;
         $event->contexturl = "{$CFG->wwwroot}/local/plan/components/objective/view.php?id={$this->plan->id}&itemid={$objective->id}";
-        $event->icon = 'objective-'.($status == 'complete' ? 'complete' : 'fail').'.png';
+        $event->icon = 'objective-'.($status == 'complete' ? 'complete' : 'fail');
         $a = new stdClass;
         $a->objective = "<a href=\"{$event->contexturl}\">{$objective->fullname}</a>";
         $a->plan = "<a href=\"{$CFG->wwwroot}/local/plan/view.php?id={$this->plan->id}\" title=\"{$this->plan->name}\">{$this->plan->name}</a>";
