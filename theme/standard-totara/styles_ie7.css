@@ -27,3 +27,12 @@ input, select, button {
 div.totara-dialog td.select #search-tab table#dialog-search-table td.querybox input {
     margin-left: 0 !important;
 }
+
+/* Fixing the tree dialogs */
+div.totara-dialog ul.treeview li {
+    float: left;
+    width: 80%;
+}
+div.totara-dialog ul.treeview li span.folder {
+    float: left;
+}

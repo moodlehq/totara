@@ -79,3 +79,13 @@ div.totara-dialog .selected {
 .hidden_select_ie {
     display:none;
 }
+
+
+/* Fixing the tree dialogs */
+div.totara-dialog ul.treeview li {
+    float: left;
+    width: 80%;
+}
+div.totara-dialog ul.treeview li span.folder {
+    float: left;
+}
