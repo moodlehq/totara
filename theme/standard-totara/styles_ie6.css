@@ -74,3 +74,8 @@ div.totara-dialog .selected {
 #left-column .block_admin_tree {
     position:relative;
 }
+
+/* Fix for selects which ignore z-index rules */
+.hidden_select_ie {
+    display:none;
+}

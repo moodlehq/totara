@@ -119,6 +119,11 @@ function totaraDialog(title, buttonid, config, default_url, handler) {
         this.dialog.height(height);
 
         this.load(url, method);
+
+	// If ie6 then hide selects while the pop-up is open
+	if($.browser.msie && parseInt($.browser.version) == 6) {
+	    $('select').addClass('hidden_select_ie');
+	}
     }
 
 
@@ -304,6 +309,11 @@ function totaraDialog(title, buttonid, config, default_url, handler) {
      * @return void
      */
     this.hide = function() {
+	// If ie6 then show selects
+	if($.browser.msie && parseInt($.browser.version) == 6) {
+	    $('select').removeClass('hidden_select_ie');
+	}
+
         this.handler._loaded = false;
         this.dialog.html('');
         this.dialog.dialog('close');
