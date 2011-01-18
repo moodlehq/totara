@@ -118,6 +118,11 @@ function totaraDialog(title, buttonid, config, default_url, handler) {
         var height = par.height() - $('div.ui-dialog-titlebar', par).height() - $('div.ui-dialog-buttonpane', par).height() - 36;
         this.dialog.height(height);
 
+        // Run dialog open hook
+        if (this.handler._open != undefined) {
+            this.handler._open();
+        }
+
         this.load(url, method);
 
 	// If ie6 then hide selects while the pop-up is open

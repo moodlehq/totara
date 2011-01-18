@@ -24,12 +24,14 @@ $(function() {
                 'Ok': function() { handler._save(saveurl) }
         };
 
+        handler.continue_buttons = {
+            'Cancel': function() { handler._cancel() },
+            'Continue': function() { handler._continue(continueurl) }
+        };
+
         // Check if user has allow permissions for updating compentencies
         if (comp_update_allowed) {
-            var buttons = {
-                'Cancel': function() { handler._cancel() },
-                'Continue': function() { handler._continue(continueurl) }
-            };
+            var buttons = handler.continue_buttons;
         } else {
             var buttons = handler.standard_buttons;
         }
@@ -61,6 +63,17 @@ totaraDialog_handler_lpCompetency = function() {
 }
 
 totaraDialog_handler_lpCompetency.prototype = new totaraDialog_handler_treeview_multiselect();
+
+
+/**
+ * Reset buttons on dialog open
+ *
+ * @return  void
+ */
+totaraDialog_handler_lpCompetency.prototype._open = function() {
+    // Reset buttons
+    this._dialog.dialog.dialog('option', 'buttons', this.continue_buttons);
+}
 
 
 /**
