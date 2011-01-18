@@ -132,12 +132,6 @@ function xmldb_local_reportbuilder_upgrade($oldversion=0) {
                 WHERE shortname IN ('notifications', 'reminders'))";
         $result = $result && execute_sql($sql);
 
-        /// Give msgid col heading value (Notifications and Reminders)
-        $sql = "Update {$CFG->prefix}report_builder_columns
-            SET heading = 'Id'
-            WHERE value = 'msgid' AND reportid IN (SELECT id FROM {$CFG->prefix}report_builder
-                WHERE shortname IN ('notifications', 'reminders'))";
-        $result = $result && execute_sql($sql);
     }
 
     if ($result && $oldversion < 2011011801) {
