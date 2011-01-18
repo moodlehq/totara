@@ -173,11 +173,10 @@ function totara_msg_dismiss_action($id) {
         })();
     });" .
     '</script>'.
-    '<form><input id="dismissmsg'.$id.'-dialog" type="image" name="tm_dismiss_msg" class="iconsmall action"'.
+    '<input id="dismissmsg'.$id.'-dialog" type="image" name="tm_dismiss_msg" class="iconsmall action"'.
     ' src="' . $CFG->wwwroot . '/theme/' . $CFG->theme . '/pix/t/dismiss.gif" title="'.$str.'"'.
     ' alt="'.$str.'" style="display:none;"/>'.
-    '</form>
-    <noscript>
+    '<noscript>
     <form action="' . $CFG->wwwroot . '/local/totara_msg/dismiss.php?id=' . $id . '" method="post">
     <input type="hidden" name="id" value="' . $id . '" />
     <input type="hidden" name="returnto" value="' . $FULLME . '" />
