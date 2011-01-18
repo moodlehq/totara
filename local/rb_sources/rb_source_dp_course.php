@@ -348,19 +348,24 @@ from
 
     function rb_display_course_type_icon($type) {
         global $CFG;
-
+        
         switch ($type) {
+            case null:
+                return null;
+                break;
             case 0:
-                $image = 'blendedcourse';
+                $image = 'elearning';
                 break;
             case 1:
-                $image = 'facetoface';
+                $image = 'blended';
                 break;
             case 2:
-                $image = 'elearning';
-                $break;
+                $image = 'facetoface';
+                break;
         }
-        $icon = "<img alt=\"{$type}\" src=\"{$CFG->wwwroot}/theme/totara/msgicons/{$image}" . '-regular.png' . "\"></img>";
+        $alt = get_string($image, 'rb_source_dp_course');
+        $icon = "<img alt=\"{$alt}\" src=\"{$CFG->wwwroot}/theme/totara/msgicons/{$image}" . '-regular.png' . "\"></img>";
+
         return $icon;
     }
 }

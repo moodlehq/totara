@@ -15,3 +15,7 @@ $string['completionstatus'] = 'Completion status';
 $string['coursetypeicon'] = 'Type';
 // filters
 $string['userid'] = 'User ID';
+// course types
+$string['elearning'] = 'E-Learning';
+$string['blended'] = 'Blended';
+$string['facetoface'] = 'Face-to-Face';
