@@ -20,7 +20,7 @@ class totara_competency_evidence_form extends moodleform {
         if($editing) {
             // get id and userid from competency evidence object
             $userid = $ce->userid;
-            $id = $ce->id;
+            $evidenceid = $ce->id;
 
             // Get position title
             $position_title = '';
@@ -36,8 +36,9 @@ class totara_competency_evidence_form extends moodleform {
         } else {
             // for new record, userid must also be passed to form
             $userid = $this->_customdata['userid'];
-            $planid = $this->_customdata['planid'];
-            $id = null;
+            $id = $this->_customdata['id'];
+            $evidenceid = null;
+
             // repopulate if set but validation failed
             $position_title = ($positionid != 0) ?
                 get_field('pos', 'fullname', 'id', $positionid) : '';
@@ -47,8 +48,8 @@ class totara_competency_evidence_form extends moodleform {
                 get_field('comp', 'fullname', 'id', $competencyid) : '';
         }
 
-        $mform->addElement('hidden', 'id', $id);
-        $mform->setType('id', PARAM_INT);
+        $mform->addElement('hidden', 'evidenceid', $evidenceid);
+        $mform->setType('evidenceid', PARAM_INT);
 
         if(!$nojs && $competencyid == 0) {
             // replace previous return url with a new url
@@ -67,7 +68,7 @@ class totara_competency_evidence_form extends moodleform {
         $mform->setType('userid', PARAM_INT);
         $mform->addRule('userid', null, 'required');
         $mform->addRule('userid', null, 'numeric');
-        $mform->addElement('hidden', 'planid', $planid);
+        $mform->addElement('hidden', 'id', $id);
         $mform->setType('userid', PARAM_INT);
 
 

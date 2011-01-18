@@ -4,10 +4,10 @@ require_once('../../../../config.php');
 require_once($CFG->dirroot . '/local/plan/lib.php');
 require_once($CFG->dirroot . '/local/plan/components/course/rpl_form.php');
 
-$planid = required_param('planid', PARAM_INT);
+$id = required_param('id', PARAM_INT);
 $courseid = required_param('courseid', PARAM_INT);
 
-$plan = new development_plan($planid);
+$plan = new development_plan($id);
 
 $userid = $plan->userid;
 $componentname = 'course';
@@ -17,10 +17,15 @@ if($component->get_setting('setcompletionstatus') != DP_PERMISSION_ALLOW) {
     error(get_string('error:coursecompletionpermission', 'local_plan'));
 }
 
-$rpl = get_record('course_completions', 'userid', $userid, 'course', $courseid);
+if($rpl = get_record('course_completions', 'userid', $userid, 'course', $courseid)){
+    $rpltext = $rpl->rpl;
+    $rplid = $rpl->id;
+} else {
+    $rpltext = '';
+    $rplid = 0;
+}
 
-$mform = new totara_course_rpl_form(null, compact('planid','courseid','userid'));
-$mform->set_data($rpl);
+$mform = new totara_course_rpl_form(null, compact('id','rplid','rpltext','courseid','userid'));
 
 $returnurl = $component->get_url();
 
@@ -40,7 +45,8 @@ if ($fromform = $mform->get_data()) {
     // Get completion object
     $params = array(
         'userid'    => $fromform->userid,
-        'course'    => $fromform->courseid
+        'course'    => $fromform->courseid,
+        'id'        => $fromform->rplid
     );
 
     // Completion

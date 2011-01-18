@@ -12,7 +12,7 @@ require_once($CFG->dirroot.'/hierarchy/type/competency/evidence/evidence.php');
 ///
 
 $userid = required_param('userid', PARAM_INT);
-$planid = required_param('planid', PARAM_INT);
+$id = required_param('id', PARAM_INT);
 $proficiency = optional_param('proficiency', null, PARAM_INT);
 $competencyid = optional_param('competencyid', 0, PARAM_INT);
 $positionid = optional_param('positionid', 0, PARAM_INT);
@@ -20,7 +20,7 @@ $organisationid = optional_param('organisationid', 0, PARAM_INT);
 
 $nojs = optional_param('nojs', 0, PARAM_INT);
 
-$plan = new development_plan($planid);
+$plan = new development_plan($id);
 
 $evidence_record = get_record('comp_evidence', 'userid', $userid, 'competencyid', $competencyid);
 
@@ -59,7 +59,7 @@ if($fromform = $mform->get_data()) { // Form submitted
         array(
             'competencyid'  => $fromform->competencyid,
             'userid'        => $fromform->userid,
-            'planid'        => $fromform->planid
+            'id'            => $fromform->id
         )
     );
 
