@@ -27,7 +27,7 @@ class rb_plan_courses_embedded extends rb_base_embedded {
             ),
             array(
                 'type' => 'plan',
-                'value' => 'name',
+                'value' => 'planlink',
                 'heading' => 'Plan',
             ),
             array(
@@ -42,8 +42,28 @@ class rb_plan_courses_embedded extends rb_base_embedded {
             ),
         );
 
-        // no filters
-        $this->filters = array();
+        $this->filters = array(
+            array(
+                'type' => 'course',
+                'value' => 'courselink',
+                'advanced' => 0,
+            ),
+            /*array(
+                'type' => 'course',
+                'value' => 'status',
+                'advanced' => 1,
+            ),*/
+            array(
+                'type' => 'plan',
+                'value' => 'name',
+                'advanced' => 1,
+            ),
+            array(
+                'type' => 'plan',
+                'value' => 'courseduedate',
+                'advanced' => 1,
+            ),
+        );
 
         // no restrictions
         $this->contentmode = REPORT_BUILDER_CONTENT_MODE_NONE;

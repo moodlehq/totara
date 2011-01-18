@@ -183,7 +183,7 @@ from
         $columnoptions[] = new rb_column_option(
                 'plan',
                 'enddate',
-                'Plan end date',
+                get_string('planenddate', 'rb_source_dp_course'),
                 'dp_course.planenddate',
                 array(
                     'joins' => 'dp_course',
@@ -298,7 +298,6 @@ from
      */
     private function define_filteroptions() {
         $filteroptions = array();
-        return $filteroptions;
 
         $filteroptions[] = new rb_filter_option(
                 'user',
@@ -306,10 +305,37 @@ from
                 get_string('userid', 'rb_source_dp_course'),
                 'number',
                 array(
-                    'defaultadvanced'=>true
+                    'defaultadvanced' => true
                 )
         );
-
+        $filteroptions[] = new rb_filter_option(
+                'course',
+                'courselink',
+                get_string('coursetitle', 'rb_source_dp_course'),
+                'text'
+        );
+        //TODO select options for the course status filter
+        /*$filteroptions[] = new rb_filter_option(
+                'course',
+                'status',
+                get_string('coursestatus', 'rb_source_dp_course'),
+                'select',
+                array(
+                    'selectfunc' => '',
+                )
+        );*/
+        $filteroptions[] = new rb_filter_option(
+                'plan',
+                'name',
+                get_string('planname', 'rb_source_dp_course'),
+                'text'
+        );
+        $filteroptions[] = new rb_filter_option(
+                'plan',
+                'courseduedate',
+                get_string('courseduedate', 'rb_source_dp_course'),
+                'date'
+        );
         return $filteroptions;
     }
 
