@@ -1967,7 +1967,15 @@ var comptree = [' . implode(', ', $comptrees) . '];
         $exportoptions = get_config('reportbuilder', 'exportoptions');
 
         $out = "<center><table><tr>";
+        $oauthenabled = get_config('local_oauth', 'oauthenabled');
+        $sitecontext = get_context_instance(CONTEXT_SYSTEM);
+        $oauthcap = has_capability('local/oauth:negotiate', $sitecontext);
         foreach($REPORT_BUILDER_EXPORT_OPTIONS as $option => $code) {
+            // specific checks for fusion tables export
+            if ($option == 'fusion' && (!$oauthenabled || !$oauthcap)) {
+                continue;
+            }
+
             // bitwise operator to see if option bit is set
             if(($exportoptions & $code) == $code) {
                 $out .= '<td>';

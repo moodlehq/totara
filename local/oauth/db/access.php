@@ -38,11 +38,19 @@
 
 $capabilities = array(
         'local/oauth:negotiate' => array(
+                'riskbitmask' => RISK_PERSONAL,
                 'captype' => 'read',
                 'contextlevel' => CONTEXT_SYSTEM,
+                'legacy' => array(
+                              'student' => CAP_ALLOW,
+                              'teacher' => CAP_ALLOW,
+                              'editingteacher' => CAP_ALLOW,
+                              'admin' => CAP_ALLOW
+                            )
         ),
 
 );
+
 
 // add this to make it 1.9 compatible
 $local_oauth_capabilities = $capabilities;

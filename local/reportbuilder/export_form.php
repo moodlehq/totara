@@ -23,7 +23,14 @@ class report_builder_export_form extends moodleform {
 
         $exportoptions = get_config('reportbuilder', 'exportoptions');
         $select = array();
+        $oauthenabled = get_config('local_oauth', 'oauthenabled');
+        $sitecontext = get_context_instance(CONTEXT_SYSTEM);
+        $oauthcap = has_capability('local/oauth:negotiate', $sitecontext);
         foreach($REPORT_BUILDER_EXPORT_OPTIONS as $option => $code) {
+            // specific checks for fusion tables export
+            if ($option == 'fusion' && (!$oauthenabled || !$oauthcap)) {
+                continue;
+            }
             // bitwise operator to see if option bit is set
             if(($exportoptions & $code) == $code) {
                 $select[$option] = get_string('export'.$option,'local_reportbuilder');

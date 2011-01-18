@@ -114,7 +114,15 @@ class report_builder_global_settings_form extends moodleform {
         $exportoptions = get_config('reportbuilder', 'exportoptions');
 
         $group = array();
+        $oauthenabled = get_config('local_oauth', 'oauthenabled');
+        $sitecontext = get_context_instance(CONTEXT_SYSTEM);
+        $oauthcap = has_capability('local/oauth:negotiate', $sitecontext);
         foreach($REPORT_BUILDER_EXPORT_OPTIONS as $option => $code) {
+            // specific checks for fusion tables export
+            if ($option == 'fusion' && (!$oauthenabled || !$oauthcap)) {
+                continue;
+            }
+
             $group[] =& $mform->createElement('checkbox', 'export'.$option, '', get_string('export'.$option,'local_reportbuilder'));
             if($exportoptions) {
                 // bitwise operation to see if bit for this export

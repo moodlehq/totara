@@ -88,7 +88,7 @@ if (empty($SESSION->local_oauth[$site->name])) {
     print_footer();
 }
 
-$context = get_context_instance(CONTEXT_COURSE, SITEID);
+$context = get_context_instance(CONTEXT_SYSTEM);
 if (!has_capability('local/oauth:negotiate', $context)) {
     print_heading(get_string('authentication', 'local_oauth'));
     print_error(get_string('notallowed', 'local_oauth'));
@@ -98,10 +98,8 @@ if (!has_capability('local/oauth:negotiate', $context)) {
 $oauth = new local_oauth($site->name);
 
 if ($oauth->authenticate()) {
-//echo "here6";
     // return to wantsurl
     $wantsurl = $oauth->getReturn();
-//echo "here7: $wantsurl";
     redirect($wantsurl);
 }
 

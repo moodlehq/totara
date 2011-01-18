@@ -30,11 +30,11 @@
 function xmldb_local_oauth_upgrade($oldversion) {
     global $CFG, $USER, $DB, $OUTPUT;
 
-    require_once($CFG->libdir.'/db/upgradelib.php'); // Core Upgrade-related functions
+    //require_once($CFG->libdir.'/db/upgradelib.php'); // Core Upgrade-related functions
 
     $result = true;
 
-    $dbman = $DB->get_manager(); // loads ddl manager and xmldb classes
+    //$dbman = $DB->get_manager(); // loads ddl manager and xmldb classes
 
 
 /*
