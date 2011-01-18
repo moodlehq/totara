@@ -448,6 +448,9 @@ function dp_display_plans($userid, $statuses=array(DP_PLAN_STATUSAPPROVED), $col
     $table->set_attribute('class', 'logtable generalbox');
     $table->set_attribute('width', '100%');
     $table->sortable(true);
+    if (in_array('status', $cols)) {
+        $table->no_sorting('status_'.$statuses_undrsc);
+    }
     $table->setup();
     $table->pagesize(15, $count);
     $sort = $table->get_sql_sort();
