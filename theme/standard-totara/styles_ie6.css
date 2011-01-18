@@ -89,3 +89,7 @@ div.totara-dialog ul.treeview li {
 div.totara-dialog ul.treeview li span.folder {
     float: left;
 }
+
+.dashboard .dashlet_container {
+    position:relative;
+}
