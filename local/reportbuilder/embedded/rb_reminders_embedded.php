@@ -52,8 +52,9 @@ class rb_reminders_embedded extends rb_base_embedded {
                 'heading' =>
                              '<div id="totara_msg_selects" style="display: none;">'.
                              '<a href="" onclick="jqCheckAll(\'totara_messages\', \'totara_message\', 1); return false;">all</a>/'.
-                             '<a href="" onclick="jqCheckAll(\'totara_messages\', \'totara_message\', 0); return false;">none</a>'.
-                             '</div><noscript>Actions</noscript>',
+                             '<a href="" onclick="jqCheckAll(\'totara_messages\', \'totara_message\', 0); return false;">none</a></div>',
+                            // too long for varchar(255) field
+                             //'</div><noscript>Actions</noscript>',
         ),
 //            array(
 //            'type' => 'message_values',
