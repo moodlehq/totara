@@ -574,11 +574,11 @@ function dp_display_plans_menu($userid, $selectedid=0, $role='learner') {
         $out .= '<div class="dp-plans-menu-section"><h4 class="dp-plans-menu-sub-header">' . get_string('recordoflearning', 'local') . '</h4>';
         $out .= "<ul>";
         $class = $rolstatus == 'all' ? 'class="dp-menu-selected"' : '';
-        $out .= "<li {$class}><a href=\"{$CFG->wwwroot}/local/plan/record/courses.php?userid={$userid}&status=all\">" . get_string('alllearning', 'local_plan') . "</a></li>";
+        $out .= "<li {$class}><a href=\"{$CFG->wwwroot}/local/plan/record/courses.php?userid={$userid}&amp;status=all\">" . get_string('alllearning', 'local_plan') . "</a></li>";
         $class = $rolstatus == 'active' ? 'class="dp-menu-selected"' : '';
-        $out .= "<li {$class}><a href=\"{$CFG->wwwroot}/local/plan/record/courses.php?userid={$userid}&status=active\">" . get_string('activelearning', 'local_plan') . "</a></li>";
+        $out .= "<li {$class}><a href=\"{$CFG->wwwroot}/local/plan/record/courses.php?userid={$userid}&amp;status=active\">" . get_string('activelearning', 'local_plan') . "</a></li>";
         $class = $rolstatus == 'completed' ? 'class="dp-menu-selected"' : '';
-        $out .= "<li {$class}><a href=\"{$CFG->wwwroot}/local/plan/record/courses.php?userid={$userid}&status=completed\">" . get_string('completedlearning', 'local_plan') . "</a></li>";
+        $out .= "<li {$class}><a href=\"{$CFG->wwwroot}/local/plan/record/courses.php?userid={$userid}&amp;status=completed\">" . get_string('completedlearning', 'local_plan') . "</a></li>";
         $out .= "</ul>";
         $out .= "</div>";
     }

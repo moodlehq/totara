@@ -412,7 +412,7 @@ function local_course_icon_tag($course=null, $size='large') {
             $course->icon = get_field('course', 'icon', 'id', $course->id);
         }
     }
-    return '<img src="'.$CFG->wwwroot.'/local/icon.php?id='.$course->id.'&amp;icon='.$course->icon.'&amp;size='.$size.'&type=course" alt="'.$course->shortname.'" class="course_icon" id="course_icon_preview" />';
+    return '<img src="'.$CFG->wwwroot.'/local/icon.php?id='.$course->id.'&amp;icon='.urlencode($course->icon).'&amp;size='.$size.'&amp;type=course" alt="'.$course->shortname.'" class="course_icon" id="course_icon_preview" />';
 }
 
 /**
@@ -429,7 +429,7 @@ function local_coursecategory_icon_tag($coursecat, $size='large') {
     if (!isset($coursecat->icon)) {
         $coursecat->icon = get_field('course_categories', 'icon', 'id', $coursecat->id);
     }
-    return '<img src="'.$CFG->wwwroot.'/local/icon.php?icon='.$coursecat->icon.'&amp;size='.$size.'&type=coursecategory" class="course_icon" />';
+    return '<img src="'.$CFG->wwwroot.'/local/icon.php?icon='.urlencode($coursecat->icon).'&amp;size='.$size.'&amp;type=coursecategory" class="course_icon" />';
 }
 
 /**

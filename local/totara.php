@@ -319,7 +319,7 @@ function totara_print_report_manager($return=false) {
                     <a href="'.$CFG->wwwroot.'/local/reportbuilder/report.php?id='.$report->id.'" title="'.$report->fullname.'">
                     <img src="'.$CFG->pixpath.'/i/reports.png" width="32" height="32" /></a>
                 </td>
-                <td class="text" align="left" valign="center">
+                <td class="text" align="left">
                     <span style="font-size: small;"><a href="'.$viewurl.'">'.$report->fullname.'</a>
                 ';
 

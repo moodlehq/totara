@@ -812,8 +812,8 @@ function tooltip_contents($sessionlist)
     $html .= '<ul>';
     foreach ($sessionlist as $session) {
         $sessionname = str_replace('"', '\"', $session);
-        $html .= "<li>$sessionname</li>";
+        $html .= "<li>$sessionname<\/li>";
     }
-    $html .= '</ul></p>';
+    $html .= '<\/ul><\/p>';
     return $html;
 }
