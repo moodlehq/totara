@@ -16,3 +16,4 @@ $string['statusundecided'] = 'Status undecided';
 $string['type'] = 'Type';
 $string['viewall'] = 'View all';
 $string['viewallnot'] = 'View all tasks';
+$string['clickformoreinfo'] = 'Click for more information';

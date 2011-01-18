@@ -193,11 +193,11 @@ function totara_msg_dismiss_action($id) {
  * @param int $id message Id
  * @return string HTML of dismiss button
  */
-function totara_msg_alert_popup($id) {
+function totara_msg_alert_popup($id, $extrabuttons=array()) {
     global $CFG, $FULLME;
 
     $str = get_string('dismiss', 'block_totara_notify');
-    return
+    $return =
     '<script type="text/javascript"> '.
     "// bind functionality to page on load
     $(function() {
@@ -213,8 +213,11 @@ function totara_msg_alert_popup($id) {
                 {
                     buttons: {
                         'Cancel': function() { handler._cancel() },
-                        'Dismiss': function() { handler._confirm('{$CFG->wwwroot}/local/totara_msg/dismiss.php?id={$id}', '{$FULLME}') }
-                    },
+                        'Dismiss': function() { handler._confirm('{$CFG->wwwroot}/local/totara_msg/dismiss.php?id={$id}', '{$FULLME}') }";
+                        foreach ($extrabuttons as $btn) {
+                            $return .= ", '{$btn->text}': function() { handler._confirm('{$btn->action}', '{$btn->redirect}') },";
+                        }
+                    $return .= "},
                     title: '<h2>{$str}<\/h2>',
                     width: 600,
                     height: 400
@@ -226,6 +229,7 @@ function totara_msg_alert_popup($id) {
     });" .
     '</script>';
 
+    return $return;
 }
 
 
@@ -378,7 +382,7 @@ function totara_msg_accept_reject_action($id) {
         })();
     });" .
     '</script>';
-    if (isset($msgmeta->onaccept) && $msgmeta->onaccept) {
+    if (!empty($msgmeta->onaccept)) {
         $accept =
             '<form><input id="acceptmsg'.$id.'-dialog" type="image" name="tm_accept_msg" class="iconsmall action"'.
             ' src="' . $CFG->wwwroot . '/theme/' . $CFG->theme . '/pix/t/accept.gif" title="'.$onaccept_str.'"'.
@@ -392,7 +396,7 @@ function totara_msg_accept_reject_action($id) {
             </form>
             </noscript>';
     }
-    if (isset($msgmeta->onreject) && $msgmeta->onreject) {
+    if (!empty($msgmeta->onreject)) {
         $reject =
             '<form><input id="rejectmsg'.$id.'-dialog" type="image" name="tm_reject_msg" class="iconsmall action"'.
             ' src="' . $CFG->wwwroot . '/theme/' . $CFG->theme . '/pix/t/delete.gif" title="'.$onreject_str.'"'.

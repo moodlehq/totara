@@ -87,6 +87,10 @@ class block_totara_reminders extends block_base {
                 // status Icon
                 $cnt++;
 
+                $msgmeta = get_record('message_metadata', 'messageid', $msg->id);
+                $msgacceptdata = totara_msg_eventdata($msg->id, 'onaccept', $msgmeta);
+                $msgrejectdata = totara_msg_eventdata($msg->id, 'onreject', $msgmeta);
+
                 // user name + link
                 $userfrom_link = $CFG->wwwroot.'/user/view.php?id='.$msg->useridfrom;
                 $from = get_record('user', 'id', $msg->useridfrom);
@@ -97,17 +101,53 @@ class block_totara_reminders extends block_base {
 
                 // statement - multipart: user + statment + object
                 $bkgd = ($cnt % 2) ? 'shade' : 'noshade';
+                $msglink = !empty($msg->contexturl) ? $msg->contexturl : '';
                 $content  = "<tr class=\"".$bkgd."\">";
+
+                // Status icon
                 $content .= '<td class="status">';
+                $content .= !empty($msglink) ? '<a href="' . $msglink .'">' : '';
                 $content .= '<img class="msgicon" src="' . totara_msg_icon_url($msg->icon) . '" title="' . format_string($msg->subject) . '" alt="' . format_string($msg->subject) .'" />';
+                $content .= !empty($msglink) ? '</a>' : '';
                 $content .= '</td>';
-                $msgtext = $msg->subject ? $msg->subject : $msg->fullmessage;
-                $content .= "<td class=\"statement\"><p>{$msgtext}</p></td>";
+
+                // Details
+                $content .= '<td class="statement"><p>';
+                $content .= !empty($msglink) ? '<a href="' . $msglink .'">' : '';
+                $content .= !empty($msg->subject) ? $msg->subject : $msg->fullmessage;
+                $content .= !empty($msglink) ? '</a>' : '';
+                $content .= '</p></td>';
+
+                // Info icon/dialog
                 $content .= "<td class=\"action\">";
-                $content .= totara_msg_accept_reject_action($msg->id);
-                $content .= totara_msg_dismiss_action($msg->id);
+                $detailbuttons = array();
+                // Add 'accept' button
+                if (!empty($msgacceptdata)) {
+                    $btn = new object();
+                    $btn->text = !empty($msgacceptdata->acceptbutton) ?
+                        $msgacceptdata->acceptbutton : get_string('onaccept', 'block_totara_reminders');
+                    $btn->action = "{$CFG->wwwroot}/local/totara_msg/accept.php?id={$msg->id}";
+                    $btn->redirect = !empty($msgacceptdata->data['redirect']) ?
+                        $msgacceptdata->data['redirect'] : $FULLME;
+                    $detailbuttons[] = $btn;
+                }
+                // Add 'reject' button
+                if (!empty($msgrejectdata)) {
+                    $btn = new object();
+                    $btn->text = !empty($msgrejectdata->rejectbutton) ?
+                        $msgrejectdata->rejectbutton : get_string('onreject', 'block_totara_reminders');
+                    $btn->action = "{$CFG->wwwroot}/local/totara_msg/reject.php?id={$msg->id}";
+                    $btn->redirect = !empty($msgrejectdata->data['redirect']) ?
+                        $msgrejectdata->data['redirect'] : $FULLME;
+                    $detailbuttons[] = $btn;
+                }
+                $detailjs = totara_msg_alert_popup($msg->id, $detailbuttons);
+                $content .= '<a id="detailtask'.$msg->id.'-dialog" href="' . $msglink . '"
+                    title="' . get_string('clickformoreinfo', 'block_totara_reminders') . '">';
+                $content .= '<img src="' . $CFG->themewww . '/' . $CFG->theme . '/pix/i/info.gif" />' . $detailjs . '</a>';
                 $content .= "</td>";
                 $content .= "</tr>";
+
                 $this->content->text .= $content;
             }
         }

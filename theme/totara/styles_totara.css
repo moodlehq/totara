@@ -1334,6 +1334,11 @@ div.totara_reminders_actions .action {
   vertical-align: top;
 }
 
+div.block_totara_reminders .content td.statement {
+  border-left: 1px solid #E0E0E0;
+  padding-left: 4px;
+}
+
 table.totara_messages_actions {
   vertical-align: top;
   border: 0px !important;
