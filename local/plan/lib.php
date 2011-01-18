@@ -449,7 +449,7 @@ function dp_display_plans($userid, $statuses=array(DP_PLAN_STATUSAPPROVED), $col
     $table->set_attribute('width', '100%');
     $table->sortable(true);
     $table->setup();
-    $table->pagesize(5, $count);
+    $table->pagesize(15, $count);
     $sort = $table->get_sql_sort();
     $sort = empty($sort) ? '' : ' ORDER BY '.$sort;
 
