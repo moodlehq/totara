@@ -926,10 +926,16 @@ abstract class dp_base_component {
             return '';
         }
 
+        // Check for allow/approve permissions
+        $canupdate = ($permission >= DP_PERMISSION_ALLOW ? 'true' : 'false');
+
         $html  = '<div class="buttons plan-add-item-button-wrapper">';
         $html .= '<div class="singlebutton dp-plan-assign-button">';
         $html .= '<div>';
-        $html .= '<script type="text/javascript">var plan_id = '.$this->plan->id.';</script>';
+        $html .= '<script type="text/javascript">';
+        $html .= "var plan_id = {$this->plan->id};";
+        $html .= "var comp_update_allowed = {$canupdate};";
+        $html .= '</script>';
         $html .= '<input type="submit" class="plan-add-item-button" id="show-'.$this->component.'-dialog" value="'.get_string('addremove'.$this->component, 'local_plan').'" />';
         $html .= '</div>';
         $html .= '</div>';

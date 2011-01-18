@@ -11,19 +11,33 @@ $(function() {
     ///
     (function() {
         var url = '<?php echo $CFG->wwwroot ?>/local/plan/components/competency/';
-        var saveurl = url + 'update.php?id='+plan_id+'&update=';
+        var continueurl = url + 'confirm.php?id='+plan_id+'&update=';
+        var saveurl = url + 'update.php?';
 
-        var handler = new totaraDialog_handler_preRequisite();
+        var handler = new totaraDialog_handler_lpCompetency();
         handler.baseurl = url;
+
+        handler.standard_buttons = {
+                'Cancel': function() { handler._cancel() },
+                'Ok': function() { handler._save(saveurl) }
+        };
+
+        // Check if user has allow permissions for updating compentencies
+        if (comp_update_allowed) {
+            var buttons = {
+                'Cancel': function() { handler._cancel() },
+                'Continue': function() { handler._continue(continueurl) }
+            };
+        } else {
+            var buttons = handler.standard_buttons;
+        }
+
 
         totaraDialogs['evidence'] = new totaraDialog(
             'assigncompetencies',
             'show-competency-dialog',
             {
-                 buttons: {
-                    'Cancel': function() { handler._cancel() },
-                    'Ok': function() { handler._save(saveurl) }
-                 },
+                buttons: buttons,
                 title: '<?php
                     echo '<h2>';
                     echo get_string('addremovecompetency', 'local_plan');
@@ -37,13 +51,70 @@ $(function() {
 
 });
 
+
 // Create handler for the dialog
-totaraDialog_handler_preRequisite = function() {
+totaraDialog_handler_lpCompetency = function() {
     // Base url
     var baseurl = '';
 }
 
-totaraDialog_handler_preRequisite.prototype = new totaraDialog_handler_treeview_multiselect();
+totaraDialog_handler_lpCompetency.prototype = new totaraDialog_handler_treeview_multiselect();
+
+
+/**
+ * Load intermediate page for selecting courses
+ *
+ * @param   string  url
+ * @return  void
+ */
+totaraDialog_handler_lpCompetency.prototype._continue = function(url) {
+
+    // Serialize data
+    var elements = $('.selected > div > span', this._container);
+    var selected_str = this._get_ids(elements).join(',');
+
+    // Add to url
+    url = url + selected_str;
+
+    // Load url in dialog
+    this._dialog._request(url, this, '_continueRender');
+}
+
+
+/**
+ * Render and update dialog buttons to be ok/cancel
+ *
+ * @return  void
+ */
+totaraDialog_handler_lpCompetency.prototype._continueRender = function() {
+
+    // Update buttons
+    this._dialog.dialog.dialog('option', 'buttons', this.standard_buttons);
+
+    // Render
+    return true;
+}
+
+
+/**
+ * Serialize linked courses and send to url,
+ * update table with result
+ *
+ * @param string URL to send dropped items to
+ * @return void
+ */
+totaraDialog_handler.prototype._save = function(url) {
+
+    // Serialize form data
+    var data_str = $('form', this._container).serialize();
+
+    // Add to url
+    url = url + data_str;
+
+    // Send to server
+    this._dialog._request(url, this, '_update');
+}
+
 
 /**
  * Add a row to a table on the calling page
@@ -52,7 +123,7 @@ totaraDialog_handler_preRequisite.prototype = new totaraDialog_handler_treeview_
  * @param string    HTML response
  * @return void
  */
-totaraDialog_handler_preRequisite.prototype._update = function(response) {
+totaraDialog_handler_lpCompetency.prototype._update = function(response) {
 
     // Hide dialog
     this._dialog.hide();
