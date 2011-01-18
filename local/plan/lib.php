@@ -566,7 +566,7 @@ function dp_display_plans_menu($userid, $selectedid=0, $role='learner') {
     }
 
     // Display record of learning (rol)
-    if ($role == 'manager') {
+    if ($role == 'manager' && $userid) {
         $rolstatus = optional_param('status', 'none', PARAM_TEXT);
         $out .= '<div class="dp-plans-menu-section"><h4 class="dp-plans-menu-sub-header">' . get_string('recordoflearning', 'local') . '</h4>';
         $out .= "<ul>";
@@ -578,6 +578,11 @@ function dp_display_plans_menu($userid, $selectedid=0, $role='learner') {
         $out .= "<li {$class}><a href=\"{$CFG->wwwroot}/local/plan/record/courses.php?userid={$userid}&status=completed\">" . get_string('completedlearning', 'local_plan') . "</a></li>";
         $out .= "</ul>";
         $out .= "</div>";
+    }
+    else if ($role == 'manager') {
+        // for displaying instructional text in the sidebar
+        // not currently necessary as links are self explanatory
+        //$out .='<p class="sidebar-content">' . get_string('myteaminstructionaltext', 'local') . '</p>';
     }
     else {
         // Show for learners?

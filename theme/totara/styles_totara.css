@@ -1941,6 +1941,10 @@ body#admin-user table.generaltable td.c7 {
     text-decoration:none;
 }
 
+#dp-plans-menu p.sidebar-content {
+    padding: 5px 5px 5px 20px;
+}
+
 /*****************************************************************************/
 /** Record of Learning **/
 /*****************************************************************************/
