@@ -13,9 +13,11 @@ $(function() {
         var url = '<?php echo $CFG->wwwroot ?>/local/plan/components/competency/';
         var continueurl = url + 'confirm.php?id='+plan_id+'&update=';
         var saveurl = url + 'update.php?';
+        var continueskipurl = saveurl + 'id='+plan_id+'&update=';
 
         var handler = new totaraDialog_handler_lpCompetency();
         handler.baseurl = url;
+        handler.continueskipurl = continueskipurl;
 
         handler.standard_buttons = {
                 'Cancel': function() { handler._cancel() },
@@ -82,16 +84,32 @@ totaraDialog_handler_lpCompetency.prototype._continue = function(url) {
 
 
 /**
- * Render and update dialog buttons to be ok/cancel
+ * Check result, if special string, redirect. Else, render;
  *
+ * If rendering, update dialog buttons to be ok/cancel
+ *
+ * @param   object  asyncRequest response
  * @return  void
  */
-totaraDialog_handler_lpCompetency.prototype._continueRender = function() {
+totaraDialog_handler_lpCompetency.prototype._continueRender = function(response) {
+
+    // Check result
+    if (response.substr(0, 9) == 'NOCOURSES') {
+
+        // Generate url
+        var url = this.continueskipurl + response.substr(10);
+
+        // Send to server
+        this._dialog._request(url, this, '_update');
+
+        // Do not render
+        return false;
+    }
 
     // Update buttons
     this._dialog.dialog.dialog('option', 'buttons', this.standard_buttons);
 
-    // Render
+    // Render result
     return true;
 }
 
