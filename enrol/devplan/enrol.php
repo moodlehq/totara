@@ -58,9 +58,10 @@ function print_entry($course) {
         redirect($destination, '', 1);
     } else {
         // this isn't an approved course in their development plan or development plan isn't approved
-        $message = 'You are not currently permitted to enrol in this course.<br />' .
-                'To enrol you must have this course listed and fully approved in your ' .
-                '<a href="' . $CFG->wwwroot . '/local/plan/index.php?userid=' . $USER->id . '">development plan</a>.<br />';
+        $message = get_string('notpermitted', 'enrol_devplan');
+        $message .= '<a href=\"' . {$CFG->wwwroot} . '/local/plan/index.php?userid=' . $USER->id . '\">';
+        $message .= get_string('developmentplan', 'enrol_devplan') . '</a><br />';
+
         if (!empty($course->guest)) {
             $destination = $CFG->wwwroot . '/course/view.php?id=' . $course->id;
             $message .= get_string('guestaccess', 'enrol_devplan', $destination);

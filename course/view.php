@@ -22,20 +22,20 @@
 
 
     if (empty($id) && empty($name) && empty($idnumber)) {
-        error("Must specify course id, short name or idnumber");
+        error(get_string('error:missingid', 'view'));
     }
 
     if (!empty($name)) {
         if (! ($course = get_record('course', 'shortname', $name)) ) {
-            error('Invalid short course name');
+            error(get_string('error:shortname', 'view'));
         }
     } else if (!empty($idnumber)) {
         if (! ($course = get_record('course', 'idnumber', $idnumber)) ) {
-            error('Invalid course idnumber');
+            error(get_string('error:idnumber', 'view'));
         }
     } else {
         if (! ($course = get_record('course', 'id', $id)) ) {
-            error('Invalid course id');
+            error(get_string('error:courseid', 'view'));
         }
     }
 
@@ -126,7 +126,7 @@
         if (!empty($section)) {
             if (!empty($move) and confirm_sesskey()) {
                 if (!move_section($course, $section, $move)) {
-                    notify('An error occurred while moving a section');
+                    notify(get_string('error:move', 'view'));
                 }
             }
         }
@@ -198,8 +198,7 @@
 
     if (!empty($USER->access['tempra'][$context->path])) {
         $enrolurl = $CFG->wwwroot . '/course/enrol.php?id=' . $course->id;
-        // TODO: get_string
-        $noticemsg = 'You are currently viewing this course as a guest. <a href="' . $enrolurl . '">Enrol to gain full access</a>.';
+        $noticemsg = get_string('viewingasguest', 'view', $enrolurl);
         array_push($coursenotices, $noticemsg);
     }
     $PAGE->print_header(get_string('course').': %fullname%', NULL, '', $bodytags);
@@ -241,7 +240,7 @@
             $section->id = insert_record('course_sections', $section);
         }
         if (! $sections = get_all_sections($course->id) ) {      // Try again
-            error('Error finding or creating section structures for this course');
+            error(get_string('error:structure', 'view'));
         }
     }
 

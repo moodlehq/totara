@@ -6,4 +6,5 @@ $string['guestnoenrol'] = 'Unable to enrol in course. You need to be a real (not
 $string['guestaccess'] = 'Without enrolment, guests are allowed <a href=\"$a\">limited access to view the course</a>.<br />';
 $string['nowenrolled'] = 'You have been enrolled in course $a .';
 $string['redirectedsoon'] = 'You are about to be redirected.';
-?>
+$string['notpermitted'] = 'You are not currently permitted to enrol in this course.<br />To enrol you must have this course listed and fully approved in your ';
+$string['developmentplan'] = 'Development Plan';
