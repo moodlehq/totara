@@ -77,6 +77,19 @@ if(in_array($secondary_selected, array(
     }
 }
 
+// look up the plan's user to see if they are
+// viewing one of their own plans or not
+if($secondary_selected == 'learningplans') {
+    $planid = optional_param('id', null, PARAM_INT);
+    if($planid) {
+        $userid = get_field('dp_plan', 'userid', 'id', $planid);
+        if($userid && $userid != $USER->id) {
+            $primary_selected = 'myteam';
+            $secondary_selected = null;
+        }
+    }
+}
+
 $sitecontext = get_context_instance(CONTEXT_SYSTEM);
 $canviewdashboards  = has_capability('local/dashboard:view', $sitecontext, $USER->id);
 $canviewlearningplans = dp_can_view_users_plans($USER->id);
