@@ -201,6 +201,8 @@ $string['nocompetencies'] = 'No competencies.';
 $string['nolinkedcompetencies'] = 'No linked competencies.';
 $string['linkedcompetencies'] = 'Linked competencies';
 $string['error:cannotupdatecompetencies'] = 'Cannot update competencies';
+$string['confirmlinkedcourses'] = 'Confirm linked courses';
+$string['confirmlinkedcoursesdesc'] = 'Some of those competencies have linked courses. By default these courses will also be added to this plan.';
 
 //Objective Strings
 $string['objective'] = 'Objective';
