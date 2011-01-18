@@ -107,7 +107,7 @@ $selected = totara_get_nav_select_classes($navstructure, $primary_selected, $sec
 </div>
 
 <ul>
-    <li id="menu1" class="first<?php echo $selected['home']; ?>">
+    <li class="first<?php echo $selected['home']; ?> menu1">
     <div><a href="<?php echo $CFG->wwwroot.'/index.php' ?>"><?php echo get_string('home') ?></a>
             <?php
             if($selected['home']) {
@@ -122,7 +122,7 @@ $selected = totara_get_nav_select_classes($navstructure, $primary_selected, $sec
     </li>
 
 
-    <li id="menu2" class="<?php echo $selected['mylearning']; ?>">
+    <li class="<?php echo $selected['mylearning']; ?> menu2">
         <div>
             <?php
                 // Get default mylearning sub tab
@@ -169,7 +169,7 @@ $selected = totara_get_nav_select_classes($navstructure, $primary_selected, $sec
 
 
     <?php if($staff = totara_get_staff()) { ?>
-    <li id="menu3" class="<?php echo $selected['myteam']; ?>">
+    <li class="<?php echo $selected['myteam']; ?> menu3">
         <div>
             <a href="<?php echo ($canviewdashboards ? $CFG->wwwroot.'/my/team.php' : $CFG->wwwroot.'/my/teammembers.php') ?>"><?php echo get_string('myteam', 'local') ?></a>
             <?php
@@ -191,14 +191,14 @@ $selected = totara_get_nav_select_classes($navstructure, $primary_selected, $sec
     </li>
     <?php } ?>
 
-    <li id="menu4" class="<?php echo $selected['myreports']; ?>">
+    <li class="<?php echo $selected['myreports']; ?> menu4">
         <div>
             <a href="<?php echo $CFG->wwwroot.'/my/reports.php' ?>"><?php echo get_string('myreports', 'local') ?></a>
         </div>
     </li>
 
 
-    <li id="menu5" class="<?php echo $selected['findcourses']; ?>">
+    <li class="<?php echo $selected['findcourses']; ?> menu5">
         <div>
         <a href="<?php echo $CFG->wwwroot.'/course/find.php' ?>"><?php echo get_string('findcourses', 'local') ?></a>
             <?php
@@ -217,7 +217,7 @@ $selected = totara_get_nav_select_classes($navstructure, $primary_selected, $sec
     </li>
 
 
-    <li id="menu6" class="last<?php echo $selected['calendar']; ?>">
+    <li class="last<?php echo $selected['calendar']; ?> menu6">
         <div>
             <a href="<?php echo $CFG->wwwroot.'/blocks/facetoface/calendar.php' ?>">Calendar</a>
         </div>

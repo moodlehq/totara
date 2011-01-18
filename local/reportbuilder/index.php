@@ -186,9 +186,9 @@
             $strdelete = get_string('delete','local_reportbuilder');
             $viewurl = reportbuilder_get_report_url($report);
             $settings = '<a href="'.$CFG->wwwroot.'/local/reportbuilder/general.php?id='.$report->id.'" title="'.$strsettings.'">' .
-                '<img src="'.$CFG->pixpath.'/t/edit.gif" alt="'.$strsettings.'"></a>';
+                '<img src="'.$CFG->pixpath.'/t/edit.gif" alt="'.$strsettings.'" /></a>';
             $delete = '<a href="'.$CFG->wwwroot.'/local/reportbuilder/index.php?d=1&amp;id='.$report->id.'" title="'.$strdelete.'">' .
-                '<img src="'.$CFG->pixpath.'/t/delete.gif" alt="'.$strdelete.'"></a>';
+                '<img src="'.$CFG->pixpath.'/t/delete.gif" alt="'.$strdelete.'" /></a>';
             $row[] = '<a href="'.$CFG->wwwroot.'/local/reportbuilder/general.php?id='.$report->id.'">'.$report->fullname.'</a>' .
                 ' (<a href="'.$viewurl.'">'.get_string('view').'</a>)';
             $row[] = $report->source;
@@ -229,9 +229,9 @@
             $url = $embed->url;
             $source = $embed->source;
             $settings = '<a href="'.$CFG->wwwroot.'/local/reportbuilder/general.php?id='.$id.'" title="'.$strsettings.'">' .
-                '<img src="'.$CFG->pixpath.'/t/edit.gif" alt="'.$strsettings.'"></a>';
+                '<img src="'.$CFG->pixpath.'/t/edit.gif" alt="'.$strsettings.'" /></a>';
             $reload = '<a href="'.$CFG->wwwroot.'/local/reportbuilder/index.php?em=1&amp;d=1&amp;id='.$id.'" title="'.$strreload.'">' .
-                '<img src="'.$CFG->pixpath.'/t/reload.gif" alt="'.$strreload.'"></a>';
+                '<img src="'.$CFG->pixpath.'/t/reload.gif" alt="'.$strreload.'" /></a>';
             $row = array();
             $row[] = '<a href="' . $CFG->wwwroot . '/local/reportbuilder/general.php?id=' . $id . '">' . $fullname . '</a> (<a href="' . $CFG->wwwroot . $url . '">' . get_string('view') . '</a>)';
             $row[] = $source;
