@@ -86,14 +86,14 @@ if ($depthid) {
                         'link'=>"{$CFG->wwwroot}/hierarchy/framework/index.php?type={$type}",
                         'type'=>'misc');    // Framework List
     $navlinks[] = array('name'=>format_string($framework->fullname),
-                        'link'=>"{$CFG->wwwroot}/hierarchy/framework/view.php?type={$type}&frameworkid={$framework->id}",
+                        'link'=>"{$CFG->wwwroot}/hierarchy/framework/view.php?type={$type}&amp;frameworkid={$framework->id}",
                         'type'=>'misc');    // Framework View
     $navlinks[] = array('name'=>format_string($depth->fullname),
-                        'link'=>"{$CFG->wwwroot}/customfield/custom_field_categories.php?type={$type}&frameworkid={$framework->id}&depthid={$depth->id}",
+                        'link'=>"{$CFG->wwwroot}/customfield/custom_field_categories.php?type={$type}&amp;frameworkid={$framework->id}&amp;depthid={$depth->id}",
                         'type'=>'misc');    // Current page
     if (isset($category)) {
         $navlinks[] = array('name'=>format_string($category->name),
-                            'link'=>"{$CFG->wwwroot}/customfield/index.php?type={$type}&frameworkid={$framework->id}",
+                            'link'=>"{$CFG->wwwroot}/customfield/index.php?amp;type={$type}&amp;frameworkid={$framework->id}",
                             'type'=>'misc');    // Category View
     }
 } else if ($type == 'course') {
@@ -242,14 +242,14 @@ if (count($table->data)) {
 } else {
     notify(get_string('nocustomfieldsdefined', 'customfields'));
 }
-echo "<br>";
+echo "<br />";
 // Create a new custom field dropdown menu
 $options = customfield_list_datatypes();
 
 if($type == 'course') {
     popup_form('index.php?type='.$type.'&amp;id=0&amp;action=editfield&amp;categoryid='.$categoryid.'&amp;datatype=', $options, 'newfieldform','','choose','','',false,'self',get_string('createnewcustomfield', 'customfields'));
 } else {
-    popup_form('index.php?type='.$type.'&amp;subtype='.$subtype.'&id=0&amp;action=editfield&amp;frameworkid='.$frameworkid.'&amp;categoryid='.$categoryid.'&amp;depthid='.$depthid.'&amp;datatype=', $options, 'newfieldform','','choose','','',false,'self',get_string('createnewcustomfield', 'customfields'));
+    popup_form('index.php?type='.$type.'&amp;subtype='.$subtype.'&amp;id=0&amp;action=editfield&amp;frameworkid='.$frameworkid.'&amp;categoryid='.$categoryid.'&amp;depthid='.$depthid.'&amp;datatype=', $options, 'newfieldform','','choose','','',false,'self',get_string('createnewcustomfield', 'customfields'));
 }
 
 print_footer();

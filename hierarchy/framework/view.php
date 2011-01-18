@@ -76,18 +76,18 @@ if ($depths) {
 
         $cssclass = '';
 
-        $row[] = "<a $cssclass href=\"{$CFG->wwwroot}/customfield/custom_field_categories.php?type={$type}&frameworkid={$framework->id}&depthid={$depth->id}\">{$depth->fullname}</a>";
+        $row[] = "<a $cssclass href=\"{$CFG->wwwroot}/customfield/custom_field_categories.php?type={$type}&amp;frameworkid={$framework->id}&amp;depthid={$depth->id}\">{$depth->fullname}</a>";
         $row[] = $depth->item_count;
         $row[] = $depth->custom_field_count;
 
         // Add edit link
         $buttons = array();
         if ($editingon && $can_edit) {
-            $buttons[] = "<a href=\"{$CFG->wwwroot}/hierarchy/depth/edit.php?type={$type}&frameworkid={$frameworkid}&id={$depth->id}\" title=\"$str_edit\">".
+            $buttons[] = "<a href=\"{$CFG->wwwroot}/hierarchy/depth/edit.php?type={$type}&amp;frameworkid={$frameworkid}&amp;id={$depth->id}\" title=\"$str_edit\">".
                 "<img src=\"{$CFG->pixpath}/t/edit.gif\" class=\"iconsmall\" alt=\"$str_edit\" /></a>";
         }
         if ($editingon && $can_delete) {
-            $buttons[] = "<a href=\"{$CFG->wwwroot}/hierarchy/depth/delete.php?type={$type}&frameworkid={$frameworkid}&id={$depth->id}\" title=\"$str_delete\">".
+            $buttons[] = "<a href=\"{$CFG->wwwroot}/hierarchy/depth/delete.php?type={$type}&amp;frameworkid={$frameworkid}&amp;id={$depth->id}\" title=\"$str_delete\">".
                 "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_delete\" /></a>";
         }
         if ($buttons) {

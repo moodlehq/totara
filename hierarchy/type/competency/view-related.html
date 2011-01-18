@@ -38,14 +38,14 @@ if ($related) {
         $oddeven = ++$oddeven % 2;
 
         echo '<tr class="r'.$oddeven.'">';
-        echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/index.php?type={$this->prefix}&frameworkid={$ritem->fid}\">{$ritem->framework}</a></td>";
+        echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/index.php?type={$this->prefix}&amp;frameworkid={$ritem->fid}\">{$ritem->framework}</a></td>";
         echo '<td>'.$ritem->depth.'</td>';
-        echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/item/view.php?type={$this->prefix}&id={$ritem->id}\">{$ritem->fullname}</a></td>";
+        echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/item/view.php?type={$this->prefix}&amp;id={$ritem->id}\">{$ritem->fullname}</a></td>";
 
         if ($editingon) {
             echo "<td style=\"text-align: center;\">";
 
-            echo "<a href=\"{$CFG->wwwroot}/hierarchy/type/{$this->prefix}/related/remove.php?id={$item->id}&related={$ritem->id}\" title=\"$str_remove\">".
+            echo "<a href=\"{$CFG->wwwroot}/hierarchy/type/{$this->prefix}/related/remove.php?id={$item->id}&amp;related={$ritem->id}\" title=\"$str_remove\">".
                  "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_remove\" /></a>";
 
             echo "</td>";

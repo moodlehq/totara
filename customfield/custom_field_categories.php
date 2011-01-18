@@ -113,7 +113,7 @@ if ($categories) {
     if($type == 'course') {
         $urlparams = "type={$type}";
     } else {
-        $urlparams = "type={$type}&subtype=depth&frameworkid={$framework->id}&depthid={$depth->id}";
+        $urlparams = "type={$type}&amp;subtype=depth&amp;frameworkid={$framework->id}&amp;depthid={$depth->id}";
     }
 
     // Add rows to table
@@ -129,11 +129,11 @@ if ($categories) {
         // Add edit link
         $buttons = array();
         if ($editingon && $can_edit) {
-            $buttons[] = "<a href=\"{$CFG->wwwroot}/customfield/index.php?{$urlparams}&categoryid={$category->id}&action=editcategory\" title=\"$str_edit\">".
+            $buttons[] = "<a href=\"{$CFG->wwwroot}/customfield/index.php?{$urlparams}&amp;categoryid={$category->id}&amp;action=editcategory\" title=\"$str_edit\">".
                 "<img src=\"{$CFG->pixpath}/t/edit.gif\" class=\"iconsmall\" alt=\"$str_edit\" /></a>";
         }
         if ($editingon && $can_delete) {
-            $buttons[] = "<a href=\"{$CFG->wwwroot}/customfield/index.php?{$urlparams}&categoryid={$category->id}&action=deletecategory\" title=\"$str_delete\">".
+            $buttons[] = "<a href=\"{$CFG->wwwroot}/customfield/index.php?{$urlparams}&amp;categoryid={$category->id}&amp;action=deletecategory\" title=\"$str_delete\">".
                 "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_delete\" /></a>";
         }
         if ($buttons) {
@@ -154,7 +154,7 @@ if($type == 'course') {
                         'link'=>"{$CFG->wwwroot}/hierarchy/framework/index.php?type={$type}",
                         'type'=>'misc');    // Framework List
     $navlinks[] = array('name'=>format_string($framework->fullname),
-                        'link'=>"{$CFG->wwwroot}/hierarchy/framework/view.php?type={$type}&frameworkid={$framework->id}",
+                        'link'=>"{$CFG->wwwroot}/hierarchy/framework/view.php?type={$type}&amp;frameworkid={$framework->id}",
                         'type'=>'misc');    // Framework View
     $navlinks[] = array('name'=>format_string($depth->fullname),
                         'link'=>'',

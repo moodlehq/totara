@@ -71,7 +71,7 @@ if ($editingon) {
 
 // Display page header
 $pagetitle = format_string($depth->fullname.' - '.$item->fullname);
-$navlinks[] = array('name' => get_string('manage'.$type,$type), 'link'=> $CFG->wwwroot.'/hierarchy/index.php?type='.$type.'&frameworkid='.$framework->id, 'type'=>'title');
+$navlinks[] = array('name' => get_string('manage'.$type,$type), 'link'=> $CFG->wwwroot.'/hierarchy/index.php?type='.$type.'&amp;frameworkid='.$framework->id, 'type'=>'title');
 $navlinks[] = array('name' => $item->shortname, 'link'=> '', 'type'=>'title');
 
 $navigation = build_navigation($navlinks);
@@ -86,7 +86,7 @@ if ($editingon) {
     $str_edit = get_string('edit');
     $str_remove = get_string('remove');
 
-    $heading .= " <a href=\"{$CFG->wwwroot}/hierarchy/item/edit.php?type={$type}&frameworkid=$framework->id&id={$item->id}\" title=\"$str_edit\">".
+    $heading .= " <a href=\"{$CFG->wwwroot}/hierarchy/item/edit.php?type={$type}&amp;frameworkid=$framework->id&id={$item->id}\" title=\"$str_edit\">".
             "<img src=\"{$CFG->pixpath}/t/edit.gif\" class=\"iconsmall\" alt=\"$str_edit\" /></a>";
 }
 
