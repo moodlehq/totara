@@ -71,6 +71,7 @@ $string['pendingitems'] = 'Pending approval';
 
 //Instruction text
 $string['planinstructions'] = 'Your current and completed learning plans are shown below. ';
+$string['planinstructionsuser'] = '{$a}\'s current and completed learning plans are shown below. ';
 $string['planinstructions_add'] = 'You can create a new learning plan by clicking \"Create a new learning plan\" to the right of the screen. ';
 $string['createplan_instructions'] = 'To create a new plan please add the plan title, a short description of the plan and a date by which the plan should be completed. You can click \"Create plan\" once you have entered this information.';
 
