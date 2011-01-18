@@ -27,13 +27,18 @@ class rb_plan_courses_embedded extends rb_base_embedded {
             ),
             array(
                 'type' => 'plan',
+                'value' => 'name',
+                'heading' => 'Plan',
+            ),
+            array(
+                'type' => 'plan',
                 'value' => 'courseduedate',
                 'heading' => 'Course due date',
             ),
             array(
                 'type' => 'course_completion',
                 'value' => 'status',
-                'heading' => 'Status',
+                'heading' => 'Progress',
             ),
         );
 

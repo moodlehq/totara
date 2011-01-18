@@ -273,6 +273,8 @@ from
                     "ELSE 'Not Completed' END",
                 array(
                     'joins' => 'course_completion',
+                    'displayfunc' => 'course_completion_icon',
+                    'defaultheading' => 'Progress',
                 )
             );
 
@@ -348,24 +350,45 @@ from
 
     function rb_display_course_type_icon($type) {
         global $CFG;
-        
+
         switch ($type) {
-            case null:
-                return null;
-                break;
-            case 0:
-                $image = 'elearning';
-                break;
-            case 1:
-                $image = 'blended';
-                break;
-            case 2:
-                $image = 'facetoface';
-                break;
+        case null:
+            return null;
+            break;
+        case 0:
+            $image = 'elearning';
+            break;
+        case 1:
+            $image = 'blended';
+            break;
+        case 2:
+            $image = 'facetoface';
+            break;
         }
         $alt = get_string($image, 'rb_source_dp_course');
-        $icon = "<img alt=\"{$alt}\" src=\"{$CFG->wwwroot}/theme/totara/msgicons/{$image}" . '-regular.png' . "\"></img>";
+        $icon = "<img title=\"{$alt}\" src=\"{$CFG->wwwroot}/theme/totara/msgicons/{$image}" . '-regular.png' . "\"></img>";
 
         return $icon;
     }
+
+    function rb_display_course_completion_icon($status) {
+        global $CFG;
+
+        switch ($status) {
+        case null:
+            return null;
+            break;
+        case 'Not Completed':
+            $statusstring = 'inprogress';
+            break;
+        case 'Completed':
+            $statusstring = 'complete';
+            break;
+        }
+        $content = "<span class=\"coursecompletionstatus\">";
+        $content .= "<span class=\"completion-$statusstring\" title=\"$status\"></span></span>";
+
+        return $content;
+    }
+
 }
