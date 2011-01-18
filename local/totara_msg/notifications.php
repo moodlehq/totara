@@ -121,7 +121,7 @@
         $out .= get_string('noscript','local_totara_msg');
         $out .= '</noscript>';
         $out .= '</td>';
-        $out .= "<tr></table></center>";
+        $out .= "</tr></table></center>";
         $out .= '<script type="text/javascript">$(function() { (function() { $(\'#totara_msg_selects\').css(\'display\',\'block\');})();});</script>';
         $out .= print_box_end(true);
         print $out;

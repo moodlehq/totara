@@ -361,7 +361,7 @@ class rb_source_totaramessages extends rb_base_source {
                     })();
                 });" .
                 '</script>'.
-                '<input class="selectbox" name="totara_message_'.$id.'" value="'.$id.'" type="checkbox" id="totara_msgcbox_'.$id.'" style="display:none;"></td>'.
+                '<input class="selectbox" name="totara_message_'.$id.'" value="'.$id.'" type="checkbox" id="totara_msgcbox_'.$id.'" style="display:none;"/></td>'.
                 '</tr></table>'.
                 '</div>';
     }
@@ -382,7 +382,7 @@ class rb_source_totaramessages extends rb_base_source {
                     })();
                 });" .
                 '</script>'.
-                '<input class="selectbox" name="totara_message_'.$id.'" value="'.$id.'" type="checkbox" id="totara_msgcbox_'.$id.'" style="display:none;"></td>'.
+                '<input class="selectbox" name="totara_message_'.$id.'" value="'.$id.'" type="checkbox" id="totara_msgcbox_'.$id.'" style="display:none;"/></td>'.
                 '</tr></table>'.
                 '</div>';
     }

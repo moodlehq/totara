@@ -155,13 +155,13 @@ array('id' => '160','reportid' => '27','type' => 'message_values','value' => 'ms
 array('id' => '161','reportid' => '27','type' => 'user','value' => 'namelink','heading' => 'Name','sortorder' => '3','hidden' => '0',),
 array('id' => '162','reportid' => '27','type' => 'message_values','value' => 'statement','heading' => 'Details','sortorder' => '4','hidden' => '0',),
 array('id' => '163','reportid' => '27','type' => 'message_values','value' => 'sent','heading' => 'Sent','sortorder' => '5','hidden' => '0',),
-array('id' => '164','reportid' => '27','type' => 'message_values','value' => 'dismiss_link','heading' => '<div id=\\\"totara_msg_selects\\\" style=\\\"display: none;\\\"><a href=\\\"\\\" onclick=\\\"jqCheckAll(\\\'totara_messages\\\', \\\'totara_message\\\', 1); return false;\\\">all</a>/<a href=\\\"\\\" onclick=\\\"jqCheckAll(\\\'totara_messages\\\', \\\'totara_message\\\', 0); return false;\\\">none</a>','sortorder' => '6','hidden' => '0',),
+array('id' => '164','reportid' => '27','type' => 'message_values','value' => 'dismiss_link','heading' => '<div id=\\\"totara_msg_selects\\\" style=\\\"display: none;\\\"><a href=\\\"\\\" onclick=\\\"jqCheckAll(\\\'totara_messages\\\', \\\'totara_message\\\', 1); return false;\\\">all</a>/<a href=\\\"\\\" onclick=\\\"jqCheckAll(\\\'totara_messages\\\', \\\'totara_message\\\', 0); return false;\\\">none</a></div>','sortorder' => '6','hidden' => '0',),
 array('id' => '165','reportid' => '28','type' => 'message_values','value' => 'urgency','heading' => 'Urgency','sortorder' => '1','hidden' => '0',),
 array('id' => '166','reportid' => '28','type' => 'message_values','value' => 'msgtype','heading' => 'Type','sortorder' => '2','hidden' => '0',),
 array('id' => '167','reportid' => '28','type' => 'user','value' => 'namelink','heading' => 'Name','sortorder' => '3','hidden' => '0',),
 array('id' => '168','reportid' => '28','type' => 'message_values','value' => 'statement','heading' => 'Details','sortorder' => '4','hidden' => '0',),
 array('id' => '169','reportid' => '28','type' => 'message_values','value' => 'sent','heading' => 'Sent','sortorder' => '5','hidden' => '0',),
-array('id' => '170','reportid' => '28','type' => 'message_values','value' => 'reminder_links','heading' => '<div id=\\\"totara_msg_selects\\\" style=\\\"display: none;\\\"><a href=\\\"\\\" onclick=\\\"jqCheckAll(\\\'totara_messages\\\', \\\'totara_message\\\', 1); return false;\\\">all</a>/<a href=\\\"\\\" onclick=\\\"jqCheckAll(\\\'totara_messages\\\', \\\'totara_message\\\', 0); return false;\\\">none</a>','sortorder' => '6','hidden' => '0',),
+array('id' => '170','reportid' => '28','type' => 'message_values','value' => 'reminder_links','heading' => '<div id=\\\"totara_msg_selects\\\" style=\\\"display: none;\\\"><a href=\\\"\\\" onclick=\\\"jqCheckAll(\\\'totara_messages\\\', \\\'totara_message\\\', 1); return false;\\\">all</a>/<a href=\\\"\\\" onclick=\\\"jqCheckAll(\\\'totara_messages\\\', \\\'totara_message\\\', 0); return false;\\\">none</a></div>','sortorder' => '6','hidden' => '0',),
 );
 print "\n";print "Inserting ".count($items)." records<br />\n";
 $i=1;
