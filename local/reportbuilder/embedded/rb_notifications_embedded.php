@@ -43,20 +43,12 @@ class rb_notifications_embedded extends rb_base_embedded {
             array(
                 'type' => 'message_values',
                 'value' => 'dismiss_link',
-//            'heading' => 'Actions',
                 'heading' =>
                 '<div id="totara_msg_selects" style="display: none;">'.
-                '<a href="" onclick="jqCheckAll(\'totara_messages\', \'totara_message\', 1); return false;">all</a>/'.
-                '<a href="" onclick="jqCheckAll(\'totara_messages\', \'totara_message\', 0); return false;">none</a></div>',
-                // too long for varchar(255) field
-                //'</div><noscript>Actions</noscript>',
-                    ),
-//            array(
-//            'type' => 'message_values',
-//            'value' => 'checkbox',
-//            'heading' => '<a href="" onclick="jqCheckAll(\'totara_messages\', \'totara_message\', 1); return false;">all</a>/'.
-//                         '<a href="" onclick="jqCheckAll(\'totara_messages\', \'totara_message\', 0); return false;">none</a>',
-//        ),
+                '<a id="all">'.get_string('all').'</a>/'.
+                '<a id="none">'.get_string('none').'</a>'.
+                '</div><noscript>'.get_string('actions').'</noscript>',
+                ),
         );
 
         $this->filters = array(

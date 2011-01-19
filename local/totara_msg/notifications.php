@@ -121,7 +121,6 @@
 
     if($countfiltered>0) {
         print $report->showhide_button();
-        print totara_msg_checkbox_all_none();
         print '<form id="totara_messages" name="totara_messages" action="'.$CFG->wwwroot.'/local/totara_msg/action.php" method="post">';
         $report->display_table();
 //        print $report->edit_button();
@@ -148,6 +147,7 @@
         print "</form>";
         // export button
         $report->export_select();
+        print totara_msg_checkbox_all_none();
     }
 
    print_footer();

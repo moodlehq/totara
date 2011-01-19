@@ -250,6 +250,8 @@ function totara_msg_checkbox_all_none() {
                       $("form#" + id + " INPUT[@name=" + name + "][type=\'checkbox\']").attr(\'checked\', true);
                    }
                 }
+            $(\'#totara_msg_selects #all\').click(function() {jqCheckAll(\'totara_messages\', \'totara_message\', 1); return false;});
+            $(\'#totara_msg_selects #none\').click(function() {jqCheckAll(\'totara_messages\', \'totara_message\', 0); return false;});
               </script>';
 }
 
