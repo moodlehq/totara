@@ -2119,6 +2119,11 @@ table.centerblock th.status, table.centerblock td.status {
    background: url('images/arw_grn.gif') no-repeat right center;
 }
 
+#site-index #middle-column div.mycourses .content .noenrollments {
+    display: block;
+    padding: 10px;
+}
+
 /*****************************************************************************/
 /** My Team **/
 /*****************************************************************************/
