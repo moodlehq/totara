@@ -4,7 +4,7 @@
  * Functions for creating/processing the settings form for a development plan
  *
  * @copyright Totara Learning Solutions Limited
- * @author Alastair Munroe <alastair@catalyst.net.nz>
+ * @author Alastair Munro <alastair@catalyst.net.nz>
  * @author Aaron Barnes <aaronb@catalyst.net.nz>
  * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
  * @package totara
