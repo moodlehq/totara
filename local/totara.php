@@ -874,5 +874,5 @@ function totara_convert_userdate($datestring) {
 
 function get_totara_menu($header=true) {
     global $CFG, $USER;
-    include($CFG->themedir.'/totara/totara_menu.php');
+    include($CFG->dirroot.'/local/totara_menu.php');
 }
