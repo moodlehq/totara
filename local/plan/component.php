@@ -38,7 +38,7 @@ $component->process_action_hook();
 //
 // Display header
 //
-$component->pre_header_hook();
+$component->setup_picker();
 
 $navlinks = array(
     array('name' => get_string($component->component.'plural', 'local_plan'), 'link' => '', 'type' => 'title')

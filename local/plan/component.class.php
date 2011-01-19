@@ -236,21 +236,21 @@ abstract class dp_base_component {
 
 
     /**
-     * Code to run before page header is displayed
-     *
-     * @access  public
-     * @return  void
-     */
-    public function pre_header_hook() {}
-
-
-    /**
      * Code to run before after header is displayed
      *
      * @access  public
      * @return  void
      */
     public function post_header_hook() {}
+
+
+    /**
+     * Code to load the JS for the picker
+     *
+     * @access  public
+     * @return  void
+     */
+    public function setup_picker() {}
 
 
     /**

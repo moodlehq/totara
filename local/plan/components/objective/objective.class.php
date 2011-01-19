@@ -112,12 +112,12 @@ class dp_objective_component extends dp_base_component {
 
 
     /**
-     * Code to run before page header is displayed
+     * Code to load the JS for the picker
      *
      * @access  public
      * @return  void
      */
-    public function pre_header_hook() {
+    public function setup_picker() {
         global $CFG;
 
         // If we are showing dialog
