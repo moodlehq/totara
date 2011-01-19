@@ -9,6 +9,9 @@
  * @package totara
  * @subpackage dialog
  */
+
+defined('MOODLE_INTERNAL') || die();
+
 class dialog_search_form extends moodleform {
 
     // Define the form

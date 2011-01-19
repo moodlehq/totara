@@ -10,6 +10,7 @@
  * @subpackage dialogs
  */
 
+defined('MOODLE_INTERNAL') || die();
 
 /**
  * Class for generating markup

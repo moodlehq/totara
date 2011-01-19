@@ -9,10 +9,12 @@
  * @package totara
  * @subpackage dialogs
  */
+
+defined('MOODLE_INTERNAL') || die();
+
 require_once($CFG->dirroot.'/local/dialogs/dialog_content.class.php');
 require_once($CFG->dirroot.'/course/lib.php');
 require_once($CFG->libdir.'/datalib.php');
-
 
 /**
  * Class for generating single select course dialog markup

@@ -9,9 +9,11 @@
  * @package totara
  * @subpackage dialogs
  */
+
+defined('MOODLE_INTERNAL') || die();
+
 require_once($CFG->dirroot.'/local/dialogs/dialog_content.class.php');
 require_once($CFG->dirroot.'/hierarchy/lib.php');
-
 
 /**
  * Class for generating single select hierarchy dialog markup

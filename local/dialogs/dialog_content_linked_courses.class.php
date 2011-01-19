@@ -9,10 +9,12 @@
  * @package totara
  * @subpackage dialogs
  */
+
+defined('MOODLE_INTERNAL') || die();
+
 require_once($CFG->dirroot.'/local/dialogs/dialog_content_courses.class.php');
 require_once($CFG->dirroot.'/course/lib.php');
 require_once($CFG->libdir.'/datalib.php');
-
 
 class totara_dialog_linked_courses_content_courses extends totara_dialog_content_courses {
     /**
