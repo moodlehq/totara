@@ -46,7 +46,7 @@ if ($fromform = $mform->get_data()) {
     $params = array(
         'userid'    => $fromform->userid,
         'course'    => $fromform->courseid,
-        'id'        => $fromform->rplid
+        'id'        => isset($fromform->rplid) ? $fromform->rplid : null
     );
 
     // Completion
