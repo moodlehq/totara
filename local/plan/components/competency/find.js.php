@@ -7,8 +7,12 @@
 // Bind functionality to page on load
 $(function() {
 
-    /// Find course prerequisites
-    ///
+    // Setup vars
+    if (plan_id == undefined) {
+        var plan_id = '';
+        var comp_update_allowed = false;
+    }
+
     (function() {
         var url = '<?php echo $CFG->wwwroot ?>/local/plan/components/competency/';
         var continueurl = url + 'confirm.php?id='+plan_id+'&update=';

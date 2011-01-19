@@ -7,8 +7,11 @@
 // Bind functionality to page on load
 $(function() {
 
-    /// Find course prerequisites
-    ///
+    // Setup vars
+    if (plan_id == undefined) {
+        var plan_id = '';
+    }
+
     (function() {
         var url = '<?php echo $CFG->wwwroot ?>/local/plan/components/course/';
         var saveurl = url + 'update.php?id='+plan_id+'&update=';
