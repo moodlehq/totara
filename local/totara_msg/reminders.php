@@ -76,8 +76,26 @@
     ///
     /// Display the page
     ///
-    print_header($strheading, $strheading, build_navigation($strheading));
+    $referer = get_referer();
+    $navlinks = array();
+    if (strstr($referer, 'my/team.php')) {
+        $backlink = "{$CFG->wwwroot}/my/team.php";
+        $navlinks[] = array('name' => get_string('myteam', 'local').' '.get_string('dashboard', 'local_dashboard'),
+            'link' => $backlink, 'type' => 'title');
+    }
+    if (strstr($referer, 'my/learning.php')) {
+        $backlink = "{$CFG->wwwroot}/my/learning.php";
+        $navlinks[] = array('name' => get_string('mylearning', 'local').' '.get_string('dashboard', 'local_dashboard'),
+            'link' => $backlink, 'type' => 'title');
+    }
+    $navlinks[] = array('name' => $strheading, 'link' => '', 'type' => 'misc');
+    $navigation = build_navigation($navlinks);
+
+    print_header($strheading, $strheading, $navigation);
     echo '<h1>'.$strheading.'</h1>';
+    if (!empty($backlink)) {
+        echo "<p><a href=\"{$backlink}\"><< ".get_string('backtodashboard', 'local_dashboard').'</a></p>';
+    }
 
     // display table here
     $fullname = $report->fullname;

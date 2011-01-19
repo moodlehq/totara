@@ -42,6 +42,7 @@ $string['addtocol'] = 'Add to column';
 $string['nodashboardsfound'] = 'No dashboards found...';
 $string['mylearning'] = 'My Learning';
 $string['myteam'] = 'My Team';
+$string['backtodashboard'] = 'Back to dashboard';
 
 $string['error:dashboardnotfound'] = 'Error: Dashboard not found';
 $string['error:couldnotgetinstance'] = 'Error: Could not get dashboard insatance';
