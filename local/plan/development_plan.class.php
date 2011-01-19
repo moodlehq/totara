@@ -1251,7 +1251,7 @@ class development_plan {
         $a = new stdClass;
         $a->learner = fullname($learner);
         $a->plan = s($this->name);
-        $a->data = '<li>'.implode($message_data, '</li><li>').'</li>';
+        $a->data = '<ul><li>'.implode($message_data, '</li><li>').'</li></ul>';
         $event->subject = get_string('item-request-manager-short', 'local_plan', $a);
         $event->fullmessage = get_string('item-request-manager-long', 'local_plan', $a);
 
