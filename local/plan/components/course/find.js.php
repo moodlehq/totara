@@ -8,8 +8,8 @@
 $(function() {
 
     // Setup vars
-    if (plan_id == undefined) {
-        var plan_id = '';
+    if (window.plan_id === undefined) {
+        plan_id = '';
     }
 
     (function() {

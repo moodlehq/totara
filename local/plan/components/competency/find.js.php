@@ -8,12 +8,13 @@
 $(function() {
 
     // Setup vars
-    if (plan_id == undefined) {
-        var plan_id = '';
-        var comp_update_allowed = false;
+    if (window.plan_id === undefined) {
+        plan_id = '';
+        comp_update_allowed = false;
     }
 
     (function() {
+
         var url = '<?php echo $CFG->wwwroot ?>/local/plan/components/competency/';
         var continueurl = url + 'confirm.php?id='+plan_id+'&update=';
         var saveurl = url + 'update.php?';
