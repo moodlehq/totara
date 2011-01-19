@@ -25,6 +25,7 @@ function development_plan_build_settings_form(&$mform, $id) {
 
     //Permissions
     $mform->addElement('header', 'planpermissions', get_string('planpermissions', 'local_plan'));
+    $mform->setHelpButton('planpermissions', array('advancedsettingsplanpermissions', get_string('planpermissions', 'local_plan'), 'local_plan'), true);
 
     $mform->addElement('html', '<div class="planpermissionsform"><table class="planpermissions"><tr>'.
         '<th>'.get_string('action', 'local_plan').'</th>'.

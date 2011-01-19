@@ -28,6 +28,7 @@ function dp_competency_component_build_settings_form(&$mform, $id) {
     global $CFG, $DP_AVAILABLE_ROLES;
 
     $mform->addElement('header', 'competencysettings', get_string('competencysettings', 'local_plan'));
+    $mform->setHelpButton('competencysettings', array('advancedsettingscompetencysettings', get_string('competencysettings', 'local_plan'), 'local_plan'), true);
 
     if ($templatesettings = get_record('dp_competency_settings', 'templateid', $id)) {
         $defaultduedatesmode = $templatesettings->duedatemode;
@@ -87,6 +88,7 @@ function dp_competency_component_build_settings_form(&$mform, $id) {
 
     //Permissions
     $mform->addElement('header', 'competencypermissions', get_string('competencypermissions', 'local_plan'));
+    $mform->setHelpButton('competencypermissions', array('advancedsettingscompetencypermissions', get_string('competencypermissions', 'local_plan'), 'local_plan'), true);
 
     $mform->addElement('html', '<div class="coursepermissionsform"><table><tr>'.
         '<th>'.get_string('action', 'local_plan').'</th>'.

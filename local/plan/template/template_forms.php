@@ -29,7 +29,7 @@ class dp_template_general_settings_form extends moodleform {
         $mform->setType('enddate', PARAM_TEXT);
 
         $mform->setDefault('enddate', $enddate);
-        $mform->setHelpButton('enddate', array('dptemplateenddate', get_string('enddate', 'local_plan')), true);
+        $mform->setHelpButton('enddate', array('templateenddate', get_string('enddate', 'local_plan'), 'local_plan'), true);
 
         $this->add_action_buttons();
     }
@@ -70,7 +70,7 @@ class dp_template_new_form extends moodleform {
         $mform->setType('enddate', PARAM_TEXT);
 
         $mform->setDefault('enddate','dd/mm/yyyy');
-        $mform->setHelpButton('enddate', array('dptemplateenddate', get_string('enddate', 'local_plan')), true);
+        $mform->setHelpButton('enddate', array('templateenddate', get_string('enddate', 'local_plan'), 'local_plan'), true);
 
         $this->add_action_buttons();
     }
@@ -196,6 +196,7 @@ class dp_components_form extends moodleform {
         $templateid = $this->_customdata['id'];
 
         $mform->addElement('header', 'componentsettings', get_string('componentsettings', 'local_plan'));
+        $mform->setHelpButton('componentsettings', array('templatecomponentsettings', get_string('componentsettings', 'local_plan'), 'local_plan'), true);
 
         $components = get_records('dp_component_settings', 'templateid', $templateid, 'sortorder');
 

@@ -28,6 +28,7 @@ function dp_course_component_build_settings_form(&$mform, $id) {
     global $CFG, $DP_AVAILABLE_ROLES;
 
     $mform->addElement('header', 'coursesettings', get_string('coursesettings', 'local_plan'));
+    $mform->setHelpButton('coursesettings', array('advancedsettingscoursesettings', get_string('coursesettings', 'local_plan'), 'local_plan'), true);
 
     if ($templatesettings = get_record('dp_course_settings', 'templateid', $id)) {
         $defaultduedatesmode = $templatesettings->duedatemode;
@@ -74,6 +75,7 @@ function dp_course_component_build_settings_form(&$mform, $id) {
 
 
     $mform->addElement('header', 'coursepermissions', get_string('coursepermissions', 'local_plan'));
+    $mform->setHelpButton('coursepermissions', array('advancedsettingscoursepermissions', get_string('coursepermissions', 'local_plan'), 'local_plan'), true);
 
     $mform->addElement('html', '<div class="coursepermissionsform"><table><tr>'.
         '<th>'.get_string('action', 'local_plan').'</th>'.
