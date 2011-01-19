@@ -18,7 +18,7 @@ require_once('template_forms.php');
 $id = required_param('id', PARAM_INT);
 $notice = optional_param('notice', 0, PARAM_INT); // notice flag
 $component = optional_param('component', 'plan', PARAM_TEXT);
-
+$currentcomponent = $component;
 
 admin_externalpage_setup('managetemplates');
 

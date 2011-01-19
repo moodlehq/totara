@@ -14,32 +14,43 @@ $inactive = array();
 
 // General Tab
 $toprow[] = new tabobject('general', $CFG->wwwroot.'/local/plan/template/general.php?id='.$id, get_string('general', 'local_plan'));
-if(substr($currenttab, 0, 7) == 'general'){
+if (substr($currenttab, 0, 7) == 'general'){
     $activated[] = 'general';
 }
 
 // Components Tab
 $toprow[] = new tabobject('components', $CFG->wwwroot.'/local/plan/template/components.php?id='.$id, get_string('components', 'local_plan'));
-if(substr($currenttab, 0, 10) == 'components'){
+if (substr($currenttab, 0, 10) == 'components'){
     $activated[] = 'components';
 }
 
 // Workflow Tab
 $toprow[] = new tabobject('workflow', $CFG->wwwroot.'/local/plan/template/workflow.php?id='.$id, get_string('workflow', 'local_plan'));
-if(substr($currenttab, 0, 8) == 'workflow'){
+if (substr($currenttab, 0, 8) == 'workflow'){
     $activated[] = 'workflow';
 }
-if($currenttab == 'workflowplan') {
+if ($currenttab == 'workflowplan') {
     $secondrow[] = new tabobject('advancedworkflow', $CFG->wwwroot.'/local/plan/template/advancedworkflow.php?component=plan&amp;id='.$id, get_string('plan', 'local_plan'));
+
+    // Check if we are on this tab
+    if ($currentcomponent == 'plan') {
+        $currenttab = 'advancedworkflow';
+    }
+
     // add one tab per active component
-    if($components) {
-        foreach($components as $component) {
-            if(!$component->enabled) {
+    if ($components) {
+        foreach ($components as $component) {
+            if (!$component->enabled) {
                 continue;
             }
+
             $configsetting = get_config(null, 'dp_'.$component->component);
             $compname = $configsetting ? $configsetting : get_string($component->component.'plural', 'local_plan');
             $secondrow[] = new tabobject('workflow'.$component->component, $CFG->wwwroot.'/local/plan/template/advancedworkflow.php?component='.$component->component.'&amp;id='.$id, $compname);
+
+            if ($component->component == $currentcomponent) {
+                $currenttab = 'workflow'.$component->component;
+            }
         }
     }
 }
