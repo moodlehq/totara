@@ -101,8 +101,14 @@ print '<input type="hidden" name="update" value="' . implode(',', $idlist) . '" 
 foreach($evidence as $compid => $linkedcourses) {
     print 'Competency "'. $compnames[$compid] . '":<br />';
     foreach($linkedcourses as $linkedcourse) {
+        if($plan->get_component('course')->is_item_assigned($linkedcourse->courseid)) {
+            $message = ' (' .
+                get_string('alreadyassignedtoplan', 'local_plan'). ')';
+        } else {
+            $message = '';
+        }
         print '<input type="checkbox" checked="checked" name="linkedcourses[' . $compid . '][' . $linkedcourse->courseid . ']" value="1"> ' .
-                        $linkedcourse->fullname . '<br />';
+                        $linkedcourse->fullname . $message . '<br />';
     }
 }
 print '</form>';
