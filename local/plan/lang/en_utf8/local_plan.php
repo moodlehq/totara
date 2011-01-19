@@ -4,6 +4,7 @@
 $string['plan:configureplans'] = 'Configure plan templates';
 $string['plan:add'] = 'Add plans';
 $string['plan:accessplan'] = 'Access plan';
+$string['plan:accessanyplan'] = 'Access any user\'s plan';
 $string['plan:manageobjectivescales'] = 'Manage objective scales';
 $string['plan:managepriorityscales'] = 'Manage priority scales';
 
