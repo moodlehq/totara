@@ -107,8 +107,11 @@ class rb_source_totaramessages extends rb_base_source {
                 'msgtype',
                 get_string('msgtype', 'rb_source_totaramessages'),
                 'mdata.msgtype',
-                array('joins' => 'mdata',
-                      'displayfunc' => 'msgtype_link')
+                array('joins' => array('mdata','msg'),
+                      'displayfunc' => 'msgtype_link',
+                      'extrafields' => array(
+                        'msgid' => 'msg.id'),
+                    )
             ),
             new rb_column_option(
                 'message_values',
@@ -132,6 +135,7 @@ class rb_source_totaramessages extends rb_base_source {
                 get_string('dismissmsg', 'rb_source_totaramessages'),
                 'base.unreadmessageid',
                 array('displayfunc' => 'dismiss_link',
+                      'noexport' => true,
                       'nosort' => true)
             ),
             new rb_column_option(
@@ -140,6 +144,7 @@ class rb_source_totaramessages extends rb_base_source {
                 get_string('actions', 'rb_source_totaramessages'),
                 'base.unreadmessageid',
                 array('displayfunc' => 'reminder_links',
+                      'noexport' => true,
                       'nosort' => true)
             ),
             new rb_column_option(
@@ -148,6 +153,7 @@ class rb_source_totaramessages extends rb_base_source {
                 get_string('select', 'rb_source_totaramessages'),
                 'base.unreadmessageid',
                 array('displayfunc' => 'message_checkbox',
+                      'noexport' => true,
                       'nosort' => true)
             ),
             new rb_column_option(
@@ -332,12 +338,10 @@ class rb_source_totaramessages extends rb_base_source {
     // generate type icon link
     function rb_display_msgtype_link($comp, $row) {
         global $CFG;
-        $msg = get_record('message20', 'id', $row->message_values_msgid);
-        $metadata = get_record('message_metadata', 'messageid', $row->message_values_msgid);
-        //$display = totara_msg_msgtype_text($row->message_values_msgtype);
-        $icon = (($metadata && isset($metadata->icon)) ? $metadata->icon : 'default.png');
-        return '<img class="msgicon" src="' . totara_msg_icon_url($icon) . '" title="' . format_string($msg->subject) . '" alt="' . format_string($msg->subject) .'" />';
-//        return "<img class=\"iconsmall\" src=\"{$display['icon']}\" title=\"{$display['text']}\" alt=\"{$display['text']}\" />";
+        $msg = get_record('message20', 'id', $row->msgid);
+        $metadata = get_record('message_metadata', 'messageid', $row->msgid);
+         //$display = totara_msg_msgtype_text($row->message_values_msgtype);
+        return '<img class="msgicon" src="' . totara_msg_icon_url($metadata->icon) . '" title="' . format_string($msg->subject) . '" alt="' . format_string($msg->subject) .'" />';
     }
 
     // generate status type text
