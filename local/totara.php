@@ -229,10 +229,10 @@ function totara_print_my_learning_nav($return=false) {
             <tr>
                 <td align="left">
                     <center><a href="'.$CFG->wwwroot.'/local/plan/index.php" title="'.get_string('developmentplan','local').'">
-                    <img src="'. $CFG->pixpath.'/i/idp.png" /></a></center>
+                    <img src="'. $CFG->pixpath.'/i/idp.png" alt="'.get_string('developmentplan', 'local').'" /></a></center>
 
                 </td>
-                <td align="left" valign="center">
+                <td align="left">
                     <span style="font-size: small"><a href="'.$CFG->wwwroot.'/local/plan/index.php">' . get_string('developmentplan', 'local') . '</a></span>
                 </td>
             </tr>
@@ -241,18 +241,20 @@ function totara_print_my_learning_nav($return=false) {
     $returnstr .= '
         <tr>
             <td align="left">
-                <center><a href="'.$CFG->wwwroot.'/blocks/facetoface/mysignups.php" title="'.get_string('bookings','local').'"><img src="'.$CFG->pixpath.'/i/bookings.png" /></a></center>
+                <center><a href="'.$CFG->wwwroot.'/blocks/facetoface/mysignups.php" title="'.get_string('bookings','local').'">
+                <img src="'.$CFG->pixpath.'/i/bookings.png" alt="'.get_string('bookings', 'local').'" /></a></center>
             </td>
-            <td align="left" valign="center">
+            <td align="left">
                 <span style="font-size: small"><a href="'.$CFG->wwwroot.'/my/bookings.php?userid='.$USER->id.'">'.get_string('bookings','local').'</a></span>
             </td>
         </tr>';
     if(get_config(NULL, 'idp_showlearnrec')==2){
         $returnstr .= '<tr>
             <td align="left">
-                <center><a href="'.$CFG->wwwroot.'/local/plan/record/courses.php?userid='.$USER->id.'" title="'.get_string('recordoflearning', 'local').'"><img src="' . $CFG->pixpath . '/i/rol.png" /></a></center>
+                <center><a href="'.$CFG->wwwroot.'/local/plan/record/courses.php?userid='.$USER->id.'" title="'.get_string('recordoflearning', 'local').'">
+                <img src="' . $CFG->pixpath . '/i/rol.png" alt="'.get_string('recordoflearning', 'local').'" /></a></center>
             </td>
-            <td align="left" valign="center">
+            <td align="left">
                 <span style="font-size: small"><a href="'.$CFG->wwwroot.'/local/plan/record/courses.php?userid='.$USER->id.'">'.get_string('recordoflearning','local').'</a></span>
             </td>
         </tr>';

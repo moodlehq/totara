@@ -241,7 +241,7 @@ class dp_components_form extends moodleform {
                 }
 
                 if ($count > 1) {
-                    $buttons[] = "<a href=\"{$CFG->wwwroot}/local/plan/template/components.php?id={$templateid}&moveup={$component->id}\" title=\"$str_moveup\">".
+                    $buttons[] = "<a href=\"{$CFG->wwwroot}/local/plan/template/components.php?id={$templateid}&amp;moveup={$component->id}\" title=\"$str_moveup\">".
                         "<img src=\"{$CFG->pixpath}/t/up.gif\" class=\"iconsmall\" alt=\"$str_moveup\" /></a>";
                 } else {
                     $buttons[] = $spacer;
@@ -249,7 +249,7 @@ class dp_components_form extends moodleform {
 
                 // If value can be moved down
                 if ($count < $numvalues) {
-                    $buttons[] = "<a href=\"{$CFG->wwwroot}/local/plan/template/components.php?id={$templateid}&movedown={$component->id}\" title=\"$str_movedown\">".
+                    $buttons[] = "<a href=\"{$CFG->wwwroot}/local/plan/template/components.php?id={$templateid}&amp;movedown={$component->id}\" title=\"$str_movedown\">".
                         "<img src=\"{$CFG->pixpath}/t/down.gif\" class=\"iconsmall\" alt=\"$str_movedown\" /></a>";
                 } else {
                     $buttons[] = $spacer;
