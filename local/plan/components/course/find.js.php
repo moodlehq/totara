@@ -92,4 +92,15 @@ totaraDialog_handler_preRequisite.prototype._update = function(response) {
         updatesettings.hide();
     }
 
+    // Add duedate datepicker
+    $(function() {
+        $('[id^=duedate_course]').datepicker(
+            {
+                dateFormat: 'dd/mm/y',
+                showOn: 'button',
+                buttonImage: '<?php echo $CFG->wwwroot; ?>/local/js/images/calendar.gif',
+                buttonImageOnly: true
+            }
+        );
+    });
 }

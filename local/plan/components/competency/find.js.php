@@ -196,4 +196,15 @@ totaraDialog_handler_lpCompetency.prototype._update = function(response) {
         updatesettings.hide();
     }
 
+    // Add duedate datepicker
+    $(function() {
+        $('[id^=duedate_competency]').datepicker(
+            {
+                dateFormat: 'dd/mm/y',
+                showOn: 'button',
+                buttonImage: '<?php echo $CFG->wwwroot; ?>/local/js/images/calendar.gif',
+                buttonImageOnly: true
+            }
+        );
+    });
 }
