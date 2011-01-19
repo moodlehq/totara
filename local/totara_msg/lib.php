@@ -170,6 +170,8 @@ function totara_msg_dismiss_action($id) {
                 url+'dismissmsg.php?id=".$id."',
                 handler
             );
+	    // Set this dialog to not bind links
+	    $('#' + name).dialog('option','dialogClass', $('#' + name).dialog( 'option', 'dialogClass' ) + ' dialog-nobind');
         })();
     });" .
     '</script>'.
@@ -225,6 +227,8 @@ function totara_msg_alert_popup($id, $extrabuttons=array()) {
                 url+'dismissmsg.php?id=".$id."',
                 handler
             );
+	    // Set this dialog to not bind links
+	    $('#' + name).dialog('option','dialogClass', $('#' + name).dialog( 'option', 'dialogClass' ) + ' dialog-nobind');
         })();
     });" .
     '</script>';
