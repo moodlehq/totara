@@ -40,7 +40,7 @@ $metadata = get_record('message_metadata', 'messageid', $id);
 //$type_alt = $display['text'];
 
 $from = get_record('user', 'id', $msg->useridfrom);
-$fromname = fullname($from);
+$fromlink = '<a href="'.$CFG->wwwroot.'/user/view.php?id='.$from->id.'">'.fullname($from).'</a>';
 $subject = format_string($msg->subject);
 $icon = '<img class="msgicon" src="' . totara_msg_icon_url($metadata->icon) . '" title="' . format_string($msg->subject) . '" alt="' . format_string($msg->subject) .'" />';
 print '<div id="totara-msgs-dismiss"><table>';
@@ -51,7 +51,7 @@ print "<td class=\"totara-msgs-action-right\"><div id='dismiss-type'>{$subject}<
 print '<tr><td class="totara-msgs-action-left"><label for="dismiss-type">' . get_string('type', 'block_totara_notify').'</label></td>';
 print "<td class=\"totara-msgs-action-right\"><div id='dismiss-type'>{$icon}</div></td></tr>";
 print '<tr><td class="totara-msgs-action-left"><label for="dismiss-from">' . get_string('from', 'block_totara_notify').'</label></td>';
-print "<td class=\"totara-msgs-action-right\"><div id='dismiss-from'>{$fromname}</div></td></tr>";
+print "<td class=\"totara-msgs-action-right\"><div id='dismiss-from'>{$fromlink}</div></td></tr>";
 print '<tr><td class="totara-msgs-action-left"><label for="dismiss-statement">' . get_string('statement', 'block_totara_notify').'</label>';
 print "<td class=\"totara-msgs-action-right\"><div id='dismiss-statement'>{$msg->fullmessage}</div></td></tr>";
 if ( $msg->contexturl && $msg->contexturlname ){
