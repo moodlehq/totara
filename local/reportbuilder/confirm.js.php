@@ -34,7 +34,7 @@ totaraDialog_handler_confirm.prototype = new totaraDialog_handler();
  * @param string returnTo to send user back to after confirm complete
  * @return void
  */
-totaraDialog_handler.prototype._confirm = function(url, returnto) {
+totaraDialog_handler_confirm.prototype._confirm = function(url, returnto) {
 
     // set the returnto
     this.setReturnTo(returnto);
@@ -56,7 +56,7 @@ totaraDialog_handler.prototype._confirm = function(url, returnto) {
  *
  * @return void
  */
-totaraDialog_handler.prototype.setReturnTo = function(url) {
+totaraDialog_handler_confirm.prototype.setReturnTo = function(url) {
     this._returnTo = url;
     return;
 }
@@ -68,7 +68,7 @@ totaraDialog_handler.prototype.setReturnTo = function(url) {
  *
  * @return void
  */
-totaraDialog_handler.prototype._redirect = function() {
+totaraDialog_handler_confirm.prototype._redirect = function() {
     this._dialog.hide();
     if (this._returnTo == null) {
         this._returnTo = '<?php echo $CFG->wwwroot; ?>';
