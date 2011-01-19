@@ -1402,6 +1402,13 @@ table.learning-plan-pending-approval-table div.related-courses {
 }
 
 /*
+ * Linked courses field
+ */
+.centertext {
+    text-align: center;
+}
+
+/*
  * Record of Learning pulldown menu
  */
 

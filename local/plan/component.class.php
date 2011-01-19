@@ -352,6 +352,11 @@ abstract class dp_base_component {
             'progress',
         );
 
+        if($this->component == 'competency' || $this->component == 'objective') {
+            $tableheaders[] = get_string('courses');
+            $tablecolumns[] = 'linkedcourses';
+        }
+
         if ($showpriorities) {
             $tableheaders[] = get_string('priority', 'local_plan');
             $tablecolumns[] = 'priority';
@@ -900,6 +905,10 @@ abstract class dp_base_component {
         return '';
     }
 
+    protected function display_list_item_linkedcourses($item) {
+            return '<div class="centertext">' .
+                $item->linkedcourses . '</div>';
+    }
 
     abstract protected function display_list_item_progress($item);
     abstract protected function display_list_item_actions($item);

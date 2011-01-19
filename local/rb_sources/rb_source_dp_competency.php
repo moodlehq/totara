@@ -94,6 +94,19 @@ class rb_source_dp_competency extends rb_base_source {
                 array()
         );
 
+        $joinlist[] = new rb_join(
+                'linkedcourses',
+                'LEFT',
+                '(SELECT itemid1 ' . sql_as() . ' compassignid,
+                    count(id) ' . sql_as() . " count
+                    FROM {$CFG->prefix}dp_plan_component_relation
+                    WHERE component1='competency' AND component2='course'
+                    GROUP BY itemid1)",
+                'base.id = linkedcourses.compassignid',
+                REPORT_BUILDER_RELATION_MANY_TO_ONE,
+                array()
+        );
+
         $this->add_user_table_to_joinlist($joinlist, 'dp','userid');
 
         return $joinlist;
@@ -240,6 +253,16 @@ class rb_source_dp_competency extends rb_base_source {
                 'scale_value.name',
                 array(
                     'joins' => 'scale_value'
+                )
+        );
+
+        $columnoptions[] = new rb_column_option(
+                'competency',
+                'linkedcourses',
+                get_string('courses', 'rb_source_dp_competency'),
+                'linkedcourses.count',
+                array(
+                    'joins' => 'linkedcourses'
                 )
         );
 

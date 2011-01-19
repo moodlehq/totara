@@ -94,6 +94,9 @@ class dp_competency_component extends dp_base_component {
             SELECT
                 a.*,
                 c.fullname,
+                CASE WHEN linkedcourses.count IS NULL
+                    THEN 0 ELSE linkedcourses.count
+                END AS linkedcourses,
                 csv.name AS status,
                 csv.sortorder AS profsort
             FROM
@@ -101,6 +104,14 @@ class dp_competency_component extends dp_base_component {
             INNER JOIN
                 {$CFG->prefix}comp c
                 ON c.id = a.competencyid
+            LEFT JOIN
+                (SELECT itemid1 " . sql_as() . " assignid,
+                    count(id) " . sql_as() . " count
+                    FROM {$CFG->prefix}dp_plan_component_relation
+                    WHERE component1='competency' AND
+                        component2='course'
+                    GROUP BY itemid1) linkedcourses
+                ON linkedcourses.assignid = a.id
             $status
             WHERE
                 $where

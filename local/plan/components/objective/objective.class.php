@@ -77,9 +77,20 @@ class dp_objective_component extends dp_base_component {
             "
             SELECT
                 a.*,
+                CASE WHEN linkedcourses.count IS NULL
+                    THEN 0 ELSE linkedcourses.count
+                END AS linkedcourses,
                 osv.achieved
             FROM
                 {$CFG->prefix}dp_plan_objective a
+            LEFT JOIN
+                (SELECT itemid2 " . sql_as() . " assignid,
+                    count(id) " . sql_as() . " count
+                    FROM {$CFG->prefix}dp_plan_component_relation
+                    WHERE component2='objective' AND
+                        component1='course'
+                    GROUP BY itemid2) linkedcourses
+                ON linkedcourses.assignid = a.id
             $status
             WHERE
                 $where
