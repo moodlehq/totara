@@ -53,7 +53,6 @@ $navigation = build_navigation($navlinks);
 $plan->print_header($componentname, $navlinks, false);
 
 print $component->display_back_to_index_link();
-$component->display_objective_detail($caid, true);
 if ( !$plancompleted && ($canupdate = $component->can_update_items()) ){
 
     if ( $component->will_an_update_revoke_approval( $caid ) ){
@@ -67,6 +66,11 @@ if ( !$plancompleted && ($canupdate = $component->can_update_items()) ){
             $buttonlabel
     );
 }
+$component->display_objective_detail($caid, true);
+
+if ( !$plancompleted ){
+    print $component->display_course_picker($caid);
+}
 
 if ( $plan->get_component('course')->get_setting('enabled') ){
     print '<h3>' . get_string('linkedx', 'local_plan', $coursename) . '</h3>';
@@ -79,9 +83,6 @@ if ( $plan->get_component('course')->get_setting('enabled') ){
     }
     print '</div>';
 
-    if ( !$plancompleted ){
-        print $component->display_course_picker($caid);
-    }
 }
 
 print_container_end();

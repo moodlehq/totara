@@ -271,11 +271,9 @@ class dp_course_component extends dp_base_component {
 
         $tableheaders = array(
             get_string('coursename','local_plan'),
-            get_string('progress','local_plan'),
         );
         $tablecolumns = array(
             'fullname',
-            'progress',
         );
 
         if($showpriorities) {
@@ -287,6 +285,9 @@ class dp_course_component extends dp_base_component {
             $tableheaders[] = get_string('duedate', 'local_plan');
             $tablecolumns[] = 'duedate';
         }
+
+        $tableheaders[] = get_string('progress','local_plan');
+        $tablecolumns[] = 'progress';
 
         $table = new flexible_table('linkedcourselist');
         $table->define_columns($tablecolumns);
@@ -304,8 +305,6 @@ class dp_course_component extends dp_base_component {
                 $row = array();
                 $row[] = $this->display_item_name($ca);
 
-                $row[] = $this->display_status_as_progress_bar($ca);
-
                 if($showpriorities) {
                     $row[] = $this->display_priority_as_text($ca->priority, $ca->priorityname, $priorityvalues);
                 }
@@ -313,6 +312,8 @@ class dp_course_component extends dp_base_component {
                 if($showduedates) {
                     $row[] = $this->display_duedate_as_text($ca->duedate);
                 }
+
+                $row[] = $this->display_status_as_progress_bar($ca);
 
                 $table->add_data($row);
             }
