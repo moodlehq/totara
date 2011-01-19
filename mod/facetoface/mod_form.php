@@ -24,7 +24,6 @@ class mod_facetoface_mod_form extends moodleform_mod {
         $mform->addElement('htmleditor', 'description', get_string('description'), array('rows'  => 10, 'cols'  => 64));
         $mform->setType('description', PARAM_RAW);
         $mform->setHelpButton('description', array('description', get_string('description'), 'facetoface'));
-        $mform->disabledIf('description', 'showoncalendar');
 
         $mform->addElement('text', 'thirdparty', get_string('thirdpartyemailaddress', 'facetoface'), array('size'=>'64'));
         $mform->setType('name', PARAM_NOTAGS);
@@ -55,11 +54,6 @@ class mod_facetoface_mod_form extends moodleform_mod {
         $mform->setHelpButton('shortname', array('shortname', get_string('shortname'), 'facetoface'));
         $mform->disabledIf('shortname', 'showoncalendar');
         $mform->addRule('shortname', null, 'maxlength', 32);
-
-        $mform->addElement('htmleditor', 'description', get_string('description'), array('rows'  => 4, 'cols'  => 64));
-        $mform->setType('description', PARAM_RAW);
-        $mform->setHelpButton('description', array('description', get_string('description'), 'facetoface'));
-        $mform->disabledIf('description', 'showoncalendar');
 
         // REQUEST MESSAGE
         $mform->addElement('header', 'request', get_string('requestmessage', 'facetoface'));
