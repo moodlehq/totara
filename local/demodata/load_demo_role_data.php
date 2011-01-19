@@ -8,7 +8,7 @@ $items = array(array('id' => '1','name' => 'Administrator','shortname' => 'admin
 array('id' => '3','name' => 'Editing Trainer','shortname' => 'trainer','description' => '<p>Responsible for delivering training of learners, and can alter activities</p>','sortorder' => '3',),
 array('id' => '5','name' => 'Learner','shortname' => 'student','description' => '<p>User acquiring knowledge, comprehension, or mastery through learning</p>','sortorder' => '8',),
 array('id' => '6','name' => 'Guest','shortname' => 'guest','description' => 'Guests have minimal privileges and usually can not enter text anywhere','sortorder' => '10',),
-array('id' => '7','name' => 'Athenticated User','shortname' => 'user','description' => '<p>All logged in users.</p>','sortorder' => '9',),
+array('id' => '7','name' => 'Authenticated User','shortname' => 'user','description' => '<p>All logged in users.</p>','sortorder' => '9',),
 array('id' => '8','name' => 'Manager','shortname' => 'manager','description' => '<p>User tasked with managing the performance of a learner or team</p>','sortorder' => '7',),
 array('id' => '10','name' => 'Assessor','shortname' => 'assessor','description' => 'User who is responsible for assessing staff','sortorder' => '5',),
 array('id' => '11','name' => 'Functional Administrator','shortname' => 'functional','description' => 'User who has a greater level of access to staff records, but not to the site administration functions','sortorder' => '2',),
