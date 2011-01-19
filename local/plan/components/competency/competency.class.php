@@ -255,6 +255,7 @@ class dp_competency_component extends dp_base_component {
         $evidence = $this->get_course_evidence_items($competencies);
 
         $table = new object();
+        $table->class = 'generaltable learning-plan-pending-approval-table';
         $table->data = array();
         foreach($pendingitems as $item) {
             $row = array();
@@ -265,14 +266,21 @@ class dp_competency_component extends dp_base_component {
             // competency with checkboxes and a description
             if(array_key_exists($item->competencyid, $evidence)) {
                 // @todo lang string
-                $name .= '<br /><strong>Related courses:</strong>';
+                $name .= '<br /><div class="related-courses"><strong>Include related courses:</strong>';
                 foreach($evidence[$item->competencyid] as $course) {
+                    if($this->plan->get_component('course')->is_item_assigned($course->courseid)) {
+                        $message = ' (' .
+                            get_string('alreadyassignedtoplan', 'local_plan'). ')';
+                    } else {
+                        $message = '';
+                    }
                     $name .= '<br />' .
                         // @todo add code to disable unless
                         // pulldown set to approve
                         '<input type="checkbox" checked="checked" name="linkedcourses[' . $item->id . '][' . $course->courseid . ']" value="1"> ' .
-                        $course->fullname;
+                        $course->fullname . $message;
                 }
+                $name .= '</div>';
             }
 
             $row[] = $name;

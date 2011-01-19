@@ -409,6 +409,7 @@ abstract class dp_base_component {
      */
     public function display_approval_list($pendingitems) {
         $table = new object();
+        $table->class = 'generaltable learning-plan-pending-approval-table';
         $table->data = array();
         foreach($pendingitems as $item) {
             $row = array();

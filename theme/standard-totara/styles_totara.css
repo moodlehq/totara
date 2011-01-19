@@ -1389,6 +1389,19 @@ span.plan_highlight {
 }
 
 /*
+ * Pending approval table
+ */
+
+table.learning-plan-pending-approval-table .lastcol {
+    width: 100px;
+}
+
+table.learning-plan-pending-approval-table div.related-courses {
+    margin-left: 40px;
+    padding: 5px;
+}
+
+/*
  * Record of Learning pulldown menu
  */
 
