@@ -206,7 +206,7 @@ div#header {
 }
 
 .navbar .breadcrumb {
-  width:600px;
+  width:100%;
 }
 
 .navbar .breadcrumb span.first {
