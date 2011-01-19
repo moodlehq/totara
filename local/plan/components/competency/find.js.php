@@ -17,16 +17,17 @@ $(function() {
 
         var url = '<?php echo $CFG->wwwroot ?>/local/plan/components/competency/';
         var continueurl = url + 'confirm.php?id='+plan_id+'&update=';
-        var saveurl = url + 'update.php?';
+        var saveurl = url + 'update.php?id='+plan_id+'&update=';
         var continueskipurl = saveurl + 'id='+plan_id+'&update=';
+        var continuesaveurl = url + 'update.php?';
 
         var handler = new totaraDialog_handler_lpCompetency();
         handler.baseurl = url;
         handler.continueskipurl = continueskipurl;
 
         handler.standard_buttons = {
-                'Cancel': function() { handler._cancel() },
-                'Ok': function() { handler._save(saveurl) }
+            'Cancel': function() { handler._cancel() },
+            'Ok': function() { handler._save(saveurl) }
         };
 
         handler.continue_buttons = {
@@ -34,19 +35,16 @@ $(function() {
             'Continue': function() { handler._continue(continueurl) }
         };
 
-        // Check if user has allow permissions for updating compentencies
-        if (comp_update_allowed) {
-            var buttons = handler.continue_buttons;
-        } else {
-            var buttons = handler.standard_buttons;
-        }
-
+        handler.continuesave_buttons = {
+            'Cancel': function() { handler._cancel() },
+            'Ok': function() { handler._continueSave(continuesaveurl) }
+        };
 
         totaraDialogs['evidence'] = new totaraDialog(
             'assigncompetencies',
             'show-competency-dialog',
             {
-                buttons: buttons,
+                buttons: {},
                 title: '<?php
                     echo '<h2>';
                     echo get_string('addremovecompetency', 'local_plan');
@@ -76,8 +74,16 @@ totaraDialog_handler_lpCompetency.prototype = new totaraDialog_handler_treeview_
  * @return  void
  */
 totaraDialog_handler_lpCompetency.prototype._open = function() {
+
+    // Check if user has allow permissions for updating compentencies
+    if (comp_update_allowed) {
+        var buttons = this.continue_buttons;
+    } else {
+        var buttons = this.standard_buttons;
+    }
+
     // Reset buttons
-    this._dialog.dialog.dialog('option', 'buttons', this.continue_buttons);
+    this._dialog.dialog.dialog('option', 'buttons', buttons);
 }
 
 
@@ -125,7 +131,7 @@ totaraDialog_handler_lpCompetency.prototype._continueRender = function(response)
     }
 
     // Update buttons
-    this._dialog.dialog.dialog('option', 'buttons', this.standard_buttons);
+    this._dialog.dialog.dialog('option', 'buttons', this.continuesave_buttons);
 
     // Render result
     return true;
@@ -139,7 +145,7 @@ totaraDialog_handler_lpCompetency.prototype._continueRender = function(response)
  * @param string URL to send dropped items to
  * @return void
  */
-totaraDialog_handler.prototype._save = function(url) {
+totaraDialog_handler.prototype._continueSave = function(url) {
 
     // Serialize form data
     var data_str = $('form', this._container).serialize();
