@@ -2414,3 +2414,7 @@ td.user_namewithlinks div.picture {
 td.user_namewithlinks .userpicture {
     vertical-align:middle
 }
+
+div.add-linked-course {
+    text-align:right;
+}

@@ -992,6 +992,25 @@ SQL;
         $out .= '<h3>' . $icon . $item->fullname . '</h3>';
         $out .= "</td></tr></table>";
 
+        $plancompleted = $this->plan->status == DP_PLAN_STATUS_COMPLETE;
+
+        if ( !$plancompleted && ($canupdate = $this->can_update_items()) ){
+
+            if ( $this->will_an_update_revoke_approval( $objectiveid ) ){
+                $buttonlabel = get_string('editdetailswithapproval', 'local_plan');
+            } else {
+                $buttonlabel = get_string('editdetails', 'local_plan');
+            }
+            $out .= '<div class="add-linked-course">' . print_single_button(
+                "{$CFG->wwwroot}/local/plan/components/objective/edit.php",
+                array('id'=>$this->plan->id, 'itemid'=>$objectiveid),
+                $buttonlabel,
+                null,
+                null,
+                true
+            ) . '</div>';
+        }
+
         $out .= "<table border=\"0\" class=\"planiteminfobox\">\n";
         $out .= "<tr>\n";
         if($priorityenabled && !empty($item->priority)) {

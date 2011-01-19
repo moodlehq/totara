@@ -53,27 +53,14 @@ $navigation = build_navigation($navlinks);
 $plan->print_header($componentname, $navlinks, false);
 
 print $component->display_back_to_index_link();
-if ( !$plancompleted && ($canupdate = $component->can_update_items()) ){
-
-    if ( $component->will_an_update_revoke_approval( $caid ) ){
-        $buttonlabel = get_string('editdetailswithapproval', 'local_plan');
-    } else {
-        $buttonlabel = get_string('editdetails', 'local_plan');
-    }
-    print_single_button(
-            "{$CFG->wwwroot}/local/plan/components/objective/edit.php",
-            array('id'=>$id, 'itemid'=>$caid),
-            $buttonlabel
-    );
-}
 $component->display_objective_detail($caid, true);
 
-if ( !$plancompleted ){
-    print $component->display_course_picker($caid);
-}
 
 if ( $plan->get_component('course')->get_setting('enabled') ){
     print '<h3>' . get_string('linkedx', 'local_plan', $coursename) . '</h3>';
+    if ( !$plancompleted ){
+        print $component->display_course_picker($caid);
+    }
     print '<div id="dp-objective-courses-container">';
     if($linkedcourses =
         $component->get_linked_components($caid, 'course')) {
