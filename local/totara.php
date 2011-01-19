@@ -870,3 +870,9 @@ function totara_convert_userdate($datestring) {
     }
     return strtotime($datestring);
 }
+
+
+function get_totara_menu($header=true) {
+    global $CFG, $USER;
+    include($CFG->themedir.'/totara/totara_menu.php');
+}

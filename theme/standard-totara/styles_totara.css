@@ -206,26 +206,26 @@ div#header .logo {
   display:none;
 }
 
-#header-search {
+.header-search {
   float:right;
   margin-right: 23px;
   padding-left:23px;
   padding-bottom:2px;
 }
 
-#header-search #coursesearch {
+.header-search #coursesearch {
   margin-top: 11px;
   overflow: hidden;
 }
 
-#header-search #coursesearchbox {
+.header-search #coursesearchbox {
   float: left;
   width: 150px;
   border: 1px;
   padding: 5px;
 }
 
-#header-search #coursesubmit {
+.header-search #coursesubmit {
   width: 28px;
   height: 21px;
   border: none;

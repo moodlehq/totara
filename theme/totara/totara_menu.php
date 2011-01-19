@@ -96,8 +96,12 @@ $canviewlearningplans = dp_can_view_users_plans($USER->id);
 
 // get an array of class string snippets to be applied to each tab element
 $selected = totara_get_nav_select_classes($navstructure, $primary_selected, $secondary_selected);
+
+if($header){
 ?>
-<div id="header-search">
+
+
+<div class="header-search">
 <form id="coursesearch" action="<?php echo $CFG->wwwroot ?>/course/search.php" method="get">
   <fieldset class="coursesearchbox invisiblefieldset">
     <input type="text" id="coursesearchbox" size="30" name="search" value="" />
@@ -105,6 +109,9 @@ $selected = totara_get_nav_select_classes($navstructure, $primary_selected, $sec
   </fieldset>
 </form>
 </div>
+<?php
+}
+?>
 
 <ul>
     <li class="first<?php echo $selected['home']; ?> menu1">

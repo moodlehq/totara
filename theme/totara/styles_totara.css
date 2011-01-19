@@ -285,22 +285,22 @@ span.youarehere {
   display:none;
 }
 
-#header-search {
+.header-search {
   background: url('images/nav_main_spacer.gif') no-repeat left 8px;
 }
 
-#header-search #coursesearch {
+.header-search #coursesearch {
   margin-top: 11px;
   overflow: hidden;
 }
 
-#header-search #coursesearchbox {
+.header-search #coursesearchbox {
   float: left;
   border: none;
   background: url('images/search_bg_field.gif') no-repeat top left;
 }
 
-#header-search #coursesubmit {
+.header-search #coursesubmit {
   background: url('images/search_bg_submit.gif') no-repeat top left;
   font-size: 0;
   line-height: 0;
@@ -459,7 +459,6 @@ span.youarehere {
 #footer .sitelink,
 #footer .helplink,
 #footer .homelink,
-#footer #header-search,
 #footer .footerlinks ul li ul {
   display: none;
 }
