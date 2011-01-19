@@ -62,3 +62,4 @@ if (!$component->can_update_items()) {
 $component->update_assigned_items($idlist);
 
 echo $component->display_list();
+echo $plan->display_plan_message_box();

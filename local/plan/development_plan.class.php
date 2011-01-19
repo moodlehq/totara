@@ -860,7 +860,7 @@ class development_plan {
         }
 
         if ($message == '') {
-            return '';
+            return '<div class="plan_box" style="display:none;"></div>';
         }
         return '<div class="plan_box '.$style.'">'.$message.'</div>';
     }

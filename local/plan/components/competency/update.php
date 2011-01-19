@@ -71,3 +71,4 @@ $component = $plan->get_component($componentname);
 $component->update_assigned_items($idlist);
 
 echo $component->display_list();
+echo $plan->display_plan_message_box();

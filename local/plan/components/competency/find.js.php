@@ -162,17 +162,25 @@ totaraDialog_handler_lpCompetency.prototype._update = function(response) {
     // Remove no item warning (if exists)
     $('.noitems-'+this._title).remove();
 
+    //Split response into table and div
+    var new_table = $(response).filter('table');
+    var new_planbox = $(response).filter('.plan_box');
+
     // Grab table
     var table = $('div#content form#dp-component-update table.dp-plan-component-items');
 
     // If table found
     if (table.size()) {
-        table.replaceWith(response);
+        table.replaceWith(new_table);
     }
     else {
         // Add new table
-        $('div#content form#dp-component-update div#dp-component-update-table').append(response);
+        $('div#content form#dp-component-update div#dp-component-update-table').append(new_table);
     }
+
+    //Replace plan message box
+    $('div.plan_box').replaceWith(new_planbox);
+
     // show the update settings button
     var table = $('div#content form#dp-component-update table.dp-plan-component-items');
     var updatesettings = $('div#content div#dp-component-update-submit');
