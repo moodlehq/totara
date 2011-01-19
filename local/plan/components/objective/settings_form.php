@@ -93,7 +93,7 @@ function dp_objective_component_build_settings_form(&$mform, $id) {
 
     foreach(dp_objective_component::$permissions as $action => $requestable) {
         foreach($DP_AVAILABLE_ROLES as $role){
-            $sql = "SELECT value FROM {$CFG->prefix}dp_permissions WHERE role='$role' AND component='objective' AND action='{$action}'";
+            $sql = "SELECT value FROM {$CFG->prefix}dp_permissions WHERE role='$role' AND component='objective' AND action='{$action}' AND templateid='{$id}'";
             $defaultvalue = get_field_sql($sql);
             $mform->setDefault($action.$role, $defaultvalue);
         }
