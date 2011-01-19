@@ -2194,11 +2194,11 @@ table.borderless td {
 }
 
 body#hierarchy-index table#competency tr.r0 td.customfield {
-    background: #fdfdfd;
+    background: #f5f5f5;
 }
 
 body#hierarchy-index table#competency tr.r1 td.customfield {
-    background: #f2f2f2;
+    background: #fefefe;
 }
 
 
