@@ -40,3 +40,4 @@ $string['sendreminderemails'] = 'Send reminder emails';
 $string['settingssaved'] = 'Settings saved';
 $string['messagesettings'] = 'Message settings';
 $string['viewdetailshere'] = 'View details <a href=$a>here</a>';
+$string['cannotsavemessage'] = 'Cannot save message';

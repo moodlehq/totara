@@ -10,7 +10,8 @@ class rb_source_totaramessages extends rb_base_source {
 
     function __construct() {
         global $CFG;
-        $this->base = $CFG->prefix . 'message_working20';
+        //$this->base = $CFG->prefix . 'message_working20';
+        $this->base = $CFG->prefix . 'message_metadata';
         $this->joinlist = $this->define_joinlist();
         $this->columnoptions = $this->define_columnoptions();
         $this->filteroptions = $this->define_filteroptions();
@@ -34,24 +35,25 @@ class rb_source_totaramessages extends rb_base_source {
         $joinlist = array(
             new rb_join(
                 'msg',
-                'LEFT',
+                'INNER',
                 $CFG->prefix . 'message20',
-                'msg.id = base.unreadmessageid',
+                'msg.id = base.messageid',
                 REPORT_BUILDER_RELATION_ONE_TO_ONE
             ),
             new rb_join(
-                'mdata',
-                'LEFT',
-                $CFG->prefix . 'message_metadata',
-                'mdata.messageid = base.unreadmessageid',
+                'wrk',
+                'INNER',
+                $CFG->prefix . 'message_working20',
+                'wrk.unreadmessageid = base.messageid',
                 REPORT_BUILDER_RELATION_ONE_TO_ONE
             ),
             new rb_join(
                 'processor',
                 'INNER',
                 $CFG->prefix . 'message_processors20',
-                'base.processorid = processor.id',
-                REPORT_BUILDER_RELATION_ONE_TO_ONE
+                'wrk.processorid = processor.id',
+                REPORT_BUILDER_RELATION_ONE_TO_ONE,
+                array('base','wrk')
             ),
         );
 
@@ -70,56 +72,37 @@ class rb_source_totaramessages extends rb_base_source {
                 'msg.fullmessage',        // field
                 array('joins' => 'msg')   // options
             ),
-//            new rb_column_option(
-//                'message_values',
-//                'msgstatus',
-//                get_string('msgstatus', 'rb_source_totaramessages'),
-//                'mdata.msgstatus',
-//                array('joins' => 'mdata',
-//                      'displayfunc' => 'msgstatus_link')
-//                ),
-//            new rb_column_option(
-//                'message_values',
-//                'msgstatus_text',
-//                get_string('msgstatus', 'rb_source_totaramessages'),
-//                'mdata.msgstatus',
-//                array('joins' => 'mdata',
-//                      'displayfunc' => 'msgstatus_text')
-//                ),
             new rb_column_option(
                 'message_values',
                 'urgency',
                 get_string('msgurgency', 'rb_source_totaramessages'),
-                'mdata.urgency',
-                array('joins' => 'mdata',
-                      'displayfunc' => 'urgency_link')
+                'base.urgency',
+                array('displayfunc' => 'urgency_link')
                 ),
             new rb_column_option(
                 'message_values',
                 'urgency_text',
                 get_string('msgurgency', 'rb_source_totaramessages'),
-                'mdata.urgency',
-                array('joins' => 'mdata',
-                      'displayfunc' => 'urgency_text')
+                'base.urgency',
+                array('displayfunc' => 'urgency_text')
                 ),
             new rb_column_option(
                 'message_values',
                 'msgtype',
                 get_string('msgtype', 'rb_source_totaramessages'),
-                'mdata.msgtype',
-                array('joins' => array('mdata','msg'),
+                'base.msgtype',
+                array('joins' => array('msg'),
                       'displayfunc' => 'msgtype_link',
                       'extrafields' => array(
-                        'msgid' => 'msg.id'),
+                        'msgid' => 'base.messageid'),
                     )
             ),
             new rb_column_option(
                 'message_values',
                 'msgtype_text',
                 get_string('msgtype', 'rb_source_totaramessages'),
-                'mdata.msgtype',
-                array('joins' => 'mdata',
-                      'displayfunc' => 'msgtype_text')
+                'base.msgtype',
+                array('displayfunc' => 'msgtype_text')
             ),
             new rb_column_option(
                 'message_values',
@@ -133,7 +116,7 @@ class rb_source_totaramessages extends rb_base_source {
                 'message_values',
                 'dismiss_link',
                 get_string('dismissmsg', 'rb_source_totaramessages'),
-                'base.unreadmessageid',
+                'base.messageid',
                 array('displayfunc' => 'dismiss_link',
                       'noexport' => true,
                       'nosort' => true)
@@ -142,7 +125,7 @@ class rb_source_totaramessages extends rb_base_source {
                 'message_values',
                 'reminder_links',
                 get_string('actions', 'rb_source_totaramessages'),
-                'base.unreadmessageid',
+                'base.messageid',
                 array('displayfunc' => 'reminder_links',
                       'noexport' => true,
                       'nosort' => true)
@@ -151,7 +134,7 @@ class rb_source_totaramessages extends rb_base_source {
                 'message_values',
                 'checkbox',
                 get_string('select', 'rb_source_totaramessages'),
-                'base.unreadmessageid',
+                'base.messageid',
                 array('displayfunc' => 'message_checkbox',
                       'noexport' => true,
                       'nosort' => true)
@@ -160,11 +143,10 @@ class rb_source_totaramessages extends rb_base_source {
                 'message_values',
                 'msgid',
                 get_string('msgid', 'rb_source_totaramessages'),
-                'msg.id',
+                'base.messageid',
                 array('nosort' => true,
                       'noexport' => true,
                       'hidden' => 1,
-                      'joins' => 'msg',
                     )
             ),
         );
@@ -190,16 +172,6 @@ class rb_source_totaramessages extends rb_base_source {
                 get_string('details', 'rb_source_totaramessages'),
                 'text'
             ),
-//            new rb_filter_option(
-//                'message_values',
-//                'msgstatus',
-//                'Message Status',
-//                'select',
-//                array(
-//                    'selectfunc' => 'message_status_list',
-//                    'selectoptions' => rb_filter_option::select_width_limiter(),
-//                )
-//            ),
             new rb_filter_option(
                 'message_values',
                 'urgency',
@@ -229,33 +201,6 @@ class rb_source_totaramessages extends rb_base_source {
 
     function define_contentoptions() {
         $contentoptions = array(
-//            new rb_content_option(
-//                'current_org',                      // class name
-//                get_string('currentorg', 'rb_source_totaramessages'),  // title
-//                'base.userid',                      // field
-//                null                                // joins
-//            ),
-//            new rb_content_option(
-//                'current_pos',                      // class name
-//                get_string('currentpos', 'rb_source_totaramessages'),      // title
-//                'base.userid',                      // field
-//                null                                // joins
-//            ),
-//            new rb_content_option(
-//                'completed_org',
-//                get_string('completedorg', 'rb_source_totaramessages'),
-//                'base.organisationid'
-//            ),
-//            new rb_content_option(
-//                'user',
-//                get_string('user', 'rb_source_totaramessages'),
-//                'base.userid'
-//            ),
-//            new rb_content_option(
-//                'date',
-//                get_string('date', 'rb_source_totaramessages'),
-//                'base.timemodified'
-//            ),
         );
         return $contentoptions;
     }
@@ -275,8 +220,7 @@ class rb_source_totaramessages extends rb_base_source {
             ),
             new rb_param_option(
                 'roleid',          // parameter name
-                'mdata.roleid',    // field
-                'mdata'            // joins
+                'base.roleid'      // field
             ),
         );
 
@@ -340,8 +284,8 @@ class rb_source_totaramessages extends rb_base_source {
         global $CFG;
         $msg = get_record('message20', 'id', $row->msgid);
         $metadata = get_record('message_metadata', 'messageid', $row->msgid);
-         //$display = totara_msg_msgtype_text($row->message_values_msgtype);
-        return '<img class="msgicon" src="' . totara_msg_icon_url($metadata->icon) . '" title="' . format_string($msg->subject) . '" alt="' . format_string($msg->subject) .'" />';
+        $icon = ($metadata ? $metadata->icon : 'default.png');
+        return '<img class="msgicon" src="' . totara_msg_icon_url($icon) . '" title="' . format_string($msg->subject) . '" alt="' . format_string($msg->subject) .'" />';
     }
 
     // generate status type text

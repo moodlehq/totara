@@ -196,6 +196,11 @@ function tm_message_send($eventdata) {
         // Store unread message just in case we can not send it
         //$savemessage->id = $DB->insert_record('message20', $savemessage);
         $savemessage->id = insert_record('message20', $savemessage);
+        if (!$savemessage->id || $savemessage->id == 0) {
+            //print_error('cannotsavemessage', 'local_totara_msg');
+            debugging('Error inserting message20: '.var_export($savemessage, TRUE));
+            return false;
+        }
         $eventdata->savedmessageid = $savemessage->id;
 
         // Try to deliver the message to each processor
