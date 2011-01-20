@@ -1386,6 +1386,7 @@ span.plan_highlight {
 
 .plan-launch-course-button {
     float: right;
+    margin-top: 2px;
 }
 
 /*
@@ -1654,6 +1655,19 @@ div.dp-plan-assign-button {
 table.dp-plan-component-items {
     width: 100%;
 }
+
+table.dp-plan-component-items td {
+    vertical-align: middle;
+}
+
+table.dp-plan-component-items td img {
+    vertical-align: middle;
+}
+
+table.dp-plan-component-items td select.approval {
+    display: block;
+}
+
 #dp-plans-menu h3 {
     margin-top: 5px;
     padding: 7px 20px;

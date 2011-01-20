@@ -371,7 +371,7 @@ function dp_display_approval_options($name, $selected=DP_APPROVAL_UNAPPROVED, $c
         DP_APPROVAL_APPROVED => get_string('approve', 'local_plan'),
         DP_APPROVAL_DECLINED => get_string('decline', 'local_plan'),
     );
-    return choose_from_menu($options, $name, $selected, $choosestr, '', $chooseval, true);
+    return choose_from_menu($options, $name, $selected, $choosestr, '', $chooseval, true, false, 0, '', false, false, 'approval');
 }
 
 
