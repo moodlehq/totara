@@ -1118,7 +1118,7 @@ abstract class dp_base_component {
             $out .= '<span class="plan_highlight">' . get_string('declined', 'local_plan') . '</span>';
             break;
         case DP_APPROVAL_UNAPPROVED:
-            $out .= '<img src="'.$CFG->pixpath.'/i/risk_xss.gif" /> ';
+            $out .= '<img src="'.$CFG->pixpath.'/i/learning_plan_alert.gif" /> ';
             $out .= get_string('unapproved', 'local_plan');
             if ($canapprove) {
                 $out .= ' '.$this->display_approval_options($obj, $approvalstatus);
