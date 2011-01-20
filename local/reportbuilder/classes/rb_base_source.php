@@ -458,14 +458,15 @@ abstract class rb_base_source {
 
         switch($status) {
         case DP_APPROVAL_DECLINED:
-            return 'Declined';
-            break;
+            return get_string('declined','local_plan');
         case DP_APPROVAL_UNAPPROVED:
-            return 'Unapproved';
-            break;
+            return get_string('unapproved', 'local_plan');
+        case DP_APPROVAL_REQUESTED:
+            return get_string('pendingapproval', 'local_plan');
         case DP_APPROVAL_APPROVED:
-            return 'Approved';
-            break;
+            return get_string('approved', 'local_plan');
+        case DP_APPROVAL_REQUEST_REMOVAL:
+            return get_string('pendingremoval', 'local_plan');
         default:
             return '';
         }

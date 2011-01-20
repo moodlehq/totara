@@ -274,7 +274,21 @@ from
                 array(
                     'joins' => 'course_completion',
                     'displayfunc' => 'course_completion_icon',
-                    'defaultheading' => 'Progress',
+                    'defaultheading' => get_string('progress', 'rb_source_dp_course'),
+                )
+            );
+
+        $columnoptions[] = new rb_column_option(
+                'course_completion',
+                'statusandapproval',
+                get_string('completionstatusandapproval', 'rb_source_dp_course'),
+                "CASE WHEN course_completion.timecompleted IS NOT NULL THEN 'Completed' " .
+                    "ELSE 'Not Completed' END",
+                array(
+                    'joins' => array('course_completion', 'dp_course'),
+                    'displayfunc' => 'course_completion_icon_and_approval',
+                    'defaultheading' => get_string('progress', 'rb_source_dp_course'),
+                    'extrafields' => array('approved' => 'dp_course.approved')
                 )
             );
 
@@ -285,7 +299,7 @@ from
                 'course.coursetype',
                 array(
                     'displayfunc' => 'course_type_icon',
-                    'defaultheading' => 'Type',
+                    'defaultheading' => get_string('coursetypeicon', 'rb_source_dp_course'),
                 )
             );
 
@@ -414,6 +428,36 @@ from
         $content = "<span class=\"coursecompletionstatus\">";
         $content .= "<span class=\"completion-$statusstring\" title=\"$status\"></span></span>";
 
+        return $content;
+    }
+
+    function rb_display_course_completion_icon_and_approval($status, $row) {
+        global $CFG;
+        // needed for approval constants
+        require_once($CFG->dirroot . '/local/plan/lib.php');
+
+        $approved = isset($row->approved) ? $row->approved : null;
+
+        switch ($status) {
+        case null:
+            return null;
+            break;
+        case 'Not Completed':
+            $statusstring = 'inprogress';
+            break;
+        case 'Completed':
+            $statusstring = 'complete';
+            break;
+        }
+        $content = "<span class=\"coursecompletionstatus\">";
+        $content .= "<span class=\"completion-$statusstring\" title=\"$status\"></span></span>";
+
+        // highlight if the item has not yet been approved
+        if($approved == DP_APPROVAL_UNAPPROVED ||
+            $approved == DP_APPROVAL_REQUESTED ||
+            $approved == DP_APPROVAL_REQUEST_REMOVAL) {
+            $content .= $this->rb_display_plan_item_status($approved);
+        }
         return $content;
     }
 

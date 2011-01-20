@@ -258,6 +258,19 @@ class rb_source_dp_competency extends rb_base_source {
 
         $columnoptions[] = new rb_column_option(
                 'competency',
+                'proficiencyandapproval',
+                get_string('competencyproficiencyandapproval', 'rb_source_dp_competency'),
+                'scale_value.name',
+                array(
+                    'joins' => 'scale_value',
+                    'displayfunc' => 'proficiency_and_approval',
+                    'defaultheading' => get_string('competencyproficiency', 'rb_source_dp_competency'),
+                    'extrafields' => array('approved' => 'base.approved')
+                )
+        );
+
+        $columnoptions[] = new rb_column_option(
+                'competency',
                 'linkedcourses',
                 get_string('courses', 'rb_source_dp_competency'),
                 'linkedcourses.count',
@@ -343,6 +356,23 @@ class rb_source_dp_competency extends rb_base_source {
         return $paramoptions;
     }
 
+    function rb_display_proficiency_and_approval($status, $row) {
+        global $CFG;
+        // needed for approval constants
+        require_once($CFG->dirroot . '/local/plan/lib.php');
+
+        $approved = isset($row->approved) ? $row->approved : null;
+
+        $content = $status;
+
+        // highlight if the item has not yet been approved
+        if($approved == DP_APPROVAL_UNAPPROVED ||
+            $approved == DP_APPROVAL_REQUESTED ||
+            $approved == DP_APPROVAL_REQUEST_REMOVAL) {
+            $content .= $this->rb_display_plan_item_status($approved);
+        }
+        return $content;
+    }
 }
 
 ?>

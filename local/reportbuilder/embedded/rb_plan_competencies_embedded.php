@@ -42,8 +42,8 @@ class rb_plan_competencies_embedded extends rb_base_embedded {
             ),
             array(
                 'type' => 'competency',
-                'value' => 'proficiency',
-                'heading' => 'Proficiency'
+                'value' => 'proficiencyandapproval',
+                'heading' => 'Status'
             ),
         );
 

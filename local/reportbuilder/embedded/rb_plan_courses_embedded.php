@@ -37,7 +37,7 @@ class rb_plan_courses_embedded extends rb_base_embedded {
             ),
             array(
                 'type' => 'course_completion',
-                'value' => 'status',
+                'value' => 'statusandapproval',
                 'heading' => 'Progress',
             ),
         );
