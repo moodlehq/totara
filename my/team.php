@@ -5,6 +5,11 @@ require_once($CFG->dirroot.'/local/dashboard/lib.php');
 
 require_login();
 
+// Check the use has staff
+if (!totara_get_staff()) {
+    print_error('nostaffassigned', 'local');
+}
+
 $dashaction = optional_param('dashaction', null, PARAM_ALPHANUM);
 $dletid = optional_param('dlet', 0, PARAM_INT);
 $col = optional_param('col', 1, PARAM_INT);
