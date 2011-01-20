@@ -259,6 +259,19 @@ class rb_source_dp_objective extends rb_base_source {
                 )
         );
 
+        $columnoptions[] = new rb_column_option(
+                'objective',
+                'proficiencyandapproval',
+                get_string('objproficiencyandapproval', 'rb_source_dp_objective'),
+                'objective_scale_value.name',
+                array(
+                    'joins' => 'objective_scale_value',
+                    'displayfunc' => 'proficiency_and_approval',
+                    'defaultheading' => get_string('objproficiency', 'rb_source_dp_objective'),
+                    'extrafields' => array('approved' => 'base.approved')
+                )
+        );
+
         $this->add_user_fields_to_columns($columnoptions);
 
         return $columnoptions;
@@ -364,6 +377,22 @@ class rb_source_dp_objective extends rb_base_source {
         return "<a href=\"{$CFG->wwwroot}/local/plan/components/objective/view.php?id={$row->plan_id}&amp;itemid={$row->objective_id}\">$objective</a>";
     }
 
+    function rb_display_proficiency_and_approval($status, $row) {
+        global $CFG;
+        // needed for approval constants
+        require_once($CFG->dirroot . '/local/plan/lib.php');
+
+        $approved = isset($row->approved) ? $row->approved : null;
+
+        $content = $status;
+
+        // highlight if the item has not yet been approved
+        if($approved == DP_APPROVAL_UNAPPROVED ||
+            $approved == DP_APPROVAL_REQUESTED) {
+            $content .= '<br />' . $this->rb_display_plan_item_status($approved);
+        }
+        return $content;
+    }
 }
 
 ?>

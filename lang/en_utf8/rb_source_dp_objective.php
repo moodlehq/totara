@@ -17,6 +17,7 @@ $string['objduedate'] = 'Objective due date';
 $string['objpriority'] = 'Objective priority';
 $string['objstatus'] = 'Objective status';
 $string['objproficiency'] = 'Objective proficiency';
+$string['objproficiencyandapproval'] = 'Objective proficiency (and approval status)';
 $string['coursetypeicon'] = 'Type';
 // filters
 $string['objfullname'] = 'Objective full name';

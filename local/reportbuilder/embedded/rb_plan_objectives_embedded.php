@@ -47,8 +47,8 @@ class rb_plan_objectives_embedded extends rb_base_embedded {
             ),
             array(
                 'type' => 'objective',
-                'value' => 'proficiency',
-                'heading' => 'Proficiency'
+                'value' => 'proficiencyandapproval',
+                'heading' => 'Status'
             ),
         );
 
