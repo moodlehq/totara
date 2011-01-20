@@ -83,7 +83,6 @@ class dp_course_component extends dp_base_component {
             }
             $where .= " AND a.approved IN ({$approved})";
         }
-
         // Generate order by clause
         if ($orderby) {
             $orderby = "ORDER BY $orderby";
@@ -93,7 +92,7 @@ class dp_course_component extends dp_base_component {
             "
             SELECT
                 a.*,
-                c.fullname,
+                c.fullname as name,
                 c.icon
             FROM
                 {$CFG->prefix}dp_plan_course_assign a
@@ -355,10 +354,10 @@ class dp_course_component extends dp_base_component {
         return '<img class="course_icon" src="' .
             $CFG->wwwroot . '/local/icon.php?icon=' . $item->icon .
             '&amp;id=' . $item->courseid .
-            '&amp;size=small&amp;type=course" alt="' . $item->fullname.
+            '&amp;size=small&amp;type=course" alt="' . $item->name.
             '"><a' . $class .' href="' . $CFG->wwwroot .
             '/local/plan/components/' . $this->component.'/view.php?id=' .
-            $this->plan->id . '&amp;itemid=' . $item->id . '">' . $item->fullname .
+            $this->plan->id . '&amp;itemid=' . $item->id . '">' . $item->name .
             '</a>'. $launch;
     }
 
