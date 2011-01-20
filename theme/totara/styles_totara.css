@@ -104,6 +104,17 @@ div.block_admin_tree div.admintree .depth2 {
     text-align: left;
 }
 
+/* Remove borders */
+.mform fieldset {
+    border:0 none;
+}
+.mform fieldset legend {
+    font-size: 1.3em;
+}
+#course-view .section td {
+    border:0 none !important;
+}
+
 /**
  * Layout Styles
  **/
@@ -1062,8 +1073,7 @@ ul.tabrow1 li a:visited {
   padding: 5px 4px 0 4px;
 }
 .sideblock div.header {
-  border:1px solid #d2d2d2;
-  border-bottom:none;
+  border:0 none;
   padding-bottom: 3px;
   background: #009697;
 }
@@ -1089,7 +1099,7 @@ ul.tabrow1 li a:visited {
   padding: 7px 7px 7px 7px;
   margin:0;
   border:none;
-  background:#fff url('images/sb_bg_ftr.gif') no-repeat bottom left;
+  background:#fff;
 }
 .sideblock .content td a {
   font-family: 'Trebuchet ms', verdana, helvetica, sans-serif;
@@ -2085,14 +2095,13 @@ table.centerblock th.status, table.centerblock td.status {
 }
 
 #site-index #middle-column div.mycourses div.header {
-  border:1px solid #d2d2d2;
+  border:0 none;
   border-bottom:none;
   background: #a2b001;
 }
 
 #site-index #middle-column div.mycourses .content {
   padding: 0 1px;
-  background: transparent url('images/course_bg_ftr.gif') no-repeat bottom left;
 }
 #site-index #middle-column div.mycourses .content th {
   padding:6px 7px;
