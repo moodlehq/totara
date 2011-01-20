@@ -1161,7 +1161,7 @@ abstract class dp_base_component {
 
         $userfrom_link = $CFG->wwwroot.'/user/view.php?id='.$USER->id;
         $fromname = fullname($USER);
-        return "<a href=\"{$userfrom_link}\" title=\"$fromname\">$fromname</a> ";
+        return "<a href=\"{$userfrom_link}\" title=\"$fromname\">$fromname</a>";
     }
 
 }
