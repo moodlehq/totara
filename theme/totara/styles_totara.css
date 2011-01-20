@@ -104,15 +104,22 @@ div.block_admin_tree div.admintree .depth2 {
     text-align: left;
 }
 
-/* Remove borders */
+/**
+ * Remove borders
+ **/
 .mform fieldset {
     border:0 none;
 }
 .mform fieldset legend {
     font-size: 1.3em;
 }
+/* Center parts of courses */
 #course-view .section td {
     border:0 none !important;
+}
+/* From forum posts */
+.forumheaderlist, .forumpost {
+    border:0 none;
 }
 
 /**
