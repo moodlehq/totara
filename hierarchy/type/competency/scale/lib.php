@@ -149,6 +149,7 @@ function competency_scale_display_table($scales, $editingon=0) {
 
     echo '<div class="buttons">';
     print_single_button("$CFG->wwwroot/hierarchy/type/competency/scale/edit.php", array('type'=>'competency'), get_string('scalescustomcreate'));
+    helpbutton('competencyscalesgeneral', get_string('competencyscales', 'competency'));
     echo '</div>';
 }
 

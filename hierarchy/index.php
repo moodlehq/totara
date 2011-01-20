@@ -513,6 +513,7 @@
     echo '<div class="buttons">';
     if ($can_add_item) {
         $hierarchy->display_add_item_button($spage);
+        print helpbutton('manage'.$type.'general', get_string($type, $type));
     }
     echo '</div>';
 
