@@ -92,7 +92,8 @@ class dp_course_component extends dp_base_component {
             "
             SELECT
                 a.*,
-                c.fullname as name,
+                c.fullname,
+                c.fullname AS name,
                 c.icon
             FROM
                 {$CFG->prefix}dp_plan_course_assign a

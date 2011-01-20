@@ -94,6 +94,7 @@ class dp_competency_component extends dp_base_component {
             SELECT
                 a.*,
                 c.fullname,
+                c.fullname AS name,
                 CASE WHEN linkedcourses.count IS NULL
                     THEN 0 ELSE linkedcourses.count
                 END AS linkedcourses,

@@ -77,6 +77,7 @@ class dp_objective_component extends dp_base_component {
             "
             SELECT
                 a.*,
+                a.fullname AS name,
                 CASE WHEN linkedcourses.count IS NULL
                     THEN 0 ELSE linkedcourses.count
                 END AS linkedcourses,
