@@ -43,7 +43,6 @@ array('id' => '45','name' => 'guides','version' => '2010073000','cron' => '0','l
 array('id' => '46','name' => 'totara_my_learning_nav','version' => '2009120100','cron' => '0','lastcron' => '0','visible' => '1','multiple' => '1',),
 array('id' => '47','name' => 'totara_my_team_nav','version' => '2009120100','cron' => '0','lastcron' => '0','visible' => '1','multiple' => '1',),
 array('id' => '48','name' => 'totara_report_manager','version' => '2010012800','cron' => '0','lastcron' => '0','visible' => '1','multiple' => '0',),
-array('id' => '49','name' => 'flash_video','version' => '2009120500','cron' => '0','lastcron' => '0','visible' => '1','multiple' => '0',),
 array('id' => '50','name' => 'quicklinks','version' => '2010111000','cron' => '0','lastcron' => '0','visible' => '1','multiple' => '1',),
 array('id' => '51','name' => 'totara_notify','version' => '2010110101','cron' => '0','lastcron' => '0','visible' => '1','multiple' => '0',),
 array('id' => '52','name' => 'totara_recent_learning','version' => '2010112300','cron' => '0','lastcron' => '0','visible' => '1','multiple' => '0',),
