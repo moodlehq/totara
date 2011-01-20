@@ -126,4 +126,5 @@ $string['completionicons']='progress tick boxes';
 $string['xdays']='$a days';
 $string['viarpl']='via RPL';
 $string['yourprogress']='Your progress';
+$string['deletedcourse']='Deleted Course';
 ?>
