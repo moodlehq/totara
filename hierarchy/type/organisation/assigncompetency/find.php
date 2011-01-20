@@ -69,6 +69,8 @@ if (!$nojs) {
     // Set title
     $dialog->selected_title = 'selectedcompetencies';
 
+    $dialog->selected_items = $currentlyassigned;
+
     // Disable framework picker
     $dialog->disable_picker = true;
 
