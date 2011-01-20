@@ -172,3 +172,6 @@ $string['unknownbuttonclicked'] = 'Unknown button clicked';
 $string['weight'] = 'Weight';
 $string['currentlyselected'] = 'Currently selected';
 $string['error:dialognotreeitems'] = 'No competencies in this framework';
+$string['globalsettings'] = 'Global settings';
+$string['useresourcelevelevidence'] = 'Use resource-level evidence';
+$string['linkcourses'] = 'Link courses';

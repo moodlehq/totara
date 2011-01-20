@@ -27,6 +27,9 @@
     $ADMIN->add('competencies', new admin_externalpage('competencymanage', get_string('competencymanage', 'competency'), "$CFG->wwwroot/hierarchy/index.php?type=competency",
             array('moodle/local:updatecompetency')));
 
+    $ADMIN->add('competencies', new admin_externalpage('competencyglobalsettings', get_string('globalsettings', 'competency'), "$CFG->wwwroot/hierarchy/type/competency/adminsettings.php",
+            array('moodle/local:updatecompetency')));
+
     // Re-enable once backup/restore is fixed
     // Backup
     //$ADMIN->add('hierarchies', new admin_externalpage('hierarchybackup', get_string('backup'), $CFG->wwwroot . '/hierarchy/hierarchybackup.php'));

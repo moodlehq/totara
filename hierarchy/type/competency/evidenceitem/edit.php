@@ -17,6 +17,7 @@ $id = required_param('id', PARAM_INT);
 $type = optional_param('type', -1, PARAM_INT);
 $category = optional_param('category', 0, PARAM_INT);
 
+
 // No javascript parameters
 $nojs = optional_param('nojs', false, PARAM_BOOL);
 $returnurl = optional_param('returnurl', '', PARAM_TEXT);
@@ -30,6 +31,23 @@ require_capability('moodle/local:updatecompetency', $sitecontext);
 
 if (!$competency = get_record('comp', 'id', $id)) {
     error('Competency ID was incorrect');
+}
+
+if (empty($CFG->competencyuseresourcelevelevidence)) {
+    ///
+    /// Load data
+    ///
+    $selected = array();
+    $sql = "SELECT c.* FROM
+        {$CFG->prefix}comp_evidence_items ei
+        INNER JOIN {$CFG->prefix}course c ON ei.iteminstance = c.id
+        WHERE ei.competencyid = {$id}";
+    $assigned = get_records_sql($sql);
+    $assigned = !empty($assigned) ? $assigned : array();
+    foreach ($assigned as $item) {
+        $item->id = $item->id;
+        $selected[$item->id] = $item;
+    }
 }
 
 
@@ -90,6 +108,11 @@ if($nojs) {
 
     // Set selected pane's id
     $dialog->selected_id = 'available-evidence';
+
+    if (empty($CFG->competencyuseresourcelevelevidence)) {
+        // Set selected items
+        $dialog->selected_items = $selected;
+    }
 
     // Display page
     echo $dialog->generate_markup();
