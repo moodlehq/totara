@@ -22,7 +22,7 @@ $toprow[] = new tabobject('competencies', $CFG->wwwroot.'/hierarchy/item/view.ph
 $assignedcounts = get_records_sql_menu("SELECT comp.frameworkid, COUNT(*) from {$CFG->prefix}pos_competencies poscomp JOIN {$CFG->prefix}comp comp ON poscomp.competencyid=comp.id where poscomp.positionid={$id} GROUP BY comp.frameworkid");
 
 if(substr($currenttab, 0, 12) == 'competencies'){
-    if($frameworks){
+/*    if($frameworks){
         foreach($frameworks as $framework){
             $count = isset($assignedcounts[$framework->id]) ? $assignedcounts[$framework->id] : 0;
             $secondrow[] = new tabobject('competencies'.$framework->id, $CFG->wwwroot.'/hierarchy/item/view.php?id='.$id.'&edit='.$edit.'&type='.$type.'&framework='.$framework->id.'&comptype='.$comptype, $framework->fullname.'('.$count.')');
@@ -32,7 +32,7 @@ if(substr($currenttab, 0, 12) == 'competencies'){
             $comptab = substr($currenttab, 12);
             $activated[] = 'competencies'.$comptab;
         }
-    }
+} */
     $currenttab = 'competencies';
 }
 
@@ -56,5 +56,15 @@ $tabs = array($toprow, $secondrow);
 print_heading(get_string('assignedcompetencies', 'competency'));
 // print out tabs
 print_tabs($tabs, $currenttab, $inactive, $activated);
+
+// print out the competency framework selector
+$fwoptions = array();
+echo '<div class="frameworkpicker">';
+foreach ($frameworks as $fw) {
+    $count = isset($assignedcounts[$fw->id]) ? $assignedcounts[$fw->id] : 0;
+    $fwoptions[$fw->id] = $fw->fullname . " ({$count})";
+}
+popup_form($CFG->wwwroot.'/hierarchy/item/view.php?id='.$id.'&amp;edit='.$edit.'&amp;type='.$type.'&amp;framework=', $fwoptions, 'switchframework', $fid, '', '', '', false, 'self', get_string('switchframework', 'hierarchy'));
+echo '</div>';
 
 ?>
