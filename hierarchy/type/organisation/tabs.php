@@ -63,7 +63,8 @@ print_tabs($tabs, $currenttab, $inactive, $activated);
 $fwoptions = array();
 echo '<div class="frameworkpicker">';
 foreach ($frameworks as $fw) {
-    $fwoptions[$fw->id] = $fw->fullname;
+    $count = isset($assignedcounts[$fw->id]) ? $assignedcounts[$fw->id] : 0;
+    $fwoptions[$fw->id] = $fw->fullname . " ({$count})";
 }
 popup_form($CFG->wwwroot.'/hierarchy/item/view.php?id='.$id.'&amp;edit='.$edit.'&amp;type='.$type.'&amp;framework=', $fwoptions, 'switchframework', $fid, '', '', '', false, 'self', get_string('switchframework', 'hierarchy'));
 echo '</div>';
