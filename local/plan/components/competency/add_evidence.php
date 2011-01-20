@@ -22,7 +22,13 @@ $nojs = optional_param('nojs', 0, PARAM_INT);
 
 $plan = new development_plan($id);
 
-$evidence_record = get_record('comp_evidence', 'userid', $userid, 'competencyid', $competencyid);
+if($evidence_record = get_record('comp_evidence', 'userid', $userid, 'competencyid', $competencyid)) {
+    $evidenceid = $evidence_record->id;
+    $evidence_record->evidenceid = $evidence_record->id;
+    $evidence_record->id = null;
+} else {
+    $evidenceid = null;
+}
 
 $fullname = $plan->name;
 
@@ -42,9 +48,8 @@ if($component->get_setting('setpriority') != DP_PERMISSION_ALLOW) {
 
 $returnurl = $component->get_url();
 
-$mform = new totara_competency_evidence_form(null, compact('id','planid','competencyid','positionid',
+$mform = new totara_competency_evidence_form(null, compact('id','evidenceid','competencyid','positionid',
     'organisationid','userid','user','s','nojs'));
-
 $mform->set_data($evidence_record);
 
 if ($mform->is_cancelled()) {
@@ -59,7 +64,7 @@ if($fromform = $mform->get_data()) { // Form submitted
         array(
             'competencyid'  => $fromform->competencyid,
             'userid'        => $fromform->userid,
-            'id'            => $fromform->id
+            'id'            => isset($fromform->evidenceid) ? $fromform->evidenceid : null
         )
     );
 

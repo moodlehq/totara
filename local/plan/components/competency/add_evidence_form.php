@@ -16,6 +16,8 @@ class totara_competency_evidence_form extends moodleform {
         $positionid = isset($this->_customdata['positionid']) ? $this->_customdata['positionid'] : 0;
         $organisationid = isset($this->_customdata['organisationid']) ? $this->_customdata['organisationid'] : 0;
         $nojs = $this->_customdata['nojs'];
+        $id = $this->_customdata['id'];
+        $evidenceid = $this->_customdata['evidenceid'];
 
         if($editing) {
             // get id and userid from competency evidence object
@@ -69,6 +71,7 @@ class totara_competency_evidence_form extends moodleform {
         $mform->addRule('userid', null, 'required');
         $mform->addRule('userid', null, 'numeric');
         $mform->addElement('hidden', 'id', $id);
+        $mform->addElement('hidden', 'evidenceid', $evidenceid);
         $mform->setType('userid', PARAM_INT);
 
 
