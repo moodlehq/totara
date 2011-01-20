@@ -67,7 +67,8 @@
     $fullname = fullname($user, has_capability('moodle/site:viewfullnames', $coursecontext));
 
     $navlinks = array();
-    if (has_capability('moodle/course:viewparticipants', $coursecontext) || has_capability('moodle/site:viewparticipants', $systemcontext)) {
+    if ((has_capability('moodle/course:viewparticipants', $coursecontext) || has_capability('moodle/site:viewparticipants', $systemcontext))
+            && $course->id != SITEID) {
         $navlinks[] = array('name' => $strparticipants, 'link' => "index.php?id=$course->id", 'type' => 'misc');
     }
 

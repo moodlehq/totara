@@ -68,7 +68,8 @@
 
     $strnotes = get_string('notes', 'notes');
     $nav = array();
-    if (has_capability('moodle/course:viewparticipants', $coursecontext) || has_capability('moodle/site:viewparticipants', $systemcontext)) {
+    if ((has_capability('moodle/course:viewparticipants', $coursecontext) || has_capability('moodle/site:viewparticipants', $systemcontext))
+        && $course->id != SITEID) {
         $nav[] = array('name' => get_string('participants'), 'link' => $CFG->wwwroot . '/user/index.php?id=' . $course->id, 'type' => 'misc');
     }
     if ($userid) {
