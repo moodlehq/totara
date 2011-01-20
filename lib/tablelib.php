@@ -873,7 +873,6 @@ class flexible_table {
         //$this->setup = 0;
         $this->define_headers($newheaders);
         $this->define_columns($newcolumns);
-        $this->setup();
 
         return true;
     }
