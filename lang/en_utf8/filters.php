@@ -45,3 +45,4 @@ $string['selectlabel'] = '$a->label $a->operator $a->value';
 $string['startswith'] = 'starts with';
 $string['textlabel'] = '$a->label $a->operator $a->value';
 $string['textlabelnovalue'] = '$a->label $a->operator';
+$string['includesubcategories'] = 'Include sub-categories?';

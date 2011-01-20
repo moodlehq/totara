@@ -65,7 +65,7 @@ class filter_hierarchy extends filter_type {
             '<input type="button" value="' .
             get_string('choose'.$this->_type, 'local_reportbuilder') .
             '" id="show-' . $this->_name . '-dialog" />');
-        $objs[] =& $mform->createElement('checkbox', $this->_name . '_rec', '', 'Include children?');
+        $objs[] =& $mform->createElement('checkbox', $this->_name . '_rec', '', get_string('includesubcategories', 'filters'));
 
         $grp =& $mform->addElement('group', $this->_name.'_grp', $label, $objs, '', false);
         $grp->setHelpButton(array('reportbuilderdialogfilter', $label, 'local_reportbuilder'));
