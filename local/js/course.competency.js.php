@@ -6,6 +6,7 @@
 
 ?>
 
+<?php if (!empty($CFG->competencyuseresourcelevelevidence)) { ?>
 // Bind functionality to page on load
 $(function() {
 
@@ -75,3 +76,72 @@ totaraDialog_handler_assignCourseEvidence.prototype.display_evidence = function(
 
     return false;
 }
+<?php } else {  // non resource-level dialog ?>
+    // Bind functionality to page on load
+    $(function() {
+
+        (function() {
+            var url = '<?php echo $CFG->wwwroot ?>/hierarchy/type/competency/course/';
+            var saveurl = url + 'save.php?course=<?php echo $courseid; ?>&type=coursecompletion&instance=<?php echo $courseid?>&deleteexisting=1&update=';
+
+            var handler = new totaraDialog_handler_courseEvidence();
+            handler.baseurl = url;
+
+            totaraDialogs['evidence'] = new totaraDialog(
+                'coursecompetency',
+                'show-coursecompetency-dialog',
+                {
+                     buttons: {
+                        'Cancel': function() { handler._cancel() },
+                        'Ok': function() { handler._save(saveurl) }
+                     },
+                    title: '<?php echo '<h2>' .
+                        get_string('assigncoursecompletiontocompetency', 'competency') . '</h2>' ?>'
+                },
+                url+'add.php?id='+<?php echo $courseid; ?>,
+                handler
+            );
+        })();
+
+    });
+
+    // Create handler for the dialog
+    totaraDialog_handler_courseEvidence = function() {
+        // Base url
+        var baseurl = '';
+    }
+
+    totaraDialog_handler_courseEvidence.prototype = new totaraDialog_handler_treeview_multiselect();
+
+    /**
+     * Add a row to a table on the calling page
+     * Also hides the dialog and any no item notice
+     *
+     * @param string    HTML response
+     * @return void
+     */
+    totaraDialog_handler_courseEvidence.prototype._update = function(response) {
+
+        // Hide dialog
+        this._dialog.hide();
+
+        // Remove no item warning (if exists)
+        $('.noitems-'+this._title).remove();
+
+        //Split response into table and div
+        var new_table = $(response).filter('table');
+
+        // Grab table
+        var table = $('div#content table#list-coursecompetency');
+
+        // If table found
+        if (table.size()) {
+            table.replaceWith(new_table);
+        }
+        else {
+            // Add new table
+            $('div#content div#coursecompetency-table-container').append(new_table);
+        }
+    }
+
+<?php } ?>

@@ -12,7 +12,21 @@ require_once('HTML/AJAX/JSON.php');
 ///
 
 // Competency id
-$id = required_param('competency', PARAM_INT);
+if (!empty($CFG->competencyuseresourcelevelevidence)) {
+    // Only assigning one competency
+    $idlist = required_param('competency', PARAM_INT);
+    $idlist = array($idlist);
+} else {
+    // Competencies list
+    $idlist = optional_param('update', null, PARAM_SEQUENCE);
+    if ($idlist == null) {
+        $idlist = array();
+    }
+    else {
+        $idlist = explode(',', $idlist);
+    }
+}
+
 // Evidence type
 $type = required_param('type', PARAM_TEXT);
 // Evidence instance id
@@ -25,43 +39,71 @@ $nojs = optional_param('nojs', false, PARAM_BOOL);
 $returnurl = optional_param('returnurl', '', PARAM_TEXT);
 $s = optional_param('s', '', PARAM_TEXT);
 
+// Indicates whether current related items, not in $relidlist, should be deleted
+$deleteexisting = optional_param('deleteexisting', 0, PARAM_BOOL);
+
 // Check perms
 admin_externalpage_setup('competencymanage', '', array(), '', $CFG->wwwroot.'/competency/edit.php');
 
 $sitecontext = get_context_instance(CONTEXT_SYSTEM);
 require_capability('moodle/local:updatecompetency', $sitecontext);
 
-// Setup hierarchy object
+
 $hierarchy = new competency();
 
-// Load competency
-if (!$competency = $hierarchy->get_item($id)) {
-    error('Competency ID was incorrect');
+
+///
+/// Save the latest list
+///
+$rowclass = 'r1';
+foreach ($idlist as $id) {
+    // Load competency
+    if (!$competency = $hierarchy->get_item($id)) {
+        print_error('Competency ID was incorrect');
+    }
+
+    // Check type is available
+    $avail_types = array('coursecompletion', 'coursegrade', 'activitycompletion');
+
+    if (!in_array($type, $avail_types)) {
+        die('type unavailable');
+    }
+
+    $data = new object();
+    $data->itemtype = $type;
+    $evidence = competency_evidence_type::factory($data);
+    $evidence->iteminstance = $instance;
+
+    $newevidenceid = $evidence->add($competency);
 }
 
-// Load framework
-if (!$framework = $hierarchy->get_framework($competency->frameworkid)) {
-    error('Competency framework could not be found');
+///
+/// Delete removed items (if specified)
+///
+if ($deleteexisting) {
+
+    $oldassigned = $hierarchy->get_course_evidence($courseid);
+    $oldassigned = !empty($oldassigned) ? $oldassigned : array();
+
+    $assignedcomps = array();
+    foreach ($oldassigned as $i => $o) {
+        // competencyid => evidenceitemid
+        $assignedcomps[$o->id] = $i;
+    }
+
+    $removeditems = array_diff(array_keys($assignedcomps), $idlist);
+
+    foreach ($removeditems as $ritem) {
+        // Load competency
+        if (!$competency = get_record('comp', 'id', $oldassigned[$assignedcomps[$ritem]]->id)) {
+            print_rerror('Could not update items - competency ID was incorrect');
+        }
+
+        $item = competency_evidence_type::factory($assignedcomps[$ritem]);
+
+        $item->delete($competency);
+    }
 }
-
-// Load depth
-if (!$depth = $hierarchy->get_depth_by_id($competency->depthid)) {
-    error('Competency framework depth could not be found');
-}
-
-// Check type is available
-$avail_types = array('coursecompletion', 'coursegrade', 'activitycompletion');
-
-if (!in_array($type, $avail_types)) {
-    die('type unavailable');
-}
-
-$data = new object();
-$data->itemtype = $type;
-$evidence = competency_evidence_type::factory($data);
-$evidence->iteminstance = $instance;
-
-$newevidenceid = $evidence->add($competency);
 
 if($nojs) {
     // redirect back to original page for none JS version
@@ -73,29 +115,5 @@ if($nojs) {
     }
     redirect($returnurl);
 } else {
-    if ( $newevidenceid !== false ){
-        // return code to be included in page for JS version
-        echo '<tr>';
-        echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/index.php?type=competency&frameworkid={$framework->id}\">{$framework->fullname}</a></td>";
-        echo '<td>'.$depth->fullname.'</td>';
-        echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/item/view.php?type=competency&id={$competency->id}\">{$competency->fullname}</a></td>";
-
-        echo '<td>'.$evidence->get_type();
-
-        if ($evidence->itemtype == 'activitycompletion') {
-            echo ' - '.$evidence->get_name();
-        }
-
-        echo '</td>';
-        echo '<td align="center">';
-        $str_remove = get_string('remove');
-        echo "<a href=\"{$CFG->wwwroot}/hierarchy/type/competency/evidenceitem/remove.php?id={$newevidenceid}";
-        if ( $courseid ){
-            echo "&course={$courseid}";
-        }
-        echo "\" title=\"$str_remove\">".
-             "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"{$str_remove}\" /></a>";
-        echo '</td>';
-        echo '</tr>';
-    }
+    echo $hierarchy->print_linked_evidence_list($courseid);
 }

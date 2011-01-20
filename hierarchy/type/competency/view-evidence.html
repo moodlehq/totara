@@ -4,7 +4,7 @@
 print_heading(get_string('evidenceitems', 'competency'));
 
 ?>
-<div id="evidence-table-container">
+<div id="evidence-list-container">
 <table width="95%" cellpadding="5" cellspacing="1" class="generalbox boxaligncenter list-evidence">
 <tr>
     <th style="vertical-align:top; text-align: left; white-space:nowrap;" class="header c0" scope="col">
@@ -87,7 +87,7 @@ if ($can_edit && $editingon) {
 <?php if (!empty($CFG->competencyuseresourcelevelevidence)) {
     $btnstr = get_string('assignnewevidenceitem', 'competency');
 } else {
-   $btnstr = get_string('linkcourses', 'competency');
+   $btnstr = get_string('assigncoursecompletion', 'competency');
 }
 ?>
     <input type="submit" id="show-evidence-dialog" value="<?php echo $btnstr; ?>" />

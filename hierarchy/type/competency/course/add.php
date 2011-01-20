@@ -11,6 +11,7 @@ require_once($CFG->dirroot.'/local/js/lib/setup.php');
 /// Setup / loading data
 ///
 
+// Course id
 $id = required_param('id', PARAM_INT);
 
 // Parent id
@@ -30,7 +31,10 @@ $s = optional_param('s', '', PARAM_TEXT);
 // string of params needed in non-js url strings
 $urlparams = 'id='.$id.'&amp;frameworkid='.$frameworkid.'&amp;nojs='.$nojs.'&amp;returnurl='.urlencode($returnurl).'&amp;s='.$s;
 
-
+if (empty($CFG->competencyuseresourcelevelevidence)) {
+    $hierarchy = new competency();
+    $selected = $hierarchy->get_course_evidence($id);
+}
 
 // Setup page
 admin_externalpage_setup('competencymanage', '', array(), '', $CFG->wwwroot.'/competency/course/add.php');
@@ -76,6 +80,11 @@ if(!$nojs) {
 
     // Set selected id
     $dialog->selected_id = 'available-evidence';
+
+    if (empty($CFG->competencyuseresourcelevelevidence)) {
+        // Set disabled/selected items
+        $dialog->selected_items = $selected;
+    }
 
     // Display
     echo $dialog->generate_markup();

@@ -81,92 +81,10 @@ $navigation = build_navigation($navlinks);
 print_header($title, $fullname, $navigation);
 print_heading($strcompetenciesusedincourse);
 
-?>
 
-<table width="95%" cellpadding="5" cellspacing="1" id="list-coursecompetency" class="generalbox editcompetency boxaligncenter">
-<tr>
-    <th style="vertical-align:top; text-align: left; white-space:nowrap;" class="header c0" scope="col">
-        <?php echo get_string('framework', 'competency'); ?>
-    </th>
-
-    <th style="vertical-align:top; text-align: left; white-space:nowrap;" class="header c1" scope="col">
-        <?php echo get_string('depthlevel', 'competency'); ?>
-    </th>
-
-    <th style="vertical-align:top; text-align:left; white-space:nowrap;" class="header c2" scope="col">
-        <?php echo get_string('name'); ?>
-    </th>
-
-    <th style="vertical-align:top; text-align:left; white-space:nowrap;" class="header c3" scope="col">
-        <?php echo get_string('evidence', 'competency'); ?>
-    </th>
-
-<?php
-    if ($can_edit) {
-?>
-    <th style="vertical-align:top; text-align:left; white-space:nowrap;" class="header c4" scope="col">
-        <?php echo get_string('options', 'competency'); ?>
-    </th>
-<?php
-    } // if ($can_edit)
-?>
-</tr>
-<?php
-
-// Get any competencies used in this course
-$competencies = $hierarchy->get_course_evidence($course->id);
-$oddeven = 0;
-if ($competencies) {
-
-    $str_remove = get_string('remove');
-
-    $activities = array();
-
-    foreach ($competencies as $competency) {
-
-        echo '<tr class="r' . $oddeven . '">';
-        echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/index.php?type=competency&frameworkid={$competency->fid}\">{$competency->framework}</a></td>";
-        echo '<td>'.$competency->depth.'</td>';
-        echo "<td><a href=\"{$CFG->wwwroot}/hierarchy/item/view.php?type=competency&id={$competency->id}\">{$competency->fullname}</a></td>";
-        echo '<td>';
-
-        // Create evidence object
-        $evidence = new object();
-        $evidence->id = $competency->evidenceid;
-        $evidence->itemtype = $competency->evidencetype;
-        $evidence->iteminstance = $competency->evidenceinstance;
-        $evidence->itemmodule = $competency->evidencemodule;
-
-        $evidence = competency_evidence_type::factory($evidence);
-
-        echo $evidence->get_type();
-        if ($evidence->itemtype == 'activitycompletion') {
-            echo ' - '.$evidence->get_name();
-        }
-
-        echo '</td>';
-
-        // Options column
-        if ($can_edit) {
-            echo '<td align="center">';
-            echo "<a href=\"{$CFG->wwwroot}/hierarchy/type/competency/evidenceitem/remove.php?id={$evidence->id}&course={$id}\" title=\"$str_remove\">".
-                 "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_remove\" /></a>";
-            echo '</td>';
-        }
-
-        echo '</tr>';
-
-        // for row striping
-        $oddeven = $oddeven ? 0 : 1;
-    }
-
-} else {
-
-    $cols = 5;
-    echo '<tr class="noitems-coursecompetency"><td colspan="'.$cols.'"><i>'.get_string('nocoursecompetencies', 'competency').'</i></td></tr>';
-}
-
-echo '</table>';
+echo '<div id="coursecompetency-table-container">';
+echo $hierarchy->print_linked_evidence_list($id);
+echo '</div>';
 
 if ($can_edit) {
 
@@ -184,7 +102,11 @@ if ($can_edit) {
 <div class="singlebutton centerbutton">
     <form action="<?php echo $CFG->wwwroot ?>/hierarchy/type/competency/course/add.php?id=<?php echo $id ?>" method="get">
         <div>
-            <input type="submit" id="show-coursecompetency-dialog" value="<?php echo get_string('addcourseevidencetocompetency', 'competency') ?>" />
+            <?php if (!empty($CFG->competencyuseresourcelevelevidence)) { ?>
+                <input type="submit" id="show-coursecompetency-dialog" value="<?php echo get_string('addcourseevidencetocompetency', 'competency'); ?>" />
+            <?php } else { ?>
+                <input type="submit" id="show-coursecompetency-dialog" value="<?php echo get_string('assigncoursecompletiontocompetency', 'competency'); ?>" />
+            <?php } ?>
             <input type="hidden" name="id" value="<?php echo $id ?>">
             <input type="hidden" name="nojs" value="1">
             <input type="hidden" name="returnurl" value="<?php echo qualified_me(); ?>">

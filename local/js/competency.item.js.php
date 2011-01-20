@@ -117,7 +117,7 @@ $(function() {
             var url = '<?php echo $CFG->wwwroot ?>/hierarchy/type/competency/evidenceitem/';
             var saveurl = url + 'add.php?competency=<?php echo $id; ?>&type=coursecompletion&instance=0&deleteexisting=1&update=';
 
-            var handler = new totaraDialog_handler_preRequisite();
+            var handler = new totaraDialog_handler_compEvidence();
             handler.baseurl = url;
 
             totaraDialogs['evidence'] = new totaraDialog(
@@ -130,7 +130,7 @@ $(function() {
                      },
                     title: '<?php
                         echo '<h2>';
-                        echo get_string('updatecourses', 'local_plan');
+                        echo get_string('assigncoursecompletion', 'competency');
                         echo '</h2>';
                     ?>'
                 },
@@ -142,12 +142,12 @@ $(function() {
     });
 
     // Create handler for the dialog
-    totaraDialog_handler_preRequisite = function() {
+    totaraDialog_handler_compEvidence = function() {
         // Base url
         var baseurl = '';
     }
 
-    totaraDialog_handler_preRequisite.prototype = new totaraDialog_handler_treeview_multiselect();
+    totaraDialog_handler_compEvidence.prototype = new totaraDialog_handler_treeview_multiselect();
 
     /**
      * Add a row to a table on the calling page
@@ -156,7 +156,7 @@ $(function() {
      * @param string    HTML response
      * @return void
      */
-    totaraDialog_handler_preRequisite.prototype._update = function(response) {
+    totaraDialog_handler_compEvidence.prototype._update = function(response) {
 
         // Hide dialog
         this._dialog.hide();
@@ -165,10 +165,12 @@ $(function() {
         $('.noitems-'+this._title).remove();
 
         //Split response into table and div
-        var new_table = $(response).filter('table');
+        var new_table = $(response).find('table.list-evidence');
+        console.log(new_table);
 
         // Grab table
         var table = $('div#content table.list-evidence');
+        console.log(table);
 
         // If table found
         if (table.size()) {
@@ -176,7 +178,7 @@ $(function() {
         }
         else {
             // Add new table
-            $('div#content div#evidence-table-container').append(new_table);
+            $('div#content div#evidence-list-container').append(new_table);
         }
     }
 <?php } ?>
