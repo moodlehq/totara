@@ -108,7 +108,7 @@ function show_rpl($type, $user, $rpl, $describe, $fulldescribe) {
         }
 
         // Rrpl value
-        print '<span class="rplvalue">'.htmlentities($rpl).'</span>';
+        print '<span class="rplvalue">'.stripslashes(htmlentities($rpl)).'</span>';
     }
 }
 
