@@ -356,7 +356,7 @@ function local_output_msg_icon( $iconfile ) {
     if (is_file($icondir.'/'.$iconfile.$type)){
         $icon = $icondir .'/'.$iconfile.$type;
     } else {
-        $icon = $icondir .'/default'.$extension;
+        $icon = $icondir .'/default'.$type;
     }
 
     send_file($icon, $icon);
