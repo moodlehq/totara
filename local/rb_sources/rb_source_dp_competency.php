@@ -367,8 +367,7 @@ class rb_source_dp_competency extends rb_base_source {
 
         // highlight if the item has not yet been approved
         if($approved == DP_APPROVAL_UNAPPROVED ||
-            $approved == DP_APPROVAL_REQUESTED ||
-            $approved == DP_APPROVAL_REQUEST_REMOVAL) {
+            $approved == DP_APPROVAL_REQUESTED) {
             $content .= $this->rb_display_plan_item_status($approved);
         }
         return $content;

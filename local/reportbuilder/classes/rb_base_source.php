@@ -465,8 +465,6 @@ abstract class rb_base_source {
             return get_string('pendingapproval', 'local_plan');
         case DP_APPROVAL_APPROVED:
             return get_string('approved', 'local_plan');
-        case DP_APPROVAL_REQUEST_REMOVAL:
-            return get_string('pendingremoval', 'local_plan');
         default:
             return '';
         }
