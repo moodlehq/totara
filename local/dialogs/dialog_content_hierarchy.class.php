@@ -106,7 +106,7 @@ class totara_dialog_content_hierarchy extends totara_dialog_content {
     public function set_framework($frameworkid) {
 
         if (!$framework = $this->hierarchy->get_framework($frameworkid, true)) {
-            error('frameworkdoesntexist', 'hierarchy', $frameworkid);
+            print_error('frameworkdoesntexist', 'hierarchy', $frameworkid);
         }
 
         $this->framework = $framework;
