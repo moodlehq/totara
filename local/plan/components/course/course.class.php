@@ -721,7 +721,6 @@ class dp_course_component extends dp_base_component {
             $currenturl = $this->get_url();
             $strdelete = get_string('delete', 'local_plan');
             $delete = '<a href="'.$currenturl.'&amp;d='.$item->id.'" title="'.$strdelete.'"><img src="'.$CFG->pixpath.'/t/delete.gif" class="iconsmall" alt="'.$strdelete.'" /></a>';
-
             $markup .= $delete;
         }
 

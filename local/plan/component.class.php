@@ -728,13 +728,8 @@ abstract class dp_base_component {
                 'planid', $this->plan->id
             );
         }
-        // Otherwise request removal
-        else {
-            $update = new object();
-            $update->id = $item->id;
-            $update->approved = DP_APPROVAL_REQUEST_REMOVAL;
-            return update_record('dp_plan_'.$this->component.'_assign', $update);
-        }
+
+        return false;
     }
 
 
@@ -892,13 +887,13 @@ abstract class dp_base_component {
 
     protected function display_list_item_status($item) {
         // If item already approved but not completed
-        $item_approved = $this->is_item_approved($item->approved);
+        $approved = $this->is_item_approved($item->approved);
         $completed = $this->is_item_complete($item);
         $canapproveitems = $this->can_update_items() == DP_PERMISSION_APPROVE;
 
-        if ($item_approved && !$completed) {
+        if ($approved && !$completed) {
             return $this->display_duedate_highlight_info($item->duedate);
-        } elseif (!$item_approved) {
+        } elseif (!$approved) {
             return $this->display_approval($item, $canapproveitems);
         }
 
@@ -1130,19 +1125,9 @@ abstract class dp_base_component {
             }
             break;
         case DP_APPROVAL_REQUESTED:
-            // @todo create new icon instead of reusing XSS one
-            $out .= '<img src="'.$CFG->pixpath.'/i/risk_xss.gif" /> ';
             $out .= '<span class="plan_highlight">' . get_string('pendingapproval', 'local_plan') . '</span><br />';
             if ($canapprove) {
                 $out .= ' '.$this->display_approval_options($obj, $approvalstatus);
-            }
-            break;
-        case DP_APPROVAL_REQUEST_REMOVAL:
-            // @todo create new icon instead of reusing XSS one
-            $out .= '<img src="'.$CFG->pixpath.'/i/risk_xss.gif" /> ';
-            $out .= '<span class="plan_highlight">' . get_string('pendingremoval', 'local_plan') . '</span><br />';
-            if ($canapprove) {
-                $out .= 'show delete button';
             }
             break;
         case DP_APPROVAL_APPROVED:

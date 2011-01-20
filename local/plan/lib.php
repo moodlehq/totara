@@ -35,7 +35,6 @@ define('DP_APPROVAL_DECLINED',          10);
 define('DP_APPROVAL_UNAPPROVED',        20);
 define('DP_APPROVAL_REQUESTED',         30);
 define('DP_APPROVAL_APPROVED',          50);
-define('DP_APPROVAL_REQUEST_REMOVAL',   60);
 
 // Plan notices
 define('DEVELOPMENT_PLAN_UNKNOWN_BUTTON_CLICKED', 1);
@@ -786,9 +785,6 @@ function dp_get_approval_status_from_code($code) {
             break;
         case DP_APPROVAL_APPROVED:
             $status = get_string('approved', 'local_plan');
-            break;
-        case DP_APPROVAL_REQUEST_REMOVAL:
-            $status = get_string('requestremoval', 'local_plan');
             break;
         default:
             $status = get_string('unknown', 'local_plan');

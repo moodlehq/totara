@@ -466,9 +466,6 @@ abstract class rb_base_source {
         case DP_APPROVAL_APPROVED:
             return 'Approved';
             break;
-        case DP_APPROVAL_REQUEST_REMOVAL:
-            return 'Removal requested';
-            break;
         default:
             return '';
         }
