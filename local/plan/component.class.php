@@ -680,7 +680,7 @@ abstract class dp_base_component {
         $event->icon = $this->component.'-update';
         $a = new stdClass;
         $a->plan = "<a href=\"{$CFG->wwwroot}/local/plan/view.php?id={$this->plan->id}\" title=\"{$this->plan->name}\">{$this->plan->name}</a>";
-        $a->component = $this->component;
+        $a->component = get_string($this->component.'plural', 'local_plan');
         $a->updates = $update_info;
 
         // did they edit it themselves?

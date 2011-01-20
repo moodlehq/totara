@@ -239,32 +239,32 @@ $string['editobjective'] = 'Edit objective';
 
 // new objective
 $string['objectivenewshortlearner'] = 'New objective \"$a\" assigned';
-$string['objectivenewlonglearner'] = 'has assigned new objective \"$a->objective\" to learning plan \"$a->plan\"';
+$string['objectivenewlonglearner'] = '$a->userfrom has assigned new objective \"$a->objective\" to learning plan \"$a->plan\"';
 $string['objectivenewshortmanager'] = '$a created new objective';
-$string['objectivenewlongmanager'] = 'has created new objective \"$a->objective\" in learning plan \"$a->plan\"';
+$string['objectivenewlongmanager'] = '$a->userfrom has created new objective \"$a->objective\" in learning plan \"$a->plan\"';
 
 // delete objective
 $string['objectivedeleteshortlearner'] = 'Objective \"$a\" has been deleted';
-$string['objectivedeletelonglearner'] = 'has deleted objective \"$a->objective\" in learning plan \"$a->plan\"';
+$string['objectivedeletelonglearner'] = '$a->userfrom has deleted objective \"$a->objective\" in learning plan \"$a->plan\"';
 $string['objectivedeleteshortmanager'] = '$a has deleted an objective';
-$string['objectivedeletelongmanager'] = 'has deleted the objective \"$a->objective\" in learning plan \"$a->plan\"';
+$string['objectivedeletelongmanager'] = '$a->userfrom has deleted the objective \"$a->objective\" in learning plan \"$a->plan\"';
 
 // change an objective
 $string['objectiveeditshortlearner'] = 'Objective \"$a\" has been edited';
-$string['objectiveeditlonglearner'] = 'has edited $a->field for objective \"$a->objective\"';
+$string['objectiveeditlonglearner'] = '$a->userfrom has edited $a->field for objective \"$a->objective\"';
 $string['objectiveeditshortmanager'] = '$a has edited their objectives';
-$string['objectiveeditlongmanager'] = 'has edited $a->field for objective \"$a->objective\" in learning plan \"$a->plan\"';
+$string['objectiveeditlongmanager'] = '$a->userfrom has edited $a->field for objective \"$a->objective\" in learning plan \"$a->plan\"';
 
 // objective complete/incomplete
 $string['objectivecompleteshortlearner'] = 'Completed objective \"$a\"';
-$string['objectivecompletelonglearner'] = 'has changed objective \"$a->objective\" to completed';
+$string['objectivecompletelonglearner'] = '$a->userfrom has changed objective \"$a->objective\" to completed';
 $string['objectivecompleteshortmanager'] = '$a has completed an objective';
-$string['objectivecompletelongmanager'] = 'has changed objective \"$a->objective\" to completed in learning plan \"$a->plan\"';
+$string['objectivecompletelongmanager'] = '$a->userfrom has changed objective \"$a->objective\" to completed in learning plan \"$a->plan\"';
 
 $string['objectiveincompleteshortlearner'] = 'Objective \"$a\" incomplete';
-$string['objectiveincompletelonglearner'] = 'has changed objective \"$a->objective\" to incomplete';
+$string['objectiveincompletelonglearner'] = '$a->userfrom has changed objective \"$a->objective\" to incomplete';
 $string['objectiveincompleteshortmanager'] = '$a has an incomplete objective';
-$string['objectiveincompletelongmanager'] = 'has changed objective \"$a->objective\" to incomplete in learning plan \"$a->plan\"';
+$string['objectiveincompletelongmanager'] = '$a->userfrom has changed objective \"$a->objective\" to incomplete in learning plan \"$a->plan\"';
 
 
 //Plan Settings strings
@@ -574,6 +574,6 @@ $string['addedx'] = 'Added \"$a\"';
 $string['removedx'] = 'Removed \"$a\"';
 $string['changedfromxtoy'] = 'Changed from \"$a->before\" to \"$a->after\"';
 $string['componentupdateshortlearner'] = '$a updated';
-$string['componentupdatelonglearner'] = '$a->component of learning plan \"$a->plan\" updated <br> $a->updates';
+$string['componentupdatelonglearner'] = '$a->component in learning plan \"$a->plan\" updated:<br> $a->updates';
 $string['componentupdateshortmanager'] = '$a->user updated $a->component';
-$string['componentupdatelongmanager'] = '$a->component of learning plan \"$a->plan\" updated <br> $a->updates';
+$string['componentupdatelongmanager'] = '$a->component in learning plan \"$a->plan\" updated:<br> $a->updates';

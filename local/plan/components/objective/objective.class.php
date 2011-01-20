@@ -593,6 +593,7 @@ class dp_objective_component extends dp_base_component {
         $event->icon = 'objective-remove';
         $a = new stdClass;
         $a->objective = $objective->fullname;
+        $a->userfrom = $this->current_user_link();
         $a->plan = "<a href=\"{$event->contexturl}\" title=\"{$this->plan->name}\">{$this->plan->name}</a>";
 
         // did they delete it themselves?
@@ -637,6 +638,7 @@ class dp_objective_component extends dp_base_component {
         $a = new stdClass;
         $a->objective = "<a href=\"{$event->contexturl}\">$fullname</a>";
         $a->plan = "<a href=\"{$CFG->wwwroot}/local/plan/view.php?id={$this->plan->id}\" title=\"{$this->plan->name}\">{$this->plan->name}</a>";
+        $a->userfrom = $this->current_user_link();
 
         // did they create it themselves?
         if ($USER->id == $this->plan->userid) {
@@ -682,6 +684,7 @@ class dp_objective_component extends dp_base_component {
         $a->objective = "<a href=\"{$event->contexturl}\">{$objective->fullname}</a>";
         $a->plan = "<a href=\"{$CFG->wwwroot}/local/plan/view.php?id={$this->plan->id}\" title=\"{$this->plan->name}\">{$this->plan->name}</a>";
         $a->field = get_string('objective'.$field, 'local_plan');
+        $a->userfrom = $this->current_user_link();
 
         // did they edit it themselves?
         if ($USER->id == $this->plan->userid) {
@@ -732,6 +735,7 @@ class dp_objective_component extends dp_base_component {
         $a = new stdClass;
         $a->objective = "<a href=\"{$event->contexturl}\">{$objective->fullname}</a>";
         $a->plan = "<a href=\"{$CFG->wwwroot}/local/plan/view.php?id={$this->plan->id}\" title=\"{$this->plan->name}\">{$this->plan->name}</a>";
+        $a->userfrom = $this->current_user_link();
 
         // did they complete it themselves?
         if ($USER->id == $this->plan->userid) {
