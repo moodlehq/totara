@@ -176,7 +176,7 @@ $(function() {
         }
         else {
             // Add new table
-            $('div#content form#dp-component-update div#dp-component-update-table').append(new_table);
+            $('div#content div#evidence-table-container').append(new_table);
         }
     }
 <?php } ?>
