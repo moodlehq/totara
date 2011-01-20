@@ -107,6 +107,25 @@ class rb_source_dp_competency extends rb_base_source {
                 array()
         );
 
+        $joinlist[] = new rb_join(
+                'comp_evidence',
+                'LEFT',
+                $CFG->prefix . 'comp_evidence',
+                '(base.competencyid = comp_evidence.competencyid
+                  AND comp_evidence.userid = dp.userid)',
+                  REPORT_BUILDER_RELATION_ONE_TO_ONE,
+                  array('dp')
+        );
+
+        $joinlist[] = new rb_join(
+                'evidence_scale_value',
+                'LEFT',
+                $CFG->prefix . 'comp_scale_values',
+                'comp_evidence.proficiency = evidence_scale_value.id',
+                REPORT_BUILDER_RELATION_MANY_TO_ONE,
+                array('comp_evidence')
+        );
+
         $this->add_user_table_to_joinlist($joinlist, 'dp','userid');
 
         return $joinlist;
@@ -250,9 +269,17 @@ class rb_source_dp_competency extends rb_base_source {
                 'competency',
                 'proficiency',
                 get_string('competencyproficiency', 'rb_source_dp_competency'),
-                'scale_value.name',
+                // source of proficiency depends on plan status
+                // take 'live' value for active plans and static
+                // stored value for completed plans
+                'CASE WHEN dp.status = ' . DP_PLAN_STATUS_COMPLETE . '
+                THEN
+                    scale_value.name
+                ELSE
+                    evidence_scale_value.name
+                END',
                 array(
-                    'joins' => 'scale_value'
+                    'joins' => array('dp', 'scale_value', 'evidence_scale_value')
                 )
         );
 
@@ -260,9 +287,17 @@ class rb_source_dp_competency extends rb_base_source {
                 'competency',
                 'proficiencyandapproval',
                 get_string('competencyproficiencyandapproval', 'rb_source_dp_competency'),
-                'scale_value.name',
+                // source of proficiency depends on plan status
+                // take 'live' value for active plans and static
+                // stored value for completed plans
+                'CASE WHEN dp.status = ' . DP_PLAN_STATUS_COMPLETE . '
+                THEN
+                    scale_value.name
+                ELSE
+                    evidence_scale_value.name
+                END',
                 array(
-                    'joins' => 'scale_value',
+                    'joins' => array('dp', 'scale_value', 'evidence_scale_value'),
                     'displayfunc' => 'proficiency_and_approval',
                     'defaultheading' => get_string('competencyproficiency', 'rb_source_dp_competency'),
                     'extrafields' => array('approved' => 'base.approved')
