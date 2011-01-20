@@ -121,6 +121,10 @@ div.block_admin_tree div.admintree .depth2 {
 .forumheaderlist, .forumpost {
     border:0 none;
 }
+/* From user info box */
+.userinfobox {
+    border:0 none;
+}
 
 /**
  * Layout Styles
