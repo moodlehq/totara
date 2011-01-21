@@ -132,8 +132,8 @@ class columns_test extends prefix_changing_test_case {
 
     // reduced version of course table
     var $course_data = array(
-        array('id','fullname','shortname','category','idnumber','startdate','icon','visible','summary'),
-        array(1, 'Test Course 1', 'TC1', 1, 'ID1', 1140606000,'icon.gif',1,'Course summary'),
+        array('id','fullname','shortname','category','idnumber','startdate','icon','visible','summary', 'coursetype'),
+        array(1, 'Test Course 1', 'TC1', 1, 'ID1', 1140606000,'icon.gif',1,'Course summary', 0),
     );
 
     // reduced version of feedback table
@@ -368,6 +368,11 @@ class columns_test extends prefix_changing_test_case {
         array(1, 1, 'Objective Scale Value', 'ID1', 'Objective scale value description', 1, 1, 1234567890, 2, 1),
     );
 
+    var $dp_plan_component_relation_data = array(
+        array('id', 'itemid1', 'component1', 'itemid2', 'component2'),
+        array(1, 1, 'competency', 1, 'course'),
+    );
+
     function setUp() {
         global $db,$CFG;
         parent::setup();
@@ -441,6 +446,7 @@ class columns_test extends prefix_changing_test_case {
         load_test_table($CFG->prefix . 'dp_priority_scale_value', $this->dp_priority_scale_value_data, $db);
         load_test_table($CFG->prefix . 'dp_plan_objective', $this->dp_plan_objective_data, $db);
         load_test_table($CFG->prefix . 'dp_objective_scale_value', $this->dp_objective_scale_value_data, $db);
+        load_test_table($CFG->prefix . 'dp_plan_component_relation', $this->dp_plan_component_relation_data, $db);
 
         // get rid of dummy records
         delete_records('report_builder_group');
@@ -521,6 +527,7 @@ class columns_test extends prefix_changing_test_case {
         remove_test_table($CFG->prefix . 'message_metadata', $db);
         remove_test_table($CFG->prefix . 'dp_template', $db);
         remove_test_table($CFG->prefix . 'dp_objective_scale_value', $db);
+        remove_test_table($CFG->prefix . 'dp_plan_component_relation', $db);
         parent::tearDown();
     }
 
