@@ -2277,6 +2277,18 @@ function xmldb_local_upgrade($oldversion) {
         }
     }
 
+    if ($result && $oldversion < 2010111603) {
+        $blockid = get_field('block', 'id', 'name', 'flash_video');
+        $dashb_instances = get_records_menu('block_instance', 'blockid', $blockid);
+        $dashb_instance_ids = implode(',', array_keys($dashb_instance_ids));
+        $result = $result && execute_sql("DELETE FROM {$CFG->prefix}mdl_dashb_instance_dashlet WHERE block_instance_id IN ({$dashb_instance_ids})", false);
+        $result = $result && execute_sql("DELETE FROM {$CFG->prefix}block_instance WHERE blockid = {$blockid}", false);
+        $result = $result && execute_sql("DELETE FROM {$CFG->prefix}block WHERE id={$blockid}", false);
+        unset($dashb_instance_ids);
+        unset($dashb_instances);
+        unset($blockid);
+    }
+
 
 
     return $result;
