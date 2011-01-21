@@ -269,10 +269,29 @@ from
                 'course_completion',
                 'status',
                 get_string('completionstatus', 'rb_source_dp_course'),
+                /*
+                 * @todo use something like the following once completion
+                 * status is being saved upon plan completion
+                 * need to write a display function to manage this
+                "CASE WHEN dp_course.planstatus = " . DP_PLAN_STATUS_COMPLETE . "
+                THEN
+                    dp_course.completionstatus
+                ELSE
+                    CASE WHEN course_completion.timecompleted IS NOT NULL
+                    THEN
+                        'Completed'
+                    ELSE
+                        'Not Completed'
+                    END
+                END",
+                 */
                 "CASE WHEN course_completion.timecompleted IS NOT NULL THEN 'Completed' " .
                     "ELSE 'Not Completed' END",
                 array(
                     'joins' => 'course_completion',
+                    /*
+                    'joins' => array('course_completion','dp_course'),
+                     */
                     'displayfunc' => 'course_completion_icon',
                     'defaultheading' => get_string('progress', 'rb_source_dp_course'),
                 )
