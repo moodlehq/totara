@@ -35,6 +35,7 @@ $report->include_js();
 
 $fullname = $report->fullname;
 $pagetitle = format_string(get_string('report','local').': '.$fullname);
+$navlinks[] = array('name' => get_string('mylearning', 'local'), 'link' => $CFG->wwwroot . '/my/learning.php', 'type' => 'title');
 $navlinks[] = array('name' => $fullname, 'link'=> '', 'type'=>'title');
 
 $navigation = build_navigation($navlinks);

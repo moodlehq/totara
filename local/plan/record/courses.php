@@ -88,7 +88,11 @@
     /// Display the page
     ///
 
-    print_header($strheading, $strheading, build_navigation($strheading));
+    $navlinks = array();
+    $navlinks[] = array('name' => get_string('mylearning', 'local'), 'link' => $CFG->wwwroot . '/my/learning.php', 'type' => 'title');
+    $navlinks[] = array('name' => $strheading, 'link' => null, 'type' => 'misc');
+
+    print_header($strheading, $strheading, build_navigation($navlinks));
 
     $print_plans_menu = $USER->id != $userid && (totara_is_manager($userid) ||
         has_capability('moodle/site:doanything',$context));
