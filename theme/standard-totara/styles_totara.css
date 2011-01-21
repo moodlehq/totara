@@ -2072,6 +2072,14 @@ div.totara-dialog .selected span:hover span.addbutton {
     background-position: right center;
 }
 
+div.totara-dialog .selected span.unremovable a {
+    color: #aaa !important;
+}
+
+div.totara-dialog .selected span.unremovable span.deletebutton {
+    display: none;
+}
+
 /** Competencies lightbox styling **/
 div.totara-dialog div#evidence #available-evidence h3 {
     margin: 0 0 0.5em;

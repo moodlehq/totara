@@ -830,6 +830,32 @@ abstract class dp_base_component {
 
 
     /**
+     * Check's if the logged in user can delete an item
+     *
+     * @access  public
+     * @param   object  $item
+     * @return  boolean
+     */
+    public function can_delete_item($item) {
+        // Load permissions
+        $canupdateitems = $this->can_update_items();
+
+        // If user has full permissions (allow/approve)
+        if ($canupdateitems >= DP_PERMISSION_ALLOW) {
+            return true;
+        }
+
+        // Or if can't request items
+        if ($canupdateitems != DP_PERMISSION_REQUEST) {
+            return false;
+        }
+
+        // If can request, and item is not yet approved
+        return in_array($item->approved, array(DP_APPROVAL_UNAPPROVED, DP_APPROVAL_DECLINED));
+    }
+
+
+    /**
      * Return the name of the component items table
      *
      * Override in subclass if component uses a different pattern

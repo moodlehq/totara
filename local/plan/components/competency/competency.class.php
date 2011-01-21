@@ -891,15 +891,10 @@ class dp_competency_component extends dp_base_component {
         $markup = '';
 
         // Get permissions
-        $canupdateitems = $this->can_update_items();
-        $canrequestitems = $canupdateitems == DP_PERMISSION_REQUEST;
-        $canapproveitems = $canupdateitems == DP_PERMISSION_APPROVE;
-        $canremoveitems = $canupdateitems >= DP_PERMISSION_ALLOW;
         $cansetproficiency = !$this->plan->is_complete() && $this->get_setting('setproficiency') >= DP_PERMISSION_ALLOW;
         $approved = $this->is_item_approved($item->approved);
 
-        if ($canremoveitems ||
-            ($canrequestitems && (in_array($item->approved, array(DP_APPROVAL_UNAPPROVED, DP_APPROVAL_DECLINED))))) {
+        if ($this->can_delete_item($item)) {
             $currenturl = $this->get_url();
             $strdelete = get_string('delete', 'local_plan');
             $delete = '<a href="'.$currenturl.'&amp;d='.$item->id.'" title="'.$strdelete.'"><img src="'.$CFG->pixpath.'/t/delete.gif" class="iconsmall" alt="'.$strdelete.'" /></a>';

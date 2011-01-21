@@ -49,15 +49,21 @@ require_capability('local/plan:accessplan', get_system_context());
 
 $plan = new development_plan($id);
 $component = $plan->get_component('course');
-$selected = array();
-foreach ($component->get_assigned_items() as $item) {
-    $item->id = $item->courseid;
-    $selected[$item->courseid] = $item;
-}
 
 // Access control check
 if (!$permission = $component->can_update_items()) {
     print_error('error:cannotupdatecourses', 'local_plan');
+}
+
+$selected = array();
+$unremovable = array();
+foreach ($component->get_assigned_items() as $item) {
+    $item->id = $item->courseid;
+    $selected[$item->courseid] = $item;
+
+    if (!$component->can_delete_item($item)) {
+        $unremovable[$item->courseid] = $item;
+    }
 }
 
 
@@ -80,6 +86,9 @@ $dialog->load_courses();
 
 // Set selected items
 $dialog->selected_items = $selected;
+
+// Set unremovable items
+$dialog->unremovable_items = $unremovable;
 
 // Display page
 echo $dialog->generate_markup();

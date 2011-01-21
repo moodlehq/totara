@@ -52,15 +52,21 @@ require_capability('local/plan:accessplan', get_system_context());
 
 $plan = new development_plan($id);
 $component = $plan->get_component('competency');
-$selected = array();
-foreach ($component->get_assigned_items() as $item) {
-    $item->id = $item->competencyid;
-    $selected[$item->competencyid] = $item;
-}
 
 // Access control check
 if (!$permission = $component->can_update_items()) {
     print_error('error:cannotupdatecompetencies', 'local_plan');
+}
+
+$selected = array();
+$unremovable = array();
+foreach ($component->get_assigned_items() as $item) {
+    $item->id = $item->competencyid;
+    $selected[$item->competencyid] = $item;
+
+    if (!$component->can_delete_item($item)) {
+        $unremovable[$item->competencyid] = $item;
+    }
 }
 
 
@@ -79,6 +85,9 @@ $dialog->load_items($parentid);
 
 // Set disabled/selected items
 $dialog->selected_items = $selected;
+
+// Set unremovable items
+$dialog->unremovable_items = $unremovable;
 
 // Set title
 $dialog->selected_title = 'currentlyselected';

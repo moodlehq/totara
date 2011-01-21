@@ -790,17 +790,27 @@ totaraDialog_handler_treeview.prototype._make_deletable = function(parent_elemen
 
     // Bind event to delete button
     deletables.unbind('click');
-    deletables.click(function() {
+    deletables.each(function() {
         // Get the span element, containing the clicked button
         var span_element = $(this).parent();
 
-        // Make sure removed element is now selectable in treeview
-        handler._toggle_items(span_element.attr('id'), true);
+        // If unremovable, do not add click handler
+        if (span_element.hasClass('unremovable')) {
+            return;
+        }
 
-        // Finally, remove the span element from the selected pane
-        span_element.remove();
+        $(this).click(function() {
+            // Get the span element, containing the clicked button
+            var span_element = $(this).parent();
 
-        return false;
+            // Make sure removed element is now selectable in treeview
+            handler._toggle_items(span_element.attr('id'), true);
+
+            // Finally, remove the span element from the selected pane
+            span_element.remove();
+
+            return false;
+        });
     });
 }
 

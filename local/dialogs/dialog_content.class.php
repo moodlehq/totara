@@ -150,6 +150,16 @@ class totara_dialog_content {
     public $selected_items = null;
 
 
+    /**
+     * Array of items that are selected (e.g. appear in the selected pane) and cannot be removed
+     *
+     * Used for rendering the treeview
+     *
+     * @access  public
+     * @var     array
+     */
+    public $unremovable_items = array();
+
 
     /**
      * Generate markup from configuration and return
@@ -365,7 +375,13 @@ class totara_dialog_content {
 
         $html = '';
         foreach ($elements as $element) {
-            $html .= '<div><span id="item_'.$element->id.'">';
+            // Check if unremovable
+            $class = '';
+            if (in_array($element->id, array_keys($this->unremovable_items))) {
+                $class .= 'unremovable ';
+            }
+
+            $html .= '<div><span id="item_'.$element->id.'" class="'.$class.'">';
             $html .= '<a href="#">';
             $html .= htmlentities($element->fullname);
             $html .= '</a>';
