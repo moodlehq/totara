@@ -17,6 +17,7 @@ require_once($CFG->libdir.'/simpletestlib/xml.php');
 
 error_reporting(E_ALL ^ E_DEPRECATED);
 ini_set('display_errors', 0);
+ini_set('memory_limit', '512M');
 
 // Setup
 $path = '';
