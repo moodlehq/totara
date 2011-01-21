@@ -355,10 +355,10 @@ class dp_course_component extends dp_base_component {
         return '<img class="course_icon" src="' .
             $CFG->wwwroot . '/local/icon.php?icon=' . $item->icon .
             '&amp;id=' . $item->courseid .
-            '&amp;size=small&amp;type=course" alt="' . $item->name.
+            '&amp;size=small&amp;type=course" alt="' . format_string($item->fullname).
             '"><a' . $class .' href="' . $CFG->wwwroot .
             '/local/plan/components/' . $this->component.'/view.php?id=' .
-            $this->plan->id . '&amp;itemid=' . $item->id . '">' . $item->name .
+            $this->plan->id . '&amp;itemid=' . $item->id . '">' . $item->fullname .
             '</a>'. $launch;
     }
 
