@@ -1369,6 +1369,8 @@ span.plan_highlight {
 
 .instructional_text {
     padding: 10px 0px;
+    float:left;
+    width:73%;
 }
 
 /*
@@ -1723,7 +1725,7 @@ table.dp-plan-component-items td select.approval {
 
 #dp-plans-description div.dp-add-plan-link{
     float: right;
-    width: 29%;
+    width: 25%;
     text-align: right;
 }
 
