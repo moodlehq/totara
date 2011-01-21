@@ -1884,7 +1884,7 @@ table tr.r0 {
     background-color: #F0F0F0;
 }
 table tr.r1 {
-    background-color: #FAFAFA;
+    background-color: #FFFFFF;
 }
 th.header {
     border:0 none;
@@ -2207,7 +2207,7 @@ tr.r0 td {
 }
 tr.r1 .cell,
 tr.r1 td {
-    background: #FAFAFA;
+    background: #FFFFFF;
 }
 
 td.c0 {
@@ -2233,7 +2233,11 @@ body#hierarchy-index table#competency tr.r0 td.customfield {
 }
 
 body#hierarchy-index table#competency tr.r1 td.customfield {
-    background: #fefefe;
+    background: #FFFFFF;
+}
+
+table.flexible .r1 {
+    background-color:#FFFFFF;
 }
 
 
@@ -2242,7 +2246,7 @@ body#hierarchy-index table#competency tr.r1 td.customfield {
 /*****************************************************************************/
 
 #guides-index .r1{
-	background: #F5F5F5;
+	background: #FFFFFF;
 }
 
 /*****************************************************************************/
