@@ -95,6 +95,7 @@ $string['notapplicable'] = 'Not applicable';
 $string['notavailable'] = 'Not available';
 $string['recordoflearning'] = 'Record of Learning';
 $string['searchcourses'] = 'Search Courses';
+$string['findcourses'] = 'Find Courses';
 $string['viewmyteam'] = 'View My Team';
 
 // My Course Completions block

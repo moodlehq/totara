@@ -7,7 +7,7 @@ require_once($CFG->dirroot.'/local/reportbuilder/lib.php');
 $format = optional_param('format','', PARAM_TEXT); // export format
 
 
-$strheading = get_string('findcourses', 'local');
+$strheading = get_string('searchcourses', 'local');
 $shortname = 'findcourses';
 
 $report = reportbuilder_get_embedded_report($shortname);
@@ -20,7 +20,8 @@ $report->include_js();
 
 $fullname = $report->fullname;
 $pagetitle = format_string(get_string('report','local').': '.$fullname);
-$navlinks[] = array('name' => $fullname, 'link'=> '', 'type'=>'title');
+$navlinks[] = array('name' => $fullname, 'link' => "{$CFG->wwwroot}" . "/course/find.php", 'type' => 'title');
+$navlinks[] = array('name' => $strheading, 'link' => null, 'type' => 'title');
 
 $navigation = build_navigation($navlinks);
 
