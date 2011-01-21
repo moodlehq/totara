@@ -98,6 +98,7 @@ class dp_competency_component extends dp_base_component {
                 CASE WHEN linkedcourses.count IS NULL
                     THEN 0 ELSE linkedcourses.count
                 END AS linkedcourses,
+                csv.id AS profscalevalueid,
                 csv.name AS status,
                 csv.sortorder AS profsort
             FROM

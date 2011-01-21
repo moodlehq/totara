@@ -1133,9 +1133,31 @@ class development_plan {
         $todb = new stdClass;
         $todb->id = $this->id;
         $todb->status = $status;
-        if ($status == DP_PLAN_STATUS_APPROVED) {
-            // Set the plan startdate to the approval time
-            $todb->startdate = time();
+
+        begin_sql();
+
+        // Handle some status triggers
+        switch ($status) {
+            case DP_PLAN_STATUS_APPROVED:
+                // Set the plan startdate to the approval time
+                $todb->startdate = time();
+                break;
+            case DP_PLAN_STATUS_COMPLETE:
+                if ($assigned = $this->get_component('competency')->get_assigned_items()) {
+                    // Set competency snapshots
+                    foreach ($assigned as $a) {
+                        $snap = new stdClass;
+                        $snap->id = $a->id;
+                        $snap->scalevalueid = !empty($a->profscalevalueid) ? $a->profscalevalueid : 0;
+                        update_record('dp_plan_competency_assign', $snap);
+                    }
+                }
+
+
+                // @todo: Set course completion snapshots
+                break;
+            default:
+                break;
         }
 
         if (update_record('dp_plan', $todb)) {
@@ -1147,11 +1169,14 @@ class development_plan {
             $todb->usermodified = $USER->id;
 
             if (!insert_record('dp_plan_history', $todb)) {
+                rollback_sql();
                 return false;
             }
         } else {
             return false;
         }
+
+        commit_sql();
 
         return true;
     }
