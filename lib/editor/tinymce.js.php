@@ -226,7 +226,11 @@ echo <<<EOF
     function mce_saveOnSubmit(id) {
         var prevOnSubmit = document.getElementById(id).form.onsubmit;
         document.getElementById(id).form.onsubmit = function() { 
-            tinyMCE.execCommand('mceToggleEditor',false,id);
+            // if in HTML mode, switch back to editor mode so
+            // changes are stored before form submission
+            if(tinyMCE.get(id).isHidden()) {
+                tinyMCE.get(id).show();
+            }
             tinyMCE.triggerSave(); 
             var ret = true;
             if (prevOnSubmit != undefined) {
