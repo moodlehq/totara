@@ -147,22 +147,22 @@ class totara_competency_evidence_form extends moodleform {
             // get id of the scale referred to by the evidence's proficiency
             $scaleid = get_field('comp_scale_values','scaleid','id',$ce->proficiency);
             $selectoptions = get_records_menu('comp_scale_values','scaleid',$scaleid,'sortorder');
-            $mform->addElement('select', 'proficiency',get_string('proficiency','local'), $selectoptions);
+            $mform->addElement('select', 'proficiency', get_string('status','local_plan'), $selectoptions);
         } else if ($competencyid != 0) {
             // competency set but validation failed. Refill scale options
             $frameworkid = get_field('comp','frameworkid','id',$competencyid);
             $scaleid = get_field('comp_scale_assignments','scaleid','frameworkid',$frameworkid);
             $selectoptions = get_records_menu('comp_scale_values','scaleid',$scaleid,'sortorder');
-            $mform->addElement('select', 'proficiency',get_string('proficiency','local'), $selectoptions);
+            $mform->addElement('select', 'proficiency', get_string('status', 'local_plan'), $selectoptions);
             $mform->setType('proficiency', PARAM_INT);
         } else {
             // new competency evidence item
             // create a placeholder element to be filled when competency is selected
-            $mform->addElement('select', 'proficiency',get_string('proficiency','local'), array(get_string('firstselectcompetency','local')));
+            $mform->addElement('select', 'proficiency', get_string('status', 'local_plan'), array(get_string('firstselectcompetency','local')));
             $mform->setType('proficiency', PARAM_INT);
             $mform->disabledIf('proficiency','competencyid','eq',0);
         }
-        $mform->setHelpButton('proficiency',array('competencyevidenceproficiency',get_string('proficiency','local'),'moodle'));
+        $mform->setHelpButton('proficiency', array('competencyevidencestatus', get_string('status', 'local_plan'), 'local_plan'));
         $mform->addRule('proficiency',null,'required');
         $mform->addRule('proficiency',get_string('err_required','form'),'nonzero');
 

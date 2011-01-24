@@ -186,7 +186,7 @@ class dp_objective_component extends dp_base_component {
         // Set up table
         $tableheaders = array(
             get_string('name'),
-            get_string('proficiency', 'local_plan'),
+            get_string('status', 'local_plan'),
         );
         $tablecolumns = array(
             'fullname',
@@ -474,7 +474,7 @@ class dp_objective_component extends dp_base_component {
                         $newprof = get_field('dp_objective_scale_value', 'name', 'id', $record->scalevalueid);
                         $updates .= $objprinted ? '' : $objheader;
                         $objprinted = true;
-                        $updates .= get_string('proficiency', 'local_plan').' - '.
+                        $updates .= get_string('status', 'local_plan').' - '.
                             get_string('changedfromxtoy', 'local_plan',
                             (object)array('before'=>$oldprof, 'after'=>$newprof))."<br>";
                     }
@@ -1040,7 +1040,7 @@ SQL;
             $out .= '</td>';
         }
         if (!empty($item->profname)) {
-            $out .= "  <td>" . get_string('proficiency', 'local') .": \n";
+            $out .= "  <td>" . get_string('status', 'local_plan') .": \n";
             $out .= "  {$item->profname}</td>\n";
         }
 
