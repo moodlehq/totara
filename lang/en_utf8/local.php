@@ -186,6 +186,7 @@ $string['mycoursecompletions'] = 'My Course Completions';
 $string['coursecompletionsfor'] = 'Course Completions for ';
 $string['mybookings'] = 'My Bookings';
 $string['mypastbookings'] = 'My Past Bookings';
+$string['myfuturebookings'] = 'My Future Bookings';
 $string['bookingsfor'] = 'Bookings for ';
 $string['pastbookingsfor'] = 'Past Bookings for ';
 $string['tab:futurebookings'] = 'Future Bookings';
