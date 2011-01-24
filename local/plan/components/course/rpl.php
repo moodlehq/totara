@@ -18,7 +18,7 @@ if($component->get_setting('setcompletionstatus') != DP_PERMISSION_ALLOW) {
 }
 
 if($rpl = get_record('course_completions', 'userid', $userid, 'course', $courseid)){
-    $rpltext = $rpl->rpl;
+    $rpltext = stripslashes($rpl->rpl);
     $rplid = $rpl->id;
 } else {
     $rpltext = '';
