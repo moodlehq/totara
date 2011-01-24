@@ -15,6 +15,7 @@ abstract class dp_base_workflow {
             //competency config options
             'cfg_competency_autoassignpos',
             'cfg_competency_autoassignorg',
+            'cfg_competency_autoassigncourses',
             'cfg_competency_duedatemode',
             'cfg_competency_prioritymode',
 

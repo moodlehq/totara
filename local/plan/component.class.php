@@ -1232,4 +1232,19 @@ abstract class dp_base_component {
         return "<a href=\"{$userfrom_link}\" title=\"$fromname\">$fromname</a>";
     }
 
+    /**
+     * Return associative array mapping assignment IDs to item IDs
+     *
+     * Only for use with assigned components (courses, competencies), not objectives. Assumes
+     * a table 'dp_plan_[component]_assign' with a field of '[component]id'
+     *
+     * @return array Array with assignment IDs as the key and item IDs as the value or false if there are none
+     */
+    function get_item_assignments() {
+        $component = $this->component;
+        $table = "dp_plan_{$component}_assign";
+        $field = "{$component}id";
+
+        return get_records_menu($table, 'planid', $this->plan->id, 'id', "id,$field");
+    }
 }

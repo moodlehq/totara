@@ -331,5 +331,16 @@ function xmldb_local_plan_upgrade($oldversion=0) {
         $result = $result && drop_field($table, $field);
     }
 
+    if ($result && $oldversion < 2011012500) {
+
+        // Define field autoassigncourses to be added to dp_competency_settings
+        $table = new XMLDBTable('dp_competency_settings');
+        $field = new XMLDBField('autoassigncourses');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '4', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0', 'autoassignpos');
+
+        // Launch add field autoassigncourses
+        $result = $result && add_field($table, $field);
+    }
+
     return $result;
 }

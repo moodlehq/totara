@@ -36,12 +36,14 @@ function dp_competency_component_build_settings_form(&$mform, $id) {
         $defaultpriorityscale = $templatesettings->priorityscale;
         $defaultautoassignpos = $templatesettings->autoassignpos;
         $defaultautoassignorg = $templatesettings->autoassignorg;
+        $defaultautoassigncourses = $templatesettings->autoassigncourses;
     } else {
         $defaultduedatesmode = null;
         $defaultprioritymode = null;
         $defaultpriorityscale = null;
         $defaultautoassignpos = null;
         $defaultautoassignorg = null;
+        $defaultautoassigncourses = null;
     }
     // due date mode options
     $radiogroup = array();
@@ -81,10 +83,12 @@ function dp_competency_component_build_settings_form(&$mform, $id) {
     $autoassigngroup = array();
     $autoassigngroup[] =& $mform->createElement('advcheckbox', 'autoassignpos', null, get_string('autoassignpos', 'local_plan'));
     $autoassigngroup[] =& $mform->createElement('advcheckbox', 'autoassignorg', null, get_string('autoassignorg', 'local_plan'));
+    $autoassigngroup[] =& $mform->createElement('advcheckbox', 'autoassigncourses', null, get_string('autoassigncourses', 'local_plan'));
 
     $mform->addGroup($autoassigngroup, 'autoassign', get_string('autoassign', 'local_plan'), array('<br />'), false);
     $mform->setDefault('autoassignpos', $defaultautoassignpos);
     $mform->setDefault('autoassignorg', $defaultautoassignorg);
+    $mform->setDefault('autoassigncourses', $defaultautoassigncourses);
 
     //Permissions
     $mform->addElement('header', 'competencypermissions', get_string('competencypermissions', 'local_plan'));
@@ -146,6 +150,7 @@ function dp_competency_component_process_settings_form($fromform, $id) {
     }
     $todb->autoassignorg = $fromform->autoassignorg;
     $todb->autoassignpos = $fromform->autoassignpos;
+    $todb->autoassigncourses = $fromform->autoassigncourses;
     // @todo add scale info
     if($competencysettings = get_record('dp_competency_settings', 'templateid', $id)) {
         // update

@@ -2,7 +2,7 @@
 @raise_memory_limit('496M');
 @ini_set('max_execution_time','3000');
 print "Loading data for table 'dp_competency_settings'<br>";
-$items = array(array('id' => '1','templateid' => '1','autoassignorg' => '1','autoassignpos' => '1','duedatemode' => '1','prioritymode' => '1','priorityscale' => '1',),
+$items = array(array('id' => '1','templateid' => '1','autoassignorg' => '1','autoassignpos' => '1','autoassigncourses' => '1','duedatemode' => '1','prioritymode' => '1','priorityscale' => '1',),
 );
 print "\n";print "Inserting ".count($items)." records<br />\n";
 $i=1;
@@ -39,4 +39,3 @@ print "<br>";
 set_config("guestloginbutton", 0);
 set_config("langmenu", 0);
 set_config("forcelogin", 1);
-        
