@@ -592,6 +592,7 @@ class dp_course_component extends dp_base_component {
             $oldrecords = get_records_list('dp_plan_course_assign', 'id', implode(',', array_keys($stored_records)));
 
             $updates = '';
+            $approvals = array();
             begin_sql();
             foreach($stored_records as $itemid => $record) {
                 // Update the record
@@ -626,20 +627,34 @@ class dp_course_component extends dp_base_component {
                             'after'=>userdate($record->duedate, '%e %h %Y', $CFG->timezone, false)))."<br>";
                     }
                     if (!empty($record->approved) && $oldrecords[$itemid]->approved != $record->approved) {
-                        $updates .= $courseprinted ? '' : $courseheader;
-                        $courseprinted = true;
-                        $updates .= get_string('approval', 'local_plan').' - '.
+                        $approval = new object();
+                        $text = $courseheader;
+                        $text .= get_string('approval', 'local_plan').' - '.
                             get_string('changedfromxtoy', 'local_plan',
                             (object)array('before'=>dp_get_approval_status_from_code($oldrecords[$itemid]->approved),
-                                'after'=>dp_get_approval_status_from_code($record->approved)))."<br>";
+                            'after'=>dp_get_approval_status_from_code($record->approved)))."<br>";
+                        $approval->text = $text;
+                        $approval->course = $course->fullname;
+                        $approval->before = $oldrecords[$itemid]->approved;
+                        $approval->after = $record->approved;
+                        $approvals[] = $approval;
+
                     }
                     $updates .= $courseprinted ? '</p>' : '';
                 }  // foreach
+
+                if ($this->plan->status != DP_PLAN_STATUS_UNAPPROVED && count($approvals)>0) {
+                    foreach($approvals as $approval) {
+                        $this->send_component_approval_notification($approval);
+                    }
+                }
 
                 // Send update notification
                 if ($this->plan->status != DP_PLAN_STATUS_UNAPPROVED && strlen($updates)) {
                     $this->send_component_update_notification($updates);
                 }
+
+
             } else {
                 rollback_sql();
             }

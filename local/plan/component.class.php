@@ -706,6 +706,48 @@ abstract class dp_base_component {
         }
     }
 
+    function send_component_approval_notification($approval) {
+        global $USER, $CFG;
+        require_once($CFG->dirroot.'/local/totara_msg/messagelib.php');
+        if($approval->after == DP_APPROVAL_DECLINED) {
+            $type = 'decline';
+        } else if($approval->after == DP_APPROVAL_APPROVED) {
+            $type = 'approve';
+        }
+
+        $event = new stdClass;
+        $userfrom = get_record('user', 'id', $USER->id);
+        $event->userfrom = $userfrom;
+        $event->contexturl = $this->get_url();
+        $event->icon = $this->component.'-'.$type;
+        $a = new stdClass;
+        $a->plan = "<a href=\"{$CFG->wwwroot}/local/plan/view.php?id={$this->plan->id}\" title=\"{$this->plan->name}\">{$this->plan->name}</a>";
+        $a->component = get_string($this->component.'plural', 'local_plan');
+        $a->updates = $approval->text;
+        $a->name = $approval->course;
+
+        // did they edit it themselves?
+        if ($USER->id == $this->plan->userid) {
+            // notify their manager
+            if ($this->plan->is_active()) {
+                if ($manager = totara_get_manager($this->plan->userid)) {
+                    $event->userto = $manager;
+                    $a->user = $this->current_user_link();
+                    $event->subject = get_string('component'.$type.'shortmanager', 'local_plan', $a);
+                    $event->fullmessage = get_string('component'.$type.'longmanager', 'local_plan', $a);
+                    $event->roleid = get_field('role','id', 'shortname', 'manager');
+                    tm_notification_send($event);
+                }
+            }
+        } else {
+            // notify user that someone else did it
+            $userto = get_record('user', 'id', $this->plan->userid);
+            $event->userto = $userto;
+            $event->subject = get_string('component'.$type.'shortlearner', 'local_plan', $a);
+            $event->fullmessage = get_string('component'.$type.'longlearner', 'local_plan', $a);
+            tm_notification_send($event);
+        }
+    }
 
     /**
      * Unassign an item from a plan

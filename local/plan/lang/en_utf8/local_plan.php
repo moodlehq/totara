@@ -577,3 +577,13 @@ $string['componentupdateshortlearner'] = '$a updated';
 $string['componentupdatelonglearner'] = '$a->component in learning plan \"$a->plan\" updated:<br> $a->updates';
 $string['componentupdateshortmanager'] = '$a->user updated $a->component';
 $string['componentupdatelongmanager'] = '$a->component in learning plan \"$a->plan\" updated:<br> $a->updates';
+
+$string['componentapproveshortlearner'] = '$a->name approved';
+$string['componentapprovelonglearner'] = '$a->component in learning plan \"$a->plan\" approved:<br> $a->updates';
+$string['componentapproveshortmanager'] = '$a->user approved $a->component $a->name';
+$string['componentapprovelongmanager'] = '$a->component in learning plan \"$a->plan\" approved:<br> $a->updates';
+
+$string['componentdeclineshortlearner'] = '$a->name declined';
+$string['componentdeclinelonglearner'] = '$a->component in learning plan \"$a->plan\" declined:<br> $a->updates';
+$string['componentdeclineshortmanager'] = '$a->user declined $a->component $a->name';
+$string['componentdeclinelongmanager'] = '$a->component in learning plan \"$a->plan\" declined:<br> $a->updates';
