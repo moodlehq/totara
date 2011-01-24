@@ -93,3 +93,9 @@ div.totara-dialog ul.treeview li span.folder {
 .dashboard .dashlet_container {
     position:relative;
 }
+
+div.totara-dialog .selected span span.deletebutton {
+    background-image: url("../../theme/totara/pix/t/delete.gif");
+    background-repeat: no-repeat;
+    background-position: right center;
+}

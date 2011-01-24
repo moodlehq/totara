@@ -1370,6 +1370,10 @@ span.plan_highlight {
 .instructional_text {
     padding: 10px 0px;
 }
+#dp-plans-description .instructional_text {
+    float:left;
+    width:73%;
+}
 
 /*
  * Right floating 'add' buttons
@@ -1723,7 +1727,7 @@ table.dp-plan-component-items td select.approval {
 
 #dp-plans-description div.dp-add-plan-link{
     float: right;
-    width: 29%;
+    width: 25%;
     text-align: right;
 }
 
@@ -2031,16 +2035,18 @@ div.totara-dialog .selected p {
 
 div.totara-dialog .selected span {
     width: 100%;
-    display: table;
+    display: block;
     font-size: 12px;
-    margin-bottom: 4px;
+    margin-bottom: 10px;
+    overflow: auto;
 }
 
 div.totara-dialog .selected span a {
-    display: table-cell;
+    display: block;
     text-decoration: none;
-    padding: 2px 4px 2px 4px;
     cursor: text;
+    float: left;
+    width: 80%;
 }
 
 div.totara-dialog .selected span.unclickable {
@@ -2051,8 +2057,9 @@ div.totara-dialog .selected span.unclickable {
 
 div.totara-dialog .selected span span.addbutton,
 div.totara-dialog .selected span span.deletebutton {
-    display: table-cell;
-    width: 16px;
+    display: block;
+    width: 18%;
+    float:right;
     cursor: pointer;
     background: none;
     text-indent: -999px;
