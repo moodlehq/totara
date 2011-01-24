@@ -724,7 +724,7 @@ abstract class dp_base_component {
         $a->plan = "<a href=\"{$CFG->wwwroot}/local/plan/view.php?id={$this->plan->id}\" title=\"{$this->plan->name}\">{$this->plan->name}</a>";
         $a->component = get_string($this->component.'plural', 'local_plan');
         $a->updates = $approval->text;
-        $a->name = $approval->course;
+        $a->name = $approval->itemname;
 
         // did they edit it themselves?
         if ($USER->id == $this->plan->userid) {

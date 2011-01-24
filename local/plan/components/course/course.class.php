@@ -634,7 +634,7 @@ class dp_course_component extends dp_base_component {
                             (object)array('before'=>dp_get_approval_status_from_code($oldrecords[$itemid]->approved),
                             'after'=>dp_get_approval_status_from_code($record->approved)))."<br>";
                         $approval->text = $text;
-                        $approval->course = $course->fullname;
+                        $approval->itemname = $course->fullname;
                         $approval->before = $oldrecords[$itemid]->approved;
                         $approval->after = $record->approved;
                         $approvals[] = $approval;

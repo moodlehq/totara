@@ -435,6 +435,7 @@ class dp_objective_component extends dp_base_component {
 
                 // Process update notifications
                 $updates = '';
+                $approvals = null;
                 $objheader = '<p><strong>'.format_string($orig_objectives[$itemid]->fullname).": </strong><br>";
                 $objprinted = false;
                 foreach($stored_records as $itemid => $record) {
@@ -483,12 +484,17 @@ class dp_objective_component extends dp_base_component {
                     if (!empty($record->approved) && array_key_exists($itemid, $orig_objectives) &&
                         $record->approved != $orig_objectives[$itemid]->approved) {
 
-                        $updates .= $objprinted ? '' : $objheader;
-                        $objprinted = true;
-                        $updates .= get_string('approval', 'local_plan').' - '.
+                        $approval = new object();
+                        $text = $objheader;
+                        $text .= get_string('approval', 'local_plan').' - '.
                             get_string('changedfromxtoy', 'local_plan',
                             (object)array('before'=>dp_get_approval_status_from_code($orig_objectives[$itemid]->approved),
-                                'after'=>dp_get_approval_status_from_code($record->approved)))."<br>";
+                            'after'=>dp_get_approval_status_from_code($record->approved)))."<br>";
+                        $approval->text = $text;
+                        $approval->itemname = $orig_objectives[$itemid]->fullname;
+                        $approval->before = $orig_objectives[$itemid]->approved;
+                        $approval->after = $record->approved;
+                        $approvals[] = $approval;
 
                     }
                 }  // foreach
@@ -498,6 +504,11 @@ class dp_objective_component extends dp_base_component {
                     $this->send_component_update_notification($updates);
                 }
 
+                if ($this->plan->status != DP_PLAN_STATUS_UNAPPROVED && count($approvals)>0) {
+                    foreach($approvals as $approval) {
+                        $this->send_component_approval_notification($approval);
+                    }
+                }
             } else {
                 rollback_sql();
             }

@@ -661,6 +661,7 @@ class dp_competency_component extends dp_base_component {
         if (!empty($stored_records)) {
             $oldrecords = get_records_list('dp_plan_competency_assign', 'id', implode(',', array_keys($stored_records)));
             $updates = '';
+            $approvals = null;
             begin_sql();
             foreach($stored_records as $itemid => $record) {
                 // Update the record
@@ -719,12 +720,17 @@ class dp_competency_component extends dp_base_component {
                                 'after'=>userdate($record->duedate, '%e %h %Y', $CFG->timezone, false)))."<br>";
                     }
                     if (!empty($record->approved) && $oldrecords[$itemid]->approved != $record->approved) {
-                        $updates .= $compprinted ? '' : $compheader;
-                        $compprinted = true;
-                        $updates .= get_string('approval', 'local_plan').' - '.
+                        $approval = new object();
+                        $text = $compheader;
+                        $text .= get_string('approval', 'local_plan').' - '.
                             get_string('changedfromxtoy', 'local_plan',
-                            (object)array('before'=>dp_get_approval_status_from_code($oldrecords[$itemid]->approved), 
+                            (object)array('before'=>dp_get_approval_status_from_code($oldrecords[$itemid]->approved),
                             'after'=>dp_get_approval_status_from_code($record->approved)))."<br>";
+                        $approval->text = $text;
+                        $approval->itemname = $competency->fullname;
+                        $approval->before = $oldrecords[$itemid]->approved;
+                        $approval->after = $record->approved;
+                        $approvals[] = $approval;
                     }
                     // TODO: proficiencies ??
                     $updates .= $compprinted ? '</p>' : '';
@@ -733,6 +739,12 @@ class dp_competency_component extends dp_base_component {
                 // Send update notification
                 if ($this->plan->status != DP_PLAN_STATUS_UNAPPROVED && strlen($updates)) {
                     $this->send_component_update_notification($updates);
+                }
+
+                if ($this->plan->status != DP_PLAN_STATUS_UNAPPROVED && count($approvals)>0) {
+                    foreach($approvals as $approval) {
+                        $this->send_component_approval_notification($approval);
+                    }
                 }
             } else {
                 rollback_sql();
