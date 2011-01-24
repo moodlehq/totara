@@ -34,7 +34,7 @@ $fullname = $plan->name;
 
 if($u = get_record('user','id',$userid)) {
     $toform = new object();
-    $toform->user = $u->firstname.' '.$u->lastname;
+    $toform->user = fullname($u);
 } else {
     error('error:usernotfound','local');
 }

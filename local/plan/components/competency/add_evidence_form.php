@@ -9,8 +9,6 @@ class totara_competency_evidence_form extends moodleform {
         global $CFG;
 
         $mform =& $this->_form;
-        $editing = isset($this->_customdata['competencyevidence']); // if competency evidence passed to form, we are editing
-        $ce = $editing ? $this->_customdata['competencyevidence'] : null;
 
         $competencyid = isset($this->_customdata['competencyid']) ? $this->_customdata['competencyid'] : 0;
         $positionid = isset($this->_customdata['positionid']) ? $this->_customdata['positionid'] : 0;
@@ -18,11 +16,14 @@ class totara_competency_evidence_form extends moodleform {
         $nojs = $this->_customdata['nojs'];
         $id = $this->_customdata['id'];
         $evidenceid = $this->_customdata['evidenceid'];
+        $editing = !empty($evidenceid) ? true : false;
 
         if($editing) {
+            // Get the evidence record
+            $ce = get_record('comp_evidence', 'id', $evidenceid);
+
             // get id and userid from competency evidence object
             $userid = $ce->userid;
-            $evidenceid = $ce->id;
 
             // Get position title
             $position_title = '';
@@ -39,13 +40,24 @@ class totara_competency_evidence_form extends moodleform {
             // for new record, userid must also be passed to form
             $userid = $this->_customdata['userid'];
             $id = $this->_customdata['id'];
-            $evidenceid = null;
+            $position_assignment = new position_assignment(
+                array(
+                    'userid'    => $userid,
+                    'type'      => POSITION_TYPE_PRIMARY
+                )
+            );
 
             // repopulate if set but validation failed
-            $position_title = ($positionid != 0) ?
-                get_field('pos', 'fullname', 'id', $positionid) : '';
-            $organisation_title = ($organisationid != 0) ?
-                get_field('org', 'fullname', 'id', $organisationid) : '';
+            if (!empty($positionid)) {
+                $position_title = get_field('pos', 'fullname', 'id', $positionid);
+            } else {
+                $position_title = !empty($position_assignment->fullname) ? $position_assignment->fullname : '';
+            }
+            if (!empty($organisationid)) {
+                $organisation_title = get_field('org', 'fullname', 'id', $organisationid);
+            } else {
+                $organisation_title = get_field('org', 'fullname', 'id', $position_assignment->organisationid);
+            }
             $competency_title = ($competencyid != 0) ?
                 get_field('comp', 'fullname', 'id', $competencyid) : '';
         }
@@ -130,7 +142,7 @@ class totara_competency_evidence_form extends moodleform {
         $mform->setType('assessmenttype', PARAM_TEXT);
         $mform->setHelpButton('assessmenttype',array('competencyevidenceassessmenttype',get_string('assessmenttype','local'),'moodle'));
 
-        if(isset($ce)) {
+        if(!empty($ce)) {
             // editing existing competency evidence item
             // get id of the scale referred to by the evidence's proficiency
             $scaleid = get_field('comp_scale_values','scaleid','id',$ce->proficiency);
@@ -169,8 +181,10 @@ class totara_competency_evidence_form extends moodleform {
 
             $mform->addElement('hidden', 'positionid');
             $mform->setType('positionid', PARAM_INT);
-            $mform->setDefault('positionid', 0);
             $mform->addRule('positionid', null, 'numeric');
+
+            // Set default pos to user's current primary position
+            $mform->setDefault('positionid', !empty($position_assignment->positionid) ? $position_assignment->positionid : 0);
         }
 
         if($nojs) {
@@ -186,7 +200,7 @@ class totara_competency_evidence_form extends moodleform {
             $mform->setHelpButton('organisationselector',array('competencyevidenceorganisation',get_string('organisationatcompletion','local'),'moodle'));
             $mform->addElement('hidden', 'organisationid');
             $mform->setType('organisationid', PARAM_INT);
-            $mform->setDefault('organisationid', 0);
+            $mform->setDefault('organisationid', !empty($position_assignment->organisationid) ? $position_assignment->organisationid : 0);
             $mform->addRule('organisationid', null, 'numeric');
         }
 
