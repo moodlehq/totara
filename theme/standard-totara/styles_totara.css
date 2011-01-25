@@ -1342,49 +1342,6 @@ div.plan_box {
     margin: 10px 0;
 }
 
-/**
- * Manager ovewview of learning plans
- */
-.plan_manager_overview {
-    margin-bottom: 15px;
-    padding-bottom: 15px;
-    border-bottom: 1px solid #DBDBDB;
-}
-.plan_manager_overview h2.main {
-    font-weight: bold;
-}
-.plan_manager_overview .plan_box_image {
-    float: left;
-    padding: 7px;
-    border: 1px solid #DBDBDB;
-}
-.plan_manager_overview .plan_box_image img {
-    width: 100px;
-    height: 100px;
-}
-.plan_manager_overview .plan_box_actions_needed {
-    float: left;
-    margin-left: 10px;
-    width: 300px;
-}
-.plan_manager_overview .plan_box_actions_needed a {
-    margin: 0 0 10px;
-    display:block;
-    padding-left: 17px;
-}
-.plan_manager_overview .plan_box_actions_needed h3 {
-    margin: 0 0 10px;
-}
-.plan_manager_overview .plan_box_options {
-    float: right;
-    width: 170px;
-}
-.plan_manager_overview .plan_box_options a {
-    margin: 0 0 10px;
-    display: block;
-    padding:3px 0 3px 30px;
-}
-
 /*
  * Highlights
  */
