@@ -11,6 +11,9 @@ $string['plan:managepriorityscales'] = 'Manage priority scales';
 // Plan
 $string['approveplantext'] = 'Please review and approve the attached plan';
 $string['approveitemstext'] = 'Please review and approve the changes to the attached plan';
+$string['declineplantext'] = 'You are about to decline the requested plan, please confirm';
+$string['decline'] = 'Decline';
+$string['approveitemstext'] = 'Please review and approve the changes to the attached plan';
 $string['noitemsrequiringapproval'] = 'There are no items requiring approval';
 $string['plan'] = 'Plan';
 $string['review'] = 'Review';
@@ -50,7 +53,7 @@ $string['error:cannotviewpage'] = 'You cannot view this page';
 $string['recordoflearningcourses'] = 'Record of Learning: Courses';
 $string['recordoflearningcompetencies'] = 'Record of Learning: Competencies';
 $string['recordoflearningobjectives'] = 'Record of Learning: Objectives';
-$string['teammembers'] = 'Team Tembers';
+$string['teammembers'] = 'Team Members';
 $string['allteammembers'] = 'All Team Members';
 $string['currentlyviewing'] = 'Currently Viewing';
 $string['filterbystatus'] = 'Filter by status';
@@ -125,6 +128,7 @@ $string['notemplates'] = 'No plan templates have been created';
 $string['autoassign'] = 'Automatic assignment';
 $string['autoassignpos'] = 'Automatically assign by position';
 $string['autoassignorg'] = 'Automatically assign by organisation';
+$string['autoassigncourses'] = 'Include linked courses';
 $string['error:dateformat'] = 'Please enter a date in the format dd/mm/yyyy';
 
 // Generic Strings
@@ -586,3 +590,13 @@ $string['componentupdateshortlearner'] = '$a updated';
 $string['componentupdatelonglearner'] = '$a->component in learning plan \"$a->plan\" updated:<br> $a->updates';
 $string['componentupdateshortmanager'] = '$a->user updated $a->component';
 $string['componentupdatelongmanager'] = '$a->component in learning plan \"$a->plan\" updated:<br> $a->updates';
+
+$string['componentapproveshortlearner'] = '$a->name approved';
+$string['componentapprovelonglearner'] = '$a->component in learning plan \"$a->plan\" approved:<br> $a->updates';
+$string['componentapproveshortmanager'] = '$a->user approved $a->component $a->name';
+$string['componentapprovelongmanager'] = '$a->component in learning plan \"$a->plan\" approved:<br> $a->updates';
+
+$string['componentdeclineshortlearner'] = '$a->name declined';
+$string['componentdeclinelonglearner'] = '$a->component in learning plan \"$a->plan\" declined:<br> $a->updates';
+$string['componentdeclineshortmanager'] = '$a->user declined $a->component $a->name';
+$string['componentdeclinelongmanager'] = '$a->component in learning plan \"$a->plan\" declined:<br> $a->updates';

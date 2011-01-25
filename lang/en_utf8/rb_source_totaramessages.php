@@ -2,6 +2,7 @@
 // lang file for local/rb_sources/rb_source_totaramessage.php
 // columns
 $string['statement'] = 'Statement';
+$string['statementurl'] = 'Statement (linking to Review)';
 $string['msgstatus'] = 'Message status';
 $string['msgurgency'] = 'Message urgency';
 $string['msgtype'] = 'Message type';

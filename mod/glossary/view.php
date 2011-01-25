@@ -2,7 +2,8 @@
 /// This page prints a particular instance of glossary
     require_once("../../config.php");
     require_once("lib.php");
-    require_once("$CFG->libdir/rsslib.php");
+    require_once("{$CFG->libdir}/completionlib.php");
+    require_once("{$CFG->libdir}/rsslib.php");
 
     $id = optional_param('id', 0, PARAM_INT);           // Course Module ID
     $g  = optional_param('g', 0, PARAM_INT);            // Glossary ID

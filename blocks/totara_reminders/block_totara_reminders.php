@@ -90,6 +90,7 @@ class block_totara_reminders extends block_base {
                 $msgmeta = get_record('message_metadata', 'messageid', $msg->id);
                 $msgacceptdata = totara_msg_eventdata($msg->id, 'onaccept', $msgmeta);
                 $msgrejectdata = totara_msg_eventdata($msg->id, 'onreject', $msgmeta);
+                $msginfodata = totara_msg_eventdata($msg->id, 'oninfo', $msgmeta);
 
                 // user name + link
                 $userfrom_link = $CFG->wwwroot.'/user/view.php?id='.$msg->useridfrom;
@@ -122,7 +123,7 @@ class block_totara_reminders extends block_base {
                 $content .= "<td class=\"action\">";
                 $detailbuttons = array();
                 // Add 'accept' button
-                if (!empty($msgacceptdata)) {
+                if (!empty($msgacceptdata) && count((array)$msgacceptdata)) {
                     $btn = new object();
                     $btn->text = !empty($msgacceptdata->acceptbutton) ?
                         $msgacceptdata->acceptbutton : get_string('onaccept', 'block_totara_reminders');
@@ -132,13 +133,22 @@ class block_totara_reminders extends block_base {
                     $detailbuttons[] = $btn;
                 }
                 // Add 'reject' button
-                if (!empty($msgrejectdata)) {
+                if (!empty($msgrejectdata) && count((array)$msgrejectdata)) {
                     $btn = new object();
                     $btn->text = !empty($msgrejectdata->rejectbutton) ?
                         $msgrejectdata->rejectbutton : get_string('onreject', 'block_totara_reminders');
                     $btn->action = "{$CFG->wwwroot}/local/totara_msg/reject.php?id={$msg->id}";
                     $btn->redirect = !empty($msgrejectdata->data['redirect']) ?
                         $msgrejectdata->data['redirect'] : $FULLME;
+                    $detailbuttons[] = $btn;
+                }
+                // Add 'info' button
+                if (!empty($msginfodata) && count((array)$msginfodata)) {
+                    $btn = new object();
+                    $btn->text = !empty($msginfodata->infobutton) ?
+                        $msginfodata->infobutton : get_string('oninfo', 'block_totara_reminders');
+                    $btn->action = "{$CFG->wwwroot}/local/totara_msg/link.php?id={$msg->id}";
+                    $btn->redirect = $msginfodata->data['redirect'];
                     $detailbuttons[] = $btn;
                 }
                 $detailjs = totara_msg_alert_popup($msg->id, $detailbuttons);

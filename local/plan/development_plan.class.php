@@ -492,12 +492,6 @@ class development_plan {
 
         // Approval
         if ($this->status == DP_PLAN_STATUS_UNAPPROVED) {
-            // Approval request
-            if ($this->get_setting('confirm') == DP_PERMISSION_REQUEST) {
-                echo '<a href="'.$CFG->wwwroot.'/local/plan/action.php?id='.$this->id.'&amp;approvalrequest=1&amp;sesskey='.sesskey().'" title="'.get_string('sendapprovalrequest', 'local_plan').'">
-                    <img src="'.$CFG->pixpath.'/t/feedback_add.gif" alt="'.get_string('sendapprovalrequest', 'local_plan').'" />
-                    </a>';
-            }
 
             // Approve/Decline
             if (in_array($this->get_setting('confirm'), array(DP_PERMISSION_ALLOW, DP_PERMISSION_APPROVE))) {
@@ -1215,6 +1209,11 @@ class development_plan {
             $event->fullmessage = get_string('plan-request-manager-long', 'local_plan', $a);
             $event->acceptbutton = get_string('approve', 'local_plan').' '.get_string('plan', 'local_plan');
             $event->accepttext = get_string('approveplantext', 'local_plan');
+            $event->rejectbutton = get_string('decline', 'local_plan').' '.get_string('plan', 'local_plan');
+            $event->rejecttext = get_string('declineplantext', 'local_plan');
+            $event->infobutton = get_string('review', 'local_plan').' '.get_string('plan', 'local_plan');
+            $event->infotext = get_string('reviewplantext', 'local_plan');
+            $event->data = $data;
 
             tm_workflow_send($event);
         }
@@ -1245,6 +1244,10 @@ class development_plan {
         $message_data = array();
         $total_items = 0;
 
+        $data = array();
+        $data['userid'] = $this->userid;
+        $data['planid'] = $this->id;
+
         // Change items to requested status
         // Loop through components, generating message
         foreach ($unapproved as $component => $items) {
@@ -1257,11 +1260,6 @@ class development_plan {
                 $message_data[] = count($items).' '. get_string($comp->component, 'local_plan');
             }
         }
-
-        // do the IDP Plan workflow event
-        $data = array();
-        $data['userid'] = $this->userid;
-        $data['planid'] = $this->id;
 
         $event = new tm_task_eventdata($manager, 'plan', $data, $data);
         $event->userfrom = $learner;
@@ -1276,9 +1274,13 @@ class development_plan {
         $a->data = '<ul><li>'.implode($message_data, '</li><li>').'</li></ul>';
         $event->subject = get_string('item-request-manager-short', 'local_plan', $a);
         $event->fullmessage = get_string('item-request-manager-long', 'local_plan', $a);
-
-        $event->acceptbutton = get_string('review', 'local_plan').' '.get_string('items', 'local_plan');
-        $event->accepttext = get_string('approveitemstext', 'local_plan');
+        unset($event->acceptbutton);
+        unset($event->onaccept);
+        unset($event->rejectbutton);
+        unset($event->onreject);
+        $event->infobutton = get_string('review', 'local_plan').' '.get_string('items', 'local_plan');
+        $event->infotext = get_string('reviewitemstext', 'local_plan');
+        $event->data = $data;
 
         tm_workflow_send($event);
     }

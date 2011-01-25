@@ -112,7 +112,7 @@ class plan_objective_edit_form extends moodleform {
         }
 
         // Proficiency
-        $mform->addElement('select', 'scalevalueid', get_string('proficiency', 'local_plan'), $proflist);
+        $mform->addElement('select', 'scalevalueid', get_string('status', 'local_plan'), $proflist);
         $mform->addRule('scalevalueid', get_string('err_required', 'form'), 'required', '', 'client', false, false);
         $mform->setDefault('scalevalueid', $defaultobjscalevalueid);
 

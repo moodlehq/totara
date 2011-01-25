@@ -42,6 +42,7 @@ $string['error:badsortorder'] = 'Could not move that $a, there is something wron
 $string['error:noframeworksfound'] = 'No $a frameworks with one or more depth levels found.';
 $string['frameworkdoesntexist'] = 'The $a framework doesn\'t exist';
 $string['switchframework'] = 'Switch framework: ';
+$string['filterframework'] = 'Filter by framework: ';
 $string['selecteditems'] = 'Selected items';
 $string['selected'] = 'Selected';
 $string['nopathfoundforid'] = 'No path found for {$a->prefix} id {$a->id}';

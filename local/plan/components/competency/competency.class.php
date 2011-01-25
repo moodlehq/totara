@@ -40,6 +40,7 @@ class dp_competency_component extends dp_base_component {
             $settings[$this->component.'_priorityscale'] = $competencysettings->priorityscale;
             $settings[$this->component.'_autoassignorg'] = $competencysettings->autoassignorg;
             $settings[$this->component.'_autoassignpos'] = $competencysettings->autoassignpos;
+            $settings[$this->component.'_autoassigncourses'] = $competencysettings->autoassigncourses;
         }
     }
 
@@ -348,7 +349,7 @@ class dp_competency_component extends dp_base_component {
 
         $tableheaders = array(
             get_string('name','local_plan'),
-            get_string('proficiency', 'local_plan'),
+            get_string('status', 'local_plan'),
         );
         $tablecolumns = array(
             'fullname',
@@ -660,6 +661,7 @@ class dp_competency_component extends dp_base_component {
         if (!empty($stored_records)) {
             $oldrecords = get_records_list('dp_plan_competency_assign', 'id', implode(',', array_keys($stored_records)));
             $updates = '';
+            $approvals = null;
             begin_sql();
             foreach($stored_records as $itemid => $record) {
                 // Update the record
@@ -718,12 +720,17 @@ class dp_competency_component extends dp_base_component {
                                 'after'=>userdate($record->duedate, '%e %h %Y', $CFG->timezone, false)))."<br>";
                     }
                     if (!empty($record->approved) && $oldrecords[$itemid]->approved != $record->approved) {
-                        $updates .= $compprinted ? '' : $compheader;
-                        $compprinted = true;
-                        $updates .= get_string('approval', 'local_plan').' - '.
+                        $approval = new object();
+                        $text = $compheader;
+                        $text .= get_string('approval', 'local_plan').' - '.
                             get_string('changedfromxtoy', 'local_plan',
-                            (object)array('before'=>dp_get_approval_status_from_code($oldrecords[$itemid]->approved), 
+                            (object)array('before'=>dp_get_approval_status_from_code($oldrecords[$itemid]->approved),
                             'after'=>dp_get_approval_status_from_code($record->approved)))."<br>";
+                        $approval->text = $text;
+                        $approval->itemname = $competency->fullname;
+                        $approval->before = $oldrecords[$itemid]->approved;
+                        $approval->after = $record->approved;
+                        $approvals[] = $approval;
                     }
                     // TODO: proficiencies ??
                     $updates .= $compprinted ? '</p>' : '';
@@ -732,6 +739,12 @@ class dp_competency_component extends dp_base_component {
                 // Send update notification
                 if ($this->plan->status != DP_PLAN_STATUS_UNAPPROVED && strlen($updates)) {
                     $this->send_component_update_notification($updates);
+                }
+
+                if ($this->plan->status != DP_PLAN_STATUS_UNAPPROVED && count($approvals)>0) {
+                    foreach($approvals as $approval) {
+                        $this->send_component_approval_notification($approval);
+                    }
                 }
             } else {
                 rollback_sql();
@@ -832,8 +845,52 @@ class dp_competency_component extends dp_base_component {
         return true;
     }
 
+    function assign_linked_courses($competencies) {
+        // get array of competency ids
+        $cids = array();
+        foreach($competencies as $competency) {
+            $cids[] = $competency->id;
+        }
+        $comp_assignments = $this->get_item_assignments();
+
+        $evidence = $this->get_course_evidence_items($cids);
+        if($evidence) {
+            foreach($evidence as $compid => $linkedcourses) {
+                foreach($linkedcourses as $linkedcourse) {
+                    $courseid = $linkedcourse->courseid;
+                    if(!$this->plan->get_component('course')->is_item_assigned($courseid)) {
+                        // assign the course if not already assigned
+                        $this->plan->get_component('course')->assign_new_item($courseid);
+                    }
+
+                    $assignmentid = get_field('dp_plan_course_assign',
+                        'id', 'planid', $this->plan->id, 'courseid', $courseid);
+                    if(!$assignmentid) {
+                        // something went wrong trying to assign the course
+                        // don't attempt to create a relation
+                        continue;
+                    }
+
+                    // also lookup the competency assignment id
+                    $comp_assign_id = array_search($compid, $comp_assignments);
+                    // competency doesn't seem to be assigned
+                    if(!$comp_assign_id) {
+                        continue;
+                    }
+
+                    // create relation
+                    $this->plan->add_component_relation('competency', $comp_assign_id, 'course', $assignmentid);
+
+                }
+            }
+
+        }
+
+    }
+
     function assign_from_pos() {
         global $CFG;
+        $includecourses = $this->get_setting('autoassigncourses');
 
         require_once($CFG->dirroot.'/hierarchy/type/position/lib.php');
         // Get primary position
@@ -849,7 +906,14 @@ class dp_competency_component extends dp_base_component {
         }
         $position = new position();
         if ($competencies = $position->get_assigned_competencies($position_assignment->positionid)) {
-            return $this->assign_competencies($competencies);
+            if($this->assign_competencies($competencies)) {
+                // assign courses
+                if($includecourses) {
+                    $this->assign_linked_courses($competencies);
+                }
+            } else {
+                return false;
+            }
         }
 
         return true;
@@ -857,6 +921,7 @@ class dp_competency_component extends dp_base_component {
 
     function assign_from_org() {
         global $CFG;
+        $includecourses = $this->get_setting('autoassigncourses');
 
         require_once($CFG->dirroot.'/hierarchy/type/position/lib.php');
         // Get primary position
@@ -873,8 +938,15 @@ class dp_competency_component extends dp_base_component {
 
         require_once($CFG->dirroot.'/hierarchy/type/organisation/lib.php');
         $org = new organisation();
-        if ($competencies = $org->get_assigned_competencies($position_assignment->positionid)) {
-            return $this->assign_competencies($competencies);
+        if ($competencies = $org->get_assigned_competencies($position_assignment->organisationid)) {
+            if($this->assign_competencies($competencies)) {
+                // assign courses
+                if($includecourses) {
+                    $this->assign_linked_courses($competencies);
+                }
+            } else {
+                return false;
+            }
         }
 
         return true;

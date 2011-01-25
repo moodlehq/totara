@@ -1,28 +1,14 @@
 <?php
 $defaultframeworkid = get_field_sql("SELECT id FROM {$CFG->prefix}comp_framework ORDER BY sortorder ASC");
 $framework = optional_param('framework', $defaultframeworkid, PARAM_INT);
-$depth = get_records('comp_depth', 'frameworkid', $framework);
 require_once $CFG->libdir.'/tablelib.php';
 
-if(count($depth)>1) {
-    $displaydepth=true;
-} else {
-    $displaydepth=false;
-}
-
 if ($displaytitle == 'assignedcompetencies') {
-    if ($displaydepth) {
-        $columns = array('depthlevel', 'name');
-        $headers = array(
-            get_string('depthlevel', $displaytype),
-            get_string('name', $displaytype)
-        );
-    } else {
-        $columns = array('name');
-        $headers = array(
-            get_string('name', $displaytype),
-        );
-    }
+    $columns = array('depthlevel', 'name');
+    $headers = array(
+        get_string('depthlevel', $displaytype),
+        get_string('name', $displaytype)
+    );
 } elseif ($displaytitle == 'assignedcompetencytemplates') {
     $columns = array('name');
     $headers = array(
@@ -40,7 +26,8 @@ $table->define_columns($columns);
 $table->define_headers($headers);
 $table->set_attribute('id', 'list-'.$displaytitle);
 $table->set_attribute('width', '95%');
-$table->set_attribute('class', 'generalbox edit'.$displaytype.' boxaligncenter');
+$table->set_attribute('class', 'generalbox generaltable edit'.$displaytype.' boxaligncenter');
+$table->column_style('options', 'width', '5%');
 $table->setup();
 
 // Add one blank line
@@ -55,9 +42,7 @@ if (is_array($items) && count($items)) {
 
         $content = array();
 
-            if ($displaydepth) {
-                $content[] = $ritem->depth;
-            }
+            $content[] = $ritem->depth;
 
             if ($displaytitle == 'assignedcompetencies') {
                 $content[] = "<a href=\"{$CFG->wwwroot}/hierarchy/item/view.php?type={$displaytype}&id={$ritem->id}\">{$ritem->fullname}</a>";

@@ -37,7 +37,7 @@ class rb_reminders_embedded extends rb_base_embedded {
             ),
             array(
                 'type' => 'message_values',
-                'value' => 'statement',
+                'value' => 'statementurl',
                 'heading' => 'Details',
             ),
                 array(

@@ -19,7 +19,12 @@ $inactive = array();
 $frameworks = get_records('comp_framework', '', '', 'sortorder');
 $toprow[] = new tabobject('competencies', $CFG->wwwroot.'/hierarchy/item/view.php?id='.$id.'&edit='.$edit.'&type=position&comptype=competencies', get_string('competencies', 'competency'));
 
-$assignedcounts = get_records_sql_menu("SELECT comp.frameworkid, COUNT(*) from {$CFG->prefix}pos_competencies poscomp JOIN {$CFG->prefix}comp comp ON poscomp.competencyid=comp.id where poscomp.positionid={$id} GROUP BY comp.frameworkid");
+$assignedcounts = get_records_sql_menu("SELECT comp.frameworkid, COUNT(*)
+                                        FROM {$CFG->prefix}pos_competencies poscomp
+                                        INNER JOIN {$CFG->prefix}comp comp
+                                        ON poscomp.competencyid=comp.id
+                                        WHERE poscomp.positionid={$id}
+                                        GROUP BY comp.frameworkid");
 
 if(substr($currenttab, 0, 12) == 'competencies'){
 /*    if($frameworks){
@@ -64,7 +69,14 @@ foreach ($frameworks as $fw) {
     $count = isset($assignedcounts[$fw->id]) ? $assignedcounts[$fw->id] : 0;
     $fwoptions[$fw->id] = $fw->fullname . " ({$count})";
 }
-popup_form($CFG->wwwroot.'/hierarchy/item/view.php?id='.$id.'&amp;edit='.$edit.'&amp;type='.$type.'&amp;framework=', $fwoptions, 'switchframework', $fid, '', '', '', false, 'self', get_string('switchframework', 'hierarchy'));
+if (count($fwoptions)) {
+    $fwoptions = array(0 => get_string('all')) + $fwoptions;
+    echo '<div style="text-align: right">';
+    popup_form($CFG->wwwroot.'/hierarchy/item/view.php?id='.$id.'&amp;edit='.$edit.'&amp;type='.$type.'&amp;framework=', $fwoptions, 'switchframework', $fid, '', '', '', false, 'self', get_string('filterframework', 'hierarchy'));
+    echo '</div>';
+} else {
+    echo get_string('noframeworks', 'competency');
+}
 echo '</div>';
 
 ?>

@@ -75,7 +75,10 @@ if ($deleteexisting) {
 
 $str_remove = get_string('remove');
 
+$rc = 0;
+
 foreach ($add as $addition) {
+    $rc = $rc == 0 ? 1 : 0;
     if (in_array($addition, array_keys($currentlyassigned))) {
         // Skip assignment
         continue;
@@ -94,9 +97,6 @@ foreach ($add as $addition) {
     // Load depths
     $depths = $competencies->get_depths();
 
-    // Get custom fields
-    $customfields = $competencies->get_custom_fields($addition);
-
     // Add relationship
     $relationship = new Object();
     $relationship->positionid = $position->id;
@@ -112,22 +112,17 @@ foreach ($add as $addition) {
         redirect($url);
     } else {
         // Return html
-        echo '<tr class="r1">';
+        echo "<tr class=\"r{$rc}\">";
 
+
+        echo '<td class="cell c0">';
+        echo $depths[$related->depthid]->fullname;
+        echo '</td>';
         echo '<td class="cell c0">';
         echo "<a href=\"{$CFG->wwwroot}/hierarchy/item/view.php?type=competency&id={$related->id}\">{$related->fullname}</a>";
         echo '</td>';
 
-        // Print the custom fields
-        $colcount = 1;
-        foreach ($customfields as $cf) {
-            echo "<td class=\"cell c{$colcount}\">";
-            echo format_string($cf->data);
-            echo '</td>';
-            $colcount++;
-        }
-
-        echo "<td class=\"cell c{$colcount}\">";
+        echo "<td class=\"cell c0\">";
         echo "<a href=\"{$CFG->wwwroot}/hierarchy/type/position/assigncompetency/remove.php?id={$relationship->id}&position={$position->id}\" title=\"$str_remove\">".
              "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_remove\" /></a>";
         echo '</td>';

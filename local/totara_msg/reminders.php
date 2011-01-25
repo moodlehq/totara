@@ -136,12 +136,6 @@
         $out .= '</noscript>';
         $out .= '</td>';
         $out .= '<td>';
-        $out .= '<input type="submit" name="accept" id="totara-accept" value="'. get_string('accept','local_totara_msg') .'" style="display:none;"/>';
-        $out .= '</td>';
-        $out .= '<td>';
-        $out .= '<input type="submit" name="reject" id="totara-reject" value="'. get_string('reject','local_totara_msg') .'" style="display:none;"/>';
-        $out .= '</td>';
-        $out .= '<td>';
         $out .= '<input type="submit" name="dismiss" id="totara-dismiss" value="'. get_string('dismiss','local_totara_msg') .'" style="display:none;"/>';
         $out .= '</td>';
         $out .= "</tr></table></center>";

@@ -25,6 +25,7 @@ class dp_userdriven_workflow extends dp_base_workflow {
         // competency specific settings
         $this->cfg_competency_autoassignpos = 1;
         $this->cfg_competency_autoassignorg = 1;
+        $this->cfg_competency_autoassigncourses = 1;
         $this->cfg_competency_duedatemode = DP_DUEDATES_NONE;
         $this->cfg_competency_prioritymode = DP_DUEDATES_OPTIONAL;
         $this->cfg_competency_priorityscale = $defaultpriority;
