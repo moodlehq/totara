@@ -981,9 +981,15 @@ totaraDialog_handler_treeview_singleselect.prototype.every_load = function() {
 totaraDialog_handler_treeview_singleselect.prototype._set_current_selected = function() {
     var current_val = $('input[name='+this.value_element_name+']').val();
     var current_text = $('#'+this.text_element_id).text();
+    var max_title_length = 60;
     if (!(current_val && current_text)) {
         current_val = 0;
         current_text = 'None';
+    }
+
+    label_length = $('#treeview_currently_selected_span_'+this._title+' label').html().length;
+    if (current_text.length+label_length > max_title_length) {
+        current_text = current_text.substring(0, max_title_length-label_length)+'...';
     }
 
     $('#treeview_selected_text_'+this._title).text(current_text);
@@ -1004,11 +1010,12 @@ totaraDialog_handler_treeview_singleselect.prototype._set_current_selected = fun
  * @return void
  */
 totaraDialog_handler_treeview_singleselect.prototype._save = function() {
+    dialog = this;
 
     // Get selected id
     var selected_val = $('#treeview_selected_val_'+this._title).val();
     // Get selected text
-    var selected_text = $('#treeview_selected_text_'+this._title).text();
+    var selected_text = $('.treeview span.unclickable#item_'+selected_val+' a', dialog._container).html();
 
     // Update value element
     if (this.value_element_name) {
@@ -1076,17 +1083,28 @@ totaraDialog_handler_treeview_singleselect.prototype._make_selectable = function
 
         var item = $(this);
         var clone = item.clone();
+        var max_title_length = 60;
 
         $('.treeview span.unclickable', dialog._container).addClass('clickable');
         $('.treeview span.unclickable', dialog._container).removeClass('unclickable');
         dialog._toggle_items($(this).attr('id'), false);
 
-        $('#treeview_selected_text_'+dialog._title).html($('a', clone).html());
+        label_length = $('#treeview_currently_selected_span_'+dialog._title+' label').html().length;
+        if ($('a', clone).html().length+label_length > max_title_length) {
+            selected_title = $('a', clone).html().substring(0, max_title_length-label_length)+'...';
+        } else {
+            selected_title = $('a', clone).html();
+        }
+
+        $('#treeview_selected_text_'+dialog._title).html(selected_title);
         var selected_id = clone.attr('id').split('_')[1];
         $('#treeview_selected_val_'+dialog._title).val(selected_id);
 
         // Make sure the info is displayed
         $('#treeview_currently_selected_span_'+dialog._title).css('display', 'inline');
+
+        // Re-bind to right elements
+        dialog._make_selectable(parent_element);
 
         return false;
     });
