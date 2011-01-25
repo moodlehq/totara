@@ -213,8 +213,15 @@ class reportbuilderlib_test extends prefix_changing_test_case {
     }
 
     function test_reportbuilder_restore_saved_search() {
-        global $SESSION;
+        global $SESSION, $USER;
         $rb = new reportbuilder(1, null, null, 1);
+
+        // ensure that saved search belongs to current user
+        $todb = new object();
+        $todb->id = 1;
+        $todb->userid = $USER->id;
+        update_record('report_builder_saved', $todb);
+
         // should be able to restore a saved search
         $this->assertTrue($rb->restore_saved_search());
         // the correct SESSION var should now be set
@@ -305,7 +312,9 @@ class reportbuilderlib_test extends prefix_changing_test_case {
     // display_search() and get_sql_filter() not tested as they print output directly to screen
 
     function test_reportbuilder_is_capable() {
+        global $USER;
         $rb = $this->rb;
+
         // should return true if accessmode is zero
         $this->assertTrue($rb->is_capable(1));
         $todb = new object();
@@ -368,14 +377,14 @@ class reportbuilderlib_test extends prefix_changing_test_case {
         insert_record('report_builder_settings', $todb);
         $rb = new reportbuilder(1);
         // should return the appropriate SQL snippet to OR the restrictions if content mode = 1
-        $this->assertPattern('/\(base\.userid = 2 OR \(base\.timemodified > \d+ AND base\.timemodified != 0 \)\)/',$rb->get_content_restrictions());
+        $this->assertPattern('/\(base\.userid = \d+ OR \(base\.timemodified > \d+ AND base\.timemodified != 0 \)\)/',$rb->get_content_restrictions());
         $todb = new object();
         $todb->id = 1;
         $todb->contentmode = REPORT_BUILDER_CONTENT_MODE_ALL;
         update_record('report_builder', $todb);
         $rb = new reportbuilder(1);
         // should return the appropriate SQL snippet to AND the restrictions if content mode = 2
-        $this->assertPattern('/\(base\.userid = 2 AND \(base\.timemodified > \d+ AND base\.timemodified != 0 \)\)/',$rb->get_content_restrictions());
+        $this->assertPattern('/\(base\.userid = \d+ AND \(base\.timemodified > \d+ AND base\.timemodified != 0 \)\)/',$rb->get_content_restrictions());
 
     }
 
@@ -409,7 +418,7 @@ class reportbuilderlib_test extends prefix_changing_test_case {
         insert_record('report_builder_settings', $todb);
         $rb = new reportbuilder(1);
         // should return the appropriate text description if content mode = 1
-        $this->assertPattern('/The user is "Admin User" or The completion date occurred after .*/', current($rb->get_restriction_descriptions('content')));
+        $this->assertPattern('/The user is ".*" or The completion date occurred after .*/', current($rb->get_restriction_descriptions('content')));
         $todb = new object();
         $todb->id = 1;
         $todb->contentmode = REPORT_BUILDER_CONTENT_MODE_ALL;
