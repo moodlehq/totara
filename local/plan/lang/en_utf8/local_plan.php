@@ -61,7 +61,6 @@ $string['planstatusunapproved'] = 'Unapproved';
 $string['planhasunapproveditems'] = 'This plan has draft items:';
 $string['planhasunapproveditem'] = 'This plan has a draft item:';
 $string['error:creationaftercompletion'] = 'Completion Date must not be before Date Created';
-$string['youcurrentlyhavenolearningplans'] = 'You currently have no learning plans';
 
 $string['noclassfileforrole'] = 'Class file \'$a->classfile\' could not be found for role of \'$->role\'';
 $string['noclassforrole'] = 'Class \'$a->class\' does not exist for role \'$a->role\'.';
