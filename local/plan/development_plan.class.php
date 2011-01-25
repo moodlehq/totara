@@ -492,12 +492,6 @@ class development_plan {
 
         // Approval
         if ($this->status == DP_PLAN_STATUS_UNAPPROVED) {
-            // Approval request
-            if ($this->get_setting('confirm') == DP_PERMISSION_REQUEST) {
-                echo '<a href="'.$CFG->wwwroot.'/local/plan/action.php?id='.$this->id.'&amp;approvalrequest=1&amp;sesskey='.sesskey().'" title="'.get_string('sendapprovalrequest', 'local_plan').'">
-                    <img src="'.$CFG->pixpath.'/t/feedback_add.gif" alt="'.get_string('sendapprovalrequest', 'local_plan').'" />
-                    </a>';
-            }
 
             // Approve/Decline
             if (in_array($this->get_setting('confirm'), array(DP_PERMISSION_ALLOW, DP_PERMISSION_APPROVE))) {
