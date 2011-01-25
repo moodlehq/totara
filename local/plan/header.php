@@ -61,11 +61,6 @@ echo dp_display_plans_menu($this->userid, $this->id, $this->role);
 // Plan page content
 print_container_start(false, '', 'dp-plan-content');
 
-// Display the managers view if appropriate
-if ($this->role == 'manager') {
-    echo dp_display_manager_overview($this->userid);
-}
-
 echo $this->display_plan_message_box();
 
 print_heading('<span class="dp-plan-prefix">'.get_string('plan','local_plan') . ':</span> ' . $fullname);
