@@ -87,10 +87,10 @@ class user_position_assignment_form extends moodleform {
             $mform->addElement('select','positionid', get_string('chooseposition','position'), $allpositions);
             $mform->setHelpButton('positionid', array('userpositionposition', get_string('chooseposition', 'position')), true);
         } else {
-            $mform->addElement('static', 'positionselector', get_string('position', 'position'),
-                '<span id="positiontitle">'.htmlentities($position_title).'</span>
-                '.
-                ($can_edit ? '<input type="button" value="'.get_string('chooseposition', 'position').'" id="show-position-dialog" />' : '')
+            $mform->addElement('static', 'positionselector', get_string('position', 'position').
+                    '<img class="req" title="Required field" alt="Required field" src="'.$CFG->pixpath.'/req.gif">',
+                '<span id="positiontitle"> '.htmlentities($position_title).'</span>'.
+                    ($can_edit ? '<input type="button" value="'.get_string('chooseposition', 'position').'" id="show-position-dialog" />' : '')
             );
             $mform->addElement('hidden', 'positionid');
             $mform->setType('positionid', PARAM_INT);
