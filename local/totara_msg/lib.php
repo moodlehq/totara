@@ -340,7 +340,7 @@ function totara_msg_accept_reject_action($id) {
     $msgmeta = get_record('message_metadata', 'messageid', $id);
     $msgacceptdata = totara_msg_eventdata($id, 'onaccept');
 
-    $returnto = ($msgmeta->msgtype == TOTARA_MSG_TYPE_LINK) ? $msgacceptdata->data['redirect'] : $FULLME;
+    $returnto = ($msgmeta->msgtype == TOTARA_MSG_TYPE_LINK && isset($msgacceptdata->data['redirect'])) ? $msgacceptdata->data['redirect'] : $FULLME;
 
     $subject = format_string($msg->subject);
     $onaccept_str = format_string(isset($msgacceptdata->acceptbutton) ? $msgacceptdata->acceptbutton : get_string('onaccept', 'block_totara_reminders'));
