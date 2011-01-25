@@ -500,15 +500,6 @@ $string['linkedobjectives'] = 'Linked objectives';
 $string['nocourses'] = 'No courses.';
 $string['nolinkedcourses'] = 'No linked courses.';
 $string['linkedcourses'] = 'Linked courses';
-$string['userslearning'] = '$a->name\' learning';
-$string['managingyourteam'] = 'Managing your team members learning plans';
-$string['sendmessage'] = 'Message $a->firstname';
-$string['viewprofile'] = 'View $a->firstname\' profile';
-$string['startevaluation'] = 'Start evaluation';
-$string['actionneeded'] = 'Action needed';
-$string['planawaitingapproval'] = 'Plan awaiting your approval: $a->planname';
-$string['itemawaitingapproval'] = '1 item awaiting your approval in plan: $a->planname';
-$string['itemsawaitingapproval'] = '$a->amount items awaiting your approval in plan: $a->planname';
 
 $string['planname'] = 'Plan name';
 $string['plandescription'] = 'Plan description';
