@@ -306,15 +306,14 @@
                 // update links for none js version of form
                 $js = $nojs ? '&amp;nojs=1' : '';
 
-                // Hide Positions until they have useful functionality
                 // Loop through preset position types
-                /*foreach ($POSITION_TYPES as $ptype) {
+                foreach ($POSITION_TYPES as $ptype) {
                     $secondrow[] = new tabobject(
                         'position'.$ptype,
                         $CFG->wwwroot.'/user/positions.php?user='.$user->id.'&amp;courseid='.$course->id.'&amp;type='.$ptype.$js,
                         get_string('type'.$ptype, 'position')
                     );
-                }*/
+                }
 
                 // Get current sub tab
                 $positiontab = substr($currenttab, 8);
