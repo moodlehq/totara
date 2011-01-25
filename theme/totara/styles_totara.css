@@ -1980,6 +1980,16 @@ body#admin-user table.generaltable td.c7 {
     padding: 5px 5px 5px 20px;
 }
 
+.plan_manager_overview .option_message {
+    background: url("images/option_message.gif") no-repeat left center transparent;
+}
+.plan_manager_overview .option_profile {
+    background: url("images/option_profile.gif") no-repeat left center transparent;
+}
+.plan_manager_overview .option_evaluation {
+    background: url("images/option_evaluation.gif") no-repeat left center transparent;
+}
+
 /*****************************************************************************/
 /** Record of Learning **/
 /*****************************************************************************/
