@@ -515,6 +515,8 @@ function dp_display_plans_menu($userid, $selectedid=0, $role='learner') {
         }
     }
 
+    $no_plans = true;
+
     // Display active plans
     if ($plans = dp_get_plans($userid, array(DP_PLAN_STATUS_APPROVED))) {
         if ($role == 'manager') {
@@ -532,6 +534,7 @@ function dp_display_plans_menu($userid, $selectedid=0, $role='learner') {
         if ($role == 'manager') {
             $out .= "</div>";
         }
+	$no_plans = false;
     }
 
     // Display unapproved plans
@@ -551,6 +554,7 @@ function dp_display_plans_menu($userid, $selectedid=0, $role='learner') {
         if ($role == 'manager') {
             $out .= "</div>";
         }
+	$no_plans = false;
     }
 
     // Display completed plans
@@ -570,6 +574,13 @@ function dp_display_plans_menu($userid, $selectedid=0, $role='learner') {
         if ($role == 'manager') {
             $out .= "</div>";
         }
+	$no_plans = false;
+    }
+
+    // If the user has no plans at all then
+    if ($no_plans) {
+	$out .= print_heading(get_string('activeplans', 'local_plan'), 'left', 3, 'main', true);
+	$out .= '<div class="dp-plans-menu-section"><br />'.get_string('youcurrentlyhavenolearningplans','local_plan').'</div>';
     }
 
     // Display record of learning (rol)
