@@ -60,7 +60,11 @@ class local_oauth_renderer {
         $formcontinue = new single_button(new moodle_url("/local/oauth/admin/registrations.php", $optionsyes), get_string('delete'), 'post');
         $formcancel = new single_button(new moodle_url("/local/oauth/admin/registrations.php", $optionsno), get_string('cancel'), 'get');
         $sitename = html_writer::tag('strong', $site->name);
-        return $OUTPUT->confirm(get_string('deleteconfirmation', 'local_oauth', $sitename), $formcontinue, $formcancel);
+        $output = html_writer::start_tag('div', array('id' => 'notice', 'class' => 'box '.renderer_base::prepare_classes('generalbox')));
+        $output .= html_writer::tag('p', get_string('deleteconfirmation', 'local_oauth', $sitename));
+        $output .= html_writer::tag('div', core_renderer::render_single_button($formcontinue) . core_renderer::render_single_button($formcancel), array('class' => 'buttons'));
+        $output .= '</div>';
+        return $output;
     }
 
 
