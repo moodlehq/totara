@@ -237,6 +237,7 @@ function tm_message_send($eventdata) {
             // add the metadata record
             $eventdata->onaccept = isset($eventdata->onaccept) ? addslashes(serialize($eventdata->onaccept)) : null;
             $eventdata->onreject = isset($eventdata->onreject) ? addslashes(serialize($eventdata->onreject)) : null;
+            $eventdata->oninfo = isset($eventdata->oninfo) ? addslashes(serialize($eventdata->oninfo)) : null;
 
             // set the default role to student / Learner
             if (!isset($eventdata->roleid)) {
@@ -262,6 +263,7 @@ function tm_message_send($eventdata) {
             $metadata->icon             = $eventdata->icon;
             $metadata->onaccept         = $eventdata->onaccept;
             $metadata->onreject         = $eventdata->onreject;
+            $metadata->oninfo           = $eventdata->oninfo;
             $metadata->roleid           = $eventdata->roleid;
             insert_record('message_metadata', $metadata);
             return $eventdata->savedmessageid;
@@ -451,19 +453,31 @@ function tm_workflow_send($eventdata) {
         debugging('tm_message_workflow_send() must have have contexturl');
         return false;
     }
-    if (!isset($eventdata->acceptbutton) || empty($eventdata->acceptbutton)) {
-        $eventdata->acceptbutton = get_string('nextaction', 'local_totara_msg');
+    if (!empty($eventdata->acceptbutton)) {
+        $onaccept = new stdClass();
+        $onaccept->action = 'plan';
+        $onaccept->text = $eventdata->accepttext;
+        $onaccept->data = $eventdata->data;
+        $onaccept->acceptbutton = $eventdata->acceptbutton;
+        $eventdata->onaccept = $onaccept;
     }
-    if (!isset($eventdata->accepttext)) {
-        $eventdata->accepttext = '';
+    if (!empty($eventdata->rejectbutton)) {
+        $onreject = new stdClass();
+        $onreject->action = 'plan';
+        $onreject->text = $eventdata->rejecttext;
+        $onreject->data = $eventdata->data;
+        $onreject->rejectbutton = $eventdata->rejectbutton;
+        $eventdata->onreject = $onreject;
     }
-    $onaccept = new stdClass();
-    $onaccept->action = 'link';
-    $onaccept->text = $eventdata->accepttext;
-    $onaccept->data = array('redirect' => $eventdata->contexturl);
-    $onaccept->acceptbutton = $eventdata->acceptbutton;
-    $eventdata->onaccept = $onaccept;
-    $eventdata->onreject = null;
+    if (!empty($eventdata->infobutton)) {
+        $oninfo = new stdClass();
+        $oninfo->action = 'plan';
+        $oninfo->text = $eventdata->infotext;
+        $oninfo->data = $eventdata->data;
+        $oninfo->data['redirect'] = $eventdata->contexturl;
+        $oninfo->infobutton = $eventdata->infobutton;
+        $eventdata->oninfo = $oninfo;
+    }
 
     $result = tm_message_send($eventdata);
 
@@ -516,6 +530,39 @@ function tm_message_reminder_accept($id) {
     if ($message) {
         // get the event data
         $eventdata = totara_msg_eventdata($id, 'onaccept');
+        // grab the onaccept handler
+        if (isset($eventdata->action)) {
+            $plugin = tm_message_workflow_object($eventdata->action);
+            if (!$plugin) {
+                return false;
+            }
+
+            // run the onaccept phase
+            $result = $plugin->onaccept($eventdata->data, $message);
+        }
+
+        // finally - dismiss this message as it has now been processed
+        $result = tm_message_mark_message_read($message, time());
+        return $result;
+    }
+    else {
+        return false;
+    }
+}
+
+/**
+ * Redirect to a reminder's context URL
+ *
+ * @param int $id message id
+ * @return boolean success
+ */
+function tm_message_reminder_link($id) {
+    global $CFG;
+
+    $message = get_record('message20', 'id', $id);
+    if ($message) {
+        // get the event data
+        $eventdata = totara_msg_eventdata($id, 'oninfo');
 
         // grab the onaccept handler
         if (isset($eventdata->action)) {

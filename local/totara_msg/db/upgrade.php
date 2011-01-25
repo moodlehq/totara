@@ -145,6 +145,15 @@ function xmldb_local_totara_msg_upgrade($oldversion) {
 /// This is temporary until Totara goes to 2.x - then migrate local/totara_msg/message20 to message
     upgrade_plugins('local','local/totara_msg/message20/output',"$CFG->wwwroot/$CFG->admin/index.php");
 
+    if ($result && $oldversion < 2011011902) {
+
+        $table = new XMLDBTable('message_metadata');
+        // add the roleid
+        $field = new XMLDBField('oninfo');
+        $field->setAttributes(XMLDB_TYPE_TEXT, 'medium', null, null, null, null, null, null);
+        $result = $result && add_field($table, $field);
+    }
+
     return $result;
 }
 

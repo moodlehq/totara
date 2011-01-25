@@ -126,8 +126,13 @@ function totara_msg_eventdata($id, $event, $metadata=null) {
     error_reporting(E_ALL & !E_NOTICE);
     if ($event == 'onaccept') {
         $eventdata = unserialize($metadata->onaccept);
-    }
-    else {
+    } elseif ($event == 'oninfo') {
+        if (isset($metadata->oninfo)) {
+            $eventdata = unserialize($metadata->oninfo);
+        } else {
+            $eventdata = new object;
+        }
+    } else {
         $eventdata = unserialize($metadata->onreject);
     }
     error_reporting(E_ALL);
@@ -217,9 +222,11 @@ function totara_msg_alert_popup($id, $extrabuttons=array()) {
                         'Cancel': function() { handler._cancel() },
                         'Dismiss': function() { handler._confirm('{$CFG->wwwroot}/local/totara_msg/dismiss.php?id={$id}', '{$FULLME}') }";
                         foreach ($extrabuttons as $btn) {
-                            $return .= ", '{$btn->text}': function() { handler._confirm('{$btn->action}', '{$btn->redirect}') },";
+                            $return .= ",
+                        '{$btn->text}': function() { handler._confirm('{$btn->action}', '{$btn->redirect}') }";
                         }
-                    $return .= "},
+                    $return .= "
+                    },
                     title: '<h2>{$str}<\/h2>',
                     width: 600,
                     height: 400
