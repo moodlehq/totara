@@ -61,6 +61,7 @@ $string['planstatusunapproved'] = 'Unapproved';
 $string['planhasunapproveditems'] = 'This plan has draft items:';
 $string['planhasunapproveditem'] = 'This plan has a draft item:';
 $string['error:creationaftercompletion'] = 'Completion Date must not be before Date Created';
+$string['youcurrentlyhavenolearningplans'] = 'You currently have no learning plans';
 
 $string['noclassfileforrole'] = 'Class file \'$a->classfile\' could not be found for role of \'$->role\'';
 $string['noclassforrole'] = 'Class \'$a->class\' does not exist for role \'$a->role\'.';
@@ -499,6 +500,15 @@ $string['linkedobjectives'] = 'Linked objectives';
 $string['nocourses'] = 'No courses.';
 $string['nolinkedcourses'] = 'No linked courses.';
 $string['linkedcourses'] = 'Linked courses';
+$string['userslearning'] = '$a->name\' learning';
+$string['managingyourteam'] = 'Managing your team members learning plans';
+$string['sendmessage'] = 'Message $a->firstname';
+$string['viewprofile'] = 'View $a->firstname\' profile';
+$string['startevaluation'] = 'Start evaluation';
+$string['actionneeded'] = 'Action needed';
+$string['planawaitingapproval'] = 'Plan awaiting your approval: $a->planname';
+$string['itemawaitingapproval'] = '1 item awaiting your approval in plan: $a->planname';
+$string['itemsawaitingapproval'] = '$a->amount items awaiting your approval in plan: $a->planname';
 
 $string['planname'] = 'Plan name';
 $string['plandescription'] = 'Plan description';

@@ -1339,21 +1339,50 @@ span.priority5of5 {
  */
 div.plan_box {
     padding: 10px;
-    margin: 5px 10%;
-}
-div.plan_box_completed {
-    background-color: #ddd;
-    border: 1px solid #aaa;
+    margin: 10px 0;
 }
 
-div.plan_box_plain {
-    background-color: #eef;
-    border: 1px solid #ccc;
+/**
+ * Manager ovewview of learning plans
+ */
+.plan_manager_overview {
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #DBDBDB;
 }
-
-div.plan_box_action {
-    background-color: #ffc;
-    border: 1px solid #cc6;
+.plan_manager_overview h2.main {
+    font-weight: bold;
+}
+.plan_manager_overview .plan_box_image {
+    float: left;
+    padding: 7px;
+    border: 1px solid #DBDBDB;
+}
+.plan_manager_overview .plan_box_image img {
+    width: 100px;
+    height: 100px;
+}
+.plan_manager_overview .plan_box_actions_needed {
+    float: left;
+    margin-left: 10px;
+    width: 300px;
+}
+.plan_manager_overview .plan_box_actions_needed a {
+    margin: 0 0 10px;
+    display:block;
+    padding-left: 17px;
+}
+.plan_manager_overview .plan_box_actions_needed h3 {
+    margin: 0 0 10px;
+}
+.plan_manager_overview .plan_box_options {
+    float: right;
+    width: 170px;
+}
+.plan_manager_overview .plan_box_options a {
+    margin: 0 0 10px;
+    display: block;
+    padding:3px 0 3px 30px;
 }
 
 /*
@@ -1737,6 +1766,18 @@ table.dp-plan-component-items td select.approval {
 
 #local-plan-template-advancedworkflow .singlebutton {
     margin-top:5px;
+}
+
+#dp-plans-list-active-plans .c1,
+#dp-plans-list-active-plans .c2,
+#dp-plans-list-active-plans .c3,
+#dp-plans-list-unapproved-plans .c1,
+#dp-plans-list-unapproved-plans .c2,
+#dp-plans-list-unapproved-plans .c2,
+#dp-plans-list-completed-plans .c1,
+#dp-plans-list-completed-plans .c2,
+#dp-plans-list-completed-plans .c3 {
+    width: 64px;
 }
 
 /*****************************************************************************/
