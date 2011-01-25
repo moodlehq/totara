@@ -11,6 +11,9 @@ $string['plan:managepriorityscales'] = 'Manage priority scales';
 // Plan
 $string['approveplantext'] = 'Please review and approve the attached plan';
 $string['approveitemstext'] = 'Please review and approve the changes to the attached plan';
+$string['declineplantext'] = 'You are about to decline the requested plan, please confirm';
+$string['decline'] = 'Decline';
+$string['approveitemstext'] = 'Please review and approve the changes to the attached plan';
 $string['noitemsrequiringapproval'] = 'There are no items requiring approval';
 $string['plan'] = 'Plan';
 $string['review'] = 'Review';
