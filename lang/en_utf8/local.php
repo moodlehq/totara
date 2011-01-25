@@ -169,6 +169,7 @@ $string['addanothercolumn'] = 'Add another column...';
 $string['error:couldnotupdatereport'] = 'Could not update report';
 $string['myteam'] = 'My Team';
 $string['teammembers'] = 'Team Members';
+$string['calendar'] = 'Calendar';
 $string['myteaminstructionaltext'] = 'Choose a team member from the table on the right.';
 
 $string['local:markcomplete'] = 'Mark user\'s complete in course completion';
