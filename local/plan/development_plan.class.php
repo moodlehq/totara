@@ -814,6 +814,9 @@ class development_plan {
         $canapproveplan = (in_array($this->get_setting('confirm'), array(DP_PERMISSION_APPROVE, DP_PERMISSION_ALLOW)));
 
         $message = '';
+        if ($viewingasmanager) {
+            $message .= $this->display_viewing_users_plan($this->userid);
+        }
 
         if ($completed) {
             $message .= $this->display_completed_plan_message();
