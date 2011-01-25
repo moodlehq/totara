@@ -1980,6 +1980,17 @@ body#admin-user table.generaltable td.c7 {
     padding: 5px 5px 5px 20px;
 }
 
+div.plan_box {
+    background: url("images/alert-box-bg.gif") repeat-x left bottom #FFFFFF;
+    border:2px solid #43C4E3;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    border-radius: 2px;
+}
+
+.plan_manager_overview .plan_box_actions_needed a {
+    background: url("images/arw_teal.gif") no-repeat left 3px transparent;
+}
 .plan_manager_overview .option_message {
     background: url("images/option_message.gif") no-repeat left center transparent;
 }
