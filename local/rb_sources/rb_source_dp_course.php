@@ -311,6 +311,17 @@ from
                 )
             );
 
+        $columnoptions[] = new rb_column_option(
+                'course_info_data',
+                'coursetypeicon',
+                get_string('coursetypeicon', 'rb_source_dp_course'),
+                'course.coursetype',
+                array(
+                    'displayfunc' => 'course_type_icon',
+                    'defaultheading' => get_string('coursetypeicon', 'rb_source_dp_course'),
+                )
+            );
+
         return $columnoptions;
     }
 
