@@ -1765,6 +1765,18 @@ table.dp-plan-component-items td select.approval {
     margin-top:5px;
 }
 
+#dp-plans-list-active-plans .c1,
+#dp-plans-list-active-plans .c2,
+#dp-plans-list-active-plans .c3,
+#dp-plans-list-unapproved-plans .c1,
+#dp-plans-list-unapproved-plans .c2,
+#dp-plans-list-unapproved-plans .c2,
+#dp-plans-list-completed-plans .c1,
+#dp-plans-list-completed-plans .c2,
+#dp-plans-list-completed-plans .c3 {
+    width: 64px;
+}
+
 /*****************************************************************************/
 /** Dialogs **/
 /*****************************************************************************/
