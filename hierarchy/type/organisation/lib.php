@@ -144,9 +144,8 @@ class organisation extends hierarchy {
     function display_extra_view_info($item) {
         global $CFG, $can_edit, $editingon;
 
-        $defaultframeworkid = get_field_sql("SELECT id FROM {$CFG->prefix}comp_framework ORDER BY sortorder ASC");
         $comptype = optional_param('comptype', 'competencies', PARAM_TEXT);
-        if(!$fid = optional_param('framework', $defaultframeworkid, PARAM_INT)){
+        if(!$fid = optional_param('framework', 0, PARAM_INT)){
             $fid = 0;
         }
 
@@ -159,27 +158,22 @@ class organisation extends hierarchy {
 
         include($CFG->dirroot.'/hierarchy/type/organisation/tabs.php');
 
-        if($defaultframeworkid!=0){
-            if($comptype=='competencies') {
-                // Display assigned competencies
-                $items = $this->get_assigned_competencies($item, $fid);
-                $addurl = $CFG->wwwroot.'/hierarchy/type/organisation/assigncompetency/find.php?assignto='.$item->id;
-                $displaytitle = 'assignedcompetencies';
-                $displaytype = 'competency';
-                $displaydepth = true;
-            } elseif($comptype == 'comptemplates') {
-                // Display assigned competencies
-                $items = $this->get_assigned_competency_templates($item, $fid);
-                $addurl = $CFG->wwwroot.'/hierarchy/type/organisation/assigncompetencytemplate/find.php?assignto='.$item->id;
-                $displaytitle = 'assignedcompetencytemplates';
-                $displaydepth = false;
-            }
+        if($comptype=='competencies') {
+            // Display assigned competencies
+            $items = $this->get_assigned_competencies($item, $fid);
+            $addurl = $CFG->wwwroot.'/hierarchy/type/organisation/assigncompetency/find.php?assignto='.$item->id;
+            $displaytitle = 'assignedcompetencies';
             $displaytype = 'competency';
-            require $CFG->dirroot.'/hierarchy/type/organisation/view-hierarchy-items.html';
+            $displaydepth = true;
+        } elseif($comptype == 'comptemplates') {
+            // Display assigned competencies
+            $items = $this->get_assigned_competency_templates($item, $fid);
+            $addurl = $CFG->wwwroot.'/hierarchy/type/organisation/assigncompetencytemplate/find.php?assignto='.$item->id;
+            $displaytitle = 'assignedcompetencytemplates';
+            $displaydepth = false;
         }
-        else{
-            echo get_string('noframeworks', 'competency');
-        }
+        $displaytype = 'competency';
+        require $CFG->dirroot.'/hierarchy/type/organisation/view-hierarchy-items.html';
     }
 
     function get_assigned_competencies($item, $frameworkid=0) {

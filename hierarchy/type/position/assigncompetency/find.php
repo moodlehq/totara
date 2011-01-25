@@ -73,7 +73,7 @@ if (!$nojs) {
     $dialog->selected_items = $currentlyassigned;
 
     // Disable framework picker
-    $dialog->disable_picker = true;
+    $dialog->disable_picker = $frameworkid ? true : false;
 
     // Display
     echo $dialog->generate_markup();

@@ -59,7 +59,7 @@ $can_edit = has_capability('moodle/local:update'.$type, $sitecontext);
 
 // Run any hierarchy type specific code
 if ($editingon) {
-    $compfw = optional_param('framework', get_field_sql("SELECT id FROM {$CFG->prefix}comp_framework WHERE visible=1 ORDER BY sortorder ASC"), PARAM_INT);
+    $compfw = optional_param('framework', 0, PARAM_INT);
     $setupitem = new stdClass;
     $setupitem->id = $item->id;
     $setupitem->frameworkid = $compfw;
