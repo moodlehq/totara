@@ -974,8 +974,9 @@ totaraDialog_handler_treeview_singleselect.prototype.first_load = function() {
  */
 totaraDialog_handler_treeview_singleselect.prototype.every_load = function() {
 
+    totaraDialog_handler_treeview.prototype.first_load.call(this);
+
     this._make_selectable($('.treeview', this._container));
-    //this._set_current_selected();
 }
 
 totaraDialog_handler_treeview_singleselect.prototype._set_current_selected = function() {
