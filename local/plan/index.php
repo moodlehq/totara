@@ -61,7 +61,6 @@ print_container_start(false, '', 'dp-plan-content');
 
 if($planuser != $USER->id) {
     echo dp_display_manager_overview($planuser);
-    echo dp_display_user_message_box($planuser);
 }
 
 print_heading($heading);
