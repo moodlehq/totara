@@ -65,12 +65,12 @@ print_tabs($tabs, $currenttab, $inactive, $activated);
 // print out the competency framework selector
 $fwoptions = array();
 echo '<div class="frameworkpicker">';
-foreach ($frameworks as $fw) {
-    $count = isset($assignedcounts[$fw->id]) ? $assignedcounts[$fw->id] : 0;
-    $fwoptions[$fw->id] = $fw->fullname . " ({$count})";
-}
-if (count($fwoptions)) {
-    $fwoptions = array(0 => get_string('all')) + $fwoptions;
+if (!empty($frameworks)) {
+    foreach ($frameworks as $fw) {
+        $count = isset($assignedcounts[$fw->id]) ? $assignedcounts[$fw->id] : 0;
+        $fwoptions[$fw->id] = $fw->fullname . " ({$count})";
+    }
+    $fwoptions = count($fwoptions) > 1 ? array(0 => get_string('all')) + $fwoptions : $fwoptions;
     echo '<div style="text-align: right">';
     popup_form($CFG->wwwroot.'/hierarchy/item/view.php?id='.$id.'&amp;edit='.$edit.'&amp;type='.$type.'&amp;framework=', $fwoptions, 'switchframework', $fid, '', '', '', false, 'self', get_string('filterframework', 'hierarchy'));
     echo '</div>';
