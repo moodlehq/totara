@@ -1987,7 +1987,9 @@ div.plan_box {
     -webkit-border-radius: 2px;
     border-radius: 2px;
 }
-
+.dp-plan-prefix {
+    font-weight: bold;
+}
 .plan_manager_overview .plan_box_actions_needed a {
     background: url("images/arw_teal.gif") no-repeat left 3px transparent;
 }

@@ -68,7 +68,7 @@ if ($this->role == 'manager') {
 
 echo $this->display_plan_message_box();
 
-print_heading($fullname);
+print_heading('<span class="dp-plan-prefix">'.get_string('plan','local_plan') . ':</span> ' . $fullname);
 
 print $this->display_tabs($currenttab);
 

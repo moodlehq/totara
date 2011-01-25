@@ -1350,6 +1350,9 @@ div.plan_box {
     padding-bottom: 15px;
     border-bottom: 1px solid #DBDBDB;
 }
+.plan_manager_overview h2.main {
+    font-weight: bold;
+}
 .plan_manager_overview .plan_box_image {
     float: left;
     padding: 7px;
