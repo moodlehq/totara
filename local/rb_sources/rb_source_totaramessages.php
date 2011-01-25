@@ -73,6 +73,17 @@ class rb_source_totaramessages extends rb_base_source {
                 array('joins' => 'msg')   // options
             ),
             new rb_column_option(
+                'message_values',         // type
+                'statementurl',              // value
+                get_string('statementurl', 'rb_source_totaramessages'),              // name
+                'msg.fullmessage',        // field
+                array('joins' => 'msg',   // options
+                      'displayfunc' => 'msgtype_statementurl',
+                      'extrafields' => array(
+                        'msgurl' => 'msg.contexturl'),
+                    )
+            ),
+            new rb_column_option(
                 'message_values',
                 'urgency',
                 get_string('msgurgency', 'rb_source_totaramessages'),
@@ -263,6 +274,11 @@ class rb_source_totaramessages extends rb_base_source {
         global $CFG;
         $display = totara_msg_msgstatus_text($row->message_values_msgstatus);
         return $display['text'];
+    }
+
+    // generate statement url
+    function rb_display_msgtype_statementurl($comp, $row) {
+        return "<a href=\"".$row->msgurl."\">".$comp."</a>";
     }
 
     // generate urgency icon link
