@@ -1339,7 +1339,21 @@ span.priority5of5 {
  */
 div.plan_box {
     padding: 10px;
-    margin: 10px 0;
+    margin: 5px 10%;
+}
+div.plan_box_completed {
+    background-color: #ddd;
+    border: 1px solid #aaa;
+}
+
+div.plan_box_plain {
+    background-color: #eef;
+    border: 1px solid #ccc;
+}
+
+div.plan_box_action {
+    background-color: #ffc;
+    border: 1px solid #cc6;
 }
 
 /*
