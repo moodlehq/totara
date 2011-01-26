@@ -17,10 +17,10 @@
  *
  * @access  public
  * @param   object  $mform  Moodle form object
- * @param   integer $id     Template ID
+ * @param   array $customdata mform customdata
  * @return  void
  */
-function development_plan_build_settings_form(&$mform, $id) {
+function development_plan_build_settings_form(&$mform, $customdata) {
     global $CFG, $DP_AVAILABLE_ROLES;
 
     //Permissions
@@ -38,7 +38,7 @@ function development_plan_build_settings_form(&$mform, $id) {
 
     foreach(development_plan::$permissions as $action => $requestable) {
         foreach($DP_AVAILABLE_ROLES as $role){
-            $sql = "SELECT value FROM {$CFG->prefix}dp_permissions WHERE role='$role' AND component='plan' AND action='{$action}' AND templateid='{$id}'";
+            $sql = "SELECT value FROM {$CFG->prefix}dp_permissions WHERE role='$role' AND component='plan' AND action='{$action}' AND templateid='{$customdata['id']}'";
             $defaultvalue = get_field_sql($sql);
             $mform->setDefault($action.$role, $defaultvalue);
         }

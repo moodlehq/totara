@@ -176,13 +176,10 @@ class dp_template_advanced_workflow_form extends moodleform {
             }
         }
         $build_form = "{$class}_build_settings_form";
-        $build_form(&$mform, $id);
+        $build_form(&$mform, $this->_customdata);
 
         $mform->addElement('hidden', 'id', $id);
         $mform->addElement('hidden', 'component', $component);
-        if ($templateinuse) {
-            $mform->disabledIf('priorityscale', 'prioritymode', 'neq', -1942);
-        }
         $this->add_action_buttons();
     }
 }

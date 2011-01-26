@@ -414,6 +414,7 @@ $string['defaultvalue'] = 'Default value';
 $string['scales'] = 'Priority Scales';
 $string['missingpriorityscalevaluename'] = 'Missing priority scale value name';
 $string['nopriorityscalevalues'] = 'There are no priority scale values defined for this priority scale.';
+$string['priorityscalesdisabledtemplateinuse'] = 'NOTE: Cannot change priority scale - there are plans using this template';
 $string['editpriority'] = 'Edit priority $a';
 $string['editpriorityvalue'] = 'Edit priority value';
 $string['priorityscalevaluenumericalvalue'] = 'Priority scale numerical value';

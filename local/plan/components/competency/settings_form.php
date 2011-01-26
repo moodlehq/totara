@@ -21,16 +21,16 @@ require_once($CFG->dirroot.'/local/plan/components/competency/competency.class.p
  *
  * @access  public
  * @param   object  $mform  Moodle form object
- * @param   integer $id     Template ID
+ * @param   array $customdata mform customdata
  * @return  void
  */
-function dp_competency_component_build_settings_form(&$mform, $id) {
+function dp_competency_component_build_settings_form(&$mform, $customdata) {
     global $CFG, $DP_AVAILABLE_ROLES;
 
     $mform->addElement('header', 'competencysettings', get_string('competencysettings', 'local_plan'));
     $mform->setHelpButton('competencysettings', array('advancedsettingscompetencysettings', get_string('competencysettings', 'local_plan'), 'local_plan'), true);
 
-    if ($templatesettings = get_record('dp_competency_settings', 'templateid', $id)) {
+    if ($templatesettings = get_record('dp_competency_settings', 'templateid', $customdata['id'])) {
         $defaultduedatesmode = $templatesettings->duedatemode;
         $defaultprioritymode = $templatesettings->prioritymode;
         $defaultpriorityscale = $templatesettings->priorityscale;
@@ -77,6 +77,10 @@ function dp_competency_component_build_settings_form(&$mform, $id) {
 
     $mform->addElement('select', 'priorityscale', get_string('priorityscale', 'local_plan'), $prioritymenu);
     $mform->disabledIf('priorityscale', 'prioritymode', 'eq', DP_PRIORITY_NONE);
+    if (!empty($customdata['templateinuse'])) {
+        $mform->addElement('static', 'priorityscalesdisabledtemplateinuse', null, get_string('priorityscalesdisabledtemplateinuse', 'local_plan'));
+        $mform->disabledIf('priorityscale', 'prioritymode', 'neq', -777);
+    }
     $mform->setDefault('priorityscale', $defaultpriorityscale);
 
     // auto assign options
@@ -105,7 +109,7 @@ function dp_competency_component_build_settings_form(&$mform, $id) {
 
     foreach(dp_competency_component::$permissions as $action => $requestable) {
         foreach($DP_AVAILABLE_ROLES as $role){
-            $sql = "SELECT value FROM {$CFG->prefix}dp_permissions WHERE role='$role' AND component='competency' AND action='{$action}' AND templateid='{$id}'";
+            $sql = "SELECT value FROM {$CFG->prefix}dp_permissions WHERE role='$role' AND component='competency' AND action='{$action}' AND templateid='{$customdata['id']}'";
             $defaultvalue = get_field_sql($sql);
             $mform->setDefault($action.$role, $defaultvalue);
         }

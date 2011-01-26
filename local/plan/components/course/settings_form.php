@@ -21,16 +21,16 @@ require_once($CFG->dirroot.'/local/plan/components/course/course.class.php');
  *
  * @access  public
  * @param   object  $mform  Moodle form object
- * @param   integer $id     Template ID
+ * @param   array $customdata mform customdata
  * @return  void
  */
-function dp_course_component_build_settings_form(&$mform, $id) {
+function dp_course_component_build_settings_form(&$mform, $customdata) {
     global $CFG, $DP_AVAILABLE_ROLES;
 
     $mform->addElement('header', 'coursesettings', get_string('coursesettings', 'local_plan'));
     $mform->setHelpButton('coursesettings', array('advancedsettingscoursesettings', get_string('coursesettings', 'local_plan'), 'local_plan'), true);
 
-    if ($templatesettings = get_record('dp_course_settings', 'templateid', $id)) {
+    if ($templatesettings = get_record('dp_course_settings', 'templateid', $customdata['id'])) {
         $defaultduedatesmode = $templatesettings->duedatemode;
         $defaultprioritymode = $templatesettings->prioritymode;
         $defaultpriorityscale = $templatesettings->priorityscale;
@@ -71,6 +71,10 @@ function dp_course_component_build_settings_form(&$mform, $id) {
 
     $mform->addElement('select', 'priorityscale', get_string('priorityscale', 'local_plan'), $prioritymenu);
     $mform->disabledIf('priorityscale', 'prioritymode', 'eq', DP_PRIORITY_NONE);
+    if (!empty($customdata['templateinuse'])) {
+        $mform->disabledIf('priorityscale', 'prioritymode', 'neq', -777);
+        $mform->addElement('static', 'priorityscalesdisabledtemplateinuse', null, get_string('priorityscalesdisabledtemplateinuse', 'local_plan'));
+    }
     $mform->setDefault('priorityscale', $defaultpriorityscale);
 
 
@@ -88,7 +92,7 @@ function dp_course_component_build_settings_form(&$mform, $id) {
 
     foreach(dp_course_component::$permissions as $action => $requestable) {
         foreach($DP_AVAILABLE_ROLES as $role){
-            $sql = "SELECT value FROM {$CFG->prefix}dp_permissions WHERE role='$role' AND component='course' AND action='{$action}' AND templateid='{$id}'";
+            $sql = "SELECT value FROM {$CFG->prefix}dp_permissions WHERE role='$role' AND component='course' AND action='{$action}' AND templateid='{$customdata['id']}'";
             $defaultvalue = get_field_sql($sql);
             $mform->setDefault($action.$role, $defaultvalue);
         }
