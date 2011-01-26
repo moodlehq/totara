@@ -42,7 +42,7 @@ class totara_dialog_content_hierarchy extends totara_dialog_content {
 
     /**
      * If you are making access checks seperately, you can disable
-     * the internal checks by setting this to false
+     * the internal checks by setting this to true
      *
      * @access  public
      * @var     boolean
@@ -186,10 +186,13 @@ class totara_dialog_content_hierarchy_multi extends totara_dialog_content_hierar
      * @see     totara_dialog_hierarchy::skip_access_checks
      *
      * @access  public
-     * @param   $type           string  Hierarchy type
-     * @param   $frameworkid    int     Framework id (optional)
+     * @param   $type               string  Hierarchy type
+     * @param   $frameworkid        int     Framework id (optional)
+     * @param   $skipaccesschecks   boolean Indicate whether access checks should be performed
      */
-    public function __construct($type, $frameworkid = 0) {
+    public function __construct($type, $frameworkid = 0, $skipaccesschecks=false) {
+
+        $this->skip_access_checks = $skipaccesschecks;
 
         // Run parent constructor
         parent::__construct($type, $frameworkid);
@@ -201,3 +204,4 @@ class totara_dialog_content_hierarchy_multi extends totara_dialog_content_hierar
         $this->select_title = 'locate'.$type;
     }
 }
+
