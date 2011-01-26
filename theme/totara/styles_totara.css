@@ -788,11 +788,13 @@ ul.tabrow1 li a:visited {
   color: #322f2c !important;
 }
 
-.tabrow0 .tabrow1 li.selected a span {
+.tabrow0 .tabrow1 li.selected a span,
+.tabrow0 .tabrow1 li.active a span {
     color: #7D8412;
 }
 
-.tabrow0 .tabrow1 li.selected a:hover span {
+.tabrow0 .tabrow1 li.selected a:hover span,
+.tabrow0 .tabrow1 li.active a:hover span {
     color: #7D8412;
 }
 
