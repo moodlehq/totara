@@ -261,6 +261,13 @@ class dp_competency_component extends dp_base_component {
         return $out;
     }
 
+
+    /**
+     * Displays the list of approvals pending
+     *
+     * @param  object  $pendingitems  the list of pending items
+     * @return false|string  the table to display
+     */
     function display_approval_list($pendingitems) {
         $competencies = array();
         foreach($pendingitems as $item) {
@@ -305,6 +312,13 @@ class dp_competency_component extends dp_base_component {
         return print_table($table, true);
     }
 
+
+    /**
+     * Displays a list of linked competencies
+     *
+     * @param  array  $list  the list of linked competencies
+     * @return false|string  $out  the table to display
+     */
     function display_linked_competencies($list) {
         global $CFG;
 
@@ -443,7 +457,7 @@ class dp_competency_component extends dp_base_component {
     /**
      * Get item's proficiency value
      *
-     * @access  public
+     * @access  private
      * @param   object  $item
      * @return  string
      */
@@ -490,6 +504,13 @@ class dp_competency_component extends dp_base_component {
             '</a>';
     }
 
+
+    /**
+     * Display the items related icon
+     *
+     * @param object $item the item being checked
+     * @return string
+     */
     function determine_item_icon($item) {
         // @todo in future the item state will determine the icon
         return "competency-regular";
@@ -559,6 +580,13 @@ class dp_competency_component extends dp_base_component {
     }
 
 
+    /**
+     * Displays an items status
+     *
+     * @access public
+     * @param object $item the item being checked
+     * @return string
+     */
     public function display_status($item) {
         // @todo: add colors and stuff?
         return format_string($item->status);
@@ -770,6 +798,12 @@ class dp_competency_component extends dp_base_component {
     }
 
 
+    /**
+     * Removes an assigned competency
+     *
+     * @param  int  $caid  the competency item
+     * @return boolean
+     */
     function remove_competency_assignment($caid) {
         // Load item
         $item = get_record('dp_plan_competency_assign', 'id', $caid);
@@ -781,6 +815,7 @@ class dp_competency_component extends dp_base_component {
         $item->itemid = $item->id;
         return $this->unassign_item($item);
     }
+
 
     /**
      * Assign a new item to this component of the plan
@@ -825,7 +860,12 @@ class dp_competency_component extends dp_base_component {
     }
 
 
-
+    /**
+     * Assigns competencies to a plan
+     *
+     * @param  array  the competencies to be assigned
+     * @return boolean
+     */
     function assign_competencies($competencies) {
         // Get all currently-assigned competencies
         $assigned = get_records('dp_plan_competency_assign', 'planid', $this->plan->id, '', 'competencyid');
@@ -845,6 +885,13 @@ class dp_competency_component extends dp_base_component {
         return true;
     }
 
+
+    /**
+     * Assigns linked courses to competencies
+     *
+     * @param array $competencies the competencies to be assigned
+     * @return void
+     */
     function assign_linked_courses($competencies) {
         // get array of competency ids
         $cids = array();
@@ -888,6 +935,12 @@ class dp_competency_component extends dp_base_component {
 
     }
 
+
+    /**
+     * Automatically assigns competencies and linked courses based on the users position
+     *
+     * @return boolean
+     */
     function assign_from_pos() {
         global $CFG;
         $includecourses = $this->get_setting('autoassigncourses');
@@ -919,6 +972,12 @@ class dp_competency_component extends dp_base_component {
         return true;
     }
 
+
+    /**
+     * Automatically assigns competencies and linked courses based on the users organisation
+     *
+     * @return boolean
+     */
     function assign_from_org() {
         global $CFG;
         $includecourses = $this->get_setting('autoassigncourses');
@@ -953,11 +1012,25 @@ class dp_competency_component extends dp_base_component {
     }
 
 
+    /**
+     * Display an items progress status
+     *
+     * @access protected
+     * @param object $item the item being checked
+     * @return string the items status
+     */
     protected function display_list_item_progress($item) {
         return $this->is_item_approved($item->approved) ? $this->display_status($item) : '';
     }
 
 
+    /**
+     * Display an items available actions
+     *
+     * @access protected
+     * @param object $item the item being checked
+     * @return string the display html
+     */
     protected function display_list_item_actions($item) {
         global $CFG;
 
@@ -988,10 +1061,11 @@ class dp_competency_component extends dp_base_component {
 
 
     /*
-     * Return markup for javascript course picker
-     * competencyid integer - the id of the competency for which selected& available courses should be displayed
+     * Display the course picker
+     *
      * @access  public
-     * @return  string
+     * @param   int $competencyid the id of the competency for which selected & available courses should be displayed
+     * @return  string markup for javascript course picker
      */
     public function display_course_picker($competencyid) {
 
