@@ -1029,7 +1029,7 @@ class dp_competency_component extends dp_base_component {
      *
      * @access protected
      * @param object $item the item being checked
-     * @return string the display html
+     * @return string $markup the display html
      */
     protected function display_list_item_actions($item) {
         global $CFG;

@@ -239,6 +239,12 @@ class dp_course_component extends dp_base_component {
     }
 
 
+    /**
+     * Displays a list of linked courses
+     *
+     * @param  array  $list  the list of linked courses
+     * @return false|string  $out  the table to display
+     */
     function display_linked_courses($list) {
         global $CFG;
 
@@ -363,6 +369,12 @@ class dp_course_component extends dp_base_component {
     }
 
 
+    /**
+     * Display details for a single course
+     *
+     * @param integer $caid ID of the course assignment (not the course id)
+     * @return string HTML string to display the course information
+     */
     function display_course_detail($caid) {
         global $CFG;
 
@@ -422,6 +434,13 @@ class dp_course_component extends dp_base_component {
         return $out;
     }
 
+
+    /**
+     * Displays an items status as a progress bar
+     *
+     * @param object $ca the item to check
+     * @return string $out display markup
+     */
     function display_status_as_progress_bar($ca) {
         global $CFG;
 
@@ -698,6 +717,12 @@ class dp_course_component extends dp_base_component {
         return $result;
     }
 
+
+    /**
+     * Get headers for a list
+     *
+     * @return array $headers
+     */
     function get_list_headers() {
         $headers = parent::get_list_headers();
 
@@ -713,11 +738,25 @@ class dp_course_component extends dp_base_component {
     }
 
 
+    /**
+     * Display progress for an item in a list
+     *
+     * @access protected
+     * @param object $item the item to check
+     * @return string the item status
+     */
     protected function display_list_item_progress($item) {
         return $this->is_item_approved($item->approved) ? $this->display_status_as_progress_bar($item) : '';
     }
 
 
+    /**
+     * Display an items available actions
+     *
+     * @access protected
+     * @param object $item the item being checked
+     * @return string $markup the display markup
+     */
     protected function display_list_item_actions($item) {
         global $CFG;
 
