@@ -89,8 +89,13 @@ totaraDialog_handler_preRequisite.prototype._update = function(response) {
     //Replace plan message box
     $('div.plan_box').replaceWith(new_planbox);
 
+    <?php
+        require_once($CFG->dirroot.'/local/plan/development_plan.class.php');
+        $plan = new development_plan(required_param('planid', PARAM_INT), optional_param('viewas', null, PARAM_INT));
+
+        if ($plan->get_component('course')->can_update_settings(LP_CHECK_ITEMS_EXIST)) {
+    ?>
     // show the update settings button
-    var table = $('div#content form#dp-component-update table.dp-plan-component-items');
     var updatesettings = $('div#content div#dp-component-update-submit');
     if (noitems.size()) {
         updatesettings.hide();
@@ -99,15 +104,18 @@ totaraDialog_handler_preRequisite.prototype._update = function(response) {
         updatesettings.show();
     }
 
-    // Add duedate datepicker
-    $(function() {
-        $('[id^=duedate_course]').datepicker(
-            {
-                dateFormat: 'dd/mm/y',
-                showOn: 'button',
-                buttonImage: '<?php echo $CFG->wwwroot; ?>/local/js/images/calendar.gif',
-                buttonImageOnly: true
-            }
-        );
-    });
+    <?php if ($plan->get_component('course')->get_setting('duedatemode') && $plan->get_component('course')->get_setting('setduedate') >= DP_PERMISSION_ALLOW) { ?>
+        // Add duedate datepicker
+        $(function() {
+            $('[id^=duedate_course]').datepicker(
+                {
+                    dateFormat: 'dd/mm/y',
+                    showOn: 'button',
+                    buttonImage: '<?php echo $CFG->wwwroot; ?>/local/js/images/calendar.gif',
+                    buttonImageOnly: true
+                }
+            );
+        });
+    <?php }
+    } ?>
 }

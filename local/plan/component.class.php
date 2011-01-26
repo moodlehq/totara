@@ -139,14 +139,23 @@ abstract class dp_base_component {
 
         // Get permissions
         $can = array();
-        $can['setduedate'] = $this->get_setting('setduedate') == DP_PERMISSION_ALLOW;
-        $can['setpriority'] = $this->get_setting('setpriority') == DP_PERMISSION_ALLOW;
+
+        $can['setduedate'] = $this->get_setting('duedatemode') && $this->get_setting('setduedate') >= DP_PERMISSION_ALLOW;
+        $can['setpriority'] = $this->get_setting('prioritymode') && $this->get_setting('setpriority') >= DP_PERMISSION_ALLOW;
         $can['approve'.$this->component] = $this->get_setting('update'.$this->component) == DP_PERMISSION_APPROVE;
 
         // If user has no permissions, return false
-        if (!count($can)) {
+        $noperms = true;
+        foreach ($can as $c) {
+            if (!empty($c)) {
+                $noperms = false;
+                break;
+            }
+        }
+        if ($noperms) {
             return false;
         }
+        unset($noperms);
 
         // If checkexists set, check for items
         if ($checkexists && !$this->get_assigned_items()) {

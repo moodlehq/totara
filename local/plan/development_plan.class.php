@@ -2,6 +2,7 @@
 
 require_once ($CFG->dirroot . '/local/totara_msg/eventdata.class.php');
 require_once ($CFG->dirroot.'/local/totara_msg/messagelib.php');
+require_once ($CFG->dirroot.'/local/plan/lib.php');
 
 
 class development_plan {
