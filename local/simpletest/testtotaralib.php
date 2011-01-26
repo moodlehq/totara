@@ -112,6 +112,7 @@ class totaralib_db_test extends prefix_changing_test_case {
 
     var $userid = 1;
     var $managerid = 2;
+    var $invaliduserid = 3;
 
     //Left out columns not needed for this test (and kept a few for code readability)
     var $user_table_data = array(
@@ -169,7 +170,7 @@ class totaralib_db_test extends prefix_changing_test_case {
         $this->assertTrue(totara_is_manager($this->userid, $this->managerid));
 
         //totara_is_manager should return false when there is not role assignment record for managerid on userid's user context
-        $this->assertFalse(totara_is_manager($this->userid));
+        $this->assertFalse(totara_is_manager($this->userid, $this->invaliduserid));
     }
 
     function test_totara_get_manager() {
