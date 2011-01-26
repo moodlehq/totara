@@ -196,6 +196,28 @@ function include_help_for_each_module($file, $langs, $helpdir) {
             }
         }
     }
+
+    //Add index help files for local modules
+    $plugins = get_list_of_plugins('local');
+    $localmodules = array();
+    foreach($plugins as $plug) {
+        foreach($langs as $lang) {
+            if(empty($lang)) {
+                continue;
+            }
+
+            $fullplug = $CFG->dirroot .'/local/'.$plug;
+            if(is_readable($fullplug .'/version.php')) {
+                //This is a local module
+                $filepath = "$fullplug/lang/$lang/help/$file";
+                if(file_exists_and_readable($filepath)) {
+                    echo '<hr />';
+                    @include($filepath);
+                    break;
+                }
+            }
+        }
+    }
 }
 
 function include_help_for_each_resource($file, $langs, $helpdir) {
