@@ -257,6 +257,13 @@ class dp_objective_component extends dp_base_component {
             '</a>';
     }
 
+
+    /**
+     * Display the items related icon
+     *
+     * @param object $item the item being checked
+     * @return string
+     */
     function determine_item_icon($item) {
         // @todo in future the item state will determine the icon
         return "objective-regular";
@@ -877,11 +884,25 @@ class dp_objective_component extends dp_base_component {
      *
      ********************************************************************************************/
 
+    /**
+     * Display an items progress status
+     *
+     * @access protected
+     * @param object $item the item being checked
+     * @return string the items status
+     */
     protected function display_list_item_progress($item) {
         return $this->display_proficiency($item);
     }
 
 
+    /**
+     * Display an items available actions
+     *
+     * @access protected
+     * @param object $item the item being checked
+     * @return string $markup the display html
+     */
     protected function display_list_item_actions($item) {
         global $CFG;
 
