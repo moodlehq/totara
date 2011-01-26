@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# This accepts one argument:
+# 1/ The base url of the site being tested (including trailing slash)
+
 # Notes on setting up machine this runs on
 #
 # Apache needs a vserver set up to point to the hudson workspace,
@@ -19,7 +22,7 @@ echo "STEP 1: Generate some test users"
 php -f build/generate-users.php
 
 echo "STEP 2: Run simpletests";
-python build/simpletests.py http://brumbies.wgtn.cat-it.co.nz/totara-hudson/
+python build/simpletests.py $1
 
 echo "Convert to Junit XML";
 xsltproc build/simpletest_to_junit.xsl build/logs/simpletest-results.xml > build/logs/xml/TEST-suite.xml
