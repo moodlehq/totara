@@ -70,11 +70,18 @@ totaraDialog_handler_preRequisite.prototype._update = function(response) {
     // Grab table
     var table = $('div#content form#dp-component-update table.dp-plan-component-items');
 
-    // If table found
-    if (table.size()) {
+    // Check for no items msg
+    var noitems = $(response).filter('span.noitems-assigncourses');
+
+    if (noitems.size()) {
+        // If no items, just display message
+        $('div#content form#dp-component-update div#dp-component-update-table').append(noitems);
+        // Replace table with nothing
+        table.empty();
+    } else if (table.size()) {
+        // If table found
         table.replaceWith(new_table);
-    }
-    else {
+    } else {
         // Add new table
         $('div#content form#dp-component-update div#dp-component-update-table').append(new_table);
     }
@@ -85,11 +92,11 @@ totaraDialog_handler_preRequisite.prototype._update = function(response) {
     // show the update settings button
     var table = $('div#content form#dp-component-update table.dp-plan-component-items');
     var updatesettings = $('div#content div#dp-component-update-submit');
-    if (table.size()) {
-        updatesettings.show();
+    if (noitems.size()) {
+        updatesettings.hide();
     }
     else {
-        updatesettings.hide();
+        updatesettings.show();
     }
 
     // Add duedate datepicker
