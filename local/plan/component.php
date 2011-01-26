@@ -70,6 +70,7 @@ print <<<HEREDOC
         $('[id^=duedate_{$componentname}]').datepicker(
             {
                 dateFormat: 'dd/mm/y',
+                constrainInput: true,
                 showOn: 'button',
                 buttonImage: '{$CFG->wwwroot}/local/js/images/calendar.gif',
                 buttonImageOnly: true

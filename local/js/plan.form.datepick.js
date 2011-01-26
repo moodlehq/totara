@@ -37,7 +37,8 @@ $(document).ready(function() {
 	    dateFormat: 'dd/mm/yy',
 	    showOn: 'both',
 	    buttonImage: '../../local/js/images/calendar.gif',
-	    buttonImageOnly: true
+	    buttonImageOnly: true,
+        constrainInput: true
 	}
     );
 });

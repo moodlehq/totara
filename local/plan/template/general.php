@@ -81,7 +81,8 @@ print <<<HEREDOC
                 dateFormat: 'dd/mm/yy',
                 showOn: 'button',
                 buttonImage: '../../../local/js/images/calendar.gif',
-                buttonImageOnly: true
+                buttonImageOnly: true,
+                constrainInput: true
             }
         );
     });

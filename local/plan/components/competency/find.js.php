@@ -222,7 +222,8 @@ totaraDialog_handler_lpCompetency.prototype._update = function(response) {
                     dateFormat: 'dd/mm/y',
                     showOn: 'button',
                     buttonImage: '<?php echo $CFG->wwwroot; ?>/local/js/images/calendar.gif',
-                    buttonImageOnly: true
+                    buttonImageOnly: true,
+                    constrainInput: true
                 }
             );
         });
