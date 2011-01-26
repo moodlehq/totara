@@ -30,8 +30,9 @@ $table->define_columns($columns);
 $table->define_headers($headers);
 $table->set_attribute('id', 'list-'.$displaytitle);
 $table->set_attribute('width', '95%');
-$table->set_attribute('class', 'generalbox edit'.$displaytype.' boxaligncenter');
-$table->column_style('options', 'width', '5%');
+$table->set_attribute('cellspacing', '0');
+$table->set_attribute('class', 'generalbox boxaligncenter edit'.$displaytype);
+$table->column_style('options', 'width', '60px');
 $table->setup();
 
 // Add one blank line

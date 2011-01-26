@@ -1545,20 +1545,6 @@ table.planbuttons td {
     padding: 0px 0px 5px 0px;
 }
 
-table#list-assignedcompetencies th.c0,
-table#list-assignedcompetencies th.c1,
-table#list-assignedcompetencies th.c3,
-table#list-assignedcompetencytemplates th.c0,
-table#list-assignedcompetencytemplates th.c2 {
-    width: 15%;
-    white-space: nowrap;
-}
-
-table#list-assignedcompetencies .c3,
-table#list-assignedcompetencytemplates .c2 {
-    text-align: center;
-}
-
 table.editcompetency div.tabledivider {
     border: 0;
 }

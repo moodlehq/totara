@@ -154,9 +154,9 @@ class organisation extends hierarchy {
             $str_remove = get_string('remove');
         }
 
-        $currenttab = $comptype.$fid;
+        print_heading(get_string('assignedcompetencies', 'competency'));
 
-        include($CFG->dirroot.'/hierarchy/type/organisation/tabs.php');
+        echo $this->print_comp_framework_picker($item->id, $fid);
 
         if($comptype=='competencies') {
             // Display assigned competencies
@@ -248,4 +248,41 @@ class organisation extends hierarchy {
 
         return get_records_sql($sql);
     }
+
+    function print_comp_framework_picker($organisationid, $currentfw) {
+        global $CFG;
+
+        $edit = optional_param('edit', 'off', PARAM_TEXT);
+
+        $frameworks = get_records('comp_framework', '', '', 'sortorder');
+
+        $assignedcounts = get_records_sql_menu("SELECT comp.frameworkid, COUNT(*)
+            FROM {$CFG->prefix}org_competencies orgcomp
+            INNER JOIN {$CFG->prefix}comp comp ON orgcomp.competencyid=comp.id
+            WHERE orgcomp.organisationid={$organisationid} GROUP BY comp.frameworkid");
+
+        ob_start();
+
+        echo '<div class="frameworkpicker">';
+        if (!empty($frameworks)) {
+            $fwoptions = array();
+            foreach ($frameworks as $fw) {
+                $count = isset($assignedcounts[$fw->id]) ? $assignedcounts[$fw->id] : 0;
+                $fwoptions[$fw->id] = $fw->fullname . " ({$count})";
+            }
+            $fwoptions = count($fwoptions) > 1 ? array(0 => get_string('all')) + $fwoptions : $fwoptions;
+            echo '<div style="text-align: right">';
+            popup_form($CFG->wwwroot.'/hierarchy/item/view.php?id='.$organisationid.'&amp;edit='.$edit.'&amp;type=organisation&amp;framework=', $fwoptions, 'switchframework', $currentfw, '', '', '', false, 'self', get_string('filterframework', 'hierarchy'));
+            echo '</div>';
+        } else {
+            echo get_string('noframeworks', 'competency');
+        }
+        echo '</div>';
+
+        $out = ob_get_contents();
+        ob_end_clean();
+
+        return $out;
+   }
+
 }

@@ -656,101 +656,102 @@ SQL;
         return get_records_sql($sql);
     }
 
-function print_linked_evidence_list($courseid) {
-    global $CFG;
+    function print_linked_evidence_list($courseid) {
+        global $CFG;
 
-    $can_edit = has_capability('moodle/local:updatecompetency', get_context_instance(CONTEXT_SYSTEM));
+        $can_edit = has_capability('moodle/local:updatecompetency', get_context_instance(CONTEXT_SYSTEM));
 
-    if (!$course = get_record('course', 'id', $courseid)) {
-        print_error('invalidcourseid');
-    }
-
-    $out = '<table width="95%" cellpadding="5" cellspacing="1" id="list-coursecompetency"
-        class="generalbox editcompetency boxaligncenter">
-        <tr>
-            <th style="vertical-align:top; text-align: left; white-space:nowrap;" class="header c0" scope="col">'.
-                get_string('framework', 'competency').
-            '</th>
-
-            <th style="vertical-align:top; text-align: left; white-space:nowrap;" class="header c1" scope="col">'.
-                get_string('depthlevel', 'competency').
-            '</th>
-
-            <th style="vertical-align:top; text-align:left; white-space:nowrap;" class="header c2" scope="col">'.
-                get_string('name').
-            '</th>';
-
-    if (!empty($CFG->competencyuseresourcelevelevidence)) {
-        $out .= '<th style="vertical-align:top; text-align:left; white-space:nowrap;" class="header c3" scope="col">'.
-            get_string('evidence', 'competency').
-        '</th>';
-    }
-
-    if ($can_edit) {
-        $out .= '<th style="vertical-align:top; text-align:left; white-space:nowrap;" class="header c4" scope="col">'.
-            get_string('options', 'competency').
-        '</th>';
-    } // if ($can_edit)
-    $out .= '</tr>';
-
-    // Get any competencies used in this course
-    $competencies = $this->get_course_evidence($course->id);
-    $oddeven = 0;
-    if ($competencies) {
-
-        $str_remove = get_string('remove');
-
-        $activities = array();
-
-        foreach ($competencies as $competency) {
-
-            $out .= '<tr class="r' . $oddeven . '">';
-            $out .= "<td><a href=\"{$CFG->wwwroot}/hierarchy/index.php?type=competency&frameworkid={$competency->fid}\">{$competency->framework}</a></td>";
-            $out .= '<td>'.$competency->depth.'</td>';
-            $out .= "<td><a href=\"{$CFG->wwwroot}/hierarchy/item/view.php?type=competency&id={$competency->id}\">{$competency->fullname}</a></td>";
-
-            // Create evidence object
-            $evidence = new object();
-            $evidence->id = $competency->evidenceid;
-            $evidence->itemtype = $competency->evidencetype;
-            $evidence->iteminstance = $competency->evidenceinstance;
-            $evidence->itemmodule = $competency->evidencemodule;
-
-            if (!empty($CFG->competencyuseresourcelevelevidence)) {
-                $out .= '<td>';
-
-                $evidence = competency_evidence_type::factory($evidence);
-
-                $out .= $evidence->get_type();
-                if ($evidence->itemtype == 'activitycompletion') {
-                    $out .= ' - '.$evidence->get_name();
-                }
-
-                $out .= '</td>';
-            }
-
-            // Options column
-            if ($can_edit) {
-                $out .= '<td align="center">';
-                $out .= "<a href=\"{$CFG->wwwroot}/hierarchy/type/competency/evidenceitem/remove.php?id={$evidence->id}&course={$courseid}\" title=\"$str_remove\">".
-                     "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_remove\" /></a>";
-                $out .= '</td>';
-            }
-
-            $out .= '</tr>';
-
-            // for row striping
-            $oddeven = $oddeven ? 0 : 1;
+        if (!$course = get_record('course', 'id', $courseid)) {
+            print_error('invalidcourseid');
         }
 
-    } else {
+        $out = '<table width="95%" cellpadding="5" cellspacing="1" id="list-coursecompetency"
+            class="generalbox editcompetency boxaligncenter">
+            <tr>
+                <th style="vertical-align:top; text-align: left; white-space:nowrap;" class="header c0" scope="col">'.
+                    get_string('framework', 'competency').
+                '</th>
 
-        $cols = 5;
-        $out .= '<tr class="noitems-coursecompetency"><td colspan="'.$cols.'"><i>'.get_string('nocoursecompetencies', 'competency').'</i></td></tr>';
+                <th style="vertical-align:top; text-align: left; white-space:nowrap;" class="header c1" scope="col">'.
+                    get_string('depthlevel', 'competency').
+                '</th>
+
+                <th style="vertical-align:top; text-align:left; white-space:nowrap;" class="header c2" scope="col">'.
+                    get_string('name').
+                '</th>';
+
+        if (!empty($CFG->competencyuseresourcelevelevidence)) {
+            $out .= '<th style="vertical-align:top; text-align:left; white-space:nowrap;" class="header c3" scope="col">'.
+                get_string('evidence', 'competency').
+            '</th>';
+        }
+
+        if ($can_edit) {
+            $out .= '<th style="vertical-align:top; text-align:left; white-space:nowrap;" class="header c4" scope="col">'.
+                get_string('options', 'competency').
+            '</th>';
+        } // if ($can_edit)
+        $out .= '</tr>';
+
+        // Get any competencies used in this course
+        $competencies = $this->get_course_evidence($course->id);
+        $oddeven = 0;
+        if ($competencies) {
+
+            $str_remove = get_string('remove');
+
+            $activities = array();
+
+            foreach ($competencies as $competency) {
+
+                $out .= '<tr class="r' . $oddeven . '">';
+                $out .= "<td><a href=\"{$CFG->wwwroot}/hierarchy/index.php?type=competency&frameworkid={$competency->fid}\">{$competency->framework}</a></td>";
+                $out .= '<td>'.$competency->depth.'</td>';
+                $out .= "<td><a href=\"{$CFG->wwwroot}/hierarchy/item/view.php?type=competency&id={$competency->id}\">{$competency->fullname}</a></td>";
+
+                // Create evidence object
+                $evidence = new object();
+                $evidence->id = $competency->evidenceid;
+                $evidence->itemtype = $competency->evidencetype;
+                $evidence->iteminstance = $competency->evidenceinstance;
+                $evidence->itemmodule = $competency->evidencemodule;
+
+                if (!empty($CFG->competencyuseresourcelevelevidence)) {
+                    $out .= '<td>';
+
+                    $evidence = competency_evidence_type::factory($evidence);
+
+                    $out .= $evidence->get_type();
+                    if ($evidence->itemtype == 'activitycompletion') {
+                        $out .= ' - '.$evidence->get_name();
+                    }
+
+                    $out .= '</td>';
+                }
+
+                // Options column
+                if ($can_edit) {
+                    $out .= '<td align="center">';
+                    $out .= "<a href=\"{$CFG->wwwroot}/hierarchy/type/competency/evidenceitem/remove.php?id={$evidence->id}&course={$courseid}\" title=\"$str_remove\">".
+                         "<img src=\"{$CFG->pixpath}/t/delete.gif\" class=\"iconsmall\" alt=\"$str_remove\" /></a>";
+                    $out .= '</td>';
+                }
+
+                $out .= '</tr>';
+
+                // for row striping
+                $oddeven = $oddeven ? 0 : 1;
+            }
+
+        } else {
+
+            $cols = 5;
+            $out .= '<tr class="noitems-coursecompetency"><td colspan="'.$cols.'"><i>'.get_string('nocoursecompetencies', 'competency').'</i></td></tr>';
+        }
+
+        $out .= '</table>';
+
+        return $out;
     }
 
-    $out .= '</table>';
-
-    return $out;
-   }
 }  // class
