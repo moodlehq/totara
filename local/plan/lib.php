@@ -131,7 +131,13 @@ function dp_get_plans($userid, $statuses=array(DP_PLAN_STATUS_APPROVED)) {
     return get_records_select('dp_plan', "userid = {$userid} AND status IN ({$statuses})");
 }
 
-//Used to create a timestamp from a string
+/**
+ * Used to create a timestamp from a string
+ *
+ * @access  public
+ * @param   string  $datestring  string to be parsed
+ * @return  int|false
+ */
 function dp_convert_userdate($datestring) {
     // Check for DD/MM/YYYY
     if (preg_match('|(\d{1,2})/(\d{1,2})/(\d{4})|', $datestring, $matches)) {
@@ -140,11 +146,23 @@ function dp_convert_userdate($datestring) {
     return strtotime($datestring);
 }
 
-// Priority Scale methods
+/**
+ * Gets Priorities
+ *
+ * @access  public
+ * @return  array|false  a recordset object
+ */
 function dp_get_priorities() {
     return get_records('dp_priority_scale', '', '', 'sortorder');
 }
 
+/**
+ * Gets Priority scale values menu
+ *
+ * @access  public
+ * @param   int  $idpid  a learning plan id
+ * @return  array|false  an array of priority records
+ */
 function dp_get_priority_scale_values_menu($idpid=0) {
     global $CFG;
 
@@ -162,6 +180,13 @@ function dp_get_priority_scale_values_menu($idpid=0) {
     return is_array($priorities) ? $priorities : array();
 }
 
+/**
+ * Gets Priority default scale value for a learning plan
+ *
+ * @access  public
+ * @param   int  $idpid  a learning plan id
+ * @return  array|false  a record object
+ */
 function dp_get_priority_default_scale_value($idpid) {
     global $CFG;
     $sql = "SELECT val.* FROM {$CFG->prefix}dp_priority_scale_value val
@@ -174,11 +199,23 @@ function dp_get_priority_default_scale_value($idpid) {
      return get_record_sql($sql);
 }
 
-// Objective Scale methods
+/**
+ * Gets learning plan objectives
+ *
+ * @access public
+ * @return array|false  a recordset object
+ */
 function dp_get_objectives() {
     return get_records('dp_objective_scale', '', '', 'sortorder');
 }
 
+/**
+ * Gets objective scale values menu
+ *
+ * @access  public
+ * @param   int  $idpid  a learning plan id
+ * @return  array|false  an array of objective records
+ */
 function dp_get_objective_scale_values_menu($idpid=0) {
     global $CFG;
 
@@ -196,6 +233,13 @@ function dp_get_objective_scale_values_menu($idpid=0) {
     return is_array($priorities) ? $priorities : array();
 }
 
+/**
+ * Gets objective defaul scale value for a learning plan
+ *
+ * @access  public
+ * @param   int  $idpid  a learning plan id
+ * @return  array|false  a record object
+ */
 function dp_get_objective_default_scale_value($idpid) {
     global $CFG;
     $sql = "SELECT val.* FROM {$CFG->prefix}dp_priority_scale_value val
@@ -210,7 +254,12 @@ function dp_get_objective_default_scale_value($idpid) {
 
 
 /**
- * Return a list of user IDs of users who can receive notification emails
+ * Get a list of user IDs of users who can receive notification emails
+ *
+ * @access  public
+ * @param   object       $contextuser  context object
+ * @param   string       $type         type of user
+ * @return array|false  $receivers    the users which receive the notification
  */
 function dp_get_notification_receivers($contextuser, $type) {
     global $USER;
@@ -229,6 +278,14 @@ function dp_get_notification_receivers($contextuser, $type) {
     return $receivers;
 }
 
+/**
+ * Adds permission selector to the form
+ *
+ * @access  public
+ * @param   object  $form  the form object
+ * @param   string  $name  the form element name
+ * @param   boolean $requestable
+ */
 function dp_add_permissions_select(&$form, $name, $requestable){
     $select_options = array();
 
@@ -243,6 +300,15 @@ function dp_add_permissions_select(&$form, $name, $requestable){
     $form->addElement('select', $name, null, $select_options);
 }
 
+/**
+ * Adds perissions table row to the form
+ *
+ * @access  public
+ * @param   object  $form  the form object
+ * @param   string  $name  the form element name
+ * @param   string  $label the form element label
+ * @param   boolean $requestable
+ */
 function dp_add_permissions_table_row(&$form, $name, $label, $requestable){
     $form->addElement('html', '<tr><td id="action">'.$label);
     $form->addElement('html', '</td><td id="learner">');
@@ -252,7 +318,13 @@ function dp_add_permissions_table_row(&$form, $name, $label, $requestable){
     $form->addElement('html', '</td></tr>');
 }
 
-
+/**
+ * Prints the workflow settings table
+ *
+ * @access public
+ * @param  array  $diff_array holds the workflow setting values
+ * @return string $return     the text data to be displayed
+ */
 function dp_print_workflow_diff($diff_array) {
     $columns[] = 'component';
     $headers[] = get_string('component', 'local_plan');
@@ -493,6 +565,15 @@ function dp_display_plans($userid, $statuses=array(DP_PLAN_STATUSAPPROVED), $col
     return $out;
 }
 
+/**
+ * Displays the plan menu
+ *
+ * @access public
+ * @param  int    $userid     the id of the current user
+ * @param  int    $selectedid the selected id
+ * @param  string $role       the role of the user
+ * @return string $out        the form to display
+ */
 function dp_display_plans_menu($userid, $selectedid=0, $role='learner') {
     global $CFG;
 
@@ -601,7 +682,13 @@ function dp_display_plans_menu($userid, $selectedid=0, $role='learner') {
     return $out;
 }
 
-
+/**
+ * Display the add plan button
+ *
+ * @access public
+ * @param  int    $userid the users id
+ * @return string $out    the display code
+ */
 function dp_display_add_plan_icon($userid) {
     global $CFG;
 
@@ -619,7 +706,13 @@ function dp_display_add_plan_icon($userid) {
     return $out;
 }
 
-
+/**
+ * Display the user message box
+ *
+ * @access public
+ * @param  int    $planuser the id of the user
+ * @return string $out      the display code
+ */
 function dp_display_user_message_box($planuser) {
     global $CFG;
     $user = get_record('user', 'id', $planuser);
@@ -640,12 +733,25 @@ function dp_display_user_message_box($planuser) {
     return $out;
 }
 
+/*
+ * Deletes a plan
+ *
+ * @access public
+ * @param  int    $planid  the id of the plan to be deleted
+ * @return false|true
+ */
 function dp_plan_delete($planid) {
     $plan = new development_plan($planid);
 
     return $plan->delete();
 }
 
+/**
+ * Gets the first template in the table
+ *
+ * @access public
+ * @return false|true
+ */
 function dp_get_first_template() {
     if (!$template = get_records('dp_template', '','', 'sortorder', '*', '', 1)) {;
         return false;
@@ -654,6 +760,16 @@ function dp_get_first_template() {
     return reset($template);
 }
 
+/**
+ * Gets the template permission value
+ *
+ * @access public
+ * @param  int    $templateid the id of the template
+ * @param  string $component  the component type
+ * @param  string $action     the action to perform
+ * @param  string $role       the user role
+ * @return false|int $permission->value
+ */
 function dp_get_template_permission($templateid, $component, $action, $role) {
     if ($permission = get_record_select('dp_permissions', "templateid={$templateid} AND role='{$role}' AND component='{$component}' AND action='{$action}'", 'value')) {
         return $permission->value;
@@ -661,7 +777,6 @@ function dp_get_template_permission($templateid, $component, $action, $role) {
         return false;
     }
 }
-
 
 /**
  * Display a pulldown for filtering record of learning page
@@ -775,7 +890,11 @@ function dp_get_plan_base_navlinks(&$navlinks, $userid) {
 }
 
 /**
- * Returns the approval status, given the approval code (e.g 50)
+ * Gets the approval status, given the approval code (e.g 50)
+ *
+ * @access public
+ * @param  int    $code   the status code
+ * @return string $status the plan approval status
  */
 function dp_get_approval_status_from_code($code) {
     switch ($code) {
