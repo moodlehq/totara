@@ -342,5 +342,11 @@ function xmldb_local_plan_upgrade($oldversion=0) {
         $result = $result && add_field($table, $field);
     }
 
+    if ($result && $oldversion < 2011012501) {
+        // Update dp_permissions table to use new setting names
+        $result = $result && execute_sql("UPDATE {$CFG->prefix}dp_permissions SET action='approve' WHERE action='confirm'",false);
+        $result = $result && execute_sql("UPDATE {$CFG->prefix}dp_permissions SET action='complete' WHERE action='signoff'",false);
+    }
+
     return $result;
 }

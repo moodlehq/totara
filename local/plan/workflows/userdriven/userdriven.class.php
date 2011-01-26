@@ -45,10 +45,10 @@ class dp_userdriven_workflow extends dp_base_workflow {
         $this->perm_plan_update_manager = DP_PERMISSION_ALLOW;
         $this->perm_plan_delete_learner = DP_PERMISSION_ALLOW;
         $this->perm_plan_delete_manager = DP_PERMISSION_ALLOW;
-        $this->perm_plan_confirm_learner = DP_PERMISSION_REQUEST;
-        $this->perm_plan_confirm_manager = DP_PERMISSION_APPROVE;
-        $this->perm_plan_signoff_learner = DP_PERMISSION_REQUEST;
-        $this->perm_plan_signoff_manager = DP_PERMISSION_APPROVE;
+        $this->perm_plan_approve_learner = DP_PERMISSION_ALLOW;
+        $this->perm_plan_approve_manager = DP_PERMISSION_ALLOW;
+        $this->perm_plan_complete_learner = DP_PERMISSION_ALLOW;
+        $this->perm_plan_complete_manager = DP_PERMISSION_ALLOW;
 
         // course permission settings
         $this->perm_course_updatecourse_learner = DP_PERMISSION_ALLOW;

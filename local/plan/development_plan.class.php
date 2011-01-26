@@ -11,8 +11,8 @@ class development_plan {
         'create' => false,
         'update' => false,
         'delete' => false,
-        'confirm' => true,
-        'signoff' => true
+        'approve' => true,
+        'complete' => false
     );
     public $id, $templateid, $userid, $name, $description;
     public $startdate, $enddate, $status, $role, $settings;
@@ -420,7 +420,7 @@ class development_plan {
         if ($this->status == DP_PLAN_STATUS_UNAPPROVED) {
             $out = get_string('planstatusunapproved', 'local_plan');
             // Approval request
-            if ($this->get_setting('confirm') == DP_PERMISSION_REQUEST) {
+            if ($this->get_setting('approve') == DP_PERMISSION_REQUEST) {
                 $out .= '<br /><a href="'.$CFG->wwwroot.'/local/plan/action.php?id='.$this->id.'&amp;approvalrequest=1&amp;sesskey='.sesskey().'" title="'.get_string('sendapprovalrequest', 'local_plan').'">'.
                     get_string('requestapproval', 'local_plan').
                     '</a>';
@@ -495,7 +495,7 @@ class development_plan {
         if ($this->status == DP_PLAN_STATUS_UNAPPROVED) {
 
             // Approve/Decline
-            if (in_array($this->get_setting('confirm'), array(DP_PERMISSION_ALLOW, DP_PERMISSION_APPROVE))) {
+            if (in_array($this->get_setting('approve'), array(DP_PERMISSION_ALLOW, DP_PERMISSION_APPROVE))) {
                 echo '<a href="'.$CFG->wwwroot.'/local/plan/action.php?id='.$this->id.'&amp;approve=1&amp;sesskey='.sesskey().'" title="'.get_string('approve', 'local_plan').'">
                     <img src="'.$CFG->pixpath.'/t/go.gif" alt="'.get_string('approve', 'local_plan').'" />
                     </a>';
@@ -506,8 +506,8 @@ class development_plan {
         }
 
         // Complete
-        if ($this->status == DP_PLAN_STATUS_APPROVED && $this->get_setting('signoff') >= DP_PERMISSION_ALLOW) {
-            echo '<a href="'.$CFG->wwwroot.'/local/plan/action.php?id='.$this->id.'&amp;signoff=1&amp;sesskey='.sesskey().'" title="'.get_string('plancomplete', 'local_plan').'">
+        if ($this->status == DP_PLAN_STATUS_APPROVED && $this->get_setting('complete') >= DP_PERMISSION_ALLOW) {
+            echo '<a href="'.$CFG->wwwroot.'/local/plan/action.php?id='.$this->id.'&amp;complete=1&amp;sesskey='.sesskey().'" title="'.get_string('plancomplete', 'local_plan').'">
                 <img src="'.$CFG->pixpath.'/t/favourite_on.gif" alt="'.get_string('plancomplete', 'local_plan').'" />
                 </a>';
         }
@@ -812,7 +812,7 @@ class development_plan {
         $unapproveditems = $this->get_unapproved_items();
         $hasunapproveditems = !empty($unapproveditems);
 
-        $canapproveplan = (in_array($this->get_setting('confirm'), array(DP_PERMISSION_APPROVE, DP_PERMISSION_ALLOW)));
+        $canapproveplan = (in_array($this->get_setting('approve'), array(DP_PERMISSION_APPROVE, DP_PERMISSION_ALLOW)));
 
         $message = '';
         if ($viewingasmanager) {
@@ -869,8 +869,8 @@ class development_plan {
     function display_unapproved_plan_message() {
         global $CFG;
 
-        $canapproveplan = (in_array($this->get_setting('confirm'),  array(DP_PERMISSION_APPROVE, DP_PERMISSION_ALLOW)));
-        $canrequestapproval = ($this->get_setting('confirm') == DP_PERMISSION_REQUEST);
+        $canapproveplan = (in_array($this->get_setting('approve'),  array(DP_PERMISSION_APPROVE, DP_PERMISSION_ALLOW)));
+        $canrequestapproval = ($this->get_setting('approve') == DP_PERMISSION_REQUEST);
         $out = '';
 
         $out .= "<form action=\"{$CFG->wwwroot}/local/plan/action.php\" method=\"POST\">";

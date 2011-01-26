@@ -49,12 +49,12 @@ class plan_edit_form extends moodleform {
 
             return;
         }
-        if ($action == 'signoff') {
+        if ($action == 'complete') {
             // Only show complete plan confirmation
             $mform->addElement('html', get_string('checkplancomplete', 'local_plan', $plan->name));
             $buttonarray = array();
-            $buttonarray[] = $mform->createElement('submit', 'signoffyes', get_string('yes'));
-            $buttonarray[] = $mform->createElement('submit', 'signoffno', get_string('no'));
+            $buttonarray[] = $mform->createElement('submit', 'completeyes', get_string('yes'));
+            $buttonarray[] = $mform->createElement('submit', 'completeno', get_string('no'));
             $mform->addGroup($buttonarray, 'buttonar', '', array(' '), false);
             $mform->closeHeaderBefore('buttonar');
 
@@ -84,8 +84,8 @@ class plan_edit_form extends moodleform {
             if ($plan->get_setting('delete') == DP_PERMISSION_ALLOW) {
                 $buttonarray[] = $mform->createElement('submit', 'delete', get_string('deleteplan', 'local_plan'));
             }
-            if ($plan->get_setting('signoff') >= DP_PERMISSION_ALLOW && $plan->status == DP_PLAN_STATUS_APPROVED) {
-                $buttonarray[] = $mform->createElement('submit', 'signoff', get_string('plancomplete', 'local_plan'));
+            if ($plan->get_setting('complete') >= DP_PERMISSION_ALLOW && $plan->status == DP_PLAN_STATUS_APPROVED) {
+                $buttonarray[] = $mform->createElement('submit', 'complete', get_string('plancomplete', 'local_plan'));
             }
 
             $mform->addGroup($buttonarray, 'buttonar', '', array(' '), false);

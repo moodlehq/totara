@@ -26,7 +26,7 @@ $approve = optional_param('approve', 0, PARAM_BOOL);
 $decline = optional_param('decline', 0, PARAM_BOOL);
 $approvalrequest = optional_param('approvalrequest', 0, PARAM_BOOL);
 $delete = optional_param('delete', 0, PARAM_BOOL);
-$signoff = optional_param('signoff', 0, PARAM_BOOL);
+$complete = optional_param('complete', 0, PARAM_BOOL);
 
 // Is this an ajax call?
 $ajax = optional_param('ajax', 0, PARAM_BOOL);
@@ -61,7 +61,7 @@ if (!dp_can_view_users_plans($plan->userid)) {
 /// Approve
 ///
 if (!empty($approve)) {
-    if (in_array($plan->get_setting('confirm'), array(DP_PERMISSION_ALLOW, DP_PERMISSION_APPROVE))) {
+    if (in_array($plan->get_setting('approve'), array(DP_PERMISSION_ALLOW, DP_PERMISSION_APPROVE))) {
        $plan->set_status(DP_PLAN_STATUS_APPROVED);
        $plan->send_approved_notification();
        totara_set_notification(get_string('planapproved', 'local_plan', $plan->name), $referer, array('style' => 'notifysuccess'));
@@ -77,7 +77,7 @@ if (!empty($approve)) {
 /// Decline
 ///
 if (!empty($decline)) {
-    if (in_array($plan->get_setting('confirm'), array(DP_PERMISSION_ALLOW, DP_PERMISSION_APPROVE))) {
+    if (in_array($plan->get_setting('approve'), array(DP_PERMISSION_ALLOW, DP_PERMISSION_APPROVE))) {
         $plan->send_declined_notification();
         totara_set_notification(get_string('plandeclined', 'local_plan', $plan->name), $referer, array('style' => 'notifysuccess'));
     } else {
@@ -95,7 +95,7 @@ if (!empty($approvalrequest)) {
 
     // If plan is a draft, must be asking for plan approval
     if ($plan->status == DP_PLAN_STATUS_UNAPPROVED) {
-        if ($plan->get_setting('confirm') == DP_PERMISSION_REQUEST) {
+        if ($plan->get_setting('approve') == DP_PERMISSION_REQUEST) {
             // If a learner is updating their plan and now needs approval, notify manager
             if ($USER->id == $plan->userid) {
                 if ($plan->get_manager()) {
@@ -190,10 +190,10 @@ if (!empty($delete)) {
 
 
 ///
-/// Signoff
+/// Complete
 ///
-if (!empty($signoff)) {
-    if ($plan->get_setting('signoff') >= DP_PERMISSION_ALLOW) {
+if (!empty($complete)) {
+    if ($plan->get_setting('complete') >= DP_PERMISSION_ALLOW) {
         $confirm = optional_param('confirm', 0, PARAM_BOOL);
 
         if (!$confirm && empty($ajax)) {
