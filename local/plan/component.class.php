@@ -678,6 +678,12 @@ abstract class dp_base_component {
     }
 
 
+    /**
+     * Send update notifications
+     *
+     * @param string $updateinfo
+     * @return void
+     */
     function send_component_update_notification($update_info='') {
         global $USER, $CFG;
         require_once($CFG->dirroot.'/local/totara_msg/messagelib.php');
@@ -715,6 +721,13 @@ abstract class dp_base_component {
         }
     }
 
+
+    /**
+     * Send approval notifications
+     *
+     * @param object $approval the approval type
+     * @return void
+     */
     function send_component_approval_notification($approval) {
         global $USER, $CFG;
         require_once($CFG->dirroot.'/local/totara_msg/messagelib.php');
@@ -947,21 +960,49 @@ abstract class dp_base_component {
      *
      ********************************************************************************************/
 
+    /**
+     * Display names of list items
+     *
+     * @access protected
+     * @param object $item
+     * @return string
+     */
     protected function display_list_item_name($item) {
         return $this->display_item_name($item);
     }
 
 
+    /**
+     * Display priority of list items
+     *
+     * @access protected
+     * @param object $item
+     * @return string
+     */
     protected function display_list_item_priority($item) {
         return $this->display_priority($item);
     }
 
 
+    /**
+     * Display due date of list items
+     *
+     * @access protected
+     * @param object $item
+     * @return string
+     */
     protected function display_list_item_duedate($item) {
         return $this->display_duedate($item->id, $item->duedate);
     }
 
 
+    /**
+     * Display status of list items
+     *
+     * @access protected
+     * @param object $item
+     * @return string
+     */
     protected function display_list_item_status($item) {
         // If item already approved but not completed
         $approved = $this->is_item_approved($item->approved);
@@ -977,6 +1018,13 @@ abstract class dp_base_component {
         return '';
     }
 
+
+    /**
+     * Display linked courses of linked items
+     *
+     * @param object $item
+     * @return string
+     */
     protected function display_list_item_linkedcourses($item) {
             return '<div class="centertext">' .
                 $item->linkedcourses . '</div>';
@@ -1027,6 +1075,13 @@ abstract class dp_base_component {
     }
 
 
+    /**
+     * Display due date for an item
+     *
+     * @param int $itemid
+     * @param int $duedate
+     * @return string
+     */
     function display_duedate($itemid, $duedate) {
         $plancompleted = $this->plan->status == DP_PLAN_STATUS_COMPLETE;
         $cansetduedate = !$plancompleted && ($this->get_setting('setduedate') == DP_PERMISSION_ALLOW);
@@ -1044,6 +1099,14 @@ abstract class dp_base_component {
 
     }
 
+
+    /**
+     * Display duedate for an item as a form
+     *
+     * @param string $name
+     * @param int $duedate
+     * @return string
+     */
     function display_duedate_as_form($duedate, $name) {
         global $CFG;
         $duedatestr = !empty($duedate) ?
@@ -1051,6 +1114,13 @@ abstract class dp_base_component {
         return '<input id="'.$name.'" type="text" name="'.$name.'" value="'. $duedatestr . '" size="8" maxlength="20"/>';
     }
 
+
+    /**
+     * Display duedate for an item as text
+     *
+     * @param int $duedate
+     * @return string
+     */
     function display_duedate_as_text($duedate) {
         global $CFG;
         if (!empty($duedate)) {
@@ -1060,6 +1130,13 @@ abstract class dp_base_component {
         }
     }
 
+
+    /**
+     * Display duedate for an item with reminder info
+     *
+     * @param int $duedate
+     * @return string
+     */
     function display_duedate_highlight_info($duedate) {
         $out = '';
         $now = time();
@@ -1118,6 +1195,16 @@ abstract class dp_base_component {
     }
 
 
+    /**
+     * Display a selection field for picking a priority
+     *
+     * @param string $name
+     * @param int $priorityid
+     * @param array $priorityvalues
+     * @param int $prioritydefaultid
+     * @param boolean $priorityrequired
+     * @return string
+     */
     function display_priority_picker($name, $priorityid, $priorityvalues, $prioritydefaultid, $priorityrequired=false) {
 
         if (!$priorityvalues) {
@@ -1143,6 +1230,15 @@ abstract class dp_base_component {
 
     }
 
+
+    /**
+     * Display a priority for an item as text
+     *
+     * @param int $priorityid
+     * @param string $prioritynane
+     * @param array $priorityvalues
+     * @return string
+     */
     function display_priority_as_text($priorityid, $priorityname, $priorityvalues) {
 
         // class (for styling priorities) is of the format:
@@ -1161,6 +1257,12 @@ abstract class dp_base_component {
         }
     }
 
+
+    /**
+     * Display a link to the plan index page
+     *
+     * @return string
+     */
     function display_back_to_index_link() {
         global $CFG;
         return '<p><a href="' . $CFG->wwwroot . '/local/plan/component.php?id='.$this->plan->id.
