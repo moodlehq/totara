@@ -951,14 +951,14 @@ abstract class rb_base_source {
         $columnoptions[] = new rb_column_option(
             'course',
             'fullname',
-            'Course Name',
+            get_string('coursename', 'local_reportbuilder'),
             "$join.fullname",
             array('joins' => $join)
         );
         $columnoptions[] = new rb_column_option(
             'course',
             'courselink',
-            'Course Name (linked to course page)',
+            get_string('coursenamelinked', 'local_reportbuilder'),
             "$join.fullname",
             array(
                 'joins' => $join,
@@ -970,7 +970,7 @@ abstract class rb_base_source {
         $columnoptions[] = new rb_column_option(
             'course',
             'courselinkicon',
-            'Course Name (linked to course page with icon)',
+            get_string('coursenamelinkedicon', 'local_reportbuilder'),
             "$join.fullname",
             array(
                 'joins' => $join,
@@ -985,7 +985,7 @@ abstract class rb_base_source {
         $columnoptions[] = new rb_column_option(
             'course',
             'icon',
-            'Course Icon',
+            get_string('courseicon', 'local_reportbuilder'),
             "$join.icon",
             array(
                 'joins' => $join,
@@ -1000,28 +1000,28 @@ abstract class rb_base_source {
         $columnoptions[] = new rb_column_option(
             'course',
             'shortname',
-            'Course Shortname',
+            get_string('courseshortname', 'local_reportbuilder'),
             "$join.shortname",
             array('joins' => $join)
         );
         $columnoptions[] = new rb_column_option(
             'course',
             'idnumber',
-            'Course ID Number',
+            get_string('courseidnumber', 'local_reportbuilder'),
             "$join.idnumber",
             array('joins' => $join)
         );
         $columnoptions[] = new rb_column_option(
             'course',
             'id',
-            'Course ID',
+            get_string('courseid', 'local_reportbuilder'),
             "$join.id",
             array('joins' => $join)
         );
         $columnoptions[] = new rb_column_option(
             'course',
             'startdate',
-            'Course Start Date',
+            get_string('coursestartdate', 'local_reportbuilder'),
             "$join.startdate",
             array(
                 'joins' => $join,
@@ -1031,7 +1031,7 @@ abstract class rb_base_source {
         $columnoptions[] = new rb_column_option(
             'course',
             'name_and_summary',
-            'Course Name and Summary',
+            get_string('coursenameandsummary', 'local_reportbuilder'),
             // case used to merge even if one value is null
             "CASE WHEN $join.fullname IS NULL THEN $join.summary
                 WHEN $join.summary IS NULL THEN $join.fullname
@@ -1057,31 +1057,31 @@ abstract class rb_base_source {
         $filteroptions[] = new rb_filter_option(
             'course',
             'fullname',
-            'Course Name',
+            get_string('coursename', 'local_reportbuilder'),
             'text'
         );
         $filteroptions[] = new rb_filter_option(
             'course',
             'shortname',
-            'Course Short Name',
+            get_string('courseshortname', 'local_reportbuilder'),
             'text'
         );
         $filteroptions[] = new rb_filter_option(
             'course',
             'idnumber',
-            'Course ID Number',
+            get_string('courseidnumber', 'local_reportbuilder'),
             'text'
         );
         $filteroptions[] = new rb_filter_option(
             'course',
             'startdate',
-            'Course Start Date',
+            get_string('coursestartdate', 'local_reportbuilder'),
             'date'
         );
         $filteroptions[] = new rb_filter_option(
             'course',
             'name_and_summary',
-            'Course Name/Summary',
+            get_string('coursenameandsummary', 'local_reportbuilder'),
             'textarea'
         );
         return true;
@@ -1226,31 +1226,31 @@ abstract class rb_base_source {
         $columnoptions[] = new rb_column_option(
                 'course_category',
                 'name',
-                'Course Category',
+                get_string('coursecategory', 'local_reportbuilder'),
                 "$catjoin.name",
                 array('joins' => $catjoin)
         );
         $columnoptions[] = new rb_column_option(
                 'course_category',
                 'namelink',
-                'Course Category (linked to category)',
+                get_string('coursecategorylinked', 'local_reportbuilder'),
                 "$catjoin.name",
                 array(
                     'joins' => $catjoin,
                     'displayfunc' => 'link_course_category',
-                    'defaultheading' => 'Category',
+                    'defaultheading' => get_string('category', 'local_reportbuilder'),
                     'extrafields' => array('cat_id' => "$catjoin.id")
                 )
         );
         $columnoptions[] = new rb_column_option(
                 'course_category',
                 'namelinkicon',
-                'Course Category (linked to category with icon)',
+                get_string('coursecategorylinkedicon', 'local_reportbuilder'),
                 "$catjoin.name",
                 array(
                     'joins' => $catjoin,
                     'displayfunc' => 'link_course_category_icon',
-                    'defaultheading' => 'Category',
+                    'defaultheading' => get_string('category', 'local_reportbuilder'),
                     'extrafields' => array(
                         'cat_id' => "$catjoin.id",
                         'cat_icon' => "$catjoin.icon",
@@ -1260,7 +1260,7 @@ abstract class rb_base_source {
         $columnoptions[] = new rb_column_option(
                 'course_category',
                 'id',
-                'Course Category ID',
+                get_string('coursecategoryid', 'local_reportbuilder'),
                 "$coursejoin.category",
                 array('joins' => $coursejoin)
         );
@@ -1280,7 +1280,7 @@ abstract class rb_base_source {
         $filteroptions[] = new rb_filter_option(
             'course_category',
             'id',
-            'Course Category',
+            get_string('coursecategory', 'local_reportbuilder'),
             'select',
             array(
                 'selectfunc' => 'course_categories_list',

@@ -300,3 +300,18 @@ $string['xofyrecords'] = '{$a->filtered} of {$a->unfiltered} records shown';
 $string['xrecord'] = '$a record shown';
 $string['xrecords'] = '$a records shown';
 
+// column and filter titles used by add_* methods
+$string['coursename'] = 'Course Name';
+$string['coursenamelinked'] = 'Course Name (linked to course page)';
+$string['coursenamelinked'] = 'Course Name (linked to course page with icon)';
+$string['courseicon'] = 'Course Icon';
+$string['courseshortname'] = 'Course Shortname';
+$string['courseidnumber'] = 'Course ID Number';
+$string['courseid'] = 'Course ID';
+$string['coursestartdate'] = 'Course Start Date';
+$string['coursenameandsummary'] = 'Course Name and Summary';
+$string['coursecategory'] = 'Course Category';
+$string['coursecategoryid'] = 'Course Category ID';
+$string['coursecategorylinked'] = 'Course Category (linked to category)';
+$string['coursecategorylinkedicon'] = 'Course Category (linked to category with icon)';
+$string['category'] = 'Category';
