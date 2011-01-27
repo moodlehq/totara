@@ -195,18 +195,25 @@ class development_plan {
 
 
     /**
-     * Return array of component instances
+     * Return array of active component instances for a plan template
      *
      * @access  public
      * @return  array
      */
     public function get_components() {
-        global $DP_AVAILABLE_COMPONENTS;
+        global $CFG, $DP_AVAILABLE_COMPONENTS;
+
+        $sql = "SELECT * FROM {$CFG->prefix}dp_component_settings
+            WHERE component IN ('".implode("','", $DP_AVAILABLE_COMPONENTS)."')
+            AND templateid = {$this->templateid}
+            AND enabled = 1
+            ORDER BY sortorder";
+        $active_components = get_records_sql($sql);
 
         $components = array();
-        foreach ($DP_AVAILABLE_COMPONENTS as $component) {
-            $componentname = "component_$component";
-            $components[$component] = $this->$componentname;
+        foreach ($active_components as $component) {
+            $componentname = "component_$component->component";
+            $components[$component->component] = $this->$componentname;
         }
 
         return $components;

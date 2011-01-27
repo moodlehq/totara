@@ -8,6 +8,7 @@ $caid = required_param('itemid', PARAM_INT); // course assignment id
 
 require_login();
 $plan = new development_plan($id);
+$systemcontext = get_context_instance(CONTEXT_SYSTEM);
 
 //Permissions check
 $systemcontext = get_system_context();

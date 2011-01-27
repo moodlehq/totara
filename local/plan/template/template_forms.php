@@ -199,8 +199,8 @@ class dp_components_form extends moodleform {
 
         if($components) {
 
-            $str_hide = get_string('hide');
-            $str_show = get_string('show');
+            $str_disable = get_string('disable');
+            $str_enable = get_string('enable');
             $str_moveup = get_string('moveup');
             $str_movedown = get_string('movedown');
 
@@ -231,11 +231,11 @@ class dp_components_form extends moodleform {
                 $buttons = array();
 
                 if ($component->enabled) {
-                    $buttons[] = "<a href=\"{$CFG->wwwroot}/local/plan/template/components.php?id={$templateid}&amp;hide={$component->id}\" title=\"$str_hide\">".
-                        "<img src=\"{$CFG->pixpath}/t/hide.gif\" class=\"iconsmall\" alt=\"$str_hide\" /></a>";
+                    $buttons[] = "<a href=\"{$CFG->wwwroot}/local/plan/template/components.php?id={$templateid}&amp;hide={$component->id}\" title=\"$str_disable\">".
+                        "<img src=\"{$CFG->pixpath}/t/hide.gif\" class=\"iconsmall\" alt=\"$str_disable\" /></a>";
                 } else {
-                    $buttons[] = "<a href=\"{$CFG->wwwroot}/local/plan/template/components.php?id={$templateid}&amp;show={$component->id}\" title=\"$str_show\">".
-                        "<img src=\"{$CFG->pixpath}/t/show.gif\" class=\"iconsmall\" alt=\"$str_show\" /></a>";
+                    $buttons[] = "<a href=\"{$CFG->wwwroot}/local/plan/template/components.php?id={$templateid}&amp;show={$component->id}\" title=\"$str_enable\">".
+                        "<img src=\"{$CFG->pixpath}/t/show.gif\" class=\"iconsmall\" alt=\"$str_enable\" /></a>";
                 }
 
                 if ($count > 1) {

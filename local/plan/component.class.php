@@ -361,7 +361,8 @@ abstract class dp_base_component {
             'progress',
         );
 
-        if($this->component == 'competency' || $this->component == 'objective') {
+        if(($this->component == 'competency' || $this->component == 'objective')
+            && $this->plan->get_component('course')->get_setting('enabled')) {
             $tableheaders[] = get_string('courses');
             $tablecolumns[] = 'linkedcourses';
         }
@@ -1362,4 +1363,5 @@ abstract class dp_base_component {
 
         return get_records_menu($table, 'planid', $this->plan->id, 'id', "id,$field");
     }
+
 }
