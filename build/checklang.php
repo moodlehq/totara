@@ -79,10 +79,13 @@ function scan_file($filepath, $langs){
 			$str = preg_replace('/^\\s*(["\'])(.*)(\\1)\\s*$/','\\2',$match[2]);
             if (isset($match[4])){
                 $loc = preg_replace('/^\\s*(["\'])(.*)(\\1)\\s*$/','\\2',$match[4]);
+                $locstr = $loc;
             }
             else{
                 $loc = '';
+                $locstr = 'moodle';
             }
+
 
 			// Bale if PHP variables, brackets, or concatenation used.
 			// too hard!
@@ -91,13 +94,12 @@ function scan_file($filepath, $langs){
 			}
 
             // run getstring and check output
-            // hide errors to avoid warnings as we're not passing an object
-            // as a third argument
+            // hide errors as we're not passing an object as a third argument
             $result = @get_string($str, $loc);
             if(preg_match('/^\\[\\[([^]]+)\\]\\]$/', $result, $match2)) {
                 // returned string contains [[ and ]]
                 // probably a bad lang string
-                print 'Missing lang string: "' . $str . '" in file "' . $loc . '" called from file "' . $filepath . '" on line ' . $line_number . "\n";
+                print 'Missing lang string: "' . $str . '" in module "' . $locstr . '" called from file "' . $filepath . '" on line ' . $line_number . "\n";
             }
 		}
 	}
