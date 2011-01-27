@@ -59,7 +59,7 @@ function print_entry($course) {
     } else {
         // this isn't an approved course in their development plan or development plan isn't approved
         $message = get_string('notpermitted', 'enrol_devplan');
-        $message .= '<a href=\"' . $CFG->wwwroot . '/local/plan/index.php?userid=' . $USER->id . '\">';
+        $message .= '<a href="' . $CFG->wwwroot . '/local/plan/index.php?userid=' . $USER->id . '">';
         $message .= get_string('developmentplan', 'enrol_devplan') . '</a><br />';
 
         if (!empty($course->guest)) {
