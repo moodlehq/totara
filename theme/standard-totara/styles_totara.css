@@ -1658,6 +1658,10 @@ table.dp-plan-component-items td select.approval {
     display: block;
 }
 
+input.dp-plan-component-input-error {
+    border: 1px solid red;
+}
+
 #dp-plans-menu h3 {
     margin-top: 5px;
     padding: 7px 20px;

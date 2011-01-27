@@ -1083,6 +1083,8 @@ abstract class dp_base_component {
      * @return string
      */
     function display_duedate($itemid, $duedate) {
+        $baddates = explode(',',optional_param('badduedates', null, PARAM_TEXT));
+
         $plancompleted = $this->plan->status == DP_PLAN_STATUS_COMPLETE;
         $cansetduedate = !$plancompleted && ($this->get_setting('setduedate') == DP_PERMISSION_ALLOW);
 
@@ -1090,7 +1092,8 @@ abstract class dp_base_component {
 
         // only show a form if they have permission to change due dates
         if($cansetduedate) {
-            $out .= $this->display_duedate_as_form($duedate, "duedate_{$this->component}[{$itemid}]");
+            $class = in_array($itemid, $baddates) ? 'dp-plan-component-input-error' : '';
+            $out .= $this->display_duedate_as_form($duedate, "duedate_{$this->component}[{$itemid}]", $class);
         } else {
             $out .= $this->display_duedate_as_text($duedate);
         }
@@ -1105,13 +1108,14 @@ abstract class dp_base_component {
      *
      * @param string $name
      * @param int $duedate
+     * @param string $inputclass
      * @return string
      */
-    function display_duedate_as_form($duedate, $name) {
+    function display_duedate_as_form($duedate, $name, $inputclass='') {
         global $CFG;
         $duedatestr = !empty($duedate) ?
             userdate($duedate, '%d/%m/%y', $CFG->timezone, false) : '';
-        return '<input id="'.$name.'" type="text" name="'.$name.'" value="'. $duedatestr . '" size="8" maxlength="20"/>';
+        return '<input id="'.$name.'" type="text" name="'.$name.'" value="'. $duedatestr . '" size="8" maxlength="20" class="'.$inputclass.'"/>';
     }
 
 

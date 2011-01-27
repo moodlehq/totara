@@ -619,6 +619,7 @@ class dp_competency_component extends dp_base_component {
 
         $status = true;
         if(!empty($duedates) && $cansetduedates) {
+            $badduedates = array();  // Record naughty duedates
             // Update duedates
             foreach($duedates as $id => $duedate) {
                 // allow empty due dates
@@ -627,6 +628,7 @@ class dp_competency_component extends dp_base_component {
                     // if they are required
                     if ($this->get_setting('duedatemode') == DP_DUEDATES_REQUIRED) {
                         $duedateout = $this->plan->enddate;
+                        $badduedates[] = $id;
                     } else {
                         $duedateout = null;
                     }
@@ -634,6 +636,7 @@ class dp_competency_component extends dp_base_component {
                     $datepattern = '/^(0?[1-9]|[12][0-9]|3[01])\/(0?[1-9]|1[0-2])\/(\d{2})$/';
                     if (preg_match($datepattern, $duedate, $matches) == 0) {
                         // skip badly formatted date strings
+                        $badduedates[] = $id;
                         continue;
                     }
                     $day = $matches[1];
@@ -778,12 +781,25 @@ class dp_competency_component extends dp_base_component {
                 rollback_sql();
             }
 
+            $currenturl = new moodle_url($currenturl);
+            $currenturl->remove_params('badduedates');
+            if (!empty($badduedates)) {
+                $currenturl->params(array('badduedates'=>implode(',', $badduedates)));
+            }
+            $currenturl = $currenturl->out();
+
+
             if ($this->plan->reviewing_pending) {
                 return $status;
             }
             else {
                 if ($status) {
-                    totara_set_notification(get_string('competenciesupdated','local_plan'), $currenturl, array('style'=>'notifysuccess'));
+                    $issuesnotification = '';
+                    if (!empty($badduedates)) {
+                        $issuesnotification .= $this->get_setting('duedatemode') == DP_DUEDATES_REQUIRED ?
+                            '<br>'.get_string('noteduedateswrongformatorrequired', 'local_plan') : '<br>'.get_string('noteduedateswrongformat', 'local_plan');
+                    }
+                    totara_set_notification(get_string('competenciesupdated','local_plan').$issuesnotification, $currenturl, array('style'=>'notifysuccess'));
                 } else {
                     totara_set_notification(get_string('error:competenciesupdated','local_plan'), $currenturl);
                 }

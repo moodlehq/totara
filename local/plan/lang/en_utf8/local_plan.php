@@ -386,6 +386,8 @@ $string['error:couldnotfindassigneditem'] = 'Could not find assigned item';
 $string['error:couldnotunassigneditem'] = 'Could not unassign item';
 $string['error:competencyproficiencypermission'] = 'You do not have permission to update proficiencies';
 $string['error:coursecompletionpermission'] = 'You do not have permission to update completion status';
+$string['noteduedateswrongformat'] = 'NOTE: The indicated duedate field(s) did not update: wrong format';
+$string['noteduedateswrongformatorrequired'] = 'NOTE: The indicated duedate field(s) did not update: required or wrong format';
 
 
 // Priority Scales
