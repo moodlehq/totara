@@ -129,6 +129,13 @@ class development_plan {
 
     }
 
+
+    /**
+     * Get the rolename from the role
+     *
+     * @param string $role
+     * @return string $rolename
+     */
     function get_role($role) {
         $rolename = "role_$role";
         return $this->$rolename;
@@ -206,6 +213,13 @@ class development_plan {
     }
 
 
+    /**
+     * Get a component setting
+     *
+     * @param array $component
+     * @param string $action
+     * @return void
+     */
     function get_component_setting($component, $action) {
         // we need the know the template to get settings
         if(!$this->templateid) {
@@ -233,10 +247,23 @@ class development_plan {
         print_error('error:settingdoesnotexist', 'local_plan', '', (object)array('component'=>$component, 'action'=>$action));
     }
 
+
+    /**
+     * Get a setting for an action
+     *
+     * @param string $action
+     * @return string
+     */
     function get_setting($action) {
         return $this->get_component_setting('plan', $action);
     }
 
+
+    /**
+     * Initialize settings for a component
+     *
+     * @return bool
+     */
     function initialize_settings() {
         global $DP_AVAILABLE_COMPONENTS;
         // no need to initialize twice
@@ -314,6 +341,11 @@ class development_plan {
     }
 
 
+    /**
+     * Display widget containing a component summary
+     *
+     * @return string $out
+     */
     function display_summary_widget() {
         global $CFG;
 
@@ -359,6 +391,12 @@ class development_plan {
         return $out;
     }
 
+
+    /**
+     * Display the add plan icon
+     *
+     * @return string $out
+     */
     function display_add_plan_icon() {
         global $CFG;
 
@@ -368,6 +406,14 @@ class development_plan {
         return $out;
     }
 
+
+    /**
+     * Display end date for an item
+     *
+     * @param int $itemid
+     * @param int $enddate
+     * @return string
+     */
     function display_enddate() {
         $out = '';
 
@@ -381,6 +427,12 @@ class development_plan {
     }
 
 
+    /**
+     * Display enddate for an item as text
+     *
+     * @param int $enddate
+     * @return string
+     */
     function display_enddate_as_text($enddate) {
         global $CFG;
         if(isset($enddate)) {
@@ -390,6 +442,13 @@ class development_plan {
         }
     }
 
+
+    /**
+     * Display enddate for an item with reminder info
+     *
+     * @param int $enddate
+     * @return string
+     */
     function display_enddate_highlight_info($enddate) {
         $out = '';
         $now = time();
@@ -470,6 +529,12 @@ class development_plan {
         return local_display_progressbar($progress, 'medium', false, $tooltipstr);
     }
 
+
+    /**
+     * Display completed date for a plan
+     *
+     * @return string
+     */
     function display_completeddate() {
         global $CFG;
 
@@ -485,7 +550,12 @@ class development_plan {
         return ($latestmodification->status != DP_PLAN_STATUS_COMPLETE) ? get_string('notcompleted', 'local_plan') : userdate($latestmodification->timemodified, '%d/%m/%y', $CFG->timezone, false);
     }
 
-    // Displays icons of current actions the user can perform on the plan
+
+    /**
+     *  Displays icons of current actions the user can perform on the plan
+     *
+     *  @return string
+     */
     function display_actions() {
         global $CFG;
 
@@ -526,6 +596,12 @@ class development_plan {
         return $out;
     }
 
+
+    /**
+     * Gets history of a plan
+     *
+     * @return object
+     */
     function get_history($orderby='timemodified') {
         return get_records('dp_plan_history', 'planid', $this->id, $orderby);
     }
@@ -861,11 +937,21 @@ class development_plan {
     }
 
 
-
+    /**
+     * Display completed plan message
+     *
+     * @return string
+     */
     function display_completed_plan_message() {
         return '<p>' . get_string('plancompleted', 'local_plan') . '</p>';
     }
 
+
+    /**
+     * Display unapproved plan message
+     *
+     * @return string
+     */
     function display_unapproved_plan_message() {
         global $CFG;
 
@@ -891,6 +977,13 @@ class development_plan {
         return $out;
     }
 
+
+    /**
+     * Display pending items list
+     *
+     * @param object $pendinglist
+     * @return string
+     */
     function display_pending_items($pendinglist=null) {
         global $CFG;
 
@@ -1027,6 +1120,14 @@ class development_plan {
         return $out;
     }
 
+
+    /**
+     * Display the viewing users plan
+     *
+     * @access public
+     * @param int $userid
+     * @return string
+     */
     static public function display_viewing_users_plan($userid) {
         global $CFG;
         $user = get_record('user', 'id', $userid);
@@ -1046,7 +1147,12 @@ class development_plan {
         return $out;
     }
 
-    // Delete the plan and all of its relevant data
+
+    /**
+     * Delete the plan and all of its relevant data
+     *
+     * @return boolean
+     */
     function delete() {
         global $CFG, $DP_AVAILABLE_COMPONENTS;
 
@@ -1176,12 +1282,16 @@ class development_plan {
         return true;
     }
 
+
     /**
      * Determine the manager for the user of this Plan
+     *
+     * @return string
      */
     function get_manager() {
         return totara_get_manager($this->userid);
     }
+
 
     /**
      * Send a task to the manager when a learner requests a plan approval
@@ -1335,6 +1445,14 @@ class development_plan {
         }
     }
 
+
+    /**
+     * Send approved notifications
+     *
+     * @global $USER
+     * @global $CFG
+     * @return void
+     */
     function send_approved_notification() {
         global $USER, $CFG;
         require_once($CFG->dirroot.'/local/totara_msg/messagelib.php');
@@ -1350,6 +1468,14 @@ class development_plan {
         tm_notification_send($event);
     }
 
+
+    /**
+     * Send declined notifications
+     *
+     * @global $USER
+     * @global $CFG
+     * @return void
+     */
     function send_declined_notification() {
         global $USER, $CFG;
         require_once($CFG->dirroot.'/local/totara_msg/messagelib.php');
@@ -1365,6 +1491,14 @@ class development_plan {
         tm_notification_send($event);
     }
 
+
+    /**
+     * Send completion notifications
+     *
+     * @global $USER
+     * @global $CFG
+     * @return void
+     */
     function send_completion_notification() {
         global $USER, $CFG;
         require_once($CFG->dirroot.'/local/totara_msg/messagelib.php');
