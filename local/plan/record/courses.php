@@ -67,7 +67,7 @@
         $strheading = get_string('recordoflearning', 'local');
     }
     // set first char of $planstatus to upper case for display
-    $strsubheading = ucfirst($planstatus . ' ');
+    $strsubheading = $ustatus . ' ';
     $strsubheading .= get_string('courseplural', 'local_plan');
 
     $shortname = 'plan_courses';
