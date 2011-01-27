@@ -656,6 +656,13 @@ SQL;
         return get_records_sql($sql);
     }
 
+
+    /**
+     * Prints the list of linked evidence
+     *
+     * @param int $courseid
+     * @return string
+     */
     function print_linked_evidence_list($courseid) {
         global $CFG;
 
