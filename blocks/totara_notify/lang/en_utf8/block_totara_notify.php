@@ -1,6 +1,7 @@
 <?php
 $string['blockname'] = 'Totara Alerts';
 $string['dismiss'] = 'Dismiss message';
+$string['reviewitems'] = 'Review Items';
 $string['from'] = 'From';
 $string['normal'] = 'Normal';
 $string['notifications'] = 'Alerts';

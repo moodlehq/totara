@@ -203,7 +203,7 @@ function totara_msg_dismiss_action($id) {
 function totara_msg_alert_popup($id, $extrabuttons=array()) {
     global $CFG, $FULLME;
 
-    $str = get_string('dismiss', 'block_totara_notify');
+    $str = get_string('reviewitems', 'block_totara_notify');
     $return =
     '<script type="text/javascript"> '.
     "// bind functionality to page on load
