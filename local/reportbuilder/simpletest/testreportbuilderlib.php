@@ -240,7 +240,7 @@ class reportbuilderlib_test extends prefix_changing_test_case {
         $this->assertEqual(current($filters)->type, 'user');
         $this->assertEqual(current($filters)->value, 'fullname');
         $this->assertEqual(current($filters)->advanced, '0');
-        $this->assertEqual(current($filters)->label, 'User\'s Full name');
+        $this->assertEqual(current($filters)->label, 'User\'s Fullname');
         $this->assertEqual(current($filters)->selectfunc, null);
     }
 
@@ -683,7 +683,7 @@ class reportbuilderlib_test extends prefix_changing_test_case {
         // should return an array
         $this->assertTrue(is_array($options));
         // the strings should have the correct format
-        $this->assertEqual($options['User']['user-fullname'], "User's Full name");
+        $this->assertEqual($options['User']['user-fullname'], "User's Fullname");
     }
 
     function test_reportbuilder_get_columns_select() {
@@ -692,7 +692,7 @@ class reportbuilderlib_test extends prefix_changing_test_case {
         // should return an array
         $this->assertTrue(is_array($options));
         // the strings should have the correct format
-        $this->assertEqual($options['User']['user-fullname'], 'User Fullname');
+        $this->assertEqual($options['User']['user-fullname'], 'User\'s Fullname');
     }
 
     function test_reportbuilder_delete_column() {
