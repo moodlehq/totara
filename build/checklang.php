@@ -1,27 +1,12 @@
 #!/usr/bin/php
 <?php
-// PHP version of Simon's missing lang string ruby script
+require_once(dirname(dirname(__FILE__)).'/config.php');
 
-//Array of what to exclude from the search
-//key: directory or filename containing exception
-//value: string or array of strings to exclude. If set to '*' exclude all strings
-$exclude = array(
-    'idp' => array('delfavouritebutton','additionalobjectives'),
-    'local/libs' => '*',
-    'local/reportbuilder/groups.php' => 'type',
-    'local/reportheading/report_forms.php' => 'noheadingcolumnsdefined',
-    'local/reportbuilder' => 'oauthfailed',
-    'local/reportbuilder/acceptrejectmsg.php' => '*',
-    'idp/dashboard.php' => 'dashboard',
-    'local/dashboard/lang/en_utf8/local_dashboard.php' => 'key',
-    'local/reportbuilder/actionmsg.php' => '*',
-    'local/totara.php' => '*',
-    'local/reportbuilder/dismissmsg.php' => 'statement',
+// Check for missing lang strings by parsing the code for calls to get_string,
+// then executing and searching for missing strings
 
-
-);
-
-
+// @todo check that it can still be called from any directory now that we
+// use config.php
 if ( $argc > 1 ){
 
 	if ( $argv[1] == '--help' || $argv[1] == '-h' ){
@@ -74,61 +59,13 @@ function scan_directory($start_dir='.', $langs) {
 }
 
 function scan_file($filepath, $langs){
-    global $exclude;
-
-    $excludevalues = array();
-    foreach($exclude as $key => $value){
-        if((substr($filepath,0,strlen($key))==$key)) {
-            if($value=='*') {
-                return;
-            }
-            if(!is_array($value)) {
-                $excludevalues[] = $value;
-            } else {
-                foreach($value as $item) {
-                    $excludevalues[] = $item;
-                }
-            }
-
-        }
-    }
-
-	// Scan file for module and block locations
-	if ( !($file = fopen($filepath, 'r')) ){
-		return;
-	}
-	$modfiles = array();
-	$langfiles = array();
-
-    // Check modules and blocks for local help files
-    $modfiles = array();
-    if ( preg_match( '/mod\\/([^\\/]*)\\//', $filepath, $modmatch )){
-        $mod = trim($modmatch[1]);
-        foreach( $langs as $lang ){
-            $modfiles[] = "./mod/{$mod}/lang/{$lang}/{$mod}.php";
-        }
-    }
-    $blockfiles = array();
-    if ( preg_match( '/blocks\\/([^\\/]*)\\//', $filepath, $blockmatch )){
-        $block = trim($blockmatch[1]);
-        foreach( $langs as $lang ){
-            $blockfiles[] = "./blocks/{$block}/lang/{$lang}/block_{$block}.php";
-            $blockfiles[] = "./mod/{$block}/lang/{$lang}/{$block}.php";
-        }
-    }
-
-    $localfiles = array();
-    if ( preg_match( '/local\\/([^\\/]*)\\//', $filepath, $localmatch )){
-        $localmod = trim($localmatch[1]);
-        foreach( $langs as $lang ){
-            $localfiles[] = "./local/{$localmod}/lang/{$lang}/local_{$localmod}.php";
-        }
-    }
 
 	// Scan file for lang strings
     $file = fopen($filepath, 'r');
+    $line_number = 0;
 	while ( !feof($file) ){
 		$line = fgets($file);
+        $line_number++;
 		$matches = array();
 		preg_match_all(
 			'/(get|print)_string\\s*\\(\\s*([^,\\)]+)(\\s*,\\s*([^,\\)]*))?(\\s*,\\s*([^,\\)]*))?\\s*\\)/m',
@@ -149,48 +86,19 @@ function scan_file($filepath, $langs){
 
 			// Bale if PHP variables, brackets, or concatenation used.
 			// too hard!
-			if ( preg_match( '/[$().]/', $str ) || preg_match ( '/\\$/', $loc ) || in_array($str,$excludevalues)) {
+			if ( preg_match( '/[$().]/', $str ) || preg_match ( '/\\$/', $loc )) {
 				continue;
 			}
 
-			$found = false;
-			foreach( $langs as $lang ){
-                $langfiles = array_merge_recursive($modfiles, $blockfiles, $localfiles);
-				if ( $loc != '' ){
-					// default location
-                    $langfiles[] = "./lang/{$lang}/{$loc}.php";
-				} else {
-					// try some possible files if nothing set
-					$langfiles[] = "./lang/{$lang}/moodle.php";
-					$langfiles[] = "./lang/{$lang}/langconfig.php";
-					$langfiles[] = "./lang/{$lang}/admin.php";
-					$langfiles[] = "./lang/{$lang}/install.php";
-				}
-                // look for strings referencing block lang files
-                if ( preg_match('|^blocks?/(.*)|', $loc, $match)) {
-                    $block = trim($match[1]);
-                    $langfiles[] = "./lang/{$lang}/block_{$block}.php";
-                }
-
-				foreach( $langfiles as $langfile ){
-					// Look for reference to string in lang file
-                    if ( file_exists($langfile) ){
-
-                        foreach( file($langfile) as $line ){
-
-							// Escape loop if a match is found
-							//echo "re: ".'/\\$string\\s*\\[\\s*([\\\'"])' . preg_quote($str) . '\\1\\s*\\]/'."\n";
-							if ( preg_match( '/\\$string\\s*\\[\\s*([\\\'"])' . str_replace( '/', '\\/', preg_quote($str)) . '\\1\\s*\\]/', $line )){
-								$found = true;
-								continue 3;
-							}
-						}
-					}
-				}
-			}
-			if ( !$found ){
-				echo "String '{$str}' missing from langfile referenced in '{$filepath}'\n";
-			}
+            // run getstring and check output
+            // hide errors to avoid warnings as we're not passing an object
+            // as a third argument
+            $result = @get_string($str, $loc);
+            if(preg_match('/^\\[\\[([^]]+)\\]\\]$/', $result, $match2)) {
+                // returned string contains [[ and ]]
+                // probably a bad lang string
+                print 'Missing lang string: "' . $str . '" in file "' . $loc . '" called from file "' . $filepath . '" on line ' . $line_number . "\n";
+            }
 		}
 	}
 }
