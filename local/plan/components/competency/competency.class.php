@@ -568,8 +568,14 @@ class dp_competency_component extends dp_base_component {
             $out .= '<td>';
             $out .= get_string('duedate', 'local_plan') . ': ';
             $out .= $this->display_duedate_as_text($item->duedate);
-            $out .= '<br />';
+            $out .= '<br>';
             $out .= $this->display_duedate_highlight_info($item->duedate);
+            $out .= '</td>';
+        }
+        if ($status = $this->get_status($item->competencyid)) {
+            $out .= '<td>';
+            $out .= get_string('status', 'local_plan').': ';
+            $out .= $status;
             $out .= '</td>';
         }
         $out .= "</tr>";
@@ -1106,5 +1112,37 @@ class dp_competency_component extends dp_base_component {
     }
 
 
+    /*
+     * Get the status of a specified competency
+     *
+     * @access  public
+     * @param   int $compid the id of the competency for which the status should be retrieved
+     * @return  string the status
+     */
+    public function get_status($compid) {
+        global $CFG;
+
+        $sql = "SELECT csv.name
+            FROM {$CFG->prefix}dp_plan_competency_assign ca ";
+
+        if ($this->plan->is_complete()) {
+            // Use the 'snapshot' status value
+            $sql .= "LEFT JOIN {$CFG->prefix}comp_scale_values csv ON ca.scalevalueid = csv.id ";
+        } else {
+            // Use the 'live' status value
+            $sql .= "
+                LEFT JOIN
+                    {$CFG->prefix}comp_evidence ce
+                 ON ca.competencyid = ce.competencyid
+                AND ce.userid = {$this->plan->userid}
+                LEFT JOIN
+                    {$CFG->prefix}comp_scale_values csv
+                 ON ce.proficiency = csv.id ";
+        }
+
+        $sql .= "WHERE ca.competencyid = {$compid}";
+
+        return get_field_sql($sql);
+    }
 
 }
