@@ -80,6 +80,11 @@ function dp_objective_component_build_settings_form(&$mform, $customdata) {
         }
     }
     $mform->addElement('select', 'objectivescale', get_string('objectivescale', 'local_plan'), $objectivemenu);
+    if (!empty($customdata['templateinuse'])) {
+        $mform->disabledIf('objectivescale', 'prioritymode', 'neq', -777);  // bogus check that will always be false, just so we can get the element disabled
+        $mform->addElement('static', 'objectivescalesdisabledtemplateinuse', null, get_string('objectivescalesdisabledtemplateinuse', 'local_plan'));
+    }
+
     $mform->setDefault('objectivescale', $defaultobjectivescale);
 
     //Permissions
