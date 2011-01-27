@@ -92,12 +92,15 @@ abstract class dp_base_workflow {
         $this->description = get_string($this->classname . 'workflowdesc', 'local_plan');
     }
 
-    // Returns a list of differences between the workflow's settings
-    // and the current database settings used to let the user know
-    // what will change if they switch workflows.
-    //
-    // @param int templateid id of the current template
-    // @return array diff an array of changes
+
+    /**
+     * Returns a list of differences between the workflow's settings
+     * and the current database settings used to let the user know
+     * what will change if they switch workflows.
+     *
+     * @param int templateid id of the current template
+     * @return array diff an array of changes
+     */
     function list_differences($templateid) {
         global $CFG;
         $diff = array();
@@ -153,8 +156,13 @@ abstract class dp_base_workflow {
         return $diff;
     }
 
-    // Copys all the settings and permissions for a workflow to
-    // the database, overriding existing values
+    /**
+     * Copies all the settings and permissions for a workflow to
+     * the database, overriding existing values
+     *
+     * @param int $templateid id of the current template
+     * @return bool
+     */
     function copy_to_db($templateid) {
         global $CFG;
         if(!$templateid) {
