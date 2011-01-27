@@ -10,6 +10,7 @@ require_login();
 $plan = new development_plan($id);
 
 //Permissions check
+$systemcontext = get_system_context();
 if(!has_capability('local/plan:accessanyplan', $systemcontext) && ($plan->get_setting('view') < DP_PERMISSION_ALLOW)) {
         print_error('error:nopermissions', 'local_plan');
 }
