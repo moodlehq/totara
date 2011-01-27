@@ -32,10 +32,10 @@ abstract class dp_base_workflow {
             'perm_plan_update_manager',
             'perm_plan_delete_learner',
             'perm_plan_delete_manager',
-            'perm_plan_confirm_learner',
-            'perm_plan_confirm_manager',
-            'perm_plan_signoff_learner',
-            'perm_plan_signoff_manager',
+            'perm_plan_approve_learner',
+            'perm_plan_approve_manager',
+            'perm_plan_complete_learner',
+            'perm_plan_complete_manager',
 
             //course permission settings
             'perm_course_updatecourse_learner',
@@ -79,7 +79,7 @@ abstract class dp_base_workflow {
                 $msg = new object();
                 $msg->class = get_class($this);
                 $msg->property = $property;
-                throw new Exception(get_string('error:propertymustbeset', $msg));
+                throw new Exception(get_string('error:propertymustbeset', 'local_plan', $msg));
             }
         }
         // reserve the name 'custom' for use by the system
