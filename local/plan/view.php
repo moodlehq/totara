@@ -33,10 +33,13 @@ $currenturl = qualified_me();
 $viewurl = strip_querystring(qualified_me())."?id={$id}&action=view";
 $editurl = strip_querystring(qualified_me())."?id={$id}&action=edit";
 
+require_login();
 $plan = new development_plan($id);
 
-if (!dp_can_view_users_plans($plan->userid)) {
-    print_error('error:nopermissions', 'local_plan');
+// Permissions check
+$systemcontext = get_system_context();
+if(!has_capability('local/plan:accessanyplan', $systemcontext) && ($plan->get_setting('view') < DP_PERMISSION_ALLOW)) {
+        print_error('error:nopermissions', 'local_plan');
 }
 
 require_once('edit_form.php');

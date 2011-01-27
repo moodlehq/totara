@@ -6,7 +6,14 @@ require_once($CFG->dirroot . '/local/plan/lib.php');
 $id = required_param('id', PARAM_INT); // plan id
 $caid = required_param('itemid', PARAM_INT); // course assignment id
 
+require_login();
 $plan = new development_plan($id);
+
+//Permissions check
+if(!has_capability('local/plan:accessanyplan', $systemcontext) && ($plan->get_setting('view') < DP_PERMISSION_ALLOW)) {
+        print_error('error:nopermissions', 'local_plan');
+}
+
 $componentname = 'course';
 $component = $plan->get_component($componentname);
 $currenturl = $CFG->wwwroot . '/local/plan/components/course/view.php?id='.$id.'&amp;itemid='.$caid;

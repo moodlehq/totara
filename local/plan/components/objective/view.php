@@ -8,7 +8,15 @@ require_once($CFG->dirroot . '/local/js/lib/setup.php');
 $id = required_param('id', PARAM_INT); // plan id
 $caid = required_param('itemid', PARAM_INT); // objective assignment id
 
+require_login();
 $plan = new development_plan($id);
+
+//Permissions check
+$systemcontext = get_system_context();
+if(!has_capability('local/plan:accessanyplan', $systemcontext) && ($plan->get_setting('view') < DP_PERMISSION_ALLOW)) {
+        print_error('error:nopermissions', 'local_plan');
+}
+
 $plancompleted = $plan->status == DP_PLAN_STATUS_COMPLETE;
 $componentname = 'objective';
 $component = $plan->get_component($componentname);

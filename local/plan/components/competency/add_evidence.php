@@ -20,7 +20,14 @@ $organisationid = optional_param('organisationid', 0, PARAM_INT);
 
 $nojs = optional_param('nojs', 0, PARAM_INT);
 
+require_login();
 $plan = new development_plan($id);
+
+//Permissions check
+$systemcontext = get_system_context();
+if(!has_capability('local/plan:accessanyplan', $systemcontext) && ($plan->get_setting('view') < DP_PERMISSION_ALLOW)) {
+        print_error('error:nopermissions', 'local_plan');
+}
 
 if($evidence_record = get_record('comp_evidence', 'userid', $userid, 'competencyid', $competencyid)) {
     $evidenceid = $evidence_record->id;
