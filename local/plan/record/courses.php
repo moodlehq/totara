@@ -66,7 +66,9 @@
     } else {
         $strheading = get_string('recordoflearning', 'local');
     }
-    $strheading .= ': ' . get_string($planstatus . 'learning', 'local_plan');
+    // set first char of $planstatus to upper case for display
+    $strsubheading = ucfirst($planstatus . ' ');
+    $strsubheading .= get_string('courseplural', 'local_plan');
 
     $shortname = 'plan_courses';
     $data = array(
@@ -90,7 +92,8 @@
 
     $navlinks = array();
     $navlinks[] = array('name' => get_string('mylearning', 'local'), 'link' => $CFG->wwwroot . '/my/learning.php', 'type' => 'title');
-    $navlinks[] = array('name' => $strheading, 'link' => null, 'type' => 'misc');
+    $navlinks[] = array('name' => $strheading, 'link' => $CFG->wwwroot . '/local/plan/record/courses.php', 'type' => 'misc');
+    $navlinks[] = array('name' => $strsubheading, 'link' => null, 'type' => 'misc');
 
     print_header($strheading, $strheading, build_navigation($navlinks));
 

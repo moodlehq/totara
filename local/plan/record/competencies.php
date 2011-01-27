@@ -65,7 +65,9 @@
     } else {
         $strheading = get_string('recordoflearning', 'local');
     }
-    $strheading .= ': ' .  get_string($planstatus . 'learning', 'local_plan');
+    // set first char of $planstatus to upper case for display
+    $strsubheading = ucfirst($planstatus . ' ');
+    $strsubheading .= get_string('competenciesplural', 'local_plan');
 
     $shortname = 'plan_competencies';
     $data = array(
@@ -89,11 +91,12 @@
 
     $navlinks = array();
     $navlinks[] = array('name' => get_string('mylearning', 'local'), 'link' => $CFG->wwwroot . '/my/learning.php', 'type' => 'title');
-    $navlinks[] = array('name' => $strheading, 'link' => null, 'type' => 'misc');
+    $navlinks[] = array('name' => $strheading, 'link' => $CFG->wwwroot . '/local/plan/record/courses.php', 'type' => 'misc');
+    $navlinks[] = array('name' => $strsubheading, 'link' => null, 'type' => 'misc');
 
     print_header($strheading, $strheading, build_navigation($navlinks));
 
-   $print_plans_menu = $USER->id != $userid && (totara_is_manager($userid) ||
+    $print_plans_menu = $USER->id != $userid && (totara_is_manager($userid) ||
         has_capability('moodle/site:doanything',$context));
 
     if ($print_plans_menu) {
