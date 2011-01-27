@@ -31,8 +31,10 @@ abstract class rb_base_source {
         );
         foreach($properties as $property) {
             if(!property_exists($this, $property)) {
-                throw new Exception("Property '$property' must be set in class " .
-                    get_class($this));
+                $a = new object();
+                $a->property = $property;
+                $a->class = get_class($this);
+                throw new Exception(get_string('error:propertyxmustbesetiny', 'local_reportbuilder', $a));
             }
         }
 
@@ -69,22 +71,26 @@ abstract class rb_base_source {
 
         // don't let source define join with same name as an SQL
         // reserved word
+        // from http://docs.moodle.org/en/XMLDB_reserved_words
         $reserved_words = explode(', ', 'access, accessible, add, all, alter, analyse, analyze, and, any, array, as, asc, asensitive, asymmetric, audit, authorization, autoincrement, avg, backup, before, begin, between, bigint, binary, blob, both, break, browse, bulk, by, call, cascade, case, cast, change, char, character, check, checkpoint, close, cluster, clustered, coalesce, collate, column, comment, commit, committed, compress, compute, condition, confirm, connect, connection, constraint, contains, containstable, continue, controlrow, convert, count, create, cross, current, current_date, current_role, current_time, current_timestamp, current_user, cursor, database, databases, date, day_hour, day_microsecond, day_minute, day_second, dbcc, deallocate, dec, decimal, declare, default, deferrable, delayed, delete, deny, desc, describe, deterministic, disk, distinct, distinctrow, distributed, div, do, double, drop, dual, dummy, dump, each, else, elseif, enclosed, end, errlvl, errorexit, escape, escaped, except, exclusive, exec, execute, exists, exit, explain, external, false, fetch, file, fillfactor, float, float4, float8, floppy, for, force, foreign, freetext, freetexttable, freeze, from, full, fulltext, function, goto, grant, group, having, high_priority, holdlock, hour_microsecond, hour_minute, hour_second, identified, identity, identity_insert, identitycol, if, ignore, ilike, immediate, in, increment, index, infile, initial, initially, inner, inout, insensitive, insert, int, int1, int2, int3, int4, int8, integer, intersect, interval, into, is, isnull, isolation, iterate, join, key, keys, kill, leading, leave, left, level, like, limit, linear, lineno, lines, load, localtime, localtimestamp, lock, long, longblob, longtext, loop, low_priority, master_heartbeat_period, master_ssl_verify_server_cert, match, max, maxextents, mediumblob, mediumint, mediumtext, middleint, min, minus, minute_microsecond, minute_second, mirrorexit, mlslabel, mod, mode, modifies, modify, national, natural, new,' .
             ' no_write_to_binlog, noaudit, nocheck, nocompress, nonclustered, not, notnull, nowait, null, nullif, number, numeric, of, off, offline, offset, offsets, old, on, once, online, only, open, opendatasource, openquery, openrowset, openxml, optimize, option, optionally, or, order, out, outer, outfile, over, overlaps, overwrite, pctfree, percent, perm, permanent, pipe, pivot, placing, plan, precision, prepare, primary, print, prior, privileges, proc, procedure, processexit, public, purge, raid0, raiserror, range, raw, read, read_only, read_write, reads, readtext, real, reconfigure, references, regexp, release, rename, repeat, repeatable, replace, replication, require, resource, restore, restrict, return, returning, revoke, right, rlike, rollback, row, rowcount, rowguidcol, rowid, rownum, rows, rule, save, schema, schemas, second_microsecond, select, sensitive, separator, serializable, session, session_user, set, setuser, share, show, shutdown, similar, size, smallint, some, soname, spatial, specific, sql, sql_big_result, sql_calc_found_rows, sql_small_result, sqlexception, sqlstate, sqlwarning, ssl, start, starting, statistics, straight_join, successful, sum, symmetric, synonym, sysdate, system_user, table, tape, temp, temporary, terminated, textsize, then, tinyblob, tinyint, tinytext, to, top, trailing, tran, transaction, trigger, true, truncate, tsequal, uid, uncommitted, undo, union, unique, unlock, unsigned, update, updatetext, upgrade, usage, use, user, using, utc_date, utc_time, utc_timestamp, validate, values, varbinary, varchar, varchar2, varcharacter, varying, verbose, view, waitfor, when, whenever, where, while, with, work, write, writetext, x509, xor, year_month, zerofill');
 
         foreach($joinlist as $item) {
             // check join list for duplicate names
             if(in_array($item->name, $joins_used)) {
-                throw new ReportBuilderException("Join name '" .
-                    $item->name . "' used more than once in source");
+                $a = new object();
+                $a->join = $item->name;
+                $a->source = get_class($this);
+                throw new ReportBuilderException(get_string('error:joinxusedmorethanonceiny', 'local_reportbuilder', $a));
             } else {
                 $joins_used[] = $item->name;
             }
 
             if(in_array($item->name, $reserved_words)) {
-                throw new ReportBuilderException("Join name '" .
-                    $item->name . "' is an SQL reserved word. " .
-                    ' Please rename the join');
+                $a = new object();
+                $a->join = $item->name;
+                $a->source = get_class($this);
+                throw new ReportBuilderException(get_string('error:joinxisreservediny', 'local_reportbuilder', $a));
             }
         }
 
@@ -98,19 +104,22 @@ abstract class rb_base_source {
                         continue;
                     }
                     if(!in_array($dep, $joins_used)) {
-                        throw new ReportBuilderException("Join name '" .
-                            $item->name . "' contains dependency '" .
-                            $dep . "' that does not exist in joinlist.");
+                        $a = new object();
+                        $a->join = $item->name;
+                        $a->source = get_class($this);
+                        $a->dependency = $dep;
+                        throw new ReportBuilderException(get_string('error:joinxhasdependencyyinz', 'local_reportbuilder', $a));
                     }
                 }
             } else if (isset($item->dependencies) &&
                 $item->dependencies != 'base') {
 
                 if(!in_array($item->dependencies, $joins_used)) {
-                    throw new ReportBuilderException("Join name '" .
-                        $item->name . "' contains dependency '" .
-                        $item->dependencies .
-                        "' that does not exist in joinlist.");
+                    $a = new object();
+                    $a->join = $item->name;
+                    $a->source = get_class($this);
+                    $a->dependency = $item->dependencies;
+                    throw new ReportBuilderException(get_string('error:joinxhasdependencyyinz', 'local_reportbuilder', $a));
                 }
             }
         }
@@ -145,9 +154,11 @@ abstract class rb_base_source {
 
             // make sure joins are defined before adding column
             if(!reportbuilder::check_joins($joinlist, $coloption->joins)) {
-                throw new ReportBuilderException("Joins for column with type '" .
-                    $coloption->type . "' and value '" . $coloption->value .
-                    "' not found");
+                $a = new object();
+                $a->type = $coloption->type;
+                $a->value = $coloption->value;
+                $a->source = get_class($this);
+                throw new ReportBuilderException(get_string('error:joinsfortypexandvalueynotfoundinz', 'local_reportbuilder', $a));
             }
 
             if($heading === null) {
@@ -173,8 +184,11 @@ abstract class rb_base_source {
                 )
             );
         } else {
-            throw new ReportBuilderException("Column option with type '".
-                $type . "' and value '". $value . "' not found");
+            $a = new object();
+            $a->type = $coloption->type;
+            $a->value = $coloption->value;
+            $a->source = get_class($this);
+            throw new ReportBuilderException(get_string('error:columnoptiontypexandvalueynotfoundinz', 'local_reportbuilder', $a));
         }
     }
 
@@ -199,21 +213,30 @@ abstract class rb_base_source {
         if(!$filteroption =
             reportbuilder::get_single_item($filteroptions, $type, $value)) {
 
-            throw new ReportBuilderException("Filter option with type '".
-                $type . "' and value '" . $value . "' not found");
+            $a = new object();
+            $a->type = $type;
+            $a->value = $value;
+            $a->source = get_class($this);
+            throw new ReportBuilderException(get_string('error:filteroptiontypexandvalueynotfoundinz', 'local_reportbuilder', $a));
         }
         if(!$columnoption =
             reportbuilder::get_single_item($columnoptions, $type, $value)) {
 
-            throw new ReportBuilderException("Column option with type '".
-                $type . "' and value '" . $value . "' not found");
+            $a = new object();
+            $a->type = $type;
+            $a->value = $value;
+            $a->source = get_class($this);
+            throw new ReportBuilderException(get_string('error:columnoptiontypexandvalueynotfoundinz', 'local_reportbuilder', $a));
         }
 
         // make sure joins are defined before adding column
         if(!reportbuilder::check_joins($joinlist, $columnoption->joins)) {
-            throw new ReportBuilderException("Joins for filter with type '" .
-                $columnoption->type . "' and value '" . $columnoption->value .
-                "' not found");
+            $a = new object();
+            $a->type = $columnoption->type;
+            $a->value = $columnoption->value;
+            $a->source = get_class($this);
+            throw new ReportBuilderException(get_string('error:joinsforfiltertypexandvalueynotfoundinz', 'local_reportbuilder', $a));
+
         }
 
         if($advanced === null) {
@@ -433,13 +456,13 @@ abstract class rb_base_source {
 
         switch ($status){
             case DP_PLAN_STATUS_UNAPPROVED:
-                return 'Unapproved';
+                return get_string('unapproved', 'local_plan');
                 break;
             case DP_PLAN_STATUS_APPROVED:
-                return 'Approved';
+                return get_string('approved', 'local_plan');
                 break;
             case DP_PLAN_STATUS_COMPLETE:
-                return 'Complete';
+                return get_string('complete', 'local_plan');
                 break;
         }
     }
@@ -503,8 +526,8 @@ abstract class rb_base_source {
 
     function rb_filter_yesno_list() {
         $yn = array();
-        $yn['Yes'] = 'Yes';
-        $yn['No'] = 'No';
+        $yn['Yes'] = get_string('yes');
+        $yn['No'] = get_string('no');
         return $yn;
     }
 
@@ -726,14 +749,14 @@ abstract class rb_base_source {
         $columnoptions[] = new rb_column_option(
             'user',
             'fullname',
-            'User Fullname',
+            get_string('userfullname', 'local_reportbuilder'),
             sql_fullname("$join.firstname", "$join.lastname"),
             array('joins' => $join)
         );
         $columnoptions[] = new rb_column_option(
             'user',
             'namelink',
-            'User Fullname (linked to profile)',
+            get_string('usernamelink', 'local_reportbuilder'),
             sql_fullname("$join.firstname", "$join.lastname"),
             array(
                 'joins' => $join,
@@ -745,7 +768,7 @@ abstract class rb_base_source {
         $columnoptions[] = new rb_column_option(
             'user',
             'namelinkicon',
-            'User Fullname (linked to profile with icon)',
+            get_string('usernamelinkicon', 'local_reportbuilder'),
             sql_fullname("$join.firstname", "$join.lastname"),
             array(
                 'joins' => $join,
@@ -764,7 +787,7 @@ abstract class rb_base_source {
         $columnoptions[] = new rb_column_option(
             'user',
             'lastlogin',
-            'User Last Login',
+            get_string('userlastlogin', 'local_reportbuilder'),
             sql_fullname("$join.lastlogin"),
             array(
                 'joins' => $join,
@@ -773,11 +796,11 @@ abstract class rb_base_source {
         );
         // auto-generate columns for user fields
         $fields = array(
-            'firstname' => 'User First Name',
-            'lastname' => 'User Last Name',
-            'username' => 'Username',
-            'idnumber' => 'User ID Number',
-            'id' => 'User ID',
+            'firstname' => get_string('userfirstname', 'local_reportbuilder'),
+            'lastname' => get_string('userlastname', 'local_reportbuilder'),
+            'username' => get_string('username', 'local_reportbuilder'),
+            'idnumber' => get_string('useridnumber', 'local_reportbuilder'),
+            'id' => get_string('userid', 'local_reportbuilder'),
         );
         foreach($fields as $field => $name) {
             $columnoptions[] = new rb_column_option(
@@ -803,11 +826,11 @@ abstract class rb_base_source {
     protected function add_user_fields_to_filters(&$filteroptions) {
         // auto-generate filters for user fields
         $fields = array(
-            'fullname' => "User's Full name",
+            'fullname' => get_string('userfullname', 'local_reportbuilder'),
             'firstname' => get_string('firstname'),
             'lastname' => get_string('lastname'),
             'username' => get_string('username'),
-            'idnumber' => 'User ID Number',
+            'idnumber' => get_string('useridnumber', 'local_reportbuilder'),
         );
         foreach($fields as $field => $name) {
             $filteroptions[] = new rb_filter_option(
@@ -1361,49 +1384,49 @@ abstract class rb_base_source {
         $columnoptions[] = new rb_column_option(
             'user',
             'organisationid',
-            "User's Organisation ID",
+            get_string('usersorgid', 'local_reportbuilder'),
             "$posassign.organisationid",
             array('joins' => $posassign)
         );
         $columnoptions[] = new rb_column_option(
             'user',
             'organisationpath',
-            "User's Organisation Path IDs",
+            get_string('usersorgpathids', 'local_reportbuilder'),
             "$org.path",
             array('joins' => $org)
         );
         $columnoptions[] = new rb_column_option(
             'user',
             'organisation',
-            "User's Organisation Name",
+            get_string('usersorgname', 'local_reportbuilder'),
             "$org.fullname",
             array('joins' => $org)
         );
         $columnoptions[] = new rb_column_option(
             'user',
             'positionid',
-            "User's Position ID",
+            get_string('usersposid', 'local_reportbuilder'),
             "$posassign.positionid",
             array('joins' => $posassign)
         );
         $columnoptions[] = new rb_column_option(
             'user',
             'positionpath',
-            "User's Position Path IDs",
+            get_string('userspospathids', 'local_reportbuilder'),
             "$pos.path",
             array('joins' => $pos)
         );
         $columnoptions[] = new rb_column_option(
             'user',
             'position',
-            "User's Position",
+            get_string('userspos', 'local_reportbuilder'),
             "$pos.fullname",
             array('joins' => $pos)
         );
         $columnoptions[] = new rb_column_option(
             'user',
             'title',
-            "User's Job Title",
+            get_string('usersjobtitle', 'local_reportbuilder'),
             "$posassign.fullname",
             array('joins' => $posassign)
         );
@@ -1423,13 +1446,13 @@ abstract class rb_base_source {
         $filteroptions[] = new rb_filter_option(
             'user',
             'title',
-            "User's Job Title",
+            get_string('usersjobtitle', 'local_reportbuilder'),
             'text'
         );
         $filteroptions[] = new rb_filter_option(
             'user',
             'organisationid',
-            "Participant's Current Office (basic)",
+            get_string('participantscurrentorgbasic', 'local_reportbuilder'),
             'select',
             array(
                 'selectfunc' => 'organisations_list',
@@ -1439,13 +1462,13 @@ abstract class rb_base_source {
         $filteroptions[] = new rb_filter_option(
             'user',
             'organisationpath',
-            "Participant's Current Organisation",
+            get_string('participantscurrentorg', 'local_reportbuilder'),
             'org'
         );
         $filteroptions[] = new rb_filter_option(
             'user',
             'positionid',
-            "Participant's Current Position (basic)",
+            get_string('participantscurrentposbasic', 'local_reportbuilder'),
             'select',
             array(
                 'selectfunc' => 'positions_list',
@@ -1455,7 +1478,7 @@ abstract class rb_base_source {
         $filteroptions[] = new rb_filter_option(
             'user',
             'positionpath',
-            "Participant's Current Position",
+            get_string('participantscurrentpos', 'local_reportbuilder'),
             'pos'
         );
         return true;
@@ -1524,7 +1547,7 @@ abstract class rb_base_source {
         $columnoptions[] = new rb_column_option(
             'user',
             'managername',
-            "User's Manager Name",
+            get_string('usersmanagername', 'local_reportbuilder'),
             sql_fullname("$manager.firstname","$manager.lastname"),
             array('joins' => $manager)
         );
@@ -1544,7 +1567,7 @@ abstract class rb_base_source {
         $filteroptions[] = new rb_filter_option(
             'user',
             'managername',
-            "Manager's Name",
+            get_string('managername', 'local_reportbuilder'),
             'text'
         );
         return true;
@@ -1621,7 +1644,7 @@ abstract class rb_base_source {
         $columnoptions[] = new rb_column_option(
             'course',
             'tagids',
-            "Course Tag IDs",
+            get_string('coursetagids', 'local_reportbuilder'),
             "$tagids.idlist",
             array('joins' => $tagids)
         );
@@ -1635,7 +1658,7 @@ abstract class rb_base_source {
                 $columnoptions[] = new rb_column_option(
                     'tags',
                     $join,
-                    "Tagged '$name'",
+                    get_string('taggedx', 'local_reportbuilder', $name),
                     "CASE WHEN $join.id IS NOT NULL THEN 1 ELSE 0 END",
                     array(
                         'joins' => $join,
@@ -1667,7 +1690,7 @@ abstract class rb_base_source {
                 $filteroptions[] = new rb_filter_option(
                     'tags',
                     $join,
-                    "Tagged '$name'",
+                    get_string('taggedx', 'local_reportbuilder', $name),
                     'simpleselect',
                     array('selectchoices' => array(
                         1 => get_string('yes'), 0 => get_string('no'))

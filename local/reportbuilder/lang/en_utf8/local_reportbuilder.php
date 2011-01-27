@@ -105,6 +105,14 @@ $string['error:nosources'] ='No sources found. You must have at least one source
 $string['error:savedsearchnotdeleted'] = 'Saved search could not be deleted';
 $string['error:unknownbuttonclicked'] = 'Unknown button clicked';
 $string['error:updatescheduledreport'] = 'Error updating Scheduled Report';
+$string['error:propertyxmustbesetiny'] = 'Property \"{$a->property}\" must be set in class \"{$a->class}\"';
+$string['error:joinxusedmorethanonceiny'] = 'Join name \"{$a->join}\" used more than once in source \"{$a->source}\"';
+$string['error:joinxisreservediny'] = 'Join name \"{$a->join}\" in source \"{$a->source}\" is an SQL reserved word. Please rename the join';
+$string['error:joinxhasdependencyyinz'] = 'Join name \"{$a->join}\" contains a dependency \"{$a->dependency}\" that does not exist in the joinlist for source \"{$a->source}\"';
+$string['error:joinsfortypexandvalueynotfoundinz'] = 'Joins for columns with type \"{$a->type}\" and value \"{$a->value}\" not found in source \"{$a->source}\"';
+$string['error:columnoptiontypexandvalueynotfoundinz'] = 'Column option with type \"{$a->type}\" and value \"{$a->value}\" not found in source \"{$a->source}\"';
+$string['error:filteroptiontypexandvalueynotfoundinz'] = 'Filter option with type \"{$a->type}\" and value \"{$a->value}\" not found in source \"{$a->source}\"';
+$string['error:joinsforfiltertypexandvalueynotfoundinz'] = 'Joins for filter with type \"{$a->type}\" and value \"{$a->value}\" not found in source \"{$a->source}\"';
 $string['excludecoursetags'] = 'Exclude records tagged with';
 $string['export'] = 'Export';
 $string['exportcsv'] = 'Export in text format';
@@ -301,9 +309,11 @@ $string['xrecord'] = '$a record shown';
 $string['xrecords'] = '$a records shown';
 
 // column and filter titles used by add_* methods
+
+// add courses
 $string['coursename'] = 'Course Name';
 $string['coursenamelinked'] = 'Course Name (linked to course page)';
-$string['coursenamelinked'] = 'Course Name (linked to course page with icon)';
+$string['coursenamelinkedicon'] = 'Course Name (linked to course page with icon)';
 $string['courseicon'] = 'Course Icon';
 $string['courseshortname'] = 'Course Shortname';
 $string['courseidnumber'] = 'Course ID Number';
@@ -315,3 +325,35 @@ $string['coursecategoryid'] = 'Course Category ID';
 $string['coursecategorylinked'] = 'Course Category (linked to category)';
 $string['coursecategorylinkedicon'] = 'Course Category (linked to category with icon)';
 $string['category'] = 'Category';
+
+// add users
+$string['userfullname'] = 'User\'s Fullname';
+$string['usernamelink'] = 'User\'s Fullname (linked to profile)';
+$string['usernamelinkicon'] = 'User\'s Fullname (linked to profile with icon)';
+$string['userlastlogin'] = 'User Last Login';
+$string['userfirstname'] = 'User First Name';
+$string['userlastname'] = 'User Last Name';
+$string['username'] = 'Username';
+$string['useridnumber'] = 'User ID Number';
+$string['userid'] = 'User ID';
+
+// add positions
+$string['usersorgid'] = 'User\'s Organisation ID';
+$string['usersorgpathids'] = 'User\'s Organisation Path IDs';
+$string['usersorgname'] = 'User\'s Organisation Name';
+$string['usersposid'] = 'User\'s Position ID';
+$string['userspospathids'] = 'User\'s Position Path IDs';
+$string['userspos'] = 'User\'s Position';
+$string['usersjobtitle'] = 'User\'s Job Title';
+$string['participantscurrentorgbasic'] = 'Participant\'s Current Organisation (basic)';
+$string['participantscurrentorg'] = 'Participant\'s Current Organisation';
+$string['participantscurrentposbasic'] = 'Participant\'s Current Position (basic)';
+$string['participantscurrentpos'] = 'Participant\'s Current Position';
+
+// add manager info
+$string['usersmanagername'] = 'User\'s Manager Name';
+$string['managername'] = 'Manager\'s Name';
+
+// add course tag fields
+$string['coursetagids'] = 'Course Tag IDs';
+$string['taggedx'] = 'Tagged \'{$a}\'';
