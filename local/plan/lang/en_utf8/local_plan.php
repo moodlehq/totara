@@ -484,7 +484,7 @@ $string['thefollowingitemsrequireyourapproval_s'] = 'This plan contains a new it
 $string['thefollowingitemsarepending_p'] = 'This plan contains the following pending items:';
 $string['thefollowingitemsrequireyourapproval_p'] = 'This plan contains new items that require your approval:';
 $string['xitemsunapproved'] = '<a href=\"{$a->uri}\">{$a->number} {$a->name}</a>';
-$string['plancompleted'] = 'This plan has been marked as complete. It can no longer be edited, and all progress indicators show progress at the time of the plan\'s completion.';
+$string['plancompleted'] = 'This plan has been marked as complete. It can no longer be edited, and all status indicators show the status at the time of the plan\'s completion.';
 $string['plandeclinedtryagain'] = 'This plan has been declined. If desired, you can make changes and request plan approval again.';
 $string['plannotapproved'] = 'This plan has not yet been approved';
 $string['awaitingapproval'] = 'Awaiting approval';
