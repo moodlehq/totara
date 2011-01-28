@@ -1,6 +1,6 @@
 <?php
 $string['coursecount'] = 'Number of site courses';
-$string['displayerrorsset'] = 'This site is configured to display errors occurances. <br />This setting is not recommended on production sites. <br />Uncheck <em>Display debug messages</em> in the <a href=\"$a->link\">Server/Debugging</a> section of the site admin settings block.';
+$string['displayerrorsset'] = 'This site is configured to display errors occurrences. <br />This setting is not recommended on production sites. <br />Uncheck <em>Display debug messages</em> in the <a href=\"$a->link\">Server/Debugging</a> section of the site admin settings block.';
 $string['displayerrorswarning'] = 'Enabling the PHP setting <em>display_errors</em> is not recommended on production sites. <br />This setting can be changed in your php settings.';
 $string['moodlerelease'] = 'Moodle release identifier';
 $string['orgname'] = 'Organisation name';
