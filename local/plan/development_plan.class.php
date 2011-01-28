@@ -514,6 +514,7 @@ class development_plan {
                 }
                 switch ($completionstatus) {
                     case 'complete' :
+                    case 'completeviarpl' :
                         $completionsum += 1;
                         $completedcount++;
                         break;
