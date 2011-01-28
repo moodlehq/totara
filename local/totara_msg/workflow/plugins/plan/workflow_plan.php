@@ -36,7 +36,7 @@ class totara_msg_workflow_plan extends totara_msg_workflow_plugin_base {
             print_error('planidnotfound', 'local_plan', $planid);
         }
 
-        if (!in_array($plan->get_setting('confirm'), array(DP_PERMISSION_ALLOW, DP_PERMISSION_APPROVE))) {
+        if (!in_array($plan->get_setting('approve'), array(DP_PERMISSION_ALLOW, DP_PERMISSION_APPROVE))) {
             return false;
         }
 
@@ -67,7 +67,7 @@ class totara_msg_workflow_plan extends totara_msg_workflow_plugin_base {
             print_error('planidnotfound', 'local_plan', $planid);
         }
 
-        if (!in_array($plan->get_setting('confirm'), array(DP_PERMISSION_ALLOW, DP_PERMISSION_APPROVE))) {
+        if (!in_array($plan->get_setting('approve'), array(DP_PERMISSION_ALLOW, DP_PERMISSION_APPROVE))) {
             return false;
         }
 
