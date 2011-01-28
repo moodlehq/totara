@@ -314,6 +314,7 @@ $string['error:createcomponents'] = 'An error occured while creating components 
 $string['deletedp'] = 'Successfully deleted learning plan template';
 $string['error:deletedp'] = 'An error occured while deleting learning plan template';
 
+$string['error:invalidcomponent'] = 'Invalid component';
 $string['error:invalid_component_id'] = 'Invalid component ID';
 $string['error:nopermissions'] = 'You do not have the necessary permissions to perform this action';
 

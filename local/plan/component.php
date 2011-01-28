@@ -13,6 +13,7 @@ $componentname = required_param('c', PARAM_ALPHA); // component type
 $submitted = optional_param('submitbutton', null, PARAM_TEXT); // form submitted
 
 require_login();
+
 //
 // Load plan, component and check permissions
 //
@@ -21,6 +22,13 @@ $plan = new development_plan($id);
 $systemcontext = get_system_context();
 if(!has_capability('local/plan:accessanyplan', $systemcontext) && ($plan->get_setting('view') < DP_PERMISSION_ALLOW)) {
         print_error('error:nopermissions', 'local_plan');
+}
+
+
+// Check for valid component, before proceeding
+// Check against active components to prevent hackery
+if (!in_array($componentname, array_keys($plan->get_components()))) {
+    print_error('error:invalidcomponent', 'local_plan');
 }
 
 $component = $plan->get_component($componentname);
