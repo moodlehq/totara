@@ -14,6 +14,8 @@ require_once('../../config.php');
 require_once('lib.php');
 require_once($CFG->dirroot.'/local/totara_msg/messagelib.php');
 
+require_login();
+
 ///
 /// Params
 ///
@@ -202,9 +204,9 @@ if (!empty($complete)) {
             $confirmurl = new moodle_url(qualified_me());
             $confirmurl->param('confirm', 'true');
             $confirmurl->param('referer', $referer);
-            $strdelete = get_string('checkplancomplete', 'local_plan', $plan->name);
+            $strcomplete = get_string('checkplancomplete', 'local_plan', $plan->name);
             notice_yesno(
-                "{$strdelete}<br /><br />".format_string($plan->name),
+                "{$strcomplete}<br><br>",
                 $confirmurl->out(),
                 $referer
             );
