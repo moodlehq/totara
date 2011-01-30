@@ -73,13 +73,13 @@ if ($mform->is_cancelled()) {
                 throw new Exception('Error creating new competency scale');
             }
 
-            $scalevalues = array_reverse( explode(',',trim($scalenew->scalevalues)) );
+            $scalevalues = array_reverse(explode(PHP_EOL, trim($scalenew->scalevalues)));
             unset($scalenew->scalevalues);
 
             $sortorder = 1;
             $scaleidlist = array();
-            foreach( $scalevalues as $scaleval ){
-                if ( trim($scaleval) != '' ){
+            foreach($scalevalues as $scaleval) {
+                if (trim($scaleval) != '') {
                     $scalevalrec = new stdClass();
                     $scalevalrec->scaleid = $scalenew->id;
                     $scalevalrec->name = trim($scaleval);
@@ -88,7 +88,7 @@ if ($mform->is_cancelled()) {
                     $scalevalrec->usermodified = $USER->id;
 
                     $result = insert_record('comp_scale_values', $scalevalrec);
-                    if (!$result){
+                    if (!$result) {
                         throw new Exception('Error creating new competency scale values');
                     }
                     $scaleidlist[] = $result;
@@ -98,7 +98,7 @@ if ($mform->is_cancelled()) {
 
             // Set the default scale value to the least competent one, and the
             // "proficient" scale value to the most competent one
-            if ( count($scaleidlist) ){
+            if (count($scaleidlist)) {
                 $scalenew->defaultid = $scaleidlist[count($scaleidlist)-1];
                 $scalenew->proficient = $scaleidlist[0];
                 update_record('comp_scale', $scalenew);

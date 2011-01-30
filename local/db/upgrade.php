@@ -1200,8 +1200,11 @@ function xmldb_local_upgrade($oldversion) {
 
         $index = new XMLDBIndex('scaleid');
         $index->setAttributes(XMLDB_INDEX_NOTUNIQUE, array('scaleid'));
-        $result = $result && add_index($table, $index);
-
+        $sfield = new XMLDBField('scaleid');
+        if (field_exists($table, $field)) {
+            $result = $result && add_index($table, $index);
+        }
+        unset($field);
 
         $table = new XMLDBTable('comp_evidence');
 
@@ -1699,7 +1702,8 @@ function xmldb_local_upgrade($oldversion) {
         // mysql supports by default. The code below adds postgres support
         // see sql_group_concat() function for usage
         if($CFG->dbfamily == 'postgres') {
-            $sql = 'CREATE TYPE tp_concat AS (data TEXT[], delimiter TEXT);
+            $sql = '
+                CREATE TYPE tp_concat AS (data TEXT[], delimiter TEXT);
                 CREATE OR REPLACE FUNCTION group_concat_iterate(_state
                     tp_concat, _value TEXT, delimiter TEXT, is_distinct boolean)
                     RETURNS tp_concat AS
@@ -1721,6 +1725,7 @@ function xmldb_local_upgrade($oldversion) {
                 $BODY$
                     LANGUAGE \'sql\' VOLATILE;
 
+                DROP AGGREGATE IF EXISTS group_concat(text, text, boolean);
                 CREATE AGGREGATE group_concat(text, text, boolean) (SFUNC =
                     group_concat_iterate, STYPE = tp_concat, FINALFUNC =
                     group_concat_finish)';
@@ -2118,8 +2123,10 @@ function xmldb_local_upgrade($oldversion) {
         // add default 0 to public
         $table = new XMLDBTable('report_builder_saved');
         $field = new XMLDBField('public');
-        $field->setAttributes(XMLDB_TYPE_INTEGER, '4', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0');
-        $result = $result && change_field_type($table, $field);
+        if (field_exists($table, $field)) {
+            $field->setAttributes(XMLDB_TYPE_INTEGER, '4', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0');
+            $result = $result && change_field_type($table, $field);
+        }
 
         // rename public to ispublic (keyword)
         if(field_exists($table, $field)) {
@@ -2292,6 +2299,52 @@ function xmldb_local_upgrade($oldversion) {
             unset($dashb_instance_ids);
             unset($dashb_instances);
             unset($blockid);
+        }
+    }
+
+    if ($result && $oldversion < 2011012800) {
+        if (!get_records('comp_scale_values')) {
+            global $USER;
+
+            $todb = new stdClass;
+            $todb->name = get_string('competencyscale', 'competency');
+            $todb->description = '';
+            $todb->usermodified = $USER->id;
+            $todb->timemodified = time();
+            if (!$scaleid = insert_record('comp_scale', $todb)) {
+                $result = false;
+            }
+
+            $comp_scale_vals = array(
+                array('name'=>get_string('competent', 'competency'), 'scaleid' => $scaleid, 'sortorder' => 1, 'usermodified' => $USER->id, 'timemodified' => time()),
+                array('name'=>get_string('competentwithsupervision', 'competency'), 'scaleid' => $scaleid, 'sortorder' => 2, 'usermodified' => $USER->id, 'timemodified' => time()),
+                array('name'=>get_string('notcompetent', 'competency'), 'scaleid' => $scaleid, 'sortorder' => 3, 'usermodified' => $USER->id, 'timemodified' => time())
+                );
+
+            $count = 0;
+            foreach ($comp_scale_vals as $svrow) {
+                $count++;
+                $todb = new stdClass;
+                foreach ($svrow as $key => $val) {
+                    // Insert default competency scale values, if non-existent
+                    $todb->$key = $val;
+                }
+                if (!$svid = insert_record('comp_scale_values', $todb)) {
+                    $result = false;
+                }
+                if ($count == 1) {
+                    $proficient = $svid;
+                }
+            }
+
+            $todb = new stdClass;
+            $todb->id = $scaleid;
+            $todb->proficient = $proficient;
+            $todb->defaultid = $svid;
+
+            $result = $result && update_record('comp_scale', $todb);
+
+            unset($comp_scale_vals, $scaleid, $svid, $todb, $proficient);
         }
     }
 

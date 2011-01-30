@@ -33,7 +33,8 @@ class edit_scale_form extends moodleform {
 
         // If it's a new scale, give them the option to define scale values.
         if ( $this->_customdata['scaleid'] == 0 ){
-            $mform->addElement('textarea', 'scalevalues', 'Scale values');
+            $mform->addElement('textarea', 'scalevalues', get_string('scalevalues', 'competency').
+                '<br><i>('.get_string('notescalevalueentry', 'competency').')</i>');
             $mform->setHelpButton('scalevalues', array('competency/scale/scalevalues', get_string('scale')));
             $mform->setType('scalevalues', PARAM_TEXT);
         } else {
