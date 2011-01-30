@@ -1122,4 +1122,9 @@ SQL;
             return $out;
         }
     }
+
+    function can_update_settings_extra($can) {
+        $can['setproficiency'] = $this->get_setting('setproficiency') >= DP_PERMISSION_ALLOW;
+        return $can;
+    }
 }

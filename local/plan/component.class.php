@@ -144,6 +144,11 @@ abstract class dp_base_component {
         $can['setpriority'] = $this->get_setting('prioritymode') && $this->get_setting('setpriority') >= DP_PERMISSION_ALLOW;
         $can['approve'.$this->component] = $this->get_setting('update'.$this->component) == DP_PERMISSION_APPROVE;
 
+        if(method_exists($this, 'can_update_settings_extra')) {
+            $can = $this->can_update_settings_extra($can);
+        }
+
+
         // If user has no permissions, return false
         $noperms = true;
         foreach ($can as $c) {
