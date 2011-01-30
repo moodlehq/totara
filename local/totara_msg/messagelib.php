@@ -322,7 +322,7 @@ function tm_notification_send($eventdata) {
     if ($result && get_user_preferences('totara_msg_send_ntfy_emails', 1, $eventdata->userto->id)) {
         // Send notification email
         if (empty($eventdata->subject)) {
-            $eventdata->subject = strlen($eventdata->fullmessage) > 40 ? substr($eventdata->fullmessage, 0, 40).'...' : $eventdata->fullmessage;
+            $eventdata->subject = strlen($eventdata->fullmessage) > 80 ? substr($eventdata->fullmessage, 0, 78).'...' : $eventdata->fullmessage;
         }
         $result = email_to_user($eventdata->userto, $eventdata->userfrom,
             format_string($eventdata->subject), format_string($eventdata->fullmessage),

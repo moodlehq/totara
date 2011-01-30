@@ -39,5 +39,5 @@ $string['sendnotificationemails'] = 'Send notification emails';
 $string['sendreminderemails'] = 'Send reminder emails';
 $string['settingssaved'] = 'Settings saved';
 $string['messagesettings'] = 'Message settings';
-$string['viewdetailshere'] = 'View details <a href=$a>here</a>';
+$string['viewdetailshere'] = 'More details can be found at:<br /><br /><a href=\"$a\">$a</a>';
 $string['cannotsavemessage'] = 'Cannot save message';
