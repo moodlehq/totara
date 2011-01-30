@@ -539,28 +539,34 @@ function dp_display_plans($userid, $statuses=array(DP_PLAN_STATUSAPPROVED), $col
     }
     foreach ($plans as $p) {
         $plan = new development_plan($p->id);
-        $row = array();
-        $row[] = $plan->display_summary_widget();
-        if (in_array('enddate', $cols)) {
-            $row[] = $plan->display_enddate();
-        }
-        if (in_array('status', $cols)) {
-            $row[] = $plan->display_progress();
-        }
-        if (in_array('completed', $cols)) {
-            $row[] = $plan->display_completeddate();
-        }
-        $row[] = $plan->display_actions();
+        if($plan->get_setting('view') == DP_PERMISSION_ALLOW){
+            $row = array();
+            $row[] = $plan->display_summary_widget();
+            if (in_array('enddate', $cols)) {
+                $row[] = $plan->display_enddate();
+            }
+            if (in_array('status', $cols)) {
+                $row[] = $plan->display_progress();
+            }
+            if (in_array('completed', $cols)) {
+                $row[] = $plan->display_completeddate();
+            }
+            $row[] = $plan->display_actions();
 
-        $table->add_data($row);
+            $table->add_data($row);
+        }
     }
     unset($plans);
     $table->hide_empty_cols();
 
-    ob_start();
-    $table->print_html();
-    $out = ob_get_contents();
-    ob_end_clean();
+    if(!empty($table->data)) {
+        ob_start();
+        $table->print_html();
+        $out = ob_get_contents();
+        ob_end_clean();
+    } else {
+        $out = '';
+    }
 
     return $out;
 }
