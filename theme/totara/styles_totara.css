@@ -1329,12 +1329,12 @@ td.totara-msgs-action-right a {
 }
 
 
-div.block_totara_reminders .header .title h2 a {
+div.block_totara_tasks .header .title h2 a {
   font-size: 0.6em;
   white-space: nowrap;
 }
 
-div.block_totara_reminders .content a {
+div.block_totara_tasks .content a {
   font-family: Verdana, Arial, Helvetica, sans-serif;
   color:#34b9e4;
 }
@@ -1347,26 +1347,26 @@ div.block_totara_reminders .content a {
   background: #ffffff;
 }
 
-div.block_totara_reminders div.content div.footer div.viewall {
+div.block_totara_tasks div.content div.footer div.viewall {
   text-align: left;
 }
 
-div.totara_reminders_actions {
+div.totara_tasks_actions {
   white-space: nowrap;
 }
 
-div.totara_reminders_actions .selectbox {
+div.totara_tasks_actions .selectbox {
   vertical-align: top;
   float: right;
   padding-top: 0px;
   margin-top: 0px;
 }
 
-div.totara_reminders_actions .action {
+div.totara_tasks_actions .action {
   vertical-align: top;
 }
 
-div.block_totara_reminders .content td.statement {
+div.block_totara_tasks .content td.statement {
   border-left: 1px solid #E0E0E0;
   padding-left: 4px;
 }
@@ -1385,24 +1385,24 @@ table.totara_messages_actions td {
 }
 
 
-div.totara_notifications_actions {
+div.totara_alerts_actions {
   white-space: nowrap;
 }
 
 
-div.totara_notifications_actions form {
+div.totara_alerts_actions form {
   text-align: left;
   vertical-align: top;
 }
 
-div.totara_notifications_actions .selectbox {
+div.totara_alerts_actions .selectbox {
   vertical-align: top;
   float: right;
   padding-top: 0px;
   margin-top: 0px;
 }
 
-div.totara_notifications_actions .action {
+div.totara_alerts_actions .action {
   vertical-align: top;
 }
 

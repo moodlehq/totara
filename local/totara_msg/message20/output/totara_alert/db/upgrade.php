@@ -24,24 +24,29 @@
 ///////////////////////////////////////////////////////////////////////////
 
 /**
- * Popup message processor - lib file
+ * Upgrade code for popup message processor
  *
  * @author Luis Rodrigues
  * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
  * @package
  */
 
-/**
- * Register the processor.
- */
-function local_totara_reminder_install(){
-    //global $DB;
+function xmldb_local_totara_alert_upgrade($oldversion) {
+    //global $CFG, $DB;
+    global $CFG;
 
-    $result = true;
+    //$dbman = $DB->get_manager();
 
-    $provider = new stdClass();
-    $provider->name  = 'totara_reminder';
-    //$DB->insert_record('message_processors20', $provider);
-    insert_record('message_processors20', $provider);
-    return $result;
+    if ($oldversion < 2010110101) {
+        $processor = new stdClass();
+        $processor->name  = 'totara_alert';
+        if (! record_exists('message_processors20', array('name' => $processor->name))){
+            insert_record('message_processors20', $processor);
+        }
+
+    /// popup savepoint reached
+        upgrade_plugin_savepoint(true, 2010110101, 'message', 'totara_alert');
+    }
+
+    return true;
 }

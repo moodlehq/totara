@@ -624,7 +624,7 @@ class dp_course_component extends dp_base_component {
             if ($status) {
                 commit_sql();
 
-                // Process update notifications
+                // Process update alerts
                 foreach($stored_records as $itemid => $record) {
                     // Record the updates for later use
                     $course = get_record('course', 'id', $oldrecords[$itemid]->courseid);
@@ -667,13 +667,13 @@ class dp_course_component extends dp_base_component {
 
                 if ($this->plan->status != DP_PLAN_STATUS_UNAPPROVED && count($approvals)>0) {
                     foreach($approvals as $approval) {
-                        $this->send_component_approval_notification($approval);
+                        $this->send_component_approval_alert($approval);
                     }
                 }
 
-                // Send update notification
+                // Send update alert
                 if ($this->plan->status != DP_PLAN_STATUS_UNAPPROVED && strlen($updates)) {
-                    $this->send_component_update_notification($updates);
+                    $this->send_component_update_alert($updates);
                 }
 
             } else {

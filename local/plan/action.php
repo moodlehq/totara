@@ -58,14 +58,14 @@ if (!dp_can_view_users_plans($plan->userid)) {
 }
 
 
-// @todo: handle action failure notifications
+// @todo: handle action failure alerts
 ///
 /// Approve
 ///
 if (!empty($approve)) {
     if (in_array($plan->get_setting('approve'), array(DP_PERMISSION_ALLOW, DP_PERMISSION_APPROVE))) {
        $plan->set_status(DP_PLAN_STATUS_APPROVED);
-       $plan->send_approved_notification();
+       $plan->send_approved_alert();
        totara_set_notification(get_string('planapproved', 'local_plan', $plan->name), $referer, array('style' => 'notifysuccess'));
     } else {
         if (empty($ajax)) {
@@ -80,7 +80,7 @@ if (!empty($approve)) {
 ///
 if (!empty($decline)) {
     if (in_array($plan->get_setting('approve'), array(DP_PERMISSION_ALLOW, DP_PERMISSION_APPROVE))) {
-        $plan->send_declined_notification();
+        $plan->send_declined_alert();
         totara_set_notification(get_string('plandeclined', 'local_plan', $plan->name), $referer, array('style' => 'notifysuccess'));
     } else {
         if (empty($ajax)) {
@@ -216,7 +216,7 @@ if (!empty($complete)) {
         } else {
             // Set plan status to complete
             $plan->set_status(DP_PLAN_STATUS_COMPLETE);
-            $plan->send_completion_notification();
+            $plan->send_completion_alert();
             totara_set_notification(get_string('plancompletesuccess', 'local_plan', $plan->name), $referer, array('style' => 'notifysuccess'));
         }
     } else {

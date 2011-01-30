@@ -598,7 +598,7 @@ function local_dashboard_install() {
                 'pos' => 0,
             ),
             array(
-                'name' => 'totara_reminders',
+                'name' => 'totara_tasks',
                 'col' => 3,
                 'pos' => 0,
             ),

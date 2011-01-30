@@ -82,7 +82,7 @@ define('TOTARA_MSG_URGENCY_URGENT', 4);
  *  fullmessageformat  - the format if the full message (FORMAT_MOODLE, FORMAT_HTML, ..)
  *  fullmessagehtml  - the full version (the message processor will choose with one to use)
  *  smallmessage - the small version of the message
- *  contexturl - if this is a notification then you can specify a url to view the event. For example the forum post the user is being notified of.
+ *  contexturl - if this is a alert then you can specify a url to view the event. For example the forum post the user is being notified of.
  *  contexturlname - the display text for contexturl
  *  msgstatus - int Message Status see TOTARA_MSG_STATUS* constants
  *  msgtype - int Message Type see TOTARA_MSG_TYPE* constants
@@ -155,10 +155,10 @@ function tm_message_send($eventdata) {
         $savemessage->smallmessage = null;
     }
 
-    if (!empty($eventdata->notification)) {
-        $savemessage->notification = $eventdata->notification;
+    if (!empty($eventdata->alert)) {
+        $savemessage->alert = $eventdata->alert;
     } else {
-        $savemessage->notification = 0;
+        $savemessage->alert = 0;
     }
 
     if (!empty($eventdata->contexturl)) {
@@ -187,8 +187,8 @@ function tm_message_send($eventdata) {
         $processor = get_user_preferences($preferencename, NULL, $eventdata->userto->id);
     }
 
-    if ($processor=='none' && $savemessage->notification) {
-        //if they have deselected all processors and its a notification mark it read. The user doesnt want to be bothered
+    if ($processor=='none' && $savemessage->alert) {
+        //if they have deselected all processors and its a alert mark it read. The user doesnt want to be bothered
         $savemessage->timeread = $timeread;
         //$DB->insert_record('message_read', $savemessage);
         insert_record('message_read20', $savemessage);
@@ -275,9 +275,9 @@ function tm_message_send($eventdata) {
 
 
 /**
- * send a notification
+ * send a alert
  *
- * Required parameter $notification structure:
+ * Required parameter $alert structure:
  *  userfrom object the user sending the message - optional
  *  userto object the message recipient
  *  fullmessage
@@ -288,11 +288,11 @@ function tm_message_send($eventdata) {
  * @param object $eventdata information about the message (userfrom, userto, ...)
  * @return boolean success
  */
-function tm_notification_send($eventdata) {
+function tm_alert_send($eventdata) {
     global $CFG;
     if (!isset($eventdata->userto)) {
         // cant send without a target user
-        debugging('tm_notification_send() userto is not set');
+        debugging('tm_alert_send() userto is not set');
         return false;
     }
     (!isset($eventdata->msgtype)) && $eventdata->msgtype = TOTARA_MSG_TYPE_UNKNOWN;
@@ -300,7 +300,7 @@ function tm_notification_send($eventdata) {
     (!isset($eventdata->urgency)) && $eventdata->urgency = TOTARA_MSG_URGENCY_NORMAL;
 
     $eventdata->component         = 'local/totara_msg';
-    $eventdata->name              = 'ntfy';
+    $eventdata->name              = 'alrt';
     if (empty($eventdata->userfrom)) {
         $eventdata->userfrom      = $eventdata->userto;
     }
@@ -310,7 +310,7 @@ function tm_notification_send($eventdata) {
     }
     $eventdata->fullmessageformat = FORMAT_PLAIN;
     $eventdata->fullmessagehtml   = $eventdata->fullmessage;
-    $eventdata->notification      = 1;
+    $eventdata->alert      = 1;
 
     if (!isset($eventdata->contexturl)) {
         $eventdata->contexturl     = $CFG->wwwroot;
@@ -319,8 +319,8 @@ function tm_notification_send($eventdata) {
 
     $result = tm_message_send($eventdata);
 
-    if ($result && get_user_preferences('totara_msg_send_ntfy_emails', 1, $eventdata->userto->id)) {
-        // Send notification email
+    if ($result && get_user_preferences('totara_msg_send_alrt_emails', 1, $eventdata->userto->id)) {
+        // Send alert email
         if (empty($eventdata->subject)) {
             $eventdata->subject = strlen($eventdata->fullmessage) > 80 ? substr($eventdata->fullmessage, 0, 78).'...' : $eventdata->fullmessage;
         }
@@ -334,22 +334,22 @@ function tm_notification_send($eventdata) {
 
 
 /**
- * send a reminder
+ * send a task
  *
  * Required parameter $eventdata structure:
  *  userfrom object the user sending the message - optional
  *  userto object the message recipient
  *  fullmessage
  *
- * @param object $reminder information about the message (userfrom, userto, ...)
+ * @param object $task information about the message (userfrom, userto, ...)
  * @return boolean success
  */
-function tm_reminder_send($eventdata) {
+function tm_task_send($eventdata) {
     global $CFG;
 
     if (!isset($eventdata->userto)) {
         // cant send without a target user
-        debugging('tm_reminder_send() userto is not set');
+        debugging('tm_task_send() userto is not set');
         return false;
     }
     (!isset($eventdata->msgtype)) && $eventdata->msgtype = TOTARA_MSG_TYPE_UNKNOWN;
@@ -359,7 +359,7 @@ function tm_reminder_send($eventdata) {
     (!isset($eventdata->onreject)) && $eventdata->onreject = null;
 
     $eventdata->component         = 'local/totara_msg';
-    $eventdata->name              = 'rmdr';
+    $eventdata->name              = 'task';
     if (!isset($eventdata->userfrom) || !$eventdata->userfrom) {
         $eventdata->userfrom      = $eventdata->userto;
     }
@@ -369,7 +369,7 @@ function tm_reminder_send($eventdata) {
     }
     $eventdata->fullmessageformat = FORMAT_PLAIN;
     $eventdata->fullmessagehtml   = $eventdata->fullmessage;
-    $eventdata->notification      = 1;
+    $eventdata->alert      = 1;
 
     if (!isset($eventdata->contexturl)) {
         $eventdata->contexturl     = $CFG->wwwroot;
@@ -378,8 +378,8 @@ function tm_reminder_send($eventdata) {
 
     $result = tm_message_send($eventdata);
 
-    if ($result && get_user_preferences('totara_msg_send_rmdr_emails', 1, $eventdata->userto->id)) {
-        // Send reminder email
+    if ($result && get_user_preferences('totara_msg_send_task_emails', 1, $eventdata->userto->id)) {
+        // Send task email
         if (empty($eventdata->subject)) {
             $eventdata->subject = strlen($eventdata->fullmessage) > 40 ? substr($eventdata->fullmessage, 0, 40).'...' : $eventdata->fullmessage;
         }
@@ -393,7 +393,7 @@ function tm_reminder_send($eventdata) {
 
 
 /**
- * send a custom reminder that initiates a workflow based on
+ * send a custom task that initiates a workflow based on
  * the contexturl set
  *
  * Required parameter $eventdata structure:
@@ -421,7 +421,7 @@ function tm_reminder_send($eventdata) {
  *          $event->accepttext = get_string('approveplantext', 'local_plan');
  *
  *
- * @param object $reminder information about the message (userfrom, userto, ...)
+ * @param object $task information about the message (userfrom, userto, ...)
  * @return boolean success
  */
 function tm_workflow_send($eventdata) {
@@ -429,7 +429,7 @@ function tm_workflow_send($eventdata) {
 
     if (!isset($eventdata->userto)) {
         // cant send without a target user
-        debugging('tm_reminder_send() userto is not set');
+        debugging('tm_task_send() userto is not set');
         return false;
     }
     $eventdata->msgtype = TOTARA_MSG_TYPE_LINK; // tells us how to treat the display
@@ -437,7 +437,7 @@ function tm_workflow_send($eventdata) {
     (!isset($eventdata->urgency)) && $eventdata->urgency = TOTARA_MSG_URGENCY_NORMAL;
 
     $eventdata->component         = 'local/totara_msg';
-    $eventdata->name              = 'rmdr';
+    $eventdata->name              = 'task';
     if (!isset($eventdata->userfrom) || !$eventdata->userfrom) {
         $eventdata->userfrom      = $eventdata->userto;
     }
@@ -447,7 +447,7 @@ function tm_workflow_send($eventdata) {
     }
     $eventdata->fullmessageformat = FORMAT_PLAIN;
     $eventdata->fullmessagehtml   = $eventdata->fullmessage;
-    $eventdata->notification      = 1;
+    $eventdata->alert      = 1;
 
     if (!isset($eventdata->contexturl)) {
         debugging('tm_message_workflow_send() must have have contexturl');
@@ -481,7 +481,7 @@ function tm_workflow_send($eventdata) {
 
     $result = tm_message_send($eventdata);
 
-    if ($result && get_user_preferences('totara_msg_send_rmdr_emails', 1, $eventdata->userto->id)) {
+    if ($result && get_user_preferences('totara_msg_send_task_emails', 1, $eventdata->userto->id)) {
         // Send workflow email
         if (empty($eventdata->subject)) {
             $eventdata->subject = strlen($eventdata->fullmessage) > 40 ? substr($eventdata->fullmessage, 0, 40).'...' : $eventdata->fullmessage;
@@ -517,13 +517,13 @@ function tm_message_dismiss($id) {
 
 
 /**
- * accept a reminder - this will invoke the reminder onaccept action
+ * accept a task - this will invoke the task onaccept action
  * saved against this message
  *
  * @param int $id message id
  * @return boolean success
  */
-function tm_message_reminder_accept($id) {
+function tm_message_task_accept($id) {
     global $CFG;
 
     $message = get_record('message20', 'id', $id);
@@ -551,12 +551,12 @@ function tm_message_reminder_accept($id) {
 }
 
 /**
- * Redirect to a reminder's context URL
+ * Redirect to a task's context URL
  *
  * @param int $id message id
  * @return boolean success
  */
-function tm_message_reminder_link($id) {
+function tm_message_task_link($id) {
     global $CFG;
 
     $message = get_record('message20', 'id', $id);
@@ -586,13 +586,13 @@ function tm_message_reminder_link($id) {
 
 
 /**
- * reject a reminder - this will invoke the reminder onreject action
+ * reject a task - this will invoke the task onreject action
  * saved against this message
  *
  * @param int $id message id
  * @return boolean success
  */
-function tm_message_reminder_reject($id) {
+function tm_message_task_reject($id) {
     global $CFG;
 
     $message = get_record('message20', 'id', $id);
@@ -633,7 +633,7 @@ function tm_message_workflow_object($action) {
     require_once($CFG->dirroot.'/local/totara_msg/workflow/lib.php');
     $file = $CFG->dirroot.'/local/totara_msg/workflow/plugins/'.$action.'/workflow_'.$action.'.php';
     if (!file_exists($file)) {
-        debugging('tm_message_reminder_accept() plugin does not exist: '.$action);
+        debugging('tm_message_task_accept() plugin does not exist: '.$action);
         return false;
     }
     require_once($file);
@@ -645,13 +645,13 @@ function tm_message_workflow_object($action) {
         return $plugin;
     }
     else {
-        debugging('tm_message_reminder_accept() plugin class does not exist: '.$ctlclass);
+        debugging('tm_message_task_accept() plugin class does not exist: '.$ctlclass);
         return false;
     }
 }
 
 /**
- * get the current list of messages by type - notification/reminder
+ * get the current list of messages by type - alert/task
  *
  * @param string $type - message type
  * @param string $order_by - order by clause
@@ -707,7 +707,7 @@ function tm_messages_get($type, $order_by=false, $userto=false, $limit=true, $ro
 
 
 /**
- * get the current count of messages by type - notification/reminder
+ * get the current count of messages by type - alert/task
  *
  * @param string $type - message type
  * @param object $userto user table record for user required
@@ -922,10 +922,10 @@ function tm_message_set_default_message_preferences($user) {
             }
         } else if ($provider->name=='posts') { //forum posts
             $offlineprocessortouse = $onlineprocessortouse = 'email';
-        } else if ($provider->name=='ntfy') { //totara notification
-            $offlineprocessortouse = $onlineprocessortouse = 'totara_notification';
-        } else if ($provider->name=='rmdr') { //totara reminder
-            $offlineprocessortouse = $onlineprocessortouse = 'totara_reminder';
+        } else if ($provider->name=='alrt') { //totara alert
+            $offlineprocessortouse = $onlineprocessortouse = 'totara_alert';
+        } else if ($provider->name=='task') { //totara task
+            $offlineprocessortouse = $onlineprocessortouse = 'totara_task';
         } else {
             $onlineprocessortouse = $defaultonlineprocessor;
             $offlineprocessortouse = $defaultofflineprocessor;

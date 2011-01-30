@@ -1447,7 +1447,7 @@ class development_plan {
             $event->subject = get_string($subjectstring,'local_plan',$a);
             $event->fullmessage = get_string($fullmessagestring,'local_plan',$a);
 
-            return tm_notification_send($event);
+            return tm_alert_send($event);
         } else {
             return false;
         }
@@ -1455,13 +1455,13 @@ class development_plan {
 
 
     /**
-     * Send approved notifications
+     * Send approved alerts
      *
      * @global $USER
      * @global $CFG
      * @return void
      */
-    function send_approved_notification() {
+    function send_approved_alert() {
         global $USER, $CFG;
         require_once($CFG->dirroot.'/local/totara_msg/messagelib.php');
 
@@ -1473,18 +1473,18 @@ class development_plan {
         $event->userto = $userto;
         $event->contexturl = $CFG->wwwroot.'/local/plan/view.php?id='.$this->id;
         $event->fullmessage = get_string('planapproved', 'local_plan', $this->name);
-        tm_notification_send($event);
+        tm_alert_send($event);
     }
 
 
     /**
-     * Send declined notifications
+     * Send declined alerts
      *
      * @global $USER
      * @global $CFG
      * @return void
      */
-    function send_declined_notification() {
+    function send_declined_alert() {
         global $USER, $CFG;
         require_once($CFG->dirroot.'/local/totara_msg/messagelib.php');
 
@@ -1496,23 +1496,23 @@ class development_plan {
         $event->userto = $userto;
         $event->contexturl = $CFG->wwwroot.'/local/plan/view.php?id='.$this->id;
         $event->fullmessage = format_string(get_string('plandeclined', 'local_plan', $this->name));
-        tm_notification_send($event);
+        tm_alert_send($event);
     }
 
 
     /**
-     * Send completion notifications
+     * Send completion alerts
      *
      * @global $USER
      * @global $CFG
      * @return void
      */
-    function send_completion_notification() {
+    function send_completion_alert() {
         global $USER, $CFG;
         require_once($CFG->dirroot.'/local/totara_msg/messagelib.php');
         $learner = get_record('user', 'id', $this->userid);
 
-        // Send notification to manager
+        // Send alert to manager
         // But don't send it if they just manually performed
         // the completion
         $manager = totara_get_manager($this->userid);
@@ -1527,15 +1527,15 @@ class development_plan {
             $event->subject = get_string('plan-complete-manager-short','local_plan',$a);
             $event->fullmessage = get_string('plan-complete-manager-long','local_plan',$a);
             $event->roleid = get_field('role','id', 'shortname', 'manager');
-            tm_notification_send($event);
+            tm_alert_send($event);
         }
 
-        // Send notification to user
+        // Send alert to user
         $event = new stdClass();
         $event->userto = $learner;
         $event->icon = 'learningplan-complete';
         $event->fullmessage = format_text(get_string('plancompletesuccess', 'local_plan', $this->name));
-        tm_notification_send($event);
+        tm_alert_send($event);
     }
 
     /**

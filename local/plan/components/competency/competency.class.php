@@ -734,7 +734,7 @@ class dp_competency_component extends dp_base_component {
             if ($status) {
                 commit_sql();
 
-                // Process update notifications
+                // Process update alerts
                 foreach($stored_records as $itemid => $record) {
                     $competency = get_record('comp', 'id', $oldrecords[$itemid]->competencyid);
                     $compheader = '<p><strong>'.format_string($competency->fullname).": </strong><br>";
@@ -773,14 +773,14 @@ class dp_competency_component extends dp_base_component {
                     $updates .= $compprinted ? '</p>' : '';
                 }  // foreach
 
-                // Send update notification
+                // Send update alert
                 if ($this->plan->status != DP_PLAN_STATUS_UNAPPROVED && strlen($updates)) {
-                    $this->send_component_update_notification($updates);
+                    $this->send_component_update_alert($updates);
                 }
 
                 if ($this->plan->status != DP_PLAN_STATUS_UNAPPROVED && count($approvals)>0) {
                     foreach($approvals as $approval) {
-                        $this->send_component_approval_notification($approval);
+                        $this->send_component_approval_alert($approval);
                     }
                 }
             } else {

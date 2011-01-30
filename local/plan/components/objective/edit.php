@@ -127,7 +127,7 @@ if ( $deleteyes ){
         } else {
             // Only send notificaitons when plan not draft
             if ($plan->status != DP_PLAN_STATUS_UNAPPROVED) {
-                // Check for changes and send notifications accordingly
+                // Check for changes and send alerts accordingly
                 $updated = false;
                 foreach (array('fullname', 'description', 'priority', 'duedate', 'approved') as $attribute) {
                     if ($record->$attribute != $objective->$attribute) {
@@ -137,11 +137,11 @@ if ( $deleteyes ){
                 }
                 // updated?
                 if ($updated) {
-                    $component->send_edit_notification($record, $updated);
+                    $component->send_edit_alert($record, $updated);
                 }
                 // status?
                 if ($record->scalevalueid != $objective->scalevalueid) {
-                    $component->send_status_notification($record);
+                    $component->send_status_alert($record);
                 }
             }
 

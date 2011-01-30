@@ -1,6 +1,6 @@
 <?php
 
-class rb_reminders_embedded extends rb_base_embedded {
+class rb_tasks_embedded extends rb_base_embedded {
 
     public $url, $source, $fullname, $filters, $columns;
     public $contentmode, $contentsettings, $embeddedparams;
@@ -10,10 +10,10 @@ class rb_reminders_embedded extends rb_base_embedded {
         $userid = array_key_exists('userid', $data) ? $data['userid'] : null;
         $roleid = array_key_exists('roleid', $data) ? $data['roleid'] : null;
 
-        $this->url = '/local/totara_msg/reminders.php';
+        $this->url = '/local/totara_msg/tasks.php';
         $this->source = 'totaramessages';
-        $this->shortname = 'reminders';
-        $this->fullname = get_string('reminders', 'local_totara_msg');
+        $this->shortname = 'tasks';
+        $this->fullname = get_string('tasks', 'local_totara_msg');
         $this->columns = array(
 //        array(
 //            'type' => 'message_values',
@@ -47,7 +47,7 @@ class rb_reminders_embedded extends rb_base_embedded {
             ),
                 array(
                 'type' => 'message_values',
-                'value' => 'reminder_links',
+                'value' => 'task_links',
                 'heading' =>
                              '<div id="totara_msg_selects" style="display: none;">'.
                              '<a id="all">'.get_string('all').'</a>/'.
@@ -92,9 +92,9 @@ class rb_reminders_embedded extends rb_base_embedded {
         // no restrictions
         $this->contentmode = REPORT_BUILDER_CONTENT_MODE_NONE;
 
-        // only show reminders, not notifications
+        // only show tasks, not notifications
         $this->embeddedparams = array(
-            'name' => '\'totara_reminder\''
+            'name' => '\'totara_task\''
         );
         // also limited to single user
         if(isset($userid)) {

@@ -646,7 +646,7 @@ abstract class dp_base_component {
         foreach($assigned as $item) {
             $assigned_ids[$item->$item_id_name] = $item->$item_id_name;
         }
-        $sendnotification = (count(array_diff($items, $assigned_ids)) || count(array_diff($assigned_ids, $items)))
+        $sendalert = (count(array_diff($items, $assigned_ids)) || count(array_diff($assigned_ids, $items)))
             && $this->plan->status != DP_PLAN_STATUS_UNAPPROVED;
         $updates = '';
 
@@ -678,19 +678,19 @@ abstract class dp_base_component {
             $updates .= get_string('removedx', 'local_plan', $assigned[$item->id]->fullname).'<br>';
         }
 
-        if ($sendnotification) {
-            $this->send_component_update_notification($updates);
+        if ($sendalert) {
+            $this->send_component_update_alert($updates);
         }
     }
 
 
     /**
-     * Send update notifications
+     * Send update alerts
      *
      * @param string $updateinfo
      * @return void
      */
-    function send_component_update_notification($update_info='') {
+    function send_component_update_alert($update_info='') {
         global $USER, $CFG;
         require_once($CFG->dirroot.'/local/totara_msg/messagelib.php');
 
@@ -714,7 +714,7 @@ abstract class dp_base_component {
                     $event->subject = get_string('componentupdateshortmanager', 'local_plan', $a);
                     $event->fullmessage = get_string('componentupdatelongmanager', 'local_plan', $a);
                     $event->roleid = get_field('role','id', 'shortname', 'manager');
-                    tm_notification_send($event);
+                    tm_alert_send($event);
                 }
             }
         } else {
@@ -723,18 +723,18 @@ abstract class dp_base_component {
             $event->userto = $userto;
             $event->subject = get_string('componentupdateshortlearner', 'local_plan', $a->component);
             $event->fullmessage = get_string('componentupdatelonglearner', 'local_plan', $a);
-            tm_notification_send($event);
+            tm_alert_send($event);
         }
     }
 
 
     /**
-     * Send approval notifications
+     * Send approval alerts
      *
      * @param object $approval the approval type
      * @return void
      */
-    function send_component_approval_notification($approval) {
+    function send_component_approval_alert($approval) {
         global $USER, $CFG;
         require_once($CFG->dirroot.'/local/totara_msg/messagelib.php');
         if($approval->after == DP_APPROVAL_DECLINED) {
@@ -764,7 +764,7 @@ abstract class dp_base_component {
                     $event->subject = get_string('component'.$type.'shortmanager', 'local_plan', $a);
                     $event->fullmessage = get_string('component'.$type.'longmanager', 'local_plan', $a);
                     $event->roleid = get_field('role','id', 'shortname', 'manager');
-                    tm_notification_send($event);
+                    tm_alert_send($event);
                 }
             }
         } else {
@@ -773,7 +773,7 @@ abstract class dp_base_component {
             $event->userto = $userto;
             $event->subject = get_string('component'.$type.'shortlearner', 'local_plan', $a);
             $event->fullmessage = get_string('component'.$type.'longlearner', 'local_plan', $a);
-            tm_notification_send($event);
+            tm_alert_send($event);
         }
     }
 

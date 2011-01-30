@@ -17,7 +17,7 @@
 // The commands in here will all be database-neutral,
 // using the functions defined in lib/ddllib.php
 
-function xmldb_block_totara_reminders_upgrade($oldversion=0) {
+function xmldb_block_totara_tasks_upgrade($oldversion=0) {
 
     global $CFG, $THEME, $db;
 

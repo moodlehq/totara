@@ -1,6 +1,6 @@
 <?php
 
-class rb_notifications_embedded extends rb_base_embedded {
+class rb_alerts_embedded extends rb_base_embedded {
 
     public $url, $source, $fullname, $filters, $columns;
     public $contentmode, $contentsettings, $embeddedparams;
@@ -10,10 +10,10 @@ class rb_notifications_embedded extends rb_base_embedded {
         $userid = array_key_exists('userid', $data) ? $data['userid'] : null;
         $roleid = array_key_exists('roleid', $data) ? $data['roleid'] : null;
 
-        $this->url = '/local/totara_msg/notifications.php';
+        $this->url = '/local/totara_msg/alerts.php';
         $this->source = 'totaramessages';
-        $this->shortname = 'notifications';
-        $this->fullname = get_string('notifications', 'local_totara_msg');
+        $this->shortname = 'alerts';
+        $this->fullname = get_string('alerts', 'local_totara_msg');
         $this->columns = array(
 //            array(
 //                'type' => 'message_values',
@@ -87,9 +87,9 @@ class rb_notifications_embedded extends rb_base_embedded {
         // no restrictions
         $this->contentmode = REPORT_BUILDER_CONTENT_MODE_NONE;
 
-        // only show notifications, not reminders
+        // only show alerts, not tasks
         $this->embeddedparams = array(
-            'name' => '\'totara_notification\''
+            'name' => '\'totara_alert\''
         );
         // also limited to single user
         if(isset($userid)) {

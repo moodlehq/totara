@@ -92,11 +92,11 @@ foreach ($ids as $msgid => $message) {
     }
     else if ($accept) {
         // onaccept the message and then return
-        tm_message_reminder_accept($msgid);
+        tm_message_task_accept($msgid);
     }
     else if ($reject) {
         // onreject the message and then return
-        tm_message_reminder_reject($msgid);
+        tm_message_task_reject($msgid);
     }
 }
 

@@ -33,14 +33,14 @@ function totara_msg_cron() {
 
     // dismiss old notifications
     $time = time() - (TOTARA_MSG_CRON_DISMISS_NOTIFICATIONS * (24 * 60 * 60));
-    $msgs = tm_messages_get_by_time('totara_notification', $time);
+    $msgs = tm_messages_get_by_time('totara_alert', $time);
     foreach ($msgs as $msg) {
         tm_message_dismiss($msg->id);
     }
 
     // dismiss old reminders
     $time = time() - (TOTARA_MSG_CRON_DISMISS_REMINDERS * (24 * 60 * 60));
-    $msgs = tm_messages_get_by_time('totara_reminder', $time);
+    $msgs = tm_messages_get_by_time('totara_task', $time);
     foreach ($msgs as $msg) {
         tm_message_dismiss($msg->id);
     }

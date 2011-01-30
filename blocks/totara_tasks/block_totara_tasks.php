@@ -1,9 +1,9 @@
 <?PHP //$Id$
   /*
-  * Totara Reminders
+  * Totara Tasks
   *
   * @package blocks
-  * @subpackage totara_reminders
+  * @subpackage totara_tasks
   * @author: Piers Harding
   * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL
   * @copyright  (C) 1999 onwards Martin Dougiamas  http://dougiamas.com
@@ -13,9 +13,9 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot.'/local/totara_msg/lib.php');
 
-class block_totara_reminders extends block_base {
+class block_totara_tasks extends block_base {
     function init() {
-        $this->title = get_string('blockname', 'block_totara_reminders');
+        $this->title = get_string('blockname', 'block_totara_tasks');
         $this->version = 2010110101;
     }
 
@@ -54,21 +54,21 @@ class block_totara_reminders extends block_base {
         $js['dismissmsg'] = $CFG->wwwroot.'/local/reportbuilder/confirm.js.php';
         require_js(array_values($js));
 
-      // just get the reminders for this user
+      // just get the tasks for this user
         $roleid = $this->current_roleid();
         $role_assertion = '';
          if ($roleid) {
              $role_assertion = '?roleid='.$roleid;
          }
-        $total = tm_messages_count('totara_reminder', false, $roleid);
-        $this->msgs = tm_messages_get('totara_reminder', 'timecreated DESC ', false, true, $roleid);
+        $total = tm_messages_count('totara_task', false, $roleid);
+        $this->msgs = tm_messages_get('totara_task', 'timecreated DESC ', false, true, $roleid);
         $count = is_array($this->msgs) ? count($this->msgs) : 0;
-        $this->title = get_string('reminders', 'block_totara_reminders');
+        $this->title = get_string('tasks', 'block_totara_tasks');
         if($count) {
             $this->title .= ' <span>' .
-                get_string('showingxofx', 'block_totara_reminders', array($count, $total)).'</span>';
+                get_string('showingxofx', 'block_totara_tasks', array($count, $total)).'</span>';
         } else {
-            $this->title .= ' <span>' . get_string('noreminders', 'block_totara_reminders') . '</span>';
+            $this->title .= ' <span>' . get_string('notasks', 'block_totara_tasks') . '</span>';
         }
 
       // firstly pull in the stylesheet needed for the dismiss dialog
@@ -126,7 +126,7 @@ class block_totara_reminders extends block_base {
                 if (!empty($msgacceptdata) && count((array)$msgacceptdata)) {
                     $btn = new object();
                     $btn->text = !empty($msgacceptdata->acceptbutton) ?
-                        $msgacceptdata->acceptbutton : get_string('onaccept', 'block_totara_reminders');
+                        $msgacceptdata->acceptbutton : get_string('onaccept', 'block_totara_tasks');
                     $btn->action = "{$CFG->wwwroot}/local/totara_msg/accept.php?id={$msg->id}";
                     $btn->redirect = !empty($msgacceptdata->data['redirect']) ?
                         $msgacceptdata->data['redirect'] : $FULLME;
@@ -136,7 +136,7 @@ class block_totara_reminders extends block_base {
                 if (!empty($msgrejectdata) && count((array)$msgrejectdata)) {
                     $btn = new object();
                     $btn->text = !empty($msgrejectdata->rejectbutton) ?
-                        $msgrejectdata->rejectbutton : get_string('onreject', 'block_totara_reminders');
+                        $msgrejectdata->rejectbutton : get_string('onreject', 'block_totara_tasks');
                     $btn->action = "{$CFG->wwwroot}/local/totara_msg/reject.php?id={$msg->id}";
                     $btn->redirect = !empty($msgrejectdata->data['redirect']) ?
                         $msgrejectdata->data['redirect'] : $FULLME;
@@ -146,14 +146,14 @@ class block_totara_reminders extends block_base {
                 if (!empty($msginfodata) && count((array)$msginfodata)) {
                     $btn = new object();
                     $btn->text = !empty($msginfodata->infobutton) ?
-                        $msginfodata->infobutton : get_string('oninfo', 'block_totara_reminders');
+                        $msginfodata->infobutton : get_string('oninfo', 'block_totara_tasks');
                     $btn->action = "{$CFG->wwwroot}/local/totara_msg/link.php?id={$msg->id}";
                     $btn->redirect = $msginfodata->data['redirect'];
                     $detailbuttons[] = $btn;
                 }
                 $detailjs = totara_msg_alert_popup($msg->id, $detailbuttons);
                 $content .= '<a id="detailtask'.$msg->id.'-dialog" href="' . $msglink . '"
-                    title="' . get_string('clickformoreinfo', 'block_totara_reminders') . '">';
+                    title="' . get_string('clickformoreinfo', 'block_totara_tasks') . '">';
                 $content .= '<img src="' . $CFG->themewww . '/' . $CFG->theme . '/pix/i/info.gif" />' . $detailjs . '</a>';
                 $content .= "</td>";
                 $content .= "</tr>";
@@ -163,8 +163,8 @@ class block_totara_reminders extends block_base {
         }
         $this->content->text .= '</table>';
         if (!empty($this->msgs)) {
-            $this->content->footer = '<div class="viewall"><a href="'.$CFG->wwwroot.'/local/totara_msg/reminders.php'.$role_assertion.'">'.
-                                     get_string('viewallnot', 'block_totara_reminders').'</a></div>';
+            $this->content->footer = '<div class="viewall"><a href="'.$CFG->wwwroot.'/local/totara_msg/tasks.php'.$role_assertion.'">'.
+                                     get_string('viewallnot', 'block_totara_tasks').'</a></div>';
         }
         return $this->content;
     }

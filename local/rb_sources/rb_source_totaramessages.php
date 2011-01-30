@@ -134,10 +134,10 @@ class rb_source_totaramessages extends rb_base_source {
             ),
             new rb_column_option(
                 'message_values',
-                'reminder_links',
+                'task_links',
                 get_string('actions', 'rb_source_totaramessages'),
                 'base.messageid',
-                array('displayfunc' => 'reminder_links',
+                array('displayfunc' => 'task_links',
                       'noexport' => true,
                       'nosort' => true)
             ),
@@ -313,7 +313,7 @@ class rb_source_totaramessages extends rb_base_source {
 
     // generate dismiss message link
     function rb_display_dismiss_link($id, $row) {
-        return '<div class="totara_notifications_actions">'.
+        return '<div class="totara_alerts_actions">'.
                 '<table class="totara_messages_actions" border="0"><tr><td>'.
                 totara_msg_dismiss_action($id).
                 '</td><td>'.
@@ -331,9 +331,9 @@ class rb_source_totaramessages extends rb_base_source {
                 '</div>';
     }
 
-    // generate reminder message links
-    function rb_display_reminder_links($id, $row) {
-        return '<div class="totara_reminders_actions">'.
+    // generate task message links
+    function rb_display_task_links($id, $row) {
+        return '<div class="totara_tasks_actions">'.
                 '<table class="totara_messages_actions" border="0"><tr>'.
                 '<td>'.totara_msg_accept_reject_action($id).'</td>'.
                 '<td>'.totara_msg_dismiss_action($id).'</td>'.

@@ -26,7 +26,7 @@ defined('MOODLE_INTERNAL') || die();
 
 // block display limits
 define('TOTARA_MSG_NOTIFY_LIMIT', 5);
-define('TOTARA_MSG_REMINDER_LIMIT', 5);
+define('TOTARA_MSG_TASK_LIMIT', 5);
 
 require_once('messagelib.php');
 
@@ -343,8 +343,8 @@ function totara_msg_accept_reject_action($id) {
     $returnto = ($msgmeta->msgtype == TOTARA_MSG_TYPE_LINK && isset($msgacceptdata->data['redirect'])) ? $msgacceptdata->data['redirect'] : $FULLME;
 
     $subject = format_string($msg->subject);
-    $onaccept_str = format_string(isset($msgacceptdata->acceptbutton) ? $msgacceptdata->acceptbutton : get_string('onaccept', 'block_totara_reminders'));
-    $onreject_str = get_string('onreject', 'block_totara_reminders');
+    $onaccept_str = format_string(isset($msgacceptdata->acceptbutton) ? $msgacceptdata->acceptbutton : get_string('onaccept', 'block_totara_tasks'));
+    $onreject_str = get_string('onreject', 'block_totara_tasks');
 
     // only give the accept/reject actions if they actually exist
     $accept = '';

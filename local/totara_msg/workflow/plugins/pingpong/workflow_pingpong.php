@@ -41,7 +41,7 @@ class totara_msg_workflow_pingpong extends totara_msg_workflow_plugin_base {
         $onreject->data = array('forward_to' => $msg->useridto, 'cnt' => $eventdata['cnt'] + 1);
         $newevent->onreject = $onreject;
 
-        return tm_reminder_send($newevent);
+        return tm_task_send($newevent);
     }
 
     function onreject($eventdata, $msg) {

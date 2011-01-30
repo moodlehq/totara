@@ -440,7 +440,7 @@ class dp_objective_component extends dp_base_component {
             if ($status) {
                 commit_sql();
 
-                // Process update notifications
+                // Process update alerts
                 $updates = '';
                 $approvals = null;
                 $objheader = '<p><strong>'.format_string($orig_objectives[$itemid]->fullname).": </strong><br>";
@@ -506,14 +506,14 @@ class dp_objective_component extends dp_base_component {
                     }
                 }  // foreach
 
-                // Send update notification
+                // Send update alert
                 if ($this->plan->status != DP_PLAN_STATUS_UNAPPROVED && strlen($updates)) {
-                    $this->send_component_update_notification($updates);
+                    $this->send_component_update_alert($updates);
                 }
 
                 if ($this->plan->status != DP_PLAN_STATUS_UNAPPROVED && count($approvals)>0) {
                     foreach($approvals as $approval) {
-                        $this->send_component_approval_notification($approval);
+                        $this->send_component_approval_alert($approval);
                     }
                 }
             } else {
@@ -550,7 +550,7 @@ class dp_objective_component extends dp_base_component {
             return false;
         }
 
-        // store objective details for notifications
+        // store objective details for alerts
         $objective = get_record('dp_plan_objective', 'id', $caid);
 
         begin_sql();
@@ -559,9 +559,9 @@ class dp_objective_component extends dp_base_component {
         $result = $result && delete_records('dp_plan_component_relation', 'component2', 'objective', 'itemid2', $caid);
         commit_sql();
 
-        // are we OK? then send the notifications
+        // are we OK? then send the alerts
         if ($result) {
-            $this->send_deletion_notification($objective);
+            $this->send_deletion_alert($objective);
         }
 
         return $result;
@@ -591,17 +591,17 @@ class dp_objective_component extends dp_base_component {
 
         $result = insert_record('dp_plan_objective', $rec);
 
-        $this->send_creation_notification($result, $fullname);
+        $this->send_creation_alert($result, $fullname);
 
         return $result;
     }
 
     /**
-     * send objective deletion notification
+     * send objective deletion alert
      * @param object $objective Objective details
      * @return nothing
      */
-    function send_deletion_notification($objective) {
+    function send_deletion_alert($objective) {
         global $USER, $CFG;
         require_once($CFG->dirroot.'/local/totara_msg/messagelib.php');
 
@@ -625,7 +625,7 @@ class dp_objective_component extends dp_base_component {
                     $event->subject = get_string('objectivedeleteshortmanager', 'local_plan', $this->current_user_link());
                     $event->fullmessage = get_string('objectivedeletelongmanager', 'local_plan', $a);
                     $event->roleid = get_field('role','id', 'shortname', 'manager');
-                    tm_notification_send($event);
+                    tm_alert_send($event);
                 }
             }
         }
@@ -635,17 +635,17 @@ class dp_objective_component extends dp_base_component {
             $event->userto = $userto;
             $event->subject = get_string('objectivedeleteshortlearner', 'local_plan', $a->objective);
             $event->fullmessage = get_string('objectivedeletelonglearner', 'local_plan', $a);
-            tm_notification_send($event);
+            tm_alert_send($event);
         }
     }
 
     /**
-     * send objective creation notification
+     * send objective creation alert
      * @param int $objid Objective Id
      * @param string $fullname the title of the objective
      * @return nothing
      */
-    function send_creation_notification($objid, $fullname) {
+    function send_creation_alert($objid, $fullname) {
         global $USER, $CFG;
         require_once($CFG->dirroot.'/local/totara_msg/messagelib.php');
 
@@ -669,7 +669,7 @@ class dp_objective_component extends dp_base_component {
                     $event->subject = get_string('objectivenewshortmanager', 'local_plan', $this->current_user_link());
                     $event->fullmessage = get_string('objectivenewlongmanager', 'local_plan', $a);
                     $event->roleid = get_field('role','id', 'shortname', 'manager');
-                    tm_notification_send($event);
+                    tm_alert_send($event);
                 }
             }
         }
@@ -679,18 +679,18 @@ class dp_objective_component extends dp_base_component {
             $event->userto = $userto;
             $event->subject = get_string('objectivenewshortlearner', 'local_plan', $fullname);
             $event->fullmessage = get_string('objectivenewlonglearner', 'local_plan', $a);
-            tm_notification_send($event);
+            tm_alert_send($event);
         }
     }
 
 
     /**
-     * send objective edit notification
+     * send objective edit alert
      * @param object $objective Objective record
      * @param string $field field updated
      * @return nothing
      */
-    function send_edit_notification($objective, $field) {
+    function send_edit_alert($objective, $field) {
         global $USER, $CFG;
         require_once($CFG->dirroot.'/local/totara_msg/messagelib.php');
 
@@ -715,7 +715,7 @@ class dp_objective_component extends dp_base_component {
                     $event->subject = get_string('objectiveeditshortmanager', 'local_plan', $this->current_user_link());
                     $event->fullmessage = get_string('objectiveeditlongmanager', 'local_plan', $a);
                     $event->roleid = get_field('role','id', 'shortname', 'manager');
-                    tm_notification_send($event);
+                    tm_alert_send($event);
                 }
             }
         }
@@ -725,19 +725,19 @@ class dp_objective_component extends dp_base_component {
             $event->userto = $userto;
             $event->subject = get_string('objectiveeditshortlearner', 'local_plan', $a->objective);
             $event->fullmessage = get_string('objectiveeditlonglearner', 'local_plan', $a);
-            tm_notification_send($event);
+            tm_alert_send($event);
         }
     }
 
     /**
-     * send objective status notification
+     * send objective status alert
      *
      * handles both complete and incomplete
      *
      * @param object $objective Objective record
      * @return nothing
      */
-    function send_status_notification($objective) {
+    function send_status_alert($objective) {
         global $USER, $CFG;
         require_once($CFG->dirroot.'/local/totara_msg/messagelib.php');
 
@@ -766,7 +766,7 @@ class dp_objective_component extends dp_base_component {
                     $event->subject = get_string('objective'.$status.'shortmanager', 'local_plan', $this->current_user_link());
                     $event->fullmessage = get_string('objective'.$status.'longmanager', 'local_plan', $a);
                     $event->roleid = get_field('role','id', 'shortname', 'manager');
-                    tm_notification_send($event);
+                    tm_alert_send($event);
                 }
             }
         }
@@ -776,7 +776,7 @@ class dp_objective_component extends dp_base_component {
             $event->userto = $userto;
             $event->subject = get_string('objective'.$status.'shortlearner', 'local_plan', $a->objective);
             $event->fullmessage = get_string('objective'.$status.'longlearner', 'local_plan', $a);
-            tm_notification_send($event);
+            tm_alert_send($event);
         }
     }
 
@@ -785,7 +785,7 @@ class dp_objective_component extends dp_base_component {
      * delete links in db which aren't needed, and add links missing from db
      * which are needed
      *
-     * specialised from super class to allow the hooking of notifications
+     * specialised from super class to allow the hooking of alerts
      *
      * @param integer $thiscompoentid Identifies the component on one end of the link
      * @param string $componentupdatetype: the type of components on the other end of the links
@@ -799,7 +799,7 @@ class dp_objective_component extends dp_base_component {
 
         if ($componentupdatetype == 'course') {
             $objective = get_record('dp_plan_objective', 'id', $thiscomponentid);
-            $this->send_edit_notification($objective, 'course');
+            $this->send_edit_alert($objective, 'course');
         }
 
     }

@@ -26,7 +26,7 @@
 require_once(dirname(dirname(dirname(dirname(dirname(dirname(__FILE__)))))) . '/config.php'); //included from messagelib (how to fix?)
 require_once($CFG->dirroot.'/local/totara_msg/message20/output/lib.php');
 
-class message_output_totara_notification extends message_output20{
+class message_output_totara_alert extends message_output20{
 
     /**
      * Process the popup message.
@@ -42,11 +42,11 @@ class message_output_totara_notification extends message_output20{
         //hold onto the popup processor id because /admin/cron.php sends a lot of messages at once
         static $processorid = null;
 
-        //prevent users from getting popup notifications of messages to themselves (happens with forum notifications)
+        //prevent users from getting popup alerts of messages to themselves (happens with forum alerts)
         //if ($eventdata->userfrom->id!=$eventdata->userto->id) {
             if (empty($processorid)) {
                 //$processor = $DB->get_record('message_processors20', array('name'=>'popup'));
-                $processor = get_record('message_processors20', 'name', 'totara_notification');
+                $processor = get_record('message_processors20', 'name', 'totara_alert');
                 $processorid = $processor->id;
             }
             $procmessage = new stdClass();

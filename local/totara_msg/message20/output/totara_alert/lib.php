@@ -34,13 +34,13 @@
 /**
  * Register the processor.
  */
-function local_totara_notification_install(){
+function local_totara_alert_install(){
     //global $DB;
 
     $result = true;
 
     $provider = new stdClass();
-    $provider->name  = 'totara_notification';
+    $provider->name  = 'totara_alert';
     //$DB->insert_record('message_processors20', $provider);
     insert_record('message_processors20', $provider);
     return $result;

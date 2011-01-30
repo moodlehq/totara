@@ -254,19 +254,19 @@ function dp_get_objective_default_scale_value($idpid) {
 
 
 /**
- * Get a list of user IDs of users who can receive notification emails
+ * Get a list of user IDs of users who can receive alert emails
  *
  * @access  public
  * @param   object       $contextuser  context object
  * @param   string       $type         type of user
- * @return array|false  $receivers    the users which receive the notification
+ * @return array|false  $receivers    the users which receive the alert
  */
-function dp_get_notification_receivers($contextuser, $type) {
+function dp_get_alert_receivers($contextuser, $type) {
     global $USER;
 
     $receivers = array();
 
-    $users = get_users_by_capability($contextuser, "local/plan:receive{$type}notifications");
+    $users = get_users_by_capability($contextuser, "local/plan:receive{$type}alerts");
     if ($users and count($users) > 0) {
         foreach ($users as $key => $user) {
             if ($user->id != $USER->id) {

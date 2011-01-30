@@ -47,7 +47,7 @@ if (!$message || $message->useridto != $USER->id) {
 }
 
 // onreject the message and then return
-tm_message_reminder_reject($msgid);
+tm_message_task_reject($msgid);
 
 if ($returnto) {
     redirect($returnto);

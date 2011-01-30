@@ -47,7 +47,7 @@ if (!$message || $message->useridto != $USER->id) {
 }
 
 // onaccept the message and then return
-tm_message_reminder_accept($msgid);
+tm_message_task_accept($msgid);
 
 if ($returnto) {
     redirect($returnto);

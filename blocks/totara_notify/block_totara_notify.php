@@ -1,6 +1,6 @@
 <?PHP //$Id$
   /*
-  * Totara Notifications
+  * Totara Alerts
   *
   * @package blocks
   * @subpackage totara_notify
@@ -54,21 +54,21 @@ class block_totara_notify extends block_base {
         $js['dismissmsg'] = $CFG->wwwroot.'/local/reportbuilder/confirm.js.php';
         require_js(array_values($js));
 
-      // just get the notifications for this user
+      // just get the alerts for this user
         $roleid = $this->current_roleid();
         $role_assertion = '';
          if ($roleid) {
              $role_assertion = '?roleid='.$roleid;
          }
-        $total = tm_messages_count('totara_notification', false, $roleid);
-        $this->msgs = tm_messages_get('totara_notification', 'timecreated DESC ', false, true, $roleid);
+        $total = tm_messages_count('totara_alert', false, $roleid);
+        $this->msgs = tm_messages_get('totara_alert', 'timecreated DESC ', false, true, $roleid);
         $count = is_array($this->msgs) ? count($this->msgs) : 0;
-        $this->title = get_string('notifications', 'block_totara_notify');
+        $this->title = get_string('alerts', 'block_totara_notify');
         if($count) {
             $this->title .= ' <span>' .
                 get_string('showingxofx', 'block_totara_notify', array($count, $total)).'</span>';
         } else {
-            $this->title .= ' <span>' . get_string('nonotifications', 'block_totara_notify') . '</span>';
+            $this->title .= ' <span>' . get_string('noalerts', 'block_totara_notify') . '</span>';
         }
 
       // firstly pull in the stylesheet needed for the dismiss dialog
@@ -115,7 +115,7 @@ class block_totara_notify extends block_base {
                 $content .= '<td class="action">';
                 $detailjs = totara_msg_alert_popup($msg->id);
                 $content .= '<a id="detailtask'.$msg->id.'-dialog" href="' . $msglink . '"
-                title="' . get_string('clickformoreinfo', 'block_totara_reminders') .'">';
+                title="' . get_string('clickformoreinfo', 'block_totara_tasks') .'">';
                 $content .= '<img src="' . $CFG->themewww . '/' . $CFG->theme . '/pix/i/info.gif" />' . $detailjs . '</a>';
                 $content .= "</td></tr>";
                 $this->content->text .= $content;
@@ -123,7 +123,7 @@ class block_totara_notify extends block_base {
         }
         $this->content->text .= '</table>';
         if (!empty($this->msgs)) {
-            $this->content->footer = '<div class="viewall"><a href="'.$CFG->wwwroot.'/local/totara_msg/notifications.php'.$role_assertion.'">'.
+            $this->content->footer = '<div class="viewall"><a href="'.$CFG->wwwroot.'/local/totara_msg/alerts.php'.$role_assertion.'">'.
                                      get_string('viewallnot', 'block_totara_notify').'</a></div>';
         }
         return $this->content;

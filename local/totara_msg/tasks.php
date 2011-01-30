@@ -51,9 +51,9 @@
     if ($USER->id != $id && !totara_is_manager($id) && !has_capability('moodle/site:doanything',$context)) {
         error('You cannot view this page');
     }
-    $strheading = get_string('reminders', 'local_totara_msg');
+    $strheading = get_string('tasks', 'local_totara_msg');
 
-    $shortname = 'reminders';
+    $shortname = 'tasks';
     $data = array(
         'userid' => $id,
     );
@@ -110,7 +110,7 @@
     }
 
     if (empty($report->description)) {
-        $report->description = get_string('reminder_description', 'local_totara_msg');
+        $report->description = get_string('task_description', 'local_totara_msg');
     }
 
     print $report->print_description();
