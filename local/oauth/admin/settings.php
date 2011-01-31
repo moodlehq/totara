@@ -51,6 +51,7 @@ if (!empty($fromform)) {
     notify(get_string('settingsupdated', 'local_oauth'), 'notifysuccess');
 }
 
+print_heading(get_string('settings', 'local_oauth'));
 $oauthsettingsform->display();
 //echo $OUTPUT->footer();
 admin_externalpage_print_footer();

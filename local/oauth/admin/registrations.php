@@ -153,7 +153,7 @@ if (!$oauthregistrationform) {
 //echo $OUTPUT->header();
 admin_externalpage_print_header();
 //echo $OUTPUT->heading(get_string('manageregistrations', 'local_oauth'), 3, 'main');
-print_heading(get_string('manageregistrations', 'local_oauth'), 3, 'main');
+print_heading(get_string('manageregistrations', 'local_oauth'));
 //display confirmation
 if ($msg) {
 //    echo $OUTPUT->notification($msg, $msgtype);

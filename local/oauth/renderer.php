@@ -167,12 +167,19 @@ class local_oauth_renderer {
 
                 if ($withwriteaccess) {
                     //edit button
-                    $editmsg = get_string('edit', 'local_oauth');
+                    /*$editmsg = get_string('edit', 'local_oauth');
                     $editurl = new moodle_url("/local/oauth/admin/registrations.php",
                             array('sesskey' => sesskey(), 'edit' => $site->id));
                     $editbutton = new single_button($editurl, $editmsg);
 //                    $editbuttonhtml = $OUTPUT->render($editbutton);
-                    $editbuttonhtml = core_renderer::render_single_button($editbutton);
+                    $editbuttonhtml = core_renderer::render_single_button($editbutton);*/
+
+                    //Edit link
+                    $editurl = new moodle_url("/local/oauth/admin/registrations.php",
+                            array('sesskey' => sesskey(), 'edit' => $site->id));
+                    $editimgtag = html_writer::empty_tag('img', array('src' => $CFG->pixpath.'/t/edit.gif',
+                                'class' => 'siteimage', 'alt' => get_string('edit')));
+                    $edithtml = html_writer::tag('a', $editimgtag, array('href' => $editurl));
 
                     //enabled
                     if ($site->enabled) {
@@ -191,20 +198,14 @@ class local_oauth_renderer {
                     $enabledhtml = html_writer::tag('a', $hideimgtag, array('href' => $enabledurl));
 
                     //delete link
-                    $deleteeurl = new moodle_url("/local/oauth/admin/registrations.php",
+                    $deleteurl = new moodle_url("/local/oauth/admin/registrations.php",
                             array('sesskey' => sesskey(), 'delete' => $site->id));
-                    $deletelinkhtml = html_writer::tag('a', get_string('delete'), array('href' => $deleteeurl));
+                    $deleteimgtag = html_writer::empty_tag('img', array('src' => $CFG->pixpath.'/t/delete.gif',
+                                'class' => 'siteimage', 'alt' => get_string('delete')));
+                    $deletehtml = html_writer::tag('a', $deleteimgtag, array('href' => $deleteurl));
 
-                    // setup the operation buttons/links
-                    $oprtab = new html_table();
-                    $oprtab->align = array('left', 'left');
-                    $oprtab->size = array('50%', '50%');
-                    $oprtab->width = '100%';
-                    $oprtab->attributes['class'] = 'siteurls';
-                    $oprtab->data  = array(new html_table_row(array($editbuttonhtml, $deletelinkhtml)));
                     // add a row to the table
-                    $cells = array($sitenamehtml, $keyhtml, $secrethtml, $siteurlshtml, $enabledhtml,
-                                   html_writer::table($oprtab));
+                    $cells = array($sitenamehtml, $keyhtml, $secrethtml, $siteurlshtml, $enabledhtml,$edithtml.' '.$deletehtml);
 
                 } else {
                     // add a row to the table

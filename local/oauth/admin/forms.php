@@ -42,7 +42,6 @@ class oauth_settings_form extends moodleform {
 
         $strrequired = get_string('required');
         $mform =& $this->_form;
-        $mform->addElement('header', 'moodle', get_string('settings', 'local_oauth'));
 
         $mform->addElement('checkbox', 'enabled', get_string('enabled', 'local_oauth'),'');
         $mform->setDefault('enabled', $enabled);
@@ -76,13 +75,13 @@ class oauth_registration_form extends moodleform {
         $mform->setHelpButton('consumer_key', array('consumer_key', get_string('consumer_key', 'local_oauth'), 'local_oauth'));
         $mform->addElement('text', 'consumer_secret' , get_string('consumer_secret', 'local_oauth'), array('size' => 60, 'maxlength' => 256));
         $mform->setHelpButton('consumer_secret', array('consumer_secret', get_string('consumer_secret', 'local_oauth'), 'local_oauth'));
-        $mform->addElement('text', 'request_token_url' , get_string('siterequest', 'local_oauth'), array('size' => 100, 'maxlength' => 256));
+        $mform->addElement('text', 'request_token_url' , get_string('siterequest', 'local_oauth'), array('size' => 65, 'maxlength' => 256));
 //        $mform->setType('request_token_url', PARAM_URL);
         $mform->setHelpButton('request_token_url', array('request_token_url', get_string('siterequest', 'local_oauth'), 'local_oauth'));
-        $mform->addElement('text', 'authorize_token_url' , get_string('siteauthorize', 'local_oauth'), array('size' => 100, 'maxlength' => 256));
+        $mform->addElement('text', 'authorize_token_url' , get_string('siteauthorize', 'local_oauth'), array('size' => 65, 'maxlength' => 256));
 //        $mform->setType('authorize_token_url', PARAM_URL);
         $mform->setHelpButton('authorize_token_url', array('authorize_token_url', get_string('siteauthorize', 'local_oauth'), 'local_oauth'));
-        $mform->addElement('text', 'access_token_url' , get_string('siteaccess', 'local_oauth'), array('size' => 100, 'maxlength' => 256));
+        $mform->addElement('text', 'access_token_url' , get_string('siteaccess', 'local_oauth'), array('size' => 65, 'maxlength' => 256));
 //        $mform->setType('access_token_url', PARAM_URL);
         $mform->setHelpButton('access_token_url', array('access_token_url', get_string('siteaccess', 'local_oauth'), 'local_oauth'));
 
