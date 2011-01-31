@@ -29,6 +29,25 @@ require_once($CFG->dirroot.'/blocks/totara_stats/locallib.php');
 
 
 /**
+ * Course completion status constants
+ *
+ * For translating database recorded integers to strings and back
+ */
+define('COMPLETION_STATUS_NOTYETSTARTED',   10);
+define('COMPLETION_STATUS_INPROGRESS',      25);
+define('COMPLETION_STATUS_COMPLETE',        50);
+define('COMPLETION_STATUS_COMPLETEVIARPL',  75);
+
+global $COMPLETION_STATUS;
+$COMPLETION_STATUS = array(
+    10  => COMPLETION_STATUS_NOTYETSTARTED,
+    25  => COMPLETION_STATUS_INPROGRESS,
+    50  => COMPLETION_STATUS_COMPLETE,
+    75  => COMPLETION_STATUS_COMPLETEVIARPL
+);
+
+
+/**
  * Course completion status for a particular user/course
  */
 class completion_completion extends data_object {
@@ -44,7 +63,7 @@ class completion_completion extends data_object {
      * @var array $required_fields
      */
     public $required_fields = array('id', 'userid', 'course', 'deleted', 'timenotified',
-        'timeenrolled', 'timestarted', 'timecompleted', 'rpl', 'reaggregate');
+        'timeenrolled', 'timestarted', 'timecompleted', 'rpl', 'reaggregate', 'status');
 
     /**
      * Array of optional table fields
@@ -125,6 +144,14 @@ class completion_completion extends data_object {
      * @var     string
      */
     public $name;
+
+    /**
+     * Status constant
+     * @access  public
+     * @var     int
+     */
+    public $status;
+
 
     /**
      * Finds and returns a data_object instance based on params.
@@ -305,6 +332,7 @@ class completion_completion extends data_object {
      * @return  void
      */
     private function _save() {
+        global $COMPLETION_STATUS;
 
         if (!$this->timeenrolled) {
             // Get users timenrolled
@@ -312,6 +340,16 @@ class completion_completion extends data_object {
             $context = get_context_instance(CONTEXT_COURSE, $this->course);
             $this->timeenrolled = get_field('role_assignments', 'timestart', 'contextid', $context->id, 'userid', $this->userid);
         }
+
+
+        // Update status column
+        $status = completion_completion::get_status($this);
+        if ($status) {
+            $status = constant('COMPLETION_STATUS_'.strtoupper($status));
+        }
+
+        $this->status = $status;
+
 
         // Save record
         if ($this->id) {

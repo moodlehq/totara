@@ -2362,6 +2362,56 @@ function xmldb_local_upgrade($oldversion) {
     }
 
 
+    // Add status column to course_completions table
+    if ($result && $oldversion < 2011031100) {
+
+        /// Define field status to be added to course_completions
+        $table = new XMLDBTable('course_completions');
+        $field = new XMLDBField('status');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '2', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, 0, 'rpl');
+
+        /// Launch add field status
+        $result = $result && add_field($table, $field);
+
+    }
+
+
+    // Update any existing course_completions data
+    if ($result && $oldversion < 2011031101) {
+
+        require_once("{$CFG->libdir}/completion/completion_completion.php");
+
+        // Begin transaction
+        begin_sql();
+
+        // Get all records
+        $rs = get_recordset_sql('SELECT * FROM mdl_course_completions');
+
+        if ($rs) {
+            while ($record = rs_fetch_next_record($rs)) {
+                // Update status column
+                $status = completion_completion::get_status($record);
+                if ($status) {
+                    $status = constant('COMPLETION_STATUS_'.strtoupper($status));
+                }
+
+                $record->status = $status;
+
+                if (!update_record('course_completions', $record)) {
+                    $result = false;
+                    break;
+                }
+            }
+        }
+
+        if ($result) {
+            commit_sql();
+        } else {
+            rollback_sql();
+        }
+    }
+
+
     return $result;
 }
 ?>
