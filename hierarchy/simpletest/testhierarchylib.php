@@ -168,6 +168,36 @@ class hierarchylib_test extends prefix_changing_test_case {
         $this->c2->timecreated = '1265963591';
         $this->c2->timemodified = '1265963591';
         $this->c2->usermodified = '2';
+
+        //Custom field category to test against
+        $this->cfcat1 = new stdClass();
+        $this->cfcat1->id = 1;
+        $this->cfcat1->name = 'Custom Field Category 1';
+        $this->cfcat1->sortorder = 1;
+        $this->cfcat1->depthid = 2;
+
+        //Expected custom field return data for get_custom_fields
+        $this->cf1->id = 1;
+        $this->cf1->fullname = 'Custom Field 1';
+        $this->cf1->shortname = 'CF1';
+        $this->cf1->depthid = 2;
+        $this->cf1->datatype = 'checkbox';
+        $this->cf1->description = 'Custom Field Description 1';
+        $this->cf1->sortorder = 1;
+        $this->cf1->categoryid = 1;
+        $this->cf1->hidden = 0;
+        $this->cf1->locked = 0;
+        $this->cf1->required = 0;
+        $this->cf1->forceunique = 0;
+        $this->cf1->defaultdata = 0;
+        $this->cf1->param1 = null;
+        $this->cf1->param2 = null;
+        $this->cf1->param3 = null;
+        $this->cf1->param4 = null;
+        $this->cf1->param5 = null;
+        $this->cf1->data = 1;
+        $this->cf1->fieldid = 1;
+        $this->cf1->competencyid = 2;
     }
 
     function tearDown() {
@@ -247,6 +277,65 @@ class hierarchylib_test extends prefix_changing_test_case {
         delete_records('comp_depth');
         // if no depth levels exist should return false
         $this->assertFalse($competency->get_depths());
+    }
+
+    function test_hierarchy_get_custom_field_categories() {
+        $competency = $this->competency;
+        $categories = $competency->get_custom_field_categories(2);
+
+        //Returned object is an array
+        $this->assertTrue(is_array($categories));
+
+        //Only one category was returned
+        $this->assertEqual(count($categories), 1);
+
+        //Make object match that returned from sql query
+        $this->cfcat1->custom_field_count = 1;
+
+        //The category returned is that which is expected
+        $this->assertEqual($categories, array($this->cfcat1->id => $this->cfcat1));
+
+        //An invalid depthid returns false
+        $this->assertFalse($competency->get_custom_field_categories(9000));
+    }
+
+    function test_hierarchy_get_custom_field_category_by_id() {
+        $competency = $this->competency;
+        $category = $competency->get_custom_field_category_by_id(1);
+
+        //The result is a single object
+        $this->assertTrue(is_object($category));
+
+        //All values are correct
+        $this->assertEqual($category, $this->cfcat1);
+
+        //False is returned for a non-existent category id
+        $this->assertFalse($competency->get_custom_field_category_by_id(9000));
+
+        //Error is raised when no id is given
+        $this->expectError(); //First call to catch Exception when expected argument is not passed
+        $this->expectError(); // Second call to catch PHP Exception for undefined variable inside the call itself
+        $competency->get_custom_field_category_by_id();
+    }
+
+    function test_hierarchy_get_custom_fields() {
+        $competency = $this->competency;
+        $customfields = $competency->get_custom_fields(2);
+
+        //Returned value is an array
+        $this->assertTrue(is_array($customfields));
+
+        //Returned array is not empty
+        $this->assertFalse(empty($customfields));
+
+        //Returned array contains one item
+        $this->assertEqual(count($customfields),1);
+
+        //Returned array is identical to expected data
+        $this->assertEqual($customfields, array($this->cf1->id => $this->cf1));
+
+        //Empty array is returned for a non-existent category id
+        $this->assertEqual($competency->get_custom_fields(9000), array());
     }
 
     function test_hierarchy_get_item() {
