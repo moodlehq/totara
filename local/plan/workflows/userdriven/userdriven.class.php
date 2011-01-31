@@ -14,20 +14,20 @@ class dp_userdriven_workflow extends dp_base_workflow {
         // workflow settings
 
         // course specific settings
-        $this->cfg_course_duedatemode = DP_DUEDATES_NONE;
+        $this->cfg_course_duedatemode = DP_DUEDATES_OPTIONAL;
         $this->cfg_course_prioritymode = DP_PRIORITY_OPTIONAL;
         $this->cfg_course_priorityscale = $defaultpriority;
 
         // competency specific settings
-        $this->cfg_competency_autoassignpos = 1;
-        $this->cfg_competency_autoassignorg = 1;
-        $this->cfg_competency_autoassigncourses = 1;
-        $this->cfg_competency_duedatemode = DP_DUEDATES_NONE;
+        $this->cfg_competency_autoassignpos = 0;
+        $this->cfg_competency_autoassignorg = 0;
+        $this->cfg_competency_autoassigncourses = 0;
+        $this->cfg_competency_duedatemode = DP_DUEDATES_OPTIONAL;
         $this->cfg_competency_prioritymode = DP_DUEDATES_OPTIONAL;
         $this->cfg_competency_priorityscale = $defaultpriority;
 
         // objective specific settings
-        $this->cfg_objective_duedatemode = DP_DUEDATES_NONE;
+        $this->cfg_objective_duedatemode = DP_DUEDATES_OPTIONAL;
         $this->cfg_objective_prioritymode = DP_DUEDATES_OPTIONAL;
         $this->cfg_objective_priorityscale = $defaultpriority;
         $this->cfg_objective_objectivescale = $defaultobjective;
@@ -55,7 +55,7 @@ class dp_userdriven_workflow extends dp_base_workflow {
         $this->perm_course_setpriority_manager = DP_PERMISSION_ALLOW;
         $this->perm_course_setduedate_learner = DP_PERMISSION_ALLOW;
         $this->perm_course_setduedate_manager = DP_PERMISSION_ALLOW;
-        $this->perm_course_setcompletionstatus_learner = DP_PERMISSION_ALLOW;
+        $this->perm_course_setcompletionstatus_learner = DP_PERMISSION_DENY;
         $this->perm_course_setcompletionstatus_manager = DP_PERMISSION_ALLOW;
 
         //competency permission settings
@@ -67,7 +67,7 @@ class dp_userdriven_workflow extends dp_base_workflow {
         $this->perm_competency_setpriority_manager = DP_PERMISSION_ALLOW;
         $this->perm_competency_setduedate_learner = DP_PERMISSION_ALLOW;
         $this->perm_competency_setduedate_manager = DP_PERMISSION_ALLOW;
-        $this->perm_competency_setproficiency_learner = DP_PERMISSION_ALLOW;
+        $this->perm_competency_setproficiency_learner = DP_PERMISSION_DENY;
         $this->perm_competency_setproficiency_manager = DP_PERMISSION_ALLOW;
 
         //objective permission settings
@@ -79,7 +79,7 @@ class dp_userdriven_workflow extends dp_base_workflow {
         $this->perm_objective_setpriority_manager = DP_PERMISSION_ALLOW;
         $this->perm_objective_setduedate_learner = DP_PERMISSION_ALLOW;
         $this->perm_objective_setduedate_manager = DP_PERMISSION_ALLOW;
-        $this->perm_objective_setproficiency_learner = DP_PERMISSION_ALLOW;
+        $this->perm_objective_setproficiency_learner = DP_PERMISSION_DENY;
         $this->perm_objective_setproficiency_manager = DP_PERMISSION_ALLOW;
 
         parent::__construct();
