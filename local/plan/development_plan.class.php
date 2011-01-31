@@ -301,7 +301,7 @@ class development_plan {
                 $configname = 'dp_'.$component->component;
                 $name = get_config(null, $configname);
                 $this->settings[$component->component.'_name'] = $name ? $name :
-                    get_string($component->component.'_defaultname', 'local_plan');
+                    get_string($component->component, 'local_plan');
             }
         }
 

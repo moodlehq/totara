@@ -368,7 +368,7 @@ function dp_print_workflow_diff($diff_array) {
         if($parts[0] == 'perm'){
             if($parts[1] != 'plan'){
                 $configsetting = get_config(null, 'dp_'.$parts[1]);
-                $compname = $configsetting ? $configsetting : get_string($parts[1].'_defaultname', 'local_plan');
+                $compname = $configsetting ? $configsetting : get_string($parts[1], 'local_plan');
                 $tablerow[] = $compname;
             } else {
                 $tablerow[] = get_string($parts[1], 'local_plan');
@@ -380,7 +380,7 @@ function dp_print_workflow_diff($diff_array) {
         } else {
             if($parts[1] != 'plan'){
                 $configsetting = get_config(null, 'dp_'.$parts[1]);
-                $compname = $configsetting ? $configsetting : get_string($parts[1].'_defaultname', 'local_plan');
+                $compname = $configsetting ? $configsetting : get_string($parts[1], 'local_plan');
                 $tablerow[] = $compname;
             } else {
                 $tablerow[] = get_string($parts[1], 'local_plan');
