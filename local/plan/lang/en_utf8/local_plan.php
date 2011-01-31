@@ -17,6 +17,8 @@ $string['approveitemstext'] = 'Please review and approve the changes to the atta
 $string['noitemsrequiringapproval'] = 'There are no items requiring approval';
 $string['plan'] = 'Plan';
 $string['review'] = 'Review';
+$string['reviewplantext'] = 'Please review the attached plan';
+$string['reviewitemstext'] = 'Please review the changes to the attached plan';
 $string['items'] = 'Items';
 $string['learningplan'] = 'Learning Plan';
 $string['learningplans'] = 'Learning Plans';
@@ -141,6 +143,7 @@ $string['approved'] = 'Approved';
 $string['declined'] = 'Declined';
 $string['approve'] = 'Approve';
 $string['decline'] = 'Decline';
+$string['unknown'] = 'Unknown';
 $string['unapproved'] = 'Draft';
 $string['pendingapproval'] = 'Pending approval';
 $string['allow'] = 'Allow';
@@ -171,6 +174,8 @@ $string['error:updatetemplateordering'] = 'Could not update plan template orderi
 $string['error:updatepriorityscaleordering'] = 'Could not update priority scale ordering';
 $string['error:updateobjectivescaleordering'] = 'Could not update objective scale ordering';
 $string['error:updateobjectivescalevalue'] = 'Could not update objective scale value';
+$string['error:competencystatuspermission'] = 'You do not have permission to change the status of that competency';
+$string['error:problemapproving'] = 'There was a problem approving those items';
 
 // Strings with placeholder for custom-editable component names
 $string['updatelinkedx'] = 'Update linked $a';

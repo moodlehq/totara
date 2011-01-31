@@ -104,7 +104,7 @@ function totara_msg_msgtype_text($msgtype) {
 //        case :
 
         default:
-            $text = get_string('local_totara_msg', 'unknown');
+            $text = get_string('unknown', 'local_totara_msg');
             $icon = 'unknown';
             break;
     }

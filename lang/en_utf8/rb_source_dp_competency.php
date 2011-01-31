@@ -6,6 +6,7 @@ $string['plannamelinked'] = 'Plan name (linked to plan page)';
 $string['planstartdate'] = 'Plan start date';
 $string['planenddate'] = 'Plan end date';
 $string['planstatus'] = 'Plan status';
+$string['courses'] = 'Courses';
 $string['templatename'] = 'Plan template name';
 $string['templatestartdate'] = 'Plan template start date';
 $string['templateenddate'] = 'Plan template end date';

@@ -69,8 +69,8 @@ if ($submitted && confirm_sesskey()) {
         }
     }
 
-    if ($errors) {
-        totara_set_notification(get_string('error:problemupdating', 'local_plan'));
+    if (!$errors) {
+        totara_set_notification(get_string('error:problemapproving', 'local_plan'));
     }
 
     redirect($plan->get_display_url());

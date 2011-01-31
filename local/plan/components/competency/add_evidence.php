@@ -50,7 +50,7 @@ if($u = get_record('user','id',$userid)) {
 $componentname = 'competency';
 $component = $plan->get_component($componentname);
 if($component->get_setting('setproficiency') != DP_PERMISSION_ALLOW) {
-    error(get_string('error:competencyobjectivepermission', 'local_plan'));
+    error(get_string('error:competencystatuspermission', 'local_plan'));
 }
 
 $returnurl = $component->get_url();

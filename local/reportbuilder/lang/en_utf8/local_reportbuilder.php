@@ -113,6 +113,7 @@ $string['error:joinsfortypexandvalueynotfoundinz'] = 'Joins for columns with typ
 $string['error:columnoptiontypexandvalueynotfoundinz'] = 'Column option with type \"{$a->type}\" and value \"{$a->value}\" not found in source \"{$a->source}\"';
 $string['error:filteroptiontypexandvalueynotfoundinz'] = 'Filter option with type \"{$a->type}\" and value \"{$a->value}\" not found in source \"{$a->source}\"';
 $string['error:joinsforfiltertypexandvalueynotfoundinz'] = 'Joins for filter with type \"{$a->type}\" and value \"{$a->value}\" not found in source \"{$a->source}\"';
+$string['error:invalidsavedsearchid'] = 'Invalid saved search ID';
 $string['excludecoursetags'] = 'Exclude records tagged with';
 $string['export'] = 'Export';
 $string['exportcsv'] = 'Export in text format';

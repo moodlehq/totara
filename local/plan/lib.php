@@ -681,7 +681,7 @@ function dp_display_plans_menu($userid, $selectedid=0, $role='learner') {
     }
     else {
         // Show for learners?
-        //$out .= print_heading(get_string('recordoflearning', 'local_plan'), 'left', 3, 'main', true);
+        //$out .= print_heading(get_string('recordoflearning', 'local'), 'left', 3, 'main', true);
     }
 
     $out .= '</div>';

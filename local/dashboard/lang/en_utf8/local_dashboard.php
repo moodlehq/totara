@@ -24,7 +24,7 @@
  * @copyright  Totara Learning Solutions Limited
  *
  * dashboard specific language strings.
- * these should be called like get_string('key', 'local_dashboard');
+ * these should be called like get_string('backtodashboard', 'local_dashboard');
  */
 
 $string['dashboard:admin'] = 'Manage dashboards';

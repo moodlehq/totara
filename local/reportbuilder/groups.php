@@ -96,7 +96,6 @@
     print '<p>' . get_string('activitygroupdesc','local_reportbuilder') . '</p>';
 
     $tableheader = array(get_string('name','local_reportbuilder'),
-                         //get_string('type','local_reportbuilder'),
                          get_string('tag'),
                          get_string('baseitem','local_reportbuilder'),
                          get_string('activities','local_reportbuilder'),

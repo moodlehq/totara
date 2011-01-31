@@ -61,6 +61,7 @@ $currenttab = 'messages';
 $currenturl = "{$CFG->wwwroot}/local/totara_msg/edit.php?id={$user->id}&course={$course->id}";
 
 $navlinks = array();
+$strparticipants = get_string('participants');
 
 if ($course->id != SITEID && has_capability('moodle/course:viewparticipants', $coursecontext)) {
     $navlinks[] = array('name' => $strparticipants, 'link' => "{$CFG->wwwroot}/user/index.php?id={$course->id}", 'type' => 'misc');
