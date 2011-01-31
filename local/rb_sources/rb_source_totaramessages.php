@@ -110,6 +110,14 @@ class rb_source_totaramessages extends rb_base_source {
             ),
             new rb_column_option(
                 'message_values',
+                'category',
+                get_string('msgcategory', 'rb_source_totaramessages'),
+                // icon uses format like 'competency-regular'
+                // strip from first '-' to get general message category
+                sql_substr() . '(base.icon, 0, ' . sql_position("'-'", 'base.icon') . ')'
+            ),
+            new rb_column_option(
+                'message_values',
                 'msgtype_text',
                 get_string('msgtype', 'rb_source_totaramessages'),
                 'base.msgtype',
@@ -195,12 +203,11 @@ class rb_source_totaramessages extends rb_base_source {
             ),
             new rb_filter_option(
                 'message_values',
-                'msgtype',
+                'category',
                 get_string('msgtype', 'rb_source_totaramessages'),
-                'select',
+                'multicheck',
                 array(
                     'selectfunc' => 'message_type_list',
-                    'selectoptions' => rb_filter_option::select_width_limiter(),
                 )
             ),
         );
@@ -380,10 +387,19 @@ class rb_source_totaramessages extends rb_base_source {
     }
 
     function rb_filter_message_type_list() {
-        $typeselect = array();
-        $typeselect['0'] = 'Unknown';
+        global $CFG;
+        $out = array();
+        foreach(array('blended', 'competency', 'course', 'elearning',
+            'evidence', 'facetoface', 'learningplan', 'objective', 'resource')
+            as $type) {
 
-        return $typeselect;
+            $typename = get_string($type, 'local_totara_msg');
+
+            $out[$type] = '<img src="' . $CFG->wwwroot . '/theme/totara/msgicons/' . $type . '-regular.gif" alt="' . $typename . '" />&nbsp;' . $typename;
+
+        }
+
+        return $out;
     }
 
 } // end of rb_source_competency_evidence class

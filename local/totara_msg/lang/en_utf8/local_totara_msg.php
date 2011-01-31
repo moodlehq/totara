@@ -41,3 +41,15 @@ $string['settingssaved'] = 'Settings saved';
 $string['messagesettings'] = 'Message settings';
 $string['viewdetailshere'] = 'More details can be found at:<br /><br /><a href=\"$a\">$a</a>';
 $string['cannotsavemessage'] = 'Cannot save message';
+
+// message types
+$string['blended'] = 'Blended';
+$string['competency'] = 'Competency';
+$string['course'] = 'Course';
+$string['elearning'] = 'E-learning';
+$string['evidence'] = 'Evidence';
+$string['facetoface'] = 'Face-to-face';
+$string['learningplan'] = 'Learning plan';
+$string['objective'] = 'Objective';
+$string['resource'] = 'Resource';
+

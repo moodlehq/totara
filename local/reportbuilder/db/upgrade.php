@@ -145,5 +145,15 @@ function xmldb_local_reportbuilder_upgrade($oldversion=0) {
 
     }
 
+    if ($result && $oldversion < 2011020100) {
+        // replace 'msgtype' filter with 'category' in alerts/tasks
+        $sql = "UPDATE {$CFG->prefix}report_builder_filters
+            SET value = 'category'
+            WHERE (type = 'message_values' AND value = 'msgtype')
+            AND reportid IN (SELECT id FROM {$CFG->prefix}report_builder
+                WHERE source = 'totaramessages')";
+        $result = $result && execute_sql($sql);
+
+    }
     return $result;
 }
