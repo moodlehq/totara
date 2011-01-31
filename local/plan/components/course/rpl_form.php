@@ -20,7 +20,7 @@ class totara_course_rpl_form extends moodleform {
             $mform->addElement('hidden', 'rplid', $rplid);
         }
 
-        $mform->addElement('header', 'rpl_general', get_string('general'));
+        $mform->addElement('header', 'rpl_general', get_string('coursecompletion','local_plan'));
 
         $mform->addElement('text', 'rpl', get_string('rpl', 'local_plan'), array('maxsize'=>'255', 'size'=>'50'));
         if($rpltext) {

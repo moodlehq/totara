@@ -357,6 +357,7 @@ $string['objectivepermissions'] = 'Objective permissions';
 $string['duedates'] = 'Due dates';
 $string['duedate'] = 'Due date';
 $string['completiondate'] = 'Completion date';
+$string['coursecompletion'] = 'Course Completion';
 $string['priorities'] = 'Priorities';
 $string['none'] = 'None';
 $string['optional'] = 'Optional';
