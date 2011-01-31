@@ -61,6 +61,7 @@ $DP_AVAILABLE_COMPONENTS = array(
 // note that new templates will default to the first workflow in this list
 global $DP_AVAILABLE_WORKFLOWS;
 $DP_AVAILABLE_WORKFLOWS = array(
+    'basic',
     'userdriven',
     'managerdriven',
 );
