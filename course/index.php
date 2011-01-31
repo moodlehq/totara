@@ -51,10 +51,11 @@
         if ($countcategories > 1 || ($countcategories == 1 && count_records('course') > 200)) {
             $strfind = get_string('findcourses', 'local');
             $strcategories = get_string('browsecategories', 'local');
+            $strbrowse = get_string('browse', 'local');
 
             $navlinks = array();
             $navlinks[] = array('name' => $strfind, 'link' => "{$CFG->wwwroot}" . "/course/find.php", 'type' => 'title');
-            $navlinks[] = array('name' => $strcategories,'link'=>'','type'=>'misc');
+            $navlinks[] = array('name' => $strbrowse,'link'=>'','type'=>'misc');
             $navigation = build_navigation($navlinks);
             print_header("$site->shortname: $strcategories", $strcourses, $navigation, '', '', true, update_category_button());
             print_heading($strcategories);

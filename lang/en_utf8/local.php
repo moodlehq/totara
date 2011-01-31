@@ -82,6 +82,7 @@ $string['local:admin'] = 'Perform administrative tasks on report builder reports
 // Course categories
 $string['assessments'] = 'Assessments';
 $string['bookings'] = 'Bookings';
+$string['browse'] = 'Browse';
 $string['browsecategories'] = 'Browse Categories';
 $string['developmentplan'] = 'Development Planner';
 $string['findcourses'] = 'Find Courses';

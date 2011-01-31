@@ -21,7 +21,7 @@ $report->include_js();
 $fullname = $report->fullname;
 $pagetitle = format_string(get_string('report','local').': '.$fullname);
 $navlinks[] = array('name' => $fullname, 'link' => "{$CFG->wwwroot}" . "/course/find.php", 'type' => 'title');
-$navlinks[] = array('name' => $strheading, 'link' => null, 'type' => 'title');
+$navlinks[] = array('name' => get_string('search'), 'link' => null, 'type' => 'title');
 
 $navigation = build_navigation($navlinks);
 
