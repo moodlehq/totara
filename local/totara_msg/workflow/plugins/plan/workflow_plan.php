@@ -45,7 +45,7 @@ class totara_msg_workflow_plan extends totara_msg_workflow_plugin_base {
             return false;
         }
 
-        return $plan->send_approved_notification();
+        return $plan->send_approved_alert();
     }
 
 
@@ -71,6 +71,6 @@ class totara_msg_workflow_plan extends totara_msg_workflow_plugin_base {
             return false;
         }
 
-        return $plan->send_declined_notification();
+        return $plan->send_declined_alert();
     }
 }
