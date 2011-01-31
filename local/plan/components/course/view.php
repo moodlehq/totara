@@ -20,9 +20,9 @@ $componentname = 'course';
 $component = $plan->get_component($componentname);
 $currenturl = $CFG->wwwroot . '/local/plan/components/course/view.php?id='.$id.'&amp;itemid='.$caid;
 $competenciesenabled = $plan->get_component('competency')->get_setting('enabled');
-$competencyname = get_string('competency', 'local_plan');
+$competencyname = get_string('competencyplural', 'local_plan');
 $objectivesenabled = $plan->get_component('objective')->get_setting('enabled');
-$objectivename = get_string('objective', 'local_plan');
+$objectivename = get_string('objectiveplural', 'local_plan');
 
 $fullname = $plan->name;
 $pagetitle = format_string(get_string('learningplan','local_plan').': '.$fullname);
