@@ -1756,7 +1756,7 @@ function xmldb_local_upgrade($oldversion) {
             $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
 
             /// Launch create table for report_builder_group
-            create_table($table);
+            $result = $result && create_table($table);
         }
 
         /// Define table report_builder_group_assign
@@ -1775,7 +1775,7 @@ function xmldb_local_upgrade($oldversion) {
             $table->addIndexInfo('groupid-itemid', XMLDB_INDEX_UNIQUE, array('groupid','itemid'));
 
         /// Launch create table for report_builder_group_assign
-            create_table($table);
+            $result = $result && create_table($table);
         }
 
 
@@ -1797,7 +1797,7 @@ function xmldb_local_upgrade($oldversion) {
             $table->addIndexInfo('groupid-itemid', XMLDB_INDEX_UNIQUE, array('groupid','itemid'));
 
         /// Launch create table for report_builder_preproc_track
-            create_table($table);
+            $result = $result && create_table($table);
         }
 
         /// Add hidden column to columns table
@@ -1807,7 +1807,7 @@ function xmldb_local_upgrade($oldversion) {
 
         /// Conditionally add field hidden
         if (!field_exists($table, $field)) {
-            add_field($table, $field);
+            $result = $result && add_field($table, $field);
         }
 
     }
@@ -2363,7 +2363,7 @@ function xmldb_local_upgrade($oldversion) {
 
 
     // Add status column to course_completions table
-    if ($result && $oldversion < 2011031100) {
+    if ($result && $oldversion < 2011013100) {
 
         /// Define field status to be added to course_completions
         $table = new XMLDBTable('course_completions');
@@ -2377,7 +2377,7 @@ function xmldb_local_upgrade($oldversion) {
 
 
     // Update any existing course_completions data
-    if ($result && $oldversion < 2011031101) {
+    if ($result && $oldversion < 2011013101) {
 
         require_once("{$CFG->libdir}/completion/completion_completion.php");
 
