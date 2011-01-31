@@ -602,13 +602,6 @@
         }
     }
 
-/// prompt to install demo data
-    if(empty($CFG->totara_demo_setup)) {
-        redirect($CFG->wwwroot.'/local/totara_demo_setup.php');
-        exit;
-    }
-
-
 /// check that site is properly customized
     if (empty($site->shortname)) {
         // probably new installation - lets return to frontpage after this step
