@@ -13,10 +13,6 @@ class dp_userdriven_workflow extends dp_base_workflow {
 
         // workflow settings
 
-        // plan specific settings
-        $this->cfg_plan_create_learner = DP_PERMISSION_REQUEST;
-        $this->cfg_plan_create_manager = DP_PERMISSION_APPROVE;
-
         // course specific settings
         $this->cfg_course_duedatemode = DP_DUEDATES_NONE;
         $this->cfg_course_prioritymode = DP_PRIORITY_OPTIONAL;

@@ -23,12 +23,12 @@ class dp_basic_workflow extends dp_base_workflow {
         $this->cfg_competency_autoassignorg = 0;
         $this->cfg_competency_autoassigncourses = 0;
         $this->cfg_competency_duedatemode = DP_DUEDATES_NONE;
-        $this->cfg_competency_prioritymode = DP_DUEDATES_OPTIONAL;
+        $this->cfg_competency_prioritymode = DP_PRIORITY_OPTIONAL;
         $this->cfg_competency_priorityscale = $defaultpriority;
 
         // objective specific settings
         $this->cfg_objective_duedatemode = DP_DUEDATES_NONE;
-        $this->cfg_objective_prioritymode = DP_DUEDATES_OPTIONAL;
+        $this->cfg_objective_prioritymode = DP_PRIORITY_OPTIONAL;
         $this->cfg_objective_priorityscale = $defaultpriority;
         $this->cfg_objective_objectivescale = $defaultobjective;
 
