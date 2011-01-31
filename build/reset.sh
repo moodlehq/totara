@@ -37,8 +37,8 @@ echo "Initialize installation";
 /usr/bin/php admin/cliupgrade.php \
       --lang=en_utf8 \
       --webaddr="http://brumbies.wgtn.cat-it.co.nz/totara-hudson" \
-      --moodledir="/var/lib/hudson/jobs/Totara/workspace" \
-      --datadir="/var/lib/hudson/jobs/Totara/moodledata" \
+      --moodledir="/var/lib/hudson/jobs/Totara-Integration/workspace" \
+      --datadir="/var/lib/hudson/jobs/Totara-Integration/moodledata" \
       --dbtype="postgres7" \
       --dbname="t1-hudsontesting" \
       --dbhost="localhost" \
