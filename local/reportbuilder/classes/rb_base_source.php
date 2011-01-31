@@ -536,14 +536,15 @@ abstract class rb_base_source {
         $out = array();
         if($mods = get_records('modules', 'visible', 1, 'id', 'id,name')) {
             foreach($mods as $mod) {
+                $modname = get_string('modulename', $mod->name);
                 $icon = '/mod/' . $mod->name . '/icon.gif';
                 if(file_exists($CFG->dirroot . $icon)) {
                     $out[$mod->name] = '<img src="'. $CFG->wwwroot .
                         '/mod/' . $mod->name . '/icon.gif" alt="'.
-                        ucfirst($mod->name) . '" />&nbsp;' .
-                        ucfirst($mod->name);
+                        $modname . '" />&nbsp;' .
+                        $modname;
                 } else {
-                    $out[$mod->name] = ucfirst($mod->name);
+                    $out[$mod->name] = $modname;
                 }
             }
         }
