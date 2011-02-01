@@ -74,6 +74,6 @@ def get_current_sequence table_name, field_name
   if result.nil? then
     1
   else
-    result.getvalue(0,0)
+    result.fetch_hash['count']
   end
 end

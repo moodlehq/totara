@@ -20,9 +20,10 @@ def get_record_object table_name, number=nil
   meth = ('get_' + table_name[$prefix.length..-1] + '_record').to_sym
   begin
     send meth, number.to_i
-  rescue
-    raise "Could not find method #{meth.to_s}. " +
-      "You need to create a method in cucumber/features/support/record_templates.rb."
+  rescue StandardError => fail
+    puts 'Method call failed with error: ' + fail
+    raise "It may be that you need to create the method #{meth.to_s} " +
+      " in cucumber/features/support/record_templates.rb."
   end
 end
 
