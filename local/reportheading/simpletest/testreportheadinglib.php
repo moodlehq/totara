@@ -100,7 +100,7 @@ class reportheadinglib_test extends prefix_changing_test_case {
         load_test_table($CFG->prefix . 'context', $this->context_data, $db);
         load_test_table($CFG->prefix . 'role', $this->role_data, $db);
 
-        $this->heading = new reportheading();
+        $this->heading = new reportheading(get_field('user', 'id', 'username', 'admin'));
     }
 
     function tearDown() {
