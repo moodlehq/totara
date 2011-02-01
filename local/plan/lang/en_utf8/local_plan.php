@@ -605,3 +605,12 @@ $string['componentdeclineshortlearner'] = '$a->name declined';
 $string['componentdeclinelonglearner'] = '$a->component in learning plan \"$a->plan\" declined:<br> $a->updates';
 $string['componentdeclineshortmanager'] = '$a->user declined $a->component $a->name';
 $string['componentdeclinelongmanager'] = '$a->component in learning plan \"$a->plan\" declined:<br> $a->updates';
+
+$string['componentcompleteshortlearner'] = '$a->name completed';
+$string['componentcompletelonglearner'] = '$a->component in learning plan \"$a->plan\" completed:<br> $a->updates';
+$string['componentcompleteshortmanager'] = '$a->user completed $a->component $a->name';
+$string['componentcompletelongmanager'] = '$a->component in learning plan \"$a->plan\" completed:<br> $a->updates';
+
+
+$string['completedviarpl'] = 'Completed via RPL: $a';
+$string['competencycompleted'] = 'Competency Completed';

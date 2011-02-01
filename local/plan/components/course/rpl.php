@@ -64,6 +64,10 @@ if ($fromform = $mform->get_data()) {
     if (strlen($rpl)) {
         $completion->rpl = addslashes($rpl);
         $completion->mark_complete();
+        $alert_detail = new object();
+        $alert_detail->itemname = get_field('course', 'fullname', 'id', $completion->course);
+        $alert_detail->text = get_string('completedviarpl', 'local_plan', $completion->rpl);
+        $component->send_component_complete_alert($alert_detail);
 
         // If no RPL, uncomplete user, and let aggregation do its thing
     } else {

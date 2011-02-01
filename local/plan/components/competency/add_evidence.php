@@ -101,6 +101,11 @@ if($fromform = $mform->get_data()) { // Form submitted
     // check the proficiency is set to "proficient" and check for duplicate data
     if ($isproficient && $count == 0) {
         totara_stats_add_event($time, $currentuser, $event, '', $data2);
+        //Send Alert
+        $alert_detail = new object();
+        $alert_detail->itemname = get_field('comp', 'fullname', 'id', $data2);
+        $alert_detail->text = get_string('competencycompleted', 'local_plan');
+        $component->send_component_complete_alert($alert_detail);
     }
     // check record exists for removal and is set to "not proficient"
     else if (empty($isproficient) && $count > 0) {

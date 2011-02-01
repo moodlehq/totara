@@ -777,6 +777,51 @@ abstract class dp_base_component {
         }
     }
 
+
+    /**
+     * Send completion alerts
+     *
+     * @param object $completion containing completion data
+     * @return void
+     */
+    function send_component_complete_alert($completion) {
+        global $USER, $CFG;
+        require_once($CFG->dirroot.'/local/totara_msg/messagelib.php');
+
+        $event = new stdClass;
+        $userfrom = get_record('user', 'id', $USER->id);
+        $event->userfrom = $userfrom;
+        $event->contexturl = $this->get_url();
+        $event->icon = $this->component.'-complete';
+        $a = new stdClass;
+        $a->plan = "<a href=\"{$CFG->wwwroot}/local/plan/view.php?id={$this->plan->id}\" title=\"{$this->plan->name}\">{$this->plan->name}</a>";
+        $a->component = get_string($this->component.'plural', 'local_plan');
+        $a->updates = $completion->text;
+        $a->name = $completion->itemname;
+
+        // did they edit it themselves?
+        if ($USER->id == $this->plan->userid) {
+            // notify their manager
+            if ($this->plan->is_active()) {
+                if ($manager = totara_get_manager($this->plan->userid)) {
+                    $event->userto = $manager;
+                    $a->user = $this->current_user_link();
+                    $event->subject = get_string('componentcompleteshortmanager', 'local_plan', $a);
+                    $event->fullmessage = get_string('componentcompletelongmanager', 'local_plan', $a);
+                    $event->roleid = get_field('role','id', 'shortname', 'manager');
+                    tm_alert_send($event);
+                }
+            }
+        } else {
+            // notify user that someone else did it
+            $userto = get_record('user', 'id', $this->plan->userid);
+            $event->userto = $userto;
+            $event->subject = get_string('componentcompleteshortlearner', 'local_plan', $a);
+            $event->fullmessage = get_string('componentcompletelonglearner', 'local_plan', $a);
+            tm_alert_send($event);
+        }
+    }
+
     /**
      * Unassign an item from a plan
      *
