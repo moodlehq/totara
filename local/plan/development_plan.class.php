@@ -1471,6 +1471,7 @@ class development_plan {
         $event = new stdClass;
         $event->userfrom = $userfrom;
         $event->userto = $userto;
+        $event->icon = 'learningplan-approve';
         $event->contexturl = $CFG->wwwroot.'/local/plan/view.php?id='.$this->id;
         $event->fullmessage = get_string('planapproved', 'local_plan', $this->name);
         tm_alert_send($event);
@@ -1494,6 +1495,7 @@ class development_plan {
         $event = new stdClass;
         $event->userfrom = $userfrom;
         $event->userto = $userto;
+        $event->icon = 'learningplan-decline';
         $event->contexturl = $CFG->wwwroot.'/local/plan/view.php?id='.$this->id;
         $event->fullmessage = format_string(get_string('plandeclined', 'local_plan', $this->name));
         tm_alert_send($event);
