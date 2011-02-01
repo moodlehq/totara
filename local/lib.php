@@ -224,7 +224,7 @@ function local_get_stock_icon_dir($type) {
     } elseif ($type == 'coursecategory') {
         $dir = 'coursecategoryicons';
     } elseif ($type == 'totaramsg') {
-        $dir = 'msgicons';
+        $dir = 'pix/msgicons';
     } else {
         return(false);
     }

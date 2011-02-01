@@ -395,7 +395,7 @@ class rb_source_totaramessages extends rb_base_source {
 
             $typename = get_string($type, 'local_totara_msg');
 
-            $out[$type] = '<img src="' . $CFG->wwwroot . '/theme/totara/msgicons/' . $type . '-regular.gif" alt="' . $typename . '" />&nbsp;' . $typename;
+            $out[$type] = '<img src="' . $CFG->pixpath . '/msgicons/' . $type . '-regular.gif" alt="' . $typename . '" />&nbsp;' . $typename;
 
         }
 

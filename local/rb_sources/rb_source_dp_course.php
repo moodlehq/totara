@@ -425,7 +425,7 @@ from
             break;
         }
         $alt = get_string($image, 'rb_source_dp_course');
-        $icon = "<img title=\"{$alt}\" src=\"{$CFG->wwwroot}/theme/totara/msgicons/{$image}" . '-regular.png' . "\"></img>";
+        $icon = "<img title=\"{$alt}\" src=\"{$CFG->pixpath}/msgicons/{$image}" . '-regular.png' . "\"></img>";
 
         return $icon;
     }

@@ -1412,7 +1412,7 @@ class development_plan {
      * Send an alert relating to this plan
      *
      * @param boolean $tolearner To the learner if true, otherwise to the manager
-     * @param string $icon filename of icon (in theme/totara/msgicons/)
+     * @param string $icon filename of icon (in theme/totara/pix/msgicons/)
      * @param string $subjectstring lang string in local_plan
      * @param string $fullmessagestring lang string in local_plan
      * @return boolean
