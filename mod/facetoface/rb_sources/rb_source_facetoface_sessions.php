@@ -475,7 +475,7 @@ class rb_source_facetoface_sessions extends rb_base_source {
                 $columnoptions[] = new rb_column_option(
                     'session',
                     $field,
-                    'Session '.$name,
+                    get_string('sessionx', 'rb_source_facetoface_sessions', $name),
                     $key.'.data',
                     array('joins' => $key)
                 );

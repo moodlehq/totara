@@ -12,6 +12,7 @@ $string['sessdate'] = 'Session Date';
 $string['sessdatelink'] = 'Session Date (linked to actvity)';
 $string['sessstart'] = 'Session Start Time';
 $string['sessfinish'] = 'Session Finish Time';
+$string['sessionx'] = 'Session $a';
 // content
 $string['currentorg'] = 'The user\'s current organisation';
 $string['currentpos'] = 'The user\'s current position';
