@@ -57,7 +57,7 @@ class reportbuilderlib_test extends prefix_changing_test_case {
 
     var $reportbuilder_saved_data = array(
         array('id', 'reportid', 'userid', 'name', 'search', 'ispublic'),
-        array(1, 1, 2, 'Saved Search', 'a:1:{s:13:"user-fullname";a:1:{i:0;a:2:{s:8:"operator";i:0;s:5:"value";s:1:"a";}}}', 0),
+        array(1, 1, 2, 'Saved Search', 'a:1:{s:13:"user-fullname";a:1:{i:0;a:2:{s:8:"operator";i:0;s:5:"value";s:1:"a";}}}', 1),
     );
 
     var $role_assignments_data = array(
@@ -322,7 +322,7 @@ class reportbuilderlib_test extends prefix_changing_test_case {
         $todb->accessmode = REPORT_BUILDER_CONTENT_MODE_ANY;
         update_record('report_builder',$todb);
         // should return true if accessmode is 1 and admin an allowed role
-        $this->assertTrue($rb->is_capable(1));
+        $this->assertTrue($rb->is_capable(1, 2));
         // should return false if access mode is 1 and admin not an allowed role
         delete_records('report_builder_settings','reportid',1);
         $this->assertFalse($rb->is_capable(1));
@@ -339,7 +339,7 @@ class reportbuilderlib_test extends prefix_changing_test_case {
         $todb->value = '1';
         insert_record('report_builder_settings', $todb);
         // should return true if accessmode is 1 and admin is only allowed role
-        $this->assertTrue($rb->is_capable(1));
+        $this->assertTrue($rb->is_capable(1, 2));
     }
 
     function test_reportbuilder_get_param_restrictions() {
@@ -428,7 +428,7 @@ class reportbuilderlib_test extends prefix_changing_test_case {
         $restrictions = $rb->get_restriction_descriptions('content');
         $firstrestriction = current($restrictions);
         $secondrestriction = next($restrictions);
-        $this->assertPattern('/^The user is "Admin User"$/', $firstrestriction);
+        $this->assertPattern('/^The user is "\d*"$/', $firstrestriction);
         $this->assertPattern('/^The completion date occurred after/', $secondrestriction);
     }
 
