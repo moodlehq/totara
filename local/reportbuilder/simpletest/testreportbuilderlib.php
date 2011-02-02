@@ -428,7 +428,7 @@ class reportbuilderlib_test extends prefix_changing_test_case {
         $restrictions = $rb->get_restriction_descriptions('content');
         $firstrestriction = current($restrictions);
         $secondrestriction = next($restrictions);
-        $this->assertPattern('/^The user is "\d*"$/', $firstrestriction);
+        $this->assertPattern('/^The user is ".*"$/', $firstrestriction);
         $this->assertPattern('/^The completion date occurred after/', $secondrestriction);
     }
 
