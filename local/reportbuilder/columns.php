@@ -4,6 +4,7 @@ require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->dirroot.'/local/reportbuilder/lib.php');
 require_once($CFG->dirroot.'/local/reportbuilder/report_forms.php');
+require_once($CFG->dirroot.'/local/js/lib/setup.php');
 
 global $USER;
 $id = required_param('id',PARAM_INT); // report builder id
@@ -18,6 +19,11 @@ admin_externalpage_setup('managereports');
 $returnurl = $CFG->wwwroot."/local/reportbuilder/columns.php?id=$id";
 
 $report = new reportbuilder($id);
+
+// include jquery
+local_js();
+// include code to handle column headings
+require_js(array($CFG->wwwroot . '/local/reportbuilder/columns.js'));
 
 // toggle show/hide column
 if ($h !== null && isset($cid)) {
@@ -101,12 +107,18 @@ include_once('tabs.php');
 // display the form
 $mform->display();
 
-// disable heading when page loads
-print<<<EOF
-<script>
-document.getElementById('id_newheading').disabled = true;
-</script>
-EOF;
+// include JS object to define the column headings
+print '<script type="text/javascript">';
+print "var rb_column_headings = {";
+foreach($report->src->columnoptions as $option) {
+    $key = $option->type . '-' . $option->value;
+    // use defaultheading if set, otherwise name
+    $value = ($option->defaultheading) ? $option->defaultheading :
+        $option->name;
+    print "'$key': '$value',";
+}
+print "};";
+print '</script>';
 
 admin_externalpage_print_footer();
 
