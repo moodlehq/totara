@@ -1,5 +1,6 @@
 <?php
 // lang file for local/rb_sources/rb_source_totaramessage.php
+$string['sourcetitle'] = 'Messages';
 // columns
 $string['statement'] = 'Statement';
 $string['statementurl'] = 'Statement (linking to Review)';

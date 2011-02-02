@@ -1,5 +1,6 @@
 <?php
 // lang file for local/rb_sources/rb_source_courses.php
+$string['sourcetitle'] = 'Courses';
 // columns
 $string['content'] = 'Content';
 // filters

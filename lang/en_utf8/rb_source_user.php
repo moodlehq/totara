@@ -1,5 +1,6 @@
 <?php
 // lang strings for report builder 'user' source
+$string['sourcetitle'] = 'User';
 $string['userspicture'] = 'User\'s picture';
 $string['mylearningicons'] = $string[''] = 'User\'s My Learning Icons';
 $string['usersachievedcompcount'] = 'User\'s Achieved Competency Count';

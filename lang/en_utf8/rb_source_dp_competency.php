@@ -1,5 +1,6 @@
 <?php
 // lang file for local/rb_sources/rb_sources_dp_competency.php
+$string['sourcetitle'] = 'Record of Learning: Competencies';
 // columns
 $string['planname'] = 'Plan name';
 $string['plannamelinked'] = 'Plan name (linked to plan page)';

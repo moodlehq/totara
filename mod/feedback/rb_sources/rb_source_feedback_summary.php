@@ -15,7 +15,7 @@
 class rb_source_feedback_summary extends rb_base_source {
     public $base, $joinlist, $columnoptions, $filteroptions;
     public $contentoptions, $paramoptions, $defaultcolumns;
-    public $defaultfilters;
+    public $defaultfilters, $sourcetitle;
 
     function __construct($groupid=null) {
         global $CFG;
@@ -27,6 +27,7 @@ class rb_source_feedback_summary extends rb_base_source {
         $this->paramoptions = $this->define_paramoptions();
         $this->defaultcolumns = $this->define_defaultcolumns();
         $this->defaultfilters = $this->define_defaultfilters();
+        $this->sourcetitle = get_string('sourcetitle', 'rb_source_feedback_summary');
         parent::__construct();
     }
 

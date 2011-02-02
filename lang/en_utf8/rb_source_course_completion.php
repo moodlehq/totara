@@ -1,5 +1,6 @@
 <?php
 // lang string for local/rb_sources/rb_source_course_completion.php
+$string['sourcetitle'] = 'Course Completion';
 // columns
 $string['completionstatus'] = 'Completion Status';
 $string['completiondate'] = 'Completion Date';

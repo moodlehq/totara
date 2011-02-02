@@ -1,5 +1,6 @@
 <?php
-// lang file for mod/rm/rb_sources_rm.php
+// lang file for mod/scorm/rb_sources_scorm.php
+$string['sourcetitle'] = 'SCORM';
 // columns
 $string['scormtitle'] = 'SCORM Title';
 $string['title'] = 'SCO Title';

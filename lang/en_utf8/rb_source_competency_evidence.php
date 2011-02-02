@@ -1,5 +1,6 @@
 <?php
 // lang strings for report builder 'completionetency evidence' source
+$string['sourcetitle'] = 'Competency Evidence';
 // columns
 $string['proficiency'] = 'Proficiency';
 $string['proficiencyid'] = 'Proficiency ID';

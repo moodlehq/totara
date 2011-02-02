@@ -399,8 +399,8 @@ var comptree = [' . implode(', ', $comptrees) . '];
                         continue;
                     }
                     $source = $matches[1];
-                    $sourcename = ucwords(str_replace(array('-','_'), ' ', $source));
                     $src = reportbuilder::get_source_object($source);
+                    $sourcename = $src->sourcetitle;
                     $preproc = $src->preproc;
 
                     if($src->grouptype == 'all') {
@@ -424,7 +424,7 @@ var comptree = [' . implode(', ', $comptrees) . '];
                 closedir($dh);
             }
         }
-
+        asort($output);
         return $output;
     }
 

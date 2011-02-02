@@ -7,7 +7,7 @@ class rb_source_user extends rb_base_source {
 
     public $base, $joinlist, $columnoptions, $filteroptions;
     public $contentoptions, $paramoptions, $defaultcolumns;
-    public $defaultfilters, $requiredcolumns;
+    public $defaultfilters, $requiredcolumns, $sourcetitle;
     /**
      * Whether the "staff_facetoface_sessions" report exists or not (used to determine
      * whether or not to display icons that link to it)
@@ -31,6 +31,7 @@ class rb_source_user extends rb_base_source {
         $this->defaultfilters = array();
         $this->requiredcolumns = array();
         $this->staff_f2f = get_field('report_builder', 'id', 'shortname', 'staff_facetoface_sessions');
+        $this->sourcetitle = get_string('sourcetitle', 'rb_source_user');
         parent::__construct();
     }
 

@@ -9,7 +9,7 @@ class rb_source_dp_competency extends rb_base_source {
 
     public $base, $joinlist, $columnoptions, $filteroptions;
     public $contentoptions, $paramoptions, $defaultcolumns;
-    public $defaultfilters, $requiredcolumns;
+    public $defaultfilters, $requiredcolumns, $sourcetitle;
 
 
     /**
@@ -27,6 +27,7 @@ class rb_source_dp_competency extends rb_base_source {
         $this->defaultcolumns = array();
         $this->defaultfilters = array();
         $this->requiredcolumns = array();
+        $this->sourcetitle = get_string('sourcetitle', 'rb_source_dp_competency');
         parent::__construct();
     }
 

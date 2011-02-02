@@ -1,5 +1,6 @@
 <?php
 // lang file for local/rb_sources/rb_source_dp_objective.php
+$string['sourcetitle'] = 'Record of Learning: Objectives';
 // columns
 $string['planname'] = 'Plan name';
 $string['plannamelink'] = 'Plan name (linked to plan page)';

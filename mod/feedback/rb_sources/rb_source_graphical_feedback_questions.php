@@ -17,7 +17,7 @@ class rb_source_graphical_feedback_questions extends rb_base_source {
     public $base, $joinlist, $columnoptions, $filteroptions;
     public $contentoptions, $paramoptions, $defaultcolumns;
     public $defaultfilters, $preproc, $grouptables, $groupid;
-    public $grouptype, $requiredcolumns;
+    public $grouptype, $requiredcolumns, $sourcetitle;
 
     function __construct($groupid=null) {
         global $CFG;
@@ -34,6 +34,7 @@ class rb_source_graphical_feedback_questions extends rb_base_source {
         $this->requiredcolumns = $this->define_requiredcolumns();
         $this->preproc = 'feedback_questions';
         $this->grouptype = 'group';
+        $this->sourcetitle = get_string('sourcetitle', 'rb_source_graphical_feedback_questions');
         parent::__construct();
     }
 

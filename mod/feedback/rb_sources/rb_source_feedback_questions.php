@@ -17,7 +17,7 @@ class rb_source_feedback_questions extends rb_base_source {
     public $base, $joinlist, $columnoptions, $filteroptions;
     public $contentoptions, $paramoptions, $defaultcolumns;
     public $defaultfilters, $preproc, $grouptables, $groupid;
-    public $grouptype;
+    public $grouptype, $sourcetitle;
 
     function __construct($groupid=null) {
         global $CFG;
@@ -33,6 +33,7 @@ class rb_source_feedback_questions extends rb_base_source {
         $this->defaultfilters = $this->define_defaultfilters();
         $this->preproc = 'feedback_questions';
         $this->grouptype = 'group';
+        $this->sourcetitle = get_string('sourcetitle', 'rb_source_feedback_questions');
         parent::__construct();
     }
 

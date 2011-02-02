@@ -1,5 +1,6 @@
 <?php
 // lang file for mod/feedback/rb_sources/rb_source_feedback_summary.php
+$string['sourcetitle'] = 'Feedback Summary';
 // columns
 $string['timecompleted'] = 'Time Completed';
 $string['feedbackactivity'] = 'Feedback Activity';

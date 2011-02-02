@@ -1,5 +1,6 @@
 <?php
 // lang file for mod/feedback/rb_sources/rb_source_graphical_feedback_questions.php
+$string['sourcetitle'] = 'Feedback Graphical Questions';
 // columns
 $string['timecompleted'] = 'Time Completed';
 $string['feedbackactivity'] = 'Feedback Activity';
