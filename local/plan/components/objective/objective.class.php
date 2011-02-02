@@ -655,7 +655,7 @@ class dp_objective_component extends dp_base_component {
         $event->contexturl = "{$CFG->wwwroot}/local/plan/components/objective/view.php?id={$this->plan->id}&itemid={$objid}";
         $event->icon = 'objective-add';
         $a = new stdClass;
-        $a->objective = "<a href=\"{$event->contexturl}\">$fullname</a>";
+        $a->objective = "<a href=\"{$event->contexturl}\">".stripslashes($fullname)."</a>";
         $a->plan = "<a href=\"{$CFG->wwwroot}/local/plan/view.php?id={$this->plan->id}\" title=\"{$this->plan->name}\">{$this->plan->name}</a>";
         $a->userfrom = $this->current_user_link();
 
