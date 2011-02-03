@@ -5,7 +5,7 @@
 
     print 'Connect to database server';
 
-    $link = mssql_connect('192.168.198.44', 'hudson', 'hudson');
+    $link = mssql_connect('192.168.2.26', 'hudson', 'hudson');
     if (!$link) {
         die('Could not connect: ' . mssql_error());
     }

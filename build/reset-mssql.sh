@@ -37,7 +37,7 @@ echo "Initialize installation";
       --datadir="/var/lib/hudson/jobs/Totara-MySQL/moodledata" \
       --dbtype="mysql_n" \
       --dbname="hudson" \
-      --dbhost="192.168.198.44" \
+      --dbhost="192.168.2.26" \
       --dbuser="hudson" \
       --dbpass="hudson" \
       --prefix="mdl_" \
