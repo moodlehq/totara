@@ -32,10 +32,10 @@ chmod 777 ../moodle_error.log
 echo "Initialize installation";
 /usr/bin/php admin/cliupgrade.php \
       --lang=en_utf8 \
-      --webaddr="http://brumbies.wgtn.cat-it.co.nz/totara-mysql-hudson" \
-      --moodledir="/var/lib/hudson/jobs/Totara-MySQL/workspace" \
-      --datadir="/var/lib/hudson/jobs/Totara-MySQL/moodledata" \
-      --dbtype="mysql_n" \
+      --webaddr="http://brumbies.wgtn.cat-it.co.nz/totara-mssql-hudson" \
+      --moodledir="/var/lib/hudson/jobs/Totara-MSSQL/workspace" \
+      --datadir="/var/lib/hudson/jobs/Totara-MSSQL/moodledata" \
+      --dbtype="mssql_n" \
       --dbname="hudson" \
       --dbhost="192.168.2.26" \
       --dbuser="hudson" \
@@ -54,4 +54,4 @@ echo "Initialize installation";
       --interactivelevel=0
 
 echo "Hit notifications page to complete installation";
-wget -O - http://brumbies.wgtn.cat-it.co.nz/totara-mysql-hudson/admin/index.php
+wget -O - http://brumbies.wgtn.cat-it.co.nz/totara-mssql-hudson/admin/index.php
