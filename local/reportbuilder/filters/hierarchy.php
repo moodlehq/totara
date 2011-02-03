@@ -148,7 +148,8 @@ class filter_hierarchy extends filter_type {
                 $token = ' NOT LIKE ';
                 break;
             default:
-                return ' TRUE ';
+                // return 1=1 instead of TRUE for MSSQL support
+                return ' 1=1 ';
         }
 
         $path = get_field($this->_type, 'path', 'id', $value);

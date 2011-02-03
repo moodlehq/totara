@@ -69,7 +69,8 @@ class rb_current_pos_content extends rb_base_content {
             'type', 1);
         // no results if they don't have one
         if(empty($posid)) {
-            return 'FALSE';
+            // using 1=0 instead of FALSE for MSSQL support
+            return '1=0';
         }
 
         if($settings['recursive']) {
@@ -216,7 +217,8 @@ class rb_current_org_content extends rb_base_content {
             'type', 1);
         // no results if they don't have one
         if(empty($orgid)) {
-            return 'FALSE';
+            // using 1=0 instead of FALSE for MSSQL support
+            return '1=0';
         }
 
         if($settings['recursive']) {
@@ -363,7 +365,8 @@ class rb_completed_org_content extends rb_base_content {
             'type', 1);
         // no results if they don't have one
         if(empty($orgid)) {
-            return 'FALSE';
+            // using 1=0 instead of FALSE for MSSQL support
+            return '1=0';
         }
         if($settings['recursive']) {
             // get list of organisations to match against
@@ -506,7 +509,8 @@ class rb_user_content extends rb_base_content {
             if($staff = totara_get_staff()) {
                 return $field . ' IN (' . implode(',', $staff) .')';
             } else {
-                return 'FALSE';
+                // using 1=0 instead of FALSE for MSSQL support
+                return '1=0';
             }
         } else if ($who == 'ownandreports') {
             // show own and staff records
@@ -518,7 +522,8 @@ class rb_user_content extends rb_base_content {
             }
         } else {
             // anything unexpected
-            return 'FALSE';
+            // using 1=0 instead of FALSE for MSSQL support
+            return '1=0';
         }
     }
 
@@ -688,7 +693,8 @@ class rb_date_content extends rb_base_content {
                 $end . ')' . $includenulls . ')';
         default:
             // no match
-            return '(FALSE' . $includenulls . ')';
+            // using 1=0 instead of FALSE for MSSQL support
+            return '(1=0' . $includenulls . ')';
         }
 
     }
@@ -895,7 +901,8 @@ class rb_course_tag_content extends rb_base_content {
         } else if ($excludestr) {
             return " $excludestr ";
         } else {
-            return 'FALSE';
+            // using 1=0 instead of FALSE for MSSQL support
+            return '1=0';
         }
     }
 

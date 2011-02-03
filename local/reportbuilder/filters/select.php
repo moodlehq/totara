@@ -113,7 +113,8 @@ class filter_select extends filter_type {
                 $glue = ' AND ';
                 break;
             default:
-                return ' TRUE ';
+                // return 1=1 instead of TRUE for MSSQL support
+                return ' 1=1 ';
         }
 
         // split by comma and look for any items

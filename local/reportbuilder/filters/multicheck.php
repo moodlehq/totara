@@ -118,7 +118,8 @@ class filter_multicheck extends filter_type {
                 $glue = ' AND ';
                 break;
             default:
-                return ' TRUE ';
+                // return 1=1 instead of TRUE for MSSQL support
+                return ' 1=1 ';
         }
 
         // split by comma and look for any items
@@ -136,7 +137,8 @@ class filter_multicheck extends filter_type {
         }
         // none selected
         if(count($res) == 0) {
-            return ' FALSE ';
+            // using 1=0 instead of FALSE for MSSQL support
+            return ' 1=0 ';
         }
         return '('.implode($glue,$res).')';
     }

@@ -899,8 +899,9 @@ var comptree = [' . implode(', ', $comptrees) . '];
     function get_content_restrictions() {
         global $CFG;
         // if no content restrictions enabled return a TRUE snippet
+        // use 1=1 instead of TRUE for MSSQL support
         if($this->contentmode == REPORT_BUILDER_CONTENT_MODE_NONE) {
-            return "( TRUE )";
+            return "( 1=1 )";
         } else if ($this->contentmode == REPORT_BUILDER_CONTENT_MODE_ALL) {
             // require all to match
             $op = ' AND ';
@@ -934,7 +935,8 @@ var comptree = [' . implode(', ', $comptrees) . '];
         }
         // show nothing if no content restrictions enabled
         if(count($out)==0) {
-            return '(FALSE)';
+            // use 1=0 instead of FALSE for MSSQL support
+            return '(1=0)';
         }
         return '('.implode($op, $out).')';
     }
@@ -1575,7 +1577,7 @@ var comptree = [' . implode(', ', $comptrees) . '];
         if($countonly && !$this->grouped) {
             $select = "SELECT COUNT(*) ";
         } else {
-            $baseid = ($this->grouped) ? "min(base.id),\n    " : "base.id,\n    ";
+            $baseid = ($this->grouped) ? "min(base.id) " . sql_as() . " id,\n    " : "base.id,\n    ";
             $select = "SELECT $baseid ".implode($fields,",\n     ")." \n";
         }
 

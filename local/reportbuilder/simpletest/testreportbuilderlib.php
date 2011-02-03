@@ -350,15 +350,16 @@ class reportbuilderlib_test extends prefix_changing_test_case {
 
     function test_reportbuilder_get_content_restrictions() {
         $rb = $this->rb;
-        // should return ( TRUE ) if content mode = 0
-        $this->assertEqual($rb->get_content_restrictions(),'( TRUE )');
+        // should return ( 1=1 ) if content mode = 0
+        $this->assertEqual($rb->get_content_restrictions(),'( 1=1 )');
         $todb = new object();
         $todb->id = 1;
         $todb->contentmode = REPORT_BUILDER_CONTENT_MODE_ANY;
         update_record('report_builder', $todb);
         $rb = new reportbuilder(1);
-        // should return (FALSE) if content mode = 1 but no restrictions set
-        $this->assertEqual($rb->get_content_restrictions(),'(FALSE)');
+        // should return (1=0) if content mode = 1 but no restrictions set
+        // using 1=0 instead of FALSE for MSSQL support
+        $this->assertEqual($rb->get_content_restrictions(),'(1=0)');
         $todb = new object();
         $todb->reportid = 1;
         $todb->type = 'date_content';

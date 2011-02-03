@@ -81,7 +81,8 @@ class filter_simpleselect extends filter_type {
         $query    = $this->_filter->get_field();
 
         if ($value == '') {
-            return ' TRUE ';
+            // return 1=1 instead of TRUE for MSSQL support
+            return ' 1=1 ';
         }
 
         return "$query = $value";

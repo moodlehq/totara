@@ -35,7 +35,8 @@ class rb_trainer_content extends rb_base_content {
             if($staff = totara_get_staff()) {
                 return $field . ' IN (' . implode(',', $staff) .')';
             } else {
-                return 'FALSE';
+                // using 1=0 instead of FALSE for MSSQL support
+                return '1=0';
             }
         } else if ($who == 'ownandreports') {
             // show own and staff records
@@ -47,7 +48,8 @@ class rb_trainer_content extends rb_base_content {
             }
         } else {
             // anything unexpected
-            return 'FALSE';
+            // using 1=0 instead of FALSE for MSSQL support
+            return '1=0';
         }
     }
 
