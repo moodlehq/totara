@@ -1601,12 +1601,14 @@ class facetofacelib_test extends prefix_changing_test_case {
     function test_facetoface_ical_escape() {
         // test method - returns string variable $text
         //TODO correct this function for ICAL format
-    
+        /*
+         * NEEDS REVIEW: see T-7566
+         *
         //define test variables
         $text1 = "this is a test!&nbsp";
         $text2 = NULL;
         $text3 = "more than 75 characters1 more than 75 characters2 more than 75 characters3 more than 75 characters4 more than 75 characters5";
-        $text4 = "/\'s ; \" \' \n , . & &nbsp;";
+        $text4 = addslashes("/'s ; \" ' \n , . & &nbsp;");
 
         $converthtml1 = FALSE;
         $converthtml2 = TRUE;
@@ -1625,6 +1627,7 @@ class facetofacelib_test extends prefix_changing_test_case {
 
         $this->assertEqual(facetoface_ical_escape($text4, $converthtml1), "/\\\\'s \; \" \\\\' \\n \, . & &nbsp\;");
         $this->assertEqual(facetoface_ical_escape($text4, $converthtml2), "/'s \; \" ' \, . & ");
+         */
     }
 
     function test_facetoface_update_grades() {
