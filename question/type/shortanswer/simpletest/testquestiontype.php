@@ -123,7 +123,7 @@ class question_shortanswer_qtype_test extends UnitTestCase {
         $state->responses = array('' => 'frog');
         $this->assertFalse($this->qtype->check_response($question, $state));
 
-        $state->responses = array('' => "fred\'s");
+        $state->responses = array('' => addslashes('fred\'s'));
         $this->assertEqual($this->qtype->check_response($question, $state), 17);
 
         $state->responses = array('' => '12*13');

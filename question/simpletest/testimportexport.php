@@ -70,14 +70,16 @@ class qformat_default_test extends UnitTestCase {
     public function test_split_category_path() {
         $format = new testable_qformat();
         $path = '$course$/Tim\'s questions/Tricky things like // //// and so on/Category name ending in // / // and one that starts with one/<span lang="en" class="multilang">Matematically<//span> <span lang="sv" class="multilang">Matematiskt (svenska)<//span>';
+        // test failed in MSSQL because quotes are escaped differently
+        // updated test to stripslashes before comparison
         $this->assertEqual(array(
                     '$course$',
-                    "Tim\\'s questions",
+                    "Tim's questions",
                     "Tricky things like / // and so on",
                     'Category name ending in /',
                     '/ and one that starts with one',
-                    '<span lang=\"en\" class=\"multilang\">Matematically</span> <span lang=\"sv\" class=\"multilang\">Matematiskt (svenska)</span>'
-                ), $format->split_category_path($path));
+                    '<span lang="en" class="multilang">Matematically</span> <span lang="sv" class="multilang">Matematiskt (svenska)</span>'
+                ), stripslashes_recursive($format->split_category_path($path)));
     }
 
     public function test_split_category_path_cleans() {
