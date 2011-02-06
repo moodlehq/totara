@@ -1,3 +1,4 @@
+require 'rubygems'
 require 'dbi'
 
 # setup config.php to use mysql db
@@ -33,8 +34,7 @@ end
 def run_query(query)
   # ODBC must be configured. See:
   # https://docs.totaralms.com/index.php/Test_Management/MSSQL
-  db = DBI.connect('dbi:ODBC:MSSQLSERVER', @@test_database_username,
-    @@test_database_password)
+  db = DBI.connect('dbi:ODBC:MSSQLSERVER', 'hudson', 'hudson')
   result = db.select_all query
   db.disconnect
   result
