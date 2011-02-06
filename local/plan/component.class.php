@@ -1187,7 +1187,7 @@ abstract class dp_base_component {
 
 
     /**
-     * Display duedate for an item with reminder info
+     * Display duedate for an item with task info
      *
      * @param int $duedate
      * @return string

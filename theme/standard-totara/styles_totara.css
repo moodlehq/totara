@@ -570,17 +570,17 @@ div.block_html .content {
 }
 
 /******************************************
- * Totara reminders dashlet
+ * Totara tasks dashlet
  *****************************************/
-.block_totara_reminders.dashlet .content tr td.status {
+.block_totara_tasks.dashlet .content tr td.status {
     width:35px;
     text-align:center;
 }
 
 /******************************************
- * Totara notifications dashlet
+ * Totara alerts dashlet
  *****************************************/
-.block_totara_notify.dashlet .content tr td.status {
+.block_totara_alerts.dashlet .content tr td.status {
   width:35px;
   text-align:center;
 }

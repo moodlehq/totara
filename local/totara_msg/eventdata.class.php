@@ -47,7 +47,7 @@ class tm_message_eventdata {
 
     /**
      * Should be one of the FORMAT_* constants
-     * @var int 
+     * @var int
      */
     public $fullmessageformat;
     public $fullmessagehtml;
@@ -88,15 +88,8 @@ class tm_message_eventdata {
  */
 class tm_task_eventdata extends tm_message_eventdata {
 
-    // Making these variables private because tm_reminder_send will overwrite them
-//    private $fullmessagehtml;
-//    private $fullmessageformat;
-//    private $notification;
-//    private $component;
-//    private $name;
-
     /**
-     * It has its own constructor because only $userto is mandatory for a reminder
+     * It has its own constructor because only $userto is mandatory for a task
      * @param object $userto
      */
     public function __construct( $userto, $acceptrejectaction, $onacceptdata, $onrejectdata ){
@@ -111,21 +104,8 @@ class tm_task_eventdata extends tm_message_eventdata {
  */
 class tm_alert_eventdata extends tm_message_eventdata {
 
-//    private $onaccept;
-//    private $onreject;
-//    private $component;
-//    private $name;
-//    private $onaccept;
-//    private $onreject;
-//    private $notification;
-//    private $fullmessagehtml;
-//    private $fullmessageformat;
-
     public function __construct( $userto ){
         $this->userto = $userto;
     }
-
-//    private function set_onaccept(){}
-//    private function set_onreject(){}
 }
 ?>

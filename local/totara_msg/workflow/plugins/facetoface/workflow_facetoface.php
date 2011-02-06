@@ -107,6 +107,6 @@ class totara_msg_workflow_facetoface extends totara_msg_workflow_plugin_base {
         $newevent->fullmessage      = 'Request to attend session <a href="'.$CFG->wwwroot.'/mod/facetoface/view.php?f='.$facetoface->id.'">'.$facetoface->name.'</a> '.$msg;
         $newevent->subject          = $newevent->fullmessage;
         $newevent->urgency          = TOTARA_MSG_URGENCY_NORMAL;
-        return tm_notification_send($newevent);
+        return tm_alert_send($newevent);
     }
 }

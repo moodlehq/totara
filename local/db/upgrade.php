@@ -2414,6 +2414,20 @@ function xmldb_local_upgrade($oldversion) {
         }
     }
 
+    // Update column name in message20 table
+    if ($result && $oldversion < 2011013102) {
+        //Rename Block
+        $result = $result && execute_sql("DELETE FROM {$CFG->prefix}block WHERE name='totara_alerts'", false);
+        $result = $result && execute_sql("UPDATE {$CFG->prefix}block SET name='totara_alerts' WHERE name='totara_notify'", false);
+
+        $table = new XMLDBTable('message20');
+        $field = new XMLDBField('notification');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0');
+        if(field_exists($table, $field)) {
+            $result = $result && rename_field($table, $field, 'alert');
+        }
+    }
+
     if ($result && $oldversion < 2011020700) {
         // change fullname to varchar so it can be sorted in MSSQL
         $table = new XMLDBTable('org_framework');

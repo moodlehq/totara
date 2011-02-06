@@ -13,9 +13,9 @@
         <FIELD NAME="fullmessage" TYPE="text" LENGTH="small" NOTNULL="false" SEQUENCE="false" ENUM="false" PREVIOUS="subject" NEXT="fullmessageformat"/>
         <FIELD NAME="fullmessageformat" TYPE="int" LENGTH="4" NOTNULL="false" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The format of the full message" PREVIOUS="fullmessage" NEXT="fullmessagehtml"/>
         <FIELD NAME="fullmessagehtml" TYPE="text" LENGTH="medium" NOTNULL="false" SEQUENCE="false" ENUM="false" COMMENT="html format of message" PREVIOUS="fullmessageformat" NEXT="smallmessage"/>
-        <FIELD NAME="smallmessage" TYPE="text" LENGTH="small" NOTNULL="false" SEQUENCE="false" ENUM="false" COMMENT="Smal version of message (eg sms)" PREVIOUS="fullmessagehtml" NEXT="notification"/>
-        <FIELD NAME="notification" TYPE="int" LENGTH="1" NOTNULL="false" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="smallmessage" NEXT="contexturl"/>
-        <FIELD NAME="contexturl" TYPE="text" LENGTH="small" NOTNULL="false" SEQUENCE="false" ENUM="false" COMMENT="If this message is a notification of an event contexturl should contain a link to view this event. For example if its a notification of a forum post contexturl should contain a link to the forum post." PREVIOUS="notification" NEXT="contexturlname"/>
+        <FIELD NAME="smallmessage" TYPE="text" LENGTH="small" NOTNULL="false" SEQUENCE="false" ENUM="false" COMMENT="Smal version of message (eg sms)" PREVIOUS="fullmessagehtml" NEXT="alert"/>
+        <FIELD NAME="alert" TYPE="int" LENGTH="1" NOTNULL="false" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="smallmessage" NEXT="contexturl"/>
+        <FIELD NAME="contexturl" TYPE="text" LENGTH="small" NOTNULL="false" SEQUENCE="false" ENUM="false" COMMENT="If this message is a notification of an event contexturl should contain a link to view this event. For example if its a notification of a forum post contexturl should contain a link to the forum post." PREVIOUS="alert" NEXT="contexturlname"/>
         <FIELD NAME="contexturlname" TYPE="text" LENGTH="small" NOTNULL="false" SEQUENCE="false" ENUM="false" COMMENT="Display text for the contexturl" PREVIOUS="contexturl" NEXT="timecreated"/>
         <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="false" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="contexturlname"/>
       </FIELDS>
@@ -36,9 +36,9 @@
         <FIELD NAME="fullmessage" TYPE="text" LENGTH="small" NOTNULL="false" SEQUENCE="false" ENUM="false" PREVIOUS="subject" NEXT="fullmessageformat"/>
         <FIELD NAME="fullmessageformat" TYPE="int" LENGTH="4" NOTNULL="false" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The format of the full message" PREVIOUS="fullmessage" NEXT="fullmessagehtml"/>
         <FIELD NAME="fullmessagehtml" TYPE="text" LENGTH="medium" NOTNULL="false" SEQUENCE="false" ENUM="false" COMMENT="html format of message" PREVIOUS="fullmessageformat" NEXT="smallmessage"/>
-        <FIELD NAME="smallmessage" TYPE="text" LENGTH="small" NOTNULL="false" SEQUENCE="false" ENUM="false" COMMENT="Smal version of message (eg sms)" PREVIOUS="fullmessagehtml" NEXT="notification"/>
-        <FIELD NAME="notification" TYPE="int" LENGTH="1" NOTNULL="false" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="smallmessage" NEXT="contexturl"/>
-        <FIELD NAME="contexturl" TYPE="text" LENGTH="small" NOTNULL="false" SEQUENCE="false" ENUM="false" COMMENT="If this message is a notification of an event contexturl should contain a link to view this event. For example if its a notification of a forum post contexturl should contain a link to the forum post." PREVIOUS="notification" NEXT="contexturlname"/>
+        <FIELD NAME="smallmessage" TYPE="text" LENGTH="small" NOTNULL="false" SEQUENCE="false" ENUM="false" COMMENT="Smal version of message (eg sms)" PREVIOUS="fullmessagehtml" NEXT="alert"/>
+        <FIELD NAME="alert" TYPE="int" LENGTH="1" NOTNULL="false" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="smallmessage" NEXT="contexturl"/>
+        <FIELD NAME="contexturl" TYPE="text" LENGTH="small" NOTNULL="false" SEQUENCE="false" ENUM="false" COMMENT="If this message is a notification of an event contexturl should contain a link to view this event. For example if its a notification of a forum post contexturl should contain a link to the forum post." PREVIOUS="alert" NEXT="contexturlname"/>
         <FIELD NAME="contexturlname" TYPE="text" LENGTH="small" NOTNULL="false" SEQUENCE="false" ENUM="false" COMMENT="Display text for the contexturl" PREVIOUS="contexturl" NEXT="timecreated"/>
         <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="false" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="contexturlname" NEXT="timeread"/>
         <FIELD NAME="timeread" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="false" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="timecreated"/>

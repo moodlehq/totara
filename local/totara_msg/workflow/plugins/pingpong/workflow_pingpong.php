@@ -57,7 +57,7 @@ class totara_msg_workflow_pingpong extends totara_msg_workflow_plugin_base {
         $newevent->subject          = $newevent->fullmessage;
         $newevent->urgency          = TOTARA_MSG_URGENCY_NORMAL;
 
-        return tm_notification_send($newevent);
+        return tm_alert_send($newevent);
     }
 
 }

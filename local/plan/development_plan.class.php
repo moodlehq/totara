@@ -451,7 +451,7 @@ class development_plan {
 
 
     /**
-     * Display enddate for an item with reminder info
+     * Display enddate for an item with task info
      *
      * @param int $enddate
      * @return string

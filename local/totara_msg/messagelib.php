@@ -693,7 +693,7 @@ function tm_messages_get($type, $order_by=false, $userto=false, $limit=true, $ro
 
         // do we apply a limit?
         if ($limit) {
-            $limit = ' LIMIT '.TOTARA_MSG_NOTIFY_LIMIT;
+            $limit = ' LIMIT '.TOTARA_MSG_ALERT_LIMIT;
         }
         else {
             $limit = ' ';

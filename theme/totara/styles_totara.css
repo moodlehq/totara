@@ -1279,25 +1279,25 @@ div.block_html .header .title h2 {
   background: transparent;
 }
 
-div.block_totara_notify .header .title h2 a {
+div.block_totara_alerts .header .title h2 a {
   font-size: 0.6em;
   white-space: nowrap;
 }
 
-div.block_totara_notify .content a {
+div.block_totara_alerts .content a {
   font-family: Verdana, Arial, Helvetica, sans-serif;
   color:#34b9e4;
 }
 
-div.block_totara_notify .content tr.shade {
+div.block_totara_alerts .content tr.shade {
   background: #F2F2F2;
 }
 
-div.block_totara_notify .content tr.noshade {
+div.block_totara_alerts .content tr.noshade {
   background: #ffffff;
 }
 
-div.block_totara_notify .content td.statement {
+div.block_totara_alerts .content td.statement {
   border-left: 1px solid #E0E0E0;
   padding-left: 4px;
 }
@@ -1406,7 +1406,7 @@ div.totara_alerts_actions .action {
   vertical-align: top;
 }
 
-.message_values_reminder_links {
+.message_values_task_links {
   white-space: nowrap;
 }
 

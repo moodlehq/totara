@@ -7,11 +7,11 @@ define('TOTARA_MSG_CRON_WAIT_NUM', 10);
 // how often to print errors (1 for every time, 2 every other time, etc)
 define('TOTARA_MSG_CRON_ERROR_FREQ', 10);
 
-// age for expiring undismissed notifications - days
-define('TOTARA_MSG_CRON_DISMISS_NOTIFICATIONS', 30);
+// age for expiring undismissed alerts - days
+define('TOTARA_MSG_CRON_DISMISS_ALERTS', 30);
 
-// age for expiring undismissed reminders - days
-define('TOTARA_MSG_CRON_DISMISS_REMINDERS', 30);
+// age for expiring undismissed tasks - days
+define('TOTARA_MSG_CRON_DISMISS_TASKS', 30);
 
 // age for purging messages - days
 define('TOTARA_MSG_CRON_PURGE', 1);
@@ -31,15 +31,15 @@ function totara_msg_cron() {
         return false;
     }
 
-    // dismiss old notifications
-    $time = time() - (TOTARA_MSG_CRON_DISMISS_NOTIFICATIONS * (24 * 60 * 60));
+    // dismiss old alerts
+    $time = time() - (TOTARA_MSG_CRON_DISMISS_ALERTS * (24 * 60 * 60));
     $msgs = tm_messages_get_by_time('totara_alert', $time);
     foreach ($msgs as $msg) {
         tm_message_dismiss($msg->id);
     }
 
-    // dismiss old reminders
-    $time = time() - (TOTARA_MSG_CRON_DISMISS_REMINDERS * (24 * 60 * 60));
+    // dismiss old taskes
+    $time = time() - (TOTARA_MSG_CRON_DISMISS_TASKS * (24 * 60 * 60));
     $msgs = tm_messages_get_by_time('totara_task', $time);
     foreach ($msgs as $msg) {
         tm_message_dismiss($msg->id);

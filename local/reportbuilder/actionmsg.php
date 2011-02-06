@@ -69,12 +69,12 @@ print '<input type="hidden" name="'.$action.'" value="'.$action.'" />';
 
 // process the action
 print '<div id="totara-msgs-action"><table>';
-//print '<tr><th>'.get_string('status', 'block_totara_notify').'</th><th>'.
+//print '<tr><th>'.get_string('status', 'block_totara_alerts').'</th><th>'.
 print '<tr><th>'.
-//                .get_string('urgency', 'block_totara_notify').'</th><th>'.
-                get_string('type', 'block_totara_notify').'</th><th>'.
-                get_string('from', 'block_totara_notify').'</th><th>'.
-                get_string('statement', 'block_totara_notify').'</th></tr>';
+//                .get_string('urgency', 'block_totara_alerts').'</th><th>'.
+                get_string('type', 'block_totara_alerts').'</th><th>'.
+                get_string('from', 'block_totara_alerts').'</th><th>'.
+                get_string('statement', 'block_totara_alerts').'</th></tr>';
 
 foreach ($ids as $msgid => $msg) {
     $metadata = get_record('message_metadata', 'messageid', $msgid);

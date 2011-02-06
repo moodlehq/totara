@@ -1853,7 +1853,7 @@ function facetoface_send_notrem($facetoface, $session, $userid, $nottype) {
                                                 );
             $newevent->subject          = 'Booked for session <a href="'.$url.'">'.$facetoface->name.'</a>';
             $newevent->urgency          = TOTARA_MSG_URGENCY_NORMAL;
-            tm_notification_send($newevent);
+            tm_alert_send($newevent);
             break;
 
         case MDL_F2F_STATUS_WAITLISTED:
@@ -1867,14 +1867,14 @@ function facetoface_send_notrem($facetoface, $session, $userid, $nottype) {
                                                 );
             $newevent->subject          = 'Waitlisted for session <a href="'.$url.'">'.$facetoface->name.'</a>';
             $newevent->urgency          = TOTARA_MSG_URGENCY_NORMAL;
-            tm_notification_send($newevent);
+            tm_alert_send($newevent);
             break;
 
         case MDL_F2F_STATUS_USER_CANCELLED:
             $newevent->subject          = 'Cancelled for session <a href="'.$url.'">'.$facetoface->name.'</a>';
             $newevent->fullmessage      = $newevent->subject;
             $newevent->urgency          = TOTARA_MSG_URGENCY_NORMAL;
-            tm_notification_send($newevent);
+            tm_alert_send($newevent);
             $managerid = facetoface_get_manager($userid);
             if ($managerid !== false) {
                 $user = get_record('user', 'id', $managerid);
@@ -1882,7 +1882,7 @@ function facetoface_send_notrem($facetoface, $session, $userid, $nottype) {
                 $newevent->userto           = $user;
                 $newevent->subject          = 'Cancelled for '.$usermsg.' session <a href="'.$url.'">'.$facetoface->name.'</a>';
                 $newevent->fullmessage      = $newevent->subject;
-                tm_notification_send($newevent);
+                tm_alert_send($newevent);
             }
             break;
 
@@ -1912,7 +1912,7 @@ function facetoface_send_notrem($facetoface, $session, $userid, $nottype) {
                 $onreject->text = 'To reject session registration press reject';
                 $onreject->data = array('userid' => $userid, 'session' => $session, 'facetoface' => $facetoface);
                 $newevent->onreject = $onreject;
-                tm_reminder_send($newevent);
+                tm_task_send($newevent);
                 $newevent = new stdClass();
                 $newevent->userfrom         = NULL;
                 $user = get_record('user', 'id', $userid);
@@ -1921,7 +1921,7 @@ function facetoface_send_notrem($facetoface, $session, $userid, $nottype) {
                 $newevent->subject          = 'Request to attend session <a href="'.$CFG->wwwroot.'/mod/facetoface/view.php?f='.$facetoface->id.'">'.$facetoface->name.'</a> sent to manager';
                 $newevent->fullmessage      = $newevent->subject;
                 $newevent->urgency          = TOTARA_MSG_URGENCY_NORMAL;
-                tm_notification_send($newevent);
+                tm_alert_send($newevent);
             }
             break;
     }

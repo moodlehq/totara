@@ -3,7 +3,7 @@
   * Totara Alerts
   *
   * @package blocks
-  * @subpackage totara_notify
+  * @subpackage totara_alerts
   * @author: Piers Harding
   * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL
   * @copyright  (C) 1999 onwards Martin Dougiamas  http://dougiamas.com
@@ -13,9 +13,9 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot.'/local/totara_msg/lib.php');
 
-class block_totara_notify extends block_base {
+class block_totara_alerts extends block_base {
     function init() {
-        $this->title = get_string('blockname', 'block_totara_notify');
+        $this->title = get_string('blockname', 'block_totara_alerts');
         $this->version = 2010110101;
     }
 
@@ -63,12 +63,12 @@ class block_totara_notify extends block_base {
         $total = tm_messages_count('totara_alert', false, $roleid);
         $this->msgs = tm_messages_get('totara_alert', 'timecreated DESC ', false, true, $roleid);
         $count = is_array($this->msgs) ? count($this->msgs) : 0;
-        $this->title = get_string('alerts', 'block_totara_notify');
+        $this->title = get_string('alerts', 'block_totara_alerts');
         if($count) {
             $this->title .= ' <span>' .
-                get_string('showingxofx', 'block_totara_notify', array($count, $total)).'</span>';
+                get_string('showingxofx', 'block_totara_alerts', array($count, $total)).'</span>';
         } else {
-            $this->title .= ' <span>' . get_string('noalerts', 'block_totara_notify') . '</span>';
+            $this->title .= ' <span>' . get_string('noalerts', 'block_totara_alerts') . '</span>';
         }
 
       // firstly pull in the stylesheet needed for the dismiss dialog
@@ -124,7 +124,7 @@ class block_totara_notify extends block_base {
         $this->content->text .= '</table>';
         if (!empty($this->msgs)) {
             $this->content->footer = '<div class="viewall"><a href="'.$CFG->wwwroot.'/local/totara_msg/alerts.php'.$role_assertion.'">'.
-                                     get_string('viewallnot', 'block_totara_notify').'</a></div>';
+                                     get_string('viewallnot', 'block_totara_alerts').'</a></div>';
         }
         return $this->content;
     }

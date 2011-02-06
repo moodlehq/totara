@@ -31,7 +31,7 @@
  * @package
  */
 
-function xmldb_local_totara_reminder_upgrade($oldversion) {
+function xmldb_local_totara_task_upgrade($oldversion) {
     //global $CFG, $DB;
     global $CFG;
 
@@ -39,13 +39,13 @@ function xmldb_local_totara_reminder_upgrade($oldversion) {
 
     if ($oldversion < 2010110101) {
         $processor = new stdClass();
-        $processor->name  = 'totara_reminder';
+        $processor->name  = 'totara_task';
         if (! record_exists('message_processors20', array('name' => $processor->name))){
             insert_record('message_processors20', $processor);
         }
 
     /// popup savepoint reached
-        upgrade_plugin_savepoint(true, 2010110101, 'message', 'totara_reminder');
+        upgrade_plugin_savepoint(true, 2010110101, 'message', 'totara_task');
     }
 
     return true;

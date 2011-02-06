@@ -25,7 +25,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 // block display limits
-define('TOTARA_MSG_NOTIFY_LIMIT', 5);
+define('TOTARA_MSG_ALERT_LIMIT', 5);
 define('TOTARA_MSG_TASK_LIMIT', 5);
 
 require_once('messagelib.php');
@@ -41,15 +41,15 @@ function totara_msg_msgstatus_text($msgstatus) {
 
     if ($msgstatus == TOTARA_MSG_STATUS_OK) {
         $status = 'go';
-        $text = get_string('statusok', 'block_totara_notify');
+        $text = get_string('statusok', 'block_totara_alerts');
     }
     else if ($msgstatus == TOTARA_MSG_STATUS_NOTOK) {
         $status = 'stop';
-        $text = get_string('statusnotok', 'block_totara_notify');
+        $text = get_string('statusnotok', 'block_totara_alerts');
     }
     else {
         $status = 'grey_undecided';
-        $text = get_string('statusundecided', 'block_totara_notify');
+        $text = get_string('statusundecided', 'block_totara_alerts');
     }
     return array('text' => $text, 'icon' =>  $CFG->wwwroot . '/theme/' . $CFG->theme . '/pix/t/'.$status.'.gif');
 }
@@ -65,11 +65,11 @@ function totara_msg_urgency_text($urgency) {
 
     if ($urgency == TOTARA_MSG_URGENCY_URGENT) {
         $level = 'stop';
-        $text = get_string('urgent', 'block_totara_notify');
+        $text = get_string('urgent', 'block_totara_alerts');
     }
     else {
         $level = 'grey_undecided';
-        $text = get_string('normal', 'block_totara_notify');
+        $text = get_string('normal', 'block_totara_alerts');
     }
     return array('text' => $text, 'icon' =>  $CFG->wwwroot . '/theme/' . $CFG->theme . '/pix/t/'.$level.'.gif');
 }
@@ -149,7 +149,7 @@ function totara_msg_eventdata($id, $event, $metadata=null) {
 function totara_msg_dismiss_action($id) {
     global $CFG, $FULLME;
 
-    $str = get_string('dismiss', 'block_totara_notify');
+    $str = get_string('dismiss', 'block_totara_alerts');
     return
     '<script type="text/javascript"> '.
     "// bind functionality to page on load
@@ -203,7 +203,7 @@ function totara_msg_dismiss_action($id) {
 function totara_msg_alert_popup($id, $extrabuttons=array()) {
     global $CFG, $FULLME;
 
-    $str = get_string('reviewitems', 'block_totara_notify');
+    $str = get_string('reviewitems', 'block_totara_alerts');
     $return =
     '<script type="text/javascript"> '.
     "// bind functionality to page on load
