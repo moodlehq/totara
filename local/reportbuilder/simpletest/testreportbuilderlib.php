@@ -607,8 +607,8 @@ class reportbuilderlib_test extends prefix_changing_test_case {
         $this->assertNoPattern('/count\(\*\)/i', $sql_query_filtered);
         $this->assertNoPattern('/count\(\*\)/i', $sql_query_unfiltered);
         // if not filtered, the SQL should include the string "where (true) " with no other clauses
-        $this->assertPattern('/where \(\s+true\s+\)\s*/i', $sql_count_unfiltered);
-        $this->assertPattern('/where \(\s+true\s+\)\s*/i', $sql_query_unfiltered);
+        $this->assertPattern('/where \(\s+1=1\s+\)\s*/i', $sql_count_unfiltered);
+        $this->assertPattern('/where \(\s+1=1\s+\)\s*/i', $sql_query_unfiltered);
         // hard to do further testing as no actual data or tables exist
 
         // delete complex query from session
