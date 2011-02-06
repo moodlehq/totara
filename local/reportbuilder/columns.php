@@ -109,15 +109,15 @@ $mform->display();
 
 // include JS object to define the column headings
 print '<script type="text/javascript">';
-print "var rb_column_headings = {";
+$headings = array();
 foreach($report->src->columnoptions as $option) {
     $key = $option->type . '-' . $option->value;
     // use defaultheading if set, otherwise name
     $value = ($option->defaultheading) ? $option->defaultheading :
         $option->name;
-    print "'$key': '$value',";
+    $headings[$key] = $value;
 }
-print "};";
+print "var rb_column_headings = " . json_encode($headings) . ';';
 print '</script>';
 
 admin_externalpage_print_footer();
