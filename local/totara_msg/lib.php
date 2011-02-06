@@ -252,7 +252,9 @@ function totara_msg_alert_popup($id, $extrabuttons=array()) {
  */
 function totara_msg_checkbox_all_none() {
 
-    return '<script>
+    return '<script type="text/javascript">
+            $(\'th.message_values_dismiss_link\').html(\'<div id="totara_msg_selects"><a id="all">'.get_string('all').
+                                            '</a>/<a id="none">'.get_string('none').'</a></div>\');
                 function jqCheckAll( id, name, flag ) {
                    if (flag == 0) {
                       $("form#" + id + " INPUT[@name=" + name + "][type=\'checkbox\']").attr(\'checked\', false);

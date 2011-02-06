@@ -132,15 +132,7 @@ class rb_source_totaramessages extends rb_base_source {
                 array('joins' => 'msg',
                       'displayfunc' => 'nice_date')
             ),
-            new rb_column_option(
-                'message_values',
-                'dismiss_link',
-                get_string('dismissmsg', 'rb_source_totaramessages'),
-                'base.messageid',
-                array('displayfunc' => 'dismiss_link',
-                      'noexport' => true,
-                      'nosort' => true)
-            ),
+            /*
             new rb_column_option(
                 'message_values',
                 'task_links',
@@ -150,6 +142,7 @@ class rb_source_totaramessages extends rb_base_source {
                       'noexport' => true,
                       'nosort' => true)
             ),
+            */
             new rb_column_option(
                 'message_values',
                 'checkbox',
@@ -260,6 +253,17 @@ class rb_source_totaramessages extends rb_base_source {
 
     function define_requiredcolumns() {
         $requiredcolumns = array(
+            new rb_column(
+                'message_values',
+                'dismiss_link',
+                get_string('dismissmsg', 'rb_source_totaramessages'),
+                'base.messageid',
+                array('displayfunc' => 'dismiss_link',
+                      'required' => true,
+                      'noexport' => true,
+                      //'capability' => 'moodle/local:updatethingy',
+                      'nosort' => true)
+            ),
         );
         return $requiredcolumns;
     }

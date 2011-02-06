@@ -154,6 +154,16 @@ function xmldb_local_totara_msg_upgrade($oldversion) {
         $result = $result && add_field($table, $field);
     }
 
+    // reset reports to fix up action column headings
+    if ($result && $oldversion < 2011011903) {
+        $reports = get_records('report_builder', 'source', 'totaramessages');
+        if ($reports) {
+            foreach ($reports as $report) {
+                totara_msg_delete_report($report->id);
+            }
+        }
+    }
+
     return $result;
 }
 

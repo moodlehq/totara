@@ -15,11 +15,6 @@ class rb_alerts_embedded extends rb_base_embedded {
         $this->shortname = 'alerts';
         $this->fullname = get_string('alerts', 'local_totara_msg');
         $this->columns = array(
-//            array(
-//                'type' => 'message_values',
-//                'value' => 'urgency',
-//                'heading' => 'Urgency',
-//            ),
             array(
                 'type' => 'message_values',
                 'value' => 'msgtype',
@@ -40,15 +35,6 @@ class rb_alerts_embedded extends rb_base_embedded {
                 'value' => 'sent',
                 'heading' => 'Sent',
             ),
-            array(
-                'type' => 'message_values',
-                'value' => 'dismiss_link',
-                'heading' =>
-                '<div id="totara_msg_selects" style="display: none;">'.
-                '<a id="all">'.get_string('all').'</a>/'.
-                '<a id="none">'.get_string('none').'</a>'.
-                '</div><noscript>'.get_string('actions').'</noscript>',
-                ),
         );
 
         $this->filters = array(
@@ -62,16 +48,6 @@ class rb_alerts_embedded extends rb_base_embedded {
                     'value' => 'category',
                     'advanced' => 0,
                 ),
-    //        array(
-    //                'type' => 'message_values',
-    //                'value' => 'msgstatus',
-    //                'advanced' => 1,
-    //            ),
-//            array(
-//                    'type' => 'message_values',
-//                    'value' => 'urgency',
-//                    'advanced' => 1,
-//                ),
             array(
                     'type' => 'message_values',
                     'value' => 'statement',
