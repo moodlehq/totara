@@ -127,7 +127,7 @@ class grade_item_test extends grade_test {
         // MSSQL as it compares a string (varchar) to the field
         // which is type NTEXT.
         //$grade_item = new grade_item($this->grade_items[0]);
-        $reduced = array('id' => $this->grade_item[0]->id);
+        $reduced = array('id' => $this->grade_items[0]->id);
         $grade_item = new grade_item($reduced);
         $this->assertTrue(method_exists($grade_item, 'qualifies_for_regrading'));
 
@@ -144,7 +144,7 @@ class grade_item_test extends grade_test {
 
     function test_grade_item_force_regrading() {
         //$grade_item = new grade_item($this->grade_items[0]);
-        $reduced = array('id' => $this->grade_item[0]->id);
+        $reduced = array('id' => $this->grade_items[0]->id);
         $grade_item = new grade_item($reduced);
         $this->assertTrue(method_exists($grade_item, 'force_regrading'));
 
@@ -352,7 +352,7 @@ class grade_item_test extends grade_test {
     // Test locking of grade items
     function test_grade_item_set_locked() {
         //$grade_item = new grade_item($this->grade_items[0]);
-        $reduced = array('id' => $this->grade_item[0]->id);
+        $reduced = array('id' => $this->grade_items[0]->id);
         $grade_item = new grade_item($reduced);
         $this->assertTrue(method_exists($grade_item, 'set_locked'));
 
@@ -375,7 +375,7 @@ class grade_item_test extends grade_test {
 
     function test_grade_item_is_locked() {
         //$grade_item = new grade_item($this->grade_items[0]);
-        $reduced = array('id' => $this->grade_item[0]->id);
+        $reduced = array('id' => $this->grade_items[0]->id);
         $grade_item = new grade_item($reduced);
         $this->assertTrue(method_exists($grade_item, 'is_locked'));
 
