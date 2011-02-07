@@ -59,6 +59,3 @@ module NavigationHelpers
   @@prefix = $prefix
 end
 
-at_exit do
-  restore_config
-end

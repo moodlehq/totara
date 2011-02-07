@@ -1,8 +1,5 @@
 require 'pg'
 
-# setup config.php to use postgres
-load_config('postgres7')
-
 # Methods to handle Postgres databases
 
 # store a table's contents to a temp file

@@ -47,27 +47,4 @@ def parse_config
   out
 end
 
-# save old config and create new one using dbname as
-# dbtype parameter
-def load_config(dbname)
-  # save original config.php
-  @orig_config = File.dirname(__FILE__) + "/../../../config.php"
-  @old_config = @orig_config + ".old"
-  FileUtils.mv @orig_config, @old_config
-
-  File.open(@orig_config,'w+') do |newfile|
-    File.open(@old_config) do |oldfile|
-      oldfile.each do |line|
-        newfile.puts line.gsub(/\s*\$CFG\->dbtype.*$/i, "$CFG->dbtype    = \'#{dbname}\';")
-      end
-    end
-  end
-end
-
-# restore the original config.php
-def restore_config
-  @orig_config = File.dirname(__FILE__) + "/../../../config.php"
-  @old_config = @orig_config + ".old"
-  FileUtils.mv @old_config, @orig_config
-end
 

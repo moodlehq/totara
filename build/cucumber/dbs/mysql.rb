@@ -1,8 +1,5 @@
 require 'mysql'
 
-# setup config.php to use mysql db
-load_config('mysql')
-
 # MySQL specific functions
 
 # store a table's contents to a temp file
