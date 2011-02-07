@@ -2414,6 +2414,80 @@ function xmldb_local_upgrade($oldversion) {
         }
     }
 
+    if ($result && $oldversion < 2011020700) {
+        // change fullname to varchar so it can be sorted in MSSQL
+        $table = new XMLDBTable('org_framework');
+        $field = new XMLDBField('fullname');
+        $field->setType(XMLDB_TYPE_CHAR);
+        $field->setLength(1024);
+        $result = $result && change_field_type($table, $field, true, true);
+
+        $table = new XMLDBTable('org_depth');
+        $field = new XMLDBField('fullname');
+        $field->setType(XMLDB_TYPE_CHAR);
+        $field->setLength(1024);
+        $result = $result && change_field_type($table, $field, true, true);
+
+        $table = new XMLDBTable('org_depth_info_field');
+        $field = new XMLDBField('fullname');
+        $field->setType(XMLDB_TYPE_CHAR);
+        $field->setLength(1024);
+        $result = $result && change_field_type($table, $field, true, true);
+
+        $table = new XMLDBTable('org');
+        $field = new XMLDBField('fullname');
+        $field->setType(XMLDB_TYPE_CHAR);
+        $field->setLength(1024);
+
+        $result = $result && change_field_type($table, $field, true, true);
+        // change fullname to varchar so it can be sorted in MSSQL
+        $table = new XMLDBTable('pos_framework');
+        $field = new XMLDBField('fullname');
+        $field->setType(XMLDB_TYPE_CHAR);
+        $field->setLength(1024);
+        $result = $result && change_field_type($table, $field, true, true);
+
+        $table = new XMLDBTable('pos_depth');
+        $field = new XMLDBField('fullname');
+        $field->setType(XMLDB_TYPE_CHAR);
+        $field->setLength(1024);
+        $result = $result && change_field_type($table, $field, true, true);
+
+        $table = new XMLDBTable('pos_depth_info_field');
+        $field = new XMLDBField('fullname');
+        $field->setType(XMLDB_TYPE_CHAR);
+        $field->setLength(1024);
+        $result = $result && change_field_type($table, $field, true, true);
+
+        $table = new XMLDBTable('pos');
+        $field = new XMLDBField('fullname');
+        $field->setType(XMLDB_TYPE_CHAR);
+        $field->setLength(1024);
+
+        // change fullname to varchar so it can be sorted in MSSQL
+        $table = new XMLDBTable('comp_framework');
+        $field = new XMLDBField('fullname');
+        $field->setType(XMLDB_TYPE_CHAR);
+        $field->setLength(1024);
+        $result = $result && change_field_type($table, $field, true, true);
+
+        $table = new XMLDBTable('comp_depth');
+        $field = new XMLDBField('fullname');
+        $field->setType(XMLDB_TYPE_CHAR);
+        $field->setLength(1024);
+        $result = $result && change_field_type($table, $field, true, true);
+
+        $table = new XMLDBTable('comp_depth_info_field');
+        $field = new XMLDBField('fullname');
+        $field->setType(XMLDB_TYPE_CHAR);
+        $field->setLength(1024);
+        $result = $result && change_field_type($table, $field, true, true);
+
+        $table = new XMLDBTable('comp');
+        $field = new XMLDBField('fullname');
+        $field->setType(XMLDB_TYPE_CHAR);
+        $field->setLength(1024);
+    }
 
     return $result;
 }
