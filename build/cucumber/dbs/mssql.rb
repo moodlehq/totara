@@ -1,9 +1,6 @@
 require 'rubygems'
 require 'dbi'
 
-# setup config.php to use mysql db
-load_config('mssql')
-
 # MSSQL specific functions
 
 # store a table's contents to a temp file
@@ -46,7 +43,7 @@ def count_records table_name
   if result[0]['count'].nil? then
     0
   else
-    result[0]['count']
+    result[0]['count'].to_i
   end
 end
 
@@ -56,7 +53,7 @@ def get_field table_name, field_name, element, value
   if result[0].nil? then
     nil
   else
-    result[0]['field']
+    result[0]['field'].to_i
   end
 end
 
@@ -67,7 +64,7 @@ def get_next_sequence table_name, field_name
   if result[0].nil? then
     1
   else
-    result[0]['count']
+    result[0]['count'].to_i
   end
 end
 
@@ -78,6 +75,6 @@ def get_current_sequence table_name, field_name
   if result[0].nil? then
     1
   else
-    result[0]['count']
+    result[0]['count'].to_i
   end
 end

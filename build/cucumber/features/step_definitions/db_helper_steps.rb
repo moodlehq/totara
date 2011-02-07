@@ -43,7 +43,7 @@ Given /^there is a (.+) record(?: numbered (\d+))?$/ do |name, number|
 end
 
 Then /^there should be (\d+) (.+) records$/ do |number, name|
-   assert_equal number, count_records(get_table(name))
+   assert_equal number, count_records(get_table(name)).to_s
 end
 
 Then /^(?:the )(.+) should match:/ do |cssname, table|
