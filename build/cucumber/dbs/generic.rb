@@ -43,12 +43,12 @@ end
 
 # return a user's ID given their username
 def get_username_id(username)
-  get_field 'mdl_user', 'id', 'username', username
+  get_field $prefix+'user', 'id', 'username', username
 end
 
 # return a scale's ID given its name
 def get_scale_id(scalename)
-  get_field 'mdl_comp_scale', 'id', 'name', scalename
+  get_field $prefix+'comp_scale', 'id', 'name', scalename
 end
 
 

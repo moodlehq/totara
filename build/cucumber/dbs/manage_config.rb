@@ -5,12 +5,12 @@ def parse_config
   out = Hash.new
 
   config = File.open(File.dirname(__FILE__) + "/../../../config.php", 'r')
-  dbuser = Regexp.new('^\$[A-Z]+->dbuser\s+=\s\'(.+)\'');
-  dbloc =  Regexp.new('^\$[A-Z]+->dbhost\s+=\s\'(.*)\'');
-  dbname = Regexp.new('^\$[A-Z]+->dbname\s+=\s\'(.+)\'');
-  dbpass = Regexp.new('^\$[A-Z]+->dbpass\s+=\s\'(.*)\'');
-  dbsite = Regexp.new('^\$[A-Z]+->wwwroot\s+=\s\'(.+)\'');
-  pref = Regexp.new('^\$[A-Z]+->prefix\s+=\s\'(.+)\'');
+  dbuser = Regexp.new("^\\$[A-Z]+->dbuser\s+=\s'(.+)'")
+  dbloc =  Regexp.new("^\\$[A-Z]+->dbhost\s+=\s'(.*)'")
+  dbname = Regexp.new("^\\$[A-Z]+->dbname\s+=\s'(.+)'")
+  dbpass = Regexp.new("^\\$[A-Z]+->dbpass\s+=\s'(.*)'")
+  dbsite = Regexp.new("^\\$[A-Z]+->wwwroot\s+=\s'(.+)'")
+  pref = Regexp.new("^\\$[A-Z]+->prefix\s+=\s'(.+)'")
 
   config.each do |line|
     if (user = dbuser.match(line))

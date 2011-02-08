@@ -4,5 +4,6 @@ std_opts = "--tags ~@wip -r build/cucumber/features/support/env.rb -r build/cucu
 pgsql: <%= std_opts %> -r build/cucumber/dbs/pgsql.rb
 mysql: <%= std_opts %> -r build/cucumber/dbs/mysql.rb
 mssql: <%= std_opts %> -r build/cucumber/dbs/mssql.rb
+oracle: <%= std_opts %> -r build/cucumber/dbs/oracle.rb
 
 selenium: -r build/cucumber/dbs/pgsql.rb -r build/cucumber/features/support/env.rb -r build/cucumber/features/support/selenium.rb -r build/cucumber/features/step_definitions/selenium build/cucumber/features/selenium
