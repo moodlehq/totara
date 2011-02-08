@@ -2,7 +2,7 @@
 /**
  * local/plan/objectivescales/lib.php
  *
- * Library of functions related to idp priorities.
+ * Library of functions related to Objective priorities.
  *
  * @copyright Catalyst IT Limited
  * @author Alastair Munro

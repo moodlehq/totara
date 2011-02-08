@@ -116,7 +116,6 @@ if($delete) {
 /// Build page
 admin_externalpage_print_header();
 
-//$idp = new idp();
 $objectives = dp_get_objectives();
 dp_objective_display_table($objectives, $editingon=1);
 

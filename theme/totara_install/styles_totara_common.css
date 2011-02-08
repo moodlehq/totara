@@ -295,9 +295,6 @@ table#list-assignedcompetencytemplates td[colspan] {
     padding: 0;
 }
 
-body#idp-plan img.ui-datepicker-trigger {
-    margin-right: 5px;
-}
 
 /*****************************************************************************/
 /** Dialogs **/
@@ -568,16 +565,6 @@ div.totara-dialog .selected img.deletebutton {
     height: 13px;
 }
 
-/* hide lightbox activation buttons */
-/* (displayed using JS if enabled) */
-input#show-idppositioncompetency-dialog,
-input#show-idpcourse-dialog,
-input#show-idpcompetency-dialog,
-input#show-idpcompetencytemplate-dialog,
-input#show-idppositioncompetencytemplate-dialog {
-    display: none;
-}
-
 /* Make none JS links look more like buttons */
 a.noscript-button {
     padding: 5px;
@@ -787,13 +774,6 @@ table.borderless td {
     vertical-align: top;
 }
 
-
-table#list-idpcompetency,
-table#list-idpcompetencytemplate,
-table#list-idpcourse{
-    margin:5px 0 0;
-    width:100%;
-}
 
 .logtable td, .logtable th {
     padding-left:5px;

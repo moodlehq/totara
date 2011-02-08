@@ -364,7 +364,6 @@ body#login-index #totara_menu ul #menu1,
 body.mod-forum #totara_menu ul #menu1,
 body.admin #totara_menu ul #menu1,
 body#my-index #totara_menu ul #menu2,
-body.idp #totara_menu ul #menu2,
 body#my-bookings #totara_menu ul #menu2,
 body#my-records #totara_menu ul #menu2,
 body#my-team #totara_menu ul #menu3,
@@ -382,7 +381,6 @@ body#login-index #totara_menu ul #menu1 a,
 body.mod-forum #totara_menu ul #menu1 a,
 body.admin #totara_menu ul #menu1 a,
 body#my-index #totara_menu ul #menu2 a,
-body.idp #totara_menu ul #menu2 a,
 body#my-bookings #totara_menu ul #menu2 a,
 body#my-records #totara_menu ul #menu2 a,
 body#my-team #totara_menu ul #menu3 a,
@@ -399,7 +397,6 @@ body#login-index #totara_menu ul #menu1 ul,
 body.mod-forum #totara_menu ul #menu1 ul,
 body.admin #totara_menu ul #menu1 ul,
 body#my-index #totara_menu ul #menu2 ul,
-body.idp #totara_menu ul #menu2 ul,
 body#my-bookings #totara_menu ul #menu2 ul,
 body#my-records #totara_menu ul #menu2 ul,
 body#my-team #totara_menu ul #menu3 ul,
@@ -415,7 +412,6 @@ body#login-index #totara_menu #menu1 ul li a,
 body.mod-forum #totara_menu #menu1 ul li a,
 body.admin #totara_menu #menu1 ul li a,
 body#my-index #totara_menu ul #menu2 ul li a,
-body.idp #totara_menu ul #menu2 ul li a,
 body#my-bookings #totara_menu ul #menu2 ul li a,
 body#my-records #totara_menu ul #menu2 ul li a,
 body#my-team #totara_menu ul #menu3 ul li a,
@@ -439,7 +435,6 @@ body.admin#totara_menu #menu1 ul {
     left:-27px;
 }
 body#my-index #totara_menu ul #menu2 ul,
-body.idp #totara_menu ul #menu2 ul,
 body#my-bookings #totara_menu ul #menu2 ul,
 body#my-records #totara_menu ul #menu2 ul {
     left:-117px;
@@ -1419,14 +1414,6 @@ div.yuimenu .yuichildtree .yuimenuitem {
     display: inline;
 }
 
-#idp-index #middle-column table,
-#idp-index #middle-column #planlist,
-#idp-index #middle-column form#idp_search {
-  margin-bottom:20px;
-}
-#idp-index #middle-column h2 {
-  font-size: 1.6em;
-}
 .logtable th {
   font-size:1.1em;
   padding: 5px 10px;  

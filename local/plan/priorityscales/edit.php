@@ -17,11 +17,11 @@ $sitecontext = get_context_instance(CONTEXT_SYSTEM);
 
 require_capability('local/plan:managepriorityscales', $sitecontext);
 if ($id == 0) {
-    // creating new idp priority
+    // creating new Learning Plan priority
     $priority = new object();
     $priority->id = 0;
 } else {
-    // editing existing idp priority
+    // editing existing Learning Plan priority
     if (!$priority = get_record('dp_priority_scale', 'id', $id)) {
         error(get_string('error:priorityscaleidincorrect', 'local_plan'));
     }

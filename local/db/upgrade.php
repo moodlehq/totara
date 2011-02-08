@@ -2503,6 +2503,83 @@ function xmldb_local_upgrade($oldversion) {
         $field->setLength(1024);
     }
 
+    if ($result && $oldversion < 2011020701) {
+        $table = new XMLDBTable('idp');
+        if(!table_exists($table)) {
+            $result = $result && drop_table($table);
+        }
+
+        $table = new XMLDBTable('idp_approval');
+        if(!table_exists($table)) {
+            $result = $result && drop_table($table);
+        }
+
+        $table = new XMLDBTable('idp_comp_area');
+        if(!table_exists($table)) {
+            $result = $result && drop_table($table);
+        }
+
+        $table = new XMLDBTable('idp_comp_area_fw');
+        if(!table_exists($table)) {
+            $result = $result && drop_table($table);
+        }
+
+        $table = new XMLDBTable('idp_competency_eval');
+        if(!table_exists($table)) {
+            $result = $result && drop_table($table);
+        }
+
+        $table = new XMLDBTable('idp_list_item');
+        if(!table_exists($table)) {
+            $result = $result && drop_table($table);
+        }
+
+        $table = new XMLDBTable('idp_revision');
+        if(!table_exists($table)) {
+            $result = $result && drop_table($table);
+        }
+
+        $table = new XMLDBTable('idp_revision_comment');
+        if(!table_exists($table)) {
+            $result = $result && drop_table($table);
+        }
+
+        $table = new XMLDBTable('idp_revision_competency');
+        if(!table_exists($table)) {
+            $result = $result && drop_table($table);
+        }
+
+        $table = new XMLDBTable('idp_revision_competencytmpl');
+        if(!table_exists($table)) {
+            $result = $result && drop_table($table);
+        }
+
+        $table = new XMLDBTable('idp_course');
+        if(!table_exists($table)) {
+            $result = $result && drop_table($table);
+        }
+
+        $table = new XMLDBTable('idp_template');
+        if(!table_exists($table)) {
+            $result = $result && drop_table($table);
+        }
+
+        $table = new XMLDBTable('idp_tmpl_priority_assign');
+        if(!table_exists($table)) {
+            $result = $result && drop_table($table);
+        }
+
+        $table = new XMLDBTable('idp_tmpl_priority_scale');
+        if(!table_exists($table)) {
+            $result = $result && drop_table($table);
+        }
+
+        $table = new XMLDBTable('idp_tmpl_priority_scal_val');
+        if(!table_exists($table)) {
+            $result = $result && drop_table($table);
+        }
+    }
+
     return $result;
 }
 ?>

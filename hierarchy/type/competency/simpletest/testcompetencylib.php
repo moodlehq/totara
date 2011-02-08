@@ -97,7 +97,6 @@ class competencylib_test extends prefix_changing_test_case {
         load_test_table($CFG->prefix . 'comp_depth_info_field', $this->depth_field_data, $db);
         load_test_table($CFG->prefix . 'comp_depth_info_data', $this->depth_data_data, $db);
         load_test_table($CFG->prefix . 'comp_template', $this->template_data, $db);
-        load_test_table($CFG->prefix . 'idp_revision_competencytmpl', $this->template_revision_data, $db);
         load_test_table($CFG->prefix . 'comp_template_assignment', $this->template_assignment_data, $db);
         load_test_table($CFG->prefix . 'pos_competencies', $this->pos_competencies_data, $db);
 
@@ -193,7 +192,6 @@ class competencylib_test extends prefix_changing_test_case {
         global $db,$CFG;
         remove_test_table($CFG->prefix . 'pos_competencies', $db);
         remove_test_table($CFG->prefix . 'comp_template_assignment', $db);
-        remove_test_table($CFG->prefix . 'idp_revision_competencytmpl', $db);
         remove_test_table($CFG->prefix . 'comp_template', $db);
         remove_test_table($CFG->prefix . 'comp_depth_info_data', $db);
         remove_test_table($CFG->prefix . 'comp_depth_info_field', $db);

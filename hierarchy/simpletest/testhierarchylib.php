@@ -84,8 +84,6 @@ class hierarchylib_test extends prefix_changing_test_case {
         load_test_table($CFG->prefix . 'comp_depth_info_category', $this->depth_category_data, $db);
         load_test_table($CFG->prefix . 'comp_depth_info_field', $this->depth_field_data, $db);
         load_test_table($CFG->prefix . 'comp_depth_info_data', $this->depth_data_data, $db);
-        load_test_table($CFG->prefix . 'idp_revision_competency', $this->dummy_data, $db);
-        load_test_table($CFG->prefix . 'idp_competency_eval', $this->dummy_data, $db);
         load_test_table($CFG->prefix . 'comp_evidence', $this->dummy_data, $db);
         load_test_table($CFG->prefix . 'comp_evidence_items', $this->dummy_data, $db);
         load_test_table($CFG->prefix . 'comp_evidence_items_evidence', $this->dummy_data, $db);
@@ -209,8 +207,6 @@ class hierarchylib_test extends prefix_changing_test_case {
         remove_test_table($CFG->prefix . 'comp_evidence_items_evidence', $db);
         remove_test_table($CFG->prefix . 'comp_evidence_items', $db);
         remove_test_table($CFG->prefix . 'comp_evidence', $db);
-        remove_test_table($CFG->prefix . 'idp_competency_eval', $db);
-        remove_test_table($CFG->prefix . 'idp_revision_competency', $db);
         remove_test_table($CFG->prefix . 'comp_depth_info_data', $db);
         remove_test_table($CFG->prefix . 'comp_depth_info_field', $db);
         remove_test_table($CFG->prefix . 'comp_depth_info_category', $db);

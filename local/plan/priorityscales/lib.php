@@ -2,7 +2,7 @@
 /**
  * local/plan/priorityscales/lib.php
  *
- * Library of functions related to idp priorities.
+ * Library of functions related to Learning Plan priorities.
  *
  * @copyright Catalyst IT Limited
  * @author Alastair Munro

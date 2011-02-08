@@ -1804,14 +1804,6 @@ div.yuimenu .yuichildtree .yuimenuitem {
     display: inline;
 }
 
-#idp-index #middle-column table,
-#idp-index #middle-column #planlist,
-#idp-index #middle-column form#idp_search {
-  margin-bottom:20px;
-}
-#idp-index #middle-column h2 {
-  font-size: 1.6em;
-}
 .logtable th {
   font-size:1.1em;
   padding: 5px 10px;
@@ -2019,7 +2011,7 @@ body#admin-user table.generaltable td.c7 {
 }
 
 /*****************************************************************************/
-/** IDP **/
+/** Learning Plans **/
 /*****************************************************************************/
 
 table.planlist tr.r0 {

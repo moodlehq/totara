@@ -157,48 +157,6 @@ function dp_get_priorities() {
     return get_records('dp_priority_scale', '', '', 'sortorder');
 }
 
-/**
- * Gets Priority scale values menu
- *
- * @access  public
- * @param   int  $idpid  a learning plan id
- * @return  array|false  an array of priority records
- */
-function dp_get_priority_scale_values_menu($idpid=0) {
-    global $CFG;
-
-    $sql = "SELECT val.id, val.name FROM {$CFG->prefix}idp_tmpl_priority_scal_val val
-            JOIN {$CFG->prefix}idp_tmpl_priority_scale ps ON val.priorityscaleid=ps.id
-            JOIN {$CFG->prefix}idp_tmpl_priority_assign pa ON ps.id=pa.priorityscaleid
-            JOIN {$CFG->prefix}idp_template temp ON pa.templateid=temp.id
-            JOIN {$CFG->prefix}idp i ON temp.id=i.templateid ";
-    if (!empty($idpid)) {
-        $sql .= " WHERE i.id={$idpid} ORDER BY val.sortorder ASC";
-    }
-
-    $priorities = get_records_sql($sql);
-
-    return is_array($priorities) ? $priorities : array();
-}
-
-/**
- * Gets Priority default scale value for a learning plan
- *
- * @access  public
- * @param   int  $idpid  a learning plan id
- * @return  array|false  a record object
- */
-function dp_get_priority_default_scale_value($idpid) {
-    global $CFG;
-    $sql = "SELECT val.* FROM {$CFG->prefix}dp_priority_scale_value val
-            JOIN {$CFG->prefix}dp_priority_scale ps ON val.id=ps.defaultid
-            JOIN {$CFG->prefix}dp_priority_assign pa ON ps.id=pa.priorityscaleid
-            JOIN {$CFG->prefix}idp_template temp ON pa.templateid=temp.id
-            JOIN {$CFG->prefix}idp i ON temp.id=i.templateid
-            WHERE i.id = {$idpid}";
-
-     return get_record_sql($sql);
-}
 
 /**
  * Gets learning plan objectives
@@ -208,49 +166,6 @@ function dp_get_priority_default_scale_value($idpid) {
  */
 function dp_get_objectives() {
     return get_records('dp_objective_scale', '', '', 'sortorder');
-}
-
-/**
- * Gets objective scale values menu
- *
- * @access  public
- * @param   int  $idpid  a learning plan id
- * @return  array|false  an array of objective records
- */
-function dp_get_objective_scale_values_menu($idpid=0) {
-    global $CFG;
-
-    $sql = "SELECT val.id, val.name FROM {$CFG->prefix}idp_tmpl_priority_scal_val val
-            JOIN {$CFG->prefix}idp_tmpl_priority_scale ps ON val.priorityscaleid=ps.id
-            JOIN {$CFG->prefix}idp_tmpl_priority_assign pa ON ps.id=pa.priorityscaleid
-            JOIN {$CFG->prefix}idp_template temp ON pa.templateid=temp.id
-            JOIN {$CFG->prefix}idp i ON temp.id=i.templateid ";
-    if (!empty($idpid)) {
-        $sql .= " WHERE i.id={$idpid} ORDER BY val.sortorder ASC";
-    }
-
-    $priorities = get_records_sql($sql);
-
-    return is_array($priorities) ? $priorities : array();
-}
-
-/**
- * Gets objective defaul scale value for a learning plan
- *
- * @access  public
- * @param   int  $idpid  a learning plan id
- * @return  array|false  a record object
- */
-function dp_get_objective_default_scale_value($idpid) {
-    global $CFG;
-    $sql = "SELECT val.* FROM {$CFG->prefix}dp_priority_scale_value val
-            JOIN {$CFG->prefix}dp_priority_scale ps ON val.id=ps.defaultid
-            JOIN {$CFG->prefix}dp_priority_assign pa ON ps.id=pa.priorityscaleid
-            JOIN {$CFG->prefix}idp_template temp ON pa.templateid=temp.id
-            JOIN {$CFG->prefix}idp i ON temp.id=i.templateid
-            WHERE i.id = {$idpid}";
-
-     return get_record_sql($sql);
 }
 
 

@@ -181,8 +181,6 @@ SQL;
 
         if ( parent::delete_framework_item($id, false) ){
             $result = true;
-            $result = $result && delete_records('idp_revision_competency','competency',$id);
-            $result = $result && delete_records('idp_competency_eval','competencyid',$id);
             $result = $result && delete_records($this->shortprefix.'_evidence','competencyid',$id);
             $result = $result && delete_records($this->shortprefix.'_evidence_items','competencyid',$id);
             $result = $result && delete_records($this->shortprefix.'_evidence_items_evidence','competencyid',$id);
@@ -235,12 +233,7 @@ SQL;
      * @return  void
      */
     function delete_template($id) {
-
-        // TODO: Depending on how IDP design goes, you might have to delete something
-        // from some IDP tables, regarding competencies that were added to a plan
-        // because of this template.
         delete_records($this->shortprefix.'_template_assignment','templateid',$id);
-        delete_records('idp_revision_competencytmpl','competencytemplate',$id);
         delete_records(hierarchy::get_short_prefix('position').'_competencies','templateid',$id);
 
         // Delete this item
