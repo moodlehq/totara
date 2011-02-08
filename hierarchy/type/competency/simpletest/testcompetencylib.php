@@ -220,10 +220,6 @@ class competencylib_test extends prefix_changing_test_case {
         $this->assertEqual(count($competency->get_templates()), 1);
         // elements should have the correct form
         $this->assertEqual(current($competency->get_templates()), $comptemp);
-        // if given a valid revision id, should correctly set the disabled flag
-        $this->assertEqual(current($competency->get_templates(1))->disabled, 1);
-        // if given an invalid revision id, should correctly set the disabled flag
-        $this->assertEqual(current($competency->get_templates(999))->disabled, 0);
     }
 
     function test_competency_show_and_hide_template() {
