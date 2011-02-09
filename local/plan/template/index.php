@@ -176,89 +176,16 @@ if ($fromform = $mform->get_data()) {
             print_error('error:notemplatewithoutobjectivescale', 'local_plan');
         }
 
-        begin_sql();
+        $error = '';
+        $newtemplateid = dp_create_template($fromform->templatename, $fromform->enddate, $error);
 
-        $todb = new object();
-        $todb->fullname = $fromform->templatename;
-        $todb->enddate = dp_convert_userdate($fromform->enddate);
-        $sortorder = count_records('dp_template') + 1;
-        $todb->sortorder = $sortorder;
-        $todb->visible = 1;
-        // by default use first listed workflow
-        global $DP_AVAILABLE_WORKFLOWS;
-        reset($DP_AVAILABLE_WORKFLOWS);
-        $workflow = current($DP_AVAILABLE_WORKFLOWS);
-        $todb->workflow = $workflow;
-
-        if(!$newtemplateid = insert_record('dp_template', $todb)) {
-            rollback_sql();
-            error(get_string('error:newdptemplate', 'local_plan'));
-            die();
+        if($newtemplateid) {
+            redirect($CFG->wwwroot .
+                '/local/plan/template/general.php?id=' .
+                $newtemplateid);
+        } else {
+            totara_set_notification($error, $CFG->wwwroot . '/local/plan/template/index.php');
         }
-
-        global $DP_AVAILABLE_COMPONENTS;
-        foreach($DP_AVAILABLE_COMPONENTS as $component){
-            $classfile = $CFG->dirroot .
-                "/local/plan/components/{$component}/{$component}.class.php";
-            if(!is_readable($classfile)) {
-                $string_properties = new object();
-                $string_properties->classfile = $class;
-                $string_properties->component = $component;
-                throw new PlanException(get_string('noclassfileforcomponent', 'local_plan', $string_properties));
-            }
-            include_once($classfile);
-
-            // check class exists
-            $class = "dp_{$component}_component";
-            if(!class_exists($class)) {
-                $string_properties = new object();
-                $string_properties->class = $class;
-                $string_properties->component = $component;
-                throw new PlanException(get_string('noclassforcomponent', 'local_plan', $string_properties));
-            }
-
-            $cn = new object();
-            $cn->templateid = $newtemplateid;
-            $cn->component = $component;
-            $cn->enabled = 1;
-            $sortorder = get_field_sql("SELECT max(sortorder) FROM {$CFG->prefix}dp_component_settings");
-            $cn->sortorder = $sortorder + 1;
-
-            if(!$componentsettingid = insert_record('dp_component_settings', $cn)){
-                rollback_sql();
-                error(get_string('error:createcomponents', 'local_plan'));
-                die();
-            }
-        }
-
-        $classfile = $CFG->dirroot . "/local/plan/workflows/{$workflow}/{$workflow}.class.php";
-        if(!is_readable($classfile)) {
-            $string_properties = new object();
-            $string_properties->classfile = $classfile;
-            $string_properties->workflow = $workflow;
-            throw new PlanException(get_string('noclassfileforworkflow', 'local_plan', $string_properties));
-        }
-        include_once($classfile);
-
-        // check class exists
-        $class = "dp_{$workflow}_workflow";
-        if(!class_exists($class)) {
-            $string_properties = new object();
-            $string_properties->class = $classfile;
-            $string_properties->workflow = $workflow;
-            throw new PlanException(get_string('noclassforworkflow','local_plan', $string_properties));
-        }
-
-        // create an instance and save as a property for easy access
-        $workflow_class = new $class();
-        if(!$workflow_class->copy_to_db($newtemplateid)) {
-            error(get_string('error:newdptemplate', 'local_plan'));
-            die();
-        }
-
-
-        commit_sql();
-        redirect($CFG->wwwroot . '/local/plan/template/general.php?id=' . $newtemplateid);
     }
 }
 

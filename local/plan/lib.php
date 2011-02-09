@@ -839,3 +839,109 @@ function dp_get_approval_status_from_code($code) {
 
     return $status;
 }
+
+
+/**
+ * Create a new template based on a template object
+ *
+ * @param string $templatename Name for the template
+ * @param integer $enddate Unix timestamp of template enddate
+ *
+ * @return integer|false ID of new template or false if unsuccessful
+ */
+function dp_create_template($templatename, $enddate, &$error) {
+    global $CFG;
+
+    begin_sql();
+
+    $todb = new object();
+    $todb->fullname = $templatename;
+    $todb->enddate = dp_convert_userdate($enddate);
+    $sortorder = get_field('dp_template', 'MAX(sortorder)', '', '') + 1;
+    $todb->sortorder = $sortorder;
+    $todb->visible = 1;
+    // by default use first listed workflow
+    global $DP_AVAILABLE_WORKFLOWS;
+    reset($DP_AVAILABLE_WORKFLOWS);
+    $workflow = current($DP_AVAILABLE_WORKFLOWS);
+    $todb->workflow = $workflow;
+
+    if(!$newtemplateid = insert_record('dp_template', $todb)) {
+        rollback_sql();
+        $error = get_string('error:newdptemplate', 'local_plan');
+        return false;
+    }
+
+    global $DP_AVAILABLE_COMPONENTS;
+    foreach($DP_AVAILABLE_COMPONENTS as $component){
+        $classfile = $CFG->dirroot .
+            "/local/plan/components/{$component}/{$component}.class.php";
+        if(!is_readable($classfile)) {
+            $string_properties = new object();
+            $string_properties->classfile = $classfile;
+            $string_properties->component = $component;
+            rollback_sql();
+            $error = get_string('noclassfileforcomponent', 'local_plan', $string_properties);
+            return false;
+        }
+        include_once($classfile);
+
+        // check class exists
+        $class = "dp_{$component}_component";
+        if(!class_exists($class)) {
+            $string_properties = new object();
+            $string_properties->class = $class;
+            $string_properties->component = $component;
+            rollback_sql();
+            $error = get_string('noclassforcomponent', 'local_plan', $string_properties);
+            return false;
+        }
+
+        $cn = new object();
+        $cn->templateid = $newtemplateid;
+        $cn->component = $component;
+        $cn->enabled = 1;
+        $sortorder = get_field_sql("SELECT max(sortorder) FROM {$CFG->prefix}dp_component_settings");
+        $cn->sortorder = $sortorder + 1;
+
+        if(!$componentsettingid = insert_record('dp_component_settings', $cn)){
+            rollback_sql();
+            $error = get_string('error:createcomponents', 'local_plan');
+            return false;
+        }
+    }
+
+    $classfile = $CFG->dirroot . "/local/plan/workflows/{$workflow}/{$workflow}.class.php";
+    if(!is_readable($classfile)) {
+        $string_properties = new object();
+        $string_properties->classfile = $classfile;
+        $string_properties->workflow = $workflow;
+        rollback_sql();
+        $error = get_string('noclassfileforworkflow', 'local_plan', $string_properties);
+        return false;
+    }
+    include_once($classfile);
+
+    // check class exists
+    $class = "dp_{$workflow}_workflow";
+    if(!class_exists($class)) {
+        $string_properties = new object();
+        $string_properties->class = $classfile;
+        $string_properties->workflow = $workflow;
+        rollback_sql();
+        $error = get_string('noclassforworkflow','local_plan', $string_properties);
+        return false;
+    }
+
+    // create an instance and save as a property for easy access
+    $workflow_class = new $class();
+    if(!$workflow_class->copy_to_db($newtemplateid)) {
+        rollback_sql();
+        $error = get_string('error:newdptemplate', 'local_plan');
+        return false;
+    }
+
+    commit_sql();
+    return $newtemplateid;
+}
+

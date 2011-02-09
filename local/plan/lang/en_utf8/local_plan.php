@@ -65,10 +65,10 @@ $string['planhasunapproveditems'] = 'This plan has draft items:';
 $string['planhasunapproveditem'] = 'This plan has a draft item:';
 $string['error:creationaftercompletion'] = 'Completion Date must not be before Date Created';
 
-$string['noclassfileforrole'] = 'Class file \'$a->classfile\' could not be found for role of \'$->role\'';
+$string['noclassfileforrole'] = 'Class file \'$a->classfile\' could not be found for role of \'$a->role\'';
 $string['noclassforrole'] = 'Class \'$a->class\' does not exist for role \'$a->role\'.';
 
-$string['noclassfileforcomponent'] = 'Class file \'$a->classfile\' could not be found for component \'$->component\'';
+$string['noclassfileforcomponent'] = 'Class file \'$a->classfile\' could not be found for component \'$a->component\'';
 $string['noclassforcomponent'] = 'Class \'$a->class\' does not exist for component \'$a->component\'.';
 
 $string['noclassfileforworkflow'] = 'Class file \'$a->classfile\' could not be found for workflow \'$a->workflow\'';
