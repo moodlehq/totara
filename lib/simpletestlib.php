@@ -213,9 +213,12 @@ function load_test_table($tablename, $data, $db = null, $strlen = 255, $empty = 
     _private_execute_sql("CREATE TABLE $tablename (" . join(',', $coldefs) . ');', $db);
 
     if ($CFG->dbfamily == 'oracle') {
-        $sql = "CREATE SEQUENCE {$tablename}_id_seq;";
+        $shortname = _private_get_unique_name($tablename);
+
+        $sql = "CREATE SEQUENCE {$shortname}_id_seq;";
         _private_execute_sql($sql, $db);
-        $sql = "CREATE OR REPLACE TRIGGER {$tablename}_id_trg BEFORE INSERT ON $tablename FOR EACH ROW BEGIN IF :new.id IS NULL THEN SELECT {$tablename}_ID_SEQ.nextval INTO :new.id FROM dual; END IF; END; ";
+
+        $sql = "CREATE OR REPLACE TRIGGER {$shortname}_id_trg BEFORE INSERT ON $tablename FOR EACH ROW BEGIN IF :new.id IS NULL THEN SELECT {$shortname}_ID_SEQ.nextval INTO :new.id FROM dual; END IF; END; ";
         _private_execute_sql($sql, $db);
     }
 
@@ -226,6 +229,47 @@ function load_test_table($tablename, $data, $db = null, $strlen = 255, $empty = 
 
     array_unshift($data, $colnames);
     load_test_data($tablename, $data, $db);
+}
+
+
+/**
+ * Given a table name, find a unique name that is
+ * 7 characters shorter
+ */
+function _private_get_unique_name($tablename) {
+    static $map_tablename;
+    static $map_shortname;
+    if (!isset($map_tablename)) {
+        $map_tablename = array();
+        $map_shortname = array();
+    }
+
+    if (isset($map_tablename[$tablename])) {
+        return $map_tablename[$tablename];
+    }
+
+    // Create new
+    $i = 1;
+    while ($i < 100) {
+        $padded = str_pad($i, 2, 0);
+        // need to shorten enough so everything fits in 30 chars
+        // assuming:
+        // u_ => 2 chars for oracle unittest prefix
+        // _100 => 4 chars for padding from this function
+        // _id_seq => 7 chars for suffix added by for sequences and triggers
+        //
+        // that leaves 30 - 2 - 4 - 7 = 17 characters for tablename
+        // use 15, just to be safe ;-)
+        $shortname = substr($tablename, 0, 15).'_'.$padded;
+
+        if (!isset($map_shortname[$shortname])) {
+            $map_tablename[$tablename] = $shortname;
+            $map_shortname[$shortname] = $tablename;
+            return $shortname;
+        }
+    }
+
+    print_error('failedtocreateuniquename', 'error');
 }
 
 /**
@@ -345,7 +389,8 @@ function remove_test_table($tablename, $db, $cascade = false) {
     }
 
     if ($CFG->dbfamily == 'oracle') {
-       _private_execute_sql("DROP SEQUENCE {$tablename}_id_seq;", $db);
+        $shortname = _private_get_unique_name($tablename);
+       _private_execute_sql("DROP SEQUENCE {$shortname}_id_seq;", $db);
     }
 }
 
@@ -448,7 +493,11 @@ class prefix_changing_test_case extends UnitTestCase {
 
     function change_prefix() {
         global $CFG;
-        $CFG->prefix = $CFG->original_prefix . 'unittest_';
+        if($CFG->dbfamily == 'oracle') {
+            $CFG->prefix = 'u_';
+        } else {
+            $CFG->prefix = $CFG->original_prefix . 'unittest_';
+        }
     }
 
     function change_prefix_back() {
