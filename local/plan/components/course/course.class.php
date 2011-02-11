@@ -88,15 +88,30 @@ class dp_course_component extends dp_base_component {
             $orderby = "ORDER BY $orderby";
         }
 
+        if($this->plan->is_complete()) {
+            // Use the 'snapshot' status value
+            $completion_field = 'a.completionstatus AS coursecompletion,';
+            $completion_joins = '';
+        } else {
+            // Use the 'live' status value
+            $completion_field = 'cc.status AS coursecompletion,';
+            $completion_joins = "LEFT JOIN
+                {$CFG->prefix}course_completions cc
+                ON ( cc.course = a.courseid
+                AND cc.userid = {$this->plan->userid} )";
+        }
+
         $assigned = get_records_sql(
             "
             SELECT
                 a.*,
+                $completion_field
                 c.fullname,
                 c.fullname AS name,
                 c.icon
             FROM
                 {$CFG->prefix}dp_plan_course_assign a
+                $completion_joins
             INNER JOIN
                 {$CFG->prefix}course c
              ON c.id = a.courseid
@@ -442,11 +457,9 @@ class dp_course_component extends dp_base_component {
      * @return string $out display markup
      */
     function display_status_as_progress_bar($ca) {
-        global $CFG;
-
+        // get the completion string, if there is a record
         $completionstatus = $this->get_item_completion_status($ca);
 
-        // @todo Move this into the single course page?
         $plancompleted = $this->plan->is_complete();
         $canupdatecoursestatus = $this->get_setting('setcompletionstatus') == DP_PERMISSION_ALLOW;
         $out = '';
@@ -461,14 +474,6 @@ class dp_course_component extends dp_base_component {
                 </span>";
         }
 
-        // @todo let users with permission edit the completion status
-        // as long as the plan is not complete
-        /*
-        if(!$plancompleted && $canupdatecoursestatus) {
-            $strassess = 'Assess';
-            $out .= '<a href="'.$CFG->wwwroot.'/local/plan/components/course/assess.php?id='.$this->plan->id.'&amp;itemid='.$ca->id.'" title="'.$strassess.'"><img src="'.$CFG->pixpath.'/t/edit.gif" class="iconsmall" alt="'.$strassess.'" /></a>';
-        }
-         */
         return $out;
     }
 
@@ -481,7 +486,9 @@ class dp_course_component extends dp_base_component {
      * @return  boolean
      */
     protected function is_item_complete($item) {
-        return strstr($this->get_item_completion_status($item), 'complete') !== false;
+        global $CFG;
+        require_once($CFG->dirroot . '/lib/completion/completion_completion.php');
+        return in_array($item->coursecompletion, array(COMPLETION_STATUS_COMPLETE, COMPLETION_STATUS_COMPLETEVIARPL));
     }
 
 
@@ -490,24 +497,17 @@ class dp_course_component extends dp_base_component {
      *
      * @access  public
      * @param   object  $item
-     * @return  string
+     * @return  string|false
      */
     public function get_item_completion_status($item) {
+        global $CFG, $COMPLETION_STATUS;
+        // needed to access completion status codes
+        require_once($CFG->dirroot . '/lib/completion/completion_completion.php');
 
-        // Use value stored in dp_plan_course_assign if plan is already complete
-        if ($this->plan->is_complete()) {
-            return $item->completionstatus;
-        }
-
-        // Load user's completions
-        static $completions;
-        if (!isset($completions)) {
-            $completions = completion_info::get_all_courses($this->plan->userid);
-        }
-
-        // Look up 'live' value from course completions table
-        if (array_key_exists($item->courseid, $completions)) {
-            return completion_completion::get_status($completions[$item->courseid]);
+        // get the completion string, if there is a record
+        if (array_key_exists($item->coursecompletion,
+            $COMPLETION_STATUS)) {
+            return $COMPLETION_STATUS[$item->coursecompletion];
         } else {
             // No completion record
             return false;

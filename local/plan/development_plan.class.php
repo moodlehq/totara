@@ -1261,9 +1261,15 @@ class development_plan {
                         update_record('dp_plan_competency_assign', $snap);
                     }
                 }
-
-
-                // @todo: Set course completion snapshots
+                if ($assigned = $this->get_component('course')->get_assigned_items()) {
+                    // Set course completion snapshots
+                    foreach ($assigned as $a) {
+                        $snap = new stdClass;
+                        $snap->id = $a->id;
+                        $snap->completionstatus = !empty($a->coursecompletion) ? $a->coursecompletion : null;
+                        update_record('dp_plan_course_assign', $snap);
+                    }
+                }
                 break;
             default:
                 break;
