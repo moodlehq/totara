@@ -255,12 +255,12 @@ function _private_get_unique_name($tablename) {
         // need to shorten enough so everything fits in 30 chars
         // assuming:
         // u_ => 2 chars for oracle unittest prefix
-        // _100 => 4 chars for padding from this function
+        // _99 => 3 chars for padding from this function
         // _id_seq => 7 chars for suffix added by for sequences and triggers
         //
-        // that leaves 30 - 2 - 4 - 7 = 17 characters for tablename
-        // use 15, just to be safe ;-)
-        $shortname = substr($tablename, 0, 15).'_'.$padded;
+        // that leaves 30 - 2 - 3 - 7 = 18 characters for tablename
+        // use 16, just to be safe ;-)
+        $shortname = substr($tablename, 0, 16).'_'.$padded;
 
         if (!isset($map_shortname[$shortname])) {
             $map_tablename[$tablename] = $shortname;
