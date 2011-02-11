@@ -23,9 +23,8 @@ mech.submit()
 
 print 'Run unit tests'
 tests = mech.open(rooturl+'admin/report/unittest/xml.php')
-results = tests.read()
 
 print 'Write to file'
-f = file('build/logs/simpletest-results.xml', 'w')
-f.write(results) # write to a test file
+f = open('build/logs/simpletest-results.xml', 'w')
+print >> f, tests.read()
 f.close()
