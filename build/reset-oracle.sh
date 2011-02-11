@@ -24,8 +24,8 @@ set pages 1000 lines 1000
 
 spool /tmp/truncate_moodle.sql
 
-select 'alter table ' || table_name || ' drop primary key cascade;' from user_tables where constraint_type = 'P';
-select 'alter table ' || table_name || ' drop constraint ' || contraint_name || ' cascade;' from user_tables where contraint_type = 'U';
+select 'alter table ' || table_name || ' drop primary key cascade;' from user_tables;
+select 'alter table ' || table_name || ' drop constraint ' || contraint_name || ' cascade;' from user_tables;
 select 'drop table ' || table_name || ' cascade constraints;' from user_tables;
 select 'drop sequence ' || sequence_name || ' ;' from user_sequences;
 
