@@ -6,6 +6,7 @@ require_once($CFG->dirroot.'/local/reportbuilder/lib.php');
 
 $format = optional_param('format','', PARAM_TEXT); // export format
 
+require_login();
 
 $strheading = get_string('searchcourses', 'local');
 $shortname = 'findcourses';
