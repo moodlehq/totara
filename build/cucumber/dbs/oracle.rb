@@ -44,7 +44,7 @@ def count_records table_name
   if result[0][0].nil? then
     0
   else
-    result[0][0]
+    result[0][0].to_i
   end
 end
 
@@ -54,7 +54,7 @@ def get_field table_name, field_name, element, value
   if result[0][0].nil? then
     nil
   else
-    result[0][0]
+    result[0][0].to_i
   end
 end
 
@@ -65,7 +65,7 @@ def get_next_sequence table_name, field_name
   if result[0][0].nil? then
     1
   else
-    result[0][0]
+    result[0][0].to_i
   end
 end
 
@@ -76,6 +76,6 @@ def get_current_sequence table_name, field_name
   if result[0][0].nil? then
     1
   else
-    result[0][0]
+    result[0][0].to_i
   end
 end
