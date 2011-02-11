@@ -693,8 +693,25 @@ function facetoface_delete_session($session)
 
 /**
  * Subsitute the placeholders in email templates for the actual data
+ *
+ * Expects the following parameters in the $data object:
+ * - datetimeknown
+ * - details
+ * - discountcost
+ * - duration
+ * - normalcost
+ * - sessiondates
+ *
+ * @access  public
+ * @param   string  $msg            Email message
+ * @param   string  $facetofacename F2F name
+ * @param   int     $reminderperiod Num business days before event to send reminder
+ * @param   obj     $user           The subject of the message
+ * @param   obj     $data           Session data
+ * @param   int     $sessionid      Session ID
+ * @return  string
  */
-function facetoface_email_substitutions($msg, $facetofacename, $reminderperiod, $user, $session, $sessionid)
+function facetoface_email_substitutions($msg, $facetofacename, $reminderperiod, $user, $data, $sessionid)
 {
     global $CFG;
 
@@ -702,14 +719,14 @@ function facetoface_email_substitutions($msg, $facetofacename, $reminderperiod, 
         return '';
     }
 
-    if ($session->datetimeknown) {
+    if ($data->datetimeknown) {
         // Scheduled session
-        $sessiondate = userdate($session->sessiondates[0]->timestart, get_string('strftimedate'));
-        $starttime = userdate($session->sessiondates[0]->timestart, get_string('strftimetime'));
-        $finishtime = userdate($session->sessiondates[0]->timefinish, get_string('strftimetime'));
+        $sessiondate = userdate($data->sessiondates[0]->timestart, get_string('strftimedate'));
+        $starttime = userdate($data->sessiondates[0]->timestart, get_string('strftimetime'));
+        $finishtime = userdate($data->sessiondates[0]->timefinish, get_string('strftimetime'));
 
         $alldates = '';
-        foreach ($session->sessiondates as $date) {
+        foreach ($data->sessiondates as $date) {
             if ($alldates != '') {
                 $alldates .= "\n";
             }
@@ -726,37 +743,37 @@ function facetoface_email_substitutions($msg, $facetofacename, $reminderperiod, 
         $finishtime  = get_string('unknowntime', 'facetoface');
     }
 
-    $msg = str_replace(get_string('placeholder:facetofacename', 'facetoface'), $facetofacename,$msg);
-    $msg = str_replace(get_string('placeholder:firstname', 'facetoface'), $user->firstname,$msg);
-    $msg = str_replace(get_string('placeholder:lastname', 'facetoface'), $user->lastname,$msg);
-    $msg = str_replace(get_string('placeholder:cost', 'facetoface'), facetoface_cost($user->id, $sessionid, $session, false),$msg);
-    $msg = str_replace(get_string('placeholder:alldates', 'facetoface'), $alldates,$msg);
-    $msg = str_replace(get_string('placeholder:sessiondate', 'facetoface'), $sessiondate,$msg);
-    $msg = str_replace(get_string('placeholder:starttime', 'facetoface'), $starttime,$msg);
-    $msg = str_replace(get_string('placeholder:finishtime', 'facetoface'), $finishtime,$msg);
-    $msg = str_replace(get_string('placeholder:duration', 'facetoface'), format_duration($session->duration),$msg);
-    if (empty($session->details)) {
-        $msg = str_replace(get_string('placeholder:details', 'facetoface'), '',$msg);
+    $msg = str_replace(get_string('placeholder:facetofacename', 'facetoface'), $facetofacename, $msg);
+    $msg = str_replace(get_string('placeholder:firstname', 'facetoface'), $user->firstname, $msg);
+    $msg = str_replace(get_string('placeholder:lastname', 'facetoface'), $user->lastname, $msg);
+    $msg = str_replace(get_string('placeholder:cost', 'facetoface'), facetoface_cost($user->id, $sessionid, $data, false), $msg);
+    $msg = str_replace(get_string('placeholder:alldates', 'facetoface'), $alldates, $msg);
+    $msg = str_replace(get_string('placeholder:sessiondate', 'facetoface'), $sessiondate, $msg);
+    $msg = str_replace(get_string('placeholder:starttime', 'facetoface'), $starttime, $msg);
+    $msg = str_replace(get_string('placeholder:finishtime', 'facetoface'), $finishtime, $msg);
+    $msg = str_replace(get_string('placeholder:duration', 'facetoface'), format_duration($data->duration), $msg);
+    if (empty($data->details)) {
+        $msg = str_replace(get_string('placeholder:details', 'facetoface'), '', $msg);
     }
     else {
-        $msg = str_replace(get_string('placeholder:details', 'facetoface'), html_to_text($session->details),$msg);
+        $msg = str_replace(get_string('placeholder:details', 'facetoface'), html_to_text($data->details), $msg);
     }
-    $msg = str_replace(get_string('placeholder:reminderperiod', 'facetoface'), $reminderperiod,$msg);
+    $msg = str_replace(get_string('placeholder:reminderperiod', 'facetoface'), $reminderperiod, $msg);
 
     // Replace more meta data
-    $msg = str_replace(get_string('placeholder:attendeeslink', 'facetoface'), $CFG->wwwroot.'/mod/facetoface/attendees.php?s='.$session->id, $msg);
+    $msg = str_replace(get_string('placeholder:attendeeslink', 'facetoface'), $CFG->wwwroot.'/mod/facetoface/attendees.php?s='.$sessionid, $msg);
 
     // Custom session fields (they look like "session:shortname" in the templates)
     $customfields = facetoface_get_session_customfields();
-    $customdata = get_records('facetoface_session_data', 'sessionid', $session->id, '', 'fieldid, data');
+    $customdata = get_records('facetoface_session_data', 'sessionid', $sessionid, '', 'fieldid, data');
     foreach ($customfields as $field) {
         $placeholder = "[session:{$field->shortname}]";
-        $data = '';
+        $value = '';
         if (!empty($customdata[$field->id])) {
-            $data = $customdata[$field->id]->data;
+            $value = $customdata[$field->id]->data;
         }
 
-        $msg = str_replace($placeholder, $data, $msg);
+        $msg = str_replace($placeholder, $value, $msg);
     }
 
     return $msg;
