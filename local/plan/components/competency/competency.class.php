@@ -108,8 +108,8 @@ class dp_competency_component extends dp_base_component {
                 {$CFG->prefix}comp c
                 ON c.id = a.competencyid
             LEFT JOIN
-                (SELECT itemid1 " . sql_as() . " assignid,
-                    count(id) " . sql_as() . " count
+                (SELECT itemid1 AS assignid,
+                    count(id) AS count
                     FROM {$CFG->prefix}dp_plan_component_relation
                     WHERE component1='competency' AND
                         component2='course'
@@ -232,8 +232,8 @@ class dp_competency_component extends dp_base_component {
             return array();
         }
 
-        $sql = 'SELECT cei.id, cei.competencyid, cei.iteminstance ' .
-            sql_as() . " courseid, c.fullname
+        $sql = 'SELECT cei.id, cei.competencyid, cei.iteminstance AS ' .
+            " courseid, c.fullname
             FROM {$CFG->prefix}comp_evidence_items cei
             LEFT JOIN {$CFG->prefix}course c ON
                 cei.iteminstance = c.id
@@ -333,9 +333,9 @@ class dp_competency_component extends dp_base_component {
             $this->get_setting('prioritymode') == DP_PRIORITY_REQUIRED);
         $priorityscaleid = ($this->get_setting('priorityscale')) ? $this->get_setting('priorityscale') : -1;
 
-        $select = 'SELECT ca.*, c.fullname, csv.name ' . sql_as() .
-            ' status, csv.sortorder ' . sql_as() . ' profsort, psv.name ' .
-            sql_as() . ' priorityname ';
+        $select = 'SELECT ca.*, c.fullname, csv.name AS ' .
+            ' status, csv.sortorder AS profsort, psv.name ' .
+            ' AS priorityname ';
 
         // get competencies assigned to this plan
         $from = "FROM {$CFG->prefix}dp_plan_competency_assign ca
@@ -533,7 +533,7 @@ class dp_competency_component extends dp_base_component {
         $duedateenabled = $this->get_setting('duedatemode') != DP_DUEDATES_NONE;
 
         // get competency assignment and competency details
-        $sql = 'SELECT ca.*, comp.*, psv.name ' . sql_as() . ' priorityname ' .
+        $sql = 'SELECT ca.*, comp.*, psv.name AS priorityname ' .
             "FROM {$CFG->prefix}dp_plan_competency_assign ca
                 LEFT JOIN {$CFG->prefix}dp_priority_scale_value psv
                     ON (ca.priority = psv.id

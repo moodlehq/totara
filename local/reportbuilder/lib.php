@@ -1577,7 +1577,7 @@ var comptree = [' . implode(', ', $comptrees) . '];
         if($countonly && !$this->grouped) {
             $select = "SELECT COUNT(*) ";
         } else {
-            $baseid = ($this->grouped) ? "min(base.id) " . sql_as() . " id,\n    " : "base.id,\n    ";
+            $baseid = ($this->grouped) ? "min(base.id) AS id,\n    " : "base.id,\n    ";
             $select = "SELECT $baseid ".implode($fields,",\n     ")." \n";
         }
 

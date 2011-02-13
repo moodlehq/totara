@@ -85,8 +85,8 @@ class dp_objective_component extends dp_base_component {
             FROM
                 {$CFG->prefix}dp_plan_objective a
             LEFT JOIN
-                (SELECT itemid2 " . sql_as() . " assignid,
-                    count(id) " . sql_as() . " count
+                (SELECT itemid2 AS assignid,
+                    count(id) AS count
                     FROM {$CFG->prefix}dp_plan_component_relation
                     WHERE component2='objective' AND
                         component1='course'
@@ -167,8 +167,8 @@ class dp_objective_component extends dp_base_component {
         $objectivename = get_string('objective', 'local_plan');
 
         // Get data
-        $select = 'SELECT po.*, po.fullname '.sql_as().' objname,
-            osv.name '.sql_as().' proficiency, psv.name '.sql_as().' priorityname ';
+        $select = 'SELECT po.*, po.fullname AS objname,
+            osv.name AS proficiency, psv.name AS priorityname ';
         $from = "FROM {$CFG->prefix}dp_plan_objective po
             LEFT JOIN {$CFG->prefix}dp_objective_scale_value osv ON po.scalevalueid = osv.id
             LEFT JOIN {$CFG->prefix}dp_priority_scale_value psv
@@ -996,7 +996,6 @@ class dp_objective_component extends dp_base_component {
         $duedateenabled = $this->get_setting('duedatemode') != DP_DUEDATES_NONE;
         $requiresapproval = $this->get_setting('updateobjective') == DP_PERMISSION_REQUEST;
 
-        $as = sql_as();
         $sql = <<<SQL
             select
                 o.id,
@@ -1005,8 +1004,8 @@ class dp_objective_component extends dp_base_component {
                 o.approved,
                 o.duedate,
                 o.priority,
-                psv.name {$as} priorityname,
-                osv.name {$as} profname,
+                psv.name AS priorityname,
+                osv.name AS profname,
                 osv.achieved
             from
                 {$CFG->prefix}dp_plan_objective o

@@ -388,12 +388,12 @@ function dp_display_plans($userid, $statuses=array(DP_PLAN_STATUSAPPROVED), $col
 
     // Construct sql query
     $count = 'SELECT COUNT(*) ';
-    $select = 'SELECT p.id, p.name '.sql_as().' "name_'.$statuses_undrsc.'",';
+    $select = 'SELECT p.id, p.name AS "name_'.$statuses_undrsc.'",';
     foreach ($cols as $c) {
         if ($c == 'completed') {
             continue;
         }
-        $select .= 'p.'.$c.' '.sql_as().' "'.$c.'_'.$statuses_undrsc.'",';
+        $select .= 'p.'.$c.' AS "'.$c.'_'.$statuses_undrsc.'",';
     }
     if (in_array('completed', $cols)) {
         $select .= "(SELECT timemodified FROM {$CFG->prefix}dp_plan_history ph WHERE ph.planid = p.id ORDER BY id DESC LIMIT 1)

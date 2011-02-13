@@ -262,11 +262,11 @@ class rb_column {
         $fields = array();
         if($this->grouping == 'none') {
             if($field !== null) {
-                $fields[] = $field . ' ' . sql_as() . " {$type}_{$value}";
+                $fields[] = $field . " AS {$type}_{$value}";
             }
             if($extrafields !== null) {
                 foreach($extrafields as $alias => $extrafield) {
-                    $fields[] = "$extrafield " . sql_as() . " $alias";
+                    $fields[] = "$extrafield AS $alias";
                 }
             }
         } else {
@@ -279,8 +279,7 @@ class rb_column {
             }
             // apply grouping function and ignore extrafields
             if($field !== null) {
-                $fields[] = $src->$groupfunc($field)  . ' ' . sql_as() .
-                    " {$type}_{$value}";
+                $fields[] = $src->$groupfunc($field)  . " AS {$type}_{$value}";
             }
         }
         return $fields;

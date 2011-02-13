@@ -484,7 +484,7 @@ abstract class dp_base_component {
         }
 
         // find all matching relations
-        $sql = "SELECT id, $searchedid " . sql_as() . " itemid
+        $sql = "SELECT id, $searchedid AS itemid
             FROM {$CFG->prefix}dp_plan_component_relation
             WHERE $matchedcomp = '$thiscomponent' AND
                 $matchedid = $id AND
@@ -546,7 +546,7 @@ abstract class dp_base_component {
         }
 
         // find all matching relations in db
-        $sql = "SELECT id, $searchedid " . sql_as() . " itemid
+        $sql = "SELECT id, $searchedid AS itemid
             FROM {$CFG->prefix}dp_plan_component_relation
             WHERE $matchedcomp = '$thiscomponent' AND
                 $matchedid = $thiscomponentid AND
@@ -613,8 +613,8 @@ abstract class dp_base_component {
         }
 
         // @todo doesn't current exclude unapproved items
-        $sql = "SELECT $matchedid " . sql_as() . " id,
-                COUNT($searchedid) " . sql_as() . " items
+        $sql = "SELECT $matchedid AS id,
+                COUNT($searchedid) AS items
             FROM {$CFG->prefix}dp_plan_component_relation
             WHERE $matchedcomp = '$thiscomponent' AND
                   $searchedcomp = '$componentrequired'

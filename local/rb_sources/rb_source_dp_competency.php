@@ -98,8 +98,8 @@ class rb_source_dp_competency extends rb_base_source {
         $joinlist[] = new rb_join(
                 'linkedcourses',
                 'LEFT',
-                '(SELECT itemid1 ' . sql_as() . ' compassignid,
-                    count(id) ' . sql_as() . " count
+                "(SELECT itemid1 AS compassignid,
+                    count(id) AS count
                     FROM {$CFG->prefix}dp_plan_component_relation
                     WHERE component1='competency' AND component2='course'
                     GROUP BY itemid1)",

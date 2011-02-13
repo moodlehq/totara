@@ -274,7 +274,7 @@ class dp_course_component extends dp_base_component {
             $this->get_setting('prioritymode') == DP_PRIORITY_REQUIRED);
         $priorityscaleid = ($this->get_setting('priorityscale')) ? $this->get_setting('priorityscale') : -1;
 
-        $select = 'SELECT ca.*, c.fullname, c.icon, psv.name ' . sql_as() . ' priorityname ';
+        $select = 'SELECT ca.*, c.fullname, c.icon, psv.name AS priorityname ';
 
         // get courses assigned to this plan
         // and related details
@@ -397,7 +397,7 @@ class dp_course_component extends dp_base_component {
         $priorityenabled = $this->get_setting('prioritymode') != DP_PRIORITY_NONE;
         $duedateenabled = $this->get_setting('duedatemode') != DP_DUEDATES_NONE;
 
-        $sql = 'SELECT ca.*, course.*, psv.name ' . sql_as() . ' priorityname ' .
+        $sql = 'SELECT ca.*, course.*, psv.name AS priorityname ' .
             "FROM {$CFG->prefix}dp_plan_course_assign ca
                 LEFT JOIN {$CFG->prefix}dp_priority_scale_value psv
                     ON (ca.priority = psv.id
