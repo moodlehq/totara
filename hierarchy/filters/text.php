@@ -97,7 +97,7 @@ class hierarchy_filter_text extends hierarchy_filter_type {
             case 4: // ends with
                 $res = "$ilike '%$value'"; break;
             case 5: // empty
-                $res = "='' OR ($field) IS NULL )";
+                $res = "$ilike '' OR ($field) IS NULL )";
                 $field = "($field"; break;
             default:
                 return '';

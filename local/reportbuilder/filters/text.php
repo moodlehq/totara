@@ -112,7 +112,7 @@ class filter_text extends filter_type {
             case 4: // ends with
                 $res = "$ilike '%$value'"; break;
             case 5: // empty - may also be null
-                return "($query = '' OR ($query) IS NULL )";
+                return "($query $ilike '' OR ($query) IS NULL )";
             default:
                 return '';
         }

@@ -143,7 +143,7 @@ class hierarchy_filter_customfield extends hierarchy_filter_type {
             case 4: // ends with
                 $where = "data $ilike '%$value'"; break;
             case 5: // empty
-                $where = "data=''"; break;
+                $where = "data $ilike ''"; break;
             case 6: // is not defined
                 $op = " NOT IN "; break;
             case 7: // is defined
