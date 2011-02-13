@@ -21,8 +21,8 @@
             $probstr .= '<ul>';
             $catlist = join(array_keys($updates), ',');
             //get info about cateogries and no of questions used outside category's course
-            $categories = get_records_sql('SELECT qc.*, c.fullname as coursename FROM '.$CFG->prefix.'question_categories as qc, '
-                        .$CFG->prefix.'course as c WHERE qc.course = c.id AND qc.id IN ('.$catlist.')');
+            $categories = get_records_sql('SELECT qc.*, c.fullname as coursename FROM '.$CFG->prefix.'question_categories qc, '
+                        .$CFG->prefix.'course c WHERE qc.course = c.id AND qc.id IN ('.$catlist.')');
             foreach ($updates as $id => $publish){
                 $categories[$id]->caturl = "$CFG->wwwroot/question/category.php?sesskey=".sesskey().
                             "&amp;edit=$id&amp;courseid=".$categories[$id]->course;

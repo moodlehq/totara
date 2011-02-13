@@ -119,8 +119,8 @@ function data_get_records($database_id, $typematch = '*', $recordid = 0) {
         SELECT
            c.*
         FROM 
-            {$CFG->prefix}data_content as c,
-            {$CFG->prefix}data_records as r
+            {$CFG->prefix}data_content c,
+            {$CFG->prefix}data_records r
         WHERE
             c.recordid = r.id AND
             r.dataid = {$database_id} 
@@ -164,8 +164,8 @@ function data_get_comments($database_id) {
           c.modified,
           r.dataid
        FROM
-          {$CFG->prefix}data_comments as c,
-          {$CFG->prefix}data_records as r 
+          {$CFG->prefix}data_comments c,
+          {$CFG->prefix}data_records r
        WHERE
           c.recordid = r.id
     ";

@@ -185,8 +185,8 @@ class hierarchy {
         global $CFG;
 
         $sql = "SELECT d.*, f.*
-                FROM {$CFG->prefix}{$this->shortprefix}_depth_info_data AS d
-                INNER JOIN {$CFG->prefix}{$this->shortprefix}_depth_info_field AS f ON d.fieldid = f.id
+                FROM {$CFG->prefix}{$this->shortprefix}_depth_info_data d
+                INNER JOIN {$CFG->prefix}{$this->shortprefix}_depth_info_field f ON d.fieldid = f.id
                 WHERE d.competencyid = {$competencyid}
                 ORDER BY f.sortorder";
 

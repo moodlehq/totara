@@ -3639,8 +3639,8 @@ function get_course_custom_fields($courseid) {
     global $CFG;
 
     $sql = "SELECT d.*, f.*
-            FROM {$CFG->prefix}course_info_data AS d
-            INNER JOIN {$CFG->prefix}course_info_field AS f ON d.fieldid = f.id
+            FROM {$CFG->prefix}course_info_data d
+            INNER JOIN {$CFG->prefix}course_info_field f ON d.fieldid = f.id
             WHERE d.courseid = {$courseid}
             ORDER BY f.sortorder";
 

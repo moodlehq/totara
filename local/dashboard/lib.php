@@ -477,9 +477,9 @@ function local_dashboard_get_dashboards() {
     $sql = "SELECT d.*, r.name AS rolename,
             (SELECT COUNT(did.id) FROM {$CFG->prefix}dashb_instance_dashlet did
                 WHERE dashb_instance_id = di.id AND did.visible=1) AS active_dashlets
-            FROM {$CFG->prefix}dashb AS d
-            INNER JOIN {$CFG->prefix}role AS r ON d.roleid = r.id
-            INNER JOIN {$CFG->prefix}dashb_instance AS di ON d.id = di.dashb_id
+            FROM {$CFG->prefix}dashb d
+            INNER JOIN {$CFG->prefix}role r ON d.roleid = r.id
+            INNER JOIN {$CFG->prefix}dashb_instance di ON d.id = di.dashb_id
             WHERE di.userid = 0";
 
     return get_records_sql($sql);
