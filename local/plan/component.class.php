@@ -310,7 +310,6 @@ abstract class dp_base_component {
 
         $table->set_attribute('class', 'logtable generalbox dp-plan-component-items');
         $table->sortable(true);
-        $table->no_sorting('progress');
         $table->no_sorting('status');
         $table->no_sorting('actions');
         $table->setup();

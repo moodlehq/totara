@@ -91,10 +91,16 @@ class dp_course_component extends dp_base_component {
         if($this->plan->is_complete()) {
             // Use the 'snapshot' status value
             $completion_field = 'a.completionstatus AS coursecompletion,';
+            // save same value again with a new alias so the column
+            // can be sorted
+            $completion_field .= 'a.completionstatus AS progress,';
             $completion_joins = '';
         } else {
             // Use the 'live' status value
             $completion_field = 'cc.status AS coursecompletion,';
+            // save same value again with a new alias so the column
+            // can be sorted
+            $completion_field .= 'a.completionstatus AS progress,';
             $completion_joins = "LEFT JOIN
                 {$CFG->prefix}course_completions cc
                 ON ( cc.course = a.courseid
