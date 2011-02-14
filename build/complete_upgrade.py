@@ -22,7 +22,7 @@ mech["password"] = "passworD1!"
 mech.submit()
 
 print 'Hit notifications page'
-url = rooturl+'/admin/index.php'
+url = rooturl+'admin/index.php'
 count = 0
 while 1:
     count += 1
