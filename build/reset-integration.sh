@@ -25,6 +25,10 @@ chmod 777 ../moodledata
 echo "Reset apache logs";
 rm /var/log/sitelogs/totara-integration/access.log
 rm /var/log/sitelogs/totara-integration/error.log
+touch /var/log/sitelogs/totara-integration/access.log
+touch /var/log/sitelogs/totara-integration/error.log
+chmod 666 /var/log/sitelogs/totara-integration/access.log
+chmod 666 /var/log/sitelogs/totara-integration/error.log
 
 echo "Initialize installation";
 /usr/bin/php admin/cliupgrade.php \
