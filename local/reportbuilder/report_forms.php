@@ -341,6 +341,36 @@ class report_builder_edit_columns_form extends moodleform {
             $mform->addElement('html','</td><td>&nbsp;</td></tr>');
             $mform->addElement('html','</table></div>');
 
+
+            // if the report is referencing columns that don't exist in the
+            // source, display them here so the user has the option to delete
+            // them
+            if(count($report->badcolumns)) {
+                $mform->addElement('header', 'badcols', get_string('badcolumns', 'local_reportbuilder'));
+                $mform->addElement('html','<p>'.get_string('badcolumnsdesc','local_reportbuilder').'</p>');
+
+                $mform->addElement('html',
+                    '<div class="reportbuilderform"><table><tr><th>' .
+                    get_string('type','local_reportbuilder') . '</th><th>' .
+                    get_string('value', 'local_reportbuilder') . '</th><th>' .
+                    get_string('heading','local_reportbuilder') . '</th><th>' .
+                    get_string('options','local_reportbuilder'). '</th><tr>');
+                foreach($report->badcolumns as $bad) {
+
+                    $mform->addElement('html','<tr><td>' . $bad['type'] .
+                        '</td><td>' . $bad['value'] .
+                        '</td><td>' .$bad['heading'] . '</td><td>' .
+                        '<a href="' . $CFG->wwwroot .
+                        '/local/reportbuilder/columns.php?d=1&amp;id=' . $id .
+                        '&amp;cid=' . $bad['id'] . '" title="' . $strdelete .
+                        '"><img src="' . $CFG->pixpath .
+                        '/t/delete.gif" class="iconsmall" alt="' . $strdelete
+                        . '" /></a></td></tr>');
+                }
+                $mform->addElement('html','</table></div>');
+            }
+
+
             $mform->addElement('header','sorting',get_string('sorting','local_reportbuilder'));
             $mform->setHelpButton('sorting', array('reportbuildersorting',get_string('sorting','local_reportbuilder'),'local_reportbuilder'));
 

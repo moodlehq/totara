@@ -88,7 +88,7 @@ class reportbuilder {
     public $_id, $recordsperpage, $defaultsortcolumn, $defaultsortorder;
     private $_joinlist, $_base, $_params, $_sid;
     private $_paramoptions, $_embeddedparams, $_fullcount, $_filteredcount;
-    public $src, $grouped, $reportfor;
+    public $src, $grouped, $reportfor, $badcolumns;
 
     /**
      * Constructor for reportbuilder object
@@ -152,6 +152,7 @@ class reportbuilder {
             $this->_sid = $sid;
             // assume no grouping initially
             $this->grouped = false;
+            $this->badcolumns = array();
 
             // pull in data for this report from the source
             $this->_base = $this->src->base . ' base';
@@ -637,6 +638,13 @@ var comptree = [' . implode(', ', $comptrees) . '];
                     }
                 }
                 catch (ReportBuilderException $e) {
+                    // save list of bad columns
+                    $this->badcolumns[] = array(
+                        'id' => $column->id,
+                        'type' => $column->type,
+                        'value' => $column->value,
+                        'heading' => $column->heading
+                    );
                     trigger_error($e->getMessage(), E_USER_WARNING);
                 }
             }
