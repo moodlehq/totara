@@ -43,12 +43,7 @@ mkdir ../moodledata
 chmod 777 ../moodledata
 
 echo "Reset apache logs";
-rm /var/log/sitelogs/totara-oracle/access.log
-rm /var/log/sitelogs/totara-oracle/error.log
-touch /var/log/sitelogs/totara-oracle/access.log
-touch /var/log/sitelogs/totara-oracle/error.log
-chmod 666 /var/log/sitelogs/totara-oracle/access.log
-chmod 666 /var/log/sitelogs/totara-oracle/error.log
+sudo /usr/local/bin/clear_apache_logs.sh totara-oracle
 
 echo "Initialize installation";
 /usr/bin/php admin/cliupgrade.php \
