@@ -15,3 +15,13 @@ xsltproc build/simpletest_to_junit.xsl build/logs/simpletest-results.xml > build
 
 echo "STEP 3: Run cucumber tests (disabled link checker tests)";
 cucumber -p $2 --format junit --out build/logs/xml/
+
+if [ $2 = 'pgsql' ]
+then
+    echo "STEP 4: Generate database performance report"
+    mkdir -p build/logs/perf
+    cd build/logs/perf
+    sudo pgfouine -file /var/log/postgresql/postgres.log -top 40 -report queries.html=overall,bytype,slowest,n-mosttime,n-mostfrequent,n-slowestaverage -report hourly.html=overall,hourly -report errors.html=overall,n-mostfrequenterrors -format html-with-graphs
+    cd -
+fi
+
