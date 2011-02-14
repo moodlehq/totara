@@ -1153,6 +1153,11 @@ if ( file_exists(dirname(dirname(__FILE__)) . '/config.php')) {
     }
     upgrade_plugins('report', (empty($CFG->admin) ? 'admin' : $CFG->admin) .'/report', '');
 
+    if ( $verbose > CLI_NO ) {
+        print_heading(get_string('upgradinglocalplugin','install'),'',1);
+    }
+    upgrade_plugins('local', 'local', '');
+
     /// just make sure upgrade logging is properly terminated
     upgrade_log_finish();
 
