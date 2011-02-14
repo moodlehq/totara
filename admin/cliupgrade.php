@@ -631,6 +631,10 @@ if (!file_exists(dirname(dirname(__FILE__)) . '/config.php')) {
     $str .= '$CFG->directorypermissions = 00777;  // try 02777 on a server in Safe Mode'."\r\n";
     $str .= "\r\n";
 
+    $str .= '$CFG->debug        = 38911;'."\r\n";
+    $str .= '$CFG->debugdisplay = 1;'."\r\n";
+    $str .= "\r\n";
+
     $str .= 'require_once("$CFG->dirroot/lib/setup.php");'."\r\n";
     $str .= '// MAKE SURE WHEN YOU EDIT THIS FILE THAT THERE ARE NO SPACES, BLANK LINES,'."\r\n";
     $str .= '// RETURNS, OR ANYTHING ELSE AFTER THE TWO CHARACTERS ON THE NEXT LINE.'."\r\n";
