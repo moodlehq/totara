@@ -11,8 +11,6 @@ require_once ($CFG->dirroot . '/hierarchy/backuplib.php');
 require_once ($CFG->libdir . '/adminlib.php');
 require_once ('hierarchybackup_forms.php');
 
-admin_externalpage_setup('hierarchybackup');
-
 require_login();
 if (!has_capability('moodle/site:backup', get_context_instance(CONTEXT_SYSTEM))) {
     error("You need the moodle/site:backup capability to use this page.", "$CFG->wwwroot/login/index.php");
@@ -105,7 +103,11 @@ else if ($fromform = $selectform->get_data()) {
     // first visit to page
 }
 
-admin_externalpage_print_header();
+$pagetitle = format_string($strhierarchybackup);
+$navlinks = array();
+
+$navigation = build_navigation($navlinks);
+print_header($strhierarchybackup, $pagetitle, $navigation);
 
 //Print form
 print_heading(format_string("$strhierarchybackup"));
@@ -116,5 +118,4 @@ if (!$fromform) {
 
 //Print footer
 print_footer();
-
 

@@ -6,8 +6,6 @@ require_once($CFG->dirroot . '/backup/lib.php');
 require_once ($CFG->libdir . '/adminlib.php');
 //TODO print headers etc
 
-admin_externalpage_setup('hierarchybackup');
-
 require_login();
 if (!has_capability('moodle/site:backup', get_context_instance(CONTEXT_SYSTEM))) {
     error("You need the moodle/site:backup capability to use this page.", "$CFG->wwwroot/login/index.php");
@@ -26,7 +24,13 @@ $backupfilename = required_param('backupfilename', PARAM_TEXT);
 
 $status = true;
 
-admin_externalpage_print_header();
+
+$strhierarchybackup = get_string('hierarchybackup','hierarchy');
+$pagetitle = format_string($strhierarchybackup);
+$navlinks = array();
+
+$navigation = build_navigation($navlinks);
+print_header($strhierarchybackup, $pagetitle, $navigation);
 
 if(!is_array($frameworks)) {
     print_error('No frameworks selected');
