@@ -208,8 +208,6 @@ function load_test_table($tablename, $data, $db = null, $strlen = 255, $empty = 
         $coldefs[] = "$colname $type";
     }
 
-    // Attempt to drop the table first just in case
-    remove_test_table($tablename, $db);
     _private_execute_sql("CREATE TABLE $tablename (" . join(',', $coldefs) . ');', $db);
 
     if ($CFG->dbfamily == 'oracle') {
