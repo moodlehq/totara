@@ -9,11 +9,11 @@ chmod 755 /var/lib/hudson
 echo "Delete config.php";
 rm config.php
 
-echo "Drop old database t1-hudsontesting-nightly";
-dropdb t1-hudsontesting-nightly
+echo "Drop old database t1-hudsontesting";
+dropdb t1-hudsontesting
 
-echo "Create new database t1-hudsontesting-nightly";
-createdb -O hudson t1-hudsontesting-nightly
+echo "Create new database t1-hudsontesting";
+createdb -O hudson t1-hudsontesting
 
 echo "Delete old moodledata";
 rm -Rf ../moodledata/
@@ -23,18 +23,17 @@ mkdir ../moodledata
 chmod 777 ../moodledata
 
 echo "Reset apache logs";
-rm ../moodle_error.log
-touch ../moodle_error.log
-chmod 777 ../moodle_error.log
+rm /var/log/sitelogs/totara-integration/access.log
+rm /var/log/sitelogs/totara-integration/error.log
 
 echo "Initialize installation";
 /usr/bin/php admin/cliupgrade.php \
       --lang=en_utf8 \
-      --webaddr="http://brumbies.wgtn.cat-it.co.nz/totara-nightly-hudson" \
-      --moodledir="/var/lib/hudson/jobs/Totara-PostgreSQL/workspace" \
-      --datadir="/var/lib/hudson/jobs/Totara-PostgreSQL/moodledata" \
+      --webaddr="http://totara-integration.hudson.brumbies.wgtn.cat-it.co.nz" \
+      --moodledir="/var/lib/hudson/jobs/Totara-Integration/workspace" \
+      --datadir="/var/lib/hudson/jobs/Totara-Integration/moodledata" \
       --dbtype="postgres7" \
-      --dbname="t1-hudsontesting-nightly" \
+      --dbname="t1-hudsontesting" \
       --dbhost="localhost" \
       --dbuser="hudson" \
       --dbpass="password" \
@@ -52,4 +51,4 @@ echo "Initialize installation";
       --interactivelevel=0
 
 echo "Hit notifications page to complete installation";
-python build/complete_upgrade.py http://brumbies.wgtn.cat-it.co.nz/totara-nightly-hudson/
+python build/complete_upgrade.py http://totara-integration.hudson.brumbies.wgtn.cat-it.co.nz/

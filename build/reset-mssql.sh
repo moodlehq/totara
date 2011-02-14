@@ -19,14 +19,13 @@ mkdir ../moodledata
 chmod 777 ../moodledata
 
 echo "Reset apache logs";
-rm ../moodle_error.log
-touch ../moodle_error.log
-chmod 777 ../moodle_error.log
+rm /var/log/sitelogs/totara-mssql/access.log
+rm /var/log/sitelogs/totara-mssql/error.log
 
 echo "Initialize installation";
 /usr/bin/php admin/cliupgrade.php \
       --lang=en_utf8 \
-      --webaddr="http://brumbies.wgtn.cat-it.co.nz/totara-mssql-hudson" \
+      --webaddr="http://totara-mssql.hudson.brumbies.wgtn.cat-it.co.nz" \
       --moodledir="/var/lib/hudson/jobs/Totara-MSSQL/workspace" \
       --datadir="/var/lib/hudson/jobs/Totara-MSSQL/moodledata" \
       --dbtype="mssql_n" \
@@ -48,4 +47,4 @@ echo "Initialize installation";
       --interactivelevel=0
 
 echo "Hit notifications page to complete installation";
-python build/complete_upgrade.py http://brumbies.wgtn.cat-it.co.nz/totara-mssql-hudson/
+python build/complete_upgrade.py http://totara-mssql.hudson.brumbies.wgtn.cat-it.co.nz/

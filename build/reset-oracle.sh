@@ -43,14 +43,13 @@ mkdir ../moodledata
 chmod 777 ../moodledata
 
 echo "Reset apache logs";
-rm ../moodle_error.log
-touch ../moodle_error.log
-chmod 777 ../moodle_error.log
+rm /var/log/sitelogs/totara-oracle/access.log
+rm /var/log/sitelogs/totara-oracle/error.log
 
 echo "Initialize installation";
 /usr/bin/php admin/cliupgrade.php \
       --lang=en_utf8 \
-      --webaddr="http://brumbies.wgtn.cat-it.co.nz/totara-oracle-hudson" \
+      --webaddr="http://totara-oracle.hudson.brumbies.wgtn.cat-it.co.nz" \
       --moodledir="/var/lib/hudson/jobs/Totara-Oracle/workspace" \
       --datadir="/var/lib/hudson/jobs/Totara-Oracle/moodledata" \
       --dbtype="oci8po" \
@@ -75,4 +74,4 @@ echo "Generate some test users"
 php -f build/generate-users.php
 
 echo "Hit notifications page to complete installation";
-python build/complete_upgrade.py http://brumbies.wgtn.cat-it.co.nz/totara-oracle-hudson/
+python build/complete_upgrade.py http://totara-oracle.hudson.brumbies.wgtn.cat-it.co.nz/
