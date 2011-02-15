@@ -21,7 +21,8 @@ then
     echo "STEP 4: Generate database performance report"
     mkdir -p build/logs/perf
     cd build/logs/perf
-    sudo pgfouine -file /var/log/postgresql/postgres.log -top 40 -report queries.html=overall,bytype,slowest,n-mosttime,n-mostfrequent,n-slowestaverage -report hourly.html=overall,hourly -report errors.html=overall,n-mostfrequenterrors -format html-with-graphs
+    # only process log info from the nightly database
+    sudo pgfouine -database t1-hudsontesting-nightly -file /var/log/postgresql/postgres.log -top 40 -report queries.html=overall,bytype,slowest,n-mosttime,n-mostfrequent,n-slowestaverage -report hourly.html=overall,hourly -report errors.html=overall,n-mostfrequenterrors -format html-with-graphs
     cd -
 fi
 

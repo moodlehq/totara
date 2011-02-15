@@ -51,3 +51,6 @@ echo "Initialize installation";
 
 echo "Hit notifications page to complete installation";
 python build/complete_upgrade.py http://totara-pgsql.hudson.brumbies.wgtn.cat-it.co.nz/
+
+echo "Clear postgres logs prior to performance test"
+sudo /usr/local/bin/clear_postgres_logs.sh
