@@ -362,6 +362,7 @@ if (!file_exists(dirname(dirname(__FILE__)) . '/config.php')) {
         console_write(STDOUT,'yourchoice','install');
         $INSTALL['dbtype']=read_element($dbtypes);//'mysql';//
     }
+    set_dbfamily();
 
     if ( ( $interactive == CLI_FULL ) || ($interactive == CLI_SEMI && ( !isset($INSTALL['dbuser']) ))) {
         console_write(STDOUT,'databaseuser','install');
@@ -569,17 +570,16 @@ if (!file_exists(dirname(dirname(__FILE__)) . '/config.php')) {
                     //We shouldn't reach this point
                 }
 
+                if ( $verbose > CLI_NO && $downloadsuccess) {
+                    //print success message if language pack download is successful
+                    console_write(STDOUT,'downloadsuccess');
+                    print_newline();
+                }
 
             }
         }
     }
-    
-    if ( $verbose > CLI_NO && $downloadsuccess) {
-        //print success message if language pack download is successful
-        console_write(STDOUT,'downloadsuccess');
-        print_newline();
-    }
-    
+
     $CONFFILE = array();
     //==================================================================================//
     //set INSTALL array values to CONFFILE array

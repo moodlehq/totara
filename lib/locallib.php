@@ -173,7 +173,7 @@ function upgrade_local_db($continueto) {
                 print_continue($continueto);
                 print_footer('none');
                 exit;
-                } else if (CLI_UPGRADE && ($interactive > CLI_SEMI) ) {
+                } else if (CLI_UPGRADE && isset($interactive) && ($interactive > CLI_SEMI) ) {
                     console_write(STDOUT,'askcontinue');
                     if (read_boolean()){
                         return ;
