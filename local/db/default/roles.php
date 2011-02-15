@@ -14,17 +14,17 @@
                 'legacy'      => 'user',
                 'sortorder'   => '8',
             ),
-            'learner' => array(
-                'name'        => 'Learner',
-                'description' => 'User acquiring knowledge, comprehension, or mastery through learning',
-                'legacy'      => 'student',
-                'sortorder'   => '7',
-            ),
             'manager' => array(
                 'name'        => 'Manager',
                 'description' => 'User tasked with managing the performance of a learner or team',
                 'legacy'      => 'manager',
                 'sortorder'   => '6',
+            ),
+            'learner' => array(
+                'name'        => 'Learner',
+                'description' => 'User acquiring knowledge, comprehension, or mastery through learning',
+                'legacy'      => 'student',
+                'sortorder'   => '7',
             ),
             'regionalmananger' => array(
                 'name'        => 'Regional Manager',
@@ -60,7 +60,7 @@
             } else {
                 $roledata['shortname'] = $shortname;
                 $roledata['legacy'] = '';
-                insert_record('role', $roledata);
+                insert_record('role', (object) $roledata);
             }
             $oldrole = get_record_select('role', "name='".$roledata['name']."'");
         }
