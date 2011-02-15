@@ -44,7 +44,7 @@ if ($userid) {
         error('User ID incorrect');
     }
 } else {
-    $user =& $USER;
+    $user = $USER;
 }
 
 
@@ -71,13 +71,13 @@ elseif (has_capability('coursereport/completion:view', $personalcontext)) {
 }
 
 if (!$can_view) {
-    error('You do not have permissions to view this report');
+    print_error('cannotviewreport', 'block_completionstatus');
 }
 
 
 // Don't display if completion isn't enabled!
 if (!$course->enablecompletion) {
-    error('completion not enabled');
+    print_error('completionnotenabledforcourse', 'completion');
 }
 
 // Load criteria to display
@@ -86,12 +86,12 @@ $completions = $info->get_completions($user->id);
 
 // Check if this course has any criteria
 if (empty($completions)) {
-    error('no criteria');
+    print_error('err_nocriteria', 'completion');
 }
 
 // Check this user is enroled
 if (!$info->is_tracked_user($user->id)) {
-    error(get_string('notenroled', 'completion'));
+    print_error('notenroled', 'completion');
 }
 
 

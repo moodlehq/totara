@@ -36,6 +36,7 @@ $string['completionenabled']='Enabled, control via completion and activity setti
 $string['completionexpected']='Expect completed on';
 $string['completiondisabled']='Disabled, not shown in activity settings';
 $string['completionmenuitem']='Completion';
+$string['completionnotenabledforcourse']='Completion not enabled for this course';
 $string['completionreport']='Completion progress report';
 $string['completionsettingslocked']='Completion settings locked';
 $string['completionstartonenrol']='Completion tracking begins on enrolment';
