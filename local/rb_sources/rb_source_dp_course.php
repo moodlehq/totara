@@ -318,6 +318,7 @@ from
                 get_string('coursetypeicon', 'rb_source_dp_course'),
                 'course.coursetype',
                 array(
+                    'joins' => 'course',
                     'displayfunc' => 'course_type_icon',
                     'defaultheading' => get_string('coursetypeicon', 'rb_source_dp_course'),
                 )

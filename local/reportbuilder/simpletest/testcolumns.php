@@ -329,8 +329,8 @@ class columns_test extends prefix_changing_test_case {
     );
 
     var $message_metadata_data = array(
-        array('id', 'messageid', 'msgtype', 'msgstatus', 'processorid', 'urgency', 'roleid', 'onaccept', 'onreject'),
-        array(1,1,1,1,1,1,1,'',''),
+        array('id', 'messageid', 'msgtype', 'msgstatus', 'processorid', 'urgency', 'roleid', 'onaccept', 'onreject', 'icon'),
+        array(1,1,1,1,1,1,1,'','', 'competency-regular'),
     );
 
     var $dp_template_data = array(
