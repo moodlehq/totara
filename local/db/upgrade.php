@@ -761,105 +761,6 @@ function xmldb_local_upgrade($oldversion) {
 
     }
 
-    if ($result && $oldversion < 2010011000) {
-
-    /// Create table idp
-        $table = new XMLDBTable('idp');
-        $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
-        $table->addFieldInfo('name', XMLDB_TYPE_TEXT, 'medium', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $table->addFieldInfo('userid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $table->addFieldInfo('startdate', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $table->addFieldInfo('enddate', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
-        $table->addIndexInfo('userid', XMLDB_INDEX_NOTUNIQUE, array('userid'));
-        $result = $result && create_table($table);
-
-    /// Create table idp_revision
-        $table = new XMLDBTable('idp_revision');
-        $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
-        $table->addFieldInfo('idp', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $table->addFieldInfo('ctime', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $table->addFieldInfo('mtime', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $table->addFieldInfo('submittedtime', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null);
-        $table->addFieldInfo('withdrawntime', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null);
-        $table->addFieldInfo('evaluatedtime', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null);
-        $table->addFieldInfo('evaluationcomment', XMLDB_TYPE_TEXT, 'medium', XMLDB_UNSIGNED, null, null, null);
-        $table->addFieldInfo('visible', XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
-        $table->addIndexInfo('idp', XMLDB_INDEX_NOTUNIQUE, array('idp'));
-        $result = $result && create_table($table);
-
-    /// Create table idp_approval
-        $table = new XMLDBTable('idp_approval');
-        $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
-        $table->addFieldInfo('revision', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $table->addFieldInfo('approvedby', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $table->addFieldInfo('onbehalfof', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $table->addFieldInfo('ctime', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
-        $table->addIndexInfo('revision', XMLDB_INDEX_NOTUNIQUE, array('revision'));
-        $result = $result && create_table($table);
-
-    /// Create table idp_revision_competency
-        $table = new XMLDBTable('idp_revision_competency');
-        $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
-        $table->addFieldInfo('revision', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $table->addFieldInfo('competency', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $table->addFieldInfo('ctime', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $table->addFieldInfo('grade', XMLDB_TYPE_INTEGER, '8', XMLDB_UNSIGNED, null, null, null);
-        $table->addFieldInfo('postapproval', XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, null, null, null);
-        $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
-        $table->addIndexInfo('revision', XMLDB_INDEX_NOTUNIQUE, array('revision'));
-        $result = $result && create_table($table);
-
-    /// Create table idp_revision_course
-        $table = new XMLDBTable('idp_revision_course');
-        $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
-        $table->addFieldInfo('revision', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $table->addFieldInfo('course', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $table->addFieldInfo('ctime', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $table->addFieldInfo('grade', XMLDB_TYPE_INTEGER, '8', XMLDB_UNSIGNED, null, null, null);
-        $table->addFieldInfo('postapproval', XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, null, null, null);
-        $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
-        $table->addIndexInfo('revision', XMLDB_INDEX_NOTUNIQUE, array('revision'));
-        $result = $result && create_table($table);
-
-    /// Create table idp_revision_comment
-        $table = new XMLDBTable('idp_revision_comment');
-        $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
-        $table->addFieldInfo('revision', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $table->addFieldInfo('author', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $table->addFieldInfo('contents', XMLDB_TYPE_TEXT, 'medium', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $table->addFieldInfo('ctime', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
-        $table->addIndexInfo('revision', XMLDB_INDEX_NOTUNIQUE, array('revision'));
-        $result = $result && create_table($table);
-
-    /// Create table idp_list_item
-        $table = new XMLDBTable('idp_list_item');
-        $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
-        $table->addFieldInfo('revision', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $table->addFieldInfo('author', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $table->addFieldInfo('contents', XMLDB_TYPE_TEXT, 'medium', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
-        $table->addIndexInfo('revision', XMLDB_INDEX_NOTUNIQUE, array('revision'));
-        $result = $result && create_table($table);
-    }
-
-    if ($result && $oldversion < 2010011001) {
-    /// Create table idp_revision_competency
-        $table = new XMLDBTable('idp_revision_competencytmpl');
-        $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
-        $table->addFieldInfo('revision', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $table->addFieldInfo('competencytemplate', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $table->addFieldInfo('ctime', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $table->addFieldInfo('grade', XMLDB_TYPE_INTEGER, '8', XMLDB_UNSIGNED, null, null, null);
-        $table->addFieldInfo('postapproval', XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, null, null, null);
-        $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
-        $table->addIndexInfo('revision', XMLDB_INDEX_NOTUNIQUE, array('revision'));
-        $result = $result && create_table($table);
-    }
-
     if ($result && $oldversion < 2010021102) {
     // Add missing fields
         $table = new XMLDBTable('pos_assignment');
@@ -933,79 +834,6 @@ function xmldb_local_upgrade($oldversion) {
 
         $field = new XMLDBField('type');
         $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null);
-        $result = $result && change_field_type($table, $field);
-
-
-        $table = new XMLDBTable('idp');
-
-        $field = new XMLDBField('userid');
-        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $result = $result && change_field_type($table, $field);
-
-
-        $table = new XMLDBTable('idp_revision');
-
-        $field = new XMLDBField('idp');
-        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $result = $result && change_field_type($table, $field);
-
-
-        $table = new XMLDBTable('idp_approval');
-
-        $field = new XMLDBField('revision');
-        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $result = $result && change_field_type($table, $field);
-
-        $field = new XMLDBField('approvedby');
-        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $result = $result && change_field_type($table, $field);
-
-        $field = new XMLDBField('onbehalfof');
-        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $result = $result && change_field_type($table, $field);
-
-
-        $table = new XMLDBTable('idp_revision_competency');
-
-        $field = new XMLDBField('revision');
-        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $result = $result && change_field_type($table, $field);
-
-        $field = new XMLDBField('competency');
-        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $result = $result && change_field_type($table, $field);
-
-
-        $table = new XMLDBTable('idp_revision_course');
-
-        $field = new XMLDBField('revision');
-        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $result = $result && change_field_type($table, $field);
-
-        $field = new XMLDBField('course');
-        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $result = $result && change_field_type($table, $field);
-
-
-        $table = new XMLDBTable('idp_revision_comment');
-
-        $field = new XMLDBField('revision');
-        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $result = $result && change_field_type($table, $field);
-
-        $field = new XMLDBField('author');
-        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $result = $result && change_field_type($table, $field);
-
-
-        $table = new XMLDBTable('idp_list_item');
-
-        $field = new XMLDBField('revision');
-        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $result = $result && change_field_type($table, $field);
-
-        $field = new XMLDBField('author');
-        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
         $result = $result && change_field_type($table, $field);
     }
 
@@ -1086,60 +914,8 @@ function xmldb_local_upgrade($oldversion) {
 
     }
 
-    if ($result && $oldversion < 2010030300) {
-        $table = new XMLDBTable('demo_users');
-        if(!table_exists($table)) {
-
-        /// Adding fields to table demo_users
-            $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null, null);
-            $table->addFieldInfo('idnumber', XMLDB_TYPE_CHAR, '100', null, null, null, null);
-            $table->addFieldInfo('firstname', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
-            $table->addFieldInfo('lastname', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
-            $table->addFieldInfo('username', XMLDB_TYPE_CHAR, '255', XMLDB_INDEX_UNIQUE, XMLDB_NOTNULL, null, null);
-            $table->addFieldInfo('email', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
-
-        /// Adding keys to table demo_users
-            $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
-
-        /// Adding indexes to table demo_users
-            $table->addIndexInfo('username', XMLDB_INDEX_UNIQUE, array('username'));
-            $table->addIndexInfo('email', XMLDB_INDEX_UNIQUE, array('email'));
-
-        /// Launch create table for demo_users
-            create_table($table);
-        }
-
-    }
-
     if ($result && $oldversion < 2010030600) {
         totara_reset_stickyblocks(true);
-    }
-
-    if ($result && $oldversion < 2010031000) {
-        // Remove not-null constraint from idp_approval.onbehalfof
-        $table = new XMLDBTable('idp_approval');
-        $field = new XMLDBField('onbehalfof');
-        $field->setType(XMLDB_TYPE_INTEGER);
-        $field->setNotNull(false);
-        $result = $result && change_field_notnull($table, $field, true, true);
-    }
-
-    if ($result && $oldversion < 2010031100) {
-        // Add due dates to IDP components
-        $table = new XMLDBTable('idp_revision_course');
-        $field = new XMLDBField('duedate');
-        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null);
-        $result = $result && add_field($table, $field);
-
-        $table = new XMLDBTable('idp_revision_competency');
-        $field = new XMLDBField('duedate');
-        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null);
-        $result = $result && add_field($table, $field);
-
-        $table = new XMLDBTable('idp_revision_competencytmpl');
-        $field = new XMLDBField('duedate');
-        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null);
-        $result = $result && add_field($table, $field);
     }
 
     if ($result && $oldversion < 2010031200) {
@@ -1320,41 +1096,6 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && drop_field($table, $field);
     }
 
-    if ($result && $oldversion < 2010040800) {
-        // Create new table idp_competency_eval
-        $table = new XMLDBTable('idp_competency_eval');
-        if(!table_exists($table)) {
-
-            // Adding fields to table
-            $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null, null);
-            $table->addFieldInfo('revisionid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
-            $table->addFieldInfo('competencyid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
-            $table->addFieldInfo('scalevalueid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
-            $table->addFieldInfo('timecreated', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
-            $table->addFieldInfo('timemodified', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
-            $table->addFieldInfo('usermodified', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
-
-            // Adding keys to table
-            $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
-
-            // Adding indexes to table
-            $table->addIndexInfo('revisionid', XMLDB_INDEX_NOTUNIQUE, array('revisionid'));
-
-            // Launch create table for course_modules_completion
-            $result = $result && create_table($table);
-        }
-
-        // Drop obsolete column idp_revision_competency.grade
-        $table = new XMLDBTable('idp_revision_competency');
-        $field = new XMLDBField('grade');
-        $result = $result && drop_field($table, $field);
-
-        // Drop obsolete column idp_revision_competencytemplate.grade
-        $table = new XMLDBTable('idp_revision_competencytmpl');
-        $field = new XMLDBField('grade');
-        $result = $result && drop_field($table, $field);
-    }
-
     // Reorganizing the IDP-related capabilities
     if ($result && $oldversion < 2010041400){
         // Delete these because they're not in use
@@ -1430,12 +1171,6 @@ function xmldb_local_upgrade($oldversion) {
             if(table_exists($table)) {
                 $result = $result && rename_table($table, $newtablename);
             }
-        }
-
-        // Rename the one IDP table whose name is too long
-        $table = new XMLDBTable('idp_revision_competencytemplate');
-        if(table_exists($table)) {
-            $result = $result && rename_table($table, 'idp_revision_competencytmpl');
         }
     }
 
@@ -1588,24 +1323,6 @@ function xmldb_local_upgrade($oldversion) {
         $table->addFieldInfo('timecreated', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
         $table->addFieldInfo('usermodified', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
         $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
-        $result = $result && create_table($table);
-    }
-
-    if ($result && $oldversion < 2010071600) {
-        // Create a table for organisational competencies
-        $table = new XMLDBTable('import_users');
-        $table->addFieldInfo('employee_id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $table->addFieldInfo('surname', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
-        $table->addFieldInfo('preferred_name', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
-        $table->addFieldInfo('email_address', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
-        $table->addFieldInfo('login', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
-        $table->addFieldInfo('position_title', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
-        $table->addFieldInfo('grade', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
-        $table->addFieldInfo('fll', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
-        $table->addFieldInfo('manager_id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $table->addFieldInfo('team', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
-        $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('employee_id'));
-        $table->addIndexInfo('unique', XMLDB_INDEX_UNIQUE, array('login'));
         $result = $result && create_table($table);
     }
 
@@ -1812,14 +1529,6 @@ function xmldb_local_upgrade($oldversion) {
 
     }
 
-    if ($result && $oldversion < 2010072602) {
-    /// Add current flag to idp table
-        $table = new XMLDBTable('idp');
-        $field = new XMLDBField('current');
-        $field->setAttributes(XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0', null);
-        $result = $result && add_field($table, $field);
-    }
-
     if ($result && $oldversion < 2010072603) {
         $table = new XMLDBTable('block_guides_guide');
         $field = new XMLDBField('identifier');
@@ -1984,125 +1693,10 @@ function xmldb_local_upgrade($oldversion) {
         }
     }
 
-    //Add Tables for IDP Templates and Priorities
-    if ($result && $oldversion < 2010081001) {
-        /// Create table idp_tmpl_priority_scale
-        $table = new XMLDBTable('idp_tmpl_priority_scale');
-        $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null, null);
-        $table->addFieldInfo('name', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null, null, null);
-        $table->addFieldInfo('description', XMLDB_TYPE_TEXT, 'small', null, XMLDB_NOTNULL, null, null, null, null);
-        $table->addFieldInfo('timemodified', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
-        $table->addFieldInfo('usermodified', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
-        $table->addFieldInfo('defaultid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null, null, null);
-        $field = new XMLDBField('defaultid');
-        $field->setAttributes(XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, null, null, null, null, null, 'proficient');
-        $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
-        $result = $result && create_table($table);
-
-        /// Create table idp_tmpl_priority_scal_val
-        $table = new XMLDBTable('idp_tmpl_priority_scal_val');
-        $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
-        $table->addFieldInfo('name', XMLDB_TYPE_TEXT, 'medium', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $table->addFieldInfo('idnumber', XMLDB_TYPE_CHAR, '100', null, null, null, null);
-        $table->addFieldInfo('description', XMLDB_TYPE_TEXT, 'big', XMLDB_UNSIGNED, null, null, null);
-        $table->addFieldInfo('priorityscaleid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $table->addFieldInfo('numericscore', XMLDB_TYPE_NUMBER, '10, 5', null, null, null, null);
-        $table->addFieldInfo('sortorder', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $table->addFieldInfo('timemodified', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $table->addFieldInfo('usermodified', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
-        $result = $result && create_table($table);
-
-        // Create idp_tmpl_assignments
-        $table = new XMLDBTable('idp_tmpl_priority_assign');
-        $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
-        $table->addFieldInfo('priorityscaleid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $table->addFieldInfo('templateid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $table->addFieldInfo('timemodified', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $table->addFieldInfo('usermodified', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
-        $result = $result && create_table($table);
-
-        // Create idp_template
-        $table = new XMLDBTable('idp_template');
-        $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
-        $table->addFieldInfo('fullname', XMLDB_TYPE_TEXT, 'medium', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $table->addFieldInfo('shortname', XMLDB_TYPE_CHAR, '100', null, XMLDB_NOTNULL, null, null);
-        $table->addFieldInfo('startdate', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null);
-        $table->addFieldInfo('enddate', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null);
-        $table->addFieldInfo('status', XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, null, null, null);
-        $table->addFieldInfo('current', XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, null, null, null);
-        $table->addFieldInfo('sortorder', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $table->addFieldInfo('visible', XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
-        $result = $result && create_table($table);
-
-        // Create idp_comp_area
-        $table = new XMLDBTable('idp_comp_area');
-        $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
-        $table->addFieldInfo('templateid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $table->addFieldInfo('fullname', XMLDB_TYPE_TEXT, 'medium', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $table->addFieldInfo('shortname', XMLDB_TYPE_CHAR, '100', null, XMLDB_NOTNULL, null, null);
-        $table->addFieldInfo('sortorder', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $table->addFieldInfo('visible', XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $table->addFieldInfo('prioritiesenabled', XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, null, null, null);
-        $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
-        $result = $result && create_table($table);
-
-        // Create idp_comp_area_fw
-        $table = new XMLDBTable('idp_comp_area_fw');
-        $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
-        $table->addFieldInfo('areaid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $table->addFieldInfo('frameworkid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-        $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
-        $result = $result && create_table($table);
-
-        // Default IDP Template
-        $start = time();
-        $end = time();
-        execute_sql("
-            INSERT INTO {$CFG->prefix}idp_template (fullname,shortname,startdate,enddate,current,sortorder,visible)
-            VALUES ('Generic Template', 'generic', {$start}, {$end}, 1, 1, 1)
-            ");
-
-        /// Add templateid to idp table
-        $table = new XMLDBTable('idp');
-        $field = new XMLDBField('templateid');
-        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0');
-        $result = $result && add_field($table, $field);
-
-        /// Add priority to idp_revision_competency table
-        $table = new XMLDBTable('idp_revision_competency');
-        $field = new XMLDBField('priority');
-        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0');
-        $result = $result && add_field($table, $field);
-
-        // Add priority to idp_revision_course table
-        $table = new XMLDBTable('idp_revision_course');
-        $field = new XMLDBField('priority');
-        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0');
-        $result = $result && add_field($table, $field);
-
-        // Add priority to idp_revision_course table
-        $table = new XMLDBTable('idp_revision_competencytmpl');
-        $field = new XMLDBField('priority');
-        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0');
-        $result = $result && add_field($table, $field);
-    }
-
     // set global export options to include all current
     // formats (excel, csv and ods)
     if ($result && $oldversion < 2010081200) {
         set_config('exportoptions', 7, 'reportbuilder');
-    }
-
-    if($result && $oldversion < 2010081800) {
-        $table = new XMLDBTable('idp_comp_area');
-        $field = new XMLDBField('timemodified');
-        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0');
-        if (!field_exists($table, $field)) {
-            $result = $result && add_field($table, $field);
-        }
     }
 
     if ($result && $oldversion < 2010081900) {
@@ -2506,80 +2100,32 @@ function xmldb_local_upgrade($oldversion) {
         $field->setLength(1024);
     }
 
-    if ($result && $oldversion < 2011020701) {
-        $table = new XMLDBTable('idp');
-        if(table_exists($table)) {
-            $result = $result && drop_table($table);
-        }
+    if ($result && $oldversion < 2011021500) {
+        $tables = array(
+            'idp',
+            'idp_revision',
+            'idp_approval',
+            'idp_revision_competency',
+            'idp_revision_course',
+            'idp_revision_comment',
+            'idp_list_item',
+            'idp_revision_competencytmpl',
+            'idp_competency_eval',
+            'idp_tmpl_priority_scale',
+            'idp_tmpl_priority_scal_val',
+            'idp_tmpl_priority_assign',
+            'idp_template',
+            'idp_comp_area',
+            'idp_comp_area_fw',
+            'demo_users',
+            'import_users',
+        );
 
-        $table = new XMLDBTable('idp_approval');
-        if(table_exists($table)) {
-            $result = $result && drop_table($table);
-        }
-
-        $table = new XMLDBTable('idp_comp_area');
-        if(table_exists($table)) {
-            $result = $result && drop_table($table);
-        }
-
-        $table = new XMLDBTable('idp_comp_area_fw');
-        if(table_exists($table)) {
-            $result = $result && drop_table($table);
-        }
-
-        $table = new XMLDBTable('idp_competency_eval');
-        if(table_exists($table)) {
-            $result = $result && drop_table($table);
-        }
-
-        $table = new XMLDBTable('idp_list_item');
-        if(table_exists($table)) {
-            $result = $result && drop_table($table);
-        }
-
-        $table = new XMLDBTable('idp_revision');
-        if(table_exists($table)) {
-            $result = $result && drop_table($table);
-        }
-
-        $table = new XMLDBTable('idp_revision_comment');
-        if(table_exists($table)) {
-            $result = $result && drop_table($table);
-        }
-
-        $table = new XMLDBTable('idp_revision_competency');
-        if(table_exists($table)) {
-            $result = $result && drop_table($table);
-        }
-
-        $table = new XMLDBTable('idp_revision_competencytmpl');
-        if(table_exists($table)) {
-            $result = $result && drop_table($table);
-        }
-
-        $table = new XMLDBTable('idp_course');
-        if(table_exists($table)) {
-            $result = $result && drop_table($table);
-        }
-
-        $table = new XMLDBTable('idp_template');
-        if(table_exists($table)) {
-            $result = $result && drop_table($table);
-        }
-
-        $table = new XMLDBTable('idp_tmpl_priority_assign');
-        if(table_exists($table)) {
-            $result = $result && drop_table($table);
-        }
-
-        $table = new XMLDBTable('idp_tmpl_priority_scale');
-        if(table_exists($table)) {
-            $result = $result && drop_table($table);
-        }
-
-        $table = new XMLDBTable('idp_tmpl_priority_scal_val');
-        if(table_exists($table)) {
-            $result = $result && drop_table($table);
+        foreach ($tables as $tablename) {
+            $table = new XMLDBTable($tablename);
+            if (table_exists($table)) {
+                $result = $result && drop_table($table);
+            }
         }
     }
 
