@@ -21,10 +21,5 @@ mech["username"] = "admin"
 mech["password"] = "passworD1!"
 mech.submit()
 
-print 'Run unit tests'
-tests = mech.open(rooturl+'admin/report/unittest/xml.php')
-
-print 'Write to file'
-f = open('build/logs/simpletest-results.xml', 'w')
-print >> f, tests.read()
-f.close()
+print 'Run unit tests and write to file'
+mech.retrieve(rooturl+'admin/report/unittest/xml.php', 'build/logs/simpletest-results.xml')
