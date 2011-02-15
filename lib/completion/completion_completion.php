@@ -187,7 +187,7 @@ class completion_completion extends data_object {
         }
 
         // Check we have the required data, if not the user is probably not
-        // participationg in the course
+        // participation in the course
         if (empty($completion->timeenrolled) &&
             empty($completion->timestarted) &&
             empty($completion->timecompleted))

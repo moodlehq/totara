@@ -93,6 +93,7 @@ class completion_aggregation extends data_object {
      */
     public static function fetch_all($params) {}
 
+
     /**
      * Set the aggregation method
      * @access  public
