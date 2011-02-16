@@ -35,6 +35,8 @@
  * @return  void
  */
 function totara_migrate_old_report_builder_reports(&$result) {
+    global $CFG;
+    require_once($CFG->dirroot.'/local/reportbuilder/lib.php');
 
     $table = new XMLDBTable('report_builder_access');
     if(!table_exists($table)) {
