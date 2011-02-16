@@ -19,6 +19,7 @@ if ($courseid) {
 
     // Check user is logged in
     $course = get_record('course', 'id', $courseid);
+    $context = get_context_instance(CONTEXT_COURSE, $course->id);
     require_login($course);
 
     $completion = new completion_info($course);
@@ -28,8 +29,22 @@ if ($courseid) {
     $rolec = optional_param('rolec', 0, PARAM_INT);
 
     if ($user && $rolec) {
+        require_sesskey();
 
         $criteria = completion_criteria::factory((object) array('id'=>$rolec, 'criteriatype'=>COMPLETION_CRITERIA_TYPE_ROLE));
+        $criteria = completion_criteria_role::fetch(array('id' => $rolec));
+
+        // Check the criteria exists
+        if (!$criteria) {
+            print_error('invalidarguments');
+        }
+
+        // Check the logged in user has this role
+        $users = get_role_users($criteria->role, $context, true);
+        if (!$users || !in_array($USER->id, array_keys($users))) {
+            print_error('nopermissions');
+        }
+
         $criteria_completions = $completion->get_completions($user, COMPLETION_CRITERIA_TYPE_ROLE);
 
         foreach ($criteria_completions as $criteria_completion) {
@@ -49,7 +64,7 @@ if ($courseid) {
     } else {
 
         // Confirm with user
-        if ($confirm) {
+        if ($confirm && confirm_sesskey()) {
             $completion = $completion->get_completion($USER->id, COMPLETION_CRITERIA_TYPE_SELF);
 
             if (!$completion) {
@@ -69,7 +84,7 @@ if ($courseid) {
 
         $strconfirm = get_string('confirmselfcompletion', 'completion');
         print_header_simple($strconfirm, '', build_navigation(array(array('name' => $strconfirm, 'link' => '', 'type' => 'misc'))));
-        notice_yesno($strconfirm, $CFG->wwwroot.'/course/togglecompletion.php?course='.$courseid.'&confirm=1', $CFG->wwwroot.'/course/view.php?id='.$courseid); 
+        notice_yesno($strconfirm, $CFG->wwwroot.'/course/togglecompletion.php?course='.$courseid.'&confirm=1&sesskey='.sesskey(), $CFG->wwwroot.'/course/view.php?id='.$courseid);
         print_simple_box_end();
         print_footer($course);
         exit;

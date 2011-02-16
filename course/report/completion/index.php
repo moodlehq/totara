@@ -630,7 +630,6 @@ foreach ($progress as $user) {
             $activity = get_record('course_modules', 'id', $criterion->moduleinstance);
             $activity->name = $mod->name;
 
-
             // Get progress information and state
             if(array_key_exists($activity->id,$user->progress)) {
                 $thisprogress=$user->progress[$activity->id];
@@ -706,7 +705,7 @@ foreach ($progress as $user) {
                 $describe = get_string('completion-alt-auto-'.$completiontype,'completion');
 
                 print '<td class="completion-progresscell">'.
-                    '<a href="'.$CFG->wwwroot.'/course/togglecompletion.php?user='.$user->id.'&course='.$course->id.'&rolec='.$allow_marking_criteria.'">'.
+                    '<a href="'.$CFG->wwwroot.'/course/togglecompletion.php?user='.$user->id.'&course='.$course->id.'&rolec='.$allow_marking_criteria.'&sesskey='.sesskey().'">'.
                     '<img src="'.$CFG->pixpath.'/i/completion-manual-'.($is_complete ? 'y' : 'n').'.gif'.
                     '" alt="'.$describe.'" class="icon" title="Mark as complete" /></a></td>';
             } else {
