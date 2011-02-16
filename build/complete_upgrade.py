@@ -25,6 +25,12 @@ print 'Hit notifications page'
 url = rooturl+'admin/index.php'
 count = 0
 while 1:
+
+    # Set max loop
+    if count > 10:
+        print 'Notifications page appears broken, aborting'
+        break
+
     count += 1
     notif = mech.open(url)
     content = notif.read()
