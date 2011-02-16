@@ -28,6 +28,8 @@
  * @abstract
  */
 abstract class data_object {
+
+
     /**
      * Table that the class maps to in the database
      * @var string $table
@@ -52,6 +54,7 @@ abstract class data_object {
      * @var int $id
      */
     public $id;
+
 
     /**
      * Constructor. Optionally (and by default) attempts to fetch corresponding row from DB.
@@ -78,14 +81,15 @@ abstract class data_object {
         }
     }
 
+
     /**
      * Makes sure all the optional fields are loaded.
      * If id present (==instance exists in db) fetches data from db.
      * Defaults are used for new instances.
      */
     public function load_optional_fields() {
-        foreach ($this->optional_fields as $field=>$default) {
-            if (array_key_exists($field, $this)) {
+        foreach ($this->optional_fields as $field => $default) {
+            if (property_exists($this, $field)) {
                 continue;
             }
             if (empty($this->id)) {
@@ -96,6 +100,7 @@ abstract class data_object {
         }
     }
 
+
     /**
      * Finds and returns a data_object instance based on params.
      * @static abstract
@@ -105,6 +110,7 @@ abstract class data_object {
      */
 #    public static function fetch($params) {}
 
+
     /**
      * Finds and returns all data_object instances based on params.
      *
@@ -112,6 +118,7 @@ abstract class data_object {
      * @return array array of data_object insatnces or false if none found.
      */
 #    public static function fetch_all($params) {}
+
 
     /**
      * Factory method - uses the parameters to retrieve matching instance from the DB.
@@ -129,6 +136,7 @@ abstract class data_object {
             return false;
         }
     }
+
 
     /**
      * Factory method - uses the parameters to retrieve all matching instances from the DB.
@@ -161,7 +169,7 @@ abstract class data_object {
         }
 
         if ($datas = get_records_select($table, $wheresql)) {
-            
+
             $result = array();
             foreach($datas as $data) {
                 $instance = new $classname();
@@ -171,10 +179,11 @@ abstract class data_object {
             return $result;
 
         } else {
-            
+
             return false;
         }
     }
+
 
     /**
      * Updates this object in the Database, based on its object variables. ID must be set.
@@ -194,6 +203,7 @@ abstract class data_object {
         $this->notify_changed(false);
         return true;
     }
+
 
     /**
      * Deletes this object from the database.
@@ -217,6 +227,7 @@ abstract class data_object {
         }
     }
 
+
     /**
      * Returns object with fields and values that are defined in database
      */
@@ -234,6 +245,7 @@ abstract class data_object {
         }
         return $data;
     }
+
 
     /**
      * Records this object in the Database, sets its id to the returned value, and returns that value.
@@ -259,6 +271,7 @@ abstract class data_object {
         return $this->id;
     }
 
+
     /**
      * Using this object's id field, fetches the matching record in the DB, and looks at
      * each variable in turn. If the DB has different data, the db's data is used to update
@@ -280,6 +293,7 @@ abstract class data_object {
         return true;
     }
 
+
     /**
      * Given an associated array or object, cycles through each key/variable
      * and assigns the value to the corresponding variable in this object.
@@ -294,13 +308,13 @@ abstract class data_object {
         }
     }
 
+
     /**
-     * Called immediately after the object data has been inserted, updated, or 
-     * deleted in the database. Default does nothing, can be overridden to 
+     * Called immediately after the object data has been inserted, updated, or
+     * deleted in the database. Default does nothing, can be overridden to
      * hook in special behaviour.
      *
      * @param bool $deleted
      */
-    function notify_changed($deleted) {
-    }
+    function notify_changed($deleted) {}
 }

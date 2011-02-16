@@ -59,10 +59,6 @@ $reportsurl = $CFG->wwwroot.'/course/report.php?id='.$course->id;
 $completion = new completion_info($course);
 $activities = $completion->get_activities();
 
-if(empty($activities)) {
-    print_error('err_noactivities','completion',$reportsurl);
-}
-
 // Generate where clause
 $where = array();
 $ilike = sql_ilike();
@@ -81,16 +77,6 @@ $total = $completion->get_num_tracked_users(implode(' AND ', $where), $group);
 // Total user count
 $grandtotal = $completion->get_num_tracked_users('', $group);
 
-// If no users in this course what-so-ever
-if (!$grandtotal) {
-    print_box_start('errorbox errorboxcontent boxaligncenter boxwidthnormal');
-    print '<p class="nousers">'.get_string('err_nousers','completion').'</p>';
-    print '<p><a href="'.$CFG->wwwroot.'/course/report.php?id='.$course->id.'">'.get_string('continue').'</a></p>';
-    print_box_end();
-    print_footer($course);
-    exit;
-}
-
 // Get user data
 $progress = array();
 
@@ -104,7 +90,8 @@ if ($total) {
     );
 }
 
-if($csv) {
+// Only show CVS if there are some active users / activities
+if ($csv && $grandtotal && !empty($activities)) {
     header('Content-Disposition: attachment; filename=progress.'.
         preg_replace('/[^a-z0-9-]/','_',strtolower($course->shortname)).'.csv');
     // Unicode byte-order mark for Excel
@@ -129,6 +116,20 @@ if($csv) {
 
     // Handle groups (if enabled)
     groups_print_course_menu($course,$CFG->wwwroot.'/course/report/progress/?course='.$course->id);
+}
+
+if (empty($activities)) {
+    print_error('err_noactivities','completion',$reportsurl);
+}
+
+// If no users in this course what-so-ever
+if (!$grandtotal) {
+    print_box_start('errorbox errorboxcontent boxaligncenter boxwidthnormal');
+    print '<p class="nousers">'.get_string('err_nousers','completion').'</p>';
+    print '<p><a href="'.$CFG->wwwroot.'/course/report.php?id='.$course->id.'">'.get_string('continue').'</a></p>';
+    print_box_end();
+    print_footer($course);
+    exit;
 }
 
 // Build link for paging
