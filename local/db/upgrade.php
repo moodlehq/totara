@@ -1068,13 +1068,12 @@ function xmldb_local_upgrade($oldversion) {
         );
 
         $system_context = get_context_instance(CONTEXT_SYSTEM);
-        $user_role = get_record('role', 'shortname', 'user');
 
         foreach ($caps as $cap) {
             assign_capability(
                 'moodle/local:'.$cap,
                 CAP_ALLOW,
-                $user_role->id,
+                $CFG->defaultuserroleid,
                 $system_context->id,
                 true
             );
