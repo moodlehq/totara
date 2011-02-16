@@ -133,7 +133,7 @@ print <<<HEREDOC
         $('input[name="enddate"]').datepicker(
             {
                 dateFormat: 'dd/mm/yy',
-                showOn: 'button',
+                showOn: 'both',
                 buttonImage: '{$CFG->wwwroot}/local/js/images/calendar.gif',
                 buttonImageOnly: true,
                 constrainInput: true
