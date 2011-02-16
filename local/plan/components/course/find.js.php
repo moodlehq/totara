@@ -110,7 +110,7 @@ totaraDialog_handler_preRequisite.prototype._update = function(response) {
             $('[id^=duedate_course]').datepicker(
                 {
                     dateFormat: 'dd/mm/y',
-                    showOn: 'button',
+                    showOn: 'both',
                     buttonImage: '<?php echo $CFG->wwwroot; ?>/local/js/images/calendar.gif',
                     buttonImageOnly: true,
                     constrainInput: true

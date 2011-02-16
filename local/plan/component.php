@@ -80,7 +80,7 @@ print <<<HEREDOC
             {
                 dateFormat: 'dd/mm/y',
                 constrainInput: true,
-                showOn: 'button',
+                showOn: 'both',
                 buttonImage: '{$CFG->wwwroot}/local/js/images/calendar.gif',
                 buttonImageOnly: true
             }

@@ -210,7 +210,7 @@ else {
             $('#id_timevalidfrom, #id_timevalidto').datepicker(
                 {
                     dateFormat: 'dd/mm/yy',
-                    showOn: 'button',
+                    showOn: 'both',
                     buttonImage: '../local/js/images/calendar.gif',
                     buttonImageOnly: true,
                     constrainInput: true

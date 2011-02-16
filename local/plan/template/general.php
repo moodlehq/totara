@@ -79,7 +79,7 @@ print <<<HEREDOC
         $('#id_startdate, #id_enddate').datepicker(
             {
                 dateFormat: 'dd/mm/yy',
-                showOn: 'button',
+                showOn: 'both',
                 buttonImage: '../../../local/js/images/calendar.gif',
                 buttonImageOnly: true,
                 constrainInput: true

@@ -220,7 +220,7 @@ totaraDialog_handler_lpCompetency.prototype._update = function(response) {
             $('[id^=duedate_competency]').datepicker(
                 {
                     dateFormat: 'dd/mm/y',
-                    showOn: 'button',
+                    showOn: 'both',
                     buttonImage: '<?php echo $CFG->wwwroot; ?>/local/js/images/calendar.gif',
                     buttonImageOnly: true,
                     constrainInput: true
