@@ -2442,3 +2442,52 @@ td.user_namewithlinks .userpicture {
 div.add-linked-course {
     text-align:right;
 }
+
+/*****************************************************************************/
+/** Datepicker **/
+/*****************************************************************************/
+body .ui-widget-content {
+    background: url("images/ui/ui-bg_highlight-soft_75_fcfcfc_1x100.png") repeat-x scroll 50% top #FCFCFC;
+    border: 1px solid #DDDDDD;
+    color: #272727;
+}
+
+body .ui-widget-header {
+    background: url("images/ui/ui-bg_inset-soft_33_b1ba1a_1x100.png") repeat-x scroll 50% 50% #B1BA1A;
+    border: 0 none;
+}
+
+body .ui-state-default,
+body .ui-widget-content .ui-state-default,
+body .ui-widget-header .ui-state-default {
+    background: url("images/ui/ui-bg_highlight-soft_60_b7b7b7_1x100.png") repeat-x scroll 50% 50% #B7B7B7;
+    border: 1px solid #FFFFFF;
+    color: #272727;
+    font-weight: normal;
+}
+
+body .ui-state-hover,
+body .ui-widget-content .ui-state-hover,
+body .ui-widget-header .ui-state-hover,
+body .ui-state-focus,
+body .ui-widget-content .ui-state-focus,
+body .ui-widget-header .ui-state-focus {
+    background: url("images/ui/ui-bg_highlight-soft_50_45c1e5_1x100.png") repeat-x scroll 50% 50% #45C1E5;
+    border: 1px solid #FFFFFF;
+    color: #FFFFFF;
+    font-weight: normal;
+}
+
+body .ui-state-active,
+body .ui-widget-content .ui-state-active,
+body .ui-widget-header .ui-state-active {
+    background: url("images/ui/ui-bg_highlight-hard_30_b14591_1x100.png") repeat-x scroll 50% 50% #B14591;
+    border: 1px solid #FFFFFF;
+    color: #FFFFFF;
+    font-weight: normal;
+}
+
+body .ui-state-hover .ui-icon,
+body .ui-state-focus .ui-icon {
+    background-image: url("images/ui/ui-icons_ffffff_256x240.png");
+}
