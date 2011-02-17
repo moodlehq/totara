@@ -3312,7 +3312,7 @@ function complete_user_login($user) {
 
     $USER = $user; // this is required because we need to access preferences here!
 
-    if (!empty($CFG->regenloginsession)) {
+    if (!empty($CFG->regenloginsession) && !defined('CLI_UPGRADE')) {
         // please note this setting may break some auth plugins
         session_regenerate_id();
     }

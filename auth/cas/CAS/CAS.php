@@ -33,7 +33,12 @@
 // hack by Vangelis Haniotakis to handle the absence of $_SERVER['REQUEST_URI'] in IIS
 //
 if (!isset($_SERVER['REQUEST_URI'])) {
-	$_SERVER['REQUEST_URI'] = $_SERVER['SCRIPT_NAME'] . '?' . $_SERVER['QUERY_STRING'];
+    $_SERVER['REQUEST_URI'] = $_SERVER['SCRIPT_NAME'];
+
+    // Fix for when running from cli
+    if (isset($_SERVER['QUERY_STRING'])) {
+        $_SERVER['REQUEST_URI'] .= '?' . $_SERVER['QUERY_STRING'];
+    }
 }
 
 //
