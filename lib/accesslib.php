@@ -3736,6 +3736,12 @@ function get_parent_contextid($context) {
  */
 function is_inside_frontpage($context) {
     $frontpagecontext = get_context_instance(CONTEXT_COURSE, SITEID);
+
+    # Fix error during cliupgrade
+    if (defined('CLI_UPGRADE') && (!$context || !$frontpagecontext)) {
+        return false;
+    }
+
     return strpos($context->path . '/', $frontpagecontext->path . '/') === 0;
 }
 
@@ -4478,7 +4484,7 @@ function get_users_by_capability($context, $capability, $fields='', $sort='',
 
     // is the default role interesting? does it have
     // a relevant rolecap? (we use this a lot later)
-    if (in_array((int)$CFG->defaultuserroleid, $roleids, true)) {
+    if (isset($CFG->defaultuserroleid) && in_array((int)$CFG->defaultuserroleid, $roleids, true)) {
         $defaultroleinteresting = true;
     } else {
         $defaultroleinteresting = false;
