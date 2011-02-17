@@ -29,12 +29,12 @@ defined('MOODLE_INTERNAL') || die();
 $messageproviders = array (
 
 /// Notices that an admin might be interested in
-    'ntfy' => array (
+    'alrt' => array (
 //         'capability'  => 'moodle/site:config'
     ),
 
 /// Important errors that an admin ought to know about
-    'rmdr' => array (
+    'task' => array (
     ),
 
 );

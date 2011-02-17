@@ -1921,18 +1921,6 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && execute_sql("DELETE FROM {$CFG->prefix}block WHERE name='totara_tasks'", false);
         $result = $result && execute_sql("UPDATE {$CFG->prefix}block SET name='totara_tasks' WHERE name='totara_reminders'", false);
 
-        //Update Block references
-        $table = new XMLDBTable('message_processors20');
-        if(table_exists($table)) {
-            $result = $result && execute_sql("UPDATE {$CFG->prefix}message_processors20 SET name='totara_alert' WHERE name='totara_notification'", false);
-            $result = $result && execute_sql("UPDATE {$CFG->prefix}message_processors20 SET name='totara_task' WHERE name='totara_reminder'", false);
-        }
-
-        $table = new XMLDBTable('message_providers20');
-        if(table_exists($table)){
-            $result = $result && execute_sql("UPDATE {$CFG->prefix}message_providers20 SET name='alrt' WHERE name='ntfy'", false);
-            $result = $result && execute_sql("UPDATE {$CFG->prefix}message_providers20 SET name='task' WHERE name='rmdr'", false);
-        }
     }
 
 
@@ -2102,6 +2090,22 @@ function xmldb_local_upgrade($oldversion) {
             }
         }
     }
+
+    if ($result && $oldversion < 2011021501) {
+        //Update Block references
+        $table = new XMLDBTable('message_processors20');
+        if(table_exists($table)) {
+            $result = $result && execute_sql("UPDATE {$CFG->prefix}message_processors20 SET name='totara_alert' WHERE name='totara_notification'", false);
+            $result = $result && execute_sql("UPDATE {$CFG->prefix}message_processors20 SET name='totara_task' WHERE name='totara_reminder'", false);
+        }
+
+        $table = new XMLDBTable('message_providers20');
+        if(table_exists($table)){
+            $result = $result && execute_sql("UPDATE {$CFG->prefix}message_providers20 SET name='alrt' WHERE name='ntfy'", false);
+            $result = $result && execute_sql("UPDATE {$CFG->prefix}message_providers20 SET name='task' WHERE name='rmdr'", false);
+        }
+    }
+
 
     return $result;
 }
