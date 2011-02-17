@@ -696,6 +696,8 @@ if ( file_exists(dirname(dirname(__FILE__)) . '/config.php')) {
      * 
      */
 
+    set_dbfamily();
+
     ///check PHP Settings
     if (ini_get_bool('session.auto_start')) {
         console_write(STDERR,"The PHP server variable 'session.auto_start' should be Off ",'',false);
