@@ -14,6 +14,8 @@ require_once($CFG->dirroot . '/local/plan/lib.php');
 require_once($CFG->dirroot . '/local/plan/edit_form.php');
 require_once($CFG->dirroot . '/local/js/lib/setup.php');
 
+require_login();
+
 $userid = required_param('userid', PARAM_INT); // user id
 
 ///

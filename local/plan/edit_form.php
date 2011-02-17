@@ -11,6 +11,10 @@
 
 require_once("{$CFG->libdir}/formslib.php");
 
+if (!defined('MOODLE_INTERNAL')) {
+    die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
+}
+
 class plan_edit_form extends moodleform {
 
     function definition() {

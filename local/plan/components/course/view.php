@@ -3,10 +3,11 @@
 require_once(dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/config.php');
 require_once($CFG->dirroot . '/local/plan/lib.php');
 
+require_login();
+
 $id = required_param('id', PARAM_INT); // plan id
 $caid = required_param('itemid', PARAM_INT); // course assignment id
 
-require_login();
 $plan = new development_plan($id);
 $systemcontext = get_context_instance(CONTEXT_SYSTEM);
 

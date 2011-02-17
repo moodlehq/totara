@@ -1,4 +1,4 @@
-<?php // $Id$
+<?php
 
 /**
  * Workflow settings page for development plan templates

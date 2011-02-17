@@ -1,5 +1,8 @@
 <?php
 
+if (!defined('MOODLE_INTERNAL')) {
+    die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
+}
 
 /**
  * Flag for dp_base_component::can_update_settings()

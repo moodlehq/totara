@@ -4,10 +4,11 @@ require_once(dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/config.ph
 require_once($CFG->dirroot . '/local/plan/lib.php');
 require_once($CFG->dirroot . '/local/js/lib/setup.php');
 
+require_login();
+
 $id = required_param('id', PARAM_INT); // plan id
 $caid = required_param('itemid', PARAM_INT); // competency assignment id
 
-require_login();
 $plan = new development_plan($id);
 
 //Permissions check

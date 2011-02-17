@@ -2,6 +2,10 @@
 
 require_once($CFG->dirroot.'/hierarchy/type/competency/lib.php');
 
+if (!defined('MOODLE_INTERNAL')) {
+    die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
+}
+
 class dp_competency_component extends dp_base_component {
 
     public static $permissions = array(

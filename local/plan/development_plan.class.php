@@ -1,4 +1,15 @@
 <?php
+/*
+ * @copyright Totara Learning Solutions
+ * @author Simon Coggins <simonc@catalyst.net.nz>
+ * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
+ * @package totara
+ * @subpackage learning plan
+ */
+
+if (!defined('MOODLE_INTERNAL')) {
+    die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
+}
 
 require_once ($CFG->dirroot . '/local/totara_msg/eventdata.class.php');
 require_once ($CFG->dirroot.'/local/totara_msg/messagelib.php');

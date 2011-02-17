@@ -1,5 +1,9 @@
 <?php
 
+if (!defined('MOODLE_INTERNAL')) {
+    die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
+}
+
 $coursename = get_config(null, 'dp_course');
 $coursename = $coursename ?
     $coursename : get_string('courseplural', 'local_plan');

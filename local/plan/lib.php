@@ -6,6 +6,10 @@ require_once($CFG->dirroot . '/local/plan/component.class.php');
 require_once($CFG->dirroot . '/local/plan/workflow.class.php');
 require_once($CFG->libdir . '/tablelib.php');
 
+if (!defined('MOODLE_INTERNAL')) {
+    die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
+}
+
 // Plan status values
 define('DP_PLAN_STATUS_UNAPPROVED', 10);
 define('DP_PLAN_STATUS_APPROVED', 50);

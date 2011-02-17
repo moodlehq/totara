@@ -14,6 +14,7 @@ require_once($CFG->dirroot . '/local/plan/lib.php');
 require_once($CFG->dirroot . '/local/js/lib/setup.php');
 require_once($CFG->dirroot . '/local/plan/components/objective/edit_form.php');
 
+require_login();
 
 ///
 /// Load parameters

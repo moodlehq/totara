@@ -20,6 +20,11 @@
  * @param   array $customdata mform customdata
  * @return  void
  */
+
+if (!defined('MOODLE_INTERNAL')) {
+    die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
+}
+
 function development_plan_build_settings_form(&$mform, $customdata) {
     global $CFG, $DP_AVAILABLE_ROLES;
 

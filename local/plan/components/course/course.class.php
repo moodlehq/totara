@@ -1,5 +1,9 @@
 <?php
 
+if (!defined('MOODLE_INTERNAL')) {
+    die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
+}
+
 class dp_course_component extends dp_base_component {
 
     public static $permissions = array(

@@ -1,5 +1,9 @@
 <?php
 
+if (!defined('MOODLE_INTERNAL')) {
+    die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
+}
+
 $id = required_param('id', PARAM_INT);
 $edit = optional_param('edit', 'off', PARAM_TEXT);
 

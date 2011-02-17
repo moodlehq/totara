@@ -3,6 +3,8 @@
 require_once(dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/config.php');
 require_once($CFG->dirroot . '/local/plan/lib.php');
 
+require_login();
+
 $id = required_param('id', PARAM_INT); // plan id
 $caid = required_param('itemid', PARAM_INT); // competency assignment id
 $action = required_param('action', PARAM_TEXT); // what to do

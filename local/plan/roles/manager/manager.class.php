@@ -1,4 +1,9 @@
 <?php
+
+if (!defined('MOODLE_INTERNAL')) {
+    die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
+}
+
 class dp_manager_role extends dp_base_role {
     function user_has_role($userid=null) {
         global $USER;

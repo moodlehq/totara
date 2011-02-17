@@ -2,6 +2,10 @@
 
 require_once "$CFG->dirroot/lib/formslib.php";
 
+if (!defined('MOODLE_INTERNAL')) {
+    die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
+}
+
 class totara_competency_evidence_form extends moodleform {
 
     function definition()

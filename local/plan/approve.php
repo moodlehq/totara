@@ -4,6 +4,7 @@ require_once('../../config.php');
 require_once($CFG->dirroot . '/local/plan/lib.php');
 require_once($CFG->dirroot . '/local/js/lib/setup.php');
 
+require_login();
 
 ///
 /// Load parameters

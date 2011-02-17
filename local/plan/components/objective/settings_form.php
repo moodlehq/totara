@@ -11,6 +11,9 @@
  * @subpackage developmentplan
  */
 
+if (!defined('MOODLE_INTERNAL')) {
+    die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
+}
 
 // Include main component class
 require_once($CFG->dirroot.'/local/plan/components/objective/objective.class.php');
