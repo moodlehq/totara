@@ -2569,3 +2569,10 @@ div.objectivepermissionsform select {
 .jqdatepicker {
     margin-right:3px;
 }
+
+/****************************************************************************/
+/** Profile fields **/
+/****************************************************************************/
+table.profilefield .lastcol {
+    width: 80px;
+}
