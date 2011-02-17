@@ -1055,31 +1055,6 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && change_field_type($table, $field);
     }
 
-    if ($result && $oldversion < 2010032401) {
-    /// Update existing IDP capability assignments
-        $caps = array(
-            'viewowncomment',
-            'viewownlist',
-            'viewownplan',
-            'withdrawownplan',
-            'submitownplan',
-            'editownplan',
-            'addowncomment'
-        );
-
-        $system_context = get_context_instance(CONTEXT_SYSTEM);
-
-        foreach ($caps as $cap) {
-            assign_capability(
-                'moodle/local:'.$cap,
-                CAP_ALLOW,
-                $CFG->defaultuserroleid,
-                $system_context->id,
-                true
-            );
-        }
-    }
-
     if ($result && $oldversion < 2010033000) {
     // increase space for restriction data
         $table = new XMLDBTable('comp_framework');
