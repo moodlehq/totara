@@ -614,3 +614,10 @@ $string['componentcompletelongmanager'] = '$a->component in learning plan \"$a->
 
 $string['completedviarpl'] = 'Completed via RPL: $a';
 $string['competencycompleted'] = 'Competency Completed';
+
+
+//Todb Strings
+$string['todb_coursesettingerror'] = 'Error updating course settings';
+$string['todb_competencysettingerror'] = 'Error updating competency settings';
+$string['todb_objectivesettingerror'] = 'Error updating objective settings';
+$string['error:todb_updatepermissionserror'] = 'Error updating template permissions';

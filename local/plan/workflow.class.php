@@ -165,6 +165,9 @@ abstract class dp_base_workflow {
      */
     function copy_to_db($templateid) {
         global $CFG;
+
+        $returnurl = $CFG->wwwroot . '/local/plan/template/workflow?id=' . $templateid;
+
         if(!$templateid) {
             error(get_string('error:templateid', 'local_plan'));
         }
@@ -213,7 +216,7 @@ abstract class dp_base_workflow {
                     begin_sql();
                     if(!insert_record('dp_permissions', $perm_todb)){
                         rollback_sql();
-                        echo 'insert permissions error'; die();
+                        totara_set_notification(get_string('error:todb_updatepermissionserror', $returnurl));
                         return false;
                     }
                 } else {
@@ -222,7 +225,7 @@ abstract class dp_base_workflow {
                     $perm_todb->id = $record->id;
                     if(!update_record('dp_permissions', $perm_todb)){
                         rollback_sql();
-                        echo 'update permissions error'; die();
+                        totara_set_notification(get_string('error:todb_updatepermissionserror', $returnurl));
                         return false;
                     }
                 }
@@ -233,14 +236,14 @@ abstract class dp_base_workflow {
         if($course_settings) {
             if(!update_record('dp_course_settings', $course_todb)) {
                 rollback_sql();
-                echo 'update course setting error'; die();
+                totara_set_notification(get_string('error:todb_coursesettingerror', $returnurl));
                 return false;
             }
         } else {
             $course_todb->templateid = $templateid;
             if(!insert_record('dp_course_settings', $course_todb)){
                 rollback_sql();
-                var_dump($course_todb); die();
+                totara_set_notification(get_string('error:todb_coursesettingerror', $returnurl));
                 return false;
             }
         }
@@ -248,14 +251,14 @@ abstract class dp_base_workflow {
         if($competency_settings) {
             if(!update_record('dp_competency_settings', $competency_todb)) {
                 rollback_sql();
-                echo 'update competency settings error'; die();
+                totara_set_notification(get_string('error:todb_competencysettingerror', $returnurl));
                 return false;
             }
         } else {
             $competency_todb->templateid = $templateid;
             if(!insert_record('dp_competency_settings', $competency_todb)){
                 rollback_sql();
-                var_dump($competency_todb); die();
+                totara_set_notification(get_string('error:todb_competencysettingerror', $returnurl));
                 return false;
             }
         }
@@ -263,14 +266,14 @@ abstract class dp_base_workflow {
         if($objective_settings) {
             if(!update_record('dp_objective_settings', $objective_todb)) {
                 rollback_sql();
-                echo 'update competency settings error'; die();
+                totara_set_notification(get_string('error:todb_objectivesettingerror', $returnurl));
                 return false;
             }
         } else {
             $objective_todb->templateid = $templateid;
             if(!insert_record('dp_objective_settings', $objective_todb)){
                 rollback_sql();
-                var_dump($objective_todb); die();
+                totara_set_notification(get_string('error:todb_objectivesettingerror', $returnurl));
                 return false;
             }
         }
