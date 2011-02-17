@@ -28,7 +28,7 @@ while 1:
 
     # Set max loop
     if count > 10:
-        print 'Notifications page appears broken, aborting'
+        print 'ERROR: Notifications page appears broken, aborting'
         break
 
     count += 1
