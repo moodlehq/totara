@@ -3,6 +3,8 @@ require_once('../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once('../lib.php');
 
+require_login();
+
 /// Setup / loading data
 $sitecontext = get_context_instance(CONTEXT_SYSTEM);
 

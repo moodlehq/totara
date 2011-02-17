@@ -14,6 +14,8 @@
 
 require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
 
+require_login();
+
 $shortname = required_param('shortname', PARAM_TEXT);
 $column = required_param('column', PARAM_TEXT);
 $value = required_param('value', PARAM_TEXT);

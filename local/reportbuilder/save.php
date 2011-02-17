@@ -14,6 +14,8 @@ require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
 require_once($CFG->dirroot.'/local/reportbuilder/lib.php');
 require_once('report_forms.php');
 
+require_login();
+
 $id = optional_param('id',null,PARAM_INT); // id for report to save
 $returnurl = $CFG->wwwroot.'/local/reportbuilder/report.php?id='.$id;
 

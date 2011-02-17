@@ -15,10 +15,10 @@ require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->dirroot.'/local/reportbuilder/lib.php');
 require_once($CFG->dirroot.'/local/reportbuilder/scheduled_forms.php');
 
+require_login();
+
 $reportid = optional_param('reportid', PARAM_INT); //report that a schedule is being added for
 $id = optional_param('id', 0, PARAM_INT); //id if editing schedule
-
-//admin_externalpage_setup('managereports');
 
 $myreportsurl = $CFG->wwwroot . '/my/reports.php';
 $returnurl = $CFG->wwwroot . '/local/reportbuilder/scheduled.php';

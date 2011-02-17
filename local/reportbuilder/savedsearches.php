@@ -14,6 +14,8 @@ require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
 require_once($CFG->dirroot.'/local/reportbuilder/lib.php');
 require_once('report_forms.php');
 
+require_login();
+
 define('REPORT_BUILDER_SAVED_SEARCHES_CONFIRM_DELETE', 1);
 define('REPORT_BUILDER_SAVED_SEARCHES_FAILED_DELETE', 2);
 

@@ -12,6 +12,9 @@
  * @subpackage reportbuilder
  */
 
+if (!defined('MOODLE_INTERNAL')) {
+    die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
+}
 
 // assumes the report id variable has been set in the page
 if (!isset($currenttab)) {

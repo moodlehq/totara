@@ -13,6 +13,10 @@
 require_once "$CFG->dirroot/lib/formslib.php";
 include_once($CFG->dirroot.'/local/reportbuilder/classes/rb_base_content.php');
 
+if (!defined('MOODLE_INTERNAL')) {
+    die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
+}
+
 /**
  * Formslib template for the new report form
  */

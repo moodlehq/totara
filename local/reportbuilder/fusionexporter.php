@@ -19,6 +19,8 @@ require_once '../../config.php';
 require_once '../../local/oauth/fusionlib.php';
 require_once 'lib.php';
 
+require_login();
+
 $id         = required_param('id', PARAM_INT); // report id
 $sid        = optional_param('sid', NULL, PARAM_INT); // report search id
 

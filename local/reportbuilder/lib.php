@@ -26,6 +26,10 @@ require_once($CFG->dirroot.'/local/reportbuilder/classes/rb_param.php');
 require_once($CFG->dirroot.'/local/reportbuilder/classes/rb_param_option.php');
 require_once($CFG->dirroot.'/local/reportbuilder/classes/rb_content_option.php');
 
+if (!defined('MOODLE_INTERNAL')) {
+    die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
+}
+
 /**
  * Name of directories containing report builder source files
  */

@@ -26,6 +26,10 @@
  * The main library for the dashboard module.
  */
 
+if (!defined('MOODLE_INTERNAL')) {
+    die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
+}
+
 class Dashboard {
     public $data;
     public $userid;
