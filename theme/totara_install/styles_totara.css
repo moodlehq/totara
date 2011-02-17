@@ -48,6 +48,7 @@ input, select, button {
   min-height: 100%;
   margin: 0 auto;
   width: 980px;
+  position: relative;
 }
 
 #top-bg {
@@ -77,6 +78,7 @@ input, select, button {
   clear:both;
   padding: 10px 23px;
   background: #FFFFFF;
+  margin-bottom: 100px;
 }
 #layout-table {
   margin-top:-5px;
@@ -459,15 +461,20 @@ body.calendar #totara_menu ul #menu6 ul {
  **/
 
 #footer {
-  position: relative;
+  position: absolute;
+  bottom: 0;
   /*padding:7px 15px;*/
   background: #FFFFFF url('images/bg_grn.jpg') repeat-x top center;
-  margin-left: auto;
-  margin-right: auto;
-  height: 30px;
   width: 960px;
   clear:both;
-  margin-top: 0 !important;
+  margin-top: 40px;
+  padding:1px 0;
+}
+.performanceinfo span {
+    display: inline;
+}
+#footer .validators {
+    margin-top: 15px;
 }
 
 #footer .sitelink,
