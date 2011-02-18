@@ -1,5 +1,7 @@
 <?php
 
+defined('MOODLE_INTERNAL') || die();
+
 require_once "$CFG->dirroot/lib/formslib.php";
 
 class report_heading_columns_form extends moodleform {

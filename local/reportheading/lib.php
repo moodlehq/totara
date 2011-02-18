@@ -1,5 +1,7 @@
 <?php
 
+defined('MOODLE_INTERNAL') || die();
+
 class reportheading {
     public $items;
     public $columnoptions;

@@ -1,5 +1,7 @@
-
 <?php
+
+defined('MOODLE_INTERNAL') || die();
+
 require_once($CFG->dirroot.'/lib/formslib.php');
 
 class totara_msg_settings_form extends moodleform {

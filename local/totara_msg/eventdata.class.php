@@ -8,6 +8,8 @@
  * @package localtotaramessages
  */
 
+defined('MOODLE_INTERNAL') || die();
+
 /**
  * A basic totara message
  */

@@ -1,4 +1,5 @@
 <?php
+
 defined('MOODLE_INTERNAL') || die();
 
 require_once(dirname(dirname(__FILE__)).'/totara_msg/lib.php');
