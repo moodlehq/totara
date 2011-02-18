@@ -75,6 +75,15 @@ class hierarchylib_test extends prefix_changing_test_case {
         array(1,1,1,1,1),
     );
 
+    var $dp_plan_competency_assign_data = array(
+        array('id', 'planid', 'competencyid'),
+        array(1, 1, 5),
+    );
+    var $dp_plan_course_assign_data = array(
+        array('id', 'planid', 'courseid'),
+        array(2, 1, 3),
+    );
+
     function setUp() {
         global $db,$CFG;
         parent::setup();
@@ -92,6 +101,8 @@ class hierarchylib_test extends prefix_changing_test_case {
         load_test_table($CFG->prefix . 'pos_competencies', $this->dummy_data, $db);
         load_test_table($CFG->prefix . 'comp_relations', $this->dummy_data, $db);
         load_test_table($CFG->prefix . 'comp_scale_assignments', $this->comp_scale_assignments_data, $db);
+        load_test_table($CFG->prefix . 'dp_plan_competency_assign', $this->dp_plan_competency_assign_data, $db);
+        load_test_table($CFG->prefix . 'dp_plan_course_assign', $this->dp_plan_course_assign_data, $db);
 
         // create the competency object
         $this->competency = new competency();
@@ -214,6 +225,8 @@ class hierarchylib_test extends prefix_changing_test_case {
         remove_test_table($CFG->prefix . 'comp_depth', $db);
         remove_test_table($CFG->prefix . 'comp_framework', $db);
         remove_test_table($CFG->prefix . 'comp_scale_assignments', $db);
+        remove_test_table($CFG->prefix . 'dp_plan_competency_assign', $db);
+        remove_test_table($CFG->prefix . 'dp_plan_course_assign', $db);
         parent::tearDown();
     }
 

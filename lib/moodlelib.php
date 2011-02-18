@@ -3637,6 +3637,13 @@ function delete_course($courseorid, $showfeedback = true) {
         return false;
     }
 
+    if (!remove_dp_items($courseid)) {
+        if ($showfeedback) {
+            notify("An error occurred while deleting some of the learning plan course items.");
+        }
+        $result = false;
+    }
+
     if (!remove_course_contents($courseid, $showfeedback)) {
         if ($showfeedback) {
             notify("An error occurred while deleting some of the course contents.");
@@ -3874,6 +3881,28 @@ function remove_course_contents($courseid, $showfeedback=true) {
 
     return $result;
 }
+
+
+/**
+ * Remove learning plan items that are associated with this course.
+ * @param int $courseid The id of the course that is being deleted
+ * @return bool true if all the removals succeeded. false if there were any failures. If this
+ *             method returns false, some of the removals will probably have succeeded, and others
+ *             failed, but you have no way of knowing which.
+ */
+function remove_dp_items($courseid) {
+    $result = true;
+    $strdeleted = get_string('deleted');
+
+    if(!delete_records('dp_plan_course_assign', 'courseid', $courseid)) {
+        return false;
+    } else {
+            notify($strdeleted . ' - Learning Plan Course Items');
+    }
+
+    return $result;
+}
+
 
 /**
  * Change dates in module - used from course reset.

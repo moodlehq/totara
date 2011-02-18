@@ -187,6 +187,10 @@ SQL;
             $result = $result && delete_records(hierarchy::get_short_prefix('position').'_competencies','competencyid',$id);
             $result = $result && delete_records($this->shortprefix.'_relations','id1',$id);
             $result = $result && delete_records($this->shortprefix.'_relations','id2',$id);
+
+            //Delete Learning plan items of this competency
+            $result = $result && delete_records('dp_plan_competency_assign', 'competencyid', $id);
+
             if ( $result ){
                 if ( $usetransaction ){
                     commit_sql();
