@@ -293,6 +293,12 @@ function load_test_data($tablename, $data, $localdb = null) {
     $colnames = array_shift($data);
     $idcol = array_search('id', $colnames);
     $maxid = -1;
+
+    // Clean up col names
+    foreach ($colnames as $key => $col) {
+        $colnames[$key] = trim($col);
+    }
+
     foreach ($data as $row) {
         $savedcolnames = $colnames;
         $savedrow      = $row;
