@@ -135,7 +135,7 @@
         $out .= get_string('withselected','local_totara_msg');
         $out .= '</td>';
         $out .= '<td>';
-        $out .= '<input type="submit" name="dismiss" id="totara-dismiss" value="'. get_string('dismiss','local_totara_msg') .'" style="display:none;"/>';
+        $out .= '<input type="submit" name="dismiss" disabled="true" id="totara-dismiss" value="'. get_string('dismiss','local_totara_msg') .'" style="display:none;"/>';
         $out .= '<noscript>';
         $out .= get_string('noscript','local_totara_msg');
         $out .= '</noscript>';
@@ -149,6 +149,21 @@
         print totara_msg_checkbox_all_none();
     }
 
-   print_footer();
+    print_footer();
+
+print <<<HEREDOC
+<script type="text/javascript">
+
+    $(function() {
+        $('#totara_messages input[type=checkbox]').bind('click', function() {
+            if ($('form#totara_messages input[type=checkbox]:checked').length) {
+                $('#totara-dismiss').attr('disabled', false);
+            } else {
+                $('#totara-dismiss').attr('disabled', true);
+            }
+        });
+    });
+</script>
+HEREDOC;
 
 ?>
