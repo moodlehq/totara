@@ -82,6 +82,12 @@ class completion_criteria_course extends completion_criteria {
                 // Use correct index, depending on use of checkbox or select
                 $this->courseinstance = $js_enabled ? $key : $course;
                 $this->id = NULL;
+
+                // Double check this isn't a circular reference
+                if ($this->course == $this->courseinstance) {
+                    continue;
+                }
+
                 $this->insert();
             }
         }

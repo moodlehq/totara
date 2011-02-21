@@ -147,7 +147,6 @@ class course_completion_form extends moodleform {
                     AND cc.course = {$course->id}
                     WHERE
                         c.enablecompletion = ".COMPLETION_ENABLED."
-                    AND c.id <> {$course->id}
                 "
             );
 
