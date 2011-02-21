@@ -331,7 +331,9 @@ function tm_alert_send($eventdata) {
         }
         $result = email_to_user($eventdata->userto, $eventdata->userfrom,
             format_string($eventdata->subject), format_string($eventdata->fullmessage),
-            $eventdata->fullmessagehtml.'<br><br>'.get_string('viewdetailshere', 'local_totara_msg', $eventdata->contexturl));
+            $eventdata->fullmessagehtml.'<br><br>'.get_string('viewdetailshere', 'local_totara_msg', $eventdata->contexturl)
+            // Add footer to email
+            .'<br><br>'.get_string('alertfooter', 'local_totara_msg', $CFG->wwwroot."/local/totara_msg/edit.php?id=".$eventdata->userto->id."&course=1"));
     }
 
     return $result;
@@ -390,9 +392,10 @@ function tm_task_send($eventdata) {
         }
         $result = email_to_user($eventdata->userto, $eventdata->userfrom,
             format_string($eventdata->subject), format_string($eventdata->fullmessage),
-            $eventdata->fullmessagehtml.'<br><br>'.get_string('viewdetailshere', 'local_totara_msg', $eventdata->contexturl));
+            $eventdata->fullmessagehtml.'<br><br>'.get_string('viewdetailshere', 'local_totara_msg', $eventdata->contexturl)
+            // Add footer to email
+            .'<br><br>'.get_string('alertfooter', 'local_totara_msg', $CFG->wwwroot."/local/totara_msg/edit.php?id=".$eventdata->userto->id."&course=1"));
     }
-
     return $result;
 }
 
@@ -493,7 +496,9 @@ function tm_workflow_send($eventdata) {
         }
         $result = email_to_user($eventdata->userto, $eventdata->userfrom,
             format_string($eventdata->subject), format_string($eventdata->fullmessage),
-            $eventdata->fullmessagehtml.'<br><br>'.get_string('viewdetailshere', 'local_totara_msg', $eventdata->contexturl));
+            $eventdata->fullmessagehtml.'<br><br>'.get_string('viewdetailshere', 'local_totara_msg', $eventdata->contexturl)
+            // Add footer to email
+            .'<br><br>'.get_string('alertfooter', 'local_totara_msg', $CFG->wwwroot."/local/totara_msg/edit.php?id=".$eventdata->userto->id."&course=1"));
     }
 
     return $result;
