@@ -104,7 +104,7 @@ if (!$courses) {
 $dialog = new totara_dialog_content_courses($categoryid);
 
 // Setup search
-$dialog->search_code = '/course/completion_prerequisite_search.php';
+$dialog->search_code = '/course/completion_dependency_search.php';
 
 // Add data
 $dialog->courses = $courses;

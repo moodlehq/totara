@@ -1,7 +1,7 @@
 <?php // $Id$
 
 /**
- * Page containing prerequisites search results
+ * Page containing dependency search results
  *
  * @copyright Totara Learning Solution Limited
  * @author Simon Coggins
@@ -43,7 +43,7 @@ $query = urldecode(trim($query));
 $hidden = array();
 
 // Create form
-$mform = new dialog_search_form($CFG->wwwroot. '/course/completion_prerequisite_search.php',
+$mform = new dialog_search_form($CFG->wwwroot. '/course/completion_dependency_search.php',
     compact('hidden', 'query'));
 
 // Display form
@@ -86,7 +86,7 @@ if (strlen($query)) {
 
             $data = array('query' => urlencode(stripslashes($query)));
 
-            $url = new moodle_url($CFG->wwwroot . '/course/completion_prerequisite_search.php', $data);
+            $url = new moodle_url($CFG->wwwroot . '/course/completion_dependency_search.php', $data);
             print '<div class="search-paging">';
             print print_paging_bar($total, $page, HIERARCHY_SEARCH_NUM_PER_PAGE, $url, 'page', false, true, 5);
             print '</div>';

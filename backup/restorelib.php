@@ -1934,7 +1934,7 @@ define('RESTORE_GROUPS_GROUPINGS', 3);
                             break;
                         case 'course_completion_criteria':
 
-                            // If prerequisite criteria, only restore if this is the same site
+                            // If dependency criteria, only restore if this is the same site
                             if ($row['courseinstance'] && !backup_is_same_site($restore)) {
                                 continue;
                             }

@@ -84,9 +84,9 @@ class block_completionstatus extends block_base {
         $activities = array();
         $activities_complete = 0;
 
-        // For aggregating course prerequisites
-        $prerequisites = array();
-        $prerequisites_complete = 0;
+        // For aggregating course dependencies
+        $dependencies = array();
+        $dependencies_complete = 0;
 
         // Flag to set if current completion data is inconsistent with
         // what is stored in the database
@@ -113,12 +113,12 @@ class block_completionstatus extends block_base {
                 continue;
             }
 
-            // Prerequisites are also a special case, so cache them and leave them till last
+            // Dependencies are also a special case, so cache them and leave them till last
             if ($criteria->criteriatype == COMPLETION_CRITERIA_TYPE_COURSE) {
-                $prerequisites[$criteria->courseinstance] = $complete;
+                $dependencies[$criteria->courseinstance] = $complete;
 
                 if ($complete) {
-                    $prerequisites_complete++;
+                    $dependencies_complete++;
                 }
 
                 continue;
@@ -141,13 +141,13 @@ class block_completionstatus extends block_base {
             $shtml .= '</td></tr>';
         }
 
-        // Aggregate prerequisites
-        if (!empty($prerequisites)) {
+        // Aggregate dependencies
+        if (!empty($dependencies)) {
 
             $phtml  = '<tr><td>';
-            $phtml .= get_string('prerequisitescompleted', 'completion');
+            $phtml .= get_string('dependenciescompleted', 'completion');
             $phtml .= '</td><td style="text-align: right">';
-            $phtml .= $prerequisites_complete.' of '.count($prerequisites);
+            $phtml .= $dependencies_complete.' of '.count($dependencies);
             $phtml .= '</td></tr>';
 
             $shtml = $phtml . $shtml;

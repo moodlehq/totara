@@ -10,7 +10,7 @@
 // Bind functionality to page on load
 $(function() {
 
-    /// Find course prerequisites
+    /// Find course dependencies
     ///
     (function() {
         var url = '<?php echo $CFG->wwwroot ?>/course/';
@@ -19,7 +19,7 @@ $(function() {
         handler.baseurl = url;
 
         totaraDialogs['evidence'] = new totaraDialog(
-            'courseprerequisite',
+            'coursedependency',
             'id_add_criteria_course',
             {
                  buttons: {
@@ -28,12 +28,12 @@ $(function() {
                  },
                 title: '<?php
                     echo '<h2>';
-                    echo get_string('addcourseprerequisite', 'completion');
-                    echo dialog_display_currently_selected(get_string('selected', 'hierarchy'), 'courseprerequisite');
+                    echo get_string('addcoursedependency', 'completion');
+                    echo dialog_display_currently_selected(get_string('selected', 'hierarchy'), 'coursedependency');
                     echo '</h2>';
                 ?>'
             },
-            url+'completion_prerequisite.php?id=<?php echo $courseid;?>',
+            url+'completion_dependency.php?id=<?php echo $courseid;?>',
             handler
         );
     })();
@@ -50,14 +50,14 @@ totaraDialog_handler_preRequisite.prototype = new totaraDialog_handler_treeview_
 
 totaraDialog_handler_preRequisite.prototype._save = function() {
 
-    var id = $('#treeview_selected_val_courseprerequisite').val();
-    var course = $('#treeview_selected_text_courseprerequisite').text();
+    var id = $('#treeview_selected_val_coursedependency').val();
+    var course = $('#treeview_selected_text_coursedependency').text();
 
     // Get button fitem
     var button_fitem = $('#id_add_criteria_course').parent().parent();
 
     // Delete no prerequisites warning, if exists
-    var statics = $('#courseprerequisites span.nocoursesselected');
+    var statics = $('#coursedependencies span.nocoursesselected');
     if (statics) {
         $(statics).parent().parent().remove();
     }

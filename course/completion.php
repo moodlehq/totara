@@ -161,7 +161,7 @@ if ($js_enabled) {
     ));
 
     require_js(array(
-        $CFG->wwwroot.'/local/js/completion.prerequisite.js.php?id='.$course->id,
+        $CFG->wwwroot.'/local/js/completion.dependencies.js.php?id='.$course->id,
     ));
 }
 

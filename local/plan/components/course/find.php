@@ -80,7 +80,7 @@ $dialog->type = totara_dialog_content::TYPE_CHOICE_MULTI;
 $dialog->selected_title = 'currentlyselected';
 
 // Setup search
-$dialog->search_code = '/course/completion_prerequisite_search.php';
+$dialog->search_code = '/course/completion_dependency_search.php';
 
 // Add data
 $dialog->load_courses();

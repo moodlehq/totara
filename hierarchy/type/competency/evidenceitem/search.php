@@ -1,7 +1,7 @@
 <?php // $Id$
 
 /**
- * Page containing prerequisites search results
+ * Page containing search results
  *
  * @copyright Totara Learning Solution Limited
  * @author Simon Coggins

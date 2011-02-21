@@ -62,9 +62,9 @@ class course_completion_form extends moodleform {
         $mform->setDefault('overall_aggregation', $completion->get_aggregation_method());
         $mform->setHelpButton('overall_aggregation', array('completionaggregationmethod', get_string('aggregationmethod', 'completion')), true);
 
-        // Course prerequisite completion criteria
-        $mform->addElement('header', 'courseprerequisites', get_string('courseprerequisites', 'completion'));
-        $mform->setHelpButton('courseprerequisites', array('completioncourseprerequisites', get_string('courseprerequisites', 'completion')), true);
+        // Course dependency completion criteria
+        $mform->addElement('header', 'coursedependencies', get_string('coursedependencies', 'completion'));
+        $mform->setHelpButton('coursedependencies', array('completioncoursedependencies', get_string('coursedependencies', 'completion')), true);
 
         // Show noscript version if js off
         if (!$js_enabled) {
@@ -132,7 +132,7 @@ class course_completion_form extends moodleform {
 
         // If js turned on
         } else {
-            // Get current prerequisites
+            // Get current dependencies
             $courses = get_records_sql(
                 "
                     SELECT DISTINCT
@@ -163,8 +163,8 @@ class course_completion_form extends moodleform {
                 $mform->addElement('static', 'nocoursesselected', '', '<span class="nocoursesselected"></span>'.get_string('err_nocoursesselected', 'completion'));
             }
 
-            // Add new prerequisite button
-            $mform->addElement('button', 'add_criteria_course', get_string('addcourseprerequisite', 'completion'));
+            // Add new dependency button
+            $mform->addElement('button', 'add_criteria_course', get_string('addcoursedependency', 'completion'));
 
             // Show non-js version
             $mform->addElement('static', 'shownonjsversion', '', '<small><a href="completion.php?id='.$course->id.'&js=0">'.get_string('usealternateselector', 'completion').'</a></small>');

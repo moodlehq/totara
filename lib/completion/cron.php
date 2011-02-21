@@ -249,12 +249,12 @@ function completion_cron_completions() {
             // Setup aggregation
             $overall = $info->get_aggregation_method();
             $activity = $info->get_aggregation_method(COMPLETION_CRITERIA_TYPE_ACTIVITY);
-            $prerequisite = $info->get_aggregation_method(COMPLETION_CRITERIA_TYPE_COURSE);
+            $dependency = $info->get_aggregation_method(COMPLETION_CRITERIA_TYPE_COURSE);
             $role = $info->get_aggregation_method(COMPLETION_CRITERIA_TYPE_ROLE);
 
             $overall_status = null;
             $activity_status = null;
-            $prerequisite_status = null;
+            $dependency_status = null;
             $role_status = null;
 
             // Get latest timecompleted
@@ -270,7 +270,7 @@ function completion_cron_completions() {
                 if ($params->criteriatype == COMPLETION_CRITERIA_TYPE_ACTIVITY) {
                     completion_cron_aggregate($activity, $completion->is_complete(), $activity_status);
                 } else if ($params->criteriatype == COMPLETION_CRITERIA_TYPE_COURSE) {
-                    completion_cron_aggregate($prerequisite, $completion->is_complete(), $prerequisite_status);
+                    completion_cron_aggregate($dependency, $completion->is_complete(), $dependency_status);
                 } else if ($params->criteriatype == COMPLETION_CRITERIA_TYPE_ROLE) {
                     completion_cron_aggregate($role, $completion->is_complete(), $role_status);
                 } else {
@@ -288,9 +288,9 @@ function completion_cron_completions() {
                 completion_cron_aggregate($overall, $activity_status, $overall_status);
             }
 
-            // Include prerequisite criteria aggregation in overall aggregation
-            if ($prerequisite_status !== null) {
-                completion_cron_aggregate($overall, $prerequisite_status, $overall_status);
+            // Include dependency criteria aggregation in overall aggregation
+            if ($dependency_status !== null) {
+                completion_cron_aggregate($overall, $dependency_status, $overall_status);
             }
 
             // If aggregation status is true, mark course complete for user

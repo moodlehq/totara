@@ -438,9 +438,9 @@
                         $activities = array();
                         $activities_complete = 0;
 
-                        // For aggregating prerequisites
-                        $prerequisites = array();
-                        $prerequisites_complete = 0;
+                        // For aggregating dependencies
+                        $dependencies = array();
+                        $dependencies_complete = 0;
 
                         // Loop through course criteria
                         foreach ($completions as $completion) {
@@ -461,12 +461,12 @@
                                 continue;
                             }
 
-                            // Prerequisites are also a special case, so cache them and leave them till last
+                            // Dependencies are also a special case, so cache them and leave them till last
                             if ($criteria->criteriatype == COMPLETION_CRITERIA_TYPE_COURSE) {
-                                $prerequisites[$criteria->courseinstance] = $complete;
+                                $dependencies[$criteria->courseinstance] = $complete;
 
                                 if ($complete) {
-                                    $prerequisites_complete++;
+                                    $dependencies_complete++;
                                 }
 
                                 continue;
@@ -487,12 +487,12 @@
                             $rows[] = $row;
                         }
 
-                        // Aggregate prerequisites
-                        if (!empty($prerequisites)) {
+                        // Aggregate dependencies
+                        if (!empty($dependencies)) {
 
                             $row = array();
-                            $row['title'] = get_string('prerequisitescompleted', 'completion');
-                            $row['status'] = $prerequisites_complete.' of '.count($prerequisites);
+                            $row['title'] = get_string('dependenciescompleted', 'completion');
+                            $row['status'] = $dependencies_complete.' of '.count($dependencies);
                             array_splice($rows, 0, 0, array($row));
                         }
 

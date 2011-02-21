@@ -124,7 +124,7 @@ class completion_criteria_course extends completion_criteria {
      * @return  string
      */
     public function get_title() {
-        return get_string('prerequisitescompleted', 'completion');
+        return get_string('dependenciescompleted', 'completion');
     }
 
     /**
@@ -133,8 +133,8 @@ class completion_criteria_course extends completion_criteria {
      * @return  string
      */
     public function get_title_detailed() {
-        $prereq = get_record('course', 'id', $this->courseinstance);
-        return shorten_text(urldecode($prereq->fullname));
+        $depend = get_record('course', 'id', $this->courseinstance);
+        return shorten_text(urldecode($depend->fullname));
     }
 
     /**
@@ -143,7 +143,7 @@ class completion_criteria_course extends completion_criteria {
      * @return  string
      */
     public function get_type_title() {
-        return get_string('prerequisites', 'completion');
+        return get_string('dependencies', 'completion');
     }
 
     /**
@@ -214,12 +214,12 @@ class completion_criteria_course extends completion_criteria {
         $course->id = $completion->course;
         $info = new completion_info($course);
 
-        $prereq = get_record('course', 'id', $this->courseinstance);
-        $prereq_info = new completion_info($prereq);
+        $depend = get_record('course', 'id', $this->courseinstance);
+        $depend_info = new completion_info($depend);
 
         $details = array();
         $details['type'] = $this->get_title();
-        $details['criteria'] = '<a href="'.$CFG->wwwroot.'/course/view.php?id='.$this->courseinstance.'">'.s($prereq->fullname).'</a>';
+        $details['criteria'] = '<a href="'.$CFG->wwwroot.'/course/view.php?id='.$this->courseinstance.'">'.s($depend->fullname).'</a>';
         $details['requirement'] = get_string('coursecompleted', 'completion');
         $details['status'] = '<a href="'.$CFG->wwwroot.'/blocks/completionstatus/details.php?course='.$this->courseinstance.'">'.get_string('seedetails', 'completion').'</a>';
 
