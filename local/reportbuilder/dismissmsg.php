@@ -53,7 +53,7 @@ print "<td class=\"totara-msgs-action-right\"><div id='dismiss-type'>{$icon}</di
 print '<tr><td class="totara-msgs-action-left"><label for="dismiss-from">' . get_string('from', 'block_totara_alerts').'</label></td>';
 print "<td class=\"totara-msgs-action-right\"><div id='dismiss-from'>{$fromlink}</div></td></tr>";
 print '<tr><td class="totara-msgs-action-left"><label for="dismiss-statement">' . get_string('statement', 'block_totara_alerts').'</label>';
-print "<td class=\"totara-msgs-action-right\"><div id='dismiss-statement'>{$msg->fullmessage}</div></td></tr>";
+print "<td class=\"totara-msgs-action-right\"><div id='dismiss-statement'>{$msg->fullmessagehtml}</div></td></tr>";
 if ( $msg->contexturl && $msg->contexturlname ){
     print '<tr><td class="totara-msgs-action-left"><label for="dismiss-context">' . get_string('context', 'block_totara_alerts').'</label>';
     print "<td class=\"totara-msgs-action-right\"><div id=\"dismiss-statement\"><a href=\"{$msg->contexturl}\" >{$msg->contexturlname}</a></div></td></tr>";

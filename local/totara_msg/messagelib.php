@@ -309,7 +309,7 @@ function tm_alert_send($eventdata) {
         $eventdata->subject       = '';
     }
     $eventdata->fullmessageformat = FORMAT_PLAIN;
-    $eventdata->fullmessagehtml   = $eventdata->fullmessage;
+    $eventdata->fullmessagehtml   = nl2br($eventdata->fullmessage);
     $eventdata->alert      = 1;
 
     if (!isset($eventdata->contexturl)) {
@@ -368,7 +368,7 @@ function tm_task_send($eventdata) {
         $eventdata->subject       = '';
     }
     $eventdata->fullmessageformat = FORMAT_PLAIN;
-    $eventdata->fullmessagehtml   = $eventdata->fullmessage;
+    $eventdata->fullmessagehtml   = nl2br($eventdata->fullmessage);
     $eventdata->alert      = 1;
 
     if (!isset($eventdata->contexturl)) {

@@ -1869,6 +1869,7 @@ function facetoface_send_notrem($facetoface, $session, $userid, $nottype) {
                                                         $session->id
                                                 );
             $newevent->subject          = 'Booked for session <a href="'.$url.'">'.$facetoface->name.'</a>';
+            $newevent->icon             = 'facetoface-add';
             $newevent->urgency          = TOTARA_MSG_URGENCY_NORMAL;
             tm_alert_send($newevent);
             break;
@@ -1883,6 +1884,7 @@ function facetoface_send_notrem($facetoface, $session, $userid, $nottype) {
                                                         $session->id
                                                 );
             $newevent->subject          = 'Waitlisted for session <a href="'.$url.'">'.$facetoface->name.'</a>';
+            $newevent->icon             = 'facetoface-regular';
             $newevent->urgency          = TOTARA_MSG_URGENCY_NORMAL;
             tm_alert_send($newevent);
             break;
@@ -1890,6 +1892,7 @@ function facetoface_send_notrem($facetoface, $session, $userid, $nottype) {
         case MDL_F2F_STATUS_USER_CANCELLED:
             $newevent->subject          = 'Cancelled for session <a href="'.$url.'">'.$facetoface->name.'</a>';
             $newevent->fullmessage      = $newevent->subject;
+            $newevent->icon             = 'facetoface-remove';
             $newevent->urgency          = TOTARA_MSG_URGENCY_NORMAL;
             tm_alert_send($newevent);
             $managerid = facetoface_get_manager($userid);
@@ -1937,6 +1940,7 @@ function facetoface_send_notrem($facetoface, $session, $userid, $nottype) {
                 $newevent->roleid           = get_field('role', 'id', 'shortname', 'student');
                 $newevent->subject          = 'Request to attend session <a href="'.$CFG->wwwroot.'/mod/facetoface/view.php?f='.$facetoface->id.'">'.$facetoface->name.'</a> sent to manager';
                 $newevent->fullmessage      = $newevent->subject;
+                $newevent->icon             = 'facetoface-request';
                 $newevent->urgency          = TOTARA_MSG_URGENCY_NORMAL;
                 tm_alert_send($newevent);
             }
