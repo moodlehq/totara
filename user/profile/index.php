@@ -52,7 +52,7 @@ switch ($action) {
         $fieldcount = count_records('user_info_field', 'categoryid', $id);
         $optionsyes = array ('id'=>$id, 'confirm'=>1, 'action'=>'deletecategory', 'sesskey'=>sesskey());
         admin_externalpage_print_header();
-        print_heading('profiledeletecategory', 'admin');
+        print_heading(get_string('profiledeletecategory', 'admin'));
         notice_yesno(get_string('profileconfirmcategorydeletion', 'admin', $fieldcount), $redirect, $redirect, $optionsyes, null, 'post', 'get');
         admin_externalpage_print_footer();
         die;
@@ -70,7 +70,7 @@ switch ($action) {
         $datacount = count_records('user_info_data', 'fieldid', $id);
         $optionsyes = array ('id'=>$id, 'confirm'=>1, 'action'=>'deletefield', 'sesskey'=>sesskey());
         admin_externalpage_print_header();
-        print_heading('profiledeletefield', 'admin');
+        print_heading(get_string('profiledeletefield', 'admin'));
         notice_yesno(get_string('profileconfirmfielddeletion', 'admin', $datacount), $redirect, $redirect, $optionsyes, null, 'post', 'get');
         admin_externalpage_print_footer();
         die;
@@ -126,7 +126,7 @@ foreach ($categories as $category) {
     if (count($table->data)) {
         print_table($table);
     } else {
-        notify($strnofields);
+        print($strnofields);
     }
 
 } /// End of $categories foreach
