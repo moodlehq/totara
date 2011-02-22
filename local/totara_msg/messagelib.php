@@ -46,6 +46,10 @@ define('TOTARA_MSG_TYPE_SURVEY', 8);
 define('TOTARA_MSG_TYPE_SCORM', 9);
 define('TOTARA_MSG_TYPE_LINK', 10);
 
+// message email constants
+define('TOTARA_MSG_EMAIL_YES', 0);
+define('TOTARA_MSG_EMAIL_NO', 1);
+
 // message type shortnames
 global $TOTARA_MESSAGE_TYPES;
 $TOTARA_MESSAGE_TYPES = array(
@@ -298,6 +302,7 @@ function tm_alert_send($eventdata) {
     (!isset($eventdata->msgtype)) && $eventdata->msgtype = TOTARA_MSG_TYPE_UNKNOWN;
     (!isset($eventdata->msgstatus)) && $eventdata->msgstatus = TOTARA_MSG_STATUS_UNDECIDED;
     (!isset($eventdata->urgency)) && $eventdata->urgency = TOTARA_MSG_URGENCY_NORMAL;
+    (!isset($eventdata->sendemail)) && $eventdata->sendemail = TOTARA_MSG_EMAIL_YES;
 
     $eventdata->component         = 'local/totara_msg';
     $eventdata->name              = 'alrt';
@@ -319,7 +324,7 @@ function tm_alert_send($eventdata) {
 
     $result = tm_message_send($eventdata);
 
-    if ($result && get_user_preferences('totara_msg_send_alrt_emails', 1, $eventdata->userto->id)) {
+    if ($result && get_user_preferences('totara_msg_send_alrt_emails', 1, $eventdata->userto->id) && $eventdata->sendemail == TOTARA_MSG_EMAIL_YES) {
         // Send alert email
         if (empty($eventdata->subject)) {
             $eventdata->subject = strlen($eventdata->fullmessage) > 80 ? substr($eventdata->fullmessage, 0, 78).'...' : $eventdata->fullmessage;
