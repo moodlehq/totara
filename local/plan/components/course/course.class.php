@@ -515,8 +515,7 @@ class dp_course_component extends dp_base_component {
         require_once($CFG->dirroot . '/lib/completion/completion_completion.php');
 
         // get the completion string, if there is a record
-        if (array_key_exists($item->coursecompletion,
-            $COMPLETION_STATUS)) {
+        if (isset($item->coursecompletion) && array_key_exists($item->coursecompletion, $COMPLETION_STATUS)) {
             return $COMPLETION_STATUS[$item->coursecompletion];
         } else {
             // No completion record
