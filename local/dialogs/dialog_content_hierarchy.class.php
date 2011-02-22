@@ -69,6 +69,15 @@ class totara_dialog_content_hierarchy extends totara_dialog_content {
 
 
     /**
+     * Switching frameworks
+     *
+     * @access  public
+     * @var     boolean
+     */
+    public $switch_frameworks = false;
+
+
+    /**
      * Load hierarchy specific information and make some
      * capability checks (which can be disabled)
      *
@@ -94,6 +103,9 @@ class totara_dialog_content_hierarchy extends totara_dialog_content {
 
         // Load framework
         $this->set_framework($frameworkid);
+
+        // Check if switching frameworks
+        $this->switch_frameworks = optional_param('switchframework', false, PARAM_BOOL);
     }
 
 
@@ -147,6 +159,16 @@ class totara_dialog_content_hierarchy extends totara_dialog_content {
         return $this->hierarchy->display_framework_selector('', true, true);
     }
 
+
+    /**
+     * Should we show the treeview root?
+     *
+     * @access  protected
+     * @return  boolean
+     */
+    protected function _show_treeview_root() {
+        return !$this->show_treeview_only || $this->switch_frameworks;
+    }
 
     /**
      * Generate search interface for hierarchy search

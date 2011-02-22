@@ -245,6 +245,17 @@ class totara_dialog_content {
 
 
     /**
+     * Should we show the treeview root
+     *
+     * @access  protected
+     * @return  boolean
+     */
+    protected function _show_treeview_root() {
+        return !$this->show_treeview_only;
+    }
+
+
+    /**
      * Generate treeview markup
      *
      * @access  public
@@ -259,7 +270,9 @@ class totara_dialog_content {
 
         $html = '';
 
-        $html .= !$this->show_treeview_only ? '<ul class="treeview filetree picker">' : '';
+        $html .= !$this->show_treeview_only ? '<div class="treeview-wrapper">' : '';
+        $show_root = $this->_show_treeview_root();
+        $html .= $show_root ? '<ul class="treeview filetree picker">' : '';
 
         if (is_array($this->items) && !empty($this->items)) {
 
@@ -270,66 +283,66 @@ class totara_dialog_content {
                 $html .= '<li class="last"><span class="empty dialog-nobind">';
                 $html .= 'There are more than ' . $maxitems . ' items at this level. Try <a href="#search-tab" onclick="$(\'#dialog-tabs\').tabs(\'select\', 1);return false;">searching</a> instead.';
                 $html .= '</span></li>'.PHP_EOL;
-                return $html;
             }
+            else {
+                // Loop through elements
+                foreach ($this->items as $element) {
+                    ++$count;
 
-            // Loop through elements
-            foreach ($this->items as $element) {
-                ++$count;
+                    // Initialise class vars
+                    $li_class = '';
+                    $div_class = '';
+                    $span_class = '';
 
-                // Initialise class vars
-                $li_class = '';
-                $div_class = '';
-                $span_class = '';
-
-                // If last element
-                if ($count == $total) {
-                    $li_class .= ' last';
-                }
-
-                // If element has children
-                if (array_key_exists($element->id, $this->parent_items)) {
-                    $li_class .= ' expandable';
-                    $div_class .= ' hitarea expandable-hitarea';
-                    $span_class .= ' folder';
-
+                    // If last element
                     if ($count == $total) {
-                        $li_class .= ' lastExpandable';
-                        $div_class .= ' lastExpandable-hitarea';
+                        $li_class .= ' last';
                     }
+
+                    // If element has children
+                    if (array_key_exists($element->id, $this->parent_items)) {
+                        $li_class .= ' expandable';
+                        $div_class .= ' hitarea expandable-hitarea';
+                        $span_class .= ' folder';
+
+                        if ($count == $total) {
+                            $li_class .= ' lastExpandable';
+                            $div_class .= ' lastExpandable-hitarea';
+                        }
+                    }
+
+                    // Make disabled elements non-draggable and greyed out
+                    if (array_key_exists($element->id, $this->disabled_items)){
+                        $span_class .= ' unclickable';
+                    } else {
+                        $span_class .= ' clickable';
+                    }
+
+                    $html .= '<li class="'.trim($li_class).'" id="item_list_'.$element->id.'">';
+                    $html .= '<div class="'.trim($div_class).'"></div>';
+                    $html .= '<span id="item_'.$element->id.'" class="'.trim($span_class).'">';
+
+                    // Grab item display name
+                    if (isset($element->fullname)) {
+                        $displayname = $element->fullname;
+                    } elseif (isset($element->name)) {
+                        $displayname = $element->name;
+                    } else {
+                        $displayname = '';
+                    }
+
+                    $html .= '<a href="#">';
+                    $html .= htmlentities($displayname);
+                    $html .= '</a>';
+                    $html .= '<span class="deletebutton">delete</span>';
+
+                    $html .= '</span>';
+
+                    if ($div_class !== '') {
+                        $html .= '<ul style="display: none;"></ul>';
+                    }
+                    $html .= '</li>'.PHP_EOL;
                 }
-
-                // Make disabled elements non-draggable and greyed out
-                if (array_key_exists($element->id, $this->disabled_items)){
-                    $span_class .= ' unclickable';
-                } else {
-                    $span_class .= ' clickable';
-                }
-
-                $html .= '<li class="'.trim($li_class).'" id="item_list_'.$element->id.'">';
-                $html .= '<div class="'.trim($div_class).'"></div>';
-                $html .= '<span id="item_'.$element->id.'" class="'.trim($span_class).'">';
-
-                // Grab item display name
-                if (isset($element->fullname)) {
-                    $displayname = $element->fullname;
-                } elseif (isset($element->name)) {
-                    $displayname = $element->name;
-                } else {
-                    $displayname = '';
-                }
-
-                $html .= '<a href="#">';
-                $html .= htmlentities($displayname);
-                $html .= '</a>';
-                $html .= '<span class="deletebutton">delete</span>';
-
-                $html .= '</span>';
-
-                if ($div_class !== '') {
-                    $html .= '<ul style="display: none;"></ul>';
-                }
-                $html .= '</li>'.PHP_EOL;
             }
         }
         else {
@@ -338,7 +351,8 @@ class totara_dialog_content {
             $html .= '</span></li>'.PHP_EOL;
         }
 
-        $html .= !$this->show_treeview_only ? '</ul>' : '';
+        $html .= $show_root ? '</ul>' : '';
+        $html .= !$this->show_treeview_only ? '</div>' : '';
         return $html;
     }
 

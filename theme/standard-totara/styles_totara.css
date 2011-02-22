@@ -1933,7 +1933,7 @@ div.totara-dialog td.select div#search-tab ul.searchview {
     padding: 2px;
 }
 
-div.totara-dialog ul.treeview,
+div.totara-dialog div.treeview-wrapper,
 div.totara-dialog div#column-checkboxes {
     overflow: auto;
     margin-top: 5px;

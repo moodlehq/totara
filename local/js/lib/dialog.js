@@ -125,10 +125,10 @@ function totaraDialog(title, buttonid, config, default_url, handler) {
 
         this.load(url, method);
 
-	// If ie6 then hide selects while the pop-up is open
-	if($.browser.msie && parseInt($.browser.version) == 6) {
-	    $('select').addClass('hidden_select_ie');
-	}
+        // If ie6 then hide selects while the pop-up is open
+        if($.browser.msie && parseInt($.browser.version) == 6) {
+            $('select').addClass('hidden_select_ie');
+        }
     }
 
 
@@ -314,10 +314,10 @@ function totaraDialog(title, buttonid, config, default_url, handler) {
      * @return void
      */
     this.hide = function() {
-	// If ie6 then show selects
-	if($.browser.msie && parseInt($.browser.version) == 6) {
-	    $('select').removeClass('hidden_select_ie');
-	}
+        // If ie6 then show selects
+        if($.browser.msie && parseInt($.browser.version) == 6) {
+            $('select').removeClass('hidden_select_ie');
+        }
 
         this.handler._loaded = false;
         this.dialog.html('');
@@ -549,7 +549,7 @@ totaraDialog_handler.prototype._set_framework = function() {
     // See if framework specific
     if (url.indexOf('&frameworkid=') == -1 || url.indexOf('?frameworkid=') == -1) {
         // Only return tree html
-        url = url + '&frameworkid=' + selected + '&treeonly=1';
+        url = url + '&frameworkid=' + selected + '&treeonly=1&switchframework=1';
     } else {
         // Get start of frameworkid
         var start = url.indexOf('frameworkid=') + 12;
@@ -567,8 +567,7 @@ totaraDialog_handler.prototype._set_framework = function() {
     }
 
     this._dialog.showLoading();  // Show loading icon and then perform request
-
-    this._dialog._request(url, this, '_load', undefined, $('#browse-tab .treeview', this._container));
+    this._dialog._request(url, undefined, undefined, undefined, $('#browse-tab .treeview-wrapper', this._container));
 }
 
 
@@ -598,11 +597,11 @@ totaraDialog_handler_treeview.prototype.setup_tabs = function(e, ui) {
 
     // Resize browse treeview, minus padding
     if (!($.browser.msie && $.browser.version=="6.0")) {
-	$('div#browse-tab ul.treeview', this._container).height(containerheight - $('select.simpleframeworkpicker', this._container).outerHeight() - 10);
+        $('div#browse-tab .treeview-wrapper', this._container).height(containerheight - $('select.simpleframeworkpicker', this._container).outerHeight() - 10);
     }
 
     // Resize search container
-    $('div#search-tab ul.treeview', this._container).height(containerheight - $('#search-tab .mform', selcontainer).outerHeight() - $('div.search-paging', this._container).outerHeight() - 18);
+    $('div#search-tab .treeview-wrapper', this._container).height(containerheight - $('#search-tab .mform', selcontainer).outerHeight() - $('div.search-paging', this._container).outerHeight() - 18);
 
     // If showing search tab, focus search box
     if (ui && ui.index == 1) {
@@ -664,18 +663,33 @@ totaraDialog_handler_treeview.prototype._partial_load = function(parent_element)
     this.setup_tabs();
 
     // Render treeview
-    $('.treeview', parent_element).treeview({
-        prerendered: true
-    });
+    if (parent_element.hasClass('treeview')) {
+        var treeview = parent_element;
+    } else {
+        var treeview = $('.treeview', parent_element);
+    }
+
+    if (treeview.size()) {
+        treeview.treeview({
+            prerendered: true
+        });
+    }
 
     // Setup hierarchy
-    this._make_hierarchy($('.treeview', parent_element));
+    this._make_hierarchy(parent_element);//$('.treeview', parent_element));
 
     // Disable selected item's anchors
     $('.selected > div > span a', parent_element).unbind('click')
     .click(function(e) {
         e.preventDefault();
     });
+
+    // Setup selectables and deletables
+    if (this.every_load != undefined) {
+        this.every_load();
+    }
+
+    return true;
 }
 
 /**
@@ -687,8 +701,8 @@ totaraDialog_handler_treeview.prototype._make_hierarchy = function(parent_elemen
     var handler = this;
 
     // Load children on parent click
-    $('span.folder, div.hitarea', parent_element).one('click', function() {
-
+   // $('span.folder, div.hitarea', parent_element).unbind('click');
+    $('span.folder, div.hitarea', parent_element).bind('click', function() {
         // Get parent
         var par = $(this).parent();
 
@@ -707,7 +721,7 @@ totaraDialog_handler_treeview.prototype._make_hierarchy = function(parent_elemen
     });
 
     // Make any unclickable items truely unclickable
-    $('span.unclickable', parent_element).each (function() {
+    $('span.unclickable', parent_element).each(function() {
         handler._toggle_items($(this).attr('id'), false);
     });
 
@@ -720,12 +734,13 @@ totaraDialog_handler_treeview.prototype._make_hierarchy = function(parent_elemen
 }
 
 /**
+ * Add items to existing treeview
+ *
  * @param string    HTML response
  * @param int       Parent id
  * @return void
  */
 totaraDialog_handler_treeview.prototype._update_hierarchy = function(response, parent_id) {
-
     var items = response;
     var list = $('#browse-tab .treeview li#item_list_'+parent_id+' ul:first', this._container);
 
@@ -733,7 +748,8 @@ totaraDialog_handler_treeview.prototype._update_hierarchy = function(response, p
     $('li', list).remove();
 
     // Add items
-    $('.treeview', this._container).treeview({add: list.append($(items))});
+    var treeview = $('#browse-tab .treeview', this._container);
+    treeview.treeview({add: list.append($(items))});
 
     // Setup new items
     this._make_hierarchy(list);
@@ -866,22 +882,6 @@ totaraDialog_handler_treeview_multiselect.prototype.every_load = function() {
     this._make_deletable($('.selected', this._container));
 }
 
-
-/**
- * Setup treeview infrastructure on partial page loads
- *
- * @return void
- */
-totaraDialog_handler_treeview_multiselect.prototype._partial_load = function(parent_element) {
-
-    // Call parent method
-    totaraDialog_handler_treeview.prototype._partial_load.call(this);
-
-    // Setup selectables and deletables
-    this.every_load();
-}
-
-
 /**
  * Bind hover/click event to elements, to make them selectable
  *
@@ -899,7 +899,7 @@ totaraDialog_handler_treeview_multiselect.prototype._make_selectable = function(
 
     // Bind click handler to selectable items
     selectable_items.unbind('click');
-    selectable_items.one('click', function() {
+    selectable_items.bind('click', function() {
 
         var clicked = $(this);
         handler._append_to_selected(clicked);
@@ -973,8 +973,6 @@ totaraDialog_handler_treeview_singleselect.prototype.first_load = function() {
  * @return void
  */
 totaraDialog_handler_treeview_singleselect.prototype.every_load = function() {
-
-    totaraDialog_handler_treeview.prototype.first_load.call(this);
 
     this._make_selectable($('.treeview', this._container));
 }
