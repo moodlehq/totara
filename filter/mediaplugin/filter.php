@@ -36,39 +36,39 @@ function mediaplugin_filter($courseid, $text) {
     $newtext = $text; // fullclone is slow and not needed here
 
     if ($CFG->filter_mediaplugin_enable_mp3) {
-        $search = '/<a.*?href="([^<]+\.mp3)"[^>]*>.*?<\/a>/is';
+        $search = '/<a.*?href="([^"]+\.mp3)"[^>]*>.*?<\/a>/is';
         $newtext = preg_replace_callback($search, 'mediaplugin_filter_mp3_callback', $newtext);
     }
 
     if ($CFG->filter_mediaplugin_enable_ogg) {
-        $search =   '/<a[^>]*?href="([^<]+\.ogg)"[^>]*>.*?<\/a>/is';
+        $search =   '/<a[^>]*?href="([^"]+\.ogg)"[^>]*>.*?<\/a>/is';
         $newtext = preg_replace_callback($search, 'filter_mediaplugin_ogg_callback', $newtext);
     }
 
     if ($CFG->filter_mediaplugin_enable_ogv) {
-        $search =   '/<a[^>]*?href="([^<]+\.ogv)"[^>]*>.*?<\/a>/is';
+        $search =   '/<a[^>]*?href="([^"]+\.ogv)"[^>]*>.*?<\/a>/is';
         $newtext = preg_replace_callback($search, 'filter_mediaplugin_ogv_callback', $newtext);
     }
 
     if ($CFG->filter_mediaplugin_enable_swf) {
-        $search = '/<a.*?href="([^<]+\.swf)(\?d=([\d]{1,4}%?)x([\d]{1,4}%?))?"[^>]*>.*?<\/a>/is';
+        $search = '/<a.*?href="([^"]+\.swf)(\?d=([\d]{1,4}%?)x([\d]{1,4}%?))?"[^>]*>.*?<\/a>/is';
         $newtext = preg_replace_callback($search, 'mediaplugin_filter_swf_callback', $newtext);
     }
 
     if ($CFG->filter_mediaplugin_enable_flv) {
-        $search = '/<a.*?href="([^<]+\.flv)(\?d=([\d]{1,4}%?)x([\d]{1,4}%?))?"[^>]*>.*?<\/a>/is';
+        $search = '/<a.*?href="([^"]+\.flv)(\?d=([\d]{1,4}%?)x([\d]{1,4}%?))?"[^>]*>.*?<\/a>/is';
         $newtext = preg_replace_callback($search, 'mediaplugin_filter_flv_callback', $newtext);
     }
 
     if ($CFG->filter_mediaplugin_enable_mov) {
-        $search = '/<a.*?href="([^<]+\.mov)(\?d=([\d]{1,4}%?)x([\d]{1,4}%?))?"[^>]*>.*?<\/a>/is';
+        $search = '/<a.*?href="([^"]+\.mov)(\?d=([\d]{1,4}%?)x([\d]{1,4}%?))?"[^>]*>.*?<\/a>/is';
         $newtext = preg_replace_callback($search, 'mediaplugin_filter_qt_callback', $newtext);
 
         // MDL-18658
-        $search = '/<a.*?href="([^<]+\.mp4)(\?d=([\d]{1,4}%?)x([\d]{1,4}%?))?"[^>]*>.*?<\/a>/is';
+        $search = '/<a.*?href="([^"]+\.mp4)(\?d=([\d]{1,4}%?)x([\d]{1,4}%?))?"[^>]*>.*?<\/a>/is';
         $newtext = preg_replace_callback($search, 'mediaplugin_filter_qt_callback', $newtext);
 
-        $search = '/<a.*?href="([^<]+\.m4v)(\?d=([\d]{1,4}%?)x([\d]{1,4}%?))?"[^>]*>.*?<\/a>/is';
+        $search = '/<a.*?href="([^"]+\.m4v)(\?d=([\d]{1,4}%?)x([\d]{1,4}%?))?"[^>]*>.*?<\/a>/is';
         $newtext = preg_replace_callback($search, 'mediaplugin_filter_qt_callback', $newtext);
 
         $search = '/<a.*?href="([^<]+\.m4a)(\?d=([\d]{1,4}%?)x([\d]{1,4}%?))?"[^>]*>.*?<\/a>/is';
@@ -76,40 +76,40 @@ function mediaplugin_filter($courseid, $text) {
     }
 
     if ($CFG->filter_mediaplugin_enable_wmv) {
-        $search = '/<a.*?href="([^<]+\.wmv)(\?d=([\d]{1,4}%?)x([\d]{1,4}%?))?"[^>]*>.*?<\/a>/is';
+        $search = '/<a.*?href="([^"]+\.wmv)(\?d=([\d]{1,4}%?)x([\d]{1,4}%?))?"[^>]*>.*?<\/a>/is';
         $newtext = preg_replace_callback($search, 'mediaplugin_filter_wmp_callback', $newtext);
     }
 
     if ($CFG->filter_mediaplugin_enable_mpg) {
-        $search = '/<a.*?href="([^<]+\.mpe?g)(\?d=([\d]{1,4}%?)x([\d]{1,4}%?))?"[^>]*>.*?<\/a>/is';
+        $search = '/<a.*?href="([^"]+\.mpe?g)(\?d=([\d]{1,4}%?)x([\d]{1,4}%?))?"[^>]*>.*?<\/a>/is';
         $newtext = preg_replace_callback($search, 'mediaplugin_filter_qt_callback', $newtext);
     }
 
     if ($CFG->filter_mediaplugin_enable_avi) {
-        $search = '/<a.*?href="([^<]+\.avi)(\?d=([\d]{1,4}%?)x([\d]{1,4}%?))?"[^>]*>.*?<\/a>/is';
+        $search = '/<a.*?href="([^"]+\.avi)(\?d=([\d]{1,4}%?)x([\d]{1,4}%?))?"[^>]*>.*?<\/a>/is';
         $newtext = preg_replace_callback($search, 'mediaplugin_filter_wmp_callback', $newtext);
     }
 
     if ($CFG->filter_mediaplugin_enable_ram) {
-        $search = '/<a.*?href="([^<]+\.ram)"[^>]*>.*?<\/a>/is';
+        $search = '/<a.*?href="([^"]+\.ram)"[^>]*>.*?<\/a>/is';
         $newtext = preg_replace_callback($search, 'mediaplugin_filter_real_callback', $newtext);
     }
 
     if ($CFG->filter_mediaplugin_enable_rpm) {
-        $search = '/<a.*?href="([^<]+\.rpm)"[^>]*>.*?<\/a>/is';
+        $search = '/<a.*?href="([^"]+\.rpm)"[^>]*>.*?<\/a>/is';
         $newtext = preg_replace_callback($search, 'mediaplugin_filter_real_callback', $newtext);
     }
 
     if ($CFG->filter_mediaplugin_enable_rm) {
-        $search = '/<a.*?href="([^<]+\.rm)"[^>]*>.*?<\/a>/is';
+        $search = '/<a.*?href="([^"]+\.rm)"[^>]*>.*?<\/a>/is';
         $newtext = preg_replace_callback($search, 'mediaplugin_filter_real_callback', $newtext);
     }
 
     if (!empty($CFG->filter_mediaplugin_enable_youtube)) {
-        $search = '/<a[^>]*?href="([^<]*)youtube.com\/watch\?v=([^"]*)"[^>]*>(.*?)<\/a>/is';
+        $search = '/<a[^>]*?href="([^"]*)youtube.com\/watch\?v=([^"]*)"[^>]*>(.*?)<\/a>/is';
         $newtext = preg_replace_callback($search, 'mediaplugin_filter_youtube_callback', $newtext);
 
-        $search = '/<a[^>]*?href="([^<]*)youtube.com\/v\/([^"]*)"[^>]*>(.*?)<\/a>/is';
+        $search = '/<a[^>]*?href="([^"]*)youtube.com\/v\/([^"]*)"[^>]*>(.*?)<\/a>/is';
         $newtext = preg_replace_callback($search, 'mediaplugin_filter_youtube_callback', $newtext);
     }
 
@@ -143,14 +143,15 @@ function mediaplugin_filter_mp3_callback($link) {
     static $count = 0;
     $count++;
     $id = 'filter_mp3_'.time().$count; //we need something unique because it might be stored in text cache
+    $url = $link[1];
+    $jsurl = addslashes_js($link[1]);
 
-    $url = addslashes_js($link[1]);
-
-    return $link[0].
+    $printlink = '<a href="'.$url.'">'.get_string('mp3audio', 'mediaplugin').'</a>';
+    return $printlink.
 '<span class="mediaplugin mediaplugin_mp3" id="'.$id.'">('.get_string('mp3audio', 'mediaplugin').')</span>
 <script type="text/javascript">
 //<![CDATA[
-  var FO = { movie:"'.$CFG->wwwroot.'/filter/mediaplugin/mp3player.swf?src='.$url.'",
+  var FO = { movie:"'.$CFG->wwwroot.'/filter/mediaplugin/mp3player.swf?src='.$jsurl.'",
     width:"90", height:"15", majorversion:"6", build:"40", flashvars:"'.$c.'", quality: "high" };
   UFO.create(FO, "'.$id.'");
 //]]>
@@ -158,38 +159,44 @@ function mediaplugin_filter_mp3_callback($link) {
 }
 
 function filter_mediaplugin_ogg_callback($link) {
-    global $CFG, $OUTPUT, $PAGE;
+    global $CFG;
 
     static $count = 0;
     $count++;
     $id = 'filter_ogg_'.time().$count; //we need something unique because it might be stored in text cache
 
-    $url = addslashes_js($link[1]);
-    $printlink = html_writer::link($url, get_string('oggaudio', 'filter_mediaplugin'));
-    $unsupportedplugins = get_string('unsupportedplugins', 'filter_mediaplugin', $printlink);
+    $url = $link[1];
+    $printlink = '<a href="'.$url.'">'.get_string('oggaudio', 'mediaplugin').'</a>';
+
+    $unsupportedplugins = get_string('unsupportedplugins', 'mediaplugin', $printlink);
     $output = <<<OET
+    <span class="mediaplugin mediaplugin_ogg" id="$id">
     <audio id="$id" src="$url" controls="true" width="100">
         $unsupportedplugins
     </audio>
+    </span>
 OET;
 
     return $output;
 }
 
 function filter_mediaplugin_ogv_callback($link) {
-    global $CFG, $OUTPUT, $PAGE;
+    global $CFG;
 
     static $count = 0;
     $count++;
     $id = 'filter_ogv_'.time().$count; //we need something unique because it might be stored in text cache
 
-    $url = addslashes_js($link[1]);
-    $printlink = html_writer::link($url, get_string('ogvvideo', 'filter_mediaplugin'));
-    $unsupportedplugins = get_string('unsupportedplugins', 'filter_mediaplugin', $printlink);
+    $url = $link[1];
+    $printlink = '<a href="'.$url.'">'.get_string('ogvvideo', 'mediaplugin').'</a>';
+
+    $unsupportedplugins = get_string('unsupportedplugins', 'mediaplugin', $printlink);
     $output = <<<OET
+    <span class="mediaplugin mediaplugin_ogv" id="$id">
     <video id="$id" src="$url" controls="true" width="600" >
         $unsupportedplugins
     </video>
+    </span>
 OET;
 
     return $output;
@@ -202,13 +209,15 @@ function mediaplugin_filter_swf_callback($link) {
 
     $width  = empty($link[3]) ? '400' : $link[3];
     $height = empty($link[4]) ? '300' : $link[4];
-    $url = addslashes_js($link[1]);
+    $url = $link[1];
+    $jsurl = addslashes_js($link[1]);
+    $printlink = '<a href="'.$url.'">'.get_string('flashvideo', 'mediaplugin').'</a>';
 
-    return $link[0].
+    return $printlink.
 '<span class="mediaplugin mediaplugin_swf" id="'.$id.'">('.get_string('flashanimation', 'mediaplugin').')</span>
 <script type="text/javascript">
 //<![CDATA[
-  var FO = { movie:"'.$url.'", width:"'.$width.'", height:"'.$height.'", majorversion:"6", build:"40",
+  var FO = { movie:"'.$jsurl.'", width:"'.$width.'", height:"'.$height.'", majorversion:"6", build:"40",
     allowscriptaccess:"never", quality: "high" };
   UFO.create(FO, "'.$id.'");
 //]]>
@@ -224,13 +233,15 @@ function mediaplugin_filter_flv_callback($link) {
 
     $width  = empty($link[3]) ? '480' : $link[3];
     $height = empty($link[4]) ? '360' : $link[4];
-    $url = addslashes_js($link[1]);
+    $url = $link[1];
+    $jsurl = addslashes_js($link[1]);
+    $printlink = '<a href="'.$url.'">'.get_string('flashvideo', 'mediaplugin').'</a>';
 
-    return $link[0].
+    return $printlink.
 '<span class="mediaplugin mediaplugin_flv" id="'.$id.'">('.get_string('flashvideo', 'mediaplugin').')</span>
 <script type="text/javascript">
 //<![CDATA[
-  var FO = { movie:"'.$CFG->wwwroot.'/filter/mediaplugin/flvplayer.swf?file='.$url.'",
+  var FO = { movie:"'.$CFG->wwwroot.'/filter/mediaplugin/flvplayer.swf?file='.$jsurl.'",
     width:"'.$width.'", height:"'.$height.'", majorversion:"6", build:"40",
     allowscriptaccess:"never", quality: "high", allowfullscreen: "true" };
   UFO.create(FO, "'.$id.'");
@@ -239,29 +250,31 @@ function mediaplugin_filter_flv_callback($link) {
 }
 
 function mediaplugin_filter_real_callback($link, $autostart=false) {
-    $url = addslashes_js($link[1]);
+    $url = $link[1];
+    $jsurl = addslashes_js($link[1]);
     $mimetype = mimeinfo('type', $url);
     $autostart = $autostart ? 'true' : 'false';
+    $printlink = '<a href="'.$url.'">'.get_string('realaudio', 'mediaplugin').'</a>';
 
 // embed kept for now see MDL-8674
-    return $link[0].
+    return $printlink.
 '<span class="mediaplugin mediaplugin_real">
 <script type="text/javascript">
 //<![CDATA[
 document.write(\'<object classid="clsid:CFCDAA03-8BE4-11cf-B84B-0020AFBBCCFA" width="240" height="180">\\
-  <param name="src" value="'.$url.'" />\\
+  <param name="src" value="'.$jsurl.'" />\\
   <param name="autostart" value="'.$autostart.'" />\\
   <param name="controls" value="imagewindow" />\\
   <param name="console" value="video" />\\
   <param name="loop" value="true" />\\
-  <embed src="'.$url.'" width="240" height="180" loop="true" type="'.$mimetype.'" controls="imagewindow" console="video" autostart="'.$autostart.'" />\\
+  <embed src="'.$jsurl.'" width="240" height="180" loop="true" type="'.$mimetype.'" controls="imagewindow" console="video" autostart="'.$autostart.'" />\\
   </object><br />\\
   <object classid="clsid:CFCDAA03-8BE4-11cf-B84B-0020AFBBCCFA" width="240" height="30">\\
-  <param name="src" value="'.$url.'" />\\
+  <param name="src" value="'.$jsurl.'" />\\
   <param name="autostart" value="'.$autostart.'" />\\
   <param name="controls" value="ControlPanel" />\\
   <param name="console" value="video" />\\
-  <embed src="'.$url.'" width="240" height="30" controls="ControlPanel" type="'.$mimetype.'" console="video" autostart="'.$autostart.'" />\\
+  <embed src="'.$jsurl.'" width="240" height="30" controls="ControlPanel" type="'.$mimetype.'" console="video" autostart="'.$autostart.'" />\\
   </object>\');
 //]]>
 </script></span>';
@@ -272,18 +285,20 @@ document.write(\'<object classid="clsid:CFCDAA03-8BE4-11cf-B84B-0020AFBBCCFA" wi
  */
 function mediaplugin_filter_youtube_callback($link, $autostart=false) {
 
-    $site = addslashes_js($link[1]);
-    $url = addslashes_js($link[2]);
-    $info = addslashes_js($link[3]);
+    $site = s($link[1]);
+    $url = $link[2];
+    $info = s($link[3]);
 
-    return '<object title="'.$info.'"
+    return '<span class="mediaplugin mediaplugin_youtube">'.
+           '<object title="'.$info.'"
                     class="mediaplugin mediaplugin_youtube" type="application/x-shockwave-flash"
                     data="'.$site.'youtube.com/v/'.$url.'&amp;fs=1&amp;rel=0" width="425" height="344">'.
            '<param name="movie" value="'.$site.'youtube.com/v/'.$url.'&amp;fs=1&amp;rel=0" />'.
            '<param name="FlashVars" value="playerMode=embedded" />'.
            '<param name="wmode" value="transparent" />'.
            '<param name="allowFullScreen" value="true" />'.
-           '</object>';
+           '</object>'.
+           '</span>';
 }
 
 /**
@@ -302,8 +317,9 @@ function mediaplugin_filter_wmp_callback($link, $autostart=false) {
     }
     $mimetype = mimeinfo('type', $url);
     $autostart = $autostart ? 'true' : 'false';
+    $printlink = '<a href="'.$url.'">'.get_string('wmpvideo', 'mediaplugin').'</a>';
 
-    return $link[0].
+    return $printlink.
 '<span class="mediaplugin mediaplugin_wmp">
 <object classid="CLSID:6BF52A52-394A-11d3-B153-00C04F79FAA6" '.$mpsize.'
   standby="Loading Microsoft(R) Windows(R) Media Player components..."
@@ -341,8 +357,9 @@ function mediaplugin_filter_qt_callback($link, $autostart=false) {
     }
     $mimetype = mimeinfo('type', $url);
     $autostart = $autostart ? 'true' : 'false';
+    $printlink = '<a href="'.$url.'">'.get_string('quicktime', 'mediaplugin').'</a>';
 
-    return $link[0].
+    return $printlink.
 '<span class="mediaplugin mediaplugin_qt">
 <object classid="clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B"
   codebase="http://www.apple.com/qtactivex/qtplugin.cab" '.$size.'>

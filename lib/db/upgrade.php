@@ -3345,8 +3345,24 @@ function xmldb_main_upgrade($oldversion=0) {
         upgrade_main_savepoint($result, 2007101590.01);
     }
 
-    if ($result && $oldversion < 2007101591.01) {
+    if ($result && $oldversion < 2007101590.02) {
         $result = set_field('modules', 'version', '2007102600', 'name', 'feedback');
+        upgrade_main_savepoint($result, 2007101590.02);
+    }
+
+    if ($result && $oldversion < 2007101591.01) {
+    /// Define index userfieldidx (not unique) to be added to user_info_data
+        $table = new XMLDBTable('user_info_data');
+        $index = new XMLDBIndex('userfieldidx');
+        $index->setAttributes(XMLDB_INDEX_NOTUNIQUE, array('userid', 'fieldid'));
+
+    /// Launch add index userfieldidx
+        if (!index_exists($table, $index)) {
+            $result = $result && add_index($table, $index);
+        }
+
+    /// Main savepoint reached
+        upgrade_main_savepoint($result, 2007101591.01);
     }
 
     return $result;

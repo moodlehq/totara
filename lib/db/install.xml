@@ -1075,6 +1075,9 @@ NULL = we are not tracking viewed for this activity
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
       </KEYS>
+      <INDEXES>
+        <INDEX NAME="userfieldidx" UNIQUE="false" FIELDS="userid, fieldid"/>
+      </INDEXES>
     </TABLE>
     <TABLE NAME="mnet_enrol_course" COMMENT="Information about courses on remote hosts" PREVIOUS="user_info_data" NEXT="mnet_enrol_assignments">
       <FIELDS>
