@@ -166,11 +166,9 @@ $(function() {
 
         //Split response into table and div
         var new_table = $(response).find('table.list-evidence');
-        console.log(new_table);
 
         // Grab table
         var table = $('div#content table.list-evidence');
-        console.log(table);
 
         // If table found
         if (table.size()) {
