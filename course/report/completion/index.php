@@ -287,7 +287,11 @@ foreach ($initials as $initial) {
         $pagingbar .= '<strong>'.get_string('all').'</strong> ';
     }
     else {
-        $pagingbar .= '<a href="'.$link.'">'.get_string('all').'</a> ';
+        if($initial == 'first') {
+            $pagingbar .= '<a href="'.$link.'&amp;silast='.$silast.'">'.get_string('all').'</a> ';
+        } else {
+            $pagingbar .= '<a href="'.$link.'&amp;sifirst='.$sifirst.'">'.get_string('all').'</a> ';
+        }
     }
 
     foreach ($alphabet as $letter) {
@@ -295,7 +299,11 @@ foreach ($initials as $initial) {
             $pagingbar .= '<strong>'.$letter.'</strong> ';
         }
         else {
-            $pagingbar .= '<a href="'.$link.'&amp;'.$var.'='.$letter.'">'.$letter.'</a> ';
+            if($initial == 'first') {
+                $pagingbar .= '<a href="'.$link.'&amp;'.$var.'='.$letter.'&amp;silast='.$silast.'">'.$letter.'</a> ';
+            } else {
+                $pagingbar .= '<a href="'.$link.'&amp;'.$var.'='.$letter.'&amp;sifirst='.$sifirst.'">'.$letter.'</a> ';
+            }
         }
     }
 
