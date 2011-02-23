@@ -44,8 +44,10 @@ $fromlink = '<a href="'.$CFG->wwwroot.'/user/view.php?id='.$from->id.'">'.fullna
 $subject = format_string($msg->subject);
 $icon = '<img class="msgicon" src="' . totara_msg_icon_url($metadata->icon) . '" title="' . format_string($msg->subject) . '" alt="' . format_string($msg->subject) .'" />';
 print '<div id="totara-msgs-dismiss"><table>';
-print '<tr><td class="totara-msgs-action-left"><label for="dismiss-type">' . get_string('subject', 'forum').'</label></td>';
-print "<td class=\"totara-msgs-action-right\"><div id='dismiss-type'>{$subject}</div></td></tr>";
+if(!empty($msg->subject)) {
+    print '<tr><td class="totara-msgs-action-left"><label for="dismiss-type">' . get_string('subject', 'forum').'</label></td>';
+    print "<td class=\"totara-msgs-action-right\"><div id='dismiss-type'>{$subject}</div></td></tr>";
+}
 //print '<tr><td class="totara-msgs-action-left"><label for="dismiss-status">' . get_string('urgency', 'block_totara_alerts').'</label></td>';
 //print "<td class=\"totara-msgs-action-right\"><div id='dismiss-status'><img class=\"iconsmall\" src=\"{$urgency}\" title=\"{$urgency_alt}\" alt=\"{$urgency_alt}\" /></div></td></tr>";
 print '<tr><td class="totara-msgs-action-left"><label for="dismiss-type">' . get_string('type', 'block_totara_alerts').'</label></td>';
