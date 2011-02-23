@@ -121,6 +121,8 @@ abstract class dp_base_workflow {
             error(get_string('error:missingobjectivesettings', 'local_plan'));
         }
 
+        $template_in_use = count_records('dp_plan', 'templateid', $templateid) > 0;
+
         foreach(get_object_vars($this) as $property => $value) {
             $parts = explode('_', $property);
             if($parts[0] == 'cfg') {
@@ -128,19 +130,49 @@ abstract class dp_base_workflow {
                 case 'course':
                     $attribute = $parts[2];
                     if($value != $course_settings->$attribute) {
-                        $diff[$property] = array('before' => $course_settings->$attribute, 'after' => $value);
+                        if($attribute == 'priorityscale') {
+                            $before = get_field('dp_priority_scale', 'name', 'id', $course_settings->$attribute);
+                            $after = get_field('dp_priority_scale', 'name', 'id', $value);
+                            if(!$template_in_use) {
+                                $diff[$property] = array('before' => $before, 'after' => $after);
+                            }
+                        } else {
+                            $diff[$property] = array('before' => $course_settings->$attribute, 'after' => $value);
+                        }
                     }
                     break;
                 case 'competency':
                     $attribute = $parts[2];
                     if($value != $competency_settings->$attribute) {
-                        $diff[$property] = array('before' => $competency_settings->$attribute, 'after' => $value);
+                        if($attribute == 'priorityscale') {
+                            $before = get_field('dp_priority_scale', 'name', 'id', $competency_settings->$attribute);
+                            $after = get_field('dp_priority_scale', 'name', 'id', $value);
+                            if(!$template_in_use) {
+                                $diff[$property] = array('before' => $before, 'after' => $after);
+                            }
+                        } else {
+                            $diff[$property] = array('before' => $competency_settings->$attribute, 'after' => $value);
+                        }
                     }
                     break;
                 case 'objective':
                     $attribute = $parts[2];
                     if($value != $objective_settings->$attribute) {
-                        $diff[$property] = array('before' => $objective_settings->$attribute, 'after' => $value);
+                        if($attribute == 'priorityscale') {
+                            $before = get_field('dp_priority_scale', 'name', 'id', $competency_settings->$attribute);
+                            $after = get_field('dp_priority_scale', 'name', 'id', $value);
+                            if(!$template_in_use) {
+                                $diff[$property] = array('before' => $before, 'after' => $after);
+                            }
+                        } else if ($attribute == 'objectivescale') {
+                            $before = get_field('dp_objective_scale', 'name', 'id', $competency_settings->$attribute);
+                            $after = get_field('dp_objective_scale', 'name', 'id', $value);
+                            if(!$template_in_use) {
+                                $diff[$property] = array('before' => $before, 'after' => $after);
+                            }
+                        } else {
+                            $diff[$property] = array('before' => $objective_settings->$attribute, 'after' => $value);
+                        }
                     }
                     break;
                 }
@@ -191,18 +223,38 @@ abstract class dp_base_workflow {
             $objective_todb->id = $objective_settings->id;
         }
 
+        $template_in_use = count_records('dp_plan', 'templateid', $templateid) > 0;
+
         foreach(get_object_vars($this) as $property => $value) {
             $parts = explode('_', $property);
             if($parts[0] == 'cfg') {
                 switch($parts[1]){
                 case 'course':
-                    $course_todb->$parts[2] = $value;
+                    if($parts[2] == 'priorityscale'){
+                        if(!$template_in_use) {
+                            $course_todb->$parts[2] = $value;
+                        }
+                    } else {
+                        $course_todb->$parts[2] = $value;
+                    }
                     break;
                 case 'competency':
-                    $competency_todb->$parts[2] = $value;
+                    if($parts[2] == 'priorityscale'){
+                        if(!$template_in_use) {
+                            $competency_todb->$parts[2] = $value;
+                        }
+                    } else {
+                        $competency_todb->$parts[2] = $value;
+                    }
                     break;
                 case 'objective':
-                    $objective_todb->$parts[2] = $value;
+                    if($parts[2] == 'priorityscale' || $parts[2] == 'objectivescale'){
+                        if(!$template_in_use) {
+                            $objective_todb->$parts[2] = $value;
+                        }
+                    } else {
+                        $objective_todb->$parts[2] = $value;
+                    }
                     break;
                 }
 

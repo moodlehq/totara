@@ -621,3 +621,5 @@ $string['todb_coursesettingerror'] = 'Error updating course settings';
 $string['todb_competencysettingerror'] = 'Error updating competency settings';
 $string['todb_objectivesettingerror'] = 'Error updating objective settings';
 $string['error:todb_updatepermissionserror'] = 'Error updating template permissions';
+
+$string['scaleslocked'] = 'This template is in use and changing the scales will impact data integrity. Therefore Priority and Objective scales are locked and will not be updated when the workflow is changed.';

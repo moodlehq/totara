@@ -27,7 +27,7 @@ function dp_priority_scale_is_used($scaleid) {
     foreach ( $DP_AVAILABLE_COMPONENTS as $c ){
         $count += count_records("dp_{$c}_settings", 'priorityscale', $scaleid);
     }
-    return $count;
+    return $count > 0 ? true : false;
 }
 
 

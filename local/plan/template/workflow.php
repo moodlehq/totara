@@ -113,7 +113,14 @@ if ($fromform = $mform->get_data()) {
             } else {
                 $differences = dp_print_workflow_diff($diff);
             }
-            $changeworkflowconfirm = get_string('changeworkflowconfirm', 'local_plan', get_string($fromform->workflow.'workflowname', 'local_plan')) . $differences;
+
+            $template_in_use = count_records('dp_plan', 'templateid', $template->id) > 0;
+            $scales_locked = '';
+            if($template_in_use){
+                $scales_locked = '<p><b>' . get_string('scaleslocked','local_plan') . '</b></p>';
+            }
+
+            $changeworkflowconfirm = get_string('changeworkflowconfirm', 'local_plan', get_string($fromform->workflow.'workflowname', 'local_plan')) . $scales_locked . $differences;
 
             notice_yesno(
                 $changeworkflowconfirm,

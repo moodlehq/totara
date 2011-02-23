@@ -317,6 +317,16 @@ function dp_print_workflow_diff($diff_array) {
                     $tablerow[] = $priority_options[$values['after']];
                     break;
 
+                case 'priorityscale':
+                    $tablerow[] = $values['before'];
+                    $tablerow[] = $values['after'];
+                    break;
+
+                case 'objectivescale':
+                    $tablerow[] = $values['before'];
+                    $tablerow[] = $values['after'];
+                    break;
+
                 case 'autoassignpos':
                     $tablerow[] = $values['before'] == 0 ? get_string('no') : get_string('yes');
                     $tablerow[] = $values['after'] == 0 ? get_string('no') : get_string('yes');
