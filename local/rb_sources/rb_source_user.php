@@ -275,9 +275,15 @@ class rb_source_user extends rb_base_source {
         $profile_link = "<a href=\"{$CFG->wwwroot}/user/view.php?id={$userid}\">Profile</a>";
         $booking_link = "<a href=\"{$CFG->wwwroot}/my/bookings.php?userid={$userid}\">Bookings</a>";
 
-        return '<div class="picture">'.$user_pic.' <span class="username">'.$user.'</span></div>'.
-            '<div class="links">'.$plan_link.'&nbsp;|&nbsp;'.$profile_link.'&nbsp;|&nbsp;'.$booking_link.'&nbsp;|&nbsp;'.$rol_link.'</div>';
+        $show_plan_link = dp_can_view_user_plans($userid);
 
+        $return = '<div class="picture">'.$user_pic.' <span class="username">'.$user.'</span></div>'.'<div class="links">';
+        $return .= $show_plan_link ? ($plan_link.'&nbsp;|&nbsp;') : '';
+        $return .= $profile_link.'&nbsp;|&nbsp;';
+        $return .= $booking_link.'&nbsp;|&nbsp;';
+        $return .= $rol_link.'</div>';
+
+        return $return;
     }
 
     function rb_display_count($result) {
