@@ -1355,6 +1355,9 @@ class development_plan {
             $event->data = $data;
 
             tm_workflow_send($event);
+
+            // Send alert to learner also
+            $this->send_alert(true, 'learningplan-request', 'plan-request-learner-short', 'plan-request-learner-long');
         }
     }
 

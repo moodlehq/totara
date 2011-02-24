@@ -554,7 +554,9 @@ $string['requestremoval'] = 'Request removal';
 
 //// Messaging
 // Plan messages
-$string['plan-request-manager-short'] = 'New plan request by $a->learner';
+$string['plan-request-learner-short'] = 'New plan approval request';
+$string['plan-request-learner-long'] = 'Requested approval for new learning plan \"$a->plan\"';
+$string['plan-request-manager-short'] = 'New plan approval request by $a->learner';
 $string['plan-request-manager-long'] = '$a->learner has requested approval for a new learning plan \"$a->plan\"';
 $string['plan-add-learner-short'] = 'New plan \"$a->plan\" assigned';
 $string['plan-add-learner-long'] = 'New learning plan \"$a->plan\" has been assigned by $a->manager';
