@@ -275,7 +275,7 @@ class rb_source_user extends rb_base_source {
         $profile_link = "<a href=\"{$CFG->wwwroot}/user/view.php?id={$userid}\">Profile</a>";
         $booking_link = "<a href=\"{$CFG->wwwroot}/my/bookings.php?userid={$userid}\">Bookings</a>";
 
-        $show_plan_link = dp_can_view_user_plans($userid);
+        $show_plan_link = dp_can_view_users_plans($userid);
 
         $return = '<div class="picture">'.$user_pic.' <span class="username">'.$user.'</span></div>'.'<div class="links">';
         $return .= $show_plan_link ? ($plan_link.'&nbsp;|&nbsp;') : '';
