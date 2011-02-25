@@ -310,6 +310,7 @@ abstract class dp_base_component {
         $table = new flexible_table($this->component.'list');
         $table->define_columns($headers->columns);
         $table->define_headers($headers->headers);
+        $table->define_baseurl($this->get_url());
 
         $table->set_attribute('class', 'logtable generalbox dp-plan-component-items');
         $table->sortable(true);

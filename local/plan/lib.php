@@ -394,7 +394,7 @@ function dp_display_approval_options($name, $selected=DP_APPROVAL_UNAPPROVED, $c
  * @return  string
  */
 function dp_display_plans($userid, $statuses=array(DP_PLAN_STATUSAPPROVED), $cols=array('enddate', 'status', 'completed'), $firstcolheader='') {
-    global $CFG;
+    global $CFG, $USER;
 
     $statuses = is_array($statuses) ? implode(',', $statuses) : $statuses;
     $statuses_undrsc = str_replace(',', '_', $statuses);
@@ -448,11 +448,20 @@ function dp_display_plans($userid, $statuses=array(DP_PLAN_STATUSAPPROVED), $col
     $tableheaders[] = '';
     $tablecols[] = 'actioncontrols';
 
+    $baseurl = $CFG->wwwroot . '/local/plan/index.php';
+    if($userid != $USER->id) {
+        $baseurl .= '?userid=' . $userid;
+    }
+
     $table = new flexible_table($tablename);
     $table->define_headers($tableheaders);
     $table->define_columns($tablecols);
+    $table->define_baseurl($baseurl);
     $table->set_attribute('class', 'logtable generalbox');
     $table->set_attribute('width', '100%');
+    $table->set_control_variables(array(
+        TABLE_VAR_SORT    => 'tsort',
+    ));
     $table->sortable(true);
     if (in_array('status', $cols)) {
         $table->no_sorting('status_'.$statuses_undrsc);

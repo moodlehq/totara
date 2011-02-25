@@ -1766,6 +1766,7 @@ var comptree = [' . implode(', ', $comptrees) . '];
         $table = new flexible_table($shortname);
         $table->define_columns($tablecolumns);
         $table->define_headers($tableheaders);
+        $table->define_baseurl($this->get_current_url());
         foreach($columns as $column) {
             if($column->display_column()) {
                 $ident = "{$column->type}_{$column->value}";
