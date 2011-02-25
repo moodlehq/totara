@@ -7,8 +7,20 @@
 }
 div#header {
 	background: #7D8312 url("images/hdr_bg_green.jpg") top right repeat-x;
-	height: 1%
+	height: 1%;
 }
-.tabrow0{
-  line-height: 2.3em;
+
+
+.tabrow0 div, .tabrow0 ul {
+	top:4.8em;
+}
+
+div#totara_menu ul li div {
+	float:left;
+}
+div#totara_menu ul li div a {
+	float:left;
+}
+div#totara_menu ul {
+	height:72px;
 }

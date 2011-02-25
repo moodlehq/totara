@@ -2,6 +2,9 @@
  * These styles are ONLY included for IE 6 (via meta.php)
  */
 
+div#totara_menu {
+	height:42px;
+}
 .tabtree {
   height: 100%;
 }
@@ -41,11 +44,6 @@
   padding: 0.2em 0;
 }
 
-.tabrow0 li a,
-.tabrow0 li a:link,
-.tabrow0 li a:visited {
-    color:#FFFFFF;
-}
 
 .tabrow0 li a,
 .tabrow0 li.active a,
@@ -96,3 +94,14 @@ form.mform textarea {
 .drag select {
     visibility: visible;
 }
+
+/* course completion */
+#course-view li.activity {
+	height:1px;
+}
+
+/* jquery dialog overlay */
+div.totara-dialog ul.treeview li {
+	height:16px;
+}
+

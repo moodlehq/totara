@@ -14,32 +14,39 @@
         echo " onload=\"setfocus()\"";
     }
     ?>>
-
 <div id="page">
+    <?php //Accessibility: 'headermain' is now H1, see theme/standard/styles_layout.css: .headermain
+          if ($home) {  // This is what gets printed on the home page only
+    ?>
+        <?php print_container_start(true, '', 'header-home'); ?>
+            <div class="headermenu"><?php echo $menu ?></div>
+            <h1 class="headermain"><?php echo $heading ?></h1>
+        <?php print_container_end(); ?>
+    <?php } else if ($heading) {  // This is what gets printed on any other page with a heading
+    ?>
+        <?php print_container_start(true, '', 'header'); ?>
+            <div class="headermenu"><?php echo $menu ?></div>
+            <h1 class="headermain"><?php echo $heading ?></h1>
+        <?php print_container_end(); ?>
+    <?php } ?>
 
-<?php //Accessibility: 'headermain' is now H1, see theme/standard/styles_layout.css: .headermain
-      if ($home) {  // This is what gets printed on the home page only
-?>
-    <?php print_container_start(true, '', 'header-home'); ?>
-        <h1 class="headermain"><?php echo $heading ?></h1>
-        <div class="headermenu"><?php echo $menu ?></div>
-    <?php print_container_end(); ?>
-<?php } else if ($heading) {  // This is what gets printed on any other page with a heading
-?>
-    <?php print_container_start(true, '', 'header'); ?>
-        <h1 class="headermain"><?php echo $heading ?></h1>
-        <div class="headermenu"><?php echo $menu ?></div>
-    <?php print_container_end(); ?>
-<?php } ?>
-<?php //Accessibility: breadcrumb trail/navbar now a DIV, not a table.
-      if ($navigation) { // This is the navigation bar with breadcrumbs  ?>
+    <div id="totara_menu">
+    <?php
+        get_totara_menu();
+    ?>
+    </div>
     <div class="navbar clearfix">
         <div class="breadcrumb"><?php print_navigation($navigation); ?></div>
         <div class="navbutton"><?php echo $button; ?></div>
     </div>
-<?php } else if ($heading) { // If no navigation, but a heading, then print a line
-?>
-        <hr />
-<?php } ?>
     <!-- END OF HEADER -->
-    <?php print_container_start(false, '', 'content'); ?>
+    <?php print_container_start(true, '', 'content'); ?>
+
+    <?php
+        // Display notifications set with totara_set_notification()
+        foreach (totara_get_notifications() as $notice) {
+            notify($notice);
+        }
+
+        unset($notices, $notice);
+    ?>

@@ -12,6 +12,13 @@
 
   admin
   blocks
+  
+  dashlets and dashlet columns
+  record of learning + learning plan
+  notifications
+  reports
+  state icons
+  
   blog
   calendar
   course
@@ -27,6 +34,7 @@
   user
 
   various modules
+  help files
 
 *******************************************************************/
 
@@ -658,10 +666,13 @@ div.phpinfo .center th {
  *** Header
  ***/
 
-#header-home {
+div.login-container {
+	padding:4px 8px;
+	text-align:right;
 }
 
-#header {
+div#header .logo {
+    padding: 0 0 0 21px;
 }
 
 .headermain, h1.headermain {
@@ -681,153 +692,186 @@ div.phpinfo .center th {
 .navigation form {
   display: inline;
 }
+	.navigation option {
+		padding-left:20px;
+		background-repeat:no-repeat;
+	}
 
+
+/**
+ * Main menu and navbar
+ **/
+div#totara_menu {
+	min-height:42px;
+	margin:5px 0 0 0;
+	padding:5px 0;
+}
+	div.header-search {
+		float:right;
+	}
+		#coursesearch, #coursesearch2 {
+			margin-top: 0;
+			margin-right:8px;
+			text-align: right;
+		}
+	/* tier 1 */
+	div#totara_menu ul {
+		float:left;
+		position:relative;
+		margin:0;
+		padding:0;
+		list-style-type:none;
+	}
+		div#totara_menu ul li {
+			float:left;
+			display:inline;/* <IE7 margin-doubling fix */
+			margin:0;
+			padding:0;
+		}
+		    div#totara_menu ul li a {
+				display:block;
+				padding:0 10px;
+		    }
+		div#totara_menu ul li.selected {
+			font-weight:bold;			
+		}
+			/* tier 2 */
+			div#totara_menu ul li ul {
+				position:absolute;
+				left:0;
+				padding-top:2px;
+			}
+				div#totara_menu ul li ul li {
+					font-size:0.9em;
+					font-weight:normal;			
+				}
+					div#totara_menu ul li ul li.selected {
+						font-weight:bold;			
+					}
+
+/* Navbar; breadcrumb and buttons */
 .navbar {
-  width:auto;
-  padding:3px 0.5em;
-  border-width:1px;
-  border-style:solid;
+	width:auto;
+	padding:2px 8px ;
+}
+	.navbar .breadcrumb {
+		float:left;
+		padding:5px 0;
+		font-size:0.8em;
+	}
+		.navbar .breadcrumb span.youarehere {
+			padding-right:5px;
+		}
+		.navbar .breadcrumb ul,
+		.navbar .breadcrumb ul li {
+			display:inline;
+			margin:0;
+			padding:0;
+			list-style-type:none;
+		  text-indent:0;
+		}
+	.navbar .langmenu {
+	  text-align:right;
+	}
+	.navbar .navbutton {
+		float:right;
+		margin-top:2px;
+	}
+		.navbar .navbutton div,
+		.navbar .navbutton form {
+		  display:inline;
+		  margin:0px;
+		  padding:0px;
+		}
+
+#site-index .navbar {
+	/* first release Totara prints empty markup, so remove styles */
+	padding:0;
+	border:none;
 }
 
-.navbar .langmenu {
-  text-align:right;
-}
 
-table.navbar {
-  width: 100%;
-}
 
-.navbar .navbutton {
-  margin-top: 3px;
-  float: left;
-}
-
-.navbar .navbutton div,
-.navbar .navbutton form {
-  display:inline;
-  margin:0px;
-  padding:0px;
-}
-
-.navbar .breadcrumb {
-  float:left;
-  margin:0.2em 0;
-}
-
-.breadcrumb ul {
-  padding:0;
-  margin:0;
-  text-indent:0;
-  list-style:none;
-}
-.breadcrumb li {
-  display:inline;
-}
-
-.navbar .navbutton,
-.navbar .menu {
-  float:right;
-}
-
-#footer .navbar {
-  margin-top: 4em;
-}
 
 .reportlink {
   text-align:right;
 }
 
-.navigation {
-  margin-bottom: 4px;
-}
 
-.navigation ul {
-  margin:0px;
-  padding:0px;
-  list-style-type:none;
-}
-
-.navigation ul li form,
-.navigation ul li {
-  display:inline;
-  margin:0px;
-  padding:0px;
-  margin-left:2px;
-}
-
-.navigation ul li form fieldset,
-.navigation ul li form div select {
-  vertical-align: middle;
-}
-
-.navigation optgroup {
-  text-align:center;
-  padding-top:4px;
-}
-
-.navigation option {
-  text-align:left;
-}
-
-.navigation optgroup option {
-  padding:0px;
-}
-
-#navmenupopup option,
-#navmenufooterpopup option {
-  padding: 2px 0 2px 20px;
-  background-repeat: no-repeat;
-  background-position: 1px 2px;
-  vertical-align: middle;
-}
 
 /***
  *** Footer
  ***/
 
 #footer {
-  text-align:center;
-  margin-top: 40px;
+	margin-top: 40px;
+	text-align:center;
 }
+	/*
+	.homelink {
+	  margin: 1em 0;
+	}
+		.homelink a {
+		  padding-left:1em;
+		  padding-right:1em;
+		}
+	*/
+	.sitelink {
+	  padding-top:1em;
+	}
+	
+	.performanceinfo {
+	  margin: 2em;
+	}
+	
+	.performanceinfo span {
+	  display: inline;
+	}
+	
+	#footer .validators {
+		margin-top:40px;
+		padding-top:5px;
+	}
+	
+	#footer .validators ul {
+		margin:0px;
+		padding:0px;
+		list-style-type:none;
+	}
+		#footer .validators ul li {
+			display:inline;
+			margin-right:10px;
+			margin-left:10px;
+		}
 
-.homelink {
-  margin: 1em 0;
-}
 
-.homelink a {
-  padding-left:1em;
-  padding-right:1em;
+/* nav tier 1 */
+#footer .footerlinks {
+	text-align:center;
 }
+	#footer .footerlinks ul {
+		margin:8px;
+		list-style-type:none;
+		border:0 none;
+	}
+		#footer .footerlinks ul li,
+			#footer .footerlinks ul li div {
+			display:inline;
+			margin:0;
+			padding:0;
+		}
+		#footer .footerlinks ul li.selected {
+			font-weight:bold;			
+		}
+			#footer .footerlinks ul li a:link,
+			#footer .footerlinks ul li a:visited,
+			#footer .footerlinks ul li a:hover {
+				padding:0 10px;
+			}
+		
+			/* nav tier 2 */
+			#footer .footerlinks ul li ul { display:none; }
 
-.sitelink {
-  padding-top:1em;
-}
-
-.performanceinfo {
-  margin: 2em;
-}
-
-.performanceinfo span {
-  display: block;
-}
-
-#footer .validators {
-  margin-top:40px;
-  padding-top:5px;
-  border-top: 1px dotted gray;
-}
-
-#footer .validators ul {
-  margin:0px;
-  padding:0px;
-  list-style-type:none;
-}
-
-#footer .validators ul li {
-  display:inline;
-  margin-right:10px;
-  margin-left:10px;
-}
 
 /***
  *** Filters
@@ -1330,6 +1374,29 @@ a.skip:focus, a.skip:active {
     visibility: hidden;
 }
 
+div.block_totara_report_manager {
+  background: transparent url(images/icon_reportmanager.gif) no-repeat right bottom;
+}
+.block_totara_stats.dashlet .content tr.stat0 td.staticon {
+    background: url(images/icon_people.gif) no-repeat scroll center center transparent;
+}
+.block_totara_stats.dashlet .content tr.stat1 td.staticon {
+    background: url(images/icon_new_course.gif) no-repeat scroll center center transparent;
+}
+.block_totara_stats.dashlet .content tr.stat2 td.staticon {
+    background: url(images/icon_completed_course.gif) no-repeat scroll center center transparent;
+}
+.block_totara_stats.dashlet .content tr.stat3 td.staticon {
+    background: url(images/icon_competency_achieved.gif) no-repeat scroll center center transparent;
+}
+.block_totara_stats.dashlet .content tr.stat4 td.staticon {
+    background: url(images/icon_objective_achieved.gif) no-repeat scroll center center transparent;
+}
+.block_quicklinks.dashlet .content td.linkicon {
+    background: url(images/icon_link.gif) no-repeat scroll center center transparent;
+}
+
+
 #left-column .hidden .header,
 #right-column .hidden .header
 {
@@ -1475,14 +1542,10 @@ a.skip:focus, a.skip:active {
   margin-bottom:1em;
   width: 100%;
 }
-
 .dashlet .header, .dashlet h2.header {
   text-align: left;
   margin:0;
-  padding:4px;
   padding-top:0;
-  /*border-width: 1px;
-  border-style: solid;*/
   border-bottom: none;
 }
 
@@ -1601,6 +1664,224 @@ a.skip:focus, a.skip:active {
   height:16px;
   margin-right:4px;
 }
+
+/**
+ * Dashlet columns
+ **/
+.dashboardcol {
+	float:left;
+	text-align:center;
+}
+	.dashboardcol .dashlet_container {
+		margin-right:10px;
+	}
+		.dashboardcol .dashlet {
+			position:relative;
+			margin-bottom:5px;
+			padding-bottom:8px;
+			text-align:left;
+			width: auto;
+		}
+			.dashboardcol .dashlet .header {
+				padding: 4px;
+				position:relative;
+			}
+			.dashboardcol .dashlet .content {
+				position:relative;
+				margin: 0;
+				padding: 4px;
+				border:none;
+			}
+					.dashboardcol .dashlet .header h2 {
+					    margin-right:16px;
+					}
+						.dashboardcol .dashlet .header .commands {
+							float:right;
+							margin-top:-25px;
+							margin-right:-4px;
+						}
+				.dashboardcol .dashlet .content .footer {
+					margin-top:5px;
+					margin-bottom:-5px;
+				}
+
+				/* Quick links dashlet */
+				.dashlet.block_quicklinks table { 
+					width:100%;
+				}
+						.dashlet.block_quicklinks td.linktext p {
+							margin:0;
+							padding:2px 0;
+						}
+						.dashlet.block_quicklinks.dashlet td.linkicon {
+							width: 35px;
+						}
+				/* Statistics dashlet */
+				.dashlet.block_totara_stats {
+				}
+					.dashlet.block_totara_stats .staticon {
+						 width: 35px;
+					}
+
+	.dashboardcol form.popupform {
+		margin:0 auto;
+	}
+
+/**
+ * My Learning > LP and RoL layouts
+ **/
+#recordoflearning-menu,
+#dp-plans-menu {
+	float:left;
+	width:28%;
+}
+	#recordoflearning-menu h3,
+	#dp-plans-menu h3,
+	#recordoflearning-menu h4,
+	#dp-plans-menu h4 {
+		margin: 5px 0;
+		padding: 4px;
+	}
+	#recordoflearning-menu ul,
+	#dp-plans-menu ul {
+		list-style: none outside none;
+		margin:5px 0 10px 0;
+		padding:0;
+	}
+		#recordoflearning-menu ul li,
+		#dp-plans-menu ul li {
+			padding: 4px 20px 5px;
+		}
+#dp-plan-content {
+	float:right;
+	display:inline; /* <IE7 margin-doubling fix */
+	width:70%;
+}
+	#dp-plan-content h2.main {
+		text-align: left;
+	}
+	#dp-plan-content #dp-plans-description .instructional_text {
+		float: left;
+		width: 73%;
+		padding: 10px 0;
+	}
+	#dp-plan-content #dp-plans-description .dp-add-plan-link {
+		float: right;
+		text-align: right;
+		width: 25%;
+		padding-top: 10px;
+	}
+	#dp-plan-content #dp-plans-list-active-plans table td.c0,
+	#dp-plan-content #dp-plans-list-unapproved-plans table td.c0,
+	#dp-plan-content #dp-plans-list-completed-plans table td.c0 {
+		padding-left: 40px;
+	}
+#recordoflearning-menu .dp-menu-selected,
+#dp-plans-menu .dp-menu-selected {
+	font-weight:bold;
+}
+
+#dp-component-update {
+ margin-top:10px;	
+}
+
+/***
+ *** Notifications
+ ***/
+div#totara-header-notifications .notifysuccess,
+div#totara-header-notifications .notifyproblem {
+	font-weight: bold;
+	margin: 5px auto 15px;
+	padding: 10px 40px;
+	text-align: left !important;
+	width: 40%;
+}
+
+
+/*****************************************************************************/
+/** Competency state Icons **/
+/*****************************************************************************/
+
+.competency_state_icon {
+    padding-right: 5px;
+    vertical-align: middle;
+}
+
+
+/*****************************************************************************/
+/** Objective state Icons **/
+/*****************************************************************************/
+
+.objective_state_icon {
+    padding-right: 5px;
+    vertical-align: middle;
+}
+
+
+/*****************************************************************************/
+/** Reports **/
+/*****************************************************************************/
+#myreports_section {
+	float:left;
+	width:49%;
+}
+#scheduledreports_section {
+	float:right;
+	width:49%;
+}
+	#scheduledreports_section h1 {
+		margin-top:0;
+		padding-top:0;
+	}
+#my-reports table.reportmanager td.icon {
+    width: 40px;
+}
+#my-reports table.reportmanager,
+table.reportbuilder-table,
+table.scheduled-reports {
+    width: 100%;
+}
+
+table.scheduled-reports .options {
+    text-align: center;
+    width: 45px;
+}
+
+.scheduled-reports tr td {
+    padding: 5px 10px;
+}
+
+.scheduled-reports tr th {
+    padding: 5px 10px;
+}
+
+img.iconhelp {
+    width: 16px;
+    height: 16px;
+}
+
+td.user_namewithlinks span.username {
+    font-size: 1.3em;
+}
+
+td.user_namewithlinks div.picture {
+    float:left;
+    padding-right:4px;
+}
+
+td.user_namewithlinks .userpicture {
+    vertical-align:middle
+}
+
+div.add-linked-course {
+    text-align:right;
+}
+table.reportbuilder-table {
+    clear: both;
+    margin-top: 5px;
+}
+
+
 
 /***
  *** Blogs
@@ -1979,6 +2260,7 @@ border-width:0px;
   display:inline;
   position:absolute;
   right:-20px;
+  bottom:0;
   z-index:10;
 }
 #course-view li.activity form.togglecompletion div {
@@ -2992,6 +3274,10 @@ body.notes .notesgroup {
 
 .tabrow0 a:hover {
   background-image: url(pix/tab/left_hover.gif);
+}
+
+.tabrow0 .selected a:hover {
+  background-image: url(pix/tab/left.gif);
 }
 
 .tabrow0 .here a:link:hover,
@@ -4538,3 +4824,5 @@ table.viewhierarchyitem th {
     text-align: left;
     vertical-align: top;
 }
+
+

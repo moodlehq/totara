@@ -22,8 +22,6 @@ function local_js($options = array()) {
         $CFG->wwwroot.'/local/js/lib/jquery-1.3.2.min.js',
     ));
 
-    $CFG->stylesheets[] = $CFG->wwwroot.'/local/js/lib/ui-lightness/jquery-ui-1.7.2.custom.css';
-
     // If dialog
     if (in_array(TOTARA_JS_DIALOG, $options)) {
 
@@ -42,8 +40,6 @@ function local_js($options = array()) {
         require_js(array(
             $CFG->wwwroot.'/local/js/lib/jquery.treeview.min.js',
         ));
-
-        $CFG->stylesheets[] = $CFG->wwwroot.'/local/js/lib/jquery.treeview.css';
     }
 
     // If datepicker enabled

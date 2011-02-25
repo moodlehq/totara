@@ -1,0 +1,89 @@
+/*******************************************************************
+ styles_totara_community.css
+
+ This CSS file contains all font definitions for the community theme.
+ The community theme extends the totara theme and should just change
+ a few colours and images.
+
+ Styles are organised into the following sections:
+  page
+
+
+ *******************************************************************/
+
+
+/***
+ *** Page
+ ***/
+
+body {
+    background-image: url("images/bg_grey_ftr.jpg");
+}
+#top-bg {
+    background-image: url("images/bg_blue.jpg");
+}
+.login-container {
+    background-image: url("images/bg_blue.jpg");
+}
+
+/* Change the header to be blue instead of green */
+div#header {
+    background: url("images/hdr_bg_blue.jpg") no-repeat scroll left bottom transparent;
+}
+    #header .tagline {
+	display: none;
+    }
+    #header-logo-container {
+	background: none repeat scroll 0 0 transparent;
+    }
+	#header-logo-container .logo {
+	    background: url("images/totara_logo.gif") no-repeat scroll left center transparent;
+	    height: 97px;
+	    padding: 0;
+	    margin-left: 20px;
+	}
+	    #header-logo-container .logo img {
+		display: none;
+	    }
+
+/* Change the footer to be grey */
+#footer {
+    background-image: url("images/footer_bg_grey.jpg");
+    background-color: #b7b8b8;
+}
+    #footer .footerlinks ul li {
+	background-image: url("images/nav_footer_spacer_grey.gif");
+    }
+    #footer .footerlinks ul li a:link,
+    #footer .footerlinks ul li a:visited,
+    #footer .footerlinks ul li a:hover {
+	color:#444444;
+    }
+    #footer .validators ul li a:link,
+    #footer .validators ul li a:visited,
+    #footer .validators ul li a:hover {
+	color: #FFFFFF;
+    }
+
+/* Replace green left menu headers with a grey one. These are used on
+ * the learning plans and record of learning screens etc. */
+#left-column .block_admin_tree div.header,
+#dp-plans-menu h3,
+#recordoflearning-menu h3,
+.dashboard .dashlet .header {
+    background-image: url("images/left_menu_header_bg.gif");
+    color: #444444;
+}
+.dashlet div.header .title h2, .dashlet div.header .title h2 a {
+    color: #444444;
+}
+
+/* Change the jquery date picker header colour from green to grey */
+#ui-datepicker-div .ui-widget-header {
+    background: url("images/footer_bg_grey.jpg") repeat-x scroll 50% 50% #B1BA1A;
+}
+.ui-widget-header {
+    color: #444444;
+}
+
+

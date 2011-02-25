@@ -1,0 +1,26 @@
+/*
+ * These styles are ONLY included for IE6 (via meta.php)
+ */
+
+#wrapper {
+     background: transparent url('images/bg_no_shadow.png') repeat-y top center;
+}
+div#header {
+	background: #b2eef9 url("images/hdr_bg_blue.jpg") right -20px repeat-x;
+	height: 1%;
+}
+
+
+.tabrow0 div, .tabrow0 ul {
+	top:4.8em;
+}
+
+div#totara_menu ul li div {
+	float:left;
+}
+div#totara_menu ul li div a {
+	float:left;
+}
+div#totara_menu ul {
+	height:72px;
+}

@@ -2,6 +2,9 @@
  * These styles are ONLY included for IE 7 (via meta.php)
  */
 
+.tabrow0 {
+	padding-top:6px;
+}
 .tabrow0 li a,
 .tabrow0 li.here a,
 .tabrow0 li.selected a,
@@ -21,6 +24,9 @@
 .tabrow0 li.selected a,
 .tabrow0 li.selected a:hover {
     padding-top:0px;
+}
+.tabrow0 div, .tabrow0 ul {
+	top:2.5em;
 }
 
 .sideblock {

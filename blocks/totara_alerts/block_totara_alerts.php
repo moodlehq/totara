@@ -44,7 +44,6 @@ class block_totara_alerts extends block_base {
         $this->content = new stdClass;
 
         // initialise jquery requirements
-        $CFG->stylesheets[] = $CFG->wwwroot.'/local/js/lib/ui-lightness/jquery-ui-1.7.2.custom.css';
         require_once($CFG->dirroot.'/local/reportbuilder/lib.php');
         require_once($CFG->dirroot.'/local/js/lib/setup.php');
         $code = array();
@@ -70,10 +69,6 @@ class block_totara_alerts extends block_base {
         } else {
             $this->title .= ' <span>' . get_string('noalerts', 'block_totara_alerts') . '</span>';
         }
-
-      // firstly pull in the stylesheet needed for the dismiss dialog
-        $this->content->text =
-        '<link rel="stylesheet" type="text/css" href="'.$CFG->wwwroot.'/local/js/lib/ui-lightness/jquery-ui-1.7.2.custom.css" />';
 
         if (empty($this->instance)) {
             return $this->content;

@@ -5,15 +5,14 @@
 /// how Moodle uses this theme.
 ////////////////////////////////////////////////////////////////////////////////
 
-
-$THEME->sheets = array('styles_menu','styles_page','styles_buttons','styles_totara','styles_totara_common');
+$THEME->sheets = array('jquery-ui-1.7.2.custom','jquery.treeview','styles_menu','styles_page','styles_buttons','styles_totara','styles_totara_common');
 
 /// This variable is an array containing the names of all the 
 /// stylesheet files you want included in this theme, and in what order
 ////////////////////////////////////////////////////////////////////////////////
 
 
-$THEME->standardsheets = array('styles_layout','styles_fonts','styles_color');  
+$THEME->standardsheets = array('jquery-ui-1.7.2.custom','jquery.treeview','styles_layout', 'styles_fonts', 'styles_color');
 
 /// This variable can be set to an array containing
 /// filenames from the *STANDARD* theme.  If the 
@@ -28,7 +27,7 @@ $THEME->standardsheets = array('styles_layout','styles_fonts','styles_color');
 ////////////////////////////////////////////////////////////////////////////////
 
 
-$THEME->parent = 'standard-totara';  
+$THEME->parent = '';  
 
 /// This variable can be set to the name of a parent theme
 /// which you want to have included before the current theme.
@@ -39,7 +38,7 @@ $THEME->parent = 'standard-totara';
 ////////////////////////////////////////////////////////////////////////////////
 
 
-$THEME->parentsheets = array('styles_totara');  
+$THEME->parentsheets = false;
 
 /// This variable can be set to an array containing
 /// filenames from a chosen *PARENT* theme.  If the 
@@ -78,6 +77,7 @@ $THEME->langsheets = false;
 /// a file named "styles.php" inside the current language
 /// directory.  This allows different languages to provide 
 /// different styles.
+
 
 $THEME->navmenuwidth = 50;
 
