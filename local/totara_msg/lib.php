@@ -258,9 +258,19 @@ function totara_msg_checkbox_all_none() {
                 function jqCheckAll( id, name, flag ) {
                    if (flag == 0) {
                       $("form#" + id + " INPUT[@name=" + name + "][type=\'checkbox\']").attr(\'checked\', false);
+                      if ($(\'form#totara_messages input[type=checkbox]:checked\').length) {
+                          $(\'#totara-dismiss\').attr(\'disabled\', false);
+                      } else {
+                          $(\'#totara-dismiss\').attr(\'disabled\', true);
+                      }
                    }
                    else {
                       $("form#" + id + " INPUT[@name=" + name + "][type=\'checkbox\']").attr(\'checked\', true);
+                      if ($(\'form#totara_messages input[type=checkbox]:checked\').length) {
+                          $(\'#totara-dismiss\').attr(\'disabled\', false);
+                      } else {
+                          $(\'#totara-dismiss\').attr(\'disabled\', true);
+                      }
                    }
                 }
             $(\'#totara_msg_selects #all\').click(function() {jqCheckAll(\'totara_messages\', \'totara_message\', 1); return false;});
