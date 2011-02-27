@@ -1841,6 +1841,19 @@ table.reportbuilder-table,
 table.scheduled-reports {
     width: 100%;
 }
+table.reportbuilder-table {
+    clear: both;
+    margin-top: 5px;
+}
+	.reportbuilder-table .cell {
+		vertical-align:middle;
+	}
+		.reportbuilder-table .cell a,
+		.reportbuilder-table .cell img {
+			vertical-align:inherit;
+			line-height:32px;
+			padding-right:5px;
+		}
 
 table.scheduled-reports .options {
     text-align: center;
@@ -1875,10 +1888,6 @@ td.user_namewithlinks .userpicture {
 
 div.add-linked-course {
     text-align:right;
-}
-table.reportbuilder-table {
-    clear: both;
-    margin-top: 5px;
 }
 
 

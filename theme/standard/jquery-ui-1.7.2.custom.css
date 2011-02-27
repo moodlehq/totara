@@ -425,15 +425,17 @@ div.totara-dialog {
 			    width: 100%;
 			}
 			    div.totara-dialog td.select #search-tab form.mform,
-			    div.totara-dialog td.select #search-tab table#dialog-search-table,
-				div.totara-dialog td.select #search-tab table#dialog-search-table td.querybox {
+			    div.totara-dialog td.select #search-tab table#dialog-search-table {
 				    width: 100%;
 				}
+					div.totara-dialog td.select select {
+						width:100%;
+					}
 				    div.totara-dialog td.select select,
 				    div.totara-dialog td.select #search-tab fieldset input,
 				    div.totara-dialog td.select #search-tab fieldset select,
 				    div.totara-dialog td.select #search-tab fieldset button {
-						font-size: 0.8em !important;
+						font-size: 0.85em;
 				    }
 				    div.totara-dialog td.select #search-tab table#dialog-search-table td.querybox input {
 						width: 95%;
@@ -452,6 +454,10 @@ div.totara-dialog {
 				div.totara-dialog ul.treeview li span a {
 					margin:0 5px;
 					display:block;
+				}
+				div.totara-dialog ul.treeview li span.empty a {
+					display:inline;
+					margin:0;
 				}
 				div.totara-dialog ul.treeview li span.unclickable,
 				div.totara-dialog ul.treeview li span.unclickable a {

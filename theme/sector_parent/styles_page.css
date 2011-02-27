@@ -1,0 +1,327 @@
+/***** page/styles_page.css start *****/
+
+/***
+ *** General CSS File
+ ***/
+
+/**
+ * Containers
+ **/
+body {
+	font-size:0.9em;
+	padding:0;
+	margin:0;
+}
+div#wrapper {
+	width:950px;
+}
+	div#wrapper a:link { color:blue; }
+	div#wrapper a:visited { color:navy; }
+	div#wrapper a:hover { color:green; }
+
+/**
+ * Header
+ **/
+div#header {
+	height:124px;
+	background-color:#EAEAEA;
+}
+	.login-container .logininfo {
+		font-size:0.75em;
+	}
+/*
+	div#header div.logo {
+		float:left;
+		width:143px;
+		height:85px;
+		margin:8px;
+		background:transparent url(images/totara-logo-strap-white.png) left top no-repeat;
+	}
+*/
+div#container {
+	font-size:0.9em;
+}
+	div#content {
+		margin:8px;
+	}
+
+
+/**
+ * Main menu and navbar
+ **/
+div#totara_menu {
+	height:53px;
+	margin:0;
+	padding:0;
+	margin-top:-25px;
+	padding-bottom:2px;
+	border:none;
+	border-bottom:1px solid #CCC;
+}
+	div.header-search {
+		position:relative;
+		z-index:1;
+		margin-top:16px;
+	}
+
+	/* tier 1 */
+	div#totara_menu ul {
+		background-color:#CCC;
+	}
+		div#totara_menu ul li.selected {
+			background-color:#EAEAEA;
+		}
+			div#totara_menu ul li a:link,
+			div#totara_menu ul li a:visited,
+			div#totara_menu ul li a:hover {
+				display:block;
+				padding:0 10px;
+				line-height:25px;
+				color:#333;
+				font-weight:bold;
+			}
+		
+			/* tier 2 */
+			div#totara_menu ul li ul {
+				padding:0;
+			}
+				div#totara_menu ul li ul li {
+				}
+					div#totara_menu ul li ul li a:link,
+					div#totara_menu ul li ul li a:visited,
+					div#totara_menu ul li ul li a:hover {
+						font-weight:normal;
+						background-color:#EAEAEA;
+						line-height:30px;
+					}
+					div#totara_menu ul li ul li.selected a:link,
+					div#totara_menu ul li ul li.selected a:visited,
+					div#totara_menu ul li ul li.selected a:hover {
+						background-image:url(images/menu_selected_arrow_up.gif);
+						background-position:center bottom;
+						background-repeat:no-repeat;
+					}
+
+/* Navbar; breadcrumb and buttons */
+.navbar {
+	padding:0 10px 2px 10px;
+}
+	.navbar .breadcrumb,
+	.navbar .navbutton {
+		margin-top:7px;
+	}
+#site-index .navbar {
+	/* first release Totara prints empty markup, so remove styles */
+	padding:0;
+	border:none;
+}
+
+/**
+ * Sideblocks
+ **/
+.sideblock {
+	padding-bottom:16px;
+	background: #EAEAEA url(images/sidefooter_bg.png) left bottom no-repeat;
+}
+	.sideblock .header {
+		padding:8px;
+		border:none;
+		font-size:1.1em;
+		background-color:#CCC;
+	}
+		.sideblock .header .commands {
+			text-align:center;
+			padding:2px 5px;
+			background-color:#FFF;
+		}
+	.sideblock .content {
+		background:none;
+		border-color:#cacaca;
+		border-top:none;
+		border-bottom:none;
+	}
+		.sideblock .content select {
+			width:160px;
+			margin:2px 0 2px 4px;
+		}
+
+/**
+ * Layout table
+ **/
+#layout-table #left-column {
+	width:180px !important; /* have to do this because Totara outputs an inline style of 210px, ignoring the 180px value for cols set in config.php */
+}
+
+
+/**
+ * Dashlet columns
+ **/
+.dashboardcol {
+	float:left;
+	margin-right:10px;
+	text-align:center;
+}
+	.dashboardcol .dashlet_container {
+		margin:0;
+	}
+	.dashboardcol .dashlet {
+		margin-bottom:5px;
+		padding-bottom:8px;
+		border:none;
+		border-top:1px solid #CACACA;
+		text-align:left;
+		background: #EAEAEA url(images/dashlet_bg.png) left bottom no-repeat;
+	}
+		.dashboardcol .dashlet .header,
+		.dashboardcol .dashlet .content {
+			position:relative;
+			padding:5px;
+			border:1px solid #CACACA;
+			border-top:none;
+			border-bottom:none;
+		}
+				.dashboardcol .dashlet .header h2 { margin-right:16px; }
+					.dashboardcol .dashlet .header .commands {
+						float:right;
+						margin-top:-20px;
+						margin-right:-4px;
+					}
+			.dashboardcol .dashlet .content .footer {
+				margin-top:5px;
+				margin-bottom:-5px;
+			}
+				.dashboardcol .dashlet .footer .commands {
+					border:1px solid #CACACA;
+					background:#FFF;
+				}
+			
+			/* Quick links dashlet */
+			.dashlet.block_quicklinks table { width:100%; }
+				.dashlet.block_quicklinks tr.noshade { background-color:#FFF; }
+					.dashlet.block_quicklinks td.linktext p {
+						margin:0;
+						padding:2px 0;
+					}
+
+	.dashboardcol form.popupform {
+		margin:0 auto;
+	}
+
+
+/**
+ * Record of Learning
+ **/
+div#recordoflearning-menu {
+}
+div#dp-plan-content {
+
+}
+
+
+/**
+ * Reports
+ **/
+
+
+/**
+ * Blocks
+ **/
+.block_quicklinks tr td {
+	padding-top:5px;
+	padding-bottom:5px;
+}
+
+/**
+ * Overlays
+ **/
+
+
+/**
+ * Footer
+ **/
+div#footer {
+	border-top:1px solid #FFFFFF;
+}
+
+	/* tier 1 */
+	div#footer .footerlinks {
+		margin-top:25px;
+	}
+	div#footer .footerlinks ul {
+		position:relative;
+		min-height:25px;
+		margin:0;
+		padding:0;
+		list-style-type:none;
+		background-color:#CCC;
+	}
+		div#footer .footerlinks li {
+			float:left;
+			display:inline;/* <IE7 margin-doubling fix */
+			margin:0;
+			padding:0;
+		}
+		div#footer .footerlinks li.selected {
+			background-color:#EAEAEA;
+		}
+			div#footer .footerlinks li a:link,
+			div#footer .footerlinks li a:visited,
+			div#footer .footerlinks li a:hover {
+				display:block;
+				padding:0 10px;
+				line-height:25px;
+				color:#333;
+				font-weight:bold;
+			}
+			/* tier 2 */
+			div#footer .footerlinks ul li ul {
+				position:absolute;
+				bottom:25px;
+				left:0;
+				width:820px;
+				min-height:1px;
+				background:none;
+			}
+				div#footer .footerlinks ul li ul li {
+				}
+					div#footer .footerlinks ul li ul li a:link,
+					div#footer .footerlinks ul li ul li a:visited,
+					div#footer .footerlinks ul li ul li a:hover {
+						font-weight:normal;
+						background-color:#EAEAEA;
+					}
+					
+/* Help and login links */
+div#footer .help_login_wrap {
+	border-top:1px solid #EAEAEA;
+}
+	div#footer .help_login_wrap .helplink {
+		float:left;
+		margin:8px;
+		padding:0;
+	}
+	div#footer .help_login_wrap .logininfo {
+		float:right;
+		margin:8px;
+	}
+
+/**
+ * Course
+ **/
+
+.weekscss-format #left-column,
+.weekscss-format #right-column {
+    width: 180px;
+}
+.weekscss-format #middle-column {
+    margin: 0 190px;
+}
+
+h2.headingblock {
+	border:none;
+	padding:0;
+	margin:0;
+	font-size:1.4em;
+}
+
+/***** page/styles_page.css end *****/

@@ -365,7 +365,7 @@ div.totara-dialog ul.treeview li span {
     padding-left: 0;
 }
 div.totara-dialog ul.treeview li span.folder {
-    padding-left: 1.75em;
+    padding-left: 1.25em;
 }
 div.totara-dialog ul.treeview li span.clickable {
     cursor: pointer;
@@ -658,17 +658,14 @@ table.allmyteam td a {
     padding: 3px;
 }
 
-
-tr.r1 .cell {
-    background: #f5f5f5;
-}
 td.c0 {
     text-align: left;
 }
 
 th.header {
-    background: #EDEDED url(images/gradient.png) top left repeat-x;
-    border: 1px solid #e2e2e2;
+    border-style: none none none solid;
+    border-width: 0 0 0 1px;
+    border-color: #E2E2E2;
     padding:3px;
 }
 

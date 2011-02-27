@@ -304,10 +304,17 @@ span.youarehere {
 }
 
 .loginbox,
-	.loginbox .subcontent { border:none; }
+.loginbox .subcontent { border:none; }
+
 .loginpanel {
-    background:url("images/login_box.gif") no-repeat top center;
     padding-bottom:30px;
+}
+
+.loginbox {
+    background: url("images/content_bg_blue.jpg") no-repeat scroll left top #FFFFFF;
+    border: 1px solid #DDDDDD;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
 }
 
 .navigation {
@@ -667,9 +674,6 @@ div.totara-dialog {
 			    div.totara-dialog td.select #search-tab table#dialog-search-table {
 				width: 100%;
 			    }
-				div.totara-dialog td.select #search-tab table#dialog-search-table td.querybox {
-				    width: 100%;
-				}
 				    div.totara-dialog td.select #search-tab fieldset input,
 				    div.totara-dialog td.select #search-tab fieldset select,
 				    div.totara-dialog td.select #search-tab fieldset button {
@@ -677,7 +681,7 @@ div.totara-dialog {
 				    }
 				    div.totara-dialog td.select #search-tab table#dialog-search-table td.querybox input {
 					padding: 3px 0 !important;
-					width: 95%;
+					width: 90%;
 				    }
 
 			div.totara-dialog ul.treeview,
@@ -689,9 +693,13 @@ div.totara-dialog {
 				padding-bottom: 2px;
 				font-size: 12px;
 			    }
-				div.totara-dialog ul.treeview li span {
-				    padding-left: 5px;
+				div.totara-dialog ul.treeview li span a {
+				    margin-left: 5px;
 				}
+				div.totara-dialog ul.treeview li span a:hover {
+				    background-color:#EEEEEE;
+				}
+
 				div.totara-dialog ul.treeview li span.unclickable,
 				div.totara-dialog ul.treeview li span.unclickable a {
 				    color: #999999;
@@ -714,12 +722,18 @@ div.totara-dialog {
 		    overflow: auto;
 		    width: 100%;
 		}
+		div.totara-dialog .selected span.unremovable a {
+				    color: #999999;
+				    cursor: text;
+				    text-decoration: none;
+		}
 		    div.totara-dialog .selected span a {
 			cursor: text;
 			display: block;
 			float: left;
 			text-decoration: none;
 			width: 80%;
+			outline:none;
 		    }
 		    div.totara-dialog .selected span span.addbutton,
 		    div.totara-dialog .selected span span.deletebutton {
@@ -743,6 +757,11 @@ div.totara-dialog {
 			background-position: right center;
 			background-repeat: no-repeat;
 		    }
+		    div.totara-dialog .selected span.unremovable:hover span.deletebutton,
+		    div.totara-dialog .selected span.unremovable:hover span.addbutton {
+			background:none;
+		    }
+
 		div.totara-dialog .selected p {
 		    font-weight: bold;
 		    margin-top: 0;
@@ -785,6 +804,12 @@ div.ui-dialog.ui-corner-all {
 .ui-tabs .ui-tabs-nav li {
     position: static !important;
 }
+
+select.totara-limited-width-150 {
+    position: static;
+    width: 150px;
+}
+
 
 /**
  * Link colors
@@ -870,7 +895,7 @@ h2.headingblock,
 .headingblock,
 #middle-column h2 {
   font-family: 'Trebuchet ms', verdana, helvetica, sans-serif;
-  font-weight:normal;
+  font-weight: bold;
 }
 h2.headingblock {
   border:none;
@@ -910,19 +935,24 @@ h6 {
   top: 2.4em;
 }
 .tabrow0{
-  line-height: 2.6em;
+  line-height: 2.5em;
   text-align:left;
   padding-bottom: 4.5em;
 }
 .tabrow0 li a:link,
 .tabrow0 li a:hover,
 .tabrow0 li a:visited {
-  font-family: 'Trebuchet ms', Verdana, Helvetica, sans-serif;
-  font-size: 1.3em;
+  font-family: 'Trebuchet ms', Verdana, Helvetica, sans-serif ;
+  font-size: 1.3em ;
   background: url("images/tab/left_dark.gif") no-repeat scroll left top transparent;
   padding-top:4px;
   color:#FFFFFF;
   padding-bottom:2px;
+}
+.tabrow0 li a.nolink {
+  font-family: 'Trebuchet ms', Verdana, Helvetica, sans-serif;
+  font-size: 1.3em;
+  padding-bottom: 2px !important;
 }
 .tabrow0 li {
     font-weight: bold;
@@ -933,7 +963,6 @@ h6 {
     padding-top:4px;
     padding-bottom:2px;
 }
-
 
 .tabrow0 li.selected a:hover span,
 .tabrow0 li.selected span,
@@ -1387,7 +1416,6 @@ ul.tabrow1 li a:visited {
     display: block;
     font-size: 0.7em;
     margin-top: 0.8em;
-    font-family: Arial,Verdana,Helvetica,sans-serif;
 }
 .dashlet div.header {
   /*border:1px solid #d2d2d2;
@@ -1726,12 +1754,23 @@ div.totara_alerts_actions .action {
 }
 
 .block_calendar_month .content {
+	position:relative !important;
   padding: 3px 5px 10px 5px !important;
 }
 
 .block_calendar_month .calendar-controls {
   width:93%;
   margin:0 auto;
+}
+
+.block_calendar_month .calendar-controls a span {
+    display: block;
+    overflow: hidden;
+    text-indent: 1000px;
+    width: 13px;
+}
+.block_calendar_month .cal_popup_bg {
+	border:1px solid #9f187c;
 }
 
 #calendar {
@@ -2172,6 +2211,8 @@ body#admin-user table.generaltable td.c7 {
 #dp-plans-list-unapproved-plans table th.header.c0 a,
 #dp-plans-list-completed-plans table th.header.c0 a {
     color: #A52B86;
+    font-size: 17px;
+    text-decoration: none;
 }
 #dp-plans-menu {
     background: url("images/left_menu_bg.gif") repeat-y scroll left top transparent;
@@ -2213,6 +2254,15 @@ body#admin-user table.generaltable td.c7 {
     padding: 5px 5px 5px 20px;
 }
 table.dp-plan-component-items { width:100%; }
+
+div.plan_box_plain {
+    background-color: #EEEEFF;
+    border: 1px solid #CCCCCC;
+}
+div.plan_box {
+    margin: 5px 10%;
+    padding: 10px;
+}
 
 /*****************************************************************************/
 /** Record of Learning **/
@@ -2607,6 +2657,13 @@ img.percentImage {
 /*****************************************************************************/
 /** Course and Category **/
 /*****************************************************************************/
+.weekscss-format #left-column,
+.weekscss-format #right-column {
+	width: 181px;
+}
+.weekscss-format #middle-column {
+	margin: 0 201px;
+}
 
 .course_icon {
     padding-right: 5px;

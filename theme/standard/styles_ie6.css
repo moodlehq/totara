@@ -104,4 +104,8 @@ form.mform textarea {
 div.totara-dialog ul.treeview li {
 	height:16px;
 }
+/* reports */
+.reportbuilder-table .cell {
+	height:32px;
+}
 
