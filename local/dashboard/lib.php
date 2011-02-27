@@ -530,7 +530,7 @@ function local_dashboard_install() {
                 'pos' => 0,
             ),
             array(
-                'name' => 'totara_notify',
+                'name' => 'totara_alerts',
                 'col' => 2,
                 'pos' => 0,
             ),
@@ -597,7 +597,7 @@ function local_dashboard_install() {
                 'pos' => 0,
             ),
             array(
-                'name' => 'totara_notify',
+                'name' => 'totara_alerts',
                 'col' => 2,
                 'pos' => 0,
             ),
