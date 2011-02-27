@@ -44,8 +44,8 @@ define('POSITION_TYPE_ASPIRATIONAL',    3);
 // (Commented out unused types here)
 $POSITION_TYPES = array(
     POSITION_TYPE_PRIMARY       => 'primary',
-    //POSITION_TYPE_SECONDARY     => 'secondary',
-    //POSITION_TYPE_ASPIRATIONAL  => 'aspirational'
+    POSITION_TYPE_SECONDARY     => 'secondary',
+    POSITION_TYPE_ASPIRATIONAL  => 'aspirational'
 );
 
 $POSITION_CODES = array_flip($POSITION_TYPES);
