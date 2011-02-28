@@ -2254,13 +2254,45 @@ body#admin-user table.generaltable td.c7 {
 }
 table.dp-plan-component-items { width:100%; }
 
-div.plan_box_plain {
+div.plan_box {
+    margin: 5px 10%;
+}
+div.plan_box_plain,
+div.plan_box_action {
     background-color: #EEEEFF;
     border: 1px solid #CCCCCC;
 }
-div.plan_box {
-    margin: 5px 10%;
-    padding: 10px;
+div.plan_box_completed {
+    background-color: #DDDDDD;
+    border: 1px solid #AAAAAA;
+}
+	div.plan_box_wrap {
+		float:left;
+		display:inline; /* <IE7 margin-doubling fix */
+	}
+	div.plan_box form {
+		float:right;
+	}
+		div.plan_box form input {
+			margin-left:10px;
+		}
+	
+.dp-summary-widget-title {
+	padding-top: 0;
+	font-size:1.1em;
+}
+span.dp-summary-widget-component-name {
+    background: url("images/nav_main_spacer.gif") no-repeat scroll right 5px transparent;
+    margin-right: 4px;
+    padding: 3px 4px 0 0;
+}
+.dp-summary-widget-description {
+	padding:5px 0;
+}
+
+.plan-launch-course-button {
+    float: right;
+    margin-top: 2px;
 }
 
 /*****************************************************************************/

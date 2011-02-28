@@ -967,7 +967,7 @@ class development_plan {
         if ($message == '') {
             return '<div class="plan_box" style="display:none;"></div>';
         }
-        return '<div class="plan_box '.$style.'">'.$message.'</div>';
+        return '<div class="plan_box '.$style.' clearfix">'.$message.'</div>';
     }
 
 
@@ -1099,8 +1099,8 @@ class development_plan {
         $out = '';
         if($listcount) {
             $descriptor .= ($itemscount > 1 ? '_p' : '_s');
-            $out .= '<p>' . get_string($descriptor, 'local_plan'). '</p>';
-            $out .= '<ul>' . $list . '</ul>';
+            $out .= '<div class="plan_box_wrap"><p>' . get_string($descriptor, 'local_plan'). '</p>';
+            $out .= '<ul>' . $list . '</ul></div>';
         }
 
         return $out;
@@ -1139,8 +1139,8 @@ class development_plan {
         }
 
         // put the heading on now we know how many
-        $out = '<p>'.get_string(($totalitems > 1 ? 'planhasunapproveditems' : 'planhasunapproveditem'), 'local_plan').'</p>'.$out;
-        $out .= '</ul>';
+        $out = '<div class="plan_box_wrap"><p>'.get_string(($totalitems > 1 ? 'planhasunapproveditems' : 'planhasunapproveditem'), 'local_plan').'</p>'.$out;
+        $out .= '</ul></div>';
 
         // Show request button if plan is active
         if ($this->status == DP_PLAN_STATUS_APPROVED) {
