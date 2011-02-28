@@ -85,7 +85,7 @@ class block_totara_recent_learning extends block_list {
                 $test .= "</table>";
 
                 $this->content->items[] = $test;
-                $this->content->footer = '<a href="'.$CFG->wwwroot.'/my/coursecompletions.php?id='.$USER->id.'">'.get_string('allmycourses','local').'</a>';
+                $this->content->footer = '<a href="'.$CFG->wwwroot.'/local/plan/record/courses.php?userid='.$USER->id.'">'.get_string('allmycourses','local').'</a>';
             }
         }
 

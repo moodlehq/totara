@@ -490,7 +490,7 @@ function totara_print_my_courses() {
             $content .=     "<td class=\"startdate\">$starteddate</td><td class=\"completeddate\">$completeddate</td></tr>\n";
         }
         $content .= "</table>\n";
-        $content .= '<div class="allmycourses"><a href="'.$CFG->wwwroot.'/my/coursecompletions.php?id='.$USER->id.'">'.get_string('allmycourses','local').'</a></div>';
+        $content .= '<div class="allmycourses"><a href="'.$CFG->wwwroot.'/local/plan/record/courses.php?userid='.$USER->id.'">'.get_string('allmycourses','local').'</a></div>';
     }
 
     if (empty($content)) {
