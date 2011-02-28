@@ -110,6 +110,14 @@ table.formtable tbody th {
   color:#000044;
 }
 
+div.totara-copyright {
+	background-color: #7D8312;
+	
+}
+	div.totara-copyright a:link,
+	div.totara-copyright a:visited,
+	div.totara-copyright a:hover { color:#FFFFFF !important; }
+
 #admin-auth_config .required {
   background-color:#DDDDDD;
 }

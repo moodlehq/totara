@@ -1785,6 +1785,13 @@ div.block_totara_report_manager {
 	#dp-plan-content #dp-plans-list-completed-plans table td.c0 {
 		padding-left: 40px;
 	}
+	table.dp-templates {
+		width:100%;
+	}
+		table.dp-templates td.c0 {
+			width:70%;
+		}
+	
 #recordoflearning-menu .dp-menu-selected,
 #dp-plans-menu .dp-menu-selected {
 	font-weight:bold;
@@ -1814,6 +1821,11 @@ div#totara-header-notifications .notifyproblem {
 	width: 40%;
 }
 
+div.totara-copyright {
+	margin: 10px 20px;
+	padding-bottom: 10px;
+	text-align:center;
+}
 
 /*****************************************************************************/
 /** Competency state Icons **/

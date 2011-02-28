@@ -192,6 +192,7 @@ div.totara-copyright {
 	margin: 10px 20px;
 	padding-bottom: 10px;
 	overflow: auto;
+	text-align:center;
 }
 
 /**
@@ -1475,8 +1476,9 @@ ul.tabrow1 li a:visited {
 .dashlet .hide-show a {
   border: none;
 }
-.dashlet .footer {
+.dashboardcol .dashlet .content .footer {
   text-align: left;
+  margin-top:10px;
 }
 .dashlet .date {
   width: 165px;
@@ -1488,9 +1490,6 @@ ul.tabrow1 li a:visited {
 
 .dashboardcol .dashlet_container {
 	margin-bottom: 10px;
-}
-.dashlet .viewall {
-	margin-top:10px;
 }
 
 /******************************************
@@ -2389,12 +2388,6 @@ table.planitems tr.r0 {
     background-color: #F0F0F0;
 }
 
-table.dp-templates {
-	width:100%;
-}
-table.dp-templates td.c0 {
-	width:70%;
-}
 
 /*****************************************************************************/
 /** Dashboards **/
