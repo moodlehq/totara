@@ -183,8 +183,8 @@ class reportbuilderlib_test extends prefix_changing_test_case {
             // show report for a specific user
             'userid' => 2,
         );
-        $this->embed = reportbuilder_get_embedded_report_object('course_completions', $data);
-        $this->shortname = 'course_completions';
+        $this->embed = reportbuilder_get_embedded_report_object('plan_competencies', $data);
+        $this->shortname = 'plan_competencies';
 
         // db version of report
         $this->rb = new reportbuilder(1);
@@ -225,9 +225,9 @@ class reportbuilderlib_test extends prefix_changing_test_case {
     function test_reportbuilder_initialize_embedded_instance() {
         $rb = new reportbuilder(null, $this->shortname, $this->embed);
         // should create embedded report builder object with the correct properties
-        $this->assertEqual($rb->fullname,'My Course Completions');
-        $this->assertEqual($rb->shortname,'course_completions');
-        $this->assertEqual($rb->source, 'course_completion');
+        $this->assertEqual($rb->fullname, 'Record of Learning: Competencies');
+        $this->assertEqual($rb->shortname, 'plan_competencies');
+        $this->assertEqual($rb->source, 'dp_competency');
         $this->assertEqual($rb->hidden, 1);
     }
 
@@ -306,7 +306,7 @@ class reportbuilderlib_test extends prefix_changing_test_case {
         $this->assertEqual(substr($rb->report_url(),strlen($CFG->wwwroot)),'/local/reportbuilder/report.php?id=1');
         $rb2 = new reportbuilder(null, $this->shortname, $this->embed);
         // an embedded report should return the embedded url (this page)
-        $this->assertEqual($rb2->report_url(), $CFG->wwwroot . '/my/coursecompletions.php');
+        $this->assertEqual($rb2->report_url(), $CFG->wwwroot . '/local/plan/record/competencies.php');
     }
 
 
@@ -318,8 +318,8 @@ class reportbuilderlib_test extends prefix_changing_test_case {
         $rb = new reportbuilder(null, $this->shortname, $this->embed);
         $paramoption = new object();
         $paramoption->name = 'userid';
-        $paramoption->field = 'base.userid';
-        $paramoption->joins = null;
+        $paramoption->field = 'dp.userid';
+        $paramoption->joins = 'dp';
         $paramoption->type = 'int';
         $param = new rb_param('userid',array($paramoption));
         $param->value = 2;
@@ -364,7 +364,7 @@ class reportbuilderlib_test extends prefix_changing_test_case {
     function test_reportbuilder_get_param_restrictions() {
         $rb = new reportbuilder(null, $this->shortname, $this->embed);
         // should return the correct SQL fragment if a parameter restriction is set
-        $this->assertEqual($rb->get_param_restrictions(),'(base.userid = 2)');
+        $this->assertEqual($rb->get_param_restrictions(),'(dp.userid = 2)');
     }
 
     function test_reportbuilder_get_content_restrictions() {
