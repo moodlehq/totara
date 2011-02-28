@@ -993,17 +993,17 @@ class development_plan {
         $canrequestapproval = ($this->get_setting('approve') == DP_PERMISSION_REQUEST);
         $out = '';
 
-        $out .= "<form action=\"{$CFG->wwwroot}/local/plan/action.php\" method=\"POST\">";
+        $out .= "<form action=\"{$CFG->wwwroot}/local/plan/action.php\" method=\"POST\" class=\"approvalform\">";
         $out .= "<input type=\"hidden\" name=\"id\" value=\"{$this->id}\"/>";
         $out .= "<input type=\"hidden\" name=\"sesskey\" value=\"".sesskey()."\"/>";
         $out .= '<table width="100%" border="0"><tr>';
-        $out .= '<td>'.get_string('plannotapproved', 'local_plan').'</td>';
+        $out .= '<td class="c0">'.get_string('plannotapproved', 'local_plan').'</td>';
 
         if($canapproveplan) {
-            $out .= '<td><input type="submit" name="approve" value="' . get_string('approve', 'local_plan') . '" /> &nbsp; ';
+            $out .= '<td class="c1"><input type="submit" name="approve" value="' . get_string('approve', 'local_plan') . '" /> &nbsp; ';
             $out .= '<input type="submit" name="decline" value="' . get_string('decline', 'local_plan') . '" /></td>';
         } elseif ($canrequestapproval) {
-            $out .= '<td><input type="submit" name="approvalrequest" value="' . get_string('sendapprovalrequest', 'local_plan') . '" /> &nbsp; ';
+            $out .= '<td class="c1"><input type="submit" name="approvalrequest" value="' . get_string('sendapprovalrequest', 'local_plan') . '" /> &nbsp; ';
         }
 
         $out .= '</tr></table></form>';
