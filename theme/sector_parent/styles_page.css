@@ -117,6 +117,17 @@ div#totara_menu {
 }
 
 /**
+ * Mods
+ **/
+/* Web resource */
+body#mod-resource-view div#wrapper {
+	width:auto;
+}
+	body#mod-resource-view .generalboxcontent {
+		padding:0 20px;
+	}
+
+/**
  * Sideblocks
  **/
 .sideblock {
@@ -213,10 +224,33 @@ div#totara_menu {
  **/
 div#recordoflearning-menu {
 }
+
+/**
+ * Learning Plans
+ **/
 div#dp-plan-content {
 
 }
-
+	table.dp-templates th {
+		text-align:left;
+	}
+table.dp-plan-component-items {
+	width:100%;
+}
+	table.dp-plan-component-items td {
+		padding:5px;
+	}
+		table.dp-plan-component-items td img {
+			margin:0 5px;
+		}
+		table.dp-plan-component-items td img,
+		table.dp-plan-component-items td a {
+			vertical-align:middle;
+		}
+	table.dp-plan-component-items .plan-launch-course-button {
+		float:right;
+		margin-top:4px;
+	}
 
 /**
  * Reports
@@ -308,7 +342,6 @@ div#footer .help_login_wrap {
 /**
  * Course
  **/
-
 .weekscss-format #left-column,
 .weekscss-format #right-column {
     width: 180px;
@@ -316,12 +349,19 @@ div#footer .help_login_wrap {
 .weekscss-format #middle-column {
     margin: 0 190px;
 }
-
 h2.headingblock {
 	border:none;
 	padding:0;
 	margin:0;
 	font-size:1.4em;
 }
+
+/**
+ * Tables
+ **/
+.boxaligncenter {
+    margin:10px auto;
+}
+
 
 /***** page/styles_page.css end *****/

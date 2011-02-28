@@ -1,0 +1,769 @@
+/*
+
+Theme Colours:
+	Dark red:  #ac0f0f 
+
+
+Contents:
+	General
+	Header
+	Menu Menu + Navbar	
+	Blocks
+	Layout Table + Dashboard Columns + Course Layout
+	Footer
+	Course
+	Tabs
+	
+*/
+
+
+/** /////////////////////////////////////////////////////////////////////////////////////////////////// General  **/
+
+*, p, li, th, td {
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+}
+body {
+	font-size:85%;
+	color:#4b4b4b;
+}
+input, select, button {
+	font-size:11px !important;
+}
+
+
+h1, h1.main, h2, h2.main, h3, h3.main, h4, h4.main, h5, h5.main, h6, h6.main {
+	color:#ac0f0f;
+	margin:10px 0 2px;
+}
+
+h2, h2.main { color:#333333; }
+h1, h1.main, h2, h2.main {
+	font-weight:400;
+}
+h1, h1.main {
+	font-size:1.6em;
+}
+h2.headingblock, .headingblock, #middle-column h2 {
+	font-size:1em;
+	font-weight:700;
+	text-align:left;
+	border:none;
+	padding-bottom:5px;
+	border-bottom:1px solid #CACACA;
+	
+}
+h3 {
+	font-size:1em;
+	font-weight:700;
+	color:#000;
+}
+h4 {
+	font-size:1em;
+	font-weight:700;
+	color:#A70B05;
+}
+h5 {
+	font-size:1em;
+	font-weight:700;
+	color:#333;
+}
+h6 {
+	font-size:0.95em;
+	font-weight:700;
+	color:#333;
+}
+
+/** /////////////////////////////////////////////////////////////////////////////////////////////////// Header  **/
+
+ 
+.login-container {
+	background-color:#000000;
+	color:#FFFFFF;
+	border-bottom:2px #FFFFFF solid;
+	
+} 
+.login-container .logininfo a { color:#d8b758 !important }
+ 
+div#header {
+	background-image:url(images/header.jpg);
+	height:145px;
+}
+
+div#header div.logo {
+	background:none;
+}
+
+div#content {
+	margin:8px 0 8px 8px;
+}
+
+
+/** /////////////////////////////////////////////////////////////////////////////////////////////////// Main menu and navbar  **/
+
+div#totara_menu {
+	border-top:1px #FFF solid;
+	background-image:url(images/navbar.jpg);
+	background-repeat:repeat-x;
+	border-right:1px #ccc solid;
+}
+div.header-search {
+	margin-top:19px;
+}
+div#totara_menu ul li a:link, div#totara_menu ul li a:visited, div#totara_menu ul li a:hover {
+	display:block;
+	line-height:27px;
+	color:#ac0f0f;
+	font-weight:bold;
+	font-size:12px;
+	padding:0 10px;
+}
+/* tier 2 */
+div#totara_menu ul li ul {
+	width:600px;
+}
+div#totara_menu ul li ul li a:link, div#totara_menu ul li ul li a:visited, div#totara_menu ul li ul li a:hover {
+	font-weight:700;
+	background:none;
+	line-height:28px;
+	text-decoration:none;
+	color:#333333;
+	font-weight:normal;
+}
+
+div#totara_menu ul li ul li.selected a { font-weight:bold; }
+
+
+
+div#totara_menu ul li.selected div {
+	
+}
+
+div#totara_menu ul li.selected div a { text-decoration:underline; } 
+
+.navbar {
+	border-right:1px #ccc solid;
+	border-bottom:1px #ccc solid;
+	position:relative;
+	z-index:0;
+	padding:0 7px 2px 10px;
+}
+
+.navbar .breadcrumb {
+	font-size:.8em;
+	font-weight:400;
+}
+.navbar .breadcrumb .sep {
+	margin:0 0 0 5px;
+}
+.navbar .navbutton .popupform {
+	padding-top:0 !important;
+}
+
+/** /////////////////////////////////////////////////////////////////////////////////////////////////// Blocks  **/
+
+
+.sideblock {
+	
+	margin-bottom:8px;
+	padding-bottom:0;
+	border-bottom:1px #ccc solid;
+}
+.sideblock div.header {	
+	color:#FFF;
+	font-weight:400;
+	padding:0px;
+	font-size:1em;
+}
+.sideblock .header .title h2 {
+	font-size:0.8em;
+	font-weight:400;
+}
+.sideblock .content {
+	font-size:11px;
+	border:none;
+	text-align:left;
+	background:transparent;
+	margin:0;
+	padding:7px 7px 15px;
+}
+
+div#wrapper #left-column .sideblock a:link {color:#333333}
+div#wrapper #left-column .sideblock a:hover {color:#ac0f0f}
+.sideblock a span  { color:#333333;}
+.sideblock a:hover  {  text-decoration:none;   }
+.sideblock a:hover span { color:#CC0000;  }
+
+.sideblock .content ul { color:#336633 }
+
+
+.sideblock div.header .title h2, .sideblock div.header .title h2 a {
+	color:#FFF;
+	font-size:1.1em;
+	font-weight:400;
+	margin:0;
+	padding:5px 4px 0 3px;
+}
+.sideblock div.header .title .commands {
+	position:relative;
+	border:1px solid #CACACA;
+	background:#FFF;
+	margin:2px 0px -6px 0px;
+	padding:5px 4px 0;
+}
+.sideblock .header .icon.hide, .sideblock .header .icon.edit {
+	margin-right:2px !important;
+}
+.sideblock div.header .title .commands img {
+	height:11px;
+	width:11px;
+}
+.sideblock .content ul {
+	margin:0 0 5px;
+	padding:0;
+}
+.sideblock .content li {
+	font-size:1em;
+	line-height:1.4em;
+	list-style-type:none;
+}
+.sideblock div.header .title input {
+	background:#FFF;
+	margin:8px 3px 0 0;
+}
+.sideblock .footer {
+	text-align:left;
+}
+.sideblock .date {
+	width:165px;
+}
+
+/** /////////////////////////////////////////////////////////////////////////////////////////////////// Layout Table + Dashboard Columns + Course Layout **/
+
+
+.dashboardcol .dashlet .header h2 {
+	margin-right:16px;
+}
+/* Quick links dashlet */
+.dashlet.block_quicklinks table {
+	width:100%;
+}
+
+ 
+
+#layout-table {
+	margin-top:-5px;
+	border-collapse:collapse;
+}
+div.course-content #layout-table {
+	margin-top:-5px;
+}
+#middle-column {
+	padding-top:12px;
+	padding-left:12px;
+	padding-right:12px;
+}
+#site-index #left-column, #site-index #middle-column, #site-index #right-column {
+	padding-top:0;
+	background:transparent;
+}
+#course-view .weekscss .current, #course-view .current td.side {
+	background:#ccc;
+}
+#course-view .weekscss .content, .weekscss .side {
+	padding:5px 0 5px 5px;
+}
+#course-view img.icon {
+	margin-right:0;
+}
+#course-view li.activity form.togglecompletion, #course-view li.activity span.autocompletion {
+	right:-15px;
+}
+div.course-content #middle-column {
+	margin-left:180px;
+	margin-right:180px;
+}
+
+
+
+h2.main {
+	font-size:14px;
+}
+h2.headingblock {
+	font-size:.8em;
+	color:#333333;
+}
+
+
+/** /////////////////////////////////////////////////////////////////////////////////////////////////// Footer  **/
+
+div#footer {
+	border-top:1px solid #FFF;
+}
+/* tier 1 */
+div#footer .footerlinks ul {
+	background-color:#ac0f0f;
+}
+div#footer .footerlinks li a:link, div#footer .footerlinks li a:visited, div#footer .footerlinks li a:hover {
+	color:#FFF;
+	font-weight:400;
+	font-size:12px;
+}
+
+
+
+
+
+/** /////////////////////////////////////////////////////////////////////////////////////////////////// Tabs  **/
+ 
+.tabtree {
+	margin-top:15px;
+}
+.tabrow0 .empty {
+	height:0;
+}
+.tabrow0 a {
+	color:#ac0f0f;
+	font-size:105%;
+	font-weight:700;
+	background:transparent url(images/tab/left.gif) no-repeat left top;
+}
+.tabrow0 a span {
+	background:transparent url(images/tab/right.gif) no-repeat right top;
+}
+.tabrow0 li.selected a span, .tabrow0 li.selected a:hover span, .tabrow0 li.active a span, .tabrow0 li.active a:hover span {
+	background:url(images/tab/right-selected.gif) no-repeat scroll right top transparent;
+}
+.tabrow0 li.selected a, .tabrow0 li.selected a:hover, .tabrow0 li.active a, .tabrow0 li.active a:hover {
+	background:url(images/tab/left-selected.gif) no-repeat scroll left top transparent;
+}
+.tabrow0 div, .tabrow0 ul.tabrow1 {
+	background:url(images/tab/tab-nav-row.gif) repeat scroll 0 0 transparent;
+	margin-top:1px;
+	border-color:#CCC;
+}
+body#course-user .section {
+	margin-top:20px;
+}
+/* Hover Styles */
+.tabrow0 a:link:hover, .tabrow0 a:visited:hover, .tabrow0 .last a:hover, .tabrow0 a:hover {
+	background-image:url(images/tab/left_hover.gif);
+	color:#FFF;
+	text-decoration:none;
+}
+.tabrow0 a:link:hover span, .tabrow0 a:visited:hover span, .tabrow0 .last a:hover span, .tabrow0 a:hover span {
+	background-image:url(images/tab/right_hover.gif);
+	color:#FFF;
+}
+.tabrow0 .here a:hover {
+	background-image:url(images/tab/left.gif);
+}
+.tabrow0 .here a:hover span {
+	background-image:url(images/tab/right.gif);
+	color:#333;
+}
+.tabrow0 .here a, .tabrow0 .here a:hover {
+	color:#444;
+	text-decoration:none;
+}
+ul.tabrow1 li a:hover {
+	color:#002C3F;
+	text-decoration:underline;
+}
+.tabrow0 ul li a:hover span, .tabrow0 ul a {
+	color:#002C3F;
+	text-decoration:none;
+}
+.tabrow0 ul li.here a:hover span {
+	color:#444;
+}
+.tabrow0 div, .tabrow0 ul {
+	padding-top:.55em;
+	background:url(images/navbar_bg.jpg) repeat-x top center;
+	border-color:#ccc;
+}
+/* Header tabs */
+.header-tabs .tabtree {
+	margin-top:0;
+	background:transparent url(images/tab/right.gif) no-repeat top right;
+	position:relative;
+	z-index:-1;
+	padding:10px 0 4px;
+}
+.header-tabs {
+	margin:0 0 -1px;
+}
+#header-tabs .tabrow0 {
+	padding-bottom:0;
+	text-align:left;
+	line-height:normal;
+	margin-top:0;
+}
+#site-index .header-tabs {
+	margin-bottom:10px;
+}
+#site-index .header-tabs .tabtree {
+	border-bottom:1px solid #DDD;
+}
+
+/** /////////////////////////////////////////////////////////////////////////////////////////////////// OTHER  **/
+
+
+
+
+
+
+.tertiary {
+	background:url("images/navbar.jpg") repeat-x scroll center top transparent;
+	clear:both;
+	line-height:26px;
+	text-align:justify;
+	width:945px;
+	margin:0;
+	padding:0 5px 0 0;
+}
+.clear {
+	clear:both;
+}
+.tertiary ul {
+	margin:0;
+	padding:0;
+}
+.tertiary li {
+	display:inline;
+	font-size:0.9em;
+	list-style:none outside none;
+	margin:0;
+	padding:4px 5px 0 10px;
+}
+.tertiary li a {
+	color:#fff;
+}
+.tertiary li.selected {
+	background:transparent url(images/blue-nav-selected.jpg) repeat-x scroll center top;
+}
+
+
+
+/**
+ * Format Page
+ **/
+.format-page {
+	margin-left:0;
+}
+/**
+ * Story Board
+ **/
+#content .storybg {
+	width:735px;
+	clear:both;
+	height:223px;
+	padding-left:12px;
+	overflow:hidden;
+	background:transparent url(images/story_bg.jpg) no-repeat top left;
+	margin:10px 0 15px;
+}
+#content .storybg ul, #content .storybg p {
+	font-family:Arial, Helvetica, sans-serif !important;
+	width:350px;
+	margin:0 0 10px 12px;
+	padding:0;
+}
+#content .storybg p {
+	font-size:1.2em;
+	line-height:1.3em;
+	color:#333;
+	margin:0 0 10px;
+}
+#content .storybg li {
+	font-family:Arial, Helvetica, sans-serif !important;
+	line-height:1.3em;
+	list-style-type:none;
+	padding-left:12px;
+	background:url(images/arrow.png) no-repeat 0 7px;
+}
+#content .storybg h1 {
+	font-family:Arial, Helvetica, sans-serif !important;
+	width:365px;
+	font-size:2em;
+	padding:2px 15px 0 0;
+}
+#content .storybg h2 {
+	font-size:1.3em;
+	border:none;
+	margin:0;
+	padding:0;
+}
+/**
+ * Front Blocks
+ **/
+#site-index #middle-column div.mycourses div.header {
+	background:#DDE9DD url(images/middle-header-bg.jpg) top left repeat-x;
+	border:1px solid #A8CFA8;
+}
+/**
+ * Message and pop up screen fixes
+ **/
+body#help div#page #header-logo-container, body#message-index div#page #header-logo-container {
+	background:url("images/header-sml.jpg") top left no-repeat;
+}
+/**
+ * Page menu
+ **/
+.mod-pagemenu .menutree {
+	padding-left:0;
+}
+.mod-pagemenu .menutree, .mod-pagemenu .menutree .childtree {
+	list-style-type:none;
+}
+.mod-pagemenu .menutree .menuitem a {
+	color:#ac0f0f;
+	text-transform:uppercase;
+}
+.mod-pagemenu .menutree .childtree .menuitem a {
+	text-transform:none;
+}
+.mod-pagemenu .menutree .menuitem a:hover {
+	text-decoration:none;
+}
+.mod-pagemenu .menutree .menuitem {
+	padding-left:5px;
+	border-bottom:1px solid #ACC2CD;
+}
+.mod-pagemenu .menutree .childtree {
+	margin-left:-5px;
+}
+.mod-pagemenu .menutree .menuitem a.current, .mod-pagemenu .menutree .menuitem a.current:hover {
+	font-weight:700;
+	color:#ac0f0f;
+}
+.mod-pagemenu .menutree li.current {
+	background-color:#DDE6EB;
+}
+.mod-pagemenu .menutree li.current .childtree {
+	margin-bottom:-3px;
+}
+#left-column .sideblock {
+	width:180px;
+}
+#right-column .sideblock, #left-column .sideblock, #site-index #left-column .sideblock {
+	width:180px;
+	background:url(images/sidecontent_bg.jpg) no-repeat center top !important;
+}
+#right-column .sideblock div.header, #left-column .sideblock div.header, #site-index #left-column .sideblock div.header {
+	border:none;
+	padding-bottom:6px;
+	background:#ac0f0f;
+}
+#right-column .sideblock .content, #left-column .sideblock .content, #site-index #left-column .sideblock .content {
+	background:transparent url(images/sidecontent_bg.jpg) no-repeat left top;
+	padding:7px 7px 12px;
+}
+
+
+
+* html #right-column .sideblock .content, * html #left-column .sideblock .content, * html #site-index #left-column .sideblock .content {
+	background:transparent url(images/sidecontent_bg.jpg) no-repeat left bottom;
+}
+.sideblock .content ul li {
+	padding-top:0;
+	padding-bottom:2px;
+}
+.block_page_module .content {
+	padding-left:0;
+	padding-right:0;
+}
+.block_news_items .newlink, .activitydate, .activityhead, .sideblock .content div.info, .sideblock .content .message, .sideblock .content .footer, .block_search_forums .searchform {
+	text-align:left;
+	font-size:1em;
+	padding:3px 0;
+}
+.sideblock .content .footer {
+	margin-bottom:0;
+	padding:3px 0 0;
+}
+.sideblock .content .message {
+	padding-bottom:0;
+	margin-bottom:0;
+}
+#inst15 .content {
+	padding-bottom:8px !important;
+}
+.block_course_html .content, .block_course_summary .content {
+	background:transparent !important;
+	border-top:1px solid #CACACA;
+	border-bottom:1px solid #CACACA;
+}
+.block_site_main_menu .footer select {
+	width:140px;
+}
+.block_login .loginform .fld input {
+	width:75px;
+	padding:2px;
+}
+.mod-forum.sideblock th.header {
+	border-style:none;
+}
+.block_calendar_month .content {
+	padding:3px 5px 10px !important;
+}
+#calendar {
+	border-spacing:0;
+}
+div#calendarcontainer div.monthlycalendar div.calendar-controls span.current {
+	font-size:1.5em;
+	color:#ac0f0f;
+}
+div#calendarcontainer table.calendarmonth td.today {
+	background:#E3EDE4;
+	border:2px solid #ac0f0f !important;
+}
+#calendar .maincalendar .filters table, #calendar .sidecalendar .filters table, .block_calendar_month .filters table {
+	background:#f8f8f8;
+}
+table.minicalendar {
+	font-size:0.9em;
+	border:none;
+	background:transparent;
+	margin:0;
+}
+table.minicalendar th {
+	font-size:0.9em;
+	padding:0;
+}
+table.minicalendar .today {
+	border:none;
+	font-weight:700;
+	border-color:#C93113;
+	margin:0;
+}
+table.minicalendar .weekend {
+	color:#666;
+	background:transparent;
+}
+#calendar .duration_global, .minicalendar .duration_global {
+	border-bottom-color:#d6e4ef !important;
+	border-top-color:#d6e4ef !important;
+}
+#calendar .event_global, .minicalendar .event_global, .block_calendar_month .event_global {
+	background-color:#cce0ef;
+	border-color:#d6e4ef !important;
+}
+/**
+ * YUI Drop-down menu
+ **/
+div.yuimenu {
+	border-top:1px solid #C9CBCD;
+	border-left:1px solid #C9CBCD;
+	border-right:1px solid #000;
+	border-bottom:1px solid #000;
+	padding:0;
+}
+div.yuimenu ul {
+	padding:0;
+}
+/* Rollovers */
+div.yuimenu li.selected, div.yuimenubar li.selected {
+	background-color:#D5E0E6;
+}
+div.yuimenu li.selected a.selected {
+	color:#ac0f0f;
+	text-decoration:none;
+}
+div.yuimenu .yuimenuitem a.yuicurrent, div.yuimenu .yuimenuitem a.yuicurrent:hover {
+	text-decoration:none;
+	color:#ac0f0f;
+	font-weight:700;
+}
+div.yuimenu li.yuimenuitem {
+	border-bottom:1px solid #D5E0E6;
+	display:block;
+	padding-left:10px;
+	padding-top:4px;
+	padding-bottom:4px;
+	font-size:90%;
+}
+div.yuimenu .yuichildtree .yuimenuitem {
+	font-size:100%;
+}
+.yuimenuitemlabel {
+	outline:none;
+	padding:2px 24px 2px 3px;
+}
+.generalbox {
+	border:none;
+	padding:0;
+}
+.coursebox .summary {
+	font-size:1.1em;
+}
+/** Course completion report **/
+.completionreport th {
+	white-space:nowrap;
+	vertical-align:top;
+}
+.completionreport th.rowheader {
+	text-align:right;
+	font-style:italic;
+	font-weight:400;
+	font-size:90%;
+}
+.completionreport th.criteriagroup, .completionreport th.aggheader {
+	text-align:center;
+}
+.completionreport th.aggheader {
+	font-weight:400;
+	font-style:italic;
+}
+.completionreport span.completion-rplheader {
+	display:block;
+	color:#238E23;
+}
+.completionreport td.completion-progresscell {
+	text-align:left;
+	white-space:nowrap;
+}
+.completionreport td.completion-progresscell a.rplshow {
+	color:#238E23;
+	display:none;
+}
+.completionreport form {
+	display:inline;
+}
+form#add_block select#add_block_jump {
+	width:163px;
+}
+/** Pop up Fixes **/
+body#help #header, body#message-index #header {
+	height:90px;
+}
+
+div#wrapper a:link, div#wrapper a:visited, div#wrapper a:hover, .navbar .breadcrumb a, .navbar .breadcrumb a:link, .navbar .breadcrumb a:active, .navbar .breadcrumb a:hover, ul.tabrow1 li a, ul.tabrow1 li a:link, ul.tabrow1 li a:visited, #site-index #middle-column div.mycourses div.header h2 {
+	color:#ac0f0f;
+}
+div#totara_menu ul, div#totara_menu ul li.selected, div#footer .footerlinks li.selected, div#footer .footerlinks ul li ul li a:link, div#footer .footerlinks ul li ul li a:visited, div#footer .footerlinks ul li ul li a:hover, ul.tabrow1 li.here a, ul.tabrow1 li a:link, ul.tabrow1 li a:visited {
+	background:none;
+}
+.sideblock .hide-show-image, .dashlet.block_quicklinks tr.noshade, .mod-pagemenu .menutree li.current .childtree, .mod-pagemenu .menutree li.current .childtree .menuitem {
+	background-color:#FFF;
+}
+
+
+
+/*****************************************************************************/
+/** Pop-up Page Size Fix **/
+/*****************************************************************************/
+
+body#message-index div#wrapper,
+body#help div#wrapper {
+	background-image: none;
+	background-color: #FFFFFF;
+	width: auto ;
+	margin: 30px 20px 0px;
+	padding-top: 30px;
+	border: 1px solid #ccc;
+
+}
+body#message-index div#wrapper .login-container,
+body#help div#wrapper .login-container {
+    display:none;
+}
