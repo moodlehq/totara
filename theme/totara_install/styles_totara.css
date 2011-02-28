@@ -46,16 +46,16 @@ input, select, button {
 #wrapper {
   background: transparent url('images/bg_shadow.png') repeat-y top left;
   min-height: 100%;
-  margin: 0 auto;
+  margin: 18px auto 0;
   width: 980px;
   position: relative;
 }
 
 #top-bg {
-	background: #e4e4e4 url('images/bg_grn.jpg') repeat-x top center;
+	background: #738344 url('images/bg_grn.jpg') repeat-x bottom center;
 	top:0;
 	right: 0;
-	height:114px;
+	height:140px;
 	position:absolute;
 	width:100%;
 	z-index: -99;
@@ -464,7 +464,7 @@ body.calendar #totara_menu ul #menu6 ul {
   position: absolute;
   bottom: 0;
   /*padding:7px 15px;*/
-  background: #FFFFFF url('images/bg_grn.jpg') repeat-x top center;
+  background: #7D8412 url('images/footer_bg_grn.jpg') repeat-x top center;
   width: 960px;
   clear:both;
   margin-top: 40px;
@@ -1348,6 +1348,9 @@ div.yuimenu .yuichildtree .yuimenuitem {
 .generalbox {
   border:none;
   padding:0;
+}
+.admin .generalbox {
+    background: 0 none;
 }
 .generaltable {
   width:100%;

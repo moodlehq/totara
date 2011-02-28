@@ -2019,6 +2019,10 @@ div.yuimenu .yuichildtree .yuimenuitem {
   border:none;
   padding:0;
 }
+#admin-upgradesettings .generalbox {
+    background: 0 none;
+}
+
 .generaltable {
   width:100%;
 }
