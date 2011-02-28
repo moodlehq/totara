@@ -146,7 +146,7 @@ $THEME->layouttable = array('left', 'middle', 'right');
 /// $THEME->layouttable = array('left', 'middle', 'right');
 
 
-$THEME->custompix = false;
+$THEME->custompix = true;
 
 /// If true, then this theme must have a "pix" 
 /// subdirectory that contains copies of all 
