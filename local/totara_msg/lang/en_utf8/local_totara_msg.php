@@ -46,6 +46,7 @@ $string['messagesettings'] = 'Message settings';
 $string['viewdetailshere'] = 'More details can be found at:<br /><br /><a href=\"$a\">$a</a>';
 $string['cannotsavemessage'] = 'Cannot save message';
 $string['alertfooter'] = 'To change your preferences for receiving these emails, go to your <a href=\"$a\">Profile -> Messages</a> tab.';
+$string['error:redirecttoexternal'] = 'Error: trying to redirect to external domain';
 
 // message types
 $string['blended'] = 'Blended';
