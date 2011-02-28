@@ -692,13 +692,13 @@ div.totara-dialog {
 					width: 90%;
 				    }
 
-			div.totara-dialog ul.treeview,
+			div.totara-dialog div.treeview-wrapper,
 			div.totara-dialog div#column-checkboxes {
 			    margin-top: 5px;
 			    overflow: auto;
 			}
 			    div.totara-dialog ul.treeview li {
-				padding-bottom: 2px;
+				padding-top: 2px;
 				font-size: 12px;
 			    }
 				div.totara-dialog ul.treeview li span a {

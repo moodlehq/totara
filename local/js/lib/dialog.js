@@ -621,11 +621,11 @@ totaraDialog_handler_treeview.prototype.setup_tabs = function(e, ui) {
 
     // Resize browse treeview, minus padding
     if (!($.browser.msie && $.browser.version=="6.0")) {
-        $('div#browse-tab .treeview-wrapper', this._container).height(containerheight - $('select.simpleframeworkpicker', this._container).outerHeight() - 10);
+        $('div#browse-tab .treeview-wrapper', this._container).height(containerheight - $('select.simpleframeworkpicker', this._container).outerHeight() - 15);
     }
 
     // Resize search container
-    $('div#search-tab .treeview-wrapper', this._container).height(containerheight - $('#search-tab .mform', selcontainer).outerHeight() - $('div.search-paging', this._container).outerHeight() - 18);
+    $('div#search-tab .treeview-wrapper', this._container).height(containerheight - $('#search-tab .mform', selcontainer).outerHeight() - $('div.search-paging', this._container).outerHeight() - 24);
 
     // If showing search tab, focus search box
     if (ui && ui.index == 1) {
