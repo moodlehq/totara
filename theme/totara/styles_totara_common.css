@@ -182,10 +182,6 @@ table.reportbuilder-table .r1 {
     background: #F5F5F5;
 }
 
-table.reportbuilder-table td {
-    border: 1px solid #DDDDDD;
-}
-
 /*****************************************************************************/
 /** Individual Development Plans **/
 /*****************************************************************************/
@@ -342,10 +338,6 @@ div.totara-dialog div.ui-dialog-content h2 {
     color: #002C3F;
 }
 
-div.totara-dialog div.ui-dialog-content p {
-    margin: 0;
-    padding: 0;
-}
 
 div.totara-dialog div.ui-dialog-content .dialog-static-content {
     height: 275px;

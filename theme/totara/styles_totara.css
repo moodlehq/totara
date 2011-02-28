@@ -187,6 +187,13 @@ div.block_admin_tree div.admintree .depth2 {
     display: none;
 }
 
+div.totara-copyright {
+	background-color: #7D8312;
+	margin: 10px 20px;
+	padding-bottom: 10px;
+	overflow: auto;
+}
+
 /**
  * Header Styles
  **/
@@ -764,8 +771,7 @@ div.totara-dialog {
 
 		div.totara-dialog .selected p {
 		    font-weight: bold;
-		    margin-top: 0;
-		    padding-bottom: 8px;
+			margin-bottom:15px;
 		}
     div.totara-dialog div.ui-dialog-buttonpane {
 	-moz-border-radius: 0 0 0 0;
@@ -893,13 +899,13 @@ h1, h1.main {
 h2, h2.main {
   font-size: 1.6em;
   font-weight:normal;
+  text-align:left;
 }
 
 h2.headingblock,
 .headingblock,
 #middle-column h2 {
   font-family: 'Trebuchet ms', verdana, helvetica, sans-serif;
-  font-weight: bold;
 }
 h2.headingblock {
   border:none;
@@ -1483,8 +1489,9 @@ ul.tabrow1 li a:visited {
 .dashboardcol .dashlet_container {
 	margin-bottom: 10px;
 }
-	.dashboardcol .dashlet {
-	}
+.dashlet .viewall {
+	margin-top:10px;
+}
 
 /******************************************
  * Block Specific
@@ -2210,6 +2217,10 @@ body#admin-user table.generaltable td.c7 {
     background: url('images/icon_completed_plan.gif') no-repeat 8px 10px transparent;
     background-color: none;
 }
+#dp-plans-list-active-plans .c1, #dp-plans-list-active-plans .c2, #dp-plans-list-active-plans .c3, #dp-plans-list-unapproved-plans .c1, #dp-plans-list-unapproved-plans .c2, #dp-plans-list-unapproved-plans .c2, #dp-plans-list-completed-plans .c1, #dp-plans-list-completed-plans .c2, #dp-plans-list-completed-plans .c3 {
+    width: 70px;
+}
+
 #dp-plans-list-active-plans table th.header.c0 a,
 #dp-plans-list-unapproved-plans table th.header.c0 a,
 #dp-plans-list-completed-plans table th.header.c0 a {
@@ -2298,6 +2309,13 @@ span.dp-summary-widget-component-name {
     float: right;
     margin-top: 2px;
 }
+
+table#dpcomponents {
+	width:100%;
+}
+	table#dpcomponents td.c0 {
+		width:70%;
+	}
 
 /*****************************************************************************/
 /** Record of Learning **/
@@ -2862,3 +2880,5 @@ body#mod-resource-view .generalboxcontent  {
 body .ui-state-focus .ui-icon {*/
     background-image: url("images/ui/ui-icons_ffffff_256x240.png");
 }
+
+

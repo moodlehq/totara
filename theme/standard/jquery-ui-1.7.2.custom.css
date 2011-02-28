@@ -522,6 +522,7 @@ div.totara-dialog {
 		div.totara-dialog .selected p {
 		    font-weight: bold;
 		    margin-top: 38px;
+			margin-bottom:10px;
 		    padding:0;
 		}
 
