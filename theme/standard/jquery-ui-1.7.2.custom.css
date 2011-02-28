@@ -460,7 +460,8 @@ div.totara-dialog {
 					margin:0;
 				}
 				div.totara-dialog ul.treeview li span.unclickable,
-				div.totara-dialog ul.treeview li span.unclickable a {
+				div.totara-dialog ul.treeview li span.unclickable a,
+				div.totara-dialog .selected span.unremovable a {
 				    color: #999999;
 				    cursor: text;
 				    text-decoration: none;
@@ -468,6 +469,10 @@ div.totara-dialog {
 				    div.totara-dialog ul.treeview span.deletebutton {
 						display: none;
 				    }
+				div.totara-dialog .selected span.unremovable span.deletebutton,
+				div.totara-dialog .selected span.unremovable span.addbutton {
+					background:none;
+				}
 		
 		/* table cell containing results from td.select operations */
 	    div.totara-dialog table.dialog-content td.selected {
@@ -490,6 +495,7 @@ div.totara-dialog {
 				float: left;
 				text-decoration: none;
 				width: 80%;
+				outline:none;
 		    }
 		    div.totara-dialog .selected span span.addbutton,
 		    div.totara-dialog .selected span span.deletebutton {

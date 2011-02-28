@@ -490,6 +490,15 @@ table.flexible .r1 {
     background-color: #FFFFFF;
 }
 
+/**
+ * Learning Plans
+ **/
+div.plan_box_plain,
+div.plan_box_action {
+	border: 1px solid #DDDDDD;
+}
+
+ 
 
 /***
  *** Blogs

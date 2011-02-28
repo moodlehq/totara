@@ -4,6 +4,10 @@
  *** Submit Buttons
  ***/
 
+.singlebutton {
+	margin:10px 0;
+}
+
 span.button {
   background: transparent url(http://ciscoinstitute.net/theme/cisco/pix/btn/btn_left.gif) left no-repeat; /* changed from top left to left for ie7 fix*/
   padding: 5px 0 5px 5px;

@@ -580,6 +580,11 @@ fieldset.fdate_selector label {
   text-align:left;
   width: 60%;
 }
+div.multicheck-items fieldset.felement span {
+    display: block;
+    float: left;
+    width: 30%;
+}
 
 .mform div.fdescription {
   clear: both;
@@ -1757,6 +1762,10 @@ div.block_totara_report_manager {
 	display:inline; /* <IE7 margin-doubling fix */
 	width:70%;
 }
+	div.plan_box {
+		margin:10px 0;
+		padding: 10px;
+	}
 	#dp-plan-content h2.main {
 		text-align: left;
 	}
@@ -1781,8 +1790,16 @@ div.block_totara_report_manager {
 	font-weight:bold;
 }
 
+.dp-summary-widget-title {
+	font-weight:bold;
+	padding:5px 0;
+}
 #dp-component-update {
  margin-top:10px;	
+}
+
+.dp-plan-assign-button {
+	margin:10px 0;
 }
 
 /***

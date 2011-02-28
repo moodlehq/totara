@@ -252,7 +252,7 @@ span.youarehere {
   display: list-item;
   float: left;
   list-style-type: disc;
-  margin: 0px 10px;
+  margin: 0px 20px;
   font-family: 'Trebuchet ms', verdana, helvetica, sans-serif;
   color: white;
   font-weight: normal;
@@ -454,7 +454,7 @@ div#totara_menu ul li.selected ul li {
 	list-style:none;
 	float:left;
 	background:transparent url('images/nav_sub_spacer.gif') no-repeat right center;
-	height: 25px;
+	height: 23px;
 	font-size:0.9em;
 	display:block;
 }
@@ -468,7 +468,7 @@ div#totara_menu ul li.selected ul li a {
 	margin:0;
 	padding: 0 20px;
 	display:block;
-	height: 25px;
+	height: 23px;
 	color:#FFFFFF;
 	background:transparent;
 }
@@ -500,7 +500,7 @@ div#totara_menu ul li.selected ul li.selected a:hover {
 	bottom: 0;
 	background: url("images/footer_bg_grn.jpg") repeat-x scroll center top #7D8412;
 	width: 930px;
-	padding:7px 15px;
+	padding:6px 15px;
 	border:none;
 }
 
@@ -723,9 +723,9 @@ div.totara-dialog {
 		    width: 100%;
 		}
 		div.totara-dialog .selected span.unremovable a {
-				    color: #999999;
-				    cursor: text;
-				    text-decoration: none;
+			color: #999999;
+			cursor: text;
+			text-decoration: none;
 		}
 		    div.totara-dialog .selected span a {
 			cursor: text;
@@ -862,6 +862,10 @@ a:hover {
   width:90px;
 }
 
+div.login-container {
+	padding:5px 10px;
+}
+.logininfo { font-size:0.8em; }
 .logininfo a:link {
     text-decoration: underline;
 }
@@ -2357,6 +2361,12 @@ table.planitems tr.r0 {
     background-color: #F0F0F0;
 }
 
+table.dp-templates {
+	width:100%;
+}
+table.dp-templates td.c0 {
+	width:70%;
+}
 
 /*****************************************************************************/
 /** Dashboards **/
@@ -2779,6 +2789,13 @@ td.user_namewithlinks .userpicture {
 
 div.add-linked-course {
     text-align:right;
+}
+
+/*****************************************************************************/
+/** Web resources **/
+/*****************************************************************************/
+body#mod-resource-view .generalboxcontent  {
+	padding:10px 20px;
 }
 
 /*****************************************************************************/
