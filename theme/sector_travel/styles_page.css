@@ -303,14 +303,10 @@ div#footer .footerlinks li a:link, div#footer .footerlinks li a:visited, div#foo
 /** /////////////////////////////////////////////////////////////////////////////////////////////////// Tabs  **/
  
 .tabtree {
-	margin-top:15px;
-}
-.tabrow0 .empty {
-	height:0;
+	margin-top:10px;
 }
 .tabrow0 a {
 	color:#47678a;
-	font-size:105%;
 	font-weight:700;
 	background:transparent url(images/tab/left.gif) no-repeat left top;
 }

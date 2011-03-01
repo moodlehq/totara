@@ -305,9 +305,6 @@ div#footer .footerlinks li a:link, div#footer .footerlinks li a:visited, div#foo
 .tabtree {
 	margin-top:15px;
 }
-.tabrow0 .empty {
-	height:0;
-}
 .tabrow0 a {
 	color:#47678a;
 	font-size:105%;
