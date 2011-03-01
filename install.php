@@ -30,7 +30,7 @@ define('SITEID', 0);
 /// Begin the session as we are holding all information in a session
 /// variable until the end.
 
-session_name('TotaraSession');
+session_name('MoodleSession');
 @session_start();
 
 /// make sure PHP errors are displayed to help diagnose problems
@@ -604,7 +604,7 @@ if (isset($_GET['help'])) {
 <table class="main" cellpadding="3" cellspacing="0">
     <tr>
         <td class="td_mainlogo">
-            <p class="p_mainlogo"><img src="/theme/totara/images/logo_main.gif" width="131" height="91" alt="Totara logo"/></p>
+            <p class="p_mainlogo"><img src="theme/totara/images/logo_main.gif" width="131" height="91" alt="Totara logo"/></p>
         </td>
         <td class="td_mainlogo" valign="bottom">
             <p class="p_mainheader"><?php print_string('installation', 'install') ?></p>
