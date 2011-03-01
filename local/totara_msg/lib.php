@@ -358,13 +358,6 @@ function totara_msg_accept_reject_action($id) {
 
     $returnto = ($msgmeta->msgtype == TOTARA_MSG_TYPE_LINK && isset($msgacceptdata->data['redirect'])) ? $msgacceptdata->data['redirect'] : $FULLME;
 
-    // Validate redirect
-    $return_host = parse_url($returnto);
-    $site_host = parse_url($CFG->wwwroot);
-    if($return_host['host'] != $site_host['host']) {
-        error(get_string('error:redirecttoexternal', 'local_totara_msg'));
-    }
-
     $subject = format_string($msg->subject);
     $onaccept_str = format_string(isset($msgacceptdata->acceptbutton) ? $msgacceptdata->acceptbutton : get_string('onaccept', 'block_totara_tasks'));
     $onreject_str = get_string('onreject', 'block_totara_tasks');
