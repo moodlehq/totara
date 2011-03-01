@@ -93,7 +93,7 @@ if ($submitted && confirm_sesskey()) {
         }
     }
 
-    if (!$errors) {
+    if ($errors) {
         totara_set_notification(get_string('error:problemapproving', 'local_plan'));
     }
 
