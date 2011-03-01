@@ -24,22 +24,26 @@
 function competency_scale_is_used( $scaleid ){
     global $CFG;
 
-    // Inner join the framework table to ignore any
-    // old scale assignments from when deleting a
-    // competency framework didn't delete related assignments
-    $sql = "
-        SELECT
-            a.id
-        FROM
-            {$CFG->prefix}comp_scale_assignments a
-        INNER JOIN
-            {$CFG->prefix}comp_framework f
-         ON f.id = a.frameworkid
-        WHERE
-            a.scaleid = {$scaleid}
-    ";
+    $sql = "SELECT
+                ce.competencyid
+            FROM
+                {$CFG->prefix}comp_evidence ce
+            LEFT JOIN {$CFG->prefix}comp_scale_values csv
+              ON csv.id = ce.proficiency
+            WHERE csv.scaleid = {$scaleid};
+        ";
 
-    return (boolean) count_records_sql($sql);
+
+    $sql2 = "SELECT
+                pca.scalevalueid
+             FROM
+                mdl_dp_plan_competency_assign pca
+             JOIN mdl_comp_scale_values csv
+                ON pca.scalevalueid = csv.id
+            WHERE
+                csv.scaleid = {$scaleid}";
+
+    return ((count_records_sql($sql) > 0) || (count_records_sql($sql2) > 0));
 }
 
 
