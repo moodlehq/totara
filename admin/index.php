@@ -8,9 +8,9 @@
 
 /// Check that PHP is of a sufficient version
 /// Moved here because older versions do not allow while(@ob_end_clean());
-    if (version_compare(phpversion(), "4.3.0") < 0) {
+    if (version_compare(phpversion(), "5.2.8") < 0) {
         $phpversion = phpversion();
-        echo "Sorry, Moodle requires PHP 4.3.0 or later (currently using version $phpversion)";
+        echo "Sorry, Totara requires PHP 5.2.8 or later (currently using version $phpversion)";
         die;
     }
 
@@ -76,7 +76,7 @@
 /// Check that config.php has been edited
 
     if ($CFG->wwwroot == "http://example.com/moodle") {
-        error("Moodle has not been configured yet.  You need to edit config.php first.");
+        error("Totara has not been configured yet.  You need to edit config.php first.");
     }
 
 
@@ -138,12 +138,12 @@
             $strlicense = get_string('license');
             $navigation = build_navigation(array(array('name'=>$strlicense, 'link'=>null, 'type'=>'misc')));
             print_header($strlicense, $strlicense, $navigation, "", "", false, "&nbsp;", "&nbsp;");
-            print_heading("<a href=\"http://moodle.org\">Moodle</a> - Modular Object-Oriented Dynamic Learning Environment");
+            print_heading("<a href=\"http://www.totaralms.com\">Totara</a> - Totara Learning Management System");
             print_heading(get_string('copyrightnotice'));
             print_box(text_to_html(get_string('gpl')), 'copyrightnotice');
             echo "<br />";
             notice_yesno(get_string('doyouagree'), "index.php?agreelicense=1",
-                                                   "http://docs.moodle.org/en/License");
+                                                   "http://www.gnu.org/licenses");
             print_footer('none');
             exit;
         }
@@ -151,8 +151,7 @@
             $strcurrentrelease = get_string("currentrelease");
             $navigation = build_navigation(array(array('name'=>$strcurrentrelease, 'link'=>null, 'type'=>'misc')));
             print_header($strcurrentrelease, $strcurrentrelease, $navigation, "", "", false, "&nbsp;", "&nbsp;");
-            print_heading("Moodle $release");
-            print_box(get_string('releasenoteslink', 'admin', 'http://docs.moodle.org/en/Release_Notes'), 'generalbox boxaligncenter boxwidthwide');
+            print_heading("Totara $TOTARA->release");
             echo '<form action="index.php"><div>';
             echo '<input type="hidden" name="agreelicense" value="1" />';
             echo '<input type="hidden" name="confirmrelease" value="1" />';
@@ -191,7 +190,7 @@
         } else if (file_exists("$CFG->libdir/db/$CFG->dbtype.sql")) {
             $status = modify_database("$CFG->libdir/db/$CFG->dbtype.sql"); //Old method
         } else {
-            error("Error: Your database ($CFG->dbtype) is not yet fully supported by Moodle or install.xml is not present.  See the lib/db directory.");
+            error("Error: Your database ($CFG->dbtype) is not yet fully supported by Totara or install.xml is not present.  See the lib/db directory.");
         }
 
         // all new installs are in unicode - keep for backwards compatibility and 1.8 upgrade checks
@@ -285,7 +284,7 @@
                 $strcurrentrelease = get_string("currentrelease");
                 $navigation = build_navigation(array(array('name'=>$strcurrentrelease, 'link'=>null, 'type'=>'misc')));
                 print_header($strcurrentrelease, $strcurrentrelease, $navigation, "", "", false, "&nbsp;", "&nbsp;");
-                print_heading("Moodle $release");
+                print_heading("Totara $TOTARA->release");
                 print_box(get_string('releasenoteslink', 'admin', 'http://docs.moodle.org/en/Release_Notes'));
 
                 require_once($CFG->libdir.'/environmentlib.php');

@@ -30,7 +30,7 @@ define('SITEID', 0);
 /// Begin the session as we are holding all information in a session
 /// variable until the end.
 
-session_name('MoodleSession');
+session_name('TotaraSession');
 @session_start();
 
 /// make sure PHP errors are displayed to help diagnose problems
@@ -59,8 +59,8 @@ if ( empty($INSTALL['language']) and empty($_POST['language']) ) {
     $INSTALL['dbhost']          = 'localhost';
     $INSTALL['dbuser']          = '';
     $INSTALL['dbpass']          = '';
-    $INSTALL['dbtype']          = 'mysql';
-    $INSTALL['dbname']          = 'moodle';
+    $INSTALL['dbtype']          = 'postgres7';
+    $INSTALL['dbname']          = 'totara';
     $INSTALL['prefix']          = 'mdl_';
 
     $INSTALL['downloadlangpack']       = false;
@@ -527,7 +527,7 @@ if ($INSTALL['stage'] == DOWNLOADLANG && $INSTALL['downloadlangpack']) {
 
 if ($nextstage == SAVE) {
 
-    $str  = '<?php  /// Moodle Configuration File '."\r\n";
+    $str  = '<?php  /// Totara Configuration File '."\r\n";
     $str .= "\r\n";
 
     $str .= 'unset($CFG);'."\r\n";
@@ -582,8 +582,8 @@ if ($nextstage == SAVE) {
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html dir="<?php echo (right_to_left() ? 'rtl' : 'ltr'); ?>">
 <head>
-<link rel="shortcut icon" href="theme/standard/favicon.ico" />
-<title>Moodle Install</title>
+<link rel="shortcut icon" href="theme/totara/favicon.ico" />
+<title>Totara Install</title>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 <?php css_styles() ?>
 <?php database_js() ?>
@@ -604,7 +604,7 @@ if (isset($_GET['help'])) {
 <table class="main" cellpadding="3" cellspacing="0">
     <tr>
         <td class="td_mainlogo">
-            <p class="p_mainlogo"><img src="pix/moodlelogo-med.gif" width="240" height="60" alt="Moodle logo"/></p>
+            <p class="p_mainlogo"><img src="/theme/totara/images/logo_main.gif" width="131" height="91" alt="Totara logo"/></p>
         </td>
         <td class="td_mainlogo" valign="bottom">
             <p class="p_mainheader"><?php print_string('installation', 'install') ?></p>
@@ -1145,7 +1145,7 @@ function css_styles() {
 
 <style type="text/css">
 
-    body { background-color: #ffeece; }
+    body { background-color: #FFFFFF; }
     p, li, td {
         font-family: helvetica, arial, sans-serif;
         font-size: 10pt;
@@ -1188,14 +1188,13 @@ function css_styles() {
         width: 80%;
         border-width: 1px;
         border-style: solid;
-        border-color: #ffc85f;
+        border-color: #7d8312;
         margin-left:auto;
         margin-right:auto;
         -moz-border-radius-bottomleft: 15px;
         -moz-border-radius-bottomright: 15px;
     }
     .td_mainheading {
-        background-color: #fee6b9;
         padding-left: 10px;
     }
     .td_main {
@@ -1203,6 +1202,9 @@ function css_styles() {
     }
     .td_mainlogo {
         vertical-align: middle;
+        padding: 10px;
+        color: #FFFFFF;
+        background-color: #7d8312;
     }
     .p_mainlogo {
         margin-top: 0px;
@@ -1277,11 +1279,11 @@ function css_styles() {
         background-color : lightgreen;
     }
     .header {
-        background-color: #fee6b9;
+        background-color: #7d8312;
         font-size: 10pt;
     }
     .cell {
-        background-color: #ffeece;
+        background-color: #7d8312;
         font-size: 10pt;
     }
     .error {
