@@ -7,9 +7,9 @@
     }
 
 /// Check that PHP is of a sufficient version
-    if (version_compare(phpversion(), "5.2.6") < 0) {
+    if (version_compare(phpversion(), "5.1.6") < 0) {
         $phpversion = phpversion();
-        echo "Sorry, Totara requires PHP 5.2.6 or later (currently using version $phpversion)";
+        echo "Sorry, Totara requires PHP 5.1.6 or later (currently using version $phpversion)";
         die;
     }
 
