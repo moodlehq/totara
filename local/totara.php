@@ -169,7 +169,7 @@ function totara_reset_frontpage_blocks() {
             'visible'  => 1,
             'configdata' => '',
         ),
-        (object)array(
+        /*(object)array(
             'blockid'  =>  get_field('block', 'id', 'name', 'guides'),
             'pageid'   => SITEID,
             'pagetype' => 'course-view',
@@ -177,7 +177,7 @@ function totara_reset_frontpage_blocks() {
             'weight'   => 3,
             'visible'  => 1,
             'configdata' => '',
-        ),
+        ),*/
     );
 
     // insert blocks
