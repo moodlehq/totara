@@ -1,0 +1,17 @@
+TOTARA INSTALL PROCESS
+======================
+
+Before installing Totara you should have a server with:
+* A supported OS - Linux (Ubuntu 10.04, Debian 6.0, Suse E11, Redhat EL6), Solaris10, other Unix variant
+* System clock synchronised with internet time servers.
+* Functional outbound email
+* Supported webserver software (Apache 2.x.x only at this stage)
+* PHP (5.2.8 minimum, 5.3.2 or greater recommended). PHP modules: iconv, mbstring, xmlrpc, ctype, pcre, tokenizer, openssl, gd, and curl
+* Access to a supported database (Postgres 8.2 or greater, Mysql 5.0.25 or greater, MSSQL 2008 or greater).
+* A domain name that resolves to your server
+
+1. Create directories on your server for www files ('wwwroot' - allow for 1GB) and sitedata files ('sitedata' - allow for 10GB). Ensure the sitedata directory is outside the wwwroot.
+2. Configure your webserver to serve requests for your domain from the wwwroot directory.
+3. Move the Totara source code into the wwwroot directory.
+4. Using your web browser, visit your domain and step through the installation process.
+5. Set up a cron task to call the file admin/cron.php every fifteen minutes.
