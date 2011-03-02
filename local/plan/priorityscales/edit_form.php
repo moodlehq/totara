@@ -41,7 +41,7 @@ class edit_priority_form extends moodleform {
         // If it's a new priority, give them the option to define priority values.
         if ( $this->_customdata['priorityid'] == 0 ){
             $mform->addElement('static', 'priorityvaluesexplain', '', get_string('explainpriorityscalevals', 'local_plan'));
-            $mform->addElement('textarea', 'priorityvalues', get_string('priorityvalues', 'local_plan'));
+            $mform->addElement('textarea', 'priorityvalues', get_string('priorityvalues', 'local_plan'), 'rows="5" cols="30"');
             $mform->setHelpButton('priorityvalues', array('priorityscalevalues', get_string('priority', 'local_plan'), 'local_plan'));
             $mform->setType('priorityvalues', PARAM_TEXT);
         } else {

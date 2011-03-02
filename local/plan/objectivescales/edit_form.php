@@ -41,7 +41,7 @@ class edit_objective_form extends moodleform {
         // If it's a new objective, give them the option to define objective values.
         if ( $this->_customdata['objectiveid'] == 0 ){
             $mform->addElement('static', 'objectivevaluesexplain', '', get_string('explainobjscalevals', 'local_plan'));
-            $mform->addElement('textarea', 'objectivevalues', get_string('objectivevalues', 'local_plan'));
+            $mform->addElement('textarea', 'objectivevalues', get_string('objectivevalues', 'local_plan'), 'rows="5" cols="30"');
             $mform->setHelpButton('objectivevalues', array('objectivescalevalues', get_string('objective', 'local_plan'), 'local_plan'));
             $mform->setType('objectivevalues', PARAM_TEXT);
         } else {
