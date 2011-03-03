@@ -31,6 +31,8 @@ require_once($CFG->dirroot . '/local/plan/lib.php');
 require_once($CFG->dirroot . '/local/plan/edit_form.php');
 require_once($CFG->dirroot . '/local/js/lib/setup.php');
 
+global $USER;
+
 require_login();
 
 $userid = required_param('userid', PARAM_INT); // user id
@@ -124,7 +126,7 @@ if ($data = $form->get_data()) {
         }
 
         $viewurl = "{$CFG->wwwroot}/local/plan/view.php?id={$newid}";
-        add_to_log(SITEID, 'plan', 'add', "view.php?id={$newid}", "$plan->name (ID:{$plan->id})" , '', $USER->id);
+        add_to_log(SITEID, 'plan', 'create', "view.php?id={$newid}", "$plan->name (ID:{$plan->id})" , '', $USER->id);
         totara_set_notification(get_string('plancreatesuccess', 'local_plan'), $viewurl, array('style' => 'notifysuccess'));
     }
 }

@@ -170,6 +170,7 @@ class dp_competency_component extends dp_base_component {
      * @return  void
      */
     public function process_action_hook() {
+        global $USER;
         $delete = optional_param('d', 0, PARAM_INT); // competency assignment id to delete
         $confirm = optional_param('confirm', 0, PARAM_INT); // confirm delete
 
@@ -180,6 +181,7 @@ class dp_competency_component extends dp_base_component {
                 totara_set_notification(get_string('confirmsesskeybad', 'error'), $currenturl);
             }
             if($this->remove_competency_assignment($delete)) {
+                add_to_log(SITEID, 'plan', 'delete item', "component.php?id={$this->plan->id}&c=competency", "removed competency (ID:{$delete})" , '', $USER->id);
                 totara_set_notification(get_string('canremoveitem','local_plan'), $currenturl, array('style' => 'notifysuccess'));
             } else {
                 totara_set_notification(get_string('cannotremoveitem', 'local_plan'), $currenturl);

@@ -573,6 +573,7 @@ class dp_objective_component extends dp_base_component {
      * @return boolean success or failure
      */
     function delete_objective($caid) {
+        global $USER;
         // need permission to remove this objective
         if (!$this->can_update_items()) {
             return false;
@@ -589,6 +590,7 @@ class dp_objective_component extends dp_base_component {
 
         // are we OK? then send the alerts
         if ($result) {
+            add_to_log(SITEID, 'plan', 'delete item', "component.php?id={$this->plan->id}&c=objective", "removed objective (ID:{$caid})" , '', $USER->id);
             $this->send_deletion_alert($objective);
         }
 
@@ -604,6 +606,7 @@ class dp_objective_component extends dp_base_component {
      * @return boolean
      */
     public function create_objective($fullname, $description=null, $priority=null, $duedate=null) {
+        global $USER;
         if ( !$this->can_update_items() ){
             return false;
         }
@@ -619,6 +622,7 @@ class dp_objective_component extends dp_base_component {
 
         if($result = insert_record('dp_plan_objective', $rec)) {
             $this->send_creation_alert($result, $fullname);
+            add_to_log(SITEID, 'plan', 'add item', "component.php?id={$rec->planid}&c=objective", "added objective (ID:{$result})" , '', $USER->id);
         }
 
         return $result;

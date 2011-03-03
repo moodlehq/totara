@@ -32,6 +32,8 @@ require_once($CFG->dirroot . '/local/plan/lib.php');
 require_once($CFG->dirroot . '/local/js/lib/setup.php');
 require_once($CFG->dirroot . '/local/plan/components/objective/edit_form.php');
 
+global $USER;
+
 require_login();
 
 ///
@@ -164,6 +166,7 @@ if ( $deleteyes ){
                 }
             }
 
+            add_to_log(SITEID, 'plan', 'update item', "component.php?id={$record->planid}&c=objective", "updated objective (ID:{$record->id})" , '', $USER->id);
             // now - back to the screen notifications ...
             totara_set_notification(get_string('objectiveupdated', 'local_plan'), $objviewurl, array('style'=>'notifysuccess'));
         }

@@ -674,6 +674,7 @@ abstract class dp_base_component {
      * @return  void
      */
     public function update_assigned_items($items) {
+        global $USER;
         $item_id_name = $this->component . 'id';
 
         // Get currently assigned items
@@ -698,6 +699,7 @@ abstract class dp_base_component {
                 if (!isset($assigned_ids[$itemid])) {
                     $newitem = $this->assign_new_item($itemid);
                     $updates .= get_string('addedx', 'local_plan', $newitem).'<br>';
+                    add_to_log(SITEID, 'plan', 'add item', "component.php?id={$this->plan->id}&c={$this->component}", "added {$this->component} (ID:{$itemid})" , '', $USER->id);
                 }
 
                 // Remove from list to prevent deletion
