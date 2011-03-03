@@ -4,7 +4,7 @@ require_once('../../config.php');
 $courseid = optional_param('course', SITEID, PARAM_INT);
 
 $editorlanguage = substr(current_language(), 0, 2);
-$SESSION->lang = $editorlanguage;
+//$SESSION->lang = $editorlanguage;  //commented out because it breaks languages for entire site T-7849
 
 $directionality = get_string('thisdirection');
 $strtime        = get_string('strftimetime');
