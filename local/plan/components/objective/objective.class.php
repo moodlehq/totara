@@ -617,9 +617,9 @@ class dp_objective_component extends dp_base_component {
         $rec->scalevalueid = get_field('dp_objective_scale', 'defaultid', 'id', $this->get_setting('objectivescale'));
         $rec->approved = $this->approval_status_after_update();
 
-        $result = insert_record('dp_plan_objective', $rec);
-
-        $this->send_creation_alert($result, $fullname);
+        if($result = insert_record('dp_plan_objective', $rec)) {
+            $this->send_creation_alert($result, $fullname);
+        }
 
         return $result;
     }
