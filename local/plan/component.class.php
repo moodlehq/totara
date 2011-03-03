@@ -354,7 +354,10 @@ abstract class dp_base_component {
             $table->add_data($row);
         }
 
-        $table->hide_empty_cols();
+        // Hide empty columns
+        if (!empty($headers->hide_if_empty)) {
+            $table->hide_empty_cols($headers->hide_if_empty);
+        }
 
         // Return instead of outputting table contents
         ob_start();
@@ -392,34 +395,41 @@ abstract class dp_base_component {
             'progress',
         );
 
+        $tablehide = array();
+
         if(($this->component == 'competency' || $this->component == 'objective')
             && $this->plan->get_component('course')->get_setting('enabled')) {
             $tableheaders[] = get_string('courses');
             $tablecolumns[] = 'linkedcourses';
+            $tablehide[] = 'linkedcourses';
         }
 
         if ($showpriorities) {
             $tableheaders[] = get_string('priority', 'local_plan');
             $tablecolumns[] = 'priority';
+            $tablehide[] = 'priority';
         }
 
         if ($showduedates) {
             $tableheaders[] = get_string('duedate', 'local_plan');
             $tablecolumns[] = 'duedate';
+            $tablehide[] = 'duedate';
         }
 
         if (!$plancompleted) {
-            //$tableheaders[] = get_string('status','local_plan');
             $tableheaders[] = '';  // don't show status header
             $tablecolumns[] = 'status';
+            $tablehide[] = 'status';
         }
 
         $tableheaders[] = get_string('actions', 'local_plan');
         $tablecolumns[] = 'actions';
+        $tablehide[] = 'actions';
 
         $return = new object();
         $return->headers = $tableheaders;
         $return->columns = $tablecolumns;
+        $return->hide_if_empty = $tablehide;
 
         return $return;
     }
