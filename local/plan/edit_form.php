@@ -85,8 +85,8 @@ class plan_edit_form extends moodleform {
         $mform->setType('name', PARAM_TEXT);
         $mform->addRule('name', get_string('err_required', 'form'), 'required', '', 'client', false, false);
         $mform->setDefault('name', $template->fullname);
-        $mform->addElement('textarea', 'description', get_string('plandescription', 'local_plan'), array('rows'=>5, 'cols'=>50));
-        $mform->setType('description', PARAM_TEXT);
+        $mform->addElement('htmleditor', 'description', get_string('plandescription', 'local_plan'));
+        $mform->setType('description', PARAM_CLEAN);
         $mform->addRule('description', get_string('err_required', 'form'), 'required', '', 'client', false, false);
         $mform->addElement('text', 'enddate', get_string('completiondate', 'local_plan'));
         $mform->addRule('enddate', get_string('err_required', 'form'), 'required', '', 'client', false, false);

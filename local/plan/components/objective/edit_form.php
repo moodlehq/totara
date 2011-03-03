@@ -103,8 +103,8 @@ class plan_objective_edit_form extends moodleform {
         $mform->addElement('text', 'fullname', get_string('objectivetitle', 'local_plan'));
         $mform->setType('fullname', PARAM_TEXT);
         $mform->addRule('fullname', get_string('err_required', 'form'), 'required', '', 'client', false, false);
-        $mform->addElement('textarea', 'description', get_string('objectivedescription', 'local_plan'), array('rows'=>5, 'cols'=>50));
-        $mform->setType('description', PARAM_TEXT);
+        $mform->addElement('htmleditor', 'description', get_string('objectivedescription', 'local_plan'));
+        $mform->setType('description', PARAM_CLEAN);
 
         // Due dates
         if ( $duedatemode == DP_DUEDATES_OPTIONAL || $duedatemode == DP_DUEDATES_REQUIRED ){
