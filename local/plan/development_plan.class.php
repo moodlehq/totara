@@ -1188,7 +1188,7 @@ class development_plan {
      * @return boolean
      */
     function delete() {
-        global $CFG, $DP_AVAILABLE_COMPONENTS;
+        global $CFG, $DP_AVAILABLE_COMPONENTS, $USER;
 
         require_once("{$CFG->libdir}/ddllib.php");
 
@@ -1249,8 +1249,8 @@ class development_plan {
             }
         }
 
-        //rollback_sql();
         commit_sql();
+        add_to_log(SITEID, 'plan', 'delete', "index.php?userid={$USER->id}", "$this->name (ID:{$this->id})" , '', $USER->id);
         return true;
     }
 

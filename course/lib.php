@@ -81,6 +81,12 @@ function make_log_url($module, $url) {
         case 'hierarchy':
             $url = '/'.$url;
             break;
+        case 'plan':
+            $url = '/local/plan/'.$url;
+            break;
+        case 'reportbuilder':
+            $url = '/local/reportbuilder/'.$url;
+            break;
         default:
             $url = "/mod/$module/$url";
             break;

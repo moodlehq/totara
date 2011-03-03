@@ -135,6 +135,7 @@ if ($data = $form->get_data()) {
  */
 $plan->print_header('plan');
 
+add_to_log(SITEID, 'plan', 'view', "view.php?id={$plan->id}", "$plan->name (ID:{$plan->id})" , '', $USER->id);
 
 // Plan details
 $plan->enddate = userdate($plan->enddate, '%d/%m/%Y', $CFG->timezone, false);

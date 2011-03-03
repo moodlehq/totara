@@ -124,6 +124,7 @@ if ($data = $form->get_data()) {
         }
 
         $viewurl = "{$CFG->wwwroot}/local/plan/view.php?id={$newid}";
+        add_to_log(SITEID, 'plan', 'add', "view.php?id={$newid}", "$plan->name (ID:{$plan->id})" , '', $USER->id);
         totara_set_notification(get_string('plancreatesuccess', 'local_plan'), $viewurl, array('style' => 'notifysuccess'));
     }
 }

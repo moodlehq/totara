@@ -98,6 +98,7 @@ if (!empty($approve)) {
 if (!empty($decline)) {
     if (in_array($plan->get_setting('approve'), array(DP_PERMISSION_ALLOW, DP_PERMISSION_APPROVE))) {
         $plan->send_declined_alert();
+        add_to_log(SITEID, 'plan', 'declined', "view.php?id={$plan->id}", "plan declined (ID:{$plan->id})" , '', $USER->id);
         totara_set_notification(get_string('plandeclined', 'local_plan', $plan->name), $referer, array('style' => 'notifysuccess'));
     } else {
         if (empty($ajax)) {
