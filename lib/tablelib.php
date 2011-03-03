@@ -834,7 +834,7 @@ class flexible_table {
         // Determine cols to hide
         foreach ($this->data as $row) {
             foreach ($colstemp as $c) {
-                if (!empty($row[$this->columns[$c]])) {
+                if (strlen(trim($row[$this->columns[$c]]))) {
                     unset($colstohide[$c]);
                 }
             }
