@@ -1955,6 +1955,8 @@ function xmldb_local_upgrade($oldversion) {
                 $status = completion_completion::get_status($record);
                 if ($status) {
                     $status = constant('COMPLETION_STATUS_'.strtoupper($status));
+                } else {
+                    $status = COMPLETION_STATUS_NOTYETSTARTED;
                 }
 
                 $record->status = $status;
