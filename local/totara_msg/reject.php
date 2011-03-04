@@ -53,5 +53,12 @@ if (!$message || $message->useridto != $USER->id) {
 tm_message_task_reject($msgid);
 
 if ($returnto) {
+    // Validate redirect
+    $return_host = parse_url($returnto);
+    $site_host = parse_url($CFG->wwwroot);
+    if ($return_host['host'] != $site_host['host']) {
+        error(get_string('error:redirecttoexternal', 'local_totara_msg'));
+    }
+
     redirect($returnto);
 }

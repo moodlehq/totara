@@ -45,6 +45,13 @@ $accept = optional_param('accept', NULL, PARAM_RAW);
 $reject = optional_param('reject', NULL, PARAM_RAW);
 $msgids = explode(',', optional_param('msgids', array(), PARAM_RAW));
 
+// Validate redirect
+$return_host = parse_url($returnto);
+$site_host = parse_url($CFG->wwwroot);
+if ($return_host['host'] != $site_host['host']) {
+    error(get_string('error:redirecttoexternal', 'local_totara_msg'));
+}
+
 // hunt for Message Ids in the POST parameters
 foreach ($_POST as $parm => $value) {
     if (preg_match('/^totara\_message\_(\d+)$/', $parm)) {

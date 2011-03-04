@@ -52,5 +52,12 @@ if (!$message || $message->useridto != $USER->id) {
 tm_message_mark_message_read($message, time());
 
 if ($returnto) {
+    // Validate redirect
+    $return_host = parse_url($returnto);
+    $site_host = parse_url($CFG->wwwroot);
+    if ($return_host['host'] != $site_host['host']) {
+        error(get_string('error:redirecttoexternal', 'local_totara_msg'));
+    }
+
     redirect($returnto);
 }
