@@ -92,6 +92,8 @@ if ($fromform = $mform->get_data()) {
         $alert_detail->text = get_string('completedviarpl', 'local_plan', $completion->rpl);
         $component->send_component_complete_alert($alert_detail);
 
+        add_to_log(SITEID, 'plan', 'course complete', "component.php?id={$plan->id}&c=course", "course rpl set (ID:{$completion->course})" , '', $USER->id);
+
         // If no RPL, uncomplete user, and let aggregation do its thing
     } else {
         $completion->delete();
