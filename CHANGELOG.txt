@@ -1,0 +1,30 @@
+Totara LMS Changelog
+
+Release 1.0.2 (8 March 2011):
+==================================================
+Security fixes:
+    7804    Fix arbitrary redirection bug                               Closed potential phishing vulnerability in Alerts/Tasks
+
+Improvements:
+    6072    Added UPGRADE.txt
+    7884    Added CHANGELOG.txt
+    7852    Scale value entry boxes enlarged                            Competency, objective, and priority scales all now have a larger input box for values
+    7490    Add HTML editing to plan/objective descriptions
+    7844    Progress column in learning plans is sometimes hidden       Column is hidden if there is no progress data, it is now always shown
+    7855    Adding more site logging                                    Improve audit trail by adding more site logs to new Totara functionality
+    7858    Add Assessor role to new installations                      Also fix issues with the Manager role not appearing after upgrading
+
+Bug fixes:
+    7836    Fixed minimum PHP version requirement check                 Was 5.2.8, now 5.1.6
+    7849    TinyMCE mistakenly resets site language                     Changing the logged in user's language will now work as expected
+    7869    Empty strings prevent table columns being hidden            This was due to a bug in flexible tables
+    7867    Incomplete completion data can break upgrades               Should have only been a problem when upgrading from pre-release versions of Totara
+    7880    Windows installations using MySQL failing to install        Due to Windows only MySQL bug
+    7870    Do not send Alert if there is an error adding an objective  Previously an Alert was sent even if an objective had failed to be added/edited
+    7850    Course completion status not displayed for linked courses   Previously no status data was displayed
+    7882    Revert to old Media Plugin filter                           Due to a bug in the Moodle 1.9.11 release breaking the filter
+
+
+Release 1.0.1 (1 March 2011):
+==================================================
+Initial public release.
