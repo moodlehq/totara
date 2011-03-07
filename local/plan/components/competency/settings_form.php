@@ -224,5 +224,6 @@ function dp_competency_component_process_settings_form($fromform, $id) {
     }
 
     commit_sql();
+    add_to_log(SITEID, 'plan', 'workflow setting change', "template/workflow.php?id={$id}", "Template ID:{$id}");
     totara_set_notification(get_string('update_competency_settings','local_plan'), $currenturl, array('style' => 'notifysuccess'));
 }

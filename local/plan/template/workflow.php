@@ -151,6 +151,7 @@ if ($fromform = $mform->get_data()) {
     } else {
         // Add checking to this method
         set_field('dp_template', 'workflow', $workflow, 'id', $id);
+        add_to_log(SITEID, 'plan', 'workflow setting change', "template/workflow.php?id={$id}", "Template ID:{$id}");
         totara_set_notification(get_string('update_workflow_settings','local_plan'), $returnurl, array('style' => 'notifysuccess'));
     }
 
