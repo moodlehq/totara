@@ -16,7 +16,7 @@
 #
 
 IGNOREFILE='/tmp/pack-totara'`date +%s`
-echo '/build*
+echo './build*
 ./.git*
 ./tags
 ./TAGS
@@ -35,7 +35,7 @@ else
     OUTFILE=$1
 fi
 
-tar -cz -f $OUTFILE --exclude-from $IGNOREFILE .
+tar -cz --transform='s|^./|./totara/|g' -f $OUTFILE --exclude-from $IGNOREFILE .
 
 rm -f $IGNOREFILE
 
