@@ -47,6 +47,8 @@ if ($d and $confirm ) {
 
     if(isset($fid)) {
         if($report->delete_filter($fid)) {
+            add_to_log(SITEID, 'reportbuilder', 'update report', 'filters.php?id='. $id,
+                'Delete Filter: Report ID=' . $id . ', Filter ID=' . $fid);
             totara_set_notification(get_string('filter_deleted','local_reportbuilder'), $returnurl, array('style' => 'notifysuccess'));
         } else {
             totara_set_notification(get_string('error:filter_not_deleted','local_reportbuilder'), $returnurl);
@@ -70,6 +72,8 @@ if ($d) {
 // move filter
 if($m && isset($fid)) {
     if($report->move_filter($fid, $m)) {
+        add_to_log(SITEID, 'reportbuilder', 'update report', 'filters.php?id='. $id,
+            'Moved Filter: Report ID=' . $id . ', Filter ID=' . $fid);
         totara_set_notification(get_string('filter_moved','local_reportbuilder'), $returnurl, array('style' => 'notifysuccess'));
     } else {
         totara_set_notification(get_string('error:filter_not_moved','local_reportbuilder'), $returnurl);
@@ -91,6 +95,8 @@ if ($fromform = $mform->get_data()) {
     }
 
     if(build_filters($id, $fromform)) {
+        add_to_log(SITEID, 'reportbuilder', 'update report', 'filters.php?id='. $id,
+            'Filter Settings: Report ID=' . $id);
         totara_set_notification(get_string('filters_updated','local_reportbuilder'), $returnurl, array('style' => 'notifysuccess'));
     } else {
         totara_set_notification(get_string('error:filters_not_updated','local_reportbuilder'), $returnurl);

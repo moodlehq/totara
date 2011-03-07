@@ -79,9 +79,14 @@
     $report = reportbuilder_get_embedded_report($shortname, $data);
 
     if($format!='') {
+        add_to_log(SITEID, 'reportbuilder', 'export report', 'report.php?id='. $report->_id,
+            $report->fullname);
         $report->export_data($format);
         die;
     }
+
+    add_to_log(SITEID, 'reportbuilder', 'view report', 'report.php?id='. $report->_id,
+        $report->fullname);
 
     $report->include_js();
 

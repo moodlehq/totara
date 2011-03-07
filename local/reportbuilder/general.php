@@ -67,6 +67,8 @@ if ($fromform = $mform->get_data()) {
     }
     $todb->recordsperpage = $rpp;
     if(update_record('report_builder',$todb)) {
+        add_to_log(SITEID, 'reportbuilder', 'update report', 'general.php?id='. $id,
+            'General Settings: Report ID=' . $id);
         totara_set_notification(get_string('reportupdated', 'local_reportbuilder'), $returnurl, array('style' => 'notifysuccess'));
     } else {
         totara_set_notification(get_string('error:couldnotupdatereport','local_reportbuilder'), $returnurl);

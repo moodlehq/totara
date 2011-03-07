@@ -64,9 +64,16 @@
     $report->defaultsortorder = 3;
 
     if($format!='') {
+        add_to_log(SITEID, 'reportbuilder', 'export report', 'report.php?id='. $report->_id,
+            $report->fullname);
+
         $report->export_data($format);
         die;
     }
+
+    add_to_log(SITEID, 'reportbuilder', 'view report', 'report.php?id='. $report->_id,
+        $report->fullname);
+
     $report->include_js();
     $js['dismissmsg'] = $CFG->wwwroot.'/local/reportbuilder/confirm.js.php';
     require_js(array_values($js));

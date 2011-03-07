@@ -37,11 +37,13 @@ $debug = optional_param('debug', 0, PARAM_INT);
 
 require_login();
 
+
 // new report object
 $report = new reportbuilder($id, null, false, $sid);
 if(!$report->is_capable($id)) {
     error(get_string('nopermission','local_reportbuilder'));
 }
+
 
 if($report->embeddedurl !== null) {
     // redirect to embedded url
@@ -49,9 +51,13 @@ if($report->embeddedurl !== null) {
 }
 
 if($format!='') {
+    add_to_log(SITEID, 'reportbuilder', 'export report', 'report.php?id='.$id, $report->fullname);
     $report->export_data($format);
     die;
 }
+
+add_to_log(SITEID, 'reportbuilder', 'view report', 'report.php?id='.$id, $report->fullname);
+
 $report->include_js();
 
 // display results as graph if report uses the graphical_feedback_questions source

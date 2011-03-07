@@ -50,6 +50,8 @@ if ($fromform = $mform->get_data()) {
     }
 
     if(update_access($id, $fromform)) {
+        add_to_log(SITEID, 'reportbuilder', 'update report', 'access.php?id='. $id,
+            'Access Settings: Report ID=' . $id);
         totara_set_notification(get_string('reportupdated', 'local_reportbuilder'), $returnurl, array('style' => 'notifysuccess'));
     } else {
         totara_set_notification(get_string('error:couldnotupdatereport','local_reportbuilder'), $returnurl);

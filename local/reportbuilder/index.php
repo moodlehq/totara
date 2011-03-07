@@ -49,7 +49,9 @@
             totara_set_notification(get_string('error:bad_sesskey','local_reportbuilder'), $returnurl);
         }
         if(delete_report($id)) {
+            add_to_log(SITEID, 'reportbuilder', $type . ' report', 'index.php', 'Report ID=' . $id);
             totara_set_notification(get_string($type . 'report','local_reportbuilder'), $returnurl, array('style' => 'notifysuccess'));
+
         } else {
             totara_set_notification(get_string('no' . $type . 'report','local_reportbuilder'), $returnurl);
         }
@@ -91,7 +93,9 @@
         $todb->embedded = 0;
 
         begin_sql();
-        if(!$newid = insert_record('report_builder',$todb)) {
+        if($newid = insert_record('report_builder',$todb)) {
+            add_to_log(SITEID, 'reportbuilder', 'new report', 'report.php?id='.$newid, $fromform->fullname . ' (ID=' . $newid . ')');
+        } else {
             rollback_sql();
             redirect($returnurl, get_string('error:couldnotcreatenewreport','local_reportbuilder'));
         }

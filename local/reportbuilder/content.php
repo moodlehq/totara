@@ -49,6 +49,8 @@ if ($fromform = $mform->get_data()) {
     }
 
     if(update_content($id, $report, $fromform)) {
+        add_to_log(SITEID, 'reportbuilder', 'update report', 'content.php?id='. $id,
+            'Content Settings: Report ID=' . $id);
         totara_set_notification(get_string('reportupdated', 'local_reportbuilder'), $returnurl, array('style' => 'notifysuccess'));
     } else {
         totara_set_notification(get_string('error:couldnotupdatereport','local_reportbuilder'), $returnurl);
