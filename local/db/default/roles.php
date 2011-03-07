@@ -3,12 +3,12 @@
  * This file is part of Totara LMS
  *
  * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
- * 
- * This program is free software; you can redistribute it and/or modify  
- * it under the terms of the GNU General Public License as published by  
- * the Free Software Foundation; either version 2 of the License, or     
- * (at your option) any later version.                                   
- *                                                                       
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -28,25 +28,30 @@
                 'name'        => 'Guest',
                 'description' => 'Guests have minimal privileges and usually can not enter text anywhere.',
                 'legacy'      => 'guest',
-                'sortorder'   => '9',
+                'sortorder'   => '10',
             ),
             'user' => array(
                 'name'        => 'Authenticated User',
                 'description' => 'All logged in users.',
                 'legacy'      => 'user',
+                'sortorder'   => '9',
+            ),
+            'learner' => array(
+                'name'        => 'Learner',
+                'description' => 'User acquiring knowledge, comprehension, or mastery through learning',
+                'legacy'      => 'student',
                 'sortorder'   => '8',
+            ),
+            'assessor' => array(
+                'name'        => 'Assessor',
+                'description' => 'User tasked with assessing the performance of a learner',
+                'sortorder'   => '7',
             ),
             'manager' => array(
                 'name'        => 'Manager',
                 'description' => 'User tasked with managing the performance of a learner or team',
                 'legacy'      => 'manager',
                 'sortorder'   => '6',
-            ),
-            'learner' => array(
-                'name'        => 'Learner',
-                'description' => 'User acquiring knowledge, comprehension, or mastery through learning',
-                'legacy'      => 'student',
-                'sortorder'   => '7',
             ),
             'regionalmananger' => array(
                 'name'        => 'Regional Manager',
@@ -71,17 +76,17 @@
                 'sortorder'   => '2',
             ),
         );
+        $counter = 100;
         foreach ($roles as $shortname => $roledata) {
-            if (array_key_exists('legacy', $roledata)) {
-                if ($oldrole = get_record_select('role', "shortname='".$roledata['legacy']."'")) {
+            if (array_key_exists('legacy', $roledata) &&
+               $oldrole = get_record_select('role', "shortname='".$roledata['legacy']."'")) {
                     $oldrole->name        = $roledata['name'];
                     $oldrole->description = $roledata['description'];
-                    $oldrole->sortorder   = $roledata['sortorder'];
                     update_record('role', $oldrole);
-                }
             } else {
                 $roledata['shortname'] = $shortname;
                 $roledata['legacy'] = '';
+                $roledata['sortorder'] = $counter++;
                 insert_record('role', (object) $roledata);
             }
             $oldrole = get_record_select('role', "name='".$roledata['name']."'");
