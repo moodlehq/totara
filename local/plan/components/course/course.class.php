@@ -309,7 +309,26 @@ class dp_course_component extends dp_base_component {
             $this->get_setting('prioritymode') == DP_PRIORITY_REQUIRED);
         $priorityscaleid = ($this->get_setting('priorityscale')) ? $this->get_setting('priorityscale') : -1;
 
-        $select = 'SELECT ca.*, c.fullname, c.icon, psv.name AS priorityname ';
+        if($this->plan->is_complete()) {
+            // Use the 'snapshot' status value
+            $completion_field = 'ca.completionstatus AS coursecompletion,';
+            // save same value again with a new alias so the column
+            // can be sorted
+            $completion_field .= 'ca.completionstatus AS progress ';
+            $completion_joins = '';
+        } else {
+            // Use the 'live' status value
+            $completion_field = 'cc.status AS coursecompletion,';
+            // save same value again with a new alias so the column
+            // can be sorted
+            $completion_field .= 'ca.completionstatus AS progress ';
+            $completion_joins = "LEFT JOIN
+                {$CFG->prefix}course_completions cc
+                ON ( cc.course = ca.courseid
+                AND cc.userid = {$this->plan->userid} )";
+        }
+
+        $select = 'SELECT ca.*, c.fullname, c.icon, psv.name AS priorityname, '. $completion_field;
 
         // get courses assigned to this plan
         // and related details
@@ -319,11 +338,13 @@ class dp_course_component extends dp_base_component {
                 LEFT JOIN
                     {$CFG->prefix}dp_priority_scale_value psv
                     ON (ca.priority = psv.id
-                    AND psv.priorityscaleid = $priorityscaleid) ";
+                    AND psv.priorityscaleid = $priorityscaleid)
+                    {$completion_joins}";
         $where = "WHERE ca.id IN (" . implode(',', $list) . ")
             AND ca.approved = ".DP_APPROVAL_APPROVED;
 
         $sort = "ORDER BY c.fullname";
+
 
         $tableheaders = array(
             get_string('coursename','local_plan'),
