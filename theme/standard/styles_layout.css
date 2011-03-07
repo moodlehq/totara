@@ -1676,6 +1676,7 @@ div.block_totara_report_manager {
 .dashboardcol {
 	float:left;
 	text-align:center;
+    padding: 0px 3px;
 }
 	.dashboardcol .dashlet_container {
 		margin-right:10px;

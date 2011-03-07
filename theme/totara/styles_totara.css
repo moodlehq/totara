@@ -1429,10 +1429,11 @@ ul.tabrow1 li a:visited {
     margin-top: 0.8em;
 }
 .dashlet div.header {
-  /*border:1px solid #d2d2d2;
-  border-bottom:none;*/
-  padding-bottom: 3px;
-  /*background: #009697;*/
+    left: -4px;
+    /*border:1px solid #d2d2d2;
+    border-bottom:none;*/
+    padding-bottom: 3px;
+    /*background: #009697;*/
 }
 .dashlet div.header .title h2,
 .dashlet div.header .title h2 a {
@@ -2399,7 +2400,7 @@ table.planitems tr.r0 {
 
 
 .dashboard .dashlet_container {
-    background: url("images/left_menu_bg.gif") repeat-y scroll left top transparent;
+    background: url("images/dashlet_container_bg.gif") repeat-y scroll left top transparent;
 }
 
 .dashboard .dashlet .header {
