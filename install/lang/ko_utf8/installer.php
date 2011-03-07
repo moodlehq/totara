@@ -223,10 +223,6 @@ $string['password'] = '비밀번호';
 $string['pgsqlextensionisnotpresentinphp'] = 'PGSQL 익스텐션으로 PHP가 포스트그레SQL 서버와 통신하도록 적절히 설정되지 않았습니다. php.ini 파일을 점검하거나 PHP를 다시 컴파일 하십시오.';
 $string['php50restricted'] = 'PHP 5.0.x 는 약간의 버그가 보고되었습니다. 5.1.x로 판올림 하던가, 아니면 4.3.x 혹은 4.4.x로 바꿔주기 바랍니다.';
 $string['phpversion'] = 'php버젼';
-$string['phpversionerror'] = 'php 버젼은 최소한 4.3.0 혹은 5.1.0. 이상 이어야합니다.(5.0.x는 버그가 있다고 알려져 있습니다)'; // ORPHANED
-$string['phpversionhelp'] = '<p>무들은 적어도 PHP4.3.0 혹은 5.1.0. 이상 이어야합니다.(5.0.x는 버그가 있다고 알려져 있습니다)</p>
-<p>현재 구동되고 있는 PHP버전은 $a 입니다.</p>
-<p>PHP를 업그레이드 하시거나 새버전을 제공하는 웹호스팅 업체로 이전하기를 권합니다!<br />(만일 5.0.x버전을 사용 중이라면 4.4.x 버전으로 다운그레이드 할 수 있습니다)</p>';
 $string['postgres7'] = '포스트그레SQL (postgres7)';
 $string['previous'] = '이전으로';
 $string['qtyperqpwillberemoved'] = '갱신과정에서 RQP 문제 유형은 제거될 것입니다. 만일 이 유형의 문제를 사용하지 않았다면, 추후에는 어떤 문제도 발생하지 않을 것입니다.';

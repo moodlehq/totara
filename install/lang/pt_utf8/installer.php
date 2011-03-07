@@ -224,11 +224,6 @@ $string['password'] = 'Senha';
 $string['pgsqlextensionisnotpresentinphp'] = 'O PHP não está configurado correctamente com a extensão PGSQL, para que possa comunicar-se com o PostgreSQL. Por favor confira o ficheiro php.ini ou recompile o PHP.';
 $string['php50restricted'] = 'O PHP 5.0.x tem um certo número de problemas conhecidos, por favor faça o processo de actualização para o 5.1.x ou o retorno para o 4.3.x ou 4.4.x';
 $string['phpversion'] = 'Versão do PHP';
-$string['phpversionerror'] = 'A versão do PHP deverá ser, pelo menos, 4.3.0 ou 5.1.0 (5.0.x tem alguns problemas)';
-$string['phpversionhelp'] = '<p>Moodle precisa da vesão 4.3.0 ou 5.1.0 do PHP (5.0.x produz vários problemas).</p>
-<p>Actualmente está a utilizar a versão $a</p>
-<p>Deverá actualizar o PHP ou migrar para outro servidor com uma versão do PHP mais recente!</p>
-(No caso da versão 5.0.x, poderá regredir para uma versão 4.4.x)</p>';
 $string['postgres7'] = 'PostgreSQL (postgres7)';
 $string['previous'] = 'Prévio';
 $string['qtyperqpwillberemoved'] = 'Durante a actualização, as perguntas do tipo RQP serão eliminadas. Não deverá experimentar nenhum problema, porque não estava a usar esse tipo de perguntas.';

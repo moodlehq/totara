@@ -216,11 +216,6 @@ $string['password'] = 'Contrasinal';
 $string['pgsqlextensionisnotpresentinphp'] = 'PHP non foi configurado apropiadamente coa extensión PGSQL polo cal non consegue comunicar con PostgreSQL. Verifique o seu ficheiro php.ini ou recompile o PHP.';
 $string['php50restricted'] = 'O PHP contén problemas coñecidos, por favor actualíceo para a versión 5.1 ou desactualíceo para a versión 4.3.x ou 4.4.x';
 $string['phpversion'] = 'Versión PHP';
-$string['phpversionerror'] = 'A versión de PHP debe ser como mínimo 4.3.0 ou 5.1.0 (5.0.x ten problemas coñecidos).';
-$string['phpversionhelp'] = '<p>Moodle require unha versión de PHP de 4.3.0 como mínimo ou 5.1.0 (5.0.x ten problemas coñecidos).</p>
-<p>Actualmente está a executar a versión $a</p>
-<p>Debe actualizar o PHP ou migrar a outro servidor cunha versión máis nova de PHP!<br/>
-(No caso de ter unha versión 5.0.x pode retornar para unha versión 4.4.x)</p>';
 $string['postgres7'] = 'PostgreSQL (postgres7)';
 $string['previous'] = 'Anterior';
 $string['remotedownloadnotallowed'] = 'O seu servidor non permite a descarga de compoñentes  (allow_url_fopen está desactivada).<br /><br />Debe descargar <a href=\"$a->url\">$a->url</a> o ficheiro manualmente, copialo para \"$a->dest\" no seu servidor e descomprimilo.';

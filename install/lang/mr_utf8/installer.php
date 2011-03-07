@@ -185,7 +185,6 @@ $string['password'] = 'पासवर्ड';
 $string['pgsqlextensionisnotpresentinphp'] = 'PHP हे PGSQL एक्स्टेंशन सोबत व्यवस्थित कॉनफिगर केलेले नाही.ते PostgreSQLसोबत संपर्क करू शकत नाही. क्रुपया तुमची php.ini ही फाइल तपासा किंवा PHP पून्हा कंपाइल करा';
 $string['php50restricted'] = 'PHP 5.0.xला काही अडचण आहे. क्रुपया 5.1x किंवा 4.3x/4.4x वापरा';
 $string['phpversion'] = 'PHP ची प्रत';
-$string['phpversionerror'] = 'PHP ची प्रत ही कमीत कमी 4.3.0 किंवा 5.1.0 असली पाहीजे (5.0.x याला काही समस्या आहेत )';
 $string['postgres7'] = 'PostgreSQL (postgres7)';
 $string['postgresqlwarning'] = 'टिप्पणी: जर तुम्हाला संपर्क करताना समस्या आली तर होस्ट सर्व्हर फिल्ड सेट करताना तुम्ही खालीलप्रमाणे प्रयत्न करा. होस्ट=\'postgresql_host\' पोर्ट=\'5432\'डीबीनेम=\'postgresql_database_name\' युजर=\'postgresql_user\' पासवर्ड=\'postgresql_user_password\'
 आणि डेटाबेस, युजर,पासवर्ड हे फिल्ड रिकामे सोडा. जास्त माहीतीसाठी <a href=\"http://docs.moodle.org/en/Installing_Postgres_for_PHP\">Moodle Docs</a>

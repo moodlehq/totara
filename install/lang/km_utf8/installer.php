@@ -229,10 +229,6 @@ $string['password'] = 'ពាក្យ​សម្ងាត់';
 $string['pgsqlextensionisnotpresentinphp'] = 'PHP មិន​ត្រូវ​បាន​កំណត់​រចនា​សម្ព័ន្ធ​ឲ្យបាន​​ត្រឹមត្រូវ ដោយប្រើ​ផ្នែក​បន្ថែម PGSQL នោះ​ទេ ដូច្នេះ​វា​អាច​ធ្វើ​ទំនាក់ទំនង​ជាមួយ PostgreSQL ។ សូម​ពិនិត្យ​ឯកសារ php.ini របស់​អ្នក ឬ​ចងក្រង PHP ឡើង​វិញ ។';
 $string['php50restricted'] = 'PHP 5.0.x មាន​បញ្ហា​មួយ​ចំនួន សូម​ធ្វើឲ្យ​ប្រសើរ​ទៅ 5.1.x ឬ​បន្ទាប​ទៅ 4.3.x ឬ 4.4.x';
 $string['phpversion'] = 'កំណែ PHP';
-$string['phpversionerror'] = 'កំណែ PHP យ៉ាង​ហោចណាស់​ត្រឹម 4.3.0 ឬ 5.1.0 (5.0.x នៅ​មាន​បញ្ហា​មួយ​ចំនួន) ។';
-$string['phpversionhelp'] = '<p>Moodle ទាមទារ​កំណែ PHP យ៉ាង​ហោច​ណាស់​ត្រឹម 4.3.0 ឬ 5.1.0 (5.0.x នៅ​មាន​បញ្ហា​មួយ​ចំនួន) ។</p>
-<p>អ្នក​កំពុង​រត់​កំណែ $a</p>
-<p>អ្នក​ត្រូវ​តែ​ធ្វើ​ឲ្យ PHP ប្រសើរ ឬ​ផ្លាស់ទី​ទៅ​ម៉ាស៊ីន​ដែល​មាន​កំណែ PHP ថ្មី ‌!<br/>(ក្នុង​ករណី 5.0.x អ្នក​ក៏​អាច​បន្ទាប​ទៅ​កំណែ 4.4.x ផង​ដែរ)</p>';
 $string['postgres7'] = 'PostgreSQL (postgres7)';
 $string['postgresqlwarning'] = '<strong>ចំណាំ ៖</strong> បើ​អ្នក​ជួប​ប្រទះ​បញ្ហា​តភ្ជាប់, អ្នក​អាច​សាកល្បង​កំណត់​វាល Host Server ជា
 ម៉ាស៊ីន=\'postgresql_host\' port=\'5432\' dbname=\'postgresql_database_name\' អ្នក​ប្រើ=\'postgresql_user\' password=\'postgresql_user_password\'

@@ -255,11 +255,6 @@ $string['password'] = 'Geslo';
 $string['pgsqlextensionisnotpresentinphp'] = 'Nastavitev PGSQL v PHP je napačna, zato ne more komunicirati s strežnikom PostgreSQL. Prosimo, preverite datoteko php.ini ali ponovno prevedite PHP.';
 $string['php50restricted'] = 'PHP 5.0.x ima vrsto znanih težav, posodobite na 5.1.x ali namestite starejšo različico 4.3.x ali 4.4.x';
 $string['phpversion'] = 'Različica PHP';
-$string['phpversionerror'] = 'Različica PHP mora biti vsaj 4.3.0 ali 5.1.0 (5.0.x ima vrsto znanih težav).';
-$string['phpversionhelp'] = '<p>Moodle zahteva različico PHP vsaj 4.3.0 ali 5.1.0 (5.0.x ima vrsto znanih težav).</p>
-<p>Vaša trenutna različica je $a</p>
-<p>Posodobiti in nadgraditi morate PHP ali premakniti program na strežnik s novejšo različico PHP!<br />
-(V primeru različice 5.0.x lahko namestite tudi različico 4.4.x)</p>';
 $string['postgres7'] = 'PostgreSQL (postgres7)';
 $string['postgresqlwarning'] = '<strong>Opomba:</strong> Če pride do težav s povezavo, lahko poskusite nastaviti polje Host Server na
 host=\'postgresql_strežnik\' port=\'5432\' dbname=\'postgresql_ime_podatkovne zbirke\' user=\'postgresql_uporabnik\' password=\'postgresql_geslo\'

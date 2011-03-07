@@ -243,11 +243,6 @@ $string['password'] = 'Parole';
 $string['pgsqlextensionisnotpresentinphp'] = 'PHP ar paplašinājumu PGSQL nav pareizi konfigurēta un nevar sazināties ar PostgreSQL.  Lūdzu, pārbaudiet php.ini failu vai atkārtoti kompilējiet PHP.';
 $string['php50restricted'] = 'PHP versijā 5.0.x ir vairākas zināmas problēmas, lūdzu, jauniniet uz versiju 5.1.x vai pazeminiet uz versiju 4.3.x vai 4.4.x';
 $string['phpversion'] = 'PHP versija';
-$string['phpversionerror'] = 'PHP versijai jābūt vismaz 4.3.0 vai 5.1.0 (versijai 5.0.x piemīt vairākas zināmas problēmas).';
-$string['phpversionhelp'] = '<p>Sistēmā Moodle jāizmanto PHP, kuras versija ir vismaz 4.3.0 vai 5.1.0 (versijai 5.0.x piemīt vairākas zināmas problēmas).</p>
-<p>Jūs pašlaik lietojat versiju $a</p>
-<p>Ir jājaunina PHP vai jāpāriet uz resursdatoru, kurā tiek izmantota jaunāka PHP versija.</p>
-(Ja PHP versija ir 5.0.x, var arī atkāpties uz versiju 4.4.x)</p>';
 $string['postgres7'] = 'PostgreSQL (postgres7)';
 $string['previous'] = 'Iepriekšējais';
 $string['remotedownloadnotallowed'] = 'Komponentu lejupielāde jūsu serverī nav atļauta (iestatījums allow_url_fopen ir atspējots).<br /><br />Lejupielādējiet šo <a href=\"$a->url\">$a->url</a> failu manuāli, kopējiet to sava servera atrašanās vietā \"{$a->dest}\" un atzipojiet to tur.';

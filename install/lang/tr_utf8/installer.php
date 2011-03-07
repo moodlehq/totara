@@ -245,10 +245,6 @@ $string['password'] = 'Şifre';
 $string['pgsqlextensionisnotpresentinphp'] = 'PHP, PostgreSQL ile iletişim kurabilmek için pgsql uzantısı düzgün bir şekilde yapılandırılmamış. Lütfen php.ini dosyasını kontrol edin veya PHP\'yi tekrar derleyin.';
 $string['php50restricted'] = 'PHP 5.0.x sürümünde çok fazla hata var. Lütfen sürümü, 5.1.x\'e yükseltin ya da 4.3.x veya 4.4.x sürümüne düşürün.';
 $string['phpversion'] = 'PHP sürümü';
-$string['phpversionerror'] = 'PHP sürümü en az 4.3.0 veya 5.1.0 olmalı (5.0.x sürümünde çok fazla hata var)'; // ORPHANED
-$string['phpversionhelp'] = '<p>Moodle, PHP sürümünün en az 4.3.0 veya 5.1.0 olmasını gerektirir (5.0.x sürümünde çok fazla hata var).</p>
-<p>Şu anda çalışan sürüm: $a</p>
-<p>PHP\'yi güncellemeli veya PHP\'nin yeni sürümünü kullananan bir hostinge taşınmalısınız!</p>';
 $string['postgres7'] = 'PostgreSQL (postgres7)';
 $string['previous'] = 'Önceki';
 $string['qtyperqpwillberemoved'] = 'Güncelleme sırasında, RQP soru tipi kaldırılacak. Bu soru tipini kullanmadığınızdan herhangi bir sorunla karşılaşmazsınız.';

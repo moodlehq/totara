@@ -190,11 +190,6 @@ $string['pass'] = 'தேர்ச்சி';
 $string['password'] = 'கடவுச்சொல்';
 $string['php50restricted'] = 'PHP 5.0.x has a number of known problems, please upgrade to 5.1.x or downgrade to 4.3.x or 4.4.x';
 $string['phpversion'] = 'பிஎச்பி பதிப்பு';
-$string['phpversionerror'] = 'PHP version must be at least 4.3.0 or 5.1.0 (5.0.x has a number of known problems).';
-$string['phpversionhelp'] = '<p>Moodle requires a PHP version of at least 4.3.0 or 5.1.0 (5.0.x has a number of known problems).</p>
-<p>You are currently running version $a</p>
-<p>You must upgrade PHP or move to a host with a newer version of PHP!<br/>
-(In case of 5.0.x you could also downgrade to 4.4.x version)</p>';
 $string['previous'] = 'முந்தைய';
 $string['remotedownloadnotallowed'] = 'Download of components to your server isn\'t allowed (allow_url_fopen is disabled).<br /><br />You must download the <a href=\"$a->url\">$a->url</a> file manually, copy it to \"$a->dest\" in your server and unzip it there.';
 $string['report'] = 'அறிக்கை';

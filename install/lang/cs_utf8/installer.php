@@ -228,11 +228,6 @@ $string['password'] = 'Heslo';
 $string['pgsqlextensionisnotpresentinphp'] = 'PHP nebylo korektně nakonfigurováno pro komunikaci s PostgreSQL přes rozšíření PGSQL. Zkontrolujte váš php.ini nebo překompilujte PHP.';
 $string['php50restricted'] = 'V PHP 5.0.x bylo nalezeno množství chyb; přejděte buď na vyšší verzi 5.1.x, nebo na nižší verzi 4.3.x či 4.4.x.';
 $string['phpversion'] = 'Verze PHP';
-$string['phpversionerror'] = 'Verze PHP musí být alespoň 4.3.0 nebo 5.1.0 (PHP 5.0.x obsahuje množství chyb).';
-$string['phpversionhelp'] = '<p>Moodle vyžaduje PHP alespoň verze 4.3.0 nebo 5.1.0 (PHP 5.0.x obsahuje množství chyb).</p>
-<p>Nyní používáte PHP verze $a.</p>
-<p>Musíte PHP upgradovat, nebo přejít k hostiteli s vyšší verzí!<br />
-(U PHP 5.0.x můžete také přejít na nižší verzi 4.4.x či 4.3.x.)</p>';
 $string['postgres7'] = 'PostgreSQL (postgres7)';
 $string['postgresqlwarning'] = '<strong>Poznámka:</strong> Pokud máte problém s konektivitou k databázi, zkuste nastavit pole \"Hostitelský server\" na hodnotu
 host=\'postgresql_hostitel\' port=\'5432\' dbname=\'nazev_postgresql_databaze\' user=\'uzivatel_postgresql\' password=\'heslo_uzivatele_postgresql\' a 

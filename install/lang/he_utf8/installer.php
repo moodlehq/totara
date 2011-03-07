@@ -240,12 +240,6 @@ $string['password'] = 'סיסמה';
 $string['pgsqlextensionisnotpresentinphp'] = 'PHP לא הוגדר כהלכה עם הרחבת PGSQL בכדי שהוא יוכל לתקשר עם PostgreSQL. אנא בדוק את קובץ הגדרות הPHP שלך- php.ini או הדר את ה-PHP שלך.';
 $string['php50restricted'] = 'קיים ל-PHP 5.0.x מספר בעיות ידועות, אנא שדרג ל-5.1 או הורד בדרגה לגירסה 4.3 או 4.4';
 $string['phpversion'] = 'גירסת PHP';
-$string['phpversionerror'] = 'גירסת PHP חייבת להיות לפחות 4.3.0 או 5.1.0 (בגירסאות 5.0.x קיימות מספר בעיות ידועות)';
-$string['phpversionhelp'] = '<p>גירסת PHP חייבת להיות לפחות 4.3.0 או 5.1.0 (בגירסאות 5.0.x קיימות מספר בעיות ידועות) </p>
-<p> במערכת שלך פועלת כרגע גירסת $a </p>
-<p> אתה חייב לשדרג את גירסת ה-PHP שלך או לעבור למחשב מארח עם עם גירסת PHP חדשה! <br/>
-(במקרים של גרסת 5.0.x תוכל גם לרדת בגירסה ל- 4.4.x)
-</p>';
 $string['postgres7'] = 'PostgreSQL (postgres7';
 $string['postgresqlwarning'] = '<strong> הערה: </strong> 
 אם נתקלת בבעיות חיבור, תוכל להגדיר את שדה ה-Host Server כך:

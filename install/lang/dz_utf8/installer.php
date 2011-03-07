@@ -229,11 +229,6 @@ $string['password'] = 'ཆོག་ཡིག';
 $string['pgsqlextensionisnotpresentinphp'] = 'PHP འདི་ PostgreSQL དང་གཅིག་ཁར་འབྲེལ་བ་འཐབ་ཚུགས་ནིའི་དོན་ལུ་ PGSQL རྒྱ་བསྐྱེད་དང་གཅིག་ཁར་ ཚུལ་མཐུན་སྦེ་ རིམ་སྒྲིག་མ་འབད་བས། ཁྱོད་རའི་ php.ini ཡིག་སྣོད་ ཞིབ་དཔྱད་འབད་གནང་ ཡང་ན་  PHP ལོག་ཕྱོགས་སྒྲིག་འབད་གནང་།';
 $string['php50restricted'] = 'པི་ཨེཆ་པི་5.0.x';
 $string['phpversion'] = 'PHP ཐོན་རིམ།';
-$string['phpversionerror'] = 'PHP ཐོན་རིམ་འདི་ ཉུང་མཐའ་ལུ་ 4.3.0 ཡང་ན་ 5.1.0 དགོ། (5.0.x ལུ་ ཤེས་ཚུགས་པའི་དཀའ་ངལ་ ལེ་ཤ་འདུག་)';
-$string['phpversionhelp'] = '<p>མུ་ཌེལ་ལུ་ ཐོན་རིམ་འདི་ ཉུང་མཐའ་ལུ་ 4.3.0 ཡང་ན་ 5.1.0 དགོ། (5.0.x ལུ་ ཤེས་ཚུགས་པའི་དཀའ་ངལ་ ལེ་ཤ་འདུག་)</p>
-<p>ཁྱོད་ད་ལྟོ་ཐོན་རིམ་$a གཡོག་བཀོལ་དོ་</p>
-<p>PHP ཡར་བསྐྱེད་འབད་དགོ་ ཡང་ན་ PHP ཐོན་རིམ་གསརཔ་ཡོད་མི་ ཧོསིཊ་གཅིག་དང་གཅིག་ཁར་ སྤོ་བཤུད་འབད།!<br />
-(5.0.x ནང་ལུ་ ཁྱོད་ཀྱིས་ ཐོན་རིམ་ 4.4.x ལུ་ མར་ཕབ་འབད་ཚུགས།)</p>';
 $string['postgres7'] = 'PostgreSQL (postgres7)';
 $string['postgresqlwarning'] = '<strong>Note:</strong> འབྲེལ་མཐུད་འབད་ནི་ལུ་ དཀའ་ངལ་ཡོད་པ་ཅིན་ ཧོསིཊ་སར་བར་ས་ཁོངས་འདི་ host=\'postgresql_host\' port=\'5432\' dbname=\'postgresql_database_name\' user=\'postgresql_user\' password=\'postgresql_user_password\'ལུ་ གཞི་སྒྲིག་འབད་ནི་ལུ་ འབད་རྩོལ་བསྐྱེད་ཞིནམ་ལས་ གནས་སྡུད་གཞི་རྟེན་དང་ ལག་ལེན་པ་དེ་ལས་ཆོག་ཡིག་སྟོངམ་སྦེ་བཞག། བརྡ་དོན་ཧེང་བཀལ་  <a href=\"http://docs.moodle.org/en/Installing_Postgres_for_PHP\">Moodle Docs</a> ནང་ ཡོད།';
 $string['previous'] = 'ཧེ་མམ།';

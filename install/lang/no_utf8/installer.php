@@ -213,10 +213,6 @@ $string['password'] = 'Passord';
 $string['pgsqlextensionisnotpresentinphp'] = 'PHP har ikke blitt ordentlig konfigurert med PGSQL tillegget slik at den kan kommunisere med PostgreSQL. Vær vennlig å sjekk php.ini fila di eller rekompiler PHP.';
 $string['php50restricted'] = 'PHP 5.0.x har en rekke kjente feil. Vennligst oppgrader til versjon 5.1 eller nedgrader til 4.3.x eller 4.4.x';
 $string['phpversion'] = 'PHP versjon';
-$string['phpversionerror'] = 'PHP versjon må være minst 4.1.0';
-$string['phpversionhelp'] = '<p>Moodle trenger en PHP versjon minst 4.3.0 eller 5.1.0 (5.0.x har rekke kjente problem).</p>
-<Du kjører nå versjon $a</p>
-<p>Du må oppgradere PHP eller flytte til en server med en nyere versjon av PHP!<br /> (I forhold til 5.0.x kan du også nedgradere til versjon 4.4.x)</p>';
 $string['postgres7'] = 'PostgreSQL (postgres7)';
 $string['postgresqlwarning'] = '<strong>OBS:</strong> Dersom du opplever tilkoblingsproblemer, kan du prøve å sette Host Server feltet som: host=\'postgresql_host\' port=\'5432\' dbname=\'postgresql_database_name\' user=\'postgresql_user\' password=\'postgresql_user_password\' og feltene for Database, Bruker og Passord være tomme. Du finner mer informasjon på <a href=\"http://docs.moodle.org/en/Installing_Postgres_for_PHP\">Moodle Docs</a>';
 $string['previous'] = 'Forrige';

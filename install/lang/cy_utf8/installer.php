@@ -234,11 +234,6 @@ $string['password'] = 'Cyfrinair';
 $string['pgsqlextensionisnotpresentinphp'] = 'Nid yw\'r PHP wedi cael ei ffurfweddu\'n iawn gyda\'r estyniad PGSQL er mwyn iddo allu cyfathrebu â PostgreSQL. Tarwch olwg dros eich ffeil php.ini neu ail-grynhoi PHP.';
 $string['php50restricted'] = 'Mae PHP 5.0.x yn frith o broblemau hysbys; uwchraddiwch i 5.1.x neu israddiwch i 4.3.x neu 4.4.x';
 $string['phpversion'] = 'Fersiwn PHP';
-$string['phpversionerror'] = 'Mae\'n rhaid i\'r fersiwn PHP fod yn o leiaf 4.3.0 neu 5.1.0 (mae llawer o broblemau gyda 5.0.x).';
-$string['phpversionhelp'] = '<p>Mae angen o leiaf fersiwn PHP 4.3.0 neu 5.1.0 ar Moodle (mae llawer o broblemau gyda 5.0.x).</p>
-<p>Ar hyn o bryd, rydych yn rhedeg fersiwn $a</p>
-<p>Rhaid i chi uwchraddio PHP neu newid i westeiwr â fersiwn diweddarach o PHP!<br/>
-(Os oes gennych 5.0.x gallwch hefyd is-raddio i fersiwn 4.4.x)</p>';
 $string['postgres7'] = 'PostgreSQL (postgres7)';
 $string['previous'] = 'Blaenorol';
 $string['remotedownloadnotallowed'] = 'Ni chaniateir llwytho cydrannau i lawr i\'ch gweinydd (mae allow_url_fopen wedi\'i analluogi).<br /><br />Rhaid i chi lwytho\'r ffeil <a href=\"$a->url\">$a->url</a> i lawr eich hun, ei chopïo i \"$a->dest\" yn eich gweinydd, a\'i dadzipio yno.';

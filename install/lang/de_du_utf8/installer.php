@@ -125,10 +125,6 @@ $string['odbcextensionisnotpresentinphp'] = 'PHP wurde nicht richtig konfigurier
 $string['parentlanguage'] = 'de_utf8';
 $string['pgsqlextensionisnotpresentinphp'] = 'PHP wurde nicht richtig konfiguriert, um über die PGSQL-Erweiterung mit PostgreSQL zu kommunizieren. Bitte prüfe die Datei php.ini oder kompiliere PHP neu.';
 $string['php50restricted'] = 'PHP 5.0.x hat eine Reihe bekannter Fehler! Du solltest stattdessen die Versionen 5.1.x bzw. 4.3.x/4.4.x benutzen.';
-$string['phpversionhelp'] = '<p>Moodle erwartet PHP mindestens in der Version 4.3.0/4.4.0 oder 5.1.0 (5.0.x weist eine Reihe bekannter Fehler auf).</p>
-<p>Du benutzt zur Zeit die Version $a.</p>
-<p>Du musst deine PHP-Verson aktualisieren oder auf einen Rechner wechseln, der eine neuere Version von PHP nutzt.<br />
-(Im Falle von 5.0.x könntest du auch zu einer Version 4.3.x/4.4.x downgraden)</p>';
 $string['remotedownloadnotallowed'] = 'Der Download von Komponenten auf deinen Server ist nicht erlaubt (allow_url_fopen ist deaktiviert). <br /><br /> Die Datei <a href=\"$a->url\">$a->url</a> muss manuell heruntergeladen werden. Kopiere die Datei nach \"$a->dest\" auf deinen Server und entpacke sie dort.';
 $string['safemodehelp'] = '<p>Moodle kann beim Betrieb im Safe Mode verschiedene Probleme haben, nicht zuletzt kann es unmöglich sein, neue Dateien zu erzeugen. </p>
 <p>Safe Mode ist zumeist nur auf einigen öffentlichen Webservern eingestellt. Suche dir einen Anbieter, der auf diese Einstellung verzichtet oder bitte deinen Dienstleister, dass du auf einen Server \'umziehen\' kannst, der diese Einstellung nicht verwendet.</p>

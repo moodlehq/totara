@@ -228,11 +228,6 @@ $string['password'] = 'Seña';
 $string['pgsqlextensionisnotpresentinphp'] = 'PHP nun ta configuráu como debe, cola estensión PGSQL, polo que nun ye a comunicar con PostgreSQL. Verifique\'l so ficheru php.ini o recompile\'l PHP.';
 $string['php50restricted'] = 'El PHP 5.0.x tien problemes conocíos, por favor actualice a la versión 5.1 o desactualice a la versión 4.3.x o 4.4.x';
 $string['phpversion'] = 'Versión PHP';
-$string['phpversionerror'] = 'La versión de PHP tien de ser, como mínimo, 4.3.0 o 5.1.0 (5.0.x tien problemes conocíos).';
-$string['phpversionhelp'] = '<p>Moodle necesita una versión de PHP de 4.3.0 como mínimo o 5.1.0 (5.0.x tien problemes conocíos).</p>
-<p>Actualmente tien instalada la versión $a</p>
-<p>Tien d\'actualizar el PHP o migrar a otru servidor con una versión más nueva de PHP!<br/>
-(Nel casu de tener una versión 5.0.x pue tornar a una versión 4.4.x)</p>';
 $string['postgres7'] = 'PostgreSQL (postgres7)';
 $string['postgresqlwarning'] = '<strong>Nota:</strong>Si tien problemes de conexón, pue intentar escribir un ficheru Host Server (.htaccess) con estes ringleres:
 host=\'postgresql_host\' port=\'5432\' dbname=\'postgresql_database_name\' user=\'postgresql_user\' password=\'postgresql_user_password\'

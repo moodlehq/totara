@@ -118,16 +118,6 @@ $string['pass'] = 'Staðið';
 $string['password'] = 'Lykilorð';
 $string['php50restricted'] = 'PHP 5.0.x inniheldur villur, vinsamlegast upfærðu í útgáfu 5.1.x eða niður í útgáfu 4.3.x eða 4.4.x';
 $string['phpversion'] = 'PHP útgáfa';
-$string['phpversionerror'] = 'PHP útgáfan má ekki vera eldri en 4.1.0';
-$string['phpversionhelp'] = '<p>Moodle requires a PHP version of at least 4.3.0 or 5.1.0 (5.0.x has a number of known problems).</p>
-<p>You are currently running version $a</p>
-<p>You must upgrade PHP or move to a host with a newer version of PHP!<br/>
-(In case of 5.0.x you could also downgrade to 4.4.x version)</p>
-
-<p>Moodle krefst útgáfu 4.3.0 eða 5.1.0 af PHP (5.0.x útgáfan inniheldur villur).</p>
-<p>Þú er með útgáfu $a</p>
-<p>Þú verður að uppfæra PHP eða velja vefþjónustu sem býður upp á nýrri útgáfu af PHP!<br/>
-(Ef þú notar útgáfu 5.0.x gætir þú hugsanlega breytt yfir í 4.4.x)</p>';
 $string['postgres7'] = 'PostgreSQL (postgres7)';
 $string['previous'] = 'Til baka';
 $string['report'] = 'Skýrsla';

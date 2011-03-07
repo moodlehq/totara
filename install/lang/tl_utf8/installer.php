@@ -229,11 +229,6 @@ $string['password'] = 'Kontrasenyas';
 $string['pgsqlextensionisnotpresentinphp'] = 'Ang PHP ay hindi wastong naisaayos na may PGSQL extension para magawa nitong makipag-ugnayan sa PostgreSQL.  Pakisuri po ang inyong sakong php.ini o muli ikompayl ang PHP.';
 $string['php50restricted'] = 'Ang PHP 5.0.x ay maraming problema, itaas po ang bersiyon sa 5.1.x o ibaba sa 4.3.x o 4.4.x';
 $string['phpversion'] = 'Bersiyon ng PHP';
-$string['phpversionerror'] = 'Ang pinakamababang bersiyon ng PHP na puwedeng gamitin ay 4.3.0 o 5.1.0 (ang 5.0.x ay maraming problema)';
-$string['phpversionhelp'] = '<p>Kinakailangan ng Moodle ang isang bersiyon ng PHP na kahit man lamang 4.3.0. o 5.1.0 (ang 5.0.x ay maraming problema)</p>
-<p>Sa kasalukuyan ay pinatatakbo mo ang bersiyong $a</p>
-<p>Kailangan mong gawing bago ang PHP o lumipat sa isang host na may mas bagong bersiyon ng PHP!<br />(Sa kaso ng 5.0.x ay maaari mo ring ibaba ang bersiyon sa 4.4.x)
-</p>';
 $string['previous'] = 'Nakaraan';
 $string['qtyperqpwillberemoved'] = 'Habang nagpapanibago, ang mga uri ng tanong na RQP ay tatanggalin.  Hindi mo ginagamit ang mga uri ng tanong na ito, kaya hindi ka dapat magkaproblema.';
 $string['qtyperqpwillberemovedanyway'] = 'Habang nagpapanibago, ang mga uri ng tanong na RQP ay tatanggalin. May ilang tanong na RQP ka sa iyong datosan, at hindi gagana ang mga ito maliban na lamang kung iluklok mo muli ang koda mula sa http://moodle.org/mod/data/view.php?d=13&amp;rid=797 bago ka magpatuloy ng pagpapanibago.';

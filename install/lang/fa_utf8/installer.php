@@ -242,11 +242,6 @@ $string['password'] = 'رمز ورود';
 $string['pgsqlextensionisnotpresentinphp'] = 'PHP با افزونهٔ PGSQL به‌نحو مناسب پیکربندی نشده است تا بتواند با PostgreSQL ارتباط برقرار کند. لطفاً فایل php.ini خود را بررسی نمائید یا PHP را مجدداً compile کنید.';
 $string['php50restricted'] = 'PHP 5.0.x has a number of known problems, please upgrade to 5.1.x or downgrade to 4.3.x or 4.4.x';
 $string['phpversion'] = 'نسخهٔ PHP';
-$string['phpversionerror'] = 'نسخهٔ PHP باید حداقل 4.3.0 یا 5.1.0 باشد (<span dir=\"ltr\">5.0.x</span> مشکلات شناخته‌شده‌ای دارد).';
-$string['phpversionhelp'] = '<p>مودل نیاز به PHP نسخهٔ حداقل 4.3.0 یا 5.1.0 دارد (<span dir=\"ltr\">5.0.x</span> مشکلات شناخته‌شده‌ای دارد).</p>
-<p>شما در حال حاضر از نسخهٔ $a استفاده می‌کنید</p>
-<p>باید PHP را ارتقاء دهید یا از کارگزاری دارای نسخهٔ جدیدتر PHP استفاده نمائید!<br />
-(در صورت استفاده از <span dir=\"ltr\">5.0.x</span> به نسخهٔ <span dir=\"ltr\">4.4.x</span> هم می‌توانید برگردید)</p>';
 $string['postgres7'] = 'PostgreSQL (postgres7)';
 $string['postgresqlwarning'] = '<strong>توجه:</strong> اگر با مشکلاتی در زمینهٔ اتصال مواجه شدید، کارگزار میزبان را به صورت
  host=\'postgresql_host\' port=\'5432\' dbname=\'postgresql_database_name\' user=\'postgresql_user\' password=\'postgresql_user_password\'
