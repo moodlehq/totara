@@ -471,6 +471,7 @@ $string['editorhelptopics'] = 'Editor Help Topics.';
 $string['editorresettodefaults'] = 'Reset to default values';
 $string['editorsettings'] = 'Editor settings';
 $string['editorshortcutkeys'] = 'Editor shortcut keys';
+$string['editortoggle'] = 'Toggle enhanced text editing mode';
 $string['editremoteprofile'] = 'Edit remote profile';
 $string['editsummary'] = 'Edit summary';
 $string['editthisactivity'] = 'Edit this activity';
