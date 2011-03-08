@@ -2108,6 +2108,20 @@ function xmldb_local_upgrade($oldversion) {
         }
     }
 
+    if ($result && $oldversion < 2011030701) {
+        $roles = get_records('role');
+        $adminid = get_field('role', 'id', 'shortname', 'admin');
+        foreach($roles as $role) {
+            $assign = get_record('role_allow_assign', 'roleid', $adminid, 'allowassign', $role->id);
+            if (!$assign) {
+                $role_assign = new object();
+                $role_assign->roleid = $adminid;
+                $role_assign->allowassign = $role->id;
+                $result = $result && insert_record('role_allow_assign', $role_assign);
+            }
+        }
+    }
+
 
     return $result;
 }
