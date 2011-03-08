@@ -252,4 +252,25 @@ if($type == 'course') {
     popup_form('index.php?type='.$type.'&amp;subtype='.$subtype.'&amp;id=0&amp;action=editfield&amp;frameworkid='.$frameworkid.'&amp;categoryid='.$categoryid.'&amp;depthid='.$depthid.'&amp;datatype=', $options, 'newfieldform','','choose','','',false,'self',get_string('createnewcustomfield', 'customfields'));
 }
 
+// Add navigation buttons
+echo '<div class="buttons">';
+
+// Print return to framework button
+$data = array('type' => $type);
+if($type != 'course') {
+    $data['subtype'] = 'depth';
+    $data['frameworkid'] = $frameworkid;
+    $data['depthid'] = $depthid;
+    print_single_button(
+        $navlinks[1]['link'],
+        $data,
+        get_string('returntoframework', 'customfields'));
+}
+// Print return to categories button
+print_single_button($CFG->wwwroot.'/customfield/custom_field_categories.php',
+    $data,
+    get_string('returntocategories', 'customfields'));
+
+echo '</div>';
+
 print_footer();

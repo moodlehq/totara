@@ -45,3 +45,5 @@ $string['visible'] = 'Hidden on the settings page?';
 $string['nocustomfieldcategories'] = 'To add custom fields, first create a custom field category';
 $string['nocustomfieldcategoriesdefined'] = 'No custom field categories defined';
 $string['customfieldcategories'] = 'Custom Field Categories';
+$string['returntocategories'] = 'Return to Custom Field Categories';
+$string['returntoframework'] = 'Return to Framework';
