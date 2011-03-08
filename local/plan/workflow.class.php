@@ -249,6 +249,7 @@ abstract class dp_base_workflow {
 
         $template_in_use = count_records('dp_plan', 'templateid', $templateid) > 0;
 
+        begin_sql();
         foreach(get_object_vars($this) as $property => $value) {
             $parts = explode('_', $property);
             if($parts[0] == 'cfg') {
@@ -293,7 +294,6 @@ abstract class dp_base_workflow {
                 $sql = "SELECT * FROM {$CFG->prefix}dp_permissions WHERE templateid={$templateid} AND role='{$parts[3]}' AND component='{$parts[1]}' AND action='{$parts[2]}'";
                 if(!$record = get_record_sql($sql)) {
                     //insert
-                    begin_sql();
                     if(!insert_record('dp_permissions', $perm_todb)){
                         rollback_sql();
                         totara_set_notification(get_string('todb_updatepermissionserror', 'local_plan'), $returnurl);
@@ -301,7 +301,6 @@ abstract class dp_base_workflow {
                     }
                 } else {
                     //update
-                    begin_sql();
                     $perm_todb->id = $record->id;
                     if(!update_record('dp_permissions', $perm_todb)){
                         rollback_sql();
