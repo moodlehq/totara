@@ -521,7 +521,7 @@ class rb_source_facetoface_sessions extends rb_base_source {
                 sql_fullname($userkey.'.firstname', $userkey.'.lastname'),
                 array(
                     'joins' => $userkey,
-                    'grouping' => 'comma_list',
+                    'grouping' => 'comma_list_unique',
                 )
             );
         }
