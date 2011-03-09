@@ -29,7 +29,7 @@
  *
  * Displays recent completed courses
  */
-class block_totara_recent_learning extends block_list {
+class block_totara_recent_learning extends block_base {
 
     public function init() {
         $this->title   = get_string('recentlearning', 'block_recentlearning');
@@ -62,9 +62,10 @@ class block_totara_recent_learning extends block_list {
         $courses = get_records_sql($sql);
         if(!$courses) {
             return $this->content;
-
         }
         if ($courses) {
+            $html = '<table class=\'recent_learning\'>';
+
             foreach($courses as $course) {
                 $id = $course->id;
                 $name = $course->fullname;
@@ -76,19 +77,17 @@ class block_totara_recent_learning extends block_list {
                 } else {
                     $statusstring = 'notyetstarted';
                     $status = get_string($statusstring, 'completion');
-
                 }
 
-                $test = "<table>";
-                $test .= "<tr><td class=\"course\"><a href=\"{$CFG->wwwroot}/course/view.php?id={$id}\" title=\"$name\">$name</a></td>";
-                $test .= "<td class=\"status\"><span class=\"completion-$statusstring\" title=\"$status\"></span></td></tr>";
-                $test .= "</table>";
-
-                $this->content->items[] = $test;
-                $this->content->footer = '<a href="'.$CFG->wwwroot.'/local/plan/record/courses.php?userid='.$USER->id.'">'.get_string('allmycourses','local').'</a>';
+                $html .= "<tr><td class=\"course\"><a href=\"{$CFG->wwwroot}/course/view.php?id={$id}\" title=\"$name\">$name</a></td>";
+                $html .= "<td class=\"status\"><span class=\"completion-$statusstring\" title=\"$status\"></span></td></tr>";
             }
+
+            $html .= '</table>';
+            $this->content->footer = '<a href="'.$CFG->wwwroot.'/local/plan/record/courses.php?userid='.$USER->id.'">'.get_string('allmycourses','local').'</a>';
         }
 
+        $this->content->text = $html;
         return $this->content;
     }
 }
