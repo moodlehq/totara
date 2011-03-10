@@ -1759,7 +1759,7 @@ class facetofacelib_test extends prefix_changing_test_case {
         $this->assertFalse(facetoface_get_trainer_roles(), $this->msgfalse);
 
         // Add some roles
-        set_config('facetoface_session_roles', '2');
+        set_config('facetoface_sessionroles', '2');
 
         $result = facetoface_get_trainer_roles();
         $this->assertEqual($result[2]->name, 'Trainer');

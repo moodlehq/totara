@@ -3754,12 +3754,12 @@ function facetoface_get_trainer_roles() {
     global $CFG;
 
     // Check that roles have been selected
-    if (empty($CFG->facetoface_session_roles)) {
+    if (empty($CFG->facetoface_sessionroles)) {
         return false;
     }
 
     // Parse roles
-    $cleanroles = clean_param($CFG->facetoface_session_roles, PARAM_SEQUENCE);
+    $cleanroles = clean_param($CFG->facetoface_sessionroles, PARAM_SEQUENCE);
 
     // Load role names
     $rolenames = get_records_sql("
