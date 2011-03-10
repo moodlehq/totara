@@ -16,7 +16,7 @@ $string['registrationisenabled'] = 'Registration is enabled.';
 $string['registrationoutofdate'] = 'Registration information has not been updated for an extended period of time. Registration information should be kept up-to-date to assist possible future troubleshooting. Ensure that your webserver has unrestricted access to make https requests to register.totaralms.com';
 $string['save'] = 'Save';
 $string['sitefullname'] = 'Site Fullname';
-$string['sitehasntregistered'] = 'This site has not yet successfully registered with Totara. Registering basic information with Totara is recommended to assist in troubleshooting any future issues you may have.  Ensure your webserver is able to make https requests to register.totaralms.com';
+$string['sitehasntregistered'] = 'This site has not yet successfully registered with Totara. Registering basic information with Totara is recommended to assist in troubleshooting any future issues you may have.  Ensure your webserver is able to make https requests to register.totaralms.com and that the Moodle cron is enabled. You can run the cron manually by <a href=\"$a\">clicking here</a>';
 $string['siteidentifier'] = 'Site Identifier';
 $string['siteshortname'] = 'Site Shortname';
 $string['techsupportemail'] = 'Tech support email';

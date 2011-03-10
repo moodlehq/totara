@@ -700,7 +700,7 @@
         print_box_end();
     } elseif (empty($CFG->registered)) {
         print_box_start('generalbox adminerror');
-        print_string('sitehasntregistered', 'admin');
+        print_string('sitehasntregistered', 'admin', $CFG->wwwroot . '/admin/cron.php');
         print_box_end();
     } elseif ($CFG->registered < time() - 60 * 60 * 24 * 31) {
         print_box_start('generalbox adminerror');
