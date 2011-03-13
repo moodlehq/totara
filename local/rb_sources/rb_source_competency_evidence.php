@@ -40,7 +40,6 @@ class rb_source_competency_evidence extends rb_base_source {
         $this->paramoptions = $this->define_paramoptions();
         $this->defaultcolumns = $this->define_defaultcolumns();
         $this->defaultfilters = $this->define_defaultfilters();
-        $this->requiredcolumns = $this->define_requiredcolumns();
         $this->sourcetitle = get_string('sourcetitle', 'rb_source_competency_evidence');
         parent::__construct();
     }
@@ -466,24 +465,6 @@ class rb_source_competency_evidence extends rb_base_source {
         return $defaultfilters;
     }
 
-    function define_requiredcolumns() {
-        $requiredcolumns = array(
-            new rb_column(
-                'admin',        // type
-                'options',      // value
-                get_string('options', 'rb_source_competency_evidence'),      // heading
-                'base.id',      // field
-                array(          // options
-                    'displayfunc' => 'ce_admin_options',
-                    'required' => true,
-                    'capability' => 'moodle/local:updatecompetency',
-                    'noexport' => true
-                )
-            ),
-        );
-        return $requiredcolumns;
-    }
-
     //
     //
     // Source specific column display methods
@@ -497,20 +478,6 @@ class rb_source_competency_evidence extends rb_base_source {
         global $CFG;
         $compid = $row->competency_id;
         return "<a href=\"{$CFG->wwwroot}/hierarchy/item/view.php?type=competency&id={$compid}\">{$comp}</a>";
-    }
-
-    // display icons to edit and delete competency evidence
-    function rb_display_ce_admin_options($itemid, $row) {
-        global $CFG;
-        $editstr = trim(get_string('edit'));
-        $deletestr = trim(get_string('delete'));
-        $editlink = '<a href="'.$CFG->wwwroot.'/hierarchy/type/competency/evidence/edit.php?id='.$itemid.'&amp;s='.sesskey().
-            '&amp;returnurl='.urlencode(qualified_me()).'" title="'.$editstr.
-            '"><img src="'.$CFG->pixpath.'/t/edit.gif" class="iconsmall" alt="'.$editstr.'" /></a>';
-        $deletelink = '<a href="'.$CFG->wwwroot.'/hierarchy/type/competency/evidence/delete.php?id='.$itemid.'&amp;s='.sesskey().
-            '&amp;returnurl='.urlencode(qualified_me()).'" title="'.$deletestr.
-            '"><img src="'.$CFG->pixpath.'/t/delete.gif" class="iconsmall" alt="'.$deletestr.'" /></a>';
-        return '<div align="center">' . $editlink .' '.$deletelink . '</div>';
     }
 
     //

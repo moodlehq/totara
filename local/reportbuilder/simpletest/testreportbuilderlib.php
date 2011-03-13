@@ -268,7 +268,7 @@ class reportbuilderlib_test extends prefix_changing_test_case {
         $columns = $rb->get_columns();
         // should return the current columns for this report
         $this->assertTrue(is_array($columns));
-        $this->assertEqual(count($columns), 9);
+        $this->assertEqual(count($columns), 8);
         $this->assertEqual(current($columns)->type, 'user');
         $this->assertEqual(current($columns)->value, 'namelink');
         $this->assertEqual(current($columns)->heading, 'Participant');
@@ -458,7 +458,7 @@ class reportbuilderlib_test extends prefix_changing_test_case {
         // should return an array
         $this->assertTrue(is_array($columns));
         // the array should contain the correct number of columns
-        $this->assertEqual(count($columns), 11);
+        $this->assertEqual(count($columns), 10);
         // the strings should have the correct format
         // can't check exactly because different dbs use different concat format
         $this->assertPattern('/auser\.firstname/', current($columns));
