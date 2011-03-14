@@ -1,5 +1,28 @@
 Totara LMS Changelog
 
+Release 1.0.3 (15 March 2011):
+==================================================
+Improvements:
+    6072    Split up upgrade notes into MOODLEUPDATE.txt and UPGRADE.txt
+    7619    Improved navigation when editing custom fields
+    7855    More site logs added to Totara functionality
+    5879    Improve site registration message                           Previous message did not explain the dependency on the cron
+    6661    Improve course completion block's messages                  Blocks now they show explanatory text if completion settings are incorrect
+
+Bug fixes:
+    7561    Broken transaction breaking MSSQL installation
+    7923    Trainers not assigned to F2F sessions                       Trainers are now correctly assigned to Face-to-face sessions
+    7915    Trainer name duplicated in F2F report
+    7901    Allow admins to assign new Totara roles by default
+    7927    Remove deprecated column from Competency Evidence report    Column will no longer appear
+    7877    Completion sometimes takes two cron runs                    Affected smaller site where the criteria and aggregation would occur during the same second
+    7902    Remove Community theme from release
+    7889    Add screenshot for Totara theme to theme picker
+    7853    Dashlet background misalignment issue
+    6072    Updated PHP version number in INSTALL.txt file
+    7890    Fix styling of Recent Learning dashlet
+
+
 Release 1.0.2 (8 March 2011):
 ==================================================
 Security fixes:
