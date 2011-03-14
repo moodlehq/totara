@@ -179,5 +179,34 @@ function xmldb_local_reportbuilder_upgrade($oldversion=0) {
         $result = $result && execute_sql($sql);
 
     }
+
+    if($result && $oldversion < 2011031400) {
+        $custom_field_locations = array(
+            'session' => 'facetoface_session_field',
+            'user' => 'user_info_field',
+            'competency' => 'comp_depth_info_field',
+            'position' => 'pos_depth_info_field',
+            'organisation' => 'org_depth_info_field',
+            'course' => 'course_info_field'
+        );
+
+        foreach($custom_field_locations as $type => $location){
+            $cust_fields = get_records($location);
+            foreach($cust_fields as $c) {
+                $columns = get_records('report_builder_columns', 'type', $type);
+                if($columns) {
+                    foreach($columns as $col) {
+                        if($col->value == $c->shortname) {
+                            $newrec = new object();
+                            $newrec->id = $col->id;
+                            $newrec->value = $type . '_' . $c->id;
+                            $result = $result && update_record('report_builder_columns', $newrec);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     return $result;
 }

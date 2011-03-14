@@ -164,7 +164,6 @@ abstract class rb_base_source {
     function new_column_from_option($type, $value, $heading=null, $hidden=0) {
         $columnoptions = $this->columnoptions;
         $joinlist = $this->joinlist;
-
         if($coloption =
             reportbuilder::get_single_item($columnoptions, $type, $value)) {
 
@@ -878,9 +877,8 @@ abstract class rb_base_source {
         // add all user custom fields to join list
         if($custom_fields = get_records('user_info_field')) {
             foreach($custom_fields as $custom_field) {
-                $field = $custom_field->shortname;
                 $id = $custom_field->id;
-                $key = "user_$field";
+                $key = "user_$id";
                 $joinlist[] = new rb_join(
                     $key,
                     'LEFT',
@@ -909,12 +907,11 @@ abstract class rb_base_source {
         if($custom_fields =
             get_records('user_info_field')) {
             foreach($custom_fields as $custom_field) {
-                $field = $custom_field->shortname;
                 $name = $custom_field->name;
-                $key = "user_$field";
+                $key = "user_$custom_field->id";
                 $columnoptions[] = new rb_column_option(
                     'user_profile',
-                    $field,
+                    $key,
                     $name,
                     "$key.data",
                     array('joins' => $key)
@@ -937,12 +934,11 @@ abstract class rb_base_source {
     protected function add_user_custom_fields_to_filters(&$filteroptions) {
         if($custom_fields = get_records('user_info_field','','','','id,shortname,name')) {
             foreach($custom_fields as $custom_field) {
-                $field = $custom_field->shortname;
                 $name = $custom_field->name;
-                $key = "user_$field";
+                $key = "user_$custom_field->id";
                 $filteroptions[] = new rb_filter_option(
                     'user_profile',
-                    $field,
+                    $key,
                     $name,
                     'text'
                 );
@@ -1145,9 +1141,8 @@ abstract class rb_base_source {
         // add all course custom fields to join list
         if($custom_fields = get_records('course_info_field')) {
             foreach($custom_fields as $custom_field) {
-                $field = strtolower($custom_field->shortname);
                 $id = $custom_field->id;
-                $key = "course_$field";
+                $key = "course_$custom_field->id";
                 $joinlist[] = new rb_join(
                     $key,
                     'LEFT',
@@ -1176,12 +1171,11 @@ abstract class rb_base_source {
         if($custom_fields =
             get_records('course_info_field')) {
             foreach($custom_fields as $custom_field) {
-                $field = strtolower($custom_field->shortname);
                 $name = $custom_field->fullname;
-                $key = "course_$field";
+                $key = "course_$custom_field->id";
                 $columnoptions[] = new rb_column_option(
                     'course_custom_fields',
-                    $field,
+                    $key,
                     $name,
                     "$key.data",
                     array('joins' => $key)
@@ -1204,12 +1198,11 @@ abstract class rb_base_source {
     protected function add_course_custom_fields_to_filters(&$filteroptions) {
         if($custom_fields = get_records('course_info_field','','','','id,shortname,fullname')) {
             foreach($custom_fields as $custom_field) {
-                $field = strtolower($custom_field->shortname);
                 $name = $custom_field->fullname;
-                $key = "course_$field";
+                $key = "course_$custom_field->id";
                 $filteroptions[] = new rb_filter_option(
                     'course_custom_fields',
-                    $field,
+                    $key,
                     $name,
                     'text'
                 );

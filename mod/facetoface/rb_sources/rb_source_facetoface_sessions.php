@@ -383,11 +383,10 @@ class rb_source_facetoface_sessions extends rb_base_source {
         global $CFG;
         // add all session custom fields to join list
         if($session_fields =
-            get_records('facetoface_session_field','','','','id,shortname')) {
+            get_records('facetoface_session_field','','','','id')) {
             foreach($session_fields as $session_field) {
-                $field = $session_field->shortname;
                 $id = $session_field->id;
-                $key = "session_$field";
+                $key = "session_$id";
                 $joinlist[] = new rb_join(
                     $key,
                     'LEFT',
@@ -468,14 +467,13 @@ class rb_source_facetoface_sessions extends rb_base_source {
      */
     function add_facetoface_session_custom_fields_to_columns(&$columnoptions) {
         // add all session custom fields to column options list
-        if($session_fields = get_records('facetoface_session_field','','','','id,shortname,name')) {
+        if($session_fields = get_records('facetoface_session_field','','','','id,name')) {
             foreach($session_fields as $session_field) {
-                $field = $session_field->shortname;
                 $name = $session_field->name;
-                $key = "session_$field";
+                $key = "session_$session_field->id";
                 $columnoptions[] = new rb_column_option(
                     'session',
-                    $field,
+                    $key,
                     get_string('sessionx', 'rb_source_facetoface_sessions', $name),
                     $key.'.data',
                     array('joins' => $key)
@@ -587,60 +585,51 @@ class rb_source_facetoface_sessions extends rb_base_source {
         // available
 
         // filters to try and add
+
         $possible_filters = array(
-            new rb_filter_option(
-                'session',
-                'location',
-                'Session Location',
-                'text'
+            'pilot' => array(
+                'text' => get_string('pilot', 'rb_source_facetoface_sessions'),
+                'type' => 'select',
+                'options' => array('selectfunc' => 'yesno_list')
             ),
-            new rb_filter_option(
-                'session',
-                'venue',
-                get_string('sessvenue', 'rb_source_facetoface_sessions'),
-                'text'
+            'audit' => array(
+                'text' => get_string('audit', 'rb_source_facetoface_sessions'),
+                'type' => 'select',
+                'options' => array('selectfunc' => 'yesno_list')
             ),
-            new rb_filter_option(
-                'session',
-                'room',
-                get_string('sessroom', 'rb_source_facetoface_sessions'),
-                'text'
-            ),
-            new rb_filter_option(
-                'session',
-                'pilot',
-                get_string('pilot', 'rb_source_facetoface_sessions'),
-                'select',
-                array('selectfunc' => 'yesno_list')
-            ),
-            new rb_filter_option(
-                'session',
-                'audit',
-                get_string('audit', 'rb_source_facetoface_sessions'),
-                'select',
-                array('selectfunc' => 'yesno_list')
-            ),
-            new rb_filter_option(
-                'session',
-                'coursedelivery',
-                get_string('coursedelivery', 'rb_source_facetoface_sessions'),
-                'select',
-                array(
+            'coursedelivery' => array(
+                'text' => get_string('coursedelivery', 'rb_source_facetoface_sessions'),
+                'type' => 'select',
+                'options' => array(
                     'selectfunc' => 'coursedelivery_list',
                     'selectoptions' => rb_filter_option::select_width_limiter(),
                 )
-            ),
+            )
         );
 
         // add all valid session custom fields to filter options list
         if($session_fields = get_records('facetoface_session_field')) {
-            foreach($possible_filters as $possible_filter) {
-                foreach($session_fields as $session_field) {
-                    // don't try and add if it's not defined above
-                    if($possible_filter->value == $session_field->shortname) {
-                        $filteroptions[] = $possible_filter;
+            foreach($session_fields as $session_field) {
+                foreach($possible_filters as $key => $filter_data) {
+                    if($key == $session_field->shortname) {
+                        $filter = new rb_filter_option(
+                            'session',
+                            'session_' . $session_field->id,
+                            $filter_data['text'],
+                            $filter_data['type'],
+                            $filter_data['options']
+                        );
+                        break;
+                    } else {
+                        $filter = new rb_filter_option(
+                            'session',
+                            'session_' . $session_field->id,
+                            $session_field->name,
+                            'text'
+                        );
                     }
                 }
+                $filteroptions[] = $filter;
             }
             return true;
         }
