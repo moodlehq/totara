@@ -173,6 +173,10 @@ function completion_cron_completions() {
         mtrace('Aggregating completions');
     }
 
+    // Wait one sec to prevent timestamp overlap on small sites with
+    // the criteria cron
+    sleep(1);
+
     // Save time started
     $timestarted = time();
 
