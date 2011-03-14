@@ -44,8 +44,8 @@ $report = new reportbuilder($id);
 
 // include jquery
 local_js();
-// include code to handle column headings
-require_js(array($CFG->wwwroot . '/local/reportbuilder/columns.js'));
+// include js to handle column actions
+require_js(array($CFG->wwwroot . '/local/reportbuilder/columns.js.php'));
 
 // toggle show/hide column
 if ($h !== null && isset($cid)) {
@@ -140,6 +140,7 @@ $mform->display();
 
 // include JS object to define the column headings
 print '<script type="text/javascript">';
+print "var rb_reportid = {$id};";
 $headings = array();
 foreach($report->src->columnoptions as $option) {
     $key = $option->type . '-' . $option->value;

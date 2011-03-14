@@ -202,22 +202,22 @@ class report_builder_edit_filters_form extends moodleform {
                     $advanced = $filter->advanced;
                     $fid = $index;
 
-                    $mform->addElement('html','<tr><td>');
-                    $mform->addElement('selectgroups',"filter{$fid}",'',$filtersselect);
+                    $mform->addElement('html','<tr fid="'.$fid.'"><td>');
+                    $mform->addElement('selectgroups', "filter{$fid}", '', $filtersselect, array('class'=>'filter_selector'));
                     $mform->setDefault("filter{$fid}", $field);
                     $mform->addElement('html','</td><td>');
                     $mform->addElement('checkbox',"advanced{$fid}",'');
                     $mform->setDefault("advanced{$fid}",$advanced);
 
                     $mform->addElement('html','</td><td>');
-                    $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/reportbuilder/filters.php?d=1&amp;id='.$id.'&amp;fid='.$fid.'" title="'.$strdelete.'"><img src="'.$CFG->pixpath.'/t/delete.gif" class="iconsmall" alt="'.$strdelete.'" /></a>');
+                    $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/reportbuilder/filters.php?d=1&amp;id='.$id.'&amp;fid='.$fid.'" title="'.$strdelete.'" class="deletefilterbtn"><img src="'.$CFG->pixpath.'/t/delete.gif" class="iconsmall" alt="'.$strdelete.'" /></a>');
                     if($i != 1) {
-                        $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/reportbuilder/filters.php?m=up&amp;id='.$id.'&amp;fid='.$fid.'" title="'.$strmoveup.'"><img src="'.$CFG->pixpath.'/t/up.gif" class="iconsmall" alt="'.$strmoveup.'" /></a>');
+                        $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/reportbuilder/filters.php?m=up&amp;id='.$id.'&amp;fid='.$fid.'" title="'.$strmoveup.'" class="movefilterupbtn"><img src="'.$CFG->pixpath.'/t/up.gif" class="iconsmall" alt="'.$strmoveup.'" /></a>');
                     } else {
                         $mform->addElement('html', $spacer);
                     }
                     if($i != $filtercount) {
-                        $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/reportbuilder/filters.php?m=down&amp;id='.$id.'&amp;fid='.$fid.'" title="'.$strmovedown.'"><img src="'.$CFG->pixpath.'/t/down.gif" class="iconsmall" alt="'.$strmovedown.'" /></a>');
+                        $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/reportbuilder/filters.php?m=down&amp;id='.$id.'&amp;fid='.$fid.'" title="'.$strmovedown.'" class="movefilterdownbtn"><img src="'.$CFG->pixpath.'/t/down.gif" class="iconsmall" alt="'.$strmovedown.'" /></a>');
                     } else {
                         $mform->addElement('html', $spacer);
                     }
@@ -235,12 +235,27 @@ class report_builder_edit_filters_form extends moodleform {
                     get_string('new') => array(0 => get_string('addanotherfilter','local_reportbuilder'))
                 ),
                 $filtersselect);
-            $mform->addElement('selectgroups','newfilter','',$newfilterselect);
+            // Remove already-added filters from the new filter selector
+            $cleanedfilterselect = $newfilterselect;
+            foreach ($newfilterselect as $okey => $optgroup) {
+                foreach ($optgroup as $typeval => $heading) {
+                    $typevalarr = explode('-', $typeval);
+                    foreach ($report->filters as $curfilter) {
+                        if ($curfilter->type == $typevalarr[0] && $curfilter->value == $typevalarr[1]) {
+                            unset($cleanedfilterselect[$okey][$typeval]);
+                        }
+                    }
+                }
+            }
+            $newfilterselect = $cleanedfilterselect;
+            unset($cleanednewfilterselect);
+
+            $mform->addElement('selectgroups','newfilter','',$newfilterselect, array('class'=>'new_filter_selector filter_selector'));
             $mform->addElement('html','</td><td>');
             $mform->addElement('checkbox','newadvanced','');
             $mform->disabledIf('newadvanced','newfilter', 'eq', 0);
             $mform->addElement('html','</td><td>');
-            $mform->addElement('html','</td><td>&nbsp;</td></tr>');
+            $mform->addElement('html','</td></tr>');
             $mform->addElement('html','</table></div>');
         } else {
             $mform->addElement('html',"No filters found. Ask your developer to add filter options to the '{$report->source}' source.");
@@ -307,7 +322,7 @@ class report_builder_edit_columns_form extends moodleform {
                         $field = "{$column->type}-{$column->value}";
                         $heading = $column->heading;
                         $cid = $index;
-                        $mform->addElement('html','<tr><td>');
+                        $mform->addElement('html','<tr colid="'.$cid.'"><td>');
                         $mform->addElement('selectgroups',"column{$cid}",'',$columnsselect, array('class' => 'column_selector'));
                         $mform->setDefault("column{$cid}", $field);
                         $mform->addElement('html','</td><td>');
@@ -317,22 +332,22 @@ class report_builder_edit_columns_form extends moodleform {
                         $mform->addElement('html','</td><td>');
                         // show/hide link
                         if($column->hidden == 0) {
-                            $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/reportbuilder/columns.php?h=1&amp;id='.$id.'&amp;cid='.$cid.'" title="'.$strhide.'"><img src="'.$CFG->pixpath.'/t/hide.gif" class="iconsmall" alt="'.$strhide.'" /></a>');
+                            $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/reportbuilder/columns.php?h=1&amp;id='.$id.'&amp;cid='.$cid.'" title="'.$strhide.'" class="hidecolbtn"><img src="'.$CFG->pixpath.'/t/hide.gif" class="iconsmall" alt="'.$strhide.'" /></a>');
                         } else {
-                            $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/reportbuilder/columns.php?h=0&amp;id='.$id.'&amp;cid='.$cid.'" title="'.$strshow.'"><img src="'.$CFG->pixpath.'/t/show.gif" class="iconsmall" alt="'.$strshow.'" /></a>');
+                            $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/reportbuilder/columns.php?h=0&amp;id='.$id.'&amp;cid='.$cid.'" title="'.$strshow.'" class="showcolbtn"><img src="'.$CFG->pixpath.'/t/show.gif" class="iconsmall" alt="'.$strshow.'" /></a>');
                         }
                         // delete link
-                        $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/reportbuilder/columns.php?d=1&amp;id='.$id.'&amp;cid='.$cid.'" title="'.$strdelete.'"><img src="'.$CFG->pixpath.'/t/delete.gif" class="iconsmall" alt="'.$strdelete.'" /></a>');
+                        $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/reportbuilder/columns.php?d=1&amp;id='.$id.'&amp;cid='.$cid.'" title="'.$strdelete.'" class="deletecolbtn"><img src="'.$CFG->pixpath.'/t/delete.gif" class="iconsmall" alt="'.$strdelete.'" /></a>');
                         // move up link
                         if($i != 1) {
-                            $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/reportbuilder/columns.php?m=up&amp;id='.$id.'&amp;cid='.$cid.'" title="'.$strmoveup.'"><img src="'.$CFG->pixpath.'/t/up.gif" class="iconsmall" alt="'.$strmoveup.'" /></a>');
+                            $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/reportbuilder/columns.php?m=up&amp;id='.$id.'&amp;cid='.$cid.'" title="'.$strmoveup.'" class="movecolupbtn"><img src="'.$CFG->pixpath.'/t/up.gif" class="iconsmall" alt="'.$strmoveup.'" /></a>');
                         } else {
                             $mform->addElement('html', $spacer);
                         }
 
                         // move down link
                         if($i != $colcount) {
-                            $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/reportbuilder/columns.php?m=down&amp;id='.$id.'&amp;cid='.$cid.'" title="'.$strmovedown.'"><img src="'.$CFG->pixpath.'/t/down.gif" class="iconsmall" alt="'.$strmovedown.'" /></a>');
+                            $mform->addElement('html', '<a href="'.$CFG->wwwroot.'/local/reportbuilder/columns.php?m=down&amp;id='.$id.'&amp;cid='.$cid.'" title="'.$strmovedown.'" class="movecoldownbtn"><img src="'.$CFG->pixpath.'/t/down.gif" class="iconsmall" alt="'.$strmovedown.'" /></a>');
                         } else {
                             $mform->addElement('html', $spacer);
                         }
@@ -351,6 +366,20 @@ class report_builder_edit_columns_form extends moodleform {
                     get_string('new') => array(0 => get_string('addanothercolumn','local_reportbuilder'))
                 ),
                 $columnsselect);
+            // Remove already-added cols from the new col selector
+            $cleanednewcolselect = $newcolumnsselect;
+            foreach ($newcolumnsselect as $okey => $optgroup) {
+                foreach ($optgroup as $typeval => $heading) {
+                    $typevalarr = explode('-', $typeval);
+                    foreach ($report->columns as $curcol) {
+                        if ($curcol->type == $typevalarr[0] && $curcol->value == $typevalarr[1]) {
+                            unset($cleanednewcolselect[$okey][$typeval]);
+                        }
+                    }
+                }
+            }
+            $newcolumnsselect = $cleanednewcolselect;
+            unset($cleanednewcolselect);
             $mform->addElement('selectgroups','newcolumns','',$newcolumnsselect, array('class' => 'column_selector new_column_selector'));
             $mform->addElement('html','</td><td>');
             $mform->addElement('text','newheading','');
@@ -358,7 +387,7 @@ class report_builder_edit_columns_form extends moodleform {
             // do manually as disabledIf doesn't play nicely with using JS to update heading values
             // $mform->disabledIf('newheading','newcolumns', 'eq', 0);
             $mform->addElement('html','</td><td>');
-            $mform->addElement('html','</td><td>&nbsp;</td></tr>');
+            $mform->addElement('html','</td></tr>');
             $mform->addElement('html','</table></div>');
 
 
@@ -383,7 +412,7 @@ class report_builder_edit_columns_form extends moodleform {
                         '<a href="' . $CFG->wwwroot .
                         '/local/reportbuilder/columns.php?d=1&amp;id=' . $id .
                         '&amp;cid=' . $bad['id'] . '" title="' . $strdelete .
-                        '"><img src="' . $CFG->pixpath .
+                        '" class="deletecolbtn"><img src="' . $CFG->pixpath .
                         '/t/delete.gif" class="iconsmall" alt="' . $strdelete
                         . '" /></a></td></tr>');
                 }

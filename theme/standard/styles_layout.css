@@ -1947,6 +1947,18 @@ div.add-linked-course {
     text-align:right;
 }
 
+div.reportbuilderform table td {
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+div.reportbuilderform table td div.fitem div.fitemtitle {
+    display: none;
+}
+
+div.reportbuilderform table td div.fitem div.felement {
+    margin: 0px;
+}
 
 
 /***

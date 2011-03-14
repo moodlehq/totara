@@ -25,6 +25,7 @@ require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->dirroot.'/local/reportbuilder/lib.php');
 require_once($CFG->dirroot.'/local/reportbuilder/report_forms.php');
+require_once($CFG->dirroot.'/local/js/lib/setup.php');
 
 global $USER;
 $id = required_param('id',PARAM_INT); // report builder id
@@ -38,6 +39,12 @@ admin_externalpage_setup('managereports');
 $returnurl = $CFG->wwwroot."/local/reportbuilder/filters.php?id=$id";
 
 $report = new reportbuilder($id);
+
+// include jquery
+local_js();
+// include js to handle column actions
+require_js(array($CFG->wwwroot . '/local/reportbuilder/filters.js.php'));
+
 
 // delete fields or columns
 if ($d and $confirm ) {
@@ -118,6 +125,18 @@ include_once('tabs.php');
 
 // display the form
 $mform->display();
+
+// include JS vars
+print '<script type="text/javascript">';
+print "var rb_reportid = {$id};";
+$headings = array();
+
+foreach($report->src->filteroptions as $option) {
+    $key = $option->type . '-' . $option->value;
+    $headings[$key] = $option->label;
+}
+print "var rb_filter_headings = " . json_encode($headings) . ';';
+print '</script>';
 
 admin_externalpage_print_footer();
 
