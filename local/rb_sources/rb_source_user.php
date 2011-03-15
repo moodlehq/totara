@@ -107,6 +107,7 @@ class rb_source_user extends rb_base_source {
         );
 
         $this->add_position_tables_to_joinlist($joinlist, 'base', 'id');
+        $this->add_user_custom_fields_to_joinlist($joinlist, 'base', 'id');
 
         return $joinlist;
     }
@@ -208,6 +209,7 @@ class rb_source_user extends rb_base_source {
                         )
         );
 
+        $this->add_user_custom_fields_to_columns($columnoptions);
 
         return $columnoptions;
     }
@@ -218,7 +220,7 @@ class rb_source_user extends rb_base_source {
      */
     private function define_filteroptions() {
         // No filter options!
-        return array(
+        $filteroptions = array(
             new rb_filter_option(
                 'user',
                 'fullname',
@@ -226,6 +228,10 @@ class rb_source_user extends rb_base_source {
                 'text'
             )
         );
+
+        $this->add_user_custom_fields_to_filters($filteroptions);
+
+        return $filteroptions;
     }
 
     /**
