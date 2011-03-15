@@ -16,9 +16,7 @@ if($heading) {
 /*
     echo $homelink;
 */
-    echo '<div class="help_login_wrap"><p class="helplink">';
-    echo page_doc_link(get_string('moodledocslink'));
-    echo '</p>';
+    echo '<div class="help_login_wrap">';
     echo $loggedinas . '</div>';
 
     if (!empty($performanceinfo) and has_capability('moodle/site:config', get_context_instance(CONTEXT_SYSTEM))) {
