@@ -88,6 +88,7 @@ $mform = new dp_template_workflow_form(null,
 
 if ($mform->is_cancelled()){
     // user cancelled form
+    redirect($CFG->wwwroot . '/local/plan/template/workflow.php?id=' . $id);
 }
 elseif ($mform->no_submit_button_pressed()) {
     // user pressed advanced options button
