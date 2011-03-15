@@ -201,8 +201,8 @@ abstract class rb_base_source {
             );
         } else {
             $a = new object();
-            $a->type = $coloption->type;
-            $a->value = $coloption->value;
+            $a->type = $type;
+            $a->value = $value;
             $a->source = get_class($this);
             throw new ReportBuilderException(get_string('error:columnoptiontypexandvalueynotfoundinz', 'local_reportbuilder', $a));
         }
