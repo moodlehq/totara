@@ -1,6 +1,6 @@
 <?PHP /*  $Id: styles.php,v 1.41 2008/09/14 08:40:23 skodak Exp $ */
 
-/// Every theme should contain a copy of this script.  It lets us 
+/// Every theme should contain a copy of this script.  It lets us
 /// set up variables and so on before we include the raw CSS files.
 /// The output of this script should be a completely standard CSS file.
 
@@ -17,5 +17,5 @@
     $lifetime    = 1800;                                   // Seconds to cache this stylesheet
 
     style_sheet_setup(time(), $lifetime, $themename, $forceconfig, $lang);
-   
+
 ?>

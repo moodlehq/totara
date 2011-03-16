@@ -80,7 +80,7 @@ div#totara_menu {
 				color:#333;
 				font-weight:bold;
 			}
-		
+
 			/* tier 2 */
 			div#totara_menu ul li ul {
 				padding:0;
@@ -205,7 +205,7 @@ body#mod-resource-view div#wrapper {
 					border:1px solid #CACACA;
 					background:#FFF;
 				}
-			
+
 			/* Quick links dashlet */
 			.dashlet.block_quicklinks table { width:100%; }
 				.dashlet.block_quicklinks tr.noshade { background-color:#FFF; }
@@ -324,7 +324,7 @@ div#footer {
 						font-weight:normal;
 						background-color:#EAEAEA;
 					}
-					
+
 /* Help and login links */
 div#footer .help_login_wrap {
 	border-top:1px solid #EAEAEA;

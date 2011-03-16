@@ -60,7 +60,7 @@
 .treeview-famfamfam li { background-image: url(images/treeview/treeview-famfamfam-line.gif); }
 .treeview-famfamfam .hitarea, .treeview-famfamfam li.lastCollapsable, .treeview-famfamfam li.lastExpandable { background-image: url(images/treeview/treeview-famfamfam.gif); }
 
- 
+
 .filetree li { padding: 3px 0 2px 16px; }
 .filetree li { padding: 0 0 0 16px; }
 .filetree span.folder, .filetree span.file { padding: 1px 0 1px 16px; display: block; }

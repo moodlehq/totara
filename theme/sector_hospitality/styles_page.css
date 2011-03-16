@@ -1,19 +1,19 @@
 /*
 
 Theme Colours:
-	Dark red:  #ac0f0f 
+	Dark red:  #ac0f0f
 
 
 Contents:
 	General
 	Header
-	Menu Menu + Navbar	
+	Menu Menu + Navbar
 	Blocks
 	Layout Table + Dashboard Columns + Course Layout
 	Footer
 	Course
 	Tabs
-	
+
 */
 
 
@@ -50,7 +50,7 @@ h2.headingblock, .headingblock, #middle-column h2 {
 	border:none;
 	padding-bottom:5px;
 	border-bottom:1px solid #CACACA;
-	
+
 }
 h3 {
 	font-size:1em;
@@ -75,15 +75,15 @@ h6 {
 
 /** /////////////////////////////////////////////////////////////////////////////////////////////////// Header  **/
 
- 
+
 .login-container {
 	background-color:#000000;
 	color:#FFFFFF;
 	border-bottom:2px #FFFFFF solid;
-	
-} 
+
+}
 .login-container .logininfo a { color:#d8b758 !important }
- 
+
 div#header {
 	background-image:url(images/header.jpg);
 	height:145px;
@@ -135,10 +135,10 @@ div#totara_menu ul li ul li.selected a { font-weight:bold; }
 
 
 div#totara_menu ul li.selected div {
-	
+
 }
 
-div#totara_menu ul li.selected div a { text-decoration:underline; } 
+div#totara_menu ul li.selected div a { text-decoration:underline; }
 
 .navbar {
 	border-right:1px #ccc solid;
@@ -163,12 +163,12 @@ div#totara_menu ul li.selected div a { text-decoration:underline; }
 
 
 .sideblock {
-	
+
 	margin-bottom:8px;
 	padding-bottom:0;
 	border-bottom:1px #ccc solid;
 }
-.sideblock div.header {	
+.sideblock div.header {
 	color:#FFF;
 	font-weight:400;
 	padding:0px;
@@ -248,7 +248,7 @@ div#wrapper #left-column .sideblock a:hover {color:#ac0f0f}
 	width:100%;
 }
 
- 
+
 
 #layout-table {
 	margin-top:-5px;
@@ -314,7 +314,7 @@ div#footer .footerlinks li a:link, div#footer .footerlinks li a:visited, div#foo
 
 
 /** /////////////////////////////////////////////////////////////////////////////////////////////////// Tabs  **/
- 
+
 .tabtree {
 	margin-top:15px;
 }

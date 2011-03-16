@@ -9,13 +9,13 @@ Theme Colours:
 Contents:
 	General
 	Header
-	Menu Menu + Navbar	
+	Menu Menu + Navbar
 	Blocks
 	Layout Table + Dashboard Columns + Course Layout
 	Footer
 	Course
 	Tabs
-	
+
 */
 
 
@@ -75,7 +75,7 @@ h6 {
 
 /** /////////////////////////////////////////////////////////////////////////////////////////////////// Header  **/
 
- 
+
 div#header {
 	background-image:url(images/header.jpg);
 	height:145px;
@@ -96,7 +96,7 @@ div#totara_menu {
 	border-top:1px #FFF solid;
 	background-image:url(images/navbar.jpg);
 	background-repeat:repeat-x;
-	border-right:1px #ccc solid;	
+	border-right:1px #ccc solid;
 }
 
 div.header-search {
@@ -127,10 +127,10 @@ div#totara_menu ul li ul li.selected a { font-weight:bold; }
 
 
 div#totara_menu ul li.selected div {
-	
+
 }
 
-div#totara_menu ul li.selected div a { color:#003300; font-weight:bold; } 
+div#totara_menu ul li.selected div a { color:#003300; font-weight:bold; }
 
 .navbar {
 	border-right:1px #ccc solid;
@@ -160,7 +160,7 @@ div#totara_menu ul li.selected div a { color:#003300; font-weight:bold; }
 	margin-bottom:8px;
 	padding-bottom:0;
 }
-.sideblock div.header {	
+.sideblock div.header {
 	color:#FFF;
 	font-weight:400;
 	padding:0px;
@@ -235,7 +235,7 @@ div#totara_menu ul li.selected div a { color:#003300; font-weight:bold; }
 	width:100%;
 }
 
- 
+
 
 #layout-table {
 	margin-top:-5px;
@@ -301,7 +301,7 @@ div#footer .footerlinks li a:link, div#footer .footerlinks li a:visited, div#foo
 
 
 /** /////////////////////////////////////////////////////////////////////////////////////////////////// Tabs  **/
- 
+
 .tabtree {
 	margin-top:15px;
 }
