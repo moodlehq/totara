@@ -1202,7 +1202,7 @@ function xmldb_local_upgrade($oldversion) {
             $table->addFieldInfo('userid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
             $table->addFieldInfo('name', XMLDB_TYPE_CHAR, '255', null, null, null, null);
             $table->addFieldInfo('search', XMLDB_TYPE_TEXT, 'medium', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-            $table->addFieldInfo('public', XMLDB_TYPE_INTEGER, '4', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
+            $table->addFieldInfo('ispublic', XMLDB_TYPE_INTEGER, '4', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
 
         /// Adding keys to table report_builder_saved
             $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
@@ -1688,17 +1688,17 @@ function xmldb_local_upgrade($oldversion) {
         $field->setAttributes(XMLDB_TYPE_INTEGER, '4', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0');
         $result = $result && change_field_type($table, $field);
 
-        // add default 0 to public
-        $table = new XMLDBTable('report_builder_saved');
-        $field = new XMLDBField('public');
-        if (field_exists($table, $field)) {
-            $field->setAttributes(XMLDB_TYPE_INTEGER, '4', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0');
-            $result = $result && change_field_type($table, $field);
-        }
-
         // rename public to ispublic (keyword)
         if(field_exists($table, $field)) {
             $result = $result && rename_field($table, $field, 'ispublic');
+        }
+
+        // add default 0 to ispublic
+        $table = new XMLDBTable('report_builder_saved');
+        $field = new XMLDBField('ispublic');
+        if (field_exists($table, $field)) {
+            $field->setAttributes(XMLDB_TYPE_INTEGER, '4', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0');
+            $result = $result && change_field_type($table, $field);
         }
 
         // add default 0 to disabled
