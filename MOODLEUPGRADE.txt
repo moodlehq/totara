@@ -25,31 +25,36 @@ NOTE: Additional plugins, custom themes or customised Moodle code are likely to
 
 5.  Backup the Moodle source code directory.
 
-6.  Create a directory for the Totara source code, or overwrite the Moodle directory.
+6.  Merge the existing Moodle source code and new Totara code. This is best
+    accomplished using a version control tool like GIT or SVN. You will
+    need to:
+    - Reuse the existing Moodle's config.php file
+    - Ensure any themes are updated to work with Totara
+    - Include any existing modules and filters remain in the code
+    - Resolve any merge conflicts caused by existing local customisations
 
-7.  Extract the Totara files into the Totara directory.
+7.  Navigate to admin/index.php using a web browser and perform the install process.
 
-8.  Navigate to the Totara index.php using a web browser and perform the install process.
+8.  Click Yes on the Upgrade page.
 
-9.  Click Yes on the Upgrade page.
+9. Confirm the server status checks.
 
-10. Confirm the server status checks.
+10. Confirm the plugin status checks.
 
-11. Confirm the plugin status checks.
+11. Proceed with the initial database upgrades.
 
-12. Proceed with the initial database upgrades.
+12. Edit the New Admin Settings page if required.
 
-13. Edit the New Admin Settings page if required.
+13. Continue the database upgrades.
 
-14. Continue the database upgrades.
+14. Check for Warnings or Errors on the upgrade review page.
 
-15. Check for Warnings or Errors on the upgrade review page.
+15. Edit the New Site Settings page if required.
 
-16. Edit the New Site Settings page if required.
-
-17. Test the site functionality. The site should now be displayed with the
+16. Test the site functionality. The site should now be displayed with the
     Totara logos and theme.
 
-18. Disable server maintenance mode.
+17. Disable server maintenance mode.
 
-19. Congratulations, your site is now running Totara.
+18. Congratulations, your site is now running Totara.
+
