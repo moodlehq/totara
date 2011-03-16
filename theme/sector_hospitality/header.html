@@ -29,14 +29,12 @@
 		<!--<div class="logo">&nbsp;</div>-->
 
         </div>
-    <?php print_container_end();
-    if (!empty($SITE->fullname)) { // only show the menu if the site has been set up ?>
+    <?php print_container_end(); ?>
         <div id="totara_menu">
         <?php
             get_totara_menu();
         ?>
         </div>
-    <?php } ?>
     <div class="clear"></div></div>
     <div class="navbar clearfix">
         <div class="breadcrumb"><?php print_navigation($navigation); ?></div>
