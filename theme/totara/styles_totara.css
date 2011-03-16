@@ -2889,3 +2889,15 @@ body .ui-state-focus .ui-icon {*/
 }
 
 
+/* Removing icons from sideblock list */
+.sideblock .content ul.list li .icon,
+.dashlet .content ul.list li .icon {
+    display:none;
+}
+
+.sideblock .content ul li,
+.dashlet .content ul li {
+    padding-top: 0;
+    padding-bottom: 2px;
+}
+
