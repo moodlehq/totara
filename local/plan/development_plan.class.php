@@ -1235,7 +1235,6 @@ class development_plan {
         }
 
         commit_sql();
-        add_to_log(SITEID, 'plan', 'delete', "index.php?userid={$USER->id}", "$this->name (ID:{$this->id})" , '', $USER->id);
         return true;
     }
 
@@ -1304,16 +1303,8 @@ class development_plan {
 
         commit_sql();
 
-        switch ($status) {
-            case DP_PLAN_STATUS_APPROVED:
-                add_to_log(SITEID, 'plan', 'change status', "view.php?id={$this->id}", "plan approved (ID:{$this->id})" , '', $USER->id);
-                break;
-            case DP_PLAN_STATUS_COMPLETE:
-                add_to_log(SITEID, 'plan', 'change status', "view.php?id={$this->id}", "plan completed (ID:{$this->id})" , '', $USER->id);
-                break;
-            default:
-                break;
-        }
+        $action = ($status == DP_PLAN_STATUS_APPROVED) ? 'approved' : 'completed';
+        add_to_log(SITEID, 'plan', $action, "view.php?id={$this->id}", $this->name);
 
         return true;
     }

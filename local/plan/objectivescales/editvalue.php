@@ -116,7 +116,7 @@ if ($valueform->is_cancelled()) {
     $valuenew = get_record('dp_objective_scale_value', 'id', $valuenew->id);
 
     // Log
-    add_to_log(SITEID, 'objectivescalevalue', 'update', "view.php?id={$valuenew->objscaleid}");
+    add_to_log(SITEID, 'objectivescalevalue', 'updated', "view.php?id={$valuenew->objscaleid}");
 
     redirect("$CFG->wwwroot/local/plan/objectivescales/view.php?id={$valuenew->objscaleid}");
     // never reached

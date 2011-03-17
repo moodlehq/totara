@@ -181,7 +181,7 @@ class dp_competency_component extends dp_base_component {
                 totara_set_notification(get_string('confirmsesskeybad', 'error'), $currenturl);
             }
             if($this->remove_competency_assignment($delete)) {
-                add_to_log(SITEID, 'plan', 'delete item', "component.php?id={$this->plan->id}&c=competency", "removed competency (ID:{$delete})" , '', $USER->id);
+                add_to_log(SITEID, 'plan', 'deleted competency', "component.php?id={$this->plan->id}&c=competency", "Competency (ID:{$delete})");
                 totara_set_notification(get_string('canremoveitem','local_plan'), $currenturl, array('style' => 'notifysuccess'));
             } else {
                 totara_set_notification(get_string('cannotremoveitem', 'local_plan'), $currenturl);
@@ -812,6 +812,9 @@ class dp_competency_component extends dp_base_component {
                 if ($this->plan->status != DP_PLAN_STATUS_UNAPPROVED && count($approvals)>0) {
                     foreach($approvals as $approval) {
                         $this->send_component_approval_alert($approval);
+
+                        $action = ($approval->after == DP_APPROVAL_APPROVED) ? 'approved' : 'declined';
+                        add_to_log(SITEID, 'plan', "{$action} competency", "component.php?id={$record->planid}&amp;c=competency", $record->fullname);
                     }
                 }
             } else {
@@ -891,6 +894,7 @@ class dp_competency_component extends dp_base_component {
         $item->duedate = null;
         $item->completionstatus = null;
         $item->grade = null;
+        $competencyname = get_field('comp', 'fullname', 'id', $itemid);
 
         // Check required values for priority/due data
         if ($this->get_setting('prioritymode') == DP_PRIORITY_REQUIRED) {
@@ -909,7 +913,8 @@ class dp_competency_component extends dp_base_component {
             $item->approved = DP_APPROVAL_UNAPPROVED;
         }
 
-        return insert_record('dp_plan_competency_assign', $item) ? get_field('comp', 'fullname', 'id', $itemid) : false;
+        add_to_log(SITEID, 'plan', 'added competency', "component.php?id={$this->plan->id}&amp;c=competency", $competencyname);
+        return insert_record('dp_plan_competency_assign', $item) ? $competencyname : false;
     }
 
 

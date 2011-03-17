@@ -98,7 +98,7 @@ if (!empty($approve)) {
 if (!empty($decline)) {
     if (in_array($plan->get_setting('approve'), array(DP_PERMISSION_ALLOW, DP_PERMISSION_APPROVE))) {
         $plan->send_declined_alert();
-        add_to_log(SITEID, 'plan', 'declined', "view.php?id={$plan->id}", "plan declined (ID:{$plan->id})" , '', $USER->id);
+        add_to_log(SITEID, 'plan', 'declined', "view.php?id={$plan->id}", $plan->name);
         totara_set_notification(get_string('plandeclined', 'local_plan', $plan->name), $referer, array('style' => 'notifysuccess'));
     } else {
         if (empty($ajax)) {
@@ -120,6 +120,7 @@ if (!empty($approvalrequest)) {
             if ($USER->id == $plan->userid) {
                 if ($plan->get_manager()) {
                     $plan->send_manager_plan_approval_request();
+                    add_to_log(SITEID, 'plan', 'requested approval', "view.php?id={$plan->id}", $plan->name);
                 }
                 else {
                     totara_set_notification(get_string('nomanager', 'local_plan'), $referer);
@@ -199,6 +200,7 @@ if (!empty($delete)) {
                 // Someone else was deleting the learner's plan, notify the learner
                 $plan->send_alert(true,'learningplan-remove.png','plan-remove-learner-short','plan-remove-learner-long');
             }
+            add_to_log(SITEID, 'plan', 'deleted', "index.php?userid={$plan->userid}", "{$plan->name} (ID:{$plan->id})");
             totara_set_notification(get_string('plandeletesuccess', 'local_plan', $plan->name), $referer, array('style' => 'notifysuccess'));
         }
     } else {
@@ -235,6 +237,7 @@ if (!empty($complete)) {
             // Set plan status to complete
             $plan->set_status(DP_PLAN_STATUS_COMPLETE);
             $plan->send_completion_alert();
+            add_to_log(SITEID, 'plan', 'completed', "view.php?id={$plan->id}", $plan->name);
             totara_set_notification(get_string('plancompletesuccess', 'local_plan', $plan->name), $referer, array('style' => 'notifysuccess'));
         }
     } else {

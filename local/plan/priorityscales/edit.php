@@ -132,7 +132,7 @@ if ($mform->is_cancelled()) {
     $prioritynew = get_record('dp_priority_scale', 'id', $prioritynew->id);
 
     // Log
-    add_to_log(SITEID, 'priorities', 'update', "view.php?id=$prioritynew->id", '');
+    add_to_log(SITEID, 'priorities', 'updated', "view.php?id=$prioritynew->id");
     redirect("$CFG->wwwroot/local/plan/priorityscales/view.php?id={$prioritynew->id}");
 }
 

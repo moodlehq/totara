@@ -194,7 +194,7 @@ class dp_course_component extends dp_base_component {
 
             // Unassign item
             if ($this->unassign_item($deleteitem)) {
-                add_to_log(SITEID, 'plan', 'delete item', "component.php?id={$this->plan->id}&c=course", "removed course (ID:{$deleteitem->id})" , '', $USER->id);
+                add_to_log(SITEID, 'plan', 'removed course', "component.php?id={$this->plan->id}&amp;c=course", "{$deleteitem->fullname} (ID:{$deleteitem->id})");
                 totara_set_notification(get_string('canremoveitem','local_plan'), $currenturl, array('style' => 'notifysuccess'));
 
             } else {
@@ -269,7 +269,7 @@ class dp_course_component extends dp_base_component {
         $item->duedate = null;
         $item->completionstatus = null;
         $item->grade = null;
-
+        $coursename = get_field('course', 'fullname',  'id', $itemid);
         // Check required values for priority/due data
         if ($this->get_setting('prioritymode') == DP_PRIORITY_REQUIRED) {
             $item->priority = $this->get_default_priority();
@@ -287,7 +287,8 @@ class dp_course_component extends dp_base_component {
             $item->approved = DP_APPROVAL_UNAPPROVED;
         }
 
-        return insert_record('dp_plan_course_assign', $item) ? get_field('course', 'fullname',  'id', $itemid) : false;
+        add_to_log(SITEID, 'plan', 'added course', "component.php?id={$this->plan->id}&amp;c=course", $coursename);
+        return insert_record('dp_plan_course_assign', $item) ? $coursename : false;
     }
 
 
@@ -725,6 +726,9 @@ class dp_course_component extends dp_base_component {
                 if ($this->plan->status != DP_PLAN_STATUS_UNAPPROVED && count($approvals)>0) {
                     foreach($approvals as $approval) {
                         $this->send_component_approval_alert($approval);
+
+                        $action = ($approval->after == DP_APPROVAL_APPROVED) ? 'approved' : 'declined';
+                        add_to_log(SITEID, 'plan', "{$action} course", "component.php?id={$record->planid}&amp;c=course", $record->fullname);
                     }
                 }
 

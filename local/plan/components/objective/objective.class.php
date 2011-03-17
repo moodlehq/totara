@@ -542,6 +542,9 @@ class dp_objective_component extends dp_base_component {
                 if ($this->plan->status != DP_PLAN_STATUS_UNAPPROVED && count($approvals)>0) {
                     foreach($approvals as $approval) {
                         $this->send_component_approval_alert($approval);
+
+                        $action = ($approval->after == DP_APPROVAL_APPROVED) ? 'approved' : 'declined';
+                        add_to_log(SITEID, 'plan', "{$action} objective", "component.php?id={$this->plan->id}&amp;c=objective", $record->fullname);
                     }
                 }
             } else {
@@ -590,7 +593,7 @@ class dp_objective_component extends dp_base_component {
 
         // are we OK? then send the alerts
         if ($result) {
-            add_to_log(SITEID, 'plan', 'delete item', "component.php?id={$this->plan->id}&c=objective", "removed objective (ID:{$caid})" , '', $USER->id);
+            add_to_log(SITEID, 'plan', 'deleted objective', "component.php?id={$this->plan->id}&amp;c=objective", "{$objective->fullname} (ID:{$caid})");
             $this->send_deletion_alert($objective);
         }
 
@@ -622,7 +625,7 @@ class dp_objective_component extends dp_base_component {
 
         if($result = insert_record('dp_plan_objective', $rec)) {
             $this->send_creation_alert($result, $fullname);
-            add_to_log(SITEID, 'plan', 'add item', "component.php?id={$rec->planid}&c=objective", "added objective (ID:{$result})" , '', $USER->id);
+            add_to_log(SITEID, 'plan', 'added objective', "component.php?id={$rec->planid}&amp;c=objective", $rec->fullname);
         }
 
         return $result;

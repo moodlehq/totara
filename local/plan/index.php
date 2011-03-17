@@ -79,10 +79,12 @@ print_heading($heading);
 print_container_start(false, '', 'dp-plans-description');
 if($planuser == $USER->id) {
     $planinstructions = '<div class="instructional_text">' . get_string('planinstructions', 'local_plan');
+    add_to_log(SITEID, 'plan', 'view all', "index.php?userid={$planuser}");
 } else {
     $user = get_record('user', 'id', $planuser);
     $userfullname = fullname($user);
     $planinstructions = '<div class="instructional_text">' . get_string('planinstructionsuser', 'local_plan', $userfullname);
+    add_to_log(SITEID, 'plan', 'view all', "index.php?userid={$planuser}", $userfullname);
 }
 if($canaddplan) {
     $planinstructions .= get_string('planinstructions_add', 'local_plan');

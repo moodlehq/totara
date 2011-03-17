@@ -166,7 +166,7 @@ if ( $deleteyes ){
                 }
             }
 
-            add_to_log(SITEID, 'plan', 'update item', "component.php?id={$record->planid}&c=objective", "updated objective (ID:{$record->id})" , '', $USER->id);
+            add_to_log(SITEID, 'plan', 'updated objective', "component.php?id={$record->planid}&amp;c=objective", $record->fullname);
             // now - back to the screen notifications ...
             totara_set_notification(get_string('objectiveupdated', 'local_plan'), $objviewurl, array('style'=>'notifysuccess'));
         }
