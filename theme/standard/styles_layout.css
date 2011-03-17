@@ -4888,3 +4888,14 @@ span.coursecompletionstatus span.completion-complete,
 span.coursecompletionstatus span.completion-completeviarpl {
     background-position: 0px -24px;
 }
+
+/* Course item styles */
+
+table.planiteminfobox {
+    width: 100%;
+}
+
+table.planiteminfobox td {
+    padding: 5px;
+    text-align: center;
+}

@@ -2901,3 +2901,7 @@ body .ui-state-focus .ui-icon {*/
     padding-bottom: 2px;
 }
 
+table.planiteminfobox td {
+    background-color: #F0F0F0;
+    border: 2px solid white;
+}
