@@ -191,16 +191,17 @@ function xmldb_local_reportbuilder_upgrade($oldversion=0) {
         );
 
         foreach($custom_field_locations as $type => $location){
-            $cust_fields = get_records($location);
-            foreach($cust_fields as $c) {
-                $columns = get_records('report_builder_columns', 'type', $type);
-                if($columns) {
-                    foreach($columns as $col) {
-                        if($col->value == $c->shortname) {
-                            $newrec = new object();
-                            $newrec->id = $col->id;
-                            $newrec->value = $type . '_' . $c->id;
-                            $result = $result && update_record('report_builder_columns', $newrec);
+            if($cust_fields = get_records($location)) {
+                foreach($cust_fields as $c) {
+                    $columns = get_records('report_builder_columns', 'type', $type);
+                    if($columns) {
+                        foreach($columns as $col) {
+                            if($col->value == $c->shortname) {
+                                $newrec = new object();
+                                $newrec->id = $col->id;
+                                $newrec->value = $type . '_' . $c->id;
+                                $result = $result && update_record('report_builder_columns', $newrec);
+                            }
                         }
                     }
                 }
