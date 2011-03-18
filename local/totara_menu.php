@@ -251,7 +251,7 @@ if($header){
 
     <li class="last<?php echo $selected['calendar']; ?> menu6">
         <div>
-        <a href="<?php echo $CFG->wwwroot.'/blocks/facetoface/calendar.php' ?>"><?php echo get_string('calendar', 'local') ?></a>
+        <a href="<?php echo $CFG->wwwroot.'/calendar/view.php?view=month' ?>"><?php echo get_string('calendar', 'local') ?></a>
         </div>
     </li>
 </ul>
