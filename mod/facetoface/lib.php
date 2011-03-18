@@ -442,7 +442,7 @@ function facetoface_add_session($session, $sessiondates)
         // Put the sessions in this user's calendar
         // (i.e. we're assuming it's the teacher)
         $session->sessiondates = $sessiondates;
-        facetoface_add_session_to_user_calendar($session, $eventname, $USER->id, 'session');
+        facetoface_add_session_to_user_calendar($session, addslashes($eventname), $USER->id, 'session');
 
         return $session->id;
     } else {
@@ -3401,7 +3401,7 @@ function facetoface_update_calendar_events($session, $eventtype)
         // Add this session to these users' calendar
         $eventname = get_field('facetoface', 'name', 'id', $session->facetoface);
         foreach($users as $user) {
-            $result = $result && facetoface_add_session_to_user_calendar($session, $eventname, $user->userid, $eventtype);
+            $result = $result && facetoface_add_session_to_user_calendar($session, addslashes($eventname), $user->userid, $eventtype);
         }
     }
 
