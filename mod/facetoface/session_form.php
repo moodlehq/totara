@@ -181,7 +181,7 @@ class mod_facetoface_session_form extends moodleform {
         for($i=0; $i < $dates; $i++) {
             $starttime = $data["timestart[$i]"];
             $endtime = $data["timefinish[$i]"];
-            $removecheckbox = $data["datedelete"];
+            $removecheckbox = empty($data["datedelete"]) ? array() : $data["datedelete"];
             if($starttime > $endtime && !isset($removecheckbox[$i])) {
                 $errstr = get_string('error:sessionstartafterend','facetoface');
                 $errors['timestart['.$i.']'] = $errstr;
