@@ -1452,4 +1452,18 @@ abstract class dp_base_component {
         return get_records_menu($table, 'planid', $this->plan->id, 'id', "id,$field");
     }
 
+    /**
+     * Override this function in component classes to return statistics
+     * giving progress in that component
+     *
+     * @return mixed Object containing stats, or false if no progress stats available
+     *
+     * Object should contain the following properties:
+     *    $progress->complete => Integer count of number of items completed
+     *    $progress->total => Integer count of total number of items in this plan
+     *    $progress->text => String description of completion (for use in tooltip)
+     */
+    public function progress_stats() {
+        return false;
+    }
 }

@@ -503,6 +503,8 @@ $string['youareviewingxsplans'] = '<strong>You are viewing <a href=\"{$a->site}/
 $string['notcompleted'] = 'Not completed';
 $string['coursescomplete'] = 'Courses complete';
 $string['inprogress'] = 'In progress';
+$string['competenciesachieved'] = 'Competencies achieved';
+$string['objectivesmet'] = 'Objectives met';
 $string['actions'] = 'Actions';
 $string['confirmitemdelete'] = 'Are you sure you want to remove this item?';
 $string['cannotremoveitem'] = 'There was a problem removing that item';

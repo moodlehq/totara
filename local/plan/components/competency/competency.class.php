@@ -1176,4 +1176,52 @@ class dp_competency_component extends dp_base_component {
         return get_field_sql($sql);
     }
 
+
+    /*
+     * Return data about competency progress within this plan
+     *
+     * @return mixed Object containing stats, or false if no progress stats available
+     *
+     * Object should contain the following properties:
+     *    $progress->complete => Integer count of number of items completed
+     *    $progress->total => Integer count of total number of items in this plan
+     *    $progress->text => String description of completion (for use in tooltip)
+     */
+    public function progress_stats() {
+
+        // array of all comp scale value ids that represent a status of proficient
+        $proficient_scale_values = get_records('comp_scale', '', '', '', 'proficient');
+        $proficient_ids = ($proficient_scale_values) ? array_keys($proficient_scale_values) : array();
+
+        $completedcount = 0;
+        // Get competencies assigned to this plan
+        if ($competencies = $this->get_assigned_items()) {
+            foreach ($competencies as $c) {
+                if (!$c->approved) {
+                    continue;
+                }
+
+                // Determine proficiency
+                $scalevalueid = $c->profscalevalueid;
+                if (empty($scalevalueid)) {
+                    continue;
+                }
+
+                if (in_array($scalevalueid, $proficient_ids)) {
+                    $completedcount++;
+                }
+            }
+        }
+        $progress_str = "{$completedcount}/" . count($competencies) . " " .
+            get_string('competenciesachieved', 'local_plan') . "\n";
+
+        $progress = new object();
+        $progress->complete = $completedcount;
+        $progress->total = count($competencies);
+        $progress->text = $progress_str;
+
+        return $progress;
+    }
+
 }
+

@@ -1158,4 +1158,53 @@ SQL;
         $can['setproficiency'] = $this->get_setting('setproficiency') >= DP_PERMISSION_ALLOW;
         return $can;
     }
+
+
+    /*
+     * Return data about objective progress within this plan
+     *
+     * @return mixed Object containing stats, or false if no progress stats available
+     *
+     * Object should contain the following properties:
+     *    $progress->complete => Integer count of number of items completed
+     *    $progress->total => Integer count of total number of items in this plan
+     *    $progress->text => String description of completion (for use in tooltip)
+     */
+    public function progress_stats() {
+
+        // array of all objective scale value ids that are 'achieved'
+        $achieved_scale_values = get_records('dp_objective_scale_value', 'achieved', '1', '', 'id');
+        $achieved_ids = ($achieved_scale_values) ? array_keys($achieved_scale_values) : array();
+
+        $completedcount = 0;
+        // Get courses assigned to this plan
+        if ($objectives = $this->get_assigned_items()) {
+            foreach ($objectives as $o) {
+                if (!$o->approved) {
+                    continue;
+                }
+
+                // Determine proficiency
+                $scalevalueid = $o->scalevalueid;
+                if (empty($scalevalueid)) {
+                    continue;
+                }
+
+                if (in_array($scalevalueid, $achieved_ids)) {
+                    $completedcount++;
+                }
+            }
+        }
+        $progress_str = "{$completedcount}/" . count($objectives) . " " .
+            get_string('objectivesmet', 'local_plan') . "\n";
+
+        $progress = new object();
+        $progress->complete = $completedcount;
+        $progress->total = count($objectives);
+        $progress->text = $progress_str;
+
+        return $progress;
+    }
+
 }
+

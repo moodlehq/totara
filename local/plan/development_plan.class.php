@@ -522,45 +522,26 @@ class development_plan {
             return $out;
         }
 
-        $completionsum = 0;
-        $completedcount = 0;
-        $inprogresscount = 0;
-        $progress = 0;
-
-        // Get courses assigned to this plan
-        if ($courses = $this->get_component('course')->get_assigned_items()) {
-            foreach ($courses as $c) {
-                if (!$c->approved) {
-                    continue;
-                }
-                // Determine course completion
-                $completionstatus = $this->get_component('course')->get_item_completion_status($c);
-                if (empty($completionstatus)) {
-                    continue;
-                }
-                switch ($completionstatus) {
-                    case 'complete' :
-                    case 'completeviarpl' :
-                        $completionsum += 1;
-                        $completedcount++;
-                        break;
-                    case 'inprogress' :
-                    default:
-                        $completionsum += 0.5;
-                        $inprogresscount++;
-                        break;
-
-                }
+        $overall_complete = 0;
+        $overall_total = 0;
+        $overall_strings = array();
+        foreach($this->get_components() as $component) {
+            if($stats = $component->progress_stats()) {
+                $overall_complete += $stats->complete;
+                $overall_total += $stats->total;
+                $overall_strings[] = $stats->text;
             }
-
-            // Calculate progress
-            $progress = $completionsum / count($courses) * 100;
-            $progress = round($progress, 2);
         }
-        $tooltipstr = "{$completedcount}/".count($courses)." ".get_string('coursescomplete', 'local_plan').", {$inprogresscount} ".get_string('inprogress', 'local_plan')." ({$progress}%)";
+
+        // Calculate plan progress
+        $overall_progress = $overall_complete / $overall_total * 100.0;
+        $overall_progress = round($overall_progress, 2);
+
+        array_unshift($overall_strings, 'Plan Progress: ' . $overall_progress . "%\n\n");
+        $tooltipstr = implode(' | ', $overall_strings);
 
         // Get relevant progress bar and return for display
-        return local_display_progressbar($progress, 'medium', false, $tooltipstr);
+        return local_display_progressbar($overall_progress, 'medium', false, $tooltipstr);
     }
 
 

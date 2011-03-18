@@ -855,4 +855,58 @@ class dp_course_component extends dp_base_component {
         return $markup;
     }
 
+    /*
+     * Return data about course progress within this plan
+     *
+     * @return mixed Object containing stats, or false if no progress stats available
+     *
+     * Object should contain the following properties:
+     *    $progress->complete => Integer count of number of items completed
+     *    $progress->total => Integer count of total number of items in this plan
+     *    $progress->text => String description of completion (for use in tooltip)
+     */
+    public function progress_stats() {
+
+        $completedcount = 0;
+        $completionsum = 0;
+        $inprogresscount = 0;
+        // Get courses assigned to this plan
+        if ($courses = $this->get_assigned_items()) {
+            foreach ($courses as $c) {
+                if (!$c->approved) {
+                    continue;
+                }
+                // Determine course completion
+                $completionstatus = $this->get_item_completion_status($c);
+                if (empty($completionstatus)) {
+                    continue;
+                }
+                switch ($completionstatus) {
+                    case 'complete' :
+                    case 'completeviarpl' :
+                        $completionsum += 1;
+                        $completedcount++;
+                        break;
+                    case 'inprogress' :
+                    default:
+                        $completionsum += 0.5;
+                        $inprogresscount++;
+                        break;
+                }
+            }
+        }
+
+        $progress_str = "{$completedcount}/" . count($courses) . " " .
+            get_string('coursescomplete', 'local_plan') . ", {$inprogresscount} " .
+            get_string('inprogress', 'local_plan') . "\n";
+
+        $progress = new object();
+        $progress->complete = $completionsum;
+        $progress->total = count($courses);
+        $progress->text = $progress_str;
+
+        return $progress;
+    }
+
 }
+
