@@ -329,7 +329,7 @@ class moodleform_mod extends moodleform {
         }
 
         if(!isset($this->_features->defaultcompletion)) {
-            $this->_features->defaultcompletion = true;
+            $this->_features->defaultcompletion = false;
         }
 
         $outcomesused = false;
