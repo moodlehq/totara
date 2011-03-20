@@ -948,7 +948,7 @@ h6 {
 }
 .tabrow0 div,
 .tabrow0 ul {
-  top: 2.4em;
+  top: 2.5em;
 }
 .tabrow0{
   line-height: 2.5em;
@@ -1005,7 +1005,11 @@ ul.tabrow1 {
     border-right: 1px solid #ccc;
     padding-bottom: 0.5em;
 }
-
+.tabrow1 li a:link,
+.tabrow1 li a:hover,
+.tabrow1 li a:visited {
+  font-size: 1.3em !important;
+}
 
 /* Hover Styles */
 .tabrow0 a:link:hover,
