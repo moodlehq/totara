@@ -3507,9 +3507,9 @@ table.centerblock th.status, table.centerblock td.status {
 }
 #site-index #middle-column div.mycourses .content .allmycourses {
    font-family: 'Trebuchet ms', Verdana, Arial, Helvetica, sans-serif;
-   text-align:right;
+   text-align: right;
    font-size: 1em;
-   font-weight:normal;
+   font-weight: normal;
    padding: 5px 7px 5px 7px;
 }
 #site-index #middle-column div.mycourses .content .allmycourses a {
