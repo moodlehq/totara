@@ -748,17 +748,17 @@ div.totara-dialog {
 			width: 80%;
 			outline:none;
 		    }
-		    div.totara-dialog .selected span span.addbutton,
-		    div.totara-dialog .selected span span.deletebutton {
-			background: none repeat scroll 0 0 transparent;
-			cursor: pointer;
-			display: block;
-			float: right;
-			margin: 0;
-			overflow: hidden;
-			text-indent: -999px;
-			width: 18%;
-		    }
+div.totara-dialog .selected span span.addbutton,
+div.totara-dialog .selected span span.deletebutton {
+    background: none repeat scroll 0 0 transparent;
+    cursor: pointer;
+    display: block;
+    float: left;
+    margin: 0;
+    overflow: hidden;
+    text-indent: -999px;
+    width: 16%;
+}
 		    /* Handle hovers */
 		    div.totara-dialog .selected span:hover span.deletebutton {
 			background-image: url("../../theme/totara/pix/t/delete.gif");

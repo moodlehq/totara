@@ -2,6 +2,9 @@
  * These styles are ONLY included for IE6 (via meta.php)
  */
 
+/**
+ * Header & menu fixes
+ **/
 #wrapper {
      background: transparent url('images/bg_no_shadow.png') repeat-y top center;
 }
@@ -23,4 +26,174 @@ div#totara_menu ul li div a {
 }
 div#totara_menu ul {
 	height:72px;
+}
+
+/**
+ * Element default fixes
+ **/
+
+input, select, button {
+  padding-left:3px;
+  padding-right:3px;
+  overflow:visible;
+}
+
+
+/**
+ * Main content area and common layout fixes
+ **/
+div#content {
+	margin: 0px 0px 100px;
+	padding: 10px;
+}
+body#course-user .section {
+  margin-top: 20px;
+}
+
+
+div#footer {
+    position: relative;
+}
+
+table.centerblock th.enroldate, table.centerblock td.enroldate,
+table.centerblock th.startdate, table.centerblock th.completeddate {
+    width: 65px;
+}
+
+td.status {
+	/*
+		background image sprite showing too much, reducing line-/height didn't work...
+		more specific selector eg; div.block_totara_recent_learning td.status
+	*/
+}
+
+/**
+ * Element state fixes
+ **/
+li.active {
+  border:0 none !important;
+}
+
+
+/* Login page */
+#login-index .loginpanel,
+#login-index .loginbox .loginform .form-label,
+#login-index .loginbox .loginform .form-input {
+    position:relative;
+}
+
+/* Admin block */
+#left-column .block_admin_tree {
+    position:relative;
+}
+
+/**
+ * Tabrow multi-tiered navigation
+ **/
+/* Tier 1 */
+.tabrow0 div, .tabrow0 ul {
+	top:4.0em;
+}
+.tabrow0 div.empty {
+	margin-right: 0;
+	margin-top:8px !important;
+}
+.tabrow0 .first a:link,
+.tabrow0 .first a:hover,
+.tabrow0 .first a:visited {
+	margin-left:4px;
+}
+.tabrow0 .last a:hover,
+.tabrow0 a:hover {
+	background-image: url(images/tab/left_white.gif) !important;
+}
+
+/* Tier 2 */
+ul.tabrow1 {
+	margin-top: 8px !important;
+	padding: 5px 0;
+}
+ul.tabrow1 li a:hover,
+ul.tabrow1 li.last a:hover {
+	background-image:none !important;
+}
+ul.tabrow1 li.here,
+ul.tabrow1 li a:link,
+ul.tabrow1 li a:hover,
+ul.tabrow1 li a:visited {
+	background-image:none !important;
+}
+
+/* Fix for selects which ignore z-index rules */
+.hidden_select_ie {
+    display:none;
+}
+
+/**
+ * Report builder
+ **/
+.reportbuilder-table .course_courselinkicon img,
+.reportbuilder-table .course_category_namelinkicon img {
+	margin-top:-9px;
+}
+
+/**
+ * Fixing the tree dialogs
+ **/
+div.totara-dialog div.ui-dialog-buttonpane button {
+    padding-bottom: 0.1em;
+}
+div.totara-dialog div.yui-isloading {
+    background-position: 675px 0px;
+}
+div.totara-dialog ul.treeview li {
+    float: left;
+    width: 80%;
+}
+div.totara-dialog ul.treeview li span.folder {
+    float: left;
+}
+
+.dashboard .dashlet_container {
+    position: relative;
+}
+
+div.totara-dialog .selected span span.deletebutton {
+    background-image: url("../../theme/totara/pix/t/delete.gif");
+    background-repeat: no-repeat;
+    background-position: right center;
+}
+
+div.totara-dialog #dialog-search-table .querybox input {
+    position: static;
+    width: 90px !important;
+    margin-left: 0 !important;
+}
+
+div.totara-dialog #dialog-search-table select#id_frameworkid,
+div.totara-dialog #dialog-search-table select#id_frameworkid.totara-expanded-width {
+    /* The 2nd of these selectors is applied by inline Javascript, applying absolute positioning */
+    position: static;
+    width: 265px;
+}
+
+/**
+ * My Team - Manager role
+ **/
+th.user_namewithlinks {
+    width: 40%;
+}
+
+td.user_namewithlinks div.picture a:link,
+td.user_namewithlinks div.picture a:hover,
+td.user_namewithlinks div.picture a:visited,
+td.user_namewithlinks div.picture span.username {
+    float: left;
+    height: 35px;
+    line-height: 35px;
+    vertical-align: middle;
+}
+
+td.user_namewithlinks div.links {
+    clear: both;
 }
