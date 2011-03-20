@@ -460,8 +460,8 @@ var comptree = [' . implode(', ', $comptrees) . '];
     static function find_source_dirs() {
         global $CFG;
         // list of directories to look in for source classes
-        // from dirroot, include leading slash
-        $SOURCE_SEARCH_PATH = array('/local','/mod');
+        // from dirroot, include leading and trailing slashes
+        $SOURCE_SEARCH_PATH = array('/local/','/mod/');
         $sourcepaths = array();
         foreach($SOURCE_SEARCH_PATH as $path) {
             $sourcepaths = array_merge($sourcepaths,
@@ -485,8 +485,13 @@ var comptree = [' . implode(', ', $comptrees) . '];
     static function glob_r($pattern='*', $flags = 0, $path='') {
         $paths = glob($path.'*', GLOB_MARK|GLOB_ONLYDIR|GLOB_NOSORT);
         $files = glob($path.$pattern, $flags);
-        foreach ($paths as $path) {
-            $files = array_merge($files, (array) self::glob_r($pattern, $flags, $path));
+        if($files === false) {
+            $files = array();
+        }
+        if(is_array($paths) && count($paths) > 0) {
+            foreach ($paths as $path) {
+                $files = array_merge($files, (array) self::glob_r($pattern, $flags, $path));
+            }
         }
         return $files;
     }
