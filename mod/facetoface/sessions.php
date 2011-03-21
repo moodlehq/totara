@@ -188,10 +188,10 @@ if ($fromform = $mform->get_data()) { // Form submitted
     }
 
     if ($update) {
-        add_to_log($course->id, 'facetoface', 'update session', "sessions.php?s=$session->id", $facetoface->id, $cm->id);
+        add_to_log($course->id, 'facetoface', 'updated session', "sessions.php?s=$session->id", $facetoface->id, $cm->id);
     }
     else {
-        add_to_log($course->id, 'facetoface', 'add session', 'facetoface', 'sessions.php?f='.$facetoface->id, $facetoface->id, $cm->id);
+        add_to_log($course->id, 'facetoface', 'added session', "sessions.php?f=$facetoface->id", $facetoface->id, $cm->id);
     }
 
     commit_sql();

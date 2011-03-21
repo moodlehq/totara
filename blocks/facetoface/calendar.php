@@ -61,6 +61,8 @@ $navlinks[] = array('name' => $pagetitle);
 $navigation = build_navigation($navlinks);
 print_header_simple($pagetitle, '', $navigation, '', '', true);
 
+add_to_log(SITEID, "facetoface", "view calendar", "calendar.php?tab={$currenttab}&amp;{$baseparams}");
+
 // Custom field filters
 $tablecells = array();
 foreach ($customfields as $field) {

@@ -41,7 +41,7 @@
     $strdelete = get_string('delete');
     $straction = get_string('action');
 
-
+    add_to_log(SITEID, "course", "view all", "index.php");
 /// Unless it's an editing admin, just print the regular listing of courses/categories
     if (!$adminediting) {
 

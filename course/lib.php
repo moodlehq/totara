@@ -87,6 +87,12 @@ function make_log_url($module, $url) {
         case 'reportbuilder':
             $url = '/local/reportbuilder/'.$url;
             break;
+        case 'my':
+            $url = '/my/'.$url;
+            break;
+        case 'facetoface':
+            $url = '/blocks/facetoface/'.$url;
+            break;
         default:
             $url = "/mod/$module/$url";
             break;
