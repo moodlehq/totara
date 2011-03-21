@@ -5,14 +5,14 @@
 /// how Moodle uses this theme.
 ////////////////////////////////////////////////////////////////////////////////
 
-$THEME->sheets = array('jquery-ui-1.7.2.custom','jquery.treeview','styles_menu','styles_page','styles_buttons','styles_totara','styles_totara_common');
+$THEME->sheets = array('jquery-ui-1.7.2.custom','jquery.treeview','styles_menu','styles_page','styles_buttons','styles_totara');
 
 /// This variable is an array containing the names of all the 
 /// stylesheet files you want included in this theme, and in what order
 ////////////////////////////////////////////////////////////////////////////////
 
 
-$THEME->standardsheets = array('jquery-ui-1.7.2.custom','jquery.treeview','styles_layout', 'styles_fonts', 'styles_color');
+$THEME->standardsheets = true;
 
 /// This variable can be set to an array containing
 /// filenames from the *STANDARD* theme.  If the 
@@ -27,7 +27,7 @@ $THEME->standardsheets = array('jquery-ui-1.7.2.custom','jquery.treeview','style
 ////////////////////////////////////////////////////////////////////////////////
 
 
-$THEME->parent = '';  
+$THEME->parent = false;
 
 /// This variable can be set to the name of a parent theme
 /// which you want to have included before the current theme.
