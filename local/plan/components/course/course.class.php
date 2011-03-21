@@ -175,6 +175,7 @@ class dp_course_component extends dp_base_component {
      * @return  void
      */
     public function process_action_hook() {
+        global $USER;
 
         $delete = optional_param('d', 0, PARAM_INT); // course assignment id to delete
         $confirm = optional_param('confirm', 0, PARAM_INT); // confirm delete
