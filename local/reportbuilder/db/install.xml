@@ -123,14 +123,13 @@
     <TABLE>
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" NEXT="reportid"/>
-        <FIELD NAME="reportid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" PREVIOUS="id" NEXT="userid"/>
-        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" PREVIOUS="reportid" NEXT="savedsearchid"/>
-        <FIELD NAME="savedsearchid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" PREVIOUS="userid" NEXT="format"/>
-        <FIELD NAME="format" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" PREVIOUS="savedsearchid" NEXT="frequency"/>
-        <FIELD NAME="frequency" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" PREVIOUS="format" NEXT="schedule"/>
-        <FIELD NAME="schedule" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" PREVIOUS="frequency" NEXT="nextreport"/>
-        <FIELD NAME="nextreport" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" PREVIOUS="schedule"/>
-
+        <FIELD NAME="reportid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="id" NEXT="userid"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="reportid" NEXT="savedsearchid"/>
+        <FIELD NAME="savedsearchid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="userid" NEXT="format"/>
+        <FIELD NAME="format" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="savedsearchid" NEXT="frequency"/>
+        <FIELD NAME="frequency" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="format" NEXT="schedule"/>
+        <FIELD NAME="schedule" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="frequency" NEXT="nextreport"/>
+        <FIELD NAME="nextreport" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="schedule"/>
       </FIELDS>
     </TABLE>
   </TABLES>
