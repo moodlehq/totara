@@ -1,5 +1,33 @@
 Totara LMS Changelog
 
+Release 1.0.4 (22 March 2011):
+==================================================
+Security fixes:
+    7149    Face-to-face event name is not escaped before inserting into database   Only exploitable by users who are able to create Face-to-face activities
+
+Improvements:
+    7951    Point calendar tab in main menu to the site calendar rather than the Face-to-face calendar      Calendar will look slightly different, and may contain more events
+    7866    Improve Learning Plan progress to include all components                                        Learning Plans now require all component entries to be complete
+    7939    Add custom user profile fields to "user" Report Builder source                                  More column options available when creating user reports
+    7900    Do not enable activity completion by default for new activities
+    7941    Add cancel buttons when editing Learning Plan template workflows
+    7935    Hide icons in Course Administration menu in Totara theme
+    6072    Standardized line endings in sector themes                                                      Remove windows line endings and whitespace to clean up code
+
+Bug fixes:
+    7561    Errors during MSSQL install                                 A fresh Totara install on MSSQL now completes successfully
+    7949    TinyMCE "insert table" button fails in Google Chrome
+    7966    Numerous IE6 theme issues
+    7963    Default Course/Category icons inconsistent                  Default icon's have been updated to be consistent with the rest
+    7879    Styling lost for Learning Plan item view page               Fix spacing and colouring of details
+    7955    Improve error checking in Report Builder source search      Fixes broken reports that occurred when PHP safe mode was on
+    7937    Remove footer help links from themes                        Footer no longer shows link to moodle help documentation
+    6739    Report Builder upgrade script not checking custom fields    Previous upgrades threw errors if no custom fields were defined
+    7944    Removed unnecessary check before displaying menu in theme   When an installations fullname was an empty string, the header menu in Totara did not display
+    7916    Unique reference to custom fields in Report Builder         Fixes bug when custom field shortnames contain upper case letters
+    7943    Problem when triggering an error in Report Builder          Error now displays with correct information
+
+
 Release 1.0.3 (15 March 2011):
 ==================================================
 Improvements:
