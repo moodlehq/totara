@@ -342,13 +342,6 @@ $local_capabilities = array(
         ),
     ),
 
-    // Ability for managers to receive notification emails.
-    // used by lplan_email_notification
-    'moodle/local:receivenotification' => array(
-        'captype' => 'read',
-        'contextlevel' => CONTEXT_USER,
-    ),
-
     // Assign a position to yourself
     'moodle/local:assignselfposition' => array(
         'captype' => 'write',

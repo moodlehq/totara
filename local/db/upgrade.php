@@ -1075,7 +1075,6 @@ function xmldb_local_upgrade($oldversion) {
         // Delete these because they're not in use
         $deletelist = array(
             'moodle/local:editownfavourite',
-            'moodle/local:receivenotification',
             'moodle/local:viewfavourite',
             'moodle/local:viewownfavourite',
             'moodle/local:withdrawownplan'
