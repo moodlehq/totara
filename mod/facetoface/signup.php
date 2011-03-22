@@ -49,8 +49,6 @@ if (isguestuser()) {
     exit();
 }
 
-require_capability('mod/facetoface:signup', $context);
-
 $manageremail = false;
 if (get_config(NULL, 'facetoface_addchangemanageremail')) {
     $manageremail = facetoface_get_manageremail($USER->id);
@@ -162,6 +160,10 @@ if ($signedup) {
 elseif (facetoface_manager_needed($facetoface) && !facetoface_get_manageremail($USER->id)){
     // Check to see if the user has a managers email set
     echo '<p><strong>'.get_string('error:manageremailaddressmissing', 'facetoface').'</strong></p>';
+    echo '<br/><a href="'.$returnurl.'" title="'.get_string('goback', 'facetoface').'">'.get_string('goback', 'facetoface').'</a>';
+}
+elseif (!has_capability('mod/facetoface:signup', $context)) {
+    echo '<p><strong>'.get_string('error:nopermissiontosignup', 'facetoface').'</strong></p>';
     echo '<br/><a href="'.$returnurl.'" title="'.get_string('goback', 'facetoface').'">'.get_string('goback', 'facetoface').'</a>';
 }
 else {

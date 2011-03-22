@@ -138,6 +138,7 @@ $string['error:manageremailaddressmissing'] = 'You are currently not assigned to
 $string['error:mustspecifycoursemodulefacetoface'] = 'Must specify a course module or a facetoface ID';
 $string['error:nomanageremail'] = 'You didn\'t provide an email address for your manager';
 $string['error:nomanagersemailset'] = 'No manager email is set';
+$string['error:nopermissiontosignup'] = 'You don\'t have permission to signup to this facetoface session.';
 $string['error:problemsigningup'] = 'There was a problem signing you up.';
 $string['error:removeattendee'] = 'Could not remove $a from the session.';
 $string['error:sessionstartafterend'] = 'Session start date/time is after end.';
