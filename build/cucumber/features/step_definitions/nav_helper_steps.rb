@@ -3,7 +3,6 @@ When /^I delete the (\d+)(?:st|nd|rd|th) (\w+) framework$/ do |number, framework
     click_link "Delete"
   end
   click_button "Yes"
-  click_button "Continue"
 end
 
 When /^I ([\w\s]+) the (\d+)(?:st|nd|rd|th) ([\w\s]+) entry$/ do |action, number, cssname|

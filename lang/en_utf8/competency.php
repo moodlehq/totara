@@ -67,6 +67,7 @@ $string['deletedcompetencyscale'] = 'The competency scale $a has been completely
 $string['deletedcompetencyscalevalue'] = 'The competency scale value $a has been deleted.';
 $string['deleteframework'] = 'Delete $a';
 $string['deletedframework'] = 'The competency framework $a and its data have been completely deleted.';
+$string['error:deletedframework'] = 'Error deleting competency framework $a and its data.';
 $string['deletedtemplate'] = 'The competency template $a and its data have been completely deleted.';
 $string['depthlevel'] = 'Depth level';
 $string['depthlevels'] = 'Depth levels';

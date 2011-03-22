@@ -135,12 +135,13 @@ class competency extends hierarchy {
         if (count_records($this->shortprefix.'_scale_assignments', 'frameworkid', $this->frameworkid)) {
             if (!delete_records($this->shortprefix.'_scale_assignments', 'frameworkid', $this->frameworkid)) {
                 rollback_sql();
-                error('Could not delete scale assignments');
+                return false;
             }
         }
 
         // End transaction
         commit_sql();
+        return true;
     }
 
     /**

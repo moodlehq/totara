@@ -763,7 +763,7 @@ class hierarchy {
 
     /**
      * Delete a framework and its contents
-     * @return  void
+     * @return  boolean
      */
     function delete_framework() {
         global $CFG;
@@ -771,10 +771,17 @@ class hierarchy {
         // Get all items in the framework
         $items = $this->get_items();
 
+        begin_sql();
+
         if ($items) {
             foreach ($items as $item) {
                 // Delete all info data for each framework item
-                delete_records($this->shortprefix.'_depth_info_data', $this->prefix.'id', $item->id);
+                if($item->parentid == 0) {
+                    if(!$this->delete_framework_item($item->id, false)) {
+                        rollback_sql();
+                        return false;
+                    }
+                }
             }
         }
 
@@ -783,28 +790,46 @@ class hierarchy {
 
         if ($depths) {
             foreach ($depths as $depth) {
-                $this->delete_depth_metadata($depth->id);
+                if(!$this->delete_depth_metadata($depth->id)) {
+                    rollback_sql();
+                    return false;
+                }
             }
         }
 
         // Delete all depths in the framework
-        delete_records($this->shortprefix.'_depth', 'frameworkid', $this->frameworkid);
+        if(!delete_records($this->shortprefix.'_depth', 'frameworkid', $this->frameworkid)) {
+            rollback_sql();
+            return false;
+        }
 
         // Delete all items in the framework
-        delete_records($this->shortprefix, 'frameworkid', $this->frameworkid);
+        if(!delete_records($this->shortprefix, 'frameworkid', $this->frameworkid)) {
+            rollback_sql();
+            return false;
+        }
 
         // Finally delete this framework
-        delete_records($this->shortprefix.'_framework', 'id', $this->frameworkid);
+        if(!delete_records($this->shortprefix.'_framework', 'id', $this->frameworkid)) {
+            rollback_sql();
+            return false;
+        }
 
         // Rewrite the sort order to account for the missing framework
         $sortorder = 1;
         $records = get_records_sql("SELECT id FROM {$CFG->prefix}{$this->shortprefix}_framework ORDER BY sortorder ASC");
         if (is_array($records)) {
             foreach( $records as $rec ){
-                set_field( "{$this->shortprefix}_framework", 'sortorder', $sortorder, 'id', $rec->id );
+                if(!set_field( "{$this->shortprefix}_framework", 'sortorder', $sortorder, 'id', $rec->id )) {
+                    rollback_sql();
+                    return false;
+                }
                 $sortorder++;
             }
         }
+
+        commit_sql();
+        return true;
     }
 
     /**
@@ -857,12 +882,14 @@ class hierarchy {
      * @return void
      */
     function delete_depth_metadata($id) {
+        $result = true;
         // Delete all info fields in a depth
-        delete_records($this->shortprefix.'_depth_info_field', 'depthid', $id);
+        $result = $result && delete_records($this->shortprefix.'_depth_info_field', 'depthid', $id);
 
         // Delete all info categories in a depth
-        delete_records($this->shortprefix.'_depth_info_category', 'depthid', $id);
+        $result = $result && delete_records($this->shortprefix.'_depth_info_category', 'depthid', $id);
 
+        return $result;
     }
 
 

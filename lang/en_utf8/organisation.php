@@ -20,6 +20,7 @@ $string['deletecheckframework'] = 'Are you sure you want to delete the framework
 $string['deleteframework'] = 'Delete $a';
 $string['deletedorganisation'] = 'The organisation $a and its children have been completely deleted';
 $string['deletedframework'] = 'The organisation framework $a and its data has been completely deleted';
+$string['error:deletedframework'] = 'Error deleting organisation framework $a and its data.';
 $string['depthlevel'] = 'Depth level';
 $string['depthlevels'] = 'Depth levels';
 $string['deletedepth'] = 'Delete $a';

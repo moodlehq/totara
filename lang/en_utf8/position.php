@@ -24,6 +24,7 @@ $string['deletedassignedcompetency'] = 'Competency unassigned successfully from 
 $string['deletecheckframework'] = 'Are you sure you want to delete the framework \"$a\"?';
 $string['deletedposition'] = 'The position $a and its children have been completely deleted';
 $string['deletedframework'] = 'The position framework $a and its data has been completely deleted';
+$string['error:deletedframework'] = 'Error deleting position framework $a and its data.';
 $string['deleteframework'] = 'Delete $a';
 $string['depths'] = 'Depths';
 $string['depthlevel'] = 'Depth level';

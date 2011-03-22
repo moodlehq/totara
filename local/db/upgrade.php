@@ -2145,6 +2145,17 @@ function xmldb_local_upgrade($oldversion) {
         }
     }
 
+    if ($result && $oldversion < 2011032802) {
+        $sql = "UPDATE {$CFG->prefix}pos SET parentid=0 WHERE parentid IS NULL";
+        $result = $result && execute_sql($sql);
+
+        $table = new XMLDBTable('pos');
+        $field = new XMLDBField('parentid');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
+
+        $result = $result && change_field_type($table, $field);
+    }
+
     return $result;
 }
 ?>

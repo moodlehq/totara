@@ -41,10 +41,8 @@ $navlinks[] = array('name'=>get_string("{$type}frameworks", $type),
                     'type'=>'misc');
 $navlinks[] = array('name'=>get_string('deleteframework', $type, format_string($framework->fullname)), 'link'=>'', 'type'=>'misc');
 
-
-admin_externalpage_print_header('', $navlinks);
-
 if (!$delete) {
+    admin_externalpage_print_header('', $navlinks);
     $strdelete = get_string('deletecheckframework', $type, format_string($framework->fullname));
 
     print_heading(get_string('deleteframework', $type, format_string($framework->fullname)), 'left', 1);
@@ -70,11 +68,12 @@ if (!confirm_sesskey()) {
     print_error('confirmsesskeybad', 'error');
 }
 
-// Log
-add_to_log(SITEID, 'hierarchy', $type . ' framework delete', "hierarchy/framework/index.php?type={$type}", "$framework->fullname (ID $framework->id)");
+if($hierarchy->delete_framework()) {
+    // Log
+    add_to_log(SITEID, 'hierarchy', $type . ' framework delete', "hierarchy/framework/index.php?type={$type}", "$framework->fullname (ID $framework->id)");
+    totara_set_notification(get_string('deletedframework', $type, $framework->fullname), "{$CFG->wwwroot}/hierarchy/framework/index.php?type={$type}", array('style'=>'notifysuccess'));
+} else {
+    totara_set_notification(get_string('error:deletedframework', $type, $framework->fullname), "{$CFG->wwwroot}/hierarchy/framework/index.php?type={$type}");
+}
 
-$hierarchy->delete_framework();
-
-print_heading(get_string('deletedframework', $type, format_string($framework->fullname)));
-print_continue("{$CFG->wwwroot}/hierarchy/framework/index.php?type={$type}");
 print_footer();

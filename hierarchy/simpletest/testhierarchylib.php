@@ -615,7 +615,7 @@ class hierarchylib_test extends prefix_changing_test_case {
     function test_hierarchy_delete_framework() {
         $competency = $this->competency;
         // function should return null
-        $this->assertEqual($competency->delete_framework(), null);
+        $this->assertTrue($competency->delete_framework());
         // items should have been deleted
         $this->assertFalse($competency->get_items());
         // depth levels should have been deleted
@@ -661,7 +661,7 @@ class hierarchylib_test extends prefix_changing_test_case {
         $competency = $this->competency;
 
         // function should return null
-        $this->assertEqual($competency->delete_depth_metadata(2), null);
+        $this->assertTrue($competency->delete_depth_metadata(2));
         // should have deleted all categories for the depth level
         $this->assertFalse(get_records('comp_depth_info_category', 'depthid', 2));
         // should have deleted all fields for the depth level
