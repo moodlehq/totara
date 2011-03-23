@@ -122,13 +122,13 @@ class totara_competency_evidence_form extends moodleform {
             $mform->setHelpButton('compname',array('competencyevidencecompetency',get_string('competency','competency'),'moodle'));
         } else {
             if($nojs) {
-                $mform->addElement('static','assigncompetency',get_string('assigncompetency','competency'),'<div id="competencytitle">'.htmlentities($competency_title).'</div><a href="'.$CFG->wwwroot.'/hierarchy/type/competency/assign/find.php?nojs=1&amp;s='.sesskey().'&amp;returnurl='.$newreturn.'&amp;userid='.$userid.'">'.get_string('assigncompetency','competency').'</a>.');
+                $mform->addElement('static','assigncompetency',get_string('assigncompetency','competency'),'<div id="competencytitle">'.format_string($competency_title).'</div><a href="'.$CFG->wwwroot.'/hierarchy/type/competency/assign/find.php?nojs=1&amp;s='.sesskey().'&amp;returnurl='.$newreturn.'&amp;userid='.$userid.'">'.get_string('assigncompetency','competency').'</a>.');
                 $mform->addElement('hidden', 'competencyid');
                 $mform->setType('competencyid', PARAM_INT);
                 $mform->setDefault('competencyid', $competencyid);
             } else {
                 // competency selector
-                $mform->addElement('static', 'competencyselector', get_string('competency', 'competency'), '<span id="competencytitle">'.htmlentities($competency_title).'</span>');
+                $mform->addElement('static', 'competencyselector', get_string('competency', 'competency'), '<span id="competencytitle">'.format_string($competency_title).'</span>');
                 $mform->addElement('hidden', 'competencyid');
                 $mform->setType('competencyid', PARAM_INT);
                 $mform->setDefault('competencyid', $competencyid);

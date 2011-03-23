@@ -89,7 +89,7 @@ class user_position_assignment_form extends moodleform {
         } else {
             $mform->addElement('static', 'positionselector', get_string('position', 'position').
                     '<img class="req" title="Required field" alt="Required field" src="'.$CFG->pixpath.'/req.gif">',
-                '<span id="positiontitle"> '.htmlentities($position_title).'</span>'.
+                '<span id="positiontitle"> '.format_string($position_title).'</span>'.
                     ($can_edit ? '<input type="button" value="'.get_string('chooseposition', 'position').'" id="show-position-dialog" />' : '')
             );
             $mform->addElement('hidden', 'positionid');
@@ -115,7 +115,7 @@ class user_position_assignment_form extends moodleform {
             } else {
                 $mform->addElement('static', 'organisationselector', get_string('organisation', 'position'),
                     '
-                        <span id="organisationtitle">'.htmlentities($organisation_title).'</span>
+                        <span id="organisationtitle">'.format_string($organisation_title).'</span>
                     '.
                     ($can_edit ? '<input type="button" value="'.get_string('chooseorganisation', 'organisation').'" id="show-organisation-dialog" />' : '')
                 );
@@ -152,7 +152,7 @@ class user_position_assignment_form extends moodleform {
                         'static',
                         'managerselector',
                         get_string('manager', 'position'),
-                        '<span id="managertitle">'.htmlentities($manager_title).'</span>'
+                        '<span id="managertitle">'.format_string($manager_title).'</span>'
                         .'<input type="button" value="'.get_string('choosemanager', 'position').'" id="show-manager-dialog" />'
                     );
                 } else {
@@ -161,7 +161,7 @@ class user_position_assignment_form extends moodleform {
                         'managerselector',
                         get_string('manager', 'position'),
                         '<span id="managertitle"><a href="'.$CFG->wwwroot.'/user/view.php?id='.$manager_id.'">'
-                        .htmlentities($manager_title).'</a></span>'
+                        .format_string($manager_title).'</a></span>'
                     );
                 }
 

@@ -184,6 +184,7 @@ class totara_dialog_content {
      * @return  string  $markup Markup to print
      */
     public function generate_markup() {
+        header('Content-Type: text/html; charset=UTF-8');
 
         // Skip container if only displaying treeview
         if ($this->show_treeview_only) {
@@ -348,7 +349,7 @@ class totara_dialog_content {
                     }
 
                     $html .= '<a href="#">';
-                    $html .= htmlentities($displayname);
+                    $html .= format_string($displayname);
                     $html .= '</a>';
                     $html .= '<span class="deletebutton">delete</span>';
 
@@ -413,7 +414,7 @@ class totara_dialog_content {
 
             $html .= '<div><span id="item_'.$element->id.'" class="'.$class.'">';
             $html .= '<a href="#">';
-            $html .= htmlentities($element->fullname);
+            $html .= format_string($element->fullname);
             $html .= '</a>';
             $html .= '<span class="deletebutton">delete</span>';
             $html .= '</span></div>';
@@ -443,7 +444,7 @@ function display_dialog_selector($options, $selected, $class) {
             $html .= ' selected="selected"';
         }
 
-        $html .= '>'.htmlentities($value).'</option>';
+        $html .= '>'.format_string($value).'</option>';
     }
 
     $html .= '</select>';

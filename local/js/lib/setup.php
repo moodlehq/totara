@@ -167,7 +167,7 @@ function build_treeview($elements, $error_string, $hierarchy = null, $disabledli
             $html .= '<span id="item_'.$element->id.'" class="'.trim($span_class).'">';
             // format_string() really slow here...
             $html .= '<table><tr>';
-            $html .= '<td class="list-item-name">'.htmlentities($element->fullname).'</td>';
+            $html .= '<td class="list-item-name">'.format_string($element->fullname).'</td>';
             $html .= '<td class="list-item-action">'.$addbutton_html.'</td>';
             $html .= '</tr></table>';
             $html .= '</span>';
@@ -315,11 +315,11 @@ function build_nojs_treeview($elements, $error_string, $actionurl, $actionparams
             // Element has children
             if (array_key_exists($element->id, $parents)) {
                 $html .= '<a href="'.$expandurl.'&amp;parentid='.$element->id.'">';
-                $html .= htmlentities($element->fullname);
+                $html .= format_string($element->fullname);
                 if(!empty($element->idnumber)) $html .= ' - '.$element->idnumber;
                 $html .= '</a>';
             } else {
-                $html .= htmlentities($element->fullname);
+                $html .= format_string($element->fullname);
                 if(!empty($element->idnumber)) $html .= ' - '.$element->idnumber;
             }
 
