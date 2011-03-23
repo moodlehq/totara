@@ -534,8 +534,12 @@ class development_plan {
         }
 
         // Calculate plan progress
-        $overall_progress = $overall_complete / $overall_total * 100.0;
-        $overall_progress = round($overall_progress, 2);
+        if($overall_complete > 0) {
+            $overall_progress = $overall_complete / $overall_total * 100.0;
+            $overall_progress = round($overall_progress, 2);
+        } else {
+            $overall_progress = $overall_complete;
+        }
 
         array_unshift($overall_strings, 'Plan Progress: ' . $overall_progress . "%\n\n");
         $tooltipstr = implode(' | ', $overall_strings);
