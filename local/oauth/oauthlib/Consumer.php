@@ -73,7 +73,7 @@ class local_oauth_Consumer {
             $authorizeURL .= '&oauth_callback=' . urlencode($callback);
         }
         if ($redirect) {
-            SimpleSAML_Utilities::redirect($authorizeURL);
+            MySimpleSAML_Utilities::redirect($authorizeURL);
             exit;
         }
         return $authorizeURL;

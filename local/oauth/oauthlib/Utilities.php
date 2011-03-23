@@ -7,7 +7,7 @@
  * @package simpleSAMLphp
  * @version $Id$
  */
-class SimpleSAML_Utilities {
+class MySimpleSAML_Utilities {
 
 	/* This function redirects the user to the specified address.
 	 * An optional set of query parameters can be appended by passing

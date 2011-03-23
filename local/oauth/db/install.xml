@@ -4,7 +4,7 @@
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >
   <TABLES>
-    <TABLE NAME="oauth_site_directory" COMMENT="Sites registered as OAuth providers">
+      <TABLE NAME="oauth_site_directory" COMMENT="Sites registered as OAuth providers" NEXT="oauth_access_token">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="name"/>
         <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="site name" PREVIOUS="id" NEXT="request_token_url"/>
@@ -17,6 +17,19 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="oauth_access_token" COMMENT="Access tokens per user per site" PREVIOUS="oauth_site_directory">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="siteid"/>
+        <FIELD NAME="siteid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" PREVIOUS="id" NEXT="userid"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="siteid" NEXT="access_token"/>
+        <FIELD NAME="access_token" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="access token" PREVIOUS="userid"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" NEXT="siteid"/>
+        <KEY NAME="siteid" TYPE="foreign" FIELDS="siteid" REFTABLE="oauth_site_directory" REFFIELDS="id" PREVIOUS="primary" NEXT="userid"/>
+        <KEY NAME="userid" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id" PREVIOUS="siteid"/>
       </KEYS>
     </TABLE>
   </TABLES>

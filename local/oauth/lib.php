@@ -160,6 +160,11 @@ class local_oauth {
     public function __construct($name) {
         global $CFG, $USER, $SESSION;
 
+        // store the site in the user SESSION
+        if (!isset($SESSION->local_oauth)) {
+            $SESSION->local_oauth = array();
+        }
+
         // search for things in the SESSION first
         if (isset($SESSION->local_oauth)) {
             if (isset($SESSION->local_oauth[$name])) {
@@ -177,10 +182,10 @@ class local_oauth {
         }
         $this->site = $site;
 
-        // store the site in the user SESSION
-        if (!isset($SESSION->local_oauth)) {
-            $SESSION->local_oauth = array();
-        }
+        $this->consumer = new local_oauth_Consumer($this->site->consumer_key, $this->site->consumer_secret);
+        if ($token = get_record('oauth_access_token', 'userid', $USER->id, 'siteid', $this->site->id)) { 
+            $this->access_token = unserialize($token->access_token);
+         }
         $this->store();
         return;
     }
@@ -195,13 +200,15 @@ class local_oauth {
         global $CFG, $USER, $SESSION;
 
         // search for things in the SESSION first
+        delete_records('oauth_access_token', 'siteid', $this->site, 'userid', $USER->id);
+        //$this->site = NULL;
+        $this->request_token = NULL;
+        $this->access_token = NULL;
+        //$this->consumer = NULL;
+        //$this->preserve = NULL;
+
         if (isset($SESSION->local_oauth)) {
             if (isset($SESSION->local_oauth[$name])) {
-                $this->site = NULL;
-                $this->request_token = NULL;
-                $this->access_token = NULL;
-                $this->consumer = NULL;
-                $this->preserve = NULL;
                 unset($SESSION->local_oauth[$name]);
             }
         }
@@ -213,13 +220,24 @@ class local_oauth {
      * @return bool success/fail
      */
     public function store() {
-        global $SESSION;
+        global $SESSION, $USER;
         $name = $this->site->name;
         $SESSION->local_oauth[$name]['site'] = serialize($this->site);
         $SESSION->local_oauth[$name]['request_token'] = serialize($this->request_token);
         $SESSION->local_oauth[$name]['access_token'] = serialize($this->access_token);
         $SESSION->local_oauth[$name]['consumer'] = serialize($this->consumer);
         $SESSION->local_oauth[$name]['preserve'] = serialize($this->preserve);
+        if ($old_token = get_record('oauth_access_token', 'userid', $USER->id, 'siteid', $this->site->id)) {
+            $old_token->access_token = $SESSION->local_oauth[$name]['access_token'];
+            update_record('oauth_access_token', $old_token);
+        }
+        else {
+            $token = new object();
+            $token->userid = $USER->id;
+            $token->siteid = $this->site->id;
+            $token->access_token = $SESSION->local_oauth[$name]['access_token'];
+            insert_record('oauth_access_token', $token);
+        }
     }
 
     /**
@@ -279,21 +297,21 @@ class local_oauth {
             $this->store();
         }
 
-        if (empty($this->request_token)) {
-            // obtain a request token
-            $this->add_to_log('get request token');
-            $this->consumer = new local_oauth_Consumer($this->site->consumer_key, $this->site->consumer_secret);
-            $this->request_token = $this->consumer->getRequestToken($this->site->request_token_url, $oauth_params);
-            $this->store();
-
-            // Authorize the request token
-            $SESSION->wantsurl = $FULLME;
-            $return_to = new moodle_url($CFG->wwwroot."/local/oauth/authenticate.php", array('id' => $this->site->id));
-            $this->add_to_log('authorise request token');
-            $this->consumer->getAuthorizeRequest($this->site->authorize_token_url, $this->request_token, TRUE, $return_to->out());
-        }
-
         if (empty($this->access_token)) {
+            if (empty($this->request_token)) {
+                // obtain a request token
+                $this->add_to_log('get request token');
+                $this->consumer = new local_oauth_Consumer($this->site->consumer_key, $this->site->consumer_secret);
+                $this->request_token = $this->consumer->getRequestToken($this->site->request_token_url, $oauth_params);
+                $this->store();
+
+                // Authorize the request token
+                $SESSION->wantsurl = $FULLME;
+                $return_to = new moodle_url($CFG->wwwroot."/local/oauth/authenticate.php", array('id' => $this->site->id));
+                $this->add_to_log('authorise request token');
+                $this->consumer->getAuthorizeRequest($this->site->authorize_token_url, $this->request_token, TRUE, $return_to->out());
+            }
+
             // Replace the request token with an access token
             $this->add_to_log('upgrade request token to access token');
             $this->access_token = $this->consumer->getAccessToken($this->site->access_token_url, $this->request_token);
