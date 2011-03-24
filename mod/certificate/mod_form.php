@@ -156,6 +156,10 @@ class mod_certificate_mod_form extends moodleform_mod {
  * Check for an 'addlink' button. If the linked activities fields are all full, add an empty one.
  */
     function definition_after_data() {
+
+        // Run parent method
+        parent::definition_after_data();
+
         global $form;
 
         /// This gets called more than once, and there's no way to tell which time this is, so set a 
@@ -207,14 +211,19 @@ class mod_certificate_mod_form extends moodleform_mod {
             }
         }
 
-        $numlacts = count($linkids);
-        $formgroup = array();
-        $formgroup[] =& $mform->createElement('select', 'linkid['.$numlacts.']', '', $this->activities);
-        $mform->setDefault('linkid['.$numlacts.']', 0);
-        $formgroup[] =& $mform->createElement('select', 'linkgrade['.$numlacts.']', '', $this->restrictoptions);
-        $mform->setDefault('linkgrade['.$numlacts.']', '');
-        $group =& $mform->createElement('group', 'actlab'.$numlacts, ($numlacts+1), $formgroup, array(' '), false);
-        $mform->insertElementBefore($group, 'addlink');
+        // check add link button was pressed
+        // required otherwise pressing 'Unlock completion options' button
+        // will create another item too
+        if (!isset($fdata['unlockcompletion'])) {
+            $numlacts = count($linkids);
+            $formgroup = array();
+            $formgroup[] =& $mform->createElement('select', 'linkid['.$numlacts.']', '', $this->activities);
+            $mform->setDefault('linkid['.$numlacts.']', 0);
+            $formgroup[] =& $mform->createElement('select', 'linkgrade['.$numlacts.']', '', $this->restrictoptions);
+            $mform->setDefault('linkgrade['.$numlacts.']', '');
+            $group =& $mform->createElement('group', 'actlab'.$numlacts, ($numlacts+1), $formgroup, array(' '), false);
+            $mform->insertElementBefore($group, 'addlink');
+        }
 
     }
 }
