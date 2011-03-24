@@ -139,6 +139,11 @@ abstract class competency_evidence_type extends data_object {
         // Get latest count
         $count = get_field('comp_evidence_items', 'COUNT(*)', 'competencyid', $competency->id);
         $competency->evidencecount = (int) $count;
+        // re-escape text fields from db
+        $competency->fullname = addslashes($competency->fullname);
+        $competency->shortname = addslashes($competency->shortname);
+        $competency->idnumber = addslashes($competency->idnumber);
+        $competency->description = addslashes($competency->description);
 
         if (!update_record('comp', $competency)) {
             error('Could not update competency evidence count');
@@ -166,6 +171,11 @@ abstract class competency_evidence_type extends data_object {
         // Get latest count
         $count = get_field('comp_evidence_items', 'COUNT(*)', 'competencyid', $competency->id);
         $competency->evidencecount = (int) $count;
+        // re-escape text fields from db
+        $competency->fullname = addslashes($competency->fullname);
+        $competency->shortname = addslashes($competency->shortname);
+        $competency->idnumber = addslashes($competency->idnumber);
+        $competency->description = addslashes($competency->description);
 
         if (!update_record('comp', $competency)) {
             error('Could not update competency evidence count');
