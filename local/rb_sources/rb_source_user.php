@@ -50,8 +50,8 @@ class rb_source_user extends rb_base_source {
         $this->filteroptions = $this->define_filteroptions();
         $this->contentoptions = $this->define_contentoptions();
         $this->paramoptions = array();
-        $this->defaultcolumns = array();
-        $this->defaultfilters = array();
+        $this->defaultcolumns = $this->define_defaultcolumns();
+        $this->defaultfilters = $this->define_defaultfilters();
         $this->requiredcolumns = array();
         $this->staff_f2f = get_field('report_builder', 'id', 'shortname', 'staff_facetoface_sessions');
         $this->sourcetitle = get_string('sourcetitle', 'rb_source_user');
@@ -234,6 +234,35 @@ class rb_source_user extends rb_base_source {
         return $filteroptions;
     }
 
+
+    function define_defaultcolumns() {
+        $defaultcolumns = array(
+            array(
+                'type' => 'user',
+                'value' => 'namelinkicon',
+            ),
+            array(
+                'type' => 'user',
+                'value' => 'username',
+            ),
+            array(
+                'type' => 'user',
+                'value' => 'lastlogin',
+            ),
+        );
+        return $defaultcolumns;
+    }
+
+    function define_defaultfilters() {
+        $defaultfilters = array(
+            array(
+                'type' => 'user',
+                'value' => 'fullname',
+            ),
+        );
+
+        return $defaultfilters;
+    }
     /**
      * Creates the array of rb_content_option object required for $this->contentoptions
      * @return array
