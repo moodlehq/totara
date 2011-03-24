@@ -138,14 +138,11 @@ abstract class competency_evidence_type extends data_object {
         // Update evidence count
         // Get latest count
         $count = get_field('comp_evidence_items', 'COUNT(*)', 'competencyid', $competency->id);
-        $competency->evidencecount = (int) $count;
-        // re-escape text fields from db
-        $competency->fullname = addslashes($competency->fullname);
-        $competency->shortname = addslashes($competency->shortname);
-        $competency->idnumber = addslashes($competency->idnumber);
-        $competency->description = addslashes($competency->description);
+        $todb = new object();
+        $todb->id = $competency->id;
+        $todb->evidencecount = (int) $count;
 
-        if (!update_record('comp', $competency)) {
+        if (!update_record('comp', $todb)) {
             error('Could not update competency evidence count');
         }
         return $newid;
@@ -170,14 +167,11 @@ abstract class competency_evidence_type extends data_object {
         // Update evidence count
         // Get latest count
         $count = get_field('comp_evidence_items', 'COUNT(*)', 'competencyid', $competency->id);
-        $competency->evidencecount = (int) $count;
-        // re-escape text fields from db
-        $competency->fullname = addslashes($competency->fullname);
-        $competency->shortname = addslashes($competency->shortname);
-        $competency->idnumber = addslashes($competency->idnumber);
-        $competency->description = addslashes($competency->description);
+        $todb = new object();
+        $todb->id = $competency->id;
+        $todb->evidencecount = (int) $count;
 
-        if (!update_record('comp', $competency)) {
+        if (!update_record('comp', $todb)) {
             error('Could not update competency evidence count');
         }
     }
