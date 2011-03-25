@@ -118,7 +118,7 @@ $string['local:editcourseclassification'] = 'Edit Classification of a Course';
 $string['local:searchclassifications'] = 'Search Classifications';
 
 // Report Headings
-$string['reportheading'] = 'Report Heading Block';
+$string['reportheading'] = 'Report heading block';
 $string['headingcolumnsdescription'] = 'The fields below define which data appear in the Report Heading Block. This block contains information about a specific user, and can appear in many locations throughout the site.';
 $string['editheading'] = 'Edit the Report Heading Block';
 $string['headingmissingvalue'] = 'Value to display if no data found';

@@ -25,9 +25,7 @@ $string['learningplans'] = 'Learning Plans';
 $string['xslearningplans'] = '$a\'s Learning Plans';
 $string['unknownuserslearningplans'] = 'Unknown User\'s Learning Plans';
 $string['globalsettings'] = 'Global Settings';
-$string['managetemplates'] = 'Manage Templates';
-$string['priorityscales'] = 'Priority Scales';
-$string['objectivescales'] = 'Objective Scales';
+$string['managetemplates'] = 'Manage templates';
 $string['progress'] = 'Progress';
 $string['activeplans'] = 'Active Plans';
 $string['completedplans'] = 'Completed Plans';
@@ -401,7 +399,7 @@ $string['noteduedateswrongformatorrequired'] = 'NOTE: The indicated duedate fiel
 
 
 // Priority Scales
-$string['priorityscales'] = 'Priority Scales';
+$string['priorityscales'] = 'Priority scales';
 $string['priorityscale'] = 'Priority scale';
 $string['noprioritiesdefined'] = 'No priorities defined';
 $string['priorityscalecreate'] = 'Add a new priority scale';
@@ -446,7 +444,7 @@ $string['error:updatepriorityvalue'] = 'Error updating priority scale value reco
 $string['nopriorityscales'] = 'To use priorities setup a priority scale';
 
 // Objective Scales
-$string['objectivescales'] = 'Objective Scales';
+$string['objectivescales'] = 'Objective scales';
 $string['objectivescale'] = 'Objective scale';
 $string['noobjectivesdefined'] = 'No objectives defined';
 $string['objectivesscalecreate'] = 'Add a new objective scale';
