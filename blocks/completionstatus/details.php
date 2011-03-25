@@ -49,7 +49,7 @@ if ($userid) {
 
 
 // Check permissions
-require_login($course);
+require_login();
 
 $coursecontext   = get_context_instance(CONTEXT_COURSE, $course->id);
 $personalcontext = get_context_instance(CONTEXT_USER, $user->id);
