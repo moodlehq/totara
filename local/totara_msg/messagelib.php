@@ -188,10 +188,11 @@ function tm_message_send($eventdata) {
     $preferencename = 'message_provider_'.$eventdata->component.'_'.$eventdata->name.'_'.$userstate;
 
     $processor = get_user_preferences($preferencename, null, $eventdata->userto->id);
-    if ($processor == NULL) { //this user never had a preference, save default
+    if (empty($processor)) { //this user never had a preference, save default
         if (!tm_message_set_default_message_preferences($eventdata->userto)) {
             print_error('cannotsavemessageprefs', 'local_totara_msg');
         }
+        reload_user_preferences();
         $processor = get_user_preferences($preferencename, NULL, $eventdata->userto->id);
     }
 
