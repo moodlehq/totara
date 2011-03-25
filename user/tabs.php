@@ -2,6 +2,8 @@
 /// This file to be included so we can assume config.php has already been included.
 /// We also assume that $user, $course, $currenttab have been set
 
+    require_once("{$CFG->libdir}/completionlib.php");
+
     if (!isset($filtertype)) {
         $filtertype = '';
     }
@@ -235,18 +237,22 @@
         }
 
         // Course completion tab
-        if (!empty($CFG->enablecompletion) && ($course->id == 1 || !empty($course->enablecompletion)) && // completion enabled
-            ($myreports || $anyreport || ($course->id == 1 || has_capability('coursereport/completion:view', $coursecontext)))) { // permissions to view the report
+        if (completion_info::is_enabled_for_site()) {
+            $cinfo = new completion_info($course);
 
-            // Decide if singular or plural
-            $coursecompletion = $course->id == 1 ? 'coursecompletions' : 'coursecompletion';
+            if (($course->id == SITEID || $cinfo->is_enabled()) &&
+                ($myreports || $anyreport || ($course->id == SITEID || has_capability('coursereport/completion:view', $coursecontext)))) { // permissions to view the report
 
-            // Add tab
-            $reportsecondrow[] = new tabobject(
-                'completion',
-                $CFG->wwwroot.'/course/user.php?id='.$course->id.'&amp;user='.$user->id.'&amp;mode='.$coursecompletion,
-                get_string($coursecompletion)
-            );
+                // Decide if singular or plural
+                $coursecompletion = $course->id == SITEID ? 'coursecompletions' : 'coursecompletion';
+
+                // Add tab
+                $reportsecondrow[] = new tabobject(
+                    'completion',
+                    $CFG->wwwroot.'/course/user.php?id='.$course->id.'&amp;user='.$user->id.'&amp;mode='.$coursecompletion,
+                    get_string($coursecompletion)
+                );
+            }
         }
 
         if ($reportsecondrow) {

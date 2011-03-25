@@ -4,6 +4,7 @@
 
     require_once("../config.php");
     require_once("lib.php");
+    require_once("{$CFG->libdir}/completionlib.php");
 
     $id      = required_param('id',PARAM_INT);       // course id
     $user    = required_param('user',PARAM_INT);     // user id
@@ -81,14 +82,14 @@
     }
 
     // Course completion tab
-    if (!empty($CFG->enablecompletion) && ($course->id == 1 || !empty($course->enablecompletion)) && // completion enabled
-        ($myreports || $anyreport || ($course->id == 1 || has_capability('coursereport/completion:view', $coursecontext)))) { // permissions to view the report
+    if (completion_info::is_enabled_for_site()) {
+        $cinfo = new completion_info($course);
 
-        // Decide if singular or plural
-        if ($course->id == 1) {
-            $modes[] = 'coursecompletions';
-        } else {
-            $modes[] = 'coursecompletion';
+        if (($course->id == SITEID || $cinfo->is_enabled()) &&
+            ($myreports || $anyreport || ($course->id == SITEID || has_capability('coursereport/completion:view', $coursecontext)))) { // permissions to view the report
+
+            // Decide if singular or plural
+            $modes[] = $course->id == SITEID ? 'coursecompletions' : 'coursecompletion';
         }
     }
 
@@ -341,10 +342,8 @@
         case "coursecompletions":
 
             // Display course completion user report
-            require_once $CFG->libdir.'/completionlib.php';
-
             // Grab all courses the user is enrolled in and their completion status
-            if ($course->id == 1) {
+            if ($course->id == SITEID) {
                 $course_completions = completion_info::get_all_courses($user->id);
             }
             else {
@@ -366,7 +365,7 @@
             );
 
             // Sort courses by the user's status in each
-            $num_completions = count($course_completions);
+            $num_completions = 0;
             foreach ($course_completions as $course_completion) {
 
                 // Get status
@@ -385,7 +384,11 @@
                 }
 
                 $c = (object) array('id' => $course_completion->course);
-                $courses[$status][] = new completion_info($c);
+                $cinfo = new completion_info($c);
+                if ($cinfo->has_criteria()) {
+                    $courses[$status][] = $cinfo;
+                    ++$num_completions;
+                }
             }
 
             // Check if results were empty
