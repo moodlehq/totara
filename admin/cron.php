@@ -456,13 +456,13 @@
         build_context_path();
         mtrace ('Built context paths');
 
-        if ($CFG->registrationenabled) {
+        if (!empty($CFG->registrationenabled)) {
             $registrationdue = $oktotry = false;
-            if ($CFG->registered < (time() - 60 * 60 * 24 * 30)) {
+            if (empty($CFG->registered) || $CFG->registered < (time() - 60 * 60 * 24 * 30)) {
                 // Register up to once a month
                 $registrationdue = true;
             }
-            if ($CFG->registrationattempted < (time() - 60 * 60 * 24 * 7)) {
+            if (empty($CFG->registrationattempted) || $CFG->registrationattempted < (time() - 60 * 60 * 24 * 7)) {
                 // Try registering once a week if unsuccessful
                 $oktotry = true;
             }

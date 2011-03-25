@@ -1506,7 +1506,11 @@ function xmldb_local_upgrade($oldversion) {
         $table = new XMLDBTable('block_guides_guide');
         $field = new XMLDBField('identifier');
         $field->setAttributes(XMLDB_TYPE_CHAR, '50', null, null, null, null, null);
-        $result = $result && add_field($table, $field);
+
+        // Conditionally add field identifier
+        if (!field_exists($table, $field)) {
+            $result = $result && add_field($table, $field);
+        }
     }
 
     if ($result && $oldversion < 2010072604) {

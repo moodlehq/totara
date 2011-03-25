@@ -3607,7 +3607,7 @@ function user_login_string($course=NULL, $user=NULL) {
         if (isset($user->username) && $user->username == 'guest') {
             $loggedinas = $realuserinfo.get_string('loggedinasguest').
                       " (<a $CFG->frametarget href=\"$wwwroot/login/index.php\">".get_string('login').'</a>)';
-        } else if (!empty($user->access['rsw'][$context->path])) {
+        } else if (!empty($context) && !empty($user->access['rsw'][$context->path])) {
             $rolename = '';
             if ($role = get_record('role', 'id', $user->access['rsw'][$context->path])) {
                 $rolename = join("", role_fix_names(array($role->id=>$role->name), $context));
