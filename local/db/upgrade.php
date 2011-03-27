@@ -1692,8 +1692,12 @@ function xmldb_local_upgrade($oldversion) {
         $result = $result && change_field_type($table, $field);
 
         // rename public to ispublic (keyword)
-        if(field_exists($table, $field)) {
-            $result = $result && rename_field($table, $field, 'ispublic');
+        if($CFG->dbfamily != 'mssql') {
+            $table = new XMLDBTable('report_builder_saved');
+            $field = new XMLDBField('public');
+            if(field_exists($table, $field)) {
+                $result = $result && rename_field($table, $field, 'ispublic');
+            }
         }
 
         // add default 0 to ispublic
@@ -2132,6 +2136,14 @@ function xmldb_local_upgrade($oldversion) {
         }
     }
 
+    // fix for bug introduced in v1.0.3
+    if ($result && $oldversion < 2011032801) {
+        $table = new XMLDBTable('report_builder_filters');
+        $field = new XMLDBField('ispublic');
+        if (field_exists($table, $field)) {
+            $result = $result && rename_field($table, $field, 'advanced');
+        }
+    }
 
     return $result;
 }
