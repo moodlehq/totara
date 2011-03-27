@@ -99,7 +99,27 @@ form.mform textarea {
     visibility: visible;
 }
 
-/* course completion */
+/* Fix for selects which ignore z-index rules
+	 - 	this fix doesn't work in 'standard' as it does in 'totara', the selects
+	 	are never re-shown?
+ */
+.hidden_select_ie {
+    display:none;
+}
+ 
+/**
+ * Course completion status
+ */
+div.mycourses td.status span,
+span.coursecompletionstatus span,
+div.block_totara_recent_learning td.status span  {
+	height:11px;
+	line-height:10px;
+	font-size:10px;
+	overflow:hidden;
+}
+
+
 #course-view li.activity {
 	height:1px;
 }
@@ -108,6 +128,26 @@ form.mform textarea {
 div.totara-dialog ul.treeview li {
 	height:16px;
 }
+
+div.totara-dialog .selected span span.deletebutton {
+    background-image: url("../../theme/totara/pix/t/delete.gif");
+    background-repeat: no-repeat;
+    background-position: right center;
+}
+
+div.totara-dialog #dialog-search-table .querybox input {
+    position: static;
+    width: 90px !important;
+    margin-left: 0 !important;
+}
+
+div.totara-dialog #dialog-search-table select#id_frameworkid,
+div.totara-dialog #dialog-search-table select#id_frameworkid.totara-expanded-width {
+    /* The 2nd of these selectors is applied by inline Javascript, applying absolute positioning */
+    position: static;
+    width: 255px;
+}
+
 /* reports */
 .reportbuilder-table .cell {
 	height:32px;

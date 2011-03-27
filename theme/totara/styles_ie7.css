@@ -39,20 +39,10 @@ button,
 div.totara-dialog div.yui-isloading {
     background-position: 675px 0px;
 }
-/* 	Tables currently not rendering properly..? The fixes for the dialog select/inputs below
-	are probably going to be similar to the ones in styles_ie6.css
-*/
-div.totara-dialog #dialog-search-table .querybox input {
-    position: static;
-    width: 90px !important;
-    margin-left: 1px;
-}
-div.totara-dialog #dialog-search-table select#id_frameworkid,
-div.totara-dialog #dialog-search-table select#id_frameworkid.totara-expanded-width {
-    position: static;
-    width: 240px !important;
-}
 
+div.totara-dialog table.dialog-content {
+	width:96% !important;
+}
 
 /**
  * My Team - Manager role

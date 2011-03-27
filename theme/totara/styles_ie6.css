@@ -153,25 +153,6 @@ div.totara-dialog ul.treeview li span.folder {
     position: relative;
 }
 
-div.totara-dialog .selected span span.deletebutton {
-    background-image: url("../../theme/totara/pix/t/delete.gif");
-    background-repeat: no-repeat;
-    background-position: right center;
-}
-
-div.totara-dialog #dialog-search-table .querybox input {
-    position: static;
-    width: 90px !important;
-    margin-left: 0 !important;
-}
-
-div.totara-dialog #dialog-search-table select#id_frameworkid,
-div.totara-dialog #dialog-search-table select#id_frameworkid.totara-expanded-width {
-    /* The 2nd of these selectors is applied by inline Javascript, applying absolute positioning */
-    position: static;
-    width: 265px;
-}
-
 /**
  * My Team - Manager role
  **/

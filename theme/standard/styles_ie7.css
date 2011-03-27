@@ -56,3 +56,22 @@ form.mform .fcheckbox input {
 div.totara-dialog div.ui-dialog-titlebar a.ui-dialog-titlebar-close span {
     left: -45px;
 }
+div.totara-dialog #dialog-search-table .querybox input {
+    position: static;
+    width: 90px !important;
+    margin-left: 2px;
+}
+div.totara-dialog #dialog-search-table select#id_frameworkid,
+div.totara-dialog #dialog-search-table select#id_frameworkid.totara-expanded-width {
+    position: static;
+    width: 240px !important;
+}
+
+/**
+ * Report builder
+ **/
+.reportbuilder-table .c0 img,
+.reportbuilder-table .c1 img {
+	float:left;
+	margin-top:2px;
+}
