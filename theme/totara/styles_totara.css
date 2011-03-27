@@ -1486,6 +1486,9 @@ ul.tabrow1 li a:visited {
 .dashlet .hide-show a {
   border: none;
 }
+.dashboardcol .dashlet .content {
+	padding:7px 4px 7px 7px;
+}
 .dashboardcol .dashlet .content .footer {
   text-align: left;
   margin-top:10px;
@@ -1628,6 +1631,10 @@ div.block_totara_tasks .content a {
   background: #ffffff;
 }
 
+.dashlet .content tr td {
+	padding:5px;
+}
+
 div.block_totara_tasks div.content div.footer div.viewall {
   text-align: left;
 }
@@ -1736,7 +1743,7 @@ div.totara_alerts_actions .action {
     background: url("images/icon_link.gif") no-repeat scroll center center transparent;
 }
 .dashlet.block_quicklinks td.linktext p {
-	margin:1em 0;
+	margin:0.5em 0;
 }
 
 /******************************************
@@ -2247,7 +2254,8 @@ body#admin-user table.generaltable td.c7 {
 #dp-plans-menu h3 {
     background: url("images/left_menu_header_bg.gif") no-repeat scroll left top transparent;
     color: #FFFFFF;
-	padding:7px 20px;
+	margin-left:-6px;
+	padding:5px 20px;
 }
 #dp-plans-menu ul {
 	padding: 2px 2px 2px 20px;
@@ -2350,6 +2358,8 @@ table#dpcomponents {
 #recordoflearning-menu h3 {
     background: url("images/left_menu_header_bg.gif") no-repeat scroll left top transparent;
     color: #FFFFFF;
+	margin-left:-6px;
+	padding:5px 20px;
 }
 #recordoflearning-menu ul li {
     background: url("images/arw_grn.gif") no-repeat scroll left center transparent;
@@ -2409,9 +2419,8 @@ table.planitems tr.r0 {
 
 
 .dashboard .dashlet_container {
-    background: url("images/dashlet_container_bg.gif") repeat-y scroll left top transparent;
+    background: url("images/left_menu_bg.gif") repeat-y scroll left top transparent;
 }
-
 .dashboard .dashlet .header {
 	margin-top: 5px;
     padding: 6px 15px;

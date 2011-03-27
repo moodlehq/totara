@@ -192,3 +192,20 @@ td.user_namewithlinks div.picture span.username {
 td.user_namewithlinks div.links {
     clear: both;
 }
+
+
+/**
+ * Dashboards
+ **/
+.dashboard .dashlet_container {
+	height:1px;
+}
+
+#recordoflearning-menu,
+#dp-plans-menu {
+	background-position:7px 0;
+}
+#recordoflearning-menu h3,
+#dp-plans-menu h3 {
+	margin-left:0;
+}

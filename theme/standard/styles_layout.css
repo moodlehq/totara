@@ -1752,7 +1752,7 @@ div.block_totara_report_manager {
 	#dp-plans-menu ul {
 		list-style: none outside none;
 		margin:5px 0 10px 0;
-		padding:0;
+		padding:2px 2px 2px 20px;
 	}
 		#recordoflearning-menu ul li,
 		#dp-plans-menu ul li {
