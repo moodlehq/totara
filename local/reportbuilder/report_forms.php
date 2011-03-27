@@ -60,7 +60,7 @@ class report_builder_new_form extends moodleform {
 
             $mform->addElement('advcheckbox','hidden', get_string('hidden','local_reportbuilder'), '', null, array(0,1));
             $mform->setHelpButton('hidden', array('reportbuilderhidden',get_string('hidden','local_reportbuilder'),'local_reportbuilder'));
-            $this->add_action_buttons();
+            $this->add_action_buttons(true, get_string('createreport', 'local_reportbuilder'));
 
         } else {
             $mform->addElement('html', get_string('error:nosources','local_reportbuilder'));

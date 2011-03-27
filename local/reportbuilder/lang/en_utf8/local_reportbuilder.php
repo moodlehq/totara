@@ -75,6 +75,7 @@ $string['context'] = 'Context';
 $string['course_completion'] = 'Course Completion';
 $string['coursetagenable'] = 'Show records by course tag';
 $string['createasavedsearch'] = 'Create a saved search';
+$string['createreport'] = 'Create report';
 $string['csvformat'] = 'text format';
 $string['currentfinancial'] = 'The current financial year';
 $string['currentorgenable'] = 'Show records from staff in the user\'s organisation';
