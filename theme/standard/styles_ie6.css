@@ -67,6 +67,10 @@ form.mform input {
   margin-left: expression((this.type=="text"||this.type=="file"||this.type=="password")?'-10px':'0');
 }
 
+form.mform #newfilter input {
+  margin-left: expression((this.type=="text")?'5px':'0');
+}
+
 #admin-user-user_bulk form.mform input,
 #admin-user form.mform input {
   margin-left: 0;
