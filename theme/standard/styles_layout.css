@@ -15,6 +15,7 @@
   
   dashlets and dashlet columns
   record of learning + learning plan
+  recent learning
   notifications
   reports
   state icons
@@ -1809,6 +1810,32 @@ div.block_totara_report_manager {
 .dp-plan-assign-button {
 	margin:10px 0;
 }
+
+/**
+ * Recent Learning
+ **/
+div.block_totara_recent_learning td.status span {
+    text-indent: -1000px;
+    display: block;
+    text-align: right;
+    width: 39px;
+    height: 12px;
+    background: transparent url(images/progress-icons.png) no-repeat;
+}
+
+div.block_totara_recent_learning td.status span.completion-inprogress {
+    background-position: 0px -12px;
+}
+
+div.block_totara_recent_learning td.status span.completion-complete,
+div.block_totara_recent_learning td.status span.completion-completeviarpl {
+    background-position: 0px -24px;
+}
+
+div.block_totara_recent_learning table.recent_learning tr {
+    height: 30px;
+}
+
 
 /***
  *** Notifications
