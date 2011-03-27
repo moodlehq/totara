@@ -63,10 +63,3 @@ td.user_namewithlinks div.links {
 clear: both;
 }
 
-/**
- * Report builder
- **/
-.reportbuilder-table .course_courselinkicon img,
-.reportbuilder-table .course_category_namelinkicon img {
-margin-top: -9px;
-}

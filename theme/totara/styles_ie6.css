@@ -124,13 +124,6 @@ ul.tabrow1 li a:visited {
     display:none;
 }
 
-/**
- * Report builder
- **/
-.reportbuilder-table .course_courselinkicon img,
-.reportbuilder-table .course_category_namelinkicon img {
-	margin-top:-9px;
-}
 
 /**
  * Fixing the tree dialogs
@@ -173,7 +166,6 @@ td.user_namewithlinks div.picture span.username {
 td.user_namewithlinks div.links {
     clear: both;
 }
-
 
 /**
  * Dashboards

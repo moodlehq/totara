@@ -153,3 +153,12 @@ div.totara-dialog #dialog-search-table select#id_frameworkid.totara-expanded-wid
 	height:32px;
 }
 
+
+/**
+ * Report builder
+ **/
+.reportbuilder-table .c0 img,
+.reportbuilder-table .c1 img {
+	float:left;
+	margin-top:2px;
+}

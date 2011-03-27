@@ -56,6 +56,7 @@ form.mform .fcheckbox input {
 div.totara-dialog div.ui-dialog-titlebar a.ui-dialog-titlebar-close span {
     left: -45px;
 }
+
 div.totara-dialog #dialog-search-table .querybox input {
     position: static;
     width: 90px !important;
