@@ -91,7 +91,7 @@
     print_container_start();
     echo skip_main_destination();
 
-    print_heading_block(get_string('topicoutline'), 'outline');
+    echo '<br />';
 
     echo '<table class="topics" width="100%" summary="'.get_string('layouttable').'">';
 
@@ -194,7 +194,7 @@
             }
 
             echo '<tr id="section-'.$section.'" class="section main'.$sectionstyle.'">';
-            echo '<td id="sectionblock-'.$section.'" class="left side">'.$currenttext.$section.'</td>';
+            echo '<td id="sectionblock-'.$section.'" class="left side"></td>';
 
             echo '<td class="content">';
             if (!has_capability('moodle/course:viewhiddensections', $context) and !$thissection->visible) {   // Hidden for students
