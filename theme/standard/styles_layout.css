@@ -4926,3 +4926,8 @@ table.planiteminfobox td {
     padding: 5px;
     text-align: center;
 }
+
+/* Plan Template Instances table */
+table.dp-template-instances {
+    width: 100%;
+}
